@@ -1,0 +1,414 @@
+{
+  "format": "form.program",
+  "schemaVersion": 3,
+  "program": {
+    "id": "full-body-classic",
+    "name": "Classic Foundation: 3-Day Full Body",
+    "description": "A time-tested 3-day full body compound routine built for maximum strength and muscle stimulus in 3 efficient weekly sessions.",
+    "guidelines": [
+      "Perform workouts on non-consecutive days (e.g. Monday, Wednesday, Friday).",
+      "Focus on progressive overload on the main compound barbell lifts.",
+      "Take 2\u20133 minute rest on heavy compounds and 90 seconds on isolation lifts."
+    ],
+    "workouts": [
+      {
+        "id": "fb-workout-a",
+        "day": 1,
+        "title": "Squat & Chest",
+        "focus": "Squat strength, horizontal press, horizontal row, and core",
+        "tone": "violet",
+        "targetMuscles": [
+          "quadriceps",
+          "chest",
+          "lats",
+          "triceps",
+          "abs"
+        ],
+        "exercises": [
+          {
+            "id": "fba-bb-squat",
+            "name": "Barbell Back Squat",
+            "movementType": "squat",
+            "movementAssetId": "barbell-back-squat",
+            "sets": 4,
+            "reps": {
+              "min": 6,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "cues": [
+              "Brace core tightly.",
+              "Descend below parallel under control.",
+              "Drive up through mid-foot."
+            ],
+            "avoid": [
+              "Knees caving in.",
+              "Rounding back."
+            ]
+          },
+          {
+            "id": "fba-bb-bench",
+            "name": "Barbell Bench Press",
+            "movementType": "press",
+            "movementAssetId": "barbell-bench-press",
+            "sets": 4,
+            "reps": {
+              "min": 6,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "cues": [
+              "Tuck shoulder blades.",
+              "Lower bar to sternum.",
+              "Press up explosively."
+            ],
+            "avoid": [
+              "Bouncing bar."
+            ]
+          },
+          {
+            "id": "fba-bb-row",
+            "name": "Barbell Row",
+            "movementType": "row",
+            "movementAssetId": "barbell-row",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Hinge at hips to 45 degrees.",
+              "Pull to upper abdomen."
+            ],
+            "avoid": [
+              "Using excessive momentum."
+            ]
+          },
+          {
+            "id": "fba-overhead-cable-ext",
+            "name": "Overhead Cable Triceps Extension",
+            "movementType": "triceps",
+            "movementAssetId": "overhead-cable-triceps-extension",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Deep long head triceps stretch.",
+              "Extend forward."
+            ],
+            "avoid": [
+              "Arching spine."
+            ]
+          },
+          {
+            "id": "fba-hanging-knee-raise",
+            "name": "Hanging Knee Raise",
+            "movementType": "core",
+            "movementAssetId": "hanging-knee-raise",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Curl pelvis up to chest."
+            ],
+            "avoid": [
+              "Swinging."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fb-workout-b",
+        "day": 3,
+        "title": "Deadlift & Press",
+        "focus": "Deadlift power, overhead pressing, vertical pulling, and single-leg strength",
+        "tone": "blue",
+        "targetMuscles": [
+          "lower-back",
+          "hamstrings",
+          "shoulders",
+          "lats",
+          "biceps"
+        ],
+        "exercises": [
+          {
+            "id": "fbb-conv-deadlift",
+            "name": "Conventional Barbell Deadlift",
+            "movementType": "hinge",
+            "movementAssetId": "conventional-barbell-deadlift",
+            "sets": 4,
+            "reps": {
+              "min": 5,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "cues": [
+              "Wedge hips, engage lats.",
+              "Drive floor away."
+            ],
+            "avoid": [
+              "Rounding lower spine."
+            ]
+          },
+          {
+            "id": "fbb-standing-ohp",
+            "name": "Standing Barbell Overhead Press",
+            "movementType": "press",
+            "movementAssetId": "standing-barbell-overhead-press",
+            "sets": 4,
+            "reps": {
+              "min": 6,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "cues": [
+              "Glutes tight, press straight overhead."
+            ],
+            "avoid": [
+              "Arching back."
+            ]
+          },
+          {
+            "id": "fbb-lat-pulldown",
+            "name": "Lat Pulldown",
+            "movementType": "pull-up",
+            "movementAssetId": "lat-pulldown",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Drive elbows down to pockets."
+            ],
+            "avoid": [
+              "Swinging torso."
+            ]
+          },
+          {
+            "id": "fbb-bulgarian-split-squat",
+            "name": "Bulgarian Split Squat",
+            "movementType": "lunge",
+            "movementAssetId": "rear-foot-elevated-split-squat",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Drive through front heel.",
+              "Deep knee bend."
+            ],
+            "avoid": [
+              "Front heel lifting."
+            ]
+          },
+          {
+            "id": "fbb-db-lat-raise",
+            "name": "Dumbbell Lateral Raise",
+            "movementType": "shoulder-raise",
+            "movementAssetId": "dumbbell-lateral-raise",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Raise in scapular plane."
+            ],
+            "avoid": [
+              "Shrugging traps."
+            ]
+          },
+          {
+            "id": "fbb-incline-db-curl",
+            "name": "Incline Dumbbell Curl",
+            "movementType": "curl",
+            "movementAssetId": "incline-dumbbell-curl",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Elbows pointing down, supinate at top."
+            ],
+            "avoid": [
+              "Swinging."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fb-workout-c",
+        "day": 5,
+        "title": "Legs & Back",
+        "focus": "Leg hypertrophy, incline upper chest, bodyweight pull, and posterior chain",
+        "tone": "orange",
+        "targetMuscles": [
+          "quadriceps",
+          "chest",
+          "hamstrings",
+          "lats",
+          "triceps",
+          "abs"
+        ],
+        "exercises": [
+          {
+            "id": "fbc-leg-press",
+            "name": "Leg Press",
+            "movementType": "squat",
+            "movementAssetId": "leg-press-45-degree",
+            "sets": 4,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Controlled descent, press through full foot."
+            ],
+            "avoid": [
+              "Locking knees forcefully."
+            ]
+          },
+          {
+            "id": "fbc-incline-db-press",
+            "name": "Incline Dumbbell Press",
+            "movementType": "press",
+            "movementAssetId": "incline-dumbbell-press",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "30 degree bench, deep stretch."
+            ],
+            "avoid": [
+              "Flaring elbows excessively."
+            ]
+          },
+          {
+            "id": "fbc-pull-ups",
+            "name": "Pull-Ups",
+            "movementType": "pull-up",
+            "movementAssetId": "weighted-pull-up",
+            "sets": 3,
+            "reps": {
+              "min": 6,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Full dead hang to chin over bar."
+            ],
+            "avoid": [
+              "Kipping."
+            ]
+          },
+          {
+            "id": "fbc-bb-rdl",
+            "name": "Barbell Romanian Deadlift",
+            "movementType": "hinge",
+            "movementAssetId": "barbell-romanian-deadlift",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "cues": [
+              "Hips push straight back, keep bar close."
+            ],
+            "avoid": [
+              "Rounding back."
+            ]
+          },
+          {
+            "id": "fbc-rope-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "movementType": "triceps",
+            "movementAssetId": "rope-triceps-pressdown",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Lock elbows, spread rope at bottom."
+            ],
+            "avoid": [
+              "Swinging."
+            ]
+          },
+          {
+            "id": "fbc-kneeling-cable-crunch",
+            "name": "Kneeling Cable Crunch",
+            "movementType": "core",
+            "movementAssetId": "kneeling-cable-crunch",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Flex spine to pull elbows to knees."
+            ],
+            "avoid": [
+              "Sitting back on heels."
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

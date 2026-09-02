@@ -1,0 +1,13 @@
+{
+  "images": [
+    {
+      "filename": "anatomy_lower.png",
+      "idiom": "universal",
+      "scale": "1x"
+    }
+  ],
+  "info": {
+    "author": "xcode",
+    "version": 1
+  }
+}

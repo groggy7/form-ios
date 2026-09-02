@@ -1,0 +1,397 @@
+{
+  "format": "form.program",
+  "schemaVersion": 3,
+  "program": {
+    "id": "athletic-performance",
+    "name": "Athletic Engine: 3-Day Performance",
+    "description": "A 3-day athletic performance program designed to build explosive lower body power, rotational core stability, vertical jump, and work capacity.",
+    "guidelines": [
+      "Perform all power exercises (jumps, push press, swings) first while neurologically fresh.",
+      "Move every rep with explosive intent.",
+      "Rest 2\u20133 minutes on power and compound lifts."
+    ],
+    "workouts": [
+      {
+        "id": "ap-lower-power",
+        "day": 1,
+        "title": "Lower Power",
+        "focus": "Trap bar deadlift power, vertical box jumps, unilateral acceleration",
+        "tone": "orange",
+        "targetMuscles": [
+          "hamstrings",
+          "glutes",
+          "quadriceps",
+          "calves",
+          "abs"
+        ],
+        "exercises": [
+          {
+            "id": "ap-trap-bar-deadlift",
+            "name": "Trap Bar Deadlift",
+            "movementType": "hinge",
+            "movementAssetId": "trap-bar-deadlift",
+            "sets": 4,
+            "reps": {
+              "min": 5,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "cues": [
+              "Stand inside center of trap bar.",
+              "Drive feet through floor with maximum velocity on the ascent."
+            ],
+            "avoid": [
+              "Rounding lower spine."
+            ]
+          },
+          {
+            "id": "ap-bulgarian-split-squat",
+            "name": "Bulgarian Split Squat",
+            "movementType": "lunge",
+            "movementAssetId": "rear-foot-elevated-split-squat",
+            "sets": 3,
+            "reps": {
+              "min": 6,
+              "max": 8,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Drive through front heel with explosive intent."
+            ],
+            "avoid": [
+              "Collapsing forward."
+            ]
+          },
+          {
+            "id": "ap-bb-rdl",
+            "name": "Barbell Romanian Deadlift",
+            "movementType": "hinge",
+            "movementAssetId": "barbell-romanian-deadlift",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Push hips back horizontally.",
+              "Deep hamstring load."
+            ],
+            "avoid": [
+              "Rounding back."
+            ]
+          },
+          {
+            "id": "ap-standing-calf",
+            "name": "Standing Machine Calf Raise",
+            "movementType": "calf",
+            "movementAssetId": "standing-machine-calf-raise",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Full stretch and explosive calf drive."
+            ],
+            "avoid": [
+              "Bouncing."
+            ]
+          },
+          {
+            "id": "ap-pallof-press",
+            "name": "Pallof Press",
+            "movementType": "core",
+            "movementAssetId": "pallof-press",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 60,
+            "cues": [
+              "Stand perpendicular to cable.",
+              "Extend cable handle straight out in front of chest.",
+              "Resist all rotational torque."
+            ],
+            "avoid": [
+              "Allowing torso or hips to twist."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ap-upper-power",
+        "day": 3,
+        "title": "Upper Power",
+        "focus": "Push press power, weighted pull-up strength, and horizontal row capacity",
+        "tone": "violet",
+        "targetMuscles": [
+          "shoulders",
+          "lats",
+          "chest",
+          "triceps",
+          "abs"
+        ],
+        "exercises": [
+          {
+            "id": "ap-push-press",
+            "name": "Push Press",
+            "movementType": "press",
+            "movementAssetId": "push-press",
+            "sets": 4,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "cues": [
+              "Dip knees 3\u20134 inches.",
+              "Explosively extend hips and drive bar overhead.",
+              "Lock out arms firmly."
+            ],
+            "avoid": [
+              "Re-bending knees under the bar (this is push press, not jerk)."
+            ]
+          },
+          {
+            "id": "ap-pull-ups",
+            "name": "Pull-Ups",
+            "movementType": "pull-up",
+            "movementAssetId": "weighted-pull-up",
+            "sets": 4,
+            "reps": {
+              "min": 6,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Full dead hang.",
+              "Drive chest up to bar with power."
+            ],
+            "avoid": [
+              "Kipping."
+            ]
+          },
+          {
+            "id": "ap-db-bench",
+            "name": "Dumbbell Bench Press",
+            "movementType": "press",
+            "movementAssetId": "dumbbell-bench-press",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Deep chest stretch.",
+              "Press up explosively."
+            ],
+            "avoid": [
+              "Flaring elbows out."
+            ]
+          },
+          {
+            "id": "ap-bb-row",
+            "name": "Barbell Row",
+            "movementType": "row",
+            "movementAssetId": "barbell-row",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "45 degree torso angle.",
+              "Pull bar to lower ribs."
+            ],
+            "avoid": [
+              "Jerking torso upright."
+            ]
+          },
+          {
+            "id": "ap-face-pull",
+            "name": "Face Pull",
+            "movementType": "row",
+            "movementAssetId": "band-face-pull",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Pull rope to eye level.",
+              "Rotate shoulders back."
+            ],
+            "avoid": [
+              "Craning neck."
+            ]
+          },
+          {
+            "id": "ap-ab-wheel",
+            "name": "Ab Wheel Rollout",
+            "movementType": "core",
+            "movementAssetId": "ab-wheel-rollout",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Roll out with flat/hollow back.",
+              "Pull back from abs."
+            ],
+            "avoid": [
+              "Sagging lower spine."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "ap-work-capacity",
+        "day": 5,
+        "title": "Conditioning & Core",
+        "focus": "Front squat anterior strength, kettlebell swings, farmer carries, and jump rope",
+        "tone": "lime",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "forearms",
+          "abs",
+          "calves"
+        ],
+        "exercises": [
+          {
+            "id": "ap-bb-front-squat",
+            "name": "Barbell Front Squat",
+            "movementType": "squat",
+            "movementAssetId": "barbell-front-squat",
+            "sets": 4,
+            "reps": {
+              "min": 6,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "cues": [
+              "High elbows, upright torso.",
+              "Descend below parallel and drive straight up."
+            ],
+            "avoid": [
+              "Elbows dropping."
+            ]
+          },
+          {
+            "id": "ap-kettlebell-swing",
+            "name": "Kettlebell Swing",
+            "movementType": "hinge",
+            "movementAssetId": "kettlebell-swing",
+            "sets": 4,
+            "reps": {
+              "min": 15,
+              "max": 20,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Hike bell between legs, snap hips forward forcefully.",
+              "Kettlebell floats to chest height on hip power."
+            ],
+            "avoid": [
+              "Squatting the bell down.",
+              "Lifting with shoulders."
+            ]
+          },
+          {
+            "id": "ap-farmer-carry",
+            "name": "Farmer Carry",
+            "movementType": "core",
+            "movementAssetId": "farmer-carry",
+            "sets": 4,
+            "reps": {
+              "min": 40,
+              "max": 60,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Deadlift heavy dumbbells or trap bar to standing.",
+              "Walk with tall posture, shoulders down and back, tight core."
+            ],
+            "avoid": [
+              "Leaning to one side.",
+              "Shrugging traps to ears."
+            ]
+          },
+          {
+            "id": "ap-hanging-knee-raise",
+            "name": "Hanging Knee Raise",
+            "movementType": "core",
+            "movementAssetId": "hanging-knee-raise",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Curl pelvis up to chest."
+            ],
+            "avoid": [
+              "Swinging."
+            ]
+          },
+          {
+            "id": "ap-jump-rope",
+            "name": "Jump Rope",
+            "movementType": "conditioning",
+            "movementAssetId": "jump-rope",
+            "prescription": "4 \u00d7 2 min",
+            "sets": 4,
+            "restSeconds": 60,
+            "cues": [
+              "Stay light on balls of feet.",
+              "Turn rope with wrists."
+            ],
+            "avoid": [
+              "Stiff flat-footed landings."
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,499 @@
+{
+  "format": "form.program",
+  "schemaVersion": 3,
+  "program": {
+    "id": "home-forge-dumbbells",
+    "name": "Home Forge: 4-Day Dumbbell Split",
+    "description": "A complete 4-day Upper/Lower split designed exclusively for dumbbells and bodyweight. No specialized machines required.",
+    "guidelines": [
+      "Use adjustable or pair dumbbells with manageable micro-increments.",
+      "Maintain strict form and full range of motion to maximize hypertrophy without heavy machines.",
+      "Take 90\u2013120 seconds rest between sets."
+    ],
+    "workouts": [
+      {
+        "id": "hf-upper-a",
+        "day": 1,
+        "title": "Chest & Back",
+        "focus": "Horizontal dumbbell pressing, lat rows, and shoulder volume",
+        "tone": "violet",
+        "targetMuscles": [
+          "chest",
+          "lats",
+          "shoulders",
+          "biceps",
+          "triceps"
+        ],
+        "exercises": [
+          {
+            "id": "hfa-db-bench",
+            "name": "Dumbbell Bench Press",
+            "movementType": "press",
+            "movementAssetId": "dumbbell-bench-press",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Tuck shoulder blades.",
+              "Control deep stretch.",
+              "Press up smoothly."
+            ],
+            "avoid": [
+              "Bouncing weights.",
+              "Flaring elbows."
+            ]
+          },
+          {
+            "id": "hfa-one-arm-row",
+            "name": "One-Arm Dumbbell Row",
+            "movementType": "row",
+            "movementAssetId": "one-arm-dumbbell-row",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Pull dumbbell toward hip.",
+              "Control eccentric."
+            ],
+            "avoid": [
+              "Torso rotation."
+            ]
+          },
+          {
+            "id": "hfa-db-lateral-raise",
+            "name": "Dumbbell Lateral Raise",
+            "movementType": "shoulder-raise",
+            "movementAssetId": "dumbbell-lateral-raise",
+            "sets": 4,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Raise in scapular plane.",
+              "Hold at top."
+            ],
+            "avoid": [
+              "Swinging hips."
+            ]
+          },
+          {
+            "id": "hfa-db-hammer-curl",
+            "name": "Dumbbell Hammer Curl",
+            "movementType": "curl",
+            "movementAssetId": "dumbbell-hammer-curl",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Neutral grip.",
+              "Squeeze brachialis."
+            ],
+            "avoid": [
+              "Body sway."
+            ]
+          },
+          {
+            "id": "hfa-push-ups",
+            "name": "Push-Ups",
+            "movementType": "press",
+            "movementAssetId": "push-up",
+            "sets": 3,
+            "reps": {
+              "toFailure": true,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Plank straight body.",
+              "Chest touches floor."
+            ],
+            "avoid": [
+              "Sagging hips."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "hf-lower-a",
+        "day": 2,
+        "title": "Quads & Hams",
+        "focus": "Goblet squats, dumbbell RDLs, and calf development",
+        "tone": "orange",
+        "targetMuscles": [
+          "quadriceps",
+          "hamstrings",
+          "calves",
+          "abs"
+        ],
+        "exercises": [
+          {
+            "id": "hfa-goblet-squat",
+            "name": "Goblet Squat",
+            "movementType": "squat",
+            "movementAssetId": "kettlebell-goblet-squat",
+            "sets": 4,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Hold dumbbell vertically against chest.",
+              "Squat between knees below parallel.",
+              "Drive through mid-foot."
+            ],
+            "avoid": [
+              "Rounding back.",
+              "Heels lifting."
+            ]
+          },
+          {
+            "id": "hfa-db-rdl",
+            "name": "Dumbbell Romanian Deadlift",
+            "movementType": "hinge",
+            "movementAssetId": "dumbbell-romanian-deadlift",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Push hips back horizontally.",
+              "Dumbbells skim shins.",
+              "Feel deep hamstring stretch."
+            ],
+            "avoid": [
+              "Squatting weight down.",
+              "Rounding spine."
+            ]
+          },
+          {
+            "id": "hfa-bulgarian-split-squat",
+            "name": "Bulgarian Split Squat",
+            "movementType": "lunge",
+            "movementAssetId": "rear-foot-elevated-split-squat",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Rear foot on chair or bench.",
+              "Drive through front heel."
+            ],
+            "avoid": [
+              "Knee collapsing."
+            ]
+          },
+          {
+            "id": "hfa-single-leg-calf",
+            "name": "Single-Leg Calf Raise",
+            "movementType": "calf",
+            "movementAssetId": "single-leg-calf-raise",
+            "sets": 4,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 60,
+            "cues": [
+              "Elevate on stair edge.",
+              "Full 2-second bottom stretch."
+            ],
+            "avoid": [
+              "Bouncing."
+            ]
+          },
+          {
+            "id": "hfa-side-plank",
+            "name": "Side Plank",
+            "movementType": "core",
+            "movementAssetId": "side-plank",
+            "sets": 3,
+            "reps": {
+              "min": 30,
+              "max": 45,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 60,
+            "cues": [
+              "Elbow under shoulder.",
+              "Straight line from head to heels."
+            ],
+            "avoid": [
+              "Sagging hips."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "hf-upper-b",
+        "day": 4,
+        "title": "Shoulders & Arms",
+        "focus": "Incline pressing, chest-supported rows, floor pressing, and biceps",
+        "tone": "rose",
+        "targetMuscles": [
+          "chest",
+          "lats",
+          "shoulders",
+          "triceps",
+          "biceps"
+        ],
+        "exercises": [
+          {
+            "id": "hfb-incline-db-press",
+            "name": "Incline Dumbbell Press",
+            "movementType": "press",
+            "movementAssetId": "incline-dumbbell-press",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "30 degree bench angle.",
+              "Deep chest stretch."
+            ],
+            "avoid": [
+              "Flaring elbows out."
+            ]
+          },
+          {
+            "id": "hfb-cs-db-row",
+            "name": "Chest-Supported Dumbbell Row",
+            "movementType": "row",
+            "movementAssetId": "chest-supported-dumbbell-row",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Chest on bench pad.",
+              "Pull elbows straight back."
+            ],
+            "avoid": [
+              "Heaving chest off bench."
+            ]
+          },
+          {
+            "id": "hfb-db-floor-press",
+            "name": "Dumbbell Floor Press",
+            "movementType": "press",
+            "movementAssetId": "dumbbell-floor-press",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Lie flat on floor with knees bent.",
+              "Lower until triceps lightly touch floor.",
+              "Press up explosively."
+            ],
+            "avoid": [
+              "Bouncing triceps hard off the ground."
+            ]
+          },
+          {
+            "id": "hfb-db-lat-raise",
+            "name": "Dumbbell Lateral Raise",
+            "movementType": "shoulder-raise",
+            "movementAssetId": "dumbbell-lateral-raise",
+            "sets": 4,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Raise in scapular plane."
+            ],
+            "avoid": [
+              "Shrugging traps."
+            ]
+          },
+          {
+            "id": "hfb-incline-db-curl",
+            "name": "Incline Dumbbell Curl",
+            "movementType": "curl",
+            "movementAssetId": "incline-dumbbell-curl",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Elbows pointing down, supinate at top."
+            ],
+            "avoid": [
+              "Swinging."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "hf-lower-b",
+        "day": 5,
+        "title": "Glutes & Core",
+        "focus": "Unilateral leg loading, glute development, and core stability",
+        "tone": "lime",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "calves",
+          "abs"
+        ],
+        "exercises": [
+          {
+            "id": "hfb-db-step-up",
+            "name": "Dumbbell Step-Up",
+            "movementType": "lunge",
+            "movementAssetId": "dumbbell-step-up",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Step onto knee-height box or bench.",
+              "Drive through top foot without jumping off back foot."
+            ],
+            "avoid": [
+              "Pushing off bottom foot."
+            ]
+          },
+          {
+            "id": "hfb-db-rdl",
+            "name": "Dumbbell Romanian Deadlift",
+            "movementType": "hinge",
+            "movementAssetId": "dumbbell-romanian-deadlift",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Push hips back, keep dumbbells close."
+            ],
+            "avoid": [
+              "Rounding back."
+            ]
+          },
+          {
+            "id": "hfb-goblet-squat",
+            "name": "Goblet Squat",
+            "movementType": "squat",
+            "movementAssetId": "kettlebell-goblet-squat",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Deep squat between knees."
+            ],
+            "avoid": [
+              "Heels lifting."
+            ]
+          },
+          {
+            "id": "hfb-single-leg-calf",
+            "name": "Single-Leg Calf Raise",
+            "movementType": "calf",
+            "movementAssetId": "single-leg-calf-raise",
+            "sets": 4,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 60,
+            "cues": [
+              "Full 2-second bottom stretch."
+            ],
+            "avoid": [
+              "Bouncing."
+            ]
+          },
+          {
+            "id": "hfb-dead-bug",
+            "name": "Dead Bug",
+            "movementType": "core",
+            "movementAssetId": "dead-bug",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 60,
+            "cues": [
+              "Press lower back firmly into floor.",
+              "Extend opposite arm and leg slowly."
+            ],
+            "avoid": [
+              "Lower back arching off floor."
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

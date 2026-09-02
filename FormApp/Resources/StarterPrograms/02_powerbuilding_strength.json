@@ -1,0 +1,533 @@
+{
+  "format": "form.program",
+  "schemaVersion": 3,
+  "program": {
+    "id": "powerbuilding-strength",
+    "name": "Heavy & Built: 4-Day Powerbuilding",
+    "description": "A 4-day heavy compound powerbuilding split blending foundational powerlifting strength (Squat, Bench, Deadlift, OHP) with high-yield hypertrophy.",
+    "guidelines": [
+      "Primary barbell lifts are performed heavy with 3\u20135 minute rest periods to maximize force production.",
+      "Accessory work focuses on high-tension hypertrophy with 90\u2013120 second rest intervals.",
+      "Record exact weights and reps to progress through linear periodization.",
+      "Always maintain rigid brace and neutral spine on heavy compounds; leave 1 rep in reserve."
+    ],
+    "workouts": [
+      {
+        "id": "pb-squat-strength",
+        "day": 1,
+        "title": "Heavy Squat",
+        "focus": "Maximal squat power, quad density, and core bracing",
+        "tone": "orange",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "abs"
+        ],
+        "exercises": [
+          {
+            "id": "pb-bb-squat",
+            "name": "Barbell Back Squat",
+            "movementType": "squat",
+            "movementAssetId": "barbell-back-squat",
+            "sets": 5,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "cues": [
+              "Pack upper back into the bar.",
+              "Deep diaphragmatic breath into belt before descent.",
+              "Drive out of the hole with chest and hips rising together."
+            ],
+            "avoid": [
+              "Good-morning squatting (hips shooting up first).",
+              "Losing abdominal brace."
+            ]
+          },
+          {
+            "id": "pb-leg-press",
+            "name": "Leg Press",
+            "movementType": "squat",
+            "movementAssetId": "leg-press-45-degree",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Feet mid-platform.",
+              "Deep controlled descent.",
+              "Press through heels and mid-foot."
+            ],
+            "avoid": [
+              "Locking knees forcefully.",
+              "Pelvis lifting off seat."
+            ]
+          },
+          {
+            "id": "pb-bb-rdl",
+            "name": "Barbell Romanian Deadlift",
+            "movementType": "hinge",
+            "movementAssetId": "barbell-romanian-deadlift",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "cues": [
+              "Lats engaged to keep bar close.",
+              "Hips travel back horizontally.",
+              "Squeeze glutes to lock out."
+            ],
+            "avoid": [
+              "Bending knees into a conventional deadlift.",
+              "Rounding lower back."
+            ]
+          },
+          {
+            "id": "pb-leg-ext",
+            "name": "Leg Extension",
+            "movementType": "squat",
+            "movementAssetId": "leg-extension",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Pause for 1 second at full extension.",
+              "Resist lowering phase."
+            ],
+            "avoid": [
+              "Using hip momentum to kick weight up."
+            ]
+          },
+          {
+            "id": "pb-hanging-knee-raise",
+            "name": "Hanging Knee Raise",
+            "movementType": "core",
+            "movementAssetId": "hanging-knee-raise",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Hang with active shoulders.",
+              "Curl pelvis upward as knees drive toward chest."
+            ],
+            "avoid": [
+              "Swinging legs with momentum."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "pb-bench-strength",
+        "day": 2,
+        "title": "Heavy Bench",
+        "focus": "Pectoral force production, triceps lockout, and horizontal pulling balance",
+        "tone": "violet",
+        "targetMuscles": [
+          "chest",
+          "triceps",
+          "shoulders",
+          "lats"
+        ],
+        "exercises": [
+          {
+            "id": "pb-bb-bench",
+            "name": "Barbell Bench Press",
+            "movementType": "press",
+            "movementAssetId": "barbell-bench-press",
+            "sets": 5,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "cues": [
+              "Plant heels, arch upper back, tuck shoulder blades.",
+              "Lower bar to sternum under control.",
+              "Explode upward with leg drive."
+            ],
+            "avoid": [
+              "Bouncing bar off ribcage.",
+              "Butt lifting off the bench."
+            ]
+          },
+          {
+            "id": "pb-incline-db-press",
+            "name": "Incline Dumbbell Press",
+            "movementType": "press",
+            "movementAssetId": "incline-dumbbell-press",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Set bench to 30 degrees.",
+              "Tuck elbows at 45 degrees.",
+              "Full range press with control."
+            ],
+            "avoid": [
+              "Flaring elbows excessively wide."
+            ]
+          },
+          {
+            "id": "pb-cs-db-row",
+            "name": "Chest-Supported Dumbbell Row",
+            "movementType": "row",
+            "movementAssetId": "chest-supported-dumbbell-row",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Chest firmly on pad.",
+              "Pull elbows straight back and squeeze scapulae."
+            ],
+            "avoid": [
+              "Heaving chest off bench."
+            ]
+          },
+          {
+            "id": "pb-cable-lat-raise",
+            "name": "Cable Lateral Raise",
+            "movementType": "shoulder-raise",
+            "movementAssetId": "cable-lateral-raise",
+            "sets": 4,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Lead with elbows in scapular plane.",
+              "Pause at shoulder height."
+            ],
+            "avoid": [
+              "Torso swinging."
+            ]
+          },
+          {
+            "id": "pb-rope-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "movementType": "triceps",
+            "movementAssetId": "rope-triceps-pressdown",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Lock elbows at ribs.",
+              "Spread rope apart at bottom."
+            ],
+            "avoid": [
+              "Flaring elbows out."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "pb-deadlift-strength",
+        "day": 4,
+        "title": "Heavy Deadlift",
+        "focus": "Posterior chain maximal strength, back thickness, and hamstring development",
+        "tone": "blue",
+        "targetMuscles": [
+          "lower-back",
+          "hamstrings",
+          "glutes",
+          "lats",
+          "trapezius"
+        ],
+        "exercises": [
+          {
+            "id": "pb-conv-deadlift",
+            "name": "Conventional Barbell Deadlift",
+            "movementType": "hinge",
+            "movementAssetId": "conventional-barbell-deadlift",
+            "sets": 4,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "cues": [
+              "Feet hip-width, pull slack out of bar.",
+              "Wedge hips, engage lats, push floor away through heels.",
+              "Lock out with glutes."
+            ],
+            "avoid": [
+              "Hyperextending spine at lockout.",
+              "Jerking the bar off the floor."
+            ]
+          },
+          {
+            "id": "pb-pull-ups",
+            "name": "Pull-Ups",
+            "movementType": "pull-up",
+            "movementAssetId": "weighted-pull-up",
+            "sets": 4,
+            "reps": {
+              "min": 6,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Full extension at bottom.",
+              "Chest to bar, drive elbows down."
+            ],
+            "avoid": [
+              "Kipping or half reps."
+            ]
+          },
+          {
+            "id": "pb-bb-row",
+            "name": "Barbell Row",
+            "movementType": "row",
+            "movementAssetId": "barbell-row",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "45 degree torso angle.",
+              "Pull to lower ribs, hold squeeze."
+            ],
+            "avoid": [
+              "Standing straight up during the set."
+            ]
+          },
+          {
+            "id": "pb-seated-leg-curl",
+            "name": "Seated Leg Curl",
+            "movementType": "hinge",
+            "movementAssetId": "seated-leg-curl",
+            "sets": 4,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Full knee flexion under seat.",
+              "Resist return."
+            ],
+            "avoid": [
+              "Hips lifting."
+            ]
+          },
+          {
+            "id": "pb-ab-wheel",
+            "name": "Ab Wheel Rollout",
+            "movementType": "core",
+            "movementAssetId": "ab-wheel-rollout",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Tuck pelvis, round upper back.",
+              "Roll out as far as core can stabilize without lumbar sag.",
+              "Pull back from abs."
+            ],
+            "avoid": [
+              "Sagging lower back into extension."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "pb-press-volume",
+        "day": 5,
+        "title": "Overhead Press",
+        "focus": "Vertical pressing overhead power, lat pulldowns, and arm hypertrophy",
+        "tone": "rose",
+        "targetMuscles": [
+          "shoulders",
+          "triceps",
+          "lats",
+          "biceps"
+        ],
+        "exercises": [
+          {
+            "id": "pb-standing-ohp",
+            "name": "Standing Barbell Overhead Press",
+            "movementType": "press",
+            "movementAssetId": "standing-barbell-overhead-press",
+            "sets": 4,
+            "reps": {
+              "min": 5,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "cues": [
+              "Squeeze glutes and quads for a solid base.",
+              "Press bar straight overhead, tuck head back slightly to clear chin.",
+              "Lock out over mid-foot."
+            ],
+            "avoid": [
+              "Arching lower back excessively.",
+              "Using knee dip (this is strict press)."
+            ]
+          },
+          {
+            "id": "pb-db-bench",
+            "name": "Dumbbell Bench Press",
+            "movementType": "press",
+            "movementAssetId": "dumbbell-bench-press",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Deep chest stretch.",
+              "Press to full extension."
+            ],
+            "avoid": [
+              "Dropping weights abruptly."
+            ]
+          },
+          {
+            "id": "pb-lat-pulldown",
+            "name": "Lat Pulldown",
+            "movementType": "pull-up",
+            "movementAssetId": "lat-pulldown",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Drive elbows down to hips.",
+              "Keep chest high."
+            ],
+            "avoid": [
+              "Rocking backward."
+            ]
+          },
+          {
+            "id": "pb-db-lat-raise",
+            "name": "Dumbbell Lateral Raise",
+            "movementType": "shoulder-raise",
+            "movementAssetId": "dumbbell-lateral-raise",
+            "sets": 4,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Raise in scapular plane.",
+              "Control lowering."
+            ],
+            "avoid": [
+              "Shrugging traps."
+            ]
+          },
+          {
+            "id": "pb-ez-bar-curl",
+            "name": "EZ-Bar Curl",
+            "movementType": "curl",
+            "movementAssetId": "ez-bar-curl",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Keep upper arms pinned.",
+              "Full peak contraction."
+            ],
+            "avoid": [
+              "Swinging elbows forward."
+            ]
+          },
+          {
+            "id": "pb-overhead-cable-ext",
+            "name": "Overhead Cable Triceps Extension",
+            "movementType": "triceps",
+            "movementAssetId": "overhead-cable-triceps-extension",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Deep long head triceps stretch.",
+              "Extend forward under control."
+            ],
+            "avoid": [
+              "Arching back."
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

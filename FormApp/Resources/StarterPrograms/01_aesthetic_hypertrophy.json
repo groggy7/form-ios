@@ -1,0 +1,759 @@
+{
+  "format": "form.program",
+  "schemaVersion": 3,
+  "program": {
+    "id": "aesthetic-hypertrophy",
+    "name": "Aesthetic Engine: 5-Day Hypertrophy",
+    "description": "A 5-day bodybuilding split engineered for maximum hypertrophy, structural balance, and aesthetic muscle development using commercial gym equipment.",
+    "guidelines": [
+      "Train with high mechanical tension: take working sets within 1\u20132 reps of technical failure.",
+      "Control the eccentric (lowering) phase for 2\u20133 seconds on all isolation and machine movements.",
+      "Log weights and reps accurately every session to apply progressive overload week over week.",
+      "Rest 2\u20133 minutes on heavy compound lifts and 60\u201390 seconds on isolation accessories.",
+      "Prioritize recovery: stay hydrated, hit your daily protein target, and get 7\u20139 hours of sleep."
+    ],
+    "workouts": [
+      {
+        "id": "aesthetic-push-a",
+        "day": 1,
+        "title": "Chest & Triceps",
+        "focus": "Upper chest, front/side delts, and triceps volume",
+        "tone": "violet",
+        "targetMuscles": [
+          "chest",
+          "shoulders",
+          "triceps"
+        ],
+        "exercises": [
+          {
+            "id": "ae-incline-bb-bench",
+            "name": "Incline Barbell Bench Press",
+            "movementType": "press",
+            "movementAssetId": "incline-barbell-bench-press",
+            "sets": 4,
+            "reps": {
+              "min": 6,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "cues": [
+              "Set bench to 30 degrees.",
+              "Retract shoulder blades and plant feet firmly.",
+              "Touch upper chest under control and drive upward."
+            ],
+            "avoid": [
+              "Bouncing the bar off your clavicle.",
+              "Flaring elbows past 80 degrees."
+            ]
+          },
+          {
+            "id": "ae-db-bench",
+            "name": "Dumbbell Bench Press",
+            "movementType": "press",
+            "movementAssetId": "dumbbell-bench-press",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Keep forearms vertical throughout the press.",
+              "Get a deep stretch at the bottom without shoulder pain.",
+              "Press in a subtle arc over mid-chest."
+            ],
+            "avoid": [
+              "Clanking dumbbells together at the top.",
+              "Losing leg drive."
+            ]
+          },
+          {
+            "id": "ae-pec-deck-fly",
+            "name": "Pec Deck Fly",
+            "movementType": "press",
+            "movementAssetId": "pec-deck-fly",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Keep a slight bend in elbows and maintain chest up.",
+              "Focus on squeezing biceps together across the chest at peak contraction."
+            ],
+            "avoid": [
+              "Overextending shoulders at the deep stretch.",
+              "Shrugging traps."
+            ]
+          },
+          {
+            "id": "ae-cable-lat-raise",
+            "name": "Cable Lateral Raise",
+            "movementType": "shoulder-raise",
+            "movementAssetId": "cable-lateral-raise",
+            "sets": 4,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Set pulley at wrist height.",
+              "Lead with elbows and raise in the scapular plane (30 deg forward).",
+              "Hold peak contraction for a split second."
+            ],
+            "avoid": [
+              "Using torso momentum to swing the weight.",
+              "Raising hands higher than elbows."
+            ]
+          },
+          {
+            "id": "ae-rope-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "movementType": "triceps",
+            "movementAssetId": "rope-triceps-pressdown",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Pin elbows to your sides.",
+              "Spread the rope ends apart at full lockout.",
+              "Control the return to 90 degrees elbow flexion."
+            ],
+            "avoid": [
+              "Elbows drifting forward during the press.",
+              "Leaning excessively over the cable."
+            ]
+          },
+          {
+            "id": "ae-overhead-cable-ext",
+            "name": "Overhead Cable Triceps Extension",
+            "movementType": "triceps",
+            "movementAssetId": "overhead-cable-triceps-extension",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Face away from cable with split stance.",
+              "Keep upper arms angled overhead and extend forearms forward.",
+              "Feel the deep long-head triceps stretch."
+            ],
+            "avoid": [
+              "Flaring elbows excessively wide.",
+              "Arching lower back."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "aesthetic-pull-a",
+        "day": 2,
+        "title": "Back & Biceps",
+        "focus": "Lat width, upper back thickness, and elbow flexor hypertrophy",
+        "tone": "blue",
+        "targetMuscles": [
+          "lats",
+          "trapezius",
+          "biceps",
+          "forearms"
+        ],
+        "exercises": [
+          {
+            "id": "ae-lat-pulldown",
+            "name": "Lat Pulldown",
+            "movementType": "pull-up",
+            "movementAssetId": "lat-pulldown",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Grip slightly wider than shoulder width.",
+              "Drive elbows down and back toward your hip pockets.",
+              "Slight torso lean (10\u201315 deg) with chest proud."
+            ],
+            "avoid": [
+              "Swinging torso backward to generate momentum.",
+              "Pulling bar down to stomach."
+            ]
+          },
+          {
+            "id": "ae-cs-db-row",
+            "name": "Chest-Supported Dumbbell Row",
+            "movementType": "row",
+            "movementAssetId": "chest-supported-dumbbell-row",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Lie face down on an incline bench.",
+              "Pull elbows past your torso while retracting scapulae.",
+              "Control the stretch at the bottom."
+            ],
+            "avoid": [
+              "Lifting chest off the pad.",
+              "Jerking the weights up."
+            ]
+          },
+          {
+            "id": "ae-one-arm-db-row",
+            "name": "One-Arm Dumbbell Row",
+            "movementType": "row",
+            "movementAssetId": "one-arm-dumbbell-row",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Support knee and hand on flat bench.",
+              "Pull dumbbell toward hip in a sweeping arc.",
+              "Keep hips square to the ground."
+            ],
+            "avoid": [
+              "Rotating torso at top of rep.",
+              "Rounding lower back."
+            ]
+          },
+          {
+            "id": "ae-face-pull",
+            "name": "Face Pull",
+            "movementType": "row",
+            "movementAssetId": "band-face-pull",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Set cable at eye level with rope attachment.",
+              "Pull thumbs back past ears with elbows high.",
+              "Rotate shoulders into external rotation."
+            ],
+            "avoid": [
+              "Craning neck forward.",
+              "Using body sway."
+            ]
+          },
+          {
+            "id": "ae-incline-db-curl",
+            "name": "Incline Dumbbell Curl",
+            "movementType": "curl",
+            "movementAssetId": "incline-dumbbell-curl",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Set bench at 45\u201360 degrees.",
+              "Keep elbows pointing straight down to stretch the long head.",
+              "Supinate wrists as you curl."
+            ],
+            "avoid": [
+              "Swinging elbows forward.",
+              "Lifting upper arms off the vertical line."
+            ]
+          },
+          {
+            "id": "ae-db-hammer-curl",
+            "name": "Dumbbell Hammer Curl",
+            "movementType": "curl",
+            "movementAssetId": "dumbbell-hammer-curl",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Maintain neutral grip with palms facing each other.",
+              "Squeeze brachialis and forearms at the top.",
+              "Lower under control without swinging."
+            ],
+            "avoid": [
+              "Rocking body back and forth.",
+              "Dropping weights quickly."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "aesthetic-legs-a",
+        "day": 4,
+        "title": "Quads & Calves",
+        "focus": "Quad hypertrophy, knee stability, and calf development",
+        "tone": "orange",
+        "targetMuscles": [
+          "quadriceps",
+          "calves",
+          "glutes"
+        ],
+        "exercises": [
+          {
+            "id": "ae-bb-back-squat",
+            "name": "Barbell Back Squat",
+            "movementType": "squat",
+            "movementAssetId": "barbell-back-squat",
+            "sets": 4,
+            "reps": {
+              "min": 6,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "cues": [
+              "Set bar across upper traps.",
+              "Brace core tightly and descend below parallel.",
+              "Drive mid-foot through the floor on ascent."
+            ],
+            "avoid": [
+              "Knees caving inward (valgus collapse).",
+              "Rounding lower spine under load."
+            ]
+          },
+          {
+            "id": "ae-leg-press",
+            "name": "Leg Press",
+            "movementType": "squat",
+            "movementAssetId": "leg-press-45-degree",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Feet shoulder-width on center platform.",
+              "Lower sled until knees reach 90 degrees without lower back lifting.",
+              "Press through full foot."
+            ],
+            "avoid": [
+              "Locking knees forcefully at top of rep.",
+              "Letting pelvis tuck off the back pad."
+            ]
+          },
+          {
+            "id": "ae-leg-extension",
+            "name": "Leg Extension",
+            "movementType": "squat",
+            "movementAssetId": "leg-extension",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Align machine pivot with knee joint.",
+              "Kick up smoothly and hold peak quad squeeze for 1 second.",
+              "Resist the descent."
+            ],
+            "avoid": [
+              "Kicking explosively with loose hips.",
+              "Letting weight stack slam."
+            ]
+          },
+          {
+            "id": "ae-seated-leg-curl",
+            "name": "Seated Leg Curl",
+            "movementType": "hinge",
+            "movementAssetId": "seated-leg-curl",
+            "sets": 4,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Lock thigh pad down snugly.",
+              "Pull heels down and back under the seat.",
+              "Control the stretch on the way up."
+            ],
+            "avoid": [
+              "Pointing toes inward excessively.",
+              "Lifting hips off the seat."
+            ]
+          },
+          {
+            "id": "ae-standing-calf-raise",
+            "name": "Standing Machine Calf Raise",
+            "movementType": "calf",
+            "movementAssetId": "standing-machine-calf-raise",
+            "sets": 4,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Balls of feet on edge of platform.",
+              "Drop into deep calf stretch for 2 full seconds.",
+              "Drive up onto big toes and peak contract."
+            ],
+            "avoid": [
+              "Bouncing quickly at the bottom.",
+              "Bending knees to assist."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "aesthetic-upper-b",
+        "day": 5,
+        "title": "Shoulders & Back",
+        "focus": "Shoulder cap fullness, chest density, and arm specialization",
+        "tone": "rose",
+        "targetMuscles": [
+          "shoulders",
+          "chest",
+          "lats",
+          "biceps",
+          "triceps"
+        ],
+        "exercises": [
+          {
+            "id": "ae-incline-db-press",
+            "name": "Incline Dumbbell Press",
+            "movementType": "press",
+            "movementAssetId": "incline-dumbbell-press",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Bench at 30 degrees.",
+              "Tuck elbows at 45\u201360 degrees.",
+              "Lower dumbbells to clavicle level with control and press."
+            ],
+            "avoid": [
+              "Excessive arch flattening the incline angle.",
+              "Dropping weights sideways."
+            ]
+          },
+          {
+            "id": "ae-pull-ups",
+            "name": "Pull-Ups",
+            "movementType": "pull-up",
+            "movementAssetId": "weighted-pull-up",
+            "sets": 3,
+            "reps": {
+              "min": 6,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Full dead hang at the bottom.",
+              "Drive chest toward the bar and lead with elbows.",
+              "Add weight with belt if reps exceed 10."
+            ],
+            "avoid": [
+              "Kicking legs or kipping.",
+              "Half reps without chin clearing bar."
+            ]
+          },
+          {
+            "id": "ae-db-lateral-raise",
+            "name": "Dumbbell Lateral Raise",
+            "movementType": "shoulder-raise",
+            "movementAssetId": "dumbbell-lateral-raise",
+            "sets": 4,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Slight forward torso hinge.",
+              "Raise dumbbells out to sides in scapular plane.",
+              "Hold peak contraction."
+            ],
+            "avoid": [
+              "Shrugging neck to lift the weight.",
+              "Swinging hips."
+            ]
+          },
+          {
+            "id": "ae-bb-row",
+            "name": "Barbell Row",
+            "movementType": "row",
+            "movementAssetId": "barbell-row",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Hinge at hips to roughly 45 degrees.",
+              "Overhand grip, pull bar to belly button.",
+              "Keep lower back flat and braced."
+            ],
+            "avoid": [
+              "Jerking torso upright during the pull.",
+              "Rounding thoracic spine excessively."
+            ]
+          },
+          {
+            "id": "ae-ez-bar-curl",
+            "name": "EZ-Bar Curl",
+            "movementType": "curl",
+            "movementAssetId": "ez-bar-curl",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Grip the cambered knurling comfortably.",
+              "Pin upper arms to ribs and curl without torso swing.",
+              "Control the lowering phase."
+            ],
+            "avoid": [
+              "Hyperextending lower back at the top.",
+              "Shortening range of motion."
+            ]
+          },
+          {
+            "id": "ae-straight-bar-pressdown",
+            "name": "Straight Bar Cable Triceps Pressdown",
+            "movementType": "triceps",
+            "movementAssetId": "straight-bar-cable-triceps-pressdown",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Overhand grip on straight bar.",
+              "Push straight down with elbows tight to torso.",
+              "Flex triceps hard at lockout."
+            ],
+            "avoid": [
+              "Letting shoulders round forward.",
+              "Using bodyweight to lean onto the bar."
+            ]
+          }
+        ]
+      },
+      {
+        "id": "aesthetic-lower-b",
+        "day": 6,
+        "title": "Glutes & Hams",
+        "focus": "Posterior chain power, glute fullness, and abdominal trunk rigidity",
+        "tone": "lime",
+        "targetMuscles": [
+          "hamstrings",
+          "glutes",
+          "abs",
+          "lower-back",
+          "calves"
+        ],
+        "exercises": [
+          {
+            "id": "ae-bb-rdl",
+            "name": "Barbell Romanian Deadlift",
+            "movementType": "hinge",
+            "movementAssetId": "barbell-romanian-deadlift",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "cues": [
+              "Soft bend in knees that stays fixed.",
+              "Push hips straight back until deep hamstring stretch.",
+              "Keep bar brushing against thighs."
+            ],
+            "avoid": [
+              "Rounding lower spine.",
+              "Squatting the weight down."
+            ]
+          },
+          {
+            "id": "ae-bulgarian-split-squat",
+            "name": "Bulgarian Split Squat",
+            "movementType": "lunge",
+            "movementAssetId": "rear-foot-elevated-split-squat",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Rear foot elevated on bench.",
+              "Descend until back knee hovers above floor.",
+              "Drive through front heel."
+            ],
+            "avoid": [
+              "Front heel lifting off floor.",
+              "Collapsing forward at the hip."
+            ]
+          },
+          {
+            "id": "ae-bb-hip-thrust",
+            "name": "Barbell Hip Thrust",
+            "movementType": "hinge",
+            "movementAssetId": "barbell-hip-thrust",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120,
+            "cues": [
+              "Upper back against bench, bar across hip crease with pad.",
+              "Drive hips up until torso and thighs form a straight table.",
+              "Full glute lock at top."
+            ],
+            "avoid": [
+              "Arching lumbar spine.",
+              "Pushing through toes instead of heels."
+            ]
+          },
+          {
+            "id": "ae-lying-leg-curl",
+            "name": "Lying Leg Curl",
+            "movementType": "hinge",
+            "movementAssetId": "lying-leg-curl",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Pad against lower calf/Achilles.",
+              "Curl heels toward glutes without hips rising off the bench.",
+              "Control eccentric."
+            ],
+            "avoid": [
+              "Hips popping off the bench pad.",
+              "Swinging momentum."
+            ]
+          },
+          {
+            "id": "ae-seated-calf-raise",
+            "name": "Seated Machine Calf Raise",
+            "movementType": "calf",
+            "movementAssetId": "seated-machine-calf-raise",
+            "sets": 4,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Thigh pad adjusted firmly over lower quads.",
+              "Full 2-second stretch at bottom to target the soleus.",
+              "Elevate onto balls of feet."
+            ],
+            "avoid": [
+              "Bouncing the weight stack.",
+              "Half range reps."
+            ]
+          },
+          {
+            "id": "ae-kneeling-cable-crunch",
+            "name": "Kneeling Cable Crunch",
+            "movementType": "core",
+            "movementAssetId": "kneeling-cable-crunch",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90,
+            "cues": [
+              "Hold rope handles against crown of head.",
+              "Flex spine to pull elbows toward knees.",
+              "Hips remain stationary throughout."
+            ],
+            "avoid": [
+              "Sitting back on heels (hip flexor take-over).",
+              "Pulling with arms instead of abs."
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
