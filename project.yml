@@ -4,6 +4,17 @@ options:
   deploymentTarget:
     iOS: "17.0"
   createIntermediateGroups: true
+schemes:
+  FormApp:
+    build:
+      targets:
+        FormApp: all
+        FormAppTests: [test]
+    test:
+      targets:
+        - FormAppTests
+    run:
+      config: Debug
 targets:
   FormApp:
     type: application
