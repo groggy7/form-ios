@@ -18,6 +18,10 @@ public final class LanguageManager: ObservableObject {
         return shared.translate(key, params: params)
     }
     
+    public static func content(_ text: String) -> String {
+        return text
+    }
+    
     public func translate(_ key: String, params: [String: Any] = [:]) -> String {
         let dict = currentLanguage == "tr" ? Translations.tr : Translations.en
         var template = dict[key] ?? Translations.en[key] ?? key

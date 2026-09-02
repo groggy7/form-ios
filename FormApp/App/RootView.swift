@@ -28,18 +28,15 @@ public struct RootView: View {
                 case .plan:
                     WeeklyPlanView(
                         store: store,
+                        onOpenToday: { store.currentView = .today },
                         onOpenPrograms: { showProgramsSheet = true },
-                        onOpenSettings: { showSettingsSheet = true },
-                        onSelectWorkout: { workoutId in
-                            store.selectedWorkoutId = workoutId
-                            store.currentView = .today
-                        }
+                        onOpenSettings: { showSettingsSheet = true }
                     )
                 case .library:
                     LibraryView(
                         store: store,
-                        onOpenSettings: { showSettingsSheet = true },
-                        onSelectExercise: { selectedExerciseForDetail = $0 }
+                        onSelectExercise: { selectedExerciseForDetail = $0 },
+                        onOpenSettings: { showSettingsSheet = true }
                     )
                 case .history:
                     HistoryView(

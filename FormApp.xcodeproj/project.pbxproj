@@ -21,6 +21,7 @@
 		329E21359E0ADED851ABBD02 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FE39F02FA4EAA1A43D7CA8 /* AppColors.swift */; };
 		36BD5962CDF814CE9F9A4F6C /* 02_powerbuilding_strength.json in Resources */ = {isa = PBXBuildFile; fileRef = EC5E4B6045ADD51D2CA59D20 /* 02_powerbuilding_strength.json */; };
 		3F7B9B586131F615F225CDD2 /* ActiveSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF19DF767A0483E3295C1ED /* ActiveSessionView.swift */; };
+		45546ACE7DF72EB335DD41FA /* MovementIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D97FA7035F2317DFBE57498 /* MovementIcon.swift */; };
 		48390A60D9C62EB7A6171580 /* 02_powerbuilding_strength.json in Resources */ = {isa = PBXBuildFile; fileRef = EC5E4B6045ADD51D2CA59D20 /* 02_powerbuilding_strength.json */; };
 		5ADDC53EC8EAFFB482F36B20 /* WeeklyPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5316FB7A7498CCB8FE13BF /* WeeklyPlanView.swift */; };
 		5D41713C889C9CD0DA0DB048 /* WorkoutModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CE78AD9510C658344F7888 /* WorkoutModels.swift */; };
@@ -42,6 +43,7 @@
 		A79CAAC595702B45728DC715 /* ExerciseDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F464967A46FF2F7447C7602 /* ExerciseDetailSheet.swift */; };
 		C07F25C1E8D200C36DCFFE4B /* WeekStripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C86D18E36BC5C24BB99CF16 /* WeekStripView.swift */; };
 		C0E82546129BB4114FE21B90 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68AD20F92BF7286266D03EB /* TodayView.swift */; };
+		C10EBC98F5843C3C6F20A4B7 /* FormHeaderIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */; };
 		CDE6B5B32A4C412F8D40C7B7 /* BottomDock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F733A913348412862B8CDF1E /* BottomDock.swift */; };
 		D5DDC5DF3C8A6E620BADA5A7 /* SetLoggingTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303A307ACE2A1CA19B710636 /* SetLoggingTable.swift */; };
 		DBF8CF30B08C1B8DF1992BA1 /* form_workout_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = 400B4993DD7FAF3B3E8C9936 /* form_workout_start.wav */; };
@@ -70,6 +72,7 @@
 		1F5316FB7A7498CCB8FE13BF /* WeeklyPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyPlanView.swift; sourceTree = "<group>"; };
 		26BB808F3B2A565E934878C4 /* FormAppTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = FormAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		29875CA77E7BA2C02CDFFA36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		2D97FA7035F2317DFBE57498 /* MovementIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementIcon.swift; sourceTree = "<group>"; };
 		303A307ACE2A1CA19B710636 /* SetLoggingTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetLoggingTable.swift; sourceTree = "<group>"; };
 		35F223343B153857F9D2B8C6 /* ProgramBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramBuilderView.swift; sourceTree = "<group>"; };
 		37340E67B2D12B2C6BCBBBC6 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
@@ -92,6 +95,7 @@
 		9F464967A46FF2F7447C7602 /* ExerciseDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDetailSheet.swift; sourceTree = "<group>"; };
 		A68AD20F92BF7286266D03EB /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		B16D5A75502FFC600D48A992 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormHeaderIconButton.swift; sourceTree = "<group>"; };
 		DECFA8F5B27849C8BE2611AF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DF6E74CE9A7C510C260498C8 /* SessionSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryView.swift; sourceTree = "<group>"; };
 		E3493C594E48AD17563A8CC2 /* FormApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormApp.swift; sourceTree = "<group>"; };
@@ -129,6 +133,8 @@
 			children = (
 				FCF84D563B45992D3D9DCB77 /* AppHeader.swift */,
 				F733A913348412862B8CDF1E /* BottomDock.swift */,
+				D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */,
+				2D97FA7035F2317DFBE57498 /* MovementIcon.swift */,
 				08997E0EACD6176BFF508687 /* ToastOverlay.swift */,
 			);
 			path = Components;
@@ -429,8 +435,10 @@
 				CDE6B5B32A4C412F8D40C7B7 /* BottomDock.swift in Sources */,
 				A79CAAC595702B45728DC715 /* ExerciseDetailSheet.swift in Sources */,
 				947A3D0C40441B9379ABD063 /* FormApp.swift in Sources */,
+				C10EBC98F5843C3C6F20A4B7 /* FormHeaderIconButton.swift in Sources */,
 				64479F749C98F6E9114D49BC /* HistoryView.swift in Sources */,
 				9BCC80499A86D74EE5B5FEDF /* LibraryView.swift in Sources */,
+				45546ACE7DF72EB335DD41FA /* MovementIcon.swift in Sources */,
 				3255EAF86BCBDCDD24C59363 /* ProgramBuilderView.swift in Sources */,
 				9D47D0FB61D291A7727C96C3 /* ProgramsView.swift in Sources */,
 				6FB272E05E6155F86E8A481E /* RestTimerBar.swift in Sources */,

@@ -21,15 +21,18 @@ public struct TodayView: View {
     public var body: some View {
         let program = store.activeProgram
         let workout = store.activeWorkout
-        let isToday = workout?.day == store.currentWeekDayNumber()
         let workoutKey = workout.map { "\(program?.id ?? ""):\($0.id)" } ?? ""
         let isCompleted = store.state.completed.contains(workoutKey)
         let isAvailable = workout.map { store.canStartWorkout($0) } ?? false
+        let availableDay: String? = {
+            guard let w = workout, w.day > store.weekCalendar.today + 1 else { return nil }
+            return LanguageManager.workoutDays.indices.contains(w.day - 1) ? LanguageManager.workoutDays[w.day - 1] : nil
+        }()
         let completedCount = program?.workouts.filter { store.state.completed.contains("\(program?.id ?? ""):\($0.id)") }.count ?? 0
         let totalWorkouts = program?.workouts.count ?? 0
 
         ScrollView {
-            VStack(spacing: 20) {
+            VStack(spacing: 16) {
                 // Header with "This week" and dates range
                 HStack(alignment: .top) {
                     VStack(alignment: .leading, spacing: 4) {
@@ -44,19 +47,14 @@ public struct TodayView: View {
 
                     Spacer()
 
-                    Button(action: onOpenSettings) {
-                        Image(systemName: "gearshape.fill")
-                            .font(.system(size: 18))
-                            .foregroundColor(AppColors.muted)
-                            .frame(width: 44, height: 44)
-                            .background(AppColors.surface)
-                            .clipShape(Circle())
-                            .overlay(Circle().stroke(AppColors.border, lineWidth: 1))
-                    }
-                    .buttonStyle(.plain)
+                    FormHeaderIconButton(
+                        icon: "gearshape.fill",
+                        contentDescription: LanguageManager.t("settings.title"),
+                        onClick: onOpenSettings
+                    )
                 }
                 .padding(.horizontal, 20)
-                .padding(.top, 10)
+                .padding(.top, 4)
 
                 // 7-day strip
                 WeekStripView(store: store) { workoutId in
@@ -69,6 +67,8 @@ public struct TodayView: View {
                     todayIndex: store.weekCalendar.today,
                     isCompleted: isCompleted,
                     isAvailable: isAvailable,
+                    availableDay: availableDay,
+                    hasUnfinishedProgress: !isCompleted && store.unfinishedWorkoutKeys().contains(workoutKey),
                     onStart: {
                         if let w = workout, let p = program {
                             _ = store.startActiveSession(programId: p.id, workout: w)
@@ -77,7 +77,7 @@ public struct TodayView: View {
                 )
 
                 // Weekly progress bar
-                VStack(spacing: 8) {
+                VStack(spacing: 10) {
                     HStack {
                         Text(LanguageManager.t("today.weekProgress"))
                             .font(.system(size: 12))
@@ -104,40 +104,43 @@ public struct TodayView: View {
 
                 // Exercise list preview
                 if let workout = workout, !workout.exercises.isEmpty {
-                    VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 10) {
                         Text(LanguageManager.t("today.exercises"))
-                            .font(.system(size: 18, weight: .bold))
+                            .font(.system(size: 18, weight: .semibold))
                             .foregroundColor(AppColors.text)
                             .padding(.horizontal, 20)
+                            .padding(.bottom, 4)
 
                         VStack(spacing: 8) {
                             ForEach(Array(workout.exercises.enumerated()), id: \.element.id) { index, exercise in
                                 Button(action: { onSelectExercise(exercise) }) {
-                                    HStack(spacing: 14) {
-                                        Text("\(index + 1)")
-                                            .font(.system(size: 13, weight: .bold))
-                                            .foregroundColor(AppColors.muted)
-                                            .frame(width: 24)
+                                    HStack(spacing: 12) {
+                                        MovementIcon(
+                                            name: exercise.name,
+                                            size: 52,
+                                            movementType: exercise.resolvedMovement,
+                                            movementAssetId: exercise.movementAssetId
+                                        )
 
-                                        VStack(alignment: .leading, spacing: 3) {
+                                        VStack(alignment: .leading, spacing: 4) {
                                             Text(exercise.name)
-                                                .font(.system(size: 15, weight: .semibold))
+                                                .font(.system(size: 14, weight: .medium))
+                                                .lineSpacing(2)
                                                 .foregroundColor(AppColors.text)
-                                                .lineLimit(1)
+                                                .lineLimit(2)
 
                                             Text(exercise.displayPrescription)
-                                                .font(.system(size: 13))
+                                                .font(.system(size: 12))
                                                 .foregroundColor(AppColors.muted)
                                         }
 
                                         Spacer()
 
-                                        Image(systemName: "chevron.right")
-                                            .font(.system(size: 12, weight: .semibold))
-                                            .foregroundColor(AppColors.muted.opacity(0.6))
+                                        Text(String(format: "%02d", index + 1))
+                                            .font(.system(size: 11, weight: .medium))
+                                            .foregroundColor(AppColors.muted)
                                     }
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 12)
+                                    .padding(9)
                                     .background(
                                         RoundedRectangle(cornerRadius: 13, style: .continuous)
                                             .fill(AppColors.surface)
@@ -154,7 +157,7 @@ public struct TodayView: View {
                     }
                 }
 
-                Spacer().frame(height: 100) // Padding for bottom dock
+                Spacer().frame(height: 90) // Padding for bottom dock
             }
         }
     }

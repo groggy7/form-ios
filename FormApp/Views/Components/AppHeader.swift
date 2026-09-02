@@ -22,14 +22,14 @@ public struct AppHeader: View {
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 3) {
                 Text(title)
-                    .font(.system(size: 26, weight: .bold))
+                    .font(.system(size: 26, weight: .semibold))
                     .foregroundColor(AppColors.text)
 
                 if let sub = subtitle {
                     Button(action: { onSubtitleClick?() }) {
                         HStack(spacing: 4) {
                             Text(sub)
-                                .font(.system(size: 14, weight: .semibold))
+                                .font(.system(size: 13, weight: .medium))
                                 .foregroundColor(AppColors.accent)
                             if onSubtitleClick != nil {
                                 Image(systemName: "chevron.up.chevron.down")
@@ -44,20 +44,13 @@ public struct AppHeader: View {
 
             Spacer()
 
-            Button(action: onSettingsClick) {
-                Image(systemName: "gearshape.fill")
-                    .font(.system(size: 18))
-                    .foregroundColor(AppColors.muted)
-                    .frame(width: 44, height: 44)
-                    .background(AppColors.surface)
-                    .clipShape(Circle())
-                    .overlay(
-                        Circle().stroke(AppColors.border, lineWidth: 1)
-                    )
-            }
-            .buttonStyle(.plain)
+            FormHeaderIconButton(
+                icon: "gearshape.fill",
+                contentDescription: LanguageManager.t("settings.title"),
+                onClick: onSettingsClick
+            )
         }
         .padding(.horizontal, 20)
-        .padding(.top, 12)
+        .padding(.top, 10)
     }
 }

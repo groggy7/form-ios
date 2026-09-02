@@ -16,6 +16,8 @@ public enum MovementType: String, Codable, CaseIterable {
     case boxing = "boxing"
     case other = "other"
 
+    public var key: String { rawValue }
+
     public static func from(key: String?) -> MovementType {
         guard let key = key else { return .other }
         return MovementType(rawValue: key) ?? .other
