@@ -142,7 +142,7 @@ public struct ActiveSessionView: View {
                             // Current Exercise Card
                             if let exercise = currentExercise {
                                 VStack(alignment: .leading, spacing: 14) {
-                                    HStack {
+                                    HStack(alignment: .top) {
                                         VStack(alignment: .leading, spacing: 4) {
                                             Text(exercise.name)
                                                 .font(.system(size: 20, weight: .bold))
@@ -154,6 +154,12 @@ public struct ActiveSessionView: View {
                                             }
                                         }
                                         Spacer()
+                                        MovementIcon(
+                                            name: exercise.name,
+                                            size: 56,
+                                            movementType: exercise.resolvedMovement,
+                                            movementAssetId: exercise.movementAssetId
+                                        )
                                     }
 
                                     SetLoggingTable(

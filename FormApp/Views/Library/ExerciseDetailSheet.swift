@@ -19,17 +19,14 @@ public struct ExerciseDetailSheet: View {
                             .fill(AppColors.surfaceRaised)
                             .frame(height: 220)
 
-                        if let assetId = exercise.movementAssetId, !assetId.isEmpty {
-                            let imageName = "anatomy_" + assetId.replacingOccurrences(of: "-", with: "_")
-                            Image(imageName)
-                                .resizable()
-                                .scaledToFit()
-                                .frame(height: 210)
-                        } else {
-                            Image(systemName: "figure.strengthtraining.traditional")
-                                .font(.system(size: 60))
-                                .foregroundColor(AppColors.muted.opacity(0.4))
-                        }
+                        MovementIcon(
+                            name: exercise.name,
+                            size: 200,
+                            large: true,
+                            movementType: exercise.resolvedMovement,
+                            movementAssetId: exercise.movementAssetId
+                        )
+                        .frame(height: 210)
                     }
 
                     // Title & Movement Badge

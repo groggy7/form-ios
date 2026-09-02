@@ -43,4 +43,34 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(bundled.count, 6, "Expected all 6 starter programs")
         XCTAssertEqual(bundled.first?.name, "Aesthetic Engine: 5-Day Hypertrophy")
     }
+
+    func testMovementSpritesResolution() {
+        let pressSprite = MovementIcon.categorySprite(.press)
+        XCTAssertNotNil(pressSprite)
+        XCTAssertEqual(pressSprite?.imageName, "anatomy_compound")
+
+        let jumpRopeSprite = MovementIcon.movementAssetSprite("jump-rope")
+        XCTAssertNotNil(jumpRopeSprite)
+        XCTAssertEqual(jumpRopeSprite?.imageName, "anatomy_jump_rope")
+
+        let benchSprite = MovementIcon.movementAssetSprite("barbell-bench-press")
+        XCTAssertNotNil(benchSprite)
+        XCTAssertEqual(benchSprite?.imageName, "anatomy_batch_03_upper")
+    }
+
+    func testMovementAnimationClockIsActive() {
+        let clock = MovementAnimationClock.shared
+        XCTAssertTrue([0, 1, 2].contains(clock.currentFrame))
+    }
+    func testMovementFrameCacheProducesDistinctFrames() {
+        let sprite = MovementIcon.categorySprite(.press)!
+        let f0 = MovementFrameCache.getFrame(for: sprite, frame: 0)
+        let f1 = MovementFrameCache.getFrame(for: sprite, frame: 1)
+        let f2 = MovementFrameCache.getFrame(for: sprite, frame: 2)
+        XCTAssertNotNil(f0)
+        XCTAssertNotNil(f1)
+        XCTAssertNotNil(f2)
+        XCTAssertNotEqual(f0?.pngData(), f2?.pngData(), "Frames 0 and 2 must be visually different")
+    }
+
 }
