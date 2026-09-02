@@ -37,6 +37,7 @@ targets:
     platform: iOS
     sources:
       - path: FormAppTests
+      - path: FormApp/Resources/StarterPrograms
     dependencies:
       - target: FormApp
     settings:

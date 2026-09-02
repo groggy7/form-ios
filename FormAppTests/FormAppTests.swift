@@ -40,6 +40,7 @@ final class FormAppTests: XCTestCase {
     func testStarterProgramsAreAvailable() {
         let bundled = AppStore.loadBundledStarterPrograms()
         XCTAssertFalse(bundled.isEmpty, "Starter programs should be bundled and loaded successfully")
-        XCTAssertTrue(bundled.count >= 6, "Expected at least 6 starter programs")
+        XCTAssertEqual(bundled.count, 6, "Expected all 6 starter programs")
+        XCTAssertEqual(bundled.first?.name, "Aesthetic Engine: 5-Day Hypertrophy")
     }
 }

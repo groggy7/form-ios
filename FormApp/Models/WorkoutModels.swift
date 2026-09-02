@@ -174,6 +174,40 @@ public struct Exercise: Identifiable, Codable, Hashable {
         }
         return MovementType.fromExerciseName(name)
     }
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, prescription, cues, avoid, videos, sets, reps, restSeconds, movementType, movementAssetId
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decodeIfPresent(String.self, forKey: .id) ?? UUID().uuidString
+        self.name = try container.decode(String.self, forKey: .name)
+        self.prescription = try container.decodeIfPresent(String.self, forKey: .prescription) ?? ""
+        
+        if let cuesStr = try? container.decode(String.self, forKey: .cues) {
+            self.cues = cuesStr
+        } else if let cuesArr = try? container.decode([String].self, forKey: .cues) {
+            self.cues = cuesArr.joined(separator: "\n")
+        } else {
+            self.cues = ""
+        }
+
+        if let avoidStr = try? container.decode(String.self, forKey: .avoid) {
+            self.avoid = avoidStr
+        } else if let avoidArr = try? container.decode([String].self, forKey: .avoid) {
+            self.avoid = avoidArr.joined(separator: "\n")
+        } else {
+            self.avoid = ""
+        }
+
+        self.videos = try container.decodeIfPresent([String].self, forKey: .videos) ?? []
+        self.sets = try container.decodeIfPresent(Int.self, forKey: .sets)
+        self.reps = try container.decodeIfPresent(RepTarget.self, forKey: .reps)
+        self.restSeconds = try container.decodeIfPresent(Int.self, forKey: .restSeconds)
+        self.movementType = try container.decodeIfPresent(String.self, forKey: .movementType)
+        self.movementAssetId = try container.decodeIfPresent(String.self, forKey: .movementAssetId)
+    }
 }
 
 public struct Workout: Identifiable, Codable, Hashable {
@@ -208,6 +242,21 @@ public struct Workout: Identifiable, Codable, Hashable {
             if !acc.contains(m) { acc.append(m) }
         }
     }
+
+    enum CodingKeys: String, CodingKey {
+        case id, day, title, focus, tone, exercises, targetMuscles
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decodeIfPresent(String.self, forKey: .id) ?? UUID().uuidString
+        self.day = try container.decode(Int.self, forKey: .day)
+        self.title = try container.decode(String.self, forKey: .title)
+        self.focus = try container.decodeIfPresent(String.self, forKey: .focus) ?? ""
+        self.tone = try container.decodeIfPresent(String.self, forKey: .tone) ?? "violet"
+        self.exercises = try container.decodeIfPresent([Exercise].self, forKey: .exercises) ?? []
+        self.targetMuscles = try container.decodeIfPresent([String].self, forKey: .targetMuscles) ?? []
+    }
 }
 
 public struct Program: Identifiable, Codable, Hashable {
@@ -229,6 +278,19 @@ public struct Program: Identifiable, Codable, Hashable {
         self.description = description
         self.guidelines = guidelines
         self.workouts = workouts
+    }
+
+    enum CodingKeys: String, CodingKey {
+        case id, name, description, guidelines, workouts
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decodeIfPresent(String.self, forKey: .id) ?? UUID().uuidString
+        self.name = try container.decode(String.self, forKey: .name)
+        self.description = try container.decodeIfPresent(String.self, forKey: .description) ?? ""
+        self.guidelines = try container.decodeIfPresent([String].self, forKey: .guidelines) ?? []
+        self.workouts = try container.decodeIfPresent([Workout].self, forKey: .workouts) ?? []
     }
 }
 

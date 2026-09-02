@@ -2,20 +2,20 @@ import SwiftUI
 
 public struct TodayHeroCard: View {
     let workout: Workout?
-    let isToday: Bool
+    let todayIndex: Int
     let isCompleted: Bool
     let isAvailable: Bool
     let onStart: () -> Void
 
     public init(
         workout: Workout?,
-        isToday: Bool,
+        todayIndex: Int,
         isCompleted: Bool,
         isAvailable: Bool,
         onStart: @escaping () -> Void
     ) {
         self.workout = workout
-        self.isToday = isToday
+        self.todayIndex = todayIndex
         self.isCompleted = isCompleted
         self.isAvailable = isAvailable
         self.onStart = onStart
@@ -79,7 +79,7 @@ public struct TodayHeroCard: View {
                 HStack(spacing: 8) {
                     Image(systemName: isCompleted ? "checkmark" : "play.fill")
                         .font(.system(size: 14, weight: .bold))
-                    Text(isCompleted ? LanguageManager.t("today.completed") : LanguageManager.t("today.startWorkout"))
+                    Text(isCompleted ? LanguageManager.t("today.completed") : LanguageManager.t("plan.startWorkout"))
                         .font(.system(size: 15, weight: .bold))
                 }
                 .frame(maxWidth: .infinity)
@@ -95,10 +95,10 @@ public struct TodayHeroCard: View {
         }
         .padding(16)
         .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
+            RoundedRectangle(cornerRadius: 23, style: .continuous)
                 .fill(AppColors.surface)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    RoundedRectangle(cornerRadius: 23, style: .continuous)
                         .stroke(AppColors.border, lineWidth: 1)
                 )
         )
@@ -106,34 +106,78 @@ public struct TodayHeroCard: View {
     }
 
     private func restDayCard() -> some View {
-        VStack(spacing: 14) {
-            Image("body_rest")
-                .resizable()
-                .scaledToFit()
-                .frame(height: 140)
-                .padding(.top, 8)
+        let weekdayName = LanguageManager.workoutDays.indices.contains(todayIndex)
+            ? LanguageManager.workoutDays[todayIndex]
+            : ""
 
-            VStack(spacing: 4) {
-                Text(LanguageManager.t("today.restTitle"))
-                    .font(.system(size: 20, weight: .bold))
-                    .foregroundColor(AppColors.text)
-                Text(LanguageManager.t("today.restSubtitle"))
-                    .font(.system(size: 13))
-                    .foregroundColor(AppColors.muted)
-                    .multilineTextAlignment(.center)
-            }
-            .padding(.bottom, 8)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(20)
-        .background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(AppColors.surface)
+        return ZStack(alignment: .topLeading) {
+            // Background card container
+            RoundedRectangle(cornerRadius: 23, style: .continuous)
+                .fill(Color(hex: 0x15191E))
                 .overlay(
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .stroke(AppColors.border, lineWidth: 1)
+                    RoundedRectangle(cornerRadius: 23, style: .continuous)
+                        .stroke(Color(hex: 0x343A41), lineWidth: 1)
                 )
-        )
+
+            // Right-aligned rest image
+            HStack {
+                Spacer()
+                Image("body_rest")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(height: 240)
+                    .clipped()
+            }
+
+            // Gradient masks over the image
+            LinearGradient(
+                stops: [
+                    .init(color: Color(hex: 0x15191E), location: 0),
+                    .init(color: Color(hex: 0x15191E).opacity(0.95), location: 0.28),
+                    .init(color: Color(hex: 0x15191E).opacity(0.50), location: 0.52),
+                    .init(color: Color.clear, location: 0.75)
+                ],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
+
+            LinearGradient(
+                stops: [
+                    .init(color: Color.clear, location: 0),
+                    .init(color: Color.clear, location: 0.70),
+                    .init(color: Color(hex: 0x15191E).opacity(0.95), location: 0.94),
+                    .init(color: Color(hex: 0x15191E), location: 1.0)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
+
+            // Text info
+            VStack(alignment: .leading, spacing: 0) {
+                Text(weekdayName)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundColor(Color(hex: 0xD3D0C7))
+
+                Spacer().frame(height: 18)
+
+                Text(LanguageManager.t("today.restDay"))
+                    .font(.system(size: 32, weight: .semibold))
+                    .foregroundColor(Color(hex: 0xF3EFE5))
+                    .lineLimit(2)
+
+                Spacer().frame(height: 9)
+
+                Text(LanguageManager.t("today.restDescription"))
+                    .font(.system(size: 14))
+                    .lineSpacing(4)
+                    .foregroundColor(AppColors.secondaryText)
+                    .frame(maxWidth: 220, alignment: .leading)
+            }
+            .padding(22)
+        }
+        .frame(height: 270)
         .padding(.horizontal, 20)
     }
 

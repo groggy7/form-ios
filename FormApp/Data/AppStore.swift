@@ -251,9 +251,22 @@ public final class AppStore: ObservableObject {
         refreshCatalogue()
     }
 
-    public func importProgram(jsonData: Data) throws -> Program {
+    public struct ProgramFileEnvelope: Codable {
+        public var format: String?
+        public var schemaVersion: Int?
+        public var program: Program
+    }
+
+    public static func decodeProgram(from data: Data) throws -> Program {
         let decoder = JSONDecoder()
-        let program = try decoder.decode(Program.self, from: jsonData)
+        if let envelope = try? decoder.decode(ProgramFileEnvelope.self, from: data) {
+            return envelope.program
+        }
+        return try decoder.decode(Program.self, from: data)
+    }
+
+    public func importProgram(jsonData: Data) throws -> Program {
+        let program = try Self.decodeProgram(from: jsonData)
         addProgram(program)
         return program
     }
@@ -353,12 +366,25 @@ public final class AppStore: ObservableObject {
         let decoder = JSONDecoder()
 
         for name in programNames {
-            if let url = Bundle.main.url(forResource: name, withExtension: "json") ??
-                         Bundle.main.url(forResource: name, withExtension: "json", subdirectory: "StarterPrograms") {
-                if let data = try? Data(contentsOf: url),
-                   let prog = try? decoder.decode(Program.self, from: data) {
-                    programs.append(prog)
+            var fileData: Data? = nil
+            for b in Bundle.allBundles {
+                if let url = b.url(forResource: name, withExtension: "json") ??
+                             b.url(forResource: name, withExtension: "json", subdirectory: "StarterPrograms"),
+                   let data = try? Data(contentsOf: url) {
+                    fileData = data
+                    break
                 }
+                let directPath = (b.bundlePath as NSString).appendingPathComponent("\(name).json")
+                if FileManager.default.fileExists(atPath: directPath),
+                   let data = try? Data(contentsOf: URL(fileURLWithPath: directPath)) {
+                    fileData = data
+                    break
+                }
+            }
+
+            if let data = fileData,
+               let prog = try? decodeProgram(from: data) {
+                programs.append(prog)
             }
         }
         return programs

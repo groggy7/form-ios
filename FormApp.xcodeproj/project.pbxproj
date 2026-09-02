@@ -8,20 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		0020D035F786CD915922D766 /* TodayHeroCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D6F413D877B7E332EEF6D /* TodayHeroCard.swift */; };
+		0667E5D4E4CF923DF66A2C24 /* 01_aesthetic_hypertrophy.json in Resources */ = {isa = PBXBuildFile; fileRef = 92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */; };
 		075B0F9BA865F79FB856122B /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D5A75502FFC600D48A992 /* AudioPlayer.swift */; };
 		08B89BB8E61779D8274FFEFD /* WorkoutSessionUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829AB05F70AD9B7E6DEE97CC /* WorkoutSessionUtils.swift */; };
+		09436475DDB7B1F05D128B14 /* 06_athletic_performance.json in Resources */ = {isa = PBXBuildFile; fileRef = 53F83778D712B708C519860F /* 06_athletic_performance.json */; };
 		11494E03B6F140F80312218E /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10AEC969AB339D9720AB880B /* AppStore.swift */; };
 		1D60B4E438B90C3F62FC88A9 /* form_rest_complete.wav in Resources */ = {isa = PBXBuildFile; fileRef = 90A44CC582072D671FF45DE4 /* form_rest_complete.wav */; };
+		20E655D806FE5C84BC7BACFB /* 05_home_forge_dumbbells.json in Resources */ = {isa = PBXBuildFile; fileRef = 3D4F0446A030E749B3A34E82 /* 05_home_forge_dumbbells.json */; };
 		2201C284B87CAEF60491DE58 /* 04_full_body_classic.json in Resources */ = {isa = PBXBuildFile; fileRef = 9A2948074308DABA9A07E42E /* 04_full_body_classic.json */; };
 		2BD3BC2D8BB759DB9AFE8F34 /* WorkoutDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023D09DFD513B3F32B009541 /* WorkoutDetailSheet.swift */; };
 		3255EAF86BCBDCDD24C59363 /* ProgramBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F223343B153857F9D2B8C6 /* ProgramBuilderView.swift */; };
 		329E21359E0ADED851ABBD02 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FE39F02FA4EAA1A43D7CA8 /* AppColors.swift */; };
+		36BD5962CDF814CE9F9A4F6C /* 02_powerbuilding_strength.json in Resources */ = {isa = PBXBuildFile; fileRef = EC5E4B6045ADD51D2CA59D20 /* 02_powerbuilding_strength.json */; };
 		3F7B9B586131F615F225CDD2 /* ActiveSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF19DF767A0483E3295C1ED /* ActiveSessionView.swift */; };
 		48390A60D9C62EB7A6171580 /* 02_powerbuilding_strength.json in Resources */ = {isa = PBXBuildFile; fileRef = EC5E4B6045ADD51D2CA59D20 /* 02_powerbuilding_strength.json */; };
 		5ADDC53EC8EAFFB482F36B20 /* WeeklyPlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F5316FB7A7498CCB8FE13BF /* WeeklyPlanView.swift */; };
 		5D41713C889C9CD0DA0DB048 /* WorkoutModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CE78AD9510C658344F7888 /* WorkoutModels.swift */; };
 		5F57A702A0F84F27F8CB9EC7 /* FormAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2282260300C11D1B7F29AE /* FormAppTests.swift */; };
 		64479F749C98F6E9114D49BC /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D279DACF295D9BB86905005 /* HistoryView.swift */; };
+		6A9E544F2449FD22D50B7E46 /* 04_full_body_classic.json in Resources */ = {isa = PBXBuildFile; fileRef = 9A2948074308DABA9A07E42E /* 04_full_body_classic.json */; };
 		6F9CAA3F576D5057AF0C84E3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFA8F5B27849C8BE2611AF /* SettingsView.swift */; };
 		6FB272E05E6155F86E8A481E /* RestTimerBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89F4479A1065BF741953378 /* RestTimerBar.swift */; };
 		8CE7A1BF601A16FFB8419C60 /* Translations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F76831712F5D29B631895CD /* Translations.swift */; };
@@ -40,6 +45,7 @@
 		CDE6B5B32A4C412F8D40C7B7 /* BottomDock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F733A913348412862B8CDF1E /* BottomDock.swift */; };
 		D5DDC5DF3C8A6E620BADA5A7 /* SetLoggingTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303A307ACE2A1CA19B710636 /* SetLoggingTable.swift */; };
 		DBF8CF30B08C1B8DF1992BA1 /* form_workout_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = 400B4993DD7FAF3B3E8C9936 /* form_workout_start.wav */; };
+		E502AEF3D69EC46BD7225892 /* 03_classic_ppl.json in Resources */ = {isa = PBXBuildFile; fileRef = ECB10B35D7F6895ECBECEDBF /* 03_classic_ppl.json */; };
 		E9AA6F2CC609F97E3FE35804 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5F87CCEA6BEE84FC15E6B7 /* RootView.swift */; };
 		ECAED6399ED27E48237E4DD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77203A709542614D89DFF819 /* Assets.xcassets */; };
 		ECF655C211A97E2025683749 /* 01_aesthetic_hypertrophy.json in Resources */ = {isa = PBXBuildFile; fileRef = 92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */; };
@@ -332,6 +338,7 @@
 			buildConfigurationList = B4B6C8B064BD01B20A377920 /* Build configuration list for PBXNativeTarget "FormAppTests" */;
 			buildPhases = (
 				F5105D820DA861E92876A519 /* Sources */,
+				FBCDC68E972D19B9363879DB /* Resources */,
 			);
 			buildRules = (
 			);
@@ -391,6 +398,19 @@
 				1D60B4E438B90C3F62FC88A9 /* form_rest_complete.wav in Resources */,
 				9698074E6A4564D0918CD7E1 /* form_set_complete.wav in Resources */,
 				DBF8CF30B08C1B8DF1992BA1 /* form_workout_start.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FBCDC68E972D19B9363879DB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0667E5D4E4CF923DF66A2C24 /* 01_aesthetic_hypertrophy.json in Resources */,
+				36BD5962CDF814CE9F9A4F6C /* 02_powerbuilding_strength.json in Resources */,
+				E502AEF3D69EC46BD7225892 /* 03_classic_ppl.json in Resources */,
+				6A9E544F2449FD22D50B7E46 /* 04_full_body_classic.json in Resources */,
+				20E655D806FE5C84BC7BACFB /* 05_home_forge_dumbbells.json in Resources */,
+				09436475DDB7B1F05D128B14 /* 06_athletic_performance.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
