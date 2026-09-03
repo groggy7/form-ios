@@ -172,4 +172,42 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(LanguageManager.t("programs.apply"), "Apply")
         XCTAssertEqual(LanguageManager.t("editor.title"), "Program editor")
     }
+
+    @MainActor
+    func testTodayHeroCardDisabledButtonSnapshot() {
+        let store = AppStore.shared
+        guard let workout = store.activeProgram?.workouts.first(where: { $0.day == 5 }) ?? store.activeWorkout else {
+            return
+        }
+
+        let card = TodayHeroCard(
+            workout: workout,
+            todayIndex: 0,
+            isCompleted: false,
+            isAvailable: false,
+            availableDay: "Friday",
+            hasUnfinishedProgress: false,
+            onStart: {}
+        )
+
+        let controller = UIHostingController(rootView: card.padding(20))
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 420)
+        controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 420))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_available_friday_fixed.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
 }

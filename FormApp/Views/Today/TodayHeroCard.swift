@@ -192,9 +192,22 @@ public struct TodayHeroCard: View {
                     .frame(height: 52)
                     .background(
                         RoundedRectangle(cornerRadius: 13, style: .continuous)
-                            .fill((isAvailable && !isCompleted) ? AppColors.accent : AppColors.surfaceRaised)
+                            .fill((isAvailable && !isCompleted) ? AppColors.accent : Color(hex: 0x14171A))
                     )
-                    .foregroundColor((isAvailable && !isCompleted) ? AppColors.background : (isCompleted ? AppColors.accent : AppColors.muted))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 13, style: .continuous)
+                            .strokeBorder(
+                                (isAvailable && !isCompleted)
+                                    ? Color.clear
+                                    : (isCompleted ? AppColors.accent.opacity(0.4) : Color(hex: 0x38404A)),
+                                lineWidth: 1
+                            )
+                    )
+                    .foregroundColor(
+                        (isAvailable && !isCompleted)
+                            ? AppColors.background
+                            : (isCompleted ? AppColors.accent : Color(hex: 0xB1BAC2))
+                    )
                 }
                 .disabled(!isAvailable || isCompleted)
                 .buttonStyle(.plain)
