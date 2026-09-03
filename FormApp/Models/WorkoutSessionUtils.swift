@@ -1,6 +1,8 @@
 import Foundation
 
 public enum RestTimerUtils {
+    public static let restPresets: [Int] = [60, 90, 120, 180, 240]
+
     public static func formatSecondsToTime(_ totalSeconds: Int) -> String {
         let clamped = max(0, totalSeconds)
         let hours = clamped / 3600

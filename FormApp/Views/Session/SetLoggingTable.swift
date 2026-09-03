@@ -113,24 +113,48 @@ public struct SetLoggingTable: View {
                 }
             }
 
-            // Add Set Button
-            Button(action: onAddSet) {
-                HStack(spacing: 6) {
-                    Image(systemName: "plus")
-                        .font(.system(size: 13, weight: .bold))
-                    Text(LanguageManager.t("table.addSet"))
-                        .font(.system(size: 13, weight: .bold))
+            // Add Set and Remove Last Buttons
+            HStack(spacing: 10) {
+                Button(action: onAddSet) {
+                    HStack(spacing: 5) {
+                        Image(systemName: "plus")
+                            .font(.system(size: 13, weight: .bold))
+                        Text(LanguageManager.t("table.addSet"))
+                            .font(.system(size: 12, weight: .semibold))
+                    }
+                    .foregroundColor(AppColors.accent)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 44)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .stroke(AppColors.border, lineWidth: 1)
+                    )
                 }
-                .foregroundColor(AppColors.accent)
-                .frame(maxWidth: .infinity)
-                .frame(height: 38)
-                .background(
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .stroke(AppColors.border, lineWidth: 1)
-                )
+                .buttonStyle(.plain)
+
+                Button(action: {
+                    if sets.count > 1 {
+                        onRemoveSet(sets.count - 1)
+                    }
+                }) {
+                    HStack(spacing: 5) {
+                        Image(systemName: "minus")
+                            .font(.system(size: 13, weight: .bold))
+                        Text(LanguageManager.t("table.removeSet"))
+                            .font(.system(size: 12, weight: .semibold))
+                    }
+                    .foregroundColor(sets.count > 1 ? AppColors.accent : AppColors.muted.opacity(0.4))
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 44)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .stroke(sets.count > 1 ? AppColors.border : AppColors.border.opacity(0.4), lineWidth: 1)
+                    )
+                }
+                .buttonStyle(.plain)
+                .disabled(sets.count <= 1)
             }
-            .buttonStyle(.plain)
-            .padding(.top, 4)
+            .padding(.top, 8)
         }
     }
 }

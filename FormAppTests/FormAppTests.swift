@@ -251,4 +251,80 @@ final class FormAppTests: XCTestCase {
             print("Successfully wrote snapshot to \(path)")
         }
     }
+
+    @MainActor
+    func testRestTimerModalSnapshot() {
+        let modal = RestTimerFullScreenModal(
+            secondsRemaining: 113,
+            totalSeconds: 120,
+            exerciseName: "Incline Dumbbell Press",
+            isRunning: true,
+            progress: 113.0 / 120.0,
+            complete: false,
+            timeText: "01:53",
+            isMuted: false,
+            onDismiss: {},
+            onTogglePause: {},
+            onAddSeconds: { _ in },
+            onSetDuration: { _ in },
+            onSkip: {},
+            onToggleMute: {}
+        )
+
+        let controller = UIHostingController(rootView: modal)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_rest_timer_modal_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testRestTimerBarSnapshot() {
+        let bar = RestTimerBar(
+            secondsRemaining: 74,
+            totalSeconds: 120,
+            exerciseName: "Incline Dumbbell Press",
+            isRunning: true,
+            onTogglePause: {},
+            onAddSeconds: { _ in },
+            onSetDuration: { _ in },
+            onSkip: {},
+            isMuted: false,
+            onToggleMute: {}
+        )
+
+        let controller = UIHostingController(rootView: bar.frame(maxWidth: .infinity).padding(.horizontal, 16))
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 100)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 100))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_rest_timer_bar_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
 }

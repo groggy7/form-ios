@@ -99,44 +99,71 @@ public struct ActiveSessionView: View {
                     // Main Content
                     ScrollView {
                         VStack(spacing: 20) {
-                            // Exercise horizontal switcher pills
-                            ScrollView(.horizontal, showsIndicators: false) {
-                                HStack(spacing: 8) {
-                                    ForEach(Array(exercises.enumerated()), id: \.element.id) { idx, ex in
-                                        let isSel = idx == currentIndex
-                                        let sets = draft.setsByExercise[ex.id] ?? []
-                                        let isAllDone = !sets.isEmpty && sets.allSatisfy { $0.isCompleted }
+                            // Exercise horizontal card carousel
+                            ScrollViewReader { scrollProxy in
+                                ScrollView(.horizontal, showsIndicators: false) {
+                                    HStack(spacing: 8) {
+                                        ForEach(Array(exercises.enumerated()), id: \.element.id) { idx, ex in
+                                            let isSel = idx == currentIndex
+                                            let sets = draft.setsByExercise[ex.id] ?? []
+                                            let isAllDone = !sets.isEmpty && sets.allSatisfy { $0.isCompleted }
 
-                                        Button(action: {
-                                            store.updateActiveSession { d in
-                                                var copy = d
-                                                copy.currentExerciseIndex = idx
-                                                return copy
-                                            }
-                                        }) {
-                                            HStack(spacing: 6) {
-                                                if isAllDone {
-                                                    Image(systemName: "checkmark.circle.fill")
-                                                        .font(.system(size: 12))
-                                                        .foregroundColor(AppColors.positive)
+                                            Button(action: {
+                                                store.updateActiveSession { d in
+                                                    var copy = d
+                                                    copy.currentExerciseIndex = idx
+                                                    return copy
                                                 }
-                                                Text("\(idx + 1). \(ex.name)")
-                                                    .font(.system(size: 13, weight: isSel ? .bold : .medium))
-                                                    .foregroundColor(isSel ? AppColors.todaySelectionText : (isAllDone ? AppColors.positive : AppColors.secondaryText))
+                                            }) {
+                                                ZStack(alignment: .topTrailing) {
+                                                    VStack(spacing: 4) {
+                                                        MovementIcon(
+                                                            name: ex.name,
+                                                            size: 48,
+                                                            movementType: ex.resolvedMovement,
+                                                            movementAssetId: ex.movementAssetId
+                                                        )
+
+                                                        Text("\(idx + 1). \(ex.name)")
+                                                            .font(.system(size: 10, weight: isSel ? .bold : .medium))
+                                                            .foregroundColor(isSel ? AppColors.text : AppColors.muted)
+                                                            .lineLimit(2)
+                                                            .multilineTextAlignment(.center)
+                                                            .frame(maxWidth: .infinity, minHeight: 26)
+                                                    }
+                                                    .padding(7)
+                                                    .frame(width: 86)
+                                                    .background(
+                                                        RoundedRectangle(cornerRadius: 11, style: .continuous)
+                                                            .fill(AppColors.surface)
+                                                            .overlay(
+                                                                RoundedRectangle(cornerRadius: 11, style: .continuous)
+                                                                    .stroke(isSel ? AppColors.accent : AppColors.border, lineWidth: 1)
+                                                            )
+                                                    )
+
+                                                    if isAllDone {
+                                                        Image(systemName: "checkmark.circle.fill")
+                                                            .font(.system(size: 14))
+                                                            .foregroundColor(AppColors.accent)
+                                                            .padding(4)
+                                                    }
+                                                }
                                             }
-                                            .padding(.horizontal, 12)
-                                            .padding(.vertical, 8)
-                                            .background(
-                                                Capsule()
-                                                    .fill(isSel ? AppColors.accent : AppColors.surface)
-                                                    .overlay(Capsule().stroke(isSel ? AppColors.accent : AppColors.border, lineWidth: 1))
-                                            )
+                                            .buttonStyle(.plain)
+                                            .id(ex.id)
                                         }
-                                        .buttonStyle(.plain)
+                                    }
+                                    .padding(.horizontal, 20)
+                                    .padding(.top, 10)
+                                }
+                                .onChange(of: currentIndex) { newIdx in
+                                    if exercises.indices.contains(newIdx) {
+                                        withAnimation {
+                                            scrollProxy.scrollTo(exercises[newIdx].id, anchor: .center)
+                                        }
                                     }
                                 }
-                                .padding(.horizontal, 20)
-                                .padding(.top, 12)
                             }
 
                             // Current Exercise Card
@@ -201,6 +228,7 @@ public struct ActiveSessionView: View {
                             isRunning: rest.isRunning,
                             onTogglePause: { toggleRest() },
                             onAddSeconds: { adjustRest(seconds: $0) },
+                            onSetDuration: { setRestDuration(seconds: $0) },
                             onSkip: { skipRest() },
                             isMuted: restMuted,
                             onToggleMute: { restMuted.toggle() }
@@ -346,6 +374,24 @@ public struct ActiveSessionView: View {
                 timer.endsAtEpochMillis = nil
             }
             copy.restTimer = timer
+            return copy
+        }
+    }
+
+    private func setRestDuration(seconds: Int) {
+        store.updateActiveSession { d in
+            var copy = d
+            let exercises = copy.workout.exercises
+            let idx = copy.currentExerciseIndex
+            let exName = copy.restTimer?.exerciseName ?? (exercises.indices.contains(idx) ? exercises[idx].name : "")
+            let endEpoch = nowEpochMillis + Int64(seconds * 1000)
+            copy.restTimer = RestTimerState(
+                exerciseName: exName,
+                totalSeconds: seconds,
+                isRunning: true,
+                endsAtEpochMillis: endEpoch,
+                pausedSecondsRemaining: seconds
+            )
             return copy
         }
     }
