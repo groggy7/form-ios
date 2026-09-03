@@ -146,20 +146,22 @@ public struct WeekStripView: View {
                             .padding(.horizontal, 8)
                             .padding(.vertical, 12)
                             .frame(width: fitsViewport ? (UIScreen.main.bounds.width - 40 - CGFloat(workouts.count - 1) * 8) / CGFloat(workouts.count) : 72)
-                            .frame(minHeight: 108)
+                            .frame(height: 108)
                             .background(
-                                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                RoundedRectangle(cornerRadius: 20)
                                     .fill(surfaceColor)
                             )
                             .overlay(
-                                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                    .stroke(borderColor, lineWidth: (isToday && !selected) ? 2 : 1)
+                                RoundedRectangle(cornerRadius: 20)
+                                    .strokeBorder(borderColor, lineWidth: (isToday && !selected) ? 2 : 1)
                             )
+                            .clipShape(RoundedRectangle(cornerRadius: 20))
                         }
                         .buttonStyle(.plain)
                     }
                 }
                 .padding(.horizontal, 20)
+                .padding(.vertical, 2)
             }
         )
     }
