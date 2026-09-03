@@ -1,6 +1,6 @@
 name: FormApp
 options:
-  bundleIdPrefix: com.form.gym
+  bundleIdPrefix: com.perseverancesoftware
   deploymentTarget:
     iOS: "17.0"
   createIntermediateGroups: true
@@ -23,7 +23,7 @@ targets:
       - path: FormApp
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.form.gym.ios
+        PRODUCT_BUNDLE_IDENTIFIER: com.perseverancesoftware.form
         PRODUCT_NAME: FormApp
         INFOPLIST_FILE: FormApp/Info.plist
         GENERATE_INFOPLIST_FILE: NO
@@ -42,7 +42,7 @@ targets:
       - target: FormApp
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.form.gym.ios.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.perseverancesoftware.form.tests
         SWIFT_VERSION: "5.0"
         CODE_SIGN_IDENTITY: ""
         CODE_SIGNING_REQUIRED: NO
