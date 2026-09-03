@@ -52,74 +52,79 @@ public struct RestTimerBar: View {
     }
 
     public var body: some View {
-        HStack(spacing: 0) {
-            // Left column: Title + Time + Mini Linear Progress (tappable to expand)
+        VStack(spacing: 8) {
+            // Top info row (tappable to expand into full-screen modal)
             Button(action: { isExpanded = true }) {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(LanguageManager.t("rest.title"))
-                        .font(.system(size: 11, weight: .medium))
-                        .foregroundColor(AppColors.secondaryText)
-
-                    HStack(spacing: 12) {
-                        Text(timeText)
-                            .font(.system(size: 26, weight: .medium, design: .monospaced))
-                            .foregroundColor(complete ? AppColors.accent : AppColors.text)
-
-                        // Linear progress track
-                        GeometryReader { geo in
-                            ZStack(alignment: .leading) {
-                                Capsule()
-                                    .fill(AppColors.border)
-                                    .frame(height: 3)
-                                Capsule()
-                                    .fill(AppColors.purple)
-                                    .frame(width: max(0, geo.size.width * CGFloat(progress)), height: 3)
-                            }
-                        }
-                        .frame(maxWidth: 86, maxHeight: 3)
+                HStack {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(LanguageManager.t("rest.title").uppercased())
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundColor(AppColors.purple)
+                        Text(exerciseName)
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundColor(AppColors.text)
+                            .lineLimit(1)
                     }
+
+                    Spacer()
+
+                    Text(timeText)
+                        .font(.system(size: 24, weight: .heavy, design: .monospaced))
+                        .foregroundColor(AppColors.purple)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
 
-            // Center button: Toggle pause or check
-            Button(action: {
-                if complete {
-                    onSkip()
-                } else {
-                    onTogglePause()
+            // Controls row
+            HStack(spacing: 10) {
+                Button(action: { onAddSeconds(-15) }) {
+                    Text("-15s")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundColor(AppColors.secondaryText)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
+                        .background(AppColors.surface)
+                        .cornerRadius(8)
                 }
-            }) {
-                Image(systemName: complete ? "checkmark" : (isRunning ? "pause.fill" : "play.fill"))
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(complete ? AppColors.accent : AppColors.text)
-                    .frame(width: 44, height: 44)
-            }
-            .buttonStyle(.plain)
+                .buttonStyle(.plain)
 
-            // Right button: Expand button
-            Button(action: { isExpanded = true }) {
-                Image(systemName: "arrow.up.left.and.arrow.down.right")
-                    .font(.system(size: 16, weight: .bold))
-                    .foregroundColor(AppColors.purple)
-                    .frame(width: 44, height: 44)
+                Button(action: { onAddSeconds(30) }) {
+                    Text("+30s")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundColor(AppColors.secondaryText)
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 6)
+                        .background(AppColors.surface)
+                        .cornerRadius(8)
+                }
+                .buttonStyle(.plain)
+
+                Spacer()
+
+                Button(action: onSkip) {
+                    Text(LanguageManager.t("rest.skip"))
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundColor(AppColors.danger)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(AppColors.surface)
+                        .cornerRadius(8)
+                }
+                .buttonStyle(.plain)
             }
-            .buttonStyle(.plain)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 10)
+        .padding(14)
         .background(
-            RoundedRectangle(cornerRadius: 18, style: .continuous)
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .fill(AppColors.surfaceRaised)
                 .overlay(
-                    RoundedRectangle(cornerRadius: 18, style: .continuous)
-                        .stroke(AppColors.purple.opacity(0.35), lineWidth: 1)
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(AppColors.purple.opacity(0.4), lineWidth: 1.5)
                 )
-                .shadow(color: Color.black.opacity(0.4), radius: 8, x: 0, y: 4)
+                .shadow(color: Color.black.opacity(0.5), radius: 12, x: 0, y: 4)
         )
-        .padding(.horizontal, 16)
+        .padding(.horizontal, 20)
         .fullScreenCover(isPresented: $isExpanded) {
             RestTimerFullScreenModal(
                 secondsRemaining: secondsRemaining,

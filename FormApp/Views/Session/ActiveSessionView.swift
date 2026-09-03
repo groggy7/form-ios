@@ -214,6 +214,68 @@ public struct ActiveSessionView: View {
                                 .padding(.horizontal, 20)
                             }
 
+                            // Navigation Row: Previous & Next Exercise buttons
+                            HStack(spacing: 10) {
+                                Button(action: {
+                                    if currentIndex > 0 {
+                                        store.updateActiveSession { d in
+                                            var copy = d
+                                            copy.currentExerciseIndex = currentIndex - 1
+                                            return copy
+                                        }
+                                    }
+                                }) {
+                                    Image(systemName: "arrow.left")
+                                        .font(.system(size: 16, weight: .semibold))
+                                        .foregroundColor(currentIndex > 0 ? AppColors.text : AppColors.muted.opacity(0.3))
+                                        .frame(width: 50, height: 50)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 11, style: .continuous)
+                                                .fill(AppColors.surfaceRaised)
+                                                .overlay(
+                                                    RoundedRectangle(cornerRadius: 11, style: .continuous)
+                                                        .stroke(AppColors.border, lineWidth: 1)
+                                                )
+                                        )
+                                }
+                                .buttonStyle(.plain)
+                                .disabled(currentIndex <= 0)
+
+                                Button(action: {
+                                    if currentIndex < exercises.count - 1 {
+                                        store.updateActiveSession { d in
+                                            var copy = d
+                                            copy.currentExerciseIndex = currentIndex + 1
+                                            return copy
+                                        }
+                                    } else {
+                                        finishedAt = Int64(Date().timeIntervalSince1970 * 1000)
+                                        showSummary = true
+                                    }
+                                }) {
+                                    HStack(spacing: 8) {
+                                        Text(LanguageManager.t(currentIndex < exercises.count - 1 ? "session.nextExercise" : "session.review"))
+                                            .font(.system(size: 14, weight: .semibold))
+                                            .foregroundColor(AppColors.text)
+                                        Image(systemName: "arrow.right")
+                                            .font(.system(size: 14, weight: .semibold))
+                                            .foregroundColor(AppColors.text)
+                                    }
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 50)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 11, style: .continuous)
+                                            .fill(AppColors.surfaceRaised)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 11, style: .continuous)
+                                                    .stroke(AppColors.border, lineWidth: 1)
+                                            )
+                                    )
+                                }
+                                .buttonStyle(.plain)
+                            }
+                            .padding(.horizontal, 20)
+
                             Spacer().frame(height: 120) // Space for floating rest timer
                         }
                     }
@@ -221,19 +283,21 @@ public struct ActiveSessionView: View {
                     // Floating Rest Timer Bar
                     if let rest = restTimer {
                         let remaining = rest.secondsRemaining(nowEpochMillis: nowEpochMillis)
-                        RestTimerBar(
-                            secondsRemaining: remaining,
-                            totalSeconds: rest.totalSeconds,
-                            exerciseName: rest.exerciseName,
-                            isRunning: rest.isRunning,
-                            onTogglePause: { toggleRest() },
-                            onAddSeconds: { adjustRest(seconds: $0) },
-                            onSetDuration: { setRestDuration(seconds: $0) },
-                            onSkip: { skipRest() },
-                            isMuted: restMuted,
-                            onToggleMute: { restMuted.toggle() }
-                        )
-                        .padding(.bottom, 16)
+                        if remaining > 0 {
+                            RestTimerBar(
+                                secondsRemaining: remaining,
+                                totalSeconds: rest.totalSeconds,
+                                exerciseName: rest.exerciseName,
+                                isRunning: rest.isRunning,
+                                onTogglePause: { toggleRest() },
+                                onAddSeconds: { adjustRest(seconds: $0) },
+                                onSetDuration: { setRestDuration(seconds: $0) },
+                                onSkip: { skipRest() },
+                                isMuted: restMuted,
+                                onToggleMute: { restMuted.toggle() }
+                            )
+                            .padding(.bottom, 16)
+                        }
                     }
                 }
             }
