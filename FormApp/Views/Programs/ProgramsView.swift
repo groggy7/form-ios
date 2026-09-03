@@ -38,7 +38,7 @@ public struct ProgramsView: View {
                             HStack(spacing: 6) {
                                 Image(systemName: "square.and.arrow.down")
                                     .font(.system(size: 14, weight: .semibold))
-                                Text(LanguageManager.t("programs.importJson"))
+                                Text(LanguageManager.t("programs.import"))
                                     .font(.system(size: 14, weight: .semibold))
                             }
                             .frame(maxWidth: .infinity)

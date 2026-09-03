@@ -143,4 +143,33 @@ final class FormAppTests: XCTestCase {
             print("Successfully wrote snapshot to \(path)")
         }
     }
+
+    @MainActor
+    func testProgramsViewSnapshot() {
+        let store = AppStore.shared
+        let programsView = ProgramsView(store: store, onDismiss: {})
+        let controller = UIHostingController(rootView: programsView)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_programs_fixed.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+
+        XCTAssertEqual(LanguageManager.t("programs.import"), "Import JSON")
+        XCTAssertEqual(LanguageManager.t("programs.apply"), "Apply")
+        XCTAssertEqual(LanguageManager.t("editor.title"), "Program editor")
+    }
 }
