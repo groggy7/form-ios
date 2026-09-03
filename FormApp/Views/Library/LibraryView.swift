@@ -186,7 +186,7 @@ public struct LibraryView: View {
                 }
                 .padding(.horizontal, 20)
 
-                Spacer().frame(height: 90) // Bottom dock padding
+                Spacer().frame(height: 16)
             }
         }
         .sheet(isPresented: $showFiltersSheet) {

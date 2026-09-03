@@ -201,7 +201,7 @@ public struct HistoryView: View {
                     }
                 }
 
-                Spacer().frame(height: 90) // Bottom dock spacing
+                Spacer().frame(height: 16)
             }
         }
     }

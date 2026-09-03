@@ -15,47 +15,50 @@ public struct RootView: View {
         ZStack(alignment: .bottom) {
             AppColors.background.ignoresSafeArea()
 
-            // Tab content
-            Group {
-                switch store.currentView {
-                case .today:
-                    TodayView(
-                        store: store,
-                        onOpenPrograms: { showProgramsSheet = true },
-                        onOpenSettings: { showSettingsSheet = true },
-                        onSelectExercise: { selectedExerciseForDetail = $0 }
-                    )
-                case .plan:
-                    WeeklyPlanView(
-                        store: store,
-                        onOpenToday: { store.currentView = .today },
-                        onOpenPrograms: { showProgramsSheet = true },
-                        onOpenSettings: { showSettingsSheet = true }
-                    )
-                case .library:
-                    LibraryView(
-                        store: store,
-                        onSelectExercise: { selectedExerciseForDetail = $0 },
-                        onOpenSettings: { showSettingsSheet = true }
-                    )
-                case .history:
-                    HistoryView(
-                        store: store,
-                        onOpenSettings: { showSettingsSheet = true },
-                        onSelectRecord: { selectedRecordForDetail = $0 }
-                    )
-                default:
-                    TodayView(
-                        store: store,
-                        onOpenPrograms: { showProgramsSheet = true },
-                        onOpenSettings: { showSettingsSheet = true },
-                        onSelectExercise: { selectedExerciseForDetail = $0 }
-                    )
+            VStack(spacing: 0) {
+                // Tab content
+                Group {
+                    switch store.currentView {
+                    case .today:
+                        TodayView(
+                            store: store,
+                            onOpenPrograms: { showProgramsSheet = true },
+                            onOpenSettings: { showSettingsSheet = true },
+                            onSelectExercise: { selectedExerciseForDetail = $0 }
+                        )
+                    case .plan:
+                        WeeklyPlanView(
+                            store: store,
+                            onOpenToday: { store.currentView = .today },
+                            onOpenPrograms: { showProgramsSheet = true },
+                            onOpenSettings: { showSettingsSheet = true }
+                        )
+                    case .library:
+                        LibraryView(
+                            store: store,
+                            onSelectExercise: { selectedExerciseForDetail = $0 },
+                            onOpenSettings: { showSettingsSheet = true }
+                        )
+                    case .history:
+                        HistoryView(
+                            store: store,
+                            onOpenSettings: { showSettingsSheet = true },
+                            onSelectRecord: { selectedRecordForDetail = $0 }
+                        )
+                    default:
+                        TodayView(
+                            store: store,
+                            onOpenPrograms: { showProgramsSheet = true },
+                            onOpenSettings: { showSettingsSheet = true },
+                            onSelectExercise: { selectedExerciseForDetail = $0 }
+                        )
+                    }
                 }
-            }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-            // Bottom Navigation Dock
-            BottomDock(currentView: $store.currentView)
+                // Bottom Navigation Dock
+                BottomDock(currentView: $store.currentView)
+            }
 
             // Animated Toast Pill
             ToastOverlay(message: store.noticeMessage)

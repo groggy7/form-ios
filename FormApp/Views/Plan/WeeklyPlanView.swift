@@ -163,7 +163,7 @@ public struct WeeklyPlanView: View {
                     .padding(.horizontal, 20)
                     .padding(.top, 4)
 
-                    Spacer().frame(height: 90) // Bottom dock spacing
+                    Spacer().frame(height: 16)
                 }
             }
         )

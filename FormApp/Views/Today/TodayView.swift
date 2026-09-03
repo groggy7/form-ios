@@ -157,7 +157,7 @@ public struct TodayView: View {
                     }
                 }
 
-                Spacer().frame(height: 90) // Padding for bottom dock
+                Spacer().frame(height: 16)
             }
         }
     }
