@@ -150,15 +150,15 @@ public struct TodayHeroCard: View {
                                 Text(LanguageManager.t("muscles.view.\(v.rawValue)"))
                                     .font(.system(size: 12, weight: .medium))
                                     .foregroundColor(isSel ? Color(hex: 0xE3DAF1) : AppColors.secondaryText)
-                                    .padding(.horizontal, 10)
-                                    .padding(.vertical, 4)
+                                    .padding(.horizontal, 12)
+                                    .frame(height: 32)
                                     .background(
                                         RoundedRectangle(cornerRadius: 8)
                                             .fill(isSel ? Color(hex: 0x343044) : cardSurface)
                                     )
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 8)
-                                            .stroke(isSel ? Color(hex: 0x494260) : cardBorder, lineWidth: 1)
+                                            .strokeBorder(isSel ? Color(hex: 0x494260) : cardBorder, lineWidth: 1)
                                     )
                             }
                             .buttonStyle(.plain)
