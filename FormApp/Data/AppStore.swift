@@ -363,7 +363,6 @@ public final class AppStore: ObservableObject {
         ]
 
         var programs: [Program] = []
-        let decoder = JSONDecoder()
 
         for name in programNames {
             var fileData: Data? = nil

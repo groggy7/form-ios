@@ -254,7 +254,7 @@ public extension MovementIcon {
         }
     }
 
-    public static func movementAssetSprite(_ id: String) -> MovementSprite? {
+    static func movementAssetSprite(_ id: String) -> MovementSprite? {
         switch id {
         case "jump-rope":
             return MovementSprite(imageName: "anatomy_jump_rope", top: 0, bottom: 1024, atlasHeight: 1024, atlasWidth: 1536)
