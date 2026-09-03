@@ -21,6 +21,7 @@ public struct TodayHeroCard: View {
         isAvailable: Bool,
         availableDay: String?,
         hasUnfinishedProgress: Bool,
+        initialViewIndex: Int = 0,
         onStart: @escaping () -> Void
     ) {
         self.workout = workout
@@ -29,6 +30,7 @@ public struct TodayHeroCard: View {
         self.isAvailable = isAvailable
         self.availableDay = availableDay
         self.hasUnfinishedProgress = hasUnfinishedProgress
+        self._selectedViewIndex = State(initialValue: initialViewIndex)
         self.onStart = onStart
     }
 
@@ -118,28 +120,28 @@ public struct TodayHeroCard: View {
                 }
                 .frame(minHeight: 20)
 
-                Spacer().frame(height: 18)
+                Spacer().frame(height: 22)
 
                 // Title
                 Text(workout.title)
-                    .font(.system(size: 30, weight: .semibold))
+                    .font(.system(size: 32, weight: .semibold))
                     .foregroundColor(Color(hex: 0xF3EFE5))
                     .lineLimit(2)
-                    .frame(maxWidth: 220, alignment: .leading)
+                    .frame(maxWidth: 260, alignment: .leading)
 
-                Spacer().frame(height: 8)
+                Spacer().frame(height: 9)
 
                 // Focus
                 if !workout.focus.isEmpty {
                     Text(LanguageManager.content(workout.focus))
-                        .font(.system(size: 13, weight: .regular))
-                        .lineSpacing(2)
+                        .font(.system(size: 14, weight: .regular))
+                        .lineSpacing(3)
                         .foregroundColor(AppColors.secondaryText)
                         .lineLimit(2)
-                        .frame(maxWidth: 215, alignment: .leading)
+                        .frame(maxWidth: 215, minHeight: 42, alignment: .topLeading)
                 }
 
-                Spacer().frame(height: 12)
+                Spacer().frame(height: 18)
 
                 // Body view switcher chips (if more than 1)
                 if bodyViews.count > 1 {
@@ -177,7 +179,7 @@ public struct TodayHeroCard: View {
                     .font(.system(size: 12))
                     .foregroundColor(Color(hex: 0xB1BAC2))
 
-                Spacer().frame(height: 16)
+                Spacer().frame(height: 18)
 
                 // Button
                 Button(action: onStart) {
@@ -212,7 +214,7 @@ public struct TodayHeroCard: View {
                 .disabled(!isAvailable || isCompleted)
                 .buttonStyle(.plain)
             }
-            .padding(EdgeInsets(top: 20, leading: 19, bottom: 19, trailing: 19))
+            .padding(EdgeInsets(top: 22, leading: 19, bottom: 19, trailing: 19))
         }
         .padding(.horizontal, 20)
     }

@@ -210,4 +210,45 @@ final class FormAppTests: XCTestCase {
             print("Successfully wrote snapshot to \(path)")
         }
     }
+
+    @MainActor
+    func testTodayHeroCardQuadsAndCalvesSnapshot() {
+        let store = AppStore.shared
+        // Workout with Quads & Calves (e.g. Day 2 / Leg day)
+        guard let workout = store.activeProgram?.workouts.first(where: { $0.title.contains("Quads") || $0.targetMuscles.contains("quadriceps") }) ?? store.activeProgram?.workouts.first(where: { $0.day == 2 }) else {
+            return
+        }
+
+        // Test legs_back (index 1) which shows calves
+        let card = TodayHeroCard(
+            workout: workout,
+            todayIndex: workout.day - 1,
+            isCompleted: false,
+            isAvailable: true,
+            availableDay: nil,
+            hasUnfinishedProgress: false,
+            initialViewIndex: 1,
+            onStart: {}
+        )
+
+        let controller = UIHostingController(rootView: card.padding(20))
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 420)
+        controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 420))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_quads_calves_back.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
 }
