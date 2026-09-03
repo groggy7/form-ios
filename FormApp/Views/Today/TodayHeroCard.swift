@@ -11,16 +11,16 @@ public struct TodayHeroCard: View {
 
     @State private var selectedViewIndex: Int = 0
 
-    private let cardSurface = Color(hex: 0x15191E)
-    private let cardBorder = Color(hex: 0x343A41)
+    private let cardSurface = Color(hex: 0x1E242B)
+    private let cardBorder = Color(hex: 0x303B46)
 
     public init(
         workout: Workout?,
         todayIndex: Int,
         isCompleted: Bool,
         isAvailable: Bool,
-        availableDay: String? = nil,
-        hasUnfinishedProgress: Bool = false,
+        availableDay: String?,
+        hasUnfinishedProgress: Bool,
         onStart: @escaping () -> Void
     ) {
         self.workout = workout
@@ -41,8 +41,8 @@ public struct TodayHeroCard: View {
     }
 
     private func workoutCard(_ workout: Workout) -> some View {
-        let views = availableBodyViews(for: workout)
-        let activeViewName = views.indices.contains(selectedViewIndex) ? views[selectedViewIndex].imageName : "body_front"
+        let bodyViews = workout.bodyViews()
+        let activeView = bodyViews.indices.contains(selectedViewIndex) ? bodyViews[selectedViewIndex] : (bodyViews.first ?? .front)
 
         return ZStack(alignment: .topLeading) {
             // Container background
@@ -53,38 +53,32 @@ public struct TodayHeroCard: View {
                         .stroke(cardBorder, lineWidth: 1)
                 )
 
-            // Right-aligned anatomy image
-            HStack {
-                Spacer()
-                Image(activeViewName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 185, height: 280)
-                    .offset(x: 10, y: -5)
-            }
-            .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
+            // Muscle artwork underlay
+            MuscleArtwork(view: activeView, muscles: workout.resolvedMuscles)
+                .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
 
-            // Horizontal Gradient scrim
+            // Horizontal Gradient scrim (matching Android 1-to-1)
             LinearGradient(
                 stops: [
                     .init(color: cardSurface, location: 0),
-                    .init(color: cardSurface, location: 0.32),
-                    .init(color: cardSurface.opacity(0.92), location: 0.52),
-                    .init(color: cardSurface.opacity(0.15), location: 0.74),
-                    .init(color: Color.clear, location: 0.95)
+                    .init(color: cardSurface.opacity(0.94), location: 0.25),
+                    .init(color: cardSurface.opacity(0.50), location: 0.51),
+                    .init(color: cardSurface.opacity(0.03), location: 0.76),
+                    .init(color: Color.clear, location: 1.0)
                 ],
                 startPoint: .leading,
                 endPoint: .trailing
             )
             .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
 
-            // Vertical Gradient scrim
+            // Vertical Gradient scrim (matching Android 1-to-1)
             LinearGradient(
                 stops: [
                     .init(color: Color.clear, location: 0),
-                    .init(color: Color.clear, location: 0.35),
-                    .init(color: cardSurface.opacity(0.30), location: 0.55),
-                    .init(color: cardSurface.opacity(0.96), location: 0.82),
+                    .init(color: Color.clear, location: 0.20),
+                    .init(color: cardSurface.opacity(0.12), location: 0.44),
+                    .init(color: cardSurface.opacity(0.96), location: 0.83),
+                    .init(color: cardSurface, location: 0.96),
                     .init(color: cardSurface, location: 1.0)
                 ],
                 startPoint: .top,
@@ -148,12 +142,12 @@ public struct TodayHeroCard: View {
                 Spacer().frame(height: 12)
 
                 // Body view switcher chips (if more than 1)
-                if views.count > 1 {
+                if bodyViews.count > 1 {
                     HStack(spacing: 6) {
-                        ForEach(Array(views.enumerated()), id: \.offset) { idx, v in
+                        ForEach(Array(bodyViews.enumerated()), id: \.offset) { idx, v in
                             let isSel = idx == selectedViewIndex
                             Button(action: { selectedViewIndex = idx }) {
-                                Text(v.label)
+                                Text(LanguageManager.t("muscles.view.\(v.rawValue)"))
                                     .font(.system(size: 12, weight: .medium))
                                     .foregroundColor(isSel ? Color(hex: 0xE3DAF1) : AppColors.secondaryText)
                                     .padding(.horizontal, 10)
@@ -295,46 +289,5 @@ public struct TodayHeroCard: View {
         }
         .frame(minHeight: 250)
         .padding(.horizontal, 20)
-    }
-
-    private struct BodyViewOption {
-        let label: String
-        let imageName: String
-    }
-
-    private func availableBodyViews(for workout: Workout) -> [BodyViewOption] {
-        var options: [BodyViewOption] = []
-        let muscles = workout.resolvedMuscles
-
-        let hasBack = muscles.contains { $0.views.contains(.back) }
-        let hasFront = muscles.contains { $0.views.contains(.front) }
-        let hasLegsFront = muscles.contains { $0.views.contains(.legsFront) }
-        let hasLegsBack = muscles.contains { $0.views.contains(.legsBack) }
-
-        if hasBack {
-            options.append(BodyViewOption(label: LanguageManager.t("muscles.view.back"), imageName: "body_back"))
-        }
-        if hasFront {
-            options.append(BodyViewOption(label: LanguageManager.t("muscles.view.front"), imageName: "body_front"))
-        }
-        if hasLegsFront {
-            options.append(BodyViewOption(label: LanguageManager.t("muscles.view.legs-front"), imageName: "body_legs_front"))
-        }
-        if hasLegsBack {
-            options.append(BodyViewOption(label: LanguageManager.t("muscles.view.legs-back"), imageName: "body_legs_back"))
-        }
-
-        if options.isEmpty {
-            switch workout.visualRegion {
-            case .upper:
-                options.append(BodyViewOption(label: LanguageManager.t("muscles.view.back"), imageName: "body_back"))
-            case .lower:
-                options.append(BodyViewOption(label: LanguageManager.t("muscles.view.legs-front"), imageName: "body_legs_front"))
-            case .fullBody:
-                options.append(BodyViewOption(label: LanguageManager.t("muscles.view.front"), imageName: "body_front"))
-            }
-        }
-
-        return options
     }
 }

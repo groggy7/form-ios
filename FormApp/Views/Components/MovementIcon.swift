@@ -158,24 +158,19 @@ public struct MovementIcon: View {
 
     public var body: some View {
         let finalSize: CGFloat = large ? 108 : size
-        let sprite = resolveSprite()
-        let activeFrame = UIAccessibility.isReduceMotionEnabled ? 1 : clock.currentFrame
 
         ZStack {
             RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .fill(AppColors.surface)
 
-            if let sprite = sprite, let frameImg = MovementFrameCache.getFrame(for: sprite, frame: activeFrame) {
-                Image(uiImage: frameImg)
-                    .resizable()
-                    .scaledToFit()
-                    .padding(3)
-                    .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
-            } else {
-                Image(systemName: "dumbbell.fill")
-                    .font(.system(size: finalSize * 0.38))
-                    .foregroundColor(AppColors.muted)
-            }
+            MovementIllustration(
+                name: name,
+                movementType: movementType,
+                movementAssetId: movementAssetId,
+                allowCategoryFallback: allowCategoryFallback
+            )
+            .padding(3)
+            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
         }
         .frame(width: finalSize, height: finalSize)
         .overlay(
@@ -193,8 +188,56 @@ public struct MovementIcon: View {
         }
         return nil
     }
+}
 
-    public static func categorySprite(_ type: MovementType) -> MovementSprite? {
+public struct MovementIllustration: View {
+    let name: String
+    let movementType: MovementType
+    let movementAssetId: String?
+    let allowCategoryFallback: Bool
+
+    @ObservedObject private var clock = MovementAnimationClock.shared
+
+    public init(
+        name: String,
+        movementType: MovementType = .other,
+        movementAssetId: String? = nil,
+        allowCategoryFallback: Bool = true
+    ) {
+        self.name = name
+        self.movementType = movementType
+        self.movementAssetId = movementAssetId
+        self.allowCategoryFallback = allowCategoryFallback
+    }
+
+    public var body: some View {
+        let sprite = resolveSprite()
+        let activeFrame = UIAccessibility.isReduceMotionEnabled ? 1 : clock.currentFrame
+
+        if let sprite = sprite, let frameImg = MovementFrameCache.getFrame(for: sprite, frame: activeFrame) {
+            Image(uiImage: frameImg)
+                .resizable()
+                .scaledToFit()
+        } else {
+            Image(systemName: "dumbbell.fill")
+                .font(.system(size: 36))
+                .foregroundColor(AppColors.muted)
+        }
+    }
+
+    public func resolveSprite() -> MovementSprite? {
+        if let assetId = movementAssetId, let s = MovementIcon.movementAssetSprite(assetId) {
+            return s
+        }
+        if allowCategoryFallback {
+            return MovementIcon.categorySprite(movementType)
+        }
+        return nil
+    }
+}
+
+public extension MovementIcon {
+    static func categorySprite(_ type: MovementType) -> MovementSprite? {
         switch type {
         case .press: return MovementSprite(imageName: "anatomy_compound", top: 0, bottom: 385)
         case .pullUp: return MovementSprite(imageName: "anatomy_compound", top: 385, bottom: 815)

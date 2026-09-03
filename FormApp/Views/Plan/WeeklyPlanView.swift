@@ -142,7 +142,7 @@ public struct WeeklyPlanView: View {
                     // Change program outlined button
                     Button(action: onOpenPrograms) {
                         HStack(spacing: 8) {
-                            Image(systemName: "rectangle.stack")
+                            Image(systemName: "folder")
                                 .font(.system(size: 14, weight: .semibold))
                             Text(LanguageManager.t("weekly.changeProgram"))
                                 .font(.system(size: 14, weight: .semibold))

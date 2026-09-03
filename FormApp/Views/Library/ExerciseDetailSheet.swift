@@ -15,19 +15,23 @@ public struct ExerciseDetailSheet: View {
                 VStack(alignment: .leading, spacing: 20) {
                     // Anatomy Artwork Banner
                     ZStack {
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(AppColors.surfaceRaised)
-                            .frame(height: 220)
+                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            .fill(AppColors.surface)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                    .stroke(AppColors.border, lineWidth: 1)
+                            )
 
-                        MovementIcon(
+                        MovementIllustration(
                             name: exercise.name,
-                            size: 200,
-                            large: true,
                             movementType: exercise.resolvedMovement,
-                            movementAssetId: exercise.movementAssetId
+                            movementAssetId: exercise.movementAssetId,
+                            allowCategoryFallback: false
                         )
-                        .frame(height: 210)
+                        .padding(12)
                     }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 224)
 
                     // Title & Movement Badge
                     VStack(alignment: .leading, spacing: 8) {
@@ -60,40 +64,26 @@ public struct ExerciseDetailSheet: View {
                         }
                     }
 
-                    // Form Cues
-                    if !exercise.cues.trimmingCharacters(in: .whitespaces).isEmpty {
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text(LanguageManager.t("editor.cues"))
-                                .font(.system(size: 14, weight: .bold))
-                                .foregroundColor(AppColors.text)
-                            Text(exercise.cues)
-                                .font(.system(size: 14))
-                                .foregroundColor(AppColors.secondaryText)
-                                .lineSpacing(4)
-                        }
-                        .padding(16)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(AppColors.surface)
-                        .cornerRadius(12)
-                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
+                    // Technique Cues
+                    let cuesText = exercise.cues.trimmingCharacters(in: .whitespacesAndNewlines)
+                    if !cuesText.isEmpty {
+                        techniqueSection(
+                            title: LanguageManager.t("modal.exercise.cues"),
+                            text: cuesText,
+                            accent: AppColors.accent,
+                            isAvoid: false
+                        )
                     }
 
-                    // What to avoid
-                    if !exercise.avoid.trimmingCharacters(in: .whitespaces).isEmpty {
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text(LanguageManager.t("editor.avoid"))
-                                .font(.system(size: 14, weight: .bold))
-                                .foregroundColor(AppColors.danger)
-                            Text(exercise.avoid)
-                                .font(.system(size: 14))
-                                .foregroundColor(AppColors.secondaryText)
-                                .lineSpacing(4)
-                        }
-                        .padding(16)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .background(AppColors.surface)
-                        .cornerRadius(12)
-                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
+                    // What to Avoid
+                    let avoidText = exercise.avoid.trimmingCharacters(in: .whitespacesAndNewlines)
+                    if !avoidText.isEmpty {
+                        techniqueSection(
+                            title: LanguageManager.t("modal.exercise.avoid"),
+                            text: avoidText,
+                            accent: AppColors.danger,
+                            isAvoid: true
+                        )
                     }
 
                     // Video Links
@@ -130,7 +120,7 @@ public struct ExerciseDetailSheet: View {
                 .padding(20)
             }
             .background(AppColors.background)
-            .navigationTitle(LanguageManager.t("library.detail"))
+            .navigationTitle(LanguageManager.t("library.details"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -142,5 +132,39 @@ public struct ExerciseDetailSheet: View {
                 }
             }
         }
+    }
+
+    private func techniqueSection(title: String, text: String, accent: Color, isAvoid: Bool) -> some View {
+        let lines = text.components(separatedBy: .newlines)
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+
+        return VStack(alignment: .leading, spacing: 9) {
+            Text(title)
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(accent)
+
+            VStack(alignment: .leading, spacing: 9) {
+                ForEach(Array(lines.enumerated()), id: \.offset) { _, line in
+                    HStack(alignment: .top, spacing: 9) {
+                        Image(systemName: isAvoid ? "xmark" : "checkmark")
+                            .font(.system(size: 12, weight: .bold))
+                            .foregroundColor(accent)
+                            .padding(.top, 3)
+
+                        let cleanLine = line.hasPrefix("- ") ? String(line.dropFirst(2)) : line
+                        Text(LanguageManager.content(cleanLine))
+                            .font(.system(size: 14))
+                            .lineSpacing(4)
+                            .foregroundColor(AppColors.secondaryText)
+                    }
+                }
+            }
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(AppColors.surface)
+        .cornerRadius(12)
+        .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
     }
 }

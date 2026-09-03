@@ -42,11 +42,20 @@ public enum MovementType: String, Codable, CaseIterable {
     }
 }
 
-public enum BodyView: String, Codable {
+public enum BodyView: String, Codable, CaseIterable {
     case back = "back"
     case front = "front"
     case legsFront = "legs-front"
     case legsBack = "legs-back"
+
+    public var artworkName: String {
+        switch self {
+        case .back: return "body_back"
+        case .front: return "body_front"
+        case .legsFront: return "body_legs_front"
+        case .legsBack: return "body_legs_back"
+        }
+    }
 }
 
 public enum MuscleGroup: String, Codable, CaseIterable {

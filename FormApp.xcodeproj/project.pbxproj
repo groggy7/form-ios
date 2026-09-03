@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E20D67A088354BF0997A9768 /* MuscleMasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 434364117A49446A94B736FC /* MuscleMasks.swift */; };
+		968B3F6694FA404191845F8C /* MuscleArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16219E8195B74994BCA95A07 /* MuscleArtwork.swift */; };
 		0020D035F786CD915922D766 /* TodayHeroCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D6F413D877B7E332EEF6D /* TodayHeroCard.swift */; };
 		0667E5D4E4CF923DF66A2C24 /* 01_aesthetic_hypertrophy.json in Resources */ = {isa = PBXBuildFile; fileRef = 92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */; };
 		075B0F9BA865F79FB856122B /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D5A75502FFC600D48A992 /* AudioPlayer.swift */; };
@@ -65,6 +67,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		434364117A49446A94B736FC /* MuscleMasks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleMasks.swift; sourceTree = "<group>"; };
+		16219E8195B74994BCA95A07 /* MuscleArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleArtwork.swift; sourceTree = "<group>"; };
 		023D09DFD513B3F32B009541 /* WorkoutDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetailSheet.swift; sourceTree = "<group>"; };
 		08997E0EACD6176BFF508687 /* ToastOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastOverlay.swift; sourceTree = "<group>"; };
 		10AEC969AB339D9720AB880B /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
@@ -286,6 +290,8 @@
 			isa = PBXGroup;
 			children = (
 				685D6F413D877B7E332EEF6D /* TodayHeroCard.swift */,
+				434364117A49446A94B736FC /* MuscleMasks.swift */,
+				16219E8195B74994BCA95A07 /* MuscleArtwork.swift */,
 				A68AD20F92BF7286266D03EB /* TodayView.swift */,
 				6C86D18E36BC5C24BB99CF16 /* WeekStripView.swift */,
 			);
@@ -448,6 +454,8 @@
 				6F9CAA3F576D5057AF0C84E3 /* SettingsView.swift in Sources */,
 				9F2ABB85EAA74F04A28E14F6 /* ToastOverlay.swift in Sources */,
 				0020D035F786CD915922D766 /* TodayHeroCard.swift in Sources */,
+				E20D67A088354BF0997A9768 /* MuscleMasks.swift in Sources */,
+				968B3F6694FA404191845F8C /* MuscleArtwork.swift in Sources */,
 				C0E82546129BB4114FE21B90 /* TodayView.swift in Sources */,
 				8CE7A1BF601A16FFB8419C60 /* Translations.swift in Sources */,
 				C07F25C1E8D200C36DCFFE4B /* WeekStripView.swift in Sources */,
