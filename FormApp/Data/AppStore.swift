@@ -523,11 +523,12 @@ public final class AppStore: ObservableObject {
     }
 
     private static func loadStoredState() -> StoredAppState {
+        let bundled = loadBundledStarterPrograms()
         if let data = UserDefaults.standard.data(forKey: "stored_app_state"),
-           let stored = try? JSONDecoder().decode(StoredAppState.self, from: data) {
+           var stored = try? JSONDecoder().decode(StoredAppState.self, from: data) {
+            stored.programs = enrichStandardizedTechniqueCues(stored.programs, bundled: bundled)
             return stored
         }
-        let bundled = loadBundledStarterPrograms()
         let activeId = bundled.first?.id ?? UUID().uuidString
         let initial = StoredAppState(
             schemaVersion: 4,
@@ -540,6 +541,39 @@ public final class AppStore: ObservableObject {
             calendarHistory: nil
         )
         return initial
+    }
+
+    private static func enrichStandardizedTechniqueCues(_ programs: [Program], bundled: [Program]) -> [Program] {
+        var standardNotes: [String: (cues: String, avoid: String)] = [:]
+        for p in bundled {
+            for w in p.workouts {
+                for e in w.exercises {
+                    let key = e.name.trimmingCharacters(in: .whitespaces).lowercased()
+                    if !key.isEmpty && (!e.cues.isEmpty || !e.avoid.isEmpty) {
+                        standardNotes[key] = (e.cues, e.avoid)
+                    }
+                }
+            }
+        }
+        if standardNotes.isEmpty { return programs }
+        return programs.map { prog in
+            var updatedProg = prog
+            updatedProg.workouts = prog.workouts.map { w in
+                var updatedW = w
+                updatedW.exercises = w.exercises.map { e in
+                    let key = e.name.trimmingCharacters(in: .whitespaces).lowercased()
+                    if let std = standardNotes[key] {
+                        var updatedE = e
+                        updatedE.cues = std.cues
+                        updatedE.avoid = std.avoid
+                        return updatedE
+                    }
+                    return e
+                }
+                return updatedW
+            }
+            return updatedProg
+        }
     }
 
     public static func loadBundledStarterPrograms() -> [Program] {
@@ -664,7 +698,31 @@ public enum ExerciseCatalog {
                 )
             }
         }
-        return map.values.sorted { $0.exercise.name.localizedCaseInsensitiveCompare($1.exercise.name) == .orderedAscending }
+        var standardNotes: [String: (cues: String, avoid: String)] = [:]
+        for p in bundledPrograms {
+            for w in p.workouts {
+                for e in w.exercises {
+                    let k = e.name.trimmingCharacters(in: .whitespaces).lowercased()
+                    if !k.isEmpty && (!e.cues.isEmpty || !e.avoid.isEmpty) {
+                        standardNotes[k] = (e.cues, e.avoid)
+                    }
+                }
+            }
+        }
+        return map.values.map { entry in
+            if let std = standardNotes[entry.key] {
+                var ex = entry.exercise
+                ex.cues = std.cues
+                ex.avoid = std.avoid
+                return ExerciseCatalogEntry(
+                    key: entry.key,
+                    exercise: ex,
+                    programIds: entry.programIds,
+                    workoutKeys: entry.workoutKeys
+                )
+            }
+            return entry
+        }.sorted { $0.exercise.name.localizedCaseInsensitiveCompare($1.exercise.name) == .orderedAscending }
     }
 
     private static func merge(primary: Exercise, fallback: Exercise) -> Exercise {
