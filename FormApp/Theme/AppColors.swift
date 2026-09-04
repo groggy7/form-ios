@@ -15,6 +15,11 @@ public enum AppColors {
     public static let purpleBg = Color(hex: 0x28203D)
     public static let coral = Color(hex: 0xFF8C78)
     public static let danger = Color(hex: 0xFF897B)
+    
+    // Calendar History status colors matching Android Theme
+    public static let completedGreen = Color(hex: 0x65D69B)
+    public static let unfinishedOrange = Color(hex: 0xF2AF61)
+    public static let missedRed = Color(hex: 0xF17E7B)
     public static let restTimerAccent = Color(hex: 0x12D8D2)
     public static let restTimerBorder = Color(hex: 0x117D79)
     public static let restTimerSurfaceStart = Color(hex: 0x071A1E)

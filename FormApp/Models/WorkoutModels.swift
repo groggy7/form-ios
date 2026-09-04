@@ -474,10 +474,22 @@ public struct WeeklyArchive: Codable, Hashable {
     public var archivedAt: String
 }
 
-public enum WorkoutDayStatus: String, Codable {
+public enum WorkoutDayStatus: String, Codable, Comparable {
     case missed = "MISSED"
     case unfinished = "UNFINISHED"
     case completed = "COMPLETED"
+
+    public var priority: Int {
+        switch self {
+        case .missed: return 0
+        case .unfinished: return 1
+        case .completed: return 2
+        }
+    }
+
+    public static func < (lhs: WorkoutDayStatus, rhs: WorkoutDayStatus) -> Bool {
+        lhs.priority < rhs.priority
+    }
 }
 
 public struct WorkoutDayEntry: Identifiable, Codable, Hashable {
@@ -508,6 +520,229 @@ public struct WorkoutCalendarHistory: Codable, Hashable {
         self.scheduledWeekdays = scheduledWeekdays
         self.missedDates = missedDates
         self.entries = entries
+    }
+}
+
+public enum WorkoutCalendar {
+    public static func formatDate(_ date: Date, timeZone: TimeZone = .current) -> String {
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd"
+        f.calendar = Calendar(identifier: .gregorian)
+        f.locale = Locale(identifier: "en_US_POSIX")
+        f.timeZone = timeZone
+        return f.string(from: date)
+    }
+
+    public static func parseDate(_ string: String, timeZone: TimeZone = .current) -> Date? {
+        guard string.count == 10 else { return nil }
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd"
+        f.calendar = Calendar(identifier: .gregorian)
+        f.locale = Locale(identifier: "en_US_POSIX")
+        f.timeZone = timeZone
+        return f.date(from: string)
+    }
+
+    public static func localDate(from timestamp: String?, timeZone: TimeZone = .current) -> String? {
+        guard let ts = timestamp, !ts.isEmpty else { return nil }
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        var d = isoFormatter.date(from: ts)
+        if d == nil {
+            isoFormatter.formatOptions = [.withInternetDateTime]
+            d = isoFormatter.date(from: ts)
+        }
+        guard let date = d else { return nil }
+        return formatDate(date, timeZone: timeZone)
+    }
+
+    public static func mondayOfCurrentWeek(for date: Date = Date(), calendar: Calendar = Calendar(identifier: .gregorian)) -> String {
+        var cal = calendar
+        cal.firstWeekday = 2 // Monday
+        let weekday = cal.component(.weekday, from: date)
+        let leadingDays = (weekday + 5) % 7
+        if let monday = cal.date(byAdding: .day, value: -leadingDays, to: date) {
+            return formatDate(monday)
+        }
+        return formatDate(date)
+    }
+
+    public static func weekdays(state: StoredAppState) -> [Int] {
+        guard let activeProg = state.programs.first(where: { $0.id == state.activeProgramId }) else { return [] }
+        let days = activeProg.workouts.filter { !$0.exercises.isEmpty }.map { $0.day }.filter { $0 >= 1 && $0 <= 7 }
+        return Array(Set(days)).sorted()
+    }
+
+    public static func sanitize(raw: WorkoutCalendarHistory?, today: String) -> WorkoutCalendarHistory? {
+        guard let raw = raw else { return nil }
+        guard let nextDate = parseDate(raw.nextScheduledDate) else { return nil }
+        guard let todayDate = parseDate(today) else { return nil }
+        let cal = Calendar(identifier: .gregorian)
+        guard let minDate = cal.date(byAdding: .year, value: -100, to: todayDate) else { return nil }
+        let coercedDate = min(max(nextDate, minDate), todayDate)
+        let nextStr = formatDate(coercedDate)
+
+        let scheduled = Array(Set(raw.scheduledWeekdays.filter { $0 >= 1 && $0 <= 7 })).sorted()
+        let missed = Array(Set(raw.missedDates.compactMap { parseDate($0) }
+            .filter { $0 < todayDate }
+            .map { formatDate($0) }))
+            .sorted()
+            .suffix(36_600)
+
+        var seen = Set<String>()
+        var validEntries: [WorkoutDayEntry] = []
+        for entry in raw.entries {
+            guard let _ = parseDate(entry.date) else { continue }
+            let trimmedId = String(entry.id.prefix(240))
+            guard !trimmedId.trimmingCharacters(in: .whitespaces).isEmpty else { continue }
+            if !seen.contains(trimmedId) {
+                seen.insert(trimmedId)
+                validEntries.append(WorkoutDayEntry(id: trimmedId, date: entry.date, status: entry.status))
+            }
+        }
+        let cappedEntries = Array(validEntries.suffix(10_000))
+
+        return WorkoutCalendarHistory(
+            nextScheduledDate: nextStr,
+            scheduledWeekdays: scheduled,
+            missedDates: Array(missed),
+            entries: cappedEntries
+        )
+    }
+
+    public static func restore(
+        raw: WorkoutCalendarHistory?,
+        sessions: [WorkoutSessionRecord],
+        today: String,
+        timeZone: TimeZone = .current,
+        weekdays: [Int]
+    ) -> WorkoutCalendarHistory {
+        let history = sanitize(raw: raw, today: today)
+            ?? WorkoutCalendarHistory(nextScheduledDate: mondayOfCurrentWeek(for: parseDate(today) ?? Date()), scheduledWeekdays: weekdays)
+        var entriesMap: [String: WorkoutDayEntry] = [:]
+        for entry in history.entries {
+            entriesMap[entry.id] = entry
+        }
+        for session in sessions {
+            let id = "session:\(session.id)"
+            let day = entriesMap[id]?.date
+                ?? localDate(from: session.startedAt, timeZone: timeZone)
+                ?? localDate(from: session.completedAt, timeZone: timeZone)
+            if let d = day {
+                let status: WorkoutDayStatus = (session.isComplete == false) ? .unfinished : .completed
+                entriesMap[id] = WorkoutDayEntry(id: id, date: d, status: status)
+            }
+        }
+        return WorkoutCalendarHistory(
+            nextScheduledDate: history.nextScheduledDate,
+            scheduledWeekdays: history.scheduledWeekdays,
+            missedDates: history.missedDates,
+            entries: Array(entriesMap.values)
+        )
+    }
+
+    public static func refresh(
+        history: WorkoutCalendarHistory,
+        today: String,
+        weekdays: [Int],
+        calendar: Calendar = Calendar(identifier: .gregorian)
+    ) -> WorkoutCalendarHistory {
+        var cal = calendar
+        cal.firstWeekday = 2 // Monday
+        guard let todayDate = parseDate(today) else { return history }
+        guard let minDate = cal.date(byAdding: .year, value: -100, to: todayDate) else { return history }
+        let startDate = parseDate(history.nextScheduledDate).map { max($0, minDate) } ?? todayDate
+
+        var missedSet = Set(history.missedDates)
+        var cursor = startDate
+        while cursor < todayDate {
+            let weekday = (cal.component(.weekday, from: cursor) + 5) % 7 + 1 // 1=Mon..7=Sun
+            let cursorStr = formatDate(cursor)
+            if history.scheduledWeekdays.contains(weekday) {
+                missedSet.insert(cursorStr)
+            }
+            guard let next = cal.date(byAdding: .day, value: 1, to: cursor) else { break }
+            cursor = next
+        }
+
+        return WorkoutCalendarHistory(
+            nextScheduledDate: today,
+            scheduledWeekdays: Array(Set(weekdays)).sorted(),
+            missedDates: missedSet.sorted()
+        )
+    }
+
+    public static func put(history: WorkoutCalendarHistory, entry: WorkoutDayEntry) -> WorkoutCalendarHistory {
+        let filtered = history.entries.filter { $0.id != entry.id }
+        return WorkoutCalendarHistory(
+            nextScheduledDate: history.nextScheduledDate,
+            scheduledWeekdays: history.scheduledWeekdays,
+            missedDates: history.missedDates,
+            entries: filtered + [entry]
+        )
+    }
+
+    public static func remove(history: WorkoutCalendarHistory, id: String) -> WorkoutCalendarHistory {
+        let filtered = history.entries.filter { $0.id != id }
+        return WorkoutCalendarHistory(
+            nextScheduledDate: history.nextScheduledDate,
+            scheduledWeekdays: history.scheduledWeekdays,
+            missedDates: history.missedDates,
+            entries: filtered
+        )
+    }
+
+    public static func statuses(history: WorkoutCalendarHistory?, today: String) -> [String: WorkoutDayStatus] {
+        guard let history = history else { return [:] }
+        var result: [String: WorkoutDayStatus] = [:]
+        for missed in history.missedDates {
+            if missed < today {
+                result[missed] = .missed
+            }
+        }
+        for entry in history.entries {
+            if entry.date <= today {
+                let current = result[entry.date]
+                if (current?.priority ?? -1) < entry.status.priority {
+                    result[entry.date] = entry.status
+                }
+            }
+        }
+        return result
+    }
+
+    public static func monthWeeks(for displayedMonthDate: Date, calendar: Calendar = Calendar(identifier: .gregorian)) -> [[Date?]] {
+        var cal = calendar
+        cal.firstWeekday = 2 // Monday
+        guard let monthInterval = cal.dateInterval(of: .month, for: displayedMonthDate) else { return [] }
+        let firstDayOfMonth = monthInterval.start
+        guard let range = cal.range(of: .day, in: .month, for: displayedMonthDate) else { return [] }
+        let numberOfDaysInMonth = range.count
+
+        let weekday = cal.component(.weekday, from: firstDayOfMonth)
+        let leadingEmpty = (weekday + 5) % 7 // 0 for Monday ... 6 for Sunday
+
+        let totalCells = ((leadingEmpty + numberOfDaysInMonth + 6) / 7) * 7
+        var cells: [Date?] = []
+        for i in 0..<totalCells {
+            let dayNumber = i - leadingEmpty + 1
+            if dayNumber >= 1 && dayNumber <= numberOfDaysInMonth {
+                if let d = cal.date(byAdding: .day, value: dayNumber - 1, to: firstDayOfMonth) {
+                    cells.append(d)
+                } else {
+                    cells.append(nil)
+                }
+            } else {
+                cells.append(nil)
+            }
+        }
+
+        var weeks: [[Date?]] = []
+        for chunk in stride(from: 0, to: cells.count, by: 7) {
+            let end = min(chunk + 7, cells.count)
+            weeks.append(Array(cells[chunk..<end]))
+        }
+        return weeks
     }
 }
 

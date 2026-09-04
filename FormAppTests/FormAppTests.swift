@@ -64,6 +64,26 @@ final class FormAppTests: XCTestCase {
         let clock = MovementAnimationClock.shared
         XCTAssertTrue([0, 1, 2].contains(clock.currentFrame))
     }
+
+    func testFeedbackSoundsAreBundledAndDistinct() throws {
+        let soundNames = [
+            "form_rest_complete",
+            "form_set_complete",
+            "form_set_undo",
+            "form_workout_start",
+            "form_workout_complete"
+        ]
+        let soundData = try soundNames.map { name -> Data in
+            let url = try XCTUnwrap(
+                Bundle.main.url(forResource: name, withExtension: "wav"),
+                "Missing bundled sound: \(name).wav"
+            )
+            return try Data(contentsOf: url)
+        }
+
+        XCTAssertEqual(Set(soundData).count, soundNames.count, "Each feedback event needs its own sound identity")
+    }
+
     func testMovementFrameCacheProducesDistinctFrames() {
         let sprite = MovementIcon.categorySprite(.press)!
         let f0 = MovementFrameCache.getFrame(for: sprite, frame: 0)
@@ -327,4 +347,177 @@ final class FormAppTests: XCTestCase {
             print("Successfully wrote snapshot to \(path)")
         }
     }
+
+    func testWorkoutCalendarOnlyPastScheduledDaysAreMissed() {
+        let initial = WorkoutCalendarHistory(nextScheduledDate: "2026-08-24", scheduledWeekdays: [1, 2, 4, 5])
+        let today = "2026-08-27"
+        let result = WorkoutCalendar.refresh(history: initial, today: today, weekdays: initial.scheduledWeekdays)
+        XCTAssertEqual(result.missedDates, ["2026-08-24", "2026-08-25"])
+        XCTAssertEqual(result.missedDates, WorkoutCalendar.refresh(history: result, today: today, weekdays: initial.scheduledWeekdays).missedDates)
+
+        let statuses = WorkoutCalendar.statuses(history: result, today: today)
+        XCTAssertEqual(statuses["2026-08-24"], .missed)
+        XCTAssertEqual(statuses["2026-08-25"], .missed)
+        XCTAssertNil(statuses["2026-08-26"], "Wednesday recovery day must stay neutral")
+        XCTAssertNil(statuses[today], "Today must stay neutral if no session logged")
+    }
+
+    func testWorkoutCalendarCompletionWinsOverUnfinishedAndMissed() {
+        let today = "2026-08-27"
+        let history = WorkoutCalendarHistory(
+            nextScheduledDate: today,
+            missedDates: ["2026-08-24", "2026-08-25", "2026-08-27"],
+            entries: [
+                WorkoutDayEntry(id: "first", date: "2026-08-24", status: .unfinished),
+                WorkoutDayEntry(id: "second", date: "2026-08-24", status: .completed),
+                WorkoutDayEntry(id: "partial", date: "2026-08-25", status: .unfinished),
+                WorkoutDayEntry(id: "future", date: "2026-08-28", status: .completed)
+            ]
+        )
+        let statuses = WorkoutCalendar.statuses(history: history, today: today)
+        XCTAssertEqual(statuses["2026-08-24"], .completed)
+        XCTAssertEqual(statuses["2026-08-25"], .unfinished)
+        XCTAssertNil(statuses[today])
+        XCTAssertNil(statuses["2026-08-28"], "Future dates must stay neutral")
+    }
+
+    func testWorkoutCalendarMonthWeeksMondayFirst() {
+        let sep2026 = WorkoutCalendar.parseDate("2026-09-01")!
+        let weeks = WorkoutCalendar.monthWeeks(for: sep2026)
+        XCTAssertEqual(weeks.count, 5)
+        XCTAssertNil(weeks[0][0], "Monday before Sept 1 is nil")
+        XCTAssertNotNil(weeks[0][1], "Tuesday is Sept 1")
+        XCTAssertEqual(WorkoutCalendar.formatDate(weeks[0][1]!), "2026-09-01")
+    }
+
+    @MainActor
+    func testHistoryViewSnapshot() {
+        let store = AppStore.shared
+        let view = HistoryView(
+            store: store,
+            onOpenSettings: {},
+            onSelectRecord: { _ in }
+        )
+
+        let controller = UIHostingController(rootView: view)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_screen_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testHistoryDayDetailSheetMissedSnapshot() {
+        let store = AppStore.shared
+        let workout = store.activeProgram?.workouts.first(where: { $0.title.contains("Chest") }) ?? store.activeWorkout
+        let date = WorkoutCalendar.parseDate("2026-09-01")!
+        let detail = HistoryDayDetailData(
+            date: date,
+            dateString: "2026-09-01",
+            status: .missed,
+            sessionRecord: nil,
+            workout: workout
+        )
+
+        let sheet = HistoryDayDetailSheet(detail: detail, onDismiss: {})
+        let controller = UIHostingController(rootView: sheet)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 650)
+        controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 650))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_detail_missed_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testHistoryDayDetailSheetUnfinishedSnapshot() {
+        let store = AppStore.shared
+        let workout = store.activeProgram?.workouts.first(where: { $0.title.contains("Chest") }) ?? store.activeWorkout
+        let date = WorkoutCalendar.parseDate("2026-09-02")!
+
+        let sampleRecord = WorkoutSessionRecord(
+            id: "test-rec",
+            programId: store.activeProgram?.id ?? "test-program",
+            workoutId: workout?.id ?? "chest-workout",
+            workoutTitle: workout?.title ?? "Chest Growth",
+            startedAt: "2026-09-02T10:00:00.000Z",
+            completedAt: "2026-09-02T10:35:12.000Z",
+            durationSeconds: 2112,
+            totalVolumeKg: 4250,
+            totalCompletedSets: 5,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: workout?.exercises.first?.name ?? "Barbell Bench Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 80, reps: 10),
+                        SessionSetLog(setNumber: 2, weightKg: 80, reps: 8),
+                        SessionSetLog(setNumber: 3, weightKg: 80, reps: 8)
+                    ]
+                ),
+                SessionExerciseLog(
+                    exerciseName: (workout?.exercises.count ?? 0) > 1 ? workout!.exercises[1].name : "Incline Dumbbell Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 24, reps: 12),
+                        SessionSetLog(setNumber: 2, weightKg: 24, reps: 10)
+                    ]
+                )
+            ]
+        )
+
+        let detail = HistoryDayDetailData(
+            date: date,
+            dateString: "2026-09-02",
+            status: .unfinished,
+            sessionRecord: sampleRecord,
+            workout: workout
+        )
+
+        let sheet = HistoryDayDetailSheet(detail: detail, onDismiss: {})
+        let controller = UIHostingController(rootView: sheet)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 750)
+        controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 750))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_detail_unfinished_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
 }
+

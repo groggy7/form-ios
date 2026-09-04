@@ -26,7 +26,21 @@ public final class AppStore: ObservableObject {
         self.soundEnabled = UserDefaults.standard.object(forKey: soundKey) as? Bool ?? true
         self.defaultRestSeconds = UserDefaults.standard.object(forKey: defaultRestKey) as? Int ?? 90
 
-        let loadedState = Self.loadStoredState()
+        var loadedState = Self.loadStoredState()
+        let todayStr = WorkoutCalendar.formatDate(Date())
+        let weekdays = WorkoutCalendar.weekdays(state: loadedState)
+        let restored = WorkoutCalendar.restore(
+            raw: loadedState.calendarHistory,
+            sessions: loadedState.history,
+            today: todayStr,
+            weekdays: weekdays
+        )
+        let refreshed = WorkoutCalendar.refresh(
+            history: restored,
+            today: todayStr,
+            weekdays: weekdays
+        )
+        loadedState.calendarHistory = refreshed
         self.state = loadedState
         self.activeSession = Self.loadActiveSession()
         self.selectedWorkoutId = loadedState.programs.first { $0.id == loadedState.activeProgramId }?.workouts.first?.id
@@ -156,6 +170,20 @@ public final class AppStore: ObservableObject {
 
         saveActiveSession(draft)
         self.activeSession = draft
+
+        let todayStr = WorkoutCalendar.formatDate(Date())
+        var curCal = state.calendarHistory ?? WorkoutCalendarHistory(
+            nextScheduledDate: WorkoutCalendar.mondayOfCurrentWeek(),
+            scheduledWeekdays: WorkoutCalendar.weekdays(state: state)
+        )
+        curCal = WorkoutCalendar.put(
+            history: curCal,
+            entry: WorkoutDayEntry(id: "session:\(draft.id)", date: todayStr, status: .unfinished)
+        )
+        var nextSt = state
+        nextSt.calendarHistory = curCal
+        saveState(nextSt)
+
         FormAudioPlayer.playWorkoutStartSound()
         return true
     }
@@ -168,6 +196,12 @@ public final class AppStore: ObservableObject {
     }
 
     public func abandonActiveSession() {
+        if let draft = activeSession, let cal = state.calendarHistory {
+            let updatedCal = WorkoutCalendar.remove(history: cal, id: "session:\(draft.id)")
+            var nextSt = state
+            nextSt.calendarHistory = updatedCal
+            saveState(nextSt)
+        }
         saveActiveSession(nil)
         self.activeSession = nil
     }
@@ -197,9 +231,29 @@ public final class AppStore: ObservableObject {
             newCompleted.append(key)
         }
 
+        var cal = state.calendarHistory ?? WorkoutCalendarHistory(
+            nextScheduledDate: WorkoutCalendar.mondayOfCurrentWeek(),
+            scheduledWeekdays: WorkoutCalendar.weekdays(state: state)
+        )
+        if let draft = activeSession {
+            cal = WorkoutCalendar.remove(history: cal, id: "session:\(draft.id)")
+        }
+        let sessionDate = WorkoutCalendar.localDate(from: finalRecord.startedAt)
+            ?? WorkoutCalendar.localDate(from: finalRecord.completedAt)
+            ?? WorkoutCalendar.formatDate(Date())
+        cal = WorkoutCalendar.put(
+            history: cal,
+            entry: WorkoutDayEntry(
+                id: "session:\(finalRecord.id)",
+                date: sessionDate,
+                status: isComplete ? .completed : .unfinished
+            )
+        )
+
         var newState = state
         newState.history = newHistory
         newState.completed = newCompleted
+        newState.calendarHistory = cal
         saveState(newState)
         abandonActiveSession()
 
@@ -215,6 +269,7 @@ public final class AppStore: ObservableObject {
         guard let prog = state.programs.first(where: { $0.id == programId }) else { return }
         var newState = state
         newState.activeProgramId = prog.id
+        newState = refreshCalendarState(newState)
         saveState(newState)
         selectedWorkoutId = prog.workouts.first?.id
         refreshCatalogue()
@@ -225,6 +280,7 @@ public final class AppStore: ObservableObject {
         var newState = state
         newState.programs.append(program)
         newState.activeProgramId = program.id
+        newState = refreshCalendarState(newState)
         saveState(newState)
         selectedWorkoutId = program.workouts.first?.id
         refreshCatalogue()
@@ -235,6 +291,7 @@ public final class AppStore: ObservableObject {
         var newState = state
         if let idx = newState.programs.firstIndex(where: { $0.id == program.id }) {
             newState.programs[idx] = program
+            newState = refreshCalendarState(newState)
             saveState(newState)
             refreshCatalogue()
         }
@@ -247,8 +304,44 @@ public final class AppStore: ObservableObject {
         if newState.activeProgramId == id {
             newState.activeProgramId = newState.programs.first?.id ?? ""
         }
+        newState = refreshCalendarState(newState)
         saveState(newState)
         refreshCatalogue()
+    }
+
+    public func calendarStatuses(today: Date = Date()) -> [String: WorkoutDayStatus] {
+        let todayStr = WorkoutCalendar.formatDate(today)
+        let curCal = state.calendarHistory ?? WorkoutCalendarHistory(
+            nextScheduledDate: WorkoutCalendar.mondayOfCurrentWeek(for: today),
+            scheduledWeekdays: WorkoutCalendar.weekdays(state: state)
+        )
+        let refreshed = WorkoutCalendar.refresh(
+            history: curCal,
+            today: todayStr,
+            weekdays: WorkoutCalendar.weekdays(state: state)
+        )
+        var statuses = WorkoutCalendar.statuses(history: refreshed, today: todayStr)
+        if let active = activeSession {
+            let activeDate = WorkoutCalendar.localDate(from: active.startedAt) ?? todayStr
+            if (statuses[activeDate]?.priority ?? -1) < WorkoutDayStatus.unfinished.priority {
+                statuses[activeDate] = .unfinished
+            }
+        }
+        return statuses
+    }
+
+    private func refreshCalendarState(_ st: StoredAppState) -> StoredAppState {
+        let weekdays = WorkoutCalendar.weekdays(state: st)
+        let today = Date()
+        let todayStr = WorkoutCalendar.formatDate(today)
+        let curCal = st.calendarHistory ?? WorkoutCalendarHistory(
+            nextScheduledDate: WorkoutCalendar.mondayOfCurrentWeek(for: today),
+            scheduledWeekdays: weekdays
+        )
+        let refreshed = WorkoutCalendar.refresh(history: curCal, today: todayStr, weekdays: weekdays)
+        var copy = st
+        copy.calendarHistory = refreshed
+        return copy
     }
 
     public struct ProgramFileEnvelope: Codable {
