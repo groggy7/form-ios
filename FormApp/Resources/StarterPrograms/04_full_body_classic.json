@@ -39,13 +39,15 @@
             },
             "restSeconds": 180,
             "cues": [
-              "Brace core tightly.",
-              "Descend below parallel under control.",
-              "Drive up through mid-foot."
+              "Set bar firmly on upper traps/shelf; pull bar down into back to engage lats.",
+              "Take a 360\u00b0 diaphragmatic breath into abdomen; break at hips and knees simultaneously.",
+              "Descend until hip crease dips below top of knee, knees tracking in line with toes.",
+              "Drive through mid-foot with chest and hips rising at the exact same rate."
             ],
             "avoid": [
-              "Knees caving in.",
-              "Rounding back."
+              "Knees caving inward (valgus collapse) on ascent.",
+              "Hips shooting up first ('good-morning' squat), shifting load onto lower back.",
+              "Rounding or hyperextending lumbar spine at the bottom."
             ]
           },
           {
@@ -62,12 +64,15 @@
             },
             "restSeconds": 180,
             "cues": [
-              "Tuck shoulder blades.",
-              "Lower bar to sternum.",
-              "Press up explosively."
+              "Lie with eyes under bar; plant feet firmly and pin shoulder blades down and back into bench.",
+              "Grip bar slightly wider than shoulder-width; unrack and stabilize directly over shoulders.",
+              "Lower bar in a slight arc to mid-to-lower sternum, tucking elbows at 45\u201370\u00b0.",
+              "Press bar explosively upward and slightly back toward your face, finishing over shoulders."
             ],
             "avoid": [
-              "Bouncing bar."
+              "Flaring elbows out at 90 degrees to torso (causes subacromial impingement).",
+              "Bouncing bar off ribcage or lifting glutes off bench.",
+              "Letting wrists bend completely backward under bar."
             ]
           },
           {
@@ -84,11 +89,15 @@
             },
             "restSeconds": 120,
             "cues": [
-              "Hinge at hips to 45 degrees.",
-              "Pull to upper abdomen."
+              "Hinge at hips with torso angled at ~45 degrees, lower back flat, knees softly bent.",
+              "Take an overhand grip slightly wider than shoulder-width, bar hanging over mid-foot.",
+              "Drive elbows back behind torso, pulling bar toward lower abdomen / belly button.",
+              "Squeeze shoulder blades together at top, then lower bar under control into full stretch."
             ],
             "avoid": [
-              "Using excessive momentum."
+              "Jerking torso upright to heave weight (turning row into a standing shrug).",
+              "Rounding lumbar or thoracic spine under load.",
+              "Letting shoulders roll forward at the bottom of the rep."
             ]
           },
           {
@@ -105,11 +114,15 @@
             },
             "restSeconds": 90,
             "cues": [
-              "Deep long head triceps stretch.",
-              "Extend forward."
+              "Set pulley at head/shoulder height; face away in a stable staggered split stance.",
+              "Position upper arms alongside ears and forward (~45\u00b0), keeping elbows fixed in place.",
+              "Extend forearms forward in a straight line until elbows are fully locked out.",
+              "Bend elbows under control, letting rope travel behind head into a deep long-head stretch."
             ],
             "avoid": [
-              "Arching spine."
+              "Hyperextending lower back to assist the press (keep ribs down and core braced).",
+              "Flaring elbows excessively wide outward during extension.",
+              "Moving upper arms back and forth instead of pivoting strictly at elbow joint."
             ]
           },
           {
@@ -126,10 +139,15 @@
             },
             "restSeconds": 90,
             "cues": [
-              "Curl pelvis up to chest."
+              "Hang from bar with an overhand grip, engaging shoulders down and back (active hang).",
+              "Squeeze legs together; curl pelvis upward toward chest as knees rise.",
+              "Pause for 1 second at top contraction with knees at chest level.",
+              "Lower knees under control to a dead stop before starting next rep."
             ],
             "avoid": [
-              "Swinging."
+              "Swinging legs or using hip momentum to kick knees up.",
+              "Arching lower back at the bottom of the rep.",
+              "Hanging passively with relaxed shoulders shrugged to ears."
             ]
           }
         ]
@@ -162,11 +180,16 @@
             },
             "restSeconds": 240,
             "cues": [
-              "Wedge hips, engage lats.",
-              "Drive floor away."
+              "Set feet hip-width with bar over mid-foot (1 inch from shins); grip just outside legs.",
+              "Pull chest tall, engage lats ('protect armpits'), and pull the slack out of the barbell.",
+              "Push floor away through mid-foot, keeping bar dragging up shins and thighs.",
+              "Stand tall and lock out with glutes; do not lean backward at the top."
             ],
             "avoid": [
-              "Rounding lower spine."
+              "Rounding the lumbar spine under load.",
+              "Jerking the barbell off floor without pulling slack first.",
+              "Hyperextending lower back at lockout instead of squeezing glutes.",
+              "Letting bar drift forward away from legs."
             ]
           },
           {
@@ -183,10 +206,15 @@
             },
             "restSeconds": 180,
             "cues": [
-              "Glutes tight, press straight overhead."
+              "Grip bar just outside shoulders; rest bar on front delts with forearms vertical and elbows slightly forward.",
+              "Squeeze glutes, quads, and abs to create an immovable base.",
+              "Pull chin back slightly to clear bar path; press bar in a straight vertical line overhead.",
+              "Push head forward once bar clears forehead; lock out bar directly over mid-foot with a slight trap shrug."
             ],
             "avoid": [
-              "Arching back."
+              "Arching lower back excessively (leaning back to turn it into an incline press).",
+              "Dipping knees to initiate press (this is a strict press, not a push press).",
+              "Pressing bar in a wide, looping forward arc around head."
             ]
           },
           {
@@ -203,10 +231,15 @@
             },
             "restSeconds": 120,
             "cues": [
-              "Drive elbows down to pockets."
+              "Adjust thigh pads securely over legs; grip bar slightly wider than shoulder width.",
+              "Lean torso back slightly (10\u201315 degrees) with chest proud and shoulder blades depressed.",
+              "Drive elbows straight down toward your front hip pockets, pulling bar to upper chest.",
+              "Squeeze lats at bottom, then control bar up into a full overhead stretch."
             ],
             "avoid": [
-              "Swinging torso."
+              "Leaning back excessively (turning the pulldown into a sloppy horizontal row).",
+              "Driving elbows far behind torso instead of pulling down in front.",
+              "Pulling bar behind neck or yanking down to stomach."
             ]
           },
           {
@@ -223,11 +256,15 @@
             },
             "restSeconds": 90,
             "cues": [
-              "Drive through front heel.",
-              "Deep knee bend."
+              "Place laces of rear foot on bench; step front foot forward into a balanced split stance.",
+              "Maintain a slight forward torso lean (~15\u00b0) with a braced, neutral spine.",
+              "Descend until back knee hovers an inch above the floor, front knee tracking over toes.",
+              "Drive straight up through the whole front foot (tripod foot: heel, big toe, pinky toe)."
             ],
             "avoid": [
-              "Front heel lifting."
+              "Front heel lifting off floor or front knee caving inward (valgus collapse).",
+              "Pushing aggressively off rear foot instead of loading the front working leg.",
+              "Hyperextending lower back by trying to stay unnaturally upright."
             ]
           },
           {
@@ -244,10 +281,15 @@
             },
             "restSeconds": 90,
             "cues": [
-              "Raise in scapular plane."
+              "Stand tall with a slight forward torso hinge (10\u201315\u00b0) and dumbbells at your sides.",
+              "Raise dumbbells outward toward walls in the scapular plane (~30\u00b0 in front of torso).",
+              "Lead slightly with elbows until arms are parallel to floor; keep wrists neutral.",
+              "Hold peak contraction for a split second, then lower under strict control."
             ],
             "avoid": [
-              "Shrugging traps."
+              "Shrugging upper traps toward ears to heave the dumbbells up.",
+              "Rocking torso back and forth or using hip thrust for momentum.",
+              "Internally rotating wrists/shoulders at top (thumbs pointed down)."
             ]
           },
           {
@@ -264,10 +306,15 @@
             },
             "restSeconds": 90,
             "cues": [
-              "Elbows pointing down, supinate at top."
+              "Set bench to 55\u201360 degrees; sit back with head and torso supported by pad.",
+              "Let arms hang straight down toward floor, keeping upper arms strictly vertical.",
+              "Curl dumbbells upward, supinating wrists (palms up) as you ascend into a hard bicep peak.",
+              "Lower under strict 2\u20133 second control into a deep, full stretch at the bottom."
             ],
             "avoid": [
-              "Swinging."
+              "Swinging upper arms or elbows forward to bypass the bottom stretch.",
+              "Lifting head or shoulders off bench pad during the curl.",
+              "Cutting the eccentric stretch short."
             ]
           }
         ]
@@ -301,10 +348,15 @@
             },
             "restSeconds": 120,
             "cues": [
-              "Controlled descent, press through full foot."
+              "Place feet shoulder-width on center of platform, knees in line with toes.",
+              "Pull seat handles firmly to anchor your hips and lower back flat against back pad.",
+              "Lower sled under control as deep as hip mobility allows without pelvis curling off pad.",
+              "Press platform away through mid-foot, stopping just short of a harsh knee lockout."
             ],
             "avoid": [
-              "Locking knees forcefully."
+              "Pelvis tucking under or lower back rounding off the back pad ('butt wink').",
+              "Forcefully hyperextending or snapping knee joints locked at the top.",
+              "Knees caving inward during the descent or initial press."
             ]
           },
           {
@@ -321,10 +373,15 @@
             },
             "restSeconds": 120,
             "cues": [
-              "30 degree bench, deep stretch."
+              "Set bench to 30 degrees; retract shoulder blades and plant feet firmly on floor.",
+              "Lower dumbbells under control to sides of upper chest, elbows angled at 45\u201360\u00b0.",
+              "Feel a deep stretch across upper pectorals at the bottom with forearms vertical.",
+              "Press dumbbells up and slightly inward over upper chest without clanking them together."
             ],
             "avoid": [
-              "Flaring elbows excessively."
+              "Arching lower back excessively to turn the press into a flat bench press.",
+              "Flaring elbows perpendicular to torso.",
+              "Banging dumbbells together at top of rep."
             ]
           },
           {
@@ -341,10 +398,15 @@
             },
             "restSeconds": 120,
             "cues": [
-              "Full dead hang to chin over bar."
+              "Hang with an overhand grip slightly wider than shoulders in a full dead hang.",
+              "Initiate pull by depressing shoulder blades down and back ('pull shoulders into back pockets').",
+              "Drive elbows down toward floor, pulling upper chest toward bar until chin clears bar.",
+              "Lower under strict control back into a full dead hang before starting next rep."
             ],
             "avoid": [
-              "Kipping."
+              "Kipping, swinging legs, or using hip momentum to clear the bar.",
+              "Craning neck upward to touch bar while chest collapses.",
+              "Performing half reps by failing to lock out into a dead hang at bottom."
             ]
           },
           {
@@ -361,10 +423,15 @@
             },
             "restSeconds": 180,
             "cues": [
-              "Hips push straight back, keep bar close."
+              "Stand tall with a shoulder-width grip, lats engaged to keep bar pinned against thighs.",
+              "Soften knees slightly and lock that knee angle in place throughout the rep.",
+              "Push hips straight back horizontally as if reaching for a wall behind you.",
+              "Stop descent once hips stop moving backward (usually mid-shin), then drive hips forward."
             ],
             "avoid": [
-              "Rounding back."
+              "Rounding lower back to reach the floor once hips have stopped traveling back.",
+              "Bending knees further into a squat, shifting tension away from hamstrings.",
+              "Allowing bar to drift forward away from legs."
             ]
           },
           {
@@ -381,10 +448,15 @@
             },
             "restSeconds": 90,
             "cues": [
-              "Lock elbows, spread rope at bottom."
+              "Stand tall with a slight forward torso lean; pin elbows firmly against sides of ribcage.",
+              "Grip rope with neutral hands; press straight down until elbows are fully extended.",
+              "Spread rope ends apart at full lockout, squeezing triceps hard for 1 second.",
+              "Allow forearms to rise past 90 degrees toward chest under control for a deep triceps stretch."
             ],
             "avoid": [
-              "Swinging."
+              "Cutting off the eccentric stretch by stopping artificially at 90 degrees elbow flexion.",
+              "Allowing elbows to swing forward and backward during the rep.",
+              "Leaning bodyweight down on top of rope to push with chest and shoulders."
             ]
           },
           {
@@ -401,10 +473,15 @@
             },
             "restSeconds": 90,
             "cues": [
-              "Flex spine to pull elbows to knees."
+              "Kneel facing cable; glue rope handles to sides of forehead/ears with hands fixed.",
+              "Keep hips high and stationary throughout; do not let hips sit back toward heels.",
+              "Flex spine to curl ribcage down toward pelvis, pulling elbows toward upper thighs.",
+              "Squeeze abs hard at peak contraction, then resist cable back into a full torso extension."
             ],
             "avoid": [
-              "Sitting back on heels."
+              "Sitting hips back onto heels during crunch (shifts load to hip flexors).",
+              "Pulling rope with arms or lats instead of flexing spine with abs.",
+              "Keeping spine straight and hinging at hips."
             ]
           }
         ]
