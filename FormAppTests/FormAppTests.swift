@@ -772,7 +772,7 @@ final class FormAppTests: XCTestCase {
             "video.linkTitle", "video.linkSubtitle", "video.urlInputLabel", "video.urlInputPlaceholder",
             "video.addUrlButton", "video.pasteButton", "video.previewVideo", "video.deleteVideo",
             "video.linkedCount", "video.maxLimitReached", "video.duplicateUrl", "video.invalidUrl",
-            "video.noVideos", "video.saveLinks", "notice.videosUpdated",
+            "video.noVideos", "video.saveLinks", "video.tapToPlay", "notice.videosUpdated",
             "library.videos", "library.attachVideoCta"
         ]
 

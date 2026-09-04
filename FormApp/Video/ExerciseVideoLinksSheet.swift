@@ -183,60 +183,71 @@ public struct ExerciseVideoLinksSheet: View {
                                     let subtitle: String = {
                                         let domain = URL(string: url)?.host?.replacingOccurrences(of: "^www\\.", with: "", options: .regularExpression) ?? ""
                                         let platform = parsed?.isShort == true ? "YouTube Shorts" : (isYouTube ? "YouTube" : domain)
-                                        if let author = metadata?.authorName, !author.isEmpty, !isUnavailable {
-                                            return "\(author) • \(platform)"
+                                        let hint = LanguageManager.t("video.tapToPlay")
+                                        if isUnavailable {
+                                            return platform
                                         }
-                                        return platform
+                                        if let author = metadata?.authorName, !author.isEmpty {
+                                            return "\(author) • \(platform) • \(hint)"
+                                        }
+                                        return "\(platform) • \(hint)"
                                     }()
 
-                                    HStack(spacing: 12) {
-                                        Image(systemName: "play.circle.fill")
-                                            .font(.system(size: 20))
-                                            .foregroundColor(AppColors.coral)
+                                    HStack(spacing: 0) {
+                                        // Clickable card body that plays video
+                                        Button(action: {
+                                            if !isUnavailable {
+                                                previewVideoUrl = url
+                                            }
+                                        }) {
+                                            HStack(spacing: 12) {
+                                                Image(systemName: isUnavailable ? "wifi.slash" : "play.circle.fill")
+                                                    .font(.system(size: 24))
+                                                    .foregroundColor(isUnavailable ? AppColors.danger : AppColors.coral)
 
-                                        VStack(alignment: .leading, spacing: 2) {
-                                            Text(title)
-                                                .font(.system(size: 14, weight: .medium))
-                                                .foregroundColor(AppColors.text)
-                                                .lineLimit(1)
+                                                VStack(alignment: .leading, spacing: 2) {
+                                                    Text(title)
+                                                        .font(.system(size: 13, weight: .medium))
+                                                        .foregroundColor(isUnavailable ? AppColors.danger : AppColors.text)
+                                                        .lineLimit(2)
+                                                        .multilineTextAlignment(.leading)
 
-                                            Text(subtitle)
-                                                .font(.system(size: 11))
-                                                .foregroundColor(AppColors.muted)
-                                                .lineLimit(1)
-                                        }
+                                                    Text(subtitle)
+                                                        .font(.system(size: 11))
+                                                        .foregroundColor(AppColors.muted)
+                                                        .lineLimit(1)
+                                                }
 
-                                        Spacer()
-
-                                        Button(action: { previewVideoUrl = url }) {
-                                            Text(LanguageManager.t("video.previewVideo"))
-                                                .font(.system(size: 12, weight: .medium))
-                                                .foregroundColor(AppColors.accent)
-                                                .padding(.horizontal, 10)
-                                                .padding(.vertical, 5)
-                                                .background(
-                                                    RoundedRectangle(cornerRadius: 6)
-                                                        .stroke(AppColors.accent.opacity(0.4), lineWidth: 1)
-                                                )
+                                                Spacer()
+                                            }
+                                            .padding(.leading, 14)
+                                            .padding(.trailing, 10)
+                                            .padding(.vertical, 10)
+                                            .contentShape(Rectangle())
                                         }
                                         .buttonStyle(.plain)
 
+                                        // Subtle vertical divider before remove button
+                                        Rectangle()
+                                            .fill(AppColors.border.opacity(0.7))
+                                            .frame(width: 1, height: 28)
+
+                                        // Remove action
                                         Button(action: {
                                             linkedUrls.removeAll { $0 == url }
                                         }) {
                                             Image(systemName: "trash")
-                                                .font(.system(size: 14))
+                                                .font(.system(size: 15))
                                                 .foregroundColor(AppColors.danger)
-                                                .frame(width: 32, height: 32)
+                                                .frame(width: 42, height: 42)
+                                                .contentShape(Rectangle())
                                         }
                                         .buttonStyle(.plain)
                                     }
-                                    .padding(.horizontal, 14)
-                                    .padding(.vertical, 10)
                                     .background(
                                         RoundedRectangle(cornerRadius: 11, style: .continuous)
                                             .fill(AppColors.surface)
-                                            .overlay(RoundedRectangle(cornerRadius: 11, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+                                            .overlay(RoundedRectangle(cornerRadius: 11, style: .continuous).stroke(isUnavailable ? AppColors.danger.opacity(0.4) : AppColors.border, lineWidth: 1))
                                     )
                                     .task(id: url) {
                                         if metadataMap[url] == nil && isYouTube {
