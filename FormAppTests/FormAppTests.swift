@@ -58,7 +58,25 @@ final class FormAppTests: XCTestCase {
 
         let benchSprite = MovementIcon.movementAssetSprite("barbell-bench-press")
         XCTAssertNotNil(benchSprite)
-        XCTAssertEqual(benchSprite?.imageName, "anatomy_batch_03_upper")
+        XCTAssertEqual(benchSprite?.imageName, "anatomy_barbell_bench_press")
+        XCTAssertEqual(benchSprite?.atlasHeight, 418)
+
+        let abWheelSprite = MovementIcon.movementAssetSprite("ab-wheel-rollout")
+        XCTAssertEqual(abWheelSprite?.imageName, "anatomy_ab_wheel_rollout")
+        XCTAssertEqual(abWheelSprite?.atlasHeight, 371)
+
+        let frontSquatSprite = MovementIcon.movementAssetSprite("barbell-front-squat")
+        XCTAssertEqual(frontSquatSprite?.imageName, "anatomy_barbell_front_squat")
+        XCTAssertEqual(frontSquatSprite?.atlasHeight, 419)
+
+        let backSquatSprite = MovementIcon.movementAssetSprite("barbell-back-squat")
+        XCTAssertEqual(backSquatSprite?.imageName, "anatomy_barbell_back_squat")
+        XCTAssertEqual(backSquatSprite?.atlasHeight, 418)
+        for sprite in [benchSprite, abWheelSprite, frontSquatSprite, backSquatSprite].compactMap({ $0 }) {
+            for frame in 0..<3 {
+                XCTAssertNotNil(MovementFrameCache.getFrame(for: sprite, frame: frame))
+            }
+        }
 
         let inclineBenchSprite = MovementIcon.movementAssetSprite("incline-barbell-bench-press")
         XCTAssertNotNil(inclineBenchSprite)
@@ -842,4 +860,3 @@ final class FormAppTests: XCTestCase {
         }
     }
 }
-
