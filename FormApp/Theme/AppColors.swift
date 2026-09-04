@@ -15,6 +15,13 @@ public enum AppColors {
     public static let purpleBg = Color(hex: 0x28203D)
     public static let coral = Color(hex: 0xFF8C78)
     public static let danger = Color(hex: 0xFF897B)
+    public static let restTimerAccent = Color(hex: 0x12D8D2)
+    public static let restTimerBorder = Color(hex: 0x117D79)
+    public static let restTimerSurfaceStart = Color(hex: 0x071A1E)
+    public static let restTimerSurfaceEnd = Color(hex: 0x071116)
+    public static let restTimerTrack = Color(hex: 0x192831)
+    public static let restTimerControlSurface = Color(hex: 0x091216)
+    public static let restTimerControlBorder = Color(hex: 0x344047)
     
     public static let unfinishedBorder = Color(hex: 0x664923)
     public static let unfinishedText = Color(hex: 0xFDE8CC)

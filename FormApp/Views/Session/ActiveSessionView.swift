@@ -276,7 +276,7 @@ public struct ActiveSessionView: View {
                             }
                             .padding(.horizontal, 20)
 
-                            Spacer().frame(height: 120) // Space for floating rest timer
+                            Spacer().frame(height: 148) // Space for floating rest timer
                         }
                     }
 

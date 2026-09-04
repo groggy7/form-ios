@@ -307,11 +307,11 @@ final class FormAppTests: XCTestCase {
             onToggleMute: {}
         )
 
-        let controller = UIHostingController(rootView: bar.frame(maxWidth: .infinity).padding(.horizontal, 16))
-        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 100)
+        let controller = UIHostingController(rootView: bar.frame(maxWidth: .infinity))
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 210)
         controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
 
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 100))
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 210))
         window.rootViewController = controller
         window.makeKeyAndVisible()
         controller.view.layoutIfNeeded()

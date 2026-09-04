@@ -52,79 +52,98 @@ public struct RestTimerBar: View {
     }
 
     public var body: some View {
-        VStack(spacing: 8) {
+        VStack(alignment: .leading, spacing: 10) {
             // Top info row (tappable to expand into full-screen modal)
             Button(action: { isExpanded = true }) {
-                HStack {
-                    VStack(alignment: .leading, spacing: 2) {
+                HStack(spacing: 12) {
+                    VStack(alignment: .leading, spacing: 1) {
                         Text(LanguageManager.t("rest.title").uppercased())
-                            .font(.system(size: 10, weight: .bold))
-                            .foregroundColor(AppColors.purple)
+                            .font(.system(size: 11, weight: .bold))
+                            .tracking(1.25)
+                            .foregroundColor(AppColors.restTimerAccent)
                         Text(exerciseName)
-                            .font(.system(size: 13, weight: .semibold))
+                            .font(.system(size: 16, weight: .bold))
                             .foregroundColor(AppColors.text)
                             .lineLimit(1)
                     }
 
-                    Spacer()
+                    Spacer(minLength: 0)
 
-                    Text(timeText)
-                        .font(.system(size: 24, weight: .heavy, design: .monospaced))
-                        .foregroundColor(AppColors.purple)
+                    HStack(spacing: 6) {
+                        Text(timeText)
+                            .font(.system(size: 31, weight: .bold))
+                            .monospacedDigit()
+                            .foregroundColor(AppColors.restTimerAccent)
+
+                        Image(systemName: "chevron.right")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(AppColors.secondaryText)
+                            .frame(width: 22, height: 22)
+                    }
                 }
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
+            .accessibilityLabel("\(LanguageManager.t("rest.title")), \(exerciseName), \(timeText)")
+            .accessibilityHint(LanguageManager.t("rest.expand"))
+
+            RestTimerProgressBar(progress: progress)
 
             // Controls row
             HStack(spacing: 10) {
                 Button(action: { onAddSeconds(-15) }) {
                     Text("-15s")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(AppColors.secondaryText)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 6)
-                        .background(AppColors.surface)
-                        .cornerRadius(8)
+                        .font(.system(size: 13))
+                        .foregroundColor(AppColors.muted)
+                        .frame(width: 60, height: 32)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(AppColors.restTimerControlSurface)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .stroke(AppColors.restTimerControlBorder, lineWidth: 1)
+                        )
                 }
                 .buttonStyle(.plain)
 
                 Button(action: { onAddSeconds(30) }) {
                     Text("+30s")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(AppColors.secondaryText)
-                        .padding(.horizontal, 10)
-                        .padding(.vertical, 6)
-                        .background(AppColors.surface)
-                        .cornerRadius(8)
+                        .font(.system(size: 13))
+                        .foregroundColor(AppColors.muted)
+                        .frame(width: 60, height: 32)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(AppColors.restTimerControlSurface)
+                        )
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .stroke(AppColors.restTimerControlBorder, lineWidth: 1)
+                        )
                 }
                 .buttonStyle(.plain)
 
                 Spacer()
-
-                Button(action: onSkip) {
-                    Text(LanguageManager.t("rest.skip"))
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(AppColors.danger)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .background(AppColors.surface)
-                        .cornerRadius(8)
-                }
-                .buttonStyle(.plain)
             }
         }
-        .padding(14)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
         .background(
-            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .fill(AppColors.surfaceRaised)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .stroke(AppColors.purple.opacity(0.4), lineWidth: 1.5)
+            RoundedRectangle(cornerRadius: 18, style: .continuous)
+                .fill(
+                    LinearGradient(
+                        colors: [AppColors.restTimerSurfaceStart, AppColors.restTimerSurfaceEnd],
+                        startPoint: .leading,
+                        endPoint: .trailing
+                    )
                 )
-                .shadow(color: Color.black.opacity(0.5), radius: 12, x: 0, y: 4)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 18, style: .continuous)
+                        .stroke(AppColors.restTimerBorder, lineWidth: 1)
+                )
         )
         .padding(.horizontal, 20)
+        .padding(.vertical, 8)
         .fullScreenCover(isPresented: $isExpanded) {
             RestTimerFullScreenModal(
                 secondsRemaining: secondsRemaining,
@@ -146,6 +165,46 @@ public struct RestTimerBar: View {
                 onToggleMute: onToggleMute
             )
         }
+    }
+}
+
+private struct RestTimerProgressBar: View {
+    let progress: Double
+
+    @Environment(\.displayScale) private var displayScale
+
+    private var clampedProgress: CGFloat {
+        CGFloat(min(1.0, max(0.0, progress)))
+    }
+
+    var body: some View {
+        GeometryReader { proxy in
+            let barWidth = proxy.size.width * 0.68
+
+            Canvas { context, size in
+                let track = Path(
+                    roundedRect: CGRect(origin: .zero, size: size),
+                    cornerSize: CGSize(width: size.height / 2, height: size.height / 2)
+                )
+                let rawFillWidth = size.width * clampedProgress
+                let fillWidth = (rawFillWidth * displayScale).rounded() / displayScale
+
+                context.fill(track, with: .color(AppColors.restTimerTrack))
+
+                if fillWidth > 0 {
+                    context.clip(
+                        to: Path(CGRect(x: 0, y: 0, width: fillWidth, height: size.height))
+                    )
+                    context.fill(track, with: .color(AppColors.restTimerAccent))
+                }
+            }
+            .frame(width: barWidth, height: 4)
+        }
+        .frame(height: 4)
+        .animation(.easeInOut(duration: 0.35), value: clampedProgress)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(LanguageManager.t("rest.title"))
+        .accessibilityValue("\(Int((Double(clampedProgress) * 100).rounded()))%")
     }
 }
 
