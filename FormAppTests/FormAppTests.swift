@@ -1,4 +1,5 @@
 import XCTest
+import AVFoundation
 import UIKit
 import SwiftUI
 @testable import FormApp
@@ -82,6 +83,16 @@ final class FormAppTests: XCTestCase {
         }
 
         XCTAssertEqual(Set(soundData).count, soundNames.count, "Each feedback event needs its own sound identity")
+    }
+
+    func testSetUndoSoundMatchesAndroidMonoFormat() throws {
+        let url = try XCTUnwrap(
+            Bundle.main.url(forResource: "form_set_undo", withExtension: "wav")
+        )
+        let audioFile = try AVAudioFile(forReading: url)
+
+        XCTAssertEqual(audioFile.fileFormat.sampleRate, 44_100, accuracy: 0.1)
+        XCTAssertEqual(audioFile.fileFormat.channelCount, 1)
     }
 
     func testMovementFrameCacheProducesDistinctFrames() {
@@ -616,5 +627,4 @@ final class FormAppTests: XCTestCase {
         XCTAssertGreaterThan(firstExLog?.sets.count ?? 0, 0, "Lat Pulldown sets must be recorded as completed")
     }
 }
-
 
