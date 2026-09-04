@@ -59,6 +59,14 @@ final class FormAppTests: XCTestCase {
         let benchSprite = MovementIcon.movementAssetSprite("barbell-bench-press")
         XCTAssertNotNil(benchSprite)
         XCTAssertEqual(benchSprite?.imageName, "anatomy_batch_03_upper")
+
+        let inclineBenchSprite = MovementIcon.movementAssetSprite("incline-barbell-bench-press")
+        XCTAssertNotNil(inclineBenchSprite)
+        XCTAssertEqual(inclineBenchSprite?.imageName, "anatomy_incline_barbell_bench_press")
+        XCTAssertEqual(inclineBenchSprite?.atlasHeight, 418)
+        for frame in 0..<3 {
+            XCTAssertNotNil(MovementFrameCache.getFrame(for: inclineBenchSprite!, frame: frame))
+        }
     }
 
     func testMovementAnimationClockIsActive() {
@@ -627,4 +635,3 @@ final class FormAppTests: XCTestCase {
         XCTAssertGreaterThan(firstExLog?.sets.count ?? 0, 0, "Lat Pulldown sets must be recorded as completed")
     }
 }
-

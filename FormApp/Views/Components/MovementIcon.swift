@@ -349,11 +349,11 @@ public extension MovementIcon {
         case "barbell-hip-thrust":
             return MovementSprite(imageName: "anatomy_batch_05_accessory", top: 857, bottom: 1254)
         case "barbell-row":
-            return MovementSprite(imageName: "anatomy_batch_06_upper", top: 0, bottom: 409)
+            return MovementSprite(imageName: "anatomy_barbell_row", top: 0, bottom: 409, atlasHeight: 409)
         case "incline-barbell-bench-press":
-            return MovementSprite(imageName: "anatomy_batch_06_upper", top: 409, bottom: 814)
+            return MovementSprite(imageName: "anatomy_incline_barbell_bench_press", top: 0, bottom: 418, atlasHeight: 418)
         case "incline-dumbbell-curl":
-            return MovementSprite(imageName: "anatomy_batch_06_upper", top: 814, bottom: 1254)
+            return MovementSprite(imageName: "anatomy_incline_dumbbell_curl", top: 0, bottom: 440, atlasHeight: 440)
         case "kettlebell-swing":
             return MovementSprite(imageName: "anatomy_batch_06_athletic", top: 0, bottom: 414)
         case "farmer-carry":
