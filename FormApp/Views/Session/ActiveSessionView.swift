@@ -78,9 +78,7 @@ public struct ActiveSessionView: View {
                         Spacer()
 
                         Button(action: {
-                            FormAudioPlayer.playWorkoutStartSound()
-                            finishedAt = Int64(Date().timeIntervalSince1970 * 1000)
-                            showSummary = true
+                            presentWorkoutSummary()
                         }) {
                             Text(LanguageManager.t("session.finish"))
                                 .font(.system(size: 14, weight: .bold))
@@ -249,8 +247,7 @@ public struct ActiveSessionView: View {
                                             return copy
                                         }
                                     } else {
-                                        finishedAt = Int64(Date().timeIntervalSince1970 * 1000)
-                                        showSummary = true
+                                        presentWorkoutSummary()
                                     }
                                 }) {
                                     HStack(spacing: 8) {
@@ -361,9 +358,17 @@ public struct ActiveSessionView: View {
                         pausedSecondsRemaining: restSecs
                     )
                 }
+            } else {
+                FormAudioPlayer.playSetUndoSound()
             }
             return copy
         }
+    }
+
+    private func presentWorkoutSummary() {
+        FormAudioPlayer.playWorkoutCompleteSound()
+        finishedAt = Int64(Date().timeIntervalSince1970 * 1000)
+        showSummary = true
     }
 
     private func addSet(exerciseId: String) {

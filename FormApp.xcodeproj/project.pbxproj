@@ -16,6 +16,7 @@
 		1D60B4E438B90C3F62FC88A9 /* form_rest_complete.wav in Resources */ = {isa = PBXBuildFile; fileRef = 90A44CC582072D671FF45DE4 /* form_rest_complete.wav */; };
 		20E655D806FE5C84BC7BACFB /* 05_home_forge_dumbbells.json in Resources */ = {isa = PBXBuildFile; fileRef = 3D4F0446A030E749B3A34E82 /* 05_home_forge_dumbbells.json */; };
 		2201C284B87CAEF60491DE58 /* 04_full_body_classic.json in Resources */ = {isa = PBXBuildFile; fileRef = 9A2948074308DABA9A07E42E /* 04_full_body_classic.json */; };
+		2882774490C67FC9F67AB522 /* form_workout_complete.wav in Resources */ = {isa = PBXBuildFile; fileRef = C151465400D7E4ECECCC89F9 /* form_workout_complete.wav */; };
 		2BD3BC2D8BB759DB9AFE8F34 /* WorkoutDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023D09DFD513B3F32B009541 /* WorkoutDetailSheet.swift */; };
 		3255EAF86BCBDCDD24C59363 /* ProgramBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F223343B153857F9D2B8C6 /* ProgramBuilderView.swift */; };
 		329E21359E0ADED851ABBD02 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FE39F02FA4EAA1A43D7CA8 /* AppColors.swift */; };
@@ -41,6 +42,7 @@
 		A07185A4CA1062B6F7D59B91 /* 05_home_forge_dumbbells.json in Resources */ = {isa = PBXBuildFile; fileRef = 3D4F0446A030E749B3A34E82 /* 05_home_forge_dumbbells.json */; };
 		A22DDBC41558C55465A714BD /* 06_athletic_performance.json in Resources */ = {isa = PBXBuildFile; fileRef = 53F83778D712B708C519860F /* 06_athletic_performance.json */; };
 		A79CAAC595702B45728DC715 /* ExerciseDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F464967A46FF2F7447C7602 /* ExerciseDetailSheet.swift */; };
+		A7A3F0240CBA5F2AEF5EB481 /* form_set_undo.wav in Resources */ = {isa = PBXBuildFile; fileRef = 13527F9CECF51E5936498509 /* form_set_undo.wav */; };
 		BFD7E7CFFD180073EA634E28 /* MuscleMasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA4284A1943107F23B87DCD /* MuscleMasks.swift */; };
 		C07F25C1E8D200C36DCFFE4B /* WeekStripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C86D18E36BC5C24BB99CF16 /* WeekStripView.swift */; };
 		C0E82546129BB4114FE21B90 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68AD20F92BF7286266D03EB /* TodayView.swift */; };
@@ -70,6 +72,7 @@
 		023D09DFD513B3F32B009541 /* WorkoutDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetailSheet.swift; sourceTree = "<group>"; };
 		08997E0EACD6176BFF508687 /* ToastOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastOverlay.swift; sourceTree = "<group>"; };
 		10AEC969AB339D9720AB880B /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
+		13527F9CECF51E5936498509 /* form_set_undo.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_set_undo.wav; sourceTree = "<group>"; };
 		152BA0CBC21F574ECF6F0EE6 /* ProgramsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramsView.swift; sourceTree = "<group>"; };
 		1F5316FB7A7498CCB8FE13BF /* WeeklyPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyPlanView.swift; sourceTree = "<group>"; };
 		26BB808F3B2A565E934878C4 /* FormAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FormAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -99,6 +102,7 @@
 		9F464967A46FF2F7447C7602 /* ExerciseDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDetailSheet.swift; sourceTree = "<group>"; };
 		A68AD20F92BF7286266D03EB /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		B16D5A75502FFC600D48A992 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		C151465400D7E4ECECCC89F9 /* form_workout_complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_workout_complete.wav; sourceTree = "<group>"; };
 		D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormHeaderIconButton.swift; sourceTree = "<group>"; };
 		DECFA8F5B27849C8BE2611AF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DF6E74CE9A7C510C260498C8 /* SessionSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryView.swift; sourceTree = "<group>"; };
@@ -242,6 +246,8 @@
 			children = (
 				90A44CC582072D671FF45DE4 /* form_rest_complete.wav */,
 				76805C2F08B45E364BEF8AB9 /* form_set_complete.wav */,
+				13527F9CECF51E5936498509 /* form_set_undo.wav */,
+				C151465400D7E4ECECCC89F9 /* form_workout_complete.wav */,
 				400B4993DD7FAF3B3E8C9936 /* form_workout_start.wav */,
 			);
 			path = Sounds;
@@ -407,6 +413,8 @@
 				ECAED6399ED27E48237E4DD6 /* Assets.xcassets in Resources */,
 				1D60B4E438B90C3F62FC88A9 /* form_rest_complete.wav in Resources */,
 				9698074E6A4564D0918CD7E1 /* form_set_complete.wav in Resources */,
+				A7A3F0240CBA5F2AEF5EB481 /* form_set_undo.wav in Resources */,
+				2882774490C67FC9F67AB522 /* form_workout_complete.wav in Resources */,
 				DBF8CF30B08C1B8DF1992BA1 /* form_workout_start.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

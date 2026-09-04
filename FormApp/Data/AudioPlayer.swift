@@ -8,19 +8,31 @@ public final class FormAudioPlayer {
 
     private init() {
         configureAudioSession()
+        preloadSounds()
     }
 
     private func configureAudioSession() {
         do {
-            try AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default, options: [.mixWithOthers])
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
             try AVAudioSession.sharedInstance().setActive(true)
         } catch {
             print("Audio session configuration error: \(error)")
         }
     }
 
+    private func preloadSounds() {
+        for name in ["form_workout_start", "form_set_complete", "form_set_undo", "form_workout_complete", "form_rest_complete"] {
+            guard let url = Bundle.main.url(forResource: name, withExtension: "wav"),
+                  let player = try? AVAudioPlayer(contentsOf: url) else { continue }
+            player.prepareToPlay()
+            players[name] = player
+        }
+    }
+
     private func playSound(named name: String) {
         guard UserDefaults.standard.object(forKey: "sound_enabled") as? Bool ?? true else { return }
+
+        try? AVAudioSession.sharedInstance().setActive(true)
 
         if let existing = players[name] {
             existing.currentTime = 0
@@ -53,6 +65,18 @@ public final class FormAudioPlayer {
         shared.playSound(named: "form_set_complete")
         let generator = UIImpactFeedbackGenerator(style: .light)
         generator.impactOccurred()
+    }
+
+    public static func playSetUndoSound() {
+        shared.playSound(named: "form_set_undo")
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()
+    }
+
+    public static func playWorkoutCompleteSound() {
+        shared.playSound(named: "form_workout_complete")
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
     }
 
     public static func playRestCompleteSound() {
