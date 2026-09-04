@@ -1,12 +1,25 @@
 import SwiftUI
 
 public struct ExerciseDetailSheet: View {
-    let exercise: Exercise
+    @ObservedObject var store: AppStore = AppStore.shared
+    let initialExercise: Exercise
     var onDismiss: () -> Void
 
+    @State private var showVideoLinks: Bool = false
+
     public init(exercise: Exercise, onDismiss: @escaping () -> Void) {
-        self.exercise = exercise
+        self.initialExercise = exercise
         self.onDismiss = onDismiss
+    }
+
+    private var currentExercise: Exercise {
+        let key = initialExercise.name.trimmingCharacters(in: .whitespaces).lowercased()
+        if let catalogExercise = store.exerciseCatalogue.first(where: { $0.key == key })?.exercise {
+            if !catalogExercise.videos.isEmpty || initialExercise.videos.isEmpty {
+                return catalogExercise
+            }
+        }
+        return initialExercise
     }
 
     public var body: some View {
@@ -23,9 +36,9 @@ public struct ExerciseDetailSheet: View {
                             )
 
                         MovementIllustration(
-                            name: exercise.name,
-                            movementType: exercise.resolvedMovement,
-                            movementAssetId: exercise.movementAssetId,
+                            name: currentExercise.name,
+                            movementType: currentExercise.resolvedMovement,
+                            movementAssetId: currentExercise.movementAssetId,
                             allowCategoryFallback: false
                         )
                         .padding(12)
@@ -36,7 +49,7 @@ public struct ExerciseDetailSheet: View {
                     // Title & Movement Badge
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
-                            Text(exercise.resolvedMovement.rawValue.uppercased())
+                            Text(currentExercise.resolvedMovement.rawValue.uppercased())
                                 .font(.system(size: 11, weight: .bold))
                                 .foregroundColor(AppColors.accent)
                                 .padding(.horizontal, 8)
@@ -46,26 +59,26 @@ public struct ExerciseDetailSheet: View {
 
                             Spacer()
 
-                            if let rest = exercise.restSeconds {
+                            if let rest = currentExercise.restSeconds {
                                 Label("\(rest)s rest", systemImage: "timer")
                                     .font(.system(size: 12, weight: .medium))
                                     .foregroundColor(AppColors.muted)
                             }
                         }
 
-                        Text(exercise.name)
+                        Text(currentExercise.name)
                             .font(.system(size: 24, weight: .bold))
                             .foregroundColor(AppColors.text)
 
-                        if !exercise.displayPrescription.isEmpty {
-                            Text(exercise.displayPrescription)
+                        if !currentExercise.displayPrescription.isEmpty {
+                            Text(currentExercise.displayPrescription)
                                 .font(.system(size: 15, weight: .medium))
                                 .foregroundColor(AppColors.accent)
                         }
                     }
 
                     // Technique Cues
-                    let cuesText = exercise.cues.trimmingCharacters(in: .whitespacesAndNewlines)
+                    let cuesText = currentExercise.cues.trimmingCharacters(in: .whitespacesAndNewlines)
                     if !cuesText.isEmpty {
                         techniqueSection(
                             title: LanguageManager.t("modal.exercise.cues"),
@@ -76,7 +89,7 @@ public struct ExerciseDetailSheet: View {
                     }
 
                     // What to Avoid
-                    let avoidText = exercise.avoid.trimmingCharacters(in: .whitespacesAndNewlines)
+                    let avoidText = currentExercise.avoid.trimmingCharacters(in: .whitespacesAndNewlines)
                     if !avoidText.isEmpty {
                         techniqueSection(
                             title: LanguageManager.t("modal.exercise.avoid"),
@@ -86,36 +99,15 @@ public struct ExerciseDetailSheet: View {
                         )
                     }
 
-                    // Video Links
-                    if !exercise.videos.isEmpty {
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text(LanguageManager.t("editor.videos"))
-                                .font(.system(size: 14, weight: .bold))
-                                .foregroundColor(AppColors.text)
-
-                            ForEach(Array(exercise.videos.enumerated()), id: \.offset) { index, urlString in
-                                if let url = URL(string: urlString) {
-                                    Link(destination: url) {
-                                        HStack {
-                                            Image(systemName: "play.rectangle.fill")
-                                                .foregroundColor(AppColors.coral)
-                                            Text("Demo Video \(index + 1)")
-                                                .font(.system(size: 14, weight: .medium))
-                                                .foregroundColor(AppColors.text)
-                                            Spacer()
-                                            Image(systemName: "arrow.up.right")
-                                                .font(.system(size: 12))
-                                                .foregroundColor(AppColors.muted)
-                                        }
-                                        .padding(14)
-                                        .background(AppColors.surface)
-                                        .cornerRadius(10)
-                                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.border, lineWidth: 1))
-                                    }
-                                }
-                            }
+                    // Technique Videos
+                    ExerciseVideosView(
+                        exercise: currentExercise,
+                        onAddVideo: { showVideoLinks = true },
+                        onRemoveVideo: { urlToRemove in
+                            let remaining = currentExercise.videos.filter { $0 != urlToRemove }
+                            store.setExerciseVideos(exerciseName: currentExercise.name, videoUrls: remaining)
                         }
-                    }
+                    )
                 }
                 .padding(20)
             }
@@ -130,6 +122,12 @@ public struct ExerciseDetailSheet: View {
                             .foregroundColor(AppColors.muted)
                     }
                 }
+            }
+            .sheet(isPresented: $showVideoLinks) {
+                ExerciseVideoLinksSheet(
+                    exercise: currentExercise,
+                    onDismiss: { showVideoLinks = false }
+                )
             }
         }
     }

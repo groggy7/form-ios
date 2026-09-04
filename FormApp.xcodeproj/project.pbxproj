@@ -56,6 +56,13 @@
 		ECAED6399ED27E48237E4DD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77203A709542614D89DFF819 /* Assets.xcassets */; };
 		ECF655C211A97E2025683749 /* 01_aesthetic_hypertrophy.json in Resources */ = {isa = PBXBuildFile; fileRef = 92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */; };
 		F89F85797C04B79378A6EF20 /* 03_classic_ppl.json in Resources */ = {isa = PBXBuildFile; fileRef = ECB10B35D7F6895ECBECEDBF /* 03_classic_ppl.json */; };
+		B10000000000000000000001 /* YouTubeVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000001 /* YouTubeVideo.swift */; };
+		B10000000000000000000002 /* YouTubeEmbed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000002 /* YouTubeEmbed.swift */; };
+		B10000000000000000000003 /* VideoMetadataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000003 /* VideoMetadataStore.swift */; };
+		B10000000000000000000004 /* YouTubeWebPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000004 /* YouTubeWebPlayerView.swift */; };
+		B10000000000000000000005 /* VideoPlayerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000005 /* VideoPlayerSheet.swift */; };
+		B10000000000000000000006 /* ExerciseVideosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000006 /* ExerciseVideosView.swift */; };
+		B10000000000000000000007 /* ExerciseVideoLinksSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000007 /* ExerciseVideoLinksSheet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -115,6 +122,13 @@
 		F89F4479A1065BF741953378 /* RestTimerBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerBar.swift; sourceTree = "<group>"; };
 		FC5F87CCEA6BEE84FC15E6B7 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
 		FCF84D563B45992D3D9DCB77 /* AppHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppHeader.swift; sourceTree = "<group>"; };
+		A10000000000000000000001 /* YouTubeVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeVideo.swift; sourceTree = "<group>"; };
+		A10000000000000000000002 /* YouTubeEmbed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeEmbed.swift; sourceTree = "<group>"; };
+		A10000000000000000000003 /* VideoMetadataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoMetadataStore.swift; sourceTree = "<group>"; };
+		A10000000000000000000004 /* YouTubeWebPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeWebPlayerView.swift; sourceTree = "<group>"; };
+		A10000000000000000000005 /* VideoPlayerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerSheet.swift; sourceTree = "<group>"; };
+		A10000000000000000000006 /* ExerciseVideosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseVideosView.swift; sourceTree = "<group>"; };
+		A10000000000000000000007 /* ExerciseVideoLinksSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseVideoLinksSheet.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -236,9 +250,24 @@
 				89CA1238E5FDE9D1567685BB /* Models */,
 				C071DCC6D32719D73DD50011 /* Resources */,
 				7B51CE823E8E934638A68AA7 /* Theme */,
+				A10000000000000000000000 /* Video */,
 				4641A4117F4FD47F13412399 /* Views */,
 			);
 			path = FormApp;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000000 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000001 /* YouTubeVideo.swift */,
+				A10000000000000000000002 /* YouTubeEmbed.swift */,
+				A10000000000000000000003 /* VideoMetadataStore.swift */,
+				A10000000000000000000004 /* YouTubeWebPlayerView.swift */,
+				A10000000000000000000005 /* VideoPlayerSheet.swift */,
+				A10000000000000000000006 /* ExerciseVideosView.swift */,
+				A10000000000000000000007 /* ExerciseVideoLinksSheet.swift */,
+			);
+			path = Video;
 			sourceTree = "<group>";
 		};
 		92387770BAF9161F9576E05F /* Sounds */ = {
@@ -469,6 +498,13 @@
 				2BD3BC2D8BB759DB9AFE8F34 /* WorkoutDetailSheet.swift in Sources */,
 				5D41713C889C9CD0DA0DB048 /* WorkoutModels.swift in Sources */,
 				08B89BB8E61779D8274FFEFD /* WorkoutSessionUtils.swift in Sources */,
+				B10000000000000000000001 /* YouTubeVideo.swift in Sources */,
+				B10000000000000000000002 /* YouTubeEmbed.swift in Sources */,
+				B10000000000000000000003 /* VideoMetadataStore.swift in Sources */,
+				B10000000000000000000004 /* YouTubeWebPlayerView.swift in Sources */,
+				B10000000000000000000005 /* VideoPlayerSheet.swift in Sources */,
+				B10000000000000000000006 /* ExerciseVideosView.swift in Sources */,
+				B10000000000000000000007 /* ExerciseVideoLinksSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

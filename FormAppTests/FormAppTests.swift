@@ -184,6 +184,43 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
+    func testExerciseDetailSheetWithVideosSnapshot() {
+        var exercise = Exercise(
+            name: "Barbell Bench Press",
+            prescription: "5 × 4–6",
+            cues: "Plant heels, arch upper back, tuck shoulder blades.\nLower bar to sternum under control.\nExplode upward with leg drive.",
+            avoid: "Bouncing bar off ribcage.\nButt lifting off the bench.",
+            videos: [
+                "https://www.youtube.com/watch?v=ZaTM37cfiDs",
+                "https://youtube.com/shorts/3jzKvd6e2q4"
+            ],
+            movementType: "press",
+            movementAssetId: "barbell-bench-press"
+        )
+
+        let sheetView = ExerciseDetailSheet(exercise: exercise, onDismiss: {})
+        let controller = UIHostingController(rootView: sheetView)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_exercise_detail_with_videos_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
+
+    @MainActor
     func testProgramsViewSnapshot() {
         let store = AppStore.shared
         let programsView = ProgramsView(store: store, onDismiss: {})
@@ -634,4 +671,175 @@ final class FormAppTests: XCTestCase {
         XCTAssertNotNil(firstExLog)
         XCTAssertGreaterThan(firstExLog?.sets.count ?? 0, 0, "Lat Pulldown sets must be recorded as completed")
     }
+
+    // MARK: - Video Support Tests
+
+    func testYouTubeVideoParsing() {
+        // Standard watch URLs
+        let watch = YouTubeVideo.parse("https://www.youtube.com/watch?v=ZaTM37cfiDs")
+        XCTAssertNotNil(watch)
+        XCTAssertEqual(watch?.id, "ZaTM37cfiDs")
+        XCTAssertFalse(watch?.isShort ?? true)
+        XCTAssertEqual(watch?.startSeconds, 0)
+
+        // Shorts URL
+        let short = YouTubeVideo.parse("https://youtube.com/shorts/ZaTM37cfiDs")
+        XCTAssertNotNil(short)
+        XCTAssertEqual(short?.id, "ZaTM37cfiDs")
+        XCTAssertTrue(short?.isShort ?? false)
+
+        // youtu.be shortlink with start time in seconds
+        let youtbe = YouTubeVideo.parse("https://youtu.be/ZaTM37cfiDs?t=90")
+        XCTAssertNotNil(youtbe)
+        XCTAssertEqual(youtbe?.id, "ZaTM37cfiDs")
+        XCTAssertEqual(youtbe?.startSeconds, 90)
+        XCTAssertEqual(youtbe?.watchUrl, "https://www.youtube.com/watch?v=ZaTM37cfiDs&t=90s")
+
+        // Formatted timestamp (1h2m3s)
+        let formattedTime = YouTubeVideo.parse("https://www.youtube.com/watch?v=ZaTM37cfiDs&t=1h2m3s")
+        XCTAssertNotNil(formattedTime)
+        XCTAssertEqual(formattedTime?.startSeconds, 3723)
+
+        // Invalid URLs
+        XCTAssertNil(YouTubeVideo.parse("https://vimeo.com/12345678"))
+        XCTAssertNil(YouTubeVideo.parse("https://youtube.com/watch?v=short"))
+        XCTAssertNil(YouTubeVideo.parse("ftp://youtube.com/watch?v=ZaTM37cfiDs"))
+        XCTAssertNil(YouTubeVideo.parse("not a url"))
+    }
+
+    func testVideoPlaybackStateProperties() {
+        let unready = VideoPlaybackState(ready: false, playerState: -1)
+        XCTAssertFalse(unready.playing)
+        XCTAssertFalse(unready.ended)
+        XCTAssertFalse(unready.canControl)
+
+        let playing = VideoPlaybackState(ready: true, playerState: 1, currentSeconds: 10, durationSeconds: 60)
+        XCTAssertTrue(playing.playing)
+        XCTAssertFalse(playing.ended)
+        XCTAssertTrue(playing.canControl)
+
+        let buffering = VideoPlaybackState(ready: true, playerState: 3)
+        XCTAssertTrue(buffering.playing)
+
+        let ended = VideoPlaybackState(ready: true, playerState: 0)
+        XCTAssertFalse(ended.playing)
+        XCTAssertTrue(ended.ended)
+        XCTAssertTrue(ended.canControl)
+
+        let errored = VideoPlaybackState(ready: true, playerState: 1, error: "network")
+        XCTAssertFalse(errored.canControl)
+    }
+
+    func testFormatVideoTime() {
+        XCTAssertEqual(formatVideoTime(0), "0:00")
+        XCTAssertEqual(formatVideoTime(9), "0:09")
+        XCTAssertEqual(formatVideoTime(75), "1:15")
+        XCTAssertEqual(formatVideoTime(3599), "59:59")
+        XCTAssertEqual(formatVideoTime(3600), "1:00:00")
+        XCTAssertEqual(formatVideoTime(3665), "1:01:05")
+    }
+
+    func testAppStoreSetExerciseVideos() {
+        let store = AppStore.shared
+        let exerciseName = "Barbell Back Squat"
+
+        let testUrls = [
+            "https://youtu.be/ZaTM37cfiDs",
+            "youtube.com/watch?v=dQw4w9WgXcQ",
+            "https://youtu.be/ZaTM37cfiDs", // duplicate
+            "not a valid url with spaces", // invalid URL
+            "ftp://invalid-scheme.com/video", // invalid scheme
+            "https://youtube.com/shorts/3jzKvd6e2q4",
+            "https://youtube.com/watch?v=extraLinkShouldBeCapped" // 4th link, should be capped at 3
+        ]
+
+        store.setExerciseVideos(exerciseName: exerciseName, videoUrls: testUrls)
+
+        let catalogEntry = store.exerciseCatalogue.first { $0.key == exerciseName.lowercased() }
+        XCTAssertNotNil(catalogEntry)
+        XCTAssertEqual(catalogEntry?.exercise.videos.count, 3, "Videos count must be capped at 3")
+        XCTAssertEqual(catalogEntry?.exercise.videos[0], "https://youtu.be/ZaTM37cfiDs")
+        XCTAssertEqual(catalogEntry?.exercise.videos[1], "https://youtube.com/watch?v=dQw4w9WgXcQ")
+        XCTAssertEqual(catalogEntry?.exercise.videos[2], "https://youtube.com/shorts/3jzKvd6e2q4")
+        XCTAssertNotNil(store.noticeMessage)
+    }
+
+    func testVideoTranslationsParity() {
+        let requiredKeys = [
+            "video.openExternal", "video.close", "video.back5", "video.forward5",
+            "video.play", "video.pause", "video.resume", "video.replay",
+            "video.loading", "video.retry", "video.invalid", "video.networkError", "video.embedError",
+            "video.linkTitle", "video.linkSubtitle", "video.urlInputLabel", "video.urlInputPlaceholder",
+            "video.addUrlButton", "video.pasteButton", "video.previewVideo", "video.deleteVideo",
+            "video.linkedCount", "video.maxLimitReached", "video.duplicateUrl", "video.invalidUrl",
+            "video.noVideos", "video.saveLinks", "notice.videosUpdated",
+            "library.videos", "library.attachVideoCta"
+        ]
+
+        for key in requiredKeys {
+            XCTAssertFalse(Translations.en[key]?.isEmpty ?? true, "Missing English key: \(key)")
+            XCTAssertFalse(Translations.tr[key]?.isEmpty ?? true, "Missing Turkish key: \(key)")
+        }
+    }
+
+    @MainActor
+    func testExerciseVideoLinksSheetSnapshot() {
+        let exercise = Exercise(
+            name: "Incline Dumbbell Press",
+            prescription: "4 × 8–10",
+            videos: [
+                "https://www.youtube.com/watch?v=8iPEnn-ltC8"
+            ],
+            movementType: "press"
+        )
+        let sheet = ExerciseVideoLinksSheet(exercise: exercise, onDismiss: {})
+        let controller = UIHostingController(rootView: sheet)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_exercise_video_links_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testVideoPlayerSheetSnapshot() {
+        let sheet = VideoPlayerSheet(
+            exerciseName: "Barbell Bench Press",
+            videoUrl: "https://www.youtube.com/watch?v=ZaTM37cfiDs",
+            onClose: {}
+        )
+        let controller = UIHostingController(rootView: sheet)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_video_player_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
 }
+
