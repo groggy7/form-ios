@@ -519,5 +519,102 @@ final class FormAppTests: XCTestCase {
             print("Successfully wrote snapshot to \(path)")
         }
     }
+
+    func testWorkoutCalendarRefreshPreservesEntries() {
+        let initial = WorkoutCalendarHistory(
+            nextScheduledDate: "2026-08-24",
+            scheduledWeekdays: [1, 2, 4, 5],
+            missedDates: [],
+            entries: [
+                WorkoutDayEntry(id: "session:tue", date: "2026-08-25", status: .unfinished)
+            ]
+        )
+        let refreshed = WorkoutCalendar.refresh(history: initial, today: "2026-08-27", weekdays: [1, 2, 4, 5])
+        XCTAssertEqual(refreshed.entries.count, 1, "Entries must not be erased during refresh")
+        XCTAssertEqual(refreshed.entries.first?.id, "session:tue")
+        XCTAssertEqual(refreshed.entries.first?.status, .unfinished)
+
+        let statuses = WorkoutCalendar.statuses(history: refreshed, today: "2026-08-27")
+        XCTAssertEqual(statuses["2026-08-24"], .missed)
+        XCTAssertEqual(statuses["2026-08-25"], .unfinished, "Unfinished entry must override missed date")
+    }
+
+    func testScheduledDateForWeekday() {
+        // Assume date is Friday, Sep 4, 2026
+        let friday = WorkoutCalendar.parseDate("2026-09-04")!
+        let tueDate = WorkoutCalendar.scheduledDate(forWeekday: 2, relativeTo: friday)
+        XCTAssertEqual(tueDate, "2026-09-01", "Tuesday of this week is 2026-09-01")
+        let monDate = WorkoutCalendar.scheduledDate(forWeekday: 1, relativeTo: friday)
+        XCTAssertEqual(monDate, "2026-08-31", "Monday of this week is 2026-08-31")
+        let friDate = WorkoutCalendar.scheduledDate(forWeekday: 5, relativeTo: friday)
+        XCTAssertEqual(friDate, "2026-09-04", "Friday of this week is 2026-09-04")
+    }
+
+    @MainActor
+    func testTuesdayWorkoutPartialCompletionMarksTuesdayUnfinishedNotMissed() {
+        let store = AppStore.shared
+        guard let program = store.activeProgram,
+              let tuesdayWorkout = program.workouts.first(where: { $0.day == 2 }) else {
+            return
+        }
+
+        // Clean state
+        store.activeSession = nil
+        var st = store.state
+        st.history.removeAll { $0.workoutId == tuesdayWorkout.id }
+        st.completed.removeAll { $0.contains(tuesdayWorkout.id) }
+        store.saveState(st)
+
+        // Start Tuesday workout
+        _ = store.startActiveSession(programId: program.id, workout: tuesdayWorkout)
+        guard let draft = store.activeSession else {
+            XCTFail("Active session failed to start")
+            return
+        }
+
+        // Verify that draft is assigned to Tuesday (2026-09-01 in the current week)
+        let sessionEntry = store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(draft.id)" })
+        XCTAssertNotNil(sessionEntry)
+        XCTAssertEqual(sessionEntry?.date, "2026-09-01")
+        XCTAssertEqual(sessionEntry?.status, .unfinished)
+
+        // Complete all sets for first exercise (e.g. Lat Pulldown)
+        let firstEx = tuesdayWorkout.exercises.first!
+        store.updateActiveSession { d in
+            var copy = d
+            var sets = copy.setsByExercise[firstEx.id] ?? []
+            for i in 0..<sets.count {
+                sets[i].isCompleted = true
+                sets[i].weightKg = 60
+                sets[i].completedReps = 10
+            }
+            copy.setsByExercise[firstEx.id] = sets
+            return copy
+        }
+
+        // Finish workout (clicks finish / Save & close)
+        let progress = SessionProgress.from(draft: store.activeSession!, nowEpochMillis: Int64(Date().timeIntervalSince1970 * 1000))
+        let record = progress.record(draft: store.activeSession!, completedAtEpochMillis: Int64(Date().timeIntervalSince1970 * 1000))
+        store.completeActiveSession(record)
+
+        // Active session should be nil
+        XCTAssertNil(store.activeSession)
+
+        // Tuesday in calendarStatuses must be UNFINISHED (orange), NOT MISSED (red)!
+        let today = Date()
+        let statuses = store.calendarStatuses(today: today)
+        XCTAssertEqual(statuses["2026-09-01"], .unfinished, "Tuesday must be orange (.unfinished), not red (.missed)!")
+
+        // History list must contain record for Tuesday
+        let foundRecord = store.state.history.first { rec in
+            WorkoutCalendar.localDate(from: rec.startedAt) == "2026-09-01" ||
+            store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(rec.id)" })?.date == "2026-09-01"
+        }
+        XCTAssertNotNil(foundRecord, "Record must be mapped to 2026-09-01")
+        let firstExLog = foundRecord?.exerciseLogs.first(where: { $0.exerciseName.lowercased() == firstEx.name.lowercased() })
+        XCTAssertNotNil(firstExLog)
+        XCTAssertGreaterThan(firstExLog?.sets.count ?? 0, 0, "Lat Pulldown sets must be recorded as completed")
+    }
 }
+
 

@@ -208,15 +208,24 @@ public struct HistoryView: View {
         let weekday = cal.component(.weekday, from: date)
         let dayOfWeek = (weekday + 5) % 7 + 1 // 1=Mon..7=Sun
 
+        let activeRecord: WorkoutSessionRecord? = {
+            guard let draft = store.activeSession else { return nil }
+            let activeDay = store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(draft.id)" })?.date
+                ?? WorkoutCalendar.localDate(from: draft.startedAt)
+            if activeDay == dateString {
+                let now = Int64(Date().timeIntervalSince1970 * 1000)
+                return SessionProgress.from(draft: draft, nowEpochMillis: now)
+                    .record(draft: draft, completedAtEpochMillis: now)
+            }
+            return nil
+        }()
+
         let sessionRecord = store.state.history.first { rec in
             let d = WorkoutCalendar.localDate(from: rec.startedAt)
                 ?? WorkoutCalendar.localDate(from: rec.completedAt)
                 ?? store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(rec.id)" })?.date
             return d == dateString
-        } ?? (cal.isDateInToday(date) ? store.activeSession.map { draft in
-            SessionProgress.from(draft: draft, nowEpochMillis: Int64(Date().timeIntervalSince1970 * 1000))
-                .record(draft: draft, completedAtEpochMillis: Int64(Date().timeIntervalSince1970 * 1000))
-        } : nil)
+        } ?? activeRecord
 
         let workout: Workout?
         if let rec = sessionRecord {

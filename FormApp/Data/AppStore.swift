@@ -135,7 +135,7 @@ public final class AppStore: ObservableObject {
         if activeSession != nil || workout.exercises.isEmpty || !canStartWorkout(workout) {
             return false
         }
-        let now = Int64(Date().timeIntervalSince1970 * 1000)
+        let now = Date()
         let currentWeek = currentWeekIsoKey()
         let unfinishedRecord = state.history.first { r in
             r.programId == programId &&
@@ -153,10 +153,23 @@ public final class AppStore: ObservableObject {
 
         let previousDuration = unfinishedRecord?.durationSeconds ?? 0
         let clampedPrevSecs = min(max(0, previousDuration), 4 * 3600)
-        let startedAtEpoch = now - Int64(clampedPrevSecs * 1000)
+
+        let sessionDay = WorkoutCalendar.scheduledDate(forWeekday: workout.day, relativeTo: now)
+
+        let sessionDateObj = WorkoutCalendar.parseDate(sessionDay) ?? now
+        let sessionCal = Calendar(identifier: .gregorian)
+        let timeComponents = sessionCal.dateComponents([.hour, .minute, .second], from: now)
+        var targetComponents = sessionCal.dateComponents([.year, .month, .day], from: sessionDateObj)
+        targetComponents.hour = timeComponents.hour
+        targetComponents.minute = timeComponents.minute
+        targetComponents.second = timeComponents.second
+        let targetNow = sessionCal.date(from: targetComponents) ?? now
+        let startedAtDate = sessionCal.date(byAdding: .second, value: -clampedPrevSecs, to: targetNow) ?? targetNow
+        let startedAtEpoch = Int64(startedAtDate.timeIntervalSince1970 * 1000)
 
         let formatter = ISO8601DateFormatter()
-        let startedAtTimestamp = formatter.string(from: Date(timeIntervalSince1970: Double(startedAtEpoch) / 1000.0))
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let startedAtTimestamp = formatter.string(from: startedAtDate)
 
         let draft = ActiveSessionDraft(
             id: unfinishedRecord?.id ?? UUID().uuidString,
@@ -171,14 +184,13 @@ public final class AppStore: ObservableObject {
         saveActiveSession(draft)
         self.activeSession = draft
 
-        let todayStr = WorkoutCalendar.formatDate(Date())
         var curCal = state.calendarHistory ?? WorkoutCalendarHistory(
-            nextScheduledDate: WorkoutCalendar.mondayOfCurrentWeek(),
+            nextScheduledDate: WorkoutCalendar.mondayOfCurrentWeek(for: now),
             scheduledWeekdays: WorkoutCalendar.weekdays(state: state)
         )
         curCal = WorkoutCalendar.put(
             history: curCal,
-            entry: WorkoutDayEntry(id: "session:\(draft.id)", date: todayStr, status: .unfinished)
+            entry: WorkoutDayEntry(id: "session:\(draft.id)", date: sessionDay, status: .unfinished)
         )
         var nextSt = state
         nextSt.calendarHistory = curCal
@@ -196,11 +208,16 @@ public final class AppStore: ObservableObject {
     }
 
     public func abandonActiveSession() {
-        if let draft = activeSession, let cal = state.calendarHistory {
-            let updatedCal = WorkoutCalendar.remove(history: cal, id: "session:\(draft.id)")
-            var nextSt = state
-            nextSt.calendarHistory = updatedCal
-            saveState(nextSt)
+        if let draft = activeSession {
+            let allSets = draft.setsByExercise.values.flatMap { $0 }
+            let hasCompleted = allSets.contains { $0.isCompleted }
+            if hasCompleted {
+                let now = Int64(Date().timeIntervalSince1970 * 1000)
+                let rec = SessionProgress.from(draft: draft, nowEpochMillis: now)
+                    .record(draft: draft, completedAtEpochMillis: now)
+                completeActiveSession(rec)
+                return
+            }
         }
         saveActiveSession(nil)
         self.activeSession = nil
@@ -223,6 +240,7 @@ public final class AppStore: ObservableObject {
         )
 
         var newHistory = state.history
+        newHistory.removeAll { $0.id == finalRecord.id }
         newHistory.insert(finalRecord, at: 0)
 
         var newCompleted = state.completed
@@ -238,9 +256,13 @@ public final class AppStore: ObservableObject {
         if let draft = activeSession {
             cal = WorkoutCalendar.remove(history: cal, id: "session:\(draft.id)")
         }
-        let sessionDate = WorkoutCalendar.localDate(from: finalRecord.startedAt)
-            ?? WorkoutCalendar.localDate(from: finalRecord.completedAt)
-            ?? WorkoutCalendar.formatDate(Date())
+        let sessionDate = (activeSession?.id).flatMap { draftId in
+            state.calendarHistory?.entries.first(where: { $0.id == "session:\(draftId)" })?.date
+        } ?? (activeSession?.workout.day).map { WorkoutCalendar.scheduledDate(forWeekday: $0, relativeTo: Date()) }
+          ?? WorkoutCalendar.localDate(from: finalRecord.startedAt)
+          ?? WorkoutCalendar.localDate(from: finalRecord.completedAt)
+          ?? WorkoutCalendar.formatDate(Date())
+
         cal = WorkoutCalendar.put(
             history: cal,
             entry: WorkoutDayEntry(
@@ -255,7 +277,9 @@ public final class AppStore: ObservableObject {
         newState.completed = newCompleted
         newState.calendarHistory = cal
         saveState(newState)
-        abandonActiveSession()
+        
+        saveActiveSession(nil)
+        self.activeSession = nil
 
         showNotice(LanguageManager.t("notice.workoutRecorded", [
             "sets": finalRecord.totalCompletedSets,
@@ -396,7 +420,7 @@ public final class AppStore: ObservableObject {
         }
     }
 
-    private func saveState(_ newState: StoredAppState) {
+    func saveState(_ newState: StoredAppState) {
         self.state = newState
         do {
             let encoder = JSONEncoder()

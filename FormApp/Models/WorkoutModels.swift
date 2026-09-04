@@ -567,6 +567,22 @@ public enum WorkoutCalendar {
         return formatDate(date)
     }
 
+    public static func scheduledDate(
+        forWeekday weekday: Int,
+        relativeTo date: Date = Date(),
+        calendar: Calendar = Calendar(identifier: .gregorian)
+    ) -> String {
+        var cal = calendar
+        cal.firstWeekday = 2 // Monday
+        let mondayStr = mondayOfCurrentWeek(for: date, calendar: cal)
+        guard let monday = parseDate(mondayStr) else { return formatDate(date) }
+        let clampedDay = min(max(1, weekday), 7)
+        if let target = cal.date(byAdding: .day, value: clampedDay - 1, to: monday) {
+            return formatDate(target)
+        }
+        return mondayStr
+    }
+
     public static func weekdays(state: StoredAppState) -> [Int] {
         guard let activeProg = state.programs.first(where: { $0.id == state.activeProgramId }) else { return [] }
         let days = activeProg.workouts.filter { !$0.exercises.isEmpty }.map { $0.day }.filter { $0 >= 1 && $0 <= 7 }
@@ -668,7 +684,8 @@ public enum WorkoutCalendar {
         return WorkoutCalendarHistory(
             nextScheduledDate: today,
             scheduledWeekdays: Array(Set(weekdays)).sorted(),
-            missedDates: missedSet.sorted()
+            missedDates: missedSet.sorted(),
+            entries: history.entries
         )
     }
 
