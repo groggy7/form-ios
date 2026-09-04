@@ -249,88 +249,122 @@ public struct ExerciseVideoLinksSheet: View {
                         }
 
                         // Add Video Section
-                        VStack(alignment: .leading, spacing: 10) {
-                            Text(LanguageManager.t("video.urlInputLabel"))
-                                .font(.system(size: 13, weight: .medium))
-                                .foregroundColor(AppColors.secondaryText)
-
-                            HStack(spacing: 8) {
-                                TextField(LanguageManager.t("video.urlInputPlaceholder"), text: $inputUrl)
-                                    .font(.system(size: 14))
+                        if linkedUrls.count < 3 {
+                            VStack(alignment: .leading, spacing: 12) {
+                                Text(LanguageManager.t("library.attachVideoCta"))
+                                    .font(.system(size: 14, weight: .semibold))
                                     .foregroundColor(AppColors.text)
-                                    .accentColor(AppColors.accent)
-                                    .autocorrectionDisabled()
-                                    .textInputAutocapitalization(.never)
-                                    .padding(.horizontal, 12)
+
+                                // Input box with inline Paste / Clear button
+                                HStack(spacing: 8) {
+                                    TextField(LanguageManager.t("video.urlInputLabel"), text: $inputUrl)
+                                        .font(.system(size: 14))
+                                        .foregroundColor(AppColors.text)
+                                        .accentColor(AppColors.accent)
+                                        .autocorrectionDisabled()
+                                        .textInputAutocapitalization(.never)
+                                        .submitLabel(.done)
+                                        .onSubmit { addUrl() }
+
+                                    if inputUrl.isEmpty {
+                                        Button(action: {
+                                            if let clip = UIPasteboard.general.string {
+                                                inputUrl = clip.trimmingCharacters(in: .whitespacesAndNewlines)
+                                            }
+                                        }) {
+                                            HStack(spacing: 4) {
+                                                Image(systemName: "doc.on.clipboard")
+                                                    .font(.system(size: 13))
+                                                Text(LanguageManager.t("video.pasteButton"))
+                                                    .font(.system(size: 12, weight: .medium))
+                                            }
+                                            .foregroundColor(AppColors.accent)
+                                            .padding(.vertical, 6)
+                                            .padding(.horizontal, 4)
+                                        }
+                                        .buttonStyle(.plain)
+                                    } else {
+                                        Button(action: { inputUrl = "" }) {
+                                            Image(systemName: "xmark.circle.fill")
+                                                .font(.system(size: 16))
+                                                .foregroundColor(AppColors.muted)
+                                                .padding(.vertical, 6)
+                                                .padding(.horizontal, 4)
+                                        }
+                                        .buttonStyle(.plain)
+                                    }
+                                }
+                                .padding(.horizontal, 14)
+                                .frame(height: 48)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 11, style: .continuous)
+                                        .fill(AppColors.background)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 11, style: .continuous)
+                                                .stroke((!inputUrl.isEmpty && (!isValidUrl || isDuplicate)) ? AppColors.danger : AppColors.border, lineWidth: 1)
+                                        )
+                                )
+
+                                // Supporting / validation text
+                                Group {
+                                    if isDuplicate {
+                                        Text(LanguageManager.t("video.duplicateUrl"))
+                                            .foregroundColor(AppColors.danger)
+                                    } else if !inputUrl.isEmpty && !isValidUrl {
+                                        Text(LanguageManager.t("video.invalidUrl"))
+                                            .foregroundColor(AppColors.danger)
+                                    } else {
+                                        Text(LanguageManager.t("programs.videoHint"))
+                                            .foregroundColor(AppColors.muted)
+                                    }
+                                }
+                                .font(.system(size: 12))
+                                .padding(.horizontal, 4)
+
+                                // Full-width Add link button
+                                Button(action: addUrl) {
+                                    HStack(spacing: 6) {
+                                        Image(systemName: "plus")
+                                            .font(.system(size: 13, weight: .bold))
+                                        Text(LanguageManager.t("video.addUrlButton"))
+                                            .font(.system(size: 14, weight: .semibold))
+                                    }
+                                    .foregroundColor(canAdd ? AppColors.background : AppColors.muted)
+                                    .frame(maxWidth: .infinity)
                                     .frame(height: 44)
                                     .background(
                                         RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                            .fill(AppColors.background)
-                                            .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(AppColors.border, lineWidth: 1))
-                                    )
-
-                                Button(action: {
-                                    if let clip = UIPasteboard.general.string {
-                                        inputUrl = clip.trimmingCharacters(in: .whitespacesAndNewlines)
-                                    }
-                                }) {
-                                    Text(LanguageManager.t("video.pasteButton"))
-                                        .font(.system(size: 13, weight: .medium))
-                                        .foregroundColor(AppColors.accent)
-                                        .frame(height: 44)
-                                        .padding(.horizontal, 12)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                                .fill(AppColors.surfaceRaised)
-                                                .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(AppColors.border, lineWidth: 1))
-                                        )
-                                }
-                                .buttonStyle(.plain)
-                            }
-
-                            // Validation & Add Button
-                            HStack {
-                                if linkedUrls.count >= 3 {
-                                    Text(LanguageManager.t("video.maxLimitReached"))
-                                        .font(.system(size: 12))
-                                        .foregroundColor(AppColors.muted)
-                                } else if isDuplicate {
-                                    Text(LanguageManager.t("video.duplicateUrl"))
-                                        .font(.system(size: 12))
-                                        .foregroundColor(AppColors.coral)
-                                } else if !inputUrl.isEmpty && !isValidUrl {
-                                    Text(LanguageManager.t("video.invalidUrl"))
-                                        .font(.system(size: 12))
-                                        .foregroundColor(AppColors.danger)
-                                }
-
-                                Spacer()
-
-                                Button(action: addUrl) {
-                                    HStack(spacing: 4) {
-                                        Image(systemName: "plus")
-                                            .font(.system(size: 12, weight: .bold))
-                                        Text(LanguageManager.t("video.addUrlButton"))
-                                            .font(.system(size: 13, weight: .semibold))
-                                    }
-                                    .foregroundColor(canAdd ? AppColors.background : AppColors.muted)
-                                    .padding(.horizontal, 14)
-                                    .padding(.vertical, 8)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 8)
                                             .fill(canAdd ? AppColors.accent : AppColors.surfaceRaised)
                                     )
                                 }
                                 .buttonStyle(.plain)
                                 .disabled(!canAdd)
                             }
+                            .padding(16)
+                            .background(
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .fill(AppColors.surface)
+                                    .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+                            )
+                        } else {
+                            HStack(spacing: 10) {
+                                Image(systemName: "info.circle.fill")
+                                    .font(.system(size: 16))
+                                    .foregroundColor(AppColors.accent)
+
+                                Text(LanguageManager.t("video.maxLimitReached"))
+                                    .font(.system(size: 13))
+                                    .foregroundColor(AppColors.muted)
+
+                                Spacer()
+                            }
+                            .padding(14)
+                            .background(
+                                RoundedRectangle(cornerRadius: 11, style: .continuous)
+                                    .fill(AppColors.surfaceRaised)
+                                    .overlay(RoundedRectangle(cornerRadius: 11, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+                            )
                         }
-                        .padding(16)
-                        .background(
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .fill(AppColors.surface)
-                                .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(AppColors.border, lineWidth: 1))
-                        )
                     }
                     .padding(.horizontal, 20)
                     .padding(.vertical, 10)
