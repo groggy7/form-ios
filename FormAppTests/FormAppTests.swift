@@ -1189,7 +1189,7 @@ final class FormAppTests: XCTestCase {
         let dateString = entry.date
         let historyRecord = store.state.history.first { rec in
             if let calDate = store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(rec.id)" })?.date {
-                if calDate == dateString { return true }
+                return calDate == dateString
             }
             let startDate = WorkoutCalendar.localDate(from: rec.startedAt)
             let completedDate = WorkoutCalendar.localDate(from: rec.completedAt)
@@ -1246,5 +1246,118 @@ final class FormAppTests: XCTestCase {
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
+    }
+
+    func testSessionRecordDoesNotLeakToAnotherDay() {
+        // Monday workout done physically on Saturday (startedAt = 2026-09-05)
+        // but scheduled/mapped to Monday (2026-08-31) in calendarHistory.
+        let mondayRecord = WorkoutSessionRecord(
+            id: "monday-workout-id",
+            programId: "prog-1",
+            workoutId: "w-mon",
+            workoutTitle: "Chest & Triceps",
+            startedAt: "2026-09-05T15:39:17.662Z",
+            completedAt: "2026-09-05T16:06:17.662Z",
+            durationSeconds: 27,
+            totalVolumeKg: 2720,
+            totalCompletedSets: 18,
+            exerciseLogs: [],
+            isComplete: true
+        )
+
+        let calHistory = WorkoutCalendarHistory(
+            nextScheduledDate: "2026-08-31",
+            scheduledWeekdays: [1, 2, 4, 5, 6],
+            missedDates: [],
+            entries: [
+                WorkoutDayEntry(id: "session:monday-workout-id", date: "2026-08-31", status: .completed)
+            ]
+        )
+
+        let history = [mondayRecord]
+
+        // Looking up for Saturday September 5 (2026-09-05)
+        let saturdayDateString = "2026-09-05"
+        let saturdayMatch = history.first { rec in
+            if let calDate = calHistory.entries.first(where: { $0.id == "session:\(rec.id)" })?.date {
+                return calDate == saturdayDateString
+            }
+            let startDate = WorkoutCalendar.localDate(from: rec.startedAt)
+            let completedDate = WorkoutCalendar.localDate(from: rec.completedAt)
+            return startDate == saturdayDateString || completedDate == saturdayDateString
+        }
+
+        XCTAssertNil(saturdayMatch, "Saturday lookup must NOT match Monday's session record even if startedAt was today!")
+
+        // Looking up for Monday August 31 (2026-08-31)
+        let mondayDateString = "2026-08-31"
+        let mondayMatch = history.first { rec in
+            if let calDate = calHistory.entries.first(where: { $0.id == "session:\(rec.id)" })?.date {
+                return calDate == mondayDateString
+            }
+            let startDate = WorkoutCalendar.localDate(from: rec.startedAt)
+            let completedDate = WorkoutCalendar.localDate(from: rec.completedAt)
+            return startDate == mondayDateString || completedDate == mondayDateString
+        }
+
+        XCTAssertNotNil(mondayMatch, "Monday lookup must match Monday's session record")
+        XCTAssertEqual(mondayMatch?.id, "monday-workout-id")
+    }
+
+    func testWorkoutCalendarRestorePrunesOrphanSessionEntries() {
+        let realSession = WorkoutSessionRecord(
+            id: "real-session-id",
+            programId: "prog-1",
+            workoutId: "w-1",
+            workoutTitle: "Upper",
+            startedAt: "2026-08-31T10:00:00Z",
+            completedAt: "2026-08-31T11:00:00Z",
+            durationSeconds: 3600,
+            totalVolumeKg: 1000,
+            totalCompletedSets: 10,
+            exerciseLogs: [],
+            isComplete: true
+        )
+
+        let rawHistory = WorkoutCalendarHistory(
+            nextScheduledDate: "2026-08-31",
+            scheduledWeekdays: [1, 2, 4, 5, 6],
+            missedDates: [],
+            entries: [
+                WorkoutDayEntry(id: "session:real-session-id", date: "2026-08-31", status: .completed),
+                WorkoutDayEntry(id: "session:active-draft-id", date: "2026-09-05", status: .unfinished),
+                WorkoutDayEntry(id: "session:stale-orphan-id", date: "2026-09-05", status: .unfinished)
+            ]
+        )
+
+        // Restore with activeSessionId = "active-draft-id"
+        let restored = WorkoutCalendar.restore(
+            raw: rawHistory,
+            sessions: [realSession],
+            today: "2026-09-05",
+            weekdays: [1, 2, 4, 5, 6],
+            activeSessionId: "active-draft-id"
+        )
+
+        XCTAssertTrue(restored.entries.contains { $0.id == "session:real-session-id" })
+        XCTAssertTrue(restored.entries.contains { $0.id == "session:active-draft-id" })
+        XCTAssertFalse(restored.entries.contains { $0.id == "session:stale-orphan-id" }, "Orphan entry must be pruned!")
+
+        // Restore without activeSession (e.g. idle today)
+        let restoredNoActive = WorkoutCalendar.restore(
+            raw: rawHistory,
+            sessions: [realSession],
+            today: "2026-09-05",
+            weekdays: [1, 2, 4, 5, 6],
+            activeSessionId: nil
+        )
+
+        XCTAssertTrue(restoredNoActive.entries.contains { $0.id == "session:real-session-id" })
+        XCTAssertFalse(restoredNoActive.entries.contains { $0.id == "session:active-draft-id" }, "Inactive draft entry must be pruned")
+        XCTAssertFalse(restoredNoActive.entries.contains { $0.id == "session:stale-orphan-id" }, "Orphan entry must be pruned")
+
+        // Status for Saturday 2026-09-05 must be nil (not unfinished!)
+        let statuses = WorkoutCalendar.statuses(history: restoredNoActive, today: "2026-09-05")
+        XCTAssertNil(statuses["2026-09-05"], "Saturday must have nil status when not started, NOT unfinished")
     }
 }

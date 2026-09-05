@@ -29,11 +29,13 @@ public final class AppStore: ObservableObject {
         var loadedState = Self.loadStoredState()
         let todayStr = WorkoutCalendar.formatDate(Date())
         let weekdays = WorkoutCalendar.weekdays(state: loadedState)
+        let activeDraft = Self.loadActiveSession()
         let restored = WorkoutCalendar.restore(
             raw: loadedState.calendarHistory,
             sessions: loadedState.history,
             today: todayStr,
-            weekdays: weekdays
+            weekdays: weekdays,
+            activeSessionId: activeDraft?.id
         )
         let refreshed = WorkoutCalendar.refresh(
             history: restored,
@@ -42,12 +44,13 @@ public final class AppStore: ObservableObject {
         )
         loadedState.calendarHistory = refreshed
         self.state = loadedState
-        self.activeSession = Self.loadActiveSession()
+        self.activeSession = activeDraft
         self.selectedWorkoutId = loadedState.programs.first { $0.id == loadedState.activeProgramId }?.workouts.first?.id
 
         // Auto-archive stale session if from previous day or > 12 hours old
         self.checkAndArchiveStaleSession()
         self.refreshCatalogue()
+        self.saveState(self.state)
 
         // Sync sound preferences
         $soundEnabled

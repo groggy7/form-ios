@@ -719,13 +719,23 @@ public enum WorkoutCalendar {
         sessions: [WorkoutSessionRecord],
         today: String,
         timeZone: TimeZone = .current,
-        weekdays: [Int]
+        weekdays: [Int],
+        activeSessionId: String? = nil
     ) -> WorkoutCalendarHistory {
         let history = sanitize(raw: raw, today: today)
             ?? WorkoutCalendarHistory(nextScheduledDate: mondayOfCurrentWeek(for: parseDate(today) ?? Date()), scheduledWeekdays: weekdays)
+        let sessionIds = Set(sessions.map { "session:\($0.id)" })
+        let validActiveId = activeSessionId.map { "session:\($0)" }
+
         var entriesMap: [String: WorkoutDayEntry] = [:]
         for entry in history.entries {
-            entriesMap[entry.id] = entry
+            if entry.id.hasPrefix("session:") {
+                if sessionIds.contains(entry.id) || entry.id == validActiveId {
+                    entriesMap[entry.id] = entry
+                }
+            } else {
+                entriesMap[entry.id] = entry
+            }
         }
         for session in sessions {
             let id = "session:\(session.id)"

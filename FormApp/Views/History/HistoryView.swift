@@ -223,7 +223,7 @@ public struct HistoryView: View {
 
         let sessionRecord: WorkoutSessionRecord? = activeRecord ?? store.state.history.first { rec in
             if let calDate = store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(rec.id)" })?.date {
-                if calDate == dateString { return true }
+                return calDate == dateString
             }
             let startDate = WorkoutCalendar.localDate(from: rec.startedAt)
             let completedDate = WorkoutCalendar.localDate(from: rec.completedAt)
@@ -240,10 +240,12 @@ public struct HistoryView: View {
                 ?? store.state.programs.flatMap(\.workouts).first(where: { $0.day == dayOfWeek })
         }
 
+        let effectiveStatus: WorkoutDayStatus = (sessionRecord?.isComplete == true) ? .completed : status
+
         selectedDayDetail = HistoryDayDetailData(
             date: date,
             dateString: dateString,
-            status: status,
+            status: effectiveStatus,
             sessionRecord: sessionRecord,
             workout: workout
         )
@@ -330,8 +332,12 @@ public struct HistoryDayDetailSheet: View {
             ?? detail.workout?.title
             ?? LanguageManager.t("history.scheduledWorkout")
 
+        let items = exerciseProgressList()
+        let allCompleted = !items.isEmpty && items.allSatisfy { $0.completedSets >= $0.plannedSets }
+        let effectiveStatus: WorkoutDayStatus = (detail.status == .unfinished && allCompleted) ? .completed : detail.status
+
         let (statusColor, statusBg, statusText): (Color, Color, String) = {
-            switch detail.status {
+            switch effectiveStatus {
             case .unfinished:
                 return (AppColors.unfinishedOrange, AppColors.unfinishedOrange.opacity(0.15), LanguageManager.t("history.unfinished"))
             case .missed:
@@ -389,12 +395,10 @@ public struct HistoryDayDetailSheet: View {
                 )
 
                 // Detail Content
-                if detail.status == .missed {
+                if effectiveStatus == .missed {
                     missedContentView(workoutTitle: workoutTitle)
-                } else if detail.status == .unfinished {
-                    unfinishedContentView()
                 } else {
-                    EmptyView()
+                    unfinishedContentView(items: items, allCompleted: allCompleted)
                 }
 
                 Spacer().frame(height: 24)
@@ -487,9 +491,13 @@ public struct HistoryDayDetailSheet: View {
         }
     }
 
-    // MARK: Unfinished Content
+    // MARK: Unfinished / Completed Content
     @ViewBuilder
-    private func unfinishedContentView() -> some View {
+    private func unfinishedContentView(items: [ExerciseProgressItem], allCompleted: Bool) -> some View {
+        let sectionTitle = allCompleted
+            ? LanguageManager.t("history.allExercises")
+            : LanguageManager.t("history.uncompletedExercises")
+
         VStack(alignment: .leading, spacing: 20) {
             // Stats Row (Duration, Sets, Volume)
             if let rec = detail.sessionRecord {
@@ -509,13 +517,12 @@ public struct HistoryDayDetailSheet: View {
                 }
             }
 
-            // Breakdown of what was / wasn't completed
+            // Breakdown of exercises
             VStack(alignment: .leading, spacing: 12) {
-                Text(LanguageManager.t("history.uncompletedExercises"))
+                Text(sectionTitle)
                     .font(.system(size: 15, weight: .semibold))
                     .foregroundColor(AppColors.text)
 
-                let items = exerciseProgressList()
                 ForEach(items) { item in
                     exerciseProgressCard(item: item)
                 }
