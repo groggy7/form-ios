@@ -80,7 +80,7 @@ public struct ExerciseDetailSheet: View {
                     // Technique Cues
                     let cuesText = currentExercise.displayCues.trimmingCharacters(in: .whitespacesAndNewlines)
                     if !cuesText.isEmpty {
-                        techniqueSection(
+                        TechniqueSectionView(
                             title: LanguageManager.t("modal.exercise.cues"),
                             text: cuesText,
                             accent: AppColors.accent,
@@ -91,7 +91,7 @@ public struct ExerciseDetailSheet: View {
                     // What to Avoid
                     let avoidText = currentExercise.displayAvoid.trimmingCharacters(in: .whitespacesAndNewlines)
                     if !avoidText.isEmpty {
-                        techniqueSection(
+                        TechniqueSectionView(
                             title: LanguageManager.t("modal.exercise.avoid"),
                             text: avoidText,
                             accent: AppColors.danger,
@@ -131,30 +131,57 @@ public struct ExerciseDetailSheet: View {
             }
         }
     }
+}
 
-    private func techniqueSection(title: String, text: String, accent: Color, isAvoid: Bool) -> some View {
+struct TechniqueSectionView: View {
+    let title: String
+    let text: String
+    let accent: Color
+    let isAvoid: Bool
+    @State private var isExpanded: Bool
+
+    init(title: String, text: String, accent: Color, isAvoid: Bool, initiallyExpanded: Bool = false) {
+        self.title = title
+        self.text = text
+        self.accent = accent
+        self.isAvoid = isAvoid
+        self._isExpanded = State(initialValue: initiallyExpanded)
+    }
+
+    var body: some View {
         let lines = text.components(separatedBy: .newlines)
             .map { $0.trimmingCharacters(in: .whitespaces) }
             .filter { !$0.isEmpty }
 
-        return VStack(alignment: .leading, spacing: 9) {
-            Text(title)
-                .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(accent)
+        VStack(alignment: .leading, spacing: isExpanded ? 12 : 0) {
+            HStack {
+                Text(title)
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(accent)
 
-            VStack(alignment: .leading, spacing: 9) {
-                ForEach(Array(lines.enumerated()), id: \.offset) { _, line in
-                    HStack(alignment: .top, spacing: 9) {
-                        Image(systemName: isAvoid ? "xmark" : "checkmark")
-                            .font(.system(size: 12, weight: .bold))
-                            .foregroundColor(accent)
-                            .padding(.top, 3)
+                Spacer()
 
-                        let cleanLine = line.hasPrefix("- ") ? String(line.dropFirst(2)) : line
-                        Text(LanguageManager.content(cleanLine))
-                            .font(.system(size: 14))
-                            .lineSpacing(4)
-                            .foregroundColor(AppColors.secondaryText)
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(AppColors.muted)
+                    .rotationEffect(.degrees(isExpanded ? 180 : 0))
+            }
+
+            if isExpanded {
+                VStack(alignment: .leading, spacing: 9) {
+                    ForEach(Array(lines.enumerated()), id: \.offset) { _, line in
+                        HStack(alignment: .top, spacing: 9) {
+                            Image(systemName: isAvoid ? "xmark" : "checkmark")
+                                .font(.system(size: 12, weight: .bold))
+                                .foregroundColor(accent)
+                                .padding(.top, 3)
+
+                            let cleanLine = line.hasPrefix("- ") ? String(line.dropFirst(2)) : line
+                            Text(LanguageManager.content(cleanLine))
+                                .font(.system(size: 14))
+                                .lineSpacing(4)
+                                .foregroundColor(AppColors.secondaryText)
+                        }
                     }
                 }
             }
@@ -164,5 +191,11 @@ public struct ExerciseDetailSheet: View {
         .background(AppColors.surface)
         .cornerRadius(12)
         .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
+        .contentShape(Rectangle())
+        .onTapGesture {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isExpanded.toggle()
+            }
+        }
     }
 }

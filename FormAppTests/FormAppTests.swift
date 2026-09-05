@@ -257,6 +257,50 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
+    func testExerciseDetailTechniqueSectionsExpandedSnapshot() {
+        let cuesView = VStack(spacing: 16) {
+            TechniqueSectionView(
+                title: "Technique cues",
+                text: "Plant heels, arch upper back, tuck shoulder blades.\nLower bar to sternum under control.\nExplode upward with leg drive.",
+                accent: AppColors.accent,
+                isAvoid: false,
+                initiallyExpanded: true
+            )
+
+            TechniqueSectionView(
+                title: "What to avoid",
+                text: "Bouncing bar off ribcage.\nButt lifting off the bench.",
+                accent: AppColors.danger,
+                isAvoid: true,
+                initiallyExpanded: true
+            )
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity)
+        .background(AppColors.background)
+
+        let controller = UIHostingController(rootView: cuesView)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 420)
+        controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 420))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_exercise_detail_expanded_cues.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
+
+    @MainActor
     func testProgramsViewSnapshot() {
         let store = AppStore.shared
         let programsView = ProgramsView(store: store, onDismiss: {})
