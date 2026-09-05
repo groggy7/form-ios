@@ -637,9 +637,7 @@ public struct HistoryDayDetailSheet: View {
 
                 // Merged & Expandable/Collapsible Not-Started Exercises Card
                 if !unstartedExercises.isEmpty {
-                    let headerTitle = (effectiveStatus == .missed || (completedExercises.isEmpty && halfwayExercises.isEmpty))
-                        ? LanguageManager.formatUncompletedExercisesCount(unstartedExercises.count)
-                        : LanguageManager.formatOtherExercises(unstartedExercises.count)
+                    let headerTitle = LanguageManager.formatUncompletedExercisesCount(unstartedExercises.count)
                     let summaryNames = unstartedExercises.map(\.name).joined(separator: ", ")
 
                     VStack(alignment: .leading, spacing: 12) {
