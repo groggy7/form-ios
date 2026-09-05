@@ -1,9 +1,6 @@
-[
-  {
-    "id": "ab-wheel-rollout",
+{
+  "ab-wheel-rollout": {
     "name": "Ab Wheel Rollout",
-    "movementType": "core",
-    "movementAssetId": "ab-wheel-rollout",
     "cues": [
       "Kneel on pad; tuck pelvis into posterior tilt, round upper back slightly, and brace abs hard.",
       "Roll wheel forward under control, extending arms while keeping lower back from sagging.",
@@ -16,11 +13,8 @@
       "Rolling out further than abdominal strength can stabilize."
     ]
   },
-  {
-    "id": "barbell-back-squat",
+  "barbell-back-squat": {
     "name": "Barbell Back Squat",
-    "movementType": "squat",
-    "movementAssetId": "barbell-back-squat",
     "cues": [
       "Set bar firmly on upper traps/shelf; pull bar down into back to engage lats.",
       "Take a 360° diaphragmatic breath into abdomen; break at hips and knees simultaneously.",
@@ -33,11 +27,8 @@
       "Rounding or hyperextending lumbar spine at the bottom."
     ]
   },
-  {
-    "id": "barbell-bench-press",
+  "barbell-bench-press": {
     "name": "Barbell Bench Press",
-    "movementType": "press",
-    "movementAssetId": "barbell-bench-press",
     "cues": [
       "Lie with eyes under bar; plant feet firmly and pin shoulder blades down and back into bench.",
       "Grip bar slightly wider than shoulder-width; unrack and stabilize directly over shoulders.",
@@ -50,11 +41,8 @@
       "Letting wrists bend completely backward under bar."
     ]
   },
-  {
-    "id": "barbell-front-squat",
+  "barbell-front-squat": {
     "name": "Barbell Front Squat",
-    "movementType": "squat",
-    "movementAssetId": "barbell-front-squat",
     "cues": [
       "Rest bar on front deltoids with fingertip clean grip (or cross-arm grip), elbows high and parallel to floor.",
       "Maintain a vertical torso and brace core tightly throughout descent.",
@@ -66,11 +54,8 @@
       "Heels lifting off floor or weight shifting excessively onto toes."
     ]
   },
-  {
-    "id": "barbell-hip-thrust",
+  "barbell-hip-thrust": {
     "name": "Barbell Hip Thrust",
-    "movementType": "hinge",
-    "movementAssetId": "barbell-hip-thrust",
     "cues": [
       "Position bench edge just below shoulder blades; rest padded bar across hip crease.",
       "Set feet shoulder-width so shins are strictly vertical (90°) at full extension.",
@@ -83,11 +68,8 @@
       "Letting knees collapse inward during hip extension."
     ]
   },
-  {
-    "id": "barbell-romanian-deadlift",
+  "barbell-romanian-deadlift": {
     "name": "Barbell Romanian Deadlift",
-    "movementType": "hinge",
-    "movementAssetId": "barbell-romanian-deadlift",
     "cues": [
       "Stand tall with a shoulder-width grip, lats engaged to keep bar pinned against thighs.",
       "Soften knees slightly and lock that knee angle in place throughout the rep.",
@@ -100,11 +82,8 @@
       "Allowing bar to drift forward away from legs."
     ]
   },
-  {
-    "id": "barbell-row",
+  "barbell-row": {
     "name": "Barbell Row",
-    "movementType": "row",
-    "movementAssetId": "barbell-row",
     "cues": [
       "Hinge at hips with torso angled at ~45 degrees, lower back flat, knees softly bent.",
       "Take an overhand grip slightly wider than shoulder-width, bar hanging over mid-foot.",
@@ -117,11 +96,8 @@
       "Letting shoulders roll forward at the bottom of the rep."
     ]
   },
-  {
-    "id": "bulgarian-split-squat",
+  "bulgarian-split-squat": {
     "name": "Bulgarian Split Squat",
-    "movementType": "lunge",
-    "movementAssetId": "rear-foot-elevated-split-squat",
     "cues": [
       "Place laces of rear foot on bench; step front foot forward into a balanced split stance.",
       "Maintain a slight forward torso lean (~15°) with a braced, neutral spine.",
@@ -134,11 +110,8 @@
       "Hyperextending lower back by trying to stay unnaturally upright."
     ]
   },
-  {
-    "id": "cable-lateral-raise",
+  "cable-lateral-raise": {
     "name": "Cable Lateral Raise",
-    "movementType": "shoulder-raise",
-    "movementAssetId": "cable-lateral-raise",
     "cues": [
       "Set pulley at knee or wrist height; stand tall with cable crossing in front or behind body.",
       "Raise arm out and slightly forward in the scapular plane (~30° in front of torso).",
@@ -151,11 +124,8 @@
       "Internally rotating shoulder ('pouring a pitcher of water') during the raise."
     ]
   },
-  {
-    "id": "chest-supported-dumbbell-row",
+  "chest-supported-dumbbell-row": {
     "name": "Chest-Supported Dumbbell Row",
-    "movementType": "row",
-    "movementAssetId": "chest-supported-dumbbell-row",
     "cues": [
       "Set bench to a 30–45 degree incline; rest chest firmly against pad with feet planted.",
       "Allow dumbbells to hang straight down at full arm extension, letting shoulder blades stretch open.",
@@ -168,11 +138,8 @@
       "Pulling with arms/biceps instead of driving through elbows and scapulae."
     ]
   },
-  {
-    "id": "conventional-barbell-deadlift",
+  "conventional-barbell-deadlift": {
     "name": "Conventional Barbell Deadlift",
-    "movementType": "hinge",
-    "movementAssetId": "conventional-barbell-deadlift",
     "cues": [
       "Set feet hip-width with bar over mid-foot (1 inch from shins); grip just outside legs.",
       "Pull chest tall, engage lats ('protect armpits'), and pull the slack out of the barbell.",
@@ -186,11 +153,8 @@
       "Letting bar drift forward away from legs."
     ]
   },
-  {
-    "id": "dead-bug",
+  "dead-bug": {
     "name": "Dead Bug",
-    "movementType": "core",
-    "movementAssetId": "dead-bug",
     "cues": [
       "Lie flat on back with arms extended toward ceiling and knees/hips bent at 90 degrees.",
       "Press lower back aggressively flat into floor, eliminating all space under spine.",
@@ -203,11 +167,8 @@
       "Letting extended heel slam or rest on floor."
     ]
   },
-  {
-    "id": "dumbbell-bench-press",
+  "dumbbell-bench-press": {
     "name": "Dumbbell Bench Press",
-    "movementType": "press",
-    "movementAssetId": "dumbbell-bench-press",
     "cues": [
       "Retract shoulder blades into bench, plant feet firmly, and hold dumbbells over chest.",
       "Lower dumbbells with control, maintaining vertical forearms and elbows tucked at 45–60°.",
@@ -220,11 +181,8 @@
       "Allowing forearms to angle inward or outward."
     ]
   },
-  {
-    "id": "dumbbell-floor-press",
+  "dumbbell-floor-press": {
     "name": "Dumbbell Floor Press",
-    "movementType": "press",
-    "movementAssetId": "dumbbell-floor-press",
     "cues": [
       "Lie flat on floor with knees bent and feet flat; retract shoulder blades into floor.",
       "Hold dumbbells over chest with wrists neutral and elbows tucked at ~45° from torso.",
@@ -237,11 +195,8 @@
       "Letting wrists collapse backward."
     ]
   },
-  {
-    "id": "dumbbell-hammer-curl",
+  "dumbbell-hammer-curl": {
     "name": "Dumbbell Hammer Curl",
-    "movementType": "curl",
-    "movementAssetId": "dumbbell-hammer-curl",
     "cues": [
       "Stand tall holding dumbbells with a neutral grip (palms facing each other).",
       "Keep elbows pinned close to ribs; curl dumbbells upward in line with shoulders.",
@@ -254,11 +209,8 @@
       "Letting wrists flex or curl inward."
     ]
   },
-  {
-    "id": "dumbbell-lateral-raise",
+  "dumbbell-lateral-raise": {
     "name": "Dumbbell Lateral Raise",
-    "movementType": "shoulder-raise",
-    "movementAssetId": "dumbbell-lateral-raise",
     "cues": [
       "Stand tall with a slight forward torso hinge (10–15°) and dumbbells at your sides.",
       "Raise dumbbells outward toward walls in the scapular plane (~30° in front of torso).",
@@ -271,11 +223,8 @@
       "Internally rotating wrists/shoulders at top (thumbs pointed down)."
     ]
   },
-  {
-    "id": "dumbbell-romanian-deadlift",
+  "dumbbell-romanian-deadlift": {
     "name": "Dumbbell Romanian Deadlift",
-    "movementType": "hinge",
-    "movementAssetId": "dumbbell-romanian-deadlift",
     "cues": [
       "Hold dumbbells against front of thighs with shoulders packed and core braced.",
       "Soften knees and push hips straight back horizontally into a deep hamstring stretch.",
@@ -288,11 +237,8 @@
       "Squatting the knees forward."
     ]
   },
-  {
-    "id": "dumbbell-step-up",
+  "dumbbell-step-up": {
     "name": "Dumbbell Step-Up",
-    "movementType": "lunge",
-    "movementAssetId": "dumbbell-step-up",
     "cues": [
       "Hold dumbbells at sides; place entire foot flat on a knee-height box or bench.",
       "Lean torso slightly forward (~10–15°) to center weight over front working leg.",
@@ -305,11 +251,8 @@
       "Slamming down onto floor during descent."
     ]
   },
-  {
-    "id": "ez-bar-curl",
+  "ez-bar-curl": {
     "name": "EZ-Bar Curl",
-    "movementType": "curl",
-    "movementAssetId": "ez-bar-curl",
     "cues": [
       "Grip the angled camber of the EZ-bar with palms facing upward and wrists comfortable.",
       "Pin elbows to your sides and brace core; stand tall with knees soft.",
@@ -322,11 +265,8 @@
       "Cutting bottom range of motion short before full extension."
     ]
   },
-  {
-    "id": "face-pull",
+  "face-pull": {
     "name": "Face Pull",
-    "movementType": "row",
-    "movementAssetId": "band-face-pull",
     "cues": [
       "Set cable pulley to eye level with rope attachment; grip rope with thumbs pointing backward.",
       "Step back into an athletic staggered stance with core braced and ribs pulled down.",
@@ -339,11 +279,8 @@
       "Allowing elbows to drop below wrist level (internal rotation fault)."
     ]
   },
-  {
-    "id": "farmer-carry",
+  "farmer-carry": {
     "name": "Farmer Carry",
-    "movementType": "core",
-    "movementAssetId": "farmer-carry",
     "cues": [
       "Deadlift weights to sides with a braced spine; stand tall with chest up and ribs down.",
       "Pack shoulder blades down and back ('anti-shrug') with an intense crush grip.",
@@ -356,11 +293,8 @@
       "Taking long, uncontrolled strides that cause weights to bang against legs."
     ]
   },
-  {
-    "id": "goblet-squat",
+  "goblet-squat": {
     "name": "Goblet Squat",
-    "movementType": "squat",
-    "movementAssetId": "kettlebell-goblet-squat",
     "cues": [
       "Cup hands under top dumbbell head, holding it vertically flush against upper chest.",
       "Set feet slightly wider than shoulder-width, toes turned out 20–30°.",
@@ -372,11 +306,8 @@
       "Heels lifting off the floor or lower back rounding at the bottom."
     ]
   },
-  {
-    "id": "hanging-knee-raise",
+  "hanging-knee-raise": {
     "name": "Hanging Knee Raise",
-    "movementType": "core",
-    "movementAssetId": "hanging-knee-raise",
     "cues": [
       "Hang from bar with an overhand grip, engaging shoulders down and back (active hang).",
       "Squeeze legs together; curl pelvis upward toward chest as knees rise.",
@@ -389,11 +320,8 @@
       "Hanging passively with relaxed shoulders shrugged to ears."
     ]
   },
-  {
-    "id": "incline-barbell-bench-press",
+  "incline-barbell-bench-press": {
     "name": "Incline Barbell Bench Press",
-    "movementType": "press",
-    "movementAssetId": "incline-barbell-bench-press",
     "cues": [
       "Set bench to 30 degrees; plant feet firmly and pin shoulder blades into pad.",
       "Grip slightly wider than shoulder width; unrack bar directly over upper chest.",
@@ -406,11 +334,8 @@
       "Arching lower back excessively (which flattens the torso and eliminates incline angle)."
     ]
   },
-  {
-    "id": "incline-dumbbell-curl",
+  "incline-dumbbell-curl": {
     "name": "Incline Dumbbell Curl",
-    "movementType": "curl",
-    "movementAssetId": "incline-dumbbell-curl",
     "cues": [
       "Set bench to 55–60 degrees; sit back with head and torso supported by pad.",
       "Let arms hang straight down toward floor, keeping upper arms strictly vertical.",
@@ -423,11 +348,8 @@
       "Cutting the eccentric stretch short."
     ]
   },
-  {
-    "id": "incline-dumbbell-press",
+  "incline-dumbbell-press": {
     "name": "Incline Dumbbell Press",
-    "movementType": "press",
-    "movementAssetId": "incline-dumbbell-press",
     "cues": [
       "Set bench to 30 degrees; retract shoulder blades and plant feet firmly on floor.",
       "Lower dumbbells under control to sides of upper chest, elbows angled at 45–60°.",
@@ -440,11 +362,8 @@
       "Banging dumbbells together at top of rep."
     ]
   },
-  {
-    "id": "jump-rope",
+  "jump-rope": {
     "name": "Jump Rope",
-    "movementType": "conditioning",
-    "movementAssetId": "jump-rope",
     "cues": [
       "Keep elbows pinned close to ribs, turning the rope primarily with relaxed wrists.",
       "Jump lightly on balls of feet, clearing floor by only 1–2 inches per rotation.",
@@ -457,11 +376,8 @@
       "Landing stiff-legged or flat on heels."
     ]
   },
-  {
-    "id": "kettlebell-swing",
+  "kettlebell-swing": {
     "name": "Kettlebell Swing",
-    "movementType": "hinge",
-    "movementAssetId": "kettlebell-swing",
     "cues": [
       "Stand 1 foot behind bell; hike bell backward high between inner thighs like a football snap.",
       "Drive hips forward explosively, snapping hips to standing with glutes and abs clenched.",
@@ -474,11 +390,8 @@
       "Leaning back and hyperextending lumbar spine at top of swing."
     ]
   },
-  {
-    "id": "kneeling-cable-crunch",
+  "kneeling-cable-crunch": {
     "name": "Kneeling Cable Crunch",
-    "movementType": "core",
-    "movementAssetId": "kneeling-cable-crunch",
     "cues": [
       "Kneel facing cable; glue rope handles to sides of forehead/ears with hands fixed.",
       "Keep hips high and stationary throughout; do not let hips sit back toward heels.",
@@ -491,11 +404,8 @@
       "Keeping spine straight and hinging at hips."
     ]
   },
-  {
-    "id": "lat-pulldown",
+  "lat-pulldown": {
     "name": "Lat Pulldown",
-    "movementType": "pull-up",
-    "movementAssetId": "lat-pulldown",
     "cues": [
       "Adjust thigh pads securely over legs; grip bar slightly wider than shoulder width.",
       "Lean torso back slightly (10–15 degrees) with chest proud and shoulder blades depressed.",
@@ -508,11 +418,8 @@
       "Pulling bar behind neck or yanking down to stomach."
     ]
   },
-  {
-    "id": "leg-extension",
+  "leg-extension": {
     "name": "Leg Extension",
-    "movementType": "squat",
-    "movementAssetId": "leg-extension",
     "cues": [
       "Align machine pivot point directly with your knee joints; adjust shin pad just above ankles.",
       "Grip side handles firmly to lock hips and pelvis down into the seat throughout the set.",
@@ -524,11 +431,8 @@
       "Letting the weight stack slam between reps."
     ]
   },
-  {
-    "id": "leg-press",
+  "leg-press": {
     "name": "Leg Press",
-    "movementType": "squat",
-    "movementAssetId": "leg-press-45-degree",
     "cues": [
       "Place feet shoulder-width on center of platform, knees in line with toes.",
       "Pull seat handles firmly to anchor your hips and lower back flat against back pad.",
@@ -541,11 +445,8 @@
       "Knees caving inward during the descent or initial press."
     ]
   },
-  {
-    "id": "lying-leg-curl",
+  "lying-leg-curl": {
     "name": "Lying Leg Curl",
-    "movementType": "hinge",
-    "movementAssetId": "lying-leg-curl",
     "cues": [
       "Align knee joints with machine pivot point; position pad on lower calf just above Achilles.",
       "Grip handles firmly to pull your hips and pelvis flat into the bench.",
@@ -557,11 +458,8 @@
       "Using ballistic momentum or kicking weights up quickly."
     ]
   },
-  {
-    "id": "one-arm-dumbbell-row",
+  "one-arm-dumbbell-row": {
     "name": "One-Arm Dumbbell Row",
-    "movementType": "row",
-    "movementAssetId": "one-arm-dumbbell-row",
     "cues": [
       "Place same-side knee and hand firmly on flat bench; keep spine flat and hips square to floor.",
       "Let dumbbell hang directly below shoulder, feeling a full lat stretch at bottom.",
@@ -574,11 +472,8 @@
       "Pulling straight up to chest like a bicep curl rather than arcing back to hip."
     ]
   },
-  {
-    "id": "overhead-cable-triceps-extension",
+  "overhead-cable-triceps-extension": {
     "name": "Overhead Cable Triceps Extension",
-    "movementType": "triceps",
-    "movementAssetId": "overhead-cable-triceps-extension",
     "cues": [
       "Set pulley at head/shoulder height; face away in a stable staggered split stance.",
       "Position upper arms alongside ears and forward (~45°), keeping elbows fixed in place.",
@@ -591,11 +486,8 @@
       "Moving upper arms back and forth instead of pivoting strictly at elbow joint."
     ]
   },
-  {
-    "id": "pallof-press",
+  "pallof-press": {
     "name": "Pallof Press",
-    "movementType": "core",
-    "movementAssetId": "pallof-press",
     "cues": [
       "Stand perpendicular to cable in an athletic shoulder-width stance, knees slightly bent.",
       "Hold handle with both hands tight against center of chest, core braced and ribs down.",
@@ -608,11 +500,8 @@
       "Rushing through reps without pausing at full extension."
     ]
   },
-  {
-    "id": "pec-deck-fly",
+  "pec-deck-fly": {
     "name": "Pec Deck Fly",
-    "movementType": "press",
-    "movementAssetId": "pec-deck-fly",
     "cues": [
       "Adjust seat height so handles align with mid-chest; plant feet firmly on floor.",
       "Set a slight, fixed bend in elbows (~15°) and keep chest proud against back pad.",
@@ -625,11 +514,8 @@
       "Bending elbows excessively to turn the fly into a chest press."
     ]
   },
-  {
-    "id": "pull-ups",
+  "pull-ups": {
     "name": "Pull-Ups",
-    "movementType": "pull-up",
-    "movementAssetId": "weighted-pull-up",
     "cues": [
       "Hang with an overhand grip slightly wider than shoulders in a full dead hang.",
       "Initiate pull by depressing shoulder blades down and back ('pull shoulders into back pockets').",
@@ -642,11 +528,8 @@
       "Performing half reps by failing to lock out into a dead hang at bottom."
     ]
   },
-  {
-    "id": "push-press",
+  "push-press": {
     "name": "Push Press",
-    "movementType": "press",
-    "movementAssetId": "push-press",
     "cues": [
       "Set bar in front rack across shoulders, hands just outside shoulders, core braced.",
       "Dip knees 3–4 inches vertically, keeping torso strictly upright (do not hinge forward).",
@@ -659,11 +542,8 @@
       "Re-bending knees to catch the bar (push press requires catching with straight legs)."
     ]
   },
-  {
-    "id": "push-ups",
+  "push-ups": {
     "name": "Push-Ups",
-    "movementType": "press",
-    "movementAssetId": "push-up",
     "cues": [
       "Set hands slightly wider than shoulder width; create a rigid plank from head to heels.",
       "Lower body as a single unit until chest touches or hovers 1 inch above floor.",
@@ -676,11 +556,8 @@
       "Craning neck down to touch floor before chest."
     ]
   },
-  {
-    "id": "rope-triceps-pressdown",
+  "rope-triceps-pressdown": {
     "name": "Rope Triceps Pressdown",
-    "movementType": "triceps",
-    "movementAssetId": "rope-triceps-pressdown",
     "cues": [
       "Stand tall with a slight forward torso lean; pin elbows firmly against sides of ribcage.",
       "Grip rope with neutral hands; press straight down until elbows are fully extended.",
@@ -693,11 +570,8 @@
       "Leaning bodyweight down on top of rope to push with chest and shoulders."
     ]
   },
-  {
-    "id": "seated-leg-curl",
+  "seated-leg-curl": {
     "name": "Seated Leg Curl",
-    "movementType": "hinge",
-    "movementAssetId": "seated-leg-curl",
     "cues": [
       "Adjust backrest so knee joints align with machine pivot; lock thigh pad tightly over lower quads.",
       "Position ankle pad against lower calves/Achilles; keep toes neutral or slightly dorsiflexed.",
@@ -710,11 +584,8 @@
       "Leaning torso far back during the pull."
     ]
   },
-  {
-    "id": "seated-machine-calf-raise",
+  "seated-machine-calf-raise": {
     "name": "Seated Machine Calf Raise",
-    "movementType": "calf",
-    "movementAssetId": "seated-machine-calf-raise",
     "cues": [
       "Sit with balls of feet on platform; adjust thigh pad firmly over lower quads (above knees).",
       "Lower heels down into a deep calf stretch; hold the bottom stretch for 2 full seconds.",
@@ -727,11 +598,8 @@
       "Setting thigh pad too high up on mid-thighs, causing instability."
     ]
   },
-  {
-    "id": "side-plank",
+  "side-plank": {
     "name": "Side Plank",
-    "movementType": "core",
-    "movementAssetId": "side-plank",
     "cues": [
       "Lie on side with elbow directly beneath shoulder, forearms flat, feet stacked or staggered.",
       "Lift hips off floor to create a straight, unbroken diagonal line from head to heels.",
@@ -744,11 +612,8 @@
       "Shrugging supporting shoulder up toward ear."
     ]
   },
-  {
-    "id": "single-leg-calf-raise",
+  "single-leg-calf-raise": {
     "name": "Single-Leg Calf Raise",
-    "movementType": "calf",
-    "movementAssetId": "single-leg-calf-raise",
     "cues": [
       "Place ball of working foot on edge of step; lightly hold wall or rack with one hand for balance.",
       "Keep working leg straight (micro-soft knee) and let non-working leg hang freely.",
@@ -761,11 +626,8 @@
       "Rolling ankle outward onto pinky toe at peak height."
     ]
   },
-  {
-    "id": "standing-barbell-overhead-press",
+  "standing-barbell-overhead-press": {
     "name": "Standing Barbell Overhead Press",
-    "movementType": "press",
-    "movementAssetId": "standing-barbell-overhead-press",
     "cues": [
       "Grip bar just outside shoulders; rest bar on front delts with forearms vertical and elbows slightly forward.",
       "Squeeze glutes, quads, and abs to create an immovable base.",
@@ -778,11 +640,8 @@
       "Pressing bar in a wide, looping forward arc around head."
     ]
   },
-  {
-    "id": "standing-machine-calf-raise",
+  "standing-machine-calf-raise": {
     "name": "Standing Machine Calf Raise",
-    "movementType": "calf",
-    "movementAssetId": "standing-machine-calf-raise",
     "cues": [
       "Place balls of feet on edge of block, shoulder-width; keep knees straight with a micro-bend.",
       "Lower heels as deep as ankle mobility allows; hold a full 2-second stretch at the bottom.",
@@ -795,11 +654,8 @@
       "Rolling ankles outward onto pinky toes."
     ]
   },
-  {
-    "id": "straight-bar-cable-triceps-pressdown",
+  "straight-bar-cable-triceps-pressdown": {
     "name": "Straight Bar Cable Triceps Pressdown",
-    "movementType": "triceps",
-    "movementAssetId": "straight-bar-cable-triceps-pressdown",
     "cues": [
       "Take an overhand grip on straight bar with hands shoulder-width apart.",
       "Pin elbows firmly to sides of torso and maintain a slight athletic forward hinge.",
@@ -812,11 +668,8 @@
       "Excessive wrist flexion (curling wrists down)."
     ]
   },
-  {
-    "id": "trap-bar-deadlift",
+  "trap-bar-deadlift": {
     "name": "Trap Bar Deadlift",
-    "movementType": "hinge",
-    "movementAssetId": "trap-bar-deadlift",
     "cues": [
       "Stand centered between handles with feet hip-to-shoulder-width; grip center of handles.",
       "Drop hips into a hybrid hinge-squat, chest proud, lats engaged to set spine neutral.",
@@ -829,4 +682,4 @@
       "Shrugging shoulders or hyperextending spine at lockout."
     ]
   }
-]
+}

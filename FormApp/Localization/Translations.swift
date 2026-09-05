@@ -44,28 +44,31 @@ public enum ContentDictionary {
     public static var canonicalMap: [String: String] {
         if let cached = _canonicalMap { return cached }
         var map: [String: String] = [:]
-        for def in ExerciseCatalog.canonicalExercises.values {
-            for (en, tr) in zip(def.cues, def.cuesTr) {
-                let e = en.trimmingCharacters(in: .whitespaces)
-                let t = tr.trimmingCharacters(in: .whitespaces)
+        let enDict = ContentLocalizer.shared.loadExercises(lang: "en")
+        let trDict = ContentLocalizer.shared.loadExercises(lang: "tr")
+        for (id, trDef) in trDict {
+            guard let enDef = enDict[id] else { continue }
+            for (en, tr) in zip(enDef.cues ?? [], trDef.cues ?? []) {
+                let e = en.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                let t = tr.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
                 if !e.isEmpty && !t.isEmpty {
                     map[e] = t
                 }
             }
-            for (en, tr) in zip(def.avoid, def.avoidTr) {
-                let e = en.trimmingCharacters(in: .whitespaces)
-                let t = tr.trimmingCharacters(in: .whitespaces)
+            for (en, tr) in zip(enDef.avoid ?? [], trDef.avoid ?? []) {
+                let e = en.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+                let t = tr.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
                 if !e.isEmpty && !t.isEmpty {
                     map[e] = t
                 }
             }
-            let cuesEn = def.cuesText.trimmingCharacters(in: .whitespaces)
-            let cuesTr = def.cuesTrText.trimmingCharacters(in: .whitespaces)
+            let cuesEn = (enDef.cues ?? []).joined(separator: "\n").trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            let cuesTr = (trDef.cues ?? []).joined(separator: "\n").trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             if !cuesEn.isEmpty && !cuesTr.isEmpty {
                 map[cuesEn] = cuesTr
             }
-            let avoidEn = def.avoidText.trimmingCharacters(in: .whitespaces)
-            let avoidTr = def.avoidTrText.trimmingCharacters(in: .whitespaces)
+            let avoidEn = (enDef.avoid ?? []).joined(separator: "\n").trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+            let avoidTr = (trDef.avoid ?? []).joined(separator: "\n").trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             if !avoidEn.isEmpty && !avoidTr.isEmpty {
                 map[avoidEn] = avoidTr
             }

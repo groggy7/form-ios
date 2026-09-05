@@ -878,8 +878,10 @@ final class FormAppTests: XCTestCase {
     func testCanonicalExercisesProvideTurkishCuesAndAvoid() {
         let canonical = Array(ExerciseCatalog.canonicalExercises.values)
         XCTAssertEqual(canonical.count, 49)
-        XCTAssertEqual(canonical.filter { !$0.cuesTr.isEmpty }.count, 49)
-        XCTAssertEqual(canonical.filter { !$0.avoidTr.isEmpty }.count, 49)
+        let trExercises = ContentLocalizer.shared.loadExercises(lang: "tr")
+        XCTAssertEqual(trExercises.count, 49)
+        XCTAssertEqual(trExercises.values.filter { ($0.cues ?? []).count > 0 }.count, 49)
+        XCTAssertEqual(trExercises.values.filter { ($0.avoid ?? []).count > 0 }.count, 49)
 
         guard let bench = canonical.first(where: { $0.id == "barbell-bench-press" }) else {
             XCTFail("Missing bench press definition")
@@ -899,6 +901,30 @@ final class FormAppTests: XCTestCase {
 
         let firstCue = bench.cues.first!
         let localizedFirstCue = LanguageManager.content(firstCue)
-        XCTAssertEqual(localizedFirstCue, bench.cuesTr.first!)
+        XCTAssertEqual(localizedFirstCue, trExercises["barbell-bench-press"]?.cues?.first)
+    }
+
+    func testContentLocalizerResolution() {
+        LanguageManager.setLanguage("tr")
+        defer { LanguageManager.setLanguage("en") }
+
+        let pullUps = Exercise(name: "Pull-Ups", exerciseId: "pull-ups")
+        XCTAssertEqual(pullUps.displayName, "Barfiks")
+        XCTAssertTrue(pullUps.displayCues.contains("Barı omuzlardan biraz geniş"))
+
+        let bench = Exercise(name: "Barbell Bench Press", exerciseId: "barbell-bench-press")
+        XCTAssertEqual(bench.displayName, "Barbell Bench Press")
+
+        let workout = Workout(id: "pb-squat-strength", day: 1, title: "Heavy Squat", focus: "Maximal squat power, quad density, and core bracing")
+        XCTAssertEqual(workout.displayTitle(programId: "powerbuilding-strength"), "Ağır Squat")
+        XCTAssertEqual(workout.displayFocus(programId: "powerbuilding-strength"), "Maksimum squat gücü, ön bacak hacmi ve gövde sertliği")
+
+        let program = Program(id: "powerbuilding-strength", name: "Heavy & Built: 4-Day Powerbuilding")
+        XCTAssertEqual(program.displayName, "Güç ve Kütle: 4 Günlük Powerbuilding")
+
+        // English check
+        LanguageManager.setLanguage("en")
+        XCTAssertEqual(pullUps.displayName, "Pull-Ups")
+        XCTAssertEqual(workout.displayTitle(programId: "powerbuilding-strength"), "Heavy Squat")
     }
 }

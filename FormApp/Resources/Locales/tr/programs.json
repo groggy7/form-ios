@@ -1,0 +1,172 @@
+{
+  "aesthetic-hypertrophy": {
+    "name": "Estetik Gelişim: 5 Günlük Hipertrofi",
+    "description": "Ticari spor salonu ekipmanlarıyla maksimum hipertrofi, yapısal denge ve estetik kas gelişimi için tasarlanmış 5 günlük vücut geliştirme programı.",
+    "guidelines": [
+      "Yüksek mekanik gerilimle çalışın: çalışma setlerini teknik tükenişe 1–2 tekrar kala bırakın.",
+      "Tüm izolasyon ve makine hareketlerinde eksantrik (indiriş) evresini 2–3 saniye kontrol altında tutun.",
+      "Haftadan haftaya kademeli aşırı yüklenme (progressive overload) sağlamak için ağırlıkları ve tekrarları her seansta doğru kaydedin.",
+      "Ağır bileşik kaldırışlarda 2–3 dakika, izolasyon aksesuarlarında 60–90 saniye dinlenin.",
+      "Toparlanmaya öncelik verin: bol su tüketin, günlük protein hedefinize ulaşın ve 7–9 saat uyuyun."
+    ],
+    "workouts": {
+      "aesthetic-push-a": {
+        "title": "Göğüs & Arka Kol",
+        "focus": "Üst göğüs, ön/yan omuz ve arka kol hacmi"
+      },
+      "aesthetic-pull-a": {
+        "title": "Sırt & Ön Kol",
+        "focus": "Kanat genişliği, üst sırt kalınlığı ve pazu gelişimi"
+      },
+      "aesthetic-legs-a": {
+        "title": "Ön Bacak & Kalf",
+        "focus": "Ön bacak hacmi, diz stabilitesi ve kalf gelişimi"
+      },
+      "aesthetic-upper-b": {
+        "title": "Omuz & Sırt",
+        "focus": "Omuz başı dolgunluğu, göğüs yoğunluğu ve kol özelleştirmesi"
+      },
+      "aesthetic-lower-b": {
+        "title": "Kalça & Arka Bacak",
+        "focus": "Arka zincir kuvveti, kalça dolgunluğu ve karın sertliği"
+      }
+    }
+  },
+  "powerbuilding-strength": {
+    "name": "Güç ve Kütle: 4 Günlük Powerbuilding",
+    "description": "Temel kuvvet kazanımlarını hipertrofi aksesuarlarıyla birleştiren, squat, bench, deadlift ve overhead press'e odaklanan 4 günlük ağır bileşik powerbuilding programı.",
+    "guidelines": [
+      "Ana kaldırışlarda (Squat, Bench, Deadlift, OHP) teknik doğruluğu korurken ağırlığı düzenli artırın.",
+      "Ağır setlerde 3–5 dakika dinlenerek her sette maksimum güç üretimi sağlayın.",
+      "Aksesuar egzersizlerde hedef kasın gerilimini hissedin ve tam hareket aralığı kullanın.",
+      "Bel sağlığı için tüm ağır kaldırışlarda karın içi basıncı (valsalva) koruyun."
+    ],
+    "workouts": {
+      "pb-squat-strength": {
+        "title": "Ağır Squat",
+        "focus": "Maksimum squat gücü, ön bacak hacmi ve gövde sertliği"
+      },
+      "pb-bench-strength": {
+        "title": "Ağır Bench",
+        "focus": "Göğüs kuvvet üretimi, triceps kilitlenmesi ve yatay çekiş dengesi"
+      },
+      "pb-deadlift-strength": {
+        "title": "Ağır Deadlift",
+        "focus": "Maksimum arka zincir kuvveti, sırt kalınlığı ve hamstring gelişimi"
+      },
+      "pb-press-volume": {
+        "title": "Overhead Press",
+        "focus": "Dikey pres kuvveti, lat pulldown ve kol hipertrofisi"
+      }
+    }
+  },
+  "classic-ppl": {
+    "name": "Saf PPL: 6 Günlük İtiş Çekiş Bacak",
+    "description": "Haftada her kas grubunu iki kez çalıştırarak hipertrofi ve kuvveti maksimize eden altın standart yüksek frekanslı program.",
+    "guidelines": [
+      "Haftada 6 gün antrenman temposunu korumak için seans başına hacmi dengeli tutun.",
+      "İlk 3 günde ağır bileşik kaldırışlara, sonraki 3 günde metabolik stres ve hipertrofiye odaklanın.",
+      "Eklemleri korumak için ısınma setlerini atlamayın ve dirsekleri kontrollü açıda tutun.",
+      "Beslenme ve uykunuza ekstra dikkat ederek toparlanmayı destekleyin."
+    ],
+    "workouts": {
+      "ppl-push-1": {
+        "title": "Göğüs & Omuz",
+        "focus": "Yatay pres kuvveti, baş üstü gücü ve arka kol"
+      },
+      "ppl-pull-1": {
+        "title": "Deadlift & Sırt",
+        "focus": "Arka zincir kuvveti, kanat genişliği ve pazu kütlesi"
+      },
+      "ppl-legs-1": {
+        "title": "Squat & Arka Bacak",
+        "focus": "Ağır ön bacak squat yüklemesi, hamstring menteşesi ve karın"
+      },
+      "ppl-push-2": {
+        "title": "Üst Göğüs",
+        "focus": "Incline pres, yan omuz hacmi ve göğüs pump hissi"
+      },
+      "ppl-pull-2": {
+        "title": "Kanat & Pazu",
+        "focus": "Vücut ağırlığı çekişi, yatay row hacmi ve kol kalınlığı"
+      },
+      "ppl-legs-2": {
+        "title": "Bacak & Karın",
+        "focus": "Ön bacak yüklemesi, tek taraflı denge ve kalf özelleştirmesi"
+      }
+    }
+  },
+  "full-body-classic": {
+    "name": "Klasik Temel: 3 Günlük Tüm Vücut",
+    "description": "Haftalık seans sıklığı sınırlı lifterlar için maksimum verim sağlayan, zamana meydan okumuş 3 günlük tüm vücut bileşik programı.",
+    "guidelines": [
+      "Her seansta tüm vücudu uyardığınız için seanslar arası en az 1 gün tam dinlenin.",
+      "Temel bileşik hareketlerde kademeli yükleme ile kuvvetinizi adım adım artırın.",
+      "Her tekrarı temiz formla yapın; ağırlığı artırmak uğruna formunuzu asla bozmayın."
+    ],
+    "workouts": {
+      "fb-workout-a": {
+        "title": "Squat & Göğüs",
+        "focus": "Squat kuvveti, yatay pres, yatay çekiş ve karın"
+      },
+      "fb-workout-b": {
+        "title": "Deadlift & Pres",
+        "focus": "Deadlift gücü, baş üstü pres, dikey çekiş ve tek bacak kuvveti"
+      },
+      "fb-workout-c": {
+        "title": "Bacak & Sırt",
+        "focus": "Bacak hipertrofisi, incline üst göğüs, barfiks ve arka zincir"
+      }
+    }
+  },
+  "home-forge-dumbbells": {
+    "name": "Evde Gelişim: 4 Günlük Dambıl Bölünmesi",
+    "description": "Sadece ayarlanabilir dambıllar ve sehpaya sahip sporcular için tasarlanmış eksiksiz 4 günlük Üst/Alt vücut programı.",
+    "guidelines": [
+      "Ağırlık sınırlı olduğunda 3 saniyelik inişler, duraklamalar veya ilave temiz tekrarlarla ilerleyin.",
+      "Ev ortamında hareketi hissetmeye ve kas gerilimine odaklanın.",
+      "Dambıl güvenliğini elden bırakmayın; zemin ve ekipman alanını temiz tutun."
+    ],
+    "workouts": {
+      "hf-upper-a": {
+        "title": "Göğüs & Sırt",
+        "focus": "Yatay dambıl presi, kanat çekişleri ve omuz hacmi"
+      },
+      "hf-lower-a": {
+        "title": "Ön Bacak & Arka Bacak",
+        "focus": "Goblet squat, dambıl RDL ve kalf gelişimi"
+      },
+      "hf-upper-b": {
+        "title": "Omuz & Kollar",
+        "focus": "Incline pres, sehpaya dayalı row, floor press ve pazu"
+      },
+      "hf-lower-b": {
+        "title": "Kalça & Karın",
+        "focus": "Tek taraflı bacak yüklemesi, kalça gelişimi ve karın stabilitesi"
+      }
+    }
+  },
+  "athletic-performance": {
+    "name": "Patlayıcı Atlet: 3 Günlük Performans",
+    "description": "Saha sporcuları için patlayıcı güç, tek taraflı bacak kuvveti, dönüş kapasitesi ve kondisyon inşa etmek üzere tasarlanmış 3 günlük atletik performans programı.",
+    "guidelines": [
+      "Patlayıcı setlerde her tekrarı maksimum hız ve niyetle gerçekleştirin.",
+      "Kondisyon devrelerinde hız ile düzgün hareket kalitesi arasındaki dengeyi koruyun.",
+      "Ayak bileği ve diz sağlığı için iniş mekaniklerine ve iniş sönümlemesine dikkat edin."
+    ],
+    "workouts": {
+      "ap-lower-power": {
+        "title": "Alt Vücut Gücü",
+        "focus": "Trap bar deadlift gücü, dikey sıçrama ve tek taraflı ivmelenme"
+      },
+      "ap-upper-power": {
+        "title": "Üst Vücut Gücü",
+        "focus": "Push press gücü, ağırlıklı barfiks kuvveti ve yatay çekiş kapasitesi"
+      },
+      "ap-work-capacity": {
+        "title": "Kondisyon & Karın",
+        "focus": "Front squat ön zincir kuvveti, kettlebell swing, farmer carry ve ip atlama"
+      }
+    }
+  }
+}

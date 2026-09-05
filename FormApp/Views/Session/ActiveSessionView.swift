@@ -66,7 +66,7 @@ public struct ActiveSessionView: View {
                         .buttonStyle(.plain)
 
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(draft.workout.title)
+                            Text(draft.workout.displayTitle(programId: draft.programId))
                                 .font(.system(size: 17, weight: .bold))
                                 .foregroundColor(AppColors.text)
                                 .lineLimit(1)
@@ -122,7 +122,7 @@ public struct ActiveSessionView: View {
                                                             movementAssetId: ex.movementAssetId
                                                         )
 
-                                                        Text("\(idx + 1). \(ex.name)")
+                                                        Text("\(idx + 1). \(ex.displayName)")
                                                             .font(.system(size: 10, weight: isSel ? .bold : .medium))
                                                             .foregroundColor(isSel ? AppColors.text : AppColors.muted)
                                                             .lineLimit(2)
@@ -169,7 +169,7 @@ public struct ActiveSessionView: View {
                                 VStack(alignment: .leading, spacing: 14) {
                                     HStack(alignment: .top) {
                                         VStack(alignment: .leading, spacing: 4) {
-                                            Text(exercise.name)
+                                            Text(exercise.displayName)
                                                 .font(.system(size: 20, weight: .bold))
                                                 .foregroundColor(AppColors.text)
                                             if !exercise.displayPrescription.isEmpty {

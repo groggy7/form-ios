@@ -2,6 +2,7 @@ import SwiftUI
 
 public struct TodayHeroCard: View {
     let workout: Workout?
+    let programId: String?
     let todayIndex: Int
     let isCompleted: Bool
     let isAvailable: Bool
@@ -16,6 +17,7 @@ public struct TodayHeroCard: View {
 
     public init(
         workout: Workout?,
+        programId: String? = nil,
         todayIndex: Int,
         isCompleted: Bool,
         isAvailable: Bool,
@@ -25,6 +27,7 @@ public struct TodayHeroCard: View {
         onStart: @escaping () -> Void
     ) {
         self.workout = workout
+        self.programId = programId
         self.todayIndex = todayIndex
         self.isCompleted = isCompleted
         self.isAvailable = isAvailable
@@ -123,7 +126,7 @@ public struct TodayHeroCard: View {
                 Spacer().frame(height: 22)
 
                 // Title
-                Text(workout.title)
+                Text(workout.displayTitle(programId: programId))
                     .font(.system(size: 32, weight: .semibold))
                     .foregroundColor(Color(hex: 0xF3EFE5))
                     .lineLimit(2)
@@ -133,7 +136,7 @@ public struct TodayHeroCard: View {
 
                 // Focus
                 if !workout.focus.isEmpty {
-                    Text(LanguageManager.content(workout.focus))
+                    Text(workout.displayFocus(programId: programId))
                         .font(.system(size: 14, weight: .regular))
                         .lineSpacing(3)
                         .foregroundColor(AppColors.secondaryText)

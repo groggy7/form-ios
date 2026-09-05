@@ -136,7 +136,7 @@ public struct WeekStripView: View {
                                     .foregroundColor(textColor)
                                     .lineLimit(1)
 
-                                Text(workout.title)
+                                Text(workout.displayTitle(programId: program.id))
                                     .font(.system(size: 11))
                                     .foregroundColor(textColor)
                                     .multilineTextAlignment(.center)

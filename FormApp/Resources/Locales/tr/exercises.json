@@ -1,0 +1,685 @@
+{
+  "ab-wheel-rollout": {
+    "name": "Karın Çarkı Açılışı (Ab Wheel)",
+    "cues": [
+      "Dizlerinizi mindere koyun; pelvisi hafifçe içe yuvarlayıp üst sırtı kubbeleştirin ve karın kaslarınızı sertçe kilitleyin.",
+      "Beli aşağı çökertmeden, kollarınızı uzatarak tekerleği kontrollü bir şekilde ileriye yuvarlayın.",
+      "Yalnızca gövde gerginliğini ve karın kilidini koruyabildiğiniz mesafeye kadar açılın.",
+      "Geri dönüşte kalçayı geriye kaçırmadan, karın ve kanat kaslarınızı sıkarak tekerleği kendinize çekin."
+    ],
+    "avoid": [
+      "Açılırken belin aşağı çökmesi ve omurganın aşırı çukurlaşması.",
+      "Tekerleği çekerken kalçayı topuklara doğru oturtarak hareketi kalça fleksörleriyle çalmak.",
+      "Karın gücünüzün kontrol edemeyeceği kadar fazla ileriye uzanmak."
+    ]
+  },
+  "barbell-back-squat": {
+    "name": "Barbell Back Squat",
+    "cues": [
+      "Barı üst trapezlerin üzerine sağlamca oturtun; kanat kaslarını kilitlemek için barı sırtınıza doğru aktif şekilde çekin.",
+      "Karnınıza derin bir diyafram nefesi alıp gövdeyi kilitleyin; kalça ve dizleri aynı anda bükerek inişi başlatın.",
+      "Dizler ayak parmakları hizasında ilerlerken, kalça eklemi diz kapağının hafif altına inene kadar çömelin.",
+      "Tabanın tam ortasından güç alarak kalkın; göğüs ve kalçanın aynı hızda yükselmesine dikkat edin."
+    ],
+    "avoid": [
+      "Kalkış sırasında dizlerin içeri doğru çökmesi (valgus pozisyonu).",
+      "Kalkışta kalçanın göğüsten önce fırlayarak yükü tamamen bele bindirmesi.",
+      "Dip noktada bel omurlarını kamburlaştırmak ya da aşırı zorlayarak kavis vermek."
+    ]
+  },
+  "barbell-bench-press": {
+    "name": "Barbell Bench Press",
+    "cues": [
+      "Gözler barın hizasında olacak şekilde uzanın; ayakları yere sağlam basın ve kürek kemiklerini geriye alıp sehpaya sabitleyin.",
+      "Barı omuz genişliğinden biraz geniş tutun; raftan alıp omuz eklemlerinin tam üzerinde dengeleyin.",
+      "Dirsekleri gövdeye 45–70° açıda tutarak barı hafif bir kavisle göğsün alt-orta kısmına doğru indirin.",
+      "Barı patlayıcı bir güçle yukarı ve hafifçe yüze doğru iterek tekrar omuz hizasında kitleyin."
+    ],
+    "avoid": [
+      "Dirsekleri gövdeye 90 derece dik olacak şekilde iki yana açmak (omuz sıkışmasına yol açar).",
+      "Barı göğüsten sektirmek ya da kalçayı sehpadan havaya kaldırmak.",
+      "Barın altında bileklerin geriye doğru aşırı bükülmesine izin vermek."
+    ]
+  },
+  "barbell-front-squat": {
+    "name": "Barbell Front Squat",
+    "cues": [
+      "Barı ön omuz başlarına oturtun; parmak uçlarıyla kavrayıp dirsekleri yere paralel olacak şekilde yüksekte tutun.",
+      "İniş boyunca gövdeyi olabildiğince dik tutun ve karnınızı sıkı bir şekilde kilitleyin.",
+      "Dizleri ayak parmakları yönünde ileri açarak iki dizinizin arasına doğru rahat bir derinliğe kadar çökün.",
+      "Dirsek yüksekliğini hiç kaybetmeden, ayağın tam ortasıyla yeri iterek yükselin."
+    ],
+    "avoid": [
+      "Dirseklerin aşağı düşmesi; bu durum üst sırtı kamburlaştırır ve barın öne kaymasına neden olur.",
+      "Topukların yerden kalkması ya da yükün tamamen ayak parmak uçlarına kayması."
+    ]
+  },
+  "barbell-hip-thrust": {
+    "name": "Barbell Hip Thrust",
+    "cues": [
+      "Sehpanın kenarını kürek kemiklerinizin hemen altına denk getirin; süngerli barı kalça kıvrımına yerleştirin.",
+      "Ayakları omuz genişliğinde açın; tepe noktada kaval kemikleriniz yere tam dik (90°) olmalıdır.",
+      "Çeneyi göğse yakın, bakışları karşıda tutun; tüm tabanla yeri iterek kalçayı yukarı kaldırın.",
+      "Tepe noktada kalçayı güçlüce sıkıp pelvisi geriye yuvarlayın; gövde ile uyluklar düz bir masa pozisyonu alsın."
+    ],
+    "avoid": [
+      "Tavana bakarak tepe noktada beli aşırı çukurlaştırmak ve yükü bel omurlarına bindirmek.",
+      "Ayakları çok ileriye koyup yükü arka bacağa, ya da çok yakına alıp ön bacağa kaçırmak.",
+      "Kalçayı kaldırırken dizlerin içe doğru çökmesine izin vermek."
+    ]
+  },
+  "barbell-romanian-deadlift": {
+    "name": "Barbell Romanian Deadlift (RDL)",
+    "cues": [
+      "Barı omuz genişliğinde kavrayıp dik durun; barı bacaklara yapışık tutmak için kanat kaslarınızı sıkın.",
+      "Dizlerinizi hafifçe kırın ve bu diz açısını hareket boyunca kesinlikle değiştirmeyin.",
+      "Arkanızdaki hayali bir duvara dokunur gibi kalçanızı yatay düzlemde geriye doğru itin.",
+      "Kalçanın geriye gidişi durduğunda inişi kesin (genelde kaval kemiği ortası); kalçayı öne iterek doğrulun."
+    ],
+    "avoid": [
+      "Kalça arkaya gitmeyi bıraktıktan sonra barı yere değdirmek için beli kamburlaştırmak.",
+      "Dizleri daha fazla büküp hareketi squata dönüştürmek ve arka bacak gerginliğini kaybetmek.",
+      "Barın bacaklardan uzaklaşıp ileriye doğru açılmasına izin vermek."
+    ]
+  },
+  "barbell-row": {
+    "name": "Barbell Row",
+    "cues": [
+      "Dizleri hafif kırıp kalçadan bükülerek gövdeyi yaklaşık 45 derece eğin; belinizi kesinlikle düz tutun.",
+      "Barı omuz genişliğinden biraz açık şekilde üstten tutun; bar taban ortasının hizasında sarkmalıdır.",
+      "Dirsekleri gövdenin gerisine doğru çekerek barı alt karın / göbek deliği hizasına doğru yönlendirin.",
+      "Tepe noktada kürek kemiklerini birbirine sıkıştırın, ardından barı kontrollüce tam uzanmaya bırakın."
+    ],
+    "avoid": [
+      "Ağırlığı kaldırmak için gövdeyi yukarı savurmak ve hareketi ayakta shrug hareketine çevirmek.",
+      "Yük altındayken bel veya sırt omurgasını kamburlaştırmak.",
+      "Dip esneme noktasında omuzların öne doğru düşmesine ve formun bozulmasına izin vermek."
+    ]
+  },
+  "bulgarian-split-squat": {
+    "name": "Bulgarian Split Squat",
+    "cues": [
+      "Arka ayağın üstünü sehpa kenarına yerleştirin; öndeki ayağınızı dengeli bir adım mesafesinde öne alın.",
+      "Omurgayı doğal ve sıkı tutarak gövdeye hafif bir öne eğim (~15°) verin.",
+      "Ön diz ayak parmakları yönünde ilerlerken, arka diz yere neredeyse değene kadar kontrollüce çökün.",
+      "Ön ayağın üç noktasına (topuk, başparmak ve serçe parmak kökü) eşit basarak yukarı yükselin."
+    ],
+    "avoid": [
+      "Ön topuğun yerden kalkması veya ön dizin içeri doğru çökmesi.",
+      "Yükü ön bacağa vermek yerine arka ayaktan sertçe güç alıp kendini yukarı itmek.",
+      "Gereksiz yere aşırı dik durmaya çalışarak beli geriye doğru zorlamak ve çukurlaştırmak."
+    ]
+  },
+  "cable-lateral-raise": {
+    "name": "Kablolu Yan Açış",
+    "cues": [
+      "Makarayı diz veya bilek hizasına ayarlayın; kablo vücudun önünden veya arkasından geçecek şekilde dik durun.",
+      "Kolunuzu tam yana değil, gövdenin yaklaşık 30 derece önünde (kürek kemiği düzleminde) yukarı açın.",
+      "Bileği bükmeden, dirseğin öncülüğünde kol yere paralel olana kadar kaldırın.",
+      "Tepe noktada anlık bir duraklama yapın, ardından ağırlığı 2-3 saniyelik kontrollü bir inişle bırakın."
+    ],
+    "avoid": [
+      "Gövdeyi savurarak ya da bacaklardan hız alarak hareketi başlatmak.",
+      "Kabloyu kaldırmak için boynu kasmak ve trapezleri kulaklara doğru çekmek.",
+      "Kaldırış sırasında başparmağı aşağı çevirip omuzu iç rotasyona zorlamak (sürahiden su döker gibi yapmak)."
+    ]
+  },
+  "chest-supported-dumbbell-row": {
+    "name": "Sehpaya Dayalı Dambıl Row",
+    "cues": [
+      "Sehpayı 30–45 derece eğime getirin; göğsünüzü sehpaya dayayıp ayakları yere sağlam basın.",
+      "Kolları serbest bırakarak dambılların sarkmasına izin verin; kürek kemiklerinizin iyice açıldığını hissedin.",
+      "Dirsekleri kalçaya doğru geriye çekin; tepe noktada kürek kemiklerini birbirine güçlüce kilitleyin.",
+      "Göğsünüzü sehpadan kaldırmadan, dambılları kontrollüce indirip sırt kaslarını tam esnetin."
+    ],
+    "avoid": [
+      "İvme kazanmak için göğsü sehpadan ayırıp geriye doğru savurmak.",
+      "Çekiş yaparken başı geriye atıp boynu aşırı zorlamak.",
+      "Dirsek ve kürek kemiklerini kullanmak yerine yükü sadece ön kol ve bisepsten çekmek."
+    ]
+  },
+  "conventional-barbell-deadlift": {
+    "name": "Conventional Barbell Deadlift",
+    "cues": [
+      "Ayakları kalça genişliğinde açın; bar kaval kemiğine 2-3 cm mesafede, tabanın tam ortasında olsun. Bacakların hemen dışından kavrayın.",
+      "Göğsü dikleştirip kanat kaslarını sıkın (koltuk altlarını kilitleyin) ve yerdeyken barın boşluğunu (tık sesini) alın.",
+      "Taban ortasıyla yeri güçlüce itin; barın kaval ve uyluklara temas ederek yukarı çıkmasını sağlayın.",
+      "Tam dik konuma gelip kalçayı sıkarak kitleyin; tepe noktada kesinlikle geriye doğru aşırı yaslanmayın."
+    ],
+    "avoid": [
+      "Yük altındayken bel omurgasını yuvarlayıp kamburlaştırmak.",
+      "Barın boşluğunu almadan yerden aniden ve sarsarak çekişe başlamak.",
+      "Kilitlenmede kalçayı sıkmak yerine beli geriye doğru bükerek aşırı kavis vermek.",
+      "Barın bacaklardan ileriye doğru uzaklaşmasına izin vermek."
+    ]
+  },
+  "dead-bug": {
+    "name": "Dead Bug (Karın)",
+    "cues": [
+      "Sırtüstü uzanın; kolları tavana uzatın, diz ve kalçaları 90 derecede bükün.",
+      "Belinizi yere doğru kuvvetlice bastırın; bel çukurunu sıfırlayıp yeri tamamen kapatın.",
+      "Nefesinizi tamamen verirken zıt kolu baş gerisine, zıt bacağı ise yere doğru kontrollüce uzatın.",
+      "Kol ve bacağı yere değdirmeden birkaç santim havada tutun, bel temasını kaybetmeden başlangıca dönün."
+    ],
+    "avoid": [
+      "Uzama esnasında belin yerden havalanması veya bel boşluğunun açılması.",
+      "Hareketi aceleyle yapmak veya nefesi tutarak gövde kontrolünü bırakmak.",
+      "Uzatılan topuğun yere çarpması ya da yerde dinlendirilmesi."
+    ]
+  },
+  "dumbbell-bench-press": {
+    "name": "Dambıl Bench Press",
+    "cues": [
+      "Kürek kemiklerinizi sehpaya sabitleyin, ayakları yere basın ve dambılları göğüs üzerinde dengede tutun.",
+      "Ön kollar yere dik, dirsekler gövdeyle 45–60° açıda kalacak şekilde dambılları kontrollüce indirin.",
+      "Omuzlarda batma hissetmeden, göğüs kaslarının iyice esnediği rahat ve derin bir noktaya kadar inin.",
+      "Dambılları birbirine çarptırmadan, hafifçe içe doğru akıcı bir kavisle yukarı itin."
+    ],
+    "avoid": [
+      "Tepe noktada dambılları birbirine çarpmak (göğüsteki kas gerilimini düşürür).",
+      "Dirsekleri gövdeye 90 derece dik olacak şekilde iki yana açmak.",
+      "Ön kolların dik açısını kaybedip içeri veya dışarı yatmasına izin vermek."
+    ]
+  },
+  "dumbbell-floor-press": {
+    "name": "Dambıl Yer Presi (Floor Press)",
+    "cues": [
+      "Dizler bükülü, ayaklar yerde sırtüstü uzanın; kürek kemiklerinizi yere sabitleyin.",
+      "Bilekleri düz tutarak dambılları göğüs hizasında tutun; dirsekleri gövdeyle 45° açıda sabitleyin.",
+      "Üst kollar yere hafifçe temas edene kadar dambılları kontrollü bir şekilde indirin.",
+      "İvmeyi sıfırlamak için yerde anlık duraklayın, ardından kollar düzleşene kadar patlayıcı güçle itin."
+    ],
+    "avoid": [
+      "Dirsekleri veya arka kolları yere sertçe çarptırıp sektirmek.",
+      "Dirsekleri gövdeden 90 derece dışarı doğru fazla açmak.",
+      "Ağırlık altında bileklerin geriye bükülmesine izin vermek."
+    ]
+  },
+  "dumbbell-hammer-curl": {
+    "name": "Dambıl Hammer Curl",
+    "cues": [
+      "Dambılları avuç içleri birbirine bakacak şekilde (nötr tutuş) kavrayıp dik durun.",
+      "Dirsekleri kaburgalara sabit tutun; dambılları omuzlar hizasında yukarıya doğru bükün.",
+      "Tepe noktada ön kol ve brakiyialis kaslarınızı kuvvetlice sıkın.",
+      "Vücudu sallamadan, dambılları tam kol açıklığına kadar kontrollüce indirin."
+    ],
+    "avoid": [
+      "Ağırlığı kaldırmak için kalçayı öne savurmak veya gövdeyi geriye sallamak.",
+      "Kaldırış sırasında dirsekleri iki yana doğru açmak.",
+      "Bilekleri aşırı bükerek yükü koldan çalmak."
+    ]
+  },
+  "dumbbell-lateral-raise": {
+    "name": "Dambıl Yan Açış",
+    "cues": [
+      "Gövdeyi çok hafif (10–15°) öne eğerek dik durun; dambılları yanlarınızda tutun.",
+      "Dambılları tam yana değil, gövdenin hafifçe önünde (kürek kemiği düzleminde) dışa doğru kaldırın.",
+      "Bilekleri düz tutun; kollar yere paralel olana kadar dirseklerin öncülüğünde yükselin.",
+      "Tepe noktada çok kısa duraklayıp omuzdaki gerilimi hissedin, ardından kontrollüce indirin."
+    ],
+    "avoid": [
+      "Dambılları savurmak için omuzları yukarı çekip trapezleri kasmak.",
+      "İvme yakalamak için gövdeyi öne arkaya sallamak veya kalçadan güç almak.",
+      "Tepe noktada başparmakları aşağı çevirip omuzu iç rotasyona zorlamak."
+    ]
+  },
+  "dumbbell-romanian-deadlift": {
+    "name": "Dambıl RDL",
+    "cues": [
+      "Dambılları uylukların önünde tutun; omuzları geride, karnı ise sıkıca kilitli tutun.",
+      "Dizleri hafif kırıp kalçayı geriye itin; arka bacaklarınızın derin bir şekilde esnediğini hissedin.",
+      "Dambılların bacaklardan ayrılmadan, uyluk ve kaval kemiğini sıyırarak inmesini sağlayın.",
+      "Arka bacak tam esneme sınırına ulaştığında, kalçanızı öne doğru iterek başlangıç pozisyonuna dönün."
+    ],
+    "avoid": [
+      "Daha derine inmek uğruna bel omurgasını kamburlaştırmak.",
+      "Dambılların bacak çizgisinden uzaklaşıp öne açılmasına izin vermek.",
+      "Dizleri öne büküp hareketi bir squata dönüştürmek."
+    ]
+  },
+  "dumbbell-step-up": {
+    "name": "Dambıl Step-Up",
+    "cues": [
+      "Dambılları yanlarda tutun; basılacak ayağın tüm tabanını diz hizasındaki kutu veya sehpaya tam yerleştirin.",
+      "Yükü tamamen çalışan ön bacağa aktarmak için gövdenizi hafifçe (~10–15°) öne eğin.",
+      "Arka ayağın parmak ucundan güç almadan, sadece ön ayağın tabanıyla yeri iterek yükselin.",
+      "Aşağıya kendinizi bırakmadan, 2-3 saniyelik sıkı bir kontrolle kontrollüce adım atarak inin."
+    ],
+    "avoid": [
+      "Yükselirken alttaki ayağın parmak ucundan ya da kalfından zıplayarak destek almak.",
+      "Kutuya basarken ön dizin içeri doğru çökmesine izin vermek.",
+      "İniş sırasında kontrolü kaybedip yere sertçe düşmek."
+    ]
+  },
+  "ez-bar-curl": {
+    "name": "Z-Bar Curl",
+    "cues": [
+      "EZ-barın kıvrımlı yerlerini bilekleriniz rahat edecek açıda avuç içleri yukarı bakacak şekilde tutun.",
+      "Dirsekleri gövdenin yanına sabitleyin, karnı sıkın; dizleri hafif kırıp dik durun.",
+      "Barı omuzlara doğru akıcı bir kavisle kaldırın ve tepe noktada bisepslerinizi iyice sıkın.",
+      "Gövdeyi sallamadan, dirsekler tamamen açılana kadar barı kontrollü bir şekilde indirin."
+    ],
+    "avoid": [
+      "Ağırlığı kaldırmak için geriye yaslanıp bel omurlarına aşırı yük bindirmek.",
+      "Dirsekleri öne fırlatarak hareketi ön omuz kaldırışına çevirmek.",
+      "Kolları tam açmadan inişi yarım kesmek."
+    ]
+  },
+  "face-pull": {
+    "name": "Kablolu Face Pull",
+    "cues": [
+      "Halat takılı makarayı göz hizasına getirin; halatı başparmaklar arkaya bakacak şekilde kavrayın.",
+      "Bir adım geriye çıkıp sağlam bir duruş alın; karnınızı sıkıp göğüs kafesini aşağıda tutun.",
+      "Dirsekleri yukarı ve yana doğru açarak halatın ortasını alnınıza doğru çekin.",
+      "Elleri kulakların gerisine doğru dışa döndürün; arka omuz ve üst sırtı güçlüce sıkıştırın."
+    ],
+    "avoid": [
+      "Halata yetişmek için başı ve boynu öne doğru uzatmak.",
+      "Ağırlığı çekebilmek için geriye yatmak ve beli çukurlaştırmak.",
+      "Çekiş esnasında dirseklerin bilek seviyesinin altına düşmesine izin vermek."
+    ]
+  },
+  "farmer-carry": {
+    "name": "Farmer Yürüyüşü",
+    "cues": [
+      "Ağırlıkları düz bir omurgayla yerden kaldırın; göğsü dik, karın kaslarını kilitli tutun.",
+      "Kürek kemiklerini geriye alıp aşağı bastırın; kulpları olanca gücünüzle sıkın.",
+      "Topuktan buruna basarak kısa, kontrollü ve kararlı adımlarla ileri doğru yürüyün.",
+      "Gövde sertliğini koruyun; ağırlıkların yanlarda sallanmadan sabit kalmasını sağlayın."
+    ],
+    "avoid": [
+      "Yürürken gövdenin iki yana sendelemesine veya sallanmasına izin vermek.",
+      "Omuzların öne yuvarlanması veya belin geriye aşırı bükülmesi.",
+      "Ağırlıkların bacaklara çarpmasına yol açacak uzun ve savruk adımlar atmak."
+    ]
+  },
+  "goblet-squat": {
+    "name": "Goblet Squat",
+    "cues": [
+      "Dambılın üst başlığını avuçlarınızla alttan destekleyin; göğsün üst kısmına yapışık tutun.",
+      "Ayakları omuz genişliğinden biraz açık konumlandırın, parmak uçlarını 20–30° dışa çevirin.",
+      "Dirsekler dizlerin iç kısmından geçecek şekilde kalçayı dizlerin arasına tam derinliğe indirin.",
+      "Taban ortasıyla yeri iterek yükselin; tepe noktada kalçayı sıkın ancak beli geriye bükmeyin."
+    ],
+    "avoid": [
+      "Dambılın göğüsten uzaklaşıp öne kayması (omurgaya binen yükü artırır).",
+      "Dip noktada topukların yerden havalanması veya belin kamburlaşması."
+    ]
+  },
+  "hanging-knee-raise": {
+    "name": "Asılarak Diz Çekme",
+    "cues": [
+      "Bara üstten tutuşla asılın; omuzları kulaklardan uzaklaştırıp sırtı aktif tutun.",
+      "Bacakları birleşik tutun; dizleri çekerken pelvisi de göğse doğru yukarı yuvarlayın.",
+      "Dizler göğüs seviyesine geldiğinde tepe noktada 1 saniye bekleyin.",
+      "Bir sonraki tekrara başlamadan önce dizleri kontrollüce indirip sallantıyı tamamen durdurun."
+    ],
+    "avoid": [
+      "Dizleri yukarı fırlatmak için bacakları sallamak veya gövdeden ivme almak.",
+      "İnişte bacaklar geriye kaçarken belin aşırı çukurlaşması.",
+      "Omuzları tamamen serbest bırakıp pasif bir şekilde asılmak."
+    ]
+  },
+  "incline-barbell-bench-press": {
+    "name": "Incline Barbell Bench Press",
+    "cues": [
+      "Sehpa açısını 30 dereceye ayarlayın; ayakları yere sağlam basın ve kürek kemiklerini mindere sabitleyin.",
+      "Barı omuz genişliğinden biraz geniş tutun; raftan alıp üst göğsün tam üzerinde sabitleyin.",
+      "Dirsekleri 45–60° açıda tutarak barı köprücük kemiğinin hemen altına (üst göğse) kontrollüce indirin.",
+      "Barı yukarı ve hafifçe yüze doğru iterek üst göğüs hizasında tam kilitlenmeye getirin."
+    ],
+    "avoid": [
+      "Barı köprücük kemiğinden veya göğüs kafesinden sertçe sektirmek.",
+      "Dirsekleri gövdeden 90 derece dışarı açarak omuzlara aşırı stres yüklemek.",
+      "Beli aşırı çukurlaştırarak açıyı sıfırlamak ve hareketi düz bench presse çevirmek."
+    ]
+  },
+  "incline-dumbbell-curl": {
+    "name": "Incline Dambıl Curl",
+    "cues": [
+      "Sehpayı 55–60 dereceye ayarlayın; baş ve gövde sehpaya tam temas edecek şekilde oturun.",
+      "Kolları yere doğru dik sarkıtın; üst kolların hareket boyunca dik kalmasını sağlayın.",
+      "Dambılları kaldırırken bilekleri dışa çevirin (avuçlar yukarı) ve tepe noktada bisepsi güçlüce sıkın.",
+      "Dip noktadaki derin esnemeyi hissedene kadar dambılları 2-3 saniyelik kontrollü bir inişle bırakın."
+    ],
+    "avoid": [
+      "Dipteki esnemeden kaçmak için dirsekleri veya üst kolları öne doğru savurmak.",
+      "Kaldırış sırasında başı veya omuzları sehpa minderinden öne kaldırmak.",
+      "İniş esnasında kasın tam esnemesine izin vermeden hareketi erken kesmek."
+    ]
+  },
+  "incline-dumbbell-press": {
+    "name": "Incline Dambıl Press",
+    "cues": [
+      "Sehpayı 30 dereceye ayarlayın; kürek kemiklerini sehpaya kilitleyin ve ayakları yere sağlam basın.",
+      "Dirsekleri 45–60° açıda tutarak dambılları kontrollüce üst göğsün yanlarına doğru indirin.",
+      "Ön kollar dik durumdayken dip noktada üst göğüs kaslarının iyice esnediğini hissedin.",
+      "Dambılları birbirine çarptırmadan, üst göğüs üzerinde hafifçe birbirine yaklaştırarak yukarı itin."
+    ],
+    "avoid": [
+      "Beli aşırı çukurlaştırarak gövdeyi düzleştirmek ve açıyı yok etmek.",
+      "Dirsekleri gövdeye 90 derece dik olacak şekilde iki yana açmak.",
+      "Tepe noktada dambılları birbirine çarparak kas gerilimini düşürmek."
+    ]
+  },
+  "jump-rope": {
+    "name": "İp Atlama",
+    "cues": [
+      "Dirsekleri kaburgalara yakın tutun; ipi tüm kollarla değil, gevşek bilek hareketleriyle çevirin.",
+      "Ayak parmak ucunda hafifçe zıplayın; her turda yerden yalnızca 3-5 cm yükselmeniz yeterlidir.",
+      "Darbeyi emmek için diz ve ayak bileklerini hafif yaylı ve esnek tutun.",
+      "Gövdeyi dik, nefesi rahat ve ritmi sabit tutun."
+    ],
+    "avoid": [
+      "İpi bilekler yerine bütün kolu omuzdan çevirmeye çalışmak.",
+      "Gereğinden fazla yükseğe sıçramak veya ayakları arkaya doğru fırlatmak.",
+      "Dizleri kilitleyerek kaskatı ya da topukların üzerine sertçe inmek."
+    ]
+  },
+  "kettlebell-swing": {
+    "name": "Kettlebell Swing",
+    "cues": [
+      "Kettlebell'ın bir adım gerisinde durun; ağırlığı bacak aranızdan geriye, kalçaya doğru seri şekilde çekin.",
+      "Kalçayı patlayıcı bir güçle öne kilitleyin; tepe noktada kalça ve karın kaslarınızı sertçe sıkın.",
+      "Kollar ip gibi rahat kalsın; ağırlığın göğüs hizasına yalnızca kalçanın ivmesiyle süzülmesini sağlayın.",
+      "Ağırlık düşerken acele etmeyin; kollar bacaklara yaklaşana kadar bekleyip ardından kalçayı geriye bükün."
+    ],
+    "avoid": [
+      "Kalçayı geriye itmek yerine dizleri öne büküp hareketi squata dönüştürmek.",
+      "Ağırlığı kalça gücü yerine kollar ve ön omuzla yukarı çekmeye çalışmak.",
+      "Tepe noktada geriye aşırı yaslanarak bel omurlarını zorlamak."
+    ]
+  },
+  "kneeling-cable-crunch": {
+    "name": "Diz Çökerek Kablolu Karın Çekişi",
+    "cues": [
+      "Makaraya dönük diz çökün; halat uçlarını alnın/kulakların yanına yapıştırıp elleri sabitleyin.",
+      "Kalçayı yukarıda ve sabit tutun; kalçanın topuklara doğru geriye çökmesine asla izin vermeyin.",
+      "Omurgayı öne doğru yuvarlayarak göğüs kafesini pelvise yaklaştırın; dirsekleri uyluklara doğru çekin.",
+      "Dip noktada karnı olanca gücünüzle sıkın, ardından kabloya direnerek kontrollüce doğrulun."
+    ],
+    "avoid": [
+      "Kapanırken kalçayı topuklara oturtmak (yükü karından alıp kalça fleksörlerine aktarır).",
+      "Omurgayı bükmek yerine halatı kollar veya kanat kaslarıyla aşağı çekmek.",
+      "Sırtı dümdüz tutarak omurgayı yuvarlamadan sadece kalçadan eğilmek."
+    ]
+  },
+  "lat-pulldown": {
+    "name": "Lat Pulldown",
+    "cues": [
+      "Dizlikleri bacaklarınızı sıkıca tutacak şekilde ayarlayın; barı omuz genişliğinden biraz geniş kavrayın.",
+      "Göğsü açıp kürek kemiklerini aşağı bastırarak gövdeyi çok hafif (10–15 derece) geriye eğin.",
+      "Dirsekleri ceplerinize doğru aşağı çekerek barı üst göğüs hizasına indirin.",
+      "Alt noktada kanat kaslarını sıkın; ardından barın kontrollüce yükselip sırtı tam esnetmesine izin verin."
+    ],
+    "avoid": [
+      "Gövdeyi geriye aşırı yatırarak hareketi nizami olmayan bir row hareketine çevirmek.",
+      "Dirsekleri aşağı çekmek yerine gövdenin çok gerisine doğru savurmak.",
+      "Barı enseye çekmek ya da göbeğe kadar kontrolsüzce asılmak."
+    ]
+  },
+  "leg-extension": {
+    "name": "Bacak İtişi (Leg Extension)",
+    "cues": [
+      "Makinenin dönme merkezini tam diz ekleminizle hizalayın; süngeri ayak bileklerinin hemen üstüne yerleştirin.",
+      "Set boyunca kalçanızın koltuktan kalkmasını engellemek için yan tutamakları sıkıca kavrayın.",
+      "Dizleri akıcı şekilde açın ve tepe noktada ön bacak kaslarınızı 1 tam saniye sıkılı tutun.",
+      "Ağırlığı 2-3 saniyelik kontrollü bir inişle, tam hareket aralığında bırakın."
+    ],
+    "avoid": [
+      "Ağırlığı savurmak için kalçayı koltuktan havalandırmak veya gövdeden ivme almak.",
+      "Tekrarlar arasında ağırlık plakalarının birbirine kontrolsüzce çarpması."
+    ]
+  },
+  "leg-press": {
+    "name": "Leg Press",
+    "cues": [
+      "Ayakları platformun ortasına omuz genişliğinde koyun; dizler parmak uçlarıyla aynı hizada olsun.",
+      "Kalçanızı ve belinizi koltuk sırtlığına sımsıkı yapıştırmak için yan kollardan güç alarak çekin.",
+      "Kalçanın koltuktan yuvarlanıp kalkmasına izin vermeden, esnekliğinizin yettiği en derin noktaya inin.",
+      "Tabanın ortasıyla platformu itin; tepe noktada diz eklemlerini sertçe kilitlemeden hemen önce durun."
+    ],
+    "avoid": [
+      "Dip noktada kalçanın koltuktan ayrılıp belin yuvarlanması.",
+      "Tepe noktada diz eklemlerini aşırı geriye doğru kilitleyip eklemlere ani baskı bindirmek.",
+      "İnişte ya da ilk itiş anında dizlerin içeri doğru çökmesi."
+    ]
+  },
+  "lying-leg-curl": {
+    "name": "Yatarak Bacak Bükme (Leg Curl)",
+    "cues": [
+      "Diz eklemlerini makinenin dönme ekseniyle hizalayın; süngeri aşil tendonunun hemen üzerine getirin.",
+      "Kalça ve pelvisin sehpadan ayrılmaması için tutamakları sıkıca kavrayıp kendinizi aşağı çekin.",
+      "Topukları kalçaya doğru akıcı şekilde bükün ve tepe noktada kısa bir an sıkıştırın.",
+      "Ağırlık plakalarını çarptırmadan, bacaklar tam açılana kadar 2-3 saniyelik kontrollü bir iniş yapın."
+    ],
+    "avoid": [
+      "Ağırlığı çekmek için kalçayı sehpadan kaldırmak veya beli aşırı çukurlaştırmak.",
+      "Kontrolsüz savurmayla bacakları hızla yukarı fırlatmak."
+    ]
+  },
+  "one-arm-dumbbell-row": {
+    "name": "Tek Kol Dambıl Row",
+    "cues": [
+      "Aynı taraftaki el ve dizi sehpaya sağlam basın; omurgayı düz, kalçayı yere paralel tutun.",
+      "Dambılın omuz hizasında sarkmasına izin verin; dipte kanat kasınızın tam esnediğini hissedin.",
+      "Dirseği tavana doğru yönlendirerek dambılı geniş bir kavisle kalça kıvrımına doğru çekin.",
+      "Tepe noktada kanat kasını iyice sıkın; ardından dambılı kontrollü şekilde tam uzanışa bırakın."
+    ],
+    "avoid": [
+      "Ağırlığı kaldırmak için tepe noktada gövdeyi yana döndürüp savurmak.",
+      "Esneme anında bel omurgasının kamburlaşmasına izin vermek.",
+      "Dambılı kalçaya doğru kavisle çekmek yerine bisepsle göğse doğru dik çekmek."
+    ]
+  },
+  "overhead-cable-triceps-extension": {
+    "name": "Baş Üstü Kablolu Arka Kol (Triceps)",
+    "cues": [
+      "Makarayı baş/omuz hizasına getirin; sırtınızı makineye dönüp dengeli bir adım duruşu alın.",
+      "Üst kolları kulak hizasında (~45° açıyla) öne sabitleyin; dirseklerin pozisyonunu hiç bozmayın.",
+      "Dirsekler tamamen kilitlenene kadar ön kolları düz bir hat üzerinde ileri doğru itin.",
+      "Dirsekleri kontrollüce bükerek halatın baş arkasına inmesine ve arka kolun tam esnemesine izin verin."
+    ],
+    "avoid": [
+      "İtişe destek olmak için beli aşırı çukurlaştırmak (karnı sıkı tutun).",
+      "Açılış sırasında dirseklerin dışarıya doğru fazla açılması.",
+      "Hareketi dirsek eklemi yerine bütün kolu omuzdan öne arkaya sallayarak yapmak."
+    ]
+  },
+  "pallof-press": {
+    "name": "Pallof Press",
+    "cues": [
+      "Makaraya yan dönerek omuz genişliğinde sağlam bir duruş alın; dizleri hafifçe bükün.",
+      "Tutamağı iki elinizle göğsün tam ortasında sıkıca tutun; karnınızı sıkıp gövdeyi kilitleyin.",
+      "Kablo sizi döndürmeye çalışırken dönmeye direnerek kolları tam ileriye doğru uzatın.",
+      "Kollar açıkken 2 saniye boyunca dönmeden bekleyin, ardından elleri yavaşça göğse geri çekin."
+    ],
+    "avoid": [
+      "Gövdenin, omuzların veya kalçanın makaraya doğru dönmesine izin vermek.",
+      "İtiş esnasında omuzları kulaklara doğru yukarı kasmak.",
+      "Uç noktada beklemeden tekrarları aceleyle ve savruk geçiştirmek."
+    ]
+  },
+  "pec-deck-fly": {
+    "name": "Pec Deck Fly (Göğüs Açış)",
+    "cues": [
+      "Koltuk yüksekliğini tutamaklar orta göğüs hizasına gelecek şekilde ayarlayın; ayakları yere sağlam basın.",
+      "Dirseklere hafif bir açı (~15°) verip bu açıyı sabitleyin; göğsünüzü açık tutun.",
+      "Geniş bir sarılma hareketiyle tutamakları öne getirin; göğüs kaslarınızı ortada güçlüce sıkıştırın.",
+      "Omuzlar öne yuvarlanmadan hemen önce durarak, dambılları göğsün iyice esnediği noktaya kadar kontrollüce açın."
+    ],
+    "avoid": [
+      "Dirsekleri gövdenin çok gerisine kaçırarak ön omuz eklem kapsülünü aşırı zorlamak.",
+      "Tepe sıkışmada omuzları öne yuvarlamak ya da trapezleri yukarı çekmek.",
+      "Dirsekleri çok fazla büküp hareketi açıştan çıkarıp prese çevirmek."
+    ]
+  },
+  "pull-ups": {
+    "name": "Barfiks",
+    "cues": [
+      "Barı omuzlardan biraz geniş üstten tutuşla kavrayın ve tam asılma pozisyonunda başlayın.",
+      "Çekişi kürek kemiklerini aşağı ve geriye bastırarak (omuzları arka cebe sokar gibi) başlatın.",
+      "Dirsekleri yere doğru bastırıp göğsü bara yaklaştırın; çene barın üzerine çıkana kadar çekin.",
+      "Sonraki tekrara geçmeden önce, kollar tamamen düzleşene kadar kontrollü bir şekilde aşağı inin."
+    ],
+    "avoid": [
+      "Çeneyi barın üstüne çıkarmak için bacakları savurmak veya kalçadan ivme almak.",
+      "Göğüs çökerken bara ulaşmak için boynu yukarı doğru uzatıp zorlamak.",
+      "Dip noktada kolları tamamen açmayıp yarım tekrarlar yapmak."
+    ]
+  },
+  "push-press": {
+    "name": "Push Press",
+    "cues": [
+      "Barı ön omuz başlarına yerleştirin; eller omuzların hemen dışında, karın kilitli olsun.",
+      "Gövdeyi öne eğmeden, dikliği bozmadan dizleri 8-10 cm kadar aşağı esnetin.",
+      "Kalça, diz ve ayak bileklerini patlayıcı güçle açarak barı omuzlardan yukarı fırlatın.",
+      "İtişi kollarınızı taban ortası hizasında baş üstünde tam kilitleyerek tamamlayın."
+    ],
+    "avoid": [
+      "Çöküş anında gövdeyi öne eğmek (barın öne kaçmasına neden olur).",
+      "Çok derin veya yavaş çökerek kasın yaylanma ve patlama refleksini kaybetmek.",
+      "Barı yakalamak için dizleri tekrar bükmek (push press hareketi düz bacakla kilitlenir)."
+    ]
+  },
+  "push-ups": {
+    "name": "Şınav",
+    "cues": [
+      "Elleri omuz genişliğinden biraz açık yerleştirin; baştan topuğa kadar dümdüz, sert bir plank pozisyonu alın.",
+      "Gövdeyi tek bir blok halinde göğüs yere 2-3 cm kalana veya hafifçe değene kadar indirin.",
+      "Dirsekleri gövdeye yaklaşık 45 derece açıda tutun (yukarıdan bakıldığında ok ucu şekli almalıdır).",
+      "Yeri iterek kolları tam açın; tepe noktada kürek kemiklerini iki yana açarak sırtı doldurun."
+    ],
+    "avoid": [
+      "Kalçanın aşağı sarkıp belin çukurlaşması ya da kalçayı havaya dikmek.",
+      "Dirsekleri iki yana 90 derece açmak (omuz ekleminde sıkışma riski yaratır).",
+      "Göğüsten önce yere değmek için boynu aşağı doğru uzatmak."
+    ]
+  },
+  "rope-triceps-pressdown": {
+    "name": "Halatla Triceps İtişi",
+    "cues": [
+      "Gövdeyi hafif öne eğerek dik durun; dirsekleri kaburgaların yanına sımsıkı sabitleyin.",
+      "Halatı nötr tutuşla kavrayın; dirsekler tamamen kilitlenene kadar düz şekilde aşağı itin.",
+      "Alt kilitlenmede halatın uçlarını iki yana açarak arka kolları 1 saniye güçlüce sıkın.",
+      "Ön kolların 90 derecenin üzerine çıkmasına izin vererek kontrollüce tam esnemeye gelin."
+    ],
+    "avoid": [
+      "Dirsekleri 90 derecede yapay olarak durdurup arka kolun tam esnemesini engellemek.",
+      "Tekrar boyunca dirseklerin öne arkaya sallanmasına izin vermek.",
+      "Ağırlığı basmak için gövde ağırlığını halatın üstüne yığıp göğüs ve omuzdan güç almak."
+    ]
+  },
+  "seated-leg-curl": {
+    "name": "Oturarak Bacak Bükme (Leg Curl)",
+    "cues": [
+      "Sırtlığı diz eklemleriniz makinenin dönme merkezine denk gelecek şekilde ayarlayın; üst süngeri uylukların üzerine sıkıca kilitleyin.",
+      "Ayak bileği süngerini aşilin hemen üzerine yerleştirin; ayak parmaklarını hafifçe kendinize doğru çekin.",
+      "Topukları koltuğun altına doğru geriye bükün ve tepe noktada 1 saniye bekleyin.",
+      "Dizler tamamen düzleşene kadar ağırlığa direnerek arka bacakların iyice esnediğini hissedin."
+    ],
+    "avoid": [
+      "Üst süngerin gevşek kalıp çekiş anında uylukların veya kalçanın yukarı kalkması.",
+      "Hareketi tepe esnemede veya dip bükülmede yarım bırakmak.",
+      "Ağırlığı çekebilmek için gövdeyi geriye doğru aşırı yatırmak."
+    ]
+  },
+  "seated-machine-calf-raise": {
+    "name": "Oturarak Makine Kalf Kaldırışı",
+    "cues": [
+      "Ayak tabanının ön kısmını platforma yerleştirin; süngeri diz kapağının hemen üzerindeki uyluğa sıkıca sabitleyin.",
+      "Topukları aşağıya doğru iyice indirin ve en dip esneme noktasında tam 2 saniye bekleyin.",
+      "Ayak parmak kökleriyle platformu kuvvetle iterek en tepe noktaya kadar yükselin.",
+      "Tepe noktada kalf kasını 1 saniye boyunca sıkın, ardından inişi yavaşça kontrol edin."
+    ],
+    "avoid": [
+      "Dip noktada beklemeden aşil tendonunun esnekliğinden güç alarak zıplatmak.",
+      "Tam esneme ve yükselme yapmayıp kısa, titrek yarım tekrarlara kaçmak.",
+      "Süngeri diz yerine uyluğun ortasına koyarak dengesizliğe yol açmak."
+    ]
+  },
+  "side-plank": {
+    "name": "Yan Plank",
+    "cues": [
+      "Dirsek tam omuz hizasında olacak şekilde yan yatın; ayakları üst üste veya ardışık yerleştirin.",
+      "Kalçayı yerden kaldırarak baştan topuğa kadar bozulmayan düz bir hat oluşturun.",
+      "Omuz ve kalçanın öne devrilmesini engelleyin; yan karın ve kalçayı sıkıca kilitleyin.",
+      "Nefesinizi tutmadan düzenli soluk alıp verin; başı omurga hizasında tutun."
+    ],
+    "avoid": [
+      "Kalçanın yere doğru sarkması veya arkaya doğru kırılması.",
+      "Göğüs ve omuzların yere doğru dönüp gövde çizgisini bozması.",
+      "Taşıyıcı omzu kulak yönünde yukarı doğru kasmak."
+    ]
+  },
+  "single-leg-calf-raise": {
+    "name": "Tek Bacak Kalf Kaldırışı",
+    "cues": [
+      "Çalışan ayağın taban önünü basamak kenarına koyun; denge için bir elinizle hafifçe duvardan destek alın.",
+      "Çalışan bacağı düz (diz hafif esnek) tutun; diğer bacağı serbest bırakın.",
+      "Topuğu basamak seviyesinin altına indirerek kalfı tam esnetin ve dipte 2 saniye bekleyin.",
+      "Başparmak köküyle yeri kuvvetle itip tepeye yükselin ve kalfınızı en üstte sertçe sıkın."
+    ],
+    "avoid": [
+      "Dip noktada duraklamadan hızlıca sektirerek yaylanmak.",
+      "Çalışan dizi büküp yaylanarak vücudu yukarı fırlatmak.",
+      "Tepe noktada ayak bileğinin dışa dönüp yükün serçe parmağa kayması."
+    ]
+  },
+  "standing-barbell-overhead-press": {
+    "name": "Barbell Omuz Presi (OHP)",
+    "cues": [
+      "Barı omuz genişliğinin hemen dışında kavrayıp ön omuzlara oturtun; ön kollar dik, dirsekler hafifçe önde olsun.",
+      "Sarsılmaz bir temel oluşturmak için kalça, ön bacak ve karın kaslarınızı sertçe sıkın.",
+      "Barın geçiş yolunu açmak için çeneyi hafifçe geriye çekin; barı dümdüz dikey bir hatta yukarı itin.",
+      "Bar alnı geçer geçmez başı doğal yerine alın; barı taban ortası hizasında, trapezleri hafif yukarı kilitleyerek tamamlayın."
+    ],
+    "avoid": [
+      "Geriye aşırı yaslanıp beli bükerek hareketi eğimli bir göğüs presine dönüştürmek.",
+      "İtişi başlatmak için dizleri büküp yaylanmak (bu nizami bir presdir, push press değil).",
+      "Barı baştan kaçırmak için öne doğru geniş bir kavisle itmek."
+    ]
+  },
+  "standing-machine-calf-raise": {
+    "name": "Ayakta Makine Kalf Kaldırışı",
+    "cues": [
+      "Ayak tabanının ön kısmını basamağın kenarına omuz genişliğinde koyun; dizleri kitlemeden hafif esnek tutun.",
+      "Topukları bilek esnekliğinizin yettiği kadar aşağı indirin; dipte 2 tam saniye boyunca esnemede bekleyin.",
+      "Baskıyı başparmak köklerine odaklayarak ayak tabanlarının önüyle kuvvetlice yukarı yükselin.",
+      "İnişe geçmeden önce en tepe sıkışma noktasında kalf kaslarınızı 1 saniye boyunca güçlüce sıkın."
+    ],
+    "avoid": [
+      "Dip esnemeden yaylanarak çıkmak (kas yerine aşil tendonunun elastikiyetine güvenir).",
+      "Ağırlığı kaldırmak için dizleri büküp açarak hareketi squata çevirmek.",
+      "Yükselirken ayak bileklerinin dışa devrilip yükün serçe parmaklara kayması."
+    ]
+  },
+  "straight-bar-cable-triceps-pressdown": {
+    "name": "Düz Bar Triceps İtişi",
+    "cues": [
+      "Düz barı omuz genişliğinde mesafeyle üstten kavrayın.",
+      "Dirsekleri gövdenin iki yanına sabitleyin ve gövdenizi hafifçe öne doğru eğin.",
+      "Dirsekler tamamen açılana kadar barı dik olarak aşağı itin ve kilitlenme anında arka kolları sıkın.",
+      "Tam bir esneme elde etmek için barın 90 derecenin üzerine, üst göğüs seviyesine çıkışını kontrol edin."
+    ],
+    "avoid": [
+      "Omuzları öne yuvarlamak veya barı basmak için göğüs ağırlığını üzerine yığmak.",
+      "İtiş esnasında dirseklerin öne kayması veya ivmeyle sallanması.",
+      "Bilekleri aşağı doğru aşırı bükerek yükü bileklere bindirmek."
+    ]
+  },
+  "trap-bar-deadlift": {
+    "name": "Trap Bar Deadlift",
+    "cues": [
+      "Kolların tam ortasında, ayaklar kalça-omuz genişliğinde durun; tutamakları tam ortalayarak kavrayın.",
+      "Göğsü dik, kanatları kilitli tutarak kalçayı squat-hinge arası ideal yüksekliğe indirin; omurgayı düzleştirin.",
+      "Taban ortasıyla yeri patlayıcı bir niyetle kuvvetlice itin.",
+      "Tepe noktada kalça ve dizleri tam kilitleyerek dik durun ve kalçayı sıkın."
+    ],
+    "avoid": [
+      "Barı yerden keserken bel omurgasının kamburlaşmasına izin vermek.",
+      "Harekete kalçayı çok yüksekte (düz bacak gibi) ya da çok alçakta başlatmak.",
+      "Kilitlenme anında omuzları yukarı silkmek veya beli geriye doğru aşırı bükmek."
+    ]
+  }
+}

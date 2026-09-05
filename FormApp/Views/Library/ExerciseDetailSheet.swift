@@ -66,7 +66,7 @@ public struct ExerciseDetailSheet: View {
                             }
                         }
 
-                        Text(currentExercise.name)
+                        Text(currentExercise.displayName)
                             .font(.system(size: 24, weight: .bold))
                             .foregroundColor(AppColors.text)
 
@@ -78,7 +78,7 @@ public struct ExerciseDetailSheet: View {
                     }
 
                     // Technique Cues
-                    let cuesText = currentExercise.cues.trimmingCharacters(in: .whitespacesAndNewlines)
+                    let cuesText = currentExercise.displayCues.trimmingCharacters(in: .whitespacesAndNewlines)
                     if !cuesText.isEmpty {
                         techniqueSection(
                             title: LanguageManager.t("modal.exercise.cues"),
@@ -89,7 +89,7 @@ public struct ExerciseDetailSheet: View {
                     }
 
                     // What to Avoid
-                    let avoidText = currentExercise.avoid.trimmingCharacters(in: .whitespacesAndNewlines)
+                    let avoidText = currentExercise.displayAvoid.trimmingCharacters(in: .whitespacesAndNewlines)
                     if !avoidText.isEmpty {
                         techniqueSection(
                             title: LanguageManager.t("modal.exercise.avoid"),

@@ -1,0 +1,172 @@
+{
+  "aesthetic-hypertrophy": {
+    "name": "Aesthetic Engine: 5-Day Hypertrophy",
+    "description": "A 5-day bodybuilding split engineered for maximum hypertrophy, structural balance, and aesthetic muscle development using commercial gym equipment.",
+    "guidelines": [
+      "Train with high mechanical tension: take working sets within 1–2 reps of technical failure.",
+      "Control the eccentric (lowering) phase for 2–3 seconds on all isolation and machine movements.",
+      "Log weights and reps accurately every session to apply progressive overload week over week.",
+      "Rest 2–3 minutes on heavy compound lifts and 60–90 seconds on isolation accessories.",
+      "Prioritize recovery: stay hydrated, hit your daily protein target, and get 7–9 hours of sleep."
+    ],
+    "workouts": {
+      "aesthetic-push-a": {
+        "title": "Chest & Triceps",
+        "focus": "Upper chest, front/side delts, and triceps volume"
+      },
+      "aesthetic-pull-a": {
+        "title": "Back & Biceps",
+        "focus": "Lat width, upper back thickness, and elbow flexor hypertrophy"
+      },
+      "aesthetic-legs-a": {
+        "title": "Quads & Calves",
+        "focus": "Quad hypertrophy, knee stability, and calf development"
+      },
+      "aesthetic-upper-b": {
+        "title": "Shoulders & Back",
+        "focus": "Shoulder cap fullness, chest density, and arm specialization"
+      },
+      "aesthetic-lower-b": {
+        "title": "Glutes & Hams",
+        "focus": "Posterior chain power, glute fullness, and abdominal trunk rigidity"
+      }
+    }
+  },
+  "powerbuilding-strength": {
+    "name": "Heavy & Built: 4-Day Powerbuilding",
+    "description": "A 4-day heavy compound powerbuilding split blending foundational powerlifting strength (Squat, Bench, Deadlift, OHP) with high-yield hypertrophy.",
+    "guidelines": [
+      "Primary barbell lifts are performed heavy with 3–5 minute rest periods to maximize force production.",
+      "Accessory work focuses on high-tension hypertrophy with 90–120 second rest intervals.",
+      "Record exact weights and reps to progress through linear periodization.",
+      "Always maintain rigid brace and neutral spine on heavy compounds; leave 1 rep in reserve."
+    ],
+    "workouts": {
+      "pb-squat-strength": {
+        "title": "Heavy Squat",
+        "focus": "Maximal squat power, quad density, and core bracing"
+      },
+      "pb-bench-strength": {
+        "title": "Heavy Bench",
+        "focus": "Pectoral force production, triceps lockout, and horizontal pulling balance"
+      },
+      "pb-deadlift-strength": {
+        "title": "Heavy Deadlift",
+        "focus": "Posterior chain maximal strength, back thickness, and hamstring development"
+      },
+      "pb-press-volume": {
+        "title": "Overhead Press",
+        "focus": "Vertical pressing overhead power, lat pulldowns, and arm hypertrophy"
+      }
+    }
+  },
+  "classic-ppl": {
+    "name": "Pure PPL: 6-Day Push Pull Legs",
+    "description": "The gold-standard high-frequency split for dedicated lifters, hitting each muscle group twice weekly with optimal volume distribution.",
+    "guidelines": [
+      "Workout order: Push 1, Pull 1, Legs 1, Push 2, Pull 2, Legs 2, Rest.",
+      "Workout 1 days emphasize heavy compound loading; Workout 2 days emphasize hypertrophy variation and pump.",
+      "Leave 1–2 clean reps in reserve on early sets; take the final set of accessories to technical failure.",
+      "Ensure high daily calorie and protein intake to support 6 days of training."
+    ],
+    "workouts": {
+      "ppl-push-1": {
+        "title": "Chest & Delts",
+        "focus": "Horizontal pressing power, overhead strength, and triceps"
+      },
+      "ppl-pull-1": {
+        "title": "Deadlift & Back",
+        "focus": "Posterior chain strength, lat width, and biceps mass"
+      },
+      "ppl-legs-1": {
+        "title": "Squat & Hams",
+        "focus": "Heavy quad squat loading, hamstring hinge, and core"
+      },
+      "ppl-push-2": {
+        "title": "Upper Chest",
+        "focus": "Incline pressing, lateral shoulder volume, and pec fly pump"
+      },
+      "ppl-pull-2": {
+        "title": "Lats & Biceps",
+        "focus": "Bodyweight pulling, horizontal row volume, and arm thickness"
+      },
+      "ppl-legs-2": {
+        "title": "Legs & Abs",
+        "focus": "Anterior quad loading, unilateral balance, and calf specialization"
+      }
+    }
+  },
+  "full-body-classic": {
+    "name": "Classic Foundation: 3-Day Full Body",
+    "description": "A time-tested 3-day full body compound routine built for maximum strength and muscle stimulus in 3 efficient weekly sessions.",
+    "guidelines": [
+      "Perform workouts on non-consecutive days (e.g. Monday, Wednesday, Friday).",
+      "Focus on progressive overload on the main compound barbell lifts.",
+      "Take 2–3 minute rest on heavy compounds and 90 seconds on isolation lifts."
+    ],
+    "workouts": {
+      "fb-workout-a": {
+        "title": "Squat & Chest",
+        "focus": "Squat strength, horizontal press, horizontal row, and core"
+      },
+      "fb-workout-b": {
+        "title": "Deadlift & Press",
+        "focus": "Deadlift power, overhead pressing, vertical pulling, and single-leg strength"
+      },
+      "fb-workout-c": {
+        "title": "Legs & Back",
+        "focus": "Leg hypertrophy, incline upper chest, bodyweight pull, and posterior chain"
+      }
+    }
+  },
+  "home-forge-dumbbells": {
+    "name": "Home Forge: 4-Day Dumbbell Split",
+    "description": "A complete 4-day Upper/Lower split designed exclusively for dumbbells and bodyweight. No specialized machines required.",
+    "guidelines": [
+      "Use adjustable or pair dumbbells with manageable micro-increments.",
+      "Maintain strict form and full range of motion to maximize hypertrophy without heavy machines.",
+      "Take 90–120 seconds rest between sets."
+    ],
+    "workouts": {
+      "hf-upper-a": {
+        "title": "Chest & Back",
+        "focus": "Horizontal dumbbell pressing, lat rows, and shoulder volume"
+      },
+      "hf-lower-a": {
+        "title": "Quads & Hams",
+        "focus": "Goblet squats, dumbbell RDLs, and calf development"
+      },
+      "hf-upper-b": {
+        "title": "Shoulders & Arms",
+        "focus": "Incline pressing, chest-supported rows, floor pressing, and biceps"
+      },
+      "hf-lower-b": {
+        "title": "Glutes & Core",
+        "focus": "Unilateral leg loading, glute development, and core stability"
+      }
+    }
+  },
+  "athletic-performance": {
+    "name": "Athletic Engine: 3-Day Performance",
+    "description": "A 3-day athletic performance program designed to build explosive lower body power, rotational core stability, vertical jump, and work capacity.",
+    "guidelines": [
+      "Perform all power exercises (jumps, push press, swings) first while neurologically fresh.",
+      "Move every rep with explosive intent.",
+      "Rest 2–3 minutes on power and compound lifts."
+    ],
+    "workouts": {
+      "ap-lower-power": {
+        "title": "Lower Power",
+        "focus": "Trap bar deadlift power, vertical box jumps, unilateral acceleration"
+      },
+      "ap-upper-power": {
+        "title": "Upper Power",
+        "focus": "Push press power, weighted pull-up strength, and horizontal row capacity"
+      },
+      "ap-work-capacity": {
+        "title": "Conditioning & Core",
+        "focus": "Front squat anterior strength, kettlebell swings, farmer carries, and jump rope"
+      }
+    }
+  }
+}

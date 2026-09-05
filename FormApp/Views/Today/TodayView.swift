@@ -64,6 +64,7 @@ public struct TodayView: View {
                 // Today card (Workout or Rest day)
                 TodayHeroCard(
                     workout: workout,
+                    programId: program?.id,
                     todayIndex: store.weekCalendar.today,
                     isCompleted: isCompleted,
                     isAvailable: isAvailable,
@@ -123,7 +124,7 @@ public struct TodayView: View {
                                         )
 
                                         VStack(alignment: .leading, spacing: 4) {
-                                            Text(exercise.name)
+                                            Text(exercise.displayName)
                                                 .font(.system(size: 14, weight: .medium))
                                                 .lineSpacing(2)
                                                 .foregroundColor(AppColors.text)
