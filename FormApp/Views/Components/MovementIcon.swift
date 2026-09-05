@@ -347,7 +347,7 @@ public extension MovementIcon {
         case "ez-bar-curl":
             return MovementSprite(imageName: "anatomy_batch_05_accessory", top: 418, bottom: 857)
         case "barbell-hip-thrust":
-            return MovementSprite(imageName: "anatomy_batch_05_accessory", top: 857, bottom: 1254)
+            return MovementSprite(imageName: "anatomy_barbell_hip_thrust", top: 0, bottom: 418, atlasHeight: 418)
         case "barbell-row":
             return MovementSprite(imageName: "anatomy_barbell_row", top: 0, bottom: 409, atlasHeight: 409)
         case "incline-barbell-bench-press":

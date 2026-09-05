@@ -72,7 +72,12 @@ final class FormAppTests: XCTestCase {
         let backSquatSprite = MovementIcon.movementAssetSprite("barbell-back-squat")
         XCTAssertEqual(backSquatSprite?.imageName, "anatomy_barbell_back_squat")
         XCTAssertEqual(backSquatSprite?.atlasHeight, 418)
-        for sprite in [benchSprite, abWheelSprite, frontSquatSprite, backSquatSprite].compactMap({ $0 }) {
+        let hipThrustSprite = MovementIcon.movementAssetSprite("barbell-hip-thrust")
+        XCTAssertEqual(hipThrustSprite?.imageName, "anatomy_barbell_hip_thrust")
+        XCTAssertEqual(hipThrustSprite?.top, 0)
+        XCTAssertEqual(hipThrustSprite?.bottom, 418)
+        XCTAssertEqual(hipThrustSprite?.atlasHeight, 418)
+        for sprite in [benchSprite, abWheelSprite, frontSquatSprite, backSquatSprite, hipThrustSprite].compactMap({ $0 }) {
             for frame in 0..<3 {
                 XCTAssertNotNil(MovementFrameCache.getFrame(for: sprite, frame: frame))
             }
