@@ -388,7 +388,7 @@ public struct HistoryDayDetailSheet: View {
         let (statusColor, statusBg, statusText): (Color, Color, String) = {
             switch effectiveStatus {
             case .unfinished:
-                return (AppColors.unfinishedOrange, AppColors.unfinishedOrange.opacity(0.15), LanguageManager.t("history.unfinished"))
+                return (AppColors.accent, AppColors.positiveBg, LanguageManager.t("history.unfinished"))
             case .missed:
                 return (AppColors.missedRed, AppColors.missedRed.opacity(0.15), LanguageManager.t("history.missed"))
             case .completed:
@@ -424,24 +424,19 @@ public struct HistoryDayDetailSheet: View {
                 }
 
                 // Status pill tag
-                HStack(spacing: 6) {
-                    Circle()
-                        .fill(statusColor)
-                        .frame(width: 8, height: 8)
-                    Text(statusText)
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(statusColor)
-                }
-                .padding(.horizontal, 10)
-                .padding(.vertical, 5)
-                .background(
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .fill(statusBg)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .stroke(statusColor.opacity(0.3), lineWidth: 1)
-                        )
-                )
+                Text(statusText)
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(statusColor)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .fill(statusBg)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .stroke(statusColor.opacity(0.3), lineWidth: 1)
+                            )
+                    )
 
                 // Overall Progress Header Row & Bar (Unified for all statuses)
                 if !items.isEmpty {
@@ -464,14 +459,14 @@ public struct HistoryDayDetailSheet: View {
                         GeometryReader { geo in
                             ZStack(alignment: .leading) {
                                 Capsule()
-                                    .fill(AppColors.surfaceRaised)
-                                    .frame(height: 6)
+                                    .fill(AppColors.progressTrack)
+                                    .frame(height: 10)
                                 Capsule()
                                     .fill(effectiveStatus == .completed ? AppColors.completedGreen : AppColors.accent)
-                                    .frame(width: geo.size.width * CGFloat(progressFraction), height: 6)
+                                    .frame(width: geo.size.width * CGFloat(progressFraction), height: 10)
                             }
                         }
-                        .frame(height: 6)
+                        .frame(height: 10)
                     }
                 }
 
@@ -567,19 +562,19 @@ public struct HistoryDayDetailSheet: View {
                                 GeometryReader { geo in
                                     ZStack(alignment: .leading) {
                                         Capsule()
-                                            .fill(AppColors.surface)
-                                            .frame(height: 4)
+                                            .fill(Color(hex: 0x192524))
+                                            .frame(height: 6)
                                         Capsule()
                                             .fill(AppColors.accent)
-                                            .frame(width: geo.size.width * CGFloat(progress), height: 4)
+                                            .frame(width: geo.size.width * CGFloat(progress), height: 6)
                                     }
                                 }
-                                .frame(height: 4)
+                                .frame(height: 6)
                             }
                             .padding(16)
                             .background(
                                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                    .fill(AppColors.surfaceRaised)
+                                    .fill(AppColors.toContinueSurface)
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 16, style: .continuous)
                                             .stroke(AppColors.accent, lineWidth: 1.5)

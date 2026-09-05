@@ -39,6 +39,10 @@ public enum AppColors {
     public static let upperBorder = Color(hex: 0x494260)
     public static let lowerBorder = Color(hex: 0x37485F)
     public static let fullBodyBorder = Color(hex: 0x414C57)
+    
+    // History Day Detail Sheet specific colors matching design reference
+    public static let toContinueSurface = Color(hex: 0x102523)
+    public static let progressTrack = Color(hex: 0x1D262B)
 }
 
 extension Color {
