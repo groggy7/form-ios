@@ -168,6 +168,7 @@ public enum WorkoutSessionUtils {
 
             let completedLogs = matchedLog?.sets ?? []
             let targetTotal = matchedLog?.targetSets ?? targetCount
+            let safeTarget = max(1, targetTotal)
             if !completedLogs.isEmpty {
                 var restored = completedLogs.map { s in
                     ExerciseSetLog(
@@ -180,7 +181,7 @@ public enum WorkoutSessionUtils {
                     )
                 }
                 let maxNum = restored.map { $0.setNumber }.max() ?? 0
-                let needed = max(targetTotal, maxNum)
+                let needed = max(safeTarget, maxNum)
                 if needed > restored.count {
                     for num in (restored.count + 1)...needed {
                         restored.append(ExerciseSetLog(setNumber: num))
@@ -188,7 +189,7 @@ public enum WorkoutSessionUtils {
                 }
                 result[ex.id] = restored
             } else {
-                result[ex.id] = (1...targetTotal).map { ExerciseSetLog(setNumber: $0) }
+                result[ex.id] = (1...safeTarget).map { ExerciseSetLog(setNumber: $0) }
             }
         }
         return result

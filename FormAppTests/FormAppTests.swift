@@ -1182,6 +1182,91 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(log?.targetSets, 4)
     }
 
+    func testRestoreSetsFromHistoryRespectsTargetSetsWhenSetDeleted() {
+        let exercise = Exercise(id: "bench", name: "Barbell Bench Press", sets: 4)
+        let workout = Workout(id: "w1", day: 1, title: "Chest", exercises: [exercise])
+
+        // User deleted set 4 (targetSets = 3), completed 1 set
+        let record1 = WorkoutSessionRecord(
+            id: "rec-1",
+            programId: "p1",
+            workoutId: "w1",
+            workoutTitle: "Chest",
+            startedAt: "2026-09-05T10:00:00Z",
+            completedAt: "2026-09-05T10:15:00Z",
+            durationSeconds: 900,
+            totalVolumeKg: 800,
+            totalCompletedSets: 1,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 80, reps: 10)
+                    ],
+                    targetSets: 3
+                )
+            ],
+            isComplete: false
+        )
+        let restored1 = WorkoutSessionUtils.restoreSetsFromHistory(workout: workout, record: record1)["bench"] ?? []
+        XCTAssertEqual(restored1.count, 3)
+        XCTAssertTrue(restored1[0].isCompleted)
+        XCTAssertFalse(restored1[1].isCompleted)
+        XCTAssertFalse(restored1[2].isCompleted)
+
+        // User deleted set 4 (targetSets = 3), completed 0 sets
+        let record2 = WorkoutSessionRecord(
+            id: "rec-2",
+            programId: "p1",
+            workoutId: "w1",
+            workoutTitle: "Chest",
+            startedAt: "2026-09-05T10:00:00Z",
+            completedAt: "2026-09-05T10:05:00Z",
+            durationSeconds: 300,
+            totalVolumeKg: 0,
+            totalCompletedSets: 0,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [],
+                    targetSets: 3
+                )
+            ],
+            isComplete: false
+        )
+        let restored2 = WorkoutSessionUtils.restoreSetsFromHistory(workout: workout, record: record2)["bench"] ?? []
+        XCTAssertEqual(restored2.count, 3)
+        XCTAssertTrue(restored2.allSatisfy { !$0.isCompleted })
+
+        // User deleted set 4 (targetSets = 3), completed all 3 sets
+        let record3 = WorkoutSessionRecord(
+            id: "rec-3",
+            programId: "p1",
+            workoutId: "w1",
+            workoutTitle: "Chest",
+            startedAt: "2026-09-05T10:00:00Z",
+            completedAt: "2026-09-05T10:25:00Z",
+            durationSeconds: 1500,
+            totalVolumeKg: 2400,
+            totalCompletedSets: 3,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 80, reps: 10),
+                        SessionSetLog(setNumber: 2, weightKg: 80, reps: 10),
+                        SessionSetLog(setNumber: 3, weightKg: 80, reps: 10)
+                    ],
+                    targetSets: 3
+                )
+            ],
+            isComplete: false
+        )
+        let restored3 = WorkoutSessionUtils.restoreSetsFromHistory(workout: workout, record: record3)["bench"] ?? []
+        XCTAssertEqual(restored3.count, 3)
+        XCTAssertTrue(restored3.allSatisfy { $0.isCompleted })
+    }
+
     func testIsoDateParserFractionalSeconds() {
         let withFractional = "2026-09-05T14:45:12.345Z"
         let withoutFractional = "2026-09-05T14:45:12Z"

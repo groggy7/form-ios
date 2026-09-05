@@ -793,9 +793,15 @@ public struct HistoryDayDetailSheet: View {
                 }
                 let completed = log?.sets.count ?? 0
                 let planned = log?.targetSets ?? WorkoutSessionUtils.initialSetCount(exercise: ex)
+                let prescription: String = {
+                    if let targetSets = log?.targetSets, let reps = ex.reps {
+                        return "\(targetSets) × \(reps.displayText)"
+                    }
+                    return ex.displayPrescription
+                }()
                 return ExerciseProgressItem(
                     name: ex.displayName,
-                    prescription: ex.displayPrescription,
+                    prescription: prescription,
                     completedSets: completed,
                     plannedSets: planned
                 )
