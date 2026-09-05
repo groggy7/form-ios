@@ -720,7 +720,8 @@ public enum WorkoutCalendar {
         today: String,
         timeZone: TimeZone = .current,
         weekdays: [Int],
-        activeSessionId: String? = nil
+        activeSessionId: String? = nil,
+        programs: [Program] = []
     ) -> WorkoutCalendarHistory {
         let history = sanitize(raw: raw, today: today)
             ?? WorkoutCalendarHistory(nextScheduledDate: mondayOfCurrentWeek(for: parseDate(today) ?? Date()), scheduledWeekdays: weekdays)
@@ -737,9 +738,17 @@ public enum WorkoutCalendar {
                 entriesMap[entry.id] = entry
             }
         }
+        let cal = Calendar(identifier: .gregorian)
         for session in sessions {
             let id = "session:\(session.id)"
-            let day = entriesMap[id]?.date
+            let workoutDay = programs.first(where: { $0.id == session.programId })?.workouts.first(where: { $0.id == session.workoutId })?.day
+            let sessionDate = parseIsoTimestamp(session.startedAt) ?? parseIsoTimestamp(session.completedAt)
+            let scheduled: String? = {
+                guard let day = workoutDay, let date = sessionDate else { return nil }
+                return scheduledDate(forWeekday: day, relativeTo: date, calendar: cal)
+            }()
+            let day = scheduled
+                ?? entriesMap[id]?.date
                 ?? localDate(from: session.startedAt, timeZone: timeZone)
                 ?? localDate(from: session.completedAt, timeZone: timeZone)
             if let d = day {

@@ -35,7 +35,8 @@ public final class AppStore: ObservableObject {
             sessions: loadedState.history,
             today: todayStr,
             weekdays: weekdays,
-            activeSessionId: activeDraft?.id
+            activeSessionId: activeDraft?.id,
+            programs: loadedState.programs
         )
         let refreshed = WorkoutCalendar.refresh(
             history: restored,

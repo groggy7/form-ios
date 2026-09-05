@@ -1360,4 +1360,52 @@ final class FormAppTests: XCTestCase {
         let statuses = WorkoutCalendar.statuses(history: restoredNoActive, today: "2026-09-05")
         XCTAssertNil(statuses["2026-09-05"], "Saturday must have nil status when not started, NOT unfinished")
     }
+
+    func testWorkoutCalendarRestoreReconcilesScheduledWorkoutDate() {
+        let mondaySession = WorkoutSessionRecord(
+            id: "session-push-a",
+            programId: "prog-1",
+            workoutId: "w-mon",
+            workoutTitle: "Chest & Triceps",
+            startedAt: "2026-09-05T15:21:25.181Z",
+            completedAt: "2026-09-05T16:03:24.092Z",
+            durationSeconds: 2518,
+            totalVolumeKg: 2000,
+            totalCompletedSets: 7,
+            exerciseLogs: [],
+            isComplete: false
+        )
+        let prog = Program(
+            id: "prog-1",
+            name: "Aesthetic",
+            workouts: [
+                Workout(id: "w-mon", day: 1, title: "Chest & Triceps", exercises: [])
+            ]
+        )
+        let rawHistory = WorkoutCalendarHistory(
+            nextScheduledDate: "2026-09-05",
+            scheduledWeekdays: [1, 2, 4, 5, 6],
+            missedDates: ["2026-08-31"],
+            entries: [
+                WorkoutDayEntry(id: "session:session-push-a", date: "2026-09-05", status: .unfinished)
+            ]
+        )
+
+        let restored = WorkoutCalendar.restore(
+            raw: rawHistory,
+            sessions: [mondaySession],
+            today: "2026-09-05",
+            weekdays: [1, 2, 4, 5, 6],
+            activeSessionId: nil,
+            programs: [prog]
+        )
+
+        let entry = restored.entries.first { $0.id == "session:session-push-a" }
+        XCTAssertNotNil(entry)
+        XCTAssertEqual(entry?.date, "2026-08-31", "Session for Monday workout performed on Saturday must reconcile to Monday 2026-08-31")
+        XCTAssertEqual(entry?.status, .unfinished)
+
+        let statuses = WorkoutCalendar.statuses(history: restored, today: "2026-09-05")
+        XCTAssertEqual(statuses["2026-08-31"], .unfinished, "August 31 must show unfinished, NOT missed")
+    }
 }
