@@ -134,6 +134,8 @@ public struct ExerciseDefinition: Identifiable, Codable, Hashable {
     public var movementAssetId: String?
     public var cues: [String]
     public var avoid: [String]
+    public var cuesTr: [String]
+    public var avoidTr: [String]
 
     public init(
         id: String,
@@ -141,7 +143,9 @@ public struct ExerciseDefinition: Identifiable, Codable, Hashable {
         movementType: String,
         movementAssetId: String? = nil,
         cues: [String] = [],
-        avoid: [String] = []
+        avoid: [String] = [],
+        cuesTr: [String] = [],
+        avoidTr: [String] = []
     ) {
         self.id = id
         self.name = name
@@ -149,10 +153,37 @@ public struct ExerciseDefinition: Identifiable, Codable, Hashable {
         self.movementAssetId = movementAssetId
         self.cues = cues
         self.avoid = avoid
+        self.cuesTr = cuesTr
+        self.avoidTr = avoidTr
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case id, name, movementType, movementAssetId, cues, avoid, cuesTr, avoidTr
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decode(String.self, forKey: .id)
+        self.name = try container.decode(String.self, forKey: .name)
+        self.movementType = try container.decode(String.self, forKey: .movementType)
+        self.movementAssetId = try container.decodeIfPresent(String.self, forKey: .movementAssetId)
+        self.cues = (try? container.decode([String].self, forKey: .cues)) ?? []
+        self.avoid = (try? container.decode([String].self, forKey: .avoid)) ?? []
+        self.cuesTr = (try? container.decode([String].self, forKey: .cuesTr)) ?? []
+        self.avoidTr = (try? container.decode([String].self, forKey: .avoidTr)) ?? []
     }
 
     public var cuesText: String { cues.joined(separator: "\n") }
     public var avoidText: String { avoid.joined(separator: "\n") }
+    public var cuesTrText: String { cuesTr.joined(separator: "\n") }
+    public var avoidTrText: String { avoidTr.joined(separator: "\n") }
+
+    public func cuesText(lang: String) -> String {
+        (lang == "tr" && !cuesTr.isEmpty) ? cuesTrText : cuesText
+    }
+    public func avoidText(lang: String) -> String {
+        (lang == "tr" && !avoidTr.isEmpty) ? avoidTrText : avoidText
+    }
 
     public func toExercise() -> Exercise {
         Exercise(

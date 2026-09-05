@@ -19,7 +19,13 @@ public final class LanguageManager: ObservableObject {
     }
     
     public static func content(_ text: String) -> String {
-        return text
+        return ContentDictionary.localize(text, lang: shared.currentLanguage)
+    }
+
+    public static func setLanguage(_ lang: String) {
+        if lang == "en" || lang == "tr" {
+            shared.currentLanguage = lang
+        }
     }
     
     public func translate(_ key: String, params: [String: Any] = [:]) -> String {
@@ -29,6 +35,75 @@ public final class LanguageManager: ObservableObject {
             template = template.replacingOccurrences(of: "{" + k + "}", with: "\(v)")
         }
         return template
+    }
+}
+
+public enum ContentDictionary {
+    private static var _canonicalMap: [String: String]?
+
+    public static var canonicalMap: [String: String] {
+        if let cached = _canonicalMap { return cached }
+        var map: [String: String] = [:]
+        for def in ExerciseCatalog.canonicalExercises.values {
+            for (en, tr) in zip(def.cues, def.cuesTr) {
+                let e = en.trimmingCharacters(in: .whitespaces)
+                let t = tr.trimmingCharacters(in: .whitespaces)
+                if !e.isEmpty && !t.isEmpty {
+                    map[e] = t
+                }
+            }
+            for (en, tr) in zip(def.avoid, def.avoidTr) {
+                let e = en.trimmingCharacters(in: .whitespaces)
+                let t = tr.trimmingCharacters(in: .whitespaces)
+                if !e.isEmpty && !t.isEmpty {
+                    map[e] = t
+                }
+            }
+            let cuesEn = def.cuesText.trimmingCharacters(in: .whitespaces)
+            let cuesTr = def.cuesTrText.trimmingCharacters(in: .whitespaces)
+            if !cuesEn.isEmpty && !cuesTr.isEmpty {
+                map[cuesEn] = cuesTr
+            }
+            let avoidEn = def.avoidText.trimmingCharacters(in: .whitespaces)
+            let avoidTr = def.avoidTrText.trimmingCharacters(in: .whitespaces)
+            if !avoidEn.isEmpty && !avoidTr.isEmpty {
+                map[avoidEn] = avoidTr
+            }
+        }
+        _canonicalMap = map
+        return map
+    }
+
+    public static func localize(_ text: String?, lang: String) -> String {
+        guard let text = text, !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            return ""
+        }
+        if lang != "tr" {
+            return text
+        }
+        let trimmed = text.trimmingCharacters(in: .whitespaces)
+        if let direct = canonicalMap[trimmed] {
+            return direct
+        }
+        if trimmed.hasPrefix("- ") {
+            let clean = String(trimmed.dropFirst(2)).trimmingCharacters(in: .whitespaces)
+            if let tr = canonicalMap[clean] {
+                return "- \(tr)"
+            }
+        }
+        if text.contains("\n") {
+            let lines = text.components(separatedBy: .newlines)
+            let translated = lines.map { line -> String in
+                let lTrim = line.trimmingCharacters(in: .whitespaces)
+                if lTrim.isEmpty { return "" }
+                let isDash = lTrim.hasPrefix("- ")
+                let clean = isDash ? String(lTrim.dropFirst(2)).trimmingCharacters(in: .whitespaces) : lTrim
+                let tr = canonicalMap[clean] ?? clean
+                return isDash ? "- \(tr)" : tr
+            }
+            return translated.joined(separator: "\n")
+        }
+        return text
     }
 }
 

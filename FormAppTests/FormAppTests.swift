@@ -874,4 +874,31 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(catalogue.filter { !$0.exercise.avoid.isEmpty }.count, 49)
         XCTAssertEqual(catalogue.filter { $0.exercise.exerciseId != nil }.count, 49)
     }
+
+    func testCanonicalExercisesProvideTurkishCuesAndAvoid() {
+        let canonical = Array(ExerciseCatalog.canonicalExercises.values)
+        XCTAssertEqual(canonical.count, 49)
+        XCTAssertEqual(canonical.filter { !$0.cuesTr.isEmpty }.count, 49)
+        XCTAssertEqual(canonical.filter { !$0.avoidTr.isEmpty }.count, 49)
+
+        guard let bench = canonical.first(where: { $0.id == "barbell-bench-press" }) else {
+            XCTFail("Missing bench press definition")
+            return
+        }
+
+        LanguageManager.setLanguage("tr")
+        defer { LanguageManager.setLanguage("en") }
+
+        let localizedCues = LanguageManager.content(bench.cuesText)
+        XCTAssertTrue(localizedCues.contains("Gözler barın hizasında"))
+        XCTAssertTrue(localizedCues.contains("kürek kemiklerini"))
+
+        let localizedAvoid = LanguageManager.content(bench.avoidText)
+        XCTAssertTrue(localizedAvoid.contains("omuz sıkışmasına yol açar"))
+        XCTAssertTrue(localizedAvoid.contains("Barı göğüsten sektirmek"))
+
+        let firstCue = bench.cues.first!
+        let localizedFirstCue = LanguageManager.content(firstCue)
+        XCTAssertEqual(localizedFirstCue, bench.cuesTr.first!)
+    }
 }

@@ -14,6 +14,17 @@
       "Allowing lower back to sag into hyperextension (anterior pelvic tilt).",
       "Sitting hips straight back onto heels to pull the wheel in (hip flexor cheat).",
       "Rolling out further than abdominal strength can stabilize."
+    ],
+    "cuesTr": [
+      "Dizlerinizi mindere koyun; pelvisi hafifçe içe yuvarlayıp üst sırtı kubbeleştirin ve karın kaslarınızı sertçe kilitleyin.",
+      "Beli aşağı çökertmeden, kollarınızı uzatarak tekerleği kontrollü bir şekilde ileriye yuvarlayın.",
+      "Yalnızca gövde gerginliğini ve karın kilidini koruyabildiğiniz mesafeye kadar açılın.",
+      "Geri dönüşte kalçayı geriye kaçırmadan, karın ve kanat kaslarınızı sıkarak tekerleği kendinize çekin."
+    ],
+    "avoidTr": [
+      "Açılırken belin aşağı çökmesi ve omurganın aşırı çukurlaşması.",
+      "Tekerleği çekerken kalçayı topuklara doğru oturtarak hareketi kalça fleksörleriyle çalmak.",
+      "Karın gücünüzün kontrol edemeyeceği kadar fazla ileriye uzanmak."
     ]
   },
   {
@@ -23,7 +34,7 @@
     "movementAssetId": "barbell-back-squat",
     "cues": [
       "Set bar firmly on upper traps/shelf; pull bar down into back to engage lats.",
-      "Take a 360\u00b0 diaphragmatic breath into abdomen; break at hips and knees simultaneously.",
+      "Take a 360° diaphragmatic breath into abdomen; break at hips and knees simultaneously.",
       "Descend until hip crease dips below top of knee, knees tracking in line with toes.",
       "Drive through mid-foot with chest and hips rising at the exact same rate."
     ],
@@ -31,6 +42,17 @@
       "Knees caving inward (valgus collapse) on ascent.",
       "Hips shooting up first ('good-morning' squat), shifting load onto lower back.",
       "Rounding or hyperextending lumbar spine at the bottom."
+    ],
+    "cuesTr": [
+      "Barı üst trapezlerin üzerine sağlamca oturtun; kanat kaslarını kilitlemek için barı sırtınıza doğru aktif şekilde çekin.",
+      "Karnınıza derin bir diyafram nefesi alıp gövdeyi kilitleyin; kalça ve dizleri aynı anda bükerek inişi başlatın.",
+      "Dizler ayak parmakları hizasında ilerlerken, kalça eklemi diz kapağının hafif altına inene kadar çömelin.",
+      "Tabanın tam ortasından güç alarak kalkın; göğüs ve kalçanın aynı hızda yükselmesine dikkat edin."
+    ],
+    "avoidTr": [
+      "Kalkış sırasında dizlerin içeri doğru çökmesi (valgus pozisyonu).",
+      "Kalkışta kalçanın göğüsten önce fırlayarak yükü tamamen bele bindirmesi.",
+      "Dip noktada bel omurlarını kamburlaştırmak ya da aşırı zorlayarak kavis vermek."
     ]
   },
   {
@@ -41,13 +63,24 @@
     "cues": [
       "Lie with eyes under bar; plant feet firmly and pin shoulder blades down and back into bench.",
       "Grip bar slightly wider than shoulder-width; unrack and stabilize directly over shoulders.",
-      "Lower bar in a slight arc to mid-to-lower sternum, tucking elbows at 45\u201370\u00b0.",
+      "Lower bar in a slight arc to mid-to-lower sternum, tucking elbows at 45–70°.",
       "Press bar explosively upward and slightly back toward your face, finishing over shoulders."
     ],
     "avoid": [
       "Flaring elbows out at 90 degrees to torso (causes subacromial impingement).",
       "Bouncing bar off ribcage or lifting glutes off bench.",
       "Letting wrists bend completely backward under bar."
+    ],
+    "cuesTr": [
+      "Gözler barın hizasında olacak şekilde uzanın; ayakları yere sağlam basın ve kürek kemiklerini geriye alıp sehpaya sabitleyin.",
+      "Barı omuz genişliğinden biraz geniş tutun; raftan alıp omuz eklemlerinin tam üzerinde dengeleyin.",
+      "Dirsekleri gövdeye 45–70° açıda tutarak barı hafif bir kavisle göğsün alt-orta kısmına doğru indirin.",
+      "Barı patlayıcı bir güçle yukarı ve hafifçe yüze doğru iterek tekrar omuz hizasında kitleyin."
+    ],
+    "avoidTr": [
+      "Dirsekleri gövdeye 90 derece dik olacak şekilde iki yana açmak (omuz sıkışmasına yol açar).",
+      "Barı göğüsten sektirmek ya da kalçayı sehpadan havaya kaldırmak.",
+      "Barın altında bileklerin geriye doğru aşırı bükülmesine izin vermek."
     ]
   },
   {
@@ -64,6 +97,16 @@
     "avoid": [
       "Elbows dropping downward, causing upper back to round and bar to dump forward.",
       "Heels lifting off floor or weight shifting excessively onto toes."
+    ],
+    "cuesTr": [
+      "Barı ön omuz başlarına oturtun; parmak uçlarıyla kavrayıp dirsekleri yere paralel olacak şekilde yüksekte tutun.",
+      "İniş boyunca gövdeyi olabildiğince dik tutun ve karnınızı sıkı bir şekilde kilitleyin.",
+      "Dizleri ayak parmakları yönünde ileri açarak iki dizinizin arasına doğru rahat bir derinliğe kadar çökün.",
+      "Dirsek yüksekliğini hiç kaybetmeden, ayağın tam ortasıyla yeri iterek yükselin."
+    ],
+    "avoidTr": [
+      "Dirseklerin aşağı düşmesi; bu durum üst sırtı kamburlaştırır ve barın öne kaymasına neden olur.",
+      "Topukların yerden kalkması ya da yükün tamamen ayak parmak uçlarına kayması."
     ]
   },
   {
@@ -73,7 +116,7 @@
     "movementAssetId": "barbell-hip-thrust",
     "cues": [
       "Position bench edge just below shoulder blades; rest padded bar across hip crease.",
-      "Set feet shoulder-width so shins are strictly vertical (90\u00b0) at full extension.",
+      "Set feet shoulder-width so shins are strictly vertical (90°) at full extension.",
       "Keep chin tucked to chest and eyes forward; drive through full foot to lift hips.",
       "Squeeze glutes hard into posterior pelvic tilt at top until torso and thighs form a flat table."
     ],
@@ -81,6 +124,17 @@
       "Looking up at the ceiling and hyperextending lumbar spine at the top.",
       "Feet too far forward (hamstrings dominate) or too close (quads dominate).",
       "Letting knees collapse inward during hip extension."
+    ],
+    "cuesTr": [
+      "Sehpanın kenarını kürek kemiklerinizin hemen altına denk getirin; süngerli barı kalça kıvrımına yerleştirin.",
+      "Ayakları omuz genişliğinde açın; tepe noktada kaval kemikleriniz yere tam dik (90°) olmalıdır.",
+      "Çeneyi göğse yakın, bakışları karşıda tutun; tüm tabanla yeri iterek kalçayı yukarı kaldırın.",
+      "Tepe noktada kalçayı güçlüce sıkıp pelvisi geriye yuvarlayın; gövde ile uyluklar düz bir masa pozisyonu alsın."
+    ],
+    "avoidTr": [
+      "Tavana bakarak tepe noktada beli aşırı çukurlaştırmak ve yükü bel omurlarına bindirmek.",
+      "Ayakları çok ileriye koyup yükü arka bacağa, ya da çok yakına alıp ön bacağa kaçırmak.",
+      "Kalçayı kaldırırken dizlerin içe doğru çökmesine izin vermek."
     ]
   },
   {
@@ -98,6 +152,17 @@
       "Rounding lower back to reach the floor once hips have stopped traveling back.",
       "Bending knees further into a squat, shifting tension away from hamstrings.",
       "Allowing bar to drift forward away from legs."
+    ],
+    "cuesTr": [
+      "Barı omuz genişliğinde kavrayıp dik durun; barı bacaklara yapışık tutmak için kanat kaslarınızı sıkın.",
+      "Dizlerinizi hafifçe kırın ve bu diz açısını hareket boyunca kesinlikle değiştirmeyin.",
+      "Arkanızdaki hayali bir duvara dokunur gibi kalçanızı yatay düzlemde geriye doğru itin.",
+      "Kalçanın geriye gidişi durduğunda inişi kesin (genelde kaval kemiği ortası); kalçayı öne iterek doğrulun."
+    ],
+    "avoidTr": [
+      "Kalça arkaya gitmeyi bıraktıktan sonra barı yere değdirmek için beli kamburlaştırmak.",
+      "Dizleri daha fazla büküp hareketi squata dönüştürmek ve arka bacak gerginliğini kaybetmek.",
+      "Barın bacaklardan uzaklaşıp ileriye doğru açılmasına izin vermek."
     ]
   },
   {
@@ -115,6 +180,17 @@
       "Jerking torso upright to heave weight (turning row into a standing shrug).",
       "Rounding lumbar or thoracic spine under load.",
       "Letting shoulders roll forward at the bottom of the rep."
+    ],
+    "cuesTr": [
+      "Dizleri hafif kırıp kalçadan bükülerek gövdeyi yaklaşık 45 derece eğin; belinizi kesinlikle düz tutun.",
+      "Barı omuz genişliğinden biraz açık şekilde üstten tutun; bar taban ortasının hizasında sarkmalıdır.",
+      "Dirsekleri gövdenin gerisine doğru çekerek barı alt karın / göbek deliği hizasına doğru yönlendirin.",
+      "Tepe noktada kürek kemiklerini birbirine sıkıştırın, ardından barı kontrollüce tam uzanmaya bırakın."
+    ],
+    "avoidTr": [
+      "Ağırlığı kaldırmak için gövdeyi yukarı savurmak ve hareketi ayakta shrug hareketine çevirmek.",
+      "Yük altındayken bel veya sırt omurgasını kamburlaştırmak.",
+      "Dip esneme noktasında omuzların öne doğru düşmesine ve formun bozulmasına izin vermek."
     ]
   },
   {
@@ -124,7 +200,7 @@
     "movementAssetId": "rear-foot-elevated-split-squat",
     "cues": [
       "Place laces of rear foot on bench; step front foot forward into a balanced split stance.",
-      "Maintain a slight forward torso lean (~15\u00b0) with a braced, neutral spine.",
+      "Maintain a slight forward torso lean (~15°) with a braced, neutral spine.",
       "Descend until back knee hovers an inch above the floor, front knee tracking over toes.",
       "Drive straight up through the whole front foot (tripod foot: heel, big toe, pinky toe)."
     ],
@@ -132,6 +208,17 @@
       "Front heel lifting off floor or front knee caving inward (valgus collapse).",
       "Pushing aggressively off rear foot instead of loading the front working leg.",
       "Hyperextending lower back by trying to stay unnaturally upright."
+    ],
+    "cuesTr": [
+      "Arka ayağın üstünü sehpa kenarına yerleştirin; öndeki ayağınızı dengeli bir adım mesafesinde öne alın.",
+      "Omurgayı doğal ve sıkı tutarak gövdeye hafif bir öne eğim (~15°) verin.",
+      "Ön diz ayak parmakları yönünde ilerlerken, arka diz yere neredeyse değene kadar kontrollüce çökün.",
+      "Ön ayağın üç noktasına (topuk, başparmak ve serçe parmak kökü) eşit basarak yukarı yükselin."
+    ],
+    "avoidTr": [
+      "Ön topuğun yerden kalkması veya ön dizin içeri doğru çökmesi.",
+      "Yükü ön bacağa vermek yerine arka ayaktan sertçe güç alıp kendini yukarı itmek.",
+      "Gereksiz yere aşırı dik durmaya çalışarak beli geriye doğru zorlamak ve çukurlaştırmak."
     ]
   },
   {
@@ -141,14 +228,25 @@
     "movementAssetId": "cable-lateral-raise",
     "cues": [
       "Set pulley at knee or wrist height; stand tall with cable crossing in front or behind body.",
-      "Raise arm out and slightly forward in the scapular plane (~30\u00b0 in front of torso).",
+      "Raise arm out and slightly forward in the scapular plane (~30° in front of torso).",
       "Lead with elbow until arm reaches parallel to floor, keeping wrist neutral.",
-      "Pause for a split second at peak contraction, then lower under 2\u20133 second control."
+      "Pause for a split second at peak contraction, then lower under 2–3 second control."
     ],
     "avoid": [
       "Swinging torso or using leg bounce to initiate the movement.",
       "Shrugging neck and upper traps up toward ears to lift the cable.",
       "Internally rotating shoulder ('pouring a pitcher of water') during the raise."
+    ],
+    "cuesTr": [
+      "Makarayı diz veya bilek hizasına ayarlayın; kablo vücudun önünden veya arkasından geçecek şekilde dik durun.",
+      "Kolunuzu tam yana değil, gövdenin yaklaşık 30 derece önünde (kürek kemiği düzleminde) yukarı açın.",
+      "Bileği bükmeden, dirseğin öncülüğünde kol yere paralel olana kadar kaldırın.",
+      "Tepe noktada anlık bir duraklama yapın, ardından ağırlığı 2-3 saniyelik kontrollü bir inişle bırakın."
+    ],
+    "avoidTr": [
+      "Gövdeyi savurarak ya da bacaklardan hız alarak hareketi başlatmak.",
+      "Kabloyu kaldırmak için boynu kasmak ve trapezleri kulaklara doğru çekmek.",
+      "Kaldırış sırasında başparmağı aşağı çevirip omuzu iç rotasyona zorlamak (sürahiden su döker gibi yapmak)."
     ]
   },
   {
@@ -157,7 +255,7 @@
     "movementType": "row",
     "movementAssetId": "chest-supported-dumbbell-row",
     "cues": [
-      "Set bench to a 30\u201345 degree incline; rest chest firmly against pad with feet planted.",
+      "Set bench to a 30–45 degree incline; rest chest firmly against pad with feet planted.",
       "Allow dumbbells to hang straight down at full arm extension, letting shoulder blades stretch open.",
       "Drive elbows back toward hips, retracting shoulder blades firmly at peak contraction.",
       "Lower dumbbells under control into a deep, full back stretch without chest lifting."
@@ -166,6 +264,17 @@
       "Heaving chest off bench pad to generate momentum.",
       "Craning neck upward toward ceiling.",
       "Pulling with arms/biceps instead of driving through elbows and scapulae."
+    ],
+    "cuesTr": [
+      "Sehpayı 30–45 derece eğime getirin; göğsünüzü sehpaya dayayıp ayakları yere sağlam basın.",
+      "Kolları serbest bırakarak dambılların sarkmasına izin verin; kürek kemiklerinizin iyice açıldığını hissedin.",
+      "Dirsekleri kalçaya doğru geriye çekin; tepe noktada kürek kemiklerini birbirine güçlüce kilitleyin.",
+      "Göğsünüzü sehpadan kaldırmadan, dambılları kontrollüce indirip sırt kaslarını tam esnetin."
+    ],
+    "avoidTr": [
+      "İvme kazanmak için göğsü sehpadan ayırıp geriye doğru savurmak.",
+      "Çekiş yaparken başı geriye atıp boynu aşırı zorlamak.",
+      "Dirsek ve kürek kemiklerini kullanmak yerine yükü sadece ön kol ve bisepsten çekmek."
     ]
   },
   {
@@ -184,6 +293,18 @@
       "Jerking the barbell off floor without pulling slack first.",
       "Hyperextending lower back at lockout instead of squeezing glutes.",
       "Letting bar drift forward away from legs."
+    ],
+    "cuesTr": [
+      "Ayakları kalça genişliğinde açın; bar kaval kemiğine 2-3 cm mesafede, tabanın tam ortasında olsun. Bacakların hemen dışından kavrayın.",
+      "Göğsü dikleştirip kanat kaslarını sıkın (koltuk altlarını kilitleyin) ve yerdeyken barın boşluğunu (tık sesini) alın.",
+      "Taban ortasıyla yeri güçlüce itin; barın kaval ve uyluklara temas ederek yukarı çıkmasını sağlayın.",
+      "Tam dik konuma gelip kalçayı sıkarak kitleyin; tepe noktada kesinlikle geriye doğru aşırı yaslanmayın."
+    ],
+    "avoidTr": [
+      "Yük altındayken bel omurgasını yuvarlayıp kamburlaştırmak.",
+      "Barın boşluğunu almadan yerden aniden ve sarsarak çekişe başlamak.",
+      "Kilitlenmede kalçayı sıkmak yerine beli geriye doğru bükerek aşırı kavis vermek.",
+      "Barın bacaklardan ileriye doğru uzaklaşmasına izin vermek."
     ]
   },
   {
@@ -195,12 +316,23 @@
       "Lie flat on back with arms extended toward ceiling and knees/hips bent at 90 degrees.",
       "Press lower back aggressively flat into floor, eliminating all space under spine.",
       "Slowly extend opposite arm overhead and opposite leg straight toward floor while exhaling fully.",
-      "Hover limb 1\u20132 inches off floor, then return under control while maintaining flat spine."
+      "Hover limb 1–2 inches off floor, then return under control while maintaining flat spine."
     ],
     "avoid": [
       "Lower back arching or peeling off floor during extension.",
       "Moving limbs rapidly or holding breath.",
       "Letting extended heel slam or rest on floor."
+    ],
+    "cuesTr": [
+      "Sırtüstü uzanın; kolları tavana uzatın, diz ve kalçaları 90 derecede bükün.",
+      "Belinizi yere doğru kuvvetlice bastırın; bel çukurunu sıfırlayıp yeri tamamen kapatın.",
+      "Nefesinizi tamamen verirken zıt kolu baş gerisine, zıt bacağı ise yere doğru kontrollüce uzatın.",
+      "Kol ve bacağı yere değdirmeden birkaç santim havada tutun, bel temasını kaybetmeden başlangıca dönün."
+    ],
+    "avoidTr": [
+      "Uzama esnasında belin yerden havalanması veya bel boşluğunun açılması.",
+      "Hareketi aceleyle yapmak veya nefesi tutarak gövde kontrolünü bırakmak.",
+      "Uzatılan topuğun yere çarpması ya da yerde dinlendirilmesi."
     ]
   },
   {
@@ -210,7 +342,7 @@
     "movementAssetId": "dumbbell-bench-press",
     "cues": [
       "Retract shoulder blades into bench, plant feet firmly, and hold dumbbells over chest.",
-      "Lower dumbbells with control, maintaining vertical forearms and elbows tucked at 45\u201360\u00b0.",
+      "Lower dumbbells with control, maintaining vertical forearms and elbows tucked at 45–60°.",
       "Lower into a deep, comfortable chest stretch at bottom without shoulder discomfort.",
       "Press dumbbells up and slightly inward in a smooth arc, stopping just short of touching."
     ],
@@ -218,6 +350,17 @@
       "Clanking dumbbells together at top (removes muscular tension from pecs).",
       "Flaring elbows perpendicular to torso ('T' position).",
       "Allowing forearms to angle inward or outward."
+    ],
+    "cuesTr": [
+      "Kürek kemiklerinizi sehpaya sabitleyin, ayakları yere basın ve dambılları göğüs üzerinde dengede tutun.",
+      "Ön kollar yere dik, dirsekler gövdeyle 45–60° açıda kalacak şekilde dambılları kontrollüce indirin.",
+      "Omuzlarda batma hissetmeden, göğüs kaslarının iyice esnediği rahat ve derin bir noktaya kadar inin.",
+      "Dambılları birbirine çarptırmadan, hafifçe içe doğru akıcı bir kavisle yukarı itin."
+    ],
+    "avoidTr": [
+      "Tepe noktada dambılları birbirine çarpmak (göğüsteki kas gerilimini düşürür).",
+      "Dirsekleri gövdeye 90 derece dik olacak şekilde iki yana açmak.",
+      "Ön kolların dik açısını kaybedip içeri veya dışarı yatmasına izin vermek."
     ]
   },
   {
@@ -227,7 +370,7 @@
     "movementAssetId": "dumbbell-floor-press",
     "cues": [
       "Lie flat on floor with knees bent and feet flat; retract shoulder blades into floor.",
-      "Hold dumbbells over chest with wrists neutral and elbows tucked at ~45\u00b0 from torso.",
+      "Hold dumbbells over chest with wrists neutral and elbows tucked at ~45° from torso.",
       "Lower dumbbells under control until upper arms lightly rest flat against floor.",
       "Pause for a split second to remove momentum, then press explosively to full extension."
     ],
@@ -235,6 +378,17 @@
       "Bouncing elbows or triceps hard off the floor.",
       "Flaring elbows wide toward 90 degrees.",
       "Letting wrists collapse backward."
+    ],
+    "cuesTr": [
+      "Dizler bükülü, ayaklar yerde sırtüstü uzanın; kürek kemiklerinizi yere sabitleyin.",
+      "Bilekleri düz tutarak dambılları göğüs hizasında tutun; dirsekleri gövdeyle 45° açıda sabitleyin.",
+      "Üst kollar yere hafifçe temas edene kadar dambılları kontrollü bir şekilde indirin.",
+      "İvmeyi sıfırlamak için yerde anlık duraklayın, ardından kollar düzleşene kadar patlayıcı güçle itin."
+    ],
+    "avoidTr": [
+      "Dirsekleri veya arka kolları yere sertçe çarptırıp sektirmek.",
+      "Dirsekleri gövdeden 90 derece dışarı doğru fazla açmak.",
+      "Ağırlık altında bileklerin geriye bükülmesine izin vermek."
     ]
   },
   {
@@ -252,6 +406,17 @@
       "Rocking hips or swinging torso to initiate curl.",
       "Flaring elbows out to sides.",
       "Letting wrists flex or curl inward."
+    ],
+    "cuesTr": [
+      "Dambılları avuç içleri birbirine bakacak şekilde (nötr tutuş) kavrayıp dik durun.",
+      "Dirsekleri kaburgalara sabit tutun; dambılları omuzlar hizasında yukarıya doğru bükün.",
+      "Tepe noktada ön kol ve brakiyialis kaslarınızı kuvvetlice sıkın.",
+      "Vücudu sallamadan, dambılları tam kol açıklığına kadar kontrollüce indirin."
+    ],
+    "avoidTr": [
+      "Ağırlığı kaldırmak için kalçayı öne savurmak veya gövdeyi geriye sallamak.",
+      "Kaldırış sırasında dirsekleri iki yana doğru açmak.",
+      "Bilekleri aşırı bükerek yükü koldan çalmak."
     ]
   },
   {
@@ -260,8 +425,8 @@
     "movementType": "shoulder-raise",
     "movementAssetId": "dumbbell-lateral-raise",
     "cues": [
-      "Stand tall with a slight forward torso hinge (10\u201315\u00b0) and dumbbells at your sides.",
-      "Raise dumbbells outward toward walls in the scapular plane (~30\u00b0 in front of torso).",
+      "Stand tall with a slight forward torso hinge (10–15°) and dumbbells at your sides.",
+      "Raise dumbbells outward toward walls in the scapular plane (~30° in front of torso).",
       "Lead slightly with elbows until arms are parallel to floor; keep wrists neutral.",
       "Hold peak contraction for a split second, then lower under strict control."
     ],
@@ -269,6 +434,17 @@
       "Shrugging upper traps toward ears to heave the dumbbells up.",
       "Rocking torso back and forth or using hip thrust for momentum.",
       "Internally rotating wrists/shoulders at top (thumbs pointed down)."
+    ],
+    "cuesTr": [
+      "Gövdeyi çok hafif (10–15°) öne eğerek dik durun; dambılları yanlarınızda tutun.",
+      "Dambılları tam yana değil, gövdenin hafifçe önünde (kürek kemiği düzleminde) dışa doğru kaldırın.",
+      "Bilekleri düz tutun; kollar yere paralel olana kadar dirseklerin öncülüğünde yükselin.",
+      "Tepe noktada çok kısa duraklayıp omuzdaki gerilimi hissedin, ardından kontrollüce indirin."
+    ],
+    "avoidTr": [
+      "Dambılları savurmak için omuzları yukarı çekip trapezleri kasmak.",
+      "İvme yakalamak için gövdeyi öne arkaya sallamak veya kalçadan güç almak.",
+      "Tepe noktada başparmakları aşağı çevirip omuzu iç rotasyona zorlamak."
     ]
   },
   {
@@ -286,6 +462,17 @@
       "Rounding lumbar spine to chase floor depth.",
       "Letting dumbbells swing forward away from legs.",
       "Squatting the knees forward."
+    ],
+    "cuesTr": [
+      "Dambılları uylukların önünde tutun; omuzları geride, karnı ise sıkıca kilitli tutun.",
+      "Dizleri hafif kırıp kalçayı geriye itin; arka bacaklarınızın derin bir şekilde esnediğini hissedin.",
+      "Dambılların bacaklardan ayrılmadan, uyluk ve kaval kemiğini sıyırarak inmesini sağlayın.",
+      "Arka bacak tam esneme sınırına ulaştığında, kalçanızı öne doğru iterek başlangıç pozisyonuna dönün."
+    ],
+    "avoidTr": [
+      "Daha derine inmek uğruna bel omurgasını kamburlaştırmak.",
+      "Dambılların bacak çizgisinden uzaklaşıp öne açılmasına izin vermek.",
+      "Dizleri öne büküp hareketi bir squata dönüştürmek."
     ]
   },
   {
@@ -295,14 +482,25 @@
     "movementAssetId": "dumbbell-step-up",
     "cues": [
       "Hold dumbbells at sides; place entire foot flat on a knee-height box or bench.",
-      "Lean torso slightly forward (~10\u201315\u00b0) to center weight over front working leg.",
+      "Lean torso slightly forward (~10–15°) to center weight over front working leg.",
       "Dorsiflex rear foot (pull toes up) and drive through front foot to stand onto box.",
-      "Step down slowly under strict 2\u20133 second eccentric control without dropping."
+      "Step down slowly under strict 2–3 second eccentric control without dropping."
     ],
     "avoid": [
       "Pushing or springing off the bottom calf/toes to assist ascent.",
       "Letting front knee collapse inward during step-up.",
       "Slamming down onto floor during descent."
+    ],
+    "cuesTr": [
+      "Dambılları yanlarda tutun; basılacak ayağın tüm tabanını diz hizasındaki kutu veya sehpaya tam yerleştirin.",
+      "Yükü tamamen çalışan ön bacağa aktarmak için gövdenizi hafifçe (~10–15°) öne eğin.",
+      "Arka ayağın parmak ucundan güç almadan, sadece ön ayağın tabanıyla yeri iterek yükselin.",
+      "Aşağıya kendinizi bırakmadan, 2-3 saniyelik sıkı bir kontrolle kontrollüce adım atarak inin."
+    ],
+    "avoidTr": [
+      "Yükselirken alttaki ayağın parmak ucundan ya da kalfından zıplayarak destek almak.",
+      "Kutuya basarken ön dizin içeri doğru çökmesine izin vermek.",
+      "İniş sırasında kontrolü kaybedip yere sertçe düşmek."
     ]
   },
   {
@@ -320,6 +518,17 @@
       "Leaning back or hyperextending lumbar spine to heave the weight up.",
       "Swinging elbows far forward to turn curl into a shoulder raise.",
       "Cutting bottom range of motion short before full extension."
+    ],
+    "cuesTr": [
+      "EZ-barın kıvrımlı yerlerini bilekleriniz rahat edecek açıda avuç içleri yukarı bakacak şekilde tutun.",
+      "Dirsekleri gövdenin yanına sabitleyin, karnı sıkın; dizleri hafif kırıp dik durun.",
+      "Barı omuzlara doğru akıcı bir kavisle kaldırın ve tepe noktada bisepslerinizi iyice sıkın.",
+      "Gövdeyi sallamadan, dirsekler tamamen açılana kadar barı kontrollü bir şekilde indirin."
+    ],
+    "avoidTr": [
+      "Ağırlığı kaldırmak için geriye yaslanıp bel omurlarına aşırı yük bindirmek.",
+      "Dirsekleri öne fırlatarak hareketi ön omuz kaldırışına çevirmek.",
+      "Kolları tam açmadan inişi yarım kesmek."
     ]
   },
   {
@@ -337,6 +546,17 @@
       "Craning head and neck forward to meet the rope.",
       "Leaning backward or hyperextending lumbar spine to heave the weight.",
       "Allowing elbows to drop below wrist level (internal rotation fault)."
+    ],
+    "cuesTr": [
+      "Halat takılı makarayı göz hizasına getirin; halatı başparmaklar arkaya bakacak şekilde kavrayın.",
+      "Bir adım geriye çıkıp sağlam bir duruş alın; karnınızı sıkıp göğüs kafesini aşağıda tutun.",
+      "Dirsekleri yukarı ve yana doğru açarak halatın ortasını alnınıza doğru çekin.",
+      "Elleri kulakların gerisine doğru dışa döndürün; arka omuz ve üst sırtı güçlüce sıkıştırın."
+    ],
+    "avoidTr": [
+      "Halata yetişmek için başı ve boynu öne doğru uzatmak.",
+      "Ağırlığı çekebilmek için geriye yatmak ve beli çukurlaştırmak.",
+      "Çekiş esnasında dirseklerin bilek seviyesinin altına düşmesine izin vermek."
     ]
   },
   {
@@ -354,6 +574,17 @@
       "Waddling or swaying torso side-to-side while walking.",
       "Allowing shoulders to round forward or hyperextending lumbar spine.",
       "Taking long, uncontrolled strides that cause weights to bang against legs."
+    ],
+    "cuesTr": [
+      "Ağırlıkları düz bir omurgayla yerden kaldırın; göğsü dik, karın kaslarını kilitli tutun.",
+      "Kürek kemiklerini geriye alıp aşağı bastırın; kulpları olanca gücünüzle sıkın.",
+      "Topuktan buruna basarak kısa, kontrollü ve kararlı adımlarla ileri doğru yürüyün.",
+      "Gövde sertliğini koruyun; ağırlıkların yanlarda sallanmadan sabit kalmasını sağlayın."
+    ],
+    "avoidTr": [
+      "Yürürken gövdenin iki yana sendelemesine veya sallanmasına izin vermek.",
+      "Omuzların öne yuvarlanması veya belin geriye aşırı bükülmesi.",
+      "Ağırlıkların bacaklara çarpmasına yol açacak uzun ve savruk adımlar atmak."
     ]
   },
   {
@@ -363,13 +594,23 @@
     "movementAssetId": "kettlebell-goblet-squat",
     "cues": [
       "Cup hands under top dumbbell head, holding it vertically flush against upper chest.",
-      "Set feet slightly wider than shoulder-width, toes turned out 20\u201330\u00b0.",
+      "Set feet slightly wider than shoulder-width, toes turned out 20–30°.",
       "Sit hips down between knees to full depth, letting elbows track inside knees.",
       "Drive through mid-foot to stand, squeezing glutes at the top without hyperextending."
     ],
     "avoid": [
       "Letting dumbbell drift forward away from chest (increases spinal moment arm).",
       "Heels lifting off the floor or lower back rounding at the bottom."
+    ],
+    "cuesTr": [
+      "Dambılın üst başlığını avuçlarınızla alttan destekleyin; göğsün üst kısmına yapışık tutun.",
+      "Ayakları omuz genişliğinden biraz açık konumlandırın, parmak uçlarını 20–30° dışa çevirin.",
+      "Dirsekler dizlerin iç kısmından geçecek şekilde kalçayı dizlerin arasına tam derinliğe indirin.",
+      "Taban ortasıyla yeri iterek yükselin; tepe noktada kalçayı sıkın ancak beli geriye bükmeyin."
+    ],
+    "avoidTr": [
+      "Dambılın göğüsten uzaklaşıp öne kayması (omurgaya binen yükü artırır).",
+      "Dip noktada topukların yerden havalanması veya belin kamburlaşması."
     ]
   },
   {
@@ -387,6 +628,17 @@
       "Swinging legs or using hip momentum to kick knees up.",
       "Arching lower back at the bottom of the rep.",
       "Hanging passively with relaxed shoulders shrugged to ears."
+    ],
+    "cuesTr": [
+      "Bara üstten tutuşla asılın; omuzları kulaklardan uzaklaştırıp sırtı aktif tutun.",
+      "Bacakları birleşik tutun; dizleri çekerken pelvisi de göğse doğru yukarı yuvarlayın.",
+      "Dizler göğüs seviyesine geldiğinde tepe noktada 1 saniye bekleyin.",
+      "Bir sonraki tekrara başlamadan önce dizleri kontrollüce indirip sallantıyı tamamen durdurun."
+    ],
+    "avoidTr": [
+      "Dizleri yukarı fırlatmak için bacakları sallamak veya gövdeden ivme almak.",
+      "İnişte bacaklar geriye kaçarken belin aşırı çukurlaşması.",
+      "Omuzları tamamen serbest bırakıp pasif bir şekilde asılmak."
     ]
   },
   {
@@ -397,13 +649,24 @@
     "cues": [
       "Set bench to 30 degrees; plant feet firmly and pin shoulder blades into pad.",
       "Grip slightly wider than shoulder width; unrack bar directly over upper chest.",
-      "Lower under control to upper chest/sternum (just below collarbones) with elbows at ~45\u201360\u00b0.",
+      "Lower under control to upper chest/sternum (just below collarbones) with elbows at ~45–60°.",
       "Press bar up and slightly back to full extension over upper chest."
     ],
     "avoid": [
       "Bouncing bar off collarbones or ribcage.",
       "Flaring elbows out wide to 90 degrees.",
       "Arching lower back excessively (which flattens the torso and eliminates incline angle)."
+    ],
+    "cuesTr": [
+      "Sehpa açısını 30 dereceye ayarlayın; ayakları yere sağlam basın ve kürek kemiklerini mindere sabitleyin.",
+      "Barı omuz genişliğinden biraz geniş tutun; raftan alıp üst göğsün tam üzerinde sabitleyin.",
+      "Dirsekleri 45–60° açıda tutarak barı köprücük kemiğinin hemen altına (üst göğse) kontrollüce indirin.",
+      "Barı yukarı ve hafifçe yüze doğru iterek üst göğüs hizasında tam kilitlenmeye getirin."
+    ],
+    "avoidTr": [
+      "Barı köprücük kemiğinden veya göğüs kafesinden sertçe sektirmek.",
+      "Dirsekleri gövdeden 90 derece dışarı açarak omuzlara aşırı stres yüklemek.",
+      "Beli aşırı çukurlaştırarak açıyı sıfırlamak ve hareketi düz bench presse çevirmek."
     ]
   },
   {
@@ -412,15 +675,26 @@
     "movementType": "curl",
     "movementAssetId": "incline-dumbbell-curl",
     "cues": [
-      "Set bench to 55\u201360 degrees; sit back with head and torso supported by pad.",
+      "Set bench to 55–60 degrees; sit back with head and torso supported by pad.",
       "Let arms hang straight down toward floor, keeping upper arms strictly vertical.",
       "Curl dumbbells upward, supinating wrists (palms up) as you ascend into a hard bicep peak.",
-      "Lower under strict 2\u20133 second control into a deep, full stretch at the bottom."
+      "Lower under strict 2–3 second control into a deep, full stretch at the bottom."
     ],
     "avoid": [
       "Swinging upper arms or elbows forward to bypass the bottom stretch.",
       "Lifting head or shoulders off bench pad during the curl.",
       "Cutting the eccentric stretch short."
+    ],
+    "cuesTr": [
+      "Sehpayı 55–60 dereceye ayarlayın; baş ve gövde sehpaya tam temas edecek şekilde oturun.",
+      "Kolları yere doğru dik sarkıtın; üst kolların hareket boyunca dik kalmasını sağlayın.",
+      "Dambılları kaldırırken bilekleri dışa çevirin (avuçlar yukarı) ve tepe noktada bisepsi güçlüce sıkın.",
+      "Dip noktadaki derin esnemeyi hissedene kadar dambılları 2-3 saniyelik kontrollü bir inişle bırakın."
+    ],
+    "avoidTr": [
+      "Dipteki esnemeden kaçmak için dirsekleri veya üst kolları öne doğru savurmak.",
+      "Kaldırış sırasında başı veya omuzları sehpa minderinden öne kaldırmak.",
+      "İniş esnasında kasın tam esnemesine izin vermeden hareketi erken kesmek."
     ]
   },
   {
@@ -430,7 +704,7 @@
     "movementAssetId": "incline-dumbbell-press",
     "cues": [
       "Set bench to 30 degrees; retract shoulder blades and plant feet firmly on floor.",
-      "Lower dumbbells under control to sides of upper chest, elbows angled at 45\u201360\u00b0.",
+      "Lower dumbbells under control to sides of upper chest, elbows angled at 45–60°.",
       "Feel a deep stretch across upper pectorals at the bottom with forearms vertical.",
       "Press dumbbells up and slightly inward over upper chest without clanking them together."
     ],
@@ -438,6 +712,17 @@
       "Arching lower back excessively to turn the press into a flat bench press.",
       "Flaring elbows perpendicular to torso.",
       "Banging dumbbells together at top of rep."
+    ],
+    "cuesTr": [
+      "Sehpayı 30 dereceye ayarlayın; kürek kemiklerini sehpaya kilitleyin ve ayakları yere sağlam basın.",
+      "Dirsekleri 45–60° açıda tutarak dambılları kontrollüce üst göğsün yanlarına doğru indirin.",
+      "Ön kollar dik durumdayken dip noktada üst göğüs kaslarının iyice esnediğini hissedin.",
+      "Dambılları birbirine çarptırmadan, üst göğüs üzerinde hafifçe birbirine yaklaştırarak yukarı itin."
+    ],
+    "avoidTr": [
+      "Beli aşırı çukurlaştırarak gövdeyi düzleştirmek ve açıyı yok etmek.",
+      "Dirsekleri gövdeye 90 derece dik olacak şekilde iki yana açmak.",
+      "Tepe noktada dambılları birbirine çarparak kas gerilimini düşürmek."
     ]
   },
   {
@@ -447,7 +732,7 @@
     "movementAssetId": "jump-rope",
     "cues": [
       "Keep elbows pinned close to ribs, turning the rope primarily with relaxed wrists.",
-      "Jump lightly on balls of feet, clearing floor by only 1\u20132 inches per rotation.",
+      "Jump lightly on balls of feet, clearing floor by only 1–2 inches per rotation.",
       "Maintain soft knees and ankles to absorb impact with natural elastic rebound.",
       "Keep breathing relaxed, rhythm steady, and torso tall."
     ],
@@ -455,6 +740,17 @@
       "Swinging whole arms from shoulder joints instead of turning with wrists.",
       "Jumping excessively high or kicking feet backward (donkey kicks).",
       "Landing stiff-legged or flat on heels."
+    ],
+    "cuesTr": [
+      "Dirsekleri kaburgalara yakın tutun; ipi tüm kollarla değil, gevşek bilek hareketleriyle çevirin.",
+      "Ayak parmak ucunda hafifçe zıplayın; her turda yerden yalnızca 3-5 cm yükselmeniz yeterlidir.",
+      "Darbeyi emmek için diz ve ayak bileklerini hafif yaylı ve esnek tutun.",
+      "Gövdeyi dik, nefesi rahat ve ritmi sabit tutun."
+    ],
+    "avoidTr": [
+      "İpi bilekler yerine bütün kolu omuzdan çevirmeye çalışmak.",
+      "Gereğinden fazla yükseğe sıçramak veya ayakları arkaya doğru fırlatmak.",
+      "Dizleri kilitleyerek kaskatı ya da topukların üzerine sertçe inmek."
     ]
   },
   {
@@ -472,6 +768,17 @@
       "Squatting the knees forward instead of hinging hips back.",
       "Actively lifting the bell with anterior deltoids and arms.",
       "Leaning back and hyperextending lumbar spine at top of swing."
+    ],
+    "cuesTr": [
+      "Kettlebell'ın bir adım gerisinde durun; ağırlığı bacak aranızdan geriye, kalçaya doğru seri şekilde çekin.",
+      "Kalçayı patlayıcı bir güçle öne kilitleyin; tepe noktada kalça ve karın kaslarınızı sertçe sıkın.",
+      "Kollar ip gibi rahat kalsın; ağırlığın göğüs hizasına yalnızca kalçanın ivmesiyle süzülmesini sağlayın.",
+      "Ağırlık düşerken acele etmeyin; kollar bacaklara yaklaşana kadar bekleyip ardından kalçayı geriye bükün."
+    ],
+    "avoidTr": [
+      "Kalçayı geriye itmek yerine dizleri öne büküp hareketi squata dönüştürmek.",
+      "Ağırlığı kalça gücü yerine kollar ve ön omuzla yukarı çekmeye çalışmak.",
+      "Tepe noktada geriye aşırı yaslanarak bel omurlarını zorlamak."
     ]
   },
   {
@@ -489,6 +796,17 @@
       "Sitting hips back onto heels during crunch (shifts load to hip flexors).",
       "Pulling rope with arms or lats instead of flexing spine with abs.",
       "Keeping spine straight and hinging at hips."
+    ],
+    "cuesTr": [
+      "Makaraya dönük diz çökün; halat uçlarını alnın/kulakların yanına yapıştırıp elleri sabitleyin.",
+      "Kalçayı yukarıda ve sabit tutun; kalçanın topuklara doğru geriye çökmesine asla izin vermeyin.",
+      "Omurgayı öne doğru yuvarlayarak göğüs kafesini pelvise yaklaştırın; dirsekleri uyluklara doğru çekin.",
+      "Dip noktada karnı olanca gücünüzle sıkın, ardından kabloya direnerek kontrollüce doğrulun."
+    ],
+    "avoidTr": [
+      "Kapanırken kalçayı topuklara oturtmak (yükü karından alıp kalça fleksörlerine aktarır).",
+      "Omurgayı bükmek yerine halatı kollar veya kanat kaslarıyla aşağı çekmek.",
+      "Sırtı dümdüz tutarak omurgayı yuvarlamadan sadece kalçadan eğilmek."
     ]
   },
   {
@@ -498,7 +816,7 @@
     "movementAssetId": "lat-pulldown",
     "cues": [
       "Adjust thigh pads securely over legs; grip bar slightly wider than shoulder width.",
-      "Lean torso back slightly (10\u201315 degrees) with chest proud and shoulder blades depressed.",
+      "Lean torso back slightly (10–15 degrees) with chest proud and shoulder blades depressed.",
       "Drive elbows straight down toward your front hip pockets, pulling bar to upper chest.",
       "Squeeze lats at bottom, then control bar up into a full overhead stretch."
     ],
@@ -506,6 +824,17 @@
       "Leaning back excessively (turning the pulldown into a sloppy horizontal row).",
       "Driving elbows far behind torso instead of pulling down in front.",
       "Pulling bar behind neck or yanking down to stomach."
+    ],
+    "cuesTr": [
+      "Dizlikleri bacaklarınızı sıkıca tutacak şekilde ayarlayın; barı omuz genişliğinden biraz geniş kavrayın.",
+      "Göğsü açıp kürek kemiklerini aşağı bastırarak gövdeyi çok hafif (10–15 derece) geriye eğin.",
+      "Dirsekleri ceplerinize doğru aşağı çekerek barı üst göğüs hizasına indirin.",
+      "Alt noktada kanat kaslarını sıkın; ardından barın kontrollüce yükselip sırtı tam esnetmesine izin verin."
+    ],
+    "avoidTr": [
+      "Gövdeyi geriye aşırı yatırarak hareketi nizami olmayan bir row hareketine çevirmek.",
+      "Dirsekleri aşağı çekmek yerine gövdenin çok gerisine doğru savurmak.",
+      "Barı enseye çekmek ya da göbeğe kadar kontrolsüzce asılmak."
     ]
   },
   {
@@ -517,11 +846,21 @@
       "Align machine pivot point directly with your knee joints; adjust shin pad just above ankles.",
       "Grip side handles firmly to lock hips and pelvis down into the seat throughout the set.",
       "Extend knees smoothly and hold a peak quad squeeze for 1 full second at top.",
-      "Lower under strict 2\u20133 second eccentric control through full range of motion."
+      "Lower under strict 2–3 second eccentric control through full range of motion."
     ],
     "avoid": [
       "Hips lifting off the seat pad or using torso momentum to kick the weight up.",
       "Letting the weight stack slam between reps."
+    ],
+    "cuesTr": [
+      "Makinenin dönme merkezini tam diz ekleminizle hizalayın; süngeri ayak bileklerinin hemen üstüne yerleştirin.",
+      "Set boyunca kalçanızın koltuktan kalkmasını engellemek için yan tutamakları sıkıca kavrayın.",
+      "Dizleri akıcı şekilde açın ve tepe noktada ön bacak kaslarınızı 1 tam saniye sıkılı tutun.",
+      "Ağırlığı 2-3 saniyelik kontrollü bir inişle, tam hareket aralığında bırakın."
+    ],
+    "avoidTr": [
+      "Ağırlığı savurmak için kalçayı koltuktan havalandırmak veya gövdeden ivme almak.",
+      "Tekrarlar arasında ağırlık plakalarının birbirine kontrolsüzce çarpması."
     ]
   },
   {
@@ -539,6 +878,17 @@
       "Pelvis tucking under or lower back rounding off the back pad ('butt wink').",
       "Forcefully hyperextending or snapping knee joints locked at the top.",
       "Knees caving inward during the descent or initial press."
+    ],
+    "cuesTr": [
+      "Ayakları platformun ortasına omuz genişliğinde koyun; dizler parmak uçlarıyla aynı hizada olsun.",
+      "Kalçanızı ve belinizi koltuk sırtlığına sımsıkı yapıştırmak için yan kollardan güç alarak çekin.",
+      "Kalçanın koltuktan yuvarlanıp kalkmasına izin vermeden, esnekliğinizin yettiği en derin noktaya inin.",
+      "Tabanın ortasıyla platformu itin; tepe noktada diz eklemlerini sertçe kilitlemeden hemen önce durun."
+    ],
+    "avoidTr": [
+      "Dip noktada kalçanın koltuktan ayrılıp belin yuvarlanması.",
+      "Tepe noktada diz eklemlerini aşırı geriye doğru kilitleyip eklemlere ani baskı bindirmek.",
+      "İnişte ya da ilk itiş anında dizlerin içeri doğru çökmesi."
     ]
   },
   {
@@ -550,11 +900,21 @@
       "Align knee joints with machine pivot point; position pad on lower calf just above Achilles.",
       "Grip handles firmly to pull your hips and pelvis flat into the bench.",
       "Curl heels toward glutes in a smooth arc, holding a brief contraction at peak.",
-      "Lower under strict 2\u20133 second control into full knee extension without slamming stack."
+      "Lower under strict 2–3 second control into full knee extension without slamming stack."
     ],
     "avoid": [
       "Hips popping off bench pad or arching lower back to heave weight.",
       "Using ballistic momentum or kicking weights up quickly."
+    ],
+    "cuesTr": [
+      "Diz eklemlerini makinenin dönme ekseniyle hizalayın; süngeri aşil tendonunun hemen üzerine getirin.",
+      "Kalça ve pelvisin sehpadan ayrılmaması için tutamakları sıkıca kavrayıp kendinizi aşağı çekin.",
+      "Topukları kalçaya doğru akıcı şekilde bükün ve tepe noktada kısa bir an sıkıştırın.",
+      "Ağırlık plakalarını çarptırmadan, bacaklar tam açılana kadar 2-3 saniyelik kontrollü bir iniş yapın."
+    ],
+    "avoidTr": [
+      "Ağırlığı çekmek için kalçayı sehpadan kaldırmak veya beli aşırı çukurlaştırmak.",
+      "Kontrolsüz savurmayla bacakları hızla yukarı fırlatmak."
     ]
   },
   {
@@ -572,6 +932,17 @@
       "Twisting or rotating torso at the top of the pull to heave the weight.",
       "Rounding lower back during the stretch phase.",
       "Pulling straight up to chest like a bicep curl rather than arcing back to hip."
+    ],
+    "cuesTr": [
+      "Aynı taraftaki el ve dizi sehpaya sağlam basın; omurgayı düz, kalçayı yere paralel tutun.",
+      "Dambılın omuz hizasında sarkmasına izin verin; dipte kanat kasınızın tam esnediğini hissedin.",
+      "Dirseği tavana doğru yönlendirerek dambılı geniş bir kavisle kalça kıvrımına doğru çekin.",
+      "Tepe noktada kanat kasını iyice sıkın; ardından dambılı kontrollü şekilde tam uzanışa bırakın."
+    ],
+    "avoidTr": [
+      "Ağırlığı kaldırmak için tepe noktada gövdeyi yana döndürüp savurmak.",
+      "Esneme anında bel omurgasının kamburlaşmasına izin vermek.",
+      "Dambılı kalçaya doğru kavisle çekmek yerine bisepsle göğse doğru dik çekmek."
     ]
   },
   {
@@ -581,7 +952,7 @@
     "movementAssetId": "overhead-cable-triceps-extension",
     "cues": [
       "Set pulley at head/shoulder height; face away in a stable staggered split stance.",
-      "Position upper arms alongside ears and forward (~45\u00b0), keeping elbows fixed in place.",
+      "Position upper arms alongside ears and forward (~45°), keeping elbows fixed in place.",
       "Extend forearms forward in a straight line until elbows are fully locked out.",
       "Bend elbows under control, letting rope travel behind head into a deep long-head stretch."
     ],
@@ -589,6 +960,17 @@
       "Hyperextending lower back to assist the press (keep ribs down and core braced).",
       "Flaring elbows excessively wide outward during extension.",
       "Moving upper arms back and forth instead of pivoting strictly at elbow joint."
+    ],
+    "cuesTr": [
+      "Makarayı baş/omuz hizasına getirin; sırtınızı makineye dönüp dengeli bir adım duruşu alın.",
+      "Üst kolları kulak hizasında (~45° açıyla) öne sabitleyin; dirseklerin pozisyonunu hiç bozmayın.",
+      "Dirsekler tamamen kilitlenene kadar ön kolları düz bir hat üzerinde ileri doğru itin.",
+      "Dirsekleri kontrollüce bükerek halatın baş arkasına inmesine ve arka kolun tam esnemesine izin verin."
+    ],
+    "avoidTr": [
+      "İtişe destek olmak için beli aşırı çukurlaştırmak (karnı sıkı tutun).",
+      "Açılış sırasında dirseklerin dışarıya doğru fazla açılması.",
+      "Hareketi dirsek eklemi yerine bütün kolu omuzdan öne arkaya sallayarak yapmak."
     ]
   },
   {
@@ -606,6 +988,17 @@
       "Allowing torso, shoulders, or hips to rotate toward the pulley.",
       "Shrugging shoulders up toward ears during the press.",
       "Rushing through reps without pausing at full extension."
+    ],
+    "cuesTr": [
+      "Makaraya yan dönerek omuz genişliğinde sağlam bir duruş alın; dizleri hafifçe bükün.",
+      "Tutamağı iki elinizle göğsün tam ortasında sıkıca tutun; karnınızı sıkıp gövdeyi kilitleyin.",
+      "Kablo sizi döndürmeye çalışırken dönmeye direnerek kolları tam ileriye doğru uzatın.",
+      "Kollar açıkken 2 saniye boyunca dönmeden bekleyin, ardından elleri yavaşça göğse geri çekin."
+    ],
+    "avoidTr": [
+      "Gövdenin, omuzların veya kalçanın makaraya doğru dönmesine izin vermek.",
+      "İtiş esnasında omuzları kulaklara doğru yukarı kasmak.",
+      "Uç noktada beklemeden tekrarları aceleyle ve savruk geçiştirmek."
     ]
   },
   {
@@ -615,7 +1008,7 @@
     "movementAssetId": "pec-deck-fly",
     "cues": [
       "Adjust seat height so handles align with mid-chest; plant feet firmly on floor.",
-      "Set a slight, fixed bend in elbows (~15\u00b0) and keep chest proud against back pad.",
+      "Set a slight, fixed bend in elbows (~15°) and keep chest proud against back pad.",
       "Bring handles together in a wide hugging arc, focusing on squeezing inner biceps together over sternum.",
       "Return under control to a deep pectoral stretch, stopping before shoulders roll forward."
     ],
@@ -623,6 +1016,17 @@
       "Letting elbows travel too far behind torso, hyperextending anterior shoulder capsule.",
       "Shrugging upper traps or rolling shoulders forward at peak contraction.",
       "Bending elbows excessively to turn the fly into a chest press."
+    ],
+    "cuesTr": [
+      "Koltuk yüksekliğini tutamaklar orta göğüs hizasına gelecek şekilde ayarlayın; ayakları yere sağlam basın.",
+      "Dirseklere hafif bir açı (~15°) verip bu açıyı sabitleyin; göğsünüzü açık tutun.",
+      "Geniş bir sarılma hareketiyle tutamakları öne getirin; göğüs kaslarınızı ortada güçlüce sıkıştırın.",
+      "Omuzlar öne yuvarlanmadan hemen önce durarak, dambılları göğsün iyice esnediği noktaya kadar kontrollüce açın."
+    ],
+    "avoidTr": [
+      "Dirsekleri gövdenin çok gerisine kaçırarak ön omuz eklem kapsülünü aşırı zorlamak.",
+      "Tepe sıkışmada omuzları öne yuvarlamak ya da trapezleri yukarı çekmek.",
+      "Dirsekleri çok fazla büküp hareketi açıştan çıkarıp prese çevirmek."
     ]
   },
   {
@@ -640,6 +1044,17 @@
       "Kipping, swinging legs, or using hip momentum to clear the bar.",
       "Craning neck upward to touch bar while chest collapses.",
       "Performing half reps by failing to lock out into a dead hang at bottom."
+    ],
+    "cuesTr": [
+      "Barı omuzlardan biraz geniş üstten tutuşla kavrayın ve tam asılma pozisyonunda başlayın.",
+      "Çekişi kürek kemiklerini aşağı ve geriye bastırarak (omuzları arka cebe sokar gibi) başlatın.",
+      "Dirsekleri yere doğru bastırıp göğsü bara yaklaştırın; çene barın üzerine çıkana kadar çekin.",
+      "Sonraki tekrara geçmeden önce, kollar tamamen düzleşene kadar kontrollü bir şekilde aşağı inin."
+    ],
+    "avoidTr": [
+      "Çeneyi barın üstüne çıkarmak için bacakları savurmak veya kalçadan ivme almak.",
+      "Göğüs çökerken bara ulaşmak için boynu yukarı doğru uzatıp zorlamak.",
+      "Dip noktada kolları tamamen açmayıp yarım tekrarlar yapmak."
     ]
   },
   {
@@ -649,7 +1064,7 @@
     "movementAssetId": "push-press",
     "cues": [
       "Set bar in front rack across shoulders, hands just outside shoulders, core braced.",
-      "Dip knees 3\u20134 inches vertically, keeping torso strictly upright (do not hinge forward).",
+      "Dip knees 3–4 inches vertically, keeping torso strictly upright (do not hinge forward).",
       "Explosively extend hips, knees, and ankles to drive the bar off shoulders.",
       "Finish the press overhead with arms locked firmly out over mid-foot."
     ],
@@ -657,6 +1072,17 @@
       "Leaning torso forward during the dip (causes bar to travel forward).",
       "Dipping too deep or too slowly, losing the elastic stretch-shortening reflex.",
       "Re-bending knees to catch the bar (push press requires catching with straight legs)."
+    ],
+    "cuesTr": [
+      "Barı ön omuz başlarına yerleştirin; eller omuzların hemen dışında, karın kilitli olsun.",
+      "Gövdeyi öne eğmeden, dikliği bozmadan dizleri 8-10 cm kadar aşağı esnetin.",
+      "Kalça, diz ve ayak bileklerini patlayıcı güçle açarak barı omuzlardan yukarı fırlatın.",
+      "İtişi kollarınızı taban ortası hizasında baş üstünde tam kilitleyerek tamamlayın."
+    ],
+    "avoidTr": [
+      "Çöküş anında gövdeyi öne eğmek (barın öne kaçmasına neden olur).",
+      "Çok derin veya yavaş çökerek kasın yaylanma ve patlama refleksini kaybetmek.",
+      "Barı yakalamak için dizleri tekrar bükmek (push press hareketi düz bacakla kilitlenir)."
     ]
   },
   {
@@ -674,6 +1100,17 @@
       "Sagging hips into lumbar hyperextension or piking hips into the air.",
       "Flaring elbows straight out to sides (shoulder impingement risk).",
       "Craning neck down to touch floor before chest."
+    ],
+    "cuesTr": [
+      "Elleri omuz genişliğinden biraz açık yerleştirin; baştan topuğa kadar dümdüz, sert bir plank pozisyonu alın.",
+      "Gövdeyi tek bir blok halinde göğüs yere 2-3 cm kalana veya hafifçe değene kadar indirin.",
+      "Dirsekleri gövdeye yaklaşık 45 derece açıda tutun (yukarıdan bakıldığında ok ucu şekli almalıdır).",
+      "Yeri iterek kolları tam açın; tepe noktada kürek kemiklerini iki yana açarak sırtı doldurun."
+    ],
+    "avoidTr": [
+      "Kalçanın aşağı sarkıp belin çukurlaşması ya da kalçayı havaya dikmek.",
+      "Dirsekleri iki yana 90 derece açmak (omuz ekleminde sıkışma riski yaratır).",
+      "Göğüsten önce yere değmek için boynu aşağı doğru uzatmak."
     ]
   },
   {
@@ -691,6 +1128,17 @@
       "Cutting off the eccentric stretch by stopping artificially at 90 degrees elbow flexion.",
       "Allowing elbows to swing forward and backward during the rep.",
       "Leaning bodyweight down on top of rope to push with chest and shoulders."
+    ],
+    "cuesTr": [
+      "Gövdeyi hafif öne eğerek dik durun; dirsekleri kaburgaların yanına sımsıkı sabitleyin.",
+      "Halatı nötr tutuşla kavrayın; dirsekler tamamen kilitlenene kadar düz şekilde aşağı itin.",
+      "Alt kilitlenmede halatın uçlarını iki yana açarak arka kolları 1 saniye güçlüce sıkın.",
+      "Ön kolların 90 derecenin üzerine çıkmasına izin vererek kontrollüce tam esnemeye gelin."
+    ],
+    "avoidTr": [
+      "Dirsekleri 90 derecede yapay olarak durdurup arka kolun tam esnemesini engellemek.",
+      "Tekrar boyunca dirseklerin öne arkaya sallanmasına izin vermek.",
+      "Ağırlığı basmak için gövde ağırlığını halatın üstüne yığıp göğüs ve omuzdan güç almak."
     ]
   },
   {
@@ -708,6 +1156,17 @@
       "Loose thigh pad allowing thighs or hips to lift during curl.",
       "Cutting range of motion short at either top stretch or bottom flexion.",
       "Leaning torso far back during the pull."
+    ],
+    "cuesTr": [
+      "Sırtlığı diz eklemleriniz makinenin dönme merkezine denk gelecek şekilde ayarlayın; üst süngeri uylukların üzerine sıkıca kilitleyin.",
+      "Ayak bileği süngerini aşilin hemen üzerine yerleştirin; ayak parmaklarını hafifçe kendinize doğru çekin.",
+      "Topukları koltuğun altına doğru geriye bükün ve tepe noktada 1 saniye bekleyin.",
+      "Dizler tamamen düzleşene kadar ağırlığa direnerek arka bacakların iyice esnediğini hissedin."
+    ],
+    "avoidTr": [
+      "Üst süngerin gevşek kalıp çekiş anında uylukların veya kalçanın yukarı kalkması.",
+      "Hareketi tepe esnemede veya dip bükülmede yarım bırakmak.",
+      "Ağırlığı çekebilmek için gövdeyi geriye doğru aşırı yatırmak."
     ]
   },
   {
@@ -725,6 +1184,17 @@
       "Bouncing off Achilles tendon at the bottom of the rep.",
       "Cutting range of motion into short, twitchy half-reps.",
       "Setting thigh pad too high up on mid-thighs, causing instability."
+    ],
+    "cuesTr": [
+      "Ayak tabanının ön kısmını platforma yerleştirin; süngeri diz kapağının hemen üzerindeki uyluğa sıkıca sabitleyin.",
+      "Topukları aşağıya doğru iyice indirin ve en dip esneme noktasında tam 2 saniye bekleyin.",
+      "Ayak parmak kökleriyle platformu kuvvetle iterek en tepe noktaya kadar yükselin.",
+      "Tepe noktada kalf kasını 1 saniye boyunca sıkın, ardından inişi yavaşça kontrol edin."
+    ],
+    "avoidTr": [
+      "Dip noktada beklemeden aşil tendonunun esnekliğinden güç alarak zıplatmak.",
+      "Tam esneme ve yükselme yapmayıp kısa, titrek yarım tekrarlara kaçmak.",
+      "Süngeri diz yerine uyluğun ortasına koyarak dengesizliğe yol açmak."
     ]
   },
   {
@@ -742,6 +1212,17 @@
       "Hips sagging toward floor or piking backward.",
       "Rotating chest and shoulders forward toward floor.",
       "Shrugging supporting shoulder up toward ear."
+    ],
+    "cuesTr": [
+      "Dirsek tam omuz hizasında olacak şekilde yan yatın; ayakları üst üste veya ardışık yerleştirin.",
+      "Kalçayı yerden kaldırarak baştan topuğa kadar bozulmayan düz bir hat oluşturun.",
+      "Omuz ve kalçanın öne devrilmesini engelleyin; yan karın ve kalçayı sıkıca kilitleyin.",
+      "Nefesinizi tutmadan düzenli soluk alıp verin; başı omurga hizasında tutun."
+    ],
+    "avoidTr": [
+      "Kalçanın yere doğru sarkması veya arkaya doğru kırılması.",
+      "Göğüs ve omuzların yere doğru dönüp gövde çizgisini bozması.",
+      "Taşıyıcı omzu kulak yönünde yukarı doğru kasmak."
     ]
   },
   {
@@ -759,6 +1240,17 @@
       "Bouncing rapidly at the bottom without pausing.",
       "Bending working knee to spring body upward.",
       "Rolling ankle outward onto pinky toe at peak height."
+    ],
+    "cuesTr": [
+      "Çalışan ayağın taban önünü basamak kenarına koyun; denge için bir elinizle hafifçe duvardan destek alın.",
+      "Çalışan bacağı düz (diz hafif esnek) tutun; diğer bacağı serbest bırakın.",
+      "Topuğu basamak seviyesinin altına indirerek kalfı tam esnetin ve dipte 2 saniye bekleyin.",
+      "Başparmak köküyle yeri kuvvetle itip tepeye yükselin ve kalfınızı en üstte sertçe sıkın."
+    ],
+    "avoidTr": [
+      "Dip noktada duraklamadan hızlıca sektirerek yaylanmak.",
+      "Çalışan dizi büküp yaylanarak vücudu yukarı fırlatmak.",
+      "Tepe noktada ayak bileğinin dışa dönüp yükün serçe parmağa kayması."
     ]
   },
   {
@@ -776,6 +1268,17 @@
       "Arching lower back excessively (leaning back to turn it into an incline press).",
       "Dipping knees to initiate press (this is a strict press, not a push press).",
       "Pressing bar in a wide, looping forward arc around head."
+    ],
+    "cuesTr": [
+      "Barı omuz genişliğinin hemen dışında kavrayıp ön omuzlara oturtun; ön kollar dik, dirsekler hafifçe önde olsun.",
+      "Sarsılmaz bir temel oluşturmak için kalça, ön bacak ve karın kaslarınızı sertçe sıkın.",
+      "Barın geçiş yolunu açmak için çeneyi hafifçe geriye çekin; barı dümdüz dikey bir hatta yukarı itin.",
+      "Bar alnı geçer geçmez başı doğal yerine alın; barı taban ortası hizasında, trapezleri hafif yukarı kilitleyerek tamamlayın."
+    ],
+    "avoidTr": [
+      "Geriye aşırı yaslanıp beli bükerek hareketi eğimli bir göğüs presine dönüştürmek.",
+      "İtişi başlatmak için dizleri büküp yaylanmak (bu nizami bir presdir, push press değil).",
+      "Barı baştan kaçırmak için öne doğru geniş bir kavisle itmek."
     ]
   },
   {
@@ -793,6 +1296,17 @@
       "Bouncing out of bottom stretch (relies on Achilles tendon elasticity instead of muscle).",
       "Bending and extending knees to heave weight up (turning it into a squat).",
       "Rolling ankles outward onto pinky toes."
+    ],
+    "cuesTr": [
+      "Ayak tabanının ön kısmını basamağın kenarına omuz genişliğinde koyun; dizleri kitlemeden hafif esnek tutun.",
+      "Topukları bilek esnekliğinizin yettiği kadar aşağı indirin; dipte 2 tam saniye boyunca esnemede bekleyin.",
+      "Baskıyı başparmak köklerine odaklayarak ayak tabanlarının önüyle kuvvetlice yukarı yükselin.",
+      "İnişe geçmeden önce en tepe sıkışma noktasında kalf kaslarınızı 1 saniye boyunca güçlüce sıkın."
+    ],
+    "avoidTr": [
+      "Dip esnemeden yaylanarak çıkmak (kas yerine aşil tendonunun elastikiyetine güvenir).",
+      "Ağırlığı kaldırmak için dizleri büküp açarak hareketi squata çevirmek.",
+      "Yükselirken ayak bileklerinin dışa devrilip yükün serçe parmaklara kayması."
     ]
   },
   {
@@ -810,6 +1324,17 @@
       "Letting shoulders round forward or using chest weight to force the bar down.",
       "Elbows drifting forward on the way down or swinging with momentum.",
       "Excessive wrist flexion (curling wrists down)."
+    ],
+    "cuesTr": [
+      "Düz barı omuz genişliğinde mesafeyle üstten kavrayın.",
+      "Dirsekleri gövdenin iki yanına sabitleyin ve gövdenizi hafifçe öne doğru eğin.",
+      "Dirsekler tamamen açılana kadar barı dik olarak aşağı itin ve kilitlenme anında arka kolları sıkın.",
+      "Tam bir esneme elde etmek için barın 90 derecenin üzerine, üst göğüs seviyesine çıkışını kontrol edin."
+    ],
+    "avoidTr": [
+      "Omuzları öne yuvarlamak veya barı basmak için göğüs ağırlığını üzerine yığmak.",
+      "İtiş esnasında dirseklerin öne kayması veya ivmeyle sallanması.",
+      "Bilekleri aşağı doğru aşırı bükerek yükü bileklere bindirmek."
     ]
   },
   {
@@ -827,6 +1352,17 @@
       "Rounding lower back during the initial break off the floor.",
       "Starting with hips too high (stiff-legging) or too low (shoving knees into handles).",
       "Shrugging shoulders or hyperextending spine at lockout."
+    ],
+    "cuesTr": [
+      "Kolların tam ortasında, ayaklar kalça-omuz genişliğinde durun; tutamakları tam ortalayarak kavrayın.",
+      "Göğsü dik, kanatları kilitli tutarak kalçayı squat-hinge arası ideal yüksekliğe indirin; omurgayı düzleştirin.",
+      "Taban ortasıyla yeri patlayıcı bir niyetle kuvvetlice itin.",
+      "Tepe noktada kalça ve dizleri tam kilitleyerek dik durun ve kalçayı sıkın."
+    ],
+    "avoidTr": [
+      "Barı yerden keserken bel omurgasının kamburlaşmasına izin vermek.",
+      "Harekete kalçayı çok yüksekte (düz bacak gibi) ya da çok alçakta başlatmak.",
+      "Kilitlenme anında omuzları yukarı silkmek veya beli geriye doğru aşırı bükmek."
     ]
   }
 ]
