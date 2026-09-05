@@ -196,6 +196,7 @@ public enum ContentDictionary {
 public enum Translations {
     public static let en: [String: String] = [
         "targets.sets": "Sets",
+        "targets.reps": "Reps",
         "targets.min": "Min reps",
         "targets.max": "Max reps",
         "targets.failure": "Technical failure",
@@ -535,6 +536,7 @@ public enum Translations {
     
     public static let tr: [String: String] = [
         "targets.sets": "Set",
+        "targets.reps": "Tekrar",
         "targets.min": "Min tekrar",
         "targets.max": "Maks tekrar",
         "targets.failure": "Teknik tükeniş",

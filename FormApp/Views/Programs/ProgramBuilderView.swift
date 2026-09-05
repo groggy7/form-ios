@@ -11,6 +11,14 @@ public struct ProgramBuilderView: View {
     @State private var showExportSheet: Bool = false
     @State private var exportedJsonString: String = ""
 
+    struct EditingExerciseContext: Identifiable {
+        let id: String
+        let workoutIndex: Int
+        let exerciseIndex: Int
+        let exercise: Exercise
+    }
+    @State private var editingContext: EditingExerciseContext? = nil
+
     public init(store: AppStore, program: Program? = nil, onDismiss: @escaping () -> Void) {
         self.store = store
         let initial = program ?? Program(
@@ -135,16 +143,41 @@ public struct ProgramBuilderView: View {
                                     } else {
                                         ForEach(Array(workout.exercises.enumerated()), id: \.element.id) { exIdx, exercise in
                                             HStack(spacing: 12) {
-                                                VStack(alignment: .leading, spacing: 2) {
-                                                    Text(exercise.name)
-                                                        .font(.system(size: 14, weight: .semibold))
-                                                        .foregroundColor(AppColors.text)
-                                                    Text(exercise.displayPrescription)
-                                                        .font(.system(size: 12))
-                                                        .foregroundColor(AppColors.muted)
+                                                Button(action: {
+                                                    editingContext = EditingExerciseContext(
+                                                        id: exercise.id,
+                                                        workoutIndex: workoutIdx,
+                                                        exerciseIndex: exIdx,
+                                                        exercise: exercise
+                                                    )
+                                                }) {
+                                                    VStack(alignment: .leading, spacing: 2) {
+                                                        Text(exercise.name)
+                                                            .font(.system(size: 14, weight: .semibold))
+                                                            .foregroundColor(AppColors.text)
+                                                        Text(exercise.displayPrescription)
+                                                            .font(.system(size: 12))
+                                                            .foregroundColor(AppColors.accent)
+                                                    }
+                                                    .frame(maxWidth: .infinity, alignment: .leading)
                                                 }
+                                                .buttonStyle(.plain)
 
-                                                Spacer()
+                                                // Edit exercise button
+                                                Button(action: {
+                                                    editingContext = EditingExerciseContext(
+                                                        id: exercise.id,
+                                                        workoutIndex: workoutIdx,
+                                                        exerciseIndex: exIdx,
+                                                        exercise: exercise
+                                                    )
+                                                }) {
+                                                    Image(systemName: "pencil")
+                                                        .font(.system(size: 13))
+                                                        .foregroundColor(AppColors.muted)
+                                                        .padding(4)
+                                                }
+                                                .buttonStyle(.plain)
 
                                                 // Reorder up/down buttons
                                                 Button(action: { moveExercise(workoutIndex: workoutIdx, from: exIdx, to: exIdx - 1) }) {
@@ -225,10 +258,36 @@ public struct ProgramBuilderView: View {
                     if let workoutIdx = program.workouts.firstIndex(where: { $0.day == selectedDay }) {
                         var ex = selected
                         ex.id = UUID().uuidString
+                        if ex.sets == nil {
+                            ex.sets = 3
+                        }
+                        if ex.reps == nil && ex.prescription.trimmingCharacters(in: .whitespaces).isEmpty {
+                            ex.reps = RepTarget(min: 8, max: 12)
+                        }
+                        if ex.restSeconds == nil {
+                            ex.restSeconds = store.defaultRestSeconds
+                        }
                         program.workouts[workoutIdx].exercises.append(ex)
                     }
                     showAddExerciseSheet = false
                 }
+            }
+            .sheet(item: $editingContext) { ctx in
+                ProgramExerciseEditorSheet(
+                    exercise: ctx.exercise,
+                    onSave: { updated in
+                        if ctx.workoutIndex < program.workouts.count &&
+                            ctx.exerciseIndex < program.workouts[ctx.workoutIndex].exercises.count {
+                            program.workouts[ctx.workoutIndex].exercises[ctx.exerciseIndex] = updated
+                        }
+                    },
+                    onDelete: {
+                        if ctx.workoutIndex < program.workouts.count &&
+                            ctx.exerciseIndex < program.workouts[ctx.workoutIndex].exercises.count {
+                            deleteExercise(workoutIndex: ctx.workoutIndex, at: ctx.exerciseIndex)
+                        }
+                    }
+                )
             }
             .sheet(isPresented: $showExportSheet) {
                 ShareSheet(text: exportedJsonString)

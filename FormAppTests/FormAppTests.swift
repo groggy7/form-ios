@@ -1615,4 +1615,84 @@ final class FormAppTests: XCTestCase {
         let statuses = WorkoutCalendar.statuses(history: restored, today: "2026-09-05")
         XCTAssertEqual(statuses["2026-08-31"], .unfinished, "August 31 must show unfinished, NOT missed")
     }
+
+    func testProgramExerciseFixedSetsAndRepTargetModificationPersists() {
+        let store = AppStore.shared
+        guard var program = store.state.programs.first else {
+            XCTFail("No programs found in store")
+            return
+        }
+        guard !program.workouts.isEmpty && !program.workouts[0].exercises.isEmpty else {
+            XCTFail("First workout has no exercises")
+            return
+        }
+
+        // Modify exercise 0 to fixed 4 sets of 10-12 reps
+        var modifiedEx = program.workouts[0].exercises[0]
+        modifiedEx.sets = 4
+        modifiedEx.reps = RepTarget(min: 10, max: 12, toFailure: false, perSide: false)
+        modifiedEx.restSeconds = 120
+        program.workouts[0].exercises[0] = modifiedEx
+
+        // Update program via store
+        store.updateProgram(program)
+
+        // Verify in-memory state
+        let updatedInStore = store.state.programs.first { $0.id == program.id }
+        XCTAssertNotNil(updatedInStore)
+        let exInStore = updatedInStore?.workouts.first?.exercises.first
+        XCTAssertEqual(exInStore?.sets, 4, "Sets must be fixed integer 4")
+        XCTAssertEqual(exInStore?.reps?.min, 10)
+        XCTAssertEqual(exInStore?.reps?.max, 12)
+        XCTAssertEqual(exInStore?.displayPrescription, "4 × 10–12")
+
+        // Verify persistence in UserDefaults
+        guard let data = UserDefaults.standard.data(forKey: "stored_app_state"),
+              let persistedState = try? JSONDecoder().decode(StoredAppState.self, from: data),
+              let persistedProgram = persistedState.programs.first(where: { $0.id == program.id }),
+              let persistedExercise = persistedProgram.workouts.first?.exercises.first else {
+            XCTFail("Failed to read persisted program from UserDefaults")
+            return
+        }
+        XCTAssertEqual(persistedExercise.sets, 4)
+        XCTAssertEqual(persistedExercise.reps?.min, 10)
+        XCTAssertEqual(persistedExercise.reps?.max, 12)
+        XCTAssertEqual(persistedExercise.restSeconds, 120)
+    }
+
+    @MainActor
+    func testProgramExerciseEditorSheetSnapshot() {
+        let exercise = Exercise(
+            name: "Incline Barbell Bench Press",
+            prescription: "4 × 6–8",
+            sets: 4,
+            reps: RepTarget(min: 6, max: 8),
+            restSeconds: 180,
+            movementType: "bench"
+        )
+        let sheet = ProgramExerciseEditorSheet(
+            exercise: exercise,
+            onSave: { _ in },
+            onDelete: {}
+        )
+        let controller = UIHostingController(rootView: sheet)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_program_exercise_editor_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
 }
