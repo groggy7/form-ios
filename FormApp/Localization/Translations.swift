@@ -28,11 +28,46 @@ public final class LanguageManager: ObservableObject {
         }
     }
     
+    public static func turkishPossessiveNumber(_ n: Int) -> String {
+        if n == 0 { return "0'ı" }
+        let lastTwo = n % 100
+        let lastOne = n % 10
+        if lastTwo >= 10 && lastTwo <= 19 {
+            let suffixes: [Int: String] = [
+                0: "'u", 1: "'i", 2: "'si", 3: "'ü", 4: "'ü",
+                5: "'i", 6: "'sı", 7: "'si", 8: "'i", 9: "'u"
+            ]
+            return "\(n)\(suffixes[lastOne] ?? "'i")"
+        }
+        if lastOne == 0 {
+            let tens: [Int: String] = [
+                20: "'si", 30: "'u", 40: "'ı", 50: "'si",
+                60: "'ı", 70: "'i", 80: "'i", 90: "'ı"
+            ]
+            return "\(n)\(tens[lastTwo] ?? "'ü")"
+        }
+        let ones: [Int: String] = [
+            1: "'i", 2: "'si", 3: "'ü", 4: "'ü",
+            5: "'i", 6: "'sı", 7: "'si", 8: "'i", 9: "'u"
+        ]
+        return "\(n)\(ones[lastOne] ?? "'i")"
+    }
+
+    public static func formatSetsProgress(done: Int, total: Int) -> String {
+        return t("history.setsProgress", ["done": done, "total": total])
+    }
+
     public func translate(_ key: String, params: [String: Any] = [:]) -> String {
         let dict = currentLanguage == "tr" ? Translations.tr : Translations.en
         var template = dict[key] ?? Translations.en[key] ?? key
         for (k, v) in params {
-            template = template.replacingOccurrences(of: "{" + k + "}", with: "\(v)")
+            let strVal: String
+            if currentLanguage == "tr" && key == "history.setsProgress" && k == "done", let n = v as? Int {
+                strVal = LanguageManager.turkishPossessiveNumber(n)
+            } else {
+                strVal = "\(v)"
+            }
+            template = template.replacingOccurrences(of: "{" + k + "}", with: strVal)
         }
         return template
     }
@@ -520,7 +555,7 @@ public enum Translations {
         "history.uncompletedExercises": "Tamamlanmayanlar",
         "history.allExercises": "Egzersizler",
         "history.notStarted": "Başlanmadı",
-        "history.setsProgress": "{total} setten {done}'si tamamlandı",
+        "history.setsProgress": "{total} setten {done} tamamlandı",
         "history.setsDoneCount": "{count} set yapıldı",
         "history.setsRemainingCount": "{count} set kaldı",
         "history.missedWorkout": "Planlanan antrenman kaçırıldı",

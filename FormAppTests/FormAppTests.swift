@@ -927,4 +927,51 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(pullUps.displayName, "Pull-Ups")
         XCTAssertEqual(workout.displayTitle(programId: "powerbuilding-strength"), "Heavy Squat")
     }
+
+    func testTurkishPossessiveNumberAndSetsProgress() {
+        LanguageManager.setLanguage("tr")
+        defer { LanguageManager.setLanguage("en") }
+
+        XCTAssertEqual(LanguageManager.formatSetsProgress(done: 4, total: 5), "5 setten 4'ü tamamlandı")
+        XCTAssertEqual(LanguageManager.formatSetsProgress(done: 4, total: 4), "4 setten 4'ü tamamlandı")
+        XCTAssertEqual(LanguageManager.formatSetsProgress(done: 0, total: 3), "3 setten 0'ı tamamlandı")
+        XCTAssertEqual(LanguageManager.formatSetsProgress(done: 1, total: 3), "3 setten 1'i tamamlandı")
+        XCTAssertEqual(LanguageManager.formatSetsProgress(done: 2, total: 3), "3 setten 2'si tamamlandı")
+        XCTAssertEqual(LanguageManager.formatSetsProgress(done: 3, total: 3), "3 setten 3'ü tamamlandı")
+        XCTAssertEqual(LanguageManager.formatSetsProgress(done: 5, total: 5), "5 setten 5'i tamamlandı")
+        XCTAssertEqual(LanguageManager.formatSetsProgress(done: 6, total: 6), "6 setten 6'sı tamamlandı")
+        XCTAssertEqual(LanguageManager.formatSetsProgress(done: 10, total: 10), "10 setten 10'u tamamlandı")
+
+        LanguageManager.setLanguage("en")
+        XCTAssertEqual(LanguageManager.formatSetsProgress(done: 4, total: 5), "4 of 5 sets")
+        XCTAssertEqual(LanguageManager.formatSetsProgress(done: 4, total: 4), "4 of 4 sets")
+    }
+
+    func testSessionProgressTargetSetsWhenSetDeleted() {
+        let exercise = Exercise(id: "squat", name: "Barbell Back Squat", sets: 5)
+        let workout = Workout(id: "w1", day: 1, title: "Heavy Squat", exercises: [exercise])
+        // 4 sets remaining out of 5, all completed
+        let sets = (1...4).map { setNum in
+            ExerciseSetLog(
+                id: "set-\(setNum)",
+                setNumber: setNum,
+                weightKg: 100,
+                completedReps: 5,
+                isCompleted: true
+            )
+        }
+        let draft = ActiveSessionDraft(
+            id: "draft-1",
+            programId: "prog-1",
+            workout: workout,
+            startedAt: "2026-09-05T10:00:00Z",
+            startedAtEpochMillis: 1000,
+            setsByExercise: ["squat": sets]
+        )
+
+        let progress = SessionProgress.from(draft: draft, nowEpochMillis: 2000)
+        let log = progress.exerciseLogs.first
+        XCTAssertEqual(log?.sets.count, 4)
+        XCTAssertEqual(log?.targetSets, 4)
+    }
 }

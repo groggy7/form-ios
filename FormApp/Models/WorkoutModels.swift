@@ -431,10 +431,12 @@ public struct SessionSetLog: Codable, Hashable {
 public struct SessionExerciseLog: Codable, Hashable {
     public var exerciseName: String
     public var sets: [SessionSetLog]
+    public var targetSets: Int?
 
-    public init(exerciseName: String, sets: [SessionSetLog] = []) {
+    public init(exerciseName: String, sets: [SessionSetLog] = [], targetSets: Int? = nil) {
         self.exerciseName = exerciseName
         self.sets = sets
+        self.targetSets = targetSets
     }
 }
 

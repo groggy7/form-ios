@@ -555,12 +555,13 @@ public struct HistoryDayDetailSheet: View {
             return plannedExercises.map { ex in
                 let log = detail.sessionRecord?.exerciseLogs.first { $0.exerciseName.lowercased() == ex.name.lowercased() }
                 let completed = log?.sets.count ?? 0
-                let planned = WorkoutSessionUtils.initialSetCount(exercise: ex)
-                return ExerciseProgressItem(name: ex.name, completedSets: completed, plannedSets: planned)
+                let planned = log?.targetSets ?? WorkoutSessionUtils.initialSetCount(exercise: ex)
+                return ExerciseProgressItem(name: ex.displayName, completedSets: completed, plannedSets: planned)
             }
         } else if let rec = detail.sessionRecord {
             return rec.exerciseLogs.map { log in
-                ExerciseProgressItem(name: log.exerciseName, completedSets: log.sets.count, plannedSets: max(log.sets.count, 1))
+                let planned = log.targetSets ?? max(log.sets.count, 1)
+                return ExerciseProgressItem(name: ContentLocalizer.shared.exerciseName(exerciseId: nil, fallback: log.exerciseName), completedSets: log.sets.count, plannedSets: planned)
             }
         }
         return []
@@ -587,7 +588,7 @@ public struct HistoryDayDetailSheet: View {
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(isFullyDone ? AppColors.secondaryText : AppColors.text)
 
-                Text(LanguageManager.t("history.setsProgress", ["done": item.completedSets, "total": item.plannedSets]))
+                Text(LanguageManager.formatSetsProgress(done: item.completedSets, total: item.plannedSets))
                     .font(.system(size: 12))
                     .foregroundColor(isFullyDone ? AppColors.muted : AppColors.secondaryText)
             }
@@ -602,7 +603,7 @@ public struct HistoryDayDetailSheet: View {
                         .foregroundColor(AppColors.completedGreen)
                 }
 
-                Text(statusBadgeText(isFullyDone: isFullyDone, isNotStarted: isNotStarted, remaining: item.plannedSets - item.completedSets))
+                Text(statusBadgeText(isFullyDone: isFullyDone, isNotStarted: isNotStarted, remaining: max(0, item.plannedSets - item.completedSets)))
                     .font(.system(size: 11, weight: .medium))
                     .foregroundColor(isFullyDone ? AppColors.completedGreen : (isPartial ? AppColors.unfinishedOrange : AppColors.muted))
             }

@@ -57,10 +57,12 @@ public struct SessionProgress {
         }
 
         let logs = draft.workout.exercises.map { ex -> SessionExerciseLog in
-            let sets = draft.setsByExercise[ex.id]?.filter { $0.isCompleted }.map {
+            let configured = draft.setsByExercise[ex.id] ?? []
+            let sets = configured.filter { $0.isCompleted }.map {
                 SessionSetLog(setNumber: $0.setNumber, weightKg: $0.weightKg, reps: $0.completedReps)
-            } ?? []
-            return SessionExerciseLog(exerciseName: ex.name, sets: sets)
+            }
+            let target = !configured.isEmpty ? configured.count : WorkoutSessionUtils.initialSetCount(exercise: ex)
+            return SessionExerciseLog(exerciseName: ex.name, sets: sets, targetSets: target)
         }
 
         let hasProg = allSets.contains {
