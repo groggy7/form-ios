@@ -507,12 +507,12 @@ final class FormAppTests: XCTestCase {
             workout: workout
         )
 
-        let sheet = HistoryDayDetailSheet(detail: detail, onDismiss: {})
+        let sheet = HistoryDayDetailSheet(detail: detail, onDismiss: {}, onActionWorkout: {})
         let controller = UIHostingController(rootView: sheet)
-        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 650)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 750)
         controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
 
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 650))
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 750))
         window.rootViewController = controller
         window.makeKeyAndVisible()
         controller.view.layoutIfNeeded()
@@ -572,12 +572,12 @@ final class FormAppTests: XCTestCase {
             workout: workout
         )
 
-        let sheet = HistoryDayDetailSheet(detail: detail, onDismiss: {})
+        let sheet = HistoryDayDetailSheet(detail: detail, onDismiss: {}, onActionWorkout: {})
         let controller = UIHostingController(rootView: sheet)
-        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 750)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 850)
         controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
 
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 750))
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 850))
         window.rootViewController = controller
         window.makeKeyAndVisible()
         controller.view.layoutIfNeeded()
@@ -589,6 +589,140 @@ final class FormAppTests: XCTestCase {
 
         if let data = image.pngData() {
             let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_detail_unfinished_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testHistoryDayDetailSheetUnfinishedExpandedSnapshot() {
+        let store = AppStore.shared
+        let workout = store.activeProgram?.workouts.first(where: { $0.title.contains("Chest") }) ?? store.activeWorkout
+        let date = WorkoutCalendar.parseDate("2026-09-02")!
+
+        let sampleRecord = WorkoutSessionRecord(
+            id: "test-rec-expanded",
+            programId: store.activeProgram?.id ?? "test-program",
+            workoutId: workout?.id ?? "chest-workout",
+            workoutTitle: workout?.title ?? "Chest Growth",
+            startedAt: "2026-09-02T10:00:00.000Z",
+            completedAt: "2026-09-02T10:35:12.000Z",
+            durationSeconds: 2112,
+            totalVolumeKg: 4250,
+            totalCompletedSets: 5,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: workout?.exercises.first?.name ?? "Barbell Bench Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 80, reps: 10),
+                        SessionSetLog(setNumber: 2, weightKg: 80, reps: 8),
+                        SessionSetLog(setNumber: 3, weightKg: 80, reps: 8)
+                    ]
+                ),
+                SessionExerciseLog(
+                    exerciseName: (workout?.exercises.count ?? 0) > 1 ? workout!.exercises[1].name : "Incline Dumbbell Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 24, reps: 12),
+                        SessionSetLog(setNumber: 2, weightKg: 24, reps: 10)
+                    ]
+                )
+            ]
+        )
+
+        let detail = HistoryDayDetailData(
+            date: date,
+            dateString: "2026-09-02",
+            status: .unfinished,
+            sessionRecord: sampleRecord,
+            workout: workout
+        )
+
+        let sheet = HistoryDayDetailSheet(detail: detail, onDismiss: {}, onActionWorkout: {}, initiallyExpanded: true)
+        let controller = UIHostingController(rootView: sheet)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 1100)
+        controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 1100))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_detail_expanded_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testHistoryDayDetailSheetTurkishSnapshot() {
+        let prevLang = LanguageManager.shared.currentLanguage
+        LanguageManager.setLanguage("tr")
+        defer { LanguageManager.setLanguage(prevLang) }
+
+        let store = AppStore.shared
+        let workout = store.activeProgram?.workouts.first(where: { $0.title.contains("Chest") }) ?? store.activeWorkout
+        let date = WorkoutCalendar.parseDate("2026-09-02")!
+
+        let sampleRecord = WorkoutSessionRecord(
+            id: "test-rec-tr",
+            programId: store.activeProgram?.id ?? "test-program",
+            workoutId: workout?.id ?? "chest-workout",
+            workoutTitle: workout?.title ?? "Göğüs & Arka Kol",
+            startedAt: "2026-09-02T10:00:00.000Z",
+            completedAt: "2026-09-02T10:35:12.000Z",
+            durationSeconds: 2112,
+            totalVolumeKg: 4250,
+            totalCompletedSets: 5,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: workout?.exercises.first?.name ?? "Barbell Bench Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 80, reps: 10),
+                        SessionSetLog(setNumber: 2, weightKg: 80, reps: 8),
+                        SessionSetLog(setNumber: 3, weightKg: 80, reps: 8)
+                    ]
+                ),
+                SessionExerciseLog(
+                    exerciseName: (workout?.exercises.count ?? 0) > 1 ? workout!.exercises[1].name : "Incline Dumbbell Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 24, reps: 12),
+                        SessionSetLog(setNumber: 2, weightKg: 24, reps: 10)
+                    ]
+                )
+            ]
+        )
+
+        let detail = HistoryDayDetailData(
+            date: date,
+            dateString: "2026-09-02",
+            status: .unfinished,
+            sessionRecord: sampleRecord,
+            workout: workout
+        )
+
+        let sheet = HistoryDayDetailSheet(detail: detail, onDismiss: {}, onActionWorkout: {})
+        let controller = UIHostingController(rootView: sheet)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 850)
+        controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 850))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_detail_turkish_snapshot.png"
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }

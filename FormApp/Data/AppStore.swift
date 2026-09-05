@@ -108,8 +108,8 @@ public final class AppStore: ObservableObject {
         return (weekday + 5) % 7 + 1 // 1 = Mon, ..., 7 = Sun
     }
 
-    public func canStartWorkout(_ workout: Workout) -> Bool {
-        return workout.day <= currentWeekDayNumber()
+    public func canStartWorkout(_ workout: Workout, allowPast: Bool = false) -> Bool {
+        return allowPast || workout.day <= currentWeekDayNumber()
     }
 
     public func unfinishedWorkoutKeys() -> Set<String> {
@@ -135,13 +135,20 @@ public final class AppStore: ObservableObject {
 
     // MARK: - Active Session
 
-    public func startActiveSession(programId: String, workout: Workout) -> Bool {
-        if activeSession != nil || workout.exercises.isEmpty || !canStartWorkout(workout) {
+    public func startActiveSession(
+        programId: String,
+        workout: Workout,
+        allowPast: Bool = false,
+        unfinishedRecordId: String? = nil
+    ) -> Bool {
+        if activeSession != nil || workout.exercises.isEmpty || !canStartWorkout(workout, allowPast: allowPast) {
             return false
         }
         let now = Date()
         let currentWeek = currentWeekIsoKey()
-        let unfinishedRecord = state.history.first { r in
+        let unfinishedRecord = (unfinishedRecordId.flatMap { recId in
+            state.history.first { $0.id == recId }
+        }) ?? state.history.first { r in
             r.programId == programId &&
             r.workoutId == workout.id &&
             r.isComplete == false &&

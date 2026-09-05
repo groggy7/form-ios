@@ -57,6 +57,50 @@ public final class LanguageManager: ObservableObject {
         return t("history.setsProgress", ["done": done, "total": total])
     }
 
+    public static func formatPercent(_ percent: Int) -> String {
+        return shared.currentLanguage == "tr" ? "%\(percent)" : "\(percent)%"
+    }
+
+    public static func formatSetsLeft(_ count: Int) -> String {
+        if shared.currentLanguage == "tr" {
+            return "\(count) set kaldı"
+        } else {
+            return count == 1 ? "1 set left" : "\(count) sets left"
+        }
+    }
+
+    public static func formatOtherExercises(_ count: Int) -> String {
+        if shared.currentLanguage == "tr" {
+            return "Diğer \(count) egzersiz"
+        } else {
+            return count == 1 ? "1 other exercise" : "\(count) other exercises"
+        }
+    }
+
+    public static func formatAllExercisesCount(_ count: Int) -> String {
+        if shared.currentLanguage == "tr" {
+            return "\(count) egzersiz"
+        } else {
+            return count == 1 ? "1 exercise" : "\(count) exercises"
+        }
+    }
+
+    public static func formatSetsFraction(completed: Int, total: Int) -> String {
+        if shared.currentLanguage == "tr" {
+            return "\(completed) / \(total) set"
+        } else {
+            return total == 1 ? "\(completed) / 1 set" : "\(completed) / \(total) sets"
+        }
+    }
+
+    public static func formatExerciseSetsCompleted(completed: Int, planned: Int) -> String {
+        if shared.currentLanguage == "tr" {
+            return "\(completed) / \(planned) set tamamlandı"
+        } else {
+            return planned == 1 ? "\(completed) / 1 set completed" : "\(completed) / \(planned) sets completed"
+        }
+    }
+
     public func translate(_ key: String, params: [String: Any] = [:]) -> String {
         let dict = currentLanguage == "tr" ? Translations.tr : Translations.en
         var template = dict[key] ?? Translations.en[key] ?? key
@@ -228,6 +272,10 @@ public enum Translations {
         "history.sets": "Sets",
         "history.volume": "Volume",
         "history.close": "Close",
+        "history.toContinue": "To continue",
+        "history.setsFraction": "{completed} / {total} sets",
+        "history.resumeWorkout": "Resume workout",
+        "history.startWorkout": "Start workout",
         "history.scheduledWorkout": "Scheduled workout",
         "programs.title": "Programs",
         "programs.new": "New program",
@@ -563,6 +611,10 @@ public enum Translations {
         "history.sets": "Setler",
         "history.volume": "Hacim",
         "history.close": "Kapat",
+        "history.toContinue": "Devam etmek için",
+        "history.setsFraction": "{completed} / {total} set",
+        "history.resumeWorkout": "Antrenmana devam et",
+        "history.startWorkout": "Antrenmana başla",
         "history.scheduledWorkout": "Planlanan antrenman",
         "programs.title": "Programlar",
         "programs.new": "Yeni program",
