@@ -140,15 +140,34 @@ public enum WorkoutSessionUtils {
     public static func restoreSetsFromHistory(workout: Workout, record: WorkoutSessionRecord) -> [String: [ExerciseSetLog]] {
         var logsByName: [String: SessionExerciseLog] = [:]
         for log in record.exerciseLogs {
-            logsByName[log.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()] = log
+            let key = log.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
+            logsByName[key] = log
         }
 
         var result: [String: [ExerciseSetLog]] = [:]
-        for ex in workout.exercises {
+        for (idx, ex) in workout.exercises.enumerated() {
             let targetCount = initialSetCount(exercise: ex)
-            let log = logsByName[ex.name.trimmingCharacters(in: .whitespaces).lowercased()]
-            let completedLogs = log?.sets ?? []
+            let nameKey = ex.name.trimmingCharacters(in: .whitespaces).lowercased()
+            let displayKey = ex.displayName.trimmingCharacters(in: .whitespaces).lowercased()
 
+            var matchedLog = logsByName[nameKey] ?? logsByName[displayKey]
+            if matchedLog == nil, idx < record.exerciseLogs.count {
+                let positionalLog = record.exerciseLogs[idx]
+                let posKey = positionalLog.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
+                if posKey == nameKey || posKey == displayKey {
+                    matchedLog = positionalLog
+                }
+            }
+            if matchedLog == nil {
+                if let exId = ex.exerciseId ?? ExerciseCatalog.canonicalExercises.first(where: { $0.value.name.lowercased() == nameKey })?.key {
+                    let enName = ContentLocalizer.shared.exerciseName(exerciseId: exId, fallback: ex.name, lang: "en").trimmingCharacters(in: .whitespaces).lowercased()
+                    let trName = ContentLocalizer.shared.exerciseName(exerciseId: exId, fallback: ex.name, lang: "tr").trimmingCharacters(in: .whitespaces).lowercased()
+                    matchedLog = logsByName[enName] ?? logsByName[trName]
+                }
+            }
+
+            let completedLogs = matchedLog?.sets ?? []
+            let targetTotal = matchedLog?.targetSets ?? targetCount
             if !completedLogs.isEmpty {
                 var restored = completedLogs.map { s in
                     ExerciseSetLog(
@@ -161,7 +180,7 @@ public enum WorkoutSessionUtils {
                     )
                 }
                 let maxNum = restored.map { $0.setNumber }.max() ?? 0
-                let needed = max(targetCount, maxNum)
+                let needed = max(targetTotal, maxNum)
                 if needed > restored.count {
                     for num in (restored.count + 1)...needed {
                         restored.append(ExerciseSetLog(setNumber: num))
@@ -169,7 +188,7 @@ public enum WorkoutSessionUtils {
                 }
                 result[ex.id] = restored
             } else {
-                result[ex.id] = (1...targetCount).map { ExerciseSetLog(setNumber: $0) }
+                result[ex.id] = (1...targetTotal).map { ExerciseSetLog(setNumber: $0) }
             }
         }
         return result

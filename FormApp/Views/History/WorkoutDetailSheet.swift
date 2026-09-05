@@ -113,8 +113,7 @@ public struct WorkoutDetailSheet: View {
     }
 
     private func formattedDate(_ isoString: String) -> String {
-        let formatter = ISO8601DateFormatter()
-        guard let date = formatter.date(from: isoString) else { return isoString }
+        guard let date = WorkoutCalendar.parseIsoTimestamp(isoString) else { return isoString }
         let out = DateFormatter()
         out.dateStyle = .medium
         out.timeStyle = .short

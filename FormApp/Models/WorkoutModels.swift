@@ -628,16 +628,19 @@ public enum WorkoutCalendar {
         return f.date(from: string)
     }
 
-    public static func localDate(from timestamp: String?, timeZone: TimeZone = .current) -> String? {
+    public static func parseIsoTimestamp(_ timestamp: String?) -> Date? {
         guard let ts = timestamp, !ts.isEmpty else { return nil }
         let isoFormatter = ISO8601DateFormatter()
         isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        var d = isoFormatter.date(from: ts)
-        if d == nil {
-            isoFormatter.formatOptions = [.withInternetDateTime]
-            d = isoFormatter.date(from: ts)
+        if let d = isoFormatter.date(from: ts) {
+            return d
         }
-        guard let date = d else { return nil }
+        isoFormatter.formatOptions = [.withInternetDateTime]
+        return isoFormatter.date(from: ts)
+    }
+
+    public static func localDate(from timestamp: String?, timeZone: TimeZone = .current) -> String? {
+        guard let date = parseIsoTimestamp(timestamp) else { return nil }
         return formatDate(date, timeZone: timeZone)
     }
 

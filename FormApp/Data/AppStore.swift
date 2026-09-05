@@ -154,17 +154,11 @@ public final class AppStore: ObservableObject {
         let previousDuration = unfinishedRecord?.durationSeconds ?? 0
         let clampedPrevSecs = min(max(0, previousDuration), 4 * 3600)
 
-        let sessionDay = WorkoutCalendar.scheduledDate(forWeekday: workout.day, relativeTo: now)
+        let sessionDay = unfinishedRecord.flatMap { rec in
+            WorkoutCalendar.localDate(from: rec.startedAt)
+        } ?? WorkoutCalendar.scheduledDate(forWeekday: workout.day, relativeTo: now)
 
-        let sessionDateObj = WorkoutCalendar.parseDate(sessionDay) ?? now
-        let sessionCal = Calendar(identifier: .gregorian)
-        let timeComponents = sessionCal.dateComponents([.hour, .minute, .second], from: now)
-        var targetComponents = sessionCal.dateComponents([.year, .month, .day], from: sessionDateObj)
-        targetComponents.hour = timeComponents.hour
-        targetComponents.minute = timeComponents.minute
-        targetComponents.second = timeComponents.second
-        let targetNow = sessionCal.date(from: targetComponents) ?? now
-        let startedAtDate = sessionCal.date(byAdding: .second, value: -clampedPrevSecs, to: targetNow) ?? targetNow
+        let startedAtDate = now.addingTimeInterval(-Double(clampedPrevSecs))
         let startedAtEpoch = Int64(startedAtDate.timeIntervalSince1970 * 1000)
 
         let formatter = ISO8601DateFormatter()
@@ -217,6 +211,13 @@ public final class AppStore: ObservableObject {
                     .record(draft: draft, completedAtEpochMillis: now)
                 completeActiveSession(rec)
                 return
+            } else {
+                if var cal = state.calendarHistory {
+                    cal = WorkoutCalendar.remove(history: cal, id: "session:\(draft.id)")
+                    var nextSt = state
+                    nextSt.calendarHistory = cal
+                    saveState(nextSt)
+                }
             }
         }
         saveActiveSession(nil)
@@ -668,8 +669,7 @@ public final class AppStore: ObservableObject {
     }
 
     private func recordWeekIsoKey(_ record: WorkoutSessionRecord) -> String {
-        let formatter = ISO8601DateFormatter()
-        guard let date = formatter.date(from: record.completedAt) ?? formatter.date(from: record.startedAt) else {
+        guard let date = WorkoutCalendar.parseIsoTimestamp(record.completedAt) ?? WorkoutCalendar.parseIsoTimestamp(record.startedAt) else {
             return ""
         }
         let calendar = Calendar(identifier: .iso8601)

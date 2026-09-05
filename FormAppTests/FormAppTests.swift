@@ -974,4 +974,152 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(log?.sets.count, 4)
         XCTAssertEqual(log?.targetSets, 4)
     }
+
+    func testIsoDateParserFractionalSeconds() {
+        let withFractional = "2026-09-05T14:45:12.345Z"
+        let withoutFractional = "2026-09-05T14:45:12Z"
+
+        let d1 = WorkoutCalendar.parseIsoTimestamp(withFractional)
+        XCTAssertNotNil(d1)
+        let d2 = WorkoutCalendar.parseIsoTimestamp(withoutFractional)
+        XCTAssertNotNil(d2)
+
+        let local1 = WorkoutCalendar.localDate(from: withFractional)
+        let local2 = WorkoutCalendar.localDate(from: withoutFractional)
+        XCTAssertEqual(local1, local2)
+    }
+
+    func testResumeWorkoutRestoresCompletedSetsAndTimer() {
+        let store = AppStore.shared
+        guard let program = store.activeProgram,
+              let workout = program.workouts.first(where: { $0.exercises.count >= 2 }) else {
+            XCTFail("Requires a workout with at least 2 exercises")
+            return
+        }
+
+        // Clean state for this workout
+        store.activeSession = nil
+        var st = store.state
+        st.history.removeAll { $0.workoutId == workout.id }
+        st.completed.removeAll { $0.contains(workout.id) }
+        store.saveState(st)
+
+        // 1. Start workout
+        let started = store.startActiveSession(programId: program.id, workout: workout)
+        XCTAssertTrue(started)
+        guard let initialDraft = store.activeSession else {
+            XCTFail("Failed to start initial active session")
+            return
+        }
+
+        // Verify timer starts near 0, NOT 5 days in the past or stuck at 8 hours!
+        let nowMillis = Int64(Date().timeIntervalSince1970 * 1000)
+        let elapsedInitial = SessionProgress.from(draft: initialDraft, nowEpochMillis: nowMillis).durationSeconds
+        XCTAssertLessThan(elapsedInitial, 5, "Initial workout timer must start at 0, not stuck at hours")
+
+        // 2. Complete all sets on first exercise
+        let firstEx = workout.exercises[0]
+        let targetFirstCount = WorkoutSessionUtils.initialSetCount(exercise: firstEx)
+        store.updateActiveSession { d in
+            var copy = d
+            var sets = copy.setsByExercise[firstEx.id] ?? []
+            for i in 0..<sets.count {
+                sets[i].isCompleted = true
+                sets[i].weightKg = 85.0
+                sets[i].weightInput = "85"
+                sets[i].completedReps = 8
+                sets[i].repsInput = "8"
+            }
+            copy.setsByExercise[firstEx.id] = sets
+            return copy
+        }
+
+        // 3. Exit workout with progress (calls abandonActiveSession)
+        store.abandonActiveSession()
+        XCTAssertNil(store.activeSession, "Active session should be nil after exiting")
+
+        // 4. Verify unfinished workout key is present and record in history
+        let unfinishedKeys = store.unfinishedWorkoutKeys()
+        let expectedKey = "\(program.id):\(workout.id)"
+        XCTAssertTrue(unfinishedKeys.contains(expectedKey), "Unfinished key must be present in unfinishedWorkoutKeys")
+
+        let unfinishedRecord = store.state.history.first { $0.workoutId == workout.id && $0.isComplete == false }
+        XCTAssertNotNil(unfinishedRecord, "Unfinished record must be saved in history")
+
+        // 5. Resume workout
+        let resumed = store.startActiveSession(programId: program.id, workout: workout)
+        XCTAssertTrue(resumed, "Resuming workout should succeed")
+        guard let resumedDraft = store.activeSession else {
+            XCTFail("Active session was not restored")
+            return
+        }
+
+        // 6. Verify first exercise sets are completely restored
+        let restoredSets = resumedDraft.setsByExercise[firstEx.id] ?? []
+        XCTAssertEqual(restoredSets.count, targetFirstCount)
+        XCTAssertTrue(restoredSets.allSatisfy { $0.isCompleted }, "All sets of first exercise must be marked completed")
+        XCTAssertEqual(restoredSets.first?.weightKg, 85.0)
+        XCTAssertEqual(restoredSets.first?.completedReps, 8)
+
+        // 7. Verify currentExerciseIndex advanced to index 1 (the next incomplete exercise)
+        XCTAssertEqual(resumedDraft.currentExerciseIndex, 1, "Workout should resume at first incomplete exercise")
+
+        // 8. Clean up
+        store.abandonActiveSession()
+    }
+
+    @MainActor
+    func testActiveSessionResumedSnapshot() {
+        let store = AppStore.shared
+        guard let program = store.activeProgram,
+              let workout = program.workouts.first(where: { $0.exercises.count >= 2 }) else {
+            return
+        }
+
+        let firstEx = workout.exercises[0]
+        let firstSets = (1...3).map {
+            ExerciseSetLog(id: "s\($0)", setNumber: $0, weightInput: "80", repsInput: "10", weightKg: 80, completedReps: 10, isCompleted: true)
+        }
+        let secondEx = workout.exercises[1]
+        let secondSets = (1...3).map {
+            ExerciseSetLog(id: "s2_\($0)", setNumber: $0, weightInput: "", repsInput: "", weightKg: nil, completedReps: nil, isCompleted: false)
+        }
+
+        let draft = ActiveSessionDraft(
+            id: "test-resumed-draft",
+            programId: program.id,
+            workout: workout,
+            startedAt: "2026-09-05T10:00:00Z",
+            startedAtEpochMillis: Int64(Date().timeIntervalSince1970 * 1000) - 245_000, // 4m 05s elapsed
+            currentExerciseIndex: 1,
+            setsByExercise: [
+                firstEx.id: firstSets,
+                secondEx.id: secondSets
+            ]
+        )
+
+        store.activeSession = draft
+        let sessionView = ActiveSessionView(store: store, draft: draft)
+        let controller = UIHostingController(rootView: sessionView)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_resumed_session_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+
+        store.abandonActiveSession()
+    }
 }

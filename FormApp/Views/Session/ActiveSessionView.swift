@@ -17,21 +17,26 @@ public struct ActiveSessionView: View {
         self.draft = draft
     }
 
+    private var currentDraft: ActiveSessionDraft {
+        store.activeSession ?? draft
+    }
+
     public var body: some View {
+        let activeDraft = currentDraft
         let effectiveNow = showSummary ? (finishedAt ?? nowEpochMillis) : nowEpochMillis
-        let progress = SessionProgress.from(draft: draft, nowEpochMillis: effectiveNow)
-        let exercises = draft.workout.exercises
-        let currentIndex = min(max(0, draft.currentExerciseIndex), max(0, exercises.count - 1))
+        let progress = SessionProgress.from(draft: activeDraft, nowEpochMillis: effectiveNow)
+        let exercises = activeDraft.workout.exercises
+        let currentIndex = min(max(0, activeDraft.currentExerciseIndex), max(0, exercises.count - 1))
         let currentExercise = exercises.indices.contains(currentIndex) ? exercises[currentIndex] : nil
-        let currentSets = currentExercise.map { draft.setsByExercise[$0.id] ?? [] } ?? []
-        let restTimer = draft.restTimer
+        let currentSets = currentExercise.map { activeDraft.setsByExercise[$0.id] ?? [] } ?? []
+        let restTimer = activeDraft.restTimer
 
         ZStack {
             AppColors.background.ignoresSafeArea()
 
             if showSummary {
                 SessionSummaryView(
-                    workoutTitle: draft.workout.title,
+                    workoutTitle: activeDraft.workout.title,
                     durationSeconds: progress.durationSeconds,
                     totalCompletedSets: progress.completedSets,
                     totalVolumeKg: progress.volumeKg,
@@ -42,8 +47,8 @@ public struct ActiveSessionView: View {
                     },
                     onSaveAndClose: {
                         let completedAt = finishedAt ?? Int64(Date().timeIntervalSince1970 * 1000)
-                        let record = SessionProgress.from(draft: draft, nowEpochMillis: completedAt)
-                            .record(draft: draft, completedAtEpochMillis: completedAt)
+                        let record = SessionProgress.from(draft: activeDraft, nowEpochMillis: completedAt)
+                            .record(draft: activeDraft, completedAtEpochMillis: completedAt)
                         store.completeActiveSession(record)
                     }
                 )
@@ -66,7 +71,7 @@ public struct ActiveSessionView: View {
                         .buttonStyle(.plain)
 
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(draft.workout.displayTitle(programId: draft.programId))
+                            Text(activeDraft.workout.displayTitle(programId: activeDraft.programId))
                                 .font(.system(size: 17, weight: .bold))
                                 .foregroundColor(AppColors.text)
                                 .lineLimit(1)
@@ -103,7 +108,7 @@ public struct ActiveSessionView: View {
                                     HStack(spacing: 8) {
                                         ForEach(Array(exercises.enumerated()), id: \.element.id) { idx, ex in
                                             let isSel = idx == currentIndex
-                                            let sets = draft.setsByExercise[ex.id] ?? []
+                                            let sets = activeDraft.setsByExercise[ex.id] ?? []
                                             let isAllDone = !sets.isEmpty && sets.allSatisfy { $0.isCompleted }
 
                                             Button(action: {
@@ -474,7 +479,7 @@ public struct ActiveSessionView: View {
     }
 
     private func checkRestTimerAlarm() {
-        guard let rest = draft.restTimer, rest.isRunning, let end = rest.endsAtEpochMillis else { return }
+        guard let rest = currentDraft.restTimer, rest.isRunning, let end = rest.endsAtEpochMillis else { return }
         if nowEpochMillis >= end {
             FormAudioPlayer.playRestCompleteSound()
             skipRest()
