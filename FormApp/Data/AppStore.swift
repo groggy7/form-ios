@@ -154,8 +154,8 @@ public final class AppStore: ObservableObject {
         let previousDuration = unfinishedRecord?.durationSeconds ?? 0
         let clampedPrevSecs = min(max(0, previousDuration), 4 * 3600)
 
-        let sessionDay = unfinishedRecord.flatMap { rec in
-            WorkoutCalendar.localDate(from: rec.startedAt)
+        let sessionDay = (unfinishedRecord?.id).flatMap { recId in
+            state.calendarHistory?.entries.first(where: { $0.id == "session:\(recId)" })?.date
         } ?? WorkoutCalendar.scheduledDate(forWeekday: workout.day, relativeTo: now)
 
         let startedAtDate = now.addingTimeInterval(-Double(clampedPrevSecs))
@@ -257,12 +257,28 @@ public final class AppStore: ObservableObject {
         if let draft = activeSession {
             cal = WorkoutCalendar.remove(history: cal, id: "session:\(draft.id)")
         }
-        let sessionDate = (activeSession?.id).flatMap { draftId in
-            state.calendarHistory?.entries.first(where: { $0.id == "session:\(draftId)" })?.date
-        } ?? (activeSession?.workout.day).map { WorkoutCalendar.scheduledDate(forWeekday: $0, relativeTo: Date()) }
-          ?? WorkoutCalendar.localDate(from: finalRecord.startedAt)
-          ?? WorkoutCalendar.localDate(from: finalRecord.completedAt)
-          ?? WorkoutCalendar.formatDate(Date())
+        let draftEntryDate = activeSession.flatMap { draft in
+            state.calendarHistory?.entries.first(where: { $0.id == "session:\(draft.id)" })?.date
+        }
+        let recordEntryDate = state.calendarHistory?.entries.first(where: { $0.id == "session:\(finalRecord.id)" })?.date
+        let draftWorkoutDay = activeSession?.workout.day
+        let recordWorkoutDay = activeProgram?.workouts.first(where: { $0.id == finalRecord.workoutId })?.day
+        let targetWeekday = draftWorkoutDay ?? recordWorkoutDay
+
+        let sessionDate: String
+        if let d = draftEntryDate {
+            sessionDate = d
+        } else if let d = recordEntryDate {
+            sessionDate = d
+        } else if let day = targetWeekday {
+            sessionDate = WorkoutCalendar.scheduledDate(forWeekday: day, relativeTo: Date())
+        } else if let d = WorkoutCalendar.localDate(from: finalRecord.startedAt) {
+            sessionDate = d
+        } else if let d = WorkoutCalendar.localDate(from: finalRecord.completedAt) {
+            sessionDate = d
+        } else {
+            sessionDate = WorkoutCalendar.formatDate(Date())
+        }
 
         cal = WorkoutCalendar.put(
             history: cal,

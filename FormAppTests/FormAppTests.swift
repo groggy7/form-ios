@@ -1122,4 +1122,129 @@ final class FormAppTests: XCTestCase {
 
         store.abandonActiveSession()
     }
+
+    @MainActor
+    func testCompletedSetsAndDeletedSetReflectedInHistoryDetail() {
+        let store = AppStore.shared
+        guard let program = store.activeProgram,
+              let workout = program.workouts.first(where: { $0.exercises.count >= 3 }) else {
+            XCTFail("Requires a workout with at least 3 exercises")
+            return
+        }
+
+        // Clean any leftover session
+        store.abandonActiveSession()
+
+        // 1. Start active session
+        let started = store.startActiveSession(programId: program.id, workout: workout)
+        XCTAssertTrue(started)
+        guard var draft = store.activeSession else {
+            XCTFail("Failed to start active session")
+            return
+        }
+
+        let ex1 = workout.exercises[0]
+        let ex2 = workout.exercises[1]
+        let ex3 = workout.exercises[2]
+
+        // 2. Complete all sets for exercise 1
+        let ex1Target = WorkoutSessionUtils.initialSetCount(exercise: ex1)
+        var ex1Sets = (1...ex1Target).map {
+            ExerciseSetLog(id: "ex1_s\($0)", setNumber: $0, weightInput: "60", repsInput: "10", weightKg: 60, completedReps: 10, isCompleted: true)
+        }
+        draft.setsByExercise[ex1.id] = ex1Sets
+
+        // 3. For exercise 2, simulate deleting last set and completing the remaining sets
+        let ex2OriginalCount = WorkoutSessionUtils.initialSetCount(exercise: ex2)
+        let ex2NewCount = max(1, ex2OriginalCount - 1)
+        var ex2Sets = (1...ex2NewCount).map {
+            ExerciseSetLog(id: "ex2_s\($0)", setNumber: $0, weightInput: "24", repsInput: "12", weightKg: 24, completedReps: 12, isCompleted: true)
+        }
+        draft.setsByExercise[ex2.id] = ex2Sets
+
+        // 4. Exercise 3 remains incomplete (0 sets done)
+        let ex3Target = WorkoutSessionUtils.initialSetCount(exercise: ex3)
+        draft.setsByExercise[ex3.id] = (1...ex3Target).map {
+            ExerciseSetLog(id: "ex3_s\($0)", setNumber: $0, weightInput: "", repsInput: "", weightKg: nil, completedReps: nil, isCompleted: false)
+        }
+
+        store.activeSession = draft
+
+        // 5. Complete active session (unfinished / partial session)
+        let nowEpoch = Int64(Date().timeIntervalSince1970 * 1000)
+        let progress = SessionProgress.from(draft: draft, nowEpochMillis: nowEpoch)
+        let record = progress.record(draft: draft, completedAtEpochMillis: nowEpoch)
+        store.completeActiveSession(record)
+
+        XCTAssertNil(store.activeSession, "Active session should be cleared after completion")
+
+        // 6. Verify calendar entry exists and find the date
+        guard let entry = store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(record.id)" }) else {
+            XCTFail("Calendar entry for session was not found")
+            return
+        }
+        XCTAssertEqual(entry.status, .unfinished)
+
+        // 7. Verify History lookup finds the session record for that day
+        let dateString = entry.date
+        let historyRecord = store.state.history.first { rec in
+            if let calDate = store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(rec.id)" })?.date {
+                if calDate == dateString { return true }
+            }
+            let startDate = WorkoutCalendar.localDate(from: rec.startedAt)
+            let completedDate = WorkoutCalendar.localDate(from: rec.completedAt)
+            return startDate == dateString || completedDate == dateString
+        }
+
+        XCTAssertNotNil(historyRecord, "Session record must be resolved for date \(dateString)")
+        guard let resolvedRec = historyRecord else { return }
+
+        // Total completed sets: ex1 (ex1Target) + ex2 (ex2NewCount)
+        XCTAssertEqual(resolvedRec.totalCompletedSets, ex1Target + ex2NewCount)
+
+        // 8. Verify exercise breakdown
+        let ex1Log = resolvedRec.exerciseLogs.first(where: { $0.exerciseName.lowercased() == ex1.name.lowercased() })
+        XCTAssertNotNil(ex1Log)
+        XCTAssertEqual(ex1Log?.sets.count, ex1Target)
+        XCTAssertEqual(ex1Log?.targetSets, ex1Target)
+
+        let ex2Log = resolvedRec.exerciseLogs.first(where: { $0.exerciseName.lowercased() == ex2.name.lowercased() })
+        XCTAssertNotNil(ex2Log)
+        XCTAssertEqual(ex2Log?.sets.count, ex2NewCount)
+        XCTAssertEqual(ex2Log?.targetSets, ex2NewCount, "Target sets for exercise 2 should reflect deleted set (\(ex2NewCount) not \(ex2OriginalCount))")
+
+        let ex3Log = resolvedRec.exerciseLogs.first(where: { $0.exerciseName.lowercased() == ex3.name.lowercased() })
+        XCTAssertNotNil(ex3Log)
+        XCTAssertEqual(ex3Log?.sets.count, 0)
+        XCTAssertEqual(ex3Log?.targetSets, ex3Target)
+
+        // 9. Snapshot rendering of the detail sheet
+        let detailData = HistoryDayDetailData(
+            date: Date(),
+            dateString: dateString,
+            status: .unfinished,
+            sessionRecord: resolvedRec,
+            workout: workout
+        )
+        let sheetView = HistoryDayDetailSheet(detail: detailData, onDismiss: {})
+        let controller = UIHostingController(rootView: sheetView)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_detail_completed_and_deleted_set.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
 }

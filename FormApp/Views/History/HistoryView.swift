@@ -211,6 +211,7 @@ public struct HistoryView: View {
         let activeRecord: WorkoutSessionRecord? = {
             guard let draft = store.activeSession else { return nil }
             let activeDay = store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(draft.id)" })?.date
+                ?? WorkoutCalendar.scheduledDate(forWeekday: draft.workout.day, relativeTo: Date())
                 ?? WorkoutCalendar.localDate(from: draft.startedAt)
             if activeDay == dateString {
                 let now = Int64(Date().timeIntervalSince1970 * 1000)
@@ -220,12 +221,14 @@ public struct HistoryView: View {
             return nil
         }()
 
-        let sessionRecord = store.state.history.first { rec in
-            let d = WorkoutCalendar.localDate(from: rec.startedAt)
-                ?? WorkoutCalendar.localDate(from: rec.completedAt)
-                ?? store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(rec.id)" })?.date
-            return d == dateString
-        } ?? activeRecord
+        let sessionRecord: WorkoutSessionRecord? = activeRecord ?? store.state.history.first { rec in
+            if let calDate = store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(rec.id)" })?.date {
+                if calDate == dateString { return true }
+            }
+            let startDate = WorkoutCalendar.localDate(from: rec.startedAt)
+            let completedDate = WorkoutCalendar.localDate(from: rec.completedAt)
+            return startDate == dateString || completedDate == dateString
+        }
 
         let workout: Workout?
         if let rec = sessionRecord {
@@ -553,7 +556,12 @@ public struct HistoryDayDetailSheet: View {
         let plannedExercises = detail.workout?.exercises ?? []
         if !plannedExercises.isEmpty {
             return plannedExercises.map { ex in
-                let log = detail.sessionRecord?.exerciseLogs.first { $0.exerciseName.lowercased() == ex.name.lowercased() }
+                let nameKey = ex.name.trimmingCharacters(in: .whitespaces).lowercased()
+                let displayKey = ex.displayName.trimmingCharacters(in: .whitespaces).lowercased()
+                let log = detail.sessionRecord?.exerciseLogs.first { l in
+                    let logKey = l.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
+                    return logKey == nameKey || logKey == displayKey
+                }
                 let completed = log?.sets.count ?? 0
                 let planned = log?.targetSets ?? WorkoutSessionUtils.initialSetCount(exercise: ex)
                 return ExerciseProgressItem(name: ex.displayName, completedSets: completed, plannedSets: planned)
