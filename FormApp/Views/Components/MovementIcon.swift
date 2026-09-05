@@ -259,17 +259,17 @@ public extension MovementIcon {
         case "jump-rope":
             return MovementSprite(imageName: "anatomy_jump_rope", top: 0, bottom: 1024, atlasHeight: 1024, atlasWidth: 1536)
         case "weighted-pull-up":
-            return MovementSprite(imageName: "anatomy_batch_01_upper", top: 0, bottom: 556)
+            return MovementSprite(imageName: "anatomy_weighted_pull_up", top: 0, bottom: 556, atlasHeight: 556)
         case "chest-supported-dumbbell-row":
-            return MovementSprite(imageName: "anatomy_batch_01_upper", top: 556, bottom: 938, frameStarts: [0, 386, 797], frameWidth: 382)
+            return MovementSprite(imageName: "anatomy_chest_supported_dumbbell_row", top: 0, bottom: 382, atlasHeight: 382)
         case "push-up":
-            return MovementSprite(imageName: "anatomy_batch_01_upper", top: 938, bottom: 1254)
+            return MovementSprite(imageName: "anatomy_push_up", top: 0, bottom: 316, atlasHeight: 316)
         case "barbell-front-squat":
             return MovementSprite(imageName: "anatomy_barbell_front_squat", top: 0, bottom: 419, atlasHeight: 419)
         case "trap-bar-deadlift":
-            return MovementSprite(imageName: "anatomy_batch_01_lower", top: 419, bottom: 821)
+            return MovementSprite(imageName: "anatomy_trap_bar_deadlift", top: 0, bottom: 402, atlasHeight: 402)
         case "seated-leg-curl":
-            return MovementSprite(imageName: "anatomy_batch_01_lower", top: 821, bottom: 1254)
+            return MovementSprite(imageName: "anatomy_seated_leg_curl", top: 0, bottom: 433, atlasHeight: 433)
         case "ab-wheel-rollout":
             return MovementSprite(imageName: "anatomy_ab_wheel_rollout", top: 0, bottom: 371, atlasHeight: 371)
         case "cable-lateral-raise":
@@ -277,75 +277,75 @@ public extension MovementIcon {
         case "overhead-cable-triceps-extension":
             return MovementSprite(imageName: "anatomy_overhead_cable_triceps_extension", top: 0, bottom: 887, atlasHeight: 887, atlasWidth: 1774)
         case "side-plank":
-            return MovementSprite(imageName: "anatomy_batch_02_core", top: 0, bottom: 444)
+            return MovementSprite(imageName: "anatomy_side_plank", top: 0, bottom: 444, atlasHeight: 444)
         case "dead-bug":
             return MovementSprite(imageName: "anatomy_dead_bug", top: 0, bottom: 390, atlasHeight: 390)
         case "hollow-body-hold":
-            return MovementSprite(imageName: "anatomy_batch_02_core", top: 834, bottom: 1254)
+            return MovementSprite(imageName: "anatomy_hollow_body_hold", top: 0, bottom: 420, atlasHeight: 420)
         case "reverse-crunch":
-            return MovementSprite(imageName: "anatomy_batch_02_bodyweight", top: 0, bottom: 463)
+            return MovementSprite(imageName: "anatomy_reverse_crunch", top: 0, bottom: 463, atlasHeight: 463)
         case "sliding-hamstring-curl":
-            return MovementSprite(imageName: "anatomy_batch_02_bodyweight", top: 463, bottom: 795)
+            return MovementSprite(imageName: "anatomy_sliding_hamstring_curl", top: 0, bottom: 332, atlasHeight: 332)
         case "pike-push-up":
-            return MovementSprite(imageName: "anatomy_batch_02_bodyweight", top: 795, bottom: 1254)
+            return MovementSprite(imageName: "anatomy_pike_push_up", top: 0, bottom: 459, atlasHeight: 459)
         case "band-face-pull":
-            return MovementSprite(imageName: "anatomy_batch_02_equipment", top: 0, bottom: 405)
+            return MovementSprite(imageName: "anatomy_band_face_pull", top: 0, bottom: 405, atlasHeight: 405)
         case "incline-dumbbell-press":
-            return MovementSprite(imageName: "anatomy_batch_02_equipment", top: 405, bottom: 811)
+            return MovementSprite(imageName: "anatomy_incline_dumbbell_press", top: 0, bottom: 406, atlasHeight: 406)
         case "dumbbell-step-up":
-            return MovementSprite(imageName: "anatomy_batch_02_equipment", top: 811, bottom: 1254)
+            return MovementSprite(imageName: "anatomy_dumbbell_step_up", top: 0, bottom: 443, atlasHeight: 443)
         case "barbell-romanian-deadlift":
-            return MovementSprite(imageName: "anatomy_batch_03_lower", top: 0, bottom: 418)
+            return MovementSprite(imageName: "anatomy_barbell_romanian_deadlift", top: 0, bottom: 418, atlasHeight: 418)
         case "kettlebell-goblet-squat":
-            return MovementSprite(imageName: "anatomy_batch_03_lower", top: 418, bottom: 836)
+            return MovementSprite(imageName: "anatomy_kettlebell_goblet_squat", top: 0, bottom: 418, atlasHeight: 418)
         case "leg-press-45-degree":
-            return MovementSprite(imageName: "anatomy_batch_03_lower", top: 836, bottom: 1254)
+            return MovementSprite(imageName: "anatomy_leg_press_45_degree", top: 0, bottom: 418, atlasHeight: 418)
         case "barbell-bench-press":
             return MovementSprite(imageName: "anatomy_barbell_bench_press", top: 0, bottom: 418, atlasHeight: 418)
         case "dumbbell-lateral-raise":
-            return MovementSprite(imageName: "anatomy_batch_03_upper", top: 418, bottom: 836)
+            return MovementSprite(imageName: "anatomy_dumbbell_lateral_raise", top: 0, bottom: 418, atlasHeight: 418)
         case "rope-triceps-pressdown":
-            return MovementSprite(imageName: "anatomy_batch_03_upper", top: 836, bottom: 1254)
+            return MovementSprite(imageName: "anatomy_rope_triceps_pressdown", top: 0, bottom: 418, atlasHeight: 418)
         case "single-leg-calf-raise":
-            return MovementSprite(imageName: "anatomy_batch_03_accessory", top: 0, bottom: 418)
+            return MovementSprite(imageName: "anatomy_single_leg_calf_raise", top: 0, bottom: 418, atlasHeight: 418)
         case "standing-machine-calf-raise":
-            return MovementSprite(imageName: "anatomy_batch_03_accessory", top: 418, bottom: 836)
+            return MovementSprite(imageName: "anatomy_standing_machine_calf_raise", top: 0, bottom: 418, atlasHeight: 418)
         case "hanging-knee-raise":
-            return MovementSprite(imageName: "anatomy_batch_03_accessory", top: 836, bottom: 1254)
+            return MovementSprite(imageName: "anatomy_hanging_knee_raise", top: 0, bottom: 418, atlasHeight: 418)
         case "barbell-back-squat":
             return MovementSprite(imageName: "anatomy_barbell_back_squat", top: 0, bottom: 418, atlasHeight: 418)
         case "conventional-barbell-deadlift":
-            return MovementSprite(imageName: "anatomy_batch_04_lower", top: 418, bottom: 806)
+            return MovementSprite(imageName: "anatomy_conventional_barbell_deadlift", top: 0, bottom: 388, atlasHeight: 388)
         case "dumbbell-romanian-deadlift":
-            return MovementSprite(imageName: "anatomy_batch_04_lower", top: 806, bottom: 1254)
+            return MovementSprite(imageName: "anatomy_dumbbell_romanian_deadlift", top: 0, bottom: 448, atlasHeight: 448)
         case "standing-barbell-overhead-press":
-            return MovementSprite(imageName: "anatomy_batch_04_upper", top: 0, bottom: 432)
+            return MovementSprite(imageName: "anatomy_standing_barbell_overhead_press", top: 0, bottom: 432, atlasHeight: 432)
         case "dumbbell-floor-press":
-            return MovementSprite(imageName: "anatomy_batch_04_upper", top: 432, bottom: 783)
+            return MovementSprite(imageName: "anatomy_dumbbell_floor_press", top: 0, bottom: 351, atlasHeight: 351)
         case "dumbbell-hammer-curl":
-            return MovementSprite(imageName: "anatomy_batch_04_upper", top: 783, bottom: 1254)
+            return MovementSprite(imageName: "anatomy_dumbbell_hammer_curl", top: 0, bottom: 471, atlasHeight: 471)
         case "straight-bar-cable-triceps-pressdown":
-            return MovementSprite(imageName: "anatomy_batch_04_accessory", top: 0, bottom: 418)
+            return MovementSprite(imageName: "anatomy_straight_bar_cable_triceps_pressdown", top: 0, bottom: 418, atlasHeight: 418)
         case "seated-machine-calf-raise":
-            return MovementSprite(imageName: "anatomy_batch_04_accessory", top: 418, bottom: 833)
+            return MovementSprite(imageName: "anatomy_seated_machine_calf_raise", top: 0, bottom: 415, atlasHeight: 415)
         case "kneeling-cable-crunch":
-            return MovementSprite(imageName: "anatomy_batch_04_accessory", top: 833, bottom: 1254)
+            return MovementSprite(imageName: "anatomy_kneeling_cable_crunch", top: 0, bottom: 421, atlasHeight: 421)
         case "dumbbell-bench-press":
-            return MovementSprite(imageName: "anatomy_batch_05_upper", top: 0, bottom: 418)
+            return MovementSprite(imageName: "anatomy_dumbbell_bench_press", top: 0, bottom: 418, atlasHeight: 418)
         case "one-arm-dumbbell-row":
-            return MovementSprite(imageName: "anatomy_batch_05_upper", top: 418, bottom: 749)
+            return MovementSprite(imageName: "anatomy_one_arm_dumbbell_row", top: 0, bottom: 331, atlasHeight: 331)
         case "lat-pulldown":
-            return MovementSprite(imageName: "anatomy_batch_05_upper", top: 810, bottom: 1254)
+            return MovementSprite(imageName: "anatomy_lat_pulldown", top: 0, bottom: 444, atlasHeight: 444)
         case "rear-foot-elevated-split-squat":
-            return MovementSprite(imageName: "anatomy_batch_05_lower", top: 0, bottom: 421)
+            return MovementSprite(imageName: "anatomy_rear_foot_elevated_split_squat", top: 0, bottom: 421, atlasHeight: 421)
         case "leg-extension":
-            return MovementSprite(imageName: "anatomy_batch_05_lower", top: 421, bottom: 820)
+            return MovementSprite(imageName: "anatomy_leg_extension", top: 0, bottom: 399, atlasHeight: 399)
         case "lying-leg-curl":
-            return MovementSprite(imageName: "anatomy_batch_05_lower", top: 836, bottom: 1254)
+            return MovementSprite(imageName: "anatomy_lying_leg_curl", top: 0, bottom: 418, atlasHeight: 418)
         case "pec-deck-fly":
-            return MovementSprite(imageName: "anatomy_batch_05_accessory", top: 0, bottom: 418)
+            return MovementSprite(imageName: "anatomy_pec_deck_fly", top: 0, bottom: 418, atlasHeight: 418)
         case "ez-bar-curl":
-            return MovementSprite(imageName: "anatomy_batch_05_accessory", top: 418, bottom: 857)
+            return MovementSprite(imageName: "anatomy_ez_bar_curl", top: 0, bottom: 439, atlasHeight: 439)
         case "barbell-hip-thrust":
             return MovementSprite(imageName: "anatomy_barbell_hip_thrust", top: 0, bottom: 418, atlasHeight: 418)
         case "barbell-row":
@@ -355,11 +355,11 @@ public extension MovementIcon {
         case "incline-dumbbell-curl":
             return MovementSprite(imageName: "anatomy_incline_dumbbell_curl", top: 0, bottom: 440, atlasHeight: 440)
         case "kettlebell-swing":
-            return MovementSprite(imageName: "anatomy_batch_06_athletic", top: 0, bottom: 414)
+            return MovementSprite(imageName: "anatomy_kettlebell_swing", top: 0, bottom: 414, atlasHeight: 414)
         case "farmer-carry":
-            return MovementSprite(imageName: "anatomy_batch_06_athletic", top: 414, bottom: 788)
+            return MovementSprite(imageName: "anatomy_farmer_carry", top: 0, bottom: 374, atlasHeight: 374)
         case "push-press":
-            return MovementSprite(imageName: "anatomy_batch_06_athletic", top: 788, bottom: 1254)
+            return MovementSprite(imageName: "anatomy_push_press", top: 0, bottom: 466, atlasHeight: 466)
         case "pallof-press":
             return MovementSprite(
                 imageName: "anatomy_pallof_press",
