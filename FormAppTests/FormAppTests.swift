@@ -96,7 +96,13 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(dumbbellLateralRaiseSprite?.bottom, 836)
         XCTAssertEqual(dumbbellLateralRaiseSprite?.atlasHeight, 1254)
 
-        for sprite in [benchSprite, abWheelSprite, frontSquatSprite, backSquatSprite, hipThrustSprite, barbellRowSprite, cableLateralRaiseSprite, dumbbellLateralRaiseSprite].compactMap({ $0 }) {
+        let hammerCurlSprite = MovementIcon.movementAssetSprite("dumbbell-hammer-curl")
+        XCTAssertEqual(hammerCurlSprite?.imageName, "anatomy_batch_04_upper")
+        XCTAssertEqual(hammerCurlSprite?.top, 783)
+        XCTAssertEqual(hammerCurlSprite?.bottom, 1254)
+        XCTAssertEqual(hammerCurlSprite?.atlasHeight, 1254)
+
+        for sprite in [benchSprite, abWheelSprite, frontSquatSprite, backSquatSprite, hipThrustSprite, barbellRowSprite, cableLateralRaiseSprite, dumbbellLateralRaiseSprite, hammerCurlSprite].compactMap({ $0 }) {
             for frame in 0..<3 {
                 XCTAssertNotNil(MovementFrameCache.getFrame(for: sprite, frame: frame))
             }
