@@ -1780,4 +1780,22 @@ final class FormAppTests: XCTestCase {
             print("Successfully wrote snapshot to \(path)")
         }
     }
+
+    func testAddedSetStartsEmptyWithoutCopyingPreviousInputs() {
+        var sets = [
+            ExerciseSetLog(setNumber: 1, weightInput: "80", repsInput: "10", weightKg: 80, completedReps: 10, isCompleted: true)
+        ]
+        // Adding a set must produce a clean, blank set
+        sets.append(ExerciseSetLog(
+            setNumber: sets.count + 1,
+            isCompleted: false
+        ))
+        let added = sets.last!
+        XCTAssertEqual(added.setNumber, 2)
+        XCTAssertEqual(added.weightInput, "")
+        XCTAssertEqual(added.repsInput, "")
+        XCTAssertNil(added.weightKg)
+        XCTAssertNil(added.completedReps)
+        XCTAssertFalse(added.isCompleted)
+    }
 }

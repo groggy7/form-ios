@@ -380,13 +380,8 @@ public struct ActiveSessionView: View {
         store.updateActiveSession { d in
             var copy = d
             var sets = copy.setsByExercise[exerciseId] ?? []
-            let last = sets.last
             sets.append(ExerciseSetLog(
                 setNumber: sets.count + 1,
-                weightInput: last?.weightInput ?? "",
-                repsInput: last?.repsInput ?? "",
-                weightKg: last?.weightKg,
-                completedReps: last?.completedReps,
                 isCompleted: false
             ))
             copy.setsByExercise[exerciseId] = sets
