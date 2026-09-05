@@ -705,10 +705,11 @@ public enum ExerciseCatalog {
     }
 
     public static func build(
-        bundledPrograms: [Program],
-        userPrograms: [Program],
+        bundledPrograms: [Program] = [],
+        userPrograms: [Program] = [],
         preferredProgramId: String? = nil,
-        preferredWorkout: Workout? = nil
+        preferredWorkout: Workout? = nil,
+        canonicalExercises: [ExerciseDefinition] = []
     ) -> [ExerciseCatalogEntry] {
         struct Source {
             let programId: String
@@ -749,6 +750,22 @@ public enum ExerciseCatalog {
                 )
             }
         }
+
+        for def in canonicalExercises {
+            let key = def.name.trimmingCharacters(in: .whitespaces).lowercased()
+            if !key.isEmpty && map[key] == nil {
+                map[key] = ExerciseCatalogEntry(
+                    key: key,
+                    exercise: def.toExercise(),
+                    programIds: [],
+                    workoutKeys: []
+                )
+            }
+        }
+
+        let canonicalById = Dictionary(uniqueKeysWithValues: canonicalExercises.map { ($0.id, $0) })
+        let canonicalByKey = Dictionary(canonicalExercises.map { ($0.name.trimmingCharacters(in: .whitespaces).lowercased(), $0) }, uniquingKeysWith: { first, _ in first })
+
         var standardNotes: [String: Exercise] = [:]
         for p in bundledPrograms {
             for w in p.workouts {
@@ -761,21 +778,28 @@ public enum ExerciseCatalog {
             }
         }
         return map.values.map { entry in
-            if let std = standardNotes[entry.key] {
-                var ex = entry.exercise
+            var ex = entry.exercise
+            let def = ex.exerciseId.flatMap { canonicalById[$0] } ?? canonicalByKey[entry.key]
+            let std = standardNotes[entry.key]
+            if let def = def {
+                if ex.exerciseId == nil { ex.exerciseId = def.id }
+                if ex.cues.trimmingCharacters(in: .whitespaces).isEmpty { ex.cues = def.cuesText }
+                if ex.avoid.trimmingCharacters(in: .whitespaces).isEmpty { ex.avoid = def.avoidText }
+                if ex.movementType == nil { ex.movementType = def.movementType }
+                if ex.movementAssetId == nil { ex.movementAssetId = def.movementAssetId }
+            } else if let std = std {
                 if ex.exerciseId == nil { ex.exerciseId = std.exerciseId }
-                ex.cues = std.cues
-                ex.avoid = std.avoid
+                if ex.cues.trimmingCharacters(in: .whitespaces).isEmpty { ex.cues = std.cues }
+                if ex.avoid.trimmingCharacters(in: .whitespaces).isEmpty { ex.avoid = std.avoid }
                 if ex.movementType == nil { ex.movementType = std.movementType }
                 if ex.movementAssetId == nil { ex.movementAssetId = std.movementAssetId }
-                return ExerciseCatalogEntry(
-                    key: entry.key,
-                    exercise: ex,
-                    programIds: entry.programIds,
-                    workoutKeys: entry.workoutKeys
-                )
             }
-            return entry
+            return ExerciseCatalogEntry(
+                key: entry.key,
+                exercise: ex,
+                programIds: entry.programIds,
+                workoutKeys: entry.workoutKeys
+            )
         }.sorted { $0.exercise.name.localizedCaseInsensitiveCompare($1.exercise.name) == .orderedAscending }
     }
 

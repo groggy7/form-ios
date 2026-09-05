@@ -150,6 +150,26 @@ public struct ExerciseDefinition: Identifiable, Codable, Hashable {
         self.cues = cues
         self.avoid = avoid
     }
+
+    public var cuesText: String { cues.joined(separator: "\n") }
+    public var avoidText: String { avoid.joined(separator: "\n") }
+
+    public func toExercise() -> Exercise {
+        Exercise(
+            id: id,
+            name: name,
+            exerciseId: id,
+            prescription: "",
+            cues: cuesText,
+            avoid: avoidText,
+            videos: [],
+            sets: nil,
+            reps: nil,
+            restSeconds: nil,
+            movementType: movementType,
+            movementAssetId: movementAssetId
+        )
+    }
 }
 
 public struct Exercise: Identifiable, Codable, Hashable {

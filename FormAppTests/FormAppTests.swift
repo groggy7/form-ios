@@ -859,4 +859,19 @@ final class FormAppTests: XCTestCase {
             print("Successfully wrote snapshot to \(path)")
         }
     }
+
+    func testCanonicalExercisesSeedCatalogueIndependentlyOfPrograms() {
+        let catalogue = ExerciseCatalog.build(
+            bundledPrograms: [],
+            userPrograms: [],
+            canonicalExercises: Array(ExerciseCatalog.canonicalExercises.values)
+        )
+
+        XCTAssertEqual(catalogue.count, 49)
+        XCTAssertEqual(catalogue.count, Set(catalogue.map { $0.key }).count)
+        XCTAssertEqual(catalogue.filter { $0.exercise.movementAssetId != nil }.count, 49)
+        XCTAssertEqual(catalogue.filter { !$0.exercise.cues.isEmpty }.count, 49)
+        XCTAssertEqual(catalogue.filter { !$0.exercise.avoid.isEmpty }.count, 49)
+        XCTAssertEqual(catalogue.filter { $0.exercise.exerciseId != nil }.count, 49)
+    }
 }
