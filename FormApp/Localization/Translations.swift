@@ -77,12 +77,16 @@ public final class LanguageManager: ObservableObject {
         }
     }
 
-    public static func formatAllExercisesCount(_ count: Int) -> String {
+    public static func formatUncompletedExercisesCount(_ count: Int) -> String {
         if shared.currentLanguage == "tr" {
-            return "\(count) egzersiz"
+            return "\(count) tamamlanmamış egzersiz"
         } else {
-            return count == 1 ? "1 exercise" : "\(count) exercises"
+            return count == 1 ? "1 uncompleted exercise" : "\(count) uncompleted exercises"
         }
+    }
+
+    public static func formatAllExercisesCount(_ count: Int) -> String {
+        return formatUncompletedExercisesCount(count)
     }
 
     public static func formatSetsFraction(completed: Int, total: Int) -> String {

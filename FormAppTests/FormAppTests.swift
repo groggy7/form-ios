@@ -1081,6 +1081,17 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(LanguageManager.formatSetsProgress(done: 4, total: 4), "4 of 4 sets")
     }
 
+    func testUncompletedExercisesCountFormatting() {
+        LanguageManager.setLanguage("en")
+        XCTAssertEqual(LanguageManager.formatUncompletedExercisesCount(1), "1 uncompleted exercise")
+        XCTAssertEqual(LanguageManager.formatUncompletedExercisesCount(6), "6 uncompleted exercises")
+
+        LanguageManager.setLanguage("tr")
+        XCTAssertEqual(LanguageManager.formatUncompletedExercisesCount(1), "1 tamamlanmamış egzersiz")
+        XCTAssertEqual(LanguageManager.formatUncompletedExercisesCount(6), "6 tamamlanmamış egzersiz")
+        LanguageManager.setLanguage("en")
+    }
+
     func testSessionProgressTargetSetsWhenSetDeleted() {
         let exercise = Exercise(id: "squat", name: "Barbell Back Squat", sets: 5)
         let workout = Workout(id: "w1", day: 1, title: "Heavy Squat", exercises: [exercise])
