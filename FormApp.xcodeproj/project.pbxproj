@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E10000000000000000000002 /* exercises.json in Resources */ = {isa = PBXBuildFile; fileRef = E10000000000000000000001 /* exercises.json */; };
+		E10000000000000000000003 /* exercises.json in Resources */ = {isa = PBXBuildFile; fileRef = E10000000000000000000001 /* exercises.json */; };
 		0020D035F786CD915922D766 /* TodayHeroCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D6F413D877B7E332EEF6D /* TodayHeroCard.swift */; };
 		0667E5D4E4CF923DF66A2C24 /* 01_aesthetic_hypertrophy.json in Resources */ = {isa = PBXBuildFile; fileRef = 92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */; };
 		075B0F9BA865F79FB856122B /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D5A75502FFC600D48A992 /* AudioPlayer.swift */; };
@@ -102,6 +104,7 @@
 		829AB05F70AD9B7E6DEE97CC /* WorkoutSessionUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSessionUtils.swift; sourceTree = "<group>"; };
 		90A44CC582072D671FF45DE4 /* form_rest_complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_rest_complete.wav; sourceTree = "<group>"; };
 		91FE39F02FA4EAA1A43D7CA8 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
+		E10000000000000000000001 /* exercises.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = exercises.json; sourceTree = "<group>"; };
 		92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 01_aesthetic_hypertrophy.json; sourceTree = "<group>"; };
 		955CAB74DAB1D7D264DD689E /* MuscleArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleArtwork.swift; sourceTree = "<group>"; };
 		9A2948074308DABA9A07E42E /* 04_full_body_classic.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 04_full_body_classic.json; sourceTree = "<group>"; };
@@ -315,6 +318,7 @@
 			isa = PBXGroup;
 			children = (
 				77203A709542614D89DFF819 /* Assets.xcassets */,
+				E10000000000000000000001 /* exercises.json */,
 				92387770BAF9161F9576E05F /* Sounds */,
 				1FD94B26592974EE021A9BF6 /* StarterPrograms */,
 			);
@@ -433,6 +437,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E10000000000000000000002 /* exercises.json in Resources */,
 				ECF655C211A97E2025683749 /* 01_aesthetic_hypertrophy.json in Resources */,
 				48390A60D9C62EB7A6171580 /* 02_powerbuilding_strength.json in Resources */,
 				F89F85797C04B79378A6EF20 /* 03_classic_ppl.json in Resources */,
@@ -452,6 +457,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E10000000000000000000003 /* exercises.json in Resources */,
 				0667E5D4E4CF923DF66A2C24 /* 01_aesthetic_hypertrophy.json in Resources */,
 				36BD5962CDF814CE9F9A4F6C /* 02_powerbuilding_strength.json in Resources */,
 				E502AEF3D69EC46BD7225892 /* 03_classic_ppl.json in Resources */,

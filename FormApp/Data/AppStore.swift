@@ -544,13 +544,13 @@ public final class AppStore: ObservableObject {
     }
 
     private static func enrichStandardizedTechniqueCues(_ programs: [Program], bundled: [Program]) -> [Program] {
-        var standardNotes: [String: (cues: String, avoid: String)] = [:]
+        var standardNotes: [String: (cues: String, avoid: String, exerciseId: String?)] = [:]
         for p in bundled {
             for w in p.workouts {
                 for e in w.exercises {
                     let key = e.name.trimmingCharacters(in: .whitespaces).lowercased()
                     if !key.isEmpty && (!e.cues.isEmpty || !e.avoid.isEmpty) {
-                        standardNotes[key] = (e.cues, e.avoid)
+                        standardNotes[key] = (e.cues, e.avoid, e.exerciseId)
                     }
                 }
             }
@@ -564,6 +564,7 @@ public final class AppStore: ObservableObject {
                     let key = e.name.trimmingCharacters(in: .whitespaces).lowercased()
                     if let std = standardNotes[key] {
                         var updatedE = e
+                        if updatedE.exerciseId == nil { updatedE.exerciseId = std.exerciseId }
                         updatedE.cues = std.cues
                         updatedE.avoid = std.avoid
                         return updatedE
@@ -613,6 +614,47 @@ public final class AppStore: ObservableObject {
         return programs
     }
 
+    public static func loadBundledExercises() -> [String: ExerciseDefinition] {
+        var fileData: Data? = nil
+        for b in Bundle.allBundles {
+            if let url = b.url(forResource: "exercises", withExtension: "json") ??
+                         b.url(forResource: "exercises", withExtension: "json", subdirectory: "Resources"),
+               let data = try? Data(contentsOf: url) {
+                fileData = data
+                break
+            }
+            let directPath = (b.bundlePath as NSString).appendingPathComponent("exercises.json")
+            if FileManager.default.fileExists(atPath: directPath),
+               let data = try? Data(contentsOf: URL(fileURLWithPath: directPath)) {
+                    fileData = data
+                    break
+            }
+        }
+        if fileData == nil {
+            let possiblePaths = [
+                "FormApp/Resources/exercises.json",
+                "../FormApp/Resources/exercises.json",
+                "../../FormApp/Resources/exercises.json"
+            ]
+            for p in possiblePaths {
+                if FileManager.default.fileExists(atPath: p),
+                   let data = try? Data(contentsOf: URL(fileURLWithPath: p)) {
+                    fileData = data
+                    break
+                }
+            }
+        }
+        guard let data = fileData,
+              let list = try? JSONDecoder().decode([ExerciseDefinition].self, from: data) else {
+            return [:]
+        }
+        var map: [String: ExerciseDefinition] = [:]
+        for def in list {
+            map[def.id] = def
+        }
+        return map
+    }
+
     private func currentWeekIsoKey() -> String {
         Self.currentWeekIsoKeyStatic()
     }
@@ -653,6 +695,15 @@ public struct ExerciseCatalogEntry: Identifiable, Hashable {
 }
 
 public enum ExerciseCatalog {
+    private static var _canonicalExercises: [String: ExerciseDefinition]?
+
+    public static var canonicalExercises: [String: ExerciseDefinition] {
+        if let cached = _canonicalExercises { return cached }
+        let loaded = AppStore.loadBundledExercises()
+        _canonicalExercises = loaded
+        return loaded
+    }
+
     public static func build(
         bundledPrograms: [Program],
         userPrograms: [Program],
@@ -698,13 +749,13 @@ public enum ExerciseCatalog {
                 )
             }
         }
-        var standardNotes: [String: (cues: String, avoid: String)] = [:]
+        var standardNotes: [String: Exercise] = [:]
         for p in bundledPrograms {
             for w in p.workouts {
                 for e in w.exercises {
                     let k = e.name.trimmingCharacters(in: .whitespaces).lowercased()
                     if !k.isEmpty && (!e.cues.isEmpty || !e.avoid.isEmpty) {
-                        standardNotes[k] = (e.cues, e.avoid)
+                        standardNotes[k] = e
                     }
                 }
             }
@@ -712,8 +763,11 @@ public enum ExerciseCatalog {
         return map.values.map { entry in
             if let std = standardNotes[entry.key] {
                 var ex = entry.exercise
+                if ex.exerciseId == nil { ex.exerciseId = std.exerciseId }
                 ex.cues = std.cues
                 ex.avoid = std.avoid
+                if ex.movementType == nil { ex.movementType = std.movementType }
+                if ex.movementAssetId == nil { ex.movementAssetId = std.movementAssetId }
                 return ExerciseCatalogEntry(
                     key: entry.key,
                     exercise: ex,
@@ -727,6 +781,7 @@ public enum ExerciseCatalog {
 
     private static func merge(primary: Exercise, fallback: Exercise) -> Exercise {
         var merged = primary
+        if merged.exerciseId == nil { merged.exerciseId = fallback.exerciseId }
         if merged.cues.trimmingCharacters(in: .whitespaces).isEmpty { merged.cues = fallback.cues }
         if merged.avoid.trimmingCharacters(in: .whitespaces).isEmpty { merged.avoid = fallback.avoid }
         if merged.videos.isEmpty { merged.videos = fallback.videos }

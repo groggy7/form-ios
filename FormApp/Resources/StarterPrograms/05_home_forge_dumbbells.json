@@ -1,6 +1,6 @@
 {
   "format": "form.program",
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "program": {
     "id": "home-forge-dumbbells",
     "name": "Home Forge: 4-Day Dumbbell Split",
@@ -27,9 +27,7 @@
         "exercises": [
           {
             "id": "hfa-db-bench",
-            "name": "Dumbbell Bench Press",
-            "movementType": "press",
-            "movementAssetId": "dumbbell-bench-press",
+            "exerciseId": "dumbbell-bench-press",
             "sets": 4,
             "reps": {
               "min": 8,
@@ -37,24 +35,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 120,
-            "cues": [
-              "Retract shoulder blades into bench, plant feet firmly, and hold dumbbells over chest.",
-              "Lower dumbbells with control, maintaining vertical forearms and elbows tucked at 45\u201360\u00b0.",
-              "Lower into a deep, comfortable chest stretch at bottom without shoulder discomfort.",
-              "Press dumbbells up and slightly inward in a smooth arc, stopping just short of touching."
-            ],
-            "avoid": [
-              "Clanking dumbbells together at top (removes muscular tension from pecs).",
-              "Flaring elbows perpendicular to torso ('T' position).",
-              "Allowing forearms to angle inward or outward."
-            ]
+            "restSeconds": 120
           },
           {
             "id": "hfa-one-arm-row",
-            "name": "One-Arm Dumbbell Row",
-            "movementType": "row",
-            "movementAssetId": "one-arm-dumbbell-row",
+            "exerciseId": "one-arm-dumbbell-row",
             "sets": 4,
             "reps": {
               "min": 8,
@@ -62,24 +47,11 @@
               "toFailure": false,
               "perSide": true
             },
-            "restSeconds": 90,
-            "cues": [
-              "Place same-side knee and hand firmly on flat bench; keep spine flat and hips square to floor.",
-              "Let dumbbell hang directly below shoulder, feeling a full lat stretch at bottom.",
-              "Pull dumbbell back toward hip crease in a sweeping arc, driving elbow toward ceiling.",
-              "Squeeze lat at top, then lower dumbbell under control into full extension."
-            ],
-            "avoid": [
-              "Twisting or rotating torso at the top of the pull to heave the weight.",
-              "Rounding lower back during the stretch phase.",
-              "Pulling straight up to chest like a bicep curl rather than arcing back to hip."
-            ]
+            "restSeconds": 90
           },
           {
             "id": "hfa-db-lateral-raise",
-            "name": "Dumbbell Lateral Raise",
-            "movementType": "shoulder-raise",
-            "movementAssetId": "dumbbell-lateral-raise",
+            "exerciseId": "dumbbell-lateral-raise",
             "sets": 4,
             "reps": {
               "min": 12,
@@ -87,24 +59,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 90,
-            "cues": [
-              "Stand tall with a slight forward torso hinge (10\u201315\u00b0) and dumbbells at your sides.",
-              "Raise dumbbells outward toward walls in the scapular plane (~30\u00b0 in front of torso).",
-              "Lead slightly with elbows until arms are parallel to floor; keep wrists neutral.",
-              "Hold peak contraction for a split second, then lower under strict control."
-            ],
-            "avoid": [
-              "Shrugging upper traps toward ears to heave the dumbbells up.",
-              "Rocking torso back and forth or using hip thrust for momentum.",
-              "Internally rotating wrists/shoulders at top (thumbs pointed down)."
-            ]
+            "restSeconds": 90
           },
           {
             "id": "hfa-db-hammer-curl",
-            "name": "Dumbbell Hammer Curl",
-            "movementType": "curl",
-            "movementAssetId": "dumbbell-hammer-curl",
+            "exerciseId": "dumbbell-hammer-curl",
             "sets": 3,
             "reps": {
               "min": 10,
@@ -112,41 +71,17 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 90,
-            "cues": [
-              "Stand tall holding dumbbells with a neutral grip (palms facing each other).",
-              "Keep elbows pinned close to ribs; curl dumbbells upward in line with shoulders.",
-              "Squeeze brachialis and forearms intensely at top of rep.",
-              "Lower dumbbells under strict control to full arm extension without swinging."
-            ],
-            "avoid": [
-              "Rocking hips or swinging torso to initiate curl.",
-              "Flaring elbows out to sides.",
-              "Letting wrists flex or curl inward."
-            ]
+            "restSeconds": 90
           },
           {
             "id": "hfa-push-ups",
-            "name": "Push-Ups",
-            "movementType": "press",
-            "movementAssetId": "push-up",
+            "exerciseId": "push-ups",
             "sets": 3,
             "reps": {
               "toFailure": true,
               "perSide": false
             },
-            "restSeconds": 90,
-            "cues": [
-              "Set hands slightly wider than shoulder width; create a rigid plank from head to heels.",
-              "Lower body as a single unit until chest touches or hovers 1 inch above floor.",
-              "Keep elbows tucked at roughly 45 degrees (forming an arrowhead, not a 'T').",
-              "Press floor away to full arm extension, actively spreading shoulder blades apart at the top."
-            ],
-            "avoid": [
-              "Sagging hips into lumbar hyperextension or piking hips into the air.",
-              "Flaring elbows straight out to sides (shoulder impingement risk).",
-              "Craning neck down to touch floor before chest."
-            ]
+            "restSeconds": 90
           }
         ]
       },
@@ -165,9 +100,7 @@
         "exercises": [
           {
             "id": "hfa-goblet-squat",
-            "name": "Goblet Squat",
-            "movementType": "squat",
-            "movementAssetId": "kettlebell-goblet-squat",
+            "exerciseId": "goblet-squat",
             "sets": 4,
             "reps": {
               "min": 10,
@@ -175,23 +108,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 120,
-            "cues": [
-              "Cup hands under top dumbbell head, holding it vertically flush against upper chest.",
-              "Set feet slightly wider than shoulder-width, toes turned out 20\u201330\u00b0.",
-              "Sit hips down between knees to full depth, letting elbows track inside knees.",
-              "Drive through mid-foot to stand, squeezing glutes at the top without hyperextending."
-            ],
-            "avoid": [
-              "Letting dumbbell drift forward away from chest (increases spinal moment arm).",
-              "Heels lifting off the floor or lower back rounding at the bottom."
-            ]
+            "restSeconds": 120
           },
           {
             "id": "hfa-db-rdl",
-            "name": "Dumbbell Romanian Deadlift",
-            "movementType": "hinge",
-            "movementAssetId": "dumbbell-romanian-deadlift",
+            "exerciseId": "dumbbell-romanian-deadlift",
             "sets": 4,
             "reps": {
               "min": 8,
@@ -199,24 +120,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 120,
-            "cues": [
-              "Hold dumbbells against front of thighs with shoulders packed and core braced.",
-              "Soften knees and push hips straight back horizontally into a deep hamstring stretch.",
-              "Keep dumbbells tracking tightly along thighs and shins.",
-              "Reverse movement by driving hips forward once hamstrings are fully lengthened."
-            ],
-            "avoid": [
-              "Rounding lumbar spine to chase floor depth.",
-              "Letting dumbbells swing forward away from legs.",
-              "Squatting the knees forward."
-            ]
+            "restSeconds": 120
           },
           {
             "id": "hfa-bulgarian-split-squat",
-            "name": "Bulgarian Split Squat",
-            "movementType": "lunge",
-            "movementAssetId": "rear-foot-elevated-split-squat",
+            "exerciseId": "bulgarian-split-squat",
             "sets": 3,
             "reps": {
               "min": 8,
@@ -224,24 +132,11 @@
               "toFailure": false,
               "perSide": true
             },
-            "restSeconds": 90,
-            "cues": [
-              "Place laces of rear foot on bench; step front foot forward into a balanced split stance.",
-              "Maintain a slight forward torso lean (~15\u00b0) with a braced, neutral spine.",
-              "Descend until back knee hovers an inch above the floor, front knee tracking over toes.",
-              "Drive straight up through the whole front foot (tripod foot: heel, big toe, pinky toe)."
-            ],
-            "avoid": [
-              "Front heel lifting off floor or front knee caving inward (valgus collapse).",
-              "Pushing aggressively off rear foot instead of loading the front working leg.",
-              "Hyperextending lower back by trying to stay unnaturally upright."
-            ]
+            "restSeconds": 90
           },
           {
             "id": "hfa-single-leg-calf",
-            "name": "Single-Leg Calf Raise",
-            "movementType": "calf",
-            "movementAssetId": "single-leg-calf-raise",
+            "exerciseId": "single-leg-calf-raise",
             "sets": 4,
             "reps": {
               "min": 12,
@@ -249,24 +144,11 @@
               "toFailure": false,
               "perSide": true
             },
-            "restSeconds": 60,
-            "cues": [
-              "Place ball of working foot on edge of step; lightly hold wall or rack with one hand for balance.",
-              "Keep working leg straight (micro-soft knee) and let non-working leg hang freely.",
-              "Lower heel below step level into a deep calf stretch; pause for 2 full seconds.",
-              "Drive forcefully through big toe to full height, squeezing calf hard at the top."
-            ],
-            "avoid": [
-              "Bouncing rapidly at the bottom without pausing.",
-              "Bending working knee to spring body upward.",
-              "Rolling ankle outward onto pinky toe at peak height."
-            ]
+            "restSeconds": 60
           },
           {
             "id": "hfa-side-plank",
-            "name": "Side Plank",
-            "movementType": "core",
-            "movementAssetId": "side-plank",
+            "exerciseId": "side-plank",
             "sets": 3,
             "reps": {
               "min": 30,
@@ -274,18 +156,7 @@
               "toFailure": false,
               "perSide": true
             },
-            "restSeconds": 60,
-            "cues": [
-              "Lie on side with elbow directly beneath shoulder, forearms flat, feet stacked or staggered.",
-              "Lift hips off floor to create a straight, unbroken diagonal line from head to heels.",
-              "Keep shoulders and hips square (stacked vertically), bracing obliques and glutes.",
-              "Maintain steady breathing and keep head aligned with spine."
-            ],
-            "avoid": [
-              "Hips sagging toward floor or piking backward.",
-              "Rotating chest and shoulders forward toward floor.",
-              "Shrugging supporting shoulder up toward ear."
-            ]
+            "restSeconds": 60
           }
         ]
       },
@@ -305,9 +176,7 @@
         "exercises": [
           {
             "id": "hfb-incline-db-press",
-            "name": "Incline Dumbbell Press",
-            "movementType": "press",
-            "movementAssetId": "incline-dumbbell-press",
+            "exerciseId": "incline-dumbbell-press",
             "sets": 4,
             "reps": {
               "min": 8,
@@ -315,24 +184,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 120,
-            "cues": [
-              "Set bench to 30 degrees; retract shoulder blades and plant feet firmly on floor.",
-              "Lower dumbbells under control to sides of upper chest, elbows angled at 45\u201360\u00b0.",
-              "Feel a deep stretch across upper pectorals at the bottom with forearms vertical.",
-              "Press dumbbells up and slightly inward over upper chest without clanking them together."
-            ],
-            "avoid": [
-              "Arching lower back excessively to turn the press into a flat bench press.",
-              "Flaring elbows perpendicular to torso.",
-              "Banging dumbbells together at top of rep."
-            ]
+            "restSeconds": 120
           },
           {
             "id": "hfb-cs-db-row",
-            "name": "Chest-Supported Dumbbell Row",
-            "movementType": "row",
-            "movementAssetId": "chest-supported-dumbbell-row",
+            "exerciseId": "chest-supported-dumbbell-row",
             "sets": 4,
             "reps": {
               "min": 8,
@@ -340,24 +196,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 120,
-            "cues": [
-              "Set bench to a 30\u201345 degree incline; rest chest firmly against pad with feet planted.",
-              "Allow dumbbells to hang straight down at full arm extension, letting shoulder blades stretch open.",
-              "Drive elbows back toward hips, retracting shoulder blades firmly at peak contraction.",
-              "Lower dumbbells under control into a deep, full back stretch without chest lifting."
-            ],
-            "avoid": [
-              "Heaving chest off bench pad to generate momentum.",
-              "Craning neck upward toward ceiling.",
-              "Pulling with arms/biceps instead of driving through elbows and scapulae."
-            ]
+            "restSeconds": 120
           },
           {
             "id": "hfb-db-floor-press",
-            "name": "Dumbbell Floor Press",
-            "movementType": "press",
-            "movementAssetId": "dumbbell-floor-press",
+            "exerciseId": "dumbbell-floor-press",
             "sets": 3,
             "reps": {
               "min": 8,
@@ -365,24 +208,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 90,
-            "cues": [
-              "Lie flat on floor with knees bent and feet flat; retract shoulder blades into floor.",
-              "Hold dumbbells over chest with wrists neutral and elbows tucked at ~45\u00b0 from torso.",
-              "Lower dumbbells under control until upper arms lightly rest flat against floor.",
-              "Pause for a split second to remove momentum, then press explosively to full extension."
-            ],
-            "avoid": [
-              "Bouncing elbows or triceps hard off the floor.",
-              "Flaring elbows wide toward 90 degrees.",
-              "Letting wrists collapse backward."
-            ]
+            "restSeconds": 90
           },
           {
             "id": "hfb-db-lat-raise",
-            "name": "Dumbbell Lateral Raise",
-            "movementType": "shoulder-raise",
-            "movementAssetId": "dumbbell-lateral-raise",
+            "exerciseId": "dumbbell-lateral-raise",
             "sets": 4,
             "reps": {
               "min": 12,
@@ -390,24 +220,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 90,
-            "cues": [
-              "Stand tall with a slight forward torso hinge (10\u201315\u00b0) and dumbbells at your sides.",
-              "Raise dumbbells outward toward walls in the scapular plane (~30\u00b0 in front of torso).",
-              "Lead slightly with elbows until arms are parallel to floor; keep wrists neutral.",
-              "Hold peak contraction for a split second, then lower under strict control."
-            ],
-            "avoid": [
-              "Shrugging upper traps toward ears to heave the dumbbells up.",
-              "Rocking torso back and forth or using hip thrust for momentum.",
-              "Internally rotating wrists/shoulders at top (thumbs pointed down)."
-            ]
+            "restSeconds": 90
           },
           {
             "id": "hfb-incline-db-curl",
-            "name": "Incline Dumbbell Curl",
-            "movementType": "curl",
-            "movementAssetId": "incline-dumbbell-curl",
+            "exerciseId": "incline-dumbbell-curl",
             "sets": 3,
             "reps": {
               "min": 10,
@@ -415,18 +232,7 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 90,
-            "cues": [
-              "Set bench to 55\u201360 degrees; sit back with head and torso supported by pad.",
-              "Let arms hang straight down toward floor, keeping upper arms strictly vertical.",
-              "Curl dumbbells upward, supinating wrists (palms up) as you ascend into a hard bicep peak.",
-              "Lower under strict 2\u20133 second control into a deep, full stretch at the bottom."
-            ],
-            "avoid": [
-              "Swinging upper arms or elbows forward to bypass the bottom stretch.",
-              "Lifting head or shoulders off bench pad during the curl.",
-              "Cutting the eccentric stretch short."
-            ]
+            "restSeconds": 90
           }
         ]
       },
@@ -446,9 +252,7 @@
         "exercises": [
           {
             "id": "hfb-db-step-up",
-            "name": "Dumbbell Step-Up",
-            "movementType": "lunge",
-            "movementAssetId": "dumbbell-step-up",
+            "exerciseId": "dumbbell-step-up",
             "sets": 3,
             "reps": {
               "min": 8,
@@ -456,24 +260,11 @@
               "toFailure": false,
               "perSide": true
             },
-            "restSeconds": 90,
-            "cues": [
-              "Hold dumbbells at sides; place entire foot flat on a knee-height box or bench.",
-              "Lean torso slightly forward (~10\u201315\u00b0) to center weight over front working leg.",
-              "Dorsiflex rear foot (pull toes up) and drive through front foot to stand onto box.",
-              "Step down slowly under strict 2\u20133 second eccentric control without dropping."
-            ],
-            "avoid": [
-              "Pushing or springing off the bottom calf/toes to assist ascent.",
-              "Letting front knee collapse inward during step-up.",
-              "Slamming down onto floor during descent."
-            ]
+            "restSeconds": 90
           },
           {
             "id": "hfb-db-rdl",
-            "name": "Dumbbell Romanian Deadlift",
-            "movementType": "hinge",
-            "movementAssetId": "dumbbell-romanian-deadlift",
+            "exerciseId": "dumbbell-romanian-deadlift",
             "sets": 4,
             "reps": {
               "min": 8,
@@ -481,24 +272,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 120,
-            "cues": [
-              "Hold dumbbells against front of thighs with shoulders packed and core braced.",
-              "Soften knees and push hips straight back horizontally into a deep hamstring stretch.",
-              "Keep dumbbells tracking tightly along thighs and shins.",
-              "Reverse movement by driving hips forward once hamstrings are fully lengthened."
-            ],
-            "avoid": [
-              "Rounding lumbar spine to chase floor depth.",
-              "Letting dumbbells swing forward away from legs.",
-              "Squatting the knees forward."
-            ]
+            "restSeconds": 120
           },
           {
             "id": "hfb-goblet-squat",
-            "name": "Goblet Squat",
-            "movementType": "squat",
-            "movementAssetId": "kettlebell-goblet-squat",
+            "exerciseId": "goblet-squat",
             "sets": 3,
             "reps": {
               "min": 10,
@@ -506,23 +284,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 90,
-            "cues": [
-              "Cup hands under top dumbbell head, holding it vertically flush against upper chest.",
-              "Set feet slightly wider than shoulder-width, toes turned out 20\u201330\u00b0.",
-              "Sit hips down between knees to full depth, letting elbows track inside knees.",
-              "Drive through mid-foot to stand, squeezing glutes at the top without hyperextending."
-            ],
-            "avoid": [
-              "Letting dumbbell drift forward away from chest (increases spinal moment arm).",
-              "Heels lifting off the floor or lower back rounding at the bottom."
-            ]
+            "restSeconds": 90
           },
           {
             "id": "hfb-single-leg-calf",
-            "name": "Single-Leg Calf Raise",
-            "movementType": "calf",
-            "movementAssetId": "single-leg-calf-raise",
+            "exerciseId": "single-leg-calf-raise",
             "sets": 4,
             "reps": {
               "min": 12,
@@ -530,24 +296,11 @@
               "toFailure": false,
               "perSide": true
             },
-            "restSeconds": 60,
-            "cues": [
-              "Place ball of working foot on edge of step; lightly hold wall or rack with one hand for balance.",
-              "Keep working leg straight (micro-soft knee) and let non-working leg hang freely.",
-              "Lower heel below step level into a deep calf stretch; pause for 2 full seconds.",
-              "Drive forcefully through big toe to full height, squeezing calf hard at the top."
-            ],
-            "avoid": [
-              "Bouncing rapidly at the bottom without pausing.",
-              "Bending working knee to spring body upward.",
-              "Rolling ankle outward onto pinky toe at peak height."
-            ]
+            "restSeconds": 60
           },
           {
             "id": "hfb-dead-bug",
-            "name": "Dead Bug",
-            "movementType": "core",
-            "movementAssetId": "dead-bug",
+            "exerciseId": "dead-bug",
             "sets": 3,
             "reps": {
               "min": 8,
@@ -555,18 +308,7 @@
               "toFailure": false,
               "perSide": true
             },
-            "restSeconds": 60,
-            "cues": [
-              "Lie flat on back with arms extended toward ceiling and knees/hips bent at 90 degrees.",
-              "Press lower back aggressively flat into floor, eliminating all space under spine.",
-              "Slowly extend opposite arm overhead and opposite leg straight toward floor while exhaling fully.",
-              "Hover limb 1\u20132 inches off floor, then return under control while maintaining flat spine."
-            ],
-            "avoid": [
-              "Lower back arching or peeling off floor during extension.",
-              "Moving limbs rapidly or holding breath.",
-              "Letting extended heel slam or rest on floor."
-            ]
+            "restSeconds": 60
           }
         ]
       }

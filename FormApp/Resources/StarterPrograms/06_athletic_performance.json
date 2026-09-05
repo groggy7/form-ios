@@ -1,6 +1,6 @@
 {
   "format": "form.program",
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "program": {
     "id": "athletic-performance",
     "name": "Athletic Engine: 3-Day Performance",
@@ -27,9 +27,7 @@
         "exercises": [
           {
             "id": "ap-trap-bar-deadlift",
-            "name": "Trap Bar Deadlift",
-            "movementType": "hinge",
-            "movementAssetId": "trap-bar-deadlift",
+            "exerciseId": "trap-bar-deadlift",
             "sets": 4,
             "reps": {
               "min": 5,
@@ -37,24 +35,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 180,
-            "cues": [
-              "Stand centered between handles with feet hip-to-shoulder-width; grip center of handles.",
-              "Drop hips into a hybrid hinge-squat, chest proud, lats engaged to set spine neutral.",
-              "Drive the floor away through mid-foot with explosive intent.",
-              "Stand tall to full hip and knee lockout, squeezing glutes at the top."
-            ],
-            "avoid": [
-              "Rounding lower back during the initial break off the floor.",
-              "Starting with hips too high (stiff-legging) or too low (shoving knees into handles).",
-              "Shrugging shoulders or hyperextending spine at lockout."
-            ]
+            "restSeconds": 180
           },
           {
             "id": "ap-bulgarian-split-squat",
-            "name": "Bulgarian Split Squat",
-            "movementType": "lunge",
-            "movementAssetId": "rear-foot-elevated-split-squat",
+            "exerciseId": "bulgarian-split-squat",
             "sets": 3,
             "reps": {
               "min": 6,
@@ -62,24 +47,11 @@
               "toFailure": false,
               "perSide": true
             },
-            "restSeconds": 90,
-            "cues": [
-              "Place laces of rear foot on bench; step front foot forward into a balanced split stance.",
-              "Maintain a slight forward torso lean (~15\u00b0) with a braced, neutral spine.",
-              "Descend until back knee hovers an inch above the floor, front knee tracking over toes.",
-              "Drive straight up through the whole front foot (tripod foot: heel, big toe, pinky toe)."
-            ],
-            "avoid": [
-              "Front heel lifting off floor or front knee caving inward (valgus collapse).",
-              "Pushing aggressively off rear foot instead of loading the front working leg.",
-              "Hyperextending lower back by trying to stay unnaturally upright."
-            ]
+            "restSeconds": 90
           },
           {
             "id": "ap-bb-rdl",
-            "name": "Barbell Romanian Deadlift",
-            "movementType": "hinge",
-            "movementAssetId": "barbell-romanian-deadlift",
+            "exerciseId": "barbell-romanian-deadlift",
             "sets": 3,
             "reps": {
               "min": 8,
@@ -87,24 +59,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 120,
-            "cues": [
-              "Stand tall with a shoulder-width grip, lats engaged to keep bar pinned against thighs.",
-              "Soften knees slightly and lock that knee angle in place throughout the rep.",
-              "Push hips straight back horizontally as if reaching for a wall behind you.",
-              "Stop descent once hips stop moving backward (usually mid-shin), then drive hips forward."
-            ],
-            "avoid": [
-              "Rounding lower back to reach the floor once hips have stopped traveling back.",
-              "Bending knees further into a squat, shifting tension away from hamstrings.",
-              "Allowing bar to drift forward away from legs."
-            ]
+            "restSeconds": 120
           },
           {
             "id": "ap-standing-calf",
-            "name": "Standing Machine Calf Raise",
-            "movementType": "calf",
-            "movementAssetId": "standing-machine-calf-raise",
+            "exerciseId": "standing-machine-calf-raise",
             "sets": 3,
             "reps": {
               "min": 12,
@@ -112,24 +71,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 90,
-            "cues": [
-              "Place balls of feet on edge of block, shoulder-width; keep knees straight with a micro-bend.",
-              "Lower heels as deep as ankle mobility allows; hold a full 2-second stretch at the bottom.",
-              "Drive up forcefully through the balls of feet, focusing pressure through the big toes.",
-              "Squeeze calves hard at peak contraction for 1 second before descending."
-            ],
-            "avoid": [
-              "Bouncing out of bottom stretch (relies on Achilles tendon elasticity instead of muscle).",
-              "Bending and extending knees to heave weight up (turning it into a squat).",
-              "Rolling ankles outward onto pinky toes."
-            ]
+            "restSeconds": 90
           },
           {
             "id": "ap-pallof-press",
-            "name": "Pallof Press",
-            "movementType": "core",
-            "movementAssetId": "pallof-press",
+            "exerciseId": "pallof-press",
             "sets": 3,
             "reps": {
               "min": 10,
@@ -137,18 +83,7 @@
               "toFailure": false,
               "perSide": true
             },
-            "restSeconds": 60,
-            "cues": [
-              "Stand perpendicular to cable in an athletic shoulder-width stance, knees slightly bent.",
-              "Hold handle with both hands tight against center of chest, core braced and ribs down.",
-              "Press handle straight forward until arms are fully extended, resisting all rotational pull.",
-              "Hold at full extension for 2 seconds, then return hands slowly to chest."
-            ],
-            "avoid": [
-              "Allowing torso, shoulders, or hips to rotate toward the pulley.",
-              "Shrugging shoulders up toward ears during the press.",
-              "Rushing through reps without pausing at full extension."
-            ]
+            "restSeconds": 60
           }
         ]
       },
@@ -168,9 +103,7 @@
         "exercises": [
           {
             "id": "ap-push-press",
-            "name": "Push Press",
-            "movementType": "press",
-            "movementAssetId": "push-press",
+            "exerciseId": "push-press",
             "sets": 4,
             "reps": {
               "min": 4,
@@ -178,24 +111,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 180,
-            "cues": [
-              "Set bar in front rack across shoulders, hands just outside shoulders, core braced.",
-              "Dip knees 3\u20134 inches vertically, keeping torso strictly upright (do not hinge forward).",
-              "Explosively extend hips, knees, and ankles to drive the bar off shoulders.",
-              "Finish the press overhead with arms locked firmly out over mid-foot."
-            ],
-            "avoid": [
-              "Leaning torso forward during the dip (causes bar to travel forward).",
-              "Dipping too deep or too slowly, losing the elastic stretch-shortening reflex.",
-              "Re-bending knees to catch the bar (push press requires catching with straight legs)."
-            ]
+            "restSeconds": 180
           },
           {
             "id": "ap-pull-ups",
-            "name": "Pull-Ups",
-            "movementType": "pull-up",
-            "movementAssetId": "weighted-pull-up",
+            "exerciseId": "pull-ups",
             "sets": 4,
             "reps": {
               "min": 6,
@@ -203,24 +123,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 120,
-            "cues": [
-              "Hang with an overhand grip slightly wider than shoulders in a full dead hang.",
-              "Initiate pull by depressing shoulder blades down and back ('pull shoulders into back pockets').",
-              "Drive elbows down toward floor, pulling upper chest toward bar until chin clears bar.",
-              "Lower under strict control back into a full dead hang before starting next rep."
-            ],
-            "avoid": [
-              "Kipping, swinging legs, or using hip momentum to clear the bar.",
-              "Craning neck upward to touch bar while chest collapses.",
-              "Performing half reps by failing to lock out into a dead hang at bottom."
-            ]
+            "restSeconds": 120
           },
           {
             "id": "ap-db-bench",
-            "name": "Dumbbell Bench Press",
-            "movementType": "press",
-            "movementAssetId": "dumbbell-bench-press",
+            "exerciseId": "dumbbell-bench-press",
             "sets": 3,
             "reps": {
               "min": 8,
@@ -228,24 +135,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 120,
-            "cues": [
-              "Retract shoulder blades into bench, plant feet firmly, and hold dumbbells over chest.",
-              "Lower dumbbells with control, maintaining vertical forearms and elbows tucked at 45\u201360\u00b0.",
-              "Lower into a deep, comfortable chest stretch at bottom without shoulder discomfort.",
-              "Press dumbbells up and slightly inward in a smooth arc, stopping just short of touching."
-            ],
-            "avoid": [
-              "Clanking dumbbells together at top (removes muscular tension from pecs).",
-              "Flaring elbows perpendicular to torso ('T' position).",
-              "Allowing forearms to angle inward or outward."
-            ]
+            "restSeconds": 120
           },
           {
             "id": "ap-bb-row",
-            "name": "Barbell Row",
-            "movementType": "row",
-            "movementAssetId": "barbell-row",
+            "exerciseId": "barbell-row",
             "sets": 3,
             "reps": {
               "min": 8,
@@ -253,24 +147,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 120,
-            "cues": [
-              "Hinge at hips with torso angled at ~45 degrees, lower back flat, knees softly bent.",
-              "Take an overhand grip slightly wider than shoulder-width, bar hanging over mid-foot.",
-              "Drive elbows back behind torso, pulling bar toward lower abdomen / belly button.",
-              "Squeeze shoulder blades together at top, then lower bar under control into full stretch."
-            ],
-            "avoid": [
-              "Jerking torso upright to heave weight (turning row into a standing shrug).",
-              "Rounding lumbar or thoracic spine under load.",
-              "Letting shoulders roll forward at the bottom of the rep."
-            ]
+            "restSeconds": 120
           },
           {
             "id": "ap-face-pull",
-            "name": "Face Pull",
-            "movementType": "row",
-            "movementAssetId": "band-face-pull",
+            "exerciseId": "face-pull",
             "sets": 3,
             "reps": {
               "min": 12,
@@ -278,24 +159,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 90,
-            "cues": [
-              "Set cable pulley to eye level with rope attachment; grip rope with thumbs pointing backward.",
-              "Step back into an athletic staggered stance with core braced and ribs pulled down.",
-              "Pull center of rope toward forehead while driving elbows high and wide.",
-              "Rotate hands back past ears into full external rotation, squeezing rear delts and upper back."
-            ],
-            "avoid": [
-              "Craning head and neck forward to meet the rope.",
-              "Leaning backward or hyperextending lumbar spine to heave the weight.",
-              "Allowing elbows to drop below wrist level (internal rotation fault)."
-            ]
+            "restSeconds": 90
           },
           {
             "id": "ap-ab-wheel",
-            "name": "Ab Wheel Rollout",
-            "movementType": "core",
-            "movementAssetId": "ab-wheel-rollout",
+            "exerciseId": "ab-wheel-rollout",
             "sets": 3,
             "reps": {
               "min": 8,
@@ -303,18 +171,7 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 90,
-            "cues": [
-              "Kneel on pad; tuck pelvis into posterior tilt, round upper back slightly, and brace abs hard.",
-              "Roll wheel forward under control, extending arms while keeping lower back from sagging.",
-              "Roll out only as far as core can maintain the hollow-body braced position.",
-              "Pull wheel back by contracting abs and engaging lats, keeping hips forward until reset."
-            ],
-            "avoid": [
-              "Allowing lower back to sag into hyperextension (anterior pelvic tilt).",
-              "Sitting hips straight back onto heels to pull the wheel in (hip flexor cheat).",
-              "Rolling out further than abdominal strength can stabilize."
-            ]
+            "restSeconds": 90
           }
         ]
       },
@@ -335,9 +192,7 @@
         "exercises": [
           {
             "id": "ap-bb-front-squat",
-            "name": "Barbell Front Squat",
-            "movementType": "squat",
-            "movementAssetId": "barbell-front-squat",
+            "exerciseId": "barbell-front-squat",
             "sets": 4,
             "reps": {
               "min": 6,
@@ -345,23 +200,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 180,
-            "cues": [
-              "Rest bar on front deltoids with fingertip clean grip (or cross-arm grip), elbows high and parallel to floor.",
-              "Maintain a vertical torso and brace core tightly throughout descent.",
-              "Squat between your knees to full comfortable depth, tracking knees forward over toes.",
-              "Drive floor away through mid-foot while keeping elbows driven high."
-            ],
-            "avoid": [
-              "Elbows dropping downward, causing upper back to round and bar to dump forward.",
-              "Heels lifting off floor or weight shifting excessively onto toes."
-            ]
+            "restSeconds": 180
           },
           {
             "id": "ap-kettlebell-swing",
-            "name": "Kettlebell Swing",
-            "movementType": "hinge",
-            "movementAssetId": "kettlebell-swing",
+            "exerciseId": "kettlebell-swing",
             "sets": 4,
             "reps": {
               "min": 15,
@@ -369,24 +212,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 90,
-            "cues": [
-              "Stand 1 foot behind bell; hike bell backward high between inner thighs like a football snap.",
-              "Drive hips forward explosively, snapping hips to standing with glutes and abs clenched.",
-              "Let kettlebell float to chest height purely from hip momentum; keep arms relaxed like ropes.",
-              "Let bell free-fall back into the hinge, waiting until forearms connect with inner thighs to hinge."
-            ],
-            "avoid": [
-              "Squatting the knees forward instead of hinging hips back.",
-              "Actively lifting the bell with anterior deltoids and arms.",
-              "Leaning back and hyperextending lumbar spine at top of swing."
-            ]
+            "restSeconds": 90
           },
           {
             "id": "ap-farmer-carry",
-            "name": "Farmer Carry",
-            "movementType": "core",
-            "movementAssetId": "farmer-carry",
+            "exerciseId": "farmer-carry",
             "sets": 4,
             "reps": {
               "min": 40,
@@ -394,24 +224,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 90,
-            "cues": [
-              "Deadlift weights to sides with a braced spine; stand tall with chest up and ribs down.",
-              "Pack shoulder blades down and back ('anti-shrug') with an intense crush grip.",
-              "Walk forward taking short, deliberate, controlled heel-to-toe strides.",
-              "Maintain rigid core tension, keeping weights motionless at sides without swinging."
-            ],
-            "avoid": [
-              "Waddling or swaying torso side-to-side while walking.",
-              "Allowing shoulders to round forward or hyperextending lumbar spine.",
-              "Taking long, uncontrolled strides that cause weights to bang against legs."
-            ]
+            "restSeconds": 90
           },
           {
             "id": "ap-hanging-knee-raise",
-            "name": "Hanging Knee Raise",
-            "movementType": "core",
-            "movementAssetId": "hanging-knee-raise",
+            "exerciseId": "hanging-knee-raise",
             "sets": 3,
             "reps": {
               "min": 12,
@@ -419,38 +236,14 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 90,
-            "cues": [
-              "Hang from bar with an overhand grip, engaging shoulders down and back (active hang).",
-              "Squeeze legs together; curl pelvis upward toward chest as knees rise.",
-              "Pause for 1 second at top contraction with knees at chest level.",
-              "Lower knees under control to a dead stop before starting next rep."
-            ],
-            "avoid": [
-              "Swinging legs or using hip momentum to kick knees up.",
-              "Arching lower back at the bottom of the rep.",
-              "Hanging passively with relaxed shoulders shrugged to ears."
-            ]
+            "restSeconds": 90
           },
           {
             "id": "ap-jump-rope",
-            "name": "Jump Rope",
-            "movementType": "conditioning",
-            "movementAssetId": "jump-rope",
-            "prescription": "4 \u00d7 2 min",
+            "exerciseId": "jump-rope",
             "sets": 4,
-            "restSeconds": 60,
-            "cues": [
-              "Keep elbows pinned close to ribs, turning the rope primarily with relaxed wrists.",
-              "Jump lightly on balls of feet, clearing floor by only 1\u20132 inches per rotation.",
-              "Maintain soft knees and ankles to absorb impact with natural elastic rebound.",
-              "Keep breathing relaxed, rhythm steady, and torso tall."
-            ],
-            "avoid": [
-              "Swinging whole arms from shoulder joints instead of turning with wrists.",
-              "Jumping excessively high or kicking feet backward (donkey kicks).",
-              "Landing stiff-legged or flat on heels."
-            ]
+            "prescription": "4 \u00d7 2 min",
+            "restSeconds": 60
           }
         ]
       }

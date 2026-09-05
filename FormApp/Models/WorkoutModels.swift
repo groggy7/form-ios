@@ -127,9 +127,35 @@ public struct RepTarget: Codable, Hashable {
     }
 }
 
+public struct ExerciseDefinition: Identifiable, Codable, Hashable {
+    public var id: String
+    public var name: String
+    public var movementType: String
+    public var movementAssetId: String?
+    public var cues: [String]
+    public var avoid: [String]
+
+    public init(
+        id: String,
+        name: String,
+        movementType: String,
+        movementAssetId: String? = nil,
+        cues: [String] = [],
+        avoid: [String] = []
+    ) {
+        self.id = id
+        self.name = name
+        self.movementType = movementType
+        self.movementAssetId = movementAssetId
+        self.cues = cues
+        self.avoid = avoid
+    }
+}
+
 public struct Exercise: Identifiable, Codable, Hashable {
     public var id: String
     public var name: String
+    public var exerciseId: String?
     public var prescription: String
     public var cues: String
     public var avoid: String
@@ -143,6 +169,7 @@ public struct Exercise: Identifiable, Codable, Hashable {
     public init(
         id: String = UUID().uuidString,
         name: String,
+        exerciseId: String? = nil,
         prescription: String = "",
         cues: String = "",
         avoid: String = "",
@@ -155,6 +182,7 @@ public struct Exercise: Identifiable, Codable, Hashable {
     ) {
         self.id = id
         self.name = name
+        self.exerciseId = exerciseId
         self.prescription = prescription
         self.cues = cues
         self.avoid = avoid
@@ -187,13 +215,17 @@ public struct Exercise: Identifiable, Codable, Hashable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, name, prescription, cues, avoid, videos, sets, reps, restSeconds, movementType, movementAssetId
+        case id, name, exerciseId, prescription, cues, avoid, videos, sets, reps, restSeconds, movementType, movementAssetId
     }
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.id = try container.decodeIfPresent(String.self, forKey: .id) ?? UUID().uuidString
-        self.name = try container.decode(String.self, forKey: .name)
+        let exId = try container.decodeIfPresent(String.self, forKey: .exerciseId)
+        self.exerciseId = exId
+        let def = exId.flatMap { ExerciseCatalog.canonicalExercises[$0] }
+        let decodedName = try container.decodeIfPresent(String.self, forKey: .name)
+        self.name = decodedName ?? def?.name ?? ""
         self.prescription = try container.decodeIfPresent(String.self, forKey: .prescription) ?? ""
         
         if let cuesStr = try? container.decode(String.self, forKey: .cues) {
@@ -201,7 +233,7 @@ public struct Exercise: Identifiable, Codable, Hashable {
         } else if let cuesArr = try? container.decode([String].self, forKey: .cues) {
             self.cues = cuesArr.joined(separator: "\n")
         } else {
-            self.cues = ""
+            self.cues = def?.cues.joined(separator: "\n") ?? ""
         }
 
         if let avoidStr = try? container.decode(String.self, forKey: .avoid) {
@@ -209,15 +241,15 @@ public struct Exercise: Identifiable, Codable, Hashable {
         } else if let avoidArr = try? container.decode([String].self, forKey: .avoid) {
             self.avoid = avoidArr.joined(separator: "\n")
         } else {
-            self.avoid = ""
+            self.avoid = def?.avoid.joined(separator: "\n") ?? ""
         }
 
         self.videos = try container.decodeIfPresent([String].self, forKey: .videos) ?? []
         self.sets = try container.decodeIfPresent(Int.self, forKey: .sets)
         self.reps = try container.decodeIfPresent(RepTarget.self, forKey: .reps)
         self.restSeconds = try container.decodeIfPresent(Int.self, forKey: .restSeconds)
-        self.movementType = try container.decodeIfPresent(String.self, forKey: .movementType)
-        self.movementAssetId = try container.decodeIfPresent(String.self, forKey: .movementAssetId)
+        self.movementType = try container.decodeIfPresent(String.self, forKey: .movementType) ?? def?.movementType
+        self.movementAssetId = try container.decodeIfPresent(String.self, forKey: .movementAssetId) ?? def?.movementAssetId
     }
 }
 
