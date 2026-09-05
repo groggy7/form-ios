@@ -388,7 +388,7 @@ public struct HistoryDayDetailSheet: View {
         let (statusColor, statusBg, statusText): (Color, Color, String) = {
             switch effectiveStatus {
             case .unfinished:
-                return (AppColors.accent, AppColors.positiveBg, LanguageManager.t("history.unfinished"))
+                return (AppColors.unfinishedOrange, AppColors.unfinishedOrange.opacity(0.15), LanguageManager.t("history.unfinished"))
             case .missed:
                 return (AppColors.missedRed, AppColors.missedRed.opacity(0.15), LanguageManager.t("history.missed"))
             case .completed:
