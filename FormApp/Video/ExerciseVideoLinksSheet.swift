@@ -75,7 +75,6 @@ public struct ExerciseVideoLinksSheet: View {
                         Text(LanguageManager.t("video.linkSubtitle"))
                             .font(.system(size: 12))
                             .foregroundColor(AppColors.muted)
-                            .lineLimit(1)
                     }
 
                     Spacer()
