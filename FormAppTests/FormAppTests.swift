@@ -137,7 +137,7 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(deadBug.frameStarts, [9, 427, 845])
         XCTAssertEqual(deadBug.frameWidth, 400)
         XCTAssertEqual(deadBug.playback.frames, [0, 1, 0, 2])
-        XCTAssertEqual(deadBug.playback.durations, [0.65, 0.65, 0.65, 0.65])
+        XCTAssertEqual(deadBug.playback.durations, [0.80, 0.80, 0.80, 0.80])
         XCTAssertEqual(deadBug.playback.reducedMotionFrame, 0)
         let otherIds = [
             "jump-rope",

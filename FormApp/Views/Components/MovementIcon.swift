@@ -8,7 +8,7 @@ public enum MovementPlayback {
         self == .alternatingSides ? [0, 1, 0, 2] : [0, 1, 2, 1]
     }
     public var durations: [TimeInterval] {
-        self == .alternatingSides ? [0.65, 0.65, 0.65, 0.65] : [0.65, 0.40, 0.65, 0.40]
+        self == .alternatingSides ? [0.80, 0.80, 0.80, 0.80] : [0.65, 0.40, 0.65, 0.40]
     }
     public var reducedMotionFrame: Int { self == .alternatingSides ? 0 : 1 }
 }
