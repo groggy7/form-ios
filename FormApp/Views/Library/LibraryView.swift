@@ -8,6 +8,7 @@ public struct LibraryView: View {
     @State private var query: String = ""
     @State private var selectedMovement: MovementType? = nil
     @State private var showFiltersSheet: Bool = false
+    @AppStorage("library_is_card_view") private var isCardView: Bool = false
 
     public init(
         store: AppStore,
@@ -87,6 +88,14 @@ public struct LibraryView: View {
                         tint: hasActiveFilters ? AppColors.accent : AppColors.secondaryText,
                         onClick: { showFiltersSheet = true }
                     )
+
+                    // View mode toggle button
+                    FormHeaderIconButton(
+                        icon: isCardView ? "list.bullet" : "square.grid.2x2",
+                        contentDescription: isCardView ? LanguageManager.t("library.viewList") : LanguageManager.t("library.viewCards"),
+                        tint: isCardView ? AppColors.accent : AppColors.secondaryText,
+                        onClick: { isCardView.toggle() }
+                    )
                 }
                 .padding(.horizontal, 20)
 
@@ -132,50 +141,58 @@ public struct LibraryView: View {
                     .padding(.horizontal, 20)
                 }
 
-                // Exercise items list
-                VStack(spacing: 8) {
-                    ForEach(filtered, id: \.id) { entry in
-                        let exercise = entry.exercise
-                        Button(action: { onSelectExercise(exercise) }) {
-                            HStack(spacing: 12) {
-                                MovementIcon(
-                                    name: exercise.name,
-                                    size: 72,
-                                    movementType: exercise.resolvedMovement,
-                                    movementAssetId: exercise.movementAssetId
-                                )
+                if isCardView {
+                    // Exercise cards grid (2 columns)
+                    LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 10) {
+                        ForEach(filtered, id: \.id) { entry in
+                            let exercise = entry.exercise
+                            Button(action: { onSelectExercise(exercise) }) {
+                                VStack(alignment: .leading, spacing: 8) {
+                                    ZStack {
+                                        RoundedRectangle(cornerRadius: 9, style: .continuous)
+                                            .fill(AppColors.surfaceRaised)
 
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(exercise.name)
-                                        .font(.system(size: 15, weight: .medium))
-                                        .lineSpacing(2)
-                                        .foregroundColor(AppColors.text)
-                                        .lineLimit(2)
-                                        .multilineTextAlignment(.leading)
+                                        MovementIcon(
+                                            name: exercise.name,
+                                            size: 84,
+                                            movementType: exercise.resolvedMovement,
+                                            movementAssetId: exercise.movementAssetId,
+                                            allowCategoryFallback: false
+                                        )
+                                        .padding(4)
+                                    }
+                                    .frame(height: 96)
+                                    .frame(maxWidth: .infinity)
 
-                                    Text(LanguageManager.t("category.\(exercise.resolvedMovement.key)"))
-                                        .font(.system(size: 11))
-                                        .foregroundColor(AppColors.muted)
+                                    VStack(alignment: .leading, spacing: 3) {
+                                        Text(exercise.name)
+                                            .font(.system(size: 13, weight: .semibold))
+                                            .foregroundColor(AppColors.text)
+                                            .lineLimit(2)
+                                            .multilineTextAlignment(.leading)
+                                            .frame(maxWidth: .infinity, minHeight: 34, alignment: .topLeading)
+
+                                        Text(LanguageManager.t("category.\(exercise.resolvedMovement.key)"))
+                                            .font(.system(size: 11))
+                                            .foregroundColor(AppColors.muted)
+                                            .lineLimit(1)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                    }
                                 }
-
-                                Spacer()
-
-                                Image(systemName: "chevron.right")
-                                    .font(.system(size: 14, weight: .semibold))
-                                    .foregroundColor(AppColors.muted.opacity(0.6))
+                                .padding(10)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 13, style: .continuous)
+                                        .fill(AppColors.surface)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 13, style: .continuous)
+                                                .stroke(AppColors.border, lineWidth: 1)
+                                        )
+                                )
                             }
-                            .padding(12)
-                            .background(
-                                RoundedRectangle(cornerRadius: 13, style: .continuous)
-                                    .fill(AppColors.surface)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 13, style: .continuous)
-                                            .stroke(AppColors.border, lineWidth: 1)
-                                    )
-                            )
+                            .buttonStyle(.plain)
                         }
-                        .buttonStyle(.plain)
                     }
+                    .padding(.horizontal, 20)
 
                     if filtered.isEmpty {
                         Text(LanguageManager.t("library.noResults"))
@@ -183,8 +200,61 @@ public struct LibraryView: View {
                             .foregroundColor(AppColors.muted)
                             .padding(.top, 40)
                     }
+                } else {
+                    // Exercise items list
+                    VStack(spacing: 8) {
+                        ForEach(filtered, id: \.id) { entry in
+                            let exercise = entry.exercise
+                            Button(action: { onSelectExercise(exercise) }) {
+                                HStack(spacing: 12) {
+                                    MovementIcon(
+                                        name: exercise.name,
+                                        size: 72,
+                                        movementType: exercise.resolvedMovement,
+                                        movementAssetId: exercise.movementAssetId
+                                    )
+
+                                    VStack(alignment: .leading, spacing: 4) {
+                                        Text(exercise.name)
+                                            .font(.system(size: 15, weight: .medium))
+                                            .lineSpacing(2)
+                                            .foregroundColor(AppColors.text)
+                                            .lineLimit(2)
+                                            .multilineTextAlignment(.leading)
+
+                                        Text(LanguageManager.t("category.\(exercise.resolvedMovement.key)"))
+                                            .font(.system(size: 11))
+                                            .foregroundColor(AppColors.muted)
+                                    }
+
+                                    Spacer()
+
+                                    Image(systemName: "chevron.right")
+                                        .font(.system(size: 14, weight: .semibold))
+                                        .foregroundColor(AppColors.muted.opacity(0.6))
+                                }
+                                .padding(12)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 13, style: .continuous)
+                                        .fill(AppColors.surface)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 13, style: .continuous)
+                                                .stroke(AppColors.border, lineWidth: 1)
+                                        )
+                                )
+                            }
+                            .buttonStyle(.plain)
+                        }
+
+                        if filtered.isEmpty {
+                            Text(LanguageManager.t("library.noResults"))
+                                .font(.system(size: 14))
+                                .foregroundColor(AppColors.muted)
+                                .padding(.top, 40)
+                        }
+                    }
+                    .padding(.horizontal, 20)
                 }
-                .padding(.horizontal, 20)
 
                 Spacer().frame(height: 16)
             }
