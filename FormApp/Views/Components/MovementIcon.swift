@@ -1,18 +1,33 @@
 import SwiftUI
 import UIKit
 
+public enum MovementPlayback {
+    case standard, alternatingSides
+
+    public var frames: [Int] {
+        self == .alternatingSides ? [0, 1, 0, 2] : [0, 1, 2, 1]
+    }
+    public var durations: [TimeInterval] {
+        self == .alternatingSides ? [0.65, 0.65, 0.65, 0.65] : [0.65, 0.40, 0.65, 0.40]
+    }
+    public var reducedMotionFrame: Int { self == .alternatingSides ? 0 : 1 }
+}
+
 // MARK: - Animation Clock (Shared singleton on main runloop)
 public final class MovementAnimationClock: ObservableObject {
     public static let shared = MovementAnimationClock()
+    public static let alternatingSides = MovementAnimationClock(playback: .alternatingSides)
 
     @Published public private(set) var currentFrame: Int = 0
 
     private var pos: Int = 0
-    private let sequence: [Int] = [0, 1, 2, 1]
-    private let durations: [TimeInterval] = [0.65, 0.40, 0.65, 0.40]
+    private let sequence: [Int]
+    private let durations: [TimeInterval]
     private var timer: Timer?
 
-    public init() {
+    public init(playback: MovementPlayback = .standard) {
+        sequence = playback.frames
+        durations = playback.durations
         if Thread.isMainThread {
             start()
         } else {
@@ -50,6 +65,7 @@ public struct MovementSprite {
     public let atlasWidth: CGFloat
     public let frameStarts: [CGFloat]?
     public let frameWidth: CGFloat?
+    public let playback: MovementPlayback
 
     public init(
         imageName: String,
@@ -58,7 +74,8 @@ public struct MovementSprite {
         atlasHeight: CGFloat = 1254,
         atlasWidth: CGFloat = 1254,
         frameStarts: [CGFloat]? = nil,
-        frameWidth: CGFloat? = nil
+        frameWidth: CGFloat? = nil,
+        playback: MovementPlayback = .standard
     ) {
         self.imageName = imageName
         self.top = top
@@ -67,6 +84,7 @@ public struct MovementSprite {
         self.atlasWidth = atlasWidth
         self.frameStarts = frameStarts
         self.frameWidth = frameWidth
+        self.playback = playback
     }
 }
 
@@ -196,7 +214,7 @@ public struct MovementIllustration: View {
     let movementAssetId: String?
     let allowCategoryFallback: Bool
 
-    @ObservedObject private var clock = MovementAnimationClock.shared
+    @ObservedObject private var clock: MovementAnimationClock
 
     public init(
         name: String,
@@ -208,11 +226,13 @@ public struct MovementIllustration: View {
         self.movementType = movementType
         self.movementAssetId = movementAssetId
         self.allowCategoryFallback = allowCategoryFallback
+        let playback = movementAssetId.flatMap { MovementIcon.movementAssetSprite($0) }?.playback ?? .standard
+        self._clock = ObservedObject(wrappedValue: playback == .alternatingSides ? .alternatingSides : .shared)
     }
 
     public var body: some View {
         let sprite = resolveSprite()
-        let activeFrame = UIAccessibility.isReduceMotionEnabled ? 1 : clock.currentFrame
+        let activeFrame = UIAccessibility.isReduceMotionEnabled ? (sprite?.playback.reducedMotionFrame ?? 1) : clock.currentFrame
 
         if let sprite = sprite, let frameImg = MovementFrameCache.getFrame(for: sprite, frame: activeFrame) {
             Image(uiImage: frameImg)
@@ -279,7 +299,7 @@ public extension MovementIcon {
         case "side-plank":
             return MovementSprite(imageName: "anatomy_side_plank", top: 0, bottom: 444, atlasHeight: 444)
         case "dead-bug":
-            return MovementSprite(imageName: "anatomy_dead_bug", top: 0, bottom: 390, atlasHeight: 390)
+            return MovementSprite(imageName: "anatomy_dead_bug", top: 0, bottom: 390, atlasHeight: 390, playback: .alternatingSides)
         case "hollow-body-hold":
             return MovementSprite(imageName: "anatomy_hollow_body_hold", top: 0, bottom: 420, atlasHeight: 420)
         case "reverse-crunch":

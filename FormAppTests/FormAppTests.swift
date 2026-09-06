@@ -129,6 +129,74 @@ final class FormAppTests: XCTestCase {
         }
     }
 
+    func testDeadBugAlternatesWithoutChangingOtherExercisePlayback() throws {
+        let deadBug = try XCTUnwrap(MovementIcon.movementAssetSprite("dead-bug"))
+        XCTAssertEqual(deadBug.playback.frames, [0, 1, 0, 2])
+        XCTAssertEqual(deadBug.playback.durations, [0.65, 0.65, 0.65, 0.65])
+        XCTAssertEqual(deadBug.playback.reducedMotionFrame, 0)
+        let otherIds = [
+            "jump-rope",
+            "weighted-pull-up",
+            "chest-supported-dumbbell-row",
+            "push-up",
+            "barbell-front-squat",
+            "trap-bar-deadlift",
+            "seated-leg-curl",
+            "ab-wheel-rollout",
+            "cable-lateral-raise",
+            "overhead-cable-triceps-extension",
+            "side-plank",
+            "hollow-body-hold",
+            "reverse-crunch",
+            "sliding-hamstring-curl",
+            "pike-push-up",
+            "band-face-pull",
+            "incline-dumbbell-press",
+            "dumbbell-step-up",
+            "barbell-romanian-deadlift",
+            "kettlebell-goblet-squat",
+            "leg-press-45-degree",
+            "barbell-bench-press",
+            "dumbbell-lateral-raise",
+            "rope-triceps-pressdown",
+            "single-leg-calf-raise",
+            "standing-machine-calf-raise",
+            "hanging-knee-raise",
+            "barbell-back-squat",
+            "conventional-barbell-deadlift",
+            "dumbbell-romanian-deadlift",
+            "standing-barbell-overhead-press",
+            "dumbbell-floor-press",
+            "dumbbell-hammer-curl",
+            "straight-bar-cable-triceps-pressdown",
+            "seated-machine-calf-raise",
+            "kneeling-cable-crunch",
+            "dumbbell-bench-press",
+            "one-arm-dumbbell-row",
+            "lat-pulldown",
+            "rear-foot-elevated-split-squat",
+            "leg-extension",
+            "lying-leg-curl",
+            "pec-deck-fly",
+            "ez-bar-curl",
+            "barbell-hip-thrust",
+            "barbell-row",
+            "incline-barbell-bench-press",
+            "incline-dumbbell-curl",
+            "kettlebell-swing",
+            "farmer-carry",
+            "pallof-press",
+            "push-press"
+        ]
+        for id in otherIds {
+            let sprite = try XCTUnwrap(MovementIcon.movementAssetSprite(id))
+            XCTAssertEqual(sprite.playback.frames, [0, 1, 2, 1], id)
+            XCTAssertEqual(sprite.playback.durations, [0.65, 0.40, 0.65, 0.40], id)
+            XCTAssertEqual(sprite.playback.reducedMotionFrame, 1, id)
+        }
+    }
+
+
     func testMovementAnimationClockIsActive() {
         let clock = MovementAnimationClock.shared
         XCTAssertTrue([0, 1, 2].contains(clock.currentFrame))
