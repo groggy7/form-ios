@@ -131,6 +131,11 @@ final class FormAppTests: XCTestCase {
 
     func testDeadBugAlternatesWithoutChangingOtherExercisePlayback() throws {
         let deadBug = try XCTUnwrap(MovementIcon.movementAssetSprite("dead-bug"))
+        XCTAssertEqual(deadBug.top, 105)
+        XCTAssertEqual(deadBug.bottom, 295)
+        XCTAssertEqual(deadBug.atlasHeight, 390)
+        XCTAssertEqual(deadBug.frameStarts, [9, 427, 845])
+        XCTAssertEqual(deadBug.frameWidth, 400)
         XCTAssertEqual(deadBug.playback.frames, [0, 1, 0, 2])
         XCTAssertEqual(deadBug.playback.durations, [0.65, 0.65, 0.65, 0.65])
         XCTAssertEqual(deadBug.playback.reducedMotionFrame, 0)

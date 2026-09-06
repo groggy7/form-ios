@@ -299,7 +299,7 @@ public extension MovementIcon {
         case "side-plank":
             return MovementSprite(imageName: "anatomy_side_plank", top: 0, bottom: 444, atlasHeight: 444)
         case "dead-bug":
-            return MovementSprite(imageName: "anatomy_dead_bug", top: 0, bottom: 390, atlasHeight: 390, playback: .alternatingSides)
+            return MovementSprite(imageName: "anatomy_dead_bug", top: 105, bottom: 295, atlasHeight: 390, frameStarts: [9, 427, 845], frameWidth: 400, playback: .alternatingSides)
         case "hollow-body-hold":
             return MovementSprite(imageName: "anatomy_hollow_body_hold", top: 0, bottom: 420, atlasHeight: 420)
         case "reverse-crunch":
