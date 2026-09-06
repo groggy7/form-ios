@@ -41,10 +41,10 @@ public struct ExerciseDetailSheet: View {
                             movementAssetId: currentExercise.movementAssetId,
                             allowCategoryFallback: false
                         )
-                        .padding(12)
+                        .padding(8)
                     }
                     .frame(maxWidth: .infinity)
-                    .frame(height: 224)
+                    .frame(height: 276)
 
                     // Title & Movement Badge
                     VStack(alignment: .leading, spacing: 8) {
