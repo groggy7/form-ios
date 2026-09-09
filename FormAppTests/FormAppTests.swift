@@ -236,6 +236,32 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(audioFile.fileFormat.channelCount, 1)
     }
 
+    func testChestSupportedRowFramesDecodeAndRender() throws {
+        let sprite = try XCTUnwrap(MovementIcon.movementAssetSprite("chest-supported-dumbbell-row"))
+        XCTAssertEqual(sprite.atlasHeight, 382)
+        XCTAssertEqual(sprite.playback.frames, [0, 1, 2, 1])
+        let frames = try (0..<3).map { try XCTUnwrap(MovementFrameCache.getFrame(for: sprite, frame: $0)) }
+        for frame in frames {
+            XCTAssertEqual(frame.cgImage?.width, 418)
+            XCTAssertEqual(frame.cgImage?.height, 382)
+        }
+        XCTAssertNotEqual(frames[0].pngData(), frames[1].pngData())
+        XCTAssertNotEqual(frames[1].pngData(), frames[2].pngData())
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let rendered = UIGraphicsImageRenderer(size: CGSize(width: 1254, height: 382), format: format).image { context in
+            UIColor(red: 17/255, green: 23/255, blue: 27/255, alpha: 1).setFill()
+            context.fill(CGRect(x: 0, y: 0, width: 1254, height: 382))
+            for (index, frame) in frames.enumerated() {
+                frame.draw(in: CGRect(x: index * 418, y: 0, width: 418, height: 382))
+            }
+        }
+        let attachment = XCTAttachment(image: rendered)
+        attachment.name = "Chest-supported row native frame render"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
     func testMovementFrameCacheProducesDistinctFrames() {
         let sprite = MovementIcon.categorySprite(.press)!
         let f0 = MovementFrameCache.getFrame(for: sprite, frame: 0)
