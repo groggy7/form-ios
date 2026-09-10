@@ -2,13 +2,21 @@ import SwiftUI
 import UIKit
 
 public enum MovementPlayback {
-    case standard, alternatingSides
+    case standard, alternatingSides, staticHold
 
     public var frames: [Int] {
-        self == .alternatingSides ? [0, 1, 0, 2] : [0, 1, 2, 1]
+        switch self {
+        case .standard: return [0, 1, 2, 1]
+        case .alternatingSides: return [0, 1, 0, 2]
+        case .staticHold: return [1]
+        }
     }
     public var durations: [TimeInterval] {
-        self == .alternatingSides ? [0.80, 0.80, 0.80, 0.80] : [0.65, 0.40, 0.65, 0.40]
+        switch self {
+        case .standard: return [0.65, 0.40, 0.65, 0.40]
+        case .alternatingSides: return [0.80, 0.80, 0.80, 0.80]
+        case .staticHold: return [0]
+        }
     }
     public var reducedMotionFrame: Int { self == .alternatingSides ? 0 : 1 }
 }
@@ -17,6 +25,7 @@ public enum MovementPlayback {
 public final class MovementAnimationClock: ObservableObject {
     public static let shared = MovementAnimationClock()
     public static let alternatingSides = MovementAnimationClock(playback: .alternatingSides)
+    public static let staticHold = MovementAnimationClock(playback: .staticHold)
 
     @Published public private(set) var currentFrame: Int = 0
 
@@ -28,6 +37,7 @@ public final class MovementAnimationClock: ObservableObject {
     public init(playback: MovementPlayback = .standard) {
         sequence = playback.frames
         durations = playback.durations
+        currentFrame = sequence[0]
         if Thread.isMainThread {
             start()
         } else {
@@ -38,7 +48,7 @@ public final class MovementAnimationClock: ObservableObject {
     }
 
     public func start() {
-        guard timer == nil else { return }
+        guard timer == nil, sequence.count > 1 else { return }
         scheduleNext()
     }
 
@@ -227,7 +237,11 @@ public struct MovementIllustration: View {
         self.movementAssetId = movementAssetId
         self.allowCategoryFallback = allowCategoryFallback
         let playback = movementAssetId.flatMap { MovementIcon.movementAssetSprite($0) }?.playback ?? .standard
-        self._clock = ObservedObject(wrappedValue: playback == .alternatingSides ? .alternatingSides : .shared)
+        switch playback {
+        case .standard: self._clock = ObservedObject(wrappedValue: .shared)
+        case .alternatingSides: self._clock = ObservedObject(wrappedValue: .alternatingSides)
+        case .staticHold: self._clock = ObservedObject(wrappedValue: .staticHold)
+        }
     }
 
     public var body: some View {
@@ -297,7 +311,7 @@ public extension MovementIcon {
         case "overhead-cable-triceps-extension":
             return MovementSprite(imageName: "anatomy_overhead_cable_triceps_extension", top: 0, bottom: 887, atlasHeight: 887, atlasWidth: 1774)
         case "side-plank":
-            return MovementSprite(imageName: "anatomy_side_plank", top: 0, bottom: 444, atlasHeight: 444)
+            return MovementSprite(imageName: "anatomy_side_plank", top: 0, bottom: 444, atlasHeight: 444, playback: .staticHold)
         case "dead-bug":
             return MovementSprite(imageName: "anatomy_dead_bug", top: 105, bottom: 295, atlasHeight: 390, frameStarts: [9, 427, 845], frameWidth: 400, playback: .alternatingSides)
         case "hollow-body-hold":

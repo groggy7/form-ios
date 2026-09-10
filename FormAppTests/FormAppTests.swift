@@ -150,7 +150,6 @@ final class FormAppTests: XCTestCase {
             "ab-wheel-rollout",
             "cable-lateral-raise",
             "overhead-cable-triceps-extension",
-            "side-plank",
             "hollow-body-hold",
             "reverse-crunch",
             "sliding-hamstring-curl",
@@ -260,6 +259,20 @@ final class FormAppTests: XCTestCase {
         attachment.name = "Chest-supported row native frame render"
         attachment.lifetime = .keepAlways
         add(attachment)
+    }
+
+    @MainActor
+    func testSidePlankRemainsOnTheStraightLegHold() throws {
+        let sprite = try XCTUnwrap(MovementIcon.movementAssetSprite("side-plank"))
+        XCTAssertEqual(sprite.playback, .staticHold)
+        XCTAssertEqual(sprite.playback.frames, [1])
+        XCTAssertEqual(sprite.playback.reducedMotionFrame, 1)
+        XCTAssertNotNil(MovementFrameCache.getFrame(for: sprite, frame: 1))
+        let clock = MovementAnimationClock(playback: sprite.playback)
+        XCTAssertEqual(clock.currentFrame, 1)
+        clock.start()
+        RunLoop.main.run(until: Date().addingTimeInterval(1.2))
+        XCTAssertEqual(clock.currentFrame, 1)
     }
 
     func testSeatedLegCurlFreshFramesDecodeAndRender() throws {
