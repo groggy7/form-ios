@@ -262,6 +262,33 @@ final class FormAppTests: XCTestCase {
         add(attachment)
     }
 
+    func testSeatedLegCurlFreshFramesDecodeAndRender() throws {
+        let sprite = try XCTUnwrap(MovementIcon.movementAssetSprite("seated-leg-curl"))
+        XCTAssertEqual(sprite.atlasHeight, 433)
+        XCTAssertEqual(sprite.playback.frames, [0, 1, 2, 1])
+        let frames = try (0..<3).map { try XCTUnwrap(MovementFrameCache.getFrame(for: sprite, frame: $0)) }
+        for frame in frames {
+            XCTAssertEqual(frame.cgImage?.width, 418)
+            XCTAssertEqual(frame.cgImage?.height, 433)
+        }
+        XCTAssertNotEqual(frames[0].pngData(), frames[1].pngData())
+        XCTAssertNotEqual(frames[1].pngData(), frames[2].pngData())
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 2
+        let rendered = UIGraphicsImageRenderer(size: CGSize(width: 696, height: 304), format: format).image { context in
+            UIColor(red: 17/255, green: 23/255, blue: 27/255, alpha: 1).setFill()
+            context.fill(CGRect(x: 0, y: 0, width: 696, height: 304))
+            for (index, frame) in frames.enumerated() {
+                frame.draw(in: CGRect(x: index * 232 + 8, y: 8, width: 216, height: 224))
+                frame.draw(in: CGRect(x: index * 232 + 8, y: 240, width: 54, height: 56))
+            }
+        }
+        let attachment = XCTAttachment(image: rendered)
+        attachment.name = "Seated leg curl fresh native detail and thumbnail render"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
     func testMovementFrameCacheProducesDistinctFrames() {
         let sprite = MovementIcon.categorySprite(.press)!
         let f0 = MovementFrameCache.getFrame(for: sprite, frame: 0)
