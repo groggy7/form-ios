@@ -156,7 +156,7 @@ public struct LibraryView: View {
                                             name: exercise.name,
                                             size: 84,
                                             movementType: exercise.resolvedMovement,
-                                            movementAssetId: exercise.movementAssetId,
+                                            movementAssetId: exercise.resolvedMovementAssetId,
                                             allowCategoryFallback: false
                                         )
                                         .padding(4)
@@ -211,7 +211,7 @@ public struct LibraryView: View {
                                         name: exercise.name,
                                         size: 72,
                                         movementType: exercise.resolvedMovement,
-                                        movementAssetId: exercise.movementAssetId
+                                        movementAssetId: exercise.resolvedMovementAssetId
                                     )
 
                                     VStack(alignment: .leading, spacing: 4) {

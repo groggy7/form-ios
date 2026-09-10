@@ -528,6 +528,20 @@
       "Dip noktada kolları tamamen açmayıp yarım tekrarlar yapmak."
     ]
   },
+  "weighted-pull-ups": {
+    "name": "Ağırlıklı Barfiks",
+    "cues": [
+      "Plakayı ağırlık kemerine güvenle sabitleyin ve bacaklarınızın arasında asılı bırakın.",
+      "Omuzlardan biraz geniş üstten tutuşla, kollar tamamen açıkken başlayın.",
+      "Dirsekleri aşağı çekerek çenenizi sabit barın üzerine çıkarın.",
+      "Plakayı sallamadan, kollar düzleşene kadar kontrollü şekilde alçalın."
+    ],
+    "avoid": [
+      "Plakayı sallamak veya kalçadan ivme alarak yükselmek.",
+      "Güvenle sabitlenmemiş kemer, zincir veya plaka kullanmak.",
+      "Ağırlık arttıkça hareket mesafesini kısaltmak."
+    ]
+  },
   "push-press": {
     "name": "Push Press",
     "cues": [

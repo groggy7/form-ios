@@ -38,7 +38,7 @@ public struct ExerciseDetailSheet: View {
                         MovementIllustration(
                             name: currentExercise.name,
                             movementType: currentExercise.resolvedMovement,
-                            movementAssetId: currentExercise.movementAssetId,
+                            movementAssetId: currentExercise.resolvedMovementAssetId,
                             allowCategoryFallback: false
                         )
                         .padding(12)

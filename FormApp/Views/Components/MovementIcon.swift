@@ -292,6 +292,8 @@ public extension MovementIcon {
         switch id {
         case "jump-rope":
             return MovementSprite(imageName: "anatomy_jump_rope", top: 0, bottom: 1024, atlasHeight: 1024, atlasWidth: 1536)
+        case "pull-up":
+            return MovementSprite(imageName: "anatomy_pull_up", top: 0, bottom: 556, atlasHeight: 556)
         case "weighted-pull-up":
             return MovementSprite(imageName: "anatomy_weighted_pull_up", top: 0, bottom: 556, atlasHeight: 556)
         case "chest-supported-dumbbell-row":

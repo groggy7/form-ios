@@ -528,6 +528,20 @@
       "Performing half reps by failing to lock out into a dead hang at bottom."
     ]
   },
+  "weighted-pull-ups": {
+    "name": "Weighted Pull-Ups",
+    "cues": [
+      "Secure the plate to a dipping belt and let it hang between your legs.",
+      "Start in a full hang with an overhand grip slightly wider than shoulders.",
+      "Pull your elbows down until your chin clears the fixed bar.",
+      "Lower under control to straight arms, keeping the plate still."
+    ],
+    "avoid": [
+      "Swinging the plate or using hip momentum to pull up.",
+      "Using an unsecured belt, chain, or plate.",
+      "Shortening the range of motion as the load increases."
+    ]
+  },
   "push-press": {
     "name": "Push Press",
     "cues": [

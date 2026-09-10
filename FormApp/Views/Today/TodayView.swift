@@ -120,7 +120,7 @@ public struct TodayView: View {
                                             name: exercise.name,
                                             size: 52,
                                             movementType: exercise.resolvedMovement,
-                                            movementAssetId: exercise.movementAssetId
+                                            movementAssetId: exercise.resolvedMovementAssetId
                                         )
 
                                         VStack(alignment: .leading, spacing: 4) {

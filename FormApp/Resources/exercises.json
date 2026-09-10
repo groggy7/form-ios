@@ -629,7 +629,7 @@
     "id": "pull-ups",
     "name": "Pull-Ups",
     "movementType": "pull-up",
-    "movementAssetId": "weighted-pull-up",
+    "movementAssetId": "pull-up",
     "cues": [
       "Hang with an overhand grip slightly wider than shoulders in a full dead hang.",
       "Initiate pull by depressing shoulder blades down and back ('pull shoulders into back pockets').",
@@ -640,6 +640,23 @@
       "Kipping, swinging legs, or using hip momentum to clear the bar.",
       "Craning neck upward to touch bar while chest collapses.",
       "Performing half reps by failing to lock out into a dead hang at bottom."
+    ]
+  },
+  {
+    "id": "weighted-pull-ups",
+    "name": "Weighted Pull-Ups",
+    "movementType": "pull-up",
+    "movementAssetId": "weighted-pull-up",
+    "cues": [
+      "Secure the plate to a dipping belt and let it hang between your legs.",
+      "Start in a full hang with an overhand grip slightly wider than shoulders.",
+      "Pull your elbows down until your chin clears the fixed bar.",
+      "Lower under control to straight arms, keeping the plate still."
+    ],
+    "avoid": [
+      "Swinging the plate or using hip momentum to pull up.",
+      "Using an unsecured belt, chain, or plate.",
+      "Shortening the range of motion as the load increases."
     ]
   },
   {

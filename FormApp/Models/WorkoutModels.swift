@@ -265,6 +265,12 @@ public struct Exercise: Identifiable, Codable, Hashable {
         return MovementType.fromExerciseName(name)
     }
 
+    // Correct the old shared illustration without migrating stored workouts.
+    public var resolvedMovementAssetId: String? {
+        if exerciseId == "pull-ups" && movementAssetId == "weighted-pull-up" { return "pull-up" }
+        return movementAssetId
+    }
+
     enum CodingKeys: String, CodingKey {
         case id, name, exerciseId, prescription, cues, avoid, videos, sets, reps, restSeconds, movementType, movementAssetId
     }

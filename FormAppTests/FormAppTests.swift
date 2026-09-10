@@ -140,6 +140,7 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(deadBug.playback.durations, [0.80, 0.80, 0.80, 0.80])
         XCTAssertEqual(deadBug.playback.reducedMotionFrame, 0)
         let otherIds = [
+            "pull-up",
             "jump-rope",
             "weighted-pull-up",
             "chest-supported-dumbbell-row",
@@ -273,6 +274,41 @@ final class FormAppTests: XCTestCase {
         clock.start()
         RunLoop.main.run(until: Date().addingTimeInterval(1.2))
         XCTAssertEqual(clock.currentFrame, 1)
+    }
+
+    func testPullUpVariantsHaveSeparateAssetsAndRenderOnFixedRack() throws {
+        XCTAssertEqual(ExerciseCatalog.canonicalExercises["pull-ups"]?.movementAssetId, "pull-up")
+        XCTAssertEqual(ExerciseCatalog.canonicalExercises["weighted-pull-ups"]?.movementAssetId, "weighted-pull-up")
+        let legacy = Exercise(name: "Pull-Ups", exerciseId: "pull-ups", movementAssetId: "weighted-pull-up")
+        XCTAssertEqual(legacy.resolvedMovementAssetId, "pull-up")
+        XCTAssertEqual(legacy.movementAssetId, "weighted-pull-up")
+        let weighted = Exercise(name: "Weighted Pull-Ups", exerciseId: "weighted-pull-ups", movementAssetId: "weighted-pull-up")
+        XCTAssertEqual(weighted.resolvedMovementAssetId, "weighted-pull-up")
+        var frames: [UIImage] = []
+        for id in ["pull-up", "weighted-pull-up"] {
+            let sprite = try XCTUnwrap(MovementIcon.movementAssetSprite(id))
+            XCTAssertEqual(sprite.playback.frames, [0, 1, 2, 1])
+            for index in 0..<3 {
+                let frame = try XCTUnwrap(MovementFrameCache.getFrame(for: sprite, frame: index))
+                XCTAssertEqual(frame.cgImage?.width, 418)
+                XCTAssertEqual(frame.cgImage?.height, 556)
+                frames.append(frame)
+            }
+        }
+        XCTAssertNotEqual(frames[0].pngData(), frames[3].pngData())
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 2
+        let rendered = UIGraphicsImageRenderer(size: CGSize(width: 600, height: 560), format: format).image { context in
+            UIColor(red: 17/255, green: 23/255, blue: 27/255, alpha: 1).setFill()
+            context.fill(CGRect(x: 0, y: 0, width: 600, height: 560))
+            for (index, frame) in frames.enumerated() {
+                frame.draw(in: CGRect(x: (index % 3) * 200 + 6, y: (index / 3) * 280 + 6, width: 188, height: 250))
+            }
+        }
+        let attachment = XCTAttachment(image: rendered)
+        attachment.name = "Regular and weighted pull-ups on shared static rack"
+        attachment.lifetime = .keepAlways
+        add(attachment)
     }
 
     func testSeatedLegCurlFreshFramesDecodeAndRender() throws {
@@ -1226,21 +1262,21 @@ final class FormAppTests: XCTestCase {
             canonicalExercises: Array(ExerciseCatalog.canonicalExercises.values)
         )
 
-        XCTAssertEqual(catalogue.count, 49)
+        XCTAssertEqual(catalogue.count, 50)
         XCTAssertEqual(catalogue.count, Set(catalogue.map { $0.key }).count)
-        XCTAssertEqual(catalogue.filter { $0.exercise.movementAssetId != nil }.count, 49)
-        XCTAssertEqual(catalogue.filter { !$0.exercise.cues.isEmpty }.count, 49)
-        XCTAssertEqual(catalogue.filter { !$0.exercise.avoid.isEmpty }.count, 49)
-        XCTAssertEqual(catalogue.filter { $0.exercise.exerciseId != nil }.count, 49)
+        XCTAssertEqual(catalogue.filter { $0.exercise.movementAssetId != nil }.count, 50)
+        XCTAssertEqual(catalogue.filter { !$0.exercise.cues.isEmpty }.count, 50)
+        XCTAssertEqual(catalogue.filter { !$0.exercise.avoid.isEmpty }.count, 50)
+        XCTAssertEqual(catalogue.filter { $0.exercise.exerciseId != nil }.count, 50)
     }
 
     func testCanonicalExercisesProvideTurkishCuesAndAvoid() {
         let canonical = Array(ExerciseCatalog.canonicalExercises.values)
-        XCTAssertEqual(canonical.count, 49)
+        XCTAssertEqual(canonical.count, 50)
         let trExercises = ContentLocalizer.shared.loadExercises(lang: "tr")
-        XCTAssertEqual(trExercises.count, 49)
-        XCTAssertEqual(trExercises.values.filter { ($0.cues ?? []).count > 0 }.count, 49)
-        XCTAssertEqual(trExercises.values.filter { ($0.avoid ?? []).count > 0 }.count, 49)
+        XCTAssertEqual(trExercises.count, 50)
+        XCTAssertEqual(trExercises.values.filter { ($0.cues ?? []).count > 0 }.count, 50)
+        XCTAssertEqual(trExercises.values.filter { ($0.avoid ?? []).count > 0 }.count, 50)
 
         guard let bench = canonical.first(where: { $0.id == "barbell-bench-press" }) else {
             XCTFail("Missing bench press definition")

@@ -124,7 +124,7 @@ public struct ActiveSessionView: View {
                                                             name: ex.name,
                                                             size: 48,
                                                             movementType: ex.resolvedMovement,
-                                                            movementAssetId: ex.movementAssetId
+                                                            movementAssetId: ex.resolvedMovementAssetId
                                                         )
 
                                                         Text("\(idx + 1). \(ex.displayName)")
@@ -188,7 +188,7 @@ public struct ActiveSessionView: View {
                                             name: exercise.name,
                                             size: 56,
                                             movementType: exercise.resolvedMovement,
-                                            movementAssetId: exercise.movementAssetId
+                                            movementAssetId: exercise.resolvedMovementAssetId
                                         )
                                     }
 
