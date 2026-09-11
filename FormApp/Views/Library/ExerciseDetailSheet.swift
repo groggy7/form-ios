@@ -59,12 +59,6 @@ public struct ExerciseDetailSheet: View {
                         Text(currentExercise.displayName)
                             .font(.system(size: 24, weight: .bold))
                             .foregroundColor(AppColors.text)
-
-                        if !currentExercise.displayPrescription.isEmpty {
-                            Text(currentExercise.displayPrescription)
-                                .font(.system(size: 15, weight: .medium))
-                                .foregroundColor(AppColors.accent)
-                        }
                     }
 
                     // Technique Cues
