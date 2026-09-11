@@ -1102,18 +1102,23 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(formatVideoTime(3665), "1:01:05")
     }
 
-    func testAppStoreSetExerciseVideos() {
+    func testAppStoreSetExerciseVideos() throws {
         let store = AppStore.shared
+        let previous = store.state
+        let previousCatalogue = store.exerciseCatalogue
+        let previousNotice = store.noticeMessage
+        defer {
+            store.state = previous; store.saveState(previous)
+            store.exerciseCatalogue = previousCatalogue; store.noticeMessage = previousNotice
+        }
         let exerciseName = "Barbell Back Squat"
 
         let testUrls = [
             "https://youtu.be/ZaTM37cfiDs",
             "youtube.com/watch?v=dQw4w9WgXcQ",
             "https://youtu.be/ZaTM37cfiDs", // duplicate
-            "not a valid url with spaces", // invalid URL
-            "ftp://invalid-scheme.com/video", // invalid scheme
             "https://youtube.com/shorts/3jzKvd6e2q4",
-            "https://youtube.com/watch?v=extraLinkShouldBeCapped" // 4th link, should be capped at 3
+            "https://youtube.com/watch?v=abcdefghijk" // 4th valid link, capped at 3
         ]
 
         store.setExerciseVideos(exerciseName: exerciseName, videoUrls: testUrls)
@@ -1125,6 +1130,30 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(catalogEntry?.exercise.videos[1], "https://youtube.com/watch?v=dQw4w9WgXcQ")
         XCTAssertEqual(catalogEntry?.exercise.videos[2], "https://youtube.com/shorts/3jzKvd6e2q4")
         XCTAssertNotNil(store.noticeMessage)
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .sortedKeys
+        let saved = try encoder.encode(store.state)
+        store.setExerciseVideos(exerciseName: exerciseName, videoUrls: ["https://vimeo.com/123"])
+        XCTAssertEqual(try encoder.encode(store.state), saved)
+        XCTAssertEqual(store.noticeMessage, LanguageManager.t("video.youtubeOnly"))
+    }
+
+    func testExerciseLinksAcceptOnlyYouTubeVideosAndShorts() {
+        let id = "ZaTM37cfiDs"
+        for url in [" youtube.com/watch?v=\(id) ", "youtu.be/\(id)?si=share", "https://youtube.com/shorts/\(id)",
+                    "https://m.youtube.com/watch?v=\(id)&t=90", "https://www.youtube-nocookie.com/embed/\(id)"] {
+            XCTAssertTrue(YouTubeVideo.isSupportedLink(url), url)
+        }
+        for url in ["https://vimeo.com/123", "https://example.com/video.mp4", "youtube.com", "youtube.com/@trainer",
+                    "youtube.com/playlist?list=PL123", "youtube.com/watch?v=short", "youtube.com.evil.com/watch?v=\(id)",
+                    "https://user@youtube.com/watch?v=\(id)", "ftp://youtube.com/watch?v=\(id)", "", "not a url",
+                    "https://youtube.com/watch?v=\(id)&x=" + String(repeating: "a", count: 2_000)] {
+            XCTAssertFalse(YouTubeVideo.isSupportedLink(url), url)
+        }
+        XCTAssertNil(YouTubeVideo.validatedLinks(["youtu.be/\(id)", "https://example.com"]))
+        XCTAssertEqual(YouTubeVideo.validatedLinks([]), [])
+        XCTAssertEqual(YouTubeVideo.validatedLinks(["youtu.be/\(id)", "https://youtu.be/\(id)", " "]), ["https://youtu.be/\(id)"])
+        XCTAssertEqual(YouTubeVideo.parse("https://youtu.be/\(id)?t=9223372036854775807h")?.startSeconds, 604800)
     }
 
     func testAppStoreExerciseCatalogueContainsAll300Exercises() {

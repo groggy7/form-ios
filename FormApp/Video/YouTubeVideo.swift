@@ -44,6 +44,23 @@ public struct YouTubeVideo: Equatable {
         return true
     }
 
+    public static func normalizeInput(_ raw: String) -> String {
+        let value = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+        return value.isEmpty || value.contains("://") ? value : "https://\(value)"
+    }
+
+    public static func isSupportedLink(_ raw: String) -> Bool {
+        let url = normalizeInput(raw)
+        return url.count <= 2_000 && parse(url) != nil
+    }
+
+    public static func validatedLinks(_ raw: [String]) -> [String]? {
+        let urls = raw.map(normalizeInput).filter { !$0.isEmpty }
+        guard urls.allSatisfy(isSupportedLink) else { return nil }
+        var seen = Set<String>()
+        return Array(urls.filter { seen.insert($0).inserted }.prefix(3))
+    }
+
     public static func parse(_ urlString: String) -> YouTubeVideo? {
         guard isYouTubeUrl(urlString),
               let url = URL(string: urlString.trimmingCharacters(in: .whitespacesAndNewlines)),
@@ -108,7 +125,7 @@ public struct YouTubeVideo: Equatable {
             guard index < match.numberOfRanges else { return 0 }
             let range = match.range(at: index)
             if range.location != NSNotFound, let r = Range(range, in: raw) {
-                return Int(raw[r]) ?? 0
+                return min(Int(raw[r]) ?? 0, maxStartSeconds)
             }
             return 0
         }

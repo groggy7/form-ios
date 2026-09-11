@@ -22,30 +22,14 @@ public struct ExerciseVideoLinksSheet: View {
     }
 
     private var cleanInput: String {
-        let trimmed = inputUrl.trimmingCharacters(in: .whitespacesAndNewlines)
-        let lower = trimmed.lowercased()
-        if lower.hasPrefix("http://") || lower.hasPrefix("https://") {
-            return trimmed
-        } else if lower.contains("://") {
-            return trimmed
-        } else if !trimmed.isEmpty {
-            return "https://\(trimmed)"
-        }
-        return trimmed
+        YouTubeVideo.normalizeInput(inputUrl)
     }
 
     private var isValidUrl: Bool {
-        guard cleanInput.count <= 2_000,
-              let url = URL(string: cleanInput),
-              let scheme = url.scheme?.lowercased(),
-              scheme == "http" || scheme == "https",
-              let host = url.host,
-              !host.isEmpty,
-              host.contains(".") else {
-            return false
-        }
-        return true
+        YouTubeVideo.isSupportedLink(cleanInput)
     }
+
+    private var validLinkedUrls: Bool { linkedUrls.allSatisfy(YouTubeVideo.isSupportedLink) }
 
     private var isDuplicate: Bool {
         linkedUrls.contains { $0.caseInsensitiveCompare(cleanInput) == .orderedSame }
@@ -322,7 +306,7 @@ public struct ExerciseVideoLinksSheet: View {
                                         Text(LanguageManager.t("video.duplicateUrl"))
                                             .foregroundColor(AppColors.danger)
                                     } else if !inputUrl.isEmpty && !isValidUrl {
-                                        Text(LanguageManager.t("video.invalidUrl"))
+                                        Text(LanguageManager.t("video.youtubeOnly"))
                                             .foregroundColor(AppColors.danger)
                                     } else {
                                         Text(LanguageManager.t("programs.videoHint"))
@@ -385,6 +369,12 @@ public struct ExerciseVideoLinksSheet: View {
                 VStack(spacing: 0) {
                     Divider().background(AppColors.border)
 
+                    if !validLinkedUrls {
+                        Text(LanguageManager.t("video.youtubeOnly"))
+                            .font(.system(size: 12)).foregroundColor(AppColors.danger)
+                            .padding(.horizontal, 20).padding(.top, 8)
+                    }
+
                     Button(action: {
                         if let onSave = onSave {
                             onSave(exercise, linkedUrls)
@@ -403,6 +393,8 @@ public struct ExerciseVideoLinksSheet: View {
                                     .fill(AppColors.accent)
                             )
                     }
+                    .disabled(!validLinkedUrls)
+                    .opacity(validLinkedUrls ? 1 : 0.5)
                     .padding(.horizontal, 20)
                     .padding(.vertical, 14)
                 }

@@ -420,40 +420,10 @@ public final class AppStore: ObservableObject {
         let key = exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
         if key.isEmpty { return }
 
-        let cleanUrls: [String] = {
-            var seen = Set<String>()
-            var result: [String] = []
-            for raw in videoUrls {
-                let trimmed = raw.trimmingCharacters(in: .whitespacesAndNewlines)
-                if trimmed.isEmpty { continue }
-                let lower = trimmed.lowercased()
-                let normalized: String
-                if lower.hasPrefix("http://") || lower.hasPrefix("https://") {
-                    normalized = trimmed
-                } else if lower.contains("://") {
-                    continue
-                } else {
-                    normalized = "https://\(trimmed)"
-                }
-
-                guard normalized.count <= 2_000,
-                      let url = URL(string: normalized),
-                      let scheme = url.scheme?.lowercased(),
-                      (scheme == "http" || scheme == "https"),
-                      let host = url.host,
-                      !host.isEmpty,
-                      host.contains(".") else {
-                    continue
-                }
-                let lowerNorm = normalized.lowercased()
-                if !seen.contains(lowerNorm) {
-                    seen.insert(lowerNorm)
-                    result.append(normalized)
-                    if result.count == 3 { break }
-                }
-            }
-            return result
-        }()
+        guard let cleanUrls = YouTubeVideo.validatedLinks(videoUrls) else {
+            noticeMessage = LanguageManager.t("video.youtubeOnly")
+            return
+        }
 
         var matched = false
         var updatedPrograms = state.programs.map { program in
