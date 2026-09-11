@@ -98,7 +98,7 @@ public struct ProgramExerciseEditorSheet: View {
                                 .foregroundColor(AppColors.muted)
                         }
 
-                        Text(exercise.name)
+                        Text(exercise.displayName)
                             .font(.system(size: 20, weight: .bold))
                             .foregroundColor(AppColors.text)
 

@@ -113,7 +113,7 @@ public struct ExerciseVideoLinksSheet: View {
 
                             // Right: Title & category pill
                             VStack(alignment: .leading, spacing: 8) {
-                                Text(exercise.name)
+                                Text(exercise.displayName)
                                     .font(.system(size: 17, weight: .bold))
                                     .foregroundColor(AppColors.text)
                                     .lineLimit(2)

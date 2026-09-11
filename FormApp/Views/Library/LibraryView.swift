@@ -23,10 +23,12 @@ public struct LibraryView: View {
     public var body: some View {
         let catalogue = store.exerciseCatalogue
         let filtered = catalogue.filter { entry in
-            let matchQuery = query.isEmpty || entry.exercise.name.localizedCaseInsensitiveContains(query)
+            let matchQuery = query.isEmpty ||
+                entry.exercise.displayName.localizedCaseInsensitiveContains(query) ||
+                entry.exercise.name.localizedCaseInsensitiveContains(query)
             let matchMovement = selectedMovement == nil || entry.exercise.resolvedMovement == selectedMovement
             return matchQuery && matchMovement
-        }
+        }.sorted { $0.exercise.displayName.localizedCaseInsensitiveCompare($1.exercise.displayName) == .orderedAscending }
         let hasActiveFilters = selectedMovement != nil
 
         ScrollView {
@@ -165,7 +167,7 @@ public struct LibraryView: View {
                                     .frame(maxWidth: .infinity)
 
                                     VStack(alignment: .leading, spacing: 3) {
-                                        Text(exercise.name)
+                                        Text(exercise.displayName)
                                             .font(.system(size: 13, weight: .semibold))
                                             .foregroundColor(AppColors.text)
                                             .lineLimit(2)
@@ -216,7 +218,7 @@ public struct LibraryView: View {
                                     )
 
                                     VStack(alignment: .leading, spacing: 4) {
-                                        Text(exercise.name)
+                                        Text(exercise.displayName)
                                             .font(.system(size: 15, weight: .medium))
                                             .lineSpacing(2)
                                             .foregroundColor(AppColors.text)

@@ -266,6 +266,9 @@ final class FormAppTests: XCTestCase {
 
     @MainActor
     func testExerciseDetailSheetSnapshot() {
+        LanguageManager.setLanguage("tr")
+        defer { LanguageManager.setLanguage("en") }
+
         let store = AppStore.shared
         guard let exercise = store.state.programs.flatMap({ $0.workouts }).flatMap({ $0.exercises }).first(where: { $0.name == "Barbell Bench Press" }) else {
             XCTFail("Barbell Bench Press not found")
@@ -289,6 +292,34 @@ final class FormAppTests: XCTestCase {
 
         if let data = image.pngData() {
             let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_exercise_detail_test.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testLibraryViewTurkishSnapshot() {
+        LanguageManager.setLanguage("tr")
+        defer { LanguageManager.setLanguage("en") }
+
+        let store = AppStore.shared
+        let libraryView = LibraryView(store: store, onSelectExercise: { _ in }, onOpenSettings: {})
+        let controller = UIHostingController(rootView: libraryView)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_library_tr_snapshot.png"
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -917,10 +948,11 @@ final class FormAppTests: XCTestCase {
             return
         }
 
-        // Verify that draft is assigned to Tuesday (2026-09-01 in the current week)
+        // Verify that draft is assigned to Tuesday in the current week
+        let tuesdayDate = WorkoutCalendar.scheduledDate(forWeekday: 2, relativeTo: Date())
         let sessionEntry = store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(draft.id)" })
         XCTAssertNotNil(sessionEntry)
-        XCTAssertEqual(sessionEntry?.date, "2026-09-01")
+        XCTAssertEqual(sessionEntry?.date, tuesdayDate)
         XCTAssertEqual(sessionEntry?.status, .unfinished)
 
         // Complete all sets for first exercise (e.g. Lat Pulldown)
@@ -948,14 +980,14 @@ final class FormAppTests: XCTestCase {
         // Tuesday in calendarStatuses must be UNFINISHED (orange), NOT MISSED (red)!
         let today = Date()
         let statuses = store.calendarStatuses(today: today)
-        XCTAssertEqual(statuses["2026-09-01"], .unfinished, "Tuesday must be orange (.unfinished), not red (.missed)!")
+        XCTAssertEqual(statuses[tuesdayDate], .unfinished, "Tuesday must be orange (.unfinished), not red (.missed)!")
 
         // History list must contain record for Tuesday
         let foundRecord = store.state.history.first { rec in
-            WorkoutCalendar.localDate(from: rec.startedAt) == "2026-09-01" ||
-            store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(rec.id)" })?.date == "2026-09-01"
+            WorkoutCalendar.localDate(from: rec.startedAt) == tuesdayDate ||
+            store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(rec.id)" })?.date == tuesdayDate
         }
-        XCTAssertNotNil(foundRecord, "Record must be mapped to 2026-09-01")
+        XCTAssertNotNil(foundRecord, "Record must be mapped to \(tuesdayDate)")
         let firstExLog = foundRecord?.exerciseLogs.first(where: { $0.exerciseName.lowercased() == firstEx.name.lowercased() })
         XCTAssertNotNil(firstExLog)
         XCTAssertGreaterThan(firstExLog?.sets.count ?? 0, 0, "Lat Pulldown sets must be recorded as completed")
@@ -1189,7 +1221,7 @@ final class FormAppTests: XCTestCase {
         XCTAssertTrue(pullUps.displayCues.contains("Barı omuzlardan biraz geniş"))
 
         let bench = Exercise(name: "Barbell Bench Press", exerciseId: "barbell-bench-press")
-        XCTAssertEqual(bench.displayName, "Barbell Bench Press")
+        XCTAssertEqual(bench.displayName, "Barbell Göğüs Presi (Bench Press)")
 
         let workout = Workout(id: "pb-squat-strength", day: 1, title: "Heavy Squat", focus: "Maximal squat power, quad density, and core bracing")
         XCTAssertEqual(workout.displayTitle(programId: "powerbuilding-strength"), "Ağır Squat")

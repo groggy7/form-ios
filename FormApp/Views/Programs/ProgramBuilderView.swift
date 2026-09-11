@@ -152,7 +152,7 @@ public struct ProgramBuilderView: View {
                                                     )
                                                 }) {
                                                     VStack(alignment: .leading, spacing: 2) {
-                                                        Text(exercise.name)
+                                                        Text(exercise.displayName)
                                                             .font(.system(size: 14, weight: .semibold))
                                                             .foregroundColor(AppColors.text)
                                                         Text(exercise.displayPrescription)
@@ -334,7 +334,7 @@ struct AddExercisePickerSheet: View {
                 ForEach(filtered) { entry in
                     Button(action: { onSelect(entry.exercise) }) {
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(entry.exercise.name)
+                            Text(entry.exercise.displayName)
                                 .font(.system(size: 15, weight: .semibold))
                                 .foregroundColor(AppColors.text)
                             Text(entry.exercise.resolvedMovement.rawValue.capitalized)
@@ -358,7 +358,10 @@ struct AddExercisePickerSheet: View {
 
     private var filtered: [ExerciseCatalogEntry] {
         if search.isEmpty { return catalogue }
-        return catalogue.filter { $0.exercise.name.localizedCaseInsensitiveContains(search) }
+        return catalogue.filter {
+            $0.exercise.displayName.localizedCaseInsensitiveContains(search) ||
+            $0.exercise.name.localizedCaseInsensitiveContains(search)
+        }
     }
 }
 

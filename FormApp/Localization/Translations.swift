@@ -4,7 +4,23 @@ import Combine
 public final class LanguageManager: ObservableObject {
     public static let shared = LanguageManager()
     
-    @Published public var currentLanguage: String = "en"
+    private static let userDefaultsKey = "app_language"
+
+    @Published public var currentLanguage: String {
+        didSet {
+            UserDefaults.standard.set(currentLanguage, forKey: Self.userDefaultsKey)
+        }
+    }
+
+    private init() {
+        if let saved = UserDefaults.standard.string(forKey: Self.userDefaultsKey), saved == "en" || saved == "tr" {
+            self.currentLanguage = saved
+        } else if Locale.current.language.languageCode?.identifier == "tr" || Locale.preferredLanguages.first?.starts(with: "tr") == true {
+            self.currentLanguage = "tr"
+        } else {
+            self.currentLanguage = "en"
+        }
+    }
     
     public static var workoutDays: [String] {
         return shared.currentLanguage == "tr" ? [
