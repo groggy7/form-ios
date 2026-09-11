@@ -501,7 +501,8 @@ public final class AppStore: ObservableObject {
             bundledPrograms: bundled,
             userPrograms: state.programs,
             preferredProgramId: activeProgram?.id,
-            preferredWorkout: activeWorkout
+            preferredWorkout: activeWorkout,
+            canonicalExercises: Array(ExerciseCatalog.canonicalExercises.values)
         )
     }
 
