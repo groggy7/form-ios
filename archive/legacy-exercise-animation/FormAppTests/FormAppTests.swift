@@ -6,39 +6,6 @@ import SwiftUI
 
 final class FormAppTests: XCTestCase {
 
-    @MainActor
-    func testExerciseArtworkFramesAreEmpty() throws {
-        for id in ["barbell-bench-press", "dead-bug", "side-plank", "unknown"] {
-            let renderer = ImageRenderer(content:
-                MovementIllustration(name: id, movementAssetId: id)
-                    .frame(width: 224, height: 224)
-            )
-            renderer.scale = 1
-            let image = try XCTUnwrap(renderer.uiImage)
-            let cgImage = try XCTUnwrap(image.cgImage)
-            XCTAssertEqual(cgImage.width, 224)
-            XCTAssertEqual(cgImage.height, 224)
-            // Compare rendered alpha, not PNG encoding or image color-profile metadata.
-            var pixels = [UInt8](repeating: 0, count: 224 * 224 * 4)
-            try pixels.withUnsafeMutableBytes { buffer in
-                let context = try XCTUnwrap(CGContext(
-                    data: buffer.baseAddress, width: 224, height: 224,
-                    bitsPerComponent: 8, bytesPerRow: 224 * 4,
-                    space: CGColorSpaceCreateDeviceRGB(),
-                    bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
-                ))
-                context.draw(cgImage, in: CGRect(x: 0, y: 0, width: 224, height: 224))
-            }
-            XCTAssertTrue(stride(from: 3, to: pixels.count, by: 4).allSatisfy {
-                pixels[$0] == 0
-            }, id)
-        }
-        for name in ["anatomy_compound", "anatomy_dead_bug", "anatomy_pull_up",
-                     "anatomy_weighted_pull_up", "anatomy_seated_leg_curl"] {
-            XCTAssertNil(UIImage(named: name), "Archived artwork must not ship")
-        }
-    }
-
     func testSanitizedRepsInputRejectsZero() {
         XCTAssertNil(WorkoutSessionUtils.sanitizedRepsInput("0"))
         XCTAssertNil(WorkoutSessionUtils.sanitizedRepsInput("00"))
@@ -80,9 +47,165 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(bundled.first?.name, "Aesthetic Engine: 5-Day Hypertrophy")
     }
 
+    func testMovementSpritesResolution() {
+        let pressSprite = MovementIcon.categorySprite(.press)
+        XCTAssertNotNil(pressSprite)
+        XCTAssertEqual(pressSprite?.imageName, "anatomy_compound")
+
+        let jumpRopeSprite = MovementIcon.movementAssetSprite("jump-rope")
+        XCTAssertNotNil(jumpRopeSprite)
+        XCTAssertEqual(jumpRopeSprite?.imageName, "anatomy_jump_rope")
+
+        let benchSprite = MovementIcon.movementAssetSprite("barbell-bench-press")
+        XCTAssertNotNil(benchSprite)
+        XCTAssertEqual(benchSprite?.imageName, "anatomy_barbell_bench_press")
+        XCTAssertEqual(benchSprite?.atlasHeight, 418)
+
+        let abWheelSprite = MovementIcon.movementAssetSprite("ab-wheel-rollout")
+        XCTAssertEqual(abWheelSprite?.imageName, "anatomy_ab_wheel_rollout")
+        XCTAssertEqual(abWheelSprite?.atlasHeight, 371)
+
+        let frontSquatSprite = MovementIcon.movementAssetSprite("barbell-front-squat")
+        XCTAssertEqual(frontSquatSprite?.imageName, "anatomy_barbell_front_squat")
+        XCTAssertEqual(frontSquatSprite?.atlasHeight, 419)
+
+        let backSquatSprite = MovementIcon.movementAssetSprite("barbell-back-squat")
+        XCTAssertEqual(backSquatSprite?.imageName, "anatomy_barbell_back_squat")
+        XCTAssertEqual(backSquatSprite?.atlasHeight, 418)
+        let hipThrustSprite = MovementIcon.movementAssetSprite("barbell-hip-thrust")
+        XCTAssertEqual(hipThrustSprite?.imageName, "anatomy_barbell_hip_thrust")
+        XCTAssertEqual(hipThrustSprite?.top, 0)
+        XCTAssertEqual(hipThrustSprite?.bottom, 418)
+        XCTAssertEqual(hipThrustSprite?.atlasHeight, 418)
+
+        let barbellRowSprite = MovementIcon.movementAssetSprite("barbell-row")
+        XCTAssertEqual(barbellRowSprite?.imageName, "anatomy_barbell_row")
+        XCTAssertEqual(barbellRowSprite?.top, 0)
+        XCTAssertEqual(barbellRowSprite?.bottom, 409)
+        XCTAssertEqual(barbellRowSprite?.atlasHeight, 409)
+
+        let cableLateralRaiseSprite = MovementIcon.movementAssetSprite("cable-lateral-raise")
+        XCTAssertEqual(cableLateralRaiseSprite?.imageName, "anatomy_cable_lateral_raise")
+        XCTAssertEqual(cableLateralRaiseSprite?.top, 0)
+        XCTAssertEqual(cableLateralRaiseSprite?.bottom, 456)
+        XCTAssertEqual(cableLateralRaiseSprite?.atlasHeight, 456)
+
+        let dumbbellLateralRaiseSprite = MovementIcon.movementAssetSprite("dumbbell-lateral-raise")
+        XCTAssertEqual(dumbbellLateralRaiseSprite?.imageName, "anatomy_dumbbell_lateral_raise")
+        XCTAssertEqual(dumbbellLateralRaiseSprite?.top, 0)
+        XCTAssertEqual(dumbbellLateralRaiseSprite?.bottom, 418)
+        XCTAssertEqual(dumbbellLateralRaiseSprite?.atlasHeight, 418)
+
+        let hammerCurlSprite = MovementIcon.movementAssetSprite("dumbbell-hammer-curl")
+        XCTAssertEqual(hammerCurlSprite?.imageName, "anatomy_dumbbell_hammer_curl")
+        XCTAssertEqual(hammerCurlSprite?.top, 0)
+        XCTAssertEqual(hammerCurlSprite?.bottom, 471)
+        XCTAssertEqual(hammerCurlSprite?.atlasHeight, 471)
+
+        let dumbbellRdlSprite = MovementIcon.movementAssetSprite("dumbbell-romanian-deadlift")
+        XCTAssertEqual(dumbbellRdlSprite?.imageName, "anatomy_dumbbell_romanian_deadlift")
+        XCTAssertEqual(dumbbellRdlSprite?.top, 0)
+        XCTAssertEqual(dumbbellRdlSprite?.bottom, 448)
+        XCTAssertEqual(dumbbellRdlSprite?.atlasHeight, 448)
+
+        let trapBarDeadliftSprite = MovementIcon.movementAssetSprite("trap-bar-deadlift")
+        XCTAssertEqual(trapBarDeadliftSprite?.imageName, "anatomy_trap_bar_deadlift")
+        XCTAssertEqual(trapBarDeadliftSprite?.top, 0)
+        XCTAssertEqual(trapBarDeadliftSprite?.bottom, 402)
+        XCTAssertEqual(trapBarDeadliftSprite?.atlasHeight, 402)
+
+        for sprite in [benchSprite, abWheelSprite, frontSquatSprite, backSquatSprite, hipThrustSprite, barbellRowSprite, cableLateralRaiseSprite, dumbbellLateralRaiseSprite, hammerCurlSprite, dumbbellRdlSprite, trapBarDeadliftSprite].compactMap({ $0 }) {
+            for frame in 0..<3 {
+                XCTAssertNotNil(MovementFrameCache.getFrame(for: sprite, frame: frame))
+            }
+        }
+
+        let inclineBenchSprite = MovementIcon.movementAssetSprite("incline-barbell-bench-press")
+        XCTAssertNotNil(inclineBenchSprite)
+        XCTAssertEqual(inclineBenchSprite?.imageName, "anatomy_incline_barbell_bench_press")
+        XCTAssertEqual(inclineBenchSprite?.atlasHeight, 418)
+        for frame in 0..<3 {
+            XCTAssertNotNil(MovementFrameCache.getFrame(for: inclineBenchSprite!, frame: frame))
+        }
+    }
+
+    func testDeadBugAlternatesWithoutChangingOtherExercisePlayback() throws {
+        let deadBug = try XCTUnwrap(MovementIcon.movementAssetSprite("dead-bug"))
+        XCTAssertEqual(deadBug.top, 105)
+        XCTAssertEqual(deadBug.bottom, 295)
+        XCTAssertEqual(deadBug.atlasHeight, 390)
+        XCTAssertEqual(deadBug.frameStarts, [9, 427, 845])
+        XCTAssertEqual(deadBug.frameWidth, 400)
+        XCTAssertEqual(deadBug.playback.frames, [0, 1, 0, 2])
+        XCTAssertEqual(deadBug.playback.durations, [0.80, 0.80, 0.80, 0.80])
+        XCTAssertEqual(deadBug.playback.reducedMotionFrame, 0)
+        let otherIds = [
+            "pull-up",
+            "jump-rope",
+            "weighted-pull-up",
+            "chest-supported-dumbbell-row",
+            "push-up",
+            "barbell-front-squat",
+            "trap-bar-deadlift",
+            "seated-leg-curl",
+            "ab-wheel-rollout",
+            "cable-lateral-raise",
+            "overhead-cable-triceps-extension",
+            "hollow-body-hold",
+            "reverse-crunch",
+            "sliding-hamstring-curl",
+            "pike-push-up",
+            "band-face-pull",
+            "incline-dumbbell-press",
+            "dumbbell-step-up",
+            "barbell-romanian-deadlift",
+            "kettlebell-goblet-squat",
+            "leg-press-45-degree",
+            "barbell-bench-press",
+            "dumbbell-lateral-raise",
+            "rope-triceps-pressdown",
+            "single-leg-calf-raise",
+            "standing-machine-calf-raise",
+            "hanging-knee-raise",
+            "barbell-back-squat",
+            "conventional-barbell-deadlift",
+            "dumbbell-romanian-deadlift",
+            "standing-barbell-overhead-press",
+            "dumbbell-floor-press",
+            "dumbbell-hammer-curl",
+            "straight-bar-cable-triceps-pressdown",
+            "seated-machine-calf-raise",
+            "kneeling-cable-crunch",
+            "dumbbell-bench-press",
+            "one-arm-dumbbell-row",
+            "lat-pulldown",
+            "rear-foot-elevated-split-squat",
+            "leg-extension",
+            "lying-leg-curl",
+            "pec-deck-fly",
+            "ez-bar-curl",
+            "barbell-hip-thrust",
+            "barbell-row",
+            "incline-barbell-bench-press",
+            "incline-dumbbell-curl",
+            "kettlebell-swing",
+            "farmer-carry",
+            "pallof-press",
+            "push-press"
+        ]
+        for id in otherIds {
+            let sprite = try XCTUnwrap(MovementIcon.movementAssetSprite(id))
+            XCTAssertEqual(sprite.playback.frames, [0, 1, 2, 1], id)
+            XCTAssertEqual(sprite.playback.durations, [0.65, 0.40, 0.65, 0.40], id)
+            XCTAssertEqual(sprite.playback.reducedMotionFrame, 1, id)
+        }
+    }
 
 
-
+    func testMovementAnimationClockIsActive() {
+        let clock = MovementAnimationClock.shared
+        XCTAssertTrue([0, 1, 2].contains(clock.currentFrame))
+    }
 
     func testFeedbackSoundsAreBundledAndDistinct() throws {
         let soundNames = [
@@ -113,10 +236,118 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(audioFile.fileFormat.channelCount, 1)
     }
 
+    func testChestSupportedRowFramesDecodeAndRender() throws {
+        let sprite = try XCTUnwrap(MovementIcon.movementAssetSprite("chest-supported-dumbbell-row"))
+        XCTAssertEqual(sprite.atlasHeight, 382)
+        XCTAssertEqual(sprite.playback.frames, [0, 1, 2, 1])
+        let frames = try (0..<3).map { try XCTUnwrap(MovementFrameCache.getFrame(for: sprite, frame: $0)) }
+        for frame in frames {
+            XCTAssertEqual(frame.cgImage?.width, 418)
+            XCTAssertEqual(frame.cgImage?.height, 382)
+        }
+        XCTAssertNotEqual(frames[0].pngData(), frames[1].pngData())
+        XCTAssertNotEqual(frames[1].pngData(), frames[2].pngData())
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let rendered = UIGraphicsImageRenderer(size: CGSize(width: 1254, height: 382), format: format).image { context in
+            UIColor(red: 17/255, green: 23/255, blue: 27/255, alpha: 1).setFill()
+            context.fill(CGRect(x: 0, y: 0, width: 1254, height: 382))
+            for (index, frame) in frames.enumerated() {
+                frame.draw(in: CGRect(x: index * 418, y: 0, width: 418, height: 382))
+            }
+        }
+        let attachment = XCTAttachment(image: rendered)
+        attachment.name = "Chest-supported row native frame render"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
 
+    @MainActor
+    func testSidePlankRemainsOnTheStraightLegHold() throws {
+        let sprite = try XCTUnwrap(MovementIcon.movementAssetSprite("side-plank"))
+        XCTAssertEqual(sprite.playback, .staticHold)
+        XCTAssertEqual(sprite.playback.frames, [1])
+        XCTAssertEqual(sprite.playback.reducedMotionFrame, 1)
+        XCTAssertNotNil(MovementFrameCache.getFrame(for: sprite, frame: 1))
+        let clock = MovementAnimationClock(playback: sprite.playback)
+        XCTAssertEqual(clock.currentFrame, 1)
+        clock.start()
+        RunLoop.main.run(until: Date().addingTimeInterval(1.2))
+        XCTAssertEqual(clock.currentFrame, 1)
+    }
 
+    func testPullUpVariantsHaveSeparateAssetsAndRenderOnFixedRack() throws {
+        XCTAssertEqual(ExerciseCatalog.canonicalExercises["pull-ups"]?.movementAssetId, "pull-up")
+        XCTAssertEqual(ExerciseCatalog.canonicalExercises["weighted-pull-ups"]?.movementAssetId, "weighted-pull-up")
+        let legacy = Exercise(name: "Pull-Ups", exerciseId: "pull-ups", movementAssetId: "weighted-pull-up")
+        XCTAssertEqual(legacy.resolvedMovementAssetId, "pull-up")
+        XCTAssertEqual(legacy.movementAssetId, "weighted-pull-up")
+        let weighted = Exercise(name: "Weighted Pull-Ups", exerciseId: "weighted-pull-ups", movementAssetId: "weighted-pull-up")
+        XCTAssertEqual(weighted.resolvedMovementAssetId, "weighted-pull-up")
+        var frames: [UIImage] = []
+        for id in ["pull-up", "weighted-pull-up"] {
+            let sprite = try XCTUnwrap(MovementIcon.movementAssetSprite(id))
+            XCTAssertEqual(sprite.playback.frames, [0, 1, 2, 1])
+            for index in 0..<3 {
+                let frame = try XCTUnwrap(MovementFrameCache.getFrame(for: sprite, frame: index))
+                XCTAssertEqual(frame.cgImage?.width, 418)
+                XCTAssertEqual(frame.cgImage?.height, 556)
+                frames.append(frame)
+            }
+        }
+        XCTAssertNotEqual(frames[0].pngData(), frames[3].pngData())
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 2
+        let rendered = UIGraphicsImageRenderer(size: CGSize(width: 600, height: 560), format: format).image { context in
+            UIColor(red: 17/255, green: 23/255, blue: 27/255, alpha: 1).setFill()
+            context.fill(CGRect(x: 0, y: 0, width: 600, height: 560))
+            for (index, frame) in frames.enumerated() {
+                frame.draw(in: CGRect(x: (index % 3) * 200 + 6, y: (index / 3) * 280 + 6, width: 188, height: 250))
+            }
+        }
+        let attachment = XCTAttachment(image: rendered)
+        attachment.name = "Regular and weighted pull-ups on shared static rack"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
 
+    func testSeatedLegCurlFreshFramesDecodeAndRender() throws {
+        let sprite = try XCTUnwrap(MovementIcon.movementAssetSprite("seated-leg-curl"))
+        XCTAssertEqual(sprite.atlasHeight, 433)
+        XCTAssertEqual(sprite.playback.frames, [0, 1, 2, 1])
+        let frames = try (0..<3).map { try XCTUnwrap(MovementFrameCache.getFrame(for: sprite, frame: $0)) }
+        for frame in frames {
+            XCTAssertEqual(frame.cgImage?.width, 418)
+            XCTAssertEqual(frame.cgImage?.height, 433)
+        }
+        XCTAssertNotEqual(frames[0].pngData(), frames[1].pngData())
+        XCTAssertNotEqual(frames[1].pngData(), frames[2].pngData())
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 2
+        let rendered = UIGraphicsImageRenderer(size: CGSize(width: 696, height: 304), format: format).image { context in
+            UIColor(red: 17/255, green: 23/255, blue: 27/255, alpha: 1).setFill()
+            context.fill(CGRect(x: 0, y: 0, width: 696, height: 304))
+            for (index, frame) in frames.enumerated() {
+                frame.draw(in: CGRect(x: index * 232 + 8, y: 8, width: 216, height: 224))
+                frame.draw(in: CGRect(x: index * 232 + 8, y: 240, width: 54, height: 56))
+            }
+        }
+        let attachment = XCTAttachment(image: rendered)
+        attachment.name = "Seated leg curl fresh native detail and thumbnail render"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
 
+    func testMovementFrameCacheProducesDistinctFrames() {
+        let sprite = MovementIcon.categorySprite(.press)!
+        let f0 = MovementFrameCache.getFrame(for: sprite, frame: 0)
+        let f1 = MovementFrameCache.getFrame(for: sprite, frame: 1)
+        let f2 = MovementFrameCache.getFrame(for: sprite, frame: 2)
+        XCTAssertNotNil(f0)
+        XCTAssertNotNil(f1)
+        XCTAssertNotNil(f2)
+        XCTAssertNotEqual(f0?.pngData(), f2?.pngData(), "Frames 0 and 2 must be visually different")
+    }
 
     func testMuscleMasksSVGPathsParseNonEmpty() {
         for view in BodyView.allCases {
