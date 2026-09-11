@@ -269,7 +269,7 @@ public struct ExerciseVideoLinksSheet: View {
                                             HStack(spacing: 4) {
                                                 Image(systemName: "doc.on.clipboard")
                                                     .font(.system(size: 13))
-                                                Text(LanguageManager.t("video.pasteButton"))
+                                                Text(LanguageManager.t("video.paste"))
                                                     .font(.system(size: 12, weight: .medium))
                                             }
                                             .foregroundColor(AppColors.accent)
@@ -297,12 +297,12 @@ public struct ExerciseVideoLinksSheet: View {
                                             RoundedRectangle(cornerRadius: 11, style: .continuous)
                                                 .stroke((!inputUrl.isEmpty && (!isValidUrl || isDuplicate)) ? AppColors.danger : AppColors.border, lineWidth: 1)
                                         )
-                                )
+                                 )
 
                                 // Supporting / validation text
                                 Group {
                                     if isDuplicate {
-                                        Text(LanguageManager.t("video.duplicateUrl"))
+                                        Text(LanguageManager.t("video.alreadyAdded"))
                                             .foregroundColor(AppColors.danger)
                                     } else if !inputUrl.isEmpty && !isValidUrl {
                                         Text(LanguageManager.t("video.youtubeOnly"))
@@ -346,7 +346,7 @@ public struct ExerciseVideoLinksSheet: View {
                                     .font(.system(size: 16))
                                     .foregroundColor(AppColors.accent)
 
-                                Text(LanguageManager.t("video.maxLimitReached"))
+                                Text(LanguageManager.t("video.maxReached"))
                                     .font(.system(size: 13))
                                     .foregroundColor(AppColors.muted)
 
