@@ -992,5 +992,4594 @@
     "file": "081112.mp4",
     "sourceFile": "08111201-Trap-Bar-Deadlift_Thighs-FIX.mp4",
     "sha256": "2618b6ff5689d2d66d06dcd69ccb27a3b8de6c06f301de747021964bc092ce6d"
+  },
+  "cable-seated-row": {
+    "videoId": "086112",
+    "baseExerciseId": "0861",
+    "name": "Cable seated row",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Infraspinatus",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior",
+      "Pectoralis Major Sternal Head"
+    ],
+    "file": "086112.mp4",
+    "sourceFile": "08611201-Cable-Seated-Row_Back-FIX.mp4",
+    "sha256": "f60fa48c9d36e5443e68f3477f6a5eb8e459724ac227ca15d931d56d95e7e8ee"
+  },
+  "dumbbell-seated-shoulder-press": {
+    "videoId": "040512",
+    "baseExerciseId": "0405",
+    "name": "Dumbbell Seated Shoulder Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Anterior"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Lateral",
+      "Pectoralis Major Clavicular Head",
+      "Serratus Anterior",
+      "Triceps Brachii"
+    ],
+    "file": "040512.mp4",
+    "sourceFile": "04051201-Dumbbell-Seated-Shoulder-Press_Shoulders-FIX2.mp4",
+    "sha256": "e5df961a460ffe90b44781b99fef06a2395d6fe9b1fe9701ebc32ecb35d63613"
+  },
+  "lever-chest-press": {
+    "videoId": "057712",
+    "baseExerciseId": "0577",
+    "name": "Lever Chest Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Pectoralis Major Clavicular Head",
+      "Triceps Brachii"
+    ],
+    "file": "057712.mp4",
+    "sourceFile": "05771201-Lever-Chest-Press_Chest-FIX.mp4",
+    "sha256": "de7cd99e321b1a4790d1f061294437073ef9ba2f4fe0cea8cf9e6eef0b3628ec"
+  },
+  "lever-seated-shoulder-press": {
+    "videoId": "145412",
+    "baseExerciseId": "1454",
+    "name": "Lever Seated Shoulder Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Anterior"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Lateral",
+      "Pectoralis Major Clavicular Head",
+      "Serratus Anterior",
+      "Triceps Brachii"
+    ],
+    "file": "145412.mp4",
+    "sourceFile": "14541201-Lever-Seated-Shoulder-Press_Shoulders-FIX.mp4",
+    "sha256": "942e36c97061d57f1fc5d9ab63bd8ef659783f4dd64762c61e8a89ba1e9b3216"
+  },
+  "bodyweight-rear-lunge": {
+    "videoId": "158112",
+    "baseExerciseId": "1581",
+    "name": "Bodyweight Rear Lunge",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips, Thighs",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Soleus"
+    ],
+    "file": "158112.mp4",
+    "sourceFile": "15811201-Bodyweight-Rear-Lunge_Thighs.mp4",
+    "sha256": "d9b583cf3733a4317ea53ee4f5e2746bb32b0a083f435f5f22444667e23c574f"
+  },
+  "walking-lunge": {
+    "videoId": "146012",
+    "baseExerciseId": "1460",
+    "name": "Walking Lunge",
+    "exerciseType": "Aerobic",
+    "bodyPart": "Hips",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Soleus"
+    ],
+    "file": "146012.mp4",
+    "sourceFile": "14601201-Walking-Lunge-Male_Hips-FIX.mp4",
+    "sha256": "270ec46e7f19b4003860aae73d193a041bd060aa6925e54c1c3523713b49207a"
+  },
+  "bodyweight-squat": {
+    "videoId": "119712",
+    "baseExerciseId": "1197",
+    "name": "Bodyweight Squat (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Soleus"
+    ],
+    "file": "119712.mp4",
+    "sourceFile": "11971201-Bodyweight-Squat-(male)_Thighs-FIX.mp4",
+    "sha256": "9c346d340a8e91ee38c6c901c8c2f31f6ba4eb46006394e38abcf2a79c8ea655"
+  },
+  "lever-seated-reverse-fly": {
+    "videoId": "060212",
+    "baseExerciseId": "0602",
+    "name": "Lever Seated Reverse Fly",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Posterior"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Lateral",
+      "Infraspinatus",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "file": "060212.mp4",
+    "sourceFile": "06021201-Lever-Seated-Reverse-Fly_Shoulders-FIX.mp4",
+    "sha256": "7516d35c41ab734177297b82c61289953258e9ef651cd30469fc7c13b08f39d4"
+  },
+  "cable-curl": {
+    "videoId": "086812",
+    "baseExerciseId": "0868",
+    "name": "Cable Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Biceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis"
+    ],
+    "file": "086812.mp4",
+    "sourceFile": "08681201-Cable-Curl-(male)_Upper-Arms-FIX.mp4",
+    "sha256": "6b1c2127c3d32ba066c0155922ea39ef8e1a4252b12ca0a08a690a1a7c5f55a3"
+  },
+  "barbell-preacher-curl": {
+    "videoId": "007012",
+    "baseExerciseId": "0070",
+    "name": "Barbell Preacher Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Brachialis"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Brachioradialis"
+    ],
+    "file": "007012.mp4",
+    "sourceFile": "00701201-Barbell-Preacher-Curl_Upper-Arms.mp4",
+    "sha256": "2c84f6e388f407ec6497a331c8692d1c5df8158124f312b3afcdc590e576a470"
+  },
+  "chest-dip": {
+    "videoId": "025112",
+    "baseExerciseId": "0251",
+    "name": "Chest Dip",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Latissimus Dorsi",
+      "Levator Scapulae",
+      "Pectoralis Major Clavicular Head",
+      "Triceps Brachii"
+    ],
+    "file": "025112.mp4",
+    "sourceFile": "02511201-Chest-Dip_Chest-FIX.mp4",
+    "sha256": "df5fe34deec9b9c7e5909c559dff1d73f3dd2fac271d76d84b788acf74be8a8a"
+  },
+  "chin-up": {
+    "videoId": "132612",
+    "baseExerciseId": "1326",
+    "name": "Chin-Up",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Latissimus Dorsi"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior",
+      "Pectoralis Major Sternal Head",
+      "Teres Major",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "file": "132612.mp4",
+    "sourceFile": "13261201-Chin-Up_Back-FIX.mp4",
+    "sha256": "f5c2f5b192f561baee638378a5dd9a5d601b97caa13b5170b4329bad4b8c7538"
+  },
+  "front-plank": {
+    "videoId": "046312",
+    "baseExerciseId": "0463",
+    "name": "Front Plank (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Waist",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Rectus Abdominis"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Gluteus Maximus",
+      "Gluteus Medius",
+      "Obliques",
+      "Sartorius",
+      "Tensor Fasciae Latae"
+    ],
+    "file": "046312.mp4",
+    "sourceFile": "04631201-Front-Elbow-Plank-(male)_Waist-FIX.mp4",
+    "sha256": "7c1780d14aace96a591f7b3ecee4ecb0dc001cdce290c7f3a130ee395255e715"
+  },
+  "cable-standing-fly": {
+    "videoId": "022712",
+    "baseExerciseId": "0227",
+    "name": "Cable Standing Fly",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Pectoralis Major Clavicular Head"
+    ],
+    "file": "022712.mp4",
+    "sourceFile": "02271201-Cable-Standing-Fly_Chest.mp4",
+    "sha256": "9d4fa5d96999b2f9543ef8dd2d6873bc75968e9f5477991a86c1a2c7e4ae1404"
+  },
+  "sled-hack-squat": {
+    "videoId": "074312",
+    "baseExerciseId": "0743",
+    "name": "Sled Hack Squat",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips, Thighs",
+    "equipment": "Sled machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Soleus"
+    ],
+    "file": "074312.mp4",
+    "sourceFile": "07431201-Sled-Hack-Squat_Hips.mp4",
+    "sha256": "e1f4c27339dc78b9cd73bc2ebd17f27338a974c6afd2eaa9b2a76695f21cf0e4"
+  },
+  "dumbbell-glute-bridge": {
+    "videoId": "333512",
+    "baseExerciseId": "3335",
+    "name": "Dumbbell Glute Bridge",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus"
+    ],
+    "secondaryMuscles": [
+      "Hamstrings"
+    ],
+    "file": "333512.mp4",
+    "sourceFile": "33351201-Dumbbell-Glute-Bridge_Hip.mp4",
+    "sha256": "fbca897e51581c9840e306ace651e676910137cd07afb961c149925c2132f8d8"
+  },
+  "barbell-sumo-deadlift": {
+    "videoId": "011712",
+    "baseExerciseId": "0117",
+    "name": "Barbell Sumo Deadlift",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Soleus",
+      "Tensor Fasciae Latae"
+    ],
+    "file": "011712.mp4",
+    "sourceFile": "01171201-Barbell-Sumo-Deadlift_Hips-FIX.mp4",
+    "sha256": "1143249c33fe1f84ce033d4e882e716ef4bd175d9f3a14adbcb03da755f8d5db"
+  },
+  "smith-squat": {
+    "videoId": "077012",
+    "baseExerciseId": "0770",
+    "name": "Smith Squat",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Smith machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Soleus"
+    ],
+    "file": "077012.mp4",
+    "sourceFile": "07701201-Smith-Squat_Hips.mp4",
+    "sha256": "2e0910826373092298a8bc64536d102849a6ad532579c7fb08cc4968036a6e05"
+  },
+  "smith-bench-press": {
+    "videoId": "074812",
+    "baseExerciseId": "0748",
+    "name": "Smith Bench Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Smith machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Clavicular Head",
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Triceps Brachii"
+    ],
+    "file": "074812.mp4",
+    "sourceFile": "07481201-Smith-Bench-Press_Chest-FIX.mp4",
+    "sha256": "cbfaa5b62a55ee75daa136daecc8d3048c8a822303acf799e1b784232fd97b5f"
+  },
+  "smith-incline-bench-press": {
+    "videoId": "075712",
+    "baseExerciseId": "0757",
+    "name": "Smith Incline Bench Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Smith machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Clavicular Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Triceps Brachii"
+    ],
+    "file": "075712.mp4",
+    "sourceFile": "07571201-Smith-Incline-Bench-Press_Chest-FIX.mp4",
+    "sha256": "7a7f1bee3ac6a32488d9ffacdf0cd8f3c4465518330c78f8e13fb53c950ab907"
+  },
+  "smith-stiff-legged-deadlift": {
+    "videoId": "159712",
+    "baseExerciseId": "1597",
+    "name": "Smith Stiff Legged Deadlift",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Smith machine",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "159712.mp4",
+    "sourceFile": "15971201-Smith-Stiff-Legged-Deadlift_Hips.mp4",
+    "sha256": "4ff219d919f8c046748f34e159670abd057912d302934f69db188b5292875739"
+  },
+  "smith-hip-thrust": {
+    "videoId": "311012",
+    "baseExerciseId": "3110",
+    "name": "Smith Hip Thrust",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Smith machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus"
+    ],
+    "secondaryMuscles": [
+      "Hamstrings",
+      "Quadriceps"
+    ],
+    "file": "311012.mp4",
+    "sourceFile": "31101201-Smith-Hip-Thrust_Hips-FIX.mp4",
+    "sha256": "91452a4a61a041a8ece408839acdb5fa1489114d2b8d071dbb12f1ee9b8c60b3"
+  },
+  "pendulum-squat": {
+    "videoId": "495112",
+    "baseExerciseId": "4951",
+    "name": "Lever Pendulum Squat (plate loaded)",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Soleus"
+    ],
+    "file": "495112.mp4",
+    "sourceFile": "49511201-Lever-Pendulum-Squat-(plate-loaded)_Thighs.mp4",
+    "sha256": "7c36603688e6f10fc4a7786909f97f361796d17fbf4f977d0d48ef5b6df43389"
+  },
+  "lever-belt-squat": {
+    "videoId": "295012",
+    "baseExerciseId": "2950",
+    "name": "Lever Belt Squat",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "295012.mp4",
+    "sourceFile": "29501201-Lever-Belt-Squat_Thighs.mp4",
+    "sha256": "20504e6e01460061a5cc3b9e9288a4ffed5c36276831f0a947bc83d961b4b539"
+  },
+  "lever-vertical-squat": {
+    "videoId": "552012",
+    "baseExerciseId": "5520",
+    "name": "Lever Vertical Squat",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "552012.mp4",
+    "sourceFile": "55201201-Lever-Vertical-Squat_Thighs.mp4",
+    "sha256": "17f6cb48352cfe1554ebae6b9046feeb7683710541598e7d146ef1590ced09f7"
+  },
+  "sled-45-degrees-one-leg-press": {
+    "videoId": "142512",
+    "baseExerciseId": "1425",
+    "name": "Sled 45 degrees One Leg Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Sled machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Soleus"
+    ],
+    "file": "142512.mp4",
+    "sourceFile": "14251201-Sled-45-degrees-One-Leg-Press_Hips-FIX.mp4",
+    "sha256": "ecdfd43b353d2562f50b710cc8897f149da85ac028a3c2d630e3a95ee8068ea7"
+  },
+  "dumbbell-split-squat-front-foot-elevanted": {
+    "videoId": "778412",
+    "baseExerciseId": "7784",
+    "name": "Dumbbell Split Squat Front Foot Elevanted",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "778412.mp4",
+    "sourceFile": "77841201-Dumbbell-Split-Squat-Front-Foot-Elevanted_Thighs.mp4",
+    "sha256": "107643c0df87647c2f2a1f835cb4141c1725a1f5fb2d900d1a23f79c030be41d"
+  },
+  "barbell-good-morning": {
+    "videoId": "004412",
+    "baseExerciseId": "0044",
+    "name": "Barbell Good Morning",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Hamstrings"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Gluteus Maximus"
+    ],
+    "file": "004412.mp4",
+    "sourceFile": "00441201-Barbell-Good-Morning_Thighs-FIX.mp4",
+    "sha256": "7467082921fd49efc1ebf47aaa0a6debce6b84df3d504d3bca2b40ad8e9e3795"
+  },
+  "dumbbell-single-leg-romanian-deadlift": {
+    "videoId": "975212",
+    "baseExerciseId": "9752",
+    "name": "Dumbbell Single Leg Romanian Deadlift (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "975212.mp4",
+    "sourceFile": "97521201-Dumbbell-Single-Leg-Romanian-Deadlift-(male)_Hips.mp4",
+    "sha256": "d045001f80e94eb38e78117f2dcfb5e7e136fad65be5aa4bcfc7fba5ff2e0d4b"
+  },
+  "dumbbell-45-deg-back-extension": {
+    "videoId": "1161712",
+    "baseExerciseId": "11617",
+    "name": "Dumbbell 45 degrees Back Extension (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1161712.mp4",
+    "sourceFile": "116171201-Dumbbell-45-degrees-Back-Extension-(male)_Hips.mp4",
+    "sha256": "0de2b18ad17ed78ffdcf391fe8e17f40fe4d5c6bfc2918f5982101974b1090dd"
+  },
+  "nordic-hamstring-curl": {
+    "videoId": "774612",
+    "baseExerciseId": "7746",
+    "name": "Nordic Hamstring Curl (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "774612.mp4",
+    "sourceFile": "77461201-Nordic-Hamstring-Curl-(male)_Thighs.mp4",
+    "sha256": "8c8d25aece1822ec6190bf52f1afaee3c126accdc35d0e75b1c8bcd6ca3769b1"
+  },
+  "glute-ham-raise": {
+    "videoId": "445612",
+    "baseExerciseId": "4456",
+    "name": "Glute Ham Raise (VERSION 2)",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Hamstrings"
+    ],
+    "secondaryMuscles": [
+      "Gastrocnemius",
+      "Gluteus Maximus"
+    ],
+    "file": "445612.mp4",
+    "sourceFile": "44561201-Glute-Ham-Raise-(VERSION-2)_Thighs-FIX.mp4",
+    "sha256": "5cdfcba46ab0bfc9ba2469a62ceb2b2b6f94820ae36cf5293d6ca6048b4a882f"
+  },
+  "cable-pull-through": {
+    "videoId": "120612",
+    "baseExerciseId": "1206",
+    "name": "Cable pull through",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus"
+    ],
+    "secondaryMuscles": [
+      "Erector Spinae",
+      "Hamstrings"
+    ],
+    "file": "120612.mp4",
+    "sourceFile": "12061201-Cable-pull-through_hips.mp4",
+    "sha256": "689ef6646d75e87095567c73647519e83dfcb1248b70fa22af706655df786101"
+  },
+  "cable-kneeling-glute-kickback": {
+    "videoId": "808812",
+    "baseExerciseId": "8088",
+    "name": "Cable Kneeling Glute Kickback (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "808812.mp4",
+    "sourceFile": "80881201-Cable-Kneeling-Glute-Kickback-(male)_Hips.mp4",
+    "sha256": "211cd4f5105ccac4a633cd5347a04053e972633a9aa3b3c12c6e96f8434f021a"
+  },
+  "lever-seated-hip-abduction": {
+    "videoId": "059712",
+    "baseExerciseId": "0597",
+    "name": "Lever Seated Hip Abduction",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus",
+      "Gluteus Medius"
+    ],
+    "secondaryMuscles": [
+      "Tensor Fasciae Latae"
+    ],
+    "file": "059712.mp4",
+    "sourceFile": "05971201-Lever-Seated-Hip-Abduction_Hips-FIX.mp4",
+    "sha256": "7cfb2258fc24ed22ead776431e914222c9f6c1b6ff41a7d872c87503e0048720"
+  },
+  "lever-seated-hip-adduction": {
+    "videoId": "059812",
+    "baseExerciseId": "0598",
+    "name": "Lever Seated Hip Adduction",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Adductor Longus",
+      "Adductor Magnus"
+    ],
+    "secondaryMuscles": [
+      "Adductor Brevis",
+      "Gracilis"
+    ],
+    "file": "059812.mp4",
+    "sourceFile": "05981201-Lever-Seated-Hip-Adduction_Thighs-FIX.mp4",
+    "sha256": "eabfe44157f99f2f6d23582752c12bd85f3f03db66b639836f072ed512bb0df0"
+  },
+  "sled-calf-press-on-leg-press": {
+    "videoId": "139112",
+    "baseExerciseId": "1391",
+    "name": "Sled Calf Press On Leg Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Calves",
+    "equipment": "Sled machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gastrocnemius"
+    ],
+    "secondaryMuscles": [
+      "Soleus"
+    ],
+    "file": "139112.mp4",
+    "sourceFile": "13911201-Sled-Calf-Press-On-Leg-Press_Calves-FIX.mp4",
+    "sha256": "d438deee7ab33d6089945a98ebc1e528ab9d45c9d62fdafdeaf6998dcbfb0ac4"
+  },
+  "donkey-calf-raise": {
+    "videoId": "028412",
+    "baseExerciseId": "0284",
+    "name": "Donkey Calf Raise",
+    "exerciseType": "Strength",
+    "bodyPart": "Calves",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gastrocnemius"
+    ],
+    "secondaryMuscles": [
+      "Soleus"
+    ],
+    "file": "028412.mp4",
+    "sourceFile": "02841201-Donkey-Calf-Raise_Calves.mp4",
+    "sha256": "7abf4cec57c60c5cf8995caf74ddd4ba9e9ea65bcd20a57461c9981c77b0789f"
+  },
+  "wall-supported-tibialis-raise": {
+    "videoId": "980312",
+    "baseExerciseId": "9803",
+    "name": "Standing Tibialis Raise Wall Supported (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Calves",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "980312.mp4",
+    "sourceFile": "98031201-Standing-Tibialis-Raise-Wall-Supported-(male)_Calv.mp4",
+    "sha256": "2e0711b6675c7743756ea815de74f6f41ea2dfea3da85520871b9fbe636ee14e"
+  },
+  "barbell-decline-bench-press": {
+    "videoId": "003312",
+    "baseExerciseId": "0033",
+    "name": "Barbell Decline Bench Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Pectoralis Major Clavicular Head",
+      "Triceps Brachii"
+    ],
+    "file": "003312.mp4",
+    "sourceFile": "00331201-Barbell-Decline-Bench-Press_Chest-FIX.mp4",
+    "sha256": "4aa845d101d2e625e1fbad1bb94d77a1dc13594e387698d1e5fb5da5436e68a6"
+  },
+  "dumbbell-decline-bench-press": {
+    "videoId": "030112",
+    "baseExerciseId": "0301",
+    "name": "Dumbbell Decline Bench Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Pectoralis Major Clavicular Head",
+      "Triceps Brachii"
+    ],
+    "file": "030112.mp4",
+    "sourceFile": "03011201-Dumbbell-Decline-Bench-Press_Chest-FIX.mp4",
+    "sha256": "de07e41a86c4518341a186555a863f5a97008abb95009888ae9388e42b1641bc"
+  },
+  "lever-incline-chest-press": {
+    "videoId": "129912",
+    "baseExerciseId": "1299",
+    "name": "Lever Incline Chest Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Clavicular Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Triceps Brachii"
+    ],
+    "file": "129912.mp4",
+    "sourceFile": "12991201-Lever-Incline-Chest-Press_Chest-FIX2.mp4",
+    "sha256": "05528a6692bbd03b0d6cf507f73931397d74543e50a58162677ebcf635f421e6"
+  },
+  "cable-low-fly": {
+    "videoId": "017912",
+    "baseExerciseId": "0179",
+    "name": "Cable Low Fly",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Clavicular Head"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Deltoid Anterior"
+    ],
+    "file": "017912.mp4",
+    "sourceFile": "01791201-Cable-Low-Fly_Chest-FIX2.mp4",
+    "sha256": "fb7ca001017d2b6c1c427651508de82ec33bfaa502100ea72a9ad0c258e47643"
+  },
+  "cable-decline-fly": {
+    "videoId": "015812",
+    "baseExerciseId": "0158",
+    "name": "Cable Decline Fly",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Deltoid Anterior",
+      "Pectoralis Major Clavicular Head"
+    ],
+    "file": "015812.mp4",
+    "sourceFile": "01581201-Cable-Decline-Fly_Chest-FIX.mp4",
+    "sha256": "ea312d99b99cac15637dd759f110f46ba51ee8007761a27ebf58db4bd2366198"
+  },
+  "dumbbell-fly": {
+    "videoId": "030812",
+    "baseExerciseId": "0308",
+    "name": "Dumbbell Fly",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Clavicular Head",
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Deltoid Anterior"
+    ],
+    "file": "030812.mp4",
+    "sourceFile": "03081201-Dumbbell-Fly_Chest-FIX2.mp4",
+    "sha256": "333ab2d05308c2a21cb03d61ef74368fd57480440d736e133a59c9576a5386f1"
+  },
+  "barbell-close-grip-bench-press": {
+    "videoId": "003012",
+    "baseExerciseId": "0030",
+    "name": "Barbell Close Grip Bench Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Pectoralis Major Clavicular Head",
+      "Pectoralis Major Sternal Head"
+    ],
+    "file": "003012.mp4",
+    "sourceFile": "00301201-Barbell-Close-Grip-Bench-Press_Upper-Arms-FIX.mp4",
+    "sha256": "36736342ac1fc36150c9ce971db42a395f9886bb2ac3b9314b484c91eeec49b4"
+  },
+  "dumbbell-pullover": {
+    "videoId": "037512",
+    "baseExerciseId": "0375",
+    "name": "Dumbbell Pullover",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Posterior",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Triceps Brachii"
+    ],
+    "file": "037512.mp4",
+    "sourceFile": "03751201-Dumbbell-Pullover_Chest.mp4",
+    "sha256": "a62ca2dbef0f95c3ea2bd87485f7c97572899e378e57f85051b43942e2a08be8"
+  },
+  "lever-chest-supported-row": {
+    "videoId": "651312",
+    "baseExerciseId": "6513",
+    "name": "Lever Bent Over Row (with chest support)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "651312.mp4",
+    "sourceFile": "65131201-Lever-Bent-Over-Row-(with-chest-support)_Back.mp4",
+    "sha256": "7320540a1eb54b358057a2f8ed95f6374d2ab668fff7e928f5c32d272d3f3bed"
+  },
+  "lever-t-bar-row": {
+    "videoId": "060612",
+    "baseExerciseId": "0606",
+    "name": "Lever T-bar Row (plate loaded)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Infraspinatus",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior",
+      "Pectoralis Major Sternal Head"
+    ],
+    "file": "060612.mp4",
+    "sourceFile": "06061201-Lever-T-bar-Row-(plate-loaded)_Back-FIX.mp4",
+    "sha256": "a693f998b52c194b5f6b6faab5e4a1c9af3371f4d3f5f1b1a166a4e7dff37d21"
+  },
+  "barbell-pendlay-row": {
+    "videoId": "301712",
+    "baseExerciseId": "3017",
+    "name": "Barbell Pendlay Row",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Infraspinatus",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior"
+    ],
+    "file": "301712.mp4",
+    "sourceFile": "30171201-Barbell-Pendlay-Row_Back.mp4",
+    "sha256": "2b2fd9fad9c96647828ab04cec134d09de6272054e841ac19a51eb886b41f5a8"
+  },
+  "inverted-row": {
+    "videoId": "049912",
+    "baseExerciseId": "0499",
+    "name": "Inverted Row",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Infraspinatus",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior",
+      "Pectoralis Major Sternal Head"
+    ],
+    "file": "049912.mp4",
+    "sourceFile": "04991201-Inverted-Row_Back-FIX3.mp4",
+    "sha256": "be29c7874bc12a83e5d41657921b12079a96f75542557d1d2f15a88e09d47145"
+  },
+  "cable-neutral-grip-lat-pulldown": {
+    "videoId": "758312",
+    "baseExerciseId": "7583",
+    "name": "Cable Neutral Grip Lat Pulldown (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "758312.mp4",
+    "sourceFile": "75831201-Cable-Neutral-Grip-Lat-Pulldown-(male)_Back.mp4",
+    "sha256": "06afb3ee89dbacb4155e7ebb6af9265ebd2038550f31226e80690714b9da7b4f"
+  },
+  "cable-close-grip-front-lat-pulldown": {
+    "videoId": "104712",
+    "baseExerciseId": "1047",
+    "name": "Cable Close Grip Front Lat Pulldown",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Latissimus Dorsi"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior",
+      "Pectoralis Major Sternal Head",
+      "Teres Major",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "file": "104712.mp4",
+    "sourceFile": "10471201-Cable-Close-Grip-Front-Lat-Pulldown_Back-FIX.mp4",
+    "sha256": "cca54ed9d96a6dda8bdc56409da2d8d754f54e9b8f5daff01956e517e189fd41"
+  },
+  "cable-underhand-pulldown": {
+    "videoId": "024512",
+    "baseExerciseId": "0245",
+    "name": "Cable Underhand Pulldown",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Latissimus Dorsi"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior",
+      "Teres Major",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "file": "024512.mp4",
+    "sourceFile": "02451201-Cable-Underhand-Pulldown_Back.mp4",
+    "sha256": "087c54568d7af09f0bdeae4807d680f21e9eb010d61eb4afbb6412010804611e"
+  },
+  "cable-straight-arm-pulldown": {
+    "videoId": "023812",
+    "baseExerciseId": "0238",
+    "name": "Cable Straight Arm Pulldown",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Latissimus Dorsi"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Posterior",
+      "Teres Major",
+      "Triceps Brachii"
+    ],
+    "file": "023812.mp4",
+    "sourceFile": "02381201-Cable-Straight-Arm-Pulldown_Back-FIX.mp4",
+    "sha256": "e6bda808d42d36420af085f14a76569caced304427d56ba13bb96187a59d2b2c"
+  },
+  "cable-kneeling-pullover": {
+    "videoId": "1176812",
+    "baseExerciseId": "11768",
+    "name": "Cable Kneeling Pullover",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1176812.mp4",
+    "sourceFile": "117681201-Cable-Kneeling-Pullover_Back.mp4",
+    "sha256": "d8308f767d26601e362aceeab0edd36b4cf86d9ccd2a5635f54fc9755812c89f"
+  },
+  "assisted-pull-up": {
+    "videoId": "001712",
+    "baseExerciseId": "0017",
+    "name": "Assisted Pull-up",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Latissimus Dorsi"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior",
+      "Infraspinatus",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Middle Fibers",
+      "Trapezius Upper Fibers"
+    ],
+    "file": "001712.mp4",
+    "sourceFile": "00171201-Assisted-Pull-up_Back.mp4",
+    "sha256": "7a2c4fa09923a945196080bed43193a72d1649406e74e6658c8d4b92d48936fc"
+  },
+  "assisted-dip-machine": {
+    "videoId": "1060512",
+    "baseExerciseId": "10605",
+    "name": "Lever Graviton Assisted Dip (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1060512.mp4",
+    "sourceFile": "106051201-Lever-Graviton-Assisted-Dip-(male)_Upper-Arms.mp4",
+    "sha256": "422cc7272e34762ee9f2eafbe86e0bf88bba9f02f5e6a234fc0de7de2d20299c"
+  },
+  "dumbbell-rear-fly": {
+    "videoId": "037812",
+    "baseExerciseId": "0378",
+    "name": "Dumbbell Rear Fly",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Posterior"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Lateral",
+      "Infraspinatus",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "file": "037812.mp4",
+    "sourceFile": "03781201-Dumbbell-Rear-Fly_Shoulders.mp4",
+    "sha256": "251702284f5a9ea5616412026f62fcfd984b48af6b59cd11f20fe5583c39b476"
+  },
+  "barbell-shrug": {
+    "videoId": "009512",
+    "baseExerciseId": "0095",
+    "name": "Barbell Shrug",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Trapezius Upper Fibers"
+    ],
+    "secondaryMuscles": [
+      "Levator Scapulae",
+      "Trapezius Middle Fibers"
+    ],
+    "file": "009512.mp4",
+    "sourceFile": "00951201-Barbell-Shrug_Back.mp4",
+    "sha256": "79102dbc09a75ea8c20b2afda55c39ea931e666c8d7166eabeff1d475a7b2f68"
+  },
+  "dumbbell-shrug": {
+    "videoId": "040612",
+    "baseExerciseId": "0406",
+    "name": "Dumbbell Shrug",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Trapezius Upper Fibers"
+    ],
+    "secondaryMuscles": [
+      "Trapezius Middle Fibers"
+    ],
+    "file": "040612.mp4",
+    "sourceFile": "04061201-Dumbbell-Shrug_Back-FIX.mp4",
+    "sha256": "c213756f081024f829ef8f674439e2fc5fdb28c15329baf060a1c9fd8a9d98d9"
+  },
+  "lever-machine-shrug": {
+    "videoId": "060412",
+    "baseExerciseId": "0604",
+    "name": "Lever Shrug (plate loaded)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Trapezius Upper Fibers"
+    ],
+    "secondaryMuscles": [
+      "Levator Scapulae",
+      "Trapezius Middle Fibers"
+    ],
+    "file": "060412.mp4",
+    "sourceFile": "06041201-Lever-Shrug-(plate-loaded)_Back.mp4",
+    "sha256": "07bb1afc225220a9b3daf1acf3cac1cd46fd218ac7691cf75c2bb6045ff9578c"
+  },
+  "dumbbell-arnold-press": {
+    "videoId": "213712",
+    "baseExerciseId": "2137",
+    "name": "Dumbbell Arnold Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Anterior"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Lateral",
+      "Serratus Anterior",
+      "Triceps Brachii"
+    ],
+    "file": "213712.mp4",
+    "sourceFile": "21371201-Dumbbell-Arnold-Press_Shoulders.mp4",
+    "sha256": "369d27752a152f959a251aef0a49a4044d9ec0b19a6788e5f39ff36e088a09c1"
+  },
+  "barbell-seated-overhead-press": {
+    "videoId": "009112",
+    "baseExerciseId": "0091",
+    "name": "Barbell Seated Overhead Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Anterior"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Lateral",
+      "Serratus Anterior",
+      "Triceps Brachii"
+    ],
+    "file": "009112.mp4",
+    "sourceFile": "00911201-Barbell-Seated-Overhead-Press_Shoulders.mp4",
+    "sha256": "6c750936a74a7bce7b2d3692ada9776d0e9cdba6cd55bb59aa90fab561531630"
+  },
+  "dumbbell-one-arm-shoulder-press": {
+    "videoId": "036012",
+    "baseExerciseId": "0360",
+    "name": "Dumbbell One Arm Shoulder Press (VERSION 2)",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Anterior"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Lateral",
+      "Pectoralis Major Clavicular Head",
+      "Serratus Anterior",
+      "Triceps Brachii"
+    ],
+    "file": "036012.mp4",
+    "sourceFile": "03601201-Dumbbell-One-Arm-Shoulder-Press-(VERSION-2)_Should.mp4",
+    "sha256": "66d0b4a981627d71e8aa6df8ecb58dd2a11ecf80eead116e04443ca2aebf659c"
+  },
+  "landmine-press": {
+    "videoId": "507412",
+    "baseExerciseId": "5074",
+    "name": "Landmine Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "507412.mp4",
+    "sourceFile": "50741201-Landmine-Press_Shoulders.mp4",
+    "sha256": "b5eeb739d0206e1f7f3b932a973601934b127eac5e442f34f7738871196948c9"
+  },
+  "lever-lateral-raise": {
+    "videoId": "058412",
+    "baseExerciseId": "0584",
+    "name": "Lever Lateral Raise",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Lateral"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Serratus Anterior"
+    ],
+    "file": "058412.mp4",
+    "sourceFile": "05841201-Lever-Lateral-Raise_shoulder.mp4",
+    "sha256": "508cfd7fc4066a06189902152ed5565b3454b455c4ca293b190f0fdab5eb98e3"
+  },
+  "cable-seated-rear-delt-fly-with-chest-support": {
+    "videoId": "394312",
+    "baseExerciseId": "3943",
+    "name": "Cable Seated Rear Delt Fly with Chest Support",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Posterior"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Lateral",
+      "Infraspinatus",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "file": "394312.mp4",
+    "sourceFile": "39431201-Cable-Seated-Rear-Delt-Fly-with-Chest-Support_Shou.mp4",
+    "sha256": "b53599b3d3f3dde1ec7ac6baf4768bb8a266ea5e0e7d8829de31d527838bdbe8"
+  },
+  "barbell-upright-row": {
+    "videoId": "012012",
+    "baseExerciseId": "0120",
+    "name": "Barbell Upright Row",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "EZ Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Lateral"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Anterior",
+      "Infraspinatus",
+      "Serratus Anterior",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "file": "012012.mp4",
+    "sourceFile": "01201201-Barbell-Upright-Row_shoulder.mp4",
+    "sha256": "49182e22d37a0df3b0864ae6c263d8f311d7ca6b54aa065c8bae980d1b7cbcf9"
+  },
+  "barbell-curl": {
+    "videoId": "003112",
+    "baseExerciseId": "0031",
+    "name": "Barbell Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Biceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis"
+    ],
+    "file": "003112.mp4",
+    "sourceFile": "00311201-Barbell-Curl_Upper-Arms-FIX2.mp4",
+    "sha256": "796f7a6421b2a0c2b0453991793ddc3b6badc1c073cb6179176740f9707690f5"
+  },
+  "dumbbell-alternate-biceps-curl": {
+    "videoId": "028512",
+    "baseExerciseId": "0285",
+    "name": "Dumbbell Alternate Biceps Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Biceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis"
+    ],
+    "file": "028512.mp4",
+    "sourceFile": "02851201-Dumbbell-Alternate-Biceps-Curl_Upper-Arms-FIX.mp4",
+    "sha256": "bcbc0ecca1bd0ebedeeec3f5347e86e679cf53dabec58b83dfca6f8e5320eb24"
+  },
+  "dumbbell-concentration-curl": {
+    "videoId": "029712",
+    "baseExerciseId": "0297",
+    "name": "Dumbbell Concentration Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Brachialis"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Brachioradialis"
+    ],
+    "file": "029712.mp4",
+    "sourceFile": "02971201-Dumbbell-Concentration-Curl_Upper-Arms-FIX.mp4",
+    "sha256": "45c24b57869e338199616479b51e98422263ce0f64ebd61607df84a2c7721d16"
+  },
+  "ez-barbell-spider-curl": {
+    "videoId": "162812",
+    "baseExerciseId": "1628",
+    "name": "EZ Barbell Spider Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "EZ Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Biceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis"
+    ],
+    "file": "162812.mp4",
+    "sourceFile": "16281201-EZ-Barbell-Spider-Curl_Upper-Arms-FIX.mp4",
+    "sha256": "5aa7d39bfe1aa9c3ba83a136b0f7d74b0349dd4a967bd15b63ca6f30cf897e68"
+  },
+  "cable-rope-hammer-curl": {
+    "videoId": "016512",
+    "baseExerciseId": "0165",
+    "name": "Cable Hammer Curl (with rope) (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Brachioradialis"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Brachialis"
+    ],
+    "file": "016512.mp4",
+    "sourceFile": "01651201-Cable-Hammer-Curl-(with-rope)-(male)_Forearms.mp4",
+    "sha256": "d3e161a8bc2da15be3f1a562cf5fe26a31d8d1dc5fa6cb534620e12296e3e2a9"
+  },
+  "cable-incline-biceps-curl": {
+    "videoId": "570312",
+    "baseExerciseId": "5703",
+    "name": "Cable Incline Biceps Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "570312.mp4",
+    "sourceFile": "57031201-Cable-Incline-Biceps-Curl_Upper-Arms.mp4",
+    "sha256": "d9886756bdaa9c4291a0b6dc751f765c1d36e9d5c8e7114d05396a2607ed4db6"
+  },
+  "lever-preacher-curl": {
+    "videoId": "059212",
+    "baseExerciseId": "0592",
+    "name": "Lever Preacher Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Brachialis"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Brachioradialis"
+    ],
+    "file": "059212.mp4",
+    "sourceFile": "05921201-Lever-Preacher-Curl_Upper-Arms-FIX.mp4",
+    "sha256": "35078150271819949555f65d608affd0a0a0ac057a867a03761fba7ad3f22dc8"
+  },
+  "ez-bar-lying-triceps-extension": {
+    "videoId": "587312",
+    "baseExerciseId": "5873",
+    "name": "EZ Barbell Lying Triceps Extension (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "EZ Barbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "587312.mp4",
+    "sourceFile": "58731201-EZ-Barbell-Lying-Triceps-Extension-(male)_Upper-Ar.mp4",
+    "sha256": "2bd8e38f1fd930215157f783d5be8a5a4e595a9bc76d6d0b25389e68ce13b287"
+  },
+  "dumbbell-standing-triceps-extension": {
+    "videoId": "043012",
+    "baseExerciseId": "0430",
+    "name": "Dumbbell Standing Triceps Extension",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [],
+    "file": "043012.mp4",
+    "sourceFile": "04301201-Dumbbell-Standing-Triceps-Extension_Upper-Arms-FIX.mp4",
+    "sha256": "bacc10e8fd4cd13d1b200a2f0480fbdd0996f607d831c99b278ec55103b48eb1"
+  },
+  "cable-one-arm-triceps-pushdown": {
+    "videoId": "172312",
+    "baseExerciseId": "1723",
+    "name": "Cable One Arm Triceps Pushdown",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [],
+    "file": "172312.mp4",
+    "sourceFile": "17231201-Cable-One-Arm-Tricep-Pushdown_Upper-Arms.mp4",
+    "sha256": "42748547d800448558e7af9f36c98e3a8843db5ea12440c359d01c6b6ac28122"
+  },
+  "cable-reverse-grip-pushdown": {
+    "videoId": "020712",
+    "baseExerciseId": "0207",
+    "name": "Cable Reverse grip Pushdown",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [],
+    "file": "020712.mp4",
+    "sourceFile": "02071201-Cable-Reverse-grip-Pushdown_Upper-Arms.mp4",
+    "sha256": "1504f8d3c6448dec42fbb61f9088745510121379fffc757b5948b96b72aa914d"
+  },
+  "dumbbell-kickback": {
+    "videoId": "033312",
+    "baseExerciseId": "0333",
+    "name": "Dumbbell Kickback",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [],
+    "file": "033312.mp4",
+    "sourceFile": "03331201-Dumbbell-Kickback_Upper-Arms.mp4",
+    "sha256": "24364dfca91161fc8e614db8f109a4cdf3b77e3733ecf671703aadace153eb04"
+  },
+  "hanging-leg-raise": {
+    "videoId": "047212",
+    "baseExerciseId": "0472",
+    "name": "Hanging Leg Raise",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Iliopsoas"
+    ],
+    "secondaryMuscles": [
+      "Adductor Brevis",
+      "Adductor Longus",
+      "Pectineous",
+      "Serratus Anterior",
+      "Tensor Fasciae Latae"
+    ],
+    "file": "047212.mp4",
+    "sourceFile": "04721201-Hanging-Leg-Raise_Hips.mp4",
+    "sha256": "019ffa28554160b02aaed452187360f7cff0ef928bd712cb72b2c042e3843be1"
+  },
+  "reverse-crunch": {
+    "videoId": "087212",
+    "baseExerciseId": "0872",
+    "name": "Reverse Crunch",
+    "exerciseType": "Strength",
+    "bodyPart": "Waist",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Rectus Abdominis"
+    ],
+    "secondaryMuscles": [
+      "Obliques"
+    ],
+    "file": "087212.mp4",
+    "sourceFile": "08721201-Reverse-Crunch-m_waist.mp4",
+    "sha256": "5f183516a345e93580ef5fd758e09952ea668556e4cf1fbf552041fb439a3aaf"
+  },
+  "bicycle-crunch": {
+    "videoId": "621112",
+    "baseExerciseId": "6211",
+    "name": "Bicycle Crunch (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Waist",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "621112.mp4",
+    "sourceFile": "62111201-Bicycle-Crunch-(male)_Waist.mp4",
+    "sha256": "3ab836fc82e3e28387bb20834dfd79d7857db9b0029ee18c629dd1ccb7a7b8a1"
+  },
+  "cable-woodchopper": {
+    "videoId": "802312",
+    "baseExerciseId": "8023",
+    "name": "Cable Standing Wood Chopper (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Waist",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "802312.mp4",
+    "sourceFile": "80231201-Cable-Standing-Wood-Chopper-(male)_Waist.mp4",
+    "sha256": "44efada16a948b625da9a59f20cf488a9d43ceca015b998d9a74d71325846768"
+  },
+  "russian-twist": {
+    "videoId": "068712",
+    "baseExerciseId": "0687",
+    "name": "Russian Twist",
+    "exerciseType": "Strength",
+    "bodyPart": "Waist",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Obliques"
+    ],
+    "secondaryMuscles": [
+      "Iliopsoas"
+    ],
+    "file": "068712.mp4",
+    "sourceFile": "06871201-Russian-Twist_waist.mp4",
+    "sha256": "7cab18fdbb2d8d03d35650c449377b7059bae69926b6ceb4a2eb0fcdc77124bd"
+  },
+  "bird-dog": {
+    "videoId": "124112",
+    "baseExerciseId": "1241",
+    "name": "Bird Dog (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Erector Spinae",
+      "Gluteus Maximus"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Hamstrings"
+    ],
+    "file": "124112.mp4",
+    "sourceFile": "12411201-Bird-Dog-male_Back.mp4",
+    "sha256": "174445251da10198b1a2d9f5619bff1942ff5d4ed526a5233715c32cf285ab49"
+  },
+  "mountain-climber": {
+    "videoId": "063012",
+    "baseExerciseId": "0630",
+    "name": "Mountain Climber",
+    "exerciseType": "Aerobic",
+    "bodyPart": "Cardio",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "063012.mp4",
+    "sourceFile": "06301201-Mountain-Climber_Cardio-FIX.mp4",
+    "sha256": "e1ba89f9d5c8fdf157a6a9ef37ceb71a36fd9c99adfc74cedeffdd8892a50237"
+  },
+  "burpee": {
+    "videoId": "116012",
+    "baseExerciseId": "1160",
+    "name": "Burpee",
+    "exerciseType": "Aerobic",
+    "bodyPart": "Cardio",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "116012.mp4",
+    "sourceFile": "11601201-Burpee_Cardio-FIX.mp4",
+    "sha256": "fa2285da031c1d8364f17e8f5ee8770b494d5752034aa4c63aa2eac2e89abbc9"
+  },
+  "jumping-jack": {
+    "videoId": "309412",
+    "baseExerciseId": "3094",
+    "name": "Jumping Jack (male)",
+    "exerciseType": "Aerobic",
+    "bodyPart": "Cardio",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "309412.mp4",
+    "sourceFile": "30941201-Jumping-Jack-(male)_Cardio-FIX.mp4",
+    "sha256": "4eefdc32a0bc5409b78cdc8f1237473607b1a2bc83b7d990d0c2661a6c3f823e"
+  },
+  "box-jump": {
+    "videoId": "496512",
+    "baseExerciseId": "4965",
+    "name": "Jump Box (male)",
+    "exerciseType": "Aerobic",
+    "bodyPart": "Plyometrics",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "496512.mp4",
+    "sourceFile": "49651201-Jump-Box-(male)_Plyometrics-FIX.mp4",
+    "sha256": "ddec4ed50bce5c5bb383e201d20d4be51f1408f55e49e473454c65db1ff3fd3e"
+  },
+  "jump-squat": {
+    "videoId": "051312",
+    "baseExerciseId": "0513",
+    "name": "Jump Squat (VERSION 2)",
+    "exerciseType": "Aerobic",
+    "bodyPart": "Plyometrics",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Soleus"
+    ],
+    "file": "051312.mp4",
+    "sourceFile": "05131201-Jump-Squat-II_Thighs.mp4",
+    "sha256": "817c4187a6458cf20aae1c25cff5f7cf19784740aa8615fe93d1b49b9c811618"
+  },
+  "kettlebell-deadlift": {
+    "videoId": "332212",
+    "baseExerciseId": "3322",
+    "name": "Kettlebell deadlift",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Kettlebell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Gastrocnemius",
+      "Hamstrings",
+      "Soleus"
+    ],
+    "file": "332212.mp4",
+    "sourceFile": "33221201-Kettlebell-deadlift_Hips.mp4",
+    "sha256": "a730bbe9ce065979271d6c2b10f23f774afeb421e377d3ea1acccf6925de3bdb"
+  },
+  "kettlebell-one-arm-clean": {
+    "videoId": "454312",
+    "baseExerciseId": "4543",
+    "name": "Kettlebell One Arm Clean",
+    "exerciseType": "Strength",
+    "bodyPart": "Weightlifting",
+    "equipment": "Kettlebell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "454312.mp4",
+    "sourceFile": "45431201-Kettlebell-One-Arm-Clean_Weightlifting.mp4",
+    "sha256": "f7bf5219b666577c502e1cd7e37db2fdd3a22a837b28162c426030520b1a7718"
+  },
+  "kettlebell-strict-press": {
+    "videoId": "357212",
+    "baseExerciseId": "3572",
+    "name": "Kettlebell Strict Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Kettlebell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Anterior"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Lateral",
+      "Pectoralis Major Clavicular Head",
+      "Serratus Anterior",
+      "Triceps Brachii"
+    ],
+    "file": "357212.mp4",
+    "sourceFile": "35721201-Kettlebell-Strict-Press_Shoulders.mp4",
+    "sha256": "5dccda4a5599149805675b8fd022e66a00327f049bbc27e045d9c4443b361eb9"
+  },
+  "kettlebell-one-arm-snatch": {
+    "videoId": "054212",
+    "baseExerciseId": "0542",
+    "name": "Kettlebell One Arm Snatch",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Kettlebell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Anterior",
+      "Deltoid Lateral",
+      "Gastrocnemius",
+      "Gluteus Maximus",
+      "Hamstrings",
+      "Pectoralis Major Clavicular Head",
+      "Quadriceps",
+      "Serratus Anterior",
+      "Soleus",
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [],
+    "file": "054212.mp4",
+    "sourceFile": "05421201-Kettlebell-One-Arm-Snatch_Shoulders.mp4",
+    "sha256": "33fe25b8b5ac363132e411c40c8842164bc1fce8d2d3b1b0e3f909310542b459"
+  },
+  "dumbbell-suitcase-carry": {
+    "videoId": "291012",
+    "baseExerciseId": "2910",
+    "name": "Dumbbell Suitcase Carry",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "291012.mp4",
+    "sourceFile": "29101201-Dumbbell-Suitcase-Carry_Thighs.mp4",
+    "sha256": "208485be5b738996293317386d76d04aa68480f0505e7361dda099d1ee196551"
+  },
+  "barbell-standing-calf-raise": {
+    "videoId": "137212",
+    "baseExerciseId": "1372",
+    "name": "Barbell Standing Calf Raise",
+    "exerciseType": "Strength",
+    "bodyPart": "Calves",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gastrocnemius"
+    ],
+    "secondaryMuscles": [
+      "Soleus"
+    ],
+    "file": "137212.mp4",
+    "sourceFile": "13721201-Barbell-Standing-Calf-Raise_Calves.mp4",
+    "sha256": "68be806dfd9ac61ab871565f8d7dfc559c84bfb3c8955e6afe5978bb0e3b8ac0"
+  },
+  "bodyweight-standing-calf-raise": {
+    "videoId": "137312",
+    "baseExerciseId": "1373",
+    "name": "Bodyweight Standing Calf Raise",
+    "exerciseType": "Strength",
+    "bodyPart": "Calves",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gastrocnemius"
+    ],
+    "secondaryMuscles": [
+      "Soleus"
+    ],
+    "file": "137312.mp4",
+    "sourceFile": "13731201-Bodyweight-Standing-Calf-Raise_Calves.mp4",
+    "sha256": "d0ecc062eaa98dd369ad795b28ca6fc64643cbe7e3b1a667220f5e603d28b860"
+  },
+  "lever-machine-hip-thrust": {
+    "videoId": "1078912",
+    "baseExerciseId": "10789",
+    "name": "Lever Hip Thrust (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1078912.mp4",
+    "sourceFile": "107891201-Lever-Hip-Thrust-(male)_Hips.mp4",
+    "sha256": "ed2c9cc4876f9868385f6eb241f2f097a7757ba0601b0fc41502994f4dad0880"
+  },
+  "floor-crunch": {
+    "videoId": "027412",
+    "baseExerciseId": "0274",
+    "name": "Crunch Floor (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Waist",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Rectus Abdominis"
+    ],
+    "secondaryMuscles": [
+      "Obliques"
+    ],
+    "file": "027412.mp4",
+    "sourceFile": "02741201-Crunch-Floor-(male)_waist.mp4",
+    "sha256": "d29b7659b6140337fd7bdfec8c6166eb963ce0e9e8bf5fee1649e0076c3a91d2"
+  },
+  "dumbbell-lying-hammer-press": {
+    "videoId": "034012",
+    "baseExerciseId": "0340",
+    "name": "Dumbbell Lying Hammer Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Clavicular Head",
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Triceps Brachii"
+    ],
+    "file": "034012.mp4",
+    "sourceFile": "03401201-Dumbbell-Lying-Hammer-Press_Chest-FIX2.mp4",
+    "sha256": "f9f9ac22ea972ef74fdc2557c44ecd2f43d1a1bbef45590ced33dde86aea302f"
+  },
+  "dumbbell-squeeze-bench-press": {
+    "videoId": "368112",
+    "baseExerciseId": "3681",
+    "name": "Dumbbell Squeeze Bench Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest, Upper Arms",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Clavicular Head",
+      "Pectoralis Major Sternal Head",
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior"
+    ],
+    "file": "368112.mp4",
+    "sourceFile": "36811201-Dumbbell-Squeeze-Bench-Press_Chest-FIX.mp4",
+    "sha256": "8900132d02161ee4511f15e6a87e525be89d7fc29cebbcaedcfbbcd5438c2e14"
+  },
+  "barbell-reverse-grip-bench-press": {
+    "videoId": "509112",
+    "baseExerciseId": "5091",
+    "name": "Barbell Reverse Grip Bench Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Pectoralis Major Clavicular Head",
+      "Triceps Brachii"
+    ],
+    "file": "509112.mp4",
+    "sourceFile": "50911201-Barbell-Reverse-Grip-Bench-Press_Chest.mp4",
+    "sha256": "15525cebefe49e9bfacc1fb28d3ee9442ee4cd72ba2265a8d303b55caa2d44bf"
+  },
+  "barbell-floor-chest-press": {
+    "videoId": "372412",
+    "baseExerciseId": "3724",
+    "name": "Barbell Floor Chest Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Clavicular Head",
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Triceps Brachii"
+    ],
+    "file": "372412.mp4",
+    "sourceFile": "37241201-Barbell-Floor-Chest-Press_Chest.mp4",
+    "sha256": "2da94a98cde84821b19f61d793a318437d1a7309af9d5bda731f67c87c832257"
+  },
+  "barbell-spoto-press": {
+    "videoId": "1120712",
+    "baseExerciseId": "11207",
+    "name": "Barbell Spoto Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1120712.mp4",
+    "sourceFile": "112071201-Barbell-Spoto-Press_Chest.mp4",
+    "sha256": "cd9175a9ba4fbb643c4b82edf68d8409fe7c4e14487ea848d2b1c755a8d8fe9a"
+  },
+  "barbell-larsen-press": {
+    "videoId": "627012",
+    "baseExerciseId": "6270",
+    "name": "Barbell Larsen Press (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "627012.mp4",
+    "sourceFile": "62701201-Barbell-Larsen-Press-(male)_Chest.mp4",
+    "sha256": "95826e2094cbca95351280de35de9462789c3273ece30b4504fb703574160173"
+  },
+  "barbell-incline-close-grip-bench-press": {
+    "videoId": "171912",
+    "baseExerciseId": "1719",
+    "name": "Barbell Incline Close Grip Bench Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Pectoralis Major Clavicular Head",
+      "Pectoralis Major Sternal Head"
+    ],
+    "file": "171912.mp4",
+    "sourceFile": "17191201-Barbell-Incline-Close-Grip-Bench-Press_Upper-Arms.mp4",
+    "sha256": "2dd59df4eb14d9dd630bcdd3948b62fce51a83967995674a7b9407b16e2fbb27"
+  },
+  "dumbbell-incline-fly": {
+    "videoId": "031912",
+    "baseExerciseId": "0319",
+    "name": "Dumbbell Incline Fly",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Clavicular Head"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Deltoid Anterior"
+    ],
+    "file": "031912.mp4",
+    "sourceFile": "03191201-Dumbbell-Incline-Fly_Chest-FIX2.mp4",
+    "sha256": "24e1924e854593c17cbfb0ba8f69ab3340e017cbb886d8f2630b2fae9a729577"
+  },
+  "dumbbell-decline-fly": {
+    "videoId": "030212",
+    "baseExerciseId": "0302",
+    "name": "Dumbbell Decline Fly",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Deltoid Anterior",
+      "Pectoralis Major Clavicular Head"
+    ],
+    "file": "030212.mp4",
+    "sourceFile": "03021201-Dumbbell-Decline-Fly_Chest-FIX.mp4",
+    "sha256": "7bc5f49f8be94de1d6e05836125d346ca0fdbd5c1cdb62b3946ac34d6b8cc15a"
+  },
+  "dumbbell-lying-one-arm-press": {
+    "videoId": "034312",
+    "baseExerciseId": "0343",
+    "name": "Dumbbell Lying One Arm Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Clavicular Head",
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Triceps Brachii"
+    ],
+    "file": "034312.mp4",
+    "sourceFile": "03431201-Dumbbell-Lying-One-Arm-Press_Chest.mp4",
+    "sha256": "b9017247d335d40f3044688574e016f3cc2e5aa5998200824cbbaf0f582ab8c6"
+  },
+  "cable-standing-single-arm-chest-press": {
+    "videoId": "981612",
+    "baseExerciseId": "9816",
+    "name": "Cable Standing Single Arm Chest Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "981612.mp4",
+    "sourceFile": "98161201-Cable-Standing-Single-Arm-Chest-Press_Chest.mp4",
+    "sha256": "4e58c095995f65ef49393458fa7a9195184bcb8119d9f3fee8a7144a03fb9d91"
+  },
+  "cable-standing-chest-press": {
+    "videoId": "335912",
+    "baseExerciseId": "3359",
+    "name": "Cable Standing Chest Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Clavicular Head",
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [],
+    "file": "335912.mp4",
+    "sourceFile": "33591201-Cable-Standing-Chest-Press_Chest.mp4",
+    "sha256": "5e8633faa0a33c98d9c7e0b186c4b7491817603d26315ab6533808e52594ebc5"
+  },
+  "cable-middle-fly": {
+    "videoId": "018812",
+    "baseExerciseId": "0188",
+    "name": "Cable Middle Fly",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Deltoid Lateral",
+      "Pectoralis Major Clavicular Head"
+    ],
+    "file": "018812.mp4",
+    "sourceFile": "01881201-Cable-Middle-Fly_Chest-FIX.mp4",
+    "sha256": "6d23f501669b03352700580ce7ee610e5f17f3ae11db6de5deda06f6f9a8e015"
+  },
+  "cable-standing-single-arm-fly": {
+    "videoId": "621912",
+    "baseExerciseId": "6219",
+    "name": "Cable Standing Single Arm Fly",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "621912.mp4",
+    "sourceFile": "62191201-Cable-Standing-Single-Arm-Fly_Chest.mp4",
+    "sha256": "8820a2a07fbe51744ecd7b75d59482062c76761e2bbcd72b550ace69a943a015"
+  },
+  "svend-press": {
+    "videoId": "085612",
+    "baseExerciseId": "0856",
+    "name": "Svend Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Weighted",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Pectoralis Major Clavicular Head",
+      "Triceps Brachii"
+    ],
+    "file": "085612.mp4",
+    "sourceFile": "08561201-Weighted-Svend-Press_Chest-FIX.mp4",
+    "sha256": "d0202943dee6616d9c0c7ae63c2084aaf34d83a7c2564f7144dd83bcd51f012c"
+  },
+  "incline-push-up": {
+    "videoId": "049312",
+    "baseExerciseId": "0493",
+    "name": "Incline Push-up",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Pectoralis Major Clavicular Head",
+      "Triceps Brachii"
+    ],
+    "file": "049312.mp4",
+    "sourceFile": "04931201-Incline-Push-up_Chest.mp4",
+    "sha256": "e6a2cc78460e2b0d89dc491af3c6602d203fa329f46c6fdef725fb8e4069dd8f"
+  },
+  "decline-push-up": {
+    "videoId": "027912",
+    "baseExerciseId": "0279",
+    "name": "Decline Push-Up",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Clavicular Head",
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Triceps Brachii"
+    ],
+    "file": "027912.mp4",
+    "sourceFile": "02791201-Decline-Push-Up_Chest-FIX.mp4",
+    "sha256": "23f6589a1dd1874480e880125cb1a23d4785b31bcde3012afd1bc0fc4c0de03f"
+  },
+  "diamond-push-up": {
+    "videoId": "028312",
+    "baseExerciseId": "0283",
+    "name": "Diamond Push-up",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Pectoralis Major Clavicular Head",
+      "Pectoralis Major Sternal Head"
+    ],
+    "file": "028312.mp4",
+    "sourceFile": "02831201-Diamond-Push-up_Upper-Arms.mp4",
+    "sha256": "115efb06463cbfa6de6fe833b5a3a62458733f0514b1b9dd4b47135b51f3b3d1"
+  },
+  "archer-push-up": {
+    "videoId": "329412",
+    "baseExerciseId": "3294",
+    "name": "Archer Push-up",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Clavicular Head",
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Triceps Brachii"
+    ],
+    "file": "329412.mp4",
+    "sourceFile": "32941201-Archer-Push-up_Chest.mp4",
+    "sha256": "65a14f6cdfe4f249e9b75d74b3d9b6a28cc02e09f0fec03a4a4b603f4a22ccc5"
+  },
+  "weighted-push-up-with-vest": {
+    "videoId": "391012",
+    "baseExerciseId": "3910",
+    "name": "Weighted Push-up with Vest",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Weighted",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Clavicular Head",
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Triceps Brachii"
+    ],
+    "file": "391012.mp4",
+    "sourceFile": "39101201-Weighted-Push-up-with-Vest_Chest.mp4",
+    "sha256": "3279eb799dd2214b21455c401db37d1d66e7a54c16978a72bb4b2b1e583bbb08"
+  },
+  "lever-seated-wide-lat-pulldown": {
+    "videoId": "864612",
+    "baseExerciseId": "8646",
+    "name": "Lever Seated Wide Lat Pulldown (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "864612.mp4",
+    "sourceFile": "86461201-Lever-Seated-Wide-Lat-Pulldown-(male)_Back.mp4",
+    "sha256": "6d62fc656da8f0af86684197caaa4413ae579eef19b44b27f88525afacdf5d8d"
+  },
+  "cable-one-arm-lat-pulldown": {
+    "videoId": "120412",
+    "baseExerciseId": "1204",
+    "name": "Cable one arm lat pulldown",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Latissimus Dorsi"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior",
+      "Obliques",
+      "Pectoralis Major Sternal Head",
+      "Teres Major",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "file": "120412.mp4",
+    "sourceFile": "12041201-Cable-One-Arm-Lat-Pulldown_Back-FIX.mp4",
+    "sha256": "9e1748c7c0e272a51647ca462eafd0dea229ef2f6440219fe695176e22d08306"
+  },
+  "cable-kneeling-one-arm-lat-pulldown": {
+    "videoId": "494812",
+    "baseExerciseId": "4948",
+    "name": "Cable Kneeling One Arm Lat Pulldown",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Latissimus Dorsi"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior",
+      "Infraspinatus",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "file": "494812.mp4",
+    "sourceFile": "49481201-Cable-Kneeling-One-Arm-Lat-Pulldown_Back.mp4",
+    "sha256": "e82ecf029857ff91e908bd38730f7e1446697fef8a0d9380aeaad29969c78bb7"
+  },
+  "cable-kneeling-lat-pulldown": {
+    "videoId": "1125312",
+    "baseExerciseId": "11253",
+    "name": "Cable Kneeling Pulldown (VERSION 3)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1125312.mp4",
+    "sourceFile": "112531201-Cable-Kneeling-Pulldown-(VERSION-3)_Back.mp4",
+    "sha256": "b001f2309c7c6397b5bdf54a7f638c6129154304a30e4d1b31eaff89cbb31973"
+  },
+  "cable-lateral-pulldown-with-v-bar": {
+    "videoId": "261612",
+    "baseExerciseId": "2616",
+    "name": "Cable Lateral Pulldown with V-bar",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Latissimus Dorsi"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior",
+      "Pectoralis Major Sternal Head",
+      "Teres Major",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "file": "261612.mp4",
+    "sourceFile": "26161201-Cable-Lateral-Pulldown-with-V-bar_Back.mp4",
+    "sha256": "fdae02150832ed9b6689b985b719e2709bb66b83452643957643a585c83a6d63"
+  },
+  "lever-machine-pullover": {
+    "videoId": "228512",
+    "baseExerciseId": "2285",
+    "name": "Lever Pullover (plate loaded)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Posterior",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Triceps Brachii"
+    ],
+    "file": "228512.mp4",
+    "sourceFile": "22851201-Lever-Pullover-(plate-loaded)_Back.mp4",
+    "sha256": "25668f7fdfe343556e1d666713ec8f7e3457741f2c4ce1254d25d5cfd65a86c0"
+  },
+  "cable-rope-straight-arm-pulldown": {
+    "videoId": "023712",
+    "baseExerciseId": "0237",
+    "name": "Cable Straight Arm Pulldown (with rope)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Latissimus Dorsi"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Posterior",
+      "Teres Major",
+      "Triceps Brachii"
+    ],
+    "file": "023712.mp4",
+    "sourceFile": "02371201-Cable-Straight-Arm-Pulldown-(with-rope)_Back.mp4",
+    "sha256": "75a3d676406d96de5bf8e910577f3c6c0a2ad93612eda32696dbc2eaa22ac085"
+  },
+  "cable-single-arm-straight-arm-pulldown": {
+    "videoId": "584412",
+    "baseExerciseId": "5844",
+    "name": "Single Arm Side Straight Arm Lat Pulldown (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Latissimus Dorsi"
+    ],
+    "secondaryMuscles": [
+      "Teres Major"
+    ],
+    "file": "584412.mp4",
+    "sourceFile": "58441201-Single-Arm-Side-Straight-Arm-Lat-Pulldown-(male)_B.mp4",
+    "sha256": "fd637f1931a6fe05eb55e5eac20944d3b6e6a746467328dce4f1107aa6d6d00e"
+  },
+  "barbell-lying-seal-row-on-rack": {
+    "videoId": "879812",
+    "baseExerciseId": "8798",
+    "name": "Barbell Lying Seal Row on Rack",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "879812.mp4",
+    "sourceFile": "87981201-Barbell-Lying-Seal-Row-on-Rack_Back.mp4",
+    "sha256": "21c954a9d0478f02ff1693401016307456a22b26d1a0692911bc3023e9c04802"
+  },
+  "landmine-one-arm-bent-over-row": {
+    "videoId": "503412",
+    "baseExerciseId": "5034",
+    "name": "Landmine One Arm Bent Over Row (VERSION 2)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Infraspinatus",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Middle Fibers",
+      "Trapezius Upper Fibers"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior"
+    ],
+    "file": "503412.mp4",
+    "sourceFile": "50341201-Landmine-One-Arm-Bent-Over-Row-(VERSION-2)_Back.mp4",
+    "sha256": "0f035891f75c5b2256bbcfe23cebc583363df853dfacb2f940399cf2a263149d"
+  },
+  "landmine-v-bar-bent-over-row": {
+    "videoId": "320012",
+    "baseExerciseId": "3200",
+    "name": "Landmine Bent over Row with V-bar (plate loaded)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Infraspinatus",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior"
+    ],
+    "file": "320012.mp4",
+    "sourceFile": "32001201-Lever-Bent-over-Row-with-V-bar-(plate-loaded)_Back.mp4",
+    "sha256": "a0fbc1ded36a7609af8b5480d64520063e20a877931987d0e68db13d7144a1bf"
+  },
+  "lever-lying-t-bar-row": {
+    "videoId": "119412",
+    "baseExerciseId": "1194",
+    "name": "Lever Lying T-bar Row",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Infraspinatus",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior",
+      "Pectoralis Major Sternal Head",
+      "Triceps Brachii"
+    ],
+    "file": "119412.mp4",
+    "sourceFile": "11941201-Lever-Lying-T-bar-Row_Back.mp4",
+    "sha256": "754919c4b1ec72d1259d94773fab1518c9ec78cbe919810a7fe8a39c9bd296cd"
+  },
+  "cable-seated-wide-grip-row": {
+    "videoId": "021812",
+    "baseExerciseId": "0218",
+    "name": "Cable Seated Wide grip Row",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Infraspinatus",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior"
+    ],
+    "file": "021812.mp4",
+    "sourceFile": "02181201-Cable-Seated-Wide-grip-Row_Back-FIX.mp4",
+    "sha256": "59ac5d6851c95529d38a5b953ec9fcf2f71d6907676ad1ea37fba35000f7de73"
+  },
+  "cable-seated-row-with-v-bar": {
+    "videoId": "266112",
+    "baseExerciseId": "2661",
+    "name": "Cable Seated Row with V-bar",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Infraspinatus",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior"
+    ],
+    "file": "266112.mp4",
+    "sourceFile": "26611201-Cable-Seated-Row-with-V-bar_Back-FIX.mp4",
+    "sha256": "0ef2ddb06599a6ba31db9b0077582990d7920c0c6766fa1688f1d4dfe0528796"
+  },
+  "cable-one-arm-twisting-seated-row": {
+    "videoId": "120512",
+    "baseExerciseId": "1205",
+    "name": "Cable one arm twisting seated row",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Infraspinatus",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior",
+      "Obliques",
+      "Pectoralis Major Sternal Head",
+      "Triceps Brachii"
+    ],
+    "file": "120512.mp4",
+    "sourceFile": "12051201-Cable-one-arm-twisting-seated-row_back.mp4",
+    "sha256": "d325670b36240f75b3cf792f0748270348d689fb9cda4d7ccca3577ec1ce05c4"
+  },
+  "cable-high-row": {
+    "videoId": "650312",
+    "baseExerciseId": "6503",
+    "name": "Cable High Row",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "650312.mp4",
+    "sourceFile": "65031201-Cable-High-Row_Back.mp4",
+    "sha256": "2cb0885b5034105b6c9cc3d4c205f82021aa44fec9575cec4cd56f34054471fe"
+  },
+  "cable-low-seated-row": {
+    "videoId": "018012",
+    "baseExerciseId": "0180",
+    "name": "Cable Low Seated Row",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Infraspinatus",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior",
+      "Pectoralis Major Sternal Head"
+    ],
+    "file": "018012.mp4",
+    "sourceFile": "01801201-Cable-Low-Seated-Row_Back.mp4",
+    "sha256": "f67a08d96ea50cd756546c7e3d773ebab870318ece7c755e6cb3e170e0ebb66c"
+  },
+  "cable-rope-seated-row": {
+    "videoId": "132312",
+    "baseExerciseId": "1323",
+    "name": "Cable Rope Seated Row",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Infraspinatus",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior",
+      "Pectoralis Major Sternal Head"
+    ],
+    "file": "132312.mp4",
+    "sourceFile": "13231201-Cable-Rope-Seated-Row_Back.mp4",
+    "sha256": "048ba233c7153ca018b6434d9a7b7c95f1558753c3ed3d00ee165b0d9642949a"
+  },
+  "lever-high-row": {
+    "videoId": "1063812",
+    "baseExerciseId": "10638",
+    "name": "Lever High Row (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1063812.mp4",
+    "sourceFile": "106381201-Lever-High-Row-(male)_Back.mp4",
+    "sha256": "09fc40d81bae8dee92036f5c000d3ab0e4cad0f3cd42397697d24e22303d6ede"
+  },
+  "lever-machine-low-row": {
+    "videoId": "421412",
+    "baseExerciseId": "4214",
+    "name": "Lever Low Row (plate loaded)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Infraspinatus",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Middle Fibers",
+      "Trapezius Upper Fibers"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior"
+    ],
+    "file": "421412.mp4",
+    "sourceFile": "42141201-Lever-Low-Row-(plate-loaded)_Back.mp4",
+    "sha256": "ad698fea968ab8df20ccbfd9a5d8498891643823ff62bebbacdc1e11e2ee4f59"
+  },
+  "lever-unilateral-row": {
+    "videoId": "131312",
+    "baseExerciseId": "1313",
+    "name": "Lever Unilateral Row",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Infraspinatus",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior",
+      "Pectoralis Major Sternal Head"
+    ],
+    "file": "131312.mp4",
+    "sourceFile": "13131201-Lever-Unilateral-Row_Back.mp4",
+    "sha256": "658933d28a281f83275e8cfde973aaab5e2419ddc748515a35a9088a4ac7da7f"
+  },
+  "dumbbell-renegade-row": {
+    "videoId": "298012",
+    "baseExerciseId": "2980",
+    "name": "Dumbbell Renegade Row",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Infraspinatus",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior",
+      "Pectoralis Major Sternal Head"
+    ],
+    "file": "298012.mp4",
+    "sourceFile": "29801201-Dumbbell-Renegade-Row_Back-FIX.mp4",
+    "sha256": "946c55bc28ff92171e10d21225625b369a2b4c4600612e5462134cc7f01e15d6"
+  },
+  "dumbbell-kroc-row": {
+    "videoId": "1032912",
+    "baseExerciseId": "10329",
+    "name": "Dumbbell Kroc Row (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1032912.mp4",
+    "sourceFile": "103291201-Dumbbell-Kroc-Row-(male)_Back.mp4",
+    "sha256": "cd4a5e40dc9a0147bb2af64ff5d1f50d9957791d1991938b80d0778f80e5fa8b"
+  },
+  "dumbbell-gorilla-row": {
+    "videoId": "1124112",
+    "baseExerciseId": "11241",
+    "name": "Dumbbell Gorilla Row (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1124112.mp4",
+    "sourceFile": "112411201-Dumbbell-Gorilla-Row-(male)_Back.mp4",
+    "sha256": "58a35ff5de99b7a89a8c0b565e8e3811d95d00bfb4c06cf88720979520af4ddc"
+  },
+  "suspension-trainer-row": {
+    "videoId": "622012",
+    "baseExerciseId": "6220",
+    "name": "Suspender Row (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Suspension",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "622012.mp4",
+    "sourceFile": "62201201-Suspender-Row-(male)_Back.mp4",
+    "sha256": "ac95ec9d3e20f0a55da6dd0cdf174dc69400f193ea83670f772437a07b00159e"
+  },
+  "ring-inverted-row": {
+    "videoId": "765512",
+    "baseExerciseId": "7655",
+    "name": "Ring Inverted Row parallel to the floor (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Suspension",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "765512.mp4",
+    "sourceFile": "76551201-Ring-Inverted-Row-parallel-to-the-floor-(male)_Bac.mp4",
+    "sha256": "ac0ab6dc8ee62bd4dfc7f413b02e264a5a69bb53b02717398d4a4d06025956f4"
+  },
+  "scapular-pull-up": {
+    "videoId": "1101512",
+    "baseExerciseId": "11015",
+    "name": "Scapular Pull-up (VERSION 2)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1101512.mp4",
+    "sourceFile": "110151201-Scapular-Pull-Up-(VERSION-2)_Back.mp4",
+    "sha256": "89609f367e24196c377a01f331e1d0e1ae00384a8c096489bfbabbe538498de9"
+  },
+  "parallel-grip-chin-up": {
+    "videoId": "025312",
+    "baseExerciseId": "0253",
+    "name": "Chin-ups (narrow parallel grip)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Infraspinatus",
+      "Latissimus Dorsi",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Posterior",
+      "Pectoralis Major Sternal Head"
+    ],
+    "file": "025312.mp4",
+    "sourceFile": "02531201-Chin-ups-(narrow-parallel-grip)_Back.mp4",
+    "sha256": "4ebc9cc6174c1ac94af685557a1c3e99d8f1c16190ec3f05ee325b6272765513"
+  },
+  "barbell-rack-pull": {
+    "videoId": "007412",
+    "baseExerciseId": "0074",
+    "name": "Barbell Rack Pull",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Erector Spinae",
+      "Gluteus Maximus"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Hamstrings",
+      "Quadriceps",
+      "Soleus"
+    ],
+    "file": "007412.mp4",
+    "sourceFile": "00741201-Barbell-Rack-Pull_Hips.mp4",
+    "sha256": "137aa5be54a78be1cd575e5ac1d50c565daefe90752fe48db668b046dfac85f7"
+  },
+  "dumbbell-seated-lateral-raise": {
+    "videoId": "039512",
+    "baseExerciseId": "0395",
+    "name": "Dumbbell Seated Lateral Raise",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Lateral"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Serratus Anterior"
+    ],
+    "file": "039512.mp4",
+    "sourceFile": "03951201-Dumbbell-Seated-Lateral-Raise_Shoulders.mp4",
+    "sha256": "0828d350b4da09066f1051a293c7b0822aa8ace1ea641f707fa79fe7d4cf037d"
+  },
+  "cable-leaning-lateral-raise": {
+    "videoId": "388012",
+    "baseExerciseId": "3880",
+    "name": "Cable Leaning Lateral Raise",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "388012.mp4",
+    "sourceFile": "38801201-Cable-Leaning-Lateral-Raise_Shoulders.mp4",
+    "sha256": "c30e1186f18a526e917f9c6b4ff75c291efed53f50f45d79f803caaea111b58e"
+  },
+  "cable-behind-the-back-lateral-raise": {
+    "videoId": "1040912",
+    "baseExerciseId": "10409",
+    "name": "Cable Behind The Back Cuffed Lateral Raise (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1040912.mp4",
+    "sourceFile": "104091201-Cable-Behind-The-Back-Cuffed-Lateral-Raise-(male).mp4",
+    "sha256": "dbd8b35fa0dc5df3ba0198ed7a7bb03caf5ced59f9ba5e13f227b4f733902cc0"
+  },
+  "cable-one-arm-lateral-raise": {
+    "videoId": "019212",
+    "baseExerciseId": "0192",
+    "name": "Cable One Arm Lateral Raise",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Lateral"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Serratus Anterior"
+    ],
+    "file": "019212.mp4",
+    "sourceFile": "01921201-Cable-One-Arm-Lateral-Raise_Shoulders.mp4",
+    "sha256": "4f2d085033d31e7194514b4c0e932e5a81f9722a978e4c1e9fae8256d62f925c"
+  },
+  "cable-y-raise": {
+    "videoId": "334212",
+    "baseExerciseId": "3342",
+    "name": "Cable Y raise",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Lateral"
+    ],
+    "secondaryMuscles": [],
+    "file": "334212.mp4",
+    "sourceFile": "33421201-Cable-Y-raise_Shoulders.mp4",
+    "sha256": "fb4d531ae3a90f424835e35e571cf72bea11ec7cedc0633925d799767deaebb0"
+  },
+  "dumbbell-incline-y-raise": {
+    "videoId": "354112",
+    "baseExerciseId": "3541",
+    "name": "Dumbbell Incline Y Raise",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Infraspinatus",
+      "Serratus Anterior",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "secondaryMuscles": [],
+    "file": "354112.mp4",
+    "sourceFile": "35411201-Dumbbell-Incline-Y-Raise_Shoulders.mp4",
+    "sha256": "163f2e68d78546686e01a1fee3543c0cbfe71b297508169532aa5c8bb0e58879"
+  },
+  "dumbbell-front-raise": {
+    "videoId": "030912",
+    "baseExerciseId": "0309",
+    "name": "Dumbbell Front Raise (version 2)",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Anterior"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Lateral",
+      "Pectoralis Major Clavicular Head",
+      "Serratus Anterior"
+    ],
+    "file": "030912.mp4",
+    "sourceFile": "03091201-Dumbbell-Front-Raise-(version-2)_Shoulders.mp4",
+    "sha256": "c71e949323dba76c61aa27093a96c357f2455fcc8aee8fdc8c755bfbf6620a0c"
+  },
+  "cable-front-raise": {
+    "videoId": "016212",
+    "baseExerciseId": "0162",
+    "name": "Cable Front Raise",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Anterior"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Lateral",
+      "Pectoralis Major Clavicular Head",
+      "Serratus Anterior"
+    ],
+    "file": "016212.mp4",
+    "sourceFile": "01621201-Cable-Front-Raise_Shoulders-FIX.mp4",
+    "sha256": "e5085b0a8450dee6cad08cfb309ba05e56248bf3b9b77923f091e2154939c151"
+  },
+  "weighted-front-raise": {
+    "videoId": "083412",
+    "baseExerciseId": "0834",
+    "name": "Weighted Front Raise",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Weighted",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Anterior"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Lateral",
+      "Pectoralis Major Clavicular Head",
+      "Serratus Anterior"
+    ],
+    "file": "083412.mp4",
+    "sourceFile": "08341201-Weighted-Front-Raise_Shoulders-FIX.mp4",
+    "sha256": "dd9c207b7831a5bd0195c645af376222cdef92e69e7e1bae29ec664cf086eea0"
+  },
+  "barbell-front-raise": {
+    "videoId": "004112",
+    "baseExerciseId": "0041",
+    "name": "Barbell Front Raise",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Anterior"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Lateral",
+      "Pectoralis Major Clavicular Head",
+      "Serratus Anterior"
+    ],
+    "file": "004112.mp4",
+    "sourceFile": "00411201-Barbell-Front-Raise_Shoulders.mp4",
+    "sha256": "a2b736a85df5a53b2e3dd165d8dd0c157fe17b01a27ea739dac5db5396d1cf04"
+  },
+  "cable-standing-reverse-fly": {
+    "videoId": "1125412",
+    "baseExerciseId": "11254",
+    "name": "Cable Standing Reverse Fly (VERSION 3)",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1125412.mp4",
+    "sourceFile": "112541201-Cable-Standing-Reverse-Fly-(VERSION-3)_Shoulders.mp4",
+    "sha256": "9ff84f3380a73bc0394de021153d6af438c8d86a391c0cc0e486e1f87d1bbf5b"
+  },
+  "head-supported-dumbbell-rear-lateral-raise": {
+    "videoId": "037912",
+    "baseExerciseId": "0379",
+    "name": "Dumbbell Rear Lateral Raise (support head)",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Posterior"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Lateral",
+      "Infraspinatus",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "file": "037912.mp4",
+    "sourceFile": "03791201-Dumbbell-Rear-Lateral-Raise-(support-head)_Shoulde.mp4",
+    "sha256": "21dc7227b3aab16dc1d89381fa3e4748ca6eeba80867f7ccfdd785a12a131dbe"
+  },
+  "dumbbell-incline-rear-fly": {
+    "videoId": "032612",
+    "baseExerciseId": "0326",
+    "name": "Dumbbell Incline Rear Fly",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Lateral",
+      "Deltoid Posterior"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "file": "032612.mp4",
+    "sourceFile": "03261201-Dumbbell-Incline-Rear-Lateral-Raise_Shoulders-FIX.mp4",
+    "sha256": "0263e801a93218c048c1c9b988ae530b5322b24b1e9b68790757f96866c74085"
+  },
+  "lever-seated-rear-delt-row": {
+    "videoId": "1109712",
+    "baseExerciseId": "11097",
+    "name": "Lever Seated Delt Row (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1109712.mp4",
+    "sourceFile": "110971201-Lever-Seated-Delt-Row-(male)_Shoulders.mp4",
+    "sha256": "e2c52c4499aa0cbd583761d28cbb59e83b1e6c84f3c93175ebf0c6ce811e265f"
+  },
+  "barbell-wide-grip-upright-row": {
+    "videoId": "012312",
+    "baseExerciseId": "0123",
+    "name": "Barbell Wide Grip Upright Row",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Lateral"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Anterior",
+      "Infraspinatus",
+      "Serratus Anterior",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "file": "012312.mp4",
+    "sourceFile": "01231201-Barbell-Wide-Grip-Upright-Row_Shoulders.mp4",
+    "sha256": "55ae576f380840a40ec64951a9b58145095862962d2dbdb4cbd52fec4bde9fe4"
+  },
+  "dumbbell-upright-row": {
+    "videoId": "043712",
+    "baseExerciseId": "0437",
+    "name": "Dumbbell Upright Row",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Lateral"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Anterior",
+      "Infraspinatus",
+      "Serratus Anterior",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "file": "043712.mp4",
+    "sourceFile": "04371201-Dumbbell-Upright-Row_Shoulders-FIX.mp4",
+    "sha256": "a7e7a722c90a0f3641a7bebc84aab29356cb0da39cf735b28bd3503deb4b7460"
+  },
+  "barbell-z-press": {
+    "videoId": "486612",
+    "baseExerciseId": "4866",
+    "name": "Barbell Z Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "486612.mp4",
+    "sourceFile": "48661201-Barbell-Z-Press_Shoulders.mp4",
+    "sha256": "6aad0884a931a223b7a12b36b16ce6c24bfef0b912719f0e377d7f44b8c9e5f8"
+  },
+  "landmine-single-arm-press": {
+    "videoId": "509412",
+    "baseExerciseId": "5094",
+    "name": "Landmine Single Arm Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Pectoralis Major Sternal Head"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Pectoralis Major Clavicular Head",
+      "Triceps Brachii"
+    ],
+    "file": "509412.mp4",
+    "sourceFile": "50941201-Landmine-Single-Arm-Press_Shoulders.mp4",
+    "sha256": "bd627ca9435b29582157df75ea3ee4a7840508898393bf24d7ef91f0a35067d9"
+  },
+  "lever-viking-press": {
+    "videoId": "885012",
+    "baseExerciseId": "8850",
+    "name": "Lever Standing Viking Press (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "885012.mp4",
+    "sourceFile": "88501201-Lever-Standing-Viking-Press-(male)_Shoulders.mp4",
+    "sha256": "421d2951bfe1572499490a2ea60ab5b5dbf6c51d14f3ca230cd5a5984dd47279"
+  },
+  "pike-push-up": {
+    "videoId": "292112",
+    "baseExerciseId": "2921",
+    "name": "Pike Push-up",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Anterior"
+    ],
+    "secondaryMuscles": [
+      "Pectoralis Major Clavicular Head",
+      "Pectoralis Major Sternal Head",
+      "Serratus Anterior",
+      "Triceps Brachii"
+    ],
+    "file": "292112.mp4",
+    "sourceFile": "29211201-Pike-Push-up_Chest.mp4",
+    "sha256": "ed76729f1432e85c65051266508768b0c7bc0c8290601c8cb8ed27bead37986c"
+  },
+  "ez-barbell-preacher-curl": {
+    "videoId": "640612",
+    "baseExerciseId": "6406",
+    "name": "EZ Barbell Preacher Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "EZ Barbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "640612.mp4",
+    "sourceFile": "64061201-EZ-Barbell-Preacher-Curl_Upper-Arms.mp4",
+    "sha256": "ce0a25c5f0b012eb6c774ef242a823b998ca2974e4edc545a8d89ceb74403ed9"
+  },
+  "dumbbell-preacher-curl": {
+    "videoId": "037212",
+    "baseExerciseId": "0372",
+    "name": "Dumbbell Preacher Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Brachialis"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis"
+    ],
+    "file": "037212.mp4",
+    "sourceFile": "03721201-Dumbbell-Preacher-Curl_Upper-Arms.mp4",
+    "sha256": "db06c99ef4750bc5e53735c014a988628fa3b8c7f19460221acfe5411a05f9e9"
+  },
+  "dumbbell-one-arm-hammer-preacher-curl": {
+    "videoId": "166312",
+    "baseExerciseId": "1663",
+    "name": "Dumbbell One Arm Hammer Preacher Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "166312.mp4",
+    "sourceFile": "16631201-Dumbbell-One-Arm-Hammer-Preacher-Curl_Upper-Arms.mp4",
+    "sha256": "41db1fb76da177e36c6bfddbddda100f0dff36489fff21b0a40a5aece3dc6465"
+  },
+  "cable-preacher-curl": {
+    "videoId": "019512",
+    "baseExerciseId": "0195",
+    "name": "Cable Preacher Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Brachialis"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Brachioradialis"
+    ],
+    "file": "019512.mp4",
+    "sourceFile": "01951201-Cable-Preacher-Curl_Upper-Arms.mp4",
+    "sha256": "e5a3a6a9e0de51d2bdb5994aa663a59682b8c8b679a980758a7fde31c9193e45"
+  },
+  "barbell-reverse-curl": {
+    "videoId": "008012",
+    "baseExerciseId": "0080",
+    "name": "Barbell Reverse Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Brachioradialis"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Brachialis"
+    ],
+    "file": "008012.mp4",
+    "sourceFile": "00801201-Barbell-Reverse-Curl_Forearm.mp4",
+    "sha256": "5e2b865f07dd8be4b39f06efad0f5f1ff72db7f400010485d39046b99eadcdef"
+  },
+  "ez-barbell-reverse-grip-curl": {
+    "videoId": "045112",
+    "baseExerciseId": "0451",
+    "name": "EZ Barbell Reverse Grip Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Forearms",
+    "equipment": "EZ Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Brachioradialis"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Brachialis"
+    ],
+    "file": "045112.mp4",
+    "sourceFile": "04511201-EZ-Barbell-Reverse-Grip-Curl_Forearms.mp4",
+    "sha256": "e5bd02fa086a6df4f633adc319aaf1aee6334a67a68a7bde0c4440f5b7d72634"
+  },
+  "dumbbell-biceps-curl-reverse": {
+    "videoId": "165412",
+    "baseExerciseId": "1654",
+    "name": "Dumbbell Biceps Curl Reverse",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "165412.mp4",
+    "sourceFile": "16541201-Dumbbell-Biceps-Curl-Reverse_Upper-Arms.mp4",
+    "sha256": "b25358110c2ca8bb40e0ce44a4da9f11ee0ceb2c030e7be8d579d9608781c067"
+  },
+  "dumbbell-zottman-curl": {
+    "videoId": "043912",
+    "baseExerciseId": "0439",
+    "name": "Dumbbell Zottman Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Biceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis"
+    ],
+    "file": "043912.mp4",
+    "sourceFile": "04391201-Dumbbell-Zottman-Curl_Upper-Arms-FIX2.mp4",
+    "sha256": "0a09362b444c16dc49b114158c9e2e9c9fbb3a134f59b1779e505f51df223e37"
+  },
+  "dumbbell-cross-body-hammer-curl": {
+    "videoId": "029812",
+    "baseExerciseId": "0298",
+    "name": "Dumbbell Cross Body Hammer Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Forearms",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Brachioradialis"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Brachialis"
+    ],
+    "file": "029812.mp4",
+    "sourceFile": "02981201-Dumbbell-Cross-Body-Hammer-Curl_Forearms.mp4",
+    "sha256": "21f4b25edd4302ad34fa2a464c453db6b4fe6f84b237fbc9c2b537c342b8a2d8"
+  },
+  "dumbbell-seated-curl": {
+    "videoId": "039112",
+    "baseExerciseId": "0391",
+    "name": "Dumbbell Seated Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Biceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis"
+    ],
+    "file": "039112.mp4",
+    "sourceFile": "03911201-Dumbbell-Seated-Curl_Upper-Arms.mp4",
+    "sha256": "0de749809019dfd6e10c1672238b17987aed4ae75b872a8de51b442061c2478a"
+  },
+  "dumbbell-standing-biceps-curl": {
+    "videoId": "029412",
+    "baseExerciseId": "0294",
+    "name": "Dumbbell Standing Biceps Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Biceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis"
+    ],
+    "file": "029412.mp4",
+    "sourceFile": "02941201-Dumbbell-Biceps-Curl_Upper-Arms.mp4",
+    "sha256": "e9e0ca39811b957a8dbc2624b01b146cf327f0899589ac57a341c11300be65f5"
+  },
+  "barbell-drag-curl": {
+    "videoId": "003812",
+    "baseExerciseId": "0038",
+    "name": "Barbell Drag Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Biceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Anterior",
+      "Deltoid Posterior"
+    ],
+    "file": "003812.mp4",
+    "sourceFile": "00381201-Barbell-Drag-Curl_Upper-Arms-FIX.mp4",
+    "sha256": "b499a340a77119d30f18600a5578872f095092e65d3ee02b983886a0c994ad6b"
+  },
+  "cable-drag-curl": {
+    "videoId": "163212",
+    "baseExerciseId": "1632",
+    "name": "Cable Drag Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "163212.mp4",
+    "sourceFile": "16321201-Cable-Drag-Curl_Upper-Arms.mp4",
+    "sha256": "033a5d802f060034c9cf082f89aadc151aa97eb7ea010120317cf6a73614add6"
+  },
+  "cable-standing-inner-curl": {
+    "videoId": "022912",
+    "baseExerciseId": "0229",
+    "name": "Cable Standing Inner Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Biceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Brachialis"
+    ],
+    "file": "022912.mp4",
+    "sourceFile": "02291201-Cable-Standing-Inner-Curl_Upper-Arms.mp4",
+    "sha256": "5f4ca7ba5435368ced34790d729a6deac087ad8a9cf401611e49411ba1318baa"
+  },
+  "cable-one-arm-curl": {
+    "videoId": "019012",
+    "baseExerciseId": "0190",
+    "name": "Cable One Arm Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Biceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis"
+    ],
+    "file": "019012.mp4",
+    "sourceFile": "01901201-Cable-One-Arm-Curl_Upper-Arms.mp4",
+    "sha256": "a7b09801dc0ceacfb636422a607ea1db987d86ca8958a07ca80e2767247d10cc"
+  },
+  "cable-overhead-curl": {
+    "videoId": "163612",
+    "baseExerciseId": "1636",
+    "name": "Cable Overhead Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Biceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis"
+    ],
+    "file": "163612.mp4",
+    "sourceFile": "16361201-Cable-Overhead-Curl_Upper-Arms.mp4",
+    "sha256": "42c400e11a0fbc89ca0064e1d7ae763dd4a40279a9058c9e00b5a92cbb800b1e"
+  },
+  "lever-biceps-curl": {
+    "videoId": "057512",
+    "baseExerciseId": "0575",
+    "name": "Lever Biceps Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Brachialis"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii"
+    ],
+    "file": "057512.mp4",
+    "sourceFile": "05751201-Lever-Bicep-Curl_Upper-Arms.mp4",
+    "sha256": "e6754b4d0afca663caf3361fc98c54ad49919151b2416172d4f484dfe85dafb3"
+  },
+  "dumbbell-spider-curl": {
+    "videoId": "993112",
+    "baseExerciseId": "9931",
+    "name": "Dumbbell Spider Curl (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "993112.mp4",
+    "sourceFile": "99311201-Dumbbell-Spider-Curl-(male)_Upper-Arms.mp4",
+    "sha256": "2479649232fbeb78aa3aff35bc0b5dd2dfc0f82d8ea0a014b380cc9f406b9e6f"
+  },
+  "dumbbell-hammer-preacher-curl": {
+    "videoId": "592112",
+    "baseExerciseId": "5921",
+    "name": "Dumbbell Hammer Preacher Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "592112.mp4",
+    "sourceFile": "59211201-Dumbbell-Hammer-Preacher-Curl_Upper-Arms.mp4",
+    "sha256": "b3c869da9beaa4282cdf86e15383d2acc99fdb43dcc05c1730f081dd687b03c8"
+  },
+  "dumbbell-incline-hammer-curl": {
+    "videoId": "032012",
+    "baseExerciseId": "0320",
+    "name": "Dumbbell Incline Hammer Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Biceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis"
+    ],
+    "file": "032012.mp4",
+    "sourceFile": "03201201-Dumbbell-Incline-Hammer-Curl_Upper-Arms.mp4",
+    "sha256": "6546502c5c2a1bb0e7b7b1411ed4f40054de6302b8c0a6a516415248fd78ccbc"
+  },
+  "dumbbell-skull-crusher": {
+    "videoId": "1043212",
+    "baseExerciseId": "10432",
+    "name": "Dumbbell Lying Triceps Extension Skull Crusher (VERSION 2)",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1043212.mp4",
+    "sourceFile": "104321201-Dumbbell-Lying-Triceps-Extension-Skull-Crusher-(V.mp4",
+    "sha256": "050482cd08c46367eba6def1a64282f28b264958b3cba50d299df7a06eed71ff"
+  },
+  "ez-barbell-incline-triceps-extension": {
+    "videoId": "044912",
+    "baseExerciseId": "0449",
+    "name": "EZ Barbell Incline Triceps Extension",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "EZ Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [],
+    "file": "044912.mp4",
+    "sourceFile": "04491201-EZ-Barbell-Incline-Triceps-Extension_Upper-Arms-FI.mp4",
+    "sha256": "a9a66b97b4881832330207483653233c48a27b8d3de1bf1e6a215af29a842b26"
+  },
+  "ez-barbell-decline-triceps-extension": {
+    "videoId": "218612",
+    "baseExerciseId": "2186",
+    "name": "EZ Barbell Decline Triceps Extension",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "EZ Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [],
+    "file": "218612.mp4",
+    "sourceFile": "21861201-EZ-Barbell-Decline-Triceps-Extension_Upper-Arms.mp4",
+    "sha256": "b1c43404ce235b3bda8cc514929fa776abe185b7998f5cb4479d65e02cc49cb0"
+  },
+  "barbell-jm-bench-press": {
+    "videoId": "005212",
+    "baseExerciseId": "0052",
+    "name": "Barbell JM-Bench Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Pectoralis Major Sternal Head"
+    ],
+    "file": "005212.mp4",
+    "sourceFile": "00521201-Barbell-JM-Bench-Press_Upper-Arms-FIX.mp4",
+    "sha256": "12c4674db846a96cf457170421f428068761ff01a3644addf2d723966bc06acc"
+  },
+  "dumbbell-tate-press": {
+    "videoId": "043612",
+    "baseExerciseId": "0436",
+    "name": "Dumbbell Tate Press",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior"
+    ],
+    "file": "043612.mp4",
+    "sourceFile": "04361201-Dumbbell-Tate-Press_Triceps.mp4",
+    "sha256": "532996d65d41d2271d24e0ba6379ae7b128cda287d399046a2e6d085d04d87aa"
+  },
+  "cable-standing-high-cross-triceps-extension": {
+    "videoId": "371912",
+    "baseExerciseId": "3719",
+    "name": "Cable Standing High Cross Triceps Extension",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [],
+    "file": "371912.mp4",
+    "sourceFile": "37191201-Cable-Standing-High-Cross-Triceps-Extension_Upper-.mp4",
+    "sha256": "35e00865650345042823062388658bb5dacc94a826988023dfcb362e8c5967ee"
+  },
+  "cable-single-arm-overhead-triceps-extension": {
+    "videoId": "1127912",
+    "baseExerciseId": "11279",
+    "name": "Cable Standing Single Arm Overhead Triceps Extension (VERSION 3)",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1127912.mp4",
+    "sourceFile": "112791201-Cable-Standing-Single-Arm-Overhead-Triceps-Extens.mp4",
+    "sha256": "78ddfdecddfc9a6b2d70be3d769eaa28e0d113ed688d349840757b120dc11e73"
+  },
+  "cable-v-bar-triceps-pushdown": {
+    "videoId": "024112",
+    "baseExerciseId": "0241",
+    "name": "Cable Triceps Pushdown (V bar)",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [],
+    "file": "024112.mp4",
+    "sourceFile": "02411201-Cable-Triceps-Pushdown-(V-bar-attachment)_Upper-Ar.mp4",
+    "sha256": "2e90623f09de3688b7de88b6a986462e1940d4008aa0ab1e2cfd23c2f19cc284"
+  },
+  "cable-kickback": {
+    "videoId": "086012",
+    "baseExerciseId": "0860",
+    "name": "Cable kickback",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [],
+    "file": "086012.mp4",
+    "sourceFile": "08601201-Cable-kickback_Upper-arms.mp4",
+    "sha256": "bb0c7cfd3e377afcbbc150507f2f51208dc3860cb4ecf13ec06a46b951dc3326"
+  },
+  "lever-seated-dip": {
+    "videoId": "145112",
+    "baseExerciseId": "1451",
+    "name": "Lever Seated Dip",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Latissimus Dorsi",
+      "Levator Scapulae",
+      "Pectoralis Major Clavicular Head",
+      "Pectoralis Major Sternal Head"
+    ],
+    "file": "145112.mp4",
+    "sourceFile": "14511201-Lever-Seated-Dip_Upper-Arms.mp4",
+    "sha256": "e36693bef112a2760ab4667451d69f49ccf11853db916b0d692aa544855fdb80"
+  },
+  "barbell-low-bar-squat": {
+    "videoId": "143512",
+    "baseExerciseId": "1435",
+    "name": "Barbell Low Bar Squat",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Soleus"
+    ],
+    "file": "143512.mp4",
+    "sourceFile": "14351201-Barbell-Low-Bar-Squat_Thighs-FIX.mp4",
+    "sha256": "e5b682cea6668c14dda747ad63bf896b6ab3cc8c99aee0fc8098626c1482a567"
+  },
+  "barbell-box-squat": {
+    "videoId": "496212",
+    "baseExerciseId": "4962",
+    "name": "Barbell Box Squat",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Soleus"
+    ],
+    "file": "496212.mp4",
+    "sourceFile": "49621201-Barbell-Box-Squat_Hips.mp4",
+    "sha256": "96e2aad802ac07bd30fc48a8ac6fdfeab94d3b604f61b26f006c729eee43ab59"
+  },
+  "barbell-pause-full-squat": {
+    "videoId": "501612",
+    "baseExerciseId": "5016",
+    "name": "Barbell Pause Full Squat",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "501612.mp4",
+    "sourceFile": "50161201-Barbell-Pause-Full-Squat_Thighs.mp4",
+    "sha256": "2f730bc458120369f8274aabed13abafe9849586b352e24958095e0574f88a2c"
+  },
+  "barbell-full-zercher-squat": {
+    "videoId": "154512",
+    "baseExerciseId": "1545",
+    "name": "Barbell full Zercher Squat",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Soleus"
+    ],
+    "file": "154512.mp4",
+    "sourceFile": "15451201-Barbell-full-Zercher-Squat_Thighs.mp4",
+    "sha256": "0578c18fc22558294b89c423f2b1026c79c8fb7ffe72b4f8e5cb01c4555f2bfd"
+  },
+  "barbell-overhead-squat": {
+    "videoId": "006912",
+    "baseExerciseId": "0069",
+    "name": "Barbell Overhead Squat",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Gluteus Maximus",
+      "Soleus"
+    ],
+    "file": "006912.mp4",
+    "sourceFile": "00691201-Barbell-Overhead-Squat_Thighs-FIX.mp4",
+    "sha256": "73353a3bf77351a791558310575281fcd744a160c5bdb316ba1818fc5da287a9"
+  },
+  "landmine-squat": {
+    "videoId": "762612",
+    "baseExerciseId": "7626",
+    "name": "Landmine Squat (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "762612.mp4",
+    "sourceFile": "76261201-Landmine-Squat-(male)_Thighs.mp4",
+    "sha256": "25483e9ba71439eb1ad8021d63e2d51f4c441adb9c765f0ef1a06b1a34ac5bc2"
+  },
+  "dumbbell-goblet-sumo-squat": {
+    "videoId": "754712",
+    "baseExerciseId": "7547",
+    "name": "Dumbbell Goblet Sumo Squat (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "754712.mp4",
+    "sourceFile": "75471201-Dumbbell-Goblet-Sumo-Squat-(male)_Thighs.mp4",
+    "sha256": "a0136f3b4a7e77dbdf7f7a0b01ce0b1ae091ed4e4bb6df99731c4f6f3df71ee9"
+  },
+  "smith-front-squat": {
+    "videoId": "159512",
+    "baseExerciseId": "1595",
+    "name": "Smith Front Squat",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Smith machine",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "159512.mp4",
+    "sourceFile": "15951201-Smith-Front-Squat_Thighs.mp4",
+    "sha256": "b6e0718de4a8161d6104b282ee5f09b8cc5fb07dae0c761014a6409063097f12"
+  },
+  "smith-split-squat": {
+    "videoId": "076912",
+    "baseExerciseId": "0769",
+    "name": "Smith Split Squat",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Smith machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Soleus"
+    ],
+    "file": "076912.mp4",
+    "sourceFile": "07691201-Smith-Split-Squat_Thighs.mp4",
+    "sha256": "d34b730118684e5c5e66a66bfb11f1fa987ec03335576c7f3835d9c1673b4447"
+  },
+  "smith-rear-lunge": {
+    "videoId": "582512",
+    "baseExerciseId": "5825",
+    "name": "Smith Rear Lunge (version 2) (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Smith machine",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "582512.mp4",
+    "sourceFile": "58251201-Smith-Rear-Lunge-(version-2)-(male)_Thighs.mp4",
+    "sha256": "8be53458c472040cc51edfe3327a33df38645959c12ce6111ada733ce80a386f"
+  },
+  "smith-deficit-bulgarian-split-squat": {
+    "videoId": "1156812",
+    "baseExerciseId": "11568",
+    "name": "Smith Unilateral Bulgarian Split Squat from Deficit (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Smith machine",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1156812.mp4",
+    "sourceFile": "115681201-Smith-Unilateral-Bulgarian-Split-Squat-from-Defic.mp4",
+    "sha256": "c46f92f1249af2a7cf917ee54d225116802cf3541107336ffb9a5fc6f430d406"
+  },
+  "smith-bent-knee-good-morning": {
+    "videoId": "074912",
+    "baseExerciseId": "0749",
+    "name": "Smith Bent Knee Good morning",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Smith machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Erector Spinae",
+      "Gluteus Maximus"
+    ],
+    "secondaryMuscles": [
+      "Hamstrings"
+    ],
+    "file": "074912.mp4",
+    "sourceFile": "07491201-Smith-Bent-Knee-Good-morning_Hips.mp4",
+    "sha256": "297549b04b61fbcaada8c6032c282384d4d1ea54826c16a8c8fe338871469c0b"
+  },
+  "smith-calf-raise": {
+    "videoId": "116412",
+    "baseExerciseId": "1164",
+    "name": "Smith Calf Raise (version 2)",
+    "exerciseType": "Strength",
+    "bodyPart": "Calves",
+    "equipment": "Smith machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gastrocnemius"
+    ],
+    "secondaryMuscles": [
+      "Soleus"
+    ],
+    "file": "116412.mp4",
+    "sourceFile": "11641201-Smith-Calf-Raise-(version-2)_Calves-FIX.mp4",
+    "sha256": "0fbefd7533a8610dd3d35e4aafdaab5767a3d0a6eb92f9dd966183937c8abacc"
+  },
+  "sissy-squat-bodyweight": {
+    "videoId": "148912",
+    "baseExerciseId": "1489",
+    "name": "Sissy Squat Bodyweight",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [],
+    "file": "148912.mp4",
+    "sourceFile": "14891201-Sissy-Squat-Bodyweight_Thighs-FIX.mp4",
+    "sha256": "56fa6156ca0a669589a032afc8af1bf98b2644adfb249960c404fe0d091fb40b"
+  },
+  "sled-reverse-hack-squat": {
+    "videoId": "158312",
+    "baseExerciseId": "1583",
+    "name": "Sled Reverse Hack Squat",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Sled machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Soleus"
+    ],
+    "file": "158312.mp4",
+    "sourceFile": "15831201-Sled-Reverse-Hack-Squat_Thighs-FIX.mp4",
+    "sha256": "7de5b5956f65c0d596d4ca27d98d2c4573d995eb0643378a455546bfe23ece13"
+  },
+  "heel-elevated-bodyweight-squat": {
+    "videoId": "757712",
+    "baseExerciseId": "7577",
+    "name": "Bodyweight Heel Elevated Squat (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "757712.mp4",
+    "sourceFile": "75771201-Bodyweight-Heel-Elevated-Squat-(male)_Thighs.mp4",
+    "sha256": "97200402f816b1c19eb40221316cc186de7a82027e09a4c93fa03778b3346516"
+  },
+  "dumbbell-elevated-heel-goblet-squat": {
+    "videoId": "1057412",
+    "baseExerciseId": "10574",
+    "name": "Dumbbell Elevated Heel Goblet Squat",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1057412.mp4",
+    "sourceFile": "105741201-Dumbbell-Elevated-Heel-Goblet-Squat_Thighs.mp4",
+    "sha256": "fecb662f4d75599a08fc49425e71c1135cde9ec98dba54b23a5a9d94f77d96b8"
+  },
+  "cossack-squat": {
+    "videoId": "463212",
+    "baseExerciseId": "4632",
+    "name": "Cossack Squat",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "463212.mp4",
+    "sourceFile": "46321201-Cossack-Squat_Hips.mp4",
+    "sha256": "7d28be9b3735b1556c43b0bfc914e1642ea849e2712f71e19e708cb61ff4cd60"
+  },
+  "side-lunge": {
+    "videoId": "297212",
+    "baseExerciseId": "2972",
+    "name": "Side Lunge",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips, Thighs",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Gluteus Medius",
+      "Soleus",
+      "Tensor Fasciae Latae"
+    ],
+    "file": "297212.mp4",
+    "sourceFile": "29721201-Side-Lunge_Thighs.mp4",
+    "sha256": "933c83d68503cdf8bcb14062062e4e8190dab7069e2e9b4689cf16cac03f1079"
+  },
+  "dumbbell-curtsey-lunge": {
+    "videoId": "866412",
+    "baseExerciseId": "8664",
+    "name": "Dumbbell Curtsey Lunge (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "866412.mp4",
+    "sourceFile": "86641201-Dumbbell-Curtsey-Lunge-(male)_Thighs.mp4",
+    "sha256": "af1b2bbdd66697d4beabc43622103490e4bb0ae98735871027c304b5397351a9"
+  },
+  "dumbbell-deficit-reverse-lunge": {
+    "videoId": "732612",
+    "baseExerciseId": "7326",
+    "name": "Dumbbell Reverse Lunge from Deficit (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "732612.mp4",
+    "sourceFile": "73261201-Dumbbell-Reverse-Lunge-from-Deficit-(male)_Thighs.mp4",
+    "sha256": "37271b45c27e6fba029d1025fbfacb81fbb551575ea5bb4bc0d9022e00ad7bd6"
+  },
+  "barbell-walking-lunge": {
+    "videoId": "582312",
+    "baseExerciseId": "5823",
+    "name": "Barbell Walking Lunge",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "582312.mp4",
+    "sourceFile": "58231201-Barbell-Walking-Lunge_Thighs.mp4",
+    "sha256": "ed3a773073177a2cc678e7c9f25186e46722c7b6b35a675f24d941488c5c20c4"
+  },
+  "barbell-step-up": {
+    "videoId": "011412",
+    "baseExerciseId": "0114",
+    "name": "Barbell Step-up",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus",
+      "Quadriceps"
+    ],
+    "secondaryMuscles": [
+      "Adductor Magnus",
+      "Soleus"
+    ],
+    "file": "011412.mp4",
+    "sourceFile": "01141201-Barbell-Step-up_Hips-FIX.mp4",
+    "sha256": "8800c2cbfccccf69d50b735965a21f85f52f0d0411fc6577784f076ccde66ed4"
+  },
+  "cable-reverse-lunge": {
+    "videoId": "1121512",
+    "baseExerciseId": "11215",
+    "name": "Cable Reverse Lunge (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1121512.mp4",
+    "sourceFile": "112151201-Cable-Reverse-Lunge-(male)_Thighs.mp4",
+    "sha256": "e0f5db17452710814036070de081de69f0c66545dd634bbb6b0a6f1d3395384b"
+  },
+  "cable-lateral-lunge": {
+    "videoId": "1125512",
+    "baseExerciseId": "11255",
+    "name": "Cable Lateral Lunge (VERSION 3)",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1125512.mp4",
+    "sourceFile": "112551201-Cable-Lateral-Lunge-(VERSION-3)_Hips.mp4",
+    "sha256": "1d4938e036907c0991b3ab3ceefe9550874933d3fde87e2b4d33b35f4cdcd93f"
+  },
+  "lever-standing-single-leg-curl": {
+    "videoId": "518112",
+    "baseExerciseId": "5181",
+    "name": "Lever Standing Single Leg Curl (plate loaded)",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "518112.mp4",
+    "sourceFile": "51811201-Lever-Standing-Single-Leg-Curl-(plate-loaded)_Thig.mp4",
+    "sha256": "723531fd8ea78fea88d799ef8715426bc3d382258048b7eae3f2c9aa422fc0b2"
+  },
+  "lever-lying-single-leg-curl": {
+    "videoId": "159012",
+    "baseExerciseId": "1590",
+    "name": "Lever Lying Single Leg Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Hamstrings"
+    ],
+    "secondaryMuscles": [
+      "Gastrocnemius",
+      "Sartorius",
+      "Soleus"
+    ],
+    "file": "159012.mp4",
+    "sourceFile": "15901201-Lever-Lying-Single-Leg-Curl_Thighs-FIX.mp4",
+    "sha256": "7cb82095e529edbf74cebde0f615bd6f3d15159ca39a9753cde0447a92271170"
+  },
+  "lever-seated-one-leg-curl": {
+    "videoId": "158612",
+    "baseExerciseId": "1586",
+    "name": "Lever Seated One Leg Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Hamstrings"
+    ],
+    "secondaryMuscles": [
+      "Gastrocnemius",
+      "Sartorius",
+      "Soleus"
+    ],
+    "file": "158612.mp4",
+    "sourceFile": "15861201-Lever-Seated-One-Leg-Curl_Thighs.mp4",
+    "sha256": "af44b456dbd78da025b5b71f7cf0952dcd19bc372795dfdc06d941955c1d1da6"
+  },
+  "dumbbell-lying-leg-curl": {
+    "videoId": "616112",
+    "baseExerciseId": "6161",
+    "name": "Dumbbell Lying Leg Curl (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Dumbbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "616112.mp4",
+    "sourceFile": "61611201-Dumbbell-Lying-Leg-Curl-(male)_Thighs.mp4",
+    "sha256": "ebcbcced3be5e1a7914cc74dd8ffb8af50a7fd451f44b09402a81582e836db67"
+  },
+  "cable-lying-single-leg-curl": {
+    "videoId": "980412",
+    "baseExerciseId": "9804",
+    "name": "Cable Lying Single Leg Curl (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Thighs",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "980412.mp4",
+    "sourceFile": "98041201-Cable-Lying-Single-Leg-Curl-(male)_Thighs.mp4",
+    "sha256": "c23d76009cbe199b67641467347594e8cc8a1b9a7316764336af26a8956e91f9"
+  },
+  "bodyweight-frog-hip-thrust": {
+    "videoId": "646412",
+    "baseExerciseId": "6464",
+    "name": "Bodyweight Frog Hip Thrust (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "646412.mp4",
+    "sourceFile": "64641201-Bodyweight-Frog-Hip-Thrust-(male)_Hips.mp4",
+    "sha256": "1831200a7c46877eaad6773d57e071df39991b9346056a39bff3608e872ce481"
+  },
+  "single-leg-hip-thrust": {
+    "videoId": "207112",
+    "baseExerciseId": "2071",
+    "name": "Single Leg Hip Thrust",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Maximus"
+    ],
+    "secondaryMuscles": [
+      "Hamstrings",
+      "Quadriceps"
+    ],
+    "file": "207112.mp4",
+    "sourceFile": "20711201-Single-Leg-_Hip-Thrusts_Hips.mp4",
+    "sha256": "b426b0846bb36a9d882c8f6162fd0ba95b91956345636cee6c528994c9e077b9"
+  },
+  "barbell-kas-glute-bridge": {
+    "videoId": "1083212",
+    "baseExerciseId": "10832",
+    "name": "Barbell KAS Glute Bridge (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Barbell",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1083212.mp4",
+    "sourceFile": "108321201-Barbell-KAS-Glute-Bridge-(male)_Hips.mp4",
+    "sha256": "156bbb591f3dc4f3ddb80176532099a41011cc23009171805f7f79d308d7c0f1"
+  },
+  "cable-hip-abduction": {
+    "videoId": "304812",
+    "baseExerciseId": "3048",
+    "name": "Cable hip abduction (version 2) (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Cable",
+    "gender": "Male",
+    "targetMuscles": [
+      "Gluteus Medius"
+    ],
+    "secondaryMuscles": [
+      "Tensor Fasciae Latae"
+    ],
+    "file": "304812.mp4",
+    "sourceFile": "30481201-Cable-hip-abduction-(version-2)-(male)_Hips.mp4",
+    "sha256": "c162d57992dfc714dec6c85009033a1a7d231f13e57d95c094d5c109dfc32072"
+  },
+  "reverse-hyperextension-on-box": {
+    "videoId": "1034212",
+    "baseExerciseId": "10342",
+    "name": "Reverse Hyperextension on Box",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1034212.mp4",
+    "sourceFile": "103421201-Reverse-Hyperextension-on-Box_Hips.mp4",
+    "sha256": "efbe8bf808cc1514a9f057d4d2f4de56b8e752e4a73f15ac911b4bf7d57482fd"
+  },
+  "handstand-push-up": {
+    "videoId": "047112",
+    "baseExerciseId": "0471",
+    "name": "Handstand Push-up",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Deltoid Lateral",
+      "Pectoralis Major Clavicular Head",
+      "Pectoralis Major Sternal Head",
+      "Serratus Anterior",
+      "Teres Major"
+    ],
+    "file": "047112.mp4",
+    "sourceFile": "04711201-Handstand-Push-Up_Shoulders.mp4",
+    "sha256": "4641096cd5189663684fb2c5bca14f2e22cd9a1ed851df8e9ecf3a8285164c5a"
+  },
+  "ring-dip": {
+    "videoId": "067712",
+    "baseExerciseId": "0677",
+    "name": "Ring Dip",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Pectoralis Major Clavicular Head",
+      "Pectoralis Major Sternal Head"
+    ],
+    "file": "067712.mp4",
+    "sourceFile": "06771201-Ring-Dip_Upper-Arms.mp4",
+    "sha256": "a3f7b7c4a70b483077388733c49f12797315f160921bf5782b0b82a039c91cd0"
+  },
+  "ring-incline-push-up": {
+    "videoId": "786912",
+    "baseExerciseId": "7869",
+    "name": "Ring Incline Push-up (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Suspension",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "786912.mp4",
+    "sourceFile": "78691201-Ring-Incline-Push-up-(male)_Chest.mp4",
+    "sha256": "0836eba55d33cc12a8d675c8515b8d5037ecae4cad2e2887cbf65485b5fb6ec7"
+  },
+  "bench-dip": {
+    "videoId": "012912",
+    "baseExerciseId": "0129",
+    "name": "Bench Dip (knees bent)",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Latissimus Dorsi",
+      "Levator Scapulae",
+      "Pectoralis Major Sternal Head"
+    ],
+    "file": "012912.mp4",
+    "sourceFile": "01291201-Bench-Dip-(knees-bent)_Upper-Arms.mp4",
+    "sha256": "e412ad1e46274b679d46173cac62138b50766033f79d5f70469ed3494ee939e7"
+  },
+  "resistance-band-standing-chest-press": {
+    "videoId": "860612",
+    "baseExerciseId": "8606",
+    "name": "Resistance Band Standing Chest Press (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Chest",
+    "equipment": "Resistance Band",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "860612.mp4",
+    "sourceFile": "86061201-Resistance-Band-Standing-Chest-Press-(male)_Chest.mp4",
+    "sha256": "8a59396a774d4fe5620b3910bc72b0bf0f0063a1e42eea2b4b0b29e6ced876a8"
+  },
+  "resistance-band-seated-row": {
+    "videoId": "835612",
+    "baseExerciseId": "8356",
+    "name": "Resistance Band Seated Row (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Resistance Band",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "835612.mp4",
+    "sourceFile": "83561201-Resistance-Band-Seated-Row-(male)_Back.mp4",
+    "sha256": "6de728fc9328c4c4b0b6b06733375738372fbdf33b2cf7ebedde4c3a81510e1e"
+  },
+  "resistance-band-lat-pulldown": {
+    "videoId": "1136712",
+    "baseExerciseId": "11367",
+    "name": "Resistance Band Standing Lat Pulldown (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Back",
+    "equipment": "Resistance Band",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "1136712.mp4",
+    "sourceFile": "113671201-Resistance-Band-Standing-Lat-Pulldown-(male)_Back.mp4",
+    "sha256": "fdfdda6b928aec54c565c7c53da262ddaeeb9551a20d1f6f6ea7eeaf5c07c79b"
+  },
+  "resistance-band-face-pull": {
+    "videoId": "560712",
+    "baseExerciseId": "5607",
+    "name": "Band Face Pull (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Band",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Posterior"
+    ],
+    "secondaryMuscles": [
+      "Brachialis",
+      "Brachioradialis",
+      "Deltoid Lateral",
+      "Infraspinatus",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "file": "560712.mp4",
+    "sourceFile": "56071201-Band-Face-Pull-(male)_Shoulders.mp4",
+    "sha256": "ff3270c448e4253c7ca9be7d2c2a1549d798c1317f3f41b504950519b870a5a2"
+  },
+  "band-biceps-curl": {
+    "videoId": "406312",
+    "baseExerciseId": "4063",
+    "name": "Band Biceps Curl",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Band",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "406312.mp4",
+    "sourceFile": "40631201-Band-Biceps-Curl_Upper-Arms.mp4",
+    "sha256": "8ca75ed37169ceb16a98377894f71dd6ecace9f9707261bee7a7abc114cb0d9c"
+  },
+  "resistance-band-triceps-pushdown": {
+    "videoId": "468812",
+    "baseExerciseId": "4688",
+    "name": "Resistance Band Triceps Pushdown",
+    "exerciseType": "Strength",
+    "bodyPart": "Upper Arms",
+    "equipment": "Resistance Band",
+    "gender": "Male",
+    "targetMuscles": [
+      "Triceps Brachii"
+    ],
+    "secondaryMuscles": [],
+    "file": "468812.mp4",
+    "sourceFile": "46881201-Resistance-Band-Triceps-Pushdown_Upper-Arms.mp4",
+    "sha256": "4f68666b9ea635835671af68cc63efa0a481b75033cebe0ae7a96ab937c16c7a"
+  },
+  "band-lateral-raise": {
+    "videoId": "150812",
+    "baseExerciseId": "1508",
+    "name": "Band Lateral Raise (Version 2)",
+    "exerciseType": "Strength",
+    "bodyPart": "Shoulders",
+    "equipment": "Band",
+    "gender": "Male",
+    "targetMuscles": [
+      "Deltoid Lateral"
+    ],
+    "secondaryMuscles": [
+      "Deltoid Anterior",
+      "Serratus Anterior"
+    ],
+    "file": "150812.mp4",
+    "sourceFile": "15081201-Band-Lateral-Raise-(Version-2)_Shoulders.mp4",
+    "sha256": "2fad2f1225f668a790cd8c9dee63ab50f22106824c9cecac34f22985d40697ba"
+  },
+  "landmine-180": {
+    "videoId": "056212",
+    "baseExerciseId": "0562",
+    "name": "Landmine 180",
+    "exerciseType": "Strength",
+    "bodyPart": "Waist",
+    "equipment": "Leverage machine",
+    "gender": "Male",
+    "targetMuscles": [
+      "Obliques"
+    ],
+    "secondaryMuscles": [
+      "Rectus Abdominis"
+    ],
+    "file": "056212.mp4",
+    "sourceFile": "05621201-Landmine-180_waist.mp4",
+    "sha256": "704a40a74adb033b322033a18bf66469d23c71917956bb758c28e0c6c5af496d"
+  },
+  "hanging-toes-to-bar": {
+    "videoId": "389112",
+    "baseExerciseId": "3891",
+    "name": "Hanging Toes to Bar",
+    "exerciseType": "Strength",
+    "bodyPart": "Waist",
+    "equipment": "Body weight",
+    "gender": "Male",
+    "targetMuscles": [
+      "Iliopsoas",
+      "Rectus Abdominis"
+    ],
+    "secondaryMuscles": [
+      "Obliques",
+      "Quadriceps",
+      "Sartorius",
+      "Tensor Fasciae Latae"
+    ],
+    "file": "389112.mp4",
+    "sourceFile": "38911201-Hanging-Toes-to-Bar_Waist.mp4",
+    "sha256": "633881cd5c7a8805182b1fbbf851d6d3501597289375df241b4aa1fd62bb5fe7"
+  },
+  "battling-ropes-high-waves": {
+    "videoId": "337912",
+    "baseExerciseId": "3379",
+    "name": "Battling Ropes High Waves",
+    "exerciseType": "Strength",
+    "bodyPart": "Plyometrics",
+    "equipment": "Battling Rope",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "337912.mp4",
+    "sourceFile": "33791201-Battling-Ropes-High-Waves_Plyometrics.mp4",
+    "sha256": "aaa74f3500de778a846e811140098bdfb8bdeffdc60f0095ff2afec04005cd0a"
+  },
+  "power-sled-push": {
+    "videoId": "442812",
+    "baseExerciseId": "4428",
+    "name": "Power Sled Push (male)",
+    "exerciseType": "Strength",
+    "bodyPart": "Hips, Thighs",
+    "equipment": "Power Sled",
+    "gender": "Male",
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "442812.mp4",
+    "sourceFile": "44281201-Power-Sled-Push-(male).mp4",
+    "sha256": "25fb224f360bc3360f0b3bfbe46547654977e259e16db3c74cc2f8125791cb4f"
   }
 }

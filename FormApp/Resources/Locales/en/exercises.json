@@ -695,5 +695,3375 @@
       "Starting with hips too high (stiff-legging) or too low (shoving knees into handles).",
       "Shrugging shoulders or hyperextending spine at lockout."
     ]
+  },
+  "cable-seated-row": {
+    "name": "Cable Seated Row",
+    "cues": [
+      "Establish stable posture with chest upright and core braced tight.",
+      "Initiate pull by retracting shoulder blades and driving elbows straight back.",
+      "Pull handle or bar toward lower abdomen / waistline, contracting mid-back and lats.",
+      "Control the return into a deep stretch without letting shoulders collapse forward."
+    ],
+    "avoid": [
+      "Using excessive torso swing or leg drive to jerk the weight.",
+      "Rounding upper or lower spine under load.",
+      "Flaring elbows excessively wide away from body."
+    ]
+  },
+  "dumbbell-seated-shoulder-press": {
+    "name": "Dumbbell Seated Shoulder Press",
+    "cues": [
+      "Set stable base with ribs pulled down, core braced, and glutes engaged.",
+      "Position weight at shoulder height with elbows stacked directly under wrists.",
+      "Press weight straight upward, clearing head and finishing in line with ears.",
+      "Lower under control back to collarbone level without losing core tightness."
+    ],
+    "avoid": [
+      "Arching lower back excessively to compensate for shoulder mobility.",
+      "Flaring elbows out completely wide to the sides.",
+      "Using leg drive on strict pressing variations."
+    ]
+  },
+  "lever-chest-press": {
+    "name": "Lever Chest Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "lever-seated-shoulder-press": {
+    "name": "Lever Seated Shoulder Press",
+    "cues": [
+      "Set stable base with ribs pulled down, core braced, and glutes engaged.",
+      "Position weight at shoulder height with elbows stacked directly under wrists.",
+      "Press weight straight upward, clearing head and finishing in line with ears.",
+      "Lower under control back to collarbone level without losing core tightness."
+    ],
+    "avoid": [
+      "Arching lower back excessively to compensate for shoulder mobility.",
+      "Flaring elbows out completely wide to the sides.",
+      "Using leg drive on strict pressing variations."
+    ]
+  },
+  "bodyweight-rear-lunge": {
+    "name": "Bodyweight Rear Lunge",
+    "cues": [
+      "Adopt a stable staggered stance with hips square and core braced tight.",
+      "Lower straight down until back knee hovers an inch above floor and front thigh is parallel.",
+      "Maintain a slight forward torso lean (~10°) aligned with front shin.",
+      "Drive forcefully through front heel and mid-foot to rise back to starting lockout."
+    ],
+    "avoid": [
+      "Banging back knee hard into the floor.",
+      "Letting front heel lift or front knee collapse inward.",
+      "Arching lower back excessively by forcing a vertical spine."
+    ]
+  },
+  "walking-lunge": {
+    "name": "Walking Lunge",
+    "cues": [
+      "Adopt a stable staggered stance with hips square and core braced tight.",
+      "Lower straight down until back knee hovers an inch above floor and front thigh is parallel.",
+      "Maintain a slight forward torso lean (~10°) aligned with front shin.",
+      "Drive forcefully through front heel and mid-foot to rise back to starting lockout."
+    ],
+    "avoid": [
+      "Banging back knee hard into the floor.",
+      "Letting front heel lift or front knee collapse inward.",
+      "Arching lower back excessively by forcing a vertical spine."
+    ]
+  },
+  "bodyweight-squat": {
+    "name": "Bodyweight Squat",
+    "cues": [
+      "Set stable stance with feet shoulder-width, toes angled slightly out; brace core.",
+      "Initiate descent by breaking at hips and knees together, keeping chest proud.",
+      "Descend until hip crease is at or below top of knee while keeping whole foot planted.",
+      "Drive evenly through mid-foot and heels to ascend with hips and chest rising in unison."
+    ],
+    "avoid": [
+      "Knees caving inward (valgus collapse) on the ascent.",
+      "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
+      "Heels lifting or excessive forward torso collapse."
+    ]
+  },
+  "lever-seated-reverse-fly": {
+    "name": "Lever Seated Reverse Fly",
+    "cues": [
+      "Hinge forward at hips with flat back (or lay chest-down on incline bench).",
+      "With slight elbow bend, sweep arms out wide in the transverse plane.",
+      "Squeeze rear deltoids firmly at top without shrugging traps toward neck.",
+      "Lower weights under controlled eccentric tempo, maintaining tension."
+    ],
+    "avoid": [
+      "Swinging torso upward to use momentum.",
+      "Turning rear fly into a lat row by pulling elbows down."
+    ]
+  },
+  "cable-curl": {
+    "name": "Cable Curl",
+    "cues": [
+      "Stand tall with elbows pinned at sides and shoulders pulled back.",
+      "Curl weight upward by flexing biceps, keeping upper arms completely stationary.",
+      "Squeeze biceps hard at the peak, supinating wrists if using dumbbells.",
+      "Lower the weight under slow 2–3 second control into full elbow extension."
+    ],
+    "avoid": [
+      "Swinging elbows forward or backward to generate momentum.",
+      "Arching lower back to lean backward during the curl."
+    ]
+  },
+  "barbell-preacher-curl": {
+    "name": "Barbell Preacher Curl",
+    "cues": [
+      "Position upper arms firmly flat against pad with armpits wedged at the top edge.",
+      "Keep wrists firm; curl weight upward by flexing biceps while keeping triceps glued to pad.",
+      "Squeeze biceps hard at peak contraction without lifting elbows off pad.",
+      "Lower weight under strict 2–3 second control until arms are nearly fully extended."
+    ],
+    "avoid": [
+      "Hyperextending and bouncing violently off the bottom elbow lockout.",
+      "Lifting elbows or leaning back off the pad during the curl."
+    ]
+  },
+  "chest-dip": {
+    "name": "Chest Dip",
+    "cues": [
+      "Grasp bars with arms locked; lean torso forward ~20–30° to target chest.",
+      "Lower body under control by bending elbows until upper arms are parallel to floor.",
+      "Keep elbows tucked at ~45° rather than flared wide.",
+      "Press through palms and contract lower pecs to return to lockout."
+    ],
+    "avoid": [
+      "Descending too deep past comfort, placing excessive strain on anterior shoulder capsule.",
+      "Shrugging shoulders up toward ears during descent."
+    ]
+  },
+  "chin-up": {
+    "name": "Chin-up",
+    "cues": [
+      "Grasp bar with chosen grip; secure thighs under pads and lift chest.",
+      "Initiate by pulling shoulder blades down and driving elbows down and back toward ribs.",
+      "Pull bar smoothly to upper chest / chin level while keeping spine tall.",
+      "Control the eccentric return under full lat stretch, allowing scapulae to elevate."
+    ],
+    "avoid": [
+      "Leaning back excessively into a horizontal row to heave the weight.",
+      "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
+      "Using jerky momentum to yank the bar down."
+    ]
+  },
+  "front-plank": {
+    "name": "Front Plank",
+    "cues": [
+      "Rest on forearms with elbows under shoulders; extend legs back on toes.",
+      "Tuck pelvis into posterior tilt, contract glutes, and brace abs as hard as possible.",
+      "Maintain a perfectly straight line from head through hips to heels.",
+      "Breathe rhythmically into diaphragm while holding intense abdominal tension."
+    ],
+    "avoid": [
+      "Allowing lower back and hips to sag toward the floor.",
+      "Piking hips upward into a tent shape to relieve core tension."
+    ]
+  },
+  "cable-standing-fly": {
+    "name": "Cable Standing Fly",
+    "cues": [
+      "Position handles at mid-chest height; maintain slight elbow bend and retract scapulae.",
+      "Open arms wide in a controlled arc until a deep chest stretch is achieved.",
+      "Bring hands together in front of chest in a hugging motion, contracting pecs.",
+      "Hold peak squeeze for a count before reversing into the stretch."
+    ],
+    "avoid": [
+      "Bending elbows excessively and turning the fly into a press.",
+      "Letting shoulders roll forward at the back of the stretch."
+    ]
+  },
+  "sled-hack-squat": {
+    "name": "Sled Hack Squat",
+    "cues": [
+      "Sit with back and hips firmly against pad, feet shoulder-width on footplate.",
+      "Release safety catches; lower sled smoothly until knees reach ~90° without butt lifting.",
+      "Keep knees tracking in line with second toes throughout the descent.",
+      "Press through mid-foot and heels to return to start, stopping just short of knee lockout."
+    ],
+    "avoid": [
+      "Allowing pelvis to tuck or lower back to round off backrest at bottom (butt wink).",
+      "Locking knees out violently into hyperextension under heavy load."
+    ]
+  },
+  "dumbbell-glute-bridge": {
+    "name": "Dumbbell Glute Bridge",
+    "cues": [
+      "Position upper back across bench just below shoulder blades; place feet flat shoulder-width.",
+      "Tuck chin slightly and engage core; drive through heels to elevate hips toward the ceiling.",
+      "Reach full hip extension where thighs and torso form a flat tabletop, squeezing glutes hard.",
+      "Lower hips back down with control, keeping ribs pulled down and chin tucked."
+    ],
+    "avoid": [
+      "Hyperextending lumbar spine at top instead of achieving true hip extension.",
+      "Pushing through toes rather than driving into heels.",
+      "Letting knees collapse inward during hip drive."
+    ]
+  },
+  "barbell-sumo-deadlift": {
+    "name": "Barbell Sumo Deadlift",
+    "cues": [
+      "Stand over bar with feet hip-to-shoulder width, neutral spine and shoulder blades packed.",
+      "Hinge hips deeply backward while keeping bar close against shins and thighs.",
+      "Descend until hamstrings reach full stretch, keeping lower back completely flat.",
+      "Drive through heels and push hips forward into full glute lockout at the top."
+    ],
+    "avoid": [
+      "Rounding lumbar or thoracic spine under load.",
+      "Letting bar drift forward away from legs.",
+      "Hyperextending lower back at lockout instead of squeezing glutes."
+    ]
+  },
+  "smith-squat": {
+    "name": "Smith Squat",
+    "cues": [
+      "Set stable stance with feet shoulder-width, toes angled slightly out; brace core.",
+      "Initiate descent by breaking at hips and knees together, keeping chest proud.",
+      "Descend until hip crease is at or below top of knee while keeping whole foot planted.",
+      "Drive evenly through mid-foot and heels to ascend with hips and chest rising in unison."
+    ],
+    "avoid": [
+      "Knees caving inward (valgus collapse) on the ascent.",
+      "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
+      "Heels lifting or excessive forward torso collapse."
+    ]
+  },
+  "smith-bench-press": {
+    "name": "Smith Bench Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "smith-incline-bench-press": {
+    "name": "Smith Incline Bench Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "smith-stiff-legged-deadlift": {
+    "name": "Smith Stiff Legged Deadlift",
+    "cues": [
+      "Stand over bar with feet hip-to-shoulder width, neutral spine and shoulder blades packed.",
+      "Hinge hips deeply backward while keeping bar close against shins and thighs.",
+      "Descend until hamstrings reach full stretch, keeping lower back completely flat.",
+      "Drive through heels and push hips forward into full glute lockout at the top."
+    ],
+    "avoid": [
+      "Rounding lumbar or thoracic spine under load.",
+      "Letting bar drift forward away from legs.",
+      "Hyperextending lower back at lockout instead of squeezing glutes."
+    ]
+  },
+  "smith-hip-thrust": {
+    "name": "Smith Hip Thrust",
+    "cues": [
+      "Position upper back across bench just below shoulder blades; place feet flat shoulder-width.",
+      "Tuck chin slightly and engage core; drive through heels to elevate hips toward the ceiling.",
+      "Reach full hip extension where thighs and torso form a flat tabletop, squeezing glutes hard.",
+      "Lower hips back down with control, keeping ribs pulled down and chin tucked."
+    ],
+    "avoid": [
+      "Hyperextending lumbar spine at top instead of achieving true hip extension.",
+      "Pushing through toes rather than driving into heels.",
+      "Letting knees collapse inward during hip drive."
+    ]
+  },
+  "pendulum-squat": {
+    "name": "Pendulum Squat",
+    "cues": [
+      "Rest shoulders securely under pads with back firmly against support pad.",
+      "Set feet shoulder-width on platform; unrack and brace core tightly.",
+      "Descend smoothly into deep knee flexion, keeping full foot contact on platform.",
+      "Drive through mid-foot and heels to power upward, keeping quads under constant tension."
+    ],
+    "avoid": [
+      "Heels lifting off platform during the bottom turnaround.",
+      "Letting knees cave inward or hyperextending knees violently at top."
+    ]
+  },
+  "lever-belt-squat": {
+    "name": "Lever Belt Squat",
+    "cues": [
+      "Set stable stance with feet shoulder-width, toes angled slightly out; brace core.",
+      "Initiate descent by breaking at hips and knees together, keeping chest proud.",
+      "Descend until hip crease is at or below top of knee while keeping whole foot planted.",
+      "Drive evenly through mid-foot and heels to ascend with hips and chest rising in unison."
+    ],
+    "avoid": [
+      "Knees caving inward (valgus collapse) on the ascent.",
+      "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
+      "Heels lifting or excessive forward torso collapse."
+    ]
+  },
+  "lever-vertical-squat": {
+    "name": "Lever Vertical Squat",
+    "cues": [
+      "Set stable stance with feet shoulder-width, toes angled slightly out; brace core.",
+      "Initiate descent by breaking at hips and knees together, keeping chest proud.",
+      "Descend until hip crease is at or below top of knee while keeping whole foot planted.",
+      "Drive evenly through mid-foot and heels to ascend with hips and chest rising in unison."
+    ],
+    "avoid": [
+      "Knees caving inward (valgus collapse) on the ascent.",
+      "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
+      "Heels lifting or excessive forward torso collapse."
+    ]
+  },
+  "sled-45-degrees-one-leg-press": {
+    "name": "Sled 45 Degrees One Leg Press",
+    "cues": [
+      "Sit with back and hips firmly against pad, feet shoulder-width on footplate.",
+      "Release safety catches; lower sled smoothly until knees reach ~90° without butt lifting.",
+      "Keep knees tracking in line with second toes throughout the descent.",
+      "Press through mid-foot and heels to return to start, stopping just short of knee lockout."
+    ],
+    "avoid": [
+      "Allowing pelvis to tuck or lower back to round off backrest at bottom (butt wink).",
+      "Locking knees out violently into hyperextension under heavy load."
+    ]
+  },
+  "dumbbell-split-squat-front-foot-elevanted": {
+    "name": "Dumbbell Split Squat Front Foot Elevanted",
+    "cues": [
+      "Adopt a stable staggered stance with hips square and core braced tight.",
+      "Lower straight down until back knee hovers an inch above floor and front thigh is parallel.",
+      "Maintain a slight forward torso lean (~10°) aligned with front shin.",
+      "Drive forcefully through front heel and mid-foot to rise back to starting lockout."
+    ],
+    "avoid": [
+      "Banging back knee hard into the floor.",
+      "Letting front heel lift or front knee collapse inward.",
+      "Arching lower back excessively by forcing a vertical spine."
+    ]
+  },
+  "barbell-good-morning": {
+    "name": "Barbell Good Morning",
+    "cues": [
+      "Stand over bar with feet hip-to-shoulder width, neutral spine and shoulder blades packed.",
+      "Hinge hips deeply backward while keeping bar close against shins and thighs.",
+      "Descend until hamstrings reach full stretch, keeping lower back completely flat.",
+      "Drive through heels and push hips forward into full glute lockout at the top."
+    ],
+    "avoid": [
+      "Rounding lumbar or thoracic spine under load.",
+      "Letting bar drift forward away from legs.",
+      "Hyperextending lower back at lockout instead of squeezing glutes."
+    ]
+  },
+  "dumbbell-single-leg-romanian-deadlift": {
+    "name": "Dumbbell Single-Leg Romanian Deadlift",
+    "cues": [
+      "Stand over bar with feet hip-to-shoulder width, neutral spine and shoulder blades packed.",
+      "Hinge hips deeply backward while keeping bar close against shins and thighs.",
+      "Descend until hamstrings reach full stretch, keeping lower back completely flat.",
+      "Drive through heels and push hips forward into full glute lockout at the top."
+    ],
+    "avoid": [
+      "Rounding lumbar or thoracic spine under load.",
+      "Letting bar drift forward away from legs.",
+      "Hyperextending lower back at lockout instead of squeezing glutes."
+    ]
+  },
+  "dumbbell-45-deg-back-extension": {
+    "name": "Dumbbell 45° Back Extension",
+    "cues": [
+      "Position thighs securely against pads with hip crease just above edge for free hip flexion.",
+      "Brace core with neutral spine; hinge forward at hips until hamstrings are fully stretched.",
+      "Contract glutes and hamstrings to pull torso back in line with legs; hold for a count.",
+      "Keep spine neutral rather than arching past straight alignment."
+    ],
+    "avoid": [
+      "Hyperextending lumbar spine excessively at the top of the extension.",
+      "Jerking torso upward with swinging momentum."
+    ]
+  },
+  "nordic-hamstring-curl": {
+    "name": "Nordic Hamstring Curl",
+    "cues": [
+      "Position lever pad snugly against lower calves / Achilles tendon with knee axis aligned with machine pivot.",
+      "Dorsiflex ankles slightly; contract hamstrings forcefully to curl heels toward glutes.",
+      "Pause for a full second at peak knee flexion, squeezing hamstrings completely.",
+      "Lower weight under strict 2–3 second control until legs are nearly straight."
+    ],
+    "avoid": [
+      "Arching lower back or lifting hips off pad to throw momentum into the curl.",
+      "Allowing weight stack to slam down on the eccentric return."
+    ]
+  },
+  "glute-ham-raise": {
+    "name": "Glute-Ham Raise",
+    "cues": [
+      "Stand over bar with feet hip-to-shoulder width, neutral spine and shoulder blades packed.",
+      "Hinge hips deeply backward while keeping bar close against shins and thighs.",
+      "Descend until hamstrings reach full stretch, keeping lower back completely flat.",
+      "Drive through heels and push hips forward into full glute lockout at the top."
+    ],
+    "avoid": [
+      "Rounding lumbar or thoracic spine under load.",
+      "Letting bar drift forward away from legs.",
+      "Hyperextending lower back at lockout instead of squeezing glutes."
+    ]
+  },
+  "cable-pull-through": {
+    "name": "Cable Pull Through",
+    "cues": [
+      "Stand over bar with feet hip-to-shoulder width, neutral spine and shoulder blades packed.",
+      "Hinge hips deeply backward while keeping bar close against shins and thighs.",
+      "Descend until hamstrings reach full stretch, keeping lower back completely flat.",
+      "Drive through heels and push hips forward into full glute lockout at the top."
+    ],
+    "avoid": [
+      "Rounding lumbar or thoracic spine under load.",
+      "Letting bar drift forward away from legs.",
+      "Hyperextending lower back at lockout instead of squeezing glutes."
+    ]
+  },
+  "cable-kneeling-glute-kickback": {
+    "name": "Cable Kneeling Glute Kickback",
+    "cues": [
+      "Set stable torso position; brace core to prevent lumbar hyperextension.",
+      "Drive working leg back/out using isolated glute contraction without rotating hips.",
+      "Hold peak contraction for a split second to maximize glute activation.",
+      "Return leg smoothly under control to starting alignment."
+    ],
+    "avoid": [
+      "Arching lower back to kick leg higher.",
+      "Twisting pelvis or swinging leg with momentum."
+    ]
+  },
+  "lever-seated-hip-abduction": {
+    "name": "Lever Seated Hip Abduction",
+    "cues": [
+      "Set stable torso position; brace core to prevent lumbar hyperextension.",
+      "Drive working leg back/out using isolated glute contraction without rotating hips.",
+      "Hold peak contraction for a split second to maximize glute activation.",
+      "Return leg smoothly under control to starting alignment."
+    ],
+    "avoid": [
+      "Arching lower back to kick leg higher.",
+      "Twisting pelvis or swinging leg with momentum."
+    ]
+  },
+  "lever-seated-hip-adduction": {
+    "name": "Lever Seated Hip Adduction",
+    "cues": [
+      "Set stable stance with feet shoulder-width, toes angled slightly out; brace core.",
+      "Initiate descent by breaking at hips and knees together, keeping chest proud.",
+      "Descend until hip crease is at or below top of knee while keeping whole foot planted.",
+      "Drive evenly through mid-foot and heels to ascend with hips and chest rising in unison."
+    ],
+    "avoid": [
+      "Knees caving inward (valgus collapse) on the ascent.",
+      "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
+      "Heels lifting or excessive forward torso collapse."
+    ]
+  },
+  "sled-calf-press-on-leg-press": {
+    "name": "Sled Calf Press on Leg Press",
+    "cues": [
+      "Position balls of feet securely on edge of step with knees straight but not hyperextended.",
+      "Lower heels below the platform until a deep stretch is felt throughout gastrocnemius.",
+      "Press forcefully through big toes to elevate heels into maximal plantarflexion.",
+      "Hold peak contraction for a split second before controlling the descent."
+    ],
+    "avoid": [
+      "Bending and extending knees to turn calf raise into a mini squat.",
+      "Rushing reps and cutting the bottom stretch or top squeeze."
+    ]
+  },
+  "donkey-calf-raise": {
+    "name": "Donkey Calf Raise",
+    "cues": [
+      "Position balls of feet securely on edge of step with knees straight but not hyperextended.",
+      "Lower heels below the platform until a deep stretch is felt throughout gastrocnemius.",
+      "Press forcefully through big toes to elevate heels into maximal plantarflexion.",
+      "Hold peak contraction for a split second before controlling the descent."
+    ],
+    "avoid": [
+      "Bending and extending knees to turn calf raise into a mini squat.",
+      "Rushing reps and cutting the bottom stretch or top squeeze."
+    ]
+  },
+  "wall-supported-tibialis-raise": {
+    "name": "Wall-Supported Tibialis Raise",
+    "cues": [
+      "Stand with upper back leaning against wall, feet positioned about two feet out with legs straight.",
+      "Dorsiflex ankles, pulling toes and forefeet upward toward shins as high as possible.",
+      "Hold peak contraction at the top for a full second to load the anterior tibialis.",
+      "Lower toes back to the floor under controlled 2-second eccentric stretch."
+    ],
+    "avoid": [
+      "Bending knees or pushing hips off wall to cheat the raise.",
+      "Bouncing feet quickly without pausing at peak dorsiflexion."
+    ]
+  },
+  "barbell-decline-bench-press": {
+    "name": "Barbell Decline Bench Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "dumbbell-decline-bench-press": {
+    "name": "Dumbbell Decline Bench Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "lever-incline-chest-press": {
+    "name": "Lever Incline Chest Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "cable-low-fly": {
+    "name": "Cable Low Fly",
+    "cues": [
+      "Position handles at mid-chest height; maintain slight elbow bend and retract scapulae.",
+      "Open arms wide in a controlled arc until a deep chest stretch is achieved.",
+      "Bring hands together in front of chest in a hugging motion, contracting pecs.",
+      "Hold peak squeeze for a count before reversing into the stretch."
+    ],
+    "avoid": [
+      "Bending elbows excessively and turning the fly into a press.",
+      "Letting shoulders roll forward at the back of the stretch."
+    ]
+  },
+  "cable-decline-fly": {
+    "name": "Cable Decline Fly",
+    "cues": [
+      "Position handles at mid-chest height; maintain slight elbow bend and retract scapulae.",
+      "Open arms wide in a controlled arc until a deep chest stretch is achieved.",
+      "Bring hands together in front of chest in a hugging motion, contracting pecs.",
+      "Hold peak squeeze for a count before reversing into the stretch."
+    ],
+    "avoid": [
+      "Bending elbows excessively and turning the fly into a press.",
+      "Letting shoulders roll forward at the back of the stretch."
+    ]
+  },
+  "dumbbell-fly": {
+    "name": "Dumbbell Fly",
+    "cues": [
+      "Position handles at mid-chest height; maintain slight elbow bend and retract scapulae.",
+      "Open arms wide in a controlled arc until a deep chest stretch is achieved.",
+      "Bring hands together in front of chest in a hugging motion, contracting pecs.",
+      "Hold peak squeeze for a count before reversing into the stretch."
+    ],
+    "avoid": [
+      "Bending elbows excessively and turning the fly into a press.",
+      "Letting shoulders roll forward at the back of the stretch."
+    ]
+  },
+  "barbell-close-grip-bench-press": {
+    "name": "Barbell Close Grip Bench Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "dumbbell-pullover": {
+    "name": "Dumbbell Pullover",
+    "cues": [
+      "Position arms on pads or grasp bar with elbows bent ~90°; brace core.",
+      "Initiate by engaging lats to pull elbows down in an arc toward ribs.",
+      "Squeeze lats hard at bottom contraction, keeping shoulders depressed.",
+      "Return slowly through the overhead stretch, keeping tension on lats."
+    ],
+    "avoid": [
+      "Using abdominal crunches or excessive neck flexion to drive the movement.",
+      "Extending or flexing elbows to turn pullover into a triceps extension."
+    ]
+  },
+  "lever-chest-supported-row": {
+    "name": "Lever Chest-Supported Row",
+    "cues": [
+      "Establish stable posture with chest upright and core braced tight.",
+      "Initiate pull by retracting shoulder blades and driving elbows straight back.",
+      "Pull handle or bar toward lower abdomen / waistline, contracting mid-back and lats.",
+      "Control the return into a deep stretch without letting shoulders collapse forward."
+    ],
+    "avoid": [
+      "Using excessive torso swing or leg drive to jerk the weight.",
+      "Rounding upper or lower spine under load.",
+      "Flaring elbows excessively wide away from body."
+    ]
+  },
+  "lever-t-bar-row": {
+    "name": "Lever T-Bar Row",
+    "cues": [
+      "Establish stable posture with chest upright and core braced tight.",
+      "Initiate pull by retracting shoulder blades and driving elbows straight back.",
+      "Pull handle or bar toward lower abdomen / waistline, contracting mid-back and lats.",
+      "Control the return into a deep stretch without letting shoulders collapse forward."
+    ],
+    "avoid": [
+      "Using excessive torso swing or leg drive to jerk the weight.",
+      "Rounding upper or lower spine under load.",
+      "Flaring elbows excessively wide away from body."
+    ]
+  },
+  "barbell-pendlay-row": {
+    "name": "Barbell Pendlay Row",
+    "cues": [
+      "Establish stable posture with chest upright and core braced tight.",
+      "Initiate pull by retracting shoulder blades and driving elbows straight back.",
+      "Pull handle or bar toward lower abdomen / waistline, contracting mid-back and lats.",
+      "Control the return into a deep stretch without letting shoulders collapse forward."
+    ],
+    "avoid": [
+      "Using excessive torso swing or leg drive to jerk the weight.",
+      "Rounding upper or lower spine under load.",
+      "Flaring elbows excessively wide away from body."
+    ]
+  },
+  "inverted-row": {
+    "name": "Inverted Row",
+    "cues": [
+      "Set body in a rigid plank from heels to head with arms extended underneath handles/bar.",
+      "Pull shoulder blades back and drive elbows behind torso to pull chest to handles.",
+      "Squeeze rhomboids and middle traps firmly at the top.",
+      "Lower body back down under control until arms are fully extended."
+    ],
+    "avoid": [
+      "Allowing hips to sag or piking hips upward.",
+      "Jerking neck forward to touch chin to bar."
+    ]
+  },
+  "cable-neutral-grip-lat-pulldown": {
+    "name": "Cable Neutral-Grip Lat Pulldown",
+    "cues": [
+      "Grasp bar with chosen grip; secure thighs under pads and lift chest.",
+      "Initiate by pulling shoulder blades down and driving elbows down and back toward ribs.",
+      "Pull bar smoothly to upper chest / chin level while keeping spine tall.",
+      "Control the eccentric return under full lat stretch, allowing scapulae to elevate."
+    ],
+    "avoid": [
+      "Leaning back excessively into a horizontal row to heave the weight.",
+      "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
+      "Using jerky momentum to yank the bar down."
+    ]
+  },
+  "cable-close-grip-front-lat-pulldown": {
+    "name": "Cable Close Grip Front Lat Pulldown",
+    "cues": [
+      "Grasp bar with chosen grip; secure thighs under pads and lift chest.",
+      "Initiate by pulling shoulder blades down and driving elbows down and back toward ribs.",
+      "Pull bar smoothly to upper chest / chin level while keeping spine tall.",
+      "Control the eccentric return under full lat stretch, allowing scapulae to elevate."
+    ],
+    "avoid": [
+      "Leaning back excessively into a horizontal row to heave the weight.",
+      "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
+      "Using jerky momentum to yank the bar down."
+    ]
+  },
+  "cable-underhand-pulldown": {
+    "name": "Cable Underhand Pulldown",
+    "cues": [
+      "Grasp bar with chosen grip; secure thighs under pads and lift chest.",
+      "Initiate by pulling shoulder blades down and driving elbows down and back toward ribs.",
+      "Pull bar smoothly to upper chest / chin level while keeping spine tall.",
+      "Control the eccentric return under full lat stretch, allowing scapulae to elevate."
+    ],
+    "avoid": [
+      "Leaning back excessively into a horizontal row to heave the weight.",
+      "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
+      "Using jerky momentum to yank the bar down."
+    ]
+  },
+  "cable-straight-arm-pulldown": {
+    "name": "Cable Straight-Arm Pulldown",
+    "cues": [
+      "Stand with slight forward torso hinge, arms extended with soft elbow bend.",
+      "Engage lats to sweep bar/rope down in an arc toward thighs.",
+      "Squeeze lats firmly at bottom contraction while keeping chest proud.",
+      "Control the return up to eye level, maintaining constant cable tension."
+    ],
+    "avoid": [
+      "Bending elbows and turning the pulldown into a triceps pressdown.",
+      "Swinging torso forward and backward to gain momentum."
+    ]
+  },
+  "cable-kneeling-pullover": {
+    "name": "Cable Kneeling Pullover",
+    "cues": [
+      "Position arms on pads or grasp bar with elbows bent ~90°; brace core.",
+      "Initiate by engaging lats to pull elbows down in an arc toward ribs.",
+      "Squeeze lats hard at bottom contraction, keeping shoulders depressed.",
+      "Return slowly through the overhead stretch, keeping tension on lats."
+    ],
+    "avoid": [
+      "Using abdominal crunches or excessive neck flexion to drive the movement.",
+      "Extending or flexing elbows to turn pullover into a triceps extension."
+    ]
+  },
+  "assisted-pull-up": {
+    "name": "Assisted Pull-up",
+    "cues": [
+      "Grasp bar with chosen grip; secure thighs under pads and lift chest.",
+      "Initiate by pulling shoulder blades down and driving elbows down and back toward ribs.",
+      "Pull bar smoothly to upper chest / chin level while keeping spine tall.",
+      "Control the eccentric return under full lat stretch, allowing scapulae to elevate."
+    ],
+    "avoid": [
+      "Leaning back excessively into a horizontal row to heave the weight.",
+      "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
+      "Using jerky momentum to yank the bar down."
+    ]
+  },
+  "assisted-dip-machine": {
+    "name": "Assisted Dip Machine",
+    "cues": [
+      "Pin elbows firmly at sides and lean torso forward slightly with braced core.",
+      "Extend forearms down by contracting triceps until arms are fully straight.",
+      "Squeeze triceps hard at bottom lockout, spreading ropes or gripping bar firm.",
+      "Return weight under 2-second control to ~90° elbow bend, keeping elbows pinned."
+    ],
+    "avoid": [
+      "Allowing elbows to drift forward and backward on each rep.",
+      "Using shoulder or torso momentum to slam weight down."
+    ]
+  },
+  "dumbbell-rear-fly": {
+    "name": "Dumbbell Rear Fly",
+    "cues": [
+      "Position handles at mid-chest height; maintain slight elbow bend and retract scapulae.",
+      "Open arms wide in a controlled arc until a deep chest stretch is achieved.",
+      "Bring hands together in front of chest in a hugging motion, contracting pecs.",
+      "Hold peak squeeze for a count before reversing into the stretch."
+    ],
+    "avoid": [
+      "Bending elbows excessively and turning the fly into a press.",
+      "Letting shoulders roll forward at the back of the stretch."
+    ]
+  },
+  "barbell-shrug": {
+    "name": "Barbell Shrug",
+    "cues": [
+      "Stand tall holding weights at sides with arms straight and shoulders relaxed.",
+      "Elevate shoulder blades straight up toward ears, squeezing upper traps hard.",
+      "Hold the peak contraction at the top for a full second.",
+      "Lower shoulders smoothly back into a deep stretch without rolling."
+    ],
+    "avoid": [
+      "Rolling shoulders in circles (provides no benefit and strains neck).",
+      "Bending elbows to pull weight with arms."
+    ]
+  },
+  "dumbbell-shrug": {
+    "name": "Dumbbell Shrug",
+    "cues": [
+      "Stand tall holding weights at sides with arms straight and shoulders relaxed.",
+      "Elevate shoulder blades straight up toward ears, squeezing upper traps hard.",
+      "Hold the peak contraction at the top for a full second.",
+      "Lower shoulders smoothly back into a deep stretch without rolling."
+    ],
+    "avoid": [
+      "Rolling shoulders in circles (provides no benefit and strains neck).",
+      "Bending elbows to pull weight with arms."
+    ]
+  },
+  "lever-machine-shrug": {
+    "name": "Lever Machine Shrug",
+    "cues": [
+      "Stand tall holding weights at sides with arms straight and shoulders relaxed.",
+      "Elevate shoulder blades straight up toward ears, squeezing upper traps hard.",
+      "Hold the peak contraction at the top for a full second.",
+      "Lower shoulders smoothly back into a deep stretch without rolling."
+    ],
+    "avoid": [
+      "Rolling shoulders in circles (provides no benefit and strains neck).",
+      "Bending elbows to pull weight with arms."
+    ]
+  },
+  "dumbbell-arnold-press": {
+    "name": "Dumbbell Arnold Press",
+    "cues": [
+      "Set stable base with ribs pulled down, core braced, and glutes engaged.",
+      "Position weight at shoulder height with elbows stacked directly under wrists.",
+      "Press weight straight upward, clearing head and finishing in line with ears.",
+      "Lower under control back to collarbone level without losing core tightness."
+    ],
+    "avoid": [
+      "Arching lower back excessively to compensate for shoulder mobility.",
+      "Flaring elbows out completely wide to the sides.",
+      "Using leg drive on strict pressing variations."
+    ]
+  },
+  "barbell-seated-overhead-press": {
+    "name": "Barbell Seated Overhead Press",
+    "cues": [
+      "Set stable base with ribs pulled down, core braced, and glutes engaged.",
+      "Position weight at shoulder height with elbows stacked directly under wrists.",
+      "Press weight straight upward, clearing head and finishing in line with ears.",
+      "Lower under control back to collarbone level without losing core tightness."
+    ],
+    "avoid": [
+      "Arching lower back excessively to compensate for shoulder mobility.",
+      "Flaring elbows out completely wide to the sides.",
+      "Using leg drive on strict pressing variations."
+    ]
+  },
+  "dumbbell-one-arm-shoulder-press": {
+    "name": "Dumbbell One-Arm Shoulder Press",
+    "cues": [
+      "Set stable base with ribs pulled down, core braced, and glutes engaged.",
+      "Position weight at shoulder height with elbows stacked directly under wrists.",
+      "Press weight straight upward, clearing head and finishing in line with ears.",
+      "Lower under control back to collarbone level without losing core tightness."
+    ],
+    "avoid": [
+      "Arching lower back excessively to compensate for shoulder mobility.",
+      "Flaring elbows out completely wide to the sides.",
+      "Using leg drive on strict pressing variations."
+    ]
+  },
+  "landmine-press": {
+    "name": "Landmine Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "lever-lateral-raise": {
+    "name": "Lever Lateral Raise",
+    "cues": [
+      "Lean torso forward ~10–15° with soft knees and core braced.",
+      "Raise arms out in scapular plane (~30° forward), leading with elbows.",
+      "Stop when hands reach shoulder height, keeping pinkies slightly above thumbs.",
+      "Control the descent slowly, keeping constant tension on lateral delts."
+    ],
+    "avoid": [
+      "Shrugging neck and upper traps up toward ears.",
+      "Swinging torso or bouncing knees to heave the weights.",
+      "Internally rotating shoulders excessively during the raise."
+    ]
+  },
+  "cable-seated-rear-delt-fly-with-chest-support": {
+    "name": "Cable Seated Rear Delt Fly with Chest Support",
+    "cues": [
+      "Hinge forward at hips with flat back (or lay chest-down on incline bench).",
+      "With slight elbow bend, sweep arms out wide in the transverse plane.",
+      "Squeeze rear deltoids firmly at top without shrugging traps toward neck.",
+      "Lower weights under controlled eccentric tempo, maintaining tension."
+    ],
+    "avoid": [
+      "Swinging torso upward to use momentum.",
+      "Turning rear fly into a lat row by pulling elbows down."
+    ]
+  },
+  "barbell-upright-row": {
+    "name": "Barbell Upright Row",
+    "cues": [
+      "Lean torso forward ~10–15° with soft knees and core braced.",
+      "Raise arms out in scapular plane (~30° forward), leading with elbows.",
+      "Stop when hands reach shoulder height, keeping pinkies slightly above thumbs.",
+      "Control the descent slowly, keeping constant tension on lateral delts."
+    ],
+    "avoid": [
+      "Shrugging neck and upper traps up toward ears.",
+      "Swinging torso or bouncing knees to heave the weights.",
+      "Internally rotating shoulders excessively during the raise."
+    ]
+  },
+  "barbell-curl": {
+    "name": "Barbell Curl",
+    "cues": [
+      "Stand tall with elbows pinned at sides and shoulders pulled back.",
+      "Curl weight upward by flexing biceps, keeping upper arms completely stationary.",
+      "Squeeze biceps hard at the peak, supinating wrists if using dumbbells.",
+      "Lower the weight under slow 2–3 second control into full elbow extension."
+    ],
+    "avoid": [
+      "Swinging elbows forward or backward to generate momentum.",
+      "Arching lower back to lean backward during the curl."
+    ]
+  },
+  "dumbbell-alternate-biceps-curl": {
+    "name": "Dumbbell Alternate Biceps Curl",
+    "cues": [
+      "Stand tall with elbows pinned at sides and shoulders pulled back.",
+      "Curl weight upward by flexing biceps, keeping upper arms completely stationary.",
+      "Squeeze biceps hard at the peak, supinating wrists if using dumbbells.",
+      "Lower the weight under slow 2–3 second control into full elbow extension."
+    ],
+    "avoid": [
+      "Swinging elbows forward or backward to generate momentum.",
+      "Arching lower back to lean backward during the curl."
+    ]
+  },
+  "dumbbell-concentration-curl": {
+    "name": "Dumbbell Concentration Curl",
+    "cues": [
+      "Stand tall with elbows pinned at sides and shoulders pulled back.",
+      "Curl weight upward by flexing biceps, keeping upper arms completely stationary.",
+      "Squeeze biceps hard at the peak, supinating wrists if using dumbbells.",
+      "Lower the weight under slow 2–3 second control into full elbow extension."
+    ],
+    "avoid": [
+      "Swinging elbows forward or backward to generate momentum.",
+      "Arching lower back to lean backward during the curl."
+    ]
+  },
+  "ez-barbell-spider-curl": {
+    "name": "EZ Barbell Spider Curl",
+    "cues": [
+      "Position upper arms firmly flat against pad with armpits wedged at the top edge.",
+      "Keep wrists firm; curl weight upward by flexing biceps while keeping triceps glued to pad.",
+      "Squeeze biceps hard at peak contraction without lifting elbows off pad.",
+      "Lower weight under strict 2–3 second control until arms are nearly fully extended."
+    ],
+    "avoid": [
+      "Hyperextending and bouncing violently off the bottom elbow lockout.",
+      "Lifting elbows or leaning back off the pad during the curl."
+    ]
+  },
+  "cable-rope-hammer-curl": {
+    "name": "Cable Rope Hammer Curl",
+    "cues": [
+      "Hold weights with neutral grip (palms facing each other), elbows tucked at sides.",
+      "Curl weight upward focusing on brachialis and forearm flexors.",
+      "Pause for a count at peak contraction with elbows remaining stationary.",
+      "Lower weights with slow eccentric tempo to full elbow extension."
+    ],
+    "avoid": [
+      "Swinging elbows forward to cheat with anterior deltoids.",
+      "Rocking torso backward to create momentum."
+    ]
+  },
+  "cable-incline-biceps-curl": {
+    "name": "Cable Incline Biceps Curl",
+    "cues": [
+      "Stand tall with elbows pinned at sides and shoulders pulled back.",
+      "Curl weight upward by flexing biceps, keeping upper arms completely stationary.",
+      "Squeeze biceps hard at the peak, supinating wrists if using dumbbells.",
+      "Lower the weight under slow 2–3 second control into full elbow extension."
+    ],
+    "avoid": [
+      "Swinging elbows forward or backward to generate momentum.",
+      "Arching lower back to lean backward during the curl."
+    ]
+  },
+  "lever-preacher-curl": {
+    "name": "Lever Preacher Curl",
+    "cues": [
+      "Position upper arms firmly flat against pad with armpits wedged at the top edge.",
+      "Keep wrists firm; curl weight upward by flexing biceps while keeping triceps glued to pad.",
+      "Squeeze biceps hard at peak contraction without lifting elbows off pad.",
+      "Lower weight under strict 2–3 second control until arms are nearly fully extended."
+    ],
+    "avoid": [
+      "Hyperextending and bouncing violently off the bottom elbow lockout.",
+      "Lifting elbows or leaning back off the pad during the curl."
+    ]
+  },
+  "ez-bar-lying-triceps-extension": {
+    "name": "EZ-Bar Lying Triceps Extension",
+    "cues": [
+      "Lie firmly on bench with arms extended, angled slightly back toward forehead (~75°).",
+      "Bend elbows to lower weight toward forehead or crown of head, keeping elbows stationary.",
+      "Drive through triceps to extend arms back to the starting angled position.",
+      "Hold peak lockout for a split second before controlling the descent."
+    ],
+    "avoid": [
+      "Letting elbows flare wide out to the sides.",
+      "Moving upper arms back and forth like a pullover."
+    ]
+  },
+  "dumbbell-standing-triceps-extension": {
+    "name": "Dumbbell Standing Triceps Extension",
+    "cues": [
+      "Pin elbows firmly at sides and lean torso forward slightly with braced core.",
+      "Extend forearms down by contracting triceps until arms are fully straight.",
+      "Squeeze triceps hard at bottom lockout, spreading ropes or gripping bar firm.",
+      "Return weight under 2-second control to ~90° elbow bend, keeping elbows pinned."
+    ],
+    "avoid": [
+      "Allowing elbows to drift forward and backward on each rep.",
+      "Using shoulder or torso momentum to slam weight down."
+    ]
+  },
+  "cable-one-arm-triceps-pushdown": {
+    "name": "Cable One Arm Triceps Pushdown",
+    "cues": [
+      "Pin elbows firmly at sides and lean torso forward slightly with braced core.",
+      "Extend forearms down by contracting triceps until arms are fully straight.",
+      "Squeeze triceps hard at bottom lockout, spreading ropes or gripping bar firm.",
+      "Return weight under 2-second control to ~90° elbow bend, keeping elbows pinned."
+    ],
+    "avoid": [
+      "Allowing elbows to drift forward and backward on each rep.",
+      "Using shoulder or torso momentum to slam weight down."
+    ]
+  },
+  "cable-reverse-grip-pushdown": {
+    "name": "Cable Reverse Grip Pushdown",
+    "cues": [
+      "Pin elbows firmly at sides and lean torso forward slightly with braced core.",
+      "Extend forearms down by contracting triceps until arms are fully straight.",
+      "Squeeze triceps hard at bottom lockout, spreading ropes or gripping bar firm.",
+      "Return weight under 2-second control to ~90° elbow bend, keeping elbows pinned."
+    ],
+    "avoid": [
+      "Allowing elbows to drift forward and backward on each rep.",
+      "Using shoulder or torso momentum to slam weight down."
+    ]
+  },
+  "dumbbell-kickback": {
+    "name": "Dumbbell Kickback",
+    "cues": [
+      "Pin elbows firmly at sides and lean torso forward slightly with braced core.",
+      "Extend forearms down by contracting triceps until arms are fully straight.",
+      "Squeeze triceps hard at bottom lockout, spreading ropes or gripping bar firm.",
+      "Return weight under 2-second control to ~90° elbow bend, keeping elbows pinned."
+    ],
+    "avoid": [
+      "Allowing elbows to drift forward and backward on each rep.",
+      "Using shoulder or torso momentum to slam weight down."
+    ]
+  },
+  "hanging-leg-raise": {
+    "name": "Hanging Leg Raise",
+    "cues": [
+      "Flatten lower back into the floor or maintain stable braced spine.",
+      "Contract abdominals to curl ribs toward hips, expelling air forcefully.",
+      "Hold peak contraction for a count, focusing purely on abdominal flexion.",
+      "Lower under control, keeping tension on abs without resting completely."
+    ],
+    "avoid": [
+      "Yanking on neck with hands or throwing head forward.",
+      "Using hip flexor momentum to swing legs or torso."
+    ]
+  },
+  "reverse-crunch": {
+    "name": "Reverse Crunch",
+    "cues": [
+      "Flatten lower back into the floor or maintain stable braced spine.",
+      "Contract abdominals to curl ribs toward hips, expelling air forcefully.",
+      "Hold peak contraction for a count, focusing purely on abdominal flexion.",
+      "Lower under control, keeping tension on abs without resting completely."
+    ],
+    "avoid": [
+      "Yanking on neck with hands or throwing head forward.",
+      "Using hip flexor momentum to swing legs or torso."
+    ]
+  },
+  "bicycle-crunch": {
+    "name": "Bicycle Crunch",
+    "cues": [
+      "Flatten lower back into the floor or maintain stable braced spine.",
+      "Contract abdominals to curl ribs toward hips, expelling air forcefully.",
+      "Hold peak contraction for a count, focusing purely on abdominal flexion.",
+      "Lower under control, keeping tension on abs without resting completely."
+    ],
+    "avoid": [
+      "Yanking on neck with hands or throwing head forward.",
+      "Using hip flexor momentum to swing legs or torso."
+    ]
+  },
+  "cable-woodchopper": {
+    "name": "Cable Woodchopper",
+    "cues": [
+      "Stand in athletic stance with core braced; hold handle/bar with both hands.",
+      "Rotate torso diagonally across body by driving from the obliques and hips.",
+      "Pivot on back foot smoothly while keeping arms mostly extended.",
+      "Control the return path against cable/weight resistance, resisting rotation."
+    ],
+    "avoid": [
+      "Bending arms and pulling purely with shoulders/arms.",
+      "Twisting spine without pivoting trailing foot, stressing lower back."
+    ]
+  },
+  "russian-twist": {
+    "name": "Russian Twist",
+    "cues": [
+      "Stand in athletic stance with core braced; hold handle/bar with both hands.",
+      "Rotate torso diagonally across body by driving from the obliques and hips.",
+      "Pivot on back foot smoothly while keeping arms mostly extended.",
+      "Control the return path against cable/weight resistance, resisting rotation."
+    ],
+    "avoid": [
+      "Bending arms and pulling purely with shoulders/arms.",
+      "Twisting spine without pivoting trailing foot, stressing lower back."
+    ]
+  },
+  "bird-dog": {
+    "name": "Bird Dog",
+    "cues": [
+      "Flatten lower back into the floor or maintain stable braced spine.",
+      "Contract abdominals to curl ribs toward hips, expelling air forcefully.",
+      "Hold peak contraction for a count, focusing purely on abdominal flexion.",
+      "Lower under control, keeping tension on abs without resting completely."
+    ],
+    "avoid": [
+      "Yanking on neck with hands or throwing head forward.",
+      "Using hip flexor momentum to swing legs or torso."
+    ]
+  },
+  "mountain-climber": {
+    "name": "Mountain Climber",
+    "cues": [
+      "Initiate movement with athletic posture, loading hips and arms rhythmically.",
+      "Explode upward through triple extension of ankles, knees, and hips.",
+      "Land softly on mid-foot, immediately absorbing impact by sinking into hips and knees.",
+      "Reset alignment before initiating the next repetition."
+    ],
+    "avoid": [
+      "Landing stiff-legged with locked knees.",
+      "Letting knees collapse inward (valgus) on takeoff or landing."
+    ]
+  },
+  "burpee": {
+    "name": "Burpee",
+    "cues": [
+      "Initiate movement with athletic posture, loading hips and arms rhythmically.",
+      "Explode upward through triple extension of ankles, knees, and hips.",
+      "Land softly on mid-foot, immediately absorbing impact by sinking into hips and knees.",
+      "Reset alignment before initiating the next repetition."
+    ],
+    "avoid": [
+      "Landing stiff-legged with locked knees.",
+      "Letting knees collapse inward (valgus) on takeoff or landing."
+    ]
+  },
+  "jumping-jack": {
+    "name": "Jumping Jack",
+    "cues": [
+      "Initiate movement with athletic posture, loading hips and arms rhythmically.",
+      "Explode upward through triple extension of ankles, knees, and hips.",
+      "Land softly on mid-foot, immediately absorbing impact by sinking into hips and knees.",
+      "Reset alignment before initiating the next repetition."
+    ],
+    "avoid": [
+      "Landing stiff-legged with locked knees.",
+      "Letting knees collapse inward (valgus) on takeoff or landing."
+    ]
+  },
+  "box-jump": {
+    "name": "Box Jump",
+    "cues": [
+      "Initiate movement with athletic posture, loading hips and arms rhythmically.",
+      "Explode upward through triple extension of ankles, knees, and hips.",
+      "Land softly on mid-foot, immediately absorbing impact by sinking into hips and knees.",
+      "Reset alignment before initiating the next repetition."
+    ],
+    "avoid": [
+      "Landing stiff-legged with locked knees.",
+      "Letting knees collapse inward (valgus) on takeoff or landing."
+    ]
+  },
+  "jump-squat": {
+    "name": "Jump Squat",
+    "cues": [
+      "Set stable stance with feet shoulder-width, toes angled slightly out; brace core.",
+      "Initiate descent by breaking at hips and knees together, keeping chest proud.",
+      "Descend until hip crease is at or below top of knee while keeping whole foot planted.",
+      "Drive evenly through mid-foot and heels to ascend with hips and chest rising in unison."
+    ],
+    "avoid": [
+      "Knees caving inward (valgus collapse) on the ascent.",
+      "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
+      "Heels lifting or excessive forward torso collapse."
+    ]
+  },
+  "kettlebell-deadlift": {
+    "name": "Kettlebell Deadlift",
+    "cues": [
+      "Stand over bar with feet hip-to-shoulder width, neutral spine and shoulder blades packed.",
+      "Hinge hips deeply backward while keeping bar close against shins and thighs.",
+      "Descend until hamstrings reach full stretch, keeping lower back completely flat.",
+      "Drive through heels and push hips forward into full glute lockout at the top."
+    ],
+    "avoid": [
+      "Rounding lumbar or thoracic spine under load.",
+      "Letting bar drift forward away from legs.",
+      "Hyperextending lower back at lockout instead of squeezing glutes."
+    ]
+  },
+  "kettlebell-one-arm-clean": {
+    "name": "Kettlebell One Arm Clean",
+    "cues": [
+      "Stand over bar with feet hip-to-shoulder width, neutral spine and shoulder blades packed.",
+      "Hinge hips deeply backward while keeping bar close against shins and thighs.",
+      "Descend until hamstrings reach full stretch, keeping lower back completely flat.",
+      "Drive through heels and push hips forward into full glute lockout at the top."
+    ],
+    "avoid": [
+      "Rounding lumbar or thoracic spine under load.",
+      "Letting bar drift forward away from legs.",
+      "Hyperextending lower back at lockout instead of squeezing glutes."
+    ]
+  },
+  "kettlebell-strict-press": {
+    "name": "Kettlebell Strict Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "kettlebell-one-arm-snatch": {
+    "name": "Kettlebell One Arm Snatch",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "dumbbell-suitcase-carry": {
+    "name": "Dumbbell Suitcase Carry",
+    "cues": [
+      "Hold weight firmly in one hand at side; stand completely upright with shoulders level.",
+      "Brace core and contract contralateral obliques to prevent any side leaning.",
+      "Walk forward with controlled, deliberate steps, keeping hips and shoulders square.",
+      "Maintain tall posture and smooth breathing throughout the carry."
+    ],
+    "avoid": [
+      "Tilting or leaning torso toward or away from the weighted side.",
+      "Shrugging shoulder up on the loaded side."
+    ]
+  },
+  "barbell-standing-calf-raise": {
+    "name": "Barbell Standing Calf Raise",
+    "cues": [
+      "Position balls of feet securely on edge of step with knees straight but not hyperextended.",
+      "Lower heels below the platform until a deep stretch is felt throughout gastrocnemius.",
+      "Press forcefully through big toes to elevate heels into maximal plantarflexion.",
+      "Hold peak contraction for a split second before controlling the descent."
+    ],
+    "avoid": [
+      "Bending and extending knees to turn calf raise into a mini squat.",
+      "Rushing reps and cutting the bottom stretch or top squeeze."
+    ]
+  },
+  "bodyweight-standing-calf-raise": {
+    "name": "Bodyweight Standing Calf Raise",
+    "cues": [
+      "Position balls of feet securely on edge of step with knees straight but not hyperextended.",
+      "Lower heels below the platform until a deep stretch is felt throughout gastrocnemius.",
+      "Press forcefully through big toes to elevate heels into maximal plantarflexion.",
+      "Hold peak contraction for a split second before controlling the descent."
+    ],
+    "avoid": [
+      "Bending and extending knees to turn calf raise into a mini squat.",
+      "Rushing reps and cutting the bottom stretch or top squeeze."
+    ]
+  },
+  "lever-machine-hip-thrust": {
+    "name": "Lever Machine Hip Thrust",
+    "cues": [
+      "Position upper back across bench just below shoulder blades; place feet flat shoulder-width.",
+      "Tuck chin slightly and engage core; drive through heels to elevate hips toward the ceiling.",
+      "Reach full hip extension where thighs and torso form a flat tabletop, squeezing glutes hard.",
+      "Lower hips back down with control, keeping ribs pulled down and chin tucked."
+    ],
+    "avoid": [
+      "Hyperextending lumbar spine at top instead of achieving true hip extension.",
+      "Pushing through toes rather than driving into heels.",
+      "Letting knees collapse inward during hip drive."
+    ]
+  },
+  "floor-crunch": {
+    "name": "Floor Crunch",
+    "cues": [
+      "Flatten lower back into the floor or maintain stable braced spine.",
+      "Contract abdominals to curl ribs toward hips, expelling air forcefully.",
+      "Hold peak contraction for a count, focusing purely on abdominal flexion.",
+      "Lower under control, keeping tension on abs without resting completely."
+    ],
+    "avoid": [
+      "Yanking on neck with hands or throwing head forward.",
+      "Using hip flexor momentum to swing legs or torso."
+    ]
+  },
+  "dumbbell-lying-hammer-press": {
+    "name": "Dumbbell Lying Hammer Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "dumbbell-squeeze-bench-press": {
+    "name": "Dumbbell Squeeze Bench Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "barbell-reverse-grip-bench-press": {
+    "name": "Barbell Reverse Grip Bench Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "barbell-floor-chest-press": {
+    "name": "Barbell Floor Chest Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "barbell-spoto-press": {
+    "name": "Barbell Spoto Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "barbell-larsen-press": {
+    "name": "Barbell Larsen Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "barbell-incline-close-grip-bench-press": {
+    "name": "Barbell Incline Close Grip Bench Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "dumbbell-incline-fly": {
+    "name": "Dumbbell Incline Fly",
+    "cues": [
+      "Position handles at mid-chest height; maintain slight elbow bend and retract scapulae.",
+      "Open arms wide in a controlled arc until a deep chest stretch is achieved.",
+      "Bring hands together in front of chest in a hugging motion, contracting pecs.",
+      "Hold peak squeeze for a count before reversing into the stretch."
+    ],
+    "avoid": [
+      "Bending elbows excessively and turning the fly into a press.",
+      "Letting shoulders roll forward at the back of the stretch."
+    ]
+  },
+  "dumbbell-decline-fly": {
+    "name": "Dumbbell Decline Fly",
+    "cues": [
+      "Position handles at mid-chest height; maintain slight elbow bend and retract scapulae.",
+      "Open arms wide in a controlled arc until a deep chest stretch is achieved.",
+      "Bring hands together in front of chest in a hugging motion, contracting pecs.",
+      "Hold peak squeeze for a count before reversing into the stretch."
+    ],
+    "avoid": [
+      "Bending elbows excessively and turning the fly into a press.",
+      "Letting shoulders roll forward at the back of the stretch."
+    ]
+  },
+  "dumbbell-lying-one-arm-press": {
+    "name": "Dumbbell Lying One Arm Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "cable-standing-single-arm-chest-press": {
+    "name": "Cable Standing Single Arm Chest Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "cable-standing-chest-press": {
+    "name": "Cable Standing Chest Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "cable-middle-fly": {
+    "name": "Cable Middle Fly",
+    "cues": [
+      "Position handles at mid-chest height; maintain slight elbow bend and retract scapulae.",
+      "Open arms wide in a controlled arc until a deep chest stretch is achieved.",
+      "Bring hands together in front of chest in a hugging motion, contracting pecs.",
+      "Hold peak squeeze for a count before reversing into the stretch."
+    ],
+    "avoid": [
+      "Bending elbows excessively and turning the fly into a press.",
+      "Letting shoulders roll forward at the back of the stretch."
+    ]
+  },
+  "cable-standing-single-arm-fly": {
+    "name": "Cable Standing Single Arm Fly",
+    "cues": [
+      "Position handles at mid-chest height; maintain slight elbow bend and retract scapulae.",
+      "Open arms wide in a controlled arc until a deep chest stretch is achieved.",
+      "Bring hands together in front of chest in a hugging motion, contracting pecs.",
+      "Hold peak squeeze for a count before reversing into the stretch."
+    ],
+    "avoid": [
+      "Bending elbows excessively and turning the fly into a press.",
+      "Letting shoulders roll forward at the back of the stretch."
+    ]
+  },
+  "svend-press": {
+    "name": "Svend Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "incline-push-up": {
+    "name": "Incline Push-up",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "decline-push-up": {
+    "name": "Decline Push-up",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "diamond-push-up": {
+    "name": "Diamond Push-up",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "archer-push-up": {
+    "name": "Archer Push-up",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "weighted-push-up-with-vest": {
+    "name": "Weighted Push-up with Vest",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "lever-seated-wide-lat-pulldown": {
+    "name": "Lever Seated Wide Lat Pulldown",
+    "cues": [
+      "Grasp bar with chosen grip; secure thighs under pads and lift chest.",
+      "Initiate by pulling shoulder blades down and driving elbows down and back toward ribs.",
+      "Pull bar smoothly to upper chest / chin level while keeping spine tall.",
+      "Control the eccentric return under full lat stretch, allowing scapulae to elevate."
+    ],
+    "avoid": [
+      "Leaning back excessively into a horizontal row to heave the weight.",
+      "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
+      "Using jerky momentum to yank the bar down."
+    ]
+  },
+  "cable-one-arm-lat-pulldown": {
+    "name": "Cable One Arm Lat Pulldown",
+    "cues": [
+      "Grasp bar with chosen grip; secure thighs under pads and lift chest.",
+      "Initiate by pulling shoulder blades down and driving elbows down and back toward ribs.",
+      "Pull bar smoothly to upper chest / chin level while keeping spine tall.",
+      "Control the eccentric return under full lat stretch, allowing scapulae to elevate."
+    ],
+    "avoid": [
+      "Leaning back excessively into a horizontal row to heave the weight.",
+      "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
+      "Using jerky momentum to yank the bar down."
+    ]
+  },
+  "cable-kneeling-one-arm-lat-pulldown": {
+    "name": "Cable Kneeling One Arm Lat Pulldown",
+    "cues": [
+      "Grasp bar with chosen grip; secure thighs under pads and lift chest.",
+      "Initiate by pulling shoulder blades down and driving elbows down and back toward ribs.",
+      "Pull bar smoothly to upper chest / chin level while keeping spine tall.",
+      "Control the eccentric return under full lat stretch, allowing scapulae to elevate."
+    ],
+    "avoid": [
+      "Leaning back excessively into a horizontal row to heave the weight.",
+      "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
+      "Using jerky momentum to yank the bar down."
+    ]
+  },
+  "cable-kneeling-lat-pulldown": {
+    "name": "Cable Kneeling Lat Pulldown",
+    "cues": [
+      "Grasp bar with chosen grip; secure thighs under pads and lift chest.",
+      "Initiate by pulling shoulder blades down and driving elbows down and back toward ribs.",
+      "Pull bar smoothly to upper chest / chin level while keeping spine tall.",
+      "Control the eccentric return under full lat stretch, allowing scapulae to elevate."
+    ],
+    "avoid": [
+      "Leaning back excessively into a horizontal row to heave the weight.",
+      "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
+      "Using jerky momentum to yank the bar down."
+    ]
+  },
+  "cable-lateral-pulldown-with-v-bar": {
+    "name": "Cable Lateral Pulldown with V-BAR",
+    "cues": [
+      "Grasp bar with chosen grip; secure thighs under pads and lift chest.",
+      "Initiate by pulling shoulder blades down and driving elbows down and back toward ribs.",
+      "Pull bar smoothly to upper chest / chin level while keeping spine tall.",
+      "Control the eccentric return under full lat stretch, allowing scapulae to elevate."
+    ],
+    "avoid": [
+      "Leaning back excessively into a horizontal row to heave the weight.",
+      "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
+      "Using jerky momentum to yank the bar down."
+    ]
+  },
+  "lever-machine-pullover": {
+    "name": "Lever Machine Pullover",
+    "cues": [
+      "Position arms on pads or grasp bar with elbows bent ~90°; brace core.",
+      "Initiate by engaging lats to pull elbows down in an arc toward ribs.",
+      "Squeeze lats hard at bottom contraction, keeping shoulders depressed.",
+      "Return slowly through the overhead stretch, keeping tension on lats."
+    ],
+    "avoid": [
+      "Using abdominal crunches or excessive neck flexion to drive the movement.",
+      "Extending or flexing elbows to turn pullover into a triceps extension."
+    ]
+  },
+  "cable-rope-straight-arm-pulldown": {
+    "name": "Cable Rope Straight-Arm Pulldown",
+    "cues": [
+      "Stand with slight forward torso hinge, arms extended with soft elbow bend.",
+      "Engage lats to sweep bar/rope down in an arc toward thighs.",
+      "Squeeze lats firmly at bottom contraction while keeping chest proud.",
+      "Control the return up to eye level, maintaining constant cable tension."
+    ],
+    "avoid": [
+      "Bending elbows and turning the pulldown into a triceps pressdown.",
+      "Swinging torso forward and backward to gain momentum."
+    ]
+  },
+  "cable-single-arm-straight-arm-pulldown": {
+    "name": "Cable Single-Arm Straight-Arm Pulldown",
+    "cues": [
+      "Stand with slight forward torso hinge, arms extended with soft elbow bend.",
+      "Engage lats to sweep bar/rope down in an arc toward thighs.",
+      "Squeeze lats firmly at bottom contraction while keeping chest proud.",
+      "Control the return up to eye level, maintaining constant cable tension."
+    ],
+    "avoid": [
+      "Bending elbows and turning the pulldown into a triceps pressdown.",
+      "Swinging torso forward and backward to gain momentum."
+    ]
+  },
+  "barbell-lying-seal-row-on-rack": {
+    "name": "Barbell Lying Seal Row on Rack",
+    "cues": [
+      "Establish stable posture with chest upright and core braced tight.",
+      "Initiate pull by retracting shoulder blades and driving elbows straight back.",
+      "Pull handle or bar toward lower abdomen / waistline, contracting mid-back and lats.",
+      "Control the return into a deep stretch without letting shoulders collapse forward."
+    ],
+    "avoid": [
+      "Using excessive torso swing or leg drive to jerk the weight.",
+      "Rounding upper or lower spine under load.",
+      "Flaring elbows excessively wide away from body."
+    ]
+  },
+  "landmine-one-arm-bent-over-row": {
+    "name": "Landmine One-Arm Bent-Over Row",
+    "cues": [
+      "Place non-working hand/knee on bench with back flat and core braced.",
+      "Let working dumbbell hang with shoulder extended, feeling full stretch in lat.",
+      "Drive elbow up and back in a sweeping arc toward the hip crease.",
+      "Squeeze lat hard at top before lowering under full control into the stretch."
+    ],
+    "avoid": [
+      "Twisting torso excessively at the top of the pull.",
+      "Pulling straight up into shoulder with bicep instead of driving elbow to hip."
+    ]
+  },
+  "landmine-v-bar-bent-over-row": {
+    "name": "Landmine V-Bar Bent-Over Row",
+    "cues": [
+      "Establish stable posture with chest upright and core braced tight.",
+      "Initiate pull by retracting shoulder blades and driving elbows straight back.",
+      "Pull handle or bar toward lower abdomen / waistline, contracting mid-back and lats.",
+      "Control the return into a deep stretch without letting shoulders collapse forward."
+    ],
+    "avoid": [
+      "Using excessive torso swing or leg drive to jerk the weight.",
+      "Rounding upper or lower spine under load.",
+      "Flaring elbows excessively wide away from body."
+    ]
+  },
+  "lever-lying-t-bar-row": {
+    "name": "Lever Lying T-BAR Row",
+    "cues": [
+      "Establish stable posture with chest upright and core braced tight.",
+      "Initiate pull by retracting shoulder blades and driving elbows straight back.",
+      "Pull handle or bar toward lower abdomen / waistline, contracting mid-back and lats.",
+      "Control the return into a deep stretch without letting shoulders collapse forward."
+    ],
+    "avoid": [
+      "Using excessive torso swing or leg drive to jerk the weight.",
+      "Rounding upper or lower spine under load.",
+      "Flaring elbows excessively wide away from body."
+    ]
+  },
+  "cable-seated-wide-grip-row": {
+    "name": "Cable Seated Wide Grip Row",
+    "cues": [
+      "Establish stable posture with chest upright and core braced tight.",
+      "Initiate pull by retracting shoulder blades and driving elbows straight back.",
+      "Pull handle or bar toward lower abdomen / waistline, contracting mid-back and lats.",
+      "Control the return into a deep stretch without letting shoulders collapse forward."
+    ],
+    "avoid": [
+      "Using excessive torso swing or leg drive to jerk the weight.",
+      "Rounding upper or lower spine under load.",
+      "Flaring elbows excessively wide away from body."
+    ]
+  },
+  "cable-seated-row-with-v-bar": {
+    "name": "Cable Seated Row with V-BAR",
+    "cues": [
+      "Establish stable posture with chest upright and core braced tight.",
+      "Initiate pull by retracting shoulder blades and driving elbows straight back.",
+      "Pull handle or bar toward lower abdomen / waistline, contracting mid-back and lats.",
+      "Control the return into a deep stretch without letting shoulders collapse forward."
+    ],
+    "avoid": [
+      "Using excessive torso swing or leg drive to jerk the weight.",
+      "Rounding upper or lower spine under load.",
+      "Flaring elbows excessively wide away from body."
+    ]
+  },
+  "cable-one-arm-twisting-seated-row": {
+    "name": "Cable One Arm Twisting Seated Row",
+    "cues": [
+      "Place non-working hand/knee on bench with back flat and core braced.",
+      "Let working dumbbell hang with shoulder extended, feeling full stretch in lat.",
+      "Drive elbow up and back in a sweeping arc toward the hip crease.",
+      "Squeeze lat hard at top before lowering under full control into the stretch."
+    ],
+    "avoid": [
+      "Twisting torso excessively at the top of the pull.",
+      "Pulling straight up into shoulder with bicep instead of driving elbow to hip."
+    ]
+  },
+  "cable-high-row": {
+    "name": "Cable High Row",
+    "cues": [
+      "Establish stable posture with chest upright and core braced tight.",
+      "Initiate pull by retracting shoulder blades and driving elbows straight back.",
+      "Pull handle or bar toward lower abdomen / waistline, contracting mid-back and lats.",
+      "Control the return into a deep stretch without letting shoulders collapse forward."
+    ],
+    "avoid": [
+      "Using excessive torso swing or leg drive to jerk the weight.",
+      "Rounding upper or lower spine under load.",
+      "Flaring elbows excessively wide away from body."
+    ]
+  },
+  "cable-low-seated-row": {
+    "name": "Cable Low Seated Row",
+    "cues": [
+      "Establish stable posture with chest upright and core braced tight.",
+      "Initiate pull by retracting shoulder blades and driving elbows straight back.",
+      "Pull handle or bar toward lower abdomen / waistline, contracting mid-back and lats.",
+      "Control the return into a deep stretch without letting shoulders collapse forward."
+    ],
+    "avoid": [
+      "Using excessive torso swing or leg drive to jerk the weight.",
+      "Rounding upper or lower spine under load.",
+      "Flaring elbows excessively wide away from body."
+    ]
+  },
+  "cable-rope-seated-row": {
+    "name": "Cable Rope Seated Row",
+    "cues": [
+      "Establish stable posture with chest upright and core braced tight.",
+      "Initiate pull by retracting shoulder blades and driving elbows straight back.",
+      "Pull handle or bar toward lower abdomen / waistline, contracting mid-back and lats.",
+      "Control the return into a deep stretch without letting shoulders collapse forward."
+    ],
+    "avoid": [
+      "Using excessive torso swing or leg drive to jerk the weight.",
+      "Rounding upper or lower spine under load.",
+      "Flaring elbows excessively wide away from body."
+    ]
+  },
+  "lever-high-row": {
+    "name": "Lever High Row",
+    "cues": [
+      "Establish stable posture with chest upright and core braced tight.",
+      "Initiate pull by retracting shoulder blades and driving elbows straight back.",
+      "Pull handle or bar toward lower abdomen / waistline, contracting mid-back and lats.",
+      "Control the return into a deep stretch without letting shoulders collapse forward."
+    ],
+    "avoid": [
+      "Using excessive torso swing or leg drive to jerk the weight.",
+      "Rounding upper or lower spine under load.",
+      "Flaring elbows excessively wide away from body."
+    ]
+  },
+  "lever-machine-low-row": {
+    "name": "Lever Machine Low Row",
+    "cues": [
+      "Establish stable posture with chest upright and core braced tight.",
+      "Initiate pull by retracting shoulder blades and driving elbows straight back.",
+      "Pull handle or bar toward lower abdomen / waistline, contracting mid-back and lats.",
+      "Control the return into a deep stretch without letting shoulders collapse forward."
+    ],
+    "avoid": [
+      "Using excessive torso swing or leg drive to jerk the weight.",
+      "Rounding upper or lower spine under load.",
+      "Flaring elbows excessively wide away from body."
+    ]
+  },
+  "lever-unilateral-row": {
+    "name": "Lever Unilateral Row",
+    "cues": [
+      "Establish stable posture with chest upright and core braced tight.",
+      "Initiate pull by retracting shoulder blades and driving elbows straight back.",
+      "Pull handle or bar toward lower abdomen / waistline, contracting mid-back and lats.",
+      "Control the return into a deep stretch without letting shoulders collapse forward."
+    ],
+    "avoid": [
+      "Using excessive torso swing or leg drive to jerk the weight.",
+      "Rounding upper or lower spine under load.",
+      "Flaring elbows excessively wide away from body."
+    ]
+  },
+  "dumbbell-renegade-row": {
+    "name": "Dumbbell Renegade Row",
+    "cues": [
+      "Establish stable posture with chest upright and core braced tight.",
+      "Initiate pull by retracting shoulder blades and driving elbows straight back.",
+      "Pull handle or bar toward lower abdomen / waistline, contracting mid-back and lats.",
+      "Control the return into a deep stretch without letting shoulders collapse forward."
+    ],
+    "avoid": [
+      "Using excessive torso swing or leg drive to jerk the weight.",
+      "Rounding upper or lower spine under load.",
+      "Flaring elbows excessively wide away from body."
+    ]
+  },
+  "dumbbell-kroc-row": {
+    "name": "Dumbbell Kroc Row",
+    "cues": [
+      "Place non-working hand/knee on bench with back flat and core braced.",
+      "Let working dumbbell hang with shoulder extended, feeling full stretch in lat.",
+      "Drive elbow up and back in a sweeping arc toward the hip crease.",
+      "Squeeze lat hard at top before lowering under full control into the stretch."
+    ],
+    "avoid": [
+      "Twisting torso excessively at the top of the pull.",
+      "Pulling straight up into shoulder with bicep instead of driving elbow to hip."
+    ]
+  },
+  "dumbbell-gorilla-row": {
+    "name": "Dumbbell Gorilla Row",
+    "cues": [
+      "Establish stable posture with chest upright and core braced tight.",
+      "Initiate pull by retracting shoulder blades and driving elbows straight back.",
+      "Pull handle or bar toward lower abdomen / waistline, contracting mid-back and lats.",
+      "Control the return into a deep stretch without letting shoulders collapse forward."
+    ],
+    "avoid": [
+      "Using excessive torso swing or leg drive to jerk the weight.",
+      "Rounding upper or lower spine under load.",
+      "Flaring elbows excessively wide away from body."
+    ]
+  },
+  "suspension-trainer-row": {
+    "name": "Suspension Trainer Row",
+    "cues": [
+      "Set body in a rigid plank from heels to head with arms extended underneath handles/bar.",
+      "Pull shoulder blades back and drive elbows behind torso to pull chest to handles.",
+      "Squeeze rhomboids and middle traps firmly at the top.",
+      "Lower body back down under control until arms are fully extended."
+    ],
+    "avoid": [
+      "Allowing hips to sag or piking hips upward.",
+      "Jerking neck forward to touch chin to bar."
+    ]
+  },
+  "ring-inverted-row": {
+    "name": "Ring Inverted Row",
+    "cues": [
+      "Set body in a rigid plank from heels to head with arms extended underneath handles/bar.",
+      "Pull shoulder blades back and drive elbows behind torso to pull chest to handles.",
+      "Squeeze rhomboids and middle traps firmly at the top.",
+      "Lower body back down under control until arms are fully extended."
+    ],
+    "avoid": [
+      "Allowing hips to sag or piking hips upward.",
+      "Jerking neck forward to touch chin to bar."
+    ]
+  },
+  "scapular-pull-up": {
+    "name": "Scapular Pull-Up",
+    "cues": [
+      "Hang from bar with overhand grip and arms fully extended in a dead hang.",
+      "Without bending elbows, pull shoulder blades down and back to elevate torso slightly.",
+      "Hold peak scapular depression for a full second.",
+      "Lower under control back into the passive dead hang stretch."
+    ],
+    "avoid": [
+      "Bending arms at elbows to pull with biceps.",
+      "Swinging legs or kipping."
+    ]
+  },
+  "parallel-grip-chin-up": {
+    "name": "Parallel-Grip Chin-Up",
+    "cues": [
+      "Grasp bar with chosen grip; secure thighs under pads and lift chest.",
+      "Initiate by pulling shoulder blades down and driving elbows down and back toward ribs.",
+      "Pull bar smoothly to upper chest / chin level while keeping spine tall.",
+      "Control the eccentric return under full lat stretch, allowing scapulae to elevate."
+    ],
+    "avoid": [
+      "Leaning back excessively into a horizontal row to heave the weight.",
+      "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
+      "Using jerky momentum to yank the bar down."
+    ]
+  },
+  "barbell-rack-pull": {
+    "name": "Barbell Rack Pull",
+    "cues": [
+      "Stand over bar with feet hip-to-shoulder width, neutral spine and shoulder blades packed.",
+      "Hinge hips deeply backward while keeping bar close against shins and thighs.",
+      "Descend until hamstrings reach full stretch, keeping lower back completely flat.",
+      "Drive through heels and push hips forward into full glute lockout at the top."
+    ],
+    "avoid": [
+      "Rounding lumbar or thoracic spine under load.",
+      "Letting bar drift forward away from legs.",
+      "Hyperextending lower back at lockout instead of squeezing glutes."
+    ]
+  },
+  "dumbbell-seated-lateral-raise": {
+    "name": "Dumbbell Seated Lateral Raise",
+    "cues": [
+      "Lean torso forward ~10–15° with soft knees and core braced.",
+      "Raise arms out in scapular plane (~30° forward), leading with elbows.",
+      "Stop when hands reach shoulder height, keeping pinkies slightly above thumbs.",
+      "Control the descent slowly, keeping constant tension on lateral delts."
+    ],
+    "avoid": [
+      "Shrugging neck and upper traps up toward ears.",
+      "Swinging torso or bouncing knees to heave the weights.",
+      "Internally rotating shoulders excessively during the raise."
+    ]
+  },
+  "cable-leaning-lateral-raise": {
+    "name": "Cable Leaning Lateral Raise",
+    "cues": [
+      "Lean torso forward ~10–15° with soft knees and core braced.",
+      "Raise arms out in scapular plane (~30° forward), leading with elbows.",
+      "Stop when hands reach shoulder height, keeping pinkies slightly above thumbs.",
+      "Control the descent slowly, keeping constant tension on lateral delts."
+    ],
+    "avoid": [
+      "Shrugging neck and upper traps up toward ears.",
+      "Swinging torso or bouncing knees to heave the weights.",
+      "Internally rotating shoulders excessively during the raise."
+    ]
+  },
+  "cable-behind-the-back-lateral-raise": {
+    "name": "Cable Behind-the-Back Lateral Raise",
+    "cues": [
+      "Lean torso forward ~10–15° with soft knees and core braced.",
+      "Raise arms out in scapular plane (~30° forward), leading with elbows.",
+      "Stop when hands reach shoulder height, keeping pinkies slightly above thumbs.",
+      "Control the descent slowly, keeping constant tension on lateral delts."
+    ],
+    "avoid": [
+      "Shrugging neck and upper traps up toward ears.",
+      "Swinging torso or bouncing knees to heave the weights.",
+      "Internally rotating shoulders excessively during the raise."
+    ]
+  },
+  "cable-one-arm-lateral-raise": {
+    "name": "Cable One Arm Lateral Raise",
+    "cues": [
+      "Lean torso forward ~10–15° with soft knees and core braced.",
+      "Raise arms out in scapular plane (~30° forward), leading with elbows.",
+      "Stop when hands reach shoulder height, keeping pinkies slightly above thumbs.",
+      "Control the descent slowly, keeping constant tension on lateral delts."
+    ],
+    "avoid": [
+      "Shrugging neck and upper traps up toward ears.",
+      "Swinging torso or bouncing knees to heave the weights.",
+      "Internally rotating shoulders excessively during the raise."
+    ]
+  },
+  "cable-y-raise": {
+    "name": "Cable Y Raise",
+    "cues": [
+      "Lean torso forward ~10–15° with soft knees and core braced.",
+      "Raise arms out in scapular plane (~30° forward), leading with elbows.",
+      "Stop when hands reach shoulder height, keeping pinkies slightly above thumbs.",
+      "Control the descent slowly, keeping constant tension on lateral delts."
+    ],
+    "avoid": [
+      "Shrugging neck and upper traps up toward ears.",
+      "Swinging torso or bouncing knees to heave the weights.",
+      "Internally rotating shoulders excessively during the raise."
+    ]
+  },
+  "dumbbell-incline-y-raise": {
+    "name": "Dumbbell Incline Y Raise",
+    "cues": [
+      "Lean torso forward ~10–15° with soft knees and core braced.",
+      "Raise arms out in scapular plane (~30° forward), leading with elbows.",
+      "Stop when hands reach shoulder height, keeping pinkies slightly above thumbs.",
+      "Control the descent slowly, keeping constant tension on lateral delts."
+    ],
+    "avoid": [
+      "Shrugging neck and upper traps up toward ears.",
+      "Swinging torso or bouncing knees to heave the weights.",
+      "Internally rotating shoulders excessively during the raise."
+    ]
+  },
+  "dumbbell-front-raise": {
+    "name": "Dumbbell Front Raise",
+    "cues": [
+      "Stand tall with feet hip-width and core braced; hold weights in front of thighs.",
+      "Raise weight smoothly in front of body until arms reach shoulder height.",
+      "Keep wrists neutral and avoid leaning torso back during the raise.",
+      "Lower weights under slow 2-second control to starting position."
+    ],
+    "avoid": [
+      "Rocking hips or swinging torso to lift the weight.",
+      "Raising hands far above shoulder height into cervical impingement."
+    ]
+  },
+  "cable-front-raise": {
+    "name": "Cable Front Raise",
+    "cues": [
+      "Stand tall with feet hip-width and core braced; hold weights in front of thighs.",
+      "Raise weight smoothly in front of body until arms reach shoulder height.",
+      "Keep wrists neutral and avoid leaning torso back during the raise.",
+      "Lower weights under slow 2-second control to starting position."
+    ],
+    "avoid": [
+      "Rocking hips or swinging torso to lift the weight.",
+      "Raising hands far above shoulder height into cervical impingement."
+    ]
+  },
+  "weighted-front-raise": {
+    "name": "Weighted Front Raise",
+    "cues": [
+      "Stand tall with feet hip-width and core braced; hold weights in front of thighs.",
+      "Raise weight smoothly in front of body until arms reach shoulder height.",
+      "Keep wrists neutral and avoid leaning torso back during the raise.",
+      "Lower weights under slow 2-second control to starting position."
+    ],
+    "avoid": [
+      "Rocking hips or swinging torso to lift the weight.",
+      "Raising hands far above shoulder height into cervical impingement."
+    ]
+  },
+  "barbell-front-raise": {
+    "name": "Barbell Front Raise",
+    "cues": [
+      "Stand tall with feet hip-width and core braced; hold weights in front of thighs.",
+      "Raise weight smoothly in front of body until arms reach shoulder height.",
+      "Keep wrists neutral and avoid leaning torso back during the raise.",
+      "Lower weights under slow 2-second control to starting position."
+    ],
+    "avoid": [
+      "Rocking hips or swinging torso to lift the weight.",
+      "Raising hands far above shoulder height into cervical impingement."
+    ]
+  },
+  "cable-standing-reverse-fly": {
+    "name": "Cable Standing Reverse Fly",
+    "cues": [
+      "Hinge forward at hips with flat back (or lay chest-down on incline bench).",
+      "With slight elbow bend, sweep arms out wide in the transverse plane.",
+      "Squeeze rear deltoids firmly at top without shrugging traps toward neck.",
+      "Lower weights under controlled eccentric tempo, maintaining tension."
+    ],
+    "avoid": [
+      "Swinging torso upward to use momentum.",
+      "Turning rear fly into a lat row by pulling elbows down."
+    ]
+  },
+  "head-supported-dumbbell-rear-lateral-raise": {
+    "name": "Head-Supported Dumbbell Rear Lateral Raise",
+    "cues": [
+      "Hinge forward at hips with flat back (or lay chest-down on incline bench).",
+      "With slight elbow bend, sweep arms out wide in the transverse plane.",
+      "Squeeze rear deltoids firmly at top without shrugging traps toward neck.",
+      "Lower weights under controlled eccentric tempo, maintaining tension."
+    ],
+    "avoid": [
+      "Swinging torso upward to use momentum.",
+      "Turning rear fly into a lat row by pulling elbows down."
+    ]
+  },
+  "dumbbell-incline-rear-fly": {
+    "name": "Dumbbell Incline Rear Fly",
+    "cues": [
+      "Position handles at mid-chest height; maintain slight elbow bend and retract scapulae.",
+      "Open arms wide in a controlled arc until a deep chest stretch is achieved.",
+      "Bring hands together in front of chest in a hugging motion, contracting pecs.",
+      "Hold peak squeeze for a count before reversing into the stretch."
+    ],
+    "avoid": [
+      "Bending elbows excessively and turning the fly into a press.",
+      "Letting shoulders roll forward at the back of the stretch."
+    ]
+  },
+  "lever-seated-rear-delt-row": {
+    "name": "Lever Seated Rear Delt Row",
+    "cues": [
+      "Hinge forward at hips with flat back (or lay chest-down on incline bench).",
+      "With slight elbow bend, sweep arms out wide in the transverse plane.",
+      "Squeeze rear deltoids firmly at top without shrugging traps toward neck.",
+      "Lower weights under controlled eccentric tempo, maintaining tension."
+    ],
+    "avoid": [
+      "Swinging torso upward to use momentum.",
+      "Turning rear fly into a lat row by pulling elbows down."
+    ]
+  },
+  "barbell-wide-grip-upright-row": {
+    "name": "Barbell Wide Grip Upright Row",
+    "cues": [
+      "Lean torso forward ~10–15° with soft knees and core braced.",
+      "Raise arms out in scapular plane (~30° forward), leading with elbows.",
+      "Stop when hands reach shoulder height, keeping pinkies slightly above thumbs.",
+      "Control the descent slowly, keeping constant tension on lateral delts."
+    ],
+    "avoid": [
+      "Shrugging neck and upper traps up toward ears.",
+      "Swinging torso or bouncing knees to heave the weights.",
+      "Internally rotating shoulders excessively during the raise."
+    ]
+  },
+  "dumbbell-upright-row": {
+    "name": "Dumbbell Upright Row",
+    "cues": [
+      "Lean torso forward ~10–15° with soft knees and core braced.",
+      "Raise arms out in scapular plane (~30° forward), leading with elbows.",
+      "Stop when hands reach shoulder height, keeping pinkies slightly above thumbs.",
+      "Control the descent slowly, keeping constant tension on lateral delts."
+    ],
+    "avoid": [
+      "Shrugging neck and upper traps up toward ears.",
+      "Swinging torso or bouncing knees to heave the weights.",
+      "Internally rotating shoulders excessively during the raise."
+    ]
+  },
+  "barbell-z-press": {
+    "name": "Barbell Z Press",
+    "cues": [
+      "Set stable base with ribs pulled down, core braced, and glutes engaged.",
+      "Position weight at shoulder height with elbows stacked directly under wrists.",
+      "Press weight straight upward, clearing head and finishing in line with ears.",
+      "Lower under control back to collarbone level without losing core tightness."
+    ],
+    "avoid": [
+      "Arching lower back excessively to compensate for shoulder mobility.",
+      "Flaring elbows out completely wide to the sides.",
+      "Using leg drive on strict pressing variations."
+    ]
+  },
+  "landmine-single-arm-press": {
+    "name": "Landmine Single Arm Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "lever-viking-press": {
+    "name": "Lever Viking Press",
+    "cues": [
+      "Set stable base with ribs pulled down, core braced, and glutes engaged.",
+      "Position weight at shoulder height with elbows stacked directly under wrists.",
+      "Press weight straight upward, clearing head and finishing in line with ears.",
+      "Lower under control back to collarbone level without losing core tightness."
+    ],
+    "avoid": [
+      "Arching lower back excessively to compensate for shoulder mobility.",
+      "Flaring elbows out completely wide to the sides.",
+      "Using leg drive on strict pressing variations."
+    ]
+  },
+  "pike-push-up": {
+    "name": "Pike Push-up",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "ez-barbell-preacher-curl": {
+    "name": "EZ Barbell Preacher Curl",
+    "cues": [
+      "Position upper arms firmly flat against pad with armpits wedged at the top edge.",
+      "Keep wrists firm; curl weight upward by flexing biceps while keeping triceps glued to pad.",
+      "Squeeze biceps hard at peak contraction without lifting elbows off pad.",
+      "Lower weight under strict 2–3 second control until arms are nearly fully extended."
+    ],
+    "avoid": [
+      "Hyperextending and bouncing violently off the bottom elbow lockout.",
+      "Lifting elbows or leaning back off the pad during the curl."
+    ]
+  },
+  "dumbbell-preacher-curl": {
+    "name": "Dumbbell Preacher Curl",
+    "cues": [
+      "Position upper arms firmly flat against pad with armpits wedged at the top edge.",
+      "Keep wrists firm; curl weight upward by flexing biceps while keeping triceps glued to pad.",
+      "Squeeze biceps hard at peak contraction without lifting elbows off pad.",
+      "Lower weight under strict 2–3 second control until arms are nearly fully extended."
+    ],
+    "avoid": [
+      "Hyperextending and bouncing violently off the bottom elbow lockout.",
+      "Lifting elbows or leaning back off the pad during the curl."
+    ]
+  },
+  "dumbbell-one-arm-hammer-preacher-curl": {
+    "name": "Dumbbell One Arm Hammer Preacher Curl",
+    "cues": [
+      "Position upper arms firmly flat against pad with armpits wedged at the top edge.",
+      "Keep wrists firm; curl weight upward by flexing biceps while keeping triceps glued to pad.",
+      "Squeeze biceps hard at peak contraction without lifting elbows off pad.",
+      "Lower weight under strict 2–3 second control until arms are nearly fully extended."
+    ],
+    "avoid": [
+      "Hyperextending and bouncing violently off the bottom elbow lockout.",
+      "Lifting elbows or leaning back off the pad during the curl."
+    ]
+  },
+  "cable-preacher-curl": {
+    "name": "Cable Preacher Curl",
+    "cues": [
+      "Position upper arms firmly flat against pad with armpits wedged at the top edge.",
+      "Keep wrists firm; curl weight upward by flexing biceps while keeping triceps glued to pad.",
+      "Squeeze biceps hard at peak contraction without lifting elbows off pad.",
+      "Lower weight under strict 2–3 second control until arms are nearly fully extended."
+    ],
+    "avoid": [
+      "Hyperextending and bouncing violently off the bottom elbow lockout.",
+      "Lifting elbows or leaning back off the pad during the curl."
+    ]
+  },
+  "barbell-reverse-curl": {
+    "name": "Barbell Reverse Curl",
+    "cues": [
+      "Grip bar or dumbbells with an overhand (pronated) grip, elbows tucked tight.",
+      "Curl weight upward, maintaining strict wrist alignment without wrist extension.",
+      "Hold peak squeeze to maximize brachioradialis and forearm activation.",
+      "Lower under 2–3 second controlled tempo through full range of motion."
+    ],
+    "avoid": [
+      "Letting wrists flex backward under the load.",
+      "Swinging upper body to heave the weight."
+    ]
+  },
+  "ez-barbell-reverse-grip-curl": {
+    "name": "EZ Barbell Reverse Grip Curl",
+    "cues": [
+      "Grip bar or dumbbells with an overhand (pronated) grip, elbows tucked tight.",
+      "Curl weight upward, maintaining strict wrist alignment without wrist extension.",
+      "Hold peak squeeze to maximize brachioradialis and forearm activation.",
+      "Lower under 2–3 second controlled tempo through full range of motion."
+    ],
+    "avoid": [
+      "Letting wrists flex backward under the load.",
+      "Swinging upper body to heave the weight."
+    ]
+  },
+  "dumbbell-biceps-curl-reverse": {
+    "name": "Dumbbell Biceps Curl Reverse",
+    "cues": [
+      "Grip bar or dumbbells with an overhand (pronated) grip, elbows tucked tight.",
+      "Curl weight upward, maintaining strict wrist alignment without wrist extension.",
+      "Hold peak squeeze to maximize brachioradialis and forearm activation.",
+      "Lower under 2–3 second controlled tempo through full range of motion."
+    ],
+    "avoid": [
+      "Letting wrists flex backward under the load.",
+      "Swinging upper body to heave the weight."
+    ]
+  },
+  "dumbbell-zottman-curl": {
+    "name": "Dumbbell Zottman Curl",
+    "cues": [
+      "Grip bar or dumbbells with an overhand (pronated) grip, elbows tucked tight.",
+      "Curl weight upward, maintaining strict wrist alignment without wrist extension.",
+      "Hold peak squeeze to maximize brachioradialis and forearm activation.",
+      "Lower under 2–3 second controlled tempo through full range of motion."
+    ],
+    "avoid": [
+      "Letting wrists flex backward under the load.",
+      "Swinging upper body to heave the weight."
+    ]
+  },
+  "dumbbell-cross-body-hammer-curl": {
+    "name": "Dumbbell Cross Body Hammer Curl",
+    "cues": [
+      "Hold weights with neutral grip (palms facing each other), elbows tucked at sides.",
+      "Curl weight upward focusing on brachialis and forearm flexors.",
+      "Pause for a count at peak contraction with elbows remaining stationary.",
+      "Lower weights with slow eccentric tempo to full elbow extension."
+    ],
+    "avoid": [
+      "Swinging elbows forward to cheat with anterior deltoids.",
+      "Rocking torso backward to create momentum."
+    ]
+  },
+  "dumbbell-seated-curl": {
+    "name": "Dumbbell Seated Curl",
+    "cues": [
+      "Stand tall with elbows pinned at sides and shoulders pulled back.",
+      "Curl weight upward by flexing biceps, keeping upper arms completely stationary.",
+      "Squeeze biceps hard at the peak, supinating wrists if using dumbbells.",
+      "Lower the weight under slow 2–3 second control into full elbow extension."
+    ],
+    "avoid": [
+      "Swinging elbows forward or backward to generate momentum.",
+      "Arching lower back to lean backward during the curl."
+    ]
+  },
+  "dumbbell-standing-biceps-curl": {
+    "name": "Dumbbell Standing Biceps Curl",
+    "cues": [
+      "Stand tall with elbows pinned at sides and shoulders pulled back.",
+      "Curl weight upward by flexing biceps, keeping upper arms completely stationary.",
+      "Squeeze biceps hard at the peak, supinating wrists if using dumbbells.",
+      "Lower the weight under slow 2–3 second control into full elbow extension."
+    ],
+    "avoid": [
+      "Swinging elbows forward or backward to generate momentum.",
+      "Arching lower back to lean backward during the curl."
+    ]
+  },
+  "barbell-drag-curl": {
+    "name": "Barbell Drag Curl",
+    "cues": [
+      "Stand tall with elbows pinned at sides and shoulders pulled back.",
+      "Curl weight upward by flexing biceps, keeping upper arms completely stationary.",
+      "Squeeze biceps hard at the peak, supinating wrists if using dumbbells.",
+      "Lower the weight under slow 2–3 second control into full elbow extension."
+    ],
+    "avoid": [
+      "Swinging elbows forward or backward to generate momentum.",
+      "Arching lower back to lean backward during the curl."
+    ]
+  },
+  "cable-drag-curl": {
+    "name": "Cable Drag Curl",
+    "cues": [
+      "Stand tall with elbows pinned at sides and shoulders pulled back.",
+      "Curl weight upward by flexing biceps, keeping upper arms completely stationary.",
+      "Squeeze biceps hard at the peak, supinating wrists if using dumbbells.",
+      "Lower the weight under slow 2–3 second control into full elbow extension."
+    ],
+    "avoid": [
+      "Swinging elbows forward or backward to generate momentum.",
+      "Arching lower back to lean backward during the curl."
+    ]
+  },
+  "cable-standing-inner-curl": {
+    "name": "Cable Standing Inner Curl",
+    "cues": [
+      "Stand tall with elbows pinned at sides and shoulders pulled back.",
+      "Curl weight upward by flexing biceps, keeping upper arms completely stationary.",
+      "Squeeze biceps hard at the peak, supinating wrists if using dumbbells.",
+      "Lower the weight under slow 2–3 second control into full elbow extension."
+    ],
+    "avoid": [
+      "Swinging elbows forward or backward to generate momentum.",
+      "Arching lower back to lean backward during the curl."
+    ]
+  },
+  "cable-one-arm-curl": {
+    "name": "Cable One Arm Curl",
+    "cues": [
+      "Stand tall with elbows pinned at sides and shoulders pulled back.",
+      "Curl weight upward by flexing biceps, keeping upper arms completely stationary.",
+      "Squeeze biceps hard at the peak, supinating wrists if using dumbbells.",
+      "Lower the weight under slow 2–3 second control into full elbow extension."
+    ],
+    "avoid": [
+      "Swinging elbows forward or backward to generate momentum.",
+      "Arching lower back to lean backward during the curl."
+    ]
+  },
+  "cable-overhead-curl": {
+    "name": "Cable Overhead Curl",
+    "cues": [
+      "Stand tall with elbows pinned at sides and shoulders pulled back.",
+      "Curl weight upward by flexing biceps, keeping upper arms completely stationary.",
+      "Squeeze biceps hard at the peak, supinating wrists if using dumbbells.",
+      "Lower the weight under slow 2–3 second control into full elbow extension."
+    ],
+    "avoid": [
+      "Swinging elbows forward or backward to generate momentum.",
+      "Arching lower back to lean backward during the curl."
+    ]
+  },
+  "lever-biceps-curl": {
+    "name": "Lever Biceps Curl",
+    "cues": [
+      "Stand tall with elbows pinned at sides and shoulders pulled back.",
+      "Curl weight upward by flexing biceps, keeping upper arms completely stationary.",
+      "Squeeze biceps hard at the peak, supinating wrists if using dumbbells.",
+      "Lower the weight under slow 2–3 second control into full elbow extension."
+    ],
+    "avoid": [
+      "Swinging elbows forward or backward to generate momentum.",
+      "Arching lower back to lean backward during the curl."
+    ]
+  },
+  "dumbbell-spider-curl": {
+    "name": "Dumbbell Spider Curl",
+    "cues": [
+      "Position upper arms firmly flat against pad with armpits wedged at the top edge.",
+      "Keep wrists firm; curl weight upward by flexing biceps while keeping triceps glued to pad.",
+      "Squeeze biceps hard at peak contraction without lifting elbows off pad.",
+      "Lower weight under strict 2–3 second control until arms are nearly fully extended."
+    ],
+    "avoid": [
+      "Hyperextending and bouncing violently off the bottom elbow lockout.",
+      "Lifting elbows or leaning back off the pad during the curl."
+    ]
+  },
+  "dumbbell-hammer-preacher-curl": {
+    "name": "Dumbbell Hammer Preacher Curl",
+    "cues": [
+      "Position upper arms firmly flat against pad with armpits wedged at the top edge.",
+      "Keep wrists firm; curl weight upward by flexing biceps while keeping triceps glued to pad.",
+      "Squeeze biceps hard at peak contraction without lifting elbows off pad.",
+      "Lower weight under strict 2–3 second control until arms are nearly fully extended."
+    ],
+    "avoid": [
+      "Hyperextending and bouncing violently off the bottom elbow lockout.",
+      "Lifting elbows or leaning back off the pad during the curl."
+    ]
+  },
+  "dumbbell-incline-hammer-curl": {
+    "name": "Dumbbell Incline Hammer Curl",
+    "cues": [
+      "Hold weights with neutral grip (palms facing each other), elbows tucked at sides.",
+      "Curl weight upward focusing on brachialis and forearm flexors.",
+      "Pause for a count at peak contraction with elbows remaining stationary.",
+      "Lower weights with slow eccentric tempo to full elbow extension."
+    ],
+    "avoid": [
+      "Swinging elbows forward to cheat with anterior deltoids.",
+      "Rocking torso backward to create momentum."
+    ]
+  },
+  "dumbbell-skull-crusher": {
+    "name": "Dumbbell Skull Crusher",
+    "cues": [
+      "Lie firmly on bench with arms extended, angled slightly back toward forehead (~75°).",
+      "Bend elbows to lower weight toward forehead or crown of head, keeping elbows stationary.",
+      "Drive through triceps to extend arms back to the starting angled position.",
+      "Hold peak lockout for a split second before controlling the descent."
+    ],
+    "avoid": [
+      "Letting elbows flare wide out to the sides.",
+      "Moving upper arms back and forth like a pullover."
+    ]
+  },
+  "ez-barbell-incline-triceps-extension": {
+    "name": "EZ Barbell Incline Triceps Extension",
+    "cues": [
+      "Pin elbows firmly at sides and lean torso forward slightly with braced core.",
+      "Extend forearms down by contracting triceps until arms are fully straight.",
+      "Squeeze triceps hard at bottom lockout, spreading ropes or gripping bar firm.",
+      "Return weight under 2-second control to ~90° elbow bend, keeping elbows pinned."
+    ],
+    "avoid": [
+      "Allowing elbows to drift forward and backward on each rep.",
+      "Using shoulder or torso momentum to slam weight down."
+    ]
+  },
+  "ez-barbell-decline-triceps-extension": {
+    "name": "EZ Barbell Decline Triceps Extension",
+    "cues": [
+      "Pin elbows firmly at sides and lean torso forward slightly with braced core.",
+      "Extend forearms down by contracting triceps until arms are fully straight.",
+      "Squeeze triceps hard at bottom lockout, spreading ropes or gripping bar firm.",
+      "Return weight under 2-second control to ~90° elbow bend, keeping elbows pinned."
+    ],
+    "avoid": [
+      "Allowing elbows to drift forward and backward on each rep.",
+      "Using shoulder or torso momentum to slam weight down."
+    ]
+  },
+  "barbell-jm-bench-press": {
+    "name": "Barbell Jm-bench Press",
+    "cues": [
+      "Lie firmly on bench with arms extended, angled slightly back toward forehead (~75°).",
+      "Bend elbows to lower weight toward forehead or crown of head, keeping elbows stationary.",
+      "Drive through triceps to extend arms back to the starting angled position.",
+      "Hold peak lockout for a split second before controlling the descent."
+    ],
+    "avoid": [
+      "Letting elbows flare wide out to the sides.",
+      "Moving upper arms back and forth like a pullover."
+    ]
+  },
+  "dumbbell-tate-press": {
+    "name": "Dumbbell Tate Press",
+    "cues": [
+      "Lie firmly on bench with arms extended, angled slightly back toward forehead (~75°).",
+      "Bend elbows to lower weight toward forehead or crown of head, keeping elbows stationary.",
+      "Drive through triceps to extend arms back to the starting angled position.",
+      "Hold peak lockout for a split second before controlling the descent."
+    ],
+    "avoid": [
+      "Letting elbows flare wide out to the sides.",
+      "Moving upper arms back and forth like a pullover."
+    ]
+  },
+  "cable-standing-high-cross-triceps-extension": {
+    "name": "Cable Standing High Cross Triceps Extension",
+    "cues": [
+      "Pin elbows firmly at sides and lean torso forward slightly with braced core.",
+      "Extend forearms down by contracting triceps until arms are fully straight.",
+      "Squeeze triceps hard at bottom lockout, spreading ropes or gripping bar firm.",
+      "Return weight under 2-second control to ~90° elbow bend, keeping elbows pinned."
+    ],
+    "avoid": [
+      "Allowing elbows to drift forward and backward on each rep.",
+      "Using shoulder or torso momentum to slam weight down."
+    ]
+  },
+  "cable-single-arm-overhead-triceps-extension": {
+    "name": "Cable Single-Arm Overhead Triceps Extension",
+    "cues": [
+      "Position weights or cable overhead with elbows pointed forward and close to head.",
+      "Lower weight behind head by flexing elbows, keeping upper arms vertical and fixed.",
+      "Extend forearms upward to full lockout by contracting triceps long head.",
+      "Lower slowly under control, feeling a deep stretch in triceps at bottom."
+    ],
+    "avoid": [
+      "Flaring elbows wide out to the sides.",
+      "Arching lumbar spine excessively; keep core braced."
+    ]
+  },
+  "cable-v-bar-triceps-pushdown": {
+    "name": "Cable V-Bar Triceps Pushdown",
+    "cues": [
+      "Pin elbows firmly at sides and lean torso forward slightly with braced core.",
+      "Extend forearms down by contracting triceps until arms are fully straight.",
+      "Squeeze triceps hard at bottom lockout, spreading ropes or gripping bar firm.",
+      "Return weight under 2-second control to ~90° elbow bend, keeping elbows pinned."
+    ],
+    "avoid": [
+      "Allowing elbows to drift forward and backward on each rep.",
+      "Using shoulder or torso momentum to slam weight down."
+    ]
+  },
+  "cable-kickback": {
+    "name": "Cable Kickback",
+    "cues": [
+      "Pin elbows firmly at sides and lean torso forward slightly with braced core.",
+      "Extend forearms down by contracting triceps until arms are fully straight.",
+      "Squeeze triceps hard at bottom lockout, spreading ropes or gripping bar firm.",
+      "Return weight under 2-second control to ~90° elbow bend, keeping elbows pinned."
+    ],
+    "avoid": [
+      "Allowing elbows to drift forward and backward on each rep.",
+      "Using shoulder or torso momentum to slam weight down."
+    ]
+  },
+  "lever-seated-dip": {
+    "name": "Lever Seated Dip",
+    "cues": [
+      "Pin elbows firmly at sides and lean torso forward slightly with braced core.",
+      "Extend forearms down by contracting triceps until arms are fully straight.",
+      "Squeeze triceps hard at bottom lockout, spreading ropes or gripping bar firm.",
+      "Return weight under 2-second control to ~90° elbow bend, keeping elbows pinned."
+    ],
+    "avoid": [
+      "Allowing elbows to drift forward and backward on each rep.",
+      "Using shoulder or torso momentum to slam weight down."
+    ]
+  },
+  "barbell-low-bar-squat": {
+    "name": "Barbell Low Bar Squat",
+    "cues": [
+      "Set stable stance with feet shoulder-width, toes angled slightly out; brace core.",
+      "Initiate descent by breaking at hips and knees together, keeping chest proud.",
+      "Descend until hip crease is at or below top of knee while keeping whole foot planted.",
+      "Drive evenly through mid-foot and heels to ascend with hips and chest rising in unison."
+    ],
+    "avoid": [
+      "Knees caving inward (valgus collapse) on the ascent.",
+      "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
+      "Heels lifting or excessive forward torso collapse."
+    ]
+  },
+  "barbell-box-squat": {
+    "name": "Barbell Box Squat",
+    "cues": [
+      "Set stable stance with feet shoulder-width, toes angled slightly out; brace core.",
+      "Initiate descent by breaking at hips and knees together, keeping chest proud.",
+      "Descend until hip crease is at or below top of knee while keeping whole foot planted.",
+      "Drive evenly through mid-foot and heels to ascend with hips and chest rising in unison."
+    ],
+    "avoid": [
+      "Knees caving inward (valgus collapse) on the ascent.",
+      "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
+      "Heels lifting or excessive forward torso collapse."
+    ]
+  },
+  "barbell-pause-full-squat": {
+    "name": "Barbell Pause Full Squat",
+    "cues": [
+      "Set stable stance with feet shoulder-width, toes angled slightly out; brace core.",
+      "Initiate descent by breaking at hips and knees together, keeping chest proud.",
+      "Descend until hip crease is at or below top of knee while keeping whole foot planted.",
+      "Drive evenly through mid-foot and heels to ascend with hips and chest rising in unison."
+    ],
+    "avoid": [
+      "Knees caving inward (valgus collapse) on the ascent.",
+      "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
+      "Heels lifting or excessive forward torso collapse."
+    ]
+  },
+  "barbell-full-zercher-squat": {
+    "name": "Barbell Full Zercher Squat",
+    "cues": [
+      "Cradle bar inside the crook of elbows; clasp hands together and pull bar tight to chest.",
+      "Stand tall with an upright torso, brace abdomen 360°, and establish shoulder-width stance.",
+      "Squat down between knees until elbows travel inside or just above thighs.",
+      "Drive through whole foot with chest high to stand, maintaining strict thoracic extension."
+    ],
+    "avoid": [
+      "Allowing upper back to round forward under the front-loaded bar.",
+      "Letting elbows drift forward away from chest."
+    ]
+  },
+  "barbell-overhead-squat": {
+    "name": "Barbell Overhead Squat",
+    "cues": [
+      "Set stable stance with feet shoulder-width, toes angled slightly out; brace core.",
+      "Initiate descent by breaking at hips and knees together, keeping chest proud.",
+      "Descend until hip crease is at or below top of knee while keeping whole foot planted.",
+      "Drive evenly through mid-foot and heels to ascend with hips and chest rising in unison."
+    ],
+    "avoid": [
+      "Knees caving inward (valgus collapse) on the ascent.",
+      "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
+      "Heels lifting or excessive forward torso collapse."
+    ]
+  },
+  "landmine-squat": {
+    "name": "Landmine Squat",
+    "cues": [
+      "Set stable stance with feet shoulder-width, toes angled slightly out; brace core.",
+      "Initiate descent by breaking at hips and knees together, keeping chest proud.",
+      "Descend until hip crease is at or below top of knee while keeping whole foot planted.",
+      "Drive evenly through mid-foot and heels to ascend with hips and chest rising in unison."
+    ],
+    "avoid": [
+      "Knees caving inward (valgus collapse) on the ascent.",
+      "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
+      "Heels lifting or excessive forward torso collapse."
+    ]
+  },
+  "dumbbell-goblet-sumo-squat": {
+    "name": "Dumbbell Goblet Sumo Squat",
+    "cues": [
+      "Set stable stance with feet shoulder-width, toes angled slightly out; brace core.",
+      "Initiate descent by breaking at hips and knees together, keeping chest proud.",
+      "Descend until hip crease is at or below top of knee while keeping whole foot planted.",
+      "Drive evenly through mid-foot and heels to ascend with hips and chest rising in unison."
+    ],
+    "avoid": [
+      "Knees caving inward (valgus collapse) on the ascent.",
+      "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
+      "Heels lifting or excessive forward torso collapse."
+    ]
+  },
+  "smith-front-squat": {
+    "name": "Smith Front Squat",
+    "cues": [
+      "Set stable stance with feet shoulder-width, toes angled slightly out; brace core.",
+      "Initiate descent by breaking at hips and knees together, keeping chest proud.",
+      "Descend until hip crease is at or below top of knee while keeping whole foot planted.",
+      "Drive evenly through mid-foot and heels to ascend with hips and chest rising in unison."
+    ],
+    "avoid": [
+      "Knees caving inward (valgus collapse) on the ascent.",
+      "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
+      "Heels lifting or excessive forward torso collapse."
+    ]
+  },
+  "smith-split-squat": {
+    "name": "Smith Split Squat",
+    "cues": [
+      "Adopt a stable staggered stance with hips square and core braced tight.",
+      "Lower straight down until back knee hovers an inch above floor and front thigh is parallel.",
+      "Maintain a slight forward torso lean (~10°) aligned with front shin.",
+      "Drive forcefully through front heel and mid-foot to rise back to starting lockout."
+    ],
+    "avoid": [
+      "Banging back knee hard into the floor.",
+      "Letting front heel lift or front knee collapse inward.",
+      "Arching lower back excessively by forcing a vertical spine."
+    ]
+  },
+  "smith-rear-lunge": {
+    "name": "Smith Rear Lunge",
+    "cues": [
+      "Adopt a stable staggered stance with hips square and core braced tight.",
+      "Lower straight down until back knee hovers an inch above floor and front thigh is parallel.",
+      "Maintain a slight forward torso lean (~10°) aligned with front shin.",
+      "Drive forcefully through front heel and mid-foot to rise back to starting lockout."
+    ],
+    "avoid": [
+      "Banging back knee hard into the floor.",
+      "Letting front heel lift or front knee collapse inward.",
+      "Arching lower back excessively by forcing a vertical spine."
+    ]
+  },
+  "smith-deficit-bulgarian-split-squat": {
+    "name": "Smith Deficit Bulgarian Split Squat",
+    "cues": [
+      "Adopt a stable staggered stance with hips square and core braced tight.",
+      "Lower straight down until back knee hovers an inch above floor and front thigh is parallel.",
+      "Maintain a slight forward torso lean (~10°) aligned with front shin.",
+      "Drive forcefully through front heel and mid-foot to rise back to starting lockout."
+    ],
+    "avoid": [
+      "Banging back knee hard into the floor.",
+      "Letting front heel lift or front knee collapse inward.",
+      "Arching lower back excessively by forcing a vertical spine."
+    ]
+  },
+  "smith-bent-knee-good-morning": {
+    "name": "Smith Bent Knee Good Morning",
+    "cues": [
+      "Stand over bar with feet hip-to-shoulder width, neutral spine and shoulder blades packed.",
+      "Hinge hips deeply backward while keeping bar close against shins and thighs.",
+      "Descend until hamstrings reach full stretch, keeping lower back completely flat.",
+      "Drive through heels and push hips forward into full glute lockout at the top."
+    ],
+    "avoid": [
+      "Rounding lumbar or thoracic spine under load.",
+      "Letting bar drift forward away from legs.",
+      "Hyperextending lower back at lockout instead of squeezing glutes."
+    ]
+  },
+  "smith-calf-raise": {
+    "name": "Smith Calf Raise",
+    "cues": [
+      "Position balls of feet securely on edge of step with knees straight but not hyperextended.",
+      "Lower heels below the platform until a deep stretch is felt throughout gastrocnemius.",
+      "Press forcefully through big toes to elevate heels into maximal plantarflexion.",
+      "Hold peak contraction for a split second before controlling the descent."
+    ],
+    "avoid": [
+      "Bending and extending knees to turn calf raise into a mini squat.",
+      "Rushing reps and cutting the bottom stretch or top squeeze."
+    ]
+  },
+  "sissy-squat-bodyweight": {
+    "name": "Sissy Squat Bodyweight",
+    "cues": [
+      "Stand tall with feet hip-width; hold a stable upright for balance if needed.",
+      "Drive knees forward and down while leaning torso back in a straight line from knees to head.",
+      "Descend until shins and thighs form a deep angle, loading the rectus femoris.",
+      "Drive through balls of feet and contract quadriceps forcefully to return upright."
+    ],
+    "avoid": [
+      "Bending at the hips (breaking neutral hip alignment).",
+      "Dropping into knee flexion without muscular quadriceps control."
+    ]
+  },
+  "sled-reverse-hack-squat": {
+    "name": "Sled Reverse Hack Squat",
+    "cues": [
+      "Sit with back and hips firmly against pad, feet shoulder-width on footplate.",
+      "Release safety catches; lower sled smoothly until knees reach ~90° without butt lifting.",
+      "Keep knees tracking in line with second toes throughout the descent.",
+      "Press through mid-foot and heels to return to start, stopping just short of knee lockout."
+    ],
+    "avoid": [
+      "Allowing pelvis to tuck or lower back to round off backrest at bottom (butt wink).",
+      "Locking knees out violently into hyperextension under heavy load."
+    ]
+  },
+  "heel-elevated-bodyweight-squat": {
+    "name": "Heel-Elevated Bodyweight Squat",
+    "cues": [
+      "Set stable stance with feet shoulder-width, toes angled slightly out; brace core.",
+      "Initiate descent by breaking at hips and knees together, keeping chest proud.",
+      "Descend until hip crease is at or below top of knee while keeping whole foot planted.",
+      "Drive evenly through mid-foot and heels to ascend with hips and chest rising in unison."
+    ],
+    "avoid": [
+      "Knees caving inward (valgus collapse) on the ascent.",
+      "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
+      "Heels lifting or excessive forward torso collapse."
+    ]
+  },
+  "dumbbell-elevated-heel-goblet-squat": {
+    "name": "Dumbbell Elevated Heel Goblet Squat",
+    "cues": [
+      "Set stable stance with feet shoulder-width, toes angled slightly out; brace core.",
+      "Initiate descent by breaking at hips and knees together, keeping chest proud.",
+      "Descend until hip crease is at or below top of knee while keeping whole foot planted.",
+      "Drive evenly through mid-foot and heels to ascend with hips and chest rising in unison."
+    ],
+    "avoid": [
+      "Knees caving inward (valgus collapse) on the ascent.",
+      "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
+      "Heels lifting or excessive forward torso collapse."
+    ]
+  },
+  "cossack-squat": {
+    "name": "Cossack Squat",
+    "cues": [
+      "Take an extra-wide stance with toes pointing forward or slightly outward; brace core.",
+      "Shift weight to working side, sitting hip back and down while keeping opposite leg straight.",
+      "Descend until working hip crease is deep, keeping working heel planted firmly.",
+      "Drive through working mid-foot to push back to the tall starting position."
+    ],
+    "avoid": [
+      "Allowing working heel to lift off the floor during the descent.",
+      "Rounding lumbar spine or collapsing chest forward under load."
+    ]
+  },
+  "side-lunge": {
+    "name": "Side Lunge",
+    "cues": [
+      "Take an extra-wide stance with toes pointing forward or slightly outward; brace core.",
+      "Shift weight to working side, sitting hip back and down while keeping opposite leg straight.",
+      "Descend until working hip crease is deep, keeping working heel planted firmly.",
+      "Drive through working mid-foot to push back to the tall starting position."
+    ],
+    "avoid": [
+      "Allowing working heel to lift off the floor during the descent.",
+      "Rounding lumbar spine or collapsing chest forward under load."
+    ]
+  },
+  "dumbbell-curtsey-lunge": {
+    "name": "Dumbbell Curtsey Lunge",
+    "cues": [
+      "Stand tall holding weights; step one leg diagonally back behind front leg.",
+      "Descend by bending both knees until front thigh is parallel and back knee hovers off floor.",
+      "Keep chest upright, hips facing mostly forward, and front foot planted solid.",
+      "Drive through front heel and glute to step back to the center starting position."
+    ],
+    "avoid": [
+      "Rotating pelvis excessively away from the forward plane.",
+      "Letting front knee cave inward past big toe."
+    ]
+  },
+  "dumbbell-deficit-reverse-lunge": {
+    "name": "Dumbbell Deficit Reverse Lunge",
+    "cues": [
+      "Adopt a stable staggered stance with hips square and core braced tight.",
+      "Lower straight down until back knee hovers an inch above floor and front thigh is parallel.",
+      "Maintain a slight forward torso lean (~10°) aligned with front shin.",
+      "Drive forcefully through front heel and mid-foot to rise back to starting lockout."
+    ],
+    "avoid": [
+      "Banging back knee hard into the floor.",
+      "Letting front heel lift or front knee collapse inward.",
+      "Arching lower back excessively by forcing a vertical spine."
+    ]
+  },
+  "barbell-walking-lunge": {
+    "name": "Barbell Walking Lunge",
+    "cues": [
+      "Adopt a stable staggered stance with hips square and core braced tight.",
+      "Lower straight down until back knee hovers an inch above floor and front thigh is parallel.",
+      "Maintain a slight forward torso lean (~10°) aligned with front shin.",
+      "Drive forcefully through front heel and mid-foot to rise back to starting lockout."
+    ],
+    "avoid": [
+      "Banging back knee hard into the floor.",
+      "Letting front heel lift or front knee collapse inward.",
+      "Arching lower back excessively by forcing a vertical spine."
+    ]
+  },
+  "barbell-step-up": {
+    "name": "Barbell Step-up",
+    "cues": [
+      "Place entire lead foot firmly onto the box or bench; lean torso slightly forward.",
+      "Drive down through lead heel and mid-foot to elevate body without springing off trailing foot.",
+      "Reach full hip extension at top on working leg, squeezing glute.",
+      "Lower trailing foot back down under 2-second control, keeping tension on front leg."
+    ],
+    "avoid": [
+      "Pushing aggressively off rear toe instead of pulling with lead leg.",
+      "Allowing lead knee to cave inward or lead heel to hang off platform."
+    ]
+  },
+  "cable-reverse-lunge": {
+    "name": "Cable Reverse Lunge",
+    "cues": [
+      "Adopt a stable staggered stance with hips square and core braced tight.",
+      "Lower straight down until back knee hovers an inch above floor and front thigh is parallel.",
+      "Maintain a slight forward torso lean (~10°) aligned with front shin.",
+      "Drive forcefully through front heel and mid-foot to rise back to starting lockout."
+    ],
+    "avoid": [
+      "Banging back knee hard into the floor.",
+      "Letting front heel lift or front knee collapse inward.",
+      "Arching lower back excessively by forcing a vertical spine."
+    ]
+  },
+  "cable-lateral-lunge": {
+    "name": "Cable Lateral Lunge",
+    "cues": [
+      "Take an extra-wide stance with toes pointing forward or slightly outward; brace core.",
+      "Shift weight to working side, sitting hip back and down while keeping opposite leg straight.",
+      "Descend until working hip crease is deep, keeping working heel planted firmly.",
+      "Drive through working mid-foot to push back to the tall starting position."
+    ],
+    "avoid": [
+      "Allowing working heel to lift off the floor during the descent.",
+      "Rounding lumbar spine or collapsing chest forward under load."
+    ]
+  },
+  "lever-standing-single-leg-curl": {
+    "name": "Lever Standing Single-Leg Curl",
+    "cues": [
+      "Position lever pad snugly against lower calves / Achilles tendon with knee axis aligned with machine pivot.",
+      "Dorsiflex ankles slightly; contract hamstrings forcefully to curl heels toward glutes.",
+      "Pause for a full second at peak knee flexion, squeezing hamstrings completely.",
+      "Lower weight under strict 2–3 second control until legs are nearly straight."
+    ],
+    "avoid": [
+      "Arching lower back or lifting hips off pad to throw momentum into the curl.",
+      "Allowing weight stack to slam down on the eccentric return."
+    ]
+  },
+  "lever-lying-single-leg-curl": {
+    "name": "Lever Lying Single Leg Curl",
+    "cues": [
+      "Position lever pad snugly against lower calves / Achilles tendon with knee axis aligned with machine pivot.",
+      "Dorsiflex ankles slightly; contract hamstrings forcefully to curl heels toward glutes.",
+      "Pause for a full second at peak knee flexion, squeezing hamstrings completely.",
+      "Lower weight under strict 2–3 second control until legs are nearly straight."
+    ],
+    "avoid": [
+      "Arching lower back or lifting hips off pad to throw momentum into the curl.",
+      "Allowing weight stack to slam down on the eccentric return."
+    ]
+  },
+  "lever-seated-one-leg-curl": {
+    "name": "Lever Seated One Leg Curl",
+    "cues": [
+      "Position lever pad snugly against lower calves / Achilles tendon with knee axis aligned with machine pivot.",
+      "Dorsiflex ankles slightly; contract hamstrings forcefully to curl heels toward glutes.",
+      "Pause for a full second at peak knee flexion, squeezing hamstrings completely.",
+      "Lower weight under strict 2–3 second control until legs are nearly straight."
+    ],
+    "avoid": [
+      "Arching lower back or lifting hips off pad to throw momentum into the curl.",
+      "Allowing weight stack to slam down on the eccentric return."
+    ]
+  },
+  "dumbbell-lying-leg-curl": {
+    "name": "Dumbbell Lying Leg Curl",
+    "cues": [
+      "Position lever pad snugly against lower calves / Achilles tendon with knee axis aligned with machine pivot.",
+      "Dorsiflex ankles slightly; contract hamstrings forcefully to curl heels toward glutes.",
+      "Pause for a full second at peak knee flexion, squeezing hamstrings completely.",
+      "Lower weight under strict 2–3 second control until legs are nearly straight."
+    ],
+    "avoid": [
+      "Arching lower back or lifting hips off pad to throw momentum into the curl.",
+      "Allowing weight stack to slam down on the eccentric return."
+    ]
+  },
+  "cable-lying-single-leg-curl": {
+    "name": "Cable Lying Single-Leg Curl",
+    "cues": [
+      "Position lever pad snugly against lower calves / Achilles tendon with knee axis aligned with machine pivot.",
+      "Dorsiflex ankles slightly; contract hamstrings forcefully to curl heels toward glutes.",
+      "Pause for a full second at peak knee flexion, squeezing hamstrings completely.",
+      "Lower weight under strict 2–3 second control until legs are nearly straight."
+    ],
+    "avoid": [
+      "Arching lower back or lifting hips off pad to throw momentum into the curl.",
+      "Allowing weight stack to slam down on the eccentric return."
+    ]
+  },
+  "bodyweight-frog-hip-thrust": {
+    "name": "Bodyweight Frog Hip Thrust",
+    "cues": [
+      "Position upper back across bench just below shoulder blades; place feet flat shoulder-width.",
+      "Tuck chin slightly and engage core; drive through heels to elevate hips toward the ceiling.",
+      "Reach full hip extension where thighs and torso form a flat tabletop, squeezing glutes hard.",
+      "Lower hips back down with control, keeping ribs pulled down and chin tucked."
+    ],
+    "avoid": [
+      "Hyperextending lumbar spine at top instead of achieving true hip extension.",
+      "Pushing through toes rather than driving into heels.",
+      "Letting knees collapse inward during hip drive."
+    ]
+  },
+  "single-leg-hip-thrust": {
+    "name": "Single Leg Hip Thrust",
+    "cues": [
+      "Position upper back across bench just below shoulder blades; place feet flat shoulder-width.",
+      "Tuck chin slightly and engage core; drive through heels to elevate hips toward the ceiling.",
+      "Reach full hip extension where thighs and torso form a flat tabletop, squeezing glutes hard.",
+      "Lower hips back down with control, keeping ribs pulled down and chin tucked."
+    ],
+    "avoid": [
+      "Hyperextending lumbar spine at top instead of achieving true hip extension.",
+      "Pushing through toes rather than driving into heels.",
+      "Letting knees collapse inward during hip drive."
+    ]
+  },
+  "barbell-kas-glute-bridge": {
+    "name": "Barbell Kas Glute Bridge",
+    "cues": [
+      "Position upper back across bench just below shoulder blades; place feet flat shoulder-width.",
+      "Tuck chin slightly and engage core; drive through heels to elevate hips toward the ceiling.",
+      "Reach full hip extension where thighs and torso form a flat tabletop, squeezing glutes hard.",
+      "Lower hips back down with control, keeping ribs pulled down and chin tucked."
+    ],
+    "avoid": [
+      "Hyperextending lumbar spine at top instead of achieving true hip extension.",
+      "Pushing through toes rather than driving into heels.",
+      "Letting knees collapse inward during hip drive."
+    ]
+  },
+  "cable-hip-abduction": {
+    "name": "Cable Hip Abduction",
+    "cues": [
+      "Set stable torso position; brace core to prevent lumbar hyperextension.",
+      "Drive working leg back/out using isolated glute contraction without rotating hips.",
+      "Hold peak contraction for a split second to maximize glute activation.",
+      "Return leg smoothly under control to starting alignment."
+    ],
+    "avoid": [
+      "Arching lower back to kick leg higher.",
+      "Twisting pelvis or swinging leg with momentum."
+    ]
+  },
+  "reverse-hyperextension-on-box": {
+    "name": "Reverse Hyperextension on Box",
+    "cues": [
+      "Position thighs securely against pads with hip crease just above edge for free hip flexion.",
+      "Brace core with neutral spine; hinge forward at hips until hamstrings are fully stretched.",
+      "Contract glutes and hamstrings to pull torso back in line with legs; hold for a count.",
+      "Keep spine neutral rather than arching past straight alignment."
+    ],
+    "avoid": [
+      "Hyperextending lumbar spine excessively at the top of the extension.",
+      "Jerking torso upward with swinging momentum."
+    ]
+  },
+  "handstand-push-up": {
+    "name": "Handstand Push-up",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "ring-dip": {
+    "name": "Ring Dip",
+    "cues": [
+      "Pin elbows firmly at sides and lean torso forward slightly with braced core.",
+      "Extend forearms down by contracting triceps until arms are fully straight.",
+      "Squeeze triceps hard at bottom lockout, spreading ropes or gripping bar firm.",
+      "Return weight under 2-second control to ~90° elbow bend, keeping elbows pinned."
+    ],
+    "avoid": [
+      "Allowing elbows to drift forward and backward on each rep.",
+      "Using shoulder or torso momentum to slam weight down."
+    ]
+  },
+  "ring-incline-push-up": {
+    "name": "Ring Incline Push-Up",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "bench-dip": {
+    "name": "Bench Dip",
+    "cues": [
+      "Pin elbows firmly at sides and lean torso forward slightly with braced core.",
+      "Extend forearms down by contracting triceps until arms are fully straight.",
+      "Squeeze triceps hard at bottom lockout, spreading ropes or gripping bar firm.",
+      "Return weight under 2-second control to ~90° elbow bend, keeping elbows pinned."
+    ],
+    "avoid": [
+      "Allowing elbows to drift forward and backward on each rep.",
+      "Using shoulder or torso momentum to slam weight down."
+    ]
+  },
+  "resistance-band-standing-chest-press": {
+    "name": "Resistance Band Standing Chest Press",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "resistance-band-seated-row": {
+    "name": "Resistance Band Seated Row",
+    "cues": [
+      "Establish stable posture with chest upright and core braced tight.",
+      "Initiate pull by retracting shoulder blades and driving elbows straight back.",
+      "Pull handle or bar toward lower abdomen / waistline, contracting mid-back and lats.",
+      "Control the return into a deep stretch without letting shoulders collapse forward."
+    ],
+    "avoid": [
+      "Using excessive torso swing or leg drive to jerk the weight.",
+      "Rounding upper or lower spine under load.",
+      "Flaring elbows excessively wide away from body."
+    ]
+  },
+  "resistance-band-lat-pulldown": {
+    "name": "Resistance Band Lat Pulldown",
+    "cues": [
+      "Grasp bar with chosen grip; secure thighs under pads and lift chest.",
+      "Initiate by pulling shoulder blades down and driving elbows down and back toward ribs.",
+      "Pull bar smoothly to upper chest / chin level while keeping spine tall.",
+      "Control the eccentric return under full lat stretch, allowing scapulae to elevate."
+    ],
+    "avoid": [
+      "Leaning back excessively into a horizontal row to heave the weight.",
+      "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
+      "Using jerky momentum to yank the bar down."
+    ]
+  },
+  "resistance-band-face-pull": {
+    "name": "Resistance Band Face Pull",
+    "cues": [
+      "Retract and depress shoulder blades firmly into bench; establish solid foot drive.",
+      "Unrack weight over shoulders; lower smoothly with elbows tucked at 45–70°.",
+      "Descend until dumbbells/bar reach chest level under full muscular control.",
+      "Press up and slightly back toward shoulder line, contracting chest forcefully."
+    ],
+    "avoid": [
+      "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
+      "Bouncing bar off ribcage or lifting glutes off the bench.",
+      "Losing upper back tightness at the top of the press."
+    ]
+  },
+  "band-biceps-curl": {
+    "name": "Band Biceps Curl",
+    "cues": [
+      "Stand tall with elbows pinned at sides and shoulders pulled back.",
+      "Curl weight upward by flexing biceps, keeping upper arms completely stationary.",
+      "Squeeze biceps hard at the peak, supinating wrists if using dumbbells.",
+      "Lower the weight under slow 2–3 second control into full elbow extension."
+    ],
+    "avoid": [
+      "Swinging elbows forward or backward to generate momentum.",
+      "Arching lower back to lean backward during the curl."
+    ]
+  },
+  "resistance-band-triceps-pushdown": {
+    "name": "Resistance Band Triceps Pushdown",
+    "cues": [
+      "Pin elbows firmly at sides and lean torso forward slightly with braced core.",
+      "Extend forearms down by contracting triceps until arms are fully straight.",
+      "Squeeze triceps hard at bottom lockout, spreading ropes or gripping bar firm.",
+      "Return weight under 2-second control to ~90° elbow bend, keeping elbows pinned."
+    ],
+    "avoid": [
+      "Allowing elbows to drift forward and backward on each rep.",
+      "Using shoulder or torso momentum to slam weight down."
+    ]
+  },
+  "band-lateral-raise": {
+    "name": "Band Lateral Raise",
+    "cues": [
+      "Lean torso forward ~10–15° with soft knees and core braced.",
+      "Raise arms out in scapular plane (~30° forward), leading with elbows.",
+      "Stop when hands reach shoulder height, keeping pinkies slightly above thumbs.",
+      "Control the descent slowly, keeping constant tension on lateral delts."
+    ],
+    "avoid": [
+      "Shrugging neck and upper traps up toward ears.",
+      "Swinging torso or bouncing knees to heave the weights.",
+      "Internally rotating shoulders excessively during the raise."
+    ]
+  },
+  "landmine-180": {
+    "name": "Landmine 180",
+    "cues": [
+      "Stand in athletic stance with core braced; hold handle/bar with both hands.",
+      "Rotate torso diagonally across body by driving from the obliques and hips.",
+      "Pivot on back foot smoothly while keeping arms mostly extended.",
+      "Control the return path against cable/weight resistance, resisting rotation."
+    ],
+    "avoid": [
+      "Bending arms and pulling purely with shoulders/arms.",
+      "Twisting spine without pivoting trailing foot, stressing lower back."
+    ]
+  },
+  "hanging-toes-to-bar": {
+    "name": "Hanging Toes to Bar",
+    "cues": [
+      "Flatten lower back into the floor or maintain stable braced spine.",
+      "Contract abdominals to curl ribs toward hips, expelling air forcefully.",
+      "Hold peak contraction for a count, focusing purely on abdominal flexion.",
+      "Lower under control, keeping tension on abs without resting completely."
+    ],
+    "avoid": [
+      "Yanking on neck with hands or throwing head forward.",
+      "Using hip flexor momentum to swing legs or torso."
+    ]
+  },
+  "battling-ropes-high-waves": {
+    "name": "Battling Ropes High Waves",
+    "cues": [
+      "Adopt an athletic half-squat stance with chest proud and core braced.",
+      "Grip rope ends firmly; generate rapid alternating or simultaneous waves from shoulders.",
+      "Keep torso rigid and absorb energy through hips and legs, not lower back.",
+      "Breathe rhythmically while sustaining maximum wave velocity."
+    ],
+    "avoid": [
+      "Standing completely upright and letting ropes pull torso forward.",
+      "Rounding upper back into a hunched posture."
+    ]
+  },
+  "power-sled-push": {
+    "name": "Power Sled Push",
+    "cues": [
+      "Grip sled poles firmly with arms extended or forearms on bars; lean torso forward at 45°.",
+      "Brace core and drive aggressively through balls of feet with deep knee drive.",
+      "Maintain a rigid neutral spine from head to heels throughout the push.",
+      "Take powerful, marching steps, keeping constant forward momentum."
+    ],
+    "avoid": [
+      "Rounding lower back or letting hips sway wildly side to side.",
+      "Taking tiny stutter steps that lose ground drive."
+    ]
   }
 }

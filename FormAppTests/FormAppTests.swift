@@ -7,7 +7,7 @@ import SwiftUI
 final class FormAppTests: XCTestCase {
 
     func testExerciseVideoCatalogMatchesCurrentExercises() throws {
-        XCTAssertEqual(ExerciseVideoCatalog.entries.count, 50)
+        XCTAssertEqual(ExerciseVideoCatalog.entries.count, 300)
         for id in ExerciseCatalog.canonicalExercises.keys {
             let entry = try XCTUnwrap(ExerciseVideoCatalog.entries[id], id)
             XCTAssertFalse(entry.name.isEmpty)
@@ -23,7 +23,7 @@ final class FormAppTests: XCTestCase {
 
     @MainActor
     func testExerciseVideoFramingIsFullBleed() throws {
-        XCTAssertEqual(ExerciseVideoCatalog.framings.count, 50)
+        XCTAssertEqual(ExerciseVideoCatalog.framings.count, 300)
         for id in ExerciseVideoCatalog.entries.keys {
             let crop = try XCTUnwrap(ExerciseVideoCatalog.framings[id], id)
             XCTAssertGreaterThan(crop.width, 0)
@@ -1138,21 +1138,21 @@ final class FormAppTests: XCTestCase {
             canonicalExercises: Array(ExerciseCatalog.canonicalExercises.values)
         )
 
-        XCTAssertEqual(catalogue.count, 50)
+        XCTAssertEqual(catalogue.count, 300)
         XCTAssertEqual(catalogue.count, Set(catalogue.map { $0.key }).count)
         XCTAssertEqual(catalogue.filter { $0.exercise.movementAssetId != nil }.count, 50)
-        XCTAssertEqual(catalogue.filter { !$0.exercise.cues.isEmpty }.count, 50)
-        XCTAssertEqual(catalogue.filter { !$0.exercise.avoid.isEmpty }.count, 50)
-        XCTAssertEqual(catalogue.filter { $0.exercise.exerciseId != nil }.count, 50)
+        XCTAssertEqual(catalogue.filter { !$0.exercise.cues.isEmpty }.count, 300)
+        XCTAssertEqual(catalogue.filter { !$0.exercise.avoid.isEmpty }.count, 300)
+        XCTAssertEqual(catalogue.filter { $0.exercise.exerciseId != nil }.count, 300)
     }
 
     func testCanonicalExercisesProvideTurkishCuesAndAvoid() {
         let canonical = Array(ExerciseCatalog.canonicalExercises.values)
-        XCTAssertEqual(canonical.count, 50)
+        XCTAssertEqual(canonical.count, 300)
         let trExercises = ContentLocalizer.shared.loadExercises(lang: "tr")
-        XCTAssertEqual(trExercises.count, 50)
-        XCTAssertEqual(trExercises.values.filter { ($0.cues ?? []).count > 0 }.count, 50)
-        XCTAssertEqual(trExercises.values.filter { ($0.avoid ?? []).count > 0 }.count, 50)
+        XCTAssertEqual(trExercises.count, 300)
+        XCTAssertEqual(trExercises.values.filter { ($0.cues ?? []).count > 0 }.count, 300)
+        XCTAssertEqual(trExercises.values.filter { ($0.avoid ?? []).count > 0 }.count, 300)
 
         guard let bench = canonical.first(where: { $0.id == "barbell-bench-press" }) else {
             XCTFail("Missing bench press definition")

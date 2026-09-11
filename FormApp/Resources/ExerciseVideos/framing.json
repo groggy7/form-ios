@@ -348,5 +348,1755 @@
     "width": 0.703125,
     "height": 1,
     "aspectRatio": 1.25
+  },
+  "cable-seated-row": {
+    "left": 0.11197916666666669,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-seated-shoulder-press": {
+    "left": 0.12239583333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "lever-chest-press": {
+    "left": 0.17513020833333331,
+    "top": 0.061111111111111116,
+    "width": 0.6601562500000001,
+    "height": 0.9388888888888889,
+    "aspectRatio": 1.2500000000000002
+  },
+  "lever-seated-shoulder-press": {
+    "left": 0.10677083333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "bodyweight-rear-lunge": {
+    "left": 0.16080729166666674,
+    "top": 0.005555555555555536,
+    "width": 0.69921875,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.25
+  },
+  "walking-lunge": {
+    "left": 0.15833333333333338,
+    "top": 0,
+    "width": 0.7041666666666667,
+    "height": 1,
+    "aspectRatio": 1.251851851851852
+  },
+  "bodyweight-squat": {
+    "left": 0.20638020833333337,
+    "top": 0.024074074074074026,
+    "width": 0.6861979166666667,
+    "height": 0.975925925925926,
+    "aspectRatio": 1.2500000000000002
+  },
+  "lever-seated-reverse-fly": {
+    "left": 0.09635416666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-curl": {
+    "left": 0.15364583333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "barbell-preacher-curl": {
+    "left": 0.15104166666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "chest-dip": {
+    "left": 0.11653645833333337,
+    "top": 0.005555555555555536,
+    "width": 0.69921875,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.25
+  },
+  "chin-up": {
+    "left": 0.1796875,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "front-plank": {
+    "left": 0.038541666666666696,
+    "top": 0.3388888888888889,
+    "width": 0.9020833333333333,
+    "height": 0.5259259259259259,
+    "aspectRatio": 3.0492957746478875
+  },
+  "cable-standing-fly": {
+    "left": 0.15364583333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "sled-hack-squat": {
+    "left": 0.10624999999999996,
+    "top": 0.1074074074074074,
+    "width": 0.7875000000000001,
+    "height": 0.8925925925925926,
+    "aspectRatio": 1.5684647302904566
+  },
+  "dumbbell-glute-bridge": {
+    "left": 0.1479166666666667,
+    "top": 0.33888888888888885,
+    "width": 0.7302083333333333,
+    "height": 0.6185185185185186,
+    "aspectRatio": 2.0988023952095807
+  },
+  "barbell-sumo-deadlift": {
+    "left": 0.1484375,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "smith-squat": {
+    "left": 0.08072916666666663,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "smith-bench-press": {
+    "left": 0.16145833333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "smith-incline-bench-press": {
+    "left": 0.17447916666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "smith-stiff-legged-deadlift": {
+    "left": 0.08333333333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "smith-hip-thrust": {
+    "left": 0.10416666666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "pendulum-squat": {
+    "left": 0.0854166666666667,
+    "top": 0,
+    "width": 0.7354166666666667,
+    "height": 1,
+    "aspectRatio": 1.3074074074074076
+  },
+  "lever-belt-squat": {
+    "left": 0.10481770833333326,
+    "top": 0.024074074074074026,
+    "width": 0.6861979166666667,
+    "height": 0.975925925925926,
+    "aspectRatio": 1.2500000000000002
+  },
+  "lever-vertical-squat": {
+    "left": 0.10416666666666669,
+    "top": 0.051851851851851816,
+    "width": 0.6666666666666666,
+    "height": 0.9481481481481482,
+    "aspectRatio": 1.25
+  },
+  "sled-45-degrees-one-leg-press": {
+    "left": 0.07499999999999996,
+    "top": 0.005555555555555536,
+    "width": 0.8447916666666667,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.5102420856610803
+  },
+  "dumbbell-split-squat-front-foot-elevanted": {
+    "left": 0.16341145833333337,
+    "top": 0.005555555555555536,
+    "width": 0.69921875,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.25
+  },
+  "barbell-good-morning": {
+    "left": 0.109375,
+    "top": 0.014814814814814836,
+    "width": 0.6927083333333334,
+    "height": 0.9851851851851852,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-single-leg-romanian-deadlift": {
+    "left": 0.19270833333333331,
+    "top": 0.014814814814814836,
+    "width": 0.6927083333333334,
+    "height": 0.9851851851851852,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-45-deg-back-extension": {
+    "left": 0.16875000000000007,
+    "top": 0.19999999999999996,
+    "width": 0.6729166666666666,
+    "height": 0.8,
+    "aspectRatio": 1.4953703703703702
+  },
+  "nordic-hamstring-curl": {
+    "left": 0.13802083333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "glute-ham-raise": {
+    "left": 0.1484375,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-pull-through": {
+    "left": 0.09895833333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-kneeling-glute-kickback": {
+    "left": 0.08072916666666669,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "lever-seated-hip-abduction": {
+    "left": 0.15104166666666663,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "lever-seated-hip-adduction": {
+    "left": 0.18098958333333331,
+    "top": 0.07037037037037042,
+    "width": 0.6536458333333334,
+    "height": 0.9296296296296296,
+    "aspectRatio": 1.25
+  },
+  "sled-calf-press-on-leg-press": {
+    "left": 0.13229166666666659,
+    "top": 0.005555555555555536,
+    "width": 0.7822916666666668,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.3985102420856614
+  },
+  "donkey-calf-raise": {
+    "left": 0.23125000000000007,
+    "top": 0.07037037037037042,
+    "width": 0.6729166666666666,
+    "height": 0.924074074074074,
+    "aspectRatio": 1.2945891783567134
+  },
+  "wall-supported-tibialis-raise": {
+    "left": 0.11979166666666669,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "barbell-decline-bench-press": {
+    "left": 0.14062500000000006,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-decline-bench-press": {
+    "left": 0.14908854166666663,
+    "top": 0.024074074074074026,
+    "width": 0.6861979166666667,
+    "height": 0.975925925925926,
+    "aspectRatio": 1.2500000000000002
+  },
+  "lever-incline-chest-press": {
+    "left": 0.10156250000000006,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-low-fly": {
+    "left": 0.18489583333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-decline-fly": {
+    "left": 0.16145833333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-fly": {
+    "left": 0.13802083333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "barbell-close-grip-bench-press": {
+    "left": 0.13020833333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-pullover": {
+    "left": 0.1479166666666667,
+    "top": 0.014814814814814836,
+    "width": 0.7145833333333333,
+    "height": 0.9851851851851852,
+    "aspectRatio": 1.2894736842105263
+  },
+  "lever-chest-supported-row": {
+    "left": 0.002083333333333326,
+    "top": 0,
+    "width": 0.8083333333333333,
+    "height": 0.9851851851851853,
+    "aspectRatio": 1.4586466165413534
+  },
+  "lever-t-bar-row": {
+    "left": 0.20182291666666669,
+    "top": 0.07037037037037042,
+    "width": 0.6536458333333334,
+    "height": 0.9296296296296296,
+    "aspectRatio": 1.25
+  },
+  "barbell-pendlay-row": {
+    "left": 0.14192708333333331,
+    "top": 0.07962962962962966,
+    "width": 0.6432291666666667,
+    "height": 0.9148148148148149,
+    "aspectRatio": 1.25
+  },
+  "inverted-row": {
+    "left": 0.1796875,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-neutral-grip-lat-pulldown": {
+    "left": 0.1015625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-close-grip-front-lat-pulldown": {
+    "left": 0.1953125,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-underhand-pulldown": {
+    "left": 0.13020833333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-straight-arm-pulldown": {
+    "left": 0.05989583333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-kneeling-pullover": {
+    "left": 0.1171875,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "assisted-pull-up": {
+    "left": 0.1796875,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "assisted-dip-machine": {
+    "left": 0.13802083333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-rear-fly": {
+    "left": 0.11145833333333333,
+    "top": 0.1166666666666667,
+    "width": 0.6677083333333333,
+    "height": 0.8833333333333333,
+    "aspectRatio": 1.3438155136268346
+  },
+  "barbell-shrug": {
+    "left": 0.13736979166666669,
+    "top": 0.04259259259259257,
+    "width": 0.6731770833333334,
+    "height": 0.9574074074074074,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-shrug": {
+    "left": 0.16276041666666674,
+    "top": 0.03333333333333327,
+    "width": 0.6796875,
+    "height": 0.9666666666666667,
+    "aspectRatio": 1.25
+  },
+  "lever-machine-shrug": {
+    "left": 0.13216145833333331,
+    "top": 0.04259259259259257,
+    "width": 0.6731770833333334,
+    "height": 0.9574074074074074,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-arnold-press": {
+    "left": 0.140625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "barbell-seated-overhead-press": {
+    "left": 0.09635416666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-one-arm-shoulder-press": {
+    "left": 0.12760416666666669,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "landmine-press": {
+    "left": 0.29374999999999996,
+    "top": 0.04259259259259257,
+    "width": 0.70625,
+    "height": 0.9574074074074074,
+    "aspectRatio": 1.311411992263056
+  },
+  "lever-lateral-raise": {
+    "left": 0.18033854166666669,
+    "top": 0.0981481481481481,
+    "width": 0.6341145833333334,
+    "height": 0.9018518518518519,
+    "aspectRatio": 1.25
+  },
+  "cable-seated-rear-delt-fly-with-chest-support": {
+    "left": 0.09635416666666669,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "barbell-upright-row": {
+    "left": 0.18229166666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "barbell-curl": {
+    "left": 0.12825520833333337,
+    "top": 0.024074074074074026,
+    "width": 0.6861979166666667,
+    "height": 0.975925925925926,
+    "aspectRatio": 1.2500000000000002
+  },
+  "dumbbell-alternate-biceps-curl": {
+    "left": 0.18229166666666669,
+    "top": 0.051851851851851816,
+    "width": 0.6666666666666666,
+    "height": 0.9481481481481482,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-concentration-curl": {
+    "left": 0.18815104166666669,
+    "top": 0.0981481481481481,
+    "width": 0.6341145833333334,
+    "height": 0.9018518518518519,
+    "aspectRatio": 1.25
+  },
+  "ez-barbell-spider-curl": {
+    "left": 0.14192708333333337,
+    "top": 0.03333333333333327,
+    "width": 0.6796875,
+    "height": 0.9666666666666667,
+    "aspectRatio": 1.25
+  },
+  "cable-rope-hammer-curl": {
+    "left": 0.20572916666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-incline-biceps-curl": {
+    "left": 0.171875,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "lever-preacher-curl": {
+    "left": 0.17317708333333337,
+    "top": 0.03333333333333327,
+    "width": 0.6796875,
+    "height": 0.9666666666666667,
+    "aspectRatio": 1.25
+  },
+  "ez-bar-lying-triceps-extension": {
+    "left": 0.09583333333333333,
+    "top": 0,
+    "width": 0.7145833333333333,
+    "height": 1,
+    "aspectRatio": 1.2703703703703704
+  },
+  "dumbbell-standing-triceps-extension": {
+    "left": 0.14583333333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-one-arm-triceps-pushdown": {
+    "left": 0.21028645833333337,
+    "top": 0,
+    "width": 0.69921875,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.25
+  },
+  "cable-reverse-grip-pushdown": {
+    "left": 0.15104166666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-kickback": {
+    "left": 0.22083333333333333,
+    "top": 0.18148148148148147,
+    "width": 0.5895833333333333,
+    "height": 0.8185185185185185,
+    "aspectRatio": 1.2805429864253393
+  },
+  "hanging-leg-raise": {
+    "left": 0.18489583333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "reverse-crunch": {
+    "left": 0.1322916666666667,
+    "top": 0.024074074074074026,
+    "width": 0.7145833333333333,
+    "height": 0.975925925925926,
+    "aspectRatio": 1.301707779886148
+  },
+  "bicycle-crunch": {
+    "left": 0.12708333333333333,
+    "top": 0.2833333333333334,
+    "width": 0.8187500000000001,
+    "height": 0.6277777777777779,
+    "aspectRatio": 2.31858407079646
+  },
+  "cable-woodchopper": {
+    "left": 0.010416666666666685,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "russian-twist": {
+    "left": 0.1166666666666667,
+    "top": 0.11666666666666664,
+    "width": 0.7510416666666667,
+    "height": 0.8592592592592593,
+    "aspectRatio": 1.5538793103448276
+  },
+  "bird-dog": {
+    "left": 0,
+    "top": 0.22777777777777775,
+    "width": 0.9458333333333334,
+    "height": 0.701851851851852,
+    "aspectRatio": 2.395778364116095
+  },
+  "mountain-climber": {
+    "left": 0.07499999999999996,
+    "top": 0.22777777777777786,
+    "width": 0.8291666666666667,
+    "height": 0.711111111111111,
+    "aspectRatio": 2.072916666666667
+  },
+  "burpee": {
+    "left": 0.10677083333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "jumping-jack": {
+    "left": 0.1484375,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "box-jump": {
+    "left": 0.1015625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "jump-squat": {
+    "left": 0.16666666666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "kettlebell-deadlift": {
+    "left": 0.1640625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "kettlebell-one-arm-clean": {
+    "left": 0.16861979166666674,
+    "top": 0.005555555555555536,
+    "width": 0.69921875,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.25
+  },
+  "kettlebell-strict-press": {
+    "left": 0.17447916666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "kettlebell-one-arm-snatch": {
+    "left": 0.15625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-suitcase-carry": {
+    "left": 0.14713541666666669,
+    "top": 0.03333333333333327,
+    "width": 0.6796875,
+    "height": 0.9666666666666667,
+    "aspectRatio": 1.25
+  },
+  "barbell-standing-calf-raise": {
+    "left": 0.13802083333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "bodyweight-standing-calf-raise": {
+    "left": 0.17643229166666669,
+    "top": 0.04259259259259257,
+    "width": 0.6731770833333334,
+    "height": 0.9574074074074074,
+    "aspectRatio": 1.25
+  },
+  "lever-machine-hip-thrust": {
+    "left": 0.14583333333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "floor-crunch": {
+    "left": 0.1322916666666667,
+    "top": 0.11666666666666664,
+    "width": 0.7145833333333333,
+    "height": 0.8592592592592593,
+    "aspectRatio": 1.478448275862069
+  },
+  "dumbbell-lying-hammer-press": {
+    "left": 0.13541666666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-squeeze-bench-press": {
+    "left": 0.19726562500000006,
+    "top": 0.04259259259259257,
+    "width": 0.6731770833333334,
+    "height": 0.9574074074074074,
+    "aspectRatio": 1.25
+  },
+  "barbell-reverse-grip-bench-press": {
+    "left": 0.10416666666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "barbell-floor-chest-press": {
+    "left": 0.10625000000000001,
+    "top": 0.014814814814814836,
+    "width": 0.8291666666666667,
+    "height": 0.9518518518518518,
+    "aspectRatio": 1.54863813229572
+  },
+  "barbell-spoto-press": {
+    "left": 0.16145833333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "barbell-larsen-press": {
+    "left": 0.048958333333333326,
+    "top": 0,
+    "width": 0.7875000000000001,
+    "height": 0.9388888888888889,
+    "aspectRatio": 1.4911242603550299
+  },
+  "barbell-incline-close-grip-bench-press": {
+    "left": 0.15364583333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-incline-fly": {
+    "left": 0.14583333333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-decline-fly": {
+    "left": 0.15559895833333331,
+    "top": 0.04259259259259257,
+    "width": 0.6731770833333334,
+    "height": 0.9574074074074074,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-lying-one-arm-press": {
+    "left": 0.11979166666666669,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-standing-single-arm-chest-press": {
+    "left": 0.0703125,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-standing-chest-press": {
+    "left": 0.18229166666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-middle-fly": {
+    "left": 0.11145833333333333,
+    "top": 0,
+    "width": 0.7041666666666667,
+    "height": 1,
+    "aspectRatio": 1.251851851851852
+  },
+  "cable-standing-single-arm-fly": {
+    "left": 0.03645833333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "svend-press": {
+    "left": 0.18750000000000006,
+    "top": 0.014814814814814836,
+    "width": 0.6927083333333334,
+    "height": 0.9851851851851852,
+    "aspectRatio": 1.25
+  },
+  "incline-push-up": {
+    "left": 0.16406249999999994,
+    "top": 0.05185185185185187,
+    "width": 0.6562500000000001,
+    "height": 0.9333333333333335,
+    "aspectRatio": 1.2500000000000002
+  },
+  "decline-push-up": {
+    "left": 0,
+    "top": 0.2833333333333333,
+    "width": 0.8520833333333334,
+    "height": 0.6462962962962964,
+    "aspectRatio": 2.3438395415472777
+  },
+  "diamond-push-up": {
+    "left": 0.20000000000000007,
+    "top": 0.20000000000000007,
+    "width": 0.6208333333333333,
+    "height": 0.7666666666666666,
+    "aspectRatio": 1.4396135265700485
+  },
+  "archer-push-up": {
+    "left": 0.22083333333333338,
+    "top": 0.274074074074074,
+    "width": 0.5635416666666667,
+    "height": 0.5629629629629631,
+    "aspectRatio": 1.7796052631578945
+  },
+  "weighted-push-up-with-vest": {
+    "left": 0.16354166666666659,
+    "top": 0.16296296296296298,
+    "width": 0.6468750000000001,
+    "height": 0.837037037037037,
+    "aspectRatio": 1.3738938053097347
+  },
+  "lever-seated-wide-lat-pulldown": {
+    "left": 0.12500000000000006,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-one-arm-lat-pulldown": {
+    "left": 0.1953125,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-kneeling-one-arm-lat-pulldown": {
+    "left": 0.125,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-kneeling-lat-pulldown": {
+    "left": 0.171875,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-lateral-pulldown-with-v-bar": {
+    "left": 0.16080729166666674,
+    "top": 0.005555555555555536,
+    "width": 0.69921875,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.25
+  },
+  "lever-machine-pullover": {
+    "left": 0.140625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-rope-straight-arm-pulldown": {
+    "left": 0.21614583333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-single-arm-straight-arm-pulldown": {
+    "left": 0.25,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "barbell-lying-seal-row-on-rack": {
+    "left": 0.17395833333333333,
+    "top": 0.16296296296296298,
+    "width": 0.5895833333333333,
+    "height": 0.837037037037037,
+    "aspectRatio": 1.252212389380531
+  },
+  "landmine-one-arm-bent-over-row": {
+    "left": 0.28333333333333327,
+    "top": 0.17222222222222217,
+    "width": 0.7166666666666667,
+    "height": 0.7944444444444445,
+    "aspectRatio": 1.6037296037296036
+  },
+  "landmine-v-bar-bent-over-row": {
+    "left": 0.15833333333333327,
+    "top": 0.061111111111111116,
+    "width": 0.8416666666666667,
+    "height": 0.9388888888888889,
+    "aspectRatio": 1.5936883629191323
+  },
+  "lever-lying-t-bar-row": {
+    "left": 0.17708333333333337,
+    "top": 0.08888888888888885,
+    "width": 0.640625,
+    "height": 0.9111111111111111,
+    "aspectRatio": 1.25
+  },
+  "cable-seated-wide-grip-row": {
+    "left": 0.0546875,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-seated-row-with-v-bar": {
+    "left": 0.16666666666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-one-arm-twisting-seated-row": {
+    "left": 0.14270833333333333,
+    "top": 0,
+    "width": 0.7041666666666667,
+    "height": 1,
+    "aspectRatio": 1.251851851851852
+  },
+  "cable-high-row": {
+    "left": 0.08333333333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-low-seated-row": {
+    "left": 0.16080729166666674,
+    "top": 0.005555555555555536,
+    "width": 0.69921875,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.25
+  },
+  "cable-rope-seated-row": {
+    "left": 0.13476562499999994,
+    "top": 0.014814814814814836,
+    "width": 0.6888020833333334,
+    "height": 0.9796296296296296,
+    "aspectRatio": 1.25
+  },
+  "lever-high-row": {
+    "left": 0.15885416666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "lever-machine-low-row": {
+    "left": 0.15625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "lever-unilateral-row": {
+    "left": 0.15950520833333337,
+    "top": 0.13518518518518519,
+    "width": 0.6080729166666667,
+    "height": 0.8648148148148148,
+    "aspectRatio": 1.2500000000000002
+  },
+  "dumbbell-renegade-row": {
+    "left": 0.1635416666666667,
+    "top": 0.18148148148148147,
+    "width": 0.6208333333333333,
+    "height": 0.8185185185185185,
+    "aspectRatio": 1.34841628959276
+  },
+  "dumbbell-kroc-row": {
+    "left": 0,
+    "top": 0.18148148148148147,
+    "width": 0.8260416666666667,
+    "height": 0.7944444444444445,
+    "aspectRatio": 1.8484848484848484
+  },
+  "dumbbell-gorilla-row": {
+    "left": 0.17643229166666669,
+    "top": 0.08888888888888885,
+    "width": 0.63671875,
+    "height": 0.9055555555555556,
+    "aspectRatio": 1.25
+  },
+  "suspension-trainer-row": {
+    "left": 0.13541666666666669,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "ring-inverted-row": {
+    "left": 0.11145833333333338,
+    "top": 0,
+    "width": 0.8291666666666667,
+    "height": 0.9574074074074075,
+    "aspectRatio": 1.539651837524178
+  },
+  "scapular-pull-up": {
+    "left": 0.140625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "parallel-grip-chin-up": {
+    "left": 0.140625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "barbell-rack-pull": {
+    "left": 0.1328125,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-seated-lateral-raise": {
+    "left": 0.162109375,
+    "top": 0.024074074074074026,
+    "width": 0.6861979166666667,
+    "height": 0.975925925925926,
+    "aspectRatio": 1.2500000000000002
+  },
+  "cable-leaning-lateral-raise": {
+    "left": 0.140625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-behind-the-back-lateral-raise": {
+    "left": 0.06770833333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-one-arm-lateral-raise": {
+    "left": 0.171875,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-y-raise": {
+    "left": 0.16666666666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-incline-y-raise": {
+    "left": 0.17968750000000006,
+    "top": 0.014814814814814836,
+    "width": 0.6927083333333334,
+    "height": 0.9851851851851852,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-front-raise": {
+    "left": 0.16406250000000006,
+    "top": 0.051851851851851816,
+    "width": 0.6666666666666666,
+    "height": 0.9481481481481482,
+    "aspectRatio": 1.25
+  },
+  "cable-front-raise": {
+    "left": 0.11458333333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "weighted-front-raise": {
+    "left": 0.22070312500000006,
+    "top": 0.04259259259259257,
+    "width": 0.6731770833333334,
+    "height": 0.9574074074074074,
+    "aspectRatio": 1.25
+  },
+  "barbell-front-raise": {
+    "left": 0.11197916666666669,
+    "top": 0.014814814814814836,
+    "width": 0.6927083333333334,
+    "height": 0.9851851851851852,
+    "aspectRatio": 1.25
+  },
+  "cable-standing-reverse-fly": {
+    "left": 0.16080729166666669,
+    "top": 0.04259259259259257,
+    "width": 0.6731770833333334,
+    "height": 0.9574074074074074,
+    "aspectRatio": 1.25
+  },
+  "head-supported-dumbbell-rear-lateral-raise": {
+    "left": 0.22083333333333333,
+    "top": 0.07037037037037042,
+    "width": 0.6833333333333333,
+    "height": 0.9296296296296296,
+    "aspectRatio": 1.3067729083665338
+  },
+  "dumbbell-incline-rear-fly": {
+    "left": 0.16927083333333331,
+    "top": 0.0888888888888889,
+    "width": 0.6302083333333334,
+    "height": 0.8962962962962964,
+    "aspectRatio": 1.25
+  },
+  "lever-seated-rear-delt-row": {
+    "left": 0.14973958333333331,
+    "top": 0.07037037037037042,
+    "width": 0.6536458333333334,
+    "height": 0.9296296296296296,
+    "aspectRatio": 1.25
+  },
+  "barbell-wide-grip-upright-row": {
+    "left": 0.09635416666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-upright-row": {
+    "left": 0.16666666666666669,
+    "top": 0.014814814814814836,
+    "width": 0.6927083333333334,
+    "height": 0.9851851851851852,
+    "aspectRatio": 1.25
+  },
+  "barbell-z-press": {
+    "left": 0.15104166666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "landmine-single-arm-press": {
+    "left": 0.29374999999999996,
+    "top": 0.04259259259259257,
+    "width": 0.70625,
+    "height": 0.9574074074074074,
+    "aspectRatio": 1.311411992263056
+  },
+  "lever-viking-press": {
+    "left": 0.2265625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "pike-push-up": {
+    "left": 0.21354166666666663,
+    "top": 0.16296296296296298,
+    "width": 0.5885416666666667,
+    "height": 0.837037037037037,
+    "aspectRatio": 1.2500000000000002
+  },
+  "ez-barbell-preacher-curl": {
+    "left": 0.19140625,
+    "top": 0.03333333333333327,
+    "width": 0.6796875,
+    "height": 0.9666666666666667,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-preacher-curl": {
+    "left": 0.15625000000000006,
+    "top": 0.051851851851851816,
+    "width": 0.6666666666666666,
+    "height": 0.9481481481481482,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-one-arm-hammer-preacher-curl": {
+    "left": 0.140625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-preacher-curl": {
+    "left": 0.13802083333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "barbell-reverse-curl": {
+    "left": 0.19856770833333337,
+    "top": 0.024074074074074026,
+    "width": 0.6861979166666667,
+    "height": 0.975925925925926,
+    "aspectRatio": 1.2500000000000002
+  },
+  "ez-barbell-reverse-grip-curl": {
+    "left": 0.166015625,
+    "top": 0.005555555555555536,
+    "width": 0.69921875,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-biceps-curl-reverse": {
+    "left": 0.18619791666666674,
+    "top": 0.03333333333333327,
+    "width": 0.6796875,
+    "height": 0.9666666666666667,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-zottman-curl": {
+    "left": 0.18750000000000006,
+    "top": 0.014814814814814836,
+    "width": 0.6927083333333334,
+    "height": 0.9851851851851852,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-cross-body-hammer-curl": {
+    "left": 0.16276041666666674,
+    "top": 0.03333333333333327,
+    "width": 0.6796875,
+    "height": 0.9666666666666667,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-seated-curl": {
+    "left": 0.16796875,
+    "top": 0.07037037037037042,
+    "width": 0.6536458333333334,
+    "height": 0.9296296296296296,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-standing-biceps-curl": {
+    "left": 0.18619791666666674,
+    "top": 0.03333333333333327,
+    "width": 0.6796875,
+    "height": 0.9666666666666667,
+    "aspectRatio": 1.25
+  },
+  "barbell-drag-curl": {
+    "left": 0.14843750000000006,
+    "top": 0.014814814814814836,
+    "width": 0.6927083333333334,
+    "height": 0.9851851851851852,
+    "aspectRatio": 1.25
+  },
+  "cable-drag-curl": {
+    "left": 0.15104166666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-standing-inner-curl": {
+    "left": 0.1640625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-one-arm-curl": {
+    "left": 0.2109375,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-overhead-curl": {
+    "left": 0.15625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "lever-biceps-curl": {
+    "left": 0.1640625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-spider-curl": {
+    "left": 0.15312500000000007,
+    "top": 0.17222222222222228,
+    "width": 0.6364583333333333,
+    "height": 0.8277777777777777,
+    "aspectRatio": 1.3668903803131993
+  },
+  "dumbbell-hammer-preacher-curl": {
+    "left": 0.15234375,
+    "top": 0.03333333333333327,
+    "width": 0.6796875,
+    "height": 0.9666666666666667,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-incline-hammer-curl": {
+    "left": 0.16861979166666663,
+    "top": 0.0796296296296296,
+    "width": 0.6471354166666667,
+    "height": 0.9203703703703704,
+    "aspectRatio": 1.2500000000000002
+  },
+  "dumbbell-skull-crusher": {
+    "left": 0.15364583333333331,
+    "top": 0.014814814814814836,
+    "width": 0.6927083333333334,
+    "height": 0.9851851851851852,
+    "aspectRatio": 1.25
+  },
+  "ez-barbell-incline-triceps-extension": {
+    "left": 0.109375,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "ez-barbell-decline-triceps-extension": {
+    "left": 0.1947916666666667,
+    "top": 0.08888888888888885,
+    "width": 0.6520833333333333,
+    "height": 0.9111111111111111,
+    "aspectRatio": 1.2723577235772359
+  },
+  "barbell-jm-bench-press": {
+    "left": 0.0854166666666667,
+    "top": 0,
+    "width": 0.75625,
+    "height": 1,
+    "aspectRatio": 1.3444444444444443
+  },
+  "dumbbell-tate-press": {
+    "left": 0.17513020833333337,
+    "top": 0.024074074074074026,
+    "width": 0.6861979166666667,
+    "height": 0.975925925925926,
+    "aspectRatio": 1.2500000000000002
+  },
+  "cable-standing-high-cross-triceps-extension": {
+    "left": 0.12500000000000006,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-single-arm-overhead-triceps-extension": {
+    "left": 0.16666666666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-v-bar-triceps-pushdown": {
+    "left": 0.17122395833333337,
+    "top": 0.005555555555555536,
+    "width": 0.69921875,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.25
+  },
+  "cable-kickback": {
+    "left": 0.140625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "lever-seated-dip": {
+    "left": 0.20052083333333343,
+    "top": 0.051851851851851816,
+    "width": 0.6666666666666666,
+    "height": 0.9481481481481482,
+    "aspectRatio": 1.25
+  },
+  "barbell-low-bar-squat": {
+    "left": 0.109375,
+    "top": 0.014814814814814836,
+    "width": 0.6927083333333334,
+    "height": 0.9851851851851852,
+    "aspectRatio": 1.25
+  },
+  "barbell-box-squat": {
+    "left": 0.13606770833333326,
+    "top": 0.06111111111111106,
+    "width": 0.6497395833333335,
+    "height": 0.9240740740740742,
+    "aspectRatio": 1.25
+  },
+  "barbell-pause-full-squat": {
+    "left": 0.10611979166666669,
+    "top": 0.04259259259259257,
+    "width": 0.6731770833333334,
+    "height": 0.9574074074074074,
+    "aspectRatio": 1.25
+  },
+  "barbell-full-zercher-squat": {
+    "left": 0.17447916666666669,
+    "top": 0.042592592592592626,
+    "width": 0.6562500000000001,
+    "height": 0.9333333333333333,
+    "aspectRatio": 1.2500000000000002
+  },
+  "barbell-overhead-squat": {
+    "left": 0.13802083333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "landmine-squat": {
+    "left": 0.3197916666666667,
+    "top": 0.061111111111111116,
+    "width": 0.6802083333333333,
+    "height": 0.9333333333333333,
+    "aspectRatio": 1.2956349206349205
+  },
+  "dumbbell-goblet-sumo-squat": {
+    "left": 0.13997395833333337,
+    "top": 0.04259259259259257,
+    "width": 0.6731770833333334,
+    "height": 0.9574074074074074,
+    "aspectRatio": 1.25
+  },
+  "smith-front-squat": {
+    "left": 0.09114583333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "smith-split-squat": {
+    "left": 0.11848958333333331,
+    "top": 0.005555555555555536,
+    "width": 0.6953125000000001,
+    "height": 0.9888888888888889,
+    "aspectRatio": 1.2500000000000002
+  },
+  "smith-rear-lunge": {
+    "left": 0.18489583333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "smith-deficit-bulgarian-split-squat": {
+    "left": 0.13802083333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "smith-bent-knee-good-morning": {
+    "left": 0.10677083333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "smith-calf-raise": {
+    "left": 0.1015625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "sissy-squat-bodyweight": {
+    "left": 0.08072916666666669,
+    "top": 0.014814814814814836,
+    "width": 0.6927083333333334,
+    "height": 0.9851851851851852,
+    "aspectRatio": 1.25
+  },
+  "sled-reverse-hack-squat": {
+    "left": 0.11145833333333333,
+    "top": 0.07037037037037042,
+    "width": 0.7718750000000001,
+    "height": 0.9296296296296296,
+    "aspectRatio": 1.4760956175298805
+  },
+  "heel-elevated-bodyweight-squat": {
+    "left": 0.140625,
+    "top": 0.014814814814814836,
+    "width": 0.6927083333333334,
+    "height": 0.9851851851851852,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-elevated-heel-goblet-squat": {
+    "left": 0.16796875,
+    "top": 0.03333333333333327,
+    "width": 0.6796875,
+    "height": 0.9666666666666667,
+    "aspectRatio": 1.25
+  },
+  "cossack-squat": {
+    "left": 0.18554687500000006,
+    "top": 0.042592592592592626,
+    "width": 0.6497395833333334,
+    "height": 0.924074074074074,
+    "aspectRatio": 1.25
+  },
+  "side-lunge": {
+    "left": 0.13736979166666674,
+    "top": 0.005555555555555536,
+    "width": 0.69921875,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-curtsey-lunge": {
+    "left": 0.16536458333333331,
+    "top": 0.04259259259259257,
+    "width": 0.6692708333333334,
+    "height": 0.9518518518518518,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-deficit-reverse-lunge": {
+    "left": 0.10677083333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "barbell-walking-lunge": {
+    "left": 0.054166666666666696,
+    "top": 0.005555555555555536,
+    "width": 0.8083333333333333,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.4450651769087524
+  },
+  "barbell-step-up": {
+    "left": 0.1171875,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-reverse-lunge": {
+    "left": 0.10156250000000006,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "cable-lateral-lunge": {
+    "left": 0.076171875,
+    "top": 0.024074074074074026,
+    "width": 0.6861979166666667,
+    "height": 0.975925925925926,
+    "aspectRatio": 1.2500000000000002
+  },
+  "lever-standing-single-leg-curl": {
+    "left": 0.11783854166666663,
+    "top": 0.024074074074074026,
+    "width": 0.6861979166666667,
+    "height": 0.975925925925926,
+    "aspectRatio": 1.2500000000000002
+  },
+  "lever-lying-single-leg-curl": {
+    "left": 0.10624999999999996,
+    "top": 0.1074074074074074,
+    "width": 0.6833333333333335,
+    "height": 0.8925925925925926,
+    "aspectRatio": 1.360995850622407
+  },
+  "lever-seated-one-leg-curl": {
+    "left": 0.10091145833333337,
+    "top": 0.005555555555555536,
+    "width": 0.69921875,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-lying-leg-curl": {
+    "left": 0.054166666666666696,
+    "top": 0.0796296296296296,
+    "width": 0.8552083333333333,
+    "height": 0.9203703703703704,
+    "aspectRatio": 1.6519114688128773
+  },
+  "cable-lying-single-leg-curl": {
+    "left": 0.134765625,
+    "top": 0,
+    "width": 0.69921875,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.25
+  },
+  "bodyweight-frog-hip-thrust": {
+    "left": 0.14791666666666659,
+    "top": 0.29259259259259257,
+    "width": 0.7197916666666668,
+    "height": 0.6462962962962963,
+    "aspectRatio": 1.9799426934097426
+  },
+  "single-leg-hip-thrust": {
+    "left": 0.09583333333333333,
+    "top": 0.09814814814814815,
+    "width": 0.7562500000000001,
+    "height": 0.8685185185185186,
+    "aspectRatio": 1.5479744136460556
+  },
+  "barbell-kas-glute-bridge": {
+    "left": 0.15833333333333333,
+    "top": 0.0796296296296296,
+    "width": 0.7406250000000001,
+    "height": 0.8962962962962964,
+    "aspectRatio": 1.4690082644628102
+  },
+  "cable-hip-abduction": {
+    "left": 0.13020833333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "reverse-hyperextension-on-box": {
+    "left": 0.04375000000000001,
+    "top": 0.19999999999999996,
+    "width": 0.9489583333333335,
+    "height": 0.7481481481481482,
+    "aspectRatio": 2.254950495049505
+  },
+  "handstand-push-up": {
+    "left": 0.09375,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "ring-dip": {
+    "left": 0.13802083333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "ring-incline-push-up": {
+    "left": 0.11979166666666669,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "bench-dip": {
+    "left": 0.09765625,
+    "top": 0.03333333333333327,
+    "width": 0.6796875,
+    "height": 0.9666666666666667,
+    "aspectRatio": 1.25
+  },
+  "resistance-band-standing-chest-press": {
+    "left": 0.17903645833333337,
+    "top": 0.005555555555555536,
+    "width": 0.69921875,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.25
+  },
+  "resistance-band-seated-row": {
+    "left": 0.24153645833333337,
+    "top": 0.13518518518518519,
+    "width": 0.55859375,
+    "height": 0.7944444444444445,
+    "aspectRatio": 1.25
+  },
+  "resistance-band-lat-pulldown": {
+    "left": 0.14583333333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "resistance-band-face-pull": {
+    "left": 0.234375,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "band-biceps-curl": {
+    "left": 0.18229166666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "resistance-band-triceps-pushdown": {
+    "left": 0.1953125,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "band-lateral-raise": {
+    "left": 0.16145833333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "landmine-180": {
+    "left": 0.2104166666666667,
+    "top": 0.005555555555555536,
+    "width": 0.7895833333333333,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.4115456238361266
+  },
+  "hanging-toes-to-bar": {
+    "left": 0.13020833333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "battling-ropes-high-waves": {
+    "left": 0.22083333333333327,
+    "top": 0.08888888888888885,
+    "width": 0.7791666666666667,
+    "height": 0.9111111111111111,
+    "aspectRatio": 1.5203252032520327
+  },
+  "power-sled-push": {
+    "left": 0,
+    "top": 0.2833333333333333,
+    "width": 1,
+    "height": 0.6462962962962964,
+    "aspectRatio": 2.7507163323782233
   }
 }

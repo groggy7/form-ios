@@ -848,5 +848,4255 @@
     "width": 353,
     "height": 384,
     "sha256": "5fb3a15f595bfba034acb227c0d59dafcbd85dad112339a6ce4f5fba9b68c6ea"
+  },
+  "cable-seated-row": {
+    "file": "cable-seated-row.png",
+    "videoId": "086112",
+    "sourceFile": "08611201-Cable-Seated-Row_Back-FIX-STEP1.png",
+    "sourceSha256": "9fee651e56f2b4dda457f532114fabce17da9570c48d41bb1773f644120827dc",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 427,
+      "top": 21,
+      "width": 920,
+      "height": 1048
+    },
+    "width": 339,
+    "height": 384,
+    "sha256": "4515822589192aa117d16e844dc94d726f12f279a5287303d5ae546f1896b946"
+  },
+  "dumbbell-seated-shoulder-press": {
+    "file": "dumbbell-seated-shoulder-press.png",
+    "videoId": "040512",
+    "sourceFile": "04051201-Dumbbell-Seated-Shoulder-Press_Shoulders-FIX2-STEP1.png",
+    "sourceSha256": "1c2cff5ed3713b1dcf25c963fd17cfcfd211a572c403872c35ba177828d84fea",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 661,
+      "top": 257,
+      "width": 518,
+      "height": 792
+    },
+    "width": 257,
+    "height": 384,
+    "sha256": "0740da77e8c9559181e165f579d1ddbd02400246005873dc5ac35c38a8d5799a"
+  },
+  "lever-chest-press": {
+    "file": "lever-chest-press.png",
+    "videoId": "057712",
+    "sourceFile": "05771201-Lever-Chest-Press_Chest-FIX-STEP1.png",
+    "sourceSha256": "1413389907f9041d8e88700b87502e882f2d79b342e55632758ee09518daa964",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 623,
+      "top": 121,
+      "width": 698,
+      "height": 932
+    },
+    "width": 292,
+    "height": 384,
+    "sha256": "755481701bd77df59cae6bd6d47b3dbda8851461e96afa9265ee758ddc6a6bfd"
+  },
+  "lever-seated-shoulder-press": {
+    "file": "lever-seated-shoulder-press.png",
+    "videoId": "145412",
+    "sourceFile": "14541201-Lever-Seated-Shoulder-Press_Shoulders-FIX-STEP1.png",
+    "sourceSha256": "459c1b5d52a56f5d28a070580bbd9c50f680e82ce0212b985513af60a263e177",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 537,
+      "top": 233,
+      "width": 686,
+      "height": 832
+    },
+    "width": 319,
+    "height": 384,
+    "sha256": "186398b4d861624d3f5374b09c415c5c87ed47dc440d5edeaeace51411b66779"
+  },
+  "bodyweight-rear-lunge": {
+    "file": "bodyweight-rear-lunge.png",
+    "videoId": "158112",
+    "sourceFile": "15811201-Bodyweight-Rear-Lunge_Thighs-STEP1.png",
+    "sourceSha256": "1fd516628a8a256b5aaadbf0cea251665f86115bef00fc7afcf7d72312168e13",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 999,
+      "top": 63,
+      "width": 276,
+      "height": 1005
+    },
+    "width": 117,
+    "height": 384,
+    "sha256": "b56bd7d223e58baa410d4bc8bf95366a4a7f44ff02590697604c2057f13bb3f1"
+  },
+  "walking-lunge": {
+    "file": "walking-lunge.png",
+    "videoId": "146012",
+    "sourceFile": "14601201-Walking-Lunge-Male_Hips-FIX-STEP1.png",
+    "sourceSha256": "61869f16d252b8101cca76118c4df50ac52d01f83c88ea0ce5c67347511ba8a3",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 397,
+      "top": 101,
+      "width": 284,
+      "height": 834
+    },
+    "width": 141,
+    "height": 384,
+    "sha256": "1b9cb4db1bd3a1c7ab099d32911f96f9b49ef9732842ebe6b817fe438365de72"
+  },
+  "bodyweight-squat": {
+    "file": "bodyweight-squat.png",
+    "videoId": "119712",
+    "sourceFile": "11971201-Bodyweight-Squat-(male)_Thighs-FIX-STEP1.png",
+    "sourceSha256": "25c4ddb60e0253ecb5ef7002d97c7ab7ea059ff72b2fc4929be41fca09a182c5",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 797,
+      "top": 78,
+      "width": 514,
+      "height": 971
+    },
+    "width": 211,
+    "height": 384,
+    "sha256": "1988588ed60e418e73fb495ac3713e17b5e5f0377e415a049ffd24e5cd48da65"
+  },
+  "lever-seated-reverse-fly": {
+    "file": "lever-seated-reverse-fly.png",
+    "videoId": "060212",
+    "sourceFile": "06021201-Lever-Seated-Reverse-Fly_Shoulders-FIX-STEP1.png",
+    "sourceSha256": "a1f89fe98e260b2868d022f665426c1e34b0ceaace6db6dc33d189caeafe0edd",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 695,
+      "top": 22,
+      "width": 542,
+      "height": 1029
+    },
+    "width": 210,
+    "height": 384,
+    "sha256": "b11c350320f95349a1e0f9cbe04b07df94a0fdf6794ee9bd91cca3d0d552bc0b"
+  },
+  "cable-curl": {
+    "file": "cable-curl.png",
+    "videoId": "086812",
+    "sourceFile": "08681201-Cable-Curl-(male)_Upper-Arms-FIX-STEP1.png",
+    "sourceSha256": "c8780d04403fb2f038657262e8ce9fb18399f7e63ecc4a8aa4538e132e75eadc",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 707,
+      "top": 30,
+      "width": 532,
+      "height": 1033
+    },
+    "width": 206,
+    "height": 384,
+    "sha256": "2ef1055acf9212c970f5bb1d68ca88e675ac06e1c8bd01436db694b097941328"
+  },
+  "barbell-preacher-curl": {
+    "file": "barbell-preacher-curl.png",
+    "videoId": "007012",
+    "sourceFile": "00701201-Barbell-Preacher-Curl_Upper-Arms-STEP1.png",
+    "sourceSha256": "d6b08961d136251a85b190e634fede72d5e15d03c1ab5a7c4bef34144b294fae",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 525,
+      "top": 41,
+      "width": 808,
+      "height": 1008
+    },
+    "width": 311,
+    "height": 384,
+    "sha256": "af07abc66211bc2ab5f6709274859c2e6f9e6a8672a6c631a8810c8ed78aa5af"
+  },
+  "chest-dip": {
+    "file": "chest-dip.png",
+    "videoId": "025112",
+    "sourceFile": "02511201-Chest-Dip_Chest-FIX-STEP1.png",
+    "sourceSha256": "44486e03aed7805d7dee1a3d688eaf3f63a67cc4977ac9e0640b6b317c3fd4d2",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 549,
+      "top": 57,
+      "width": 605,
+      "height": 1012
+    },
+    "width": 236,
+    "height": 384,
+    "sha256": "fa83bc63d049732a03c9fa17ae905d98dc60b0e95f0e212347d42b357b481cdb"
+  },
+  "chin-up": {
+    "file": "chin-up.png",
+    "videoId": "132612",
+    "sourceFile": "13261201-Chin-Up_Back-FIX-STEP1.png",
+    "sourceSha256": "591a7f355fb6da4cc0aa4618f9066aad9da091754720d3455a08d61ea03ea0fa",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 661,
+      "top": 71,
+      "width": 692,
+      "height": 972
+    },
+    "width": 278,
+    "height": 384,
+    "sha256": "ab259642ec0e478dc7b6fed43c8dc0b78dfdbb7a84c2082fb9179ba990495e76"
+  },
+  "front-plank": {
+    "file": "front-plank.png",
+    "videoId": "046312",
+    "sourceFile": "04631201-Front-Elbow-Plank-(male)_Waist-FIX-STEP1.png",
+    "sourceSha256": "14d76922835a673003ca4032c4a1e32c315466271b2dc8fc765eb96b1a2223d6",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 174,
+      "top": 415,
+      "width": 1531,
+      "height": 460
+    },
+    "width": 384,
+    "height": 127,
+    "sha256": "3780b217eedc2d5b118f67abd43ae8ee25579b94620e650f1b15a75eae56aecd"
+  },
+  "cable-standing-fly": {
+    "file": "cable-standing-fly.png",
+    "videoId": "022712",
+    "sourceFile": "02271201-Cable-Standing-Fly_Chest-STEP1.png",
+    "sourceSha256": "79e97f5d81ae108473bc470e659142a96dac6f730a669c0e292820137365e749",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 399,
+      "top": 21,
+      "width": 1138,
+      "height": 1048
+    },
+    "width": 384,
+    "height": 355,
+    "sha256": "70e5f56c446d9639e4dfb749970bd864c58b8bb45b26f0b193dcec1a56e8acb5"
+  },
+  "sled-hack-squat": {
+    "file": "sled-hack-squat.png",
+    "videoId": "074312",
+    "sourceFile": "07431201-Sled-Hack-Squat_Hips-STEP1.png",
+    "sourceSha256": "31c18906beb809ac075b5905489c80ba9903c1967e18dc951fae4732de96eb18",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 299,
+      "top": 164,
+      "width": 1320,
+      "height": 865
+    },
+    "width": 384,
+    "height": 257,
+    "sha256": "110b26b6afefce8e8096d38bae1d59e8d854f214ce087e6892c2195ae502706a"
+  },
+  "dumbbell-glute-bridge": {
+    "file": "dumbbell-glute-bridge.png",
+    "videoId": "333512",
+    "sourceFile": "33351201-Dumbbell-Glute-Bridge_Hip-STEP1.png",
+    "sourceSha256": "3b08f920dd56a416145eec8fa6b6b481696724343d983cf5525cffd7c09100f3",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 371,
+      "top": 455,
+      "width": 1218,
+      "height": 528
+    },
+    "width": 384,
+    "height": 176,
+    "sha256": "7e577a05174ad9e65f1c956c3c6bfa6d5bfecc2a0e9d954ec1f458a0491c9c89"
+  },
+  "barbell-sumo-deadlift": {
+    "file": "barbell-sumo-deadlift.png",
+    "videoId": "011712",
+    "sourceFile": "01171201-Barbell-Sumo-Deadlift_Hips-FIX-STEP1.png",
+    "sourceSha256": "71121b7587db7f8b90138bcacdc60ece654920b4a6ebc2410c30852e79a3f4f3",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 615,
+      "top": 372,
+      "width": 672,
+      "height": 695
+    },
+    "width": 372,
+    "height": 384,
+    "sha256": "664eb4c2d63e2074fc7505f33d9bd4540564bd8aacf7845a9398edf271fd448d"
+  },
+  "smith-squat": {
+    "file": "smith-squat.png",
+    "videoId": "077012",
+    "sourceFile": "07701201-Smith-Squat_Hips-STEP1.png",
+    "sourceSha256": "6057225ff382e31132381f14566089d3b701afdb0a78ec3ba5d6c71ee5ed2e7b",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 435,
+      "top": 35,
+      "width": 788,
+      "height": 1018
+    },
+    "width": 301,
+    "height": 384,
+    "sha256": "cb1a91320befe4169e07f7b89c29b5db997a882a367c9024095ab99c374861d0"
+  },
+  "smith-bench-press": {
+    "file": "smith-bench-press.png",
+    "videoId": "074812",
+    "sourceFile": "07481201-Smith-Bench-Press_Chest-FIX-STEP1.png",
+    "sourceSha256": "96b283260a3b91a70732e7cd50a059a008d00a09a1a269217bb058cb33550348",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 571,
+      "top": 15,
+      "width": 830,
+      "height": 1040
+    },
+    "width": 310,
+    "height": 384,
+    "sha256": "2c6966519785f6eb83ff4af11e97de290300a2d1dca4471e6f26808f5031d08c"
+  },
+  "smith-incline-bench-press": {
+    "file": "smith-incline-bench-press.png",
+    "videoId": "075712",
+    "sourceFile": "07571201-Smith-Incline-Bench-Press_Chest-FIX-STEP1.png",
+    "sourceSha256": "174c42487894ae166b17c053fe4aa24133a570d43b731764a8f19a83373e7ebb",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 583,
+      "top": 15,
+      "width": 857,
+      "height": 1056
+    },
+    "width": 315,
+    "height": 384,
+    "sha256": "ddf4a38e5015905868fc51e0bc7b099ee25f9e73e8fa6fab1549ecf3cf4af904"
+  },
+  "smith-stiff-legged-deadlift": {
+    "file": "smith-stiff-legged-deadlift.png",
+    "videoId": "159712",
+    "sourceFile": "15971201-Smith-Stiff-Legged-Deadlift_Hips-STEP1.png",
+    "sourceSha256": "593f718eb005ab89eec52b61d2db6cbcb860ed2454649c34d43e6c0cc7e5a71c",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 465,
+      "top": 15,
+      "width": 746,
+      "height": 1048
+    },
+    "width": 278,
+    "height": 384,
+    "sha256": "771e2d98fd185a2b8bbc05f7d50ffdc72568a714b266ef95b9f0a55270516d8f"
+  },
+  "smith-hip-thrust": {
+    "file": "smith-hip-thrust.png",
+    "videoId": "311012",
+    "sourceFile": "31101201-Smith-Hip-Thrust_Hips-FIX-STEP1.png",
+    "sourceSha256": "dee75fe628576b78a0275513cbaeda46c54dd4fdd111b5817c78f97c91b1c584",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 476,
+      "top": 13,
+      "width": 787,
+      "height": 1048
+    },
+    "width": 292,
+    "height": 384,
+    "sha256": "5fd0e22a6df800fa68b45e1bf72a245593626ce3d7d2e56a14f9d40cbeb018c7"
+  },
+  "pendulum-squat": {
+    "file": "pendulum-squat.png",
+    "videoId": "495112",
+    "sourceFile": "49511201-Lever-Pendulum-Squat-(plate-loaded)_Thighs-STEP1.png",
+    "sourceSha256": "87cd183f188d4be028dfc92bb2e518e08da53bf6f74c29eab37ed96a4255f4d6",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 368,
+      "top": 49,
+      "width": 1118,
+      "height": 1013
+    },
+    "width": 384,
+    "height": 349,
+    "sha256": "3544a181f203da7cd668e5598985fd74097bf17c6fbf25280ce23e12114cf86a"
+  },
+  "lever-belt-squat": {
+    "file": "lever-belt-squat.png",
+    "videoId": "295012",
+    "sourceFile": "29501201-Lever-Belt-Squat_Thighs-STEP1.png",
+    "sourceSha256": "97646dfdead85f1e143510410e3df145bb667053a9d85cbb2ecdfc0588ad6bfe",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 437,
+      "top": 75,
+      "width": 839,
+      "height": 981
+    },
+    "width": 331,
+    "height": 384,
+    "sha256": "56c9b3d6ff762b46160e1bfa630db30183bbed3ff9f51b323febdf46ea9dcffb"
+  },
+  "lever-vertical-squat": {
+    "file": "lever-vertical-squat.png",
+    "videoId": "552012",
+    "sourceFile": "55201201-Lever-Vertical-Squat_Thighs-STEP1.png",
+    "sourceSha256": "dad74cb7d524e00d117fd3a89071bc41185158539fb0cc2be592d469eac80e46",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 371,
+      "top": 109,
+      "width": 942,
+      "height": 954
+    },
+    "width": 379,
+    "height": 384,
+    "sha256": "cd4daa9ff669972d69cf118640b1030f543354a7ea9544b7a27b2d41fb4ebd1d"
+  },
+  "sled-45-degrees-one-leg-press": {
+    "file": "sled-45-degrees-one-leg-press.png",
+    "videoId": "142512",
+    "sourceFile": "14251201-Sled-45-degrees-One-Leg-Press_Hips-FIX-STEP1.png",
+    "sourceSha256": "ccf80766197bbe783f8ea55434063634f5697285f14bd5086bc82a83b47468b9",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 235,
+      "top": 60,
+      "width": 1438,
+      "height": 999
+    },
+    "width": 384,
+    "height": 272,
+    "sha256": "aa6149653859d7653d22e61bda20cb44734227c3ea91377703b304e3ecc873d0"
+  },
+  "dumbbell-split-squat-front-foot-elevanted": {
+    "file": "dumbbell-split-squat-front-foot-elevanted.png",
+    "videoId": "778412",
+    "sourceFile": "77841201-Dumbbell-Split-Squat-Front-Foot-Elevanted_Thighs-STEP1.png",
+    "sourceSha256": "e621d24ba39177e36e2430467346c99e52d7e1b31f0e03082585628d0319eeb5",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 651,
+      "top": 60,
+      "width": 666,
+      "height": 1000
+    },
+    "width": 261,
+    "height": 384,
+    "sha256": "3c26683512947da6cc4dac72ec79d78f68e3e1249e2d27e340deae876ebb8fd3"
+  },
+  "barbell-good-morning": {
+    "file": "barbell-good-morning.png",
+    "videoId": "004412",
+    "sourceFile": "00441201-Barbell-Good-Morning_Thighs-FIX-STEP1.png",
+    "sourceSha256": "a488b0c55e836c98ae1ea54e2a2ec7a314f1c365c9aa31f7a79144658adb3688",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 631,
+      "top": 63,
+      "width": 570,
+      "height": 966
+    },
+    "width": 233,
+    "height": 384,
+    "sha256": "2080ab9e11e1696e124751e17b26c707d134bb6e28f74bff86ac0cfc8949d28c"
+  },
+  "dumbbell-single-leg-romanian-deadlift": {
+    "file": "dumbbell-single-leg-romanian-deadlift.png",
+    "videoId": "975212",
+    "sourceFile": "97521201-Dumbbell-Single-Leg-Romanian-Deadlift-(male)_Hips-STEP1.png",
+    "sourceSha256": "07a6585cd22d7fc512fc73f509d5a9daeedaf40b3808766a0d53d481f0c78257",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 767,
+      "top": 428,
+      "width": 522,
+      "height": 619
+    },
+    "width": 326,
+    "height": 384,
+    "sha256": "d700e3c4e3fcdc4cb1a3bbd984fd2361d03c69536ecd9d56f53c04117fbe0be4"
+  },
+  "dumbbell-45-deg-back-extension": {
+    "file": "dumbbell-45-deg-back-extension.png",
+    "videoId": "1161712",
+    "sourceFile": "116171201-Dumbbell-45-degrees-Back-Extension-(male)_Hips-STEP1.png",
+    "sourceSha256": "b8b299a59075412df1a37056f5f2c8aa846be331217cefb3faab56be89e5592b",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 419,
+      "top": 297,
+      "width": 970,
+      "height": 748
+    },
+    "width": 384,
+    "height": 300,
+    "sha256": "0df31b0f7b591dfb6f0cbd8b74304bcc2c7f8d32f3275645c44973800cd2012e"
+  },
+  "nordic-hamstring-curl": {
+    "file": "nordic-hamstring-curl.png",
+    "videoId": "774612",
+    "sourceFile": "77461201-Nordic-Hamstring-Curl-(male)_Thighs-STEP1.png",
+    "sourceSha256": "cff25b9399f1e67e2b115ad79364dca36f9aac7d1749586fc5da241a95586843",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 925,
+      "top": 0,
+      "width": 586,
+      "height": 888
+    },
+    "width": 259,
+    "height": 384,
+    "sha256": "fe829637c59893138a2d5e54461d0b254716d31b352254c07cd4bd8b3d429436"
+  },
+  "glute-ham-raise": {
+    "file": "glute-ham-raise.png",
+    "videoId": "445612",
+    "sourceFile": "44561201-Glute-Ham-Raise-(VERSION-2)_Thighs-FIX-STEP1.png",
+    "sourceSha256": "9fecc86dabad190c9e337a642faa97808c342281abe344b2dff550ae2ff8857f",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 595,
+      "top": 433,
+      "width": 629,
+      "height": 640
+    },
+    "width": 378,
+    "height": 384,
+    "sha256": "72b886d355dff64a0be1de7a192d232ef7a64e4d20040fdc88d2ec9f05e052a5"
+  },
+  "cable-pull-through": {
+    "file": "cable-pull-through.png",
+    "videoId": "120612",
+    "sourceFile": "12061201-Cable-pull-through_hips-STEP1.png",
+    "sourceSha256": "f7ea202030522f83666977b53a8f0e78ff0083a69f88f42e99d9a96441bd1d09",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 431,
+      "top": 25,
+      "width": 860,
+      "height": 1041
+    },
+    "width": 320,
+    "height": 384,
+    "sha256": "8695e84d4093257de7f9b3898ed33fc04b8c17c4b00d5782862f51dc4dc6823e"
+  },
+  "cable-kneeling-glute-kickback": {
+    "file": "cable-kneeling-glute-kickback.png",
+    "videoId": "808812",
+    "sourceFile": "80881201-Cable-Kneeling-Glute-Kickback-(male)_Hips-STEP1.png",
+    "sourceSha256": "e6b689f5629a73a189976432b59e211f35e0a3daeacfb2b2ee89e3b8f3d21080",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 425,
+      "top": 19,
+      "width": 932,
+      "height": 1042
+    },
+    "width": 345,
+    "height": 384,
+    "sha256": "b8660be694dd36d86c611a6a01624997e761d7e379c32c1fbbd0ae73e7fe424b"
+  },
+  "lever-seated-hip-abduction": {
+    "file": "lever-seated-hip-abduction.png",
+    "videoId": "059712",
+    "sourceFile": "05971201-Lever-Seated-Hip-Abduction_Hips-FIX-STEP1.png",
+    "sourceSha256": "86f566dfaf9956591a5be49e00701995b3c7b5d6707fcb13761949f1501390cd",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 466,
+      "top": 45,
+      "width": 991,
+      "height": 998
+    },
+    "width": 381,
+    "height": 384,
+    "sha256": "9fb23aaa192ae6d059b0d7722a57221dd949652298dff229146aa35b6600ea08"
+  },
+  "lever-seated-hip-adduction": {
+    "file": "lever-seated-hip-adduction.png",
+    "videoId": "059812",
+    "sourceFile": "05981201-Lever-Seated-Hip-Adduction_Thighs-FIX-STEP1.png",
+    "sourceSha256": "6da0315bf95661ed395f9d1eb2b4bc1469da07570522f1f149432b13d6facbfa",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 575,
+      "top": 131,
+      "width": 792,
+      "height": 932
+    },
+    "width": 329,
+    "height": 384,
+    "sha256": "e27d3630cc1b53d385aa0b1ff8ac9db5cd829a912fecc09da4b59e54ee91b0c4"
+  },
+  "sled-calf-press-on-leg-press": {
+    "file": "sled-calf-press-on-leg-press.png",
+    "videoId": "139112",
+    "sourceFile": "13911201-Sled-Calf-Press-On-Leg-Press_Calves-FIX-STEP1.png",
+    "sourceSha256": "64c771a98ac453962c564dab1c5eeb4955d9590677d0acb31c4d1155632eed8c",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 345,
+      "top": 61,
+      "width": 1316,
+      "height": 982
+    },
+    "width": 384,
+    "height": 291,
+    "sha256": "0af4bef74c95b83d68f4e8b9479b6bc5c7ed163d6ab9150e270b780d509f8464"
+  },
+  "donkey-calf-raise": {
+    "file": "donkey-calf-raise.png",
+    "videoId": "028412",
+    "sourceFile": "02841201-Donkey-Calf-Raise_Calves-STEP1.png",
+    "sourceSha256": "e5c881d07eac0951845fba633c707a45ad0355ed7486dfaea9dbadf811b65baf",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 537,
+      "top": 159,
+      "width": 1106,
+      "height": 866
+    },
+    "width": 384,
+    "height": 304,
+    "sha256": "6b5e871f67ab2530f5c123236f260f9a2e8f7cab8b5148405559b8b6bb71f704"
+  },
+  "wall-supported-tibialis-raise": {
+    "file": "wall-supported-tibialis-raise.png",
+    "videoId": "980312",
+    "sourceFile": "98031201-Standing-Tibialis-Raise-Wall-Supported-(male)_Calv-STEP1.png",
+    "sourceSha256": "46b8503b10148dd2db2ae016e5e846f47d55c1fabd0cd7ef8af743340f868ea3",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 703,
+      "top": 29,
+      "width": 405,
+      "height": 1018
+    },
+    "width": 162,
+    "height": 384,
+    "sha256": "e9dfd691acd27bb4d06ca8a46761230fb42051eefe1965bc39fe6505af89af1a"
+  },
+  "barbell-decline-bench-press": {
+    "file": "barbell-decline-bench-press.png",
+    "videoId": "003312",
+    "sourceFile": "00331201-Barbell-Decline-Bench-Press_Chest-FIX-STEP1.png",
+    "sourceSha256": "d1fbf471878e44e137e43b788a92b625c13dec3107f76c0a12eecb0e36109089",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 493,
+      "top": 183,
+      "width": 900,
+      "height": 874
+    },
+    "width": 384,
+    "height": 373,
+    "sha256": "7acb6c1646d8b486994ac5a26c201a94f571241adbbcb4bc97cd9340bb571eef"
+  },
+  "dumbbell-decline-bench-press": {
+    "file": "dumbbell-decline-bench-press.png",
+    "videoId": "030112",
+    "sourceFile": "03011201-Dumbbell-Decline-Bench-Press_Chest-FIX-STEP1.png",
+    "sourceSha256": "d371cacd4005d4325ea63bd05b4c2e9eea21f3003073cefa63bd740736818618",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 479,
+      "top": 263,
+      "width": 927,
+      "height": 798
+    },
+    "width": 384,
+    "height": 333,
+    "sha256": "5f0a6ff046855fde8ebacf722a3b0a0f8f65dd6e0b8b15e50b36c2b91227254a"
+  },
+  "lever-incline-chest-press": {
+    "file": "lever-incline-chest-press.png",
+    "videoId": "129912",
+    "sourceFile": "12991201-Lever-Incline-Chest-Press_Chest-FIX2-STEP1.png",
+    "sourceSha256": "ad515e878c61b9195e3241c2297e33423d08288f18184ecf4bc9ff88207f3756",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 505,
+      "top": 57,
+      "width": 740,
+      "height": 972
+    },
+    "width": 296,
+    "height": 384,
+    "sha256": "5d02be3254edea71a54e9ced3d05e7901f3ac2adaecb1bd292eab314cb58d3c2"
+  },
+  "cable-low-fly": {
+    "file": "cable-low-fly.png",
+    "videoId": "017912",
+    "sourceFile": "01791201-Cable-Low-Fly_Chest-FIX2-STEP1.png",
+    "sourceSha256": "c0ed05b0ee939ed5ef97cdee68d67dfae4e45bb6f1584e9ba9d094394f6dcfcd",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 579,
+      "top": 13,
+      "width": 998,
+      "height": 1051
+    },
+    "width": 365,
+    "height": 384,
+    "sha256": "44bfdd63508d2956cee5930ca745842ed7c456f6a7f87c1d297fd11471f3c7cc"
+  },
+  "cable-decline-fly": {
+    "file": "cable-decline-fly.png",
+    "videoId": "015812",
+    "sourceFile": "01581201-Cable-Decline-Fly_Chest-FIX-STEP1.png",
+    "sourceSha256": "bbde52974b2589cc75fc233e420f873c5ee9e0679b595efc524737aa2eeb8d76",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 457,
+      "top": 28,
+      "width": 1050,
+      "height": 1033
+    },
+    "width": 384,
+    "height": 378,
+    "sha256": "e8c19b0cfc1ad6aa2781356092fa391ae477dc6741e24e4b270f688c3d54fb4f"
+  },
+  "dumbbell-fly": {
+    "file": "dumbbell-fly.png",
+    "videoId": "030812",
+    "sourceFile": "03081201-Dumbbell-Fly_Chest-FIX2-STEP1.png",
+    "sourceSha256": "42cff0b27e2b74c0bbde56525de42042ba5e62b2818ec5bbcfd9992379e09d69",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 453,
+      "top": 271,
+      "width": 970,
+      "height": 776
+    },
+    "width": 384,
+    "height": 310,
+    "sha256": "d7d7bdf518d3249b5777cf5c333902b958232d349ba469e8571c2bb145bb1fa8"
+  },
+  "barbell-close-grip-bench-press": {
+    "file": "barbell-close-grip-bench-press.png",
+    "videoId": "003012",
+    "sourceFile": "00301201-Barbell-Close-Grip-Bench-Press_Upper-Arms-FIX-STEP1.png",
+    "sourceSha256": "727545614d999dc647480fcc0139d105c7eef0560b628773a539634dbe70ea04",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 378,
+      "top": 116,
+      "width": 1085,
+      "height": 944
+    },
+    "width": 384,
+    "height": 336,
+    "sha256": "3592b710644cb5950fe67e77c403ae92e41f353a97a2e91e1df45a8b8795e74d"
+  },
+  "dumbbell-pullover": {
+    "file": "dumbbell-pullover.png",
+    "videoId": "037512",
+    "sourceFile": "03751201-Dumbbell-Pullover_Chest-STEP1.png",
+    "sourceSha256": "dfb0b4cedbd9282c0fc73191da28ce40cab8ee49d68ee03534fd4a29c2bb3bee",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 383,
+      "top": 381,
+      "width": 1162,
+      "height": 658
+    },
+    "width": 384,
+    "height": 224,
+    "sha256": "481bdaf08d668e3c8643a6caa8c08a43671acc9f416011299c6135bd407a2e3b"
+  },
+  "lever-chest-supported-row": {
+    "file": "lever-chest-supported-row.png",
+    "videoId": "651312",
+    "sourceFile": "65131201-Lever-Bent-Over-Row-(with-chest-support)_Back-STEP1.png",
+    "sourceSha256": "1c2b55357838335201a5413f0ebe9bfd6004d0a05aed1c4ec23fbd95ef0f6718",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 101,
+      "top": 35,
+      "width": 1354,
+      "height": 968
+    },
+    "width": 384,
+    "height": 279,
+    "sha256": "6c80b0c0969a45cc7f725f7d8c0904c5bcbaf1917b9e7f3a42fe3155d8b12680"
+  },
+  "lever-t-bar-row": {
+    "file": "lever-t-bar-row.png",
+    "videoId": "060612",
+    "sourceFile": "06061201-Lever-T-bar-Row-(plate-loaded)_Back-FIX-STEP1.png",
+    "sourceSha256": "506399dfb507915fee13f80d6e9e8b604df168c4fc4c43e1abd48bb6bc95f5e1",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 545,
+      "top": 131,
+      "width": 944,
+      "height": 938
+    },
+    "width": 384,
+    "height": 382,
+    "sha256": "a551191289a952a6a3e9bcc4281ec832a5a237a08d0971ce97d073d7b22ddd5f"
+  },
+  "barbell-pendlay-row": {
+    "file": "barbell-pendlay-row.png",
+    "videoId": "301712",
+    "sourceFile": "30171201-Barbell-Pendlay-Row_Back-STEP1.png",
+    "sourceSha256": "e78c2f95c1721b337d0ca8a6c5e5a59dba11b510c2789657fb434ae89b045c63",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 561,
+      "top": 265,
+      "width": 718,
+      "height": 764
+    },
+    "width": 362,
+    "height": 384,
+    "sha256": "490b754376c438b29acad47975092d91e833d1a882c11256264d83d1041c5b4d"
+  },
+  "inverted-row": {
+    "file": "inverted-row.png",
+    "videoId": "049912",
+    "sourceFile": "04991201-Inverted-Row_Back-FIX3-STEP1.png",
+    "sourceSha256": "9e6420fdb49c69caf8a3b6b8860131c873f698ee400edc3e56c095b65090ff3c",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 631,
+      "top": 28,
+      "width": 777,
+      "height": 1023
+    },
+    "width": 296,
+    "height": 384,
+    "sha256": "72d8f7b9978cdea16a3e4bd753d75d2dd6cb2db194db0bdb486fe233cdddc23e"
+  },
+  "cable-neutral-grip-lat-pulldown": {
+    "file": "cable-neutral-grip-lat-pulldown.png",
+    "videoId": "758312",
+    "sourceFile": "75831201-Cable-Neutral-Grip-Lat-Pulldown-(male)_Back-STEP1.png",
+    "sourceSha256": "0fa9b43c640e207e5cd07768c7baa29bfff85a3dd33f60cf530df7119551ab89",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 609,
+      "top": 27,
+      "width": 518,
+      "height": 1014
+    },
+    "width": 204,
+    "height": 384,
+    "sha256": "1ccd7f3f78168e8af65e83b4454a0e80b6a5ad4679a249418fc5db34803ecbb6"
+  },
+  "cable-close-grip-front-lat-pulldown": {
+    "file": "cable-close-grip-front-lat-pulldown.png",
+    "videoId": "104712",
+    "sourceFile": "10471201-Cable-Close-Grip-Front-Lat-Pulldown_Back-FIX-STEP1.png",
+    "sourceSha256": "ea008a86ee35196b75a5080ddc27afd3714f37c61ec32d34085d029e09fd6a7f",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 597,
+      "top": 13,
+      "width": 894,
+      "height": 1055
+    },
+    "width": 328,
+    "height": 384,
+    "sha256": "54bfaec0434ce535e9ca908156786307158045eb905cd707d633ab71beb20128"
+  },
+  "cable-underhand-pulldown": {
+    "file": "cable-underhand-pulldown.png",
+    "videoId": "024512",
+    "sourceFile": "02451201-Cable-Underhand-Pulldown_Back-STEP1.png",
+    "sourceSha256": "7abfe88bafa29b74c806b3dfdf9f253bd721487990927ed3e73ec912ac6d8c98",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 571,
+      "top": 13,
+      "width": 710,
+      "height": 1056
+    },
+    "width": 263,
+    "height": 384,
+    "sha256": "2911c6e87309b6ca4382df6099f86492acb337fec7e6073be645423f5c97a388"
+  },
+  "cable-straight-arm-pulldown": {
+    "file": "cable-straight-arm-pulldown.png",
+    "videoId": "023812",
+    "sourceFile": "02381201-Cable-Straight-Arm-Pulldown_Back-FIX-STEP1.png",
+    "sourceSha256": "e4e53e487581cb977eaaa9cb9a50ce2f2882daf659929b5fc2b468f08af14275",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 381,
+      "top": 37,
+      "width": 816,
+      "height": 1012
+    },
+    "width": 313,
+    "height": 384,
+    "sha256": "db8467783272f1ca017b957f77a2a0d974b99ddf6b8adeb6fc6d66cb1020a0cb"
+  },
+  "cable-kneeling-pullover": {
+    "file": "cable-kneeling-pullover.png",
+    "videoId": "1176812",
+    "sourceFile": "117681201-Cable-Kneeling-Pullover_Back-STEP1.png",
+    "sourceSha256": "849ff538289747a251ef7eabbb341fda6e6a6e28515a1bf43faa8d13b1cc4a6f",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 525,
+      "top": 23,
+      "width": 768,
+      "height": 1030
+    },
+    "width": 290,
+    "height": 384,
+    "sha256": "016bdb3c2dbd0417ad1f2241e8842754e4fa71dd0b3eaf93b2e05f44377f670c"
+  },
+  "assisted-pull-up": {
+    "file": "assisted-pull-up.png",
+    "videoId": "001712",
+    "sourceFile": "00171201-Assisted-Pull-up_Back-STEP1.png",
+    "sourceSha256": "e559f1763854e3ea28f86e0fee8b24856e9f391c47a865dec424f012273e8402",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 734,
+      "top": 17,
+      "width": 570,
+      "height": 1044
+    },
+    "width": 217,
+    "height": 384,
+    "sha256": "3f6610379ab832082e0eacfd6fb60d90b1cc7f29126cb4924dd60e22cd59cb0b"
+  },
+  "assisted-dip-machine": {
+    "file": "assisted-dip-machine.png",
+    "videoId": "1060512",
+    "sourceFile": "106051201-Lever-Graviton-Assisted-Dip-(male)_Upper-Arms-STEP1.png",
+    "sourceSha256": "960a20e7d24f6653f9ae8125106e01b8b75661ac5c1881d58062242faaf4072a",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 657,
+      "top": 15,
+      "width": 571,
+      "height": 1046
+    },
+    "width": 217,
+    "height": 384,
+    "sha256": "e2df8f0bd87d71d41e565411b28a0ecaeb7db323def3f9c333457ea9872c325c"
+  },
+  "dumbbell-rear-fly": {
+    "file": "dumbbell-rear-fly.png",
+    "videoId": "037812",
+    "sourceFile": "03781201-Dumbbell-Rear-Fly_Shoulders-STEP1.png",
+    "sourceSha256": "13e3063137680b8157d96ed1edabba1df4253709ec45113c24fe1fb0e155d7eb",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 309,
+      "top": 181,
+      "width": 971,
+      "height": 874
+    },
+    "width": 384,
+    "height": 347,
+    "sha256": "01c3e7339a442d4e9c0694a6a121459c4e6f61a61cc37daa6a8012cd3242d03b"
+  },
+  "barbell-shrug": {
+    "file": "barbell-shrug.png",
+    "videoId": "009512",
+    "sourceFile": "00951201-Barbell-Shrug_Back-STEP1.png",
+    "sourceSha256": "26028472882c68ae275e7d9e97ead08f637c58a1565a2999bab2fe56c961c6db",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 525,
+      "top": 92,
+      "width": 779,
+      "height": 957
+    },
+    "width": 316,
+    "height": 384,
+    "sha256": "3abb974890a8478f33929c33318a3f9ac8f9edb6d549e29edfdac40164fd7c60"
+  },
+  "dumbbell-shrug": {
+    "file": "dumbbell-shrug.png",
+    "videoId": "040612",
+    "sourceFile": "04061201-Dumbbell-Shrug_Back-FIX-STEP1.png",
+    "sourceSha256": "63f5089361e4ba93421a1f39ed413fd8c436e6c91425e371fadab0d44edf1c39",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 778,
+      "top": 88,
+      "width": 366,
+      "height": 941
+    },
+    "width": 159,
+    "height": 384,
+    "sha256": "157a3403a927e1bbc9fd3c3f7a6d69813b602d7a49fd99fbdbcd2e5d3d6811db"
+  },
+  "lever-machine-shrug": {
+    "file": "lever-machine-shrug.png",
+    "videoId": "060412",
+    "sourceFile": "06041201-Lever-Shrug-(plate-loaded)_Back-STEP1.png",
+    "sourceSha256": "45be711d99f3dafbe9c84dcc0f066768d2ce7e618f2782795866533e1d16a847",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 547,
+      "top": 96,
+      "width": 702,
+      "height": 959
+    },
+    "width": 285,
+    "height": 384,
+    "sha256": "44b5cf5f0bec764da51093deb1f732acf0013d7221f9dc88566b0ea84696003f"
+  },
+  "dumbbell-arnold-press": {
+    "file": "dumbbell-arnold-press.png",
+    "videoId": "213712",
+    "sourceFile": "21371201-Dumbbell-Arnold-Press_Shoulders-STEP1.png",
+    "sourceSha256": "e6d2f80e68e4ee5e4ebb7052a13b6afb2aeedc5db37fe58c7889884f35994124",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 746,
+      "top": 256,
+      "width": 473,
+      "height": 810
+    },
+    "width": 231,
+    "height": 384,
+    "sha256": "2fc2a681c85be3b0b25e01b03781c994bbe524d1dd52f6896b4614aa4528acd3"
+  },
+  "barbell-seated-overhead-press": {
+    "file": "barbell-seated-overhead-press.png",
+    "videoId": "009112",
+    "sourceFile": "00911201-Barbell-Seated-Overhead-Press_Shoulders-STEP1.png",
+    "sourceSha256": "d9e476aec764085392d19243971889f1851a629c82ccb0f275bb9a998fdd205d",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 443,
+      "top": 247,
+      "width": 858,
+      "height": 808
+    },
+    "width": 384,
+    "height": 363,
+    "sha256": "bf3d8ed9dd45e4078eebffd4cfdd951b94f496b0d090cb50b76cd9528f249d68"
+  },
+  "dumbbell-one-arm-shoulder-press": {
+    "file": "dumbbell-one-arm-shoulder-press.png",
+    "videoId": "036012",
+    "sourceFile": "03601201-Dumbbell-One-Arm-Shoulder-Press-(VERSION-2)_Should-STEP1.png",
+    "sourceSha256": "0cdfebca777ccfabc496cc831c225813ff200a07dd6495f5f33c32b7169790b4",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 742,
+      "top": 225,
+      "width": 389,
+      "height": 828
+    },
+    "width": 189,
+    "height": 384,
+    "sha256": "9b6556e44d5214143ff57b1e39633372fe736f79ea4fa63b7d6593baa773cecf"
+  },
+  "landmine-press": {
+    "file": "landmine-press.png",
+    "videoId": "507412",
+    "sourceFile": "50741201-Landmine-Press_Shoulders-STEP1.png",
+    "sourceSha256": "68f3a5d5a00e46ffc918eddd76c8a021b3ec3c630dd7cead6f0339252392453e",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 660,
+      "top": 129,
+      "width": 1233,
+      "height": 946
+    },
+    "width": 384,
+    "height": 298,
+    "sha256": "2d5683e5c8e3c995c96e73f4eaff500d4b16ddb04bc3921715df398d0913e27d"
+  },
+  "lever-lateral-raise": {
+    "file": "lever-lateral-raise.png",
+    "videoId": "058412",
+    "sourceFile": "05841201-Lever-Lateral-Raise_shoulder-STEP1.png",
+    "sourceSha256": "3b03397fd00e418c7acc8af4f71088a024d99e7406702fecdb09fbe9c926b442",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 633,
+      "top": 159,
+      "width": 596,
+      "height": 889
+    },
+    "width": 263,
+    "height": 384,
+    "sha256": "83dae48d5d4445683479c69b691dd72f3aab8010b29b600ae0b78215887d76ad"
+  },
+  "cable-seated-rear-delt-fly-with-chest-support": {
+    "file": "cable-seated-rear-delt-fly-with-chest-support.png",
+    "videoId": "394312",
+    "sourceFile": "39431201-Cable-Seated-Rear-Delt-Fly-with-Chest-Support_Shou-STEP1.png",
+    "sourceSha256": "73520578e242f1a2f1f902d418589b00e7e8c9b8f5d2f47d236122ebeb6af778",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 369,
+      "top": 17,
+      "width": 982,
+      "height": 1042
+    },
+    "width": 363,
+    "height": 384,
+    "sha256": "16537a1d9446f2ddb11cb103bca45602896887ea287611cac44d0923cf251616"
+  },
+  "barbell-upright-row": {
+    "file": "barbell-upright-row.png",
+    "videoId": "012012",
+    "sourceFile": "01201201-Barbell-Upright-Row_shoulder-STEP1.png",
+    "sourceSha256": "a1ec70703dd7ce3e270b7347e66519d94f3b0b62686d7be2752265b25805f77e",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 769,
+      "top": 37,
+      "width": 502,
+      "height": 1010
+    },
+    "width": 199,
+    "height": 384,
+    "sha256": "f9e44976e95d153b400478e298f4ef36e1827355bd42ebc6e7730e717fd1a6be"
+  },
+  "barbell-curl": {
+    "file": "barbell-curl.png",
+    "videoId": "003112",
+    "sourceFile": "00311201-Barbell-Curl_Upper-Arms-FIX2-STEP1.png",
+    "sourceSha256": "027e43f6fbc3302d77294cd2e146f3eaac9c5a3e9e1de662a8ab433940040344",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 527,
+      "top": 79,
+      "width": 836,
+      "height": 972
+    },
+    "width": 333,
+    "height": 384,
+    "sha256": "ff83efc3d2319d584ebb238c3cd646608982f9656e171fc83df53295426017e8"
+  },
+  "dumbbell-alternate-biceps-curl": {
+    "file": "dumbbell-alternate-biceps-curl.png",
+    "videoId": "028512",
+    "sourceFile": "02851201-Dumbbell-Alternate-Biceps-Curl_Upper-Arms-FIX-STEP1.png",
+    "sourceSha256": "b0585aa328d12335e39b26cf63abf81c7c584518863c4f58c56b68e750946c9d",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 763,
+      "top": 107,
+      "width": 387,
+      "height": 940
+    },
+    "width": 168,
+    "height": 384,
+    "sha256": "19d10df57b231799c5d6488541838e2d9ba3a9d8a771fc2887a2e92075505ecd"
+  },
+  "dumbbell-concentration-curl": {
+    "file": "dumbbell-concentration-curl.png",
+    "videoId": "029712",
+    "sourceFile": "02971201-Dumbbell-Concentration-Curl_Upper-Arms-FIX-STEP1.png",
+    "sourceSha256": "d2886fa98516cff0b065d540c4b97b14f54ebd2eb9005aa3a9164be8244ebef5",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 543,
+      "top": 161,
+      "width": 860,
+      "height": 897
+    },
+    "width": 369,
+    "height": 384,
+    "sha256": "bf26e85d2b762436eb8ddab320afa789e1429670416cafaad3e7f73db5272920"
+  },
+  "ez-barbell-spider-curl": {
+    "file": "ez-barbell-spider-curl.png",
+    "videoId": "162812",
+    "sourceFile": "16281201-EZ-Barbell-Spider-Curl_Upper-Arms-FIX-STEP1.png",
+    "sourceSha256": "89ea61ce478ea05cbbbcf94c82f036dfe721dc2d0d0521ee2dbc54a9718cce19",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 397,
+      "top": 89,
+      "width": 884,
+      "height": 972
+    },
+    "width": 351,
+    "height": 384,
+    "sha256": "5a4a8397aaa4d6fa33daffbafa54ef06ebb0c21bfe2c9990c78ba321377a5e5e"
+  },
+  "cable-rope-hammer-curl": {
+    "file": "cable-rope-hammer-curl.png",
+    "videoId": "016512",
+    "sourceFile": "01651201-Cable-Hammer-Curl-(with-rope)-(male)_Forearms-STEP1.png",
+    "sourceSha256": "bcb1881385d21e007cb687890512004e91c98504f30b43362079ec6bcb121064",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 819,
+      "top": 27,
+      "width": 494,
+      "height": 1021
+    },
+    "width": 194,
+    "height": 384,
+    "sha256": "375ca8737a1f138c98e80aa4b226540592b6c3867804c87df0a52f0e2e4a9733"
+  },
+  "cable-incline-biceps-curl": {
+    "file": "cable-incline-biceps-curl.png",
+    "videoId": "570312",
+    "sourceFile": "57031201-Cable-Incline-Biceps-Curl_Upper-Arms-STEP1.png",
+    "sourceSha256": "2b123cb6a97117a2a7f37394a13245e960a99855adc4fa62a41a191f264f6210",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 543,
+      "top": 25,
+      "width": 920,
+      "height": 1036
+    },
+    "width": 343,
+    "height": 384,
+    "sha256": "352760bcb5f7f3c5416a0141a13d20fd653df36f622291a6551b8e2a0081ea10"
+  },
+  "lever-preacher-curl": {
+    "file": "lever-preacher-curl.png",
+    "videoId": "059212",
+    "sourceFile": "05921201-Lever-Preacher-Curl_Upper-Arms-FIX-STEP1.png",
+    "sourceSha256": "4ce6d44f4e0d4a56b30da95566ab9356396c812769d4126e038c2f8386e07457",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 661,
+      "top": 91,
+      "width": 615,
+      "height": 970
+    },
+    "width": 249,
+    "height": 384,
+    "sha256": "dc29c95b76c077dccd5ee31a77a9768774c8c096cfc138aca23a1fe08e81dac4"
+  },
+  "ez-bar-lying-triceps-extension": {
+    "file": "ez-bar-lying-triceps-extension.png",
+    "videoId": "587312",
+    "sourceFile": "58731201-EZ-Barbell-Lying-Triceps-Extension-(male)_Upper-Ar-STEP1.png",
+    "sourceSha256": "6d436b077c4ab9d9a0c7fbf0c76a72259fd4d413522fd5be92c897b65fb32481",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 337,
+      "top": 291,
+      "width": 1124,
+      "height": 752
+    },
+    "width": 384,
+    "height": 262,
+    "sha256": "6a46c70303cc331bbc2184134a4b3b5aa67b585ab25a4099d39d9472af1deb9e"
+  },
+  "dumbbell-standing-triceps-extension": {
+    "file": "dumbbell-standing-triceps-extension.png",
+    "videoId": "043012",
+    "sourceFile": "04301201-Dumbbell-Standing-Triceps-Extension_Upper-Arms-FIX-STEP1.png",
+    "sourceSha256": "91eb439caeeda6aa47a3bbcc7960c9dd079f283144f4364a07e1caa275b2ad9b",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 837,
+      "top": 158,
+      "width": 235,
+      "height": 902
+    },
+    "width": 112,
+    "height": 384,
+    "sha256": "e0eb04d1b807c546bb444bd38a7310c020e7837c3fb505ff1f8cf335d0b825d0"
+  },
+  "cable-one-arm-triceps-pushdown": {
+    "file": "cable-one-arm-triceps-pushdown.png",
+    "videoId": "172312",
+    "sourceFile": "17231201-Cable-One-Arm-Tricep-Pushdown_Upper-Arms-STEP1.png",
+    "sourceSha256": "1ac843e05fed4aaae469c03db0a0b73baa9de72dedda4218e2386f2c93ee1d57",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 733,
+      "top": 25,
+      "width": 682,
+      "height": 995
+    },
+    "width": 268,
+    "height": 384,
+    "sha256": "5a72dfb5c2df040b9aff358d8f1ce9cc46dbdc286823e73d9e89c9ceae16466d"
+  },
+  "cable-reverse-grip-pushdown": {
+    "file": "cable-reverse-grip-pushdown.png",
+    "videoId": "020712",
+    "sourceFile": "02071201-Cable-Reverse-grip-Pushdown_Upper-Arms-STEP1.png",
+    "sourceSha256": "efe0a302baa3f975236e3c88067884bbf927e8bb8d9a45eaf314c77c54042c60",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 589,
+      "top": 41,
+      "width": 742,
+      "height": 1008
+    },
+    "width": 287,
+    "height": 384,
+    "sha256": "7f357b4acd4d128a6d4a9cd053243144f9345c0e14a9a7ea0471006343032d78"
+  },
+  "dumbbell-kickback": {
+    "file": "dumbbell-kickback.png",
+    "videoId": "033312",
+    "sourceFile": "03331201-Dumbbell-Kickback_Upper-Arms-STEP1.png",
+    "sourceSha256": "79a8fe4eecac72aa5466d44bb208dc2d3d816ca81fee0e33052eb7d7543bb437",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 523,
+      "top": 243,
+      "width": 935,
+      "height": 818
+    },
+    "width": 384,
+    "height": 338,
+    "sha256": "83981b40e51599202d48384d6ac414780f258c1192fbe1d4d1e5c0fdd4acaefc"
+  },
+  "hanging-leg-raise": {
+    "file": "hanging-leg-raise.png",
+    "videoId": "047212",
+    "sourceFile": "04721201-Hanging-Leg-Raise_Hips-STEP1.png",
+    "sourceSha256": "124f5bac3e1e6fe1f48d04f5264b495a56fb9f3005ec9fb283f60832b77f63b1",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 673,
+      "top": 19,
+      "width": 718,
+      "height": 1040
+    },
+    "width": 270,
+    "height": 384,
+    "sha256": "ed3adbd368887f723d4935335b67a2fb95cde85091f66e52d61c89d245f7217b"
+  },
+  "reverse-crunch": {
+    "file": "reverse-crunch.png",
+    "videoId": "087212",
+    "sourceFile": "08721201-Reverse-Crunch-m_waist-STEP1.png",
+    "sourceSha256": "f507f6c31a662fca5849efe58c4eba9a7af1e7c258cb4d2e2281e3a5671468d7",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 353,
+      "top": 404,
+      "width": 1180,
+      "height": 624
+    },
+    "width": 384,
+    "height": 211,
+    "sha256": "3e8194b03504aaa32ee4eb6cb2992d229966cc7912e11a00ba88be444440c415"
+  },
+  "bicycle-crunch": {
+    "file": "bicycle-crunch.png",
+    "videoId": "621112",
+    "sourceFile": "62111201-Bicycle-Crunch-(male)_Waist-STEP1.png",
+    "sourceSha256": "15f3e6ab68e9eccd0164f77bba0b93c793a9402c0931e2ba793500c6be63e5c3",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 340,
+      "top": 361,
+      "width": 1360,
+      "height": 572
+    },
+    "width": 384,
+    "height": 171,
+    "sha256": "843222d0f78001a3f614f5b32882c6dbd2a51fccb2a0ca5ddb41d21416b8e900"
+  },
+  "cable-woodchopper": {
+    "file": "cable-woodchopper.png",
+    "videoId": "802312",
+    "sourceFile": "80231201-Cable-Standing-Wood-Chopper-(male)_Waist-STEP1.png",
+    "sourceSha256": "1db1691eb7a64d02aa30ae6349c200bdcac03dc71d16b0a56d4ec0e86559ebf4",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 237,
+      "top": 7,
+      "width": 889,
+      "height": 1020
+    },
+    "width": 337,
+    "height": 384,
+    "sha256": "b81556eb2f66de09ea0286542741e693857b783f25ff3064e489452c720457d3"
+  },
+  "russian-twist": {
+    "file": "russian-twist.png",
+    "videoId": "068712",
+    "sourceFile": "06871201-Russian-Twist_waist-STEP1.png",
+    "sourceSha256": "d2af28558ecbd9b39fc648b36855566684be42a2e2ce9b684ca56fef4afeafa4",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 396,
+      "top": 178,
+      "width": 1177,
+      "height": 825
+    },
+    "width": 384,
+    "height": 274,
+    "sha256": "9755cccd2d93862115e18e6d5b548c0c29356af3bc71daae290e50129dc6daa9"
+  },
+  "bird-dog": {
+    "file": "bird-dog.png",
+    "videoId": "124112",
+    "sourceFile": "12411201-Bird-Dog-male_Back-STEP1.png",
+    "sourceSha256": "495ca7af64be79af0b0a701b4b5eb61b1da357b609c71f050ade0b724accd759",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 447,
+      "top": 403,
+      "width": 938,
+      "height": 545
+    },
+    "width": 384,
+    "height": 230,
+    "sha256": "4163373d4b2b85a66e191183181df5901082a5dc2f68e23a90adda079601b43d"
+  },
+  "mountain-climber": {
+    "file": "mountain-climber.png",
+    "videoId": "063012",
+    "sourceFile": "06301201-Mountain-Climber_Cardio-FIX-STEP1.png",
+    "sourceSha256": "a15955e7606514e9d016fb67cf86175a0a18ada1f518171b1c9af28958eaf1af",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 242,
+      "top": 313,
+      "width": 1397,
+      "height": 644
+    },
+    "width": 384,
+    "height": 186,
+    "sha256": "c677513b8dc42ad73f9439a0312e06acd35bf9ffcb70ebdfa21deae09bc64406"
+  },
+  "burpee": {
+    "file": "burpee.png",
+    "videoId": "116012",
+    "sourceFile": "11601201-Burpee_Cardio-FIX-STEP1.png",
+    "sourceSha256": "081e4a97c7b53018ef3b2412925bf795717712050ce42704bcdf27b711f06354",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 823,
+      "top": 325,
+      "width": 150,
+      "height": 686
+    },
+    "width": 96,
+    "height": 384,
+    "sha256": "cf84d1a2e9cb1ea0d06e4579189a505bda9c62b08f2dba095a78ac9382c3fd2d"
+  },
+  "jumping-jack": {
+    "file": "jumping-jack.png",
+    "videoId": "309412",
+    "sourceFile": "30941201-Jumping-Jack-(male)_Cardio-FIX-STEP1.png",
+    "sourceSha256": "2192526d6f842f1a0973e94bbf4648a04998ac99793479101a32bcdf23b833d4",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 817,
+      "top": 221,
+      "width": 286,
+      "height": 814
+    },
+    "width": 145,
+    "height": 384,
+    "sha256": "4a159e22b589c72ed614744a2efcca54883d2cf62253fc961f945b73eeb2523d"
+  },
+  "box-jump": {
+    "file": "box-jump.png",
+    "videoId": "496512",
+    "sourceFile": "49651201-Jump-Box-(male)_Plyometrics-FIX-STEP1.png",
+    "sourceSha256": "2eed83b5440e4c4bbe0baa8c5f3dd040b631468874db5d4e7fa147972a320f15",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 657,
+      "top": 267,
+      "width": 562,
+      "height": 758
+    },
+    "width": 289,
+    "height": 384,
+    "sha256": "d3d8782fa18e72abadd2a77fd1dfcb46bc2ea59249d7a02a92c31f496da59a7c"
+  },
+  "jump-squat": {
+    "file": "jump-squat.png",
+    "videoId": "051312",
+    "sourceFile": "05131201-Jump-Squat-II_Thighs-STEP1.png",
+    "sourceSha256": "472ba9bfcd58b6f4b040a58b54f23d842b477e58e06e191a262b50047f0d741c",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 845,
+      "top": 183,
+      "width": 294,
+      "height": 874
+    },
+    "width": 140,
+    "height": 384,
+    "sha256": "cbe386db383fc671e958c5e3aaa8a3d89e87ee77744bd6993c084a92449bdf1a"
+  },
+  "kettlebell-deadlift": {
+    "file": "kettlebell-deadlift.png",
+    "videoId": "332212",
+    "sourceFile": "33221201-Kettlebell-deadlift_Hips-STEP1.png",
+    "sourceSha256": "68b89ae988996535fb0603296e51d81ab82a44d707e5df67451785575131f14c",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 781,
+      "top": 361,
+      "width": 402,
+      "height": 691
+    },
+    "width": 230,
+    "height": 384,
+    "sha256": "375613402e7f14ca10f960edf88d564c6e84e531d773cf22e6f98d9e18eb71bf"
+  },
+  "kettlebell-one-arm-clean": {
+    "file": "kettlebell-one-arm-clean.png",
+    "videoId": "454312",
+    "sourceFile": "45431201-Kettlebell-One-Arm-Clean_Weightlifting-STEP1.png",
+    "sourceSha256": "47f365f322a419e9de2bf739d22b78be8e521af6a48a4cafd77734bd4fd668ca",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 804,
+      "top": 349,
+      "width": 345,
+      "height": 696
+    },
+    "width": 198,
+    "height": 384,
+    "sha256": "f2e27bdc19d1643437f7076c9dd21c747802df30d41d39ed627ac830c82c3e90"
+  },
+  "kettlebell-strict-press": {
+    "file": "kettlebell-strict-press.png",
+    "videoId": "357212",
+    "sourceFile": "35721201-Kettlebell-Strict-Press_Shoulders-STEP1.png",
+    "sourceSha256": "ad21ea83bedd217668647a6782ba3261acf9c48080e82de564c040084274bbc9",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 808,
+      "top": 231,
+      "width": 358,
+      "height": 834
+    },
+    "width": 174,
+    "height": 384,
+    "sha256": "054182fe8c69ce41b643fe0c76ce717bdc7d990d916bd7b4d1c58d1be5e64449"
+  },
+  "kettlebell-one-arm-snatch": {
+    "file": "kettlebell-one-arm-snatch.png",
+    "videoId": "054212",
+    "sourceFile": "05421201-Kettlebell-One-Arm-Snatch_Shoulders-STEP1.png",
+    "sourceSha256": "483cebbdf6fcea2be00dc6a59c6d3e0ae53ea8051f2dc51c960ebb1597a35195",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 763,
+      "top": 421,
+      "width": 330,
+      "height": 642
+    },
+    "width": 205,
+    "height": 384,
+    "sha256": "6d64f4276ad2263a4c2f08a82769917aeac76c954cc7adf848008d54e1dca5b4"
+  },
+  "dumbbell-suitcase-carry": {
+    "file": "dumbbell-suitcase-carry.png",
+    "videoId": "291012",
+    "sourceFile": "29101201-Dumbbell-Suitcase-Carry_Thighs-STEP1.png",
+    "sourceSha256": "97aa9f184c6bb80b764e5790a110c32aace9aab8b4124bfdfed15ffadd8a7c27",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 727,
+      "top": 103,
+      "width": 411,
+      "height": 940
+    },
+    "width": 177,
+    "height": 384,
+    "sha256": "710fa4643952a466d4ccbfa48ea1bed5f538a51ee08d6f73fb237dbe1446216e"
+  },
+  "barbell-standing-calf-raise": {
+    "file": "barbell-standing-calf-raise.png",
+    "videoId": "137212",
+    "sourceFile": "13721201-Barbell-Standing-Calf-Raise_Calves-STEP1.png",
+    "sourceSha256": "7a8b414f665f9fd426da2e46f06a19187534699592bd3c5630b43fbd48062d76",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 515,
+      "top": 115,
+      "width": 847,
+      "height": 940
+    },
+    "width": 348,
+    "height": 384,
+    "sha256": "86c8327ef79714ab8e004df77bb3eefeee093bcbb5d51ae685224e68cb93840e"
+  },
+  "bodyweight-standing-calf-raise": {
+    "file": "bodyweight-standing-calf-raise.png",
+    "videoId": "137312",
+    "sourceFile": "13731201-Bodyweight-Standing-Calf-Raise_Calves-STEP1.png",
+    "sourceSha256": "b712957d6ad3f15b335b497536f36cfb6c623d0462f5ea5450dd1858c069b864",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 859,
+      "top": 135,
+      "width": 224,
+      "height": 902
+    },
+    "width": 107,
+    "height": 384,
+    "sha256": "d205f9c2071f0ee7826ebcfa0d85830c9d09342523efb87d4b58407d4392da02"
+  },
+  "lever-machine-hip-thrust": {
+    "file": "lever-machine-hip-thrust.png",
+    "videoId": "1078912",
+    "sourceFile": "107891201-Lever-Hip-Thrust-(male)_Hips-STEP1.png",
+    "sourceSha256": "7fd34a99d15f23360322e18a63dbf94bdffbbf866e4e8331eb80365defb06d24",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 423,
+      "top": 33,
+      "width": 1069,
+      "height": 1025
+    },
+    "width": 384,
+    "height": 369,
+    "sha256": "5e0ef40500df313be571f6c5831d19fb40af0b58eb4508a80391e400583fbdd2"
+  },
+  "floor-crunch": {
+    "file": "floor-crunch.png",
+    "videoId": "027412",
+    "sourceFile": "02741201-Crunch-Floor-(male)_waist-STEP1.png",
+    "sourceSha256": "a51962aca1df5e1cda61ae2d626a83d621f643506a522ba80646b77445657241",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 353,
+      "top": 313,
+      "width": 1171,
+      "height": 684
+    },
+    "width": 384,
+    "height": 231,
+    "sha256": "d3b4484ec3813445fe88c653dad765280703ab9924c24e12ffe169caeb49633a"
+  },
+  "dumbbell-lying-hammer-press": {
+    "file": "dumbbell-lying-hammer-press.png",
+    "videoId": "034012",
+    "sourceFile": "03401201-Dumbbell-Lying-Hammer-Press_Chest-FIX2-STEP1.png",
+    "sourceSha256": "529ec5bfcc4963ade5252df10e05238a8ba9ca7337b9902af35383d9c67f154f",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 479,
+      "top": 416,
+      "width": 912,
+      "height": 653
+    },
+    "width": 384,
+    "height": 279,
+    "sha256": "0ceb3c776cfe6c323bcbda4b899616356acf5642aa0b888aa57d7486d2959ea0"
+  },
+  "dumbbell-squeeze-bench-press": {
+    "file": "dumbbell-squeeze-bench-press.png",
+    "videoId": "368112",
+    "sourceFile": "36811201-Dumbbell-Squeeze-Bench-Press_Chest-FIX-STEP1.png",
+    "sourceSha256": "aae44567cb05d1726e1603ab68f25fb891dbb481c0b0fda84f557568d2737cca",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 627,
+      "top": 319,
+      "width": 787,
+      "height": 726
+    },
+    "width": 384,
+    "height": 355,
+    "sha256": "1d549cd86b866cdf63a239de73417046f119a61ee4ff76ee6efb86e386c161ec"
+  },
+  "barbell-reverse-grip-bench-press": {
+    "file": "barbell-reverse-grip-bench-press.png",
+    "videoId": "509112",
+    "sourceFile": "50911201-Barbell-Reverse-Grip-Bench-Press_Chest-STEP1.png",
+    "sourceSha256": "6b1aaa629d3d34ac18d3e0279b8f9231c9e80571d413071e2ea3d519fd40d008",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 367,
+      "top": 39,
+      "width": 1022,
+      "height": 1026
+    },
+    "width": 383,
+    "height": 384,
+    "sha256": "b89fe484113cd5f401dea9bd8721a0bb37ecf0bef4b090665c15bfeb72085cfd"
+  },
+  "barbell-floor-chest-press": {
+    "file": "barbell-floor-chest-press.png",
+    "videoId": "372412",
+    "sourceFile": "37241201-Barbell-Floor-Chest-Press_Chest-STEP1.png",
+    "sourceSha256": "42d6d767efb5291bcac938413793ae4dee6d63ea93eb0a17b7d2fcc20708cf18",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 391,
+      "top": 223,
+      "width": 1305,
+      "height": 772
+    },
+    "width": 384,
+    "height": 234,
+    "sha256": "d41bf19ebd9f2d9e9ac8dc3e5b936cc4012f43dd7d9e77fa602a866d9f41e022"
+  },
+  "barbell-spoto-press": {
+    "file": "barbell-spoto-press.png",
+    "videoId": "1120712",
+    "sourceFile": "112071201-Barbell-Spoto-Press_Chest-STEP1.png",
+    "sourceSha256": "f3341f362bd138fcb744303acd1342c8fc62be805185ce3ec02a6cd6b9835012",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 457,
+      "top": 14,
+      "width": 1050,
+      "height": 1047
+    },
+    "width": 384,
+    "height": 383,
+    "sha256": "1165559a737cddd710f9d85cdf664dd34568be8e4da23e23f5cb80cbb28ed8fa"
+  },
+  "barbell-larsen-press": {
+    "file": "barbell-larsen-press.png",
+    "videoId": "627012",
+    "sourceFile": "62701201-Barbell-Larsen-Press-(male)_Chest-STEP1.png",
+    "sourceSha256": "ef48b2789fd122eb9c343407054c0b2dea201a8020473d3e7326905af4b63d9f",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 195,
+      "top": 92,
+      "width": 1312,
+      "height": 867
+    },
+    "width": 384,
+    "height": 259,
+    "sha256": "51abbbf9c909b17b0ce5b50ee0e86a166548cad8137f581cbde98edd91c5ccad"
+  },
+  "barbell-incline-close-grip-bench-press": {
+    "file": "barbell-incline-close-grip-bench-press.png",
+    "videoId": "171912",
+    "sourceFile": "17191201-Barbell-Incline-Close-Grip-Bench-Press_Upper-Arms-STEP1.png",
+    "sourceSha256": "072c8ee2155753b6e50952f1c16d574f17df4d01cd165c707a8091a2104de4b2",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 592,
+      "top": 74,
+      "width": 737,
+      "height": 986
+    },
+    "width": 291,
+    "height": 384,
+    "sha256": "7f52c0be9b0fab57693cbbaf50e83a6a434fac568ba341b2f70a760f66849476"
+  },
+  "dumbbell-incline-fly": {
+    "file": "dumbbell-incline-fly.png",
+    "videoId": "031912",
+    "sourceFile": "03191201-Dumbbell-Incline-Fly_Chest-FIX2-STEP1.png",
+    "sourceSha256": "bc8091ce890a1e25563238e585b1b2a3de549e9d32786214c3866085931a752f",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 537,
+      "top": 223,
+      "width": 832,
+      "height": 838
+    },
+    "width": 381,
+    "height": 384,
+    "sha256": "64dba12bca24050be8e8b8eb3469fecbb91676dcaca201de08066a5fa85ac922"
+  },
+  "dumbbell-decline-fly": {
+    "file": "dumbbell-decline-fly.png",
+    "videoId": "030212",
+    "sourceFile": "03021201-Dumbbell-Decline-Fly_Chest-FIX-STEP1.png",
+    "sourceSha256": "cc519aaff9ace99f4ad45d6680584d5a2838cb26726f65088c3d7fd492d1a0d8",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 443,
+      "top": 249,
+      "width": 1004,
+      "height": 814
+    },
+    "width": 384,
+    "height": 314,
+    "sha256": "2ea96e30903abc7f0802103517eb8517ca480997ac8cb759230d0f681a6b5e68"
+  },
+  "dumbbell-lying-one-arm-press": {
+    "file": "dumbbell-lying-one-arm-press.png",
+    "videoId": "034312",
+    "sourceFile": "03431201-Dumbbell-Lying-One-Arm-Press_Chest-STEP1.png",
+    "sourceSha256": "07d07f98c7218076b458305e48affffc1919eb061c578b28255975ce6aec6b17",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 489,
+      "top": 353,
+      "width": 832,
+      "height": 715
+    },
+    "width": 384,
+    "height": 332,
+    "sha256": "fa705894fd85cc31fde21f3ade7e561a88acfc826baa9e797d9bc23260356532"
+  },
+  "cable-standing-single-arm-chest-press": {
+    "file": "cable-standing-single-arm-chest-press.png",
+    "videoId": "981612",
+    "sourceFile": "98161201-Cable-Standing-Single-Arm-Chest-Press_Chest-STEP1.png",
+    "sourceSha256": "bf236948c6024c5fbcbfcf23cd5ea92524055601b8e54afb468c347784a3e992",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 401,
+      "top": 13,
+      "width": 734,
+      "height": 1012
+    },
+    "width": 283,
+    "height": 384,
+    "sha256": "1d88e082bf154f31976ddf9a5767ee194fbcafb69d1448d41712f0b27f6f2ae5"
+  },
+  "cable-standing-chest-press": {
+    "file": "cable-standing-chest-press.png",
+    "videoId": "335912",
+    "sourceFile": "33591201-Cable-Standing-Chest-Press_Chest-STEP1.png",
+    "sourceSha256": "34558e2192fbe13411fa820c0ff2c4a7895cef4dcb89370751a03011b54e6297",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 705,
+      "top": 15,
+      "width": 762,
+      "height": 1034
+    },
+    "width": 287,
+    "height": 384,
+    "sha256": "8054a7d42e3852328871f191c4e779208967e64e6946047c3ba2b5e6d1685f65"
+  },
+  "cable-middle-fly": {
+    "file": "cable-middle-fly.png",
+    "videoId": "018812",
+    "sourceFile": "01881201-Cable-Middle-Fly_Chest-FIX-STEP1.png",
+    "sourceSha256": "0f39684f833eb1bf280f2d9d61904cbc3469038af77c955296445776f96d95c8",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 313,
+      "top": 23,
+      "width": 1153,
+      "height": 1028
+    },
+    "width": 384,
+    "height": 344,
+    "sha256": "86d21519390ce030e32e8ca4cc4b997e54938fb90e3393c5d234d5cd215731af"
+  },
+  "cable-standing-single-arm-fly": {
+    "file": "cable-standing-single-arm-fly.png",
+    "videoId": "621912",
+    "sourceFile": "62191201-Cable-Standing-Single-Arm-Fly_Chest-STEP1.png",
+    "sourceSha256": "283cce5ac925f6125cc8aade55e1e8f79877f89166b40440347bcee0592b4007",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 359,
+      "top": 41,
+      "width": 766,
+      "height": 1020
+    },
+    "width": 292,
+    "height": 384,
+    "sha256": "b75d0614433c3248c3b50c129326330ec7ec465ac15602e16e29a0540328593b"
+  },
+  "svend-press": {
+    "file": "svend-press.png",
+    "videoId": "085612",
+    "sourceFile": "08561201-Weighted-Svend-Press_Chest-FIX-STEP1.png",
+    "sourceSha256": "77d3704e8236e169440b16013c11feafe0c015f94c38c445ff0d682cc561c9b6",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 805,
+      "top": 64,
+      "width": 320,
+      "height": 993
+    },
+    "width": 135,
+    "height": 384,
+    "sha256": "38b05c27d5312837b9a2896d1e3fcb5578d903cb07f534236f964c44180258b0"
+  },
+  "incline-push-up": {
+    "file": "incline-push-up.png",
+    "videoId": "049312",
+    "sourceFile": "04931201-Incline-Push-up_Chest-STEP1.png",
+    "sourceSha256": "6223621719ec67a664e9f40b163ff0c35ddf2327d14b5616307f0e23a5ff9958",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 475,
+      "top": 111,
+      "width": 900,
+      "height": 898
+    },
+    "width": 384,
+    "height": 383,
+    "sha256": "2c8c4f6d3d5bf1b4ae73420010415043513d938fdfd164b998b1e64fa14c6e2f"
+  },
+  "decline-push-up": {
+    "file": "decline-push-up.png",
+    "videoId": "027912",
+    "sourceFile": "02791201-Decline-Push-Up_Chest-FIX-STEP1.png",
+    "sourceSha256": "b225ee35bed9f8517159f5bbe5b72a7d8832329060a1c0e8e1713cf95d68e50d",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 77,
+      "top": 357,
+      "width": 1470,
+      "height": 587
+    },
+    "width": 384,
+    "height": 163,
+    "sha256": "b81a1f49c802167995eda9a1c7159c57a2cc13686900fbb347144dde91147623"
+  },
+  "diamond-push-up": {
+    "file": "diamond-push-up.png",
+    "videoId": "028312",
+    "sourceFile": "02831201-Diamond-Push-up_Upper-Arms-STEP1.png",
+    "sourceSha256": "01bd14e2bfb2e090017e353021e73ea0c8e683324f4a5b0c60f1ff24388f1732",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 481,
+      "top": 268,
+      "width": 938,
+      "height": 711
+    },
+    "width": 384,
+    "height": 295,
+    "sha256": "d6aee9a5d3a7720729d776308ee23fece1ddb93b0930b563e5984cd19f065f80"
+  },
+  "archer-push-up": {
+    "file": "archer-push-up.png",
+    "videoId": "329412",
+    "sourceFile": "32941201-Archer-Push-up_Chest-STEP1.png",
+    "sourceSha256": "791f78c8e113868cb2292e0fbc51e6c88b1056824ff53f8bcafae70f5f5a76da",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 529,
+      "top": 408,
+      "width": 870,
+      "height": 416
+    },
+    "width": 384,
+    "height": 192,
+    "sha256": "9dd85b5c5a3dc8cae289f57468a58473de972f56c70132d71bd6267c0ce2047b"
+  },
+  "weighted-push-up-with-vest": {
+    "file": "weighted-push-up-with-vest.png",
+    "videoId": "391012",
+    "sourceFile": "39101201-Weighted-Push-up-with-Vest_Chest-STEP1.png",
+    "sourceSha256": "4662d5396d18fa95d07c4477d9b6cf173667a8924b3a3608ecac3110df1c4a72",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 413,
+      "top": 229,
+      "width": 954,
+      "height": 810
+    },
+    "width": 384,
+    "height": 328,
+    "sha256": "a21bdc105e02f87917fee97766bb9494173debdd5ddc71496f8fd84c4cd671ac"
+  },
+  "lever-seated-wide-lat-pulldown": {
+    "file": "lever-seated-wide-lat-pulldown.png",
+    "videoId": "864612",
+    "sourceFile": "86461201-Lever-Seated-Wide-Lat-Pulldown-(male)_Back-STEP1.png",
+    "sourceSha256": "290ca9970756910668a6862632431615ef6b6027ba1290380f8feb18f89e8f16",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 665,
+      "top": 25,
+      "width": 526,
+      "height": 1002
+    },
+    "width": 209,
+    "height": 384,
+    "sha256": "0f8bf59000934e16fd551b5cca8d74ffabfb9ebf0dd6c9329b8f79ccfba95de2"
+  },
+  "cable-one-arm-lat-pulldown": {
+    "file": "cable-one-arm-lat-pulldown.png",
+    "videoId": "120412",
+    "sourceFile": "12041201-Cable-One-Arm-Lat-Pulldown_Back-FIX-STEP1.png",
+    "sourceSha256": "1ace89c04c7ee658a0a04105505dd135e9ee5e520731766e28617ccefab0f0dc",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 597,
+      "top": 13,
+      "width": 894,
+      "height": 1055
+    },
+    "width": 328,
+    "height": 384,
+    "sha256": "6bf3e0d5b4ab02097a34a04fbccefeae81cdea431666bcdb594c7a0f197e58d1"
+  },
+  "cable-kneeling-one-arm-lat-pulldown": {
+    "file": "cable-kneeling-one-arm-lat-pulldown.png",
+    "videoId": "494812",
+    "sourceFile": "49481201-Cable-Kneeling-One-Arm-Lat-Pulldown_Back-STEP1.png",
+    "sourceSha256": "c9c03b9788df0249c1e53dc305e868cbc62dc3f23c84ac771b4bbae478303303",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 520,
+      "top": 37,
+      "width": 789,
+      "height": 1008
+    },
+    "width": 304,
+    "height": 384,
+    "sha256": "379cc7a7d4f06e1c11d76b55d20175d598ad6bef8960f3c57bdc959f7d7ab0d0"
+  },
+  "cable-kneeling-lat-pulldown": {
+    "file": "cable-kneeling-lat-pulldown.png",
+    "videoId": "1125312",
+    "sourceFile": "112531201-Cable-Kneeling-Pulldown-(VERSION-3)_Back-STEP1.png",
+    "sourceSha256": "8707c0811993dc02b87be42f7010cb9db50b24d4a1ae0376395e5ed787036628",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 501,
+      "top": 11,
+      "width": 825,
+      "height": 1058
+    },
+    "width": 303,
+    "height": 384,
+    "sha256": "3efb3c6d1215a83ad8bc508474edefc59e4c2a9bd382076535c81ce5444faef3"
+  },
+  "cable-lateral-pulldown-with-v-bar": {
+    "file": "cable-lateral-pulldown-with-v-bar.png",
+    "videoId": "261612",
+    "sourceFile": "26161201-Cable-Lateral-Pulldown-with-V-bar_Back-STEP1.png",
+    "sourceSha256": "953adbc87d19eb6b6b153ef2a738c48b92839de7d29f1f5c608aa65cf83f4d00",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 673,
+      "top": 57,
+      "width": 610,
+      "height": 976
+    },
+    "width": 246,
+    "height": 384,
+    "sha256": "82345dfa130df53c1385e3d89b36c9d31e71981fad2dc62789598c71c8e49b79"
+  },
+  "lever-machine-pullover": {
+    "file": "lever-machine-pullover.png",
+    "videoId": "228512",
+    "sourceFile": "22851201-Lever-Pullover-(plate-loaded)_Back-STEP1.png",
+    "sourceSha256": "cbe607d93fa9acbf0f6dfa6fe4f27be5f2983dd384b947d69041048e511b70a5",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 486,
+      "top": 74,
+      "width": 911,
+      "height": 993
+    },
+    "width": 354,
+    "height": 384,
+    "sha256": "7012e79d15847e08fa15eda3907e45d5060eaeb0f7487ad9199093335af5897e"
+  },
+  "cable-rope-straight-arm-pulldown": {
+    "file": "cable-rope-straight-arm-pulldown.png",
+    "videoId": "023712",
+    "sourceFile": "02371201-Cable-Straight-Arm-Pulldown-(with-rope)_Back-STEP1.png",
+    "sourceSha256": "2d2787bfdaa9ea66651e9c32eee574ae304febcfa511940c1607d81e721b50d9",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 757,
+      "top": 21,
+      "width": 670,
+      "height": 1045
+    },
+    "width": 252,
+    "height": 384,
+    "sha256": "27dec112a5be3fe29a924db4fea828f803413f1494edd4b35ef7db16eb19d4d4"
+  },
+  "cable-single-arm-straight-arm-pulldown": {
+    "file": "cable-single-arm-straight-arm-pulldown.png",
+    "videoId": "584412",
+    "sourceFile": "58441201-Single-Arm-Side-Straight-Arm-Lat-Pulldown-(male)_B-STEP1.png",
+    "sourceSha256": "48d94410e0831f6fdb6bbd83961fb0800e32acbe9fa5246c1ed6b59fe7546fb0",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 589,
+      "top": 23,
+      "width": 1128,
+      "height": 1043
+    },
+    "width": 384,
+    "height": 356,
+    "sha256": "099752e1abc784e3c52f536fe81ecfa3d44eb94c97b40c455747c463b81bcf36"
+  },
+  "barbell-lying-seal-row-on-rack": {
+    "file": "barbell-lying-seal-row-on-rack.png",
+    "videoId": "879812",
+    "sourceFile": "87981201-Barbell-Lying-Seal-Row-on-Rack_Back-STEP1.png",
+    "sourceSha256": "ff07cc42d3fcc00ed1b082658a09afc3bcd7748e1e03bd12ba5673bf49bfe1e8",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 433,
+      "top": 259,
+      "width": 935,
+      "height": 799
+    },
+    "width": 384,
+    "height": 330,
+    "sha256": "a973624798123ebf1992d3b3ce8f83f1e559f622de344880d0484e7e8b441a08"
+  },
+  "landmine-one-arm-bent-over-row": {
+    "file": "landmine-one-arm-bent-over-row.png",
+    "videoId": "503412",
+    "sourceFile": "50341201-Landmine-One-Arm-Bent-Over-Row-(VERSION-2)_Back-STEP1.png",
+    "sourceSha256": "f9e86691cbff561a0f5a47fd415f6a92f67dec19f9b5ea2db0b01005cae8deef",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 643,
+      "top": 253,
+      "width": 1262,
+      "height": 731
+    },
+    "width": 384,
+    "height": 229,
+    "sha256": "f5cf7057203a5ed20858091f444d2a2638cc856072bb35a968a2f7f45cebbc62"
+  },
+  "landmine-v-bar-bent-over-row": {
+    "file": "landmine-v-bar-bent-over-row.png",
+    "videoId": "320012",
+    "sourceFile": "32001201-Lever-Bent-over-Row-with-V-bar-(plate-loaded)_Back-STEP1.png",
+    "sourceSha256": "ee4fd4eaf44c33347dfe423be64ebf345729a93839fb06a0d15015a7ec9d2c45",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 406,
+      "top": 117,
+      "width": 1489,
+      "height": 954
+    },
+    "width": 384,
+    "height": 252,
+    "sha256": "01529691fe50213697f26a06f9119920c2650f00d3bfebc028ed9fe360d4b127"
+  },
+  "lever-lying-t-bar-row": {
+    "file": "lever-lying-t-bar-row.png",
+    "videoId": "119412",
+    "sourceFile": "11941201-Lever-Lying-T-bar-Row_Back-STEP1.png",
+    "sourceSha256": "5a92ed2435cd9541599aa5b149dd10f3a002e2c72d40fbd8599895ed400ec7e9",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 471,
+      "top": 150,
+      "width": 970,
+      "height": 909
+    },
+    "width": 384,
+    "height": 361,
+    "sha256": "68ed936991797441cf9d2ea5a4020f09e68e014012a07a988678649421294908"
+  },
+  "cable-seated-wide-grip-row": {
+    "file": "cable-seated-wide-grip-row.png",
+    "videoId": "021812",
+    "sourceFile": "02181201-Cable-Seated-Wide-grip-Row_Back-FIX-STEP1.png",
+    "sourceSha256": "5b79bc63d63b354a53ad9aa6e5b9f6fd28e19c9a77c958201e7eb687057aee92",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 346,
+      "top": 29,
+      "width": 869,
+      "height": 1014
+    },
+    "width": 331,
+    "height": 384,
+    "sha256": "c7a4c59a556b4ba84a03ced82a2958efac0105cbcad55d2c3e52fb862768f2de"
+  },
+  "cable-seated-row-with-v-bar": {
+    "file": "cable-seated-row-with-v-bar.png",
+    "videoId": "266112",
+    "sourceFile": "26611201-Cable-Seated-Row-with-V-bar_Back-FIX-STEP1.png",
+    "sourceSha256": "c91030c14ec901bbf39579b75e6ed20e6d1e854a620ebafe4288541a20efd153",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 523,
+      "top": 21,
+      "width": 948,
+      "height": 1042
+    },
+    "width": 351,
+    "height": 384,
+    "sha256": "2364d374fc578348e096561e4af61d20f977a037b6552ab1e99ae9b6a5c89a89"
+  },
+  "cable-one-arm-twisting-seated-row": {
+    "file": "cable-one-arm-twisting-seated-row.png",
+    "videoId": "120512",
+    "sourceFile": "12051201-Cable-one-arm-twisting-seated-row_back-STEP1.png",
+    "sourceSha256": "d899699d8d6aca91e0bb90700f13a47e417913ebb58f264cdb9305051b904b9e",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 484,
+      "top": 29,
+      "width": 1046,
+      "height": 1002
+    },
+    "width": 384,
+    "height": 369,
+    "sha256": "fa86e62141726f5651ada0f76838d3b03624a0ff96bce430f03da06bb438cc2d"
+  },
+  "cable-high-row": {
+    "file": "cable-high-row.png",
+    "videoId": "650312",
+    "sourceFile": "65031201-Cable-High-Row_Back-STEP1.png",
+    "sourceSha256": "19e8081bf63f57381917d98e1b85f7ddc3267de26c4dd9e46416f2dd6a0cde57",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 399,
+      "top": 17,
+      "width": 870,
+      "height": 1053
+    },
+    "width": 320,
+    "height": 384,
+    "sha256": "787df24053e46e8ff1fb45d0e583abd23edf9ea70f7bc020399c14634dd94080"
+  },
+  "cable-low-seated-row": {
+    "file": "cable-low-seated-row.png",
+    "videoId": "018012",
+    "sourceFile": "01801201-Cable-Low-Seated-Row_Back-STEP1.png",
+    "sourceSha256": "fc7e8c62085fd22dfd80d8d36ab04590eda0acda1c0fd720c3d1bb0857746783",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 535,
+      "top": 61,
+      "width": 826,
+      "height": 1002
+    },
+    "width": 319,
+    "height": 384,
+    "sha256": "9166a08e7879984022689e10fcd08a480ef258d9731af35d66d422636b25f021"
+  },
+  "cable-rope-seated-row": {
+    "file": "cable-rope-seated-row.png",
+    "videoId": "132312",
+    "sourceFile": "13231201-Cable-Rope-Seated-Row_Back-STEP1.png",
+    "sourceSha256": "95477c3d964d5f3e1681e3704ed304d504873846a27a61bf697f07e3cd8b962f",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 445,
+      "top": 67,
+      "width": 958,
+      "height": 956
+    },
+    "width": 384,
+    "height": 383,
+    "sha256": "de74001c9b391de06214a2da4f4818968f33c519f3e63feb84df345af4f4433a"
+  },
+  "lever-high-row": {
+    "file": "lever-high-row.png",
+    "videoId": "1063812",
+    "sourceFile": "106381201-Lever-High-Row-(male)_Back-STEP1.png",
+    "sourceSha256": "00d358fa7543051eb140a42757d2f28e8728f2421f5db258cd92e9976e041ce2",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 616,
+      "top": 75,
+      "width": 731,
+      "height": 992
+    },
+    "width": 287,
+    "height": 384,
+    "sha256": "ea666b027e7f84634a9ccd885e7828e8aced19f0762d3ff58d91f4dcb0e2a827"
+  },
+  "lever-machine-low-row": {
+    "file": "lever-machine-low-row.png",
+    "videoId": "421412",
+    "sourceFile": "42141201-Lever-Low-Row-(plate-loaded)_Back-STEP1.png",
+    "sourceSha256": "1f3b88278554557577b4fc7f8779b365c43109a28303ffebbd211c180db79f48",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 655,
+      "top": 107,
+      "width": 650,
+      "height": 949
+    },
+    "width": 268,
+    "height": 384,
+    "sha256": "b9f7094335db6dfed949bcae7a1618b57fa6ad31d9226bac974cce75cf499765"
+  },
+  "lever-unilateral-row": {
+    "file": "lever-unilateral-row.png",
+    "videoId": "131312",
+    "sourceFile": "13131201-Lever-Unilateral-Row_Back-STEP1.png",
+    "sourceSha256": "58e17dbaafaf5c707cd20223988b3b0b6e6f46e2437f8c1c5f579c824b073978",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 571,
+      "top": 207,
+      "width": 636,
+      "height": 838
+    },
+    "width": 295,
+    "height": 384,
+    "sha256": "5e0cbc011ca17cdeba18ed5271d3cf60ea7fc42f1d5d6c6dd9a4e3332f3e85bf"
+  },
+  "dumbbell-renegade-row": {
+    "file": "dumbbell-renegade-row.png",
+    "videoId": "298012",
+    "sourceFile": "29801201-Dumbbell-Renegade-Row_Back-FIX-STEP1.png",
+    "sourceSha256": "8bf9e60bf56c0c37aa522cf85f62b9759e8364f93ec19c8eafa9f860a0ccd468",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 418,
+      "top": 263,
+      "width": 949,
+      "height": 786
+    },
+    "width": 384,
+    "height": 321,
+    "sha256": "c8fa7b9f3daa4b31a5704196e546c691d69a98a4d2f074ddd31b8f9e02137754"
+  },
+  "dumbbell-kroc-row": {
+    "file": "dumbbell-kroc-row.png",
+    "videoId": "1032912",
+    "sourceFile": "103291201-Dumbbell-Kroc-Row-(male)_Back-STEP1.png",
+    "sourceSha256": "40ead96bfab8b6959629763569df1511d7bf4507b1c198a5c11dec0d21afddb8",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 28,
+      "top": 243,
+      "width": 1464,
+      "height": 760
+    },
+    "width": 384,
+    "height": 207,
+    "sha256": "43ed5c59283c6eb3c95e4bfd823de1c6517dc825d8f1a608ca692151b156b701"
+  },
+  "dumbbell-gorilla-row": {
+    "file": "dumbbell-gorilla-row.png",
+    "videoId": "1124112",
+    "sourceFile": "112411201-Dumbbell-Gorilla-Row-(male)_Back-STEP1.png",
+    "sourceSha256": "6a817460799ae1cf9cc4b0b02b61a710bf1090c52cde4448ed7663dabbf4b577",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 673,
+      "top": 149,
+      "width": 558,
+      "height": 872
+    },
+    "width": 251,
+    "height": 384,
+    "sha256": "c554321aac6d0993fb623f5b71800430c57e0580b463c37927696a0d8cd70c1f"
+  },
+  "suspension-trainer-row": {
+    "file": "suspension-trainer-row.png",
+    "videoId": "622012",
+    "sourceFile": "62201201-Suspender-Row-(male)_Back-STEP1.png",
+    "sourceSha256": "26a676ec76bb9331cdb2d3062f7f4e2965c0e6f8f38c4d1fd72b4b9a6f4784b1",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 517,
+      "top": 0,
+      "width": 772,
+      "height": 1041
+    },
+    "width": 289,
+    "height": 384,
+    "sha256": "4fb0e0eaa0c0ff1630320f604f9e7916c58f6b90915ba6ceb316255cf082896d"
+  },
+  "ring-inverted-row": {
+    "file": "ring-inverted-row.png",
+    "videoId": "765512",
+    "sourceFile": "76551201-Ring-Inverted-Row-parallel-to-the-floor-(male)_Bac-STEP1.png",
+    "sourceSha256": "b4c8d521a6ce380461e7d2ce64188c3e8fd4ec62c77c78ba16d74ac133064cdc",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 305,
+      "top": 0,
+      "width": 1358,
+      "height": 975
+    },
+    "width": 384,
+    "height": 280,
+    "sha256": "ae0d943778b4bf043c8292a17c5767d49d6bf74c50bef5ac221e0af4c6f86350"
+  },
+  "scapular-pull-up": {
+    "file": "scapular-pull-up.png",
+    "videoId": "1101512",
+    "sourceFile": "110151201-Scapular-Pull-Up-(VERSION-2)_Back-STEP1.png",
+    "sourceSha256": "3b53cd159ed5b00ac819853fb29233a562128aca97c4900bcdbb6e0728103f5e",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 692,
+      "top": 25,
+      "width": 495,
+      "height": 1041
+    },
+    "width": 191,
+    "height": 384,
+    "sha256": "a107930425fe2f4c29ae504f5c46a1b6800f654463f3d2006124ec101e087ed2"
+  },
+  "parallel-grip-chin-up": {
+    "file": "parallel-grip-chin-up.png",
+    "videoId": "025312",
+    "sourceFile": "02531201-Chin-ups-(narrow-parallel-grip)_Back-STEP1.png",
+    "sourceSha256": "07ce9b32458ba68968d2c0155e2203b74f7cd6ecf1cf2f674c9f33ef41b3cce5",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 693,
+      "top": 47,
+      "width": 500,
+      "height": 1008
+    },
+    "width": 199,
+    "height": 384,
+    "sha256": "8505ccf14fbdc8cd88f7ed67a5597045cf59d8b06c76f2b9e94917981982f467"
+  },
+  "barbell-rack-pull": {
+    "file": "barbell-rack-pull.png",
+    "videoId": "007412",
+    "sourceFile": "00741201-Barbell-Rack-Pull_Hips-STEP1.png",
+    "sourceSha256": "a20388baec8d83102f4daea902383c387bef060f6309ba0991d9c61842e02bd2",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 631,
+      "top": 23,
+      "width": 598,
+      "height": 1033
+    },
+    "width": 229,
+    "height": 384,
+    "sha256": "cba4fe7b4911575646575b123e8da0b760e62ab85a2f9a4e6c7afb53f9054d98"
+  },
+  "dumbbell-seated-lateral-raise": {
+    "file": "dumbbell-seated-lateral-raise.png",
+    "videoId": "039512",
+    "sourceFile": "03951201-Dumbbell-Seated-Lateral-Raise_Shoulders-STEP1.png",
+    "sourceSha256": "4fdeca57e5a4a2364c3f2af1cfd75b983e14932b3f3b500a2c63e96b8aec209b",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 650,
+      "top": 76,
+      "width": 615,
+      "height": 973
+    },
+    "width": 249,
+    "height": 384,
+    "sha256": "c1081812e83b28a42bb3b22171d9848ab7f013b7ebce72cff8f1965319caefc0"
+  },
+  "cable-leaning-lateral-raise": {
+    "file": "cable-leaning-lateral-raise.png",
+    "videoId": "388012",
+    "sourceFile": "38801201-Cable-Leaning-Lateral-Raise_Shoulders-STEP1.png",
+    "sourceSha256": "3c34ce3e0bd5a5617470b5b3b6b228d33966e0be8243e4e4ce66c9f90b815cf1",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 643,
+      "top": 15,
+      "width": 619,
+      "height": 1044
+    },
+    "width": 234,
+    "height": 384,
+    "sha256": "9d7beafed1fc6cde70e8e1a053ea6dd81fa9d69fa0b38c6bd83dfcbe84cd4bc4"
+  },
+  "cable-behind-the-back-lateral-raise": {
+    "file": "cable-behind-the-back-lateral-raise.png",
+    "videoId": "1040912",
+    "sourceFile": "104091201-Cable-Behind-The-Back-Cuffed-Lateral-Raise-(male)-STEP1.png",
+    "sourceSha256": "3d839dbcf43d9f357dc64473f9f348c0152aaad7094585d5afcb92ae4f71c172",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 408,
+      "top": 53,
+      "width": 691,
+      "height": 989
+    },
+    "width": 273,
+    "height": 384,
+    "sha256": "2cf223a8d2d8cb0cb8822c5e5aaf507276572492a38e5d2869d2375c0b583a65"
+  },
+  "cable-one-arm-lateral-raise": {
+    "file": "cable-one-arm-lateral-raise.png",
+    "videoId": "019212",
+    "sourceFile": "01921201-Cable-One-Arm-Lateral-Raise_Shoulders-STEP1.png",
+    "sourceSha256": "de2035ce952cf02229fe0551a724dcd7d678b5f52e1b4b6d40b841d6ac977ac4",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 739,
+      "top": 31,
+      "width": 732,
+      "height": 1014
+    },
+    "width": 282,
+    "height": 384,
+    "sha256": "1fcf0b550d3bf20ad90b20ef9eb45b156ba2ff1cd6c4cacdfe4587e9922fe3c5"
+  },
+  "cable-y-raise": {
+    "file": "cable-y-raise.png",
+    "videoId": "334212",
+    "sourceFile": "33421201-Cable-Y-raise_Shoulders-STEP1.png",
+    "sourceSha256": "f729021fe0ce4926636748e30f4816027ab44058537e6d7cf3d1509fb1341d38",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 655,
+      "top": 33,
+      "width": 732,
+      "height": 1034
+    },
+    "width": 277,
+    "height": 384,
+    "sha256": "004440738ee87481d2ecf9c1dd98c24bfbac727ef563c340111d40fa7730741a"
+  },
+  "dumbbell-incline-y-raise": {
+    "file": "dumbbell-incline-y-raise.png",
+    "videoId": "354112",
+    "sourceFile": "35411201-Dumbbell-Incline-Y-Raise_Shoulders-STEP1.png",
+    "sourceSha256": "b23e75cf42b12859a0644765eaf2ab105e9f846141c862d96554154945df23ca",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 559,
+      "top": 219,
+      "width": 648,
+      "height": 836
+    },
+    "width": 301,
+    "height": 384,
+    "sha256": "2c64915f92ef297831401070b695a8f2b5e5a2f789ba7e5977ed378effb03286"
+  },
+  "dumbbell-front-raise": {
+    "file": "dumbbell-front-raise.png",
+    "videoId": "030912",
+    "sourceFile": "03091201-Dumbbell-Front-Raise-(version-2)_Shoulders-STEP1.png",
+    "sourceSha256": "028fca23a84e4c343734b8005aec8801da5641ef6f0e9a5838060d5236b43653",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 788,
+      "top": 107,
+      "width": 381,
+      "height": 949
+    },
+    "width": 164,
+    "height": 384,
+    "sha256": "5610f7106da24803b965fdf6fc40dfbba36f800b510bc984818e5987ea647073"
+  },
+  "cable-front-raise": {
+    "file": "cable-front-raise.png",
+    "videoId": "016212",
+    "sourceFile": "01621201-Cable-Front-Raise_Shoulders-FIX-STEP1.png",
+    "sourceSha256": "dcdc02869c949a0fb699e893315b926df1fe349a13ad96f2a51ad33631b2f1ae",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 756,
+      "top": 31,
+      "width": 465,
+      "height": 1030
+    },
+    "width": 182,
+    "height": 384,
+    "sha256": "b2b859f7c17ecab74863d3196c8ed732f2c704377d63e2ee35fe374eaec9c98f"
+  },
+  "weighted-front-raise": {
+    "file": "weighted-front-raise.png",
+    "videoId": "083412",
+    "sourceFile": "08341201-Weighted-Front-Raise_Shoulders-FIX-STEP1.png",
+    "sourceSha256": "7ea250e8769a2c643c35c81444382908345249d89ebde2684e0f3ccc1446a3d7",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 841,
+      "top": 92,
+      "width": 287,
+      "height": 949
+    },
+    "width": 127,
+    "height": 384,
+    "sha256": "1065e1c1c623b6c4e9cf9970415c24310b0c726df1908769c243852f5a0ea779"
+  },
+  "barbell-front-raise": {
+    "file": "barbell-front-raise.png",
+    "videoId": "004112",
+    "sourceFile": "00411201-Barbell-Front-Raise_Shoulders-STEP1.png",
+    "sourceSha256": "13f0d20643279d65c2323d2f236493c7f58647d5d5384956f8cff39d3fdbaef1",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 603,
+      "top": 68,
+      "width": 756,
+      "height": 985
+    },
+    "width": 298,
+    "height": 384,
+    "sha256": "b6bd5a26aed34ca846acf8ac79e1aea6147f567c074f35b24dc7bc4126c1279c"
+  },
+  "cable-standing-reverse-fly": {
+    "file": "cable-standing-reverse-fly.png",
+    "videoId": "1125412",
+    "sourceFile": "112541201-Cable-Standing-Reverse-Fly-(VERSION-3)_Shoulders-STEP1.png",
+    "sourceSha256": "6b61956f268d69c63f212bbbb55c33546e9a2e6483768bf6cd8eb963847dcb6d",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 623,
+      "top": 92,
+      "width": 836,
+      "height": 936
+    },
+    "width": 345,
+    "height": 384,
+    "sha256": "b0fcd2652e37b66321cae1c8f001aee2f5bdfbf2933246bc22c15bb8012326cd"
+  },
+  "head-supported-dumbbell-rear-lateral-raise": {
+    "file": "head-supported-dumbbell-rear-lateral-raise.png",
+    "videoId": "037912",
+    "sourceFile": "03791201-Dumbbell-Rear-Lateral-Raise-(support-head)_Shoulde-STEP1.png",
+    "sourceSha256": "34659e0668fbb392066cef27f4d5ecc5a79384319170e802c210a9aa63d9e255",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 515,
+      "top": 193,
+      "width": 1128,
+      "height": 865
+    },
+    "width": 384,
+    "height": 298,
+    "sha256": "69c292d94a6c4a4f61661616668d16a483286aa8dd72e032849dec7effb9684a"
+  },
+  "dumbbell-incline-rear-fly": {
+    "file": "dumbbell-incline-rear-fly.png",
+    "videoId": "032612",
+    "sourceFile": "03261201-Dumbbell-Incline-Rear-Lateral-Raise_Shoulders-FIX-STEP1.png",
+    "sourceSha256": "3cfd812d44510bbf296c04f8841ba84e1b19f2882e927b64e2482e9082b9a308",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 443,
+      "top": 152,
+      "width": 866,
+      "height": 856
+    },
+    "width": 384,
+    "height": 380,
+    "sha256": "d5c5dd8c24c38940a23e7a096cd14fa0ce765ff58c7bf22f36b08063c0f4183a"
+  },
+  "lever-seated-rear-delt-row": {
+    "file": "lever-seated-rear-delt-row.png",
+    "videoId": "1109712",
+    "sourceFile": "110971201-Lever-Seated-Delt-Row-(male)_Shoulders-STEP1.png",
+    "sourceSha256": "b51831f006e028f58b737ab007ded5851e86dff565897a39fffd650a2ac882bc",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 623,
+      "top": 125,
+      "width": 686,
+      "height": 908
+    },
+    "width": 294,
+    "height": 384,
+    "sha256": "cd8829790aa7ce0e41a74f3c6601d2a25ffef1e73b1d04e772ac9aa587f40ca8"
+  },
+  "barbell-wide-grip-upright-row": {
+    "file": "barbell-wide-grip-upright-row.png",
+    "videoId": "012312",
+    "sourceFile": "01231201-Barbell-Wide-Grip-Upright-Row_Shoulders-STEP1.png",
+    "sourceSha256": "b4fc69b256c8c325aa5df0e5ea48d5e8c38c28deaac5654b45c36dfa0dc6dbb3",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 491,
+      "top": 31,
+      "width": 780,
+      "height": 1026
+    },
+    "width": 296,
+    "height": 384,
+    "sha256": "f4921de447efed345df27e5b40c2b55cc80c5718bc0430ab1137c22ae56d636a"
+  },
+  "dumbbell-upright-row": {
+    "file": "dumbbell-upright-row.png",
+    "videoId": "043712",
+    "sourceFile": "04371201-Dumbbell-Upright-Row_Shoulders-FIX-STEP1.png",
+    "sourceSha256": "58517d818a355fc9ea17818fdc37d5d37fdeea29c6f3b7661a99099d9adc8841",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 825,
+      "top": 67,
+      "width": 362,
+      "height": 971
+    },
+    "width": 153,
+    "height": 384,
+    "sha256": "4d4a01f35db52223ccb2929318d6ed49fb5b315bdf6cd311cd4f6b81279b74f8"
+  },
+  "barbell-z-press": {
+    "file": "barbell-z-press.png",
+    "videoId": "486612",
+    "sourceFile": "48661201-Barbell-Z-Press_Shoulders-STEP1.png",
+    "sourceSha256": "78de76eb31b382bc401308a95c6e2fba4e1e00880aa7a62048631295f88c9672",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 532,
+      "top": 349,
+      "width": 873,
+      "height": 718
+    },
+    "width": 384,
+    "height": 319,
+    "sha256": "ea1d3d3ff8c2d22388dfc0f5ef5b1f0d346a3cb415cb3e1173af6c6b5b1483e9"
+  },
+  "landmine-single-arm-press": {
+    "file": "landmine-single-arm-press.png",
+    "videoId": "509412",
+    "sourceFile": "50941201-Landmine-Single-Arm-Press_Shoulders-STEP1.png",
+    "sourceSha256": "786e30b5e37429f157699e6c819fb40b015ebe64afce784125cf21f3bb640a73",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 661,
+      "top": 129,
+      "width": 1232,
+      "height": 946
+    },
+    "width": 384,
+    "height": 299,
+    "sha256": "d2bcefe97f93a1392df2d9c53663b5b49f81c5ad144ffc5f262e18460497437c"
+  },
+  "lever-viking-press": {
+    "file": "lever-viking-press.png",
+    "videoId": "885012",
+    "sourceFile": "88501201-Lever-Standing-Viking-Press-(male)_Shoulders-STEP1.png",
+    "sourceSha256": "f198124ee8760bfcc269d9be2f675ed66304b0338d76c4c6e3bfd7b41964ca25",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 627,
+      "top": 195,
+      "width": 968,
+      "height": 858
+    },
+    "width": 384,
+    "height": 342,
+    "sha256": "0a0831ee9d737b77a735ffcfa909b4a9d7950b3920aee2df8d54b160f1dd69c6"
+  },
+  "pike-push-up": {
+    "file": "pike-push-up.png",
+    "videoId": "292112",
+    "sourceFile": "29211201-Pike-Push-up_Chest-STEP1.png",
+    "sourceSha256": "1b5df3b8da185e38d34858e7596f1da52d31b9756a5eb59f38b6a5c5843e0372",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 523,
+      "top": 232,
+      "width": 900,
+      "height": 794
+    },
+    "width": 384,
+    "height": 341,
+    "sha256": "fa5328e30d793c3061b1a70b8b391140f76ff0e39fb15992f86e64977b7b342a"
+  },
+  "ez-barbell-preacher-curl": {
+    "file": "ez-barbell-preacher-curl.png",
+    "videoId": "640612",
+    "sourceFile": "64061201-EZ-Barbell-Preacher-Curl_Upper-Arms-STEP1.png",
+    "sourceSha256": "87e8e888103ab5f655c5da4b52186e9e9c4159603ccfa9ef4bfadec418339193",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 685,
+      "top": 82,
+      "width": 674,
+      "height": 975
+    },
+    "width": 270,
+    "height": 384,
+    "sha256": "b57ac43e8947be798dfc03d6d43abb77d6b061b8496f4a1e3ee509034791054f"
+  },
+  "dumbbell-preacher-curl": {
+    "file": "dumbbell-preacher-curl.png",
+    "videoId": "037212",
+    "sourceFile": "03721201-Dumbbell-Preacher-Curl_Upper-Arms-STEP1.png",
+    "sourceSha256": "bde0414a1e2ac0858b915c711a40489b773df1faf04385eedc625f1ed987f85d",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 655,
+      "top": 104,
+      "width": 568,
+      "height": 935
+    },
+    "width": 240,
+    "height": 384,
+    "sha256": "e3056346437833c31394928163d2ee863b7b6e12af9ae0374a7159c6c8ba6b5a"
+  },
+  "dumbbell-one-arm-hammer-preacher-curl": {
+    "file": "dumbbell-one-arm-hammer-preacher-curl.png",
+    "videoId": "166312",
+    "sourceFile": "16631201-Dumbbell-One-Arm-Hammer-Preacher-Curl_Upper-Arms-STEP1.png",
+    "sourceSha256": "6dcc478ec1cf33e6566350b189e3839dd122a8178e718b3adca85bcd2751a0cd",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 641,
+      "top": 44,
+      "width": 612,
+      "height": 1015
+    },
+    "width": 238,
+    "height": 384,
+    "sha256": "78ca61e33fdfbe565d90f0d702f2ac72b3a46f44f0ba2ac7094257ddb7ebb209"
+  },
+  "cable-preacher-curl": {
+    "file": "cable-preacher-curl.png",
+    "videoId": "019512",
+    "sourceFile": "01951201-Cable-Preacher-Curl_Upper-Arms-STEP1.png",
+    "sourceSha256": "574c6dfe20e6351baed1759613247f91538b81a66946a08e6ddc9d1a1fcfe254",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 601,
+      "top": 24,
+      "width": 680,
+      "height": 1033
+    },
+    "width": 258,
+    "height": 384,
+    "sha256": "146c446e9845401f6deb79b81307c2861efb32af81d04aa98f561345bfc3fa89"
+  },
+  "barbell-reverse-curl": {
+    "file": "barbell-reverse-curl.png",
+    "videoId": "008012",
+    "sourceFile": "00801201-Barbell-Reverse-Curl_Forearm-STEP1.png",
+    "sourceSha256": "94b715cf5a9a2e0c8499626b8f4189de2bb9dd3cfcde380eb9a4d8eda1245aee",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 573,
+      "top": 77,
+      "width": 844,
+      "height": 978
+    },
+    "width": 334,
+    "height": 384,
+    "sha256": "9c427da26fb496aa78c307d0f472ec9958286b61f6f8ee8e313626a2f032d68d"
+  },
+  "ez-barbell-reverse-grip-curl": {
+    "file": "ez-barbell-reverse-grip-curl.png",
+    "videoId": "045112",
+    "sourceFile": "04511201-EZ-Barbell-Reverse-Grip-Curl_Forearms-STEP1.png",
+    "sourceSha256": "af95a4a1b89f9f42d87e67c81c3a44aa9629716301b43dd31d2085b11cfe45f6",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 637,
+      "top": 63,
+      "width": 652,
+      "height": 991
+    },
+    "width": 258,
+    "height": 384,
+    "sha256": "e47191f0ca100538269204f21c38dee91d5296f39c5c4bed795ce6932062923c"
+  },
+  "dumbbell-biceps-curl-reverse": {
+    "file": "dumbbell-biceps-curl-reverse.png",
+    "videoId": "165412",
+    "sourceFile": "16541201-Dumbbell-Biceps-Curl-Reverse_Upper-Arms-STEP1.png",
+    "sourceSha256": "e17e75d7efb0a37b057ab0de6648775613bab2f6b8cb3d5eea43bd5be7bdd80f",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 795,
+      "top": 85,
+      "width": 364,
+      "height": 940
+    },
+    "width": 159,
+    "height": 384,
+    "sha256": "7260e4b00fafde21eae3fc8f7f8c4bc17f4c72afe9a846dbb835bf4bc91cd422"
+  },
+  "dumbbell-zottman-curl": {
+    "file": "dumbbell-zottman-curl.png",
+    "videoId": "043912",
+    "sourceFile": "04391201-Dumbbell-Zottman-Curl_Upper-Arms-FIX2-STEP1.png",
+    "sourceSha256": "f938152734ed2862a2a73b9e2ca21523e4b4727926465a6169b36994a6833bbe",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 804,
+      "top": 65,
+      "width": 417,
+      "height": 982
+    },
+    "width": 172,
+    "height": 384,
+    "sha256": "8d712ed5dbb45cb4cb89d7c70eeadfb6e6d6f5d9f1ecd0b668d6c516243d24f8"
+  },
+  "dumbbell-cross-body-hammer-curl": {
+    "file": "dumbbell-cross-body-hammer-curl.png",
+    "videoId": "029812",
+    "sourceFile": "02981201-Dumbbell-Cross-Body-Hammer-Curl_Forearms-STEP1.png",
+    "sourceSha256": "5b390d31007414e8108a51a789155606628984ed95b40610b12190843d47231f",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 747,
+      "top": 85,
+      "width": 424,
+      "height": 982
+    },
+    "width": 175,
+    "height": 384,
+    "sha256": "de55094651fe5172151d845e3a5c7b5aa39eb655a30d51a5026e2e9dc0061161"
+  },
+  "dumbbell-seated-curl": {
+    "file": "dumbbell-seated-curl.png",
+    "videoId": "039112",
+    "sourceFile": "03911201-Dumbbell-Seated-Curl_Upper-Arms-STEP1.png",
+    "sourceSha256": "6b245e12cfa041fb9605e962ec1ad4fb7ba3a4e0ff94b08352b4b80bdd3c098d",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 557,
+      "top": 131,
+      "width": 777,
+      "height": 908
+    },
+    "width": 331,
+    "height": 384,
+    "sha256": "c7f72c8ddb8e281bde55df4656c96603c0af899b01452d0cf472e56ba3759227"
+  },
+  "dumbbell-standing-biceps-curl": {
+    "file": "dumbbell-standing-biceps-curl.png",
+    "videoId": "029412",
+    "sourceFile": "02941201-Dumbbell-Biceps-Curl_Upper-Arms-STEP1.png",
+    "sourceSha256": "aeedc83afc2da1bfbe45eb9828a4e48fea48f4cce7a3370c4b0937fe172f7493",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 763,
+      "top": 86,
+      "width": 438,
+      "height": 952
+    },
+    "width": 185,
+    "height": 384,
+    "sha256": "416bf7e42a1d90ff4e5244ddcc959cb214b6dc711dca7ce9a734e59a886df2e7"
+  },
+  "barbell-drag-curl": {
+    "file": "barbell-drag-curl.png",
+    "videoId": "003812",
+    "sourceFile": "00381201-Barbell-Drag-Curl_Upper-Arms-FIX-STEP1.png",
+    "sourceSha256": "aec324f8e26bc7fac7e5e960d0361e3a6447df9422404cdd19aff8cd15d660fb",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 547,
+      "top": 72,
+      "width": 800,
+      "height": 975
+    },
+    "width": 318,
+    "height": 384,
+    "sha256": "7d07231a6b7d37719863871fb436f69e6d1e730118cf87957223c9400e8d3b30"
+  },
+  "cable-drag-curl": {
+    "file": "cable-drag-curl.png",
+    "videoId": "163212",
+    "sourceFile": "16321201-Cable-Drag-Curl_Upper-Arms-STEP1.png",
+    "sourceSha256": "1108ae2c4d62275ecd1de92a54957f131ca51459b24e10b68625193a827be0f7",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 725,
+      "top": 34,
+      "width": 520,
+      "height": 1029
+    },
+    "width": 202,
+    "height": 384,
+    "sha256": "b36c37916482c9353a2b63a46041d988c5ae02f319584d183dd8e66e268bb22f"
+  },
+  "cable-standing-inner-curl": {
+    "file": "cable-standing-inner-curl.png",
+    "videoId": "022912",
+    "sourceFile": "02291201-Cable-Standing-Inner-Curl_Upper-Arms-STEP1.png",
+    "sourceSha256": "c92496653430d25093fc451ca2f1007cee3c2b0aeccf9c364352c7edd03ebb7b",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 423,
+      "top": 28,
+      "width": 1142,
+      "height": 1039
+    },
+    "width": 384,
+    "height": 351,
+    "sha256": "098786230e40535f658c7607d05103def0d68568e4014f50832cbcc52b3b126d"
+  },
+  "cable-one-arm-curl": {
+    "file": "cable-one-arm-curl.png",
+    "videoId": "019012",
+    "sourceFile": "01901201-Cable-One-Arm-Curl_Upper-Arms-STEP1.png",
+    "sourceSha256": "ab3803415c8c7202fbe26176bdcb36cfdfdecf4acee9585fc770aa3fa92aa49c",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 809,
+      "top": 41,
+      "width": 544,
+      "height": 1016
+    },
+    "width": 213,
+    "height": 384,
+    "sha256": "68f647e6c1fa9a50595101fa2fae9443fb8790ab6d6756678c6fcc0c6384fdb2"
+  },
+  "cable-overhead-curl": {
+    "file": "cable-overhead-curl.png",
+    "videoId": "163612",
+    "sourceFile": "16361201-Cable-Overhead-Curl_Upper-Arms-STEP1.png",
+    "sourceSha256": "46f6d06a5f5c8db295c56aa9c48d726be81b93e9644d05f83521fae2d4146b89",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 422,
+      "top": 23,
+      "width": 1108,
+      "height": 1034
+    },
+    "width": 384,
+    "height": 359,
+    "sha256": "ea6cf40dbe0396262ff72cc75caf6e31965d8175228ebb1387fc651c17a4b8a5"
+  },
+  "lever-biceps-curl": {
+    "file": "lever-biceps-curl.png",
+    "videoId": "057512",
+    "sourceFile": "05751201-Lever-Bicep-Curl_Upper-Arms-STEP1.png",
+    "sourceSha256": "305bc42bf4a8913a5fee312de92a114667a18d411374fa2f06e28725231b097d",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 635,
+      "top": 83,
+      "width": 714,
+      "height": 972
+    },
+    "width": 286,
+    "height": 384,
+    "sha256": "e1bc49cfd20916b0ab678c218851508f85135e6ad4fad8ed8c860537171a9ecb"
+  },
+  "dumbbell-spider-curl": {
+    "file": "dumbbell-spider-curl.png",
+    "videoId": "993112",
+    "sourceFile": "99311201-Dumbbell-Spider-Curl-(male)_Upper-Arms-STEP1.png",
+    "sourceSha256": "bb8fc9090580a4b1807cf185f83d05d325ec42d626c3c2da1710e78b30492edf",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 391,
+      "top": 241,
+      "width": 926,
+      "height": 798
+    },
+    "width": 384,
+    "height": 333,
+    "sha256": "367f451c7feeedcc75e892419879b2fb8865bbc2d66ecbbc46683bda1783726b"
+  },
+  "dumbbell-hammer-preacher-curl": {
+    "file": "dumbbell-hammer-preacher-curl.png",
+    "videoId": "592112",
+    "sourceFile": "59211201-Dumbbell-Hammer-Preacher-Curl_Upper-Arms-STEP1.png",
+    "sourceSha256": "22c4a9d3c527e5c04bf14fea7c10cf8e55162f4d1dad843bb6d99c0145562669",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 631,
+      "top": 81,
+      "width": 625,
+      "height": 986
+    },
+    "width": 249,
+    "height": 384,
+    "sha256": "55b4c8f536be08605c68aee4a9bc3bd6137a230856599fcbeba43b05e4eb06aa"
+  },
+  "dumbbell-incline-hammer-curl": {
+    "file": "dumbbell-incline-hammer-curl.png",
+    "videoId": "032012",
+    "sourceFile": "03201201-Dumbbell-Incline-Hammer-Curl_Upper-Arms-STEP1.png",
+    "sourceSha256": "05041a0d7e825e9eee412e9295585f3197201bd6bd813bdd3a924165ead5eee3",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 587,
+      "top": 143,
+      "width": 728,
+      "height": 886
+    },
+    "width": 318,
+    "height": 384,
+    "sha256": "a5c1b06faa33016197c37c2f29b9756a6008093951278b2eb13073749aab165b"
+  },
+  "dumbbell-skull-crusher": {
+    "file": "dumbbell-skull-crusher.png",
+    "videoId": "1043212",
+    "sourceFile": "104321201-Dumbbell-Lying-Triceps-Extension-Skull-Crusher-(V-STEP1.png",
+    "sourceSha256": "45f16d9196e50831d7d8adaa18a94469c18170f47e8c90447ba78837c552940d",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 479,
+      "top": 299,
+      "width": 982,
+      "height": 744
+    },
+    "width": 384,
+    "height": 295,
+    "sha256": "499728ce7b5d165a0f5ad68d282c6106ba830f732b672b2ce52660b420e0fdec"
+  },
+  "ez-barbell-incline-triceps-extension": {
+    "file": "ez-barbell-incline-triceps-extension.png",
+    "videoId": "044912",
+    "sourceFile": "04491201-EZ-Barbell-Incline-Triceps-Extension_Upper-Arms-FI-STEP1.png",
+    "sourceSha256": "68e3a56969fab352b2451472793f3270356748f136bdd226ffdb5a459b4e8d32",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 457,
+      "top": 216,
+      "width": 889,
+      "height": 850
+    },
+    "width": 384,
+    "height": 368,
+    "sha256": "763a01a3beff4a0b474e945af4cb21a9a48c481597d6d5d754e3462c3671d09b"
+  },
+  "ez-barbell-decline-triceps-extension": {
+    "file": "ez-barbell-decline-triceps-extension.png",
+    "videoId": "218612",
+    "sourceFile": "21861201-EZ-Barbell-Decline-Triceps-Extension_Upper-Arms-STEP1.png",
+    "sourceSha256": "f344b68b850f98ee2af35758fcf67fcde08b20b4f702a2f2e9cc0d577b0afc04",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 529,
+      "top": 341,
+      "width": 1000,
+      "height": 710
+    },
+    "width": 384,
+    "height": 277,
+    "sha256": "50c61740ba260a95ac34bdf1f5ba80914907894bbdd3304d508d2d7cee8ba5fa"
+  },
+  "barbell-jm-bench-press": {
+    "file": "barbell-jm-bench-press.png",
+    "videoId": "005212",
+    "sourceFile": "00521201-Barbell-JM-Bench-Press_Upper-Arms-FIX-STEP1.png",
+    "sourceSha256": "a3a4ed0cb2f19597a93fe85c9a8c0e16073f563c82f95d1b0c4d8479aec245e1",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 265,
+      "top": 23,
+      "width": 1250,
+      "height": 1037
+    },
+    "width": 384,
+    "height": 321,
+    "sha256": "fb1a8e577f2b989614501c6c1c6af81372118e0d8ad568f9a2d7dfe34d7a6f53"
+  },
+  "dumbbell-tate-press": {
+    "file": "dumbbell-tate-press.png",
+    "videoId": "043612",
+    "sourceFile": "04361201-Dumbbell-Tate-Press_Triceps-STEP1.png",
+    "sourceSha256": "397d565ba2996ca0c23180d3e070b0b73d10c559cf6dacd208c870db39da0618",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 546,
+      "top": 257,
+      "width": 896,
+      "height": 794
+    },
+    "width": 384,
+    "height": 342,
+    "sha256": "e4e074a4fd005e0426287b65e7c5f27100962855b6bd33316a9b11e609d3505e"
+  },
+  "cable-standing-high-cross-triceps-extension": {
+    "file": "cable-standing-high-cross-triceps-extension.png",
+    "videoId": "371912",
+    "sourceFile": "37191201-Cable-Standing-High-Cross-Triceps-Extension_Upper--STEP1.png",
+    "sourceSha256": "bb51cd68141f2c644c3aacf05f40621ea5cd3af8ea75589473dc0e403bad8a7b",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 592,
+      "top": 23,
+      "width": 643,
+      "height": 1036
+    },
+    "width": 244,
+    "height": 384,
+    "sha256": "b2261adfc5fdfaa13b9166460d21f069bdbd92eb3925d0bfa2676ce6e461b61a"
+  },
+  "cable-single-arm-overhead-triceps-extension": {
+    "file": "cable-single-arm-overhead-triceps-extension.png",
+    "videoId": "1127912",
+    "sourceFile": "112791201-Cable-Standing-Single-Arm-Overhead-Triceps-Extens-STEP1.png",
+    "sourceSha256": "279a7aa46a5e8e2490e3954eba43622ba9736eafeefc7260a6f760c596da1af2",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 585,
+      "top": 201,
+      "width": 620,
+      "height": 858
+    },
+    "width": 282,
+    "height": 384,
+    "sha256": "471a7fbf2953a28fad7bf25d7762eb7a65de73e00524c733fccee3f25058b29d"
+  },
+  "cable-v-bar-triceps-pushdown": {
+    "file": "cable-v-bar-triceps-pushdown.png",
+    "videoId": "024112",
+    "sourceFile": "02411201-Cable-Triceps-Pushdown-(V-bar-attachment)_Upper-Ar-STEP1.png",
+    "sourceSha256": "5d4420acef9700a1f68efcac8b17f711e90805f32473ca15711a5a4914597c81",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 721,
+      "top": 65,
+      "width": 558,
+      "height": 996
+    },
+    "width": 222,
+    "height": 384,
+    "sha256": "4ca669ef6369cca2086fed61bd4970d150a872c2852c65031c268ff8cac04a22"
+  },
+  "cable-kickback": {
+    "file": "cable-kickback.png",
+    "videoId": "086012",
+    "sourceFile": "08601201-Cable-kickback_Upper-arms-STEP1.png",
+    "sourceSha256": "825c9396d8757c08e9b12c6f0b108c7f66ae6e217e194f6e198a54196f6c859a",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 553,
+      "top": 25,
+      "width": 794,
+      "height": 1020
+    },
+    "width": 302,
+    "height": 384,
+    "sha256": "9aaf42af07d619e299580137ca0b75b44f83272f1448521b3b6b53e7a3834ddc"
+  },
+  "lever-seated-dip": {
+    "file": "lever-seated-dip.png",
+    "videoId": "145112",
+    "sourceFile": "14511201-Lever-Seated-Dip_Upper-Arms-STEP1.png",
+    "sourceSha256": "ddd017502295c857f6db0b2509e141fb4ab74edf7bd9130b70ae4e1a0eeab4fa",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 613,
+      "top": 112,
+      "width": 831,
+      "height": 937
+    },
+    "width": 342,
+    "height": 384,
+    "sha256": "f62fb8c56dd3441f1d794c1cd08638a2579e3d4c639299735ccc08b752a14734"
+  },
+  "barbell-low-bar-squat": {
+    "file": "barbell-low-bar-squat.png",
+    "videoId": "143512",
+    "sourceFile": "14351201-Barbell-Low-Bar-Squat_Thighs-FIX-STEP1.png",
+    "sourceSha256": "6f4abca31b46adc78e6ef36c5cce4123392a83e0a8c81c697dcc088da1aaf4b2",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 591,
+      "top": 65,
+      "width": 560,
+      "height": 960
+    },
+    "width": 231,
+    "height": 384,
+    "sha256": "8c5e3aaaa2010bcd9513d863996f048a66ddfe38c9bdfa977fd46deaaa736299"
+  },
+  "barbell-box-squat": {
+    "file": "barbell-box-squat.png",
+    "videoId": "496212",
+    "sourceFile": "49621201-Barbell-Box-Squat_Hips-STEP1.png",
+    "sourceSha256": "edef0f30bd03980b53657e29225433ba766fac0515512ac2b77eb66ad5ede7a9",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 515,
+      "top": 113,
+      "width": 747,
+      "height": 896
+    },
+    "width": 323,
+    "height": 384,
+    "sha256": "4d809b1f5947896e8a7915b76a0d078b9e16f7e3392b1adb652d9ee08609998c"
+  },
+  "barbell-pause-full-squat": {
+    "file": "barbell-pause-full-squat.png",
+    "videoId": "501612",
+    "sourceFile": "50161201-Barbell-Pause-Full-Squat_Thighs-STEP1.png",
+    "sourceSha256": "de9c638889285b0872f930e74dedf151ffbe1514e0a036ab9e40339fc1175b8e",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 436,
+      "top": 91,
+      "width": 801,
+      "height": 964
+    },
+    "width": 322,
+    "height": 384,
+    "sha256": "f0f5cd747963e261929b834420889b45639753273cd371b9ad5cace262d14d4a"
+  },
+  "barbell-full-zercher-squat": {
+    "file": "barbell-full-zercher-squat.png",
+    "videoId": "154512",
+    "sourceFile": "15451201-Barbell-full-Zercher-Squat_Thighs-STEP1.png",
+    "sourceSha256": "8620a179e6b0d7ce35898af90726b5946e0010f85926c7e05147d9992ef72944",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 592,
+      "top": 99,
+      "width": 757,
+      "height": 901
+    },
+    "width": 325,
+    "height": 384,
+    "sha256": "9937e25ed96a9fb2842ca3b6d1d75d8a6c4f045228fc782af26e6d6ed1718fd8"
+  },
+  "barbell-overhead-squat": {
+    "file": "barbell-overhead-squat.png",
+    "videoId": "006912",
+    "sourceFile": "00691201-Barbell-Overhead-Squat_Thighs-FIX-STEP1.png",
+    "sourceSha256": "d1775f7f298f1528cafbdf47e525cf51bdb97f82a0bca445bfbf1c4e3924cd43",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 633,
+      "top": 18,
+      "width": 580,
+      "height": 1019
+    },
+    "width": 225,
+    "height": 384,
+    "sha256": "f56fc22d69936ed6edc8b24d788a9b0ce45d28a77a392a6ecec81c0bb9fa505c"
+  },
+  "landmine-squat": {
+    "file": "landmine-squat.png",
+    "videoId": "762612",
+    "sourceFile": "76261201-Landmine-Squat-(male)_Thighs-STEP1.png",
+    "sourceSha256": "2ac2942f014b7d0c43491fb8ea7d255ae57e2a12a981b5e280c4fc09447c1733",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 763,
+      "top": 125,
+      "width": 1130,
+      "height": 888
+    },
+    "width": 384,
+    "height": 305,
+    "sha256": "a4814cf3d54f8c771d5151c5fec7b4a35ec1dbf0d64246b8c23ccd9c6df5c1dc"
+  },
+  "dumbbell-goblet-sumo-squat": {
+    "file": "dumbbell-goblet-sumo-squat.png",
+    "videoId": "754712",
+    "sourceFile": "75471201-Dumbbell-Goblet-Sumo-Squat-(male)_Thighs-STEP1.png",
+    "sourceSha256": "687bf06cbcd3dc607afa527f0f632bee741abbba7371d1f6f60f47cd1c3f5aba",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 757,
+      "top": 93,
+      "width": 363,
+      "height": 953
+    },
+    "width": 156,
+    "height": 384,
+    "sha256": "8cb0c287c96b6fe336a08fbd432c312e3ad7408d30d8919f2294c098b80b1bce"
+  },
+  "smith-front-squat": {
+    "file": "smith-front-squat.png",
+    "videoId": "159512",
+    "sourceFile": "15951201-Smith-Front-Squat_Thighs-STEP1.png",
+    "sourceSha256": "2ac509576955b554f940345aacad47db9155f5985c79431f842cb956958c85e4",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 463,
+      "top": 25,
+      "width": 778,
+      "height": 1042
+    },
+    "width": 291,
+    "height": 384,
+    "sha256": "66ac26dff83891721bb3a3221247fe58a30e69d5806d78c49f02a965558e0ad7"
+  },
+  "smith-split-squat": {
+    "file": "smith-split-squat.png",
+    "videoId": "076912",
+    "sourceFile": "07691201-Smith-Split-Squat_Thighs-STEP1.png",
+    "sourceSha256": "305e2b07b08c780a21bcf691eafb76371a9c06247b3fb8182a4b73cd7761be82",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 516,
+      "top": 61,
+      "width": 757,
+      "height": 961
+    },
+    "width": 306,
+    "height": 384,
+    "sha256": "4c8468b98710114e3f43f289a0a724898f81e96356e69a8f53746712464f0ae8"
+  },
+  "smith-rear-lunge": {
+    "file": "smith-rear-lunge.png",
+    "videoId": "582512",
+    "sourceFile": "58251201-Smith-Rear-Lunge-(version-2)-(male)_Thighs-STEP1.png",
+    "sourceSha256": "7768cd35476de718ae9e888bf22ec8cd688be41ce4bbbb4f235ef737a6686ffd",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 712,
+      "top": 23,
+      "width": 723,
+      "height": 1042
+    },
+    "width": 271,
+    "height": 384,
+    "sha256": "24d2f80634520c2c2e84fc0c7e5348f25367d34aad274cf073ae22d14057301f"
+  },
+  "smith-deficit-bulgarian-split-squat": {
+    "file": "smith-deficit-bulgarian-split-squat.png",
+    "videoId": "1156812",
+    "sourceFile": "115681201-Smith-Unilateral-Bulgarian-Split-Squat-from-Defic-STEP1.png",
+    "sourceSha256": "5a3fc6263e60dda0b832a4536a75e5cd58ad20b23423b3f9167722a68052374a",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 481,
+      "top": 33,
+      "width": 916,
+      "height": 1030
+    },
+    "width": 343,
+    "height": 384,
+    "sha256": "3cfcb30ab6f3b704ede067fd9652934f4939ebd5d033c6f7f38bdf07600ddf72"
+  },
+  "smith-bent-knee-good-morning": {
+    "file": "smith-bent-knee-good-morning.png",
+    "videoId": "074912",
+    "sourceFile": "07491201-Smith-Bent-Knee-Good-morning_Hips-STEP1.png",
+    "sourceSha256": "a6b98221afa5697ae61e13dd2ca7a1412eacf330e757d6a707f5b6b267a585bd",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 491,
+      "top": 13,
+      "width": 778,
+      "height": 1056
+    },
+    "width": 287,
+    "height": 384,
+    "sha256": "3cb7269aea41b88f2fc37243c96853747bf3fbee478854390854884ee929a245"
+  },
+  "smith-calf-raise": {
+    "file": "smith-calf-raise.png",
+    "videoId": "116412",
+    "sourceFile": "11641201-Smith-Calf-Raise-(version-2)_Calves-FIX-STEP1.png",
+    "sourceSha256": "556bf730fe1e5575e27a26372e99e049e997d6f9da9a73fa873a0736675e6070",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 457,
+      "top": 33,
+      "width": 821,
+      "height": 1038
+    },
+    "width": 307,
+    "height": 384,
+    "sha256": "69c5ea8c94cff035a15def1e6e45d3a7faf2aa50eef23e5de386b7de10165336"
+  },
+  "sissy-squat-bodyweight": {
+    "file": "sissy-squat-bodyweight.png",
+    "videoId": "148912",
+    "sourceFile": "14891201-Sissy-Squat-Bodyweight_Thighs-FIX-STEP1.png",
+    "sourceSha256": "c8166f1582b680d2de48108e100cd79e9b0ccf63187c152d7e559caf41f2a3c7",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 413,
+      "top": 67,
+      "width": 680,
+      "height": 990
+    },
+    "width": 269,
+    "height": 384,
+    "sha256": "13c0f40acf49cbed331c7fd241f3d06d9b7462271c47b4f31f9eaea0749699a8"
+  },
+  "sled-reverse-hack-squat": {
+    "file": "sled-reverse-hack-squat.png",
+    "videoId": "158312",
+    "sourceFile": "15831201-Sled-Reverse-Hack-Squat_Thighs-FIX-STEP1.png",
+    "sourceSha256": "1a31a4110688db2c08e9d23f8d7fa5e6c82dfad4b898c6dadd2060fb2a3cefc6",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 312,
+      "top": 123,
+      "width": 1291,
+      "height": 928
+    },
+    "width": 384,
+    "height": 281,
+    "sha256": "600fa3908840132c34a1f31673c3d9e9c0a8af96b7af981adb1e625fc95720a6"
+  },
+  "heel-elevated-bodyweight-squat": {
+    "file": "heel-elevated-bodyweight-squat.png",
+    "videoId": "757712",
+    "sourceFile": "75771201-Bodyweight-Heel-Elevated-Squat-(male)_Thighs-STEP1.png",
+    "sourceSha256": "7c272f3defd27a236d7be784fee985feb58a65261a6c82c8741a4da71dddfa38",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 700,
+      "top": 72,
+      "width": 465,
+      "height": 952
+    },
+    "width": 196,
+    "height": 384,
+    "sha256": "e53159b2c97c2f23f4acb5526e0baa664a3ba5bbe92a4fe083fdfa4e5092e4ff"
+  },
+  "dumbbell-elevated-heel-goblet-squat": {
+    "file": "dumbbell-elevated-heel-goblet-squat.png",
+    "videoId": "1057412",
+    "sourceFile": "105741201-Dumbbell-Elevated-Heel-Goblet-Squat_Thighs-STEP1.png",
+    "sourceSha256": "48a4312a9dbfd3351ce4471767d2f7ca39b0826b83468827c343e98828e1b881",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 796,
+      "top": 87,
+      "width": 319,
+      "height": 962
+    },
+    "width": 138,
+    "height": 384,
+    "sha256": "e6e9686f56e2f40889e662c192b58f0f65515c8c64e79a6fc930916e72587f9f"
+  },
+  "cossack-squat": {
+    "file": "cossack-squat.png",
+    "videoId": "463212",
+    "sourceFile": "46321201-Cossack-Squat_Hips-STEP1.png",
+    "sourceSha256": "93bdfa23eb48483758a01416f4959e7cbfc4765b930c4bd20f7d73f17633961f",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 641,
+      "top": 95,
+      "width": 645,
+      "height": 893
+    },
+    "width": 282,
+    "height": 384,
+    "sha256": "64ef976a2009546c308b1b6fd3ca84c37414a9230e59e95c9d46479a14805043"
+  },
+  "side-lunge": {
+    "file": "side-lunge.png",
+    "videoId": "297212",
+    "sourceFile": "29721201-Side-Lunge_Thighs-STEP1.png",
+    "sourceSha256": "60bbcdce6abc4c8e959525d87e5aa745e7a61de054d80c3b51ce8ab77187718f",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 761,
+      "top": 61,
+      "width": 324,
+      "height": 904
+    },
+    "width": 148,
+    "height": 384,
+    "sha256": "a16c452f461d92165e2810feb9bac292c87d1aa55477d75a9d05b35f15593a04"
+  },
+  "dumbbell-curtsey-lunge": {
+    "file": "dumbbell-curtsey-lunge.png",
+    "videoId": "866412",
+    "sourceFile": "86641201-Dumbbell-Curtsey-Lunge-(male)_Thighs-STEP1.png",
+    "sourceSha256": "a3562234b137ebfaf0b28372747f588e057f53323d3075f8762ec48fbb2371ea",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 767,
+      "top": 101,
+      "width": 386,
+      "height": 904
+    },
+    "width": 173,
+    "height": 384,
+    "sha256": "f48cb0ca3ca0460a8f8366300537d05daaea3b555f0adcb7ec780050e89eff4a"
+  },
+  "dumbbell-deficit-reverse-lunge": {
+    "file": "dumbbell-deficit-reverse-lunge.png",
+    "videoId": "732612",
+    "sourceFile": "73261201-Dumbbell-Reverse-Lunge-from-Deficit-(male)_Thighs-STEP1.png",
+    "sourceSha256": "1d630b3f05423f1ecf4b0263b93cd98a3420952303ee39245afe322ace56e362",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 854,
+      "top": 33,
+      "width": 313,
+      "height": 1033
+    },
+    "width": 128,
+    "height": 384,
+    "sha256": "aa50c58c29c4e10a483a73fbb0813c147779fac662607547221887a17fec8445"
+  },
+  "barbell-walking-lunge": {
+    "file": "barbell-walking-lunge.png",
+    "videoId": "582312",
+    "sourceFile": "58231201-Barbell-Walking-Lunge_Thighs-STEP1.png",
+    "sourceSha256": "968331eae0f22435e0ef0e748e7827151045dd31cb0f0d537f03842ebd8ac945",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 197,
+      "top": 103,
+      "width": 576,
+      "height": 832
+    },
+    "width": 271,
+    "height": 384,
+    "sha256": "3d91d41e80ca01f7af3264fa58a4cff0758aa07426820e923b0d9eb89b9d491b"
+  },
+  "barbell-step-up": {
+    "file": "barbell-step-up.png",
+    "videoId": "011412",
+    "sourceFile": "01141201-Barbell-Step-up_Hips-FIX-STEP1.png",
+    "sourceSha256": "e4d471dd053d679b80d55edd4e005d49852bce01ed94fe6d5097f27908e7cdb9",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 623,
+      "top": 255,
+      "width": 552,
+      "height": 814
+    },
+    "width": 266,
+    "height": 384,
+    "sha256": "d0b9914d02c9c67b634216e2f283cc344e8df64182d34cb004c2cb5db3f7e9be"
+  },
+  "cable-reverse-lunge": {
+    "file": "cable-reverse-lunge.png",
+    "videoId": "1121512",
+    "sourceFile": "112151201-Cable-Reverse-Lunge-(male)_Thighs-STEP1.png",
+    "sourceSha256": "7fefb748e278655e84652db6b97223488550de894a056074d0df82a329b60e13",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 305,
+      "top": 13,
+      "width": 744,
+      "height": 1010
+    },
+    "width": 287,
+    "height": 384,
+    "sha256": "0cdf4a83cb490663206d7360a838662ccb423f6de7e10e47450663201d94227e"
+  },
+  "cable-lateral-lunge": {
+    "file": "cable-lateral-lunge.png",
+    "videoId": "1125512",
+    "sourceFile": "112551201-Cable-Lateral-Lunge-(VERSION-3)_Hips-STEP1.png",
+    "sourceSha256": "8e36ff4f437f678316a82ff4c67de6e6a8fbcd85c5c8b91b3e79e8cc7e12ae7d",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 635,
+      "top": 81,
+      "width": 712,
+      "height": 872
+    },
+    "width": 316,
+    "height": 384,
+    "sha256": "e2783668caeea188080c2c8a988676e9cf1f98de8bbdbfdb068b23f840d33d5d"
+  },
+  "lever-standing-single-leg-curl": {
+    "file": "lever-standing-single-leg-curl.png",
+    "videoId": "518112",
+    "sourceFile": "51811201-Lever-Standing-Single-Leg-Curl-(plate-loaded)_Thig-STEP1.png",
+    "sourceSha256": "ed30d2c43de2d4a95b0d5a0767000fead3ecb2c72ab0674024421b0617f17338",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 616,
+      "top": 71,
+      "width": 485,
+      "height": 996
+    },
+    "width": 195,
+    "height": 384,
+    "sha256": "5bec62bb65da631fe4d2e55a3d39f9278024bf2a0ad919f43ebe234f3689e9e7"
+  },
+  "lever-lying-single-leg-curl": {
+    "file": "lever-lying-single-leg-curl.png",
+    "videoId": "159012",
+    "sourceFile": "15901201-Lever-Lying-Single-Leg-Curl_Thighs-FIX-STEP1.png",
+    "sourceSha256": "6f15bac963bdc5a99e092b33c9b33dbed5a54f9f1f10e656d74a51de15ae6adc",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 323,
+      "top": 169,
+      "width": 1094,
+      "height": 867
+    },
+    "width": 384,
+    "height": 308,
+    "sha256": "6830552b86afd8e6aa94682eacddb0b55608ca0cb3d0dc25a13763107134ab8a"
+  },
+  "lever-seated-one-leg-curl": {
+    "file": "lever-seated-one-leg-curl.png",
+    "videoId": "158612",
+    "sourceFile": "15861201-Lever-Seated-One-Leg-Curl_Thighs-STEP1.png",
+    "sourceSha256": "794168f4adcff17014751c46ae95d4bfe58c6033fb7ab0b88476aed27a1b3fff",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 447,
+      "top": 64,
+      "width": 838,
+      "height": 982
+    },
+    "width": 330,
+    "height": 384,
+    "sha256": "0aeafc7c114282a09a0035b79ea19b38cce9d416ea8588afacc41079e5c11534"
+  },
+  "dumbbell-lying-leg-curl": {
+    "file": "dumbbell-lying-leg-curl.png",
+    "videoId": "616112",
+    "sourceFile": "61611201-Dumbbell-Lying-Leg-Curl-(male)_Thighs-STEP1.png",
+    "sourceSha256": "1e3af3a67725db6e068366b91c7c4d2bab0180656f09a64b0fa0c7b82c129019",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 205,
+      "top": 464,
+      "width": 1450,
+      "height": 595
+    },
+    "width": 384,
+    "height": 167,
+    "sha256": "a0ddcea91d2d12237081bb1fc81feb169249a093027b24ba20ea7b2978f835ad"
+  },
+  "cable-lying-single-leg-curl": {
+    "file": "cable-lying-single-leg-curl.png",
+    "videoId": "980412",
+    "sourceFile": "98041201-Cable-Lying-Single-Leg-Curl-(male)_Thighs-STEP1.png",
+    "sourceSha256": "55a45eeca69d9dda3bfb654323bc603f1e439a5eb056d32932f578f9b44a9ae1",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 458,
+      "top": 11,
+      "width": 949,
+      "height": 1012
+    },
+    "width": 361,
+    "height": 384,
+    "sha256": "d5cf1d44cde6e33f66a15d701016d61c50fe4199638e4407c7b2d27eeafa59dd"
+  },
+  "bodyweight-frog-hip-thrust": {
+    "file": "bodyweight-frog-hip-thrust.png",
+    "videoId": "646412",
+    "sourceFile": "64641201-Bodyweight-Frog-Hip-Thrust-(male)_Hips-STEP1.png",
+    "sourceSha256": "4b9a83eb509adc8e7680839b9e2e3cdc5a05d3a37eeaf10d804f6d41d17368da",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 383,
+      "top": 421,
+      "width": 1186,
+      "height": 534
+    },
+    "width": 384,
+    "height": 182,
+    "sha256": "e32df695634bfcdf576e3c7a19eda7a728263f698d9b27aff584f813390d6970"
+  },
+  "single-leg-hip-thrust": {
+    "file": "single-leg-hip-thrust.png",
+    "videoId": "207112",
+    "sourceFile": "20711201-Single-Leg-_Hip-Thrusts_Hips-STEP1.png",
+    "sourceSha256": "96c0691adf2ed9e4607cf081775db19dbb5f9f84ae792dbae327caa059d7b979",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 331,
+      "top": 181,
+      "width": 1189,
+      "height": 810
+    },
+    "width": 384,
+    "height": 267,
+    "sha256": "fd2bab567907954298f2be2bfe7f7d0237d53e2900c5d070dff942996705d71b"
+  },
+  "barbell-kas-glute-bridge": {
+    "file": "barbell-kas-glute-bridge.png",
+    "videoId": "1083212",
+    "sourceFile": "108321201-Barbell-KAS-Glute-Bridge-(male)_Hips-STEP1.png",
+    "sourceSha256": "e096ed2d49646a02ddd43e1a2ce9d9ebe733f28b0966717b4b75a15c1b27a845",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 400,
+      "top": 187,
+      "width": 1229,
+      "height": 810
+    },
+    "width": 384,
+    "height": 259,
+    "sha256": "6d303859f47dd54b1a6decbc74afd24be5cca734f76c4ac240354d2cb16ab0e6"
+  },
+  "cable-hip-abduction": {
+    "file": "cable-hip-abduction.png",
+    "videoId": "304812",
+    "sourceFile": "30481201-Cable-hip-abduction-(version-2)-(male)_Hips-STEP1.png",
+    "sourceSha256": "13cd8d95ecef7e68b2601bc7d35de5a61e12ae57e273cfc3cf48bf3ace56f8b7",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 705,
+      "top": 20,
+      "width": 650,
+      "height": 983
+    },
+    "width": 259,
+    "height": 384,
+    "sha256": "0be0a66a081264bdb3d74385243d059b9ae8667904c6c8bf7dd678fa6f0d2d61"
+  },
+  "reverse-hyperextension-on-box": {
+    "file": "reverse-hyperextension-on-box.png",
+    "videoId": "1034212",
+    "sourceFile": "103421201-Reverse-Hyperextension-on-Box_Hips-STEP1.png",
+    "sourceSha256": "bd9513b07b0a1b930ebb5454bca3565ef390c4b0fdc5a75922cd4ecc8e1834d4",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 177,
+      "top": 543,
+      "width": 1590,
+      "height": 428
+    },
+    "width": 384,
+    "height": 115,
+    "sha256": "d16d23c462988f23a356b92c9a4cb6e694a2b609fe003f38f3e9841513ba14b4"
+  },
+  "handstand-push-up": {
+    "file": "handstand-push-up.png",
+    "videoId": "047112",
+    "sourceFile": "04711201-Handstand-Push-Up_Shoulders-STEP1.png",
+    "sourceSha256": "f2539b12848022d7ecadecbce981bb53e761581f94544a7984180c265807abe8",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 699,
+      "top": 531,
+      "width": 362,
+      "height": 515
+    },
+    "width": 275,
+    "height": 384,
+    "sha256": "172b8d9756c54aa2d0e9e94941ecc7420893d815e813883ba0a3710daaa4bd90"
+  },
+  "ring-dip": {
+    "file": "ring-dip.png",
+    "videoId": "067712",
+    "sourceFile": "06771201-Ring-Dip_Upper-Arms-STEP1.png",
+    "sourceSha256": "80670b11eb1e137232c675aaf71bcf2f0eee51883686db22832493f02307a7d0",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 768,
+      "top": 0,
+      "width": 331,
+      "height": 943
+    },
+    "width": 145,
+    "height": 384,
+    "sha256": "695e13c9213e7d1748583786ef440db613d5b189d6f72e795f1912021be1e12f"
+  },
+  "ring-incline-push-up": {
+    "file": "ring-incline-push-up.png",
+    "videoId": "786912",
+    "sourceFile": "78691201-Ring-Incline-Push-up-(male)_Chest-STEP1.png",
+    "sourceSha256": "4dcf653b0ed9dc10f16b648d645b024b04ae788aec43b0a564d0e373301c5863",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 532,
+      "top": 0,
+      "width": 851,
+      "height": 1025
+    },
+    "width": 322,
+    "height": 384,
+    "sha256": "f81d0dc400b9375a54c71ec2d0f382d44043d6b7e6df3bb897d0d69c84bc9efb"
+  },
+  "bench-dip": {
+    "file": "bench-dip.png",
+    "videoId": "012912",
+    "sourceFile": "01291201-Bench-Dip-(knees-bent)_Upper-Arms-STEP1.png",
+    "sourceSha256": "aea2636aefb3a437ae07db2fdb88572663e9ccd4f82f76d9640118ec529a940a",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 479,
+      "top": 84,
+      "width": 718,
+      "height": 970
+    },
+    "width": 288,
+    "height": 384,
+    "sha256": "1385a411be75a58f2b13463d7e97eb5e8102bcd7646018092513424777c6ee13"
+  },
+  "resistance-band-standing-chest-press": {
+    "file": "resistance-band-standing-chest-press.png",
+    "videoId": "860612",
+    "sourceFile": "86061201-Resistance-Band-Standing-Chest-Press-(male)_Chest-STEP1.png",
+    "sourceSha256": "92140fcd8d171f2134cc155adec66e90aa44f40ea20ec146e2c5d2cdbbf05bfa",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 707,
+      "top": 61,
+      "width": 479,
+      "height": 983
+    },
+    "width": 195,
+    "height": 384,
+    "sha256": "37192701f5242d0763e46bc9776a0803c58f9101b5ea87c9cade2c75da9d92aa"
+  },
+  "resistance-band-seated-row": {
+    "file": "resistance-band-seated-row.png",
+    "videoId": "835612",
+    "sourceFile": "83561201-Resistance-Band-Seated-Row-(male)_Back-STEP1.png",
+    "sourceSha256": "542ac74f836b5ddb00b36ece4e067a3a8bb230177401fc5657345583d8746d2e",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 685,
+      "top": 195,
+      "width": 753,
+      "height": 754
+    },
+    "width": 384,
+    "height": 384,
+    "sha256": "e0d6595e36f02b73e78789ea3fd87b5386be1b35c93e85f9b2b0496da4119036"
+  },
+  "resistance-band-lat-pulldown": {
+    "file": "resistance-band-lat-pulldown.png",
+    "videoId": "1136712",
+    "sourceFile": "113671201-Resistance-Band-Standing-Lat-Pulldown-(male)_Back-STEP1.png",
+    "sourceSha256": "651152e057453c88d5bb8ae5907cc00e8d42e0836e0abd75077a6cc6d17c1c07",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 597,
+      "top": 12,
+      "width": 712,
+      "height": 1055
+    },
+    "width": 264,
+    "height": 384,
+    "sha256": "7849cdd1aee9872917563b8f535805a1e97e49a191ab1bf9175c14e3cd293146"
+  },
+  "resistance-band-face-pull": {
+    "file": "resistance-band-face-pull.png",
+    "videoId": "560712",
+    "sourceFile": "56071201-Band-Face-Pull-(male)_Shoulders-STEP1.png",
+    "sourceSha256": "97dd0b3a1d404e4ce82daecf5876b77907f2309bcb6353446104c196b9b1e245",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 613,
+      "top": 11,
+      "width": 1024,
+      "height": 1050
+    },
+    "width": 375,
+    "height": 384,
+    "sha256": "a0877a8c27f4a8916c00d793a3952f149f89f47fd3359aa1642aee852279a05b"
+  },
+  "band-biceps-curl": {
+    "file": "band-biceps-curl.png",
+    "videoId": "406312",
+    "sourceFile": "40631201-Band-Biceps-Curl_Upper-Arms-STEP1.png",
+    "sourceSha256": "1b9fe4f9b9d0f6ac44c4d62ab5d04cf3f43cbd8dc6a458e23e341abed5daa598",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 811,
+      "top": 49,
+      "width": 348,
+      "height": 1005
+    },
+    "width": 143,
+    "height": 384,
+    "sha256": "4ee24e124b260df8e7ce71118f5835cc5066ebb04cdb79d2c9c3e8bc898341e5"
+  },
+  "resistance-band-triceps-pushdown": {
+    "file": "resistance-band-triceps-pushdown.png",
+    "videoId": "468812",
+    "sourceFile": "46881201-Resistance-Band-Triceps-Pushdown_Upper-Arms-STEP1.png",
+    "sourceSha256": "8ab29334427e7f7410f9e78d7a2a102ffb9f8736f7c287036b8f246180f29921",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 725,
+      "top": 17,
+      "width": 639,
+      "height": 1049
+    },
+    "width": 240,
+    "height": 384,
+    "sha256": "0d9fc7ee1f2e1e091e1414364ec092e8959a752fecc31e4283a2bb2a93ec0c86"
+  },
+  "band-lateral-raise": {
+    "file": "band-lateral-raise.png",
+    "videoId": "150812",
+    "sourceFile": "15081201-Band-Lateral-Raise-(Version-2)_Shoulders-STEP1.png",
+    "sourceSha256": "e2c7aefaa77abac1fed459e86b156e928e3f5718faf3314bcf7dd46ff2849604",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 819,
+      "top": 43,
+      "width": 327,
+      "height": 1006
+    },
+    "width": 136,
+    "height": 384,
+    "sha256": "9ef639a86d6a6755b7ca06db9d069b8a4b0142fcce58c6651cd2e0f0a5e7bfa6"
+  },
+  "landmine-180": {
+    "file": "landmine-180.png",
+    "videoId": "056212",
+    "sourceFile": "05621201-Landmine-180_waist-STEP1.png",
+    "sourceSha256": "291fe9c91e994c9eba3be306148cb88954478a11a88c0eff3d890eefa4788439",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 505,
+      "top": 59,
+      "width": 1393,
+      "height": 1005
+    },
+    "width": 384,
+    "height": 281,
+    "sha256": "25ef3c5755674756092a1fba49d3e9d346e8158a9af5b802380646f045e01cb9"
+  },
+  "hanging-toes-to-bar": {
+    "file": "hanging-toes-to-bar.png",
+    "videoId": "389112",
+    "sourceFile": "38911201-Hanging-Toes-to-Bar_Waist-STEP1.png",
+    "sourceSha256": "e2b6744dea21ab004a0bec88018e1abb3cfa2af8b66c204135deb9072e708b2f",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 625,
+      "top": 45,
+      "width": 668,
+      "height": 1014
+    },
+    "width": 258,
+    "height": 384,
+    "sha256": "7e1b19cc53738a080e03bd4795741e93f67b41d9809b67efffdb8cac455338cd"
+  },
+  "battling-ropes-high-waves": {
+    "file": "battling-ropes-high-waves.png",
+    "videoId": "337912",
+    "sourceFile": "33791201-Battling-Ropes-High-Waves_Plyometrics-STEP1.png",
+    "sourceSha256": "2b74d4567d22b3017c62e4806fe36b1bc54e8c469e205e2622950151cf033d7e",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 533,
+      "top": 145,
+      "width": 1387,
+      "height": 890
+    },
+    "width": 384,
+    "height": 252,
+    "sha256": "93eeb50a92b5fe37174cffe305db1da8bccf87dffbbcd3d0a9001cfb4114b7c2"
+  },
+  "power-sled-push": {
+    "file": "power-sled-push.png",
+    "videoId": "442812",
+    "sourceFile": "44281201-Power-Sled-Push-(male)-STEP1.png",
+    "sourceSha256": "fbc7a6b5238eafcc65e6773aa18111399c3e9ee4aa4e7b4275ef537f56061499",
+    "sourceWidth": 1920,
+    "sourceHeight": 1080,
+    "crop": {
+      "left": 73,
+      "top": 357,
+      "width": 1736,
+      "height": 595
+    },
+    "width": 384,
+    "height": 142,
+    "sha256": "2f727a5e9ea07e3eea18601b0bf049e0198c7e79faf13c7bad1a0646faa80cff"
   }
 }
