@@ -1090,6 +1090,25 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(store.exerciseCatalogue.count, 300)
     }
 
+    func testLegacyExerciseNameWithCanonicalExerciseIdMergesUnderCanonicalName() {
+        let legacyExercise = Exercise(
+            name: "Conventional Barbell Deadlift",
+            exerciseId: "conventional-barbell-deadlift"
+        )
+        let legacyWorkout = Workout(id: "w-leg", day: 1, title: "Legs", exercises: [legacyExercise])
+        let legacyProgram = Program(id: "p-leg", name: "Legacy", workouts: [legacyWorkout])
+        let entries = ExerciseCatalog.build(
+            bundledPrograms: [],
+            userPrograms: [legacyProgram],
+            canonicalExercises: Array(ExerciseCatalog.canonicalExercises.values)
+        )
+        XCTAssertEqual(entries.count, 300)
+        let deadlift = entries.first { $0.exercise.exerciseId == "conventional-barbell-deadlift" }
+        XCTAssertEqual(deadlift?.key, "deadlift")
+        XCTAssertEqual(deadlift?.exercise.name, "Deadlift")
+        XCTAssertTrue(deadlift?.programIds.contains("p-leg") ?? false)
+    }
+
     func testVideoTranslationsParity() {
         let requiredKeys = [
             "video.openExternal", "video.close", "video.back5", "video.forward5",
@@ -1221,7 +1240,13 @@ final class FormAppTests: XCTestCase {
         XCTAssertTrue(pullUps.displayCues.contains("Barı omuzlardan biraz geniş"))
 
         let bench = Exercise(name: "Barbell Bench Press", exerciseId: "barbell-bench-press")
-        XCTAssertEqual(bench.displayName, "Barbell Göğüs Presi (Bench Press)")
+        XCTAssertEqual(bench.displayName, "Barbell Bench Press")
+
+        let deadlift = Exercise(name: "Deadlift", exerciseId: "conventional-barbell-deadlift")
+        XCTAssertEqual(deadlift.displayName, "Deadlift")
+
+        let smithSquat = Exercise(name: "Smith Machine Squat", exerciseId: "smith-squat")
+        XCTAssertEqual(smithSquat.displayName, "Smith Makinesi Squat")
 
         let workout = Workout(id: "pb-squat-strength", day: 1, title: "Heavy Squat", focus: "Maximal squat power, quad density, and core bracing")
         XCTAssertEqual(workout.displayTitle(programId: "powerbuilding-strength"), "Ağır Squat")

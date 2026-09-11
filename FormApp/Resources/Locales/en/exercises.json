@@ -139,7 +139,7 @@
     ]
   },
   "conventional-barbell-deadlift": {
-    "name": "Conventional Barbell Deadlift",
+    "name": "Deadlift",
     "cues": [
       "Set feet hip-width with bar over mid-foot (1 inch from shins); grip just outside legs.",
       "Pull chest tall, engage lats ('protect armpits'), and pull the slack out of the barbell.",
@@ -928,7 +928,7 @@
     ]
   },
   "smith-squat": {
-    "name": "Smith Squat",
+    "name": "Smith Machine Squat",
     "cues": [
       "Set stable stance with feet shoulder-width, toes angled slightly out; brace core.",
       "Initiate descent by breaking at hips and knees together, keeping chest proud.",
@@ -1390,7 +1390,7 @@
     ]
   },
   "cable-neutral-grip-lat-pulldown": {
-    "name": "Cable Neutral-Grip Lat Pulldown",
+    "name": "Dual Cable Lat Pulldown",
     "cues": [
       "Grasp bar with chosen grip; secure thighs under pads and lift chest.",
       "Initiate by pulling shoulder blades down and driving elbows down and back toward ribs.",

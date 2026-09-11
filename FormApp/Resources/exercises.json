@@ -170,7 +170,7 @@
   },
   {
     "id": "conventional-barbell-deadlift",
-    "name": "Conventional Barbell Deadlift",
+    "name": "Deadlift",
     "movementType": "hinge",
     "movementAssetId": "conventional-barbell-deadlift",
     "cues": [
@@ -1113,7 +1113,7 @@
   },
   {
     "id": "smith-squat",
-    "name": "Smith Squat",
+    "name": "Smith Machine Squat",
     "movementType": "squat",
     "cues": [
       "Set stable stance with feet shoulder-width, toes angled slightly out; brace core.",
@@ -1643,7 +1643,7 @@
   },
   {
     "id": "cable-neutral-grip-lat-pulldown",
-    "name": "Cable Neutral-Grip Lat Pulldown",
+    "name": "Dual Cable Lat Pulldown",
     "movementType": "pull-up",
     "cues": [
       "Grasp bar with chosen grip; secure thighs under pads and lift chest.",

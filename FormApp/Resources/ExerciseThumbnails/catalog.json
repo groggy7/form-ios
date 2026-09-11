@@ -494,20 +494,20 @@
   },
   "lat-pulldown": {
     "file": "lat-pulldown.png",
-    "videoId": "233012",
-    "sourceFile": "23301201-Cable-Lat-Pulldown-Full-Range-Of-Motion_Back-STEP1.png",
-    "sourceSha256": "6599e036e282834d1e95f9275b7c64ba2391e835a103b1c59aa816d4228acf91",
+    "videoId": "758312",
+    "sourceFile": "75831201-Cable-Neutral-Grip-Lat-Pulldown-(male)_Back-STEP1.png",
+    "sourceSha256": "0fa9b43c640e207e5cd07768c7baa29bfff85a3dd33f60cf530df7119551ab89",
     "sourceWidth": 1920,
     "sourceHeight": 1080,
     "crop": {
-      "left": 420,
-      "top": 22,
-      "width": 1162,
-      "height": 1031
+      "left": 609,
+      "top": 27,
+      "width": 518,
+      "height": 1014
     },
-    "width": 384,
-    "height": 343,
-    "sha256": "48f036e297e190a223b30904f88899aa1f30dacf8eb192dd0501eecc698b030e"
+    "width": 204,
+    "height": 384,
+    "sha256": "1ccd7f3f78168e8af65e83b4454a0e80b6a5ad4679a249418fc5db34803ecbb6"
   },
   "leg-extension": {
     "file": "leg-extension.png",
@@ -1718,20 +1718,20 @@
   },
   "cable-neutral-grip-lat-pulldown": {
     "file": "cable-neutral-grip-lat-pulldown.png",
-    "videoId": "758312",
-    "sourceFile": "75831201-Cable-Neutral-Grip-Lat-Pulldown-(male)_Back-STEP1.png",
-    "sourceSha256": "0fa9b43c640e207e5cd07768c7baa29bfff85a3dd33f60cf530df7119551ab89",
+    "videoId": "233012",
+    "sourceFile": "23301201-Cable-Lat-Pulldown-Full-Range-Of-Motion_Back-STEP1.png",
+    "sourceSha256": "6599e036e282834d1e95f9275b7c64ba2391e835a103b1c59aa816d4228acf91",
     "sourceWidth": 1920,
     "sourceHeight": 1080,
     "crop": {
-      "left": 609,
-      "top": 27,
-      "width": 518,
-      "height": 1014
+      "left": 420,
+      "top": 22,
+      "width": 1162,
+      "height": 1031
     },
-    "width": 204,
-    "height": 384,
-    "sha256": "1ccd7f3f78168e8af65e83b4454a0e80b6a5ad4679a249418fc5db34803ecbb6"
+    "width": 384,
+    "height": 343,
+    "sha256": "48f036e297e190a223b30904f88899aa1f30dacf8eb192dd0501eecc698b030e"
   },
   "cable-close-grip-front-lat-pulldown": {
     "file": "cable-close-grip-front-lat-pulldown.png",

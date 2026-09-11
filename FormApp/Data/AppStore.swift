@@ -760,13 +760,28 @@ public enum ExerciseCatalog {
             }
         }
 
+        let canonicalById = Dictionary(uniqueKeysWithValues: canonicalExercises.map { ($0.id, $0) })
+        let canonicalByKey = Dictionary(canonicalExercises.map { ($0.name.trimmingCharacters(in: .whitespaces).lowercased(), $0) }, uniquingKeysWith: { first, _ in first })
+
         var map: [String: ExerciseCatalogEntry] = [:]
         for s in sources {
-            let key = s.exercise.name.trimmingCharacters(in: .whitespaces).lowercased()
+            let rawKey = s.exercise.name.trimmingCharacters(in: .whitespaces).lowercased()
+            let def = s.exercise.exerciseId.flatMap { canonicalById[$0] }
+                ?? canonicalByKey[rawKey]
+                ?? canonicalById[rawKey.replacingOccurrences(of: " ", with: "-")]
+            let resolvedName = def?.name ?? s.exercise.name
+            let key = resolvedName.trimmingCharacters(in: .whitespaces).lowercased()
             if key.isEmpty { continue }
+
+            var ex = s.exercise
+            if let def = def {
+                ex.name = def.name
+                if ex.exerciseId == nil { ex.exerciseId = def.id }
+            }
+
             let occ = "\(s.programId)\u{0}\(s.workoutId)"
             if let existing = map[key] {
-                let merged = merge(primary: existing.exercise, fallback: s.exercise)
+                let merged = merge(primary: existing.exercise, fallback: ex)
                 map[key] = ExerciseCatalogEntry(
                     key: key,
                     exercise: merged,
@@ -776,7 +791,7 @@ public enum ExerciseCatalog {
             } else {
                 map[key] = ExerciseCatalogEntry(
                     key: key,
-                    exercise: s.exercise,
+                    exercise: ex,
                     programIds: [s.programId],
                     workoutKeys: [occ]
                 )
@@ -795,14 +810,13 @@ public enum ExerciseCatalog {
             }
         }
 
-        let canonicalById = Dictionary(uniqueKeysWithValues: canonicalExercises.map { ($0.id, $0) })
-        let canonicalByKey = Dictionary(canonicalExercises.map { ($0.name.trimmingCharacters(in: .whitespaces).lowercased(), $0) }, uniquingKeysWith: { first, _ in first })
-
         var standardNotes: [String: Exercise] = [:]
         for p in bundledPrograms {
             for w in p.workouts {
                 for e in w.exercises {
-                    let k = e.name.trimmingCharacters(in: .whitespaces).lowercased()
+                    let def = e.exerciseId.flatMap { canonicalById[$0] }
+                    let k = def?.name.trimmingCharacters(in: .whitespaces).lowercased()
+                        ?? e.name.trimmingCharacters(in: .whitespaces).lowercased()
                     if !k.isEmpty && (!e.cues.isEmpty || !e.avoid.isEmpty) {
                         standardNotes[k] = e
                     }
@@ -814,6 +828,7 @@ public enum ExerciseCatalog {
             let def = ex.exerciseId.flatMap { canonicalById[$0] } ?? canonicalByKey[entry.key]
             let std = standardNotes[entry.key]
             if let def = def {
+                ex.name = def.name
                 if ex.exerciseId == nil { ex.exerciseId = def.id }
                 if ex.cues.trimmingCharacters(in: .whitespaces).isEmpty { ex.cues = def.cuesText }
                 if ex.avoid.trimmingCharacters(in: .whitespaces).isEmpty { ex.avoid = def.avoidText }
@@ -1171,19 +1186,34 @@ public enum ExercisePriority {
         return map
     }()
 
+    private static let nameAliases: [String: String] = [
+        "deadlift": "conventional-barbell-deadlift",
+        "smith machine squat": "smith-squat",
+        "smith makinesi squat": "smith-squat",
+        "lat pulldown": "lat-pulldown",
+        "dual cable lat pulldown": "cable-neutral-grip-lat-pulldown",
+    ]
+
     public static func priority(for exerciseId: String?) -> Int {
         guard let exerciseId = exerciseId, !exerciseId.isEmpty else { return Int.max }
-        if let rank = priorityById[exerciseId] { return rank }
+        let resolvedId = nameAliases[ExerciseCatalog.key(exerciseId)] ?? exerciseId
+        if let rank = priorityById[resolvedId] { return rank }
         let key = ExerciseCatalog.key(exerciseId)
         if let rank = priorityByKey[key] { return rank }
         return Int.max
     }
 
     public static func priority(for exercise: Exercise) -> Int {
-        if let id = exercise.exerciseId, let rank = priorityById[id] {
-            return rank
+        if let id = exercise.exerciseId {
+            let resolvedId = nameAliases[id] ?? id
+            if let rank = priorityById[resolvedId] {
+                return rank
+            }
         }
         let key = ExerciseCatalog.key(exercise.name)
+        if let aliasId = nameAliases[key], let rank = priorityById[aliasId] {
+            return rank
+        }
         if let rank = priorityByKey[key] {
             return rank
         }

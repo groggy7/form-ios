@@ -203,11 +203,11 @@
     "aspectRatio": 1.25
   },
   "lat-pulldown": {
-    "left": 0.16875000000000007,
+    "left": 0.1015625,
     "top": 0,
-    "width": 0.7041666666666666,
+    "width": 0.703125,
     "height": 1,
-    "aspectRatio": 1.2518518518518518
+    "aspectRatio": 1.25
   },
   "leg-extension": {
     "left": 0.19661458333333331,
@@ -707,11 +707,11 @@
     "aspectRatio": 1.25
   },
   "cable-neutral-grip-lat-pulldown": {
-    "left": 0.1015625,
+    "left": 0.16875000000000007,
     "top": 0,
-    "width": 0.703125,
+    "width": 0.7041666666666666,
     "height": 1,
-    "aspectRatio": 1.25
+    "aspectRatio": 1.2518518518518518
   },
   "cable-close-grip-front-lat-pulldown": {
     "left": 0.1953125,

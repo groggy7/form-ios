@@ -14,7 +14,7 @@
     ]
   },
   "barbell-back-squat": {
-    "name": "Barbell Sırt Squat (Back Squat)",
+    "name": "Barbell Squat",
     "cues": [
       "Barı üst trapezlerin üzerine sağlamca oturtun; kanat kaslarını kilitlemek için barı sırtınıza doğru aktif şekilde çekin.",
       "Karnınıza derin bir diyafram nefesi alıp gövdeyi kilitleyin; kalça ve dizleri aynı anda bükerek inişi başlatın.",
@@ -28,7 +28,7 @@
     ]
   },
   "barbell-bench-press": {
-    "name": "Barbell Göğüs Presi (Bench Press)",
+    "name": "Barbell Bench Press",
     "cues": [
       "Gözler barın hizasında olacak şekilde uzanın; ayakları yere sağlam basın ve kürek kemiklerini geriye alıp sehpaya sabitleyin.",
       "Barı omuz genişliğinden biraz geniş tutun; raftan alıp omuz eklemlerinin tam üzerinde dengeleyin.",
@@ -42,7 +42,7 @@
     ]
   },
   "barbell-front-squat": {
-    "name": "Barbell Ön Squat (Front Squat)",
+    "name": "Front Squat",
     "cues": [
       "Barı ön omuz başlarına oturtun; parmak uçlarıyla ya da kollarınızı çaprazlayarak sabitleyin ve dirsekleri yere paralel olacak şekilde yüksekte tutun.",
       "İniş boyunca gövdeyi olabildiğince dik tutun ve karnınızı sıkı bir şekilde kilitleyin.",
@@ -55,7 +55,7 @@
     ]
   },
   "barbell-hip-thrust": {
-    "name": "Barbell Kalça İtişi (Hip Thrust)",
+    "name": "Barbell Hip Thrust",
     "cues": [
       "Sehpanın kenarını kürek kemiklerinizin hemen altına denk getirin; süngerli barı kalça kıvrımına yerleştirin.",
       "Ayakları omuz genişliğinde açın; tepe noktada kaval kemikleriniz yere tam dik (90°) olmalıdır.",
@@ -69,7 +69,7 @@
     ]
   },
   "barbell-romanian-deadlift": {
-    "name": "Barbell Romen Deadlift (RDL)",
+    "name": "Romanian Deadlift (RDL)",
     "cues": [
       "Barı omuz genişliğinde kavrayıp dik durun; barı bacaklara yapışık tutmak için kanat kaslarınızı sıkın.",
       "Dizlerinizi hafifçe kırın ve bu diz açısını hareket boyunca kesinlikle değiştirmeyin.",
@@ -83,7 +83,7 @@
     ]
   },
   "barbell-row": {
-    "name": "Barbell Eğilerek Kürek (Bent-Over Row)",
+    "name": "Barbell Row",
     "cues": [
       "Dizleri hafif kırıp kalçadan bükülerek gövdeyi yaklaşık 45 derece eğin; belinizi kesinlikle düz tutun.",
       "Barı omuz genişliğinden biraz açık şekilde üstten tutun; bar taban ortasının hizasında sarkmalıdır.",
@@ -97,7 +97,7 @@
     ]
   },
   "bulgarian-split-squat": {
-    "name": "Bulgar Split Squat (Bulgarian Split Squat)",
+    "name": "Bulgarian Split Squat",
     "cues": [
       "Arka ayağın üstünü sehpa kenarına yerleştirin; öndeki ayağınızı dengeli bir adım mesafesinde öne alın.",
       "Omurgayı doğal ve sıkı tutarak gövdeye hafif bir öne eğim (~15°) verin.",
@@ -111,7 +111,7 @@
     ]
   },
   "cable-lateral-raise": {
-    "name": "Kablolu Yan Açış (Cable Lateral Raise)",
+    "name": "Cable Lateral Raise",
     "cues": [
       "Makarayı diz veya bilek hizasına ayarlayın; kablo vücudun önünden veya arkasından geçecek şekilde dik durun.",
       "Kolunuzu tam yana değil, gövdenin yaklaşık 30 derece önünde (kürek kemiği düzleminde) yukarı açın.",
@@ -125,7 +125,7 @@
     ]
   },
   "chest-supported-dumbbell-row": {
-    "name": "Sehpaya Dayalı Dambıl Kürek (Chest-Supported Row)",
+    "name": "Chest-Supported Dumbbell Row",
     "cues": [
       "Sehpayı 30–45 derece eğime getirin; göğsünüzü sehpaya dayayıp ayakları yere sağlam basın.",
       "Kolları serbest bırakarak dambılların sarkmasına izin verin; kürek kemiklerinizin iyice açıldığını hissedin.",
@@ -139,7 +139,7 @@
     ]
   },
   "conventional-barbell-deadlift": {
-    "name": "Geleneksel Barbell Deadlift (Conventional Deadlift)",
+    "name": "Deadlift",
     "cues": [
       "Ayakları kalça genişliğinde açın; bar kaval kemiğine 2-3 cm mesafede, tabanın tam ortasında olsun. Bacakların hemen dışından kavrayın.",
       "Göğsü dikleştirip kanat kaslarını sıkın (koltuk altlarını kilitleyin) ve yerdeyken barın boşluğunu (tık sesini) alın.",
@@ -154,7 +154,7 @@
     ]
   },
   "dead-bug": {
-    "name": "Dead Bug (Karın Egzersizi)",
+    "name": "Dead Bug",
     "cues": [
       "Sırtüstü uzanın; kolları tavana uzatın, diz ve kalçaları 90 derecede bükün.",
       "Belinizi yere doğru kuvvetlice bastırın; bel çukurunu sıfırlayıp yeri tamamen kapatın.",
@@ -168,7 +168,7 @@
     ]
   },
   "dumbbell-bench-press": {
-    "name": "Dambıl Göğüs Presi (Dumbbell Bench Press)",
+    "name": "Dumbbell Bench Press",
     "cues": [
       "Kürek kemiklerinizi sehpaya sabitleyin, ayakları yere basın ve dambılları göğüs üzerinde dengede tutun.",
       "Ön kollar yere dik, dirsekler gövdeyle 45–60° açıda kalacak şekilde dambılları kontrollüce indirin.",
@@ -196,7 +196,7 @@
     ]
   },
   "dumbbell-hammer-curl": {
-    "name": "Dambıl Çekiç Büküş (Hammer Curl)",
+    "name": "Hammer Curl",
     "cues": [
       "Dambılları avuç içleri birbirine bakacak şekilde (nötr tutuş) kavrayıp dik durun.",
       "Dirsekleri kaburgalara sabit tutun; dambılları omuzlar hizasında yukarıya doğru bükün.",
@@ -210,7 +210,7 @@
     ]
   },
   "dumbbell-lateral-raise": {
-    "name": "Dambıl Yan Açış (Lateral Raise)",
+    "name": "Dumbbell Lateral Raise",
     "cues": [
       "Gövdeyi çok hafif (10–15°) öne eğerek dik durun; dambılları yanlarınızda tutun.",
       "Dambılları tam yana değil, gövdenin hafifçe önünde (kürek kemiği düzleminde) dışa doğru kaldırın.",
@@ -224,7 +224,7 @@
     ]
   },
   "dumbbell-romanian-deadlift": {
-    "name": "Dambıl Romen Deadlift (Dumbbell RDL)",
+    "name": "Dumbbell RDL",
     "cues": [
       "Dambılları uylukların önünde tutun; omuzları geride, karnı ise sıkıca kilitli tutun.",
       "Dizleri hafif kırıp kalçayı geriye itin; arka bacaklarınızın derin bir şekilde esnediğini hissedin.",
@@ -252,7 +252,7 @@
     ]
   },
   "ez-bar-curl": {
-    "name": "Z-Bar Biceps Büküş (EZ-Bar Curl)",
+    "name": "EZ-Bar Curl",
     "cues": [
       "EZ-barın kıvrımlı yerlerini bilekleriniz rahat edecek açıda avuç içleri yukarı bakacak şekilde tutun.",
       "Dirsekleri gövdenin yanına sabitleyin, karnı sıkın; dizleri hafif kırıp dik durun.",
@@ -266,7 +266,7 @@
     ]
   },
   "face-pull": {
-    "name": "Kablolu Yüze Çekiş (Face Pull)",
+    "name": "Face Pull",
     "cues": [
       "Halat takılı makarayı göz hizasına getirin; halatı başparmaklar arkaya bakacak şekilde kavrayın.",
       "Bir adım geriye çıkıp sağlam bir duruş alın; karnınızı sıkıp göğüs kafesini aşağıda tutun.",
@@ -321,7 +321,7 @@
     ]
   },
   "incline-barbell-bench-press": {
-    "name": "Eğimli Barbell Pres (Incline Bench Press)",
+    "name": "Incline Barbell Bench Press",
     "cues": [
       "Sehpa açısını 30 dereceye ayarlayın; ayakları yere sağlam basın ve kürek kemiklerini mindere sabitleyin.",
       "Barı omuz genişliğinden biraz geniş tutun; raftan alıp üst göğsün tam üzerinde sabitleyin.",
@@ -335,7 +335,7 @@
     ]
   },
   "incline-dumbbell-curl": {
-    "name": "Eğimli Dambıl Büküş (Incline Dumbbell Curl)",
+    "name": "Incline Dumbbell Curl",
     "cues": [
       "Sehpayı 55–60 dereceye ayarlayın; baş ve gövde sehpaya tam temas edecek şekilde oturun.",
       "Kolları yere doğru dik sarkıtın; üst kolların hareket boyunca dik kalmasını sağlayın.",
@@ -349,7 +349,7 @@
     ]
   },
   "incline-dumbbell-press": {
-    "name": "Eğimli Dambıl Pres (Incline Dumbbell Press)",
+    "name": "Incline Dumbbell Press",
     "cues": [
       "Sehpayı 30 dereceye ayarlayın; kürek kemiklerini sehpaya kilitleyin ve ayakları yere sağlam basın.",
       "Dirsekleri 45–60° açıda tutarak dambılları kontrollüce üst göğsün yanlarına doğru indirin.",
@@ -391,7 +391,7 @@
     ]
   },
   "kneeling-cable-crunch": {
-    "name": "Diz Çökerek Kablolu Mekik (Cable Crunch)",
+    "name": "Cable Crunch",
     "cues": [
       "Makaraya dönük diz çökün; halat uçlarını alnın/kulakların yanına yapıştırıp elleri sabitleyin.",
       "Kalçayı yukarıda ve sabit tutun; kalçanın topuklara doğru geriye çökmesine asla izin vermeyin.",
@@ -405,7 +405,7 @@
     ]
   },
   "lat-pulldown": {
-    "name": "Kablolu Göğse Çekiş (Lat Pulldown)",
+    "name": "Lat Pulldown",
     "cues": [
       "Dizlikleri bacaklarınızı sıkıca tutacak şekilde ayarlayın; barı omuz genişliğinden biraz geniş kavrayın.",
       "Göğsü açıp kürek kemiklerini aşağı bastırarak gövdeyi çok hafif (10–15 derece) geriye eğin.",
@@ -419,7 +419,7 @@
     ]
   },
   "leg-extension": {
-    "name": "Bacak Uzatma (Leg Extension)",
+    "name": "Leg Extension",
     "cues": [
       "Makinenin dönme merkezini tam diz ekleminizle hizalayın; süngeri ayak bileklerinin hemen üstüne yerleştirin.",
       "Set boyunca kalçanızın koltuktan kalkmasını engellemek için yan tutamakları sıkıca kavrayın.",
@@ -432,7 +432,7 @@
     ]
   },
   "leg-press": {
-    "name": "Bacak İtişi (Leg Press)",
+    "name": "Leg Press",
     "cues": [
       "Ayakları platformun ortasına omuz genişliğinde koyun; dizler parmak uçlarıyla aynı hizada olsun.",
       "Kalçanızı ve belinizi koltuk sırtlığına sımsıkı yapıştırmak için yan kollardan güç alarak çekin.",
@@ -446,7 +446,7 @@
     ]
   },
   "lying-leg-curl": {
-    "name": "Yatarak Bacak Bükme (Lying Leg Curl)",
+    "name": "Lying Leg Curl",
     "cues": [
       "Diz eklemlerini makinenin dönme ekseniyle hizalayın; süngeri aşil tendonunun hemen üzerine getirin.",
       "Kalça ve pelvisin sehpadan ayrılmaması için tutamakları sıkıca kavrayıp kendinizi aşağı çekin.",
@@ -459,7 +459,7 @@
     ]
   },
   "one-arm-dumbbell-row": {
-    "name": "Tek Kol Dambıl Kürek (One-Arm Dumbbell Row)",
+    "name": "One-Arm Dumbbell Row",
     "cues": [
       "Aynı taraftaki el ve dizi sehpaya sağlam basın; omurgayı düz, kalçayı yere paralel tutun.",
       "Dambılın omuz hizasında sarkmasına izin verin; dipte kanat kasınızın tam esnediğini hissedin.",
@@ -473,7 +473,7 @@
     ]
   },
   "overhead-cable-triceps-extension": {
-    "name": "Baş Üstü Kablolu Triceps Uzatma (Overhead Cable Extension)",
+    "name": "Overhead Cable Extension",
     "cues": [
       "Makarayı baş/omuz hizasına getirin; sırtınızı makineye dönüp dengeli bir adım duruşu alın.",
       "Üst kolları kulak hizasında (~45° açıyla) öne sabitleyin; dirseklerin pozisyonunu hiç bozmayın.",
@@ -501,7 +501,7 @@
     ]
   },
   "pec-deck-fly": {
-    "name": "Makinede Göğüs Açış (Pec Deck Fly)",
+    "name": "Pec Deck Fly",
     "cues": [
       "Koltuk yüksekliğini tutamaklar orta göğüs hizasına gelecek şekilde ayarlayın; ayakları yere sağlam basın.",
       "Dirseklere hafif bir açı (~15°) verip bu açıyı sabitleyin; göğsünüzü açık tutun.",
@@ -529,7 +529,7 @@
     ]
   },
   "weighted-pull-ups": {
-    "name": "Ağırlıklı Barfiks (Weighted Pull-Up)",
+    "name": "Ağırlıklı Barfiks",
     "cues": [
       "Plakayı ağırlık kemerine güvenle sabitleyin ve bacaklarınızın arasında asılı bırakın.",
       "Omuzlardan biraz geniş üstten tutuşla, kollar tamamen açıkken başlayın.",
@@ -571,7 +571,7 @@
     ]
   },
   "rope-triceps-pressdown": {
-    "name": "Halatla Triceps İtişi (Rope Pushdown)",
+    "name": "Rope Triceps Pushdown",
     "cues": [
       "Gövdeyi hafif öne eğerek dik durun; dirsekleri kaburgaların yanına sımsıkı sabitleyin.",
       "Halatı nötr tutuşla kavrayın; dirsekler tamamen kilitlenene kadar düz şekilde aşağı itin.",
@@ -585,7 +585,7 @@
     ]
   },
   "seated-leg-curl": {
-    "name": "Oturarak Bacak Bükme (Seated Leg Curl)",
+    "name": "Seated Leg Curl",
     "cues": [
       "Sırtlığı diz eklemleriniz makinenin dönme merkezine denk gelecek şekilde ayarlayın; üst süngeri uylukların üzerine sıkıca kilitleyin.",
       "Ayak bileği süngerini aşilin hemen üzerine yerleştirin; ayak parmaklarını hafifçe kendinize doğru çekin.",
@@ -599,7 +599,7 @@
     ]
   },
   "seated-machine-calf-raise": {
-    "name": "Oturarak Makine Baldır Kaldırma (Seated Calf Raise)",
+    "name": "Seated Calf Raise",
     "cues": [
       "Ayak tabanının ön kısmını platforma yerleştirin; süngeri diz kapağının hemen üzerindeki uyluğa sıkıca sabitleyin.",
       "Topukları aşağıya doğru iyice indirin ve en dip esneme noktasında tam 2 saniye bekleyin.",
@@ -641,7 +641,7 @@
     ]
   },
   "standing-barbell-overhead-press": {
-    "name": "Barbell Ayakta Omuz Presi (Overhead Press)",
+    "name": "Overhead Press (OHP)",
     "cues": [
       "Barı omuz genişliğinin hemen dışında kavrayıp ön omuzlara oturtun; ön kollar dik, dirsekler hafifçe önde olsun.",
       "Sarsılmaz bir temel oluşturmak için kalça, ön bacak ve karın kaslarınızı sertçe sıkın.",
@@ -655,7 +655,7 @@
     ]
   },
   "standing-machine-calf-raise": {
-    "name": "Ayakta Makine Baldır Kaldırma (Standing Calf Raise)",
+    "name": "Standing Calf Raise",
     "cues": [
       "Ayak tabanının ön kısmını basamağın kenarına omuz genişliğinde koyun; dizleri kitlemeden hafif esnek tutun.",
       "Topukları bilek esnekliğinizin yettiği kadar aşağı indirin; dipte 2 tam saniye boyunca esnemede bekleyin.",
@@ -669,7 +669,7 @@
     ]
   },
   "straight-bar-cable-triceps-pressdown": {
-    "name": "Düz Bar Triceps İtişi (Cable Pushdown)",
+    "name": "Straight Bar Cable Pushdown",
     "cues": [
       "Düz barı omuz genişliğinde mesafeyle üstten kavrayın.",
       "Dirsekleri gövdenin iki yanına sabitleyin ve gövdenizi hafifçe öne doğru eğin.",
@@ -697,7 +697,7 @@
     ]
   },
   "cable-seated-row": {
-    "name": "Kablolu Oturarak Kürek (Seated Cable Row)",
+    "name": "Seated Cable Row",
     "cues": [
       "Göğsü dik, omurgayı nötr ve karın kaslarını sıkı tutarak sağlam bir pozisyon alın.",
       "Kürek kemiklerini geriye kilitleyip dirsekleri arkaya doğru çekerek hareketi başlatın.",
@@ -711,7 +711,7 @@
     ]
   },
   "dumbbell-seated-shoulder-press": {
-    "name": "Oturarak Dambıl Omuz Presi (Seated Dumbbell Press)",
+    "name": "Dumbbell Shoulder Press",
     "cues": [
       "Kaburgaları aşağıda tutun, karın ve kalçayı sıkarak gövdeyi tamamen sabitleyin.",
       "Ağırlığı omuz hizasında, dirsekler bileklerin tam altında olacak şekilde konumlandırın.",
@@ -834,7 +834,7 @@
     ]
   },
   "chest-dip": {
-    "name": "Göğüs Odaklı Dips (Chest Dip)",
+    "name": "Chest Dip",
     "cues": [
       "Barları kavrayıp kollar kilitli başlayın; göğsü hedeflemek için gövdeyi ~20-30° öne eğin.",
       "Dirsekleri bükerek üst kollar yere paralel olana kadar gövdeyi kontrollüce alçaltın.",
@@ -847,7 +847,7 @@
     ]
   },
   "chin-up": {
-    "name": "Ters Tutuş Barfiks (Chin-Up)",
+    "name": "Chin-Up",
     "cues": [
       "Barı tutun; uylukları pedin altına sıkıca yerleştirip göğsü yukarı kaldırın.",
       "Kürek kemiklerini aşağı çekip dirsekleri kaburgalara doğru sürerek hareketi başlatın.",
@@ -887,7 +887,7 @@
     ]
   },
   "sled-hack-squat": {
-    "name": "Kızaklı Hack Squat (Hack Squat)",
+    "name": "Hack Squat",
     "cues": [
       "Sırt ve kalçayı koltuğa tam yapıştırın, ayakları omuz genişliğinde platforma basın.",
       "Emniyet kilitlerini açın; kalça koltuktan ayrılmadan dizler yaklaşık 90 dereceye inene kadar kızağı indirin.",
@@ -928,7 +928,7 @@
     ]
   },
   "smith-squat": {
-    "name": "Smith Machine Squat",
+    "name": "Smith Makinesi Squat",
     "cues": [
       "Ayakları omuz genişliğinde açıp parmakları hafif dışa çevirin; karnı sağlamca kilitleyin.",
       "Kalça ve dizleri aynı anda bükerek inişi başlatın, göğsü daima açık tutun.",
@@ -942,7 +942,7 @@
     ]
   },
   "smith-bench-press": {
-    "name": "Smith Machine Göğüs Presi (Smith Bench Press)",
+    "name": "Smith Makinesi Bench Press",
     "cues": [
       "Kürek kemiklerini sehpaya sağlamca kilitleyin; ayak tabanlarını yere sabitleyin.",
       "Ağırlığı omuz üzerinde sabitleyin; dirsekleri gövdeyle 45-70° açı yapacak şekilde indirin.",
@@ -956,7 +956,7 @@
     ]
   },
   "smith-incline-bench-press": {
-    "name": "Smith Machine Eğimli Pres (Incline Bench Press)",
+    "name": "Smith Makinesi Eğimli Bench Press",
     "cues": [
       "Kürek kemiklerini sehpaya sağlamca kilitleyin; ayak tabanlarını yere sabitleyin.",
       "Ağırlığı omuz üzerinde sabitleyin; dirsekleri gövdeyle 45-70° açı yapacak şekilde indirin.",
@@ -970,7 +970,7 @@
     ]
   },
   "smith-stiff-legged-deadlift": {
-    "name": "Smith Machine Düz Bacak Deadlift (Stiff-Legged Deadlift)",
+    "name": "Smith Makinesi Düz Bacak Deadlift",
     "cues": [
       "Ayaklar kalça-omuz genişliğinde barın üzerine geçin; omurgayı düz ve kürek kemiklerini geride tutun.",
       "Barı bacaklara yakın tutarak kalçayı arkaya doğru itin, belin düzlüğünü kesinlikle bozmayın.",
@@ -984,7 +984,7 @@
     ]
   },
   "smith-hip-thrust": {
-    "name": "Smith Machine Kalça İtişi (Smith Hip Thrust)",
+    "name": "Smith Makinesi Hip Thrust",
     "cues": [
       "Üst sırtı kürek kemiklerinin hemen altından sehpaya yaslayın; ayakları omuz genişliğinde düz basın.",
       "Çeneyi hafifçe göğse yaklaştırın, topuklardan basarak kalçayı tavana doğru itin.",
@@ -1390,7 +1390,7 @@
     ]
   },
   "cable-neutral-grip-lat-pulldown": {
-    "name": "Kablolu Nötr Tutuş Göğse Çekiş (Neutral-Grip Lat Pulldown)",
+    "name": "Çift Makaralı Lat Pulldown",
     "cues": [
       "Barı tutun; uylukları pedin altına sıkıca yerleştirip göğsü yukarı kaldırın.",
       "Kürek kemiklerini aşağı çekip dirsekleri kaburgalara doğru sürerek hareketi başlatın.",
@@ -1634,7 +1634,7 @@
     ]
   },
   "barbell-curl": {
-    "name": "Barbell Biceps Büküş (Barbell Curl)",
+    "name": "Barbell Curl",
     "cues": [
       "Omuzları geride, dirsekleri gövdenin iki yanına sabitlenmiş olarak dik durun.",
       "Üst kolları hiç oynatmadan sadece biceps kaslarını sıkarak ağırlığı yukarı bükün.",
@@ -1725,7 +1725,7 @@
     ]
   },
   "ez-bar-lying-triceps-extension": {
-    "name": "Z-Bar Yatarak Alına Triceps Pres (Skull Crusher)",
+    "name": "Skull Crusher (EZ-Bar)",
     "cues": [
       "Sehpaya sağlamca uzanın; kollar alına doğru hafifçe geriye açılı (~75°) uzatılmış olsun.",
       "Dirsekleri sabit tutarak ağırlığı alına veya başın tepesine doğru kontrollüce indirin.",
@@ -3488,7 +3488,7 @@
     ]
   },
   "smith-front-squat": {
-    "name": "Smith Machine Ön Squat (Front Squat)",
+    "name": "Smith Makinesi Ön Squat",
     "cues": [
       "Ayakları omuz genişliğinde açıp parmakları hafif dışa çevirin; karnı sağlamca kilitleyin.",
       "Kalça ve dizleri aynı anda bükerek inişi başlatın, göğsü daima açık tutun.",
@@ -3502,7 +3502,7 @@
     ]
   },
   "smith-split-squat": {
-    "name": "Smith Machine Split Squat",
+    "name": "Smith Makinesi Split Squat",
     "cues": [
       "Leğen kemiği karşıya bakacak şekilde dengeli bir adım mesafesi alın; karnı kilitleyin.",
       "Arka diz yere bir parmak yaklaşana ve ön uyluk yere paralel olana dek dikçe inin.",
@@ -3516,7 +3516,7 @@
     ]
   },
   "smith-rear-lunge": {
-    "name": "Smith Machine Geriye Lunge (Reverse Lunge)",
+    "name": "Smith Makinesi Geriye Lunge",
     "cues": [
       "Leğen kemiği karşıya bakacak şekilde dengeli bir adım mesafesi alın; karnı kilitleyin.",
       "Arka diz yere bir parmak yaklaşana ve ön uyluk yere paralel olana dek dikçe inin.",
@@ -3530,7 +3530,7 @@
     ]
   },
   "smith-deficit-bulgarian-split-squat": {
-    "name": "Smith Machine Blok Üstü Bulgar Squat (Deficit Bulgarian Squat)",
+    "name": "Smith Makinesi Deficit Bulgarian Split Squat",
     "cues": [
       "Leğen kemiği karşıya bakacak şekilde dengeli bir adım mesafesi alın; karnı kilitleyin.",
       "Arka diz yere bir parmak yaklaşana ve ön uyluk yere paralel olana dek dikçe inin.",
@@ -3544,7 +3544,7 @@
     ]
   },
   "smith-bent-knee-good-morning": {
-    "name": "Smith Machine Diz Bükülü Bel Hareketi (Good Morning)",
+    "name": "Smith Makinesi Good Morning",
     "cues": [
       "Ayaklar kalça-omuz genişliğinde barın üzerine geçin; omurgayı düz ve kürek kemiklerini geride tutun.",
       "Barı bacaklara yakın tutarak kalçayı arkaya doğru itin, belin düzlüğünü kesinlikle bozmayın.",
@@ -3558,7 +3558,7 @@
     ]
   },
   "smith-calf-raise": {
-    "name": "Smith Machine Baldır Kaldırma (Calf Raise)",
+    "name": "Smith Makinesi Kalf Kaldırma",
     "cues": [
       "Ayak tabanının ön kısmını basamağın kenarına yerleştirin; dizler düz ancak kilitli olmasın.",
       "Kalf kaslarında derin bir esneme hissedene kadar topukları basamak hizasının altına indirin.",

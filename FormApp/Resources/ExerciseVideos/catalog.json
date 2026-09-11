@@ -578,29 +578,18 @@
     "sha256": "75e35bb5ad63fa91778de4e486c8cd0f0a335fadd18083d43459ad6c8b52061e"
   },
   "lat-pulldown": {
-    "videoId": "233012",
-    "baseExerciseId": "2330",
-    "name": "Cable Lat Pulldown Full Range Of Motion",
+    "videoId": "758312",
+    "baseExerciseId": "7583",
+    "name": "Cable Neutral Grip Lat Pulldown (male)",
     "exerciseType": "Strength",
     "bodyPart": "Back",
     "equipment": "Cable",
     "gender": "Male",
-    "targetMuscles": [
-      "Latissimus Dorsi"
-    ],
-    "secondaryMuscles": [
-      "Biceps Brachii",
-      "Brachialis",
-      "Deltoid Posterior",
-      "Infraspinatus",
-      "Teres Major",
-      "Teres Minor",
-      "Trapezius Lower Fibers",
-      "Trapezius Middle Fibers"
-    ],
-    "file": "233012.mp4",
-    "sourceFile": "23301201-Cable-Lat-Pulldown-Full-Range-Of-Motion_Back.mp4",
-    "sha256": "4b826ae59dfe03c8618859c079847abeb6adf1484a78f35520201af1da503c97"
+    "targetMuscles": [],
+    "secondaryMuscles": [],
+    "file": "758312.mp4",
+    "sourceFile": "75831201-Cable-Neutral-Grip-Lat-Pulldown-(male)_Back.mp4",
+    "sha256": "06afb3ee89dbacb4155e7ebb6af9265ebd2038550f31226e80690714b9da7b4f"
   },
   "leg-extension": {
     "videoId": "058512",
@@ -1975,18 +1964,29 @@
     "sha256": "be29c7874bc12a83e5d41657921b12079a96f75542557d1d2f15a88e09d47145"
   },
   "cable-neutral-grip-lat-pulldown": {
-    "videoId": "758312",
-    "baseExerciseId": "7583",
-    "name": "Cable Neutral Grip Lat Pulldown (male)",
+    "videoId": "233012",
+    "baseExerciseId": "2330",
+    "name": "Cable Lat Pulldown Full Range Of Motion",
     "exerciseType": "Strength",
     "bodyPart": "Back",
     "equipment": "Cable",
     "gender": "Male",
-    "targetMuscles": [],
-    "secondaryMuscles": [],
-    "file": "758312.mp4",
-    "sourceFile": "75831201-Cable-Neutral-Grip-Lat-Pulldown-(male)_Back.mp4",
-    "sha256": "06afb3ee89dbacb4155e7ebb6af9265ebd2038550f31226e80690714b9da7b4f"
+    "targetMuscles": [
+      "Latissimus Dorsi"
+    ],
+    "secondaryMuscles": [
+      "Biceps Brachii",
+      "Brachialis",
+      "Deltoid Posterior",
+      "Infraspinatus",
+      "Teres Major",
+      "Teres Minor",
+      "Trapezius Lower Fibers",
+      "Trapezius Middle Fibers"
+    ],
+    "file": "233012.mp4",
+    "sourceFile": "23301201-Cable-Lat-Pulldown-Full-Range-Of-Motion_Back.mp4",
+    "sha256": "4b826ae59dfe03c8618859c079847abeb6adf1484a78f35520201af1da503c97"
   },
   "cable-close-grip-front-lat-pulldown": {
     "videoId": "104712",
