@@ -1236,6 +1236,41 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(workout.displayTitle(programId: "powerbuilding-strength"), "Heavy Squat")
     }
 
+    func testExercisePriorityStaplesBeforeGymRatMoves() {
+        XCTAssertEqual(ExercisePriority.orderedIds.count, 300)
+        XCTAssertEqual(Set(ExercisePriority.orderedIds).count, 300)
+
+        let benchRank = ExercisePriority.priority(for: "barbell-bench-press")
+        let squatRank = ExercisePriority.priority(for: "barbell-back-squat")
+        let deadliftRank = ExercisePriority.priority(for: "conventional-barbell-deadlift")
+        let pullUpRank = ExercisePriority.priority(for: "pull-ups")
+        let latPulldownRank = ExercisePriority.priority(for: "lat-pulldown")
+
+        let svendPressRank = ExercisePriority.priority(for: "svend-press")
+        let tatePressRank = ExercisePriority.priority(for: "dumbbell-tate-press")
+        let zercherSquatRank = ExercisePriority.priority(for: "barbell-full-zercher-squat")
+        let larsenPressRank = ExercisePriority.priority(for: "barbell-larsen-press")
+        let gorillaRowRank = ExercisePriority.priority(for: "dumbbell-gorilla-row")
+        let tibialisRaiseRank = ExercisePriority.priority(for: "wall-supported-tibialis-raise")
+        let kasGluteBridgeRank = ExercisePriority.priority(for: "barbell-kas-glute-bridge")
+
+        // Staples in top 40
+        XCTAssertTrue(benchRank < 40)
+        XCTAssertTrue(squatRank < 40)
+        XCTAssertTrue(deadliftRank < 40)
+        XCTAssertTrue(pullUpRank < 40)
+        XCTAssertTrue(latPulldownRank < 40)
+
+        // Niche gym-rat moves in bottom 50 (> 250)
+        XCTAssertTrue(svendPressRank > 250)
+        XCTAssertTrue(tatePressRank > 250)
+        XCTAssertTrue(zercherSquatRank > 250)
+        XCTAssertTrue(larsenPressRank > 250)
+        XCTAssertTrue(gorillaRowRank > 250)
+        XCTAssertTrue(tibialisRaiseRank > 250)
+        XCTAssertTrue(kasGluteBridgeRank > 250)
+    }
+
     func testTurkishPossessiveNumberAndSetsProgress() {
         LanguageManager.setLanguage("tr")
         defer { LanguageManager.setLanguage("en") }

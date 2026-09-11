@@ -725,6 +725,10 @@ public struct ExerciseCatalogEntry: Identifiable, Hashable {
 public enum ExerciseCatalog {
     private static var _canonicalExercises: [String: ExerciseDefinition]?
 
+    public static func key(_ name: String) -> String {
+        name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+    }
+
     public static var canonicalExercises: [String: ExerciseDefinition] {
         if let cached = _canonicalExercises { return cached }
         let loaded = AppStore.loadBundledExercises()
@@ -828,7 +832,7 @@ public enum ExerciseCatalog {
                 programIds: entry.programIds,
                 workoutKeys: entry.workoutKeys
             )
-        }.sorted { $0.exercise.name.localizedCaseInsensitiveCompare($1.exercise.name) == .orderedAscending }
+        }.sorted { ExercisePriority.compare($0.exercise, $1.exercise) }
     }
 
     private static func merge(primary: Exercise, fallback: Exercise) -> Exercise {
@@ -843,5 +847,359 @@ public enum ExerciseCatalog {
         if merged.movementType == nil { merged.movementType = fallback.movementType }
         if merged.movementAssetId == nil { merged.movementAssetId = fallback.movementAssetId }
         return merged
+    }
+}
+
+public enum ExercisePriority {
+    public static let orderedIds: [String] = [
+        "barbell-bench-press",
+        "barbell-back-squat",
+        "conventional-barbell-deadlift",
+        "lat-pulldown",
+        "barbell-row",
+        "dumbbell-hammer-curl",
+        "rope-triceps-pressdown",
+        "dumbbell-lateral-raise",
+        "bulgarian-split-squat",
+        "standing-machine-calf-raise",
+        "front-plank",
+        "jump-rope",
+        "dumbbell-bench-press",
+        "leg-press",
+        "barbell-romanian-deadlift",
+        "pull-ups",
+        "one-arm-dumbbell-row",
+        "ez-bar-curl",
+        "straight-bar-cable-triceps-pressdown",
+        "cable-lateral-raise",
+        "walking-lunge",
+        "seated-machine-calf-raise",
+        "hanging-leg-raise",
+        "box-jump",
+        "incline-barbell-bench-press",
+        "leg-extension",
+        "dumbbell-romanian-deadlift",
+        "chin-up",
+        "cable-seated-row",
+        "barbell-curl",
+        "ez-bar-lying-triceps-extension",
+        "dumbbell-shrug",
+        "bodyweight-rear-lunge",
+        "sled-calf-press-on-leg-press",
+        "kneeling-cable-crunch",
+        "burpee",
+        "incline-dumbbell-press",
+        "barbell-front-squat",
+        "barbell-hip-thrust",
+        "weighted-pull-ups",
+        "chest-supported-dumbbell-row",
+        "incline-dumbbell-curl",
+        "overhead-cable-triceps-extension",
+        "barbell-shrug",
+        "dumbbell-step-up",
+        "hanging-knee-raise",
+        "mountain-climber",
+        "standing-barbell-overhead-press",
+        "goblet-squat",
+        "lying-leg-curl",
+        "assisted-pull-up",
+        "face-pull",
+        "dumbbell-alternate-biceps-curl",
+        "assisted-dip-machine",
+        "lever-seated-reverse-fly",
+        "ab-wheel-rollout",
+        "dumbbell-seated-shoulder-press",
+        "sled-hack-squat",
+        "seated-leg-curl",
+        "lever-t-bar-row",
+        "cable-curl",
+        "bench-dip",
+        "side-plank",
+        "push-ups",
+        "chest-dip",
+        "pec-deck-fly",
+        "lever-chest-press",
+        "smith-squat",
+        "trap-bar-deadlift",
+        "cable-neutral-grip-lat-pulldown",
+        "lever-chest-supported-row",
+        "dumbbell-concentration-curl",
+        "dumbbell-skull-crusher",
+        "dumbbell-seated-lateral-raise",
+        "barbell-walking-lunge",
+        "barbell-standing-calf-raise",
+        "russian-twist",
+        "power-sled-push",
+        "lever-seated-shoulder-press",
+        "bodyweight-squat",
+        "barbell-sumo-deadlift",
+        "cable-close-grip-front-lat-pulldown",
+        "cable-seated-row-with-v-bar",
+        "barbell-preacher-curl",
+        "dumbbell-standing-triceps-extension",
+        "lever-lateral-raise",
+        "smith-split-squat",
+        "single-leg-calf-raise",
+        "bicycle-crunch",
+        "battling-ropes-high-waves",
+        "cable-standing-fly",
+        "pendulum-squat",
+        "kettlebell-swing",
+        "cable-straight-arm-pulldown",
+        "cable-seated-wide-grip-row",
+        "ez-barbell-preacher-curl",
+        "cable-one-arm-triceps-pushdown",
+        "lever-machine-shrug",
+        "smith-rear-lunge",
+        "bodyweight-standing-calf-raise",
+        "reverse-crunch",
+        "jumping-jack",
+        "barbell-close-grip-bench-press",
+        "lever-belt-squat",
+        "dumbbell-glute-bridge",
+        "dumbbell-pullover",
+        "barbell-pendlay-row",
+        "dumbbell-preacher-curl",
+        "cable-v-bar-triceps-pushdown",
+        "barbell-upright-row",
+        "barbell-step-up",
+        "smith-calf-raise",
+        "floor-crunch",
+        "dumbbell-fly",
+        "lever-seated-hip-adduction",
+        "smith-hip-thrust",
+        "lever-seated-wide-lat-pulldown",
+        "lever-high-row",
+        "lever-preacher-curl",
+        "lever-seated-dip",
+        "dumbbell-front-raise",
+        "dead-bug",
+        "dumbbell-arnold-press",
+        "smith-stiff-legged-deadlift",
+        "lever-lying-t-bar-row",
+        "cable-rope-hammer-curl",
+        "cable-reverse-grip-pushdown",
+        "cable-front-raise",
+        "bird-dog",
+        "lever-incline-chest-press",
+        "lever-machine-hip-thrust",
+        "inverted-row",
+        "lever-biceps-curl",
+        "cable-standing-reverse-fly",
+        "smith-bench-press",
+        "lever-seated-hip-abduction",
+        "dumbbell-standing-biceps-curl",
+        "smith-incline-bench-press",
+        "dumbbell-seated-curl",
+        "dumbbell-rear-fly",
+        "barbell-seated-overhead-press",
+        "barbell-decline-bench-press",
+        "barbell-low-bar-squat",
+        "dumbbell-45-deg-back-extension",
+        "cable-underhand-pulldown",
+        "cable-high-row",
+        "ez-barbell-spider-curl",
+        "ez-barbell-incline-triceps-extension",
+        "cable-leaning-lateral-raise",
+        "dumbbell-deficit-reverse-lunge",
+        "donkey-calf-raise",
+        "farmer-carry",
+        "dumbbell-decline-bench-press",
+        "barbell-box-squat",
+        "barbell-good-morning",
+        "cable-rope-straight-arm-pulldown",
+        "cable-low-seated-row",
+        "dumbbell-spider-curl",
+        "ez-barbell-decline-triceps-extension",
+        "cable-one-arm-lateral-raise",
+        "smith-deficit-bulgarian-split-squat",
+        "cable-woodchopper",
+        "dumbbell-floor-press",
+        "dumbbell-goblet-sumo-squat",
+        "dumbbell-single-leg-romanian-deadlift",
+        "cable-one-arm-lat-pulldown",
+        "cable-rope-seated-row",
+        "dumbbell-zottman-curl",
+        "dumbbell-kickback",
+        "cable-behind-the-back-lateral-raise",
+        "side-lunge",
+        "pallof-press",
+        "cable-low-fly",
+        "sled-45-degrees-one-leg-press",
+        "cable-pull-through",
+        "parallel-grip-chin-up",
+        "lever-machine-low-row",
+        "cable-one-arm-curl",
+        "cable-single-arm-overhead-triceps-extension",
+        "cable-seated-rear-delt-fly-with-chest-support",
+        "cable-reverse-lunge",
+        "dumbbell-suitcase-carry",
+        "cable-middle-fly",
+        "jump-squat",
+        "barbell-rack-pull",
+        "lever-machine-pullover",
+        "lever-unilateral-row",
+        "cable-incline-biceps-curl",
+        "cable-kickback",
+        "lever-seated-rear-delt-row",
+        "dumbbell-curtsey-lunge",
+        "cable-decline-fly",
+        "smith-front-squat",
+        "nordic-hamstring-curl",
+        "cable-kneeling-pullover",
+        "dumbbell-kroc-row",
+        "cable-preacher-curl",
+        "ring-dip",
+        "dumbbell-upright-row",
+        "push-press",
+        "lever-vertical-squat",
+        "glute-ham-raise",
+        "landmine-one-arm-bent-over-row",
+        "cable-overhead-curl",
+        "resistance-band-triceps-pushdown",
+        "weighted-front-raise",
+        "dumbbell-one-arm-shoulder-press",
+        "cable-kneeling-glute-kickback",
+        "landmine-v-bar-bent-over-row",
+        "dumbbell-cross-body-hammer-curl",
+        "barbell-front-raise",
+        "incline-push-up",
+        "cable-hip-abduction",
+        "dumbbell-incline-hammer-curl",
+        "decline-push-up",
+        "lever-standing-single-leg-curl",
+        "dumbbell-hammer-preacher-curl",
+        "diamond-push-up",
+        "lever-lying-single-leg-curl",
+        "landmine-press",
+        "lever-seated-one-leg-curl",
+        "cable-standing-chest-press",
+        "cable-standing-single-arm-chest-press",
+        "cable-standing-single-arm-fly",
+        "dumbbell-incline-fly",
+        "dumbbell-lying-hammer-press",
+        "dumbbell-squeeze-bench-press",
+        "weighted-push-up-with-vest",
+        "barbell-pause-full-squat",
+        "single-leg-hip-thrust",
+        "cable-kneeling-lat-pulldown",
+        "dumbbell-renegade-row",
+        "dumbbell-one-arm-hammer-preacher-curl",
+        "barbell-jm-bench-press",
+        "cable-y-raise",
+        "cable-lateral-lunge",
+        "hanging-toes-to-bar",
+        "pike-push-up",
+        "dumbbell-elevated-heel-goblet-squat",
+        "dumbbell-lying-leg-curl",
+        "cable-kneeling-one-arm-lat-pulldown",
+        "suspension-trainer-row",
+        "barbell-reverse-curl",
+        "dumbbell-incline-y-raise",
+        "dumbbell-decline-fly",
+        "heel-elevated-bodyweight-squat",
+        "cable-lying-single-leg-curl",
+        "cable-single-arm-straight-arm-pulldown",
+        "ring-inverted-row",
+        "ez-barbell-reverse-grip-curl",
+        "barbell-wide-grip-upright-row",
+        "dumbbell-lying-one-arm-press",
+        "sled-reverse-hack-squat",
+        "kettlebell-deadlift",
+        "scapular-pull-up",
+        "resistance-band-seated-row",
+        "dumbbell-biceps-curl-reverse",
+        "band-lateral-raise",
+        "barbell-reverse-grip-bench-press",
+        "landmine-squat",
+        "kettlebell-one-arm-clean",
+        "resistance-band-lat-pulldown",
+        "band-biceps-curl",
+        "barbell-floor-chest-press",
+        "barbell-incline-close-grip-bench-press",
+        "kettlebell-strict-press",
+        "dumbbell-incline-rear-fly",
+        "landmine-single-arm-press",
+        "resistance-band-standing-chest-press",
+        "resistance-band-face-pull",
+        "barbell-spoto-press",
+        "sissy-squat-bodyweight",
+        "barbell-kas-glute-bridge",
+        "cable-lateral-pulldown-with-v-bar",
+        "barbell-lying-seal-row-on-rack",
+        "barbell-drag-curl",
+        "dumbbell-tate-press",
+        "head-supported-dumbbell-rear-lateral-raise",
+        "cossack-squat",
+        "wall-supported-tibialis-raise",
+        "landmine-180",
+        "barbell-larsen-press",
+        "barbell-full-zercher-squat",
+        "bodyweight-frog-hip-thrust",
+        "dumbbell-gorilla-row",
+        "cable-drag-curl",
+        "cable-standing-high-cross-triceps-extension",
+        "dumbbell-split-squat-front-foot-elevanted",
+        "barbell-z-press",
+        "barbell-overhead-squat",
+        "smith-bent-knee-good-morning",
+        "cable-one-arm-twisting-seated-row",
+        "cable-standing-inner-curl",
+        "lever-viking-press",
+        "reverse-hyperextension-on-box",
+        "svend-press",
+        "archer-push-up",
+        "handstand-push-up",
+        "ring-incline-push-up",
+        "kettlebell-one-arm-snatch",
+    ]
+
+    private static let priorityById: [String: Int] = {
+        var map = [String: Int]()
+        for (index, id) in orderedIds.enumerated() {
+            map[id] = index
+        }
+        return map
+    }()
+
+    private static let priorityByKey: [String: Int] = {
+        var map = [String: Int]()
+        for (index, id) in orderedIds.enumerated() {
+            let key = ExerciseCatalog.key(id.replacingOccurrences(of: "-", with: " "))
+            map[key] = index
+        }
+        return map
+    }()
+
+    public static func priority(for exerciseId: String?) -> Int {
+        guard let exerciseId = exerciseId, !exerciseId.isEmpty else { return Int.max }
+        if let rank = priorityById[exerciseId] { return rank }
+        let key = ExerciseCatalog.key(exerciseId)
+        if let rank = priorityByKey[key] { return rank }
+        return Int.max
+    }
+
+    public static func priority(for exercise: Exercise) -> Int {
+        if let id = exercise.exerciseId, let rank = priorityById[id] {
+            return rank
+        }
+        let key = ExerciseCatalog.key(exercise.name)
+        if let rank = priorityByKey[key] {
+            return rank
+        }
+        let idFromName = key.replacingOccurrences(of: " ", with: "-")
+        if let rank = priorityById[idFromName] {
+            return rank
+        }
+        return Int.max
+    }
+
+    public static func compare(_ a: Exercise, _ b: Exercise) -> Bool {
+        let pA = priority(for: a)
+        let pB = priority(for: b)
+        if pA != pB {
+            return pA < pB
+        }
+        return a.displayName.localizedCaseInsensitiveCompare(b.displayName) == .orderedAscending
     }
 }

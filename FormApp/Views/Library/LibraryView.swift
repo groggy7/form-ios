@@ -28,7 +28,7 @@ public struct LibraryView: View {
                 entry.exercise.name.localizedCaseInsensitiveContains(query)
             let matchMovement = selectedMovement == nil || entry.exercise.resolvedMovement == selectedMovement
             return matchQuery && matchMovement
-        }.sorted { $0.exercise.displayName.localizedCaseInsensitiveCompare($1.exercise.displayName) == .orderedAscending }
+        }.sorted { ExercisePriority.compare($0.exercise, $1.exercise) }
         let hasActiveFilters = selectedMovement != nil
 
         ScrollView {
