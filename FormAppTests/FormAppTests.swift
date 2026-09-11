@@ -68,6 +68,8 @@ final class FormAppTests: XCTestCase {
         defer { video.release(); window.isHidden = true }
         video.setPlaying(true)
         try await Task.sleep(nanoseconds: 2_000_000_000)
+        XCTAssertEqual(ExerciseVideoCatalog.playbackSpeed, 1.2, accuracy: 0.01)
+        XCTAssertEqual(video.playbackRate, 1.2, accuracy: 0.01)
         XCTAssertGreaterThan(video.playbackTime.seconds, 0.1)
         XCTAssertEqual(video.renderedVideoFrame, framing.videoFrame(in: video.bounds.size))
         let image = UIGraphicsImageRenderer(size: video.bounds.size).image { _ in
@@ -78,6 +80,7 @@ final class FormAppTests: XCTestCase {
         attachment.lifetime = .keepAlways
         add(attachment)
         video.setPlaying(false)
+        XCTAssertEqual(video.playbackRate, 0.0, accuracy: 0.01)
         let pausedAt = video.playbackTime.seconds
         try await Task.sleep(nanoseconds: 200_000_000)
         XCTAssertEqual(video.playbackTime.seconds, pausedAt, accuracy: 0.05)

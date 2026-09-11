@@ -3,6 +3,8 @@ import AVFoundation
 import UIKit
 
 enum ExerciseVideoCatalog {
+    static let playbackSpeed: Float = 1.2
+
     struct Framing: Decodable {
         var left: CGFloat = 0
         var top: CGFloat = 0
@@ -93,12 +95,15 @@ private struct LocalExerciseVideo: UIViewRepresentable {
 }
 
 final class ExercisePlayerView: UIView {
+    static let playbackSpeed: Float = ExerciseVideoCatalog.playbackSpeed
+
     private let playerLayer = AVPlayerLayer()
     private let framing: ExerciseVideoCatalog.Framing
     private let queue = AVQueuePlayer()
     private var looper: AVPlayerLooper?
     private var wantsPlayback = false
     var playbackTime: CMTime { queue.currentTime() }
+    var playbackRate: Float { queue.rate }
     var renderedVideoFrame: CGRect { playerLayer.frame }
 
     init(url: URL, framing: ExerciseVideoCatalog.Framing = .init()) {
@@ -110,6 +115,7 @@ final class ExercisePlayerView: UIView {
         playerLayer.videoGravity = .resizeAspect
         queue.isMuted = true
         queue.volume = 0
+        queue.defaultRate = Self.playbackSpeed
         // No audio-session activation: exercise demos must not interrupt music.
         looper = AVPlayerLooper(player: queue, templateItem: AVPlayerItem(url: url))
         playerLayer.player = queue
@@ -134,7 +140,11 @@ final class ExercisePlayerView: UIView {
         syncPlayback()
     }
     private func syncPlayback() {
-        if wantsPlayback && window != nil { queue.play() } else { queue.pause() }
+        if wantsPlayback && window != nil {
+            queue.rate = Self.playbackSpeed
+        } else {
+            queue.pause()
+        }
     }
     func release() {
         queue.pause()
