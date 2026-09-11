@@ -27,19 +27,14 @@ public struct ExerciseDetailSheet: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
                     // Local exercise video; thumbnails remain empty.
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .fill(AppColors.exerciseVideoSurface)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                    .stroke(AppColors.border, lineWidth: 1)
-                            )
-
-                        ExerciseDetailVideo(exerciseId: currentExercise.exerciseId)
-                        .padding(12)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 224)
+                    ExerciseDetailVideo(exerciseId: currentExercise.exerciseId)
+                        .frame(maxWidth: .infinity)
+                        .background(AppColors.exerciseVideoSurface)
+                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                .stroke(AppColors.border, lineWidth: 1)
+                        )
 
                     // Title & Movement Badge
                     VStack(alignment: .leading, spacing: 8) {

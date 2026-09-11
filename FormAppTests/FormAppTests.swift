@@ -22,24 +22,59 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
+    func testExerciseVideoFramingIsFullBleed() throws {
+        XCTAssertEqual(ExerciseVideoCatalog.framings.count, 50)
+        for id in ExerciseVideoCatalog.entries.keys {
+            let crop = try XCTUnwrap(ExerciseVideoCatalog.framings[id], id)
+            XCTAssertGreaterThan(crop.width, 0)
+            XCTAssertGreaterThan(crop.height, 0)
+            XCTAssertGreaterThanOrEqual(crop.left, 0)
+            XCTAssertGreaterThanOrEqual(crop.top, 0)
+            XCTAssertLessThanOrEqual(crop.left + crop.width, 1.00001)
+            XCTAssertLessThanOrEqual(crop.top + crop.height, 1.00001)
+            for width: CGFloat in [320, 440] {
+                let size = CGSize(width: width, height: width / crop.aspectRatio)
+                let frame = crop.videoFrame(in: size)
+                XCTAssertEqual(frame.width / frame.height, 16 / 9, accuracy: 0.0001)
+                XCTAssertLessThanOrEqual(frame.minX, 0)
+                XCTAssertLessThanOrEqual(frame.minY, 0)
+                XCTAssertGreaterThanOrEqual(frame.maxX + 0.001, size.width)
+                XCTAssertGreaterThanOrEqual(frame.maxY + 0.001, size.height)
+            }
+        }
+        let host = UIHostingController(rootView:
+            ExerciseDetailVideo(exerciseId: "barbell-bench-press").frame(width: 320)
+        )
+        let size = host.sizeThatFits(in: CGSize(width: 320, height: 1000))
+        XCTAssertEqual(size.width, 320, accuracy: 0.1)
+        XCTAssertEqual(size.height, 256, accuracy: 0.1)
+    }
+
+    @MainActor
     func testLocalExerciseVideoPlaysAndPauses() async throws {
         let url = try XCTUnwrap(ExerciseVideoCatalog.url(for: "barbell-bench-press"))
         let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 300))
         let controller = UIViewController()
         window.rootViewController = controller
-        let video = ExercisePlayerView(url: url)
-        video.frame = CGRect(x: 0, y: 0, width: 320, height: 224)
+        let framing = ExerciseVideoCatalog.framing(for: "barbell-bench-press")
+        let video = ExercisePlayerView(url: url, framing: framing)
+        video.frame = CGRect(x: 0, y: 0, width: 320, height: 320 / framing.aspectRatio)
         controller.view.addSubview(video)
         window.isHidden = false
+        // This standalone test window is not the app's key window; lay out its
+        // hosted view explicitly before checking the child AVPlayerLayer.
+        video.setNeedsLayout()
+        video.layoutIfNeeded()
         defer { video.release(); window.isHidden = true }
         video.setPlaying(true)
         try await Task.sleep(nanoseconds: 2_000_000_000)
         XCTAssertGreaterThan(video.playbackTime.seconds, 0.1)
+        XCTAssertEqual(video.renderedVideoFrame, framing.videoFrame(in: video.bounds.size))
         let image = UIGraphicsImageRenderer(size: video.bounds.size).image { _ in
             video.drawHierarchy(in: video.bounds, afterScreenUpdates: true)
         }
         let attachment = XCTAttachment(image: image)
-        attachment.name = "Detail video on matched dark background"
+        attachment.name = "Full-bleed centered detail video"
         attachment.lifetime = .keepAlways
         add(attachment)
         video.setPlaying(false)

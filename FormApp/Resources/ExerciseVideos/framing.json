@@ -1,0 +1,352 @@
+{
+  "ab-wheel-rollout": {
+    "left": 0.08020833333333333,
+    "top": 0.0703703703703703,
+    "width": 0.8708333333333333,
+    "height": 0.7574074074074075,
+    "aspectRatio": 2.0440097799510997
+  },
+  "barbell-back-squat": {
+    "left": 0.13932291666666669,
+    "top": 0.07037037037037042,
+    "width": 0.6536458333333334,
+    "height": 0.9296296296296296,
+    "aspectRatio": 1.25
+  },
+  "barbell-bench-press": {
+    "left": 0.16145833333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "barbell-front-squat": {
+    "left": 0.13541666666666674,
+    "top": 0.051851851851851816,
+    "width": 0.6666666666666666,
+    "height": 0.9481481481481482,
+    "aspectRatio": 1.25
+  },
+  "barbell-hip-thrust": {
+    "left": 0.10624999999999996,
+    "top": 0.13518518518518519,
+    "width": 0.7197916666666667,
+    "height": 0.8500000000000001,
+    "aspectRatio": 1.505446623093682
+  },
+  "barbell-romanian-deadlift": {
+    "left": 0.11848958333333337,
+    "top": 0.03333333333333327,
+    "width": 0.6796875,
+    "height": 0.9666666666666667,
+    "aspectRatio": 1.25
+  },
+  "barbell-row": {
+    "left": 0.17057291666666669,
+    "top": 0.1074074074074074,
+    "width": 0.6276041666666666,
+    "height": 0.8925925925925926,
+    "aspectRatio": 1.25
+  },
+  "bulgarian-split-squat": {
+    "left": 0.10221354166666663,
+    "top": 0.024074074074074026,
+    "width": 0.6757812500000001,
+    "height": 0.9611111111111112,
+    "aspectRatio": 1.25
+  },
+  "cable-lateral-raise": {
+    "left": 0.15299479166666674,
+    "top": 0.005555555555555536,
+    "width": 0.69921875,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.25
+  },
+  "chest-supported-dumbbell-row": {
+    "left": 0.20000000000000007,
+    "top": 0.09814814814814815,
+    "width": 0.6416666666666666,
+    "height": 0.8777777777777779,
+    "aspectRatio": 1.2995780590717296
+  },
+  "conventional-barbell-deadlift": {
+    "left": 0.15885416666666669,
+    "top": 0.014814814814814836,
+    "width": 0.6927083333333334,
+    "height": 0.9851851851851852,
+    "aspectRatio": 1.25
+  },
+  "dead-bug": {
+    "left": 0.002083333333333326,
+    "top": 0.18148148148148152,
+    "width": 0.9979166666666667,
+    "height": 0.7203703703703704,
+    "aspectRatio": 2.4627249357326475
+  },
+  "dumbbell-bench-press": {
+    "left": 0.16927083333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-floor-press": {
+    "left": 0.18294270833333331,
+    "top": 0.024074074074074026,
+    "width": 0.6757812500000001,
+    "height": 0.9611111111111112,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-hammer-curl": {
+    "left": 0.1640625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-lateral-raise": {
+    "left": 0.14388020833333331,
+    "top": 0.024074074074074026,
+    "width": 0.6861979166666667,
+    "height": 0.975925925925926,
+    "aspectRatio": 1.2500000000000002
+  },
+  "dumbbell-romanian-deadlift": {
+    "left": 0.16276041666666674,
+    "top": 0.03333333333333327,
+    "width": 0.6796875,
+    "height": 0.9666666666666667,
+    "aspectRatio": 1.25
+  },
+  "dumbbell-step-up": {
+    "left": 0.13020833333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "ez-bar-curl": {
+    "left": 0.12044270833333337,
+    "top": 0.024074074074074026,
+    "width": 0.6861979166666667,
+    "height": 0.975925925925926,
+    "aspectRatio": 1.2500000000000002
+  },
+  "face-pull": {
+    "left": 0.17122395833333337,
+    "top": 0,
+    "width": 0.69921875,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.25
+  },
+  "farmer-carry": {
+    "left": 0.13932291666666674,
+    "top": 0.03333333333333327,
+    "width": 0.6796875,
+    "height": 0.9666666666666667,
+    "aspectRatio": 1.25
+  },
+  "goblet-squat": {
+    "left": 0.14518229166666669,
+    "top": 0.04259259259259257,
+    "width": 0.6731770833333334,
+    "height": 0.9574074074074074,
+    "aspectRatio": 1.25
+  },
+  "hanging-knee-raise": {
+    "left": 0.17447916666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "incline-barbell-bench-press": {
+    "left": 0.13541666666666669,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "incline-dumbbell-curl": {
+    "left": 0.17447916666666669,
+    "top": 0.08888888888888885,
+    "width": 0.640625,
+    "height": 0.9111111111111111,
+    "aspectRatio": 1.25
+  },
+  "incline-dumbbell-press": {
+    "left": 0.11458333333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "jump-rope": {
+    "left": 0.16210937499999994,
+    "top": 0.061111111111111116,
+    "width": 0.6601562500000001,
+    "height": 0.9388888888888889,
+    "aspectRatio": 1.2500000000000002
+  },
+  "kettlebell-swing": {
+    "left": 0.20572916666666669,
+    "top": 0.014814814814814836,
+    "width": 0.6927083333333334,
+    "height": 0.9851851851851852,
+    "aspectRatio": 1.25
+  },
+  "kneeling-cable-crunch": {
+    "left": 0.15885416666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "lat-pulldown": {
+    "left": 0.16875000000000007,
+    "top": 0,
+    "width": 0.7041666666666666,
+    "height": 1,
+    "aspectRatio": 1.2518518518518518
+  },
+  "leg-extension": {
+    "left": 0.19661458333333331,
+    "top": 0.07037037037037042,
+    "width": 0.6536458333333334,
+    "height": 0.9296296296296296,
+    "aspectRatio": 1.25
+  },
+  "leg-press": {
+    "left": 0.06979166666666664,
+    "top": 0.005555555555555536,
+    "width": 0.896875,
+    "height": 0.9888888888888889,
+    "aspectRatio": 1.6123595505617976
+  },
+  "lying-leg-curl": {
+    "left": 0.10624999999999996,
+    "top": 0.1074074074074074,
+    "width": 0.6833333333333335,
+    "height": 0.8925925925925926,
+    "aspectRatio": 1.360995850622407
+  },
+  "one-arm-dumbbell-row": {
+    "left": 0.13749999999999996,
+    "top": 0,
+    "width": 0.7562500000000001,
+    "height": 1,
+    "aspectRatio": 1.3444444444444446
+  },
+  "overhead-cable-triceps-extension": {
+    "left": 0.19010416666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "pallof-press": {
+    "left": 0.1640625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "pec-deck-fly": {
+    "left": 0.1171875,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "pull-ups": {
+    "left": 0.12760416666666669,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "weighted-pull-ups": {
+    "left": 0.16666666666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "push-press": {
+    "left": 0.11458333333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "push-ups": {
+    "left": 0.17916666666666659,
+    "top": 0.19999999999999996,
+    "width": 0.6104166666666668,
+    "height": 0.7574074074074075,
+    "aspectRatio": 1.4327628361858191
+  },
+  "rope-triceps-pressdown": {
+    "left": 0.203125,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "seated-leg-curl": {
+    "left": 0.11263020833333326,
+    "top": 0.024074074074074026,
+    "width": 0.6861979166666667,
+    "height": 0.975925925925926,
+    "aspectRatio": 1.2500000000000002
+  },
+  "seated-machine-calf-raise": {
+    "left": 0.19856770833333337,
+    "top": 0.03333333333333327,
+    "width": 0.67578125,
+    "height": 0.9611111111111111,
+    "aspectRatio": 1.25
+  },
+  "side-plank": {
+    "left": 0.012499999999999956,
+    "top": 0.20925925925925926,
+    "width": 0.9177083333333335,
+    "height": 0.7907407407407407,
+    "aspectRatio": 2.0632318501170963
+  },
+  "single-leg-calf-raise": {
+    "left": 0.14583333333333337,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "standing-barbell-overhead-press": {
+    "left": 0.1484375,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "standing-machine-calf-raise": {
+    "left": 0.06184895833333337,
+    "top": 0.005555555555555536,
+    "width": 0.69921875,
+    "height": 0.9944444444444445,
+    "aspectRatio": 1.25
+  },
+  "straight-bar-cable-triceps-pressdown": {
+    "left": 0.15104166666666674,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  },
+  "trap-bar-deadlift": {
+    "left": 0.140625,
+    "top": 0,
+    "width": 0.703125,
+    "height": 1,
+    "aspectRatio": 1.25
+  }
+}
