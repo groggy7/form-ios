@@ -136,6 +136,7 @@ public struct ExerciseDefinition: Identifiable, Codable, Hashable {
     public var avoid: [String]
     public var cuesTr: [String]
     public var avoidTr: [String]
+    public var searchKeywords: [String]
 
     public init(
         id: String,
@@ -145,7 +146,8 @@ public struct ExerciseDefinition: Identifiable, Codable, Hashable {
         cues: [String] = [],
         avoid: [String] = [],
         cuesTr: [String] = [],
-        avoidTr: [String] = []
+        avoidTr: [String] = [],
+        searchKeywords: [String] = []
     ) {
         self.id = id
         self.name = name
@@ -155,10 +157,11 @@ public struct ExerciseDefinition: Identifiable, Codable, Hashable {
         self.avoid = avoid
         self.cuesTr = cuesTr
         self.avoidTr = avoidTr
+        self.searchKeywords = searchKeywords
     }
 
     private enum CodingKeys: String, CodingKey {
-        case id, name, movementType, movementAssetId, cues, avoid, cuesTr, avoidTr
+        case id, name, movementType, movementAssetId, cues, avoid, cuesTr, avoidTr, searchKeywords
     }
 
     public init(from decoder: Decoder) throws {
@@ -171,6 +174,7 @@ public struct ExerciseDefinition: Identifiable, Codable, Hashable {
         self.avoid = (try? container.decode([String].self, forKey: .avoid)) ?? []
         self.cuesTr = (try? container.decode([String].self, forKey: .cuesTr)) ?? []
         self.avoidTr = (try? container.decode([String].self, forKey: .avoidTr)) ?? []
+        self.searchKeywords = (try? container.decode([String].self, forKey: .searchKeywords)) ?? []
     }
 
     public var cuesText: String { cues.joined(separator: "\n") }

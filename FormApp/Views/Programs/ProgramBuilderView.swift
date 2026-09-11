@@ -357,11 +357,14 @@ struct AddExercisePickerSheet: View {
     }
 
     private var filtered: [ExerciseCatalogEntry] {
-        if search.isEmpty { return catalogue }
-        return catalogue.filter {
-            $0.exercise.displayName.localizedCaseInsensitiveContains(search) ||
-            $0.exercise.name.localizedCaseInsensitiveContains(search)
-        }
+        let query = ExerciseSearch.Query(search)
+        return catalogue.compactMap { entry -> (ExerciseCatalogEntry, Int)? in
+            guard let score = ExerciseSearch.score(query, exercise: entry.exercise,
+                localizedName: entry.exercise.displayName,
+                category: LanguageManager.t("category.\(entry.exercise.resolvedMovement.rawValue)")) else { return nil }
+            return (entry, score)
+        }.sorted { $0.1 == $1.1 ? ExercisePriority.compare($0.0.exercise, $1.0.exercise) : $0.1 < $1.1 }
+            .map { $0.0 }
     }
 }
 

@@ -22,13 +22,15 @@ public struct LibraryView: View {
 
     public var body: some View {
         let catalogue = store.exerciseCatalogue
-        let filtered = catalogue.filter { entry in
-            let matchQuery = query.isEmpty ||
-                entry.exercise.displayName.localizedCaseInsensitiveContains(query) ||
-                entry.exercise.name.localizedCaseInsensitiveContains(query)
+        let search = ExerciseSearch.Query(query)
+        let filtered = catalogue.compactMap { entry -> (ExerciseCatalogEntry, Int)? in
             let matchMovement = selectedMovement == nil || entry.exercise.resolvedMovement == selectedMovement
-            return matchQuery && matchMovement
-        }.sorted { ExercisePriority.compare($0.exercise, $1.exercise) }
+            guard matchMovement, let score = ExerciseSearch.score(search, exercise: entry.exercise,
+                localizedName: entry.exercise.displayName,
+                category: LanguageManager.t("category.\(entry.exercise.resolvedMovement.rawValue)")) else { return nil }
+            return (entry, score)
+        }.sorted { $0.1 == $1.1 ? ExercisePriority.compare($0.0.exercise, $1.0.exercise) : $0.1 < $1.1 }
+            .map { $0.0 }
         let hasActiveFilters = selectedMovement != nil
 
         ScrollView {

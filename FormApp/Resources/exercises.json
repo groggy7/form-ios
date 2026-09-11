@@ -14,6 +14,17 @@
       "Allowing lower back to sag into hyperextension (anterior pelvic tilt).",
       "Sitting hips straight back onto heels to pull the wheel in (hip flexor cheat).",
       "Rolling out further than abdominal strength can stabilize."
+    ],
+    "searchKeywords": [
+      "Ab Wheel Rollout",
+      "Karın Çarkı Açılışı (Ab Wheel)",
+      "Wheel Rollout",
+      "Wheel roller",
+      "ab roller",
+      "ab wheel",
+      "rollout",
+      "roll out",
+      "karın çarkı"
     ]
   },
   {
@@ -31,6 +42,14 @@
       "Knees caving inward (valgus collapse) on ascent.",
       "Hips shooting up first ('good-morning' squat), shifting load onto lower back.",
       "Rounding or hyperextending lumbar spine at the bottom."
+    ],
+    "searchKeywords": [
+      "Barbell Back Squat",
+      "Barbell Squat",
+      "Barbell High Bar Squat",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -48,6 +67,12 @@
       "Flaring elbows out at 90 degrees to torso (causes subacromial impingement).",
       "Bouncing bar off ribcage or lifting glutes off bench.",
       "Letting wrists bend completely backward under bar."
+    ],
+    "searchKeywords": [
+      "Barbell Bench Press",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -64,6 +89,13 @@
     "avoid": [
       "Elbows dropping downward, causing upper back to round and bar to dump forward.",
       "Heels lifting off floor or weight shifting excessively onto toes."
+    ],
+    "searchKeywords": [
+      "Barbell Front Squat",
+      "Front Squat",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -81,6 +113,15 @@
       "Looking up at the ceiling and hyperextending lumbar spine at the top.",
       "Feet too far forward (hamstrings dominate) or too close (quads dominate).",
       "Letting knees collapse inward during hip extension."
+    ],
+    "searchKeywords": [
+      "Barbell Hip Thrust",
+      "Barbell",
+      "bb",
+      "barbel",
+      "hip thrust",
+      "glute",
+      "kalça"
     ]
   },
   {
@@ -98,6 +139,18 @@
       "Rounding lower back to reach the floor once hips have stopped traveling back.",
       "Bending knees further into a squat, shifting tension away from hamstrings.",
       "Allowing bar to drift forward away from legs."
+    ],
+    "searchKeywords": [
+      "Barbell Romanian Deadlift",
+      "Romanian Deadlift (RDL)",
+      "Barbell",
+      "bb",
+      "barbel",
+      "rdl",
+      "romanian deadlift",
+      "romen deadlift",
+      "deadlift",
+      "dead lift"
     ]
   },
   {
@@ -115,6 +168,13 @@
       "Jerking torso upright to heave weight (turning row into a standing shrug).",
       "Rounding lumbar or thoracic spine under load.",
       "Letting shoulders roll forward at the bottom of the rep."
+    ],
+    "searchKeywords": [
+      "Barbell Row",
+      "Barbell Bent Over Row",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -132,6 +192,14 @@
       "Front heel lifting off floor or front knee caving inward (valgus collapse).",
       "Pushing aggressively off rear foot instead of loading the front working leg.",
       "Hyperextending lower back by trying to stay unnaturally upright."
+    ],
+    "searchKeywords": [
+      "Bulgarian Split Squat",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı",
+      "rear foot elevated split squat",
+      "rfess"
     ]
   },
   {
@@ -149,6 +217,13 @@
       "Swinging torso or using leg bounce to initiate the movement.",
       "Shrugging neck and upper traps up toward ears to lift the cable.",
       "Internally rotating shoulder ('pouring a pitcher of water') during the raise."
+    ],
+    "searchKeywords": [
+      "Cable Lateral Raise",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -166,6 +241,15 @@
       "Heaving chest off bench pad to generate momentum.",
       "Craning neck upward toward ceiling.",
       "Pulling with arms/biceps instead of driving through elbows and scapulae."
+    ],
+    "searchKeywords": [
+      "Chest-Supported Dumbbell Row",
+      "Dumbbell Chest Supported Row",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -184,6 +268,15 @@
       "Jerking the barbell off floor without pulling slack first.",
       "Hyperextending lower back at lockout instead of squeezing glutes.",
       "Letting bar drift forward away from legs."
+    ],
+    "searchKeywords": [
+      "Deadlift",
+      "Barbell Deadlift",
+      "Barbell",
+      "bb",
+      "barbel",
+      "deadlift",
+      "dead lift"
     ]
   },
   {
@@ -201,6 +294,12 @@
       "Lower back arching or peeling off floor during extension.",
       "Moving limbs rapidly or holding breath.",
       "Letting extended heel slam or rest on floor."
+    ],
+    "searchKeywords": [
+      "Dead Bug",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -218,6 +317,14 @@
       "Clanking dumbbells together at top (removes muscular tension from pecs).",
       "Flaring elbows perpendicular to torso ('T' position).",
       "Allowing forearms to angle inward or outward."
+    ],
+    "searchKeywords": [
+      "Dumbbell Bench Press",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -235,6 +342,16 @@
       "Bouncing elbows or triceps hard off the floor.",
       "Flaring elbows wide toward 90 degrees.",
       "Letting wrists collapse backward."
+    ],
+    "searchKeywords": [
+      "Dumbbell Floor Press",
+      "Dambıl Yer Presi (Floor Press)",
+      "Dumbbell Lying on Floor Chest Press",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -252,6 +369,18 @@
       "Rocking hips or swinging torso to initiate curl.",
       "Flaring elbows out to sides.",
       "Letting wrists flex or curl inward."
+    ],
+    "searchKeywords": [
+      "Dumbbell Hammer Curl",
+      "Hammer Curl",
+      "Dumbbell Hammer Curl (version 2)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil",
+      "neutral grip curl",
+      "çekiç curl"
     ]
   },
   {
@@ -269,6 +398,14 @@
       "Shrugging upper traps toward ears to heave the dumbbells up.",
       "Rocking torso back and forth or using hip thrust for momentum.",
       "Internally rotating wrists/shoulders at top (thumbs pointed down)."
+    ],
+    "searchKeywords": [
+      "Dumbbell Lateral Raise",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -286,6 +423,20 @@
       "Rounding lumbar spine to chase floor depth.",
       "Letting dumbbells swing forward away from legs.",
       "Squatting the knees forward."
+    ],
+    "searchKeywords": [
+      "Dumbbell Romanian Deadlift",
+      "Dumbbell RDL",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil",
+      "rdl",
+      "romanian deadlift",
+      "romen deadlift",
+      "deadlift",
+      "dead lift"
     ]
   },
   {
@@ -303,6 +454,19 @@
       "Pushing or springing off the bottom calf/toes to assist ascent.",
       "Letting front knee collapse inward during step-up.",
       "Slamming down onto floor during descent."
+    ],
+    "searchKeywords": [
+      "Dumbbell Step-Up",
+      "Dambıl Sehpaya Adımlama (Step-Up)",
+      "Dumbbell Step-up",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil",
+      "stepup",
+      "step up",
+      "step ups"
     ]
   },
   {
@@ -320,6 +484,13 @@
       "Leaning back or hyperextending lumbar spine to heave the weight up.",
       "Swinging elbows far forward to turn curl into a shoulder raise.",
       "Cutting bottom range of motion short before full extension."
+    ],
+    "searchKeywords": [
+      "EZ-Bar Curl",
+      "EZ Barbell Curl",
+      "EZ Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -337,6 +508,14 @@
       "Craning head and neck forward to meet the rope.",
       "Leaning backward or hyperextending lumbar spine to heave the weight.",
       "Allowing elbows to drop below wrist level (internal rotation fault)."
+    ],
+    "searchKeywords": [
+      "Face Pull",
+      "Cable Standing Face Pull (with rope)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -354,6 +533,16 @@
       "Waddling or swaying torso side-to-side while walking.",
       "Allowing shoulders to round forward or hyperextending lumbar spine.",
       "Taking long, uncontrolled strides that cause weights to bang against legs."
+    ],
+    "searchKeywords": [
+      "Farmer Carry",
+      "Çift Ağırlık Taşıma (Farmer Carry)",
+      "Dumbbell Farmers Carry",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -370,6 +559,16 @@
     "avoid": [
       "Letting dumbbell drift forward away from chest (increases spinal moment arm).",
       "Heels lifting off the floor or lower back rounding at the bottom."
+    ],
+    "searchKeywords": [
+      "Goblet Squat",
+      "Dambıl Goblet Squat",
+      "Dumbbell Goblet Squat",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -387,6 +586,14 @@
       "Swinging legs or using hip momentum to kick knees up.",
       "Arching lower back at the bottom of the rep.",
       "Hanging passively with relaxed shoulders shrugged to ears."
+    ],
+    "searchKeywords": [
+      "Hanging Knee Raise",
+      "Asılarak Diz Çekme (Hanging Knee Raise)",
+      "Hanging Knee Raise (male)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -404,6 +611,13 @@
       "Bouncing bar off collarbones or ribcage.",
       "Flaring elbows out wide to 90 degrees.",
       "Arching lower back excessively (which flattens the torso and eliminates incline angle)."
+    ],
+    "searchKeywords": [
+      "Incline Barbell Bench Press",
+      "Barbell Incline Bench Press",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -421,6 +635,15 @@
       "Swinging upper arms or elbows forward to bypass the bottom stretch.",
       "Lifting head or shoulders off bench pad during the curl.",
       "Cutting the eccentric stretch short."
+    ],
+    "searchKeywords": [
+      "Incline Dumbbell Curl",
+      "Dumbbell Incline Curl",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -438,6 +661,15 @@
       "Arching lower back excessively to turn the press into a flat bench press.",
       "Flaring elbows perpendicular to torso.",
       "Banging dumbbells together at top of rep."
+    ],
+    "searchKeywords": [
+      "Incline Dumbbell Press",
+      "Dumbbell Incline Bench Press",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -455,6 +687,12 @@
       "Swinging whole arms from shoulder joints instead of turning with wrists.",
       "Jumping excessively high or kicking feet backward (donkey kicks).",
       "Landing stiff-legged or flat on heels."
+    ],
+    "searchKeywords": [
+      "Jump Rope",
+      "İp Atlama (Jump Rope)",
+      "Jump Rope (male)",
+      "Rope"
     ]
   },
   {
@@ -472,6 +710,12 @@
       "Squatting the knees forward instead of hinging hips back.",
       "Actively lifting the bell with anterior deltoids and arms.",
       "Leaning back and hyperextending lumbar spine at top of swing."
+    ],
+    "searchKeywords": [
+      "Kettlebell Swing",
+      "Kettlebell Salınımı (Kettlebell Swing)",
+      "Kettlebell",
+      "kb"
     ]
   },
   {
@@ -489,6 +733,15 @@
       "Sitting hips back onto heels during crunch (shifts load to hip flexors).",
       "Pulling rope with arms or lats instead of flexing spine with abs.",
       "Keeping spine straight and hinging at hips."
+    ],
+    "searchKeywords": [
+      "Kneeling Cable Crunch",
+      "Cable Crunch",
+      "Cable Kneeling Crunch",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -506,6 +759,16 @@
       "Leaning back excessively (turning the pulldown into a sloppy horizontal row).",
       "Driving elbows far behind torso instead of pulling down in front.",
       "Pulling bar behind neck or yanking down to stomach."
+    ],
+    "searchKeywords": [
+      "Lat Pulldown",
+      "Cable Neutral Grip Lat Pulldown (male)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara",
+      "pulldown",
+      "pull down"
     ]
   },
   {
@@ -522,6 +785,13 @@
     "avoid": [
       "Hips lifting off the seat pad or using torso momentum to kick the weight up.",
       "Letting the weight stack slam between reps."
+    ],
+    "searchKeywords": [
+      "Leg Extension",
+      "Lever Leg Extension",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -539,6 +809,13 @@
       "Pelvis tucking under or lower back rounding off the back pad ('butt wink').",
       "Forcefully hyperextending or snapping knee joints locked at the top.",
       "Knees caving inward during the descent or initial press."
+    ],
+    "searchKeywords": [
+      "Leg Press",
+      "Sled 45 degrees Leg Press",
+      "Sled machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -555,6 +832,13 @@
     "avoid": [
       "Hips popping off bench pad or arching lower back to heave weight.",
       "Using ballistic momentum or kicking weights up quickly."
+    ],
+    "searchKeywords": [
+      "Lying Leg Curl",
+      "Lever Lying Leg Curl",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -572,6 +856,15 @@
       "Twisting or rotating torso at the top of the pull to heave the weight.",
       "Rounding lower back during the stretch phase.",
       "Pulling straight up to chest like a bicep curl rather than arcing back to hip."
+    ],
+    "searchKeywords": [
+      "One-Arm Dumbbell Row",
+      "Dumbbell One Arm Row (rack support)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -589,6 +882,15 @@
       "Hyperextending lower back to assist the press (keep ribs down and core braced).",
       "Flaring elbows excessively wide outward during extension.",
       "Moving upper arms back and forth instead of pivoting strictly at elbow joint."
+    ],
+    "searchKeywords": [
+      "Overhead Cable Triceps Extension",
+      "Overhead Cable Extension",
+      "Cable Overhead Triceps Extension (rope attachment)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -606,6 +908,15 @@
       "Allowing torso, shoulders, or hips to rotate toward the pulley.",
       "Shrugging shoulders up toward ears during the press.",
       "Rushing through reps without pausing at full extension."
+    ],
+    "searchKeywords": [
+      "Pallof Press",
+      "Kablolu Gövde Sabitleme (Pallof Press)",
+      "Cable horizontal Pallof Press",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -623,6 +934,17 @@
       "Letting elbows travel too far behind torso, hyperextending anterior shoulder capsule.",
       "Shrugging upper traps or rolling shoulders forward at peak contraction.",
       "Bending elbows excessively to turn the fly into a chest press."
+    ],
+    "searchKeywords": [
+      "Pec Deck Fly",
+      "Lever Seated Fly",
+      "Leverage machine",
+      "machine",
+      "makine",
+      "butterfly",
+      "chest fly",
+      "pec fly",
+      "göğüs açış"
     ]
   },
   {
@@ -640,6 +962,19 @@
       "Kipping, swinging legs, or using hip momentum to clear the bar.",
       "Craning neck upward to touch bar while chest collapses.",
       "Performing half reps by failing to lock out into a dead hang at bottom."
+    ],
+    "searchKeywords": [
+      "Pull-Ups",
+      "Barfiks",
+      "Pull-up",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı",
+      "pull up",
+      "pull ups",
+      "pullup",
+      "pullups",
+      "barfiks"
     ]
   },
   {
@@ -657,6 +992,17 @@
       "Swinging the plate or using hip momentum to pull up.",
       "Using an unsecured belt, chain, or plate.",
       "Shortening the range of motion as the load increases."
+    ],
+    "searchKeywords": [
+      "Weighted Pull-Ups",
+      "Ağırlıklı Barfiks",
+      "Weighted Pull-up",
+      "Weighted",
+      "pull up",
+      "pull ups",
+      "pullup",
+      "pullups",
+      "barfiks"
     ]
   },
   {
@@ -674,6 +1020,13 @@
       "Leaning torso forward during the dip (causes bar to travel forward).",
       "Dipping too deep or too slowly, losing the elastic stretch-shortening reflex.",
       "Re-bending knees to catch the bar (push press requires catching with straight legs)."
+    ],
+    "searchKeywords": [
+      "Push Press",
+      "İtişli Omuz Presi (Push Press)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -691,6 +1044,19 @@
       "Sagging hips into lumbar hyperextension or piking hips into the air.",
       "Flaring elbows straight out to sides (shoulder impingement risk).",
       "Craning neck down to touch floor before chest."
+    ],
+    "searchKeywords": [
+      "Push-Ups",
+      "Şınav",
+      "Push-up",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı",
+      "push up",
+      "push ups",
+      "pushup",
+      "pushups",
+      "şınav"
     ]
   },
   {
@@ -708,6 +1074,19 @@
       "Cutting off the eccentric stretch by stopping artificially at 90 degrees elbow flexion.",
       "Allowing elbows to swing forward and backward during the rep.",
       "Leaning bodyweight down on top of rope to push with chest and shoulders."
+    ],
+    "searchKeywords": [
+      "Rope Triceps Pressdown",
+      "Rope Triceps Pushdown",
+      "Cable Pushdown (with rope attachment)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara",
+      "pressdown",
+      "press down",
+      "pushdown",
+      "push down"
     ]
   },
   {
@@ -725,6 +1104,13 @@
       "Loose thigh pad allowing thighs or hips to lift during curl.",
       "Cutting range of motion short at either top stretch or bottom flexion.",
       "Leaning torso far back during the pull."
+    ],
+    "searchKeywords": [
+      "Seated Leg Curl",
+      "Lever Seated Leg Curl",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -742,6 +1128,14 @@
       "Bouncing off Achilles tendon at the bottom of the rep.",
       "Cutting range of motion into short, twitchy half-reps.",
       "Setting thigh pad too high up on mid-thighs, causing instability."
+    ],
+    "searchKeywords": [
+      "Seated Machine Calf Raise",
+      "Seated Calf Raise",
+      "Lever Seated Calf Raise (plate loaded)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -759,6 +1153,14 @@
       "Hips sagging toward floor or piking backward.",
       "Rotating chest and shoulders forward toward floor.",
       "Shrugging supporting shoulder up toward ear."
+    ],
+    "searchKeywords": [
+      "Side Plank",
+      "Yan Plank (Side Plank)",
+      "Side Plank (male)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -776,6 +1178,14 @@
       "Bouncing rapidly at the bottom without pausing.",
       "Bending working knee to spring body upward.",
       "Rolling ankle outward onto pinky toe at peak height."
+    ],
+    "searchKeywords": [
+      "Single-Leg Calf Raise",
+      "Tek Bacak Baldır Kaldırma (Single-Leg Calf Raise)",
+      "Single Leg Calf Raise Off Step",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -793,6 +1203,18 @@
       "Arching lower back excessively (leaning back to turn it into an incline press).",
       "Dipping knees to initiate press (this is a strict press, not a push press).",
       "Pressing bar in a wide, looping forward arc around head."
+    ],
+    "searchKeywords": [
+      "Standing Barbell Overhead Press",
+      "Overhead Press (OHP)",
+      "Barbell Standing Military Press",
+      "Barbell",
+      "bb",
+      "barbel",
+      "ohp",
+      "overhead press",
+      "shoulder press",
+      "omuz press"
     ]
   },
   {
@@ -810,6 +1232,14 @@
       "Bouncing out of bottom stretch (relies on Achilles tendon elasticity instead of muscle).",
       "Bending and extending knees to heave weight up (turning it into a squat).",
       "Rolling ankles outward onto pinky toes."
+    ],
+    "searchKeywords": [
+      "Standing Machine Calf Raise",
+      "Standing Calf Raise",
+      "Lever Standing Calf Raise",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -827,6 +1257,19 @@
       "Letting shoulders round forward or using chest weight to force the bar down.",
       "Elbows drifting forward on the way down or swinging with momentum.",
       "Excessive wrist flexion (curling wrists down)."
+    ],
+    "searchKeywords": [
+      "Straight Bar Cable Triceps Pressdown",
+      "Straight Bar Cable Pushdown",
+      "Cable Pushdown",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara",
+      "pressdown",
+      "press down",
+      "pushdown",
+      "push down"
     ]
   },
   {
@@ -844,6 +1287,13 @@
       "Rounding lower back during the initial break off the floor.",
       "Starting with hips too high (stiff-legging) or too low (shoving knees into handles).",
       "Shrugging shoulders or hyperextending spine at lockout."
+    ],
+    "searchKeywords": [
+      "Trap Bar Deadlift",
+      "Trap bar",
+      "deadlift",
+      "dead lift",
+      "hex bar"
     ]
   },
   {
@@ -860,6 +1310,15 @@
       "Using excessive torso swing or leg drive to jerk the weight.",
       "Rounding upper or lower spine under load.",
       "Flaring elbows excessively wide away from body."
+    ],
+    "searchKeywords": [
+      "Cable Seated Row",
+      "Seated Cable Row",
+      "Cable seated row",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -876,6 +1335,19 @@
       "Arching lower back excessively to compensate for shoulder mobility.",
       "Flaring elbows out completely wide to the sides.",
       "Using leg drive on strict pressing variations."
+    ],
+    "searchKeywords": [
+      "Dumbbell Seated Shoulder Press",
+      "Dumbbell Shoulder Press",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil",
+      "ohp",
+      "overhead press",
+      "shoulder press",
+      "omuz press"
     ]
   },
   {
@@ -892,6 +1364,13 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Lever Chest Press",
+      "Makine Göğüs Presi (Chest Press)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -908,6 +1387,17 @@
       "Arching lower back excessively to compensate for shoulder mobility.",
       "Flaring elbows out completely wide to the sides.",
       "Using leg drive on strict pressing variations."
+    ],
+    "searchKeywords": [
+      "Lever Seated Shoulder Press",
+      "Makine Oturarak Omuz Presi (Shoulder Press)",
+      "Leverage machine",
+      "machine",
+      "makine",
+      "ohp",
+      "overhead press",
+      "shoulder press",
+      "omuz press"
     ]
   },
   {
@@ -924,6 +1414,13 @@
       "Banging back knee hard into the floor.",
       "Letting front heel lift or front knee collapse inward.",
       "Arching lower back excessively by forcing a vertical spine."
+    ],
+    "searchKeywords": [
+      "Bodyweight Rear Lunge",
+      "Vücut Ağırlığıyla Geriye Lunge (Reverse Lunge)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -940,6 +1437,13 @@
       "Banging back knee hard into the floor.",
       "Letting front heel lift or front knee collapse inward.",
       "Arching lower back excessively by forcing a vertical spine."
+    ],
+    "searchKeywords": [
+      "Walking Lunge",
+      "Yürüyüş Lunge (Walking Lunge)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -956,6 +1460,14 @@
       "Knees caving inward (valgus collapse) on the ascent.",
       "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
       "Heels lifting or excessive forward torso collapse."
+    ],
+    "searchKeywords": [
+      "Bodyweight Squat",
+      "Vücut Ağırlığıyla Squat (Bodyweight Squat)",
+      "Bodyweight Squat (male)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -971,6 +1483,13 @@
     "avoid": [
       "Swinging torso upward to use momentum.",
       "Turning rear fly into a lat row by pulling elbows down."
+    ],
+    "searchKeywords": [
+      "Lever Seated Reverse Fly",
+      "Makinede Ters Omuz Açış (Reverse Fly)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -986,6 +1505,14 @@
     "avoid": [
       "Swinging elbows forward or backward to generate momentum.",
       "Arching lower back to lean backward during the curl."
+    ],
+    "searchKeywords": [
+      "Cable Curl",
+      "Kablolu Biceps Büküş (Cable Curl)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -1001,6 +1528,13 @@
     "avoid": [
       "Hyperextending and bouncing violently off the bottom elbow lockout.",
       "Lifting elbows or leaning back off the pad during the curl."
+    ],
+    "searchKeywords": [
+      "Barbell Preacher Curl",
+      "Barbell Preacher Büküş (Preacher Curl)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -1016,6 +1550,12 @@
     "avoid": [
       "Descending too deep past comfort, placing excessive strain on anterior shoulder capsule.",
       "Shrugging shoulders up toward ears during descent."
+    ],
+    "searchKeywords": [
+      "Chest Dip",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -1032,6 +1572,17 @@
       "Leaning back excessively into a horizontal row to heave the weight.",
       "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
       "Using jerky momentum to yank the bar down."
+    ],
+    "searchKeywords": [
+      "Chin-up",
+      "Chin-Up",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı",
+      "chin up",
+      "chin ups",
+      "chinup",
+      "chinups"
     ]
   },
   {
@@ -1047,6 +1598,14 @@
     "avoid": [
       "Allowing lower back and hips to sag toward the floor.",
       "Piking hips upward into a tent shape to relieve core tension."
+    ],
+    "searchKeywords": [
+      "Front Plank",
+      "Ön Plank (Plank)",
+      "Front Plank (male)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -1062,6 +1621,14 @@
     "avoid": [
       "Bending elbows excessively and turning the fly into a press.",
       "Letting shoulders roll forward at the back of the stretch."
+    ],
+    "searchKeywords": [
+      "Cable Standing Fly",
+      "Kablolu Ayakta Göğüs Açışı (Cable Fly)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -1077,6 +1644,13 @@
     "avoid": [
       "Allowing pelvis to tuck or lower back to round off backrest at bottom (butt wink).",
       "Locking knees out violently into hyperextension under heavy load."
+    ],
+    "searchKeywords": [
+      "Sled Hack Squat",
+      "Hack Squat",
+      "Sled machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -1093,6 +1667,15 @@
       "Hyperextending lumbar spine at top instead of achieving true hip extension.",
       "Pushing through toes rather than driving into heels.",
       "Letting knees collapse inward during hip drive."
+    ],
+    "searchKeywords": [
+      "Dumbbell Glute Bridge",
+      "Dambıl Kalça Köprüsü (Glute Bridge)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -1109,6 +1692,14 @@
       "Rounding lumbar or thoracic spine under load.",
       "Letting bar drift forward away from legs.",
       "Hyperextending lower back at lockout instead of squeezing glutes."
+    ],
+    "searchKeywords": [
+      "Barbell Sumo Deadlift",
+      "Barbell",
+      "bb",
+      "barbel",
+      "deadlift",
+      "dead lift"
     ]
   },
   {
@@ -1125,6 +1716,14 @@
       "Knees caving inward (valgus collapse) on the ascent.",
       "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
       "Heels lifting or excessive forward torso collapse."
+    ],
+    "searchKeywords": [
+      "Smith Machine Squat",
+      "Smith Makinesi Squat",
+      "Smith Squat",
+      "Smith machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -1141,6 +1740,13 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Smith Bench Press",
+      "Smith Makinesi Bench Press",
+      "Smith machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -1157,6 +1763,13 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Smith Incline Bench Press",
+      "Smith Makinesi Eğimli Bench Press",
+      "Smith machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -1173,6 +1786,15 @@
       "Rounding lumbar or thoracic spine under load.",
       "Letting bar drift forward away from legs.",
       "Hyperextending lower back at lockout instead of squeezing glutes."
+    ],
+    "searchKeywords": [
+      "Smith Stiff Legged Deadlift",
+      "Smith Makinesi Düz Bacak Deadlift",
+      "Smith machine",
+      "machine",
+      "makine",
+      "deadlift",
+      "dead lift"
     ]
   },
   {
@@ -1189,6 +1811,16 @@
       "Hyperextending lumbar spine at top instead of achieving true hip extension.",
       "Pushing through toes rather than driving into heels.",
       "Letting knees collapse inward during hip drive."
+    ],
+    "searchKeywords": [
+      "Smith Hip Thrust",
+      "Smith Makinesi Hip Thrust",
+      "Smith machine",
+      "machine",
+      "makine",
+      "hip thrust",
+      "glute",
+      "kalça"
     ]
   },
   {
@@ -1204,6 +1836,14 @@
     "avoid": [
       "Heels lifting off platform during the bottom turnaround.",
       "Letting knees cave inward or hyperextending knees violently at top."
+    ],
+    "searchKeywords": [
+      "Pendulum Squat",
+      "Sarkaç Çömelme (Pendulum Squat)",
+      "Lever Pendulum Squat (plate loaded)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -1220,6 +1860,13 @@
       "Knees caving inward (valgus collapse) on the ascent.",
       "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
       "Heels lifting or excessive forward torso collapse."
+    ],
+    "searchKeywords": [
+      "Lever Belt Squat",
+      "Kemerli Squat Makinesi (Belt Squat)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -1236,6 +1883,13 @@
       "Knees caving inward (valgus collapse) on the ascent.",
       "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
       "Heels lifting or excessive forward torso collapse."
+    ],
+    "searchKeywords": [
+      "Lever Vertical Squat",
+      "Dikey Squat Makinesi (Vertical Squat)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -1251,6 +1905,14 @@
     "avoid": [
       "Allowing pelvis to tuck or lower back to round off backrest at bottom (butt wink).",
       "Locking knees out violently into hyperextension under heavy load."
+    ],
+    "searchKeywords": [
+      "Sled 45 Degrees One Leg Press",
+      "45° Tek Bacak İtişi (Single-Leg Press)",
+      "Sled 45 degrees One Leg Press",
+      "Sled machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -1267,6 +1929,15 @@
       "Banging back knee hard into the floor.",
       "Letting front heel lift or front knee collapse inward.",
       "Arching lower back excessively by forcing a vertical spine."
+    ],
+    "searchKeywords": [
+      "Dumbbell Split Squat Front Foot Elevanted",
+      "Ön Ayak Yükseltmeli Split Squat (Front-Foot Elevated)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -1283,6 +1954,13 @@
       "Rounding lumbar or thoracic spine under load.",
       "Letting bar drift forward away from legs.",
       "Hyperextending lower back at lockout instead of squeezing glutes."
+    ],
+    "searchKeywords": [
+      "Barbell Good Morning",
+      "Barbell Bel Bükme (Good Morning)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -1299,6 +1977,21 @@
       "Rounding lumbar or thoracic spine under load.",
       "Letting bar drift forward away from legs.",
       "Hyperextending lower back at lockout instead of squeezing glutes."
+    ],
+    "searchKeywords": [
+      "Dumbbell Single-Leg Romanian Deadlift",
+      "Dambıl Tek Bacak Romen Deadlift (Single-Leg RDL)",
+      "Dumbbell Single Leg Romanian Deadlift (male)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil",
+      "rdl",
+      "romanian deadlift",
+      "romen deadlift",
+      "deadlift",
+      "dead lift"
     ]
   },
   {
@@ -1314,6 +2007,16 @@
     "avoid": [
       "Hyperextending lumbar spine excessively at the top of the extension.",
       "Jerking torso upward with swinging momentum."
+    ],
+    "searchKeywords": [
+      "Dumbbell 45° Back Extension",
+      "Dambıl 45° Bel Uzatma (Back Extension)",
+      "Dumbbell 45 degrees Back Extension (male)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -1329,6 +2032,14 @@
     "avoid": [
       "Arching lower back or lifting hips off pad to throw momentum into the curl.",
       "Allowing weight stack to slam down on the eccentric return."
+    ],
+    "searchKeywords": [
+      "Nordic Hamstring Curl",
+      "Nordic Arka Bacak Büküşü (Nordic Hamstring Curl)",
+      "Nordic Hamstring Curl (male)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -1345,6 +2056,14 @@
       "Rounding lumbar or thoracic spine under load.",
       "Letting bar drift forward away from legs.",
       "Hyperextending lower back at lockout instead of squeezing glutes."
+    ],
+    "searchKeywords": [
+      "Glute-Ham Raise",
+      "Kalça ve Arka Bacak Kaldırışı (Glute-Ham Raise)",
+      "Glute Ham Raise (VERSION 2)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -1361,6 +2080,15 @@
       "Rounding lumbar or thoracic spine under load.",
       "Letting bar drift forward away from legs.",
       "Hyperextending lower back at lockout instead of squeezing glutes."
+    ],
+    "searchKeywords": [
+      "Cable Pull Through",
+      "Kablolu Bacak Arasından Kalça Çekişi (Pull-Through)",
+      "Cable pull through",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -1376,6 +2104,15 @@
     "avoid": [
       "Arching lower back to kick leg higher.",
       "Twisting pelvis or swinging leg with momentum."
+    ],
+    "searchKeywords": [
+      "Cable Kneeling Glute Kickback",
+      "Kablolu Diz Üstü Kalça Geriye İtiş (Glute Kickback)",
+      "Cable Kneeling Glute Kickback (male)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -1391,6 +2128,13 @@
     "avoid": [
       "Arching lower back to kick leg higher.",
       "Twisting pelvis or swinging leg with momentum."
+    ],
+    "searchKeywords": [
+      "Lever Seated Hip Abduction",
+      "Makinede Oturarak Bacak Açma (Hip Abduction)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -1407,6 +2151,13 @@
       "Knees caving inward (valgus collapse) on the ascent.",
       "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
       "Heels lifting or excessive forward torso collapse."
+    ],
+    "searchKeywords": [
+      "Lever Seated Hip Adduction",
+      "Makinede Oturarak Bacak Kapatma (Hip Adduction)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -1422,6 +2173,14 @@
     "avoid": [
       "Bending and extending knees to turn calf raise into a mini squat.",
       "Rushing reps and cutting the bottom stretch or top squeeze."
+    ],
+    "searchKeywords": [
+      "Sled Calf Press on Leg Press",
+      "Bacak Presinde Baldır İtişi (Calf Press)",
+      "Sled Calf Press On Leg Press",
+      "Sled machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -1437,6 +2196,13 @@
     "avoid": [
       "Bending and extending knees to turn calf raise into a mini squat.",
       "Rushing reps and cutting the bottom stretch or top squeeze."
+    ],
+    "searchKeywords": [
+      "Donkey Calf Raise",
+      "Eğilerek Baldır Kaldırma (Donkey Calf Raise)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -1452,6 +2218,14 @@
     "avoid": [
       "Bending knees or pushing hips off wall to cheat the raise.",
       "Bouncing feet quickly without pausing at peak dorsiflexion."
+    ],
+    "searchKeywords": [
+      "Wall-Supported Tibialis Raise",
+      "Duvar Destekli Ön Kaval Kaldırışı (Tibialis Raise)",
+      "Standing Tibialis Raise Wall Supported (male)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -1468,6 +2242,13 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Barbell Decline Bench Press",
+      "Ters Eğimli Barbell Pres (Decline Bench Press)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -1484,6 +2265,15 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Dumbbell Decline Bench Press",
+      "Ters Eğimli Dambıl Pres (Decline Dumbbell Press)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -1500,6 +2290,13 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Lever Incline Chest Press",
+      "Eğimli Makine Göğüs Presi (Incline Chest Press)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -1515,6 +2312,14 @@
     "avoid": [
       "Bending elbows excessively and turning the fly into a press.",
       "Letting shoulders roll forward at the back of the stretch."
+    ],
+    "searchKeywords": [
+      "Cable Low Fly",
+      "Kablolu Aşağıdan Yukarı Göğüs Açış (Low Cable Fly)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -1530,6 +2335,14 @@
     "avoid": [
       "Bending elbows excessively and turning the fly into a press.",
       "Letting shoulders roll forward at the back of the stretch."
+    ],
+    "searchKeywords": [
+      "Cable Decline Fly",
+      "Kablolu Yukarıdan Aşağı Göğüs Açış (Decline Cable Fly)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -1545,6 +2358,15 @@
     "avoid": [
       "Bending elbows excessively and turning the fly into a press.",
       "Letting shoulders roll forward at the back of the stretch."
+    ],
+    "searchKeywords": [
+      "Dumbbell Fly",
+      "Dambıl Göğüs Açış (Dumbbell Fly)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -1561,6 +2383,13 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Barbell Close Grip Bench Press",
+      "Dar Tutuş Barbell Pres (Close-Grip Bench Press)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -1576,6 +2405,15 @@
     "avoid": [
       "Using abdominal crunches or excessive neck flexion to drive the movement.",
       "Extending or flexing elbows to turn pullover into a triceps extension."
+    ],
+    "searchKeywords": [
+      "Dumbbell Pullover",
+      "Dambıl Pullover",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -1592,6 +2430,14 @@
       "Using excessive torso swing or leg drive to jerk the weight.",
       "Rounding upper or lower spine under load.",
       "Flaring elbows excessively wide away from body."
+    ],
+    "searchKeywords": [
+      "Lever Chest-Supported Row",
+      "Sehpaya Dayalı Makine Kürek (Chest-Supported Row)",
+      "Lever Bent Over Row (with chest support)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -1608,6 +2454,14 @@
       "Using excessive torso swing or leg drive to jerk the weight.",
       "Rounding upper or lower spine under load.",
       "Flaring elbows excessively wide away from body."
+    ],
+    "searchKeywords": [
+      "Lever T-Bar Row",
+      "Makine T-Bar Kürek (T-Bar Row)",
+      "Lever T-bar Row (plate loaded)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -1624,6 +2478,13 @@
       "Using excessive torso swing or leg drive to jerk the weight.",
       "Rounding upper or lower spine under load.",
       "Flaring elbows excessively wide away from body."
+    ],
+    "searchKeywords": [
+      "Barbell Pendlay Row",
+      "Barbell Pendlay Kürek (Pendlay Row)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -1639,6 +2500,13 @@
     "avoid": [
       "Allowing hips to sag or piking hips upward.",
       "Jerking neck forward to touch chin to bar."
+    ],
+    "searchKeywords": [
+      "Inverted Row",
+      "Bar Altında Ters Kürek (Inverted Row)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -1655,6 +2523,17 @@
       "Leaning back excessively into a horizontal row to heave the weight.",
       "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
       "Using jerky momentum to yank the bar down."
+    ],
+    "searchKeywords": [
+      "Dual Cable Lat Pulldown",
+      "Çift Makaralı Lat Pulldown",
+      "Cable Lat Pulldown Full Range Of Motion",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara",
+      "pulldown",
+      "pull down"
     ]
   },
   {
@@ -1671,6 +2550,16 @@
       "Leaning back excessively into a horizontal row to heave the weight.",
       "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
       "Using jerky momentum to yank the bar down."
+    ],
+    "searchKeywords": [
+      "Cable Close Grip Front Lat Pulldown",
+      "Kablolu Dar Tutuş Göğse Çekiş (Close-Grip Lat Pulldown)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara",
+      "pulldown",
+      "pull down"
     ]
   },
   {
@@ -1687,6 +2576,16 @@
       "Leaning back excessively into a horizontal row to heave the weight.",
       "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
       "Using jerky momentum to yank the bar down."
+    ],
+    "searchKeywords": [
+      "Cable Underhand Pulldown",
+      "Kablolu Ters Tutuş Göğse Çekiş (Underhand Lat Pulldown)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara",
+      "pulldown",
+      "pull down"
     ]
   },
   {
@@ -1702,6 +2601,17 @@
     "avoid": [
       "Bending elbows and turning the pulldown into a triceps pressdown.",
       "Swinging torso forward and backward to gain momentum."
+    ],
+    "searchKeywords": [
+      "Cable Straight-Arm Pulldown",
+      "Kablolu Düz Kol Sırta Çekiş (Straight-Arm Pulldown)",
+      "Cable Straight Arm Pulldown",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara",
+      "pulldown",
+      "pull down"
     ]
   },
   {
@@ -1717,6 +2627,14 @@
     "avoid": [
       "Using abdominal crunches or excessive neck flexion to drive the movement.",
       "Extending or flexing elbows to turn pullover into a triceps extension."
+    ],
+    "searchKeywords": [
+      "Cable Kneeling Pullover",
+      "Kablolu Diz Üstü Pullover (Kneeling Pullover)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -1733,6 +2651,18 @@
       "Leaning back excessively into a horizontal row to heave the weight.",
       "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
       "Using jerky momentum to yank the bar down."
+    ],
+    "searchKeywords": [
+      "Assisted Pull-up",
+      "Destekli Barfiks (Assisted Pull-Up)",
+      "Leverage machine",
+      "machine",
+      "makine",
+      "pull up",
+      "pull ups",
+      "pullup",
+      "pullups",
+      "barfiks"
     ]
   },
   {
@@ -1748,6 +2678,14 @@
     "avoid": [
       "Allowing elbows to drift forward and backward on each rep.",
       "Using shoulder or torso momentum to slam weight down."
+    ],
+    "searchKeywords": [
+      "Assisted Dip Machine",
+      "Destekli Dips Makinesi (Assisted Dips)",
+      "Lever Graviton Assisted Dip (male)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -1763,6 +2701,15 @@
     "avoid": [
       "Bending elbows excessively and turning the fly into a press.",
       "Letting shoulders roll forward at the back of the stretch."
+    ],
+    "searchKeywords": [
+      "Dumbbell Rear Fly",
+      "Dambıl Arka Omuz Açış (Rear Delt Fly)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -1778,6 +2725,13 @@
     "avoid": [
       "Rolling shoulders in circles (provides no benefit and strains neck).",
       "Bending elbows to pull weight with arms."
+    ],
+    "searchKeywords": [
+      "Barbell Shrug",
+      "Barbell Omuz Silkme (Barbell Shrug)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -1793,6 +2747,15 @@
     "avoid": [
       "Rolling shoulders in circles (provides no benefit and strains neck).",
       "Bending elbows to pull weight with arms."
+    ],
+    "searchKeywords": [
+      "Dumbbell Shrug",
+      "Dambıl Omuz Silkme (Dumbbell Shrug)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -1808,6 +2771,14 @@
     "avoid": [
       "Rolling shoulders in circles (provides no benefit and strains neck).",
       "Bending elbows to pull weight with arms."
+    ],
+    "searchKeywords": [
+      "Lever Machine Shrug",
+      "Makinede Omuz Silkme (Machine Shrug)",
+      "Lever Shrug (plate loaded)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -1824,6 +2795,15 @@
       "Arching lower back excessively to compensate for shoulder mobility.",
       "Flaring elbows out completely wide to the sides.",
       "Using leg drive on strict pressing variations."
+    ],
+    "searchKeywords": [
+      "Dumbbell Arnold Press",
+      "Dambıl Arnold Pres (Arnold Press)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -1840,6 +2820,17 @@
       "Arching lower back excessively to compensate for shoulder mobility.",
       "Flaring elbows out completely wide to the sides.",
       "Using leg drive on strict pressing variations."
+    ],
+    "searchKeywords": [
+      "Barbell Seated Overhead Press",
+      "Barbell Oturarak Baş Üstü Pres (Seated Overhead Press)",
+      "Barbell",
+      "bb",
+      "barbel",
+      "ohp",
+      "overhead press",
+      "shoulder press",
+      "omuz press"
     ]
   },
   {
@@ -1856,6 +2847,20 @@
       "Arching lower back excessively to compensate for shoulder mobility.",
       "Flaring elbows out completely wide to the sides.",
       "Using leg drive on strict pressing variations."
+    ],
+    "searchKeywords": [
+      "Dumbbell One-Arm Shoulder Press",
+      "Tek Kol Dambıl Omuz Presi (Single-Arm Dumbbell Press)",
+      "Dumbbell One Arm Shoulder Press (VERSION 2)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil",
+      "ohp",
+      "overhead press",
+      "shoulder press",
+      "omuz press"
     ]
   },
   {
@@ -1872,6 +2877,13 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Landmine Press",
+      "Landmine Omuz Presi (Landmine Press)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -1888,6 +2900,13 @@
       "Shrugging neck and upper traps up toward ears.",
       "Swinging torso or bouncing knees to heave the weights.",
       "Internally rotating shoulders excessively during the raise."
+    ],
+    "searchKeywords": [
+      "Lever Lateral Raise",
+      "Makinede Yan Açış (Machine Lateral Raise)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -1903,6 +2922,14 @@
     "avoid": [
       "Swinging torso upward to use momentum.",
       "Turning rear fly into a lat row by pulling elbows down."
+    ],
+    "searchKeywords": [
+      "Cable Seated Rear Delt Fly with Chest Support",
+      "Sehpaya Dayalı Kablolu Arka Omuz Açış (Supported Rear Delt Fly)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -1919,6 +2946,13 @@
       "Shrugging neck and upper traps up toward ears.",
       "Swinging torso or bouncing knees to heave the weights.",
       "Internally rotating shoulders excessively during the raise."
+    ],
+    "searchKeywords": [
+      "Barbell Upright Row",
+      "Barbell Çeneye Çekiş (Upright Row)",
+      "EZ Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -1934,6 +2968,12 @@
     "avoid": [
       "Swinging elbows forward or backward to generate momentum.",
       "Arching lower back to lean backward during the curl."
+    ],
+    "searchKeywords": [
+      "Barbell Curl",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -1949,6 +2989,15 @@
     "avoid": [
       "Swinging elbows forward or backward to generate momentum.",
       "Arching lower back to lean backward during the curl."
+    ],
+    "searchKeywords": [
+      "Dumbbell Alternate Biceps Curl",
+      "Sıralı Dambıl Biceps Büküş (Alternate Dumbbell Curl)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -1964,6 +3013,15 @@
     "avoid": [
       "Swinging elbows forward or backward to generate momentum.",
       "Arching lower back to lean backward during the curl."
+    ],
+    "searchKeywords": [
+      "Dumbbell Concentration Curl",
+      "Dambıl Konsantrasyon Büküşü (Concentration Curl)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -1979,6 +3037,13 @@
     "avoid": [
       "Hyperextending and bouncing violently off the bottom elbow lockout.",
       "Lifting elbows or leaning back off the pad during the curl."
+    ],
+    "searchKeywords": [
+      "EZ Barbell Spider Curl",
+      "Z-Bar Spider Büküş (Spider Curl)",
+      "EZ Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -1994,6 +3059,17 @@
     "avoid": [
       "Swinging elbows forward to cheat with anterior deltoids.",
       "Rocking torso backward to create momentum."
+    ],
+    "searchKeywords": [
+      "Cable Rope Hammer Curl",
+      "Kablolu Halatla Çekiç Büküş (Rope Hammer Curl)",
+      "Cable Hammer Curl (with rope) (male)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara",
+      "neutral grip curl",
+      "çekiç curl"
     ]
   },
   {
@@ -2009,6 +3085,14 @@
     "avoid": [
       "Swinging elbows forward or backward to generate momentum.",
       "Arching lower back to lean backward during the curl."
+    ],
+    "searchKeywords": [
+      "Cable Incline Biceps Curl",
+      "Kablolu Eğimli Biceps Büküş (Incline Cable Curl)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -2024,6 +3108,13 @@
     "avoid": [
       "Hyperextending and bouncing violently off the bottom elbow lockout.",
       "Lifting elbows or leaning back off the pad during the curl."
+    ],
+    "searchKeywords": [
+      "Lever Preacher Curl",
+      "Makinede Preacher Büküş (Machine Preacher Curl)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -2039,6 +3130,16 @@
     "avoid": [
       "Letting elbows flare wide out to the sides.",
       "Moving upper arms back and forth like a pullover."
+    ],
+    "searchKeywords": [
+      "EZ-Bar Lying Triceps Extension",
+      "Skull Crusher (EZ-Bar)",
+      "EZ Barbell Lying Triceps Extension (male)",
+      "EZ Barbell",
+      "bb",
+      "barbel",
+      "skull crusher",
+      "skullcrusher"
     ]
   },
   {
@@ -2054,6 +3155,15 @@
     "avoid": [
       "Allowing elbows to drift forward and backward on each rep.",
       "Using shoulder or torso momentum to slam weight down."
+    ],
+    "searchKeywords": [
+      "Dumbbell Standing Triceps Extension",
+      "Dambıl Ayakta Baş Üstü Triceps Pres (Overhead Triceps Extension)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -2069,6 +3179,18 @@
     "avoid": [
       "Allowing elbows to drift forward and backward on each rep.",
       "Using shoulder or torso momentum to slam weight down."
+    ],
+    "searchKeywords": [
+      "Cable One Arm Triceps Pushdown",
+      "Kablolu Tek Kol Triceps İtişi (Single-Arm Pushdown)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara",
+      "pressdown",
+      "press down",
+      "pushdown",
+      "push down"
     ]
   },
   {
@@ -2084,6 +3206,19 @@
     "avoid": [
       "Allowing elbows to drift forward and backward on each rep.",
       "Using shoulder or torso momentum to slam weight down."
+    ],
+    "searchKeywords": [
+      "Cable Reverse Grip Pushdown",
+      "Kablolu Ters Tutuş Triceps İtişi (Reverse-Grip Pushdown)",
+      "Cable Reverse grip Pushdown",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara",
+      "pressdown",
+      "press down",
+      "pushdown",
+      "push down"
     ]
   },
   {
@@ -2099,6 +3234,15 @@
     "avoid": [
       "Allowing elbows to drift forward and backward on each rep.",
       "Using shoulder or torso momentum to slam weight down."
+    ],
+    "searchKeywords": [
+      "Dumbbell Kickback",
+      "Dambıl Geriye Triceps İtiş (Dumbbell Kickback)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -2114,6 +3258,13 @@
     "avoid": [
       "Yanking on neck with hands or throwing head forward.",
       "Using hip flexor momentum to swing legs or torso."
+    ],
+    "searchKeywords": [
+      "Hanging Leg Raise",
+      "Asılarak Bacak Kaldırma (Hanging Leg Raise)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -2129,6 +3280,13 @@
     "avoid": [
       "Yanking on neck with hands or throwing head forward.",
       "Using hip flexor momentum to swing legs or torso."
+    ],
+    "searchKeywords": [
+      "Reverse Crunch",
+      "Ters Mekik (Reverse Crunch)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -2144,6 +3302,14 @@
     "avoid": [
       "Yanking on neck with hands or throwing head forward.",
       "Using hip flexor momentum to swing legs or torso."
+    ],
+    "searchKeywords": [
+      "Bicycle Crunch",
+      "Bisiklet Mekiği (Bicycle Crunch)",
+      "Bicycle Crunch (male)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -2159,6 +3325,15 @@
     "avoid": [
       "Bending arms and pulling purely with shoulders/arms.",
       "Twisting spine without pivoting trailing foot, stressing lower back."
+    ],
+    "searchKeywords": [
+      "Cable Woodchopper",
+      "Kablolu Oduncu Çekişi (Woodchopper)",
+      "Cable Standing Wood Chopper (male)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -2174,6 +3349,13 @@
     "avoid": [
       "Bending arms and pulling purely with shoulders/arms.",
       "Twisting spine without pivoting trailing foot, stressing lower back."
+    ],
+    "searchKeywords": [
+      "Russian Twist",
+      "Rus Dönüşü (Russian Twist)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -2189,6 +3371,14 @@
     "avoid": [
       "Yanking on neck with hands or throwing head forward.",
       "Using hip flexor momentum to swing legs or torso."
+    ],
+    "searchKeywords": [
+      "Bird Dog",
+      "Çapraz Kol Bacak Uzatma (Bird Dog)",
+      "Bird Dog (male)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -2204,6 +3394,13 @@
     "avoid": [
       "Landing stiff-legged with locked knees.",
       "Letting knees collapse inward (valgus) on takeoff or landing."
+    ],
+    "searchKeywords": [
+      "Mountain Climber",
+      "Dağ Tırmanışı Hareketi (Mountain Climber)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -2219,6 +3416,13 @@
     "avoid": [
       "Landing stiff-legged with locked knees.",
       "Letting knees collapse inward (valgus) on takeoff or landing."
+    ],
+    "searchKeywords": [
+      "Burpee",
+      "Burpee (Tüm Vücut Sıçrama)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -2234,6 +3438,14 @@
     "avoid": [
       "Landing stiff-legged with locked knees.",
       "Letting knees collapse inward (valgus) on takeoff or landing."
+    ],
+    "searchKeywords": [
+      "Jumping Jack",
+      "Yıldız Zıplayışı (Jumping Jack)",
+      "Jumping Jack (male)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -2249,6 +3461,14 @@
     "avoid": [
       "Landing stiff-legged with locked knees.",
       "Letting knees collapse inward (valgus) on takeoff or landing."
+    ],
+    "searchKeywords": [
+      "Box Jump",
+      "Kutuya Sıçrama (Box Jump)",
+      "Jump Box (male)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -2265,6 +3485,14 @@
       "Knees caving inward (valgus collapse) on the ascent.",
       "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
       "Heels lifting or excessive forward torso collapse."
+    ],
+    "searchKeywords": [
+      "Jump Squat",
+      "Sıçramalı Squat (Jump Squat)",
+      "Jump Squat (VERSION 2)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -2281,6 +3509,14 @@
       "Rounding lumbar or thoracic spine under load.",
       "Letting bar drift forward away from legs.",
       "Hyperextending lower back at lockout instead of squeezing glutes."
+    ],
+    "searchKeywords": [
+      "Kettlebell Deadlift",
+      "Kettlebell deadlift",
+      "Kettlebell",
+      "kb",
+      "deadlift",
+      "dead lift"
     ]
   },
   {
@@ -2297,6 +3533,12 @@
       "Rounding lumbar or thoracic spine under load.",
       "Letting bar drift forward away from legs.",
       "Hyperextending lower back at lockout instead of squeezing glutes."
+    ],
+    "searchKeywords": [
+      "Kettlebell One Arm Clean",
+      "Kettlebell Tek Kol Clean",
+      "Kettlebell",
+      "kb"
     ]
   },
   {
@@ -2313,6 +3555,12 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Kettlebell Strict Press",
+      "Kettlebell Omuz Presi (Strict Press)",
+      "Kettlebell",
+      "kb"
     ]
   },
   {
@@ -2329,6 +3577,12 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Kettlebell One Arm Snatch",
+      "Kettlebell Tek Kol Koparma (Snatch)",
+      "Kettlebell",
+      "kb"
     ]
   },
   {
@@ -2344,6 +3598,15 @@
     "avoid": [
       "Tilting or leaning torso toward or away from the weighted side.",
       "Shrugging shoulder up on the loaded side."
+    ],
+    "searchKeywords": [
+      "Dumbbell Suitcase Carry",
+      "Dambıl Tek Kol Çanta Taşıma (Suitcase Carry)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -2359,6 +3622,13 @@
     "avoid": [
       "Bending and extending knees to turn calf raise into a mini squat.",
       "Rushing reps and cutting the bottom stretch or top squeeze."
+    ],
+    "searchKeywords": [
+      "Barbell Standing Calf Raise",
+      "Barbell Ayakta Baldır Kaldırma (Standing Calf Raise)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -2374,6 +3644,13 @@
     "avoid": [
       "Bending and extending knees to turn calf raise into a mini squat.",
       "Rushing reps and cutting the bottom stretch or top squeeze."
+    ],
+    "searchKeywords": [
+      "Bodyweight Standing Calf Raise",
+      "Vücut Ağırlığıyla Baldır Kaldırma (Calf Raise)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -2390,6 +3667,17 @@
       "Hyperextending lumbar spine at top instead of achieving true hip extension.",
       "Pushing through toes rather than driving into heels.",
       "Letting knees collapse inward during hip drive."
+    ],
+    "searchKeywords": [
+      "Lever Machine Hip Thrust",
+      "Makinede Kalça İtişi (Machine Hip Thrust)",
+      "Lever Hip Thrust (male)",
+      "Leverage machine",
+      "machine",
+      "makine",
+      "hip thrust",
+      "glute",
+      "kalça"
     ]
   },
   {
@@ -2405,6 +3693,14 @@
     "avoid": [
       "Yanking on neck with hands or throwing head forward.",
       "Using hip flexor momentum to swing legs or torso."
+    ],
+    "searchKeywords": [
+      "Floor Crunch",
+      "Zemin Mekiği (Floor Crunch)",
+      "Crunch Floor (male)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -2421,6 +3717,15 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Dumbbell Lying Hammer Press",
+      "Dambıl Nötr Tutuş Göğüs Presi (Hammer Press)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -2437,6 +3742,15 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Dumbbell Squeeze Bench Press",
+      "Dambıl Bitişik Göğüs Presi (Squeeze Press)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -2453,6 +3767,13 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Barbell Reverse Grip Bench Press",
+      "Ters Tutuş Barbell Pres (Reverse-Grip Bench Press)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -2469,6 +3790,13 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Barbell Floor Chest Press",
+      "Yerde Barbell Göğüs Presi (Barbell Floor Press)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -2485,6 +3813,13 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Barbell Spoto Press",
+      "Duraklamalı Barbell Pres (Spoto Press)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -2501,6 +3836,14 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Barbell Larsen Press",
+      "Ayaklar Havada Barbell Pres (Larsen Press)",
+      "Barbell Larsen Press (male)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -2517,6 +3860,13 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Barbell Incline Close Grip Bench Press",
+      "Eğimli Dar Tutuş Barbell Pres (Incline Close-Grip Bench)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -2532,6 +3882,15 @@
     "avoid": [
       "Bending elbows excessively and turning the fly into a press.",
       "Letting shoulders roll forward at the back of the stretch."
+    ],
+    "searchKeywords": [
+      "Dumbbell Incline Fly",
+      "Eğimli Dambıl Göğüs Açış (Incline Dumbbell Fly)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -2547,6 +3906,15 @@
     "avoid": [
       "Bending elbows excessively and turning the fly into a press.",
       "Letting shoulders roll forward at the back of the stretch."
+    ],
+    "searchKeywords": [
+      "Dumbbell Decline Fly",
+      "Ters Eğimli Dambıl Açış (Decline Dumbbell Fly)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -2563,6 +3931,15 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Dumbbell Lying One Arm Press",
+      "Tek Kol Dambıl Göğüs Presi (Single-Arm Dumbbell Press)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -2579,6 +3956,14 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Cable Standing Single Arm Chest Press",
+      "Kablolu Ayakta Tek Kol Göğüs Presi (Single-Arm Cable Press)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -2595,6 +3980,14 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Cable Standing Chest Press",
+      "Kablolu Ayakta Göğüs Presi (Standing Cable Chest Press)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -2610,6 +4003,14 @@
     "avoid": [
       "Bending elbows excessively and turning the fly into a press.",
       "Letting shoulders roll forward at the back of the stretch."
+    ],
+    "searchKeywords": [
+      "Cable Middle Fly",
+      "Kablolu Orta Seviye Göğüs Açış (Cable Chest Fly)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -2625,6 +4026,14 @@
     "avoid": [
       "Bending elbows excessively and turning the fly into a press.",
       "Letting shoulders roll forward at the back of the stretch."
+    ],
+    "searchKeywords": [
+      "Cable Standing Single Arm Fly",
+      "Kablolu Tek Kol Göğüs Açış (Single-Arm Cable Fly)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -2641,6 +4050,11 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Svend Press",
+      "Plaka Sıkıştırma Presi (Svend Press)",
+      "Weighted"
     ]
   },
   {
@@ -2657,6 +4071,18 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Incline Push-up",
+      "Eğimli Şınav (Incline Push-Up)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı",
+      "push up",
+      "push ups",
+      "pushup",
+      "pushups",
+      "şınav"
     ]
   },
   {
@@ -2673,6 +4099,19 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Decline Push-up",
+      "Ters Eğimli Şınav (Decline Push-Up)",
+      "Decline Push-Up",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı",
+      "push up",
+      "push ups",
+      "pushup",
+      "pushups",
+      "şınav"
     ]
   },
   {
@@ -2689,6 +4128,18 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Diamond Push-up",
+      "Elmas Şınav (Diamond Push-Up)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı",
+      "push up",
+      "push ups",
+      "pushup",
+      "pushups",
+      "şınav"
     ]
   },
   {
@@ -2705,6 +4156,18 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Archer Push-up",
+      "Okçu Şınavı (Archer Push-Up)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı",
+      "push up",
+      "push ups",
+      "pushup",
+      "pushups",
+      "şınav"
     ]
   },
   {
@@ -2721,6 +4184,16 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Weighted Push-up with Vest",
+      "Ağırlık Yelekli Şınav (Weighted Push-Up)",
+      "Weighted",
+      "push up",
+      "push ups",
+      "pushup",
+      "pushups",
+      "şınav"
     ]
   },
   {
@@ -2737,6 +4210,16 @@
       "Leaning back excessively into a horizontal row to heave the weight.",
       "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
       "Using jerky momentum to yank the bar down."
+    ],
+    "searchKeywords": [
+      "Lever Seated Wide Lat Pulldown",
+      "Makinede Geniş Tutuş Göğse Çekiş (Wide Lat Pulldown)",
+      "Lever Seated Wide Lat Pulldown (male)",
+      "Leverage machine",
+      "machine",
+      "makine",
+      "pulldown",
+      "pull down"
     ]
   },
   {
@@ -2753,6 +4236,17 @@
       "Leaning back excessively into a horizontal row to heave the weight.",
       "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
       "Using jerky momentum to yank the bar down."
+    ],
+    "searchKeywords": [
+      "Cable One Arm Lat Pulldown",
+      "Kablolu Tek Kol Göğse Çekiş (Single-Arm Lat Pulldown)",
+      "Cable one arm lat pulldown",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara",
+      "pulldown",
+      "pull down"
     ]
   },
   {
@@ -2769,6 +4263,16 @@
       "Leaning back excessively into a horizontal row to heave the weight.",
       "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
       "Using jerky momentum to yank the bar down."
+    ],
+    "searchKeywords": [
+      "Cable Kneeling One Arm Lat Pulldown",
+      "Kablolu Diz Üstü Tek Kol Çekiş (Kneeling One-Arm Pulldown)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara",
+      "pulldown",
+      "pull down"
     ]
   },
   {
@@ -2785,6 +4289,17 @@
       "Leaning back excessively into a horizontal row to heave the weight.",
       "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
       "Using jerky momentum to yank the bar down."
+    ],
+    "searchKeywords": [
+      "Cable Kneeling Lat Pulldown",
+      "Kablolu Diz Üstü Göğse Çekiş (Kneeling Lat Pulldown)",
+      "Cable Kneeling Pulldown (VERSION 3)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara",
+      "pulldown",
+      "pull down"
     ]
   },
   {
@@ -2801,6 +4316,17 @@
       "Leaning back excessively into a horizontal row to heave the weight.",
       "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
       "Using jerky momentum to yank the bar down."
+    ],
+    "searchKeywords": [
+      "Cable Lateral Pulldown with V-BAR",
+      "Kablolu V-Bar Göğse Çekiş (V-Bar Lat Pulldown)",
+      "Cable Lateral Pulldown with V-bar",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara",
+      "pulldown",
+      "pull down"
     ]
   },
   {
@@ -2816,6 +4342,14 @@
     "avoid": [
       "Using abdominal crunches or excessive neck flexion to drive the movement.",
       "Extending or flexing elbows to turn pullover into a triceps extension."
+    ],
+    "searchKeywords": [
+      "Lever Machine Pullover",
+      "Makinede Pullover (Machine Pullover)",
+      "Lever Pullover (plate loaded)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -2831,6 +4365,17 @@
     "avoid": [
       "Bending elbows and turning the pulldown into a triceps pressdown.",
       "Swinging torso forward and backward to gain momentum."
+    ],
+    "searchKeywords": [
+      "Cable Rope Straight-Arm Pulldown",
+      "Kablolu Halatlı Düz Kol Çekiş (Rope Straight-Arm Pulldown)",
+      "Cable Straight Arm Pulldown (with rope)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara",
+      "pulldown",
+      "pull down"
     ]
   },
   {
@@ -2846,6 +4391,17 @@
     "avoid": [
       "Bending elbows and turning the pulldown into a triceps pressdown.",
       "Swinging torso forward and backward to gain momentum."
+    ],
+    "searchKeywords": [
+      "Cable Single-Arm Straight-Arm Pulldown",
+      "Kablolu Tek Kol Düz Kol Çekiş (Single-Arm Straight-Arm Pulldown)",
+      "Single Arm Side Straight Arm Lat Pulldown (male)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara",
+      "pulldown",
+      "pull down"
     ]
   },
   {
@@ -2862,6 +4418,13 @@
       "Using excessive torso swing or leg drive to jerk the weight.",
       "Rounding upper or lower spine under load.",
       "Flaring elbows excessively wide away from body."
+    ],
+    "searchKeywords": [
+      "Barbell Lying Seal Row on Rack",
+      "Sehpada Yatarak Barbell Kürek (Seal Row)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -2877,6 +4440,14 @@
     "avoid": [
       "Twisting torso excessively at the top of the pull.",
       "Pulling straight up into shoulder with bicep instead of driving elbow to hip."
+    ],
+    "searchKeywords": [
+      "Landmine One-Arm Bent-Over Row",
+      "Landmine Tek Kol Eğilerek Kürek (One-Arm Landmine Row)",
+      "Landmine One Arm Bent Over Row (VERSION 2)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -2893,6 +4464,14 @@
       "Using excessive torso swing or leg drive to jerk the weight.",
       "Rounding upper or lower spine under load.",
       "Flaring elbows excessively wide away from body."
+    ],
+    "searchKeywords": [
+      "Landmine V-Bar Bent-Over Row",
+      "Landmine V-Bar Eğilerek Kürek (V-Bar Landmine Row)",
+      "Landmine Bent over Row with V-bar (plate loaded)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -2909,6 +4488,14 @@
       "Using excessive torso swing or leg drive to jerk the weight.",
       "Rounding upper or lower spine under load.",
       "Flaring elbows excessively wide away from body."
+    ],
+    "searchKeywords": [
+      "Lever Lying T-BAR Row",
+      "Sehpada Makine T-Bar Kürek (Lying T-Bar Row)",
+      "Lever Lying T-bar Row",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -2925,6 +4512,15 @@
       "Using excessive torso swing or leg drive to jerk the weight.",
       "Rounding upper or lower spine under load.",
       "Flaring elbows excessively wide away from body."
+    ],
+    "searchKeywords": [
+      "Cable Seated Wide Grip Row",
+      "Kablolu Oturarak Geniş Tutuş Kürek (Wide-Grip Cable Row)",
+      "Cable Seated Wide grip Row",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -2941,6 +4537,15 @@
       "Using excessive torso swing or leg drive to jerk the weight.",
       "Rounding upper or lower spine under load.",
       "Flaring elbows excessively wide away from body."
+    ],
+    "searchKeywords": [
+      "Cable Seated Row with V-BAR",
+      "Kablolu Oturarak V-Bar Kürek (V-Bar Cable Row)",
+      "Cable Seated Row with V-bar",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -2956,6 +4561,15 @@
     "avoid": [
       "Twisting torso excessively at the top of the pull.",
       "Pulling straight up into shoulder with bicep instead of driving elbow to hip."
+    ],
+    "searchKeywords": [
+      "Cable One Arm Twisting Seated Row",
+      "Kablolu Tek Kol Dönüşlü Kürek (Single-Arm Twisting Row)",
+      "Cable one arm twisting seated row",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -2972,6 +4586,14 @@
       "Using excessive torso swing or leg drive to jerk the weight.",
       "Rounding upper or lower spine under load.",
       "Flaring elbows excessively wide away from body."
+    ],
+    "searchKeywords": [
+      "Cable High Row",
+      "Kablolu Yüksekten Kürek (Cable High Row)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -2988,6 +4610,14 @@
       "Using excessive torso swing or leg drive to jerk the weight.",
       "Rounding upper or lower spine under load.",
       "Flaring elbows excessively wide away from body."
+    ],
+    "searchKeywords": [
+      "Cable Low Seated Row",
+      "Kablolu Alçak Oturarak Kürek (Low Cable Row)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -3004,6 +4634,14 @@
       "Using excessive torso swing or leg drive to jerk the weight.",
       "Rounding upper or lower spine under load.",
       "Flaring elbows excessively wide away from body."
+    ],
+    "searchKeywords": [
+      "Cable Rope Seated Row",
+      "Kablolu Halatla Oturarak Kürek (Rope Seated Row)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -3020,6 +4658,14 @@
       "Using excessive torso swing or leg drive to jerk the weight.",
       "Rounding upper or lower spine under load.",
       "Flaring elbows excessively wide away from body."
+    ],
+    "searchKeywords": [
+      "Lever High Row",
+      "Makinede Yüksek Kürek (Lever High Row)",
+      "Lever High Row (male)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -3036,6 +4682,14 @@
       "Using excessive torso swing or leg drive to jerk the weight.",
       "Rounding upper or lower spine under load.",
       "Flaring elbows excessively wide away from body."
+    ],
+    "searchKeywords": [
+      "Lever Machine Low Row",
+      "Makinede Alçak Kürek (Lever Low Row)",
+      "Lever Low Row (plate loaded)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -3052,6 +4706,13 @@
       "Using excessive torso swing or leg drive to jerk the weight.",
       "Rounding upper or lower spine under load.",
       "Flaring elbows excessively wide away from body."
+    ],
+    "searchKeywords": [
+      "Lever Unilateral Row",
+      "Makinede Tek Taraflı Kürek (Unilateral Row)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -3068,6 +4729,15 @@
       "Using excessive torso swing or leg drive to jerk the weight.",
       "Rounding upper or lower spine under load.",
       "Flaring elbows excessively wide away from body."
+    ],
+    "searchKeywords": [
+      "Dumbbell Renegade Row",
+      "Dambıl Şınav Pozisyonunda Kürek (Renegade Row)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -3083,6 +4753,16 @@
     "avoid": [
       "Twisting torso excessively at the top of the pull.",
       "Pulling straight up into shoulder with bicep instead of driving elbow to hip."
+    ],
+    "searchKeywords": [
+      "Dumbbell Kroc Row",
+      "Ağır Dambıl Tek Kol Kürek (Kroc Row)",
+      "Dumbbell Kroc Row (male)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -3099,6 +4779,16 @@
       "Using excessive torso swing or leg drive to jerk the weight.",
       "Rounding upper or lower spine under load.",
       "Flaring elbows excessively wide away from body."
+    ],
+    "searchKeywords": [
+      "Dumbbell Gorilla Row",
+      "Dambıl Çift Kol Yerden Kürek (Gorilla Row)",
+      "Dumbbell Gorilla Row (male)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -3114,6 +4804,12 @@
     "avoid": [
       "Allowing hips to sag or piking hips upward.",
       "Jerking neck forward to touch chin to bar."
+    ],
+    "searchKeywords": [
+      "Suspension Trainer Row",
+      "Askı Kayışında Ters Kürek (TRX / Suspension Row)",
+      "Suspender Row (male)",
+      "Suspension"
     ]
   },
   {
@@ -3129,6 +4825,12 @@
     "avoid": [
       "Allowing hips to sag or piking hips upward.",
       "Jerking neck forward to touch chin to bar."
+    ],
+    "searchKeywords": [
+      "Ring Inverted Row",
+      "Jimnastik Halkasında Ters Kürek (Ring Row)",
+      "Ring Inverted Row parallel to the floor (male)",
+      "Suspension"
     ]
   },
   {
@@ -3144,6 +4846,19 @@
     "avoid": [
       "Bending arms at elbows to pull with biceps.",
       "Swinging legs or kipping."
+    ],
+    "searchKeywords": [
+      "Scapular Pull-Up",
+      "Skapular Barfiks (Scapular Pull-Up)",
+      "Scapular Pull-up (VERSION 2)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı",
+      "pull up",
+      "pull ups",
+      "pullup",
+      "pullups",
+      "barfiks"
     ]
   },
   {
@@ -3160,6 +4875,18 @@
       "Leaning back excessively into a horizontal row to heave the weight.",
       "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
       "Using jerky momentum to yank the bar down."
+    ],
+    "searchKeywords": [
+      "Parallel-Grip Chin-Up",
+      "Paralel Tutuş Barfiks (Neutral-Grip Chin-Up)",
+      "Chin-ups (narrow parallel grip)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı",
+      "chin up",
+      "chin ups",
+      "chinup",
+      "chinups"
     ]
   },
   {
@@ -3176,6 +4903,13 @@
       "Rounding lumbar or thoracic spine under load.",
       "Letting bar drift forward away from legs.",
       "Hyperextending lower back at lockout instead of squeezing glutes."
+    ],
+    "searchKeywords": [
+      "Barbell Rack Pull",
+      "Bloktan Barbell Yarım Çekiş (Rack Pull)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -3192,6 +4926,15 @@
       "Shrugging neck and upper traps up toward ears.",
       "Swinging torso or bouncing knees to heave the weights.",
       "Internally rotating shoulders excessively during the raise."
+    ],
+    "searchKeywords": [
+      "Dumbbell Seated Lateral Raise",
+      "Oturarak Dambıl Yan Açış (Seated Lateral Raise)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -3208,6 +4951,14 @@
       "Shrugging neck and upper traps up toward ears.",
       "Swinging torso or bouncing knees to heave the weights.",
       "Internally rotating shoulders excessively during the raise."
+    ],
+    "searchKeywords": [
+      "Cable Leaning Lateral Raise",
+      "Kablolu Yana Eğilerek Yan Açış (Leaning Lateral Raise)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -3224,6 +4975,15 @@
       "Shrugging neck and upper traps up toward ears.",
       "Swinging torso or bouncing knees to heave the weights.",
       "Internally rotating shoulders excessively during the raise."
+    ],
+    "searchKeywords": [
+      "Cable Behind-the-Back Lateral Raise",
+      "Kablolu Arkadan Yan Açış (Behind-the-Back Lateral Raise)",
+      "Cable Behind The Back Cuffed Lateral Raise (male)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -3240,6 +5000,14 @@
       "Shrugging neck and upper traps up toward ears.",
       "Swinging torso or bouncing knees to heave the weights.",
       "Internally rotating shoulders excessively during the raise."
+    ],
+    "searchKeywords": [
+      "Cable One Arm Lateral Raise",
+      "Kablolu Tek Kol Yan Açış (Single-Arm Lateral Raise)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -3256,6 +5024,15 @@
       "Shrugging neck and upper traps up toward ears.",
       "Swinging torso or bouncing knees to heave the weights.",
       "Internally rotating shoulders excessively during the raise."
+    ],
+    "searchKeywords": [
+      "Cable Y Raise",
+      "Kablolu Y Şeklinde Omuz Kaldırışı (Cable Y-Raise)",
+      "Cable Y raise",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -3272,6 +5049,15 @@
       "Shrugging neck and upper traps up toward ears.",
       "Swinging torso or bouncing knees to heave the weights.",
       "Internally rotating shoulders excessively during the raise."
+    ],
+    "searchKeywords": [
+      "Dumbbell Incline Y Raise",
+      "Eğimli Sehpada Dambıl Y Kaldırışı (Incline Y-Raise)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -3287,6 +5073,16 @@
     "avoid": [
       "Rocking hips or swinging torso to lift the weight.",
       "Raising hands far above shoulder height into cervical impingement."
+    ],
+    "searchKeywords": [
+      "Dumbbell Front Raise",
+      "Dambıl Öne Kaldırış (Dumbbell Front Raise)",
+      "Dumbbell Front Raise (version 2)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -3302,6 +5098,14 @@
     "avoid": [
       "Rocking hips or swinging torso to lift the weight.",
       "Raising hands far above shoulder height into cervical impingement."
+    ],
+    "searchKeywords": [
+      "Cable Front Raise",
+      "Kablolu Öne Kaldırış (Cable Front Raise)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -3317,6 +5121,11 @@
     "avoid": [
       "Rocking hips or swinging torso to lift the weight.",
       "Raising hands far above shoulder height into cervical impingement."
+    ],
+    "searchKeywords": [
+      "Weighted Front Raise",
+      "Plaka ile Öne Kaldırış (Plate Front Raise)",
+      "Weighted"
     ]
   },
   {
@@ -3332,6 +5141,13 @@
     "avoid": [
       "Rocking hips or swinging torso to lift the weight.",
       "Raising hands far above shoulder height into cervical impingement."
+    ],
+    "searchKeywords": [
+      "Barbell Front Raise",
+      "Barbell Öne Kaldırış (Barbell Front Raise)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -3347,6 +5163,15 @@
     "avoid": [
       "Swinging torso upward to use momentum.",
       "Turning rear fly into a lat row by pulling elbows down."
+    ],
+    "searchKeywords": [
+      "Cable Standing Reverse Fly",
+      "Kablolu Ayakta Ters Omuz Açış (Reverse Cable Fly)",
+      "Cable Standing Reverse Fly (VERSION 3)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -3362,6 +5187,16 @@
     "avoid": [
       "Swinging torso upward to use momentum.",
       "Turning rear fly into a lat row by pulling elbows down."
+    ],
+    "searchKeywords": [
+      "Head-Supported Dumbbell Rear Lateral Raise",
+      "Alın Destekli Dambıl Arka Omuz Açış (Head-Supported Rear Fly)",
+      "Dumbbell Rear Lateral Raise (support head)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -3377,6 +5212,15 @@
     "avoid": [
       "Bending elbows excessively and turning the fly into a press.",
       "Letting shoulders roll forward at the back of the stretch."
+    ],
+    "searchKeywords": [
+      "Dumbbell Incline Rear Fly",
+      "Eğimli Sehpada Dambıl Arka Omuz Açış (Incline Rear Fly)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -3392,6 +5236,14 @@
     "avoid": [
       "Swinging torso upward to use momentum.",
       "Turning rear fly into a lat row by pulling elbows down."
+    ],
+    "searchKeywords": [
+      "Lever Seated Rear Delt Row",
+      "Makinede Oturarak Arka Omuz Çekişi (Rear Delt Row)",
+      "Lever Seated Delt Row (male)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -3408,6 +5260,13 @@
       "Shrugging neck and upper traps up toward ears.",
       "Swinging torso or bouncing knees to heave the weights.",
       "Internally rotating shoulders excessively during the raise."
+    ],
+    "searchKeywords": [
+      "Barbell Wide Grip Upright Row",
+      "Geniş Tutuş Barbell Çeneye Çekiş (Wide-Grip Upright Row)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -3424,6 +5283,15 @@
       "Shrugging neck and upper traps up toward ears.",
       "Swinging torso or bouncing knees to heave the weights.",
       "Internally rotating shoulders excessively during the raise."
+    ],
+    "searchKeywords": [
+      "Dumbbell Upright Row",
+      "Dambıl Çeneye Çekiş (Dumbbell Upright Row)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -3440,6 +5308,13 @@
       "Arching lower back excessively to compensate for shoulder mobility.",
       "Flaring elbows out completely wide to the sides.",
       "Using leg drive on strict pressing variations."
+    ],
+    "searchKeywords": [
+      "Barbell Z Press",
+      "Yerde Oturarak Barbell Omuz Presi (Z-Press)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -3456,6 +5331,13 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Landmine Single Arm Press",
+      "Landmine Tek Kol Omuz Presi (Single-Arm Landmine Press)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -3472,6 +5354,14 @@
       "Arching lower back excessively to compensate for shoulder mobility.",
       "Flaring elbows out completely wide to the sides.",
       "Using leg drive on strict pressing variations."
+    ],
+    "searchKeywords": [
+      "Lever Viking Press",
+      "Viking Omuz Presi Makinesi (Viking Press)",
+      "Lever Standing Viking Press (male)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -3488,6 +5378,18 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Pike Push-up",
+      "Pike Şınavı (Pike Push-Up)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı",
+      "push up",
+      "push ups",
+      "pushup",
+      "pushups",
+      "şınav"
     ]
   },
   {
@@ -3503,6 +5405,13 @@
     "avoid": [
       "Hyperextending and bouncing violently off the bottom elbow lockout.",
       "Lifting elbows or leaning back off the pad during the curl."
+    ],
+    "searchKeywords": [
+      "EZ Barbell Preacher Curl",
+      "Z-Bar Preacher Büküş (EZ Preacher Curl)",
+      "EZ Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -3518,6 +5427,15 @@
     "avoid": [
       "Hyperextending and bouncing violently off the bottom elbow lockout.",
       "Lifting elbows or leaning back off the pad during the curl."
+    ],
+    "searchKeywords": [
+      "Dumbbell Preacher Curl",
+      "Dambıl Preacher Büküş (Dumbbell Preacher Curl)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -3533,6 +5451,17 @@
     "avoid": [
       "Hyperextending and bouncing violently off the bottom elbow lockout.",
       "Lifting elbows or leaning back off the pad during the curl."
+    ],
+    "searchKeywords": [
+      "Dumbbell One Arm Hammer Preacher Curl",
+      "Dambıl Tek Kol Çekiç Preacher Büküş (Hammer Preacher Curl)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil",
+      "neutral grip curl",
+      "çekiç curl"
     ]
   },
   {
@@ -3548,6 +5477,14 @@
     "avoid": [
       "Hyperextending and bouncing violently off the bottom elbow lockout.",
       "Lifting elbows or leaning back off the pad during the curl."
+    ],
+    "searchKeywords": [
+      "Cable Preacher Curl",
+      "Kablolu Preacher Büküş (Cable Preacher Curl)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -3563,6 +5500,13 @@
     "avoid": [
       "Letting wrists flex backward under the load.",
       "Swinging upper body to heave the weight."
+    ],
+    "searchKeywords": [
+      "Barbell Reverse Curl",
+      "Barbell Ters Tutuş Büküş (Reverse Curl)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -3578,6 +5522,13 @@
     "avoid": [
       "Letting wrists flex backward under the load.",
       "Swinging upper body to heave the weight."
+    ],
+    "searchKeywords": [
+      "EZ Barbell Reverse Grip Curl",
+      "Z-Bar Ters Tutuş Büküş (EZ Reverse Curl)",
+      "EZ Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -3593,6 +5544,15 @@
     "avoid": [
       "Letting wrists flex backward under the load.",
       "Swinging upper body to heave the weight."
+    ],
+    "searchKeywords": [
+      "Dumbbell Biceps Curl Reverse",
+      "Dambıl Ters Tutuş Büküş (Reverse Dumbbell Curl)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -3608,6 +5568,15 @@
     "avoid": [
       "Letting wrists flex backward under the load.",
       "Swinging upper body to heave the weight."
+    ],
+    "searchKeywords": [
+      "Dumbbell Zottman Curl",
+      "Dambıl Zottman Büküş (Zottman Curl)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -3623,6 +5592,17 @@
     "avoid": [
       "Swinging elbows forward to cheat with anterior deltoids.",
       "Rocking torso backward to create momentum."
+    ],
+    "searchKeywords": [
+      "Dumbbell Cross Body Hammer Curl",
+      "Gövdeye Çapraz Dambıl Çekiç Büküş (Cross-Body Hammer Curl)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil",
+      "neutral grip curl",
+      "çekiç curl"
     ]
   },
   {
@@ -3638,6 +5618,15 @@
     "avoid": [
       "Swinging elbows forward or backward to generate momentum.",
       "Arching lower back to lean backward during the curl."
+    ],
+    "searchKeywords": [
+      "Dumbbell Seated Curl",
+      "Oturarak Dambıl Biceps Büküş (Seated Dumbbell Curl)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -3653,6 +5642,15 @@
     "avoid": [
       "Swinging elbows forward or backward to generate momentum.",
       "Arching lower back to lean backward during the curl."
+    ],
+    "searchKeywords": [
+      "Dumbbell Standing Biceps Curl",
+      "Ayakta Dambıl Biceps Büküş (Standing Dumbbell Curl)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -3668,6 +5666,13 @@
     "avoid": [
       "Swinging elbows forward or backward to generate momentum.",
       "Arching lower back to lean backward during the curl."
+    ],
+    "searchKeywords": [
+      "Barbell Drag Curl",
+      "Barbell Vücuda Bitişik Büküş (Drag Curl)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -3683,6 +5688,14 @@
     "avoid": [
       "Swinging elbows forward or backward to generate momentum.",
       "Arching lower back to lean backward during the curl."
+    ],
+    "searchKeywords": [
+      "Cable Drag Curl",
+      "Kablolu Vücuda Bitişik Büküş (Cable Drag Curl)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -3698,6 +5711,14 @@
     "avoid": [
       "Swinging elbows forward or backward to generate momentum.",
       "Arching lower back to lean backward during the curl."
+    ],
+    "searchKeywords": [
+      "Cable Standing Inner Curl",
+      "Kablolu İç Biceps Büküş (Inner Biceps Curl)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -3713,6 +5734,14 @@
     "avoid": [
       "Swinging elbows forward or backward to generate momentum.",
       "Arching lower back to lean backward during the curl."
+    ],
+    "searchKeywords": [
+      "Cable One Arm Curl",
+      "Kablolu Tek Kol Biceps Büküş (Single-Arm Cable Curl)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -3728,6 +5757,14 @@
     "avoid": [
       "Swinging elbows forward or backward to generate momentum.",
       "Arching lower back to lean backward during the curl."
+    ],
+    "searchKeywords": [
+      "Cable Overhead Curl",
+      "Kablolu Çift Kol Yüksek Büküş (Overhead Cable Curl)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -3743,6 +5780,13 @@
     "avoid": [
       "Swinging elbows forward or backward to generate momentum.",
       "Arching lower back to lean backward during the curl."
+    ],
+    "searchKeywords": [
+      "Lever Biceps Curl",
+      "Makinede Biceps Büküş (Machine Biceps Curl)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -3758,6 +5802,16 @@
     "avoid": [
       "Hyperextending and bouncing violently off the bottom elbow lockout.",
       "Lifting elbows or leaning back off the pad during the curl."
+    ],
+    "searchKeywords": [
+      "Dumbbell Spider Curl",
+      "Eğimli Sehpada Dambıl Spider Büküş (Spider Curl)",
+      "Dumbbell Spider Curl (male)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -3773,6 +5827,17 @@
     "avoid": [
       "Hyperextending and bouncing violently off the bottom elbow lockout.",
       "Lifting elbows or leaning back off the pad during the curl."
+    ],
+    "searchKeywords": [
+      "Dumbbell Hammer Preacher Curl",
+      "Çift Dambıl Çekiç Preacher Büküş (Hammer Preacher Curl)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil",
+      "neutral grip curl",
+      "çekiç curl"
     ]
   },
   {
@@ -3788,6 +5853,17 @@
     "avoid": [
       "Swinging elbows forward to cheat with anterior deltoids.",
       "Rocking torso backward to create momentum."
+    ],
+    "searchKeywords": [
+      "Dumbbell Incline Hammer Curl",
+      "Eğimli Sehpada Dambıl Çekiç Büküş (Incline Hammer Curl)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil",
+      "neutral grip curl",
+      "çekiç curl"
     ]
   },
   {
@@ -3803,6 +5879,18 @@
     "avoid": [
       "Letting elbows flare wide out to the sides.",
       "Moving upper arms back and forth like a pullover."
+    ],
+    "searchKeywords": [
+      "Dumbbell Skull Crusher",
+      "Dambıl Alına Triceps Presi (Skull Crusher)",
+      "Dumbbell Lying Triceps Extension Skull Crusher (VERSION 2)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil",
+      "skull crusher",
+      "skullcrusher"
     ]
   },
   {
@@ -3818,6 +5906,13 @@
     "avoid": [
       "Allowing elbows to drift forward and backward on each rep.",
       "Using shoulder or torso momentum to slam weight down."
+    ],
+    "searchKeywords": [
+      "EZ Barbell Incline Triceps Extension",
+      "Eğimli Sehpada Z-Bar Triceps Uzatma (Incline Triceps Extension)",
+      "EZ Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -3833,6 +5928,13 @@
     "avoid": [
       "Allowing elbows to drift forward and backward on each rep.",
       "Using shoulder or torso momentum to slam weight down."
+    ],
+    "searchKeywords": [
+      "EZ Barbell Decline Triceps Extension",
+      "Ters Eğimli Sehpada Z-Bar Triceps Presi (Decline Triceps Extension)",
+      "EZ Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -3848,6 +5950,14 @@
     "avoid": [
       "Letting elbows flare wide out to the sides.",
       "Moving upper arms back and forth like a pullover."
+    ],
+    "searchKeywords": [
+      "Barbell Jm-bench Press",
+      "Barbell JM Triceps Presi (JM Press)",
+      "Barbell JM-Bench Press",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -3863,6 +5973,15 @@
     "avoid": [
       "Letting elbows flare wide out to the sides.",
       "Moving upper arms back and forth like a pullover."
+    ],
+    "searchKeywords": [
+      "Dumbbell Tate Press",
+      "Dambıl Tate Presi (Tate Press)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -3878,6 +5997,14 @@
     "avoid": [
       "Allowing elbows to drift forward and backward on each rep.",
       "Using shoulder or torso momentum to slam weight down."
+    ],
+    "searchKeywords": [
+      "Cable Standing High Cross Triceps Extension",
+      "Kablolu Çapraz Yüksek Triceps Uzatma (High Cross Triceps Extension)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -3893,6 +6020,15 @@
     "avoid": [
       "Flaring elbows wide out to the sides.",
       "Arching lumbar spine excessively; keep core braced."
+    ],
+    "searchKeywords": [
+      "Cable Single-Arm Overhead Triceps Extension",
+      "Kablolu Tek Kol Baş Üstü Triceps Uzatma (Single-Arm Overhead Extension)",
+      "Cable Standing Single Arm Overhead Triceps Extension (VERSION 3)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -3908,6 +6044,19 @@
     "avoid": [
       "Allowing elbows to drift forward and backward on each rep.",
       "Using shoulder or torso momentum to slam weight down."
+    ],
+    "searchKeywords": [
+      "Cable V-Bar Triceps Pushdown",
+      "Kablolu V-Bar Triceps İtişi (V-Bar Pushdown)",
+      "Cable Triceps Pushdown (V bar)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara",
+      "pressdown",
+      "press down",
+      "pushdown",
+      "push down"
     ]
   },
   {
@@ -3923,6 +6072,15 @@
     "avoid": [
       "Allowing elbows to drift forward and backward on each rep.",
       "Using shoulder or torso momentum to slam weight down."
+    ],
+    "searchKeywords": [
+      "Cable Kickback",
+      "Kablolu Triceps Geriye İtiş (Cable Kickback)",
+      "Cable kickback",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -3938,6 +6096,13 @@
     "avoid": [
       "Allowing elbows to drift forward and backward on each rep.",
       "Using shoulder or torso momentum to slam weight down."
+    ],
+    "searchKeywords": [
+      "Lever Seated Dip",
+      "Makinede Oturarak Dips (Machine Seated Dip)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -3954,6 +6119,13 @@
       "Knees caving inward (valgus collapse) on the ascent.",
       "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
       "Heels lifting or excessive forward torso collapse."
+    ],
+    "searchKeywords": [
+      "Barbell Low Bar Squat",
+      "Barbell Alçak Bar Squat (Low-Bar Squat)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -3970,6 +6142,13 @@
       "Knees caving inward (valgus collapse) on the ascent.",
       "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
       "Heels lifting or excessive forward torso collapse."
+    ],
+    "searchKeywords": [
+      "Barbell Box Squat",
+      "Kutuya Barbell Squat (Box Squat)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -3986,6 +6165,13 @@
       "Knees caving inward (valgus collapse) on the ascent.",
       "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
       "Heels lifting or excessive forward torso collapse."
+    ],
+    "searchKeywords": [
+      "Barbell Pause Full Squat",
+      "Duraklamalı Tam Squat (Pause Squat)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -4001,6 +6187,14 @@
     "avoid": [
       "Allowing upper back to round forward under the front-loaded bar.",
       "Letting elbows drift forward away from chest."
+    ],
+    "searchKeywords": [
+      "Barbell Full Zercher Squat",
+      "Kollarda Barbell Zercher Squat (Zercher Squat)",
+      "Barbell full Zercher Squat",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -4017,6 +6211,13 @@
       "Knees caving inward (valgus collapse) on the ascent.",
       "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
       "Heels lifting or excessive forward torso collapse."
+    ],
+    "searchKeywords": [
+      "Barbell Overhead Squat",
+      "Baş Üstü Barbell Squat (Overhead Squat)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -4033,6 +6234,13 @@
       "Knees caving inward (valgus collapse) on the ascent.",
       "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
       "Heels lifting or excessive forward torso collapse."
+    ],
+    "searchKeywords": [
+      "Landmine Squat",
+      "Landmine Squat (male)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -4049,6 +6257,16 @@
       "Knees caving inward (valgus collapse) on the ascent.",
       "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
       "Heels lifting or excessive forward torso collapse."
+    ],
+    "searchKeywords": [
+      "Dumbbell Goblet Sumo Squat",
+      "Dambıl Geniş Duruş Goblet Squat (Sumo Goblet Squat)",
+      "Dumbbell Goblet Sumo Squat (male)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -4065,6 +6283,13 @@
       "Knees caving inward (valgus collapse) on the ascent.",
       "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
       "Heels lifting or excessive forward torso collapse."
+    ],
+    "searchKeywords": [
+      "Smith Front Squat",
+      "Smith Makinesi Ön Squat",
+      "Smith machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -4081,6 +6306,13 @@
       "Banging back knee hard into the floor.",
       "Letting front heel lift or front knee collapse inward.",
       "Arching lower back excessively by forcing a vertical spine."
+    ],
+    "searchKeywords": [
+      "Smith Split Squat",
+      "Smith Makinesi Split Squat",
+      "Smith machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -4097,6 +6329,14 @@
       "Banging back knee hard into the floor.",
       "Letting front heel lift or front knee collapse inward.",
       "Arching lower back excessively by forcing a vertical spine."
+    ],
+    "searchKeywords": [
+      "Smith Rear Lunge",
+      "Smith Makinesi Geriye Lunge",
+      "Smith Rear Lunge (version 2) (male)",
+      "Smith machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -4113,6 +6353,16 @@
       "Banging back knee hard into the floor.",
       "Letting front heel lift or front knee collapse inward.",
       "Arching lower back excessively by forcing a vertical spine."
+    ],
+    "searchKeywords": [
+      "Smith Deficit Bulgarian Split Squat",
+      "Smith Makinesi Deficit Bulgarian Split Squat",
+      "Smith Unilateral Bulgarian Split Squat from Deficit (male)",
+      "Smith machine",
+      "machine",
+      "makine",
+      "rear foot elevated split squat",
+      "rfess"
     ]
   },
   {
@@ -4129,6 +6379,14 @@
       "Rounding lumbar or thoracic spine under load.",
       "Letting bar drift forward away from legs.",
       "Hyperextending lower back at lockout instead of squeezing glutes."
+    ],
+    "searchKeywords": [
+      "Smith Bent Knee Good Morning",
+      "Smith Makinesi Good Morning",
+      "Smith Bent Knee Good morning",
+      "Smith machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -4144,6 +6402,14 @@
     "avoid": [
       "Bending and extending knees to turn calf raise into a mini squat.",
       "Rushing reps and cutting the bottom stretch or top squeeze."
+    ],
+    "searchKeywords": [
+      "Smith Calf Raise",
+      "Smith Makinesi Kalf Kaldırma",
+      "Smith Calf Raise (version 2)",
+      "Smith machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -4159,6 +6425,13 @@
     "avoid": [
       "Bending at the hips (breaking neutral hip alignment).",
       "Dropping into knee flexion without muscular quadriceps control."
+    ],
+    "searchKeywords": [
+      "Sissy Squat Bodyweight",
+      "Vücut Ağırlığıyla Sissy Squat (Sissy Squat)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -4174,6 +6447,13 @@
     "avoid": [
       "Allowing pelvis to tuck or lower back to round off backrest at bottom (butt wink).",
       "Locking knees out violently into hyperextension under heavy load."
+    ],
+    "searchKeywords": [
+      "Sled Reverse Hack Squat",
+      "Kızaklı Ters Hack Squat (Reverse Hack Squat)",
+      "Sled machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -4190,6 +6470,14 @@
       "Knees caving inward (valgus collapse) on the ascent.",
       "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
       "Heels lifting or excessive forward torso collapse."
+    ],
+    "searchKeywords": [
+      "Heel-Elevated Bodyweight Squat",
+      "Topuk Yükseltmeli Squat (Heel-Elevated Squat)",
+      "Bodyweight Heel Elevated Squat (male)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -4206,6 +6494,15 @@
       "Knees caving inward (valgus collapse) on the ascent.",
       "Hips shooting up first ('good-morning' squat), shifting load to lumbar spine.",
       "Heels lifting or excessive forward torso collapse."
+    ],
+    "searchKeywords": [
+      "Dumbbell Elevated Heel Goblet Squat",
+      "Topuk Yükseltmeli Dambıl Goblet Squat (Heel-Elevated Goblet Squat)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -4221,6 +6518,13 @@
     "avoid": [
       "Allowing working heel to lift off the floor during the descent.",
       "Rounding lumbar spine or collapsing chest forward under load."
+    ],
+    "searchKeywords": [
+      "Cossack Squat",
+      "Yan Çömelme (Cossack Squat)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -4236,6 +6540,13 @@
     "avoid": [
       "Allowing working heel to lift off the floor during the descent.",
       "Rounding lumbar spine or collapsing chest forward under load."
+    ],
+    "searchKeywords": [
+      "Side Lunge",
+      "Yana Adımlama (Side Lunge)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -4251,6 +6562,16 @@
     "avoid": [
       "Rotating pelvis excessively away from the forward plane.",
       "Letting front knee cave inward past big toe."
+    ],
+    "searchKeywords": [
+      "Dumbbell Curtsey Lunge",
+      "Dambıl Çapraz Lunge (Curtsy Lunge)",
+      "Dumbbell Curtsey Lunge (male)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -4267,6 +6588,16 @@
       "Banging back knee hard into the floor.",
       "Letting front heel lift or front knee collapse inward.",
       "Arching lower back excessively by forcing a vertical spine."
+    ],
+    "searchKeywords": [
+      "Dumbbell Deficit Reverse Lunge",
+      "Blok Üstü Dambıl Geriye Lunge (Deficit Reverse Lunge)",
+      "Dumbbell Reverse Lunge from Deficit (male)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -4283,6 +6614,13 @@
       "Banging back knee hard into the floor.",
       "Letting front heel lift or front knee collapse inward.",
       "Arching lower back excessively by forcing a vertical spine."
+    ],
+    "searchKeywords": [
+      "Barbell Walking Lunge",
+      "Barbell Yürüyüş Lunge (Walking Lunge)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -4298,6 +6636,16 @@
     "avoid": [
       "Pushing aggressively off rear toe instead of pulling with lead leg.",
       "Allowing lead knee to cave inward or lead heel to hang off platform."
+    ],
+    "searchKeywords": [
+      "Barbell Step-up",
+      "Barbell Sehpaya Adımlama (Step-Up)",
+      "Barbell",
+      "bb",
+      "barbel",
+      "stepup",
+      "step up",
+      "step ups"
     ]
   },
   {
@@ -4314,6 +6662,15 @@
       "Banging back knee hard into the floor.",
       "Letting front heel lift or front knee collapse inward.",
       "Arching lower back excessively by forcing a vertical spine."
+    ],
+    "searchKeywords": [
+      "Cable Reverse Lunge",
+      "Kablolu Geriye Lunge (Cable Reverse Lunge)",
+      "Cable Reverse Lunge (male)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -4329,6 +6686,15 @@
     "avoid": [
       "Allowing working heel to lift off the floor during the descent.",
       "Rounding lumbar spine or collapsing chest forward under load."
+    ],
+    "searchKeywords": [
+      "Cable Lateral Lunge",
+      "Kablolu Yana Lunge (Cable Lateral Lunge)",
+      "Cable Lateral Lunge (VERSION 3)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -4344,6 +6710,14 @@
     "avoid": [
       "Arching lower back or lifting hips off pad to throw momentum into the curl.",
       "Allowing weight stack to slam down on the eccentric return."
+    ],
+    "searchKeywords": [
+      "Lever Standing Single-Leg Curl",
+      "Ayakta Makine Tek Bacak Bükme (Standing Leg Curl)",
+      "Lever Standing Single Leg Curl (plate loaded)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -4359,6 +6733,13 @@
     "avoid": [
       "Arching lower back or lifting hips off pad to throw momentum into the curl.",
       "Allowing weight stack to slam down on the eccentric return."
+    ],
+    "searchKeywords": [
+      "Lever Lying Single Leg Curl",
+      "Yatarak Makine Tek Bacak Bükme (Lying Single-Leg Curl)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -4374,6 +6755,13 @@
     "avoid": [
       "Arching lower back or lifting hips off pad to throw momentum into the curl.",
       "Allowing weight stack to slam down on the eccentric return."
+    ],
+    "searchKeywords": [
+      "Lever Seated One Leg Curl",
+      "Oturarak Makine Tek Bacak Bükme (Seated Single-Leg Curl)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -4389,6 +6777,16 @@
     "avoid": [
       "Arching lower back or lifting hips off pad to throw momentum into the curl.",
       "Allowing weight stack to slam down on the eccentric return."
+    ],
+    "searchKeywords": [
+      "Dumbbell Lying Leg Curl",
+      "Yatarak Dambıl Bacak Bükme (Dumbbell Leg Curl)",
+      "Dumbbell Lying Leg Curl (male)",
+      "Dumbbell",
+      "db",
+      "dumbbells",
+      "dambıl",
+      "dambil"
     ]
   },
   {
@@ -4404,6 +6802,15 @@
     "avoid": [
       "Arching lower back or lifting hips off pad to throw momentum into the curl.",
       "Allowing weight stack to slam down on the eccentric return."
+    ],
+    "searchKeywords": [
+      "Cable Lying Single-Leg Curl",
+      "Yatarak Kablolu Tek Bacak Bükme (Cable Leg Curl)",
+      "Cable Lying Single Leg Curl (male)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -4420,6 +6827,17 @@
       "Hyperextending lumbar spine at top instead of achieving true hip extension.",
       "Pushing through toes rather than driving into heels.",
       "Letting knees collapse inward during hip drive."
+    ],
+    "searchKeywords": [
+      "Bodyweight Frog Hip Thrust",
+      "Kurbağa Duruşu Kalça İtişi (Frog Hip Thrust)",
+      "Bodyweight Frog Hip Thrust (male)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı",
+      "hip thrust",
+      "glute",
+      "kalça"
     ]
   },
   {
@@ -4436,6 +6854,16 @@
       "Hyperextending lumbar spine at top instead of achieving true hip extension.",
       "Pushing through toes rather than driving into heels.",
       "Letting knees collapse inward during hip drive."
+    ],
+    "searchKeywords": [
+      "Single Leg Hip Thrust",
+      "Tek Bacak Kalça İtişi (Single-Leg Hip Thrust)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı",
+      "hip thrust",
+      "glute",
+      "kalça"
     ]
   },
   {
@@ -4452,6 +6880,14 @@
       "Hyperextending lumbar spine at top instead of achieving true hip extension.",
       "Pushing through toes rather than driving into heels.",
       "Letting knees collapse inward during hip drive."
+    ],
+    "searchKeywords": [
+      "Barbell Kas Glute Bridge",
+      "Barbell Kas Kalça Köprüsü (Kas Glute Bridge)",
+      "Barbell KAS Glute Bridge (male)",
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -4467,6 +6903,15 @@
     "avoid": [
       "Arching lower back to kick leg higher.",
       "Twisting pelvis or swinging leg with momentum."
+    ],
+    "searchKeywords": [
+      "Cable Hip Abduction",
+      "Kablolu Kalça Dışa Açma (Cable Hip Abduction)",
+      "Cable hip abduction (version 2) (male)",
+      "Cable",
+      "pulley",
+      "kablo",
+      "makara"
     ]
   },
   {
@@ -4482,6 +6927,13 @@
     "avoid": [
       "Hyperextending lumbar spine excessively at the top of the extension.",
       "Jerking torso upward with swinging momentum."
+    ],
+    "searchKeywords": [
+      "Reverse Hyperextension on Box",
+      "Sehpada Ters Bel ve Kalça Kaldırışı (Reverse Hyperextension)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -4498,6 +6950,18 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Handstand Push-up",
+      "Amuda Kalkarak Şınav (Handstand Push-Up)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı",
+      "push up",
+      "push ups",
+      "pushup",
+      "pushups",
+      "şınav"
     ]
   },
   {
@@ -4513,6 +6977,13 @@
     "avoid": [
       "Allowing elbows to drift forward and backward on each rep.",
       "Using shoulder or torso momentum to slam weight down."
+    ],
+    "searchKeywords": [
+      "Ring Dip",
+      "Jimnastik Halkasında Dips (Ring Dip)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -4529,6 +7000,17 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Ring Incline Push-Up",
+      "Jimnastik Halkasında Eğimli Şınav (Ring Incline Push-Up)",
+      "Ring Incline Push-up (male)",
+      "Suspension",
+      "push up",
+      "push ups",
+      "pushup",
+      "pushups",
+      "şınav"
     ]
   },
   {
@@ -4544,6 +7026,14 @@
     "avoid": [
       "Allowing elbows to drift forward and backward on each rep.",
       "Using shoulder or torso momentum to slam weight down."
+    ],
+    "searchKeywords": [
+      "Bench Dip",
+      "Sehpada Dips (Bench Dip)",
+      "Bench Dip (knees bent)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -4560,6 +7050,12 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Resistance Band Standing Chest Press",
+      "Direnç Bandı Ayakta Göğüs Presi (Band Chest Press)",
+      "Resistance Band Standing Chest Press (male)",
+      "Resistance Band"
     ]
   },
   {
@@ -4576,6 +7072,12 @@
       "Using excessive torso swing or leg drive to jerk the weight.",
       "Rounding upper or lower spine under load.",
       "Flaring elbows excessively wide away from body."
+    ],
+    "searchKeywords": [
+      "Resistance Band Seated Row",
+      "Direnç Bandı Oturarak Kürek (Band Seated Row)",
+      "Resistance Band Seated Row (male)",
+      "Resistance Band"
     ]
   },
   {
@@ -4592,6 +7094,14 @@
       "Leaning back excessively into a horizontal row to heave the weight.",
       "Pulling bar behind the neck (strains cervical spine and rotator cuff).",
       "Using jerky momentum to yank the bar down."
+    ],
+    "searchKeywords": [
+      "Resistance Band Lat Pulldown",
+      "Direnç Bandı Göğse Çekiş (Band Lat Pulldown)",
+      "Resistance Band Standing Lat Pulldown (male)",
+      "Resistance Band",
+      "pulldown",
+      "pull down"
     ]
   },
   {
@@ -4608,6 +7118,12 @@
       "Flaring elbows out at 90 degrees to torso (causes shoulder impingement).",
       "Bouncing bar off ribcage or lifting glutes off the bench.",
       "Losing upper back tightness at the top of the press."
+    ],
+    "searchKeywords": [
+      "Resistance Band Face Pull",
+      "Direnç Bandı Yüze Çekiş (Band Face Pull)",
+      "Band Face Pull (male)",
+      "Band"
     ]
   },
   {
@@ -4623,6 +7139,11 @@
     "avoid": [
       "Swinging elbows forward or backward to generate momentum.",
       "Arching lower back to lean backward during the curl."
+    ],
+    "searchKeywords": [
+      "Band Biceps Curl",
+      "Direnç Bandı Biceps Büküş (Band Biceps Curl)",
+      "Band"
     ]
   },
   {
@@ -4638,6 +7159,15 @@
     "avoid": [
       "Allowing elbows to drift forward and backward on each rep.",
       "Using shoulder or torso momentum to slam weight down."
+    ],
+    "searchKeywords": [
+      "Resistance Band Triceps Pushdown",
+      "Direnç Bandı Triceps İtişi (Band Pushdown)",
+      "Resistance Band",
+      "pressdown",
+      "press down",
+      "pushdown",
+      "push down"
     ]
   },
   {
@@ -4654,6 +7184,12 @@
       "Shrugging neck and upper traps up toward ears.",
       "Swinging torso or bouncing knees to heave the weights.",
       "Internally rotating shoulders excessively during the raise."
+    ],
+    "searchKeywords": [
+      "Band Lateral Raise",
+      "Direnç Bandı Yan Açış (Band Lateral Raise)",
+      "Band Lateral Raise (Version 2)",
+      "Band"
     ]
   },
   {
@@ -4669,6 +7205,13 @@
     "avoid": [
       "Bending arms and pulling purely with shoulders/arms.",
       "Twisting spine without pivoting trailing foot, stressing lower back."
+    ],
+    "searchKeywords": [
+      "Landmine 180",
+      "Landmine Gövde Dönüşü (Landmine 180)",
+      "Leverage machine",
+      "machine",
+      "makine"
     ]
   },
   {
@@ -4684,6 +7227,13 @@
     "avoid": [
       "Yanking on neck with hands or throwing head forward.",
       "Using hip flexor momentum to swing legs or torso."
+    ],
+    "searchKeywords": [
+      "Hanging Toes to Bar",
+      "Asılarak Ayakları Bara Çekme (Toes to Bar)",
+      "Body weight",
+      "bodyweight",
+      "vücut ağırlığı"
     ]
   },
   {
@@ -4699,6 +7249,11 @@
     "avoid": [
       "Standing completely upright and letting ropes pull torso forward.",
       "Rounding upper back into a hunched posture."
+    ],
+    "searchKeywords": [
+      "Battling Ropes High Waves",
+      "Dalgalı Halat Savurma (Battle Ropes)",
+      "Battling Rope"
     ]
   },
   {
@@ -4714,6 +7269,14 @@
     "avoid": [
       "Rounding lower back or letting hips sway wildly side to side.",
       "Taking tiny stutter steps that lose ground drive."
+    ],
+    "searchKeywords": [
+      "Power Sled Push",
+      "Ağırlık Kızağı İtişi (Sled Push)",
+      "Power Sled Push (male)",
+      "Power Sled",
+      "machine",
+      "makine"
     ]
   }
 ]

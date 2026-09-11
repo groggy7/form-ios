@@ -6,6 +6,45 @@ import SwiftUI
 
 final class FormAppTests: XCTestCase {
 
+    func testFlexibleExerciseSearch() throws {
+        func score(_ id: String, _ query: String) throws -> Int? {
+            let exercise = try XCTUnwrap(ExerciseCatalog.canonicalExercises[id]).toExercise()
+            return ExerciseSearch.score(.init(query), exercise: exercise)
+        }
+        for query in ["chest supported", "CHEST-SUPPORTED", "chest—supported", "  chest   supported  ",
+                      "row chest", "supported dumb", "DB chest row"] {
+            XCTAssertNotNil(try score("chest-supported-dumbbell-row", query), query)
+        }
+        for (id, query) in [
+            ("dumbbell-romanian-deadlift", "DB RDL"), ("barbell-romanian-deadlift", "bb rdl"),
+            ("standing-barbell-overhead-press", "OHP"), ("rope-triceps-pressdown", "rope pushdown"),
+            ("pec-deck-fly", "butterfly"), ("push-ups", "pushups"), ("pull-ups", "pull ups"),
+            ("push-ups", "SINAV"), ("push-ups", "ŞINAV"), ("pull-ups", "barfiks")
+        ] { XCTAssertNotNil(try score(id, query), "\(id) / \(query)") }
+        XCTAssertNil(try score("barbell-bench-press", "chest supported"))
+        XCTAssertNil(try score("chest-supported-dumbbell-row", "chest bicycle"))
+        XCTAssertNil(try score("barbell-back-squat", "bell"))
+        XCTAssertNil(try score("pull-ups", "weighted"))
+        XCTAssertNotNil(try score("weighted-pull-ups", "weighted pullup"))
+        XCTAssertEqual(try score("barbell-bench-press", " --- "), 0)
+        XCTAssertEqual(try score("barbell-back-squat", ""), 0)
+        XCTAssertEqual(ExerciseSearch.normalize("İŞINAV GÖĞÜS ÇEKİŞ"), "isinav gogus cekis")
+        let exact = Exercise(name: "RDL")
+        XCTAssertLessThan(try XCTUnwrap(ExerciseSearch.score(.init("rdl"), exercise: exact)),
+                          try XCTUnwrap(score("barbell-romanian-deadlift", "rdl")))
+    }
+
+    func testSearchKeywordsAndCustomExerciseCompatibility() throws {
+        XCTAssertEqual(ExerciseCatalog.canonicalExercises.count, 300)
+        XCTAssertTrue(ExerciseCatalog.canonicalExercises.values.allSatisfy { !$0.searchKeywords.isEmpty })
+        let custom = Exercise(name: "My Chest—Supported Row", exerciseId: "custom")
+        XCTAssertNotNil(ExerciseSearch.score(.init("chest supported"), exercise: custom))
+        XCTAssertNotNil(ExerciseSearch.score(.init("CEKIS"), exercise: custom, category: "Çekiş"))
+        XCTAssertNil(ExerciseSearch.score(.init("rdl"), exercise: custom))
+        let old = Data(#"{"id":"custom","name":"Custom","movementType":"other"}"#.utf8)
+        XCTAssertTrue(try JSONDecoder().decode(ExerciseDefinition.self, from: old).searchKeywords.isEmpty)
+    }
+
     func testExerciseVideoCatalogMatchesCurrentExercises() throws {
         XCTAssertEqual(ExerciseVideoCatalog.entries.count, 300)
         for id in ExerciseCatalog.canonicalExercises.keys {
