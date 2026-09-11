@@ -474,7 +474,7 @@ final class FormAppTests: XCTestCase {
 
         XCTAssertEqual(LanguageManager.t("programs.import"), "Import JSON")
         XCTAssertEqual(LanguageManager.t("programs.apply"), "Apply")
-        XCTAssertEqual(LanguageManager.t("editor.title"), "Program editor")
+        XCTAssertEqual(LanguageManager.t("modal.program.titleEdit"), "Edit program")
     }
 
     @MainActor
@@ -1187,8 +1187,8 @@ final class FormAppTests: XCTestCase {
             "video.play", "video.pause", "video.resume", "video.replay",
             "video.loading", "video.retry", "video.invalid", "video.youtubeOnly", "video.networkError", "video.embedError",
             "video.linkTitle", "video.linkSubtitle", "video.urlInputLabel", "video.urlInputPlaceholder",
-            "video.addUrlButton", "video.paste", "video.pasteButton", "video.preview", "video.previewVideo", "video.deleteVideo",
-            "video.linkedCount", "video.maxReached", "video.maxReachedHint", "video.maxLimitReached", "video.alreadyAdded", "video.duplicateUrl",
+            "video.addUrlButton", "video.paste", "video.preview",
+            "video.linkedCount", "video.maxReached", "video.maxReachedHint", "video.alreadyAdded",
             "video.noVideos", "video.saveLinks", "video.tapToPlay", "notice.videosUpdated",
             "library.videos", "library.attachVideoCta"
         ]

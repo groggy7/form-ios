@@ -39,12 +39,12 @@ public struct ProgramBuilderView: View {
                 VStack(alignment: .leading, spacing: 20) {
                     // Program Details Section
                     VStack(alignment: .leading, spacing: 12) {
-                        Text(LanguageManager.t("editor.details"))
+                        Text(LanguageManager.t("builder.details"))
                             .font(.system(size: 15, weight: .bold))
                             .foregroundColor(AppColors.secondaryText)
 
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(LanguageManager.t("editor.name"))
+                            Text(LanguageManager.t("modal.program.name"))
                                 .font(.system(size: 12))
                                 .foregroundColor(AppColors.muted)
                             TextField("Program Name", text: $program.name)
@@ -57,7 +57,7 @@ public struct ProgramBuilderView: View {
                         }
 
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(LanguageManager.t("editor.description"))
+                            Text(LanguageManager.t("modal.program.desc"))
                                 .font(.system(size: 12))
                                 .foregroundColor(AppColors.muted)
                             TextField("Description", text: $program.description)
@@ -75,7 +75,7 @@ public struct ProgramBuilderView: View {
 
                     // Day Tabs
                     VStack(alignment: .leading, spacing: 14) {
-                        Text(LanguageManager.t("editor.schedule"))
+                        Text(LanguageManager.t("builder.trainingDays"))
                             .font(.system(size: 15, weight: .bold))
                             .foregroundColor(AppColors.secondaryText)
 
@@ -109,7 +109,7 @@ public struct ProgramBuilderView: View {
                             let workout = program.workouts[workoutIdx]
                             VStack(alignment: .leading, spacing: 14) {
                                 VStack(alignment: .leading, spacing: 4) {
-                                    Text(LanguageManager.t("editor.workoutTitle"))
+                                    Text(LanguageManager.t("modal.workout.name"))
                                         .font(.system(size: 12))
                                         .foregroundColor(AppColors.muted)
                                     TextField("Day Title", text: $program.workouts[workoutIdx].title)
@@ -129,7 +129,7 @@ public struct ProgramBuilderView: View {
                                             .foregroundColor(AppColors.text)
                                         Spacer()
                                         Button(action: { showAddExerciseSheet = true }) {
-                                            Label(LanguageManager.t("editor.addExercise"), systemImage: "plus")
+                                            Label(LanguageManager.t("builder.addExercises"), systemImage: "plus")
                                                 .font(.system(size: 12, weight: .bold))
                                                 .foregroundColor(AppColors.accent)
                                         }
@@ -218,7 +218,7 @@ public struct ProgramBuilderView: View {
                     // Save & Export Buttons
                     VStack(spacing: 10) {
                         Button(action: saveProgram) {
-                            Text(LanguageManager.t("editor.save"))
+                            Text(LanguageManager.t("modal.program.save"))
                                 .font(.system(size: 16, weight: .bold))
                                 .foregroundColor(AppColors.todaySelectionText)
                                 .frame(maxWidth: .infinity)
@@ -229,7 +229,7 @@ public struct ProgramBuilderView: View {
                         .buttonStyle(.plain)
 
                         Button(action: exportProgram) {
-                            Text(LanguageManager.t("editor.export"))
+                            Text(LanguageManager.t("programs.exportJson"))
                                 .font(.system(size: 15, weight: .semibold))
                                 .foregroundColor(AppColors.muted)
                                 .frame(maxWidth: .infinity)
@@ -245,7 +245,7 @@ public struct ProgramBuilderView: View {
                 .padding(20)
             }
             .background(AppColors.background)
-            .navigationTitle(isNew ? LanguageManager.t("programs.new") : LanguageManager.t("editor.title"))
+            .navigationTitle(isNew ? LanguageManager.t("programs.new") : LanguageManager.t("modal.program.titleEdit"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -346,7 +346,7 @@ struct AddExercisePickerSheet: View {
                 }
             }
             .searchable(text: $search)
-            .navigationTitle(LanguageManager.t("editor.addExercise"))
+            .navigationTitle(LanguageManager.t("builder.addExercises"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
