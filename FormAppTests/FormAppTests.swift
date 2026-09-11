@@ -6,6 +6,48 @@ import SwiftUI
 
 final class FormAppTests: XCTestCase {
 
+    func testExerciseVideoCatalogMatchesCurrentExercises() throws {
+        XCTAssertEqual(ExerciseVideoCatalog.entries.count, 50)
+        for id in ExerciseCatalog.canonicalExercises.keys {
+            let entry = try XCTUnwrap(ExerciseVideoCatalog.entries[id], id)
+            XCTAssertFalse(entry.name.isEmpty)
+            let url = try XCTUnwrap(ExerciseVideoCatalog.url(for: id), id)
+            XCTAssertTrue(FileManager.default.fileExists(atPath: url.path))
+        }
+        XCTAssertNil(ExerciseVideoCatalog.url(for: "unknown-custom-exercise"))
+        XCTAssertEqual(ExerciseVideoCatalog.entries["face-pull"]?.videoId, "565612")
+        XCTAssertEqual(ExerciseVideoCatalog.entries["goblet-squat"]?.videoId, "176012")
+        XCTAssertNotEqual(ExerciseVideoCatalog.url(for: "pull-ups"),
+                          ExerciseVideoCatalog.url(for: "weighted-pull-ups"))
+    }
+
+    @MainActor
+    func testLocalExerciseVideoPlaysAndPauses() async throws {
+        let url = try XCTUnwrap(ExerciseVideoCatalog.url(for: "barbell-bench-press"))
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 300))
+        let controller = UIViewController()
+        window.rootViewController = controller
+        let video = ExercisePlayerView(url: url)
+        video.frame = CGRect(x: 0, y: 0, width: 320, height: 224)
+        controller.view.addSubview(video)
+        window.isHidden = false
+        defer { video.release(); window.isHidden = true }
+        video.setPlaying(true)
+        try await Task.sleep(nanoseconds: 2_000_000_000)
+        XCTAssertGreaterThan(video.playbackTime.seconds, 0.1)
+        let image = UIGraphicsImageRenderer(size: video.bounds.size).image { _ in
+            video.drawHierarchy(in: video.bounds, afterScreenUpdates: true)
+        }
+        let attachment = XCTAttachment(image: image)
+        attachment.name = "Detail video on matched dark background"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+        video.setPlaying(false)
+        let pausedAt = video.playbackTime.seconds
+        try await Task.sleep(nanoseconds: 200_000_000)
+        XCTAssertEqual(video.playbackTime.seconds, pausedAt, accuracy: 0.05)
+    }
+
     @MainActor
     func testExerciseArtworkFramesAreEmpty() throws {
         for id in ["barbell-bench-press", "dead-bug", "side-plank", "unknown"] {

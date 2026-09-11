@@ -26,21 +26,16 @@ public struct ExerciseDetailSheet: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    // Anatomy Artwork Banner
+                    // Local exercise video; thumbnails remain empty.
                     ZStack {
                         RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .fill(AppColors.surface)
+                            .fill(AppColors.exerciseVideoSurface)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 14, style: .continuous)
                                     .stroke(AppColors.border, lineWidth: 1)
                             )
 
-                        MovementIllustration(
-                            name: currentExercise.name,
-                            movementType: currentExercise.resolvedMovement,
-                            movementAssetId: currentExercise.resolvedMovementAssetId,
-                            allowCategoryFallback: false
-                        )
+                        ExerciseDetailVideo(exerciseId: currentExercise.exerciseId)
                         .padding(12)
                     }
                     .frame(maxWidth: .infinity)
