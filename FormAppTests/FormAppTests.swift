@@ -1053,6 +1053,11 @@ final class FormAppTests: XCTestCase {
         XCTAssertNotNil(store.noticeMessage)
     }
 
+    func testAppStoreExerciseCatalogueContainsAll300Exercises() {
+        let store = AppStore()
+        XCTAssertEqual(store.exerciseCatalogue.count, 300)
+    }
+
     func testVideoTranslationsParity() {
         let requiredKeys = [
             "video.openExternal", "video.close", "video.back5", "video.forward5",
