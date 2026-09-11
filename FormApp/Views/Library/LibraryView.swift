@@ -156,13 +156,7 @@ public struct LibraryView: View {
                                         RoundedRectangle(cornerRadius: 9, style: .continuous)
                                             .fill(AppColors.exerciseThumbnailSurface)
 
-                                        MovementIllustration(
-                                            name: exercise.name,
-                                            movementType: exercise.resolvedMovement,
-                                            movementAssetId: exercise.resolvedMovementAssetId,
-                                            allowCategoryFallback: false,
-                                            exerciseId: exercise.exerciseId
-                                        )
+                                        MovementIllustration(exerciseId: exercise.exerciseId)
                                         .padding(4)
                                     }
                                     .frame(height: 96)
@@ -212,11 +206,8 @@ public struct LibraryView: View {
                             Button(action: { onSelectExercise(exercise) }) {
                                 HStack(spacing: 12) {
                                     MovementIcon(
-                                        name: exercise.name,
-                                        size: 72,
-                                        movementType: exercise.resolvedMovement,
-                                        movementAssetId: exercise.resolvedMovementAssetId,
-                                        exerciseId: exercise.exerciseId
+                                        exerciseId: exercise.exerciseId,
+                                        size: 72
                                     )
 
                                     VStack(alignment: .leading, spacing: 4) {

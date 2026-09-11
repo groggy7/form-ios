@@ -121,11 +121,8 @@ public struct ActiveSessionView: View {
                                                 ZStack(alignment: .topTrailing) {
                                                     VStack(spacing: 4) {
                                                         MovementIcon(
-                                                            name: ex.name,
-                                                            size: 48,
-                                                            movementType: ex.resolvedMovement,
-                                                            movementAssetId: ex.resolvedMovementAssetId,
-                                                            exerciseId: ex.exerciseId
+                                                            exerciseId: ex.exerciseId,
+                                                            size: 48
                                                         )
 
                                                         Text("\(idx + 1). \(ex.displayName)")
@@ -186,11 +183,8 @@ public struct ActiveSessionView: View {
                                         }
                                         Spacer()
                                         MovementIcon(
-                                            name: exercise.name,
-                                            size: 56,
-                                            movementType: exercise.resolvedMovement,
-                                            movementAssetId: exercise.resolvedMovementAssetId,
-                                            exerciseId: exercise.exerciseId
+                                            exerciseId: exercise.exerciseId,
+                                            size: 56
                                         )
                                     }
 

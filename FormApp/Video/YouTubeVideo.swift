@@ -57,8 +57,11 @@ public struct YouTubeVideo: Equatable {
     public static func validatedLinks(_ raw: [String]) -> [String]? {
         let urls = raw.map(normalizeInput).filter { !$0.isEmpty }
         guard urls.allSatisfy(isSupportedLink) else { return nil }
-        var seen = Set<String>()
-        return Array(urls.filter { seen.insert($0).inserted }.prefix(3))
+        var seenIds = Set<String>()
+        return Array(urls.filter { url in
+            let key = parse(url)?.id ?? url
+            return seenIds.insert(key).inserted
+        }.prefix(3))
     }
 
     public static func parse(_ urlString: String) -> YouTubeVideo? {

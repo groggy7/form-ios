@@ -117,11 +117,8 @@ public struct TodayView: View {
                                 Button(action: { onSelectExercise(exercise) }) {
                                     HStack(spacing: 12) {
                                         MovementIcon(
-                                            name: exercise.name,
-                                            size: 52,
-                                            movementType: exercise.resolvedMovement,
-                                            movementAssetId: exercise.resolvedMovementAssetId,
-                                            exerciseId: exercise.exerciseId
+                                            exerciseId: exercise.exerciseId,
+                                            size: 52
                                         )
 
                                         VStack(alignment: .leading, spacing: 4) {

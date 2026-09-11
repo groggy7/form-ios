@@ -32,7 +32,12 @@ public struct ExerciseVideoLinksSheet: View {
     private var validLinkedUrls: Bool { linkedUrls.allSatisfy(YouTubeVideo.isSupportedLink) }
 
     private var isDuplicate: Bool {
-        linkedUrls.contains { $0.caseInsensitiveCompare(cleanInput) == .orderedSame }
+        if let inputId = YouTubeVideo.parse(cleanInput)?.id {
+            return linkedUrls.contains { url in
+                YouTubeVideo.parse(url)?.id == inputId || url.caseInsensitiveCompare(cleanInput) == .orderedSame
+            }
+        }
+        return linkedUrls.contains { $0.caseInsensitiveCompare(cleanInput) == .orderedSame }
     }
 
     private var canAdd: Bool {
@@ -84,13 +89,7 @@ public struct ExerciseVideoLinksSheet: View {
                                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                                     .fill(AppColors.exerciseThumbnailSurface)
 
-                                MovementIllustration(
-                                    name: exercise.name,
-                                    movementType: exercise.resolvedMovement,
-                                    movementAssetId: exercise.movementAssetId,
-                                    allowCategoryFallback: false,
-                                    exerciseId: exercise.exerciseId
-                                )
+                                MovementIllustration(exerciseId: exercise.exerciseId)
                                 .padding(4)
                             }
                             .frame(width: 76, height: 76)

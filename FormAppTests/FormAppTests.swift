@@ -129,7 +129,7 @@ final class FormAppTests: XCTestCase {
     func testUnknownExerciseArtworkFramesAreEmpty() throws {
         for id in ["unknown", "band-face-pull"] {
             let renderer = ImageRenderer(content:
-                MovementIllustration(name: id, movementAssetId: "barbell-bench-press", exerciseId: id)
+                MovementIllustration(exerciseId: id)
                     .frame(width: 224, height: 224)
             )
             renderer.scale = 1
@@ -170,11 +170,11 @@ final class FormAppTests: XCTestCase {
         XCTAssertNil(ExerciseThumbnails.image(for: "unknown"))
         let renderer = ImageRenderer(content:
             VStack {
-                MovementIllustration(name: "Bench", exerciseId: "barbell-bench-press")
+                MovementIllustration(exerciseId: "barbell-bench-press")
                     .frame(width: 224, height: 224).background(AppColors.exerciseThumbnailSurface)
                 HStack {
                     ForEach(["face-pull", "cable-lateral-raise", "leg-press"], id: \.self) { id in
-                        MovementIcon(name: id, size: 96, exerciseId: id)
+                        MovementIcon(exerciseId: id, size: 96)
                     }
                 }
             }.padding(12).background(AppColors.background)
@@ -1153,6 +1153,7 @@ final class FormAppTests: XCTestCase {
         XCTAssertNil(YouTubeVideo.validatedLinks(["youtu.be/\(id)", "https://example.com"]))
         XCTAssertEqual(YouTubeVideo.validatedLinks([]), [])
         XCTAssertEqual(YouTubeVideo.validatedLinks(["youtu.be/\(id)", "https://youtu.be/\(id)", " "]), ["https://youtu.be/\(id)"])
+        XCTAssertEqual(YouTubeVideo.validatedLinks(["youtu.be/\(id)", "https://www.youtube.com/watch?v=\(id)&si=xyz", "https://youtube.com/shorts/\(id)"]), ["https://youtu.be/\(id)"])
         XCTAssertEqual(YouTubeVideo.parse("https://youtu.be/\(id)?t=9223372036854775807h")?.startSeconds, 604800)
     }
 
@@ -1184,10 +1185,10 @@ final class FormAppTests: XCTestCase {
         let requiredKeys = [
             "video.openExternal", "video.close", "video.back5", "video.forward5",
             "video.play", "video.pause", "video.resume", "video.replay",
-            "video.loading", "video.retry", "video.invalid", "video.networkError", "video.embedError",
+            "video.loading", "video.retry", "video.invalid", "video.youtubeOnly", "video.networkError", "video.embedError",
             "video.linkTitle", "video.linkSubtitle", "video.urlInputLabel", "video.urlInputPlaceholder",
             "video.addUrlButton", "video.pasteButton", "video.previewVideo", "video.deleteVideo",
-            "video.linkedCount", "video.maxLimitReached", "video.duplicateUrl", "video.invalidUrl",
+            "video.linkedCount", "video.maxLimitReached", "video.duplicateUrl",
             "video.noVideos", "video.saveLinks", "video.tapToPlay", "notice.videosUpdated",
             "library.videos", "library.attachVideoCta"
         ]

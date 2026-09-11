@@ -1,7 +1,7 @@
 # Static STEP1 thumbnails
 
 Approved 2026-09-11. `FormApp/Resources/ExerciseThumbnails/` is an explicit Xcode
-folder resource containing 50 transparent static PNGs and `catalog.json`.
+folder resource containing 300 transparent static PNGs and `catalog.json`.
 It is byte-identical to Android's `app/src/main/assets/exercise_thumbnails/`.
 STEP2, original source packs and legacy sprite assets are not bundled.
 
@@ -10,7 +10,7 @@ selects the purchased pack's matching STEP1 view using the video catalogue.
 It trims only fully transparent outer space, proportionally resizes inside
 368×368, adds 8px transparent padding, and exports PNG compression level 9.
 The catalogue preserves source filenames/hashes/dimensions, crop bounds and
-output dimensions/hashes. The 50 PNGs total 4,066,942 bytes.
+output dimensions/hashes. The 300 PNGs total 24,203,332 bytes.
 
 MovementIcon and MovementIllustration show one static fitted image on the
 thumbnail-only slate backdrop `#3B4B5B`, with an 8 MiB decoded-image cache.

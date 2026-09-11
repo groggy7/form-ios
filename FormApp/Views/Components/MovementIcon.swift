@@ -26,27 +26,23 @@ enum ExerciseThumbnails {
 
 /// Static thumbnail; no player or animation clock.
 public struct MovementIcon: View {
+    private let exerciseId: String?
     private let size: CGFloat
     private let large: Bool
-    private let exerciseId: String?
 
     public init(
-        name: String,
+        exerciseId: String?,
         size: CGFloat = 56,
-        large: Bool = false,
-        movementType: MovementType = .other,
-        movementAssetId: String? = nil,
-        allowCategoryFallback: Bool = true,
-        exerciseId: String? = nil
+        large: Bool = false
     ) {
+        self.exerciseId = exerciseId
         self.size = size
         self.large = large
-        self.exerciseId = exerciseId
     }
 
     public var body: some View {
         let finalSize: CGFloat = large ? 108 : size
-        MovementIllustration(name: "", exerciseId: exerciseId)
+        MovementIllustration(exerciseId: exerciseId)
             .padding(4)
             .frame(width: finalSize, height: finalSize)
             .background(AppColors.exerciseThumbnailSurface)
@@ -61,13 +57,9 @@ public struct MovementIcon: View {
 /// Unknown exercises remain empty instead of inheriting a similar movement.
 public struct MovementIllustration: View {
     private let exerciseId: String?
-    public init(
-        name: String,
-        movementType: MovementType = .other,
-        movementAssetId: String? = nil,
-        allowCategoryFallback: Bool = true,
-        exerciseId: String? = nil
-    ) { self.exerciseId = exerciseId }
+    public init(exerciseId: String?) {
+        self.exerciseId = exerciseId
+    }
 
     public var body: some View {
         ZStack {
