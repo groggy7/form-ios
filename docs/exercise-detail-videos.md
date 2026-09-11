@@ -1,7 +1,8 @@
 # Exercise detail videos
 
 The 50 local MP4 files in `FormApp/Resources/ExerciseVideos/` replace only the
-exercise-detail banner. Library thumbnails remain empty. The folder is an
+exercise-detail banner. Library thumbnails now use separate
+[static STEP1 images](exercise-thumbnails.md). The video folder is an
 explicit Xcode resource; the legacy archive is not bundled.
 
 `catalog.json` maps stable canonical exercise IDs to source video IDs, filenames,

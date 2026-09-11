@@ -95,16 +95,17 @@ public struct ExerciseVideoLinksSheet: View {
                     VStack(spacing: 16) {
                         // Exercise Card
                         HStack(spacing: 14) {
-                            // Left: Animation
+                            // Left: Static STEP1 thumbnail
                             ZStack {
                                 RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .fill(AppColors.surfaceRaised)
+                                    .fill(AppColors.exerciseThumbnailSurface)
 
                                 MovementIllustration(
                                     name: exercise.name,
                                     movementType: exercise.resolvedMovement,
                                     movementAssetId: exercise.movementAssetId,
-                                    allowCategoryFallback: false
+                                    allowCategoryFallback: false,
+                                    exerciseId: exercise.exerciseId
                                 )
                                 .padding(4)
                             }

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
         V10000000000000000000001 /* ExerciseDetailVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = V10000000000000000000002 /* ExerciseDetailVideo.swift */; };
         V10000000000000000000003 /* ExerciseVideos in Resources */ = {isa = PBXBuildFile; fileRef = V10000000000000000000004 /* ExerciseVideos */; };
+        T10000000000000000000003 /* ExerciseThumbnails in Resources */ = {isa = PBXBuildFile; fileRef = T10000000000000000000004 /* ExerciseThumbnails */; };
 		L100000000000000000000002 /* Locales in Resources */ = {isa = PBXBuildFile; fileRef = L100000000000000000000001 /* Locales */; };
 		L100000000000000000000003 /* Locales in Resources */ = {isa = PBXBuildFile; fileRef = L100000000000000000000001 /* Locales */; };
 		C10000000000000000000002 /* ContentLocalizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000001 /* ContentLocalizer.swift */; };
@@ -86,6 +87,7 @@
 /* Begin PBXFileReference section */
         V10000000000000000000002 /* ExerciseDetailVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDetailVideo.swift; sourceTree = "<group>"; };
         V10000000000000000000004 /* ExerciseVideos */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseVideos; sourceTree = "<group>"; };
+        T10000000000000000000004 /* ExerciseThumbnails */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseThumbnails; sourceTree = "<group>"; };
 		023D09DFD513B3F32B009541 /* WorkoutDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetailSheet.swift; sourceTree = "<group>"; };
 		08997E0EACD6176BFF508687 /* ToastOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastOverlay.swift; sourceTree = "<group>"; };
 		10AEC969AB339D9720AB880B /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
@@ -333,6 +335,7 @@
 			children = (
                 77203A709542614D89DFF819 /* Assets.xcassets */,
                 V10000000000000000000004 /* ExerciseVideos */,
+                T10000000000000000000004 /* ExerciseThumbnails */,
 				E10000000000000000000001 /* exercises.json */,
 				L100000000000000000000001 /* Locales */,
 				92387770BAF9161F9576E05F /* Sounds */,
@@ -455,6 +458,7 @@
 			files = (
 				E10000000000000000000002 /* exercises.json in Resources */,
                 V10000000000000000000003 /* ExerciseVideos in Resources */,
+                T10000000000000000000003 /* ExerciseThumbnails in Resources */,
 				L100000000000000000000002 /* Locales in Resources */,
 				ECF655C211A97E2025683749 /* 01_aesthetic_hypertrophy.json in Resources */,
 				48390A60D9C62EB7A6171580 /* 02_powerbuilding_strength.json in Resources */,

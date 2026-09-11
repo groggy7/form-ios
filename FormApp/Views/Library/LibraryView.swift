@@ -150,14 +150,14 @@ public struct LibraryView: View {
                                 VStack(alignment: .leading, spacing: 8) {
                                     ZStack {
                                         RoundedRectangle(cornerRadius: 9, style: .continuous)
-                                            .fill(AppColors.surfaceRaised)
+                                            .fill(AppColors.exerciseThumbnailSurface)
 
-                                        MovementIcon(
+                                        MovementIllustration(
                                             name: exercise.name,
-                                            size: 84,
                                             movementType: exercise.resolvedMovement,
                                             movementAssetId: exercise.resolvedMovementAssetId,
-                                            allowCategoryFallback: false
+                                            allowCategoryFallback: false,
+                                            exerciseId: exercise.exerciseId
                                         )
                                         .padding(4)
                                     }
@@ -211,7 +211,8 @@ public struct LibraryView: View {
                                         name: exercise.name,
                                         size: 72,
                                         movementType: exercise.resolvedMovement,
-                                        movementAssetId: exercise.resolvedMovementAssetId
+                                        movementAssetId: exercise.resolvedMovementAssetId,
+                                        exerciseId: exercise.exerciseId
                                     )
 
                                     VStack(alignment: .leading, spacing: 4) {

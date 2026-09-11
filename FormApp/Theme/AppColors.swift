@@ -5,6 +5,7 @@ public enum AppColors {
     public static let surface = Color(hex: 0x13171B)
     public static let surfaceRaised = Color(hex: 0x1D2227)
     public static let exerciseVideoSurface = Color(hex: 0x16202A)
+    public static let exerciseThumbnailSurface = Color(hex: 0x3B4B5B)
     public static let text = Color(hex: 0xF3F5F5)
     public static let secondaryText = Color(hex: 0xB6BEC4)
     public static let muted = Color(hex: 0x8F999F)

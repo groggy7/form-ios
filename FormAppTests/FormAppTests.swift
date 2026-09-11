@@ -84,10 +84,10 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
-    func testExerciseArtworkFramesAreEmpty() throws {
-        for id in ["barbell-bench-press", "dead-bug", "side-plank", "unknown"] {
+    func testUnknownExerciseArtworkFramesAreEmpty() throws {
+        for id in ["unknown", "band-face-pull"] {
             let renderer = ImageRenderer(content:
-                MovementIllustration(name: id, movementAssetId: id)
+                MovementIllustration(name: id, movementAssetId: "barbell-bench-press", exerciseId: id)
                     .frame(width: 224, height: 224)
             )
             renderer.scale = 1
@@ -114,6 +114,36 @@ final class FormAppTests: XCTestCase {
                      "anatomy_weighted_pull_up", "anatomy_seated_leg_curl"] {
             XCTAssertNil(UIImage(named: name), "Archived artwork must not ship")
         }
+    }
+
+    @MainActor
+    func testStaticStepOneThumbnails() throws {
+        XCTAssertEqual(Set(ExerciseThumbnails.catalog.keys), Set(ExerciseCatalog.canonicalExercises.keys))
+        for id in ExerciseThumbnails.catalog.keys {
+            let image = try XCTUnwrap(ExerciseThumbnails.image(for: id), id)
+            XCTAssertLessThanOrEqual(image.size.width, 384)
+            XCTAssertLessThanOrEqual(image.size.height, 384)
+            XCTAssertNotEqual(image.cgImage?.alphaInfo, CGImageAlphaInfo.none)
+        }
+        XCTAssertNil(ExerciseThumbnails.image(for: "unknown"))
+        let renderer = ImageRenderer(content:
+            VStack {
+                MovementIllustration(name: "Bench", exerciseId: "barbell-bench-press")
+                    .frame(width: 224, height: 224).background(AppColors.exerciseThumbnailSurface)
+                HStack {
+                    ForEach(["face-pull", "cable-lateral-raise", "leg-press"], id: \.self) { id in
+                        MovementIcon(name: id, size: 96, exerciseId: id)
+                    }
+                }
+            }.padding(12).background(AppColors.background)
+        )
+        renderer.scale = 2
+        let image = try XCTUnwrap(renderer.uiImage)
+        XCTAssertEqual(image.pngData(), renderer.uiImage?.pngData())
+        let attachment = XCTAttachment(image: image)
+        attachment.name = "Static STEP1 thumbnails"
+        attachment.lifetime = .keepAlways
+        add(attachment)
     }
 
     func testSanitizedRepsInputRejectsZero() {
