@@ -52,10 +52,10 @@ struct ExerciseMusclesCard: View {
     @State private var selectedView: String?
     @ObservedObject private var language = LanguageManager.shared
     @Environment(\.dynamicTypeSize) private var dynamicType
-    @ScaledMetric(relativeTo: .body) private var titleSize: CGFloat = 15
-    @ScaledMetric(relativeTo: .body) private var bodySize: CGFloat = 13
-    @ScaledMetric(relativeTo: .caption) private var labelSize: CGFloat = 12
-    @ScaledMetric(relativeTo: .caption) private var noteSize: CGFloat = 11
+    @ScaledMetric(relativeTo: .body) private var titleSize: CGFloat = 16
+    @ScaledMetric(relativeTo: .body) private var bodySize: CGFloat = 15
+    @ScaledMetric(relativeTo: .caption) private var labelSize: CGFloat = 13
+    @ScaledMetric(relativeTo: .caption) private var noteSize: CGFloat = 12
 
     init(exerciseId: String?, initiallyExpanded: Bool = false) {
         self.exerciseId = exerciseId
@@ -90,7 +90,7 @@ struct ExerciseMusclesCard: View {
                         stacked(catalog, profile, view)
                     } else {
                         ViewThatFits(in: .horizontal) {
-                            HStack(alignment: .top, spacing: 16) {
+                            HStack(alignment: .center, spacing: 16) {
                                 figure(catalog, profile, view).frame(width: 128, height: 190)
                                 legend(catalog, profile).frame(maxWidth: .infinity, alignment: .leading)
                             }.frame(minWidth: 260)
@@ -147,22 +147,24 @@ struct ExerciseMusclesCard: View {
     }
 
     private func legend(_ catalog: ExerciseMuscleCatalog, _ profile: ExerciseMuscleProfile) -> some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 18) {
             muscleList(catalog, profile.primary, primary: true)
             if !profile.secondary.isEmpty { muscleList(catalog, profile.secondary, primary: false) }
         }.fixedSize(horizontal: false, vertical: true)
+            .accessibilityIdentifier("anatomy-legend")
     }
 
     private func muscleList(_ catalog: ExerciseMuscleCatalog, _ muscles: [String], primary: Bool) -> some View {
-        VStack(alignment: .leading, spacing: 7) {
+        VStack(alignment: .leading, spacing: 8) {
             Text(LanguageManager.t(primary ? "anatomy.primary" : "anatomy.secondary"))
                 .font(.system(size: labelSize, weight: .medium)).foregroundColor(AppColors.secondaryText)
             ForEach(muscles, id: \.self) { muscle in
                 HStack(alignment: .top, spacing: 8) {
                     Circle().fill(primary ? AppColors.purple : AppColors.muscleSecondary)
-                        .frame(width: 7, height: 7).padding(.top, 5).accessibilityHidden(true)
+                        .frame(width: 8, height: 8).padding(.top, bodySize * 0.3).accessibilityHidden(true)
                     Text(catalog.muscles[muscle]?[language.currentLanguage] ?? muscle)
-                        .font(.system(size: bodySize)).foregroundColor(AppColors.text).fixedSize(horizontal: false, vertical: true)
+                        .font(.system(size: bodySize, weight: .medium)).foregroundColor(AppColors.text)
+                        .lineSpacing(3).fixedSize(horizontal: false, vertical: true)
                 }
             }
         }
