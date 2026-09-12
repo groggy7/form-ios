@@ -30,11 +30,11 @@
   "muscles": {
     "chest": {
       "en": "Chest",
-      "tr": "Göğüs"
+      "tr": "G\u00f6\u011f\u00fcs"
     },
     "front-delts": {
       "en": "Front shoulders",
-      "tr": "Ön omuz"
+      "tr": "\u00d6n omuz"
     },
     "rear-delts": {
       "en": "Rear shoulders",
@@ -50,23 +50,23 @@
     },
     "upper-back": {
       "en": "Upper back",
-      "tr": "Üst sırt"
+      "tr": "\u00dcst s\u0131rt"
     },
     "lats": {
       "en": "Lats",
-      "tr": "Kanat kasları"
+      "tr": "Kanat kaslar\u0131"
     },
     "abs": {
       "en": "Abdominals",
-      "tr": "Karın kasları"
+      "tr": "Kar\u0131n kaslar\u0131"
     },
     "obliques": {
       "en": "Obliques",
-      "tr": "Yan karın"
+      "tr": "Yan kar\u0131n"
     },
     "quads": {
       "en": "Quadriceps",
-      "tr": "Ön bacak"
+      "tr": "\u00d6n bacak"
     },
     "hamstrings": {
       "en": "Hamstrings",
@@ -74,11 +74,11 @@
     },
     "glutes": {
       "en": "Glutes",
-      "tr": "Kalça"
+      "tr": "Kal\u00e7a"
     },
     "calves": {
       "en": "Calves",
-      "tr": "Baldır"
+      "tr": "Bald\u0131r"
     }
   },
   "sources": {
@@ -86,6 +86,36 @@
     "ace-chest": "https://www.acefitness.org/resources/pros/expert-articles/8972/be-a-chest-day-champion-an-evidence-based-approach-to-training-the-chest/"
   },
   "exercises": {
+    "ab-wheel-rollout": {
+      "primary": [
+        "abs"
+      ],
+      "secondary": [
+        "lats",
+        "obliques"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-back-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
     "barbell-bench-press": {
       "primary": [
         "chest"
@@ -100,6 +130,137 @@
       "sources": [
         "nasm",
         "ace-chest"
+      ]
+    },
+    "barbell-front-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-hip-thrust": {
+      "primary": [
+        "glutes"
+      ],
+      "secondary": [
+        "hamstrings"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-romanian-deadlift": {
+      "primary": [
+        "hamstrings",
+        "glutes"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "nasm"
+      ]
+    },
+    "barbell-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "bulgarian-split-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "nasm"
+      ]
+    },
+    "cable-lateral-raise": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "chest-supported-dumbbell-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "conventional-barbell-deadlift": {
+      "primary": [
+        "glutes",
+        "hamstrings"
+      ],
+      "secondary": [
+        "upper-back",
+        "quads"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dead-bug": {
+      "primary": [
+        "abs"
+      ],
+      "secondary": [
+        "obliques"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "nasm"
       ]
     },
     "dumbbell-bench-press": {
@@ -118,6 +279,145 @@
         "ace-chest"
       ]
     },
+    "dumbbell-floor-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-hammer-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-lateral-raise": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-romanian-deadlift": {
+      "primary": [
+        "hamstrings",
+        "glutes"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "nasm"
+      ]
+    },
+    "dumbbell-step-up": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "ez-bar-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "face-pull": {
+      "primary": [
+        "rear-delts",
+        "upper-back"
+      ],
+      "secondary": [
+        "biceps"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "farmer-carry": {
+      "primary": [
+        "abs",
+        "obliques"
+      ],
+      "secondary": [
+        "upper-back",
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "goblet-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "nasm"
+      ]
+    },
+    "hanging-knee-raise": {
+      "primary": [
+        "abs"
+      ],
+      "secondary": [
+        "obliques"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
     "incline-barbell-bench-press": {
       "primary": [
         "chest"
@@ -131,6 +431,18 @@
       "status": "curated",
       "sources": [
         "nasm"
+      ]
+    },
+    "incline-dumbbell-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
       ]
     },
     "incline-dumbbell-press": {
@@ -148,19 +460,162 @@
         "nasm"
       ]
     },
-    "push-ups": {
+    "jump-rope": {
       "primary": [
-        "chest"
+        "calves"
       ],
       "secondary": [
-        "front-delts",
-        "triceps"
+        "quads",
+        "front-delts"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "kettlebell-swing": {
+      "primary": [
+        "glutes",
+        "hamstrings"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "kneeling-cable-crunch": {
+      "primary": [
+        "abs"
+      ],
+      "secondary": [
+        "obliques"
       ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
       "sources": [
+        "gymvisual"
+      ]
+    },
+    "lat-pulldown": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "upper-back",
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "leg-extension": {
+      "primary": [
+        "quads"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "leg-press": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lying-leg-curl": {
+      "primary": [
+        "hamstrings"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
         "nasm"
+      ]
+    },
+    "one-arm-dumbbell-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "overhead-cable-triceps-extension": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "pallof-press": {
+      "primary": [
+        "abs",
+        "obliques"
+      ],
+      "secondary": [
+        "chest"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "pec-deck-fly": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
       ]
     },
     "pull-ups": {
@@ -195,70 +650,47 @@
         "nasm"
       ]
     },
-    "bulgarian-split-squat": {
+    "push-press": {
       "primary": [
-        "quads",
-        "glutes"
-      ],
-      "secondary": [],
-      "focus": "lower",
-      "initialView": "front",
-      "status": "curated",
-      "sources": [
-        "nasm"
-      ]
-    },
-    "goblet-squat": {
-      "primary": [
-        "quads",
-        "glutes"
-      ],
-      "secondary": [],
-      "focus": "lower",
-      "initialView": "front",
-      "status": "curated",
-      "sources": [
-        "nasm"
-      ]
-    },
-    "barbell-romanian-deadlift": {
-      "primary": [
-        "hamstrings",
-        "glutes"
-      ],
-      "secondary": [],
-      "focus": "lower",
-      "initialView": "back",
-      "status": "curated",
-      "sources": [
-        "nasm"
-      ]
-    },
-    "dumbbell-romanian-deadlift": {
-      "primary": [
-        "hamstrings",
-        "glutes"
-      ],
-      "secondary": [],
-      "focus": "lower",
-      "initialView": "back",
-      "status": "curated",
-      "sources": [
-        "nasm"
-      ]
-    },
-    "lying-leg-curl": {
-      "primary": [
-        "hamstrings"
+        "front-delts"
       ],
       "secondary": [
-        "calves"
+        "quads",
+        "triceps",
+        "glutes"
       ],
-      "focus": "lower",
-      "initialView": "back",
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "push-ups": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
       "status": "curated",
       "sources": [
         "nasm"
+      ]
+    },
+    "rope-triceps-pressdown": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
       ]
     },
     "seated-leg-curl": {
@@ -275,18 +707,272 @@
         "nasm"
       ]
     },
-    "dead-bug": {
+    "seated-machine-calf-raise": {
       "primary": [
-        "abs"
+        "calves"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "side-plank": {
+      "primary": [
+        "obliques"
       ],
       "secondary": [
-        "obliques"
+        "abs"
       ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
       "sources": [
         "nasm"
+      ]
+    },
+    "single-leg-calf-raise": {
+      "primary": [
+        "calves"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "standing-barbell-overhead-press": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "triceps",
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "standing-machine-calf-raise": {
+      "primary": [
+        "calves"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "straight-bar-cable-triceps-pressdown": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "trap-bar-deadlift": {
+      "primary": [
+        "glutes",
+        "quads"
+      ],
+      "secondary": [
+        "hamstrings",
+        "upper-back"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-seated-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-seated-shoulder-press": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "triceps",
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-chest-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-seated-shoulder-press": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "triceps",
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "bodyweight-rear-lunge": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "walking-lunge": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "bodyweight-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-seated-reverse-fly": {
+      "primary": [
+        "rear-delts"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-preacher-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "chest-dip": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "triceps",
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "chin-up": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "upper-back",
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
       ]
     },
     "front-plank": {
@@ -303,7 +989,1001 @@
         "nasm"
       ]
     },
-    "side-plank": {
+    "cable-standing-fly": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "sled-hack-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-glute-bridge": {
+      "primary": [
+        "glutes"
+      ],
+      "secondary": [
+        "hamstrings"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-sumo-deadlift": {
+      "primary": [
+        "glutes",
+        "quads"
+      ],
+      "secondary": [
+        "hamstrings",
+        "upper-back"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "smith-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "smith-bench-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "smith-incline-bench-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "smith-stiff-legged-deadlift": {
+      "primary": [
+        "hamstrings",
+        "glutes"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "smith-hip-thrust": {
+      "primary": [
+        "glutes"
+      ],
+      "secondary": [
+        "hamstrings"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "pendulum-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-belt-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-vertical-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "sled-45-degrees-one-leg-press": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-split-squat-front-foot-elevanted": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-good-morning": {
+      "primary": [
+        "hamstrings",
+        "glutes"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-single-leg-romanian-deadlift": {
+      "primary": [
+        "hamstrings",
+        "glutes"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-45-deg-back-extension": {
+      "primary": [
+        "glutes",
+        "hamstrings"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "nordic-hamstring-curl": {
+      "primary": [
+        "hamstrings"
+      ],
+      "secondary": [
+        "calves",
+        "glutes"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "glute-ham-raise": {
+      "primary": [
+        "hamstrings",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-pull-through": {
+      "primary": [
+        "glutes",
+        "hamstrings"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-kneeling-glute-kickback": {
+      "primary": [
+        "glutes"
+      ],
+      "secondary": [
+        "hamstrings"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-seated-hip-abduction": {
+      "primary": [
+        "glutes"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-seated-hip-adduction": {
+      "primary": [
+        "quads"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "sled-calf-press-on-leg-press": {
+      "primary": [
+        "calves"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "donkey-calf-raise": {
+      "primary": [
+        "calves"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "wall-supported-tibialis-raise": {
+      "primary": [
+        "calves"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-decline-bench-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-decline-bench-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-incline-chest-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-low-fly": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-decline-fly": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-fly": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-close-grip-bench-press": {
+      "primary": [
+        "triceps",
+        "chest"
+      ],
+      "secondary": [
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-pullover": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "chest",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-chest-supported-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-t-bar-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-pendlay-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "inverted-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-neutral-grip-lat-pulldown": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "upper-back",
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-close-grip-front-lat-pulldown": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "upper-back",
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-underhand-pulldown": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "upper-back",
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-straight-arm-pulldown": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "upper-back",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-kneeling-pullover": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "chest",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "assisted-pull-up": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "upper-back",
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "assisted-dip-machine": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [
+        "chest",
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-rear-fly": {
+      "primary": [
+        "rear-delts"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-shrug": {
+      "primary": [
+        "upper-back"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-shrug": {
+      "primary": [
+        "upper-back"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-machine-shrug": {
+      "primary": [
+        "upper-back"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-arnold-press": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "triceps",
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-seated-overhead-press": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "triceps",
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-one-arm-shoulder-press": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "triceps",
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "landmine-press": {
+      "primary": [
+        "front-delts",
+        "chest"
+      ],
+      "secondary": [
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-lateral-raise": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-seated-rear-delt-fly-with-chest-support": {
+      "primary": [
+        "rear-delts"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-upright-row": {
+      "primary": [
+        "front-delts",
+        "upper-back"
+      ],
+      "secondary": [
+        "biceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-alternate-biceps-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-concentration-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "ez-barbell-spider-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-rope-hammer-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-incline-biceps-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-preacher-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "ez-bar-lying-triceps-extension": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-standing-triceps-extension": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-one-arm-triceps-pushdown": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-reverse-grip-pushdown": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-kickback": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "hanging-leg-raise": {
+      "primary": [
+        "abs"
+      ],
+      "secondary": [
+        "obliques"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "reverse-crunch": {
+      "primary": [
+        "abs"
+      ],
+      "secondary": [
+        "obliques"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "bicycle-crunch": {
+      "primary": [
+        "abs",
+        "obliques"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-woodchopper": {
       "primary": [
         "obliques"
       ],
@@ -314,7 +1994,2385 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "nasm"
+        "gymvisual"
+      ]
+    },
+    "russian-twist": {
+      "primary": [
+        "obliques",
+        "abs"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "bird-dog": {
+      "primary": [
+        "glutes",
+        "upper-back"
+      ],
+      "secondary": [
+        "abs"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "mountain-climber": {
+      "primary": [
+        "abs"
+      ],
+      "secondary": [
+        "quads",
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "burpee": {
+      "primary": [
+        "quads",
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps",
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "jumping-jack": {
+      "primary": [
+        "calves",
+        "quads"
+      ],
+      "secondary": [
+        "front-delts"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "box-jump": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves",
+        "hamstrings"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "jump-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "kettlebell-deadlift": {
+      "primary": [
+        "glutes",
+        "hamstrings"
+      ],
+      "secondary": [
+        "upper-back",
+        "quads"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "kettlebell-one-arm-clean": {
+      "primary": [
+        "glutes",
+        "hamstrings"
+      ],
+      "secondary": [
+        "upper-back",
+        "front-delts"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "kettlebell-strict-press": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "triceps",
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "kettlebell-one-arm-snatch": {
+      "primary": [
+        "front-delts",
+        "glutes"
+      ],
+      "secondary": [
+        "hamstrings",
+        "upper-back",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-suitcase-carry": {
+      "primary": [
+        "obliques",
+        "abs"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-standing-calf-raise": {
+      "primary": [
+        "calves"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "bodyweight-standing-calf-raise": {
+      "primary": [
+        "calves"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-machine-hip-thrust": {
+      "primary": [
+        "glutes"
+      ],
+      "secondary": [
+        "hamstrings"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "floor-crunch": {
+      "primary": [
+        "abs"
+      ],
+      "secondary": [
+        "obliques"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-lying-hammer-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-squeeze-bench-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-reverse-grip-bench-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-floor-chest-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-spoto-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-larsen-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-incline-close-grip-bench-press": {
+      "primary": [
+        "triceps",
+        "chest"
+      ],
+      "secondary": [
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-incline-fly": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-decline-fly": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-lying-one-arm-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-standing-single-arm-chest-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-standing-chest-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-middle-fly": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-standing-single-arm-fly": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "svend-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "incline-push-up": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "decline-push-up": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "diamond-push-up": {
+      "primary": [
+        "triceps",
+        "chest"
+      ],
+      "secondary": [
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "archer-push-up": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "weighted-push-up-with-vest": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-seated-wide-lat-pulldown": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "upper-back",
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-one-arm-lat-pulldown": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "upper-back",
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-kneeling-one-arm-lat-pulldown": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "upper-back",
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-kneeling-lat-pulldown": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "upper-back",
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-lateral-pulldown-with-v-bar": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "upper-back",
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-machine-pullover": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "chest",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-rope-straight-arm-pulldown": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "upper-back",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-single-arm-straight-arm-pulldown": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "upper-back",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-lying-seal-row-on-rack": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "landmine-one-arm-bent-over-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "landmine-v-bar-bent-over-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-lying-t-bar-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-seated-wide-grip-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-seated-row-with-v-bar": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-one-arm-twisting-seated-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-high-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-low-seated-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-rope-seated-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-high-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-machine-low-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-unilateral-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-renegade-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "abs"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-kroc-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-gorilla-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "suspension-trainer-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "ring-inverted-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "scapular-pull-up": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "parallel-grip-chin-up": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "upper-back",
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-rack-pull": {
+      "primary": [
+        "glutes",
+        "upper-back"
+      ],
+      "secondary": [
+        "hamstrings"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-seated-lateral-raise": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-leaning-lateral-raise": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-behind-the-back-lateral-raise": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-one-arm-lateral-raise": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-y-raise": {
+      "primary": [
+        "upper-back",
+        "front-delts"
+      ],
+      "secondary": [
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-incline-y-raise": {
+      "primary": [
+        "upper-back",
+        "front-delts"
+      ],
+      "secondary": [
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-front-raise": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-front-raise": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "weighted-front-raise": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-front-raise": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-standing-reverse-fly": {
+      "primary": [
+        "rear-delts"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "head-supported-dumbbell-rear-lateral-raise": {
+      "primary": [
+        "rear-delts"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-incline-rear-fly": {
+      "primary": [
+        "rear-delts"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-seated-rear-delt-row": {
+      "primary": [
+        "rear-delts"
+      ],
+      "secondary": [
+        "upper-back",
+        "biceps"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-wide-grip-upright-row": {
+      "primary": [
+        "front-delts",
+        "upper-back"
+      ],
+      "secondary": [
+        "biceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-upright-row": {
+      "primary": [
+        "front-delts",
+        "upper-back"
+      ],
+      "secondary": [
+        "biceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-z-press": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "triceps",
+        "upper-back",
+        "abs"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "landmine-single-arm-press": {
+      "primary": [
+        "front-delts",
+        "chest"
+      ],
+      "secondary": [
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-viking-press": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "triceps",
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "pike-push-up": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "triceps",
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "ez-barbell-preacher-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-preacher-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-one-arm-hammer-preacher-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-preacher-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-reverse-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "ez-barbell-reverse-grip-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-biceps-curl-reverse": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-zottman-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-cross-body-hammer-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-seated-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-standing-biceps-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-drag-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-drag-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-standing-inner-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-one-arm-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-overhead-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-biceps-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-spider-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-hammer-preacher-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-incline-hammer-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-skull-crusher": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "ez-barbell-incline-triceps-extension": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "ez-barbell-decline-triceps-extension": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-jm-bench-press": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [
+        "chest",
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-tate-press": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-standing-high-cross-triceps-extension": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-single-arm-overhead-triceps-extension": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-v-bar-triceps-pushdown": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-kickback": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-seated-dip": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [
+        "chest",
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-low-bar-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-box-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-pause-full-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-full-zercher-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-overhead-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "landmine-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-goblet-sumo-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "smith-front-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "smith-split-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "smith-rear-lunge": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "smith-deficit-bulgarian-split-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "smith-bent-knee-good-morning": {
+      "primary": [
+        "hamstrings",
+        "glutes"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "smith-calf-raise": {
+      "primary": [
+        "calves"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "sissy-squat-bodyweight": {
+      "primary": [
+        "quads"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "sled-reverse-hack-squat": {
+      "primary": [
+        "glutes",
+        "quads"
+      ],
+      "secondary": [
+        "hamstrings",
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "heel-elevated-bodyweight-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-elevated-heel-goblet-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cossack-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "side-lunge": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-curtsey-lunge": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-deficit-reverse-lunge": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-walking-lunge": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-step-up": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-reverse-lunge": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-lateral-lunge": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-standing-single-leg-curl": {
+      "primary": [
+        "hamstrings"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-lying-single-leg-curl": {
+      "primary": [
+        "hamstrings"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "lever-seated-one-leg-curl": {
+      "primary": [
+        "hamstrings"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "dumbbell-lying-leg-curl": {
+      "primary": [
+        "hamstrings"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-lying-single-leg-curl": {
+      "primary": [
+        "hamstrings"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "bodyweight-frog-hip-thrust": {
+      "primary": [
+        "glutes"
+      ],
+      "secondary": [
+        "hamstrings"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "single-leg-hip-thrust": {
+      "primary": [
+        "glutes"
+      ],
+      "secondary": [
+        "hamstrings"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "barbell-kas-glute-bridge": {
+      "primary": [
+        "glutes"
+      ],
+      "secondary": [
+        "hamstrings"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "cable-hip-abduction": {
+      "primary": [
+        "glutes"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "reverse-hyperextension-on-box": {
+      "primary": [
+        "glutes",
+        "hamstrings"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "handstand-push-up": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "triceps",
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "ring-dip": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [
+        "chest",
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "ring-incline-push-up": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "bench-dip": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [
+        "chest",
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "resistance-band-standing-chest-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "resistance-band-seated-row": {
+      "primary": [
+        "upper-back",
+        "lats"
+      ],
+      "secondary": [
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "resistance-band-lat-pulldown": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "upper-back",
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "resistance-band-face-pull": {
+      "primary": [
+        "rear-delts",
+        "upper-back"
+      ],
+      "secondary": [
+        "biceps"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "band-biceps-curl": {
+      "primary": [
+        "biceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "resistance-band-triceps-pushdown": {
+      "primary": [
+        "triceps"
+      ],
+      "secondary": [],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "band-lateral-raise": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "upper-back"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "landmine-180": {
+      "primary": [
+        "obliques",
+        "abs"
+      ],
+      "secondary": [
+        "front-delts"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "hanging-toes-to-bar": {
+      "primary": [
+        "abs"
+      ],
+      "secondary": [
+        "obliques",
+        "lats"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "battling-ropes-high-waves": {
+      "primary": [
+        "front-delts"
+      ],
+      "secondary": [
+        "upper-back",
+        "abs",
+        "quads"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
+      ]
+    },
+    "power-sled-push": {
+      "primary": [
+        "quads",
+        "calves"
+      ],
+      "secondary": [
+        "glutes",
+        "hamstrings"
+      ],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "gymvisual"
       ]
     }
   },

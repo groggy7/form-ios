@@ -1140,10 +1140,10 @@ final class FormAppTests: XCTestCase {
 
     func testExerciseMuscleCatalog() throws {
         let catalog = try XCTUnwrap(ExerciseMuscleCatalog.shared)
-        XCTAssertEqual(catalog.exercises.count, 16)
+        XCTAssertEqual(catalog.exercises.count, 300)
         XCTAssertNil(catalog.profile(nil))
         XCTAssertNil(catalog.profile("unknown"))
-        XCTAssertNil(catalog.profile("barbell-back-squat"))
+        XCTAssertNotNil(catalog.profile("barbell-back-squat"))
         for (_, profile) in catalog.exercises {
             XCTAssertFalse(profile.primary.isEmpty)
             XCTAssertEqual(Set(profile.all).count, profile.all.count)
