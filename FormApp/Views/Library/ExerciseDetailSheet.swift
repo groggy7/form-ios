@@ -93,9 +93,11 @@ public struct ExerciseDetailSheet: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: onDismiss) {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 20))
-                            .foregroundColor(AppColors.muted)
+                        Image(systemName: "xmark")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundColor(AppColors.text.opacity(0.85))
+                            .frame(width: 30, height: 30)
+                            .background(Circle().fill(Color.white.opacity(0.14)))
                     }
                 }
             }
