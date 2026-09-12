@@ -28,27 +28,17 @@ public struct ExerciseDetailSheet: View {
                 VStack(alignment: .leading, spacing: 20) {
                     // Title & Movement Badge
                     VStack(alignment: .leading, spacing: 8) {
-                        HStack {
-                            Text(currentExercise.resolvedMovement.rawValue.uppercased())
-                                .font(.system(size: 11, weight: .bold))
-                                .foregroundColor(AppColors.accent)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(AppColors.positiveBg)
-                                .cornerRadius(6)
-
-                            Spacer()
-
-                            if let rest = currentExercise.restSeconds {
-                                Label("\(rest)s rest", systemImage: "timer")
-                                    .font(.system(size: 12, weight: .medium))
-                                    .foregroundColor(AppColors.muted)
-                            }
-                        }
-
                         Text(currentExercise.displayName)
                             .font(.system(size: 24, weight: .bold))
                             .foregroundColor(AppColors.text)
+
+                        Text(currentExercise.resolvedMovement.rawValue.uppercased())
+                            .font(.system(size: 11, weight: .bold))
+                            .foregroundColor(AppColors.accent)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(AppColors.positiveBg)
+                            .cornerRadius(6)
                     }
 
                     // Local exercise video; the muscle panel is independent of playback.
