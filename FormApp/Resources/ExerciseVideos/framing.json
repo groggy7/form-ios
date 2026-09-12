@@ -63,11 +63,11 @@
     "aspectRatio": 1.25
   },
   "chest-supported-dumbbell-row": {
-    "left": 0.20000000000000007,
-    "top": 0.09814814814814815,
-    "width": 0.6416666666666666,
-    "height": 0.8777777777777779,
-    "aspectRatio": 1.2995780590717296
+    "left": 0.12239583333333343,
+    "top": 0.051851851851851816,
+    "width": 0.6666666666666666,
+    "height": 0.9481481481481482,
+    "aspectRatio": 1.25
   },
   "conventional-barbell-deadlift": {
     "left": 0.15885416666666669,
@@ -203,11 +203,11 @@
     "aspectRatio": 1.25
   },
   "lat-pulldown": {
-    "left": 0.1015625,
+    "left": 0.16875000000000007,
     "top": 0,
-    "width": 0.703125,
+    "width": 0.7041666666666666,
     "height": 1,
-    "aspectRatio": 1.25
+    "aspectRatio": 1.2518518518518518
   },
   "leg-extension": {
     "left": 0.19661458333333331,
@@ -707,11 +707,11 @@
     "aspectRatio": 1.25
   },
   "cable-neutral-grip-lat-pulldown": {
-    "left": 0.16875000000000007,
+    "left": 0.1015625,
     "top": 0,
-    "width": 0.7041666666666666,
+    "width": 0.703125,
     "height": 1,
-    "aspectRatio": 1.2518518518518518
+    "aspectRatio": 1.25
   },
   "cable-close-grip-front-lat-pulldown": {
     "left": 0.1953125,
