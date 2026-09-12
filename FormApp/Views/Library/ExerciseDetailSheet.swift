@@ -26,18 +26,6 @@ public struct ExerciseDetailSheet: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    // Local exercise video; the muscle panel is independent of playback.
-                    ExerciseDetailVideo(exerciseId: currentExercise.exerciseId)
-                        .frame(maxWidth: .infinity)
-                        .background(AppColors.exerciseVideoSurface)
-                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .stroke(AppColors.border, lineWidth: 1)
-                        )
-
-                    ExerciseMusclesCard(exerciseId: currentExercise.exerciseId)
-
                     // Title & Movement Badge
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
@@ -62,6 +50,18 @@ public struct ExerciseDetailSheet: View {
                             .font(.system(size: 24, weight: .bold))
                             .foregroundColor(AppColors.text)
                     }
+
+                    // Local exercise video; the muscle panel is independent of playback.
+                    ExerciseDetailVideo(exerciseId: currentExercise.exerciseId)
+                        .frame(maxWidth: .infinity)
+                        .background(AppColors.exerciseVideoSurface)
+                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                .stroke(AppColors.border, lineWidth: 1)
+                        )
+
+                    ExerciseMusclesCard(exerciseId: currentExercise.exerciseId)
 
                     // Technique Cues
                     let cuesText = currentExercise.displayCues.trimmingCharacters(in: .whitespacesAndNewlines)

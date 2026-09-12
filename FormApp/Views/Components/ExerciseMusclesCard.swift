@@ -93,7 +93,7 @@ struct ExerciseMusclesCard: View {
                             HStack(alignment: .top, spacing: 16) {
                                 figure(catalog, profile, view).frame(width: 128, height: 190)
                                 legend(catalog, profile).frame(maxWidth: .infinity, alignment: .leading)
-                            }.frame(minWidth: 300)
+                            }.frame(minWidth: 260)
                             stacked(catalog, profile, view)
                         }
                     }
