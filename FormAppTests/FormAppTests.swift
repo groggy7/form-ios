@@ -2170,4 +2170,16 @@ final class FormAppTests: XCTestCase {
         XCTAssertNil(added.completedReps)
         XCTAssertFalse(added.isCompleted)
     }
+
+    func testCanCompleteSetValidatesKgAndRepsAboveOrEqualToOne() {
+        XCTAssertFalse(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1)))
+        XCTAssertFalse(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "", repsInput: "10")))
+        XCTAssertFalse(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "0", repsInput: "10", weightKg: 0, completedReps: 10)))
+        XCTAssertFalse(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "0.9", repsInput: "10", weightKg: 0.9, completedReps: 10)))
+        XCTAssertFalse(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "50", repsInput: "", weightKg: 50)))
+        XCTAssertFalse(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "50", repsInput: "0", weightKg: 50, completedReps: 0)))
+        XCTAssertTrue(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "1", repsInput: "1", weightKg: 1, completedReps: 1)))
+        XCTAssertTrue(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "50", repsInput: "12", weightKg: 50, completedReps: 12)))
+        XCTAssertTrue(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "2.5", repsInput: "15")))
+    }
 }

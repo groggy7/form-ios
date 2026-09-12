@@ -231,4 +231,11 @@ public enum WorkoutSessionUtils {
         guard regex.firstMatch(in: normalized, options: [], range: range) != nil else { return nil }
         return normalized
     }
+
+    public static func canCompleteSet(_ set: ExerciseSetLog) -> Bool {
+        let weight = set.weightKg ?? Double(set.weightInput.replacingOccurrences(of: ",", with: ".").trimmingCharacters(in: .whitespaces))
+        let reps = set.completedReps ?? Int(set.repsInput.trimmingCharacters(in: .whitespaces))
+        guard let w = weight, let r = reps else { return false }
+        return w >= 1.0 && r >= 1
+    }
 }

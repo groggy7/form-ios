@@ -62,13 +62,15 @@ public struct SetLoggingTable: View {
                     }
                 )
 
+                let canComplete = set.isCompleted || WorkoutSessionUtils.canCompleteSet(set)
+
                 HStack(spacing: 8) {
                     Text("\(set.setNumber)")
                         .font(.system(size: 14, weight: .bold))
                         .foregroundColor(set.isCompleted ? AppColors.accent : AppColors.secondaryText)
                         .frame(width: 38, alignment: .leading)
 
-                    TextField("0", text: weightBinding)
+                    TextField("—", text: weightBinding, prompt: Text("—").foregroundColor(AppColors.muted))
                         .keyboardType(.decimalPad)
                         .multilineTextAlignment(.center)
                         .font(.system(size: 15, weight: .semibold))
@@ -78,7 +80,7 @@ public struct SetLoggingTable: View {
                         .cornerRadius(8)
                         .frame(maxWidth: .infinity)
 
-                    TextField("0", text: repsBinding)
+                    TextField("—", text: repsBinding, prompt: Text("—").foregroundColor(AppColors.muted))
                         .keyboardType(.numberPad)
                         .multilineTextAlignment(.center)
                         .font(.system(size: 15, weight: .semibold))
@@ -93,10 +95,15 @@ public struct SetLoggingTable: View {
                     }) {
                         Image(systemName: set.isCompleted ? "checkmark.circle.fill" : "circle")
                             .font(.system(size: 24))
-                            .foregroundColor(set.isCompleted ? AppColors.accent : AppColors.muted.opacity(0.5))
+                            .foregroundColor(
+                                set.isCompleted
+                                    ? AppColors.accent
+                                    : (canComplete ? AppColors.muted.opacity(0.5) : AppColors.muted.opacity(0.2))
+                            )
                             .frame(width: 44, height: 44)
                     }
                     .buttonStyle(.plain)
+                    .disabled(!canComplete)
                 }
                 .padding(.horizontal, 14)
                 .padding(.vertical, 6)

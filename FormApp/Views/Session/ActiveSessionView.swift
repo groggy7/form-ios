@@ -342,7 +342,11 @@ public struct ActiveSessionView: View {
             var copy = d
             var sets = copy.setsByExercise[exercise.id] ?? []
             guard sets.indices.contains(index) else { return copy }
-            let willComplete = !sets[index].isCompleted
+            let currentSet = sets[index]
+            if !currentSet.isCompleted && !WorkoutSessionUtils.canCompleteSet(currentSet) {
+                return copy
+            }
+            let willComplete = !currentSet.isCompleted
             sets[index].isCompleted = willComplete
             copy.setsByExercise[exercise.id] = sets
 
