@@ -1138,6 +1138,54 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(store.noticeMessage, LanguageManager.t("video.youtubeOnly"))
     }
 
+    func testExerciseMuscleCatalog() throws {
+        let catalog = try XCTUnwrap(ExerciseMuscleCatalog.shared)
+        XCTAssertEqual(catalog.exercises.count, 16)
+        XCTAssertNil(catalog.profile(nil))
+        XCTAssertNil(catalog.profile("unknown"))
+        XCTAssertNil(catalog.profile("barbell-back-squat"))
+        for (_, profile) in catalog.exercises {
+            XCTAssertFalse(profile.primary.isEmpty)
+            XCTAssertEqual(Set(profile.all).count, profile.all.count)
+            XCTAssertFalse(profile.sources.isEmpty)
+            XCTAssertTrue(catalog.availableViews(profile).contains(profile.initialView))
+            for muscle in profile.all {
+                XCTAssertNotNil(catalog.muscles[muscle]?["en"])
+                XCTAssertNotNil(catalog.muscles[muscle]?["tr"])
+                XCTAssertTrue(catalog.views.values.contains { $0.regions[muscle] != nil })
+            }
+        }
+        XCTAssertEqual(ExerciseMuscleCatalog.images.count, 2)
+        for image in ExerciseMuscleCatalog.images.values {
+            XCTAssertEqual(image.size, CGSize(width: 480, height: 1024))
+        }
+    }
+
+    @MainActor
+    func testExerciseMusclePanelRenders() throws {
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previousLanguage) }
+        for (id, name, language, width, type) in [
+            ("barbell-bench-press", "bench", "en", 350.0, DynamicTypeSize.large),
+            ("pull-ups", "pull", "tr", 280.0, DynamicTypeSize.xxxLarge),
+            ("seated-leg-curl", "legs", "en", 350.0, DynamicTypeSize.large),
+            ("unknown", "unknown", "en", 280.0, DynamicTypeSize.large)
+        ] {
+            LanguageManager.setLanguage(language)
+            let renderer = ImageRenderer(content: ExerciseMusclesCard(exerciseId: id)
+                .environment(\.dynamicTypeSize, type).frame(width: width))
+            renderer.scale = 2
+            let image = try XCTUnwrap(renderer.uiImage)
+            XCTAssertGreaterThan(image.size.height, 60)
+            XCTAssertLessThan(image.size.height, 750)
+            try image.pngData()?.write(to: URL(fileURLWithPath: "/private/tmp/form-muscles-ios-\(name).png"))
+            let attachment = XCTAttachment(image: image)
+            attachment.name = "Muscle panel \(name)"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+        }
+    }
+
     func testVideoDuplicatesPreserveCaseSensitiveIdsAndFirstTimestamp() {
         let first = "https://youtu.be/ZaTM37cfiDs?t=90"
         let same = "https://youtube.com/shorts/ZaTM37cfiDs?t=30"

@@ -14,6 +14,7 @@ public enum AppColors {
     public static let positive = Color(hex: 0x49C7AF)
     public static let positiveBg = Color(hex: 0x142D29)
     public static let purple = Color(hex: 0xB18AFF)
+    public static let muscleSecondary = Color(hex: 0x8EA9F4)
     public static let purpleBg = Color(hex: 0x28203D)
     public static let coral = Color(hex: 0xFF8C78)
     public static let danger = Color(hex: 0xFF897B)

@@ -1,0 +1,325 @@
+{
+  "version": 1,
+  "width": 480,
+  "height": 1024,
+  "views": {
+    "front": {
+      "offsetX": 278,
+      "regions": {
+        "chest": "M 416 217 C 442 202 481 202 513 216 L 514 285 C 492 309 453 305 429 285 C 418 267 413 244 416 217 Z M 526 216 C 557 202 594 208 613 228 C 618 253 609 283 589 294 C 564 309 541 301 526 286 Z",
+        "front-delts": "M 409 213 C 383 227 376 249 383 278 L 407 270 C 411 249 411 234 409 213 Z M 620 218 C 647 229 657 251 651 280 L 627 270 C 623 250 619 236 620 218 Z",
+        "biceps": "M 381 281 C 373 300 364 324 366 348 C 370 363 381 366 389 346 C 399 326 405 301 402 281 Z M 629 281 C 628 306 636 337 649 354 C 659 369 668 361 666 344 C 665 319 657 296 653 281 Z",
+        "abs": "M 487 309 C 496 315 503 316 512 313 L 512 416 L 493 420 C 482 389 481 338 487 309 Z M 525 313 C 537 313 543 312 552 310 C 557 345 554 389 542 420 L 525 416 Z",
+        "obliques": "M 443 311 L 470 327 C 468 356 472 394 482 420 L 443 411 C 437 378 438 344 443 311 Z M 571 326 L 597 311 C 604 348 602 378 595 410 L 557 420 C 567 387 573 354 571 326 Z",
+        "quads": "M 430 530 C 450 517 479 528 493 550 L 490 620 C 489 649 478 675 466 683 C 454 670 441 662 424 665 C 417 630 419 575 430 530 Z M 547 550 C 565 527 593 522 614 534 C 628 572 624 623 614 663 C 595 660 584 673 574 683 C 560 669 550 645 548 620 Z"
+      }
+    },
+    "back": {
+      "offsetX": 790,
+      "regions": {
+        "upper-back": "M 1025 168 C 1008 184 980 199 955 211 L 994 252 L 1030 310 L 1030 180 Z M 1041 170 L 1040 309 L 1074 253 L 1113 213 C 1087 199 1063 185 1041 170 Z",
+        "lats": "M 939 274 C 954 292 979 298 995 285 L 1023 323 L 1018 386 C 986 371 961 345 951 319 Z M 1076 286 C 1096 297 1115 293 1132 277 L 1120 323 C 1104 351 1076 375 1050 387 L 1048 323 Z",
+        "triceps": "M 897 279 C 882 301 875 330 880 352 C 885 367 897 362 907 344 C 918 323 925 302 925 280 Z M 1144 279 C 1146 308 1156 339 1168 354 C 1179 368 1188 358 1188 345 C 1184 317 1178 296 1172 281 Z",
+        "rear-delts": "M 944 211 C 918 210 894 229 893 254 L 898 275 L 927 267 C 932 245 941 231 951 223 Z M 1119 214 C 1150 213 1173 237 1172 259 L 1170 275 L 1143 266 C 1138 245 1128 230 1119 224 Z",
+        "glutes": "M 966 446 C 989 434 1014 438 1028 450 L 1028 522 C 1010 545 979 549 949 533 C 948 503 956 470 966 446 Z M 1042 449 C 1064 437 1085 438 1105 449 C 1118 477 1128 509 1127 532 C 1101 550 1066 546 1042 523 Z",
+        "hamstrings": "M 950 551 C 972 557 997 552 1019 543 L 1007 615 C 1001 649 990 680 978 694 L 950 687 C 938 650 944 590 950 551 Z M 1047 545 C 1071 557 1093 557 1116 552 C 1129 592 1131 650 1117 688 L 1091 695 C 1077 672 1065 640 1058 613 Z",
+        "calves": "M 946 725 C 959 712 974 713 982 727 C 993 751 985 787 973 817 L 954 825 C 940 805 936 755 946 725 Z M 1100 725 C 1114 714 1128 716 1135 733 C 1145 759 1143 802 1129 823 L 1111 817 C 1099 788 1089 750 1100 725 Z"
+      }
+    }
+  },
+  "muscles": {
+    "chest": {
+      "en": "Chest",
+      "tr": "Göğüs"
+    },
+    "front-delts": {
+      "en": "Front shoulders",
+      "tr": "Ön omuz"
+    },
+    "rear-delts": {
+      "en": "Rear shoulders",
+      "tr": "Arka omuz"
+    },
+    "biceps": {
+      "en": "Biceps",
+      "tr": "Biseps"
+    },
+    "triceps": {
+      "en": "Triceps",
+      "tr": "Triseps"
+    },
+    "upper-back": {
+      "en": "Upper back",
+      "tr": "Üst sırt"
+    },
+    "lats": {
+      "en": "Lats",
+      "tr": "Kanat kasları"
+    },
+    "abs": {
+      "en": "Abdominals",
+      "tr": "Karın kasları"
+    },
+    "obliques": {
+      "en": "Obliques",
+      "tr": "Yan karın"
+    },
+    "quads": {
+      "en": "Quadriceps",
+      "tr": "Ön bacak"
+    },
+    "hamstrings": {
+      "en": "Hamstrings",
+      "tr": "Arka bacak"
+    },
+    "glutes": {
+      "en": "Glutes",
+      "tr": "Kalça"
+    },
+    "calves": {
+      "en": "Calves",
+      "tr": "Baldır"
+    }
+  },
+  "sources": {
+    "nasm": "https://www.nasm.org/workout-exercise-guidance",
+    "ace-chest": "https://www.acefitness.org/resources/pros/expert-articles/8972/be-a-chest-day-champion-an-evidence-based-approach-to-training-the-chest/"
+  },
+  "exercises": {
+    "barbell-bench-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "nasm",
+        "ace-chest"
+      ]
+    },
+    "dumbbell-bench-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "nasm",
+        "ace-chest"
+      ]
+    },
+    "incline-barbell-bench-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "nasm"
+      ]
+    },
+    "incline-dumbbell-press": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "nasm"
+      ]
+    },
+    "push-ups": {
+      "primary": [
+        "chest"
+      ],
+      "secondary": [
+        "front-delts",
+        "triceps"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "nasm"
+      ]
+    },
+    "pull-ups": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "upper-back",
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "nasm"
+      ]
+    },
+    "weighted-pull-ups": {
+      "primary": [
+        "lats"
+      ],
+      "secondary": [
+        "upper-back",
+        "biceps",
+        "rear-delts"
+      ],
+      "focus": "upper",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "nasm"
+      ]
+    },
+    "bulgarian-split-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "nasm"
+      ]
+    },
+    "goblet-squat": {
+      "primary": [
+        "quads",
+        "glutes"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "nasm"
+      ]
+    },
+    "barbell-romanian-deadlift": {
+      "primary": [
+        "hamstrings",
+        "glutes"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "nasm"
+      ]
+    },
+    "dumbbell-romanian-deadlift": {
+      "primary": [
+        "hamstrings",
+        "glutes"
+      ],
+      "secondary": [],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "nasm"
+      ]
+    },
+    "lying-leg-curl": {
+      "primary": [
+        "hamstrings"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "nasm"
+      ]
+    },
+    "seated-leg-curl": {
+      "primary": [
+        "hamstrings"
+      ],
+      "secondary": [
+        "calves"
+      ],
+      "focus": "lower",
+      "initialView": "back",
+      "status": "curated",
+      "sources": [
+        "nasm"
+      ]
+    },
+    "dead-bug": {
+      "primary": [
+        "abs"
+      ],
+      "secondary": [
+        "obliques"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "nasm"
+      ]
+    },
+    "front-plank": {
+      "primary": [
+        "abs"
+      ],
+      "secondary": [
+        "obliques"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "nasm"
+      ]
+    },
+    "side-plank": {
+      "primary": [
+        "obliques"
+      ],
+      "secondary": [
+        "abs"
+      ],
+      "focus": "upper",
+      "initialView": "front",
+      "status": "curated",
+      "sources": [
+        "nasm"
+      ]
+    }
+  },
+  "hashes": {
+    "front.png": "c25a358dbc87d06e7cd3422c9e330b5ede1622ef92019aec21614fd68fff6049",
+    "back.png": "7dd92c571ea0881feb9b2398627a82c42eeb77e80d509524befedaca398af8e9"
+  }
+}

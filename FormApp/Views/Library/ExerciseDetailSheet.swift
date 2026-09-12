@@ -26,7 +26,7 @@ public struct ExerciseDetailSheet: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    // Local exercise video; thumbnails remain empty.
+                    // Local exercise video; the muscle panel is independent of playback.
                     ExerciseDetailVideo(exerciseId: currentExercise.exerciseId)
                         .frame(maxWidth: .infinity)
                         .background(AppColors.exerciseVideoSurface)
@@ -35,6 +35,8 @@ public struct ExerciseDetailSheet: View {
                             RoundedRectangle(cornerRadius: 14, style: .continuous)
                                 .stroke(AppColors.border, lineWidth: 1)
                         )
+
+                    ExerciseMusclesCard(exerciseId: currentExercise.exerciseId)
 
                     // Title & Movement Badge
                     VStack(alignment: .leading, spacing: 8) {
