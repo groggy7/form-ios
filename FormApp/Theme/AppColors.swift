@@ -5,7 +5,16 @@ public enum AppColors {
     public static let surface = Color(hex: 0x13171B)
     public static let surfaceRaised = Color(hex: 0x1D2227)
     public static let exerciseVideoSurface = Color(hex: 0x051216)
-    public static let exerciseThumbnailSurface = Color(hex: 0x051216)
+    public static let exerciseThumbnailSurface = EllipticalGradient(
+        colors: [
+            Color(hex: 0x064844),
+            Color(hex: 0x052B2C),
+            Color(hex: 0x051216)
+        ],
+        center: .center,
+        startRadiusFraction: 0,
+        endRadiusFraction: 0.75
+    )
     public static let text = Color(hex: 0xF3F5F5)
     public static let secondaryText = Color(hex: 0xB6BEC4)
     public static let muted = Color(hex: 0x8F999F)
