@@ -32,12 +32,7 @@ public struct ExerciseVideoLinksSheet: View {
     private var validLinkedUrls: Bool { linkedUrls.allSatisfy(YouTubeVideo.isSupportedLink) }
 
     private var isDuplicate: Bool {
-        if let inputId = YouTubeVideo.parse(cleanInput)?.id {
-            return linkedUrls.contains { url in
-                YouTubeVideo.parse(url)?.id == inputId || url.caseInsensitiveCompare(cleanInput) == .orderedSame
-            }
-        }
-        return linkedUrls.contains { $0.caseInsensitiveCompare(cleanInput) == .orderedSame }
+        linkedUrls.contains { YouTubeVideo.isSameVideo($0, cleanInput) }
     }
 
     private var canAdd: Bool {

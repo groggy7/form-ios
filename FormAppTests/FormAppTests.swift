@@ -1138,6 +1138,22 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(store.noticeMessage, LanguageManager.t("video.youtubeOnly"))
     }
 
+    func testVideoDuplicatesPreserveCaseSensitiveIdsAndFirstTimestamp() {
+        let first = "https://youtu.be/ZaTM37cfiDs?t=90"
+        let same = "https://youtube.com/shorts/ZaTM37cfiDs?t=30"
+        let different = "https://youtu.be/zaTM37cfiDs?t=90"
+        XCTAssertTrue(YouTubeVideo.isSameVideo(first, same))
+        XCTAssertFalse(YouTubeVideo.isSameVideo(first, different))
+        XCTAssertFalse(YouTubeVideo.isSameVideo("invalid", "invalid"))
+        XCTAssertFalse(YouTubeVideo.isSameVideo(first, "invalid"))
+        XCTAssertEqual(YouTubeVideo.validatedLinks([first, same, different]), [first, different])
+    }
+
+    func testProgramExportTranslation() {
+        XCTAssertEqual(Translations.en["programs.export"], "Export")
+        XCTAssertEqual(Translations.tr["programs.export"], "Dışa aktar")
+    }
+
     func testExerciseLinksAcceptOnlyYouTubeVideosAndShorts() {
         let id = "ZaTM37cfiDs"
         for url in [" youtube.com/watch?v=\(id) ", "youtu.be/\(id)?si=share", "https://youtube.com/shorts/\(id)",

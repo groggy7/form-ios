@@ -229,7 +229,7 @@ public struct ProgramBuilderView: View {
                         .buttonStyle(.plain)
 
                         Button(action: exportProgram) {
-                            Text(LanguageManager.t("programs.exportJson"))
+                            Text(LanguageManager.t("programs.export"))
                                 .font(.system(size: 15, weight: .semibold))
                                 .foregroundColor(AppColors.muted)
                                 .frame(maxWidth: .infinity)

@@ -54,6 +54,12 @@ public struct YouTubeVideo: Equatable {
         return url.count <= 2_000 && parse(url) != nil
     }
 
+    /// Video IDs are case-sensitive; invalid URLs never identify the same video.
+    public static func isSameVideo(_ first: String, _ second: String) -> Bool {
+        guard let id = parse(normalizeInput(first))?.id else { return false }
+        return id == parse(normalizeInput(second))?.id
+    }
+
     public static func validatedLinks(_ raw: [String]) -> [String]? {
         let urls = raw.map(normalizeInput).filter { !$0.isEmpty }
         guard urls.allSatisfy(isSupportedLink) else { return nil }
