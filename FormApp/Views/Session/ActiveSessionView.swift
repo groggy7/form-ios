@@ -9,6 +9,8 @@ public struct ActiveSessionView: View {
     @State private var showSummary: Bool = false
     @State private var finishedAt: Int64? = nil
     @State private var restMuted: Bool = false
+    @State private var warningNoticeMessage: String? = nil
+    @State private var isWarningVisible: Bool = false
 
     private let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
 
@@ -303,6 +305,31 @@ public struct ActiveSessionView: View {
                 }
             }
 
+            if isWarningVisible, let warning = warningNoticeMessage {
+                VStack {
+                    Spacer()
+                    HStack(spacing: 8) {
+                        Image(systemName: "exclamationmark.triangle.fill")
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundColor(AppColors.danger)
+                        Text(warning)
+                            .font(.system(size: 13, weight: .bold))
+                            .foregroundColor(AppColors.danger)
+                    }
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 10)
+                    .background(
+                        Capsule()
+                            .fill(AppColors.surfaceRaised)
+                            .overlay(Capsule().stroke(AppColors.danger.opacity(0.35), lineWidth: 1))
+                            .shadow(color: Color.black.opacity(0.4), radius: 10, x: 0, y: 4)
+                    )
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .padding(.bottom, restTimer != nil ? 96 : 24)
+                }
+                .animation(.easeInOut(duration: 0.25), value: isWarningVisible)
+            }
+
             ToastOverlay(message: store.noticeMessage)
         }
         .onReceive(timer) { _ in
@@ -323,7 +350,15 @@ public struct ActiveSessionView: View {
 
     private func showEmptyWarning() {
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        store.showNotice(LanguageManager.t("notice.emptySetWarning"))
+        warningNoticeMessage = LanguageManager.t("notice.emptySetWarning")
+        withAnimation(.easeOut(duration: 0.28)) {
+            isWarningVisible = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            withAnimation(.easeIn(duration: 0.24)) {
+                isWarningVisible = false
+            }
+        }
     }
 
     private func updateSet(exerciseId: String, index: Int, weight: String, reps: String) {
