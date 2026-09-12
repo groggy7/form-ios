@@ -13,7 +13,7 @@ The catalogue preserves source filenames/hashes/dimensions, crop bounds and
 output dimensions/hashes. The 300 PNGs total 24,203,332 bytes.
 
 MovementIcon and MovementIllustration show one static fitted image on the
-thumbnail-only slate backdrop `#3B4B5B`, with an 8 MiB decoded-image cache.
+thumbnail backdrop `#051216` (matching the video surface), with an 8 MiB decoded-image cache.
 Lookup is by canonical exercise ID, never translated name or old artwork alias.
 Unknown custom exercises remain blank. Detail video playback, crop metadata,
 `#16202A` video surface, prescriptions and personal workout data are unchanged.

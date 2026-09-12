@@ -233,6 +233,9 @@ final class FormAppTests: XCTestCase {
         renderer.scale = 2
         let image = try XCTUnwrap(renderer.uiImage)
         XCTAssertEqual(image.pngData(), renderer.uiImage?.pngData())
+        if let data = image.pngData() {
+            try? data.write(to: URL(fileURLWithPath: "/private/tmp/static-thumbnails-ios.png"))
+        }
         let attachment = XCTAttachment(image: image)
         attachment.name = "Static STEP1 thumbnails"
         attachment.lifetime = .keepAlways
