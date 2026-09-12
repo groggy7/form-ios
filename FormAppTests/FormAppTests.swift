@@ -2182,4 +2182,9 @@ final class FormAppTests: XCTestCase {
         XCTAssertTrue(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "50", repsInput: "12", weightKg: 50, completedReps: 12)))
         XCTAssertTrue(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "2.5", repsInput: "15")))
     }
+
+    func testEmptySetWarningTranslationsParity() {
+        XCTAssertEqual(Translations.en["notice.emptySetWarning"], "Weight and rep info cannot be left empty.")
+        XCTAssertEqual(Translations.tr["notice.emptySetWarning"], "Tekrar ve ağırlık bilgisi boş bırakılamaz.")
+    }
 }

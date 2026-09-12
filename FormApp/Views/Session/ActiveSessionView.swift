@@ -201,6 +201,9 @@ public struct ActiveSessionView: View {
                                         },
                                         onRemoveSet: { setIdx in
                                             removeSet(exerciseId: exercise.id, index: setIdx)
+                                        },
+                                        onEmptyWarning: {
+                                            showEmptyWarning()
                                         }
                                     )
                                 }
@@ -299,6 +302,8 @@ public struct ActiveSessionView: View {
                     }
                 }
             }
+
+            ToastOverlay(message: store.noticeMessage)
         }
         .onReceive(timer) { _ in
             nowEpochMillis = Int64(Date().timeIntervalSince1970 * 1000)
@@ -315,6 +320,11 @@ public struct ActiveSessionView: View {
     }
 
     // MARK: - Actions
+
+    private func showEmptyWarning() {
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        store.showNotice(LanguageManager.t("notice.emptySetWarning"))
+    }
 
     private func updateSet(exerciseId: String, index: Int, weight: String, reps: String) {
         store.updateActiveSession { d in

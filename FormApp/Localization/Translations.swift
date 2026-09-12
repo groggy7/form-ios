@@ -541,6 +541,7 @@ public enum Translations {
         "notice.programUpdated": "Program updated.",
         "notice.programDeleted": "Program deleted.",
         "notice.programApplied": "Switched to {name}.",
+        "notice.emptySetWarning": "Weight and rep info cannot be left empty.",
     ]
     
     public static let tr: [String: String] = [
@@ -874,5 +875,6 @@ public enum Translations {
         "notice.programUpdated": "Program güncellendi.",
         "notice.programDeleted": "Program silindi.",
         "notice.programApplied": "{name} programına geçildi.",
+        "notice.emptySetWarning": "Tekrar ve ağırlık bilgisi boş bırakılamaz.",
     ]
 }

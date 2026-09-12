@@ -6,19 +6,22 @@ public struct SetLoggingTable: View {
     var onToggleCompleteSet: (Int) -> Void
     var onAddSet: () -> Void
     var onRemoveSet: (Int) -> Void
+    var onEmptyWarning: (() -> Void)? = nil
 
     public init(
         sets: [ExerciseSetLog],
         onUpdateSet: @escaping (Int, String, String) -> Void,
         onToggleCompleteSet: @escaping (Int) -> Void,
         onAddSet: @escaping () -> Void,
-        onRemoveSet: @escaping (Int) -> Void
+        onRemoveSet: @escaping (Int) -> Void,
+        onEmptyWarning: (() -> Void)? = nil
     ) {
         self.sets = sets
         self.onUpdateSet = onUpdateSet
         self.onToggleCompleteSet = onToggleCompleteSet
         self.onAddSet = onAddSet
         self.onRemoveSet = onRemoveSet
+        self.onEmptyWarning = onEmptyWarning
     }
 
     public var body: some View {
@@ -70,7 +73,7 @@ public struct SetLoggingTable: View {
                         .foregroundColor(set.isCompleted ? AppColors.accent : AppColors.secondaryText)
                         .frame(width: 38, alignment: .leading)
 
-                    TextField("—", text: weightBinding, prompt: Text("—").foregroundColor(AppColors.muted))
+                    TextField("0", text: weightBinding, prompt: Text("0").foregroundColor(AppColors.muted))
                         .keyboardType(.decimalPad)
                         .multilineTextAlignment(.center)
                         .font(.system(size: 15, weight: .semibold))
@@ -80,7 +83,7 @@ public struct SetLoggingTable: View {
                         .cornerRadius(8)
                         .frame(maxWidth: .infinity)
 
-                    TextField("—", text: repsBinding, prompt: Text("—").foregroundColor(AppColors.muted))
+                    TextField("0", text: repsBinding, prompt: Text("0").foregroundColor(AppColors.muted))
                         .keyboardType(.numberPad)
                         .multilineTextAlignment(.center)
                         .font(.system(size: 15, weight: .semibold))
@@ -91,7 +94,11 @@ public struct SetLoggingTable: View {
                         .frame(maxWidth: .infinity)
 
                     Button(action: {
-                        onToggleCompleteSet(index)
+                        if canComplete {
+                            onToggleCompleteSet(index)
+                        } else {
+                            onEmptyWarning?()
+                        }
                     }) {
                         Image(systemName: set.isCompleted ? "checkmark.circle.fill" : "circle")
                             .font(.system(size: 24))
@@ -103,7 +110,6 @@ public struct SetLoggingTable: View {
                             .frame(width: 44, height: 44)
                     }
                     .buttonStyle(.plain)
-                    .disabled(!canComplete)
                 }
                 .padding(.horizontal, 14)
                 .padding(.vertical, 6)
