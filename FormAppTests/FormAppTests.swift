@@ -5,6 +5,57 @@ import SwiftUI
 @testable import FormApp
 
 final class FormAppTests: XCTestCase {
+    @MainActor
+    func testEquipmentOptionsRenderInEnglishAndTurkishLargeText() throws {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        for (language, width, type) in [("en", 390.0, DynamicTypeSize.large), ("tr", 320.0, DynamicTypeSize.xxxLarge)] {
+            LanguageManager.setLanguage(language)
+            let content = VStack(alignment: .leading, spacing: 16) {
+                Text(LanguageManager.t("library.equipment")).foregroundColor(AppColors.text)
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 140))], spacing: 10) {
+                    ForEach(EquipmentCatalog.shared.categories) { category in
+                        LibraryFilterOption(title: category.title, selected: category.id == "resistance-band", equipment: category, action: {})
+                    }
+                }
+            }.padding(20).frame(width: width).background(AppColors.background).environment(\.dynamicTypeSize, type)
+            let renderer = ImageRenderer(content: content)
+            renderer.scale = 2
+            let image = try XCTUnwrap(renderer.uiImage)
+            XCTAssertGreaterThan(image.size.height, 180)
+            XCTAssertLessThan(image.size.height, 950)
+            try XCTUnwrap(image.pngData()).write(to: URL(fileURLWithPath: "/private/tmp/form-equipment-ios-\(language).png"))
+            let attachment = XCTAttachment(image: image)
+            attachment.name = "Equipment \(language)"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+        }
+    }
+
+    func testEquipmentCatalogCoverageAndFiltering() throws {
+        let catalog = EquipmentCatalog.shared
+        XCTAssertEqual(catalog.exercises.count, 300)
+        XCTAssertEqual(Set(catalog.exercises.keys), Set(ExerciseCatalog.canonicalExercises.keys))
+        XCTAssertEqual(catalog.categories.count, 7)
+        XCTAssertEqual(Set(catalog.exercises.values), Set(catalog.categories.map(\.id)))
+        for (id, group) in ["ez-bar-curl": "bar", "goblet-squat": "dumbbell",
+                            "cable-lateral-raise": "machine", "leg-press": "machine",
+                            "weighted-front-raise": "weight-plate", "svend-press": "weight-plate",
+                            "weighted-pull-ups": "other"] {
+            XCTAssertEqual(catalog.categoryId(id), group)
+            XCTAssertTrue(catalog.matches(id, selected: group))
+            XCTAssertTrue(catalog.matches(id, selected: nil))
+        }
+        XCTAssertEqual(catalog.categoryId("custom-dumbbell"), "other")
+        XCTAssertEqual(catalog.categoryId(nil), "other")
+        XCTAssertFalse(catalog.matches("ez-bar-curl", selected: "machine"))
+        for category in catalog.categories {
+            XCTAssertFalse(SVGPathParser.parse(category.icon).isEmpty)
+            XCTAssertFalse(category.en.isEmpty)
+            XCTAssertFalse(category.tr.isEmpty)
+        }
+    }
+
 
     func testFlexibleExerciseSearch() throws {
         func score(_ id: String, _ query: String) throws -> Int? {

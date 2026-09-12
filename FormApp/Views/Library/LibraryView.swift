@@ -7,6 +7,7 @@ public struct LibraryView: View {
 
     @State private var query: String = ""
     @State private var selectedMovement: MovementType? = nil
+    @State private var selectedEquipment: String? = nil
     @State private var showFiltersSheet: Bool = false
     @AppStorage("library_is_card_view") private var isCardView: Bool = false
 
@@ -25,13 +26,14 @@ public struct LibraryView: View {
         let search = ExerciseSearch.Query(query)
         let filtered = catalogue.compactMap { entry -> (ExerciseCatalogEntry, Int)? in
             let matchMovement = selectedMovement == nil || entry.exercise.resolvedMovement == selectedMovement
-            guard matchMovement, let score = ExerciseSearch.score(search, exercise: entry.exercise,
+            guard matchMovement, EquipmentCatalog.shared.matches(entry.exercise.exerciseId, selected: selectedEquipment),
+                let score = ExerciseSearch.score(search, exercise: entry.exercise,
                 localizedName: entry.exercise.displayName,
                 category: LanguageManager.t("category.\(entry.exercise.resolvedMovement.rawValue)")) else { return nil }
             return (entry, score)
         }.sorted { $0.1 == $1.1 ? ExercisePriority.compare($0.0.exercise, $1.0.exercise) : $0.1 < $1.1 }
             .map { $0.0 }
-        let hasActiveFilters = selectedMovement != nil
+        let hasActiveFilters = selectedMovement != nil || selectedEquipment != nil
 
         ScrollView {
             VStack(spacing: 16) {
@@ -105,33 +107,18 @@ public struct LibraryView: View {
 
                 // Active filters row
                 if hasActiveFilters {
-                    HStack(spacing: 8) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        if let equipment = EquipmentCatalog.shared.categories.first(where: { $0.id == selectedEquipment }) {
+                            activeFilter(equipment.title, equipment: equipment) { selectedEquipment = nil }
+                                .accessibilityIdentifier("library-active-filter-equipment")
+                        }
                         if let mov = selectedMovement {
-                            HStack(spacing: 6) {
-                                Text(LanguageManager.t("category.\(mov.key)"))
-                                    .font(.system(size: 12, weight: .medium))
-                                    .foregroundColor(AppColors.accent)
-
-                                Button(action: { selectedMovement = nil }) {
-                                    Image(systemName: "xmark")
-                                        .font(.system(size: 10, weight: .bold))
-                                        .foregroundColor(AppColors.accent)
-                                }
-                                .buttonStyle(.plain)
-                            }
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 5)
-                            .background(AppColors.positiveBg)
-                            .cornerRadius(8)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(AppColors.accent.opacity(0.4), lineWidth: 1)
-                            )
+                            activeFilter(LanguageManager.t("category.\(mov.key)")) { selectedMovement = nil }
                         }
 
                         Button(action: {
                             selectedMovement = nil
-                            query = ""
+                            selectedEquipment = nil
                         }) {
                             Text(LanguageManager.t("library.clearFilters"))
                                 .font(.system(size: 12))
@@ -139,9 +126,9 @@ public struct LibraryView: View {
                         }
                         .buttonStyle(.plain)
                         .padding(.horizontal, 8)
-
-                        Spacer()
+                        .frame(minHeight: 48)
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 20)
                 }
 
@@ -267,39 +254,43 @@ public struct LibraryView: View {
 
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
+                        Text(LanguageManager.t("library.equipment"))
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(AppColors.text)
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 140))], spacing: 10) {
+                            filterOption(LanguageManager.t("library.any"), selected: selectedEquipment == nil) {
+                                selectedEquipment = nil
+                            }
+                            ForEach(EquipmentCatalog.shared.categories) { category in
+                                filterOption(category.title, selected: selectedEquipment == category.id, equipment: category) {
+                                    selectedEquipment = selectedEquipment == category.id ? nil : category.id
+                                }
+                                .accessibilityIdentifier("equipment-\(category.id)")
+                            }
+                        }
                         Text(LanguageManager.t("library.filterMovement"))
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundColor(AppColors.text)
                             .padding(.top, 16)
 
                         let movements = MovementType.allCases
-                        LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 10) {
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 140))], spacing: 10) {
+                            filterOption(LanguageManager.t("library.any"), selected: selectedMovement == nil) { selectedMovement = nil }
                             ForEach(movements, id: \.rawValue) { (mov: MovementType) in
                                 let isSelected = selectedMovement == mov
-                                Button(action: {
+                                filterOption(LanguageManager.t("category.\(mov.key)"), selected: isSelected) {
                                     if isSelected { selectedMovement = nil }
                                     else { selectedMovement = mov }
-                                    showFiltersSheet = false
-                                }) {
-                                    Text(LanguageManager.t("category.\(mov.key)"))
-                                        .font(.system(size: 13, weight: isSelected ? .bold : .medium))
-                                        .foregroundColor(isSelected ? AppColors.accent : AppColors.secondaryText)
-                                        .frame(maxWidth: .infinity)
-                                        .frame(height: 44)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 10)
-                                                .fill(isSelected ? AppColors.positiveBg : AppColors.surface)
-                                        )
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 10)
-                                                .stroke(isSelected ? AppColors.accent : AppColors.border, lineWidth: 1)
-                                        )
                                 }
-                                .buttonStyle(.plain)
                             }
                         }
 
-                        Spacer().frame(height: 20)
+                        if selectedEquipment != nil || selectedMovement != nil {
+                            filterOption(LanguageManager.t("library.resetFilters"), selected: false) {
+                                selectedEquipment = nil
+                                selectedMovement = nil
+                            }
+                        }
                     }
                     .padding(20)
                 }
@@ -314,5 +305,52 @@ public struct LibraryView: View {
                 }
             }
         }
+    }
+
+    private func activeFilter(_ title: String, equipment: EquipmentCategory? = nil, remove: @escaping () -> Void) -> some View {
+        Button(action: remove) {
+            HStack(spacing: 8) {
+                if let equipment { EquipmentIcon(category: equipment, tint: AppColors.accent) }
+                Text(title).font(.system(size: 12, weight: .medium))
+                Image(systemName: "xmark").font(.system(size: 11, weight: .bold))
+            }
+            .foregroundColor(AppColors.accent)
+            .padding(.horizontal, 12)
+            .frame(minHeight: 48)
+            .background(AppColors.positiveBg, in: RoundedRectangle(cornerRadius: 10))
+            .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.accent.opacity(0.4)))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("\(LanguageManager.t("library.clearFilters")): \(title)")
+    }
+
+    private func filterOption(_ title: String, selected: Bool, equipment: EquipmentCategory? = nil, action: @escaping () -> Void) -> some View {
+        LibraryFilterOption(title: title, selected: selected, equipment: equipment, action: action)
+    }
+}
+
+struct LibraryFilterOption: View {
+    let title: String
+    let selected: Bool
+    var equipment: EquipmentCategory? = nil
+    let action: () -> Void
+    @ScaledMetric(relativeTo: .subheadline) private var labelSize: CGFloat = 13
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 8) {
+                if let equipment { EquipmentIcon(category: equipment, tint: selected ? AppColors.accent : AppColors.secondaryText) }
+                Text(title).font(.system(size: labelSize, weight: selected ? .semibold : .medium))
+                    .fixedSize(horizontal: false, vertical: true)
+                Spacer(minLength: 0)
+            }
+            .foregroundColor(selected ? AppColors.accent : AppColors.secondaryText)
+            .padding(.horizontal, 12).padding(.vertical, 10)
+            .frame(maxWidth: .infinity, minHeight: 48)
+            .background(selected ? AppColors.positiveBg : AppColors.surface, in: RoundedRectangle(cornerRadius: 10))
+            .overlay(RoundedRectangle(cornerRadius: 10).stroke(selected ? AppColors.accent : AppColors.border))
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(selected ? .isSelected : [])
     }
 }

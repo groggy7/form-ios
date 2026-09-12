@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+        E30000000000000000000001 /* ExerciseEquipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30000000000000000000002; };
+        E30000000000000000000003 /* equipment_catalog.json in Resources */ = {isa = PBXBuildFile; fileRef = E30000000000000000000004; };
         V10000000000000000000001 /* ExerciseDetailVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = V10000000000000000000002 /* ExerciseDetailVideo.swift */; };
         M20000000000000000000001 /* ExerciseMusclesCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = M20000000000000000000002 /* ExerciseMusclesCard.swift */; };
         M20000000000000000000003 /* ExerciseMuscles in Resources */ = {isa = PBXBuildFile; fileRef = M20000000000000000000004 /* ExerciseMuscles */; };
@@ -89,6 +91,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+        E30000000000000000000002 /* ExerciseEquipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseEquipment.swift; sourceTree = "<group>"; };
+        E30000000000000000000004 /* equipment_catalog.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = equipment_catalog.json; sourceTree = "<group>"; };
         V10000000000000000000002 /* ExerciseDetailVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDetailVideo.swift; sourceTree = "<group>"; };
         M20000000000000000000002 /* ExerciseMusclesCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMusclesCard.swift; sourceTree = "<group>"; };
         M20000000000000000000004 /* ExerciseMuscles */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseMuscles; sourceTree = "<group>"; };
@@ -184,6 +188,7 @@
 				2D97FA7035F2317DFBE57498 /* MovementIcon.swift */,
                 V10000000000000000000002 /* ExerciseDetailVideo.swift */,
                 M20000000000000000000002 /* ExerciseMusclesCard.swift */,
+                E30000000000000000000002 /* ExerciseEquipment.swift */,
 				08997E0EACD6176BFF508687 /* ToastOverlay.swift */,
 			);
 			path = Components;
@@ -347,6 +352,7 @@
                 77203A709542614D89DFF819 /* Assets.xcassets */,
                 V10000000000000000000004 /* ExerciseVideos */,
                 M20000000000000000000004 /* ExerciseMuscles */,
+                E30000000000000000000004 /* equipment_catalog.json */,
                 T10000000000000000000004 /* ExerciseThumbnails */,
 				E10000000000000000000001 /* exercises.json */,
 				L100000000000000000000001 /* Locales */,
@@ -471,6 +477,7 @@
 				E10000000000000000000002 /* exercises.json in Resources */,
                 V10000000000000000000003 /* ExerciseVideos in Resources */,
                 M20000000000000000000003 /* ExerciseMuscles in Resources */,
+                E30000000000000000000003 /* equipment_catalog.json in Resources */,
                 T10000000000000000000003 /* ExerciseThumbnails in Resources */,
 				L100000000000000000000002 /* Locales in Resources */,
 				ECF655C211A97E2025683749 /* 01_aesthetic_hypertrophy.json in Resources */,
@@ -526,6 +533,7 @@
 				45546ACE7DF72EB335DD41FA /* MovementIcon.swift in Sources */,
                 V10000000000000000000001 /* ExerciseDetailVideo.swift in Sources */,
                 M20000000000000000000001 /* ExerciseMusclesCard.swift in Sources */,
+                E30000000000000000000001 /* ExerciseEquipment.swift in Sources */,
 				DD65F19A9F064CC90CE953C3 /* MuscleArtwork.swift in Sources */,
 				BFD7E7CFFD180073EA634E28 /* MuscleMasks.swift in Sources */,
 				3255EAF86BCBDCDD24C59363 /* ProgramBuilderView.swift in Sources */,
