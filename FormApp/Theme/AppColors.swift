@@ -17,6 +17,10 @@ public enum AppColors {
     public static let purpleBg = Color(hex: 0x28203D)
     public static let coral = Color(hex: 0xFF8C78)
     public static let danger = Color(hex: 0xFF897B)
+    public static let cuesBg = Color(hex: 0x061F20)
+    public static let cuesBorder = Color(hex: 0x0E5B53)
+    public static let avoidBg = Color(hex: 0x1D1416)
+    public static let avoidBorder = Color(hex: 0x54282A)
     
     // Calendar History status colors matching Android Theme
     public static let completedGreen = Color(hex: 0x65D69B)

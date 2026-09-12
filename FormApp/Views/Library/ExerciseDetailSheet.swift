@@ -172,9 +172,9 @@ struct TechniqueSectionView: View {
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(AppColors.surface)
+        .background(isAvoid ? AppColors.avoidBg : AppColors.cuesBg)
         .cornerRadius(12)
-        .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
+        .overlay(RoundedRectangle(cornerRadius: 12).stroke(isAvoid ? AppColors.avoidBorder : AppColors.cuesBorder, lineWidth: 1))
         .contentShape(Rectangle())
         .onTapGesture {
             withAnimation(.easeInOut(duration: 0.2)) {
