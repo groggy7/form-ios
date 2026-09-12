@@ -1172,7 +1172,7 @@ final class FormAppTests: XCTestCase {
             ("unknown", "unknown", "en", 280.0, DynamicTypeSize.large)
         ] {
             LanguageManager.setLanguage(language)
-            let renderer = ImageRenderer(content: ExerciseMusclesCard(exerciseId: id)
+            let renderer = ImageRenderer(content: ExerciseMusclesCard(exerciseId: id, initiallyExpanded: true)
                 .environment(\.dynamicTypeSize, type).frame(width: width))
             renderer.scale = 2
             let image = try XCTUnwrap(renderer.uiImage)
@@ -1184,6 +1184,16 @@ final class FormAppTests: XCTestCase {
             attachment.lifetime = .keepAlways
             add(attachment)
         }
+    }
+
+    @MainActor
+    func testExerciseMusclesCardCollapsedByDefault() throws {
+        LanguageManager.setLanguage("en")
+        let renderer = ImageRenderer(content: ExerciseMusclesCard(exerciseId: "barbell-bench-press")
+            .frame(width: 350))
+        renderer.scale = 2
+        let image = try XCTUnwrap(renderer.uiImage)
+        XCTAssertLessThan(image.size.height, 90)
     }
 
     func testVideoDuplicatesPreserveCaseSensitiveIdsAndFirstTimestamp() {

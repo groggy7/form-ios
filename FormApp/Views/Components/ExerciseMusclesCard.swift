@@ -47,6 +47,8 @@ struct ExerciseMuscleCatalog: Decodable {
 
 struct ExerciseMusclesCard: View {
     let exerciseId: String?
+    let initiallyExpanded: Bool
+    @State private var isExpanded: Bool
     @State private var selectedView: String?
     @ObservedObject private var language = LanguageManager.shared
     @Environment(\.dynamicTypeSize) private var dynamicType
@@ -55,52 +57,84 @@ struct ExerciseMusclesCard: View {
     @ScaledMetric(relativeTo: .caption) private var labelSize: CGFloat = 12
     @ScaledMetric(relativeTo: .caption) private var noteSize: CGFloat = 11
 
+    init(exerciseId: String?, initiallyExpanded: Bool = false) {
+        self.exerciseId = exerciseId
+        self.initiallyExpanded = initiallyExpanded
+        self._isExpanded = State(initialValue: initiallyExpanded)
+    }
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
-            Text(LanguageManager.t("anatomy.title"))
-                .font(.system(size: titleSize, weight: .semibold)).foregroundColor(AppColors.text)
-            if let catalog = ExerciseMuscleCatalog.shared, let profile = catalog.profile(exerciseId) {
-                let view = selectedView ?? profile.initialView
-                if dynamicType >= .xxLarge {
-                    stacked(catalog, profile, view)
-                } else {
-                    ViewThatFits(in: .horizontal) {
-                        HStack(alignment: .top, spacing: 16) {
-                            figure(catalog, profile, view).frame(width: 128, height: 190)
-                            legend(catalog, profile).frame(maxWidth: .infinity, alignment: .leading)
-                        }.frame(minWidth: 300)
-                        stacked(catalog, profile, view)
-                    }
+        VStack(alignment: .leading, spacing: isExpanded ? 14 : 0) {
+            HStack {
+                Text(LanguageManager.t("anatomy.title"))
+                    .font(.system(size: titleSize, weight: .semibold)).foregroundColor(AppColors.text)
+
+                Spacer()
+
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(AppColors.muted)
+                    .rotationEffect(.degrees(isExpanded ? 180 : 0))
+            }
+            .contentShape(Rectangle())
+            .onTapGesture {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    isExpanded.toggle()
                 }
-                let views = catalog.availableViews(profile)
-                if views.count > 1 {
-                    HStack(spacing: 8) {
-                        ForEach(views, id: \.self) { option in
-                            Button { selectedView = option } label: {
-                                Text(LanguageManager.t(option == "front" ? "anatomy.front" : "anatomy.back"))
-                                    .font(.system(size: bodySize, weight: .medium))
-                                    .foregroundColor(view == option ? AppColors.purple : AppColors.muted)
-                                    .frame(maxWidth: .infinity, minHeight: 48)
-                                    .background(view == option ? AppColors.purpleBg : AppColors.surface)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(view == option ? AppColors.purple : AppColors.border, lineWidth: 1))
-                            }.buttonStyle(.plain)
-                                .accessibilityAddTraits(view == option ? .isSelected : [])
-                                .accessibilityIdentifier("anatomy-view-\(option)")
+            }
+
+            if isExpanded {
+                if let catalog = ExerciseMuscleCatalog.shared, let profile = catalog.profile(exerciseId) {
+                    let view = selectedView ?? profile.initialView
+                    if dynamicType >= .xxLarge {
+                        stacked(catalog, profile, view)
+                    } else {
+                        ViewThatFits(in: .horizontal) {
+                            HStack(alignment: .top, spacing: 16) {
+                                figure(catalog, profile, view).frame(width: 128, height: 190)
+                                legend(catalog, profile).frame(maxWidth: .infinity, alignment: .leading)
+                            }.frame(minWidth: 300)
+                            stacked(catalog, profile, view)
                         }
                     }
+                    let views = catalog.availableViews(profile)
+                    if views.count > 1 {
+                        HStack(spacing: 8) {
+                            ForEach(views, id: \.self) { option in
+                                Button { selectedView = option } label: {
+                                    Text(LanguageManager.t(option == "front" ? "anatomy.front" : "anatomy.back"))
+                                        .font(.system(size: bodySize, weight: .medium))
+                                        .foregroundColor(view == option ? AppColors.purple : AppColors.muted)
+                                        .frame(maxWidth: .infinity, minHeight: 48)
+                                        .background(view == option ? AppColors.purpleBg : AppColors.surface)
+                                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(view == option ? AppColors.purple : AppColors.border, lineWidth: 1))
+                                }.buttonStyle(.plain)
+                                    .accessibilityAddTraits(view == option ? .isSelected : [])
+                                    .accessibilityIdentifier("anatomy-view-\(option)")
+                            }
+                        }
+                    }
+                    Text(LanguageManager.t("anatomy.note"))
+                        .font(.system(size: noteSize)).foregroundColor(AppColors.muted).fixedSize(horizontal: false, vertical: true)
+                } else {
+                    Text(LanguageManager.t("anatomy.unavailable"))
+                        .font(.system(size: bodySize)).foregroundColor(AppColors.muted).fixedSize(horizontal: false, vertical: true)
                 }
-                Text(LanguageManager.t("anatomy.note"))
-                    .font(.system(size: noteSize)).foregroundColor(AppColors.muted).fixedSize(horizontal: false, vertical: true)
-            } else {
-                Text(LanguageManager.t("anatomy.unavailable"))
-                    .font(.system(size: bodySize)).foregroundColor(AppColors.muted).fixedSize(horizontal: false, vertical: true)
             }
         }
         .padding(16).frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surface)
         .clipShape(RoundedRectangle(cornerRadius: 14))
         .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
+        .contentShape(Rectangle())
+        .onTapGesture {
+            if !isExpanded {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    isExpanded = true
+                }
+            }
+        }
         .accessibilityIdentifier("exercise-muscles-card")
         .onChange(of: exerciseId) { _, _ in selectedView = nil }
     }

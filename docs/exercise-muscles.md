@@ -2,7 +2,8 @@
 
 `ExerciseMusclesCard.swift` renders the same curated catalogue, grayscale bases,
 region geometry and role colors as Android. It is placed immediately below the
-exercise video without reordering the existing title/cue sections. Front/back
+exercise video without reordering the existing title/cue sections. It is collapsible
+(collapsed by default for scanning, with an animated chevron on tap). Front/back
 selection is manual and resets when the exercise changes. Narrow widths and
 large text use stacked presentation. Unknown/unreviewed canonical IDs show an
 unavailable message instead of guessed targets.
