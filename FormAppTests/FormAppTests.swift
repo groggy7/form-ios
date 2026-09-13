@@ -283,6 +283,76 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(WorkoutSessionUtils.sanitizedRepsInput("999"), "999")
     }
 
+    func testSetJumpLimitsAndPreviousSetPrefill() throws {
+        XCTAssertEqual(WorkoutSessionUtils.adjustWeight("7,5", by: 5), "12.5")
+        XCTAssertEqual(WorkoutSessionUtils.adjustWeight("2.5", by: -10), "0")
+        XCTAssertEqual(WorkoutSessionUtils.adjustWeight("", by: 10), "10")
+        XCTAssertEqual(WorkoutSessionUtils.adjustWeight("9999.99", by: 10), "9999.99")
+        XCTAssertEqual(WorkoutSessionUtils.adjustReps("1", by: -1), "")
+        XCTAssertEqual(WorkoutSessionUtils.adjustReps("", by: 1), "1")
+        XCTAssertEqual(WorkoutSessionUtils.adjustReps("999", by: 1), "999")
+        let source = ExerciseSetLog(setNumber: 1, weightInput: "62.5", repsInput: "10", isCompleted: true)
+        let blank = ExerciseSetLog(id: "next", setNumber: 2)
+        let next = WorkoutSessionUtils.prefillSet(blank, from: source)
+        XCTAssertEqual(next.id, blank.id)
+        XCTAssertEqual(next.weightKg, 62.5)
+        XCTAssertEqual(next.completedReps, 10)
+        XCTAssertFalse(next.isCompleted)
+        var cleared = blank
+        cleared.inputTouched = true
+        XCTAssertEqual(WorkoutSessionUtils.prefillSet(cleared, from: source), cleared)
+        var partial = blank
+        partial.weightInput = "20"
+        XCTAssertEqual(WorkoutSessionUtils.prefillSet(partial, from: source), partial)
+        XCTAssertEqual(WorkoutSessionUtils.prefillSet(blank, from: nil), blank)
+        let persisted = try JSONDecoder().decode(ExerciseSetLog.self, from: JSONEncoder().encode(cleared))
+        XCTAssertEqual(persisted.inputTouched, true)
+        let legacy = #"{"id":"old","setNumber":1,"weightInput":"","repsInput":"","isCompleted":false}"#.data(using: .utf8)!
+        XCTAssertNil(try JSONDecoder().decode(ExerciseSetLog.self, from: legacy).inputTouched)
+    }
+
+    @MainActor
+    func testSetJumpControlsNarrowSnapshots() throws {
+        defer { LanguageManager.setLanguage("en") }
+        func textFields(_ view: UIView) -> [UITextField] {
+            (view as? UITextField).map { [$0] } ?? view.subviews.flatMap { textFields($0) }
+        }
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            for index in 0..<2 {
+            let content = SetLoggingTable(sets: [ExerciseSetLog(setNumber: 1, weightInput: "12.5", repsInput: "10")],
+                onUpdateSet: { _, _, _ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in })
+                .padding(16).environment(\.dynamicTypeSize, .xLarge)
+                .frame(width: 320).background(AppColors.background)
+            let host = UIHostingController(rootView: content)
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 700))
+            window.rootViewController = host
+            window.makeKeyAndVisible()
+            host.view.frame = window.bounds
+            host.view.layoutIfNeeded()
+            RunLoop.main.run(until: Date().addingTimeInterval(0.15))
+            let fields = textFields(host.view)
+            XCTAssertEqual(fields.count, 2)
+                window.endEditing(true)
+                RunLoop.main.run(until: Date().addingTimeInterval(0.1))
+                let field = try XCTUnwrap(textFields(host.view).filter { !$0.isHidden }.dropFirst(index).first)
+                XCTAssertTrue(field.becomeFirstResponder())
+                RunLoop.main.run(until: Date().addingTimeInterval(0.2))
+                host.view.layoutIfNeeded()
+                let image = UIGraphicsImageRenderer(bounds: host.view.bounds).image { _ in
+                    host.view.drawHierarchy(in: host.view.bounds, afterScreenUpdates: true)
+                }
+                let attachment = XCTAttachment(image: image)
+                attachment.name = "set-jumps-\(language)-\(index)"
+                attachment.lifetime = .keepAlways
+                add(attachment)
+                try image.pngData()?.write(to: URL(fileURLWithPath: "/private/tmp/set-jumps-ios-\(language)-\(index).png"))
+            window.endEditing(true)
+            window.isHidden = true
+            }
+        }
+    }
+
     func testSanitizedWeightInput() {
         XCTAssertEqual(WorkoutSessionUtils.sanitizedWeightInput("50"), "50")
         XCTAssertEqual(WorkoutSessionUtils.sanitizedWeightInput("52.5"), "52.5")

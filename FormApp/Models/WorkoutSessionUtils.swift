@@ -100,6 +100,33 @@ public struct SessionProgress {
 }
 
 public enum WorkoutSessionUtils {
+    public static func adjustWeight(_ input: String, by delta: Int) -> String {
+        let current = sanitizedWeightInput(input).flatMap { Double($0) } ?? 0
+        let adjusted = (min(9999.99, max(0, current + Double(delta))) * 100).rounded() / 100
+        return formatWeight(adjusted)
+    }
+
+    public static func adjustReps(_ input: String, by delta: Int) -> String {
+        let current = min(999, max(0, Int(input) ?? 0))
+        let adjusted = min(999, max(0, current + delta))
+        return adjusted == 0 ? "" : "\(adjusted)"
+    }
+
+    public static func prefillSet(_ target: ExerciseSetLog, from previous: ExerciseSetLog?) -> ExerciseSetLog {
+        guard target.inputTouched != true, !target.isCompleted, target.weightInput.isEmpty, target.repsInput.isEmpty,
+              target.weightKg == nil, target.completedReps == nil, let previous, canCompleteSet(previous) else { return target }
+        let weight = previous.weightInput.isEmpty ? previous.weightKg.map { formatWeight($0) } ?? "" : previous.weightInput
+        let reps = previous.repsInput.isEmpty ? previous.completedReps.map { "\($0)" } ?? "" : previous.repsInput
+        guard let weight = sanitizedWeightInput(weight), let reps = sanitizedRepsInput(reps) else { return target }
+        var result = target
+        result.weightInput = weight
+        result.weightKg = Double(weight)
+        result.repsInput = reps
+        result.completedReps = Int(reps)
+        result.inputTouched = true
+        return result
+    }
+
     public static func isComplete(draft: ActiveSessionDraft) -> Bool {
         guard !draft.workout.exercises.isEmpty else { return false }
         return draft.workout.exercises.allSatisfy { ex in

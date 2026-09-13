@@ -375,7 +375,8 @@ public struct ActiveSessionView: View {
                 repsInput: reps,
                 weightKg: wKg,
                 completedReps: rInt,
-                isCompleted: sets[index].isCompleted
+                isCompleted: sets[index].isCompleted,
+                inputTouched: true
             )
             copy.setsByExercise[exerciseId] = sets
             return copy
@@ -393,6 +394,9 @@ public struct ActiveSessionView: View {
             }
             let willComplete = !currentSet.isCompleted
             sets[index].isCompleted = willComplete
+            if willComplete, sets.indices.contains(index + 1) {
+                sets[index + 1] = WorkoutSessionUtils.prefillSet(sets[index + 1], from: currentSet)
+            }
             copy.setsByExercise[exercise.id] = sets
 
             if willComplete {
@@ -425,10 +429,10 @@ public struct ActiveSessionView: View {
         store.updateActiveSession { d in
             var copy = d
             var sets = copy.setsByExercise[exerciseId] ?? []
-            sets.append(ExerciseSetLog(
+            sets.append(WorkoutSessionUtils.prefillSet(ExerciseSetLog(
                 setNumber: sets.count + 1,
                 isCompleted: false
-            ))
+            ), from: sets.last))
             copy.setsByExercise[exerciseId] = sets
             return copy
         }
@@ -448,7 +452,8 @@ public struct ActiveSessionView: View {
                     repsInput: sets[i].repsInput,
                     weightKg: sets[i].weightKg,
                     completedReps: sets[i].completedReps,
-                    isCompleted: sets[i].isCompleted
+                    isCompleted: sets[i].isCompleted,
+                    inputTouched: sets[i].inputTouched
                 )
             }
             copy.setsByExercise[exerciseId] = sets

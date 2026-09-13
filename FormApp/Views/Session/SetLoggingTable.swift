@@ -1,6 +1,12 @@
 import SwiftUI
 
 public struct SetLoggingTable: View {
+    private struct Field: Hashable {
+        let id: String
+        let weight: Bool
+    }
+    @FocusState private var focusedField: Field?
+    @State private var selectedField: Field?
     let sets: [ExerciseSetLog]
     var onUpdateSet: (Int, String, String) -> Void
     var onToggleCompleteSet: (Int) -> Void
@@ -74,6 +80,9 @@ public struct SetLoggingTable: View {
                         .frame(width: 38, alignment: .leading)
 
                     TextField("0", text: weightBinding, prompt: Text("0").foregroundColor(AppColors.muted))
+                        .focused($focusedField, equals: Field(id: set.id, weight: true))
+                        .simultaneousGesture(TapGesture().onEnded { selectedField = Field(id: set.id, weight: true) })
+                        .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \(LanguageManager.t("table.weightKg"))")
                         .keyboardType(.decimalPad)
                         .multilineTextAlignment(.center)
                         .font(.system(size: 15, weight: .semibold))
@@ -82,8 +91,13 @@ public struct SetLoggingTable: View {
                         .background(AppColors.surfaceRaised)
                         .cornerRadius(8)
                         .frame(maxWidth: .infinity)
+                        .frame(minHeight: 48)
+                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: true) ? AppColors.accent : .clear))
 
                     TextField("0", text: repsBinding, prompt: Text("0").foregroundColor(AppColors.muted))
+                        .focused($focusedField, equals: Field(id: set.id, weight: false))
+                        .simultaneousGesture(TapGesture().onEnded { selectedField = Field(id: set.id, weight: false) })
+                        .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \(LanguageManager.t("table.actualReps"))")
                         .keyboardType(.numberPad)
                         .multilineTextAlignment(.center)
                         .font(.system(size: 15, weight: .semibold))
@@ -92,10 +106,14 @@ public struct SetLoggingTable: View {
                         .background(AppColors.surfaceRaised)
                         .cornerRadius(8)
                         .frame(maxWidth: .infinity)
+                        .frame(minHeight: 48)
+                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: false) ? AppColors.accent : .clear))
 
                     Button(action: {
                         if canComplete {
                             onToggleCompleteSet(index)
+                            focusedField = nil
+                            selectedField = nil
                         } else {
                             onEmptyWarning?()
                         }
@@ -123,6 +141,41 @@ public struct SetLoggingTable: View {
                             Label(LanguageManager.t("table.deleteSet"), systemImage: "trash")
                         }
                     }
+                }
+                if let selected = selectedField, selected.id == set.id {
+                    let fieldLabel = LanguageManager.t(selected.weight ? "table.weightKg" : "table.actualReps")
+                    let setLabel = "\(LanguageManager.t("table.set")) \(set.setNumber)"
+                    VStack(spacing: 4) {
+                        HStack {
+                            Text("\(setLabel) · \(fieldLabel)")
+                                .font(.system(size: 12)).foregroundColor(AppColors.secondaryText)
+                            Spacer()
+                            Button(LanguageManager.t("table.done")) { focusedField = nil; selectedField = nil }
+                                .font(.system(size: 12)).foregroundColor(AppColors.accent)
+                                .frame(minWidth: 48, minHeight: 48)
+                        }
+                        HStack(spacing: 8) {
+                            ForEach(selected.weight ? [-10, -5, 5, 10] : [-1, 1], id: \.self) { step in
+                                let label = step > 0 ? "+\(step)" : "−\(-step)"
+                                Button {
+                                    if selected.weight {
+                                        weightBinding.wrappedValue = WorkoutSessionUtils.adjustWeight(weightBinding.wrappedValue, by: step)
+                                    } else {
+                                        repsBinding.wrappedValue = WorkoutSessionUtils.adjustReps(repsBinding.wrappedValue, by: step)
+                                    }
+                                } label: {
+                                    Text(label).font(.system(size: 16)).foregroundColor(AppColors.text)
+                                        .frame(maxWidth: .infinity, minHeight: 48)
+                                        .background(RoundedRectangle(cornerRadius: 8).stroke(AppColors.border))
+                                }
+                                .buttonStyle(.plain)
+                                .accessibilityLabel("\(setLabel), \(fieldLabel), \(label)")
+                            }
+                        }
+                    }
+                    .padding(.horizontal, 8).padding(.vertical, 4)
+                    .background(AppColors.surfaceRaised).cornerRadius(10)
+                    .accessibilityIdentifier("set-adjustments")
                 }
             }
 
@@ -168,6 +221,13 @@ public struct SetLoggingTable: View {
                 .disabled(sets.count <= 1)
             }
             .padding(.top, 8)
+        }
+        .tint(AppColors.accent)
+        .onChange(of: focusedField) { _, value in
+            if let value { selectedField = value }
+        }
+        .onChange(of: sets.map(\.id)) { _, ids in
+            if let selectedField, !ids.contains(selectedField.id) { self.selectedField = nil; focusedField = nil }
         }
     }
 }

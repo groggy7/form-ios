@@ -400,6 +400,7 @@ public struct ExerciseSetLog: Identifiable, Codable, Hashable {
     public var weightKg: Double?
     public var completedReps: Int?
     public var isCompleted: Bool
+    public var inputTouched: Bool?
 
     public init(
         id: String = UUID().uuidString,
@@ -408,7 +409,8 @@ public struct ExerciseSetLog: Identifiable, Codable, Hashable {
         repsInput: String = "",
         weightKg: Double? = nil,
         completedReps: Int? = nil,
-        isCompleted: Bool = false
+        isCompleted: Bool = false,
+        inputTouched: Bool? = nil
     ) {
         self.id = id
         self.setNumber = setNumber
@@ -417,6 +419,7 @@ public struct ExerciseSetLog: Identifiable, Codable, Hashable {
         self.weightKg = weightKg
         self.completedReps = completedReps
         self.isCompleted = isCompleted
+        self.inputTouched = inputTouched
     }
 }
 
