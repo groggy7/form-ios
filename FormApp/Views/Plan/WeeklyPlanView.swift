@@ -131,7 +131,10 @@ public struct WeeklyPlanView: View {
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 13, style: .continuous)
                                         .stroke(
-                                            isToday ? AppColors.accent.opacity(0.8) : (isUnfinished ? AppColors.unfinishedBorder : (isMissed ? AppColors.missedDayBorder : AppColors.border)),
+                                            isToday ? AppColors.accent.opacity(0.8)
+                                                : (isCompleted && index < calendar.today ? AppColors.completedDayBorder
+                                                    : (isUnfinished ? AppColors.unfinishedBorder
+                                                        : (isMissed ? AppColors.missedDayBorder : AppColors.border))),
                                             lineWidth: isToday ? 2 : 1
                                         )
                                 )

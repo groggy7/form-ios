@@ -46,6 +46,7 @@ public enum AppColors {
     
     public static let unfinishedBorder = Color(hex: 0x664923)
     public static let missedDayBorder = Color(hex: 0x6B383B)
+    public static let completedDayBorder = Color(hex: 0x2D5949)
     public static let unfinishedText = Color(hex: 0xFDE8CC)
     public static let unfinishedSurface = Color(hex: 0x332717)
     
