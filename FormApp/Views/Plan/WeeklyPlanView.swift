@@ -108,7 +108,7 @@ public struct WeeklyPlanView: View {
                                             .foregroundColor(workout == nil ? AppColors.muted : AppColors.text)
                                             .lineLimit(1)
 
-                                        Text(workoutSubtitle(workout: workout, isUnfinished: isUnfinished, isMissed: isMissed))
+                                        Text(Self.workoutSubtitle(workout: workout, isUnfinished: isUnfinished, isMissed: isMissed))
                                             .font(.system(size: 12))
                                             .foregroundColor(isUnfinished ? Color(hex: 0xFDE8CC).opacity(0.8) : AppColors.muted)
                                     }
@@ -178,13 +178,12 @@ public struct WeeklyPlanView: View {
         (0..<7).contains(dayIndex) && (0..<7).contains(todayIndex) && dayIndex < todayIndex && hasWorkout && !completed && !unfinished
     }
 
-    private func workoutSubtitle(workout: Workout?, isUnfinished: Bool, isMissed: Bool) -> String {
-        if isUnfinished {
-            return LanguageManager.t("history.unfinished")
-        }
-        if isMissed { return LanguageManager.t("history.missed") }
+    static func workoutSubtitle(workout: Workout?, isUnfinished: Bool, isMissed: Bool) -> String {
         if let w = workout {
-            return LanguageManager.t("weekly.exerciseCount", ["count": w.exercises.count])
+            let count = LanguageManager.t("weekly.exerciseCount", ["count": w.exercises.count])
+            if isUnfinished { return "\(count) · \(LanguageManager.t("history.unfinished"))" }
+            if isMissed { return "\(count) · \(LanguageManager.t("history.missed"))" }
+            return count
         }
         return LanguageManager.t("weekly.restDay")
     }

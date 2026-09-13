@@ -5,6 +5,20 @@ import SwiftUI
 @testable import FormApp
 
 final class FormAppTests: XCTestCase {
+    func testWeeklyPlanPreservesExerciseCountWithStatus() {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        let workout = Workout(id: "test", day: 1, title: "Test", exercises: [Exercise(name: "A"), Exercise(name: "B")])
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            let count = LanguageManager.t("weekly.exerciseCount", ["count": 2])
+            XCTAssertEqual("\(count) · \(LanguageManager.t("history.unfinished"))", WeeklyPlanView.workoutSubtitle(workout: workout, isUnfinished: true, isMissed: false))
+            XCTAssertEqual("\(count) · \(LanguageManager.t("history.missed"))", WeeklyPlanView.workoutSubtitle(workout: workout, isUnfinished: false, isMissed: true))
+            XCTAssertEqual(count, WeeklyPlanView.workoutSubtitle(workout: workout, isUnfinished: false, isMissed: false))
+            XCTAssertEqual(LanguageManager.t("weekly.restDay"), WeeklyPlanView.workoutSubtitle(workout: nil, isUnfinished: false, isMissed: false))
+        }
+    }
+
     func testOnlyPastUnstartedWorkoutDaysAreMissed() {
         for today in 0..<7 {
             for day in 0..<7 {
