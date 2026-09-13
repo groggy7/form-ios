@@ -1,171 +1,234 @@
 {
   "aesthetic-hypertrophy": {
-    "name": "Estetik Gelişim: 5 Günlük Hipertrofi",
-    "description": "Ticari spor salonu ekipmanlarıyla maksimum hipertrofi, yapısal denge ve estetik kas gelişimi için tasarlanmış 5 günlük vücut geliştirme programı.",
+    "name": "Aesthetic Engine: 5 Günlük Hipertrofi",
+    "description": "Haftada beş gün salona giden deneyimli sporcular için. Omuzlara ek çalışma içeren dengeli üst/alt vücut kas gelişimi. Tam donanımlı salon; seans başına yaklaşık 55–75 dakika.",
     "guidelines": [
-      "Yüksek mekanik gerilimle çalışın: çalışma setlerini teknik tükenişe 1–2 tekrar kala bırakın.",
-      "Tüm izolasyon ve makine hareketlerinde eksantrik (indiriş) evresini 2–3 saniye kontrol altında tutun.",
-      "Haftadan haftaya kademeli aşırı yüklenme (progressive overload) sağlamak için ağırlıkları ve tekrarları her seansta doğru kaydedin.",
-      "Ağır bileşik kaldırışlarda 2–3 dakika, izolasyon aksesuarlarında 60–90 saniye dinlenin.",
-      "Toparlanmaya öncelik verin: bol su tüketin, günlük protein hedefinize ulaşın ve 7–9 saat uyuyun."
+      "Pazartesi, salı, perşembe, cuma ve cumartesi çalışın. Çarşamba ve pazarı toparlanmaya ayırın; gerekirse seanslar arasına ek dinlenme koyun.",
+      "Listelenen setler çalışma setleridir. Önce ısının; ilk ağır hareketlerden önce ağırlığı kademeli artırarak hazırlık setleri yapın.",
+      "Çoğu seti düzgün yapabileceğiniz yaklaşık 2 tekrar kalınca bitirin. Kontrollü hareket açıklığını koruyun; tükenişe gitmek gerekmez.",
+      "Tüm setlerde tekrar aralığının üst sınırına düzgün formla ulaştığınızda bir sonraki antrenmanda ağırlığı mümkün olan en küçük miktarda artırıp alt sınıra dönün. Aksi halde aynı ağırlıkla tekrarları artırın.",
+      "Gelişimi değerlendirmeden önce planı 6–8 hafta uygulayın. Yorgunluk birikirse veya birkaç antrenman boyunca performans düşerse bir hafta setleri ve ağırlığı azaltın. Ağrıya rağmen devam etmeyin."
     ],
     "workouts": {
       "aesthetic-push-a": {
-        "title": "Göğüs & Arka Kol",
-        "focus": "Üst göğüs, ön/yan omuz ve arka kol hacmi"
+        "title": "Göğüs ve Arka Kol",
+        "focus": "İtiş, göğüs izolasyonu ve yan omuz"
       },
       "aesthetic-pull-a": {
-        "title": "Sırt & Ön Kol",
-        "focus": "Kanat genişliği, üst sırt kalınlığı ve pazu gelişimi"
+        "title": "Sırt ve Ön Kol",
+        "focus": "Dikey çekiş, destekli row ve arka omuz"
       },
       "aesthetic-legs-a": {
-        "title": "Ön Bacak & Kalf",
-        "focus": "Ön bacak hacmi, diz stabilitesi ve kalf gelişimi"
+        "title": "Ön Bacak ve Baldır",
+        "focus": "Squat, diz açma ve arka bacak"
       },
       "aesthetic-upper-b": {
-        "title": "Omuz & Sırt",
-        "focus": "Omuz başı dolgunluğu, göğüs yoğunluğu ve kol özelleştirmesi"
+        "title": "Üst Vücut ve Omuz",
+        "focus": "İkinci göğüs/sırt çalışması; omuz ve kol desteği"
       },
       "aesthetic-lower-b": {
-        "title": "Kalça & Arka Bacak",
-        "focus": "Arka zincir kuvveti, kalça dolgunluğu ve karın sertliği"
+        "title": "Kalça ve Arka Bacak",
+        "focus": "Kalça menteşesi, tek bacak squat ve karın"
       }
     }
   },
   "powerbuilding-strength": {
-    "name": "Güç ve Kütle: 4 Günlük Powerbuilding",
-    "description": "Temel kuvvet kazanımlarını hipertrofi aksesuarlarıyla birleştiren, squat, bench, deadlift ve overhead press'e odaklanan 4 günlük ağır bileşik powerbuilding programı.",
+    "name": "Heavy & Built: 4 Günlük Güç ve Kas",
+    "description": "Squat, bench press ve deadlift gücünü kas gelişimiyle birlikte artırmak isteyen orta seviye sporcular için. Rack, bar, sehpa, dambıl ve kablo/makineler; yaklaşık 60–80 dakika.",
     "guidelines": [
-      "Ana kaldırışlarda (Squat, Bench, Deadlift, OHP) teknik doğruluğu korurken ağırlığı düzenli artırın.",
-      "Ağır setlerde 3–5 dakika dinlenerek her sette maksimum güç üretimi sağlayın.",
-      "Aksesuar egzersizlerde hedef kasın gerilimini hissedin ve tam hareket aralığı kullanın.",
-      "Bel sağlığı için tüm ağır kaldırışlarda karın içi basıncı (valsalva) koruyun."
+      "Pazartesi, salı, perşembe ve cuma çalışın. Ana hareketlerde 3 dakika, gerekirse daha uzun dinlenin; ağır setleri kontrollü yapın ve tükenişe zorlamayın.",
+      "Listelenen setler çalışma setleridir. Önce ısının; ilk ağır hareketlerden önce ağırlığı kademeli artırarak hazırlık setleri yapın.",
+      "Çoğu seti düzgün yapabileceğiniz yaklaşık 2 tekrar kalınca bitirin. Kontrollü hareket açıklığını koruyun; tükenişe gitmek gerekmez.",
+      "Tüm setlerde tekrar aralığının üst sınırına düzgün formla ulaştığınızda bir sonraki antrenmanda ağırlığı mümkün olan en küçük miktarda artırıp alt sınıra dönün. Aksi halde aynı ağırlıkla tekrarları artırın.",
+      "Gelişimi değerlendirmeden önce planı 6–8 hafta uygulayın. Yorgunluk birikirse veya birkaç antrenman boyunca performans düşerse bir hafta setleri ve ağırlığı azaltın. Ağrıya rağmen devam etmeyin."
     ],
     "workouts": {
       "pb-squat-strength": {
-        "title": "Ağır Squat",
-        "focus": "Maksimum squat gücü, ön bacak hacmi ve gövde sertliği"
+        "title": "Alt Vücut: Squat",
+        "focus": "Squat tekniği, arka bacak ve baldır"
       },
       "pb-bench-strength": {
-        "title": "Ağır Bench",
-        "focus": "Göğüs kuvvet üretimi, triceps kilitlenmesi ve yatay çekiş dengesi"
+        "title": "Üst Vücut: Bench Press",
+        "focus": "Ağır bench press ve dengeli çekiş"
       },
       "pb-deadlift-strength": {
-        "title": "Ağır Deadlift",
-        "focus": "Maksimum arka zincir kuvveti, sırt kalınlığı ve hamstring gelişimi"
+        "title": "Alt Vücut: Deadlift",
+        "focus": "Düşük hacimli deadlift ve squat desteği"
       },
       "pb-press-volume": {
-        "title": "Overhead Press",
-        "focus": "Dikey pres kuvveti, lat pulldown ve kol hipertrofisi"
+        "title": "Üst Vücut: İtiş ve Hacim",
+        "focus": "Baş üstü itiş, daha hafif bench press ve sırt"
       }
     }
   },
   "classic-ppl": {
-    "name": "Saf PPL: 6 Günlük İtiş Çekiş Bacak",
-    "description": "Haftada her kas grubunu iki kez çalıştırarak hipertrofi ve kuvveti maksimize eden altın standart yüksek frekanslı program.",
+    "name": "Pure PPL: 6 Günlük Hipertrofi",
+    "description": "Haftada altı salon gününden düzenli toparlanabilen deneyimli sporcular için. Farklı odaklarla ikişer itiş, çekiş ve bacak seansı. Tam donanımlı salon; yaklaşık 45–65 dakika.",
     "guidelines": [
-      "Haftada 6 gün antrenman temposunu korumak için seans başına hacmi dengeli tutun.",
-      "İlk 3 günde ağır bileşik kaldırışlara, sonraki 3 günde metabolik stres ve hipertrofiye odaklanın.",
-      "Eklemleri korumak için ısınma setlerini atlamayın ve dirsekleri kontrollü açıda tutun.",
-      "Beslenme ve uykunuza ekstra dikkat ederek toparlanmayı destekleyin."
+      "Pazar dinlenmedir. Altı günü sürdürmek zorsa 4 günlük Üst/Alt Vücut planını seçin. Çekiş günlerinde destekli row kullanılır; ağır kalça menteşesi hareketleri bacak günlerindedir.",
+      "Listelenen setler çalışma setleridir. Önce ısının; ilk ağır hareketlerden önce ağırlığı kademeli artırarak hazırlık setleri yapın.",
+      "Çoğu seti düzgün yapabileceğiniz yaklaşık 2 tekrar kalınca bitirin. Kontrollü hareket açıklığını koruyun; tükenişe gitmek gerekmez.",
+      "Tüm setlerde tekrar aralığının üst sınırına düzgün formla ulaştığınızda bir sonraki antrenmanda ağırlığı mümkün olan en küçük miktarda artırıp alt sınıra dönün. Aksi halde aynı ağırlıkla tekrarları artırın.",
+      "Gelişimi değerlendirmeden önce planı 6–8 hafta uygulayın. Yorgunluk birikirse veya birkaç antrenman boyunca performans düşerse bir hafta setleri ve ağırlığı azaltın. Ağrıya rağmen devam etmeyin."
     ],
     "workouts": {
       "ppl-push-1": {
-        "title": "Göğüs & Omuz",
-        "focus": "Yatay pres kuvveti, baş üstü gücü ve arka kol"
+        "title": "İtiş A: Göğüs",
+        "focus": "Düz itiş, omuz ve arka kol desteği"
       },
       "ppl-pull-1": {
-        "title": "Deadlift & Sırt",
-        "focus": "Arka zincir kuvveti, kanat genişliği ve pazu kütlesi"
+        "title": "Çekiş A: Kanat",
+        "focus": "Dikey çekiş, destekli row ve ön kol"
       },
       "ppl-legs-1": {
-        "title": "Squat & Arka Bacak",
-        "focus": "Ağır ön bacak squat yüklemesi, hamstring menteşesi ve karın"
+        "title": "Bacak A: Squat",
+        "focus": "Ön bacak, diz bükme ve baldır"
       },
       "ppl-push-2": {
-        "title": "Üst Göğüs",
-        "focus": "Incline pres, yan omuz hacmi ve göğüs pump hissi"
+        "title": "İtiş B: Eğik Sehpa",
+        "focus": "Eğik itiş, göğüs izolasyonu ve baş üstü arka kol"
       },
       "ppl-pull-2": {
-        "title": "Kanat & Pazu",
-        "focus": "Vücut ağırlığı çekişi, yatay row hacmi ve kol kalınlığı"
+        "title": "Çekiş B: Row",
+        "focus": "Yatay çekiş, arka omuz ve kol bükme"
       },
       "ppl-legs-2": {
-        "title": "Bacak & Karın",
-        "focus": "Ön bacak yüklemesi, tek taraflı denge ve kalf özelleştirmesi"
+        "title": "Bacak B: Kalça Menteşesi",
+        "focus": "Arka zincir ve ikinci squat çalışması"
       }
     }
   },
   "full-body-classic": {
-    "name": "Klasik Temel: 3 Günlük Tüm Vücut",
-    "description": "Haftalık seans sıklığı sınırlı lifterlar için maksimum verim sağlayan, zamana meydan okumuş 3 günlük tüm vücut bileşik programı.",
+    "name": "Classic Foundation: 3 Günlük Tüm Vücut",
+    "description": "Yeni başlayanlar ve spora dönenler için yönetilebilir bir başlangıç. Her gün yeni bir rutin yerine temel hareketleri tekrar edin. Dambıl, sehpa, leg press ve kablo bulunan salon; yaklaşık 40–55 dakika.",
     "guidelines": [
-      "Her seansta tüm vücudu uyardığınız için seanslar arası en az 1 gün tam dinlenin.",
-      "Temel bileşik hareketlerde kademeli yükleme ile kuvvetinizi adım adım artırın.",
-      "Her tekrarı temiz formla yapın; ağırlığı artırmak uğruna formunuzu asla bozmayın."
+      "Ardışık olmayan günlerde çalışın. İlk iki hafta 3–4 düzgün tekrar yedekte bırakın; ağırlık artırmaktan önce kurulumu öğrenin. Tanımadığınız ekipman için yardım alın.",
+      "Listelenen setler çalışma setleridir. Önce ısının; ilk ağır hareketlerden önce ağırlığı kademeli artırarak hazırlık setleri yapın.",
+      "Çoğu seti düzgün yapabileceğiniz yaklaşık 2 tekrar kalınca bitirin. Kontrollü hareket açıklığını koruyun; tükenişe gitmek gerekmez.",
+      "Tüm setlerde tekrar aralığının üst sınırına düzgün formla ulaştığınızda bir sonraki antrenmanda ağırlığı mümkün olan en küçük miktarda artırıp alt sınıra dönün. Aksi halde aynı ağırlıkla tekrarları artırın.",
+      "Gelişimi değerlendirmeden önce planı 6–8 hafta uygulayın. Yorgunluk birikirse veya birkaç antrenman boyunca performans düşerse bir hafta setleri ve ağırlığı azaltın. Ağrıya rağmen devam etmeyin."
     ],
     "workouts": {
       "fb-workout-a": {
-        "title": "Squat & Göğüs",
-        "focus": "Squat kuvveti, yatay pres, yatay çekiş ve karın"
+        "title": "Tüm Vücut A",
+        "focus": "Leg press, göğüs itişi, row ve kalça menteşesi"
       },
       "fb-workout-b": {
-        "title": "Deadlift & Pres",
-        "focus": "Deadlift gücü, baş üstü pres, dikey çekiş ve tek bacak kuvveti"
+        "title": "Tüm Vücut B",
+        "focus": "Goblet squat, üstten çekiş ve destekli itişler"
       },
       "fb-workout-c": {
-        "title": "Bacak & Sırt",
-        "focus": "Bacak hipertrofisi, incline üst göğüs, barfiks ve arka zincir"
+        "title": "Tüm Vücut C",
+        "focus": "Temelleri tekrarlayın; baldır ve karın çalışması ekleyin"
       }
     }
   },
   "home-forge-dumbbells": {
-    "name": "Evde Gelişim: 4 Günlük Dambıl Bölünmesi",
-    "description": "Sadece ayarlanabilir dambıllar ve sehpaya sahip sporcular için tasarlanmış eksiksiz 4 günlük Üst/Alt vücut programı.",
+    "name": "Home Forge: 4 Günlük Dambıl",
+    "description": "Ayarlanabilir dambıllar ve ayarlanabilir sehpayla üst/alt vücut çalışması; kablo, bar veya barfiks istasyonu gerekmez. Temel hareketleri bilenler için. Yaklaşık 40–60 dakika.",
     "guidelines": [
-      "Ağırlık sınırlı olduğunda 3 saniyelik inişler, duraklamalar veya ilave temiz tekrarlarla ilerleyin.",
-      "Ev ortamında hareketi hissetmeye ve kas gerilimine odaklanın.",
-      "Dambıl güvenliğini elden bırakmayın; zemin ve ekipman alanını temiz tutun."
+      "Pazartesi, salı, perşembe ve cuma çalışın. Ön ayak yükseltilmiş split squat için sağlam, alçak bir platform kullanın. Dambıllar hafif kalırsa kontrollü formla tekrar aralığının üst sınırını kullanın; kayda hayali ağırlık eklemeyin.",
+      "Listelenen setler çalışma setleridir. Önce ısının; ilk ağır hareketlerden önce ağırlığı kademeli artırarak hazırlık setleri yapın.",
+      "Çoğu seti düzgün yapabileceğiniz yaklaşık 2 tekrar kalınca bitirin. Kontrollü hareket açıklığını koruyun; tükenişe gitmek gerekmez.",
+      "Tüm setlerde tekrar aralığının üst sınırına düzgün formla ulaştığınızda bir sonraki antrenmanda ağırlığı mümkün olan en küçük miktarda artırıp alt sınıra dönün. Aksi halde aynı ağırlıkla tekrarları artırın.",
+      "Gelişimi değerlendirmeden önce planı 6–8 hafta uygulayın. Yorgunluk birikirse veya birkaç antrenman boyunca performans düşerse bir hafta setleri ve ağırlığı azaltın. Ağrıya rağmen devam etmeyin."
     ],
     "workouts": {
       "hf-upper-a": {
-        "title": "Göğüs & Sırt",
-        "focus": "Yatay dambıl presi, kanat çekişleri ve omuz hacmi"
+        "title": "Üst A: Düz İtiş",
+        "focus": "Düz itiş, tek kol row ve omuzlar"
       },
       "hf-lower-a": {
-        "title": "Ön Bacak & Arka Bacak",
-        "focus": "Goblet squat, dambıl RDL ve kalf gelişimi"
+        "title": "Alt A: Squat ve Kalça Menteşesi",
+        "focus": "Squat, Romen deadlift ve tek bacak çalışması"
       },
       "hf-upper-b": {
-        "title": "Omuz & Kollar",
-        "focus": "Incline pres, sehpaya dayalı row, floor press ve pazu"
+        "title": "Üst B: Eğik İtiş ve Row",
+        "focus": "Eğik itiş, destekli row ve arka omuz"
       },
       "hf-lower-b": {
-        "title": "Kalça & Karın",
-        "focus": "Tek taraflı bacak yüklemesi, kalça gelişimi ve karın stabilitesi"
+        "title": "Alt B: Tek Bacak Gücü",
+        "focus": "Split squat, kalça menteşesi ve kalça köprüsü"
       }
     }
   },
   "athletic-performance": {
-    "name": "Patlayıcı Atlet: 3 Günlük Performans",
-    "description": "Saha sporcuları için patlayıcı güç, tek taraflı bacak kuvveti, dönüş kapasitesi ve kondisyon inşa etmek üzere tasarlanmış 3 günlük atletik performans programı.",
+    "name": "Athletic Engine: 3 Günlük Güç ve Patlayıcılık",
+    "description": "Deneyimli sporcular için genel kuvvet ve düşük tekrarlı patlayıcılık çalışması; belirli bir spora özel kondisyon planı değildir. Trap bar, kettlebell ve alçak platform bulunan tam donanımlı salon; yaklaşık 50–65 dakika.",
     "guidelines": [
-      "Patlayıcı setlerde her tekrarı maksimum hız ve niyetle gerçekleştirin.",
-      "Kondisyon devrelerinde hız ile düzgün hareket kalitesi arasındaki dengeyi koruyun.",
-      "Ayak bileği ve diz sağlığı için iniş mekaniklerine ve iniş sönümlemesine dikkat edin."
+      "Ardışık olmayan günlerde çalışın ve diğer spor seanslarını hesaba katın. Bu plana başlamadan swing ve push press tekniğini öğrenin. Bu iki harekette hafif-orta yük kullanın; hedef tekrardan önce bile hız veya teknik bozulursa seti bitirin.",
+      "Swing ve push press için tekrar aralığına dayalı otomatik ilerleme uygulamayın: yalnızca her tekrar hızlı ve kontrollü kaldığında yük artırın. Bu plan aerobik antrenmanın veya spor pratiğinin yerini tutmaz.",
+      "Listelenen setler çalışma setleridir. Önce ısının; ilk ağır hareketlerden önce ağırlığı kademeli artırarak hazırlık setleri yapın.",
+      "Çoğu seti düzgün yapabileceğiniz yaklaşık 2 tekrar kalınca bitirin. Kontrollü hareket açıklığını koruyun; tükenişe gitmek gerekmez.",
+      "Tüm setlerde tekrar aralığının üst sınırına düzgün formla ulaştığınızda bir sonraki antrenmanda ağırlığı mümkün olan en küçük miktarda artırıp alt sınıra dönün. Aksi halde aynı ağırlıkla tekrarları artırın.",
+      "Gelişimi değerlendirmeden önce planı 6–8 hafta uygulayın. Yorgunluk birikirse veya birkaç antrenman boyunca performans düşerse bir hafta setleri ve ağırlığı azaltın. Ağrıya rağmen devam etmeyin."
     ],
     "workouts": {
       "ap-lower-power": {
-        "title": "Alt Vücut Gücü",
-        "focus": "Trap bar deadlift gücü, dikey sıçrama ve tek taraflı ivmelenme"
+        "title": "Patlayıcılık ve Alt Vücut",
+        "focus": "Hızlı kalça menteşesi, trap bar kuvveti ve dengeli üst vücut"
       },
       "ap-upper-power": {
-        "title": "Üst Vücut Gücü",
-        "focus": "Push press gücü, ağırlıklı barfiks kuvveti ve yatay çekiş kapasitesi"
+        "title": "Patlayıcılık ve Tek Bacak",
+        "focus": "Push press ardından tek bacak ve çekiş çalışması"
       },
       "ap-work-capacity": {
-        "title": "Kondisyon & Karın",
-        "focus": "Front squat ön zincir kuvveti, kettlebell swing, farmer carry ve ip atlama"
+        "title": "Tüm Vücut Kuvveti",
+        "focus": "Squat, kalça menteşesi, eğik itiş ve destekli row"
+      }
+    }
+  },
+  "upper-lower-balanced": {
+    "name": "Balanced Build: 4 Günlük Üst/Alt Vücut",
+    "description": "Tüm vücut antrenmanından sonra pratik bir adım: ağır ve düşük tekrarlı kuvvet çalışması veya altı gün antrenman olmadan ana bölgeleri haftada iki kez çalıştırın. Tam donanımlı salon; yaklaşık 50–70 dakika.",
+    "guidelines": [
+      "Üst vücudu pazartesi/perşembe, alt vücudu salı/cuma çalışın. Hafta sonunu boş bırakın veya aynı bölge seansları arasında bir dinlenme günü koruyarak günleri değiştirin.",
+      "Listelenen setler çalışma setleridir. Önce ısının; ilk ağır hareketlerden önce ağırlığı kademeli artırarak hazırlık setleri yapın.",
+      "Çoğu seti düzgün yapabileceğiniz yaklaşık 2 tekrar kalınca bitirin. Kontrollü hareket açıklığını koruyun; tükenişe gitmek gerekmez.",
+      "Tüm setlerde tekrar aralığının üst sınırına düzgün formla ulaştığınızda bir sonraki antrenmanda ağırlığı mümkün olan en küçük miktarda artırıp alt sınıra dönün. Aksi halde aynı ağırlıkla tekrarları artırın.",
+      "Gelişimi değerlendirmeden önce planı 6–8 hafta uygulayın. Yorgunluk birikirse veya birkaç antrenman boyunca performans düşerse bir hafta setleri ve ağırlığı azaltın. Ağrıya rağmen devam etmeyin."
+    ],
+    "workouts": {
+      "ul-upper-a": {
+        "title": "Üst A: Düz İtiş ve Row",
+        "focus": "Dengeli yatay ve dikey üst vücut çalışması"
+      },
+      "ul-lower-a": {
+        "title": "Alt A: Ön Bacak",
+        "focus": "Hack squat, kalça menteşesi ve baldır"
+      },
+      "ul-upper-b": {
+        "title": "Üst B: Eğik İtiş ve Çekiş",
+        "focus": "Eğik itiş, kanat ve omuzlar"
+      },
+      "ul-lower-b": {
+        "title": "Alt B: Kalça ve Arka Bacak",
+        "focus": "Leg press, kalça açma ve diz bükme"
+      }
+    }
+  },
+  "machine-foundation": {
+    "name": "Machine Foundation: 3 Günlük Tüm Vücut",
+    "description": "Yeni başlayanlar, spora dönenler veya serbest ağırlık yerine makineyi tercih edenler için. Ağırlık bloklu/kızaklı makineler ve kablolarla üç tekrarlanabilir tüm vücut seansı. Yaklaşık 40–55 dakika; salonunuzda listelenen makinelerin bulunduğunu kontrol edin.",
+    "guidelines": [
+      "Ardışık olmayan günlerde çalışın. Yüklemeden önce koltuk, ped ve hareket açıklığını ayarlayın. Makine ağırlıkları farklılık gösterebildiğinden her seferinde aynı makinenin yükünü kaydedin. Öğrenirken 3–4 tekrar yedekte bırakın.",
+      "Listelenen setler çalışma setleridir. Önce ısının; ilk ağır hareketlerden önce ağırlığı kademeli artırarak hazırlık setleri yapın.",
+      "Çoğu seti düzgün yapabileceğiniz yaklaşık 2 tekrar kalınca bitirin. Kontrollü hareket açıklığını koruyun; tükenişe gitmek gerekmez.",
+      "Tüm setlerde tekrar aralığının üst sınırına düzgün formla ulaştığınızda bir sonraki antrenmanda ağırlığı mümkün olan en küçük miktarda artırıp alt sınıra dönün. Aksi halde aynı ağırlıkla tekrarları artırın.",
+      "Gelişimi değerlendirmeden önce planı 6–8 hafta uygulayın. Yorgunluk birikirse veya birkaç antrenman boyunca performans düşerse bir hafta setleri ve ağırlığı azaltın. Ağrıya rağmen devam etmeyin."
+    ],
+    "workouts": {
+      "mf-a": {
+        "title": "Makineler A",
+        "focus": "Leg press, göğüs itişi ve destekli row"
+      },
+      "mf-b": {
+        "title": "Makineler B",
+        "focus": "Squat makinesi, üstten çekiş ve omuz itişi"
+      },
+      "mf-c": {
+        "title": "Makineler C",
+        "focus": "Ana makineleri tekrarlayın; arka omuz ve karın çalışması ekleyin"
       }
     }
   }

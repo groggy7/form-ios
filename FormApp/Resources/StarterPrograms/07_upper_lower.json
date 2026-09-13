@@ -2,11 +2,11 @@
   "format": "form.program",
   "schemaVersion": 4,
   "program": {
-    "id": "aesthetic-hypertrophy",
-    "name": "Aesthetic Engine: 5-Day Hypertrophy",
-    "description": "For experienced lifters who enjoy five gym days. Balanced upper/lower muscle building with extra shoulder work. Full gym; roughly 55–75 minutes per session.",
+    "id": "upper-lower-balanced",
+    "name": "Balanced Build: 4-Day Upper/Lower",
+    "description": "A practical next step after full-body training: each major area twice a week, without heavy low-rep strength work or six training days. Full gym; about 50–70 minutes.",
     "guidelines": [
-      "Train Monday, Tuesday, Thursday, Friday and Saturday. Keep Wednesday and Sunday free for recovery; add time between sessions if recovery suffers.",
+      "Train upper body Monday/Thursday and lower body Tuesday/Friday. Keep weekends free or move the days while preserving a rest day between sessions for the same region.",
       "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
       "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
       "When every set reaches the top of its rep range with clean form, increase by the smallest available weight next time and return to the lower end. Otherwise keep the weight and build reps.",
@@ -14,31 +14,21 @@
     ],
     "workouts": [
       {
-        "id": "aesthetic-push-a",
+        "id": "ul-upper-a",
         "day": 1,
-        "title": "Chest & Triceps",
-        "focus": "Pressing, chest isolation and side delts",
+        "title": "Upper A: Flat & Row",
+        "focus": "Balanced horizontal and vertical upper-body work",
         "targetMuscles": [
           "chest",
+          "lats",
           "shoulders",
+          "biceps",
           "triceps"
         ],
         "exercises": [
           {
-            "id": "aesthetic-push-a-incline-barbell-bench-press",
-            "exerciseId": "incline-barbell-bench-press",
-            "sets": 3,
-            "reps": {
-              "min": 6,
-              "max": 10,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 180
-          },
-          {
-            "id": "aesthetic-push-a-lever-chest-press",
-            "exerciseId": "lever-chest-press",
+            "id": "ul-upper-a-dumbbell-bench-press",
+            "exerciseId": "dumbbell-bench-press",
             "sets": 3,
             "reps": {
               "min": 8,
@@ -49,11 +39,47 @@
             "restSeconds": 120
           },
           {
-            "id": "aesthetic-push-a-cable-standing-fly",
-            "exerciseId": "cable-standing-fly",
+            "id": "ul-upper-a-cable-seated-row",
+            "exerciseId": "cable-seated-row",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "ul-upper-a-lat-pulldown",
+            "exerciseId": "lat-pulldown",
             "sets": 2,
             "reps": {
-              "min": 12,
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "ul-upper-a-dumbbell-seated-shoulder-press",
+            "exerciseId": "dumbbell-seated-shoulder-press",
+            "sets": 2,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "ul-upper-a-cable-curl",
+            "exerciseId": "cable-curl",
+            "sets": 2,
+            "reps": {
+              "min": 10,
               "max": 15,
               "toFailure": false,
               "perSide": false
@@ -61,21 +87,9 @@
             "restSeconds": 90
           },
           {
-            "id": "aesthetic-push-a-cable-lateral-raise",
-            "exerciseId": "cable-lateral-raise",
-            "sets": 3,
-            "reps": {
-              "min": 12,
-              "max": 20,
-              "toFailure": false,
-              "perSide": true
-            },
-            "restSeconds": 90
-          },
-          {
-            "id": "aesthetic-push-a-rope-triceps-pressdown",
+            "id": "ul-upper-a-rope-triceps-pressdown",
             "exerciseId": "rope-triceps-pressdown",
-            "sets": 3,
+            "sets": 2,
             "reps": {
               "min": 10,
               "max": 15,
@@ -88,20 +102,21 @@
         "tone": "violet"
       },
       {
-        "id": "aesthetic-pull-a",
+        "id": "ul-lower-a",
         "day": 2,
-        "title": "Back & Biceps",
-        "focus": "Vertical pull, supported row and rear delts",
+        "title": "Lower A: Quads",
+        "focus": "Hack squat, hinge and calves",
         "targetMuscles": [
-          "lats",
-          "trapezius",
-          "shoulders",
-          "biceps"
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "calves",
+          "abs"
         ],
         "exercises": [
           {
-            "id": "aesthetic-pull-a-cable-neutral-grip-lat-pulldown",
-            "exerciseId": "cable-neutral-grip-lat-pulldown",
+            "id": "ul-lower-a-sled-hack-squat",
+            "exerciseId": "sled-hack-squat",
             "sets": 3,
             "reps": {
               "min": 8,
@@ -109,11 +124,11 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 120
+            "restSeconds": 150
           },
           {
-            "id": "aesthetic-pull-a-chest-supported-dumbbell-row",
-            "exerciseId": "chest-supported-dumbbell-row",
+            "id": "ul-lower-a-barbell-romanian-deadlift",
+            "exerciseId": "barbell-romanian-deadlift",
             "sets": 3,
             "reps": {
               "min": 8,
@@ -121,23 +136,35 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 120
+            "restSeconds": 150
           },
           {
-            "id": "aesthetic-pull-a-lever-seated-reverse-fly",
-            "exerciseId": "lever-seated-reverse-fly",
-            "sets": 3,
+            "id": "ul-lower-a-leg-extension",
+            "exerciseId": "leg-extension",
+            "sets": 2,
             "reps": {
               "min": 12,
-              "max": 20,
+              "max": 15,
               "toFailure": false,
               "perSide": false
             },
             "restSeconds": 90
           },
           {
-            "id": "aesthetic-pull-a-incline-dumbbell-curl",
-            "exerciseId": "incline-dumbbell-curl",
+            "id": "ul-lower-a-seated-leg-curl",
+            "exerciseId": "seated-leg-curl",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "ul-lower-a-standing-machine-calf-raise",
+            "exerciseId": "standing-machine-calf-raise",
             "sets": 3,
             "reps": {
               "min": 10,
@@ -148,8 +175,8 @@
             "restSeconds": 90
           },
           {
-            "id": "aesthetic-pull-a-dumbbell-hammer-curl",
-            "exerciseId": "dumbbell-hammer-curl",
+            "id": "ul-lower-a-kneeling-cable-crunch",
+            "exerciseId": "kneeling-cable-crunch",
             "sets": 2,
             "reps": {
               "min": 10,
@@ -163,20 +190,21 @@
         "tone": "blue"
       },
       {
-        "id": "aesthetic-legs-a",
+        "id": "ul-upper-b",
         "day": 4,
-        "title": "Quads & Calves",
-        "focus": "Squat pattern, knee extension and hamstrings",
+        "title": "Upper B: Incline & Pull",
+        "focus": "Incline pressing, lats and delts",
         "targetMuscles": [
-          "quadriceps",
-          "glutes",
-          "hamstrings",
-          "calves"
+          "chest",
+          "lats",
+          "shoulders",
+          "biceps",
+          "triceps"
         ],
         "exercises": [
           {
-            "id": "aesthetic-legs-a-sled-hack-squat",
-            "exerciseId": "sled-hack-squat",
+            "id": "ul-upper-b-incline-dumbbell-press",
+            "exerciseId": "incline-dumbbell-press",
             "sets": 3,
             "reps": {
               "min": 8,
@@ -184,23 +212,35 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 180
+            "restSeconds": 120
           },
           {
-            "id": "aesthetic-legs-a-leg-press",
-            "exerciseId": "leg-press",
+            "id": "ul-upper-b-cable-neutral-grip-lat-pulldown",
+            "exerciseId": "cable-neutral-grip-lat-pulldown",
             "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "ul-upper-b-lever-chest-supported-row",
+            "exerciseId": "lever-chest-supported-row",
+            "sets": 2,
             "reps": {
               "min": 10,
               "max": 15,
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 150
+            "restSeconds": 120
           },
           {
-            "id": "aesthetic-legs-a-leg-extension",
-            "exerciseId": "leg-extension",
+            "id": "ul-upper-b-pec-deck-fly",
+            "exerciseId": "pec-deck-fly",
             "sets": 2,
             "reps": {
               "min": 12,
@@ -211,9 +251,21 @@
             "restSeconds": 90
           },
           {
-            "id": "aesthetic-legs-a-seated-leg-curl",
-            "exerciseId": "seated-leg-curl",
+            "id": "ul-upper-b-cable-lateral-raise",
+            "exerciseId": "cable-lateral-raise",
             "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 20,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "ul-upper-b-dumbbell-hammer-curl",
+            "exerciseId": "dumbbell-hammer-curl",
+            "sets": 2,
             "reps": {
               "min": 10,
               "max": 15,
@@ -223,9 +275,9 @@
             "restSeconds": 90
           },
           {
-            "id": "aesthetic-legs-a-standing-machine-calf-raise",
-            "exerciseId": "standing-machine-calf-raise",
-            "sets": 3,
+            "id": "ul-upper-b-overhead-cable-triceps-extension",
+            "exerciseId": "overhead-cable-triceps-extension",
+            "sets": 2,
             "reps": {
               "min": 10,
               "max": 15,
@@ -238,146 +290,46 @@
         "tone": "orange"
       },
       {
-        "id": "aesthetic-upper-b",
+        "id": "ul-lower-b",
         "day": 5,
-        "title": "Upper Body & Shoulders",
-        "focus": "Second chest/back exposure with shoulder and arm work",
+        "title": "Lower B: Glutes & Hamstrings",
+        "focus": "Leg press, glute extension and knee flexion",
         "targetMuscles": [
-          "chest",
-          "lats",
-          "shoulders",
-          "biceps",
-          "triceps"
-        ],
-        "exercises": [
-          {
-            "id": "aesthetic-upper-b-incline-dumbbell-press",
-            "exerciseId": "incline-dumbbell-press",
-            "sets": 3,
-            "reps": {
-              "min": 8,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "aesthetic-upper-b-cable-seated-row",
-            "exerciseId": "cable-seated-row",
-            "sets": 3,
-            "reps": {
-              "min": 8,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "aesthetic-upper-b-dumbbell-seated-shoulder-press",
-            "exerciseId": "dumbbell-seated-shoulder-press",
-            "sets": 2,
-            "reps": {
-              "min": 8,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "aesthetic-upper-b-dumbbell-lateral-raise",
-            "exerciseId": "dumbbell-lateral-raise",
-            "sets": 3,
-            "reps": {
-              "min": 12,
-              "max": 20,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
-          },
-          {
-            "id": "aesthetic-upper-b-cable-curl",
-            "exerciseId": "cable-curl",
-            "sets": 2,
-            "reps": {
-              "min": 10,
-              "max": 15,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
-          },
-          {
-            "id": "aesthetic-upper-b-overhead-cable-triceps-extension",
-            "exerciseId": "overhead-cable-triceps-extension",
-            "sets": 2,
-            "reps": {
-              "min": 10,
-              "max": 15,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
-          }
-        ],
-        "tone": "lime"
-      },
-      {
-        "id": "aesthetic-lower-b",
-        "day": 6,
-        "title": "Glutes & Hamstrings",
-        "focus": "Hip hinge, single-leg squat and trunk flexion",
-        "targetMuscles": [
+          "quadriceps",
           "glutes",
           "hamstrings",
-          "quadriceps",
           "calves",
-          "abs"
+          "obliques"
         ],
         "exercises": [
           {
-            "id": "aesthetic-lower-b-barbell-romanian-deadlift",
-            "exerciseId": "barbell-romanian-deadlift",
+            "id": "ul-lower-b-leg-press",
+            "exerciseId": "leg-press",
             "sets": 3,
             "reps": {
-              "min": 8,
-              "max": 10,
+              "min": 10,
+              "max": 15,
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 180
+            "restSeconds": 150
           },
           {
-            "id": "aesthetic-lower-b-smith-split-squat",
-            "exerciseId": "smith-split-squat",
-            "sets": 3,
-            "reps": {
-              "min": 8,
-              "max": 12,
-              "toFailure": false,
-              "perSide": true
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "aesthetic-lower-b-lever-machine-hip-thrust",
+            "id": "ul-lower-b-lever-machine-hip-thrust",
             "exerciseId": "lever-machine-hip-thrust",
             "sets": 3,
             "reps": {
-              "min": 10,
-              "max": 15,
+              "min": 8,
+              "max": 12,
               "toFailure": false,
               "perSide": false
             },
             "restSeconds": 120
           },
           {
-            "id": "aesthetic-lower-b-lying-leg-curl",
+            "id": "ul-lower-b-lying-leg-curl",
             "exerciseId": "lying-leg-curl",
-            "sets": 2,
+            "sets": 3,
             "reps": {
               "min": 10,
               "max": 15,
@@ -387,7 +339,19 @@
             "restSeconds": 90
           },
           {
-            "id": "aesthetic-lower-b-seated-machine-calf-raise",
+            "id": "ul-lower-b-leg-extension",
+            "exerciseId": "leg-extension",
+            "sets": 2,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "ul-lower-b-seated-machine-calf-raise",
             "exerciseId": "seated-machine-calf-raise",
             "sets": 3,
             "reps": {
@@ -399,19 +363,19 @@
             "restSeconds": 90
           },
           {
-            "id": "aesthetic-lower-b-kneeling-cable-crunch",
-            "exerciseId": "kneeling-cable-crunch",
+            "id": "ul-lower-b-pallof-press",
+            "exerciseId": "pallof-press",
             "sets": 2,
             "reps": {
               "min": 10,
-              "max": 15,
+              "max": 12,
               "toFailure": false,
-              "perSide": false
+              "perSide": true
             },
             "restSeconds": 90
           }
         ],
-        "tone": "rose"
+        "tone": "lime"
       }
     ]
   }

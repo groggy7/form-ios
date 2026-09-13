@@ -4,57 +4,45 @@
   "program": {
     "id": "powerbuilding-strength",
     "name": "Heavy & Built: 4-Day Powerbuilding",
-    "description": "A 4-day heavy compound powerbuilding split blending foundational powerlifting strength (Squat, Bench, Deadlift, OHP) with high-yield hypertrophy.",
+    "description": "For intermediate lifters who want stronger squat, bench and deadlift alongside muscle growth. Rack, barbell, bench, dumbbells and cable/machines; about 60–80 minutes.",
     "guidelines": [
-      "Primary barbell lifts are performed heavy with 3\u20135 minute rest periods to maximize force production.",
-      "Accessory work focuses on high-tension hypertrophy with 90\u2013120 second rest intervals.",
-      "Record exact weights and reps to progress through linear periodization.",
-      "Always maintain rigid brace and neutral spine on heavy compounds; leave 1 rep in reserve."
+      "Train Monday, Tuesday, Thursday and Friday. Rest 3 minutes on the main lifts, longer if needed; keep heavy sets controlled, never grinding to failure.",
+      "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
+      "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
+      "When every set reaches the top of its rep range with clean form, increase by the smallest available weight next time and return to the lower end. Otherwise keep the weight and build reps.",
+      "Keep the plan for 6–8 weeks before judging progress. If fatigue accumulates or performance drops across several sessions, use fewer sets and lighter loads for a week. Do not train through pain."
     ],
     "workouts": [
       {
         "id": "pb-squat-strength",
         "day": 1,
-        "title": "Heavy Squat",
-        "focus": "Maximal squat power, quad density, and core bracing",
-        "tone": "orange",
+        "title": "Lower: Squat",
+        "focus": "Squat practice with hamstrings and calves",
         "targetMuscles": [
           "quadriceps",
           "glutes",
           "hamstrings",
-          "abs"
+          "calves"
         ],
         "exercises": [
           {
-            "id": "pb-bb-squat",
+            "id": "pb-squat-strength-barbell-back-squat",
             "exerciseId": "barbell-back-squat",
-            "sets": 5,
+            "sets": 3,
             "reps": {
               "min": 4,
               "max": 6,
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 240
+            "restSeconds": 180
           },
           {
-            "id": "pb-leg-press",
-            "exerciseId": "leg-press",
-            "sets": 3,
-            "reps": {
-              "min": 8,
-              "max": 10,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "pb-bb-rdl",
+            "id": "pb-squat-strength-barbell-romanian-deadlift",
             "exerciseId": "barbell-romanian-deadlift",
             "sets": 3,
             "reps": {
-              "min": 8,
+              "min": 6,
               "max": 10,
               "toFailure": false,
               "perSide": false
@@ -62,11 +50,11 @@
             "restSeconds": 180
           },
           {
-            "id": "pb-leg-ext",
+            "id": "pb-squat-strength-leg-extension",
             "exerciseId": "leg-extension",
-            "sets": 3,
+            "sets": 2,
             "reps": {
-              "min": 12,
+              "min": 10,
               "max": 15,
               "toFailure": false,
               "perSide": false
@@ -74,8 +62,20 @@
             "restSeconds": 90
           },
           {
-            "id": "pb-hanging-knee-raise",
-            "exerciseId": "hanging-knee-raise",
+            "id": "pb-squat-strength-seated-leg-curl",
+            "exerciseId": "seated-leg-curl",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "pb-squat-strength-standing-machine-calf-raise",
+            "exerciseId": "standing-machine-calf-raise",
             "sets": 3,
             "reps": {
               "min": 10,
@@ -85,49 +85,49 @@
             },
             "restSeconds": 90
           }
-        ]
+        ],
+        "tone": "violet"
       },
       {
         "id": "pb-bench-strength",
         "day": 2,
-        "title": "Heavy Bench",
-        "focus": "Pectoral force production, triceps lockout, and horizontal pulling balance",
-        "tone": "violet",
+        "title": "Upper: Bench",
+        "focus": "Heavy bench with balanced pulling",
         "targetMuscles": [
           "chest",
-          "triceps",
+          "lats",
           "shoulders",
-          "lats"
+          "triceps"
         ],
         "exercises": [
           {
-            "id": "pb-bb-bench",
+            "id": "pb-bench-strength-barbell-bench-press",
             "exerciseId": "barbell-bench-press",
-            "sets": 5,
+            "sets": 3,
             "reps": {
               "min": 4,
               "max": 6,
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 240
+            "restSeconds": 180
           },
           {
-            "id": "pb-incline-db-press",
-            "exerciseId": "incline-dumbbell-press",
+            "id": "pb-bench-strength-chest-supported-dumbbell-row",
+            "exerciseId": "chest-supported-dumbbell-row",
             "sets": 3,
             "reps": {
-              "min": 8,
+              "min": 6,
               "max": 10,
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 120
+            "restSeconds": 150
           },
           {
-            "id": "pb-cs-db-row",
-            "exerciseId": "chest-supported-dumbbell-row",
-            "sets": 4,
+            "id": "pb-bench-strength-incline-dumbbell-press",
+            "exerciseId": "incline-dumbbell-press",
+            "sets": 2,
             "reps": {
               "min": 8,
               "max": 12,
@@ -137,126 +137,138 @@
             "restSeconds": 120
           },
           {
-            "id": "pb-cable-lat-raise",
+            "id": "pb-bench-strength-lat-pulldown",
+            "exerciseId": "lat-pulldown",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "pb-bench-strength-cable-lateral-raise",
             "exerciseId": "cable-lateral-raise",
-            "sets": 4,
+            "sets": 2,
             "reps": {
               "min": 12,
+              "max": 20,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "pb-bench-strength-rope-triceps-pressdown",
+            "exerciseId": "rope-triceps-pressdown",
+            "sets": 2,
+            "reps": {
+              "min": 10,
               "max": 15,
               "toFailure": false,
               "perSide": false
             },
             "restSeconds": 90
-          },
-          {
-            "id": "pb-rope-pressdown",
-            "exerciseId": "rope-triceps-pressdown",
-            "sets": 3,
-            "reps": {
-              "min": 10,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
           }
-        ]
+        ],
+        "tone": "blue"
       },
       {
         "id": "pb-deadlift-strength",
         "day": 4,
-        "title": "Heavy Deadlift",
-        "focus": "Posterior chain maximal strength, back thickness, and hamstring development",
-        "tone": "blue",
+        "title": "Lower: Deadlift",
+        "focus": "Low-volume deadlift followed by squat assistance",
         "targetMuscles": [
-          "lower-back",
-          "hamstrings",
           "glutes",
-          "lats",
-          "trapezius"
+          "hamstrings",
+          "quadriceps",
+          "calves"
         ],
         "exercises": [
           {
-            "id": "pb-conv-deadlift",
+            "id": "pb-deadlift-strength-conventional-barbell-deadlift",
             "exerciseId": "conventional-barbell-deadlift",
-            "sets": 4,
+            "sets": 2,
             "reps": {
-              "min": 4,
-              "max": 6,
+              "min": 3,
+              "max": 5,
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 240
+            "restSeconds": 180
           },
           {
-            "id": "pb-pull-ups",
-            "exerciseId": "pull-ups",
-            "sets": 4,
+            "id": "pb-deadlift-strength-barbell-back-squat",
+            "exerciseId": "barbell-back-squat",
+            "sets": 3,
             "reps": {
               "min": 6,
               "max": 8,
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 120
+            "restSeconds": 180
           },
           {
-            "id": "pb-bb-row",
-            "exerciseId": "barbell-row",
+            "id": "pb-deadlift-strength-lying-leg-curl",
+            "exerciseId": "lying-leg-curl",
             "sets": 3,
             "reps": {
-              "min": 8,
-              "max": 10,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "pb-seated-leg-curl",
-            "exerciseId": "seated-leg-curl",
-            "sets": 4,
-            "reps": {
               "min": 10,
-              "max": 12,
+              "max": 15,
               "toFailure": false,
               "perSide": false
             },
             "restSeconds": 90
           },
           {
-            "id": "pb-ab-wheel",
-            "exerciseId": "ab-wheel-rollout",
+            "id": "pb-deadlift-strength-seated-machine-calf-raise",
+            "exerciseId": "seated-machine-calf-raise",
             "sets": 3,
             "reps": {
-              "min": 8,
-              "max": 12,
+              "min": 12,
+              "max": 20,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "pb-deadlift-strength-kneeling-cable-crunch",
+            "exerciseId": "kneeling-cable-crunch",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 15,
               "toFailure": false,
               "perSide": false
             },
             "restSeconds": 90
           }
-        ]
+        ],
+        "tone": "orange"
       },
       {
         "id": "pb-press-volume",
         "day": 5,
-        "title": "Overhead Press",
-        "focus": "Vertical pressing overhead power, lat pulldowns, and arm hypertrophy",
-        "tone": "rose",
+        "title": "Upper: Press & Volume",
+        "focus": "Overhead press, lighter bench and back",
         "targetMuscles": [
           "shoulders",
-          "triceps",
+          "chest",
           "lats",
-          "biceps"
+          "biceps",
+          "triceps"
         ],
         "exercises": [
           {
-            "id": "pb-standing-ohp",
+            "id": "pb-press-volume-standing-barbell-overhead-press",
             "exerciseId": "standing-barbell-overhead-press",
-            "sets": 4,
+            "sets": 3,
             "reps": {
-              "min": 5,
+              "min": 4,
               "max": 6,
               "toFailure": false,
               "perSide": false
@@ -264,8 +276,20 @@
             "restSeconds": 180
           },
           {
-            "id": "pb-db-bench",
-            "exerciseId": "dumbbell-bench-press",
+            "id": "pb-press-volume-barbell-bench-press",
+            "exerciseId": "barbell-bench-press",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 150
+          },
+          {
+            "id": "pb-press-volume-cable-seated-row",
+            "exerciseId": "cable-seated-row",
             "sets": 3,
             "reps": {
               "min": 8,
@@ -276,11 +300,11 @@
             "restSeconds": 120
           },
           {
-            "id": "pb-lat-pulldown",
-            "exerciseId": "lat-pulldown",
-            "sets": 4,
+            "id": "pb-press-volume-cable-neutral-grip-lat-pulldown",
+            "exerciseId": "cable-neutral-grip-lat-pulldown",
+            "sets": 2,
             "reps": {
-              "min": 8,
+              "min": 10,
               "max": 12,
               "toFailure": false,
               "perSide": false
@@ -288,11 +312,11 @@
             "restSeconds": 120
           },
           {
-            "id": "pb-db-lat-raise",
-            "exerciseId": "dumbbell-lateral-raise",
-            "sets": 4,
+            "id": "pb-press-volume-ez-bar-curl",
+            "exerciseId": "ez-bar-curl",
+            "sets": 2,
             "reps": {
-              "min": 12,
+              "min": 10,
               "max": 15,
               "toFailure": false,
               "perSide": false
@@ -300,21 +324,9 @@
             "restSeconds": 90
           },
           {
-            "id": "pb-ez-bar-curl",
-            "exerciseId": "ez-bar-curl",
-            "sets": 3,
-            "reps": {
-              "min": 8,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
-          },
-          {
-            "id": "pb-overhead-cable-ext",
+            "id": "pb-press-volume-overhead-cable-triceps-extension",
             "exerciseId": "overhead-cable-triceps-extension",
-            "sets": 3,
+            "sets": 2,
             "reps": {
               "min": 10,
               "max": 15,
@@ -323,7 +335,8 @@
             },
             "restSeconds": 90
           }
-        ]
+        ],
+        "tone": "lime"
       }
     ]
   }

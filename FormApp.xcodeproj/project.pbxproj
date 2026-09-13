@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+        A90000000000000000000002 /* 07_upper_lower.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001; };
+        A90000000000000000000003 /* 07_upper_lower.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001; };
+        A90000000000000000000005 /* 08_machine_foundation.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000004; };
+        A90000000000000000000006 /* 08_machine_foundation.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000004; };
         E30000000000000000000001 /* ExerciseEquipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30000000000000000000002; };
         E30000000000000000000003 /* equipment_catalog.json in Resources */ = {isa = PBXBuildFile; fileRef = E30000000000000000000004; };
         V10000000000000000000001 /* ExerciseDetailVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = V10000000000000000000002 /* ExerciseDetailVideo.swift */; };
@@ -91,6 +95,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+        A90000000000000000000001 /* 07_upper_lower.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 07_upper_lower.json; sourceTree = "<group>"; };
+        A90000000000000000000004 /* 08_machine_foundation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 08_machine_foundation.json; sourceTree = "<group>"; };
         E30000000000000000000002 /* ExerciseEquipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseEquipment.swift; sourceTree = "<group>"; };
         E30000000000000000000004 /* equipment_catalog.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = equipment_catalog.json; sourceTree = "<group>"; };
         V10000000000000000000002 /* ExerciseDetailVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDetailVideo.swift; sourceTree = "<group>"; };
@@ -203,6 +209,8 @@
 				9A2948074308DABA9A07E42E /* 04_full_body_classic.json */,
 				3D4F0446A030E749B3A34E82 /* 05_home_forge_dumbbells.json */,
 				53F83778D712B708C519860F /* 06_athletic_performance.json */,
+                A90000000000000000000001 /* 07_upper_lower.json */,
+                A90000000000000000000004 /* 08_machine_foundation.json */,
 			);
 			path = StarterPrograms;
 			sourceTree = "<group>";
@@ -486,6 +494,8 @@
 				2201C284B87CAEF60491DE58 /* 04_full_body_classic.json in Resources */,
 				A07185A4CA1062B6F7D59B91 /* 05_home_forge_dumbbells.json in Resources */,
 				A22DDBC41558C55465A714BD /* 06_athletic_performance.json in Resources */,
+                A90000000000000000000002 /* 07_upper_lower.json in Resources */,
+                A90000000000000000000005 /* 08_machine_foundation.json in Resources */,
 				ECAED6399ED27E48237E4DD6 /* Assets.xcassets in Resources */,
 				1D60B4E438B90C3F62FC88A9 /* form_rest_complete.wav in Resources */,
 				9698074E6A4564D0918CD7E1 /* form_set_complete.wav in Resources */,
@@ -507,6 +517,8 @@
 				6A9E544F2449FD22D50B7E46 /* 04_full_body_classic.json in Resources */,
 				20E655D806FE5C84BC7BACFB /* 05_home_forge_dumbbells.json in Resources */,
 				09436475DDB7B1F05D128B14 /* 06_athletic_performance.json in Resources */,
+                A90000000000000000000003 /* 07_upper_lower.json in Resources */,
+                A90000000000000000000006 /* 08_machine_foundation.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

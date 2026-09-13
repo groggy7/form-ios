@@ -3,108 +3,47 @@
   "schemaVersion": 4,
   "program": {
     "id": "athletic-performance",
-    "name": "Athletic Engine: 3-Day Performance",
-    "description": "A 3-day athletic performance program designed to build explosive lower body power, rotational core stability, vertical jump, and work capacity.",
+    "name": "Athletic Engine: 3-Day Strength & Power",
+    "description": "General strength and low-rep power practice for experienced lifters, not a sport-specific conditioning plan. Full gym with trap bar, kettlebell and low platform; about 50–65 minutes.",
     "guidelines": [
-      "Perform all power exercises (jumps, push press, swings) first while neurologically fresh.",
-      "Move every rep with explosive intent.",
-      "Rest 2\u20133 minutes on power and compound lifts."
+      "Train on non-consecutive days and account for your sport sessions. Learn swings and push presses before using this plan. Use light-to-moderate loads on these two lifts and stop the set as soon as speed or technique drops, even before the target reps.",
+      "Do not apply automatic rep-range progression to swings or push presses: add load only while every repetition stays fast and controlled. This plan does not replace aerobic training or sport practice.",
+      "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
+      "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
+      "When every set reaches the top of its rep range with clean form, increase by the smallest available weight next time and return to the lower end. Otherwise keep the weight and build reps.",
+      "Keep the plan for 6–8 weeks before judging progress. If fatigue accumulates or performance drops across several sessions, use fewer sets and lighter loads for a week. Do not train through pain."
     ],
     "workouts": [
       {
         "id": "ap-lower-power",
         "day": 1,
-        "title": "Lower Power",
-        "focus": "Trap bar deadlift power, vertical box jumps, unilateral acceleration",
-        "tone": "orange",
+        "title": "Power & Lower Strength",
+        "focus": "Fast hinge, trap-bar strength and balanced upper work",
         "targetMuscles": [
-          "hamstrings",
           "glutes",
+          "hamstrings",
           "quadriceps",
-          "calves",
-          "abs"
+          "chest",
+          "lats",
+          "obliques"
         ],
         "exercises": [
           {
-            "id": "ap-trap-bar-deadlift",
-            "exerciseId": "trap-bar-deadlift",
-            "sets": 4,
-            "reps": {
-              "min": 5,
-              "max": 6,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 180
-          },
-          {
-            "id": "ap-bulgarian-split-squat",
-            "exerciseId": "bulgarian-split-squat",
+            "id": "ap-lower-power-kettlebell-swing",
+            "exerciseId": "kettlebell-swing",
             "sets": 3,
             "reps": {
               "min": 6,
               "max": 8,
-              "toFailure": false,
-              "perSide": true
-            },
-            "restSeconds": 90
-          },
-          {
-            "id": "ap-bb-rdl",
-            "exerciseId": "barbell-romanian-deadlift",
-            "sets": 3,
-            "reps": {
-              "min": 8,
-              "max": 10,
               "toFailure": false,
               "perSide": false
             },
             "restSeconds": 120
           },
           {
-            "id": "ap-standing-calf",
-            "exerciseId": "standing-machine-calf-raise",
+            "id": "ap-lower-power-trap-bar-deadlift",
+            "exerciseId": "trap-bar-deadlift",
             "sets": 3,
-            "reps": {
-              "min": 12,
-              "max": 15,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
-          },
-          {
-            "id": "ap-pallof-press",
-            "exerciseId": "pallof-press",
-            "sets": 3,
-            "reps": {
-              "min": 10,
-              "max": 12,
-              "toFailure": false,
-              "perSide": true
-            },
-            "restSeconds": 60
-          }
-        ]
-      },
-      {
-        "id": "ap-upper-power",
-        "day": 3,
-        "title": "Upper Power",
-        "focus": "Push press power, weighted pull-up strength, and horizontal row capacity",
-        "tone": "violet",
-        "targetMuscles": [
-          "shoulders",
-          "lats",
-          "chest",
-          "triceps",
-          "abs"
-        ],
-        "exercises": [
-          {
-            "id": "ap-push-press",
-            "exerciseId": "push-press",
-            "sets": 4,
             "reps": {
               "min": 4,
               "max": 6,
@@ -114,19 +53,7 @@
             "restSeconds": 180
           },
           {
-            "id": "ap-pull-ups",
-            "exerciseId": "pull-ups",
-            "sets": 4,
-            "reps": {
-              "min": 6,
-              "max": 8,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "ap-db-bench",
+            "id": "ap-lower-power-dumbbell-bench-press",
             "exerciseId": "dumbbell-bench-press",
             "sets": 3,
             "reps": {
@@ -138,32 +65,8 @@
             "restSeconds": 120
           },
           {
-            "id": "ap-bb-row",
-            "exerciseId": "barbell-row",
-            "sets": 3,
-            "reps": {
-              "min": 8,
-              "max": 10,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "ap-face-pull",
-            "exerciseId": "face-pull",
-            "sets": 3,
-            "reps": {
-              "min": 12,
-              "max": 15,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
-          },
-          {
-            "id": "ap-ab-wheel",
-            "exerciseId": "ab-wheel-rollout",
+            "id": "ap-lower-power-cable-seated-row",
+            "exerciseId": "cable-seated-row",
             "sets": 3,
             "reps": {
               "min": 8,
@@ -171,29 +74,117 @@
               "toFailure": false,
               "perSide": false
             },
+            "restSeconds": 120
+          },
+          {
+            "id": "ap-lower-power-pallof-press",
+            "exerciseId": "pallof-press",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": true
+            },
             "restSeconds": 90
           }
-        ]
+        ],
+        "tone": "violet"
+      },
+      {
+        "id": "ap-upper-power",
+        "day": 3,
+        "title": "Power & Single-Leg Strength",
+        "focus": "Push press followed by unilateral legs and pulling",
+        "targetMuscles": [
+          "shoulders",
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "lats"
+        ],
+        "exercises": [
+          {
+            "id": "ap-upper-power-push-press",
+            "exerciseId": "push-press",
+            "sets": 3,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 150
+          },
+          {
+            "id": "ap-upper-power-dumbbell-split-squat-front-foot-elevanted",
+            "exerciseId": "dumbbell-split-squat-front-foot-elevanted",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 10,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "ap-upper-power-cable-neutral-grip-lat-pulldown",
+            "exerciseId": "cable-neutral-grip-lat-pulldown",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "ap-upper-power-seated-leg-curl",
+            "exerciseId": "seated-leg-curl",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "ap-upper-power-standing-machine-calf-raise",
+            "exerciseId": "standing-machine-calf-raise",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ],
+        "tone": "blue"
       },
       {
         "id": "ap-work-capacity",
         "day": 5,
-        "title": "Conditioning & Core",
-        "focus": "Front squat anterior strength, kettlebell swings, farmer carries, and jump rope",
-        "tone": "lime",
+        "title": "Full-Body Strength",
+        "focus": "Squat, hinge, incline press and supported row",
         "targetMuscles": [
           "quadriceps",
           "glutes",
           "hamstrings",
-          "forearms",
-          "abs",
-          "calves"
+          "chest",
+          "lats",
+          "obliques"
         ],
         "exercises": [
           {
-            "id": "ap-bb-front-squat",
+            "id": "ap-work-capacity-barbell-front-squat",
             "exerciseId": "barbell-front-squat",
-            "sets": 4,
+            "sets": 3,
             "reps": {
               "min": 6,
               "max": 8,
@@ -203,49 +194,55 @@
             "restSeconds": 180
           },
           {
-            "id": "ap-kettlebell-swing",
-            "exerciseId": "kettlebell-swing",
-            "sets": 4,
+            "id": "ap-work-capacity-barbell-romanian-deadlift",
+            "exerciseId": "barbell-romanian-deadlift",
+            "sets": 2,
             "reps": {
-              "min": 15,
-              "max": 20,
+              "min": 8,
+              "max": 10,
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 90
+            "restSeconds": 150
           },
           {
-            "id": "ap-farmer-carry",
-            "exerciseId": "farmer-carry",
-            "sets": 4,
-            "reps": {
-              "min": 40,
-              "max": 60,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
-          },
-          {
-            "id": "ap-hanging-knee-raise",
-            "exerciseId": "hanging-knee-raise",
+            "id": "ap-work-capacity-incline-dumbbell-press",
+            "exerciseId": "incline-dumbbell-press",
             "sets": 3,
             "reps": {
-              "min": 12,
-              "max": 15,
+              "min": 8,
+              "max": 12,
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 90
+            "restSeconds": 120
           },
           {
-            "id": "ap-jump-rope",
-            "exerciseId": "jump-rope",
-            "sets": 4,
-            "prescription": "4 \u00d7 2 min",
-            "restSeconds": 60
+            "id": "ap-work-capacity-chest-supported-dumbbell-row",
+            "exerciseId": "chest-supported-dumbbell-row",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "ap-work-capacity-pallof-press",
+            "exerciseId": "pallof-press",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 90
           }
-        ]
+        ],
+        "tone": "orange"
       }
     ]
   }

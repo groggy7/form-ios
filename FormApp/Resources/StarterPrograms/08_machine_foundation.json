@@ -2,11 +2,11 @@
   "format": "form.program",
   "schemaVersion": 4,
   "program": {
-    "id": "full-body-classic",
-    "name": "Classic Foundation: 3-Day Full Body",
-    "description": "A manageable starting point for beginners and returning lifters. Repeat key movement patterns instead of learning a new routine every day. Gym with dumbbells, bench, leg press and cables; about 40–55 minutes.",
+    "id": "machine-foundation",
+    "name": "Machine Foundation: 3-Day Full Body",
+    "description": "For beginners, returning lifters or anyone who prefers machine setups to free weights. Three repeatable full-body sessions using selectorized/sled machines and cables. About 40–55 minutes; check that your gym has the listed machines.",
     "guidelines": [
-      "Use non-consecutive days. For the first two weeks, leave 3–4 good repetitions in reserve and prioritize learning the setup over adding weight. Ask for help with unfamiliar equipment.",
+      "Use non-consecutive days. Set the seat, pads and range of motion before loading; record the same machine’s load each time, since stack numbers differ between machines. Leave 3–4 repetitions in reserve while learning.",
       "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
       "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
       "When every set reaches the top of its rep range with clean form, increase by the smallest available weight next time and return to the lower end. Otherwise keep the weight and build reps.",
@@ -14,122 +14,34 @@
     ],
     "workouts": [
       {
-        "id": "fb-workout-a",
+        "id": "mf-a",
         "day": 1,
-        "title": "Full Body A",
-        "focus": "Leg press, chest press, row and hinge",
+        "title": "Machines A",
+        "focus": "Leg press, chest press and supported row",
         "targetMuscles": [
           "quadriceps",
           "glutes",
           "hamstrings",
           "chest",
-          "lats"
+          "lats",
+          "calves"
         ],
         "exercises": [
           {
-            "id": "fb-workout-a-leg-press",
+            "id": "mf-a-leg-press",
             "exerciseId": "leg-press",
             "sets": 2,
             "reps": {
               "min": 10,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 150
-          },
-          {
-            "id": "fb-workout-a-dumbbell-bench-press",
-            "exerciseId": "dumbbell-bench-press",
-            "sets": 2,
-            "reps": {
-              "min": 8,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "fb-workout-a-cable-seated-row",
-            "exerciseId": "cable-seated-row",
-            "sets": 2,
-            "reps": {
-              "min": 10,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "fb-workout-a-dumbbell-romanian-deadlift",
-            "exerciseId": "dumbbell-romanian-deadlift",
-            "sets": 2,
-            "reps": {
-              "min": 8,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 150
-          },
-          {
-            "id": "fb-workout-a-dumbbell-lateral-raise",
-            "exerciseId": "dumbbell-lateral-raise",
-            "sets": 2,
-            "reps": {
-              "min": 12,
               "max": 15,
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 90
-          }
-        ],
-        "tone": "violet"
-      },
-      {
-        "id": "fb-workout-b",
-        "day": 3,
-        "title": "Full Body B",
-        "focus": "Goblet squat, pulldown and supported presses",
-        "targetMuscles": [
-          "quadriceps",
-          "glutes",
-          "hamstrings",
-          "lats",
-          "chest",
-          "shoulders"
-        ],
-        "exercises": [
-          {
-            "id": "fb-workout-b-goblet-squat",
-            "exerciseId": "goblet-squat",
-            "sets": 2,
-            "reps": {
-              "min": 10,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
             "restSeconds": 150
           },
           {
-            "id": "fb-workout-b-lat-pulldown",
-            "exerciseId": "lat-pulldown",
-            "sets": 2,
-            "reps": {
-              "min": 10,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "fb-workout-b-dumbbell-bench-press",
-            "exerciseId": "dumbbell-bench-press",
+            "id": "mf-a-lever-chest-press",
+            "exerciseId": "lever-chest-press",
             "sets": 2,
             "reps": {
               "min": 8,
@@ -140,7 +52,19 @@
             "restSeconds": 120
           },
           {
-            "id": "fb-workout-b-seated-leg-curl",
+            "id": "mf-a-lever-chest-supported-row",
+            "exerciseId": "lever-chest-supported-row",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "mf-a-seated-leg-curl",
             "exerciseId": "seated-leg-curl",
             "sets": 2,
             "reps": {
@@ -152,85 +76,7 @@
             "restSeconds": 90
           },
           {
-            "id": "fb-workout-b-dumbbell-seated-shoulder-press",
-            "exerciseId": "dumbbell-seated-shoulder-press",
-            "sets": 2,
-            "reps": {
-              "min": 8,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          }
-        ],
-        "tone": "blue"
-      },
-      {
-        "id": "fb-workout-c",
-        "day": 5,
-        "title": "Full Body C",
-        "focus": "Repeat the basics with calves and trunk work",
-        "targetMuscles": [
-          "quadriceps",
-          "glutes",
-          "hamstrings",
-          "chest",
-          "lats",
-          "calves",
-          "abs"
-        ],
-        "exercises": [
-          {
-            "id": "fb-workout-c-leg-press",
-            "exerciseId": "leg-press",
-            "sets": 2,
-            "reps": {
-              "min": 10,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 150
-          },
-          {
-            "id": "fb-workout-c-dumbbell-bench-press",
-            "exerciseId": "dumbbell-bench-press",
-            "sets": 2,
-            "reps": {
-              "min": 8,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "fb-workout-c-cable-seated-row",
-            "exerciseId": "cable-seated-row",
-            "sets": 2,
-            "reps": {
-              "min": 10,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "fb-workout-c-dumbbell-romanian-deadlift",
-            "exerciseId": "dumbbell-romanian-deadlift",
-            "sets": 2,
-            "reps": {
-              "min": 8,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 150
-          },
-          {
-            "id": "fb-workout-c-standing-machine-calf-raise",
+            "id": "mf-a-standing-machine-calf-raise",
             "exerciseId": "standing-machine-calf-raise",
             "sets": 2,
             "reps": {
@@ -242,7 +88,185 @@
             "restSeconds": 90
           },
           {
-            "id": "fb-workout-c-kneeling-cable-crunch",
+            "id": "mf-a-cable-curl",
+            "exerciseId": "cable-curl",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ],
+        "tone": "violet"
+      },
+      {
+        "id": "mf-b",
+        "day": 3,
+        "title": "Machines B",
+        "focus": "Squat machine, pulldown and shoulder press",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "lats",
+          "shoulders",
+          "chest"
+        ],
+        "exercises": [
+          {
+            "id": "mf-b-sled-hack-squat",
+            "exerciseId": "sled-hack-squat",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 150
+          },
+          {
+            "id": "mf-b-lat-pulldown",
+            "exerciseId": "lat-pulldown",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "mf-b-lever-seated-shoulder-press",
+            "exerciseId": "lever-seated-shoulder-press",
+            "sets": 2,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "mf-b-lever-machine-hip-thrust",
+            "exerciseId": "lever-machine-hip-thrust",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "mf-b-pec-deck-fly",
+            "exerciseId": "pec-deck-fly",
+            "sets": 2,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "mf-b-rope-triceps-pressdown",
+            "exerciseId": "rope-triceps-pressdown",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ],
+        "tone": "blue"
+      },
+      {
+        "id": "mf-c",
+        "day": 5,
+        "title": "Machines C",
+        "focus": "Repeat the main machines with rear delts and trunk work",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "chest",
+          "lats",
+          "shoulders",
+          "abs"
+        ],
+        "exercises": [
+          {
+            "id": "mf-c-leg-press",
+            "exerciseId": "leg-press",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 150
+          },
+          {
+            "id": "mf-c-lever-chest-press",
+            "exerciseId": "lever-chest-press",
+            "sets": 2,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "mf-c-lever-chest-supported-row",
+            "exerciseId": "lever-chest-supported-row",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "mf-c-seated-leg-curl",
+            "exerciseId": "seated-leg-curl",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "mf-c-lever-seated-reverse-fly",
+            "exerciseId": "lever-seated-reverse-fly",
+            "sets": 2,
+            "reps": {
+              "min": 12,
+              "max": 20,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "mf-c-kneeling-cable-crunch",
             "exerciseId": "kneeling-cable-crunch",
             "sets": 2,
             "reps": {

@@ -3,20 +3,21 @@
   "schemaVersion": 4,
   "program": {
     "id": "home-forge-dumbbells",
-    "name": "Home Forge: 4-Day Dumbbell Split",
-    "description": "A complete 4-day Upper/Lower split designed exclusively for dumbbells and bodyweight. No specialized machines required.",
+    "name": "Home Forge: 4-Day Dumbbells",
+    "description": "Upper/lower training with adjustable dumbbells and an adjustable bench; no cables, barbell or pull-up station. For lifters comfortable with the basics. About 40–60 minutes.",
     "guidelines": [
-      "Use adjustable or pair dumbbells with manageable micro-increments.",
-      "Maintain strict form and full range of motion to maximize hypertrophy without heavy machines.",
-      "Take 90\u2013120 seconds rest between sets."
+      "Train Monday, Tuesday, Thursday and Friday. Use a stable low platform for the front-foot-elevated split squat. If your dumbbells become too light, use the top of the rep range with controlled form; do not invent extra weight in the log.",
+      "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
+      "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
+      "When every set reaches the top of its rep range with clean form, increase by the smallest available weight next time and return to the lower end. Otherwise keep the weight and build reps.",
+      "Keep the plan for 6–8 weeks before judging progress. If fatigue accumulates or performance drops across several sessions, use fewer sets and lighter loads for a week. Do not train through pain."
     ],
     "workouts": [
       {
         "id": "hf-upper-a",
         "day": 1,
-        "title": "Chest & Back",
-        "focus": "Horizontal dumbbell pressing, lat rows, and shoulder volume",
-        "tone": "violet",
+        "title": "Upper A: Flat Press",
+        "focus": "Flat press, single-arm row and shoulders",
         "targetMuscles": [
           "chest",
           "lats",
@@ -26,9 +27,9 @@
         ],
         "exercises": [
           {
-            "id": "hfa-db-bench",
+            "id": "hf-upper-a-dumbbell-bench-press",
             "exerciseId": "dumbbell-bench-press",
-            "sets": 4,
+            "sets": 3,
             "reps": {
               "min": 8,
               "max": 12,
@@ -38,23 +39,47 @@
             "restSeconds": 120
           },
           {
-            "id": "hfa-one-arm-row",
+            "id": "hf-upper-a-one-arm-dumbbell-row",
             "exerciseId": "one-arm-dumbbell-row",
-            "sets": 4,
+            "sets": 3,
             "reps": {
               "min": 8,
               "max": 12,
               "toFailure": false,
               "perSide": true
             },
+            "restSeconds": 120
+          },
+          {
+            "id": "hf-upper-a-dumbbell-seated-shoulder-press",
+            "exerciseId": "dumbbell-seated-shoulder-press",
+            "sets": 2,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "hf-upper-a-dumbbell-lateral-raise",
+            "exerciseId": "dumbbell-lateral-raise",
+            "sets": 2,
+            "reps": {
+              "min": 12,
+              "max": 20,
+              "toFailure": false,
+              "perSide": false
+            },
             "restSeconds": 90
           },
           {
-            "id": "hfa-db-lateral-raise",
-            "exerciseId": "dumbbell-lateral-raise",
-            "sets": 4,
+            "id": "hf-upper-a-dumbbell-hammer-curl",
+            "exerciseId": "dumbbell-hammer-curl",
+            "sets": 2,
             "reps": {
-              "min": 12,
+              "min": 10,
               "max": 15,
               "toFailure": false,
               "perSide": false
@@ -62,145 +87,98 @@
             "restSeconds": 90
           },
           {
-            "id": "hfa-db-hammer-curl",
-            "exerciseId": "dumbbell-hammer-curl",
-            "sets": 3,
+            "id": "hf-upper-a-dumbbell-skull-crusher",
+            "exerciseId": "dumbbell-skull-crusher",
+            "sets": 2,
             "reps": {
               "min": 10,
-              "max": 12,
+              "max": 15,
               "toFailure": false,
               "perSide": false
             },
             "restSeconds": 90
-          },
-          {
-            "id": "hfa-push-ups",
-            "exerciseId": "push-ups",
-            "sets": 3,
-            "reps": {
-              "toFailure": true,
-              "perSide": false
-            },
-            "restSeconds": 90
           }
-        ]
+        ],
+        "tone": "violet"
       },
       {
         "id": "hf-lower-a",
         "day": 2,
-        "title": "Quads & Hams",
-        "focus": "Goblet squats, dumbbell RDLs, and calf development",
-        "tone": "orange",
+        "title": "Lower A: Squat & Hinge",
+        "focus": "Squat, Romanian deadlift and unilateral legs",
         "targetMuscles": [
           "quadriceps",
-          "hamstrings",
-          "calves",
-          "abs"
+          "glutes",
+          "hamstrings"
         ],
         "exercises": [
           {
-            "id": "hfa-goblet-squat",
+            "id": "hf-lower-a-goblet-squat",
             "exerciseId": "goblet-squat",
-            "sets": 4,
+            "sets": 3,
             "reps": {
               "min": 10,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "hfa-db-rdl",
-            "exerciseId": "dumbbell-romanian-deadlift",
-            "sets": 4,
-            "reps": {
-              "min": 8,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "hfa-bulgarian-split-squat",
-            "exerciseId": "bulgarian-split-squat",
-            "sets": 3,
-            "reps": {
-              "min": 8,
-              "max": 10,
-              "toFailure": false,
-              "perSide": true
-            },
-            "restSeconds": 90
-          },
-          {
-            "id": "hfa-single-leg-calf",
-            "exerciseId": "single-leg-calf-raise",
-            "sets": 4,
-            "reps": {
-              "min": 12,
               "max": 15,
               "toFailure": false,
-              "perSide": true
+              "perSide": false
             },
-            "restSeconds": 60
+            "restSeconds": 150
           },
           {
-            "id": "hfa-side-plank",
-            "exerciseId": "side-plank",
+            "id": "hf-lower-a-dumbbell-romanian-deadlift",
+            "exerciseId": "dumbbell-romanian-deadlift",
             "sets": 3,
             "reps": {
-              "min": 30,
-              "max": 45,
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 150
+          },
+          {
+            "id": "hf-lower-a-dumbbell-split-squat-front-foot-elevanted",
+            "exerciseId": "dumbbell-split-squat-front-foot-elevanted",
+            "sets": 2,
+            "reps": {
+              "min": 8,
+              "max": 12,
               "toFailure": false,
               "perSide": true
             },
-            "restSeconds": 60
+            "restSeconds": 120
+          },
+          {
+            "id": "hf-lower-a-dumbbell-glute-bridge",
+            "exerciseId": "dumbbell-glute-bridge",
+            "sets": 2,
+            "reps": {
+              "min": 12,
+              "max": 20,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
           }
-        ]
+        ],
+        "tone": "blue"
       },
       {
         "id": "hf-upper-b",
         "day": 4,
-        "title": "Shoulders & Arms",
-        "focus": "Incline pressing, chest-supported rows, floor pressing, and biceps",
-        "tone": "rose",
+        "title": "Upper B: Incline & Row",
+        "focus": "Incline press, supported row and rear delts",
         "targetMuscles": [
           "chest",
           "lats",
           "shoulders",
-          "triceps",
-          "biceps"
+          "biceps",
+          "triceps"
         ],
         "exercises": [
           {
-            "id": "hfb-incline-db-press",
+            "id": "hf-upper-b-incline-dumbbell-press",
             "exerciseId": "incline-dumbbell-press",
-            "sets": 4,
-            "reps": {
-              "min": 8,
-              "max": 10,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "hfb-cs-db-row",
-            "exerciseId": "chest-supported-dumbbell-row",
-            "sets": 4,
-            "reps": {
-              "min": 8,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "hfb-db-floor-press",
-            "exerciseId": "dumbbell-floor-press",
             "sets": 3,
             "reps": {
               "min": 8,
@@ -208,14 +186,50 @@
               "toFailure": false,
               "perSide": false
             },
+            "restSeconds": 120
+          },
+          {
+            "id": "hf-upper-b-chest-supported-dumbbell-row",
+            "exerciseId": "chest-supported-dumbbell-row",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "hf-upper-b-dumbbell-pullover",
+            "exerciseId": "dumbbell-pullover",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "hf-upper-b-dumbbell-rear-fly",
+            "exerciseId": "dumbbell-rear-fly",
+            "sets": 2,
+            "reps": {
+              "min": 12,
+              "max": 20,
+              "toFailure": false,
+              "perSide": false
+            },
             "restSeconds": 90
           },
           {
-            "id": "hfb-db-lat-raise",
-            "exerciseId": "dumbbell-lateral-raise",
-            "sets": 4,
+            "id": "hf-upper-b-dumbbell-standing-biceps-curl",
+            "exerciseId": "dumbbell-standing-biceps-curl",
+            "sets": 2,
             "reps": {
-              "min": 12,
+              "min": 10,
               "max": 15,
               "toFailure": false,
               "perSide": false
@@ -223,94 +237,81 @@
             "restSeconds": 90
           },
           {
-            "id": "hfb-incline-db-curl",
-            "exerciseId": "incline-dumbbell-curl",
-            "sets": 3,
+            "id": "hf-upper-b-dumbbell-standing-triceps-extension",
+            "exerciseId": "dumbbell-standing-triceps-extension",
+            "sets": 2,
             "reps": {
               "min": 10,
-              "max": 12,
+              "max": 15,
               "toFailure": false,
               "perSide": false
             },
             "restSeconds": 90
           }
-        ]
+        ],
+        "tone": "orange"
       },
       {
         "id": "hf-lower-b",
         "day": 5,
-        "title": "Glutes & Core",
-        "focus": "Unilateral leg loading, glute development, and core stability",
-        "tone": "lime",
+        "title": "Lower B: Single-Leg Strength",
+        "focus": "Split squat, hinge and glute bridge",
         "targetMuscles": [
           "quadriceps",
           "glutes",
-          "hamstrings",
-          "calves",
-          "abs"
+          "hamstrings"
         ],
         "exercises": [
           {
-            "id": "hfb-db-step-up",
-            "exerciseId": "dumbbell-step-up",
+            "id": "hf-lower-b-dumbbell-split-squat-front-foot-elevanted",
+            "exerciseId": "dumbbell-split-squat-front-foot-elevanted",
             "sets": 3,
             "reps": {
               "min": 8,
-              "max": 10,
+              "max": 12,
               "toFailure": false,
               "perSide": true
             },
-            "restSeconds": 90
+            "restSeconds": 120
           },
           {
-            "id": "hfb-db-rdl",
+            "id": "hf-lower-b-dumbbell-romanian-deadlift",
             "exerciseId": "dumbbell-romanian-deadlift",
-            "sets": 4,
+            "sets": 3,
             "reps": {
-              "min": 8,
-              "max": 12,
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 150
+          },
+          {
+            "id": "hf-lower-b-goblet-squat",
+            "exerciseId": "goblet-squat",
+            "sets": 2,
+            "reps": {
+              "min": 12,
+              "max": 15,
               "toFailure": false,
               "perSide": false
             },
             "restSeconds": 120
           },
           {
-            "id": "hfb-goblet-squat",
-            "exerciseId": "goblet-squat",
-            "sets": 3,
+            "id": "hf-lower-b-dumbbell-glute-bridge",
+            "exerciseId": "dumbbell-glute-bridge",
+            "sets": 2,
             "reps": {
-              "min": 10,
-              "max": 12,
+              "min": 12,
+              "max": 20,
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 90
-          },
-          {
-            "id": "hfb-single-leg-calf",
-            "exerciseId": "single-leg-calf-raise",
-            "sets": 4,
-            "reps": {
-              "min": 12,
-              "max": 15,
-              "toFailure": false,
-              "perSide": true
-            },
-            "restSeconds": 60
-          },
-          {
-            "id": "hfb-dead-bug",
-            "exerciseId": "dead-bug",
-            "sets": 3,
-            "reps": {
-              "min": 8,
-              "max": 10,
-              "toFailure": false,
-              "perSide": true
-            },
-            "restSeconds": 60
+            "restSeconds": 120
           }
-        ]
+        ],
+        "tone": "lime"
       }
     ]
   }

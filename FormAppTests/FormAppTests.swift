@@ -307,8 +307,26 @@ final class FormAppTests: XCTestCase {
     func testStarterProgramsAreAvailable() {
         let bundled = AppStore.loadBundledStarterPrograms()
         XCTAssertFalse(bundled.isEmpty, "Starter programs should be bundled and loaded successfully")
-        XCTAssertEqual(bundled.count, 6, "Expected all 6 starter programs")
+        XCTAssertEqual(bundled.count, 8, "Expected all 8 starter programs")
         XCTAssertEqual(bundled.first?.name, "Aesthetic Engine: 5-Day Hypertrophy")
+        XCTAssertEqual(bundled.map { $0.workouts.count }, [5, 4, 6, 3, 4, 3, 4, 3])
+        let canonical = AppStore.loadBundledExercises()
+        for exercise in bundled.flatMap({ $0.workouts }).flatMap({ $0.exercises }) {
+            XCTAssertNotNil(exercise.exerciseId.flatMap { canonical[$0] })
+            XCTAssertNotNil(exercise.reps?.min)
+            XCTAssertEqual(exercise.reps?.toFailure, false)
+        }
+    }
+
+    func testStarterRefreshPreservesIndependentProgramsAndIsIdempotent() {
+        let bundled = AppStore.loadBundledStarterPrograms()
+        let old = Program(id: "aesthetic-hypertrophy", name: "Old template")
+        let custom = Program(id: "my-copy", name: "My edited plan")
+        let refreshed = AppStore.refreshedStarterPrograms(existing: [old, custom], bundled: bundled)
+        XCTAssertEqual(refreshed.count, 9)
+        XCTAssertEqual(refreshed.first, bundled.first)
+        XCTAssertEqual(refreshed.last, custom)
+        XCTAssertEqual(AppStore.refreshedStarterPrograms(existing: refreshed, bundled: bundled), refreshed)
     }
 
 
@@ -1477,16 +1495,18 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(smithSquat.displayName, "Smith Makinesi Squat")
 
         let workout = Workout(id: "pb-squat-strength", day: 1, title: "Heavy Squat", focus: "Maximal squat power, quad density, and core bracing")
-        XCTAssertEqual(workout.displayTitle(programId: "powerbuilding-strength"), "Ağır Squat")
-        XCTAssertEqual(workout.displayFocus(programId: "powerbuilding-strength"), "Maksimum squat gücü, ön bacak hacmi ve gövde sertliği")
+        XCTAssertEqual(workout.displayTitle(programId: "powerbuilding-strength"), "Alt Vücut: Squat")
+        XCTAssertEqual(workout.displayFocus(programId: "powerbuilding-strength"), "Squat tekniği, arka bacak ve baldır")
 
         let program = Program(id: "powerbuilding-strength", name: "Heavy & Built: 4-Day Powerbuilding")
-        XCTAssertEqual(program.displayName, "Güç ve Kütle: 4 Günlük Powerbuilding")
+        XCTAssertEqual(program.displayName, "Heavy & Built: 4 Günlük Güç ve Kas")
+        XCTAssertEqual(Program(id: "machine-foundation", name: "fallback").displayName, "Machine Foundation: 3 Günlük Tüm Vücut")
+        XCTAssertEqual(Program(id: "upper-lower-balanced", name: "fallback").displayName, "Balanced Build: 4 Günlük Üst/Alt Vücut")
 
         // English check
         LanguageManager.setLanguage("en")
         XCTAssertEqual(pullUps.displayName, "Pull-Ups")
-        XCTAssertEqual(workout.displayTitle(programId: "powerbuilding-strength"), "Heavy Squat")
+        XCTAssertEqual(workout.displayTitle(programId: "powerbuilding-strength"), "Lower: Squat")
     }
 
     func testExercisePriorityStaplesBeforeGymRatMoves() {

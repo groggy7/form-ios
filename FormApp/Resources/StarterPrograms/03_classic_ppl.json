@@ -3,21 +3,21 @@
   "schemaVersion": 4,
   "program": {
     "id": "classic-ppl",
-    "name": "Pure PPL: 6-Day Push Pull Legs",
-    "description": "The gold-standard high-frequency split for dedicated lifters, hitting each muscle group twice weekly with optimal volume distribution.",
+    "name": "Pure PPL: 6-Day Hypertrophy",
+    "description": "For experienced lifters who can consistently recover from six gym days. Two push, pull and leg sessions with distinct emphases. Full gym; about 45–65 minutes.",
     "guidelines": [
-      "Workout order: Push 1, Pull 1, Legs 1, Push 2, Pull 2, Legs 2, Rest.",
-      "Workout 1 days emphasize heavy compound loading; Workout 2 days emphasize hypertrophy variation and pump.",
-      "Leave 1\u20132 clean reps in reserve on early sets; take the final set of accessories to technical failure.",
-      "Ensure high daily calorie and protein intake to support 6 days of training."
+      "Sunday is rest. Choose the 4-day Upper/Lower plan if six days is hard to sustain. Pull days use supported rows, leaving heavy hip hinges to leg days.",
+      "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
+      "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
+      "When every set reaches the top of its rep range with clean form, increase by the smallest available weight next time and return to the lower end. Otherwise keep the weight and build reps.",
+      "Keep the plan for 6–8 weeks before judging progress. If fatigue accumulates or performance drops across several sessions, use fewer sets and lighter loads for a week. Do not train through pain."
     ],
     "workouts": [
       {
         "id": "ppl-push-1",
         "day": 1,
-        "title": "Chest & Delts",
-        "focus": "Horizontal pressing power, overhead strength, and triceps",
-        "tone": "violet",
+        "title": "Push A: Chest",
+        "focus": "Flat press with shoulder and triceps assistance",
         "targetMuscles": [
           "chest",
           "shoulders",
@@ -25,31 +25,219 @@
         ],
         "exercises": [
           {
-            "id": "ppl1-bb-bench",
+            "id": "ppl-push-1-barbell-bench-press",
             "exerciseId": "barbell-bench-press",
-            "sets": 4,
-            "reps": {
-              "min": 6,
-              "max": 8,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 180
-          },
-          {
-            "id": "ppl1-standing-ohp",
-            "exerciseId": "standing-barbell-overhead-press",
             "sets": 3,
             "reps": {
               "min": 6,
-              "max": 8,
+              "max": 10,
               "toFailure": false,
               "perSide": false
             },
             "restSeconds": 180
           },
           {
-            "id": "ppl1-incline-db-press",
+            "id": "ppl-push-1-dumbbell-seated-shoulder-press",
+            "exerciseId": "dumbbell-seated-shoulder-press",
+            "sets": 2,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "ppl-push-1-pec-deck-fly",
+            "exerciseId": "pec-deck-fly",
+            "sets": 2,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "ppl-push-1-cable-lateral-raise",
+            "exerciseId": "cable-lateral-raise",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 20,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "ppl-push-1-rope-triceps-pressdown",
+            "exerciseId": "rope-triceps-pressdown",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ],
+        "tone": "violet"
+      },
+      {
+        "id": "ppl-pull-1",
+        "day": 2,
+        "title": "Pull A: Lats",
+        "focus": "Vertical pull, supported row and biceps",
+        "targetMuscles": [
+          "lats",
+          "trapezius",
+          "shoulders",
+          "biceps"
+        ],
+        "exercises": [
+          {
+            "id": "ppl-pull-1-lat-pulldown",
+            "exerciseId": "lat-pulldown",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "ppl-pull-1-lever-chest-supported-row",
+            "exerciseId": "lever-chest-supported-row",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "ppl-pull-1-lever-seated-reverse-fly",
+            "exerciseId": "lever-seated-reverse-fly",
+            "sets": 2,
+            "reps": {
+              "min": 12,
+              "max": 20,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "ppl-pull-1-incline-dumbbell-curl",
+            "exerciseId": "incline-dumbbell-curl",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ],
+        "tone": "blue"
+      },
+      {
+        "id": "ppl-legs-1",
+        "day": 3,
+        "title": "Legs A: Squat",
+        "focus": "Quads, knee flexion and calves",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "calves"
+        ],
+        "exercises": [
+          {
+            "id": "ppl-legs-1-barbell-back-squat",
+            "exerciseId": "barbell-back-squat",
+            "sets": 3,
+            "reps": {
+              "min": 6,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180
+          },
+          {
+            "id": "ppl-legs-1-leg-press",
+            "exerciseId": "leg-press",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 150
+          },
+          {
+            "id": "ppl-legs-1-seated-leg-curl",
+            "exerciseId": "seated-leg-curl",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "ppl-legs-1-standing-machine-calf-raise",
+            "exerciseId": "standing-machine-calf-raise",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "ppl-legs-1-kneeling-cable-crunch",
+            "exerciseId": "kneeling-cable-crunch",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ],
+        "tone": "orange"
+      },
+      {
+        "id": "ppl-push-2",
+        "day": 4,
+        "title": "Push B: Incline",
+        "focus": "Incline press, chest isolation and overhead triceps",
+        "targetMuscles": [
+          "chest",
+          "shoulders",
+          "triceps"
+        ],
+        "exercises": [
+          {
+            "id": "ppl-push-2-incline-dumbbell-press",
             "exerciseId": "incline-dumbbell-press",
             "sets": 3,
             "reps": {
@@ -61,9 +249,21 @@
             "restSeconds": 120
           },
           {
-            "id": "ppl1-cable-lat-raise",
-            "exerciseId": "cable-lateral-raise",
-            "sets": 4,
+            "id": "ppl-push-2-lever-chest-press",
+            "exerciseId": "lever-chest-press",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "ppl-push-2-cable-standing-fly",
+            "exerciseId": "cable-standing-fly",
+            "sets": 2,
             "reps": {
               "min": 12,
               "max": 15,
@@ -73,48 +273,48 @@
             "restSeconds": 90
           },
           {
-            "id": "ppl1-rope-pressdown",
-            "exerciseId": "rope-triceps-pressdown",
+            "id": "ppl-push-2-dumbbell-lateral-raise",
+            "exerciseId": "dumbbell-lateral-raise",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 20,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "ppl-push-2-overhead-cable-triceps-extension",
+            "exerciseId": "overhead-cable-triceps-extension",
             "sets": 3,
             "reps": {
               "min": 10,
-              "max": 12,
+              "max": 15,
               "toFailure": false,
               "perSide": false
             },
             "restSeconds": 90
           }
-        ]
+        ],
+        "tone": "lime"
       },
       {
-        "id": "ppl-pull-1",
-        "day": 2,
-        "title": "Deadlift & Back",
-        "focus": "Posterior chain strength, lat width, and biceps mass",
-        "tone": "blue",
+        "id": "ppl-pull-2",
+        "day": 5,
+        "title": "Pull B: Rows",
+        "focus": "Horizontal pull with rear delts and curls",
         "targetMuscles": [
-          "lower-back",
           "lats",
           "trapezius",
+          "shoulders",
           "biceps"
         ],
         "exercises": [
           {
-            "id": "ppl1-conv-deadlift",
-            "exerciseId": "conventional-barbell-deadlift",
-            "sets": 4,
-            "reps": {
-              "min": 5,
-              "max": 6,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 240
-          },
-          {
-            "id": "ppl1-lat-pulldown",
-            "exerciseId": "lat-pulldown",
-            "sets": 4,
+            "id": "ppl-pull-2-cable-seated-row",
+            "exerciseId": "cable-seated-row",
+            "sets": 3,
             "reps": {
               "min": 8,
               "max": 12,
@@ -124,70 +324,58 @@
             "restSeconds": 120
           },
           {
-            "id": "ppl1-bb-row",
-            "exerciseId": "barbell-row",
+            "id": "ppl-pull-2-cable-neutral-grip-lat-pulldown",
+            "exerciseId": "cable-neutral-grip-lat-pulldown",
             "sets": 3,
             "reps": {
-              "min": 8,
-              "max": 10,
+              "min": 10,
+              "max": 15,
               "toFailure": false,
               "perSide": false
             },
             "restSeconds": 120
           },
           {
-            "id": "ppl1-face-pull",
+            "id": "ppl-pull-2-face-pull",
             "exerciseId": "face-pull",
-            "sets": 3,
+            "sets": 2,
             "reps": {
               "min": 12,
+              "max": 20,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "ppl-pull-2-dumbbell-hammer-curl",
+            "exerciseId": "dumbbell-hammer-curl",
+            "sets": 3,
+            "reps": {
+              "min": 10,
               "max": 15,
               "toFailure": false,
               "perSide": false
             },
             "restSeconds": 90
-          },
-          {
-            "id": "ppl1-incline-db-curl",
-            "exerciseId": "incline-dumbbell-curl",
-            "sets": 3,
-            "reps": {
-              "min": 10,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
           }
-        ]
+        ],
+        "tone": "rose"
       },
       {
-        "id": "ppl-legs-1",
-        "day": 3,
-        "title": "Squat & Hams",
-        "focus": "Heavy quad squat loading, hamstring hinge, and core",
-        "tone": "orange",
+        "id": "ppl-legs-2",
+        "day": 6,
+        "title": "Legs B: Hinge",
+        "focus": "Posterior chain with a second squat pattern",
         "targetMuscles": [
-          "quadriceps",
           "hamstrings",
-          "calves",
-          "abs"
+          "glutes",
+          "quadriceps",
+          "calves"
         ],
         "exercises": [
           {
-            "id": "ppl1-bb-squat",
-            "exerciseId": "barbell-back-squat",
-            "sets": 4,
-            "reps": {
-              "min": 6,
-              "max": 8,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 180
-          },
-          {
-            "id": "ppl1-bb-rdl",
+            "id": "ppl-legs-2-barbell-romanian-deadlift",
             "exerciseId": "barbell-romanian-deadlift",
             "sets": 3,
             "reps": {
@@ -199,8 +387,8 @@
             "restSeconds": 180
           },
           {
-            "id": "ppl1-leg-press",
-            "exerciseId": "leg-press",
+            "id": "ppl-legs-2-sled-hack-squat",
+            "exerciseId": "sled-hack-squat",
             "sets": 3,
             "reps": {
               "min": 10,
@@ -208,249 +396,12 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 120
+            "restSeconds": 150
           },
           {
-            "id": "ppl1-leg-ext",
-            "exerciseId": "leg-extension",
-            "sets": 3,
-            "reps": {
-              "min": 12,
-              "max": 15,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
-          },
-          {
-            "id": "ppl1-standing-calf",
-            "exerciseId": "standing-machine-calf-raise",
-            "sets": 4,
-            "reps": {
-              "min": 12,
-              "max": 15,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
-          },
-          {
-            "id": "ppl1-kneeling-cable-crunch",
-            "exerciseId": "kneeling-cable-crunch",
-            "sets": 3,
-            "reps": {
-              "min": 12,
-              "max": 15,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
-          }
-        ]
-      },
-      {
-        "id": "ppl-push-2",
-        "day": 4,
-        "title": "Upper Chest",
-        "focus": "Incline pressing, lateral shoulder volume, and pec fly pump",
-        "tone": "rose",
-        "targetMuscles": [
-          "chest",
-          "shoulders",
-          "triceps"
-        ],
-        "exercises": [
-          {
-            "id": "ppl2-incline-bb-bench",
-            "exerciseId": "incline-barbell-bench-press",
-            "sets": 4,
-            "reps": {
-              "min": 8,
-              "max": 10,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 180
-          },
-          {
-            "id": "ppl2-db-bench",
-            "exerciseId": "dumbbell-bench-press",
-            "sets": 3,
-            "reps": {
-              "min": 8,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "ppl2-db-lat-raise",
-            "exerciseId": "dumbbell-lateral-raise",
-            "sets": 4,
-            "reps": {
-              "min": 12,
-              "max": 15,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
-          },
-          {
-            "id": "ppl2-pec-deck-fly",
-            "exerciseId": "pec-deck-fly",
-            "sets": 3,
-            "reps": {
-              "min": 10,
-              "max": 15,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
-          },
-          {
-            "id": "ppl2-overhead-cable-ext",
-            "exerciseId": "overhead-cable-triceps-extension",
-            "sets": 3,
-            "reps": {
-              "min": 10,
-              "max": 15,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
-          }
-        ]
-      },
-      {
-        "id": "ppl-pull-2",
-        "day": 5,
-        "title": "Lats & Biceps",
-        "focus": "Bodyweight pulling, horizontal row volume, and arm thickness",
-        "tone": "sand",
-        "targetMuscles": [
-          "lats",
-          "trapezius",
-          "biceps",
-          "forearms"
-        ],
-        "exercises": [
-          {
-            "id": "ppl2-pull-ups",
-            "exerciseId": "pull-ups",
-            "sets": 4,
-            "reps": {
-              "min": 6,
-              "max": 10,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 120
-          },
-          {
-            "id": "ppl2-one-arm-db-row",
-            "exerciseId": "one-arm-dumbbell-row",
-            "sets": 3,
-            "reps": {
-              "min": 10,
-              "max": 12,
-              "toFailure": false,
-              "perSide": true
-            },
-            "restSeconds": 90
-          },
-          {
-            "id": "ppl2-cs-db-row",
-            "exerciseId": "chest-supported-dumbbell-row",
-            "sets": 3,
-            "reps": {
-              "min": 10,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
-          },
-          {
-            "id": "ppl2-db-hammer-curl",
-            "exerciseId": "dumbbell-hammer-curl",
-            "sets": 3,
-            "reps": {
-              "min": 10,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
-          },
-          {
-            "id": "ppl2-ez-bar-curl",
-            "exerciseId": "ez-bar-curl",
-            "sets": 3,
-            "reps": {
-              "min": 8,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
-          }
-        ]
-      },
-      {
-        "id": "ppl-legs-2",
-        "day": 6,
-        "title": "Legs & Abs",
-        "focus": "Anterior quad loading, unilateral balance, and calf specialization",
-        "tone": "lime",
-        "targetMuscles": [
-          "quadriceps",
-          "glutes",
-          "hamstrings",
-          "calves",
-          "abs"
-        ],
-        "exercises": [
-          {
-            "id": "ppl2-front-squat",
-            "exerciseId": "barbell-front-squat",
-            "sets": 4,
-            "reps": {
-              "min": 6,
-              "max": 8,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 180
-          },
-          {
-            "id": "ppl2-bulgarian-split-squat",
-            "exerciseId": "bulgarian-split-squat",
-            "sets": 3,
-            "reps": {
-              "min": 8,
-              "max": 10,
-              "toFailure": false,
-              "perSide": true
-            },
-            "restSeconds": 90
-          },
-          {
-            "id": "ppl2-seated-leg-curl",
-            "exerciseId": "seated-leg-curl",
-            "sets": 4,
-            "reps": {
-              "min": 10,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "restSeconds": 90
-          },
-          {
-            "id": "ppl2-lying-leg-curl",
+            "id": "ppl-legs-2-lying-leg-curl",
             "exerciseId": "lying-leg-curl",
-            "sets": 3,
+            "sets": 2,
             "reps": {
               "min": 10,
               "max": 15,
@@ -460,30 +411,31 @@
             "restSeconds": 90
           },
           {
-            "id": "ppl2-seated-calf",
+            "id": "ppl-legs-2-seated-machine-calf-raise",
             "exerciseId": "seated-machine-calf-raise",
-            "sets": 4,
+            "sets": 3,
             "reps": {
               "min": 12,
-              "max": 15,
+              "max": 20,
               "toFailure": false,
               "perSide": false
             },
             "restSeconds": 90
           },
           {
-            "id": "ppl2-hanging-knee-raise",
-            "exerciseId": "hanging-knee-raise",
-            "sets": 3,
+            "id": "ppl-legs-2-pallof-press",
+            "exerciseId": "pallof-press",
+            "sets": 2,
             "reps": {
-              "min": 12,
-              "max": 15,
+              "min": 10,
+              "max": 12,
               "toFailure": false,
-              "perSide": false
+              "perSide": true
             },
             "restSeconds": 90
           }
-        ]
+        ],
+        "tone": "sand"
       }
     ]
   }

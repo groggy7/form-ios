@@ -525,6 +525,18 @@ public final class AppStore: ObservableObject {
         let bundled = loadBundledStarterPrograms()
         if let data = UserDefaults.standard.data(forKey: "stored_app_state"),
            var stored = try? JSONDecoder().decode(StoredAppState.self, from: data) {
+            let defaults = UserDefaults.standard
+            if !defaults.bool(forKey: "seeded_starters_v9"), bundled.count == 8 {
+                if defaults.data(forKey: "starter_programs_before_v9") == nil {
+                    defaults.set(data, forKey: "starter_programs_before_v9")
+                }
+                stored.programs = refreshedStarterPrograms(existing: stored.programs, bundled: bundled)
+                // Persist the replacement before its marker. History and the separate draft stay intact.
+                if let refreshed = try? JSONEncoder().encode(stored) {
+                    defaults.set(refreshed, forKey: "stored_app_state")
+                    defaults.set(true, forKey: "seeded_starters_v9")
+                }
+            }
             stored.programs = enrichStandardizedTechniqueCues(stored.programs, bundled: bundled)
             return stored
         }
@@ -539,7 +551,15 @@ public final class AppStore: ObservableObject {
             history: [],
             calendarHistory: nil
         )
+        if bundled.count == 8 {
+            UserDefaults.standard.set(true, forKey: "seeded_starters_v9")
+        }
         return initial
+    }
+
+    public static func refreshedStarterPrograms(existing: [Program], bundled: [Program]) -> [Program] {
+        let ids = Set(bundled.map(\.id))
+        return bundled + existing.filter { !ids.contains($0.id) }
     }
 
     private static func enrichStandardizedTechniqueCues(_ programs: [Program], bundled: [Program]) -> [Program] {
@@ -583,7 +603,9 @@ public final class AppStore: ObservableObject {
             "03_classic_ppl",
             "04_full_body_classic",
             "05_home_forge_dumbbells",
-            "06_athletic_performance"
+            "06_athletic_performance",
+            "07_upper_lower",
+            "08_machine_foundation"
         ]
 
         var programs: [Program] = []
@@ -834,4 +856,3 @@ public enum ExerciseCatalog {
         return merged
     }
 }
-

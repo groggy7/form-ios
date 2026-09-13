@@ -1,171 +1,234 @@
 {
   "aesthetic-hypertrophy": {
     "name": "Aesthetic Engine: 5-Day Hypertrophy",
-    "description": "A 5-day bodybuilding split engineered for maximum hypertrophy, structural balance, and aesthetic muscle development using commercial gym equipment.",
+    "description": "For experienced lifters who enjoy five gym days. Balanced upper/lower muscle building with extra shoulder work. Full gym; roughly 55–75 minutes per session.",
     "guidelines": [
-      "Train with high mechanical tension: take working sets within 1–2 reps of technical failure.",
-      "Control the eccentric (lowering) phase for 2–3 seconds on all isolation and machine movements.",
-      "Log weights and reps accurately every session to apply progressive overload week over week.",
-      "Rest 2–3 minutes on heavy compound lifts and 60–90 seconds on isolation accessories.",
-      "Prioritize recovery: stay hydrated, hit your daily protein target, and get 7–9 hours of sleep."
+      "Train Monday, Tuesday, Thursday, Friday and Saturday. Keep Wednesday and Sunday free for recovery; add time between sessions if recovery suffers.",
+      "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
+      "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
+      "When every set reaches the top of its rep range with clean form, increase by the smallest available weight next time and return to the lower end. Otherwise keep the weight and build reps.",
+      "Keep the plan for 6–8 weeks before judging progress. If fatigue accumulates or performance drops across several sessions, use fewer sets and lighter loads for a week. Do not train through pain."
     ],
     "workouts": {
       "aesthetic-push-a": {
         "title": "Chest & Triceps",
-        "focus": "Upper chest, front/side delts, and triceps volume"
+        "focus": "Pressing, chest isolation and side delts"
       },
       "aesthetic-pull-a": {
         "title": "Back & Biceps",
-        "focus": "Lat width, upper back thickness, and elbow flexor hypertrophy"
+        "focus": "Vertical pull, supported row and rear delts"
       },
       "aesthetic-legs-a": {
         "title": "Quads & Calves",
-        "focus": "Quad hypertrophy, knee stability, and calf development"
+        "focus": "Squat pattern, knee extension and hamstrings"
       },
       "aesthetic-upper-b": {
-        "title": "Shoulders & Back",
-        "focus": "Shoulder cap fullness, chest density, and arm specialization"
+        "title": "Upper Body & Shoulders",
+        "focus": "Second chest/back exposure with shoulder and arm work"
       },
       "aesthetic-lower-b": {
-        "title": "Glutes & Hams",
-        "focus": "Posterior chain power, glute fullness, and abdominal trunk rigidity"
+        "title": "Glutes & Hamstrings",
+        "focus": "Hip hinge, single-leg squat and trunk flexion"
       }
     }
   },
   "powerbuilding-strength": {
     "name": "Heavy & Built: 4-Day Powerbuilding",
-    "description": "A 4-day heavy compound powerbuilding split blending foundational powerlifting strength (Squat, Bench, Deadlift, OHP) with high-yield hypertrophy.",
+    "description": "For intermediate lifters who want stronger squat, bench and deadlift alongside muscle growth. Rack, barbell, bench, dumbbells and cable/machines; about 60–80 minutes.",
     "guidelines": [
-      "Primary barbell lifts are performed heavy with 3–5 minute rest periods to maximize force production.",
-      "Accessory work focuses on high-tension hypertrophy with 90–120 second rest intervals.",
-      "Record exact weights and reps to progress through linear periodization.",
-      "Always maintain rigid brace and neutral spine on heavy compounds; leave 1 rep in reserve."
+      "Train Monday, Tuesday, Thursday and Friday. Rest 3 minutes on the main lifts, longer if needed; keep heavy sets controlled, never grinding to failure.",
+      "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
+      "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
+      "When every set reaches the top of its rep range with clean form, increase by the smallest available weight next time and return to the lower end. Otherwise keep the weight and build reps.",
+      "Keep the plan for 6–8 weeks before judging progress. If fatigue accumulates or performance drops across several sessions, use fewer sets and lighter loads for a week. Do not train through pain."
     ],
     "workouts": {
       "pb-squat-strength": {
-        "title": "Heavy Squat",
-        "focus": "Maximal squat power, quad density, and core bracing"
+        "title": "Lower: Squat",
+        "focus": "Squat practice with hamstrings and calves"
       },
       "pb-bench-strength": {
-        "title": "Heavy Bench",
-        "focus": "Pectoral force production, triceps lockout, and horizontal pulling balance"
+        "title": "Upper: Bench",
+        "focus": "Heavy bench with balanced pulling"
       },
       "pb-deadlift-strength": {
-        "title": "Heavy Deadlift",
-        "focus": "Posterior chain maximal strength, back thickness, and hamstring development"
+        "title": "Lower: Deadlift",
+        "focus": "Low-volume deadlift followed by squat assistance"
       },
       "pb-press-volume": {
-        "title": "Overhead Press",
-        "focus": "Vertical pressing overhead power, lat pulldowns, and arm hypertrophy"
+        "title": "Upper: Press & Volume",
+        "focus": "Overhead press, lighter bench and back"
       }
     }
   },
   "classic-ppl": {
-    "name": "Pure PPL: 6-Day Push Pull Legs",
-    "description": "The gold-standard high-frequency split for dedicated lifters, hitting each muscle group twice weekly with optimal volume distribution.",
+    "name": "Pure PPL: 6-Day Hypertrophy",
+    "description": "For experienced lifters who can consistently recover from six gym days. Two push, pull and leg sessions with distinct emphases. Full gym; about 45–65 minutes.",
     "guidelines": [
-      "Workout order: Push 1, Pull 1, Legs 1, Push 2, Pull 2, Legs 2, Rest.",
-      "Workout 1 days emphasize heavy compound loading; Workout 2 days emphasize hypertrophy variation and pump.",
-      "Leave 1–2 clean reps in reserve on early sets; take the final set of accessories to technical failure.",
-      "Ensure high daily calorie and protein intake to support 6 days of training."
+      "Sunday is rest. Choose the 4-day Upper/Lower plan if six days is hard to sustain. Pull days use supported rows, leaving heavy hip hinges to leg days.",
+      "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
+      "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
+      "When every set reaches the top of its rep range with clean form, increase by the smallest available weight next time and return to the lower end. Otherwise keep the weight and build reps.",
+      "Keep the plan for 6–8 weeks before judging progress. If fatigue accumulates or performance drops across several sessions, use fewer sets and lighter loads for a week. Do not train through pain."
     ],
     "workouts": {
       "ppl-push-1": {
-        "title": "Chest & Delts",
-        "focus": "Horizontal pressing power, overhead strength, and triceps"
+        "title": "Push A: Chest",
+        "focus": "Flat press with shoulder and triceps assistance"
       },
       "ppl-pull-1": {
-        "title": "Deadlift & Back",
-        "focus": "Posterior chain strength, lat width, and biceps mass"
+        "title": "Pull A: Lats",
+        "focus": "Vertical pull, supported row and biceps"
       },
       "ppl-legs-1": {
-        "title": "Squat & Hams",
-        "focus": "Heavy quad squat loading, hamstring hinge, and core"
+        "title": "Legs A: Squat",
+        "focus": "Quads, knee flexion and calves"
       },
       "ppl-push-2": {
-        "title": "Upper Chest",
-        "focus": "Incline pressing, lateral shoulder volume, and pec fly pump"
+        "title": "Push B: Incline",
+        "focus": "Incline press, chest isolation and overhead triceps"
       },
       "ppl-pull-2": {
-        "title": "Lats & Biceps",
-        "focus": "Bodyweight pulling, horizontal row volume, and arm thickness"
+        "title": "Pull B: Rows",
+        "focus": "Horizontal pull with rear delts and curls"
       },
       "ppl-legs-2": {
-        "title": "Legs & Abs",
-        "focus": "Anterior quad loading, unilateral balance, and calf specialization"
+        "title": "Legs B: Hinge",
+        "focus": "Posterior chain with a second squat pattern"
       }
     }
   },
   "full-body-classic": {
     "name": "Classic Foundation: 3-Day Full Body",
-    "description": "A time-tested 3-day full body compound routine built for maximum strength and muscle stimulus in 3 efficient weekly sessions.",
+    "description": "A manageable starting point for beginners and returning lifters. Repeat key movement patterns instead of learning a new routine every day. Gym with dumbbells, bench, leg press and cables; about 40–55 minutes.",
     "guidelines": [
-      "Perform workouts on non-consecutive days (e.g. Monday, Wednesday, Friday).",
-      "Focus on progressive overload on the main compound barbell lifts.",
-      "Take 2–3 minute rest on heavy compounds and 90 seconds on isolation lifts."
+      "Use non-consecutive days. For the first two weeks, leave 3–4 good repetitions in reserve and prioritize learning the setup over adding weight. Ask for help with unfamiliar equipment.",
+      "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
+      "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
+      "When every set reaches the top of its rep range with clean form, increase by the smallest available weight next time and return to the lower end. Otherwise keep the weight and build reps.",
+      "Keep the plan for 6–8 weeks before judging progress. If fatigue accumulates or performance drops across several sessions, use fewer sets and lighter loads for a week. Do not train through pain."
     ],
     "workouts": {
       "fb-workout-a": {
-        "title": "Squat & Chest",
-        "focus": "Squat strength, horizontal press, horizontal row, and core"
+        "title": "Full Body A",
+        "focus": "Leg press, chest press, row and hinge"
       },
       "fb-workout-b": {
-        "title": "Deadlift & Press",
-        "focus": "Deadlift power, overhead pressing, vertical pulling, and single-leg strength"
+        "title": "Full Body B",
+        "focus": "Goblet squat, pulldown and supported presses"
       },
       "fb-workout-c": {
-        "title": "Legs & Back",
-        "focus": "Leg hypertrophy, incline upper chest, bodyweight pull, and posterior chain"
+        "title": "Full Body C",
+        "focus": "Repeat the basics with calves and trunk work"
       }
     }
   },
   "home-forge-dumbbells": {
-    "name": "Home Forge: 4-Day Dumbbell Split",
-    "description": "A complete 4-day Upper/Lower split designed exclusively for dumbbells and bodyweight. No specialized machines required.",
+    "name": "Home Forge: 4-Day Dumbbells",
+    "description": "Upper/lower training with adjustable dumbbells and an adjustable bench; no cables, barbell or pull-up station. For lifters comfortable with the basics. About 40–60 minutes.",
     "guidelines": [
-      "Use adjustable or pair dumbbells with manageable micro-increments.",
-      "Maintain strict form and full range of motion to maximize hypertrophy without heavy machines.",
-      "Take 90–120 seconds rest between sets."
+      "Train Monday, Tuesday, Thursday and Friday. Use a stable low platform for the front-foot-elevated split squat. If your dumbbells become too light, use the top of the rep range with controlled form; do not invent extra weight in the log.",
+      "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
+      "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
+      "When every set reaches the top of its rep range with clean form, increase by the smallest available weight next time and return to the lower end. Otherwise keep the weight and build reps.",
+      "Keep the plan for 6–8 weeks before judging progress. If fatigue accumulates or performance drops across several sessions, use fewer sets and lighter loads for a week. Do not train through pain."
     ],
     "workouts": {
       "hf-upper-a": {
-        "title": "Chest & Back",
-        "focus": "Horizontal dumbbell pressing, lat rows, and shoulder volume"
+        "title": "Upper A: Flat Press",
+        "focus": "Flat press, single-arm row and shoulders"
       },
       "hf-lower-a": {
-        "title": "Quads & Hams",
-        "focus": "Goblet squats, dumbbell RDLs, and calf development"
+        "title": "Lower A: Squat & Hinge",
+        "focus": "Squat, Romanian deadlift and unilateral legs"
       },
       "hf-upper-b": {
-        "title": "Shoulders & Arms",
-        "focus": "Incline pressing, chest-supported rows, floor pressing, and biceps"
+        "title": "Upper B: Incline & Row",
+        "focus": "Incline press, supported row and rear delts"
       },
       "hf-lower-b": {
-        "title": "Glutes & Core",
-        "focus": "Unilateral leg loading, glute development, and core stability"
+        "title": "Lower B: Single-Leg Strength",
+        "focus": "Split squat, hinge and glute bridge"
       }
     }
   },
   "athletic-performance": {
-    "name": "Athletic Engine: 3-Day Performance",
-    "description": "A 3-day athletic performance program designed to build explosive lower body power, rotational core stability, vertical jump, and work capacity.",
+    "name": "Athletic Engine: 3-Day Strength & Power",
+    "description": "General strength and low-rep power practice for experienced lifters, not a sport-specific conditioning plan. Full gym with trap bar, kettlebell and low platform; about 50–65 minutes.",
     "guidelines": [
-      "Perform all power exercises (jumps, push press, swings) first while neurologically fresh.",
-      "Move every rep with explosive intent.",
-      "Rest 2–3 minutes on power and compound lifts."
+      "Train on non-consecutive days and account for your sport sessions. Learn swings and push presses before using this plan. Use light-to-moderate loads on these two lifts and stop the set as soon as speed or technique drops, even before the target reps.",
+      "Do not apply automatic rep-range progression to swings or push presses: add load only while every repetition stays fast and controlled. This plan does not replace aerobic training or sport practice.",
+      "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
+      "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
+      "When every set reaches the top of its rep range with clean form, increase by the smallest available weight next time and return to the lower end. Otherwise keep the weight and build reps.",
+      "Keep the plan for 6–8 weeks before judging progress. If fatigue accumulates or performance drops across several sessions, use fewer sets and lighter loads for a week. Do not train through pain."
     ],
     "workouts": {
       "ap-lower-power": {
-        "title": "Lower Power",
-        "focus": "Trap bar deadlift power, vertical box jumps, unilateral acceleration"
+        "title": "Power & Lower Strength",
+        "focus": "Fast hinge, trap-bar strength and balanced upper work"
       },
       "ap-upper-power": {
-        "title": "Upper Power",
-        "focus": "Push press power, weighted pull-up strength, and horizontal row capacity"
+        "title": "Power & Single-Leg Strength",
+        "focus": "Push press followed by unilateral legs and pulling"
       },
       "ap-work-capacity": {
-        "title": "Conditioning & Core",
-        "focus": "Front squat anterior strength, kettlebell swings, farmer carries, and jump rope"
+        "title": "Full-Body Strength",
+        "focus": "Squat, hinge, incline press and supported row"
+      }
+    }
+  },
+  "upper-lower-balanced": {
+    "name": "Balanced Build: 4-Day Upper/Lower",
+    "description": "A practical next step after full-body training: each major area twice a week, without heavy low-rep strength work or six training days. Full gym; about 50–70 minutes.",
+    "guidelines": [
+      "Train upper body Monday/Thursday and lower body Tuesday/Friday. Keep weekends free or move the days while preserving a rest day between sessions for the same region.",
+      "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
+      "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
+      "When every set reaches the top of its rep range with clean form, increase by the smallest available weight next time and return to the lower end. Otherwise keep the weight and build reps.",
+      "Keep the plan for 6–8 weeks before judging progress. If fatigue accumulates or performance drops across several sessions, use fewer sets and lighter loads for a week. Do not train through pain."
+    ],
+    "workouts": {
+      "ul-upper-a": {
+        "title": "Upper A: Flat & Row",
+        "focus": "Balanced horizontal and vertical upper-body work"
+      },
+      "ul-lower-a": {
+        "title": "Lower A: Quads",
+        "focus": "Hack squat, hinge and calves"
+      },
+      "ul-upper-b": {
+        "title": "Upper B: Incline & Pull",
+        "focus": "Incline pressing, lats and delts"
+      },
+      "ul-lower-b": {
+        "title": "Lower B: Glutes & Hamstrings",
+        "focus": "Leg press, glute extension and knee flexion"
+      }
+    }
+  },
+  "machine-foundation": {
+    "name": "Machine Foundation: 3-Day Full Body",
+    "description": "For beginners, returning lifters or anyone who prefers machine setups to free weights. Three repeatable full-body sessions using selectorized/sled machines and cables. About 40–55 minutes; check that your gym has the listed machines.",
+    "guidelines": [
+      "Use non-consecutive days. Set the seat, pads and range of motion before loading; record the same machine’s load each time, since stack numbers differ between machines. Leave 3–4 repetitions in reserve while learning.",
+      "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
+      "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
+      "When every set reaches the top of its rep range with clean form, increase by the smallest available weight next time and return to the lower end. Otherwise keep the weight and build reps.",
+      "Keep the plan for 6–8 weeks before judging progress. If fatigue accumulates or performance drops across several sessions, use fewer sets and lighter loads for a week. Do not train through pain."
+    ],
+    "workouts": {
+      "mf-a": {
+        "title": "Machines A",
+        "focus": "Leg press, chest press and supported row"
+      },
+      "mf-b": {
+        "title": "Machines B",
+        "focus": "Squat machine, pulldown and shoulder press"
+      },
+      "mf-c": {
+        "title": "Machines C",
+        "focus": "Repeat the main machines with rear delts and trunk work"
       }
     }
   }
