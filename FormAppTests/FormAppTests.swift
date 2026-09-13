@@ -5,6 +5,20 @@ import SwiftUI
 @testable import FormApp
 
 final class FormAppTests: XCTestCase {
+    func testOnlyPastUnstartedWorkoutDaysAreMissed() {
+        for today in 0..<7 {
+            for day in 0..<7 {
+                XCTAssertEqual(day < today, WeeklyPlanView.isMissedPlanDay(dayIndex: day, todayIndex: today, hasWorkout: true, completed: false, unfinished: false))
+                XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: day, todayIndex: today, hasWorkout: false, completed: false, unfinished: false))
+                XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: day, todayIndex: today, hasWorkout: true, completed: true, unfinished: false))
+                XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: day, todayIndex: today, hasWorkout: true, completed: false, unfinished: true))
+                XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: day, todayIndex: today, hasWorkout: true, completed: true, unfinished: true))
+            }
+        }
+        XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: 0, todayIndex: 7, hasWorkout: true, completed: false, unfinished: false))
+        XCTAssertFalse(WeeklyPlanView.isMissedPlanDay(dayIndex: -1, todayIndex: 6, hasWorkout: true, completed: false, unfinished: false))
+    }
+
     @MainActor
     func testEquipmentOptionsRenderInEnglishAndTurkishLargeText() throws {
         let previous = LanguageManager.shared.currentLanguage

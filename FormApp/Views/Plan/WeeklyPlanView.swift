@@ -72,6 +72,8 @@ public struct WeeklyPlanView: View {
                             let workoutKey = workout.map { "\(program.id):\($0.id)" } ?? ""
                             let isCompleted = !workoutKey.isEmpty && completedKeys.contains(workoutKey)
                             let isUnfinished = !workoutKey.isEmpty && !isCompleted && unfinishedKeys.contains(workoutKey)
+                            let isMissed = Self.isMissedPlanDay(dayIndex: index, todayIndex: calendar.today,
+                                                               hasWorkout: workout != nil, completed: isCompleted, unfinished: isUnfinished)
                             let isToday = index == calendar.today
                             let dayName = LanguageManager.workoutDays.indices.contains(index)
                                 ? LanguageManager.workoutDays[index]
@@ -106,7 +108,7 @@ public struct WeeklyPlanView: View {
                                             .foregroundColor(workout == nil ? AppColors.muted : AppColors.text)
                                             .lineLimit(1)
 
-                                        Text(workoutSubtitle(workout: workout, isUnfinished: isUnfinished))
+                                        Text(workoutSubtitle(workout: workout, isUnfinished: isUnfinished, isMissed: isMissed))
                                             .font(.system(size: 12))
                                             .foregroundColor(isUnfinished ? Color(hex: 0xFDE8CC).opacity(0.8) : AppColors.muted)
                                     }
@@ -129,7 +131,7 @@ public struct WeeklyPlanView: View {
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 13, style: .continuous)
                                         .stroke(
-                                            isToday ? AppColors.accent.opacity(0.8) : (isUnfinished ? Color(hex: 0x664923) : AppColors.border),
+                                            isToday ? AppColors.accent.opacity(0.8) : (isUnfinished ? AppColors.unfinishedBorder : (isMissed ? AppColors.missedDayBorder : AppColors.border)),
                                             lineWidth: isToday ? 2 : 1
                                         )
                                 )
@@ -169,10 +171,15 @@ public struct WeeklyPlanView: View {
         )
     }
 
-    private func workoutSubtitle(workout: Workout?, isUnfinished: Bool) -> String {
+    static func isMissedPlanDay(dayIndex: Int, todayIndex: Int, hasWorkout: Bool, completed: Bool, unfinished: Bool) -> Bool {
+        (0..<7).contains(dayIndex) && (0..<7).contains(todayIndex) && dayIndex < todayIndex && hasWorkout && !completed && !unfinished
+    }
+
+    private func workoutSubtitle(workout: Workout?, isUnfinished: Bool, isMissed: Bool) -> String {
         if isUnfinished {
             return LanguageManager.t("history.unfinished")
         }
+        if isMissed { return LanguageManager.t("history.missed") }
         if let w = workout {
             return LanguageManager.t("weekly.exerciseCount", ["count": w.exercises.count])
         }
