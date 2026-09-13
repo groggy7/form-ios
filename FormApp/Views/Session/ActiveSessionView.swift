@@ -160,7 +160,7 @@ public struct ActiveSessionView: View {
                                     .padding(.horizontal, 20)
                                     .padding(.top, 10)
                                 }
-                                .onChange(of: currentIndex) { newIdx in
+                                .onChange(of: currentIndex) { _, newIdx in
                                     if exercises.indices.contains(newIdx) {
                                         withAnimation {
                                             scrollProxy.scrollTo(exercises[newIdx].id, anchor: .center)

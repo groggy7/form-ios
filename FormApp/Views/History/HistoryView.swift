@@ -238,8 +238,8 @@ public struct HistoryView: View {
         let activeRecord: WorkoutSessionRecord? = {
             guard let draft = store.activeSession else { return nil }
             let activeDay = store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(draft.id)" })?.date
-                ?? WorkoutCalendar.scheduledDate(forWeekday: draft.workout.day, relativeTo: Date())
                 ?? WorkoutCalendar.localDate(from: draft.startedAt)
+                ?? WorkoutCalendar.scheduledDate(forWeekday: draft.workout.day, relativeTo: Date())
             if activeDay == dateString {
                 let now = Int64(Date().timeIntervalSince1970 * 1000)
                 return SessionProgress.from(draft: draft, nowEpochMillis: now)
