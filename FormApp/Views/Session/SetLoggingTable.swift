@@ -44,7 +44,7 @@ public struct SetLoggingTable: View {
             HStack(spacing: 12) {
                 if !prescription.isEmpty {
                     Text(prescription)
-                        .font(.system(size: 20, weight: .semibold))
+                        .font(.system(size: 16, weight: .semibold))
                         .foregroundColor(AppColors.accent)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
