@@ -67,9 +67,11 @@ public struct SetLoggingTable: View {
 
             // Set Rows
             ForEach(Array(sets.enumerated()), id: \.element.id) { index, set in
+                let isSetEnabled = set.isCompleted || WorkoutSessionUtils.isSetEnabled(sets: sets, index: index)
                 let weightBinding = Binding<String>(
                     get: { set.weightInput.isEmpty ? (set.weightKg.map { WorkoutSessionUtils.formatWeight($0) } ?? "") : set.weightInput },
                     set: { newVal in
+                        guard isSetEnabled else { return }
                         if let sanitized = WorkoutSessionUtils.sanitizedWeightInput(newVal) {
                             let reps = set.repsInput.isEmpty ? (set.completedReps.map { "\($0)" } ?? "") : set.repsInput
                             onUpdateSet(index, sanitized, reps)
@@ -83,6 +85,7 @@ public struct SetLoggingTable: View {
                         return set.repsInput.isEmpty ? (set.completedReps.flatMap { $0 > 0 ? "\($0)" : nil } ?? "") : set.repsInput
                     },
                     set: { newVal in
+                        guard isSetEnabled else { return }
                         if let sanitized = WorkoutSessionUtils.sanitizedRepsInput(newVal) {
                             let weight = set.weightInput.isEmpty ? (set.weightKg.map { WorkoutSessionUtils.formatWeight($0) } ?? "") : set.weightInput
                             onUpdateSet(index, weight, sanitized)
@@ -95,38 +98,52 @@ public struct SetLoggingTable: View {
                 HStack(spacing: 8) {
                     Text("\(set.setNumber)")
                         .font(.system(size: 14, weight: .bold))
-                        .foregroundColor(set.isCompleted ? AppColors.accent : AppColors.secondaryText)
+                        .foregroundColor(
+                            set.isCompleted
+                                ? AppColors.accent
+                                : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35))
+                        )
                         .frame(width: 38, alignment: .leading)
 
-                    TextField("0", text: weightBinding, prompt: Text("0").foregroundColor(AppColors.muted))
+                    TextField("-", text: weightBinding, prompt: Text("-").foregroundColor(AppColors.muted.opacity(isSetEnabled ? 1.0 : 0.4)))
                         .focused($focusedField, equals: Field(id: set.id, weight: true))
-                        .simultaneousGesture(TapGesture().onEnded { selectedField = Field(id: set.id, weight: true) })
+                        .simultaneousGesture(TapGesture().onEnded {
+                            if isSetEnabled {
+                                selectedField = Field(id: set.id, weight: true)
+                            }
+                        })
+                        .disabled(!isSetEnabled)
                         .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \(LanguageManager.t("table.weightKg"))")
                         .keyboardType(.decimalPad)
                         .multilineTextAlignment(.center)
                         .font(.system(size: 15, weight: .semibold))
-                        .foregroundColor(AppColors.text)
+                        .foregroundColor(isSetEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
                         .padding(.vertical, 8)
-                        .background(AppColors.surfaceRaised)
+                        .background(AppColors.surfaceRaised.opacity(isSetEnabled ? 1.0 : 0.5))
                         .cornerRadius(8)
                         .frame(maxWidth: .infinity)
                         .frame(minHeight: 48)
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: true) ? AppColors.accent : .clear))
+                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: true) && isSetEnabled ? AppColors.accent : .clear))
 
-                    TextField("0", text: repsBinding, prompt: Text("0").foregroundColor(AppColors.muted))
+                    TextField("-", text: repsBinding, prompt: Text("-").foregroundColor(AppColors.muted.opacity(isSetEnabled ? 1.0 : 0.4)))
                         .focused($focusedField, equals: Field(id: set.id, weight: false))
-                        .simultaneousGesture(TapGesture().onEnded { selectedField = Field(id: set.id, weight: false) })
+                        .simultaneousGesture(TapGesture().onEnded {
+                            if isSetEnabled {
+                                selectedField = Field(id: set.id, weight: false)
+                            }
+                        })
+                        .disabled(!isSetEnabled)
                         .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \(LanguageManager.t("table.actualReps"))")
                         .keyboardType(.numberPad)
                         .multilineTextAlignment(.center)
                         .font(.system(size: 15, weight: .semibold))
-                        .foregroundColor(AppColors.text)
+                        .foregroundColor(isSetEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
                         .padding(.vertical, 8)
-                        .background(AppColors.surfaceRaised)
+                        .background(AppColors.surfaceRaised.opacity(isSetEnabled ? 1.0 : 0.5))
                         .cornerRadius(8)
                         .frame(maxWidth: .infinity)
                         .frame(minHeight: 48)
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: false) ? AppColors.accent : .clear))
+                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: false) && isSetEnabled ? AppColors.accent : .clear))
 
                     Button(action: {
                         if canComplete {
@@ -142,17 +159,24 @@ public struct SetLoggingTable: View {
                             .foregroundColor(
                                 set.isCompleted
                                     ? AppColors.accent
-                                    : (canComplete ? AppColors.muted.opacity(0.5) : AppColors.muted.opacity(0.2))
+                                    : (!isSetEnabled
+                                        ? AppColors.muted.opacity(0.15)
+                                        : (canComplete ? AppColors.muted.opacity(0.5) : AppColors.muted.opacity(0.2)))
                             )
                             .frame(width: 44, height: 44)
                     }
                     .buttonStyle(.plain)
+                    .disabled(!isSetEnabled && !set.isCompleted)
                 }
                 .padding(.horizontal, 14)
                 .padding(.vertical, 6)
                 .background(
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .fill(set.isCompleted ? AppColors.positiveBg.opacity(0.4) : AppColors.surface)
+                        .fill(
+                            set.isCompleted
+                                ? AppColors.positiveBg.opacity(0.4)
+                                : (isSetEnabled ? AppColors.surface : AppColors.surface.opacity(0.5))
+                        )
                 )
                 .contextMenu {
                     if sets.count > 1 {
@@ -161,7 +185,7 @@ public struct SetLoggingTable: View {
                         }
                     }
                 }
-                if let selected = selectedField, selected.id == set.id {
+                if let selected = selectedField, selected.id == set.id, isSetEnabled {
                     let fieldLabel = LanguageManager.t(selected.weight ? "table.weightKg" : "table.actualReps")
                     let setLabel = "\(LanguageManager.t("table.set")) \(set.setNumber)"
                     VStack(spacing: 4) {

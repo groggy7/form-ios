@@ -2316,4 +2316,30 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(Translations.en["notice.emptySetWarning"], "Weight and rep info cannot be left empty.")
         XCTAssertEqual(Translations.tr["notice.emptySetWarning"], "Tekrar ve ağırlık bilgisi boş bırakılamaz.")
     }
+
+    func testIsSetEnabledRequiresPrecedingSetsToBeCompleted() {
+        let sets = [
+            ExerciseSetLog(setNumber: 1),
+            ExerciseSetLog(setNumber: 2),
+            ExerciseSetLog(setNumber: 3)
+        ]
+        // All incomplete: only set 1 enabled
+        XCTAssertTrue(WorkoutSessionUtils.isSetEnabled(sets: sets, index: 0))
+        XCTAssertFalse(WorkoutSessionUtils.isSetEnabled(sets: sets, index: 1))
+        XCTAssertFalse(WorkoutSessionUtils.isSetEnabled(sets: sets, index: 2))
+
+        // Set 1 completed: set 1 and 2 enabled, set 3 locked
+        var set1Done = sets
+        set1Done[0].isCompleted = true
+        XCTAssertTrue(WorkoutSessionUtils.isSetEnabled(sets: set1Done, index: 0))
+        XCTAssertTrue(WorkoutSessionUtils.isSetEnabled(sets: set1Done, index: 1))
+        XCTAssertFalse(WorkoutSessionUtils.isSetEnabled(sets: set1Done, index: 2))
+
+        // Set 1 and 2 completed: all enabled
+        var set1And2Done = set1Done
+        set1And2Done[1].isCompleted = true
+        XCTAssertTrue(WorkoutSessionUtils.isSetEnabled(sets: set1And2Done, index: 0))
+        XCTAssertTrue(WorkoutSessionUtils.isSetEnabled(sets: set1And2Done, index: 1))
+        XCTAssertTrue(WorkoutSessionUtils.isSetEnabled(sets: set1And2Done, index: 2))
+    }
 }

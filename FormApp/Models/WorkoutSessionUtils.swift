@@ -104,6 +104,11 @@ public enum WorkoutSessionUtils {
         sets.firstIndex(where: { !$0.isCompleted }).map { $0 + 1 } ?? sets.count
     }
 
+    public static func isSetEnabled(sets: [ExerciseSetLog], index: Int) -> Bool {
+        guard index > 0 else { return true }
+        return sets[..<index].allSatisfy { $0.isCompleted }
+    }
+
     public static func adjustWeight(_ input: String, by delta: Int) -> String {
         let current = sanitizedWeightInput(input).flatMap { Double($0) } ?? 0
         let adjusted = (min(9999.99, max(0, current + Double(delta))) * 100).rounded() / 100
