@@ -545,6 +545,7 @@ public enum Translations {
         "notice.programDeleted": "Program deleted.",
         "notice.programApplied": "Switched to {name}.",
         "notice.emptySetWarning": "Weight and rep info cannot be left empty.",
+        "notice.restActiveWarning": "Cannot log a set while the rest timer is running.",
     ]
     
     public static let tr: [String: String] = [
@@ -882,5 +883,6 @@ public enum Translations {
         "notice.programDeleted": "Program silindi.",
         "notice.programApplied": "{name} programına geçildi.",
         "notice.emptySetWarning": "Tekrar ve ağırlık bilgisi boş bırakılamaz.",
+        "notice.restActiveWarning": "Dinlenme sayacı devredeyken set tamamlanamaz.",
     ]
 }

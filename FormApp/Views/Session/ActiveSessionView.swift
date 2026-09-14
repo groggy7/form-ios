@@ -185,9 +185,12 @@ public struct ActiveSessionView: View {
                                         )
                                     }
 
+                                    let isRestActive = (activeDraft.restTimer?.secondsRemaining(nowEpochMillis: nowEpochMillis) ?? 0) > 0
+
                                     SetLoggingTable(
                                         sets: currentSets,
                                         prescription: exercise.displayPrescription,
+                                        isRestActive: isRestActive,
                                         onUpdateSet: { setIdx, weight, reps in
                                             updateSet(exerciseId: exercise.id, index: setIdx, weight: weight, reps: reps)
                                         },
@@ -202,6 +205,9 @@ public struct ActiveSessionView: View {
                                         },
                                         onEmptyWarning: {
                                             showEmptyWarning()
+                                        },
+                                        onRestWarning: {
+                                            showRestWarning()
                                         }
                                     )
                                 }
@@ -353,6 +359,19 @@ public struct ActiveSessionView: View {
         }
     }
 
+    private func showRestWarning() {
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        warningNoticeMessage = LanguageManager.t("notice.restActiveWarning")
+        withAnimation(.easeOut(duration: 0.28)) {
+            isWarningVisible = true
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
+            withAnimation(.easeIn(duration: 0.24)) {
+                isWarningVisible = false
+            }
+        }
+    }
+
     private func updateSet(exerciseId: String, index: Int, weight: String, reps: String) {
         store.updateActiveSession { d in
             var copy = d
@@ -381,7 +400,8 @@ public struct ActiveSessionView: View {
             var sets = copy.setsByExercise[exercise.id] ?? []
             guard sets.indices.contains(index) else { return copy }
             let currentSet = sets[index]
-            if !currentSet.isCompleted && !WorkoutSessionUtils.canCompleteSet(currentSet) {
+            let isRestActive = (copy.restTimer?.secondsRemaining(nowEpochMillis: nowEpochMillis) ?? 0) > 0
+            if !currentSet.isCompleted && (isRestActive || !WorkoutSessionUtils.canCompleteSet(currentSet) || !WorkoutSessionUtils.isSetEnabled(sets: sets, index: index)) {
                 return copy
             }
             let willComplete = !currentSet.isCompleted

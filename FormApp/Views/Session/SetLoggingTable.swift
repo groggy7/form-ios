@@ -9,28 +9,34 @@ public struct SetLoggingTable: View {
     @State private var selectedField: Field?
     let sets: [ExerciseSetLog]
     let prescription: String
+    var isRestActive: Bool = false
     var onUpdateSet: (Int, String, String) -> Void
     var onToggleCompleteSet: (Int) -> Void
     var onAddSet: () -> Void
     var onRemoveSet: (Int) -> Void
     var onEmptyWarning: (() -> Void)? = nil
+    var onRestWarning: (() -> Void)? = nil
 
     public init(
         sets: [ExerciseSetLog],
         prescription: String = "",
+        isRestActive: Bool = false,
         onUpdateSet: @escaping (Int, String, String) -> Void,
         onToggleCompleteSet: @escaping (Int) -> Void,
         onAddSet: @escaping () -> Void,
         onRemoveSet: @escaping (Int) -> Void,
-        onEmptyWarning: (() -> Void)? = nil
+        onEmptyWarning: (() -> Void)? = nil,
+        onRestWarning: (() -> Void)? = nil
     ) {
         self.sets = sets
         self.prescription = prescription
+        self.isRestActive = isRestActive
         self.onUpdateSet = onUpdateSet
         self.onToggleCompleteSet = onToggleCompleteSet
         self.onAddSet = onAddSet
         self.onRemoveSet = onRemoveSet
         self.onEmptyWarning = onEmptyWarning
+        self.onRestWarning = onRestWarning
     }
 
     public var body: some View {
@@ -93,7 +99,7 @@ public struct SetLoggingTable: View {
                     }
                 )
 
-                let canComplete = set.isCompleted || WorkoutSessionUtils.canCompleteSet(set)
+                let canComplete = set.isCompleted || (WorkoutSessionUtils.canCompleteSet(set) && !isRestActive)
 
                 HStack(spacing: 8) {
                     Text("\(set.setNumber)")
@@ -146,7 +152,13 @@ public struct SetLoggingTable: View {
                         .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: false) && isSetEnabled ? AppColors.accent : .clear))
 
                     Button(action: {
-                        if canComplete {
+                        if set.isCompleted {
+                            onToggleCompleteSet(index)
+                            focusedField = nil
+                            selectedField = nil
+                        } else if isRestActive {
+                            onRestWarning?()
+                        } else if canComplete {
                             onToggleCompleteSet(index)
                             focusedField = nil
                             selectedField = nil

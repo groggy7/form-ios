@@ -2317,6 +2317,11 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(Translations.tr["notice.emptySetWarning"], "Tekrar ve ağırlık bilgisi boş bırakılamaz.")
     }
 
+    func testRestActiveWarningTranslationsParity() {
+        XCTAssertEqual(Translations.en["notice.restActiveWarning"], "Cannot log a set while the rest timer is running.")
+        XCTAssertEqual(Translations.tr["notice.restActiveWarning"], "Dinlenme sayacı devredeyken set tamamlanamaz.")
+    }
+
     func testIsSetEnabledRequiresPrecedingSetsToBeCompleted() {
         let sets = [
             ExerciseSetLog(setNumber: 1),
