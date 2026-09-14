@@ -2373,4 +2373,25 @@ final class FormAppTests: XCTestCase {
         let animatedIcon = MovementIcon(exerciseId: "barbell-bench-press", size: 72, animated: true)
         XCTAssertNotNil(animatedIcon)
     }
+
+    @MainActor
+    func testSettingsViewSnapshot() {
+        let view = SettingsView(store: AppStore.shared, onDismiss: {})
+        let controller = UIHostingController(rootView: view)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 440, height: 956))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_settings_view_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
 }
