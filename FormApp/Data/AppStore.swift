@@ -8,12 +8,14 @@ public final class AppStore: ObservableObject {
     private let activeSessionKey = "active_session_v1"
     private let soundKey = "sound_enabled"
     private let defaultRestKey = "default_rest_seconds"
+    private let prefillNextSetKey = "prefill_next_set"
 
     @Published public var state: StoredAppState
     @Published public var activeSession: ActiveSessionDraft?
     @Published public var currentView: ViewMode = .today
     @Published public var soundEnabled: Bool
     @Published public var defaultRestSeconds: Int
+    @Published public var prefillNextSet: Bool
     @Published public var noticeMessage: String?
     @Published public var exerciseCatalogue: [ExerciseCatalogEntry] = []
     
@@ -25,6 +27,7 @@ public final class AppStore: ObservableObject {
     public init() {
         self.soundEnabled = UserDefaults.standard.object(forKey: soundKey) as? Bool ?? true
         self.defaultRestSeconds = UserDefaults.standard.object(forKey: defaultRestKey) as? Int ?? 90
+        self.prefillNextSet = UserDefaults.standard.object(forKey: prefillNextSetKey) as? Bool ?? true
 
         var loadedState = Self.loadStoredState()
         let todayStr = WorkoutCalendar.formatDate(Date())
@@ -60,6 +63,10 @@ public final class AppStore: ObservableObject {
 
         $defaultRestSeconds
             .sink { UserDefaults.standard.set($0, forKey: self.defaultRestKey) }
+            .store(in: &cancellables)
+
+        $prefillNextSet
+            .sink { UserDefaults.standard.set($0, forKey: self.prefillNextSetKey) }
             .store(in: &cancellables)
     }
 

@@ -1165,7 +1165,7 @@ final class FormAppTests: XCTestCase {
         store.saveState(st)
 
         // Start Tuesday workout
-        _ = store.startActiveSession(programId: program.id, workout: tuesdayWorkout)
+        _ = store.startActiveSession(programId: program.id, workout: tuesdayWorkout, allowPast: true)
         guard let draft = store.activeSession else {
             XCTFail("Active session failed to start")
             return
@@ -1201,8 +1201,8 @@ final class FormAppTests: XCTestCase {
         XCTAssertNil(store.activeSession)
 
         // Tuesday in calendarStatuses must be UNFINISHED (orange), NOT MISSED (red)!
-        let today = Date()
-        let statuses = store.calendarStatuses(today: today)
+        let tuesdayDateObj = WorkoutCalendar.parseDate(tuesdayDate) ?? Date()
+        let statuses = store.calendarStatuses(today: tuesdayDateObj)
         XCTAssertEqual(statuses[tuesdayDate], .unfinished, "Tuesday must be orange (.unfinished), not red (.missed)!")
 
         // History list must contain record for Tuesday
@@ -2346,5 +2346,17 @@ final class FormAppTests: XCTestCase {
         XCTAssertTrue(WorkoutSessionUtils.isSetEnabled(sets: set1And2Done, index: 0))
         XCTAssertTrue(WorkoutSessionUtils.isSetEnabled(sets: set1And2Done, index: 1))
         XCTAssertTrue(WorkoutSessionUtils.isSetEnabled(sets: set1And2Done, index: 2))
+    }
+
+    func testPrefillNextSetTranslationsParity() {
+        XCTAssertEqual(Translations.en["settings.prefillNextSet"], "Pre-fill next set")
+        XCTAssertEqual(Translations.tr["settings.prefillNextSet"], "Sonraki seti doldur")
+        XCTAssertEqual(Translations.en["settings.prefillNextSetSubtitle"], "Copy weight and reps from previous set")
+        XCTAssertEqual(Translations.tr["settings.prefillNextSetSubtitle"], "Önceki setin ağırlık ve tekrarını kopyala")
+    }
+
+    func testPrefillNextSetDefault() {
+        let store = AppStore.shared
+        XCTAssertTrue(store.prefillNextSet)
     }
 }

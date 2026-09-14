@@ -406,7 +406,7 @@ public struct ActiveSessionView: View {
             }
             let willComplete = !currentSet.isCompleted
             sets[index].isCompleted = willComplete
-            if willComplete, sets.indices.contains(index + 1) {
+            if willComplete, store.prefillNextSet, sets.indices.contains(index + 1) {
                 sets[index + 1] = WorkoutSessionUtils.prefillSet(sets[index + 1], from: currentSet)
             }
             copy.setsByExercise[exercise.id] = sets
@@ -441,10 +441,11 @@ public struct ActiveSessionView: View {
         store.updateActiveSession { d in
             var copy = d
             var sets = copy.setsByExercise[exerciseId] ?? []
-            sets.append(WorkoutSessionUtils.prefillSet(ExerciseSetLog(
+            let newSet = ExerciseSetLog(
                 setNumber: sets.count + 1,
                 isCompleted: false
-            ), from: sets.last))
+            )
+            sets.append(store.prefillNextSet ? WorkoutSessionUtils.prefillSet(newSet, from: sets.last) : newSet)
             copy.setsByExercise[exerciseId] = sets
             return copy
         }

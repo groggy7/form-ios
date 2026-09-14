@@ -19,21 +19,38 @@ public struct SettingsView: View {
                 VStack(alignment: .leading, spacing: 20) {
                     // Training section
                     settingsSection(title: LanguageManager.t("settings.training")) {
-                        HStack {
-                            Text(LanguageManager.t("settings.defaultRest"))
-                                .font(.system(size: 15))
-                                .foregroundColor(AppColors.text)
-                            Spacer()
-                            Picker("", selection: $store.defaultRestSeconds) {
-                                Text("60s").tag(60)
-                                Text("90s").tag(90)
-                                Text("120s").tag(120)
-                                Text("180s").tag(180)
+                        VStack(spacing: 0) {
+                            HStack {
+                                Text(LanguageManager.t("settings.defaultRest"))
+                                    .font(.system(size: 15))
+                                    .foregroundColor(AppColors.text)
+                                Spacer()
+                                Picker("", selection: $store.defaultRestSeconds) {
+                                    Text("60s").tag(60)
+                                    Text("90s").tag(90)
+                                    Text("120s").tag(120)
+                                    Text("180s").tag(180)
+                                }
+                                .pickerStyle(.segmented)
+                                .frame(width: 180)
                             }
-                            .pickerStyle(.segmented)
-                            .frame(width: 180)
+                            .padding(14)
+
+                            Divider().background(AppColors.border)
+
+                            Toggle(isOn: $store.prefillNextSet) {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(LanguageManager.t("settings.prefillNextSet"))
+                                        .font(.system(size: 15))
+                                        .foregroundColor(AppColors.text)
+                                    Text(LanguageManager.t("settings.prefillNextSetSubtitle"))
+                                        .font(.system(size: 12))
+                                        .foregroundColor(AppColors.secondaryText)
+                                }
+                            }
+                            .tint(AppColors.accent)
+                            .padding(14)
                         }
-                        .padding(14)
                     }
 
                     // Preferences
