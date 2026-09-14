@@ -8,6 +8,7 @@ public struct SetLoggingTable: View {
     @FocusState private var focusedField: Field?
     @State private var selectedField: Field?
     let sets: [ExerciseSetLog]
+    let prescription: String
     var onUpdateSet: (Int, String, String) -> Void
     var onToggleCompleteSet: (Int) -> Void
     var onAddSet: () -> Void
@@ -16,6 +17,7 @@ public struct SetLoggingTable: View {
 
     public init(
         sets: [ExerciseSetLog],
+        prescription: String = "",
         onUpdateSet: @escaping (Int, String, String) -> Void,
         onToggleCompleteSet: @escaping (Int) -> Void,
         onAddSet: @escaping () -> Void,
@@ -23,6 +25,7 @@ public struct SetLoggingTable: View {
         onEmptyWarning: (() -> Void)? = nil
     ) {
         self.sets = sets
+        self.prescription = prescription
         self.onUpdateSet = onUpdateSet
         self.onToggleCompleteSet = onToggleCompleteSet
         self.onAddSet = onAddSet
@@ -32,6 +35,22 @@ public struct SetLoggingTable: View {
 
     public var body: some View {
         VStack(spacing: 8) {
+            HStack(spacing: 12) {
+                if !prescription.isEmpty {
+                    Text(prescription)
+                        .font(.system(size: 20, weight: .semibold))
+                        .foregroundColor(AppColors.accent)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                Text(!sets.isEmpty && sets.allSatisfy(\.isCompleted)
+                     ? LanguageManager.t("table.allSetsDone", ["total": sets.count])
+                     : LanguageManager.t("table.currentSet", ["current": WorkoutSessionUtils.currentSetNumber(sets), "total": sets.count]))
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(AppColors.secondaryText)
+                    .multilineTextAlignment(.trailing)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+            }
+            .padding(12).background(AppColors.positiveBg).cornerRadius(10)
             // Table Header
             HStack(spacing: 8) {
                 Text(LanguageManager.t("table.set"))
@@ -40,7 +59,7 @@ public struct SetLoggingTable: View {
                     .frame(maxWidth: .infinity)
                 Text(LanguageManager.t("table.reps"))
                     .frame(maxWidth: .infinity)
-                Spacer().frame(width: 44)
+                Text(LanguageManager.t("table.doneHeading")).frame(width: 44)
             }
             .font(.system(size: 11, weight: .bold))
             .foregroundColor(AppColors.muted)

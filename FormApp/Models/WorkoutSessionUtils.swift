@@ -100,6 +100,10 @@ public struct SessionProgress {
 }
 
 public enum WorkoutSessionUtils {
+    public static func currentSetNumber(_ sets: [ExerciseSetLog]) -> Int {
+        sets.firstIndex(where: { !$0.isCompleted }).map { $0 + 1 } ?? sets.count
+    }
+
     public static func adjustWeight(_ input: String, by delta: Int) -> String {
         let current = sanitizedWeightInput(input).flatMap { Double($0) } ?? 0
         let adjusted = (min(9999.99, max(0, current + Double(delta))) * 100).rounded() / 100

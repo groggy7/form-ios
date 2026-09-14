@@ -284,6 +284,17 @@ final class FormAppTests: XCTestCase {
     }
 
     func testSetJumpLimitsAndPreviousSetPrefill() throws {
+        let rows = (1...3).map { ExerciseSetLog(setNumber: $0) }
+        XCTAssertEqual(WorkoutSessionUtils.currentSetNumber(rows), 1)
+        var completed = rows
+        completed[0].isCompleted = true
+        XCTAssertEqual(WorkoutSessionUtils.currentSetNumber(completed), 2)
+        completed[1].isCompleted = true
+        completed[2].isCompleted = true
+        XCTAssertEqual(WorkoutSessionUtils.currentSetNumber(completed), 3)
+        completed[0].isCompleted = false
+        XCTAssertEqual(WorkoutSessionUtils.currentSetNumber(completed), 1)
+        XCTAssertEqual(WorkoutSessionUtils.currentSetNumber([]), 0)
         XCTAssertEqual(WorkoutSessionUtils.adjustWeight("7,5", by: 5), "12.5")
         XCTAssertEqual(WorkoutSessionUtils.adjustWeight("2.5", by: -10), "0")
         XCTAssertEqual(WorkoutSessionUtils.adjustWeight("", by: 10), "10")
@@ -320,7 +331,7 @@ final class FormAppTests: XCTestCase {
         for language in ["en", "tr"] {
             LanguageManager.setLanguage(language)
             for index in 0..<2 {
-            let content = SetLoggingTable(sets: [ExerciseSetLog(setNumber: 1, weightInput: "12.5", repsInput: "10")],
+            let content = SetLoggingTable(sets: (1...3).map { ExerciseSetLog(setNumber: $0, weightInput: "12.5", repsInput: "10") }, prescription: "3 × 6–10",
                 onUpdateSet: { _, _, _ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in })
                 .padding(16).environment(\.dynamicTypeSize, .xLarge)
                 .frame(width: 320).background(AppColors.background)
@@ -332,7 +343,7 @@ final class FormAppTests: XCTestCase {
             host.view.layoutIfNeeded()
             RunLoop.main.run(until: Date().addingTimeInterval(0.15))
             let fields = textFields(host.view)
-            XCTAssertEqual(fields.count, 2)
+            XCTAssertEqual(fields.count, 6)
                 window.endEditing(true)
                 RunLoop.main.run(until: Date().addingTimeInterval(0.1))
                 let field = try XCTUnwrap(textFields(host.view).filter { !$0.isHidden }.dropFirst(index).first)

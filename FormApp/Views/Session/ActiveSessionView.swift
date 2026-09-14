@@ -177,11 +177,6 @@ public struct ActiveSessionView: View {
                                             Text(exercise.displayName)
                                                 .font(.system(size: 20, weight: .bold))
                                                 .foregroundColor(AppColors.text)
-                                            if !exercise.displayPrescription.isEmpty {
-                                                Text(exercise.displayPrescription)
-                                                    .font(.system(size: 14, weight: .medium))
-                                                    .foregroundColor(AppColors.accent)
-                                            }
                                         }
                                         Spacer()
                                         MovementIcon(
@@ -192,6 +187,7 @@ public struct ActiveSessionView: View {
 
                                     SetLoggingTable(
                                         sets: currentSets,
+                                        prescription: exercise.displayPrescription,
                                         onUpdateSet: { setIdx, weight, reps in
                                             updateSet(exerciseId: exercise.id, index: setIdx, weight: weight, reps: reps)
                                         },
@@ -259,20 +255,16 @@ public struct ActiveSessionView: View {
                                     HStack(spacing: 8) {
                                         Text(LanguageManager.t(currentIndex < exercises.count - 1 ? "session.nextExercise" : "session.review"))
                                             .font(.system(size: 14, weight: .semibold))
-                                            .foregroundColor(AppColors.text)
+                                            .foregroundColor(.black)
                                         Image(systemName: "arrow.right")
                                             .font(.system(size: 14, weight: .semibold))
-                                            .foregroundColor(AppColors.text)
+                                            .foregroundColor(.black)
                                     }
                                     .frame(maxWidth: .infinity)
                                     .frame(height: 50)
                                     .background(
                                         RoundedRectangle(cornerRadius: 11, style: .continuous)
-                                            .fill(AppColors.surfaceRaised)
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 11, style: .continuous)
-                                                    .stroke(AppColors.border, lineWidth: 1)
-                                            )
+                                            .fill(AppColors.accent)
                                     )
                                 }
                                 .buttonStyle(.plain)
