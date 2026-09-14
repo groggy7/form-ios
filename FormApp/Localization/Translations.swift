@@ -586,7 +586,7 @@ public enum Translations {
         "settings.exportBackup": "Yedeği dışa aktar (JSON)",
         "settings.restoreBackup": "Yedekten geri yükle",
         "settings.about": "FORM hakkında",
-        "settings.aboutDescription": "FORM; antrenmanlarınızı kaydetmek, hareket animasyonları ve teknik ipuçlarıyla formunuzu geliştirmek ve güç gelişiminizi sürdürmek için tasarlanmış, sade ve odaklı bir güç antrenmanı yardımcısıdır.",
+        "settings.aboutDescription": "FORM; antrenmanlarınızı kaydetmek, hareket animasyonları ve teknik ipuçlarıyla formunuzu geliştirmek ve güç gelişiminizi sürdürmek için tasarlanmış, sade ve temiz bir güç antrenmanı yardımcısıdır.",
         "settings.version": "v1.0",
         "video.openExternal": "YouTube'da aç",
         "video.close": "Videoyu kapat",
