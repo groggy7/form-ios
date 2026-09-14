@@ -115,16 +115,27 @@ public struct SettingsView: View {
                     }
 
                     // About
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(LanguageManager.t("settings.about"))
-                            .font(.system(size: 12, weight: .bold))
-                            .foregroundColor(AppColors.muted)
-                        Text(LanguageManager.t("settings.version"))
-                            .font(.system(size: 13))
-                            .foregroundColor(AppColors.secondaryText)
+                    settingsSection(title: LanguageManager.t("settings.about")) {
+                        VStack(alignment: .leading, spacing: 10) {
+                            HStack(spacing: 8) {
+                                Text("FORM")
+                                    .font(.system(size: 16, weight: .bold))
+                                    .foregroundColor(AppColors.text)
+                                Text(LanguageManager.t("settings.version"))
+                                    .font(.system(size: 12, weight: .semibold))
+                                    .foregroundColor(AppColors.accent)
+                                    .padding(.horizontal, 6)
+                                    .padding(.vertical, 2)
+                                    .background(AppColors.accent.opacity(0.15))
+                                    .cornerRadius(6)
+                            }
+                            Text(LanguageManager.t("settings.aboutDescription"))
+                                .font(.system(size: 14))
+                                .foregroundColor(AppColors.secondaryText)
+                                .lineSpacing(3)
+                        }
+                        .padding(14)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 10)
                 }
                 .padding(.vertical, 16)
             }

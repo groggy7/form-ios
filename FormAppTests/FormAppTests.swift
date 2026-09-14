@@ -2359,4 +2359,11 @@ final class FormAppTests: XCTestCase {
         let store = AppStore.shared
         XCTAssertTrue(store.prefillNextSet)
     }
+
+    func testAboutTranslationsParity() {
+        XCTAssertEqual(Translations.en["settings.version"], "v1.0")
+        XCTAssertEqual(Translations.tr["settings.version"], "v1.0")
+        XCTAssertFalse(Translations.en["settings.aboutDescription"]?.isEmpty ?? true)
+        XCTAssertFalse(Translations.tr["settings.aboutDescription"]?.isEmpty ?? true)
+    }
 }
