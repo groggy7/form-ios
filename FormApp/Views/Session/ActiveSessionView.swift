@@ -11,6 +11,7 @@ public struct ActiveSessionView: View {
     @State private var restMuted: Bool = false
     @State private var warningNoticeMessage: String? = nil
     @State private var isWarningVisible: Bool = false
+    @State private var inspectingExerciseId: String? = nil
 
     private let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
 
@@ -107,7 +108,7 @@ public struct ActiveSessionView: View {
                             // Exercise horizontal card carousel
                             ScrollViewReader { scrollProxy in
                                 ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 8) {
+                                    HStack(spacing: 10) {
                                         ForEach(Array(exercises.enumerated()), id: \.element.id) { idx, ex in
                                             let isSel = idx == currentIndex
                                             let sets = activeDraft.setsByExercise[ex.id] ?? []
@@ -119,35 +120,37 @@ public struct ActiveSessionView: View {
                                                     copy.currentExerciseIndex = idx
                                                     return copy
                                                 }
+                                                inspectingExerciseId = ex.id
                                             }) {
                                                 ZStack(alignment: .topTrailing) {
                                                     VStack(spacing: 4) {
                                                         MovementIcon(
                                                             exerciseId: ex.exerciseId,
-                                                            size: 48
+                                                            size: 72,
+                                                            animated: isSel && inspectingExerciseId == nil
                                                         )
 
                                                         Text("\(idx + 1). \(ex.displayName)")
-                                                            .font(.system(size: 10, weight: isSel ? .bold : .medium))
+                                                            .font(.system(size: 11, weight: isSel ? .bold : .medium))
                                                             .foregroundColor(isSel ? AppColors.text : AppColors.muted)
                                                             .lineLimit(2)
                                                             .multilineTextAlignment(.center)
-                                                            .frame(maxWidth: .infinity, minHeight: 26)
+                                                            .frame(maxWidth: .infinity, minHeight: 28)
                                                     }
-                                                    .padding(7)
-                                                    .frame(width: 86)
+                                                    .padding(8)
+                                                    .frame(width: 110)
                                                     .background(
-                                                        RoundedRectangle(cornerRadius: 11, style: .continuous)
+                                                        RoundedRectangle(cornerRadius: 13, style: .continuous)
                                                             .fill(AppColors.surface)
                                                             .overlay(
-                                                                RoundedRectangle(cornerRadius: 11, style: .continuous)
+                                                                RoundedRectangle(cornerRadius: 13, style: .continuous)
                                                                     .stroke(isSel ? AppColors.accent : AppColors.border, lineWidth: 1)
                                                             )
                                                     )
 
                                                     if isAllDone {
                                                         Image(systemName: "checkmark.circle.fill")
-                                                            .font(.system(size: 14))
+                                                            .font(.system(size: 16))
                                                             .foregroundColor(AppColors.accent)
                                                             .padding(4)
                                                     }
@@ -326,6 +329,15 @@ public struct ActiveSessionView: View {
                     .padding(.bottom, restTimer != nil ? 96 : 24)
                 }
                 .animation(.easeInOut(duration: 0.25), value: isWarningVisible)
+            }
+
+            if let inspectingId = inspectingExerciseId,
+               let inspectingExercise = exercises.first(where: { $0.id == inspectingId }) {
+                MiniExerciseDetailModal(
+                    exercise: inspectingExercise,
+                    onDismiss: { inspectingExerciseId = nil }
+                )
+                .transition(.opacity)
             }
 
             ToastOverlay(message: store.noticeMessage)
@@ -541,6 +553,97 @@ public struct ActiveSessionView: View {
         if nowEpochMillis >= end {
             FormAudioPlayer.playRestCompleteSound()
             skipRest()
+        }
+    }
+}
+
+private struct MiniExerciseDetailModal: View {
+    let exercise: Exercise
+    var onDismiss: () -> Void
+
+    var body: some View {
+        ZStack {
+            Color.black.opacity(0.6)
+                .ignoresSafeArea()
+                .onTapGesture { onDismiss() }
+
+            VStack(spacing: 0) {
+                // Header: Title, category, and close button
+                HStack(alignment: .center) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(exercise.displayName)
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(AppColors.text)
+                            .lineLimit(2)
+                        Text(LanguageManager.t("category.\(exercise.resolvedMovement.key)"))
+                            .font(.system(size: 11, weight: .medium))
+                            .foregroundColor(AppColors.accent)
+                    }
+
+                    Spacer()
+
+                    Button(action: onDismiss) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(AppColors.secondaryText)
+                            .frame(width: 44, height: 44)
+                    }
+                    .accessibilityLabel(LanguageManager.t("common.close"))
+                    .accessibilityIdentifier("mini-exercise-detail-close")
+                }
+                .padding(.horizontal, 18)
+                .padding(.top, 14)
+                .padding(.bottom, 12)
+
+                Divider().background(AppColors.border)
+
+                // Scrollable Content: Video + Cues + Avoid
+                ScrollView {
+                    VStack(spacing: 14) {
+                        ExerciseDetailVideo(exerciseId: exercise.exerciseId)
+                            .frame(maxWidth: .infinity)
+                            .background(AppColors.exerciseVideoSurface)
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                    .stroke(AppColors.border, lineWidth: 1)
+                            )
+
+                        let cuesText = exercise.displayCues.trimmingCharacters(in: .whitespacesAndNewlines)
+                        if !cuesText.isEmpty {
+                            TechniqueSectionView(
+                                title: LanguageManager.t("modal.exercise.cues"),
+                                text: cuesText,
+                                accent: AppColors.accent,
+                                isAvoid: false,
+                                initiallyExpanded: false
+                            )
+                        }
+
+                        let avoidText = exercise.displayAvoid.trimmingCharacters(in: .whitespacesAndNewlines)
+                        if !avoidText.isEmpty {
+                            TechniqueSectionView(
+                                title: LanguageManager.t("modal.exercise.avoid"),
+                                text: avoidText,
+                                accent: AppColors.danger,
+                                isAvoid: true,
+                                initiallyExpanded: false
+                            )
+                        }
+                    }
+                    .padding(16)
+                }
+            }
+            .frame(maxWidth: 360, maxHeight: 560)
+            .background(AppColors.surface)
+            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .stroke(AppColors.border, lineWidth: 1)
+            )
+            .shadow(color: Color.black.opacity(0.4), radius: 16, x: 0, y: 8)
+            .padding(24)
+            .accessibilityIdentifier("mini-exercise-detail-modal")
         }
     }
 }

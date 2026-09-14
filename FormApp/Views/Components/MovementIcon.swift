@@ -24,33 +24,43 @@ enum ExerciseThumbnails {
     }
 }
 
-/// Static thumbnail; no player or animation clock.
+/// Static thumbnail by default; can optionally play looping movement animation when animated is true.
 public struct MovementIcon: View {
     private let exerciseId: String?
     private let size: CGFloat
     private let large: Bool
+    private let animated: Bool
 
     public init(
         exerciseId: String?,
         size: CGFloat = 56,
-        large: Bool = false
+        large: Bool = false,
+        animated: Bool = false
     ) {
         self.exerciseId = exerciseId
         self.size = size
         self.large = large
+        self.animated = animated
     }
 
     public var body: some View {
         let finalSize: CGFloat = large ? 108 : size
-        MovementIllustration(exerciseId: exerciseId)
-            .padding(4)
-            .frame(width: finalSize, height: finalSize)
-            .background(AppColors.exerciseThumbnailSurface)
-            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .stroke(AppColors.border.opacity(0.4), lineWidth: 1)
-            )
+        let cornerRadius: CGFloat = finalSize >= 96 ? 12 : (finalSize >= 68 ? 11 : 10)
+        ZStack {
+            MovementIllustration(exerciseId: exerciseId)
+                .padding(4)
+            if animated {
+                ExerciseDetailVideo(exerciseId: exerciseId)
+                    .accessibilityIdentifier("movement-icon-video")
+            }
+        }
+        .frame(width: finalSize, height: finalSize)
+        .background(AppColors.exerciseThumbnailSurface)
+        .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                .stroke(AppColors.border.opacity(0.4), lineWidth: 1)
+        )
     }
 }
 

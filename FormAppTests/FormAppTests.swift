@@ -2366,4 +2366,11 @@ final class FormAppTests: XCTestCase {
         XCTAssertFalse(Translations.en["settings.aboutDescription"]?.isEmpty ?? true)
         XCTAssertFalse(Translations.tr["settings.aboutDescription"]?.isEmpty ?? true)
     }
+
+    func testMovementIconSupportsAnimatedParameter() {
+        let staticIcon = MovementIcon(exerciseId: "barbell-bench-press", size: 72, animated: false)
+        XCTAssertNotNil(staticIcon)
+        let animatedIcon = MovementIcon(exerciseId: "barbell-bench-press", size: 72, animated: true)
+        XCTAssertNotNil(animatedIcon)
+    }
 }
