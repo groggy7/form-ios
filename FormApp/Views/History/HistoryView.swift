@@ -294,7 +294,7 @@ private struct BoxDayCell: View {
                 let isToday = (dateString == todayStr)
                 let calendar = Calendar.current
                 let dayNumber = calendar.component(.day, from: date)
-                let isClickable = (status == .unfinished || status == .missed)
+                let isClickable = (status == .unfinished || status == .missed || status == .completed)
 
                 ZStack {
                     // Outer border ring for today
@@ -782,17 +782,46 @@ public struct HistoryDayDetailSheet: View {
     }
 
     private func exerciseProgressList() -> [ExerciseProgressItem] {
+        let isExplicitlyCompleted = detail.status == .completed || detail.sessionRecord?.isComplete == true
+        if isExplicitlyCompleted, let rec = detail.sessionRecord, !rec.exerciseLogs.isEmpty {
+            return rec.exerciseLogs.map { log in
+                let logKey = log.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
+                let exercise = detail.workout?.exercises.first { ex in
+                    ex.name.trimmingCharacters(in: .whitespaces).lowercased() == logKey ||
+                    ex.displayName.trimmingCharacters(in: .whitespaces).lowercased() == logKey
+                }
+                let name = exercise?.displayName ?? ContentLocalizer.shared.exerciseName(exerciseId: nil, fallback: log.exerciseName)
+                let prescription: String = {
+                    if let ex = exercise {
+                        if let targetSets = log.targetSets, let reps = ex.reps {
+                            return "\(targetSets) × \(reps.displayText)"
+                        }
+                        return ex.displayPrescription
+                    }
+                    return ""
+                }()
+                let completed = log.sets.count
+                let planned = log.targetSets ?? (exercise.map { WorkoutSessionUtils.initialSetCount(exercise: $0) } ?? max(log.sets.count, 1))
+                return ExerciseProgressItem(
+                    name: name,
+                    prescription: prescription,
+                    completedSets: completed,
+                    plannedSets: planned
+                )
+            }
+        }
+
         let plannedExercises = detail.workout?.exercises ?? []
         if !plannedExercises.isEmpty {
-            return plannedExercises.map { ex in
+            let planned = plannedExercises.map { ex in
                 let nameKey = ex.name.trimmingCharacters(in: .whitespaces).lowercased()
                 let displayKey = ex.displayName.trimmingCharacters(in: .whitespaces).lowercased()
                 let log = detail.sessionRecord?.exerciseLogs.first { l in
                     let logKey = l.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
                     return logKey == nameKey || logKey == displayKey
                 }
-                let completed = log?.sets.count ?? 0
-                let planned = log?.targetSets ?? WorkoutSessionUtils.initialSetCount(exercise: ex)
+                let plannedCount = log?.targetSets ?? WorkoutSessionUtils.initialSetCount(exercise: ex)
+                let completed = log?.sets.count ?? (isExplicitlyCompleted && detail.sessionRecord == nil ? plannedCount : 0)
                 let prescription: String = {
                     if let targetSets = log?.targetSets, let reps = ex.reps {
                         return "\(targetSets) × \(reps.displayText)"
@@ -803,9 +832,25 @@ public struct HistoryDayDetailSheet: View {
                     name: ex.displayName,
                     prescription: prescription,
                     completedSets: completed,
+                    plannedSets: plannedCount
+                )
+            }
+            let extraLogs = (detail.sessionRecord?.exerciseLogs ?? []).filter { log in
+                let logKey = log.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
+                return !plannedExercises.contains { ex in
+                    ex.name.trimmingCharacters(in: .whitespaces).lowercased() == logKey ||
+                    ex.displayName.trimmingCharacters(in: .whitespaces).lowercased() == logKey
+                }
+            }.map { log in
+                let planned = log.targetSets ?? max(log.sets.count, 1)
+                return ExerciseProgressItem(
+                    name: ContentLocalizer.shared.exerciseName(exerciseId: nil, fallback: log.exerciseName),
+                    prescription: "",
+                    completedSets: log.sets.count,
                     plannedSets: planned
                 )
             }
+            return planned + extraLogs
         } else if let rec = detail.sessionRecord {
             return rec.exerciseLogs.map { log in
                 let planned = log.targetSets ?? max(log.sets.count, 1)
