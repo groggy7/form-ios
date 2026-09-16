@@ -12,6 +12,7 @@ public struct ActiveSessionView: View {
     @State private var warningNoticeMessage: String? = nil
     @State private var isWarningVisible: Bool = false
     @State private var inspectingExerciseId: String? = nil
+    @State private var isDotVisible: Bool = false
 
     private let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
 
@@ -33,6 +34,21 @@ public struct ActiveSessionView: View {
         let currentExercise = exercises.indices.contains(currentIndex) ? exercises[currentIndex] : nil
         let currentSets = currentExercise.map { activeDraft.setsByExercise[$0.id] ?? [] } ?? []
         let restTimer = activeDraft.restTimer
+
+        let program = store.state.programs.first(where: { $0.id == activeDraft.programId })
+            ?? store.state.programs.first(where: { $0.id == store.state.activeProgramId })
+        let programName = program?.displayName ?? ""
+        let programLabel: String = {
+            if !programName.isEmpty && activeDraft.workout.day > 0 {
+                return "\(programName) D\(activeDraft.workout.day)"
+            } else if !programName.isEmpty {
+                return programName
+            } else if activeDraft.workout.day > 0 {
+                return "D\(activeDraft.workout.day)"
+            } else {
+                return ""
+            }
+        }()
 
         ZStack {
             AppColors.background.ignoresSafeArea()
@@ -58,49 +74,88 @@ public struct ActiveSessionView: View {
             } else {
                 VStack(spacing: 0) {
                     // Top Bar
-                    HStack {
-                        Button(action: {
-                            if progress.hasProgress {
-                                showExitConfirmation = true
-                            } else {
-                                store.abandonActiveSession()
-                            }
-                        }) {
-                            Image(systemName: "arrow.backward")
-                                .font(.system(size: 18, weight: .semibold))
-                                .foregroundColor(AppColors.muted)
-                                .frame(width: 44, height: 44)
-                        }
-                        .buttonStyle(.plain)
-
-                        VStack(alignment: .leading, spacing: 2) {
+                    ZStack {
+                        // Center Column
+                        VStack(spacing: 2) {
                             Text(activeDraft.workout.displayTitle(programId: activeDraft.programId))
-                                .font(.system(size: 17, weight: .bold))
+                                .font(.system(size: 16, weight: .bold))
                                 .foregroundColor(AppColors.text)
                                 .lineLimit(1)
-                            Text(RestTimerUtils.formatSecondsToTime(progress.durationSeconds))
-                                .font(.system(size: 12, weight: .semibold, design: .monospaced))
-                                .foregroundColor(AppColors.accent)
-                        }
 
-                        Spacer()
+                            HStack(spacing: 5) {
+                                Circle()
+                                    .fill(AppColors.accent)
+                                    .frame(width: 7, height: 7)
+                                    .opacity(isDotVisible ? 1.0 : 0.25)
+                                    .onAppear {
+                                        withAnimation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true)) {
+                                            isDotVisible = true
+                                        }
+                                    }
 
-                        Button(action: {
-                            presentWorkoutSummary()
-                        }) {
-                            Text(LanguageManager.t("session.finish"))
-                                .font(.system(size: 14, weight: .bold))
-                                .foregroundColor(AppColors.todaySelectionText)
-                                .padding(.horizontal, 14)
-                                .padding(.vertical, 7)
-                                .background(AppColors.accent)
-                                .cornerRadius(10)
+                                Text(RestTimerUtils.formatSecondsToTime(progress.durationSeconds))
+                                    .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                                    .foregroundColor(AppColors.accent)
+
+                                if !programLabel.isEmpty {
+                                    Text("·")
+                                        .font(.system(size: 12))
+                                        .foregroundColor(AppColors.muted)
+
+                                    Text(programLabel)
+                                        .font(.system(size: 12))
+                                        .foregroundColor(AppColors.muted)
+                                        .lineLimit(1)
+                                }
+                            }
                         }
-                        .buttonStyle(.plain)
+                        .padding(.horizontal, 72)
+
+                        // Left and Right buttons
+                        HStack {
+                            Button(action: {
+                                if progress.hasProgress {
+                                    showExitConfirmation = true
+                                } else {
+                                    store.abandonActiveSession()
+                                }
+                            }) {
+                                Image(systemName: "chevron.left")
+                                    .font(.system(size: 16, weight: .bold))
+                                    .foregroundColor(AppColors.text)
+                                    .frame(width: 38, height: 38)
+                                    .background(AppColors.surface)
+                                    .cornerRadius(10)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(AppColors.border, lineWidth: 1)
+                                    )
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel(LanguageManager.t("session.exit"))
+
+                            Spacer()
+
+                            Button(action: {
+                                presentWorkoutSummary()
+                            }) {
+                                Text(LanguageManager.t("session.finishBtn"))
+                                    .font(.system(size: 13, weight: .semibold))
+                                    .foregroundColor(AppColors.accent)
+                                    .padding(.horizontal, 14)
+                                    .padding(.vertical, 6)
+                                    .background(Color.clear)
+                                    .overlay(
+                                        Capsule()
+                                            .stroke(AppColors.accent, lineWidth: 1)
+                                    )
+                            }
+                            .buttonStyle(.plain)
+                        }
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 8)
-                    .background(AppColors.surface)
+                    .background(AppColors.background)
 
                     // Main Content
                     ScrollView {
