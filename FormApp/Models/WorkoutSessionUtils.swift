@@ -249,7 +249,14 @@ public enum WorkoutSessionUtils {
     }
 
     public static func sanitizedWeightInput(_ value: String) -> String? {
-        let normalized = value.replacingOccurrences(of: ",", with: ".").trimmingCharacters(in: .whitespaces)
+        var normalized = value.replacingOccurrences(of: ",", with: ".").trimmingCharacters(in: .whitespaces)
+        if normalized.isEmpty { return "" }
+        if normalized.range(of: #"^0+$"#, options: .regularExpression) != nil { return nil }
+        if normalized.hasPrefix(".") { normalized = "0" + normalized }
+        if let regex = try? NSRegularExpression(pattern: #"^0+(?=[1-9]|0\.)"#) {
+            let range = NSRange(location: 0, length: normalized.utf16.count)
+            normalized = regex.stringByReplacingMatches(in: normalized, options: [], range: range, withTemplate: "")
+        }
         guard normalized.count <= 7 else { return nil }
         let regex = try! NSRegularExpression(pattern: #"^\d{0,4}(\.\d{0,2})?$"#)
         let range = NSRange(location: 0, length: normalized.utf16.count)

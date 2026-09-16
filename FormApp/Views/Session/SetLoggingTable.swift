@@ -76,11 +76,19 @@ public struct SetLoggingTable: View {
                 let isSetEnabled = set.isCompleted || WorkoutSessionUtils.isSetEnabled(sets: sets, index: index)
                 let isSetInputEnabled = !isRestActive && isSetEnabled
                 let weightBinding = Binding<String>(
-                    get: { set.weightInput.isEmpty ? (set.weightKg.map { WorkoutSessionUtils.formatWeight($0) } ?? "") : set.weightInput },
+                    get: {
+                        if set.weightInput == "0" { return "" }
+                        return set.weightInput.isEmpty ? (set.weightKg.flatMap { $0 > 0 ? WorkoutSessionUtils.formatWeight($0) : nil } ?? "") : set.weightInput
+                    },
                     set: { newVal in
                         guard isSetInputEnabled else { return }
+                        if newVal == "0" || newVal == "00" {
+                            let reps = (set.repsInput == "0" || set.repsInput.isEmpty) ? (set.completedReps.flatMap { $0 > 0 ? "\($0)" : nil } ?? "") : set.repsInput
+                            onUpdateSet(index, "", reps)
+                            return
+                        }
                         if let sanitized = WorkoutSessionUtils.sanitizedWeightInput(newVal) {
-                            let reps = set.repsInput.isEmpty ? (set.completedReps.map { "\($0)" } ?? "") : set.repsInput
+                            let reps = (set.repsInput == "0" || set.repsInput.isEmpty) ? (set.completedReps.flatMap { $0 > 0 ? "\($0)" : nil } ?? "") : set.repsInput
                             onUpdateSet(index, sanitized, reps)
                         }
                     }
@@ -93,8 +101,13 @@ public struct SetLoggingTable: View {
                     },
                     set: { newVal in
                         guard isSetInputEnabled else { return }
+                        if newVal == "0" || newVal == "00" {
+                            let weight = (set.weightInput == "0" || set.weightInput.isEmpty) ? (set.weightKg.flatMap { $0 > 0 ? WorkoutSessionUtils.formatWeight($0) : nil } ?? "") : set.weightInput
+                            onUpdateSet(index, weight, "")
+                            return
+                        }
                         if let sanitized = WorkoutSessionUtils.sanitizedRepsInput(newVal) {
-                            let weight = set.weightInput.isEmpty ? (set.weightKg.map { WorkoutSessionUtils.formatWeight($0) } ?? "") : set.weightInput
+                            let weight = (set.weightInput == "0" || set.weightInput.isEmpty) ? (set.weightKg.flatMap { $0 > 0 ? WorkoutSessionUtils.formatWeight($0) : nil } ?? "") : set.weightInput
                             onUpdateSet(index, weight, sanitized)
                         }
                     }
@@ -112,7 +125,7 @@ public struct SetLoggingTable: View {
                         )
                         .frame(width: 38, alignment: .leading)
 
-                    TextField("-", text: weightBinding, prompt: Text("-").foregroundColor(AppColors.muted.opacity(isSetInputEnabled ? 1.0 : 0.4)))
+                    TextField("0", text: weightBinding, prompt: Text("0").foregroundColor(AppColors.muted.opacity(isSetInputEnabled ? 1.0 : 0.4)))
                         .focused($focusedField, equals: Field(id: set.id, weight: true))
                         .simultaneousGesture(TapGesture().onEnded {
                             if isSetInputEnabled {
@@ -132,7 +145,7 @@ public struct SetLoggingTable: View {
                         .frame(minHeight: 48)
                         .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: true) && isSetInputEnabled ? AppColors.accent : .clear))
 
-                    TextField("-", text: repsBinding, prompt: Text("-").foregroundColor(AppColors.muted.opacity(isSetInputEnabled ? 1.0 : 0.4)))
+                    TextField("0", text: repsBinding, prompt: Text("0").foregroundColor(AppColors.muted.opacity(isSetInputEnabled ? 1.0 : 0.4)))
                         .focused($focusedField, equals: Field(id: set.id, weight: false))
                         .simultaneousGesture(TapGesture().onEnded {
                             if isSetInputEnabled {
