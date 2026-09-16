@@ -170,12 +170,15 @@ public struct ActiveSessionView: View {
                                             let isAllDone = !sets.isEmpty && sets.allSatisfy { $0.isCompleted }
 
                                             Button(action: {
-                                                store.updateActiveSession { d in
-                                                    var copy = d
-                                                    copy.currentExerciseIndex = idx
-                                                    return copy
+                                                if isSel {
+                                                    inspectingExerciseId = ex.id
+                                                } else {
+                                                    store.updateActiveSession { d in
+                                                        var copy = d
+                                                        copy.currentExerciseIndex = idx
+                                                        return copy
+                                                    }
                                                 }
-                                                inspectingExerciseId = ex.id
                                             }) {
                                                 ZStack(alignment: .topTrailing) {
                                                     VStack(spacing: 4) {
