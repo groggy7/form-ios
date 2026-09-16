@@ -82,6 +82,8 @@
 		B10000000000000000000005 /* VideoPlayerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000005 /* VideoPlayerSheet.swift */; };
 		B10000000000000000000006 /* ExerciseVideosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000006 /* ExerciseVideosView.swift */; };
 		B10000000000000000000007 /* ExerciseVideoLinksSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000007 /* ExerciseVideoLinksSheet.swift */; };
+		PR0000000000000000000002 /* PersonalRecordTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = PR0000000000000000000001 /* PersonalRecordTracker.swift */; };
+		WG0000000000000000000002 /* WeeklyGoalProgressCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = WG0000000000000000000001 /* WeeklyGoalProgressCard.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -95,6 +97,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		PR0000000000000000000001 /* PersonalRecordTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordTracker.swift; sourceTree = "<group>"; };
+		WG0000000000000000000001 /* WeeklyGoalProgressCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyGoalProgressCard.swift; sourceTree = "<group>"; };
         A90000000000000000000001 /* 07_upper_lower.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 07_upper_lower.json; sourceTree = "<group>"; };
         A90000000000000000000004 /* 08_machine_foundation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 08_machine_foundation.json; sourceTree = "<group>"; };
         E30000000000000000000002 /* ExerciseEquipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseEquipment.swift; sourceTree = "<group>"; };
@@ -277,6 +281,7 @@
 		89CA1238E5FDE9D1567685BB /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				PR0000000000000000000001 /* PersonalRecordTracker.swift */,
 				68CE78AD9510C658344F7888 /* WorkoutModels.swift */,
 				829AB05F70AD9B7E6DEE97CC /* WorkoutSessionUtils.swift */,
 			);
@@ -378,6 +383,7 @@
 				685D6F413D877B7E332EEF6D /* TodayHeroCard.swift */,
 				A68AD20F92BF7286266D03EB /* TodayView.swift */,
 				6C86D18E36BC5C24BB99CF16 /* WeekStripView.swift */,
+				WG0000000000000000000001 /* WeeklyGoalProgressCard.swift */,
 			);
 			path = Today;
 			sourceTree = "<group>";
@@ -573,6 +579,8 @@
 				B10000000000000000000005 /* VideoPlayerSheet.swift in Sources */,
 				B10000000000000000000006 /* ExerciseVideosView.swift in Sources */,
 				B10000000000000000000007 /* ExerciseVideoLinksSheet.swift in Sources */,
+				PR0000000000000000000002 /* PersonalRecordTracker.swift in Sources */,
+				WG0000000000000000000002 /* WeeklyGoalProgressCard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

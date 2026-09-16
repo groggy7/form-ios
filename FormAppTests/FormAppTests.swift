@@ -2463,4 +2463,244 @@ final class FormAppTests: XCTestCase {
             print("Successfully wrote snapshot to \(path)")
         }
     }
+
+    private func makePrSession(
+        id: String,
+        startedAt: String,
+        completedAt: String = "",
+        durationSeconds: Int = 1800,
+        volumeKg: Double = 1000.0,
+        exercises: [(String, [Double])]
+    ) -> WorkoutSessionRecord {
+        let comp = completedAt.isEmpty ? startedAt : completedAt
+        let exerciseLogs = exercises.map { (name, weights) in
+            SessionExerciseLog(
+                exerciseName: name,
+                sets: weights.enumerated().map { idx, w in
+                    SessionSetLog(setNumber: idx + 1, weightKg: w, reps: 10)
+                },
+                targetSets: weights.count
+            )
+        }
+        return WorkoutSessionRecord(
+            id: id,
+            programId: "prog-1",
+            workoutId: "w-1",
+            workoutTitle: "Test Workout",
+            startedAt: startedAt,
+            completedAt: comp,
+            durationSeconds: durationSeconds,
+            totalVolumeKg: volumeKg,
+            totalCompletedSets: exercises.reduce(0) { $0 + $1.1.count },
+            exerciseLogs: exerciseLogs,
+            isComplete: true
+        )
+    }
+
+    func testFirstRecordedWeightIsBaselineNotPR() {
+        let session1 = makePrSession(
+            id: "s1",
+            startedAt: "2026-09-14T10:00:00Z",
+            exercises: [
+                ("Bench Press", [60.0, 70.0, 80.0]),
+                ("Barbell Squat", [100.0, 100.0])
+            ]
+        )
+
+        let prCount = PersonalRecordTracker.countPrsForWeek(
+            history: [session1],
+            currentWeekKey: "2026-W38",
+            timeZone: TimeZone(identifier: "UTC")!
+        )
+
+        XCTAssertEqual(prCount, 0, "First time weights are recorded must not count as PRs")
+    }
+
+    func testPassingPreviousWeightHitsPR() {
+        let session1 = makePrSession(
+            id: "s1",
+            startedAt: "2026-09-07T10:00:00Z", // Week 37
+            exercises: [("Bench Press", [80.0, 80.0])]
+        )
+        let session2 = makePrSession(
+            id: "s2",
+            startedAt: "2026-09-14T10:00:00Z", // Week 38
+            exercises: [("Bench Press", [80.0, 85.0])]
+        )
+
+        let prCountWeek38 = PersonalRecordTracker.countPrsForWeek(
+            history: [session1, session2],
+            currentWeekKey: "2026-W38",
+            timeZone: TimeZone(identifier: "UTC")!
+        )
+
+        XCTAssertEqual(prCountWeek38, 1, "Exceeding 80 kg with 85 kg must hit 1 PR in Week 38")
+    }
+
+    func testEqualOrLowerWeightDoesNotHitPR() {
+        let session1 = makePrSession(
+            id: "s1",
+            startedAt: "2026-09-07T10:00:00Z", // Week 37
+            exercises: [("Bench Press", [80.0, 80.0])]
+        )
+        let session2 = makePrSession(
+            id: "s2",
+            startedAt: "2026-09-14T10:00:00Z", // Week 38
+            exercises: [("Bench Press", [70.0, 80.0])]
+        )
+
+        let prCount = PersonalRecordTracker.countPrsForWeek(
+            history: [session1, session2],
+            currentWeekKey: "2026-W38",
+            timeZone: TimeZone(identifier: "UTC")!
+        )
+
+        XCTAssertEqual(prCount, 0, "Matching or lower weight must not count as a PR")
+    }
+
+    func testMultipleExercisesInWeekTrackIndependentPRs() {
+        let session1 = makePrSession(
+            id: "s1",
+            startedAt: "2026-09-07T10:00:00Z", // Week 37
+            exercises: [
+                ("Bench Press", [80.0]),
+                ("Barbell Squat", [100.0])
+            ]
+        )
+        let session2 = makePrSession(
+            id: "s2",
+            startedAt: "2026-09-15T10:00:00Z", // Week 38
+            exercises: [
+                ("Bench Press", [85.0]),    // PR #1 (passed 80)
+                ("Barbell Squat", [105.0]),  // PR #2 (passed 100)
+                ("Overhead Press", [50.0])   // Baseline (not PR)
+            ]
+        )
+
+        let prCount = PersonalRecordTracker.countPrsForWeek(
+            history: [session1, session2],
+            currentWeekKey: "2026-W38",
+            timeZone: TimeZone(identifier: "UTC")!
+        )
+
+        XCTAssertEqual(prCount, 2)
+    }
+
+    func testBodyweightZeroKgDoesNotEstablishOrHitWeightPR() {
+        let session1 = makePrSession(
+            id: "s1",
+            startedAt: "2026-09-07T10:00:00Z",
+            exercises: [("Pull-Up", [0.0])]
+        )
+        let session2 = makePrSession(
+            id: "s2",
+            startedAt: "2026-09-14T10:00:00Z",
+            exercises: [("Pull-Up", [10.0])] // First weight recorded, baseline
+        )
+        let session3 = makePrSession(
+            id: "s3",
+            startedAt: "2026-09-16T10:00:00Z",
+            exercises: [("Pull-Up", [15.0])] // Passed 10 -> PR!
+        )
+
+        let prCountWeek38 = PersonalRecordTracker.countPrsForWeek(
+            history: [session1, session2, session3],
+            currentWeekKey: "2026-W38",
+            timeZone: TimeZone(identifier: "UTC")!
+        )
+
+        XCTAssertEqual(prCountWeek38, 1, "10 kg was first recorded weight, 15 kg was the PR")
+    }
+
+    func testWeeklyGoalMetricsFormatting() {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+
+        LanguageManager.setLanguage("en")
+        let metrics = WeeklyGoalProgressMetrics(
+            completedWorkouts: 1,
+            totalWorkouts: 5,
+            totalVolumeKg: 14850.0,
+            activeDurationSeconds: 5040, // 1h 24m
+            prsHitCount: 2,
+            hasUnfinishedProgress: false
+        )
+
+        XCTAssertEqual(metrics.formattedVolume, "14,850")
+        XCTAssertEqual(metrics.formattedActiveTime, "1h 24m")
+        XCTAssertEqual(metrics.progressFraction, 0.2, accuracy: 0.001)
+
+        LanguageManager.setLanguage("tr")
+        XCTAssertEqual(metrics.formattedVolume, "14.850")
+        XCTAssertEqual(metrics.formattedActiveTime, "1 sa 24 dk")
+    }
+
+    @MainActor
+    func testWeeklyGoalProgressCardSnapshot() {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        LanguageManager.setLanguage("en")
+
+        let metrics = WeeklyGoalProgressMetrics(
+            completedWorkouts: 3,
+            totalWorkouts: 4,
+            totalVolumeKg: 14850.0,
+            activeDurationSeconds: 5040,
+            prsHitCount: 2,
+            hasUnfinishedProgress: false
+        )
+
+        let view = VStack(spacing: 16) {
+            WeeklyGoalProgressCard(metrics: metrics)
+        }
+        .padding(20)
+        .frame(width: 440)
+        .background(AppColors.background)
+
+        let controller = UIHostingController(rootView: view)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 440, height: 300))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_weekly_goal_progress_card_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote WeeklyGoalProgressCard snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testTodayViewSnapshot() {
+        let store = AppStore.shared
+        let view = TodayView(
+            store: store,
+            onOpenPrograms: {},
+            onOpenSettings: {},
+            onSelectExercise: { _ in }
+        )
+        .background(AppColors.background)
+
+        let controller = UIHostingController(rootView: view)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 440, height: 956))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_today_view_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote TodayView snapshot to \(path)")
+        }
+    }
 }

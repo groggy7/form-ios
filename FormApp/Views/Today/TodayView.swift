@@ -28,8 +28,14 @@ public struct TodayView: View {
             guard let w = workout, w.day > store.weekCalendar.today + 1 else { return nil }
             return LanguageManager.workoutDays.indices.contains(w.day - 1) ? LanguageManager.workoutDays[w.day - 1] : nil
         }()
-        let completedCount = program?.workouts.filter { store.state.completed.contains("\(program?.id ?? ""):\($0.id)") }.count ?? 0
-        let totalWorkouts = program?.workouts.count ?? 0
+        let weeklyMetrics = PersonalRecordTracker.computeWeeklyMetrics(
+            program: program,
+            completedKeys: store.state.completed,
+            history: store.state.history,
+            currentWeekKey: store.state.currentWeekKey,
+            activeSession: store.activeSession,
+            unfinishedKeys: store.unfinishedWorkoutKeys()
+        )
 
         ScrollView {
             VStack(spacing: 16) {
@@ -77,31 +83,9 @@ public struct TodayView: View {
                     }
                 )
 
-                // Weekly progress bar
-                VStack(spacing: 10) {
-                    HStack {
-                        Text(LanguageManager.t("today.weekProgress"))
-                            .font(.system(size: 12))
-                            .foregroundColor(AppColors.secondaryText)
-                        Spacer()
-                        Text("\(completedCount) / \(totalWorkouts)")
-                            .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(AppColors.accent)
-                    }
-
-                    GeometryReader { geo in
-                        ZStack(alignment: .leading) {
-                            Capsule()
-                                .fill(AppColors.surfaceRaised)
-                                .frame(height: 4)
-                            Capsule()
-                                .fill(AppColors.accent)
-                                .frame(width: totalWorkouts > 0 ? geo.size.width * CGFloat(completedCount) / CGFloat(totalWorkouts) : 0, height: 4)
-                        }
-                    }
-                    .frame(height: 4)
-                }
-                .padding(.horizontal, 20)
+                // Weekly goal progress card
+                WeeklyGoalProgressCard(metrics: weeklyMetrics)
+                    .padding(.horizontal, 20)
 
                 // Exercise list preview
                 if let workout = workout, !workout.exercises.isEmpty {
