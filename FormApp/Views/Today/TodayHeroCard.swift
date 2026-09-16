@@ -130,7 +130,7 @@ public struct TodayHeroCard: View {
                     .font(.system(size: 32, weight: .semibold))
                     .foregroundColor(Color(hex: 0xF3EFE5))
                     .lineLimit(2)
-                    .frame(maxWidth: 260, alignment: .leading)
+                    .frame(maxWidth: 215, alignment: .leading)
 
                 Spacer().frame(height: 9)
 
@@ -182,7 +182,7 @@ public struct TodayHeroCard: View {
                     .font(.system(size: 12))
                     .foregroundColor(Color(hex: 0xB1BAC2))
 
-                Spacer().frame(height: 18)
+                Spacer(minLength: 22)
 
                 // Button
                 Button(action: onStart) {
@@ -219,6 +219,7 @@ public struct TodayHeroCard: View {
             }
             .padding(EdgeInsets(top: 22, leading: 19, bottom: 19, trailing: 19))
         }
+        .frame(minHeight: 395)
         .padding(.horizontal, 20)
     }
 
