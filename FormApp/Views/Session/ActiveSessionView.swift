@@ -12,7 +12,7 @@ public struct ActiveSessionView: View {
     @State private var warningNoticeMessage: String? = nil
     @State private var isWarningVisible: Bool = false
     @State private var inspectingExerciseId: String? = nil
-    @State private var isDotVisible: Bool = false
+    @State private var isRadarPinging: Bool = false
 
     private let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
 
@@ -82,16 +82,29 @@ public struct ActiveSessionView: View {
                                 .foregroundColor(AppColors.text)
                                 .lineLimit(1)
 
-                            HStack(spacing: 5) {
-                                Circle()
-                                    .fill(AppColors.accent)
-                                    .frame(width: 7, height: 7)
-                                    .opacity(isDotVisible ? 1.0 : 0.25)
-                                    .onAppear {
-                                        withAnimation(.easeInOut(duration: 0.8).repeatForever(autoreverses: true)) {
-                                            isDotVisible = true
-                                        }
-                                    }
+                            HStack(spacing: 6) {
+                                ZStack {
+                                    // Outer expanding radar ping ripple
+                                    Circle()
+                                        .fill(AppColors.accent)
+                                        .frame(width: 7, height: 7)
+                                        .scaleEffect(isRadarPinging ? 2.3 : 1.0)
+                                        .opacity(isRadarPinging ? 0.0 : 0.75)
+                                        .animation(
+                                            .easeOut(duration: 1.4)
+                                            .repeatForever(autoreverses: false),
+                                            value: isRadarPinging
+                                        )
+
+                                    // Solid core dot
+                                    Circle()
+                                        .fill(AppColors.accent)
+                                        .frame(width: 7, height: 7)
+                                }
+                                .frame(width: 8, height: 8)
+                                .onAppear {
+                                    isRadarPinging = true
+                                }
 
                                 Text(RestTimerUtils.formatSecondsToTime(progress.durationSeconds))
                                     .font(.system(size: 12, weight: .semibold, design: .monospaced))
