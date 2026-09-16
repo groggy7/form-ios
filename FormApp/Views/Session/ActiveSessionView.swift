@@ -12,7 +12,6 @@ public struct ActiveSessionView: View {
     @State private var warningNoticeMessage: String? = nil
     @State private var isWarningVisible: Bool = false
     @State private var inspectingExerciseId: String? = nil
-    @State private var isRadarPinging: Bool = false
 
     private let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
 
@@ -83,27 +82,33 @@ public struct ActiveSessionView: View {
                                 .lineLimit(1)
 
                             HStack(spacing: 6) {
-                                ZStack {
-                                    // Outer expanding radar ping ripple
-                                    Circle()
-                                        .fill(AppColors.accent)
-                                        .frame(width: 7, height: 7)
-                                        .scaleEffect(isRadarPinging ? 2.3 : 1.0)
-                                        .opacity(isRadarPinging ? 0.0 : 0.75)
-                                        .animation(
-                                            .easeOut(duration: 1.4)
-                                            .repeatForever(autoreverses: false),
-                                            value: isRadarPinging
-                                        )
+                                TimelineView(.animation) { timeline in
+                                    let time = timeline.date.timeIntervalSinceReferenceDate
+                                    let cycleTime = time.truncatingRemainder(dividingBy: 1.2)
+                                    let (scale, opacity): (CGFloat, Double) = {
+                                        if cycleTime < 0.20 {
+                                            return (1.0, 1.0)
+                                        } else if cycleTime < 0.45 {
+                                            let fraction = (cycleTime - 0.20) / 0.25
+                                            let easeOut = 1.0 - (1.0 - fraction) * (1.0 - fraction)
+                                            let s = 1.0 + easeOut * 1.2
+                                            let o = max(0.0, 1.0 - fraction * fraction)
+                                            return (CGFloat(s), o)
+                                        } else {
+                                            return (1.0, 0.0)
+                                        }
+                                    }()
 
-                                    // Solid core dot
-                                    Circle()
-                                        .fill(AppColors.accent)
-                                        .frame(width: 7, height: 7)
-                                }
-                                .frame(width: 8, height: 8)
-                                .onAppear {
-                                    isRadarPinging = true
+                                    ZStack {
+                                        if opacity > 0.001 {
+                                            Circle()
+                                                .fill(AppColors.accent)
+                                                .frame(width: 7, height: 7)
+                                                .scaleEffect(scale)
+                                                .opacity(opacity)
+                                        }
+                                    }
+                                    .frame(width: 8, height: 8)
                                 }
 
                                 Text(RestTimerUtils.formatSecondsToTime(progress.durationSeconds))
