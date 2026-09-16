@@ -264,20 +264,24 @@ public struct SetLoggingTable: View {
             }
 
             // Add Set and Remove Last Buttons
-            HStack(spacing: 10) {
+            HStack(spacing: 8) {
                 Button(action: onAddSet) {
-                    HStack(spacing: 5) {
+                    HStack(spacing: 6) {
                         Image(systemName: "plus")
                             .font(.system(size: 13, weight: .bold))
                         Text(LanguageManager.t("table.addSet"))
-                            .font(.system(size: 12, weight: .semibold))
+                            .font(.system(size: 13, weight: .semibold))
                     }
                     .foregroundColor(AppColors.accent)
                     .frame(maxWidth: .infinity)
                     .frame(height: 44)
                     .background(
                         RoundedRectangle(cornerRadius: 10, style: .continuous)
-                            .stroke(AppColors.border, lineWidth: 1)
+                            .fill(AppColors.positiveBg)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .stroke(AppColors.accent.opacity(0.45), lineWidth: 1)
+                            )
                     )
                 }
                 .buttonStyle(.plain)
@@ -287,19 +291,15 @@ public struct SetLoggingTable: View {
                         onRemoveSet(sets.count - 1)
                     }
                 }) {
-                    HStack(spacing: 5) {
+                    HStack(spacing: 4) {
                         Image(systemName: "minus")
-                            .font(.system(size: 13, weight: .bold))
-                        Text(LanguageManager.t("table.removeSet"))
                             .font(.system(size: 12, weight: .semibold))
+                        Text(LanguageManager.t("table.removeSet"))
+                            .font(.system(size: 12, weight: .medium))
                     }
-                    .foregroundColor(sets.count > 1 ? AppColors.accent : AppColors.muted.opacity(0.4))
-                    .frame(maxWidth: .infinity)
+                    .foregroundColor(sets.count > 1 ? AppColors.muted : AppColors.muted.opacity(0.35))
                     .frame(height: 44)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10, style: .continuous)
-                            .stroke(sets.count > 1 ? AppColors.border : AppColors.border.opacity(0.4), lineWidth: 1)
-                    )
+                    .padding(.horizontal, 8)
                 }
                 .buttonStyle(.plain)
                 .disabled(sets.count <= 1)

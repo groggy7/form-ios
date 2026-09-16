@@ -3070,4 +3070,48 @@ final class FormAppTests: XCTestCase {
             print("Successfully wrote snapshot to \(path)")
         }
     }
+
+    @MainActor
+    func testSetLoggingTableButtonHierarchySnapshot() {
+        let sets = [
+            ExerciseSetLog(setNumber: 1, weightInput: "65", repsInput: "10", weightKg: 65.0, completedReps: 10, isCompleted: true),
+            ExerciseSetLog(setNumber: 2, weightInput: "65", repsInput: "10", weightKg: 65.0, completedReps: nil, isCompleted: false),
+            ExerciseSetLog(setNumber: 3, weightInput: "", repsInput: "", weightKg: nil, completedReps: nil, isCompleted: false)
+        ]
+        let table = SetLoggingTable(
+            sets: sets,
+            prescription: "3 × 8–10",
+            prText: "65x10",
+            onUpdateSet: { _, _, _ in },
+            onToggleCompleteSet: { _ in },
+            onAddSet: {},
+            onRemoveSet: { _ in }
+        )
+        .padding(16)
+        .background(AppColors.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+        .padding(16)
+        .background(AppColors.background)
+
+        let controller = UIHostingController(rootView: table)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 380)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 380))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { _ in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_set_logging_table_buttons_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
 }
