@@ -2635,6 +2635,25 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(metrics.formattedActiveTime, "1 sa 24 dk")
     }
 
+    func testWeeklyGoalPillBlinking() {
+        let totalWorkouts = 5
+        let completedWorkouts = 2
+
+        XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: 0, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts, isCurrentWorkoutPending: true))
+        XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: 1, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts, isCurrentWorkoutPending: true))
+        XCTAssertTrue(isWeeklyGoalPillBlinking(pillIndex: 2, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts, isCurrentWorkoutPending: true))
+        XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: 3, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts, isCurrentWorkoutPending: true))
+        XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: 4, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts, isCurrentWorkoutPending: true))
+
+        XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: 2, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts, isCurrentWorkoutPending: false))
+
+        for i in 0..<totalWorkouts {
+            XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: i, totalWorkouts: totalWorkouts, completedWorkouts: 5, isCurrentWorkoutPending: true))
+        }
+
+        XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: 0, totalWorkouts: 0, completedWorkouts: 0, isCurrentWorkoutPending: true))
+    }
+
     @MainActor
     func testWeeklyGoalProgressCardSnapshot() {
         let previous = LanguageManager.shared.currentLanguage

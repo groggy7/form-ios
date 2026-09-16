@@ -3,17 +3,32 @@ import SwiftUI
 private let cardBackground = Color(hex: 0x1E242B)
 private let cardBorder = Color(hex: 0x303B46)
 private let segmentActive = Color(hex: 0x21E498)
-private let segmentPineGreen = Color(hex: 0x0E493C)
+private let segmentBlinkingTarget = Color(hex: 0x1E946A)
 private let segmentTrack = Color(hex: 0x13171B)
 private let statBoxBg = AppColors.surface
 private let statBoxBorder = AppColors.border
 private let amberPr = Color(hex: 0xFBBF24)
 
+public func isWeeklyGoalPillBlinking(
+    pillIndex: Int,
+    totalWorkouts: Int,
+    completedWorkouts: Int,
+    isCurrentWorkoutPending: Bool
+) -> Bool {
+    totalWorkouts > 0 &&
+        completedWorkouts < totalWorkouts &&
+        pillIndex == completedWorkouts &&
+        isCurrentWorkoutPending
+}
+
 public struct WeeklyGoalProgressCard: View {
     public let metrics: WeeklyGoalProgressMetrics
+    public let isCurrentWorkoutPending: Bool
+    @State private var isBlinking: Bool = false
 
-    public init(metrics: WeeklyGoalProgressMetrics) {
+    public init(metrics: WeeklyGoalProgressMetrics, isCurrentWorkoutPending: Bool = true) {
         self.metrics = metrics
+        self.isCurrentWorkoutPending = isCurrentWorkoutPending
     }
 
     public var body: some View {
@@ -41,11 +56,19 @@ public struct WeeklyGoalProgressCard: View {
             let totalSegments = max(metrics.totalWorkouts, 1)
             HStack(spacing: 6) {
                 ForEach(0..<totalSegments, id: \.self) { i in
+                    let isCompleted = metrics.totalWorkouts > 0 && i < metrics.completedWorkouts
+                    let isBlinkingPill = isWeeklyGoalPillBlinking(
+                        pillIndex: i,
+                        totalWorkouts: metrics.totalWorkouts,
+                        completedWorkouts: metrics.completedWorkouts,
+                        isCurrentWorkoutPending: isCurrentWorkoutPending
+                    )
+
                     let segmentColor: Color = {
-                        if metrics.totalWorkouts > 0 && i < metrics.completedWorkouts {
+                        if isCompleted {
                             return segmentActive
-                        } else if metrics.totalWorkouts > 0 && i == metrics.completedWorkouts && metrics.hasUnfinishedProgress {
-                            return segmentPineGreen
+                        } else if isBlinkingPill {
+                            return isBlinking ? segmentBlinkingTarget : segmentTrack
                         } else {
                             return segmentTrack
                         }
@@ -57,6 +80,14 @@ public struct WeeklyGoalProgressCard: View {
                 }
             }
             .accessibilityIdentifier("weekly-goal-progress-segments")
+            .onAppear {
+                withAnimation(
+                    .easeInOut(duration: 0.9)
+                    .repeatForever(autoreverses: true)
+                ) {
+                    isBlinking = true
+                }
+            }
 
             // Subtle Divider
             Rectangle()
