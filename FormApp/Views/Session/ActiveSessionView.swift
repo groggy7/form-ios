@@ -84,39 +84,42 @@ public struct ActiveSessionView: View {
                             HStack(spacing: 6) {
                                 TimelineView(.animation) { timeline in
                                     let time = timeline.date.timeIntervalSinceReferenceDate
-                                    let cycleTime = time.truncatingRemainder(dividingBy: 1.2)
-                                    let (scale, coreAlpha, diffuseAlpha, diffuseStop): (CGFloat, Double, Double, CGFloat) = {
-                                        if cycleTime < 0.20 {
-                                            return (1.0, 1.0, 0.85, 0.65)
-                                        } else if cycleTime < 0.48 {
-                                            let fraction = (cycleTime - 0.20) / 0.28
-                                            let easeOut = 1.0 - (1.0 - fraction) * (1.0 - fraction)
-                                            let s = 1.0 + easeOut * 1.3
-                                            let cAlpha = max(0.0, 1.0 - fraction)
-                                            let dAlpha = max(0.0, 0.85 * (1.0 - fraction * fraction))
-                                            let dStop = 0.65 + 0.25 * CGFloat(fraction)
-                                            return (CGFloat(s), cAlpha, dAlpha, dStop)
+                                    let cycleTime = time.truncatingRemainder(dividingBy: 1.0)
+                                    let (scale, alpha): (CGFloat, Double) = {
+                                        if cycleTime < 0.75 {
+                                            let fraction = cycleTime / 0.75
+                                            // cubic-bezier(0, 0, 0.2, 1): x(u) = 0.6 u^2 + 0.4 u^3, y(u) = 3 u^2 - 2 u^3
+                                            var u = min(1.0, max(0.0, sqrt(fraction / 0.6)))
+                                            for _ in 0..<4 {
+                                                let xu = 0.6 * u * u + 0.4 * u * u * u
+                                                let dxdu = 1.2 * u + 1.2 * u * u
+                                                if abs(dxdu) < 1e-6 { break }
+                                                u -= (xu - fraction) / dxdu
+                                                u = min(1.0, max(0.0, u))
+                                            }
+                                            let eased = min(1.0, max(0.0, 3.0 * u * u - 2.0 * u * u * u))
+                                            return (CGFloat(1.0 + eased * 1.0), 1.0 - eased)
                                         } else {
-                                            return (1.0, 0.0, 0.0, 0.65)
+                                            return (2.0, 0.0)
                                         }
                                     }()
 
                                     ZStack {
-                                        if coreAlpha > 0.001 || diffuseAlpha > 0.001 {
+                                        if alpha > 0.001 {
                                             Circle()
                                                 .fill(
                                                     RadialGradient(
                                                         stops: [
-                                                            .init(color: AppColors.accent.opacity(coreAlpha), location: 0.0),
-                                                            .init(color: AppColors.accent.opacity(diffuseAlpha), location: diffuseStop),
+                                                            .init(color: AppColors.accent.opacity(alpha), location: 0.0),
+                                                            .init(color: AppColors.accent.opacity(alpha * 0.85), location: 0.75),
                                                             .init(color: Color.clear, location: 1.0)
                                                         ],
                                                         center: .center,
                                                         startRadius: 0,
-                                                        endRadius: 5.0
+                                                        endRadius: 4.0
                                                     )
                                                 )
-                                                .frame(width: 10, height: 10)
+                                                .frame(width: 8, height: 8)
                                                 .scaleEffect(scale)
                                         }
                                     }
