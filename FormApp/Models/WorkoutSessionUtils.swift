@@ -241,6 +241,104 @@ public enum WorkoutSessionUtils {
         return 0
     }
 
+    public static func findExercisePr(
+        history: [WorkoutSessionRecord],
+        exerciseName: String,
+        exerciseId: String? = nil
+    ) -> String? {
+        let targetId = exerciseId?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        let targetName = exerciseName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+
+        var bestWeight: Double = 0.0
+        var bestReps: Int = 0
+
+        for record in history {
+            for log in record.exerciseLogs {
+                let logName = log.exerciseName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+
+                var matches = logName == targetName
+
+                if !matches {
+                    if let exId = targetId ?? ExerciseCatalog.canonicalExercises.first(where: { $0.value.name.lowercased() == targetName })?.key {
+                        let enName = ContentLocalizer.shared.exerciseName(exerciseId: exId, fallback: exerciseName, lang: "en").trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+                        let trName = ContentLocalizer.shared.exerciseName(exerciseId: exId, fallback: exerciseName, lang: "tr").trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+                        if logName == enName || logName == trName {
+                            matches = true
+                        }
+                    }
+                }
+
+                if !matches { continue }
+
+                for set in log.sets {
+                    let weight = set.weightKg ?? 0.0
+                    let reps = set.reps ?? 0
+                    if weight > 0.0 && reps > 0 {
+                        if weight > bestWeight || (weight == bestWeight && reps > bestReps) {
+                            bestWeight = weight
+                            bestReps = reps
+                        }
+                    }
+                }
+            }
+        }
+
+        if bestWeight > 0.0 && bestReps > 0 {
+            return "\(formatWeight(bestWeight))x\(bestReps)"
+        } else {
+            return nil
+        }
+    }
+
+    public static func findExercisePr(
+        history: [WorkoutSessionRecord],
+        exercise: Exercise
+    ) -> String? {
+        let targetId = exercise.exerciseId?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        let targetName = exercise.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        let targetDisplay = exercise.displayName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+
+        var bestWeight: Double = 0.0
+        var bestReps: Int = 0
+
+        for record in history {
+            for log in record.exerciseLogs {
+                let logName = log.exerciseName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+
+                var matches = logName == targetName || logName == targetDisplay
+
+                if !matches {
+                    if let exId = targetId ?? ExerciseCatalog.canonicalExercises.first(where: { $0.value.name.lowercased() == targetName })?.key {
+                        let enName = ContentLocalizer.shared.exerciseName(exerciseId: exId, fallback: exercise.name, lang: "en").trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+                        let trName = ContentLocalizer.shared.exerciseName(exerciseId: exId, fallback: exercise.name, lang: "tr").trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+                        if logName == enName || logName == trName {
+                            matches = true
+                        }
+                    }
+                }
+
+                if !matches { continue }
+
+                for set in log.sets {
+                    let weight = set.weightKg ?? 0.0
+                    let reps = set.reps ?? 0
+                    if weight > 0.0 && reps > 0 {
+                        if weight > bestWeight || (weight == bestWeight && reps > bestReps) {
+                            bestWeight = weight
+                            bestReps = reps
+                        }
+                    }
+                }
+            }
+        }
+
+        if bestWeight > 0.0 && bestReps > 0 {
+            return "\(formatWeight(bestWeight))x\(bestReps)"
+        } else {
+            return nil
+        }
+    }
+
     public static func formatWeight(_ value: Double) -> String {
         if value.truncatingRemainder(dividingBy: 1.0) == 0 {
             return "\(Int(value))"

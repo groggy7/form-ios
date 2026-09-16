@@ -10,6 +10,7 @@ public struct SetLoggingTable: View {
     let sets: [ExerciseSetLog]
     let prescription: String
     var isRestActive: Bool = false
+    var prText: String = ""
     var onUpdateSet: (Int, String, String) -> Void
     var onToggleCompleteSet: (Int) -> Void
     var onAddSet: () -> Void
@@ -21,6 +22,7 @@ public struct SetLoggingTable: View {
         sets: [ExerciseSetLog],
         prescription: String = "",
         isRestActive: Bool = false,
+        prText: String = "",
         onUpdateSet: @escaping (Int, String, String) -> Void,
         onToggleCompleteSet: @escaping (Int) -> Void,
         onAddSet: @escaping () -> Void,
@@ -31,6 +33,7 @@ public struct SetLoggingTable: View {
         self.sets = sets
         self.prescription = prescription
         self.isRestActive = isRestActive
+        self.prText = prText
         self.onUpdateSet = onUpdateSet
         self.onToggleCompleteSet = onToggleCompleteSet
         self.onAddSet = onAddSet
@@ -60,8 +63,10 @@ public struct SetLoggingTable: View {
             // Table Header
             HStack(spacing: 8) {
                 Text(LanguageManager.t("table.set"))
-                    .frame(width: 38, alignment: .leading)
-                Text(LanguageManager.t("table.weightKg"))
+                    .frame(width: 32, alignment: .leading)
+                Text(LanguageManager.t("table.pr"))
+                    .frame(width: 56, alignment: .center)
+                Text("KG")
                     .frame(maxWidth: .infinity)
                 Text(LanguageManager.t("table.reps"))
                     .frame(maxWidth: .infinity)
@@ -123,7 +128,17 @@ public struct SetLoggingTable: View {
                                 ? AppColors.accent
                                 : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35))
                         )
-                        .frame(width: 38, alignment: .leading)
+                        .frame(width: 32, alignment: .leading)
+
+                    Text(prText)
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundColor(
+                            set.isCompleted
+                                ? AppColors.secondaryText.opacity(0.6)
+                                : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35))
+                        )
+                        .lineLimit(1)
+                        .frame(width: 56, alignment: .center)
 
                     TextField("0", text: weightBinding, prompt: Text("0").foregroundColor(AppColors.muted.opacity(isSetInputEnabled ? 1.0 : 0.4)))
                         .focused($focusedField, equals: Field(id: set.id, weight: true))

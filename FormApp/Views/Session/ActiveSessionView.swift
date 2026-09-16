@@ -278,11 +278,13 @@ public struct ActiveSessionView: View {
                                     }
 
                                     let isRestActive = (activeDraft.restTimer?.secondsRemaining(nowEpochMillis: nowEpochMillis) ?? 0) > 0
+                                    let prText = WorkoutSessionUtils.findExercisePr(history: store.state.history, exercise: exercise) ?? ""
 
                                     SetLoggingTable(
                                         sets: currentSets,
                                         prescription: exercise.displayPrescription,
                                         isRestActive: isRestActive,
+                                        prText: prText,
                                         onUpdateSet: { setIdx, weight, reps in
                                             updateSet(exerciseId: exercise.id, index: setIdx, weight: weight, reps: reps)
                                         },

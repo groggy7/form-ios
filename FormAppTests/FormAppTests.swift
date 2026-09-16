@@ -2882,4 +2882,77 @@ final class FormAppTests: XCTestCase {
         }
         store.selectedWorkoutId = nil
     }
+
+    func testFindExercisePrReturnsBestSetOrNilWhenNoData() {
+        let exercise = Exercise(id: "bench", name: "Barbell Bench Press", sets: 3)
+
+        // Empty history
+        XCTAssertNil(WorkoutSessionUtils.findExercisePr(history: [], exercise: exercise))
+
+        // History with unrelated exercise
+        let record1 = WorkoutSessionRecord(
+            id: "rec-1",
+            programId: "p1",
+            workoutId: "w1",
+            workoutTitle: "Legs",
+            startedAt: "2026-09-10T10:00:00Z",
+            completedAt: "2026-09-10T11:00:00Z",
+            durationSeconds: 1800,
+            totalVolumeKg: 500,
+            totalCompletedSets: 1,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Squat",
+                    sets: [SessionSetLog(setNumber: 1, weightKg: 100.0, reps: 5)]
+                )
+            ]
+        )
+        XCTAssertNil(WorkoutSessionUtils.findExercisePr(history: [record1], exercise: exercise))
+
+        // History with matching exercise
+        let record2 = WorkoutSessionRecord(
+            id: "rec-2",
+            programId: "p1",
+            workoutId: "w1",
+            workoutTitle: "Chest",
+            startedAt: "2026-09-12T10:00:00Z",
+            completedAt: "2026-09-12T11:00:00Z",
+            durationSeconds: 1800,
+            totalVolumeKg: 1000,
+            totalCompletedSets: 3,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 60.0, reps: 12),
+                        SessionSetLog(setNumber: 2, weightKg: 65.0, reps: 8),
+                        SessionSetLog(setNumber: 3, weightKg: 65.0, reps: 10)
+                    ]
+                )
+            ]
+        )
+        XCTAssertEqual(WorkoutSessionUtils.findExercisePr(history: [record1, record2], exercise: exercise), "65x10")
+
+        // Newer record with fractional weight PR
+        let record3 = WorkoutSessionRecord(
+            id: "rec-3",
+            programId: "p1",
+            workoutId: "w1",
+            workoutTitle: "Chest",
+            startedAt: "2026-09-15T10:00:00Z",
+            completedAt: "2026-09-15T11:00:00Z",
+            durationSeconds: 1800,
+            totalVolumeKg: 1200,
+            totalCompletedSets: 1,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 67.5, reps: 6)
+                    ]
+                )
+            ]
+        )
+        XCTAssertEqual(WorkoutSessionUtils.findExercisePr(history: [record1, record2, record3], exercise: exercise), "67.5x6")
+    }
 }
