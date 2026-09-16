@@ -1,15 +1,20 @@
 import SwiftUI
 
-public struct ExerciseDetailSheet: View {
+public struct ExerciseDetailView: View {
     @ObservedObject var store: AppStore = AppStore.shared
     let initialExercise: Exercise
-    var onDismiss: () -> Void
+    var onBack: () -> Void
 
     @State private var showVideoLinks: Bool = false
 
+    public init(exercise: Exercise, onBack: @escaping () -> Void) {
+        self.initialExercise = exercise
+        self.onBack = onBack
+    }
+
     public init(exercise: Exercise, onDismiss: @escaping () -> Void) {
         self.initialExercise = exercise
-        self.onDismiss = onDismiss
+        self.onBack = onDismiss
     }
 
     private var currentExercise: Exercise {
@@ -23,22 +28,41 @@ public struct ExerciseDetailSheet: View {
     }
 
     public var body: some View {
-        NavigationStack {
+        VStack(spacing: 0) {
+            // Top Navigation Bar matching Android
+            HStack(spacing: 8) {
+                Button(action: onBack) {
+                    Image(systemName: "chevron.left")
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(AppColors.text)
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(LanguageManager.t("common.back"))
+
+                Text(LanguageManager.t("library.details"))
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(AppColors.secondaryText)
+
+                Spacer()
+            }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+
             ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    // Title & Movement Badge
-                    VStack(alignment: .leading, spacing: 8) {
+                VStack(alignment: .leading, spacing: 18) {
+                    // Title & Movement Category
+                    VStack(alignment: .leading, spacing: 6) {
                         Text(currentExercise.displayName)
-                            .font(.system(size: 24, weight: .bold))
+                            .font(.system(size: 25, weight: .semibold))
                             .foregroundColor(AppColors.text)
 
-                        Text(currentExercise.resolvedMovement.rawValue.uppercased())
-                            .font(.system(size: 11, weight: .bold))
+                        let categoryKey = "category.\(currentExercise.resolvedMovement.rawValue)"
+                        Text(LanguageManager.t(categoryKey))
+                            .font(.system(size: 11, weight: .medium))
                             .foregroundColor(AppColors.accent)
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 4)
-                            .background(AppColors.positiveBg)
-                            .cornerRadius(6)
+                            .tracking(0.7)
                     }
 
                     // Local exercise video; the muscle panel is independent of playback.
@@ -85,29 +109,29 @@ public struct ExerciseDetailSheet: View {
                         }
                     )
                 }
-                .padding(20)
-            }
-            .background(AppColors.background)
-            .navigationTitle(LanguageManager.t("library.details"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: onDismiss) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundColor(AppColors.text.opacity(0.85))
-                    }
-                }
-            }
-            .sheet(isPresented: $showVideoLinks) {
-                ExerciseVideoLinksSheet(
-                    exercise: currentExercise,
-                    onDismiss: { showVideoLinks = false }
-                )
+                .padding(.horizontal, 20)
+                .padding(.bottom, 24)
             }
         }
+        .background(AppColors.background.ignoresSafeArea())
+        .sheet(isPresented: $showVideoLinks) {
+            ExerciseVideoLinksSheet(
+                exercise: currentExercise,
+                onDismiss: { showVideoLinks = false }
+            )
+        }
+        .gesture(
+            DragGesture()
+                .onEnded { value in
+                    if value.startLocation.x < 50 && value.translation.width > 80 {
+                        onBack()
+                    }
+                }
+        )
     }
 }
+
+public typealias ExerciseDetailSheet = ExerciseDetailView
 
 struct TechniqueSectionView: View {
     let title: String

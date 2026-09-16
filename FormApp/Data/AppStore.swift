@@ -12,7 +12,14 @@ public final class AppStore: ObservableObject {
 
     @Published public var state: StoredAppState
     @Published public var activeSession: ActiveSessionDraft?
-    @Published public var currentView: ViewMode = .today
+    @Published public var currentView: ViewMode = .today {
+        didSet {
+            if currentView != .library {
+                selectedExerciseId = nil
+                returnView = nil
+            }
+        }
+    }
     @Published public var soundEnabled: Bool
     @Published public var defaultRestSeconds: Int
     @Published public var prefillNextSet: Bool
@@ -21,6 +28,54 @@ public final class AppStore: ObservableObject {
     
     // Navigation selection
     @Published public var selectedWorkoutId: String?
+    @Published public var selectedExerciseId: String?
+    @Published public var returnView: ViewMode?
+
+    public func openExercise(id: String) {
+        self.returnView = currentView
+        self.selectedExerciseId = id
+        self.currentView = .library
+    }
+
+    public func selectExerciseInLibrary(id: String?) {
+        self.selectedExerciseId = id
+        if id == nil {
+            if let target = returnView {
+                self.returnView = nil
+                self.currentView = target
+            }
+        }
+    }
+
+    public func navigate(to view: ViewMode) {
+        self.selectedExerciseId = nil
+        self.returnView = nil
+        self.currentView = view
+    }
+
+    public func findExercise(id: String) -> Exercise? {
+        let cleanId = id.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        if let found = exerciseCatalogue.first(where: {
+            $0.key == cleanId ||
+            $0.exercise.id == id ||
+            $0.exercise.exerciseId == id ||
+            $0.exercise.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == cleanId
+        })?.exercise {
+            return found
+        }
+        for program in state.programs {
+            for workout in program.workouts {
+                if let found = workout.exercises.first(where: {
+                    $0.id == id ||
+                    $0.exerciseId == id ||
+                    $0.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == cleanId
+                }) {
+                    return found
+                }
+            }
+        }
+        return nil
+    }
 
     private var cancellables = Set<AnyCancellable>()
 

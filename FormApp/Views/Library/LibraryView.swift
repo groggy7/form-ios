@@ -35,7 +35,12 @@ public struct LibraryView: View {
             .map { $0.0 }
         let hasActiveFilters = selectedMovement != nil || selectedEquipment != nil
 
-        ScrollView {
+        if let selectedId = store.selectedExerciseId, let selectedExercise = store.findExercise(id: selectedId) {
+            ExerciseDetailView(exercise: selectedExercise, onBack: {
+                store.selectExerciseInLibrary(id: nil)
+            })
+        } else {
+            ScrollView {
             VStack(spacing: 16) {
                 // Header
                 HStack(alignment: .center) {
@@ -244,6 +249,12 @@ public struct LibraryView: View {
         }
         .sheet(isPresented: $showFiltersSheet) {
             filterMovementSheet()
+        }
+        .onAppear {
+            if let selectedId = store.selectedExerciseId, store.findExercise(id: selectedId) == nil {
+                store.selectExerciseInLibrary(id: nil)
+            }
+        }
         }
     }
 

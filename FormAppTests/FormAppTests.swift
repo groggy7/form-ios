@@ -638,6 +638,39 @@ final class FormAppTests: XCTestCase {
         }
     }
 
+    func testExerciseDetailNavigationFromTodayAndLibrary() {
+        let store = AppStore.shared
+        store.currentView = .today
+        XCTAssertEqual(store.currentView, .today)
+        XCTAssertNil(store.selectedExerciseId)
+        XCTAssertNil(store.returnView)
+
+        // Opening exercise from Today
+        store.openExercise(id: "barbell-bench-press")
+        XCTAssertEqual(store.currentView, .library)
+        XCTAssertEqual(store.selectedExerciseId, "barbell-bench-press")
+        XCTAssertEqual(store.returnView, .today)
+
+        // Pressing back returns to Today
+        store.selectExerciseInLibrary(id: nil)
+        XCTAssertEqual(store.currentView, .today)
+        XCTAssertNil(store.selectedExerciseId)
+        XCTAssertNil(store.returnView)
+
+        // Opening exercise directly in Library
+        store.currentView = .library
+        store.selectExerciseInLibrary(id: "barbell-bench-press")
+        XCTAssertEqual(store.currentView, .library)
+        XCTAssertEqual(store.selectedExerciseId, "barbell-bench-press")
+        XCTAssertNil(store.returnView)
+
+        // Pressing back stays in Library
+        store.selectExerciseInLibrary(id: nil)
+        XCTAssertEqual(store.currentView, .library)
+        XCTAssertNil(store.selectedExerciseId)
+        XCTAssertNil(store.returnView)
+    }
+
     @MainActor
     func testProgramsViewSnapshot() {
         let store = AppStore.shared

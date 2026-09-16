@@ -6,7 +6,6 @@ public struct RootView: View {
 
     @State private var showProgramsSheet: Bool = false
     @State private var showSettingsSheet: Bool = false
-    @State private var selectedExerciseForDetail: Exercise? = nil
     @State private var selectedRecordForDetail: WorkoutSessionRecord? = nil
 
     public init() {}
@@ -24,19 +23,19 @@ public struct RootView: View {
                             store: store,
                             onOpenPrograms: { showProgramsSheet = true },
                             onOpenSettings: { showSettingsSheet = true },
-                            onSelectExercise: { selectedExerciseForDetail = $0 }
+                            onSelectExercise: { store.openExercise(id: $0.id) }
                         )
                     case .plan:
                         WeeklyPlanView(
                             store: store,
-                            onOpenToday: { store.currentView = .today },
+                            onOpenToday: { store.navigate(to: .today) },
                             onOpenPrograms: { showProgramsSheet = true },
                             onOpenSettings: { showSettingsSheet = true }
                         )
                     case .library:
                         LibraryView(
                             store: store,
-                            onSelectExercise: { selectedExerciseForDetail = $0 },
+                            onSelectExercise: { store.selectExerciseInLibrary(id: $0.id) },
                             onOpenSettings: { showSettingsSheet = true }
                         )
                     case .history:
@@ -50,14 +49,19 @@ public struct RootView: View {
                             store: store,
                             onOpenPrograms: { showProgramsSheet = true },
                             onOpenSettings: { showSettingsSheet = true },
-                            onSelectExercise: { selectedExerciseForDetail = $0 }
+                            onSelectExercise: { store.openExercise(id: $0.id) }
                         )
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-                // Bottom Navigation Dock
-                BottomDock(currentView: $store.currentView)
+                // Bottom Navigation Dock (hidden when viewing exercise detail)
+                if store.currentView != .library || store.selectedExerciseId == nil {
+                    BottomDock(currentView: Binding(
+                        get: { store.currentView },
+                        set: { store.navigate(to: $0) }
+                    ))
+                }
             }
 
             // Animated Toast Pill
@@ -80,11 +84,6 @@ public struct RootView: View {
         .sheet(isPresented: $showSettingsSheet) {
             SettingsView(store: store) {
                 showSettingsSheet = false
-            }
-        }
-        .sheet(item: $selectedExerciseForDetail) { exercise in
-            ExerciseDetailSheet(exercise: exercise) {
-                selectedExerciseForDetail = nil
             }
         }
         .sheet(item: $selectedRecordForDetail) { record in
