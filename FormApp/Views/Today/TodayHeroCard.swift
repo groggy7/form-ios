@@ -105,7 +105,7 @@ public struct TodayHeroCard: View {
                     }()
 
                     Text(dayText)
-                        .font(.system(size: 12, weight: .medium))
+                        .font(.system(size: 13, weight: .medium))
                         .foregroundColor(Color(hex: 0xD3D0C7))
 
                     Spacer()
@@ -123,7 +123,7 @@ public struct TodayHeroCard: View {
                 }
                 .frame(minHeight: 20)
 
-                Spacer().frame(height: 22)
+                Spacer().frame(height: 20)
 
                 // Title
                 Text(workout.displayTitle(programId: programId))
@@ -132,19 +132,19 @@ public struct TodayHeroCard: View {
                     .lineLimit(2)
                     .frame(maxWidth: 215, alignment: .leading)
 
-                Spacer().frame(height: 9)
+                Spacer().frame(height: 10)
 
                 // Focus
                 if !workout.focus.isEmpty {
                     Text(workout.displayFocus(programId: programId))
                         .font(.system(size: 14, weight: .regular))
-                        .lineSpacing(3)
+                        .lineSpacing(4)
                         .foregroundColor(AppColors.secondaryText)
                         .lineLimit(2)
                         .frame(maxWidth: 215, minHeight: 42, alignment: .topLeading)
                 }
 
-                Spacer().frame(height: 18)
+                Spacer().frame(height: 20)
 
                 // Body view switcher chips (if more than 1)
                 if bodyViews.count > 1 {
@@ -153,23 +153,24 @@ public struct TodayHeroCard: View {
                             let isSel = idx == selectedViewIndex
                             Button(action: { selectedViewIndex = idx }) {
                                 Text(LanguageManager.t("muscles.view.\(v.rawValue)"))
-                                    .font(.system(size: 12, weight: .medium))
+                                    .font(.system(size: 13, weight: .medium))
                                     .foregroundColor(isSel ? Color(hex: 0xE3DAF1) : AppColors.secondaryText)
-                                    .padding(.horizontal, 12)
-                                    .frame(height: 32)
+                                    .padding(.horizontal, 14)
+                                    .frame(height: 38)
                                     .background(
-                                        RoundedRectangle(cornerRadius: 8)
+                                        RoundedRectangle(cornerRadius: 10, style: .continuous)
                                             .fill(isSel ? Color(hex: 0x343044) : cardSurface)
                                     )
                                     .overlay(
-                                        RoundedRectangle(cornerRadius: 8)
+                                        RoundedRectangle(cornerRadius: 10, style: .continuous)
                                             .strokeBorder(isSel ? Color(hex: 0x494260) : cardBorder, lineWidth: 1)
                                     )
                             }
                             .buttonStyle(.plain)
                         }
                     }
-                    Spacer().frame(height: 10)
+
+                    Spacer().frame(height: 20)
                 }
 
                 // Meta
@@ -179,10 +180,10 @@ public struct TodayHeroCard: View {
                     "minutes": mins
                 ])
                 Text(meta)
-                    .font(.system(size: 12))
+                    .font(.system(size: 13, weight: .regular))
                     .foregroundColor(Color(hex: 0xB1BAC2))
 
-                Spacer(minLength: 22)
+                Spacer().frame(height: 22)
 
                 // Button
                 Button(action: onStart) {
@@ -217,9 +218,8 @@ public struct TodayHeroCard: View {
                 .disabled(!isAvailable || isCompleted)
                 .buttonStyle(.plain)
             }
-            .padding(EdgeInsets(top: 22, leading: 19, bottom: 19, trailing: 19))
+            .padding(EdgeInsets(top: 22, leading: 19, bottom: 20, trailing: 19))
         }
-        .frame(minHeight: 395)
         .padding(.horizontal, 20)
     }
 
