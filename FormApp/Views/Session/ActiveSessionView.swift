@@ -84,10 +84,12 @@ public struct ActiveSessionView: View {
                             HStack(spacing: 6) {
                                 TimelineView(.animation) { timeline in
                                     let time = timeline.date.timeIntervalSinceReferenceDate
-                                    let cycleTime = time.truncatingRemainder(dividingBy: 1.0)
+                                    let cycleDuration = 1.4
+                                    let cycleTime = time.truncatingRemainder(dividingBy: cycleDuration)
+                                    let progress = cycleTime / cycleDuration
                                     let (scale, alpha): (CGFloat, Double) = {
-                                        if cycleTime < 0.75 {
-                                            let fraction = cycleTime / 0.75
+                                        if progress < 0.75 {
+                                            let fraction = progress / 0.75
                                             // cubic-bezier(0, 0, 0.2, 1): x(u) = 0.6 u^2 + 0.4 u^3, y(u) = 3 u^2 - 2 u^3
                                             var u = min(1.0, max(0.0, sqrt(fraction / 0.6)))
                                             for _ in 0..<4 {
@@ -159,10 +161,6 @@ public struct ActiveSessionView: View {
                                     .frame(width: 38, height: 38)
                                     .background(AppColors.surface)
                                     .cornerRadius(10)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .stroke(AppColors.border, lineWidth: 1)
-                                    )
                             }
                             .buttonStyle(.plain)
                             .accessibilityLabel(LanguageManager.t("session.exit"))
