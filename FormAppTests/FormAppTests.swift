@@ -1733,6 +1733,17 @@ final class FormAppTests: XCTestCase {
         LanguageManager.setLanguage("en")
     }
 
+    func testCompletedExercisesCountFormatting() {
+        LanguageManager.setLanguage("en")
+        XCTAssertEqual(LanguageManager.formatCompletedExercisesCount(1), "1 completed exercise")
+        XCTAssertEqual(LanguageManager.formatCompletedExercisesCount(6), "6 completed exercises")
+
+        LanguageManager.setLanguage("tr")
+        XCTAssertEqual(LanguageManager.formatCompletedExercisesCount(1), "1 tamamlanan egzersiz")
+        XCTAssertEqual(LanguageManager.formatCompletedExercisesCount(6), "6 tamamlanan egzersiz")
+        LanguageManager.setLanguage("en")
+    }
+
     func testSessionProgressTargetSetsWhenSetDeleted() {
         let exercise = Exercise(id: "squat", name: "Barbell Back Squat", sets: 5)
         let workout = Workout(id: "w1", day: 1, title: "Heavy Squat", exercises: [exercise])

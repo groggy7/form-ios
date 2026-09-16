@@ -349,6 +349,7 @@ public struct HistoryDayDetailSheet: View {
     var onActionWorkout: (() -> Void)? = nil
 
     @State private var isUnstartedExpanded: Bool = false
+    @State private var isCompletedExpanded: Bool = false
 
     public init(
         detail: HistoryDayDetailData,
@@ -360,6 +361,7 @@ public struct HistoryDayDetailSheet: View {
         self.onDismiss = onDismiss
         self.onActionWorkout = onActionWorkout
         self._isUnstartedExpanded = State(initialValue: initiallyExpanded)
+        self._isCompletedExpanded = State(initialValue: initiallyExpanded)
     }
 
     public var body: some View {
@@ -584,55 +586,95 @@ public struct HistoryDayDetailSheet: View {
                     }
                 }
 
-                // Completed Exercises (if any)
+                // Merged & Expandable/Collapsible Completed Exercises Card
                 if !completedExercises.isEmpty {
-                    VStack(alignment: .leading, spacing: 10) {
-                        if !halfwayExercises.isEmpty || !unstartedExercises.isEmpty {
-                            Text(LanguageManager.t("history.completed"))
-                                .font(.system(size: 14, weight: .semibold))
-                                .foregroundColor(AppColors.secondaryText)
-                        }
+                    let headerTitle = LanguageManager.formatCompletedExercisesCount(completedExercises.count)
+                    let summaryNames = completedExercises.map(\.name).joined(separator: ", ")
 
-                        ForEach(completedExercises) { item in
-                            HStack {
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(item.name)
-                                        .font(.system(size: 14, weight: .medium))
-                                        .foregroundColor(AppColors.secondaryText)
-                                    Text(LanguageManager.formatSetsProgress(done: item.completedSets, total: item.plannedSets))
+                    VStack(alignment: .leading, spacing: 12) {
+                        Button(action: {
+                            withAnimation(.easeInOut(duration: 0.25)) {
+                                isCompletedExpanded.toggle()
+                            }
+                        }) {
+                            HStack(alignment: .center) {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(headerTitle)
+                                        .font(.system(size: 14, weight: .semibold))
+                                        .foregroundColor(AppColors.text)
+                                    Text(summaryNames)
                                         .font(.system(size: 12))
                                         .foregroundColor(AppColors.muted)
+                                        .lineLimit(isCompletedExpanded ? nil : 2)
                                 }
 
                                 Spacer()
 
-                                HStack(spacing: 4) {
-                                    Image(systemName: "checkmark")
-                                        .font(.system(size: 11, weight: .bold))
-                                        .foregroundColor(AppColors.completedGreen)
-                                    Text(LanguageManager.t("history.completed"))
-                                        .font(.system(size: 11, weight: .medium))
-                                        .foregroundColor(AppColors.completedGreen)
-                                }
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                        .fill(AppColors.completedGreen.opacity(0.15))
-                                )
+                                Image(systemName: "chevron.down")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .foregroundColor(AppColors.secondaryText)
+                                    .rotationEffect(.degrees(isCompletedExpanded ? 180 : 0))
                             }
-                            .padding(.horizontal, 14)
-                            .padding(.vertical, 14)
-                            .background(
-                                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                    .fill(AppColors.surfaceRaised)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                            .stroke(AppColors.border, lineWidth: 1)
+                        }
+                        .buttonStyle(.plain)
+
+                        if isCompletedExpanded {
+                            Divider()
+                                .background(AppColors.border.opacity(0.5))
+
+                            VStack(spacing: 8) {
+                                ForEach(completedExercises) { item in
+                                    HStack {
+                                        VStack(alignment: .leading, spacing: 2) {
+                                            Text(item.name)
+                                                .font(.system(size: 14, weight: .medium))
+                                                .foregroundColor(AppColors.text)
+                                            Text(LanguageManager.formatSetsProgress(done: item.completedSets, total: item.plannedSets))
+                                                .font(.system(size: 12))
+                                                .foregroundColor(AppColors.secondaryText)
+                                        }
+
+                                        Spacer()
+
+                                        HStack(spacing: 4) {
+                                            Image(systemName: "checkmark")
+                                                .font(.system(size: 11, weight: .bold))
+                                                .foregroundColor(AppColors.completedGreen)
+                                            Text(LanguageManager.t("history.completed"))
+                                                .font(.system(size: 11, weight: .medium))
+                                                .foregroundColor(AppColors.completedGreen)
+                                        }
+                                        .padding(.horizontal, 8)
+                                        .padding(.vertical, 4)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                                .fill(AppColors.completedGreen.opacity(0.15))
+                                        )
+                                    }
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 12)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                            .fill(AppColors.surface)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                                    .stroke(AppColors.border.opacity(0.6), lineWidth: 1)
+                                            )
                                     )
-                            )
+                                }
+                            }
                         }
                     }
+                    .padding(16)
+                    .background(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .fill(AppColors.surfaceRaised)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .stroke(AppColors.border, lineWidth: 1)
+                            )
+                    )
+                    .accessibilityIdentifier("history-completed-container")
                 }
 
                 // Merged & Expandable/Collapsible Not-Started Exercises Card

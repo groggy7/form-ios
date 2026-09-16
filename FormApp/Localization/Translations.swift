@@ -101,6 +101,14 @@ public final class LanguageManager: ObservableObject {
         }
     }
 
+    public static func formatCompletedExercisesCount(_ count: Int) -> String {
+        if shared.currentLanguage == "tr" {
+            return "\(count) tamamlanan egzersiz"
+        } else {
+            return count == 1 ? "1 completed exercise" : "\(count) completed exercises"
+        }
+    }
+
     public static func formatAllExercisesCount(_ count: Int) -> String {
         return formatUncompletedExercisesCount(count)
     }
