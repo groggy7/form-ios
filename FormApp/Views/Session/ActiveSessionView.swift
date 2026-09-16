@@ -85,27 +85,39 @@ public struct ActiveSessionView: View {
                                 TimelineView(.animation) { timeline in
                                     let time = timeline.date.timeIntervalSinceReferenceDate
                                     let cycleTime = time.truncatingRemainder(dividingBy: 1.2)
-                                    let (scale, opacity): (CGFloat, Double) = {
+                                    let (scale, coreAlpha, diffuseAlpha, diffuseStop): (CGFloat, Double, Double, CGFloat) = {
                                         if cycleTime < 0.20 {
-                                            return (1.0, 1.0)
-                                        } else if cycleTime < 0.45 {
-                                            let fraction = (cycleTime - 0.20) / 0.25
+                                            return (1.0, 1.0, 0.85, 0.65)
+                                        } else if cycleTime < 0.48 {
+                                            let fraction = (cycleTime - 0.20) / 0.28
                                             let easeOut = 1.0 - (1.0 - fraction) * (1.0 - fraction)
-                                            let s = 1.0 + easeOut * 1.2
-                                            let o = max(0.0, 1.0 - fraction * fraction)
-                                            return (CGFloat(s), o)
+                                            let s = 1.0 + easeOut * 1.3
+                                            let cAlpha = max(0.0, 1.0 - fraction)
+                                            let dAlpha = max(0.0, 0.85 * (1.0 - fraction * fraction))
+                                            let dStop = 0.65 + 0.25 * CGFloat(fraction)
+                                            return (CGFloat(s), cAlpha, dAlpha, dStop)
                                         } else {
-                                            return (1.0, 0.0)
+                                            return (1.0, 0.0, 0.0, 0.65)
                                         }
                                     }()
 
                                     ZStack {
-                                        if opacity > 0.001 {
+                                        if coreAlpha > 0.001 || diffuseAlpha > 0.001 {
                                             Circle()
-                                                .fill(AppColors.accent)
-                                                .frame(width: 7, height: 7)
+                                                .fill(
+                                                    RadialGradient(
+                                                        stops: [
+                                                            .init(color: AppColors.accent.opacity(coreAlpha), location: 0.0),
+                                                            .init(color: AppColors.accent.opacity(diffuseAlpha), location: diffuseStop),
+                                                            .init(color: Color.clear, location: 1.0)
+                                                        ],
+                                                        center: .center,
+                                                        startRadius: 0,
+                                                        endRadius: 5.0
+                                                    )
+                                                )
+                                                .frame(width: 10, height: 10)
                                                 .scaleEffect(scale)
-                                                .opacity(opacity)
                                         }
                                     }
                                     .frame(width: 8, height: 8)
