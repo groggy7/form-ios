@@ -2955,4 +2955,119 @@ final class FormAppTests: XCTestCase {
         )
         XCTAssertEqual(WorkoutSessionUtils.findExercisePr(history: [record1, record2, record3], exercise: exercise), "67.5x6")
     }
+
+    func testExerciseReportTranslationsParity() {
+        let requiredKeys = [
+            "report.action", "report.title", "report.category",
+            "report.category.animation_form", "report.category.technique_cue",
+            "report.category.what_to_avoid", "report.category.muscles_worked",
+            "report.category.equipment_category", "report.category.other",
+            "report.detailsLabel", "report.detailsPlaceholder",
+            "report.submit", "report.submitted"
+        ]
+
+        for key in requiredKeys {
+            XCTAssertFalse(Translations.en[key]?.isEmpty ?? true, "Missing English key: \(key)")
+            XCTAssertFalse(Translations.tr[key]?.isEmpty ?? true, "Missing Turkish key: \(key)")
+        }
+    }
+
+    func testExerciseReportStore() throws {
+        let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: tempDir, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: tempDir) }
+
+        let fileURL = tempDir.appendingPathComponent("reports.json")
+        let store = ExerciseReportStore(fileURL: fileURL)
+
+        XCTAssertTrue(store.loadReports().isEmpty)
+
+        let report1 = ExerciseIssueReport(
+            id: "r1",
+            exerciseId: "bench_press",
+            exerciseName: "Bench Press",
+            category: "animation_form",
+            comment: "Elbow flares too much"
+        )
+        let updated1 = store.saveReport(report1)
+        XCTAssertEqual(updated1.count, 1)
+        XCTAssertEqual(updated1[0].id, "r1")
+
+        let report2 = ExerciseIssueReport(
+            id: "r2",
+            exerciseId: "squat",
+            exerciseName: "Barbell Squat",
+            category: "what_to_avoid",
+            comment: "Add knee cave note"
+        )
+        let updated2 = store.saveReport(report2)
+        XCTAssertEqual(updated2.count, 2)
+
+        let loaded = store.loadReports()
+        XCTAssertEqual(loaded.count, 2)
+        XCTAssertEqual(loaded[0].exerciseName, "Bench Press")
+        XCTAssertEqual(loaded[0].category, "animation_form")
+        XCTAssertEqual(loaded[1].exerciseName, "Barbell Squat")
+        XCTAssertEqual(loaded[1].category, "what_to_avoid")
+    }
+
+    @MainActor
+    func testExerciseReportSheetSnapshot() {
+        let exercise = Exercise(
+            name: "Barbell Bench Press",
+            prescription: "3 × 8–10",
+            movementType: "press"
+        )
+        let sheet = ExerciseReportSheet(exercise: exercise, onDismiss: {}, onSubmit: { _ in })
+        let controller = UIHostingController(rootView: sheet)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { _ in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_exercise_report_sheet_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testExerciseDetailViewSnapshot() {
+        let exercise = Exercise(
+            name: "Barbell Bench Press",
+            prescription: "3 × 8–10",
+            cues: "Keep feet flat on floor\nRetract scapula\nLower bar with control",
+            avoid: "Do not flare elbows to 90 degrees\nDo not bounce bar off chest",
+            movementType: "press"
+        )
+        let view = ExerciseDetailView(exercise: exercise, onBack: {})
+        let controller = UIHostingController(rootView: view)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { _ in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_exercise_detail_with_report_button_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
 }

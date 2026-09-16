@@ -6,6 +6,7 @@ public struct ExerciseDetailView: View {
     var onBack: () -> Void
 
     @State private var showVideoLinks: Bool = false
+    @State private var showReportSheet: Bool = false
 
     public init(exercise: Exercise, onBack: @escaping () -> Void) {
         self.initialExercise = exercise
@@ -108,6 +109,24 @@ public struct ExerciseDetailView: View {
                             store.setExerciseVideos(exerciseName: currentExercise.name, videoUrls: remaining)
                         }
                     )
+
+                    // Report an issue
+                    Button(action: {
+                        showReportSheet = true
+                    }) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "flag")
+                                .font(.system(size: 14, weight: .medium))
+                            Text(LanguageManager.t("report.action"))
+                                .font(.system(size: 13, weight: .medium))
+                        }
+                        .foregroundColor(AppColors.muted)
+                        .frame(maxWidth: .infinity)
+                        .frame(minHeight: 48)
+                    }
+                    .buttonStyle(.plain)
+                    .padding(.top, 16)
+                    .padding(.bottom, 8)
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 24)
@@ -118,6 +137,17 @@ public struct ExerciseDetailView: View {
             ExerciseVideoLinksSheet(
                 exercise: currentExercise,
                 onDismiss: { showVideoLinks = false }
+            )
+        }
+        .sheet(isPresented: $showReportSheet) {
+            ExerciseReportSheet(
+                exercise: currentExercise,
+                onDismiss: { showReportSheet = false },
+                onSubmit: { report in
+                    ExerciseReportStore.shared.saveReport(report)
+                    showReportSheet = false
+                    store.showNotice(LanguageManager.t("report.submitted"))
+                }
             )
         }
         .gesture(
