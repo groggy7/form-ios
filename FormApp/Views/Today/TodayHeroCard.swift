@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 public struct TodayHeroCard: View {
     let workout: Workout?
@@ -123,13 +124,16 @@ public struct TodayHeroCard: View {
                 }
                 .frame(minHeight: 20)
 
-                Spacer().frame(height: 20)
+                let singleLineTitle = isSingleLineTitle(workout.displayTitle(programId: programId))
+
+                Spacer().frame(height: singleLineTitle ? 38 : 20)
 
                 // Title
                 Text(workout.displayTitle(programId: programId))
                     .font(.system(size: 32, weight: .semibold))
                     .foregroundColor(Color(hex: 0xF3EFE5))
                     .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: 215, alignment: .leading)
 
                 Spacer().frame(height: 10)
@@ -144,7 +148,7 @@ public struct TodayHeroCard: View {
                         .frame(maxWidth: 215, minHeight: 42, alignment: .topLeading)
                 }
 
-                Spacer().frame(height: 20)
+                Spacer().frame(height: singleLineTitle ? 40 : 20)
 
                 // Body view switcher chips (if more than 1)
                 if bodyViews.count > 1 {
@@ -159,11 +163,11 @@ public struct TodayHeroCard: View {
                                     .frame(height: 38)
                                     .background(
                                         RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                            .fill(isSel ? Color(hex: 0x343044) : cardSurface)
+                                             .fill(isSel ? Color(hex: 0x343044) : cardSurface)
                                     )
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                            .strokeBorder(isSel ? Color(hex: 0x494260) : cardBorder, lineWidth: 1)
+                                             .strokeBorder(isSel ? Color(hex: 0x494260) : cardBorder, lineWidth: 1)
                                     )
                             }
                             .buttonStyle(.plain)
@@ -234,6 +238,18 @@ public struct TodayHeroCard: View {
             return LanguageManager.t("plan.resumeWorkout")
         }
         return LanguageManager.t("plan.startWorkout")
+    }
+
+    private func isSingleLineTitle(_ title: String) -> Bool {
+        let font = UIFont.systemFont(ofSize: 32, weight: .semibold)
+        let constraintRect = CGSize(width: 215, height: CGFloat.greatestFiniteMagnitude)
+        let boundingBox = (title as NSString).boundingRect(
+            with: constraintRect,
+            options: [.usesLineFragmentOrigin, .usesFontLeading],
+            attributes: [.font: font],
+            context: nil
+        )
+        return boundingBox.height < 50
     }
 
     private func restDayCard() -> some View {

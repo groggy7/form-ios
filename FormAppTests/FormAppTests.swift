@@ -2752,4 +2752,57 @@ final class FormAppTests: XCTestCase {
             print("Successfully wrote legs hero snapshot to \(path)")
         }
     }
+
+    @MainActor
+    func testTodayHeroCardTuesdaySnapshot() {
+        let store = AppStore.shared
+        store.selectedWorkoutId = "aesthetic-pull-a"
+        let workout = store.activeProgram?.workouts.first { $0.id == "aesthetic-pull-a" }
+            ?? Workout(
+                id: "aesthetic-pull-a",
+                day: 2,
+                title: "Back & Biceps",
+                focus: "Vertical pull, supported row and rear delts",
+                exercises: [
+                    Exercise(name: "Cable Lat Pulldown"),
+                    Exercise(name: "Chest Supported Row"),
+                    Exercise(name: "Incline Dumbbell Curl")
+                ],
+                targetMuscles: ["lats", "trapezius", "shoulders", "biceps"]
+            )
+
+        let view = VStack {
+            TodayHeroCard(
+                workout: workout,
+                programId: store.activeProgram?.id ?? "01_aesthetic_hypertrophy",
+                todayIndex: store.weekCalendar.today,
+                isCompleted: false,
+                isAvailable: true,
+                availableDay: nil,
+                hasUnfinishedProgress: false,
+                onStart: {}
+            )
+        }
+        .padding(.vertical, 20)
+        .frame(width: 440)
+        .background(AppColors.background)
+
+        let controller = UIHostingController(rootView: view)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 440, height: 500))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_tuesday_hero_card_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote Tuesday hero snapshot to \(path)")
+        }
+        store.selectedWorkoutId = nil
+    }
 }
