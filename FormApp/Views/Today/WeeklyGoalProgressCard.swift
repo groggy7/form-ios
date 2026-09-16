@@ -1,11 +1,12 @@
 import SwiftUI
 
-private let cardBackground = Color(hex: 0x0E161F)
-private let cardBorder = Color(hex: 0x232C36)
+private let cardBackground = Color(hex: 0x1E242B)
+private let cardBorder = Color(hex: 0x303B46)
 private let segmentActive = Color(hex: 0x21E498)
 private let segmentPineGreen = Color(hex: 0x0E493C)
-private let segmentTrack = Color(hex: 0x16202C)
-private let statBoxBg = Color(hex: 0x0D1419)
+private let segmentTrack = Color(hex: 0x13171B)
+private let statBoxBg = AppColors.surface
+private let statBoxBorder = AppColors.border
 private let amberPr = Color(hex: 0xFBBF24)
 
 public struct WeeklyGoalProgressCard: View {
@@ -87,7 +88,7 @@ public struct WeeklyGoalProgressCard: View {
                 .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 .overlay(
                     RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .stroke(cardBorder, lineWidth: 1)
+                        .stroke(statBoxBorder, lineWidth: 1)
                 )
                 .accessibilityIdentifier("weekly-progress-volume")
 
@@ -108,7 +109,7 @@ public struct WeeklyGoalProgressCard: View {
                 .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 .overlay(
                     RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .stroke(cardBorder, lineWidth: 1)
+                        .stroke(statBoxBorder, lineWidth: 1)
                 )
                 .accessibilityIdentifier("weekly-progress-active-time")
 
@@ -135,7 +136,7 @@ public struct WeeklyGoalProgressCard: View {
                 .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                 .overlay(
                     RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .stroke(cardBorder, lineWidth: 1)
+                        .stroke(statBoxBorder, lineWidth: 1)
                 )
                 .accessibilityIdentifier("weekly-progress-prs")
             }
