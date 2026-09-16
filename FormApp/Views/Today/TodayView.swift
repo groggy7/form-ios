@@ -84,20 +84,8 @@ public struct TodayView: View {
                 )
 
                 // Weekly goal progress card
-                let isCurrentWorkoutPending: Bool = {
-                    if store.activeSession != nil || weeklyMetrics.hasUnfinishedProgress {
-                        return true
-                    } else if let w = workout {
-                        let workoutKey = "\(program?.id ?? ""):\(w.id)"
-                        return !store.state.completed.contains(workoutKey)
-                    } else {
-                        return false
-                    }
-                }()
-
                 WeeklyGoalProgressCard(
-                    metrics: weeklyMetrics,
-                    isCurrentWorkoutPending: isCurrentWorkoutPending
+                    metrics: weeklyMetrics
                 )
                 .padding(.horizontal, 20)
 

@@ -13,12 +13,11 @@ public func isWeeklyGoalPillBlinking(
     pillIndex: Int,
     totalWorkouts: Int,
     completedWorkouts: Int,
-    isCurrentWorkoutPending: Bool
+    isCurrentWorkoutPending: Bool = true
 ) -> Bool {
     totalWorkouts > 0 &&
         completedWorkouts < totalWorkouts &&
-        pillIndex == completedWorkouts &&
-        isCurrentWorkoutPending
+        pillIndex == completedWorkouts
 }
 
 public struct WeeklyGoalProgressCard: View {
@@ -82,7 +81,7 @@ public struct WeeklyGoalProgressCard: View {
             .accessibilityIdentifier("weekly-goal-progress-segments")
             .onAppear {
                 withAnimation(
-                    .easeInOut(duration: 0.9)
+                    .easeInOut(duration: 1.25)
                     .repeatForever(autoreverses: true)
                 ) {
                     isBlinking = true

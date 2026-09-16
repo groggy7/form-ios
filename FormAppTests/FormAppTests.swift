@@ -2639,19 +2639,24 @@ final class FormAppTests: XCTestCase {
         let totalWorkouts = 5
         let completedWorkouts = 2
 
-        XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: 0, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts, isCurrentWorkoutPending: true))
-        XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: 1, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts, isCurrentWorkoutPending: true))
-        XCTAssertTrue(isWeeklyGoalPillBlinking(pillIndex: 2, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts, isCurrentWorkoutPending: true))
-        XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: 3, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts, isCurrentWorkoutPending: true))
-        XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: 4, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts, isCurrentWorkoutPending: true))
+        XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: 0, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts))
+        XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: 1, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts))
+        XCTAssertTrue(isWeeklyGoalPillBlinking(pillIndex: 2, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts))
+        XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: 3, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts))
+        XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: 4, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts))
 
-        XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: 2, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts, isCurrentWorkoutPending: false))
+        // Blinks even when no active workout is started/pending
+        XCTAssertTrue(isWeeklyGoalPillBlinking(pillIndex: 2, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts, isCurrentWorkoutPending: false))
+
+        // 1 completed out of 5 -> 2nd pill (index 1) blinks
+        XCTAssertTrue(isWeeklyGoalPillBlinking(pillIndex: 1, totalWorkouts: totalWorkouts, completedWorkouts: 1))
+        XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: 0, totalWorkouts: totalWorkouts, completedWorkouts: 1))
 
         for i in 0..<totalWorkouts {
-            XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: i, totalWorkouts: totalWorkouts, completedWorkouts: 5, isCurrentWorkoutPending: true))
+            XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: i, totalWorkouts: totalWorkouts, completedWorkouts: 5))
         }
 
-        XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: 0, totalWorkouts: 0, completedWorkouts: 0, isCurrentWorkoutPending: true))
+        XCTAssertFalse(isWeeklyGoalPillBlinking(pillIndex: 0, totalWorkouts: 0, completedWorkouts: 0))
     }
 
     @MainActor
