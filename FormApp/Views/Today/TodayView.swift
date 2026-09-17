@@ -60,7 +60,7 @@ public struct TodayView: View {
                     )
                 }
                 .padding(.horizontal, 20)
-                .padding(.top, 4)
+                .padding(.top, 10)
 
                 // 7-day strip
                 WeekStripView(store: store) { workoutId in
