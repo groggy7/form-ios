@@ -1445,6 +1445,58 @@ final class FormAppTests: XCTestCase {
         }
     }
 
+    func testHistoryDayPreviewCardMissedSnapshot() {
+        let store = AppStore.shared
+        let workout = Workout(
+            id: "missed-test-workout",
+            day: 1,
+            title: "Chest & Triceps",
+            exercises: [
+                Exercise(name: "Barbell Bench Press", sets: 3),
+                Exercise(name: "Incline Dumbbell Press", sets: 3),
+                Exercise(name: "Cable Fly", sets: 3),
+                Exercise(name: "Triceps Pushdown", sets: 3)
+            ]
+        )
+        let date = WorkoutCalendar.parseDate("2026-09-01")!
+
+        let detail = HistoryDayDetailData(
+            date: date,
+            dateString: "2026-09-01",
+            status: .missed,
+            sessionRecord: nil,
+            workout: workout
+        )
+
+        let card = HistoryDayPreviewCard(
+            detail: detail,
+            history: [],
+            onOpenDetail: {}
+        )
+        .padding(16)
+        .background(Color(hex: 0x090C0F))
+
+        let controller = UIHostingController(rootView: card)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 480)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 480))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_preview_card_missed_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
+
     func testWorkoutCalendarRefreshPreservesEntries() {
         let initial = WorkoutCalendarHistory(
             nextScheduledDate: "2026-08-24",

@@ -433,6 +433,8 @@ public struct HistoryDayPreviewCard: View {
             return AppColors.completedGreen.opacity(0.35)
         } else if item.setsCount > 0 && item.setsCount < item.targetSets {
             return AppColors.unfinishedOrange.opacity(0.5)
+        } else if detail.status == .missed || item.setsCount == 0 {
+            return AppColors.missedRed.opacity(0.35)
         } else {
             return AppColors.border
         }
@@ -457,7 +459,7 @@ public struct HistoryDayPreviewCard: View {
                 .fill(AppColors.surfaceRaised)
                 .overlay(
                     RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .stroke(AppColors.border, lineWidth: 1)
+                        .stroke(AppColors.missedRed.opacity(0.35), lineWidth: 1)
                 )
         )
         .accessibilityIdentifier("history-preview-unstarted-group")
