@@ -223,66 +223,10 @@ public struct ExerciseDetailView: View {
                             .cornerRadius(14)
                             .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
                         } else {
-                            // Summary card
-                            VStack(spacing: 12) {
-                                HStack(spacing: 12) {
-                                    let prText: String = {
-                                        if let w = stats.prWeightKg, w > 0.0 {
-                                            return "\(store.weightUnit.formatWeight(w)) \(store.weightUnit.label) × \(stats.prReps ?? 0)"
-                                        } else if let r = stats.prReps, r > 0 {
-                                            return "\(r) reps"
-                                        } else {
-                                            return "—"
-                                        }
-                                    }()
-
-                                    HistoryMetricTile(
-                                        label: LanguageManager.t("exercise.history.pr"),
-                                        value: prText,
-                                        highlight: true
-                                    )
-
-                                    let est1rmText: String = {
-                                        if let est = stats.estimated1rmKg {
-                                            return "\(store.weightUnit.formatWeight(est)) \(store.weightUnit.label)"
-                                        } else {
-                                            return "—"
-                                        }
-                                    }()
-
-                                    HistoryMetricTile(
-                                        label: LanguageManager.t("exercise.history.estimated1rm"),
-                                        value: est1rmText,
-                                        highlight: false
-                                    )
-                                }
-
-                                HStack(spacing: 12) {
-                                    let volumeText: String = {
-                                        if stats.totalVolumeKg > 0.0 {
-                                            return "\(store.weightUnit.formatVolume(stats.totalVolumeKg)) \(store.weightUnit.label)"
-                                        } else {
-                                            return "0 \(store.weightUnit.label)"
-                                        }
-                                    }()
-
-                                    HistoryMetricTile(
-                                        label: LanguageManager.t("exercise.history.volume"),
-                                        value: volumeText,
-                                        highlight: false
-                                    )
-
-                                    HistoryMetricTile(
-                                        label: LanguageManager.t("exercise.history.sets"),
-                                        value: "\(stats.lifetimeSets)",
-                                        highlight: false
-                                    )
-                                }
-                            }
-                            .padding(16)
-                            .background(AppColors.surface)
-                            .cornerRadius(14)
-                            .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
+                            ExerciseHistoryStatsRow(
+                                stats: stats,
+                                weightUnit: store.weightUnit
+                            )
 
                             if !stats.recentSessions.isEmpty {
                                 Text(LanguageManager.t("exercise.history.recent"))
@@ -372,29 +316,117 @@ public struct ExerciseDetailView: View {
 
 public typealias ExerciseDetailSheet = ExerciseDetailView
 
-struct HistoryMetricTile: View {
-    let label: String
-    let value: String
-    var highlight: Bool = false
+struct ExerciseHistoryStatsRow: View {
+    let stats: ExerciseHistoryStats
+    let weightUnit: WeightUnit
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(label)
-                .font(.system(size: 11, weight: .medium))
-                .foregroundColor(AppColors.secondaryText)
-                .lineLimit(1)
+        HStack(spacing: 8) {
+            // Card 1: Personal Best
+            let prValue: String = {
+                if let w = stats.prWeightKg, w > 0.0 {
+                    return "\(weightUnit.formatWeight(w)) \(weightUnit.label)"
+                } else if let r = stats.prReps, r > 0 {
+                    return "\(r) \(LanguageManager.t("exercise.history.reps"))"
+                } else {
+                    return "—"
+                }
+            }()
+            let prSubtitle: String = {
+                if let w = stats.prWeightKg, w > 0.0, let r = stats.prReps, r > 0 {
+                    return "× \(r) \(LanguageManager.t("exercise.history.reps"))"
+                } else if let w = stats.prWeightKg, w > 0.0 {
+                    return "—"
+                } else if let r = stats.prReps, r > 0 {
+                    return LanguageManager.t("exercise.history.bodyweight")
+                } else {
+                    return "—"
+                }
+            }()
+
+            HistoryStatCard(
+                title: LanguageManager.t("exercise.history.personalBestTitle").uppercased(),
+                value: prValue,
+                valueColor: .white,
+                subtitle: prSubtitle,
+                subtitleColor: AppColors.historyStatPrGreen
+            )
+
+            // Card 2: Estimated 1RM
+            let est1rmValue: String = {
+                if let est = stats.estimated1rmKg {
+                    return "\(weightUnit.formatWeight(est.rounded())) \(weightUnit.label)"
+                } else {
+                    return "—"
+                }
+            }()
+
+            HistoryStatCard(
+                title: LanguageManager.t("exercise.history.estimated1rmTitle").uppercased(),
+                value: est1rmValue,
+                valueColor: AppColors.historyStat1RmAmber,
+                subtitle: LanguageManager.t("exercise.history.brzyckiEq"),
+                subtitleColor: AppColors.historyStatCardTitle
+            )
+
+            // Card 3: Logged Volume
+            HistoryStatCard(
+                title: LanguageManager.t("exercise.history.loggedVolumeTitle").uppercased(),
+                value: "\(stats.lifetimeSets)",
+                valueColor: .white,
+                subtitle: LanguageManager.t("exercise.history.sets"),
+                subtitleColor: AppColors.historyStatCardTitle
+            )
+        }
+        .frame(maxWidth: .infinity)
+    }
+}
+
+struct HistoryStatCard: View {
+    let title: String
+    let value: String
+    let valueColor: Color
+    let subtitle: String
+    let subtitleColor: Color
+
+    var body: some View {
+        VStack(spacing: 0) {
+            Text(title)
+                .font(.system(size: 11, weight: .semibold))
+                .foregroundColor(AppColors.historyStatCardTitle)
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
+                .fixedSize(horizontal: false, vertical: true)
+                .kerning(0.5)
+
+            Spacer(minLength: 4)
 
             Text(value)
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(highlight ? AppColors.accent : AppColors.text)
+                .font(.system(size: 18, weight: .bold))
+                .foregroundColor(valueColor)
+                .multilineTextAlignment(.center)
                 .lineLimit(1)
+                .minimumScaleFactor(0.8)
+
+            Spacer(minLength: 4)
+
+            Text(subtitle)
+                .font(.system(size: 12, weight: .medium))
+                .foregroundColor(subtitleColor)
+                .multilineTextAlignment(.center)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
         }
-        .padding(.horizontal, 12)
-        .padding(.vertical, 10)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(AppColors.background)
-        .cornerRadius(10)
-        .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.border, lineWidth: 1))
+        .padding(.horizontal, 6)
+        .padding(.vertical, 12)
+        .frame(maxWidth: .infinity)
+        .frame(height: 116)
+        .background(AppColors.historyStatCardBg)
+        .cornerRadius(16)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(AppColors.historyStatCardBorder, lineWidth: 1)
+        )
     }
 }
 

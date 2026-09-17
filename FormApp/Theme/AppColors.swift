@@ -69,6 +69,13 @@ public enum AppColors {
     public static let goldPrBg = Color(hex: 0x2C1E14)
     public static let goldPrBorder = Color(hex: 0x6E461F)
     public static let goldPrText = Color(hex: 0xF2AF61)
+
+    // Exercise Detail History Stat Card colors
+    public static let historyStatCardBg = Color(hex: 0x1A232A)
+    public static let historyStatCardBorder = Color(hex: 0x26323D)
+    public static let historyStatCardTitle = Color(hex: 0x8E9BAE)
+    public static let historyStatPrGreen = Color(hex: 0x20D791)
+    public static let historyStat1RmAmber = Color(hex: 0xFEB447)
 }
 
 extension Color {
