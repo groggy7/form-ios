@@ -590,6 +590,52 @@ final class FormAppTests: XCTestCase {
         }
     }
 
+    @MainActor
+    func testAllMuscleArtworkThumbnails() {
+        let contactSheet = VStack(spacing: 12) {
+            LazyVGrid(columns: [GridItem(.fixed(160), spacing: 10), GridItem(.fixed(160), spacing: 10)], spacing: 10) {
+                ForEach(MuscleGroupFilter.allCases) { muscle in
+                    VStack(spacing: 4) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(Color.black)
+                            MuscleArtwork(view: muscle.bodyView, muscles: muscle.muscleGroups, centered: true)
+                                .padding(4)
+                        }
+                        .frame(width: 160, height: 84)
+
+                        Text(LanguageManager.t(muscle.translationKey))
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(AppColors.text)
+                    }
+                }
+            }
+        }
+        .padding(20)
+        .background(AppColors.background)
+
+        let controller = UIHostingController(rootView: contactSheet)
+        let targetSize = controller.sizeThatFits(in: CGSize(width: 400, height: 1200))
+        controller.view.frame = CGRect(origin: .zero, size: targetSize)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(origin: .zero, size: targetSize))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: targetSize)
+        let image = renderer.image { _ in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_all_muscle_groups_contact_sheet.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote contact sheet to \(path)")
+        }
+    }
+
     func testLibraryMuscleFilteringAndMatching() {
         let bench = Exercise(name: "Barbell Bench Press", exerciseId: "barbell-bench-press", movementType: "press")
         let squat = Exercise(name: "Barbell Squat", exerciseId: "barbell-back-squat", movementType: "squat")

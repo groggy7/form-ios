@@ -30,10 +30,38 @@ public struct MuscleArtwork: View {
             case .front: athleteCenterX = 866
             }
 
+            let athleteCenterY: CGFloat
+            if muscles.contains(.glutes) {
+                athleteCenterY = 240
+            } else if muscles.contains(.calves) {
+                athleteCenterY = 750
+            } else if muscles.contains(.abs) || muscles.contains(.obliques) {
+                athleteCenterY = 660
+            } else if muscles.contains(.biceps) || muscles.contains(.triceps) {
+                athleteCenterY = 560
+            } else if muscles.contains(.quadriceps) {
+                athleteCenterY = 430
+            } else if muscles.contains(.hamstrings) {
+                athleteCenterY = 490
+            } else if muscles.contains(.chest) || muscles.contains(.shoulders) {
+                athleteCenterY = 450
+            } else if muscles.contains(.trapezius) || muscles.contains(.lats) {
+                athleteCenterY = 490
+            } else {
+                athleteCenterY = 520
+            }
+
             let scale = max(size.width, size.height) / MuscleMasks.viewport
             let width = MuscleMasks.viewport * scale
             let left = centered ? ((size.width / 2.0) - (athleteCenterX * scale)) : ((size.width - width) / 2.0)
-            let top = (size.height - width) * 0.41
+            let top: CGFloat
+            if centered {
+                let rawTop = (size.height / 2.0) - (athleteCenterY * scale)
+                let minTop = size.height - width
+                top = min(0.0, max(minTop, rawTop))
+            } else {
+                top = (size.height - width) * 0.41
+            }
 
             var rootContext = context
             rootContext.opacity = Double(alpha)
