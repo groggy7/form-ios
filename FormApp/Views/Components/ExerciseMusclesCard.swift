@@ -57,7 +57,7 @@ struct ExerciseMusclesCard: View {
     @ScaledMetric(relativeTo: .caption) private var labelSize: CGFloat = 13
     @ScaledMetric(relativeTo: .caption) private var noteSize: CGFloat = 12
 
-    init(exerciseId: String?, initiallyExpanded: Bool = false) {
+    init(exerciseId: String?, initiallyExpanded: Bool = true) {
         self.exerciseId = exerciseId
         self.initiallyExpanded = initiallyExpanded
         self._isExpanded = State(initialValue: initiallyExpanded)

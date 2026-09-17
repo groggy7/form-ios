@@ -1746,13 +1746,19 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
-    func testExerciseMusclesCardCollapsedByDefault() throws {
+    func testExerciseMusclesCardExpandedByDefault() throws {
         LanguageManager.setLanguage("en")
         let renderer = ImageRenderer(content: ExerciseMusclesCard(exerciseId: "barbell-bench-press")
             .frame(width: 350))
         renderer.scale = 2
         let image = try XCTUnwrap(renderer.uiImage)
-        XCTAssertLessThan(image.size.height, 90)
+        XCTAssertGreaterThan(image.size.height, 100)
+
+        let collapsedRenderer = ImageRenderer(content: ExerciseMusclesCard(exerciseId: "barbell-bench-press", initiallyExpanded: false)
+            .frame(width: 350))
+        collapsedRenderer.scale = 2
+        let collapsedImage = try XCTUnwrap(collapsedRenderer.uiImage)
+        XCTAssertLessThan(collapsedImage.size.height, 90)
     }
 
     func testVideoDuplicatesPreserveCaseSensitiveIdsAndFirstTimestamp() {
