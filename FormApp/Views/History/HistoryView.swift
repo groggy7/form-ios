@@ -450,31 +450,140 @@ public struct HistoryDayDetailSheet: View {
         let halfwayExercises = items.filter { $0.completedSets > 0 && $0.completedSets < $0.plannedSets }
         let unstartedExercises = items.filter { $0.completedSets == 0 }
 
+        let totalCompletedSets = detail.sessionRecord?.totalCompletedSets ?? items.reduce(0) { $0 + $1.completedSets }
+        let totalPlannedSets = max(1, items.reduce(0) { $0 + $1.plannedSets })
+        let displayCompletedSets = effectiveStatus == .missed ? 0 : totalCompletedSets
+        let durationSeconds = detail.sessionRecord?.durationSeconds ?? 0
+        let totalVolumeKg = detail.sessionRecord?.totalVolumeKg ?? 0.0
+
+        let progressFraction: Double = effectiveStatus == .missed ? 0.0 : min(1.0, max(0.0, Double(totalCompletedSets) / Double(totalPlannedSets)))
+        let progressPercent = Int(progressFraction * 100)
+
+        let formattedDuration: String = {
+            let isTr = LanguageManager.shared.currentLanguage.lowercased().hasPrefix("tr")
+            if effectiveStatus == .missed || durationSeconds <= 0 {
+                return isTr ? "0dk 0sn" : "0m 0s"
+            }
+            if durationSeconds >= 3600 {
+                let hours = durationSeconds / 3600
+                let mins = (durationSeconds % 3600) / 60
+                return isTr ? "\(hours)sa \(mins)dk" : "\(hours)h \(mins)m"
+            } else {
+                let mins = durationSeconds / 60
+                let secs = durationSeconds % 60
+                return isTr ? "\(mins)dk \(secs)sn" : "\(mins)m \(secs)s"
+            }
+        }()
+
+        let formattedVolume: String = {
+            if effectiveStatus == .missed { return "0" }
+            return WorkoutSessionUtils.formatWeight(totalVolumeKg)
+        }()
+
+        let (statusColor, statusBg, statusText): (Color, Color, String) = {
+            switch effectiveStatus {
+            case .unfinished:
+                return (AppColors.unfinishedOrange, AppColors.unfinishedOrange.opacity(0.15), LanguageManager.t("history.unfinished"))
+            case .missed:
+                return (AppColors.missedRed, AppColors.missedRed.opacity(0.15), LanguageManager.t("history.missed"))
+            case .completed:
+                return (AppColors.completedGreen, AppColors.completedGreen.opacity(0.15), LanguageManager.t("history.completed"))
+            }
+        }()
+
         ScrollView {
-            VStack(alignment: .leading, spacing: 20) {
-                // Header
-                HStack(alignment: .top) {
+            VStack(alignment: .leading, spacing: 18) {
+                // Header (close button removed as back navigation is handled by top-left bar)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(formattedDate)
+                        .font(.system(size: 13, weight: .medium))
+                        .foregroundColor(AppColors.secondaryText)
+
+                    Text(workoutTitle)
+                        .font(.system(size: 22, weight: .bold))
+                        .foregroundColor(AppColors.text)
+                }
+
+                // Status Pill Tag
+                Text(statusText)
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(statusColor)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .fill(statusBg)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .stroke(statusColor.opacity(0.35), lineWidth: 1)
+                            )
+                    )
+                    .accessibilityIdentifier("history-detail-status")
+
+                // Key Stats (Sets | Duration | Volume)
+                HStack(spacing: 0) {
+                    // Sets
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(formattedDate)
+                        Text(LanguageManager.t("history.sets").isEmpty ? "Sets" : LanguageManager.t("history.sets"))
                             .font(.system(size: 13, weight: .medium))
                             .foregroundColor(AppColors.secondaryText)
-
-                        Text(workoutTitle)
-                            .font(.system(size: 22, weight: .bold))
+                        Text("\(displayCompletedSets) / \(totalPlannedSets)")
+                            .font(.system(size: 20, weight: .bold))
                             .foregroundColor(AppColors.text)
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
 
-                    Spacer()
+                    Rectangle()
+                        .fill(Color.white.opacity(0.08))
+                        .frame(width: 1, height: 36)
 
-                    Button(action: onDismiss) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 14, weight: .semibold))
+                    // Duration
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(LanguageManager.t("history.duration").isEmpty ? "Duration" : LanguageManager.t("history.duration"))
+                            .font(.system(size: 13, weight: .medium))
                             .foregroundColor(AppColors.secondaryText)
-                            .frame(width: 36, height: 36)
-                            .background(AppColors.surfaceRaised)
-                            .clipShape(Circle())
+                        Text(formattedDuration)
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(AppColors.text)
                     }
-                    .buttonStyle(.plain)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 16)
+
+                    Rectangle()
+                        .fill(Color.white.opacity(0.08))
+                        .frame(width: 1, height: 36)
+
+                    // Volume
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(LanguageManager.t("history.volume").isEmpty ? "Volume" : LanguageManager.t("history.volume"))
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundColor(AppColors.secondaryText)
+                        Text("\(formattedVolume) kg")
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(AppColors.text)
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 16)
+                }
+
+                // Progress Bar + Percentage Row
+                HStack(spacing: 12) {
+                    GeometryReader { geometry in
+                        ZStack(alignment: .leading) {
+                            Capsule()
+                                .fill(AppColors.progressTrack)
+                                .frame(height: 8)
+
+                            Capsule()
+                                .fill(effectiveStatus == .completed ? AppColors.completedGreen : AppColors.accent)
+                                .frame(width: geometry.size.width * CGFloat(progressFraction), height: 8)
+                        }
+                    }
+                    .frame(height: 8)
+
+                    Text(LanguageManager.formatPercent(progressPercent))
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundColor(AppColors.text)
                 }
 
                 // Content Sections

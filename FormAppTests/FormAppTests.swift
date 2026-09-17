@@ -942,10 +942,10 @@ final class FormAppTests: XCTestCase {
 
         let sheet = HistoryDayDetailSheet(detail: detail, onDismiss: {}, onActionWorkout: {})
         let controller = UIHostingController(rootView: sheet)
-        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 750)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 850)
         controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
 
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 750))
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 850))
         window.rootViewController = controller
         window.makeKeyAndVisible()
         controller.view.layoutIfNeeded()
