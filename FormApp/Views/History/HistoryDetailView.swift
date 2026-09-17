@@ -28,6 +28,9 @@ public struct HistoryDetailView: View {
         let items = exerciseProgressList()
         let allCompleted = !items.isEmpty && items.allSatisfy { $0.completedSets >= $0.plannedSets && $0.plannedSets > 0 }
         let effectiveStatus: WorkoutDayStatus = (detail.status == .unfinished && allCompleted) ? .completed : detail.status
+        let isMissed = effectiveStatus == .missed || (!items.isEmpty && items.allSatisfy { $0.completedSets == 0 } && detail.date < Calendar.current.startOfDay(for: Date()))
+        let showActionButton = onActionWorkout != nil && !allCompleted
+        let actionButtonText = isMissed ? LanguageManager.t("history.startWorkout") : LanguageManager.t("history.resumeWorkout")
 
         let completedExercises = items.filter { $0.completedSets >= $0.plannedSets && $0.plannedSets > 0 }
         let halfwayExercises = items.filter { $0.completedSets > 0 && $0.completedSets < $0.plannedSets }
@@ -97,106 +100,105 @@ public struct HistoryDetailView: View {
             .padding(.top, 6)
             .padding(.bottom, 6)
 
-            ScrollView {
-                VStack(alignment: .leading, spacing: 18) {
-                    // Header Date & Title
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(formattedDate)
-                            .font(.system(size: 13, weight: .medium))
-                            .foregroundColor(AppColors.secondaryText)
-
-                        Text(workoutTitle)
-                            .font(.system(size: 22, weight: .bold))
-                            .foregroundColor(AppColors.text)
-                            .accessibilityIdentifier("history-detail-title")
-                    }
-
-                    // Status Pill Tag
-                    Text(statusText)
-                        .font(.system(size: 12, weight: .semibold))
-                        .foregroundColor(statusColor)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .background(
-                            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                .fill(statusBg)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                        .stroke(statusColor.opacity(0.35), lineWidth: 1)
-                                )
-                        )
-                        .accessibilityIdentifier("history-detail-status")
-
-                    // Key Stats (Sets | Duration | Volume)
-                    HStack(spacing: 0) {
-                        // Sets
+            ZStack(alignment: .bottom) {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 18) {
+                        // Header Date & Title
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(LanguageManager.t("history.sets").isEmpty ? "Sets" : LanguageManager.t("history.sets"))
+                            Text(formattedDate)
                                 .font(.system(size: 13, weight: .medium))
                                 .foregroundColor(AppColors.secondaryText)
-                            Text("\(displayCompletedSets) / \(totalPlannedSets)")
-                                .font(.system(size: 20, weight: .bold))
+
+                            Text(workoutTitle)
+                                .font(.system(size: 22, weight: .bold))
                                 .foregroundColor(AppColors.text)
+                                .accessibilityIdentifier("history-detail-title")
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
 
-                        Rectangle()
-                            .fill(Color.white.opacity(0.08))
-                            .frame(width: 1, height: 36)
+                        // Status Pill Tag
+                        Text(statusText)
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundColor(statusColor)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 6)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                    .fill(statusBg)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                            .stroke(statusColor.opacity(0.35), lineWidth: 1)
+                                    )
+                            )
+                            .accessibilityIdentifier("history-detail-status")
 
-                        // Duration
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(LanguageManager.t("history.duration").isEmpty ? "Duration" : LanguageManager.t("history.duration"))
-                                .font(.system(size: 13, weight: .medium))
-                                .foregroundColor(AppColors.secondaryText)
-                            Text(formattedDuration)
-                                .font(.system(size: 20, weight: .bold))
-                                .foregroundColor(AppColors.text)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 16)
-
-                        Rectangle()
-                            .fill(Color.white.opacity(0.08))
-                            .frame(width: 1, height: 36)
-
-                        // Volume
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(LanguageManager.t("history.volume").isEmpty ? "Volume" : LanguageManager.t("history.volume"))
-                                .font(.system(size: 13, weight: .medium))
-                                .foregroundColor(AppColors.secondaryText)
-                            Text("\(formattedVolume) kg")
-                                .font(.system(size: 20, weight: .bold))
-                                .foregroundColor(AppColors.text)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 16)
-                    }
-
-                    // Progress Bar + Percentage Row
-                    HStack(spacing: 12) {
-                        GeometryReader { geometry in
-                            ZStack(alignment: .leading) {
-                                Capsule()
-                                    .fill(AppColors.progressTrack)
-                                    .frame(height: 8)
-
-                                Capsule()
-                                    .fill(effectiveStatus == .completed ? AppColors.completedGreen : AppColors.accent)
-                                    .frame(width: geometry.size.width * CGFloat(progressFraction), height: 8)
+                        // Key Stats (Sets | Duration | Volume)
+                        HStack(spacing: 0) {
+                            // Sets
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(LanguageManager.t("history.sets").isEmpty ? "Sets" : LanguageManager.t("history.sets"))
+                                    .font(.system(size: 13, weight: .medium))
+                                    .foregroundColor(AppColors.secondaryText)
+                                Text("\(displayCompletedSets) / \(totalPlannedSets)")
+                                    .font(.system(size: 20, weight: .bold))
+                                    .foregroundColor(AppColors.text)
                             }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+
+                            Rectangle()
+                                .fill(Color.white.opacity(0.08))
+                                .frame(width: 1, height: 36)
+
+                            // Duration
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(LanguageManager.t("history.duration").isEmpty ? "Duration" : LanguageManager.t("history.duration"))
+                                    .font(.system(size: 13, weight: .medium))
+                                    .foregroundColor(AppColors.secondaryText)
+                                Text(formattedDuration)
+                                    .font(.system(size: 20, weight: .bold))
+                                    .foregroundColor(AppColors.text)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 16)
+
+                            Rectangle()
+                                .fill(Color.white.opacity(0.08))
+                                .frame(width: 1, height: 36)
+
+                            // Volume
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(LanguageManager.t("history.volume").isEmpty ? "Volume" : LanguageManager.t("history.volume"))
+                                    .font(.system(size: 13, weight: .medium))
+                                    .foregroundColor(AppColors.secondaryText)
+                                Text("\(formattedVolume) kg")
+                                    .font(.system(size: 20, weight: .bold))
+                                    .foregroundColor(AppColors.text)
+                            }
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.leading, 16)
                         }
-                        .frame(height: 8)
 
-                        Text(LanguageManager.formatPercent(progressPercent))
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundColor(AppColors.text)
-                    }
+                        // Progress Bar + Percentage Row
+                        HStack(spacing: 12) {
+                            GeometryReader { geometry in
+                                ZStack(alignment: .leading) {
+                                    Capsule()
+                                        .fill(AppColors.progressTrack)
+                                        .frame(height: 8)
 
-                    // Content Sections
-                    let isMissed = effectiveStatus == .missed || (!items.isEmpty && items.allSatisfy { $0.completedSets == 0 } && detail.date < Calendar.current.startOfDay(for: Date()))
+                                    Capsule()
+                                        .fill(effectiveStatus == .completed ? AppColors.completedGreen : AppColors.accent)
+                                        .frame(width: geometry.size.width * CGFloat(progressFraction), height: 8)
+                                }
+                            }
+                            .frame(height: 8)
 
-                    if allCompleted {
+                            Text(LanguageManager.formatPercent(progressPercent))
+                                .font(.system(size: 14, weight: .bold))
+                                .foregroundColor(AppColors.text)
+                        }
+
+                        // Content Sections
+                        if allCompleted {
                         // Completed Day (Picture 1)
                         VStack(alignment: .leading, spacing: 12) {
                             HStack(alignment: .firstTextBaseline) {
@@ -242,21 +244,6 @@ public struct HistoryDetailView: View {
                                             .background(Color.white.opacity(0.08))
                                     }
                                 }
-                            }
-
-                            if let action = onActionWorkout {
-                                Spacer().frame(height: 8)
-                                Button(action: action) {
-                                    Text(LanguageManager.t("history.startWorkout"))
-                                        .font(.system(size: 16, weight: .bold))
-                                        .foregroundColor(AppColors.background)
-                                        .frame(maxWidth: .infinity)
-                                        .frame(height: 52)
-                                        .background(AppColors.accent)
-                                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                                }
-                                .buttonStyle(.plain)
-                                .accessibilityIdentifier("history-action-button")
                             }
                         }
                     } else {
@@ -401,29 +388,46 @@ public struct HistoryDetailView: View {
                                 }
                             }
 
-                            // Bottom Primary Action CTA Button (Static Resume Workout button)
-                            if let action = onActionWorkout {
-                                Spacer().frame(height: 8)
-                                Button(action: action) {
-                                    Text(LanguageManager.t("history.resumeWorkout"))
-                                        .font(.system(size: 16, weight: .bold))
-                                        .foregroundColor(AppColors.background)
-                                        .frame(maxWidth: .infinity)
-                                        .frame(height: 52)
-                                        .background(AppColors.accent)
-                                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                                }
-                                .buttonStyle(.plain)
-                                .accessibilityIdentifier("history-action-button")
-                            }
                         }
                     }
 
-                    Spacer().frame(height: 24)
+                    Spacer().frame(height: 12)
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 10)
+                .padding(.bottom, showActionButton ? 96 : 24)
             }
+
+            if showActionButton, let action = onActionWorkout {
+                VStack(spacing: 0) {
+                    LinearGradient(
+                        gradient: Gradient(colors: [
+                            AppColors.background.opacity(0),
+                            AppColors.background.opacity(0.85),
+                            AppColors.background
+                        ]),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .frame(height: 20)
+
+                    Button(action: action) {
+                        Text(actionButtonText)
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundColor(AppColors.background)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 52)
+                            .background(AppColors.accent)
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("history-action-button")
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 16)
+                    .background(AppColors.background)
+                }
+            }
+        }
         }
         .background(AppColors.background.ignoresSafeArea())
         .accessibilityIdentifier("history-detail-screen")

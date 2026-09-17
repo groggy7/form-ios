@@ -445,6 +445,9 @@ public struct HistoryDayDetailSheet: View {
         let items = exerciseProgressList()
         let allCompleted = !items.isEmpty && items.allSatisfy { $0.completedSets >= $0.plannedSets && $0.plannedSets > 0 }
         let effectiveStatus: WorkoutDayStatus = (detail.status == .unfinished && allCompleted) ? .completed : detail.status
+        let isMissed = effectiveStatus == .missed || (!items.isEmpty && items.allSatisfy { $0.completedSets == 0 } && detail.date < Calendar.current.startOfDay(for: Date()))
+        let showActionButton = onActionWorkout != nil && !allCompleted
+        let actionButtonText = isMissed ? LanguageManager.t("history.startWorkout") : LanguageManager.t("history.resumeWorkout")
 
         let completedExercises = items.filter { $0.completedSets >= $0.plannedSets && $0.plannedSets > 0 }
         let halfwayExercises = items.filter { $0.completedSets > 0 && $0.completedSets < $0.plannedSets }
@@ -491,7 +494,8 @@ public struct HistoryDayDetailSheet: View {
             }
         }()
 
-        ScrollView {
+        ZStack(alignment: .bottom) {
+            ScrollView {
             VStack(alignment: .leading, spacing: 18) {
                 // Header (close button removed as back navigation is handled by top-left bar)
                 VStack(alignment: .leading, spacing: 4) {
@@ -587,8 +591,6 @@ public struct HistoryDayDetailSheet: View {
                 }
 
                 // Content Sections
-                let isMissed = effectiveStatus == .missed || (!items.isEmpty && items.allSatisfy { $0.completedSets == 0 } && detail.date < Calendar.current.startOfDay(for: Date()))
-
                 if allCompleted {
                     // Completed Day (Picture 1)
                     VStack(alignment: .leading, spacing: 12) {
@@ -635,21 +637,6 @@ public struct HistoryDayDetailSheet: View {
                                         .background(Color.white.opacity(0.08))
                                 }
                             }
-                        }
-
-                        if let action = onActionWorkout {
-                            Spacer().frame(height: 8)
-                            Button(action: action) {
-                                Text(LanguageManager.t("history.startWorkout"))
-                                        .font(.system(size: 16, weight: .bold))
-                                        .foregroundColor(AppColors.background)
-                                        .frame(maxWidth: .infinity)
-                                        .frame(height: 52)
-                                        .background(AppColors.accent)
-                                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                            }
-                            .buttonStyle(.plain)
-                            .accessibilityIdentifier("history-action-button")
                         }
                     }
                 } else {
@@ -794,28 +781,45 @@ public struct HistoryDayDetailSheet: View {
                             }
                         }
 
-                        // Bottom Primary Action CTA Button (Static Resume Workout button)
-                        if let action = onActionWorkout {
-                            Spacer().frame(height: 8)
-                            Button(action: action) {
-                                Text(LanguageManager.t("history.resumeWorkout"))
-                                    .font(.system(size: 16, weight: .bold))
-                                    .foregroundColor(AppColors.background)
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 52)
-                                    .background(AppColors.accent)
-                                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                            }
-                            .buttonStyle(.plain)
-                            .accessibilityIdentifier("history-action-button")
                         }
                     }
-                }
 
-                Spacer().frame(height: 24)
+                    Spacer().frame(height: 12)
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 24)
+                .padding(.bottom, showActionButton ? 96 : 24)
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 24)
+
+            if showActionButton, let action = onActionWorkout {
+                VStack(spacing: 0) {
+                    LinearGradient(
+                        gradient: Gradient(colors: [
+                            AppColors.surface.opacity(0),
+                            AppColors.surface.opacity(0.85),
+                            AppColors.surface
+                        ]),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                    .frame(height: 20)
+
+                    Button(action: action) {
+                        Text(actionButtonText)
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundColor(AppColors.background)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 52)
+                            .background(AppColors.accent)
+                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("history-action-button")
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 20)
+                    .background(AppColors.surface)
+                }
+            }
         }
         .background(AppColors.surface.ignoresSafeArea())
         .presentationDetents([.fraction(0.8), .large])
