@@ -1239,14 +1239,24 @@ final class FormAppTests: XCTestCase {
     @MainActor
     func testHistoryDayPreviewCardSnapshot() {
         let store = AppStore.shared
-        let workout = store.activeProgram?.workouts.first(where: { $0.title.contains("Chest") }) ?? store.activeWorkout
+        let workout = Workout(
+            id: "chest-workout",
+            day: 1,
+            title: "Chest & Triceps",
+            exercises: [
+                Exercise(name: "Barbell Bench Press", sets: 3),
+                Exercise(name: "Incline Dumbbell Press", sets: 3),
+                Exercise(name: "Cable Fly", sets: 3),
+                Exercise(name: "Triceps Pushdown", sets: 3)
+            ]
+        )
         let date = WorkoutCalendar.parseDate("2026-09-02")!
 
         let priorRecord = WorkoutSessionRecord(
             id: "prior-rec",
             programId: store.activeProgram?.id ?? "test-program",
-            workoutId: workout?.id ?? "chest-workout",
-            workoutTitle: workout?.title ?? "Chest Growth",
+            workoutId: workout.id,
+            workoutTitle: workout.title,
             startedAt: "2026-08-25T10:00:00.000Z",
             completedAt: "2026-08-25T10:45:00.000Z",
             durationSeconds: 2700,
@@ -1265,8 +1275,8 @@ final class FormAppTests: XCTestCase {
         let currentRecord = WorkoutSessionRecord(
             id: "current-rec",
             programId: store.activeProgram?.id ?? "test-program",
-            workoutId: workout?.id ?? "chest-workout",
-            workoutTitle: workout?.title ?? "Chest Growth",
+            workoutId: workout.id,
+            workoutTitle: workout.title,
             startedAt: "2026-09-02T10:00:00.000Z",
             completedAt: "2026-09-02T10:48:30.000Z",
             durationSeconds: 2910,
@@ -1344,6 +1354,89 @@ final class FormAppTests: XCTestCase {
 
         if let data = image.pngData() {
             let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_preview_card_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
+
+    func testHistoryDayPreviewCardUnfinishedSnapshot() {
+        let store = AppStore.shared
+        let workout = Workout(
+            id: "unfinished-test-workout",
+            day: 1,
+            title: "Push Day",
+            exercises: [
+                Exercise(name: "Barbell Bench Press", sets: 3),
+                Exercise(name: "Incline Dumbbell Press", sets: 3),
+                Exercise(name: "Cable Fly", sets: 3),
+                Exercise(name: "Triceps Pushdown", sets: 3)
+            ]
+        )
+        let date = WorkoutCalendar.parseDate("2026-09-03")!
+
+        let currentRecord = WorkoutSessionRecord(
+            id: "unfinished-rec",
+            programId: store.activeProgram?.id ?? "test-program",
+            workoutId: workout.id,
+            workoutTitle: workout.title,
+            startedAt: "2026-09-03T10:00:00.000Z",
+            completedAt: "2026-09-03T10:25:00.000Z",
+            durationSeconds: 1500,
+            totalVolumeKg: 2400,
+            totalCompletedSets: 4,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 100, reps: 8),
+                        SessionSetLog(setNumber: 2, weightKg: 100, reps: 8),
+                        SessionSetLog(setNumber: 3, weightKg: 100, reps: 6)
+                    ],
+                    targetSets: 3
+                ),
+                SessionExerciseLog(
+                    exerciseName: "Incline Dumbbell Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 28, reps: 10)
+                    ],
+                    targetSets: 3
+                )
+            ],
+            isComplete: false
+        )
+
+        let detail = HistoryDayDetailData(
+            date: date,
+            dateString: "2026-09-03",
+            status: .unfinished,
+            sessionRecord: currentRecord,
+            workout: workout
+        )
+
+        let card = HistoryDayPreviewCard(
+            detail: detail,
+            history: [currentRecord],
+            onOpenDetail: {}
+        )
+        .padding(16)
+        .background(Color(hex: 0x090C0F))
+
+        let controller = UIHostingController(rootView: card)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 480)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 480))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_preview_card_unfinished_snapshot.png"
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }

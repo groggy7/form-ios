@@ -27,6 +27,20 @@ public struct HistoryDayPreviewCard: View {
         let isCompleted: Bool
     }
 
+    private enum PreviewDisplayItem: Identifiable {
+        case single(PreviewExerciseItem)
+        case unstartedGroup([PreviewExerciseItem])
+
+        var id: String {
+            switch self {
+            case .single(let item):
+                return "single-\(item.id)"
+            case .unstartedGroup(let items):
+                return "group-\(items.count)-\(items.first?.id ?? "")"
+            }
+        }
+    }
+
     private var prExercises: Set<String> {
         guard let record = detail.sessionRecord else { return [] }
         return PersonalRecordTracker.findSessionPrExercises(history: history, targetRecord: record)
@@ -112,34 +126,85 @@ public struct HistoryDayPreviewCard: View {
         return total
     }
 
-    private var exerciseList: [PreviewExerciseItem] {
+    private var allExercises: [PreviewExerciseItem] {
         let planned = detail.workout?.exercises ?? []
         let logs = detail.sessionRecord?.exerciseLogs ?? []
         let activePrs = prExercises
 
-        if !logs.isEmpty {
-            return logs.enumerated().map { index, log in
-                let ex = planned.first {
-                    $0.name.trimmingCharacters(in: .whitespacesAndNewlines).caseInsensitiveCompare(log.exerciseName.trimmingCharacters(in: .whitespacesAndNewlines)) == .orderedSame ||
-                    $0.displayName.trimmingCharacters(in: .whitespacesAndNewlines).caseInsensitiveCompare(log.exerciseName.trimmingCharacters(in: .whitespacesAndNewlines)) == .orderedSame
+        if !planned.isEmpty {
+            let plannedItems: [PreviewExerciseItem] = planned.enumerated().map { index, ex in
+                let log = logs.first {
+                    $0.exerciseName.trimmingCharacters(in: .whitespacesAndNewlines).caseInsensitiveCompare(ex.name.trimmingCharacters(in: .whitespacesAndNewlines)) == .orderedSame ||
+                    $0.exerciseName.trimmingCharacters(in: .whitespacesAndNewlines).caseInsensitiveCompare(ex.displayName.trimmingCharacters(in: .whitespacesAndNewlines)) == .orderedSame
                 }
-                let name = ex?.displayName ?? ContentLocalizer.shared.exerciseName(exerciseId: nil, fallback: log.exerciseName)
+                let setsCount = log?.sets.count ?? 0
+                let targetSets = log?.targetSets ?? WorkoutSessionUtils.initialSetCount(exercise: ex)
+                let validSets = log?.sets.filter { ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 } ?? []
+                let topSet = validSets.max { a, b in
+                    let wA = a.weightKg ?? 0.0
+                    let wB = b.weightKg ?? 0.0
+                    if wA != wB { return wA < wB }
+                    return (a.reps ?? 0) < (b.reps ?? 0)
+                }
+                let rawName = log?.exerciseName ?? ex.name
+                let normKey = PersonalRecordTracker.normalizeExerciseKey(rawName)
+                let isPr = activePrs.contains(normKey)
+                return PreviewExerciseItem(
+                    index: index + 1,
+                    name: ex.displayName,
+                    setsCount: setsCount,
+                    targetSets: targetSets,
+                    topSetWeight: topSet?.weightKg,
+                    topSetReps: topSet?.reps,
+                    isPr: isPr,
+                    isCompleted: setsCount >= targetSets && setsCount > 0
+                )
+            }
+            let extraLogs: [PreviewExerciseItem] = logs.filter { log in
+                !planned.contains { ex in
+                    log.exerciseName.trimmingCharacters(in: .whitespacesAndNewlines).caseInsensitiveCompare(ex.name.trimmingCharacters(in: .whitespacesAndNewlines)) == .orderedSame ||
+                    log.exerciseName.trimmingCharacters(in: .whitespacesAndNewlines).caseInsensitiveCompare(ex.displayName.trimmingCharacters(in: .whitespacesAndNewlines)) == .orderedSame
+                }
+            }.enumerated().map { index, log in
                 let setsCount = log.sets.count
-                let targetSets = log.targetSets ?? ex.map { WorkoutSessionUtils.initialSetCount(exercise: $0) } ?? setsCount
+                let targetSets = log.targetSets ?? max(setsCount, 1)
                 let validSets = log.sets.filter { ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }
                 let topSet = validSets.max { a, b in
                     let wA = a.weightKg ?? 0.0
                     let wB = b.weightKg ?? 0.0
-                    if wA != wB {
-                        return wA < wB
-                    }
+                    if wA != wB { return wA < wB }
+                    return (a.reps ?? 0) < (b.reps ?? 0)
+                }
+                let normKey = PersonalRecordTracker.normalizeExerciseKey(log.exerciseName)
+                let isPr = activePrs.contains(normKey)
+                return PreviewExerciseItem(
+                    index: planned.count + index + 1,
+                    name: ContentLocalizer.shared.exerciseName(exerciseId: nil, fallback: log.exerciseName),
+                    setsCount: setsCount,
+                    targetSets: targetSets,
+                    topSetWeight: topSet?.weightKg,
+                    topSetReps: topSet?.reps,
+                    isPr: isPr,
+                    isCompleted: setsCount >= targetSets && setsCount > 0
+                )
+            }
+            return plannedItems + extraLogs
+        } else if !logs.isEmpty {
+            return logs.enumerated().map { index, log in
+                let setsCount = log.sets.count
+                let targetSets = log.targetSets ?? max(setsCount, 1)
+                let validSets = log.sets.filter { ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }
+                let topSet = validSets.max { a, b in
+                    let wA = a.weightKg ?? 0.0
+                    let wB = b.weightKg ?? 0.0
+                    if wA != wB { return wA < wB }
                     return (a.reps ?? 0) < (b.reps ?? 0)
                 }
                 let normKey = PersonalRecordTracker.normalizeExerciseKey(log.exerciseName)
                 let isPr = activePrs.contains(normKey)
                 return PreviewExerciseItem(
                     index: index + 1,
-                    name: name,
+                    name: ContentLocalizer.shared.exerciseName(exerciseId: nil, fallback: log.exerciseName),
                     setsCount: setsCount,
                     targetSets: targetSets,
                     topSetWeight: topSet?.weightKg,
@@ -149,28 +214,35 @@ public struct HistoryDayPreviewCard: View {
                 )
             }
         } else {
-            return planned.enumerated().map { index, ex in
-                let targetSets = WorkoutSessionUtils.initialSetCount(exercise: ex)
-                return PreviewExerciseItem(
-                    index: index + 1,
-                    name: ex.displayName,
-                    setsCount: 0,
-                    targetSets: targetSets,
-                    topSetWeight: nil,
-                    topSetReps: nil,
-                    isPr: false,
-                    isCompleted: false
-                )
+            return []
+        }
+    }
+
+    private var displayItems: [PreviewDisplayItem] {
+        if detail.status == .unfinished {
+            let started = allExercises.filter { $0.setsCount > 0 }
+            let unstarted = allExercises.filter { $0.setsCount == 0 }
+            var result: [PreviewDisplayItem] = []
+            for item in started {
+                result.append(.single(item))
             }
+            if unstarted.count > 1 {
+                result.append(.unstartedGroup(unstarted))
+            } else if let single = unstarted.first {
+                result.append(.single(single))
+            }
+            return result
+        } else {
+            return allExercises.map { .single($0) }
         }
     }
 
     private var totalCompletedSets: Int {
-        detail.sessionRecord?.totalCompletedSets ?? exerciseList.reduce(0) { $0 + $1.setsCount }
+        detail.sessionRecord?.totalCompletedSets ?? allExercises.reduce(0) { $0 + $1.setsCount }
     }
 
     private var totalPlannedSets: Int {
-        max(1, exerciseList.reduce(0) { $0 + $1.targetSets })
+        max(1, allExercises.reduce(0) { $0 + $1.targetSets })
     }
 
     private var prsHitCount: Int {
@@ -241,7 +313,7 @@ public struct HistoryDayPreviewCard: View {
                 )
                 metricTile(
                     title: LanguageManager.t("history.moves").uppercased().isEmpty ? "MOVES" : LanguageManager.t("history.moves").uppercased(),
-                    value: "\(exerciseList.count) Ex",
+                    value: "\(allExercises.count) Ex",
                     isPrTile: false
                 )
                 metricTile(
@@ -253,12 +325,23 @@ public struct HistoryDayPreviewCard: View {
 
             // Exercise List Rows (Max 3 preview cards)
             VStack(spacing: 8) {
-                let previewItems = Array(exerciseList.prefix(3))
-                ForEach(previewItems) { item in
-                    exerciseRowItem(item: item)
+                let previewItems = Array(displayItems.prefix(3))
+                ForEach(previewItems) { displayItem in
+                    switch displayItem {
+                    case .single(let item):
+                        exerciseRowItem(item: item)
+                    case .unstartedGroup(let items):
+                        unstartedGroupCard(items: items)
+                    }
                 }
-                if exerciseList.count > 3 {
-                    let remaining = exerciseList.count - 3
+                let accountedCount = previewItems.reduce(0) { sum, item in
+                    switch item {
+                    case .single: return sum + 1
+                    case .unstartedGroup(let items): return sum + items.count
+                    }
+                }
+                let remaining = allExercises.count - accountedCount
+                if remaining > 0 {
                     let hint = LanguageManager.t("history.moreExercisesInBreakdown", ["count": "\(remaining)"])
                     Text(hint.isEmpty ? "+\(remaining) more exercises in full breakdown" : hint)
                         .font(.system(size: 12))
@@ -324,14 +407,70 @@ public struct HistoryDayPreviewCard: View {
 
     private func formatSubInfo(for item: PreviewExerciseItem) -> String {
         let repsWord = LanguageManager.shared.currentLanguage == "tr" ? "tekrar" : "reps"
+        let setsWord = LanguageManager.shared.currentLanguage == "tr" ? "set" : "sets"
         let topLabel = LanguageManager.t("history.top").isEmpty ? "Top" : LanguageManager.t("history.top")
-        if let w = item.topSetWeight, let r = item.topSetReps {
-            return "\(item.setsCount) sets · \(topLabel): \(WorkoutSessionUtils.formatWeight(w)) kg × \(r) \(repsWord)"
-        } else if item.setsCount > 0 {
-            return "\(item.setsCount) / \(item.targetSets) sets"
+        if item.setsCount > 0 && item.setsCount < item.targetSets {
+            let setsText = "\(item.setsCount) / \(item.targetSets) \(setsWord)"
+            if let w = item.topSetWeight, let r = item.topSetReps {
+                return "\(setsText) · \(topLabel): \(WorkoutSessionUtils.formatWeight(w)) kg × \(r) \(repsWord)"
+            } else {
+                return setsText
+            }
+        } else if item.isCompleted {
+            let setsText = "\(item.setsCount) \(setsWord)"
+            if let w = item.topSetWeight, let r = item.topSetReps {
+                return "\(setsText) · \(topLabel): \(WorkoutSessionUtils.formatWeight(w)) kg × \(r) \(repsWord)"
+            } else {
+                return setsText
+            }
         } else {
-            return "\(item.targetSets) sets"
+            return "\(item.targetSets) \(setsWord)"
         }
+    }
+
+    private func exerciseBorderColor(for item: PreviewExerciseItem) -> Color {
+        if item.isCompleted {
+            return AppColors.completedGreen.opacity(0.35)
+        } else if item.setsCount > 0 && item.setsCount < item.targetSets {
+            return AppColors.unfinishedOrange.opacity(0.5)
+        } else {
+            return AppColors.border
+        }
+    }
+
+    private func unstartedGroupCard(items: [PreviewExerciseItem]) -> some View {
+        Button(action: { onOpenDetail() }) {
+            HStack(spacing: 10) {
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(LanguageManager.formatUncompletedExercisesCount(items.count))
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(AppColors.text)
+
+                    Text(items.map(\.name).joined(separator: ", "))
+                        .font(.system(size: 11))
+                        .foregroundColor(AppColors.muted)
+                        .lineLimit(1)
+                }
+
+                Spacer(minLength: 4)
+
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(AppColors.secondaryText)
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 12)
+            .background(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .fill(AppColors.surfaceRaised)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            .stroke(AppColors.border, lineWidth: 1)
+                    )
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("history-preview-unstarted-group")
     }
 
     private func exerciseRowItem(item: PreviewExerciseItem) -> some View {
@@ -386,6 +525,7 @@ public struct HistoryDayPreviewCard: View {
                     Circle()
                         .fill(AppColors.completedGreen.opacity(0.15))
                         .frame(width: 26, height: 26)
+                        .overlay(Circle().stroke(AppColors.completedGreen.opacity(0.35), lineWidth: 1))
                     Image(systemName: "checkmark")
                         .font(.system(size: 12, weight: .bold))
                         .foregroundColor(AppColors.completedGreen)
@@ -395,6 +535,7 @@ public struct HistoryDayPreviewCard: View {
                     Circle()
                         .fill(AppColors.unfinishedOrange.opacity(0.15))
                         .frame(width: 26, height: 26)
+                        .overlay(Circle().stroke(AppColors.unfinishedOrange.opacity(0.35), lineWidth: 1))
                     Image(systemName: "clock")
                         .font(.system(size: 12, weight: .medium))
                         .foregroundColor(AppColors.unfinishedOrange)
@@ -408,8 +549,9 @@ public struct HistoryDayPreviewCard: View {
                 .fill(AppColors.surfaceRaised)
                 .overlay(
                     RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .stroke(item.isCompleted ? AppColors.completedGreen.opacity(0.35) : AppColors.border, lineWidth: 1)
+                        .stroke(exerciseBorderColor(for: item), lineWidth: 1)
                 )
         )
     }
 }
+
