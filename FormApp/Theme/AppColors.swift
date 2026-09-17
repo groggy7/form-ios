@@ -62,10 +62,13 @@ public enum AppColors {
     public static let toContinueSurface = Color(hex: 0x102523)
     public static let progressTrack = Color(hex: 0x1D262B)
     
-    // PR Badge & Tile colors
-    public static let goldPrBg = Color(hex: 0x2E2413)
-    public static let goldPrBorder = Color(hex: 0x6B5121)
-    public static let goldPrText = Color(hex: 0xFFC043)
+    // PR Badge & Tile colors (Orange identity)
+    public static let orangePrBg = Color(hex: 0x2C1E14)
+    public static let orangePrBorder = Color(hex: 0x6E461F)
+    public static let orangePrText = Color(hex: 0xF2AF61)
+    public static let goldPrBg = Color(hex: 0x2C1E14)
+    public static let goldPrBorder = Color(hex: 0x6E461F)
+    public static let goldPrText = Color(hex: 0xF2AF61)
 }
 
 extension Color {

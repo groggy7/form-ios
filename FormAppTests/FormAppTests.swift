@@ -1208,7 +1208,13 @@ final class FormAppTests: XCTestCase {
             workout: workout
         )
 
-        let sheet = HistoryDayDetailSheet(detail: detail, onDismiss: {}, onActionWorkout: {})
+        let sheet = HistoryDayDetailSheet(
+            detail: detail,
+            history: [sampleRecord],
+            onDismiss: {},
+            onActionWorkout: {},
+            initiallyExpanded: true
+        )
         let controller = UIHostingController(rootView: sheet)
         controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 850)
         controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
@@ -1225,6 +1231,119 @@ final class FormAppTests: XCTestCase {
 
         if let data = image.pngData() {
             let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_detail_completed_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testHistoryDayPreviewCardSnapshot() {
+        let store = AppStore.shared
+        let workout = store.activeProgram?.workouts.first(where: { $0.title.contains("Chest") }) ?? store.activeWorkout
+        let date = WorkoutCalendar.parseDate("2026-09-02")!
+
+        let priorRecord = WorkoutSessionRecord(
+            id: "prior-rec",
+            programId: store.activeProgram?.id ?? "test-program",
+            workoutId: workout?.id ?? "chest-workout",
+            workoutTitle: workout?.title ?? "Chest Growth",
+            startedAt: "2026-08-25T10:00:00.000Z",
+            completedAt: "2026-08-25T10:45:00.000Z",
+            durationSeconds: 2700,
+            totalVolumeKg: 4000,
+            totalCompletedSets: 6,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [SessionSetLog(setNumber: 1, weightKg: 80, reps: 8)],
+                    targetSets: 3
+                )
+            ],
+            isComplete: true
+        )
+
+        let currentRecord = WorkoutSessionRecord(
+            id: "current-rec",
+            programId: store.activeProgram?.id ?? "test-program",
+            workoutId: workout?.id ?? "chest-workout",
+            workoutTitle: workout?.title ?? "Chest Growth",
+            startedAt: "2026-09-02T10:00:00.000Z",
+            completedAt: "2026-09-02T10:48:30.000Z",
+            durationSeconds: 2910,
+            totalVolumeKg: 6200,
+            totalCompletedSets: 12,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 100, reps: 8),
+                        SessionSetLog(setNumber: 2, weightKg: 100, reps: 8),
+                        SessionSetLog(setNumber: 3, weightKg: 100, reps: 6)
+                    ],
+                    targetSets: 3
+                ),
+                SessionExerciseLog(
+                    exerciseName: "Incline Dumbbell Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 28, reps: 10),
+                        SessionSetLog(setNumber: 2, weightKg: 28, reps: 10),
+                        SessionSetLog(setNumber: 3, weightKg: 28, reps: 8)
+                    ],
+                    targetSets: 3
+                ),
+                SessionExerciseLog(
+                    exerciseName: "Cable Fly",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 15, reps: 12),
+                        SessionSetLog(setNumber: 2, weightKg: 15, reps: 12)
+                    ],
+                    targetSets: 3
+                ),
+                SessionExerciseLog(
+                    exerciseName: "Triceps Pushdown",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 25, reps: 12),
+                        SessionSetLog(setNumber: 2, weightKg: 25, reps: 10),
+                        SessionSetLog(setNumber: 3, weightKg: 25, reps: 10)
+                    ],
+                    targetSets: 3
+                )
+            ],
+            isComplete: true
+        )
+
+        let detail = HistoryDayDetailData(
+            date: date,
+            dateString: "2026-09-02",
+            status: .completed,
+            sessionRecord: currentRecord,
+            workout: workout
+        )
+
+        let card = HistoryDayPreviewCard(
+            detail: detail,
+            history: [priorRecord, currentRecord],
+            onOpenDetail: {}
+        )
+        .padding(16)
+        .background(Color(hex: 0x090C0F))
+
+        let controller = UIHostingController(rootView: card)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 480)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 480))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_preview_card_snapshot.png"
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }

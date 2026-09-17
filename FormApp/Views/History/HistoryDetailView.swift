@@ -2,6 +2,7 @@ import SwiftUI
 
 public struct HistoryDetailView: View {
     let detail: HistoryDayDetailData
+    let history: [WorkoutSessionRecord]
     var onBack: () -> Void
     var onActionWorkout: (() -> Void)? = nil
 
@@ -10,10 +11,12 @@ public struct HistoryDetailView: View {
 
     public init(
         detail: HistoryDayDetailData,
+        history: [WorkoutSessionRecord] = [],
         onBack: @escaping () -> Void,
         onActionWorkout: (() -> Void)? = nil
     ) {
         self.detail = detail
+        self.history = history
         self.onBack = onBack
         self.onActionWorkout = onActionWorkout
     }
@@ -222,7 +225,17 @@ public struct HistoryDetailView: View {
                                             )
                                     }
 
-                                    Text(LanguageManager.formatExerciseSetsCompleted(completed: item.completedSets, planned: item.plannedSets))
+                                    let setsText = LanguageManager.formatExerciseSetsCompleted(completed: item.completedSets, planned: item.plannedSets)
+                                    let repsWord = LanguageManager.shared.currentLanguage == "tr" ? "tekrar" : "reps"
+                                    let topLabel = LanguageManager.t("history.top").isEmpty ? "Top" : LanguageManager.t("history.top")
+                                    let detailText: String = {
+                                        if let w = item.topSetWeight, let r = item.topSetReps {
+                                            return "\(setsText) · \(topLabel): \(WorkoutSessionUtils.formatWeight(w)) kg × \(r) \(repsWord)"
+                                        }
+                                        return setsText
+                                    }()
+
+                                    Text(detailText)
                                         .font(.system(size: 12))
                                         .foregroundColor(AppColors.secondaryText)
 
@@ -290,31 +303,56 @@ public struct HistoryDetailView: View {
                                 VStack(spacing: 8) {
                                     ForEach(completedExercises) { item in
                                         HStack {
-                                            VStack(alignment: .leading, spacing: 2) {
-                                                Text(item.name)
-                                                    .font(.system(size: 14, weight: .medium))
-                                                    .foregroundColor(AppColors.text)
-                                                Text(LanguageManager.formatSetsProgress(done: item.completedSets, total: item.plannedSets))
+                                            VStack(alignment: .leading, spacing: 3) {
+                                                HStack(spacing: 6) {
+                                                    Text(item.name)
+                                                        .font(.system(size: 14, weight: .medium))
+                                                        .foregroundColor(AppColors.text)
+                                                        .lineLimit(1)
+
+                                                    if item.isPr {
+                                                        Text("PR")
+                                                            .font(.system(size: 10, weight: .bold))
+                                                            .foregroundColor(AppColors.orangePrText)
+                                                            .padding(.horizontal, 5)
+                                                            .padding(.vertical, 1)
+                                                            .background(
+                                                                RoundedRectangle(cornerRadius: 4, style: .continuous)
+                                                                    .fill(AppColors.orangePrBg)
+                                                                    .overlay(
+                                                                        RoundedRectangle(cornerRadius: 4, style: .continuous)
+                                                                            .stroke(AppColors.orangePrBorder, lineWidth: 1)
+                                                                    )
+                                                            )
+                                                    }
+                                                }
+
+                                                let setsProgress = LanguageManager.formatSetsProgress(done: item.completedSets, total: item.plannedSets)
+                                                let repsWord = LanguageManager.shared.currentLanguage == "tr" ? "tekrar" : "reps"
+                                                let topLabel = LanguageManager.t("history.top").isEmpty ? "Top" : LanguageManager.t("history.top")
+                                                let detailText: String = {
+                                                    if let w = item.topSetWeight, let r = item.topSetReps {
+                                                        return "\(setsProgress) · \(topLabel): \(WorkoutSessionUtils.formatWeight(w)) kg × \(r) \(repsWord)"
+                                                    }
+                                                    return setsProgress
+                                                }()
+
+                                                Text(detailText)
                                                     .font(.system(size: 12))
                                                     .foregroundColor(AppColors.secondaryText)
+                                                    .lineLimit(1)
                                             }
 
-                                            Spacer()
+                                            Spacer(minLength: 4)
 
-                                            HStack(spacing: 4) {
-                                                Image(systemName: "checkmark")
-                                                    .font(.system(size: 11, weight: .bold))
-                                                    .foregroundColor(AppColors.completedGreen)
-                                                Text(LanguageManager.t("history.completed"))
-                                                    .font(.system(size: 11, weight: .medium))
-                                                    .foregroundColor(AppColors.completedGreen)
-                                            }
-                                            .padding(.horizontal, 8)
-                                            .padding(.vertical, 4)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                            ZStack {
+                                                Circle()
                                                     .fill(AppColors.completedGreen.opacity(0.15))
-                                            )
+                                                    .frame(width: 26, height: 26)
+                                                Image(systemName: "checkmark")
+                                                    .font(.system(size: 12, weight: .bold))
+                                                    .foregroundColor(AppColors.completedGreen)
+                                            }
                                         }
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 12)
@@ -323,7 +361,7 @@ public struct HistoryDetailView: View {
                                                 .fill(AppColors.surface)
                                                 .overlay(
                                                     RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                                        .stroke(AppColors.border.opacity(0.6), lineWidth: 1)
+                                                        .stroke(AppColors.completedGreen.opacity(0.35), lineWidth: 1)
                                                 )
                                         )
                                     }
@@ -469,10 +507,33 @@ public struct HistoryDetailView: View {
         let prescription: String
         let completedSets: Int
         let plannedSets: Int
+        let topSetWeight: Double?
+        let topSetReps: Int?
+        let isPr: Bool
     }
 
     private func exerciseProgressList() -> [ExerciseProgressItem] {
         let isExplicitlyCompleted = detail.status == .completed || detail.sessionRecord?.isComplete == true
+        let prExercises: Set<String> = {
+            if let rec = detail.sessionRecord {
+                return PersonalRecordTracker.findSessionPrExercises(history: history, targetRecord: rec)
+            }
+            return []
+        }()
+
+        func extractTopSet(log: SessionExerciseLog?) -> (Double?, Int?) {
+            guard let validSets = log?.sets.filter({ ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }), !validSets.isEmpty else {
+                return (nil, nil)
+            }
+            let top = validSets.max { a, b in
+                if (a.weightKg ?? 0.0) != (b.weightKg ?? 0.0) {
+                    return (a.weightKg ?? 0.0) < (b.weightKg ?? 0.0)
+                }
+                return (a.reps ?? 0) < (b.reps ?? 0)
+            }
+            return (top?.weightKg, top?.reps)
+        }
+
         if isExplicitlyCompleted, let rec = detail.sessionRecord, !rec.exerciseLogs.isEmpty {
             return rec.exerciseLogs.map { log in
                 let logKey = log.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
@@ -492,11 +553,16 @@ public struct HistoryDetailView: View {
                 }()
                 let completed = log.sets.count
                 let planned = log.targetSets ?? (exercise.map { WorkoutSessionUtils.initialSetCount(exercise: $0) } ?? max(log.sets.count, 1))
+                let (topWeight, topReps) = extractTopSet(log: log)
+                let isPr = prExercises.contains(PersonalRecordTracker.normalizeExerciseKey(log.exerciseName))
                 return ExerciseProgressItem(
                     name: name,
                     prescription: prescription,
                     completedSets: completed,
-                    plannedSets: planned
+                    plannedSets: planned,
+                    topSetWeight: topWeight,
+                    topSetReps: topReps,
+                    isPr: isPr
                 )
             }
         }
@@ -518,11 +584,17 @@ public struct HistoryDetailView: View {
                     }
                     return ex.displayPrescription
                 }()
+                let (topWeight, topReps) = extractTopSet(log: log)
+                let rawName = log?.exerciseName ?? ex.name
+                let isPr = prExercises.contains(PersonalRecordTracker.normalizeExerciseKey(rawName))
                 return ExerciseProgressItem(
                     name: ex.displayName,
                     prescription: prescription,
                     completedSets: completed,
-                    plannedSets: plannedCount
+                    plannedSets: plannedCount,
+                    topSetWeight: topWeight,
+                    topSetReps: topReps,
+                    isPr: isPr
                 )
             }
             let extraLogs = (detail.sessionRecord?.exerciseLogs ?? []).filter { log in
@@ -533,22 +605,32 @@ public struct HistoryDetailView: View {
                 }
             }.map { log in
                 let planned = log.targetSets ?? max(log.sets.count, 1)
+                let (topWeight, topReps) = extractTopSet(log: log)
+                let isPr = prExercises.contains(PersonalRecordTracker.normalizeExerciseKey(log.exerciseName))
                 return ExerciseProgressItem(
                     name: ContentLocalizer.shared.exerciseName(exerciseId: nil, fallback: log.exerciseName),
                     prescription: "",
                     completedSets: log.sets.count,
-                    plannedSets: planned
+                    plannedSets: planned,
+                    topSetWeight: topWeight,
+                    topSetReps: topReps,
+                    isPr: isPr
                 )
             }
             return planned + extraLogs
         } else if let rec = detail.sessionRecord {
             return rec.exerciseLogs.map { log in
                 let planned = log.targetSets ?? max(log.sets.count, 1)
+                let (topWeight, topReps) = extractTopSet(log: log)
+                let isPr = prExercises.contains(PersonalRecordTracker.normalizeExerciseKey(log.exerciseName))
                 return ExerciseProgressItem(
                     name: ContentLocalizer.shared.exerciseName(exerciseId: nil, fallback: log.exerciseName),
                     prescription: "",
                     completedSets: log.sets.count,
-                    plannedSets: planned
+                    plannedSets: planned,
+                    topSetWeight: topWeight,
+                    topSetReps: topReps,
+                    isPr: isPr
                 )
             }
         }
