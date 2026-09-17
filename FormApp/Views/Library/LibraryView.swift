@@ -313,27 +313,6 @@ public struct LibraryView: View {
             modalHeader(title: LanguageManager.t("library.equipment"))
             ScrollView {
                 VStack(spacing: 8) {
-                    Button(action: {
-                        selectedEquipment = nil
-                        activeModal = nil
-                    }) {
-                        HStack {
-                            Text(LanguageManager.t("library.filter.allEquipments"))
-                                .font(.system(size: 14, weight: selectedEquipment == nil ? .semibold : .medium))
-                                .foregroundColor(selectedEquipment == nil ? AppColors.accent : AppColors.text)
-                            Spacer()
-                        }
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 12)
-                        .background(selectedEquipment == nil ? AppColors.positiveBg : AppColors.background, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .stroke(selectedEquipment == nil ? AppColors.accent : AppColors.border, lineWidth: 1)
-                        )
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityIdentifier("equipment-any")
-
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8)], spacing: 8) {
                         ForEach(EquipmentCatalog.shared.categories) { category in
                             let isSelected = selectedEquipment == category.id
@@ -383,27 +362,6 @@ public struct LibraryView: View {
             modalHeader(title: LanguageManager.t("library.muscles"))
             ScrollView {
                 VStack(spacing: 8) {
-                    Button(action: {
-                        selectedMuscle = nil
-                        activeModal = nil
-                    }) {
-                        HStack {
-                            Text(LanguageManager.t("library.filter.allMuscles"))
-                                .font(.system(size: 14, weight: selectedMuscle == nil ? .semibold : .medium))
-                                .foregroundColor(selectedMuscle == nil ? AppColors.accent : AppColors.text)
-                            Spacer()
-                        }
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 12)
-                        .background(selectedMuscle == nil ? AppColors.positiveBg : AppColors.background, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .stroke(selectedMuscle == nil ? AppColors.accent : AppColors.border, lineWidth: 1)
-                        )
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityIdentifier("muscle-any")
-
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 10) {
                         ForEach(MuscleGroupFilter.allCases) { muscle in
                             let isSelected = selectedMuscle == muscle.rawValue
