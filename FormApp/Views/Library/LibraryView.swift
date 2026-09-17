@@ -1,5 +1,13 @@
 import SwiftUI
 
+public enum LibraryFilterModal: String, Identifiable {
+    case equipment
+    case movement
+    case muscle
+
+    public var id: String { rawValue }
+}
+
 public struct LibraryView: View {
     @ObservedObject var store: AppStore
     var onSelectExercise: (Exercise) -> Void
@@ -9,17 +17,19 @@ public struct LibraryView: View {
     @State private var selectedMovement: MovementType? = nil
     @State private var selectedEquipment: String? = nil
     @State private var selectedMuscle: String? = nil
-    @State private var showFiltersSheet: Bool = false
+    @State private var activeModal: LibraryFilterModal? = nil
     @AppStorage("library_is_card_view") private var isCardView: Bool = false
 
     public init(
         store: AppStore,
         onSelectExercise: @escaping (Exercise) -> Void,
-        onOpenSettings: @escaping () -> Void
+        onOpenSettings: @escaping () -> Void,
+        initialModal: LibraryFilterModal? = nil
     ) {
         self.store = store
         self.onSelectExercise = onSelectExercise
         self.onOpenSettings = onOpenSettings
+        self._activeModal = State(initialValue: initialModal)
     }
 
     public var body: some View {
@@ -114,7 +124,7 @@ public struct LibraryView: View {
                         title: equipTitle,
                         isSelected: selectedEquipment != nil,
                         equipment: EquipmentCatalog.shared.categories.first(where: { $0.id == selectedEquipment }),
-                        onTap: { showFiltersSheet = true },
+                        onTap: { activeModal = .equipment },
                         onClear: { selectedEquipment = nil }
                     )
                     .accessibilityIdentifier(selectedEquipment != nil ? "library-active-filter-equipment" : "library-filter-equipment")
@@ -124,7 +134,7 @@ public struct LibraryView: View {
                     LibraryFilterPill(
                         title: movTitle,
                         isSelected: selectedMovement != nil,
-                        onTap: { showFiltersSheet = true },
+                        onTap: { activeModal = .movement },
                         onClear: { selectedMovement = nil }
                     )
                     .accessibilityIdentifier(selectedMovement != nil ? "library-active-filter-movement" : "library-filter-movement")
@@ -134,7 +144,7 @@ public struct LibraryView: View {
                     LibraryFilterPill(
                         title: muscleTitle,
                         isSelected: selectedMuscle != nil,
-                        onTap: { showFiltersSheet = true },
+                        onTap: { activeModal = .muscle },
                         onClear: { selectedMuscle = nil }
                     )
                     .accessibilityIdentifier(selectedMuscle != nil ? "library-active-filter-muscle" : "library-filter-muscle")
@@ -251,9 +261,40 @@ public struct LibraryView: View {
                 Spacer().frame(height: 16)
             }
         }
-        .sheet(isPresented: $showFiltersSheet) {
-            filterMovementSheet()
+        .overlay {
+            if let modal = activeModal {
+                ZStack {
+                    Color.black.opacity(0.65)
+                        .ignoresSafeArea()
+                        .onTapGesture {
+                            activeModal = nil
+                        }
+
+                    VStack(spacing: 0) {
+                        switch modal {
+                        case .equipment:
+                            equipmentModalView()
+                        case .movement:
+                            movementModalView()
+                        case .muscle:
+                            muscleModalView()
+                        }
+                    }
+                    .background(AppColors.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 20, style: .continuous)
+                            .stroke(AppColors.border, lineWidth: 1)
+                    )
+                    .padding(.horizontal, 16)
+                    .frame(maxWidth: 380, maxHeight: 580)
+                    .shadow(color: Color.black.opacity(0.4), radius: 24, x: 0, y: 12)
+                }
+                .transition(.opacity)
+                .zIndex(100)
+            }
         }
+        .animation(.easeInOut(duration: 0.2), value: activeModal)
         .onAppear {
             if let selectedId = store.selectedExerciseId, store.findExercise(id: selectedId) == nil {
                 store.selectExerciseInLibrary(id: nil)
@@ -262,88 +303,223 @@ public struct LibraryView: View {
         }
     }
 
-    private func filterMovementSheet() -> some View {
-        NavigationView {
-            ZStack {
-                AppColors.background.ignoresSafeArea()
-
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 16) {
-                        Text(LanguageManager.t("library.equipment"))
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(AppColors.text)
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 140))], spacing: 10) {
-                            filterOption(LanguageManager.t("library.any"), selected: selectedEquipment == nil) {
-                                selectedEquipment = nil
-                            }
-                            ForEach(EquipmentCatalog.shared.categories) { category in
-                                filterOption(category.title, selected: selectedEquipment == category.id, equipment: category) {
-                                    selectedEquipment = selectedEquipment == category.id ? nil : category.id
-                                }
-                                .accessibilityIdentifier("equipment-\(category.id)")
-                            }
-                        }
-                        Text(LanguageManager.t("library.filterMovement"))
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(AppColors.text)
-                            .padding(.top, 16)
-
-                        let movements = MovementType.allCases
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 140))], spacing: 10) {
-                            filterOption(LanguageManager.t("library.any"), selected: selectedMovement == nil) { selectedMovement = nil }
-                            ForEach(movements, id: \.rawValue) { (mov: MovementType) in
-                                let isSelected = selectedMovement == mov
-                                filterOption(LanguageManager.t("category.\(mov.key)"), selected: isSelected) {
-                                    if isSelected { selectedMovement = nil }
-                                    else { selectedMovement = mov }
-                                }
-                            }
-                        }
-
-                        Text(LanguageManager.t("library.muscles"))
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(AppColors.text)
-                            .padding(.top, 16)
-
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 140))], spacing: 10) {
-                            filterOption(LanguageManager.t("library.any"), selected: selectedMuscle == nil) {
-                                selectedMuscle = nil
-                            }
-                            ForEach(MuscleGroupFilter.allCases) { muscle in
-                                let isSelected = selectedMuscle == muscle.rawValue
-                                filterOption(LanguageManager.t(muscle.translationKey), selected: isSelected) {
-                                    if isSelected { selectedMuscle = nil }
-                                    else { selectedMuscle = muscle.rawValue }
-                                }
-                                .accessibilityIdentifier("muscle-\(muscle.rawValue)")
-                            }
-                        }
-
-                        if selectedEquipment != nil || selectedMovement != nil || selectedMuscle != nil {
-                            filterOption(LanguageManager.t("library.resetFilters"), selected: false) {
-                                selectedEquipment = nil
-                                selectedMovement = nil
-                                selectedMuscle = nil
-                            }
-                        }
-                    }
-                    .padding(20)
-                }
+    private func modalHeader(title: String) -> some View {
+        HStack {
+            Text(title)
+                .font(.system(size: 18, weight: .semibold))
+                .foregroundColor(AppColors.text)
+            Spacer()
+            Button(action: { activeModal = nil }) {
+                Image(systemName: "xmark")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(AppColors.muted)
+                    .frame(width: 32, height: 32)
             }
-            .navigationBarTitle(LanguageManager.t("library.filters"), displayMode: .inline)
-            .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button(LanguageManager.t("common.done")) {
-                        showFiltersSheet = false
-                    }
-                    .foregroundColor(AppColors.accent)
-                }
-            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(LanguageManager.t("common.done"))
         }
+        .padding(.horizontal, 18)
+        .padding(.top, 18)
+        .padding(.bottom, 12)
     }
 
-    private func filterOption(_ title: String, selected: Bool, equipment: EquipmentCategory? = nil, action: @escaping () -> Void) -> some View {
-        LibraryFilterOption(title: title, selected: selected, equipment: equipment, action: action)
+    private func equipmentModalView() -> some View {
+        VStack(spacing: 0) {
+            modalHeader(title: LanguageManager.t("library.equipment"))
+            ScrollView {
+                VStack(spacing: 8) {
+                    Button(action: {
+                        selectedEquipment = nil
+                        activeModal = nil
+                    }) {
+                        HStack {
+                            Text(LanguageManager.t("library.filter.allEquipments"))
+                                .font(.system(size: 14, weight: selectedEquipment == nil ? .semibold : .medium))
+                                .foregroundColor(selectedEquipment == nil ? AppColors.accent : AppColors.text)
+                            Spacer()
+                        }
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 12)
+                        .background(selectedEquipment == nil ? AppColors.positiveBg : AppColors.background, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                .stroke(selectedEquipment == nil ? AppColors.accent : AppColors.border, lineWidth: 1)
+                        )
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("equipment-any")
+
+                    LazyVGrid(columns: [GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8)], spacing: 8) {
+                        ForEach(EquipmentCatalog.shared.categories) { category in
+                            let isSelected = selectedEquipment == category.id
+                            let solidColor = equipmentSolidColor(categoryId: category.id)
+                            Button(action: {
+                                selectedEquipment = isSelected ? nil : category.id
+                                activeModal = nil
+                            }) {
+                                HStack(spacing: 8) {
+                                    ZStack {
+                                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                            .fill(solidColor.opacity(0.16))
+                                        EquipmentIcon(category: category, tint: solidColor)
+                                    }
+                                    .frame(width: 34, height: 34)
+
+                                    Text(category.title)
+                                        .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
+                                        .foregroundColor(isSelected ? AppColors.accent : AppColors.text)
+                                        .lineLimit(2)
+                                        .multilineTextAlignment(.leading)
+                                    Spacer(minLength: 0)
+                                }
+                                .padding(.horizontal, 10)
+                                .padding(.vertical, 8)
+                                .frame(maxWidth: .infinity, minHeight: 52)
+                                .background(isSelected ? AppColors.positiveBg : AppColors.background, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .stroke(isSelected ? AppColors.accent : AppColors.border, lineWidth: 1)
+                                )
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("equipment-\(category.id)")
+                        }
+                    }
+                }
+                .padding(.horizontal, 18)
+                .padding(.bottom, 18)
+            }
+        }
+        .accessibilityIdentifier("library-equipment-modal")
+    }
+
+    private func movementModalView() -> some View {
+        VStack(spacing: 0) {
+            modalHeader(title: LanguageManager.t("library.movement"))
+            ScrollView {
+                VStack(spacing: 8) {
+                    Button(action: {
+                        selectedMovement = nil
+                        activeModal = nil
+                    }) {
+                        HStack {
+                            Text(LanguageManager.t("library.filter.allMovements"))
+                                .font(.system(size: 14, weight: selectedMovement == nil ? .semibold : .medium))
+                                .foregroundColor(selectedMovement == nil ? AppColors.accent : AppColors.text)
+                            Spacer()
+                        }
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 12)
+                        .background(selectedMovement == nil ? AppColors.positiveBg : AppColors.background, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                .stroke(selectedMovement == nil ? AppColors.accent : AppColors.border, lineWidth: 1)
+                        )
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("movement-any")
+
+                    LazyVGrid(columns: [GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8)], spacing: 8) {
+                        ForEach(MovementType.allCases, id: \.rawValue) { (mov: MovementType) in
+                            let isSelected = selectedMovement == mov
+                            Button(action: {
+                                selectedMovement = isSelected ? nil : mov
+                                activeModal = nil
+                            }) {
+                                HStack {
+                                    Text(LanguageManager.t("category.\(mov.key)"))
+                                        .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
+                                        .foregroundColor(isSelected ? AppColors.accent : AppColors.text)
+                                        .lineLimit(1)
+                                    Spacer(minLength: 0)
+                                }
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 12)
+                                .frame(maxWidth: .infinity, minHeight: 48)
+                                .background(isSelected ? AppColors.positiveBg : AppColors.background, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .stroke(isSelected ? AppColors.accent : AppColors.border, lineWidth: 1)
+                                )
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("movement-\(mov.key)")
+                        }
+                    }
+                }
+                .padding(.horizontal, 18)
+                .padding(.bottom, 18)
+            }
+        }
+        .accessibilityIdentifier("library-movement-modal")
+    }
+
+    private func muscleModalView() -> some View {
+        VStack(spacing: 0) {
+            modalHeader(title: LanguageManager.t("library.muscles"))
+            ScrollView {
+                VStack(spacing: 8) {
+                    Button(action: {
+                        selectedMuscle = nil
+                        activeModal = nil
+                    }) {
+                        HStack {
+                            Text(LanguageManager.t("library.filter.allMuscles"))
+                                .font(.system(size: 14, weight: selectedMuscle == nil ? .semibold : .medium))
+                                .foregroundColor(selectedMuscle == nil ? AppColors.accent : AppColors.text)
+                            Spacer()
+                        }
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 12)
+                        .background(selectedMuscle == nil ? AppColors.positiveBg : AppColors.background, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                .stroke(selectedMuscle == nil ? AppColors.accent : AppColors.border, lineWidth: 1)
+                        )
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("muscle-any")
+
+                    LazyVGrid(columns: [GridItem(.flexible(), spacing: 10), GridItem(.flexible(), spacing: 10)], spacing: 10) {
+                        ForEach(MuscleGroupFilter.allCases) { muscle in
+                            let isSelected = selectedMuscle == muscle.rawValue
+                            Button(action: {
+                                selectedMuscle = isSelected ? nil : muscle.rawValue
+                                activeModal = nil
+                            }) {
+                                VStack(spacing: 0) {
+                                    ZStack {
+                                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                            .fill(AppColors.exerciseThumbnailSurface)
+                                        MuscleArtwork(view: muscle.bodyView, muscles: muscle.muscleGroups)
+                                            .padding(4)
+                                    }
+                                    .frame(height: 84)
+                                    .frame(maxWidth: .infinity)
+
+                                    Text(LanguageManager.t(muscle.translationKey))
+                                        .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
+                                        .foregroundColor(isSelected ? AppColors.accent : AppColors.text)
+                                        .lineLimit(1)
+                                        .padding(.horizontal, 6)
+                                        .padding(.vertical, 8)
+                                }
+                                .background(isSelected ? AppColors.positiveBg : AppColors.background, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                        .stroke(isSelected ? AppColors.accent : AppColors.border, lineWidth: isSelected ? 1.5 : 1)
+                                )
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("muscle-\(muscle.rawValue)")
+                        }
+                    }
+                }
+                .padding(.horizontal, 18)
+                .padding(.bottom, 18)
+            }
+        }
+        .accessibilityIdentifier("library-muscle-modal")
     }
 }
 
@@ -360,7 +536,7 @@ struct LibraryFilterPill: View {
             Button(action: onTap) {
                 HStack(spacing: 4) {
                     if let equipment {
-                        EquipmentIcon(category: equipment, tint: isSelected ? AppColors.accent : AppColors.secondaryText)
+                        EquipmentIcon(category: equipment, tint: isSelected ? equipmentSolidColor(categoryId: equipment.id) : AppColors.secondaryText)
                     }
                     Text(title)
                         .font(.system(size: labelSize, weight: isSelected ? .semibold : .medium))
@@ -405,10 +581,19 @@ struct LibraryFilterOption: View {
     let action: () -> Void
     @ScaledMetric(relativeTo: .subheadline) private var labelSize: CGFloat = 13
 
+    init(title: String, selected: Bool, equipment: EquipmentCategory? = nil, action: @escaping () -> Void) {
+        self.title = title
+        self.selected = selected
+        self.equipment = equipment
+        self.action = action
+    }
+
     var body: some View {
         Button(action: action) {
             HStack(spacing: 8) {
-                if let equipment { EquipmentIcon(category: equipment, tint: selected ? AppColors.accent : AppColors.secondaryText) }
+                if let equipment {
+                    EquipmentIcon(category: equipment, tint: selected ? equipmentSolidColor(categoryId: equipment.id) : AppColors.secondaryText)
+                }
                 Text(title).font(.system(size: labelSize, weight: selected ? .semibold : .medium))
                     .fixedSize(horizontal: false, vertical: true)
                 Spacer(minLength: 0)

@@ -557,6 +557,39 @@ final class FormAppTests: XCTestCase {
         }
     }
 
+    @MainActor
+    func testLibraryModalsSnapshots() {
+        let store = AppStore.shared
+        let modals: [(LibraryFilterModal, String)] = [
+            (.equipment, "ios_library_equipment_modal_snapshot.png"),
+            (.movement, "ios_library_movement_modal_snapshot.png"),
+            (.muscle, "ios_library_muscle_modal_snapshot.png")
+        ]
+
+        for (modal, filename) in modals {
+            let libraryView = LibraryView(store: store, onSelectExercise: { _ in }, onOpenSettings: {}, initialModal: modal)
+            let controller = UIHostingController(rootView: libraryView)
+            controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+            controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
+
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+            window.rootViewController = controller
+            window.makeKeyAndVisible()
+            controller.view.layoutIfNeeded()
+
+            let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+            let image = renderer.image { ctx in
+                controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+            }
+
+            if let data = image.pngData() {
+                let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/\(filename)"
+                try? data.write(to: URL(fileURLWithPath: path))
+                print("Successfully wrote modal snapshot to \(path)")
+            }
+        }
+    }
+
     func testLibraryMuscleFilteringAndMatching() {
         let bench = Exercise(name: "Barbell Bench Press", exerciseId: "barbell-bench-press", movementType: "press")
         let squat = Exercise(name: "Barbell Squat", exerciseId: "barbell-back-squat", movementType: "squat")

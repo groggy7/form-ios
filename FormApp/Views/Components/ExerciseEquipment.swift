@@ -23,16 +23,29 @@ struct EquipmentCatalog: Decodable {
     func matches(_ exerciseId: String?, selected: String?) -> Bool { selected == nil || categoryId(exerciseId) == selected }
 }
 
+func equipmentSolidColor(categoryId: String) -> Color {
+    switch categoryId {
+    case "bar": return Color(hex: 0xF59E0B)           // Amber / Gold
+    case "dumbbell": return Color(hex: 0xA855F7)      // Purple
+    case "resistance-band": return Color(hex: 0xF97316) // Coral / Orange
+    case "kettlebell": return Color(hex: 0x10B981)    // Emerald
+    case "machine": return Color(hex: 0x0EA5E9)       // Sky / Cyan
+    case "weight-plate": return Color(hex: 0xEF4444)  // Crimson / Rose
+    default: return Color(hex: 0x6366F1)            // Indigo / Blue
+    }
+}
+
 struct EquipmentIcon: View {
     let category: EquipmentCategory
     let tint: Color
+    var size: CGFloat = 20
     var body: some View {
-        Canvas { context, size in
-            context.scaleBy(x: size.width / 24, y: size.height / 24)
+        Canvas { context, sz in
+            context.scaleBy(x: sz.width / 24, y: sz.height / 24)
             context.stroke(Path(SVGPathParser.parse(category.icon)), with: .color(tint),
-                           style: StrokeStyle(lineWidth: 1.6, lineCap: .round, lineJoin: .round))
+                           style: StrokeStyle(lineWidth: 1.8, lineCap: .round, lineJoin: .round))
         }
-        .frame(width: 20, height: 20)
+        .frame(width: size, height: size)
         .accessibilityHidden(true)
     }
 }

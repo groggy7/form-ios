@@ -1152,5 +1152,33 @@ public enum MuscleGroupFilter: String, CaseIterable, Identifiable {
     public var translationKey: String {
         return "exercise.muscle.\(rawValue)"
     }
+
+    public var bodyView: BodyView {
+        switch self {
+        case .chest, .shoulders, .biceps, .core:
+            return .front
+        case .back, .triceps:
+            return .back
+        case .quads:
+            return .legsFront
+        case .hamstrings, .glutes, .calves:
+            return .legsBack
+        }
+    }
+
+    public var muscleGroups: [MuscleGroup] {
+        switch self {
+        case .chest: return [.chest]
+        case .back: return [.lats, .trapezius]
+        case .shoulders: return [.shoulders]
+        case .biceps: return [.biceps]
+        case .triceps: return [.triceps]
+        case .quads: return [.quadriceps]
+        case .hamstrings: return [.hamstrings]
+        case .glutes: return [.glutes]
+        case .calves: return [.calves]
+        case .core: return [.abs, .obliques]
+        }
+    }
 }
 
