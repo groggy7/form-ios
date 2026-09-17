@@ -229,31 +229,65 @@ public struct ExerciseDetailView: View {
                             )
 
                             if !stats.recentSessions.isEmpty {
-                                Text(LanguageManager.t("exercise.history.recent"))
-                                    .font(.system(size: 16, weight: .semibold))
-                                    .foregroundColor(AppColors.text)
-                                    .padding(.top, 4)
+                                HStack(spacing: 8) {
+                                    ZStack {
+                                        Circle()
+                                            .fill(AppColors.historyStatPrGreen.opacity(0.12))
+                                            .frame(width: 24, height: 24)
+                                            .overlay(
+                                                Circle()
+                                                    .stroke(AppColors.historyStatPrGreen.opacity(0.35), lineWidth: 1)
+                                            )
+                                        Image(systemName: "clock.arrow.circlepath")
+                                            .font(.system(size: 11, weight: .bold))
+                                            .foregroundColor(AppColors.historyStatPrGreen)
+                                    }
 
-                                ForEach(stats.recentSessions) { session in
-                                    VStack(alignment: .leading, spacing: 10) {
-                                        HStack {
-                                            Text(session.workoutTitle.isEmpty ? "Workout" : session.workoutTitle)
-                                                .font(.system(size: 14, weight: .semibold))
-                                                .foregroundColor(AppColors.text)
+                                    Text(LanguageManager.t("exercise.history.recent"))
+                                        .font(.system(size: 17, weight: .bold))
+                                        .foregroundColor(.white)
 
-                                            Spacer()
+                                    Spacer()
+                                        .frame(width: 4)
 
-                                            Text(formatSessionDate(session.date))
-                                                .font(.system(size: 12))
-                                                .foregroundColor(AppColors.muted)
-                                        }
+                                    Rectangle()
+                                        .fill(AppColors.historyStatCardBorder.opacity(0.6))
+                                        .frame(height: 1)
+                                }
+                                .padding(.top, 4)
 
-                                        VStack(alignment: .leading, spacing: 4) {
-                                            ForEach(session.sets, id: \.self) { setLog in
+                                VStack(spacing: 12) {
+                                    ForEach(stats.recentSessions) { session in
+                                        VStack(alignment: .leading, spacing: 0) {
+                                            HStack {
+                                                Text(session.workoutTitle.isEmpty ? "Workout" : session.workoutTitle)
+                                                    .font(.system(size: 15, weight: .bold))
+                                                    .foregroundColor(.white)
+
+                                                Spacer()
+
+                                                Text(formatSessionDate(session.date))
+                                                    .font(.system(size: 13))
+                                                    .foregroundColor(AppColors.historyStatCardTitle)
+                                            }
+
+                                            Rectangle()
+                                                .fill(AppColors.historyStatCardBorder.opacity(0.6))
+                                                .frame(height: 1)
+                                                .padding(.vertical, 12)
+
+                                            ForEach(Array(session.sets.enumerated()), id: \.offset) { index, setLog in
+                                                if index > 0 {
+                                                    Rectangle()
+                                                        .fill(AppColors.historyStatCardBorder.opacity(0.4))
+                                                        .frame(height: 1)
+                                                        .padding(.vertical, 10)
+                                                }
+
                                                 HStack {
                                                     Text("Set \(setLog.setNumber)")
-                                                        .font(.system(size: 13))
-                                                        .foregroundColor(AppColors.secondaryText)
+                                                        .font(.system(size: 14))
+                                                        .foregroundColor(AppColors.historyStatCardTitle)
 
                                                     Spacer()
 
@@ -266,16 +300,19 @@ public struct ExerciseDetailView: View {
                                                     }()
 
                                                     Text(setDetail)
-                                                        .font(.system(size: 13, weight: .medium))
-                                                        .foregroundColor(AppColors.text)
+                                                        .font(.system(size: 15, weight: .bold))
+                                                        .foregroundColor(.white)
                                                 }
                                             }
                                         }
+                                        .padding(16)
+                                        .background(AppColors.historyStatCardBg)
+                                        .cornerRadius(16)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 16)
+                                                .stroke(AppColors.historyStatCardBorder, lineWidth: 1)
+                                        )
                                     }
-                                    .padding(14)
-                                    .background(AppColors.surface)
-                                    .cornerRadius(12)
-                                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
                                 }
                             }
                         }
