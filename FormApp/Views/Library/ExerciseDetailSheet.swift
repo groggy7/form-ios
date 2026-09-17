@@ -358,68 +358,93 @@ struct ExerciseHistoryStatsRow: View {
     let weightUnit: WeightUnit
 
     var body: some View {
-        HStack(spacing: 8) {
-            // Card 1: Personal Best
-            let prValue: String = {
-                if let w = stats.prWeightKg, w > 0.0 {
-                    return "\(weightUnit.formatWeight(w)) \(weightUnit.label)"
-                } else if let r = stats.prReps, r > 0 {
-                    return "\(r) \(LanguageManager.t("exercise.history.reps"))"
-                } else {
-                    return "—"
-                }
-            }()
-            let prSubtitle: String = {
-                if let w = stats.prWeightKg, w > 0.0, let r = stats.prReps, r > 0 {
-                    return "× \(r) \(LanguageManager.t("exercise.history.reps"))"
-                } else if let w = stats.prWeightKg, w > 0.0 {
-                    return "—"
-                } else if let r = stats.prReps, r > 0 {
-                    return LanguageManager.t("exercise.history.bodyweight")
-                } else {
-                    return "—"
-                }
-            }()
+        VStack(spacing: 10) {
+            // Row 1: Personal Best & Estimated 1RM
+            HStack(spacing: 10) {
+                // Card 1: Personal Best
+                let prValue: String = {
+                    if let w = stats.prWeightKg, w > 0.0 {
+                        return "\(weightUnit.formatWeight(w)) \(weightUnit.label)"
+                    } else if let r = stats.prReps, r > 0 {
+                        return "\(r) \(LanguageManager.t("exercise.history.reps"))"
+                    } else {
+                        return "—"
+                    }
+                }()
+                let prSubtitle: String = {
+                    if let w = stats.prWeightKg, w > 0.0, let r = stats.prReps, r > 0 {
+                        return "× \(r) \(LanguageManager.t("exercise.history.reps"))"
+                    } else if let w = stats.prWeightKg, w > 0.0 {
+                        return "—"
+                    } else if let r = stats.prReps, r > 0 {
+                        return LanguageManager.t("exercise.history.bodyweight")
+                    } else {
+                        return "—"
+                    }
+                }()
 
-            HistoryStatCard(
-                title: LanguageManager.t("exercise.history.personalBestTitle").uppercased(),
-                iconName: "trophy.fill",
-                iconColor: AppColors.historyStatPrGreen,
-                value: prValue,
-                valueColor: .white,
-                subtitle: prSubtitle,
-                subtitleColor: AppColors.historyStatPrGreen
-            )
+                HistoryStatCard(
+                    title: LanguageManager.t("exercise.history.personalBestTitle").uppercased(),
+                    iconName: "trophy.fill",
+                    iconColor: AppColors.historyStatPrGreen,
+                    value: prValue,
+                    valueColor: .white,
+                    subtitle: prSubtitle,
+                    subtitleColor: AppColors.historyStatPrGreen
+                )
 
-            // Card 2: Estimated 1RM
-            let est1rmValue: String = {
-                if let est = stats.estimated1rmKg {
-                    return "\(weightUnit.formatWeight(est.rounded())) \(weightUnit.label)"
-                } else {
-                    return "—"
-                }
-            }()
+                // Card 2: Estimated 1RM
+                let est1rmValue: String = {
+                    if let est = stats.estimated1rmKg {
+                        return "\(weightUnit.formatWeight(est.rounded())) \(weightUnit.label)"
+                    } else {
+                        return "—"
+                    }
+                }()
 
-            HistoryStatCard(
-                title: LanguageManager.t("exercise.history.estimated1rmTitle").uppercased(),
-                iconName: "chart.bar.fill",
-                iconColor: AppColors.historyStat1RmAmber,
-                value: est1rmValue,
-                valueColor: AppColors.historyStat1RmAmber,
-                subtitle: LanguageManager.t("exercise.history.brzyckiEq"),
-                subtitleColor: AppColors.historyStatCardTitle
-            )
+                HistoryStatCard(
+                    title: LanguageManager.t("exercise.history.estimated1rmTitle").uppercased(),
+                    iconName: "chart.bar.fill",
+                    iconColor: AppColors.historyStat1RmAmber,
+                    value: est1rmValue,
+                    valueColor: AppColors.historyStat1RmAmber,
+                    subtitle: LanguageManager.t("exercise.history.brzyckiEq"),
+                    subtitleColor: AppColors.historyStatCardTitle
+                )
+            }
 
-            // Card 3: Logged Volume
-            HistoryStatCard(
-                title: LanguageManager.t("exercise.history.loggedVolumeTitle").uppercased(),
-                iconName: "dumbbell.fill",
-                iconColor: AppColors.historyStatCyan,
-                value: "\(stats.lifetimeSets)",
-                valueColor: .white,
-                subtitle: LanguageManager.t("exercise.history.sets"),
-                subtitleColor: AppColors.historyStatCardTitle
-            )
+            // Row 2: Total Sets & Total Volume
+            HStack(spacing: 10) {
+                // Card 3: Total Sets
+                HistoryStatCard(
+                    title: LanguageManager.t("exercise.history.totalSetsTitle").uppercased(),
+                    iconName: "repeat",
+                    iconColor: AppColors.historyStatCyan,
+                    value: "\(stats.lifetimeSets)",
+                    valueColor: .white,
+                    subtitle: LanguageManager.t("exercise.history.lifetimeSetsSubtitle"),
+                    subtitleColor: AppColors.historyStatCardTitle
+                )
+
+                // Card 4: Total Volume
+                let volumeValue: String = {
+                    if stats.totalVolumeKg > 0.0 {
+                        return "\(weightUnit.formatVolume(stats.totalVolumeKg)) \(weightUnit.label)"
+                    } else {
+                        return "—"
+                    }
+                }()
+
+                HistoryStatCard(
+                    title: LanguageManager.t("exercise.history.totalVolumeTitle").uppercased(),
+                    iconName: "dumbbell.fill",
+                    iconColor: AppColors.historyStatPurple,
+                    value: volumeValue,
+                    valueColor: .white,
+                    subtitle: LanguageManager.t("exercise.history.lifetimeVolumeSubtitle"),
+                    subtitleColor: AppColors.historyStatCardTitle
+                )
+            }
         }
         .frame(maxWidth: .infinity)
     }
@@ -437,7 +462,7 @@ struct HistoryStatCard: View {
     var body: some View {
         VStack(spacing: 0) {
             // Header Row: Circular Icon Badge + Title
-            HStack(spacing: 6) {
+            HStack(spacing: 8) {
                 ZStack {
                     Circle()
                         .fill(iconColor.opacity(0.12))
@@ -451,7 +476,7 @@ struct HistoryStatCard: View {
                 }
 
                 Text(title)
-                    .font(.system(size: 10, weight: .semibold))
+                    .font(.system(size: 11, weight: .semibold))
                     .foregroundColor(AppColors.historyStatCardTitle)
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
@@ -478,10 +503,9 @@ struct HistoryStatCard: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
         }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 12)
+        .padding(14)
         .frame(maxWidth: .infinity)
-        .frame(height: 118)
+        .frame(height: 114)
         .background(AppColors.historyStatCardBg)
         .cornerRadius(16)
         .overlay(
