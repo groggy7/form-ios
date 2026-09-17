@@ -136,20 +136,30 @@ public struct ExerciseDetailView: View {
                             }
                         )
 
-                        Button(action: {
-                            showReportSheet = true
-                        }) {
-                            HStack(spacing: 6) {
-                                Image(systemName: "flag")
-                                    .font(.system(size: 14, weight: .medium))
-                                Text(LanguageManager.t("report.action"))
-                                    .font(.system(size: 13, weight: .medium))
+                        HStack {
+                            Spacer()
+                            Button(action: {
+                                showReportSheet = true
+                            }) {
+                                HStack(spacing: 6) {
+                                    Image(systemName: "flag")
+                                        .font(.system(size: 14, weight: .medium))
+                                    Text(LanguageManager.t("report.action"))
+                                        .font(.system(size: 13, weight: .medium))
+                                }
+                                .foregroundColor(AppColors.danger)
+                                .padding(.horizontal, 16)
+                                .frame(minHeight: 40)
+                                .background(AppColors.danger.opacity(0.12))
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(AppColors.danger.opacity(0.3), lineWidth: 1)
+                                )
                             }
-                            .foregroundColor(AppColors.muted)
-                            .frame(maxWidth: .infinity)
-                            .frame(minHeight: 48)
+                            .buttonStyle(.plain)
+                            Spacer()
                         }
-                        .buttonStyle(.plain)
                         .padding(.top, 8)
                         .padding(.bottom, 8)
 
