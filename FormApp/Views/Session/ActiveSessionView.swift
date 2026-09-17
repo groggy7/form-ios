@@ -12,6 +12,7 @@ public struct ActiveSessionView: View {
     @State private var warningNoticeMessage: String? = nil
     @State private var isWarningVisible: Bool = false
     @State private var inspectingExerciseId: String? = nil
+    @State private var reportingExercise: Exercise? = nil
 
     private let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
 
@@ -278,7 +279,7 @@ public struct ActiveSessionView: View {
                                     }
 
                                     let isRestActive = (activeDraft.restTimer?.secondsRemaining(nowEpochMillis: nowEpochMillis) ?? 0) > 0
-                                    let prText = WorkoutSessionUtils.findExercisePr(history: store.state.history, exercise: exercise) ?? ""
+                                    let prText = WorkoutSessionUtils.findExercisePr(history: store.state.history, exercise: exercise) ?? "-"
 
                                     SetLoggingTable(
                                         sets: currentSets,
@@ -426,12 +427,27 @@ public struct ActiveSessionView: View {
                let inspectingExercise = exercises.first(where: { $0.id == inspectingId }) {
                 MiniExerciseDetailModal(
                     exercise: inspectingExercise,
-                    onDismiss: { inspectingExerciseId = nil }
+                    onDismiss: { inspectingExerciseId = nil },
+                    onReportIssue: {
+                        reportingExercise = inspectingExercise
+                        inspectingExerciseId = nil
+                    }
                 )
                 .transition(.opacity)
             }
 
             ToastOverlay(message: store.noticeMessage)
+        }
+        .sheet(item: $reportingExercise) { exercise in
+            ExerciseReportSheet(
+                exercise: exercise,
+                onDismiss: { reportingExercise = nil },
+                onSubmit: { report in
+                    ExerciseReportStore.shared.saveReport(report)
+                    reportingExercise = nil
+                    store.showNotice(LanguageManager.t("report.submitted"))
+                }
+            )
         }
         .onReceive(timer) { _ in
             nowEpochMillis = Int64(Date().timeIntervalSince1970 * 1000)
@@ -651,6 +667,7 @@ public struct ActiveSessionView: View {
 private struct MiniExerciseDetailModal: View {
     let exercise: Exercise
     var onDismiss: () -> Void
+    var onReportIssue: (() -> Void)? = nil
 
     var body: some View {
         ZStack {
@@ -720,6 +737,22 @@ private struct MiniExerciseDetailModal: View {
                                 isAvoid: true,
                                 initiallyExpanded: false
                             )
+                        }
+
+                        if let onReportIssue = onReportIssue {
+                            Button(action: onReportIssue) {
+                                HStack(spacing: 6) {
+                                    Image(systemName: "flag")
+                                        .font(.system(size: 14, weight: .medium))
+                                    Text(LanguageManager.t("report.action"))
+                                        .font(.system(size: 13, weight: .medium))
+                                }
+                                .foregroundColor(AppColors.muted)
+                                .frame(maxWidth: .infinity)
+                                .frame(minHeight: 44)
+                            }
+                            .buttonStyle(.plain)
+                            .padding(.top, 8)
                         }
                     }
                     .padding(16)

@@ -10,7 +10,7 @@ public struct SetLoggingTable: View {
     let sets: [ExerciseSetLog]
     let prescription: String
     var isRestActive: Bool = false
-    var prText: String = ""
+    var prText: String = "-"
     var onUpdateSet: (Int, String, String) -> Void
     var onToggleCompleteSet: (Int) -> Void
     var onAddSet: () -> Void
@@ -22,7 +22,7 @@ public struct SetLoggingTable: View {
         sets: [ExerciseSetLog],
         prescription: String = "",
         isRestActive: Bool = false,
-        prText: String = "",
+        prText: String = "-",
         onUpdateSet: @escaping (Int, String, String) -> Void,
         onToggleCompleteSet: @escaping (Int) -> Void,
         onAddSet: @escaping () -> Void,
@@ -130,7 +130,7 @@ public struct SetLoggingTable: View {
                         )
                         .frame(width: 32, alignment: .leading)
 
-                    Text(prText)
+                    Text(prText.isEmpty ? "-" : prText)
                         .font(.system(size: 13, weight: .medium))
                         .foregroundColor(
                             set.isCompleted
