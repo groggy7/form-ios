@@ -85,7 +85,8 @@ public struct TodayView: View {
 
                 // Weekly goal progress card
                 WeeklyGoalProgressCard(
-                    metrics: weeklyMetrics
+                    metrics: weeklyMetrics,
+                    weightUnit: store.weightUnit
                 )
                 .padding(.horizontal, 20)
 

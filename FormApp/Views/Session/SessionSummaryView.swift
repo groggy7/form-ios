@@ -8,6 +8,7 @@ public struct SessionSummaryView: View {
     let exerciseLogs: [SessionExerciseLog]
     var onBack: () -> Void
     var onSaveAndClose: () -> Void
+    var weightUnit: WeightUnit = .kg
 
     public init(
         workoutTitle: String,
@@ -16,7 +17,8 @@ public struct SessionSummaryView: View {
         totalVolumeKg: Double,
         exerciseLogs: [SessionExerciseLog],
         onBack: @escaping () -> Void,
-        onSaveAndClose: @escaping () -> Void
+        onSaveAndClose: @escaping () -> Void,
+        weightUnit: WeightUnit = .kg
     ) {
         self.workoutTitle = workoutTitle
         self.durationSeconds = durationSeconds
@@ -25,6 +27,7 @@ public struct SessionSummaryView: View {
         self.exerciseLogs = exerciseLogs
         self.onBack = onBack
         self.onSaveAndClose = onSaveAndClose
+        self.weightUnit = weightUnit
     }
 
     public var body: some View {
@@ -53,7 +56,7 @@ public struct SessionSummaryView: View {
                             )
                             summaryMetric(
                                 title: LanguageManager.t("summary.estimatedVolume"),
-                                value: "\(Int(totalVolumeKg)) kg"
+                                value: "\(weightUnit.formatVolume(totalVolumeKg)) \(weightUnit.label)"
                             )
                         }
 

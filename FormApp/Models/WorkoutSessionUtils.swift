@@ -112,7 +112,10 @@ public enum WorkoutSessionUtils {
     public static func adjustWeight(_ input: String, by delta: Int) -> String {
         let current = sanitizedWeightInput(input).flatMap { Double($0) } ?? 0
         let adjusted = (min(9999.99, max(0, current + Double(delta))) * 100).rounded() / 100
-        return formatWeight(adjusted)
+        if adjusted.truncatingRemainder(dividingBy: 1.0) == 0 {
+            return "\(Int(adjusted))"
+        }
+        return "\(adjusted)"
     }
 
     public static func adjustReps(_ input: String, by delta: Int) -> String {
@@ -121,15 +124,15 @@ public enum WorkoutSessionUtils {
         return adjusted == 0 ? "" : "\(adjusted)"
     }
 
-    public static func prefillSet(_ target: ExerciseSetLog, from previous: ExerciseSetLog?) -> ExerciseSetLog {
+    public static func prefillSet(_ target: ExerciseSetLog, from previous: ExerciseSetLog?, unit: WeightUnit = .kg) -> ExerciseSetLog {
         guard target.inputTouched != true, !target.isCompleted, target.weightInput.isEmpty, target.repsInput.isEmpty,
               target.weightKg == nil, target.completedReps == nil, let previous, canCompleteSet(previous) else { return target }
-        let weight = previous.weightInput.isEmpty ? previous.weightKg.map { formatWeight($0) } ?? "" : previous.weightInput
+        let weight = previous.weightInput.isEmpty ? previous.weightKg.map { formatWeight($0, unit: unit) } ?? "" : previous.weightInput
         let reps = previous.repsInput.isEmpty ? previous.completedReps.map { "\($0)" } ?? "" : previous.repsInput
         guard let weight = sanitizedWeightInput(weight), let reps = sanitizedRepsInput(reps) else { return target }
         var result = target
         result.weightInput = weight
-        result.weightKg = Double(weight)
+        result.weightKg = Double(weight).map { unit.toCanonicalKg($0) }
         result.repsInput = reps
         result.completedReps = Int(reps)
         result.inputTouched = true
@@ -173,7 +176,7 @@ public enum WorkoutSessionUtils {
         return map
     }
 
-    public static func restoreSetsFromHistory(workout: Workout, record: WorkoutSessionRecord) -> [String: [ExerciseSetLog]] {
+    public static func restoreSetsFromHistory(workout: Workout, record: WorkoutSessionRecord, unit: WeightUnit = .kg) -> [String: [ExerciseSetLog]] {
         var logsByName: [String: SessionExerciseLog] = [:]
         for log in record.exerciseLogs {
             let key = log.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
@@ -209,7 +212,7 @@ public enum WorkoutSessionUtils {
                 var restored = completedLogs.map { s in
                     ExerciseSetLog(
                         setNumber: s.setNumber,
-                        weightInput: s.weightKg.map { formatWeight($0) } ?? "",
+                        weightInput: s.weightKg.map { formatWeight($0, unit: unit) } ?? "",
                         repsInput: (s.reps ?? 0) > 0 ? "\(s.reps!)" : "",
                         weightKg: s.weightKg,
                         completedReps: (s.reps ?? 0) > 0 ? s.reps : nil,
@@ -244,7 +247,8 @@ public enum WorkoutSessionUtils {
     public static func findExercisePr(
         history: [WorkoutSessionRecord],
         exerciseName: String,
-        exerciseId: String? = nil
+        exerciseId: String? = nil,
+        unit: WeightUnit = .kg
     ) -> String? {
         let targetId = exerciseId?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         let targetName = exerciseName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
@@ -284,7 +288,7 @@ public enum WorkoutSessionUtils {
         }
 
         if bestWeight > 0.0 && bestReps > 0 {
-            return "\(formatWeight(bestWeight))x\(bestReps)"
+            return "\(formatWeight(bestWeight, unit: unit))x\(bestReps)"
         } else {
             return nil
         }
@@ -292,7 +296,8 @@ public enum WorkoutSessionUtils {
 
     public static func findExercisePr(
         history: [WorkoutSessionRecord],
-        exercise: Exercise
+        exercise: Exercise,
+        unit: WeightUnit = .kg
     ) -> String? {
         let targetId = exercise.exerciseId?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         let targetName = exercise.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
@@ -333,17 +338,14 @@ public enum WorkoutSessionUtils {
         }
 
         if bestWeight > 0.0 && bestReps > 0 {
-            return "\(formatWeight(bestWeight))x\(bestReps)"
+            return "\(formatWeight(bestWeight, unit: unit))x\(bestReps)"
         } else {
             return nil
         }
     }
 
-    public static func formatWeight(_ value: Double) -> String {
-        if value.truncatingRemainder(dividingBy: 1.0) == 0 {
-            return "\(Int(value))"
-        }
-        return "\(value)"
+    public static func formatWeight(_ value: Double, unit: WeightUnit = .kg) -> String {
+        return unit.formatWeight(value)
     }
 
     public static func sanitizedWeightInput(_ value: String) -> String? {

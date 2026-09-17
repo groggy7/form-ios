@@ -17,6 +17,7 @@ public struct SetLoggingTable: View {
     var onRemoveSet: (Int) -> Void
     var onEmptyWarning: (() -> Void)? = nil
     var onRestWarning: (() -> Void)? = nil
+    var weightUnit: WeightUnit = .kg
 
     public init(
         sets: [ExerciseSetLog],
@@ -28,7 +29,8 @@ public struct SetLoggingTable: View {
         onAddSet: @escaping () -> Void,
         onRemoveSet: @escaping (Int) -> Void,
         onEmptyWarning: (() -> Void)? = nil,
-        onRestWarning: (() -> Void)? = nil
+        onRestWarning: (() -> Void)? = nil,
+        weightUnit: WeightUnit = .kg
     ) {
         self.sets = sets
         self.prescription = prescription
@@ -40,6 +42,7 @@ public struct SetLoggingTable: View {
         self.onRemoveSet = onRemoveSet
         self.onEmptyWarning = onEmptyWarning
         self.onRestWarning = onRestWarning
+        self.weightUnit = weightUnit
     }
 
     public var body: some View {
@@ -66,7 +69,7 @@ public struct SetLoggingTable: View {
                     .frame(width: 32, alignment: .leading)
                 Text(LanguageManager.t("table.pr"))
                     .frame(width: 56, alignment: .center)
-                Text("KG")
+                Text(weightUnit.uppercaseLabel)
                     .frame(maxWidth: .infinity)
                 Text(LanguageManager.t("table.reps"))
                     .frame(maxWidth: .infinity)
@@ -227,7 +230,8 @@ public struct SetLoggingTable: View {
                     }
                 }
                 if let selected = selectedField, selected.id == set.id, isSetInputEnabled {
-                    let fieldLabel = LanguageManager.t(selected.weight ? "table.weightKg" : "table.actualReps")
+                    let weightLabelKey = weightUnit == .lbs ? "table.weightLbs" : "table.weightKg"
+                    let fieldLabel = LanguageManager.t(selected.weight ? weightLabelKey : "table.actualReps")
                     let setLabel = "\(LanguageManager.t("table.set")) \(set.setNumber)"
                     VStack(spacing: 4) {
                         HStack {

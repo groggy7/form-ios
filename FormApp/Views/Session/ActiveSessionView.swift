@@ -69,7 +69,8 @@ public struct ActiveSessionView: View {
                         let record = SessionProgress.from(draft: activeDraft, nowEpochMillis: completedAt)
                             .record(draft: activeDraft, completedAtEpochMillis: completedAt)
                         store.completeActiveSession(record)
-                    }
+                    },
+                    weightUnit: store.weightUnit
                 )
             } else {
                 VStack(spacing: 0) {
@@ -279,7 +280,7 @@ public struct ActiveSessionView: View {
                                     }
 
                                     let isRestActive = (activeDraft.restTimer?.secondsRemaining(nowEpochMillis: nowEpochMillis) ?? 0) > 0
-                                    let prText = WorkoutSessionUtils.findExercisePr(history: store.state.history, exercise: exercise) ?? "-"
+                                    let prText = WorkoutSessionUtils.findExercisePr(history: store.state.history, exercise: exercise, unit: store.weightUnit) ?? "-"
 
                                     SetLoggingTable(
                                         sets: currentSets,
@@ -303,7 +304,8 @@ public struct ActiveSessionView: View {
                                         },
                                         onRestWarning: {
                                             showRestWarning()
-                                        }
+                                        },
+                                        weightUnit: store.weightUnit
                                     )
                                 }
                                 .padding(18)
@@ -496,7 +498,8 @@ public struct ActiveSessionView: View {
             var copy = d
             var sets = copy.setsByExercise[exerciseId] ?? []
             guard sets.indices.contains(index) else { return copy }
-            let wKg = Double(weight)
+            let displayVal = Double(weight)
+            let wKg = displayVal.map { store.weightUnit.toCanonicalKg($0) }
             let rInt = Int(reps).flatMap { $0 > 0 ? $0 : nil }
             sets[index] = ExerciseSetLog(
                 id: sets[index].id,
@@ -526,7 +529,7 @@ public struct ActiveSessionView: View {
             let willComplete = !currentSet.isCompleted
             sets[index].isCompleted = willComplete
             if willComplete, store.prefillNextSet, sets.indices.contains(index + 1) {
-                sets[index + 1] = WorkoutSessionUtils.prefillSet(sets[index + 1], from: currentSet)
+                sets[index + 1] = WorkoutSessionUtils.prefillSet(sets[index + 1], from: currentSet, unit: store.weightUnit)
             }
             copy.setsByExercise[exercise.id] = sets
 
@@ -564,7 +567,7 @@ public struct ActiveSessionView: View {
                 setNumber: sets.count + 1,
                 isCompleted: false
             )
-            sets.append(store.prefillNextSet ? WorkoutSessionUtils.prefillSet(newSet, from: sets.last) : newSet)
+            sets.append(store.prefillNextSet ? WorkoutSessionUtils.prefillSet(newSet, from: sets.last, unit: store.weightUnit) : newSet)
             copy.setsByExercise[exerciseId] = sets
             return copy
         }

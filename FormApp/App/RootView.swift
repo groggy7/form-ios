@@ -87,9 +87,9 @@ public struct RootView: View {
             }
         }
         .sheet(item: $selectedRecordForDetail) { record in
-            WorkoutDetailSheet(record: record) {
+            WorkoutDetailSheet(record: record, onDismiss: {
                 selectedRecordForDetail = nil
-            }
+            }, weightUnit: store.weightUnit)
         }
     }
 }

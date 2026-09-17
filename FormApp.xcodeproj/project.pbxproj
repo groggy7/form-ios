@@ -88,6 +88,7 @@
 		B10000000000000000000007 /* ExerciseVideoLinksSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000007 /* ExerciseVideoLinksSheet.swift */; };
 		PR0000000000000000000002 /* PersonalRecordTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = PR0000000000000000000001 /* PersonalRecordTracker.swift */; };
 		WG0000000000000000000002 /* WeeklyGoalProgressCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = WG0000000000000000000001 /* WeeklyGoalProgressCard.swift */; };
+		WU0000000000000000000002 /* WeightUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = WU0000000000000000000001 /* WeightUnit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,6 +103,7 @@
 
 /* Begin PBXFileReference section */
 		PR0000000000000000000001 /* PersonalRecordTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordTracker.swift; sourceTree = "<group>"; };
+		WU0000000000000000000001 /* WeightUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightUnit.swift; sourceTree = "<group>"; };
 		WG0000000000000000000001 /* WeeklyGoalProgressCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyGoalProgressCard.swift; sourceTree = "<group>"; };
         A90000000000000000000001 /* 07_upper_lower.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 07_upper_lower.json; sourceTree = "<group>"; };
         A90000000000000000000004 /* 08_machine_foundation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 08_machine_foundation.json; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 			isa = PBXGroup;
 			children = (
 				PR0000000000000000000001 /* PersonalRecordTracker.swift */,
+				WU0000000000000000000001 /* WeightUnit.swift */,
 				68CE78AD9510C658344F7888 /* WorkoutModels.swift */,
 				829AB05F70AD9B7E6DEE97CC /* WorkoutSessionUtils.swift */,
 			);
@@ -597,6 +600,7 @@
 				B10000000000000000000007 /* ExerciseVideoLinksSheet.swift in Sources */,
 				PR0000000000000000000002 /* PersonalRecordTracker.swift in Sources */,
 				WG0000000000000000000002 /* WeeklyGoalProgressCard.swift in Sources */,
+				WU0000000000000000000002 /* WeightUnit.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

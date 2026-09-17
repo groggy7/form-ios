@@ -23,11 +23,13 @@ public func isWeeklyGoalPillBlinking(
 public struct WeeklyGoalProgressCard: View {
     public let metrics: WeeklyGoalProgressMetrics
     public let isCurrentWorkoutPending: Bool
+    public var weightUnit: WeightUnit = .kg
     @State private var isBlinking: Bool = false
 
-    public init(metrics: WeeklyGoalProgressMetrics, isCurrentWorkoutPending: Bool = true) {
+    public init(metrics: WeeklyGoalProgressMetrics, isCurrentWorkoutPending: Bool = true, weightUnit: WeightUnit = .kg) {
         self.metrics = metrics
         self.isCurrentWorkoutPending = isCurrentWorkoutPending
+        self.weightUnit = weightUnit
     }
 
     public var body: some View {
@@ -102,11 +104,11 @@ public struct WeeklyGoalProgressCard: View {
                         .foregroundColor(AppColors.muted)
 
                     HStack(alignment: .lastTextBaseline, spacing: 3) {
-                        Text(metrics.formattedVolume)
+                        Text(metrics.formattedVolume(unit: weightUnit))
                             .font(.system(size: 16, weight: .bold))
                             .foregroundColor(AppColors.text)
 
-                        Text("kg")
+                        Text(weightUnit.label)
                             .font(.system(size: 11, weight: .regular))
                             .foregroundColor(AppColors.muted)
                     }

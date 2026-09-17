@@ -5,17 +5,20 @@ public struct HistoryDetailView: View {
     let history: [WorkoutSessionRecord]
     var onBack: () -> Void
     var onActionWorkout: (() -> Void)? = nil
+    var weightUnit: WeightUnit = .kg
 
     public init(
         detail: HistoryDayDetailData,
         history: [WorkoutSessionRecord] = [],
         onBack: @escaping () -> Void,
-        onActionWorkout: (() -> Void)? = nil
+        onActionWorkout: (() -> Void)? = nil,
+        weightUnit: WeightUnit = .kg
     ) {
         self.detail = detail
         self.history = history
         self.onBack = onBack
         self.onActionWorkout = onActionWorkout
+        self.weightUnit = weightUnit
     }
 
     public var body: some View {
@@ -63,7 +66,7 @@ public struct HistoryDetailView: View {
 
         let formattedVolume: String = {
             if effectiveStatus == .missed { return "0" }
-            return WorkoutSessionUtils.formatWeight(totalVolumeKg)
+            return weightUnit.formatVolume(totalVolumeKg)
         }()
 
         let (statusColor, statusBg, statusText): (Color, Color, String) = {
@@ -169,7 +172,7 @@ public struct HistoryDetailView: View {
                                 Text(LanguageManager.t("history.volume").isEmpty ? "Volume" : LanguageManager.t("history.volume"))
                                     .font(.system(size: 13, weight: .medium))
                                     .foregroundColor(AppColors.secondaryText)
-                                Text("\(formattedVolume) kg")
+                                Text("\(formattedVolume) \(weightUnit.label)")
                                     .font(.system(size: 20, weight: .bold))
                                     .foregroundColor(AppColors.text)
                             }
@@ -289,7 +292,7 @@ public struct HistoryDetailView: View {
                                                     let repsLabel = LanguageManager.shared.currentLanguage.lowercased().hasPrefix("tr") ? "tekrar" : "reps"
                                                     let detailText: String = {
                                                         if let w = item.topSetWeight, let r = item.topSetReps {
-                                                            return "\(setsText) · \(topLabel): \(WorkoutSessionUtils.formatWeight(w)) kg × \(r) \(repsLabel)"
+                                                            return "\(setsText) · \(topLabel): \(weightUnit.formatWeight(w)) \(weightUnit.label) × \(r) \(repsLabel)"
                                                         }
                                                         return setsText
                                                     }()
@@ -465,7 +468,7 @@ public struct HistoryDetailView: View {
                         let setsFraction = LanguageManager.formatSetsFraction(completed: item.completedSets, total: item.plannedSets)
                         let topLabel = LanguageManager.t("history.top").isEmpty ? "Top" : LanguageManager.t("history.top")
                         if let w = item.topSetWeight, let r = item.topSetReps {
-                            return "\(setsFraction) · \(topLabel): \(WorkoutSessionUtils.formatWeight(w)) kg × \(r)"
+                            return "\(setsFraction) · \(topLabel): \(weightUnit.formatWeight(w)) \(weightUnit.label) × \(r)"
                         }
                         return setsFraction
                     } else {

@@ -81,6 +81,28 @@ public struct SettingsView: View {
                         .padding(14)
                     }
 
+                    // Weight Unit
+                    settingsSection(title: LanguageManager.t("settings.weightUnit")) {
+                        HStack {
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(LanguageManager.t("settings.weightUnit"))
+                                    .font(.system(size: 15))
+                                    .foregroundColor(AppColors.text)
+                                Text(LanguageManager.t("settings.weightUnitSubtitle"))
+                                    .font(.system(size: 12))
+                                    .foregroundColor(AppColors.secondaryText)
+                            }
+                            Spacer()
+                            Picker("", selection: $store.weightUnit) {
+                                Text(LanguageManager.t("settings.unitKg")).tag(WeightUnit.kg)
+                                Text(LanguageManager.t("settings.unitLbs")).tag(WeightUnit.lbs)
+                            }
+                            .pickerStyle(.segmented)
+                            .frame(width: 120)
+                        }
+                        .padding(14)
+                    }
+
                     // Data Management
                     settingsSection(title: LanguageManager.t("settings.dataManagement")) {
                         VStack(spacing: 0) {

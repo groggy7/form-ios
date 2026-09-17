@@ -12,6 +12,7 @@ public final class FormAudioPlayer {
     }
 
     private func configureAudioSession() {
+        guard NSClassFromString("XCTestCase") == nil else { return }
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
             try AVAudioSession.sharedInstance().setActive(true)
@@ -21,6 +22,7 @@ public final class FormAudioPlayer {
     }
 
     private func preloadSounds() {
+        guard NSClassFromString("XCTestCase") == nil else { return }
         for name in ["form_workout_start", "form_set_complete", "form_set_undo", "form_workout_complete", "form_rest_complete"] {
             guard let url = Bundle.main.url(forResource: name, withExtension: "wav"),
                   let player = try? AVAudioPlayer(contentsOf: url) else { continue }
@@ -30,6 +32,7 @@ public final class FormAudioPlayer {
     }
 
     private func playSound(named name: String) {
+        guard NSClassFromString("XCTestCase") == nil else { return }
         guard UserDefaults.standard.object(forKey: "sound_enabled") as? Bool ?? true else { return }
 
         try? AVAudioSession.sharedInstance().setActive(true)

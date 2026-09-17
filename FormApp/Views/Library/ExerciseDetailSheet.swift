@@ -228,7 +228,7 @@ public struct ExerciseDetailView: View {
                                 HStack(spacing: 12) {
                                     let prText: String = {
                                         if let w = stats.prWeightKg, w > 0.0 {
-                                            return "\(WorkoutSessionUtils.formatWeight(w)) kg × \(stats.prReps ?? 0)"
+                                            return "\(store.weightUnit.formatWeight(w)) \(store.weightUnit.label) × \(stats.prReps ?? 0)"
                                         } else if let r = stats.prReps, r > 0 {
                                             return "\(r) reps"
                                         } else {
@@ -244,7 +244,7 @@ public struct ExerciseDetailView: View {
 
                                     let est1rmText: String = {
                                         if let est = stats.estimated1rmKg {
-                                            return "\(WorkoutSessionUtils.formatWeight(est.rounded())) kg"
+                                            return "\(store.weightUnit.formatWeight(est)) \(store.weightUnit.label)"
                                         } else {
                                             return "—"
                                         }
@@ -260,9 +260,9 @@ public struct ExerciseDetailView: View {
                                 HStack(spacing: 12) {
                                     let volumeText: String = {
                                         if stats.totalVolumeKg > 0.0 {
-                                            return "\(WorkoutSessionUtils.formatWeight(stats.totalVolumeKg)) kg"
+                                            return "\(store.weightUnit.formatVolume(stats.totalVolumeKg)) \(store.weightUnit.label)"
                                         } else {
-                                            return "0 kg"
+                                            return "0 \(store.weightUnit.label)"
                                         }
                                     }()
 
@@ -315,7 +315,7 @@ public struct ExerciseDetailView: View {
 
                                                     let setDetail: String = {
                                                         if let w = setLog.weightKg, w > 0.0 {
-                                                            return "\(WorkoutSessionUtils.formatWeight(w)) kg × \(setLog.reps ?? 0)"
+                                                            return "\(store.weightUnit.formatWeight(w)) \(store.weightUnit.label) × \(setLog.reps ?? 0)"
                                                         } else {
                                                             return "\(setLog.reps ?? 0) reps"
                                                         }

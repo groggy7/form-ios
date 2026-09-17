@@ -4,15 +4,18 @@ public struct HistoryDayPreviewCard: View {
     let detail: HistoryDayDetailData
     let history: [WorkoutSessionRecord]
     let onOpenDetail: () -> Void
+    var weightUnit: WeightUnit = .kg
 
     public init(
         detail: HistoryDayDetailData,
         history: [WorkoutSessionRecord],
-        onOpenDetail: @escaping () -> Void
+        onOpenDetail: @escaping () -> Void,
+        weightUnit: WeightUnit = .kg
     ) {
         self.detail = detail
         self.history = history
         self.onOpenDetail = onOpenDetail
+        self.weightUnit = weightUnit
     }
 
     private struct PreviewExerciseItem: Identifiable {
@@ -303,7 +306,7 @@ public struct HistoryDayPreviewCard: View {
             HStack(spacing: 8) {
                 metricTile(
                     title: LanguageManager.t("history.volume").uppercased(),
-                    value: volumeKg > 0.0 ? "\(WorkoutSessionUtils.formatWeight(volumeKg)) kg" : "0 kg",
+                    value: volumeKg > 0.0 ? "\(weightUnit.formatVolume(volumeKg)) \(weightUnit.label)" : "0 \(weightUnit.label)",
                     isPrTile: false
                 )
                 metricTile(
@@ -412,14 +415,14 @@ public struct HistoryDayPreviewCard: View {
         if item.setsCount > 0 && item.setsCount < item.targetSets {
             let setsText = "\(item.setsCount) / \(item.targetSets) \(setsWord)"
             if let w = item.topSetWeight, let r = item.topSetReps {
-                return "\(setsText) · \(topLabel): \(WorkoutSessionUtils.formatWeight(w)) kg × \(r) \(repsWord)"
+                return "\(setsText) · \(topLabel): \(weightUnit.formatWeight(w)) \(weightUnit.label) × \(r) \(repsWord)"
             } else {
                 return setsText
             }
         } else if item.isCompleted {
             let setsText = "\(item.setsCount) \(setsWord)"
             if let w = item.topSetWeight, let r = item.topSetReps {
-                return "\(setsText) · \(topLabel): \(WorkoutSessionUtils.formatWeight(w)) kg × \(r) \(repsWord)"
+                return "\(setsText) · \(topLabel): \(weightUnit.formatWeight(w)) \(weightUnit.label) × \(r) \(repsWord)"
             } else {
                 return setsText
             }

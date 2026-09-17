@@ -53,7 +53,8 @@ public struct HistoryView: View {
                 onActionWorkout: {
                     store.selectedHistoryDetailDay = nil
                     handleWorkoutAction(detail: detail)
-                }
+                },
+                weightUnit: store.weightUnit
             )
         } else {
             let calendar = Calendar.current
@@ -204,7 +205,8 @@ public struct HistoryView: View {
                             history: store.state.history,
                             onOpenDetail: {
                                 store.selectedHistoryDetailDay = detail.dateString
-                            }
+                            },
+                            weightUnit: store.weightUnit
                         )
                         .padding(.horizontal, 20)
                     }

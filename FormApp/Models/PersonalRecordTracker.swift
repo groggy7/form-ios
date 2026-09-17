@@ -29,13 +29,18 @@ public struct WeeklyGoalProgressMetrics: Equatable {
         return min(1.0, max(0.0, Double(completedWorkouts) / Double(totalWorkouts)))
     }
 
-    public var formattedVolume: String {
-        let rounded = Int(totalVolumeKg.rounded())
+    public func formattedVolume(unit: WeightUnit = .kg) -> String {
+        let display = unit.toDisplay(totalVolumeKg)
+        let rounded = Int(display.rounded())
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
         let lang = LanguageManager.shared.currentLanguage
         formatter.locale = Locale(identifier: lang == "tr" ? "tr_TR" : "en_US")
         return formatter.string(from: NSNumber(value: rounded)) ?? "\(rounded)"
+    }
+
+    public var formattedVolume: String {
+        return formattedVolume(unit: .kg)
     }
 
     public var formattedActiveTime: String {

@@ -3,10 +3,12 @@ import SwiftUI
 public struct WorkoutDetailSheet: View {
     let record: WorkoutSessionRecord
     var onDismiss: () -> Void
+    var weightUnit: WeightUnit = .kg
 
-    public init(record: WorkoutSessionRecord, onDismiss: @escaping () -> Void) {
+    public init(record: WorkoutSessionRecord, onDismiss: @escaping () -> Void, weightUnit: WeightUnit = .kg) {
         self.record = record
         self.onDismiss = onDismiss
+        self.weightUnit = weightUnit
     }
 
     public var body: some View {
@@ -27,7 +29,7 @@ public struct WorkoutDetailSheet: View {
                     HStack(spacing: 12) {
                         metricTile(title: LanguageManager.t("summary.totalDuration"), value: RestTimerUtils.formatSecondsToTime(record.durationSeconds))
                         metricTile(title: LanguageManager.t("summary.setsCompleted"), value: "\(record.totalCompletedSets)")
-                        metricTile(title: LanguageManager.t("summary.estimatedVolume"), value: "\(Int(record.totalVolumeKg)) kg")
+                        metricTile(title: LanguageManager.t("summary.estimatedVolume"), value: "\(weightUnit.formatVolume(record.totalVolumeKg)) \(weightUnit.label)")
                     }
 
                     Divider().background(AppColors.border)
@@ -53,7 +55,7 @@ public struct WorkoutDetailSheet: View {
 
                                         Spacer()
 
-                                        let weightText = setLog.weightKg.map { WorkoutSessionUtils.formatWeight($0) + " kg" } ?? "—"
+                                        let weightText = setLog.weightKg.map { weightUnit.formatWeight($0) + " " + weightUnit.label } ?? "—"
                                         Text(weightText)
                                             .font(.system(size: 14, weight: .semibold))
                                             .foregroundColor(AppColors.text)
