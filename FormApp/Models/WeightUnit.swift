@@ -31,6 +31,14 @@ public enum WeightUnit: String, Codable, CaseIterable {
         return .kg
     }
 
+    public static func defaultForLocale(_ locale: Locale = .current) -> WeightUnit {
+        let region = locale.region?.identifier.uppercased() ?? (locale as NSLocale).countryCode?.uppercased() ?? ""
+        if region == "US" || region == "USA" {
+            return .lbs
+        }
+        return .kg
+    }
+
     public func toDisplay(_ weightKg: Double) -> Double {
         switch self {
         case .kg: return weightKg

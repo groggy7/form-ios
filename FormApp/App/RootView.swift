@@ -11,85 +11,91 @@ public struct RootView: View {
     public init() {}
 
     public var body: some View {
-        ZStack(alignment: .bottom) {
-            AppColors.background.ignoresSafeArea()
+        Group {
+            if !store.isOnboardingCompleted {
+                OnboardingView(store: store)
+            } else {
+                ZStack(alignment: .bottom) {
+                    AppColors.background.ignoresSafeArea()
 
-            VStack(spacing: 0) {
-                // Tab content
-                Group {
-                    switch store.currentView {
-                    case .today:
-                        TodayView(
-                            store: store,
-                            onOpenPrograms: { showProgramsSheet = true },
-                            onOpenSettings: { showSettingsSheet = true },
-                            onSelectExercise: { store.openExercise(id: $0.id) }
-                        )
-                    case .plan:
-                        WeeklyPlanView(
-                            store: store,
-                            onOpenToday: { store.navigate(to: .today) },
-                            onOpenPrograms: { showProgramsSheet = true },
-                            onOpenSettings: { showSettingsSheet = true }
-                        )
-                    case .library:
-                        LibraryView(
-                            store: store,
-                            onSelectExercise: { store.selectExerciseInLibrary(id: $0.id) },
-                            onOpenSettings: { showSettingsSheet = true }
-                        )
-                    case .history:
-                        HistoryView(
-                            store: store,
-                            onOpenSettings: { showSettingsSheet = true },
-                            onSelectRecord: { selectedRecordForDetail = $0 }
-                        )
-                    default:
-                        TodayView(
-                            store: store,
-                            onOpenPrograms: { showProgramsSheet = true },
-                            onOpenSettings: { showSettingsSheet = true },
-                            onSelectExercise: { store.openExercise(id: $0.id) }
-                        )
+                    VStack(spacing: 0) {
+                        // Tab content
+                        Group {
+                            switch store.currentView {
+                            case .today:
+                                TodayView(
+                                    store: store,
+                                    onOpenPrograms: { showProgramsSheet = true },
+                                    onOpenSettings: { showSettingsSheet = true },
+                                    onSelectExercise: { store.openExercise(id: $0.id) }
+                                )
+                            case .plan:
+                                WeeklyPlanView(
+                                    store: store,
+                                    onOpenToday: { store.navigate(to: .today) },
+                                    onOpenPrograms: { showProgramsSheet = true },
+                                    onOpenSettings: { showSettingsSheet = true }
+                                )
+                            case .library:
+                                LibraryView(
+                                    store: store,
+                                    onSelectExercise: { store.selectExerciseInLibrary(id: $0.id) },
+                                    onOpenSettings: { showSettingsSheet = true }
+                                )
+                            case .history:
+                                HistoryView(
+                                    store: store,
+                                    onOpenSettings: { showSettingsSheet = true },
+                                    onSelectRecord: { selectedRecordForDetail = $0 }
+                                )
+                            default:
+                                TodayView(
+                                    store: store,
+                                    onOpenPrograms: { showProgramsSheet = true },
+                                    onOpenSettings: { showSettingsSheet = true },
+                                    onSelectExercise: { store.openExercise(id: $0.id) }
+                                )
+                            }
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+                        // Bottom Navigation Dock (hidden when viewing exercise detail or history detail)
+                        if (store.currentView != .library || store.selectedExerciseId == nil) && store.selectedHistoryDetailDay == nil {
+                            BottomDock(currentView: Binding(
+                                get: { store.currentView },
+                                set: { store.navigate(to: $0) }
+                            ))
+                        }
+                    }
+
+                    // Animated Toast Pill
+                    ToastOverlay(message: store.noticeMessage)
+                }
+                // Fullscreen Active Workout Session
+                .fullScreenCover(item: Binding<ActiveSessionDraft?>(
+                    get: { store.activeSession },
+                    set: { _ in }
+                )) { draft in
+                    ActiveSessionView(store: store, draft: draft)
+                }
+                // Sheets
+                .sheet(isPresented: $showProgramsSheet) {
+                    ProgramsView(store: store) {
+                        showProgramsSheet = false
                     }
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-                // Bottom Navigation Dock (hidden when viewing exercise detail or history detail)
-                if (store.currentView != .library || store.selectedExerciseId == nil) && store.selectedHistoryDetailDay == nil {
-                    BottomDock(currentView: Binding(
-                        get: { store.currentView },
-                        set: { store.navigate(to: $0) }
-                    ))
+                .sheet(isPresented: $showSettingsSheet) {
+                    SettingsView(store: store) {
+                        showSettingsSheet = false
+                    }
+                }
+                .sheet(item: $selectedRecordForDetail) { record in
+                    WorkoutDetailSheet(record: record, onDismiss: {
+                        selectedRecordForDetail = nil
+                    }, weightUnit: store.weightUnit)
                 }
             }
-
-            // Animated Toast Pill
-            ToastOverlay(message: store.noticeMessage)
         }
         .preferredColorScheme(.dark)
-        // Fullscreen Active Workout Session
-        .fullScreenCover(item: Binding<ActiveSessionDraft?>(
-            get: { store.activeSession },
-            set: { _ in }
-        )) { draft in
-            ActiveSessionView(store: store, draft: draft)
-        }
-        // Sheets
-        .sheet(isPresented: $showProgramsSheet) {
-            ProgramsView(store: store) {
-                showProgramsSheet = false
-            }
-        }
-        .sheet(isPresented: $showSettingsSheet) {
-            SettingsView(store: store) {
-                showSettingsSheet = false
-            }
-        }
-        .sheet(item: $selectedRecordForDetail) { record in
-            WorkoutDetailSheet(record: record, onDismiss: {
-                selectedRecordForDetail = nil
-            }, weightUnit: store.weightUnit)
-        }
     }
 }

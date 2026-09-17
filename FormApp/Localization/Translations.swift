@@ -269,6 +269,83 @@ public enum Translations {
         "import.confirmButton": "Import %d Workouts",
         "import.cancelButton": "Cancel",
         "notice.historyImported": "Imported {count} workouts into history.",
+
+        // Onboarding
+        "settings.retakeOnboarding": "Program advisor",
+        "settings.retakeOnboardingSubtitle": "Answer 5 quick questions to find your optimal routine",
+        "onboarding.skip": "Skip",
+        "onboarding.back": "Back",
+        "onboarding.next": "Continue",
+        "onboarding.stepIndicator": "Step {current} of {total}",
+
+        // Step 1: Goal
+        "onboarding.goal.title": "What is your main focus?",
+        "onboarding.goal.subtitle": "Choose what matters most in your training right now.",
+        "onboarding.goal.hypertrophy.title": "Muscle Growth & Shape",
+        "onboarding.goal.hypertrophy.desc": "Focused hypertrophy across upper and lower body for an aesthetic, balanced physique.",
+        "onboarding.goal.strength.title": "Strength & Heavy Compounds",
+        "onboarding.goal.strength.desc": "Build your squat, bench, and deadlift while adding dense muscular foundation.",
+        "onboarding.goal.athletic.title": "Athletic Power & Speed",
+        "onboarding.goal.athletic.desc": "Explosive movement, functional conditioning, and resilient compound power.",
+        "onboarding.goal.foundation.title": "Build Foundation & Habit",
+        "onboarding.goal.foundation.desc": "Master basic movement patterns and establish a consistent routine.",
+
+        // Step 2: Experience
+        "onboarding.experience.title": "What is your lifting experience?",
+        "onboarding.experience.subtitle": "We will tune exercise complexity and volume accordingly.",
+        "onboarding.experience.beginner.title": "Beginner (< 1 year)",
+        "onboarding.experience.beginner.desc": "Learning the movements and building basic gym confidence.",
+        "onboarding.experience.intermediate.title": "Intermediate (1–3 years)",
+        "onboarding.experience.intermediate.desc": "Consistent training history, familiar with barbells and progression.",
+        "onboarding.experience.advanced.title": "Advanced (3+ years)",
+        "onboarding.experience.advanced.desc": "Comfortable with high volume, varied splits, and intensity.",
+
+        // Step 3: Equipment
+        "onboarding.equipment.title": "Where will you train?",
+        "onboarding.equipment.subtitle": "Select the gear you have reliable access to.",
+        "onboarding.equipment.commercialGym.title": "Commercial Gym",
+        "onboarding.equipment.commercialGym.desc": "Full access to barbells, racks, dumbbells, cables, and machines.",
+        "onboarding.equipment.machinesOnly.title": "Machines & Cables Only",
+        "onboarding.equipment.machinesOnly.desc": "Selectorized machines and cables with low barrier to entry.",
+        "onboarding.equipment.dumbbellsHome.title": "Home / Dumbbells Only",
+        "onboarding.equipment.dumbbellsHome.desc": "Adjustable dumbbells and an adjustable bench (no barbell or rack).",
+
+        // Step 4: Frequency
+        "onboarding.frequency.title": "How many days can you train?",
+        "onboarding.frequency.subtitle": "Consistency matters more than cramming too many days.",
+        "onboarding.frequency.days3.title": "3 Days / Week",
+        "onboarding.frequency.days3.desc": "Manageable and high-recovery. Great for full-body or athletic splits.",
+        "onboarding.frequency.days4.title": "4 Days / Week",
+        "onboarding.frequency.days4.desc": "The sweet spot. Balanced upper/lower splits with plenty of recovery.",
+        "onboarding.frequency.days5.title": "5 Days / Week",
+        "onboarding.frequency.days5.desc": "High dedication. Dedicated muscle group sessions with focused intensity.",
+        "onboarding.frequency.days6.title": "6 Days / Week",
+        "onboarding.frequency.days6.desc": "Pure Push, Pull, Legs frequency for experienced, high-recovery lifters.",
+
+        // Step 5: Schedule Days
+        "onboarding.schedule.title": "Which days do you prefer to train?",
+        "onboarding.schedule.subtitle": "Pick {count} days that best match your weekly lifestyle.",
+        "onboarding.schedule.daysSelected": "{selected} of {total} days selected",
+
+        // Recommendation Screen
+        "onboarding.rec.badge": "RECOMMENDED PROGRAM",
+        "onboarding.rec.title": "We built your plan.",
+        "onboarding.rec.subtitle": "Here is the optimal program matched to your goals, space, and schedule.",
+        "onboarding.rec.workoutsTitle": "Workouts in this split",
+        "onboarding.rec.startCta": "Start Training",
+        "onboarding.rec.browseAll": "Browse other programs",
+
+        // Recommendation reasons
+        "onboarding.reason.homeForge": "Matched for home training with dumbbells and an adjustable bench with balanced frequency.",
+        "onboarding.reason.machineFoundation": "Matched for machine and cable guidance with low joint impact and zero barbell setup required.",
+        "onboarding.reason.classicPpl": "Matched for 6 days of dedicated Push, Pull, and Legs training with high hypertrophy volume.",
+        "onboarding.reason.aestheticHypertrophy": "Matched for 5-day balanced upper/lower physique development with extra shoulder focus.",
+        "onboarding.reason.powerbuildingStrength": "Matched for 4-day heavy compound progression (squat, bench, deadlift) paired with hypertrophy accessory work.",
+        "onboarding.reason.upperLower": "Matched for 4-day upper/lower balance hitting each major muscle group twice a week with optimal recovery.",
+        "onboarding.reason.athleticPerformance": "Matched for 3-day power, explosiveness, and athletic movement patterns.",
+        "onboarding.reason.fullBodyClassic": "Matched for 3-day whole-body training repeating key movement patterns with high efficiency.",
+        "onboarding.reason.default": "Matched to your selected training preferences and schedule.",
+
         "settings.about": "About FORM",
         "settings.aboutDescription": "FORM is a focused strength training companion designed to log your workouts, guide your exercise technique with visual movement animations and cues, and track your progressive overload — quiet, distraction-free, and always ready.",
         "settings.version": "v1.0",
@@ -1084,5 +1161,81 @@ public enum Translations {
         "notice.programApplied": "{name} programına geçildi.",
         "notice.emptySetWarning": "Tekrar ve ağırlık bilgisi boş bırakılamaz.",
         "notice.restActiveWarning": "Dinlenme sayacı devredeyken set tamamlanamaz.",
+
+        // Onboarding
+        "settings.retakeOnboarding": "Program danışmanı",
+        "settings.retakeOnboardingSubtitle": "Size en uygun programı bulmak için 5 hızlı soruyu yanıtlayın",
+        "onboarding.skip": "Atla",
+        "onboarding.back": "Geri",
+        "onboarding.next": "Devam et",
+        "onboarding.stepIndicator": "{current} / {total}. Adım",
+
+        // Step 1: Goal
+        "onboarding.goal.title": "Ana odak noktanız nedir?",
+        "onboarding.goal.subtitle": "Antrenmanlarınızda şu anda en çok neyi hedeflediğinizi seçin.",
+        "onboarding.goal.hypertrophy.title": "Kas Kütlesi ve Hacim",
+        "onboarding.goal.hypertrophy.desc": "Estetik ve dengeli bir fizik için tüm vücutta kas hipertrofisi odaklı çalışma.",
+        "onboarding.goal.strength.title": "Güç ve Temel Ağırlıklar",
+        "onboarding.goal.strength.desc": "Squat, bench press ve deadlift derecelerinizi artırırken sağlam bir kas temeli kurun.",
+        "onboarding.goal.athletic.title": "Atletik Güç ve Hız",
+        "onboarding.goal.athletic.desc": "Patlayıcı güç, fonksiyonel kondisyon ve dayanıklı bileşik hareketler.",
+        "onboarding.goal.foundation.title": "Temel Oluşturma ve Alışkanlık",
+        "onboarding.goal.foundation.desc": "Temel hareket kalıplarını öğrenin ve sürdürülebilir bir antrenman alışkanlığı kazanın.",
+
+        // Step 2: Experience
+        "onboarding.experience.title": "Antrenman tecrübeniz nedir?",
+        "onboarding.experience.subtitle": "Egzersiz çeşitliliği ve set hacmini seviyenize göre ayarlayacağız.",
+        "onboarding.experience.beginner.title": "Başlangıç (< 1 yıl)",
+        "onboarding.experience.beginner.desc": "Hareket kalıplarını öğreniyor ve temel gücünü geliştiriyor.",
+        "onboarding.experience.intermediate.title": "Orta Seviye (1–3 yıl)",
+        "onboarding.experience.intermediate.desc": "Düzenli antrenman geçmişi var, serbest ağırlıklara ve progresif aşırı yüklemeye aşina.",
+        "onboarding.experience.advanced.title": "İleri Seviye (3+ yıl)",
+        "onboarding.experience.advanced.desc": "Yüksek hacim, farklı antrenman bölüşümleri ve yüksek yoğunluğa alışkın.",
+
+        // Step 3: Equipment
+        "onboarding.equipment.title": "Nerede antrenman yapacaksınız?",
+        "onboarding.equipment.subtitle": "Düzenli olarak erişebildiğiniz ekipmanı seçin.",
+        "onboarding.equipment.commercialGym.title": "Tam Donanımlı Spor Salonu",
+        "onboarding.equipment.commercialGym.desc": "Halter, squat rack, dambıllar, kablolar ve makinelere tam erişim.",
+        "onboarding.equipment.machinesOnly.title": "Sadece Makineler ve Kablolar",
+        "onboarding.equipment.machinesOnly.desc": "Düşük eklem baskısı ve serbest ağırlık stresi olmadan rehberli makineler.",
+        "onboarding.equipment.dumbbellsHome.title": "Ev / Sadece Dambıllar",
+        "onboarding.equipment.dumbbellsHome.desc": "Ayarlanabilir dambıllar ve ayarlanabilir sehpa (halter veya rack yok).",
+
+        // Step 4: Frequency
+        "onboarding.frequency.title": "Haftada kaç gün antrenman yapabilirsiniz?",
+        "onboarding.frequency.subtitle": "Süreklilik, çok fazla günü zorlamaktan her zaman daha etkilidir.",
+        "onboarding.frequency.days3.title": "Haftada 3 Gün",
+        "onboarding.frequency.days3.desc": "Yüksek toparlanma ve pratik. Tüm vücut veya atletik programlar için ideal.",
+        "onboarding.frequency.days4.title": "Haftada 4 Gün",
+        "onboarding.frequency.days4.desc": "En dengeli oran. Üst/Alt vücut bölüşümü ve bol toparlanma süresi.",
+        "onboarding.frequency.days5.title": "Haftada 5 Gün",
+        "onboarding.frequency.days5.desc": "Yüksek adanmışlık. Her kas grubu için odaklanmış özel seanslar.",
+        "onboarding.frequency.days6.title": "Haftada 6 Gün",
+        "onboarding.frequency.days6.desc": "İleri seviye lifterlar için saf İtiş, Çekiş, Bacak frekansı.",
+
+        // Step 5: Schedule Days
+        "onboarding.schedule.title": "Hangi günlerde çalışmak istersiniz?",
+        "onboarding.schedule.subtitle": "Haftalık rutininize en uygun {count} günü seçin.",
+        "onboarding.schedule.daysSelected": "{selected} / {total} gün seçildi",
+
+        // Recommendation Screen
+        "onboarding.rec.badge": "ÖNERİLEN PROGRAM",
+        "onboarding.rec.title": "Planınız hazır.",
+        "onboarding.rec.subtitle": "Hedeflerinize, ekipmanınıza ve zamanınıza göre en uygun program eşleştirildi.",
+        "onboarding.rec.workoutsTitle": "Programdaki antrenmanlar",
+        "onboarding.rec.startCta": "Antrenmana Başla",
+        "onboarding.rec.browseAll": "Diğer programları incele",
+
+        // Recommendation reasons
+        "onboarding.reason.homeForge": "Evde dambıl ve ayarlanabilir sehpa ile dengeli frekansta antrenman için eşleştirildi.",
+        "onboarding.reason.machineFoundation": "Düşük eklem baskısı, serbest ağırlık kurulumu olmadan makinelerle güvenli antrenman için eşleştirildi.",
+        "onboarding.reason.classicPpl": "Haftada 6 gün adanmış İtiş, Çekiş ve Bacak hipertrofi hacmi için eşleştirildi.",
+        "onboarding.reason.aestheticHypertrophy": "5 günlük dengeli üst/alt vücut gelişimi ve ekstra omuz vurgusu için eşleştirildi.",
+        "onboarding.reason.powerbuildingStrength": "4 günlük ağır temel kaldırışlar (squat, bench, deadlift) ve hipertrofi aksesuarları için eşleştirildi.",
+        "onboarding.reason.upperLower": "Haftada iki kez her kas grubunu çalıştıran 4 günlük dengeli Üst/Alt bölüşümü için eşleştirildi.",
+        "onboarding.reason.athleticPerformance": "Haftada 3 gün patlayıcı güç, hız ve atletik hareket kalıpları için eşleştirildi.",
+        "onboarding.reason.fullBodyClassic": "Haftada 3 gün temel hareketleri yüksek verimle tekrarlayan tüm vücut antrenmanı için eşleştirildi.",
+        "onboarding.reason.default": "Seçtiğiniz antrenman tercihleri ve takviminize göre eşleştirildi.",
     ]
 }

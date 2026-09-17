@@ -10,9 +10,11 @@ public final class AppStore: ObservableObject {
     private let defaultRestKey = "default_rest_seconds"
     private let prefillNextSetKey = "prefill_next_set"
     private let weightUnitKey = "weight_unit"
+    private let onboardingCompletedKey = "is_onboarding_completed"
 
     @Published public var state: StoredAppState
     @Published public var activeSession: ActiveSessionDraft?
+    @Published public var isOnboardingCompleted: Bool
     @Published public var currentView: ViewMode = .today {
         didSet {
             if currentView != .library {
@@ -90,10 +92,19 @@ public final class AppStore: ObservableObject {
         if let savedUnitCode = UserDefaults.standard.string(forKey: weightUnitKey) {
             self.weightUnit = WeightUnit.fromCode(savedUnitCode)
         } else {
-            self.weightUnit = .kg
+            self.weightUnit = WeightUnit.defaultForLocale()
         }
 
         var loadedState = Self.loadStoredState()
+
+        let hasCompleted = UserDefaults.standard.bool(forKey: onboardingCompletedKey)
+        let hasExistingData = UserDefaults.standard.object(forKey: stateKey) != nil || UserDefaults.standard.object(forKey: activeSessionKey) != nil || !loadedState.history.isEmpty
+        if !hasCompleted && hasExistingData {
+            UserDefaults.standard.set(true, forKey: onboardingCompletedKey)
+            self.isOnboardingCompleted = true
+        } else {
+            self.isOnboardingCompleted = hasCompleted
+        }
         let todayStr = WorkoutCalendar.formatDate(Date())
         let weekdays = WorkoutCalendar.weekdays(state: loadedState)
         let activeDraft = Self.loadActiveSession()
@@ -135,6 +146,10 @@ public final class AppStore: ObservableObject {
 
         $weightUnit
             .sink { UserDefaults.standard.set($0.rawValue, forKey: self.weightUnitKey) }
+            .store(in: &cancellables)
+
+        $isOnboardingCompleted
+            .sink { UserDefaults.standard.set($0, forKey: self.onboardingCompletedKey) }
             .store(in: &cancellables)
     }
 
@@ -479,6 +494,51 @@ public final class AppStore: ObservableObject {
         newState = refreshCalendarState(newState)
         saveState(newState)
         refreshCatalogue()
+    }
+
+    public func completeOnboarding(preferences: OnboardingPreferences, targetProgramId: String? = nil) {
+        let rec = OnboardingRecommender.recommendProgram(preferences: preferences, availablePrograms: state.programs)
+        let chosenProgramId = targetProgramId ?? rec.targetProgramId
+        let currentProg = state.programs.first(where: { $0.id == chosenProgramId }) ?? activeProgram ?? state.programs[0]
+
+        let updatedWorkouts = currentProg.workouts.enumerated().map { index, workout -> Workout in
+            let newDay = index < rec.scheduledWeekdays.count ? rec.scheduledWeekdays[index] : workout.day
+            return Workout(
+                id: workout.id,
+                day: newDay,
+                title: workout.title,
+                focus: workout.focus,
+                tone: workout.tone,
+                exercises: workout.exercises,
+                targetMuscles: workout.targetMuscles
+            )
+        }
+        let updatedProg = Program(
+            id: currentProg.id,
+            name: currentProg.name,
+            description: currentProg.description,
+            guidelines: currentProg.guidelines,
+            workouts: updatedWorkouts
+        )
+        var newState = state
+        if let idx = newState.programs.firstIndex(where: { $0.id == updatedProg.id }) {
+            newState.programs[idx] = updatedProg
+        }
+        newState.activeProgramId = updatedProg.id
+        newState = refreshCalendarState(newState)
+        saveState(newState)
+        selectedWorkoutId = updatedProg.workouts.first?.id
+        setOnboardingCompleted(true)
+        refreshCatalogue()
+    }
+
+    public func setOnboardingCompleted(_ completed: Bool) {
+        UserDefaults.standard.set(completed, forKey: onboardingCompletedKey)
+        isOnboardingCompleted = completed
+    }
+
+    public func resetOnboarding() {
+        setOnboardingCompleted(false)
     }
 
     public func calendarStatuses(today: Date = Date()) -> [String: WorkoutDayStatus] {

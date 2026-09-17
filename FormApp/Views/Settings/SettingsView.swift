@@ -47,12 +47,38 @@ public struct SettingsView: View {
                                     Text(LanguageManager.t("settings.prefillNextSet"))
                                         .font(.system(size: 15))
                                         .foregroundColor(AppColors.text)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
                                     Text(LanguageManager.t("settings.prefillNextSetSubtitle"))
                                         .font(.system(size: 12))
                                         .foregroundColor(AppColors.secondaryText)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
                                 }
                             }
                             .tint(AppColors.accent)
+                            .padding(14)
+
+                            Divider().background(AppColors.border)
+
+                            Button(action: {
+                                onDismiss()
+                                store.resetOnboarding()
+                            }) {
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(LanguageManager.t("settings.retakeOnboarding"))
+                                            .font(.system(size: 15, weight: .medium))
+                                            .foregroundColor(AppColors.text)
+                                        Text(LanguageManager.t("settings.retakeOnboardingSubtitle"))
+                                            .font(.system(size: 12))
+                                            .foregroundColor(AppColors.secondaryText)
+                                            .multilineTextAlignment(.leading)
+                                    }
+                                    Spacer()
+                                    Image(systemName: "chevron.right")
+                                        .font(.system(size: 14, weight: .semibold))
+                                        .foregroundColor(AppColors.secondaryText)
+                                }
+                            }
                             .padding(14)
                         }
                     }

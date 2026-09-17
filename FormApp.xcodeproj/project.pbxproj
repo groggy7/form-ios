@@ -96,6 +96,8 @@
 		PR0000000000000000000002 /* PersonalRecordTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = PR0000000000000000000001 /* PersonalRecordTracker.swift */; };
 		WG0000000000000000000002 /* WeeklyGoalProgressCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = WG0000000000000000000001 /* WeeklyGoalProgressCard.swift */; };
 		WU0000000000000000000002 /* WeightUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = WU0000000000000000000001 /* WeightUnit.swift */; };
+		OB0000000000000000000002 /* OnboardingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = OB0000000000000000000001 /* OnboardingModels.swift */; };
+		OV0000000000000000000002 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OV0000000000000000000001 /* OnboardingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,6 +111,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		OB0000000000000000000001 /* OnboardingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModels.swift; sourceTree = "<group>"; };
+		OV0000000000000000000001 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		PR0000000000000000000001 /* PersonalRecordTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordTracker.swift; sourceTree = "<group>"; };
 		WU0000000000000000000001 /* WeightUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightUnit.swift; sourceTree = "<group>"; };
 		WG0000000000000000000001 /* WeeklyGoalProgressCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyGoalProgressCard.swift; sourceTree = "<group>"; };
@@ -266,6 +270,7 @@
 				1A91D28BE5BC35235E24EF0C /* Components */,
 				B5DCAF1657F6166FF66909F6 /* History */,
 				DD589D5F2BEDA424635E3831 /* Library */,
+				OB0000000000000000000000 /* Onboarding */,
 				67DA0294140D96EFABF0317E /* Plan */,
 				146614B978001041EF2542A8 /* Programs */,
 				BEFF9E3EC42E1D7235D28C12 /* Session */,
@@ -273,6 +278,14 @@
 				CB9935388CB380F0691B3A5D /* Today */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		OB0000000000000000000000 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				OV0000000000000000000001 /* OnboardingView.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		67DA0294140D96EFABF0317E /* Plan */ = {
@@ -312,6 +325,7 @@
 			isa = PBXGroup;
 			children = (
 				HM0000000000000000000001 /* HistoryImportModels.swift */,
+				OB0000000000000000000001 /* OnboardingModels.swift */,
 				PR0000000000000000000001 /* PersonalRecordTracker.swift */,
 				WU0000000000000000000001 /* WeightUnit.swift */,
 				68CE78AD9510C658344F7888 /* WorkoutModels.swift */,
@@ -629,6 +643,8 @@
 				WI0000000000000000000002 /* WorkoutHistoryImporter.swift in Sources */,
 				HM0000000000000000000002 /* HistoryImportModels.swift in Sources */,
 				HP0000000000000000000002 /* HistoryImportPreviewSheet.swift in Sources */,
+				OB0000000000000000000002 /* OnboardingModels.swift in Sources */,
+				OV0000000000000000000002 /* OnboardingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
