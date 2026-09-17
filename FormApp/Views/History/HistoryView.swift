@@ -422,9 +422,6 @@ public struct HistoryDayDetailSheet: View {
     var onDismiss: () -> Void
     var onActionWorkout: (() -> Void)? = nil
 
-    @State private var isUnstartedExpanded: Bool = false
-    @State private var isCompletedExpanded: Bool = false
-
     public init(
         detail: HistoryDayDetailData,
         history: [WorkoutSessionRecord] = [],
@@ -436,8 +433,6 @@ public struct HistoryDayDetailSheet: View {
         self.history = history
         self.onDismiss = onDismiss
         self.onActionWorkout = onActionWorkout
-        self._isUnstartedExpanded = State(initialValue: initiallyExpanded)
-        self._isCompletedExpanded = State(initialValue: initiallyExpanded)
     }
 
     public var body: some View {
@@ -448,31 +443,12 @@ public struct HistoryDayDetailSheet: View {
             ?? LanguageManager.t("history.scheduledWorkout")
 
         let items = exerciseProgressList()
-        let allCompleted = !items.isEmpty && items.allSatisfy { $0.completedSets >= $0.plannedSets }
+        let allCompleted = !items.isEmpty && items.allSatisfy { $0.completedSets >= $0.plannedSets && $0.plannedSets > 0 }
         let effectiveStatus: WorkoutDayStatus = (detail.status == .unfinished && allCompleted) ? .completed : detail.status
-
-        let totalCompletedSets = detail.sessionRecord?.totalCompletedSets ?? items.reduce(0) { $0 + $1.completedSets }
-        let totalPlannedSets = max(1, items.reduce(0) { $0 + $1.plannedSets })
-        let progressFraction = effectiveStatus == .missed ? 0.0 : min(1.0, max(0.0, Double(totalCompletedSets) / Double(totalPlannedSets)))
-        let progressPercent = Int(progressFraction * 100)
-
-        let durationSeconds = detail.sessionRecord?.durationSeconds ?? 0
-        let totalVolumeKg = detail.sessionRecord?.totalVolumeKg ?? 0.0
 
         let completedExercises = items.filter { $0.completedSets >= $0.plannedSets && $0.plannedSets > 0 }
         let halfwayExercises = items.filter { $0.completedSets > 0 && $0.completedSets < $0.plannedSets }
         let unstartedExercises = items.filter { $0.completedSets == 0 }
-
-        let (statusColor, statusBg, statusText): (Color, Color, String) = {
-            switch effectiveStatus {
-            case .unfinished:
-                return (AppColors.unfinishedOrange, AppColors.unfinishedOrange.opacity(0.15), LanguageManager.t("history.unfinished"))
-            case .missed:
-                return (AppColors.missedRed, AppColors.missedRed.opacity(0.15), LanguageManager.t("history.missed"))
-            case .completed:
-                return (AppColors.completedGreen, AppColors.completedGreen.opacity(0.15), LanguageManager.t("history.completed"))
-            }
-        }()
 
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
@@ -501,404 +477,216 @@ public struct HistoryDayDetailSheet: View {
                     .buttonStyle(.plain)
                 }
 
-                // Status pill tag
-                Text(statusText)
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(statusColor)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(
-                        RoundedRectangle(cornerRadius: 10, style: .continuous)
-                            .fill(statusBg)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .stroke(statusColor.opacity(0.3), lineWidth: 1)
-                            )
-                    )
+                // Content Sections
+                let isMissed = effectiveStatus == .missed || (!items.isEmpty && items.allSatisfy { $0.completedSets == 0 } && detail.date < Calendar.current.startOfDay(for: Date()))
 
-                // Overall Progress Header Row & Bar (Unified for all statuses)
-                if !items.isEmpty {
-                    VStack(alignment: .leading, spacing: 8) {
+                if allCompleted {
+                    // Completed Day (Picture 1)
+                    VStack(alignment: .leading, spacing: 12) {
                         HStack {
-                            Text(LanguageManager.formatSetsFraction(
-                                completed: effectiveStatus == .missed ? 0 : totalCompletedSets,
-                                total: totalPlannedSets
-                            ))
-                            .font(.system(size: 13, weight: .medium))
-                            .foregroundColor(AppColors.secondaryText)
-
-                            Spacer()
-
-                            Text(LanguageManager.formatPercent(progressPercent))
-                                .font(.system(size: 13, weight: .semibold))
+                            Text(LanguageManager.t("history.exercises").isEmpty ? "Exercises" : LanguageManager.t("history.exercises"))
+                                .font(.system(size: 17, weight: .bold))
                                 .foregroundColor(AppColors.text)
+                            Spacer()
+                            Text("\(items.count)")
+                                .font(.system(size: 15, weight: .regular))
+                                .foregroundColor(AppColors.secondaryText)
                         }
 
-                        GeometryReader { geo in
-                            ZStack(alignment: .leading) {
-                                Capsule()
-                                    .fill(AppColors.progressTrack)
-                                    .frame(height: 10)
-                                Capsule()
-                                    .fill(effectiveStatus == .completed ? AppColors.completedGreen : AppColors.accent)
-                                    .frame(width: geo.size.width * CGFloat(progressFraction), height: 10)
+                        VStack(spacing: 0) {
+                            ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
+                                exerciseRow(item: item, isCompleted: true)
+                                if index < items.count - 1 {
+                                    Divider()
+                                        .background(Color.white.opacity(0.08))
+                                }
                             }
                         }
-                        .frame(height: 10)
                     }
-                }
-
-                // Unified 3-Column Key Stats Surface (Single Card)
-                HStack(spacing: 0) {
-                    // Column 1: Duration
-                    VStack(spacing: 4) {
-                        Text(LanguageManager.t("history.duration"))
-                            .font(.system(size: 11))
-                            .foregroundColor(AppColors.muted)
-                        Text(effectiveStatus == .missed ? "0:00" : RestTimerUtils.formatSecondsToTime(durationSeconds))
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(AppColors.text)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 12)
-
-                    Rectangle()
-                        .fill(AppColors.border)
-                        .frame(width: 1, height: 36)
-
-                    // Column 2: Sets
-                    VStack(spacing: 4) {
-                        Text(LanguageManager.t("history.sets"))
-                            .font(.system(size: 11))
-                            .foregroundColor(AppColors.muted)
-                        Text(effectiveStatus == .missed ? "0" : "\(totalCompletedSets)")
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(AppColors.text)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 12)
-
-                    Rectangle()
-                        .fill(AppColors.border)
-                        .frame(width: 1, height: 36)
-
-                    // Column 3: Volume
-                    VStack(spacing: 4) {
-                        Text(LanguageManager.t("history.volume"))
-                            .font(.system(size: 11))
-                            .foregroundColor(AppColors.muted)
-                        Text(effectiveStatus == .missed ? "0 kg" : "\(Int(totalVolumeKg)) kg")
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(AppColors.text)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 12)
-                }
-                .background(
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(AppColors.surfaceRaised)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .stroke(AppColors.border, lineWidth: 1)
-                        )
-                )
-
-                // Halfway Done Exercises at the Top (if any exercise has partial progress)
-                if !halfwayExercises.isEmpty {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text(LanguageManager.t("history.toContinue"))
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(AppColors.text)
-
-                        ForEach(halfwayExercises) { item in
-                            let setsLeft = max(0, item.plannedSets - item.completedSets)
-                            let progress = min(1.0, max(0.0, Double(item.completedSets) / Double(max(1, item.plannedSets))))
-
-                            VStack(alignment: .leading, spacing: 8) {
-                                HStack {
-                                    Text(item.name)
-                                        .font(.system(size: 15, weight: .semibold))
-                                        .foregroundColor(AppColors.text)
-
-                                    Spacer()
-
-                                    Text(LanguageManager.formatSetsLeft(setsLeft))
-                                        .font(.system(size: 11, weight: .semibold))
-                                        .foregroundColor(AppColors.accent)
-                                        .padding(.horizontal, 8)
-                                        .padding(.vertical, 4)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                                .fill(AppColors.accent.opacity(0.15))
-                                        )
-                                }
-
-                                let setsText = LanguageManager.formatExerciseSetsCompleted(completed: item.completedSets, planned: item.plannedSets)
-                                let repsWord = LanguageManager.shared.currentLanguage == "tr" ? "tekrar" : "reps"
-                                let topLabel = LanguageManager.t("history.top").isEmpty ? "Top" : LanguageManager.t("history.top")
-                                let detailText: String = {
-                                    if let w = item.topSetWeight, let r = item.topSetReps {
-                                        return "\(setsText) · \(topLabel): \(WorkoutSessionUtils.formatWeight(w)) kg × \(r) \(repsWord)"
-                                    }
-                                    return setsText
-                                }()
-
-                                Text(detailText)
-                                    .font(.system(size: 12))
-                                    .foregroundColor(AppColors.secondaryText)
-
-                                GeometryReader { geo in
-                                    ZStack(alignment: .leading) {
-                                        Capsule()
-                                            .fill(Color(hex: 0x192524))
-                                            .frame(height: 6)
-                                        Capsule()
-                                            .fill(AppColors.accent)
-                                            .frame(width: geo.size.width * CGFloat(progress), height: 6)
-                                    }
-                                }
-                                .frame(height: 6)
-                            }
-                            .padding(16)
-                            .background(
-                                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                    .fill(AppColors.toContinueSurface)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                            .stroke(AppColors.accent, lineWidth: 1.5)
-                                    )
-                            )
-                        }
-                    }
-                }
-
-                // Merged & Expandable/Collapsible Completed Exercises Card
-                if !completedExercises.isEmpty {
-                    let headerTitle = LanguageManager.formatCompletedExercisesCount(completedExercises.count)
-                    let summaryNames = completedExercises.map(\.name).joined(separator: ", ")
-
+                } else if isMissed {
+                    // Missed Day (Unstarted past day)
                     VStack(alignment: .leading, spacing: 12) {
-                        Button(action: {
-                            withAnimation(.easeInOut(duration: 0.25)) {
-                                isCompletedExpanded.toggle()
-                            }
-                        }) {
-                            HStack(alignment: .center) {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(headerTitle)
-                                        .font(.system(size: 14, weight: .semibold))
-                                        .foregroundColor(AppColors.text)
-                                    Text(summaryNames)
-                                        .font(.system(size: 12))
-                                        .foregroundColor(AppColors.muted)
-                                        .lineLimit(isCompletedExpanded ? nil : 2)
+                        HStack {
+                            Text(LanguageManager.t("history.exercises").isEmpty ? "Exercises" : LanguageManager.t("history.exercises"))
+                                .font(.system(size: 17, weight: .bold))
+                                .foregroundColor(AppColors.text)
+                            Spacer()
+                            Text("\(items.count)")
+                                .font(.system(size: 15, weight: .regular))
+                                .foregroundColor(AppColors.secondaryText)
+                        }
+
+                        VStack(spacing: 0) {
+                            ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
+                                exerciseRow(item: item, isCompleted: false)
+                                if index < items.count - 1 {
+                                    Divider()
+                                        .background(Color.white.opacity(0.08))
                                 }
-
-                                Spacer()
-
-                                Image(systemName: "chevron.down")
-                                    .font(.system(size: 14, weight: .semibold))
-                                    .foregroundColor(AppColors.secondaryText)
-                                    .rotationEffect(.degrees(isCompletedExpanded ? 180 : 0))
                             }
                         }
-                        .buttonStyle(.plain)
 
-                        if isCompletedExpanded {
-                            Divider()
-                                .background(AppColors.border.opacity(0.5))
-
-                            VStack(spacing: 8) {
-                                ForEach(completedExercises) { item in
-                                    HStack {
-                                        VStack(alignment: .leading, spacing: 3) {
-                                            HStack(spacing: 6) {
-                                                Text(item.name)
-                                                    .font(.system(size: 14, weight: .medium))
-                                                    .foregroundColor(AppColors.text)
-                                                    .lineLimit(1)
-
-                                                if item.isPr {
-                                                    Text("PR")
-                                                        .font(.system(size: 10, weight: .bold))
-                                                        .foregroundColor(AppColors.orangePrText)
-                                                        .padding(.horizontal, 5)
-                                                        .padding(.vertical, 1)
-                                                        .background(
-                                                            RoundedRectangle(cornerRadius: 4, style: .continuous)
-                                                                .fill(AppColors.orangePrBg)
-                                                                .overlay(
-                                                                    RoundedRectangle(cornerRadius: 4, style: .continuous)
-                                                                        .stroke(AppColors.orangePrBorder, lineWidth: 1)
-                                                                )
-                                                        )
-                                                }
-                                            }
-
-                                            let setsProgress = LanguageManager.formatSetsProgress(done: item.completedSets, total: item.plannedSets)
-                                            let repsWord = LanguageManager.shared.currentLanguage == "tr" ? "tekrar" : "reps"
-                                            let topLabel = LanguageManager.t("history.top").isEmpty ? "Top" : LanguageManager.t("history.top")
-                                            let detailText: String = {
-                                                if let w = item.topSetWeight, let r = item.topSetReps {
-                                                    return "\(setsProgress) · \(topLabel): \(WorkoutSessionUtils.formatWeight(w)) kg × \(r) \(repsWord)"
-                                                }
-                                                return setsProgress
-                                            }()
-
-                                            Text(detailText)
-                                                .font(.system(size: 12))
-                                                .foregroundColor(AppColors.secondaryText)
-                                                .lineLimit(1)
-                                        }
-
-                                        Spacer(minLength: 4)
-
-                                        ZStack {
-                                            Circle()
-                                                .fill(AppColors.completedGreen.opacity(0.15))
-                                                .frame(width: 26, height: 26)
-                                            Image(systemName: "checkmark")
-                                                .font(.system(size: 12, weight: .bold))
-                                                .foregroundColor(AppColors.completedGreen)
-                                        }
-                                    }
-                                    .padding(.horizontal, 12)
-                                    .padding(.vertical, 12)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                            .fill(AppColors.surface)
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                                    .stroke(AppColors.completedGreen.opacity(0.35), lineWidth: 1)
-                                            )
-                                    )
-                                }
+                        if let action = onActionWorkout {
+                            Spacer().frame(height: 8)
+                            Button(action: action) {
+                                Text(LanguageManager.t("history.startWorkout"))
+                                        .font(.system(size: 16, weight: .bold))
+                                        .foregroundColor(AppColors.background)
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 52)
+                                        .background(AppColors.accent)
+                                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                             }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("history-action-button")
                         }
                     }
-                    .padding(16)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(AppColors.surfaceRaised)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                    .stroke(AppColors.border, lineWidth: 1)
-                            )
-                    )
-                    .accessibilityIdentifier("history-completed-container")
-                }
+                } else {
+                    // Half-Done / In-Progress Workout (Picture 2)
+                    VStack(alignment: .leading, spacing: 20) {
+                        // Section 1: Continue Workout Card
+                        if !halfwayExercises.isEmpty {
+                            VStack(alignment: .leading, spacing: 10) {
+                                Text(LanguageManager.t("history.continueWorkout").isEmpty ? "Continue workout" : LanguageManager.t("history.continueWorkout"))
+                                    .font(.system(size: 17, weight: .bold))
+                                    .foregroundColor(AppColors.text)
 
-                // Merged & Expandable/Collapsible Not-Started Exercises Card
-                if !unstartedExercises.isEmpty {
-                    let headerTitle = LanguageManager.formatUncompletedExercisesCount(unstartedExercises.count)
-                    let summaryNames = unstartedExercises.map(\.name).joined(separator: ", ")
+                                ForEach(halfwayExercises) { item in
+                                    let setsLeft = max(0, item.plannedSets - item.completedSets)
+                                    let progress = min(1.0, max(0.0, Double(item.completedSets) / Double(max(1, item.plannedSets))))
 
-                    VStack(alignment: .leading, spacing: 12) {
-                        Button(action: {
-                            withAnimation(.easeInOut(duration: 0.25)) {
-                                isUnstartedExpanded.toggle()
-                            }
-                        }) {
-                            HStack(alignment: .center) {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(headerTitle)
-                                        .font(.system(size: 14, weight: .semibold))
-                                        .foregroundColor(AppColors.text)
-                                    Text(summaryNames)
-                                        .font(.system(size: 12))
-                                        .foregroundColor(AppColors.muted)
-                                        .lineLimit(isUnstartedExpanded ? nil : 2)
-                                }
-
-                                Spacer()
-
-                                Image(systemName: "chevron.down")
-                                    .font(.system(size: 14, weight: .semibold))
-                                    .foregroundColor(AppColors.secondaryText)
-                                    .rotationEffect(.degrees(isUnstartedExpanded ? 180 : 0))
-                            }
-                        }
-                        .buttonStyle(.plain)
-
-                        if isUnstartedExpanded {
-                            Divider()
-                                .background(AppColors.border.opacity(0.5))
-
-                            VStack(spacing: 8) {
-                                ForEach(unstartedExercises) { item in
-                                    HStack {
-                                        VStack(alignment: .leading, spacing: 2) {
+                                    VStack(alignment: .leading, spacing: 10) {
+                                        HStack {
                                             Text(item.name)
-                                                .font(.system(size: 14, weight: .medium))
+                                                .font(.system(size: 16, weight: .bold))
                                                 .foregroundColor(AppColors.text)
-                                            let subtext = item.prescription.isEmpty
-                                                ? LanguageManager.formatSetsProgress(done: 0, total: item.plannedSets)
-                                                : item.prescription
-                                            Text(subtext)
-                                                .font(.system(size: 12))
-                                                .foregroundColor(AppColors.secondaryText)
+                                                .lineLimit(1)
+
+                                            Spacer()
+
+                                            Text(LanguageManager.formatSetsLeft(setsLeft))
+                                                .font(.system(size: 13, weight: .semibold))
+                                                .foregroundColor(AppColors.accent)
                                         }
 
-                                        Spacer()
+                                        let setsText = LanguageManager.formatExerciseSetsCompleted(completed: item.completedSets, planned: item.plannedSets)
+                                        let topLabel = LanguageManager.t("history.top").isEmpty ? "Top" : LanguageManager.t("history.top")
+                                        let detailText: String = {
+                                            if let w = item.topSetWeight, let r = item.topSetReps {
+                                                return "\(setsText) · \(topLabel): \(WorkoutSessionUtils.formatWeight(w)) kg × \(r)"
+                                            }
+                                            return setsText
+                                        }()
 
-                                        Text(LanguageManager.t("history.notStarted"))
-                                            .font(.system(size: 11, weight: .medium))
-                                            .foregroundColor(AppColors.muted)
-                                            .padding(.horizontal, 8)
-                                            .padding(.vertical, 4)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                                    .fill(AppColors.border.opacity(0.4))
-                                            )
+                                        Text(detailText)
+                                            .font(.system(size: 13))
+                                            .foregroundColor(AppColors.secondaryText)
+
+                                        GeometryReader { geo in
+                                            ZStack(alignment: .leading) {
+                                                Capsule()
+                                                    .fill(Color(hex: 0x1D262B))
+                                                    .frame(height: 6)
+                                                Capsule()
+                                                    .fill(AppColors.accent)
+                                                    .frame(width: geo.size.width * CGFloat(progress), height: 6)
+                                            }
+                                        }
+                                        .frame(height: 6)
+
+                                        if let action = onActionWorkout {
+                                            Button(action: action) {
+                                                Text(LanguageManager.t("history.resume").isEmpty ? "Resume" : LanguageManager.t("history.resume"))
+                                                    .font(.system(size: 14, weight: .bold))
+                                                    .foregroundColor(AppColors.background)
+                                                    .padding(.horizontal, 20)
+                                                    .padding(.vertical, 8)
+                                                    .background(AppColors.accent)
+                                                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                            }
+                                            .buttonStyle(.plain)
+                                            .accessibilityIdentifier("history-action-button")
+                                        }
                                     }
-                                    .padding(.horizontal, 12)
-                                    .padding(.vertical, 12)
+                                    .padding(16)
                                     .background(
-                                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                            .fill(AppColors.surface)
+                                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                            .fill(AppColors.toContinueSurface)
                                             .overlay(
-                                                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                                    .stroke(AppColors.border.opacity(0.6), lineWidth: 1)
+                                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                                    .stroke(AppColors.accent, lineWidth: 1.5)
                                             )
                                     )
                                 }
                             }
                         }
-                    }
-                    .padding(16)
-                    .background(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .fill(AppColors.surfaceRaised)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                    .stroke(AppColors.border, lineWidth: 1)
-                            )
-                    )
-                }
 
-                // Bottom Primary Action CTA Button
-                if effectiveStatus == .unfinished, let action = onActionWorkout {
-                    Button(action: action) {
-                        Text(LanguageManager.t("history.resumeWorkout"))
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(AppColors.background)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 52)
-                            .background(AppColors.accent)
-                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        // Section 2: Completed Exercises
+                        if !completedExercises.isEmpty {
+                            VStack(alignment: .leading, spacing: 10) {
+                                HStack {
+                                    Text(LanguageManager.t("history.completedSection").isEmpty ? "Completed" : LanguageManager.t("history.completedSection"))
+                                        .font(.system(size: 17, weight: .bold))
+                                        .foregroundColor(AppColors.text)
+                                    Spacer()
+                                    Text("\(completedExercises.count)")
+                                        .font(.system(size: 15, weight: .regular))
+                                        .foregroundColor(AppColors.secondaryText)
+                                }
+
+                                VStack(spacing: 0) {
+                                    ForEach(Array(completedExercises.enumerated()), id: \.element.id) { index, item in
+                                        exerciseRow(item: item, isCompleted: true)
+                                        if index < completedExercises.count - 1 {
+                                            Divider()
+                                                .background(Color.white.opacity(0.08))
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // Section 3: Uncompleted Exercises
+                        if !unstartedExercises.isEmpty {
+                            VStack(alignment: .leading, spacing: 10) {
+                                HStack {
+                                    Text(LanguageManager.t("history.uncompletedSection").isEmpty ? "Uncompleted" : LanguageManager.t("history.uncompletedSection"))
+                                        .font(.system(size: 17, weight: .bold))
+                                        .foregroundColor(AppColors.text)
+                                    Spacer()
+                                    Text("\(unstartedExercises.count)")
+                                        .font(.system(size: 15, weight: .regular))
+                                        .foregroundColor(AppColors.secondaryText)
+                                }
+
+                                VStack(spacing: 0) {
+                                    ForEach(Array(unstartedExercises.enumerated()), id: \.element.id) { index, item in
+                                        exerciseRow(item: item, isCompleted: false)
+                                        if index < unstartedExercises.count - 1 {
+                                            Divider()
+                                                .background(Color.white.opacity(0.08))
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // Fallback Resume Workout CTA if no continue card
+                        if halfwayExercises.isEmpty, let action = onActionWorkout {
+                            Spacer().frame(height: 8)
+                            Button(action: action) {
+                                Text(LanguageManager.t("history.resumeWorkout"))
+                                    .font(.system(size: 16, weight: .bold))
+                                    .foregroundColor(AppColors.background)
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 52)
+                                    .background(AppColors.accent)
+                                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityIdentifier("history-action-button")
+                        }
                     }
-                    .buttonStyle(.plain)
-                } else if effectiveStatus == .missed, let action = onActionWorkout {
-                    Button(action: action) {
-                        Text(LanguageManager.t("history.startWorkout"))
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(AppColors.background)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 52)
-                            .background(AppColors.accent)
-                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                    }
-                    .buttonStyle(.plain)
                 }
 
                 Spacer().frame(height: 24)
@@ -910,6 +698,72 @@ public struct HistoryDayDetailSheet: View {
         .presentationDetents([.fraction(0.8), .large])
         .presentationDragIndicator(.visible)
         .preferredColorScheme(.dark)
+    }
+
+    @ViewBuilder
+    private func exerciseRow(item: ExerciseProgressItem, isCompleted: Bool) -> some View {
+        HStack(alignment: .center) {
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(spacing: 6) {
+                    Text(item.name)
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundColor(AppColors.text)
+                        .lineLimit(1)
+
+                    if item.isPr {
+                        Text("PR")
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundColor(AppColors.orangePrText)
+                            .padding(.horizontal, 5)
+                            .padding(.vertical, 1)
+                            .background(
+                                RoundedRectangle(cornerRadius: 4, style: .continuous)
+                                    .fill(AppColors.orangePrBg)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 4, style: .continuous)
+                                            .stroke(AppColors.orangePrBorder, lineWidth: 1)
+                                    )
+                            )
+                    }
+                }
+
+                let subText: String = {
+                    if isCompleted {
+                        let setsFraction = LanguageManager.formatSetsFraction(completed: item.completedSets, total: item.plannedSets)
+                        let topLabel = LanguageManager.t("history.top").isEmpty ? "Top" : LanguageManager.t("history.top")
+                        if let w = item.topSetWeight, let r = item.topSetReps {
+                            return "\(setsFraction) · \(topLabel): \(WorkoutSessionUtils.formatWeight(w)) kg × \(r)"
+                        }
+                        return setsFraction
+                    } else {
+                        return item.prescription.isEmpty
+                            ? LanguageManager.formatSetsFraction(completed: item.completedSets, total: item.plannedSets)
+                            : item.prescription
+                    }
+                }()
+
+                Text(subText)
+                    .font(.system(size: 13))
+                    .foregroundColor(AppColors.secondaryText)
+                    .lineLimit(1)
+            }
+
+            Spacer()
+
+            if isCompleted {
+                Image(systemName: "checkmark")
+                    .font(.system(size: 15, weight: .bold))
+                    .foregroundColor(Color(hex: 0x3DDB84))
+                    .frame(width: 20, height: 20)
+            } else {
+                Image(systemName: "xmark")
+                    .font(.system(size: 15, weight: .bold))
+                    .foregroundColor(AppColors.missedRed)
+                    .frame(width: 20, height: 20)
+            }
+        }
+        .padding(.vertical, 12)
+        .accessibilityIdentifier("history-exercise-\(item.name)")
     }
 
     private func formattedFullDate(for date: Date) -> String {
