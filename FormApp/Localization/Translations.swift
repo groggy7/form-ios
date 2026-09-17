@@ -392,6 +392,20 @@ public enum Translations {
         "library.remove": "Remove",
         "library.videoError": "Could not open this video link.",
 
+        // Exercise Detail Tabs & History
+        "exercise.tab.main": "Main",
+        "exercise.tab.technique": "Technique",
+        "exercise.tab.history": "History",
+        "exercise.history.cardTitle": "Exercise Stats",
+        "exercise.history.pr": "Personal Record",
+        "exercise.history.estimated1rm": "Est. 1RM",
+        "exercise.history.volume": "Total Volume",
+        "exercise.history.sets": "Lifetime Sets",
+        "exercise.history.recent": "Workout History",
+        "exercise.history.empty": "No workout history yet",
+        "exercise.history.emptyHint": "Log this exercise in a workout to track your PR, estimated 1RM, and volume.",
+        "exercise.technique.empty": "No technique cues recorded yet",
+
         // Exercise Issue Reporting
         "report.action": "Report an issue",
         "report.title": "Report an Issue",
@@ -760,6 +774,20 @@ public enum Translations {
         "library.videoUnavailable": "Video kullanılamıyor",
         "library.remove": "Kaldır",
         "library.videoError": "Video bağlantısı açılamadı.",
+
+        // Exercise Detail Tabs & History
+        "exercise.tab.main": "Genel",
+        "exercise.tab.technique": "Teknik",
+        "exercise.tab.history": "Geçmiş",
+        "exercise.history.cardTitle": "Egzersiz İstatistikleri",
+        "exercise.history.pr": "Kişisel Rekor",
+        "exercise.history.estimated1rm": "Tahmini 1TM",
+        "exercise.history.volume": "Toplam Hacim",
+        "exercise.history.sets": "Toplam Set",
+        "exercise.history.recent": "Antrenman Geçmişi",
+        "exercise.history.empty": "Henüz antrenman geçmişi yok",
+        "exercise.history.emptyHint": "PR, tahmini 1TM ve hacim istatistiklerini takip etmek için bu egzersizi kaydedin.",
+        "exercise.technique.empty": "Henüz teknik ipucu eklenmemiş",
 
         // Exercise Issue Reporting
         "report.action": "Sorun bildir",

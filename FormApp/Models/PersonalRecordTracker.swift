@@ -246,4 +246,134 @@ public enum PersonalRecordTracker {
 
         return prExercises
     }
+
+    public static func calculateEstimated1RM(weightKg: Double, reps: Int) -> Double {
+        guard weightKg > 0.0, reps > 0 else { return 0.0 }
+        if reps == 1 { return weightKg }
+        let clampedReps = min(reps, 36)
+        return weightKg * (36.0 / (37.0 - Double(clampedReps)))
+    }
+
+    public static func computeExerciseHistoryStats(
+        history: [WorkoutSessionRecord],
+        exerciseName: String,
+        exerciseDisplayName: String? = nil
+    ) -> ExerciseHistoryStats {
+        let targetKey = normalizeExerciseKey(exerciseName)
+        let targetDisplayKey = exerciseDisplayName.map { normalizeExerciseKey($0) }
+
+        var matchingSessions: [ExerciseSessionHistoryEntry] = []
+        var allValidSets: [SessionSetLog] = []
+        var totalVolume: Double = 0.0
+
+        let sortedRecords = history.sorted { r1, r2 in
+            let d1 = r1.startedAt.isEmpty ? r1.completedAt : r1.startedAt
+            let d2 = r2.startedAt.isEmpty ? r2.completedAt : r2.startedAt
+            return d1 > d2
+        }
+
+        for record in sortedRecords {
+            guard let matchingLog = record.exerciseLogs.first(where: { log in
+                let logKey = normalizeExerciseKey(log.exerciseName)
+                return logKey == targetKey || (targetDisplayKey != nil && logKey == targetDisplayKey)
+            }) else { continue }
+
+            let validSets = matchingLog.sets.filter { ($0.weightKg ?? 0.0) > 0.0 || ($0.reps ?? 0) > 0 }
+            if !validSets.isEmpty {
+                let dateStr = record.startedAt.isEmpty ? record.completedAt : record.startedAt
+                matchingSessions.append(
+                    ExerciseSessionHistoryEntry(
+                        sessionId: record.id,
+                        date: dateStr,
+                        workoutTitle: record.workoutTitle,
+                        sets: validSets
+                    )
+                )
+                for s in validSets {
+                    allValidSets.append(s)
+                    let w = s.weightKg ?? 0.0
+                    let r = Double(s.reps ?? 0)
+                    if w > 0.0 && r > 0 {
+                        totalVolume += w * r
+                    }
+                }
+            }
+        }
+
+        if allValidSets.isEmpty {
+            return ExerciseHistoryStats()
+        }
+
+        let weightedSets = allValidSets.filter { ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }
+        let prSet: SessionSetLog?
+        if !weightedSets.isEmpty {
+            prSet = weightedSets.max { s1, s2 in
+                let rm1 = calculateEstimated1RM(weightKg: s1.weightKg ?? 0.0, reps: s1.reps ?? 0)
+                let rm2 = calculateEstimated1RM(weightKg: s2.weightKg ?? 0.0, reps: s2.reps ?? 0)
+                if abs(rm1 - rm2) > 0.001 {
+                    return rm1 < rm2
+                }
+                if let w1 = s1.weightKg, let w2 = s2.weightKg, abs(w1 - w2) > 0.001 {
+                    return w1 < w2
+                }
+                return (s1.reps ?? 0) < (s2.reps ?? 0)
+            }
+        } else {
+            prSet = allValidSets.max { ($0.reps ?? 0) < ($1.reps ?? 0) }
+        }
+
+        var est1rm: Double? = nil
+        if let pr = prSet, let w = pr.weightKg, let r = pr.reps, w > 0.0, r > 0 {
+            est1rm = calculateEstimated1RM(weightKg: w, reps: r)
+        }
+
+        return ExerciseHistoryStats(
+            prWeightKg: prSet?.weightKg,
+            prReps: prSet?.reps,
+            estimated1rmKg: est1rm,
+            totalVolumeKg: totalVolume,
+            lifetimeSets: allValidSets.count,
+            recentSessions: matchingSessions
+        )
+    }
+}
+
+public struct ExerciseSessionHistoryEntry: Identifiable, Hashable {
+    public var id: String { sessionId }
+    public var sessionId: String
+    public var date: String
+    public var workoutTitle: String
+    public var sets: [SessionSetLog]
+
+    public init(sessionId: String, date: String, workoutTitle: String, sets: [SessionSetLog]) {
+        self.sessionId = sessionId
+        self.date = date
+        self.workoutTitle = workoutTitle
+        self.sets = sets
+    }
+}
+
+public struct ExerciseHistoryStats: Hashable {
+    public var prWeightKg: Double?
+    public var prReps: Int?
+    public var estimated1rmKg: Double?
+    public var totalVolumeKg: Double
+    public var lifetimeSets: Int
+    public var recentSessions: [ExerciseSessionHistoryEntry]
+
+    public init(
+        prWeightKg: Double? = nil,
+        prReps: Int? = nil,
+        estimated1rmKg: Double? = nil,
+        totalVolumeKg: Double = 0.0,
+        lifetimeSets: Int = 0,
+        recentSessions: [ExerciseSessionHistoryEntry] = []
+    ) {
+        self.prWeightKg = prWeightKg
+        self.prReps = prReps
+        self.estimated1rmKg = estimated1rmKg
+        self.totalVolumeKg = totalVolumeKg
+        self.lifetimeSets = lifetimeSets
+        self.recentSessions = recentSessions
+    }
 }

@@ -3339,6 +3339,155 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
+    func testExerciseDetailTechniqueTabSnapshot() {
+        let exercise = Exercise(
+            name: "Barbell Bench Press",
+            prescription: "3 × 8–10",
+            cues: "Keep feet flat on floor\nRetract scapula and arch slightly\nLower bar with control to sternum\nDrive feet down to press up",
+            avoid: "Do not flare elbows to 90 degrees\nDo not bounce bar off chest\nDo not lift hips off the bench",
+            movementType: "press"
+        )
+        let view = ExerciseDetailView(exercise: exercise, initialTab: .technique, onBack: {})
+        let controller = UIHostingController(rootView: view)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { _ in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_exercise_detail_technique_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testExerciseDetailHistoryTabSnapshot() {
+        let exercise = Exercise(
+            name: "Barbell Bench Press",
+            prescription: "3 × 8–10",
+            cues: "Keep feet flat on floor\nRetract scapula\nLower bar with control",
+            avoid: "Do not flare elbows to 90 degrees",
+            movementType: "press"
+        )
+
+        let mockHistory: [WorkoutSessionRecord] = [
+            WorkoutSessionRecord(
+                id: "mock_session_1",
+                programId: "prog_1",
+                workoutId: "w_1",
+                workoutTitle: "Upper Body Strength",
+                startedAt: "2026-09-15T10:00:00Z",
+                completedAt: "2026-09-15T11:00:00Z",
+                durationSeconds: 3600,
+                totalVolumeKg: 4000,
+                totalCompletedSets: 12,
+                exerciseLogs: [
+                    SessionExerciseLog(
+                        exerciseName: "Barbell Bench Press",
+                        sets: [
+                            SessionSetLog(setNumber: 1, weightKg: 100.0, reps: 8),
+                            SessionSetLog(setNumber: 2, weightKg: 100.0, reps: 7),
+                            SessionSetLog(setNumber: 3, weightKg: 95.0, reps: 8)
+                        ],
+                        targetSets: 3
+                    )
+                ]
+            ),
+            WorkoutSessionRecord(
+                id: "mock_session_2",
+                programId: "prog_1",
+                workoutId: "w_1",
+                workoutTitle: "Chest & Arms Focus",
+                startedAt: "2026-09-10T10:00:00Z",
+                completedAt: "2026-09-10T11:00:00Z",
+                durationSeconds: 3600,
+                totalVolumeKg: 3500,
+                totalCompletedSets: 10,
+                exerciseLogs: [
+                    SessionExerciseLog(
+                        exerciseName: "Barbell Bench Press",
+                        sets: [
+                            SessionSetLog(setNumber: 1, weightKg: 95.0, reps: 8),
+                            SessionSetLog(setNumber: 2, weightKg: 90.0, reps: 8)
+                        ],
+                        targetSets: 2
+                    )
+                ]
+            )
+        ]
+
+        let originalHistory = AppStore.shared.state.history
+        AppStore.shared.state.history = mockHistory
+        defer { AppStore.shared.state.history = originalHistory }
+
+        let view = ExerciseDetailView(exercise: exercise, initialTab: .history, onBack: {})
+        let controller = UIHostingController(rootView: view)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { _ in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_exercise_detail_history_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testExerciseDetailHistoryEmptyTabSnapshot() {
+        let exercise = Exercise(
+            name: "Barbell Bench Press",
+            prescription: "3 × 8–10",
+            cues: "Keep feet flat on floor\nRetract scapula\nLower bar with control",
+            avoid: "Do not flare elbows to 90 degrees",
+            movementType: "press"
+        )
+
+        let originalHistory = AppStore.shared.state.history
+        AppStore.shared.state.history = []
+        defer { AppStore.shared.state.history = originalHistory }
+
+        let view = ExerciseDetailView(exercise: exercise, initialTab: .history, onBack: {})
+        let controller = UIHostingController(rootView: view)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { _ in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_exercise_detail_history_empty_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
+
+    @MainActor
     func testSetLoggingTableButtonHierarchySnapshot() {
         let sets = [
             ExerciseSetLog(setNumber: 1, weightInput: "65", repsInput: "10", weightKg: 65.0, completedReps: 10, isCompleted: true),
