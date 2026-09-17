@@ -337,7 +337,7 @@ struct AddExercisePickerSheet: View {
                             Text(entry.exercise.displayName)
                                 .font(.system(size: 15, weight: .semibold))
                                 .foregroundColor(AppColors.text)
-                            Text(entry.exercise.resolvedMovement.rawValue.capitalized)
+                            Text(entry.exercise.metadataSubtitle)
                                 .font(.system(size: 12))
                                 .foregroundColor(AppColors.muted)
                         }
@@ -361,7 +361,7 @@ struct AddExercisePickerSheet: View {
         return catalogue.compactMap { entry -> (ExerciseCatalogEntry, Int)? in
             guard let score = ExerciseSearch.score(query, exercise: entry.exercise,
                 localizedName: entry.exercise.displayName,
-                category: LanguageManager.t("category.\(entry.exercise.resolvedMovement.rawValue)")) else { return nil }
+                category: "\(LanguageManager.t("category.\(entry.exercise.resolvedMovement.rawValue)")) \(entry.exercise.metadataSubtitle)") else { return nil }
             return (entry, score)
         }.sorted { $0.1 == $1.1 ? ExercisePriority.compare($0.0.exercise, $1.0.exercise) : $0.1 < $1.1 }
             .map { $0.0 }

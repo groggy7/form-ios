@@ -683,7 +683,7 @@ private struct MiniExerciseDetailModal: View {
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundColor(AppColors.text)
                             .lineLimit(2)
-                        Text(LanguageManager.t("category.\(exercise.resolvedMovement.key)"))
+                        Text(exercise.metadataSubtitle)
                             .font(.system(size: 11, weight: .medium))
                             .foregroundColor(AppColors.accent)
                     }

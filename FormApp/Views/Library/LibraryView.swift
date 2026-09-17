@@ -29,7 +29,7 @@ public struct LibraryView: View {
             guard matchMovement, EquipmentCatalog.shared.matches(entry.exercise.exerciseId, selected: selectedEquipment),
                 let score = ExerciseSearch.score(search, exercise: entry.exercise,
                 localizedName: entry.exercise.displayName,
-                category: LanguageManager.t("category.\(entry.exercise.resolvedMovement.rawValue)")) else { return nil }
+                category: "\(LanguageManager.t("category.\(entry.exercise.resolvedMovement.rawValue)")) \(entry.exercise.metadataSubtitle)") else { return nil }
             return (entry, score)
         }.sorted { $0.1 == $1.1 ? ExercisePriority.compare($0.0.exercise, $1.0.exercise) : $0.1 < $1.1 }
             .map { $0.0 }
@@ -162,7 +162,7 @@ public struct LibraryView: View {
                                             .multilineTextAlignment(.leading)
                                             .frame(maxWidth: .infinity, minHeight: 34, alignment: .topLeading)
 
-                                        Text(LanguageManager.t("category.\(exercise.resolvedMovement.key)"))
+                                        Text(exercise.metadataSubtitle)
                                             .font(.system(size: 11))
                                             .foregroundColor(AppColors.muted)
                                             .lineLimit(1)
@@ -210,7 +210,7 @@ public struct LibraryView: View {
                                             .lineLimit(2)
                                             .multilineTextAlignment(.leading)
 
-                                        Text(LanguageManager.t("category.\(exercise.resolvedMovement.key)"))
+                                        Text(exercise.metadataSubtitle)
                                             .font(.system(size: 11))
                                             .foregroundColor(AppColors.muted)
                                     }

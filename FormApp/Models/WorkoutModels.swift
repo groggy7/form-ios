@@ -269,6 +269,10 @@ public struct Exercise: Identifiable, Codable, Hashable {
         return MovementType.fromExerciseName(name)
     }
 
+    public var metadataSubtitle: String {
+        ExerciseMetadata.format(self)
+    }
+
     enum CodingKeys: String, CodingKey {
         case id, name, exerciseId, prescription, cues, avoid, videos, sets, reps, restSeconds, movementType, movementAssetId
     }
@@ -915,5 +919,180 @@ public struct WeekCalendar {
     public init(today: Int, numbers: [Int]) {
         self.today = today
         self.numbers = numbers
+    }
+}
+
+public struct ExerciseMetadata {
+
+    private static let knownCableIds: Set<String> = [
+        "lat-pulldown", "face-pull", "rope-triceps-pressdown",
+        "straight-bar-cable-triceps-pressdown", "kneeling-cable-crunch",
+        "pallof-press", "cable-seated-row", "cable-curl",
+        "cable-lateral-raise", "overhead-cable-triceps-extension",
+        "cable-pull-through", "cable-standing-fly", "cable-low-fly",
+        "cable-decline-fly", "cable-middle-fly", "cable-woodchopper"
+    ]
+
+    public static func resolveMuscleKey(
+        exerciseId: String?,
+        name: String,
+        movementType: MovementType?
+    ) -> String {
+        if let profile = ExerciseMuscleCatalog.shared?.profile(exerciseId),
+           let primary = profile.primary.first {
+            switch primary {
+            case "chest": return "exercise.muscle.chest"
+            case "lats", "upper-back": return "exercise.muscle.back"
+            case "front-delts", "rear-delts": return "exercise.muscle.shoulders"
+            case "biceps": return "exercise.muscle.biceps"
+            case "triceps": return "exercise.muscle.triceps"
+            case "quads": return "exercise.muscle.quads"
+            case "hamstrings": return "exercise.muscle.hamstrings"
+            case "glutes": return "exercise.muscle.glutes"
+            case "calves": return "exercise.muscle.calves"
+            case "abs", "obliques": return "exercise.muscle.core"
+            default: return "exercise.muscle.full_body"
+            }
+        }
+
+        let resolved = movementType ?? MovementType.fromExerciseName(name)
+        let lowerName = name.lowercased()
+        switch resolved {
+        case .press:
+            if lowerName.contains("overhead") || lowerName.contains("shoulder") ||
+                lowerName.contains("military") || lowerName.contains("arnold") ||
+                lowerName.contains("viking") {
+                return "exercise.muscle.shoulders"
+            } else {
+                return "exercise.muscle.chest"
+            }
+        case .pullUp, .row:
+            return "exercise.muscle.back"
+        case .shoulderRaise:
+            return "exercise.muscle.shoulders"
+        case .curl:
+            return "exercise.muscle.biceps"
+        case .triceps:
+            return "exercise.muscle.triceps"
+        case .squat, .lunge:
+            return "exercise.muscle.quads"
+        case .hinge:
+            if lowerName.contains("glute") || lowerName.contains("thrust") || lowerName.contains("bridge") {
+                return "exercise.muscle.glutes"
+            } else {
+                return "exercise.muscle.hamstrings"
+            }
+        case .calf:
+            return "exercise.muscle.calves"
+        case .core:
+            return "exercise.muscle.core"
+        case .conditioning, .boxing:
+            return "exercise.muscle.cardio"
+        case .other:
+            if lowerName.contains("chest") || lowerName.contains("bench") || lowerName.contains("push-up") {
+                return "exercise.muscle.chest"
+            } else if lowerName.contains("lat") || lowerName.contains("pull") || lowerName.contains("row") {
+                return "exercise.muscle.back"
+            } else if lowerName.contains("shoulder") || lowerName.contains("delt") {
+                return "exercise.muscle.shoulders"
+            } else if lowerName.contains("squat") || lowerName.contains("quad") || lowerName.contains("leg extension") {
+                return "exercise.muscle.quads"
+            } else if lowerName.contains("deadlift") || lowerName.contains("rdl") || lowerName.contains("hamstring") {
+                return "exercise.muscle.hamstrings"
+            } else if lowerName.contains("calf") {
+                return "exercise.muscle.calves"
+            } else if lowerName.contains("curl") {
+                return "exercise.muscle.biceps"
+            } else if lowerName.contains("tricep") || lowerName.contains("dip") {
+                return "exercise.muscle.triceps"
+            } else if lowerName.contains("abs") || lowerName.contains("crunch") || lowerName.contains("plank") {
+                return "exercise.muscle.core"
+            } else {
+                return "exercise.muscle.full_body"
+            }
+        }
+    }
+
+    public static func resolveEquipmentKey(
+        exerciseId: String?,
+        name: String,
+        searchKeywords: [String] = []
+    ) -> String {
+        let lowerId = (exerciseId ?? "").lowercased()
+        let lowerName = name.lowercased()
+
+        // 1. Cable check
+        let isCable = knownCableIds.contains(lowerId) ||
+            lowerId.contains("cable") ||
+            lowerName.contains("cable") ||
+            searchKeywords.contains { $0.caseInsensitiveCompare("cable") == .orderedSame || $0.caseInsensitiveCompare("pulley") == .orderedSame }
+        if isCable { return "exercise.equipment.cable" }
+
+        // 2. Equipment Catalog check
+        let eqCat = EquipmentCatalog.shared.categoryId(exerciseId)
+        switch eqCat {
+        case "bar": return "exercise.equipment.barbell"
+        case "dumbbell": return "exercise.equipment.dumbbell"
+        case "kettlebell": return "exercise.equipment.kettlebell"
+        case "resistance-band": return "exercise.equipment.band"
+        case "weight-plate": return "exercise.equipment.plate"
+        case "machine": return "exercise.equipment.machine"
+        case "other":
+            if lowerId == "jump-rope" || lowerName.contains("jump rope") { return "exercise.equipment.rope" }
+            if lowerId == "ab-wheel-rollout" || lowerName.contains("ab wheel") { return "exercise.equipment.ab_wheel" }
+            if exerciseId != nil && EquipmentCatalog.shared.exercises[exerciseId!] != nil {
+                return "exercise.equipment.bodyweight"
+            }
+        default:
+            break
+        }
+
+        // 3. Fallback heuristics
+        if lowerName.contains("barbell") || lowerName.contains("ez-bar") { return "exercise.equipment.barbell" }
+        if lowerName.contains("dumbbell") || lowerName.contains(" db ") { return "exercise.equipment.dumbbell" }
+        if lowerName.contains("kettlebell") || lowerName.contains(" kb ") { return "exercise.equipment.kettlebell" }
+        if lowerName.contains("band") { return "exercise.equipment.band" }
+        if lowerName.contains("plate") { return "exercise.equipment.plate" }
+        if lowerName.contains("machine") || lowerName.contains("lever") || lowerName.contains("sled") || lowerName.contains("smith") { return "exercise.equipment.machine" }
+        if lowerName.contains("jump rope") { return "exercise.equipment.rope" }
+        if lowerName.contains("ab wheel") { return "exercise.equipment.ab_wheel" }
+        return "exercise.equipment.bodyweight"
+    }
+
+    public static func format(_ exercise: Exercise) -> String {
+        let muscleKey = resolveMuscleKey(
+            exerciseId: exercise.exerciseId,
+            name: exercise.name,
+            movementType: exercise.resolvedMovement
+        )
+        let equipmentKey = resolveEquipmentKey(
+            exerciseId: exercise.exerciseId,
+            name: exercise.name,
+            searchKeywords: []
+        )
+        let muscle = LanguageManager.t(muscleKey)
+        let equipment = LanguageManager.t(equipmentKey)
+        return "\(muscle) · \(equipment)"
+    }
+
+    public static func format(
+        exerciseId: String?,
+        name: String,
+        movementType: MovementType?,
+        searchKeywords: [String] = []
+    ) -> String {
+        let muscleKey = resolveMuscleKey(
+            exerciseId: exerciseId,
+            name: name,
+            movementType: movementType
+        )
+        let equipmentKey = resolveEquipmentKey(
+            exerciseId: exerciseId,
+            name: name,
+            searchKeywords: searchKeywords
+        )
+        let muscle = LanguageManager.t(muscleKey)
+        let equipment = LanguageManager.t(equipmentKey)
+        return "\(muscle) · \(equipment)"
     }
 }

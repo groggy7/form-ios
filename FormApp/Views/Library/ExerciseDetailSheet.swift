@@ -75,8 +75,7 @@ public struct ExerciseDetailView: View {
                         .font(.system(size: 24, weight: .semibold))
                         .foregroundColor(AppColors.text)
 
-                    let categoryKey = "category.\(currentExercise.resolvedMovement.rawValue)"
-                    Text(LanguageManager.t(categoryKey))
+                    Text(currentExercise.metadataSubtitle)
                         .font(.system(size: 11, weight: .medium))
                         .foregroundColor(AppColors.accent)
                         .tracking(0.7)
