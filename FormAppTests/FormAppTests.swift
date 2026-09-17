@@ -562,7 +562,6 @@ final class FormAppTests: XCTestCase {
         let store = AppStore.shared
         let modals: [(LibraryFilterModal, String)] = [
             (.equipment, "ios_library_equipment_modal_snapshot.png"),
-            (.movement, "ios_library_movement_modal_snapshot.png"),
             (.muscle, "ios_library_muscle_modal_snapshot.png")
         ]
 

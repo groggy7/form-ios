@@ -2,7 +2,6 @@ import SwiftUI
 
 public enum LibraryFilterModal: String, Identifiable {
     case equipment
-    case movement
     case muscle
 
     public var id: String { rawValue }
@@ -14,7 +13,6 @@ public struct LibraryView: View {
     var onOpenSettings: () -> Void
 
     @State private var query: String = ""
-    @State private var selectedMovement: MovementType? = nil
     @State private var selectedEquipment: String? = nil
     @State private var selectedMuscle: String? = nil
     @State private var activeModal: LibraryFilterModal? = nil
@@ -36,17 +34,16 @@ public struct LibraryView: View {
         let catalogue = store.exerciseCatalogue
         let search = ExerciseSearch.Query(query)
         let filtered = catalogue.compactMap { entry -> (ExerciseCatalogEntry, Int)? in
-            let matchMovement = selectedMovement == nil || entry.exercise.resolvedMovement == selectedMovement
             let matchEquipment = EquipmentCatalog.shared.matches(entry.exercise.exerciseId, selected: selectedEquipment)
             let matchMuscle = ExerciseMetadata.matchesMuscle(exercise: entry.exercise, muscleKey: selectedMuscle)
-            guard matchMovement, matchEquipment, matchMuscle,
+            guard matchEquipment, matchMuscle,
                 let score = ExerciseSearch.score(search, exercise: entry.exercise,
                 localizedName: entry.exercise.displayName,
                 category: "\(LanguageManager.t("category.\(entry.exercise.resolvedMovement.rawValue)")) \(entry.exercise.metadataSubtitle)") else { return nil }
             return (entry, score)
         }.sorted { $0.1 == $1.1 ? ExercisePriority.compare($0.0.exercise, $1.0.exercise) : $0.1 < $1.1 }
             .map { $0.0 }
-        let hasActiveFilters = selectedMovement != nil || selectedEquipment != nil || selectedMuscle != nil
+        let hasActiveFilters = selectedEquipment != nil || selectedMuscle != nil
 
         if let selectedId = store.selectedExerciseId, let selectedExercise = store.findExercise(id: selectedId) {
             ExerciseDetailView(exercise: selectedExercise, onBack: {
@@ -115,7 +112,7 @@ public struct LibraryView: View {
                 }
                 .padding(.horizontal, 20)
 
-                // 3 equally spaced category buttons: Equipment, Movement, Muscle Group
+                // 2 equally spaced category buttons: Equipment, Muscle Group
                 HStack(spacing: 8) {
                     // Equipment pill
                     let equipTitle = EquipmentCatalog.shared.categories.first(where: { $0.id == selectedEquipment })?.title
@@ -128,16 +125,6 @@ public struct LibraryView: View {
                         onClear: { selectedEquipment = nil }
                     )
                     .accessibilityIdentifier(selectedEquipment != nil ? "library-active-filter-equipment" : "library-filter-equipment")
-
-                    // Movement pill
-                    let movTitle = selectedMovement != nil ? LanguageManager.t("category.\(selectedMovement!.key)") : LanguageManager.t("library.filter.allMovements")
-                    LibraryFilterPill(
-                        title: movTitle,
-                        isSelected: selectedMovement != nil,
-                        onTap: { activeModal = .movement },
-                        onClear: { selectedMovement = nil }
-                    )
-                    .accessibilityIdentifier(selectedMovement != nil ? "library-active-filter-movement" : "library-filter-movement")
 
                     // Muscle pill
                     let muscleTitle = selectedMuscle != nil ? LanguageManager.t("exercise.muscle.\(selectedMuscle!)") : LanguageManager.t("library.filter.allMuscles")
@@ -274,8 +261,6 @@ public struct LibraryView: View {
                         switch modal {
                         case .equipment:
                             equipmentModalView()
-                        case .movement:
-                            movementModalView()
                         case .muscle:
                             muscleModalView()
                         }
@@ -391,67 +376,6 @@ public struct LibraryView: View {
             }
         }
         .accessibilityIdentifier("library-equipment-modal")
-    }
-
-    private func movementModalView() -> some View {
-        VStack(spacing: 0) {
-            modalHeader(title: LanguageManager.t("library.movement"))
-            ScrollView {
-                VStack(spacing: 8) {
-                    Button(action: {
-                        selectedMovement = nil
-                        activeModal = nil
-                    }) {
-                        HStack {
-                            Text(LanguageManager.t("library.filter.allMovements"))
-                                .font(.system(size: 14, weight: selectedMovement == nil ? .semibold : .medium))
-                                .foregroundColor(selectedMovement == nil ? AppColors.accent : AppColors.text)
-                            Spacer()
-                        }
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 12)
-                        .background(selectedMovement == nil ? AppColors.positiveBg : AppColors.background, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                .stroke(selectedMovement == nil ? AppColors.accent : AppColors.border, lineWidth: 1)
-                        )
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityIdentifier("movement-any")
-
-                    LazyVGrid(columns: [GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8)], spacing: 8) {
-                        ForEach(MovementType.allCases, id: \.rawValue) { (mov: MovementType) in
-                            let isSelected = selectedMovement == mov
-                            Button(action: {
-                                selectedMovement = isSelected ? nil : mov
-                                activeModal = nil
-                            }) {
-                                HStack {
-                                    Text(LanguageManager.t("category.\(mov.key)"))
-                                        .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
-                                        .foregroundColor(isSelected ? AppColors.accent : AppColors.text)
-                                        .lineLimit(1)
-                                    Spacer(minLength: 0)
-                                }
-                                .padding(.horizontal, 12)
-                                .padding(.vertical, 12)
-                                .frame(maxWidth: .infinity, minHeight: 48)
-                                .background(isSelected ? AppColors.positiveBg : AppColors.background, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                        .stroke(isSelected ? AppColors.accent : AppColors.border, lineWidth: 1)
-                                )
-                            }
-                            .buttonStyle(.plain)
-                            .accessibilityIdentifier("movement-\(mov.key)")
-                        }
-                    }
-                }
-                .padding(.horizontal, 18)
-                .padding(.bottom, 18)
-            }
-        }
-        .accessibilityIdentifier("library-movement-modal")
     }
 
     private func muscleModalView() -> some View {
