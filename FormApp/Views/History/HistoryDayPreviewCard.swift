@@ -439,37 +439,27 @@ public struct HistoryDayPreviewCard: View {
     }
 
     private func unstartedGroupCard(items: [PreviewExerciseItem]) -> some View {
-        Button(action: { onOpenDetail() }) {
-            HStack(spacing: 10) {
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(LanguageManager.formatUncompletedExercisesCount(items.count))
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(AppColors.text)
+        VStack(alignment: .leading, spacing: 4) {
+            Text(LanguageManager.formatUncompletedExercisesCount(items.count))
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundColor(AppColors.text)
 
-                    Text(items.map(\.name).joined(separator: ", "))
-                        .font(.system(size: 11))
-                        .foregroundColor(AppColors.muted)
-                        .lineLimit(1)
-                }
-
-                Spacer(minLength: 4)
-
-                Image(systemName: "chevron.down")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(AppColors.secondaryText)
-            }
-            .padding(.horizontal, 14)
-            .padding(.vertical, 12)
-            .background(
-                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .fill(AppColors.surfaceRaised)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .stroke(AppColors.border, lineWidth: 1)
-                    )
-            )
+            Text(items.map(\.name).joined(separator: ", "))
+                .font(.system(size: 12))
+                .foregroundColor(AppColors.secondaryText)
+                .fixedSize(horizontal: false, vertical: true)
         }
-        .buttonStyle(.plain)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 14)
+        .padding(.vertical, 12)
+        .background(
+            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                .fill(AppColors.surfaceRaised)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .stroke(AppColors.border, lineWidth: 1)
+                )
+        )
         .accessibilityIdentifier("history-preview-unstarted-group")
     }
 

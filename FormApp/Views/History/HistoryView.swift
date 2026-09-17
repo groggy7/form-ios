@@ -311,7 +311,30 @@ public struct HistoryView: View {
                 ?? store.state.programs.flatMap(\.workouts).first(where: { $0.day == dayOfWeek })
         }
 
-        let effectiveStatus: WorkoutDayStatus = (sessionRecord?.isComplete == true) ? .completed : (status ?? (sessionRecord != nil ? .unfinished : .missed))
+        let hasSets: Bool = {
+            if let rec = sessionRecord {
+                if rec.totalCompletedSets > 0 { return true }
+                return rec.exerciseLogs.contains { log in
+                    log.sets.contains { ($0.reps ?? 0) > 0 || ($0.weightKg ?? 0) > 0 }
+                }
+            }
+            if let active = store.activeSession {
+                let allSets = active.setsByExercise.values.flatMap { $0 }
+                if allSets.contains(where: { $0.isCompleted }) { return true }
+            }
+            return false
+        }()
+        let isToday = (dateString == WorkoutCalendar.formatDate(Date()))
+        let effectiveStatus: WorkoutDayStatus = {
+            if sessionRecord?.isComplete == true {
+                return .completed
+            }
+            if isToday {
+                return hasSets ? .unfinished : (status ?? .unfinished)
+            } else {
+                return hasSets ? .unfinished : .missed
+            }
+        }()
 
         return HistoryDayDetailData(
             date: date,

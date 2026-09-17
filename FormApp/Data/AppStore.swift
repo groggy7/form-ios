@@ -274,6 +274,29 @@ public final class AppStore: ObservableObject {
         let updated = transform(current)
         saveActiveSession(updated)
         self.activeSession = updated
+
+        let allSets = updated.setsByExercise.values.flatMap { $0 }
+        let hasCompleted = allSets.contains { $0.isCompleted }
+        if var cal = state.calendarHistory {
+            let sessionDate: String = {
+                if let d = cal.entries.first(where: { $0.id == "session:\(updated.id)" })?.date {
+                    return d
+                }
+                return WorkoutCalendar.localDate(from: updated.startedAt) ?? WorkoutCalendar.formatDate(Date())
+            }()
+            let updatedCal: WorkoutCalendarHistory
+            if hasCompleted {
+                updatedCal = WorkoutCalendar.put(
+                    history: cal,
+                    entry: WorkoutDayEntry(id: "session:\(updated.id)", date: sessionDate, status: .unfinished)
+                )
+            } else {
+                updatedCal = WorkoutCalendar.remove(history: cal, id: "session:\(updated.id)")
+            }
+            var nextSt = state
+            nextSt.calendarHistory = updatedCal
+            saveState(nextSt)
+        }
     }
 
     public func abandonActiveSession() {
@@ -355,14 +378,36 @@ public final class AppStore: ObservableObject {
             sessionDate = WorkoutCalendar.formatDate(Date())
         }
 
-        cal = WorkoutCalendar.put(
-            history: cal,
-            entry: WorkoutDayEntry(
-                id: "session:\(finalRecord.id)",
-                date: sessionDate,
-                status: isComplete ? .completed : .unfinished
+        let hasSets = finalRecord.totalCompletedSets > 0 || finalRecord.exerciseLogs.contains { log in
+            log.sets.contains { ($0.reps ?? 0) > 0 || ($0.weightKg ?? 0) > 0 }
+        }
+        let sessionDateParsed = WorkoutCalendar.parseDate(sessionDate)
+        let todayDate = WorkoutCalendar.parseDate(WorkoutCalendar.formatDate(Date())) ?? Date()
+        let isPast = (sessionDateParsed.map { $0 < todayDate }) ?? false
+
+        let entryStatus: WorkoutDayStatus?
+        if isComplete {
+            entryStatus = .completed
+        } else if hasSets {
+            entryStatus = .unfinished
+        } else if isPast {
+            entryStatus = .missed
+        } else {
+            entryStatus = nil
+        }
+
+        if let s = entryStatus {
+            cal = WorkoutCalendar.put(
+                history: cal,
+                entry: WorkoutDayEntry(
+                    id: "session:\(finalRecord.id)",
+                    date: sessionDate,
+                    status: s
+                )
             )
-        )
+        } else {
+            cal = WorkoutCalendar.remove(history: cal, id: "session:\(finalRecord.id)")
+        }
 
         var newState = state
         newState.history = newHistory
@@ -437,12 +482,49 @@ public final class AppStore: ObservableObject {
             weekdays: WorkoutCalendar.weekdays(state: state)
         )
         var statuses = WorkoutCalendar.statuses(history: refreshed, today: todayStr)
-        if let active = activeSession {
-            let activeDate = WorkoutCalendar.localDate(from: active.startedAt) ?? todayStr
-            if (statuses[activeDate]?.priority ?? -1) < WorkoutDayStatus.unfinished.priority {
-                statuses[activeDate] = .unfinished
+
+        func hasLoggedSets(for dateStr: String) -> Bool {
+            if let active = activeSession {
+                let activeDate = curCal.entries.first(where: { $0.id == "session:\(active.id)" })?.date
+                    ?? WorkoutCalendar.localDate(from: active.startedAt) ?? todayStr
+                if activeDate == dateStr {
+                    let allSets = active.setsByExercise.values.flatMap { $0 }
+                    if allSets.contains(where: { $0.isCompleted }) { return true }
+                }
+            }
+            return state.history.contains { rec in
+                let calDate = state.calendarHistory?.entries.first(where: { $0.id == "session:\(rec.id)" })?.date
+                let d = calDate ?? WorkoutCalendar.localDate(from: rec.startedAt) ?? WorkoutCalendar.localDate(from: rec.completedAt)
+                guard d == dateStr else { return false }
+                if rec.totalCompletedSets > 0 { return true }
+                return rec.exerciseLogs.contains { log in
+                    log.sets.contains { ($0.reps ?? 0) > 0 || ($0.weightKg ?? 0) > 0 }
+                }
             }
         }
+
+        if let active = activeSession {
+            let allSets = active.setsByExercise.values.flatMap { $0 }
+            if allSets.contains(where: { $0.isCompleted }) {
+                let activeDate = WorkoutCalendar.localDate(from: active.startedAt) ?? todayStr
+                if (statuses[activeDate]?.priority ?? -1) < WorkoutDayStatus.unfinished.priority {
+                    statuses[activeDate] = .unfinished
+                }
+            }
+        }
+
+        // 1. Today with no logged sets -> neutral (no status)
+        if statuses[todayStr] == .unfinished && !hasLoggedSets(for: todayStr) {
+            statuses.removeValue(forKey: todayStr)
+        }
+
+        // 2. Passed days with no logged sets -> red (.missed)
+        for (dateStr, status) in statuses {
+            if dateStr < todayStr && status == .unfinished && !hasLoggedSets(for: dateStr) {
+                statuses[dateStr] = .missed
+            }
+        }
+
         return statuses
     }
 

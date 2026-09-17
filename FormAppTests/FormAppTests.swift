@@ -1368,8 +1368,11 @@ final class FormAppTests: XCTestCase {
             exercises: [
                 Exercise(name: "Barbell Bench Press", sets: 3),
                 Exercise(name: "Incline Dumbbell Press", sets: 3),
-                Exercise(name: "Cable Fly", sets: 3),
-                Exercise(name: "Triceps Pushdown", sets: 3)
+                Exercise(name: "Sled Hack Squat", sets: 3),
+                Exercise(name: "Leg Press", sets: 3),
+                Exercise(name: "Leg Extension", sets: 3),
+                Exercise(name: "Standing Calf Raise", sets: 3),
+                Exercise(name: "Seated Cable Row", sets: 3)
             ]
         )
         let date = WorkoutCalendar.parseDate("2026-09-03")!
@@ -3326,4 +3329,131 @@ final class FormAppTests: XCTestCase {
             print("Successfully wrote snapshot to \(path)")
         }
     }
+
+    @MainActor
+    func testZeroLoggedSetsDayStatusResolution() {
+        let store = AppStore.shared
+        let todayStr = "2026-09-17"
+        let yesterdayStr = "2026-09-16"
+        let todayDate = WorkoutCalendar.parseDate(todayStr)!
+
+        // 1. Session today with 0 sets logged -> calendar status is nil (neutral tile)
+        let todaySessionNoSets = WorkoutSessionRecord(
+            id: "test-zero-sets-today",
+            programId: "prog",
+            workoutId: "w1",
+            workoutTitle: "Push",
+            startedAt: "2026-09-17T10:00:00.000Z",
+            completedAt: "2026-09-17T10:30:00.000Z",
+            durationSeconds: 1800,
+            totalCompletedSets: 0,
+            exerciseLogs: [],
+            isComplete: false
+        )
+
+        // Save a clean state
+        store.activeSession = nil
+        let previousHistory = store.state.history
+        var st = store.state
+        st.history = [todaySessionNoSets]
+        st.history.append(todaySessionNoSets)
+        st.calendarHistory = WorkoutCalendarHistory(
+            nextScheduledDate: "2026-09-14",
+            scheduledWeekdays: [1, 2, 4, 5],
+            missedDates: [],
+            entries: [
+                WorkoutDayEntry(id: "session:test-zero-sets-today", date: todayStr, status: .unfinished)
+            ]
+        )
+        store.saveState(st)
+
+        let statusesToday = store.calendarStatuses(today: todayDate)
+        XCTAssertNil(statusesToday[todayStr], "Today with zero sets logged must have no status (neutral tile)")
+
+        // 1b. Active session today with 0 completed sets -> calendar status is nil (neutral tile)
+        let dummyWorkout = Workout(id: "w1", day: 4, title: "Push", exercises: [Exercise(name: "Bench", sets: 3)])
+        store.activeSession = ActiveSessionDraft(
+            id: "draft-0-sets",
+            programId: "prog",
+            workout: dummyWorkout,
+            startedAt: "2026-09-17T10:00:00.000Z",
+            startedAtEpochMillis: 1000,
+            currentExerciseIndex: 0,
+            setsByExercise: [
+                "Bench": [
+                    ExerciseSetLog(setNumber: 1, isCompleted: false)
+                ]
+            ]
+        )
+        let statusesActive0Sets = store.calendarStatuses(today: todayDate)
+        XCTAssertNil(statusesActive0Sets[todayStr], "Active session today with 0 completed sets must have no status (neutral tile)")
+        store.activeSession = nil
+
+        // 2. Session on a passed day with 0 sets logged -> calendar status is .missed (red)
+        let pastSessionNoSets = WorkoutSessionRecord(
+            id: "test-zero-sets-past",
+            programId: "prog",
+            workoutId: "w1",
+            workoutTitle: "Push",
+            startedAt: "2026-09-16T10:00:00.000Z",
+            completedAt: "2026-09-16T10:30:00.000Z",
+            durationSeconds: 1800,
+            totalCompletedSets: 0,
+            exerciseLogs: [],
+            isComplete: false
+        )
+        st.history.append(pastSessionNoSets)
+        st.calendarHistory = WorkoutCalendarHistory(
+            nextScheduledDate: "2026-09-14",
+            scheduledWeekdays: [1, 2, 4, 5],
+            missedDates: [],
+            entries: [
+                WorkoutDayEntry(id: "session:test-zero-sets-past", date: yesterdayStr, status: .unfinished)
+            ]
+        )
+        store.saveState(st)
+
+        let statusesPast = store.calendarStatuses(today: todayDate)
+        XCTAssertEqual(statusesPast[yesterdayStr], .missed, "Passed day with zero sets logged must be marked .missed (red)")
+
+        // 3. Session on a passed day WITH sets logged -> calendar status is .unfinished (orange)
+        let pastSessionWithSets = WorkoutSessionRecord(
+            id: "test-zero-sets-past-completed",
+            programId: "prog",
+            workoutId: "w1",
+            workoutTitle: "Push",
+            startedAt: "2026-09-16T10:00:00.000Z",
+            completedAt: "2026-09-16T10:30:00.000Z",
+            durationSeconds: 1800,
+            totalCompletedSets: 2,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Bench Press",
+                    sets: [SessionSetLog(setNumber: 1, weightKg: 80, reps: 8)],
+                    targetSets: 3
+                )
+            ],
+            isComplete: false
+        )
+        st.history.removeAll { $0.id == "test-zero-sets-past" }
+        st.history.append(pastSessionWithSets)
+        st.calendarHistory = WorkoutCalendarHistory(
+            nextScheduledDate: "2026-09-14",
+            scheduledWeekdays: [1, 2, 4, 5],
+            missedDates: [],
+            entries: [
+                WorkoutDayEntry(id: "session:test-zero-sets-past-completed", date: yesterdayStr, status: .unfinished)
+            ]
+        )
+        store.saveState(st)
+
+        let statusesWithSets = store.calendarStatuses(today: todayDate)
+        XCTAssertEqual(statusesWithSets[yesterdayStr], .unfinished, "Passed day with sets logged must remain .unfinished (orange)")
+
+        // Clean up
+        st.history = previousHistory
+        st.calendarHistory = nil
+        store.saveState(st)
+    }
 }
+
