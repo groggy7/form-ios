@@ -5,11 +5,13 @@ public struct MuscleArtwork: View {
     let view: BodyView
     let muscles: [MuscleGroup]
     var alpha: CGFloat = 1.0
+    var centered: Bool = false
 
-    public init(view: BodyView, muscles: [MuscleGroup], alpha: CGFloat = 1.0) {
+    public init(view: BodyView, muscles: [MuscleGroup], alpha: CGFloat = 1.0, centered: Bool = false) {
         self.view = view
         self.muscles = muscles
         self.alpha = alpha
+        self.centered = centered
     }
 
     public var body: some View {
@@ -20,9 +22,17 @@ public struct MuscleArtwork: View {
         Canvas { context, size in
             guard size.width > 0 && size.height > 0 else { return }
 
+            let athleteCenterX: CGFloat
+            switch view {
+            case .legsFront: athleteCenterX = 835
+            case .legsBack: athleteCenterX = 855
+            case .back: athleteCenterX = 870
+            case .front: athleteCenterX = 866
+            }
+
             let scale = max(size.width, size.height) / MuscleMasks.viewport
             let width = MuscleMasks.viewport * scale
-            let left = (size.width - width) / 2.0
+            let left = centered ? ((size.width / 2.0) - (athleteCenterX * scale)) : ((size.width - width) / 2.0)
             let top = (size.height - width) * 0.41
 
             var rootContext = context

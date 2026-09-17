@@ -490,8 +490,8 @@ public struct LibraryView: View {
                                 VStack(spacing: 0) {
                                     ZStack {
                                         RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                            .fill(AppColors.exerciseThumbnailSurface)
-                                        MuscleArtwork(view: muscle.bodyView, muscles: muscle.muscleGroups)
+                                            .fill(Color.black)
+                                        MuscleArtwork(view: muscle.bodyView, muscles: muscle.muscleGroups, centered: true)
                                             .padding(4)
                                     }
                                     .frame(height: 84)
