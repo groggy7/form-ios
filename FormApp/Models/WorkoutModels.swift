@@ -1095,4 +1095,62 @@ public struct ExerciseMetadata {
         let equipment = LanguageManager.t(equipmentKey)
         return "\(muscle) · \(equipment)"
     }
+
+    public static func matchesMuscle(
+        exercise: Exercise,
+        muscleKey: String?
+    ) -> Bool {
+        guard let muscleKey = muscleKey else { return true }
+        let muscleMap: [String: [String]] = [
+            "chest": ["chest"],
+            "back": ["lats", "upper-back"],
+            "shoulders": ["front-delts", "rear-delts"],
+            "biceps": ["biceps"],
+            "triceps": ["triceps"],
+            "quads": ["quads"],
+            "hamstrings": ["hamstrings"],
+            "glutes": ["glutes"],
+            "calves": ["calves"],
+            "core": ["abs", "obliques"]
+        ]
+        let targetMuscles = muscleMap[muscleKey] ?? [muscleKey]
+        if let profile = ExerciseMuscleCatalog.shared?.profile(exercise.exerciseId),
+           profile.primary.contains(where: { targetMuscles.contains($0) }) {
+            return true
+        }
+        let fallbackKey = resolveMuscleKey(exerciseId: exercise.exerciseId, name: exercise.name, movementType: exercise.resolvedMovement)
+        switch muscleKey {
+        case "chest": return fallbackKey == "exercise.muscle.chest"
+        case "back": return fallbackKey == "exercise.muscle.back"
+        case "shoulders": return fallbackKey == "exercise.muscle.shoulders"
+        case "biceps": return fallbackKey == "exercise.muscle.biceps"
+        case "triceps": return fallbackKey == "exercise.muscle.triceps"
+        case "quads": return fallbackKey == "exercise.muscle.quads"
+        case "hamstrings": return fallbackKey == "exercise.muscle.hamstrings"
+        case "glutes": return fallbackKey == "exercise.muscle.glutes"
+        case "calves": return fallbackKey == "exercise.muscle.calves"
+        case "core": return fallbackKey == "exercise.muscle.core"
+        default: return false
+        }
+    }
 }
+
+public enum MuscleGroupFilter: String, CaseIterable, Identifiable {
+    case chest = "chest"
+    case back = "back"
+    case shoulders = "shoulders"
+    case biceps = "biceps"
+    case triceps = "triceps"
+    case quads = "quads"
+    case hamstrings = "hamstrings"
+    case glutes = "glutes"
+    case calves = "calves"
+    case core = "core"
+
+    public var id: String { rawValue }
+
+    public var translationKey: String {
+        return "exercise.muscle.\(rawValue)"
+    }
+}
+

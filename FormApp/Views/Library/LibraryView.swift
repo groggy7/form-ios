@@ -8,6 +8,7 @@ public struct LibraryView: View {
     @State private var query: String = ""
     @State private var selectedMovement: MovementType? = nil
     @State private var selectedEquipment: String? = nil
+    @State private var selectedMuscle: String? = nil
     @State private var showFiltersSheet: Bool = false
     @AppStorage("library_is_card_view") private var isCardView: Bool = false
 
@@ -26,14 +27,16 @@ public struct LibraryView: View {
         let search = ExerciseSearch.Query(query)
         let filtered = catalogue.compactMap { entry -> (ExerciseCatalogEntry, Int)? in
             let matchMovement = selectedMovement == nil || entry.exercise.resolvedMovement == selectedMovement
-            guard matchMovement, EquipmentCatalog.shared.matches(entry.exercise.exerciseId, selected: selectedEquipment),
+            let matchEquipment = EquipmentCatalog.shared.matches(entry.exercise.exerciseId, selected: selectedEquipment)
+            let matchMuscle = ExerciseMetadata.matchesMuscle(exercise: entry.exercise, muscleKey: selectedMuscle)
+            guard matchMovement, matchEquipment, matchMuscle,
                 let score = ExerciseSearch.score(search, exercise: entry.exercise,
                 localizedName: entry.exercise.displayName,
                 category: "\(LanguageManager.t("category.\(entry.exercise.resolvedMovement.rawValue)")) \(entry.exercise.metadataSubtitle)") else { return nil }
             return (entry, score)
         }.sorted { $0.1 == $1.1 ? ExercisePriority.compare($0.0.exercise, $1.0.exercise) : $0.1 < $1.1 }
             .map { $0.0 }
-        let hasActiveFilters = selectedMovement != nil || selectedEquipment != nil
+        let hasActiveFilters = selectedMovement != nil || selectedEquipment != nil || selectedMuscle != nil
 
         if let selectedId = store.selectedExerciseId, let selectedExercise = store.findExercise(id: selectedId) {
             ExerciseDetailView(exercise: selectedExercise, onBack: {
@@ -92,14 +95,6 @@ public struct LibraryView: View {
                             )
                     )
 
-                    // Filters button
-                    FormHeaderIconButton(
-                        icon: "slider.horizontal.3",
-                        contentDescription: LanguageManager.t("library.filters"),
-                        tint: hasActiveFilters ? AppColors.accent : AppColors.secondaryText,
-                        onClick: { showFiltersSheet = true }
-                    )
-
                     // View mode toggle button
                     FormHeaderIconButton(
                         icon: isCardView ? "list.bullet" : "square.grid.2x2",
@@ -110,32 +105,41 @@ public struct LibraryView: View {
                 }
                 .padding(.horizontal, 20)
 
-                // Active filters row
-                if hasActiveFilters {
-                    VStack(alignment: .leading, spacing: 8) {
-                        if let equipment = EquipmentCatalog.shared.categories.first(where: { $0.id == selectedEquipment }) {
-                            activeFilter(equipment.title, equipment: equipment) { selectedEquipment = nil }
-                                .accessibilityIdentifier("library-active-filter-equipment")
-                        }
-                        if let mov = selectedMovement {
-                            activeFilter(LanguageManager.t("category.\(mov.key)")) { selectedMovement = nil }
-                        }
+                // 3 equally spaced category buttons: Equipment, Movement, Muscle Group
+                HStack(spacing: 8) {
+                    // Equipment pill
+                    let equipTitle = EquipmentCatalog.shared.categories.first(where: { $0.id == selectedEquipment })?.title
+                        ?? LanguageManager.t("library.filter.allEquipments")
+                    LibraryFilterPill(
+                        title: equipTitle,
+                        isSelected: selectedEquipment != nil,
+                        equipment: EquipmentCatalog.shared.categories.first(where: { $0.id == selectedEquipment }),
+                        onTap: { showFiltersSheet = true },
+                        onClear: { selectedEquipment = nil }
+                    )
+                    .accessibilityIdentifier(selectedEquipment != nil ? "library-active-filter-equipment" : "library-filter-equipment")
 
-                        Button(action: {
-                            selectedMovement = nil
-                            selectedEquipment = nil
-                        }) {
-                            Text(LanguageManager.t("library.clearFilters"))
-                                .font(.system(size: 12))
-                                .foregroundColor(AppColors.muted)
-                        }
-                        .buttonStyle(.plain)
-                        .padding(.horizontal, 8)
-                        .frame(minHeight: 48)
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 20)
+                    // Movement pill
+                    let movTitle = selectedMovement != nil ? LanguageManager.t("category.\(selectedMovement!.key)") : LanguageManager.t("library.filter.allMovements")
+                    LibraryFilterPill(
+                        title: movTitle,
+                        isSelected: selectedMovement != nil,
+                        onTap: { showFiltersSheet = true },
+                        onClear: { selectedMovement = nil }
+                    )
+                    .accessibilityIdentifier(selectedMovement != nil ? "library-active-filter-movement" : "library-filter-movement")
+
+                    // Muscle pill
+                    let muscleTitle = selectedMuscle != nil ? LanguageManager.t("exercise.muscle.\(selectedMuscle!)") : LanguageManager.t("library.filter.allMuscles")
+                    LibraryFilterPill(
+                        title: muscleTitle,
+                        isSelected: selectedMuscle != nil,
+                        onTap: { showFiltersSheet = true },
+                        onClear: { selectedMuscle = nil }
+                    )
+                    .accessibilityIdentifier(selectedMuscle != nil ? "library-active-filter-muscle" : "library-filter-muscle")
                 }
+                .padding(.horizontal, 20)
 
                 if isCardView {
                     // Exercise cards grid (2 columns)
@@ -296,10 +300,30 @@ public struct LibraryView: View {
                             }
                         }
 
-                        if selectedEquipment != nil || selectedMovement != nil {
+                        Text(LanguageManager.t("library.muscles"))
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(AppColors.text)
+                            .padding(.top, 16)
+
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 140))], spacing: 10) {
+                            filterOption(LanguageManager.t("library.any"), selected: selectedMuscle == nil) {
+                                selectedMuscle = nil
+                            }
+                            ForEach(MuscleGroupFilter.allCases) { muscle in
+                                let isSelected = selectedMuscle == muscle.rawValue
+                                filterOption(LanguageManager.t(muscle.translationKey), selected: isSelected) {
+                                    if isSelected { selectedMuscle = nil }
+                                    else { selectedMuscle = muscle.rawValue }
+                                }
+                                .accessibilityIdentifier("muscle-\(muscle.rawValue)")
+                            }
+                        }
+
+                        if selectedEquipment != nil || selectedMovement != nil || selectedMuscle != nil {
                             filterOption(LanguageManager.t("library.resetFilters"), selected: false) {
                                 selectedEquipment = nil
                                 selectedMovement = nil
+                                selectedMuscle = nil
                             }
                         }
                     }
@@ -318,25 +342,59 @@ public struct LibraryView: View {
         }
     }
 
-    private func activeFilter(_ title: String, equipment: EquipmentCategory? = nil, remove: @escaping () -> Void) -> some View {
-        Button(action: remove) {
-            HStack(spacing: 8) {
-                if let equipment { EquipmentIcon(category: equipment, tint: AppColors.accent) }
-                Text(title).font(.system(size: 12, weight: .medium))
-                Image(systemName: "xmark").font(.system(size: 11, weight: .bold))
-            }
-            .foregroundColor(AppColors.accent)
-            .padding(.horizontal, 12)
-            .frame(minHeight: 48)
-            .background(AppColors.positiveBg, in: RoundedRectangle(cornerRadius: 10))
-            .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.accent.opacity(0.4)))
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel("\(LanguageManager.t("library.clearFilters")): \(title)")
-    }
-
     private func filterOption(_ title: String, selected: Bool, equipment: EquipmentCategory? = nil, action: @escaping () -> Void) -> some View {
         LibraryFilterOption(title: title, selected: selected, equipment: equipment, action: action)
+    }
+}
+
+struct LibraryFilterPill: View {
+    let title: String
+    let isSelected: Bool
+    var equipment: EquipmentCategory? = nil
+    let onTap: () -> Void
+    let onClear: () -> Void
+    @ScaledMetric(relativeTo: .subheadline) private var labelSize: CGFloat = 12
+
+    var body: some View {
+        HStack(spacing: 4) {
+            Button(action: onTap) {
+                HStack(spacing: 4) {
+                    if let equipment {
+                        EquipmentIcon(category: equipment, tint: isSelected ? AppColors.accent : AppColors.secondaryText)
+                    }
+                    Text(title)
+                        .font(.system(size: labelSize, weight: isSelected ? .semibold : .medium))
+                        .foregroundColor(isSelected ? AppColors.accent : AppColors.secondaryText)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.8)
+                        .truncationMode(.tail)
+                }
+                .frame(maxWidth: .infinity, alignment: .center)
+            }
+            .buttonStyle(.plain)
+
+            if isSelected {
+                Button(action: onClear) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundColor(AppColors.accent)
+                        .frame(width: 22, height: 22)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(LanguageManager.t("library.clearFilter"))
+            } else {
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundColor(AppColors.muted)
+            }
+        }
+        .padding(.horizontal, 8)
+        .frame(maxWidth: .infinity, minHeight: 44)
+        .background(isSelected ? AppColors.positiveBg : AppColors.surface, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .stroke(isSelected ? AppColors.accent.opacity(0.6) : AppColors.border, lineWidth: 1)
+        )
     }
 }
 

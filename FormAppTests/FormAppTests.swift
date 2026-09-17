@@ -557,6 +557,24 @@ final class FormAppTests: XCTestCase {
         }
     }
 
+    func testLibraryMuscleFilteringAndMatching() {
+        let bench = Exercise(name: "Barbell Bench Press", exerciseId: "barbell-bench-press", movementType: "press")
+        let squat = Exercise(name: "Barbell Squat", exerciseId: "barbell-back-squat", movementType: "squat")
+        let curl = Exercise(name: "Barbell Curl", exerciseId: "barbell-curl", movementType: "curl")
+
+        XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: bench, muscleKey: "chest"))
+        XCTAssertFalse(ExerciseMetadata.matchesMuscle(exercise: bench, muscleKey: "quads"))
+
+        XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: squat, muscleKey: "quads"))
+        XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: squat, muscleKey: "glutes"))
+        XCTAssertFalse(ExerciseMetadata.matchesMuscle(exercise: squat, muscleKey: "biceps"))
+
+        XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: curl, muscleKey: "biceps"))
+        XCTAssertFalse(ExerciseMetadata.matchesMuscle(exercise: curl, muscleKey: "chest"))
+
+        XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: bench, muscleKey: nil))
+    }
+
     @MainActor
     func testExerciseDetailSheetWithVideosSnapshot() {
         var exercise = Exercise(
