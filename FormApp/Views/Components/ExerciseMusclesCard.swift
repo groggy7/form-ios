@@ -86,33 +86,23 @@ struct ExerciseMusclesCard: View {
             if isExpanded {
                 if let catalog = ExerciseMuscleCatalog.shared, let profile = catalog.profile(exerciseId) {
                     let view = selectedView ?? profile.initialView
+                    let views = catalog.availableViews(profile)
                     if dynamicType >= .xxLarge {
-                        stacked(catalog, profile, view)
+                        stacked(catalog, profile, view, views)
                     } else {
                         ViewThatFits(in: .horizontal) {
                             HStack(alignment: .center, spacing: 16) {
                                 figure(catalog, profile, view).frame(width: 128, height: 190)
-                                legend(catalog, profile).frame(maxWidth: .infinity, alignment: .leading)
+                                VStack(alignment: .leading, spacing: 16) {
+                                    legend(catalog, profile)
+                                    if views.count > 1 {
+                                        segmentedControl(views, selected: view)
+                                    }
+                                }
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .accessibilityIdentifier("anatomy-legend")
                             }.frame(minWidth: 260)
-                            stacked(catalog, profile, view)
-                        }
-                    }
-                    let views = catalog.availableViews(profile)
-                    if views.count > 1 {
-                        HStack(spacing: 8) {
-                            ForEach(views, id: \.self) { option in
-                                Button { selectedView = option } label: {
-                                    Text(LanguageManager.t(option == "front" ? "anatomy.front" : "anatomy.back"))
-                                        .font(.system(size: bodySize, weight: .medium))
-                                        .foregroundColor(view == option ? AppColors.purple : AppColors.muted)
-                                        .frame(maxWidth: .infinity, minHeight: 48)
-                                        .background(view == option ? AppColors.purpleBg : AppColors.surface)
-                                        .clipShape(RoundedRectangle(cornerRadius: 10))
-                                        .overlay(RoundedRectangle(cornerRadius: 10).stroke(view == option ? AppColors.purple : AppColors.border, lineWidth: 1))
-                                }.buttonStyle(.plain)
-                                    .accessibilityAddTraits(view == option ? .isSelected : [])
-                                    .accessibilityIdentifier("anatomy-view-\(option)")
-                            }
+                            stacked(catalog, profile, view, views)
                         }
                     }
                     Text(LanguageManager.t("anatomy.note"))
@@ -139,19 +129,58 @@ struct ExerciseMusclesCard: View {
         .onChange(of: exerciseId) { _, _ in selectedView = nil }
     }
 
-    private func stacked(_ catalog: ExerciseMuscleCatalog, _ profile: ExerciseMuscleProfile, _ view: String) -> some View {
+    private func stacked(_ catalog: ExerciseMuscleCatalog, _ profile: ExerciseMuscleProfile, _ view: String, _ views: [String]) -> some View {
         VStack(alignment: .leading, spacing: 14) {
             figure(catalog, profile, view).frame(maxWidth: .infinity).frame(height: 210)
-            legend(catalog, profile)
+            VStack(alignment: .leading, spacing: 16) {
+                legend(catalog, profile)
+                if views.count > 1 {
+                    segmentedControl(views, selected: view)
+                }
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .accessibilityIdentifier("anatomy-legend")
         }
     }
 
+    private func segmentedControl(_ views: [String], selected: String) -> some View {
+        HStack(spacing: 2) {
+            ForEach(views, id: \.self) { option in
+                let isSelected = selected == option
+                Button {
+                    selectedView = option
+                } label: {
+                    Text(LanguageManager.t(option == "front" ? "anatomy.front" : "anatomy.back"))
+                        .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
+                        .foregroundColor(isSelected ? AppColors.purple : AppColors.muted)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(isSelected ? AppColors.purpleBg : Color.clear)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(isSelected ? AppColors.purple.opacity(0.6) : Color.clear, lineWidth: 1)
+                        )
+                }
+                .buttonStyle(.plain)
+                .accessibilityAddTraits(isSelected ? .isSelected : [])
+                .accessibilityIdentifier("anatomy-view-\(option)")
+            }
+        }
+        .padding(3)
+        .frame(height: 38)
+        .background(AppColors.surfaceRaised)
+        .clipShape(RoundedRectangle(cornerRadius: 11))
+        .overlay(
+            RoundedRectangle(cornerRadius: 11)
+                .stroke(AppColors.border, lineWidth: 1)
+        )
+    }
+
     private func legend(_ catalog: ExerciseMuscleCatalog, _ profile: ExerciseMuscleProfile) -> some View {
-        VStack(alignment: .leading, spacing: 18) {
+        VStack(alignment: .leading, spacing: 16) {
             muscleList(catalog, profile.primary, primary: true)
             if !profile.secondary.isEmpty { muscleList(catalog, profile.secondary, primary: false) }
         }.fixedSize(horizontal: false, vertical: true)
-            .accessibilityIdentifier("anatomy-legend")
     }
 
     private func muscleList(_ catalog: ExerciseMuscleCatalog, _ muscles: [String], primary: Bool) -> some View {
