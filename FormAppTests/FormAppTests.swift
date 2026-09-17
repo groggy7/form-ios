@@ -3662,5 +3662,170 @@ final class FormAppTests: XCTestCase {
         st.calendarHistory = nil
         store.saveState(st)
     }
+
+    // MARK: - History Import Tests
+
+    func testCsvParserRFC4180() {
+        let csv = "col1,col2,\"col3, with comma\"\n" +
+            "val1,\"val2 with \"\"quote\"\"\",val3\n" +
+            "\"multi\nline\",val5,val6"
+
+        let rows = CsvParser.parse(csv)
+        XCTAssertEqual(rows.count, 3)
+        XCTAssertEqual(rows[0], ["col1", "col2", "col3, with comma"])
+        XCTAssertEqual(rows[1], ["val1", "val2 with \"quote\"", "val3"])
+        XCTAssertEqual(rows[2][0], "multi\nline")
+        XCTAssertEqual(rows[2][1], "val5")
+        XCTAssertEqual(rows[2][2], "val6")
+    }
+
+    func testCsvParserDelimiterDetection() {
+        let semicolonCsv = "Date;Workout Name;Exercise Name;Set Order\n2024-05-10;Chest;Bench;1"
+        let rows = CsvParser.parse(semicolonCsv)
+        XCTAssertEqual(rows.count, 2)
+        XCTAssertEqual(rows[0], ["Date", "Workout Name", "Exercise Name", "Set Order"])
+        XCTAssertEqual(rows[1], ["2024-05-10", "Chest", "Bench", "1"])
+    }
+
+    func testExerciseAliasDictionary() {
+        let sampleCanonical = [
+            "Barbell Bench Press",
+            "Barbell Back Squat",
+            "Deadlift",
+            "Incline Barbell Bench Press",
+            "Lat Pulldown",
+            "Dumbbell Bicep Curl",
+            "Dumbbell Lateral Raise",
+            "Cable Triceps Pushdown",
+            "Leg Press",
+            "Pull-up",
+            "Parallel Bar Dips"
+        ]
+
+        XCTAssertEqual(ExerciseAliasDictionary.resolve(rawName: "Bench Press (Barbell)", canonicalNames: sampleCanonical), "Barbell Bench Press")
+        XCTAssertEqual(ExerciseAliasDictionary.resolve(rawName: "Squat (Barbell)", canonicalNames: sampleCanonical), "Barbell Back Squat")
+        XCTAssertEqual(ExerciseAliasDictionary.resolve(rawName: "Deadlift (Barbell)", canonicalNames: sampleCanonical), "Deadlift")
+        XCTAssertEqual(ExerciseAliasDictionary.resolve(rawName: "Lat Pulldown (Cable)", canonicalNames: sampleCanonical), "Lat Pulldown")
+        XCTAssertEqual(ExerciseAliasDictionary.resolve(rawName: "Dumbbell Curl", canonicalNames: sampleCanonical), "Dumbbell Bicep Curl")
+        XCTAssertEqual(ExerciseAliasDictionary.resolve(rawName: "Dips", canonicalNames: sampleCanonical), "Parallel Bar Dips")
+        XCTAssertEqual(ExerciseAliasDictionary.resolve(rawName: "Custom Rare Exercise", canonicalNames: sampleCanonical), "Custom Rare Exercise")
+    }
+
+    func testStrongCsvParsing() throws {
+        let sampleCanonical = [
+            "Barbell Bench Press",
+            "Barbell Back Squat",
+            "Deadlift",
+            "Dumbbell Lateral Raise"
+        ]
+        let strongCsv = [
+            "Date;Workout Name;Exercise Name;Set Order;Weight;Weight Unit;Reps;RPE;Distance;Distance Unit;Seconds;Notes;Workout Notes;Workout Duration",
+            "2024-06-15 10:00:00;Push Day;Bench Press (Barbell);1;80;kg;8;;;;;;;4500",
+            "2024-06-15 10:00:00;Push Day;Bench Press (Barbell);2;80;kg;8;;;;;;;4500",
+            "2024-06-15 10:00:00;Push Day;Lateral Raise (Dumbbell);1;26.4;lbs;12;;;;;;;4500"
+        ].joined(separator: "\n")
+
+        let preview = try WorkoutHistoryImporter.preview(
+            csvText: strongCsv,
+            existingHistory: [],
+            canonicalNames: sampleCanonical
+        )
+
+        XCTAssertEqual(preview.source, .strong)
+        XCTAssertEqual(preview.totalWorkouts, 1)
+        XCTAssertEqual(preview.newWorkoutsCount, 1)
+        XCTAssertEqual(preview.duplicateWorkoutsCount, 0)
+        XCTAssertEqual(preview.totalSetsCount, 3)
+        XCTAssertEqual(preview.earliestDate, "2024-06-15")
+
+        let workout = try XCTUnwrap(preview.workoutsToImport.first)
+        XCTAssertEqual(workout.workoutTitle, "Push Day")
+        XCTAssertEqual(workout.durationSeconds, 4500)
+        XCTAssertEqual(workout.exerciseLogs.count, 2)
+
+        let bench = workout.exerciseLogs[0]
+        XCTAssertEqual(bench.exerciseName, "Barbell Bench Press")
+        XCTAssertEqual(bench.sets.count, 2)
+        XCTAssertEqual(try XCTUnwrap(bench.sets[0].weightKg), 80.0, accuracy: 0.01)
+        XCTAssertEqual(bench.sets[0].reps, 8)
+
+        let latRaise = workout.exerciseLogs[1]
+        XCTAssertEqual(latRaise.exerciseName, "Dumbbell Lateral Raise")
+        XCTAssertEqual(latRaise.sets.count, 1)
+        // 26.4 lbs * 0.45359237 ≈ 11.97 kg
+        XCTAssertEqual(try XCTUnwrap(latRaise.sets[0].weightKg), 11.97, accuracy: 0.05)
+        XCTAssertEqual(latRaise.sets[0].reps, 12)
+    }
+
+    func testHevyCsvParsing() throws {
+        let sampleCanonical = [
+            "Barbell Back Squat",
+            "Leg Press"
+        ]
+        let hevyCsv = [
+            "\"title\",\"start_time\",\"end_time\",\"description\",\"exercise_title\",\"superset_id\",\"exercise_notes\",\"set_index\",\"set_type\",\"weight_lbs\",\"reps\",\"distance_miles\",\"duration_seconds\",\"rpe\"",
+            "\"Leg Day\",\"15 Jul 2024, 09:30\",\"15 Jul 2024, 10:30\",\"\",\"Squat (Barbell)\",,\"\",0,\"normal\",220,5,,3600,",
+            "\"Leg Day\",\"15 Jul 2024, 09:30\",\"15 Jul 2024, 10:30\",\"\",\"Squat (Barbell)\",,\"\",1,\"normal\",220,5,,3600,",
+            "\"Leg Day\",\"15 Jul 2024, 09:30\",\"15 Jul 2024, 10:30\",\"\",\"Leg Press\",,\"\",0,\"normal\",400,10,,3600,"
+        ].joined(separator: "\n")
+
+        let preview = try WorkoutHistoryImporter.preview(
+            csvText: hevyCsv,
+            existingHistory: [],
+            canonicalNames: sampleCanonical
+        )
+
+        XCTAssertEqual(preview.source, .hevy)
+        XCTAssertEqual(preview.totalWorkouts, 1)
+        XCTAssertEqual(preview.newWorkoutsCount, 1)
+        XCTAssertEqual(preview.totalSetsCount, 3)
+        XCTAssertEqual(preview.earliestDate, "2024-07-15")
+
+        let workout = try XCTUnwrap(preview.workoutsToImport.first)
+        XCTAssertEqual(workout.workoutTitle, "Leg Day")
+        XCTAssertEqual(workout.exerciseLogs.count, 2)
+
+        let squat = workout.exerciseLogs[0]
+        XCTAssertEqual(squat.exerciseName, "Barbell Back Squat")
+        // 220 lbs * 0.45359237 ≈ 99.79 kg (~100 kg)
+        XCTAssertEqual(try XCTUnwrap(squat.sets[0].weightKg), 99.79, accuracy: 0.1)
+        XCTAssertEqual(squat.sets[0].reps, 5)
+    }
+
+    func testDeduplicationAgainstExistingHistory() throws {
+        let sampleCanonical = [
+            "Barbell Bench Press",
+            "Pull-up"
+        ]
+        let strongCsv = [
+            "Date;Workout Name;Exercise Name;Set Order;Weight;Weight Unit;Reps;RPE;Distance;Distance Unit;Seconds;Notes;Workout Notes;Workout Duration",
+            "2024-06-15 10:00:00;Push Day;Bench Press (Barbell);1;80;kg;8;;;;;;;2700",
+            "2024-06-16 10:00:00;Pull Day;Pull Up;1;0;kg;10;;;;;;;2700"
+        ].joined(separator: "\n")
+
+        let existingSession = WorkoutSessionRecord(
+            id: "existing-1",
+            programId: "imported",
+            workoutId: "imported_push_day",
+            workoutTitle: "Push Day",
+            startedAt: "2024-06-15T10:00:00Z",
+            completedAt: "2024-06-15T11:15:00Z",
+            durationSeconds: 4500,
+            totalVolumeKg: 640.0,
+            totalCompletedSets: 1,
+            isComplete: true
+        )
+
+        let preview = try WorkoutHistoryImporter.preview(
+            csvText: strongCsv,
+            existingHistory: [existingSession],
+            canonicalNames: sampleCanonical
+        )
+
+        XCTAssertEqual(preview.totalWorkouts, 2)
+        XCTAssertEqual(preview.newWorkoutsCount, 1) // Pull Day is new
+        XCTAssertEqual(preview.duplicateWorkoutsCount, 1) // Push Day is skipped
+        XCTAssertEqual(preview.workoutsToImport.first?.workoutTitle, "Pull Day")
+    }
 }
 

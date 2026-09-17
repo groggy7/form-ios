@@ -660,6 +660,78 @@ public final class AppStore: ObservableObject {
         }
     }
 
+    public func exportBackupJson() -> String {
+        do {
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .prettyPrinted
+            let data = try encoder.encode(state)
+            return String(data: data, encoding: .utf8) ?? "{}"
+        } catch {
+            return "{}"
+        }
+    }
+
+    public func previewHistoryImport(csvText: String) throws -> HistoryImportPreview {
+        guard activeSession == nil else {
+            throw NSError(domain: "FormApp", code: 1, userInfo: [NSLocalizedDescriptionKey: "Finish or discard the current workout before importing history."])
+        }
+        let canonicalNames = Array(ExerciseCatalog.canonicalExercises.values.map { $0.name })
+        return try WorkoutHistoryImporter.preview(
+            csvText: csvText,
+            existingHistory: state.history,
+            canonicalNames: canonicalNames
+        )
+    }
+
+    @discardableResult
+    public func executeHistoryImport(_ preview: HistoryImportPreview) -> HistoryImportResult {
+        // 1. Safety backup
+        let backupJson = exportBackupJson()
+        let backupFileName = "safety_backup_before_import_\(Int(Date().timeIntervalSince1970 * 1000)).json"
+        if let docsDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
+            let fileURL = docsDir.appendingPathComponent(backupFileName)
+            try? backupJson.data(using: .utf8)?.write(to: fileURL)
+        }
+
+        // 2. Add imported workouts to history
+        guard !preview.workoutsToImport.isEmpty else {
+            return HistoryImportResult(
+                importedCount: 0,
+                skippedCount: preview.duplicateWorkoutsCount,
+                backupFilePath: backupFileName
+            )
+        }
+
+        var newHistory = state.history
+        newHistory.append(contentsOf: preview.workoutsToImport)
+        newHistory.sort { $0.startedAt > $1.startedAt }
+
+        let todayStr = WorkoutCalendar.formatDate(Date())
+        let weekdays = WorkoutCalendar.weekdays(state: state)
+        let newCal = WorkoutCalendar.restore(
+            raw: state.calendarHistory,
+            sessions: newHistory,
+            today: todayStr,
+            timeZone: .current,
+            weekdays: weekdays,
+            activeSessionId: activeSession?.id,
+            programs: state.programs
+        )
+
+        var newState = state
+        newState.history = newHistory
+        newState.calendarHistory = newCal
+        saveState(newState)
+
+        showNotice(LanguageManager.t("notice.historyImported", ["count": "\(preview.workoutsToImport.count)"]))
+
+        return HistoryImportResult(
+            importedCount: preview.workoutsToImport.count,
+            skippedCount: preview.duplicateWorkoutsCount,
+            backupFilePath: backupFileName
+        )
+    }
+
     private func saveActiveSession(_ draft: ActiveSessionDraft?) {
         if let draft = draft {
             do {

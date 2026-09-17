@@ -31,6 +31,13 @@
 		08B89BB8E61779D8274FFEFD /* WorkoutSessionUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829AB05F70AD9B7E6DEE97CC /* WorkoutSessionUtils.swift */; };
 		09436475DDB7B1F05D128B14 /* 06_athletic_performance.json in Resources */ = {isa = PBXBuildFile; fileRef = 53F83778D712B708C519860F /* 06_athletic_performance.json */; };
 		11494E03B6F140F80312218E /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10AEC969AB339D9720AB880B /* AppStore.swift */; };
+		CP0000000000000000000002 /* CsvParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CP0000000000000000000001 /* CsvParser.swift */; };
+		EA0000000000000000000002 /* ExerciseAliasDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = EA0000000000000000000001 /* ExerciseAliasDictionary.swift */; };
+		SC0000000000000000000002 /* StrongCsvParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = SC0000000000000000000001 /* StrongCsvParser.swift */; };
+		HC0000000000000000000002 /* HevyCsvParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = HC0000000000000000000001 /* HevyCsvParser.swift */; };
+		WI0000000000000000000002 /* WorkoutHistoryImporter.swift in Sources */ = {isa = PBXBuildFile; fileRef = WI0000000000000000000001 /* WorkoutHistoryImporter.swift */; };
+		HM0000000000000000000002 /* HistoryImportModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = HM0000000000000000000001 /* HistoryImportModels.swift */; };
+		HP0000000000000000000002 /* HistoryImportPreviewSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = HP0000000000000000000001 /* HistoryImportPreviewSheet.swift */; };
         S10000000000000000000001 /* ExerciseSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = S10000000000000000000002 /* ExerciseSearch.swift */; };
         P10000000000000000000001 /* ExercisePriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = P10000000000000000000002 /* ExercisePriority.swift */; };
 		1D60B4E438B90C3F62FC88A9 /* form_rest_complete.wav in Resources */ = {isa = PBXBuildFile; fileRef = 90A44CC582072D671FF45DE4 /* form_rest_complete.wav */; };
@@ -119,6 +126,13 @@
 		023D09DFD513B3F32B009541 /* WorkoutDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetailSheet.swift; sourceTree = "<group>"; };
 		08997E0EACD6176BFF508687 /* ToastOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastOverlay.swift; sourceTree = "<group>"; };
 		10AEC969AB339D9720AB880B /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
+		CP0000000000000000000001 /* CsvParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CsvParser.swift; sourceTree = "<group>"; };
+		EA0000000000000000000001 /* ExerciseAliasDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseAliasDictionary.swift; sourceTree = "<group>"; };
+		SC0000000000000000000001 /* StrongCsvParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrongCsvParser.swift; sourceTree = "<group>"; };
+		HC0000000000000000000001 /* HevyCsvParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HevyCsvParser.swift; sourceTree = "<group>"; };
+		WI0000000000000000000001 /* WorkoutHistoryImporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutHistoryImporter.swift; sourceTree = "<group>"; };
+		HM0000000000000000000001 /* HistoryImportModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryImportModels.swift; sourceTree = "<group>"; };
+		HP0000000000000000000001 /* HistoryImportPreviewSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryImportPreviewSheet.swift; sourceTree = "<group>"; };
         S10000000000000000000002 /* ExerciseSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSearch.swift; sourceTree = "<group>"; };
         P10000000000000000000002 /* ExercisePriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisePriority.swift; sourceTree = "<group>"; };
 		13527F9CECF51E5936498509 /* form_set_undo.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_set_undo.wav; sourceTree = "<group>"; };
@@ -273,6 +287,11 @@
 			isa = PBXGroup;
 			children = (
 				10AEC969AB339D9720AB880B /* AppStore.swift */,
+				CP0000000000000000000001 /* CsvParser.swift */,
+				EA0000000000000000000001 /* ExerciseAliasDictionary.swift */,
+				SC0000000000000000000001 /* StrongCsvParser.swift */,
+				HC0000000000000000000001 /* HevyCsvParser.swift */,
+				WI0000000000000000000001 /* WorkoutHistoryImporter.swift */,
                 RP0000000000000000000002 /* ExerciseReportStore.swift */,
                 S10000000000000000000002 /* ExerciseSearch.swift */,
                 P10000000000000000000002 /* ExercisePriority.swift */,
@@ -292,6 +311,7 @@
 		89CA1238E5FDE9D1567685BB /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				HM0000000000000000000001 /* HistoryImportModels.swift */,
 				PR0000000000000000000001 /* PersonalRecordTracker.swift */,
 				WU0000000000000000000001 /* WeightUnit.swift */,
 				68CE78AD9510C658344F7888 /* WorkoutModels.swift */,
@@ -425,6 +445,7 @@
 			isa = PBXGroup;
 			children = (
 				DECFA8F5B27849C8BE2611AF /* SettingsView.swift */,
+				HP0000000000000000000001 /* HistoryImportPreviewSheet.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -601,6 +622,13 @@
 				PR0000000000000000000002 /* PersonalRecordTracker.swift in Sources */,
 				WG0000000000000000000002 /* WeeklyGoalProgressCard.swift in Sources */,
 				WU0000000000000000000002 /* WeightUnit.swift in Sources */,
+				CP0000000000000000000002 /* CsvParser.swift in Sources */,
+				EA0000000000000000000002 /* ExerciseAliasDictionary.swift in Sources */,
+				SC0000000000000000000002 /* StrongCsvParser.swift in Sources */,
+				HC0000000000000000000002 /* HevyCsvParser.swift in Sources */,
+				WI0000000000000000000002 /* WorkoutHistoryImporter.swift in Sources */,
+				HM0000000000000000000002 /* HistoryImportModels.swift in Sources */,
+				HP0000000000000000000002 /* HistoryImportPreviewSheet.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
