@@ -29,6 +29,7 @@ public final class AppStore: ObservableObject {
     // Navigation selection
     @Published public var selectedWorkoutId: String?
     @Published public var selectedExerciseId: String?
+    @Published public var selectedHistoryDetailDay: String?
     @Published public var returnView: ViewMode?
 
     public func openExercise(id: String) {
@@ -49,6 +50,7 @@ public final class AppStore: ObservableObject {
 
     public func navigate(to view: ViewMode) {
         self.selectedExerciseId = nil
+        self.selectedHistoryDetailDay = nil
         self.returnView = nil
         self.currentView = view
     }

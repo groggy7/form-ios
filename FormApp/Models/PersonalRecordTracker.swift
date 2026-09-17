@@ -191,4 +191,59 @@ public enum PersonalRecordTracker {
             hasUnfinishedProgress: hasUnfinished
         )
     }
+
+    public static func findSessionPrExercises(
+        history: [WorkoutSessionRecord],
+        targetRecord: WorkoutSessionRecord
+    ) -> Set<String> {
+        let sortedRecords = history
+            .filter { $0.id != targetRecord.id }
+            .sorted { (r1, r2) -> Bool in
+                let d1 = r1.startedAt.isEmpty ? r1.completedAt : r1.startedAt
+                let d2 = r2.startedAt.isEmpty ? r2.completedAt : r2.startedAt
+                return d1 < d2
+            }
+
+        let targetTimestamp = targetRecord.startedAt.isEmpty ? targetRecord.completedAt : targetRecord.startedAt
+        let priorRecords = sortedRecords.filter { r in
+            let ts = r.startedAt.isEmpty ? r.completedAt : r.startedAt
+            return ts.isEmpty || targetTimestamp.isEmpty || ts < targetTimestamp
+        }
+
+        var maxWeightByExercise: [String: Double] = [:]
+        for record in priorRecords {
+            for exerciseLog in record.exerciseLogs {
+                let key = normalizeExerciseKey(exerciseLog.exerciseName)
+                let maxSessionWeight = exerciseLog.sets
+                    .filter { ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }
+                    .compactMap { $0.weightKg }
+                    .max()
+                guard let maxWeight = maxSessionWeight else { continue }
+
+                if let prev = maxWeightByExercise[key] {
+                    if maxWeight > prev {
+                        maxWeightByExercise[key] = maxWeight
+                    }
+                } else {
+                    maxWeightByExercise[key] = maxWeight
+                }
+            }
+        }
+
+        var prExercises = Set<String>()
+        for exerciseLog in targetRecord.exerciseLogs {
+            let key = normalizeExerciseKey(exerciseLog.exerciseName)
+            let maxSessionWeight = exerciseLog.sets
+                .filter { ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }
+                .compactMap { $0.weightKg }
+                .max()
+            guard let maxWeight = maxSessionWeight else { continue }
+
+            if let prev = maxWeightByExercise[key], maxWeight > prev {
+                prExercises.insert(key)
+            }
+        }
+
+        return prExercises
+    }
 }

@@ -61,6 +61,11 @@ public enum AppColors {
     // History Day Detail Sheet specific colors matching design reference
     public static let toContinueSurface = Color(hex: 0x102523)
     public static let progressTrack = Color(hex: 0x1D262B)
+    
+    // PR Badge & Tile colors
+    public static let goldPrBg = Color(hex: 0x2E2413)
+    public static let goldPrBorder = Color(hex: 0x6B5121)
+    public static let goldPrText = Color(hex: 0xFFC043)
 }
 
 extension Color {

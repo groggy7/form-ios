@@ -55,8 +55,8 @@ public struct RootView: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 
-                // Bottom Navigation Dock (hidden when viewing exercise detail)
-                if store.currentView != .library || store.selectedExerciseId == nil {
+                // Bottom Navigation Dock (hidden when viewing exercise detail or history detail)
+                if (store.currentView != .library || store.selectedExerciseId == nil) && store.selectedHistoryDetailDay == nil {
                     BottomDock(currentView: Binding(
                         get: { store.currentView },
                         set: { store.navigate(to: $0) }

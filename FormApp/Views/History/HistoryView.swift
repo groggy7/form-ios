@@ -29,7 +29,7 @@ public struct HistoryView: View {
     var onSelectRecord: (WorkoutSessionRecord) -> Void
 
     @State private var displayedDate: Date = Date()
-    @State private var selectedDayDetail: HistoryDayDetailData? = nil
+    @State private var selectedDateString: String? = nil
 
     public init(
         store: AppStore,
@@ -42,138 +42,175 @@ public struct HistoryView: View {
     }
 
     public var body: some View {
-        let calendar = Calendar.current
-        let today = Date()
-        let todayStr = WorkoutCalendar.formatDate(today)
-        let isCurrentMonth = calendar.isDate(displayedDate, equalTo: today, toGranularity: .month)
-        let statuses = store.calendarStatuses(today: today)
-
-        ScrollView {
-            VStack(spacing: 24) {
-                // Header row
-                HStack(alignment: .center) {
-                    Text(LanguageManager.t("nav.history"))
-                        .font(.system(size: 28, weight: .semibold))
-                        .foregroundColor(AppColors.text)
-
-                    Spacer()
-
-                    if !isCurrentMonth {
-                        Button(action: { displayedDate = Date() }) {
-                            Text(LanguageManager.t("history.thisMonth"))
-                                .font(.system(size: 14, weight: .medium))
-                                .foregroundColor(AppColors.secondaryText)
-                        }
-                        .buttonStyle(.plain)
-                        .padding(.trailing, 8)
-                    }
-
-                    FormHeaderIconButton(
-                        icon: "gearshape.fill",
-                        contentDescription: LanguageManager.t("settings.title"),
-                        onClick: onOpenSettings
-                    )
+        if let detailDay = store.selectedHistoryDetailDay,
+           let detail = resolveDayDetail(for: detailDay) {
+            HistoryDetailView(
+                detail: detail,
+                onBack: {
+                    store.selectedHistoryDetailDay = nil
+                },
+                onActionWorkout: {
+                    store.selectedHistoryDetailDay = nil
+                    handleWorkoutAction(detail: detail)
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 10)
+            )
+        } else {
+            let calendar = Calendar.current
+            let today = Date()
+            let todayStr = WorkoutCalendar.formatDate(today)
+            let isCurrentMonth = calendar.isDate(displayedDate, equalTo: today, toGranularity: .month)
+            let statuses = store.calendarStatuses(today: today)
+            let weeks = WorkoutCalendar.monthWeeks(for: displayedDate)
 
-                // Month Calendar Card
-                VStack(spacing: 18) {
-                    // Month navigation row
-                    HStack {
-                        Button(action: { changeMonth(by: -1) }) {
-                            Image(systemName: "chevron.left")
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(AppColors.secondaryText)
-                                .frame(width: 36, height: 36)
-                        }
-                        .buttonStyle(.plain)
+            let currentSelectedDetail: HistoryDayDetailData? = {
+                if let explicit = selectedDateString {
+                    return resolveDayDetail(for: explicit)
+                }
+                if isCurrentMonth, let s = statuses[todayStr], s == .completed || s == .unfinished || s == .missed {
+                    return resolveDayDetail(for: todayStr)
+                }
+                let daysWithStatus = weeks.flatMap { $0 }.compactMap { $0 }.compactMap { d -> String? in
+                    let dStr = WorkoutCalendar.formatDate(d)
+                    if let s = statuses[dStr], s == .completed || s == .unfinished || s == .missed {
+                        return dStr
+                    }
+                    return nil
+                }
+                if let lastDay = daysWithStatus.last {
+                    return resolveDayDetail(for: lastDay)
+                }
+                return nil
+            }()
 
-                        Spacer()
-
-                        Text(monthYearString(from: displayedDate))
-                            .font(.system(size: 19, weight: .medium))
+            ScrollView {
+                VStack(spacing: 16) {
+                    // Header row
+                    HStack(alignment: .center) {
+                        Text(LanguageManager.t("nav.history"))
+                            .font(.system(size: 28, weight: .semibold))
                             .foregroundColor(AppColors.text)
 
                         Spacer()
 
-                        Button(action: { changeMonth(by: 1) }) {
-                            Image(systemName: "chevron.right")
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(isCurrentMonth ? AppColors.muted.opacity(0.3) : AppColors.secondaryText)
-                                .frame(width: 36, height: 36)
+                        if !isCurrentMonth {
+                            Button(action: { displayedDate = Date() }) {
+                                Text(LanguageManager.t("history.thisMonth"))
+                                    .font(.system(size: 14, weight: .medium))
+                                    .foregroundColor(AppColors.secondaryText)
+                            }
+                            .buttonStyle(.plain)
+                            .padding(.trailing, 8)
                         }
-                        .disabled(isCurrentMonth)
-                        .buttonStyle(.plain)
-                    }
 
-                    // Weekday headers
-                    HStack(spacing: 0) {
-                        ForEach(weekdaySymbols(), id: \.self) { symbol in
-                            Text(symbol)
-                                .font(.system(size: 11, weight: .medium))
-                                .foregroundColor(AppColors.muted)
-                                .frame(maxWidth: .infinity)
+                        FormHeaderIconButton(
+                            icon: "gearshape.fill",
+                            contentDescription: LanguageManager.t("settings.title"),
+                            onClick: onOpenSettings
+                        )
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 10)
+
+                    // Month Calendar Card
+                    VStack(spacing: 10) {
+                        // Month navigation row
+                        HStack {
+                            Button(action: { changeMonth(by: -1) }) {
+                                Image(systemName: "chevron.left")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundColor(AppColors.secondaryText)
+                                    .frame(width: 36, height: 36)
+                            }
+                            .buttonStyle(.plain)
+
+                            Spacer()
+
+                            Text(monthYearString(from: displayedDate))
+                                .font(.system(size: 19, weight: .medium))
+                                .foregroundColor(AppColors.text)
+
+                            Spacer()
+
+                            Button(action: { changeMonth(by: 1) }) {
+                                Image(systemName: "chevron.right")
+                                    .font(.system(size: 16, weight: .semibold))
+                                    .foregroundColor(isCurrentMonth ? AppColors.muted.opacity(0.3) : AppColors.secondaryText)
+                                    .frame(width: 36, height: 36)
+                            }
+                            .disabled(isCurrentMonth)
+                            .buttonStyle(.plain)
                         }
-                    }
 
-                    // Weeks grid
-                    let weeks = WorkoutCalendar.monthWeeks(for: displayedDate)
-                    VStack(spacing: 8) {
-                        ForEach(Array(weeks.enumerated()), id: \.offset) { _, week in
-                            HStack(spacing: 0) {
-                                ForEach(Array(week.enumerated()), id: \.offset) { _, dateOpt in
-                                    BoxDayCell(
-                                        dateOpt: dateOpt,
-                                        todayStr: todayStr,
-                                        statuses: statuses,
-                                        onSelectDay: { date, dateString, status in
-                                            handleDaySelection(date: date, dateString: dateString, status: status)
-                                        }
-                                    )
+                        // Weekday headers
+                        HStack(spacing: 0) {
+                            ForEach(weekdaySymbols(), id: \.self) { symbol in
+                                Text(symbol)
+                                    .font(.system(size: 11, weight: .medium))
+                                    .foregroundColor(AppColors.muted)
                                     .frame(maxWidth: .infinity)
+                            }
+                        }
+
+                        // Weeks grid
+                        VStack(spacing: 4) {
+                            ForEach(Array(weeks.enumerated()), id: \.offset) { _, week in
+                                HStack(spacing: 0) {
+                                    ForEach(Array(week.enumerated()), id: \.offset) { _, dateOpt in
+                                        BoxDayCell(
+                                            dateOpt: dateOpt,
+                                            todayStr: todayStr,
+                                            statuses: statuses,
+                                            isSelected: (dateOpt != nil && WorkoutCalendar.formatDate(dateOpt!) == (currentSelectedDetail?.dateString ?? selectedDateString)),
+                                            onSelectDay: { date, dateString, status in
+                                                selectedDateString = dateString
+                                            }
+                                        )
+                                        .frame(maxWidth: .infinity)
+                                    }
                                 }
                             }
                         }
                     }
-                }
-                .padding(16)
-                .background(
-                    RoundedRectangle(cornerRadius: 24, style: .continuous)
-                        .fill(AppColors.surface)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 24, style: .continuous)
-                                .stroke(AppColors.border, lineWidth: 1)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 12)
+                    .background(
+                        RoundedRectangle(cornerRadius: 24, style: .continuous)
+                            .fill(AppColors.surface)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 24, style: .continuous)
+                                    .stroke(AppColors.border, lineWidth: 1)
+                            )
+                    )
+                    .padding(.horizontal, 20)
+
+                    // Calendar Legend Row
+                    HStack {
+                        Spacer()
+                        legendItem(color: AppColors.completedGreen, label: LanguageManager.t("history.completed"))
+                        Spacer()
+                        legendItem(color: AppColors.unfinishedOrange, label: LanguageManager.t("history.unfinished"))
+                        Spacer()
+                        legendItem(color: AppColors.missedRed, label: LanguageManager.t("history.missed"))
+                        Spacer()
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 2)
+
+                    // Inline Preview Card
+                    if let detail = currentSelectedDetail {
+                        HistoryDayPreviewCard(
+                            detail: detail,
+                            history: store.state.history,
+                            onOpenDetail: {
+                                store.selectedHistoryDetailDay = detail.dateString
+                            }
                         )
-                )
-                .padding(.horizontal, 20)
+                        .padding(.horizontal, 20)
+                    }
 
-                // Calendar Legend Row
-                HStack {
-                    Spacer()
-                    legendItem(color: AppColors.completedGreen, label: LanguageManager.t("history.completed"))
-                    Spacer()
-                    legendItem(color: AppColors.unfinishedOrange, label: LanguageManager.t("history.unfinished"))
-                    Spacer()
-                    legendItem(color: AppColors.missedRed, label: LanguageManager.t("history.missed"))
-                    Spacer()
+                    Spacer().frame(height: 24)
                 }
-                .padding(.horizontal, 20)
-                .padding(.top, 4)
-
-                Spacer().frame(height: 24)
             }
-        }
-        .sheet(item: $selectedDayDetail) { detail in
-            HistoryDayDetailSheet(
-                detail: detail,
-                onDismiss: { selectedDayDetail = nil },
-                onActionWorkout: {
-                    let d = detail
-                    selectedDayDetail = nil
-                    handleWorkoutAction(detail: d)
-                }
-            )
         }
     }
 
@@ -230,7 +267,13 @@ public struct HistoryView: View {
         return [symbols[1], symbols[2], symbols[3], symbols[4], symbols[5], symbols[6], symbols[0]]
     }
 
-    private func handleDaySelection(date: Date, dateString: String, status: WorkoutDayStatus) {
+    private func resolveDayDetail(for dateString: String) -> HistoryDayDetailData? {
+        guard let date = WorkoutCalendar.parseDate(dateString) ?? WorkoutCalendar.parseIsoTimestamp(dateString) else {
+            return nil
+        }
+        let statuses = store.calendarStatuses(today: Date())
+        let status = statuses[dateString]
+
         let cal = Calendar(identifier: .gregorian)
         let weekday = cal.component(.weekday, from: date)
         let dayOfWeek = (weekday + 5) % 7 + 1 // 1=Mon..7=Sun
@@ -267,9 +310,9 @@ public struct HistoryView: View {
                 ?? store.state.programs.flatMap(\.workouts).first(where: { $0.day == dayOfWeek })
         }
 
-        let effectiveStatus: WorkoutDayStatus = (sessionRecord?.isComplete == true) ? .completed : status
+        let effectiveStatus: WorkoutDayStatus = (sessionRecord?.isComplete == true) ? .completed : (status ?? (sessionRecord != nil ? .unfinished : .missed))
 
-        selectedDayDetail = HistoryDayDetailData(
+        return HistoryDayDetailData(
             date: date,
             dateString: dateString,
             status: effectiveStatus,
@@ -284,6 +327,7 @@ private struct BoxDayCell: View {
     let dateOpt: Date?
     let todayStr: String
     let statuses: [String: WorkoutDayStatus]
+    let isSelected: Bool
     let onSelectDay: (Date, String, WorkoutDayStatus) -> Void
 
     var body: some View {
@@ -297,8 +341,12 @@ private struct BoxDayCell: View {
                 let isClickable = (status == .unfinished || status == .missed || status == .completed)
 
                 ZStack {
-                    // Outer border ring for today
-                    if isToday {
+                    // Outer border ring for selected day or today
+                    if isSelected {
+                        Circle()
+                            .stroke(AppColors.accent, lineWidth: 2)
+                            .frame(width: 38, height: 38)
+                    } else if isToday {
                         Circle()
                             .stroke(AppColors.text.opacity(0.8), lineWidth: 1)
                             .frame(width: 38, height: 38)
@@ -334,6 +382,7 @@ private struct BoxDayCell: View {
                         onSelectDay(date, dateString, status)
                     }
                 }
+                .accessibilityIdentifier("history-day-\(dateString)")
             } else {
                 Color.clear
             }
