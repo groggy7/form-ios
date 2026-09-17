@@ -76,6 +76,7 @@ public enum AppColors {
     public static let historyStatCardTitle = Color(hex: 0x8E9BAE)
     public static let historyStatPrGreen = Color(hex: 0x20D791)
     public static let historyStat1RmAmber = Color(hex: 0xFEB447)
+    public static let historyStatCyan = Color(hex: 0x38BDF8)
 }
 
 extension Color {

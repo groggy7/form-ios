@@ -346,6 +346,8 @@ struct ExerciseHistoryStatsRow: View {
 
             HistoryStatCard(
                 title: LanguageManager.t("exercise.history.personalBestTitle").uppercased(),
+                iconName: "trophy.fill",
+                iconColor: AppColors.historyStatPrGreen,
                 value: prValue,
                 valueColor: .white,
                 subtitle: prSubtitle,
@@ -363,6 +365,8 @@ struct ExerciseHistoryStatsRow: View {
 
             HistoryStatCard(
                 title: LanguageManager.t("exercise.history.estimated1rmTitle").uppercased(),
+                iconName: "chart.bar.fill",
+                iconColor: AppColors.historyStat1RmAmber,
                 value: est1rmValue,
                 valueColor: AppColors.historyStat1RmAmber,
                 subtitle: LanguageManager.t("exercise.history.brzyckiEq"),
@@ -372,6 +376,8 @@ struct ExerciseHistoryStatsRow: View {
             // Card 3: Logged Volume
             HistoryStatCard(
                 title: LanguageManager.t("exercise.history.loggedVolumeTitle").uppercased(),
+                iconName: "dumbbell.fill",
+                iconColor: AppColors.historyStatCyan,
                 value: "\(stats.lifetimeSets)",
                 valueColor: .white,
                 subtitle: LanguageManager.t("exercise.history.sets"),
@@ -384,6 +390,8 @@ struct ExerciseHistoryStatsRow: View {
 
 struct HistoryStatCard: View {
     let title: String
+    let iconName: String
+    let iconColor: Color
     let value: String
     let valueColor: Color
     let subtitle: String
@@ -391,13 +399,29 @@ struct HistoryStatCard: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Text(title)
-                .font(.system(size: 11, weight: .semibold))
-                .foregroundColor(AppColors.historyStatCardTitle)
-                .multilineTextAlignment(.center)
-                .lineLimit(2)
-                .fixedSize(horizontal: false, vertical: true)
-                .kerning(0.5)
+            // Header Row: Circular Icon Badge + Title
+            HStack(spacing: 6) {
+                ZStack {
+                    Circle()
+                        .fill(iconColor.opacity(0.12))
+                        .frame(width: 28, height: 28)
+                    Circle()
+                        .stroke(iconColor.opacity(0.35), lineWidth: 1)
+                        .frame(width: 28, height: 28)
+                    Image(systemName: iconName)
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundColor(iconColor)
+                }
+
+                Text(title)
+                    .font(.system(size: 10, weight: .semibold))
+                    .foregroundColor(AppColors.historyStatCardTitle)
+                    .lineLimit(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .lineSpacing(2)
+                    .kerning(0.4)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
 
             Spacer(minLength: 4)
 
@@ -417,10 +441,10 @@ struct HistoryStatCard: View {
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
         }
-        .padding(.horizontal, 6)
+        .padding(.horizontal, 8)
         .padding(.vertical, 12)
         .frame(maxWidth: .infinity)
-        .frame(height: 116)
+        .frame(height: 118)
         .background(AppColors.historyStatCardBg)
         .cornerRadius(16)
         .overlay(
