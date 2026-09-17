@@ -3877,18 +3877,18 @@ final class FormAppTests: XCTestCase {
         let pbRec = OnboardingRecommender.recommendProgram(preferences: pbPrefs, availablePrograms: dummyPrograms)
         XCTAssertEqual(pbRec.targetProgramId, "powerbuilding-strength")
 
-        // 6. Commercial gym + 4 days + hypertrophy
-        let ulPrefs = OnboardingPreferences(goal: .hypertrophy, equipment: .commercialGym, frequency: .days4)
+        // 6. Commercial gym + 4 days + bulk
+        let ulPrefs = OnboardingPreferences(goal: .bulk, equipment: .commercialGym, frequency: .days4)
         let ulRec = OnboardingRecommender.recommendProgram(preferences: ulPrefs, availablePrograms: dummyPrograms)
         XCTAssertEqual(ulRec.targetProgramId, "upper-lower-balanced")
 
-        // 7. Commercial gym + 3 days + athletic
-        let athleticPrefs = OnboardingPreferences(goal: .athletic, equipment: .commercialGym, frequency: .days3)
+        // 7. Commercial gym + 3 days + cut
+        let athleticPrefs = OnboardingPreferences(goal: .cut, equipment: .commercialGym, frequency: .days3)
         let athleticRec = OnboardingRecommender.recommendProgram(preferences: athleticPrefs, availablePrograms: dummyPrograms)
         XCTAssertEqual(athleticRec.targetProgramId, "athletic-performance")
 
-        // 8. Commercial gym + 3 days + foundation
-        let fbPrefs = OnboardingPreferences(goal: .foundation, equipment: .commercialGym, frequency: .days3)
+        // 8. Commercial gym + 3 days + maintain
+        let fbPrefs = OnboardingPreferences(goal: .maintain, equipment: .commercialGym, frequency: .days3)
         let fbRec = OnboardingRecommender.recommendProgram(preferences: fbPrefs, availablePrograms: dummyPrograms)
         XCTAssertEqual(fbRec.targetProgramId, "full-body-classic")
     }

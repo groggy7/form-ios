@@ -114,10 +114,16 @@ public struct OnboardingView: View {
             subtitle: LanguageManager.t("onboarding.goal.subtitle")
         ) {
             OptionCard(
-                title: LanguageManager.t("onboarding.goal.hypertrophy.title"),
-                description: LanguageManager.t("onboarding.goal.hypertrophy.desc"),
-                isSelected: preferences.goal == .hypertrophy,
-                onClick: { preferences.goal = .hypertrophy }
+                title: LanguageManager.t("onboarding.goal.bulk.title"),
+                description: LanguageManager.t("onboarding.goal.bulk.desc"),
+                isSelected: preferences.goal == .bulk,
+                onClick: { preferences.goal = .bulk }
+            )
+            OptionCard(
+                title: LanguageManager.t("onboarding.goal.cut.title"),
+                description: LanguageManager.t("onboarding.goal.cut.desc"),
+                isSelected: preferences.goal == .cut,
+                onClick: { preferences.goal = .cut }
             )
             OptionCard(
                 title: LanguageManager.t("onboarding.goal.strength.title"),
@@ -126,16 +132,10 @@ public struct OnboardingView: View {
                 onClick: { preferences.goal = .strength }
             )
             OptionCard(
-                title: LanguageManager.t("onboarding.goal.athletic.title"),
-                description: LanguageManager.t("onboarding.goal.athletic.desc"),
-                isSelected: preferences.goal == .athletic,
-                onClick: { preferences.goal = .athletic }
-            )
-            OptionCard(
-                title: LanguageManager.t("onboarding.goal.foundation.title"),
-                description: LanguageManager.t("onboarding.goal.foundation.desc"),
-                isSelected: preferences.goal == .foundation,
-                onClick: { preferences.goal = .foundation }
+                title: LanguageManager.t("onboarding.goal.maintain.title"),
+                description: LanguageManager.t("onboarding.goal.maintain.desc"),
+                isSelected: preferences.goal == .maintain,
+                onClick: { preferences.goal = .maintain }
             )
         }
     }

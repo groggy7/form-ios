@@ -1,10 +1,10 @@
 import Foundation
 
 public enum OnboardingGoal: String, Codable, CaseIterable {
-    case hypertrophy
+    case bulk
+    case cut
     case strength
-    case athletic
-    case foundation
+    case maintain
 }
 
 public enum OnboardingExperience: String, Codable, CaseIterable {
@@ -43,7 +43,7 @@ public struct OnboardingPreferences: Codable {
     public var selectedDays: [Int]
 
     public init(
-        goal: OnboardingGoal = .hypertrophy,
+        goal: OnboardingGoal = .bulk,
         experience: OnboardingExperience = .intermediate,
         equipment: OnboardingEquipment = .commercialGym,
         frequency: OnboardingFrequency = .days4,
@@ -89,7 +89,7 @@ public enum OnboardingRecommender {
             case .days4:
                 targetProgramId = (preferences.goal == .strength) ? "powerbuilding-strength" : "upper-lower-balanced"
             case .days3:
-                targetProgramId = (preferences.goal == .athletic) ? "athletic-performance" : "full-body-classic"
+                targetProgramId = (preferences.goal == .cut) ? "athletic-performance" : "full-body-classic"
             }
         }
 

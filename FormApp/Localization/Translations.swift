@@ -279,16 +279,16 @@ public enum Translations {
         "onboarding.stepIndicator": "Step {current} of {total}",
 
         // Step 1: Goal
-        "onboarding.goal.title": "What is your main focus?",
-        "onboarding.goal.subtitle": "Choose what matters most in your training right now.",
-        "onboarding.goal.hypertrophy.title": "Muscle Growth & Shape",
-        "onboarding.goal.hypertrophy.desc": "Focused hypertrophy across upper and lower body for an aesthetic, balanced physique.",
-        "onboarding.goal.strength.title": "Strength & Heavy Compounds",
-        "onboarding.goal.strength.desc": "Build your squat, bench, and deadlift while adding dense muscular foundation.",
-        "onboarding.goal.athletic.title": "Athletic Power & Speed",
-        "onboarding.goal.athletic.desc": "Explosive movement, functional conditioning, and resilient compound power.",
-        "onboarding.goal.foundation.title": "Build Foundation & Habit",
-        "onboarding.goal.foundation.desc": "Master basic movement patterns and establish a consistent routine.",
+        "onboarding.goal.title": "What is your primary goal?",
+        "onboarding.goal.subtitle": "Choose the outcome that matters most to you right now.",
+        "onboarding.goal.bulk.title": "Build Muscle (Bulk)",
+        "onboarding.goal.bulk.desc": "Maximize muscle growth, fullness, and physique development.",
+        "onboarding.goal.cut.title": "Get Lean & Tone (Cut)",
+        "onboarding.goal.cut.desc": "Preserve lean muscle and stay conditioned while losing body fat.",
+        "onboarding.goal.strength.title": "Increase Pure Strength",
+        "onboarding.goal.strength.desc": "Add weight to key compound lifts (squat, bench, deadlift).",
+        "onboarding.goal.maintain.title": "Stay Fit & Consistent",
+        "onboarding.goal.maintain.desc": "Maintain fitness, stay healthy, and build a lasting routine.",
 
         // Step 2: Experience
         "onboarding.experience.title": "What is your lifting experience?",
@@ -1171,16 +1171,16 @@ public enum Translations {
         "onboarding.stepIndicator": "{current} / {total}. Adım",
 
         // Step 1: Goal
-        "onboarding.goal.title": "Ana odak noktanız nedir?",
-        "onboarding.goal.subtitle": "Antrenmanlarınızda şu anda en çok neyi hedeflediğinizi seçin.",
-        "onboarding.goal.hypertrophy.title": "Kas Kütlesi ve Hacim",
-        "onboarding.goal.hypertrophy.desc": "Estetik ve dengeli bir fizik için tüm vücutta kas hipertrofisi odaklı çalışma.",
-        "onboarding.goal.strength.title": "Güç ve Temel Ağırlıklar",
-        "onboarding.goal.strength.desc": "Squat, bench press ve deadlift derecelerinizi artırırken sağlam bir kas temeli kurun.",
-        "onboarding.goal.athletic.title": "Atletik Güç ve Hız",
-        "onboarding.goal.athletic.desc": "Patlayıcı güç, fonksiyonel kondisyon ve dayanıklı bileşik hareketler.",
-        "onboarding.goal.foundation.title": "Temel Oluşturma ve Alışkanlık",
-        "onboarding.goal.foundation.desc": "Temel hareket kalıplarını öğrenin ve sürdürülebilir bir antrenman alışkanlığı kazanın.",
+        "onboarding.goal.title": "Birincil hedefiniz nedir?",
+        "onboarding.goal.subtitle": "Şu anda sizin için en önemli olan hedefi seçin.",
+        "onboarding.goal.bulk.title": "Kas Kütlesi Kazan (Bulk)",
+        "onboarding.goal.bulk.desc": "Kas büyümesini, dolgunluğunu ve fizik gelişimini maksimize edin.",
+        "onboarding.goal.cut.title": "Yağ Yak ve Sıkılaş (Cut)",
+        "onboarding.goal.cut.desc": "Vücut yağını azaltırken mevcut kas kütlenizi ve kondisyonunuzu koruyun.",
+        "onboarding.goal.strength.title": "Saf Güç Kazan",
+        "onboarding.goal.strength.desc": "Temel kaldırışlarda (squat, bench, deadlift) kaldırılan ağırlıkları artırın.",
+        "onboarding.goal.maintain.title": "Formunu Koru ve Alışkanlık Kazan",
+        "onboarding.goal.maintain.desc": "Kondisyonunuzu koruyun, sağlıklı kalın ve kalıcı bir antrenman rutini oluşturun.",
 
         // Step 2: Experience
         "onboarding.experience.title": "Antrenman tecrübeniz nedir?",
