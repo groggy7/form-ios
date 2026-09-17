@@ -199,7 +199,7 @@ public struct HistoryDetailView: View {
                     if allCompleted {
                         // Completed Day (Picture 1)
                         VStack(alignment: .leading, spacing: 12) {
-                            HStack {
+                            HStack(alignment: .firstTextBaseline) {
                                 Text(LanguageManager.t("history.exercises").isEmpty ? "Exercises" : LanguageManager.t("history.exercises"))
                                     .font(.system(size: 17, weight: .bold))
                                     .foregroundColor(AppColors.text)
@@ -207,6 +207,7 @@ public struct HistoryDetailView: View {
                                 Text("\(items.count)")
                                     .font(.system(size: 15, weight: .regular))
                                     .foregroundColor(AppColors.secondaryText)
+                                    .frame(width: 20, alignment: .center)
                             }
 
                             VStack(spacing: 0) {
@@ -222,7 +223,7 @@ public struct HistoryDetailView: View {
                     } else if isMissed {
                         // Missed Day (Unstarted past day)
                         VStack(alignment: .leading, spacing: 12) {
-                            HStack {
+                            HStack(alignment: .firstTextBaseline) {
                                 Text(LanguageManager.t("history.exercises").isEmpty ? "Exercises" : LanguageManager.t("history.exercises"))
                                     .font(.system(size: 17, weight: .bold))
                                     .foregroundColor(AppColors.text)
@@ -230,6 +231,7 @@ public struct HistoryDetailView: View {
                                 Text("\(items.count)")
                                     .font(.system(size: 15, weight: .regular))
                                     .foregroundColor(AppColors.secondaryText)
+                                    .frame(width: 20, alignment: .center)
                             }
 
                             VStack(spacing: 0) {
@@ -260,7 +262,7 @@ public struct HistoryDetailView: View {
                     } else {
                         // Half-Done / In-Progress Workout (Picture 2)
                         VStack(alignment: .leading, spacing: 20) {
-                            // Section 1: Continue Workout Card
+                            // Section 1: Continue Workout Card (Compact, Chevron, No Resume Button)
                             if !halfwayExercises.isEmpty {
                                 VStack(alignment: .leading, spacing: 10) {
                                     Text(LanguageManager.t("history.continueWorkout").isEmpty ? "Continue workout" : LanguageManager.t("history.continueWorkout"))
@@ -271,68 +273,78 @@ public struct HistoryDetailView: View {
                                         let setsLeft = max(0, item.plannedSets - item.completedSets)
                                         let progress = min(1.0, max(0.0, Double(item.completedSets) / Double(max(1, item.plannedSets))))
 
-                                        VStack(alignment: .leading, spacing: 10) {
-                                            HStack {
-                                                Text(item.name)
-                                                    .font(.system(size: 16, weight: .bold))
-                                                    .foregroundColor(AppColors.text)
-                                                    .lineLimit(1)
+                                        Button(action: { onActionWorkout?() }) {
+                                            VStack(alignment: .leading, spacing: 10) {
+                                                // Row 1: Exercise title & Sets left badge
+                                                HStack {
+                                                    Text(item.name)
+                                                        .font(.system(size: 16, weight: .bold))
+                                                        .foregroundColor(AppColors.text)
+                                                        .lineLimit(1)
 
-                                                Spacer()
+                                                    Spacer()
 
-                                                Text(LanguageManager.formatSetsLeft(setsLeft))
-                                                    .font(.system(size: 13, weight: .semibold))
-                                                    .foregroundColor(AppColors.accent)
-                                            }
-
-                                            let setsText = LanguageManager.formatExerciseSetsCompleted(completed: item.completedSets, planned: item.plannedSets)
-                                            let topLabel = LanguageManager.t("history.top").isEmpty ? "Top" : LanguageManager.t("history.top")
-                                            let detailText: String = {
-                                                if let w = item.topSetWeight, let r = item.topSetReps {
-                                                    return "\(setsText) · \(topLabel): \(WorkoutSessionUtils.formatWeight(w)) kg × \(r)"
+                                                    Text(LanguageManager.formatSetsLeft(setsLeft))
+                                                        .font(.system(size: 12, weight: .semibold))
+                                                        .foregroundColor(AppColors.accent)
+                                                        .padding(.horizontal, 8)
+                                                        .padding(.vertical, 4)
+                                                        .background(
+                                                            RoundedRectangle(cornerRadius: 6, style: .continuous)
+                                                                .fill(Color(hex: 0x15322F))
+                                                        )
                                                 }
-                                                return setsText
-                                            }()
 
-                                            Text(detailText)
-                                                .font(.system(size: 13))
-                                                .foregroundColor(AppColors.secondaryText)
+                                                // Row 2: Subtitle & Chevron right
+                                                HStack {
+                                                    let setsText = LanguageManager.formatExerciseSetsCompleted(completed: item.completedSets, planned: item.plannedSets)
+                                                    let topLabel = LanguageManager.t("history.top").isEmpty ? "Top" : LanguageManager.t("history.top")
+                                                    let repsLabel = LanguageManager.shared.currentLanguage.lowercased().hasPrefix("tr") ? "tekrar" : "reps"
+                                                    let detailText: String = {
+                                                        if let w = item.topSetWeight, let r = item.topSetReps {
+                                                            return "\(setsText) · \(topLabel): \(WorkoutSessionUtils.formatWeight(w)) kg × \(r) \(repsLabel)"
+                                                        }
+                                                        return setsText
+                                                    }()
 
-                                            GeometryReader { geo in
-                                                ZStack(alignment: .leading) {
-                                                    Capsule()
-                                                        .fill(Color(hex: 0x1D262B))
-                                                        .frame(height: 6)
-                                                    Capsule()
-                                                        .fill(AppColors.accent)
-                                                        .frame(width: geo.size.width * CGFloat(progress), height: 6)
+                                                    Text(detailText)
+                                                        .font(.system(size: 13))
+                                                        .foregroundColor(AppColors.secondaryText)
+                                                        .lineLimit(1)
+
+                                                    Spacer()
+
+                                                    Image(systemName: "chevron.right")
+                                                        .font(.system(size: 14, weight: .semibold))
+                                                        .foregroundColor(AppColors.secondaryText)
                                                 }
-                                            }
-                                            .frame(height: 6)
 
-                                            if let action = onActionWorkout {
-                                                Button(action: action) {
-                                                    Text(LanguageManager.t("history.resume").isEmpty ? "Resume" : LanguageManager.t("history.resume"))
-                                                        .font(.system(size: 14, weight: .bold))
-                                                        .foregroundColor(AppColors.background)
-                                                        .padding(.horizontal, 20)
-                                                        .padding(.vertical, 8)
-                                                        .background(AppColors.accent)
-                                                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                                                // Row 3: Mini Progress Bar
+                                                GeometryReader { geo in
+                                                    ZStack(alignment: .leading) {
+                                                        Capsule()
+                                                            .fill(Color(hex: 0x192524))
+                                                            .frame(height: 6)
+                                                        Capsule()
+                                                            .fill(AppColors.accent)
+                                                            .frame(width: geo.size.width * CGFloat(progress), height: 6)
+                                                    }
                                                 }
-                                                .buttonStyle(.plain)
-                                                .accessibilityIdentifier("history-action-button")
+                                                .frame(height: 6)
                                             }
+                                            .padding(.horizontal, 16)
+                                            .padding(.vertical, 14)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                                    .fill(AppColors.toContinueSurface)
+                                                    .overlay(
+                                                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                                            .stroke(AppColors.accent, lineWidth: 1.5)
+                                                    )
+                                            )
                                         }
-                                        .padding(16)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                                .fill(AppColors.toContinueSurface)
-                                                .overlay(
-                                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                                        .stroke(AppColors.accent, lineWidth: 1.5)
-                                                )
-                                        )
+                                        .buttonStyle(.plain)
+                                        .accessibilityIdentifier("history-continue-card")
                                     }
                                 }
                             }
@@ -340,7 +352,7 @@ public struct HistoryDetailView: View {
                             // Section 2: Completed Exercises
                             if !completedExercises.isEmpty {
                                 VStack(alignment: .leading, spacing: 10) {
-                                    HStack {
+                                    HStack(alignment: .firstTextBaseline) {
                                         Text(LanguageManager.t("history.completedSection").isEmpty ? "Completed" : LanguageManager.t("history.completedSection"))
                                             .font(.system(size: 17, weight: .bold))
                                             .foregroundColor(AppColors.text)
@@ -348,6 +360,7 @@ public struct HistoryDetailView: View {
                                         Text("\(completedExercises.count)")
                                             .font(.system(size: 15, weight: .regular))
                                             .foregroundColor(AppColors.secondaryText)
+                                            .frame(width: 20, alignment: .center)
                                     }
 
                                     VStack(spacing: 0) {
@@ -362,17 +375,18 @@ public struct HistoryDetailView: View {
                                 }
                             }
 
-                            // Section 3: Uncompleted Exercises
+                            // Section 3: Remaining Exercises
                             if !unstartedExercises.isEmpty {
                                 VStack(alignment: .leading, spacing: 10) {
-                                    HStack {
-                                        Text(LanguageManager.t("history.uncompletedSection").isEmpty ? "Uncompleted" : LanguageManager.t("history.uncompletedSection"))
+                                    HStack(alignment: .firstTextBaseline) {
+                                        Text(LanguageManager.t("history.remainingSection").isEmpty ? "Remaining" : LanguageManager.t("history.remainingSection"))
                                             .font(.system(size: 17, weight: .bold))
                                             .foregroundColor(AppColors.text)
                                         Spacer()
                                         Text("\(unstartedExercises.count)")
                                             .font(.system(size: 15, weight: .regular))
                                             .foregroundColor(AppColors.secondaryText)
+                                            .frame(width: 20, alignment: .center)
                                     }
 
                                     VStack(spacing: 0) {
@@ -387,8 +401,8 @@ public struct HistoryDetailView: View {
                                 }
                             }
 
-                            // Fallback Resume Workout CTA if no continue card
-                            if halfwayExercises.isEmpty, let action = onActionWorkout {
+                            // Bottom Primary Action CTA Button (Static Resume Workout button)
+                            if let action = onActionWorkout {
                                 Spacer().frame(height: 8)
                                 Button(action: action) {
                                     Text(LanguageManager.t("history.resumeWorkout"))
