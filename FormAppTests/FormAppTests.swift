@@ -4002,5 +4002,83 @@ final class FormAppTests: XCTestCase {
         let customRec = OnboardingRecommender.recommendProgram(preferences: customPrefs, availablePrograms: dummyPrograms)
         XCTAssertEqual(customRec.scheduledWeekdays, [2, 4, 6, 7])
     }
+
+    func testProAccessManagerEntitlements() {
+        let manager = ProAccessManager.shared
+        defer { manager.resetOverrides() }
+
+        // Default: unlocked
+        manager.resetOverrides()
+        XCTAssertTrue(manager.isFeatureUnlocked(.volumeMatrix))
+        XCTAssertTrue(manager.isFeatureUnlocked(.autoProgression))
+
+        // Force locked via override
+        manager.setFeatureOverride(.volumeMatrix, unlocked: false)
+        XCTAssertFalse(manager.isFeatureUnlocked(.volumeMatrix))
+        XCTAssertTrue(manager.isFeatureUnlocked(.autoProgression))
+
+        // Force unlocked via override
+        manager.setFeatureOverride(.volumeMatrix, unlocked: true)
+        XCTAssertTrue(manager.isFeatureUnlocked(.volumeMatrix))
+    }
+
+    func testVolumeMatrixEngineComputation() {
+        guard let catalog = ExerciseMuscleCatalog.shared else {
+            XCTFail("ExerciseMuscleCatalog must load")
+            return
+        }
+
+        XCTAssertEqual(VolumeMatrixEngine.canonicalMuscles.count, 13)
+        for muscle in VolumeMatrixEngine.canonicalMuscles {
+            XCTAssertNotNil(catalog.muscles[muscle], "Muscle \(muscle) must exist in catalog")
+        }
+
+        let benchId = VolumeMatrixEngine.resolveExerciseId(exerciseName: "Barbell Bench Press")
+        XCTAssertEqual(benchId, "barbell-bench-press")
+
+        let session = WorkoutSessionRecord(
+            id: "test-sess-1",
+            programId: "p1",
+            workoutId: "w1",
+            workoutTitle: "Push Day",
+            startedAt: "2026-09-15T10:00:00Z",
+            completedAt: "2026-09-15T11:00:00Z",
+            durationSeconds: 3600,
+            totalVolumeKg: 320,
+            totalCompletedSets: 4,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 80, reps: 10),
+                        SessionSetLog(setNumber: 2, weightKg: 80, reps: 10),
+                        SessionSetLog(setNumber: 3, weightKg: 80, reps: 10),
+                        SessionSetLog(setNumber: 4, weightKg: 80, reps: 8)
+                    ]
+                )
+            ]
+        )
+
+        let report = VolumeMatrixEngine.computeLoggedVolume(
+            targetWeekKey: "2026-W38",
+            history: [session],
+            catalog: catalog
+        )
+
+        // Chest: 4 direct, 0 indirect -> 4.0 effective
+        let chest = report.muscleSummaries["chest"]
+        XCTAssertNotNil(chest)
+        XCTAssertEqual(chest?.directSets, 4)
+        XCTAssertEqual(chest?.indirectSets, 0)
+        XCTAssertEqual(chest?.totalEffectiveSets, 4.0)
+        XCTAssertEqual(chest?.zone, VolumeZone.underMev)
+
+        // Front delts: 0 direct, 4 indirect -> 2.0 effective
+        let frontDelts = report.muscleSummaries["front-delts"]
+        XCTAssertNotNil(frontDelts)
+        XCTAssertEqual(frontDelts?.directSets, 0)
+        XCTAssertEqual(frontDelts?.indirectSets, 4)
+        XCTAssertEqual(frontDelts?.totalEffectiveSets, 2.0)
+    }
 }
 

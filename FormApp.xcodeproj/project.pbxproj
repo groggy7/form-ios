@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		VM0000000000000000000002 /* ProFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000001 /* ProFeature.swift */; };
+		VM0000000000000000000004 /* VolumeMatrixModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000003 /* VolumeMatrixModels.swift */; };
+		VM0000000000000000000006 /* VolumeMatrixEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000005 /* VolumeMatrixEngine.swift */; };
+		VM0000000000000000000008 /* VolumeMatrixView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000007 /* VolumeMatrixView.swift */; };
         A90000000000000000000002 /* 07_upper_lower.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001; };
         A90000000000000000000003 /* 07_upper_lower.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001; };
         A90000000000000000000005 /* 08_machine_foundation.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000004; };
@@ -111,6 +115,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		VM0000000000000000000001 /* ProFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeature.swift; sourceTree = "<group>"; };
+		VM0000000000000000000003 /* VolumeMatrixModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixModels.swift; sourceTree = "<group>"; };
+		VM0000000000000000000005 /* VolumeMatrixEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixEngine.swift; sourceTree = "<group>"; };
+		VM0000000000000000000007 /* VolumeMatrixView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixView.swift; sourceTree = "<group>"; };
 		OB0000000000000000000001 /* OnboardingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModels.swift; sourceTree = "<group>"; };
 		OV0000000000000000000001 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		PR0000000000000000000001 /* PersonalRecordTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordTracker.swift; sourceTree = "<group>"; };
@@ -198,6 +206,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		VM0000000000000000000000 /* Pro */ = {
+			isa = PBXGroup;
+			children = (
+				VM0000000000000000000001 /* ProFeature.swift */,
+			);
+			path = Pro;
+			sourceTree = "<group>";
+		};
 		12E39561EAB2ACA42229972D = {
 			isa = PBXGroup;
 			children = (
@@ -300,6 +316,7 @@
 			isa = PBXGroup;
 			children = (
 				10AEC969AB339D9720AB880B /* AppStore.swift */,
+				VM0000000000000000000005 /* VolumeMatrixEngine.swift */,
 				CP0000000000000000000001 /* CsvParser.swift */,
 				EA0000000000000000000001 /* ExerciseAliasDictionary.swift */,
 				SC0000000000000000000001 /* StrongCsvParser.swift */,
@@ -330,6 +347,7 @@
 				WU0000000000000000000001 /* WeightUnit.swift */,
 				68CE78AD9510C658344F7888 /* WorkoutModels.swift */,
 				829AB05F70AD9B7E6DEE97CC /* WorkoutSessionUtils.swift */,
+				VM0000000000000000000003 /* VolumeMatrixModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -346,6 +364,7 @@
 				7B51CE823E8E934638A68AA7 /* Theme */,
 				A10000000000000000000000 /* Video */,
 				4641A4117F4FD47F13412399 /* Views */,
+				VM0000000000000000000000 /* Pro */,
 			);
 			path = FormApp;
 			sourceTree = "<group>";
@@ -392,6 +411,7 @@
 				023D09DFD513B3F32B009541 /* WorkoutDetailSheet.swift */,
 				A1B2C3D4E5F60718293A4B01 /* HistoryDayPreviewCard.swift */,
 				A1B2C3D4E5F60718293A4B03 /* HistoryDetailView.swift */,
+				VM0000000000000000000007 /* VolumeMatrixView.swift */,
 			);
 			path = History;
 			sourceTree = "<group>";
@@ -585,6 +605,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				VM0000000000000000000002 /* ProFeature.swift in Sources */,
+				VM0000000000000000000004 /* VolumeMatrixModels.swift in Sources */,
+				VM0000000000000000000006 /* VolumeMatrixEngine.swift in Sources */,
+				VM0000000000000000000008 /* VolumeMatrixView.swift in Sources */,
 				3F7B9B586131F615F225CDD2 /* ActiveSessionView.swift in Sources */,
 				329E21359E0ADED851ABBD02 /* AppColors.swift in Sources */,
 				90857D8F8161417A3E7FCFE1 /* AppHeader.swift in Sources */,

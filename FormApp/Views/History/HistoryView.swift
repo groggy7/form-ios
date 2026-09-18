@@ -28,6 +28,12 @@ public struct HistoryView: View {
     var onOpenSettings: () -> Void
     var onSelectRecord: (WorkoutSessionRecord) -> Void
 
+    public enum HistoryTab {
+        case calendar
+        case volumeMatrix
+    }
+
+    @State private var activeTab: HistoryTab = .calendar
     @State private var displayedDate: Date = Date()
     @State private var selectedDateString: String? = nil
 
@@ -94,7 +100,7 @@ public struct HistoryView: View {
 
                         Spacer()
 
-                        if !isCurrentMonth {
+                        if activeTab == .calendar && !isCurrentMonth {
                             Button(action: { displayedDate = Date() }) {
                                 Text(LanguageManager.t("history.thisMonth"))
                                     .font(.system(size: 14, weight: .medium))
@@ -113,8 +119,47 @@ public struct HistoryView: View {
                     .padding(.horizontal, 20)
                     .padding(.top, 10)
 
-                    // Month Calendar Card
-                    VStack(spacing: 10) {
+                    // Segmented Control: Calendar vs Volume Matrix
+                    HStack(spacing: 3) {
+                        Button(action: { activeTab = .calendar }) {
+                            Text(LanguageManager.t("history.calendar"))
+                                .font(.system(size: 13, weight: activeTab == .calendar ? .semibold : .medium))
+                                .foregroundColor(activeTab == .calendar ? AppColors.text : AppColors.muted)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .background(activeTab == .calendar ? AppColors.surfaceRaised : Color.clear)
+                                .cornerRadius(9)
+                        }
+                        .buttonStyle(.plain)
+
+                        Button(action: { activeTab = .volumeMatrix }) {
+                            HStack(spacing: 6) {
+                                Text(LanguageManager.t("history.volumeMatrix"))
+                                    .font(.system(size: 13, weight: activeTab == .volumeMatrix ? .semibold : .medium))
+                                    .foregroundColor(activeTab == .volumeMatrix ? AppColors.text : AppColors.muted)
+                                ProBadge()
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .background(activeTab == .volumeMatrix ? AppColors.surfaceRaised : Color.clear)
+                            .cornerRadius(9)
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    .frame(height: 44)
+                    .padding(3)
+                    .background(AppColors.surface)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(AppColors.border, lineWidth: 1)
+                    )
+                    .cornerRadius(12)
+                    .padding(.horizontal, 20)
+
+                    if activeTab == .volumeMatrix {
+                        VolumeMatrixView(store: store)
+                            .padding(.horizontal, 20)
+                    } else {
+                        // Month Calendar Card
+                        VStack(spacing: 10) {
                         // Month navigation row
                         HStack {
                             Button(action: { changeMonth(by: -1) }) {
@@ -209,6 +254,7 @@ public struct HistoryView: View {
                             weightUnit: store.weightUnit
                         )
                         .padding(.horizontal, 20)
+                    }
                     }
 
                     Spacer().frame(height: 24)
