@@ -405,6 +405,11 @@ public struct ExerciseSetLog: Identifiable, Codable, Hashable {
     public var completedReps: Int?
     public var isCompleted: Bool
     public var inputTouched: Bool?
+    public var isWarmup: Bool
+
+    enum CodingKeys: String, CodingKey {
+        case id, setNumber, weightInput, repsInput, weightKg, completedReps, isCompleted, inputTouched, isWarmup
+    }
 
     public init(
         id: String = UUID().uuidString,
@@ -414,7 +419,8 @@ public struct ExerciseSetLog: Identifiable, Codable, Hashable {
         weightKg: Double? = nil,
         completedReps: Int? = nil,
         isCompleted: Bool = false,
-        inputTouched: Bool? = nil
+        inputTouched: Bool? = nil,
+        isWarmup: Bool = false
     ) {
         self.id = id
         self.setNumber = setNumber
@@ -424,6 +430,20 @@ public struct ExerciseSetLog: Identifiable, Codable, Hashable {
         self.completedReps = completedReps
         self.isCompleted = isCompleted
         self.inputTouched = inputTouched
+        self.isWarmup = isWarmup
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decodeIfPresent(String.self, forKey: .id) ?? UUID().uuidString
+        self.setNumber = try container.decode(Int.self, forKey: .setNumber)
+        self.weightInput = try container.decodeIfPresent(String.self, forKey: .weightInput) ?? ""
+        self.repsInput = try container.decodeIfPresent(String.self, forKey: .repsInput) ?? ""
+        self.weightKg = try container.decodeIfPresent(Double.self, forKey: .weightKg)
+        self.completedReps = try container.decodeIfPresent(Int.self, forKey: .completedReps)
+        self.isCompleted = try container.decodeIfPresent(Bool.self, forKey: .isCompleted) ?? false
+        self.inputTouched = try container.decodeIfPresent(Bool.self, forKey: .inputTouched)
+        self.isWarmup = try container.decodeIfPresent(Bool.self, forKey: .isWarmup) ?? false
     }
 }
 
@@ -431,11 +451,25 @@ public struct SessionSetLog: Codable, Hashable {
     public var setNumber: Int
     public var weightKg: Double?
     public var reps: Int?
+    public var isWarmup: Bool
 
-    public init(setNumber: Int, weightKg: Double? = nil, reps: Int? = nil) {
+    enum CodingKeys: String, CodingKey {
+        case setNumber, weightKg, reps, isWarmup
+    }
+
+    public init(setNumber: Int, weightKg: Double? = nil, reps: Int? = nil, isWarmup: Bool = false) {
         self.setNumber = setNumber
         self.weightKg = weightKg
         self.reps = reps
+        self.isWarmup = isWarmup
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.setNumber = try container.decode(Int.self, forKey: .setNumber)
+        self.weightKg = try container.decodeIfPresent(Double.self, forKey: .weightKg)
+        self.reps = try container.decodeIfPresent(Int.self, forKey: .reps)
+        self.isWarmup = try container.decodeIfPresent(Bool.self, forKey: .isWarmup) ?? false
     }
 }
 

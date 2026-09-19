@@ -46,11 +46,12 @@ public struct SessionProgress {
     public static func from(draft: ActiveSessionDraft, nowEpochMillis: Int64) -> SessionProgress {
         let allSets = draft.setsByExercise.values.flatMap { $0 }
         let completed = allSets.filter { $0.isCompleted }
+        let completedWorking = completed.filter { !$0.isWarmup }
         let elapsed = Int((nowEpochMillis - draft.startedAtEpochMillis) / 1000)
         let duration = min(max(0, elapsed), 8 * 3600)
         
         var volume: Double = 0
-        for s in completed {
+        for s in completedWorking {
             let w = s.weightKg ?? 0
             let r = s.completedReps ?? 0
             volume += w * Double(r)
@@ -58,10 +59,11 @@ public struct SessionProgress {
 
         let logs = draft.workout.exercises.map { ex -> SessionExerciseLog in
             let configured = draft.setsByExercise[ex.id] ?? []
+            let workingCount = configured.filter { !$0.isWarmup }.count
             let sets = configured.filter { $0.isCompleted }.map {
-                SessionSetLog(setNumber: $0.setNumber, weightKg: $0.weightKg, reps: $0.completedReps)
+                SessionSetLog(setNumber: $0.setNumber, weightKg: $0.weightKg, reps: $0.completedReps, isWarmup: $0.isWarmup)
             }
-            let target = !configured.isEmpty ? configured.count : WorkoutSessionUtils.initialSetCount(exercise: ex)
+            let target = workingCount > 0 ? workingCount : WorkoutSessionUtils.initialSetCount(exercise: ex)
             return SessionExerciseLog(exerciseName: ex.name, sets: sets, targetSets: target)
         }
 
@@ -71,7 +73,7 @@ public struct SessionProgress {
 
         return SessionProgress(
             durationSeconds: duration,
-            completedSets: completed.count,
+            completedSets: completedWorking.count,
             volumeKg: volume,
             exerciseLogs: logs,
             hasProgress: hasProg
@@ -143,7 +145,12 @@ public enum WorkoutSessionUtils {
         guard !draft.workout.exercises.isEmpty else { return false }
         return draft.workout.exercises.allSatisfy { ex in
             let sets = draft.setsByExercise[ex.id] ?? []
-            return !sets.isEmpty && sets.allSatisfy { $0.isCompleted }
+            let workingSets = sets.filter { !$0.isWarmup }
+            if !workingSets.isEmpty {
+                return workingSets.allSatisfy { $0.isCompleted }
+            } else {
+                return !sets.isEmpty && sets.allSatisfy { $0.isCompleted }
+            }
         }
     }
 
@@ -275,6 +282,7 @@ public enum WorkoutSessionUtils {
                 if !matches { continue }
 
                 for set in log.sets {
+                    if set.isWarmup { continue }
                     let weight = set.weightKg ?? 0.0
                     let reps = set.reps ?? 0
                     if weight > 0.0 && reps > 0 {
@@ -325,6 +333,7 @@ public enum WorkoutSessionUtils {
                 if !matches { continue }
 
                 for set in log.sets {
+                    if set.isWarmup { continue }
                     let weight = set.weightKg ?? 0.0
                     let reps = set.reps ?? 0
                     if weight > 0.0 && reps > 0 {

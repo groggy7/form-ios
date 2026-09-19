@@ -10,6 +10,8 @@ public final class AppStore: ObservableObject {
     private let defaultRestKey = "default_rest_seconds"
     private let prefillNextSetKey = "prefill_next_set"
     private let weightUnitKey = "weight_unit"
+    private let barTypeKey = "bar_type"
+    private let availablePlatesKey = "available_plates_kg"
     private let onboardingCompletedKey = "is_onboarding_completed"
 
     @Published public var state: StoredAppState
@@ -27,6 +29,8 @@ public final class AppStore: ObservableObject {
     @Published public var defaultRestSeconds: Int
     @Published public var prefillNextSet: Bool
     @Published public var weightUnit: WeightUnit
+    @Published public var barType: BarType
+    @Published public var availablePlatesKg: [Double]
     @Published public var noticeMessage: String?
     @Published public var exerciseCatalogue: [ExerciseCatalogEntry] = []
     
@@ -94,6 +98,16 @@ public final class AppStore: ObservableObject {
         } else {
             self.weightUnit = WeightUnit.defaultForLocale()
         }
+        if let savedBarKey = UserDefaults.standard.string(forKey: barTypeKey) {
+            self.barType = BarType.fromKey(savedBarKey)
+        } else {
+            self.barType = .olympic20
+        }
+        if let savedPlates = UserDefaults.standard.array(forKey: availablePlatesKey) as? [Double] {
+            self.availablePlatesKg = savedPlates
+        } else {
+            self.availablePlatesKg = WarmupPlateEngine.defaultPlatesKg
+        }
 
         var loadedState = Self.loadStoredState()
 
@@ -146,6 +160,14 @@ public final class AppStore: ObservableObject {
 
         $weightUnit
             .sink { UserDefaults.standard.set($0.rawValue, forKey: self.weightUnitKey) }
+            .store(in: &cancellables)
+
+        $barType
+            .sink { UserDefaults.standard.set($0.key, forKey: self.barTypeKey) }
+            .store(in: &cancellables)
+
+        $availablePlatesKg
+            .sink { UserDefaults.standard.set($0, forKey: self.availablePlatesKey) }
             .store(in: &cancellables)
 
         $isOnboardingCompleted
@@ -323,6 +345,80 @@ public final class AppStore: ObservableObject {
             nextSt.calendarHistory = updatedCal
             saveState(nextSt)
         }
+    }
+
+    public func setBarType(_ type: BarType) {
+        self.barType = type
+    }
+
+    public func setAvailablePlatesKg(_ plates: [Double]) {
+        self.availablePlatesKg = plates
+    }
+
+    public func insertWarmupSets(exerciseId: String, warmupSets: [ExerciseSetLog]) {
+        updateActiveSession { d in
+            var copy = d
+            let sets = copy.setsByExercise[exerciseId] ?? []
+            let workingSets = sets.filter { !$0.isWarmup }
+            let completedWarmups = sets.filter { $0.isWarmup && $0.isCompleted }
+            let newWarmups = completedWarmups.isEmpty ? warmupSets : (completedWarmups + warmupSets.dropFirst(completedWarmups.count))
+            let combined = newWarmups + workingSets
+            copy.setsByExercise[exerciseId] = Self.reindexSets(combined)
+            return copy
+        }
+    }
+
+    public func clearWarmupSets(exerciseId: String) {
+        updateActiveSession { d in
+            var copy = d
+            let sets = copy.setsByExercise[exerciseId] ?? []
+            let workingOnly = sets.filter { !$0.isWarmup }
+            copy.setsByExercise[exerciseId] = Self.reindexSets(workingOnly)
+            return copy
+        }
+    }
+
+    public func toggleWarmup(exerciseId: String, index: Int) {
+        updateActiveSession { d in
+            var copy = d
+            var sets = copy.setsByExercise[exerciseId] ?? []
+            guard sets.indices.contains(index) else { return copy }
+            var set = sets[index]
+            set.isWarmup.toggle()
+            sets[index] = set
+            copy.setsByExercise[exerciseId] = Self.reindexSets(sets)
+            return copy
+        }
+    }
+
+    public static func reindexSets(_ sets: [ExerciseSetLog]) -> [ExerciseSetLog] {
+        let warmups = sets.filter { $0.isWarmup }.enumerated().map { idx, s in
+            ExerciseSetLog(
+                id: s.id,
+                setNumber: idx + 1,
+                weightInput: s.weightInput,
+                repsInput: s.repsInput,
+                weightKg: s.weightKg,
+                completedReps: s.completedReps,
+                isCompleted: s.isCompleted,
+                inputTouched: s.inputTouched,
+                isWarmup: true
+            )
+        }
+        let working = sets.filter { !$0.isWarmup }.enumerated().map { idx, s in
+            ExerciseSetLog(
+                id: s.id,
+                setNumber: idx + 1,
+                weightInput: s.weightInput,
+                repsInput: s.repsInput,
+                weightKg: s.weightKg,
+                completedReps: s.completedReps,
+                isCompleted: s.isCompleted,
+                inputTouched: s.inputTouched,
+                isWarmup: false
+            )
+        }
+        return warmups + working
     }
 
     public func abandonActiveSession() {

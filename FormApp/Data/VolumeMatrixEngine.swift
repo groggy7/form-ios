@@ -36,7 +36,7 @@ struct VolumeMatrixEngine {
         for record in weekRecords {
             let dateStr = recordDateString(record)
             for log in record.exerciseLogs {
-                let completedSets = log.sets.filter { ($0.weightKg ?? 0) > 0 || ($0.reps ?? 0) > 0 }.count
+                let completedSets = log.sets.filter { !$0.isWarmup && (($0.weightKg ?? 0) > 0 || ($0.reps ?? 0) > 0) }.count
                 guard completedSets > 0 else { continue }
 
                 let exerciseId = resolveExerciseId(exerciseName: log.exerciseName)

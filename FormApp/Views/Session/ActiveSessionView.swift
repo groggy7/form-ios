@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 public struct ActiveSessionView: View {
     @ObservedObject var store: AppStore
@@ -14,6 +15,9 @@ public struct ActiveSessionView: View {
     @State private var inspectingExerciseId: String? = nil
     @State private var reportingExercise: Exercise? = nil
     @State private var showProgressionInfo: Bool = false
+    @State private var showWarmupPlateSheet: Bool = false
+    @State private var warmupModalTab: WarmupPlateTab = .warmupRamp
+    @State private var selectedPlateWeight: Double? = nil
 
     private let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
 
@@ -307,6 +311,24 @@ public struct ActiveSessionView: View {
                                         }
                                     )
 
+                                    let currentWarmups = currentSets.filter { $0.isWarmup }
+                                    WarmupPlateCard(
+                                        warmupSets: currentWarmups,
+                                        onGenerateWarmup: {
+                                            warmupModalTab = .warmupRamp
+                                            selectedPlateWeight = nil
+                                            showWarmupPlateSheet = true
+                                        },
+                                        onOpenPlates: {
+                                            warmupModalTab = .plateLoader
+                                            selectedPlateWeight = nil
+                                            showWarmupPlateSheet = true
+                                        },
+                                        onClearWarmups: {
+                                            store.clearWarmupSets(exerciseId: exercise.id)
+                                        }
+                                    )
+
                                     let isRestActive = (activeDraft.restTimer?.secondsRemaining(nowEpochMillis: nowEpochMillis) ?? 0) > 0
                                     let prText = WorkoutSessionUtils.findExercisePr(history: store.state.history, exercise: exercise, unit: store.weightUnit) ?? "-"
 
@@ -332,6 +354,14 @@ public struct ActiveSessionView: View {
                                         },
                                         onRestWarning: {
                                             showRestWarning()
+                                        },
+                                        onInspectPlates: { weightVal in
+                                            warmupModalTab = .plateLoader
+                                            selectedPlateWeight = weightVal
+                                            showWarmupPlateSheet = true
+                                        },
+                                        onToggleWarmup: { setIdx in
+                                            store.toggleWarmup(exerciseId: exercise.id, index: setIdx)
                                         },
                                         weightUnit: store.weightUnit
                                     )
@@ -482,6 +512,33 @@ public struct ActiveSessionView: View {
         .sheet(isPresented: $showProgressionInfo) {
             ProgressionInfoSheet()
         }
+        .sheet(isPresented: $showWarmupPlateSheet) {
+            if let exercise = currentExercise {
+                let firstWorking = currentSets.first { !$0.isWarmup && ($0.weightKg ?? 0) > 0 }
+                let baseWeight = selectedPlateWeight
+                    ?? firstWorking?.weightKg
+                    ?? Double(firstWorking?.weightInput.replacingOccurrences(of: ",", with: ".") ?? "")
+                    ?? 0.0
+
+                WarmupPlateSheet(
+                    exerciseName: exercise.displayName,
+                    initialWorkingWeightKg: baseWeight,
+                    initialBarType: store.barType,
+                    initialPlatesKg: store.availablePlatesKg,
+                    unit: store.weightUnit,
+                    initialTab: warmupModalTab,
+                    onInsertWarmupSets: { sets in
+                        store.insertWarmupSets(exerciseId: exercise.id, warmupSets: sets)
+                    },
+                    onSaveBarType: { bar in
+                        store.setBarType(bar)
+                    },
+                    onSavePlates: { plates in
+                        store.setAvailablePlatesKg(plates)
+                    }
+                )
+            }
+        }
         .onReceive(timer) { _ in
             nowEpochMillis = Int64(Date().timeIntervalSince1970 * 1000)
             checkRestTimerAlarm()
@@ -540,7 +597,8 @@ public struct ActiveSessionView: View {
                 weightKg: wKg,
                 completedReps: rInt,
                 isCompleted: sets[index].isCompleted,
-                inputTouched: true
+                inputTouched: true,
+                isWarmup: sets[index].isWarmup
             )
             copy.setsByExercise[exerciseId] = sets
             return copy
@@ -594,12 +652,15 @@ public struct ActiveSessionView: View {
         store.updateActiveSession { d in
             var copy = d
             var sets = copy.setsByExercise[exerciseId] ?? []
+            let workingCount = sets.filter { !$0.isWarmup }.count
             let newSet = ExerciseSetLog(
-                setNumber: sets.count + 1,
-                isCompleted: false
+                setNumber: workingCount + 1,
+                isCompleted: false,
+                isWarmup: false
             )
-            sets.append(store.prefillNextSet ? WorkoutSessionUtils.prefillSet(newSet, from: sets.last, unit: store.weightUnit) : newSet)
-            copy.setsByExercise[exerciseId] = sets
+            let lastWorking = sets.filter { !$0.isWarmup }.last
+            sets.append(store.prefillNextSet ? WorkoutSessionUtils.prefillSet(newSet, from: lastWorking, unit: store.weightUnit) : newSet)
+            copy.setsByExercise[exerciseId] = AppStore.reindexSets(sets)
             return copy
         }
     }
@@ -610,19 +671,7 @@ public struct ActiveSessionView: View {
             var sets = copy.setsByExercise[exerciseId] ?? []
             guard sets.indices.contains(index) else { return copy }
             sets.remove(at: index)
-            for i in 0..<sets.count {
-                sets[i] = ExerciseSetLog(
-                    id: sets[i].id,
-                    setNumber: i + 1,
-                    weightInput: sets[i].weightInput,
-                    repsInput: sets[i].repsInput,
-                    weightKg: sets[i].weightKg,
-                    completedReps: sets[i].completedReps,
-                    isCompleted: sets[i].isCompleted,
-                    inputTouched: sets[i].inputTouched
-                )
-            }
-            copy.setsByExercise[exerciseId] = sets
+            copy.setsByExercise[exerciseId] = AppStore.reindexSets(sets)
             return copy
         }
     }

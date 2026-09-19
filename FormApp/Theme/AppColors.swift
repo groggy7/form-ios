@@ -78,6 +78,10 @@ public enum AppColors {
     public static let historyStat1RmAmber = Color(hex: 0xFEB447)
     public static let historyStatCyan = Color(hex: 0x38BDF8)
     public static let historyStatPurple = Color(hex: 0xB18AFF)
+
+    // Warmup Set demarcation
+    public static let warmupAmber = Color(hex: 0xFEB447)
+    public static let warmupAmberBg = Color(hex: 0x2C1E14)
 }
 
 extension Color {

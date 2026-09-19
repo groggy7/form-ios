@@ -4519,5 +4519,275 @@ final class FormAppTests: XCTestCase {
             print("Successfully wrote RootView bottom dock snapshot to \(path)")
         }
     }
+
+    func testWarmupRampFor100kgWorkingWeight() {
+        let ramp = WarmupPlateEngine.generateWarmupRamp(
+            workingWeightKg: 100.0,
+            barWeightKg: 20.0,
+            unit: .kg
+        )
+
+        XCTAssertEqual(ramp.workingWeightKg, 100.0, accuracy: 0.001)
+        XCTAssertEqual(ramp.barWeightKg, 20.0, accuracy: 0.001)
+        XCTAssertEqual(ramp.steps.count, 4)
+
+        // Set 1: Empty Bar (20 kg) x 10 (warm joints)
+        let s1 = ramp.steps[0]
+        XCTAssertEqual(s1.setNumber, 1)
+        XCTAssertEqual(s1.weightKg, 20.0, accuracy: 0.001)
+        XCTAssertEqual(s1.reps, 10)
+        XCTAssertEqual(s1.labelKey, "warmup.warm_joints")
+        XCTAssertFalse(s1.isPotentiation)
+
+        // Set 2: 50 kg x 5 (50% working weight)
+        let s2 = ramp.steps[1]
+        XCTAssertEqual(s2.setNumber, 2)
+        XCTAssertEqual(s2.weightKg, 50.0, accuracy: 0.001)
+        XCTAssertEqual(s2.reps, 5)
+        XCTAssertEqual(s2.labelKey, "warmup.50_percent")
+        XCTAssertFalse(s2.isPotentiation)
+
+        // Set 3: 70 kg x 3 (70% working weight)
+        let s3 = ramp.steps[2]
+        XCTAssertEqual(s3.setNumber, 3)
+        XCTAssertEqual(s3.weightKg, 70.0, accuracy: 0.001)
+        XCTAssertEqual(s3.reps, 3)
+        XCTAssertEqual(s3.labelKey, "warmup.70_percent")
+        XCTAssertFalse(s3.isPotentiation)
+
+        // Set 4: 85 kg x 1 (85% potentiation single)
+        let s4 = ramp.steps[3]
+        XCTAssertEqual(s4.setNumber, 4)
+        XCTAssertEqual(s4.weightKg, 85.0, accuracy: 0.001)
+        XCTAssertEqual(s4.reps, 1)
+        XCTAssertEqual(s4.labelKey, "warmup.85_percent")
+        XCTAssertTrue(s4.isPotentiation)
+    }
+
+    func testWarmupRampForLightWeights() {
+        // Working weight equal to bar: only empty bar
+        let ramp20 = WarmupPlateEngine.generateWarmupRamp(workingWeightKg: 20.0, barWeightKg: 20.0)
+        XCTAssertEqual(ramp20.steps.count, 1)
+        XCTAssertEqual(ramp20.steps[0].weightKg, 20.0, accuracy: 0.001)
+        XCTAssertEqual(ramp20.steps[0].reps, 10)
+
+        // Working weight 40 kg: strictly increasing, strictly < 40 kg
+        let ramp40 = WarmupPlateEngine.generateWarmupRamp(workingWeightKg: 40.0, barWeightKg: 20.0)
+        XCTAssertFalse(ramp40.steps.isEmpty)
+        XCTAssertTrue(ramp40.steps.allSatisfy { $0.weightKg < 40.0 })
+        for i in 1..<ramp40.steps.count {
+            XCTAssertTrue(ramp40.steps[i].weightKg > ramp40.steps[i - 1].weightKg)
+        }
+    }
+
+    func testCalculatePlates95kgPromptExample() {
+        // (95 - 20) / 2 = 37.5 kg per side = 1x20kg + 1x15kg + 1x2.5kg
+        let platesWithout25: [Double] = [20.0, 15.0, 10.0, 5.0, 2.5, 1.25]
+        let result = WarmupPlateEngine.calculatePlates(
+            targetWeight: 95.0,
+            barWeight: 20.0,
+            availablePlates: platesWithout25,
+            unit: .kg
+        )
+
+        XCTAssertTrue(result.isExactMatch)
+        XCTAssertEqual(result.weightPerSide, 37.5, accuracy: 0.001)
+        XCTAssertEqual(result.totalPlatesWeight, 75.0, accuracy: 0.001)
+        XCTAssertEqual(result.totalAchievedWeight, 95.0, accuracy: 0.001)
+        XCTAssertEqual(result.remainderPerSide, 0.0, accuracy: 0.001)
+
+        XCTAssertEqual(result.platesPerSide.count, 3)
+        XCTAssertEqual(result.platesPerSide[0].weight, 20.0, accuracy: 0.001)
+        XCTAssertEqual(result.platesPerSide[0].count, 1)
+        XCTAssertEqual(result.platesPerSide[1].weight, 15.0, accuracy: 0.001)
+        XCTAssertEqual(result.platesPerSide[1].count, 1)
+        XCTAssertEqual(result.platesPerSide[2].weight, 2.5, accuracy: 0.001)
+        XCTAssertEqual(result.platesPerSide[2].count, 1)
+
+        XCTAssertEqual(result.displayText, "1×20 kg + 1×15 kg + 1×2.5 kg")
+    }
+
+    func testCalculatePlatesUnderOrEqualBarWeight() {
+        let resultEmpty = WarmupPlateEngine.calculatePlates(targetWeight: 20.0, barWeight: 20.0, availablePlates: WarmupPlateEngine.defaultPlatesKg)
+        XCTAssertTrue(resultEmpty.isExactMatch)
+        XCTAssertTrue(resultEmpty.platesPerSide.isEmpty)
+        XCTAssertEqual(resultEmpty.totalAchievedWeight, 20.0, accuracy: 0.001)
+
+        let resultUnder = WarmupPlateEngine.calculatePlates(targetWeight: 15.0, barWeight: 20.0, availablePlates: WarmupPlateEngine.defaultPlatesKg)
+        XCTAssertFalse(resultUnder.isExactMatch)
+        XCTAssertTrue(resultUnder.platesPerSide.isEmpty)
+    }
+
+    func testWarmupSetsExcludedFromVolumeAndCompletedCount() {
+        let exercise = Exercise(
+            id: "ex-bench",
+            name: "Barbell Bench Press",
+            sets: 3
+        )
+        let workout = Workout(
+            id: "w1",
+            day: 1,
+            title: "Chest Day",
+            exercises: [exercise]
+        )
+
+        let sets: [ExerciseSetLog] = [
+            // 2 Warmup sets (both completed)
+            ExerciseSetLog(id: "w1", setNumber: 1, weightKg: 20.0, completedReps: 10, isCompleted: true, isWarmup: true),
+            ExerciseSetLog(id: "w2", setNumber: 2, weightKg: 50.0, completedReps: 5, isCompleted: true, isWarmup: true),
+            // 3 Working sets (1 completed at 100kg x 8, 2 uncompleted)
+            ExerciseSetLog(id: "s1", setNumber: 1, weightKg: 100.0, completedReps: 8, isCompleted: true, isWarmup: false),
+            ExerciseSetLog(id: "s2", setNumber: 2, weightKg: 100.0, completedReps: 8, isCompleted: false, isWarmup: false),
+            ExerciseSetLog(id: "s3", setNumber: 3, weightKg: 100.0, completedReps: 8, isCompleted: false, isWarmup: false)
+        ]
+
+        let draft = ActiveSessionDraft(
+            id: UUID().uuidString,
+            programId: "prog1",
+            workout: workout,
+            startedAt: "2026-09-19T20:00:00Z",
+            startedAtEpochMillis: 1000,
+            setsByExercise: [exercise.id: sets]
+        )
+
+        let progress = SessionProgress.from(draft: draft, nowEpochMillis: 5000)
+
+        // Only the 1 completed working set should count!
+        XCTAssertEqual(progress.completedSets, 1)
+        // Only working set volume: 100 kg * 8 reps = 800 kg (warmup 20*10=200kg and 50*5=250kg MUST be excluded!)
+        XCTAssertEqual(progress.volumeKg, 800.0, accuracy: 0.001)
+
+        let exerciseLog = progress.exerciseLogs.first!
+        // Target sets should only count working sets (3)
+        XCTAssertEqual(exerciseLog.targetSets, 3)
+        // All sets are recorded in logs with isWarmup preserved
+        XCTAssertEqual(exerciseLog.sets.count, 3)
+        XCTAssertTrue(exerciseLog.sets[0].isWarmup)
+        XCTAssertTrue(exerciseLog.sets[1].isWarmup)
+        XCTAssertFalse(exerciseLog.sets[2].isWarmup)
+    }
+
+    @MainActor
+    func testWarmupPlateSheetSnapshot() {
+        let sheetRamp = WarmupPlateSheet(
+            exerciseName: "Barbell Bench Press",
+            initialWorkingWeightKg: 100.0,
+            initialBarType: .olympic20,
+            initialPlatesKg: WarmupPlateEngine.defaultPlatesKg,
+            unit: .kg,
+            initialTab: .warmupRamp,
+            onInsertWarmupSets: { _ in },
+            onSaveBarType: { _ in },
+            onSavePlates: { _ in }
+        )
+        let controllerRamp = UIHostingController(rootView: sheetRamp)
+        controllerRamp.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controllerRamp.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+        let windowRamp = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        windowRamp.rootViewController = controllerRamp
+        windowRamp.makeKeyAndVisible()
+        controllerRamp.view.layoutIfNeeded()
+
+        let rendererRamp = UIGraphicsImageRenderer(size: controllerRamp.view.bounds.size)
+        let imageRamp = rendererRamp.image { ctx in
+            controllerRamp.view.drawHierarchy(in: controllerRamp.view.bounds, afterScreenUpdates: true)
+        }
+        if let data = imageRamp.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_warmup_ramp_sheet_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote warmup ramp sheet snapshot to \(path)")
+        }
+
+        let sheetPlates = WarmupPlateSheet(
+            exerciseName: "Barbell Bench Press",
+            initialWorkingWeightKg: 100.0,
+            initialBarType: .olympic20,
+            initialPlatesKg: WarmupPlateEngine.defaultPlatesKg,
+            unit: .kg,
+            initialTab: .plateLoader,
+            onInsertWarmupSets: { _ in },
+            onSaveBarType: { _ in },
+            onSavePlates: { _ in }
+        )
+        let controllerPlates = UIHostingController(rootView: sheetPlates)
+        controllerPlates.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controllerPlates.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+        let windowPlates = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        windowPlates.rootViewController = controllerPlates
+        windowPlates.makeKeyAndVisible()
+        controllerPlates.view.layoutIfNeeded()
+
+        let rendererPlates = UIGraphicsImageRenderer(size: controllerPlates.view.bounds.size)
+        let imagePlates = rendererPlates.image { ctx in
+            controllerPlates.view.drawHierarchy(in: controllerPlates.view.bounds, afterScreenUpdates: true)
+        }
+        if let data = imagePlates.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_plate_loader_sheet_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote plate loader sheet snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testActiveSessionWithWarmupSetsSnapshot() {
+        let store = AppStore.shared
+        let originalSession = store.activeSession
+
+        let benchExercise = Exercise(
+            id: "ex-bench-warmup",
+            name: "Barbell Bench Press",
+            exerciseId: "bench-press",
+            prescription: "3×8-12",
+            sets: 3
+        )
+        let workout = Workout(
+            id: "w-chest-warmup",
+            day: 1,
+            title: "Push Day",
+            exercises: [benchExercise]
+        )
+
+        let sets: [ExerciseSetLog] = [
+            ExerciseSetLog(id: "w1", setNumber: 1, weightInput: "20", repsInput: "10", weightKg: 20.0, completedReps: 10, isCompleted: true, inputTouched: true, isWarmup: true),
+            ExerciseSetLog(id: "w2", setNumber: 2, weightInput: "50", repsInput: "5", weightKg: 50.0, completedReps: 5, isCompleted: true, inputTouched: true, isWarmup: true),
+            ExerciseSetLog(id: "w3", setNumber: 3, weightInput: "70", repsInput: "3", weightKg: 70.0, completedReps: 3, isCompleted: true, inputTouched: true, isWarmup: true),
+            ExerciseSetLog(id: "w4", setNumber: 4, weightInput: "85", repsInput: "1", weightKg: 85.0, completedReps: 1, isCompleted: false, inputTouched: true, isWarmup: true),
+            ExerciseSetLog(id: "s1", setNumber: 1, weightInput: "100", repsInput: "8", weightKg: 100.0, completedReps: nil, isCompleted: false, inputTouched: true, isWarmup: false),
+            ExerciseSetLog(id: "s2", setNumber: 2, weightInput: "100", repsInput: "8", weightKg: 100.0, completedReps: nil, isCompleted: false, inputTouched: true, isWarmup: false),
+            ExerciseSetLog(id: "s3", setNumber: 3, weightInput: "100", repsInput: "8", weightKg: 100.0, completedReps: nil, isCompleted: false, inputTouched: true, isWarmup: false)
+        ]
+
+        let draft = ActiveSessionDraft(
+            id: "session-warmup-demo",
+            programId: "prog1",
+            workout: workout,
+            startedAt: "2026-09-19T20:00:00Z",
+            startedAtEpochMillis: Int64(Date().timeIntervalSince1970 * 1000) - 900_000,
+            currentExerciseIndex: 0,
+            setsByExercise: [benchExercise.id: sets]
+        )
+
+        store.activeSession = draft
+        let sessionView = ActiveSessionView(store: store, draft: draft)
+        let controller = UIHostingController(rootView: sessionView)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_active_session_with_warmup_sets_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote active session with warmups snapshot to \(path)")
+        }
+
+        store.activeSession = originalSession
+    }
 }
 

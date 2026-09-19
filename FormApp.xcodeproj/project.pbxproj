@@ -16,6 +16,11 @@
 		PG0000000000000000000004 /* ProgressionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000003 /* ProgressionEngine.swift */; };
 		PG0000000000000000000006 /* ProgressionCoachCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000005 /* ProgressionCoachCard.swift */; };
 		PG0000000000000000000008 /* ProgressionInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000007 /* ProgressionInfoSheet.swift */; };
+		WP0000000000000000000002 /* WarmupPlateModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000001 /* WarmupPlateModels.swift */; };
+		WP0000000000000000000004 /* WarmupPlateEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000003 /* WarmupPlateEngine.swift */; };
+		WP0000000000000000000006 /* BarbellPlateVisualizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000005 /* BarbellPlateVisualizerView.swift */; };
+		WP0000000000000000000008 /* WarmupPlateSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000007 /* WarmupPlateSheet.swift */; };
+		WP0000000000000000000010 /* WarmupPlateCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000009 /* WarmupPlateCard.swift */; };
         A90000000000000000000002 /* 07_upper_lower.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001; };
         A90000000000000000000003 /* 07_upper_lower.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001; };
         A90000000000000000000005 /* 08_machine_foundation.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000004; };
@@ -129,6 +134,11 @@
 		PG0000000000000000000003 /* ProgressionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionEngine.swift; sourceTree = "<group>"; };
 		PG0000000000000000000005 /* ProgressionCoachCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionCoachCard.swift; sourceTree = "<group>"; };
 		PG0000000000000000000007 /* ProgressionInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionInfoSheet.swift; sourceTree = "<group>"; };
+		WP0000000000000000000001 /* WarmupPlateModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupPlateModels.swift; sourceTree = "<group>"; };
+		WP0000000000000000000003 /* WarmupPlateEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupPlateEngine.swift; sourceTree = "<group>"; };
+		WP0000000000000000000005 /* BarbellPlateVisualizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarbellPlateVisualizerView.swift; sourceTree = "<group>"; };
+		WP0000000000000000000007 /* WarmupPlateSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupPlateSheet.swift; sourceTree = "<group>"; };
+		WP0000000000000000000009 /* WarmupPlateCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupPlateCard.swift; sourceTree = "<group>"; };
 		OB0000000000000000000001 /* OnboardingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModels.swift; sourceTree = "<group>"; };
 		OV0000000000000000000001 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		PR0000000000000000000001 /* PersonalRecordTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordTracker.swift; sourceTree = "<group>"; };
@@ -337,6 +347,7 @@
                 P10000000000000000000002 /* ExercisePriority.swift */,
 				B16D5A75502FFC600D48A992 /* AudioPlayer.swift */,
 				PG0000000000000000000003 /* ProgressionEngine.swift */,
+				WP0000000000000000000003 /* WarmupPlateEngine.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -360,6 +371,7 @@
 				829AB05F70AD9B7E6DEE97CC /* WorkoutSessionUtils.swift */,
 				VM0000000000000000000003 /* VolumeMatrixModels.swift */,
 				PG0000000000000000000001 /* ProgressionModels.swift */,
+				WP0000000000000000000001 /* WarmupPlateModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -438,6 +450,9 @@
 				303A307ACE2A1CA19B710636 /* SetLoggingTable.swift */,
 				PG0000000000000000000005 /* ProgressionCoachCard.swift */,
 				PG0000000000000000000007 /* ProgressionInfoSheet.swift */,
+				WP0000000000000000000005 /* BarbellPlateVisualizerView.swift */,
+				WP0000000000000000000007 /* WarmupPlateSheet.swift */,
+				WP0000000000000000000009 /* WarmupPlateCard.swift */,
 			);
 			path = Session;
 			sourceTree = "<group>";
@@ -629,6 +644,11 @@
 				PG0000000000000000000004 /* ProgressionEngine.swift in Sources */,
 				PG0000000000000000000006 /* ProgressionCoachCard.swift in Sources */,
 				PG0000000000000000000008 /* ProgressionInfoSheet.swift in Sources */,
+				WP0000000000000000000002 /* WarmupPlateModels.swift in Sources */,
+				WP0000000000000000000004 /* WarmupPlateEngine.swift in Sources */,
+				WP0000000000000000000006 /* BarbellPlateVisualizerView.swift in Sources */,
+				WP0000000000000000000008 /* WarmupPlateSheet.swift in Sources */,
+				WP0000000000000000000010 /* WarmupPlateCard.swift in Sources */,
 				3F7B9B586131F615F225CDD2 /* ActiveSessionView.swift in Sources */,
 				329E21359E0ADED851ABBD02 /* AppColors.swift in Sources */,
 				90857D8F8161417A3E7FCFE1 /* AppHeader.swift in Sources */,

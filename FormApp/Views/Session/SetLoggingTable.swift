@@ -17,6 +17,8 @@ public struct SetLoggingTable: View {
     var onRemoveSet: (Int) -> Void
     var onEmptyWarning: (() -> Void)? = nil
     var onRestWarning: (() -> Void)? = nil
+    var onInspectPlates: ((Double) -> Void)? = nil
+    var onToggleWarmup: ((Int) -> Void)? = nil
     var weightUnit: WeightUnit = .kg
 
     public init(
@@ -30,6 +32,8 @@ public struct SetLoggingTable: View {
         onRemoveSet: @escaping (Int) -> Void,
         onEmptyWarning: (() -> Void)? = nil,
         onRestWarning: (() -> Void)? = nil,
+        onInspectPlates: ((Double) -> Void)? = nil,
+        onToggleWarmup: ((Int) -> Void)? = nil,
         weightUnit: WeightUnit = .kg
     ) {
         self.sets = sets
@@ -42,11 +46,27 @@ public struct SetLoggingTable: View {
         self.onRemoveSet = onRemoveSet
         self.onEmptyWarning = onEmptyWarning
         self.onRestWarning = onRestWarning
+        self.onInspectPlates = onInspectPlates
+        self.onToggleWarmup = onToggleWarmup
         self.weightUnit = weightUnit
     }
 
     public var body: some View {
         VStack(spacing: 8) {
+            let workingSets = sets.filter { !$0.isWarmup }
+            let relevantSets = workingSets.isEmpty ? sets : workingSets
+            let allRelevantDone = !relevantSets.isEmpty && relevantSets.allSatisfy(\.isCompleted)
+            let progressText: String = {
+                if allRelevantDone {
+                    return LanguageManager.t("table.allSetsDone", ["total": relevantSets.count])
+                } else {
+                    return LanguageManager.t("table.currentSet", [
+                        "current": WorkoutSessionUtils.currentSetNumber(relevantSets),
+                        "total": relevantSets.count
+                    ])
+                }
+            }()
+
             HStack(spacing: 12) {
                 if !prescription.isEmpty {
                     Text(prescription)
@@ -54,9 +74,7 @@ public struct SetLoggingTable: View {
                         .foregroundColor(AppColors.accent)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                Text(!sets.isEmpty && sets.allSatisfy(\.isCompleted)
-                     ? LanguageManager.t("table.allSetsDone", ["total": sets.count])
-                     : LanguageManager.t("table.currentSet", ["current": WorkoutSessionUtils.currentSetNumber(sets), "total": sets.count]))
+                Text(progressText)
                     .font(.system(size: 14, weight: .medium))
                     .foregroundColor(AppColors.secondaryText)
                     .multilineTextAlignment(.trailing)
@@ -124,21 +142,25 @@ public struct SetLoggingTable: View {
                 let canComplete = set.isCompleted || (WorkoutSessionUtils.canCompleteSet(set) && !isRestActive)
 
                 HStack(spacing: 8) {
-                    Text("\(set.setNumber)")
-                        .font(.system(size: 14, weight: .bold))
+                    Text(set.isWarmup ? "W\(set.setNumber)" : "\(set.setNumber)")
+                        .font(.system(size: set.isWarmup ? 13 : 14, weight: .bold))
                         .foregroundColor(
-                            set.isCompleted
-                                ? AppColors.accent
-                                : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35))
+                            set.isWarmup
+                                ? AppColors.warmupAmber
+                                : (set.isCompleted
+                                    ? AppColors.accent
+                                    : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35)))
                         )
                         .frame(width: 32, alignment: .leading)
 
-                    Text(prText.isEmpty ? "-" : prText)
-                        .font(.system(size: 13, weight: .medium))
+                    Text(set.isWarmup ? LanguageManager.t("warmup.badge") : (prText.isEmpty ? "-" : prText))
+                        .font(.system(size: set.isWarmup ? 10.5 : 13, weight: set.isWarmup ? .bold : .medium))
                         .foregroundColor(
-                            set.isCompleted
-                                ? AppColors.secondaryText.opacity(0.6)
-                                : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35))
+                            set.isWarmup
+                                ? AppColors.warmupAmber.opacity(0.85)
+                                : (set.isCompleted
+                                    ? AppColors.secondaryText.opacity(0.6)
+                                    : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35)))
                         )
                         .lineLimit(1)
                         .frame(width: 56, alignment: .center)
@@ -202,7 +224,7 @@ public struct SetLoggingTable: View {
                             .font(.system(size: 24))
                             .foregroundColor(
                                 set.isCompleted
-                                    ? AppColors.accent
+                                    ? (set.isWarmup ? AppColors.warmupAmber : AppColors.accent)
                                     : (!isSetEnabled
                                         ? AppColors.muted.opacity(0.15)
                                         : (canComplete ? AppColors.muted.opacity(0.5) : AppColors.muted.opacity(0.2)))
@@ -218,11 +240,27 @@ public struct SetLoggingTable: View {
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .fill(
                             set.isCompleted
-                                ? AppColors.positiveBg.opacity(0.4)
-                                : (isSetEnabled ? AppColors.surface : AppColors.surface.opacity(0.5))
+                                ? (set.isWarmup ? AppColors.warmupAmberBg.opacity(0.4) : AppColors.positiveBg.opacity(0.4))
+                                : (set.isWarmup
+                                    ? AppColors.warmupAmberBg.opacity(0.35)
+                                    : (isSetEnabled ? AppColors.surface : AppColors.surface.opacity(0.5)))
                         )
                 )
                 .contextMenu {
+                    if let toggleWarmup = onToggleWarmup {
+                        Button(action: { toggleWarmup(index) }) {
+                            Label(
+                                LanguageManager.t(set.isWarmup ? "warmup.convert_to_working" : "warmup.convert_to_warmup"),
+                                systemImage: set.isWarmup ? "dumbbell" : "flame"
+                            )
+                        }
+                    }
+                    if let inspect = onInspectPlates {
+                        let wVal = set.weightKg ?? Double(weightBinding.wrappedValue) ?? 0.0
+                        Button(action: { inspect(wVal) }) {
+                            Label(LanguageManager.t("warmup.tab_plates"), systemImage: "square.stack.3d.up")
+                        }
+                    }
                     if sets.count > 1 {
                         Button(role: .destructive, action: { onRemoveSet(index) }) {
                             Label(LanguageManager.t("table.deleteSet"), systemImage: "trash")
@@ -260,6 +298,38 @@ public struct SetLoggingTable: View {
                                 .accessibilityLabel("\(setLabel), \(fieldLabel), \(label)")
                             }
                         }
+
+                        HStack(spacing: 8) {
+                            let weightVal = set.weightKg ?? Double(weightBinding.wrappedValue) ?? 0.0
+                            Button {
+                                onInspectPlates?(weightVal)
+                            } label: {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "square.stack.3d.up")
+                                        .font(.system(size: 13))
+                                    Text(LanguageManager.t("warmup.tab_plates"))
+                                        .font(.system(size: 12, weight: .medium))
+                                }
+                                .foregroundColor(AppColors.accent)
+                                .frame(maxWidth: .infinity, minHeight: 40)
+                            }
+                            .buttonStyle(.plain)
+
+                            Button {
+                                onToggleWarmup?(index)
+                            } label: {
+                                HStack(spacing: 4) {
+                                    Image(systemName: set.isWarmup ? "dumbbell" : "flame")
+                                        .font(.system(size: 13))
+                                    Text(LanguageManager.t(set.isWarmup ? "warmup.convert_to_working" : "warmup.convert_to_warmup"))
+                                        .font(.system(size: 12, weight: .medium))
+                                }
+                                .foregroundColor(set.isWarmup ? AppColors.secondaryText : AppColors.warmupAmber)
+                                .frame(maxWidth: .infinity, minHeight: 40)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                        .padding(.top, 4)
                     }
                     .padding(.horizontal, 8).padding(.vertical, 4)
                     .background(AppColors.surfaceRaised).cornerRadius(10)
