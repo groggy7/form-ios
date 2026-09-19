@@ -414,7 +414,7 @@ struct LibraryFilterPill: View {
     @ScaledMetric(relativeTo: .subheadline) private var labelSize: CGFloat = 12
 
     var body: some View {
-        HStack(spacing: 4) {
+        HStack(spacing: 0) {
             Button(action: onTap) {
                 HStack(spacing: 4) {
                     if let equipment {
@@ -426,8 +426,16 @@ struct LibraryFilterPill: View {
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
                         .truncationMode(.tail)
+
+                    if !isSelected {
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 10, weight: .semibold))
+                            .foregroundColor(AppColors.muted)
+                    }
                 }
-                .frame(maxWidth: .infinity, alignment: .center)
+                .padding(.horizontal, 10)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
 
@@ -436,23 +444,22 @@ struct LibraryFilterPill: View {
                     Image(systemName: "xmark")
                         .font(.system(size: 11, weight: .bold))
                         .foregroundColor(AppColors.accent)
-                        .frame(width: 22, height: 22)
+                        .frame(width: 36, height: 44)
+                        .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(LanguageManager.t("library.clearFilter"))
-            } else {
-                Image(systemName: "chevron.down")
-                    .font(.system(size: 10, weight: .semibold))
-                    .foregroundColor(AppColors.muted)
+                .padding(.trailing, 2)
             }
         }
-        .padding(.horizontal, 8)
-        .frame(maxWidth: .infinity, minHeight: 44)
+        .frame(maxWidth: .infinity)
+        .frame(height: 44)
         .background(isSelected ? AppColors.positiveBg : AppColors.surface, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .stroke(isSelected ? AppColors.accent.opacity(0.6) : AppColors.border, lineWidth: 1)
         )
+        .contentShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
 }
 
