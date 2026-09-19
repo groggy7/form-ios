@@ -124,12 +124,16 @@ public struct VolumeMatrixView: View {
                 .cornerRadius(14)
             }
 
-            // KPI Metrics
-            HStack(spacing: 8) {
-                kpiCard(title: LanguageManager.t("matrix.stat.totalSets"), value: String(format: "%.1f", report.totalEffectiveSets), subtitle: LanguageManager.t("matrix.setsUnit"), icon: "dumbbell.fill", color: AppColors.purple)
-                kpiCard(title: LanguageManager.t("matrix.stat.optimal"), value: "\(report.optimalMuscleCount)", subtitle: "MAV", icon: "checkmark.circle.fill", color: Color(hex: 0x20D791))
-                kpiCard(title: LanguageManager.t("matrix.stat.undertrained"), value: "\(report.underTrainedCount)", subtitle: "< MEV", icon: "hourglass", color: Color(hex: 0x8E9BAE))
-                kpiCard(title: LanguageManager.t("matrix.stat.highFatigue"), value: "\(report.highFatigueCount)", subtitle: "> MAV", icon: "flame.fill", color: Color(hex: 0xFF897B))
+            // KPI Metrics (2x2 grid)
+            VStack(spacing: 8) {
+                HStack(spacing: 8) {
+                    kpiCard(title: LanguageManager.t("matrix.stat.totalSets"), value: String(format: "%.1f", report.totalEffectiveSets), subtitle: LanguageManager.t("matrix.setsUnit"), icon: "dumbbell.fill", color: AppColors.purple)
+                    kpiCard(title: LanguageManager.t("matrix.stat.optimal"), value: "\(report.optimalMuscleCount)", subtitle: "MAV", icon: "checkmark.circle.fill", color: Color(hex: 0x20D791))
+                }
+                HStack(spacing: 8) {
+                    kpiCard(title: LanguageManager.t("matrix.stat.undertrained"), value: "\(report.underTrainedCount)", subtitle: "< MEV", icon: "hourglass", color: Color(hex: 0x8E9BAE))
+                    kpiCard(title: LanguageManager.t("matrix.stat.highFatigue"), value: "\(report.highFatigueCount)", subtitle: "> MAV", icon: "flame.fill", color: Color(hex: 0xFF897B))
+                }
             }
 
             // Heatmap Figure Card ("Athlete Window")
@@ -255,27 +259,30 @@ public struct VolumeMatrixView: View {
     }
 
     private func kpiCard(title: String, value: String, subtitle: String, icon: String, color: Color) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 0) {
             HStack {
                 Text(title)
-                    .font(.system(size: 10, weight: .medium))
+                    .font(.system(size: 11, weight: .medium))
                     .foregroundColor(AppColors.muted)
                     .lineLimit(1)
                 Spacer()
                 Image(systemName: icon)
-                    .font(.system(size: 11))
+                    .font(.system(size: 13, weight: .semibold))
                     .foregroundColor(color)
             }
+            Spacer(minLength: 0)
             Text(value)
-                .font(.system(size: 17, weight: .bold))
+                .font(.system(size: 20, weight: .bold))
                 .foregroundColor(AppColors.text)
+            Spacer(minLength: 0)
             Text(subtitle)
-                .font(.system(size: 9, weight: .semibold))
+                .font(.system(size: 10, weight: .semibold))
                 .foregroundColor(color)
         }
-        .padding(8)
-        .frame(maxWidth: .infinity)
-        .frame(height: 80)
+        .padding(.horizontal, 16)
+        .padding(.vertical, 12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(height: 88)
         .background(AppColors.surface)
         .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
         .cornerRadius(14)
