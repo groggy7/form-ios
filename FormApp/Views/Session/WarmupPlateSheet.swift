@@ -276,16 +276,21 @@ public struct WarmupPlateSheet: View {
 
                         Spacer()
 
-                        // Plates Preview
-                        if let res = step.platesResult, !res.platesPerSide.isEmpty {
-                            Text(res.displayText)
-                                .font(.system(size: 11, weight: .medium))
-                                .foregroundColor(AppColors.muted)
-                                .multilineTextAlignment(.trailing)
-                        } else {
-                            Text(LanguageManager.t("warmup.empty_bar"))
-                                .font(.system(size: 11))
-                                .foregroundColor(AppColors.muted)
+                        // Plates Preview (clean stacked lines)
+                        VStack(alignment: .trailing, spacing: 1) {
+                            if let res = step.platesResult, !res.platesPerSide.isEmpty {
+                                ForEach(res.platesPerSide, id: \.weight) { p in
+                                    Text("\(p.count)×\(WarmupPlateEngine.formatPlateWeight(p.weight))\u{00A0}\(unit.label)")
+                                        .font(.system(size: 11, weight: .semibold))
+                                        .foregroundColor(step.isPotentiation ? AppColors.purple.opacity(0.9) : AppColors.muted)
+                                        .lineLimit(1)
+                                }
+                            } else {
+                                Text(LanguageManager.t("warmup.empty_bar"))
+                                    .font(.system(size: 11, weight: .medium))
+                                    .foregroundColor(AppColors.muted)
+                                    .lineLimit(1)
+                            }
                         }
                     }
                     .padding(12)
