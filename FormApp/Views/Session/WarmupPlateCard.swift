@@ -22,55 +22,65 @@ public struct WarmupPlateCard: View {
         if ProAccessManager.shared.isFeatureUnlocked(.warmupCalculator) {
             let hasWarmups = !warmupSets.isEmpty
 
-            HStack(spacing: 10) {
-                // Left Icon
-                ZStack {
-                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                        .fill(hasWarmups ? AppColors.warmupAmberBg : AppColors.positiveBg)
-                        .frame(width: 36, height: 36)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                .stroke(hasWarmups ? AppColors.warmupAmber.opacity(0.5) : AppColors.accent.opacity(0.4), lineWidth: 1)
-                        )
-
-                    Image(systemName: hasWarmups ? "flame.fill" : "dumbbell.fill")
-                        .font(.system(size: 16))
-                        .foregroundColor(hasWarmups ? AppColors.warmupAmber : AppColors.accent)
-                }
-
-                // Text details
-                VStack(alignment: .leading, spacing: 2) {
-                    HStack(spacing: 6) {
-                        ProBadge()
-                        Text(hasWarmups ? LanguageManager.t("warmup.active_badge") : LanguageManager.t("warmup.card_title"))
-                            .font(.system(size: 13, weight: .bold))
-                            .foregroundColor(hasWarmups ? AppColors.warmupAmber : AppColors.text)
-                    }
-
-                    Text(hasWarmups
-                         ? LanguageManager.t("warmup.active_desc", ["count": warmupSets.count])
-                         : LanguageManager.t("warmup.card_desc"))
-                        .font(.system(size: 11))
-                        .foregroundColor(AppColors.muted)
-                        .lineLimit(1)
-                }
-
-                Spacer()
-
-                // Actions
+            VStack(spacing: 10) {
                 if !hasWarmups {
-                    HStack(spacing: 6) {
+                    // Header row
+                    Button(action: onOpenPlates) {
+                        HStack(spacing: 10) {
+                            // Left Icon
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .fill(AppColors.positiveBg)
+                                    .frame(width: 36, height: 36)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                            .stroke(AppColors.accent.opacity(0.4), lineWidth: 1)
+                                    )
+
+                                Image(systemName: "dumbbell.fill")
+                                    .font(.system(size: 16))
+                                    .foregroundColor(AppColors.accent)
+                            }
+
+                            // Text details
+                            VStack(alignment: .leading, spacing: 2) {
+                                HStack(spacing: 6) {
+                                    ProBadge()
+                                    Text(LanguageManager.t("warmup.card_title"))
+                                        .font(.system(size: 13, weight: .bold))
+                                        .foregroundColor(AppColors.text)
+                                        .lineLimit(1)
+                                }
+
+                                Text(LanguageManager.t("warmup.card_desc"))
+                                    .font(.system(size: 11))
+                                    .foregroundColor(AppColors.muted)
+                                    .lineLimit(1)
+                            }
+
+                            Spacer()
+
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 13, weight: .semibold))
+                                .foregroundColor(AppColors.muted)
+                        }
+                    }
+                    .buttonStyle(.plain)
+
+                    // Action buttons (50/50 split)
+                    HStack(spacing: 8) {
                         // Generate button
                         Button(action: onGenerateWarmup) {
-                            HStack(spacing: 4) {
+                            HStack(spacing: 6) {
                                 Image(systemName: "flame.fill")
                                     .font(.system(size: 12))
                                 Text(LanguageManager.t("warmup.generate_btn"))
                                     .font(.system(size: 12, weight: .bold))
+                                    .lineLimit(1)
                             }
                             .foregroundColor(AppColors.warmupAmber)
-                            .padding(.horizontal, 10)
-                            .frame(height: 34)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 36)
                             .background(AppColors.warmupAmberBg)
                             .cornerRadius(8)
                             .overlay(
@@ -82,41 +92,78 @@ public struct WarmupPlateCard: View {
 
                         // Plates button
                         Button(action: onOpenPlates) {
-                            Image(systemName: "square.stack.3d.up.fill")
-                                .font(.system(size: 13))
-                                .foregroundColor(AppColors.secondaryText)
-                                .frame(width: 34, height: 34)
-                                .background(AppColors.surface)
-                                .cornerRadius(8)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                        .stroke(AppColors.border, lineWidth: 1)
-                                )
+                            HStack(spacing: 6) {
+                                Image(systemName: "square.stack.3d.up.fill")
+                                    .font(.system(size: 12))
+                                Text(LanguageManager.t("warmup.tab_plates"))
+                                    .font(.system(size: 12, weight: .semibold))
+                                    .lineLimit(1)
+                            }
+                            .foregroundColor(AppColors.secondaryText)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 36)
+                            .background(AppColors.surface)
+                            .cornerRadius(8)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .stroke(AppColors.border, lineWidth: 1)
+                            )
                         }
                         .buttonStyle(.plain)
-                        .accessibilityLabel(LanguageManager.t("warmup.tab_plates"))
                     }
                 } else {
-                    HStack(spacing: 6) {
-                        // Inspect Plates
-                        Button(action: onOpenPlates) {
-                            Image(systemName: "square.stack.3d.up.fill")
-                                .font(.system(size: 15))
-                                .foregroundColor(AppColors.secondaryText)
-                                .frame(width: 32, height: 32)
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel(LanguageManager.t("warmup.tab_plates"))
+                    // Active warmup sets row
+                    HStack(spacing: 10) {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                .fill(AppColors.warmupAmberBg)
+                                .frame(width: 36, height: 36)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                        .stroke(AppColors.warmupAmber.opacity(0.5), lineWidth: 1)
+                                )
 
-                        // Clear warmups
-                        Button(action: onClearWarmups) {
-                            Image(systemName: "trash")
-                                .font(.system(size: 15))
-                                .foregroundColor(AppColors.muted)
-                                .frame(width: 32, height: 32)
+                            Image(systemName: "flame.fill")
+                                .font(.system(size: 16))
+                                .foregroundColor(AppColors.warmupAmber)
                         }
-                        .buttonStyle(.plain)
-                        .accessibilityLabel(LanguageManager.t("warmup.clear_warmups"))
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            HStack(spacing: 6) {
+                                ProBadge()
+                                Text(LanguageManager.t("warmup.active_badge"))
+                                    .font(.system(size: 13, weight: .bold))
+                                    .foregroundColor(AppColors.warmupAmber)
+                                    .lineLimit(1)
+                            }
+
+                            Text(LanguageManager.t("warmup.active_desc", ["count": warmupSets.count]))
+                                .font(.system(size: 11))
+                                .foregroundColor(AppColors.muted)
+                                .lineLimit(1)
+                        }
+
+                        Spacer()
+
+                        HStack(spacing: 4) {
+                            Button(action: onOpenPlates) {
+                                Image(systemName: "square.stack.3d.up.fill")
+                                    .font(.system(size: 15))
+                                    .foregroundColor(AppColors.secondaryText)
+                                    .frame(width: 32, height: 32)
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel(LanguageManager.t("warmup.tab_plates"))
+
+                            Button(action: onClearWarmups) {
+                                Image(systemName: "trash")
+                                    .font(.system(size: 15))
+                                    .foregroundColor(AppColors.muted)
+                                    .frame(width: 32, height: 32)
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel(LanguageManager.t("warmup.clear_warmups"))
+                        }
                     }
                 }
             }

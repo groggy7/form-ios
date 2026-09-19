@@ -4789,5 +4789,36 @@ final class FormAppTests: XCTestCase {
 
         store.activeSession = originalSession
     }
+
+    @MainActor
+    func testWarmupPlateCardInactiveSnapshot() {
+        let card = WarmupPlateCard(
+            warmupSets: [],
+            onGenerateWarmup: {},
+            onOpenPlates: {},
+            onClearWarmups: {}
+        )
+        .padding(.horizontal, 16)
+        .padding(.vertical, 24)
+        .background(AppColors.background)
+
+        let controller = UIHostingController(rootView: card)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 200)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 200))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_warmup_plate_card_inactive_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote inactive warmup plate card snapshot to \(path)")
+        }
+    }
 }
 
