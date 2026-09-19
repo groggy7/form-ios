@@ -8,6 +8,7 @@ public struct VolumeMatrixView: View {
     @State private var selectedWeekKey: String = ""
     @State private var selectedMuscleKey: String = "chest"
     @State private var currentView: String = "front"
+    @State private var showInfoSheet: Bool = false
 
     public init(store: AppStore) {
         self.store = store
@@ -131,68 +132,79 @@ public struct VolumeMatrixView: View {
                 kpiCard(title: LanguageManager.t("matrix.stat.highFatigue"), value: "\(report.highFatigueCount)", subtitle: "> MAV", icon: "flame.fill", color: Color(hex: 0xFF897B))
             }
 
-            // Heatmap Figure Card
+            // Heatmap Figure Card ("Athlete Window")
             if let catalog = ExerciseMuscleCatalog.shared {
-                VStack(spacing: 14) {
-                    heatmapFigure(catalog: catalog)
-                        .frame(height: 280)
+                ZStack(alignment: .topTrailing) {
+                    VStack(spacing: 14) {
+                        heatmapFigure(catalog: catalog)
+                            .frame(height: 280)
 
-                    // Front / Back Toggle
-                    HStack(spacing: 2) {
-                        ForEach(["front", "back"], id: \.self) { view in
-                            let isSelected = currentView == view
-                            Button(action: { currentView = view }) {
-                                Text(LanguageManager.t(view == "front" ? "anatomy.front" : "anatomy.back"))
-                                    .font(.system(size: 12, weight: isSelected ? .semibold : .medium))
-                                    .foregroundColor(isSelected ? AppColors.purple : AppColors.muted)
-                                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                    .background(isSelected ? AppColors.purpleBg : Color.clear)
-                                    .cornerRadius(8)
+                        // Front / Back Toggle
+                        HStack(spacing: 2) {
+                            ForEach(["front", "back"], id: \.self) { view in
+                                let isSelected = currentView == view
+                                Button(action: { currentView = view }) {
+                                    Text(LanguageManager.t(view == "front" ? "anatomy.front" : "anatomy.back"))
+                                        .font(.system(size: 12, weight: isSelected ? .semibold : .medium))
+                                        .foregroundColor(isSelected ? AppColors.purple : AppColors.muted)
+                                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                        .background(isSelected ? AppColors.purpleBg : Color.clear)
+                                        .cornerRadius(8)
+                                }
+                                .buttonStyle(.plain)
                             }
-                            .buttonStyle(.plain)
                         }
-                    }
-                    .frame(width: 180, height: 34)
-                    .padding(3)
-                    .background(AppColors.surfaceRaised)
-                    .overlay(RoundedRectangle(cornerRadius: 11).stroke(AppColors.border, lineWidth: 1))
-                    .cornerRadius(11)
+                        .frame(width: 180, height: 34)
+                        .padding(3)
+                        .background(AppColors.surfaceRaised)
+                        .overlay(RoundedRectangle(cornerRadius: 11).stroke(AppColors.border, lineWidth: 1))
+                        .cornerRadius(11)
 
-                    // Zone Legend (2 centered rows for clean, unclipped presentation on any screen size)
-                    VStack(spacing: 6) {
-                        HStack(spacing: 12) {
-                            ForEach([VolumeZone.underMev, VolumeZone.progressive, VolumeZone.optimalMav], id: \.self) { zone in
-                                HStack(spacing: 4) {
-                                    Circle()
-                                        .fill(zone.color)
-                                        .frame(width: 7, height: 7)
-                                    Text(LanguageManager.t(zone.titleKey))
-                                        .font(.system(size: 10, weight: .medium))
-                                        .foregroundColor(AppColors.muted)
-                                        .lineLimit(1)
+                        // Zone Legend (2 centered rows for clean, unclipped presentation on any screen size)
+                        VStack(spacing: 6) {
+                            HStack(spacing: 12) {
+                                ForEach([VolumeZone.underMev, VolumeZone.progressive, VolumeZone.optimalMav], id: \.self) { zone in
+                                    HStack(spacing: 4) {
+                                        Circle()
+                                            .fill(zone.color)
+                                            .frame(width: 7, height: 7)
+                                        Text(LanguageManager.t(zone.titleKey))
+                                            .font(.system(size: 10, weight: .medium))
+                                            .foregroundColor(AppColors.muted)
+                                            .lineLimit(1)
+                                    }
+                                }
+                            }
+                            HStack(spacing: 12) {
+                                ForEach([VolumeZone.highFatigue, VolumeZone.overMrv], id: \.self) { zone in
+                                    HStack(spacing: 4) {
+                                        Circle()
+                                            .fill(zone.color)
+                                            .frame(width: 7, height: 7)
+                                        Text(LanguageManager.t(zone.titleKey))
+                                            .font(.system(size: 10, weight: .medium))
+                                            .foregroundColor(AppColors.muted)
+                                            .lineLimit(1)
+                                    }
                                 }
                             }
                         }
-                        HStack(spacing: 12) {
-                            ForEach([VolumeZone.highFatigue, VolumeZone.overMrv], id: \.self) { zone in
-                                HStack(spacing: 4) {
-                                    Circle()
-                                        .fill(zone.color)
-                                        .frame(width: 7, height: 7)
-                                    Text(LanguageManager.t(zone.titleKey))
-                                        .font(.system(size: 10, weight: .medium))
-                                        .foregroundColor(AppColors.muted)
-                                        .lineLimit(1)
-                                }
-                            }
-                        }
                     }
+                    .padding(.vertical, 16)
+                    .padding(.horizontal, 12)
+                    .background(AppColors.surface)
+                    .overlay(RoundedRectangle(cornerRadius: 20).stroke(AppColors.border, lineWidth: 1))
+                    .cornerRadius(20)
+
+                    // Circled "i" info button top-right corner of the athlete window
+                    Button(action: { showInfoSheet = true }) {
+                        Image(systemName: "info.circle")
+                            .font(.system(size: 18, weight: .regular))
+                            .foregroundColor(AppColors.secondaryText)
+                            .padding(14)
+                    }
+                    .buttonStyle(.plain)
                 }
-                .padding(.vertical, 16)
-                .padding(.horizontal, 12)
-                .background(AppColors.surface)
-                .overlay(RoundedRectangle(cornerRadius: 20).stroke(AppColors.border, lineWidth: 1))
-                .cornerRadius(20)
             }
 
             // Muscle Selectors
@@ -236,6 +248,9 @@ public struct VolumeMatrixView: View {
             if let selected = report.muscleSummaries[selectedMuscleKey] {
                 muscleDetailCard(summary: selected)
             }
+        }
+        .sheet(isPresented: $showInfoSheet) {
+            VolumeMatrixInfoSheet()
         }
     }
 

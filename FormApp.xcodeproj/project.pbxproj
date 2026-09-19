@@ -11,6 +11,7 @@
 		VM0000000000000000000004 /* VolumeMatrixModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000003 /* VolumeMatrixModels.swift */; };
 		VM0000000000000000000006 /* VolumeMatrixEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000005 /* VolumeMatrixEngine.swift */; };
 		VM0000000000000000000008 /* VolumeMatrixView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000007 /* VolumeMatrixView.swift */; };
+		VM0000000000000000000010 /* VolumeMatrixInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000009 /* VolumeMatrixInfoSheet.swift */; };
         A90000000000000000000002 /* 07_upper_lower.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001; };
         A90000000000000000000003 /* 07_upper_lower.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001; };
         A90000000000000000000005 /* 08_machine_foundation.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000004; };
@@ -119,6 +120,7 @@
 		VM0000000000000000000003 /* VolumeMatrixModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixModels.swift; sourceTree = "<group>"; };
 		VM0000000000000000000005 /* VolumeMatrixEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixEngine.swift; sourceTree = "<group>"; };
 		VM0000000000000000000007 /* VolumeMatrixView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixView.swift; sourceTree = "<group>"; };
+		VM0000000000000000000009 /* VolumeMatrixInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixInfoSheet.swift; sourceTree = "<group>"; };
 		OB0000000000000000000001 /* OnboardingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModels.swift; sourceTree = "<group>"; };
 		OV0000000000000000000001 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		PR0000000000000000000001 /* PersonalRecordTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordTracker.swift; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 				A1B2C3D4E5F60718293A4B01 /* HistoryDayPreviewCard.swift */,
 				A1B2C3D4E5F60718293A4B03 /* HistoryDetailView.swift */,
 				VM0000000000000000000007 /* VolumeMatrixView.swift */,
+				VM0000000000000000000009 /* VolumeMatrixInfoSheet.swift */,
 			);
 			path = History;
 			sourceTree = "<group>";
@@ -609,6 +612,7 @@
 				VM0000000000000000000004 /* VolumeMatrixModels.swift in Sources */,
 				VM0000000000000000000006 /* VolumeMatrixEngine.swift in Sources */,
 				VM0000000000000000000008 /* VolumeMatrixView.swift in Sources */,
+				VM0000000000000000000010 /* VolumeMatrixInfoSheet.swift in Sources */,
 				3F7B9B586131F615F225CDD2 /* ActiveSessionView.swift in Sources */,
 				329E21359E0ADED851ABBD02 /* AppColors.swift in Sources */,
 				90857D8F8161417A3E7FCFE1 /* AppHeader.swift in Sources */,
