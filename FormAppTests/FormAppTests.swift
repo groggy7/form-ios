@@ -1026,7 +1026,12 @@ final class FormAppTests: XCTestCase {
     @MainActor
     func testVolumeMatrixViewSnapshot() {
         let store = AppStore.shared
-        let view = VolumeMatrixView(store: store)
+        let view = ScrollView(showsIndicators: false) {
+            VolumeMatrixView(store: store)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 16)
+        }
+        .background(Color(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0))
 
         let controller = UIHostingController(rootView: view)
         controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)

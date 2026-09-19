@@ -58,81 +58,135 @@ public struct VolumeMatrixView: View {
 
     public var body: some View {
         VStack(spacing: 16) {
-            // Mode Selector: Logged vs Planned
+            // Mode Selector: Logged Volume vs Planned Routine
             HStack(spacing: 4) {
                 Button(action: { isPlannedMode = false }) {
                     Text(LanguageManager.t("matrix.mode.completed"))
-                        .font(.system(size: 13, weight: !isPlannedMode ? .semibold : .medium))
-                        .foregroundColor(!isPlannedMode ? AppColors.text : AppColors.muted)
+                        .font(.system(size: 14, weight: !isPlannedMode ? .bold : .medium))
+                        .foregroundColor(!isPlannedMode ? .white : Color(hex: 0x7E8B9B))
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(!isPlannedMode ? AppColors.surfaceRaised : Color.clear)
-                        .cornerRadius(9)
+                        .background(!isPlannedMode ? Color(hex: 0x0E2528) : Color.clear)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(!isPlannedMode ? Color(hex: 0x20D791) : Color.clear, lineWidth: 1.5)
+                        )
+                        .cornerRadius(12)
                 }
                 .buttonStyle(.plain)
 
                 Button(action: { isPlannedMode = true }) {
                     Text(LanguageManager.t("matrix.mode.planned"))
-                        .font(.system(size: 13, weight: isPlannedMode ? .semibold : .medium))
-                        .foregroundColor(isPlannedMode ? AppColors.text : AppColors.muted)
+                        .font(.system(size: 14, weight: isPlannedMode ? .bold : .medium))
+                        .foregroundColor(isPlannedMode ? .white : Color(hex: 0x7E8B9B))
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(isPlannedMode ? AppColors.surfaceRaised : Color.clear)
-                        .cornerRadius(9)
+                        .background(isPlannedMode ? Color(hex: 0x0E2528) : Color.clear)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .stroke(isPlannedMode ? Color(hex: 0x20D791) : Color.clear, lineWidth: 1.5)
+                        )
+                        .cornerRadius(12)
                 }
                 .buttonStyle(.plain)
             }
-            .frame(height: 44)
+            .frame(height: 48)
             .padding(4)
-            .background(AppColors.surface)
-            .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
-            .cornerRadius(12)
+            .background(Color(hex: 0x0C1014))
+            .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color(hex: 0x1E2630), lineWidth: 1))
+            .cornerRadius(16)
 
             // Week Navigator (for Logged Mode)
             if !isPlannedMode {
-                HStack {
-                    Button(action: { shiftWeek(-1) }) {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(AppColors.secondaryText)
-                            .frame(width: 36, height: 36)
+                ZStack {
+                    // Ambient diagonal teal wave canvas
+                    Canvas { context, size in
+                        let w = size.width
+                        let h = size.height
+                        var path = Path()
+                        path.move(to: CGPoint(x: 0, y: h * 0.85))
+                        path.addCurve(
+                            to: CGPoint(x: w, y: h * 0.35),
+                            control1: CGPoint(x: w * 0.3, y: h * 0.45),
+                            control2: CGPoint(x: w * 0.7, y: h * 0.95)
+                        )
+                        path.addLine(to: CGPoint(x: w, y: h))
+                        path.addLine(to: CGPoint(x: 0, y: h))
+                        path.closeSubpath()
+
+                        context.fill(
+                            path,
+                            with: .linearGradient(
+                                Gradient(colors: [Color(hex: 0x0F3B3F).opacity(0.30), Color.clear]),
+                                startPoint: CGPoint(x: 0, y: h),
+                                endPoint: CGPoint(x: w, y: 0)
+                            )
+                        )
+
+                        var line = Path()
+                        line.move(to: CGPoint(x: 0, y: h * 0.85))
+                        line.addCurve(
+                            to: CGPoint(x: w, y: h * 0.35),
+                            control1: CGPoint(x: w * 0.3, y: h * 0.45),
+                            control2: CGPoint(x: w * 0.7, y: h * 0.95)
+                        )
+                        context.stroke(line, with: .color(Color(hex: 0x1EC98B).opacity(0.16)), lineWidth: 1.2)
                     }
 
-                    Spacer()
+                    HStack {
+                        // Left circular button
+                        Button(action: { shiftWeek(-1) }) {
+                            Image(systemName: "chevron.left")
+                                .font(.system(size: 15, weight: .bold))
+                                .foregroundColor(Color(hex: 0xD0D9E3))
+                                .frame(width: 44, height: 44)
+                                .background(Color(hex: 0x161E26))
+                                .overlay(Circle().stroke(Color(hex: 0x26323E), lineWidth: 1))
+                                .clipShape(Circle())
+                        }
+                        .buttonStyle(.plain)
 
-                    VStack(spacing: 2) {
-                        Text(effectiveWeekKey == currentWeekKey ? LanguageManager.t("matrix.thisWeek") : effectiveWeekKey)
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(AppColors.text)
-                        Text(effectiveWeekKey)
-                            .font(.system(size: 11))
-                            .foregroundColor(AppColors.muted)
+                        Spacer()
+
+                        VStack(spacing: 4) {
+                            Text(effectiveWeekKey == currentWeekKey ? LanguageManager.t("matrix.thisWeek") : effectiveWeekKey)
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundColor(.white)
+                            Text(effectiveWeekKey)
+                                .font(.system(size: 13, weight: .medium))
+                                .foregroundColor(Color(hex: 0x7E8B9B))
+                        }
+
+                        Spacer()
+
+                        // Right circular button
+                        Button(action: { shiftWeek(1) }) {
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 15, weight: .bold))
+                                .foregroundColor(effectiveWeekKey < currentWeekKey ? Color(hex: 0xD0D9E3) : Color(hex: 0x7E8B9B).opacity(0.35))
+                                .frame(width: 44, height: 44)
+                                .background(Color(hex: 0x161E26))
+                                .overlay(Circle().stroke(Color(hex: 0x26323E), lineWidth: 1))
+                                .clipShape(Circle())
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(effectiveWeekKey >= currentWeekKey)
                     }
-
-                    Spacer()
-
-                    Button(action: { shiftWeek(1) }) {
-                        Image(systemName: "chevron.right")
-                            .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(effectiveWeekKey < currentWeekKey ? AppColors.secondaryText : AppColors.muted.opacity(0.3))
-                            .frame(width: 36, height: 36)
-                    }
-                    .disabled(effectiveWeekKey >= currentWeekKey)
+                    .padding(.horizontal, 16)
                 }
-                .padding(.horizontal, 10)
-                .padding(.vertical, 6)
-                .background(AppColors.surface)
-                .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
-                .cornerRadius(14)
+                .frame(height: 92)
+                .background(Color(hex: 0x11171D))
+                .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color(hex: 0x1E2833), lineWidth: 1))
+                .cornerRadius(18)
             }
 
-            // KPI Metrics (2x2 grid)
-            VStack(spacing: 8) {
-                HStack(spacing: 8) {
+            // KPI Metrics (2x2 grid with atmospheric wave badges)
+            VStack(spacing: 10) {
+                HStack(spacing: 10) {
                     kpiCard(title: LanguageManager.t("matrix.stat.totalSets"), value: String(format: "%.1f", report.totalEffectiveSets), subtitle: LanguageManager.t("matrix.setsUnit"), icon: "dumbbell.fill", color: AppColors.purple)
                     kpiCard(title: LanguageManager.t("matrix.stat.optimal"), value: "\(report.optimalMuscleCount)", subtitle: "MAV", icon: "checkmark.circle.fill", color: Color(hex: 0x20D791))
                 }
-                HStack(spacing: 8) {
+                HStack(spacing: 10) {
                     kpiCard(title: LanguageManager.t("matrix.stat.undertrained"), value: "\(report.underTrainedCount)", subtitle: "< MEV", icon: "hourglass", color: Color(hex: 0x8E9BAE))
-                    kpiCard(title: LanguageManager.t("matrix.stat.highFatigue"), value: "\(report.highFatigueCount)", subtitle: "> MAV", icon: "flame.fill", color: Color(hex: 0xFF897B))
+                    kpiCard(title: LanguageManager.t("matrix.stat.highFatigue"), value: "\(report.highFatigueCount)", subtitle: "> MAV", icon: "flame.fill", color: Color(hex: 0xFFFF6B6B))
                 }
             }
 
@@ -259,33 +313,80 @@ public struct VolumeMatrixView: View {
     }
 
     private func kpiCard(title: String, value: String, subtitle: String, icon: String, color: Color) -> some View {
-        VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                Text(title)
-                    .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(AppColors.muted)
-                    .lineLimit(1)
-                Spacer()
-                Image(systemName: icon)
-                    .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(color)
+        ZStack {
+            // Ambient corner wave glow matching theme color
+            Canvas { context, size in
+                let w = size.width
+                let h = size.height
+
+                var wave = Path()
+                wave.move(to: CGPoint(x: w * 0.35, y: h))
+                wave.addCurve(
+                    to: CGPoint(x: w, y: h * 0.62),
+                    control1: CGPoint(x: w * 0.55, y: h * 0.95),
+                    control2: CGPoint(x: w * 0.75, y: h * 0.78)
+                )
+                wave.addLine(to: CGPoint(x: w, y: h))
+                wave.closeSubpath()
+
+                context.fill(
+                    wave,
+                    with: .linearGradient(
+                        Gradient(colors: [color.opacity(0.22), color.opacity(0.04)]),
+                        startPoint: CGPoint(x: w * 0.5, y: h),
+                        endPoint: CGPoint(x: w, y: h * 0.62)
+                    )
+                )
+
+                var stroke = Path()
+                stroke.move(to: CGPoint(x: w * 0.35, y: h))
+                stroke.addCurve(
+                    to: CGPoint(x: w, y: h * 0.62),
+                    control1: CGPoint(x: w * 0.55, y: h * 0.95),
+                    control2: CGPoint(x: w * 0.75, y: h * 0.78)
+                )
+                context.stroke(stroke, with: .color(color.opacity(0.18)), lineWidth: 1.5)
             }
-            Spacer(minLength: 0)
-            Text(value)
-                .font(.system(size: 20, weight: .bold))
-                .foregroundColor(AppColors.text)
-            Spacer(minLength: 0)
-            Text(subtitle)
-                .font(.system(size: 10, weight: .semibold))
-                .foregroundColor(color)
+
+            VStack(alignment: .leading, spacing: 0) {
+                // Top row: Icon badge + Title
+                HStack(spacing: 10) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(color.opacity(0.14))
+                        RoundedRectangle(cornerRadius: 12)
+                            .stroke(color.opacity(0.32), lineWidth: 1)
+                        Image(systemName: icon)
+                            .font(.system(size: 17, weight: .semibold))
+                            .foregroundColor(color)
+                    }
+                    .frame(width: 40, height: 40)
+
+                    Text(title)
+                        .font(.system(size: 13.5, weight: .semibold))
+                        .foregroundColor(Color(hex: 0xD1D8E0))
+                        .lineLimit(1)
+                }
+
+                Spacer()
+
+                // Bottom group: Value + Subtitle
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(value)
+                        .font(.system(size: 28, weight: .bold))
+                        .foregroundColor(.white)
+                    Text(subtitle)
+                        .font(.system(size: 12, weight: .semibold))
+                        .foregroundColor(color)
+                }
+            }
+            .padding(16)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: 88)
-        .background(AppColors.surface)
-        .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
-        .cornerRadius(14)
+        .frame(height: 144)
+        .background(Color(hex: 0x10151B))
+        .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color(hex: 0x1F2732), lineWidth: 1))
+        .cornerRadius(18)
     }
 
     private func heatmapFigure(catalog: ExerciseMuscleCatalog) -> some View {
