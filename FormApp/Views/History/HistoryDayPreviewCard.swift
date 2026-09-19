@@ -256,7 +256,7 @@ public struct HistoryDayPreviewCard: View {
         switch detail.status {
         case .completed: return "checkmark"
         case .unfinished: return "clock"
-        case .missed: return "xmark"
+        case .missed: return "exclamationmark"
         }
     }
 
