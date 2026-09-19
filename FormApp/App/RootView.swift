@@ -15,6 +15,8 @@ public struct RootView: View {
             if !store.isOnboardingCompleted {
                 OnboardingView(store: store)
             } else {
+                let isBottomDockVisible = (store.currentView != .library || store.selectedExerciseId == nil) && store.selectedHistoryDetailDay == nil
+
                 ZStack(alignment: .bottom) {
                     AppColors.background.ignoresSafeArea()
 
@@ -60,13 +62,14 @@ public struct RootView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
 
                         // Bottom Navigation Dock (hidden when viewing exercise detail or history detail)
-                        if (store.currentView != .library || store.selectedExerciseId == nil) && store.selectedHistoryDetailDay == nil {
+                        if isBottomDockVisible {
                             BottomDock(currentView: Binding(
                                 get: { store.currentView },
                                 set: { store.navigate(to: $0) }
                             ))
                         }
                     }
+                    .ignoresSafeArea(.container, edges: isBottomDockVisible ? .bottom : [])
 
                     // Animated Toast Pill
                     ToastOverlay(message: store.noticeMessage)

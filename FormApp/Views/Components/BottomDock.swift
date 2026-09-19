@@ -27,7 +27,7 @@ public struct BottomDock: View {
                 .shadow(color: Color.black.opacity(0.35), radius: 8, x: 0, y: 4)
         )
         .padding(.horizontal, 20)
-        .padding(.bottom, 6)
+        .padding(.bottom, 20)
     }
 
     private func dockItem(mode: ViewMode, title: String, icon: String) -> some View {
