@@ -116,7 +116,7 @@ public struct YouTubeWebPlayerView: UIViewRepresentable {
         controller.webView = webView
         controller.startPolling()
 
-        let origin = YouTubeEmbed.origin(bundleId: Bundle.main.bundleIdentifier ?? "com.perseverancesoftware.form")
+        let origin = YouTubeEmbed.origin(bundleId: Bundle.main.bundleIdentifier ?? "com.perseverancesoftware.forcedrep")
         let html = YouTubeEmbed.page(
             video: controller.video,
             origin: origin,

@@ -726,7 +726,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.perseverancesoftware.form;
+				PRODUCT_BUNDLE_IDENTIFIER = com.perseverancesoftware.forcedrep;
 				PRODUCT_NAME = FormApp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -808,7 +808,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.perseverancesoftware.form;
+				PRODUCT_BUNDLE_IDENTIFIER = com.perseverancesoftware.forcedrep;
 				PRODUCT_NAME = FormApp;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -829,7 +829,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.perseverancesoftware.form.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.perseverancesoftware.forcedrep.tests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -849,7 +849,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.perseverancesoftware.form.tests;
+				PRODUCT_BUNDLE_IDENTIFIER = com.perseverancesoftware.forcedrep.tests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

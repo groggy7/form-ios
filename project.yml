@@ -23,7 +23,7 @@ targets:
       - path: FormApp
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.perseverancesoftware.form
+        PRODUCT_BUNDLE_IDENTIFIER: com.perseverancesoftware.forcedrep
         PRODUCT_NAME: FormApp
         INFOPLIST_FILE: FormApp/Info.plist
         GENERATE_INFOPLIST_FILE: NO
@@ -42,7 +42,7 @@ targets:
       - target: FormApp
     settings:
       base:
-        PRODUCT_BUNDLE_IDENTIFIER: com.perseverancesoftware.form.tests
+        PRODUCT_BUNDLE_IDENTIFIER: com.perseverancesoftware.forcedrep.tests
         SWIFT_VERSION: "5.0"
         CODE_SIGN_IDENTITY: ""
         CODE_SIGNING_REQUIRED: NO
