@@ -158,16 +158,32 @@ public struct VolumeMatrixView: View {
                     .overlay(RoundedRectangle(cornerRadius: 11).stroke(AppColors.border, lineWidth: 1))
                     .cornerRadius(11)
 
-                    // Zone Legend
-                    HStack(spacing: 8) {
-                        ForEach(VolumeZone.allCases, id: \.self) { zone in
-                            HStack(spacing: 4) {
-                                Circle()
-                                    .fill(zone.color)
-                                    .frame(width: 7, height: 7)
-                                Text(LanguageManager.t(zone.titleKey))
-                                    .font(.system(size: 10, weight: .medium))
-                                    .foregroundColor(AppColors.muted)
+                    // Zone Legend (2 centered rows for clean, unclipped presentation on any screen size)
+                    VStack(spacing: 6) {
+                        HStack(spacing: 12) {
+                            ForEach([VolumeZone.underMev, VolumeZone.progressive, VolumeZone.optimalMav], id: \.self) { zone in
+                                HStack(spacing: 4) {
+                                    Circle()
+                                        .fill(zone.color)
+                                        .frame(width: 7, height: 7)
+                                    Text(LanguageManager.t(zone.titleKey))
+                                        .font(.system(size: 10, weight: .medium))
+                                        .foregroundColor(AppColors.muted)
+                                        .lineLimit(1)
+                                }
+                            }
+                        }
+                        HStack(spacing: 12) {
+                            ForEach([VolumeZone.highFatigue, VolumeZone.overMrv], id: \.self) { zone in
+                                HStack(spacing: 4) {
+                                    Circle()
+                                        .fill(zone.color)
+                                        .frame(width: 7, height: 7)
+                                    Text(LanguageManager.t(zone.titleKey))
+                                        .font(.system(size: 10, weight: .medium))
+                                        .foregroundColor(AppColors.muted)
+                                        .lineLimit(1)
+                                }
                             }
                         }
                     }
