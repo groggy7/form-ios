@@ -135,9 +135,9 @@ public struct VolumeMatrixView: View {
                         // Left circular button
                         Button(action: { shiftWeek(-1) }) {
                             Image(systemName: "chevron.left")
-                                .font(.system(size: 15, weight: .bold))
+                                .font(.system(size: 14, weight: .bold))
                                 .foregroundColor(Color(hex: 0xD0D9E3))
-                                .frame(width: 44, height: 44)
+                                .frame(width: 40, height: 40)
                                 .background(Color(hex: 0x161E26))
                                 .overlay(Circle().stroke(Color(hex: 0x26323E), lineWidth: 1))
                                 .clipShape(Circle())
@@ -146,12 +146,12 @@ public struct VolumeMatrixView: View {
 
                         Spacer()
 
-                        VStack(spacing: 4) {
+                        VStack(spacing: 3) {
                             Text(effectiveWeekKey == currentWeekKey ? LanguageManager.t("matrix.thisWeek") : effectiveWeekKey)
-                                .font(.system(size: 18, weight: .bold))
+                                .font(.system(size: 17, weight: .bold))
                                 .foregroundColor(.white)
                             Text(effectiveWeekKey)
-                                .font(.system(size: 13, weight: .medium))
+                                .font(.system(size: 12.5, weight: .medium))
                                 .foregroundColor(Color(hex: 0x7E8B9B))
                         }
 
@@ -160,9 +160,9 @@ public struct VolumeMatrixView: View {
                         // Right circular button
                         Button(action: { shiftWeek(1) }) {
                             Image(systemName: "chevron.right")
-                                .font(.system(size: 15, weight: .bold))
+                                .font(.system(size: 14, weight: .bold))
                                 .foregroundColor(effectiveWeekKey < currentWeekKey ? Color(hex: 0xD0D9E3) : Color(hex: 0x7E8B9B).opacity(0.35))
-                                .frame(width: 44, height: 44)
+                                .frame(width: 40, height: 40)
                                 .background(Color(hex: 0x161E26))
                                 .overlay(Circle().stroke(Color(hex: 0x26323E), lineWidth: 1))
                                 .clipShape(Circle())
@@ -170,9 +170,9 @@ public struct VolumeMatrixView: View {
                         .buttonStyle(.plain)
                         .disabled(effectiveWeekKey >= currentWeekKey)
                     }
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 14)
                 }
-                .frame(height: 92)
+                .frame(height: 80)
                 .background(Color(hex: 0x11171D))
                 .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color(hex: 0x1E2833), lineWidth: 1))
                 .cornerRadius(18)
@@ -313,7 +313,7 @@ public struct VolumeMatrixView: View {
     }
 
     private func kpiCard(title: String, value: String, subtitle: String, icon: String, color: Color) -> some View {
-        ZStack {
+        ZStack(alignment: .topLeading) {
             // Ambient corner wave glow matching theme color
             Canvas { context, size in
                 let w = size.width
@@ -350,25 +350,25 @@ public struct VolumeMatrixView: View {
 
             VStack(alignment: .leading, spacing: 0) {
                 // Top row: Icon badge + Title
-                HStack(spacing: 10) {
+                HStack(spacing: 8) {
                     ZStack {
-                        RoundedRectangle(cornerRadius: 12)
+                        RoundedRectangle(cornerRadius: 11)
                             .fill(color.opacity(0.14))
-                        RoundedRectangle(cornerRadius: 12)
+                        RoundedRectangle(cornerRadius: 11)
                             .stroke(color.opacity(0.32), lineWidth: 1)
                         Image(systemName: icon)
-                            .font(.system(size: 17, weight: .semibold))
+                            .font(.system(size: 16, weight: .semibold))
                             .foregroundColor(color)
                     }
-                    .frame(width: 40, height: 40)
+                    .frame(width: 38, height: 38)
 
                     Text(title)
-                        .font(.system(size: 13.5, weight: .semibold))
+                        .font(.system(size: 13, weight: .semibold))
                         .foregroundColor(Color(hex: 0xD1D8E0))
                         .lineLimit(1)
                 }
 
-                Spacer()
+                Spacer(minLength: 8)
 
                 // Bottom group: Value + Subtitle
                 VStack(alignment: .leading, spacing: 2) {
@@ -380,10 +380,11 @@ public struct VolumeMatrixView: View {
                         .foregroundColor(color)
                 }
             }
-            .padding(16)
+            .padding(12)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .frame(height: 144)
+        .frame(maxWidth: .infinity)
+        .frame(height: 136)
         .background(Color(hex: 0x10151B))
         .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color(hex: 0x1F2732), lineWidth: 1))
         .cornerRadius(18)
