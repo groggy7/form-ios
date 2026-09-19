@@ -135,9 +135,9 @@ public struct VolumeMatrixView: View {
                         // Left circular button
                         Button(action: { shiftWeek(-1) }) {
                             Image(systemName: "chevron.left")
-                                .font(.system(size: 14, weight: .bold))
+                                .font(.system(size: 13, weight: .bold))
                                 .foregroundColor(Color(hex: 0xD0D9E3))
-                                .frame(width: 40, height: 40)
+                                .frame(width: 36, height: 36)
                                 .background(Color(hex: 0x161E26))
                                 .overlay(Circle().stroke(Color(hex: 0x26323E), lineWidth: 1))
                                 .clipShape(Circle())
@@ -146,12 +146,12 @@ public struct VolumeMatrixView: View {
 
                         Spacer()
 
-                        VStack(spacing: 3) {
+                        VStack(spacing: 2) {
                             Text(effectiveWeekKey == currentWeekKey ? LanguageManager.t("matrix.thisWeek") : effectiveWeekKey)
-                                .font(.system(size: 17, weight: .bold))
+                                .font(.system(size: 16, weight: .bold))
                                 .foregroundColor(.white)
                             Text(effectiveWeekKey)
-                                .font(.system(size: 12.5, weight: .medium))
+                                .font(.system(size: 12, weight: .medium))
                                 .foregroundColor(Color(hex: 0x7E8B9B))
                         }
 
@@ -160,9 +160,9 @@ public struct VolumeMatrixView: View {
                         // Right circular button
                         Button(action: { shiftWeek(1) }) {
                             Image(systemName: "chevron.right")
-                                .font(.system(size: 14, weight: .bold))
+                                .font(.system(size: 13, weight: .bold))
                                 .foregroundColor(effectiveWeekKey < currentWeekKey ? Color(hex: 0xD0D9E3) : Color(hex: 0x7E8B9B).opacity(0.35))
-                                .frame(width: 40, height: 40)
+                                .frame(width: 36, height: 36)
                                 .background(Color(hex: 0x161E26))
                                 .overlay(Circle().stroke(Color(hex: 0x26323E), lineWidth: 1))
                                 .clipShape(Circle())
@@ -172,7 +172,7 @@ public struct VolumeMatrixView: View {
                     }
                     .padding(.horizontal, 14)
                 }
-                .frame(height: 80)
+                .frame(height: 70)
                 .background(Color(hex: 0x11171D))
                 .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color(hex: 0x1E2833), lineWidth: 1))
                 .cornerRadius(18)
@@ -352,39 +352,40 @@ public struct VolumeMatrixView: View {
                 // Top row: Icon badge + Title
                 HStack(spacing: 8) {
                     ZStack {
-                        RoundedRectangle(cornerRadius: 11)
+                        RoundedRectangle(cornerRadius: 9)
                             .fill(color.opacity(0.14))
-                        RoundedRectangle(cornerRadius: 11)
+                        RoundedRectangle(cornerRadius: 9)
                             .stroke(color.opacity(0.32), lineWidth: 1)
                         Image(systemName: icon)
-                            .font(.system(size: 16, weight: .semibold))
+                            .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(color)
                     }
-                    .frame(width: 38, height: 38)
+                    .frame(width: 32, height: 32)
 
                     Text(title)
-                        .font(.system(size: 13, weight: .semibold))
+                        .font(.system(size: 12.5, weight: .semibold))
                         .foregroundColor(Color(hex: 0xD1D8E0))
                         .lineLimit(1)
                 }
 
-                Spacer(minLength: 8)
+                Spacer(minLength: 4)
 
                 // Bottom group: Value + Subtitle
-                VStack(alignment: .leading, spacing: 2) {
+                VStack(alignment: .leading, spacing: 1) {
                     Text(value)
-                        .font(.system(size: 28, weight: .bold))
+                        .font(.system(size: 24, weight: .bold))
                         .foregroundColor(.white)
                     Text(subtitle)
-                        .font(.system(size: 12, weight: .semibold))
+                        .font(.system(size: 11, weight: .semibold))
                         .foregroundColor(color)
                 }
             }
-            .padding(12)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 10)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 136)
+        .frame(height: 114)
         .background(Color(hex: 0x10151B))
         .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color(hex: 0x1F2732), lineWidth: 1))
         .cornerRadius(18)
