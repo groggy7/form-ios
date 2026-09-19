@@ -76,8 +76,9 @@ public struct HistoryView: View {
             }()
 
             ScrollView {
-                VStack(spacing: 16) {
-                    // Header row
+                ScrollViewReader { proxy in
+                    VStack(spacing: 16) {
+                        // Header row
                     HStack(alignment: .center) {
                         Text(LanguageManager.t("nav.history"))
                             .font(.system(size: 28, weight: .semibold))
@@ -245,12 +246,24 @@ public struct HistoryView: View {
                             },
                             weightUnit: store.weightUnit
                         )
+                        .id("history-day-preview-card")
                         .padding(.horizontal, 20)
                     }
                     }
 
                     Spacer().frame(height: 24)
+                        .id("history-bottom-anchor")
                 }
+                .onChange(of: selectedDateString) { _, newDate in
+                    if newDate != nil {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
+                            withAnimation(.easeInOut(duration: 0.55)) {
+                                proxy.scrollTo("history-bottom-anchor", anchor: .bottom)
+                            }
+                        }
+                    }
+                }
+            }
             }
         }
     }
