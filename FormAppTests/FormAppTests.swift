@@ -4394,5 +4394,97 @@ final class FormAppTests: XCTestCase {
             print("Successfully wrote snapshot to \(path)")
         }
     }
+
+    @MainActor
+    func testActiveSessionWithProgressionCoachSnapshot() {
+        let store = AppStore.shared
+        let originalHistory = store.state.history
+        let originalSession = store.activeSession
+
+        // Inject history for Barbell Bench Press where lifter hit rep ceiling (80kg x 12, 12, 12)
+        let sampleHistory = WorkoutSessionRecord(
+            id: "hist-bench",
+            programId: "hypertrophy-split",
+            workoutId: "push-1",
+            workoutTitle: "Monday: Chest & Triceps",
+            startedAt: "2026-09-15T10:00:00Z",
+            completedAt: "2026-09-15T11:00:00Z",
+            durationSeconds: 3600,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 80.0, reps: 12),
+                        SessionSetLog(setNumber: 2, weightKg: 80.0, reps: 12),
+                        SessionSetLog(setNumber: 3, weightKg: 80.0, reps: 12)
+                    ]
+                )
+            ]
+        )
+        store.state.history = [sampleHistory] + originalHistory
+
+        let benchExercise = Exercise(
+            id: "bench-active",
+            name: "Barbell Bench Press",
+            exerciseId: "barbell-bench-press",
+            prescription: "3 × 8–12",
+            sets: 3,
+            reps: RepTarget(min: 8, max: 12)
+        )
+        let inclineExercise = Exercise(
+            id: "incline-active",
+            name: "Incline Dumbbell Press",
+            exerciseId: "incline-dumbbell-press",
+            prescription: "3 × 10–12",
+            sets: 3,
+            reps: RepTarget(min: 10, max: 12)
+        )
+        let activeWorkout = Workout(
+            id: "workout-chest",
+            day: 1,
+            title: "Chest & Triceps",
+            exercises: [benchExercise, inclineExercise]
+        )
+
+        let initialSets = (1...3).map { ExerciseSetLog(setNumber: $0) }
+        let draft = ActiveSessionDraft(
+            id: "active-prog-session",
+            programId: "hypertrophy-split",
+            workout: activeWorkout,
+            startedAt: "2026-09-19T13:00:00Z",
+            startedAtEpochMillis: Int64(Date().timeIntervalSince1970 * 1000),
+            currentExerciseIndex: 0,
+            setsByExercise: [
+                benchExercise.id: initialSets,
+                inclineExercise.id: (1...3).map { ExerciseSetLog(setNumber: $0) }
+            ]
+        )
+
+        store.activeSession = draft
+        let sessionView = ActiveSessionView(store: store, draft: draft)
+        let controller = UIHostingController(rootView: sessionView)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_active_session_with_progression.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+
+        // Restore state
+        store.state.history = originalHistory
+        store.activeSession = originalSession
+    }
 }
 
