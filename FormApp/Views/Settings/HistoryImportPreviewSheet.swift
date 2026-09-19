@@ -23,9 +23,12 @@ public struct HistoryImportPreviewSheet: View {
                         .foregroundColor(AppColors.text)
                     Spacer()
                     Button(action: onCancel) {
-                        Image(systemName: "xmark.circle.fill")
-                            .font(.system(size: 22))
-                            .foregroundColor(AppColors.muted)
+                        Image(systemName: "xmark")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundColor(AppColors.secondaryText)
+                            .frame(width: 32, height: 32)
+                            .background(AppColors.surfaceRaised)
+                            .clipShape(Circle())
                     }
                 }
                 .padding(.horizontal, 20)
