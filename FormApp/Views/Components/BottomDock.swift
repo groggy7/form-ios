@@ -54,6 +54,7 @@ public struct BottomDock: View {
                 RoundedRectangle(cornerRadius: 17, style: .continuous)
                     .fill(isSelected ? AppColors.positiveBg : Color.clear)
             )
+            .contentShape(RoundedRectangle(cornerRadius: 17, style: .continuous))
         }
         .buttonStyle(.plain)
     }
