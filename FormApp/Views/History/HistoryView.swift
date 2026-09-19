@@ -71,23 +71,8 @@ public struct HistoryView: View {
             let weeks = WorkoutCalendar.monthWeeks(for: displayedDate)
 
             let currentSelectedDetail: HistoryDayDetailData? = {
-                if let explicit = selectedDateString {
-                    return resolveDayDetail(for: explicit)
-                }
-                if isCurrentMonth, let s = statuses[todayStr], s == .completed || s == .unfinished || s == .missed {
-                    return resolveDayDetail(for: todayStr)
-                }
-                let daysWithStatus = weeks.flatMap { $0 }.compactMap { $0 }.compactMap { d -> String? in
-                    let dStr = WorkoutCalendar.formatDate(d)
-                    if let s = statuses[dStr], s == .completed || s == .unfinished || s == .missed {
-                        return dStr
-                    }
-                    return nil
-                }
-                if let lastDay = daysWithStatus.last {
-                    return resolveDayDetail(for: lastDay)
-                }
-                return nil
+                guard let explicit = selectedDateString else { return nil }
+                return resolveDayDetail(for: explicit)
             }()
 
             ScrollView {
@@ -101,7 +86,10 @@ public struct HistoryView: View {
                         Spacer()
 
                         if activeTab == .calendar && !isCurrentMonth {
-                            Button(action: { displayedDate = Date() }) {
+                            Button(action: {
+                                displayedDate = Date()
+                                selectedDateString = nil
+                            }) {
                                 Text(LanguageManager.t("history.thisMonth"))
                                     .font(.system(size: 14, weight: .medium))
                                     .foregroundColor(AppColors.secondaryText)
@@ -207,9 +195,13 @@ public struct HistoryView: View {
                                             dateOpt: dateOpt,
                                             todayStr: todayStr,
                                             statuses: statuses,
-                                            isSelected: (dateOpt != nil && WorkoutCalendar.formatDate(dateOpt!) == (currentSelectedDetail?.dateString ?? selectedDateString)),
+                                            isSelected: (dateOpt != nil && WorkoutCalendar.formatDate(dateOpt!) == selectedDateString),
                                             onSelectDay: { date, dateString, status in
-                                                selectedDateString = dateString
+                                                if selectedDateString == dateString {
+                                                    selectedDateString = nil
+                                                } else {
+                                                    selectedDateString = dateString
+                                                }
                                             }
                                         )
                                         .frame(maxWidth: .infinity)
@@ -298,6 +290,7 @@ public struct HistoryView: View {
     private func changeMonth(by value: Int) {
         if let newDate = Calendar.current.date(byAdding: .month, value: value, to: displayedDate) {
             displayedDate = newDate
+            selectedDateString = nil
         }
     }
 
