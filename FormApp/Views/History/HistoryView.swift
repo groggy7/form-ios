@@ -31,6 +31,7 @@ public struct HistoryView: View {
     public enum HistoryTab {
         case calendar
         case volumeMatrix
+        case formLab
     }
 
     @State private var activeTab: HistoryTab = .calendar
@@ -108,7 +109,7 @@ public struct HistoryView: View {
                     .padding(.horizontal, 20)
                     .padding(.top, 10)
 
-                    // Segmented Control: Calendar vs Volume Matrix
+                    // Segmented Control: Calendar vs Volume Matrix vs Form Lab
                     HStack(spacing: 3) {
                         Button(action: { activeTab = .calendar }) {
                             Text(LanguageManager.t("history.calendar"))
@@ -121,14 +122,29 @@ public struct HistoryView: View {
                         .buttonStyle(.plain)
 
                         Button(action: { activeTab = .volumeMatrix }) {
-                            HStack(spacing: 6) {
+                            HStack(spacing: 4) {
                                 Text(LanguageManager.t("history.volumeMatrix"))
-                                    .font(.system(size: 13, weight: activeTab == .volumeMatrix ? .semibold : .medium))
+                                    .font(.system(size: 12, weight: activeTab == .volumeMatrix ? .semibold : .medium))
                                     .foregroundColor(activeTab == .volumeMatrix ? AppColors.text : AppColors.muted)
+                                    .lineLimit(1)
                                 ProBadge()
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .background(activeTab == .volumeMatrix ? AppColors.surfaceRaised : Color.clear)
+                            .cornerRadius(9)
+                        }
+                        .buttonStyle(.plain)
+
+                        Button(action: { activeTab = .formLab }) {
+                            HStack(spacing: 4) {
+                                Text("Form Lab")
+                                    .font(.system(size: 12, weight: activeTab == .formLab ? .semibold : .medium))
+                                    .foregroundColor(activeTab == .formLab ? AppColors.text : AppColors.muted)
+                                    .lineLimit(1)
+                                ProBadge()
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .background(activeTab == .formLab ? AppColors.surfaceRaised : Color.clear)
                             .cornerRadius(9)
                         }
                         .buttonStyle(.plain)
@@ -145,6 +161,9 @@ public struct HistoryView: View {
 
                     if activeTab == .volumeMatrix {
                         VolumeMatrixView(store: store)
+                            .padding(.horizontal, 20)
+                    } else if activeTab == .formLab {
+                        FormLabView(store: store)
                             .padding(.horizontal, 20)
                     } else {
                         // Month Calendar Card

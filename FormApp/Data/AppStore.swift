@@ -827,6 +827,20 @@ public final class AppStore: ObservableObject {
         }
     }
 
+    @discardableResult
+    public func restoreBackupJson(_ jsonString: String) -> Bool {
+        guard let data = jsonString.data(using: .utf8) else { return false }
+        do {
+            let decoder = JSONDecoder()
+            let decodedState = try decoder.decode(StoredAppState.self, from: data)
+            saveState(decodedState)
+            return true
+        } catch {
+            print("Failed to restore backup: \(error)")
+            return false
+        }
+    }
+
     public func previewHistoryImport(csvText: String) throws -> HistoryImportPreview {
         guard activeSession == nil else {
             throw NSError(domain: "FormApp", code: 1, userInfo: [NSLocalizedDescriptionKey: "Finish or discard the current workout before importing history."])

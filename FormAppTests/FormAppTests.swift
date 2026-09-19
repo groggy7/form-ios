@@ -1688,9 +1688,11 @@ final class FormAppTests: XCTestCase {
 
         // Clean state
         store.activeSession = nil
+        let tuesdayDate = WorkoutCalendar.scheduledDate(forWeekday: 2, relativeTo: Date())
         var st = store.state
         st.history.removeAll { $0.workoutId == tuesdayWorkout.id }
         st.completed.removeAll { $0.contains(tuesdayWorkout.id) }
+        st.calendarHistory?.entries.removeAll { $0.date == tuesdayDate }
         store.saveState(st)
 
         // Start Tuesday workout
@@ -1701,7 +1703,6 @@ final class FormAppTests: XCTestCase {
         }
 
         // Verify that draft is assigned to Tuesday in the current week
-        let tuesdayDate = WorkoutCalendar.scheduledDate(forWeekday: 2, relativeTo: Date())
         let sessionEntry = store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(draft.id)" })
         XCTAssertNotNil(sessionEntry)
         XCTAssertEqual(sessionEntry?.date, tuesdayDate)
@@ -4818,6 +4819,336 @@ final class FormAppTests: XCTestCase {
             let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_warmup_plate_card_inactive_snapshot.png"
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote inactive warmup plate card snapshot to \(path)")
+        }
+    }
+
+    // MARK: - Form Lab Unit & Snapshot Tests
+
+    func testFormLabRepMaxCalculations() {
+        // Brzycki
+        let brzycki1Rep = FormLabEngine.calculateEstimated1RM(weightKg: 100.0, reps: 1, formula: .brzycki)
+        XCTAssertEqual(brzycki1Rep, 100.0, accuracy: 0.001)
+
+        let brzycki5Reps = FormLabEngine.calculateEstimated1RM(weightKg: 100.0, reps: 5, formula: .brzycki)
+        // 100 * 36 / (37 - 5) = 3600 / 32 = 112.5
+        XCTAssertEqual(brzycki5Reps, 112.5, accuracy: 0.001)
+
+        // Epley
+        let epley10Reps = FormLabEngine.calculateEstimated1RM(weightKg: 100.0, reps: 10, formula: .epley)
+        // 100 * (1 + 10/30) = 133.333
+        XCTAssertEqual(epley10Reps, 133.333, accuracy: 0.01)
+
+        // Target N-RM
+        let target5RM = FormLabEngine.calculateTargetNRM(oneRmKg: 112.5, targetReps: 5, formula: .brzycki)
+        XCTAssertEqual(target5RM, 100.0, accuracy: 0.01)
+
+        // Multi-rep targets
+        let targets = FormLabEngine.computeRepMaxTargets(oneRmKg: 100.0, formula: .brzycki)
+        XCTAssertEqual(targets.count, 5)
+        XCTAssertEqual(targets[0].reps, 1)
+        XCTAssertEqual(targets[0].estimatedWeightKg, 100.0, accuracy: 0.01)
+        XCTAssertEqual(targets[1].reps, 3)
+        XCTAssertEqual(targets[2].reps, 5)
+        XCTAssertEqual(targets[3].reps, 8)
+        XCTAssertEqual(targets[4].reps, 10)
+    }
+
+    func testFormLabLongitudinalCurve() {
+        let session1 = WorkoutSessionRecord(
+            id: "s1",
+            programId: "p1",
+            workoutId: "w1",
+            workoutTitle: "Chest Day 1",
+            startedAt: "2026-06-01T10:00:00Z",
+            completedAt: "2026-06-01T11:00:00Z",
+            durationSeconds: 3600,
+            totalVolumeKg: 800.0,
+            totalCompletedSets: 10,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 80.0, reps: 10, isWarmup: false)
+                    ]
+                )
+            ]
+        )
+
+        let session2 = WorkoutSessionRecord(
+            id: "s2",
+            programId: "p1",
+            workoutId: "w2",
+            workoutTitle: "Chest Day 2",
+            startedAt: "2026-08-01T10:00:00Z",
+            completedAt: "2026-08-01T11:00:00Z",
+            durationSeconds: 3600,
+            totalVolumeKg: 1000.0,
+            totalCompletedSets: 10,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 100.0, reps: 5, isWarmup: false)
+                    ]
+                )
+            ]
+        )
+
+        let report = FormLabEngine.computeLongitudinalCurve(
+            exerciseName: "Barbell Bench Press",
+            history: [session1, session2],
+            timeframe: .allTime,
+            formula: .brzycki
+        )
+
+        XCTAssertEqual(report.points.count, 2)
+        XCTAssertNotNil(report.start1rmKg)
+        XCTAssertNotNil(report.current1rmKg)
+        XCTAssertGreaterThan(report.current1rmKg!, report.start1rmKg!)
+        XCTAssertGreaterThan(report.deltaKg, 0)
+        XCTAssertGreaterThan(report.percentageGain, 0)
+    }
+
+    func testFormLabAntagonistBalance() {
+        let session = WorkoutSessionRecord(
+            id: "s-balance",
+            programId: "p1",
+            workoutId: "w-bal",
+            workoutTitle: "Push Day Heavy",
+            startedAt: "2026-09-01T10:00:00Z",
+            completedAt: "2026-09-01T11:00:00Z",
+            durationSeconds: 3600,
+            totalVolumeKg: 1500.0,
+            totalCompletedSets: 11,
+            exerciseLogs: [
+                // 10 push sets
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: (1...5).map { SessionSetLog(setNumber: $0, weightKg: 80.0, reps: 8, isWarmup: false) }
+                ),
+                SessionExerciseLog(
+                    exerciseName: "Incline Dumbbell Press",
+                    sets: (1...5).map { SessionSetLog(setNumber: $0, weightKg: 30.0, reps: 10, isWarmup: false) }
+                ),
+                // 1 pull set
+                SessionExerciseLog(
+                    exerciseName: "Lat Pulldown",
+                    sets: [SessionSetLog(setNumber: 1, weightKg: 50.0, reps: 10, isWarmup: false)]
+                )
+            ]
+        )
+
+        let balance = FormLabEngine.computeAntagonistBalance(
+            history: [session],
+            timeframe: .allTime
+        )
+
+        XCTAssertEqual(balance.pushPull.primarySets, 10)
+        XCTAssertEqual(balance.pushPull.antagonistSets, 1)
+        XCTAssertEqual(balance.pushPull.status, AntagonistStatus.primaryDominant)
+    }
+
+    func testFormLabCloudMirrorEncryption() throws {
+        let payload = "{\"test_key\":\"test_value_42\"}"
+        let passphrase = "my_strong_passphrase_2026"
+
+        let encrypted = try CloudMirrorManager.encryptPayload(payload, passphrase: passphrase)
+        XCTAssertFalse(encrypted.isEmpty)
+        XCTAssertTrue(encrypted.contains("ciphertext"))
+        XCTAssertTrue(encrypted.contains("sha256"))
+
+        let decrypted = try CloudMirrorManager.decryptPayload(encrypted, passphrase: passphrase)
+        XCTAssertEqual(decrypted, payload)
+
+        // Decrypt with wrong passphrase should fail
+        XCTAssertThrowsError(try CloudMirrorManager.decryptPayload(encrypted, passphrase: "wrong_password"))
+    }
+
+    @MainActor
+    func testFormLabViewSnapshot() {
+        let store = AppStore()
+        // Provide mock history
+        let session = WorkoutSessionRecord(
+            id: "s-lab-snap",
+            programId: "p1",
+            workoutId: "w1",
+            workoutTitle: "Strength & Power",
+            startedAt: "2026-09-15T10:00:00Z",
+            completedAt: "2026-09-15T11:00:00Z",
+            durationSeconds: 3600,
+            totalVolumeKg: 2400.0,
+            totalCompletedSets: 15,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: (1...5).map { SessionSetLog(setNumber: $0, weightKg: 100.0, reps: 5, isWarmup: false) }
+                ),
+                SessionExerciseLog(
+                    exerciseName: "Barbell Squat",
+                    sets: (1...5).map { SessionSetLog(setNumber: $0, weightKg: 140.0, reps: 5, isWarmup: false) }
+                )
+            ]
+        )
+        var state = store.state
+        state.history = [session]
+        store.saveState(state)
+
+        let labView = FormLabView(store: store)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 16)
+            .background(AppColors.background)
+
+        let controller = UIHostingController(rootView: labView)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 750)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 750))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { _ in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_form_lab_matrix_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote Form Lab snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testFormLabInfoSheetSnapshot() {
+        let sheet = FormLabInfoSheet()
+
+        let controller = UIHostingController(rootView: sheet)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 700)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 700))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { _ in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_form_lab_info_sheet_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote Form Lab Info Sheet snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testFormLabCurvesSnapshot() {
+        let store = AppStore()
+        let session1 = WorkoutSessionRecord(
+            id: "s1", programId: "p1", workoutId: "w1", workoutTitle: "Chest Day 1",
+            startedAt: "2026-06-01T10:00:00Z", completedAt: "2026-06-01T11:00:00Z",
+            durationSeconds: 3600, totalVolumeKg: 800.0, totalCompletedSets: 10,
+            exerciseLogs: [SessionExerciseLog(exerciseName: "Barbell Bench Press", sets: [SessionSetLog(setNumber: 1, weightKg: 80.0, reps: 8, isWarmup: false)])]
+        )
+        let session2 = WorkoutSessionRecord(
+            id: "s2", programId: "p1", workoutId: "w2", workoutTitle: "Chest Day 2",
+            startedAt: "2026-07-15T10:00:00Z", completedAt: "2026-07-15T11:00:00Z",
+            durationSeconds: 3600, totalVolumeKg: 1000.0, totalCompletedSets: 10,
+            exerciseLogs: [SessionExerciseLog(exerciseName: "Barbell Bench Press", sets: [SessionSetLog(setNumber: 1, weightKg: 95.0, reps: 6, isWarmup: false)])]
+        )
+        let session3 = WorkoutSessionRecord(
+            id: "s3", programId: "p1", workoutId: "w3", workoutTitle: "Chest Day 3",
+            startedAt: "2026-09-10T10:00:00Z", completedAt: "2026-09-10T11:00:00Z",
+            durationSeconds: 3600, totalVolumeKg: 1200.0, totalCompletedSets: 10,
+            exerciseLogs: [SessionExerciseLog(exerciseName: "Barbell Bench Press", sets: [SessionSetLog(setNumber: 1, weightKg: 110.0, reps: 5, isWarmup: false)])]
+        )
+        var state = store.state
+        state.history = [session1, session2, session3]
+        store.saveState(state)
+
+        let labView = FormLabView(store: store, initialTab: .curves)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 16)
+            .background(AppColors.background)
+
+        let controller = UIHostingController(rootView: labView)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 750)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 750))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { _ in controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true) }
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_form_lab_curves_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote Form Lab Curves snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testFormLabBalanceSnapshot() {
+        let store = AppStore()
+        let session = WorkoutSessionRecord(
+            id: "s-bal-snap", programId: "p1", workoutId: "w1", workoutTitle: "Full Body Structural",
+            startedAt: "2026-09-12T10:00:00Z", completedAt: "2026-09-12T11:30:00Z",
+            durationSeconds: 5400, totalVolumeKg: 3500.0, totalCompletedSets: 22,
+            exerciseLogs: [
+                SessionExerciseLog(exerciseName: "Barbell Bench Press", sets: (1...5).map { SessionSetLog(setNumber: $0, weightKg: 90.0, reps: 8, isWarmup: false) }),
+                SessionExerciseLog(exerciseName: "Bent Over Barbell Row", sets: (1...5).map { SessionSetLog(setNumber: $0, weightKg: 80.0, reps: 8, isWarmup: false) }),
+                SessionExerciseLog(exerciseName: "Barbell Squat", sets: (1...4).map { SessionSetLog(setNumber: $0, weightKg: 130.0, reps: 6, isWarmup: false) }),
+                SessionExerciseLog(exerciseName: "Romanian Deadlift", sets: (1...4).map { SessionSetLog(setNumber: $0, weightKg: 110.0, reps: 8, isWarmup: false) })
+            ]
+        )
+        var state = store.state
+        state.history = [session]
+        store.saveState(state)
+
+        let labView = FormLabView(store: store, initialTab: .balance)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 16)
+            .background(AppColors.background)
+
+        let controller = UIHostingController(rootView: labView)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 850)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 850))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { _ in controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true) }
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_form_lab_balance_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote Form Lab Balance snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testFormLabMirrorSnapshot() {
+        let store = AppStore()
+        let labView = FormLabView(store: store, initialTab: .mirror)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 16)
+            .background(AppColors.background)
+
+        let controller = UIHostingController(rootView: labView)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 600)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 600))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { _ in controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true) }
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_form_lab_mirror_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote Form Lab Mirror snapshot to \(path)")
         }
     }
 }
