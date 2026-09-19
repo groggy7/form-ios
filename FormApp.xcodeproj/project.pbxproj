@@ -12,6 +12,10 @@
 		VM0000000000000000000006 /* VolumeMatrixEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000005 /* VolumeMatrixEngine.swift */; };
 		VM0000000000000000000008 /* VolumeMatrixView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000007 /* VolumeMatrixView.swift */; };
 		VM0000000000000000000010 /* VolumeMatrixInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000009 /* VolumeMatrixInfoSheet.swift */; };
+		PG0000000000000000000002 /* ProgressionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000001 /* ProgressionModels.swift */; };
+		PG0000000000000000000004 /* ProgressionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000003 /* ProgressionEngine.swift */; };
+		PG0000000000000000000006 /* ProgressionCoachCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000005 /* ProgressionCoachCard.swift */; };
+		PG0000000000000000000008 /* ProgressionInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000007 /* ProgressionInfoSheet.swift */; };
         A90000000000000000000002 /* 07_upper_lower.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001; };
         A90000000000000000000003 /* 07_upper_lower.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001; };
         A90000000000000000000005 /* 08_machine_foundation.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000004; };
@@ -121,6 +125,10 @@
 		VM0000000000000000000005 /* VolumeMatrixEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixEngine.swift; sourceTree = "<group>"; };
 		VM0000000000000000000007 /* VolumeMatrixView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixView.swift; sourceTree = "<group>"; };
 		VM0000000000000000000009 /* VolumeMatrixInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixInfoSheet.swift; sourceTree = "<group>"; };
+		PG0000000000000000000001 /* ProgressionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionModels.swift; sourceTree = "<group>"; };
+		PG0000000000000000000003 /* ProgressionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionEngine.swift; sourceTree = "<group>"; };
+		PG0000000000000000000005 /* ProgressionCoachCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionCoachCard.swift; sourceTree = "<group>"; };
+		PG0000000000000000000007 /* ProgressionInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionInfoSheet.swift; sourceTree = "<group>"; };
 		OB0000000000000000000001 /* OnboardingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModels.swift; sourceTree = "<group>"; };
 		OV0000000000000000000001 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		PR0000000000000000000001 /* PersonalRecordTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordTracker.swift; sourceTree = "<group>"; };
@@ -328,6 +336,7 @@
                 S10000000000000000000002 /* ExerciseSearch.swift */,
                 P10000000000000000000002 /* ExercisePriority.swift */,
 				B16D5A75502FFC600D48A992 /* AudioPlayer.swift */,
+				PG0000000000000000000003 /* ProgressionEngine.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -350,6 +359,7 @@
 				68CE78AD9510C658344F7888 /* WorkoutModels.swift */,
 				829AB05F70AD9B7E6DEE97CC /* WorkoutSessionUtils.swift */,
 				VM0000000000000000000003 /* VolumeMatrixModels.swift */,
+				PG0000000000000000000001 /* ProgressionModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -426,6 +436,8 @@
 				F89F4479A1065BF741953378 /* RestTimerBar.swift */,
 				DF6E74CE9A7C510C260498C8 /* SessionSummaryView.swift */,
 				303A307ACE2A1CA19B710636 /* SetLoggingTable.swift */,
+				PG0000000000000000000005 /* ProgressionCoachCard.swift */,
+				PG0000000000000000000007 /* ProgressionInfoSheet.swift */,
 			);
 			path = Session;
 			sourceTree = "<group>";
@@ -613,6 +625,10 @@
 				VM0000000000000000000006 /* VolumeMatrixEngine.swift in Sources */,
 				VM0000000000000000000008 /* VolumeMatrixView.swift in Sources */,
 				VM0000000000000000000010 /* VolumeMatrixInfoSheet.swift in Sources */,
+				PG0000000000000000000002 /* ProgressionModels.swift in Sources */,
+				PG0000000000000000000004 /* ProgressionEngine.swift in Sources */,
+				PG0000000000000000000006 /* ProgressionCoachCard.swift in Sources */,
+				PG0000000000000000000008 /* ProgressionInfoSheet.swift in Sources */,
 				3F7B9B586131F615F225CDD2 /* ActiveSessionView.swift in Sources */,
 				329E21359E0ADED851ABBD02 /* AppColors.swift in Sources */,
 				90857D8F8161417A3E7FCFE1 /* AppHeader.swift in Sources */,

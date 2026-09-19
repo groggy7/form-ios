@@ -1,0 +1,127 @@
+import SwiftUI
+
+public struct ProgressionCoachCard: View {
+    let recommendation: ExerciseProgressionRecommendation
+    let onApplyTarget: () -> Void
+    let onOpenInfo: () -> Void
+
+    @State private var wasApplied: Bool = false
+
+    public init(
+        recommendation: ExerciseProgressionRecommendation,
+        onApplyTarget: @escaping () -> Void,
+        onOpenInfo: @escaping () -> Void
+    ) {
+        self.recommendation = recommendation
+        self.onApplyTarget = onApplyTarget
+        self.onOpenInfo = onOpenInfo
+    }
+
+    public var body: some View {
+        if !ProAccessManager.shared.isFeatureUnlocked(.autoProgression) {
+            EmptyView()
+        } else {
+            VStack(alignment: .leading, spacing: 10) {
+                // Header Row
+                HStack(alignment: .center) {
+                    HStack(spacing: 8) {
+                        ProBadge()
+
+                        Text(LanguageManager.t(recommendation.action.titleKey))
+                            .font(.system(size: 11, weight: .bold))
+                            .foregroundColor(recommendation.action.color)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 3)
+                            .background(recommendation.action.badgeBgColor)
+                            .overlay(RoundedRectangle(cornerRadius: 6).stroke(recommendation.action.color.opacity(0.5), lineWidth: 1))
+                            .cornerRadius(6)
+                    }
+
+                    Spacer()
+
+                    Button(action: onOpenInfo) {
+                        Image(systemName: "info.circle")
+                            .font(.system(size: 14, weight: .medium))
+                            .foregroundColor(AppColors.muted)
+                            .padding(4)
+                    }
+                    .accessibilityLabel(LanguageManager.t("progression.info.title"))
+                }
+
+                // Target Headline & Action Button Row
+                HStack(alignment: .center) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack(spacing: 6) {
+                            Image(systemName: "bolt.fill")
+                                .font(.system(size: 13, weight: .bold))
+                                .foregroundColor(recommendation.action.color)
+
+                            let repStr = recommendation.suggestedRepsMin == recommendation.suggestedRepsMax
+                                ? "\(recommendation.suggestedRepsMin)"
+                                : "\(recommendation.suggestedRepsMin)–\(recommendation.suggestedRepsMax)"
+
+                            let targetHeadline: String = {
+                                if recommendation.suggestedWeightKg != nil {
+                                    return "\(LanguageManager.t("progression.coach.target")): \(recommendation.suggestedWeightDisplay) × \(repStr)"
+                                } else {
+                                    return "\(LanguageManager.t("progression.coach.target")): \(repStr) reps"
+                                }
+                            }()
+
+                            Text(targetHeadline)
+                                .font(.system(size: 14, weight: .bold))
+                                .foregroundColor(AppColors.text)
+                        }
+
+                        if let delta = recommendation.weightDeltaDisplay {
+                            Text(delta)
+                                .font(.system(size: 11, weight: .semibold))
+                                .foregroundColor(recommendation.action.color)
+                                .padding(.leading, 19)
+                        }
+                    }
+
+                    Spacer()
+
+                    if recommendation.suggestedWeightKg != nil {
+                        Button(action: {
+                            onApplyTarget()
+                            wasApplied = true
+                        }) {
+                            HStack(spacing: 4) {
+                                if wasApplied {
+                                    Image(systemName: "checkmark")
+                                        .font(.system(size: 10, weight: .bold))
+                                        .foregroundColor(AppColors.accent)
+                                }
+                                Text(wasApplied ? LanguageManager.t("progression.coach.applied") : LanguageManager.t("progression.coach.apply"))
+                                    .font(.system(size: 11, weight: .semibold))
+                            }
+                            .foregroundColor(wasApplied ? AppColors.accent : AppColors.text)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(wasApplied ? AppColors.positiveBg : AppColors.surface)
+                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(wasApplied ? AppColors.accent.opacity(0.5) : AppColors.border, lineWidth: 1))
+                            .cornerRadius(8)
+                        }
+                    }
+                }
+
+                // Rationale text
+                let rationaleText = LanguageManager.t(recommendation.rationaleKey, recommendation.rationaleArgs)
+                Text(rationaleText)
+                    .font(.system(size: 12))
+                    .lineSpacing(2)
+                    .foregroundColor(AppColors.secondaryText)
+            }
+            .padding(14)
+            .background(AppColors.surfaceRaised)
+            .overlay(RoundedRectangle(cornerRadius: 16).stroke(recommendation.action.color.opacity(0.35), lineWidth: 1))
+            .cornerRadius(16)
+            .contentShape(Rectangle())
+            .onTapGesture {
+                onOpenInfo()
+            }
+        }
+    }
+}

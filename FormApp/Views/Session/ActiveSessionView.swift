@@ -13,6 +13,7 @@ public struct ActiveSessionView: View {
     @State private var isWarningVisible: Bool = false
     @State private var inspectingExerciseId: String? = nil
     @State private var reportingExercise: Exercise? = nil
+    @State private var showProgressionInfo: Bool = false
 
     private let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
 
@@ -279,6 +280,33 @@ public struct ActiveSessionView: View {
                                         )
                                     }
 
+                                    let recommendation = ProgressionEngine.computeProgression(
+                                        exercise: exercise,
+                                        history: store.state.history,
+                                        weightUnit: store.weightUnit
+                                    )
+
+                                    ProgressionCoachCard(
+                                        recommendation: recommendation,
+                                        onApplyTarget: {
+                                            for (setIdx, setLog) in currentSets.enumerated() {
+                                                if !setLog.isCompleted {
+                                                    let targetWeight: String = {
+                                                        if let suggestedKg = recommendation.suggestedWeightKg {
+                                                            return store.weightUnit.formatWeight(suggestedKg)
+                                                        }
+                                                        return setLog.weightInput
+                                                    }()
+                                                    let targetReps = "\(recommendation.suggestedRepsMin)"
+                                                    updateSet(exerciseId: exercise.id, index: setIdx, weight: targetWeight, reps: targetReps)
+                                                }
+                                            }
+                                        },
+                                        onOpenInfo: {
+                                            showProgressionInfo = true
+                                        }
+                                    )
+
                                     let isRestActive = (activeDraft.restTimer?.secondsRemaining(nowEpochMillis: nowEpochMillis) ?? 0) > 0
                                     let prText = WorkoutSessionUtils.findExercisePr(history: store.state.history, exercise: exercise, unit: store.weightUnit) ?? "-"
 
@@ -450,6 +478,9 @@ public struct ActiveSessionView: View {
                     store.showNotice(LanguageManager.t("report.submitted"))
                 }
             )
+        }
+        .sheet(isPresented: $showProgressionInfo) {
+            ProgressionInfoSheet()
         }
         .onReceive(timer) { _ in
             nowEpochMillis = Int64(Date().timeIntervalSince1970 * 1000)

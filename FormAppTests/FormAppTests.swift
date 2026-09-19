@@ -4130,5 +4130,269 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(frontDelts?.indirectSets, 4)
         XCTAssertEqual(frontDelts?.totalEffectiveSets, 2.0)
     }
+
+    func testProgressionEngineReturnsFirstSessionWhenHistoryIsEmpty() {
+        let benchPress = Exercise(
+            id: "bench-1",
+            name: "Barbell Bench Press",
+            exerciseId: "barbell-bench-press",
+            sets: 3,
+            reps: RepTarget(min: 8, max: 12)
+        )
+        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: [])
+        XCTAssertEqual(rec.action, .firstSession)
+        XCTAssertNil(rec.suggestedWeightKg)
+        XCTAssertEqual(rec.suggestedRepsMin, 8)
+        XCTAssertEqual(rec.suggestedRepsMax, 12)
+        XCTAssertFalse(rec.isPlateau)
+    }
+
+    func testProgressionEngineRecommendsIncreaseLoadWhenAllSetsHitRepCeiling() {
+        let benchPress = Exercise(
+            id: "bench-1",
+            name: "Barbell Bench Press",
+            exerciseId: "barbell-bench-press",
+            sets: 3,
+            reps: RepTarget(min: 8, max: 12)
+        )
+        let history = [
+            WorkoutSessionRecord(
+                id: "s1",
+                programId: "p1",
+                workoutId: "w1",
+                workoutTitle: "Push",
+                startedAt: "2026-09-10T10:00:00Z",
+                completedAt: "2026-09-10T11:00:00Z",
+                durationSeconds: 3600,
+                exerciseLogs: [
+                    SessionExerciseLog(
+                        exerciseName: "Barbell Bench Press",
+                        sets: [
+                            SessionSetLog(setNumber: 1, weightKg: 80.0, reps: 12),
+                            SessionSetLog(setNumber: 2, weightKg: 80.0, reps: 12),
+                            SessionSetLog(setNumber: 3, weightKg: 80.0, reps: 12)
+                        ]
+                    )
+                ]
+            )
+        ]
+
+        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)
+        XCTAssertEqual(rec.action, .increaseLoad)
+        XCTAssertEqual(rec.suggestedWeightKg ?? 0, 82.5, accuracy: 0.01)
+        XCTAssertEqual(rec.suggestedRepsMin, 8)
+        XCTAssertFalse(rec.isPlateau)
+        XCTAssertTrue(rec.weightDeltaDisplay?.contains("+2.5") == true)
+    }
+
+    func testProgressionEngineRecommendsAddRepsWhenWithinBracket() {
+        let benchPress = Exercise(
+            id: "bench-1",
+            name: "Barbell Bench Press",
+            exerciseId: "barbell-bench-press",
+            sets: 3,
+            reps: RepTarget(min: 8, max: 12)
+        )
+        let history = [
+            WorkoutSessionRecord(
+                id: "s1",
+                programId: "p1",
+                workoutId: "w1",
+                workoutTitle: "Push",
+                startedAt: "2026-09-10T10:00:00Z",
+                completedAt: "2026-09-10T11:00:00Z",
+                durationSeconds: 3600,
+                exerciseLogs: [
+                    SessionExerciseLog(
+                        exerciseName: "Barbell Bench Press",
+                        sets: [
+                            SessionSetLog(setNumber: 1, weightKg: 80.0, reps: 11),
+                            SessionSetLog(setNumber: 2, weightKg: 80.0, reps: 10),
+                            SessionSetLog(setNumber: 3, weightKg: 80.0, reps: 9)
+                        ]
+                    )
+                ]
+            )
+        ]
+
+        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)
+        XCTAssertEqual(rec.action, .addReps)
+        XCTAssertEqual(rec.suggestedWeightKg ?? 0, 80.0, accuracy: 0.01)
+        XCTAssertEqual(rec.suggestedRepsMin, 12)
+        XCTAssertEqual(rec.suggestedRepsMax, 12)
+        XCTAssertFalse(rec.isPlateau)
+    }
+
+    func testProgressionEngineRecommendsHoldLoadWhenSetsMissFloor() {
+        let benchPress = Exercise(
+            id: "bench-1",
+            name: "Barbell Bench Press",
+            exerciseId: "barbell-bench-press",
+            sets: 3,
+            reps: RepTarget(min: 8, max: 12)
+        )
+        let history = [
+            WorkoutSessionRecord(
+                id: "s1",
+                programId: "p1",
+                workoutId: "w1",
+                workoutTitle: "Push",
+                startedAt: "2026-09-10T10:00:00Z",
+                completedAt: "2026-09-10T11:00:00Z",
+                durationSeconds: 3600,
+                exerciseLogs: [
+                    SessionExerciseLog(
+                        exerciseName: "Barbell Bench Press",
+                        sets: [
+                            SessionSetLog(setNumber: 1, weightKg: 80.0, reps: 8),
+                            SessionSetLog(setNumber: 2, weightKg: 80.0, reps: 7),
+                            SessionSetLog(setNumber: 3, weightKg: 80.0, reps: 6)
+                        ]
+                    )
+                ]
+            )
+        ]
+
+        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)
+        XCTAssertEqual(rec.action, .holdLoad)
+        XCTAssertEqual(rec.suggestedWeightKg ?? 0, 80.0, accuracy: 0.01)
+        XCTAssertEqual(rec.suggestedRepsMin, 8)
+        XCTAssertEqual(rec.suggestedRepsMax, 12)
+        XCTAssertFalse(rec.isPlateau)
+    }
+
+    func testProgressionEngineDetectsPlateauAfterThreeStagnantSessions() {
+        let benchPress = Exercise(
+            id: "bench-1",
+            name: "Barbell Bench Press",
+            exerciseId: "barbell-bench-press",
+            sets: 3,
+            reps: RepTarget(min: 8, max: 12)
+        )
+        let history = (1...3).map { i in
+            WorkoutSessionRecord(
+                id: "s\(i)",
+                programId: "p1",
+                workoutId: "w1",
+                workoutTitle: "Push",
+                startedAt: "2026-09-0\(i)T10:00:00Z",
+                completedAt: "2026-09-0\(i)T11:00:00Z",
+                durationSeconds: 3600,
+                exerciseLogs: [
+                    SessionExerciseLog(
+                        exerciseName: "Barbell Bench Press",
+                        sets: [
+                            SessionSetLog(setNumber: 1, weightKg: 80.0, reps: 10),
+                            SessionSetLog(setNumber: 2, weightKg: 80.0, reps: 9),
+                            SessionSetLog(setNumber: 3, weightKg: 80.0, reps: 8)
+                        ]
+                    )
+                ]
+            )
+        }
+
+        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)
+        XCTAssertTrue(rec.isPlateau)
+        XCTAssertEqual(rec.action, .deload)
+        XCTAssertEqual(rec.suggestedWeightKg ?? 0, 72.0, accuracy: 0.01)
+        XCTAssertEqual(rec.suggestedVariationId, "incline-dumbbell-press")
+        XCTAssertEqual(rec.suggestedVariationName, "Incline Dumbbell Press")
+    }
+
+    func testProgressionEngineParsesRepRangesFromPrescription() {
+        let exRange = Exercise(name: "Squat", prescription: "3 × 6–10")
+        let (min1, max1) = ProgressionEngine.parseRepRange(exercise: exRange)
+        XCTAssertEqual(min1, 6)
+        XCTAssertEqual(max1, 10)
+
+        let exFixed = Exercise(name: "Deadlift", prescription: "5 reps")
+        let (min2, max2) = ProgressionEngine.parseRepRange(exercise: exFixed)
+        XCTAssertEqual(min2, 5)
+        XCTAssertEqual(max2, 5)
+    }
+
+    @MainActor
+    func testProgressionCoachCardSnapshot() {
+        let benchPress = Exercise(
+            id: "bench-1",
+            name: "Barbell Bench Press",
+            exerciseId: "barbell-bench-press",
+            sets: 3,
+            reps: RepTarget(min: 8, max: 12)
+        )
+        let history = [
+            WorkoutSessionRecord(
+                id: "s1",
+                programId: "p1",
+                workoutId: "w1",
+                workoutTitle: "Push",
+                startedAt: "2026-09-10T10:00:00Z",
+                completedAt: "2026-09-10T11:00:00Z",
+                durationSeconds: 3600,
+                exerciseLogs: [
+                    SessionExerciseLog(
+                        exerciseName: "Barbell Bench Press",
+                        sets: [
+                            SessionSetLog(setNumber: 1, weightKg: 80.0, reps: 12),
+                            SessionSetLog(setNumber: 2, weightKg: 80.0, reps: 12),
+                            SessionSetLog(setNumber: 3, weightKg: 80.0, reps: 12)
+                        ]
+                    )
+                ]
+            )
+        ]
+
+        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)
+        let card = ProgressionCoachCard(
+            recommendation: rec,
+            onApplyTarget: {},
+            onOpenInfo: {}
+        )
+        .padding(20)
+
+        let controller = UIHostingController(rootView: card)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 180)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 180))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_progression_coach_card_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testProgressionInfoSheetSnapshot() {
+        let sheet = ProgressionInfoSheet()
+        let controller = UIHostingController(rootView: sheet)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_progression_info_sheet_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
 }
 
