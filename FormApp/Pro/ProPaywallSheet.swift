@@ -390,37 +390,19 @@ public struct ProPaywallPreview: View {
 
     public var body: some View {
         VStack(spacing: 8) {
-            ZStack {
-                HStack(spacing: 5) {
-                    Image(systemName: "crown.fill")
-                        .font(.system(size: 11, weight: .bold))
-                        .foregroundColor(AppColors.purple)
-                    Text("FORCED REP PRO")
-                        .font(.system(size: 10.5, weight: .bold))
-                        .foregroundColor(AppColors.purple)
-                        .tracking(0.5)
-                }
-                .padding(.horizontal, 8)
-                .padding(.vertical, 3.5)
-                .background(AppColors.purpleBg)
-                .cornerRadius(6)
-
-                if let onBack = onBack {
-                    HStack {
-                        Spacer()
-                        Button(action: onBack) {
-                            Image(systemName: "xmark")
-                                .font(.system(size: 10, weight: .bold))
-                                .foregroundColor(AppColors.secondaryText)
-                                .frame(width: 24, height: 24)
-                                .background(AppColors.surface)
-                                .clipShape(Circle())
-                        }
-                        .buttonStyle(.plain)
-                    }
-                }
+            HStack(spacing: 5) {
+                Image(systemName: "crown.fill")
+                    .font(.system(size: 11, weight: .bold))
+                    .foregroundColor(AppColors.purple)
+                Text("FORCED REP PRO")
+                    .font(.system(size: 10.5, weight: .bold))
+                    .foregroundColor(AppColors.purple)
+                    .tracking(0.5)
             }
-            .frame(maxWidth: .infinity)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 3.5)
+            .background(AppColors.purpleBg)
+            .cornerRadius(6)
 
             Text(LanguageManager.t(feature.titleKey))
                 .font(.system(size: 15, weight: .bold))
