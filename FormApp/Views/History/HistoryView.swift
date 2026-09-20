@@ -137,7 +137,7 @@ public struct HistoryView: View {
 
                         Button(action: { activeTab = .formLab }) {
                             HStack(spacing: 4) {
-                                Text("Form Lab")
+                                Text(LanguageManager.t("history.formLab"))
                                     .font(.system(size: 12, weight: activeTab == .formLab ? .semibold : .medium))
                                     .foregroundColor(activeTab == .formLab ? AppColors.text : AppColors.muted)
                                     .lineLimit(1)

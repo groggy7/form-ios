@@ -242,7 +242,7 @@ public struct FormLabView: View {
                         .font(.system(size: 13))
                         .foregroundColor(Color(hex: 0xF59E0B))
 
-                    let dateStr = summary.achievedDate ?? ""
+                    let dateStr = summary.achievedDate.map { formatAchievedDate($0) } ?? ""
                     let displayWeight = store.weightUnit.toDisplay(summary.bestWeightKg)
                     let unitStr = store.weightUnit.label
                     let formatted = LanguageManager.t(
@@ -428,7 +428,7 @@ public struct FormLabView: View {
                         let pt = report.points[idx]
                         HStack {
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(pt.dateString)
+                                Text(formatAchievedDate(pt.dateString))
                                     .font(.system(size: 11, weight: .medium))
                                     .foregroundColor(AppColors.muted)
                                 Text("Best: \(formatWeight(pt.topWeightKg)) × \(pt.topReps)")
@@ -886,4 +886,27 @@ private struct StrengthLineChart: View {
             )
         }
     }
+}
+
+private func formatAchievedDate(_ dateStr: String) -> String {
+    guard !dateStr.isEmpty else { return "" }
+    let isoFormatter = ISO8601DateFormatter()
+    isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+    var date = isoFormatter.date(from: dateStr)
+    if date == nil {
+        isoFormatter.formatOptions = [.withInternetDateTime]
+        date = isoFormatter.date(from: dateStr)
+    }
+    if date == nil && dateStr.count == 10 && dateStr.contains("-") {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd"
+        date = df.date(from: dateStr)
+    }
+    guard let parsedDate = date else {
+        return String(dateStr.prefix(10))
+    }
+    let displayFormatter = DateFormatter()
+    displayFormatter.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
+    displayFormatter.dateFormat = "d MMM yyyy"
+    return displayFormatter.string(from: parsedDate)
 }
