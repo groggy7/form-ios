@@ -575,7 +575,7 @@ public struct FormLabView: View {
                     .font(.system(size: 12, weight: .medium))
                     .foregroundColor(AppColors.secondaryText)
                 Spacer()
-                Text("Ratio: \(String(format: "%.2f", ratio.ratio))")
+                Text(ratio.ratio.map { String(format: "Ratio: %.2f", $0) } ?? "Ratio: —")
                     .font(.system(size: 13, weight: .bold, design: .monospaced))
                     .foregroundColor(statusColor(ratio.status))
                 Spacer()
@@ -586,23 +586,28 @@ public struct FormLabView: View {
 
             // Visual Dual Meter
             GeometryReader { geo in
-                let total = max(1, ratio.primarySets + ratio.antagonistSets)
-                let primaryFrac = CGFloat(ratio.primarySets) / CGFloat(total)
-
+                let total = ratio.primarySets + ratio.antagonistSets
                 ZStack(alignment: .leading) {
                     RoundedRectangle(cornerRadius: 4)
                         .fill(AppColors.surface)
                         .frame(height: 8)
 
-                    HStack(spacing: 2) {
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(AppColors.accent)
-                            .frame(width: max(4, geo.size.width * primaryFrac))
-                        RoundedRectangle(cornerRadius: 4)
-                            .fill(Color(hex: 0x3B82F6))
-                            .frame(width: max(4, geo.size.width * (1.0 - primaryFrac) - 2))
+                    if total > 0 {
+                        let primaryFrac = CGFloat(ratio.primarySets) / CGFloat(total)
+                        HStack(spacing: 2) {
+                            if ratio.primarySets > 0 {
+                                RoundedRectangle(cornerRadius: 4)
+                                    .fill(ratio.status == .primaryDominant ? Color(hex: 0xF59E0B) : AppColors.accent)
+                                    .frame(width: max(4, geo.size.width * primaryFrac - (ratio.antagonistSets > 0 ? 1 : 0)))
+                            }
+                            if ratio.antagonistSets > 0 {
+                                RoundedRectangle(cornerRadius: 4)
+                                    .fill(ratio.status == .antagonistDominant ? Color.red : Color(hex: 0x3B82F6))
+                                    .frame(width: max(4, geo.size.width * (1.0 - primaryFrac) - (ratio.primarySets > 0 ? 1 : 0)))
+                            }
+                        }
+                        .frame(height: 8)
                     }
-                    .frame(height: 8)
                 }
             }
             .frame(height: 8)

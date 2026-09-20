@@ -283,17 +283,26 @@ public struct FormLabEngine {
         }
 
         // 1. Push vs Pull
-        let pushPullVal = pullSets > 0 ? Double(pushSets) / Double(pullSets) : (pushSets > 0 ? 2.0 : 1.0)
         let pushPullStatus: AntagonistStatus
         if pushSets + pullSets < 3 {
             pushPullStatus = .insufficientData
-        } else if pushPullVal > 1.25 {
+        } else if pullSets == 0 {
             pushPullStatus = .primaryDominant
-        } else if pushPullVal < 0.80 {
+        } else if pushSets == 0 {
             pushPullStatus = .antagonistDominant
         } else {
-            pushPullStatus = .optimal
+            let r = Double(pushSets) / Double(pullSets)
+            if r > 1.25 {
+                pushPullStatus = .primaryDominant
+            } else if r < 0.80 {
+                pushPullStatus = .antagonistDominant
+            } else {
+                pushPullStatus = .optimal
+            }
         }
+        let pushPullRatio: Double? = (pushPullStatus != .insufficientData && pullSets > 0)
+            ? (Double(pushSets) / Double(pullSets) * 100).rounded() / 100
+            : nil
         let pushPullAlertKey: String
         switch pushPullStatus {
         case .primaryDominant: pushPullAlertKey = "form_lab.balance.push_dominant_alert"
@@ -315,7 +324,7 @@ public struct FormLabEngine {
             antagonistLabelKey: "form_lab.balance.pull_label",
             primarySets: pushSets,
             antagonistSets: pullSets,
-            ratio: (pushPullVal * 100).rounded() / 100,
+            ratio: pushPullRatio,
             optimalMin: 0.80,
             optimalMax: 1.25,
             status: pushPullStatus,
@@ -324,17 +333,26 @@ public struct FormLabEngine {
         )
 
         // 2. Quad vs Ham
-        let quadHamVal = hamSets > 0 ? Double(quadSets) / Double(hamSets) : (quadSets > 0 ? 2.0 : 1.0)
         let quadHamStatus: AntagonistStatus
         if quadSets + hamSets < 3 {
             quadHamStatus = .insufficientData
-        } else if quadHamVal > 1.40 {
+        } else if hamSets == 0 {
             quadHamStatus = .primaryDominant
-        } else if quadHamVal < 0.75 {
+        } else if quadSets == 0 {
             quadHamStatus = .antagonistDominant
         } else {
-            quadHamStatus = .optimal
+            let r = Double(quadSets) / Double(hamSets)
+            if r > 1.40 {
+                quadHamStatus = .primaryDominant
+            } else if r < 0.75 {
+                quadHamStatus = .antagonistDominant
+            } else {
+                quadHamStatus = .optimal
+            }
         }
+        let quadHamRatio: Double? = (quadHamStatus != .insufficientData && hamSets > 0)
+            ? (Double(quadSets) / Double(hamSets) * 100).rounded() / 100
+            : nil
         let quadHamAlertKey: String
         switch quadHamStatus {
         case .primaryDominant: quadHamAlertKey = "form_lab.balance.quad_dominant_alert"
@@ -356,7 +374,7 @@ public struct FormLabEngine {
             antagonistLabelKey: "form_lab.balance.ham_label",
             primarySets: quadSets,
             antagonistSets: hamSets,
-            ratio: (quadHamVal * 100).rounded() / 100,
+            ratio: quadHamRatio,
             optimalMin: 0.75,
             optimalMax: 1.40,
             status: quadHamStatus,
@@ -365,17 +383,26 @@ public struct FormLabEngine {
         )
 
         // 3. Upper vs Lower
-        let upperLowerVal = lowerSets > 0 ? Double(upperSets) / Double(lowerSets) : (upperSets > 0 ? 3.0 : 1.0)
         let upperLowerStatus: AntagonistStatus
         if upperSets + lowerSets < 4 {
             upperLowerStatus = .insufficientData
-        } else if upperLowerVal > 2.20 {
+        } else if lowerSets == 0 {
             upperLowerStatus = .primaryDominant
-        } else if upperLowerVal < 0.85 {
+        } else if upperSets == 0 {
             upperLowerStatus = .antagonistDominant
         } else {
-            upperLowerStatus = .optimal
+            let r = Double(upperSets) / Double(lowerSets)
+            if r > 2.20 {
+                upperLowerStatus = .primaryDominant
+            } else if r < 0.85 {
+                upperLowerStatus = .antagonistDominant
+            } else {
+                upperLowerStatus = .optimal
+            }
         }
+        let upperLowerRatio: Double? = (upperLowerStatus != .insufficientData && lowerSets > 0)
+            ? (Double(upperSets) / Double(lowerSets) * 100).rounded() / 100
+            : nil
         let upperLowerAlertKey: String
         switch upperLowerStatus {
         case .primaryDominant: upperLowerAlertKey = "form_lab.balance.upper_dominant_alert"
@@ -397,7 +424,7 @@ public struct FormLabEngine {
             antagonistLabelKey: "form_lab.balance.lower_label",
             primarySets: upperSets,
             antagonistSets: lowerSets,
-            ratio: (upperLowerVal * 100).rounded() / 100,
+            ratio: upperLowerRatio,
             optimalMin: 0.85,
             optimalMax: 2.20,
             status: upperLowerStatus,

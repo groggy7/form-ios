@@ -54,34 +54,38 @@ public enum WeightUnit: String, Codable, CaseIterable {
     }
 
     public func formatWeight(_ weightKg: Double) -> String {
-        guard weightKg > 0.0 else { return "0" }
-        let display = toDisplay(weightKg)
+        guard weightKg != 0.0 else { return "0" }
+        let isNegative = weightKg < 0.0
+        let absWeight = abs(weightKg)
+        let display = toDisplay(absWeight)
+        let formatted: String
         switch self {
         case .lbs:
             let rounded = display.rounded()
             if abs(display - rounded) < 0.05 || display >= 10.0 {
-                return "\(Int(rounded))"
+                formatted = "\(Int(rounded))"
             } else {
                 let oneDec = (display * 10.0).rounded() / 10.0
                 if oneDec.truncatingRemainder(dividingBy: 1.0) == 0 {
-                    return "\(Int(oneDec))"
+                    formatted = "\(Int(oneDec))"
                 } else {
-                    return String(format: "%.1f", oneDec)
+                    formatted = String(format: "%.1f", oneDec)
                 }
             }
         case .kg:
             let rounded = display.rounded()
             if abs(display - rounded) < 0.001 {
-                return "\(Int(rounded))"
+                formatted = "\(Int(rounded))"
             } else {
                 let oneDec = (display * 10.0).rounded() / 10.0
                 if oneDec.truncatingRemainder(dividingBy: 1.0) == 0 {
-                    return "\(Int(oneDec))"
+                    formatted = "\(Int(oneDec))"
                 } else {
-                    return String(format: "%.1f", oneDec)
+                    formatted = String(format: "%.1f", oneDec)
                 }
             }
         }
+        return isNegative ? "-\(formatted)" : formatted
     }
 
     public func formatWeightWithUnit(_ weightKg: Double) -> String {

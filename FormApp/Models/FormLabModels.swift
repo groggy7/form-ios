@@ -163,7 +163,7 @@ public struct AntagonistRatio: Equatable, Identifiable {
     public let antagonistLabelKey: String
     public let primarySets: Int
     public let antagonistSets: Int
-    public let ratio: Double
+    public let ratio: Double?
     public let optimalMin: Double
     public let optimalMax: Double
     public let status: AntagonistStatus
@@ -177,7 +177,7 @@ public struct AntagonistRatio: Equatable, Identifiable {
         antagonistLabelKey: String,
         primarySets: Int,
         antagonistSets: Int,
-        ratio: Double,
+        ratio: Double?,
         optimalMin: Double,
         optimalMax: Double,
         status: AntagonistStatus,

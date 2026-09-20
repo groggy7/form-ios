@@ -5105,7 +5105,81 @@ final class FormAppTests: XCTestCase {
 
         XCTAssertEqual(balance.pushPull.primarySets, 10)
         XCTAssertEqual(balance.pushPull.antagonistSets, 1)
+        XCTAssertEqual(balance.pushPull.ratio, 10.0)
         XCTAssertEqual(balance.pushPull.status, AntagonistStatus.primaryDominant)
+    }
+
+    func testAntagonistBalanceZeroAndMissingData() {
+        // Empty history: all ratios nil, insufficient data
+        let emptyBalance = FormLabEngine.computeAntagonistBalance(history: [], timeframe: .allTime)
+        XCTAssertEqual(emptyBalance.pushPull.primarySets, 0)
+        XCTAssertEqual(emptyBalance.pushPull.antagonistSets, 0)
+        XCTAssertNil(emptyBalance.pushPull.ratio)
+        XCTAssertEqual(emptyBalance.pushPull.status, .insufficientData)
+        XCTAssertNil(emptyBalance.quadHamstring.ratio)
+        XCTAssertEqual(emptyBalance.quadHamstring.status, .insufficientData)
+        XCTAssertNil(emptyBalance.upperLower.ratio)
+        XCTAssertEqual(emptyBalance.upperLower.status, .insufficientData)
+
+        // Session with push sets only (denominator = 0): ratio must be nil, not fabricated 2.0
+        let pushOnlySession = WorkoutSessionRecord(
+            id: "s-push-only",
+            programId: "p1",
+            workoutId: "w1",
+            workoutTitle: "Chest Only",
+            startedAt: "2026-09-10T10:00:00Z",
+            completedAt: "2026-09-10T11:00:00Z",
+            durationSeconds: 3600,
+            totalVolumeKg: 1000.0,
+            totalCompletedSets: 4,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: (1...4).map { SessionSetLog(setNumber: $0, weightKg: 80.0, reps: 8, isWarmup: false) }
+                )
+            ]
+        )
+        let pushOnlyBalance = FormLabEngine.computeAntagonistBalance(history: [pushOnlySession], timeframe: .allTime)
+        XCTAssertEqual(pushOnlyBalance.pushPull.primarySets, 4)
+        XCTAssertEqual(pushOnlyBalance.pushPull.antagonistSets, 0)
+        XCTAssertNil(pushOnlyBalance.pushPull.ratio)
+        XCTAssertEqual(pushOnlyBalance.pushPull.status, .primaryDominant)
+
+        // Low volume (1 push, 1 pull < 3 sets threshold): status insufficientData, ratio nil
+        let lowVolumeSession = WorkoutSessionRecord(
+            id: "s-low",
+            programId: "p1",
+            workoutId: "w1",
+            workoutTitle: "Quick Session",
+            startedAt: "2026-09-10T10:00:00Z",
+            completedAt: "2026-09-10T10:30:00Z",
+            durationSeconds: 1800,
+            totalVolumeKg: 500.0,
+            totalCompletedSets: 2,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [SessionSetLog(setNumber: 1, weightKg: 80.0, reps: 8, isWarmup: false)]
+                ),
+                SessionExerciseLog(
+                    exerciseName: "Lat Pulldown",
+                    sets: [SessionSetLog(setNumber: 1, weightKg: 50.0, reps: 10, isWarmup: false)]
+                )
+            ]
+        )
+        let lowVolumeBalance = FormLabEngine.computeAntagonistBalance(history: [lowVolumeSession], timeframe: .allTime)
+        XCTAssertEqual(lowVolumeBalance.pushPull.primarySets, 1)
+        XCTAssertEqual(lowVolumeBalance.pushPull.antagonistSets, 1)
+        XCTAssertNil(lowVolumeBalance.pushPull.ratio)
+        XCTAssertEqual(lowVolumeBalance.pushPull.status, .insufficientData)
+    }
+
+    func testNegativeWeightFormatting() {
+        XCTAssertEqual(WeightUnit.kg.formatWeight(-5.0), "-5")
+        XCTAssertEqual(WeightUnit.kg.formatWeight(-5.5), "-5.5")
+        XCTAssertEqual(WeightUnit.lbs.formatWeight(-5.0), "-11")
+        XCTAssertEqual(WeightUnit.kg.formatWeightWithUnit(-5.0), "-5 kg")
+        XCTAssertEqual(WeightUnit.kg.formatWeight(0.0), "0")
     }
 
     func testFormLabCloudMirrorEncryption() throws {
