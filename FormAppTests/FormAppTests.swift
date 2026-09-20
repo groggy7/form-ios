@@ -5046,9 +5046,9 @@ final class FormAppTests: XCTestCase {
         .background(AppColors.background)
 
         let controller = UIHostingController(rootView: card)
-        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 200)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 120)
         controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 200))
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 120))
         window.rootViewController = controller
         window.makeKeyAndVisible()
         controller.view.layoutIfNeeded()
@@ -5061,6 +5061,48 @@ final class FormAppTests: XCTestCase {
             let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_warmup_plate_card_inactive_snapshot.png"
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote inactive warmup plate card snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testProgressionCoachCardInactiveSnapshot() {
+        let dummyRecommendation = ExerciseProgressionRecommendation(
+            exerciseId: "bench_press",
+            exerciseName: "Bench Press",
+            action: .increaseLoad,
+            suggestedWeightKg: 82.5,
+            suggestedWeightDisplay: "82.5 kg",
+            suggestedRepsMin: 5,
+            suggestedRepsMax: 5,
+            weightDeltaDisplay: "+2.5 kg",
+            rationaleKey: "progression.rationale.all_sets_hit_max_reps",
+            rationaleArgs: ["reps": "5"]
+        )
+        let card = ProgressionCoachCard(
+            recommendation: dummyRecommendation,
+            onApplyTarget: {},
+            onOpenInfo: {}
+        )
+        .padding(.horizontal, 16)
+        .padding(.vertical, 24)
+        .background(AppColors.background)
+
+        let controller = UIHostingController(rootView: card)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 120)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 120))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_progression_coach_card_inactive_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote inactive progression coach card snapshot to \(path)")
         }
     }
 

@@ -18,6 +18,7 @@ public struct ActiveSessionView: View {
     @State private var showWarmupPlateSheet: Bool = false
     @State private var warmupModalTab: WarmupPlateTab = .warmupRamp
     @State private var selectedPlateWeight: Double? = nil
+    @State private var paywallFeature: ProFeature? = nil
 
     private let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
 
@@ -308,6 +309,9 @@ public struct ActiveSessionView: View {
                                         },
                                         onOpenInfo: {
                                             showProgressionInfo = true
+                                        },
+                                        onLockedClick: {
+                                            paywallFeature = .autoProgression
                                         }
                                     )
 
@@ -326,6 +330,9 @@ public struct ActiveSessionView: View {
                                         },
                                         onClearWarmups: {
                                             store.clearWarmupSets(exerciseId: exercise.id)
+                                        },
+                                        onLockedClick: {
+                                            paywallFeature = .warmupCalculator
                                         }
                                     )
 
@@ -538,6 +545,12 @@ public struct ActiveSessionView: View {
                     }
                 )
             }
+        }
+        .sheet(item: $paywallFeature) { feat in
+            ProPaywallSheet(
+                feature: feat,
+                onDismiss: { paywallFeature = nil }
+            )
         }
         .onReceive(timer) { _ in
             nowEpochMillis = Int64(Date().timeIntervalSince1970 * 1000)

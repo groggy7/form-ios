@@ -5,21 +5,90 @@ public struct WarmupPlateCard: View {
     var onGenerateWarmup: () -> Void
     var onOpenPlates: () -> Void
     var onClearWarmups: () -> Void
+    var onLockedClick: (() -> Void)? = nil
+
+    @ObservedObject private var proManager = ProAccessManager.shared
+    @State private var showInternalPaywall: Bool = false
 
     public init(
         warmupSets: [ExerciseSetLog],
         onGenerateWarmup: @escaping () -> Void,
         onOpenPlates: @escaping () -> Void,
-        onClearWarmups: @escaping () -> Void
+        onClearWarmups: @escaping () -> Void,
+        onLockedClick: (() -> Void)? = nil
     ) {
         self.warmupSets = warmupSets
         self.onGenerateWarmup = onGenerateWarmup
         self.onOpenPlates = onOpenPlates
         self.onClearWarmups = onClearWarmups
+        self.onLockedClick = onLockedClick
     }
 
     public var body: some View {
-        if ProAccessManager.shared.isFeatureUnlocked(.warmupCalculator) {
+        if !proManager.isFeatureUnlocked(.warmupCalculator) {
+            Button(action: {
+                if let onLockedClick = onLockedClick {
+                    onLockedClick()
+                } else {
+                    showInternalPaywall = true
+                }
+            }) {
+                HStack(spacing: 10) {
+                    // Left Icon
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                            .fill(AppColors.purpleBg)
+                            .frame(width: 36, height: 36)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .stroke(AppColors.purple.opacity(0.4), lineWidth: 1)
+                            )
+
+                        Image(systemName: "dumbbell.fill")
+                            .font(.system(size: 16))
+                            .foregroundColor(AppColors.purple)
+                    }
+
+                    // Text details
+                    VStack(alignment: .leading, spacing: 2) {
+                        HStack(spacing: 6) {
+                            ProBadge()
+                            Text(LanguageManager.t("pro.warmup_calculator.title"))
+                                .font(.system(size: 13, weight: .bold))
+                                .foregroundColor(AppColors.text)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.85)
+                        }
+
+                        Text(LanguageManager.t("pro.warmup_calculator.teaser"))
+                            .font(.system(size: 11))
+                            .foregroundColor(AppColors.secondaryText)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.85)
+                    }
+
+                    Spacer()
+
+                    Image(systemName: "lock.fill")
+                        .font(.system(size: 14))
+                        .foregroundColor(AppColors.purple)
+                }
+                .padding(12)
+                .background(
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(AppColors.surfaceRaised)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                .stroke(AppColors.purple.opacity(0.35), lineWidth: 1)
+                        )
+                )
+            }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("warmup-plate-card")
+            .sheet(isPresented: $showInternalPaywall) {
+                ProPaywallSheet(feature: .warmupCalculator, onDismiss: { showInternalPaywall = false })
+            }
+        } else {
             let hasWarmups = !warmupSets.isEmpty
 
             VStack(spacing: 10) {
