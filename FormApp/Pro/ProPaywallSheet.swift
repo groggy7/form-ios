@@ -384,67 +384,72 @@ public struct ProPaywallPreview: View {
     }
 
     public var body: some View {
-        VStack(spacing: 16) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 16)
-                    .fill(AppColors.purpleBg)
-                    .frame(width: 54, height: 54)
+        VStack(spacing: 8) {
+            HStack(spacing: 5) {
                 Image(systemName: "crown.fill")
-                    .font(.system(size: 24, weight: .bold))
+                    .font(.system(size: 11, weight: .bold))
                     .foregroundColor(AppColors.purple)
+                Text("FORCED REP PRO")
+                    .font(.system(size: 10.5, weight: .bold))
+                    .foregroundColor(AppColors.purple)
+                    .tracking(0.5)
             }
+            .padding(.horizontal, 8)
+            .padding(.vertical, 3.5)
+            .background(AppColors.purpleBg)
+            .cornerRadius(6)
 
-            VStack(spacing: 8) {
-                ProBadge(text: "FORCED REP PRO")
+            Text(LanguageManager.t(feature.titleKey))
+                .font(.system(size: 15, weight: .bold))
+                .foregroundColor(AppColors.text)
+                .multilineTextAlignment(.center)
+                .lineLimit(1)
 
-                Text(LanguageManager.t(feature.titleKey))
-                    .font(.system(size: 18, weight: .bold))
-                    .foregroundColor(AppColors.text)
-                    .multilineTextAlignment(.center)
+            Text(LanguageManager.t(feature.teaserKey))
+                .font(.system(size: 12))
+                .foregroundColor(AppColors.secondaryText)
+                .multilineTextAlignment(.center)
+                .lineSpacing(2)
+                .lineLimit(2)
+                .padding(.horizontal, 4)
 
-                Text(LanguageManager.t(feature.descriptionKey))
-                    .font(.system(size: 13))
-                    .foregroundColor(AppColors.secondaryText)
-                    .multilineTextAlignment(.center)
-                    .lineSpacing(3)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-
-            VStack(spacing: 8) {
-                Button(action: {
-                    if let onUpgradeClick = onUpgradeClick {
-                        onUpgradeClick()
-                    } else {
-                        showSheet = true
-                    }
-                }) {
-                    HStack(spacing: 8) {
-                        Image(systemName: "lock.fill")
-                            .font(.system(size: 14))
-                        Text(LanguageManager.t("pro.upgrade_cta"))
-                            .font(.system(size: 14, weight: .bold))
-                    }
-                    .foregroundColor(AppColors.background)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 48)
-                    .background(AppColors.accent)
-                    .cornerRadius(12)
+            Button(action: {
+                if let onUpgradeClick = onUpgradeClick {
+                    onUpgradeClick()
+                } else {
+                    showSheet = true
                 }
-                .buttonStyle(.plain)
-
-                Text(LanguageManager.t("paywall.cancel_anytime"))
-                    .font(.system(size: 11))
-                    .foregroundColor(AppColors.secondaryText)
-                    .multilineTextAlignment(.center)
+            }) {
+                HStack(spacing: 6) {
+                    Image(systemName: "lock.fill")
+                        .font(.system(size: 12))
+                    Text(LanguageManager.t("pro.upgrade_cta"))
+                        .font(.system(size: 13.5, weight: .bold))
+                }
+                .foregroundColor(AppColors.background)
+                .frame(maxWidth: .infinity)
+                .frame(height: 40)
+                .background(AppColors.accent)
+                .cornerRadius(10)
             }
+            .buttonStyle(.plain)
+            .padding(.top, 2)
+
+            Text(LanguageManager.t("paywall.cancel_anytime_short"))
+                .font(.system(size: 10))
+                .foregroundColor(AppColors.secondaryText)
+                .multilineTextAlignment(.center)
+                .lineLimit(1)
         }
-        .padding(24)
-        .background(AppColors.surfaceRaised.opacity(0.94))
+        .padding(.horizontal, 18)
+        .padding(.vertical, 14)
+        .frame(maxWidth: 285)
+        .background(AppColors.surfaceRaised.opacity(0.92))
         .overlay(
-            RoundedRectangle(cornerRadius: 20)
+            RoundedRectangle(cornerRadius: 16)
                 .stroke(AppColors.purple.opacity(0.4), lineWidth: 1)
         )
-        .cornerRadius(20)
+        .cornerRadius(16)
         .sheet(isPresented: $showSheet) {
             ProPaywallSheet(feature: feature, onDismiss: { showSheet = false })
         }

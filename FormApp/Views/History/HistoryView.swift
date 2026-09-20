@@ -78,152 +78,173 @@ public struct HistoryView: View {
                 return resolveDayDetail(for: explicit)
             }()
 
-            ScrollView {
-                ScrollViewReader { proxy in
-                    VStack(spacing: 16) {
-                        // Header row
-                    HStack(alignment: .center) {
-                        Text(LanguageManager.t("nav.history"))
-                            .font(.system(size: 28, weight: .semibold))
-                            .foregroundColor(AppColors.text)
+            VStack(spacing: 16) {
+                // Header row
+                HStack(alignment: .center) {
+                    Text(LanguageManager.t("nav.history"))
+                        .font(.system(size: 28, weight: .semibold))
+                        .foregroundColor(AppColors.text)
 
-                        Spacer()
+                    Spacer()
 
-                        if activeTab == .calendar && !isCurrentMonth {
-                            Button(action: {
-                                displayedDate = Date()
-                                selectedDateString = nil
-                            }) {
-                                Text(LanguageManager.t("history.thisMonth"))
-                                    .font(.system(size: 14, weight: .medium))
-                                    .foregroundColor(AppColors.secondaryText)
-                            }
-                            .buttonStyle(.plain)
-                            .padding(.trailing, 8)
-                        }
-
-                        FormHeaderIconButton(
-                            icon: "gearshape.fill",
-                            contentDescription: LanguageManager.t("settings.title"),
-                            onClick: onOpenSettings
-                        )
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 10)
-
-                    // Segmented Control: Calendar vs Volume Matrix vs Form Lab
-                    HStack(spacing: 3) {
-                        Button(action: { activeTab = .calendar }) {
-                            Text(LanguageManager.t("history.calendar"))
-                                .font(.system(size: 13, weight: activeTab == .calendar ? .semibold : .medium))
-                                .foregroundColor(activeTab == .calendar ? AppColors.text : AppColors.muted)
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .background(activeTab == .calendar ? AppColors.surfaceRaised : Color.clear)
-                                .cornerRadius(9)
-                        }
-                        .buttonStyle(.plain)
-
+                    if activeTab == .calendar && !isCurrentMonth {
                         Button(action: {
-                            activeTab = .volumeMatrix
+                            displayedDate = Date()
+                            selectedDateString = nil
                         }) {
-                            HStack(spacing: 4) {
-                                Text(LanguageManager.t("history.volumeMatrix"))
-                                    .font(.system(size: 12, weight: activeTab == .volumeMatrix ? .semibold : .medium))
-                                    .foregroundColor(activeTab == .volumeMatrix ? AppColors.text : AppColors.muted)
-                                    .lineLimit(1)
-                                ProBadge()
-                            }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(activeTab == .volumeMatrix ? AppColors.surfaceRaised : Color.clear)
-                            .cornerRadius(9)
+                            Text(LanguageManager.t("history.thisMonth"))
+                                .font(.system(size: 14, weight: .medium))
+                                .foregroundColor(AppColors.secondaryText)
                         }
                         .buttonStyle(.plain)
-
-                        Button(action: {
-                            activeTab = .formLab
-                        }) {
-                            HStack(spacing: 4) {
-                                Text(LanguageManager.t("history.formLab"))
-                                    .font(.system(size: 12, weight: activeTab == .formLab ? .semibold : .medium))
-                                    .foregroundColor(activeTab == .formLab ? AppColors.text : AppColors.muted)
-                                    .lineLimit(1)
-                                ProBadge()
-                            }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(activeTab == .formLab ? AppColors.surfaceRaised : Color.clear)
-                            .cornerRadius(9)
-                        }
-                        .buttonStyle(.plain)
+                        .padding(.trailing, 8)
                     }
-                    .frame(height: 44)
-                    .padding(3)
-                    .background(AppColors.surface)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .stroke(AppColors.border, lineWidth: 1)
+
+                    FormHeaderIconButton(
+                        icon: "gearshape.fill",
+                        contentDescription: LanguageManager.t("settings.title"),
+                        onClick: onOpenSettings
                     )
-                    .cornerRadius(12)
-                    .padding(.horizontal, 20)
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 10)
 
-                    if activeTab == .volumeMatrix {
-                        if proManager.isFeatureUnlocked(.volumeMatrix) {
+                // Segmented Control: Calendar vs Volume Matrix vs Form Lab
+                HStack(spacing: 3) {
+                    Button(action: { activeTab = .calendar }) {
+                        Text(LanguageManager.t("history.calendar"))
+                            .font(.system(size: 13, weight: activeTab == .calendar ? .semibold : .medium))
+                            .foregroundColor(activeTab == .calendar ? AppColors.text : AppColors.muted)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .background(activeTab == .calendar ? AppColors.surfaceRaised : Color.clear)
+                            .cornerRadius(9)
+                    }
+                    .buttonStyle(.plain)
+
+                    Button(action: {
+                        activeTab = .volumeMatrix
+                    }) {
+                        HStack(spacing: 4) {
+                            Text(LanguageManager.t("history.volumeMatrix"))
+                                .font(.system(size: 12, weight: activeTab == .volumeMatrix ? .semibold : .medium))
+                                .foregroundColor(activeTab == .volumeMatrix ? AppColors.text : AppColors.muted)
+                                .lineLimit(1)
+                            ProBadge()
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(activeTab == .volumeMatrix ? AppColors.surfaceRaised : Color.clear)
+                        .cornerRadius(9)
+                    }
+                    .buttonStyle(.plain)
+
+                    Button(action: {
+                        activeTab = .formLab
+                    }) {
+                        HStack(spacing: 4) {
+                            Text(LanguageManager.t("history.formLab"))
+                                .font(.system(size: 12, weight: activeTab == .formLab ? .semibold : .medium))
+                                .foregroundColor(activeTab == .formLab ? AppColors.text : AppColors.muted)
+                                .lineLimit(1)
+                            ProBadge()
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(activeTab == .formLab ? AppColors.surfaceRaised : Color.clear)
+                        .cornerRadius(9)
+                    }
+                    .buttonStyle(.plain)
+                }
+                .frame(height: 44)
+                .padding(3)
+                .background(AppColors.surface)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12)
+                        .stroke(AppColors.border, lineWidth: 1)
+                )
+                .cornerRadius(12)
+                .padding(.horizontal, 20)
+
+                if activeTab == .volumeMatrix {
+                    if proManager.isFeatureUnlocked(.volumeMatrix) {
+                        ScrollView {
                             VolumeMatrixView(store: store)
                                 .padding(.horizontal, 20)
-                        } else {
-                            ZStack {
-                                VolumeMatrixView(store: store)
-                                    .blur(radius: 16)
-                                    .opacity(0.45)
-                                    .allowsHitTesting(false)
-
-                                LinearGradient(
-                                    colors: [
-                                        AppColors.background.opacity(0.4),
-                                        AppColors.background.opacity(0.75),
-                                        AppColors.background.opacity(0.92)
-                                    ],
-                                    startPoint: .top,
-                                    endPoint: .bottom
-                                )
-                                .allowsHitTesting(false)
-
-                                ProPaywallPreview(feature: .volumeMatrix) {
-                                    activePaywallFeature = .volumeMatrix
-                                }
-                            }
-                            .padding(.horizontal, 20)
-                        }
-                    } else if activeTab == .formLab {
-                        if proManager.isFeatureUnlocked(.formLab) {
-                            FormLabView(store: store)
-                                .padding(.horizontal, 20)
-                        } else {
-                            ZStack {
-                                FormLabView(store: store)
-                                    .blur(radius: 16)
-                                    .opacity(0.45)
-                                    .allowsHitTesting(false)
-
-                                LinearGradient(
-                                    colors: [
-                                        AppColors.background.opacity(0.4),
-                                        AppColors.background.opacity(0.75),
-                                        AppColors.background.opacity(0.92)
-                                    ],
-                                    startPoint: .top,
-                                    endPoint: .bottom
-                                )
-                                .allowsHitTesting(false)
-
-                                ProPaywallPreview(feature: .formLab) {
-                                    activePaywallFeature = .formLab
-                                }
-                            }
-                            .padding(.horizontal, 20)
+                                .padding(.bottom, 24)
                         }
                     } else {
-                        // Month Calendar Card
-                        VStack(spacing: 10) {
+                        ZStack {
+                            VolumeMatrixView(store: store)
+                                .padding(.horizontal, 20)
+                                .blur(radius: 6)
+                                .opacity(0.85)
+                                .allowsHitTesting(false)
+
+                            LinearGradient(
+                                colors: [
+                                    Color.black.opacity(0.12),
+                                    Color.black.opacity(0.25),
+                                    Color.black.opacity(0.42)
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                            .allowsHitTesting(false)
+
+                            ProPaywallPreview(feature: .volumeMatrix) {
+                                activePaywallFeature = .volumeMatrix
+                            }
+                            .padding(.horizontal, 24)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .clipped()
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            activePaywallFeature = .volumeMatrix
+                        }
+                    }
+                } else if activeTab == .formLab {
+                    if proManager.isFeatureUnlocked(.formLab) {
+                        ScrollView {
+                            FormLabView(store: store)
+                                .padding(.horizontal, 20)
+                                .padding(.bottom, 24)
+                        }
+                    } else {
+                        ZStack {
+                            FormLabView(store: store)
+                                .padding(.horizontal, 20)
+                                .blur(radius: 6)
+                                .opacity(0.85)
+                                .allowsHitTesting(false)
+
+                            LinearGradient(
+                                colors: [
+                                    Color.black.opacity(0.12),
+                                    Color.black.opacity(0.25),
+                                    Color.black.opacity(0.42)
+                                ],
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                            .allowsHitTesting(false)
+
+                            ProPaywallPreview(feature: .formLab) {
+                                activePaywallFeature = .formLab
+                            }
+                            .padding(.horizontal, 24)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .clipped()
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            activePaywallFeature = .formLab
+                        }
+                    }
+                } else {
+                    ScrollView {
+                        ScrollViewReader { proxy in
+                            VStack(spacing: 16) {
+                                // Month Calendar Card
+                                VStack(spacing: 10) {
                         // Month navigation row
                         HStack {
                             Button(action: { changeMonth(by: -1) }) {
@@ -324,7 +345,6 @@ public struct HistoryView: View {
                         .id("history-day-preview-card")
                         .padding(.horizontal, 20)
                     }
-                    }
 
                     Spacer().frame(height: 24)
                         .id("history-bottom-anchor")
@@ -339,11 +359,13 @@ public struct HistoryView: View {
                     }
                 }
             }
-            .sheet(item: $activePaywallFeature) { feat in
-                ProPaywallSheet(feature: feat, onDismiss: { activePaywallFeature = nil })
-            }
         }
     }
+}
+    .sheet(item: $activePaywallFeature) { feat in
+        ProPaywallSheet(feature: feat, onDismiss: { activePaywallFeature = nil })
+    }
+}
 }
 
     private func handleWorkoutAction(detail: HistoryDayDetailData) {

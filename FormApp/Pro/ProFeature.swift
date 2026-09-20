@@ -25,6 +25,15 @@ public enum ProFeature: String, CaseIterable, Identifiable {
         case .formLab: return "pro.form_lab.description"
         }
     }
+
+    public var teaserKey: String {
+        switch self {
+        case .volumeMatrix: return "pro.volume_matrix.teaser"
+        case .autoProgression: return "pro.auto_progression.teaser"
+        case .warmupCalculator: return "pro.warmup_calculator.teaser"
+        case .formLab: return "pro.form_lab.teaser"
+        }
+    }
 }
 
 public class ProAccessManager: ObservableObject {

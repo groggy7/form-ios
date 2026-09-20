@@ -5290,15 +5290,15 @@ final class FormAppTests: XCTestCase {
                     .padding(.horizontal, 16)
                     .padding(.vertical, 16)
             }
-            .blur(radius: 12)
-            .opacity(0.65)
+            .blur(radius: 6)
+            .opacity(0.85)
             .allowsHitTesting(false)
 
             LinearGradient(
                 colors: [
-                    AppColors.background.opacity(0.2),
-                    AppColors.background.opacity(0.6),
-                    AppColors.background.opacity(0.85)
+                    Color.black.opacity(0.12),
+                    Color.black.opacity(0.25),
+                    Color.black.opacity(0.42)
                 ],
                 startPoint: .top,
                 endPoint: .bottom
@@ -5306,7 +5306,7 @@ final class FormAppTests: XCTestCase {
             .allowsHitTesting(false)
 
             ProPaywallPreview(feature: .volumeMatrix)
-                .padding(.horizontal, 20)
+                .padding(.horizontal, 24)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(AppColors.background)
