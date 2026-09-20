@@ -5246,4 +5246,85 @@ final class FormAppTests: XCTestCase {
             print("Successfully wrote Rep Lab Paywall snapshot to \(path)")
         }
     }
+
+    @MainActor
+    func testVolumeMatrixLockedBlurredPreviewSnapshot() {
+        let store = AppStore.shared
+        ProAccessManager.shared.updateSubscriptionStatus(active: false)
+        ProAccessManager.shared.resetOverrides()
+
+        // Populate a completed workout so heatmaps and metrics glow through
+        let session = WorkoutSessionRecord(
+            id: UUID().uuidString,
+            programId: "prog_test",
+            workoutId: "w1",
+            workoutTitle: "Push Strength",
+            startedAt: "2026-09-20T10:00:00.000Z",
+            completedAt: "2026-09-20T10:45:00.000Z",
+            durationSeconds: 2700,
+            totalVolumeKg: 4250.0,
+            totalCompletedSets: 5,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 80, reps: 10),
+                        SessionSetLog(setNumber: 2, weightKg: 90, reps: 8),
+                        SessionSetLog(setNumber: 3, weightKg: 100, reps: 6)
+                    ]
+                ),
+                SessionExerciseLog(
+                    exerciseName: "Barbell Squat",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 120, reps: 8),
+                        SessionSetLog(setNumber: 2, weightKg: 130, reps: 8)
+                    ]
+                )
+            ]
+        )
+        store.state.history.append(session)
+
+        let view = ZStack {
+            ScrollView(showsIndicators: false) {
+                VolumeMatrixView(store: store)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 16)
+            }
+            .blur(radius: 12)
+            .opacity(0.65)
+            .allowsHitTesting(false)
+
+            LinearGradient(
+                colors: [
+                    AppColors.background.opacity(0.2),
+                    AppColors.background.opacity(0.6),
+                    AppColors.background.opacity(0.85)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .allowsHitTesting(false)
+
+            ProPaywallPreview(feature: .volumeMatrix)
+                .padding(.horizontal, 20)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(AppColors.background)
+
+        let controller = UIHostingController(rootView: view)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { _ in controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true) }
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_volume_matrix_locked_blurred_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote Volume Matrix Locked Blurred snapshot to \(path)")
+        }
+    }
 }

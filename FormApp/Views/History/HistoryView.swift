@@ -125,9 +125,6 @@ public struct HistoryView: View {
 
                         Button(action: {
                             activeTab = .volumeMatrix
-                            if !proManager.isFeatureUnlocked(.volumeMatrix) {
-                                activePaywallFeature = .volumeMatrix
-                            }
                         }) {
                             HStack(spacing: 4) {
                                 Text(LanguageManager.t("history.volumeMatrix"))
@@ -144,9 +141,6 @@ public struct HistoryView: View {
 
                         Button(action: {
                             activeTab = .formLab
-                            if !proManager.isFeatureUnlocked(.formLab) {
-                                activePaywallFeature = .formLab
-                            }
                         }) {
                             HStack(spacing: 4) {
                                 Text(LanguageManager.t("history.formLab"))
@@ -176,8 +170,26 @@ public struct HistoryView: View {
                             VolumeMatrixView(store: store)
                                 .padding(.horizontal, 20)
                         } else {
-                            ProPaywallPreview(feature: .volumeMatrix) {
-                                activePaywallFeature = .volumeMatrix
+                            ZStack {
+                                VolumeMatrixView(store: store)
+                                    .blur(radius: 16)
+                                    .opacity(0.45)
+                                    .allowsHitTesting(false)
+
+                                LinearGradient(
+                                    colors: [
+                                        AppColors.background.opacity(0.4),
+                                        AppColors.background.opacity(0.75),
+                                        AppColors.background.opacity(0.92)
+                                    ],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                                .allowsHitTesting(false)
+
+                                ProPaywallPreview(feature: .volumeMatrix) {
+                                    activePaywallFeature = .volumeMatrix
+                                }
                             }
                             .padding(.horizontal, 20)
                         }
@@ -186,8 +198,26 @@ public struct HistoryView: View {
                             FormLabView(store: store)
                                 .padding(.horizontal, 20)
                         } else {
-                            ProPaywallPreview(feature: .formLab) {
-                                activePaywallFeature = .formLab
+                            ZStack {
+                                FormLabView(store: store)
+                                    .blur(radius: 16)
+                                    .opacity(0.45)
+                                    .allowsHitTesting(false)
+
+                                LinearGradient(
+                                    colors: [
+                                        AppColors.background.opacity(0.4),
+                                        AppColors.background.opacity(0.75),
+                                        AppColors.background.opacity(0.92)
+                                    ],
+                                    startPoint: .top,
+                                    endPoint: .bottom
+                                )
+                                .allowsHitTesting(false)
+
+                                ProPaywallPreview(feature: .formLab) {
+                                    activePaywallFeature = .formLab
+                                }
                             }
                             .padding(.horizontal, 20)
                         }

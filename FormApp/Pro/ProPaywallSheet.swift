@@ -388,20 +388,19 @@ public struct ProPaywallPreview: View {
             ZStack {
                 RoundedRectangle(cornerRadius: 16)
                     .fill(AppColors.purpleBg)
-                    .frame(width: 56, height: 56)
+                    .frame(width: 54, height: 54)
                 Image(systemName: "crown.fill")
                     .font(.system(size: 24, weight: .bold))
                     .foregroundColor(AppColors.purple)
             }
 
-            VStack(spacing: 6) {
-                HStack(spacing: 8) {
-                    Text(LanguageManager.t(feature.titleKey))
-                        .font(.system(size: 18, weight: .bold))
-                        .foregroundColor(AppColors.text)
-                        .multilineTextAlignment(.center)
-                    ProBadge()
-                }
+            VStack(spacing: 8) {
+                ProBadge(text: "FORCED REP PRO")
+
+                Text(LanguageManager.t(feature.titleKey))
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundColor(AppColors.text)
+                    .multilineTextAlignment(.center)
 
                 Text(LanguageManager.t(feature.descriptionKey))
                     .font(.system(size: 13))
@@ -411,32 +410,39 @@ public struct ProPaywallPreview: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            Button(action: {
-                if let onUpgradeClick = onUpgradeClick {
-                    onUpgradeClick()
-                } else {
-                    showSheet = true
+            VStack(spacing: 8) {
+                Button(action: {
+                    if let onUpgradeClick = onUpgradeClick {
+                        onUpgradeClick()
+                    } else {
+                        showSheet = true
+                    }
+                }) {
+                    HStack(spacing: 8) {
+                        Image(systemName: "lock.fill")
+                            .font(.system(size: 14))
+                        Text(LanguageManager.t("pro.upgrade_cta"))
+                            .font(.system(size: 14, weight: .bold))
+                    }
+                    .foregroundColor(AppColors.background)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 48)
+                    .background(AppColors.accent)
+                    .cornerRadius(12)
                 }
-            }) {
-                HStack(spacing: 8) {
-                    Image(systemName: "lock.fill")
-                        .font(.system(size: 14))
-                    Text(LanguageManager.t("pro.upgrade_cta"))
-                        .font(.system(size: 14, weight: .semibold))
-                }
-                .foregroundColor(AppColors.background)
-                .frame(maxWidth: .infinity)
-                .frame(height: 48)
-                .background(AppColors.accent)
-                .cornerRadius(12)
+                .buttonStyle(.plain)
+
+                Text(LanguageManager.t("paywall.cancel_anytime"))
+                    .font(.system(size: 11))
+                    .foregroundColor(AppColors.secondaryText)
+                    .multilineTextAlignment(.center)
             }
-            .buttonStyle(.plain)
         }
         .padding(24)
-        .background(AppColors.surface)
+        .background(AppColors.surfaceRaised.opacity(0.94))
         .overlay(
             RoundedRectangle(cornerRadius: 20)
-                .stroke(AppColors.border, lineWidth: 1)
+                .stroke(AppColors.purple.opacity(0.4), lineWidth: 1)
         )
         .cornerRadius(20)
         .sheet(isPresented: $showSheet) {
