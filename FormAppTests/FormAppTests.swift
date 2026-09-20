@@ -5284,30 +5284,12 @@ final class FormAppTests: XCTestCase {
         )
         store.state.history.append(session)
 
-        let view = ZStack {
-            ScrollView(showsIndicators: false) {
-                VolumeMatrixView(store: store)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 16)
-            }
-            .blur(radius: 6)
-            .opacity(0.85)
-            .allowsHitTesting(false)
-
-            LinearGradient(
-                colors: [
-                    Color.black.opacity(0.12),
-                    Color.black.opacity(0.25),
-                    Color.black.opacity(0.42)
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .allowsHitTesting(false)
-
-            ProPaywallPreview(feature: .volumeMatrix)
-                .padding(.horizontal, 24)
-        }
+        let view = HistoryView(
+            store: store,
+            initialTab: .volumeMatrix,
+            onOpenSettings: {},
+            onSelectRecord: { _ in }
+        )
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(AppColors.background)
 

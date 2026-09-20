@@ -42,10 +42,12 @@ public struct HistoryView: View {
 
     public init(
         store: AppStore,
+        initialTab: HistoryTab = .calendar,
         onOpenSettings: @escaping () -> Void,
         onSelectRecord: @escaping (WorkoutSessionRecord) -> Void
     ) {
         self.store = store
+        self._activeTab = State(initialValue: initialTab)
         self.onOpenSettings = onOpenSettings
         self.onSelectRecord = onSelectRecord
     }
@@ -124,11 +126,12 @@ public struct HistoryView: View {
                     Button(action: {
                         activeTab = .volumeMatrix
                     }) {
-                        HStack(spacing: 4) {
+                        HStack(spacing: 3) {
                             Text(LanguageManager.t("history.volumeMatrix"))
-                                .font(.system(size: 12, weight: activeTab == .volumeMatrix ? .semibold : .medium))
+                                .font(.system(size: 11, weight: activeTab == .volumeMatrix ? .semibold : .medium))
                                 .foregroundColor(activeTab == .volumeMatrix ? AppColors.text : AppColors.muted)
                                 .lineLimit(1)
+                                .minimumScaleFactor(0.85)
                             ProBadge()
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -140,11 +143,12 @@ public struct HistoryView: View {
                     Button(action: {
                         activeTab = .formLab
                     }) {
-                        HStack(spacing: 4) {
+                        HStack(spacing: 3) {
                             Text(LanguageManager.t("history.formLab"))
-                                .font(.system(size: 12, weight: activeTab == .formLab ? .semibold : .medium))
+                                .font(.system(size: 11, weight: activeTab == .formLab ? .semibold : .medium))
                                 .foregroundColor(activeTab == .formLab ? AppColors.text : AppColors.muted)
                                 .lineLimit(1)
+                                .minimumScaleFactor(0.85)
                             ProBadge()
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -172,11 +176,15 @@ public struct HistoryView: View {
                         }
                     } else {
                         ZStack {
-                            VolumeMatrixView(store: store)
-                                .padding(.horizontal, 20)
-                                .blur(radius: 6)
-                                .opacity(0.85)
-                                .allowsHitTesting(false)
+                            ScrollView(showsIndicators: false) {
+                                VolumeMatrixView(store: store)
+                                    .padding(.horizontal, 20)
+                                    .padding(.bottom, 24)
+                            }
+                            .scrollDisabled(true)
+                            .blur(radius: 6)
+                            .opacity(0.85)
+                            .allowsHitTesting(false)
 
                             LinearGradient(
                                 colors: [
@@ -189,9 +197,15 @@ public struct HistoryView: View {
                             )
                             .allowsHitTesting(false)
 
-                            ProPaywallPreview(feature: .volumeMatrix) {
-                                activePaywallFeature = .volumeMatrix
-                            }
+                            ProPaywallPreview(
+                                feature: .volumeMatrix,
+                                onUpgradeClick: {
+                                    activePaywallFeature = .volumeMatrix
+                                },
+                                onBack: {
+                                    activeTab = .calendar
+                                }
+                            )
                             .padding(.horizontal, 24)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -210,11 +224,15 @@ public struct HistoryView: View {
                         }
                     } else {
                         ZStack {
-                            FormLabView(store: store)
-                                .padding(.horizontal, 20)
-                                .blur(radius: 6)
-                                .opacity(0.85)
-                                .allowsHitTesting(false)
+                            ScrollView(showsIndicators: false) {
+                                FormLabView(store: store)
+                                    .padding(.horizontal, 20)
+                                    .padding(.bottom, 24)
+                            }
+                            .scrollDisabled(true)
+                            .blur(radius: 6)
+                            .opacity(0.85)
+                            .allowsHitTesting(false)
 
                             LinearGradient(
                                 colors: [
@@ -227,9 +245,15 @@ public struct HistoryView: View {
                             )
                             .allowsHitTesting(false)
 
-                            ProPaywallPreview(feature: .formLab) {
-                                activePaywallFeature = .formLab
-                            }
+                            ProPaywallPreview(
+                                feature: .formLab,
+                                onUpgradeClick: {
+                                    activePaywallFeature = .formLab
+                                },
+                                onBack: {
+                                    activeTab = .calendar
+                                }
+                            )
                             .padding(.horizontal, 24)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)

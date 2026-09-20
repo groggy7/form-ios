@@ -373,31 +373,54 @@ public struct ProPaywallSheet: View {
 }
 
 public struct ProPaywallPreview: View {
-    public var feature: ProFeature
-    public var onUpgradeClick: (() -> Void)?
+    public let feature: ProFeature
+    public let onUpgradeClick: (() -> Void)?
+    public let onBack: (() -> Void)?
+    @State private var showSheet = false
 
-    @State private var showSheet: Bool = false
-
-    public init(feature: ProFeature, onUpgradeClick: (() -> Void)? = nil) {
+    public init(
+        feature: ProFeature,
+        onUpgradeClick: (() -> Void)? = nil,
+        onBack: (() -> Void)? = nil
+    ) {
         self.feature = feature
         self.onUpgradeClick = onUpgradeClick
+        self.onBack = onBack
     }
 
     public var body: some View {
         VStack(spacing: 8) {
-            HStack(spacing: 5) {
-                Image(systemName: "crown.fill")
-                    .font(.system(size: 11, weight: .bold))
-                    .foregroundColor(AppColors.purple)
-                Text("FORCED REP PRO")
-                    .font(.system(size: 10.5, weight: .bold))
-                    .foregroundColor(AppColors.purple)
-                    .tracking(0.5)
+            ZStack {
+                HStack(spacing: 5) {
+                    Image(systemName: "crown.fill")
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundColor(AppColors.purple)
+                    Text("FORCED REP PRO")
+                        .font(.system(size: 10.5, weight: .bold))
+                        .foregroundColor(AppColors.purple)
+                        .tracking(0.5)
+                }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 3.5)
+                .background(AppColors.purpleBg)
+                .cornerRadius(6)
+
+                if let onBack = onBack {
+                    HStack {
+                        Spacer()
+                        Button(action: onBack) {
+                            Image(systemName: "xmark")
+                                .font(.system(size: 10, weight: .bold))
+                                .foregroundColor(AppColors.secondaryText)
+                                .frame(width: 24, height: 24)
+                                .background(AppColors.surface)
+                                .clipShape(Circle())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
             }
-            .padding(.horizontal, 8)
-            .padding(.vertical, 3.5)
-            .background(AppColors.purpleBg)
-            .cornerRadius(6)
+            .frame(maxWidth: .infinity)
 
             Text(LanguageManager.t(feature.titleKey))
                 .font(.system(size: 15, weight: .bold))
@@ -440,6 +463,17 @@ public struct ProPaywallPreview: View {
                 .foregroundColor(AppColors.secondaryText)
                 .multilineTextAlignment(.center)
                 .lineLimit(1)
+
+            if let onBack = onBack {
+                Button(action: onBack) {
+                    Text(LanguageManager.t("pro.return_calendar"))
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundColor(AppColors.secondaryText)
+                        .underline()
+                        .padding(.top, 2)
+                }
+                .buttonStyle(.plain)
+            }
         }
         .padding(.horizontal, 18)
         .padding(.vertical, 14)
