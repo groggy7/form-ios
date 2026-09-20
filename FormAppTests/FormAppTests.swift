@@ -3063,6 +3063,15 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(Translations.tr["settings.version"], "v1.0")
         XCTAssertFalse(Translations.en["settings.aboutDescription"]?.isEmpty ?? true)
         XCTAssertFalse(Translations.tr["settings.aboutDescription"]?.isEmpty ?? true)
+        XCTAssertEqual(Translations.en["settings.terms"], "Terms of Service")
+        XCTAssertEqual(Translations.tr["settings.terms"], "Kullanım Koşulları")
+        XCTAssertEqual(Translations.en["settings.privacy"], "Privacy Policy")
+        XCTAssertEqual(Translations.tr["settings.privacy"], "Gizlilik Politikası")
+        XCTAssertEqual(Translations.en["settings.support"], "Customer Support")
+        XCTAssertEqual(Translations.tr["settings.support"], "Müşteri Desteği")
+        XCTAssertTrue(LegalUrls.termsOfService.hasPrefix("https://"))
+        XCTAssertTrue(LegalUrls.privacyPolicy.hasPrefix("https://"))
+        XCTAssertTrue(LegalUrls.support.hasPrefix("https://"))
     }
 
     func testMovementIconSupportsAnimatedParameter() {
@@ -3076,7 +3085,7 @@ final class FormAppTests: XCTestCase {
     func testSettingsViewSnapshot() {
         let view = SettingsView(store: AppStore.shared, onDismiss: {})
         let controller = UIHostingController(rootView: view)
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 440, height: 956))
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 440, height: 1500))
         window.rootViewController = controller
         window.makeKeyAndVisible()
         controller.view.layoutIfNeeded()

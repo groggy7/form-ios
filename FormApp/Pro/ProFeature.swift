@@ -98,3 +98,9 @@ public struct ProBadge: View {
             .cornerRadius(6)
     }
 }
+
+public enum LegalUrls {
+    public static let termsOfService = "https://perseverance-software.github.io/forcedrep/terms/"
+    public static let privacyPolicy = "https://perseverance-software.github.io/forcedrep/privacy/"
+    public static let support = "https://perseverance-software.github.io/forcedrep/support/"
+}

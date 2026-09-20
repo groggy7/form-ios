@@ -8,6 +8,7 @@ public struct SettingsView: View {
     var onDismiss: () -> Void
 
     @State private var showPaywall: Bool = false
+    @Environment(\.openURL) private var openURL
     @State private var showExportSheet: Bool = false
     @State private var exportText: String = ""
     @State private var isShowingFileImporter: Bool = false
@@ -243,6 +244,63 @@ public struct SettingsView: View {
                                 .lineSpacing(3)
                         }
                         .padding(14)
+
+                        Divider().background(AppColors.border)
+
+                        Button(action: {
+                            if let url = URL(string: LegalUrls.termsOfService) {
+                                openURL(url)
+                            }
+                        }) {
+                            HStack {
+                                Text(LanguageManager.t("settings.terms"))
+                                    .font(.system(size: 15))
+                                    .foregroundColor(AppColors.text)
+                                Spacer()
+                                Image(systemName: "arrow.up.right")
+                                    .font(.system(size: 13, weight: .semibold))
+                                    .foregroundColor(AppColors.muted)
+                            }
+                            .padding(14)
+                        }
+
+                        Divider().background(AppColors.border)
+
+                        Button(action: {
+                            if let url = URL(string: LegalUrls.privacyPolicy) {
+                                openURL(url)
+                            }
+                        }) {
+                            HStack {
+                                Text(LanguageManager.t("settings.privacy"))
+                                    .font(.system(size: 15))
+                                    .foregroundColor(AppColors.text)
+                                Spacer()
+                                Image(systemName: "arrow.up.right")
+                                    .font(.system(size: 13, weight: .semibold))
+                                    .foregroundColor(AppColors.muted)
+                            }
+                            .padding(14)
+                        }
+
+                        Divider().background(AppColors.border)
+
+                        Button(action: {
+                            if let url = URL(string: LegalUrls.support) {
+                                openURL(url)
+                            }
+                        }) {
+                            HStack {
+                                Text(LanguageManager.t("settings.support"))
+                                    .font(.system(size: 15))
+                                    .foregroundColor(AppColors.text)
+                                Spacer()
+                                Image(systemName: "arrow.up.right")
+                                    .font(.system(size: 13, weight: .semibold))
+                                    .foregroundColor(AppColors.muted)
+                            }
+                            .padding(14)
+                        }
                     }
                 }
                 .padding(.vertical, 16)

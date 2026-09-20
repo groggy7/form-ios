@@ -21,6 +21,7 @@ public struct ProPaywallSheet: View {
     @State private var selectedPlan: PaywallPlan = .annual
     @State private var showRestoreSuccess: Bool = false
     @Environment(\.presentationMode) private var presentationMode
+    @Environment(\.openURL) private var openURL
 
     public init(
         feature: ProFeature? = nil,
@@ -332,7 +333,11 @@ public struct ProPaywallSheet: View {
                             Text("·")
                                 .foregroundColor(AppColors.border)
 
-                            Button(action: {}) {
+                            Button(action: {
+                                if let url = URL(string: LegalUrls.termsOfService) {
+                                    openURL(url)
+                                }
+                            }) {
                                 Text(LanguageManager.t("paywall.terms"))
                                     .font(.system(size: 11.5))
                                     .foregroundColor(AppColors.secondaryText)
@@ -342,7 +347,11 @@ public struct ProPaywallSheet: View {
                             Text("·")
                                 .foregroundColor(AppColors.border)
 
-                            Button(action: {}) {
+                            Button(action: {
+                                if let url = URL(string: LegalUrls.privacyPolicy) {
+                                    openURL(url)
+                                }
+                            }) {
                                 Text(LanguageManager.t("paywall.privacy"))
                                     .font(.system(size: 11.5))
                                     .foregroundColor(AppColors.secondaryText)
