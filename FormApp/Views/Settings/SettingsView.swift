@@ -58,6 +58,7 @@ public struct SettingsView: View {
                                 .buttonStyle(.plain)
                             }
 
+                            #if DEBUG
                             Button(action: { _ = proManager.toggleSubscriptionStatus() }) {
                                 Text(proManager.isProSubscribed ? LanguageManager.t("paywall.dev_locked") : LanguageManager.t("settings.test_pro_toggle"))
                                     .font(.system(size: 12, weight: .medium))
@@ -72,6 +73,7 @@ public struct SettingsView: View {
                                     .cornerRadius(10)
                             }
                             .buttonStyle(.plain)
+                            #endif
                         }
                     }
                     .padding(16)

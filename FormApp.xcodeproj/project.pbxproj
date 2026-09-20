@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		PW0000000000000000000002 /* ProPaywallSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = PW0000000000000000000001 /* ProPaywallSheet.swift */; };
 		VM0000000000000000000002 /* ProFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000001 /* ProFeature.swift */; };
+		SK0000000000000000000002 /* StoreKitSubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = SK0000000000000000000001 /* StoreKitSubscriptionManager.swift */; };
 		PP0000000000000000000002 /* ProPreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = PP0000000000000000000001 /* ProPreviewData.swift */; };
 		VM0000000000000000000004 /* VolumeMatrixModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000003 /* VolumeMatrixModels.swift */; };
 		VM0000000000000000000006 /* VolumeMatrixEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000005 /* VolumeMatrixEngine.swift */; };
@@ -134,6 +135,8 @@
 /* Begin PBXFileReference section */
 		PW0000000000000000000001 /* ProPaywallSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPaywallSheet.swift; sourceTree = "<group>"; };
 		VM0000000000000000000001 /* ProFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeature.swift; sourceTree = "<group>"; };
+		SK0000000000000000000001 /* StoreKitSubscriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitSubscriptionManager.swift; sourceTree = "<group>"; };
+		SK0000000000000000000003 /* ForcedRep.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = ForcedRep.storekit; sourceTree = "<group>"; };
 		PP0000000000000000000001 /* ProPreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPreviewData.swift; sourceTree = "<group>"; };
 		VM0000000000000000000003 /* VolumeMatrixModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixModels.swift; sourceTree = "<group>"; };
 		VM0000000000000000000005 /* VolumeMatrixEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixEngine.swift; sourceTree = "<group>"; };
@@ -247,6 +250,7 @@
 				VM0000000000000000000001 /* ProFeature.swift */,
 				PW0000000000000000000001 /* ProPaywallSheet.swift */,
 				PP0000000000000000000001 /* ProPreviewData.swift */,
+				SK0000000000000000000001 /* StoreKitSubscriptionManager.swift */,
 			);
 			path = Pro;
 			sourceTree = "<group>";
@@ -257,6 +261,7 @@
 				8B831B21B285081608505315 /* FormApp */,
 				437F319122A3CF2DA68E58AD /* FormAppTests */,
 				E2F2588BEE12E037370DE474 /* Products */,
+				SK0000000000000000000003 /* ForcedRep.storekit */,
 			);
 			sourceTree = "<group>";
 		};
@@ -661,6 +666,7 @@
 				VM0000000000000000000002 /* ProFeature.swift in Sources */,
 				PW0000000000000000000002 /* ProPaywallSheet.swift in Sources */,
 				PP0000000000000000000002 /* ProPreviewData.swift in Sources */,
+				SK0000000000000000000002 /* StoreKitSubscriptionManager.swift in Sources */,
 				VM0000000000000000000004 /* VolumeMatrixModels.swift in Sources */,
 				VM0000000000000000000006 /* VolumeMatrixEngine.swift in Sources */,
 				VM0000000000000000000008 /* VolumeMatrixView.swift in Sources */,

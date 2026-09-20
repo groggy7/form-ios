@@ -18,6 +18,7 @@ public struct ProPaywallSheet: View {
     public var onUnlocked: (() -> Void)?
 
     @ObservedObject private var proManager = ProAccessManager.shared
+    @ObservedObject private var storeKit = StoreKitSubscriptionManager.shared
     @State private var selectedPlan: PaywallPlan = .annual
     @State private var showRestoreSuccess: Bool = false
     @Environment(\.presentationMode) private var presentationMode
@@ -38,33 +39,46 @@ public struct ProPaywallSheet: View {
         case .volumeMatrix:
             return [
                 PaywallBenefit(titleKey: "paywall.volume_matrix.benefit1", descKey: "paywall.volume_matrix.benefit1_desc", iconName: "chart.bar.fill"),
-                PaywallBenefit(titleKey: "paywall.volume_matrix.benefit2", descKey: "paywall.volume_matrix.benefit2_desc", iconName: "square.grid.3x3.fill"),
-                PaywallBenefit(titleKey: "paywall.volume_matrix.benefit3", descKey: "paywall.volume_matrix.benefit3_desc", iconName: "gauge.with.needle.fill")
+                PaywallBenefit(titleKey: "paywall.volume_matrix.benefit2", descKey: "paywall.volume_matrix.benefit2_desc", iconName: "figure.walk"),
+                PaywallBenefit(titleKey: "paywall.volume_matrix.benefit3", descKey: "paywall.volume_matrix.benefit3_desc", iconName: "gauge.with.needle.fill"),
+                PaywallBenefit(titleKey: "paywall.volume_matrix.benefit4", descKey: "paywall.volume_matrix.benefit4_desc", iconName: "arrow.triangle.2.circlepath")
             ]
         case .formLab:
             return [
-                PaywallBenefit(titleKey: "paywall.form_lab.benefit1", descKey: "paywall.form_lab.benefit1_desc", iconName: "function"),
+                PaywallBenefit(titleKey: "paywall.form_lab.benefit1", descKey: "paywall.form_lab.benefit1_desc", iconName: "number.circle.fill"),
                 PaywallBenefit(titleKey: "paywall.form_lab.benefit2", descKey: "paywall.form_lab.benefit2_desc", iconName: "chart.xyaxis.line"),
                 PaywallBenefit(titleKey: "paywall.form_lab.benefit3", descKey: "paywall.form_lab.benefit3_desc", iconName: "scalemass.fill"),
-                PaywallBenefit(titleKey: "paywall.form_lab.benefit4", descKey: "paywall.form_lab.benefit4_desc", iconName: "lock.icloud.fill")
+                PaywallBenefit(titleKey: "paywall.form_lab.benefit4", descKey: "paywall.form_lab.benefit4_desc", iconName: "cloud.fill")
             ]
         case .autoProgression:
             return [
-                PaywallBenefit(titleKey: "paywall.auto_progression.benefit1", descKey: "paywall.auto_progression.benefit1_desc", iconName: "arrow.up.forward.app.fill"),
-                PaywallBenefit(titleKey: "paywall.auto_progression.benefit2", descKey: "paywall.auto_progression.benefit2_desc", iconName: "arrow.counterclockwise.circle.fill")
+                PaywallBenefit(titleKey: "paywall.auto_progression.benefit1", descKey: "paywall.auto_progression.benefit1_desc", iconName: "arrow.up.forward.circle.fill"),
+                PaywallBenefit(titleKey: "paywall.auto_progression.benefit2", descKey: "paywall.auto_progression.benefit2_desc", iconName: "slider.horizontal.3"),
+                PaywallBenefit(titleKey: "paywall.auto_progression.benefit3", descKey: "paywall.auto_progression.benefit3_desc", iconName: "brain.head.profile"),
+                PaywallBenefit(titleKey: "paywall.auto_progression.benefit4", descKey: "paywall.auto_progression.benefit4_desc", iconName: "shield.checkered")
             ]
         case .warmupCalculator:
             return [
-                PaywallBenefit(titleKey: "paywall.warmup_calculator.benefit1", descKey: "paywall.warmup_calculator.benefit1_desc", iconName: "figure.strengthtraining.traditional"),
-                PaywallBenefit(titleKey: "paywall.warmup_calculator.benefit2", descKey: "paywall.warmup_calculator.benefit2_desc", iconName: "circle.grid.2x1.fill")
+                PaywallBenefit(titleKey: "paywall.warmup_calculator.benefit1", descKey: "paywall.warmup_calculator.benefit1_desc", iconName: "flame.fill"),
+                PaywallBenefit(titleKey: "paywall.warmup_calculator.benefit2", descKey: "paywall.warmup_calculator.benefit2_desc", iconName: "circle.grid.cross.fill"),
+                PaywallBenefit(titleKey: "paywall.warmup_calculator.benefit3", descKey: "paywall.warmup_calculator.benefit3_desc", iconName: "gauge.with.needle.fill"),
+                PaywallBenefit(titleKey: "paywall.warmup_calculator.benefit4", descKey: "paywall.warmup_calculator.benefit4_desc", iconName: "bolt.badge.clock.fill")
             ]
         case .none:
             return [
-                PaywallBenefit(titleKey: "pro.volume_matrix.title", descKey: "pro.volume_matrix.description", iconName: "chart.bar.fill"),
-                PaywallBenefit(titleKey: "pro.form_lab.title", descKey: "pro.form_lab.description", iconName: "chart.xyaxis.line"),
-                PaywallBenefit(titleKey: "pro.auto_progression.title", descKey: "pro.auto_progression.description", iconName: "arrow.up.forward.app.fill"),
-                PaywallBenefit(titleKey: "pro.warmup_calculator.title", descKey: "pro.warmup_calculator.description", iconName: "figure.strengthtraining.traditional")
+                PaywallBenefit(titleKey: "paywall.general.benefit1", descKey: "paywall.general.benefit1_desc", iconName: "figure.strengthtraining.traditional"),
+                PaywallBenefit(titleKey: "paywall.general.benefit2", descKey: "paywall.general.benefit2_desc", iconName: "chart.line.uptrend.xyaxis"),
+                PaywallBenefit(titleKey: "paywall.general.benefit3", descKey: "paywall.general.benefit3_desc", iconName: "waveform.path.ecg"),
+                PaywallBenefit(titleKey: "paywall.general.benefit4", descKey: "paywall.general.benefit4_desc", iconName: "lock.shield.fill")
             ]
+        }
+    }
+
+    private func dismissSelf() {
+        if let onDismiss = onDismiss {
+            onDismiss()
+        } else {
+            presentationMode.wrappedValue.dismiss()
         }
     }
 
@@ -72,9 +86,9 @@ public struct ProPaywallSheet: View {
         ZStack {
             AppColors.background.ignoresSafeArea()
 
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: 20) {
-                    // Header: Pro Badge & Close Button
+            ScrollView {
+                VStack(spacing: 24) {
+                    // Top Drag Indicator & Header
                     HStack {
                         HStack(spacing: 8) {
                             ZStack {
@@ -82,66 +96,63 @@ public struct ProPaywallSheet: View {
                                     .fill(AppColors.purpleBg)
                                     .frame(width: 36, height: 36)
                                 Image(systemName: "crown.fill")
-                                    .font(.system(size: 16, weight: .bold))
+                                    .font(.system(size: 18))
                                     .foregroundColor(AppColors.purple)
                             }
+
                             ProBadge(text: LanguageManager.t("paywall.badge"))
                         }
 
                         Spacer()
 
-                        Button(action: dismissSelf) {
-                            Image(systemName: "xmark")
-                                .font(.system(size: 14, weight: .bold))
+                        Button(action: { dismissSelf() }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.system(size: 24))
                                 .foregroundColor(AppColors.secondaryText)
-                                .frame(width: 32, height: 32)
-                                .background(AppColors.surfaceRaised)
-                                .clipShape(Circle())
                         }
                         .buttonStyle(.plain)
                     }
 
-                    // Headline & Value Context
-                    VStack(alignment: .leading, spacing: 6) {
+                    // Headline & Subtitle
+                    VStack(spacing: 6) {
                         let headline = feature != nil ? LanguageManager.t(feature!.titleKey) : LanguageManager.t("pro.upgrade_cta")
                         Text(headline)
                             .font(.system(size: 22, weight: .bold))
                             .foregroundColor(AppColors.text)
-                            .fixedSize(horizontal: false, vertical: true)
+                            .multilineTextAlignment(.center)
 
                         let subtitle = feature != nil ? LanguageManager.t(feature!.descriptionKey) : LanguageManager.t("paywall.cancel_anytime")
                         Text(subtitle)
                             .font(.system(size: 13.5))
                             .foregroundColor(AppColors.secondaryText)
+                            .multilineTextAlignment(.center)
                             .lineSpacing(3)
-                            .fixedSize(horizontal: false, vertical: true)
                     }
-                    .frame(maxWidth: .infinity, alignment: .leading)
 
-                    // Value Propositions Card
-                    VStack(alignment: .leading, spacing: 14) {
+                    // Benefit List Card
+                    VStack(spacing: 14) {
                         ForEach(benefits) { benefit in
                             HStack(alignment: .top, spacing: 12) {
                                 ZStack {
                                     Circle()
-                                        .fill(AppColors.accent.opacity(0.15))
-                                        .frame(width: 24, height: 24)
+                                        .fill(AppColors.accent.opacity(0.12))
+                                        .frame(width: 32, height: 32)
                                     Image(systemName: benefit.iconName)
-                                        .font(.system(size: 11, weight: .bold))
+                                        .font(.system(size: 14))
                                         .foregroundColor(AppColors.accent)
                                 }
-                                .padding(.top, 2)
 
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(LanguageManager.t(benefit.titleKey))
-                                        .font(.system(size: 14, weight: .semibold))
+                                        .font(.system(size: 13.5, weight: .semibold))
                                         .foregroundColor(AppColors.text)
                                     Text(LanguageManager.t(benefit.descKey))
-                                        .font(.system(size: 12.5))
+                                        .font(.system(size: 11.5))
                                         .foregroundColor(AppColors.secondaryText)
                                         .lineSpacing(2)
-                                        .fixedSize(horizontal: false, vertical: true)
                                 }
+
+                                Spacer()
                             }
                         }
                     }
@@ -153,26 +164,15 @@ public struct ProPaywallSheet: View {
                     )
                     .cornerRadius(16)
 
-                    // Subscription Plan Cards
+                    // Pricing Plans
                     VStack(spacing: 12) {
-                        // Annual Plan Card
+                        // Annual Plan Card (Featured)
                         let isAnnual = selectedPlan == .annual
                         Button(action: { selectedPlan = .annual }) {
-                            VStack(alignment: .leading, spacing: 8) {
+                            VStack(spacing: 10) {
                                 HStack {
                                     HStack(spacing: 6) {
-                                        Text(LanguageManager.t("paywall.annual_savings"))
-                                            .font(.system(size: 9, weight: .bold))
-                                            .foregroundColor(AppColors.accent)
-                                            .padding(.horizontal, 6)
-                                            .padding(.vertical, 2)
-                                            .background(AppColors.accent.opacity(0.18))
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 4)
-                                                    .stroke(AppColors.accent.opacity(0.5), lineWidth: 1)
-                                            )
-                                            .cornerRadius(4)
-
+                                        ProBadge(text: LanguageManager.t("paywall.annual_savings"))
                                         ProBadge(text: LanguageManager.t("paywall.annual_trial"))
                                     }
 
@@ -203,7 +203,8 @@ public struct ProPaywallSheet: View {
                                     Spacer()
 
                                     VStack(alignment: .trailing, spacing: 2) {
-                                        Text(LanguageManager.t("paywall.annual_price"))
+                                        let annualPrice = storeKit.annualProduct?.displayPrice ?? LanguageManager.t("paywall.annual_price")
+                                        Text(annualPrice)
                                             .font(.system(size: 15, weight: .bold))
                                             .foregroundColor(AppColors.accent)
                                         Text(LanguageManager.t("paywall.annual_breakdown"))
@@ -238,7 +239,8 @@ public struct ProPaywallSheet: View {
                                 Spacer()
 
                                 HStack(spacing: 12) {
-                                    Text(LanguageManager.t("paywall.monthly_price"))
+                                    let monthlyPrice = storeKit.monthlyProduct?.displayPrice ?? LanguageManager.t("paywall.monthly_price")
+                                    Text(monthlyPrice)
                                         .font(.system(size: 15, weight: .bold))
                                         .foregroundColor(isMonthly ? AppColors.accent : AppColors.text)
 
@@ -268,22 +270,43 @@ public struct ProPaywallSheet: View {
                     // Primary Call to Action Button
                     VStack(spacing: 8) {
                         Button(action: {
-                            proManager.updateSubscriptionStatus(active: true)
-                            onUnlocked?()
-                            dismissSelf()
-                        }) {
-                            HStack(spacing: 8) {
-                                Image(systemName: "lock.open.fill")
-                                    .font(.system(size: 14, weight: .bold))
-                                let ctaText = selectedPlan == .annual ? LanguageManager.t("paywall.cta_trial") : LanguageManager.t("paywall.cta_continue")
-                                Text(ctaText)
-                                    .font(.system(size: 15, weight: .bold))
+                            Task {
+                                do {
+                                    let purchased = try await storeKit.purchase(plan: selectedPlan)
+                                    if purchased {
+                                        onUnlocked?()
+                                        dismissSelf()
+                                    }
+                                } catch {
+                                    #if DEBUG
+                                    proManager.updateSubscriptionStatus(active: true)
+                                    onUnlocked?()
+                                    dismissSelf()
+                                    #endif
+                                }
                             }
-                            .foregroundColor(AppColors.background)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 52)
-                            .background(AppColors.accent)
-                            .cornerRadius(14)
+                        }) {
+                            if storeKit.isPurchasing {
+                                ProgressView()
+                                    .progressViewStyle(CircularProgressViewStyle(tint: AppColors.background))
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 52)
+                                    .background(AppColors.accent)
+                                    .cornerRadius(14)
+                            } else {
+                                HStack(spacing: 8) {
+                                    Image(systemName: "lock.open.fill")
+                                        .font(.system(size: 14, weight: .bold))
+                                    let ctaText = selectedPlan == .annual ? LanguageManager.t("paywall.cta_trial") : LanguageManager.t("paywall.cta_continue")
+                                    Text(ctaText)
+                                        .font(.system(size: 15, weight: .bold))
+                                }
+                                .foregroundColor(AppColors.background)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 52)
+                                .background(AppColors.accent)
+                                .cornerRadius(14)
+                            }
                         }
                         .buttonStyle(.plain)
 
@@ -295,6 +318,7 @@ public struct ProPaywallSheet: View {
 
                     // Dev Mode Simulation & Legal Links
                     VStack(spacing: 10) {
+                        #if DEBUG
                         // Quick Dev Unlock Button
                         Button(action: {
                             proManager.updateSubscriptionStatus(active: true)
@@ -316,13 +340,26 @@ public struct ProPaywallSheet: View {
                             )
                         }
                         .buttonStyle(.plain)
+                        #endif
 
                         // Restore Purchases & Legal Links
                         HStack(spacing: 12) {
                             Button(action: {
-                                proManager.updateSubscriptionStatus(active: true)
-                                showRestoreSuccess = true
-                                onUnlocked?()
+                                Task {
+                                    do {
+                                        try await storeKit.restorePurchases()
+                                        if proManager.isProSubscribed {
+                                            showRestoreSuccess = true
+                                            onUnlocked?()
+                                        }
+                                    } catch {
+                                        #if DEBUG
+                                        proManager.updateSubscriptionStatus(active: true)
+                                        showRestoreSuccess = true
+                                        onUnlocked?()
+                                        #endif
+                                    }
+                                }
                             }) {
                                 Text(LanguageManager.t("paywall.restore"))
                                     .font(.system(size: 11.5))
@@ -369,14 +406,6 @@ public struct ProPaywallSheet: View {
                 .padding(.horizontal, 20)
                 .padding(.vertical, 24)
             }
-        }
-    }
-
-    private func dismissSelf() {
-        if let onDismiss = onDismiss {
-            onDismiss()
-        } else {
-            presentationMode.wrappedValue.dismiss()
         }
     }
 }
