@@ -34,7 +34,9 @@ public struct HistoryView: View {
         case formLab
     }
 
+    @ObservedObject private var proManager = ProAccessManager.shared
     @State private var activeTab: HistoryTab = .calendar
+    @State private var activePaywallFeature: ProFeature? = nil
     @State private var displayedDate: Date = Date()
     @State private var selectedDateString: String? = nil
 
@@ -121,7 +123,12 @@ public struct HistoryView: View {
                         }
                         .buttonStyle(.plain)
 
-                        Button(action: { activeTab = .volumeMatrix }) {
+                        Button(action: {
+                            activeTab = .volumeMatrix
+                            if !proManager.isFeatureUnlocked(.volumeMatrix) {
+                                activePaywallFeature = .volumeMatrix
+                            }
+                        }) {
                             HStack(spacing: 4) {
                                 Text(LanguageManager.t("history.volumeMatrix"))
                                     .font(.system(size: 12, weight: activeTab == .volumeMatrix ? .semibold : .medium))
@@ -135,7 +142,12 @@ public struct HistoryView: View {
                         }
                         .buttonStyle(.plain)
 
-                        Button(action: { activeTab = .formLab }) {
+                        Button(action: {
+                            activeTab = .formLab
+                            if !proManager.isFeatureUnlocked(.formLab) {
+                                activePaywallFeature = .formLab
+                            }
+                        }) {
                             HStack(spacing: 4) {
                                 Text(LanguageManager.t("history.formLab"))
                                     .font(.system(size: 12, weight: activeTab == .formLab ? .semibold : .medium))
@@ -160,11 +172,25 @@ public struct HistoryView: View {
                     .padding(.horizontal, 20)
 
                     if activeTab == .volumeMatrix {
-                        VolumeMatrixView(store: store)
+                        if proManager.isFeatureUnlocked(.volumeMatrix) {
+                            VolumeMatrixView(store: store)
+                                .padding(.horizontal, 20)
+                        } else {
+                            ProPaywallPreview(feature: .volumeMatrix) {
+                                activePaywallFeature = .volumeMatrix
+                            }
                             .padding(.horizontal, 20)
+                        }
                     } else if activeTab == .formLab {
-                        FormLabView(store: store)
+                        if proManager.isFeatureUnlocked(.formLab) {
+                            FormLabView(store: store)
+                                .padding(.horizontal, 20)
+                        } else {
+                            ProPaywallPreview(feature: .formLab) {
+                                activePaywallFeature = .formLab
+                            }
                             .padding(.horizontal, 20)
+                        }
                     } else {
                         // Month Calendar Card
                         VStack(spacing: 10) {
@@ -283,9 +309,12 @@ public struct HistoryView: View {
                     }
                 }
             }
+            .sheet(item: $activePaywallFeature) { feat in
+                ProPaywallSheet(feature: feat, onDismiss: { activePaywallFeature = nil })
             }
         }
     }
+}
 
     private func handleWorkoutAction(detail: HistoryDayDetailData) {
         guard let workout = detail.workout else { return }

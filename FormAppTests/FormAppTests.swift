@@ -4111,19 +4111,28 @@ final class FormAppTests: XCTestCase {
         let manager = ProAccessManager.shared
         defer { manager.resetOverrides() }
 
-        // Default: unlocked
+        // Default: locked for free tier
         manager.resetOverrides()
+        XCTAssertFalse(manager.isFeatureUnlocked(.volumeMatrix))
+        XCTAssertFalse(manager.isFeatureUnlocked(.autoProgression))
+        XCTAssertFalse(manager.isFeatureUnlocked(.formLab))
+
+        // Subscription unlocks all
+        manager.updateSubscriptionStatus(active: true)
         XCTAssertTrue(manager.isFeatureUnlocked(.volumeMatrix))
         XCTAssertTrue(manager.isFeatureUnlocked(.autoProgression))
+        XCTAssertTrue(manager.isFeatureUnlocked(.formLab))
 
         // Force locked via override
         manager.setFeatureOverride(.volumeMatrix, unlocked: false)
         XCTAssertFalse(manager.isFeatureUnlocked(.volumeMatrix))
         XCTAssertTrue(manager.isFeatureUnlocked(.autoProgression))
 
-        // Force unlocked via override
+        // Force unlocked via override even when unsubscribed
+        manager.updateSubscriptionStatus(active: false)
         manager.setFeatureOverride(.volumeMatrix, unlocked: true)
         XCTAssertTrue(manager.isFeatureUnlocked(.volumeMatrix))
+        XCTAssertFalse(manager.isFeatureUnlocked(.autoProgression))
     }
 
     func testVolumeMatrixEngineComputation() {
@@ -5197,6 +5206,44 @@ final class FormAppTests: XCTestCase {
             let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_form_lab_mirror_snapshot.png"
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote Form Lab Mirror snapshot to \(path)")
+        }
+    }
+
+    func testVolumeMatrixPaywallSnapshot() {
+        let view = ProPaywallSheet(feature: .volumeMatrix)
+        let controller = UIHostingController(rootView: view)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { _ in controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true) }
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_paywall_volume_matrix_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote Volume Matrix Paywall snapshot to \(path)")
+        }
+    }
+
+    func testFormLabPaywallSnapshot() {
+        let view = ProPaywallSheet(feature: .formLab)
+        let controller = UIHostingController(rootView: view)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { _ in controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true) }
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_paywall_rep_lab_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote Rep Lab Paywall snapshot to \(path)")
         }
     }
 }

@@ -4,8 +4,10 @@ import UniformTypeIdentifiers
 public struct SettingsView: View {
     @ObservedObject var store: AppStore
     @ObservedObject var langManager = LanguageManager.shared
+    @ObservedObject private var proManager = ProAccessManager.shared
     var onDismiss: () -> Void
 
+    @State private var showPaywall: Bool = false
     @State private var showExportSheet: Bool = false
     @State private var exportText: String = ""
     @State private var isShowingFileImporter: Bool = false
@@ -21,6 +23,64 @@ public struct SettingsView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
+                    // Forced Rep Pro Membership Card
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack {
+                            HStack(spacing: 8) {
+                                Image(systemName: "crown.fill")
+                                    .font(.system(size: 16, weight: .bold))
+                                    .foregroundColor(proManager.isProSubscribed ? AppColors.purple : AppColors.accent)
+                                Text(LanguageManager.t("settings.pro_membership"))
+                                    .font(.system(size: 16, weight: .bold))
+                                    .foregroundColor(AppColors.text)
+                            }
+                            Spacer()
+                            ProBadge(text: proManager.isProSubscribed ? "PRO ACTIVE" : "FREE")
+                        }
+
+                        Text(LanguageManager.t(proManager.isProSubscribed ? "settings.pro_active" : "pro.volume_matrix.description"))
+                            .font(.system(size: 12.5))
+                            .foregroundColor(AppColors.secondaryText)
+                            .lineSpacing(2)
+
+                        HStack(spacing: 8) {
+                            if !proManager.isProSubscribed {
+                                Button(action: { showPaywall = true }) {
+                                    Text(LanguageManager.t("settings.upgrade_to_pro"))
+                                        .font(.system(size: 13, weight: .semibold))
+                                        .foregroundColor(AppColors.background)
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 38)
+                                        .background(AppColors.accent)
+                                        .cornerRadius(10)
+                                }
+                                .buttonStyle(.plain)
+                            }
+
+                            Button(action: { _ = proManager.toggleSubscriptionStatus() }) {
+                                Text(proManager.isProSubscribed ? LanguageManager.t("paywall.dev_locked") : LanguageManager.t("settings.test_pro_toggle"))
+                                    .font(.system(size: 12, weight: .medium))
+                                    .foregroundColor(proManager.isProSubscribed ? AppColors.purple : AppColors.text)
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 38)
+                                    .background(Color.clear)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(proManager.isProSubscribed ? AppColors.purple.opacity(0.6) : AppColors.border, lineWidth: 1)
+                                    )
+                                    .cornerRadius(10)
+                            }
+                            .buttonStyle(.plain)
+                        }
+                    }
+                    .padding(16)
+                    .background(proManager.isProSubscribed ? AppColors.purpleBg : AppColors.surfaceRaised)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16)
+                            .stroke(proManager.isProSubscribed ? AppColors.purple.opacity(0.5) : AppColors.border, lineWidth: 1)
+                    )
+                    .cornerRadius(16)
+
                     // Training section
                     settingsSection(title: LanguageManager.t("settings.training")) {
                         VStack(spacing: 0) {
@@ -258,6 +318,9 @@ public struct SettingsView: View {
                     Text(importErrorMessage ?? "")
                 }
             )
+            .sheet(isPresented: $showPaywall) {
+                ProPaywallSheet(feature: nil, onDismiss: { showPaywall = false })
+            }
         }
     }
 

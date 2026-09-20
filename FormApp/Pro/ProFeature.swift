@@ -30,7 +30,7 @@ public enum ProFeature: String, CaseIterable, Identifiable {
 public class ProAccessManager: ObservableObject {
     public static let shared = ProAccessManager()
 
-    @Published public var isProSubscribed: BooleanLiteralType = true
+    @Published public var isProSubscribed: Bool = false
     private var featureOverrides: [ProFeature: Bool] = [:]
 
     public init() {}
@@ -50,7 +50,20 @@ public class ProAccessManager: ObservableObject {
 
     public func resetOverrides() {
         featureOverrides.removeAll()
-        isProSubscribed = true
+        isProSubscribed = false
+        objectWillChange.send()
+    }
+
+    @discardableResult
+    public func toggleSubscriptionStatus() -> Bool {
+        let next = !isProSubscribed
+        isProSubscribed = next
+        objectWillChange.send()
+        return next
+    }
+
+    public func updateSubscriptionStatus(active: Bool) {
+        isProSubscribed = active
         objectWillChange.send()
     }
 }
