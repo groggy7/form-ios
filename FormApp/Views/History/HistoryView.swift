@@ -197,15 +197,9 @@ public struct HistoryView: View {
                             )
                             .allowsHitTesting(false)
 
-                            ProPaywallPreview(
-                                feature: .volumeMatrix,
-                                onUpgradeClick: {
-                                    activePaywallFeature = .volumeMatrix
-                                },
-                                onBack: {
-                                    activeTab = .calendar
-                                }
-                            )
+                            ProPaywallPreview(feature: .volumeMatrix) {
+                                activePaywallFeature = .volumeMatrix
+                            }
                             .padding(.horizontal, 24)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -245,15 +239,9 @@ public struct HistoryView: View {
                             )
                             .allowsHitTesting(false)
 
-                            ProPaywallPreview(
-                                feature: .formLab,
-                                onUpgradeClick: {
-                                    activePaywallFeature = .formLab
-                                },
-                                onBack: {
-                                    activeTab = .calendar
-                                }
-                            )
+                            ProPaywallPreview(feature: .formLab) {
+                                activePaywallFeature = .formLab
+                            }
                             .padding(.horizontal, 24)
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -375,17 +375,14 @@ public struct ProPaywallSheet: View {
 public struct ProPaywallPreview: View {
     public let feature: ProFeature
     public let onUpgradeClick: (() -> Void)?
-    public let onBack: (() -> Void)?
     @State private var showSheet = false
 
     public init(
         feature: ProFeature,
-        onUpgradeClick: (() -> Void)? = nil,
-        onBack: (() -> Void)? = nil
+        onUpgradeClick: (() -> Void)? = nil
     ) {
         self.feature = feature
         self.onUpgradeClick = onUpgradeClick
-        self.onBack = onBack
     }
 
     public var body: some View {
@@ -445,17 +442,6 @@ public struct ProPaywallPreview: View {
                 .foregroundColor(AppColors.secondaryText)
                 .multilineTextAlignment(.center)
                 .lineLimit(1)
-
-            if let onBack = onBack {
-                Button(action: onBack) {
-                    Text(LanguageManager.t("pro.return_calendar"))
-                        .font(.system(size: 11, weight: .medium))
-                        .foregroundColor(AppColors.secondaryText)
-                        .underline()
-                        .padding(.top, 2)
-                }
-                .buttonStyle(.plain)
-            }
         }
         .padding(.horizontal, 18)
         .padding(.vertical, 14)
