@@ -39,7 +39,7 @@ public struct ProPaywallSheet: View {
             return [
                 PaywallBenefit(titleKey: "paywall.volume_matrix.benefit1", descKey: "paywall.volume_matrix.benefit1_desc", iconName: "chart.bar.fill"),
                 PaywallBenefit(titleKey: "paywall.volume_matrix.benefit2", descKey: "paywall.volume_matrix.benefit2_desc", iconName: "square.grid.3x3.fill"),
-                PaywallBenefit(titleKey: "paywall.volume_matrix.benefit3", descKey: "paywall.volume_matrix.benefit3_desc", iconName: "bolt.heart.fill")
+                PaywallBenefit(titleKey: "paywall.volume_matrix.benefit3", descKey: "paywall.volume_matrix.benefit3_desc", iconName: "gauge.with.needle.fill")
             ]
         case .formLab:
             return [

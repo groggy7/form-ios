@@ -149,8 +149,8 @@ final class FormAppTests: XCTestCase {
             for key in ["matrix.limitations", "matrix.info.overviewText", "form_lab.balance_subtitle", "form_lab.info_antagonist_desc"] {
                 XCTAssertTrue((copy[key] ?? "").contains(language == "en" ? "not" : "tanı"), key)
             }
-            let analytics = copy.filter { $0.key.hasPrefix("matrix.") || $0.key.hasPrefix("form_lab.balance") || $0.key.hasPrefix("form_lab.info_antagonist") }.values.joined(separator: "\n").lowercased()
-            for claim in ["high risk of overtraining", "protect shoulders", "prevent joint impingement", "balanced knee flexion and extension torque", "optimal balance", "maintenance only", "sürantrene olma riski yüksek", "yalnızca koruma sağlar", "maksimum toparlanabilir hacim aşıldı"] {
+            let analytics = copy.filter { $0.key.hasPrefix("matrix.") || $0.key.hasPrefix("form_lab.balance") || $0.key.hasPrefix("form_lab.info_antagonist") || $0.key.hasPrefix("paywall.volume_matrix") }.values.joined(separator: "\n").lowercased()
+            for claim in ["high risk of overtraining", "protect shoulders", "prevent joint impingement", "balanced knee flexion and extension torque", "optimal balance", "maintenance only", "eliminate overtraining", "fatigue optimization", "aşırı antrenman riskini önlemek", "sürantrene olma riski yüksek", "yalnızca koruma sağlar", "maksimum toparlanabilir hacim aşıldı"] {
                 XCTAssertFalse(analytics.contains(claim), claim)
             }
         }
