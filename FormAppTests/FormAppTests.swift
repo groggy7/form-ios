@@ -5,6 +5,54 @@ import SwiftUI
 @testable import FormApp
 
 final class FormAppTests: XCTestCase {
+    @MainActor
+    func testAnalyticsReferenceCopySnapshots() {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            for matrix in [true, false] {
+                let content = Group {
+                    if matrix {
+                        ScrollView { VolumeMatrixView(store: AppStore.shared).padding(16) }
+                    } else {
+                        FormLabView(store: AppStore.shared, initialTab: .balance)
+                    }
+                }.environment(\.sizeCategory, .extraExtraLarge)
+                let controller = UIHostingController(rootView: content)
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 1300))
+                window.rootViewController = controller
+                window.makeKeyAndVisible()
+                controller.view.frame = window.bounds
+                controller.view.layoutIfNeeded()
+                let image = UIGraphicsImageRenderer(size: window.bounds.size).image { _ in
+                    controller.view.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
+                }
+                let attachment = XCTAttachment(image: image)
+                attachment.name = "\(matrix ? "volume-reference" : "training-distribution")-\(language)"
+                attachment.lifetime = .keepAlways
+                add(attachment)
+                window.isHidden = true
+            }
+        }
+    }
+
+    func testAnalyticsCopyUsesReferenceRangesNotDiagnoses() {
+        for (language, copy) in [("en", Translations.en), ("tr", Translations.tr)] {
+            XCTAssertEqual(copy["form_lab.tab_balance"], language == "en" ? "Training Distribution" : "Antrenman Dağılımı")
+            for zone in VolumeZone.allCases {
+                XCTAssertTrue((copy[zone.titleKey] ?? "").lowercased().contains("refer"))
+            }
+            for key in ["matrix.limitations", "matrix.info.overviewText", "form_lab.balance_subtitle", "form_lab.info_antagonist_desc"] {
+                XCTAssertTrue((copy[key] ?? "").contains(language == "en" ? "not" : "tanı"), key)
+            }
+            let analytics = copy.filter { $0.key.hasPrefix("matrix.") || $0.key.hasPrefix("form_lab.balance") || $0.key.hasPrefix("form_lab.info_antagonist") }.values.joined(separator: "\n").lowercased()
+            for claim in ["high risk of overtraining", "protect shoulders", "prevent joint impingement", "balanced knee flexion and extension torque", "optimal balance", "maintenance only", "sürantrene olma riski yüksek", "yalnızca koruma sağlar", "maksimum toparlanabilir hacim aşıldı"] {
+                XCTAssertFalse(analytics.contains(claim), claim)
+            }
+        }
+    }
+
     func testWeeklyPlanPreservesExerciseCountWithStatus() {
         let previous = LanguageManager.shared.currentLanguage
         defer { LanguageManager.setLanguage(previous) }
@@ -5152,4 +5200,3 @@ final class FormAppTests: XCTestCase {
         }
     }
 }
-

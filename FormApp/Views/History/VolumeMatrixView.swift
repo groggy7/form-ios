@@ -58,6 +58,11 @@ public struct VolumeMatrixView: View {
 
     public var body: some View {
         VStack(spacing: 16) {
+            Text(LanguageManager.t("matrix.limitations"))
+                .font(.system(size: 13))
+                .foregroundColor(AppColors.secondaryText)
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, alignment: .leading)
             // Mode Selector: Logged Volume vs Planned Routine
             HStack(spacing: 4) {
                 Button(action: { isPlannedMode = false }) {
@@ -218,32 +223,18 @@ public struct VolumeMatrixView: View {
                         .overlay(RoundedRectangle(cornerRadius: 11).stroke(AppColors.border, lineWidth: 1))
                         .cornerRadius(11)
 
-                        // Zone Legend (2 centered rows for clean, unclipped presentation on any screen size)
-                        VStack(spacing: 6) {
-                            HStack(spacing: 12) {
-                                ForEach([VolumeZone.underMev, VolumeZone.progressive, VolumeZone.optimalMav], id: \.self) { zone in
-                                    HStack(spacing: 4) {
-                                        Circle()
-                                            .fill(zone.color)
-                                            .frame(width: 7, height: 7)
-                                        Text(LanguageManager.t(zone.titleKey))
-                                            .font(.system(size: 10, weight: .medium))
-                                            .foregroundColor(AppColors.muted)
-                                            .lineLimit(1)
-                                    }
-                                }
-                            }
-                            HStack(spacing: 12) {
-                                ForEach([VolumeZone.highFatigue, VolumeZone.overMrv], id: \.self) { zone in
-                                    HStack(spacing: 4) {
-                                        Circle()
-                                            .fill(zone.color)
-                                            .frame(width: 7, height: 7)
-                                        Text(LanguageManager.t(zone.titleKey))
-                                            .font(.system(size: 10, weight: .medium))
-                                            .foregroundColor(AppColors.muted)
-                                            .lineLimit(1)
-                                    }
+                        // Adaptive columns keep localized reference labels readable.
+                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 140), alignment: .leading)], spacing: 8) {
+                            ForEach(VolumeZone.allCases, id: \.self) { zone in
+                                HStack(alignment: .top, spacing: 4) {
+                                    Circle()
+                                        .fill(zone.color)
+                                        .frame(width: 7, height: 7)
+                                        .padding(.top, 3)
+                                    Text(LanguageManager.t(zone.titleKey))
+                                        .font(.system(size: 10, weight: .medium))
+                                        .foregroundColor(AppColors.muted)
+                                        .fixedSize(horizontal: false, vertical: true)
                                 }
                             }
                         }

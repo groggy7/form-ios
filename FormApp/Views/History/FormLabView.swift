@@ -541,12 +541,10 @@ public struct FormLabView: View {
     private func antagonistRatioCard(ratio: AntagonistRatio) -> some View {
         VStack(alignment: .leading, spacing: 12) {
             // Title & Status Badge
-            HStack {
+            VStack(alignment: .leading, spacing: 6) {
                 Text(LanguageManager.t(ratio.titleKey))
                     .font(.system(size: 14, weight: .bold))
                     .foregroundColor(AppColors.text)
-
-                Spacer()
 
                 Text(LanguageManager.t(ratio.status.labelKey))
                     .font(.system(size: 10, weight: .bold))
