@@ -40,14 +40,21 @@ public struct FormLabView: View {
     // Interactive chart scrubber
     @State private var selectedPointIndex: Int? = nil
 
-    public init(store: AppStore, initialTab: FormLabTab = .repMax) {
+    private let customHistory: [WorkoutSessionRecord]?
+
+    public init(store: AppStore, initialTab: FormLabTab = .repMax, customHistory: [WorkoutSessionRecord]? = nil) {
         self.store = store
         self._activeTab = State(initialValue: initialTab)
+        self.customHistory = customHistory
+    }
+
+    private var effectiveHistory: [WorkoutSessionRecord] {
+        customHistory ?? store.state.history
     }
 
     private var distinctExercises: [String] {
         var names = Set<String>()
-        for record in store.state.history {
+        for record in effectiveHistory {
             for log in record.exerciseLogs {
                 if !log.exerciseName.trimmingCharacters(in: .whitespaces).isEmpty {
                     names.insert(log.exerciseName)
@@ -65,7 +72,7 @@ public struct FormLabView: View {
     private var currentExerciseSummary: ExerciseRepMaxSummary? {
         FormLabEngine.computeExerciseRepMax(
             exerciseName: selectedExercise,
-            history: store.state.history,
+            history: effectiveHistory,
             formula: selectedFormula
         )
     }
@@ -73,7 +80,7 @@ public struct FormLabView: View {
     private var currentCurveReport: LongitudinalCurveReport {
         FormLabEngine.computeLongitudinalCurve(
             exerciseName: selectedExercise,
-            history: store.state.history,
+            history: effectiveHistory,
             timeframe: selectedTimeframe,
             formula: selectedFormula
         )
@@ -81,7 +88,7 @@ public struct FormLabView: View {
 
     private var balanceReport: AntagonistBalanceReport {
         FormLabEngine.computeAntagonistBalance(
-            history: store.state.history,
+            history: effectiveHistory,
             timeframe: balanceTimeframe
         )
     }
@@ -571,7 +578,7 @@ public struct FormLabView: View {
 
             // Sets breakdown
             HStack {
-                Text("\(LanguageManager.t(ratio.primaryLabelKey)): \(ratio.primarySets) sets")
+                Text("\(LanguageManager.t(ratio.primaryLabelKey)): \(ratio.primarySets) \(LanguageManager.t("matrix.setsUnit"))")
                     .font(.system(size: 12, weight: .medium))
                     .foregroundColor(AppColors.secondaryText)
                 Spacer()
@@ -579,7 +586,7 @@ public struct FormLabView: View {
                     .font(.system(size: 13, weight: .bold, design: .monospaced))
                     .foregroundColor(statusColor(ratio.status))
                 Spacer()
-                Text("\(LanguageManager.t(ratio.antagonistLabelKey)): \(ratio.antagonistSets) sets")
+                Text("\(LanguageManager.t(ratio.antagonistLabelKey)): \(ratio.antagonistSets) \(LanguageManager.t("matrix.setsUnit"))")
                     .font(.system(size: 12, weight: .medium))
                     .foregroundColor(AppColors.secondaryText)
             }

@@ -4238,6 +4238,79 @@ final class FormAppTests: XCTestCase {
         XCTAssertFalse(manager.isFeatureUnlocked(.autoProgression))
     }
 
+    func testProPreviewDataDemonstrationHistory() {
+        // Zero-history accounts identified correctly
+        XCTAssertFalse(ProPreviewData.hasWorkingHistory([]))
+
+        let warmupOnly = [
+            WorkoutSessionRecord(
+                programId: "p",
+                workoutId: "w",
+                workoutTitle: "Warmup",
+                startedAt: "2026-09-20T10:00:00Z",
+                completedAt: "2026-09-20T10:30:00Z",
+                durationSeconds: 1800,
+                exerciseLogs: [
+                    SessionExerciseLog(
+                        exerciseName: "Barbell Bench Press",
+                        sets: [SessionSetLog(setNumber: 1, weightKg: 40.0, reps: 10, isWarmup: true)]
+                    )
+                ]
+            )
+        ]
+        XCTAssertFalse(ProPreviewData.hasWorkingHistory(warmupOnly))
+
+        var calendar = Calendar(identifier: .iso8601)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
+        let testDate = calendar.date(from: DateComponents(year: 2026, month: 9, day: 20)) ?? Date()
+        let preview = ProPreviewData.previewHistory(today: testDate)
+        XCTAssertTrue(ProPreviewData.hasWorkingHistory(preview))
+
+        // Volume Matrix computation
+        guard let catalog = ExerciseMuscleCatalog.shared else {
+            XCTFail("ExerciseMuscleCatalog must load")
+            return
+        }
+        let report = VolumeMatrixEngine.computeLoggedVolume(
+            targetWeekKey: "2026-W38",
+            history: preview,
+            catalog: catalog,
+            language: "en"
+        )
+        XCTAssertGreaterThan(report.totalEffectiveSets, 20)
+        XCTAssertGreaterThanOrEqual(report.muscleSummaries["chest"]?.directSets ?? 0, 6)
+        XCTAssertGreaterThanOrEqual(report.muscleSummaries["quads"]?.directSets ?? 0, 6)
+        XCTAssertGreaterThanOrEqual(report.muscleSummaries["lats"]?.directSets ?? 0, 6)
+
+        // Form Lab balance and progression computation
+        let balance = FormLabEngine.computeAntagonistBalance(
+            history: preview,
+            today: testDate
+        )
+        XCTAssertNotNil(balance.pushPull.ratio)
+        XCTAssertTrue(balance.pushPull.status != AntagonistStatus.insufficientData)
+        XCTAssertNotNil(balance.quadHamstring.ratio)
+        XCTAssertTrue(balance.quadHamstring.status != AntagonistStatus.insufficientData)
+        XCTAssertNotNil(balance.upperLower.ratio)
+        XCTAssertTrue(balance.upperLower.status != AntagonistStatus.insufficientData)
+
+        let benchRepMax = FormLabEngine.computeExerciseRepMax(
+            exerciseName: "Barbell Bench Press",
+            history: preview
+        )
+        XCTAssertNotNil(benchRepMax)
+        XCTAssertGreaterThan(benchRepMax?.estimated1rmKg ?? 0.0, 100.0)
+
+        let benchCurve = FormLabEngine.computeLongitudinalCurve(
+            exerciseName: "Barbell Bench Press",
+            history: preview,
+            today: testDate
+        )
+        XCTAssertGreaterThanOrEqual(benchCurve.points.count, 4)
+        XCTAssertGreaterThan(benchCurve.deltaKg, 0.0)
+        XCTAssertGreaterThan(benchCurve.percentageGain, 0.0)
+    }
+
     func testVolumeMatrixEngineComputation() {
         guard let catalog = ExerciseMuscleCatalog.shared else {
             XCTFail("ExerciseMuscleCatalog must load")

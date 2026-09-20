@@ -10,8 +10,11 @@ public struct VolumeMatrixView: View {
     @State private var currentView: String = "front"
     @State private var showInfoSheet: Bool = false
 
-    public init(store: AppStore) {
+    private let customHistory: [WorkoutSessionRecord]?
+
+    public init(store: AppStore, customHistory: [WorkoutSessionRecord]? = nil) {
         self.store = store
+        self.customHistory = customHistory
     }
 
     private var currentWeekKey: String {
@@ -49,7 +52,7 @@ public struct VolumeMatrixView: View {
         } else {
             return VolumeMatrixEngine.computeLoggedVolume(
                 targetWeekKey: effectiveWeekKey,
-                history: store.state.history,
+                history: customHistory ?? store.state.history,
                 catalog: catalog,
                 language: language.currentLanguage
             )
