@@ -156,6 +156,10 @@ public struct FormLabView: View {
 
     private var repMaxMatrixTab: some View {
         VStack(spacing: 16) {
+            Text(LanguageManager.t("form_lab.estimate_policy"))
+                .font(.system(size: 12))
+                .foregroundColor(AppColors.secondaryText)
+                .frame(maxWidth: .infinity, alignment: .leading)
             // Exercise picker & Formula selector card
             VStack(spacing: 12) {
                 HStack {
@@ -250,7 +254,8 @@ public struct FormLabView: View {
                         [
                             "weight": String(format: "%.1f %@", displayWeight, unitStr),
                             "reps": "\(summary.bestReps)",
-                            "date": dateStr
+                            "date": dateStr,
+                            "formula": LanguageManager.t(selectedFormula.titleKey)
                         ]
                     )
 
@@ -309,7 +314,7 @@ public struct FormLabView: View {
                 .font(.system(size: 22, weight: .bold, design: .rounded))
                 .foregroundColor(AppColors.text)
 
-            Text("\(target.reps) Rep Max")
+            Text(LanguageManager.t("form_lab.estimated_label"))
                 .font(.system(size: 11))
                 .foregroundColor(AppColors.secondaryText)
         }
@@ -326,6 +331,14 @@ public struct FormLabView: View {
         let report = currentCurveReport
 
         return VStack(spacing: 16) {
+            Text(LanguageManager.t("form_lab.estimate_policy"))
+                .font(.system(size: 12))
+                .foregroundColor(AppColors.secondaryText)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Text(LanguageManager.t("form_lab.formula_used", ["formula": LanguageManager.t(selectedFormula.titleKey)]))
+                .font(.system(size: 12))
+                .foregroundColor(AppColors.muted)
+                .frame(maxWidth: .infinity, alignment: .leading)
             // Exercise picker & Timeframe selector
             VStack(spacing: 12) {
                 // Exercise Menu
@@ -411,7 +424,7 @@ public struct FormLabView: View {
                     Spacer()
                 }
 
-                if report.points.count < 2 {
+                if report.points.isEmpty {
                     VStack(spacing: 8) {
                         Image(systemName: "chart.xyaxis.line")
                             .font(.system(size: 32))
@@ -424,20 +437,20 @@ public struct FormLabView: View {
                     .frame(height: 180)
                 } else {
                     // Touch scrubber detail tooltip if active
-                    if let idx = selectedPointIndex, idx < report.points.count {
-                        let pt = report.points[idx]
-                        HStack {
+                    if let pt = selectedPointIndex.flatMap({ report.points.indices.contains($0) ? report.points[$0] : nil }) ?? report.points.last {
+                        VStack(alignment: .leading, spacing: 6) {
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(formatAchievedDate(pt.dateString))
+                                Text(LanguageManager.t("form_lab.achieved_with", [
+                                    "weight": formatWeight(pt.topWeightKg),
+                                    "reps": "\(pt.topReps)",
+                                    "date": formatAchievedDate(pt.dateString),
+                                    "formula": LanguageManager.t(selectedFormula.titleKey)
+                                ]))
                                     .font(.system(size: 11, weight: .medium))
                                     .foregroundColor(AppColors.muted)
-                                Text("Best: \(formatWeight(pt.topWeightKg)) × \(pt.topReps)")
-                                    .font(.system(size: 12, weight: .semibold))
-                                    .foregroundColor(AppColors.text)
                             }
-                            Spacer()
                             VStack(alignment: .trailing, spacing: 2) {
-                                Text("Est. 1RM")
+                                Text(LanguageManager.t("exercise.history.estimated1rmTitle"))
                                     .font(.system(size: 10, weight: .bold))
                                     .foregroundColor(AppColors.accent)
                                 Text(formatWeight(pt.estimated1rmKg))

@@ -14,16 +14,18 @@ public struct FormLabEngine {
         reps: Int,
         formula: RepMaxFormula = .brzycki
     ) -> Double {
-        guard weightKg > 0, reps > 0 else { return 0 }
+        // Zero means unavailable, not a zero-capacity estimate. Logs are untouched.
+        guard weightKg.isFinite, weightKg > 0, (1...10).contains(reps) else { return 0 }
         if reps == 1 { return weightKg }
 
+        let estimate: Double
         switch formula {
         case .brzycki:
-            let clampedReps = min(reps, 36)
-            return weightKg * (36.0 / (37.0 - Double(clampedReps)))
+            estimate = weightKg * (36.0 / (37.0 - Double(reps)))
         case .epley:
-            return weightKg * (1.0 + Double(reps) / 30.0)
+            estimate = weightKg * (1.0 + Double(reps) / 30.0)
         }
+        return estimate.isFinite ? estimate : 0
     }
 
     public static func calculateTargetNRM(
@@ -31,13 +33,12 @@ public struct FormLabEngine {
         targetReps: Int,
         formula: RepMaxFormula = .brzycki
     ) -> Double {
-        guard oneRmKg > 0, targetReps > 0 else { return 0 }
+        guard oneRmKg.isFinite, oneRmKg > 0, (1...10).contains(targetReps) else { return 0 }
         if targetReps == 1 { return oneRmKg }
 
         switch formula {
         case .brzycki:
-            let clampedReps = max(1, min(targetReps, 36))
-            return oneRmKg * (37.0 - Double(clampedReps)) / 36.0
+            return oneRmKg * ((37.0 - Double(targetReps)) / 36.0)
         case .epley:
             return oneRmKg / (1.0 + Double(targetReps) / 30.0)
         }
@@ -47,6 +48,7 @@ public struct FormLabEngine {
         oneRmKg: Double,
         formula: RepMaxFormula = .brzycki
     ) -> [RepMaxTarget] {
+        guard oneRmKg.isFinite, oneRmKg > 0 else { return [] }
         let repValues = [1, 3, 5, 8, 10]
         return repValues.map { r in
             let targetWeight = calculateTargetNRM(oneRmKg: oneRmKg, targetReps: r, formula: formula)

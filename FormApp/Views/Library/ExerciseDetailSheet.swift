@@ -406,7 +406,7 @@ struct ExerciseHistoryStatsRow: View {
                 // Card 2: Estimated 1RM
                 let est1rmValue: String = {
                     if let est = stats.estimated1rmKg {
-                        return "\(weightUnit.formatWeight(est.rounded())) \(weightUnit.label)"
+                        return "\(weightUnit.formatWeight(est)) \(weightUnit.label)"
                     } else {
                         return "—"
                     }
@@ -422,6 +422,29 @@ struct ExerciseHistoryStatsRow: View {
                     subtitleColor: AppColors.historyStatCardTitle
                 )
             }
+
+            VStack(alignment: .leading, spacing: 6) {
+                if let source = stats.estimateSourceSet {
+                    Text(LanguageManager.t("form_lab.achieved_with", [
+                        "weight": "\(weightUnit.formatWeight(source.weightKg ?? 0)) \(weightUnit.label)",
+                        "reps": "\(source.reps ?? 0)",
+                        "date": formatSessionDate(stats.estimateSourceDate ?? ""),
+                        "formula": "Brzycki"
+                    ]))
+                    .foregroundColor(AppColors.secondaryText)
+                } else {
+                    Text(LanguageManager.t("form_lab.no_weighted_sets"))
+                        .foregroundColor(AppColors.secondaryText)
+                }
+                Text(LanguageManager.t("form_lab.estimate_policy"))
+                    .foregroundColor(AppColors.muted)
+            }
+            .font(.system(size: 12))
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(12)
+            .background(AppColors.surface)
+            .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
+            .cornerRadius(12)
 
             // Row 2: Total Sets & Total Volume
             HStack(spacing: 10) {

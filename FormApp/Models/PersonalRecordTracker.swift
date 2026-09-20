@@ -253,10 +253,7 @@ public enum PersonalRecordTracker {
     }
 
     public static func calculateEstimated1RM(weightKg: Double, reps: Int) -> Double {
-        guard weightKg > 0.0, reps > 0 else { return 0.0 }
-        if reps == 1 { return weightKg }
-        let clampedReps = min(reps, 36)
-        return weightKg * (36.0 / (37.0 - Double(clampedReps)))
+        FormLabEngine.calculateEstimated1RM(weightKg: weightKg, reps: reps)
     }
 
     public static func computeExerciseHistoryStats(
@@ -313,11 +310,6 @@ public enum PersonalRecordTracker {
         let prSet: SessionSetLog?
         if !weightedSets.isEmpty {
             prSet = weightedSets.max { s1, s2 in
-                let rm1 = calculateEstimated1RM(weightKg: s1.weightKg ?? 0.0, reps: s1.reps ?? 0)
-                let rm2 = calculateEstimated1RM(weightKg: s2.weightKg ?? 0.0, reps: s2.reps ?? 0)
-                if abs(rm1 - rm2) > 0.001 {
-                    return rm1 < rm2
-                }
                 if let w1 = s1.weightKg, let w2 = s2.weightKg, abs(w1 - w2) > 0.001 {
                     return w1 < w2
                 }
@@ -328,14 +320,25 @@ public enum PersonalRecordTracker {
         }
 
         var est1rm: Double? = nil
-        if let pr = prSet, let w = pr.weightKg, let r = pr.reps, w > 0.0, r > 0 {
-            est1rm = calculateEstimated1RM(weightKg: w, reps: r)
+        var estimateSourceSet: SessionSetLog? = nil
+        var estimateSourceDate: String? = nil
+        for session in matchingSessions {
+            for set in session.sets where !set.isWarmup {
+                let estimate = calculateEstimated1RM(weightKg: set.weightKg ?? 0, reps: set.reps ?? 0)
+                if estimate > (est1rm ?? 0) {
+                    est1rm = estimate
+                    estimateSourceSet = set
+                    estimateSourceDate = session.date
+                }
+            }
         }
 
         return ExerciseHistoryStats(
             prWeightKg: prSet?.weightKg,
             prReps: prSet?.reps,
             estimated1rmKg: est1rm,
+            estimateSourceSet: estimateSourceSet,
+            estimateSourceDate: estimateSourceDate,
             totalVolumeKg: totalVolume,
             lifetimeSets: allValidSets.count,
             recentSessions: matchingSessions
@@ -362,6 +365,8 @@ public struct ExerciseHistoryStats: Hashable {
     public var prWeightKg: Double?
     public var prReps: Int?
     public var estimated1rmKg: Double?
+    public var estimateSourceSet: SessionSetLog?
+    public var estimateSourceDate: String?
     public var totalVolumeKg: Double
     public var lifetimeSets: Int
     public var recentSessions: [ExerciseSessionHistoryEntry]
@@ -370,6 +375,8 @@ public struct ExerciseHistoryStats: Hashable {
         prWeightKg: Double? = nil,
         prReps: Int? = nil,
         estimated1rmKg: Double? = nil,
+        estimateSourceSet: SessionSetLog? = nil,
+        estimateSourceDate: String? = nil,
         totalVolumeKg: Double = 0.0,
         lifetimeSets: Int = 0,
         recentSessions: [ExerciseSessionHistoryEntry] = []
@@ -377,6 +384,8 @@ public struct ExerciseHistoryStats: Hashable {
         self.prWeightKg = prWeightKg
         self.prReps = prReps
         self.estimated1rmKg = estimated1rmKg
+        self.estimateSourceSet = estimateSourceSet
+        self.estimateSourceDate = estimateSourceDate
         self.totalVolumeKg = totalVolumeKg
         self.lifetimeSets = lifetimeSets
         self.recentSessions = recentSessions

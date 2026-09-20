@@ -6,6 +6,109 @@ import SwiftUI
 
 final class FormAppTests: XCTestCase {
     @MainActor
+    func testRepMaxSourceSnapshots() {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        let store = AppStore()
+        let oldState = store.state
+        defer { store.state = oldState }
+        store.state.history = [WorkoutSessionRecord(id: "estimate-ui", programId: "p", workoutId: "w", workoutTitle: "Workout",
+            startedAt: "2026-09-15T10:00:00Z", completedAt: "2026-09-15T11:00:00Z", durationSeconds: 100,
+            totalVolumeKg: 1220, totalCompletedSets: 2, exerciseLogs: [SessionExerciseLog(exerciseName: "Bench", sets: [
+                SessionSetLog(setNumber: 1, weightKg: 100, reps: 5), SessionSetLog(setNumber: 2, weightKg: 20, reps: 36)
+            ])])]
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            for kind in ["matrix", "curve", "library"] {
+                let content = Group {
+                    if kind == "library" {
+                        ExerciseHistoryStatsRow(stats: PersonalRecordTracker.computeExerciseHistoryStats(history: store.state.history, exerciseName: "Bench"), weightUnit: .kg)
+                    } else {
+                        FormLabView(store: store, initialTab: kind == "matrix" ? .repMax : .curves)
+                    }
+                }.padding(12).background(AppColors.background).environment(\.sizeCategory, .extraExtraLarge)
+                let controller = UIHostingController(rootView: content)
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 1300))
+                window.rootViewController = controller
+                window.makeKeyAndVisible()
+                controller.view.frame = window.bounds
+                controller.view.layoutIfNeeded()
+                let image = UIGraphicsImageRenderer(size: window.bounds.size).image { _ in
+                    controller.view.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
+                }
+                let attachment = XCTAttachment(image: image)
+                attachment.name = "rep-\(kind)-\(language)"
+                attachment.lifetime = .keepAlways
+                add(attachment)
+                window.isHidden = true
+            }
+        }
+    }
+
+    func testRepMaxEligibilityAndPreservedLogs() throws {
+        for formula in RepMaxFormula.allCases {
+            for reps in [-1, 0, 11, 20, 36, 37, Int.max] {
+                XCTAssertEqual(FormLabEngine.calculateEstimated1RM(weightKg: 20, reps: reps, formula: formula), 0)
+                XCTAssertEqual(FormLabEngine.calculateTargetNRM(oneRmKg: 100, targetReps: reps, formula: formula), 0)
+            }
+            for weight in [0.0, -1.0, Double.nan, Double.infinity, -Double.infinity] {
+                XCTAssertEqual(FormLabEngine.calculateEstimated1RM(weightKg: weight, reps: 5, formula: formula), 0)
+                XCTAssertTrue(FormLabEngine.computeRepMaxTargets(oneRmKg: weight, formula: formula).isEmpty)
+            }
+            XCTAssertEqual(FormLabEngine.calculateEstimated1RM(weightKg: 20, reps: 1, formula: formula), 20)
+            XCTAssertEqual(FormLabEngine.calculateEstimated1RM(weightKg: 20, reps: 10, formula: formula), 26.6667, accuracy: 0.001)
+            XCTAssertEqual(FormLabEngine.calculateEstimated1RM(weightKg: .greatestFiniteMagnitude, reps: 10, formula: formula), 0)
+        }
+        XCTAssertEqual(PersonalRecordTracker.calculateEstimated1RM(weightKg: 20, reps: 36), 0)
+        let eligible = SessionSetLog(setNumber: 1, weightKg: 100, reps: 5)
+        let highRep = SessionSetLog(setNumber: 2, weightKg: 20, reps: 36)
+        let warmup = SessionSetLog(setNumber: 3, weightKg: 300, reps: 5, isWarmup: true)
+        func session(_ id: String, _ date: String, _ sets: [SessionSetLog]) -> WorkoutSessionRecord {
+            WorkoutSessionRecord(id: id, programId: "p", workoutId: "w", workoutTitle: "Workout", startedAt: date,
+                completedAt: date, durationSeconds: 100, totalVolumeKg: 0, totalCompletedSets: sets.count,
+                exerciseLogs: [SessionExerciseLog(exerciseName: "Bench", sets: sets)])
+        }
+        let mixed = session("mixed", "2026-09-01T10:00:00Z", [eligible, highRep, warmup])
+        let highOnly = session("high", "2026-09-02T10:00:00Z", [highRep])
+        let history = [mixed, highOnly]
+        for formula in RepMaxFormula.allCases {
+            let expected = FormLabEngine.calculateEstimated1RM(weightKg: 100, reps: 5, formula: formula)
+            let summary = try XCTUnwrap(FormLabEngine.computeExerciseRepMax(exerciseName: "Bench", history: history, formula: formula))
+            XCTAssertEqual(summary.estimated1rmKg, expected, accuracy: 0.001)
+            XCTAssertEqual(summary.achievedDate, mixed.startedAt)
+            XCTAssertEqual(summary.bestWeightKg, 100)
+            XCTAssertEqual(summary.bestReps, 5)
+            XCTAssertEqual(summary.formula, formula)
+            XCTAssertEqual(summary.targets.first?.estimatedWeightKg, expected)
+            let curve = FormLabEngine.computeLongitudinalCurve(exerciseName: "Bench", history: history, formula: formula)
+            XCTAssertEqual(curve.points.count, 1)
+            XCTAssertEqual(curve.peak1rmKg, expected)
+            XCTAssertEqual(curve.current1rmKg, expected)
+            XCTAssertEqual(curve.start1rmKg, expected)
+            XCTAssertEqual(curve.points.first?.topReps, 5)
+            XCTAssertNil(FormLabEngine.computeExerciseRepMax(exerciseName: "Bench", history: [highOnly], formula: formula))
+            XCTAssertTrue(FormLabEngine.computeAllRepMaxSummaries(history: [highOnly], formula: formula).isEmpty)
+            let empty = FormLabEngine.computeLongitudinalCurve(exerciseName: "Bench", history: [highOnly], formula: formula)
+            XCTAssertTrue(empty.points.isEmpty)
+            XCTAssertNil(empty.peak1rmKg)
+        }
+        let stats = PersonalRecordTracker.computeExerciseHistoryStats(history: history, exerciseName: "Bench")
+        XCTAssertEqual(stats.estimated1rmKg, 112.5)
+        XCTAssertEqual(stats.estimateSourceSet, eligible)
+        XCTAssertEqual(stats.estimateSourceDate, mixed.startedAt)
+        XCTAssertEqual(stats.lifetimeSets, 4)
+        XCTAssertEqual(stats.totalVolumeKg, 3440)
+        XCTAssertEqual(stats.recentSessions.first?.sets, [highRep])
+        let onlyStats = PersonalRecordTracker.computeExerciseHistoryStats(history: [highOnly], exerciseName: "Bench")
+        XCTAssertNil(onlyStats.estimated1rmKg)
+        XCTAssertNil(onlyStats.estimateSourceSet)
+        XCTAssertEqual(onlyStats.prReps, 36)
+        XCTAssertEqual(onlyStats.prWeightKg, 20)
+        XCTAssertEqual(onlyStats.totalVolumeKg, 720)
+        XCTAssertEqual(mixed.exerciseLogs.first?.sets, [eligible, highRep, warmup])
+    }
+
+    @MainActor
     func testAnalyticsReferenceCopySnapshots() {
         let previous = LanguageManager.shared.currentLanguage
         defer { LanguageManager.setLanguage(previous) }
