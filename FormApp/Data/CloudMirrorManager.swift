@@ -16,13 +16,25 @@ public class CloudMirrorManager {
 
     private init() {}
 
+    public var isICloudAvailable: Bool {
+        return FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.com.perseverancesoftware.forcedrep") != nil
+    }
+
     public var mirrorDirectory: URL {
-        let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let dir = docs.appendingPathComponent(mirrorDirName)
-        if !FileManager.default.fileExists(atPath: dir.path) {
-            try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        if let ubiquityURL = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.com.perseverancesoftware.forcedrep") {
+            let docs = ubiquityURL.appendingPathComponent("Documents").appendingPathComponent(mirrorDirName)
+            if !FileManager.default.fileExists(atPath: docs.path) {
+                try? FileManager.default.createDirectory(at: docs, withIntermediateDirectories: true)
+            }
+            return docs
+        } else {
+            let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            let dir = docs.appendingPathComponent(mirrorDirName)
+            if !FileManager.default.fileExists(atPath: dir.path) {
+                try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+            }
+            return dir
         }
-        return dir
     }
 
     public var isEnabled: Bool {
@@ -51,13 +63,14 @@ public class CloudMirrorManager {
         let lastSync = UserDefaults.standard.object(forKey: keyLastSync) as? TimeInterval
         let file = isEncrypted ? mirrorDirectory.appendingPathComponent(encryptedBackupFileName) : mirrorDirectory.appendingPathComponent(backupFileName)
         let size = (try? FileManager.default.attributesOfItem(atPath: file.path)[.size] as? Int64)
+        let provider = isICloudAvailable ? "iCloud Drive" : "iCloud Drive & Cloud Mirror"
 
         return CloudMirrorStatus(
             isEnabled: isEnabled,
             isEncrypted: isEncrypted,
             lastSyncTimestamp: lastSync,
             snapshotSizeBytes: size,
-            providerName: "iCloud Drive & Cloud Mirror"
+            providerName: provider
         )
     }
 
@@ -130,13 +143,24 @@ public class CloudMirrorManager {
     public func syncNow(backupJson: String, passphrase: String? = nil) throws -> Int64 {
         let file = isEncrypted ? mirrorDirectory.appendingPathComponent(encryptedBackupFileName) : mirrorDirectory.appendingPathComponent(backupFileName)
 
-        if isEncrypted {
-            let pass = passphrase ?? "form_default_secure_key"
-            let envelope = try Self.encryptPayload(backupJson, passphrase: pass)
-            try envelope.data(using: .utf8)?.write(to: file)
-        } else {
-            try backupJson.data(using: .utf8)?.write(to: file)
+        var coordinatorError: NSError?
+        var writeError: Error?
+        let coordinator = NSFileCoordinator(filePresenter: nil)
+        coordinator.coordinate(writingItemAt: file, options: .forReplacing, error: &coordinatorError) { writeURL in
+            do {
+                if isEncrypted {
+                    let pass = passphrase ?? "form_default_secure_key"
+                    let envelope = try Self.encryptPayload(backupJson, passphrase: pass)
+                    try envelope.data(using: .utf8)?.write(to: writeURL, options: .atomic)
+                } else {
+                    try backupJson.data(using: .utf8)?.write(to: writeURL, options: .atomic)
+                }
+            } catch {
+                writeError = error
+            }
         }
+        if let err = writeError { throw err }
+        if let err = coordinatorError { throw err }
 
         let now = Date().timeIntervalSince1970
         UserDefaults.standard.set(now, forKey: keyLastSync)
@@ -149,15 +173,41 @@ public class CloudMirrorManager {
         let encryptedFile = mirrorDirectory.appendingPathComponent(encryptedBackupFileName)
         let plainFile = mirrorDirectory.appendingPathComponent(backupFileName)
 
+        let targetFile: URL
+        let isEncryptedTarget: Bool
         if FileManager.default.fileExists(atPath: encryptedFile.path) {
-            let content = try String(contentsOf: encryptedFile, encoding: .utf8)
-            let pass = passphrase ?? "form_default_secure_key"
-            return try Self.decryptPayload(content, passphrase: pass)
+            targetFile = encryptedFile
+            isEncryptedTarget = true
         } else if FileManager.default.fileExists(atPath: plainFile.path) {
-            return try String(contentsOf: plainFile, encoding: .utf8)
+            targetFile = plainFile
+            isEncryptedTarget = false
         } else {
             throw NSError(domain: "CloudMirror", code: 5, userInfo: [NSLocalizedDescriptionKey: "No cloud mirror backup snapshot found."])
         }
+
+        var coordinatorError: NSError?
+        var readError: Error?
+        var resultString: String?
+        let coordinator = NSFileCoordinator(filePresenter: nil)
+        coordinator.coordinate(readingItemAt: targetFile, options: .withoutChanges, error: &coordinatorError) { readURL in
+            do {
+                let content = try String(contentsOf: readURL, encoding: .utf8)
+                if isEncryptedTarget {
+                    let pass = passphrase ?? "form_default_secure_key"
+                    resultString = try Self.decryptPayload(content, passphrase: pass)
+                } else {
+                    resultString = content
+                }
+            } catch {
+                readError = error
+            }
+        }
+        if let err = readError { throw err }
+        if let err = coordinatorError { throw err }
+        guard let result = resultString else {
+            throw NSError(domain: "CloudMirror", code: 6, userInfo: [NSLocalizedDescriptionKey: "Failed to read cloud mirror."])
+        }
+        return result
     }
 
     private static func sha256(_ input: String) -> String {
