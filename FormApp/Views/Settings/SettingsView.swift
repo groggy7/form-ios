@@ -116,30 +116,6 @@ public struct SettingsView: View {
                             }
                             .tint(AppColors.accent)
                             .padding(14)
-
-                            Divider().background(AppColors.border)
-
-                            Button(action: {
-                                onDismiss()
-                                store.resetOnboarding()
-                            }) {
-                                HStack {
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        Text(LanguageManager.t("settings.retakeOnboarding"))
-                                            .font(.system(size: 15, weight: .medium))
-                                            .foregroundColor(AppColors.text)
-                                        Text(LanguageManager.t("settings.retakeOnboardingSubtitle"))
-                                            .font(.system(size: 12))
-                                            .foregroundColor(AppColors.secondaryText)
-                                            .multilineTextAlignment(.leading)
-                                    }
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .font(.system(size: 14, weight: .semibold))
-                                        .foregroundColor(AppColors.secondaryText)
-                                }
-                            }
-                            .padding(14)
                         }
                     }
 
@@ -250,7 +226,7 @@ public struct SettingsView: View {
                     settingsSection(title: LanguageManager.t("settings.about")) {
                         VStack(alignment: .leading, spacing: 10) {
                             HStack(spacing: 8) {
-                                Text("FORM")
+                                Text("FORCED REP")
                                     .font(.system(size: 16, weight: .bold))
                                     .foregroundColor(AppColors.text)
                                 Text(LanguageManager.t("settings.version"))
