@@ -1191,6 +1191,18 @@ public struct ExerciseMetadata {
         muscleKey: String?
     ) -> Bool {
         guard let muscleKey = muscleKey else { return true }
+        if muscleKey == "cardio" {
+            let mov = exercise.resolvedMovement
+            if mov == .conditioning || mov == .boxing { return true }
+            let lowerName = exercise.name.lowercased()
+            let lowerId = (exercise.exerciseId ?? "").lowercased()
+            return lowerId.contains("jump-rope") || lowerId.contains("burpee") ||
+                   lowerName.contains("jump rope") || lowerName.contains("sprint") ||
+                   lowerName.contains("burpee") || lowerName.contains("run") ||
+                   lowerName.contains("cardio") || lowerName.contains("box jump") ||
+                   lowerName.contains("battle rope") || lowerName.contains("jumping jack") ||
+                   lowerName.contains("mountain climber")
+        }
         let muscleMap: [String: [String]] = [
             "chest": ["chest"],
             "back": ["lats", "upper-back"],
@@ -1220,6 +1232,7 @@ public struct ExerciseMetadata {
         case "glutes": return fallbackKey == "exercise.muscle.glutes"
         case "calves": return fallbackKey == "exercise.muscle.calves"
         case "core": return fallbackKey == "exercise.muscle.core"
+        case "cardio": return fallbackKey == "exercise.muscle.cardio"
         default: return false
         }
     }
@@ -1236,6 +1249,7 @@ public enum MuscleGroupFilter: String, CaseIterable, Identifiable {
     case glutes = "glutes"
     case calves = "calves"
     case core = "core"
+    case cardio = "cardio"
 
     public var id: String { rawValue }
 
@@ -1245,7 +1259,7 @@ public enum MuscleGroupFilter: String, CaseIterable, Identifiable {
 
     public var bodyView: BodyView {
         switch self {
-        case .chest, .shoulders, .biceps, .core:
+        case .chest, .shoulders, .biceps, .core, .cardio:
             return .front
         case .back, .triceps:
             return .back
@@ -1268,6 +1282,7 @@ public enum MuscleGroupFilter: String, CaseIterable, Identifiable {
         case .glutes: return [.glutes]
         case .calves: return [.calves]
         case .core: return [.abs, .obliques]
+        case .cardio: return []
         }
     }
 }

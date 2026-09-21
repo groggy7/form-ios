@@ -758,8 +758,19 @@ final class FormAppTests: XCTestCase {
                         ZStack {
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
                                 .fill(Color.black)
-                            MuscleArtwork(view: muscle.bodyView, muscles: muscle.muscleGroups, centered: true)
-                                .padding(4)
+                            if muscle == .cardio {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .fill(AppColors.accent.opacity(0.14))
+                                        .frame(width: 48, height: 48)
+                                    Image(systemName: "figure.run")
+                                        .font(.system(size: 26, weight: .semibold))
+                                        .foregroundColor(AppColors.accent)
+                                }
+                            } else {
+                                MuscleArtwork(view: muscle.bodyView, muscles: muscle.muscleGroups, centered: true)
+                                    .padding(4)
+                            }
                         }
                         .frame(width: 160, height: 84)
 
@@ -774,7 +785,7 @@ final class FormAppTests: XCTestCase {
         .background(AppColors.background)
 
         let controller = UIHostingController(rootView: contactSheet)
-        let targetSize = controller.sizeThatFits(in: CGSize(width: 400, height: 1200))
+        let targetSize = controller.sizeThatFits(in: CGSize(width: 400, height: 1400))
         controller.view.frame = CGRect(origin: .zero, size: targetSize)
         controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
 
@@ -809,6 +820,12 @@ final class FormAppTests: XCTestCase {
 
         XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: curl, muscleKey: "biceps"))
         XCTAssertFalse(ExerciseMetadata.matchesMuscle(exercise: curl, muscleKey: "chest"))
+
+        let jumpRope = Exercise(name: "Jump Rope", exerciseId: "jump-rope", movementType: "conditioning")
+        let burpee = Exercise(name: "Burpee", exerciseId: "burpee", movementType: "conditioning")
+        XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: jumpRope, muscleKey: "cardio"))
+        XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: burpee, muscleKey: "cardio"))
+        XCTAssertFalse(ExerciseMetadata.matchesMuscle(exercise: bench, muscleKey: "cardio"))
 
         XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: bench, muscleKey: nil))
     }
