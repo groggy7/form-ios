@@ -4465,7 +4465,7 @@ final class FormAppTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(VolumeMatrixEngine.canonicalMuscles.count, 13)
+        XCTAssertEqual(VolumeMatrixEngine.canonicalMuscles.count, 14)
         for muscle in VolumeMatrixEngine.canonicalMuscles {
             XCTAssertNotNil(catalog.muscles[muscle], "Muscle \(muscle) must exist in catalog")
         }
@@ -4516,6 +4516,56 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(frontDelts?.directSets, 0)
         XCTAssertEqual(frontDelts?.indirectSets, 4)
         XCTAssertEqual(frontDelts?.totalEffectiveSets, 2.0)
+        XCTAssertEqual(report.totalWorkingSets, 4)
+        XCTAssertEqual(report.totalEffectiveSets, 8.0)
+        XCTAssertTrue(report.unmappedExercises.isEmpty)
+
+        let coverageSession = WorkoutSessionRecord(
+            id: "coverage", programId: "p", workoutId: "w", workoutTitle: "Shoulders",
+            startedAt: "2026-09-15T10:00:00Z", completedAt: "2026-09-15T11:00:00Z",
+            durationSeconds: 3600, exerciseLogs: [
+                SessionExerciseLog(exerciseName: "Dumbbell Lateral Raise", sets: (1...2).map { SessionSetLog(setNumber: $0, weightKg: 10, reps: 12) }),
+                SessionExerciseLog(exerciseName: "My Custom Movement", sets: (1...2).map { SessionSetLog(setNumber: $0, weightKg: 10, reps: 10) })
+            ])
+        let coverage = VolumeMatrixEngine.computeLoggedVolume(targetWeekKey: "2026-W38", history: [coverageSession], catalog: catalog)
+        XCTAssertEqual(coverage.totalWorkingSets, 4)
+        XCTAssertEqual(coverage.unmappedExercises["My Custom Movement"], 2)
+        XCTAssertEqual(coverage.muscleSummaries["side-delts"]?.totalEffectiveSets, 2)
+        XCTAssertEqual(catalog.profile("dumbbell-lateral-raise")?.primary, ["side-delts"])
+        XCTAssertEqual(catalog.profile("head-supported-dumbbell-rear-lateral-raise")?.primary, ["rear-delts"])
+        XCTAssertNil(VolumeMatrixEngine.resolveExerciseId(exerciseName: "My Custom Movement"))
+
+        let program = Program(
+            id: "cycle",
+            name: "Test cycle",
+            workouts: [
+                Workout(
+                    id: "upper",
+                    day: 1,
+                    title: "Upper",
+                    exercises: [
+                        Exercise(name: "Barbell Bench Press", exerciseId: "barbell-bench-press", sets: 4),
+                        Exercise(name: "Lat Pulldown", exerciseId: "lat-pulldown", sets: 4)
+                    ]
+                ),
+                Workout(
+                    id: "lower",
+                    day: 2,
+                    title: "Lower",
+                    exercises: [
+                        Exercise(name: "Barbell Back Squat", exerciseId: "barbell-back-squat", sets: 4)
+                    ]
+                )
+            ]
+        )
+        let cycle = VolumeMatrixEngine.computePlannedRoutineVolume(program: program, catalog: catalog)
+        XCTAssertTrue(cycle.isPlannedRoutine)
+        XCTAssertEqual(cycle.weekKey, "program-cycle")
+        XCTAssertEqual(cycle.totalWorkingSets, 12)
+        XCTAssertTrue(cycle.muscleSummaries.values.allSatisfy { $0.zone == .noWeeklyReference })
+        XCTAssertEqual(cycle.optimalMuscleCount, 0)
+        XCTAssertEqual(cycle.underTrainedCount, 0)
+        XCTAssertEqual(cycle.highFatigueCount, 0)
     }
 
     func testProgressionEngineReturnsFirstSessionWhenHistoryIsEmpty() {
@@ -6132,4 +6182,3 @@ final class FormAppTests: XCTestCase {
         }
     }
 }
-

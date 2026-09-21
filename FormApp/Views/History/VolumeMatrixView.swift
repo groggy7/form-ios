@@ -43,7 +43,10 @@ public struct VolumeMatrixView: View {
             )
         }
 
-        if isPlannedMode, let program = store.state.programs.first(where: { $0.id == store.state.activeProgramId }) ?? store.state.programs.first {
+        if isPlannedMode {
+            let program = store.state.programs.first(where: { $0.id == store.state.activeProgramId })
+                ?? store.state.programs.first
+                ?? Program(id: "empty", name: "", workouts: [])
             return VolumeMatrixEngine.computePlannedRoutineVolume(
                 program: program,
                 catalog: catalog,
@@ -186,16 +189,36 @@ public struct VolumeMatrixView: View {
                 .cornerRadius(18)
             }
 
-            // KPI Metrics (2x2 grid with atmospheric wave badges)
-            VStack(spacing: 10) {
-                HStack(spacing: 10) {
-                    kpiCard(title: LanguageManager.t("matrix.stat.totalSets"), value: String(format: "%.1f", report.totalEffectiveSets), subtitle: LanguageManager.t("matrix.setsUnit"), icon: "dumbbell.fill", color: AppColors.purple)
-                    kpiCard(title: LanguageManager.t("matrix.stat.optimal"), value: "\(report.optimalMuscleCount)", subtitle: "MAV", icon: "checkmark.circle.fill", color: Color(hex: 0x20D791))
+            if isPlannedMode {
+                Text(LanguageManager.t("matrix.cycleNote"))
+                    .font(.system(size: 12)).foregroundColor(AppColors.secondaryText)
+                    .fixedSize(horizontal: false, vertical: true)
+                if store.state.programs.isEmpty {
+                    Text(LanguageManager.t("matrix.noProgram")).foregroundColor(AppColors.muted)
                 }
-                HStack(spacing: 10) {
-                    kpiCard(title: LanguageManager.t("matrix.stat.undertrained"), value: "\(report.underTrainedCount)", subtitle: "< MEV", icon: "hourglass", color: Color(hex: 0x8E9BAE))
-                    kpiCard(title: LanguageManager.t("matrix.stat.highFatigue"), value: "\(report.highFatigueCount)", subtitle: "> MAV", icon: "flame.fill", color: Color(hex: 0xFFFF6B6B))
+            }
+            HStack(alignment: .top, spacing: 10) {
+                kpiCard(title: LanguageManager.t(report.isPlannedRoutine ? "matrix.stat.plannedSets" : "matrix.stat.totalSets"),
+                    value: "\(report.totalWorkingSets)", subtitle: LanguageManager.t("matrix.setsUnit"), icon: "dumbbell.fill", color: AppColors.purple)
+                kpiCard(title: LanguageManager.t("matrix.stat.credits"), value: String(format: "%.1f", report.totalEffectiveSets),
+                    subtitle: LanguageManager.t("matrix.creditsUnit"), icon: "chart.bar.fill", color: AppColors.accent)
+            }
+            Text(LanguageManager.t("matrix.creditNote"))
+                .font(.system(size: 12)).foregroundColor(AppColors.muted)
+                .fixedSize(horizontal: false, vertical: true)
+            if !report.unmappedExercises.isEmpty {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(LanguageManager.t("matrix.unmapped", ["count": report.unmappedExercises.values.reduce(0, +)]))
+                        .font(.system(size: 13)).foregroundColor(AppColors.text)
+                    ForEach(report.unmappedExercises.keys.sorted(), id: \.self) { name in
+                        let count = report.unmappedExercises[name] ?? 0
+                        Text("\(name) · \(count) " + LanguageManager.t(count == 1 ? "matrix.setUnit" : "matrix.setsUnit"))
+                            .font(.system(size: 12)).foregroundColor(AppColors.secondaryText)
+                    }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading).padding(14)
+                .background(AppColors.surface).cornerRadius(14)
+                .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
             }
 
             // Heatmap Figure Card ("Athlete Window")
@@ -228,7 +251,7 @@ public struct VolumeMatrixView: View {
 
                         // Adaptive columns keep localized reference labels readable.
                         LazyVGrid(columns: [GridItem(.adaptive(minimum: 140), alignment: .leading)], spacing: 8) {
-                            ForEach(VolumeZone.allCases, id: \.self) { zone in
+                            ForEach(VolumeZone.allCases.filter { report.isPlannedRoutine ? $0 == .noWeeklyReference : $0 != .noWeeklyReference }, id: \.self) { zone in
                                 HStack(alignment: .top, spacing: 4) {
                                     Circle()
                                         .fill(zone.color)
@@ -359,10 +382,10 @@ public struct VolumeMatrixView: View {
                     Text(title)
                         .font(.system(size: 12.5, weight: .semibold))
                         .foregroundColor(Color(hex: 0xD1D8E0))
-                        .lineLimit(1)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
 
-                Spacer(minLength: 4)
+                Spacer(minLength: 10)
 
                 // Bottom group: Value + Subtitle
                 VStack(alignment: .leading, spacing: 1) {
@@ -376,10 +399,10 @@ public struct VolumeMatrixView: View {
             }
             .padding(.horizontal, 12)
             .padding(.vertical, 10)
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .frame(maxWidth: .infinity, alignment: .topLeading)
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 114)
+        .frame(minHeight: 114)
         .background(Color(hex: 0x10151B))
         .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color(hex: 0x1F2732), lineWidth: 1))
         .cornerRadius(18)
@@ -413,24 +436,23 @@ public struct VolumeMatrixView: View {
 
     private func muscleDetailCard(summary: MuscleVolumeSummary) -> some View {
         VStack(alignment: .leading, spacing: 14) {
-            VStack(alignment: .leading, spacing: 4) {
-                HStack(alignment: .center, spacing: 8) {
-                    Text(summary.localizedName)
-                        .font(.system(size: 18, weight: .bold))
-                        .foregroundColor(AppColors.text)
-                        .lineLimit(1)
-                    Spacer()
-                    Text(LanguageManager.t(summary.zone.titleKey))
-                        .font(.system(size: 11, weight: .semibold))
-                        .foregroundColor(summary.zone.color)
-                        .lineLimit(1)
-                        .padding(.horizontal, 8)
-                        .padding(.vertical, 4)
-                        .background(summary.zone.badgeBgColor)
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(summary.zone.color.opacity(0.5), lineWidth: 1))
-                        .cornerRadius(8)
-                }
-                Text("\(String(format: "%.1f", summary.totalEffectiveSets)) \(LanguageManager.t("matrix.setsUnit")) (\(summary.directSets) direct, \(summary.indirectSets) indirect)")
+            VStack(alignment: .leading, spacing: 8) {
+                Text(summary.localizedName)
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundColor(AppColors.text)
+                Text(LanguageManager.t(summary.zone.titleKey))
+                    .font(.system(size: 11, weight: .semibold))
+                    .foregroundColor(summary.zone.color)
+                    .padding(.horizontal, 8)
+                    .padding(.vertical, 4)
+                    .background(summary.zone.badgeBgColor)
+                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(summary.zone.color.opacity(0.5), lineWidth: 1))
+                    .cornerRadius(8)
+                Text(LanguageManager.t("matrix.breakdown", [
+                    "credits": String(format: "%.1f", summary.totalEffectiveSets),
+                    "direct": summary.directSets,
+                    "indirect": summary.indirectSets
+                ]))
                     .font(.system(size: 12))
                     .foregroundColor(AppColors.secondaryText)
             }
@@ -440,7 +462,7 @@ public struct VolumeMatrixView: View {
                 .foregroundColor(AppColors.muted)
 
             // Landmark Gauge
-            landmarkGauge(summary: summary)
+            if summary.zone != .noWeeklyReference { landmarkGauge(summary: summary) }
 
             if !summary.contributions.isEmpty {
                 Divider().background(AppColors.border)
@@ -462,7 +484,7 @@ public struct VolumeMatrixView: View {
                                     .foregroundColor(item.isPrimary ? AppColors.purple : AppColors.secondaryText)
                             }
                             Spacer()
-                            Text("\(item.completedSets) sets (\(String(format: "%.1f", item.effectiveSets)))")
+                            Text(LanguageManager.t("matrix.contribution", ["sets": item.completedSets, "credits": String(format: "%.1f", item.effectiveSets)]))
                                 .font(.system(size: 12, weight: .semibold))
                                 .foregroundColor(AppColors.text)
                         }

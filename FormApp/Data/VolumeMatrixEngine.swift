@@ -3,14 +3,17 @@ import Foundation
 struct VolumeMatrixEngine {
 
     static let canonicalMuscles: [String] = [
-        "chest", "front-delts", "biceps", "abs", "obliques", "quads",
+        "chest", "front-delts", "side-delts", "biceps", "abs", "obliques", "quads",
         "upper-back", "lats", "triceps", "rear-delts", "glutes", "hamstrings", "calves"
     ]
 
     static func resolveExerciseId(exerciseName: String) -> String? {
         let raw = exerciseName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         let slug = raw.replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "_", with: "-")
-        return slug
+        let exercises = ExerciseCatalog.canonicalExercises
+        return exercises[raw]?.id
+            ?? exercises.values.first { $0.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == raw }?.id
+            ?? exercises[slug]?.id
     }
 
     static func computeLoggedVolume(
@@ -22,6 +25,8 @@ struct VolumeMatrixEngine {
         var directSetsMap: [String: Int] = [:]
         var indirectSetsMap: [String: Int] = [:]
         var contributionsMap: [String: [MuscleVolumeContribution]] = [:]
+        var workingSets = 0
+        var unmapped: [String: Int] = [:]
 
         for muscle in canonicalMuscles {
             directSetsMap[muscle] = 0
@@ -40,9 +45,14 @@ struct VolumeMatrixEngine {
                 guard completedSets > 0 else { continue }
 
                 let exerciseId = resolveExerciseId(exerciseName: log.exerciseName)
-                guard let profile = catalog.profile(exerciseId) else { continue }
+                workingSets += completedSets
+                guard let profile = catalog.profile(exerciseId),
+                      (profile.primary + profile.secondary).contains(where: { canonicalMuscles.contains($0) }) else {
+                    unmapped[log.exerciseName, default: 0] += completedSets
+                    continue
+                }
 
-                for primary in profile.primary {
+                for primary in Set(profile.primary) {
                     if canonicalMuscles.contains(primary) {
                         directSetsMap[primary, default: 0] += completedSets
                         contributionsMap[primary, default: []].append(
@@ -57,7 +67,7 @@ struct VolumeMatrixEngine {
                     }
                 }
 
-                for secondary in profile.secondary {
+                for secondary in Set(profile.secondary).subtracting(profile.primary) {
                     if canonicalMuscles.contains(secondary) {
                         indirectSetsMap[secondary, default: 0] += completedSets
                         contributionsMap[secondary, default: []].append(
@@ -81,7 +91,9 @@ struct VolumeMatrixEngine {
             indirectSetsMap: indirectSetsMap,
             contributionsMap: contributionsMap,
             catalog: catalog,
-            language: language
+            language: language,
+            workingSets: workingSets,
+            unmapped: unmapped
         )
     }
 
@@ -93,6 +105,8 @@ struct VolumeMatrixEngine {
         var directSetsMap: [String: Int] = [:]
         var indirectSetsMap: [String: Int] = [:]
         var contributionsMap: [String: [MuscleVolumeContribution]] = [:]
+        var workingSets = 0
+        var unmapped: [String: Int] = [:]
 
         for muscle in canonicalMuscles {
             directSetsMap[muscle] = 0
@@ -107,9 +121,14 @@ struct VolumeMatrixEngine {
                 guard targetSets > 0 else { continue }
 
                 let exerciseId = exercise.exerciseId ?? resolveExerciseId(exerciseName: exercise.name)
-                guard let profile = catalog.profile(exerciseId) else { continue }
+                workingSets += targetSets
+                guard let profile = catalog.profile(exerciseId),
+                      (profile.primary + profile.secondary).contains(where: { canonicalMuscles.contains($0) }) else {
+                    unmapped[exercise.name, default: 0] += targetSets
+                    continue
+                }
 
-                for primary in profile.primary {
+                for primary in Set(profile.primary) {
                     if canonicalMuscles.contains(primary) {
                         directSetsMap[primary, default: 0] += targetSets
                         contributionsMap[primary, default: []].append(
@@ -124,7 +143,7 @@ struct VolumeMatrixEngine {
                     }
                 }
 
-                for secondary in profile.secondary {
+                for secondary in Set(profile.secondary).subtracting(profile.primary) {
                     if canonicalMuscles.contains(secondary) {
                         indirectSetsMap[secondary, default: 0] += targetSets
                         contributionsMap[secondary, default: []].append(
@@ -142,13 +161,15 @@ struct VolumeMatrixEngine {
         }
 
         return buildReport(
-            weekKey: "Planned Routine",
+            weekKey: "program-cycle",
             isPlannedRoutine: true,
             directSetsMap: directSetsMap,
             indirectSetsMap: indirectSetsMap,
             contributionsMap: contributionsMap,
             catalog: catalog,
-            language: language
+            language: language,
+            workingSets: workingSets,
+            unmapped: unmapped
         )
     }
 
@@ -159,7 +180,9 @@ struct VolumeMatrixEngine {
         indirectSetsMap: [String: Int],
         contributionsMap: [String: [MuscleVolumeContribution]],
         catalog: ExerciseMuscleCatalog,
-        language: String
+        language: String,
+        workingSets: Int,
+        unmapped: [String: Int]
     ) -> VolumeMatrixReport {
         var summaries: [String: MuscleVolumeSummary] = [:]
         var totalSets: Float = 0
@@ -176,7 +199,7 @@ struct VolumeMatrixEngine {
             totalSets += effective
 
             let landmarks = VolumeLandmark.forMuscle(muscle)
-            let zone = landmarks.zone(for: effective)
+            let zone: VolumeZone = isPlannedRoutine ? .noWeeklyReference : landmarks.zone(for: effective)
 
             switch zone {
             case .optimalMav: optimalCount += 1
@@ -213,7 +236,9 @@ struct VolumeMatrixEngine {
             totalEffectiveSets: totalSets,
             optimalMuscleCount: optimalCount,
             underTrainedCount: underTrainedCount,
-            highFatigueCount: highFatigueCount
+            highFatigueCount: highFatigueCount,
+            totalWorkingSets: workingSets,
+            unmappedExercises: unmapped
         )
     }
 

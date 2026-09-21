@@ -6,7 +6,7 @@ public struct FormLabEngine {
     public static let pullMuscles: Set<String> = ["upper-back", "rear-delts", "lats", "biceps"]
     public static let quadMuscles: Set<String> = ["quads"]
     public static let hamstringMuscles: Set<String> = ["hamstrings"]
-    public static let upperMuscles: Set<String> = pushMuscles.union(pullMuscles).union(["abs", "obliques"])
+    public static let upperMuscles: Set<String> = pushMuscles.union(pullMuscles).union(["abs", "obliques", "side-delts"])
     public static let lowerMuscles: Set<String> = quadMuscles.union(hamstringMuscles).union(["glutes", "calves"])
 
     public static func calculateEstimated1RM(

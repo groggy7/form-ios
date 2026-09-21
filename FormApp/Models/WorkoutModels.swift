@@ -1033,7 +1033,7 @@ public struct ExerciseMetadata {
             switch primary {
             case "chest": return "exercise.muscle.chest"
             case "lats", "upper-back": return "exercise.muscle.back"
-            case "front-delts", "rear-delts": return "exercise.muscle.shoulders"
+            case "front-delts", "side-delts", "rear-delts": return "exercise.muscle.shoulders"
             case "biceps": return "exercise.muscle.biceps"
             case "triceps": return "exercise.muscle.triceps"
             case "quads": return "exercise.muscle.quads"
@@ -1206,7 +1206,7 @@ public struct ExerciseMetadata {
         let muscleMap: [String: [String]] = [
             "chest": ["chest"],
             "back": ["lats", "upper-back"],
-            "shoulders": ["front-delts", "rear-delts"],
+            "shoulders": ["front-delts", "side-delts", "rear-delts"],
             "biceps": ["biceps"],
             "triceps": ["triceps"],
             "quads": ["quads"],
@@ -1286,4 +1286,3 @@ public enum MuscleGroupFilter: String, CaseIterable, Identifiable {
         }
     }
 }
-

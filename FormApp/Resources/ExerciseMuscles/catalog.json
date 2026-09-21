@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "width": 480,
   "height": 1024,
   "views": {
@@ -7,7 +7,8 @@
       "offsetX": 278,
       "regions": {
         "chest": "M 416 217 C 442 202 481 202 513 216 L 514 285 C 492 309 453 305 429 285 C 418 267 413 244 416 217 Z M 526 216 C 557 202 594 208 613 228 C 618 253 609 283 589 294 C 564 309 541 301 526 286 Z",
-        "front-delts": "M 409 213 C 383 227 376 249 383 278 L 407 270 C 411 249 411 234 409 213 Z M 620 218 C 647 229 657 251 651 280 L 627 270 C 623 250 619 236 620 218 Z",
+        "front-delts": "M 409 217 C 402 219 398 227 396 239 L 395 270 L 407 266 C 412 247 412 231 409 217 Z M 624 222 C 632 224 637 232 640 242 L 640 271 L 628 266 C 624 248 621 232 624 222 Z",
+        "side-delts": "M 391 228 C 381 241 379 259 384 275 L 391 271 L 392 242 Z M 644 232 C 654 245 656 262 650 277 L 645 273 L 644 247 Z",
         "biceps": "M 381 281 C 373 300 364 324 366 348 C 370 363 381 366 389 346 C 399 326 405 301 402 281 Z M 629 281 C 628 306 636 337 649 354 C 659 369 668 361 666 344 C 665 319 657 296 653 281 Z",
         "abs": "M 487 309 C 496 315 503 316 512 313 L 512 416 L 493 420 C 482 389 481 338 487 309 Z M 525 313 C 537 313 543 312 552 310 C 557 345 554 389 542 420 L 525 416 Z",
         "obliques": "M 443 311 L 470 327 C 468 356 472 394 482 420 L 443 411 C 437 378 438 344 443 311 Z M 571 326 L 597 311 C 604 348 602 378 595 410 L 557 420 C 567 387 573 354 571 326 Z",
@@ -30,11 +31,15 @@
   "muscles": {
     "chest": {
       "en": "Chest",
-      "tr": "G\u00f6\u011f\u00fcs"
+      "tr": "Göğüs"
     },
     "front-delts": {
       "en": "Front shoulders",
-      "tr": "\u00d6n omuz"
+      "tr": "Ön omuz"
+    },
+    "side-delts": {
+      "en": "Side shoulders",
+      "tr": "Yan omuz"
     },
     "rear-delts": {
       "en": "Rear shoulders",
@@ -50,23 +55,23 @@
     },
     "upper-back": {
       "en": "Upper back",
-      "tr": "\u00dcst s\u0131rt"
+      "tr": "Üst sırt"
     },
     "lats": {
       "en": "Lats",
-      "tr": "Kanat kaslar\u0131"
+      "tr": "Kanat kasları"
     },
     "abs": {
       "en": "Abdominals",
-      "tr": "Kar\u0131n kaslar\u0131"
+      "tr": "Karın kasları"
     },
     "obliques": {
       "en": "Obliques",
-      "tr": "Yan kar\u0131n"
+      "tr": "Yan karın"
     },
     "quads": {
       "en": "Quadriceps",
-      "tr": "\u00d6n bacak"
+      "tr": "Ön bacak"
     },
     "hamstrings": {
       "en": "Hamstrings",
@@ -74,14 +79,15 @@
     },
     "glutes": {
       "en": "Glutes",
-      "tr": "Kal\u00e7a"
+      "tr": "Kalça"
     },
     "calves": {
       "en": "Calves",
-      "tr": "Bald\u0131r"
+      "tr": "Baldır"
     }
   },
   "sources": {
+    "rp-side-delts": "https://rpstrength.com/blogs/articles/side-delt-hypertrophy-training-tips",
     "nasm": "https://www.nasm.org/workout-exercise-guidance",
     "ace-chest": "https://www.acefitness.org/resources/pros/expert-articles/8972/be-a-chest-day-champion-an-evidence-based-approach-to-training-the-chest/"
   },
@@ -205,7 +211,7 @@
     },
     "cable-lateral-raise": {
       "primary": [
-        "front-delts"
+        "side-delts"
       ],
       "secondary": [
         "upper-back"
@@ -214,7 +220,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "rp-side-delts"
       ]
     },
     "chest-supported-dumbbell-row": {
@@ -308,7 +315,7 @@
     },
     "dumbbell-lateral-raise": {
       "primary": [
-        "front-delts"
+        "side-delts"
       ],
       "secondary": [
         "upper-back"
@@ -317,7 +324,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "rp-side-delts"
       ]
     },
     "dumbbell-romanian-deadlift": {
@@ -1757,7 +1765,7 @@
     },
     "lever-lateral-raise": {
       "primary": [
-        "front-delts"
+        "side-delts"
       ],
       "secondary": [
         "upper-back"
@@ -1766,7 +1774,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "rp-side-delts"
       ]
     },
     "cable-seated-rear-delt-fly-with-chest-support": {
@@ -1785,7 +1794,7 @@
     },
     "barbell-upright-row": {
       "primary": [
-        "front-delts",
+        "side-delts",
         "upper-back"
       ],
       "secondary": [
@@ -1795,7 +1804,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "rp-side-delts"
       ]
     },
     "barbell-curl": {
@@ -2988,7 +2998,7 @@
     },
     "dumbbell-seated-lateral-raise": {
       "primary": [
-        "front-delts"
+        "side-delts"
       ],
       "secondary": [
         "upper-back"
@@ -2997,12 +3007,13 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "rp-side-delts"
       ]
     },
     "cable-leaning-lateral-raise": {
       "primary": [
-        "front-delts"
+        "side-delts"
       ],
       "secondary": [
         "upper-back"
@@ -3011,12 +3022,13 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "rp-side-delts"
       ]
     },
     "cable-behind-the-back-lateral-raise": {
       "primary": [
-        "front-delts"
+        "side-delts"
       ],
       "secondary": [
         "upper-back"
@@ -3025,12 +3037,13 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "rp-side-delts"
       ]
     },
     "cable-one-arm-lateral-raise": {
       "primary": [
-        "front-delts"
+        "side-delts"
       ],
       "secondary": [
         "upper-back"
@@ -3039,7 +3052,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "rp-side-delts"
       ]
     },
     "cable-y-raise": {
@@ -3187,7 +3201,7 @@
     },
     "barbell-wide-grip-upright-row": {
       "primary": [
-        "front-delts",
+        "side-delts",
         "upper-back"
       ],
       "secondary": [
@@ -3197,12 +3211,13 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "rp-side-delts"
       ]
     },
     "dumbbell-upright-row": {
       "primary": [
-        "front-delts",
+        "side-delts",
         "upper-back"
       ],
       "secondary": [
@@ -3212,7 +3227,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "rp-side-delts"
       ]
     },
     "barbell-z-press": {
@@ -4301,7 +4317,7 @@
     },
     "band-lateral-raise": {
       "primary": [
-        "front-delts"
+        "side-delts"
       ],
       "secondary": [
         "upper-back"
@@ -4310,7 +4326,8 @@
       "initialView": "front",
       "status": "curated",
       "sources": [
-        "gymvisual"
+        "gymvisual",
+        "rp-side-delts"
       ]
     },
     "landmine-180": {

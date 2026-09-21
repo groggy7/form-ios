@@ -1,6 +1,7 @@
 import SwiftUI
 
 public enum VolumeZone: String, CaseIterable {
+    case noWeeklyReference = "no_weekly_reference"
     case underMev = "under_mev"
     case progressive = "progressive"
     case optimalMav = "optimal_mav"
@@ -9,6 +10,7 @@ public enum VolumeZone: String, CaseIterable {
 
     public var titleKey: String {
         switch self {
+        case .noWeeklyReference: return "matrix.zone.no_weekly_reference"
         case .underMev: return "matrix.zone.under_mev"
         case .progressive: return "matrix.zone.progressive"
         case .optimalMav: return "matrix.zone.optimal_mav"
@@ -19,6 +21,7 @@ public enum VolumeZone: String, CaseIterable {
 
     public var descriptionKey: String {
         switch self {
+        case .noWeeklyReference: return "matrix.cycleNote"
         case .underMev: return "matrix.zone.under_mev_desc"
         case .progressive: return "matrix.zone.progressive_desc"
         case .optimalMav: return "matrix.zone.optimal_mav_desc"
@@ -29,6 +32,7 @@ public enum VolumeZone: String, CaseIterable {
 
     public var color: Color {
         switch self {
+        case .noWeeklyReference: return Color(hex: 0x8F999F)
         case .underMev: return Color(hex: 0x62717E)
         case .progressive: return Color(hex: 0x12D8D2)
         case .optimalMav: return Color(hex: 0x20D791)
@@ -39,6 +43,7 @@ public enum VolumeZone: String, CaseIterable {
 
     public var badgeBgColor: Color {
         switch self {
+        case .noWeeklyReference: return Color(hex: 0x1E252B)
         case .underMev: return Color(hex: 0x1E252B)
         case .progressive: return Color(hex: 0x0C292B)
         case .optimalMav: return Color(hex: 0x142D29)
@@ -72,6 +77,7 @@ public struct VolumeLandmark: Equatable {
     public static let defaults: [String: VolumeLandmark] = [
         "chest": VolumeLandmark(muscleKey: "chest", mev: 6, mavMin: 10, mavMax: 18, mrv: 22),
         "front-delts": VolumeLandmark(muscleKey: "front-delts", mev: 4, mavMin: 6, mavMax: 12, mrv: 16),
+        "side-delts": VolumeLandmark(muscleKey: "side-delts", mev: 6, mavMin: 8, mavMax: 24, mrv: 30),
         "rear-delts": VolumeLandmark(muscleKey: "rear-delts", mev: 8, mavMin: 12, mavMax: 20, mrv: 25),
         "biceps": VolumeLandmark(muscleKey: "biceps", mev: 8, mavMin: 12, mavMax: 20, mrv: 24),
         "triceps": VolumeLandmark(muscleKey: "triceps", mev: 6, mavMin: 10, mavMax: 18, mrv: 22),
@@ -119,4 +125,6 @@ public struct VolumeMatrixReport: Equatable {
     public let optimalMuscleCount: Int
     public let underTrainedCount: Int
     public let highFatigueCount: Int
+    public var totalWorkingSets: Int = 0
+    public var unmappedExercises: [String: Int] = [:]
 }
