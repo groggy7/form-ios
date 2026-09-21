@@ -56,6 +56,7 @@ public struct VolumeMatrixView: View {
             return VolumeMatrixEngine.computeLoggedVolume(
                 targetWeekKey: effectiveWeekKey,
                 history: customHistory ?? store.state.history,
+                activeSession: effectiveWeekKey == currentWeekKey ? store.activeSession : nil,
                 catalog: catalog,
                 language: language.currentLanguage
             )

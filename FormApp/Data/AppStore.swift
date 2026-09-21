@@ -1161,6 +1161,27 @@ public enum ExerciseCatalog {
         name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
     }
 
+    /// Stable IDs win; legacy records fall back to exact normalized catalog names, then slugs.
+    public static func resolveCanonicalId(stableId: String?, name: String) -> String? {
+        if let stable = stableId?.trimmingCharacters(in: .whitespacesAndNewlines), !stable.isEmpty {
+            return stable
+        }
+        let normalized = name
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+            .replacingOccurrences(of: #"\s+"#, with: " ", options: .regularExpression)
+        guard !normalized.isEmpty else { return nil }
+        let exercises = canonicalExercises
+        if let direct = exercises[normalized] { return direct.id }
+        if let named = exercises.values.first(where: {
+            $0.name.trimmingCharacters(in: .whitespacesAndNewlines)
+                .lowercased()
+                .replacingOccurrences(of: #"\s+"#, with: " ", options: .regularExpression) == normalized
+        }) { return named.id }
+        let slug = normalized.replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "_", with: "-")
+        return exercises[slug]?.id ?? exercises.values.first(where: { $0.id == slug })?.id
+    }
+
     public static var canonicalExercises: [String: ExerciseDefinition] {
         if let cached = _canonicalExercises { return cached }
         let loaded = AppStore.loadBundledExercises()

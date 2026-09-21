@@ -173,7 +173,8 @@ public enum HevyCsvParser {
                 return SessionExerciseLog(
                     exerciseName: name,
                     sets: sets,
-                    targetSets: sets.count
+                    targetSets: sets.count,
+                    exerciseId: ExerciseCatalog.resolveCanonicalId(stableId: nil, name: name)
                 )
             }
 

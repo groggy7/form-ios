@@ -4472,6 +4472,10 @@ final class FormAppTests: XCTestCase {
 
         let benchId = VolumeMatrixEngine.resolveExerciseId(exerciseName: "Barbell Bench Press")
         XCTAssertEqual(benchId, "barbell-bench-press")
+        XCTAssertEqual(VolumeMatrixEngine.resolveExerciseId(exerciseName: "Deadlift"), "conventional-barbell-deadlift")
+        XCTAssertEqual(VolumeMatrixEngine.resolveExerciseId(exerciseName: "Smith Machine Squat"), "smith-squat")
+        XCTAssertEqual(VolumeMatrixEngine.resolveExerciseId(exerciseName: "Dumbbell 45° Back Extension"), "dumbbell-45-deg-back-extension")
+        XCTAssertEqual(VolumeMatrixEngine.resolveExerciseId(exerciseName: "Dual Cable Lat Pulldown"), "cable-neutral-grip-lat-pulldown")
 
         let session = WorkoutSessionRecord(
             id: "test-sess-1",
@@ -4566,6 +4570,61 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(cycle.optimalMuscleCount, 0)
         XCTAssertEqual(cycle.underTrainedCount, 0)
         XCTAssertEqual(cycle.highFatigueCount, 0)
+
+        let resumedId = "resumed-session"
+        let staleRecord = WorkoutSessionRecord(
+            id: resumedId,
+            programId: "program",
+            workoutId: "workout",
+            workoutTitle: "Old saved state",
+            startedAt: "2026-09-15T09:00:00Z",
+            completedAt: "2026-09-15T10:00:00Z",
+            durationSeconds: 3600,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: (1...4).map { SessionSetLog(setNumber: $0, weightKg: 80, reps: 8) },
+                    exerciseId: "barbell-bench-press"
+                )
+            ],
+            isComplete: false
+        )
+        let activeExercise = Exercise(
+            id: "deadlift-instance",
+            name: "Localized deadlift label",
+            exerciseId: "conventional-barbell-deadlift",
+            sets: 2
+        )
+        let start = Int64((ISO8601DateFormatter().date(from: "2026-09-15T09:00:00Z")?.timeIntervalSince1970 ?? 0) * 1000)
+        let now = Int64((ISO8601DateFormatter().date(from: "2026-09-15T11:00:00Z")?.timeIntervalSince1970 ?? 0) * 1000)
+        let active = ActiveSessionDraft(
+            id: resumedId,
+            programId: "program",
+            workout: Workout(id: "workout", day: 2, title: "Resumed", exercises: [activeExercise]),
+            startedAt: "2026-09-15T09:00:00Z",
+            startedAtEpochMillis: start,
+            setsByExercise: [
+                activeExercise.id: (1...2).map {
+                    ExerciseSetLog(setNumber: $0, weightKg: 100, completedReps: 5, isCompleted: true)
+                }
+            ]
+        )
+        let activeReport = VolumeMatrixEngine.computeLoggedVolume(
+            targetWeekKey: "2026-W38",
+            history: [staleRecord],
+            activeSession: active,
+            catalog: catalog,
+            nowEpochMillis: now
+        )
+        XCTAssertEqual(activeReport.totalWorkingSets, 2)
+        XCTAssertEqual(activeReport.muscleSummaries["glutes"]?.totalEffectiveSets, 2)
+        XCTAssertEqual(activeReport.muscleSummaries["hamstrings"]?.totalEffectiveSets, 2)
+        XCTAssertEqual(activeReport.muscleSummaries["chest"]?.totalEffectiveSets, 0)
+        XCTAssertTrue(activeReport.unmappedExercises.isEmpty)
+        XCTAssertEqual(
+            SessionProgress.from(draft: active, nowEpochMillis: now).exerciseLogs.first?.exerciseId,
+            "conventional-barbell-deadlift"
+        )
     }
 
     func testProgressionEngineReturnsFirstSessionWhenHistoryIsEmpty() {

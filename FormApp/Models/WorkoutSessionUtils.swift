@@ -64,7 +64,12 @@ public struct SessionProgress {
                 SessionSetLog(setNumber: $0.setNumber, weightKg: $0.weightKg, reps: $0.completedReps, isWarmup: $0.isWarmup)
             }
             let target = workingCount > 0 ? workingCount : WorkoutSessionUtils.initialSetCount(exercise: ex)
-            return SessionExerciseLog(exerciseName: ex.name, sets: sets, targetSets: target)
+            return SessionExerciseLog(
+                exerciseName: ex.name,
+                sets: sets,
+                targetSets: target,
+                exerciseId: ExerciseCatalog.resolveCanonicalId(stableId: ex.exerciseId, name: ex.name)
+            )
         }
 
         let hasProg = allSets.contains {
@@ -185,9 +190,13 @@ public enum WorkoutSessionUtils {
 
     public static func restoreSetsFromHistory(workout: Workout, record: WorkoutSessionRecord, unit: WeightUnit = .kg) -> [String: [ExerciseSetLog]] {
         var logsByName: [String: SessionExerciseLog] = [:]
+        var logsById: [String: SessionExerciseLog] = [:]
         for log in record.exerciseLogs {
             let key = log.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
             logsByName[key] = log
+            if let id = log.exerciseId?.trimmingCharacters(in: .whitespacesAndNewlines), !id.isEmpty {
+                logsById[id] = log
+            }
         }
 
         var result: [String: [ExerciseSetLog]] = [:]
@@ -196,7 +205,8 @@ public enum WorkoutSessionUtils {
             let nameKey = ex.name.trimmingCharacters(in: .whitespaces).lowercased()
             let displayKey = ex.displayName.trimmingCharacters(in: .whitespaces).lowercased()
 
-            var matchedLog = logsByName[nameKey] ?? logsByName[displayKey]
+            let stableId = ExerciseCatalog.resolveCanonicalId(stableId: ex.exerciseId, name: ex.name)
+            var matchedLog = stableId.flatMap { logsById[$0] } ?? logsByName[nameKey] ?? logsByName[displayKey]
             if matchedLog == nil, idx < record.exerciseLogs.count {
                 let positionalLog = record.exerciseLogs[idx]
                 let posKey = positionalLog.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()

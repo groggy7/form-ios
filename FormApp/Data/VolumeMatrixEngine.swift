@@ -8,20 +8,31 @@ struct VolumeMatrixEngine {
     ]
 
     static func resolveExerciseId(exerciseName: String) -> String? {
-        let raw = exerciseName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        let slug = raw.replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "_", with: "-")
-        let exercises = ExerciseCatalog.canonicalExercises
-        return exercises[raw]?.id
-            ?? exercises.values.first { $0.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == raw }?.id
-            ?? exercises[slug]?.id
+        ExerciseCatalog.resolveCanonicalId(stableId: nil, name: exerciseName)
     }
 
     static func computeLoggedVolume(
         targetWeekKey: String,
         history: [WorkoutSessionRecord],
+        activeSession: ActiveSessionDraft? = nil,
         catalog: ExerciseMuscleCatalog,
-        language: String = "en"
+        language: String = "en",
+        nowEpochMillis: Int64 = Int64(Date().timeIntervalSince1970 * 1000.0)
     ) -> VolumeMatrixReport {
+        var records = history
+        if let activeSession {
+            records.removeAll { $0.id == activeSession.id }
+            let activeSets = activeSession.setsByExercise.values.flatMap { $0 }
+            if activeSets.contains(where: {
+                $0.isCompleted && (($0.weightKg ?? 0) > 0 || ($0.completedReps ?? 0) > 0)
+            }) {
+                records.append(
+                    SessionProgress.from(draft: activeSession, nowEpochMillis: nowEpochMillis)
+                        .record(draft: activeSession, completedAtEpochMillis: nowEpochMillis)
+                )
+            }
+        }
+
         var directSetsMap: [String: Int] = [:]
         var indirectSetsMap: [String: Int] = [:]
         var contributionsMap: [String: [MuscleVolumeContribution]] = [:]
@@ -34,7 +45,7 @@ struct VolumeMatrixEngine {
             contributionsMap[muscle] = []
         }
 
-        let weekRecords = history.filter { record in
+        let weekRecords = records.filter { record in
             isRecordInWeek(record: record, targetWeekKey: targetWeekKey)
         }
 
@@ -44,7 +55,7 @@ struct VolumeMatrixEngine {
                 let completedSets = log.sets.filter { !$0.isWarmup && (($0.weightKg ?? 0) > 0 || ($0.reps ?? 0) > 0) }.count
                 guard completedSets > 0 else { continue }
 
-                let exerciseId = resolveExerciseId(exerciseName: log.exerciseName)
+                let exerciseId = ExerciseCatalog.resolveCanonicalId(stableId: log.exerciseId, name: log.exerciseName)
                 workingSets += completedSets
                 guard let profile = catalog.profile(exerciseId),
                       (profile.primary + profile.secondary).contains(where: { canonicalMuscles.contains($0) }) else {

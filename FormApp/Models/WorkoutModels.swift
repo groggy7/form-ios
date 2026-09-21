@@ -477,11 +477,14 @@ public struct SessionExerciseLog: Codable, Hashable {
     public var exerciseName: String
     public var sets: [SessionSetLog]
     public var targetSets: Int?
+    /// Stable catalog identity for new records. Nil keeps older/imported history compatible.
+    public var exerciseId: String?
 
-    public init(exerciseName: String, sets: [SessionSetLog] = [], targetSets: Int? = nil) {
+    public init(exerciseName: String, sets: [SessionSetLog] = [], targetSets: Int? = nil, exerciseId: String? = nil) {
         self.exerciseName = exerciseName
         self.sets = sets
         self.targetSets = targetSets
+        self.exerciseId = exerciseId
     }
 }
 
