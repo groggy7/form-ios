@@ -5,6 +5,7 @@ public struct ProgressionCoachCard: View {
     let onApplyTarget: () -> Void
     let onOpenInfo: () -> Void
     var onLockedClick: (() -> Void)? = nil
+    var onDismissLocked: (() -> Void)? = nil
 
     @ObservedObject private var proManager = ProAccessManager.shared
     @State private var wasApplied: Bool = false
@@ -14,74 +15,93 @@ public struct ProgressionCoachCard: View {
         recommendation: ExerciseProgressionRecommendation,
         onApplyTarget: @escaping () -> Void,
         onOpenInfo: @escaping () -> Void,
-        onLockedClick: (() -> Void)? = nil
+        onLockedClick: (() -> Void)? = nil,
+        onDismissLocked: (() -> Void)? = nil
     ) {
         self.recommendation = recommendation
         self.onApplyTarget = onApplyTarget
         self.onOpenInfo = onOpenInfo
         self.onLockedClick = onLockedClick
+        self.onDismissLocked = onDismissLocked
     }
 
     public var body: some View {
         if !proManager.isFeatureUnlocked(.autoProgression) {
-            Button(action: {
-                if let onLockedClick = onLockedClick {
-                    onLockedClick()
-                } else {
-                    showInternalPaywall = true
-                }
-            }) {
-                HStack(spacing: 10) {
-                    // Left Icon
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 8, style: .continuous)
-                            .fill(AppColors.purpleBg)
-                            .frame(width: 36, height: 36)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                    .stroke(AppColors.purple.opacity(0.4), lineWidth: 1)
-                            )
-
-                        Image(systemName: "chart.line.uptrend.xyaxis")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(AppColors.purple)
+            HStack(spacing: 6) {
+                Button(action: {
+                    if let onLockedClick = onLockedClick {
+                        onLockedClick()
+                    } else {
+                        showInternalPaywall = true
                     }
+                }) {
+                    HStack(spacing: 10) {
+                        // Left Icon
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                .fill(AppColors.purpleBg)
+                                .frame(width: 36, height: 36)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                        .stroke(AppColors.purple.opacity(0.4), lineWidth: 1)
+                                )
 
-                    // Text details
-                    VStack(alignment: .leading, spacing: 2) {
-                        HStack(spacing: 6) {
-                            ProBadge()
-                            Text(LanguageManager.t("pro.auto_progression.title"))
-                                .font(.system(size: 13, weight: .bold))
-                                .foregroundColor(AppColors.text)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.85)
+                            Image(systemName: "chart.line.uptrend.xyaxis")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(AppColors.purple)
                         }
 
-                        Text(LanguageManager.t("pro.auto_progression.teaser"))
-                            .font(.system(size: 11))
-                            .foregroundColor(AppColors.secondaryText)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.85)
+                        // Text details
+                        VStack(alignment: .leading, spacing: 2) {
+                            HStack(spacing: 6) {
+                                ProBadge()
+                                Text(LanguageManager.t("pro.auto_progression.title"))
+                                    .font(.system(size: 13, weight: .bold))
+                                    .foregroundColor(AppColors.text)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.75)
+                            }
+
+                            Text(LanguageManager.t("pro.auto_progression.teaser"))
+                                .font(.system(size: 11))
+                                .foregroundColor(AppColors.secondaryText)
+                                .lineLimit(1)
+                                .minimumScaleFactor(0.75)
+                        }
+
+                        Spacer(minLength: 2)
+
+                        Image(systemName: "lock.fill")
+                            .font(.system(size: 13))
+                            .foregroundColor(AppColors.purple)
                     }
-
-                    Spacer()
-
-                    Image(systemName: "lock.fill")
-                        .font(.system(size: 14))
-                        .foregroundColor(AppColors.purple)
+                    .contentShape(Rectangle())
                 }
-                .padding(14)
-                .background(
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(AppColors.surfaceRaised)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .stroke(AppColors.purple.opacity(0.35), lineWidth: 1)
-                        )
-                )
+                .buttonStyle(.plain)
+
+                if let onDismissLocked = onDismissLocked {
+                    Button(action: onDismissLocked) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 12, weight: .semibold))
+                            .foregroundColor(AppColors.muted)
+                            .frame(width: 24, height: 24)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("dismiss-progression-card")
+                }
             }
-            .buttonStyle(.plain)
+            .padding(.leading, 14)
+            .padding(.trailing, onDismissLocked != nil ? 8 : 14)
+            .padding(.vertical, 10)
+            .background(
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .fill(AppColors.surfaceRaised)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(AppColors.purple.opacity(0.35), lineWidth: 1)
+                    )
+            )
             .accessibilityIdentifier("progression-coach-card")
             .sheet(isPresented: $showInternalPaywall) {
                 ProPaywallSheet(feature: .autoProgression, onDismiss: { showInternalPaywall = false })

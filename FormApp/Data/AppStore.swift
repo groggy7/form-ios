@@ -13,10 +13,14 @@ public final class AppStore: ObservableObject {
     private let barTypeKey = "bar_type"
     private let availablePlatesKey = "available_plates_kg"
     private let onboardingCompletedKey = "is_onboarding_completed"
+    private let progressionCardDismissedKey = "pro_progression_card_dismissed"
+    private let warmupCardDismissedKey = "pro_warmup_card_dismissed"
 
     @Published public var state: StoredAppState
     @Published public var activeSession: ActiveSessionDraft?
     @Published public var isOnboardingCompleted: Bool
+    @Published public var isProgressionCardDismissed: Bool
+    @Published public var isWarmupCardDismissed: Bool
     @Published public var currentView: ViewMode = .today {
         didSet {
             if currentView != .library {
@@ -108,6 +112,8 @@ public final class AppStore: ObservableObject {
         } else {
             self.availablePlatesKg = WarmupPlateEngine.defaultPlatesKg
         }
+        self.isProgressionCardDismissed = UserDefaults.standard.bool(forKey: progressionCardDismissedKey)
+        self.isWarmupCardDismissed = UserDefaults.standard.bool(forKey: warmupCardDismissedKey)
 
         var loadedState = Self.loadStoredState()
 
@@ -173,6 +179,21 @@ public final class AppStore: ObservableObject {
         $isOnboardingCompleted
             .sink { UserDefaults.standard.set($0, forKey: self.onboardingCompletedKey) }
             .store(in: &cancellables)
+
+        $isProgressionCardDismissed
+            .dropFirst()
+            .sink { UserDefaults.standard.set($0, forKey: self.progressionCardDismissedKey) }
+            .store(in: &cancellables)
+
+        $isWarmupCardDismissed
+            .dropFirst()
+            .sink { UserDefaults.standard.set($0, forKey: self.warmupCardDismissedKey) }
+            .store(in: &cancellables)
+    }
+
+    public func resetDismissedProCards() {
+        isProgressionCardDismissed = false
+        isWarmupCardDismissed = false
     }
 
     public var activeProgram: Program? {

@@ -3,6 +3,7 @@ import Combine
 
 public struct ActiveSessionView: View {
     @ObservedObject var store: AppStore
+    @ObservedObject private var proManager = ProAccessManager.shared
     let draft: ActiveSessionDraft
 
     @State private var nowEpochMillis: Int64 = Int64(Date().timeIntervalSince1970 * 1000)
@@ -291,50 +292,66 @@ public struct ActiveSessionView: View {
                                         weightUnit: store.weightUnit
                                     )
 
-                                    ProgressionCoachCard(
-                                        recommendation: recommendation,
-                                        onApplyTarget: {
-                                            for (setIdx, setLog) in currentSets.enumerated() {
-                                                if !setLog.isCompleted {
-                                                    let targetWeight: String = {
-                                                        if let suggestedKg = recommendation.suggestedWeightKg {
-                                                            return store.weightUnit.formatWeight(suggestedKg)
-                                                        }
-                                                        return setLog.weightInput
-                                                    }()
-                                                    let targetReps = "\(recommendation.suggestedRepsMin)"
-                                                    updateSet(exerciseId: exercise.id, index: setIdx, weight: targetWeight, reps: targetReps)
+                                    if !store.isProgressionCardDismissed || proManager.isFeatureUnlocked(.autoProgression) {
+                                        ProgressionCoachCard(
+                                            recommendation: recommendation,
+                                            onApplyTarget: {
+                                                for (setIdx, setLog) in currentSets.enumerated() {
+                                                    if !setLog.isCompleted {
+                                                        let targetWeight: String = {
+                                                            if let suggestedKg = recommendation.suggestedWeightKg {
+                                                                return store.weightUnit.formatWeight(suggestedKg)
+                                                            }
+                                                            return setLog.weightInput
+                                                        }()
+                                                        let targetReps = "\(recommendation.suggestedRepsMin)"
+                                                        updateSet(exerciseId: exercise.id, index: setIdx, weight: targetWeight, reps: targetReps)
+                                                    }
+                                                }
+                                            },
+                                            onOpenInfo: {
+                                                showProgressionInfo = true
+                                            },
+                                            onLockedClick: {
+                                                paywallFeature = .autoProgression
+                                            },
+                                            onDismissLocked: {
+                                                withAnimation(.easeInOut(duration: 0.25)) {
+                                                    store.isProgressionCardDismissed = true
                                                 }
                                             }
-                                        },
-                                        onOpenInfo: {
-                                            showProgressionInfo = true
-                                        },
-                                        onLockedClick: {
-                                            paywallFeature = .autoProgression
-                                        }
-                                    )
+                                        )
+                                        .transition(.opacity.combined(with: .scale(scale: 0.96)))
+                                    }
 
                                     let currentWarmups = currentSets.filter { $0.isWarmup }
-                                    WarmupPlateCard(
-                                        warmupSets: currentWarmups,
-                                        onGenerateWarmup: {
-                                            warmupModalTab = .warmupRamp
-                                            selectedPlateWeight = nil
-                                            showWarmupPlateSheet = true
-                                        },
-                                        onOpenPlates: {
-                                            warmupModalTab = .plateLoader
-                                            selectedPlateWeight = nil
-                                            showWarmupPlateSheet = true
-                                        },
-                                        onClearWarmups: {
-                                            store.clearWarmupSets(exerciseId: exercise.id)
-                                        },
-                                        onLockedClick: {
-                                            paywallFeature = .warmupCalculator
-                                        }
-                                    )
+                                    if !store.isWarmupCardDismissed || proManager.isFeatureUnlocked(.warmupCalculator) {
+                                        WarmupPlateCard(
+                                            warmupSets: currentWarmups,
+                                            onGenerateWarmup: {
+                                                warmupModalTab = .warmupRamp
+                                                selectedPlateWeight = nil
+                                                showWarmupPlateSheet = true
+                                            },
+                                            onOpenPlates: {
+                                                warmupModalTab = .plateLoader
+                                                selectedPlateWeight = nil
+                                                showWarmupPlateSheet = true
+                                            },
+                                            onClearWarmups: {
+                                                store.clearWarmupSets(exerciseId: exercise.id)
+                                            },
+                                            onLockedClick: {
+                                                paywallFeature = .warmupCalculator
+                                            },
+                                            onDismissLocked: {
+                                                withAnimation(.easeInOut(duration: 0.25)) {
+                                                    store.isWarmupCardDismissed = true
+                                                }
+                                            }
+                                        )
+                                        .transition(.opacity.combined(with: .scale(scale: 0.96)))
+                                    }
 
                                     let isRestActive = (activeDraft.restTimer?.secondsRemaining(nowEpochMillis: nowEpochMillis) ?? 0) > 0
                                     let prText = WorkoutSessionUtils.findExercisePr(history: store.state.history, exercise: exercise, unit: store.weightUnit) ?? "-"

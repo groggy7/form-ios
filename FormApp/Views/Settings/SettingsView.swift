@@ -119,6 +119,35 @@ public struct SettingsView: View {
                             }
                             .tint(AppColors.accent)
                             .padding(14)
+
+                            if store.isProgressionCardDismissed || store.isWarmupCardDismissed {
+                                Divider().background(AppColors.border)
+
+                                Button(action: {
+                                    withAnimation {
+                                        store.resetDismissedProCards()
+                                    }
+                                }) {
+                                    HStack {
+                                        VStack(alignment: .leading, spacing: 2) {
+                                            Text(LanguageManager.t("settings.restore_pro_cards"))
+                                                .font(.system(size: 15))
+                                                .foregroundColor(AppColors.text)
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                            Text(LanguageManager.t("settings.restore_pro_cards_desc"))
+                                                .font(.system(size: 12))
+                                                .foregroundColor(AppColors.secondaryText)
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                        }
+                                        Spacer()
+                                        Image(systemName: "arrow.counterclockwise")
+                                            .font(.system(size: 14, weight: .semibold))
+                                            .foregroundColor(AppColors.accent)
+                                    }
+                                    .padding(14)
+                                }
+                                .buttonStyle(.plain)
+                            }
                         }
                     }
 

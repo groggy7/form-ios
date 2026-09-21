@@ -5178,7 +5178,8 @@ final class FormAppTests: XCTestCase {
             warmupSets: [],
             onGenerateWarmup: {},
             onOpenPlates: {},
-            onClearWarmups: {}
+            onClearWarmups: {},
+            onDismissLocked: {}
         )
         .padding(.horizontal, 16)
         .padding(.vertical, 24)
@@ -5220,7 +5221,8 @@ final class FormAppTests: XCTestCase {
         let card = ProgressionCoachCard(
             recommendation: dummyRecommendation,
             onApplyTarget: {},
-            onOpenInfo: {}
+            onOpenInfo: {},
+            onDismissLocked: {}
         )
         .padding(.horizontal, 16)
         .padding(.vertical, 24)
@@ -5243,6 +5245,26 @@ final class FormAppTests: XCTestCase {
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote inactive progression coach card snapshot to \(path)")
         }
+    }
+
+    @MainActor
+    func testDismissProCardsInSessionAndRestoreFromSettings() {
+        let store = AppStore.shared
+        store.resetDismissedProCards()
+        XCTAssertFalse(store.isProgressionCardDismissed)
+        XCTAssertFalse(store.isWarmupCardDismissed)
+
+        store.isProgressionCardDismissed = true
+        XCTAssertTrue(store.isProgressionCardDismissed)
+        XCTAssertTrue(UserDefaults.standard.bool(forKey: "pro_progression_card_dismissed"))
+
+        store.isWarmupCardDismissed = true
+        XCTAssertTrue(store.isWarmupCardDismissed)
+        XCTAssertTrue(UserDefaults.standard.bool(forKey: "pro_warmup_card_dismissed"))
+
+        store.resetDismissedProCards()
+        XCTAssertFalse(store.isProgressionCardDismissed)
+        XCTAssertFalse(store.isWarmupCardDismissed)
     }
 
     // MARK: - Form Lab Unit & Snapshot Tests
