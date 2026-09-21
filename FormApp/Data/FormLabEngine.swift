@@ -5,9 +5,9 @@ public struct FormLabEngine {
     public static let pushMuscles: Set<String> = ["chest", "front-delts", "triceps"]
     public static let pullMuscles: Set<String> = ["upper-back", "rear-delts", "lats", "biceps"]
     public static let quadMuscles: Set<String> = ["quads"]
-    public static let hamstringMuscles: Set<String> = ["hamstrings", "glutes"]
+    public static let hamstringMuscles: Set<String> = ["hamstrings"]
     public static let upperMuscles: Set<String> = pushMuscles.union(pullMuscles).union(["abs", "obliques"])
-    public static let lowerMuscles: Set<String> = quadMuscles.union(hamstringMuscles).union(["calves"])
+    public static let lowerMuscles: Set<String> = quadMuscles.union(hamstringMuscles).union(["glutes", "calves"])
 
     public static func calculateEstimated1RM(
         weightKg: Double,
@@ -210,35 +210,13 @@ public struct FormLabEngine {
     }
 
     public static func resolveExerciseMuscles(exerciseName: String) -> [String] {
-        let lower = exerciseName.lowercased()
-        if lower.contains("overhead") || lower.contains("shoulder") || lower.contains("military") || lower.contains("arnold") || lower.contains("lateral raise") {
-            return ["front-delts"]
-        }
-        if lower.contains("bench") || lower.contains("chest") || lower.contains("fly") || lower.contains("push-up") || lower.contains("pushup") || lower.contains("pec") || (lower.contains("press") && !lower.contains("leg")) {
-            return ["chest"]
-        }
-        if lower.contains("dip") || lower.contains("tricep") || lower.contains("skull") || lower.contains("pushdown") {
-            return ["triceps"]
-        }
-        if lower.contains("row") || lower.contains("lat") || lower.contains("pull-up") || lower.contains("chin-up") || lower.contains("pulldown") {
-            return ["upper-back", "lats"]
-        }
-        if lower.contains("curl") || lower.contains("bicep") {
-            return ["biceps"]
-        }
-        if lower.contains("squat") || lower.contains("leg press") || lower.contains("extension") || lower.contains("lunge") {
-            return ["quads"]
-        }
-        if lower.contains("deadlift") || lower.contains("rdl") || lower.contains("hamstring") || lower.contains("leg curl") || lower.contains("hip thrust") {
-            return ["hamstrings", "glutes"]
-        }
-        if lower.contains("calf") {
-            return ["calves"]
-        }
-        if lower.contains("crunch") || lower.contains("plank") || lower.contains("leg raise") {
-            return ["abs"]
-        }
-        return []
+        // Match canonical IDs/names, never broad substrings such as "curl".
+        let key = exerciseName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        let catalog = ExerciseCatalog.canonicalExercises
+        let exercise = catalog[key]
+            ?? catalog.values.first { $0.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == key }
+            ?? catalog[key.replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "_", with: "-")]
+        return ExerciseMuscleCatalog.shared?.profile(exercise?.id)?.primary ?? []
     }
 
     public static func computeAntagonistBalance(
@@ -255,6 +233,7 @@ public struct FormLabEngine {
         var upperSets = 0
         var lowerSets = 0
         var totalSets = 0
+        var unclassifiedSets = 0
 
         let isoFormatter = ISO8601DateFormatter()
         let fallbackFormatter = DateFormatter()
@@ -272,6 +251,7 @@ public struct FormLabEngine {
                 guard workingSetsCount > 0 else { continue }
 
                 totalSets += workingSetsCount
+                if muscles.isEmpty { unclassifiedSets += workingSetsCount }
 
                 if muscles.contains(where: { pushMuscles.contains($0) }) { pushSets += workingSetsCount }
                 if muscles.contains(where: { pullMuscles.contains($0) }) { pullSets += workingSetsCount }
@@ -328,7 +308,7 @@ public struct FormLabEngine {
             optimalMin: 0.80,
             optimalMax: 1.25,
             status: pushPullStatus,
-            alertMessageKey: pushPullAlertKey,
+            alertMessageKey: missingWorkKey(pushSets, pullSets, "push", "pull") ?? pushPullAlertKey,
             recommendationKey: pushPullRecKey
         )
 
@@ -378,7 +358,7 @@ public struct FormLabEngine {
             optimalMin: 0.75,
             optimalMax: 1.40,
             status: quadHamStatus,
-            alertMessageKey: quadHamAlertKey,
+            alertMessageKey: missingWorkKey(quadSets, hamSets, "quads", "hamstrings") ?? quadHamAlertKey,
             recommendationKey: quadHamRecKey
         )
 
@@ -428,7 +408,7 @@ public struct FormLabEngine {
             optimalMin: 0.85,
             optimalMax: 2.20,
             status: upperLowerStatus,
-            alertMessageKey: upperLowerAlertKey,
+            alertMessageKey: missingWorkKey(upperSets, lowerSets, "upper", "lower") ?? upperLowerAlertKey,
             recommendationKey: upperLowerRecKey
         )
 
@@ -436,7 +416,14 @@ public struct FormLabEngine {
             pushPull: pushPull,
             quadHamstring: quadHam,
             upperLower: upperLower,
-            totalWorkingSets: totalSets
+            totalWorkingSets: totalSets,
+            unclassifiedWorkingSets: unclassifiedSets
         )
+    }
+
+    private static func missingWorkKey(_ primary: Int, _ antagonist: Int, _ primaryName: String, _ antagonistName: String) -> String? {
+        if primary > 0 && antagonist == 0 { return "form_lab.balance.no_\(antagonistName)" }
+        if antagonist > 0 && primary == 0 { return "form_lab.balance.no_\(primaryName)" }
+        return nil
     }
 }

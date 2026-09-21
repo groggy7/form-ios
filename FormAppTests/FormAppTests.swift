@@ -111,7 +111,16 @@ final class FormAppTests: XCTestCase {
     @MainActor
     func testAnalyticsReferenceCopySnapshots() {
         let previous = LanguageManager.shared.currentLanguage
-        defer { LanguageManager.setLanguage(previous) }
+        let store = AppStore.shared
+        let original = store.state
+        var fixture = original
+        fixture.history = [WorkoutSessionRecord(id: "distribution-ui", programId: "p", workoutId: "w", workoutTitle: "Workout",
+            startedAt: "2026-09-15T10:00:00Z", completedAt: "2026-09-15T11:00:00Z", durationSeconds: 100,
+            totalVolumeKg: 1280, totalCompletedSets: 5, exerciseLogs: [
+                SessionExerciseLog(exerciseName: "Barbell Bench Press", sets: (1...4).map { SessionSetLog(setNumber: $0, weightKg: 40, reps: 8, isWarmup: false) }),
+                SessionExerciseLog(exerciseName: "My leg curl", sets: [SessionSetLog(setNumber: 1, weightKg: 10, reps: 8, isWarmup: false)])])]
+        store.saveState(fixture)
+        defer { LanguageManager.setLanguage(previous); store.saveState(original) }
         for language in ["en", "tr"] {
             LanguageManager.setLanguage(language)
             for matrix in [true, false] {
@@ -5191,6 +5200,59 @@ final class FormAppTests: XCTestCase {
         XCTAssertGreaterThan(report.current1rmKg!, report.start1rmKg!)
         XCTAssertGreaterThan(report.deltaKg, 0)
         XCTAssertGreaterThan(report.percentageGain, 0)
+    }
+
+    func testDistributionUsesExactCatalogClassifications() {
+        XCTAssertGreaterThanOrEqual(ExerciseCatalog.canonicalExercises.count, 300)
+        XCTAssertNotNil(ExerciseMuscleCatalog.shared)
+        for exercise in ExerciseCatalog.canonicalExercises.values {
+            let expected = ExerciseMuscleCatalog.shared?.profile(exercise.id)?.primary ?? []
+            XCTAssertEqual(FormLabEngine.resolveExerciseMuscles(exerciseName: exercise.id), expected, exercise.id)
+            XCTAssertEqual(FormLabEngine.resolveExerciseMuscles(exerciseName: exercise.name), expected, exercise.name)
+        }
+        for name in ["Seated Leg Curl", "Lying Leg Curl", "  SEATED LEG CURL  "] {
+            XCTAssertEqual(FormLabEngine.resolveExerciseMuscles(exerciseName: name), ["hamstrings"])
+        }
+        XCTAssertEqual(FormLabEngine.resolveExerciseMuscles(exerciseName: "Barbell Curl"), ["biceps"])
+        for name in ["My leg curl", "Custom curl", "My chest-supported row", "Unknown"] {
+            XCTAssertTrue(FormLabEngine.resolveExerciseMuscles(exerciseName: name).isEmpty)
+        }
+    }
+
+    func testDistributionKeepsGlutesSeparateAndReportsMissingWork() {
+        func report(_ name: String, count: Int = 4) -> AntagonistBalanceReport {
+            let sets = (1...count).map { SessionSetLog(setNumber: $0, weightKg: 40, reps: 8, isWarmup: false) }
+                + [SessionSetLog(setNumber: 99, weightKg: 10, reps: 8, isWarmup: true)]
+            let session = WorkoutSessionRecord(id: "classification", programId: "p", workoutId: "w", workoutTitle: "Test",
+                startedAt: "2026-09-10T10:00:00Z", completedAt: "2026-09-10T11:00:00Z", durationSeconds: 3600,
+                totalVolumeKg: 1280, totalCompletedSets: count, exerciseLogs: [SessionExerciseLog(exerciseName: name, sets: sets)])
+            return FormLabEngine.computeAntagonistBalance(history: [session])
+        }
+        let squat = report("Barbell Back Squat")
+        XCTAssertEqual(squat.quadHamstring.primarySets, 4)
+        XCTAssertEqual(squat.quadHamstring.antagonistSets, 0)
+        XCTAssertNil(squat.quadHamstring.ratio)
+        XCTAssertEqual(squat.quadHamstring.alertMessageKey, "form_lab.balance.no_hamstrings")
+        XCTAssertNotEqual(squat.quadHamstring.status, .optimal)
+        let glutes = report("Barbell Hip Thrust")
+        XCTAssertEqual(glutes.quadHamstring.antagonistSets, 0)
+        XCTAssertEqual(glutes.upperLower.antagonistSets, 4)
+        XCTAssertEqual(glutes.upperLower.alertMessageKey, "form_lab.balance.no_upper")
+        let curl = report("Seated Leg Curl")
+        XCTAssertEqual(curl.quadHamstring.antagonistSets, 4)
+        XCTAssertEqual(curl.pushPull.antagonistSets, 0)
+        XCTAssertEqual(curl.quadHamstring.alertMessageKey, "form_lab.balance.no_quads")
+        XCTAssertEqual(report("Barbell Row").pushPull.alertMessageKey, "form_lab.balance.no_push")
+        let push = report("Barbell Bench Press")
+        XCTAssertNil(push.pushPull.ratio)
+        XCTAssertEqual(push.pushPull.alertMessageKey, "form_lab.balance.no_pull")
+        XCTAssertEqual(push.upperLower.alertMessageKey, "form_lab.balance.no_lower")
+        XCTAssertEqual(report("Barbell Bench Press", count: 1).pushPull.alertMessageKey, "form_lab.balance.no_pull")
+        let unknown = report("My leg curl")
+        XCTAssertEqual(unknown.totalWorkingSets, 4)
+        XCTAssertEqual(unknown.unclassifiedWorkingSets, 4)
+        XCTAssertEqual(unknown.pushPull.antagonistSets, 0)
+        XCTAssertEqual(unknown.upperLower.antagonistSets, 0)
     }
 
     func testFormLabAntagonistBalance() {

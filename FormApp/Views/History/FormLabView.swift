@@ -544,6 +544,14 @@ public struct FormLabView: View {
                     .font(.system(size: 12))
                     .lineSpacing(2)
                     .foregroundColor(AppColors.secondaryText)
+                Text(LanguageManager.t("form_lab.balance.classification"))
+                    .font(.system(size: 12))
+                    .foregroundColor(AppColors.secondaryText)
+                if balance.unclassifiedWorkingSets > 0 {
+                    Text(LanguageManager.t("form_lab.balance.unclassified", ["count": balance.unclassifiedWorkingSets]))
+                        .font(.system(size: 12))
+                        .foregroundColor(AppColors.secondaryText)
+                }
             }
             .padding(16)
             .frame(maxWidth: .infinity, alignment: .leading)

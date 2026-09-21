@@ -204,17 +204,20 @@ public struct AntagonistBalanceReport: Equatable {
     public let quadHamstring: AntagonistRatio
     public let upperLower: AntagonistRatio
     public let totalWorkingSets: Int
+    public let unclassifiedWorkingSets: Int
 
     public init(
         pushPull: AntagonistRatio,
         quadHamstring: AntagonistRatio,
         upperLower: AntagonistRatio,
-        totalWorkingSets: Int
+        totalWorkingSets: Int,
+        unclassifiedWorkingSets: Int = 0
     ) {
         self.pushPull = pushPull
         self.quadHamstring = quadHamstring
         self.upperLower = upperLower
         self.totalWorkingSets = totalWorkingSets
+        self.unclassifiedWorkingSets = unclassifiedWorkingSets
     }
 }
 
