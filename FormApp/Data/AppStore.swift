@@ -484,7 +484,9 @@ public final class AppStore: ObservableObject {
         }
         let recordEntryDate = state.calendarHistory?.entries.first(where: { $0.id == "session:\(finalRecord.id)" })?.date
         let draftWorkoutDay = activeSession?.workout.day
-        let recordWorkoutDay = activeProgram?.workouts.first(where: { $0.id == finalRecord.workoutId })?.day
+        let recordWorkoutDay = state.programs.first(where: { $0.id == finalRecord.programId })?.workouts.first(where: { $0.id == finalRecord.workoutId })?.day
+            ?? activeProgram?.workouts.first(where: { $0.id == finalRecord.workoutId })?.day
+            ?? state.programs.flatMap(\.workouts).first(where: { $0.id == finalRecord.workoutId })?.day
         let targetWeekday = draftWorkoutDay ?? recordWorkoutDay
 
         let sessionDate: String

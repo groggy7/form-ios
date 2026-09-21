@@ -2568,6 +2568,115 @@ final class FormAppTests: XCTestCase {
         store.abandonActiveSession()
     }
 
+    func testResumeWorkoutPreservesProgramAcrossActiveProgramSwitch() {
+        let store = AppStore.shared
+        guard store.state.programs.count >= 2 else { return }
+        let progA = store.state.programs[0]
+        let progB = store.state.programs[1]
+        guard let workoutA = progA.workouts.first(where: { $0.exercises.count >= 2 }) else { return }
+
+        // Set active program to progA
+        var st = store.state
+        st.activeProgramId = progA.id
+        st.history.removeAll { $0.workoutId == workoutA.id }
+        st.completed.removeAll { $0.contains(workoutA.id) }
+        store.saveState(st)
+
+        // 1. Start workout in progA
+        let started = store.startActiveSession(programId: progA.id, workout: workoutA)
+        XCTAssertTrue(started)
+
+        // 2. Complete first exercise
+        let firstEx = workoutA.exercises[0]
+        store.updateActiveSession { d in
+            var copy = d
+            var sets = copy.setsByExercise[firstEx.id] ?? []
+            for i in 0..<sets.count {
+                sets[i].isCompleted = true
+                sets[i].weightKg = 50.0
+                sets[i].weightInput = "50"
+                sets[i].completedReps = 10
+                sets[i].repsInput = "10"
+            }
+            copy.setsByExercise[firstEx.id] = sets
+            return copy
+        }
+
+        // 3. Abandon active session so it saves as an unfinished session in history
+        store.abandonActiveSession()
+        XCTAssertNil(store.activeSession)
+
+        let unfinishedRec = store.state.history.first { $0.workoutId == workoutA.id && $0.isComplete == false }
+        XCTAssertNotNil(unfinishedRec)
+        XCTAssertEqual(unfinishedRec?.programId, progA.id)
+
+        // 4. User changes active program to progB!
+        var switchedState = store.state
+        switchedState.activeProgramId = progB.id
+        store.saveState(switchedState)
+        XCTAssertEqual(store.activeProgram?.id, progB.id)
+
+        // 5. Resume from History: simulate HistoryView handleWorkoutAction logic
+        let resolvedProgId = unfinishedRec?.programId
+            ?? store.state.programs.first(where: { $0.workouts.contains(where: { $0.id == workoutA.id }) })?.id
+            ?? store.activeProgram?.id
+        XCTAssertEqual(resolvedProgId, progA.id, "Resolved program ID must be progA, NOT activeProgram (progB)")
+
+        let resumed = store.startActiveSession(
+            programId: resolvedProgId ?? "",
+            workout: workoutA,
+            allowPast: true,
+            unfinishedRecordId: unfinishedRec?.id
+        )
+        XCTAssertTrue(resumed)
+        guard let resumedDraft = store.activeSession else {
+            XCTFail("Failed to resume active session")
+            return
+        }
+        XCTAssertEqual(resumedDraft.programId, progA.id, "Draft must preserve original program ID")
+
+        // 6. Complete remaining exercises and finish workout
+        for ex in workoutA.exercises {
+            store.updateActiveSession { d in
+                var copy = d
+                var sets = copy.setsByExercise[ex.id] ?? []
+                for i in 0..<sets.count {
+                    sets[i].isCompleted = true
+                    sets[i].weightKg = 60.0
+                    sets[i].weightInput = "60"
+                    sets[i].completedReps = 10
+                    sets[i].repsInput = "10"
+                }
+                copy.setsByExercise[ex.id] = sets
+                return copy
+            }
+        }
+
+        let finalRecord = WorkoutSessionRecord(
+            id: resumedDraft.id,
+            programId: resumedDraft.programId,
+            workoutId: resumedDraft.workout.id,
+            workoutTitle: resumedDraft.workout.title,
+            startedAt: resumedDraft.startedAt,
+            completedAt: ISO8601DateFormatter().string(from: Date()),
+            durationSeconds: 1800,
+            totalVolumeKg: 1000.0,
+            totalCompletedSets: 6,
+            exerciseLogs: [],
+            isComplete: true
+        )
+        store.completeActiveSession(finalRecord)
+
+        // 7. Verify completions
+        let completedKeys = store.state.completed
+        XCTAssertTrue(completedKeys.contains("\(progA.id):\(workoutA.id)"), "Completion key for progA must be added")
+        XCTAssertFalse(completedKeys.contains("\(progB.id):\(workoutA.id)"), "Must NOT add completion key under progB")
+
+        // 8. Clean up
+        store.abandonActiveSession()
+    }
+
+
     @MainActor
     func testActiveSessionResumedSnapshot() {
         let store = AppStore.shared

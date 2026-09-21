@@ -384,8 +384,9 @@ public struct HistoryView: View {
 
     private func handleWorkoutAction(detail: HistoryDayDetailData) {
         guard let workout = detail.workout else { return }
-        let programId = store.activeProgram?.id
+        let programId = detail.sessionRecord?.programId
             ?? store.state.programs.first(where: { $0.workouts.contains(where: { $0.id == workout.id }) })?.id
+            ?? store.activeProgram?.id
         guard let progId = programId else { return }
 
         if let active = store.activeSession, active.workout.id == workout.id {
@@ -471,7 +472,8 @@ public struct HistoryView: View {
 
         let workout: Workout?
         if let rec = sessionRecord {
-            workout = store.activeProgram?.workouts.first(where: { $0.id == rec.workoutId })
+            workout = store.state.programs.first(where: { $0.id == rec.programId })?.workouts.first(where: { $0.id == rec.workoutId })
+                ?? store.activeProgram?.workouts.first(where: { $0.id == rec.workoutId })
                 ?? store.state.programs.flatMap(\.workouts).first(where: { $0.id == rec.workoutId })
                 ?? store.activeProgram?.workouts.first(where: { $0.day == dayOfWeek })
         } else {
