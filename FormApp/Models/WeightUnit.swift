@@ -53,6 +53,10 @@ public enum WeightUnit: String, Codable, CaseIterable {
         }
     }
 
+    public static func toCanonicalKg(_ displayWeight: Double, unit: WeightUnit) -> Double {
+        return unit.toCanonicalKg(displayWeight)
+    }
+
     public func formatWeight(_ weightKg: Double) -> String {
         guard weightKg != 0.0 else { return "0" }
         let isNegative = weightKg < 0.0

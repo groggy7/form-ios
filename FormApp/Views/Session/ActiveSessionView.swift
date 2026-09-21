@@ -13,6 +13,8 @@ public struct ActiveSessionView: View {
     @State private var restMuted: Bool = false
     @State private var warningNoticeMessage: String? = nil
     @State private var isWarningVisible: Bool = false
+    @State private var celebratoryNoticeMessage: String? = nil
+    @State private var isCelebrationVisible: Bool = false
     @State private var inspectingExerciseId: String? = nil
     @State private var reportingExercise: Exercise? = nil
     @State private var showProgressionInfo: Bool = false
@@ -41,6 +43,43 @@ public struct ActiveSessionView: View {
         let currentExercise = exercises.indices.contains(currentIndex) ? exercises[currentIndex] : nil
         let currentSets = currentExercise.map { activeDraft.setsByExercise[$0.id] ?? [] } ?? []
         let restTimer = activeDraft.restTimer
+
+        let previousWorkingSets: [SessionSetLog] = currentExercise.map {
+            WorkoutSessionUtils.findPreviousSessionWorkingSets(history: store.state.history, exercise: $0)
+        } ?? []
+
+        let ghostTargets: [Int: GhostTarget] = {
+            guard let exercise = currentExercise else { return [:] }
+            var map: [Int: GhostTarget] = [:]
+            var workingIdx = 0
+            for (idx, set) in currentSets.enumerated() {
+                if !set.isWarmup {
+                    let target = WorkoutSessionUtils.computeGhostTarget(
+                        previousSets: previousWorkingSets,
+                        workingSetIndex: workingIdx,
+                        exercise: exercise,
+                        unit: store.weightUnit
+                    )
+                    workingIdx += 1
+                    map[idx] = target
+                }
+            }
+            return map
+        }()
+
+        let logbookBeatenSets: [Int: LogbookBeatResult] = {
+            var map: [Int: LogbookBeatResult] = [:]
+            for (idx, set) in currentSets.enumerated() {
+                if set.isCompleted, !set.isWarmup, let target = ghostTargets[idx] {
+                    let weightKg = set.weightKg ?? (Double(set.weightInput.replacingOccurrences(of: ",", with: ".")).map { WeightUnit.toCanonicalKg($0, unit: store.weightUnit) } ?? 0.0)
+                    let reps = set.completedReps ?? (Int(set.repsInput) ?? 0)
+                    if let beat = WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: weightKg, loggedReps: reps, target: target) {
+                        map[idx] = beat
+                    }
+                }
+            }
+            return map
+        }()
 
         let program = store.state.programs.first(where: { $0.id == activeDraft.programId })
             ?? store.state.programs.first(where: { $0.id == store.state.activeProgramId })
@@ -365,7 +404,7 @@ public struct ActiveSessionView: View {
                                             updateSet(exerciseId: exercise.id, index: setIdx, weight: weight, reps: reps)
                                         },
                                         onToggleCompleteSet: { setIdx in
-                                            toggleSet(exercise: exercise, index: setIdx)
+                                            toggleSet(exercise: exercise, index: setIdx, ghostTarget: ghostTargets[setIdx])
                                         },
                                         onAddSet: {
                                             addSet(exerciseId: exercise.id)
@@ -387,7 +426,9 @@ public struct ActiveSessionView: View {
                                         onToggleWarmup: { setIdx in
                                             store.toggleWarmup(exerciseId: exercise.id, index: setIdx)
                                         },
-                                        weightUnit: store.weightUnit
+                                        weightUnit: store.weightUnit,
+                                        ghostTargets: ghostTargets,
+                                        logbookBeatenSets: logbookBeatenSets
                                     )
                                 }
                                 .padding(18)
@@ -480,6 +521,31 @@ public struct ActiveSessionView: View {
                         }
                     }
                 }
+            }
+
+            if isCelebrationVisible, let msg = celebratoryNoticeMessage, !isWarningVisible {
+                VStack {
+                    Spacer()
+                    HStack(spacing: 8) {
+                        Image(systemName: "bolt.fill")
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundColor(AppColors.accent)
+                        Text(msg)
+                            .font(.system(size: 13, weight: .bold))
+                            .foregroundColor(AppColors.accent)
+                    }
+                    .padding(.horizontal, 18)
+                    .padding(.vertical, 10)
+                    .background(
+                        Capsule()
+                            .fill(AppColors.surfaceRaised)
+                            .overlay(Capsule().stroke(AppColors.accent.opacity(0.5), lineWidth: 1))
+                            .shadow(color: Color.black.opacity(0.4), radius: 10, x: 0, y: 4)
+                    )
+                    .transition(.move(edge: .bottom).combined(with: .opacity))
+                    .padding(.bottom, restTimer != nil ? 96 : 24)
+                }
+                .animation(.easeInOut(duration: 0.25), value: isCelebrationVisible)
             }
 
             if isWarningVisible, let warning = warningNoticeMessage {
@@ -635,7 +701,30 @@ public struct ActiveSessionView: View {
         }
     }
 
-    private func toggleSet(exercise: Exercise, index: Int) {
+    private func toggleSet(exercise: Exercise, index: Int, ghostTarget: GhostTarget? = nil) {
+        let currentSets = currentDraft.setsByExercise[exercise.id] ?? []
+        if currentSets.indices.contains(index) {
+            let currentSet = currentSets[index]
+            if !currentSet.isCompleted && !currentSet.isWarmup, let target = ghostTarget {
+                let weightKg = currentSet.weightKg ?? (Double(currentSet.weightInput.replacingOccurrences(of: ",", with: ".")).map { WeightUnit.toCanonicalKg($0, unit: store.weightUnit) } ?? 0.0)
+                let reps = currentSet.completedReps ?? (Int(currentSet.repsInput) ?? 0)
+                if let beat = WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: weightKg, loggedReps: reps, target: target) {
+                    celebratoryNoticeMessage = WorkoutSessionUtils.formatLogbookBeatNotice(result: beat, unit: store.weightUnit)
+                    withAnimation(.easeInOut(duration: 0.2)) {
+                        isCelebrationVisible = true
+                    }
+                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+                    Task {
+                        try? await Task.sleep(nanoseconds: 2_500_000_000)
+                        await MainActor.run {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                isCelebrationVisible = false
+                            }
+                        }
+                    }
+                }
+            }
+        }
         store.updateActiveSession { d in
             var copy = d
             var sets = copy.setsByExercise[exercise.id] ?? []

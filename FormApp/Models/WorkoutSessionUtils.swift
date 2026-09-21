@@ -390,4 +390,218 @@ public enum WorkoutSessionUtils {
         guard let w = weight, let r = reps else { return false }
         return w >= 1.0 && r >= 1
     }
+
+    public static func findPreviousSessionWorkingSets(
+        history: [WorkoutSessionRecord],
+        exercise: Exercise
+    ) -> [SessionSetLog] {
+        let targetId = exercise.exerciseId?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        let targetName = exercise.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        let targetCanonical = ExerciseCatalog.key(exercise.name)
+
+        let sortedRecords = history.sorted { a, b in
+            let dateA = a.completedAt.isEmpty ? a.startedAt : a.completedAt
+            let dateB = b.completedAt.isEmpty ? b.startedAt : b.completedAt
+            return dateA > dateB
+        }
+
+        for record in sortedRecords {
+            for log in record.exerciseLogs {
+                let logName = log.exerciseName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+                let logCanonical = ExerciseCatalog.key(log.exerciseName)
+
+                let matches = (targetId != nil && (targetId == logName || targetId == logCanonical)) ||
+                    logName == targetName ||
+                    logCanonical == targetCanonical
+
+                if !matches { continue }
+
+                let validSets = log.sets.filter { !$0.isWarmup && ($0.reps ?? 0) > 0 && ($0.weightKg ?? 0.0) > 0.0 }
+                if !validSets.isEmpty {
+                    return validSets
+                }
+            }
+        }
+        return []
+    }
+
+    public static func computeGhostTarget(
+        previousSets: [SessionSetLog],
+        workingSetIndex: Int,
+        exercise: Exercise,
+        unit: WeightUnit = .kg
+    ) -> GhostTarget {
+        if !previousSets.isEmpty {
+            let prev = (workingSetIndex < previousSets.count) ? previousSets[workingSetIndex] : previousSets.last!
+            let prevWeightKg = prev.weightKg ?? 0.0
+            let prevReps = prev.reps ?? 8
+            let targetWeightKg = prevWeightKg
+            let targetReps = prevReps + 1
+            let deltaKg = (unit == .lbs) ? WeightUnit.toCanonicalKg(5.0, unit: .lbs) : 2.5
+            let altWeightKg = prevWeightKg + deltaKg
+            let altReps = max(1, prevReps - 1)
+            return GhostTarget(
+                lastWeekWeightKg: prevWeightKg,
+                lastWeekReps: prevReps,
+                targetWeightKg: targetWeightKg,
+                targetReps: targetReps,
+                altWeightKg: altWeightKg,
+                altReps: altReps,
+                isFirstSession: false,
+                prescription: exercise.displayPrescription
+            )
+        } else {
+            let (minReps, _) = ProgressionEngine.parseRepRange(exercise: exercise)
+            return GhostTarget(
+                lastWeekWeightKg: nil,
+                lastWeekReps: nil,
+                targetWeightKg: 0.0,
+                targetReps: minReps,
+                altWeightKg: nil,
+                altReps: nil,
+                isFirstSession: true,
+                prescription: exercise.displayPrescription
+            )
+        }
+    }
+
+    public static func evaluateLogbookBeat(
+        loggedWeightKg: Double,
+        loggedReps: Int,
+        target: GhostTarget
+    ) -> LogbookBeatResult? {
+        guard let prevW = target.lastWeekWeightKg, let prevR = target.lastWeekReps else { return nil }
+        if target.isFirstSession || prevW <= 0.0 || prevR <= 0 { return nil }
+
+        let isSameOrHigherWeightMoreReps = loggedWeightKg >= (prevW - 0.01) && loggedReps > prevR
+        let isHigherWeightEqualOrMoreReps = loggedWeightKg > (prevW + 0.01) && loggedReps >= prevR
+        let isAltLoadTargetMet = target.altWeightKg != nil && target.altReps != nil &&
+            loggedWeightKg >= (target.altWeightKg! - 0.01) && loggedReps >= target.altReps!
+
+        let current1RM = loggedWeightKg * (1.0 + Double(loggedReps) / 30.0)
+        let prev1RM = prevW * (1.0 + Double(prevR) / 30.0)
+        let isEstimated1RMHigher = current1RM > (prev1RM * 1.005) && loggedWeightKg >= (prevW * 0.95)
+
+        if isSameOrHigherWeightMoreReps || isHigherWeightEqualOrMoreReps || isAltLoadTargetMet || isEstimated1RMHigher {
+            return LogbookBeatResult(
+                repDelta: loggedReps - prevR,
+                weightDeltaKg: loggedWeightKg - prevW,
+                currentWeightKg: loggedWeightKg,
+                currentReps: loggedReps,
+                previousWeightKg: prevW,
+                previousReps: prevR
+            )
+        }
+        return nil
+    }
+
+    public static func formatGhostTargetText(target: GhostTarget, unit: WeightUnit = .kg) -> String {
+        if target.isFirstSession {
+            let presc = target.prescription.isEmpty ? "8–12 reps" : target.prescription
+            return LanguageManager.t("session.ghost.first_session", ["prescription": presc])
+        }
+        let prevW = formatWeight(target.lastWeekWeightKg ?? 0.0, unit: unit)
+        let prevR = target.lastWeekReps ?? 0
+        let repsLabel = (LanguageManager.shared.currentLanguage == "tr") ? "tekrar" : "reps"
+        let lastWeekStr = LanguageManager.t(
+            "session.ghost.last_week",
+            ["weight": "\(prevW) \(unit.label)", "reps": "\(prevR) \(repsLabel)"]
+        )
+
+        let repW = formatWeight(target.targetWeightKg, unit: unit)
+        let repR = target.targetReps
+        let repTargetStr = "\(repW) \(unit.label) × \(repR) \(repsLabel)"
+
+        let targetToBeatStr: String
+        if let altWKg = target.altWeightKg, let altR = target.altReps {
+            let altW = formatWeight(altWKg, unit: unit)
+            let loadTargetStr = "\(altW) \(unit.label) × \(altR)"
+            targetToBeatStr = LanguageManager.t(
+                "session.ghost.target_to_beat",
+                ["repTarget": repTargetStr, "loadTarget": loadTargetStr]
+            )
+        } else {
+            targetToBeatStr = LanguageManager.t(
+                "session.ghost.target_to_beat_reps_only",
+                ["repTarget": repTargetStr]
+            )
+        }
+        return "\(lastWeekStr) · \(targetToBeatStr)"
+    }
+
+    public static func formatLogbookBeatBadge(result: LogbookBeatResult, unit: WeightUnit = .kg) -> String {
+        if result.repDelta > 0 && result.weightDeltaKg <= 0.01 {
+            return LanguageManager.t("session.logbook.badge_rep", ["count": result.repDelta])
+        } else if result.weightDeltaKg > 0.01 {
+            let deltaStr = "\(formatWeight(result.weightDeltaKg, unit: unit)) \(unit.uppercaseLabel)"
+            return LanguageManager.t("session.logbook.badge_weight", ["weight": deltaStr])
+        } else {
+            return LanguageManager.t("session.logbook.badge_beat")
+        }
+    }
+
+    public static func formatLogbookBeatNotice(result: LogbookBeatResult, unit: WeightUnit = .kg) -> String {
+        let currStr = "\(formatWeight(result.currentWeightKg, unit: unit)) \(unit.label) × \(result.currentReps)"
+        let prevStr = "\(formatWeight(result.previousWeightKg, unit: unit)) \(unit.label) × \(result.previousReps)"
+        return LanguageManager.t("session.logbook.beat_notice", ["current": currStr, "previous": prevStr])
+    }
+
+    public struct GhostTarget: Equatable {
+        public let lastWeekWeightKg: Double?
+        public let lastWeekReps: Int?
+        public let targetWeightKg: Double
+        public let targetReps: Int
+        public let altWeightKg: Double?
+        public let altReps: Int?
+        public let isFirstSession: Bool
+        public let prescription: String
+
+        public init(
+            lastWeekWeightKg: Double?,
+            lastWeekReps: Int?,
+            targetWeightKg: Double,
+            targetReps: Int,
+            altWeightKg: Double?,
+            altReps: Int?,
+            isFirstSession: Bool,
+            prescription: String = ""
+        ) {
+            self.lastWeekWeightKg = lastWeekWeightKg
+            self.lastWeekReps = lastWeekReps
+            self.targetWeightKg = targetWeightKg
+            self.targetReps = targetReps
+            self.altWeightKg = altWeightKg
+            self.altReps = altReps
+            self.isFirstSession = isFirstSession
+            self.prescription = prescription
+        }
+    }
+
+    public struct LogbookBeatResult: Equatable {
+        public let repDelta: Int
+        public let weightDeltaKg: Double
+        public let currentWeightKg: Double
+        public let currentReps: Int
+        public let previousWeightKg: Double
+        public let previousReps: Int
+
+        public init(
+            repDelta: Int,
+            weightDeltaKg: Double,
+            currentWeightKg: Double,
+            currentReps: Int,
+            previousWeightKg: Double,
+            previousReps: Int
+        ) {
+            self.repDelta = repDelta
+            self.weightDeltaKg = weightDeltaKg
+            self.currentWeightKg = currentWeightKg
+            self.currentReps = currentReps
+            self.previousWeightKg = previousWeightKg
+            self.previousReps = previousReps
+        }
+    }
 }
+
+public typealias GhostTarget = WorkoutSessionUtils.GhostTarget
+public typealias LogbookBeatResult = WorkoutSessionUtils.LogbookBeatResult

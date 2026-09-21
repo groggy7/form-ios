@@ -6007,4 +6007,129 @@ final class FormAppTests: XCTestCase {
         let count = weekDays.compactMap { statuses[$0] }.count
         XCTAssertEqual(count, 5, "Exactly 5 scheduled workout days in that week must have a status")
     }
+
+    func testGhostTargetCalculationAndProgressionTargets() {
+        let exercise = Exercise(id: "bench", name: "Barbell Bench Press", prescription: "3 × 8–12", sets: 3)
+        let prevSets = [
+            SessionSetLog(setNumber: 1, weightKg: 100.0, reps: 8),
+            SessionSetLog(setNumber: 2, weightKg: 100.0, reps: 7)
+        ]
+
+        // Set 1 target: based on 100kg x 8
+        let target1 = WorkoutSessionUtils.computeGhostTarget(previousSets: prevSets, workingSetIndex: 0, exercise: exercise, unit: .kg)
+        XCTAssertFalse(target1.isFirstSession)
+        XCTAssertEqual(target1.lastWeekWeightKg ?? 0.0, 100.0, accuracy: 0.01)
+        XCTAssertEqual(target1.lastWeekReps, 8)
+        XCTAssertEqual(target1.targetWeightKg, 100.0, accuracy: 0.01)
+        XCTAssertEqual(target1.targetReps, 9)
+        XCTAssertEqual(target1.altWeightKg ?? 0.0, 102.5, accuracy: 0.01)
+        XCTAssertEqual(target1.altReps, 7)
+
+        // Set 2 target: based on 100kg x 7
+        let target2 = WorkoutSessionUtils.computeGhostTarget(previousSets: prevSets, workingSetIndex: 1, exercise: exercise, unit: .kg)
+        XCTAssertEqual(target2.lastWeekReps, 7)
+        XCTAssertEqual(target2.targetReps, 8)
+        XCTAssertEqual(target2.altWeightKg ?? 0.0, 102.5, accuracy: 0.01)
+        XCTAssertEqual(target2.altReps, 6)
+
+        // First session (no history)
+        let firstTarget = WorkoutSessionUtils.computeGhostTarget(previousSets: [], workingSetIndex: 0, exercise: exercise, unit: .kg)
+        XCTAssertTrue(firstTarget.isFirstSession)
+        XCTAssertNil(firstTarget.lastWeekWeightKg)
+        XCTAssertNil(firstTarget.lastWeekReps)
+        XCTAssertEqual(firstTarget.targetReps, 8)
+    }
+
+    func testLogbookBeatDetectionAndFormatting() {
+        let exercise = Exercise(id: "bench", name: "Bench Press", prescription: "3 × 8–12", sets: 3)
+        let prevSets = [SessionSetLog(setNumber: 1, weightKg: 100.0, reps: 8)]
+        let target = WorkoutSessionUtils.computeGhostTarget(previousSets: prevSets, workingSetIndex: 0, exercise: exercise, unit: .kg)
+
+        // Rep progression beat (+1 rep)
+        let beatRep = WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: 100.0, loggedReps: 9, target: target)
+        XCTAssertNotNil(beatRep)
+        XCTAssertEqual(beatRep?.repDelta, 1)
+        XCTAssertEqual(beatRep?.weightDeltaKg ?? 0.0, 0.0, accuracy: 0.01)
+        let badgeRep = WorkoutSessionUtils.formatLogbookBeatBadge(result: beatRep!, unit: .kg)
+        XCTAssertTrue(badgeRep.contains("+1 REP") || badgeRep.contains("+1 TEKRAR"))
+
+        // Load progression beat (102.5kg x 7)
+        let beatLoad = WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: 102.5, loggedReps: 7, target: target)
+        XCTAssertNotNil(beatLoad)
+        XCTAssertEqual(beatLoad?.weightDeltaKg ?? 0.0, 2.5, accuracy: 0.01)
+        let badgeLoad = WorkoutSessionUtils.formatLogbookBeatBadge(result: beatLoad!, unit: .kg)
+        XCTAssertTrue(badgeLoad.contains("+2.5 KG"))
+
+        // Rejection of matched or subpar performances
+        XCTAssertNil(WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: 100.0, loggedReps: 8, target: target))
+        XCTAssertNil(WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: 100.0, loggedReps: 7, target: target))
+        XCTAssertNil(WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: 90.0, loggedReps: 8, target: target))
+
+        // Notice text formatting
+        let notice = WorkoutSessionUtils.formatLogbookBeatNotice(result: beatRep!, unit: .kg)
+        XCTAssertTrue(notice.contains("100 kg × 9") && notice.contains("100 kg × 8"))
+    }
+
+    @MainActor
+    func testSetLoggingTableActiveGhostTargetSnapshot() {
+        let exercise = Exercise(id: "bench", name: "Barbell Bench Press", prescription: "3 × 8–12", sets: 3)
+        let prevSets = [
+            SessionSetLog(setNumber: 1, weightKg: 100.0, reps: 8),
+            SessionSetLog(setNumber: 2, weightKg: 100.0, reps: 8),
+            SessionSetLog(setNumber: 3, weightKg: 100.0, reps: 7)
+        ]
+        let target1 = WorkoutSessionUtils.computeGhostTarget(previousSets: prevSets, workingSetIndex: 0, exercise: exercise, unit: .kg)
+        let target2 = WorkoutSessionUtils.computeGhostTarget(previousSets: prevSets, workingSetIndex: 1, exercise: exercise, unit: .kg)
+        let target3 = WorkoutSessionUtils.computeGhostTarget(previousSets: prevSets, workingSetIndex: 2, exercise: exercise, unit: .kg)
+
+        // Set 1 completed with logbook beat: 100kg x 9 (+1 rep)
+        let beatSet1 = WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: 100.0, loggedReps: 9, target: target1)!
+
+        let testSets = [
+            ExerciseSetLog(setNumber: 1, weightInput: "100", repsInput: "9", weightKg: 100.0, completedReps: 9, isCompleted: true, inputTouched: true),
+            ExerciseSetLog(setNumber: 2, weightInput: "", repsInput: "", weightKg: nil, completedReps: nil, isCompleted: false, inputTouched: false),
+            ExerciseSetLog(setNumber: 3, weightInput: "", repsInput: "", weightKg: nil, completedReps: nil, isCompleted: false, inputTouched: false)
+        ]
+
+        let table = SetLoggingTable(
+            sets: testSets,
+            prescription: "3 × 8–12",
+            isRestActive: false,
+            prText: "100x8",
+            onUpdateSet: { _, _, _ in },
+            onToggleCompleteSet: { _ in },
+            onAddSet: {},
+            onRemoveSet: { _ in },
+            weightUnit: .kg,
+            ghostTargets: [0: target1, 1: target2, 2: target3],
+            logbookBeatenSets: [0: beatSet1]
+        )
+
+        let container = VStack {
+            table
+        }
+        .padding(16)
+        .background(AppColors.background)
+
+        let controller = UIHostingController(rootView: container)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 420)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 420))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_ghost_target_set_table_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote Ghost Target Set Table snapshot to \(path)")
+        }
+    }
 }
+

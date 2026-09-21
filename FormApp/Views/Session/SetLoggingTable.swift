@@ -20,6 +20,8 @@ public struct SetLoggingTable: View {
     var onInspectPlates: ((Double) -> Void)? = nil
     var onToggleWarmup: ((Int) -> Void)? = nil
     var weightUnit: WeightUnit = .kg
+    var ghostTargets: [Int: GhostTarget] = [:]
+    var logbookBeatenSets: [Int: LogbookBeatResult] = [:]
 
     public init(
         sets: [ExerciseSetLog],
@@ -34,7 +36,9 @@ public struct SetLoggingTable: View {
         onRestWarning: (() -> Void)? = nil,
         onInspectPlates: ((Double) -> Void)? = nil,
         onToggleWarmup: ((Int) -> Void)? = nil,
-        weightUnit: WeightUnit = .kg
+        weightUnit: WeightUnit = .kg,
+        ghostTargets: [Int: GhostTarget] = [:],
+        logbookBeatenSets: [Int: LogbookBeatResult] = [:]
     ) {
         self.sets = sets
         self.prescription = prescription
@@ -49,6 +53,8 @@ public struct SetLoggingTable: View {
         self.onInspectPlates = onInspectPlates
         self.onToggleWarmup = onToggleWarmup
         self.weightUnit = weightUnit
+        self.ghostTargets = ghostTargets
+        self.logbookBeatenSets = logbookBeatenSets
     }
 
     public var body: some View {
@@ -101,6 +107,20 @@ public struct SetLoggingTable: View {
             ForEach(Array(sets.enumerated()), id: \.element.id) { index, set in
                 let isSetEnabled = set.isCompleted || WorkoutSessionUtils.isSetEnabled(sets: sets, index: index)
                 let isSetInputEnabled = !isRestActive && isSetEnabled
+                let ghostTarget = ghostTargets[index]
+                let isActiveWorkingSet = !set.isCompleted && isSetEnabled && !set.isWarmup
+                let weightPlaceholder: String = {
+                    if let gt = ghostTarget, !gt.isFirstSession, gt.targetWeightKg > 0.0 {
+                        return WorkoutSessionUtils.formatWeight(gt.targetWeightKg, unit: weightUnit)
+                    }
+                    return "0"
+                }()
+                let repsPlaceholder: String = {
+                    if let gt = ghostTarget, gt.targetReps > 0 {
+                        return "\(gt.targetReps)"
+                    }
+                    return "0"
+                }()
                 let weightBinding = Binding<String>(
                     get: {
                         if set.weightInput == "0" { return "" }
@@ -153,19 +173,38 @@ public struct SetLoggingTable: View {
                         )
                         .frame(width: 32, alignment: .leading)
 
-                    Text(set.isWarmup ? LanguageManager.t("warmup.badge") : (prText.isEmpty ? "-" : prText))
-                        .font(.system(size: set.isWarmup ? 10.5 : 13, weight: set.isWarmup ? .bold : .medium))
-                        .foregroundColor(
-                            set.isWarmup
-                                ? AppColors.warmupAmber.opacity(0.85)
-                                : (set.isCompleted
+                    let beatResult = set.isCompleted ? logbookBeatenSets[index] : nil
+                    if set.isWarmup {
+                        Text(LanguageManager.t("warmup.badge"))
+                            .font(.system(size: 10.5, weight: .bold))
+                            .foregroundColor(AppColors.warmupAmber.opacity(0.85))
+                            .lineLimit(1)
+                            .frame(width: 56, alignment: .center)
+                    } else if let beat = beatResult {
+                        Text(WorkoutSessionUtils.formatLogbookBeatBadge(result: beat, unit: weightUnit))
+                            .font(.system(size: 10, weight: .bold))
+                            .foregroundColor(AppColors.accent)
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.75)
+                            .padding(.horizontal, 4)
+                            .padding(.vertical, 2)
+                            .background(AppColors.positiveBg)
+                            .cornerRadius(4)
+                            .overlay(RoundedRectangle(cornerRadius: 4).stroke(AppColors.accent.opacity(0.35)))
+                            .frame(width: 56, alignment: .center)
+                    } else {
+                        Text(prText.isEmpty ? "-" : prText)
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundColor(
+                                set.isCompleted
                                     ? AppColors.secondaryText.opacity(0.6)
-                                    : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35)))
-                        )
-                        .lineLimit(1)
-                        .frame(width: 56, alignment: .center)
+                                    : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35))
+                            )
+                            .lineLimit(1)
+                            .frame(width: 56, alignment: .center)
+                    }
 
-                    TextField("0", text: weightBinding, prompt: Text("0").foregroundColor(AppColors.muted.opacity(isSetInputEnabled ? 1.0 : 0.4)))
+                    TextField(weightPlaceholder, text: weightBinding, prompt: Text(weightPlaceholder).foregroundColor(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
                         .focused($focusedField, equals: Field(id: set.id, weight: true))
                         .simultaneousGesture(TapGesture().onEnded {
                             if isSetInputEnabled {
@@ -185,7 +224,7 @@ public struct SetLoggingTable: View {
                         .frame(minHeight: 48)
                         .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: true) && isSetInputEnabled ? AppColors.accent : .clear))
 
-                    TextField("0", text: repsBinding, prompt: Text("0").foregroundColor(AppColors.muted.opacity(isSetInputEnabled ? 1.0 : 0.4)))
+                    TextField(repsPlaceholder, text: repsBinding, prompt: Text(repsPlaceholder).foregroundColor(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
                         .focused($focusedField, equals: Field(id: set.id, weight: false))
                         .simultaneousGesture(TapGesture().onEnded {
                             if isSetInputEnabled {
@@ -266,6 +305,10 @@ public struct SetLoggingTable: View {
                             Label(LanguageManager.t("table.deleteSet"), systemImage: "trash")
                         }
                     }
+                }
+
+                if isActiveWorkingSet, let gt = ghostTarget {
+                    GhostTargetCardView(ghostTarget: gt, weightUnit: weightUnit)
                 }
                 if let selected = selectedField, selected.id == set.id, isSetInputEnabled {
                     let weightLabelKey = weightUnit == .lbs ? "table.weightLbs" : "table.weightKg"
@@ -393,5 +436,36 @@ public struct SetLoggingTable: View {
                 self.focusedField = nil
             }
         }
+    }
+}
+
+private struct GhostTargetCardView: View {
+    let ghostTarget: WorkoutSessionUtils.GhostTarget
+    let weightUnit: WeightUnit
+
+    var body: some View {
+        HStack(spacing: 8) {
+            ZStack {
+                Circle()
+                    .fill(AppColors.positiveBg)
+                    .frame(width: 22, height: 22)
+                Image(systemName: "arrow.up.right")
+                    .font(.system(size: 11, weight: .bold))
+                    .foregroundColor(AppColors.accent)
+            }
+            Text(WorkoutSessionUtils.formatGhostTargetText(target: ghostTarget, unit: weightUnit))
+                .font(.system(size: 11.5, weight: .medium))
+                .foregroundColor(AppColors.secondaryText)
+                .lineLimit(nil)
+                .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 8)
+        .background(AppColors.surfaceRaised)
+        .cornerRadius(8)
+        .overlay(RoundedRectangle(cornerRadius: 8).stroke(AppColors.border))
+        .accessibilityIdentifier("ghost-target-card")
     }
 }
