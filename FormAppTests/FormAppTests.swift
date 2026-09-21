@@ -6184,8 +6184,8 @@ final class FormAppTests: XCTestCase {
         let exercise = Exercise(id: "bench", name: "Barbell Bench Press", prescription: "3 × 8–12", sets: 3)
         let prevSets = [
             SessionSetLog(setNumber: 1, weightKg: 100.0, reps: 8),
-            SessionSetLog(setNumber: 2, weightKg: 100.0, reps: 8),
-            SessionSetLog(setNumber: 3, weightKg: 100.0, reps: 7)
+            SessionSetLog(setNumber: 2, weightKg: 100.0, reps: 7),
+            SessionSetLog(setNumber: 3, weightKg: 95.0, reps: 8)
         ]
         let target1 = WorkoutSessionUtils.computeGhostTarget(previousSets: prevSets, workingSetIndex: 0, exercise: exercise, unit: .kg)
         let target2 = WorkoutSessionUtils.computeGhostTarget(previousSets: prevSets, workingSetIndex: 1, exercise: exercise, unit: .kg)
@@ -6221,10 +6221,10 @@ final class FormAppTests: XCTestCase {
         .background(AppColors.background)
 
         let controller = UIHostingController(rootView: container)
-        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 420)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 340)
         controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
 
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 420))
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 340))
         window.rootViewController = controller
         window.makeKeyAndVisible()
         controller.view.layoutIfNeeded()
