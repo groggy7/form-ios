@@ -395,8 +395,8 @@ public final class AppStore: ObservableObject {
         updateActiveSession { d in
             var copy = d
             let sets = copy.setsByExercise[exerciseId] ?? []
-            let workingOnly = sets.filter { !$0.isWarmup }
-            copy.setsByExercise[exerciseId] = Self.reindexSets(workingOnly)
+            let remaining = sets.filter { !$0.isWarmup || $0.isCompleted }
+            copy.setsByExercise[exerciseId] = Self.reindexSets(remaining)
             return copy
         }
     }

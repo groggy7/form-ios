@@ -110,6 +110,7 @@ public struct WarmupPlateCard: View {
             }
         } else {
             let hasWarmups = !warmupSets.isEmpty
+            let hasUncompletedWarmups = warmupSets.contains { !$0.isCompleted }
 
             VStack(spacing: 10) {
                 if !hasWarmups {
@@ -230,6 +231,7 @@ public struct WarmupPlateCard: View {
                                 .font(.system(size: 11))
                                 .foregroundColor(AppColors.muted)
                                 .lineLimit(1)
+                                .minimumScaleFactor(0.8)
                         }
 
                         Spacer()
@@ -244,14 +246,17 @@ public struct WarmupPlateCard: View {
                             .buttonStyle(.plain)
                             .accessibilityLabel(LanguageManager.t("warmup.tab_plates"))
 
-                            Button(action: onClearWarmups) {
-                                Image(systemName: "trash")
-                                    .font(.system(size: 15))
-                                    .foregroundColor(AppColors.muted)
-                                    .frame(width: 32, height: 32)
+                            if hasUncompletedWarmups {
+                                Button(action: onClearWarmups) {
+                                    Image(systemName: "trash")
+                                        .font(.system(size: 15))
+                                        .foregroundColor(AppColors.muted)
+                                        .frame(width: 32, height: 32)
+                                }
+                                .buttonStyle(.plain)
+                                .accessibilityLabel(LanguageManager.t("warmup.clear_warmups"))
+                                .accessibilityIdentifier("clear-warmup-sets")
                             }
-                            .buttonStyle(.plain)
-                            .accessibilityLabel(LanguageManager.t("warmup.clear_warmups"))
                         }
                     }
                 }

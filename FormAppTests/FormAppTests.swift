@@ -5205,6 +5205,116 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
+    func testClearWarmupSetsPreservesCompletedSets() {
+        let store = AppStore()
+        let exercise = Exercise(id: "bench", name: "Bench", sets: 2, reps: RepTarget(min: 8, max: 12), restSeconds: 90)
+        let workout = Workout(id: "w1", day: 1, title: "Push", exercises: [exercise])
+        let session = ActiveSessionDraft(
+            id: "s1",
+            programId: "p1",
+            workout: workout,
+            startedAt: "2026-08-28T09:00:00Z",
+            startedAtEpochMillis: 1000,
+            setsByExercise: [
+                exercise.id: [
+                    ExerciseSetLog(id: "w1", setNumber: 1, weightInput: "20", repsInput: "10", weightKg: 20, completedReps: 10, isCompleted: true, isWarmup: true),
+                    ExerciseSetLog(id: "w2", setNumber: 2, weightInput: "40", repsInput: "5", weightKg: 40, completedReps: 5, isCompleted: false, isWarmup: true),
+                    ExerciseSetLog(id: "s1", setNumber: 1, weightInput: "60", repsInput: "10", weightKg: 60, completedReps: 10, isCompleted: false, isWarmup: false)
+                ]
+            ]
+        )
+        store.activeSession = session
+        store.clearWarmupSets(exerciseId: exercise.id)
+
+        let sets = store.activeSession?.setsByExercise[exercise.id] ?? []
+        XCTAssertEqual(sets.count, 2)
+        XCTAssertEqual(sets[0].id, "w1")
+        XCTAssertTrue(sets[0].isWarmup)
+        XCTAssertTrue(sets[0].isCompleted)
+        XCTAssertEqual(sets[0].setNumber, 1)
+
+        XCTAssertEqual(sets[1].id, "s1")
+        XCTAssertFalse(sets[1].isWarmup)
+        XCTAssertEqual(sets[1].setNumber, 1)
+    }
+
+    @MainActor
+    func testWarmupPlateCardActiveWithIncompleteWarmupsSnapshot() {
+        ProAccessManager.shared.updateSubscriptionStatus(active: true)
+        defer { ProAccessManager.shared.updateSubscriptionStatus(active: false) }
+
+        let warmups = [
+            ExerciseSetLog(id: "w1", setNumber: 1, weightInput: "20", repsInput: "10", weightKg: 20, completedReps: 10, isCompleted: true, isWarmup: true),
+            ExerciseSetLog(id: "w2", setNumber: 2, weightInput: "40", repsInput: "5", weightKg: 40, completedReps: 5, isCompleted: false, isWarmup: true)
+        ]
+        let card = WarmupPlateCard(
+            warmupSets: warmups,
+            onGenerateWarmup: {},
+            onOpenPlates: {},
+            onClearWarmups: {}
+        )
+        .padding(.horizontal, 16)
+        .padding(.vertical, 24)
+        .background(AppColors.background)
+
+        let controller = UIHostingController(rootView: card)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 120)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 120))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_warmup_plate_card_active_with_delete_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote active warmup plate card with delete snapshot to \(path)")
+        }
+    }
+
+    @MainActor
+    func testWarmupPlateCardActiveAllCompletedSnapshot() {
+        ProAccessManager.shared.updateSubscriptionStatus(active: true)
+        defer { ProAccessManager.shared.updateSubscriptionStatus(active: false) }
+
+        let warmups = [
+            ExerciseSetLog(id: "w1", setNumber: 1, weightInput: "20", repsInput: "10", weightKg: 20, completedReps: 10, isCompleted: true, isWarmup: true),
+            ExerciseSetLog(id: "w2", setNumber: 2, weightInput: "40", repsInput: "5", weightKg: 40, completedReps: 5, isCompleted: true, isWarmup: true)
+        ]
+        let card = WarmupPlateCard(
+            warmupSets: warmups,
+            onGenerateWarmup: {},
+            onOpenPlates: {},
+            onClearWarmups: {}
+        )
+        .padding(.horizontal, 16)
+        .padding(.vertical, 24)
+        .background(AppColors.background)
+
+        let controller = UIHostingController(rootView: card)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 120)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 120))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_warmup_plate_card_active_all_completed_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote active warmup plate card with all completed snapshot to \(path)")
+        }
+    }
+
+    @MainActor
     func testProgressionCoachCardInactiveSnapshot() {
         let dummyRecommendation = ExerciseProgressionRecommendation(
             exerciseId: "bench_press",
