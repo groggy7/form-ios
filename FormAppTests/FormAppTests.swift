@@ -1186,6 +1186,10 @@ final class FormAppTests: XCTestCase {
     @MainActor
     func testVolumeMatrixViewSnapshot() {
         let store = AppStore.shared
+        let originalLang = LanguageManager.shared.currentLanguage
+        LanguageManager.shared.currentLanguage = "tr"
+        defer { LanguageManager.shared.currentLanguage = originalLang }
+
         let view = ScrollView(showsIndicators: false) {
             VolumeMatrixView(store: store)
                 .padding(.horizontal, 16)
@@ -1194,10 +1198,10 @@ final class FormAppTests: XCTestCase {
         .background(Color(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0))
 
         let controller = UIHostingController(rootView: view)
-        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 1250)
         controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
 
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 1250))
         window.rootViewController = controller
         window.makeKeyAndVisible()
         controller.view.layoutIfNeeded()

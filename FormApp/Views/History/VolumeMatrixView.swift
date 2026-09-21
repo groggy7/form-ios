@@ -413,24 +413,26 @@ public struct VolumeMatrixView: View {
 
     private func muscleDetailCard(summary: MuscleVolumeSummary) -> some View {
         VStack(alignment: .leading, spacing: 14) {
-            HStack {
-                VStack(alignment: .leading, spacing: 2) {
+            VStack(alignment: .leading, spacing: 4) {
+                HStack(alignment: .center, spacing: 8) {
                     Text(summary.localizedName)
                         .font(.system(size: 18, weight: .bold))
                         .foregroundColor(AppColors.text)
-                    Text("\(String(format: "%.1f", summary.totalEffectiveSets)) \(LanguageManager.t("matrix.setsUnit")) (\(summary.directSets) direct, \(summary.indirectSets) indirect)")
-                        .font(.system(size: 12))
-                        .foregroundColor(AppColors.secondaryText)
+                        .lineLimit(1)
+                    Spacer()
+                    Text(LanguageManager.t(summary.zone.titleKey))
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundColor(summary.zone.color)
+                        .lineLimit(1)
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(summary.zone.badgeBgColor)
+                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(summary.zone.color.opacity(0.5), lineWidth: 1))
+                        .cornerRadius(8)
                 }
-                Spacer()
-                Text(LanguageManager.t(summary.zone.titleKey))
-                    .font(.system(size: 11, weight: .semibold))
-                    .foregroundColor(summary.zone.color)
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(summary.zone.badgeBgColor)
-                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(summary.zone.color.opacity(0.5), lineWidth: 1))
-                    .cornerRadius(8)
+                Text("\(String(format: "%.1f", summary.totalEffectiveSets)) \(LanguageManager.t("matrix.setsUnit")) (\(summary.directSets) direct, \(summary.indirectSets) indirect)")
+                    .font(.system(size: 12))
+                    .foregroundColor(AppColors.secondaryText)
             }
 
             Text(LanguageManager.t(summary.zone.descriptionKey))
