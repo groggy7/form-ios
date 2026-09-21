@@ -561,6 +561,8 @@ public final class AppStore: ObservableObject {
         newState.completed = newCompleted
         newState.calendarHistory = cal
         saveState(newState)
+
+        CloudMirrorManager.shared.autoSync(backupJson: exportBackupJson())
         
         saveActiveSession(nil)
         self.activeSession = nil

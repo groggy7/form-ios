@@ -230,7 +230,7 @@ public struct CloudMirrorStatus: Equatable {
 
     public init(
         isEnabled: Bool,
-        isEncrypted: Bool,
+        isEncrypted: Bool = false,
         lastSyncTimestamp: TimeInterval?,
         snapshotSizeBytes: Int64?,
         providerName: String

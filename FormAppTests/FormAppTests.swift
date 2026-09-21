@@ -5739,20 +5739,20 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(WeightUnit.kg.formatWeight(0.0), "0")
     }
 
-    func testFormLabCloudMirrorEncryption() throws {
-        let payload = "{\"test_key\":\"test_value_42\"}"
-        let passphrase = "my_strong_passphrase_2026"
+    func testFormLabCloudMirrorSyncAndReadRoundtrip() throws {
+        let payload = "{\"schemaVersion\":4,\"programs\":[],\"activeProgramId\":\"\",\"history\":[]}"
+        CloudMirrorManager.shared.isEnabled = true
+        let size = try CloudMirrorManager.shared.syncNow(backupJson: payload)
+        XCTAssertGreaterThan(size, 0)
 
-        let encrypted = try CloudMirrorManager.encryptPayload(payload, passphrase: passphrase)
-        XCTAssertFalse(encrypted.isEmpty)
-        XCTAssertTrue(encrypted.contains("ciphertext"))
-        XCTAssertTrue(encrypted.contains("sha256"))
+        let readJson = try CloudMirrorManager.shared.readLatestSnapshot()
+        XCTAssertEqual(readJson, payload)
 
-        let decrypted = try CloudMirrorManager.decryptPayload(encrypted, passphrase: passphrase)
-        XCTAssertEqual(decrypted, payload)
-
-        // Decrypt with wrong passphrase should fail
-        XCTAssertThrowsError(try CloudMirrorManager.decryptPayload(encrypted, passphrase: "wrong_password"))
+        let status = CloudMirrorManager.shared.getStatus()
+        XCTAssertTrue(status.isEnabled)
+        XCTAssertFalse(status.isEncrypted)
+        XCTAssertNotNil(status.lastSyncTimestamp)
+        XCTAssertEqual(status.snapshotSizeBytes, size)
     }
 
     @MainActor

@@ -31,9 +31,8 @@ public struct FormLabView: View {
 
     // Cloud mirror state
     @State private var isMirrorEnabled: Bool = CloudMirrorManager.shared.isEnabled
-    @State private var isMirrorEncrypted: Bool = CloudMirrorManager.shared.isEncrypted
-    @State private var mirrorPassphrase: String = ""
     @State private var syncStatusMessage: String? = nil
+    @State private var syncIsError: Bool = false
     @State private var showRestoreConfirm: Bool = false
     @State private var lastSyncTime: Date? = CloudMirrorManager.shared.getStatus().lastSyncTimestamp.map { Date(timeIntervalSince1970: $0) }
 
@@ -682,7 +681,7 @@ public struct FormLabView: View {
                     Image(systemName: "icloud.fill")
                         .font(.system(size: 20))
                         .foregroundColor(AppColors.accent)
-                    Text("iCloud Drive & Cloud Mirror")
+                    Text(CloudMirrorManager.shared.isICloudAvailable ? "iCloud Drive" : "Local Mirror")
                         .font(.system(size: 14, weight: .semibold))
                         .foregroundColor(AppColors.text)
                     Spacer()
@@ -705,27 +704,6 @@ public struct FormLabView: View {
                         }
                 }
 
-                HStack {
-                    Text(LanguageManager.t("form_lab.mirror_encrypted_toggle"))
-                        .font(.system(size: 13, weight: .medium))
-                        .foregroundColor(AppColors.text)
-                    Spacer()
-                    Toggle("", isOn: $isMirrorEncrypted)
-                        .labelsHidden()
-                        .onChange(of: isMirrorEncrypted) { val in
-                            CloudMirrorManager.shared.isEncrypted = val
-                        }
-                }
-
-                if isMirrorEncrypted {
-                    SecureField(LanguageManager.t("form_lab.mirror_passphrase_label"), text: $mirrorPassphrase)
-                        .textFieldStyle(.plain)
-                        .padding(10)
-                        .background(AppColors.surface)
-                        .cornerRadius(8)
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(AppColors.border, lineWidth: 1))
-                }
-
                 if let syncTime = lastSyncTime {
                     Text(LanguageManager.t("form_lab.mirror_last_synced", ["time": formatSyncTime(syncTime)]))
                         .font(.system(size: 11))
@@ -739,7 +717,7 @@ public struct FormLabView: View {
                 if let msg = syncStatusMessage {
                     Text(msg)
                         .font(.system(size: 12, weight: .medium))
-                        .foregroundColor(AppColors.accent)
+                        .foregroundColor(syncIsError ? AppColors.danger : AppColors.accent)
                 }
             }
             .padding(16)
@@ -781,23 +759,25 @@ public struct FormLabView: View {
 
     private func syncNow() {
         let json = store.exportBackupJson()
-        let pass = mirrorPassphrase.trimmingCharacters(in: .whitespaces).isEmpty ? nil : mirrorPassphrase
         do {
-            _ = try CloudMirrorManager.shared.syncNow(backupJson: json, passphrase: pass)
+            _ = try CloudMirrorManager.shared.syncNow(backupJson: json)
             lastSyncTime = Date()
+            syncIsError = false
             syncStatusMessage = LanguageManager.t("form_lab.mirror_success")
         } catch {
+            syncIsError = true
             syncStatusMessage = "Sync failed: \(error.localizedDescription)"
         }
     }
 
     private func restoreFromMirror() {
-        let pass = mirrorPassphrase.trimmingCharacters(in: .whitespaces).isEmpty ? nil : mirrorPassphrase
         do {
-            let json = try CloudMirrorManager.shared.readLatestSnapshot(passphrase: pass)
+            let json = try CloudMirrorManager.shared.readLatestSnapshot()
             store.restoreBackupJson(json)
+            syncIsError = false
             syncStatusMessage = LanguageManager.t("notice.backupRestored")
         } catch {
+            syncIsError = true
             syncStatusMessage = "Restore failed: \(error.localizedDescription)"
         }
     }
