@@ -48,7 +48,7 @@ public struct SessionProgress {
         let completed = allSets.filter { $0.isCompleted }
         let completedWorking = completed.filter { !$0.isWarmup }
         let elapsed = Int((nowEpochMillis - draft.startedAtEpochMillis) / 1000)
-        let duration = min(max(0, elapsed), 8 * 3600)
+        let duration = min(max(0, elapsed), 6 * 3600)
         
         var volume: Double = 0
         for s in completedWorking {

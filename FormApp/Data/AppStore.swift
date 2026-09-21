@@ -253,6 +253,7 @@ public final class AppStore: ObservableObject {
         allowPast: Bool = false,
         unfinishedRecordId: String? = nil
     ) -> Bool {
+        checkAndArchiveStaleSession()
         if activeSession != nil || workout.exercises.isEmpty || !canStartWorkout(workout, allowPast: allowPast) {
             return false
         }
@@ -319,7 +320,8 @@ public final class AppStore: ObservableObject {
 
     public func updateActiveSession(_ transform: (ActiveSessionDraft) -> ActiveSessionDraft) {
         guard let current = activeSession else { return }
-        let updated = transform(current)
+        var updated = transform(current)
+        updated.lastActivityEpochMillis = Int64(Date().timeIntervalSince1970 * 1000)
         saveActiveSession(updated)
         self.activeSession = updated
 
@@ -789,20 +791,36 @@ public final class AppStore: ObservableObject {
         )
     }
 
-    private func checkAndArchiveStaleSession() {
-        guard let draft = activeSession else { return }
+    @discardableResult
+    public func checkAndArchiveStaleSession() -> Bool {
+        guard let draft = activeSession else { return false }
         let now = Int64(Date().timeIntervalSince1970 * 1000)
-        let isStale = (now - draft.startedAtEpochMillis) > 12 * 3600 * 1000
-        if isStale {
-            let hasCompleted = draft.setsByExercise.values.flatMap { $0 }.contains { $0.isCompleted }
-            if hasCompleted {
-                let rec = SessionProgress.from(draft: draft, nowEpochMillis: draft.startedAtEpochMillis + 30 * 60 * 1000)
-                    .record(draft: draft, completedAtEpochMillis: draft.startedAtEpochMillis + 30 * 60 * 1000)
-                completeActiveSession(rec)
-            } else {
-                abandonActiveSession()
-            }
+        let startedDate = WorkoutCalendar.localDate(from: draft.startedAt) ?? WorkoutCalendar.formatDate(Date())
+        let todayStr = WorkoutCalendar.formatDate(Date())
+        let lastActivity = draft.lastActivityEpochMillis > 0 ? draft.lastActivityEpochMillis : draft.startedAtEpochMillis
+
+        let isStartedOnPreviousDay = startedDate < todayStr && (now - lastActivity) > (2 * 3600 * 1000)
+        let isInactive = (now - lastActivity) > (4 * 3600 * 1000)
+        let isOverMaxDuration = (now - draft.startedAtEpochMillis) > (6 * 3600 * 1000)
+
+        let isStale = isStartedOnPreviousDay || isInactive || isOverMaxDuration
+        guard isStale else { return false }
+
+        let allSets = draft.setsByExercise.values.flatMap { $0 }
+        let hasCompleted = allSets.contains { $0.isCompleted }
+        if hasCompleted {
+            let elapsedActivitySeconds = Int((lastActivity - draft.startedAtEpochMillis) / 1000)
+            let effectiveDurationSeconds = elapsedActivitySeconds >= 60 ? min(max(60, elapsedActivitySeconds), 4 * 3600) : (30 * 60)
+            let effectiveCompletionMillis = draft.startedAtEpochMillis + Int64(effectiveDurationSeconds * 1000)
+            var rec = SessionProgress.from(draft: draft, nowEpochMillis: effectiveCompletionMillis)
+                .record(draft: draft, completedAtEpochMillis: effectiveCompletionMillis)
+            rec.isComplete = false
+            rec.durationSeconds = effectiveDurationSeconds
+            completeActiveSession(rec)
+        } else {
+            abandonActiveSession()
         }
+        return true
     }
 
     func saveState(_ newState: StoredAppState) {

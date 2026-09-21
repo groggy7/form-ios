@@ -563,6 +563,7 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
     public var workout: Workout
     public var startedAt: String
     public var startedAtEpochMillis: Int64
+    public var lastActivityEpochMillis: Int64
     public var currentExerciseIndex: Int
     public var setsByExercise: [String: [ExerciseSetLog]]
     public var restTimer: RestTimerState?
@@ -574,6 +575,7 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         workout: Workout,
         startedAt: String,
         startedAtEpochMillis: Int64,
+        lastActivityEpochMillis: Int64? = nil,
         currentExerciseIndex: Int = 0,
         setsByExercise: [String: [ExerciseSetLog]] = [:],
         restTimer: RestTimerState? = nil
@@ -584,9 +586,24 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         self.workout = workout
         self.startedAt = startedAt
         self.startedAtEpochMillis = startedAtEpochMillis
+        self.lastActivityEpochMillis = lastActivityEpochMillis ?? startedAtEpochMillis
         self.currentExerciseIndex = currentExerciseIndex
         self.setsByExercise = setsByExercise
         self.restTimer = restTimer
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.schemaVersion = try container.decodeIfPresent(Int.self, forKey: .schemaVersion) ?? 1
+        self.id = try container.decode(String.self, forKey: .id)
+        self.programId = try container.decode(String.self, forKey: .programId)
+        self.workout = try container.decode(Workout.self, forKey: .workout)
+        self.startedAt = try container.decode(String.self, forKey: .startedAt)
+        self.startedAtEpochMillis = try container.decode(Int64.self, forKey: .startedAtEpochMillis)
+        self.lastActivityEpochMillis = try container.decodeIfPresent(Int64.self, forKey: .lastActivityEpochMillis) ?? self.startedAtEpochMillis
+        self.currentExerciseIndex = try container.decodeIfPresent(Int.self, forKey: .currentExerciseIndex) ?? 0
+        self.setsByExercise = try container.decodeIfPresent([String: [ExerciseSetLog]].self, forKey: .setsByExercise) ?? [:]
+        self.restTimer = try container.decodeIfPresent(RestTimerState.self, forKey: .restTimer)
     }
 }
 

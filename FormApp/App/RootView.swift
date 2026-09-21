@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct RootView: View {
+    @Environment(\.scenePhase) private var scenePhase
     @StateObject private var store = AppStore.shared
     @StateObject private var langManager = LanguageManager.shared
 
@@ -100,5 +101,10 @@ public struct RootView: View {
             }
         }
         .preferredColorScheme(.dark)
+        .onChange(of: scenePhase) { phase in
+            if phase == .active {
+                store.checkAndArchiveStaleSession()
+            }
+        }
     }
 }
