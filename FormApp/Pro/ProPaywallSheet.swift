@@ -371,6 +371,20 @@ public struct ProPaywallSheet: View {
                                 .foregroundColor(AppColors.border)
 
                             Button(action: {
+                                if let url = URL(string: LegalUrls.manageSubscriptions) {
+                                    openURL(url)
+                                }
+                            }) {
+                                Text(LanguageManager.t("settings.manage_subscription"))
+                                    .font(.system(size: 11.5))
+                                    .foregroundColor(AppColors.secondaryText)
+                            }
+                            .buttonStyle(.plain)
+
+                            Text("·")
+                                .foregroundColor(AppColors.border)
+
+                            Button(action: {
                                 if let url = URL(string: LegalUrls.termsOfService) {
                                     openURL(url)
                                 }

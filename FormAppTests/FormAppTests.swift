@@ -3208,9 +3208,12 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(Translations.tr["settings.privacy"], "Gizlilik Politikası")
         XCTAssertEqual(Translations.en["settings.support"], "Customer Support")
         XCTAssertEqual(Translations.tr["settings.support"], "Müşteri Desteği")
+        XCTAssertEqual(Translations.en["settings.manage_subscription"], "Manage Subscription")
+        XCTAssertEqual(Translations.tr["settings.manage_subscription"], "Aboneliği Yönet")
         XCTAssertTrue(LegalUrls.termsOfService.hasPrefix("https://"))
         XCTAssertTrue(LegalUrls.privacyPolicy.hasPrefix("https://"))
         XCTAssertTrue(LegalUrls.support.hasPrefix("https://"))
+        XCTAssertTrue(LegalUrls.manageSubscriptions.hasPrefix("https://apps.apple.com/account/subscriptions"))
     }
 
     func testMovementIconSupportsAnimatedParameter() {

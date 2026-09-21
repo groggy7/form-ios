@@ -103,4 +103,5 @@ public enum LegalUrls {
     public static let termsOfService = "https://perseverance-software.github.io/forcedrep/terms/"
     public static let privacyPolicy = "https://perseverance-software.github.io/forcedrep/privacy/"
     public static let support = "https://perseverance-software.github.io/forcedrep/support/"
+    public static let manageSubscriptions = "https://apps.apple.com/account/subscriptions"
 }
