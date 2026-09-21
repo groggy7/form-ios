@@ -818,10 +818,49 @@ public enum WorkoutCalendar {
                 entriesMap[id] = WorkoutDayEntry(id: id, date: d, status: status)
             }
         }
+        var missedSet = Set(history.missedDates)
+        let entriesByDate = Set(entriesMap.values.map { $0.date })
+        let todayDate = parseDate(today) ?? Date()
+
+        var activeWeekMondays = Set<String>()
+        for missedStr in history.missedDates {
+            if let d = parseDate(missedStr) {
+                activeWeekMondays.insert(mondayOfCurrentWeek(for: d, calendar: cal))
+            }
+        }
+        if raw != nil, let recentThreshold = cal.date(byAdding: .day, value: -14, to: todayDate) {
+            for entry in entriesMap.values {
+                if let d = parseDate(entry.date), d >= recentThreshold {
+                    activeWeekMondays.insert(mondayOfCurrentWeek(for: d, calendar: cal))
+                }
+            }
+        }
+
+        for weekMondayStr in activeWeekMondays {
+            guard let weekMonday = parseDate(weekMondayStr) else { continue }
+            let weekSessions = sessions.filter { session in
+                guard let sDate = parseIsoTimestamp(session.startedAt) ?? parseIsoTimestamp(session.completedAt) else { return false }
+                return mondayOfCurrentWeek(for: sDate, calendar: cal) == weekMondayStr
+            }
+            let weekProgramId = weekSessions.first?.programId
+            let weekProgram = programs.first(where: { $0.id == weekProgramId })
+            let weekWeekdays = weekProgram?.workouts.filter { !$0.exercises.isEmpty }.map { $0.day }.sorted()
+                ?? (!history.scheduledWeekdays.isEmpty ? history.scheduledWeekdays : weekdays)
+
+            for dayIndex in weekWeekdays {
+                if let dayDate = cal.date(byAdding: .day, value: dayIndex - 1, to: weekMonday) {
+                    let dayStr = formatDate(dayDate)
+                    if dayDate < todayDate && !entriesByDate.contains(dayStr) {
+                        missedSet.insert(dayStr)
+                    }
+                }
+            }
+        }
+
         return WorkoutCalendarHistory(
             nextScheduledDate: history.nextScheduledDate,
             scheduledWeekdays: history.scheduledWeekdays,
-            missedDates: history.missedDates,
+            missedDates: missedSet.sorted(),
             entries: Array(entriesMap.values)
         )
     }

@@ -5672,4 +5672,58 @@ final class FormAppTests: XCTestCase {
             print("Successfully wrote Volume Matrix Locked Blurred snapshot to \(path)")
         }
     }
+
+    func testActiveWeekWithFiveDayScheduleReconcilesAllUncompletedDaysAsMissed() {
+        let testToday = "2026-09-21"
+        let mon = WorkoutSessionRecord(
+            id: "s-mon", programId: "p5", workoutId: "w-push", workoutTitle: "Push",
+            startedAt: "2026-09-14T10:00:00Z", completedAt: "2026-09-14T11:00:00Z", durationSeconds: 3600,
+            isComplete: false
+        )
+        let tue = WorkoutSessionRecord(
+            id: "s-tue", programId: "p5", workoutId: "w-pull", workoutTitle: "Pull",
+            startedAt: "2026-09-15T10:00:00Z", completedAt: "2026-09-15T11:00:00Z", durationSeconds: 3600,
+            isComplete: true
+        )
+        let program = Program(
+            id: "p5", name: "5-Day Split",
+            workouts: [
+                Workout(id: "w-push", day: 1, title: "Push", exercises: [Exercise(id: "e1", name: "Bench", sets: 3)]),
+                Workout(id: "w-pull", day: 2, title: "Pull", exercises: [Exercise(id: "e2", name: "Row", sets: 3)]),
+                Workout(id: "w-legs", day: 4, title: "Legs", exercises: [Exercise(id: "e3", name: "Squat", sets: 3)]),
+                Workout(id: "w-upper", day: 5, title: "Upper", exercises: [Exercise(id: "e4", name: "OHP", sets: 3)]),
+                Workout(id: "w-arms", day: 6, title: "Arms", exercises: [Exercise(id: "e5", name: "Curls", sets: 3)])
+            ]
+        )
+        let existingHistory = WorkoutCalendarHistory(
+            nextScheduledDate: "2026-09-21",
+            scheduledWeekdays: [1, 2, 4, 5, 6],
+            missedDates: ["2026-09-19"],
+            entries: [
+                WorkoutDayEntry(id: "session:s-mon", date: "2026-09-14", status: .unfinished),
+                WorkoutDayEntry(id: "session:s-tue", date: "2026-09-15", status: .completed)
+            ]
+        )
+        let restored = WorkoutCalendar.restore(
+            raw: existingHistory,
+            sessions: [mon, tue],
+            today: testToday,
+            weekdays: [1, 2, 4, 5, 6],
+            programs: [program]
+        )
+        XCTAssertEqual(restored.missedDates, ["2026-09-17", "2026-09-18", "2026-09-19"])
+
+        let statuses = WorkoutCalendar.statuses(history: restored, today: testToday)
+        XCTAssertEqual(statuses["2026-09-14"], .unfinished)
+        XCTAssertEqual(statuses["2026-09-15"], .completed)
+        XCTAssertNil(statuses["2026-09-16"], "Wednesday is a rest day")
+        XCTAssertEqual(statuses["2026-09-17"], .missed)
+        XCTAssertEqual(statuses["2026-09-18"], .missed)
+        XCTAssertEqual(statuses["2026-09-19"], .missed)
+        XCTAssertNil(statuses["2026-09-20"], "Sunday is a rest day")
+
+        let weekDays = ["2026-09-14", "2026-09-15", "2026-09-16", "2026-09-17", "2026-09-18", "2026-09-19", "2026-09-20"]
+        let count = weekDays.compactMap { statuses[$0] }.count
+        XCTAssertEqual(count, 5, "Exactly 5 scheduled workout days in that week must have a status")
+    }
 }
