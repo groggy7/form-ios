@@ -374,14 +374,12 @@ public struct LibraryView: View {
                                         RoundedRectangle(cornerRadius: 10, style: .continuous)
                                             .fill(Color.black)
                                         if muscle == .cardio {
-                                            ZStack {
-                                                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                                    .fill(AppColors.accent.opacity(0.14))
-                                                    .frame(width: 48, height: 48)
-                                                Image(systemName: "figure.run")
-                                                    .font(.system(size: 26, weight: .semibold))
-                                                    .foregroundColor(AppColors.accent)
-                                            }
+                                            Image("library_filter_cardio")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .padding(.horizontal, 4)
+                                                .padding(.vertical, 2)
+                                                .accessibilityHidden(true)
                                         } else {
                                             MuscleArtwork(view: muscle.bodyView, muscles: muscle.muscleGroups, centered: true)
                                                 .padding(4)

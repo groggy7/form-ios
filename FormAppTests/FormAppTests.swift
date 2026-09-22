@@ -764,14 +764,11 @@ final class FormAppTests: XCTestCase {
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
                                 .fill(Color.black)
                             if muscle == .cardio {
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                        .fill(AppColors.accent.opacity(0.14))
-                                        .frame(width: 48, height: 48)
-                                    Image(systemName: "figure.run")
-                                        .font(.system(size: 26, weight: .semibold))
-                                        .foregroundColor(AppColors.accent)
-                                }
+                                Image("library_filter_cardio")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .padding(.horizontal, 4)
+                                    .padding(.vertical, 2)
                             } else {
                                 MuscleArtwork(view: muscle.bodyView, muscles: muscle.muscleGroups, centered: true)
                                     .padding(4)
@@ -808,6 +805,13 @@ final class FormAppTests: XCTestCase {
             let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_all_muscle_groups_contact_sheet.png"
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote contact sheet to \(path)")
+        }
+        let cardioArtwork = UIImage(named: "library_filter_cardio")
+        XCTAssertEqual(cardioArtwork?.size, CGSize(width: 1254, height: 1254))
+        if let alphaInfo = cardioArtwork?.cgImage?.alphaInfo {
+            XCTAssertFalse(alphaInfo == .none || alphaInfo == .noneSkipFirst || alphaInfo == .noneSkipLast)
+        } else {
+            XCTFail("Cardio artwork has no decoded CGImage")
         }
     }
 
