@@ -429,7 +429,8 @@ public struct VolumeMatrixView: View {
                 let summary = report.muscleSummaries[muscle]
                 let zone = summary?.zone ?? .underMev
                 let isSelected = (muscle == selectedMuscleKey)
-                context.opacity = isSelected ? 0.95 : 0.80
+                let baseAlpha: Double = (zone == .underMev || zone == .noWeeklyReference) ? 0.80 : 0.65
+                context.opacity = isSelected ? 0.90 : baseAlpha
                 context.fill(Path(path), with: .color(zone.color))
             }
         }
