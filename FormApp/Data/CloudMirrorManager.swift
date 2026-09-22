@@ -76,7 +76,7 @@ public class CloudMirrorManager {
         let lastSync = UserDefaults.standard.object(forKey: keyLastSync) as? TimeInterval
         let file = mirrorDirectory.appendingPathComponent(backupFileName)
         let size = (try? FileManager.default.attributesOfItem(atPath: file.path)[.size] as? Int64)
-        let provider = isICloudAvailable ? "iCloud Drive" : "Local Mirror (No iCloud Drive)"
+        let provider = isICloudAvailable ? "iCloud Drive" : "Local Backup (No iCloud Drive)"
 
         return CloudMirrorStatus(
             isEnabled: isEnabled,

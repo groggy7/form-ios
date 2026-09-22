@@ -600,7 +600,7 @@ public struct CloudBackupSheet: View {
                     VStack(spacing: 12) {
                         HStack {
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(CloudMirrorManager.shared.isICloudAvailable ? "iCloud Drive" : "Local Mirror (No iCloud Drive)")
+                                Text(CloudMirrorManager.shared.isICloudAvailable ? "iCloud Drive" : "Local Backup (No iCloud Drive)")
                                     .font(.system(size: 14, weight: .semibold))
                                     .foregroundColor(AppColors.text)
                                 if let syncTime = lastSyncTime {
@@ -726,7 +726,7 @@ public struct CloudBackupSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(LanguageManager.t("modal.done")) {
+                    Button(LanguageManager.t("common.done")) {
                         dismiss()
                     }
                     .font(.system(size: 14, weight: .semibold))
@@ -737,7 +737,7 @@ public struct CloudBackupSheet: View {
                 Button(LanguageManager.t("form_lab.restore_btn"), role: .destructive) {
                     restoreFromMirror()
                 }
-                Button(LanguageManager.t("table.deleteSet"), role: .cancel) {}
+                Button(LanguageManager.t("modal.cancel"), role: .cancel) {}
             } message: {
                 Text(LanguageManager.t("form_lab.mirror_restore_warning"))
             }

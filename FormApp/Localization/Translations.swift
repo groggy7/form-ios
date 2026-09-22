@@ -621,6 +621,7 @@ public enum Translations {
         "exercise.equipment.other": "Other",
 
         "modal.cancel": "Cancel",
+        "modal.done": "Done",
         "modal.delete": "Delete",
         "modal.program.titleAdd": "New program",
         "modal.program.titleEdit": "Edit program",
@@ -796,7 +797,7 @@ public enum Translations {
         "paywall.cloud_backup.benefit2": "No Third-Party Accounts or Tracking",
         "paywall.cloud_backup.benefit2_desc": "Forced Rep operates no user databases. Your data remains entirely under your personal control.",
         "paywall.cloud_backup.benefit3": "Durable Post-Workout Backup",
-        "paywall.cloud_backup.benefit3_desc": "Automatically mirrors your logs in the background as soon as you complete a workout session.",
+        "paywall.cloud_backup.benefit3_desc": "Automatically backs up your logs in the background as soon as you complete a workout session.",
         "pro.upgrade_cta": "Unlock Forced Rep Pro",
         "paywall.badge": "FORCED REP PRO",
         "paywall.feature_badge": "PRO FEATURE",
@@ -1057,7 +1058,7 @@ public enum Translations {
         "form_lab.mirror_last_synced": "Last synced: {time}",
         "form_lab.mirror_never_synced": "Not synced yet",
         "form_lab.mirror_size": "Snapshot size: {size}",
-        "form_lab.mirror_success": "Snapshot successfully mirrored to private cloud storage!",
+        "form_lab.mirror_success": "Snapshot successfully backed up to private cloud storage!",
         "form_lab.mirror_restore_confirm": "Restore App Data from Cloud Backup?",
         "form_lab.mirror_restore_warning": "This will restore your programs and history from the latest cloud snapshot. Live active workout will be preserved.",
         "form_lab.mirror_folder_title": "iCloud / Cloud Storage",
@@ -1402,6 +1403,7 @@ public enum Translations {
         "exercise.equipment.other": "Diğer",
 
         "modal.cancel": "İptal",
+        "modal.done": "Tamam",
         "modal.delete": "Sil",
         "modal.program.titleAdd": "Yeni program",
         "modal.program.titleEdit": "Programı düzenle",
