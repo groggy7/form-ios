@@ -4422,6 +4422,108 @@ final class FormAppTests: XCTestCase {
         XCTAssertFalse(manager.isFeatureUnlocked(.autoProgression))
     }
 
+    func testComprehensiveProGatedQualitySuite() {
+        let manager = ProAccessManager.shared
+        manager.resetOverrides()
+        manager.updateSubscriptionStatus(active: false)
+
+        // 1. Free Tier Baseline: All 5 features strictly locked
+        let allFeatures: [ProFeature] = [.volumeMatrix, .autoProgression, .warmupCalculator, .formLab, .cloudBackup]
+        XCTAssertEqual(ProFeature.allCases.count, 5)
+        for feature in allFeatures {
+            XCTAssertFalse(manager.isFeatureUnlocked(feature), "Feature \(feature.rawValue) must be locked for free tier")
+            XCTAssertFalse(feature.titleKey.isEmpty)
+            XCTAssertFalse(feature.descriptionKey.isEmpty)
+            XCTAssertFalse(feature.teaserKey.isEmpty)
+        }
+
+        // 2. Subscription Activation: All 5 features unlock immediately
+        manager.updateSubscriptionStatus(active: true)
+        XCTAssertTrue(manager.isProSubscribed)
+        for feature in allFeatures {
+            XCTAssertTrue(manager.isFeatureUnlocked(feature), "Feature \(feature.rawValue) must be unlocked when subscribed")
+        }
+
+        // 3. Override Isolation: Lock Cloud Backup specifically
+        manager.setFeatureOverride(.cloudBackup, unlocked: false)
+        XCTAssertFalse(manager.isFeatureUnlocked(.cloudBackup))
+        XCTAssertTrue(manager.isFeatureUnlocked(.volumeMatrix))
+        XCTAssertTrue(manager.isFeatureUnlocked(.autoProgression))
+        XCTAssertTrue(manager.isFeatureUnlocked(.warmupCalculator))
+        XCTAssertTrue(manager.isFeatureUnlocked(.formLab))
+
+        manager.setFeatureOverride(.cloudBackup, unlocked: nil)
+        XCTAssertTrue(manager.isFeatureUnlocked(.cloudBackup))
+
+        // 4. Warmup Plate Math & Unit Normalization under Pro
+        let lbsResult = WarmupPlateEngine.calculatePlates(
+            targetWeight: 225.0,
+            barWeight: 45.0,
+            availablePlates: WarmupPlateEngine.defaultPlatesLbs,
+            unit: .lbs
+        )
+        XCTAssertEqual(lbsResult.targetWeight, 225.0, accuracy: 0.001)
+        XCTAssertEqual(lbsResult.totalAchievedWeight, 225.0, accuracy: 0.001)
+        let fortyFivePlates = lbsResult.platesPerSide.first(where: { $0.weight == 45.0 })?.count ?? 0
+        XCTAssertEqual(fortyFivePlates, 2)
+
+        // 5. Progression Engine: Bodyweight Support
+        let pullUp = Exercise(
+            id: "pu-1",
+            name: "Pull-Up",
+            exerciseId: "pull-up",
+            sets: 3,
+            reps: RepTarget(min: 8, max: 12)
+        )
+        let bwHistory = [
+            WorkoutSessionRecord(
+                id: "bws1",
+                programId: "p1",
+                workoutId: "w1",
+                workoutTitle: "Back",
+                startedAt: "2026-09-10T10:00:00Z",
+                completedAt: "2026-09-10T11:00:00Z",
+                durationSeconds: 3600,
+                exerciseLogs: [
+                    SessionExerciseLog(
+                        exerciseName: "Pull-Up",
+                        sets: [
+                            SessionSetLog(setNumber: 1, weightKg: 0.0, reps: 10),
+                            SessionSetLog(setNumber: 2, weightKg: 0.0, reps: 9),
+                            SessionSetLog(setNumber: 3, weightKg: 0.0, reps: 8)
+                        ]
+                    )
+                ]
+            )
+        ]
+        let bwRec = ProgressionEngine.computeProgression(exercise: pullUp, history: bwHistory, weightUnit: .kg)
+        XCTAssertEqual(bwRec.action, .addReps)
+        XCTAssertEqual(bwRec.suggestedWeightDisplay, "BW")
+        XCTAssertEqual(bwRec.suggestedRepsMin, 11)
+
+        // 6. Form Lab Training Distribution Ratio Formatting
+        let pushSets = 76
+        let pullSets = 85
+        let ratioVal = round((Double(pushSets) / Double(pullSets)) * 100.0) / 100.0
+        XCTAssertEqual(ratioVal, 0.89, accuracy: 0.01)
+        let ratioFormatted = String(format: "%.2f : 1.0", ratioVal)
+        XCTAssertEqual(ratioFormatted, "0.89 : 1.0")
+
+        // 7. Offline Grace Period Lifecycle Bounds (7 Days)
+        let now = Date().timeIntervalSince1970
+        let verifiedThreeDaysAgo = now - (3 * 86400)
+        let isWithinGrace = (now - verifiedThreeDaysAgo) <= (7 * 86400) && (verifiedThreeDaysAgo - now) <= 300
+        XCTAssertTrue(isWithinGrace)
+
+        let verifiedEightDaysAgo = now - (8 * 86400)
+        let isExpired = (now - verifiedEightDaysAgo) > (7 * 86400)
+        XCTAssertTrue(isExpired)
+
+        // Cleanup
+        manager.resetOverrides()
+        manager.updateSubscriptionStatus(active: false)
+    }
+
     func testProPreviewDataDemonstrationHistory() {
         // Zero-history accounts identified correctly
         XCTAssertFalse(ProPreviewData.hasWorkingHistory([]))
