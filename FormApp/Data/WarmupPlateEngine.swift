@@ -22,6 +22,19 @@ public enum WarmupPlateEngine {
         availablePlates: [Double],
         unit: WeightUnit = .kg
     ) -> PlateCalculationResult {
+        guard targetWeight.isFinite, barWeight.isFinite else {
+            return PlateCalculationResult(
+                targetWeight: 0.0,
+                barWeight: 0.0,
+                weightPerSide: 0.0,
+                platesPerSide: [],
+                totalPlatesWeight: 0.0,
+                totalAchievedWeight: 0.0,
+                remainderPerSide: 0.0,
+                isExactMatch: false,
+                displayText: "Invalid Weight"
+            )
+        }
         let safeTarget = (targetWeight * 100).rounded() / 100
         let safeBar = (barWeight * 100).rounded() / 100
 
@@ -43,36 +56,35 @@ public enum WarmupPlateEngine {
         let neededFromPlates = safeTarget - safeBar
         let neededPerSide = neededFromPlates / 2.0
 
-        let sortedPlates = availablePlates.filter { $0 > 0 }.sorted(by: >)
-        var remaining = neededPerSide
-        var selected: [PlateCount] = []
+        let sortedPlates = availablePlates.filter { $0 > 0 && $0.isFinite }.sorted(by: >)
+        var remainingPerSide = neededPerSide
+        var selectedPlates: [PlateCount] = []
 
         for plate in sortedPlates {
             if plate <= 0 { continue }
-            let count = Int((remaining + 0.0001) / plate)
+            let count = Int(floor((remainingPerSide + 0.0001) / plate))
             if count > 0 {
-                selected.append(PlateCount(weight: plate, count: count))
-                remaining -= Double(count) * plate
-                remaining = (remaining * 100).rounded() / 100
+                selectedPlates.append(PlateCount(weight: plate, count: count))
+                remainingPerSide -= Double(count) * plate
             }
         }
 
-        let totalPerSide = selected.reduce(0.0) { $0 + $1.totalWeight }
-        let totalBothSides = ((totalPerSide * 2.0) * 100).rounded() / 100
-        let totalAchieved = (((safeBar + totalBothSides) * 100).rounded()) / 100
-        let remainder = (remaining * 100).rounded() / 100
-        let isExact = remainder <= 0.001
+        let totalPlatesPerSide = selectedPlates.reduce(0.0) { $0 + $1.totalWeight }
+        let totalPlatesBothSides = (totalPlatesPerSide * 2.0 * 100).rounded() / 100
+        let totalAchieved = ((safeBar + totalPlatesBothSides) * 100).rounded() / 100
+        let remainder = (remainingPerSide * 100).rounded() / 100
+        let isExact = remainder <= 0.01
 
         let unitLabel = unit.label
-        let displayParts = selected.map { "\($0.count)×\(formatPlateWeight($0.weight)) \(unitLabel)" }
+        let displayParts = selectedPlates.map { "\($0.count)×\(formatPlateWeight($0.weight)) \(unitLabel)" }
         let displayText = displayParts.isEmpty ? "Bar only" : displayParts.joined(separator: " + ")
 
         return PlateCalculationResult(
             targetWeight: safeTarget,
             barWeight: safeBar,
             weightPerSide: neededPerSide,
-            platesPerSide: selected,
-            totalPlatesWeight: totalBothSides,
+            platesPerSide: selectedPlates,
+            totalPlatesWeight: totalPlatesBothSides,
             totalAchievedWeight: totalAchieved,
             remainderPerSide: remainder,
             isExactMatch: isExact,
@@ -86,14 +98,22 @@ public enum WarmupPlateEngine {
         availablePlatesKg: [Double] = defaultPlatesKg,
         unit: WeightUnit = .kg
     ) -> WarmupRamp {
+        guard workingWeightKg.isFinite, barWeightKg.isFinite else {
+            return WarmupRamp(workingWeightKg: 0, barWeightKg: 0, steps: [])
+        }
         let safeWorking = (workingWeightKg * 100).rounded() / 100
         let safeBar = (barWeightKg * 100).rounded() / 100
 
-        let increment = unit == .lbs ? 5.0 : 2.5
+        let isLbs = unit == .lbs
+        let displayWorking = isLbs ? unit.toDisplay(safeWorking) : safeWorking
+        let displayBar = isLbs ? unit.toDisplay(safeBar) : safeBar
+        let increment = isLbs ? 5.0 : 2.5
+        let availablePlates = isLbs ? defaultPlates(for: .lbs) : availablePlatesKg
+
         var steps: [WarmupStep] = []
 
         // Step 1: Empty Bar x 10 (warm joints)
-        let step1Plates = calculatePlates(targetWeight: safeBar, barWeight: safeBar, availablePlates: availablePlatesKg, unit: unit)
+        let step1Plates = calculatePlates(targetWeight: displayBar, barWeight: displayBar, availablePlates: availablePlates, unit: unit)
         steps.append(
             WarmupStep(
                 setNumber: 1,
@@ -106,7 +126,7 @@ public enum WarmupPlateEngine {
             )
         )
 
-        if safeWorking > safeBar {
+        if displayWorking > displayBar {
             let candidates: [(fraction: Double, reps: Int, labelKey: String)] = [
                 (0.50, 5, "warmup.50_percent"),
                 (0.70, 3, "warmup.70_percent"),
@@ -114,16 +134,17 @@ public enum WarmupPlateEngine {
             ]
 
             for candidate in candidates {
-                let rawWeight = safeWorking * candidate.fraction
-                let roundedWeight = roundToIncrement(rawWeight, increment: increment)
-                let lastWeight = steps.last?.weightKg ?? 0.0
+                let rawWeight = displayWorking * candidate.fraction
+                let roundedDisplayWeight = roundToIncrement(rawWeight, increment: increment)
+                let lastDisplayWeight = isLbs ? (steps.last.map { unit.toDisplay($0.weightKg) } ?? 0.0) : (steps.last?.weightKg ?? 0.0)
 
-                if roundedWeight > lastWeight && roundedWeight < safeWorking {
-                    let plates = calculatePlates(targetWeight: roundedWeight, barWeight: safeBar, availablePlates: availablePlatesKg, unit: unit)
+                if roundedDisplayWeight > lastDisplayWeight && roundedDisplayWeight < displayWorking {
+                    let plates = calculatePlates(targetWeight: roundedDisplayWeight, barWeight: displayBar, availablePlates: availablePlates, unit: unit)
+                    let stepKg = isLbs ? unit.toCanonicalKg(roundedDisplayWeight) : roundedDisplayWeight
                     steps.append(
                         WarmupStep(
                             setNumber: steps.count + 1,
-                            weightKg: roundedWeight,
+                            weightKg: stepKg,
                             reps: candidate.reps,
                             percentage: Int(candidate.fraction * 100),
                             labelKey: candidate.labelKey,

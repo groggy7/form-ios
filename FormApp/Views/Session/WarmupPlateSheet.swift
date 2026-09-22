@@ -53,7 +53,10 @@ public struct WarmupPlateSheet: View {
 
         _activeTab = State(initialValue: initialTab)
         _selectedBarType = State(initialValue: initialBarType)
-        _availablePlates = State(initialValue: initialPlatesKg)
+        let platesForUnit = unit == .lbs
+            ? (initialPlatesKg.contains(45.0) ? initialPlatesKg : WarmupPlateEngine.defaultPlatesLbs)
+            : initialPlatesKg
+        _availablePlates = State(initialValue: platesForUnit)
         _workingWeightInput = State(initialValue: defaultWeight)
         _plateTargetInput = State(initialValue: defaultWeight)
     }
@@ -70,11 +73,10 @@ public struct WarmupPlateSheet: View {
     }
 
     private var plateResult: PlateCalculationResult {
-        let targetKg = unit == .lbs ? unit.toCanonicalKg(plateTargetInput) : plateTargetInput
-        let barKg = selectedBarType.weightKg
+        let barWeight = selectedBarType.weight(unit: unit)
         return WarmupPlateEngine.calculatePlates(
-            targetWeight: targetKg,
-            barWeight: barKg,
+            targetWeight: plateTargetInput,
+            barWeight: barWeight,
             availablePlates: availablePlates,
             unit: unit
         )
@@ -215,17 +217,19 @@ public struct WarmupPlateSheet: View {
 
                 HStack(spacing: 6) {
                     let step = unit == .lbs ? 5.0 : 2.5
+                    let barWeight = unit == .lbs ? unit.toDisplay(ramp.barWeightKg) : ramp.barWeightKg
+                    let maxWeight = unit == .lbs ? 1000.0 : 500.0
                     quickStepButton("-\(WarmupPlateEngine.formatPlateWeight(step * 2))") {
-                        workingWeightInput = max(ramp.barWeightKg, workingWeightInput - step * 2)
+                        workingWeightInput = max(barWeight, workingWeightInput - step * 2)
                     }
                     quickStepButton("-\(WarmupPlateEngine.formatPlateWeight(step))") {
-                        workingWeightInput = max(ramp.barWeightKg, workingWeightInput - step)
+                        workingWeightInput = max(barWeight, workingWeightInput - step)
                     }
                     quickStepButton("+\(WarmupPlateEngine.formatPlateWeight(step))") {
-                        workingWeightInput = min(500.0, workingWeightInput + step)
+                        workingWeightInput = min(maxWeight, workingWeightInput + step)
                     }
                     quickStepButton("+\(WarmupPlateEngine.formatPlateWeight(step * 2))") {
-                        workingWeightInput = min(500.0, workingWeightInput + step * 2)
+                        workingWeightInput = min(maxWeight, workingWeightInput + step * 2)
                     }
                 }
             }
@@ -265,7 +269,8 @@ public struct WarmupPlateSheet: View {
                                 )
 
                             VStack(alignment: .leading, spacing: 2) {
-                                Text("\(WarmupPlateEngine.formatPlateWeight(step.weightKg)) \(unit.label) × \(step.reps)")
+                                let displayStepWeight = unit == .lbs ? unit.toDisplay(step.weightKg) : step.weightKg
+                                Text("\(WarmupPlateEngine.formatPlateWeight(displayStepWeight)) \(unit.label) × \(step.reps)")
                                     .font(.system(size: 15, weight: .bold))
                                     .foregroundColor(AppColors.text)
                                 Text(LanguageManager.t(step.labelKey))
@@ -308,7 +313,8 @@ public struct WarmupPlateSheet: View {
             // Insert Sets CTA Button
             Button(action: {
                 let generatedSets = ramp.steps.enumerated().map { idx, step in
-                    let formattedWeight = WarmupPlateEngine.formatPlateWeight(step.weightKg)
+                    let displayStepWeight = unit == .lbs ? unit.toDisplay(step.weightKg) : step.weightKg
+                    let formattedWeight = WarmupPlateEngine.formatPlateWeight(displayStepWeight)
                     return ExerciseSetLog(
                         id: UUID().uuidString,
                         setNumber: idx + 1,
@@ -343,15 +349,15 @@ public struct WarmupPlateSheet: View {
 
     // MARK: - Plate Loader Content
     private var plateLoaderContent: some View {
-        VStack(spacing: 14) {
-            // Target Barbell Weight Stepper
+        VStack(spacing: 16) {
+            // Target Weight Controller
             HStack {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(LanguageManager.t("warmup.target_barbell_weight"))
-                        .font(.system(size: 11))
-                        .foregroundColor(AppColors.muted)
-                    Text("\(WarmupPlateEngine.formatPlateWeight(plateTargetInput)) \(unit.label)")
-                        .font(.system(size: 22, weight: .bold))
+                    Text(LanguageManager.t("warmup.target_weight"))
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundColor(AppColors.secondaryText)
+                    Text("\(WarmupPlateEngine.formatPlateWeight(plateTargetInput))\u{00A0}\(unit.label)")
+                        .font(.system(size: 18, weight: .bold))
                         .foregroundColor(AppColors.text)
                 }
 
@@ -359,6 +365,7 @@ public struct WarmupPlateSheet: View {
 
                 HStack(spacing: 6) {
                     let step = unit == .lbs ? 5.0 : 2.5
+                    let maxWeight = unit == .lbs ? 1000.0 : 500.0
                     quickStepButton("-\(WarmupPlateEngine.formatPlateWeight(step * 2))") {
                         plateTargetInput = max(plateResult.barWeight, plateTargetInput - step * 2)
                     }
@@ -366,10 +373,10 @@ public struct WarmupPlateSheet: View {
                         plateTargetInput = max(plateResult.barWeight, plateTargetInput - step)
                     }
                     quickStepButton("+\(WarmupPlateEngine.formatPlateWeight(step))") {
-                        plateTargetInput = min(500.0, plateTargetInput + step)
+                        plateTargetInput = min(maxWeight, plateTargetInput + step)
                     }
                     quickStepButton("+\(WarmupPlateEngine.formatPlateWeight(step * 2))") {
-                        plateTargetInput = min(500.0, plateTargetInput + step * 2)
+                        plateTargetInput = min(maxWeight, plateTargetInput + step * 2)
                     }
                 }
             }

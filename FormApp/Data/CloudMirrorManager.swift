@@ -39,14 +39,86 @@ public class CloudMirrorManager {
         autoSync(backupJson: payload)
     }
 
-    private init() {}
+#if canImport(UIKit)
+private final class BackgroundTaskTracker: @unchecked Sendable {
+    private var taskId: UIBackgroundTaskIdentifier = .invalid
+    private var isEnded = false
+    private let lock = NSLock()
+
+    func start(name: String) {
+        lock.lock()
+        defer { lock.unlock() }
+        guard !isEnded else { return }
+        taskId = UIApplication.shared.beginBackgroundTask(withName: name) { [weak self] in
+            self?.end()
+        }
+    }
+
+    func end() {
+        lock.lock()
+        isEnded = true
+        let id = taskId
+        taskId = .invalid
+        lock.unlock()
+        if id != .invalid {
+            UIApplication.shared.endBackgroundTask(id)
+        }
+    }
+}
+#endif
+
+    private var _cachedUbiquityURL: URL? = nil
+    private let ubiquityLock = NSLock()
+    private let ubiquityQueue = DispatchQueue(label: "com.form.CloudMirror.ubiquity", qos: .utility)
+
+    private var cachedUbiquityURL: URL? {
+        get {
+            ubiquityLock.lock()
+            defer { ubiquityLock.unlock() }
+            return _cachedUbiquityURL
+        }
+        set {
+            ubiquityLock.lock()
+            _cachedUbiquityURL = newValue
+            ubiquityLock.unlock()
+        }
+    }
+
+    private init() {
+        refreshUbiquityURL()
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name.NSUbiquityIdentityDidChange,
+            object: nil,
+            queue: nil
+        ) { [weak self] _ in
+            self?.refreshUbiquityURL()
+        }
+    }
+
+    public func refreshUbiquityURL() {
+        ubiquityQueue.async { [weak self] in
+            let url = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.com.perseverancesoftware.forcedrep")
+            self?.cachedUbiquityURL = url
+        }
+    }
+
+    private func resolveUbiquityURL() -> URL? {
+        if let cached = cachedUbiquityURL { return cached }
+        if !Thread.isMainThread {
+            let url = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.com.perseverancesoftware.forcedrep")
+            cachedUbiquityURL = url
+            return url
+        }
+        refreshUbiquityURL()
+        return nil
+    }
 
     public var isICloudAvailable: Bool {
-        return FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.com.perseverancesoftware.forcedrep") != nil
+        return resolveUbiquityURL() != nil
     }
 
     public var mirrorDirectory: URL {
-        if let ubiquityURL = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.com.perseverancesoftware.forcedrep") {
+        if let ubiquityURL = resolveUbiquityURL() {
             let docs = ubiquityURL.appendingPathComponent("Documents").appendingPathComponent(mirrorDirName)
             if !FileManager.default.fileExists(atPath: docs.path) {
                 try? FileManager.default.createDirectory(at: docs, withIntermediateDirectories: true)
@@ -96,11 +168,12 @@ public class CloudMirrorManager {
 
         // 2. Request background execution time from iOS to prevent immediate suspension
         #if canImport(UIKit)
-        var bgTaskId: UIBackgroundTaskIdentifier = .invalid
+        let bgTracker = BackgroundTaskTracker()
         if Thread.isMainThread {
-            bgTaskId = UIApplication.shared.beginBackgroundTask(withName: "CloudMirrorAutoSync") {
-                UIApplication.shared.endBackgroundTask(bgTaskId)
-                bgTaskId = .invalid
+            bgTracker.start(name: "CloudMirrorAutoSync")
+        } else {
+            DispatchQueue.main.async {
+                bgTracker.start(name: "CloudMirrorAutoSync")
             }
         }
         #endif
@@ -108,11 +181,7 @@ public class CloudMirrorManager {
         Task.detached(priority: .background) { [weak self] in
             #if canImport(UIKit)
             defer {
-                if bgTaskId != .invalid {
-                    DispatchQueue.main.async {
-                        UIApplication.shared.endBackgroundTask(bgTaskId)
-                    }
-                }
+                bgTracker.end()
             }
             #endif
             do {

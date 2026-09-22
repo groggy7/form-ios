@@ -917,7 +917,7 @@ public final class AppStore: ObservableObject {
         let backupFileName = "safety_backup_before_import_\(Int(Date().timeIntervalSince1970 * 1000)).json"
         if let docsDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
             let fileURL = docsDir.appendingPathComponent(backupFileName)
-            try? backupJson.data(using: .utf8)?.write(to: fileURL)
+            try? backupJson.data(using: .utf8)?.write(to: fileURL, options: .atomic)
         }
 
         // 2. Add imported workouts to history
@@ -979,22 +979,47 @@ public final class AppStore: ObservableObject {
 
     private static func loadStoredState() -> StoredAppState {
         let bundled = loadBundledStarterPrograms()
-        if let data = UserDefaults.standard.data(forKey: "stored_app_state"),
-           var stored = try? JSONDecoder().decode(StoredAppState.self, from: data) {
-            let defaults = UserDefaults.standard
-            if !defaults.bool(forKey: "seeded_starters_v9"), bundled.count == 8 {
-                if defaults.data(forKey: "starter_programs_before_v9") == nil {
-                    defaults.set(data, forKey: "starter_programs_before_v9")
+        if let data = UserDefaults.standard.data(forKey: "stored_app_state") {
+            do {
+                var stored = try JSONDecoder().decode(StoredAppState.self, from: data)
+                let defaults = UserDefaults.standard
+                if !defaults.bool(forKey: "seeded_starters_v9"), bundled.count == 8 {
+                    if defaults.data(forKey: "starter_programs_before_v9") == nil {
+                        defaults.set(data, forKey: "starter_programs_before_v9")
+                    }
+                    stored.programs = refreshedStarterPrograms(existing: stored.programs, bundled: bundled)
+                    // Persist the replacement before its marker. History and the separate draft stay intact.
+                    if let refreshed = try? JSONEncoder().encode(stored) {
+                        defaults.set(refreshed, forKey: "stored_app_state")
+                        defaults.set(true, forKey: "seeded_starters_v9")
+                    }
                 }
-                stored.programs = refreshedStarterPrograms(existing: stored.programs, bundled: bundled)
-                // Persist the replacement before its marker. History and the separate draft stay intact.
-                if let refreshed = try? JSONEncoder().encode(stored) {
-                    defaults.set(refreshed, forKey: "stored_app_state")
-                    defaults.set(true, forKey: "seeded_starters_v9")
+                stored.programs = enrichStandardizedTechniqueCues(stored.programs, bundled: bundled)
+                return stored
+            } catch {
+                let quarantineKey = "quarantine_corrupt_state_\(Int(Date().timeIntervalSince1970 * 1000))"
+                UserDefaults.standard.set(data, forKey: quarantineKey)
+                print("[AppStore] CRITICAL: Failed to decode stored_app_state: \(error). Quarantined in \(quarantineKey)")
+
+                // Attempt emergency rescue of history from raw JSON dictionary
+                if let rawDict = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                   let rawHistory = rawDict["history"],
+                   let rawHistoryData = try? JSONSerialization.data(withJSONObject: rawHistory),
+                   let rescuedHistory = try? JSONDecoder().decode([WorkoutSessionRecord].self, from: rawHistoryData) {
+                    print("[AppStore] Rescued \(rescuedHistory.count) historical sessions from corrupt state.")
+                    let activeId = bundled.first?.id ?? UUID().uuidString
+                    return StoredAppState(
+                        schemaVersion: 4,
+                        programs: bundled,
+                        activeProgramId: activeId,
+                        completed: [],
+                        currentWeekKey: currentWeekIsoKeyStatic(),
+                        weeklyArchives: [],
+                        history: rescuedHistory,
+                        calendarHistory: nil
+                    )
                 }
             }
-            stored.programs = enrichStandardizedTechniqueCues(stored.programs, bundled: bundled)
-            return stored
         }
         let activeId = bundled.first?.id ?? UUID().uuidString
         let initial = StoredAppState(

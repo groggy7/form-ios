@@ -25,7 +25,7 @@ public enum ProgressionEngine {
         if let reps = exercise.reps {
             let minR = reps.min ?? 8
             let maxR = reps.max ?? minR
-            return (minR, maxR)
+            return (min(minR, maxR), max(minR, maxR))
         }
         let presc = exercise.prescription
         let nsPresc = presc as NSString
@@ -37,7 +37,7 @@ public enum ProgressionEngine {
             let maxStr = nsPresc.substring(with: rangeMatch.range(at: 2))
             let minVal = Int(minStr) ?? 8
             let maxVal = Int(maxStr) ?? minVal
-            return (minVal, maxVal)
+            return (min(minVal, maxVal), max(minVal, maxVal))
         }
 
         if let fixedMatch = prescriptionFixedRegex?.firstMatch(in: presc, range: fullRange),
@@ -55,7 +55,7 @@ public enum ProgressionEngine {
         let sets: [SessionSetLog]
 
         var workingSets: [SessionSetLog] {
-            sets.filter { ($0.reps ?? 0) > 0 && ($0.weightKg ?? 0.0) > 0.0 }
+            sets.filter { ($0.reps ?? 0) > 0 && !$0.isWarmup }
         }
 
         var topWeightKg: Double {
@@ -64,8 +64,12 @@ public enum ProgressionEngine {
 
         var totalRepsAtTopWeight: Int {
             let top = topWeightKg
-            return workingSets.filter { ($0.weightKg ?? 0.0) >= (top * 0.95) }
-                .reduce(0) { $0 + ($1.reps ?? 0) }
+            if top > 0.0 {
+                return workingSets.filter { ($0.weightKg ?? 0.0) >= (top * 0.95) }
+                    .reduce(0) { $0 + ($1.reps ?? 0) }
+            } else {
+                return workingSets.reduce(0) { $0 + ($1.reps ?? 0) }
+            }
         }
     }
 
@@ -96,7 +100,7 @@ public enum ProgressionEngine {
 
                 if !matches { continue }
 
-                let validSets = log.sets.filter { ($0.reps ?? 0) > 0 && ($0.weightKg ?? 0.0) > 0.0 }
+                let validSets = log.sets.filter { ($0.reps ?? 0) > 0 && !$0.isWarmup }
                 if !validSets.isEmpty {
                     results.append(
                         HistoricalSessionSets(
@@ -266,20 +270,21 @@ public enum ProgressionEngine {
         if !anyMissedFloor {
             let highestRepsAchieved = thresholdSets.map { $0.reps ?? 0 }.max() ?? repMin
             let nextRepTarget = min(highestRepsAchieved + 1, repMax)
+            let weightDisplay = lastTopWeightKg <= 0.0 ? "BW" : formatWeight(lastTopWeightKg, unit: weightUnit)
 
             return ExerciseProgressionRecommendation(
                 exerciseId: exerciseId,
                 exerciseName: exercise.name,
                 action: .addReps,
                 suggestedWeightKg: lastTopWeightKg,
-                suggestedWeightDisplay: formatWeight(lastTopWeightKg, unit: weightUnit),
+                suggestedWeightDisplay: weightDisplay,
                 suggestedRepsMin: nextRepTarget,
                 suggestedRepsMax: repMax,
                 weightDeltaDisplay: nil,
                 rationaleKey: "progression.rationale.add_reps",
                 rationaleArgs: [
-                    "weight": formatWeight(lastTopWeightKg, unit: weightUnit),
-                    "unit": weightUnit.label,
+                    "weight": weightDisplay,
+                    "unit": lastTopWeightKg <= 0.0 ? "" : weightUnit.label,
                     "ceiling": "\(repMax)"
                 ],
                 isPlateau: false,
@@ -289,19 +294,20 @@ public enum ProgressionEngine {
         }
 
         // 4. Failed to hit floor -> HOLD_LOAD
+        let holdWeightDisplay = lastTopWeightKg <= 0.0 ? "BW" : formatWeight(lastTopWeightKg, unit: weightUnit)
         return ExerciseProgressionRecommendation(
             exerciseId: exerciseId,
             exerciseName: exercise.name,
             action: .holdLoad,
             suggestedWeightKg: lastTopWeightKg,
-            suggestedWeightDisplay: formatWeight(lastTopWeightKg, unit: weightUnit),
+            suggestedWeightDisplay: holdWeightDisplay,
             suggestedRepsMin: repMin,
             suggestedRepsMax: repMax,
             weightDeltaDisplay: nil,
             rationaleKey: "progression.rationale.hold_load",
             rationaleArgs: [
-                "weight": formatWeight(lastTopWeightKg, unit: weightUnit),
-                "unit": weightUnit.label,
+                "weight": holdWeightDisplay,
+                "unit": lastTopWeightKg <= 0.0 ? "" : weightUnit.label,
                 "floor": "\(repMin)"
             ],
             isPlateau: false,
@@ -324,12 +330,22 @@ public enum ProgressionEngine {
             )
         }
 
+        let calendar = Calendar(identifier: .iso8601)
         let weekKeys = Set(history.compactMap { record -> String? in
             let dateStr = record.completedAt.isEmpty ? record.startedAt : record.completedAt
-            return dateStr.count >= 10 ? String(dateStr.prefix(10)) : nil
+            guard dateStr.count >= 10 else { return nil }
+            let dayStr = String(dateStr.prefix(10))
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-dd"
+            formatter.locale = Locale(identifier: "en_US_POSIX")
+            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+            guard let date = formatter.date(from: dayStr) else { return nil }
+            let year = calendar.component(.yearForWeekOfYear, from: date)
+            let week = calendar.component(.weekOfYear, from: date)
+            return "\(year)-W\(String(format: "%02d", week))"
         })
 
-        let consecutiveWeeks = min(max(weekKeys.count / 3, 0), 12)
+        let consecutiveWeeks = min(max(weekKeys.count, 0), 12)
 
         let exercises = activeProgram?.workouts.flatMap { $0.exercises } ?? []
         let stagnantCount = exercises.filter { ex in
@@ -360,12 +376,12 @@ public enum ProgressionEngine {
     }
 
     private static func formatWeight(_ kg: Double, unit: WeightUnit) -> String {
-        unit.formatWeight(kg)
+        kg <= 0.0 ? "BW" : unit.formatWeight(kg)
     }
 
     private static func formatSessionSummary(_ sets: [SessionSetLog], unit: WeightUnit) -> String {
         sets.map { set in
-            let w = set.weightKg != nil ? formatWeight(set.weightKg!, unit: unit) : "?"
+            let w = (set.weightKg != nil && set.weightKg! > 0.0) ? formatWeight(set.weightKg!, unit: unit) : "BW"
             let r = set.reps ?? 0
             return "\(w)×\(r)"
         }.joined(separator: ", ")

@@ -67,9 +67,13 @@ public final class ExerciseReportStore {
         return queue.sync(flags: .barrier) {
             var existing = [ExerciseIssueReport]()
             if FileManager.default.fileExists(atPath: fileURL.path) {
-                if let data = try? Data(contentsOf: fileURL),
-                   let decoded = try? JSONDecoder().decode([ExerciseIssueReport].self, from: data) {
-                    existing = decoded
+                if let data = try? Data(contentsOf: fileURL) {
+                    if let decoded = try? JSONDecoder().decode([ExerciseIssueReport].self, from: data) {
+                        existing = decoded
+                    } else {
+                        let corruptURL = fileURL.appendingPathExtension("corrupt.\(Int(Date().timeIntervalSince1970))")
+                        try? data.write(to: corruptURL, options: .atomic)
+                    }
                 }
             }
             existing.append(report)

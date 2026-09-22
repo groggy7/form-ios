@@ -70,8 +70,22 @@ public enum OnboardingRecommender {
         preferences: OnboardingPreferences,
         availablePrograms: [Program]
     ) -> ProgramRecommendation {
-        guard !availablePrograms.isEmpty else {
-            fatalError("Available programs cannot be empty")
+        let programs = availablePrograms.isEmpty ? AppStore.loadBundledStarterPrograms() : availablePrograms
+        guard let firstProgram = programs.first else {
+            let fallback = Program(
+                id: "full-body-classic",
+                name: "Full Body Classic",
+                description: "Full body workout routine",
+                guidelines: [],
+                workouts: []
+            )
+            let scheduledWeekdays = preferences.selectedDays.isEmpty ? preferences.frequency.defaultWeekdays : preferences.selectedDays.sorted()
+            return ProgramRecommendation(
+                targetProgramId: fallback.id,
+                program: fallback,
+                explanationKey: "onboarding.reason.default",
+                scheduledWeekdays: scheduledWeekdays
+            )
         }
 
         let targetProgramId: String
@@ -106,7 +120,7 @@ public enum OnboardingRecommender {
         default: explanationKey = "onboarding.reason.default"
         }
 
-        let matched = availablePrograms.first(where: { $0.id == targetProgramId }) ?? availablePrograms[0]
+        let matched = programs.first(where: { $0.id == targetProgramId }) ?? firstProgram
 
         let scheduledWeekdays = preferences.selectedDays.isEmpty ? preferences.frequency.defaultWeekdays : preferences.selectedDays.sorted()
 

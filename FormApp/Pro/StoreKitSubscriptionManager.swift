@@ -14,6 +14,8 @@ public class StoreKitSubscriptionManager: ObservableObject {
     ]
 
     private static let keyCachedEntitlement = "form_cached_pro_entitlement"
+    private static let keyCachedEntitlementLastVerified = "form_cached_pro_entitlement_last_verified"
+    private static let offlineGracePeriodSeconds: TimeInterval = 7 * 24 * 60 * 60 // 7 days
 
     @Published public var products: [Product] = []
     @Published public var purchasedProductIds: Set<String> = []
@@ -31,10 +33,16 @@ public class StoreKitSubscriptionManager: ObservableObject {
     private var transactionListener: Task<Void, Never>? = nil
 
     public init() {
-        // Fast path: restore from local cache first for instant offline readiness
+        // Fast path: restore from local cache first for instant offline readiness if within grace period
         let cachedActive = UserDefaults.standard.bool(forKey: Self.keyCachedEntitlement)
-        if cachedActive {
+        let lastVerified = UserDefaults.standard.double(forKey: Self.keyCachedEntitlementLastVerified)
+        let now = Date().timeIntervalSince1970
+        let isWithinGrace = cachedActive && lastVerified > 0 && (now - lastVerified) <= Self.offlineGracePeriodSeconds && (lastVerified - now) <= 300
+        if isWithinGrace {
             ProAccessManager.shared.updateSubscriptionStatus(active: true)
+        } else if cachedActive && (now - lastVerified) > Self.offlineGracePeriodSeconds {
+            UserDefaults.standard.set(false, forKey: Self.keyCachedEntitlement)
+            ProAccessManager.shared.updateSubscriptionStatus(active: false)
         }
 
         transactionListener = listenForTransactions()
@@ -108,21 +116,40 @@ public class StoreKitSubscriptionManager: ObservableObject {
 
     public func updatePurchasedProducts() async {
         var purchasedIds: Set<String> = []
+        let now = Date()
         for await result in Transaction.currentEntitlements {
             guard case .verified(let transaction) = result else { continue }
-            if transaction.revocationDate == nil {
-                purchasedIds.insert(transaction.productID)
+            guard transaction.revocationDate == nil else { continue }
+            if let expirationDate = transaction.expirationDate, expirationDate <= now {
+                continue
             }
+            purchasedIds.insert(transaction.productID)
         }
         self.purchasedProductIds = purchasedIds
         let isPro = !purchasedIds.isEmpty
-        UserDefaults.standard.set(isPro, forKey: Self.keyCachedEntitlement)
-        ProAccessManager.shared.updateSubscriptionStatus(active: isPro)
+        if isPro {
+            UserDefaults.standard.set(true, forKey: Self.keyCachedEntitlement)
+            UserDefaults.standard.set(now.timeIntervalSince1970, forKey: Self.keyCachedEntitlementLastVerified)
+            ProAccessManager.shared.updateSubscriptionStatus(active: true)
+        } else {
+            // Check offline grace period before revoking
+            let cachedActive = UserDefaults.standard.bool(forKey: Self.keyCachedEntitlement)
+            let lastVerified = UserDefaults.standard.double(forKey: Self.keyCachedEntitlementLastVerified)
+            let nowTime = now.timeIntervalSince1970
+            let isWithinGrace = cachedActive && lastVerified > 0 && (nowTime - lastVerified) <= Self.offlineGracePeriodSeconds && (lastVerified - nowTime) <= 300
+            if isWithinGrace {
+                ProAccessManager.shared.updateSubscriptionStatus(active: true)
+            } else {
+                UserDefaults.standard.set(false, forKey: Self.keyCachedEntitlement)
+                ProAccessManager.shared.updateSubscriptionStatus(active: false)
+            }
+        }
     }
 
     private func listenForTransactions() -> Task<Void, Never> {
-        return Task.detached {
+        return Task.detached { [weak self] in
             for await result in Transaction.updates {
+                guard let self = self else { return }
                 do {
                     let transaction = try self.checkVerified(result)
                     await self.updatePurchasedProducts()

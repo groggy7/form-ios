@@ -760,9 +760,14 @@ public struct CloudBackupSheet: View {
     private func restoreFromMirror() {
         do {
             let json = try CloudMirrorManager.shared.readLatestSnapshot()
-            store.restoreBackupJson(json)
-            syncIsError = false
-            syncStatusMessage = LanguageManager.t("notice.backupRestored")
+            let success = store.restoreBackupJson(json)
+            if success {
+                syncIsError = false
+                syncStatusMessage = LanguageManager.t("notice.backupRestored")
+            } else {
+                syncIsError = true
+                syncStatusMessage = LanguageManager.t("notice.restoreFailed")
+            }
         } catch {
             syncIsError = true
             syncStatusMessage = "Restore failed: \(error.localizedDescription)"
