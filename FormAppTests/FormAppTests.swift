@@ -5745,9 +5745,22 @@ final class FormAppTests: XCTestCase {
     func testFormLabCloudMirrorSyncAndReadRoundtrip() throws {
         let payload = "{\"schemaVersion\":4,\"programs\":[],\"activeProgramId\":\"\",\"history\":[]}"
         CloudMirrorManager.shared.isEnabled = true
+
+        // 1. When not Pro, syncNow must throw
+        ProAccessManager.shared.updateSubscriptionStatus(active: false)
+        XCTAssertThrowsError(try CloudMirrorManager.shared.syncNow(backupJson: payload)) { error in
+            let nsError = error as NSError
+            XCTAssertEqual(nsError.domain, "CloudMirror")
+            XCTAssertEqual(nsError.code, 403)
+        }
+
+        // 2. When Pro is active, syncNow succeeds
+        ProAccessManager.shared.updateSubscriptionStatus(active: true)
         let size = try CloudMirrorManager.shared.syncNow(backupJson: payload)
         XCTAssertGreaterThan(size, 0)
 
+        // 3. Even after Pro expires or for free users, reading existing snapshot remains free
+        ProAccessManager.shared.updateSubscriptionStatus(active: false)
         let readJson = try CloudMirrorManager.shared.readLatestSnapshot()
         XCTAssertEqual(readJson, payload)
 

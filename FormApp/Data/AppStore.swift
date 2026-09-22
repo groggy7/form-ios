@@ -562,7 +562,9 @@ public final class AppStore: ObservableObject {
         newState.calendarHistory = cal
         saveState(newState)
 
-        CloudMirrorManager.shared.autoSync(backupJson: exportBackupJson())
+        if ProAccessManager.shared.isFeatureUnlocked(.formLab) {
+            CloudMirrorManager.shared.autoSync(backupJson: exportBackupJson())
+        }
         
         saveActiveSession(nil)
         self.activeSession = nil

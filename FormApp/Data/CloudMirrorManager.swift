@@ -58,6 +58,7 @@ public class CloudMirrorManager {
     }
 
     public func autoSync(backupJson: String) {
+        guard ProAccessManager.shared.isFeatureUnlocked(.formLab) else { return }
         guard isEnabled else { return }
         Task.detached(priority: .background) { [weak self] in
             _ = try? self?.syncNow(backupJson: backupJson)
@@ -66,6 +67,9 @@ public class CloudMirrorManager {
 
     @discardableResult
     public func syncNow(backupJson: String) throws -> Int64 {
+        guard ProAccessManager.shared.isFeatureUnlocked(.formLab) else {
+            throw NSError(domain: "CloudMirror", code: 403, userInfo: [NSLocalizedDescriptionKey: "Cloud Mirror sync requires Forced Rep Pro"])
+        }
         guard isEnabled else {
             throw NSError(domain: "CloudMirror", code: 1, userInfo: [NSLocalizedDescriptionKey: "Cloud Mirror is disabled"])
         }
