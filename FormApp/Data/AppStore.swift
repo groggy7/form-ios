@@ -1,5 +1,8 @@
 import Foundation
 import Combine
+#if canImport(UIKit)
+import UIKit
+#endif
 
 public final class AppStore: ObservableObject {
     public static let shared = AppStore()
@@ -189,6 +192,15 @@ public final class AppStore: ObservableObject {
             .dropFirst()
             .sink { UserDefaults.standard.set($0, forKey: self.warmupCardDismissedKey) }
             .store(in: &cancellables)
+
+        #if canImport(UIKit)
+        CloudMirrorManager.shared.retryPendingSyncIfAny()
+        NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
+            .sink { _ in
+                CloudMirrorManager.shared.retryPendingSyncIfAny()
+            }
+            .store(in: &cancellables)
+        #endif
     }
 
     public func resetDismissedProCards() {

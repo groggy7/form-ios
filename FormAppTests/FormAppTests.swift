@@ -5771,6 +5771,36 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(status.snapshotSizeBytes, size)
     }
 
+    func testCloudMirrorPendingSyncStagingAndRetry() throws {
+        let payload = "{\"schemaVersion\":4,\"pendingTest\":true}"
+        CloudMirrorManager.shared.isEnabled = true
+        ProAccessManager.shared.updateSubscriptionStatus(active: true)
+
+        CloudMirrorManager.shared.clearPendingSync()
+        XCTAssertFalse(CloudMirrorManager.shared.hasPendingSync)
+
+        CloudMirrorManager.shared.savePendingSync(backupJson: payload)
+        XCTAssertTrue(CloudMirrorManager.shared.hasPendingSync)
+
+        // Retry pending sync
+        CloudMirrorManager.shared.retryPendingSyncIfAny()
+
+        let exp = expectation(description: "Wait for autoSync")
+        let start = Date()
+        let timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { t in
+            if !CloudMirrorManager.shared.hasPendingSync || Date().timeIntervalSince(start) > 4.0 {
+                t.invalidate()
+                exp.fulfill()
+            }
+        }
+        RunLoop.current.add(timer, forMode: .common)
+        wait(for: [exp], timeout: 5.0)
+
+        let readJson = try CloudMirrorManager.shared.readLatestSnapshot()
+        XCTAssertEqual(readJson, payload)
+        XCTAssertFalse(CloudMirrorManager.shared.hasPendingSync)
+    }
+
     @MainActor
     func testFormLabViewSnapshot() {
         let store = AppStore()

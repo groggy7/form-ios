@@ -1,4 +1,7 @@
 import Foundation
+#if canImport(UIKit)
+import UIKit
+#endif
 
 public class CloudMirrorManager {
     public static let shared = CloudMirrorManager()
@@ -8,6 +11,33 @@ public class CloudMirrorManager {
 
     private let mirrorDirName = "CloudMirror"
     private let backupFileName = "form_safety_mirror.json"
+    private let pendingBackupFileName = "pending_form_safety_mirror.json"
+
+    private var pendingBackupFile: URL {
+        let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        return docs.appendingPathComponent(pendingBackupFileName)
+    }
+
+    public func savePendingSync(backupJson: String) {
+        try? backupJson.write(to: pendingBackupFile, atomically: true, encoding: .utf8)
+    }
+
+    public func clearPendingSync() {
+        try? FileManager.default.removeItem(at: pendingBackupFile)
+    }
+
+    public var hasPendingSync: Bool {
+        FileManager.default.fileExists(atPath: pendingBackupFile.path)
+    }
+
+    public func retryPendingSyncIfAny() {
+        guard ProAccessManager.shared.isFeatureUnlocked(.formLab), isEnabled, hasPendingSync else { return }
+        guard let payload = try? String(contentsOf: pendingBackupFile, encoding: .utf8), !payload.isEmpty else {
+            clearPendingSync()
+            return
+        }
+        autoSync(backupJson: payload)
+    }
 
     private init() {}
 
@@ -60,8 +90,38 @@ public class CloudMirrorManager {
     public func autoSync(backupJson: String) {
         guard ProAccessManager.shared.isFeatureUnlocked(.formLab) else { return }
         guard isEnabled else { return }
+
+        // 1. Stage pending backup to disk so it survives process suspension/termination
+        savePendingSync(backupJson: backupJson)
+
+        // 2. Request background execution time from iOS to prevent immediate suspension
+        #if canImport(UIKit)
+        var bgTaskId: UIBackgroundTaskIdentifier = .invalid
+        if Thread.isMainThread {
+            bgTaskId = UIApplication.shared.beginBackgroundTask(withName: "CloudMirrorAutoSync") {
+                UIApplication.shared.endBackgroundTask(bgTaskId)
+                bgTaskId = .invalid
+            }
+        }
+        #endif
+
         Task.detached(priority: .background) { [weak self] in
-            _ = try? self?.syncNow(backupJson: backupJson)
+            #if canImport(UIKit)
+            defer {
+                if bgTaskId != .invalid {
+                    DispatchQueue.main.async {
+                        UIApplication.shared.endBackgroundTask(bgTaskId)
+                    }
+                }
+            }
+            #endif
+            do {
+                _ = try self?.syncNow(backupJson: backupJson)
+                self?.clearPendingSync()
+                print("[CloudMirror] Durable autoSync succeeded.")
+            } catch {
+                print("[CloudMirror] AutoSync failed (retained on disk to retry on next app launch/foreground): \(error.localizedDescription)")
+            }
         }
     }
 
