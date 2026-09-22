@@ -124,7 +124,7 @@ public struct ProgramBuilderView: View {
                                 // Exercise List for Day
                                 VStack(alignment: .leading, spacing: 10) {
                                     HStack {
-                                        Text(LanguageManager.t("today.exercises"))
+                                        Text(LanguageManager.t("history.exercises"))
                                             .font(.system(size: 14, weight: .bold))
                                             .foregroundColor(AppColors.text)
                                         Spacer()
