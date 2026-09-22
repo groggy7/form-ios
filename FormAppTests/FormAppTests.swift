@@ -632,6 +632,11 @@ final class FormAppTests: XCTestCase {
         }
     }
 
+    func testTodayChestHalvesMirrorAcrossAthleteCenterline() throws {
+        let path = try XCTUnwrap(MuscleMasks.rawPathStrings[.front]?[.chest])
+        assertMirroredChestPath(path, centerX: 866)
+    }
+
     func testWorkoutBodyViewsResolution() {
         // Quads and Calves -> legs-front and legs-back
         let legWorkout = Workout(
@@ -2050,6 +2055,30 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(ExerciseMuscleCatalog.images.count, 2)
         for image in ExerciseMuscleCatalog.images.values {
             XCTAssertEqual(image.size, CGSize(width: 480, height: 1024))
+        }
+        let chestPath = try XCTUnwrap(catalog.views["front"]?.regions["chest"])
+        assertMirroredChestPath(chestPath, centerX: 520)
+    }
+
+    private func assertMirroredChestPath(_ path: String, centerX: Double) {
+        let halves = path.components(separatedBy: " Z M ")
+        XCTAssertEqual(halves.count, 2)
+        guard halves.count == 2 else { return }
+        let expression = try! NSRegularExpression(pattern: #"-?\d+(?:\.\d+)?"#)
+        func coordinates(_ value: String) -> [(Double, Double)] {
+            let range = NSRange(value.startIndex..<value.endIndex, in: value)
+            let values = expression.matches(in: value, range: range).compactMap { match -> Double? in
+                guard let range = Range(match.range, in: value) else { return nil }
+                return Double(value[range])
+            }
+            return stride(from: 0, to: values.count, by: 2).map { (values[$0], values[$0 + 1]) }
+        }
+        let left = coordinates(halves[0])
+        let right = coordinates(halves[1])
+        XCTAssertEqual(left.count, right.count)
+        for (index, pair) in zip(left, right).enumerated() {
+            XCTAssertEqual(pair.0.0, centerX * 2 - pair.1.0, accuracy: 0.01, "x at point \(index)")
+            XCTAssertEqual(pair.0.1, pair.1.1, accuracy: 0.01, "y at point \(index)")
         }
     }
 
