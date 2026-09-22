@@ -46,12 +46,14 @@ public struct MovementIcon: View {
     public var body: some View {
         let finalSize: CGFloat = large ? 108 : size
         let cornerRadius: CGFloat = finalSize >= 96 ? 12 : (finalSize >= 68 ? 11 : 10)
+        let hasVideo = ExerciseVideoCatalog.url(for: exerciseId) != nil
         ZStack {
-            MovementIllustration(exerciseId: exerciseId)
-                .padding(4)
-            if animated {
+            if animated && hasVideo {
                 ExerciseDetailVideo(exerciseId: exerciseId)
                     .accessibilityIdentifier("movement-icon-video")
+            } else {
+                MovementIllustration(exerciseId: exerciseId)
+                    .padding(4)
             }
         }
         .frame(width: finalSize, height: finalSize)
