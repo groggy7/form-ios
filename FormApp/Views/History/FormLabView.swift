@@ -548,20 +548,29 @@ public struct FormLabView: View {
 
     private func antagonistRatioCard(ratio: AntagonistRatio) -> some View {
         VStack(alignment: .leading, spacing: 12) {
-            // Title & Status Badge
-            VStack(alignment: .leading, spacing: 6) {
-                Text(LanguageManager.t(ratio.titleKey))
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(AppColors.text)
+            // Title & Status Badge with Ratio on trailing edge
+            HStack(alignment: .top) {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(LanguageManager.t(ratio.titleKey))
+                        .font(.system(size: 14, weight: .bold))
+                        .foregroundColor(AppColors.text)
 
-                Text(LanguageManager.t(ratio.status.labelKey))
-                    .font(.system(size: 10, weight: .bold))
+                    Text(LanguageManager.t(ratio.status.labelKey))
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundColor(statusColor(ratio.status))
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(statusColor(ratio.status).opacity(0.12))
+                        .overlay(RoundedRectangle(cornerRadius: 6).stroke(statusColor(ratio.status).opacity(0.5), lineWidth: 1))
+                        .cornerRadius(6)
+                }
+
+                Spacer()
+
+                Text(ratio.ratio.map { String(format: "%.2f : 1.0", $0) } ?? "—")
+                    .font(.system(size: 15, weight: .bold, design: .monospaced))
                     .foregroundColor(statusColor(ratio.status))
-                    .padding(.horizontal, 8)
-                    .padding(.vertical, 4)
-                    .background(statusColor(ratio.status).opacity(0.12))
-                    .overlay(RoundedRectangle(cornerRadius: 6).stroke(statusColor(ratio.status).opacity(0.5), lineWidth: 1))
-                    .cornerRadius(6)
+                    .lineLimit(1)
             }
 
             // Sets breakdown
@@ -569,10 +578,6 @@ public struct FormLabView: View {
                 Text("\(LanguageManager.t(ratio.primaryLabelKey)): \(ratio.primarySets) \(LanguageManager.t("matrix.setsUnit"))")
                     .font(.system(size: 12, weight: .medium))
                     .foregroundColor(AppColors.secondaryText)
-                Spacer()
-                Text(ratio.ratio.map { String(format: "Ratio: %.2f", $0) } ?? "Ratio: —")
-                    .font(.system(size: 13, weight: .bold, design: .monospaced))
-                    .foregroundColor(statusColor(ratio.status))
                 Spacer()
                 Text("\(LanguageManager.t(ratio.antagonistLabelKey)): \(ratio.antagonistSets) \(LanguageManager.t("matrix.setsUnit"))")
                     .font(.system(size: 12, weight: .medium))
