@@ -5,6 +5,7 @@ public enum ProFeature: String, CaseIterable, Identifiable {
     case autoProgression = "auto_progression"
     case warmupCalculator = "warmup_calculator"
     case formLab = "form_lab"
+    case cloudBackup = "cloud_backup"
 
     public var id: String { rawValue }
 
@@ -14,6 +15,7 @@ public enum ProFeature: String, CaseIterable, Identifiable {
         case .autoProgression: return "pro.auto_progression.title"
         case .warmupCalculator: return "pro.warmup_calculator.title"
         case .formLab: return "pro.form_lab.title"
+        case .cloudBackup: return "pro.cloud_backup.title"
         }
     }
 
@@ -23,6 +25,7 @@ public enum ProFeature: String, CaseIterable, Identifiable {
         case .autoProgression: return "pro.auto_progression.description"
         case .warmupCalculator: return "pro.warmup_calculator.description"
         case .formLab: return "pro.form_lab.description"
+        case .cloudBackup: return "pro.cloud_backup.description"
         }
     }
 
@@ -32,6 +35,7 @@ public enum ProFeature: String, CaseIterable, Identifiable {
         case .autoProgression: return "pro.auto_progression.teaser"
         case .warmupCalculator: return "pro.warmup_calculator.teaser"
         case .formLab: return "pro.form_lab.teaser"
+        case .cloudBackup: return "pro.cloud_backup.teaser"
         }
     }
 }

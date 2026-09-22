@@ -4,7 +4,6 @@ public enum FormLabTab: String, CaseIterable, Identifiable {
     case repMax = "rep_max"
     case curves = "curves"
     case balance = "balance"
-    case mirror = "mirror"
 
     public var id: String { rawValue }
 
@@ -13,7 +12,6 @@ public enum FormLabTab: String, CaseIterable, Identifiable {
         case .repMax: return "form_lab.tab_rep_max"
         case .curves: return "form_lab.tab_curves"
         case .balance: return "form_lab.tab_balance"
-        case .mirror: return "form_lab.tab_mirror"
         }
     }
 }
@@ -28,13 +26,6 @@ public struct FormLabView: View {
     @State private var selectedTimeframe: StrengthCurveTimeframe = .sixMonths
     @State private var balanceTimeframe: StrengthCurveTimeframe = .allTime
     @State private var showInfoSheet: Bool = false
-
-    // Cloud mirror state
-    @State private var isMirrorEnabled: Bool = CloudMirrorManager.shared.isEnabled
-    @State private var syncStatusMessage: String? = nil
-    @State private var syncIsError: Bool = false
-    @State private var showRestoreConfirm: Bool = false
-    @State private var lastSyncTime: Date? = CloudMirrorManager.shared.getStatus().lastSyncTimestamp.map { Date(timeIntervalSince1970: $0) }
 
     // Interactive chart scrubber
     @State private var selectedPointIndex: Int? = nil
@@ -136,20 +127,10 @@ public struct FormLabView: View {
                 strengthCurvesTab
             case .balance:
                 structuralBalanceTab
-            case .mirror:
-                cloudMirrorTab
             }
         }
         .sheet(isPresented: $showInfoSheet) {
             FormLabInfoSheet()
-        }
-        .alert(LanguageManager.t("form_lab.mirror_restore_confirm"), isPresented: $showRestoreConfirm) {
-            Button(LanguageManager.t("form_lab.restore_btn"), role: .destructive) {
-                restoreFromMirror()
-            }
-            Button(LanguageManager.t("table.deleteSet"), role: .cancel) {}
-        } message: {
-            Text(LanguageManager.t("form_lab.mirror_restore_warning"))
         }
         .onAppear {
             if !distinctExercises.contains(selectedExercise), let first = distinctExercises.first {
@@ -655,133 +636,6 @@ public struct FormLabView: View {
         }
     }
 
-    // MARK: - 4. Cloud Mirror Tab
-
-    private var cloudMirrorTab: some View {
-        VStack(spacing: 16) {
-            // Title & Subtitle
-            VStack(alignment: .leading, spacing: 4) {
-                Text(LanguageManager.t("form_lab.mirror_title"))
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(AppColors.text)
-                Text(LanguageManager.t("form_lab.mirror_subtitle"))
-                    .font(.system(size: 12))
-                    .lineSpacing(2)
-                    .foregroundColor(AppColors.secondaryText)
-            }
-            .padding(16)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(AppColors.surfaceRaised)
-            .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-            .cornerRadius(16)
-
-            // Status Card
-            VStack(spacing: 12) {
-                HStack {
-                    Image(systemName: "icloud.fill")
-                        .font(.system(size: 20))
-                        .foregroundColor(AppColors.accent)
-                    Text(CloudMirrorManager.shared.isICloudAvailable ? "iCloud Drive" : "Local Mirror")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(AppColors.text)
-                    Spacer()
-                    Circle()
-                        .fill(isMirrorEnabled ? AppColors.accent : AppColors.muted)
-                        .frame(width: 8, height: 8)
-                }
-
-                Divider().background(AppColors.border)
-
-                HStack {
-                    Text(LanguageManager.t("form_lab.mirror_toggle"))
-                        .font(.system(size: 13, weight: .medium))
-                        .foregroundColor(AppColors.text)
-                    Spacer()
-                    Toggle("", isOn: $isMirrorEnabled)
-                        .labelsHidden()
-                        .onChange(of: isMirrorEnabled) { val in
-                            CloudMirrorManager.shared.isEnabled = val
-                        }
-                }
-
-                if let syncTime = lastSyncTime {
-                    Text(LanguageManager.t("form_lab.mirror_last_synced", ["time": formatSyncTime(syncTime)]))
-                        .font(.system(size: 11))
-                        .foregroundColor(AppColors.muted)
-                } else {
-                    Text(LanguageManager.t("form_lab.mirror_never_synced"))
-                        .font(.system(size: 11))
-                        .foregroundColor(AppColors.muted)
-                }
-
-                if let msg = syncStatusMessage {
-                    Text(msg)
-                        .font(.system(size: 12, weight: .medium))
-                        .foregroundColor(syncIsError ? AppColors.danger : AppColors.accent)
-                }
-            }
-            .padding(16)
-            .background(AppColors.surfaceRaised)
-            .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-            .cornerRadius(16)
-
-            // Action Buttons
-            VStack(spacing: 10) {
-                Button(action: syncNow) {
-                    HStack {
-                        Image(systemName: "arrow.triangle.2.circlepath")
-                            .font(.system(size: 14, weight: .bold))
-                        Text(LanguageManager.t("form_lab.mirror_sync_now"))
-                            .font(.system(size: 14, weight: .bold))
-                    }
-                    .foregroundColor(AppColors.background)
-                    .frame(maxWidth: .infinity)
-                    .padding(.vertical, 14)
-                    .background(AppColors.accent)
-                    .cornerRadius(12)
-                }
-                .buttonStyle(.plain)
-
-                Button(action: { showRestoreConfirm = true }) {
-                    Text(LanguageManager.t("form_lab.mirror_restore_cta"))
-                        .font(.system(size: 13, weight: .medium))
-                        .foregroundColor(AppColors.accent)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
-                        .background(AppColors.surfaceRaised)
-                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
-                        .cornerRadius(12)
-                }
-                .buttonStyle(.plain)
-            }
-        }
-    }
-
-    private func syncNow() {
-        let json = store.exportBackupJson()
-        do {
-            _ = try CloudMirrorManager.shared.syncNow(backupJson: json)
-            lastSyncTime = Date()
-            syncIsError = false
-            syncStatusMessage = LanguageManager.t("form_lab.mirror_success")
-        } catch {
-            syncIsError = true
-            syncStatusMessage = "Sync failed: \(error.localizedDescription)"
-        }
-    }
-
-    private func restoreFromMirror() {
-        do {
-            let json = try CloudMirrorManager.shared.readLatestSnapshot()
-            store.restoreBackupJson(json)
-            syncIsError = false
-            syncStatusMessage = LanguageManager.t("notice.backupRestored")
-        } catch {
-            syncIsError = true
-            syncStatusMessage = "Restore failed: \(error.localizedDescription)"
-        }
-    }
-
     // MARK: - Format Helpers
 
     private func formatWeight(_ kg: Double) -> String {
@@ -793,12 +647,6 @@ public struct FormLabView: View {
         let val = store.weightUnit.toDisplay(kg)
         let prefix = val >= 0 ? "+" : ""
         return String(format: "%@%.1f %@", prefix, val, store.weightUnit.label)
-    }
-
-    private func formatSyncTime(_ date: Date) -> String {
-        let df = DateFormatter()
-        df.dateFormat = "HH:mm, dd MMM"
-        return df.string(from: date)
     }
 }
 

@@ -5994,17 +5994,15 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
-    func testFormLabMirrorSnapshot() {
+    func testSettingsCloudBackupSnapshot() {
         let store = AppStore()
-        let labView = FormLabView(store: store, initialTab: .mirror)
-            .padding(.horizontal, 20)
-            .padding(.vertical, 16)
+        let backupView = CloudBackupSheet(store: store)
             .background(AppColors.background)
 
-        let controller = UIHostingController(rootView: labView)
-        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 600)
+        let controller = UIHostingController(rootView: backupView)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 750)
         controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 600))
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 750))
         window.rootViewController = controller
         window.makeKeyAndVisible()
         controller.view.layoutIfNeeded()
@@ -6012,9 +6010,9 @@ final class FormAppTests: XCTestCase {
         let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
         let image = renderer.image { _ in controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true) }
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_form_lab_mirror_snapshot.png"
+            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_settings_cloud_backup_snapshot.png"
             try? data.write(to: URL(fileURLWithPath: path))
-            print("Successfully wrote Form Lab Mirror snapshot to \(path)")
+            print("Successfully wrote Settings Cloud Backup snapshot to \(path)")
         }
     }
 

@@ -31,7 +31,7 @@ public class CloudMirrorManager {
     }
 
     public func retryPendingSyncIfAny() {
-        guard ProAccessManager.shared.isFeatureUnlocked(.formLab), isEnabled, hasPendingSync else { return }
+        guard ProAccessManager.shared.isFeatureUnlocked(.cloudBackup), isEnabled, hasPendingSync else { return }
         guard let payload = try? String(contentsOf: pendingBackupFile, encoding: .utf8), !payload.isEmpty else {
             clearPendingSync()
             return
@@ -88,7 +88,7 @@ public class CloudMirrorManager {
     }
 
     public func autoSync(backupJson: String) {
-        guard ProAccessManager.shared.isFeatureUnlocked(.formLab) else { return }
+        guard ProAccessManager.shared.isFeatureUnlocked(.cloudBackup) else { return }
         guard isEnabled else { return }
 
         // 1. Stage pending backup to disk so it survives process suspension/termination
@@ -127,7 +127,7 @@ public class CloudMirrorManager {
 
     @discardableResult
     public func syncNow(backupJson: String) throws -> Int64 {
-        guard ProAccessManager.shared.isFeatureUnlocked(.formLab) else {
+        guard ProAccessManager.shared.isFeatureUnlocked(.cloudBackup) else {
             throw NSError(domain: "CloudMirror", code: 403, userInfo: [NSLocalizedDescriptionKey: "Cloud Mirror sync requires Forced Rep Pro"])
         }
         guard isEnabled else {

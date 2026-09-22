@@ -47,8 +47,13 @@ public struct ProPaywallSheet: View {
             return [
                 PaywallBenefit(titleKey: "paywall.form_lab.benefit1", descKey: "paywall.form_lab.benefit1_desc", iconName: "number.circle.fill"),
                 PaywallBenefit(titleKey: "paywall.form_lab.benefit2", descKey: "paywall.form_lab.benefit2_desc", iconName: "chart.xyaxis.line"),
-                PaywallBenefit(titleKey: "paywall.form_lab.benefit3", descKey: "paywall.form_lab.benefit3_desc", iconName: "scalemass.fill"),
-                PaywallBenefit(titleKey: "paywall.form_lab.benefit4", descKey: "paywall.form_lab.benefit4_desc", iconName: "cloud.fill")
+                PaywallBenefit(titleKey: "paywall.form_lab.benefit3", descKey: "paywall.form_lab.benefit3_desc", iconName: "scalemass.fill")
+            ]
+        case .cloudBackup:
+            return [
+                PaywallBenefit(titleKey: "paywall.cloud_backup.benefit1", descKey: "paywall.cloud_backup.benefit1_desc", iconName: "cloud.fill"),
+                PaywallBenefit(titleKey: "paywall.cloud_backup.benefit2", descKey: "paywall.cloud_backup.benefit2_desc", iconName: "lock.shield.fill"),
+                PaywallBenefit(titleKey: "paywall.cloud_backup.benefit3", descKey: "paywall.cloud_backup.benefit3_desc", iconName: "arrow.triangle.2.circlepath")
             ]
         case .autoProgression:
             return [

@@ -13,7 +13,6 @@ public struct FormLabInfoSheet: View {
                     overviewSection
                     formulasSection
                     balanceSection
-                    cloudSection
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
@@ -142,22 +141,5 @@ public struct FormLabInfoSheet: View {
         .padding(10)
         .background(AppColors.surface)
         .cornerRadius(10)
-    }
-
-    private var cloudSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(LanguageManager.t("form_lab.info_cloud_title"))
-                .font(.system(size: 15, weight: .semibold))
-                .foregroundColor(AppColors.text)
-            Text(LanguageManager.t("form_lab.info_cloud_desc"))
-                .font(.system(size: 13))
-                .lineSpacing(3)
-                .foregroundColor(AppColors.secondaryText)
-        }
-        .padding(16)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .background(AppColors.surfaceRaised)
-        .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-        .cornerRadius(16)
     }
 }
