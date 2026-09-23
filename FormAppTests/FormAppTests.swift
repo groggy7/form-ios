@@ -6130,6 +6130,13 @@ final class FormAppTests: XCTestCase {
         }
     }
 
+    @MainActor
+    func testAnnualSavingsUsesLiveStoreAmounts() {
+        XCTAssertEqual(StoreKitSubscriptionManager.savingsPercentage(monthly: 5, annual: 40), 33)
+        XCTAssertNil(StoreKitSubscriptionManager.savingsPercentage(monthly: 5, annual: 60))
+        XCTAssertNil(StoreKitSubscriptionManager.savingsPercentage(monthly: 0, annual: 40))
+    }
+
     func testVolumeMatrixPaywallSnapshot() {
         let view = ProPaywallSheet(feature: .volumeMatrix)
         let controller = UIHostingController(rootView: view)

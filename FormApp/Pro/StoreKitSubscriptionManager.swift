@@ -38,6 +38,18 @@ public class StoreKitSubscriptionManager: ObservableObject {
         return "\(formatted)\(suffix)"
     }
 
+    public static func savingsPercentage(monthly: Decimal, annual: Decimal) -> Int? {
+        guard monthly > 0, annual > 0 else { return nil }
+        let savings = (1 - annual / (monthly * 12)) * 100
+        let rounded = Int((savings as NSDecimalNumber).doubleValue.rounded())
+        return rounded > 0 ? rounded : nil
+    }
+
+    public var annualSavingsPercentage: Int? {
+        guard let monthly = monthlyProduct, let annual = annualProduct else { return nil }
+        return Self.savingsPercentage(monthly: monthly.price, annual: annual.price)
+    }
+
     public func hasFreeTrial(for plan: PaywallPlan) -> Bool {
         let product = (plan == .annual) ? annualProduct : monthlyProduct
         guard let subscription = product?.subscription else { return false }

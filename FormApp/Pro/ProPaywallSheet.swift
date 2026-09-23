@@ -91,6 +91,10 @@ public struct ProPaywallSheet: View {
         }
     }
 
+    private var selectedPriceAvailable: Bool {
+        selectedPlan == .annual ? storeKit.annualProduct != nil : storeKit.monthlyProduct != nil
+    }
+
     private func performPurchase() {
         guard !storeKit.isPurchasing else { return }
         purchaseErrorMessage = nil
@@ -229,7 +233,9 @@ public struct ProPaywallSheet: View {
                             VStack(spacing: 10) {
                                 HStack {
                                     HStack(spacing: 6) {
-                                        ProBadge(text: LanguageManager.t("paywall.annual_savings"))
+                                        if let savings = storeKit.annualSavingsPercentage {
+                                            ProBadge(text: LanguageManager.t("paywall.annual_savings_template", ["savings": "\(savings)%"]))
+                                        }
                                         if storeKit.hasFreeTrial(for: .annual) {
                                             ProBadge(text: LanguageManager.t("paywall.trial_badge"))
                                         }
@@ -262,11 +268,11 @@ public struct ProPaywallSheet: View {
                                     Spacer()
 
                                     VStack(alignment: .trailing, spacing: 2) {
-                                        let annualPrice = storeKit.annualProduct?.displayPrice ?? LanguageManager.t("paywall.annual_price")
+                                        let annualPrice = storeKit.annualProduct?.displayPrice ?? "—"
                                         Text(annualPrice)
                                             .font(.system(size: 15, weight: .bold))
                                             .foregroundColor(AppColors.accent)
-                                        let annualBreakdown = storeKit.annualPerMonthDisplayPrice ?? LanguageManager.t("paywall.annual_breakdown")
+                                        let annualBreakdown = storeKit.annualPerMonthDisplayPrice ?? LanguageManager.t("paywall.price_unavailable_short")
                                         Text(annualBreakdown)
                                             .font(.system(size: 11.5))
                                             .foregroundColor(AppColors.secondaryText)
@@ -323,7 +329,7 @@ public struct ProPaywallSheet: View {
 
                                     Spacer()
 
-                                    let monthlyPrice = storeKit.monthlyProduct?.displayPrice ?? LanguageManager.t("paywall.monthly_price")
+                                    let monthlyPrice = storeKit.monthlyProduct?.displayPrice ?? "—"
                                     Text(monthlyPrice)
                                         .font(.system(size: 15, weight: .bold))
                                         .foregroundColor(isMonthly ? AppColors.accent : AppColors.text)
@@ -338,6 +344,19 @@ public struct ProPaywallSheet: View {
                             .cornerRadius(16)
                         }
                         .buttonStyle(.plain)
+                        if storeKit.annualProduct == nil || storeKit.monthlyProduct == nil {
+                            HStack(spacing: 8) {
+                                Text(LanguageManager.t("paywall.price_unavailable"))
+                                    .font(.system(size: 12))
+                                    .foregroundColor(AppColors.secondaryText)
+                                Spacer()
+                                Button(LanguageManager.t("paywall.retry")) {
+                                    Task { await storeKit.requestProducts() }
+                                }
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundColor(AppColors.accent)
+                            }
+                        }
                     }
 
                     // Primary Call to Action Button
@@ -369,7 +388,7 @@ public struct ProPaywallSheet: View {
                             }
                         }
                         .buttonStyle(.plain)
-                        .disabled(storeKit.isPurchasing)
+                        .disabled(storeKit.isPurchasing || !selectedPriceAvailable)
 
                         if let purchaseError = purchaseErrorMessage {
                             HStack(alignment: .center, spacing: 10) {
