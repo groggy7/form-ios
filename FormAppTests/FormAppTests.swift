@@ -4936,6 +4936,15 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(rec.suggestedVariationName, "Incline Dumbbell Press")
     }
 
+    func testEveryProgressionSwapResolvesToCatalogExercises() {
+        let catalog = ExerciseCatalog.canonicalExercises
+        for (sourceId, destination) in ProgressionEngine.variationSwaps {
+            XCTAssertNotNil(catalog[sourceId], "Unknown swap source: \(sourceId)")
+            XCTAssertEqual(catalog[destination.id]?.name, destination.name,
+                           "Unknown or mislabeled swap destination for \(sourceId)")
+        }
+    }
+
     func testProgressionTrainingWeeksRequireAnUnbrokenRun() {
         func session(_ date: String) -> WorkoutSessionRecord {
             WorkoutSessionRecord(
