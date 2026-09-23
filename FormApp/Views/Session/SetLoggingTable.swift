@@ -287,9 +287,12 @@ public struct SetLoggingTable: View {
                             )
                         }
                     }
-                    if let inspect = onInspectPlates {
-                        let wVal = set.weightKg ?? Double(weightBinding.wrappedValue) ?? 0.0
-                        Button(action: { inspect(wVal) }) {
+                    let plateWeight = (WarmupPlateEngine.hasWorkingLoad(set.weightKg) ? set.weightKg : nil)
+                        ?? Double(weightBinding.wrappedValue.replacingOccurrences(of: ",", with: ".")).map {
+                        weightUnit.toCanonicalKg($0)
+                    }
+                    if let inspect = onInspectPlates, let plateWeight, WarmupPlateEngine.hasWorkingLoad(plateWeight) {
+                        Button(action: { inspect(plateWeight) }) {
                             Label(LanguageManager.t("warmup.tab_plates"), systemImage: "square.stack.3d.up")
                         }
                     }
@@ -333,20 +336,25 @@ public struct SetLoggingTable: View {
                         }
 
                         HStack(spacing: 8) {
-                            let weightVal = set.weightKg ?? Double(weightBinding.wrappedValue) ?? 0.0
-                            Button {
-                                onInspectPlates?(weightVal)
-                            } label: {
-                                HStack(spacing: 4) {
-                                    Image(systemName: "square.stack.3d.up")
-                                        .font(.system(size: 13))
-                                    Text(LanguageManager.t("warmup.tab_plates"))
-                                        .font(.system(size: 12, weight: .medium))
-                                }
-                                .foregroundColor(AppColors.accent)
-                                .frame(maxWidth: .infinity, minHeight: 40)
+                            let plateWeight = (WarmupPlateEngine.hasWorkingLoad(set.weightKg) ? set.weightKg : nil)
+                                ?? Double(weightBinding.wrappedValue.replacingOccurrences(of: ",", with: ".")).map {
+                                weightUnit.toCanonicalKg($0)
                             }
-                            .buttonStyle(.plain)
+                            if let inspect = onInspectPlates, let plateWeight, WarmupPlateEngine.hasWorkingLoad(plateWeight) {
+                                Button {
+                                    inspect(plateWeight)
+                                } label: {
+                                    HStack(spacing: 4) {
+                                        Image(systemName: "square.stack.3d.up")
+                                            .font(.system(size: 13))
+                                        Text(LanguageManager.t("warmup.tab_plates"))
+                                            .font(.system(size: 12, weight: .medium))
+                                    }
+                                    .foregroundColor(AppColors.accent)
+                                    .frame(maxWidth: .infinity, minHeight: 40)
+                                }
+                                .buttonStyle(.plain)
+                            }
 
                             Button {
                                 onToggleWarmup?(index)

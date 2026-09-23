@@ -2,6 +2,8 @@ import SwiftUI
 
 public struct WarmupPlateCard: View {
     let warmupSets: [ExerciseSetLog]
+    let hasWorkingLoad: Bool
+    let supportsBarbellWarmup: Bool
     var onGenerateWarmup: () -> Void
     var onOpenPlates: () -> Void
     var onClearWarmups: () -> Void
@@ -13,6 +15,8 @@ public struct WarmupPlateCard: View {
 
     public init(
         warmupSets: [ExerciseSetLog],
+        hasWorkingLoad: Bool = true,
+        supportsBarbellWarmup: Bool = true,
         onGenerateWarmup: @escaping () -> Void,
         onOpenPlates: @escaping () -> Void,
         onClearWarmups: @escaping () -> Void,
@@ -20,6 +24,8 @@ public struct WarmupPlateCard: View {
         onDismissLocked: (() -> Void)? = nil
     ) {
         self.warmupSets = warmupSets
+        self.hasWorkingLoad = hasWorkingLoad
+        self.supportsBarbellWarmup = supportsBarbellWarmup
         self.onGenerateWarmup = onGenerateWarmup
         self.onOpenPlates = onOpenPlates
         self.onClearWarmups = onClearWarmups
@@ -142,10 +148,10 @@ public struct WarmupPlateCard: View {
                                         .lineLimit(1)
                                 }
 
-                                Text(LanguageManager.t("warmup.card_desc"))
+                                Text(LanguageManager.t(hasWorkingLoad ? "warmup.card_desc" : "warmup.enter_working_load"))
                                     .font(.system(size: 11))
                                     .foregroundColor(AppColors.muted)
-                                    .lineLimit(1)
+                                    .lineLimit(hasWorkingLoad ? 1 : 2)
                             }
 
                             Spacer()
@@ -156,9 +162,11 @@ public struct WarmupPlateCard: View {
                         }
                     }
                     .buttonStyle(.plain)
+                    .disabled(!hasWorkingLoad)
 
                     // Action buttons (50/50 split)
-                    HStack(spacing: 8) {
+                    if hasWorkingLoad {
+                        HStack(spacing: 8) {
                         // Generate button
                         Button(action: onGenerateWarmup) {
                             HStack(spacing: 6) {
@@ -200,6 +208,7 @@ public struct WarmupPlateCard: View {
                             )
                         }
                         .buttonStyle(.plain)
+                        }
                     }
                 } else {
                     // Active warmup sets row
@@ -237,7 +246,7 @@ public struct WarmupPlateCard: View {
                         Spacer()
 
                         HStack(spacing: 4) {
-                            Button(action: onOpenPlates) {
+                            if supportsBarbellWarmup && hasWorkingLoad { Button(action: onOpenPlates) {
                                 Image(systemName: "square.stack.3d.up.fill")
                                     .font(.system(size: 15))
                                     .foregroundColor(AppColors.secondaryText)
@@ -245,6 +254,7 @@ public struct WarmupPlateCard: View {
                             }
                             .buttonStyle(.plain)
                             .accessibilityLabel(LanguageManager.t("warmup.tab_plates"))
+                            }
 
                             if hasUncompletedWarmups {
                                 Button(action: onClearWarmups) {

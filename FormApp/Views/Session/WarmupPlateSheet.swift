@@ -46,10 +46,9 @@ public struct WarmupPlateSheet: View {
         self.onSaveBarType = onSaveBarType
         self.onSavePlates = onSavePlates
 
-        let barWeight = initialBarType.weight(unit: unit)
         let defaultWeight = initialWorkingWeightKg > 0.0
             ? (unit == .lbs ? unit.toDisplay(initialWorkingWeightKg) : initialWorkingWeightKg)
-            : (barWeight * 2.0)
+            : 0.0
 
         _activeTab = State(initialValue: initialTab)
         _selectedBarType = State(initialValue: initialBarType)
@@ -251,6 +250,11 @@ public struct WarmupPlateSheet: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             // Steps List
+            if ramp.steps.isEmpty {
+                Text(LanguageManager.t(workingWeightInput <= 0 ? "warmup.enter_working_load" : "warmup.load_below_bar"))
+                    .font(.system(size: 13))
+                    .foregroundColor(AppColors.muted)
+            }
             VStack(spacing: 8) {
                 ForEach(ramp.steps) { step in
                     HStack {
@@ -312,6 +316,7 @@ public struct WarmupPlateSheet: View {
 
             // Insert Sets CTA Button
             Button(action: {
+                guard !ramp.steps.isEmpty else { return }
                 let generatedSets = ramp.steps.enumerated().map { idx, step in
                     let displayStepWeight = unit == .lbs ? unit.toDisplay(step.weightKg) : step.weightKg
                     let formattedWeight = WarmupPlateEngine.formatPlateWeight(displayStepWeight)
@@ -343,6 +348,7 @@ public struct WarmupPlateSheet: View {
                 .cornerRadius(12)
             }
             .buttonStyle(.plain)
+            .disabled(ramp.steps.isEmpty)
             .padding(.top, 4)
         }
     }

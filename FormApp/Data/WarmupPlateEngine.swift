@@ -4,6 +4,13 @@ public enum WarmupPlateEngine {
     public static let defaultPlatesKg: [Double] = [25.0, 20.0, 15.0, 10.0, 5.0, 2.5, 1.25]
     public static let defaultPlatesLbs: [Double] = [45.0, 35.0, 25.0, 10.0, 5.0, 2.5]
 
+    public static func supportsExercise(equipmentCategory: String) -> Bool { equipmentCategory == "bar" }
+
+    public static func hasWorkingLoad(_ weightKg: Double?) -> Bool {
+        guard let weightKg else { return false }
+        return weightKg.isFinite && weightKg > 0
+    }
+
     public static func defaultPlates(for unit: WeightUnit) -> [Double] {
         return unit == .lbs ? defaultPlatesLbs : defaultPlatesKg
     }
@@ -98,11 +105,14 @@ public enum WarmupPlateEngine {
         availablePlatesKg: [Double] = defaultPlatesKg,
         unit: WeightUnit = .kg
     ) -> WarmupRamp {
-        guard workingWeightKg.isFinite, barWeightKg.isFinite else {
+        guard hasWorkingLoad(workingWeightKg), barWeightKg.isFinite, barWeightKg > 0 else {
             return WarmupRamp(workingWeightKg: 0, barWeightKg: 0, steps: [])
         }
         let safeWorking = (workingWeightKg * 100).rounded() / 100
         let safeBar = (barWeightKg * 100).rounded() / 100
+        if safeWorking < safeBar {
+            return WarmupRamp(workingWeightKg: safeWorking, barWeightKg: safeBar, steps: [])
+        }
 
         let isLbs = unit == .lbs
         let displayWorking = isLbs ? unit.toDisplay(safeWorking) : safeWorking

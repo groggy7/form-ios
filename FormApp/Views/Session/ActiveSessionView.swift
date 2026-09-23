@@ -42,6 +42,16 @@ public struct ActiveSessionView: View {
         let currentIndex = min(max(0, activeDraft.currentExerciseIndex), max(0, exercises.count - 1))
         let currentExercise = exercises.indices.contains(currentIndex) ? exercises[currentIndex] : nil
         let currentSets = currentExercise.map { activeDraft.setsByExercise[$0.id] ?? [] } ?? []
+        let supportsBarbellWarmup = currentExercise.map {
+            WarmupPlateEngine.supportsExercise(equipmentCategory: EquipmentCatalog.shared.categoryId($0.exerciseId))
+        } ?? false
+        let workingWeightKg = currentSets.filter { !$0.isWarmup }.compactMap { set -> Double? in
+            let weight = (WarmupPlateEngine.hasWorkingLoad(set.weightKg) ? set.weightKg : nil)
+                ?? Double(set.weightInput.replacingOccurrences(of: ",", with: ".")).map {
+                store.weightUnit.toCanonicalKg($0)
+            }
+            return WarmupPlateEngine.hasWorkingLoad(weight) ? weight : nil
+        }.first
         let restTimer = activeDraft.restTimer
 
         let previousWorkingSets: [SessionSetLog] = currentExercise.map {
@@ -364,15 +374,19 @@ public struct ActiveSessionView: View {
                                     }
 
                                     let currentWarmups = currentSets.filter { $0.isWarmup }
-                                    if !store.isWarmupCardDismissed || proManager.isFeatureUnlocked(.warmupCalculator) {
+                                    if (supportsBarbellWarmup || !currentWarmups.isEmpty) && (!store.isWarmupCardDismissed || proManager.isFeatureUnlocked(.warmupCalculator)) {
                                         WarmupPlateCard(
                                             warmupSets: currentWarmups,
+                                            hasWorkingLoad: workingWeightKg != nil,
+                                            supportsBarbellWarmup: supportsBarbellWarmup,
                                             onGenerateWarmup: {
+                                                guard workingWeightKg != nil else { return }
                                                 warmupModalTab = .warmupRamp
                                                 selectedPlateWeight = nil
                                                 showWarmupPlateSheet = true
                                             },
                                             onOpenPlates: {
+                                                guard workingWeightKg != nil else { return }
                                                 warmupModalTab = .plateLoader
                                                 selectedPlateWeight = nil
                                                 showWarmupPlateSheet = true
@@ -418,11 +432,11 @@ public struct ActiveSessionView: View {
                                         onRestWarning: {
                                             showRestWarning()
                                         },
-                                        onInspectPlates: { weightVal in
+                                        onInspectPlates: supportsBarbellWarmup ? { weightVal in
                                             warmupModalTab = .plateLoader
                                             selectedPlateWeight = weightVal
                                             showWarmupPlateSheet = true
-                                        },
+                                        } : nil,
                                         onToggleWarmup: { setIdx in
                                             store.toggleWarmup(exerciseId: exercise.id, index: setIdx)
                                         },
@@ -603,12 +617,9 @@ public struct ActiveSessionView: View {
             ProgressionInfoSheet()
         }
         .sheet(isPresented: $showWarmupPlateSheet) {
-            if let exercise = currentExercise {
-                let firstWorking = currentSets.first { !$0.isWarmup && ($0.weightKg ?? 0) > 0 }
-                let baseWeight = selectedPlateWeight
-                    ?? firstWorking?.weightKg
-                    ?? Double(firstWorking?.weightInput.replacingOccurrences(of: ",", with: ".") ?? "")
-                    ?? 0.0
+            if let exercise = currentExercise, supportsBarbellWarmup {
+                let baseWeight = (WarmupPlateEngine.hasWorkingLoad(selectedPlateWeight) ? selectedPlateWeight : nil)
+                    ?? workingWeightKg ?? 0.0
 
                 WarmupPlateSheet(
                     exerciseName: exercise.displayName,

@@ -5228,6 +5228,20 @@ final class FormAppTests: XCTestCase {
         XCTAssertTrue(s4.isPotentiation)
     }
 
+    func testBarbellWarmupNeedsKnownLoadAndSupportedEquipment() {
+        let catalog = EquipmentCatalog.shared
+        XCTAssertTrue(WarmupPlateEngine.supportsExercise(equipmentCategory: catalog.categoryId("barbell-bench-press")))
+        for id in ["pull-ups", "cable-lateral-raise", "leg-press"] {
+            XCTAssertFalse(WarmupPlateEngine.supportsExercise(equipmentCategory: catalog.categoryId(id)))
+        }
+        XCTAssertFalse(WarmupPlateEngine.hasWorkingLoad(nil))
+        XCTAssertFalse(WarmupPlateEngine.hasWorkingLoad(0))
+        XCTAssertFalse(WarmupPlateEngine.hasWorkingLoad(.nan))
+        XCTAssertTrue(WarmupPlateEngine.hasWorkingLoad(80))
+        XCTAssertTrue(WarmupPlateEngine.generateWarmupRamp(workingWeightKg: 0, barWeightKg: 20).steps.isEmpty)
+        XCTAssertTrue(WarmupPlateEngine.generateWarmupRamp(workingWeightKg: 15, barWeightKg: 20).steps.isEmpty)
+    }
+
     func testWarmupRampForLightWeights() {
         // Working weight equal to bar: only empty bar
         let ramp20 = WarmupPlateEngine.generateWarmupRamp(workingWeightKg: 20.0, barWeightKg: 20.0)
