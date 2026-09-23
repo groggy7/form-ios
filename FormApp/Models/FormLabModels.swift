@@ -227,18 +227,24 @@ public struct CloudMirrorStatus: Equatable {
     public let lastSyncTimestamp: TimeInterval?
     public let snapshotSizeBytes: Int64?
     public let providerName: String
+    public let isCloudConnected: Bool
+    public let isUploadPending: Bool
 
     public init(
         isEnabled: Bool,
         isEncrypted: Bool = false,
         lastSyncTimestamp: TimeInterval?,
         snapshotSizeBytes: Int64?,
-        providerName: String
+        providerName: String,
+        isCloudConnected: Bool = false,
+        isUploadPending: Bool = false
     ) {
         self.isEnabled = isEnabled
         self.isEncrypted = isEncrypted
         self.lastSyncTimestamp = lastSyncTimestamp
         self.snapshotSizeBytes = snapshotSizeBytes
         self.providerName = providerName
+        self.isCloudConnected = isCloudConnected
+        self.isUploadPending = isUploadPending
     }
 }

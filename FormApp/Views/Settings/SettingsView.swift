@@ -17,6 +17,27 @@ public struct SettingsView: View {
     @State private var importPreview: HistoryImportPreview? = nil
     @State private var importErrorMessage: String? = nil
 
+    private var cloudBackupSubtitle: String {
+        if !proManager.isProSubscribed {
+            return LanguageManager.t("settings.cloudBackupSubtitle")
+        }
+        let status = CloudMirrorManager.shared.getStatus()
+        let lastSyncStr = status.lastSyncTimestamp.map { timestamp -> String in
+            let df = DateFormatter()
+            df.dateFormat = "HH:mm, dd MMM"
+            return df.string(from: Date(timeIntervalSince1970: timestamp))
+        }
+        let syncLabel: String
+        if let str = lastSyncStr {
+            syncLabel = LanguageManager.t("form_lab.mirror_last_synced", ["time": str])
+        } else if status.isCloudConnected {
+            syncLabel = status.isUploadPending ? "Upload pending..." : LanguageManager.t("form_lab.mirror_never_synced")
+        } else {
+            syncLabel = "Local only"
+        }
+        return "\(status.providerName) · \(syncLabel)"
+    }
+
     public init(store: AppStore, onDismiss: @escaping () -> Void) {
         self.store = store
         self.onDismiss = onDismiss
@@ -263,22 +284,9 @@ public struct SettingsView: View {
                                                 ProBadge(text: "PRO")
                                             }
                                         }
-                                        if proManager.isProSubscribed {
-                                            let status = CloudMirrorManager.shared.getStatus()
-                                            let lastSyncStr = status.lastSyncTimestamp.map { timestamp -> String in
-                                                let df = DateFormatter()
-                                                df.dateFormat = "HH:mm, dd MMM"
-                                                return df.string(from: Date(timeIntervalSince1970: timestamp))
-                                            }
-                                            let syncLabel = lastSyncStr != nil ? LanguageManager.t("form_lab.mirror_last_synced", ["time": lastSyncStr!]) : LanguageManager.t("form_lab.mirror_never_synced")
-                                            Text("\(status.providerName) · \(syncLabel)")
-                                                .font(.system(size: 12))
-                                                .foregroundColor(AppColors.secondaryText)
-                                        } else {
-                                            Text(LanguageManager.t("settings.cloudBackupSubtitle"))
-                                                .font(.system(size: 12))
-                                                .foregroundColor(AppColors.secondaryText)
-                                        }
+                                        Text(cloudBackupSubtitle)
+                                            .font(.system(size: 12))
+                                            .foregroundColor(AppColors.secondaryText)
                                     }
                                     Spacer()
                                     Image(systemName: "chevron.right")
@@ -566,6 +574,32 @@ public struct CloudBackupSheet: View {
     @State private var showRestoreConfirm: Bool = false
     @State private var lastSyncTime: Date? = CloudMirrorManager.shared.getStatus().lastSyncTimestamp.map { Date(timeIntervalSince1970: $0) }
 
+    private var mirrorStatus: CloudMirrorStatus {
+        CloudMirrorManager.shared.getStatus()
+    }
+
+    private var isBadgeActive: Bool {
+        isMirrorEnabled && mirrorStatus.isCloudConnected
+    }
+
+    private var badgeLabel: String {
+        if !isMirrorEnabled { return "Paused" }
+        if mirrorStatus.isCloudConnected {
+            return mirrorStatus.isUploadPending ? "Pending" : "Active"
+        }
+        return "Local Only"
+    }
+
+    private var syncSubtitleText: String {
+        if let syncTime = lastSyncTime {
+            return LanguageManager.t("form_lab.mirror_last_synced", ["time": formatSyncTime(syncTime)])
+        }
+        if mirrorStatus.isCloudConnected {
+            return mirrorStatus.isUploadPending ? "Upload pending..." : LanguageManager.t("form_lab.mirror_never_synced")
+        }
+        return "No cloud backup (local only)"
+    }
+
     public init(store: AppStore) {
         self.store = store
     }
@@ -600,33 +634,27 @@ public struct CloudBackupSheet: View {
                     VStack(spacing: 12) {
                         HStack {
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(CloudMirrorManager.shared.isICloudAvailable ? "iCloud Drive" : "Local Backup (No iCloud Drive)")
+                                Text(mirrorStatus.providerName)
                                     .font(.system(size: 14, weight: .semibold))
                                     .foregroundColor(AppColors.text)
-                                if let syncTime = lastSyncTime {
-                                    Text(LanguageManager.t("form_lab.mirror_last_synced", ["time": formatSyncTime(syncTime)]))
-                                        .font(.system(size: 11))
-                                        .foregroundColor(AppColors.muted)
-                                } else {
-                                    Text(LanguageManager.t("form_lab.mirror_never_synced"))
-                                        .font(.system(size: 11))
-                                        .foregroundColor(AppColors.muted)
-                                }
+                                Text(syncSubtitleText)
+                                    .font(.system(size: 11))
+                                    .foregroundColor(AppColors.muted)
                             }
                             Spacer()
                             HStack(spacing: 6) {
                                 Circle()
-                                    .fill(isMirrorEnabled ? AppColors.accent : AppColors.muted)
+                                    .fill(isBadgeActive ? AppColors.accent : AppColors.muted)
                                     .frame(width: 8, height: 8)
-                                Text(isMirrorEnabled ? "Active" : "Paused")
+                                Text(badgeLabel)
                                     .font(.system(size: 11, weight: .semibold))
-                                    .foregroundColor(isMirrorEnabled ? AppColors.accent : AppColors.muted)
+                                    .foregroundColor(isBadgeActive ? AppColors.accent : AppColors.muted)
                             }
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
-                            .background(isMirrorEnabled ? AppColors.positiveBg : AppColors.surface)
+                            .background(isBadgeActive ? AppColors.positiveBg : AppColors.surface)
                             .cornerRadius(8)
-                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(isMirrorEnabled ? AppColors.accent.opacity(0.4) : AppColors.border, lineWidth: 1))
+                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(isBadgeActive ? AppColors.accent.opacity(0.4) : AppColors.border, lineWidth: 1))
                         }
 
                         Divider().background(AppColors.border)
@@ -748,9 +776,10 @@ public struct CloudBackupSheet: View {
         let json = store.exportBackupJson()
         do {
             _ = try CloudMirrorManager.shared.syncNow(backupJson: json)
-            lastSyncTime = Date()
+            let status = CloudMirrorManager.shared.getStatus()
+            lastSyncTime = status.lastSyncTimestamp.map { Date(timeIntervalSince1970: $0) }
             syncIsError = false
-            syncStatusMessage = LanguageManager.t("form_lab.mirror_success")
+            syncStatusMessage = status.isCloudConnected ? LanguageManager.t("form_lab.mirror_success") : "Saved local backup. Sign in to iCloud Drive for cloud backup."
         } catch {
             syncIsError = true
             syncStatusMessage = "Sync failed: \(error.localizedDescription)"

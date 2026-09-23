@@ -7,7 +7,9 @@ public class CloudMirrorManager {
     public static let shared = CloudMirrorManager()
 
     private let keyEnabled = "cloud_mirror_enabled"
-    private let keyLastSync = "cloud_mirror_last_sync"
+    private let keyLastSync = "cloud_mirror_last_sync" // Legacy key
+    private let keyLastLocalWrite = "cloud_mirror_last_local_write"
+    private let keyLastCloudUpload = "cloud_mirror_last_cloud_upload"
 
     private let mirrorDirName = "CloudMirror"
     private let backupFileName = "form_safety_mirror.json"
@@ -97,8 +99,39 @@ private final class BackgroundTaskTracker: @unchecked Sendable {
 
     public func refreshUbiquityURL() {
         ubiquityQueue.async { [weak self] in
+            guard let self = self else { return }
             let url = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.com.perseverancesoftware.forcedrep")
-            self?.cachedUbiquityURL = url
+            self.cachedUbiquityURL = url
+            if url != nil {
+                self.migrateLocalToCloudIfNewer()
+            }
+        }
+    }
+
+    private func migrateLocalToCloudIfNewer() {
+        guard let ubiDir = ubiquitousMirrorDirectory else { return }
+        let localFile = localMirrorDirectory.appendingPathComponent(backupFileName)
+        guard FileManager.default.fileExists(atPath: localFile.path) else { return }
+
+        let ubiFile = ubiDir.appendingPathComponent(backupFileName)
+        let localDate = (try? FileManager.default.attributesOfItem(atPath: localFile.path)[.modificationDate] as? Date) ?? Date.distantPast
+        let ubiDate = (try? FileManager.default.attributesOfItem(atPath: ubiFile.path)[.modificationDate] as? Date) ?? Date.distantPast
+
+        if !FileManager.default.fileExists(atPath: ubiFile.path) || localDate > ubiDate {
+            guard let localContent = try? Data(contentsOf: localFile) else { return }
+            var coordinatorError: NSError?
+            var writeError: Error?
+            let coordinator = NSFileCoordinator(filePresenter: nil)
+            coordinator.coordinate(writingItemAt: ubiFile, options: .forReplacing, error: &coordinatorError) { writeURL in
+                do {
+                    try localContent.write(to: writeURL, options: .atomic)
+                } catch {
+                    writeError = error
+                }
+            }
+            if coordinatorError == nil && writeError == nil {
+                print("[CloudMirror] Successfully migrated newer local backup to iCloud Drive.")
+            }
         }
     }
 
@@ -107,6 +140,9 @@ private final class BackgroundTaskTracker: @unchecked Sendable {
         if !Thread.isMainThread {
             let url = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.com.perseverancesoftware.forcedrep")
             cachedUbiquityURL = url
+            if url != nil {
+                migrateLocalToCloudIfNewer()
+            }
             return url
         }
         refreshUbiquityURL()
@@ -117,20 +153,48 @@ private final class BackgroundTaskTracker: @unchecked Sendable {
         return resolveUbiquityURL() != nil
     }
 
+    public var localMirrorDirectory: URL {
+        let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let dir = docs.appendingPathComponent(mirrorDirName)
+        if !FileManager.default.fileExists(atPath: dir.path) {
+            try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        }
+        return dir
+    }
+
+    public var ubiquitousMirrorDirectory: URL? {
+        guard let ubiquityURL = resolveUbiquityURL() else { return nil }
+        let docs = ubiquityURL.appendingPathComponent("Documents").appendingPathComponent(mirrorDirName)
+        if !FileManager.default.fileExists(atPath: docs.path) {
+            try? FileManager.default.createDirectory(at: docs, withIntermediateDirectories: true)
+        }
+        return docs
+    }
+
     public var mirrorDirectory: URL {
-        if let ubiquityURL = resolveUbiquityURL() {
-            let docs = ubiquityURL.appendingPathComponent("Documents").appendingPathComponent(mirrorDirName)
-            if !FileManager.default.fileExists(atPath: docs.path) {
-                try? FileManager.default.createDirectory(at: docs, withIntermediateDirectories: true)
-            }
-            return docs
-        } else {
-            let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-            let dir = docs.appendingPathComponent(mirrorDirName)
-            if !FileManager.default.fileExists(atPath: dir.path) {
-                try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-            }
-            return dir
+        return ubiquitousMirrorDirectory ?? localMirrorDirectory
+    }
+
+    public func checkICloudUploadStatus() -> (isUploaded: Bool, isUploading: Bool, error: Error?) {
+        guard let ubiDir = ubiquitousMirrorDirectory else {
+            return (false, false, nil)
+        }
+        let file = ubiDir.appendingPathComponent(backupFileName)
+        guard FileManager.default.fileExists(atPath: file.path) else {
+            return (false, false, nil)
+        }
+        do {
+            let resourceValues = try file.resourceValues(forKeys: [
+                .ubiquitousItemIsUploadedKey,
+                .ubiquitousItemIsUploadingKey,
+                .ubiquitousItemUploadingErrorKey
+            ])
+            let isUploaded = resourceValues.ubiquitousItemIsUploaded ?? false
+            let isUploading = resourceValues.ubiquitousItemIsUploading ?? false
+            let error = resourceValues.ubiquitousItemUploadingError
+            return (isUploaded, isUploading, error)
+        } catch {
+            return (false, false, error)
         }
     }
 
@@ -145,17 +209,55 @@ private final class BackgroundTaskTracker: @unchecked Sendable {
     }
 
     public func getStatus() -> CloudMirrorStatus {
-        let lastSync = UserDefaults.standard.object(forKey: keyLastSync) as? TimeInterval
-        let file = mirrorDirectory.appendingPathComponent(backupFileName)
+        let isCloud = isICloudAvailable
+        var confirmedSyncTimestamp: TimeInterval? = nil
+        var isUploadPending = false
+        var provider = "No Cloud Storage (Local Only)"
+
+        if isCloud {
+            let uploadStatus = checkICloudUploadStatus()
+            let ubiFile = ubiquitousMirrorDirectory?.appendingPathComponent(backupFileName)
+            let ubiExists = ubiFile != nil && FileManager.default.fileExists(atPath: ubiFile!.path)
+
+            if uploadStatus.isUploaded {
+                let modDate = (try? FileManager.default.attributesOfItem(atPath: ubiFile!.path)[.modificationDate] as? Date)?.timeIntervalSince1970
+                let recorded = UserDefaults.standard.object(forKey: keyLastCloudUpload) as? TimeInterval
+                let finalTs = recorded ?? modDate ?? UserDefaults.standard.object(forKey: keyLastSync) as? TimeInterval
+                confirmedSyncTimestamp = finalTs
+                if let finalTs = finalTs {
+                    UserDefaults.standard.set(finalTs, forKey: keyLastCloudUpload)
+                }
+                provider = "iCloud Drive"
+            } else if uploadStatus.isUploading {
+                isUploadPending = true
+                provider = "iCloud Drive (Uploading...)"
+                confirmedSyncTimestamp = UserDefaults.standard.object(forKey: keyLastCloudUpload) as? TimeInterval
+            } else if ubiExists {
+                isUploadPending = true
+                provider = "iCloud Drive (Pending Upload)"
+                confirmedSyncTimestamp = UserDefaults.standard.object(forKey: keyLastCloudUpload) as? TimeInterval
+            } else {
+                provider = "iCloud Drive"
+                confirmedSyncTimestamp = UserDefaults.standard.object(forKey: keyLastCloudUpload) as? TimeInterval
+            }
+        } else {
+            // Local fallback only: no off-device copy exists
+            confirmedSyncTimestamp = nil
+            provider = "No Cloud Storage (Local Only)"
+        }
+
+        let file = (isCloud ? ubiquitousMirrorDirectory?.appendingPathComponent(backupFileName) : nil)
+            ?? localMirrorDirectory.appendingPathComponent(backupFileName)
         let size = (try? FileManager.default.attributesOfItem(atPath: file.path)[.size] as? Int64)
-        let provider = isICloudAvailable ? "iCloud Drive" : "Local Backup (No iCloud Drive)"
 
         return CloudMirrorStatus(
             isEnabled: isEnabled,
             isEncrypted: false,
-            lastSyncTimestamp: lastSync,
+            lastSyncTimestamp: confirmedSyncTimestamp,
             snapshotSizeBytes: size,
-            providerName: provider
+            providerName: provider,
+            isCloudConnected: isCloud,
+            isUploadPending: isUploadPending
         )
     }
 
@@ -202,51 +304,100 @@ private final class BackgroundTaskTracker: @unchecked Sendable {
         guard isEnabled else {
             throw NSError(domain: "CloudMirror", code: 1, userInfo: [NSLocalizedDescriptionKey: "Cloud Mirror is disabled"])
         }
-
-        let file = mirrorDirectory.appendingPathComponent(backupFileName)
-
-        var coordinatorError: NSError?
-        var writeError: Error?
-        let coordinator = NSFileCoordinator(filePresenter: nil)
-        coordinator.coordinate(writingItemAt: file, options: .forReplacing, error: &coordinatorError) { writeURL in
-            do {
-                guard let data = backupJson.data(using: .utf8) else {
-                    throw NSError(domain: "CloudMirror", code: 2, userInfo: [NSLocalizedDescriptionKey: "Invalid UTF-8 payload"])
-                }
-                try data.write(to: writeURL, options: .atomic)
-            } catch {
-                writeError = error
-            }
+        guard let data = backupJson.data(using: .utf8) else {
+            throw NSError(domain: "CloudMirror", code: 2, userInfo: [NSLocalizedDescriptionKey: "Invalid UTF-8 payload"])
         }
-        if let err = writeError { throw err }
-        if let err = coordinatorError { throw err }
 
         let now = Date().timeIntervalSince1970
-        UserDefaults.standard.set(now, forKey: keyLastSync)
 
-        let attrs = try FileManager.default.attributesOfItem(atPath: file.path)
-        return (attrs[.size] as? Int64) ?? 0
+        // 1. Always write local mirror snapshot atomically
+        let localFile = localMirrorDirectory.appendingPathComponent(backupFileName)
+        try data.write(to: localFile, options: .atomic)
+        UserDefaults.standard.set(now, forKey: keyLastLocalWrite)
+
+        var writtenSize: Int64 = (try? FileManager.default.attributesOfItem(atPath: localFile.path)[.size] as? Int64) ?? Int64(data.count)
+
+        // 2. If iCloud is available, write to ubiquitous container via NSFileCoordinator
+        if let ubiDir = ubiquitousMirrorDirectory {
+            let ubiFile = ubiDir.appendingPathComponent(backupFileName)
+            var coordinatorError: NSError?
+            var writeError: Error?
+            let coordinator = NSFileCoordinator(filePresenter: nil)
+            coordinator.coordinate(writingItemAt: ubiFile, options: .forReplacing, error: &coordinatorError) { writeURL in
+                do {
+                    try data.write(to: writeURL, options: .atomic)
+                } catch {
+                    writeError = error
+                }
+            }
+            if let err = writeError { throw err }
+            if let err = coordinatorError { throw err }
+
+            let attrs = try FileManager.default.attributesOfItem(atPath: ubiFile.path)
+            writtenSize = (attrs[.size] as? Int64) ?? writtenSize
+            UserDefaults.standard.set(now, forKey: keyLastSync)
+        }
+
+        return writtenSize
     }
 
     public func readLatestSnapshot() throws -> String {
-        let file = mirrorDirectory.appendingPathComponent(backupFileName)
-        guard FileManager.default.fileExists(atPath: file.path) else {
+        let localFile = localMirrorDirectory.appendingPathComponent(backupFileName)
+        let localExists = FileManager.default.fileExists(atPath: localFile.path)
+
+        var ubiFile: URL? = nil
+        var ubiExists = false
+        if let ubiDir = ubiquitousMirrorDirectory {
+            let candidate = ubiDir.appendingPathComponent(backupFileName)
+            if FileManager.default.fileExists(atPath: candidate.path) {
+                ubiFile = candidate
+                ubiExists = true
+            }
+        }
+
+        if !localExists && !ubiExists {
             throw NSError(domain: "CloudMirror", code: 5, userInfo: [NSLocalizedDescriptionKey: "No cloud mirror backup snapshot found."])
         }
 
-        var coordinatorError: NSError?
-        var readError: Error?
-        var resultString: String?
-        let coordinator = NSFileCoordinator(filePresenter: nil)
-        coordinator.coordinate(readingItemAt: file, options: .withoutChanges, error: &coordinatorError) { readURL in
-            do {
-                resultString = try String(contentsOf: readURL, encoding: .utf8)
-            } catch {
-                readError = error
+        // If both exist, inspect modification dates to pick the newer one so local offline workouts are never lost
+        let readTarget: URL
+        let isUbiquitous: Bool
+        if localExists && ubiExists, let ubi = ubiFile {
+            let localDate = (try? FileManager.default.attributesOfItem(atPath: localFile.path)[.modificationDate] as? Date) ?? Date.distantPast
+            let ubiDate = (try? FileManager.default.attributesOfItem(atPath: ubi.path)[.modificationDate] as? Date) ?? Date.distantPast
+            if ubiDate >= localDate {
+                readTarget = ubi
+                isUbiquitous = true
+            } else {
+                readTarget = localFile
+                isUbiquitous = false
             }
+        } else if let ubi = ubiFile {
+            readTarget = ubi
+            isUbiquitous = true
+        } else {
+            readTarget = localFile
+            isUbiquitous = false
         }
-        if let err = readError { throw err }
-        if let err = coordinatorError { throw err }
+
+        var resultString: String?
+        if isUbiquitous {
+            var coordinatorError: NSError?
+            var readError: Error?
+            let coordinator = NSFileCoordinator(filePresenter: nil)
+            coordinator.coordinate(readingItemAt: readTarget, options: .withoutChanges, error: &coordinatorError) { readURL in
+                do {
+                    resultString = try String(contentsOf: readURL, encoding: .utf8)
+                } catch {
+                    readError = error
+                }
+            }
+            if let err = readError { throw err }
+            if let err = coordinatorError { throw err }
+        } else {
+            resultString = try String(contentsOf: readTarget, encoding: .utf8)
+        }
+
         guard let result = resultString else {
             throw NSError(domain: "CloudMirror", code: 6, userInfo: [NSLocalizedDescriptionKey: "Failed to read cloud mirror."])
         }

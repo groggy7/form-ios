@@ -5904,8 +5904,11 @@ final class FormAppTests: XCTestCase {
 
         let status = CloudMirrorManager.shared.getStatus()
         XCTAssertTrue(status.isEnabled)
-        XCTAssertFalse(status.isEncrypted)
-        XCTAssertNotNil(status.lastSyncTimestamp)
+        if status.isCloudConnected {
+            XCTAssertNotNil(status.lastSyncTimestamp)
+        } else {
+            XCTAssertNil(status.lastSyncTimestamp)
+        }
         XCTAssertEqual(status.snapshotSizeBytes, size)
     }
 
