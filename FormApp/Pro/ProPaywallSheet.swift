@@ -20,7 +20,11 @@ public struct ProPaywallSheet: View {
     @ObservedObject private var proManager = ProAccessManager.shared
     @ObservedObject private var storeKit = StoreKitSubscriptionManager.shared
     @State private var selectedPlan: PaywallPlan = .annual
-    @State private var showRestoreSuccess: Bool = false
+    @State private var userInteractedWithPlan: Bool = false
+    @State private var purchaseErrorMessage: String? = nil
+    @State private var restoreStatusMessage: String? = nil
+    @State private var isRestoreError: Bool = false
+    @State private var isRestoring: Bool = false
     @Environment(\.presentationMode) private var presentationMode
     @Environment(\.openURL) private var openURL
 
@@ -84,6 +88,51 @@ public struct ProPaywallSheet: View {
             onDismiss()
         } else {
             presentationMode.wrappedValue.dismiss()
+        }
+    }
+
+    private func performPurchase() {
+        guard !storeKit.isPurchasing else { return }
+        purchaseErrorMessage = nil
+        Task {
+            do {
+                let status = try await storeKit.purchase(plan: selectedPlan)
+                switch status {
+                case .success:
+                    purchaseErrorMessage = nil
+                    onUnlocked?()
+                    dismissSelf()
+                case .userCancelled:
+                    purchaseErrorMessage = nil
+                case .pending:
+                    purchaseErrorMessage = LanguageManager.t("paywall.purchase_pending")
+                }
+            } catch {
+                purchaseErrorMessage = LanguageManager.t("paywall.purchase_failed")
+            }
+        }
+    }
+
+    private func performRestore() {
+        guard !isRestoring else { return }
+        isRestoring = true
+        restoreStatusMessage = nil
+        Task {
+            defer { isRestoring = false }
+            do {
+                let restored = try await storeKit.restorePurchases()
+                if restored || proManager.isProSubscribed {
+                    restoreStatusMessage = LanguageManager.t("paywall.restored_success")
+                    isRestoreError = false
+                    onUnlocked?()
+                } else {
+                    restoreStatusMessage = LanguageManager.t("paywall.restore_no_purchases")
+                    isRestoreError = true
+                }
+            } catch {
+                restoreStatusMessage = LanguageManager.t("paywall.restore_failed")
+                isRestoreError = true
+            }
         }
     }
 
@@ -173,12 +222,17 @@ public struct ProPaywallSheet: View {
                     VStack(spacing: 12) {
                         // Annual Plan Card (Featured)
                         let isAnnual = selectedPlan == .annual
-                        Button(action: { selectedPlan = .annual }) {
+                        Button(action: {
+                            userInteractedWithPlan = true
+                            selectedPlan = .annual
+                        }) {
                             VStack(spacing: 10) {
                                 HStack {
                                     HStack(spacing: 6) {
                                         ProBadge(text: LanguageManager.t("paywall.annual_savings"))
-                                        ProBadge(text: LanguageManager.t("paywall.annual_trial"))
+                                        if storeKit.hasFreeTrial(for: .annual) {
+                                            ProBadge(text: LanguageManager.t("paywall.trial_badge"))
+                                        }
                                     }
 
                                     Spacer()
@@ -200,7 +254,7 @@ public struct ProPaywallSheet: View {
                                         Text(LanguageManager.t("paywall.annual_plan"))
                                             .font(.system(size: 15, weight: .bold))
                                             .foregroundColor(AppColors.text)
-                                        Text(LanguageManager.t("paywall.annual_subtitle"))
+                                        Text(storeKit.hasFreeTrial(for: .annual) ? LanguageManager.t("paywall.annual_trial_subtitle") : LanguageManager.t("paywall.annual_subtitle"))
                                             .font(.system(size: 11.5))
                                             .foregroundColor(AppColors.secondaryText)
                                     }
@@ -212,7 +266,8 @@ public struct ProPaywallSheet: View {
                                         Text(annualPrice)
                                             .font(.system(size: 15, weight: .bold))
                                             .foregroundColor(AppColors.accent)
-                                        Text(LanguageManager.t("paywall.annual_breakdown"))
+                                        let annualBreakdown = storeKit.annualPerMonthDisplayPrice ?? LanguageManager.t("paywall.annual_breakdown")
+                                        Text(annualBreakdown)
                                             .font(.system(size: 11.5))
                                             .foregroundColor(AppColors.secondaryText)
                                     }
@@ -230,24 +285,19 @@ public struct ProPaywallSheet: View {
 
                         // Monthly Plan Card
                         let isMonthly = selectedPlan == .monthly
-                        Button(action: { selectedPlan = .monthly }) {
-                            HStack {
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(LanguageManager.t("paywall.monthly_plan"))
-                                        .font(.system(size: 15, weight: .bold))
-                                        .foregroundColor(AppColors.text)
-                                    Text(LanguageManager.t("paywall.monthly_subtitle"))
-                                        .font(.system(size: 11.5))
-                                        .foregroundColor(AppColors.secondaryText)
-                                }
+                        Button(action: {
+                            userInteractedWithPlan = true
+                            selectedPlan = .monthly
+                        }) {
+                            VStack(spacing: 10) {
+                                HStack {
+                                    if storeKit.hasFreeTrial(for: .monthly) {
+                                        ProBadge(text: LanguageManager.t("paywall.trial_badge"))
+                                    } else {
+                                        Spacer()
+                                    }
 
-                                Spacer()
-
-                                HStack(spacing: 12) {
-                                    let monthlyPrice = storeKit.monthlyProduct?.displayPrice ?? LanguageManager.t("paywall.monthly_price")
-                                    Text(monthlyPrice)
-                                        .font(.system(size: 15, weight: .bold))
-                                        .foregroundColor(isMonthly ? AppColors.accent : AppColors.text)
+                                    Spacer()
 
                                     ZStack {
                                         Circle()
@@ -259,6 +309,24 @@ public struct ProPaywallSheet: View {
                                                 .frame(width: 12, height: 12)
                                         }
                                     }
+                                }
+
+                                HStack(alignment: .bottom) {
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(LanguageManager.t("paywall.monthly_plan"))
+                                            .font(.system(size: 15, weight: .bold))
+                                            .foregroundColor(AppColors.text)
+                                        Text(storeKit.hasFreeTrial(for: .monthly) ? LanguageManager.t("paywall.monthly_trial_subtitle") : LanguageManager.t("paywall.monthly_subtitle"))
+                                            .font(.system(size: 11.5))
+                                            .foregroundColor(AppColors.secondaryText)
+                                    }
+
+                                    Spacer()
+
+                                    let monthlyPrice = storeKit.monthlyProduct?.displayPrice ?? LanguageManager.t("paywall.monthly_price")
+                                    Text(monthlyPrice)
+                                        .font(.system(size: 15, weight: .bold))
+                                        .foregroundColor(isMonthly ? AppColors.accent : AppColors.text)
                                 }
                             }
                             .padding(16)
@@ -275,21 +343,7 @@ public struct ProPaywallSheet: View {
                     // Primary Call to Action Button
                     VStack(spacing: 8) {
                         Button(action: {
-                            Task {
-                                do {
-                                    let purchased = try await storeKit.purchase(plan: selectedPlan)
-                                    if purchased {
-                                        onUnlocked?()
-                                        dismissSelf()
-                                    }
-                                } catch {
-                                    #if DEBUG
-                                    proManager.updateSubscriptionStatus(active: true)
-                                    onUnlocked?()
-                                    dismissSelf()
-                                    #endif
-                                }
-                            }
+                            performPurchase()
                         }) {
                             if storeKit.isPurchasing {
                                 ProgressView()
@@ -302,7 +356,8 @@ public struct ProPaywallSheet: View {
                                 HStack(spacing: 8) {
                                     Image(systemName: "lock.open.fill")
                                         .font(.system(size: 14, weight: .bold))
-                                    let ctaText = selectedPlan == .annual ? LanguageManager.t("paywall.cta_trial") : LanguageManager.t("paywall.cta_continue")
+                                    let planHasTrial = storeKit.hasFreeTrial(for: selectedPlan)
+                                    let ctaText = planHasTrial ? LanguageManager.t("paywall.cta_trial") : LanguageManager.t("paywall.cta_continue")
                                     Text(ctaText)
                                         .font(.system(size: 15, weight: .bold))
                                 }
@@ -314,6 +369,42 @@ public struct ProPaywallSheet: View {
                             }
                         }
                         .buttonStyle(.plain)
+                        .disabled(storeKit.isPurchasing)
+
+                        if let purchaseError = purchaseErrorMessage {
+                            HStack(alignment: .center, spacing: 10) {
+                                Image(systemName: "exclamationmark.circle.fill")
+                                    .foregroundColor(AppColors.danger)
+                                    .font(.system(size: 14))
+
+                                Text(purchaseError)
+                                    .font(.system(size: 11.5))
+                                    .foregroundColor(AppColors.text)
+                                    .lineLimit(3)
+
+                                Spacer()
+
+                                Button(action: {
+                                    performPurchase()
+                                }) {
+                                    Text(LanguageManager.t("paywall.retry"))
+                                        .font(.system(size: 11.5, weight: .bold))
+                                        .foregroundColor(AppColors.accent)
+                                        .padding(.horizontal, 10)
+                                        .padding(.vertical, 5)
+                                        .background(AppColors.accent.opacity(0.12))
+                                        .cornerRadius(6)
+                                }
+                                .buttonStyle(.plain)
+                            }
+                            .padding(10)
+                            .background(AppColors.avoidBg)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(AppColors.avoidBorder, lineWidth: 1)
+                            )
+                            .cornerRadius(10)
+                        }
 
                         Text(LanguageManager.t("paywall.cancel_anytime"))
                             .font(.system(size: 11))
@@ -350,27 +441,20 @@ public struct ProPaywallSheet: View {
                         // Restore Purchases & Legal Links
                         HStack(spacing: 12) {
                             Button(action: {
-                                Task {
-                                    do {
-                                        try await storeKit.restorePurchases()
-                                        if proManager.isProSubscribed {
-                                            showRestoreSuccess = true
-                                            onUnlocked?()
-                                        }
-                                    } catch {
-                                        #if DEBUG
-                                        proManager.updateSubscriptionStatus(active: true)
-                                        showRestoreSuccess = true
-                                        onUnlocked?()
-                                        #endif
-                                    }
-                                }
+                                performRestore()
                             }) {
-                                Text(LanguageManager.t("paywall.restore"))
-                                    .font(.system(size: 11.5))
-                                    .foregroundColor(AppColors.secondaryText)
+                                if isRestoring {
+                                    ProgressView()
+                                        .progressViewStyle(CircularProgressViewStyle(tint: AppColors.secondaryText))
+                                        .scaleEffect(0.7)
+                                } else {
+                                    Text(LanguageManager.t("paywall.restore"))
+                                        .font(.system(size: 11.5))
+                                        .foregroundColor(AppColors.secondaryText)
+                                }
                             }
                             .buttonStyle(.plain)
+                            .disabled(isRestoring)
 
                             Text("·")
                                 .foregroundColor(AppColors.border)
@@ -381,7 +465,7 @@ public struct ProPaywallSheet: View {
                                 }
                             }) {
                                 Text(LanguageManager.t("settings.manage_subscription"))
-                                    .font(.system(size: 11.5))
+                                        .font(.system(size: 11.5))
                                     .foregroundColor(AppColors.secondaryText)
                             }
                             .buttonStyle(.plain)
@@ -415,15 +499,45 @@ public struct ProPaywallSheet: View {
                             .buttonStyle(.plain)
                         }
 
-                        if showRestoreSuccess {
-                            Text(LanguageManager.t("paywall.restored_success"))
-                                .font(.system(size: 12, weight: .medium))
-                                .foregroundColor(AppColors.accent)
+                        if let status = restoreStatusMessage {
+                            HStack(alignment: .center, spacing: 6) {
+                                Image(systemName: isRestoreError ? "exclamationmark.circle" : "checkmark.circle.fill")
+                                    .foregroundColor(isRestoreError ? AppColors.danger : AppColors.accent)
+                                    .font(.system(size: 12))
+
+                                Text(status)
+                                    .font(.system(size: 11.5, weight: .medium))
+                                    .foregroundColor(isRestoreError ? AppColors.danger : AppColors.accent)
+                                    .multilineTextAlignment(.center)
+
+                                if isRestoreError {
+                                    Button(action: {
+                                        performRestore()
+                                    }) {
+                                        Text(LanguageManager.t("paywall.retry"))
+                                            .font(.system(size: 11.5, weight: .bold))
+                                            .foregroundColor(AppColors.accent)
+                                            .underline()
+                                    }
+                                    .buttonStyle(.plain)
+                                }
+                            }
+                            .padding(.horizontal, 8)
                         }
                     }
                 }
                 .padding(.horizontal, 20)
                 .padding(.vertical, 24)
+            }
+            .onAppear {
+                if !userInteractedWithPlan && !storeKit.hasFreeTrial(for: .annual) && storeKit.hasFreeTrial(for: .monthly) {
+                    selectedPlan = .monthly
+                }
+            }
+            .onChange(of: storeKit.products) { _ in
+                if !userInteractedWithPlan && !storeKit.hasFreeTrial(for: .annual) && storeKit.hasFreeTrial(for: .monthly) {
+                    selectedPlan = .monthly
+                }
             }
         }
     }

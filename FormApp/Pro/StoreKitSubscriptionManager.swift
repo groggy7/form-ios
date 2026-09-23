@@ -30,6 +30,27 @@ public class StoreKitSubscriptionManager: ObservableObject {
         products.first { $0.id == Self.annualProductId }
     }
 
+    public var annualPerMonthDisplayPrice: String? {
+        guard let product = annualProduct else { return nil }
+        let perMonth = product.price / 12
+        let formatted = perMonth.formatted(product.priceFormatStyle)
+        let suffix = LanguageManager.t("paywall.per_month_suffix")
+        return "\(formatted)\(suffix)"
+    }
+
+    public func hasFreeTrial(for plan: PaywallPlan) -> Bool {
+        let product = (plan == .annual) ? annualProduct : monthlyProduct
+        guard let subscription = product?.subscription else { return false }
+        guard let intro = subscription.introductoryOffer else { return false }
+        return intro.paymentMode == .freeTrial
+    }
+
+    public enum PurchaseStatus {
+        case success
+        case userCancelled
+        case pending
+    }
+
     private var transactionListener: Task<Void, Never>? = nil
 
     public init() {
@@ -66,7 +87,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
         }
     }
 
-    public func purchase(plan: PaywallPlan) async throws -> Bool {
+    public func purchase(plan: PaywallPlan) async throws -> PurchaseStatus {
         let targetId = (plan == .annual) ? Self.annualProductId : Self.monthlyProductId
         guard let product = products.first(where: { $0.id == targetId }) else {
             // If product details haven't finished loading yet, try fetching again
@@ -75,7 +96,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
                 throw NSError(
                     domain: "StoreKitSubscriptionManager",
                     code: 404,
-                    userInfo: [NSLocalizedDescriptionKey: "Product not available in StoreKit."]
+                    userInfo: [NSLocalizedDescriptionKey: LanguageManager.t("paywall.purchase_failed")]
                 )
             }
             return try await executePurchase(product: fetchedProduct)
@@ -83,7 +104,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
         return try await executePurchase(product: product)
     }
 
-    private func executePurchase(product: Product) async throws -> Bool {
+    private func executePurchase(product: Product) async throws -> PurchaseStatus {
         isPurchasing = true
         errorMessage = nil
         defer { isPurchasing = false }
@@ -94,24 +115,26 @@ public class StoreKitSubscriptionManager: ObservableObject {
             let transaction = try checkVerified(verification)
             await updatePurchasedProducts()
             await transaction.finish()
-            return true
+            return .success
 
         case .userCancelled:
-            return false
+            return .userCancelled
 
         case .pending:
             // Family sharing approval or parental ask-to-buy pending
-            return false
+            return .pending
 
         @unknown default:
-            return false
+            return .userCancelled
         }
     }
 
-    public func restorePurchases() async throws {
+    @discardableResult
+    public func restorePurchases() async throws -> Bool {
         errorMessage = nil
         try await StoreKit.AppStore.sync()
         await updatePurchasedProducts()
+        return !purchasedProductIds.isEmpty
     }
 
     public func updatePurchasedProducts() async {
@@ -132,17 +155,11 @@ public class StoreKitSubscriptionManager: ObservableObject {
             UserDefaults.standard.set(now.timeIntervalSince1970, forKey: Self.keyCachedEntitlementLastVerified)
             ProAccessManager.shared.updateSubscriptionStatus(active: true)
         } else {
-            // Check offline grace period before revoking
-            let cachedActive = UserDefaults.standard.bool(forKey: Self.keyCachedEntitlement)
-            let lastVerified = UserDefaults.standard.double(forKey: Self.keyCachedEntitlementLastVerified)
-            let nowTime = now.timeIntervalSince1970
-            let isWithinGrace = cachedActive && lastVerified > 0 && (nowTime - lastVerified) <= Self.offlineGracePeriodSeconds && (lastVerified - nowTime) <= 300
-            if isWithinGrace {
-                ProAccessManager.shared.updateSubscriptionStatus(active: true)
-            } else {
-                UserDefaults.standard.set(false, forKey: Self.keyCachedEntitlement)
-                ProAccessManager.shared.updateSubscriptionStatus(active: false)
-            }
+            // Authoritative store query returned zero active entitlements.
+            // Revoke Pro immediately and clear the cached verification timestamp.
+            UserDefaults.standard.set(false, forKey: Self.keyCachedEntitlement)
+            UserDefaults.standard.set(0.0, forKey: Self.keyCachedEntitlementLastVerified)
+            ProAccessManager.shared.updateSubscriptionStatus(active: false)
         }
     }
 
