@@ -381,7 +381,7 @@ public struct LibraryView: View {
                                                 .padding(.vertical, 2)
                                                 .accessibilityHidden(true)
                                         } else {
-                                            MuscleArtwork(view: muscle.bodyView, muscles: muscle.muscleGroups, centered: true)
+                                            MuscleArtwork(view: muscle.bodyView, muscles: muscle.muscleGroups, centered: true, transparentBackground: true)
                                                 .padding(4)
                                         }
                                     }

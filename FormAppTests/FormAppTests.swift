@@ -770,7 +770,7 @@ final class FormAppTests: XCTestCase {
                                     .padding(.horizontal, 4)
                                     .padding(.vertical, 2)
                             } else {
-                                MuscleArtwork(view: muscle.bodyView, muscles: muscle.muscleGroups, centered: true)
+                                MuscleArtwork(view: muscle.bodyView, muscles: muscle.muscleGroups, centered: true, transparentBackground: true)
                                     .padding(4)
                             }
                         }

@@ -6,12 +6,14 @@ public struct MuscleArtwork: View {
     let muscles: [MuscleGroup]
     var alpha: CGFloat = 1.0
     var centered: Bool = false
+    var transparentBackground: Bool = false
 
-    public init(view: BodyView, muscles: [MuscleGroup], alpha: CGFloat = 1.0, centered: Bool = false) {
+    public init(view: BodyView, muscles: [MuscleGroup], alpha: CGFloat = 1.0, centered: Bool = false, transparentBackground: Bool = false) {
         self.view = view
         self.muscles = muscles
         self.alpha = alpha
         self.centered = centered
+        self.transparentBackground = transparentBackground
     }
 
     public var body: some View {
@@ -70,7 +72,8 @@ public struct MuscleArtwork: View {
             rootContext.scaleBy(x: scale, y: scale)
 
             // Draw base physique bitmap
-            if let uiImage = UIImage(named: view.artworkName) {
+            let artworkName = transparentBackground ? "library_\(view.artworkName)" : view.artworkName
+            if let uiImage = UIImage(named: artworkName) {
                 rootContext.draw(
                     Image(uiImage: uiImage),
                     in: CGRect(x: 0, y: 0, width: MuscleMasks.viewport, height: MuscleMasks.viewport)
