@@ -14,17 +14,37 @@ public class CloudMirrorManager {
     private let mirrorDirName = "CloudMirror"
     private let backupFileName = "form_safety_mirror.json"
     private let pendingBackupFileName = "pending_form_safety_mirror.json"
+    private let pendingLock = NSLock()
+    private let syncQueue = DispatchQueue(label: "com.form.CloudMirror.sync", qos: .utility)
 
     private var pendingBackupFile: URL {
         let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         return docs.appendingPathComponent(pendingBackupFileName)
     }
 
-    public func savePendingSync(backupJson: String) {
-        try? backupJson.write(to: pendingBackupFile, atomically: true, encoding: .utf8)
+    @discardableResult
+    public func savePendingSync(backupJson: String) -> Bool {
+        pendingLock.lock()
+        defer { pendingLock.unlock() }
+        do {
+            try backupJson.write(to: pendingBackupFile, atomically: true, encoding: .utf8)
+            return true
+        } catch {
+            print("[CloudMirror] Could not stage pending backup: \(error.localizedDescription)")
+            return false
+        }
     }
 
-    public func clearPendingSync() {
+    private func readPendingSync() -> String? {
+        pendingLock.lock()
+        defer { pendingLock.unlock() }
+        return try? String(contentsOf: pendingBackupFile, encoding: .utf8)
+    }
+
+    public func clearPendingSync(onlyIfMatching payload: String? = nil) {
+        pendingLock.lock()
+        defer { pendingLock.unlock() }
+        if let payload, (try? String(contentsOf: pendingBackupFile, encoding: .utf8)) != payload { return }
         try? FileManager.default.removeItem(at: pendingBackupFile)
     }
 
@@ -34,7 +54,7 @@ public class CloudMirrorManager {
 
     public func retryPendingSyncIfAny() {
         guard ProAccessManager.shared.isFeatureUnlocked(.cloudBackup), isEnabled, hasPendingSync else { return }
-        guard let payload = try? String(contentsOf: pendingBackupFile, encoding: .utf8), !payload.isEmpty else {
+        guard let payload = readPendingSync(), !payload.isEmpty else {
             clearPendingSync()
             return
         }
@@ -222,7 +242,7 @@ private final class BackgroundTaskTracker: @unchecked Sendable {
             if uploadStatus.isUploaded {
                 let modDate = (try? FileManager.default.attributesOfItem(atPath: ubiFile!.path)[.modificationDate] as? Date)?.timeIntervalSince1970
                 let recorded = UserDefaults.standard.object(forKey: keyLastCloudUpload) as? TimeInterval
-                let finalTs = recorded ?? modDate ?? UserDefaults.standard.object(forKey: keyLastSync) as? TimeInterval
+                let finalTs = [recorded, modDate].compactMap { $0 }.max()
                 confirmedSyncTimestamp = finalTs
                 if let finalTs = finalTs {
                     UserDefaults.standard.set(finalTs, forKey: keyLastCloudUpload)
@@ -238,7 +258,7 @@ private final class BackgroundTaskTracker: @unchecked Sendable {
                 confirmedSyncTimestamp = UserDefaults.standard.object(forKey: keyLastCloudUpload) as? TimeInterval
             } else {
                 provider = "iCloud Drive"
-                confirmedSyncTimestamp = UserDefaults.standard.object(forKey: keyLastCloudUpload) as? TimeInterval
+                confirmedSyncTimestamp = nil
             }
         } else {
             // Local fallback only: no off-device copy exists
@@ -266,7 +286,7 @@ private final class BackgroundTaskTracker: @unchecked Sendable {
         guard isEnabled else { return }
 
         // 1. Stage pending backup to disk so it survives process suspension/termination
-        savePendingSync(backupJson: backupJson)
+        guard savePendingSync(backupJson: backupJson) else { return }
 
         // 2. Request background execution time from iOS to prevent immediate suspension
         #if canImport(UIKit)
@@ -280,15 +300,16 @@ private final class BackgroundTaskTracker: @unchecked Sendable {
         }
         #endif
 
-        Task.detached(priority: .background) { [weak self] in
+        syncQueue.async { [weak self] in
             #if canImport(UIKit)
             defer {
                 bgTracker.end()
             }
             #endif
+            guard let self, let pending = self.readPendingSync(), !pending.isEmpty else { return }
             do {
-                _ = try self?.syncNow(backupJson: backupJson)
-                self?.clearPendingSync()
+                _ = try self.syncNow(backupJson: pending)
+                self.clearPendingSync(onlyIfMatching: pending)
                 print("[CloudMirror] Durable autoSync succeeded.")
             } catch {
                 print("[CloudMirror] AutoSync failed (retained on disk to retry on next app launch/foreground): \(error.localizedDescription)")

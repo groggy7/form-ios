@@ -5904,11 +5904,7 @@ final class FormAppTests: XCTestCase {
 
         let status = CloudMirrorManager.shared.getStatus()
         XCTAssertTrue(status.isEnabled)
-        if status.isCloudConnected {
-            XCTAssertNotNil(status.lastSyncTimestamp)
-        } else {
-            XCTAssertNil(status.lastSyncTimestamp)
-        }
+        if !status.isCloudConnected { XCTAssertNil(status.lastSyncTimestamp) }
         XCTAssertEqual(status.snapshotSizeBytes, size)
     }
 
@@ -5922,6 +5918,12 @@ final class FormAppTests: XCTestCase {
 
         CloudMirrorManager.shared.savePendingSync(backupJson: payload)
         XCTAssertTrue(CloudMirrorManager.shared.hasPendingSync)
+
+        // An older upload must not erase a newer backup staged while it was running.
+        CloudMirrorManager.shared.savePendingSync(backupJson: "newer")
+        CloudMirrorManager.shared.clearPendingSync(onlyIfMatching: payload)
+        XCTAssertTrue(CloudMirrorManager.shared.hasPendingSync)
+        CloudMirrorManager.shared.savePendingSync(backupJson: payload)
 
         // Retry pending sync
         CloudMirrorManager.shared.retryPendingSyncIfAny()

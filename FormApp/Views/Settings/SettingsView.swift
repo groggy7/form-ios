@@ -579,13 +579,14 @@ public struct CloudBackupSheet: View {
     }
 
     private var isBadgeActive: Bool {
-        isMirrorEnabled && mirrorStatus.isCloudConnected
+        isMirrorEnabled && mirrorStatus.isCloudConnected && !mirrorStatus.isUploadPending && mirrorStatus.lastSyncTimestamp != nil
     }
 
     private var badgeLabel: String {
         if !isMirrorEnabled { return "Paused" }
         if mirrorStatus.isCloudConnected {
-            return mirrorStatus.isUploadPending ? "Pending" : "Active"
+            if mirrorStatus.isUploadPending { return "Pending" }
+            return mirrorStatus.lastSyncTimestamp == nil ? "Ready" : "Active"
         }
         return "Local Only"
     }
@@ -779,7 +780,13 @@ public struct CloudBackupSheet: View {
             let status = CloudMirrorManager.shared.getStatus()
             lastSyncTime = status.lastSyncTimestamp.map { Date(timeIntervalSince1970: $0) }
             syncIsError = false
-            syncStatusMessage = status.isCloudConnected ? LanguageManager.t("form_lab.mirror_success") : "Saved local backup. Sign in to iCloud Drive for cloud backup."
+            if status.isCloudConnected {
+                syncStatusMessage = status.isUploadPending || status.lastSyncTimestamp == nil
+                    ? LanguageManager.t("form_lab.mirror_upload_pending")
+                    : LanguageManager.t("form_lab.mirror_success")
+            } else {
+                syncStatusMessage = "Saved local backup. Sign in to iCloud Drive for cloud backup."
+            }
         } catch {
             syncIsError = true
             syncStatusMessage = "Sync failed: \(error.localizedDescription)"
