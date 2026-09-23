@@ -145,6 +145,7 @@ public struct SettingsView: View {
                             .stroke(proManager.isProSubscribed ? AppColors.purple.opacity(0.5) : AppColors.border, lineWidth: 1)
                     )
                     .cornerRadius(16)
+                    .padding(.horizontal, 20)
 
                     // Training section
                     settingsSection(title: LanguageManager.t("settings.training")) {
