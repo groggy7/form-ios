@@ -13,6 +13,10 @@ public class StoreKitSubscriptionManager: ObservableObject {
         annualProductId
     ]
 
+    public static func isProProductId(_ productId: String) -> Bool {
+        productIds.contains(productId)
+    }
+
     private static let keyCachedEntitlement = "form_cached_pro_entitlement"
     private static let keyCachedEntitlementLastVerified = "form_cached_pro_entitlement_last_verified"
     private static let offlineGracePeriodSeconds: TimeInterval = 7 * 24 * 60 * 60 // 7 days
@@ -125,6 +129,9 @@ public class StoreKitSubscriptionManager: ObservableObject {
         switch result {
         case .success(let verification):
             let transaction = try checkVerified(verification)
+            guard Self.isProProductId(transaction.productID) else {
+                throw NSError(domain: "StoreKitSubscriptionManager", code: 403, userInfo: [NSLocalizedDescriptionKey: "Unexpected product in Pro purchase"])
+            }
             await updatePurchasedProducts()
             await transaction.finish()
             return .success
@@ -154,6 +161,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
         let now = Date()
         for await result in Transaction.currentEntitlements {
             guard case .verified(let transaction) = result else { continue }
+            guard Self.isProProductId(transaction.productID) else { continue }
             guard transaction.revocationDate == nil else { continue }
             if let expirationDate = transaction.expirationDate, expirationDate <= now {
                 continue
@@ -181,6 +189,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
                 guard let self = self else { return }
                 do {
                     let transaction = try self.checkVerified(result)
+                    guard await Self.isProProductId(transaction.productID) else { continue }
                     await self.updatePurchasedProducts()
                     await transaction.finish()
                 } catch {

@@ -6137,6 +6137,13 @@ final class FormAppTests: XCTestCase {
         XCTAssertNil(StoreKitSubscriptionManager.savingsPercentage(monthly: 0, annual: 40))
     }
 
+    @MainActor
+    func testOnlyKnownStoreKitProductsGrantPro() {
+        XCTAssertTrue(StoreKitSubscriptionManager.isProProductId(StoreKitSubscriptionManager.monthlyProductId))
+        XCTAssertTrue(StoreKitSubscriptionManager.isProProductId(StoreKitSubscriptionManager.annualProductId))
+        XCTAssertFalse(StoreKitSubscriptionManager.isProProductId("com.perseverancesoftware.forcedrep.other"))
+    }
+
     func testVolumeMatrixPaywallSnapshot() {
         let view = ProPaywallSheet(feature: .volumeMatrix)
         let controller = UIHostingController(rootView: view)
