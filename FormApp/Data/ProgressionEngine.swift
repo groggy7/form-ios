@@ -158,9 +158,9 @@ public enum ProgressionEngine {
         let allHitCeiling = !thresholdSets.isEmpty && thresholdSets.allSatisfy { ($0.reps ?? 0) >= repMax }
         let anyMissedFloor = thresholdSets.contains { ($0.reps ?? 0) < repMin }
 
-        // Plateau evaluation across up to 3 sessions
+        // Match Android: no load or top-weight rep improvement across the last 3 sessions.
         var isPlateau = false
-        var consecutiveStagnant = 1
+        var consecutiveStagnant = 0
         if sessions.count >= 3 {
             let s1 = sessions[0]
             let s2 = sessions[1]
@@ -170,14 +170,14 @@ public enum ProgressionEngine {
             let w2 = s2.topWeightKg
             let w3 = s3.topWeightKg
 
-            let weightStagnant = abs(w1 - w2) <= (w1 * 0.025) && abs(w2 - w3) <= (w2 * 0.025)
+            let weightStagnant = w1 <= w2 && w2 <= w3
             let r1 = s1.totalRepsAtTopWeight
             let r2 = s2.totalRepsAtTopWeight
             let r3 = s3.totalRepsAtTopWeight
 
-            let repsStagnant = r1 <= (r2 + 1) && r2 <= (r3 + 1)
+            let repsStagnant = r1 <= r2 && r2 <= r3
 
-            if weightStagnant && repsStagnant {
+            if weightStagnant && repsStagnant && !allHitCeiling {
                 isPlateau = true
                 consecutiveStagnant = 3
             }
@@ -330,8 +330,12 @@ public enum ProgressionEngine {
             )
         }
 
-        let calendar = Calendar(identifier: .iso8601)
-        let weekKeys = Set(history.compactMap { record -> String? in
+        var calendar = Calendar(identifier: .iso8601)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        let trainingWeeks = Set(history.compactMap { record -> Date? in
+            guard record.exerciseLogs.contains(where: { log in
+                log.sets.contains(where: { ($0.reps ?? 0) > 0 && !$0.isWarmup })
+            }) else { return nil }
             let dateStr = record.completedAt.isEmpty ? record.startedAt : record.completedAt
             guard dateStr.count >= 10 else { return nil }
             let dayStr = String(dateStr.prefix(10))
@@ -340,14 +344,21 @@ public enum ProgressionEngine {
             formatter.locale = Locale(identifier: "en_US_POSIX")
             formatter.timeZone = TimeZone(secondsFromGMT: 0)
             guard let date = formatter.date(from: dayStr) else { return nil }
-            let year = calendar.component(.yearForWeekOfYear, from: date)
-            let week = calendar.component(.weekOfYear, from: date)
-            return "\(year)-W\(String(format: "%02d", week))"
+            return calendar.dateInterval(of: .weekOfYear, for: date)?.start
         })
 
-        let consecutiveWeeks = min(max(weekKeys.count, 0), 12)
+        var consecutiveWeeks = 0
+        var week = trainingWeeks.max()
+        while let currentWeek = week, trainingWeeks.contains(currentWeek), consecutiveWeeks < 12 {
+            consecutiveWeeks += 1
+            week = calendar.date(byAdding: .weekOfYear, value: -1, to: currentWeek)
+        }
 
-        let exercises = activeProgram?.workouts.flatMap { $0.exercises } ?? []
+        let exercises = Array(Dictionary(
+            (activeProgram?.workouts.flatMap { $0.exercises } ?? []).map {
+                ($0.exerciseId ?? ExerciseCatalog.key($0.name), $0)
+            }, uniquingKeysWith: { first, _ in first }
+        ).values)
         let stagnantCount = exercises.filter { ex in
             computeProgression(exercise: ex, history: history).isPlateau
         }.count

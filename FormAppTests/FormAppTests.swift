@@ -4936,6 +4936,38 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(rec.suggestedVariationName, "Incline Dumbbell Press")
     }
 
+    func testProgressionTrainingWeeksRequireAnUnbrokenRun() {
+        func session(_ date: String) -> WorkoutSessionRecord {
+            WorkoutSessionRecord(
+                id: date, programId: "p1", workoutId: "w1", workoutTitle: "Push",
+                startedAt: "\(date)T10:00:00Z", completedAt: "\(date)T11:00:00Z",
+                durationSeconds: 3600,
+                exerciseLogs: [SessionExerciseLog(exerciseName: "Barbell Bench Press", sets: [SessionSetLog(setNumber: 1, weightKg: 80.0, reps: 10)])]
+            )
+        }
+        let scattered = ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16"].map(session)
+        let result = ProgressionEngine.evaluateMesocycleFatigue(history: scattered, activeProgram: nil)
+        XCTAssertEqual(result.consecutiveWeeksTrained, 1)
+        XCTAssertFalse(result.isRecommended)
+
+        let continuous = ["2026-08-10", "2026-08-17", "2026-08-24", "2026-08-31", "2026-09-07", "2026-09-14"].map(session)
+        XCTAssertEqual(ProgressionEngine.evaluateMesocycleFatigue(history: continuous, activeProgram: nil).consecutiveWeeksTrained, 6)
+    }
+
+    func testProgressionRepGainDoesNotTriggerPlateauPrompt() {
+        let exercise = Exercise(id: "bench-1", name: "Barbell Bench Press", exerciseId: "barbell-bench-press", sets: 3, reps: RepTarget(min: 8, max: 12))
+        let history = [("2026-09-03", 10), ("2026-09-10", 10), ("2026-09-17", 11)].map { entry in
+            let (date, reps) = entry
+            return WorkoutSessionRecord(
+                id: date, programId: "p1", workoutId: "w1", workoutTitle: "Push",
+                startedAt: "\(date)T10:00:00Z", completedAt: "\(date)T11:00:00Z",
+                durationSeconds: 3600,
+                exerciseLogs: [SessionExerciseLog(exerciseName: "Barbell Bench Press", sets: [SessionSetLog(setNumber: 1, weightKg: 80.0, reps: reps)])]
+            )
+        }
+        XCTAssertFalse(ProgressionEngine.computeProgression(exercise: exercise, history: history).isPlateau)
+    }
+
     func testProgressionEngineParsesRepRangesFromPrescription() {
         let exRange = Exercise(name: "Squat", prescription: "3 × 6–10")
         let (min1, max1) = ProgressionEngine.parseRepRange(exercise: exRange)
