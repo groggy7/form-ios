@@ -2277,6 +2277,9 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(catalogue.filter { !$0.exercise.cues.isEmpty }.count, 300)
         XCTAssertEqual(catalogue.filter { !$0.exercise.avoid.isEmpty }.count, 300)
         XCTAssertEqual(catalogue.filter { $0.exercise.exerciseId != nil }.count, 300)
+        XCTAssertTrue(ExerciseCatalog.canonicalExercises.values.allSatisfy { $0.cues.count == 2 && $0.avoid.count == 1 })
+        XCTAssertTrue(ExerciseCatalog.canonicalExercises["nordic-hamstring-curl"]?.cuesText.contains("Anchor your ankles") == true)
+        XCTAssertTrue(ExerciseCatalog.canonicalExercises["handstand-push-up"]?.cuesText.contains("handstand") == true)
     }
 
     func testCanonicalExercisesProvideTurkishCuesAndAvoid() {
@@ -2296,12 +2299,12 @@ final class FormAppTests: XCTestCase {
         defer { LanguageManager.setLanguage("en") }
 
         let localizedCues = LanguageManager.content(bench.cuesText)
-        XCTAssertTrue(localizedCues.contains("Gözler barın hizasında"))
-        XCTAssertTrue(localizedCues.contains("kürek kemiklerini"))
+        XCTAssertTrue(localizedCues.contains("Sehpada dengeli yerleş"))
+        XCTAssertTrue(localizedCues.contains("kontrollü biçimde göğsüne"))
 
         let localizedAvoid = LanguageManager.content(bench.avoidText)
-        XCTAssertTrue(localizedAvoid.contains("omuz sıkışmasına yol açar"))
-        XCTAssertTrue(localizedAvoid.contains("Barı göğüsten sektirmek"))
+        XCTAssertTrue(localizedAvoid.contains("Ağırlığı sektirme"))
+        XCTAssertFalse(localizedAvoid.contains("omuz sıkışmasına"))
 
         let firstCue = bench.cues.first!
         let localizedFirstCue = LanguageManager.content(firstCue)
@@ -2314,7 +2317,7 @@ final class FormAppTests: XCTestCase {
 
         let pullUps = Exercise(name: "Pull-Ups", exerciseId: "pull-ups")
         XCTAssertEqual(pullUps.displayName, "Barfiks")
-        XCTAssertTrue(pullUps.displayCues.contains("Barı omuzlardan biraz geniş"))
+        XCTAssertTrue(pullUps.displayCues.contains("Sağlam bir barı rahat bir tutuşla kavra"))
 
         let bench = Exercise(name: "Barbell Bench Press", exerciseId: "barbell-bench-press")
         XCTAssertEqual(bench.displayName, "Barbell Bench Press")
