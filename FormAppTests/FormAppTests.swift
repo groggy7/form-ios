@@ -4855,9 +4855,32 @@ final class FormAppTests: XCTestCase {
         let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)
         XCTAssertEqual(rec.action, .addReps)
         XCTAssertEqual(rec.suggestedWeightKg ?? 0, 80.0, accuracy: 0.01)
-        XCTAssertEqual(rec.suggestedRepsMin, 12)
+        XCTAssertEqual(rec.suggestedRepsMin, 10)
         XCTAssertEqual(rec.suggestedRepsMax, 12)
         XCTAssertFalse(rec.isPlateau)
+    }
+
+    func testProgressionUsesStableIdForRenamedHistory() {
+        let exercise = Exercise(
+            id: "bench-1", name: "Barbell Bench Press", exerciseId: "barbell-bench-press",
+            sets: 3, reps: RepTarget(min: 8, max: 12)
+        )
+        let record = WorkoutSessionRecord(
+            id: "renamed", programId: "p1", workoutId: "w1", workoutTitle: "Push",
+            startedAt: "2026-09-10T10:00:00Z", completedAt: "2026-09-10T11:00:00Z",
+            durationSeconds: 3600,
+            exerciseLogs: [SessionExerciseLog(
+                exerciseName: "Previous bench label",
+                sets: [SessionSetLog(setNumber: 1, weightKg: 80, reps: 10)],
+                exerciseId: "barbell-bench-press"
+            )]
+        )
+        XCTAssertEqual(ProgressionEngine.computeProgression(exercise: exercise, history: [record]).action, .addReps)
+
+        var conflicting = record
+        conflicting.exerciseLogs[0].exerciseName = exercise.name
+        conflicting.exerciseLogs[0].exerciseId = "barbell-back-squat"
+        XCTAssertEqual(ProgressionEngine.computeProgression(exercise: exercise, history: [conflicting]).action, .firstSession)
     }
 
     func testProgressionEngineRecommendsHoldLoadWhenSetsMissFloor() {
@@ -5683,6 +5706,29 @@ final class FormAppTests: XCTestCase {
     }
 
     // MARK: - Form Lab Unit & Snapshot Tests
+
+    func testFormLabStableIdsUnifyRenamedHistory() {
+        func record(_ id: String, _ date: String, _ name: String, _ weight: Double) -> WorkoutSessionRecord {
+            WorkoutSessionRecord(
+                id: id, programId: "p1", workoutId: "w1", workoutTitle: "Push",
+                startedAt: date, completedAt: date, durationSeconds: 3600,
+                exerciseLogs: [SessionExerciseLog(
+                    exerciseName: name,
+                    sets: [SessionSetLog(setNumber: 1, weightKg: weight, reps: 5)],
+                    exerciseId: "barbell-bench-press"
+                )]
+            )
+        }
+        let history = [
+            record("older", "2026-09-01T10:00:00Z", "Old bench label", 80),
+            record("newer", "2026-09-08T10:00:00Z", "Barbell Bench Press", 100)
+        ]
+        let summary = FormLabEngine.computeExerciseRepMax(exerciseName: "Barbell Bench Press", history: history)
+        XCTAssertEqual(summary?.estimated1rmKg ?? 0, 112.5, accuracy: 0.001)
+        XCTAssertEqual(FormLabEngine.computeLongitudinalCurve(exerciseName: "Barbell Bench Press", history: history).points.count, 2)
+        XCTAssertEqual(FormLabEngine.computeAllRepMaxSummaries(history: history).count, 1)
+        XCTAssertEqual(FormLabEngine.resolveExerciseMuscles(exerciseName: "Old bench label", exerciseId: "barbell-bench-press"), ["chest"])
+    }
 
     func testFormLabRepMaxCalculations() {
         // Brzycki

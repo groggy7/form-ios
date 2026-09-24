@@ -81,7 +81,10 @@ public struct FormLabEngine {
 
         for record in sortedRecords {
             for log in record.exerciseLogs {
-                guard normalizeExerciseName(log.exerciseName) == targetNorm else { continue }
+                guard ExerciseCatalog.sameExercise(
+                    leftId: nil, leftName: exerciseName,
+                    rightId: log.exerciseId, rightName: log.exerciseName
+                ) else { continue }
 
                 for set in log.sets {
                     guard !set.isWarmup else { continue }
@@ -103,7 +106,7 @@ public struct FormLabEngine {
         guard best1RM > 0 else { return nil }
 
         return ExerciseRepMaxSummary(
-            exerciseId: targetNorm,
+            exerciseId: ExerciseCatalog.resolveCanonicalId(stableId: nil, name: exerciseName) ?? targetNorm,
             exerciseName: exerciseName,
             bestWeightKg: bestWeight,
             bestReps: bestReps,
@@ -118,16 +121,18 @@ public struct FormLabEngine {
         history: [WorkoutSessionRecord],
         formula: RepMaxFormula = .brzycki
     ) -> [ExerciseRepMaxSummary] {
-        var names = Set<String>()
+        var namesByIdentity: [String: String] = [:]
         for record in history {
             for log in record.exerciseLogs {
                 if log.sets.contains(where: { !$0.isWarmup && ($0.weightKg ?? 0) > 0 && ($0.reps ?? 0) > 0 }) {
-                    names.insert(log.exerciseName)
+                    let canonicalId = ExerciseCatalog.resolveCanonicalId(stableId: log.exerciseId, name: log.exerciseName)
+                    let key = canonicalId ?? "name:\(normalizeExerciseName(log.exerciseName))"
+                    namesByIdentity[key] = canonicalId.flatMap { ExerciseCatalog.canonicalExercises[$0]?.name } ?? log.exerciseName
                 }
             }
         }
 
-        return names.compactMap { name in
+        return namesByIdentity.values.compactMap { name in
             computeExerciseRepMax(exerciseName: name, history: history, formula: formula)
         }.sorted { $0.estimated1rmKg > $1.estimated1rmKg }
     }
@@ -139,7 +144,6 @@ public struct FormLabEngine {
         today: Date = Date(),
         formula: RepMaxFormula = .brzycki
     ) -> LongitudinalCurveReport {
-        let targetNorm = normalizeExerciseName(exerciseName)
         let cutoffDate: Date? = timeframe.days.flatMap { Calendar.current.date(byAdding: .day, value: -$0, to: today) }
 
         var points: [StrengthDataPoint] = []
@@ -156,7 +160,10 @@ public struct FormLabEngine {
             if let cutoff = cutoffDate, recordDate < cutoff { continue }
 
             for log in record.exerciseLogs {
-                guard normalizeExerciseName(log.exerciseName) == targetNorm else { continue }
+                guard ExerciseCatalog.sameExercise(
+                    leftId: nil, leftName: exerciseName,
+                    rightId: log.exerciseId, rightName: log.exerciseName
+                ) else { continue }
 
                 var sessionPeak1RM: Double = 0
                 var sessionTopWeight: Double = 0
@@ -209,14 +216,10 @@ public struct FormLabEngine {
         )
     }
 
-    public static func resolveExerciseMuscles(exerciseName: String) -> [String] {
-        // Match canonical IDs/names, never broad substrings such as "curl".
-        let key = exerciseName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        let catalog = ExerciseCatalog.canonicalExercises
-        let exercise = catalog[key]
-            ?? catalog.values.first { $0.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased() == key }
-            ?? catalog[key.replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "_", with: "-")]
-        return ExerciseMuscleCatalog.shared?.profile(exercise?.id)?.primary ?? []
+    public static func resolveExerciseMuscles(exerciseName: String, exerciseId: String? = nil) -> [String] {
+        // Stable IDs win; legacy records use exact catalog names, never broad substrings.
+        let resolvedId = ExerciseCatalog.resolveCanonicalId(stableId: exerciseId, name: exerciseName)
+        return ExerciseMuscleCatalog.shared?.profile(resolvedId)?.primary ?? []
     }
 
     public static func computeAntagonistBalance(
@@ -246,7 +249,7 @@ public struct FormLabEngine {
             }
 
             for log in record.exerciseLogs {
-                let muscles = resolveExerciseMuscles(exerciseName: log.exerciseName)
+                let muscles = resolveExerciseMuscles(exerciseName: log.exerciseName, exerciseId: log.exerciseId)
                 let workingSetsCount = log.sets.filter { !$0.isWarmup && (($0.reps ?? 0) > 0 || ($0.weightKg ?? 0) > 0) }.count
                 guard workingSetsCount > 0 else { continue }
 

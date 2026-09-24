@@ -1223,6 +1223,14 @@ public enum ExerciseCatalog {
         return exercises[slug]?.id ?? exercises.values.first(where: { $0.id == slug })?.id
     }
 
+    /// Compare stable catalog identities first; use names for legacy/custom logs.
+    public static func sameExercise(leftId: String?, leftName: String, rightId: String?, rightName: String) -> Bool {
+        let left = resolveCanonicalId(stableId: leftId, name: leftName)
+        let right = resolveCanonicalId(stableId: rightId, name: rightName)
+        if let left, let right { return left.caseInsensitiveCompare(right) == .orderedSame }
+        return key(leftName) == key(rightName)
+    }
+
     public static var canonicalExercises: [String: ExerciseDefinition] {
         if let cached = _canonicalExercises { return cached }
         let loaded = AppStore.loadBundledExercises()

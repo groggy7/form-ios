@@ -77,10 +77,6 @@ public enum ProgressionEngine {
         exercise: Exercise,
         history: [WorkoutSessionRecord]
     ) -> [HistoricalSessionSets] {
-        let targetId = exercise.exerciseId?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        let targetName = exercise.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        let targetCanonical = ExerciseCatalog.key(exercise.name)
-
         var results: [HistoricalSessionSets] = []
 
         let sortedRecords = history.sorted { a, b in
@@ -91,14 +87,10 @@ public enum ProgressionEngine {
 
         for record in sortedRecords {
             for log in record.exerciseLogs {
-                let logName = log.exerciseName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-                let logCanonical = ExerciseCatalog.key(log.exerciseName)
-
-                let matches = (targetId != nil && (targetId == logName || targetId == logCanonical)) ||
-                    logName == targetName ||
-                    logCanonical == targetCanonical
-
-                if !matches { continue }
+                if !ExerciseCatalog.sameExercise(
+                    leftId: exercise.exerciseId, leftName: exercise.name,
+                    rightId: log.exerciseId, rightName: log.exerciseName
+                ) { continue }
 
                 let validSets = log.sets.filter { ($0.reps ?? 0) > 0 && !$0.isWarmup }
                 if !validSets.isEmpty {
@@ -268,8 +260,8 @@ public enum ProgressionEngine {
 
         // 3. Within rep bracket -> ADD_REPS
         if !anyMissedFloor {
-            let highestRepsAchieved = thresholdSets.map { $0.reps ?? 0 }.max() ?? repMin
-            let nextRepTarget = min(highestRepsAchieved + 1, repMax)
+            let lowestRepsAchieved = thresholdSets.map { $0.reps ?? 0 }.min() ?? repMin
+            let nextRepTarget = min(lowestRepsAchieved + 1, repMax)
             let weightDisplay = lastTopWeightKg <= 0.0 ? "BW" : formatWeight(lastTopWeightKg, unit: weightUnit)
 
             return ExerciseProgressionRecommendation(
