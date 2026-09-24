@@ -18,36 +18,35 @@ public enum ProgressionEngine {
         "rope-triceps-pressdown": ("overhead-cable-triceps-extension", "Overhead Cable Triceps Extension")
     ]
 
-    private static let prescriptionRangeRegex = try? NSRegularExpression(pattern: #"(\d+)\s*[-–—]\s*(\d+)"#)
-    private static let prescriptionFixedRegex = try? NSRegularExpression(pattern: #"(\d+)\s*(?:reps|rep)?"#, options: .caseInsensitive)
+    private static let prescriptionRepsRegex = try? NSRegularExpression(
+        pattern: #"^\s*(?:\d+\s*[×x]\s*)?(\d+)(?:\s*[-–—]\s*(\d+))?\s*(?:reps?)?(?:\s*/\s*(?:side|leg|arm))?\s*$"#,
+        options: .caseInsensitive
+    )
 
-    public static func parseRepRange(exercise: Exercise) -> (min: Int, max: Int) {
+    public static func parseRepRange(exercise: Exercise) -> (min: Int, max: Int)? {
         if let reps = exercise.reps {
-            let minR = reps.min ?? 8
+            if reps.toFailure { return nil }
+            guard let minR = reps.min ?? reps.max else { return nil }
             let maxR = reps.max ?? minR
+            guard minR > 0, maxR > 0 else { return nil }
             return (min(minR, maxR), max(minR, maxR))
         }
         let presc = exercise.prescription
         let nsPresc = presc as NSString
         let fullRange = NSRange(location: 0, length: nsPresc.length)
 
-        if let rangeMatch = prescriptionRangeRegex?.firstMatch(in: presc, range: fullRange),
-           rangeMatch.numberOfRanges >= 3 {
-            let minStr = nsPresc.substring(with: rangeMatch.range(at: 1))
-            let maxStr = nsPresc.substring(with: rangeMatch.range(at: 2))
-            let minVal = Int(minStr) ?? 8
-            let maxVal = Int(maxStr) ?? minVal
-            return (min(minVal, maxVal), max(minVal, maxVal))
+        guard let match = prescriptionRepsRegex?.firstMatch(in: presc, range: fullRange),
+              match.range(at: 1).location != NSNotFound,
+              let minVal = Int(nsPresc.substring(with: match.range(at: 1))) else { return nil }
+        let maxVal: Int
+        if match.range(at: 2).location == NSNotFound {
+            maxVal = minVal
+        } else {
+            guard let parsedMax = Int(nsPresc.substring(with: match.range(at: 2))) else { return nil }
+            maxVal = parsedMax
         }
-
-        if let fixedMatch = prescriptionFixedRegex?.firstMatch(in: presc, range: fullRange),
-           fixedMatch.numberOfRanges >= 2 {
-            let fixedStr = nsPresc.substring(with: fixedMatch.range(at: 1))
-            let fixedVal = Int(fixedStr) ?? 10
-            return (fixedVal, fixedVal)
-        }
-
-        return (8, 12)
+        guard minVal > 0, maxVal > 0 else { return nil }
+        return (min(minVal, maxVal), max(minVal, maxVal))
     }
 
     private struct HistoricalSessionSets {
@@ -110,8 +109,8 @@ public enum ProgressionEngine {
         exercise: Exercise,
         history: [WorkoutSessionRecord],
         weightUnit: WeightUnit = .kg
-    ) -> ExerciseProgressionRecommendation {
-        let (repMin, repMax) = parseRepRange(exercise: exercise)
+    ) -> ExerciseProgressionRecommendation? {
+        guard let (repMin, repMax) = parseRepRange(exercise: exercise) else { return nil }
         let exerciseId = exercise.exerciseId ?? ExerciseCatalog.key(exercise.name)
         let category = EquipmentCatalog.shared.categoryId(exerciseId)
 
@@ -352,7 +351,7 @@ public enum ProgressionEngine {
             }, uniquingKeysWith: { first, _ in first }
         ).values)
         let stagnantCount = exercises.filter { ex in
-            computeProgression(exercise: ex, history: history).isPlateau
+            computeProgression(exercise: ex, history: history)?.isPlateau == true
         }.count
 
         let isRecommended = stagnantCount >= 3 || consecutiveWeeks >= 6

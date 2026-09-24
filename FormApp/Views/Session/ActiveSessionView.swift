@@ -341,7 +341,7 @@ public struct ActiveSessionView: View {
                                         weightUnit: store.weightUnit
                                     )
 
-                                    if !store.isProgressionCardDismissed || proManager.isFeatureUnlocked(.autoProgression) {
+                                    if let recommendation, !store.isProgressionCardDismissed || proManager.isFeatureUnlocked(.autoProgression) {
                                         ProgressionCoachCard(
                                             recommendation: recommendation,
                                             onApplyTarget: {

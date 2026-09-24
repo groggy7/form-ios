@@ -461,7 +461,7 @@ public enum WorkoutSessionUtils {
                 prescription: exercise.displayPrescription
             )
         } else {
-            let (minReps, _) = ProgressionEngine.parseRepRange(exercise: exercise)
+            let minReps = ProgressionEngine.parseRepRange(exercise: exercise)?.min
             return GhostTarget(
                 lastWeekWeightKg: nil,
                 lastWeekReps: nil,
@@ -519,7 +519,7 @@ public enum WorkoutSessionUtils {
         )
 
         let repW = formatWeight(target.targetWeightKg, unit: unit)
-        let repR = target.targetReps
+        guard let repR = target.targetReps else { return lastWeekStr }
         let repTargetStr = "\(repW) \(unit.label) × \(repR) \(repsLabel)"
 
         let targetToBeatStr: String
@@ -560,7 +560,7 @@ public enum WorkoutSessionUtils {
         public let lastWeekWeightKg: Double?
         public let lastWeekReps: Int?
         public let targetWeightKg: Double
-        public let targetReps: Int
+        public let targetReps: Int?
         public let altWeightKg: Double?
         public let altReps: Int?
         public let isFirstSession: Bool
@@ -570,7 +570,7 @@ public enum WorkoutSessionUtils {
             lastWeekWeightKg: Double?,
             lastWeekReps: Int?,
             targetWeightKg: Double,
-            targetReps: Int,
+            targetReps: Int?,
             altWeightKg: Double?,
             altReps: Int?,
             isFirstSession: Bool,

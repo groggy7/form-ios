@@ -4514,7 +4514,7 @@ final class FormAppTests: XCTestCase {
                 ]
             )
         ]
-        let bwRec = ProgressionEngine.computeProgression(exercise: pullUp, history: bwHistory, weightUnit: .kg)
+        let bwRec = ProgressionEngine.computeProgression(exercise: pullUp, history: bwHistory, weightUnit: .kg)!
         XCTAssertEqual(bwRec.action, .addReps)
         XCTAssertEqual(bwRec.suggestedWeightDisplay, "BW")
         XCTAssertEqual(bwRec.suggestedRepsMin, 9)
@@ -4791,7 +4791,7 @@ final class FormAppTests: XCTestCase {
             sets: 3,
             reps: RepTarget(min: 8, max: 12)
         )
-        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: [])
+        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: [])!
         XCTAssertEqual(rec.action, .firstSession)
         XCTAssertNil(rec.suggestedWeightKg)
         XCTAssertEqual(rec.suggestedRepsMin, 8)
@@ -4829,7 +4829,7 @@ final class FormAppTests: XCTestCase {
             )
         ]
 
-        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)
+        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)!
         XCTAssertEqual(rec.action, .increaseLoad)
         XCTAssertEqual(rec.suggestedWeightKg ?? 0, 82.5, accuracy: 0.01)
         XCTAssertEqual(rec.suggestedRepsMin, 8)
@@ -4867,7 +4867,7 @@ final class FormAppTests: XCTestCase {
             )
         ]
 
-        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)
+        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)!
         XCTAssertEqual(rec.action, .addReps)
         XCTAssertEqual(rec.suggestedWeightKg ?? 0, 80.0, accuracy: 0.01)
         XCTAssertEqual(rec.suggestedRepsMin, 10)
@@ -4890,12 +4890,12 @@ final class FormAppTests: XCTestCase {
                 exerciseId: "barbell-bench-press"
             )]
         )
-        XCTAssertEqual(ProgressionEngine.computeProgression(exercise: exercise, history: [record]).action, .addReps)
+        XCTAssertEqual(ProgressionEngine.computeProgression(exercise: exercise, history: [record])?.action, .addReps)
 
         var conflicting = record
         conflicting.exerciseLogs[0].exerciseName = exercise.name
         conflicting.exerciseLogs[0].exerciseId = "barbell-back-squat"
-        XCTAssertEqual(ProgressionEngine.computeProgression(exercise: exercise, history: [conflicting]).action, .firstSession)
+        XCTAssertEqual(ProgressionEngine.computeProgression(exercise: exercise, history: [conflicting])?.action, .firstSession)
     }
 
     func testProgressionEngineRecommendsHoldLoadWhenSetsMissFloor() {
@@ -4928,7 +4928,7 @@ final class FormAppTests: XCTestCase {
             )
         ]
 
-        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)
+        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)!
         XCTAssertEqual(rec.action, .holdLoad)
         XCTAssertEqual(rec.suggestedWeightKg ?? 0, 80.0, accuracy: 0.01)
         XCTAssertEqual(rec.suggestedRepsMin, 8)
@@ -4966,7 +4966,7 @@ final class FormAppTests: XCTestCase {
             )
         }
 
-        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)
+        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)!
         XCTAssertTrue(rec.isPlateau)
         XCTAssertEqual(rec.action, .deload)
         XCTAssertEqual(rec.suggestedWeightKg ?? 0, 72.0, accuracy: 0.01)
@@ -5012,19 +5012,43 @@ final class FormAppTests: XCTestCase {
                 exerciseLogs: [SessionExerciseLog(exerciseName: "Barbell Bench Press", sets: [SessionSetLog(setNumber: 1, weightKg: 80.0, reps: reps)])]
             )
         }
-        XCTAssertFalse(ProgressionEngine.computeProgression(exercise: exercise, history: history).isPlateau)
+        XCTAssertFalse(ProgressionEngine.computeProgression(exercise: exercise, history: history)!.isPlateau)
     }
 
     func testProgressionEngineParsesRepRangesFromPrescription() {
         let exRange = Exercise(name: "Squat", prescription: "3 × 6–10")
-        let (min1, max1) = ProgressionEngine.parseRepRange(exercise: exRange)
+        let (min1, max1) = ProgressionEngine.parseRepRange(exercise: exRange)!
         XCTAssertEqual(min1, 6)
         XCTAssertEqual(max1, 10)
 
         let exFixed = Exercise(name: "Deadlift", prescription: "5 reps")
-        let (min2, max2) = ProgressionEngine.parseRepRange(exercise: exFixed)
+        let (min2, max2) = ProgressionEngine.parseRepRange(exercise: exFixed)!
         XCTAssertEqual(min2, 5)
         XCTAssertEqual(max2, 5)
+    }
+
+    func testProgressionUsesRepsAfterLegacySetCountAndSkipsTechnicalFailure() {
+        let legacy = Exercise(name: "Barbell Bench Press", exerciseId: "barbell-bench-press", prescription: "3 x 8 reps")
+        XCTAssertEqual(ProgressionEngine.parseRepRange(exercise: legacy)?.min, 8)
+        XCTAssertEqual(ProgressionEngine.parseRepRange(exercise: legacy)?.max, 8)
+
+        let history = [WorkoutSessionRecord(
+            id: "s1", programId: "p1", workoutId: "w1", workoutTitle: "Push",
+            startedAt: "2026-09-17T10:00:00Z", completedAt: "2026-09-17T11:00:00Z",
+            durationSeconds: 3600,
+            exerciseLogs: [SessionExerciseLog(
+                exerciseName: "Barbell Bench Press",
+                sets: [SessionSetLog(setNumber: 1, weightKg: 80, reps: 3)]
+            )]
+        )]
+        XCTAssertEqual(ProgressionEngine.computeProgression(exercise: legacy, history: history)?.action, .holdLoad)
+
+        var failure = legacy
+        failure.reps = RepTarget(toFailure: true)
+        XCTAssertNil(ProgressionEngine.parseRepRange(exercise: failure))
+        XCTAssertNil(ProgressionEngine.computeProgression(exercise: failure, history: []))
+        XCTAssertNil(ProgressionEngine.computeProgression(exercise: failure, history: history))
+        XCTAssertNil(WorkoutSessionUtils.computeGhostTarget(previousSets: [], workingSetIndex: 0, exercise: failure, unit: .kg).targetReps)
     }
 
     @MainActor
@@ -5058,7 +5082,7 @@ final class FormAppTests: XCTestCase {
             )
         ]
 
-        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)
+        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)!
         let card = ProgressionCoachCard(
             recommendation: rec,
             onApplyTarget: {},
