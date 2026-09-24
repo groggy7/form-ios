@@ -3027,7 +3027,7 @@ final class FormAppTests: XCTestCase {
         XCTAssertNil(statuses["2026-09-05"], "Saturday must have nil status when not started, NOT unfinished")
     }
 
-    func testWorkoutCalendarRestoreReconcilesScheduledWorkoutDate() {
+    func testWorkoutCalendarRestorePreservesLoggedDateAndExplicitPastDay() {
         let mondaySession = WorkoutSessionRecord(
             id: "session-push-a",
             programId: "prog-1",
@@ -3068,11 +3068,26 @@ final class FormAppTests: XCTestCase {
 
         let entry = restored.entries.first { $0.id == "session:session-push-a" }
         XCTAssertNotNil(entry)
-        XCTAssertEqual(entry?.date, "2026-08-31", "Session for Monday workout performed on Saturday must reconcile to Monday 2026-08-31")
+        XCTAssertEqual(entry?.date, "2026-09-05", "Restoring a saved session must not move it to the workout's usual weekday")
         XCTAssertEqual(entry?.status, .unfinished)
 
         let statuses = WorkoutCalendar.statuses(history: restored, today: "2026-09-05")
-        XCTAssertEqual(statuses["2026-08-31"], .unfinished, "August 31 must show unfinished, NOT missed")
+        XCTAssertEqual(statuses["2026-08-31"], .missed)
+        XCTAssertEqual(statuses["2026-09-05"], .unfinished)
+
+        var pastDayHistory = rawHistory
+        pastDayHistory.entries = [WorkoutDayEntry(id: "session:session-push-a", date: "2026-08-31", status: .unfinished)]
+        let pastDayRestore = WorkoutCalendar.restore(
+            raw: pastDayHistory, sessions: [mondaySession], today: "2026-09-05",
+            weekdays: [1, 2, 4, 5, 6], programs: [prog]
+        )
+        XCTAssertEqual(pastDayRestore.entries.first?.date, "2026-08-31")
+
+        let migrated = WorkoutCalendar.restore(
+            raw: nil, sessions: [mondaySession], today: "2026-09-05",
+            weekdays: [1, 2, 4, 5, 6], programs: [prog]
+        )
+        XCTAssertEqual(migrated.entries.first?.date, "2026-09-05")
     }
 
     func testProgramExerciseFixedSetsAndRepTargetModificationPersists() {

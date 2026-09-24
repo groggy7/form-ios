@@ -806,14 +806,9 @@ public enum WorkoutCalendar {
         let cal = Calendar(identifier: .gregorian)
         for session in sessions {
             let id = "session:\(session.id)"
-            let workoutDay = programs.first(where: { $0.id == session.programId })?.workouts.first(where: { $0.id == session.workoutId })?.day
-            let sessionDate = parseIsoTimestamp(session.startedAt) ?? parseIsoTimestamp(session.completedAt)
-            let scheduled: String? = {
-                guard let day = workoutDay, let date = sessionDate else { return nil }
-                return scheduledDate(forWeekday: day, relativeTo: date, calendar: cal)
-            }()
-            let day = scheduled
-                ?? entriesMap[id]?.date
+            // Preserve an explicit past-day assignment; otherwise use the actual
+            // session date instead of moving it to the workout's usual weekday.
+            let day = entriesMap[id]?.date
                 ?? localDate(from: session.startedAt, timeZone: timeZone)
                 ?? localDate(from: session.completedAt, timeZone: timeZone)
             if let d = day {

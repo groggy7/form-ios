@@ -313,7 +313,9 @@ public final class AppStore: ObservableObject {
 
         let sessionDay = (unfinishedRecord?.id).flatMap { recId in
             state.calendarHistory?.entries.first(where: { $0.id == "session:\(recId)" })?.date
-        } ?? WorkoutCalendar.scheduledDate(forWeekday: workout.day, relativeTo: now)
+        } ?? (allowPast
+            ? WorkoutCalendar.scheduledDate(forWeekday: workout.day, relativeTo: now)
+            : WorkoutCalendar.formatDate(now))
 
         let startedAtDate = now.addingTimeInterval(-Double(clampedPrevSecs))
         let startedAtEpoch = Int64(startedAtDate.timeIntervalSince1970 * 1000)
@@ -516,19 +518,11 @@ public final class AppStore: ObservableObject {
             state.calendarHistory?.entries.first(where: { $0.id == "session:\(draft.id)" })?.date
         }
         let recordEntryDate = state.calendarHistory?.entries.first(where: { $0.id == "session:\(finalRecord.id)" })?.date
-        let draftWorkoutDay = activeSession?.workout.day
-        let recordWorkoutDay = state.programs.first(where: { $0.id == finalRecord.programId })?.workouts.first(where: { $0.id == finalRecord.workoutId })?.day
-            ?? activeProgram?.workouts.first(where: { $0.id == finalRecord.workoutId })?.day
-            ?? state.programs.flatMap(\.workouts).first(where: { $0.id == finalRecord.workoutId })?.day
-        let targetWeekday = draftWorkoutDay ?? recordWorkoutDay
-
         let sessionDate: String
         if let d = draftEntryDate {
             sessionDate = d
         } else if let d = recordEntryDate {
             sessionDate = d
-        } else if let day = targetWeekday {
-            sessionDate = WorkoutCalendar.scheduledDate(forWeekday: day, relativeTo: Date())
         } else if let d = WorkoutCalendar.localDate(from: finalRecord.startedAt) {
             sessionDate = d
         } else if let d = WorkoutCalendar.localDate(from: finalRecord.completedAt) {
