@@ -77,6 +77,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
         let isWithinGrace = cachedActive && lastVerified > 0 && (now - lastVerified) <= Self.offlineGracePeriodSeconds && (lastVerified - now) <= 300
         if isWithinGrace {
             ProAccessManager.shared.updateSubscriptionStatus(active: true)
+            CloudMirrorManager.shared.retryPendingSyncIfAny()
         } else if cachedActive && (now - lastVerified) > Self.offlineGracePeriodSeconds {
             UserDefaults.standard.set(false, forKey: Self.keyCachedEntitlement)
             ProAccessManager.shared.updateSubscriptionStatus(active: false)
@@ -84,10 +85,9 @@ public class StoreKitSubscriptionManager: ObservableObject {
 
         transactionListener = listenForTransactions()
 
-        Task {
-            await requestProducts()
-            await updatePurchasedProducts()
-        }
+        // Entitlements must restore even when fetching paywall products is slow or offline.
+        Task { await updatePurchasedProducts() }
+        Task { await requestProducts() }
     }
 
     deinit {
@@ -174,6 +174,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
             UserDefaults.standard.set(true, forKey: Self.keyCachedEntitlement)
             UserDefaults.standard.set(now.timeIntervalSince1970, forKey: Self.keyCachedEntitlementLastVerified)
             ProAccessManager.shared.updateSubscriptionStatus(active: true)
+            CloudMirrorManager.shared.retryPendingSyncIfAny()
         } else {
             // Authoritative store query returned zero active entitlements.
             // Revoke Pro immediately and clear the cached verification timestamp.

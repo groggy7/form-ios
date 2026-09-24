@@ -101,6 +101,10 @@ public struct RootView: View {
             }
         }
         .preferredColorScheme(.dark)
+        .task {
+            // Restore subscriptions on every app launch, not only when a paywall opens.
+            _ = StoreKitSubscriptionManager.shared
+        }
         .onChange(of: scenePhase) { phase in
             if phase == .active {
                 store.checkAndArchiveStaleSession()
