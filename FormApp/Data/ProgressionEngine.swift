@@ -145,9 +145,10 @@ public enum ProgressionEngine {
             }
         }()
 
-        let thresholdSets = lastWorkingSets.filter { ($0.weightKg ?? 0.0) >= (lastTopWeightKg * 0.95) }
-        let allHitCeiling = !thresholdSets.isEmpty && thresholdSets.allSatisfy { ($0.reps ?? 0) >= repMax }
-        let anyMissedFloor = thresholdSets.contains { ($0.reps ?? 0) < repMin }
+        // Every logged working set must reach the ceiling before load increases.
+        let allHitCeiling = lastWorkingSets.allSatisfy { ($0.reps ?? 0) >= repMax }
+        let anyMissedFloor = lastWorkingSets.contains { ($0.reps ?? 0) < repMin }
+        let hasMixedWorkingLoads = lastWorkingSets.contains { ($0.weightKg ?? 0.0) < lastTopWeightKg - 0.01 }
 
         // Match Android: no load or top-weight rep improvement across the last 3 sessions.
         var isPlateau = false
@@ -197,7 +198,7 @@ public enum ProgressionEngine {
                 exerciseId: exerciseId,
                 exerciseName: exercise.name,
                 action: .deload,
-                suggestedWeightKg: deloadWeightKg,
+                suggestedWeightKg: hasMixedWorkingLoads ? nil : deloadWeightKg,
                 suggestedWeightDisplay: formatWeight(deloadWeightKg, unit: weightUnit),
                 suggestedRepsMin: repMin,
                 suggestedRepsMax: repMax,
@@ -238,12 +239,12 @@ public enum ProgressionEngine {
                 exerciseId: exerciseId,
                 exerciseName: exercise.name,
                 action: .increaseLoad,
-                suggestedWeightKg: newWeightKg,
+                suggestedWeightKg: hasMixedWorkingLoads ? nil : newWeightKg,
                 suggestedWeightDisplay: formatWeight(newWeightKg, unit: weightUnit),
                 suggestedRepsMin: repMin,
                 suggestedRepsMax: repMax,
                 weightDeltaDisplay: "+\(formattedDelta) \(weightUnit.label)",
-                rationaleKey: "progression.rationale.increase_load",
+                rationaleKey: hasMixedWorkingLoads ? "progression.rationale.increase_load_mixed" : "progression.rationale.increase_load",
                 rationaleArgs: [
                     "ceiling": "\(repMax)",
                     "lastWeight": formatWeight(lastTopWeightKg, unit: weightUnit),
@@ -259,7 +260,7 @@ public enum ProgressionEngine {
 
         // 3. Within rep bracket -> ADD_REPS
         if !anyMissedFloor {
-            let lowestRepsAchieved = thresholdSets.map { $0.reps ?? 0 }.min() ?? repMin
+            let lowestRepsAchieved = lastWorkingSets.map { $0.reps ?? 0 }.min() ?? repMin
             let nextRepTarget = min(lowestRepsAchieved + 1, repMax)
             let weightDisplay = lastTopWeightKg <= 0.0 ? "BW" : formatWeight(lastTopWeightKg, unit: weightUnit)
 
@@ -267,12 +268,12 @@ public enum ProgressionEngine {
                 exerciseId: exerciseId,
                 exerciseName: exercise.name,
                 action: .addReps,
-                suggestedWeightKg: lastTopWeightKg,
+                suggestedWeightKg: hasMixedWorkingLoads ? nil : lastTopWeightKg,
                 suggestedWeightDisplay: weightDisplay,
                 suggestedRepsMin: nextRepTarget,
                 suggestedRepsMax: repMax,
                 weightDeltaDisplay: nil,
-                rationaleKey: "progression.rationale.add_reps",
+                rationaleKey: hasMixedWorkingLoads ? "progression.rationale.add_reps_mixed" : "progression.rationale.add_reps",
                 rationaleArgs: [
                     "weight": weightDisplay,
                     "unit": lastTopWeightKg <= 0.0 ? "" : weightUnit.label,
@@ -290,12 +291,12 @@ public enum ProgressionEngine {
             exerciseId: exerciseId,
             exerciseName: exercise.name,
             action: .holdLoad,
-            suggestedWeightKg: lastTopWeightKg,
+            suggestedWeightKg: hasMixedWorkingLoads ? nil : lastTopWeightKg,
             suggestedWeightDisplay: holdWeightDisplay,
             suggestedRepsMin: repMin,
             suggestedRepsMax: repMax,
             weightDeltaDisplay: nil,
-            rationaleKey: "progression.rationale.hold_load",
+            rationaleKey: hasMixedWorkingLoads ? "progression.rationale.hold_load_mixed" : "progression.rationale.hold_load",
             rationaleArgs: [
                 "weight": holdWeightDisplay,
                 "unit": lastTopWeightKg <= 0.0 ? "" : weightUnit.label,

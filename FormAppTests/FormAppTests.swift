@@ -4837,6 +4837,46 @@ final class FormAppTests: XCTestCase {
         XCTAssertTrue(rec.weightDeltaDisplay?.contains("+2.5") == true)
     }
 
+    func testBackoffSetsGovernDoubleProgressionWithoutOverwritingTheirLoads() {
+        let benchPress = Exercise(
+            name: "Barbell Bench Press", exerciseId: "barbell-bench-press",
+            sets: 2, reps: RepTarget(min: 8, max: 12)
+        )
+
+        func recommendationFor(_ backoffReps: Int) -> ExerciseProgressionRecommendation {
+            let record = WorkoutSessionRecord(
+                id: "s1", programId: "p1", workoutId: "w1", workoutTitle: "Push",
+                startedAt: "2026-09-17T10:00:00Z", completedAt: "2026-09-17T11:00:00Z",
+                durationSeconds: 3600,
+                exerciseLogs: [SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [
+                        SessionSetLog(setNumber: 0, weightKg: 20, reps: 3, isWarmup: true),
+                        SessionSetLog(setNumber: 1, weightKg: 80, reps: 12),
+                        SessionSetLog(setNumber: 2, weightKg: 60, reps: backoffReps)
+                    ]
+                )]
+            )
+            return ProgressionEngine.computeProgression(exercise: benchPress, history: [record], weightUnit: .kg)!
+        }
+
+        let addReps = recommendationFor(10)
+        XCTAssertEqual(addReps.action, .addReps)
+        XCTAssertEqual(addReps.suggestedRepsMin, 11)
+        XCTAssertNil(addReps.suggestedWeightKg)
+        XCTAssertEqual(addReps.rationaleKey, "progression.rationale.add_reps_mixed")
+
+        let hold = recommendationFor(7)
+        XCTAssertEqual(hold.action, .holdLoad)
+        XCTAssertNil(hold.suggestedWeightKg)
+        XCTAssertEqual(hold.rationaleKey, "progression.rationale.hold_load_mixed")
+
+        let increase = recommendationFor(12)
+        XCTAssertEqual(increase.action, .increaseLoad)
+        XCTAssertNil(increase.suggestedWeightKg)
+        XCTAssertEqual(increase.rationaleKey, "progression.rationale.increase_load_mixed")
+    }
+
     func testProgressionEngineRecommendsAddRepsWhenWithinBracket() {
         let benchPress = Exercise(
             id: "bench-1",
