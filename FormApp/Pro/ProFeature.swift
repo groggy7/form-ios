@@ -82,9 +82,9 @@ public class ProAccessManager: ObservableObject {
 }
 
 public struct ProBadge: View {
-    public var text: String = "PRO"
+    public var text: String = "PREMIUM"
 
-    public init(text: String = "PRO") {
+    public init(text: String = "PREMIUM") {
         self.text = text
     }
 

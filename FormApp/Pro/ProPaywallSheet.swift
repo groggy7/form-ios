@@ -581,7 +581,7 @@ public struct ProPaywallPreview: View {
                 Image(systemName: "crown.fill")
                     .font(.system(size: 11, weight: .bold))
                     .foregroundColor(AppColors.purple)
-                Text("FORCED REP PRO")
+                Text(LanguageManager.t("paywall.badge"))
                     .font(.system(size: 10.5, weight: .bold))
                     .foregroundColor(AppColors.purple)
                     .tracking(0.5)

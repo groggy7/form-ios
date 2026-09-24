@@ -59,7 +59,7 @@ public struct SettingsView: View {
                                     .foregroundColor(AppColors.text)
                             }
                             Spacer()
-                            ProBadge(text: proManager.isProSubscribed ? "PRO ACTIVE" : "FREE")
+                            ProBadge(text: proManager.isProSubscribed ? "PREMIUM ACTIVE" : "FREE")
                         }
 
                         Text(LanguageManager.t(proManager.isProSubscribed ? "settings.pro_active" : "pro.volume_matrix.description"))
@@ -282,7 +282,7 @@ public struct SettingsView: View {
                                                 .font(.system(size: 15))
                                                 .foregroundColor(AppColors.text)
                                             if !proManager.isProSubscribed {
-                                                ProBadge(text: "PRO")
+                                                ProBadge(text: "PREMIUM")
                                             }
                                         }
                                         Text(cloudBackupSubtitle)

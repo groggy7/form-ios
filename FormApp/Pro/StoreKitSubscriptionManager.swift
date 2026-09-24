@@ -5,12 +5,18 @@ import StoreKit
 public class StoreKitSubscriptionManager: ObservableObject {
     public static let shared = StoreKitSubscriptionManager()
 
-    public static let monthlyProductId = "com.perseverancesoftware.forcedrep.pro.monthly"
-    public static let annualProductId = "com.perseverancesoftware.forcedrep.pro.annual"
+    public static let monthlyProductId = "com.perseverancesoftware.forcedrep.premium.monthly"
+    public static let annualProductId = "com.perseverancesoftware.forcedrep.premium.annual"
+
+    // Backward compatibility with legacy Pro IDs
+    public static let legacyMonthlyProductId = "com.perseverancesoftware.forcedrep.pro.monthly"
+    public static let legacyAnnualProductId = "com.perseverancesoftware.forcedrep.pro.annual"
 
     public static let productIds: Set<String> = [
         monthlyProductId,
-        annualProductId
+        annualProductId,
+        legacyMonthlyProductId,
+        legacyAnnualProductId
     ]
 
     public static func isProProductId(_ productId: String) -> Bool {
@@ -27,11 +33,11 @@ public class StoreKitSubscriptionManager: ObservableObject {
     @Published public var errorMessage: String? = nil
 
     public var monthlyProduct: Product? {
-        products.first { $0.id == Self.monthlyProductId }
+        products.first { $0.id == Self.monthlyProductId } ?? products.first { $0.id == Self.legacyMonthlyProductId }
     }
 
     public var annualProduct: Product? {
-        products.first { $0.id == Self.annualProductId }
+        products.first { $0.id == Self.annualProductId } ?? products.first { $0.id == Self.legacyAnnualProductId }
     }
 
     public var annualPerMonthDisplayPrice: String? {
@@ -104,8 +110,9 @@ public class StoreKitSubscriptionManager: ObservableObject {
     }
 
     public func purchase(plan: PaywallPlan) async throws -> PurchaseStatus {
-        let targetId = (plan == .annual) ? Self.annualProductId : Self.monthlyProductId
-        guard let product = products.first(where: { $0.id == targetId }) else {
+        let productToPurchase = (plan == .annual) ? annualProduct : monthlyProduct
+        let targetId = productToPurchase?.id ?? ((plan == .annual) ? Self.annualProductId : Self.monthlyProductId)
+        guard let product = productToPurchase ?? products.first(where: { $0.id == targetId }) else {
             // If product details haven't finished loading yet, try fetching again
             let fetched = try await Product.products(for: [targetId])
             guard let fetchedProduct = fetched.first else {

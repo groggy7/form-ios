@@ -320,7 +320,7 @@ private final class BackgroundTaskTracker: @unchecked Sendable {
     @discardableResult
     public func syncNow(backupJson: String) throws -> Int64 {
         guard ProAccessManager.shared.isFeatureUnlocked(.cloudBackup) else {
-            throw NSError(domain: "CloudMirror", code: 403, userInfo: [NSLocalizedDescriptionKey: "Cloud Mirror sync requires Forced Rep Pro"])
+            throw NSError(domain: "CloudMirror", code: 403, userInfo: [NSLocalizedDescriptionKey: "Cloud Mirror sync requires Forced Rep Premium"])
         }
         guard isEnabled else {
             throw NSError(domain: "CloudMirror", code: 1, userInfo: [NSLocalizedDescriptionKey: "Cloud Mirror is disabled"])

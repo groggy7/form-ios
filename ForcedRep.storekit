@@ -72,17 +72,17 @@
       "id" : "21495831",
       "localizations" : [
         {
-          "description" : "Unlock all Forced Rep Pro features",
-          "displayName" : "Forced Rep Pro",
+          "description" : "Unlock all Forced Rep Premium features",
+          "displayName" : "Forced Rep Premium",
           "locale" : "en_US"
         },
         {
-          "description" : "Tüm Forced Rep Pro özelliklerinin kilidini açın",
-          "displayName" : "Forced Rep Pro",
+          "description" : "Tüm Forced Rep Premium özelliklerinin kilidini açın",
+          "displayName" : "Forced Rep Premium",
           "locale" : "tr"
         }
       ],
-      "name" : "Forced Rep Pro",
+      "name" : "Forced Rep Premium",
       "subscriptions" : [
         {
           "adHocOffers" : [
@@ -98,17 +98,17 @@
           "introductoryOffer" : null,
           "localizations" : [
             {
-              "description" : "Monthly subscription with complete Pro access",
-              "displayName" : "Forced Rep Pro Monthly",
+              "description" : "Monthly subscription with complete Premium access",
+              "displayName" : "Forced Rep Premium Monthly",
               "locale" : "en_US"
             },
             {
-              "description" : "Eksiksiz Pro erişimi ile aylık abonelik",
-              "displayName" : "Forced Rep Pro Aylık",
+              "description" : "Eksiksiz Premium erişimi ile aylık abonelik",
+              "displayName" : "Forced Rep Premium Aylık",
               "locale" : "tr"
             }
           ],
-          "productID" : "com.perseverancesoftware.forcedrep.pro.monthly",
+          "productID" : "com.perseverancesoftware.forcedrep.premium.monthly",
           "recurringSubscriptionPeriod" : "P1M",
           "referenceName" : "Monthly Access",
           "subscriptionGroupID" : "21495831",
@@ -137,16 +137,16 @@
           "localizations" : [
             {
               "description" : "Annual subscription with 7-day free trial",
-              "displayName" : "Forced Rep Pro Annual",
+              "displayName" : "Forced Rep Premium Annual",
               "locale" : "en_US"
             },
             {
               "description" : "7 günlük ücretsiz deneme ile yıllık abonelik",
-              "displayName" : "Forced Rep Pro Yıllık",
+              "displayName" : "Forced Rep Premium Yıllık",
               "locale" : "tr"
             }
           ],
-          "productID" : "com.perseverancesoftware.forcedrep.pro.annual",
+          "productID" : "com.perseverancesoftware.forcedrep.premium.annual",
           "recurringSubscriptionPeriod" : "P1Y",
           "referenceName" : "Annual Access",
           "subscriptionGroupID" : "21495831",

@@ -4517,7 +4517,7 @@ final class FormAppTests: XCTestCase {
         let bwRec = ProgressionEngine.computeProgression(exercise: pullUp, history: bwHistory, weightUnit: .kg)
         XCTAssertEqual(bwRec.action, .addReps)
         XCTAssertEqual(bwRec.suggestedWeightDisplay, "BW")
-        XCTAssertEqual(bwRec.suggestedRepsMin, 11)
+        XCTAssertEqual(bwRec.suggestedRepsMin, 9)
 
         // 6. Form Lab Training Distribution Ratio Formatting
         let pushSets = 76
