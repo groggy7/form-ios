@@ -28,6 +28,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
     private static let offlineGracePeriodSeconds: TimeInterval = 7 * 24 * 60 * 60 // 7 days
 
     @Published public var products: [Product] = []
+    @Published public private(set) var eligibleFreeTrialProductIds: Set<String> = []
     @Published public var purchasedProductIds: Set<String> = []
     @Published public var isPurchasing: Bool = false
     @Published public var errorMessage: String? = nil
@@ -61,10 +62,10 @@ public class StoreKitSubscriptionManager: ObservableObject {
     }
 
     public func hasFreeTrial(for plan: PaywallPlan) -> Bool {
+        guard purchasedProductIds.isEmpty else { return false }
         let product = (plan == .annual) ? annualProduct : monthlyProduct
-        guard let subscription = product?.subscription else { return false }
-        guard let intro = subscription.introductoryOffer else { return false }
-        return intro.paymentMode == .freeTrial
+        guard let product else { return false }
+        return eligibleFreeTrialProductIds.contains(product.id)
     }
 
     public enum PurchaseStatus {
@@ -101,9 +102,18 @@ public class StoreKitSubscriptionManager: ObservableObject {
     }
 
     public func requestProducts() async {
+        eligibleFreeTrialProductIds = []
         do {
             let fetched = try await Product.products(for: Self.productIds)
+            var eligibleIds: Set<String> = []
+            for product in fetched {
+                guard let subscription = product.subscription,
+                      subscription.introductoryOffer?.paymentMode == .freeTrial,
+                      await subscription.isEligibleForIntroOffer else { continue }
+                eligibleIds.insert(product.id)
+            }
             self.products = fetched.sorted { $0.price < $1.price }
+            self.eligibleFreeTrialProductIds = purchasedProductIds.isEmpty ? eligibleIds : []
         } catch {
             print("[StoreKit] Failed to fetch products: \(error)")
         }
@@ -178,6 +188,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
         self.purchasedProductIds = purchasedIds
         let isPro = !purchasedIds.isEmpty
         if isPro {
+            eligibleFreeTrialProductIds = []
             UserDefaults.standard.set(true, forKey: Self.keyCachedEntitlement)
             UserDefaults.standard.set(now.timeIntervalSince1970, forKey: Self.keyCachedEntitlementLastVerified)
             ProAccessManager.shared.updateSubscriptionStatus(active: true)

@@ -95,6 +95,12 @@ public struct ProPaywallSheet: View {
         selectedPlan == .annual ? storeKit.annualProduct != nil : storeKit.monthlyProduct != nil
     }
 
+    private func selectDefaultPlanIfNeeded() {
+        if !userInteractedWithPlan && !storeKit.hasFreeTrial(for: .annual) && storeKit.hasFreeTrial(for: .monthly) {
+            selectedPlan = .monthly
+        }
+    }
+
     private func performPurchase() {
         guard !storeKit.isPurchasing else { return }
         purchaseErrorMessage = nil
@@ -548,16 +554,9 @@ public struct ProPaywallSheet: View {
                 .padding(.horizontal, 20)
                 .padding(.vertical, 24)
             }
-            .onAppear {
-                if !userInteractedWithPlan && !storeKit.hasFreeTrial(for: .annual) && storeKit.hasFreeTrial(for: .monthly) {
-                    selectedPlan = .monthly
-                }
-            }
-            .onChange(of: storeKit.products) { _ in
-                if !userInteractedWithPlan && !storeKit.hasFreeTrial(for: .annual) && storeKit.hasFreeTrial(for: .monthly) {
-                    selectedPlan = .monthly
-                }
-            }
+            .onAppear(perform: selectDefaultPlanIfNeeded)
+            .onChange(of: storeKit.products) { selectDefaultPlanIfNeeded() }
+            .onChange(of: storeKit.eligibleFreeTrialProductIds) { selectDefaultPlanIfNeeded() }
         }
     }
 }
