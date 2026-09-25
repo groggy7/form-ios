@@ -12,7 +12,7 @@ public struct BottomDock: View {
             dockItem(mode: .today, title: LanguageManager.t("nav.today"), icon: "bolt.fill")
             dockItem(mode: .plan, title: LanguageManager.t("nav.plan"), icon: "calendar")
             dockItem(mode: .library, title: LanguageManager.t("nav.library"), icon: "dumbbell.fill")
-            dockItem(mode: .history, title: LanguageManager.t("nav.history"), icon: "clock.arrow.circlepath")
+            dockItem(mode: .history, title: LanguageManager.t("nav.progress"), icon: "chart.xyaxis.line")
         }
         .padding(6)
         .frame(maxWidth: 360)

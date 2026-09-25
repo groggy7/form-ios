@@ -83,7 +83,7 @@ public struct HistoryView: View {
             VStack(spacing: 16) {
                 // Header row
                 HStack(alignment: .center) {
-                    Text(LanguageManager.t("nav.history"))
+                    Text(LanguageManager.t("nav.progress"))
                         .font(.system(size: 28, weight: .semibold))
                         .foregroundColor(AppColors.text)
 
