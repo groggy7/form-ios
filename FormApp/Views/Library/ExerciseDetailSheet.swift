@@ -775,6 +775,7 @@ struct ExerciseSessionHistoryCard: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
+            // Header: full-bleed interactive area
             Button(action: onToggleExpand) {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack(alignment: .center) {
@@ -818,6 +819,9 @@ struct ExerciseSessionHistoryCard: View {
                             .foregroundColor(AppColors.muted)
                     }
                 }
+                .padding(16)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
 
@@ -825,48 +829,59 @@ struct ExerciseSessionHistoryCard: View {
                 Rectangle()
                     .fill(AppColors.historyStatCardBorder.opacity(0.6))
                     .frame(height: 1)
-                    .padding(.vertical, 12)
+                    .padding(.horizontal, 16)
 
-                ForEach(Array(session.sets.enumerated()), id: \.offset) { index, setLog in
-                    if index > 0 {
-                        Rectangle()
-                            .fill(AppColors.historyStatCardBorder.opacity(0.4))
-                            .frame(height: 1)
-                            .padding(.vertical, 10)
-                    }
+                // Sets section: also interactive to toggle collapse
+                Button(action: onToggleExpand) {
+                    VStack(alignment: .leading, spacing: 0) {
+                        ForEach(Array(session.sets.enumerated()), id: \.offset) { index, setLog in
+                            if index > 0 {
+                                Rectangle()
+                                    .fill(AppColors.historyStatCardBorder.opacity(0.4))
+                                    .frame(height: 1)
+                                    .padding(.vertical, 10)
+                            }
 
-                    HStack {
-                        HStack(spacing: 6) {
-                            Text("Set \(setLog.setNumber)")
-                                .font(.system(size: 14))
-                                .foregroundColor(AppColors.historyStatCardTitle)
+                            HStack {
+                                HStack(spacing: 6) {
+                                    Text("Set \(setLog.setNumber)")
+                                        .font(.system(size: 14))
+                                        .foregroundColor(AppColors.historyStatCardTitle)
 
-                            if setLog.isWarmup {
-                                Text("W")
-                                    .font(.system(size: 10, weight: .bold))
-                                    .foregroundColor(AppColors.historyStat1RmAmber)
-                                    .padding(.horizontal, 5)
-                                    .padding(.vertical, 1)
-                                    .background(AppColors.historyStat1RmAmber.opacity(0.15))
-                                    .cornerRadius(4)
+                                    if setLog.isWarmup {
+                                        Text("W")
+                                            .font(.system(size: 10, weight: .bold))
+                                            .foregroundColor(AppColors.historyStat1RmAmber)
+                                            .padding(.horizontal, 5)
+                                            .padding(.vertical, 1)
+                                            .background(AppColors.historyStat1RmAmber.opacity(0.15))
+                                            .cornerRadius(4)
+                                    }
+                                }
+
+                                Spacer()
+
+                                let setDetail: String = {
+                                    if let w = setLog.weightKg, w > 0.0 {
+                                        return "\(weightUnit.formatWeight(w)) \(weightUnit.label) × \(setLog.reps ?? 0)"
+                                    } else {
+                                        return "\(setLog.reps ?? 0) reps"
+                                    }
+                                }()
+
+                                Text(setDetail)
+                                    .font(.system(size: 15, weight: .bold))
+                                    .foregroundColor(.white)
                             }
                         }
-
-                        Spacer()
-
-                        let setDetail: String = {
-                            if let w = setLog.weightKg, w > 0.0 {
-                                return "\(weightUnit.formatWeight(w)) \(weightUnit.label) × \(setLog.reps ?? 0)"
-                            } else {
-                                return "\(setLog.reps ?? 0) reps"
-                            }
-                        }()
-
-                        Text(setDetail)
-                            .font(.system(size: 15, weight: .bold))
-                            .foregroundColor(.white)
                     }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 12)
+                    .padding(.bottom, onOpenWorkout != nil ? 4 : 16)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .contentShape(Rectangle())
                 }
+                .buttonStyle(.plain)
 
                 if let onOpenWorkout = onOpenWorkout {
                     Button(action: onOpenWorkout) {
@@ -877,13 +892,14 @@ struct ExerciseSessionHistoryCard: View {
                                 .font(.system(size: 10, weight: .bold))
                         }
                         .foregroundColor(AppColors.accent)
-                        .padding(.top, 12)
+                        .padding(.horizontal, 16)
+                        .padding(.top, 8)
+                        .padding(.bottom, 16)
                     }
                     .buttonStyle(.plain)
                 }
             }
         }
-        .padding(16)
         .background(AppColors.historyStatCardBg)
         .cornerRadius(16)
         .overlay(
