@@ -4,7 +4,8 @@
     "policies" : [
       {
         "locale" : "en_US",
-        "policyText" : ""
+        "policyText" : "",
+        "policyURL" : ""
       }
     ]
   },
