@@ -111,60 +111,11 @@ public struct HistoryView: View {
                 .padding(.horizontal, 20)
                 .padding(.top, 10)
 
-                // Segmented Control: Calendar vs Volume Matrix vs Form Lab
-                HStack(spacing: 3) {
-                    Button(action: { activeTab = .calendar }) {
-                        Text(LanguageManager.t("history.calendar"))
-                            .font(.system(size: 13, weight: activeTab == .calendar ? .semibold : .medium))
-                            .foregroundColor(activeTab == .calendar ? AppColors.text : AppColors.muted)
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(activeTab == .calendar ? AppColors.surfaceRaised : Color.clear)
-                            .cornerRadius(9)
-                    }
-                    .buttonStyle(.plain)
-
-                    Button(action: {
-                        activeTab = .volumeMatrix
-                    }) {
-                        HStack(spacing: 3) {
-                            Text(LanguageManager.t("history.volumeMatrix"))
-                                .font(.system(size: 11, weight: activeTab == .volumeMatrix ? .semibold : .medium))
-                                .foregroundColor(activeTab == .volumeMatrix ? AppColors.text : AppColors.muted)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.85)
-                            ProBadge()
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(activeTab == .volumeMatrix ? AppColors.surfaceRaised : Color.clear)
-                        .cornerRadius(9)
-                    }
-                    .buttonStyle(.plain)
-
-                    Button(action: {
-                        activeTab = .formLab
-                    }) {
-                        HStack(spacing: 3) {
-                            Text(LanguageManager.t("history.formLab"))
-                                .font(.system(size: 11, weight: activeTab == .formLab ? .semibold : .medium))
-                                .foregroundColor(activeTab == .formLab ? AppColors.text : AppColors.muted)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.85)
-                            ProBadge()
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(activeTab == .formLab ? AppColors.surfaceRaised : Color.clear)
-                        .cornerRadius(9)
-                    }
-                    .buttonStyle(.plain)
+                HStack(alignment: .bottom, spacing: 0) {
+                    historyTab(.calendar, label: LanguageManager.t("history.calendar"))
+                    historyTab(.volumeMatrix, label: LanguageManager.t("history.volumeMatrix"), isPro: true)
+                    historyTab(.formLab, label: LanguageManager.t("history.formLab"), isPro: true)
                 }
-                .frame(height: 44)
-                .padding(3)
-                .background(AppColors.surface)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(AppColors.border, lineWidth: 1)
-                )
-                .cornerRadius(12)
                 .padding(.horizontal, 20)
 
                 if activeTab == .volumeMatrix {
@@ -381,6 +332,38 @@ public struct HistoryView: View {
     }
 }
 }
+
+    private func historyTab(_ tab: HistoryTab, label: String, isPro: Bool = false) -> some View {
+        let isSelected = activeTab == tab
+        return Button {
+            activeTab = tab
+        } label: {
+            HStack(spacing: 4) {
+                Text(label)
+                    .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
+                    .foregroundColor(isSelected ? AppColors.text : AppColors.muted)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                if isPro {
+                    Image(systemName: "crown.fill")
+                        .font(.system(size: 12))
+                        .foregroundColor(AppColors.purple)
+                        .accessibilityHidden(true)
+                }
+            }
+            .frame(maxWidth: .infinity, minHeight: 48)
+            .overlay(alignment: .bottom) {
+                Rectangle()
+                    .fill(isSelected ? AppColors.accent : AppColors.border)
+                    .frame(height: isSelected ? 2 : 1)
+            }
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(isPro ? "\(label), \(LanguageManager.t("paywall.feature_badge"))" : label)
+        .accessibilityAddTraits(isSelected ? .isSelected : [])
+    }
 
     private func handleWorkoutAction(detail: HistoryDayDetailData) {
         guard let workout = detail.workout else { return }
