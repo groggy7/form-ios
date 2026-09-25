@@ -4822,6 +4822,39 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(report.muscleSummaries["calves"]?.zone, .underMev)
     }
 
+    func testExerciseSessionHistoryEntryBestSet() {
+        let entry1 = ExerciseSessionHistoryEntry(
+            sessionId: "s1",
+            date: "2026-09-24T10:00:00Z",
+            workoutTitle: "Push Day",
+            sets: [
+                SessionSetLog(setNumber: 1, weightKg: 60.0, reps: 10, isWarmup: true),
+                SessionSetLog(setNumber: 2, weightKg: 100.0, reps: 8, isWarmup: false),
+                SessionSetLog(setNumber: 3, weightKg: 140.0, reps: 5, isWarmup: false)
+            ]
+        )
+        XCTAssertEqual(entry1.bestSet(weightUnit: .kg), "140 kg × 5")
+
+        let entryBodyweight = ExerciseSessionHistoryEntry(
+            sessionId: "s2",
+            date: "2026-09-22T10:00:00Z",
+            workoutTitle: "Pull Day",
+            sets: [
+                SessionSetLog(setNumber: 1, weightKg: 0.0, reps: 12, isWarmup: false),
+                SessionSetLog(setNumber: 2, weightKg: 0.0, reps: 15, isWarmup: false)
+            ]
+        )
+        XCTAssertEqual(entryBodyweight.bestSet(weightUnit: .kg), "15 reps")
+
+        let entryEmpty = ExerciseSessionHistoryEntry(
+            sessionId: "s3",
+            date: "2026-09-20T10:00:00Z",
+            workoutTitle: "Empty",
+            sets: []
+        )
+        XCTAssertNil(entryEmpty.bestSet(weightUnit: .kg))
+    }
+
     func testProgressionEngineReturnsFirstSessionWhenHistoryIsEmpty() {
         let benchPress = Exercise(
             id: "bench-1",

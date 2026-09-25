@@ -359,6 +359,27 @@ public struct ExerciseSessionHistoryEntry: Identifiable, Hashable {
         self.workoutTitle = workoutTitle
         self.sets = sets
     }
+
+    public func bestSet(weightUnit: WeightUnit) -> String? {
+        let nonWarmup = sets.filter { !$0.isWarmup && (($0.weightKg ?? 0) > 0 || ($0.reps ?? 0) > 0) }
+        let candidates = nonWarmup.isEmpty ? sets.filter { ($0.weightKg ?? 0) > 0 || ($0.reps ?? 0) > 0 } : nonWarmup
+        guard !candidates.isEmpty else { return nil }
+
+        let weighted = candidates.filter { ($0.weightKg ?? 0) > 0 && ($0.reps ?? 0) > 0 }
+        if let bestWeighted = weighted.max(by: { s1, s2 in
+            let w1 = s1.weightKg ?? 0
+            let w2 = s2.weightKg ?? 0
+            if abs(w1 - w2) > 0.001 { return w1 < w2 }
+            return (s1.reps ?? 0) < (s2.reps ?? 0)
+        }) {
+            return "\(weightUnit.formatWeight(bestWeighted.weightKg ?? 0)) \(weightUnit.label) × \(bestWeighted.reps ?? 0)"
+        }
+
+        if let bestReps = candidates.max(by: { ($0.reps ?? 0) < ($1.reps ?? 0) }) {
+            return "\(bestReps.reps ?? 0) reps"
+        }
+        return nil
+    }
 }
 
 public struct ExerciseHistoryStats: Hashable {
