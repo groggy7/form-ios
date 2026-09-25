@@ -396,6 +396,7 @@ public typealias ExerciseDetailSheet = ExerciseDetailView
 struct ExerciseHistoryStatsRow: View {
     let stats: ExerciseHistoryStats
     let weightUnit: WeightUnit
+    @State private var show1RmInfoSheet = false
 
     var body: some View {
         VStack(spacing: 10) {
@@ -449,32 +450,10 @@ struct ExerciseHistoryStatsRow: View {
                     value: est1rmValue,
                     valueColor: AppColors.historyStat1RmAmber,
                     subtitle: LanguageManager.t("exercise.history.brzyckiEq"),
-                    subtitleColor: AppColors.historyStatCardTitle
+                    subtitleColor: AppColors.historyStatCardTitle,
+                    onTap: { show1RmInfoSheet = true }
                 )
             }
-
-            VStack(alignment: .leading, spacing: 6) {
-                if let source = stats.estimateSourceSet {
-                    Text(LanguageManager.t("form_lab.achieved_with", [
-                        "weight": "\(weightUnit.formatWeight(source.weightKg ?? 0)) \(weightUnit.label)",
-                        "reps": "\(source.reps ?? 0)",
-                        "date": formatSessionDate(stats.estimateSourceDate ?? ""),
-                        "formula": "Brzycki"
-                    ]))
-                    .foregroundColor(AppColors.secondaryText)
-                } else {
-                    Text(LanguageManager.t("form_lab.no_weighted_sets"))
-                        .foregroundColor(AppColors.secondaryText)
-                }
-                Text(LanguageManager.t("form_lab.estimate_policy"))
-                    .foregroundColor(AppColors.muted)
-            }
-            .font(.system(size: 12))
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(12)
-            .background(AppColors.surface)
-            .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
-            .cornerRadius(12)
 
             // Row 2: Total Sets & Total Volume
             HStack(spacing: 10) {
@@ -510,6 +489,13 @@ struct ExerciseHistoryStatsRow: View {
             }
         }
         .frame(maxWidth: .infinity)
+        .sheet(isPresented: $show1RmInfoSheet) {
+            Estimated1RmInfoSheet(
+                stats: stats,
+                weightUnit: weightUnit,
+                onDismiss: { show1RmInfoSheet = false }
+            )
+        }
     }
 }
 
@@ -521,6 +507,7 @@ struct HistoryStatCard: View {
     let valueColor: Color
     let subtitle: String
     let subtitleColor: Color
+    var onTap: (() -> Void)? = nil
 
     var body: some View {
         VStack(spacing: 0) {
@@ -545,6 +532,13 @@ struct HistoryStatCard: View {
                     .fixedSize(horizontal: false, vertical: true)
                     .lineSpacing(2)
                     .kerning(0.4)
+
+                if onTap != nil {
+                    Spacer(minLength: 2)
+                    Image(systemName: "info.circle")
+                        .font(.system(size: 12))
+                        .foregroundColor(AppColors.muted)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -575,6 +569,143 @@ struct HistoryStatCard: View {
             RoundedRectangle(cornerRadius: 16)
                 .stroke(AppColors.historyStatCardBorder, lineWidth: 1)
         )
+        .contentShape(RoundedRectangle(cornerRadius: 16))
+        .onTapGesture {
+            onTap?()
+        }
+    }
+}
+
+struct Estimated1RmInfoSheet: View {
+    let stats: ExerciseHistoryStats
+    let weightUnit: WeightUnit
+    var onDismiss: () -> Void
+
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 0) {
+                // Header
+                HStack(alignment: .center, spacing: 12) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(AppColors.historyStat1RmAmber.opacity(0.15))
+                            .frame(width: 36, height: 36)
+                        RoundedRectangle(cornerRadius: 10)
+                            .stroke(AppColors.historyStat1RmAmber.opacity(0.4), lineWidth: 1)
+                            .frame(width: 36, height: 36)
+                        Image(systemName: "chart.bar.fill")
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundColor(AppColors.historyStat1RmAmber)
+                    }
+
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(LanguageManager.t("exercise.history.estimated1rmTitle"))
+                            .font(.system(size: 17, weight: .bold))
+                            .foregroundColor(AppColors.text)
+                        Text(LanguageManager.t("exercise.history.brzyckiEq"))
+                            .font(.system(size: 12))
+                            .foregroundColor(AppColors.muted)
+                    }
+
+                    Spacer()
+
+                    Button(action: onDismiss) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 14, weight: .bold))
+                            .foregroundColor(AppColors.secondaryText)
+                            .frame(width: 32, height: 32)
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 18)
+                .padding(.bottom, 14)
+
+                ScrollView {
+                    VStack(spacing: 16) {
+                        // Calculation highlight card
+                        let est1rmValue: String = {
+                            if let est = stats.estimated1rmKg {
+                                return "\(weightUnit.formatWeight(est)) \(weightUnit.label)"
+                            } else {
+                                return "—"
+                            }
+                        }()
+
+                        VStack(spacing: 8) {
+                            Text(est1rmValue)
+                                .font(.system(size: 32, weight: .bold))
+                                .foregroundColor(AppColors.historyStat1RmAmber)
+
+                            let sourceText: String = {
+                                if let source = stats.estimateSourceSet {
+                                    return LanguageManager.t("form_lab.achieved_with", [
+                                        "weight": "\(weightUnit.formatWeight(source.weightKg ?? 0)) \(weightUnit.label)",
+                                        "reps": "\(source.reps ?? 0)",
+                                        "date": formatSessionDate(stats.estimateSourceDate ?? ""),
+                                        "formula": "Brzycki"
+                                    ])
+                                } else {
+                                    return LanguageManager.t("form_lab.no_weighted_sets")
+                                }
+                            }()
+
+                            Text(sourceText)
+                                .font(.system(size: 13))
+                                .foregroundColor(AppColors.secondaryText)
+                                .multilineTextAlignment(.center)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .padding(18)
+                        .background(AppColors.historyStatCardBg)
+                        .cornerRadius(16)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 16)
+                                .stroke(AppColors.historyStatCardBorder, lineWidth: 1)
+                        )
+
+                        // Formula card
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text(LanguageManager.t("form_lab.info_brzycki_epley_title"))
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundColor(AppColors.text)
+                            Text(LanguageManager.t("form_lab.info_brzycki_epley_desc"))
+                                .font(.system(size: 12))
+                                .lineSpacing(3)
+                                .foregroundColor(AppColors.secondaryText)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(14)
+                        .background(AppColors.surfaceRaised)
+                        .cornerRadius(14)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14)
+                                .stroke(AppColors.border, lineWidth: 1)
+                        )
+
+                        // Policy card
+                        VStack(alignment: .leading, spacing: 6) {
+                            Text(LanguageManager.t("form_lab.estimate_policy"))
+                                .font(.system(size: 12))
+                                .lineSpacing(3)
+                                .foregroundColor(AppColors.muted)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(14)
+                        .background(AppColors.surfaceRaised)
+                        .cornerRadius(14)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14)
+                                .stroke(AppColors.border, lineWidth: 1)
+                        )
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 32)
+                }
+            }
+            .background(AppColors.surface.ignoresSafeArea())
+        }
+        .presentationDetents([.fraction(0.55), .large])
+        .presentationDragIndicator(.visible)
     }
 }
 
