@@ -6178,6 +6178,55 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
+    func testFormLabRepMaxEmptySnapshot() {
+        let store = AppStore()
+        // Provide mock history with only >10 rep sets for Barbell Bench Press so no 1-10 rep sets exist
+        let session = WorkoutSessionRecord(
+            id: "s-lab-empty-snap",
+            programId: "p1",
+            workoutId: "w1",
+            workoutTitle: "Hypertrophy High Reps",
+            startedAt: "2026-09-15T10:00:00Z",
+            completedAt: "2026-09-15T11:00:00Z",
+            durationSeconds: 3600,
+            totalVolumeKg: 2400.0,
+            totalCompletedSets: 5,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: (1...3).map { SessionSetLog(setNumber: $0, weightKg: 60.0, reps: 15, isWarmup: false) }
+                )
+            ]
+        )
+        var state = store.state
+        state.history = [session]
+        store.saveState(state)
+
+        let labView = FormLabView(store: store)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 16)
+            .background(AppColors.background)
+
+        let controller = UIHostingController(rootView: labView)
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 750)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 750))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { _ in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+        if let data = image.pngData() {
+            let path = "/tmp/ios_form_lab_matrix_empty_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote Form Lab empty snapshot to \(path)")
+        }
+    }
+
+    @MainActor
     func testFormLabInfoSheetSnapshot() {
         let sheet = FormLabInfoSheet()
 

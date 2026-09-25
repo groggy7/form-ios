@@ -266,17 +266,20 @@ public struct FormLabView: View {
                     }
                 }
             } else {
-                VStack(spacing: 8) {
+                VStack(spacing: 10) {
                     Image(systemName: "dumbbell")
                         .font(.system(size: 32))
                         .foregroundColor(AppColors.muted)
                     Text(LanguageManager.t("form_lab.no_weighted_sets"))
                         .font(.system(size: 13))
                         .foregroundColor(AppColors.secondaryText)
+                        .multilineTextAlignment(.center)
                 }
-                .frame(maxWidth: .infinity)
+                .padding(.horizontal, 24)
                 .padding(.vertical, 32)
+                .frame(maxWidth: .infinity)
                 .background(AppColors.surfaceRaised)
+                .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
                 .cornerRadius(16)
             }
         }
@@ -412,13 +415,15 @@ public struct FormLabView: View {
                 }
 
                 if report.points.isEmpty {
-                    VStack(spacing: 8) {
+                    VStack(spacing: 10) {
                         Image(systemName: "chart.xyaxis.line")
                             .font(.system(size: 32))
                             .foregroundColor(AppColors.muted)
                         Text(LanguageManager.t("form_lab.no_weighted_sets"))
                             .font(.system(size: 13))
                             .foregroundColor(AppColors.secondaryText)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 16)
                     }
                     .frame(maxWidth: .infinity)
                     .frame(height: 180)
