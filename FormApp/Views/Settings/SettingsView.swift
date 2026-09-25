@@ -49,17 +49,13 @@ public struct SettingsView: View {
                 VStack(alignment: .leading, spacing: 20) {
                     // Forced Rep Pro Membership Card
                     VStack(alignment: .leading, spacing: 12) {
-                        HStack {
-                            HStack(spacing: 8) {
-                                Image(systemName: "crown.fill")
-                                    .font(.system(size: 16, weight: .bold))
-                                    .foregroundColor(proManager.isProSubscribed ? AppColors.purple : AppColors.accent)
-                                Text(LanguageManager.t("settings.pro_membership"))
-                                    .font(.system(size: 16, weight: .bold))
-                                    .foregroundColor(AppColors.text)
-                            }
-                            Spacer()
-                            ProBadge(text: proManager.isProSubscribed ? "PREMIUM ACTIVE" : "FREE")
+                        HStack(spacing: 8) {
+                            Image(systemName: "crown.fill")
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(proManager.isProSubscribed ? AppColors.purple : AppColors.accent)
+                            Text(LanguageManager.t("settings.pro_membership"))
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundColor(AppColors.text)
                         }
 
                         Text(LanguageManager.t(proManager.isProSubscribed ? "settings.pro_active" : "pro.volume_matrix.description"))
