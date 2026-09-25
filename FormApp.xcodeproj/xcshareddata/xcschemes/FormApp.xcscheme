@@ -85,7 +85,7 @@
          </BuildableReference>
       </BuildableProductRunnable>
       <StoreKitConfigurationFileReference
-         identifier = "../../ForcedRep.storekit">
+         identifier = "../../../ForcedRep.storekit">
       </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
