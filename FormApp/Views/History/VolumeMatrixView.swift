@@ -77,10 +77,13 @@ public struct VolumeMatrixView: View {
                         .font(.system(size: 14, weight: !isPlannedMode ? .bold : .medium))
                         .foregroundColor(!isPlannedMode ? .white : Color(hex: 0x7E8B9B))
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(!isPlannedMode ? Color(hex: 0x0E2528) : Color.clear)
+                        .background(LinearGradient(
+                            colors: !isPlannedMode ? [Color(hex: 0x0C292A), Color(hex: 0x0D2224)] : [.clear, .clear],
+                            startPoint: .leading, endPoint: .trailing
+                        ))
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(!isPlannedMode ? Color(hex: 0x20D791) : Color.clear, lineWidth: 1.5)
+                                .stroke(!isPlannedMode ? Color(hex: 0x1D5350) : Color.clear, lineWidth: 1.5)
                         )
                         .cornerRadius(12)
                 }
@@ -91,10 +94,13 @@ public struct VolumeMatrixView: View {
                         .font(.system(size: 14, weight: isPlannedMode ? .bold : .medium))
                         .foregroundColor(isPlannedMode ? .white : Color(hex: 0x7E8B9B))
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(isPlannedMode ? Color(hex: 0x0E2528) : Color.clear)
+                        .background(LinearGradient(
+                            colors: isPlannedMode ? [Color(hex: 0x0C292A), Color(hex: 0x0D2224)] : [.clear, .clear],
+                            startPoint: .leading, endPoint: .trailing
+                        ))
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(isPlannedMode ? Color(hex: 0x20D791) : Color.clear, lineWidth: 1.5)
+                                .stroke(isPlannedMode ? Color(hex: 0x1D5350) : Color.clear, lineWidth: 1.5)
                         )
                         .cornerRadius(12)
                 }
@@ -102,45 +108,53 @@ public struct VolumeMatrixView: View {
             }
             .frame(height: 48)
             .padding(4)
-            .background(Color(hex: 0x0C1014))
-            .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color(hex: 0x1E2630), lineWidth: 1))
+            .background(Color(hex: 0x0F1518))
+            .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color(hex: 0x2B373C), lineWidth: 1))
             .cornerRadius(16)
 
             // Week Navigator (for Logged Mode)
             if !isPlannedMode {
                 ZStack {
-                    // Ambient diagonal teal wave canvas
+                    // Dark teal base and a low-contrast tone crossing behind the week label.
                     Canvas { context, size in
                         let w = size.width
                         let h = size.height
-                        var path = Path()
-                        path.move(to: CGPoint(x: 0, y: h * 0.85))
-                        path.addCurve(
-                            to: CGPoint(x: w, y: h * 0.35),
-                            control1: CGPoint(x: w * 0.3, y: h * 0.45),
-                            control2: CGPoint(x: w * 0.7, y: h * 0.95)
+                        context.fill(
+                            Path(CGRect(origin: .zero, size: size)),
+                            with: .linearGradient(
+                                Gradient(colors: [Color(hex: 0x0C2427), Color(hex: 0x071719)]),
+                                startPoint: .zero,
+                                endPoint: CGPoint(x: w, y: h)
+                            )
                         )
+                        var path = Path()
+                        path.move(to: CGPoint(x: w * 0.34, y: h))
+                        path.addCurve(
+                            to: CGPoint(x: w * 0.89, y: 0),
+                            control1: CGPoint(x: w * 0.62, y: h * 1.02),
+                            control2: CGPoint(x: w * 0.76, y: h * 0.4)
+                        )
+                        path.addLine(to: CGPoint(x: w, y: 0))
                         path.addLine(to: CGPoint(x: w, y: h))
-                        path.addLine(to: CGPoint(x: 0, y: h))
                         path.closeSubpath()
 
                         context.fill(
                             path,
                             with: .linearGradient(
-                                Gradient(colors: [Color(hex: 0x0F3B3F).opacity(0.30), Color.clear]),
-                                startPoint: CGPoint(x: 0, y: h),
+                                Gradient(colors: [Color(hex: 0x071D20), Color(hex: 0x062527)]),
+                                startPoint: CGPoint(x: w * 0.34, y: h),
                                 endPoint: CGPoint(x: w, y: 0)
                             )
                         )
 
                         var line = Path()
-                        line.move(to: CGPoint(x: 0, y: h * 0.85))
+                        line.move(to: CGPoint(x: w * 0.34, y: h))
                         line.addCurve(
-                            to: CGPoint(x: w, y: h * 0.35),
-                            control1: CGPoint(x: w * 0.3, y: h * 0.45),
-                            control2: CGPoint(x: w * 0.7, y: h * 0.95)
+                            to: CGPoint(x: w * 0.89, y: 0),
+                            control1: CGPoint(x: w * 0.62, y: h * 1.02),
+                            control2: CGPoint(x: w * 0.76, y: h * 0.4)
                         )
-                        context.stroke(line, with: .color(Color(hex: 0x1EC98B).opacity(0.16)), lineWidth: 1.2)
+                        context.stroke(line, with: .color(Color(hex: 0x3A817C).opacity(0.14)), lineWidth: 1.2)
                     }
 
                     HStack {
@@ -185,8 +199,8 @@ public struct VolumeMatrixView: View {
                     .padding(.horizontal, 14)
                 }
                 .frame(height: 70)
-                .background(Color(hex: 0x11171D))
-                .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color(hex: 0x1E2833), lineWidth: 1))
+                .background(Color(hex: 0x0A1B1E))
+                .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color(hex: 0x1A4547), lineWidth: 1))
                 .cornerRadius(18)
             }
 
@@ -200,9 +214,9 @@ public struct VolumeMatrixView: View {
             }
             HStack(alignment: .top, spacing: 10) {
                 kpiCard(title: LanguageManager.t(report.isPlannedRoutine ? "matrix.stat.plannedSets" : "matrix.stat.totalSets"),
-                    value: "\(report.totalWorkingSets)", subtitle: LanguageManager.t("matrix.setsUnit"), icon: "dumbbell.fill", color: AppColors.purple)
+                    value: "\(report.totalWorkingSets)", subtitle: LanguageManager.t("matrix.setsUnit"), icon: "dumbbell.fill", color: AppColors.purple, tone: .purple)
                 kpiCard(title: LanguageManager.t("matrix.stat.credits"), value: String(format: "%.1f", report.totalEffectiveSets),
-                    subtitle: LanguageManager.t("matrix.creditsUnit"), icon: "chart.bar.fill", color: AppColors.accent)
+                    subtitle: LanguageManager.t("matrix.creditsUnit"), icon: "chart.bar.fill", color: AppColors.accent, tone: .teal)
             }
             Text(LanguageManager.t("matrix.creditNote"))
                 .font(.system(size: 12)).foregroundColor(AppColors.muted)
@@ -330,19 +344,47 @@ public struct VolumeMatrixView: View {
         }
     }
 
-    private func kpiCard(title: String, value: String, subtitle: String, icon: String, color: Color) -> some View {
+    private struct KpiTone {
+        let surfaceTop: Color
+        let surfaceBottom: Color
+        let waveStart: Color
+        let waveEnd: Color
+        let border: Color
+        let waveLine: Color
+
+        static let purple = KpiTone(
+            surfaceTop: Color(hex: 0x191A25), surfaceBottom: Color(hex: 0x10151C),
+            waveStart: Color(hex: 0x171824), waveEnd: Color(hex: 0x201F2D),
+            border: Color(hex: 0x3A3452), waveLine: Color(hex: 0x55496E)
+        )
+        static let teal = KpiTone(
+            surfaceTop: Color(hex: 0x0C1E1E), surfaceBottom: Color(hex: 0x091517),
+            waveStart: Color(hex: 0x0A1E1E), waveEnd: Color(hex: 0x0D2725),
+            border: Color(hex: 0x1B4841), waveLine: Color(hex: 0x286A5D)
+        )
+    }
+
+    private func kpiCard(title: String, value: String, subtitle: String, icon: String, color: Color, tone: KpiTone) -> some View {
         ZStack(alignment: .topLeading) {
-            // Ambient corner wave glow matching theme color
+            // The full surface shifts in tone; the curved band adds a second, quieter layer.
             Canvas { context, size in
                 let w = size.width
                 let h = size.height
+                context.fill(
+                    Path(CGRect(origin: .zero, size: size)),
+                    with: .linearGradient(
+                        Gradient(colors: [tone.surfaceTop, tone.surfaceBottom]),
+                        startPoint: .zero,
+                        endPoint: CGPoint(x: w, y: h)
+                    )
+                )
 
                 var wave = Path()
-                wave.move(to: CGPoint(x: w * 0.35, y: h))
+                wave.move(to: CGPoint(x: w * 0.05, y: h * 1.02))
                 wave.addCurve(
-                    to: CGPoint(x: w, y: h * 0.62),
-                    control1: CGPoint(x: w * 0.55, y: h * 0.95),
-                    control2: CGPoint(x: w * 0.75, y: h * 0.78)
+                    to: CGPoint(x: w, y: h * 0.66),
+                    control1: CGPoint(x: w * 0.48, y: h * 1.05),
+                    control2: CGPoint(x: w * 0.62, y: h * 0.82)
                 )
                 wave.addLine(to: CGPoint(x: w, y: h))
                 wave.closeSubpath()
@@ -350,20 +392,20 @@ public struct VolumeMatrixView: View {
                 context.fill(
                     wave,
                     with: .linearGradient(
-                        Gradient(colors: [color.opacity(0.22), color.opacity(0.04)]),
-                        startPoint: CGPoint(x: w * 0.5, y: h),
-                        endPoint: CGPoint(x: w, y: h * 0.62)
+                        Gradient(colors: [tone.waveStart, tone.waveEnd]),
+                        startPoint: CGPoint(x: w * 0.05, y: h),
+                        endPoint: CGPoint(x: w, y: h * 0.66)
                     )
                 )
 
                 var stroke = Path()
-                stroke.move(to: CGPoint(x: w * 0.35, y: h))
+                stroke.move(to: CGPoint(x: w * 0.05, y: h * 1.02))
                 stroke.addCurve(
-                    to: CGPoint(x: w, y: h * 0.62),
-                    control1: CGPoint(x: w * 0.55, y: h * 0.95),
-                    control2: CGPoint(x: w * 0.75, y: h * 0.78)
+                    to: CGPoint(x: w, y: h * 0.66),
+                    control1: CGPoint(x: w * 0.48, y: h * 1.05),
+                    control2: CGPoint(x: w * 0.62, y: h * 0.82)
                 )
-                context.stroke(stroke, with: .color(color.opacity(0.18)), lineWidth: 1.5)
+                context.stroke(stroke, with: .color(tone.waveLine.opacity(0.3)), lineWidth: 1.2)
             }
 
             VStack(alignment: .leading, spacing: 0) {
@@ -404,8 +446,8 @@ public struct VolumeMatrixView: View {
         }
         .frame(maxWidth: .infinity)
         .frame(minHeight: 114)
-        .background(Color(hex: 0x10151B))
-        .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color(hex: 0x1F2732), lineWidth: 1))
+        .background(tone.surfaceBottom)
+        .overlay(RoundedRectangle(cornerRadius: 18).stroke(tone.border, lineWidth: 1))
         .cornerRadius(18)
     }
 
