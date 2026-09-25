@@ -32,12 +32,12 @@ public enum VolumeZone: String, CaseIterable {
 
     public var color: Color {
         switch self {
-        case .noWeeklyReference: return Color(hex: 0x8F999F)
-        case .underMev: return Color(hex: 0x62717E)
-        case .progressive: return Color(hex: 0x3890C2)
-        case .optimalMav: return Color(hex: 0x2EAA76)
-        case .highFatigue: return Color(hex: 0x9E7FE0)
-        case .overMrv: return Color(hex: 0xD66A5E)
+        case .noWeeklyReference: return Color(hex: 0x8FA0AD)
+        case .underMev: return Color(hex: 0x627485)
+        case .progressive: return Color(hex: 0x38BDF8)
+        case .optimalMav: return Color(hex: 0x10B981)
+        case .highFatigue: return Color(hex: 0xA855F7)
+        case .overMrv: return Color(hex: 0xF45D48)
         }
     }
 
@@ -45,10 +45,10 @@ public enum VolumeZone: String, CaseIterable {
         switch self {
         case .noWeeklyReference: return Color(hex: 0x1E252B)
         case .underMev: return Color(hex: 0x1E252B)
-        case .progressive: return Color(hex: 0x0F1E29)
-        case .optimalMav: return Color(hex: 0x11261E)
-        case .highFatigue: return Color(hex: 0x221A33)
-        case .overMrv: return Color(hex: 0x2B1616)
+        case .progressive: return Color(hex: 0x0C283E)
+        case .optimalMav: return Color(hex: 0x0B2F21)
+        case .highFatigue: return Color(hex: 0x291442)
+        case .overMrv: return Color(hex: 0x361614)
         }
     }
 }

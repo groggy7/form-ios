@@ -303,7 +303,7 @@ public struct VolumeMatrixView: View {
                     ForEach(VolumeMatrixEngine.canonicalMuscles, id: \.self) { muscleKey in
                         let summary = report.muscleSummaries[muscleKey]
                         let isSelected = muscleKey == selectedMuscleKey
-                        let zoneColor = summary?.zone.color ?? Color(hex: 0x62717E)
+                        let zoneColor = summary?.zone.color ?? Color(hex: 0x627485)
 
                         Button(action: {
                             selectedMuscleKey = muscleKey
@@ -465,15 +465,39 @@ public struct VolumeMatrixView: View {
             context.scaleBy(x: scale, y: scale)
             context.draw(Image(uiImage: image), in: CGRect(x: 0, y: 0, width: catalog.width, height: catalog.height))
             context.translateBy(x: -anatomy.offsetX, y: 0)
-            context.blendMode = .color
-
             for (muscle, path) in paths {
                 let summary = report.muscleSummaries[muscle]
                 let zone = summary?.zone ?? .underMev
                 let isSelected = (muscle == selectedMuscleKey)
-                let baseAlpha: Double = (zone == .underMev || zone == .noWeeklyReference) ? 0.80 : 0.65
-                context.opacity = isSelected ? 0.90 : baseAlpha
-                context.fill(Path(path), with: .color(zone.color))
+                let p = Path(path)
+
+                if zone == .underMev || zone == .noWeeklyReference {
+                    var baseContext = context
+                    baseContext.blendMode = .color
+                    baseContext.opacity = 0.50
+                    baseContext.fill(p, with: .color(zone.color))
+                } else {
+                    // Active worked muscle: rich, vibrant color pass
+                    var colorContext = context
+                    colorContext.blendMode = .color
+                    colorContext.opacity = isSelected ? 1.0 : 0.92
+                    colorContext.fill(p, with: .color(zone.color))
+
+                    // Luminous screen pass to lift dark shadows and make the colors pop
+                    var screenContext = context
+                    screenContext.blendMode = .screen
+                    screenContext.opacity = isSelected ? 0.32 : 0.20
+                    screenContext.fill(p, with: .color(zone.color))
+
+                    // Subtle contour outline for muscle separation
+                    var strokeContext = context
+                    strokeContext.blendMode = .normal
+                    strokeContext.stroke(
+                        p,
+                        with: .color(zone.color.opacity(isSelected ? 0.90 : 0.40)),
+                        lineWidth: isSelected ? 2.0 : 1.0
+                    )
+                }
             }
         }
     }
