@@ -14,6 +14,9 @@ public struct SettingsView: View {
     @State private var showExportSheet: Bool = false
     @State private var exportText: String = ""
     @State private var isShowingFileImporter: Bool = false
+    @State private var isShowingBackupImporter: Bool = false
+    @State private var backupToRestore: String? = nil
+    @State private var showRestoreBackupAlert: Bool = false
     @State private var importPreview: HistoryImportPreview? = nil
     @State private var importErrorMessage: String? = nil
 
@@ -291,7 +294,7 @@ public struct SettingsView: View {
 
                             Divider().background(AppColors.border)
 
-                            Button(action: {}) {
+                            Button(action: { isShowingBackupImporter = true }) {
                                 HStack {
                                     Text(LanguageManager.t("settings.restoreBackup"))
                                         .font(.system(size: 15))
@@ -436,6 +439,57 @@ public struct SettingsView: View {
             ) { result in
                 handleFileImportResult(result)
             }
+            .fileImporter(
+                isPresented: $isShowingBackupImporter,
+                allowedContentTypes: [.json],
+                allowsMultipleSelection: false
+            ) { result in
+                switch result {
+                case .success(let urls):
+                    guard let url = urls.first else { return }
+                    guard url.startAccessingSecurityScopedResource() else {
+                        importErrorMessage = "Could not access selected backup file."
+                        return
+                    }
+                    defer { url.stopAccessingSecurityScopedResource() }
+                    do {
+                        let data = try Data(contentsOf: url)
+                        if let jsonString = String(data: data, encoding: .utf8) {
+                            backupToRestore = jsonString
+                            showRestoreBackupAlert = true
+                        } else {
+                            importErrorMessage = "The selected backup file is not valid UTF-8 text."
+                        }
+                    } catch {
+                        importErrorMessage = error.localizedDescription
+                    }
+                case .failure(let error):
+                    importErrorMessage = error.localizedDescription
+                }
+            }
+            .alert(
+                LanguageManager.t("form_lab.mirror_restore_confirm"),
+                isPresented: $showRestoreBackupAlert,
+                actions: {
+                    Button(LanguageManager.t("settings.restoreBackup"), role: .destructive) {
+                        if let json = backupToRestore {
+                            let success = store.restoreBackupJson(json)
+                            if success {
+                                store.noticeMessage = LanguageManager.t("notice.backupRestored")
+                            } else {
+                                importErrorMessage = LanguageManager.t("notice.restoreFailed")
+                            }
+                            backupToRestore = nil
+                        }
+                    }
+                    Button(LanguageManager.t("modal.cancel"), role: .cancel) {
+                        backupToRestore = nil
+                    }
+                },
+                message: {
+                    Text(LanguageManager.t("form_lab.mirror_restore_warning"))
+                }
+            )
             .sheet(item: $importPreview) { preview in
                 HistoryImportPreviewSheet(
                     preview: preview,

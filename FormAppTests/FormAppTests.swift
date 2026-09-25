@@ -4783,6 +4783,45 @@ final class FormAppTests: XCTestCase {
         )
     }
 
+    func testHeavylifterBackupDecodingAndVolumeMatrixZones() throws {
+        let testDir = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+        let fixtureUrl = Bundle(for: FormAppTests.self).url(forResource: "heavylifter_backup", withExtension: "json")
+            ?? testDir.appendingPathComponent("../FormApp/Resources/Fixtures/heavylifter_backup.json").standardized
+        let data = try Data(contentsOf: fixtureUrl)
+        let decoded = try JSONDecoder().decode(StoredAppState.self, from: data)
+        XCTAssertEqual(decoded.activeProgramId, "heavylifter-strength-power")
+        XCTAssertEqual(decoded.history.count, 48)
+
+        guard let catalog = ExerciseMuscleCatalog.shared else {
+            XCTFail("Catalog required")
+            return
+        }
+
+        let report = VolumeMatrixEngine.computeLoggedVolume(
+            targetWeekKey: "2026-W39",
+            history: decoded.history,
+            catalog: catalog
+        )
+
+        // Front view
+        XCTAssertEqual(report.muscleSummaries["chest"]?.zone, .overMrv)
+        XCTAssertEqual(report.muscleSummaries["front-delts"]?.zone, .highFatigue)
+        XCTAssertEqual(report.muscleSummaries["quads"]?.zone, .optimalMav)
+        XCTAssertEqual(report.muscleSummaries["side-delts"]?.zone, .optimalMav)
+        XCTAssertEqual(report.muscleSummaries["biceps"]?.zone, .progressive)
+        XCTAssertEqual(report.muscleSummaries["abs"]?.zone, .underMev)
+        XCTAssertEqual(report.muscleSummaries["obliques"]?.zone, .underMev)
+
+        // Back view
+        XCTAssertEqual(report.muscleSummaries["upper-back"]?.zone, .overMrv)
+        XCTAssertEqual(report.muscleSummaries["lats"]?.zone, .highFatigue)
+        XCTAssertEqual(report.muscleSummaries["triceps"]?.zone, .optimalMav)
+        XCTAssertEqual(report.muscleSummaries["rear-delts"]?.zone, .progressive)
+        XCTAssertEqual(report.muscleSummaries["glutes"]?.zone, .progressive)
+        XCTAssertEqual(report.muscleSummaries["hamstrings"]?.zone, .underMev)
+        XCTAssertEqual(report.muscleSummaries["calves"]?.zone, .underMev)
+    }
+
     func testProgressionEngineReturnsFirstSessionWhenHistoryIsEmpty() {
         let benchPress = Exercise(
             id: "bench-1",
