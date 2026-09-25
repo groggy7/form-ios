@@ -437,33 +437,8 @@ public struct ProPaywallSheet: View {
                             .multilineTextAlignment(.center)
                     }
 
-                    // Dev Mode Simulation & Legal Links
+                    // Restore Purchases & Legal Links
                     VStack(spacing: 10) {
-                        #if DEBUG
-                        // Quick Dev Unlock Button
-                        Button(action: {
-                            proManager.updateSubscriptionStatus(active: true)
-                            onUnlocked?()
-                            dismissSelf()
-                        }) {
-                            HStack(spacing: 6) {
-                                Image(systemName: "lock.open")
-                                    .font(.system(size: 13, weight: .semibold))
-                                Text(LanguageManager.t("paywall.dev_unlock"))
-                                    .font(.system(size: 12.5, weight: .semibold))
-                            }
-                            .foregroundColor(AppColors.purple)
-                            .frame(maxWidth: .infinity)
-                            .padding(.vertical, 10)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(AppColors.purple.opacity(0.4), lineWidth: 1)
-                            )
-                        }
-                        .buttonStyle(.plain)
-                        #endif
-
-                        // Restore Purchases & Legal Links
                         HStack(spacing: 12) {
                             Button(action: {
                                 performRestore()
@@ -480,20 +455,6 @@ public struct ProPaywallSheet: View {
                             }
                             .buttonStyle(.plain)
                             .disabled(isRestoring)
-
-                            Text("·")
-                                .foregroundColor(AppColors.border)
-
-                            Button(action: {
-                                if let url = URL(string: LegalUrls.manageSubscriptions) {
-                                    openURL(url)
-                                }
-                            }) {
-                                Text(LanguageManager.t("settings.manage_subscription"))
-                                        .font(.system(size: 11.5))
-                                    .foregroundColor(AppColors.secondaryText)
-                            }
-                            .buttonStyle(.plain)
 
                             Text("·")
                                 .foregroundColor(AppColors.border)

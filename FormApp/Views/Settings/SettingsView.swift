@@ -67,73 +67,34 @@ public struct SettingsView: View {
                             .foregroundColor(AppColors.secondaryText)
                             .lineSpacing(2)
 
-                        HStack(spacing: 8) {
-                            if proManager.isProSubscribed {
-                                Button(action: {
-                                    if let url = URL(string: LegalUrls.manageSubscriptions) {
-                                        openURL(url)
-                                    }
-                                }) {
-                                    HStack(spacing: 6) {
-                                        Image(systemName: "arrow.up.right")
-                                            .font(.system(size: 11, weight: .semibold))
-                                        Text(LanguageManager.t("settings.manage_subscription"))
-                                            .font(.system(size: 13, weight: .semibold))
-                                    }
-                                    .foregroundColor(AppColors.text)
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 38)
-                                    .background(AppColors.purple)
-                                    .cornerRadius(10)
-                                }
-                                .buttonStyle(.plain)
-                            } else {
-                                Button(action: { showPaywall = true }) {
-                                    Text(LanguageManager.t("settings.upgrade_to_pro"))
-                                        .font(.system(size: 13, weight: .semibold))
-                                        .foregroundColor(AppColors.background)
-                                        .frame(maxWidth: .infinity)
-                                        .frame(height: 38)
-                                        .background(AppColors.accent)
-                                        .cornerRadius(10)
-                                }
-                                .buttonStyle(.plain)
-                            }
-
-                            #if DEBUG
-                            Button(action: { _ = proManager.toggleSubscriptionStatus() }) {
-                                Text(proManager.isProSubscribed ? LanguageManager.t("paywall.dev_locked") : LanguageManager.t("settings.test_pro_toggle"))
-                                    .font(.system(size: 12, weight: .medium))
-                                    .foregroundColor(proManager.isProSubscribed ? AppColors.purple : AppColors.text)
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 38)
-                                    .background(Color.clear)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .stroke(proManager.isProSubscribed ? AppColors.purple.opacity(0.6) : AppColors.border, lineWidth: 1)
-                                    )
-                                    .cornerRadius(10)
-                            }
-                            .buttonStyle(.plain)
-                            #endif
-                        }
-
-                        if !proManager.isProSubscribed {
+                        if proManager.isProSubscribed {
                             Button(action: {
                                 if let url = URL(string: LegalUrls.manageSubscriptions) {
                                     openURL(url)
                                 }
                             }) {
-                                HStack(spacing: 4) {
-                                    Text(LanguageManager.t("settings.manage_subscription_store"))
-                                        .font(.system(size: 12))
-                                        .foregroundColor(AppColors.secondaryText)
+                                HStack(spacing: 6) {
                                     Image(systemName: "arrow.up.right")
-                                        .font(.system(size: 10, weight: .medium))
-                                        .foregroundColor(AppColors.secondaryText)
+                                        .font(.system(size: 11, weight: .semibold))
+                                    Text(LanguageManager.t("settings.manage_subscription"))
+                                        .font(.system(size: 13, weight: .semibold))
                                 }
+                                .foregroundColor(AppColors.text)
                                 .frame(maxWidth: .infinity)
-                                .padding(.vertical, 2)
+                                .frame(height: 38)
+                                .background(AppColors.purple)
+                                .cornerRadius(10)
+                            }
+                            .buttonStyle(.plain)
+                        } else {
+                            Button(action: { showPaywall = true }) {
+                                Text(LanguageManager.t("settings.upgrade_to_pro"))
+                                    .font(.system(size: 13, weight: .semibold))
+                                    .foregroundColor(AppColors.background)
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: 38)
+                                    .background(AppColors.accent)
+                                    .cornerRadius(10)
                             }
                             .buttonStyle(.plain)
                         }
@@ -371,28 +332,30 @@ public struct SettingsView: View {
                         }
                         .padding(14)
 
-                        Divider().background(AppColors.border)
+                        if proManager.isProSubscribed {
+                            Divider().background(AppColors.border)
 
-                        Button(action: {
-                            if let url = URL(string: LegalUrls.manageSubscriptions) {
-                                openURL(url)
-                            }
-                        }) {
-                            HStack {
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(LanguageManager.t("settings.manage_subscription"))
-                                        .font(.system(size: 15))
-                                        .foregroundColor(AppColors.text)
-                                    Text(LanguageManager.t("settings.manage_subscription_desc"))
-                                        .font(.system(size: 12))
-                                        .foregroundColor(AppColors.secondaryText)
+                            Button(action: {
+                                if let url = URL(string: LegalUrls.manageSubscriptions) {
+                                    openURL(url)
                                 }
-                                Spacer()
-                                Image(systemName: "arrow.up.right")
-                                    .font(.system(size: 13, weight: .semibold))
-                                    .foregroundColor(AppColors.muted)
+                            }) {
+                                HStack {
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(LanguageManager.t("settings.manage_subscription"))
+                                            .font(.system(size: 15))
+                                            .foregroundColor(AppColors.text)
+                                        Text(LanguageManager.t("settings.manage_subscription_desc"))
+                                            .font(.system(size: 12))
+                                            .foregroundColor(AppColors.secondaryText)
+                                    }
+                                    Spacer()
+                                    Image(systemName: "arrow.up.right")
+                                        .font(.system(size: 13, weight: .semibold))
+                                        .foregroundColor(AppColors.muted)
+                                }
+                                .padding(14)
                             }
-                            .padding(14)
                         }
 
                         Divider().background(AppColors.border)
