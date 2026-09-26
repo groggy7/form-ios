@@ -147,7 +147,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
         case .success(let verification):
             let transaction = try checkVerified(verification)
             guard Self.isProProductId(transaction.productID) else {
-                throw NSError(domain: "StoreKitSubscriptionManager", code: 403, userInfo: [NSLocalizedDescriptionKey: "Unexpected product in Pro purchase"])
+                throw NSError(domain: "StoreKitSubscriptionManager", code: 403, userInfo: [NSLocalizedDescriptionKey: "Unexpected product in Premium purchase"])
             }
             await updatePurchasedProducts()
             await transaction.finish()
@@ -195,7 +195,7 @@ public class StoreKitSubscriptionManager: ObservableObject {
             CloudMirrorManager.shared.retryPendingSyncIfAny()
         } else {
             // Authoritative store query returned zero active entitlements.
-            // Revoke Pro immediately and clear the cached verification timestamp.
+            // Revoke Premium immediately and clear the cached verification timestamp.
             UserDefaults.standard.set(false, forKey: Self.keyCachedEntitlement)
             UserDefaults.standard.set(0.0, forKey: Self.keyCachedEntitlementLastVerified)
             ProAccessManager.shared.updateSubscriptionStatus(active: false)

@@ -50,7 +50,7 @@ public struct SettingsView: View {
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    // Forced Rep Pro Membership Card
+                    // Forced Rep Premium Membership Card
                     VStack(alignment: .leading, spacing: 12) {
                         HStack(spacing: 8) {
                             Image(systemName: "crown.fill")
