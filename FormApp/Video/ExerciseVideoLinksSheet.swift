@@ -63,12 +63,7 @@ public struct ExerciseVideoLinksSheet: View {
 
                     Spacer()
 
-                    Button(action: onDismiss) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(AppColors.muted)
-                            .frame(width: 36, height: 36)
-                    }
+                    FormModalCloseButton(action: onDismiss)
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 16)

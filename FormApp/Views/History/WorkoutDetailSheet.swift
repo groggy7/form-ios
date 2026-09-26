@@ -88,11 +88,7 @@ public struct WorkoutDetailSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: onDismiss) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 13, weight: .semibold))
-                            .foregroundColor(AppColors.secondaryText)
-                    }
+                    FormModalCloseButton(action: onDismiss)
                 }
             }
         }

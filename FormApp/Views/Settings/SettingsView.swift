@@ -422,11 +422,7 @@ public struct SettingsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: onDismiss) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundColor(AppColors.text.opacity(0.85))
-                    }
+                    FormModalCloseButton(action: onDismiss)
                 }
             }
             .sheet(isPresented: $showExportSheet) {

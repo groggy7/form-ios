@@ -609,12 +609,7 @@ struct Estimated1RmInfoSheet: View {
 
                     Spacer()
 
-                    Button(action: onDismiss) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 14, weight: .bold))
-                            .foregroundColor(AppColors.secondaryText)
-                            .frame(width: 32, height: 32)
-                    }
+                    FormModalCloseButton(action: onDismiss)
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 18)

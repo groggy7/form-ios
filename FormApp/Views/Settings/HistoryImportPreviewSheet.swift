@@ -22,14 +22,7 @@ public struct HistoryImportPreviewSheet: View {
                         .font(.system(size: 18, weight: .bold))
                         .foregroundColor(AppColors.text)
                     Spacer()
-                    Button(action: onCancel) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 13, weight: .semibold))
-                            .foregroundColor(AppColors.secondaryText)
-                            .frame(width: 32, height: 32)
-                            .background(AppColors.surfaceRaised)
-                            .clipShape(Circle())
-                    }
+                    FormModalCloseButton(action: onCancel)
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 24)
