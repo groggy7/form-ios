@@ -240,58 +240,78 @@ public struct VolumeMatrixView: View {
             // Heatmap Figure Card ("Athlete Window")
             if let catalog = ExerciseMuscleCatalog.shared {
                 ZStack(alignment: .topTrailing) {
-                    VStack(spacing: 14) {
+                    HStack(spacing: 10) {
+                        // Left: Athlete Figure
                         heatmapFigure(catalog: catalog, report: report)
-                            .frame(height: 280)
+                            .frame(width: 125, height: 265)
 
-                        // Front / Back Toggle
-                        HStack(spacing: 2) {
-                            ForEach(["front", "back"], id: \.self) { view in
-                                let isSelected = currentView == view
-                                Button(action: { currentView = view }) {
-                                    Text(LanguageManager.t(view == "front" ? "anatomy.front" : "anatomy.back"))
-                                        .font(.system(size: 12, weight: isSelected ? .semibold : .medium))
-                                        .foregroundColor(isSelected ? AppColors.purple : AppColors.muted)
-                                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                        .background(isSelected ? AppColors.purpleBg : Color.clear)
-                                        .cornerRadius(8)
+                        // Right: Front/Back Toggle + Vertical Legend
+                        VStack(spacing: 14) {
+                            // Front / Back Toggle
+                            HStack(spacing: 2) {
+                                ForEach(["front", "back"], id: \.self) { view in
+                                    let isSelected = currentView == view
+                                    Button(action: { currentView = view }) {
+                                        Text(LanguageManager.t(view == "front" ? "anatomy.front" : "anatomy.back"))
+                                            .font(.system(size: 12.5, weight: isSelected ? .semibold : .medium))
+                                            .foregroundColor(isSelected ? Color(hex: 0xE8DEF8) : Color(hex: 0x8F999F))
+                                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                            .background(isSelected ? Color(hex: 0x28203D) : Color.clear)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 9)
+                                                    .stroke(isSelected ? Color(hex: 0xA855F7) : Color.clear, lineWidth: 1.5)
+                                            )
+                                            .cornerRadius(9)
+                                    }
+                                    .buttonStyle(.plain)
                                 }
-                                .buttonStyle(.plain)
                             }
-                        }
-                        .frame(width: 180, height: 34)
-                        .padding(3)
-                        .background(AppColors.surfaceRaised)
-                        .overlay(RoundedRectangle(cornerRadius: 11).stroke(AppColors.border, lineWidth: 1))
-                        .cornerRadius(11)
+                            .frame(height: 36)
+                            .padding(3)
+                            .background(Color(hex: 0x161B20))
+                            .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color(hex: 0x2B373C), lineWidth: 1))
+                            .cornerRadius(12)
+                            .padding(.trailing, 28) // Breathing room for info button
 
-                        // Volume Zone Legend (FlowLayout to cleanly center and wrap on any screen width)
-                        FlowLayout(alignment: .center, horizontalSpacing: 10, verticalSpacing: 6) {
-                            ForEach(VolumeZone.allCases.filter { report.isPlannedRoutine ? $0 == .noWeeklyReference : $0 != .noWeeklyReference }, id: \.self) { zone in
-                                HStack(alignment: .center, spacing: 5) {
-                                    Circle()
-                                        .fill(zone.color)
-                                        .frame(width: 7, height: 7)
-                                    Text(LanguageManager.t(zone.titleKey))
-                                        .font(.system(size: 10, weight: .medium))
-                                        .foregroundColor(AppColors.muted)
+                            // Volume Zone Legend (Vertical list with dividers matching reference)
+                            let zones = VolumeZone.allCases.filter { report.isPlannedRoutine ? $0 == .noWeeklyReference : $0 != .noWeeklyReference }
+                            VStack(spacing: 0) {
+                                ForEach(Array(zones.enumerated()), id: \.element) { index, zone in
+                                    HStack(alignment: .center, spacing: 10) {
+                                        Circle()
+                                            .fill(zone.color)
+                                            .frame(width: 9, height: 9)
+                                        Text(LanguageManager.t(zone.titleKey))
+                                            .font(.system(size: 11.5, weight: .medium))
+                                            .foregroundColor(Color(hex: 0xC0CAD2))
+                                            .lineLimit(1)
+                                        Spacer()
+                                    }
+                                    .padding(.vertical, 7)
+
+                                    if index < zones.count - 1 {
+                                        Rectangle()
+                                            .fill(Color(hex: 0x20262D))
+                                            .frame(height: 1)
+                                    }
                                 }
                             }
                         }
                         .frame(maxWidth: .infinity)
-                        .padding(.horizontal, 4)
+                        .padding(.trailing, 2)
                     }
-                    .padding(.vertical, 16)
-                    .padding(.horizontal, 12)
+                    .padding(.vertical, 14)
+                    .padding(.leading, 10)
+                    .padding(.trailing, 14)
                     .background(AppColors.surface)
                     .overlay(RoundedRectangle(cornerRadius: 20).stroke(AppColors.border, lineWidth: 1))
                     .cornerRadius(20)
 
                     // Circled "i" info button top-right corner of the athlete window
                     Button(action: { showInfoSheet = true }) {
-                        Image(systemName: "info.circle")
-                            .font(.system(size: 18, weight: .regular))
-                            .foregroundColor(AppColors.secondaryText)
+                        Image(systemName: "info.circle.fill")
+                            .font(.system(size: 24, weight: .regular))
+                            .foregroundColor(Color(hex: 0xC0CAD2))
                             .padding(14)
                     }
                     .buttonStyle(.plain)
