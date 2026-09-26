@@ -78,7 +78,7 @@ public struct TodayView: View {
                     hasUnfinishedProgress: !isCompleted && store.unfinishedWorkoutKeys().contains(workoutKey),
                     onStart: {
                         if let w = workout, let p = program {
-                            _ = store.startActiveSession(programId: p.id, workout: w)
+                            _ = store.startActiveSession(programId: p.id, workout: w, allowPast: true)
                         }
                     }
                 )

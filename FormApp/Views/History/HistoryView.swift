@@ -38,7 +38,7 @@ public struct HistoryView: View {
     @State private var activeTab: HistoryTab = .calendar
     @State private var activePaywallFeature: ProFeature? = nil
     @State private var displayedDate: Date = Date()
-    @State private var selectedDateString: String? = nil
+    @State private var selectedDateString: String? = ProcessInfo.processInfo.environment["SELECTED_HISTORY_DATE"]
 
     public init(
         store: AppStore,
@@ -381,7 +381,8 @@ public struct HistoryView: View {
             programId: progId,
             workout: workout,
             allowPast: true,
-            unfinishedRecordId: detail.sessionRecord?.id
+            unfinishedRecordId: detail.sessionRecord?.id,
+            assignedCalendarDate: detail.dateString
         ) {
             store.currentView = .today
         }
@@ -433,7 +434,8 @@ public struct HistoryView: View {
 
         let activeRecord: WorkoutSessionRecord? = {
             guard let draft = store.activeSession else { return nil }
-            let activeDay = store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(draft.id)" })?.date
+            let activeDay = draft.assignedCalendarDate
+                ?? store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(draft.id)" })?.date
                 ?? WorkoutCalendar.localDate(from: draft.startedAt)
                 ?? WorkoutCalendar.scheduledDate(forWeekday: draft.workout.day, relativeTo: Date())
             if activeDay == dateString {

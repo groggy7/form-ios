@@ -149,6 +149,9 @@ public final class AppStore: ObservableObject {
         self.state = loadedState
         self.activeSession = activeDraft
         self.selectedWorkoutId = loadedState.programs.first { $0.id == loadedState.activeProgramId }?.workouts.first?.id
+        if let targetView = ProcessInfo.processInfo.environment["INITIAL_VIEW"], targetView == "history" {
+            self.currentView = .history
+        }
 
         // Auto-archive stale session if from previous day or > 12 hours old
         self.checkAndArchiveStaleSession()
@@ -285,7 +288,8 @@ public final class AppStore: ObservableObject {
         programId: String,
         workout: Workout,
         allowPast: Bool = false,
-        unfinishedRecordId: String? = nil
+        unfinishedRecordId: String? = nil,
+        assignedCalendarDate: String? = nil
     ) -> Bool {
         checkAndArchiveStaleSession()
         if activeSession != nil || workout.exercises.isEmpty || !canStartWorkout(workout, allowPast: allowPast) {
@@ -312,11 +316,19 @@ public final class AppStore: ObservableObject {
         let previousDuration = unfinishedRecord?.durationSeconds ?? 0
         let clampedPrevSecs = min(max(0, previousDuration), 4 * 3600)
 
-        let sessionDay = (unfinishedRecord?.id).flatMap { recId in
-            state.calendarHistory?.entries.first(where: { $0.id == "session:\(recId)" })?.date
-        } ?? (allowPast
-            ? WorkoutCalendar.scheduledDate(forWeekday: workout.day, relativeTo: now)
-            : WorkoutCalendar.formatDate(now))
+        let scheduledDay = WorkoutCalendar.scheduledDate(forWeekday: workout.day, relativeTo: now)
+        let isPastOrScheduled = allowPast || workout.day <= currentWeekDayNumber()
+        let sessionDay: String = {
+            if let assigned = assignedCalendarDate { return assigned }
+            if isPastOrScheduled {
+                return scheduledDay
+            }
+            if let recId = unfinishedRecord?.id,
+               let existingDate = state.calendarHistory?.entries.first(where: { $0.id == "session:\(recId)" })?.date {
+                return existingDate
+            }
+            return WorkoutCalendar.formatDate(now)
+        }()
 
         let startedAtDate = now.addingTimeInterval(-Double(clampedPrevSecs))
         let startedAtEpoch = Int64(startedAtDate.timeIntervalSince1970 * 1000)
@@ -332,7 +344,8 @@ public final class AppStore: ObservableObject {
             startedAt: startedAtTimestamp,
             startedAtEpochMillis: startedAtEpoch,
             currentExerciseIndex: initialIndex,
-            setsByExercise: setsByExercise
+            setsByExercise: setsByExercise,
+            assignedCalendarDate: sessionDay
         )
 
         saveActiveSession(draft)
@@ -363,8 +376,11 @@ public final class AppStore: ObservableObject {
 
         let allSets = updated.setsByExercise.values.flatMap { $0 }
         let hasCompleted = allSets.contains { $0.isCompleted }
-        if var cal = state.calendarHistory {
+        if let cal = state.calendarHistory {
             let sessionDate: String = {
+                if let assigned = updated.assignedCalendarDate {
+                    return assigned
+                }
                 if let d = cal.entries.first(where: { $0.id == "session:\(updated.id)" })?.date {
                     return d
                 }
@@ -527,26 +543,14 @@ public final class AppStore: ObservableObject {
             isComplete: isComplete
         )
 
-        var newHistory = state.history
-        newHistory.removeAll { $0.id == finalRecord.id }
-        newHistory.insert(finalRecord, at: 0)
-
-        var newCompleted = state.completed
-        let key = "\(finalRecord.programId):\(finalRecord.workoutId)"
-        if isComplete && !newCompleted.contains(key) {
-            newCompleted.append(key)
-        }
-
         var cal = state.calendarHistory ?? WorkoutCalendarHistory(
             nextScheduledDate: WorkoutCalendar.mondayOfCurrentWeek(),
             scheduledWeekdays: WorkoutCalendar.weekdays(state: state)
         )
-        if let draft = activeSession {
-            cal = WorkoutCalendar.remove(history: cal, id: "session:\(draft.id)")
-        }
-        let draftEntryDate = activeSession.flatMap { draft in
-            state.calendarHistory?.entries.first(where: { $0.id == "session:\(draft.id)" })?.date
-        }
+        let draftEntryDate = activeSession?.assignedCalendarDate
+            ?? (activeSession.flatMap { draft in
+                state.calendarHistory?.entries.first(where: { $0.id == "session:\(draft.id)" })?.date
+            })
         let recordEntryDate = state.calendarHistory?.entries.first(where: { $0.id == "session:\(finalRecord.id)" })?.date
         let sessionDate: String
         if let d = draftEntryDate {
@@ -559,6 +563,56 @@ public final class AppStore: ObservableObject {
             sessionDate = d
         } else {
             sessionDate = WorkoutCalendar.formatDate(Date())
+        }
+
+        let adjustedRecord: WorkoutSessionRecord = {
+            let todayStr = WorkoutCalendar.formatDate(Date())
+            guard sessionDate != todayStr,
+                  let targetDay = WorkoutCalendar.parseDate(sessionDate) else {
+                return finalRecord
+            }
+            let cal = Calendar(identifier: .gregorian)
+            let timeZone = TimeZone.current
+            let targetComps = cal.dateComponents(in: timeZone, from: targetDay)
+
+            func adjustIsoDate(_ isoString: String) -> String {
+                guard let origDate = WorkoutCalendar.parseIsoTimestamp(isoString) else { return isoString }
+                var origComps = cal.dateComponents(in: timeZone, from: origDate)
+                origComps.year = targetComps.year
+                origComps.month = targetComps.month
+                origComps.day = targetComps.day
+                guard let newDate = cal.date(from: origComps) else { return isoString }
+                let formatter = ISO8601DateFormatter()
+                return formatter.string(from: newDate)
+            }
+
+            return WorkoutSessionRecord(
+                id: finalRecord.id,
+                programId: finalRecord.programId,
+                workoutId: finalRecord.workoutId,
+                workoutTitle: finalRecord.workoutTitle,
+                startedAt: adjustIsoDate(finalRecord.startedAt),
+                completedAt: adjustIsoDate(finalRecord.completedAt),
+                durationSeconds: finalRecord.durationSeconds,
+                totalVolumeKg: finalRecord.totalVolumeKg,
+                totalCompletedSets: finalRecord.totalCompletedSets,
+                exerciseLogs: finalRecord.exerciseLogs,
+                isComplete: finalRecord.isComplete
+            )
+        }()
+
+        var newHistory = state.history
+        newHistory.removeAll { $0.id == adjustedRecord.id }
+        newHistory.insert(adjustedRecord, at: 0)
+
+        var newCompleted = state.completed
+        let key = "\(finalRecord.programId):\(finalRecord.workoutId)"
+        if isComplete && !newCompleted.contains(key) {
+            newCompleted.append(key)
+        }
+
+        if let draft = activeSession {
+            cal = WorkoutCalendar.remove(history: cal, id: "session:\(draft.id)")
         }
 
         let hasSets = finalRecord.totalCompletedSets > 0 || finalRecord.exerciseLogs.contains { log in
@@ -717,7 +771,8 @@ public final class AppStore: ObservableObject {
 
         func hasLoggedSets(for dateStr: String) -> Bool {
             if let active = activeSession {
-                let activeDate = curCal.entries.first(where: { $0.id == "session:\(active.id)" })?.date
+                let activeDate = active.assignedCalendarDate
+                    ?? curCal.entries.first(where: { $0.id == "session:\(active.id)" })?.date
                     ?? WorkoutCalendar.localDate(from: active.startedAt) ?? todayStr
                 if activeDate == dateStr {
                     let allSets = active.setsByExercise.values.flatMap { $0 }
@@ -738,7 +793,9 @@ public final class AppStore: ObservableObject {
         if let active = activeSession {
             let allSets = active.setsByExercise.values.flatMap { $0 }
             if allSets.contains(where: { $0.isCompleted }) {
-                let activeDate = WorkoutCalendar.localDate(from: active.startedAt) ?? todayStr
+                let activeDate = active.assignedCalendarDate
+                    ?? curCal.entries.first(where: { $0.id == "session:\(active.id)" })?.date
+                    ?? WorkoutCalendar.localDate(from: active.startedAt) ?? todayStr
                 if (statuses[activeDate]?.priority ?? -1) < WorkoutDayStatus.unfinished.priority {
                     statuses[activeDate] = .unfinished
                 }

@@ -570,6 +570,7 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
     public var currentExerciseIndex: Int
     public var setsByExercise: [String: [ExerciseSetLog]]
     public var restTimer: RestTimerState?
+    public var assignedCalendarDate: String?
 
     public init(
         schemaVersion: Int = 1,
@@ -581,7 +582,8 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         lastActivityEpochMillis: Int64? = nil,
         currentExerciseIndex: Int = 0,
         setsByExercise: [String: [ExerciseSetLog]] = [:],
-        restTimer: RestTimerState? = nil
+        restTimer: RestTimerState? = nil,
+        assignedCalendarDate: String? = nil
     ) {
         self.schemaVersion = schemaVersion
         self.id = id
@@ -593,6 +595,7 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         self.currentExerciseIndex = currentExerciseIndex
         self.setsByExercise = setsByExercise
         self.restTimer = restTimer
+        self.assignedCalendarDate = assignedCalendarDate
     }
 
     public init(from decoder: Decoder) throws {
@@ -607,6 +610,7 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         self.currentExerciseIndex = try container.decodeIfPresent(Int.self, forKey: .currentExerciseIndex) ?? 0
         self.setsByExercise = try container.decodeIfPresent([String: [ExerciseSetLog]].self, forKey: .setsByExercise) ?? [:]
         self.restTimer = try container.decodeIfPresent(RestTimerState.self, forKey: .restTimer)
+        self.assignedCalendarDate = try container.decodeIfPresent(String.self, forKey: .assignedCalendarDate)
     }
 }
 
@@ -855,8 +859,8 @@ public enum WorkoutCalendar {
                 entriesMap[id] = WorkoutDayEntry(id: id, date: d, status: status)
             }
         }
-        var missedSet = Set(history.missedDates)
         let entriesByDate = Set(entriesMap.values.map { $0.date })
+        var missedSet = Set(history.missedDates).subtracting(entriesByDate)
         let todayDate = parseDate(today) ?? Date()
 
         var activeWeekMondays = Set<String>()
@@ -936,10 +940,11 @@ public enum WorkoutCalendar {
 
     public static func put(history: WorkoutCalendarHistory, entry: WorkoutDayEntry) -> WorkoutCalendarHistory {
         let filtered = history.entries.filter { $0.id != entry.id }
+        let missedFiltered = history.missedDates.filter { $0 != entry.date }
         return WorkoutCalendarHistory(
             nextScheduledDate: history.nextScheduledDate,
             scheduledWeekdays: history.scheduledWeekdays,
-            missedDates: history.missedDates,
+            missedDates: missedFiltered,
             entries: filtered + [entry]
         )
     }
