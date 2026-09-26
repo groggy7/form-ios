@@ -9,6 +9,35 @@ public struct FormLabEngine {
     public static let upperMuscles: Set<String> = pushMuscles.union(pullMuscles).union(["abs", "obliques", "side-delts"])
     public static let lowerMuscles: Set<String> = quadMuscles.union(hamstringMuscles).union(["glutes", "calves"])
 
+    private static let isoFormatterWithMillis: ISO8601DateFormatter = {
+        let f = ISO8601DateFormatter()
+        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return f
+    }()
+
+    private static let isoFormatter: ISO8601DateFormatter = {
+        let f = ISO8601DateFormatter()
+        f.formatOptions = [.withInternetDateTime]
+        return f
+    }()
+
+    private static let fallbackDateFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd"
+        df.calendar = Calendar(identifier: .gregorian)
+        df.locale = Locale(identifier: "en_US_POSIX")
+        return df
+    }()
+
+    public static func parseRecordDate(_ dateStr: String) -> Date? {
+        guard !dateStr.isEmpty else { return nil }
+        if let d = isoFormatterWithMillis.date(from: dateStr) { return d }
+        if let d = isoFormatter.date(from: dateStr) { return d }
+        if let d = fallbackDateFormatter.date(from: dateStr) { return d }
+        if dateStr.count >= 10, let d = fallbackDateFormatter.date(from: String(dateStr.prefix(10))) { return d }
+        return nil
+    }
+
     public static func calculateEstimated1RM(
         weightKg: Double,
         reps: Int,
@@ -149,13 +178,9 @@ public struct FormLabEngine {
         var points: [StrengthDataPoint] = []
         let sortedRecords = history.sorted { ($0.startedAt.isEmpty ? $0.completedAt : $0.startedAt) < ($1.startedAt.isEmpty ? $1.completedAt : $1.startedAt) }
 
-        let isoFormatter = ISO8601DateFormatter()
-        let fallbackFormatter = DateFormatter()
-        fallbackFormatter.dateFormat = "yyyy-MM-dd"
-
         for record in sortedRecords {
             let dateStr = record.startedAt.isEmpty ? record.completedAt : record.startedAt
-            guard let recordDate = isoFormatter.date(from: dateStr) ?? fallbackFormatter.date(from: dateStr) else { continue }
+            guard let recordDate = parseRecordDate(dateStr) else { continue }
 
             if let cutoff = cutoffDate, recordDate < cutoff { continue }
 
@@ -238,13 +263,9 @@ public struct FormLabEngine {
         var totalSets = 0
         var unclassifiedSets = 0
 
-        let isoFormatter = ISO8601DateFormatter()
-        let fallbackFormatter = DateFormatter()
-        fallbackFormatter.dateFormat = "yyyy-MM-dd"
-
         for record in history {
             let dateStr = record.startedAt.isEmpty ? record.completedAt : record.startedAt
-            if let cutoff = cutoffDate, let recordDate = isoFormatter.date(from: dateStr) ?? fallbackFormatter.date(from: dateStr), recordDate < cutoff {
+            if let cutoff = cutoffDate, let recordDate = parseRecordDate(dateStr), recordDate < cutoff {
                 continue
             }
 

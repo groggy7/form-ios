@@ -6009,6 +6009,77 @@ final class FormAppTests: XCTestCase {
         XCTAssertGreaterThan(report.percentageGain, 0)
     }
 
+    func testFormLabDateParsingWithFractionalSecondsAndDateFormats() {
+        let sMillis = WorkoutSessionRecord(
+            id: "s_millis",
+            programId: "p1",
+            workoutId: "w1",
+            workoutTitle: "Chest Day",
+            startedAt: "2026-09-01T10:00:00.000Z",
+            completedAt: "2026-09-01T11:00:00.000Z",
+            durationSeconds: 3600,
+            totalVolumeKg: 500.0,
+            totalCompletedSets: 5,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [SessionSetLog(setNumber: 1, weightKg: 100.0, reps: 5, isWarmup: false)]
+                )
+            ]
+        )
+        let sStandard = WorkoutSessionRecord(
+            id: "s_standard",
+            programId: "p1",
+            workoutId: "w2",
+            workoutTitle: "Chest Day",
+            startedAt: "2026-09-15T10:00:00Z",
+            completedAt: "2026-09-15T11:00:00Z",
+            durationSeconds: 3600,
+            totalVolumeKg: 600.0,
+            totalCompletedSets: 5,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [SessionSetLog(setNumber: 1, weightKg: 110.0, reps: 5, isWarmup: false)]
+                )
+            ]
+        )
+        let sDateOnly = WorkoutSessionRecord(
+            id: "s_dateonly",
+            programId: "p1",
+            workoutId: "w3",
+            workoutTitle: "Chest Day",
+            startedAt: "2026-09-20",
+            completedAt: "2026-09-20",
+            durationSeconds: 3600,
+            totalVolumeKg: 700.0,
+            totalCompletedSets: 5,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [SessionSetLog(setNumber: 1, weightKg: 120.0, reps: 5, isWarmup: false)]
+                )
+            ]
+        )
+
+        let report = FormLabEngine.computeLongitudinalCurve(
+            exerciseName: "Barbell Bench Press",
+            history: [sMillis, sStandard, sDateOnly],
+            timeframe: .allTime,
+            formula: .brzycki
+        )
+        XCTAssertEqual(report.points.count, 3)
+        XCTAssertEqual(report.start1rmKg, FormLabEngine.calculateEstimated1RM(weightKg: 100.0, reps: 5, formula: .brzycki))
+        XCTAssertEqual(report.current1rmKg, FormLabEngine.calculateEstimated1RM(weightKg: 120.0, reps: 5, formula: .brzycki))
+
+        // Direct parseRecordDate checks
+        XCTAssertNotNil(FormLabEngine.parseRecordDate("2026-09-21T17:30:00.000Z"))
+        XCTAssertNotNil(FormLabEngine.parseRecordDate("2026-09-21T17:30:00.123+03:00"))
+        XCTAssertNotNil(FormLabEngine.parseRecordDate("2026-09-21T17:30:00Z"))
+        XCTAssertNotNil(FormLabEngine.parseRecordDate("2026-09-21"))
+        XCTAssertNotNil(FormLabEngine.parseRecordDate("2026-09-21 17:30:00"))
+    }
+
     func testDistributionUsesExactCatalogClassifications() {
         XCTAssertGreaterThanOrEqual(ExerciseCatalog.canonicalExercises.count, 300)
         XCTAssertNotNil(ExerciseMuscleCatalog.shared)
