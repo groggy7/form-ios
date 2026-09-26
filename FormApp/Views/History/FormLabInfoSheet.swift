@@ -56,26 +56,26 @@ public struct FormLabInfoSheet: View {
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundColor(AppColors.text)
 
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Brzycki (1993)")
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Brzycki")
                     .font(.system(size: 13, weight: .bold))
                     .foregroundColor(AppColors.accent)
-                Text("1RM = Weight × (36 / (37 − Reps))")
-                    .font(.system(size: 12, weight: .semibold, design: .monospaced))
-                    .foregroundColor(AppColors.text)
+                Text(LanguageManager.t("form_lab.info_brzycki_subtitle"))
+                    .font(.system(size: 12))
+                    .foregroundColor(AppColors.secondaryText)
             }
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(AppColors.surface)
             .cornerRadius(10)
 
-            VStack(alignment: .leading, spacing: 6) {
-                Text("Epley (1985)")
+            VStack(alignment: .leading, spacing: 4) {
+                Text("Epley")
                     .font(.system(size: 13, weight: .bold))
                     .foregroundColor(AppColors.accent)
-                Text("1RM = Weight × (1 + Reps / 30)")
-                    .font(.system(size: 12, weight: .semibold, design: .monospaced))
-                    .foregroundColor(AppColors.text)
+                Text(LanguageManager.t("form_lab.info_epley_subtitle"))
+                    .font(.system(size: 12))
+                    .foregroundColor(AppColors.secondaryText)
             }
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -106,9 +106,9 @@ public struct FormLabInfoSheet: View {
                 .foregroundColor(AppColors.secondaryText)
 
             VStack(spacing: 8) {
-                ratioRow(label: "Push / Pull", range: "0.80 – 1.25", desc: "Glenohumeral & Scapular Balance")
-                ratioRow(label: "Quad / Hamstring", range: "0.75 – 1.40", desc: "Knee Joint Shear & ACL Integrity")
-                ratioRow(label: "Upper / Lower", range: "0.65 – 1.60", desc: "Systemic Whole-Body Equilibrium")
+                ratioRow(label: LanguageManager.t("form_lab.balance.push_pull_title"), range: "0.80 – 1.25", desc: LanguageManager.t("form_lab.info_push_pull_desc"))
+                ratioRow(label: LanguageManager.t("form_lab.balance.quad_ham_title"), range: "0.75 – 1.40", desc: LanguageManager.t("form_lab.info_quad_ham_desc"))
+                ratioRow(label: LanguageManager.t("form_lab.balance.upper_lower_title"), range: "0.65 – 1.60", desc: LanguageManager.t("form_lab.info_upper_lower_desc"))
             }
             .padding(.top, 4)
         }
