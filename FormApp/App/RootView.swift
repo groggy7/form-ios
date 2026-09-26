@@ -105,7 +105,7 @@ public struct RootView: View {
             // Restore subscriptions on every app launch, not only when a paywall opens.
             _ = StoreKitSubscriptionManager.shared
         }
-        .onChange(of: scenePhase) { phase in
+        .onChange(of: scenePhase) { _, phase in
             if phase == .active {
                 store.checkAndArchiveStaleSession()
             }

@@ -686,7 +686,7 @@ public struct CloudBackupSheet: View {
                             Spacer()
                             Toggle("", isOn: $isMirrorEnabled)
                                 .labelsHidden()
-                                .onChange(of: isMirrorEnabled) { val in
+                                .onChange(of: isMirrorEnabled) { _, val in
                                     CloudMirrorManager.shared.isEnabled = val
                                 }
                         }
