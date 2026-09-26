@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A13B29C1D4E5F60718293A4B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A13B29C1D4E5F60718293A4A /* PrivacyInfo.xcprivacy */; };
 		PW0000000000000000000002 /* ProPaywallSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = PW0000000000000000000001 /* ProPaywallSheet.swift */; };
 		VM0000000000000000000002 /* ProFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000001 /* ProFeature.swift */; };
 		SK0000000000000000000002 /* StoreKitSubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = SK0000000000000000000001 /* StoreKitSubscriptionManager.swift */; };
@@ -133,6 +134,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A13B29C1D4E5F60718293A4A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		PW0000000000000000000001 /* ProPaywallSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPaywallSheet.swift; sourceTree = "<group>"; };
 		VM0000000000000000000001 /* ProFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeature.swift; sourceTree = "<group>"; };
 		SK0000000000000000000001 /* StoreKitSubscriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitSubscriptionManager.swift; sourceTree = "<group>"; };
@@ -406,6 +408,7 @@
 			children = (
 				FAENT0000000000000000001 /* FormApp.entitlements */,
 				29875CA77E7BA2C02CDFFA36 /* Info.plist */,
+				A13B29C1D4E5F60718293A4A /* PrivacyInfo.xcprivacy */,
 				94947E9D4851281EE48A4B52 /* App */,
 				6B884E9359482E3EEF287C4A /* Data */,
 				2874F4DF3B1E987838585D83 /* Localization */,
@@ -616,6 +619,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A13B29C1D4E5F60718293A4B /* PrivacyInfo.xcprivacy in Resources */,
 				E10000000000000000000002 /* exercises.json in Resources */,
                 V10000000000000000000003 /* ExerciseVideos in Resources */,
                 M20000000000000000000003 /* ExerciseMuscles in Resources */,
