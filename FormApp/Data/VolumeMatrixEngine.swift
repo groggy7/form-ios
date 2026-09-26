@@ -253,35 +253,56 @@ struct VolumeMatrixEngine {
         )
     }
 
+    private static let isoCalendar: Calendar = {
+        var cal = Calendar(identifier: .iso8601)
+        cal.firstWeekday = 2
+        return cal
+    }()
+
+    private static let isoFormatterWithMillis: ISO8601DateFormatter = {
+        let f = ISO8601DateFormatter()
+        f.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return f
+    }()
+
+    private static let isoFormatter: ISO8601DateFormatter = {
+        let f = ISO8601DateFormatter()
+        f.formatOptions = [.withInternetDateTime]
+        return f
+    }()
+
+    private static let ymdFormatter: DateFormatter = {
+        let f = DateFormatter()
+        f.dateFormat = "yyyy-MM-dd"
+        return f
+    }()
+
     private static func isRecordInWeek(record: WorkoutSessionRecord, targetWeekKey: String) -> Bool {
         guard !targetWeekKey.isEmpty else { return false }
         let dateString = record.completedAt.isEmpty ? record.startedAt : record.completedAt
         guard let date = parseDate(dateString) else { return false }
-        var calendar = Calendar(identifier: .iso8601)
-        calendar.firstWeekday = 2 // Monday
-        let year = calendar.component(.yearForWeekOfYear, from: date)
-        let week = calendar.component(.weekOfYear, from: date)
+        let year = isoCalendar.component(.yearForWeekOfYear, from: date)
+        let week = isoCalendar.component(.weekOfYear, from: date)
         let weekKey = String(format: "%04d-W%02d", year, week)
         return weekKey == targetWeekKey
     }
 
     private static func recordDateString(_ record: WorkoutSessionRecord) -> String? {
         let dateString = record.completedAt.isEmpty ? record.startedAt : record.completedAt
+        if dateString.count >= 10 {
+            let prefix = String(dateString.prefix(10))
+            if prefix.count == 10 && prefix.contains("-") {
+                return prefix
+            }
+        }
         guard let date = parseDate(dateString) else { return nil }
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter.string(from: date)
+        return ymdFormatter.string(from: date)
     }
 
     private static func parseDate(_ string: String) -> Date? {
         if string.isEmpty { return nil }
-        let isoFormatter = ISO8601DateFormatter()
-        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        if let d = isoFormatterWithMillis.date(from: string) { return d }
         if let d = isoFormatter.date(from: string) { return d }
-        isoFormatter.formatOptions = [.withInternetDateTime]
-        if let d = isoFormatter.date(from: string) { return d }
-        let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd"
-        return df.date(from: string)
+        return ymdFormatter.date(from: string)
     }
 }

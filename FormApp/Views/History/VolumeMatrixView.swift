@@ -64,7 +64,8 @@ public struct VolumeMatrixView: View {
     }
 
     public var body: some View {
-        VStack(spacing: 16) {
+        let report = self.report
+        return VStack(spacing: 16) {
             Text(LanguageManager.t("matrix.limitations"))
                 .font(.system(size: 13))
                 .foregroundColor(AppColors.secondaryText)
@@ -240,7 +241,7 @@ public struct VolumeMatrixView: View {
             if let catalog = ExerciseMuscleCatalog.shared {
                 ZStack(alignment: .topTrailing) {
                     VStack(spacing: 14) {
-                        heatmapFigure(catalog: catalog)
+                        heatmapFigure(catalog: catalog, report: report)
                             .frame(height: 280)
 
                         // Front / Back Toggle
@@ -451,11 +452,9 @@ public struct VolumeMatrixView: View {
         .cornerRadius(18)
     }
 
-    private func heatmapFigure(catalog: ExerciseMuscleCatalog) -> some View {
+    private func heatmapFigure(catalog: ExerciseMuscleCatalog, report: VolumeMatrixReport) -> some View {
         let anatomy = catalog.views[currentView]
-        let paths: [(String, CGPath)] = (anatomy?.regions ?? [:]).compactMap { (muscle, pathString) in
-            return (muscle, SVGPathParser.parse(pathString))
-        }
+        let paths = catalog.parsedPaths(for: currentView)
 
         return Canvas { context, size in
             guard let anatomy, let image = ExerciseMuscleCatalog.images[currentView] else { return }

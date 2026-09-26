@@ -43,6 +43,23 @@ struct ExerciseMuscleCatalog: Decodable {
         }
         return result
     }()
+
+    private static var parsedPathsCache: [String: [(String, CGPath)]] = [:]
+    private static let pathsLock = NSLock()
+
+    func parsedPaths(for view: String) -> [(String, CGPath)] {
+        Self.pathsLock.lock()
+        defer { Self.pathsLock.unlock() }
+        if let cached = Self.parsedPathsCache[view] {
+            return cached
+        }
+        let anatomy = views[view]
+        let paths: [(String, CGPath)] = (anatomy?.regions ?? [:]).compactMap { (muscle, pathString) in
+            return (muscle, SVGPathParser.parse(pathString))
+        }
+        Self.parsedPathsCache[view] = paths
+        return paths
+    }
 }
 
 struct ExerciseMusclesCard: View {
