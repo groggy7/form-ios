@@ -41,3 +41,49 @@ enum ExerciseSearch {
         return matches(words) ? 4 : nil
     }
 }
+
+/// UI-thread cache retained by AppStore across Library tab mounts. Keeps one filter result.
+final class LibraryExerciseResults {
+    private var source: [ExerciseCatalogEntry]?
+    private var language: String?
+    private var ordered: [ExerciseCatalogEntry] = []
+    private struct Filter: Equatable {
+        let query: String
+        let equipment: String?
+        let muscle: String?
+    }
+    private var lastFilter: Filter?
+    private var lastResult: [ExerciseCatalogEntry] = []
+
+    func entries(catalogue: [ExerciseCatalogEntry], query: String = "",
+                 equipmentKey: String? = nil, muscleKey: String? = nil) -> [ExerciseCatalogEntry] {
+        let currentLanguage = LanguageManager.shared.currentLanguage
+        if source != catalogue || language != currentLanguage {
+            source = catalogue
+            language = currentLanguage
+            // Custom exercise ties must follow the current localized names.
+            ordered = catalogue.sorted { ExercisePriority.compare($0.exercise, $1.exercise) }
+            lastFilter = nil
+        }
+        let filter = Filter(query: query, equipment: equipmentKey, muscle: muscleKey)
+        if lastFilter == filter { return lastResult }
+        let search = ExerciseSearch.Query(query)
+        let matching = equipmentKey == nil && muscleKey == nil ? ordered : ordered.filter {
+            (equipmentKey == nil || EquipmentCatalog.shared.matches($0.exercise.exerciseId, selected: equipmentKey)) &&
+                ExerciseMetadata.matchesMuscle(exercise: $0.exercise, muscleKey: muscleKey)
+        }
+        if search.tokens.isEmpty {
+            lastResult = matching
+        } else {
+            lastResult = matching.compactMap { entry -> (ExerciseCatalogEntry, Int)? in
+                guard let score = ExerciseSearch.score(search, exercise: entry.exercise,
+                    localizedName: entry.exercise.displayName,
+                    category: "\(LanguageManager.t("category.\(entry.exercise.resolvedMovement.rawValue)")) \(entry.exercise.metadataSubtitle)") else { return nil }
+                return (entry, score)
+            // Swift's stable sort retains the cached priority order for equal scores.
+            }.sorted { $0.1 < $1.1 }.map { $0.0 }
+        }
+        lastFilter = filter
+        return lastResult
+    }
+}

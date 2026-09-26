@@ -40,6 +40,7 @@ public final class AppStore: ObservableObject {
     @Published public var availablePlatesKg: [Double]
     @Published public var noticeMessage: String?
     @Published public var exerciseCatalogue: [ExerciseCatalogEntry] = []
+    let libraryResults = LibraryExerciseResults()
     
     // Navigation selection
     @Published public var selectedWorkoutId: String?

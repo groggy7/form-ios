@@ -398,15 +398,23 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
-    func testStaticStepOneThumbnails() throws {
+    func testStaticStepOneThumbnails() async throws {
         XCTAssertEqual(Set(ExerciseThumbnails.catalog.keys), Set(ExerciseCatalog.canonicalExercises.keys))
         for id in ExerciseThumbnails.catalog.keys {
-            let image = try XCTUnwrap(ExerciseThumbnails.image(for: id), id)
+            let loaded = await ExerciseThumbnails.load(for: id)
+            let image = try XCTUnwrap(loaded, id)
             XCTAssertLessThanOrEqual(image.size.width, 384)
             XCTAssertLessThanOrEqual(image.size.height, 384)
             XCTAssertNotEqual(image.cgImage?.alphaInfo, CGImageAlphaInfo.none)
         }
-        XCTAssertNil(ExerciseThumbnails.image(for: "unknown"))
+        let unknown = await ExerciseThumbnails.load(for: "unknown")
+        XCTAssertNil(unknown)
+        let missing = await ExerciseThumbnails.load(for: nil)
+        XCTAssertNil(missing)
+        for id in ["barbell-bench-press", "face-pull", "cable-lateral-raise", "leg-press"] {
+            let loaded = await ExerciseThumbnails.load(for: id)
+            XCTAssertTrue(loaded === ExerciseThumbnails.cachedImage(for: id))
+        }
         let renderer = ImageRenderer(content:
             VStack {
                 MovementIllustration(exerciseId: "barbell-bench-press")
@@ -813,6 +821,41 @@ final class FormAppTests: XCTestCase {
         } else {
             XCTFail("Cardio artwork has no decoded CGImage")
         }
+    }
+
+    @MainActor
+    func testLibraryResultsPreserveOrderingAndInvalidateCachedInputs() {
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previousLanguage) }
+        LanguageManager.setLanguage("en")
+        let cache = LibraryExerciseResults()
+        func entry(_ id: String) -> ExerciseCatalogEntry {
+            ExerciseCatalogEntry(key: id, exercise: ExerciseCatalog.canonicalExercises[id]!.toExercise(), programIds: [], workoutKeys: [])
+        }
+        let catalogue = [entry("dumbbell-bench-press"), entry("barbell-back-squat"), entry("barbell-bench-press")]
+        let all = cache.entries(catalogue: catalogue)
+        XCTAssertEqual(all.map(\.key), ["barbell-bench-press", "barbell-back-squat", "dumbbell-bench-press"])
+        XCTAssertEqual(cache.entries(catalogue: catalogue, query: "bench", equipmentKey: "bar", muscleKey: "chest").map(\.key), ["barbell-bench-press"])
+        XCTAssertEqual(cache.entries(catalogue: catalogue, query: "bench", muscleKey: "chest").map(\.key), ["barbell-bench-press", "dumbbell-bench-press"])
+        XCTAssertEqual(cache.entries(catalogue: catalogue, query: " --- "), all)
+        XCTAssertEqual(cache.entries(catalogue: catalogue), all)
+
+        var custom = ExerciseCatalogEntry(key: "custom", exercise: Exercise(name: "Special movement", movementType: "press"), programIds: [], workoutKeys: [])
+        XCTAssertTrue(cache.entries(catalogue: [custom], query: "gogus").isEmpty)
+        LanguageManager.setLanguage("tr")
+        XCTAssertEqual(cache.entries(catalogue: [custom], query: "gogus"), [custom])
+        custom.exercise.cues = "Updated technique"
+        custom.exercise.videos = ["https://youtu.be/test"]
+        XCTAssertEqual(cache.entries(catalogue: [custom], query: "gogus"), [custom])
+        XCTAssertEqual(cache.entries(catalogue: [custom, entry("barbell-bench-press")], query: "gogus").count, 2)
+        LanguageManager.setLanguage("en")
+        XCTAssertTrue(cache.entries(catalogue: [custom], query: "gogus").isEmpty)
+
+        let exact = ExerciseCatalogEntry(key: "custom-rdl", exercise: Exercise(name: "RDL"), programIds: [], workoutKeys: [])
+        let aliases = [entry("barbell-romanian-deadlift"), exact, entry("barbell-bench-press")]
+        XCTAssertEqual(cache.entries(catalogue: aliases, query: "rdl").first?.key, "custom-rdl")
+        XCTAssertTrue(cache.entries(catalogue: aliases, query: "rdl", equipmentKey: "bar", muscleKey: "chest").isEmpty)
+        XCTAssertEqual(cache.entries(catalogue: aliases, query: "RDL", equipmentKey: "bar", muscleKey: "hamstrings").map(\.key), ["barbell-romanian-deadlift"])
     }
 
     func testLibraryMuscleFilteringAndMatching() {

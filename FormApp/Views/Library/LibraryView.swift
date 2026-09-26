@@ -9,6 +9,7 @@ public enum LibraryFilterModal: String, Identifiable {
 
 public struct LibraryView: View {
     @ObservedObject var store: AppStore
+    @ObservedObject private var language = LanguageManager.shared
     var onSelectExercise: (Exercise) -> Void
     var onOpenSettings: () -> Void
 
@@ -31,25 +32,13 @@ public struct LibraryView: View {
     }
 
     public var body: some View {
-        let catalogue = store.exerciseCatalogue
-        let search = ExerciseSearch.Query(query)
-        let filtered = catalogue.compactMap { entry -> (ExerciseCatalogEntry, Int)? in
-            let matchEquipment = EquipmentCatalog.shared.matches(entry.exercise.exerciseId, selected: selectedEquipment)
-            let matchMuscle = ExerciseMetadata.matchesMuscle(exercise: entry.exercise, muscleKey: selectedMuscle)
-            guard matchEquipment, matchMuscle,
-                let score = ExerciseSearch.score(search, exercise: entry.exercise,
-                localizedName: entry.exercise.displayName,
-                category: "\(LanguageManager.t("category.\(entry.exercise.resolvedMovement.rawValue)")) \(entry.exercise.metadataSubtitle)") else { return nil }
-            return (entry, score)
-        }.sorted { $0.1 == $1.1 ? ExercisePriority.compare($0.0.exercise, $1.0.exercise) : $0.1 < $1.1 }
-            .map { $0.0 }
-        let hasActiveFilters = selectedEquipment != nil || selectedMuscle != nil
-
         if let selectedId = store.selectedExerciseId, let selectedExercise = store.findExercise(id: selectedId) {
             ExerciseDetailView(exercise: selectedExercise, onBack: {
                 store.selectExerciseInLibrary(id: nil)
             })
         } else {
+            let filtered = store.libraryResults.entries(catalogue: store.exerciseCatalogue, query: query,
+                                                       equipmentKey: selectedEquipment, muscleKey: selectedMuscle)
             ScrollView {
             VStack(spacing: 16) {
                 // Header
@@ -193,7 +182,7 @@ public struct LibraryView: View {
                     }
                 } else {
                     // Exercise items list
-                    VStack(spacing: 8) {
+                    LazyVStack(spacing: 8) {
                         ForEach(filtered, id: \.id) { entry in
                             let exercise = entry.exercise
                             Button(action: { onSelectExercise(exercise) }) {

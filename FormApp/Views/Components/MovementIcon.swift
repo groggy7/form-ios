@@ -14,13 +14,34 @@ enum ExerciseThumbnails {
         cache.totalCostLimit = 8 * 1024 * 1024
         return cache
     }()
-    static func image(for exerciseId: String?) -> UIImage? {
-        guard let id = exerciseId, let entry = catalog[id] else { return nil }
-        if let image = cache.object(forKey: id as NSString) { return image }
+    private static let loadQueue = DispatchQueue(label: "com.form.exercise-thumbnails", qos: .userInitiated)
+
+    /// Safe during view construction: never touches the filesystem or decodes an image.
+    static func cachedImage(for exerciseId: String?) -> UIImage? {
+        exerciseId.flatMap { cache.object(forKey: $0 as NSString) }
+    }
+
+    static func load(for exerciseId: String?) async -> UIImage? {
+        guard let exerciseId else { return nil }
+        if let image = cachedImage(for: exerciseId) { return image }
+        return await withCheckedContinuation { continuation in
+            loadQueue.async {
+                continuation.resume(returning: readImage(for: exerciseId))
+            }
+        }
+    }
+
+    private static func readImage(for exerciseId: String) -> UIImage? {
+        dispatchPrecondition(condition: .onQueue(loadQueue))
+        // Recheck after queueing so simultaneous requests for an ID share the decoded image.
+        if let image = cachedImage(for: exerciseId) { return image }
+        guard let entry = catalog[exerciseId] else { return nil }
         guard let url = Bundle.main.url(forResource: entry.file, withExtension: nil, subdirectory: "ExerciseThumbnails"),
               let image = UIImage(contentsOfFile: url.path) else { return nil }
-        cache.setObject(image, forKey: id as NSString, cost: Int(image.size.width * image.size.height * 4))
-        return image
+        let prepared = image.preparingForDisplay() ?? image
+        let cost = prepared.cgImage.map { $0.bytesPerRow * $0.height } ?? Int(image.size.width * image.size.height * 4)
+        cache.setObject(prepared, forKey: exerciseId as NSString, cost: cost)
+        return prepared
     }
 }
 
@@ -46,7 +67,7 @@ public struct MovementIcon: View {
     public var body: some View {
         let finalSize: CGFloat = large ? 108 : size
         let cornerRadius: CGFloat = finalSize >= 96 ? 12 : (finalSize >= 68 ? 11 : 10)
-        let hasVideo = ExerciseVideoCatalog.url(for: exerciseId) != nil
+        let hasVideo = animated && ExerciseVideoCatalog.url(for: exerciseId) != nil
         ZStack {
             if animated && hasVideo {
                 ExerciseDetailVideo(exerciseId: exerciseId)
@@ -69,6 +90,8 @@ public struct MovementIcon: View {
 /// Unknown exercises remain empty instead of inheriting a similar movement.
 public struct MovementIllustration: View {
     private let exerciseId: String?
+    @State private var loadedImage: UIImage?
+    @State private var loadedExerciseId: String?
     public init(exerciseId: String?) {
         self.exerciseId = exerciseId
     }
@@ -76,9 +99,16 @@ public struct MovementIllustration: View {
     public var body: some View {
         ZStack {
             Color.clear
-            if let image = ExerciseThumbnails.image(for: exerciseId) {
+            if let image = ExerciseThumbnails.cachedImage(for: exerciseId)
+                ?? (loadedExerciseId == exerciseId ? loadedImage : nil) {
                 Image(uiImage: image).resizable().scaledToFit()
             }
         }.accessibilityHidden(true)
+        .task(id: exerciseId) {
+            let image = await ExerciseThumbnails.load(for: exerciseId)
+            guard !Task.isCancelled else { return }
+            loadedExerciseId = exerciseId
+            loadedImage = image
+        }
     }
 }
