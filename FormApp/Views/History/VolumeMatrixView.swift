@@ -239,51 +239,51 @@ public struct VolumeMatrixView: View {
 
             // Heatmap Figure Card ("Athlete Window")
             if let catalog = ExerciseMuscleCatalog.shared {
-                HStack(spacing: 12) {
-                    // Left: Athlete Figure
+                HStack(alignment: .center, spacing: 20) {
+                    // Left: Athlete Figure (relaxed, not cornered)
                     heatmapFigure(catalog: catalog, report: report)
-                        .frame(width: 120, height: 270)
+                        .frame(width: 108, height: 226)
 
-                    // Right: (i) button at top-right, Front/Back switcher directly under it, and Vertical Legend
-                    VStack(spacing: 0) {
+                    // Right: (i) button at top-right, gentle Front/Back switcher directly under it, and Vertical Legend
+                    VStack(alignment: .leading, spacing: 0) {
                         // Top row: Info button aligned to the trailing edge
                         HStack {
                             Spacer()
                             Button(action: { showInfoSheet = true }) {
                                 Image(systemName: "info.circle.fill")
-                                    .font(.system(size: 24, weight: .regular))
-                                    .foregroundColor(Color(hex: 0xC0CAD2))
+                                    .font(.system(size: 22, weight: .regular))
+                                    .foregroundColor(Color(hex: 0xB6BEC4))
                             }
                             .buttonStyle(.plain)
-                            .frame(width: 28, height: 28)
+                            .frame(width: 24, height: 24)
                         }
 
-                        Spacer().frame(height: 10)
+                        Spacer().frame(height: 6)
 
-                        // Front / Back Toggle (under the info button)
+                        // Front / Back Toggle (gentle, slim, compact)
                         HStack(spacing: 2) {
                             ForEach(["front", "back"], id: \.self) { view in
                                 let isSelected = currentView == view
                                 Button(action: { currentView = view }) {
                                     Text(LanguageManager.t(view == "front" ? "anatomy.front" : "anatomy.back"))
-                                        .font(.system(size: 13.5, weight: isSelected ? .semibold : .medium))
-                                        .foregroundColor(isSelected ? Color(hex: 0xE8DEF8) : Color(hex: 0x7E8B9B))
+                                        .font(.system(size: 12.5, weight: isSelected ? .semibold : .medium))
+                                        .foregroundColor(isSelected ? Color(hex: 0xE8DEF8) : Color(hex: 0x8F999F))
                                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                                         .background(isSelected ? Color(hex: 0x28203D) : Color.clear)
                                         .overlay(
-                                            RoundedRectangle(cornerRadius: 11)
-                                                .stroke(isSelected ? Color(hex: 0xA855F7) : Color.clear, lineWidth: 1.5)
+                                            RoundedRectangle(cornerRadius: 9.5)
+                                                .stroke(isSelected ? Color(hex: 0xA855F7) : Color.clear, lineWidth: 1)
                                         )
-                                        .cornerRadius(11)
+                                        .cornerRadius(9.5)
                                 }
                                 .buttonStyle(.plain)
                             }
                         }
-                        .frame(height: 40)
-                        .padding(3)
+                        .frame(width: 148, height: 34)
+                        .padding(2.5)
                         .background(Color(hex: 0x161B20))
-                        .overlay(RoundedRectangle(cornerRadius: 14).stroke(Color(hex: 0x2B373C), lineWidth: 1))
-                        .cornerRadius(14)
+                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color(hex: 0x2A3238), lineWidth: 1))
+                        .cornerRadius(12)
 
                         Spacer().frame(height: 14)
 
@@ -294,28 +294,27 @@ public struct VolumeMatrixView: View {
                                 HStack(alignment: .center, spacing: 10) {
                                     Circle()
                                         .fill(zone.color)
-                                        .frame(width: 10, height: 10)
+                                        .frame(width: 8, height: 8)
                                     Text(LanguageManager.t(zone.titleKey))
-                                        .font(.system(size: 12.5, weight: .medium))
-                                        .foregroundColor(Color(hex: 0xB6BEC4))
+                                        .font(.system(size: 11.5, weight: .medium))
+                                        .foregroundColor(Color(hex: 0xA4B0BA))
                                         .lineLimit(1)
                                     Spacer()
                                 }
-                                .padding(.vertical, 6.5)
+                                .padding(.vertical, 5.5)
 
                                 if index < zones.count - 1 {
                                     Rectangle()
                                         .fill(Color(hex: 0x1E242B))
-                                        .frame(height: 1)
+                                        .frame(height: 0.7)
                                 }
                             }
                         }
                     }
                     .frame(maxWidth: .infinity)
                 }
-                .padding(.vertical, 14)
-                .padding(.leading, 12)
-                .padding(.trailing, 14)
+                .padding(.vertical, 16)
+                .padding(.horizontal, 16)
                 .background(AppColors.surface)
                 .overlay(RoundedRectangle(cornerRadius: 20).stroke(AppColors.border, lineWidth: 1))
                 .cornerRadius(20)
