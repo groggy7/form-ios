@@ -265,21 +265,21 @@ public struct VolumeMatrixView: View {
                         .overlay(RoundedRectangle(cornerRadius: 11).stroke(AppColors.border, lineWidth: 1))
                         .cornerRadius(11)
 
-                        // Adaptive columns keep localized reference labels readable.
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 140), alignment: .leading)], spacing: 8) {
+                        // Volume Zone Legend (FlowLayout to cleanly center and wrap on any screen width)
+                        FlowLayout(alignment: .center, horizontalSpacing: 10, verticalSpacing: 6) {
                             ForEach(VolumeZone.allCases.filter { report.isPlannedRoutine ? $0 == .noWeeklyReference : $0 != .noWeeklyReference }, id: \.self) { zone in
-                                HStack(alignment: .top, spacing: 4) {
+                                HStack(alignment: .center, spacing: 5) {
                                     Circle()
                                         .fill(zone.color)
                                         .frame(width: 7, height: 7)
-                                        .padding(.top, 3)
                                     Text(LanguageManager.t(zone.titleKey))
                                         .font(.system(size: 10, weight: .medium))
                                         .foregroundColor(AppColors.muted)
-                                        .fixedSize(horizontal: false, vertical: true)
                                 }
                             }
                         }
+                        .frame(maxWidth: .infinity)
+                        .padding(.horizontal, 4)
                     }
                     .padding(.vertical, 16)
                     .padding(.horizontal, 12)
@@ -614,6 +614,100 @@ public struct VolumeMatrixView: View {
             let newYear = calendar.component(.yearForWeekOfYear, from: d)
             let newWeek = calendar.component(.weekOfYear, from: d)
             selectedWeekKey = String(format: "%04d-W%02d", newYear, newWeek)
+        }
+    }
+}
+
+// MARK: - FlowLayout
+
+private struct FlowLayout: Layout {
+    var alignment: HorizontalAlignment = .center
+    var horizontalSpacing: CGFloat = 10
+    var verticalSpacing: CGFloat = 6
+
+    init(
+        alignment: HorizontalAlignment = .center,
+        horizontalSpacing: CGFloat = 10,
+        verticalSpacing: CGFloat = 6
+    ) {
+        self.alignment = alignment
+        self.horizontalSpacing = horizontalSpacing
+        self.verticalSpacing = verticalSpacing
+    }
+
+    private struct Row {
+        var subviewIndices: [Int] = []
+        var sizes: [CGSize] = []
+        var width: CGFloat = 0
+        var height: CGFloat = 0
+    }
+
+    private func computeRows(proposal: ProposedViewSize, subviews: Subviews) -> [Row] {
+        let maxWidth = proposal.width ?? .infinity
+        var rows: [Row] = []
+        var currentRow = Row()
+
+        for (index, subview) in subviews.enumerated() {
+            let itemProposal = ProposedViewSize(width: maxWidth.isFinite ? maxWidth : nil, height: nil)
+            let size = subview.sizeThatFits(itemProposal)
+            if !currentRow.subviewIndices.isEmpty && currentRow.width + horizontalSpacing + size.width > maxWidth {
+                rows.append(currentRow)
+                currentRow = Row()
+            }
+            if !currentRow.subviewIndices.isEmpty {
+                currentRow.width += horizontalSpacing
+            }
+            currentRow.subviewIndices.append(index)
+            currentRow.sizes.append(size)
+            currentRow.width += size.width
+            currentRow.height = max(currentRow.height, size.height)
+        }
+
+        if !currentRow.subviewIndices.isEmpty {
+            rows.append(currentRow)
+        }
+
+        return rows
+    }
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let rows = computeRows(proposal: proposal, subviews: subviews)
+        if rows.isEmpty { return .zero }
+
+        let totalHeight = rows.reduce(0) { $0 + $1.height } + CGFloat(max(0, rows.count - 1)) * verticalSpacing
+        let maxRowWidth = rows.reduce(0) { max($0, $1.width) }
+        let width = (proposal.width != nil && proposal.width!.isFinite) ? proposal.width! : maxRowWidth
+
+        return CGSize(width: width, height: totalHeight)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let rows = computeRows(proposal: ProposedViewSize(width: bounds.width, height: bounds.height), subviews: subviews)
+        var y = bounds.minY
+
+        for row in rows {
+            let xOffset: CGFloat
+            switch alignment {
+            case .leading:
+                xOffset = 0
+            case .trailing:
+                xOffset = max(0, bounds.width - row.width)
+            default:
+                xOffset = max(0, (bounds.width - row.width) / 2.0)
+            }
+            var x = bounds.minX + xOffset
+
+            for (index, subviewIndex) in row.subviewIndices.enumerated() {
+                let size = row.sizes[index]
+                let yOffset = (row.height - size.height) / 2.0
+                subviews[subviewIndex].place(
+                    at: CGPoint(x: x, y: y + yOffset),
+                    proposal: ProposedViewSize(size)
+                )
+                x += size.width + horizontalSpacing
+            }
+
+            y += row.height + verticalSpacing
         }
     }
 }
