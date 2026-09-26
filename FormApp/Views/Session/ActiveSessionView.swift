@@ -903,7 +903,14 @@ private struct MiniExerciseDetailModal: View {
 
                     Spacer()
 
-                    FormModalCloseButton(action: onDismiss, accessibilityIdentifier: "mini-exercise-detail-close")
+                    Button(action: onDismiss) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 14, weight: .semibold))
+                            .foregroundColor(AppColors.secondaryText)
+                            .frame(width: 44, height: 44)
+                    }
+                    .accessibilityLabel(LanguageManager.t("common.close"))
+                    .accessibilityIdentifier("mini-exercise-detail-close")
                 }
                 .padding(.horizontal, 18)
                 .padding(.top, 14)

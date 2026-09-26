@@ -23,7 +23,11 @@ public struct FormLabInfoSheet: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    FormModalCloseButton(action: { dismiss() })
+                    Button(action: { dismiss() }) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundColor(AppColors.secondaryText)
+                    }
                 }
             }
         }

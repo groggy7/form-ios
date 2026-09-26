@@ -169,7 +169,12 @@ public struct ProPaywallSheet: View {
 
                         Spacer()
 
-                        FormModalCloseButton(action: { dismissSelf() })
+                        Button(action: { dismissSelf() }) {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.system(size: 24))
+                                .foregroundColor(AppColors.secondaryText)
+                        }
+                        .buttonStyle(.plain)
                     }
 
                     // Headline & Subtitle

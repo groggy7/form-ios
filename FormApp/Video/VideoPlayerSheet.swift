@@ -44,7 +44,12 @@ public struct VideoPlayerSheet: View {
 
                 Spacer()
 
-                FormModalCloseButton(action: onClose)
+                Button(action: onClose) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 16, weight: .bold))
+                        .foregroundColor(AppColors.text)
+                        .padding(8)
+                }
             }
             .padding(.horizontal, 20)
             .padding(.top, 16)
@@ -111,7 +116,12 @@ public struct VideoPlayerSheet: View {
                         }
                     }
 
-                    FormModalCloseButton(action: onClose)
+                    Button(action: onClose) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundColor(AppColors.text)
+                            .frame(width: 36, height: 36)
+                    }
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 16)

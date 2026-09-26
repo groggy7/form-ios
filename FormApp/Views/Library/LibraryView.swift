@@ -283,7 +283,14 @@ public struct LibraryView: View {
                 .font(.system(size: 18, weight: .semibold))
                 .foregroundColor(AppColors.text)
             Spacer()
-            FormModalCloseButton(action: { activeModal = nil })
+            Button(action: { activeModal = nil }) {
+                Image(systemName: "xmark")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundColor(AppColors.muted)
+                    .frame(width: 32, height: 32)
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(LanguageManager.t("common.done"))
         }
         .padding(.horizontal, 18)
         .padding(.top, 18)

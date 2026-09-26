@@ -35,38 +35,3 @@ public struct FormHeaderIconButton: View {
         .accessibilityLabel(contentDescription)
     }
 }
-
-public struct FormModalCloseButton: View {
-    private let action: () -> Void
-    private let accessibilityLabelText: String
-    private let accessibilityIdentifierText: String?
-
-    public init(
-        action: @escaping () -> Void,
-        accessibilityLabel: String = LanguageManager.t("common.close"),
-        accessibilityIdentifier: String? = nil
-    ) {
-        self.action = action
-        self.accessibilityLabelText = accessibilityLabel
-        self.accessibilityIdentifierText = accessibilityIdentifier
-    }
-
-    public var body: some View {
-        let button = Button(action: action) {
-            Image(systemName: "xmark")
-                .font(.system(size: 13, weight: .semibold))
-                .foregroundColor(AppColors.secondaryText)
-                .frame(width: 32, height: 32)
-                .background(AppColors.surfaceRaised)
-                .clipShape(Circle())
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(accessibilityLabelText)
-
-        if let identifier = accessibilityIdentifierText {
-            button.accessibilityIdentifier(identifier)
-        } else {
-            button
-        }
-    }
-}

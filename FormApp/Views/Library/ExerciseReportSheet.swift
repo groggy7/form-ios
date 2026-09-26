@@ -31,7 +31,14 @@ public struct ExerciseReportSheet: View {
 
                     Spacer()
 
-                    FormModalCloseButton(action: onDismiss)
+                    Button(action: onDismiss) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundColor(AppColors.muted)
+                            .frame(width: 36, height: 36)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(LanguageManager.t("common.close"))
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 16)

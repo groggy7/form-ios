@@ -133,7 +133,11 @@ public struct ProgramsView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    FormModalCloseButton(action: onDismiss)
+                    Button(action: onDismiss) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundColor(AppColors.secondaryText)
+                    }
                 }
             }
             .sheet(item: $editingProgram) { prog in
