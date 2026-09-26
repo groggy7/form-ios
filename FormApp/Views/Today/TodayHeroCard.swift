@@ -220,7 +220,7 @@ public struct TodayHeroCard: View {
                     )
                 }
                 .disabled(!isAvailable || isCompleted)
-                .buttonStyle(.plain)
+                .buttonStyle(TodayHeroActionButtonStyle())
             }
             .padding(EdgeInsets(top: 22, leading: 19, bottom: 20, trailing: 19))
         }
@@ -324,5 +324,12 @@ public struct TodayHeroCard: View {
         }
         .frame(minHeight: 250)
         .padding(.horizontal, 20)
+    }
+}
+
+private struct TodayHeroActionButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .opacity(configuration.isPressed ? 0.85 : 1.0)
     }
 }

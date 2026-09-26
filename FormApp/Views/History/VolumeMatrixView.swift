@@ -239,14 +239,14 @@ public struct VolumeMatrixView: View {
 
             // Heatmap Figure Card ("Athlete Window")
             if let catalog = ExerciseMuscleCatalog.shared {
-                HStack(alignment: .center, spacing: 18) {
-                    // Left: Athlete Figure (uncornered with breathing room)
+                HStack(alignment: .top, spacing: 24) {
+                    // Left: Athlete Figure with generous left and right padding
                     heatmapFigure(catalog: catalog, report: report)
                         .frame(width: 108, height: 244)
 
-                    // Right: (i) button at top-right, gentle Front/Back switcher directly under it, and Vertical Legend
+                    // Right: (i) button at higher position (top-right), Front/Back switcher preserved at original level, and Vertical Legend
                     VStack(spacing: 0) {
-                        // Top row: Info button aligned to the trailing edge
+                        // Top row: Info button aligned to the trailing edge at the top
                         HStack {
                             Spacer()
                             Button(action: { showInfoSheet = true }) {
@@ -258,9 +258,10 @@ public struct VolumeMatrixView: View {
                             .frame(width: 24, height: 24)
                         }
 
-                        Spacer().frame(height: 8)
+                        // Preserves original vertical position for switcher and legend without pushing them higher
+                        Spacer().frame(height: 24)
 
-                        // Front / Back Toggle (gentle, slim, directly under info button)
+                        // Front / Back Toggle (gentle, slim, at comfortable centered height)
                         HStack(spacing: 2) {
                             ForEach(["front", "back"], id: \.self) { view in
                                 let isSelected = currentView == view
@@ -313,8 +314,10 @@ public struct VolumeMatrixView: View {
                     }
                     .frame(maxWidth: .infinity)
                 }
-                .padding(.vertical, 14)
-                .padding(.horizontal, 14)
+                .padding(.top, 14)
+                .padding(.bottom, 14)
+                .padding(.leading, 20)
+                .padding(.trailing, 14)
                 .background(AppColors.surface)
                 .overlay(RoundedRectangle(cornerRadius: 20).stroke(AppColors.border, lineWidth: 1))
                 .cornerRadius(20)
