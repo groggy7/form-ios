@@ -477,15 +477,28 @@ public struct HistoryView: View {
             }
             return false
         }()
+        let isFullyComplete: Bool = {
+            if let active = store.activeSession, activeRecord != nil {
+                return WorkoutSessionUtils.isComplete(draft: active)
+            }
+            if let rec = sessionRecord {
+                return WorkoutCalendar.isSessionComplete(session: rec, workout: workout)
+            }
+            return false
+        }()
+
         let isToday = (dateString == WorkoutCalendar.formatDate(Date()))
         let effectiveStatus: WorkoutDayStatus = {
-            if sessionRecord?.isComplete == true {
+            if isFullyComplete {
                 return .completed
             }
+            if hasSets {
+                return .unfinished
+            }
             if isToday {
-                return hasSets ? .unfinished : (status ?? .unfinished)
+                return status ?? .unfinished
             } else {
-                return hasSets ? .unfinished : .missed
+                return .missed
             }
         }()
 

@@ -6856,4 +6856,115 @@ final class FormAppTests: XCTestCase {
             print("Successfully wrote Ghost Target Set Table snapshot to \(path)")
         }
     }
+
+    func testWorkoutCalendarIsSessionComplete_MissingPlannedExercise_ReturnsFalse() {
+        let workout = Workout(
+            id: "hl-bench-push",
+            day: 1,
+            title: "Heavy Bench & Push",
+            exercises: [
+                Exercise(name: "Barbell Bench Press", sets: 6),
+                Exercise(name: "Incline Barbell Bench Press", sets: 3),
+                Exercise(name: "Pec Deck Fly", sets: 4),
+                Exercise(name: "Standing Barbell Overhead Press", sets: 3),
+                Exercise(name: "Cable Lateral Raise", sets: 3),
+                Exercise(name: "Rope Triceps Pressdown", sets: 3)
+            ]
+        )
+
+        // Session has 5 of 6 exercises done, Pec Deck Fly is omitted.
+        // Even if isComplete is true, isSessionComplete must return false.
+        let session = WorkoutSessionRecord(
+            id: "s-1",
+            programId: "heavylifter",
+            workoutId: "hl-bench-push",
+            workoutTitle: "Heavy Bench & Push",
+            startedAt: "2026-09-14T17:30:00Z",
+            completedAt: "2026-09-14T18:46:40Z",
+            durationSeconds: 4600,
+            totalCompletedSets: 16,
+            exerciseLogs: [
+                SessionExerciseLog(exerciseName: "Barbell Bench Press", sets: (1...6).map { SessionSetLog(setNumber: $0, weightKg: 100.0, reps: 5) }, targetSets: 6),
+                SessionExerciseLog(exerciseName: "Incline Barbell Bench Press", sets: (1...3).map { SessionSetLog(setNumber: $0, weightKg: 80.0, reps: 5) }, targetSets: 3),
+                SessionExerciseLog(exerciseName: "Standing Barbell Overhead Press", sets: (1...3).map { SessionSetLog(setNumber: $0, weightKg: 60.0, reps: 5) }, targetSets: 3),
+                SessionExerciseLog(exerciseName: "Cable Lateral Raise", sets: (1...3).map { SessionSetLog(setNumber: $0, weightKg: 15.0, reps: 12) }, targetSets: 3),
+                SessionExerciseLog(exerciseName: "Rope Triceps Pressdown", sets: (1...3).map { SessionSetLog(setNumber: $0, weightKg: 35.0, reps: 10) }, targetSets: 3)
+            ],
+            isComplete: true
+        )
+
+        XCTAssertFalse(WorkoutCalendar.isSessionComplete(session: session, workout: workout))
+    }
+
+    func testWorkoutCalendarIsSessionComplete_OnlyOneOfThreeExercisesDone_ReturnsFalse() {
+        let workout = Workout(
+            id: "w1", day: 2, title: "3-Move Workout",
+            exercises: [
+                Exercise(name: "Ex 1", sets: 4),
+                Exercise(name: "Ex 2", sets: 4),
+                Exercise(name: "Ex 3", sets: 4)
+            ]
+        )
+
+        // Ex 1 is done 4 out of 4 sets, but Ex 2 and Ex 3 are not done.
+        let session = WorkoutSessionRecord(
+            id: "s-2", programId: "p1", workoutId: "w1", workoutTitle: "3-Move Workout",
+            startedAt: "2026-09-15T10:00:00Z", completedAt: "2026-09-15T10:30:00Z",
+            durationSeconds: 1800, totalCompletedSets: 4,
+            exerciseLogs: [
+                SessionExerciseLog(exerciseName: "Ex 1", sets: (1...4).map { SessionSetLog(setNumber: $0, weightKg: 50.0, reps: 10) }, targetSets: 4)
+            ],
+            isComplete: true
+        )
+
+        XCTAssertFalse(WorkoutCalendar.isSessionComplete(session: session, workout: workout))
+    }
+
+    func testWorkoutCalendarIsSessionComplete_21Of22SetsCompleted_ReturnsFalse() {
+        let workout = Workout(
+            id: "w2", day: 3, title: "Big Workout",
+            exercises: [
+                Exercise(name: "Ex 1", sets: 11),
+                Exercise(name: "Ex 2", sets: 11)
+            ]
+        )
+
+        // 21 of 22 sets completed (Ex 2 only has 10 sets instead of 11)
+        let session = WorkoutSessionRecord(
+            id: "s-3", programId: "p2", workoutId: "w2", workoutTitle: "Big Workout",
+            startedAt: "2026-09-16T10:00:00Z", completedAt: "2026-09-16T11:00:00Z",
+            durationSeconds: 3600, totalCompletedSets: 21,
+            exerciseLogs: [
+                SessionExerciseLog(exerciseName: "Ex 1", sets: (1...11).map { SessionSetLog(setNumber: $0, weightKg: 50.0, reps: 10) }, targetSets: 11),
+                SessionExerciseLog(exerciseName: "Ex 2", sets: (1...10).map { SessionSetLog(setNumber: $0, weightKg: 50.0, reps: 10) }, targetSets: 11)
+            ],
+            isComplete: true
+        )
+
+        XCTAssertFalse(WorkoutCalendar.isSessionComplete(session: session, workout: workout))
+    }
+
+    func testWorkoutCalendarIsSessionComplete_AllExercisesAndSetsCompleted_ReturnsTrue() {
+        let workout = Workout(
+            id: "w3", day: 4, title: "Complete Workout",
+            exercises: [
+                Exercise(name: "Ex 1", sets: 3),
+                Exercise(name: "Ex 2", sets: 3)
+            ]
+        )
+
+        let session = WorkoutSessionRecord(
+            id: "s-4", programId: "p3", workoutId: "w3", workoutTitle: "Complete Workout",
+            startedAt: "2026-09-17T10:00:00Z", completedAt: "2026-09-17T10:45:00Z",
+            durationSeconds: 2700, totalCompletedSets: 6,
+            exerciseLogs: [
+                SessionExerciseLog(exerciseName: "Ex 1", sets: (1...3).map { SessionSetLog(setNumber: $0, weightKg: 50.0, reps: 10) }, targetSets: 3),
+                SessionExerciseLog(exerciseName: "Ex 2", sets: (1...3).map { SessionSetLog(setNumber: $0, weightKg: 50.0, reps: 10) }, targetSets: 3)
+            ],
+            isComplete: true
+        )
+
+        XCTAssertTrue(WorkoutCalendar.isSessionComplete(session: session, workout: workout))
+    }
 }
+

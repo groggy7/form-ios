@@ -241,7 +241,7 @@ public struct HistoryDayPreviewCard: View {
     }
 
     private var totalCompletedSets: Int {
-        detail.sessionRecord?.totalCompletedSets ?? allExercises.reduce(0) { $0 + $1.setsCount }
+        allExercises.reduce(0) { $0 + $1.setsCount }
     }
 
     private var totalPlannedSets: Int {

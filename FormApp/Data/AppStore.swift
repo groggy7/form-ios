@@ -482,8 +482,37 @@ public final class AppStore: ObservableObject {
         self.activeSession = nil
     }
 
+    private func resolveWorkout(for record: WorkoutSessionRecord) -> Workout? {
+        if let w = activeSession?.workout, w.id == record.workoutId {
+            return w
+        }
+        if let p = state.programs.first(where: { $0.id == record.programId }),
+           let w = p.workouts.first(where: { $0.id == record.workoutId }) {
+            return w
+        }
+        if let w = activeProgram?.workouts.first(where: { $0.id == record.workoutId }) {
+            return w
+        }
+        for p in state.programs {
+            if let w = p.workouts.first(where: { $0.id == record.workoutId }) {
+                return w
+            }
+        }
+        return nil
+    }
+
+    private func sessionForDate(_ dateStr: String) -> WorkoutSessionRecord? {
+        state.history.first { rec in
+            let calDate = state.calendarHistory?.entries.first(where: { entry in entry.id == "session:\(rec.id)" })?.date
+            let d = calDate ?? WorkoutCalendar.localDate(from: rec.startedAt) ?? WorkoutCalendar.localDate(from: rec.completedAt)
+            return d == dateStr
+        }
+    }
+
     public func completeActiveSession(_ record: WorkoutSessionRecord) {
-        let isComplete = activeSession.map(WorkoutSessionUtils.isComplete) ?? (record.isComplete ?? true)
+        let workout = resolveWorkout(for: record)
+        let isComplete = activeSession.map(WorkoutSessionUtils.isComplete)
+            ?? WorkoutCalendar.isSessionComplete(session: record, workout: workout)
         let finalRecord = WorkoutSessionRecord(
             id: record.id,
             programId: record.programId,
@@ -721,10 +750,17 @@ public final class AppStore: ObservableObject {
             statuses.removeValue(forKey: todayStr)
         }
 
-        // 2. Passed days with no logged sets -> red (.missed)
+        // 2. Passed days with no logged sets -> red (.missed), and verify completed days
         for (dateStr, status) in statuses {
             if dateStr < todayStr && status == .unfinished && !hasLoggedSets(for: dateStr) {
                 statuses[dateStr] = .missed
+            } else if status == .completed {
+                if let rec = sessionForDate(dateStr) {
+                    let workout = resolveWorkout(for: rec)
+                    if !WorkoutCalendar.isSessionComplete(session: rec, workout: workout) {
+                        statuses[dateStr] = .unfinished
+                    }
+                }
             }
         }
 

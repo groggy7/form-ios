@@ -30,7 +30,15 @@ public struct HistoryDetailView: View {
 
         let items = exerciseProgressList()
         let allCompleted = !items.isEmpty && items.allSatisfy { $0.completedSets >= $0.plannedSets && $0.plannedSets > 0 }
-        let effectiveStatus: WorkoutDayStatus = (detail.status == .unfinished && allCompleted) ? .completed : detail.status
+        let effectiveStatus: WorkoutDayStatus = {
+            if allCompleted {
+                return .completed
+            } else if items.contains(where: { $0.completedSets > 0 }) || (detail.sessionRecord?.totalCompletedSets ?? 0) > 0 {
+                return .unfinished
+            } else {
+                return detail.status
+            }
+        }()
         let isMissed = effectiveStatus == .missed || (!items.isEmpty && items.allSatisfy { $0.completedSets == 0 } && detail.date < Calendar.current.startOfDay(for: Date()))
         let showActionButton = onActionWorkout != nil && !allCompleted
         let actionButtonText = isMissed ? LanguageManager.t("history.startWorkout") : LanguageManager.t("history.resumeWorkout")
@@ -39,7 +47,7 @@ public struct HistoryDetailView: View {
         let halfwayExercises = items.filter { $0.completedSets > 0 && $0.completedSets < $0.plannedSets }
         let unstartedExercises = items.filter { $0.completedSets == 0 }
 
-        let totalCompletedSets = detail.sessionRecord?.totalCompletedSets ?? items.reduce(0) { $0 + $1.completedSets }
+        let totalCompletedSets = items.reduce(0) { $0 + $1.completedSets }
         let totalPlannedSets = max(1, items.reduce(0) { $0 + $1.plannedSets })
         let displayCompletedSets = effectiveStatus == .missed ? 0 : totalCompletedSets
         let durationSeconds = detail.sessionRecord?.durationSeconds ?? 0
@@ -540,39 +548,6 @@ public struct HistoryDetailView: View {
                 return (a.reps ?? 0) < (b.reps ?? 0)
             }
             return (top?.weightKg, top?.reps)
-        }
-
-        if isExplicitlyCompleted, let rec = detail.sessionRecord, !rec.exerciseLogs.isEmpty {
-            return rec.exerciseLogs.map { log in
-                let logKey = log.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
-                let exercise = detail.workout?.exercises.first { ex in
-                    ex.name.trimmingCharacters(in: .whitespaces).lowercased() == logKey ||
-                    ex.displayName.trimmingCharacters(in: .whitespaces).lowercased() == logKey
-                }
-                let name = exercise?.displayName ?? ContentLocalizer.shared.exerciseName(exerciseId: nil, fallback: log.exerciseName)
-                let prescription: String = {
-                    if let ex = exercise {
-                        if let targetSets = log.targetSets, let reps = ex.reps {
-                            return "\(targetSets) × \(reps.displayText)"
-                        }
-                        return ex.displayPrescription
-                    }
-                    return ""
-                }()
-                let completed = log.sets.count
-                let planned = log.targetSets ?? (exercise.map { WorkoutSessionUtils.initialSetCount(exercise: $0) } ?? max(log.sets.count, 1))
-                let (topWeight, topReps) = extractTopSet(log: log)
-                let isPr = prExercises.contains(PersonalRecordTracker.normalizeExerciseKey(log.exerciseName))
-                return ExerciseProgressItem(
-                    name: name,
-                    prescription: prescription,
-                    completedSets: completed,
-                    plannedSets: planned,
-                    topSetWeight: topWeight,
-                    topSetReps: topReps,
-                    isPr: isPr
-                )
-            }
         }
 
         let plannedExercises = detail.workout?.exercises ?? []

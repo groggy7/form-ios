@@ -779,6 +779,42 @@ public enum WorkoutCalendar {
         )
     }
 
+    public static func isSessionComplete(session: WorkoutSessionRecord, workout: Workout?) -> Bool {
+        if session.isComplete == false { return false }
+        if session.exerciseLogs.isEmpty {
+            return session.isComplete != false
+        }
+        if let w = workout, !w.exercises.isEmpty {
+            let planned = w.exercises
+            let allPlannedDone = planned.allSatisfy { ex in
+                let log = session.exerciseLogs.first {
+                    $0.exerciseName.trimmingCharacters(in: .whitespaces).caseInsensitiveCompare(ex.name.trimmingCharacters(in: .whitespaces)) == .orderedSame ||
+                    $0.exerciseName.trimmingCharacters(in: .whitespaces).caseInsensitiveCompare(ex.displayName.trimmingCharacters(in: .whitespaces)) == .orderedSame
+                }
+                let target = log?.targetSets ?? WorkoutSessionUtils.initialSetCount(exercise: ex)
+                let completed = log?.sets.count ?? 0
+                return completed >= target && target > 0
+            }
+            if !allPlannedDone { return false }
+            let extraLogs = session.exerciseLogs.filter { log in
+                !planned.contains { ex in
+                    log.exerciseName.trimmingCharacters(in: .whitespaces).caseInsensitiveCompare(ex.name.trimmingCharacters(in: .whitespaces)) == .orderedSame ||
+                    log.exerciseName.trimmingCharacters(in: .whitespaces).caseInsensitiveCompare(ex.displayName.trimmingCharacters(in: .whitespaces)) == .orderedSame
+                }
+            }
+            let allExtrasDone = extraLogs.allSatisfy { log in
+                let target = log.targetSets ?? max(log.sets.count, 1)
+                return log.sets.count >= target && target > 0
+            }
+            return allExtrasDone
+        } else {
+            return session.exerciseLogs.allSatisfy { log in
+                let target = log.targetSets ?? max(log.sets.count, 1)
+                return log.sets.count >= target && target > 0
+            }
+        }
+    }
+
     public static func restore(
         raw: WorkoutCalendarHistory?,
         sessions: [WorkoutSessionRecord],
@@ -812,7 +848,10 @@ public enum WorkoutCalendar {
                 ?? localDate(from: session.startedAt, timeZone: timeZone)
                 ?? localDate(from: session.completedAt, timeZone: timeZone)
             if let d = day {
-                let status: WorkoutDayStatus = (session.isComplete == false) ? .unfinished : .completed
+                let workout = programs.first(where: { $0.id == session.programId })?.workouts.first(where: { $0.id == session.workoutId })
+                    ?? programs.flatMap(\.workouts).first(where: { $0.id == session.workoutId })
+                let isComplete = isSessionComplete(session: session, workout: workout)
+                let status: WorkoutDayStatus = isComplete ? .completed : .unfinished
                 entriesMap[id] = WorkoutDayEntry(id: id, date: d, status: status)
             }
         }
