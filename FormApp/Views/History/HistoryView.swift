@@ -68,18 +68,6 @@ public struct HistoryView: View {
                 weightUnit: store.weightUnit
             )
         } else {
-            let calendar = Calendar.current
-            let today = Date()
-            let todayStr = WorkoutCalendar.formatDate(today)
-            let isCurrentMonth = calendar.isDate(displayedDate, equalTo: today, toGranularity: .month)
-            let statuses = store.calendarStatuses(today: today)
-            let weeks = WorkoutCalendar.monthWeeks(for: displayedDate)
-
-            let currentSelectedDetail: HistoryDayDetailData? = {
-                guard let explicit = selectedDateString else { return nil }
-                return resolveDayDetail(for: explicit)
-            }()
-
             VStack(spacing: 16) {
                 // Header row
                 HStack(alignment: .center) {
@@ -89,7 +77,7 @@ public struct HistoryView: View {
 
                     Spacer()
 
-                    if activeTab == .calendar && !isCurrentMonth {
+                    if activeTab == .calendar && !Calendar.current.isDate(displayedDate, equalTo: Date(), toGranularity: .month) {
                         Button(action: {
                             displayedDate = Date()
                             selectedDateString = nil
@@ -205,6 +193,18 @@ public struct HistoryView: View {
                         }
                     }
                 } else {
+                    let calendar = Calendar.current
+                    let today = Date()
+                    let todayStr = WorkoutCalendar.formatDate(today)
+                    let isCurrentMonth = calendar.isDate(displayedDate, equalTo: today, toGranularity: .month)
+                    let statuses = store.calendarStatuses(today: today)
+                    let weeks = WorkoutCalendar.monthWeeks(for: displayedDate)
+
+                    let currentSelectedDetail: HistoryDayDetailData? = {
+                        guard let explicit = selectedDateString else { return nil }
+                        return resolveDayDetail(for: explicit)
+                    }()
+
                     ScrollView {
                         ScrollViewReader { proxy in
                             VStack(spacing: 16) {

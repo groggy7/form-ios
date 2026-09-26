@@ -122,7 +122,7 @@ public struct FormLabView: View {
             // Tab Content
             switch activeTab {
             case .repMax:
-                repMaxMatrixTab
+                repMaxMatrixTab(summary: currentExerciseSummary)
             case .curves:
                 strengthCurvesTab
             case .balance:
@@ -141,7 +141,7 @@ public struct FormLabView: View {
 
     // MARK: - 1. Rep Max Matrix Tab
 
-    private var repMaxMatrixTab: some View {
+    private func repMaxMatrixTab(summary: ExerciseRepMaxSummary?) -> some View {
         VStack(spacing: 16) {
             Text(LanguageManager.t("form_lab.estimate_policy"))
                 .font(.system(size: 12))
@@ -227,7 +227,7 @@ public struct FormLabView: View {
             .cornerRadius(16)
 
             // PR Set Traceability Banner
-            if let summary = currentExerciseSummary {
+            if let summary = summary {
                 HStack(spacing: 8) {
                     Image(systemName: "trophy.fill")
                         .font(.system(size: 13))
@@ -259,7 +259,7 @@ public struct FormLabView: View {
             }
 
             // Rep Max Targets Grid
-            if let targets = currentExerciseSummary?.targets, !targets.isEmpty {
+            if let targets = summary?.targets, !targets.isEmpty {
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                     ForEach(targets) { target in
                         repMaxCard(target: target)

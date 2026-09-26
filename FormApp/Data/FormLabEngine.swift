@@ -108,12 +108,19 @@ public struct FormLabEngine {
 
         let sortedRecords = history.sorted { ($0.startedAt.isEmpty ? $0.completedAt : $0.startedAt) > ($1.startedAt.isEmpty ? $1.completedAt : $1.startedAt) }
 
+        let targetCanonicalId = ExerciseCatalog.resolveCanonicalId(stableId: nil, name: exerciseName)
+        let targetKey = ExerciseCatalog.key(exerciseName)
+
         for record in sortedRecords {
             for log in record.exerciseLogs {
-                guard ExerciseCatalog.sameExercise(
-                    leftId: nil, leftName: exerciseName,
-                    rightId: log.exerciseId, rightName: log.exerciseName
-                ) else { continue }
+                let isMatch: Bool
+                if let target = targetCanonicalId {
+                    let logId = ExerciseCatalog.resolveCanonicalId(stableId: log.exerciseId, name: log.exerciseName)
+                    isMatch = (logId?.caseInsensitiveCompare(target) == .orderedSame)
+                } else {
+                    isMatch = (ExerciseCatalog.key(log.exerciseName) == targetKey)
+                }
+                guard isMatch else { continue }
 
                 for set in log.sets {
                     guard !set.isWarmup else { continue }
@@ -178,6 +185,9 @@ public struct FormLabEngine {
         var points: [StrengthDataPoint] = []
         let sortedRecords = history.sorted { ($0.startedAt.isEmpty ? $0.completedAt : $0.startedAt) < ($1.startedAt.isEmpty ? $1.completedAt : $1.startedAt) }
 
+        let targetCanonicalId = ExerciseCatalog.resolveCanonicalId(stableId: nil, name: exerciseName)
+        let targetKey = ExerciseCatalog.key(exerciseName)
+
         for record in sortedRecords {
             let dateStr = record.startedAt.isEmpty ? record.completedAt : record.startedAt
             guard let recordDate = parseRecordDate(dateStr) else { continue }
@@ -185,10 +195,14 @@ public struct FormLabEngine {
             if let cutoff = cutoffDate, recordDate < cutoff { continue }
 
             for log in record.exerciseLogs {
-                guard ExerciseCatalog.sameExercise(
-                    leftId: nil, leftName: exerciseName,
-                    rightId: log.exerciseId, rightName: log.exerciseName
-                ) else { continue }
+                let isMatch: Bool
+                if let target = targetCanonicalId {
+                    let logId = ExerciseCatalog.resolveCanonicalId(stableId: log.exerciseId, name: log.exerciseName)
+                    isMatch = (logId?.caseInsensitiveCompare(target) == .orderedSame)
+                } else {
+                    isMatch = (ExerciseCatalog.key(log.exerciseName) == targetKey)
+                }
+                guard isMatch else { continue }
 
                 var sessionPeak1RM: Double = 0
                 var sessionTopWeight: Double = 0

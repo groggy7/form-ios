@@ -1193,6 +1193,42 @@ public struct ExerciseCatalogEntry: Identifiable, Hashable {
 public enum ExerciseCatalog {
     private static var _canonicalExercises: [String: ExerciseDefinition]?
 
+    private static var _canonicalLookup: [String: String]?
+    private static let _canonicalLock = NSLock()
+
+    private static func normalizeForLookup(_ name: String) -> String {
+        name.trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+            .split(whereSeparator: \.isWhitespace)
+            .joined(separator: " ")
+    }
+
+    private static func ensureLookupLoaded() -> [String: String] {
+        if let lookup = _canonicalLookup { return lookup }
+        _canonicalLock.lock()
+        defer { _canonicalLock.unlock() }
+        if let lookup = _canonicalLookup { return lookup }
+
+        let loaded = canonicalExercises
+        var lookup: [String: String] = [:]
+        for def in loaded.values {
+            let id = def.id
+            lookup[id] = id
+            lookup[id.lowercased()] = id
+
+            let normName = normalizeForLookup(def.name)
+            if !normName.isEmpty {
+                lookup[normName] = id
+                let slugName = normName.replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "_", with: "-")
+                lookup[slugName] = id
+            }
+            let slugId = id.replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "_", with: "-")
+            lookup[slugId] = id
+        }
+        _canonicalLookup = lookup
+        return lookup
+    }
+
     public static func key(_ name: String) -> String {
         name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
     }
@@ -1202,20 +1238,12 @@ public enum ExerciseCatalog {
         if let stable = stableId?.trimmingCharacters(in: .whitespacesAndNewlines), !stable.isEmpty {
             return stable
         }
-        let normalized = name
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-            .lowercased()
-            .replacingOccurrences(of: #"\s+"#, with: " ", options: .regularExpression)
+        let normalized = normalizeForLookup(name)
         guard !normalized.isEmpty else { return nil }
-        let exercises = canonicalExercises
-        if let direct = exercises[normalized] { return direct.id }
-        if let named = exercises.values.first(where: {
-            $0.name.trimmingCharacters(in: .whitespacesAndNewlines)
-                .lowercased()
-                .replacingOccurrences(of: #"\s+"#, with: " ", options: .regularExpression) == normalized
-        }) { return named.id }
+        let lookup = ensureLookupLoaded()
+        if let direct = lookup[normalized] { return direct }
         let slug = normalized.replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "_", with: "-")
-        return exercises[slug]?.id ?? exercises.values.first(where: { $0.id == slug })?.id
+        return lookup[slug]
     }
 
     /// Compare stable catalog identities first; use names for legacy/custom logs.
