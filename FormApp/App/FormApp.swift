@@ -14,6 +14,10 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct FormApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
+    init() {
+        _ = FormAudioPlayer.shared
+    }
+
     var body: some Scene {
         WindowGroup {
             RootView()

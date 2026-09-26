@@ -13,11 +13,14 @@ public final class FormAudioPlayer {
 
     private func configureAudioSession() {
         guard NSClassFromString("XCTestCase") == nil else { return }
-        do {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.mixWithOthers])
-            try AVAudioSession.sharedInstance().setActive(true)
-        } catch {
-            print("Audio session configuration error: \(error)")
+        DispatchQueue.global(qos: .userInitiated).async {
+            do {
+                let session = AVAudioSession.sharedInstance()
+                try session.setCategory(.playback, mode: .default, options: [.mixWithOthers])
+                try session.setActive(true)
+            } catch {
+                print("Audio session configuration error: \(error)")
+            }
         }
     }
 
@@ -34,8 +37,6 @@ public final class FormAudioPlayer {
     private func playSound(named name: String) {
         guard NSClassFromString("XCTestCase") == nil else { return }
         guard UserDefaults.standard.object(forKey: "sound_enabled") as? Bool ?? true else { return }
-
-        try? AVAudioSession.sharedInstance().setActive(true)
 
         if let existing = players[name] {
             existing.currentTime = 0
