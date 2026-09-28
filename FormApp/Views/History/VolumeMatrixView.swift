@@ -451,7 +451,9 @@ public struct VolumeMatrixView: View {
                     Text(title)
                         .font(.system(size: 12.5, weight: .semibold))
                         .foregroundColor(Color(hex: 0xD1D8E0))
-                        .fixedSize(horizontal: false, vertical: true)
+                        .lineSpacing(-2)
+                        .lineLimit(2)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
 
                 Spacer(minLength: 10)
@@ -471,7 +473,7 @@ public struct VolumeMatrixView: View {
             .frame(maxWidth: .infinity, alignment: .topLeading)
         }
         .frame(maxWidth: .infinity)
-        .frame(minHeight: 114)
+        .frame(height: 114)
         .background(tone.surfaceBottom)
         .overlay(RoundedRectangle(cornerRadius: 18).stroke(tone.border, lineWidth: 1))
         .cornerRadius(18)
