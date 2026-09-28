@@ -225,6 +225,10 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(catalog.exercises.count, 300)
         XCTAssertEqual(Set(catalog.exercises.keys), Set(ExerciseCatalog.canonicalExercises.keys))
         XCTAssertEqual(catalog.categories.count, 7)
+        for category in catalog.categories {
+            let name = "library_equipment_\(category.id.replacingOccurrences(of: "-", with: "_"))"
+            XCTAssertNotNil(UIImage(named: name), "Missing equipment filter artwork: \(name)")
+        }
         XCTAssertEqual(Set(catalog.exercises.values), Set(catalog.categories.map(\.id)))
         for (id, group) in ["ez-bar-curl": "bar", "goblet-squat": "dumbbell",
                             "cable-lateral-raise": "machine", "leg-press": "machine",
@@ -733,18 +737,22 @@ final class FormAppTests: XCTestCase {
     @MainActor
     func testLibraryModalsSnapshots() {
         let store = AppStore.shared
-        let modals: [(LibraryFilterModal, String)] = [
-            (.equipment, "ios_library_equipment_modal_snapshot.png"),
-            (.muscle, "ios_library_muscle_modal_snapshot.png")
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previousLanguage) }
+        let modals: [(LibraryFilterModal, String, String, CGFloat)] = [
+            (.equipment, "ios_library_equipment_modal_snapshot.png", "en", 393),
+            (.muscle, "ios_library_muscle_modal_snapshot.png", "en", 393),
+            (.equipment, "ios_library_equipment_modal_tr_320_snapshot.png", "tr", 320)
         ]
 
-        for (modal, filename) in modals {
+        for (modal, filename, language, width) in modals {
+            LanguageManager.setLanguage(language)
             let libraryView = LibraryView(store: store, onSelectExercise: { _ in }, onOpenSettings: {}, initialModal: modal)
             let controller = UIHostingController(rootView: libraryView)
-            controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+            controller.view.frame = CGRect(x: 0, y: 0, width: width, height: 852)
             controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
 
-            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 852))
             window.rootViewController = controller
             window.makeKeyAndVisible()
             controller.view.layoutIfNeeded()
@@ -755,7 +763,7 @@ final class FormAppTests: XCTestCase {
             }
 
             if let data = image.pngData() {
-                let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/\(filename)"
+                let path = "/private/tmp/\(filename)"
                 try? data.write(to: URL(fileURLWithPath: path))
                 print("Successfully wrote modal snapshot to \(path)")
             }

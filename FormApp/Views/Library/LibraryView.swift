@@ -305,33 +305,37 @@ public struct LibraryView: View {
                     LazyVGrid(columns: [GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8)], spacing: 8) {
                         ForEach(EquipmentCatalog.shared.categories) { category in
                             let isSelected = selectedEquipment == category.id
-                            let solidColor = equipmentSolidColor(categoryId: category.id)
                             Button(action: {
                                 selectedEquipment = isSelected ? nil : category.id
                                 activeModal = nil
                             }) {
-                                HStack(spacing: 8) {
+                                VStack(spacing: 0) {
                                     ZStack {
-                                        RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                            .fill(solidColor.opacity(0.16))
-                                        EquipmentIcon(category: category, tint: solidColor)
+                                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                            .fill(Color.black)
+                                        Image("library_equipment_\(category.id.replacingOccurrences(of: "-", with: "_"))")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .padding(.horizontal, 4)
+                                            .padding(.vertical, 2)
+                                            .accessibilityHidden(true)
                                     }
-                                    .frame(width: 34, height: 34)
+                                    .frame(height: 84)
+                                    .frame(maxWidth: .infinity)
 
                                     Text(category.title)
                                         .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
                                         .foregroundColor(isSelected ? AppColors.accent : AppColors.text)
                                         .lineLimit(2)
-                                        .multilineTextAlignment(.leading)
-                                    Spacer(minLength: 0)
+                                        .multilineTextAlignment(.center)
+                                        .padding(.horizontal, 6)
+                                        .padding(.vertical, 8)
                                 }
-                                .padding(.horizontal, 10)
-                                .padding(.vertical, 8)
-                                .frame(maxWidth: .infinity, minHeight: 52)
-                                .background(isSelected ? AppColors.positiveBg : AppColors.background, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                .frame(maxWidth: .infinity)
+                                .background(isSelected ? AppColors.positiveBg : AppColors.background, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
                                 .overlay(
-                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                        .stroke(isSelected ? AppColors.accent : AppColors.border, lineWidth: 1)
+                                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                        .stroke(isSelected ? AppColors.accent : AppColors.border, lineWidth: isSelected ? 1.5 : 1)
                                 )
                             }
                             .buttonStyle(.plain)
