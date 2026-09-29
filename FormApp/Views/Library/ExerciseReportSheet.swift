@@ -274,8 +274,13 @@ public struct ExerciseReportSheet: View {
                             comment: comments.trimmingCharacters(in: .whitespacesAndNewlines),
                             status: "pending"
                         )
-                        // Save locally in outbox first
-                        _ = try? ExerciseReportStore.shared.saveReport(report)
+                        do {
+                            _ = try ExerciseReportStore.shared.saveReport(report)
+                        } catch {
+                            isSubmitting = false
+                            inlineToast = LanguageManager.t("report.saveFailed")
+                            return
+                        }
 
                         Task {
                             let result = await ExerciseReportStore.shared.submitReport(report)

@@ -66,6 +66,13 @@ public final class ExerciseReportStore {
 
     private let fileURL: URL
     private let queue = DispatchQueue(label: "com.form.gym.ExerciseReportStore", attributes: .concurrent)
+    private var retrying = false
+
+    private static func parseServerDate(_ value: String) -> Date? {
+        let fractional = ISO8601DateFormatter()
+        fractional.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        return fractional.date(from: value) ?? ISO8601DateFormatter().date(from: value)
+    }
 
     public init(fileURL: URL? = nil) {
         if let fileURL = fileURL {
@@ -104,14 +111,8 @@ public final class ExerciseReportStore {
         return try queue.sync(flags: .barrier) {
             var existing = [ExerciseIssueReport]()
             if FileManager.default.fileExists(atPath: fileURL.path) {
-                if let data = try? Data(contentsOf: fileURL) {
-                    if let decoded = try? JSONDecoder().decode([ExerciseIssueReport].self, from: data) {
-                        existing = decoded
-                    } else {
-                        let corruptURL = fileURL.appendingPathExtension("corrupt.\(Int(Date().timeIntervalSince1970))")
-                        try? data.write(to: corruptURL, options: .atomic)
-                    }
-                }
+                let data = try Data(contentsOf: fileURL)
+                existing = try JSONDecoder().decode([ExerciseIssueReport].self, from: data)
             }
 
             if let index = existing.firstIndex(where: { $0.id == report.id || $0.clientUuid == report.clientUuid }) {
@@ -137,10 +138,8 @@ public final class ExerciseReportStore {
         return try queue.sync(flags: .barrier) {
             var existing = [ExerciseIssueReport]()
             if FileManager.default.fileExists(atPath: fileURL.path) {
-                if let data = try? Data(contentsOf: fileURL),
-                   let decoded = try? JSONDecoder().decode([ExerciseIssueReport].self, from: data) {
-                    existing = decoded
-                }
+                let data = try Data(contentsOf: fileURL)
+                existing = try JSONDecoder().decode([ExerciseIssueReport].self, from: data)
             }
 
             existing.removeAll(where: { $0.id == id || $0.clientUuid == id })
@@ -162,7 +161,6 @@ public final class ExerciseReportStore {
         }
 
         // 2. Rolling 24-hour receipts
-        let isoFormatter = ISO8601DateFormatter()
         let oneHourAgo = now.addingTimeInterval(-3600)
         let twentyFourHoursAgo = now.addingTimeInterval(-86400)
 
@@ -170,14 +168,14 @@ public final class ExerciseReportStore {
             .filter { $0.status == "accepted" }
             .compactMap { report -> Date? in
                 let dateStr = report.receivedAt ?? report.timestamp
-                return isoFormatter.date(from: dateStr)
+                return Self.parseServerDate(dateStr)
             }
             .filter { $0 > twentyFourHoursAgo }
             .sorted()
 
         if acceptedDates.count >= 3 {
             let oldest = acceptedDates[0]
-            let nextAllowed = oldest.addingTimeInterval(86400)
+            let nextAllowed = max(oldest.addingTimeInterval(86400), acceptedDates.last!.addingTimeInterval(3600))
             return .cooldown(isDaily: true, nextAllowedAt: nextAllowed, remaining24h: 0)
         }
 
@@ -232,8 +230,11 @@ public final class ExerciseReportStore {
 
             if (200...299).contains(httpResponse.statusCode) {
                 let json = (try? JSONSerialization.jsonObject(with: data) as? [String: Any]) ?? [:]
-                let receiptId = json["receipt_id"] as? String ?? report.id
-                let receivedAt = json["received_at"] as? String ?? ISO8601DateFormatter().string(from: Date())
+                guard let receiptId = json["receipt_id"] as? String, !receiptId.isEmpty,
+                      let receivedAt = json["received_at"] as? String,
+                      Self.parseServerDate(receivedAt) != nil else {
+                    return .offlineSaved
+                }
                 let nextAllowed = json["next_allowed_at"] as? String ?? ""
 
                 var acceptedReport = report
@@ -245,28 +246,38 @@ public final class ExerciseReportStore {
             } else if httpResponse.statusCode == 429 {
                 let json = (try? JSONSerialization.jsonObject(with: data) as? [String: Any]) ?? [:]
                 let code = json["code"] as? String ?? ""
+                guard code == "DAILY_LIMIT" || code == "HOURLY_COOLDOWN" else {
+                    return .offlineSaved
+                }
                 let nextAllowedStr = json["next_allowed_at"] as? String ?? ""
-                let nextAllowedDate = ISO8601DateFormatter().date(from: nextAllowedStr) ?? Date().addingTimeInterval(3600)
+                let nextAllowedDate = Self.parseServerDate(nextAllowedStr) ?? Date().addingTimeInterval(3600)
                 let retryAfterSec = json["retry_after"] as? Int ?? 3600
+                do { _ = try deleteReport(id: report.id) }
+                catch { return .error(error.localizedDescription) }
 
                 return .rateLimited(isDaily: code == "DAILY_LIMIT", nextAllowedAt: nextAllowedDate, retryAfterSec: retryAfterSec)
+            } else if httpResponse.statusCode == 408 || httpResponse.statusCode == 425 || httpResponse.statusCode >= 500 {
+                return .offlineSaved
             } else {
-                var failedReport = report
-                failedReport.status = "failed"
-                _ = try? saveReport(failedReport)
-                let errorMsg = String(data: data, encoding: .utf8) ?? "HTTP \(httpResponse.statusCode)"
-                return .error(errorMsg)
+                do { _ = try deleteReport(id: report.id) }
+                catch { return .error(error.localizedDescription) }
+                return .error(LanguageManager.t("report.rejected"))
             }
-        } catch let urlErr as URLError where urlErr.code == .notConnectedToInternet || urlErr.code == .timedOut || urlErr.code == .networkConnectionLost {
-            var pendingReport = report
-            pendingReport.status = "pending"
-            _ = try? saveReport(pendingReport)
+        } catch is URLError {
             return .offlineSaved
         } catch {
-            var failedReport = report
-            failedReport.status = "failed"
-            _ = try? saveReport(failedReport)
             return .error(error.localizedDescription)
+        }
+    }
+
+    @MainActor
+    public func retryPendingReports() async {
+        guard !retrying else { return }
+        retrying = true
+        defer { retrying = false }
+        for report in loadReports().filter({ $0.status == "pending" }) {
+            let result = await submitReport(report)
+            if case .offlineSaved = result { break }
         }
     }
 

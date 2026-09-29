@@ -104,10 +104,12 @@ public struct RootView: View {
         .task {
             // Restore subscriptions on every app launch, not only when a paywall opens.
             _ = StoreKitSubscriptionManager.shared
+            await ExerciseReportStore.shared.retryPendingReports()
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
                 store.checkAndArchiveStaleSession()
+                Task { await ExerciseReportStore.shared.retryPendingReports() }
             }
         }
     }

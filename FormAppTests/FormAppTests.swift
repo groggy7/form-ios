@@ -3872,6 +3872,19 @@ final class FormAppTests: XCTestCase {
         } else {
             XCTFail("Expected daily cooldown")
         }
+
+        let fractionalReceipt = ExerciseIssueReport(
+            id: "fractional", exerciseName: "Row", category: "other",
+            status: "accepted", receivedAt: "2026-09-29T12:15:00.123Z"
+        )
+        let fractionalNow = ISO8601DateFormatter().date(from: "2026-09-29T12:30:00Z")!
+        if case .cooldown(let isDaily, let nextAllowedAt, _) = store.checkPreflight(reports: [fractionalReceipt], now: fractionalNow) {
+            XCTAssertFalse(isDaily)
+            XCTAssertEqual(nextAllowedAt.timeIntervalSince1970,
+                           fractionalNow.timeIntervalSince1970 + 2700.123, accuracy: 0.01)
+        } else {
+            XCTFail("Expected cooldown for fractional second receipt")
+        }
     }
 
     @MainActor
@@ -3881,7 +3894,7 @@ final class FormAppTests: XCTestCase {
             prescription: "3 × 8–10",
             movementType: "press"
         )
-        let sheet = ExerciseReportSheet(exercise: exercise, onDismiss: {}, onSubmit: { _ in })
+        let sheet = ExerciseReportSheet(exercise: exercise, onDismiss: {}, onSubmitNotice: { _ in })
         let controller = UIHostingController(rootView: sheet)
         controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
         controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
@@ -7009,4 +7022,3 @@ final class FormAppTests: XCTestCase {
         XCTAssertTrue(WorkoutCalendar.isSessionComplete(session: session, workout: workout))
     }
 }
-
