@@ -3853,9 +3853,11 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(afterDelete[0].id, "r2")
 
         // Preflight cooldown test
-        let now = Date()
+        var calendar = Calendar(identifier: .gregorian)
+        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        let now = ISO8601DateFormatter().date(from: "2026-09-29T15:00:00Z")!
         let accepted1 = ExerciseIssueReport(id: "a1", exerciseName: "Bench", category: "other", timestamp: ISO8601DateFormatter().string(from: now.addingTimeInterval(-600)), status: "accepted")
-        let cooldownStatus = store.checkPreflight(reports: [accepted1], now: now)
+        let cooldownStatus = store.checkPreflight(reports: [accepted1], now: now, calendar: calendar)
         if case .cooldown(let isDaily, _, let remaining) = cooldownStatus {
             XCTAssertFalse(isDaily)
             XCTAssertEqual(remaining, 2)
@@ -3865,12 +3867,27 @@ final class FormAppTests: XCTestCase {
 
         let accepted2 = ExerciseIssueReport(id: "a2", exerciseName: "Squat", category: "other", timestamp: ISO8601DateFormatter().string(from: now.addingTimeInterval(-7200)), status: "accepted")
         let accepted3 = ExerciseIssueReport(id: "a3", exerciseName: "Deadlift", category: "other", timestamp: ISO8601DateFormatter().string(from: now.addingTimeInterval(-14400)), status: "accepted")
-        let dailyStatus = store.checkPreflight(reports: [accepted1, accepted2, accepted3], now: now)
-        if case .cooldown(let isDaily, _, let remaining) = dailyStatus {
+        let dailyStatus = store.checkPreflight(reports: [accepted1, accepted2, accepted3], now: now, calendar: calendar)
+        if case .cooldown(let isDaily, let nextAllowedAt, let remaining) = dailyStatus {
             XCTAssertTrue(isDaily)
             XCTAssertEqual(remaining, 0)
+            let tomorrowMidnight = ISO8601DateFormatter().date(from: "2026-09-30T00:00:00Z")!
+            XCTAssertEqual(nextAllowedAt, tomorrowMidnight)
         } else {
             XCTFail("Expected daily cooldown")
+        }
+
+        let lateNow = ISO8601DateFormatter().date(from: "2026-09-29T23:45:00Z")!
+        let lateR1 = ExerciseIssueReport(id: "l1", exerciseName: "Squat", category: "other", timestamp: "2026-09-29T21:00:00Z", status: "accepted")
+        let lateR2 = ExerciseIssueReport(id: "l2", exerciseName: "Bench", category: "other", timestamp: "2026-09-29T22:30:00Z", status: "accepted")
+        let lateR3 = ExerciseIssueReport(id: "l3", exerciseName: "Deadlift", category: "other", timestamp: "2026-09-29T23:30:00Z", status: "accepted")
+        let lateDailyStatus = store.checkPreflight(reports: [lateR1, lateR2, lateR3], now: lateNow, calendar: calendar)
+        if case .cooldown(let isDaily, let nextAllowedAt, _) = lateDailyStatus {
+            XCTAssertTrue(isDaily)
+            let expectedNext = ISO8601DateFormatter().date(from: "2026-09-30T00:30:00Z")!
+            XCTAssertEqual(nextAllowedAt, expectedNext)
+        } else {
+            XCTFail("Expected daily cooldown respecting 1h window")
         }
 
         let fractionalReceipt = ExerciseIssueReport(
@@ -3878,7 +3895,7 @@ final class FormAppTests: XCTestCase {
             status: "accepted", receivedAt: "2026-09-29T12:15:00.123Z"
         )
         let fractionalNow = ISO8601DateFormatter().date(from: "2026-09-29T12:30:00Z")!
-        if case .cooldown(let isDaily, let nextAllowedAt, _) = store.checkPreflight(reports: [fractionalReceipt], now: fractionalNow) {
+        if case .cooldown(let isDaily, let nextAllowedAt, _) = store.checkPreflight(reports: [fractionalReceipt], now: fractionalNow, calendar: calendar) {
             XCTAssertFalse(isDaily)
             XCTAssertEqual(nextAllowedAt.timeIntervalSince1970,
                            fractionalNow.timeIntervalSince1970 + 2700.123, accuracy: 0.01)

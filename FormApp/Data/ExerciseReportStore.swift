@@ -152,7 +152,11 @@ public final class ExerciseReportStore {
         }
     }
 
-    public func checkPreflight(reports: [ExerciseIssueReport]? = nil, now: Date = Date()) -> PreflightStatus {
+    public func checkPreflight(
+        reports: [ExerciseIssueReport]? = nil,
+        now: Date = Date(),
+        calendar: Calendar = Calendar.current
+    ) -> PreflightStatus {
         let allReports = reports ?? loadReports()
 
         // 1. Any report still pending outbox delivery?
@@ -160,29 +164,31 @@ public final class ExerciseReportStore {
             return .pending(pendingReport)
         }
 
-        // 2. Rolling 24-hour receipts
-        let oneHourAgo = now.addingTimeInterval(-3600)
-        let twentyFourHoursAgo = now.addingTimeInterval(-86400)
+        // 2. Local calendar day limit check (resets at 00:00 local time)
+        let startOfDay = calendar.startOfDay(for: now)
+        let startOfNextDay = calendar.date(byAdding: .day, value: 1, to: startOfDay) ?? startOfDay.addingTimeInterval(86400)
 
-        let acceptedDates = allReports
+        let allAcceptedDates = allReports
             .filter { $0.status == "accepted" }
             .compactMap { report -> Date? in
                 let dateStr = report.receivedAt ?? report.timestamp
                 return Self.parseServerDate(dateStr)
             }
-            .filter { $0 > twentyFourHoursAgo }
             .sorted()
 
-        if acceptedDates.count >= 3 {
-            let oldest = acceptedDates[0]
-            let nextAllowed = max(oldest.addingTimeInterval(86400), acceptedDates.last!.addingTimeInterval(3600))
+        let acceptedToday = allAcceptedDates.filter { $0 >= startOfDay }
+
+        if acceptedToday.count >= 3 {
+            let lastReport1h = acceptedToday.last!.addingTimeInterval(3600)
+            let nextAllowed = max(startOfNextDay, lastReport1h)
             return .cooldown(isDaily: true, nextAllowedAt: nextAllowed, remaining24h: 0)
         }
 
-        let accepted1h = acceptedDates.filter { $0 > oneHourAgo }
+        let oneHourAgo = now.addingTimeInterval(-3600)
+        let accepted1h = allAcceptedDates.filter { $0 > oneHourAgo }
         if let latest = accepted1h.last {
             let nextAllowed = latest.addingTimeInterval(3600)
-            let remaining = max(0, 3 - acceptedDates.count)
+            let remaining = max(0, 3 - acceptedToday.count)
             return .cooldown(isDaily: false, nextAllowedAt: nextAllowed, remaining24h: remaining)
         }
 
@@ -197,6 +203,8 @@ public final class ExerciseReportStore {
         let installationId = Self.getInstallationId()
         let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0.0"
         let language = LanguageManager.shared.currentLanguage
+        let timeZone = TimeZone.current
+        let tzOffsetMinutes = timeZone.secondsFromGMT() / 60
 
         var payload: [String: Any] = [
             "client_uuid": report.clientUuid,
@@ -206,7 +214,9 @@ public final class ExerciseReportStore {
             "language": language,
             "exercise_name": report.exerciseName,
             "category": report.category,
-            "comment": report.comment
+            "comment": report.comment,
+            "timezone": timeZone.identifier,
+            "tz_offset_minutes": tzOffsetMinutes
         ]
         if let exId = report.exerciseId {
             payload["exercise_id"] = exId
