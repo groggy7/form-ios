@@ -380,96 +380,137 @@ public struct FormLabView: View {
             .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
             .cornerRadius(16)
 
-            // Headline Stats (Start 1RM, Current 1RM, Net Gain)
-            HStack(spacing: 10) {
-                statCard(
-                    title: LanguageManager.t("form_lab.start_1rm"),
-                    value: report.start1rmKg != nil ? formatWeight(report.start1rmKg!) : "—",
-                    color: AppColors.text
-                )
-                statCard(
-                    title: LanguageManager.t("form_lab.current_1rm"),
-                    value: report.current1rmKg != nil ? formatWeight(report.current1rmKg!) : "—",
-                    color: AppColors.accent
-                )
-                statCard(
-                    title: LanguageManager.t("form_lab.net_gain"),
-                    value: report.points.count >= 2 ? String(format: "%@ (%.1f%%)", formatDelta(report.deltaKg), report.percentageGain) : "—",
-                    color: report.deltaKg >= 0 ? AppColors.accent : Color.red
-                )
-            }
-
-            // Interactive Progression Chart Card
-            VStack(alignment: .leading, spacing: 12) {
-                HStack {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(LanguageManager.t("form_lab.curves_title"))
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(AppColors.text)
-                        let count = report.points.count
-                        Text(LanguageManager.t("form_lab.sessions_tracked", ["count": "\(count)"]))
-                            .font(.system(size: 12))
-                            .foregroundColor(AppColors.secondaryText)
-                    }
-                    Spacer()
-                }
-
-                if report.points.isEmpty {
-                    VStack(spacing: 10) {
-                        Image(systemName: "chart.xyaxis.line")
-                            .font(.system(size: 32))
-                            .foregroundColor(AppColors.muted)
-                        Text(LanguageManager.t("form_lab.no_weighted_sets"))
-                            .font(.system(size: 13))
-                            .foregroundColor(AppColors.secondaryText)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, 16)
-                    }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 180)
-                } else {
-                    // Touch scrubber detail tooltip if active
-                    if let pt = selectedPointIndex.flatMap({ report.points.indices.contains($0) ? report.points[$0] : nil }) ?? report.points.last {
-                        VStack(alignment: .leading, spacing: 6) {
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(LanguageManager.t("form_lab.achieved_with", [
-                                    "weight": formatWeight(pt.topWeightKg),
-                                    "reps": "\(pt.topReps)",
-                                    "date": formatAchievedDate(pt.dateString),
-                                    "formula": LanguageManager.t(selectedFormula.titleKey)
-                                ]))
-                                    .font(.system(size: 11, weight: .medium))
-                                    .foregroundColor(AppColors.muted)
-                            }
-                            VStack(alignment: .trailing, spacing: 2) {
-                                Text(LanguageManager.t("exercise.history.estimated1rmTitle"))
-                                    .font(.system(size: 10, weight: .bold))
-                                    .foregroundColor(AppColors.accent)
-                                Text(formatWeight(pt.estimated1rmKg))
-                                    .font(.system(size: 14, weight: .bold, design: .rounded))
-                                    .foregroundColor(AppColors.accent)
-                            }
-                        }
-                        .padding(10)
-                        .background(AppColors.surface)
-                        .cornerRadius(8)
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(AppColors.accent.opacity(0.4), lineWidth: 1))
-                    }
-
-                    // Canvas Line Chart
-                    StrengthLineChart(
-                        points: report.points,
-                        selectedIndex: $selectedPointIndex,
-                        weightUnit: store.weightUnit
+            if report.points.count == 1, let point = report.points.first {
+                firstEstimateCard(point: point)
+            } else {
+                // Headline Stats (Start 1RM, Current 1RM, Net Gain)
+                HStack(spacing: 10) {
+                    statCard(
+                        title: LanguageManager.t("form_lab.start_1rm"),
+                        value: report.start1rmKg != nil ? formatWeight(report.start1rmKg!) : "—",
+                        color: AppColors.text
                     )
-                    .frame(height: 200)
+                    statCard(
+                        title: LanguageManager.t("form_lab.current_1rm"),
+                        value: report.current1rmKg != nil ? formatWeight(report.current1rmKg!) : "—",
+                        color: AppColors.accent
+                    )
+                    statCard(
+                        title: LanguageManager.t("form_lab.net_gain"),
+                        value: report.points.count >= 2 ? String(format: "%@ (%.1f%%)", formatDelta(report.deltaKg), report.percentageGain) : "—",
+                        color: report.deltaKg >= 0 ? AppColors.accent : Color.red
+                    )
                 }
+
+                // Interactive Progression Chart Card
+                VStack(alignment: .leading, spacing: 12) {
+                    HStack {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(LanguageManager.t("form_lab.curves_title"))
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundColor(AppColors.text)
+                            let count = report.points.count
+                            Text(LanguageManager.t("form_lab.sessions_tracked", ["count": "\(count)"]))
+                                .font(.system(size: 12))
+                                .foregroundColor(AppColors.secondaryText)
+                        }
+                        Spacer()
+                    }
+
+                    if report.points.isEmpty {
+                        VStack(spacing: 10) {
+                            Image(systemName: "chart.xyaxis.line")
+                                .font(.system(size: 32))
+                                .foregroundColor(AppColors.muted)
+                            Text(LanguageManager.t("form_lab.no_weighted_sets"))
+                                .font(.system(size: 13))
+                                .foregroundColor(AppColors.secondaryText)
+                                .multilineTextAlignment(.center)
+                                .padding(.horizontal, 16)
+                        }
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 180)
+                    } else {
+                        // Touch scrubber detail tooltip if active
+                        if let pt = selectedPointIndex.flatMap({ report.points.indices.contains($0) ? report.points[$0] : nil }) ?? report.points.last {
+                            VStack(alignment: .leading, spacing: 6) {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(LanguageManager.t("form_lab.achieved_with", [
+                                        "weight": formatWeight(pt.topWeightKg),
+                                        "reps": "\(pt.topReps)",
+                                        "date": formatAchievedDate(pt.dateString),
+                                        "formula": LanguageManager.t(selectedFormula.titleKey)
+                                    ]))
+                                        .font(.system(size: 11, weight: .medium))
+                                        .foregroundColor(AppColors.muted)
+                                }
+                                VStack(alignment: .trailing, spacing: 2) {
+                                    Text(LanguageManager.t("exercise.history.estimated1rmTitle"))
+                                        .font(.system(size: 10, weight: .bold))
+                                        .foregroundColor(AppColors.accent)
+                                    Text(formatWeight(pt.estimated1rmKg))
+                                        .font(.system(size: 14, weight: .bold, design: .rounded))
+                                        .foregroundColor(AppColors.accent)
+                                }
+                            }
+                            .padding(10)
+                            .background(AppColors.surface)
+                            .cornerRadius(8)
+                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(AppColors.accent.opacity(0.4), lineWidth: 1))
+                        }
+
+                        // Canvas Line Chart
+                        StrengthLineChart(
+                            points: report.points,
+                            selectedIndex: $selectedPointIndex,
+                            weightUnit: store.weightUnit
+                        )
+                        .frame(height: 200)
+                    }
+                }
+                .padding(16)
+                .background(AppColors.surfaceRaised)
+                .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
+                .cornerRadius(16)
             }
-            .padding(16)
-            .background(AppColors.surfaceRaised)
-            .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-            .cornerRadius(16)
         }
+    }
+
+    private func firstEstimateCard(point: StrengthDataPoint) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(LanguageManager.t("form_lab.single_estimate_title"))
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundColor(AppColors.text)
+                Text(LanguageManager.t("form_lab.one_session_tracked"))
+                    .font(.system(size: 12))
+                    .foregroundColor(AppColors.secondaryText)
+            }
+
+            Text(formatWeight(point.estimated1rmKg))
+                .font(.system(size: 26, weight: .bold, design: .rounded))
+                .foregroundColor(AppColors.text)
+
+            Text(LanguageManager.t("form_lab.achieved_with", [
+                "weight": formatWeight(point.topWeightKg),
+                "reps": "\(point.topReps)",
+                "date": formatAchievedDate(point.dateString),
+                "formula": LanguageManager.t(selectedFormula.titleKey)
+            ]))
+                .font(.system(size: 12))
+                .foregroundColor(AppColors.secondaryText)
+                .fixedSize(horizontal: false, vertical: true)
+
+            Text(LanguageManager.t("form_lab.single_estimate_hint"))
+                .font(.system(size: 12))
+                .foregroundColor(AppColors.muted)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(16)
+        .background(AppColors.surfaceRaised)
+        .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
+        .cornerRadius(16)
     }
 
     private func statCard(title: String, value: String, color: Color) -> some View {
