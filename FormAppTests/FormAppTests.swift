@@ -3818,7 +3818,7 @@ final class FormAppTests: XCTestCase {
             category: "animation_form",
             comment: "Elbow flares too much"
         )
-        let updated1 = store.saveReport(report1)
+        let updated1 = try store.saveReport(report1)
         XCTAssertEqual(updated1.count, 1)
         XCTAssertEqual(updated1[0].id, "r1")
 
@@ -3829,7 +3829,7 @@ final class FormAppTests: XCTestCase {
             category: "what_to_avoid",
             comment: "Add knee cave note"
         )
-        let updated2 = store.saveReport(report2)
+        let updated2 = try store.saveReport(report2)
         XCTAssertEqual(updated2.count, 2)
 
         let loaded = store.loadReports()
@@ -3838,6 +3838,40 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(loaded[0].category, "animation_form")
         XCTAssertEqual(loaded[1].exerciseName, "Barbell Squat")
         XCTAssertEqual(loaded[1].category, "what_to_avoid")
+
+        // Preflight pending test (report1 has status pending)
+        let preflight = store.checkPreflight()
+        if case .pending(let p) = preflight {
+            XCTAssertEqual(p.id, "r1")
+        } else {
+            XCTFail("Expected pending preflight status")
+        }
+
+        // Delete test
+        let afterDelete = try store.deleteReport(id: "r1")
+        XCTAssertEqual(afterDelete.count, 1)
+        XCTAssertEqual(afterDelete[0].id, "r2")
+
+        // Preflight cooldown test
+        let now = Date()
+        let accepted1 = ExerciseIssueReport(id: "a1", exerciseName: "Bench", category: "other", timestamp: ISO8601DateFormatter().string(from: now.addingTimeInterval(-600)), status: "accepted")
+        let cooldownStatus = store.checkPreflight(reports: [accepted1], now: now)
+        if case .cooldown(let isDaily, _, let remaining) = cooldownStatus {
+            XCTAssertFalse(isDaily)
+            XCTAssertEqual(remaining, 2)
+        } else {
+            XCTFail("Expected hourly cooldown")
+        }
+
+        let accepted2 = ExerciseIssueReport(id: "a2", exerciseName: "Squat", category: "other", timestamp: ISO8601DateFormatter().string(from: now.addingTimeInterval(-7200)), status: "accepted")
+        let accepted3 = ExerciseIssueReport(id: "a3", exerciseName: "Deadlift", category: "other", timestamp: ISO8601DateFormatter().string(from: now.addingTimeInterval(-14400)), status: "accepted")
+        let dailyStatus = store.checkPreflight(reports: [accepted1, accepted2, accepted3], now: now)
+        if case .cooldown(let isDaily, _, let remaining) = dailyStatus {
+            XCTAssertTrue(isDaily)
+            XCTAssertEqual(remaining, 0)
+        } else {
+            XCTFail("Expected daily cooldown")
+        }
     }
 
     @MainActor

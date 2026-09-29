@@ -22,6 +22,8 @@ public struct ExerciseDetailView: View {
     @State private var selectedTab: ExerciseDetailTab = .main
     @State private var showVideoLinks: Bool = false
     @State private var showReportSheet: Bool = false
+    @State private var cooldownInfo: IdentifiableCooldown? = nil
+    @State private var pendingReport: ExerciseIssueReport? = nil
     @State private var showAllHistory: Bool = false
     @State private var expandedSessionIds: Set<String> = []
     @State private var initializedFirstSessionId: String? = nil
@@ -160,7 +162,15 @@ public struct ExerciseDetailView: View {
                         HStack {
                             Spacer()
                             Button(action: {
-                                showReportSheet = true
+                                let preflight = ExerciseReportStore.shared.checkPreflight()
+                                switch preflight {
+                                case .allowed:
+                                    showReportSheet = true
+                                case .cooldown(let isDaily, let nextAllowedAt, let remaining):
+                                    cooldownInfo = IdentifiableCooldown(isDaily: isDaily, nextAllowedAt: nextAllowedAt, remaining24h: remaining)
+                                case .pending(let report):
+                                    pendingReport = report
+                                }
                             }) {
                                 HStack(spacing: 6) {
                                     Image(systemName: "flag")
@@ -364,10 +374,48 @@ public struct ExerciseDetailView: View {
             ExerciseReportSheet(
                 exercise: currentExercise,
                 onDismiss: { showReportSheet = false },
-                onSubmit: { report in
-                    ExerciseReportStore.shared.saveReport(report)
+                onSubmitNotice: { msg in
                     showReportSheet = false
-                    store.showNotice(LanguageManager.t("report.submitted"))
+                    store.showNotice(msg)
+                }
+            )
+        }
+        .sheet(item: $cooldownInfo) { cd in
+            ExerciseReportCooldownSheet(
+                isDaily: cd.isDaily,
+                nextAllowedAt: cd.nextAllowedAt,
+                remaining24h: cd.remaining24h,
+                onDismiss: { cooldownInfo = nil }
+            )
+        }
+        .sheet(item: $pendingReport) { pending in
+            PendingReportSheet(
+                report: pending,
+                onDismiss: { pendingReport = nil },
+                onSendNow: {
+                    pendingReport = nil
+                    Task {
+                        let res = await ExerciseReportStore.shared.submitReport(pending)
+                        await MainActor.run {
+                            switch res {
+                            case .success:
+                                store.showNotice(LanguageManager.t("report.received"))
+                            case .offlineSaved:
+                                store.showNotice(LanguageManager.t("report.savedOffline"))
+                            case .rateLimited(let isDaily, let nextAllowedAt, _):
+                                let toastMsg = isDaily
+                                    ? LanguageManager.t("report.toastDaily", ["dateTime": ExerciseReportStore.formatLocalDateTime(nextAllowedAt)])
+                                    : LanguageManager.t("report.toastHourly", ["time": ExerciseReportStore.formatLocalTime(nextAllowedAt)])
+                                store.showNotice(toastMsg)
+                            case .error(let msg):
+                                store.showNotice(msg)
+                            }
+                        }
+                    }
+                },
+                onDiscard: {
+                    _ = try? ExerciseReportStore.shared.deleteReport(id: pending.id)
+                    pendingReport = nil
                 }
             )
         }
