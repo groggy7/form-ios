@@ -913,7 +913,7 @@ public final class AppStore: ObservableObject {
         self.currentToast = ToastItem(message: message, style: style, duration: duration)
     }
 
-    public func showErrorNotice(_ message: String, duration: Double = 6.0) {
+    public func showErrorNotice(_ message: String, duration: Double = 4.0) {
         self.noticeMessage = message
         self.currentToast = ToastItem(message: message, style: .error, duration: duration)
     }

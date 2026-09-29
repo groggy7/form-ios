@@ -169,7 +169,7 @@ public struct ExerciseDetailView: View {
                                     let toastMsg = isDaily
                                         ? LanguageManager.t("report.toastDaily", ["dateTime": ExerciseReportStore.formatLocalDateTime(nextAllowedAt)])
                                         : LanguageManager.t("report.toastHourly", ["time": ExerciseReportStore.formatLocalTime(nextAllowedAt)])
-                                    store.showErrorNotice(toastMsg, duration: 6.0)
+                                    store.showErrorNotice(toastMsg, duration: 4.0)
                                 case .pending(let report):
                                     pendingReport = report
                                 }
@@ -400,7 +400,7 @@ public struct ExerciseDetailView: View {
                                 let toastMsg = isDaily
                                     ? LanguageManager.t("report.toastDaily", ["dateTime": ExerciseReportStore.formatLocalDateTime(nextAllowedAt)])
                                     : LanguageManager.t("report.toastHourly", ["time": ExerciseReportStore.formatLocalTime(nextAllowedAt)])
-                                store.showErrorNotice(toastMsg, duration: 6.0)
+                                store.showErrorNotice(toastMsg, duration: 4.0)
                             case .error(let msg):
                                 store.showErrorNotice(msg, duration: 5.0)
                             }
