@@ -22,7 +22,6 @@ public struct ExerciseDetailView: View {
     @State private var selectedTab: ExerciseDetailTab = .main
     @State private var showVideoLinks: Bool = false
     @State private var showReportSheet: Bool = false
-    @State private var cooldownInfo: IdentifiableCooldown? = nil
     @State private var pendingReport: ExerciseIssueReport? = nil
     @State private var showAllHistory: Bool = false
     @State private var expandedSessionIds: Set<String> = []
@@ -166,8 +165,11 @@ public struct ExerciseDetailView: View {
                                 switch preflight {
                                 case .allowed:
                                     showReportSheet = true
-                                case .cooldown(let isDaily, let nextAllowedAt, let remaining):
-                                    cooldownInfo = IdentifiableCooldown(isDaily: isDaily, nextAllowedAt: nextAllowedAt, remaining24h: remaining)
+                                case .cooldown(let isDaily, let nextAllowedAt, _):
+                                    let toastMsg = isDaily
+                                        ? LanguageManager.t("report.toastDaily", ["dateTime": ExerciseReportStore.formatLocalDateTime(nextAllowedAt)])
+                                        : LanguageManager.t("report.toastHourly", ["time": ExerciseReportStore.formatLocalTime(nextAllowedAt)])
+                                    store.showErrorNotice(toastMsg, duration: 6.0)
                                 case .pending(let report):
                                     pendingReport = report
                                 }
@@ -380,14 +382,6 @@ public struct ExerciseDetailView: View {
                 }
             )
         }
-        .sheet(item: $cooldownInfo) { cd in
-            ExerciseReportCooldownSheet(
-                isDaily: cd.isDaily,
-                nextAllowedAt: cd.nextAllowedAt,
-                remaining24h: cd.remaining24h,
-                onDismiss: { cooldownInfo = nil }
-            )
-        }
         .sheet(item: $pendingReport) { pending in
             PendingReportSheet(
                 report: pending,
@@ -406,9 +400,9 @@ public struct ExerciseDetailView: View {
                                 let toastMsg = isDaily
                                     ? LanguageManager.t("report.toastDaily", ["dateTime": ExerciseReportStore.formatLocalDateTime(nextAllowedAt)])
                                     : LanguageManager.t("report.toastHourly", ["time": ExerciseReportStore.formatLocalTime(nextAllowedAt)])
-                                store.showNotice(toastMsg)
+                                store.showErrorNotice(toastMsg, duration: 6.0)
                             case .error(let msg):
-                                store.showNotice(msg)
+                                store.showErrorNotice(msg, duration: 5.0)
                             }
                         }
                     }

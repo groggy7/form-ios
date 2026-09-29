@@ -38,7 +38,14 @@ public final class AppStore: ObservableObject {
     @Published public var weightUnit: WeightUnit
     @Published public var barType: BarType
     @Published public var availablePlatesKg: [Double]
-    @Published public var noticeMessage: String?
+    @Published public var currentToast: ToastItem?
+    @Published public var noticeMessage: String? {
+        didSet {
+            if let msg = noticeMessage, !msg.isEmpty {
+                currentToast = ToastItem(message: msg, style: .info, duration: 3.0)
+            }
+        }
+    }
     @Published public var exerciseCatalogue: [ExerciseCatalogEntry] = []
     let libraryResults = LibraryExerciseResults()
     
@@ -901,8 +908,14 @@ public final class AppStore: ObservableObject {
         showNotice(LanguageManager.t("notice.videosUpdated", ["name": exerciseName]))
     }
 
-    public func showNotice(_ message: String) {
+    public func showNotice(_ message: String, style: ToastStyle = .info, duration: Double = 3.0) {
         self.noticeMessage = message
+        self.currentToast = ToastItem(message: message, style: style, duration: duration)
+    }
+
+    public func showErrorNotice(_ message: String, duration: Double = 6.0) {
+        self.noticeMessage = message
+        self.currentToast = ToastItem(message: message, style: .error, duration: duration)
     }
 
     // MARK: - Internal Helpers & Persistence

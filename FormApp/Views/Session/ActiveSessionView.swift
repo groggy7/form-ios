@@ -17,7 +17,6 @@ public struct ActiveSessionView: View {
     @State private var isCelebrationVisible: Bool = false
     @State private var inspectingExerciseId: String? = nil
     @State private var reportingExercise: Exercise? = nil
-    @State private var cooldownInfo: IdentifiableCooldown? = nil
     @State private var pendingReport: ExerciseIssueReport? = nil
     @State private var showProgressionInfo: Bool = false
     @State private var showWarmupPlateSheet: Bool = false
@@ -600,8 +599,11 @@ public struct ActiveSessionView: View {
                         switch preflight {
                         case .allowed:
                             reportingExercise = inspectingExercise
-                        case .cooldown(let isDaily, let nextAllowedAt, let remaining):
-                            cooldownInfo = IdentifiableCooldown(isDaily: isDaily, nextAllowedAt: nextAllowedAt, remaining24h: remaining)
+                        case .cooldown(let isDaily, let nextAllowedAt, _):
+                            let toastMsg = isDaily
+                                ? LanguageManager.t("report.toastDaily", ["dateTime": ExerciseReportStore.formatLocalDateTime(nextAllowedAt)])
+                                : LanguageManager.t("report.toastHourly", ["time": ExerciseReportStore.formatLocalTime(nextAllowedAt)])
+                            store.showErrorNotice(toastMsg, duration: 6.0)
                         case .pending(let report):
                             pendingReport = report
                         }
@@ -610,7 +612,7 @@ public struct ActiveSessionView: View {
                 .transition(.opacity)
             }
 
-            ToastOverlay(message: store.noticeMessage)
+            ToastOverlay(item: store.currentToast, bottomPadding: restTimer != nil ? 96 : 36)
         }
         .sheet(item: $reportingExercise) { exercise in
             ExerciseReportSheet(
@@ -620,14 +622,6 @@ public struct ActiveSessionView: View {
                     reportingExercise = nil
                     store.showNotice(msg)
                 }
-            )
-        }
-        .sheet(item: $cooldownInfo) { cd in
-            ExerciseReportCooldownSheet(
-                isDaily: cd.isDaily,
-                nextAllowedAt: cd.nextAllowedAt,
-                remaining24h: cd.remaining24h,
-                onDismiss: { cooldownInfo = nil }
             )
         }
         .sheet(item: $pendingReport) { pending in
@@ -648,9 +642,9 @@ public struct ActiveSessionView: View {
                                 let toastMsg = isDaily
                                     ? LanguageManager.t("report.toastDaily", ["dateTime": ExerciseReportStore.formatLocalDateTime(nextAllowedAt)])
                                     : LanguageManager.t("report.toastHourly", ["time": ExerciseReportStore.formatLocalTime(nextAllowedAt)])
-                                store.showNotice(toastMsg)
+                                store.showErrorNotice(toastMsg, duration: 6.0)
                             case .error(let msg):
-                                store.showNotice(msg)
+                                store.showErrorNotice(msg, duration: 5.0)
                             }
                         }
                     }

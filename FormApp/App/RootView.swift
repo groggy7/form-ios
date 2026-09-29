@@ -73,7 +73,7 @@ public struct RootView: View {
                     .ignoresSafeArea(.container, edges: isBottomDockVisible ? .bottom : [])
 
                     // Animated Toast Pill
-                    ToastOverlay(message: store.noticeMessage)
+                    ToastOverlay(item: store.currentToast, bottomPadding: isBottomDockVisible ? 80 : 36)
                 }
                 // Fullscreen Active Workout Session
                 .fullScreenCover(item: Binding<ActiveSessionDraft?>(
