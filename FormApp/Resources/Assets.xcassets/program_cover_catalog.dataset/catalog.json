@@ -1,0 +1,142 @@
+{
+  "schemaVersion": 1,
+  "defaultAssetId": "full_body",
+  "covers": [
+    {
+      "id": "hypertrophy",
+      "resourceName": "program_cover_hypertrophy",
+      "programIds": [
+        "aesthetic-hypertrophy"
+      ],
+      "labels": {
+        "en": "Aesthetic Engine",
+        "tr": "Aesthetic Engine"
+      },
+      "tags": [
+        "hypertrophy",
+        "shoulders",
+        "arms",
+        "full_body"
+      ],
+      "exportSha256": "631e0e725841361d52a0b53ed925ef0c139d60bb76c850b812dcb25c741ad24b"
+    },
+    {
+      "id": "powerbuilding",
+      "resourceName": "program_cover_powerbuilding",
+      "programIds": [
+        "powerbuilding-strength"
+      ],
+      "labels": {
+        "en": "Heavy & Built",
+        "tr": "Heavy & Built"
+      },
+      "tags": [
+        "strength",
+        "barbell",
+        "full_body"
+      ],
+      "exportSha256": "6f0e953ed26bd1450b3b4cfe894d6433cf0a33dcdcb3be7be0e5c87e73472585"
+    },
+    {
+      "id": "push_pull_legs",
+      "resourceName": "program_cover_push_pull_legs",
+      "programIds": [
+        "classic-ppl"
+      ],
+      "labels": {
+        "en": "Pure PPL",
+        "tr": "Pure PPL"
+      },
+      "tags": [
+        "hypertrophy",
+        "push_pull_legs",
+        "full_body"
+      ],
+      "exportSha256": "7d1d062e07f85781808da2af9988978e7eda8bbd4366c0b5853cb6c1270fc9f9"
+    },
+    {
+      "id": "full_body",
+      "resourceName": "program_cover_full_body",
+      "programIds": [
+        "full-body-classic"
+      ],
+      "labels": {
+        "en": "Classic Foundation",
+        "tr": "Classic Foundation"
+      },
+      "tags": [
+        "foundation",
+        "full_body"
+      ],
+      "exportSha256": "665c40cc14c084cc85d6e65b8123b5495c0582770dcc086686646524397d7f76"
+    },
+    {
+      "id": "home_dumbbells",
+      "resourceName": "program_cover_home_dumbbells",
+      "programIds": [
+        "home-forge-dumbbells"
+      ],
+      "labels": {
+        "en": "Home Forge",
+        "tr": "Home Forge"
+      },
+      "tags": [
+        "dumbbells",
+        "home",
+        "full_body"
+      ],
+      "exportSha256": "a1743097adeaea59728e049f4482d289463c6b184780eacfec7aff60bf29f5cd"
+    },
+    {
+      "id": "strength_power",
+      "resourceName": "program_cover_strength_power",
+      "programIds": [
+        "athletic-performance"
+      ],
+      "labels": {
+        "en": "Athletic Engine",
+        "tr": "Athletic Engine"
+      },
+      "tags": [
+        "strength",
+        "power",
+        "full_body"
+      ],
+      "exportSha256": "80b6be6bcafef0bd5ab1d9ca454979d6342bcbeff3b40e1e28b847a8e7ab8758"
+    },
+    {
+      "id": "upper_lower",
+      "resourceName": "program_cover_upper_lower",
+      "programIds": [
+        "upper-lower-balanced"
+      ],
+      "labels": {
+        "en": "Balanced Build",
+        "tr": "Balanced Build"
+      },
+      "tags": [
+        "hypertrophy",
+        "upper_lower",
+        "full_body"
+      ],
+      "exportSha256": "5b753a8a21592e2094f87d87ea3d84cb7d1b53b03232312373f20cf2e1d9285a"
+    },
+    {
+      "id": "machines",
+      "resourceName": "program_cover_machines",
+      "programIds": [
+        "machine-foundation"
+      ],
+      "labels": {
+        "en": "Machine Foundation",
+        "tr": "Machine Foundation"
+      },
+      "tags": [
+        "foundation",
+        "machines",
+        "full_body"
+      ],
+      "exportSha256": "bf242d2f619922f3524761cdb7e009562b3390d3b239e7e6a3bbace3a73cba9d"
+    }
+  ]
+}

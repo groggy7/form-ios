@@ -6,6 +6,56 @@ import SwiftUI
 
 final class FormAppTests: XCTestCase {
     @MainActor
+    func testProgramCoverLibraryResourcesAndMappings() throws {
+        let programs = AppStore.loadBundledStarterPrograms()
+        XCTAssertEqual(Set(programs.map(\.id)), Set(ProgramCover.allCases.map(\.programID)))
+        XCTAssertEqual(ProgramCover.forProgram("custom-program"), .fullBody)
+        for cover in ProgramCover.allCases {
+            let image = try XCTUnwrap(UIImage(named: cover.assetName)?.cgImage)
+            XCTAssertEqual(image.width, 1152)
+            XCTAssertEqual(image.height, 768)
+            XCTAssertEqual(ProgramCover.forProgram(cover.programID), cover)
+        }
+        let data = try XCTUnwrap(NSDataAsset(name: "program_cover_catalog")?.data)
+        let catalog = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
+        XCTAssertEqual((catalog["covers"] as? [[String: Any]])?.count, programs.count)
+    }
+
+    @MainActor
+    func testProgramHeroCardSnapshotsAtNormalAndLargeTurkishText() {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        let programs = AppStore.loadBundledStarterPrograms()
+        for (language, screenWidth, scale) in [("en", CGFloat(393), CGFloat(1)), ("tr", CGFloat(320), CGFloat(1.3))] {
+            LanguageManager.setLanguage(language)
+            let width = screenWidth - 40
+            let height = ProgramHeroLayout.height(programs: programs, width: width, titleSize: 18 * scale, bodySize: 13 * scale, daysSize: 12 * scale)
+            XCTAssertGreaterThanOrEqual(height, 240)
+            let content = VStack(spacing: 14) {
+                ForEach(Array(programs.prefix(2))) { program in
+                    ProgramHeroCard(program: program, isActive: program.id == programs[0].id,
+                        width: width, height: height, titleSize: 18 * scale, bodySize: 13 * scale, daysSize: 12 * scale,
+                        onSelect: {}, onEdit: {})
+                }
+            }.padding(20).background(AppColors.background)
+            let controller = UIHostingController(rootView: content)
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: screenWidth, height: 2 * height + 54))
+            window.rootViewController = controller
+            window.makeKeyAndVisible()
+            controller.view.frame = window.bounds
+            controller.view.layoutIfNeeded()
+            let image = UIGraphicsImageRenderer(size: window.bounds.size).image { _ in
+                controller.view.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
+            }
+            let attachment = XCTAttachment(image: image)
+            attachment.name = "program-heroes-\(language)-\(scale)"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+            window.isHidden = true
+        }
+    }
+
+    @MainActor
     func testRepMaxSourceSnapshots() {
         let previous = LanguageManager.shared.currentLanguage
         defer { LanguageManager.setLanguage(previous) }
