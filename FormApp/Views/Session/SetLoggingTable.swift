@@ -244,14 +244,17 @@ public struct SetLoggingTable: View {
                         .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: false) && isSetInputEnabled ? AppColors.accent : .clear))
 
                     Button(action: {
-                        if isRestActive && index != currentLoggedIndex {
-                            onRestWarning?()
+                        if isRestActive {
+                            if set.isCompleted && index == currentLoggedIndex {
+                                focusedField = nil
+                                selectedField = nil
+                            } else {
+                                onRestWarning?()
+                            }
                         } else if set.isCompleted {
                             onToggleCompleteSet(index)
                             focusedField = nil
                             selectedField = nil
-                        } else if isRestActive {
-                            onRestWarning?()
                         } else if canComplete {
                             onToggleCompleteSet(index)
                             focusedField = nil

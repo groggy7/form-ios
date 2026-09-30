@@ -786,12 +786,10 @@ public struct ActiveSessionView: View {
             guard sets.indices.contains(index) else { return copy }
             let currentSet = sets[index]
             let isRestActive = (copy.restTimer?.secondsRemaining(nowEpochMillis: nowEpochMillis) ?? 0) > 0
-            let isRestForCurrent = isRestActive && copy.restTimer?.exerciseName == exercise.name
-            let currentLoggedIndex = isRestForCurrent ? sets.lastIndex(where: { $0.isCompleted }) : nil
-            if isRestActive && index != currentLoggedIndex {
+            if isRestActive {
                 return copy
             }
-            if !currentSet.isCompleted && (isRestActive || !WorkoutSessionUtils.canCompleteSet(currentSet) || !WorkoutSessionUtils.isSetEnabled(sets: sets, index: index)) {
+            if !currentSet.isCompleted && (!WorkoutSessionUtils.canCompleteSet(currentSet) || !WorkoutSessionUtils.isSetEnabled(sets: sets, index: index)) {
                 return copy
             }
             let willComplete = !currentSet.isCompleted
