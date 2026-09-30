@@ -1018,12 +1018,12 @@ final class FormAppTests: XCTestCase {
         for (language, width, category) in [("en", CGFloat(393), ContentSizeCategory.large),
                                             ("tr", CGFloat(320), ContentSizeCategory.accessibilityExtraLarge)] {
             LanguageManager.setLanguage(language)
-            let cuesView = VStack(spacing: 16) {
+            let fullView = VStack(spacing: 16) {
                 TechniqueSectionView(title: LanguageManager.t("modal.exercise.cues"),
-                    text: ContentLocalizer.shared.exerciseCues(exerciseId: bench.id, fallback: bench.cues).joined(separator: "\n"),
+                    text: ContentLocalizer.shared.exerciseCuesDetails(exerciseId: bench.id).joined(separator: "\n"),
                     accent: AppColors.accent, isAvoid: false, collapsible: false)
                 TechniqueSectionView(title: LanguageManager.t("modal.exercise.avoid"),
-                    text: ContentLocalizer.shared.exerciseAvoid(exerciseId: bench.id, fallback: bench.avoid).joined(separator: "\n"),
+                    text: ContentLocalizer.shared.exerciseAvoidDetails(exerciseId: bench.id).joined(separator: "\n"),
                     accent: AppColors.danger, isAvoid: true, collapsible: false)
             }
             .padding(20)
@@ -1031,9 +1031,22 @@ final class FormAppTests: XCTestCase {
             .background(AppColors.background)
             .environment(\.sizeCategory, category)
             .ignoresSafeArea()
+            let cuesView = TechniqueGuideView(
+                cues: ContentLocalizer.shared.exerciseCues(exerciseId: bench.id, fallback: bench.cues).joined(separator: "\n"),
+                avoid: ContentLocalizer.shared.exerciseAvoid(exerciseId: bench.id, fallback: bench.avoid).joined(separator: "\n"),
+                cuesDetails: ContentLocalizer.shared.exerciseCuesDetails(exerciseId: bench.id).joined(separator: "\n"),
+                avoidDetails: ContentLocalizer.shared.exerciseAvoidDetails(exerciseId: bench.id).joined(separator: "\n")
+            )
+            .padding(20)
+            .frame(maxWidth: .infinity)
+            .background(AppColors.background)
+            .environment(\.sizeCategory, category)
+            .ignoresSafeArea()
             let controller = UIHostingController(rootView: cuesView)
             let size = controller.sizeThatFits(in: CGSize(width: width, height: 10000))
-            XCTAssertGreaterThan(size.height, 700)
+            let fullController = UIHostingController(rootView: fullView)
+            let fullSize = fullController.sizeThatFits(in: CGSize(width: width, height: 10000))
+            XCTAssertLessThan(size.height, fullSize.height)
             XCTAssertEqual(size.width, width, accuracy: 0.5) // Permit layout rounding to the nearest display pixel.
             // Render the complete content without an oversized UIWindow, which can
             // produce a blank hierarchy capture at accessibility text sizes.
@@ -1045,6 +1058,9 @@ final class FormAppTests: XCTestCase {
             attachment.lifetime = .keepAlways
             add(attachment)
             try XCTUnwrap(image.pngData()).write(to: URL(fileURLWithPath: "/tmp/form-technique-ios-cards-\(language).png"))
+            let fullRenderer = ImageRenderer(content: fullView.frame(width: width))
+            fullRenderer.scale = 1
+            try XCTUnwrap(fullRenderer.uiImage?.pngData()).write(to: URL(fileURLWithPath: "/tmp/form-technique-ios-full-\(language).png"))
         }
     }
 
@@ -2405,9 +2421,8 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(catalogue.filter { !$0.exercise.cues.isEmpty }.count, 300)
         XCTAssertEqual(catalogue.filter { !$0.exercise.avoid.isEmpty }.count, 300)
         XCTAssertEqual(catalogue.filter { $0.exercise.exerciseId != nil }.count, 300)
-        XCTAssertTrue(ExerciseCatalog.canonicalExercises.values.allSatisfy {
-            $0.cues.count >= 6 && $0.avoid.count >= 4 && $0.cues.first?.hasPrefix("Set up: ") == true
-        })
+        XCTAssertGreaterThan(Set(ExerciseCatalog.canonicalExercises.values.map { $0.cues.count }).count, 1)
+        XCTAssertGreaterThan(Set(ExerciseCatalog.canonicalExercises.values.map { $0.avoid.count }).count, 1)
         XCTAssertTrue(ExerciseCatalog.canonicalExercises["nordic-hamstring-curl"]?.cuesText.contains("Anchor your ankles") == true)
         XCTAssertTrue(ExerciseCatalog.canonicalExercises["handstand-push-up"]?.cuesText.contains("handstand") == true)
     }
@@ -2422,7 +2437,11 @@ final class FormAppTests: XCTestCase {
         for definition in canonical {
             XCTAssertEqual(trExercises[definition.id]?.cues?.count, definition.cues.count, definition.id)
             XCTAssertEqual(trExercises[definition.id]?.avoid?.count, definition.avoid.count, definition.id)
-            XCTAssertTrue(trExercises[definition.id]?.cues?.first?.hasPrefix("Hazırlık: ") == true, definition.id)
+            let english = ContentLocalizer.shared.loadExercises(lang: "en")[definition.id]
+            XCTAssertEqual(trExercises[definition.id]?.cuesDetails?.count, english?.cuesDetails?.count, definition.id)
+            XCTAssertEqual(trExercises[definition.id]?.avoidDetails?.count, english?.avoidDetails?.count, definition.id)
+            XCTAssertFalse((english?.cuesDetails ?? []).isEmpty, definition.id)
+            XCTAssertFalse((english?.avoidDetails ?? []).isEmpty, definition.id)
         }
 
         guard let bench = canonical.first(where: { $0.id == "barbell-bench-press" }) else {
@@ -2476,6 +2495,24 @@ final class FormAppTests: XCTestCase {
         LanguageManager.setLanguage("en")
         XCTAssertEqual(pullUps.displayName, "Pull-Ups")
         XCTAssertEqual(workout.displayTitle(programId: "powerbuilding-strength"), "Lower: Squat")
+    }
+
+    func testTechniqueKeepsSafetyVisibleAndReferenceDetailsOptional() {
+        let localizer = ContentLocalizer.shared
+        let bench = localizer.exerciseCues(exerciseId: "barbell-bench-press", fallback: [], lang: "en")
+        XCTAssertTrue(bench.contains { $0.contains("rack safeties") })
+        let details = localizer.exerciseCuesDetails(exerciseId: "barbell-bench-press", lang: "en")
+        XCTAssertGreaterThan(details.joined().count, bench.joined().count)
+        XCTAssertTrue(details.first?.hasPrefix("Set up:") == true)
+        XCTAssertTrue(localizer.exerciseCuesDetails(exerciseId: "barbell-bench-press", lang: "tr").first?.hasPrefix("Hazırlık:") == true)
+        XCTAssertEqual(details, localizer.exerciseCuesDetails(exerciseId: "barbell-bench-press", lang: "missing-language"))
+        XCTAssertTrue(localizer.exerciseCuesDetails(exerciseId: "custom-123", lang: "en").isEmpty)
+        XCTAssertTrue(localizer.exerciseAvoidDetails(exerciseId: nil, lang: "en").isEmpty)
+        let larsen = localizer.exerciseCues(exerciseId: "barbell-larsen-press", fallback: [], lang: "en")
+        XCTAssertTrue(larsen.contains { $0.contains("Feet stay off the floor") })
+        XCTAssertFalse(larsen.contains { $0.contains("Keep feet secure") })
+        let handstand = localizer.exerciseCues(exerciseId: "handstand-push-up", fallback: [], lang: "en")
+        XCTAssertTrue(handstand.contains { $0.contains("exit you can control") })
     }
 
     func testExercisePriorityStaplesBeforeGymRatMoves() {

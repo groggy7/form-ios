@@ -4,6 +4,8 @@ public struct ExerciseLocaleData: Codable {
     public var name: String?
     public var cues: [String]?
     public var avoid: [String]?
+    public var cuesDetails: [String]?
+    public var avoidDetails: [String]?
 }
 
 public struct WorkoutLocaleData: Codable {
@@ -125,6 +127,22 @@ public final class ContentLocalizer {
         return fallback
     }
 
+    public func exerciseCuesDetails(exerciseId: String?, lang: String? = nil) -> [String] {
+        exerciseDetails(exerciseId: exerciseId, lang: lang, field: \.cuesDetails)
+    }
+
+    public func exerciseAvoidDetails(exerciseId: String?, lang: String? = nil) -> [String] {
+        exerciseDetails(exerciseId: exerciseId, lang: lang, field: \.avoidDetails)
+    }
+
+    private func exerciseDetails(exerciseId: String?, lang: String?, field: KeyPath<ExerciseLocaleData, [String]?>) -> [String] {
+        guard let key = resolveExerciseKey(exerciseId: exerciseId, name: nil) else { return [] }
+        if let lines = loadExercises(lang: lang ?? activeLanguage)[key]?[keyPath: field], !lines.isEmpty {
+            return lines
+        }
+        return loadExercises(lang: "en")[key]?[keyPath: field] ?? []
+    }
+
     public func workoutTitle(programId: String?, workoutId: String?, fallback: String, lang: String? = nil) -> String {
         let currentLang = lang ?? activeLanguage
         if let pid = programId, let wid = workoutId {
@@ -208,6 +226,14 @@ public final class ContentLocalizer {
 // MARK: - Model Extensions
 
 extension Exercise {
+    public var displayCuesDetails: String {
+        ContentLocalizer.shared.exerciseCuesDetails(exerciseId: exerciseId).joined(separator: "\n")
+    }
+
+    public var displayAvoidDetails: String {
+        ContentLocalizer.shared.exerciseAvoidDetails(exerciseId: exerciseId).joined(separator: "\n")
+    }
+
     public var displayName: String {
         ContentLocalizer.shared.exerciseName(exerciseId: exerciseId, fallback: name)
     }

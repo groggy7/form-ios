@@ -213,27 +213,13 @@ public struct ExerciseDetailView: View {
                             .cornerRadius(12)
                             .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
                         } else {
-                            if !cuesText.isEmpty {
-                                TechniqueSectionView(
-                                    title: LanguageManager.t("modal.exercise.cues"),
-                                    text: cuesText,
-                                    accent: AppColors.accent,
-                                    isAvoid: false,
-                                    initiallyExpanded: true,
-                                    collapsible: false
-                                )
-                            }
-
-                            if !avoidText.isEmpty {
-                                TechniqueSectionView(
-                                    title: LanguageManager.t("modal.exercise.avoid"),
-                                    text: avoidText,
-                                    accent: AppColors.danger,
-                                    isAvoid: true,
-                                    initiallyExpanded: true,
-                                    collapsible: false
-                                )
-                            }
+                            TechniqueGuideView(
+                                cues: cuesText,
+                                avoid: avoidText,
+                                cuesDetails: currentExercise.displayCuesDetails,
+                                avoidDetails: currentExercise.displayAvoidDetails
+                            )
+                            .id(currentExercise.id)
                         }
 
                     case .history:
@@ -1221,6 +1207,54 @@ struct ExerciseHistoryArchiveView: View {
     }
 }
 
+struct TechniqueGuideView: View {
+    let cues: String
+    let avoid: String
+    let cuesDetails: String
+    let avoidDetails: String
+    @State private var showDetails = false
+    @ScaledMetric(relativeTo: .body) private var textSize: CGFloat = 14
+
+    var body: some View {
+        let visibleCues = showDetails && !cuesDetails.isEmpty ? cuesDetails : cues
+        let visibleAvoid = showDetails && !avoidDetails.isEmpty ? avoidDetails : avoid
+        VStack(spacing: 16) {
+            if !visibleCues.isEmpty {
+                TechniqueSectionView(title: LanguageManager.t("modal.exercise.cues"), text: visibleCues,
+                    accent: AppColors.accent, isAvoid: false, collapsible: false)
+            }
+            if !visibleAvoid.isEmpty {
+                TechniqueSectionView(title: LanguageManager.t("modal.exercise.avoid"), text: visibleAvoid,
+                    accent: AppColors.danger, isAvoid: true, collapsible: false)
+            }
+            if !cuesDetails.isEmpty || !avoidDetails.isEmpty {
+                Button {
+                    showDetails.toggle()
+                } label: {
+                    HStack(spacing: 12) {
+                        Text(LanguageManager.t(showDetails ? "exercise.technique.less" : "exercise.technique.more"))
+                            .font(.system(size: textSize))
+                            .fixedSize(horizontal: false, vertical: true)
+                        Spacer(minLength: 0)
+                        Image(systemName: "chevron.down")
+                            .font(.system(size: 12, weight: .semibold))
+                            .rotationEffect(.degrees(showDetails ? 180 : 0))
+                    }
+                    .foregroundColor(AppColors.secondaryText)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 12)
+                    .frame(maxWidth: .infinity, minHeight: 48, alignment: .leading)
+                    .background(AppColors.surface)
+                    .cornerRadius(12)
+                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
+                }
+                .buttonStyle(.plain)
+                .accessibilityValue(LanguageManager.t(showDetails ? "exercise.technique.detailed" : "exercise.technique.brief"))
+            }
+        }
+    }
+}
+
 struct TechniqueSectionView: View {
     let title: String
     let text: String
@@ -1253,6 +1287,7 @@ struct TechniqueSectionView: View {
                 Text(title)
                     .font(.system(size: textSize, weight: .semibold))
                     .foregroundColor(accent)
+                    .fixedSize(horizontal: false, vertical: true)
 
                 Spacer()
 

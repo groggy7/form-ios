@@ -541,6 +541,10 @@ public enum Translations {
         "exercise.history.empty": "No workout history yet",
         "exercise.history.emptyHint": "Log this exercise in a workout to track your PR, estimated 1RM, and volume.",
         "exercise.technique.empty": "No technique cues recorded yet",
+        "exercise.technique.more": "More technique details",
+        "exercise.technique.less": "Show less",
+        "exercise.technique.detailed": "Detailed guide",
+        "exercise.technique.brief": "Quick guide",
 
         // Exercise Issue Reporting
         "report.action": "Report an issue",
@@ -1389,6 +1393,10 @@ public enum Translations {
         "exercise.history.empty": "Henüz antrenman geçmişi yok",
         "exercise.history.emptyHint": "PR, tahmini 1TM ve hacim istatistiklerini takip etmek için bu egzersizi kaydedin.",
         "exercise.technique.empty": "Henüz teknik ipucu eklenmemiş",
+        "exercise.technique.more": "Daha fazla teknik bilgi",
+        "exercise.technique.less": "Daha az göster",
+        "exercise.technique.detailed": "Ayrıntılı rehber",
+        "exercise.technique.brief": "Kısa rehber",
 
         // Exercise Issue Reporting
         "report.action": "Sorun bildir",
