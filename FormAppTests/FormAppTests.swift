@@ -3343,6 +3343,93 @@ final class FormAppTests: XCTestCase {
         XCTAssertTrue(WorkoutSessionUtils.isSetEnabled(sets: set1And2Done, index: 2))
     }
 
+    func testEditingLoggedSetDuringRestPreservesTimer() {
+        let store = AppStore.shared
+        let exercise = Exercise(id: "bench", name: "Bench", prescription: "3 × 8–12", sets: 3, restSeconds: 90)
+        let workout = Workout(id: "upper", day: 1, title: "Upper", exercises: [exercise])
+        let sets = [
+            ExerciseSetLog(setNumber: 1, weightInput: "80", repsInput: "10", weightKg: 80.0, completedReps: 10, isCompleted: true),
+            ExerciseSetLog(setNumber: 2, weightInput: "80", repsInput: "10", weightKg: 80.0, completedReps: 10, isCompleted: false),
+            ExerciseSetLog(setNumber: 3, weightInput: "", repsInput: "", isCompleted: false)
+        ]
+        let endEpoch: Int64 = 100_000
+        let restTimer = RestTimerState(
+            exerciseName: "Bench",
+            totalSeconds: 90,
+            isRunning: true,
+            endsAtEpochMillis: endEpoch,
+            pausedSecondsRemaining: 90
+        )
+        let draft = ActiveSessionDraft(
+            id: "test-draft",
+            programId: "plan",
+            workout: workout,
+            startedAt: "2026-08-28T09:00:00Z",
+            startedAtEpochMillis: 10_000,
+            setsByExercise: [exercise.id: sets],
+            restTimer: restTimer
+        )
+        store.activeSession = draft
+
+        // Editing current set's weight and reps does not restart or change the rest timer
+        store.updateActiveSession { d in
+            var copy = d
+            var currentSets = copy.setsByExercise[exercise.id] ?? []
+            currentSets[0] = ExerciseSetLog(
+                id: currentSets[0].id,
+                setNumber: currentSets[0].setNumber,
+                weightInput: "85",
+                repsInput: "12",
+                weightKg: 85.0,
+                completedReps: 12,
+                isCompleted: true,
+                inputTouched: true
+            )
+            copy.setsByExercise[exercise.id] = currentSets
+            return copy
+        }
+
+        XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?[0].weightInput, "85")
+        XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?[0].completedReps, 12)
+        XCTAssertEqual(store.activeSession?.restTimer?.endsAtEpochMillis, endEpoch)
+        XCTAssertEqual(store.activeSession?.restTimer?.totalSeconds, 90)
+        XCTAssertEqual(store.activeSession?.restTimer?.isRunning, true)
+    }
+
+    func testSetLoggingTableRestBouncerAllowsCurrentSetEditAndBlocksOthers() {
+        let sets = [
+            ExerciseSetLog(setNumber: 1, weightInput: "80", repsInput: "10", weightKg: 80.0, completedReps: 10, isCompleted: true),
+            ExerciseSetLog(setNumber: 2, weightInput: "85", repsInput: "8", weightKg: 85.0, completedReps: 8, isCompleted: true),
+            ExerciseSetLog(setNumber: 3, weightInput: "85", repsInput: "8", weightKg: 85.0, completedReps: 8, isCompleted: false)
+        ]
+        var warningCount = 0
+        var toggledIndex: Int? = nil
+
+        let table = SetLoggingTable(
+            sets: sets,
+            prescription: "3 × 8–12",
+            isRestActive: true,
+            isRestForCurrentExercise: true,
+            onUpdateSet: { _, _, _ in },
+            onToggleCompleteSet: { idx in
+                toggledIndex = idx
+            },
+            onAddSet: {},
+            onRemoveSet: { _ in },
+            onRestWarning: {
+                warningCount += 1
+            }
+        )
+
+        // Set 2 is the current logged set (last completed set, index 1)
+        let currentLogged = table.sets.lastIndex(where: { $0.isCompleted })
+        XCTAssertEqual(currentLogged, 1)
+        XCTAssertTrue(table.isRestActive)
+        XCTAssertTrue(table.isRestForCurrentExercise)
+        XCTAssertNil(toggledIndex)
+        XCTAssertEqual(warningCount, 0)
+    }
+
     func testPrefillNextSetTranslationsParity() {
         XCTAssertEqual(Translations.en["settings.prefillNextSet"], "Pre-fill next set")
         XCTAssertEqual(Translations.tr["settings.prefillNextSet"], "Sonraki seti doldur")

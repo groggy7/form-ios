@@ -10,6 +10,7 @@ public struct SetLoggingTable: View {
     let sets: [ExerciseSetLog]
     let prescription: String
     var isRestActive: Bool = false
+    var isRestForCurrentExercise: Bool = true
     var prText: String = "-"
     var onUpdateSet: (Int, String, String) -> Void
     var onToggleCompleteSet: (Int) -> Void
@@ -27,6 +28,7 @@ public struct SetLoggingTable: View {
         sets: [ExerciseSetLog],
         prescription: String = "",
         isRestActive: Bool = false,
+        isRestForCurrentExercise: Bool = true,
         prText: String = "-",
         onUpdateSet: @escaping (Int, String, String) -> Void,
         onToggleCompleteSet: @escaping (Int) -> Void,
@@ -43,6 +45,7 @@ public struct SetLoggingTable: View {
         self.sets = sets
         self.prescription = prescription
         self.isRestActive = isRestActive
+        self.isRestForCurrentExercise = isRestForCurrentExercise
         self.prText = prText
         self.onUpdateSet = onUpdateSet
         self.onToggleCompleteSet = onToggleCompleteSet
@@ -103,10 +106,13 @@ public struct SetLoggingTable: View {
             .foregroundColor(AppColors.muted)
             .padding(.horizontal, 14)
 
+            let currentLoggedIndex = (isRestActive && isRestForCurrentExercise) ? sets.lastIndex(where: { $0.isCompleted }) : nil
             // Set Rows
             ForEach(Array(sets.enumerated()), id: \.element.id) { index, set in
                 let isSetEnabled = set.isCompleted || WorkoutSessionUtils.isSetEnabled(sets: sets, index: index)
-                let isSetInputEnabled = !isRestActive && isSetEnabled
+                let isSetInputEnabled = isRestActive
+                    ? (currentLoggedIndex == index)
+                    : isSetEnabled
                 let ghostTarget = ghostTargets[index]
                 let contextualPr: String = {
                     if let gt = ghostTarget, let prevW = gt.lastWeekWeightKg, let prevR = gt.lastWeekReps, prevW > 0.0, prevR > 0 {
@@ -238,7 +244,9 @@ public struct SetLoggingTable: View {
                         .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: false) && isSetInputEnabled ? AppColors.accent : .clear))
 
                     Button(action: {
-                        if set.isCompleted {
+                        if isRestActive && index != currentLoggedIndex {
+                            onRestWarning?()
+                        } else if set.isCompleted {
                             onToggleCompleteSet(index)
                             focusedField = nil
                             selectedField = nil

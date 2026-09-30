@@ -408,12 +408,14 @@ public struct ActiveSessionView: View {
                                     }
 
                                     let isRestActive = (activeDraft.restTimer?.secondsRemaining(nowEpochMillis: nowEpochMillis) ?? 0) > 0
+                                    let isRestForCurrentExercise = isRestActive && activeDraft.restTimer?.exerciseName == exercise.name
                                     let prText = WorkoutSessionUtils.findExercisePr(history: store.state.history, exercise: exercise, unit: store.weightUnit) ?? "-"
 
                                     SetLoggingTable(
                                         sets: currentSets,
                                         prescription: exercise.displayPrescription,
                                         isRestActive: isRestActive,
+                                        isRestForCurrentExercise: isRestForCurrentExercise,
                                         prText: prText,
                                         onUpdateSet: { setIdx, weight, reps in
                                             updateSet(exerciseId: exercise.id, index: setIdx, weight: weight, reps: reps)
@@ -784,6 +786,11 @@ public struct ActiveSessionView: View {
             guard sets.indices.contains(index) else { return copy }
             let currentSet = sets[index]
             let isRestActive = (copy.restTimer?.secondsRemaining(nowEpochMillis: nowEpochMillis) ?? 0) > 0
+            let isRestForCurrent = isRestActive && copy.restTimer?.exerciseName == exercise.name
+            let currentLoggedIndex = isRestForCurrent ? sets.lastIndex(where: { $0.isCompleted }) : nil
+            if isRestActive && index != currentLoggedIndex {
+                return copy
+            }
             if !currentSet.isCompleted && (isRestActive || !WorkoutSessionUtils.canCompleteSet(currentSet) || !WorkoutSessionUtils.isSetEnabled(sets: sets, index: index)) {
                 return copy
             }
