@@ -984,46 +984,40 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
-    func testExerciseDetailTechniqueSectionsExpandedSnapshot() {
-        let cuesView = VStack(spacing: 16) {
-            TechniqueSectionView(
-                title: "Technique cues",
-                text: "Plant heels, arch upper back, tuck shoulder blades.\nLower bar to sternum under control.\nExplode upward with leg drive.",
-                accent: AppColors.accent,
-                isAvoid: false,
-                initiallyExpanded: true
-            )
-
-            TechniqueSectionView(
-                title: "What to avoid",
-                text: "Bouncing bar off ribcage.\nButt lifting off the bench.",
-                accent: AppColors.danger,
-                isAvoid: true,
-                initiallyExpanded: true
-            )
-        }
-        .padding(20)
-        .frame(maxWidth: .infinity)
-        .background(AppColors.background)
-
-        let controller = UIHostingController(rootView: cuesView)
-        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 420)
-        controller.view.backgroundColor = UIColor(red: 0x14/255.0, green: 0x17/255.0, blue: 0x1A/255.0, alpha: 1.0)
-
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 420))
-        window.rootViewController = controller
-        window.makeKeyAndVisible()
-        controller.view.layoutIfNeeded()
-
-        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
-        let image = renderer.image { ctx in
-            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
-        }
-
-        if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_exercise_detail_expanded_cues.png"
-            try? data.write(to: URL(fileURLWithPath: path))
-            print("Successfully wrote snapshot to \(path)")
+    func testExerciseDetailTechniqueSectionsExpandedSnapshot() throws {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        let bench = try XCTUnwrap(ExerciseCatalog.canonicalExercises["barbell-bench-press"])
+        for (language, width, category) in [("en", CGFloat(393), ContentSizeCategory.large),
+                                            ("tr", CGFloat(320), ContentSizeCategory.accessibilityExtraLarge)] {
+            LanguageManager.setLanguage(language)
+            let cuesView = VStack(spacing: 16) {
+                TechniqueSectionView(title: LanguageManager.t("modal.exercise.cues"),
+                    text: ContentLocalizer.shared.exerciseCues(exerciseId: bench.id, fallback: bench.cues).joined(separator: "\n"),
+                    accent: AppColors.accent, isAvoid: false, collapsible: false)
+                TechniqueSectionView(title: LanguageManager.t("modal.exercise.avoid"),
+                    text: ContentLocalizer.shared.exerciseAvoid(exerciseId: bench.id, fallback: bench.avoid).joined(separator: "\n"),
+                    accent: AppColors.danger, isAvoid: true, collapsible: false)
+            }
+            .padding(20)
+            .frame(maxWidth: .infinity)
+            .background(AppColors.background)
+            .environment(\.sizeCategory, category)
+            .ignoresSafeArea()
+            let controller = UIHostingController(rootView: cuesView)
+            let size = controller.sizeThatFits(in: CGSize(width: width, height: 10000))
+            XCTAssertGreaterThan(size.height, 700)
+            XCTAssertEqual(size.width, width, accuracy: 0.5) // Permit layout rounding to the nearest display pixel.
+            // Render the complete content without an oversized UIWindow, which can
+            // produce a blank hierarchy capture at accessibility text sizes.
+            let renderer = ImageRenderer(content: cuesView.frame(width: width))
+            renderer.scale = 1 // Keep the complete accessibility-size image below bitmap encoder limits.
+            let image = try XCTUnwrap(renderer.uiImage)
+            let attachment = XCTAttachment(image: image)
+            attachment.name = "technique-cards-\(language)"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+            try XCTUnwrap(image.pngData()).write(to: URL(fileURLWithPath: "/tmp/form-technique-ios-cards-\(language).png"))
         }
     }
 
@@ -2384,7 +2378,9 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(catalogue.filter { !$0.exercise.cues.isEmpty }.count, 300)
         XCTAssertEqual(catalogue.filter { !$0.exercise.avoid.isEmpty }.count, 300)
         XCTAssertEqual(catalogue.filter { $0.exercise.exerciseId != nil }.count, 300)
-        XCTAssertTrue(ExerciseCatalog.canonicalExercises.values.allSatisfy { $0.cues.count == 2 && $0.avoid.count == 1 })
+        XCTAssertTrue(ExerciseCatalog.canonicalExercises.values.allSatisfy {
+            $0.cues.count >= 6 && $0.avoid.count >= 4 && $0.cues.first?.hasPrefix("Set up: ") == true
+        })
         XCTAssertTrue(ExerciseCatalog.canonicalExercises["nordic-hamstring-curl"]?.cuesText.contains("Anchor your ankles") == true)
         XCTAssertTrue(ExerciseCatalog.canonicalExercises["handstand-push-up"]?.cuesText.contains("handstand") == true)
     }
@@ -2396,6 +2392,11 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(trExercises.count, 300)
         XCTAssertEqual(trExercises.values.filter { ($0.cues ?? []).count > 0 }.count, 300)
         XCTAssertEqual(trExercises.values.filter { ($0.avoid ?? []).count > 0 }.count, 300)
+        for definition in canonical {
+            XCTAssertEqual(trExercises[definition.id]?.cues?.count, definition.cues.count, definition.id)
+            XCTAssertEqual(trExercises[definition.id]?.avoid?.count, definition.avoid.count, definition.id)
+            XCTAssertTrue(trExercises[definition.id]?.cues?.first?.hasPrefix("Hazırlık: ") == true, definition.id)
+        }
 
         guard let bench = canonical.first(where: { $0.id == "barbell-bench-press" }) else {
             XCTFail("Missing bench press definition")
@@ -4193,33 +4194,39 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
-    func testExerciseDetailTechniqueTabSnapshot() {
+    func testExerciseDetailTechniqueTabSnapshot() throws {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        let bench = try XCTUnwrap(ExerciseCatalog.canonicalExercises["barbell-bench-press"])
         let exercise = Exercise(
-            name: "Barbell Bench Press",
+            name: bench.name,
+            exerciseId: bench.id,
             prescription: "3 × 8–10",
-            cues: "Keep feet flat on floor\nRetract scapula and arch slightly\nLower bar with control to sternum\nDrive feet down to press up",
-            avoid: "Do not flare elbows to 90 degrees\nDo not bounce bar off chest\nDo not lift hips off the bench",
+            cues: bench.cuesText,
+            avoid: bench.avoidText,
             movementType: "press"
         )
-        let view = ExerciseDetailView(exercise: exercise, initialTab: .technique, onBack: {})
-        let controller = UIHostingController(rootView: view)
-        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
-        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+        for (language, width) in [("en", CGFloat(393)), ("tr", CGFloat(320))] {
+            LanguageManager.setLanguage(language)
+            let view = ExerciseDetailView(exercise: exercise, initialTab: .technique, onBack: {})
+            let controller = UIHostingController(rootView: view)
+            controller.view.frame = CGRect(x: 0, y: 0, width: width, height: 852)
+            controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
 
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
-        window.rootViewController = controller
-        window.makeKeyAndVisible()
-        controller.view.layoutIfNeeded()
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 852))
+            window.rootViewController = controller
+            window.makeKeyAndVisible()
+            controller.view.layoutIfNeeded()
 
-        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
-        let image = renderer.image { _ in
-            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
-        }
+            let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+            let image = renderer.image { _ in
+                controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+            }
 
-        if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_exercise_detail_technique_snapshot.png"
-            try? data.write(to: URL(fileURLWithPath: path))
-            print("Successfully wrote snapshot to \(path)")
+            if let data = image.pngData() {
+                try data.write(to: URL(fileURLWithPath: "/tmp/form-technique-ios-page-\(language).png"))
+            }
+            window.isHidden = true
         }
     }
 

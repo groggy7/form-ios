@@ -1228,6 +1228,7 @@ struct TechniqueSectionView: View {
     let isAvoid: Bool
     let collapsible: Bool
     @State private var isExpanded: Bool
+    @ScaledMetric(relativeTo: .body) private var textSize: CGFloat = 14
 
     init(title: String, text: String, accent: Color, isAvoid: Bool, initiallyExpanded: Bool = false, collapsible: Bool = true) {
         self.title = title
@@ -1250,7 +1251,7 @@ struct TechniqueSectionView: View {
         VStack(alignment: .leading, spacing: effectiveExpanded ? 12 : 0) {
             HStack {
                 Text(title)
-                    .font(.system(size: 14, weight: .semibold))
+                    .font(.system(size: textSize, weight: .semibold))
                     .foregroundColor(accent)
 
                 Spacer()
@@ -1273,10 +1274,11 @@ struct TechniqueSectionView: View {
                                 .padding(.top, 3)
 
                             let cleanLine = line.hasPrefix("- ") ? String(line.dropFirst(2)) : line
-                            Text(LanguageManager.content(cleanLine))
-                                .font(.system(size: 14))
+                            techniqueLine(LanguageManager.content(cleanLine))
+                                .font(.system(size: textSize))
                                 .lineSpacing(4)
                                 .foregroundColor(AppColors.secondaryText)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
                     }
                 }
@@ -1294,5 +1296,18 @@ struct TechniqueSectionView: View {
                 isExpanded.toggle()
             }
         }
+    }
+
+    private func techniqueLine(_ line: String) -> Text {
+        if let separator = line.range(of: ": "),
+           line.distance(from: line.startIndex, to: separator.lowerBound) <= 40,
+           separator.lowerBound > line.startIndex {
+            let labelEnd = line.index(after: separator.lowerBound)
+            return Text(String(line[..<labelEnd]))
+                .fontWeight(.semibold)
+                .foregroundColor(AppColors.text)
+                + Text(String(line[labelEnd...]))
+        }
+        return Text(line)
     }
 }
