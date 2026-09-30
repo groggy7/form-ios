@@ -3770,37 +3770,44 @@ final class FormAppTests: XCTestCase {
 
     @MainActor
     func testTodayHeroCardRestDaySnapshot() {
-        let view = VStack {
-            TodayHeroCard(
-                workout: nil,
-                programId: "01_aesthetic_hypertrophy",
-                todayIndex: 5, // Saturday (Rest day)
-                isCompleted: false,
-                isAvailable: false,
-                availableDay: nil,
-                hasUnfinishedProgress: false,
-                onStart: {}
-            )
-        }
-        .padding(.vertical, 20)
-        .frame(width: 440)
-        .background(AppColors.background)
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
 
-        let controller = UIHostingController(rootView: view)
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 440, height: 500))
-        window.rootViewController = controller
-        window.makeKeyAndVisible()
-        controller.view.layoutIfNeeded()
+        for lang in ["en", "tr"] {
+            LanguageManager.setLanguage(lang)
+            let view = VStack {
+                TodayHeroCard(
+                    workout: nil,
+                    programId: "01_aesthetic_hypertrophy",
+                    todayIndex: 5, // Saturday (Rest day)
+                    isCompleted: false,
+                    isAvailable: false,
+                    availableDay: nil,
+                    hasUnfinishedProgress: false,
+                    onStart: {}
+                )
+            }
+            .padding(.vertical, 20)
+            .frame(width: 440)
+            .background(AppColors.background)
 
-        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
-        let image = renderer.image { ctx in
-            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
-        }
+            let controller = UIHostingController(rootView: view)
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 440, height: 500))
+            window.rootViewController = controller
+            window.makeKeyAndVisible()
+            controller.view.layoutIfNeeded()
 
-        if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/ceb804a2-e800-493e-9c87-33e78710bc6d/ios_rest_day_hero_card_snapshot.png"
-            try? data.write(to: URL(fileURLWithPath: path))
-            print("Successfully wrote Rest Day hero snapshot to \(path)")
+            let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+            let image = renderer.image { ctx in
+                controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+            }
+
+            if let data = image.pngData() {
+                let suffix = lang == "en" ? "" : "_\(lang)"
+                let path = "/Users/groggy/.gemini/antigravity/brain/ceb804a2-e800-493e-9c87-33e78710bc6d/ios_rest_day_hero_card_snapshot\(suffix).png"
+                try? data.write(to: URL(fileURLWithPath: path))
+                print("Successfully wrote Rest Day hero snapshot to \(path)")
+            }
         }
     }
 

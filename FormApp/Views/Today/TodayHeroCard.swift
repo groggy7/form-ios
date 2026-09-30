@@ -307,28 +307,44 @@ public struct TodayHeroCard: View {
             .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
 
             VStack(alignment: .leading, spacing: 0) {
+                // Top row
                 Text(weekdayName)
-                    .font(.system(size: 12, weight: .medium))
+                    .font(.system(size: 13, weight: .medium))
                     .foregroundColor(Color(hex: 0xD3D0C7))
+                    .frame(minHeight: 20)
 
-                Spacer().frame(height: 18)
+                Spacer().frame(height: 20)
 
+                // Title
                 Text(LanguageManager.t("today.restDay"))
-                    .font(.system(size: 30, weight: .semibold))
+                    .font(.system(size: 32, weight: .semibold))
                     .foregroundColor(Color(hex: 0xF3EFE5))
                     .lineLimit(2)
+                    .frame(maxWidth: 215, alignment: .leading)
 
-                Spacer().frame(height: 9)
+                Spacer().frame(height: 12)
 
-                Text(LanguageManager.t("today.restDescription"))
-                    .font(.system(size: 14))
+                // Motivational Recovery Quote
+                Text(LanguageManager.restMotivationQuote(for: todayIndex))
+                    .font(.system(size: 14, weight: .regular))
                     .lineSpacing(4)
                     .foregroundColor(AppColors.secondaryText)
-                    .frame(maxWidth: 210, alignment: .leading)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: 215, alignment: .leading)
+
+                Spacer().frame(height: 16)
+
+                // Guidance Note
+                Text(LanguageManager.t("today.restDescription"))
+                    .font(.system(size: 12.5, weight: .regular))
+                    .lineSpacing(3)
+                    .foregroundColor(Color(hex: 0x9AA4AC))
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: 215, alignment: .leading)
 
                 Spacer()
             }
-            .padding(22)
+            .padding(EdgeInsets(top: 22, leading: 19, bottom: 20, trailing: 19))
         }
         .frame(height: Self.cardHeight)
         .padding(.horizontal, 20)

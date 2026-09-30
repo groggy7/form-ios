@@ -34,6 +34,11 @@ public final class LanguageManager: ObservableObject {
         return shared.translate(key, params: params)
     }
     
+    public static func restMotivationQuote(for index: Int) -> String {
+        let normalized = (index >= 0 ? index : abs(index)) % 7
+        return t("today.restMotivation.\(normalized)")
+    }
+    
     public static func content(_ text: String) -> String {
         return ContentDictionary.localize(text, lang: shared.currentLanguage)
     }
@@ -599,6 +604,13 @@ public enum Translations {
         "today.exercises": "Today's exercises",
         "today.restDay": "Rest day",
         "today.restDescription": "No workout is scheduled for today. You can still open any workout above.",
+        "today.restMotivation.0": "Real progress is forged when recovery matches your effort. Sleep deeply, refuel to rebuild, and let your body adapt.",
+        "today.restMotivation.1": "Rest is not the absence of training; it is the catalyst for growth. Give your muscles time to repair and supercompensate.",
+        "today.restMotivation.2": "Muscles rebuild during rest, not in the gym. Stepping back today ensures you bring full intensity to the bar tomorrow.",
+        "today.restMotivation.3": "Fatigue masks fitness. Allowing your central nervous system to reset is what turns hard volume into lasting strength.",
+        "today.restMotivation.4": "Consistency includes knowing when not to train. Quality rest prevents joint wear and fuels continuous progressive overload.",
+        "today.restMotivation.5": "Adaptation happens in the quiet hours between sessions. Hydrate, recover, and prepare your body for the next challenge.",
+        "today.restMotivation.6": "Growth occurs when recovery meets discipline. Recharge fully today so you can attack the upcoming training week with conviction.",
         "today.emptyTitle": "No workouts yet",
         "today.emptyDescription": "Add a workout to this program from your weekly plan.",
         "today.openPlan": "Open weekly plan",
@@ -1436,6 +1448,13 @@ public enum Translations {
         "today.exercises": "Bugünün egzersizleri",
         "today.restDay": "Dinlenme günü",
         "today.restDescription": "Bugün için planlanmış antrenman yok. Yukarıdan bir antrenman seçebilirsin.",
+        "today.restMotivation.0": "Gerçek gelişim, toparlanma emeğinize denk olduğunda şekillenir. Derin uyuyun, onarım için beslenin ve vücudunuzun adapte olmasına izin verin.",
+        "today.restMotivation.1": "Dinlenme antrenmanın yokluğu değil, gelişimin katalizörüdür. Kaslarınıza onarılmaları ve güçlenmeleri için gereken zamanı tanıyın.",
+        "today.restMotivation.2": "Kaslar salonda değil, dinlenirken inşa edilir. Bugün geri adım atmak, yarın ağırlığa tam yoğunlukla girmenizi sağlar.",
+        "today.restMotivation.3": "Yorgunluk performansı perdeler. Merkezi sinir sisteminizin yenilenmesine izin vermek, ağır hacmi kalıcı güce dönüştürür.",
+        "today.restMotivation.4": "İstikrar, ne zaman çalışmayacağını bilmeyi de kapsar. Kaliteli dinlenme eklem aşınmasını önler ve sürekli aşamalı yüklenmeyi besler.",
+        "today.restMotivation.5": "Adaptasyon, seanslar arasındaki sessiz saatlerde gerçekleşir. Hidrasyonu koruyun, toparlanın ve vücudunuzu bir sonraki mücadeleye hazırlayın.",
+        "today.restMotivation.6": "Büyüme, toparlanma disiplinle buluştuğunda gerçekleşir. Yeni antrenman haftasına kararlılıkla başlamak için bugün enerjinizi tazeleyin.",
         "today.emptyTitle": "Henüz antrenman yok",
         "today.emptyDescription": "Haftalık planından bu programa bir antrenman ekleyebilirsin.",
         "today.openPlan": "Haftalık programı aç",
