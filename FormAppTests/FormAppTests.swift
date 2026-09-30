@@ -3513,6 +3513,51 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(Translations.tr["settings.showWarmupCalculatorSubtitle"], "Antrenman ekranında ısınma setlerini ve plaka hesaplayıcıyı göster")
     }
 
+    func testWarmupTranslationsParity() {
+        XCTAssertEqual(Translations.en["warmup.target_weight"], "Target Weight")
+        XCTAssertEqual(Translations.tr["warmup.target_weight"], "Hedef Ağırlık")
+        XCTAssertEqual(Translations.en["warmup.target_barbell_weight"], "Barbell Total Weight")
+        XCTAssertEqual(Translations.tr["warmup.target_barbell_weight"], "Toplam Barbell Ağırlığı")
+
+        let warmupKeys = [
+            "warmup.badge",
+            "warmup.modal_title",
+            "warmup.tab_warmup",
+            "warmup.tab_plates",
+            "warmup.card_title",
+            "warmup.card_desc",
+            "warmup.enter_working_load",
+            "warmup.load_below_bar",
+            "warmup.generate_btn",
+            "warmup.active_badge",
+            "warmup.active_desc",
+            "warmup.clear_warmups",
+            "warmup.convert_to_warmup",
+            "warmup.convert_to_working",
+            "warmup.working_load_label",
+            "warmup.sequence_title",
+            "warmup.warm_joints",
+            "warmup.50_percent",
+            "warmup.70_percent",
+            "warmup.85_percent",
+            "warmup.insert_sets_cta",
+            "warmup.target_weight",
+            "warmup.target_barbell_weight",
+            "warmup.available_plates_inventory",
+            "warmup.per_side",
+            "warmup.bar",
+            "warmup.plates_total",
+            "warmup.total",
+            "warmup.empty_bar",
+            "warmup.empty_bar_sleeve",
+            "warmup.unmatched_remainder"
+        ]
+        for key in warmupKeys {
+            XCTAssertFalse(Translations.en[key]?.isEmpty ?? true, "Missing English warmup key: \(key)")
+            XCTAssertFalse(Translations.tr[key]?.isEmpty ?? true, "Missing Turkish warmup key: \(key)")
+        }
+    }
+
     func testPrefillNextSetDefault() {
         let store = AppStore.shared
         XCTAssertTrue(store.prefillNextSet)
