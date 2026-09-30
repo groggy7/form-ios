@@ -6,6 +6,33 @@ import SwiftUI
 
 final class FormAppTests: XCTestCase {
     @MainActor
+    func testBarbellPlateSnapshotsAtNarrowAndLargerLocalizedText() throws {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            for (target, unit) in [(90.0, WeightUnit.kg), (167.5, .kg), (500.0, .kg), (225.0, .lbs), (20.0, .kg)] {
+                let result = WarmupPlateEngine.calculatePlates(targetWeight: target,
+                    barWeight: unit == .kg ? 20 : 45,
+                    availablePlates: WarmupPlateEngine.defaultPlates(unit: unit), unit: unit)
+                let content = BarbellPlateVisualizerView(result: result, unit: unit)
+                    .frame(width: 280)
+                    .padding(20)
+                    .background(AppColors.background)
+                    .environment(\.sizeCategory, .extraExtraExtraLarge)
+                let renderer = ImageRenderer(content: content)
+                renderer.scale = 1
+                let image = try XCTUnwrap(renderer.uiImage)
+                XCTAssertEqual(image.size.width, 320)
+                let attachment = XCTAttachment(image: image)
+                attachment.name = "plates-\(language)-\(unit.label)-\(target)"
+                attachment.lifetime = .keepAlways
+                add(attachment)
+            }
+        }
+    }
+
+    @MainActor
     func testProgramCoverLibraryResourcesAndMappings() throws {
         let programs = AppStore.loadBundledStarterPrograms()
         XCTAssertEqual(Set(programs.map(\.id)), Set(ProgramCover.allCases.map(\.programID)))
