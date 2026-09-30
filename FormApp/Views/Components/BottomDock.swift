@@ -9,7 +9,7 @@ public struct BottomDock: View {
 
     public var body: some View {
         HStack(spacing: 4) {
-            dockItem(mode: .today, title: LanguageManager.t("nav.today"), icon: "bolt.fill")
+            dockItem(mode: .today, title: LanguageManager.t("nav.home"), icon: "bolt.fill")
             dockItem(mode: .plan, title: LanguageManager.t("nav.plan"), icon: "calendar")
             dockItem(mode: .library, title: LanguageManager.t("nav.library"), icon: "dumbbell.fill")
             dockItem(mode: .history, title: LanguageManager.t("nav.progress"), icon: "chart.xyaxis.line")

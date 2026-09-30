@@ -39,10 +39,10 @@ public struct TodayView: View {
 
         ScrollView {
             VStack(spacing: 16) {
-                // Header with "This week" and dates range
+                // Home header with the current week's date range
                 HStack(alignment: .top) {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(LanguageManager.t("today.thisWeek"))
+                        Text(LanguageManager.t("nav.home"))
                             .font(.system(size: 26, weight: .semibold))
                             .foregroundColor(AppColors.text)
 
