@@ -16,14 +16,26 @@ public final class AppStore: ObservableObject {
     private let barTypeKey = "bar_type"
     private let availablePlatesKey = "available_plates_kg"
     private let onboardingCompletedKey = "is_onboarding_completed"
+    private let showProgressionTargetsKey = "show_progression_targets"
+    private let showWarmupCalculatorKey = "show_warmup_calculator"
     private let progressionCardDismissedKey = "pro_progression_card_dismissed"
     private let warmupCardDismissedKey = "pro_warmup_card_dismissed"
 
     @Published public var state: StoredAppState
     @Published public var activeSession: ActiveSessionDraft?
     @Published public var isOnboardingCompleted: Bool
-    @Published public var isProgressionCardDismissed: Bool
-    @Published public var isWarmupCardDismissed: Bool
+    @Published public var showProgressionTargets: Bool
+    @Published public var showWarmupCalculator: Bool
+
+    public var isProgressionCardDismissed: Bool {
+        get { !showProgressionTargets }
+        set { showProgressionTargets = !newValue }
+    }
+
+    public var isWarmupCardDismissed: Bool {
+        get { !showWarmupCalculator }
+        set { showWarmupCalculator = !newValue }
+    }
     @Published public var currentView: ViewMode = .today {
         didSet {
             if currentView != .library {
@@ -123,8 +135,21 @@ public final class AppStore: ObservableObject {
         } else {
             self.availablePlatesKg = WarmupPlateEngine.defaultPlatesKg
         }
-        self.isProgressionCardDismissed = UserDefaults.standard.bool(forKey: progressionCardDismissedKey)
-        self.isWarmupCardDismissed = UserDefaults.standard.bool(forKey: warmupCardDismissedKey)
+        if UserDefaults.standard.object(forKey: showProgressionTargetsKey) != nil {
+            self.showProgressionTargets = UserDefaults.standard.bool(forKey: showProgressionTargetsKey)
+        } else if UserDefaults.standard.object(forKey: progressionCardDismissedKey) != nil {
+            self.showProgressionTargets = !UserDefaults.standard.bool(forKey: progressionCardDismissedKey)
+        } else {
+            self.showProgressionTargets = true
+        }
+
+        if UserDefaults.standard.object(forKey: showWarmupCalculatorKey) != nil {
+            self.showWarmupCalculator = UserDefaults.standard.bool(forKey: showWarmupCalculatorKey)
+        } else if UserDefaults.standard.object(forKey: warmupCardDismissedKey) != nil {
+            self.showWarmupCalculator = !UserDefaults.standard.bool(forKey: warmupCardDismissedKey)
+        } else {
+            self.showWarmupCalculator = true
+        }
 
         var loadedState = Self.loadStoredState()
 
@@ -194,14 +219,22 @@ public final class AppStore: ObservableObject {
             .sink { UserDefaults.standard.set($0, forKey: self.onboardingCompletedKey) }
             .store(in: &cancellables)
 
-        $isProgressionCardDismissed
+        $showProgressionTargets
             .dropFirst()
-            .sink { UserDefaults.standard.set($0, forKey: self.progressionCardDismissedKey) }
+            .sink { [weak self] show in
+                guard let self = self else { return }
+                UserDefaults.standard.set(show, forKey: self.showProgressionTargetsKey)
+                UserDefaults.standard.set(!show, forKey: self.progressionCardDismissedKey)
+            }
             .store(in: &cancellables)
 
-        $isWarmupCardDismissed
+        $showWarmupCalculator
             .dropFirst()
-            .sink { UserDefaults.standard.set($0, forKey: self.warmupCardDismissedKey) }
+            .sink { [weak self] show in
+                guard let self = self else { return }
+                UserDefaults.standard.set(show, forKey: self.showWarmupCalculatorKey)
+                UserDefaults.standard.set(!show, forKey: self.warmupCardDismissedKey)
+            }
             .store(in: &cancellables)
 
         #if canImport(UIKit)
@@ -215,6 +248,8 @@ public final class AppStore: ObservableObject {
     }
 
     public func resetDismissedProCards() {
+        showProgressionTargets = true
+        showWarmupCalculator = true
         isProgressionCardDismissed = false
         isWarmupCardDismissed = false
     }

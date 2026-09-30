@@ -143,34 +143,41 @@ public struct SettingsView: View {
                             .tint(AppColors.accent)
                             .padding(14)
 
-                            if store.isProgressionCardDismissed || store.isWarmupCardDismissed {
-                                Divider().background(AppColors.border)
+                            Divider().background(AppColors.border)
 
-                                Button(action: {
-                                    withAnimation {
-                                        store.resetDismissedProCards()
-                                    }
-                                }) {
-                                    HStack {
-                                        VStack(alignment: .leading, spacing: 2) {
-                                            Text(LanguageManager.t("settings.restore_pro_cards"))
-                                                .font(.system(size: 15))
-                                                .foregroundColor(AppColors.text)
-                                                .frame(maxWidth: .infinity, alignment: .leading)
-                                            Text(LanguageManager.t("settings.restore_pro_cards_desc"))
-                                                .font(.system(size: 12))
-                                                .foregroundColor(AppColors.secondaryText)
-                                                .frame(maxWidth: .infinity, alignment: .leading)
-                                        }
-                                        Spacer()
-                                        Image(systemName: "arrow.counterclockwise")
-                                            .font(.system(size: 14, weight: .semibold))
-                                            .foregroundColor(AppColors.accent)
-                                    }
-                                    .padding(14)
+                            Toggle(isOn: $store.showProgressionTargets) {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(LanguageManager.t("settings.showProgressionTargets"))
+                                        .font(.system(size: 15))
+                                        .foregroundColor(AppColors.text)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    Text(LanguageManager.t("settings.showProgressionTargetsSubtitle"))
+                                        .font(.system(size: 12))
+                                        .foregroundColor(AppColors.secondaryText)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
                                 }
-                                .buttonStyle(.plain)
                             }
+                            .tint(AppColors.accent)
+                            .padding(14)
+                            .accessibilityIdentifier("toggle-progression-targets")
+
+                            Divider().background(AppColors.border)
+
+                            Toggle(isOn: $store.showWarmupCalculator) {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(LanguageManager.t("settings.showWarmupCalculator"))
+                                        .font(.system(size: 15))
+                                        .foregroundColor(AppColors.text)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    Text(LanguageManager.t("settings.showWarmupCalculatorSubtitle"))
+                                        .font(.system(size: 12))
+                                        .foregroundColor(AppColors.secondaryText)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                            }
+                            .tint(AppColors.accent)
+                            .padding(14)
+                            .accessibilityIdentifier("toggle-warmup-calculator")
                         }
                     }
 

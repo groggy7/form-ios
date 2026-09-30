@@ -342,7 +342,7 @@ public struct ActiveSessionView: View {
                                         weightUnit: store.weightUnit
                                     )
 
-                                    if let recommendation, !store.isProgressionCardDismissed || proManager.isFeatureUnlocked(.autoProgression) {
+                                    if let recommendation, store.showProgressionTargets {
                                         ProgressionCoachCard(
                                             recommendation: recommendation,
                                             onApplyTarget: {
@@ -367,7 +367,7 @@ public struct ActiveSessionView: View {
                                             },
                                             onDismissLocked: {
                                                 withAnimation(.easeInOut(duration: 0.25)) {
-                                                    store.isProgressionCardDismissed = true
+                                                    store.showProgressionTargets = false
                                                 }
                                             }
                                         )
@@ -375,7 +375,7 @@ public struct ActiveSessionView: View {
                                     }
 
                                     let currentWarmups = currentSets.filter { $0.isWarmup }
-                                    if (supportsBarbellWarmup || !currentWarmups.isEmpty) && (!store.isWarmupCardDismissed || proManager.isFeatureUnlocked(.warmupCalculator)) {
+                                    if (supportsBarbellWarmup || !currentWarmups.isEmpty) && store.showWarmupCalculator {
                                         WarmupPlateCard(
                                             warmupSets: currentWarmups,
                                             hasWorkingLoad: workingWeightKg != nil,
@@ -400,7 +400,7 @@ public struct ActiveSessionView: View {
                                             },
                                             onDismissLocked: {
                                                 withAnimation(.easeInOut(duration: 0.25)) {
-                                                    store.isWarmupCardDismissed = true
+                                                    store.showWarmupCalculator = false
                                                 }
                                             }
                                         )

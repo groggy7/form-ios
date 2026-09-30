@@ -3465,6 +3465,17 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(Translations.tr["settings.prefillNextSetSubtitle"], "Önceki setin ağırlık ve tekrarını kopyala")
     }
 
+    func testSessionCardsSettingsTranslationsParity() {
+        XCTAssertEqual(Translations.en["settings.showProgressionTargets"], "Recommended targets")
+        XCTAssertEqual(Translations.tr["settings.showProgressionTargets"], "Önerilen hedefler")
+        XCTAssertEqual(Translations.en["settings.showProgressionTargetsSubtitle"], "Show progression advice and suggested targets in session")
+        XCTAssertEqual(Translations.tr["settings.showProgressionTargetsSubtitle"], "Antrenman ekranında ağırlık artış ve hedef önerilerini göster")
+        XCTAssertEqual(Translations.en["settings.showWarmupCalculator"], "Warmup & plate calculator")
+        XCTAssertEqual(Translations.tr["settings.showWarmupCalculator"], "Isınma & plaka hesaplayıcı")
+        XCTAssertEqual(Translations.en["settings.showWarmupCalculatorSubtitle"], "Show warm-up sets and plate calculator in session")
+        XCTAssertEqual(Translations.tr["settings.showWarmupCalculatorSubtitle"], "Antrenman ekranında ısınma setlerini ve plaka hesaplayıcıyı göster")
+    }
+
     func testPrefillNextSetDefault() {
         let store = AppStore.shared
         XCTAssertTrue(store.prefillNextSet)
@@ -6219,18 +6230,62 @@ final class FormAppTests: XCTestCase {
         store.resetDismissedProCards()
         XCTAssertFalse(store.isProgressionCardDismissed)
         XCTAssertFalse(store.isWarmupCardDismissed)
+        XCTAssertTrue(store.showProgressionTargets)
+        XCTAssertTrue(store.showWarmupCalculator)
 
         store.isProgressionCardDismissed = true
         XCTAssertTrue(store.isProgressionCardDismissed)
+        XCTAssertFalse(store.showProgressionTargets)
         XCTAssertTrue(UserDefaults.standard.bool(forKey: "pro_progression_card_dismissed"))
+        XCTAssertFalse(UserDefaults.standard.bool(forKey: "show_progression_targets"))
 
         store.isWarmupCardDismissed = true
         XCTAssertTrue(store.isWarmupCardDismissed)
+        XCTAssertFalse(store.showWarmupCalculator)
         XCTAssertTrue(UserDefaults.standard.bool(forKey: "pro_warmup_card_dismissed"))
+        XCTAssertFalse(UserDefaults.standard.bool(forKey: "show_warmup_calculator"))
 
         store.resetDismissedProCards()
         XCTAssertFalse(store.isProgressionCardDismissed)
         XCTAssertFalse(store.isWarmupCardDismissed)
+        XCTAssertTrue(store.showProgressionTargets)
+        XCTAssertTrue(store.showWarmupCalculator)
+    }
+
+    @MainActor
+    func testSeparateSessionCardsSettings() {
+        let store = AppStore.shared
+        store.resetDismissedProCards()
+        XCTAssertTrue(store.showProgressionTargets)
+        XCTAssertTrue(store.showWarmupCalculator)
+
+        // Hide progression targets independently
+        store.showProgressionTargets = false
+        XCTAssertFalse(store.showProgressionTargets)
+        XCTAssertTrue(store.isProgressionCardDismissed)
+        XCTAssertTrue(store.showWarmupCalculator, "Warmup calculator setting must remain unchanged")
+        XCTAssertFalse(store.isWarmupCardDismissed)
+        XCTAssertFalse(UserDefaults.standard.bool(forKey: "show_progression_targets"))
+        XCTAssertTrue(UserDefaults.standard.bool(forKey: "show_warmup_calculator"))
+
+        // Hide warmup calculator independently
+        store.showWarmupCalculator = false
+        XCTAssertFalse(store.showProgressionTargets)
+        XCTAssertFalse(store.showWarmupCalculator)
+        XCTAssertTrue(store.isWarmupCardDismissed)
+        XCTAssertFalse(UserDefaults.standard.bool(forKey: "show_warmup_calculator"))
+
+        // Re-enable progression targets independently
+        store.showProgressionTargets = true
+        XCTAssertTrue(store.showProgressionTargets)
+        XCTAssertFalse(store.isProgressionCardDismissed)
+        XCTAssertFalse(store.showWarmupCalculator, "Warmup calculator must remain hidden")
+        XCTAssertTrue(store.isWarmupCardDismissed)
+
+        // Reset both
+        store.resetDismissedProCards()
+        XCTAssertTrue(store.showProgressionTargets)
+        XCTAssertTrue(store.showWarmupCalculator)
     }
 
     // MARK: - Form Lab Unit & Snapshot Tests
