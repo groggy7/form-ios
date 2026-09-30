@@ -66,7 +66,12 @@ public struct RootView: View {
                         if isBottomDockVisible {
                             BottomDock(currentView: Binding(
                                 get: { store.currentView },
-                                set: { store.navigate(to: $0) }
+                                set: { destination in
+                                    if destination == .today {
+                                        store.selectedWorkoutId = nil
+                                    }
+                                    store.navigate(to: destination)
+                                }
                             ))
                         }
                     }

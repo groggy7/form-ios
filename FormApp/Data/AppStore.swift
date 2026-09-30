@@ -155,7 +155,7 @@ public final class AppStore: ObservableObject {
         loadedState.calendarHistory = refreshed
         self.state = loadedState
         self.activeSession = activeDraft
-        self.selectedWorkoutId = loadedState.programs.first { $0.id == loadedState.activeProgramId }?.workouts.first?.id
+        self.selectedWorkoutId = nil
         if let targetView = ProcessInfo.processInfo.environment["INITIAL_VIEW"], targetView == "history" {
             self.currentView = .history
         }
@@ -229,7 +229,7 @@ public final class AppStore: ObservableObject {
             return w
         }
         let todayDay = currentWeekDayNumber() // 1 = Mon, ..., 7 = Sun
-        return program.workouts.first(where: { $0.day == todayDay }) ?? program.workouts.first
+        return program.workouts.first(where: { $0.day == todayDay })
     }
 
     public var weekCalendar: WeekCalendar {
@@ -680,7 +680,7 @@ public final class AppStore: ObservableObject {
         newState.activeProgramId = prog.id
         newState = refreshCalendarState(newState)
         saveState(newState)
-        selectedWorkoutId = prog.workouts.first?.id
+        selectedWorkoutId = nil
         refreshCatalogue()
         showNotice(LanguageManager.t("notice.programApplied", ["name": prog.name]))
     }
@@ -691,7 +691,7 @@ public final class AppStore: ObservableObject {
         newState.activeProgramId = program.id
         newState = refreshCalendarState(newState)
         saveState(newState)
-        selectedWorkoutId = program.workouts.first?.id
+        selectedWorkoutId = nil
         refreshCatalogue()
         showNotice(LanguageManager.t("notice.programApplied", ["name": program.name]))
     }
@@ -712,6 +712,7 @@ public final class AppStore: ObservableObject {
         newState.programs.removeAll { $0.id == id }
         if newState.activeProgramId == id {
             newState.activeProgramId = newState.programs.first?.id ?? ""
+            selectedWorkoutId = nil
         }
         newState = refreshCalendarState(newState)
         saveState(newState)
@@ -749,7 +750,7 @@ public final class AppStore: ObservableObject {
         newState.activeProgramId = updatedProg.id
         newState = refreshCalendarState(newState)
         saveState(newState)
-        selectedWorkoutId = updatedProg.workouts.first?.id
+        selectedWorkoutId = nil
         setOnboardingCompleted(true)
         refreshCatalogue()
     }

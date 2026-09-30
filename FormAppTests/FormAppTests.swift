@@ -3768,6 +3768,84 @@ final class FormAppTests: XCTestCase {
         store.selectedWorkoutId = nil
     }
 
+    @MainActor
+    func testTodayHeroCardRestDaySnapshot() {
+        let view = VStack {
+            TodayHeroCard(
+                workout: nil,
+                programId: "01_aesthetic_hypertrophy",
+                todayIndex: 5, // Saturday (Rest day)
+                isCompleted: false,
+                isAvailable: false,
+                availableDay: nil,
+                hasUnfinishedProgress: false,
+                onStart: {}
+            )
+        }
+        .padding(.vertical, 20)
+        .frame(width: 440)
+        .background(AppColors.background)
+
+        let controller = UIHostingController(rootView: view)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 440, height: 400))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { ctx in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/ceb804a2-e800-493e-9c87-33e78710bc6d/ios_rest_day_hero_card_snapshot.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote Rest Day hero snapshot to \(path)")
+        }
+    }
+
+    func testRestDayActiveWorkoutBehavior() {
+        let store = AppStore.shared
+        // Configure a program with workouts only on Monday (1), Wednesday (3), Friday (5)
+        let customProgram = Program(
+            id: "test-rest-program",
+            name: "3-Day Split",
+            description: "Test",
+            guidelines: [],
+            workouts: [
+                Workout(id: "day1", day: 1, title: "Monday Workout", exercises: []),
+                Workout(id: "day3", day: 3, title: "Wednesday Workout", exercises: []),
+                Workout(id: "day5", day: 5, title: "Friday Workout", exercises: [])
+            ]
+        )
+        store.addProgram(customProgram)
+        store.switchProgram(to: customProgram.id)
+        XCTAssertNil(store.selectedWorkoutId, "selectedWorkoutId should be nil after switching program")
+
+        // If today is a rest day (not day 1, 3, or 5), activeWorkout must be nil
+        let todayDay = store.currentWeekDayNumber()
+        if todayDay != 1 && todayDay != 3 && todayDay != 5 {
+            XCTAssertNil(store.activeWorkout, "activeWorkout must be nil on a rest day when no workout is selected")
+        }
+
+        // When a workout is explicitly selected, activeWorkout returns it
+        store.selectedWorkoutId = "day3"
+        XCTAssertEqual(store.activeWorkout?.id, "day3")
+
+        // When deselected, returns to schedule
+        store.selectedWorkoutId = nil
+        if todayDay != 1 && todayDay != 3 && todayDay != 5 {
+            XCTAssertNil(store.activeWorkout)
+        }
+
+        // Clean up
+        store.deleteProgram(withId: customProgram.id)
+        if let firstProg = store.state.programs.first {
+            store.switchProgram(to: firstProg.id)
+        }
+        store.selectedWorkoutId = nil
+    }
+
     func testFindExercisePrReturnsBestSetOrNilWhenNoData() {
         let exercise = Exercise(id: "bench", name: "Barbell Bench Press", sets: 3)
 

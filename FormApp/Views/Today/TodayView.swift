@@ -64,7 +64,11 @@ public struct TodayView: View {
 
                 // 7-day strip
                 WeekStripView(store: store) { workoutId in
-                    store.selectedWorkoutId = workoutId
+                    if store.selectedWorkoutId == workoutId {
+                        store.selectedWorkoutId = nil
+                    } else {
+                        store.selectedWorkoutId = workoutId
+                    }
                 }
 
                 // Today card (Workout or Rest day)

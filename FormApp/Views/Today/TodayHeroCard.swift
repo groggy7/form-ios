@@ -265,22 +265,23 @@ public struct TodayHeroCard: View {
                         .stroke(cardBorder, lineWidth: 1)
                 )
 
-            HStack {
-                Spacer()
+            GeometryReader { geo in
                 Image("body_rest")
                     .resizable()
-                    .scaledToFit()
-                    .frame(width: 185, height: 260)
-                    .offset(x: 10, y: -5)
+                    .scaledToFill()
+                    .frame(width: geo.size.width, height: geo.size.height, alignment: .topTrailing)
+                    .clipped()
             }
             .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
 
             LinearGradient(
                 stops: [
                     .init(color: cardSurface, location: 0),
-                    .init(color: cardSurface, location: 0.35),
-                    .init(color: cardSurface.opacity(0.85), location: 0.55),
-                    .init(color: Color.clear, location: 0.85)
+                    .init(color: cardSurface.opacity(0.95), location: 0.26),
+                    .init(color: cardSurface.opacity(0.50), location: 0.48),
+                    .init(color: cardSurface.opacity(0.04), location: 0.64),
+                    .init(color: Color.clear, location: 0.74),
+                    .init(color: Color.clear, location: 1.0)
                 ],
                 startPoint: .leading,
                 endPoint: .trailing
@@ -290,9 +291,9 @@ public struct TodayHeroCard: View {
             LinearGradient(
                 stops: [
                     .init(color: Color.clear, location: 0),
-                    .init(color: Color.clear, location: 0.35),
-                    .init(color: cardSurface.opacity(0.35), location: 0.55),
-                    .init(color: cardSurface.opacity(0.95), location: 0.80),
+                    .init(color: Color.clear, location: 0.70),
+                    .init(color: cardSurface.opacity(0.60), location: 0.84),
+                    .init(color: cardSurface.opacity(0.95), location: 0.94),
                     .init(color: cardSurface, location: 1.0)
                 ],
                 startPoint: .top,
