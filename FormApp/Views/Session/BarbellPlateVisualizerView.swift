@@ -153,15 +153,17 @@ public struct BarbellPlateVisualizerView: View {
         Canvas { context, size in
             let centerY = size.height / 2
             let edge: CGFloat = 12
-            let gripWidth = max(48, size.width * 0.26)
-            let leftInner = (size.width - gripWidth) / 2
-            let rightInner = (size.width + gripWidth) / 2
+            let minimumGripWidth = max(48, size.width * 0.26)
+            let sleeveInnerLimit = (size.width - minimumGripWidth) / 2
             let count = result.platesPerSide.reduce(0) { $0 + $1.count }
             let stackWidth = result.platesPerSide.reduce(CGFloat(0)) {
                 $0 + BarbellPlateColors.widthFor(weight: $1.weight) * CGFloat($1.count)
             } + CGFloat(max(0, count - 1)) * 2
             // Fit every plate on both sleeves while leaving the center grip visible.
-            let scale = stackWidth > 0 ? min(1, (leftInner - edge) / stackWidth) : 1
+            let scale = stackWidth > 0 ? min(1, (sleeveInnerLimit - edge) / stackWidth) : 1
+            // Short stacks sit near the ends; fuller sleeves keep the existing grip spacing.
+            let leftInner = count > 0 ? min(sleeveInnerLimit, edge + 12 + stackWidth * scale) : sleeveInnerLimit
+            let rightInner = size.width - leftInner
 
             context.fill(
                 Path(roundedRect: CGRect(x: edge, y: centerY - 3, width: size.width - 2 * edge, height: 6), cornerRadius: 2),

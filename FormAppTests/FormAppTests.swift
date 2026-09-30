@@ -11,7 +11,7 @@ final class FormAppTests: XCTestCase {
         defer { LanguageManager.setLanguage(previous) }
         for language in ["en", "tr"] {
             LanguageManager.setLanguage(language)
-            for (target, unit) in [(90.0, WeightUnit.kg), (167.5, .kg), (500.0, .kg), (225.0, .lbs), (20.0, .kg)] {
+            for (target, unit) in [(70.0, WeightUnit.kg), (90.0, .kg), (167.5, .kg), (500.0, .kg), (225.0, .lbs), (20.0, .kg)] {
                 let result = WarmupPlateEngine.calculatePlates(targetWeight: target,
                     barWeight: unit == .kg ? 20 : 45,
                     availablePlates: WarmupPlateEngine.defaultPlates(unit: unit), unit: unit)
