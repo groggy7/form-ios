@@ -699,6 +699,12 @@ final class FormAppTests: XCTestCase {
         assertMirroredChestPath(path, centerX: 866)
     }
 
+    func testTodayRearHairIsOutsideTrapeziusHighlight() throws {
+        let path = try XCTUnwrap(MuscleMasks.paths(for: .back)[.trapezius])
+        XCTAssertFalse(path.contains(CGPoint(x: 865, y: 240)))
+        XCTAssertTrue(path.contains(CGPoint(x: 855, y: 280)))
+    }
+
     func testWorkoutBodyViewsResolution() {
         // Quads and Calves -> legs-front and legs-back
         let legWorkout = Workout(
