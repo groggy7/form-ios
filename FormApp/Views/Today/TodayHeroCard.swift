@@ -13,6 +13,8 @@ public struct TodayHeroCard: View {
 
     @State private var selectedViewIndex: Int = 0
 
+    public static let cardHeight: CGFloat = 378
+
     private let cardSurface = Color(hex: 0x1E242B)
     private let cardBorder = Color(hex: 0x303B46)
 
@@ -175,6 +177,8 @@ public struct TodayHeroCard: View {
                     }
 
                     Spacer().frame(height: 20)
+                } else {
+                    Spacer()
                 }
 
                 // Meta
@@ -224,6 +228,7 @@ public struct TodayHeroCard: View {
             }
             .padding(EdgeInsets(top: 22, leading: 19, bottom: 20, trailing: 19))
         }
+        .frame(height: Self.cardHeight)
         .padding(.horizontal, 20)
     }
 
@@ -320,10 +325,12 @@ public struct TodayHeroCard: View {
                     .lineSpacing(4)
                     .foregroundColor(AppColors.secondaryText)
                     .frame(maxWidth: 210, alignment: .leading)
+
+                Spacer()
             }
             .padding(22)
         }
-        .frame(minHeight: 250)
+        .frame(height: Self.cardHeight)
         .padding(.horizontal, 20)
     }
 }

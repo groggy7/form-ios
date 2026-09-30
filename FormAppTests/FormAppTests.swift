@@ -3787,7 +3787,7 @@ final class FormAppTests: XCTestCase {
         .background(AppColors.background)
 
         let controller = UIHostingController(rootView: view)
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 440, height: 400))
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 440, height: 500))
         window.rootViewController = controller
         window.makeKeyAndVisible()
         controller.view.layoutIfNeeded()
