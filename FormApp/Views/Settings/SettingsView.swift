@@ -13,11 +13,9 @@ public struct SettingsView: View {
     @Environment(\.openURL) private var openURL
     @State private var showExportSheet: Bool = false
     @State private var exportText: String = ""
-    @State private var isShowingFileImporter: Bool = false
     @State private var isShowingBackupImporter: Bool = false
     @State private var backupToRestore: String? = nil
     @State private var showRestoreBackupAlert: Bool = false
-    @State private var importPreview: HistoryImportPreview? = nil
     @State private var importErrorMessage: String? = nil
 
     private var cloudBackupSubtitle: String {
@@ -266,26 +264,6 @@ public struct SettingsView: View {
 
                             Divider().background(AppColors.border)
 
-                            Button(action: { isShowingFileImporter = true }) {
-                                HStack {
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        Text(LanguageManager.t("settings.importHistory"))
-                                            .font(.system(size: 15))
-                                            .foregroundColor(AppColors.text)
-                                        Text(LanguageManager.t("settings.importHistorySubtitle"))
-                                            .font(.system(size: 12))
-                                            .foregroundColor(AppColors.secondaryText)
-                                    }
-                                    Spacer()
-                                    Image(systemName: "square.and.arrow.down")
-                                        .font(.system(size: 14))
-                                        .foregroundColor(AppColors.accent)
-                                }
-                                .padding(14)
-                            }
-
-                            Divider().background(AppColors.border)
-
                             Button(action: exportBackup) {
                                 HStack {
                                     Text(LanguageManager.t("settings.exportBackup"))
@@ -440,13 +418,6 @@ public struct SettingsView: View {
                 ShareSheet(text: exportText)
             }
             .fileImporter(
-                isPresented: $isShowingFileImporter,
-                allowedContentTypes: [.commaSeparatedText, .plainText, UTType(filenameExtension: "csv") ?? .plainText],
-                allowsMultipleSelection: false
-            ) { result in
-                handleFileImportResult(result)
-            }
-            .fileImporter(
                 isPresented: $isShowingBackupImporter,
                 allowedContentTypes: [.json],
                 allowsMultipleSelection: false
@@ -497,18 +468,6 @@ public struct SettingsView: View {
                     Text(LanguageManager.t("form_lab.mirror_restore_warning"))
                 }
             )
-            .sheet(item: $importPreview) { preview in
-                HistoryImportPreviewSheet(
-                    preview: preview,
-                    onConfirm: {
-                        store.executeHistoryImport(preview)
-                        importPreview = nil
-                    },
-                    onCancel: {
-                        importPreview = nil
-                    }
-                )
-            }
             .alert(
                 "Import Error",
                 isPresented: Binding(
@@ -555,32 +514,6 @@ public struct SettingsView: View {
         if let data = try? JSONEncoder().encode(store.state), let str = String(data: data, encoding: .utf8) {
             exportText = str
             showExportSheet = true
-        }
-    }
-
-    private func handleFileImportResult(_ result: Result<[URL], Error>) {
-        switch result {
-        case .success(let urls):
-            guard let url = urls.first else { return }
-            guard url.startAccessingSecurityScopedResource() else {
-                importErrorMessage = "Could not access selected file."
-                return
-            }
-            defer { url.stopAccessingSecurityScopedResource() }
-            do {
-                let data = try Data(contentsOf: url)
-                let csvText = String(data: data, encoding: .utf8) ?? String(data: data, encoding: .isoLatin1) ?? ""
-                guard !csvText.isEmpty else {
-                    importErrorMessage = "The selected file is empty or could not be read."
-                    return
-                }
-                let preview = try store.previewHistoryImport(csvText: csvText)
-                self.importPreview = preview
-            } catch {
-                importErrorMessage = error.localizedDescription
-            }
-        case .failure(let error):
-            importErrorMessage = error.localizedDescription
         }
     }
 }
