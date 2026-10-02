@@ -313,6 +313,12 @@ public struct Exercise: Identifiable, Codable, Hashable {
 }
 
 public struct Workout: Identifiable, Codable, Hashable {
+    public static let maxTitleLength = 24
+
+    public static func titleLength(_ title: String) -> Int {
+        title.trimmingCharacters(in: .whitespacesAndNewlines).unicodeScalars.count
+    }
+
     public var id: String
     public var day: Int
     public var title: String

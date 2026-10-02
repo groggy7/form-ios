@@ -4,6 +4,18 @@ public struct ProgramBuilderView: View {
     @ObservedObject var store: AppStore
     @State var program: Program
     let isNew: Bool
+    private let originalTitles: [String: String]
+
+    private func titleTooLong(_ workout: Workout) -> Bool {
+        Workout.titleLength(workout.title) > Workout.maxTitleLength &&
+            workout.title.trimmingCharacters(in: .whitespacesAndNewlines) != originalTitles[workout.id]
+    }
+
+    private var canSave: Bool {
+        program.workouts.allSatisfy {
+            !$0.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !titleTooLong($0)
+        }
+    }
     var onDismiss: () -> Void
 
     @State private var selectedDay: Int = 1
@@ -30,6 +42,9 @@ public struct ProgramBuilderView: View {
         )
         self._program = State(initialValue: initial)
         self.isNew = program == nil
+        self.originalTitles = Dictionary(initial.workouts.map {
+            ($0.id, $0.title.trimmingCharacters(in: .whitespacesAndNewlines))
+        }, uniquingKeysWith: { first, _ in first })
         self.onDismiss = onDismiss
     }
 
@@ -112,13 +127,18 @@ public struct ProgramBuilderView: View {
                                     Text(LanguageManager.t("modal.workout.name"))
                                         .font(.system(size: 12))
                                         .foregroundColor(AppColors.muted)
-                                    TextField("Day Title", text: $program.workouts[workoutIdx].title)
+                                    TextField(LanguageManager.t("modal.workout.namePlaceholder"), text: $program.workouts[workoutIdx].title)
                                         .font(.system(size: 16, weight: .semibold))
                                         .foregroundColor(AppColors.text)
                                         .padding(10)
                                         .background(AppColors.surface)
                                         .cornerRadius(8)
-                                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(AppColors.border, lineWidth: 1))
+                                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(titleTooLong(workout) ? AppColors.danger : AppColors.border, lineWidth: 1))
+                                    Text(LanguageManager.t("modal.workout.nameLimit", [
+                                        "count": Workout.titleLength(workout.title), "limit": Workout.maxTitleLength
+                                    ]))
+                                        .font(.caption)
+                                        .foregroundColor(titleTooLong(workout) ? AppColors.danger : AppColors.muted)
                                 }
 
                                 // Exercise List for Day
@@ -227,6 +247,8 @@ public struct ProgramBuilderView: View {
                                 .cornerRadius(12)
                         }
                         .buttonStyle(.plain)
+                        .disabled(!canSave)
+                        .opacity(canSave ? 1 : 0.5)
 
                         Button(action: exportProgram) {
                             Text(LanguageManager.t("programs.export"))
@@ -306,6 +328,13 @@ public struct ProgramBuilderView: View {
     }
 
     private func saveProgram() {
+        guard canSave else { return }
+        for index in program.workouts.indices {
+            let title = program.workouts[index].title.trimmingCharacters(in: .whitespacesAndNewlines)
+            if title != originalTitles[program.workouts[index].id] {
+                program.workouts[index].title = title
+            }
+        }
         if isNew {
             store.addProgram(program)
         } else {

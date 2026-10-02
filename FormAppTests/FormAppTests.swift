@@ -6,6 +6,64 @@ import SwiftUI
 
 final class FormAppTests: XCTestCase {
     @MainActor
+    func testHomeDayStripMinimumWidthAndScrollingSnapshots() throws {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        func scrollViews(in view: UIView) -> [UIScrollView] {
+            (view as? UIScrollView).map { [$0] } ?? view.subviews.flatMap { scrollViews(in: $0) }
+        }
+        for (language, width, sizeCategory) in [
+            ("en", CGFloat(320), ContentSizeCategory.large),
+            ("en", CGFloat(440), ContentSizeCategory.large),
+            ("tr", CGFloat(320), ContentSizeCategory.extraExtraExtraLarge)
+        ] {
+            LanguageManager.setLanguage(language)
+            let names = language == "en"
+                ? ["Chest & Triceps", "Back & Biceps", "Quads & Calves", "Upper Body & Shoulders", "Glutes & Hamstrings"]
+                : ["Göğüs & Arka Kol", "Sırt & Ön Kol", "Bacak & Baldır", "Üst Vücut & Omuzlar", "Kalça & Arka Bacak"]
+            for count in [5, 7] {
+                let workouts = (0..<count).map { index in
+                    Workout(id: "tile-\(index)", day: index + 1,
+                        title: index < names.count ? names[index] : "Existing workout day with a much longer name")
+                }
+                let program = Program(id: "tile-fixture", name: "Fixture", workouts: workouts)
+                var rowHeight: CGFloat?
+                for selected in [workouts.first!.id, workouts.last!.id] {
+                    let content = WorkoutDayStrip(program: program, workouts: workouts,
+                        calendar: WeekCalendar(today: 4, numbers: [28, 29, 30, 1, 2, 3, 4]),
+                        activeWorkoutId: selected, completedKeys: [], unfinishedKeys: [], onSelectWorkout: { _ in })
+                        .environment(\.sizeCategory, sizeCategory)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                        .background(AppColors.background)
+                    let controller = UIHostingController(rootView: content)
+                    let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 350))
+                    window.rootViewController = controller
+                    window.makeKeyAndVisible()
+                    controller.view.frame = window.bounds
+                    controller.view.layoutIfNeeded()
+                    RunLoop.main.run(until: Date().addingTimeInterval(0.15))
+                    controller.view.layoutIfNeeded()
+                    let scroll = try XCTUnwrap(scrollViews(in: controller.view).first)
+                    XCTAssertGreaterThanOrEqual(scroll.contentSize.width, CGFloat(count * 104 + (count - 1) * 8 + 40) - 1)
+                    XCTAssertGreaterThan(scroll.contentSize.width, scroll.bounds.width)
+                    XCTAssertGreaterThanOrEqual(scroll.contentSize.height, 108)
+                    if let rowHeight {
+                        XCTAssertEqual(scroll.contentSize.height, rowHeight, accuracy: 1, "Selection must keep the row height fixed")
+                    } else { rowHeight = scroll.contentSize.height }
+                    let image = UIGraphicsImageRenderer(size: controller.view.bounds.size).image { _ in
+                        controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+                    }
+                    let attachment = XCTAttachment(image: image)
+                    attachment.name = "home-day-tiles-\(language)-\(Int(width))-\(count)-\(selected)"
+                    attachment.lifetime = .keepAlways
+                    add(attachment)
+                    window.isHidden = true
+                }
+            }
+        }
+    }
+
+    @MainActor
     func testBarbellPlateSnapshotsAtNarrowAndLargerLocalizedText() throws {
         let previous = LanguageManager.shared.currentLanguage
         defer { LanguageManager.setLanguage(previous) }

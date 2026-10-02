@@ -81,14 +81,35 @@ public struct WeekStripView: View {
         let unfinishedKeys = store.unfinishedWorkoutKeys()
         let activeWorkout = store.activeWorkout
 
-        let fitsViewport = workouts.count <= 5
+        return AnyView(WorkoutDayStrip(
+            program: program, workouts: workouts, calendar: calendar,
+            activeWorkoutId: activeWorkout?.id, completedKeys: completedKeys,
+            unfinishedKeys: unfinishedKeys, onSelectWorkout: onSelectWorkout
+        ))
+    }
+}
 
-        return AnyView(
+struct WorkoutDayStrip: View {
+    let program: Program
+    let workouts: [Workout]
+    let calendar: WeekCalendar
+    let activeWorkoutId: String?
+    let completedKeys: [String]
+    let unfinishedKeys: Set<String>
+    let onSelectWorkout: (String) -> Void
+
+    @ScaledMetric(relativeTo: .caption2) private var minimumTileWidth: CGFloat = 104
+    @ScaledMetric(relativeTo: .caption2) private var minimumTileHeight: CGFloat = 108
+    @ScaledMetric(relativeTo: .caption2) private var labelSize: CGFloat = 11
+    @ScaledMetric(relativeTo: .title2) private var numberSize: CGFloat = 25
+
+    var body: some View {
+        ScrollViewReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
                     ForEach(workouts, id: \.id) { workout in
                         let dayIndex = workout.day - 1
-                        let selected = workout.id == activeWorkout?.id
+                        let selected = workout.id == activeWorkoutId
                         let isToday = dayIndex == calendar.today
                         let workoutKey = "\(program.id):\(workout.id)"
                         let isCompleted = completedKeys.contains(workoutKey)
@@ -127,26 +148,29 @@ public struct WeekStripView: View {
                                     : "DAY"
 
                                 Text(dayLabel)
-                                    .font(.system(size: 11, weight: .medium))
+                                    .font(.system(size: labelSize, weight: .medium))
                                     .foregroundColor(textColor)
                                     .lineLimit(1)
 
                                 Text("\(dayNumber)")
-                                    .font(.system(size: 25, weight: .semibold))
+                                    .font(.system(size: numberSize, weight: .semibold))
                                     .foregroundColor(textColor)
                                     .lineLimit(1)
 
                                 Text(workout.displayTitle(programId: program.id))
-                                    .font(.system(size: 11))
+                                    .font(.system(size: labelSize))
                                     .foregroundColor(textColor)
                                     .multilineTextAlignment(.center)
-                                    .lineLimit(2)
+                                    .fixedSize(horizontal: false, vertical: true)
                                     .frame(maxWidth: .infinity)
                             }
                             .padding(.horizontal, 8)
                             .padding(.vertical, 12)
-                            .frame(width: fitsViewport ? (UIScreen.main.bounds.width - 40 - CGFloat(workouts.count - 1) * 8) / CGFloat(workouts.count) : 72)
-                            .frame(height: 108)
+                            .containerRelativeFrame(.horizontal) { width, _ in
+                                max(minimumTileWidth, (width - 40 - CGFloat(workouts.count - 1) * 8) / CGFloat(max(workouts.count, 1)))
+                            }
+                            .frame(minHeight: minimumTileHeight, alignment: .top)
+                            .frame(maxHeight: .infinity, alignment: .top)
                             .background(
                                 RoundedRectangle(cornerRadius: 20)
                                     .fill(surfaceColor)
@@ -158,11 +182,18 @@ public struct WeekStripView: View {
                             .clipShape(RoundedRectangle(cornerRadius: 20))
                         }
                         .buttonStyle(.plain)
+                        .id(workout.id)
+                        .accessibilityIdentifier("today-day-\(workout.id)")
+                        .accessibilityAddTraits(selected ? [.isSelected] : [])
                     }
                 }
+                .fixedSize(horizontal: false, vertical: true)
                 .padding(.horizontal, 20)
                 .padding(.vertical, 2)
             }
-        )
+            .onChange(of: activeWorkoutId, initial: true) { _, selectedId in
+                if let selectedId { proxy.scrollTo(selectedId) }
+            }
+        }
     }
 }
