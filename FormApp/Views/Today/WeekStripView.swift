@@ -98,8 +98,6 @@ struct WorkoutDayStrip: View {
     let unfinishedKeys: Set<String>
     let onSelectWorkout: (String) -> Void
 
-    @ScaledMetric(relativeTo: .caption2) private var minimumTileWidth: CGFloat = 104
-    @ScaledMetric(relativeTo: .caption2) private var minimumTileHeight: CGFloat = 108
     @ScaledMetric(relativeTo: .caption2) private var labelSize: CGFloat = 11
     @ScaledMetric(relativeTo: .title2) private var numberSize: CGFloat = 25
 
@@ -161,15 +159,16 @@ struct WorkoutDayStrip: View {
                                     .font(.system(size: labelSize))
                                     .foregroundColor(textColor)
                                     .multilineTextAlignment(.center)
+                                    .lineLimit(2, reservesSpace: true)
                                     .fixedSize(horizontal: false, vertical: true)
                                     .frame(maxWidth: .infinity)
                             }
                             .padding(.horizontal, 8)
                             .padding(.vertical, 12)
                             .containerRelativeFrame(.horizontal) { width, _ in
-                                max(minimumTileWidth, (width - 40 - CGFloat(workouts.count - 1) * 8) / CGFloat(max(workouts.count, 1)))
+                                min(96, max(48, (width - 40 - 3 * 8) / 4))
                             }
-                            .frame(minHeight: minimumTileHeight, alignment: .top)
+                            .frame(minHeight: 108, alignment: .top)
                             .frame(maxHeight: .infinity, alignment: .top)
                             .background(
                                 RoundedRectangle(cornerRadius: 20)
@@ -184,6 +183,7 @@ struct WorkoutDayStrip: View {
                         .buttonStyle(.plain)
                         .id(workout.id)
                         .accessibilityIdentifier("today-day-\(workout.id)")
+                        .accessibilityLabel("\(LanguageManager.workoutDays[dayIndex]), \(dayNumber), \(workout.displayTitle(programId: program.id))")
                         .accessibilityAddTraits(selected ? [.isSelected] : [])
                     }
                 }

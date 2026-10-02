@@ -6,7 +6,7 @@ import SwiftUI
 
 final class FormAppTests: XCTestCase {
     @MainActor
-    func testHomeDayStripMinimumWidthAndScrollingSnapshots() throws {
+    func testHomeDayStripShowsFourCompactTilesAndScrolls() throws {
         let previous = LanguageManager.shared.currentLanguage
         defer { LanguageManager.setLanguage(previous) }
         func scrollViews(in view: UIView) -> [UIScrollView] {
@@ -14,6 +14,7 @@ final class FormAppTests: XCTestCase {
         }
         for (language, width, sizeCategory) in [
             ("en", CGFloat(320), ContentSizeCategory.large),
+            ("en", CGFloat(393), ContentSizeCategory.large),
             ("en", CGFloat(440), ContentSizeCategory.large),
             ("tr", CGFloat(320), ContentSizeCategory.extraExtraExtraLarge)
         ] {
@@ -21,6 +22,7 @@ final class FormAppTests: XCTestCase {
             let names = language == "en"
                 ? ["Chest & Triceps", "Back & Biceps", "Quads & Calves", "Upper Body & Shoulders", "Glutes & Hamstrings"]
                 : ["Göğüs & Arka Kol", "Sırt & Ön Kol", "Bacak & Baldır", "Üst Vücut & Omuzlar", "Kalça & Arka Bacak"]
+            var boundedRowHeight: CGFloat?
             for count in [5, 7] {
                 let workouts = (0..<count).map { index in
                     Workout(id: "tile-\(index)", day: index + 1,
@@ -44,9 +46,17 @@ final class FormAppTests: XCTestCase {
                     RunLoop.main.run(until: Date().addingTimeInterval(0.15))
                     controller.view.layoutIfNeeded()
                     let scroll = try XCTUnwrap(scrollViews(in: controller.view).first)
-                    XCTAssertGreaterThanOrEqual(scroll.contentSize.width, CGFloat(count * 104 + (count - 1) * 8 + 40) - 1)
+                    let tileWidth = (scroll.contentSize.width - 40 - CGFloat(count - 1) * 8) / CGFloat(count)
+                    XCTAssertGreaterThanOrEqual(tileWidth, 48)
+                    XCTAssertLessThanOrEqual(tileWidth, 96)
+                    XCTAssertLessThanOrEqual(4 * tileWidth + 3 * 8, scroll.bounds.width - 40 + 1,
+                        "Four whole tiles must fit at narrow and normal widths, including larger text")
                     XCTAssertGreaterThan(scroll.contentSize.width, scroll.bounds.width)
                     XCTAssertGreaterThanOrEqual(scroll.contentSize.height, 108)
+                    if let boundedRowHeight {
+                        XCTAssertEqual(scroll.contentSize.height, boundedRowHeight, accuracy: 1,
+                            "Longer names must not increase the two-line tile height")
+                    } else { boundedRowHeight = scroll.contentSize.height }
                     if let rowHeight {
                         XCTAssertEqual(scroll.contentSize.height, rowHeight, accuracy: 1, "Selection must keep the row height fixed")
                     } else { rowHeight = scroll.contentSize.height }
