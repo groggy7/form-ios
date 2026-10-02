@@ -13,8 +13,8 @@ public struct ProgressionCoachCard: View {
     @State private var wasApplied: Bool = false
     @State private var showInternalPaywall: Bool = false
     @ScaledMetric(relativeTo: .subheadline) private var emptyHeaderSize = 14.0
-    @ScaledMetric(relativeTo: .title2) private var emptyHeadlineSize = 22.0
-    @ScaledMetric(relativeTo: .subheadline) private var emptyBodySize = 14.0
+    @ScaledMetric(relativeTo: .headline) private var emptyHeadlineSize = 16.0
+    @ScaledMetric(relativeTo: .subheadline) private var emptyBodySize = 13.0
 
     public init(
         recommendation: ExerciseProgressionRecommendation,
@@ -288,21 +288,23 @@ public struct ProgressionCoachCard: View {
                 .buttonStyle(.plain)
                 .accessibilityLabel(LanguageManager.t("progression.info.title"))
             }
-            .padding(.bottom, 14)
+            .padding(.bottom, 4)
 
             Text(LanguageManager.t("progression.coach.no_target"))
-                .font(.system(size: emptyHeadlineSize, weight: .bold))
+                .font(.system(size: emptyHeadlineSize, weight: .semibold))
                 .foregroundColor(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
-                .padding(.bottom, 8)
+                .padding(.bottom, 6)
 
             Text(LanguageManager.t("progression.coach.first_session_hint"))
                 .font(.system(size: emptyBodySize))
-                .lineSpacing(3)
+                .lineSpacing(2)
                 .foregroundColor(AppColors.muted)
                 .fixedSize(horizontal: false, vertical: true)
         }
-        .padding(20)
+        .padding(.horizontal, 16)
+        .padding(.top, 8)
+        .padding(.bottom, 12)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surface)
         .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
