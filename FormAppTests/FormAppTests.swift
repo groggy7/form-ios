@@ -7631,12 +7631,14 @@ final class ProgressionReliabilityTests: XCTestCase {
         let manager = ProAccessManager.shared
         manager.setFeatureOverride(.autoProgression, unlocked: true)
         defer { LanguageManager.setLanguage(previous); manager.setFeatureOverride(.autoProgression, unlocked: nil) }
-        let cases: [(String, [WorkoutSessionRecord])] = [("uniform", [record(1)]), ("by-set", [record(1, reps: [12, 10, 8], loads: [80, 70, 60])]), ("incomplete", [record(1, reps: [8])]), ("baseline", [])]
+        let cases: [(String, [WorkoutSessionRecord])] = [("uniform", [record(1)]), ("by-set", [record(1, reps: [12, 10, 8], loads: [80, 70, 60])]), ("incomplete", [record(1, reps: [8])]), ("incomplete-six", [record(1, reps: [8])]), ("baseline", [])]
         for language in ["en", "tr"] {
             LanguageManager.setLanguage(language)
             for (name, history) in cases {
-                let rec = ProgressionEngine.computeProgression(exercise: bench, history: history)!
-                let layouts: [(CGFloat, ContentSizeCategory)] = name == "baseline"
+                var exercise = bench
+                if name == "incomplete-six" { exercise.sets = 6 }
+                let rec = ProgressionEngine.computeProgression(exercise: exercise, history: history)!
+                let layouts: [(CGFloat, ContentSizeCategory)] = name == "baseline" || name.hasPrefix("incomplete")
                     ? [(393, .large), (320, .extraExtraExtraLarge)]
                     : [(320, .extraExtraExtraLarge)]
                 for (width, textSize) in layouts {

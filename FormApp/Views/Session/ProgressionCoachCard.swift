@@ -115,8 +115,8 @@ public struct ProgressionCoachCard: View {
             .sheet(isPresented: $showInternalPaywall) {
                 ProPaywallSheet(feature: .autoProgression, onDismiss: { showInternalPaywall = false })
             }
-        } else if recommendation.action == .firstSession && recommendation.setTargets.isEmpty {
-            firstSessionCard
+        } else if recommendation.setTargets.isEmpty && (recommendation.action == .firstSession || recommendation.action == .insufficientData) {
+            emptyHistoryCard
         } else {
             VStack(alignment: .leading, spacing: 10) {
                 // Header Row
@@ -252,7 +252,7 @@ public struct ProgressionCoachCard: View {
         }
     }
 
-    private var firstSessionCard: some View {
+    private var emptyHistoryCard: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(spacing: 12) {
                 Image(systemName: "bolt.fill")
@@ -267,12 +267,12 @@ public struct ProgressionCoachCard: View {
 
                 ViewThatFits(in: .horizontal) {
                     HStack(spacing: 8) {
-                        firstSessionHeader
+                        emptyHistoryHeader
                         ProBadge()
                     }
                     .fixedSize(horizontal: true, vertical: false)
                     VStack(alignment: .leading, spacing: 4) {
-                        firstSessionHeader
+                        emptyHistoryHeader
                         ProBadge()
                     }
                 }
@@ -290,13 +290,16 @@ public struct ProgressionCoachCard: View {
             }
             .padding(.bottom, 4)
 
-            Text(LanguageManager.t("progression.coach.no_target"))
+            Text(LanguageManager.t(recommendation.action == .firstSession ? "progression.coach.no_target" : "progression.coach.more_history"))
                 .font(.system(size: emptyHeadlineSize, weight: .semibold))
                 .foregroundColor(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.bottom, 6)
 
-            Text(LanguageManager.t("progression.coach.first_session_hint"))
+            Text(LanguageManager.t(
+                recommendation.action == .firstSession ? "progression.coach.first_session_hint" : "progression.coach.insufficient_data_hint",
+                recommendation.rationaleArgs
+            ))
                 .font(.system(size: emptyBodySize))
                 .lineSpacing(2)
                 .foregroundColor(AppColors.muted)
@@ -314,7 +317,7 @@ public struct ProgressionCoachCard: View {
         .accessibilityIdentifier("progression-coach-card")
     }
 
-    private var firstSessionHeader: some View {
+    private var emptyHistoryHeader: some View {
         Text(LanguageManager.t("progression.coach.next_target"))
             .font(.system(size: emptyHeaderSize, weight: .semibold))
             .foregroundColor(AppColors.text)
