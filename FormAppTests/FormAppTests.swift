@@ -5320,6 +5320,17 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(report.muscleSummaries["calves"]?.zone, .underMev)
     }
 
+    func testHeavylifterFreshWeekBackupDecodingAndUntouchedCurrentWeek() throws {
+        let testDir = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+        let fixtureUrl = Bundle(for: FormAppTests.self).url(forResource: "heavylifter_fresh_week_backup", withExtension: "json")
+            ?? testDir.appendingPathComponent("../FormApp/Resources/Fixtures/heavylifter_fresh_week_backup.json").standardized
+        let data = try Data(contentsOf: fixtureUrl)
+        let decoded = try JSONDecoder().decode(StoredAppState.self, from: data)
+        XCTAssertEqual(decoded.activeProgramId, "heavylifter-strength-power")
+        XCTAssertTrue(decoded.completed.isEmpty, "Current week completed workouts must be empty for testing")
+        XCTAssertEqual(decoded.history.count, 44)
+    }
+
     func testExerciseSessionHistoryEntryBestSet() {
         let entry1 = ExerciseSessionHistoryEntry(
             sessionId: "s1",
