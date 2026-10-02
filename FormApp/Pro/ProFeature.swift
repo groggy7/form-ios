@@ -83,6 +83,7 @@ public class ProAccessManager: ObservableObject {
 
 public struct ProBadge: View {
     public var text: String = "PREMIUM"
+    @ScaledMetric(relativeTo: .caption2) private var fontSize = 8.5
 
     public init(text: String = "PREMIUM") {
         self.text = text
@@ -90,16 +91,18 @@ public struct ProBadge: View {
 
     public var body: some View {
         Text(text)
-            .font(.system(size: 10, weight: .bold))
+            .font(.system(size: fontSize, weight: .bold))
+            .tracking(0.2)
+            .fixedSize(horizontal: true, vertical: true)
             .foregroundColor(AppColors.purple)
             .padding(.horizontal, 6)
-            .padding(.vertical, 2)
+            .padding(.vertical, 3)
             .background(AppColors.purpleBg)
             .overlay(
-                RoundedRectangle(cornerRadius: 6)
+                RoundedRectangle(cornerRadius: 4)
                     .stroke(AppColors.purple.opacity(0.5), lineWidth: 1)
             )
-            .cornerRadius(6)
+            .cornerRadius(4)
     }
 }
 

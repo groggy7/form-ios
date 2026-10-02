@@ -7649,14 +7649,14 @@ final class ProgressionReliabilityTests: XCTestCase {
         manager.setFeatureOverride(.autoProgression, unlocked: true)
         defer { LanguageManager.setLanguage(previous); manager.setFeatureOverride(.autoProgression, unlocked: nil) }
         let cases: [(String, [WorkoutSessionRecord])] = [("uniform", [record(1)]), ("by-set", [record(1, reps: [12, 10, 8], loads: [80, 70, 60])]),
-            ("incomplete", [record(1, reps: [8])]), ("incomplete-six", [record(1, reps: [8])]),
+            ("incomplete", [record(1, reps: [8])]), ("incomplete-zero", [record(1, reps: [8])]), ("incomplete-six", [record(1, reps: [8])]),
             ("incomplete-one-left", [record(1, reps: [8])]), ("incomplete-recorded", [record(1, reps: [8])]), ("baseline", [])]
         for language in ["en", "tr"] {
             LanguageManager.setLanguage(language)
             for (name, history) in cases {
                 var exercise = bench
-                let total = name == "incomplete" ? 3 : 6
-                let recorded = name == "incomplete" ? 1 : name == "incomplete-one-left" ? 5 : name == "incomplete-recorded" ? 6 : 4
+                let total = name == "incomplete" ? 3 : name == "incomplete-zero" ? 5 : 6
+                let recorded = name == "incomplete-zero" ? 0 : name == "incomplete" ? 1 : name == "incomplete-one-left" ? 5 : name == "incomplete-recorded" ? 6 : 4
                 if name.hasPrefix("incomplete") { exercise.sets = total }
                 let sessionSets: [ExerciseSetLog]? = name.hasPrefix("incomplete")
                     ? [ExerciseSetLog(setNumber: 0, isCompleted: true, isWarmup: true)] + (1...total).map { index in

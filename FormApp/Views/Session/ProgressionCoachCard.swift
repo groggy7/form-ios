@@ -140,14 +140,7 @@ public struct ProgressionCoachCard: View {
 
                     Spacer()
 
-                    Button(action: onOpenInfo) {
-                        Image(systemName: "info.circle")
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(AppColors.muted)
-                            .padding(4)
-                            .frame(minWidth: 48, minHeight: 48)
-                    }
-                    .accessibilityLabel(LanguageManager.t("progression.info.title"))
+                    progressionInfoButton
                 }
 
                 // Target Headline & Action Button Row
@@ -257,15 +250,11 @@ public struct ProgressionCoachCard: View {
 
     private var emptyHistoryCard: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack(spacing: 12) {
-                Image(systemName: "bolt.fill")
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(AppColors.purple)
-                    .frame(width: 34, height: 34)
-                    .background(AppColors.purpleBg)
-                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                    .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .stroke(AppColors.purple.opacity(0.25), lineWidth: 1))
+            HStack(alignment: .top, spacing: 4) {
+                ProgressionHeaderBolt()
+                    .fill(AppColors.purple)
+                    .frame(width: 16, height: 16)
+                    .frame(width: 20, height: 24)
                     .accessibilityHidden(true)
 
                 ViewThatFits(in: .horizontal) {
@@ -281,20 +270,14 @@ public struct ProgressionCoachCard: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
-                Button(action: onOpenInfo) {
-                    Image(systemName: "info.circle.fill")
-                        .font(.system(size: 18))
-                        .foregroundColor(AppColors.muted)
-                        .frame(width: 48, height: 48)
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(LanguageManager.t("progression.info.title"))
+                progressionInfoButton
+                    .frame(width: 18, height: 24)
             }
-            .padding(.bottom, 4)
+            .frame(minHeight: 24)
+            .padding(.bottom, 8)
 
             Text(emptyHistoryCopy.headline)
-                .font(.system(size: emptyHeadlineSize, weight: loggingProgress == nil ? .semibold : .bold))
+                .font(.system(size: emptyHeadlineSize, weight: .bold))
                 .foregroundColor(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.bottom, 6)
@@ -305,13 +288,12 @@ public struct ProgressionCoachCard: View {
                 .foregroundColor(AppColors.muted)
                 .fixedSize(horizontal: false, vertical: true)
         }
-        .padding(.horizontal, 16)
-        .padding(.top, 8)
-        .padding(.bottom, 12)
+        .padding(.horizontal, 18)
+        .padding(.vertical, 12)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surface)
-        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(AppColors.border, lineWidth: 1))
         .contentShape(Rectangle())
         .onTapGesture(perform: onOpenInfo)
         .accessibilityIdentifier("progression-coach-card")
@@ -340,13 +322,51 @@ public struct ProgressionCoachCard: View {
 
     private var emptyHistoryHeader: some View {
         Text(LanguageManager.t("progression.coach.next_target"))
-            .font(.system(size: emptyHeaderSize, weight: .semibold))
+            .font(.system(size: emptyHeaderSize, weight: .bold))
             .foregroundColor(AppColors.text)
             .fixedSize(horizontal: false, vertical: true)
+            .frame(minHeight: 24)
+    }
+
+    private var progressionInfoButton: some View {
+        Button(action: onOpenInfo) {
+            ZStack {
+                Circle().stroke(AppColors.muted, lineWidth: 1.5)
+                    .frame(width: 12.5, height: 12.5)
+                Circle().fill(AppColors.muted)
+                    .frame(width: 1.8, height: 1.8).offset(y: -3.4)
+                Capsule().fill(AppColors.muted)
+                    .frame(width: 1.3, height: 5).offset(y: 1.35)
+                Capsule().fill(AppColors.muted)
+                    .frame(width: 3.6, height: 1.1).offset(y: 3.6)
+            }
+            .frame(width: 18, height: 18)
+            .accessibilityHidden(true)
+            .frame(width: 48, height: 48)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(LanguageManager.t("progression.info.title"))
+        .accessibilityIdentifier("progression-info-button")
     }
 
     private var hasDifferentTargets: Bool {
         guard let first = recommendation.setTargets.first else { return false }
         return recommendation.setTargets.contains { $0 != first }
+    }
+}
+
+// Use the same 20-unit bolt geometry on both platforms.
+private struct ProgressionHeaderBolt: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.move(to: CGPoint(x: 12.5, y: 0))
+        path.addLine(to: CGPoint(x: 3.5, y: 11))
+        path.addLine(to: CGPoint(x: 9, y: 11))
+        path.addLine(to: CGPoint(x: 7.5, y: 20))
+        path.addLine(to: CGPoint(x: 16.5, y: 8))
+        path.addLine(to: CGPoint(x: 11, y: 8))
+        path.closeSubpath()
+        return path.applying(CGAffineTransform(scaleX: rect.width / 20, y: rect.height / 20))
     }
 }
