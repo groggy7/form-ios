@@ -86,15 +86,9 @@ public struct MuscleArtwork: View {
                 .init(color: tint.opacity(0.48), location: 1.0)
             ])
 
-            let startPoint: CGPoint
-            let endPoint: CGPoint
-            if view == .back {
-                startPoint = CGPoint(x: 866, y: 250)
-                endPoint = CGPoint(x: 866, y: 1000)
-            } else {
-                startPoint = CGPoint(x: 620, y: 250)
-                endPoint = CGPoint(x: 1050, y: 1000)
-            }
+            // Equal tint strength at the same height on both sides of every view.
+            let startPoint = CGPoint(x: 866, y: 250)
+            let endPoint = CGPoint(x: 866, y: 1000)
 
             for (_, cgPath) in matchingPaths {
                 let p = Path(cgPath)

@@ -860,6 +860,71 @@ final class FormAppTests: XCTestCase {
         XCTAssertTrue(path.contains(CGPoint(x: 855, y: 280)))
     }
 
+    func testTodayShoulderAndUpperArmContoursAreBilateral() throws {
+        for (view, muscle, centerX) in [(BodyView.front, MuscleGroup.shoulders, 873.0),
+            (.front, .biceps, 876.0), (.back, .shoulders, 868.0), (.back, .triceps, 878.0)] {
+            assertMirroredChestPath(try XCTUnwrap(MuscleMasks.rawPathStrings[view]?[muscle]), centerX: centerX)
+        }
+    }
+
+    func testTodayFrontArmMasksExcludeNeighboringMusclesAndJoints() throws {
+        let paths = MuscleMasks.paths(for: .front)
+        let bellies: [MuscleGroup: [CGPoint]] = [
+            .shoulders: [CGPoint(x: 650, y: 430), CGPoint(x: 1096, y: 430)],
+            .biceps: [CGPoint(x: 657, y: 565), CGPoint(x: 1095, y: 565)],
+            .forearms: [CGPoint(x: 578, y: 766), CGPoint(x: 1165, y: 766)]
+        ]
+        let exclusions = [CGPoint(x: 700, y: 455), CGPoint(x: 1046, y: 455),
+            CGPoint(x: 605, y: 580), CGPoint(x: 1147, y: 580),
+            CGPoint(x: 607, y: 688), CGPoint(x: 1139, y: 688),
+            CGPoint(x: 540, y: 935), CGPoint(x: 1188, y: 935)]
+        for (muscle, points) in bellies {
+            let path = try XCTUnwrap(paths[muscle])
+            for point in points { XCTAssertTrue(path.contains(point), "\(muscle) misses its muscle belly") }
+            for point in bellies.filter({ $0.key != muscle }).values.flatMap({ $0 }) + exclusions {
+                XCTAssertFalse(path.contains(point), "\(muscle) spills onto \(point)")
+            }
+        }
+    }
+
+    @MainActor
+    func testTodayMusclePrecisionSnapshots() throws {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        for (name, language, width, textSize, targets) in [
+            ("front", "en", 393.0, DynamicTypeSize.large, ["chest", "shoulders", "biceps", "forearms"]),
+            ("back", "en", 393.0, DynamicTypeSize.large, ["triceps", "shoulders", "lats", "trapezius", "forearms"]),
+            ("front-tr-large", "tr", 320.0, DynamicTypeSize.xxxLarge, ["chest", "shoulders", "biceps"])
+        ] {
+            LanguageManager.setLanguage(language)
+            let workout = Workout(id: "mask-review", day: 1,
+                title: language == "tr" ? "Üst Vücut ve Omuz" : "Upper body & shoulders",
+                focus: language == "tr" ? "Göğüs, omuz ve kol çalışması" : "Chest, shoulders and arms",
+                exercises: [Exercise(name: "Fixture")], targetMuscles: targets)
+            let content = TodayHeroCard(workout: workout, programId: "mask-fixture", todayIndex: 0,
+                isCompleted: false, isAvailable: true, availableDay: nil,
+                hasUnfinishedProgress: false, onStart: {})
+                .environment(\.dynamicTypeSize, textSize).padding(20)
+                .frame(width: width, height: 500).background(AppColors.background)
+            let controller = UIHostingController(rootView: content)
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 500))
+            window.rootViewController = controller
+            window.makeKeyAndVisible()
+            controller.view.frame = window.bounds
+            controller.view.layoutIfNeeded()
+            RunLoop.main.run(until: Date().addingTimeInterval(0.1))
+            let image = UIGraphicsImageRenderer(size: window.bounds.size).image { _ in
+                controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+            }
+            try XCTUnwrap(image.pngData()).write(to: URL(fileURLWithPath: "/private/tmp/form-muscle-ios-\(name).png"))
+            let attachment = XCTAttachment(image: image)
+            attachment.name = "Today muscle precision \(name)"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+            window.isHidden = true
+        }
+    }
+
     func testWorkoutBodyViewsResolution() {
         // Quads and Calves -> legs-front and legs-back
         let legWorkout = Workout(
