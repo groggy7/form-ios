@@ -7631,22 +7631,27 @@ final class ProgressionReliabilityTests: XCTestCase {
         let manager = ProAccessManager.shared
         manager.setFeatureOverride(.autoProgression, unlocked: true)
         defer { LanguageManager.setLanguage(previous); manager.setFeatureOverride(.autoProgression, unlocked: nil) }
-        let cases: [(String, [WorkoutSessionRecord])] = [("uniform", [record(1)]), ("by-set", [record(1, reps: [12, 10, 8], loads: [80, 70, 60])]), ("incomplete", [record(1, reps: [8])])]
+        let cases: [(String, [WorkoutSessionRecord])] = [("uniform", [record(1)]), ("by-set", [record(1, reps: [12, 10, 8], loads: [80, 70, 60])]), ("incomplete", [record(1, reps: [8])]), ("baseline", [])]
         for language in ["en", "tr"] {
             LanguageManager.setLanguage(language)
             for (name, history) in cases {
                 let rec = ProgressionEngine.computeProgression(exercise: bench, history: history)!
-                let content = ProgressionCoachCard(recommendation: rec, onApplyTarget: {}, onOpenInfo: {})
-                    .padding(20).frame(width: 320).background(AppColors.background)
-                    .environment(\.sizeCategory, .extraExtraExtraLarge)
-                let renderer = ImageRenderer(content: content)
-                renderer.scale = 1
-                let image = try XCTUnwrap(renderer.uiImage)
-                XCTAssertEqual(image.size.width, 320)
-                let attachment = XCTAttachment(image: image)
-                attachment.name = "progression-\(language)-\(name)"
-                attachment.lifetime = .keepAlways
-                add(attachment)
+                let layouts: [(CGFloat, ContentSizeCategory)] = name == "baseline"
+                    ? [(393, .large), (320, .extraExtraExtraLarge)]
+                    : [(320, .extraExtraExtraLarge)]
+                for (width, textSize) in layouts {
+                    let content = ProgressionCoachCard(recommendation: rec, onApplyTarget: {}, onOpenInfo: {})
+                        .padding(20).frame(width: width).background(AppColors.background)
+                        .environment(\.sizeCategory, textSize)
+                    let renderer = ImageRenderer(content: content)
+                    renderer.scale = 1
+                    let image = try XCTUnwrap(renderer.uiImage)
+                    XCTAssertEqual(image.size.width, width)
+                    let attachment = XCTAttachment(image: image)
+                    attachment.name = "progression-\(language)-\(name)-\(Int(width))"
+                    attachment.lifetime = .keepAlways
+                    add(attachment)
+                }
             }
         }
     }

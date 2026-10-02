@@ -12,6 +12,9 @@ public struct ProgressionCoachCard: View {
     @ObservedObject private var proManager = ProAccessManager.shared
     @State private var wasApplied: Bool = false
     @State private var showInternalPaywall: Bool = false
+    @ScaledMetric(relativeTo: .subheadline) private var emptyHeaderSize = 14.0
+    @ScaledMetric(relativeTo: .title2) private var emptyHeadlineSize = 22.0
+    @ScaledMetric(relativeTo: .subheadline) private var emptyBodySize = 14.0
 
     public init(
         recommendation: ExerciseProgressionRecommendation,
@@ -112,6 +115,8 @@ public struct ProgressionCoachCard: View {
             .sheet(isPresented: $showInternalPaywall) {
                 ProPaywallSheet(feature: .autoProgression, onDismiss: { showInternalPaywall = false })
             }
+        } else if recommendation.action == .firstSession && recommendation.setTargets.isEmpty {
+            firstSessionCard
         } else {
             VStack(alignment: .leading, spacing: 10) {
                 // Header Row
@@ -245,6 +250,73 @@ public struct ProgressionCoachCard: View {
                 onOpenInfo()
             }
         }
+    }
+
+    private var firstSessionCard: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(spacing: 12) {
+                Image(systemName: "bolt.fill")
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundColor(AppColors.purple)
+                    .frame(width: 34, height: 34)
+                    .background(AppColors.purpleBg)
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .stroke(AppColors.purple.opacity(0.25), lineWidth: 1))
+                    .accessibilityHidden(true)
+
+                ViewThatFits(in: .horizontal) {
+                    HStack(spacing: 8) {
+                        firstSessionHeader
+                        ProBadge()
+                    }
+                    .fixedSize(horizontal: true, vertical: false)
+                    VStack(alignment: .leading, spacing: 4) {
+                        firstSessionHeader
+                        ProBadge()
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+                Button(action: onOpenInfo) {
+                    Image(systemName: "info.circle.fill")
+                        .font(.system(size: 18))
+                        .foregroundColor(AppColors.muted)
+                        .frame(width: 48, height: 48)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(LanguageManager.t("progression.info.title"))
+            }
+            .padding(.bottom, 14)
+
+            Text(LanguageManager.t("progression.coach.no_target"))
+                .font(.system(size: emptyHeadlineSize, weight: .bold))
+                .foregroundColor(AppColors.text)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.bottom, 8)
+
+            Text(LanguageManager.t("progression.coach.first_session_hint"))
+                .font(.system(size: emptyBodySize))
+                .lineSpacing(3)
+                .foregroundColor(AppColors.muted)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(20)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(AppColors.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 18, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+        .contentShape(Rectangle())
+        .onTapGesture(perform: onOpenInfo)
+        .accessibilityIdentifier("progression-coach-card")
+    }
+
+    private var firstSessionHeader: some View {
+        Text(LanguageManager.t("progression.coach.next_target"))
+            .font(.system(size: emptyHeaderSize, weight: .semibold))
+            .foregroundColor(AppColors.text)
+            .fixedSize(horizontal: false, vertical: true)
     }
 
     private var hasDifferentTargets: Bool {
