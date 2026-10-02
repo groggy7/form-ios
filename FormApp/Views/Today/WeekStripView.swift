@@ -101,6 +101,16 @@ struct WorkoutDayStrip: View {
     @ScaledMetric(relativeTo: .caption2) private var labelSize: CGFloat = 11
     @ScaledMetric(relativeTo: .title2) private var numberSize: CGFloat = 25
 
+    private var initialScrollAnchor: UnitPoint {
+        // Four tiles fit on phones. Advance the window from the third workout,
+        // retaining the most recent workout's window on intervening rest days.
+        let currentIndex = workouts.lastIndex { $0.day <= calendar.today + 1 } ?? -1
+        let lastWindowIndex = max(0, workouts.count - 4)
+        let firstIndex = min(lastWindowIndex, max(0, currentIndex - 1))
+        let fraction = lastWindowIndex > 0 ? CGFloat(firstIndex) / CGFloat(lastWindowIndex) : 0
+        return UnitPoint(x: fraction, y: 0)
+    }
+
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
@@ -191,9 +201,18 @@ struct WorkoutDayStrip: View {
                 .padding(.horizontal, 20)
                 .padding(.vertical, 2)
             }
+            .defaultScrollAnchor(initialScrollAnchor)
             .onChange(of: activeWorkoutId, initial: true) { _, selectedId in
                 if let selectedId { proxy.scrollTo(selectedId) }
             }
+            .id(InitialWindowKey(programId: program.id, today: calendar.today,
+                schedule: workouts.map { "\($0.id):\($0.day)" }))
         }
+    }
+
+    private struct InitialWindowKey: Hashable {
+        let programId: String
+        let today: Int
+        let schedule: [String]
     }
 }

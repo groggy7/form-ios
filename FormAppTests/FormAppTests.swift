@@ -6,6 +6,66 @@ import SwiftUI
 
 final class FormAppTests: XCTestCase {
     @MainActor
+    func testHomeDayStripOpensOnCurrentWorkoutWindow() throws {
+        func scrollViews(in view: UIView) -> [UIScrollView] {
+            (view as? UIScrollView).map { [$0] } ?? view.subviews.flatMap { scrollViews(in: $0) }
+        }
+        let schedules = [
+            (Array(1...5), [0, 0, 1, 1, 1, 1, 1]),
+            (Array(1...7), [0, 0, 1, 2, 3, 3, 3]),
+            ([1, 2, 4, 5, 6], [0, 0, 0, 1, 1, 1, 1]),
+            ([2, 4, 6], [0, 0, 0, 0, 0, 0, 0])
+        ]
+        for width in [CGFloat(320), CGFloat(393)] {
+            for (schedule, expectedStarts) in schedules {
+                let workouts = schedule.map { Workout(id: "window-\($0)", day: $0, title: "Workout \($0)") }
+                let program = Program(id: "window-fixture", name: "Fixture", workouts: workouts)
+                for (today, firstIndex) in expectedStarts.enumerated() {
+                    func content(completedKeys: [String] = []) -> some View {
+                        WorkoutDayStrip(program: program, workouts: workouts,
+                            calendar: WeekCalendar(today: today, numbers: Array(1...7)),
+                            activeWorkoutId: workouts.first { $0.day == today + 1 }?.id,
+                            completedKeys: completedKeys, unfinishedKeys: [], onSelectWorkout: { _ in })
+                            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                            .background(AppColors.background)
+                    }
+                    let controller = UIHostingController(rootView: content())
+                    let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 200))
+                    window.rootViewController = controller
+                    window.makeKeyAndVisible()
+                    controller.view.frame = window.bounds
+                    controller.view.layoutIfNeeded()
+                    RunLoop.main.run(until: Date().addingTimeInterval(0.15))
+                    controller.view.layoutIfNeeded()
+                    let scroll = try XCTUnwrap(scrollViews(in: controller.view).first)
+                    let tileWidth = (width - 40 - 3 * 8) / 4
+                    XCTAssertEqual(scroll.contentOffset.x, CGFloat(firstIndex) * (tileWidth + 8), accuracy: 1,
+                        "The opening window should follow the current scheduled workout: \(schedule), weekday \(today)")
+                    XCTAssertLessThanOrEqual(20 + 4 * tileWidth + 3 * 8, scroll.bounds.width - 20 + 1)
+                    if schedule == Array(1...5), today == 2 {
+                        let image = UIGraphicsImageRenderer(size: controller.view.bounds.size).image { _ in
+                            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+                        }
+                        let attachment = XCTAttachment(image: image)
+                        attachment.name = "home-day-tiles-third-workout-window-\(Int(width))"
+                        attachment.lifetime = .keepAlways
+                        add(attachment)
+                    }
+                    if schedule == Array(1...7), today == 4 {
+                        scroll.setContentOffset(.zero, animated: false)
+                        controller.rootView = content(completedKeys: ["window-fixture:window-1"])
+                        controller.view.layoutIfNeeded()
+                        RunLoop.main.run(until: Date().addingTimeInterval(0.15))
+                        XCTAssertEqual(scroll.contentOffset.x, 0, accuracy: 1,
+                            "Routine updates must preserve the user's manual scroll position")
+                    }
+                    window.isHidden = true
+                }
+            }
+        }
+    }
+
+    @MainActor
     func testHomeDayStripShowsFourCompactTilesAndScrolls() throws {
         let previous = LanguageManager.shared.currentLanguage
         defer { LanguageManager.setLanguage(previous) }
