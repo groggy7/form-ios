@@ -58,26 +58,26 @@ public struct ProgressionInfoSheet: View {
 
     private var actionsSection: some View {
         VStack(alignment: .leading, spacing: 14) {
-            Text("Progression Rules")
+            Text(LanguageManager.t("progression.info.rules"))
                 .font(.system(size: 15, weight: .semibold))
                 .foregroundColor(AppColors.text)
 
             VStack(spacing: 10) {
                 actionRow(
                     action: .increaseLoad,
-                    desc: "When all working sets hit the top rep target with clean form, increase weight by 2.5 kg (or 5 lb)."
+                    desc: LanguageManager.t("progression.info.rule_load")
                 )
                 actionRow(
                     action: .addReps,
-                    desc: "When sets are within the target rep range, maintain load and push reps upward."
+                    desc: LanguageManager.t("progression.info.rule_reps")
                 )
                 actionRow(
                     action: .holdLoad,
-                    desc: "When failing below the rep floor on any set, hold weight to consolidate form and recovery."
+                    desc: LanguageManager.t("progression.info.rule_hold")
                 )
                 actionRow(
                     action: .deload,
-                    desc: "When stagnant across 3+ workouts, deload load by 10% or swap to a fresh variation."
+                    desc: LanguageManager.t("progression.info.rule_review")
                 )
             }
         }

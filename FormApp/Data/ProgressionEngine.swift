@@ -28,7 +28,7 @@ public enum ProgressionEngine {
             if reps.toFailure { return nil }
             guard let minR = reps.min ?? reps.max else { return nil }
             let maxR = reps.max ?? minR
-            guard minR > 0, maxR > 0 else { return nil }
+            guard (1...999).contains(minR), (1...999).contains(maxR) else { return nil }
             return (min(minR, maxR), max(minR, maxR))
         }
         let presc = exercise.prescription
@@ -45,64 +45,28 @@ public enum ProgressionEngine {
             guard let parsedMax = Int(nsPresc.substring(with: match.range(at: 2))) else { return nil }
             maxVal = parsedMax
         }
-        guard minVal > 0, maxVal > 0 else { return nil }
+        guard (1...999).contains(minVal), (1...999).contains(maxVal) else { return nil }
         return (min(minVal, maxVal), max(minVal, maxVal))
     }
 
     private struct HistoricalSessionSets {
-        let dateString: String
         let sets: [SessionSetLog]
-
-        var workingSets: [SessionSetLog] {
-            sets.filter { ($0.reps ?? 0) > 0 && !$0.isWarmup }
-        }
-
-        var topWeightKg: Double {
-            workingSets.map { $0.weightKg ?? 0.0 }.max() ?? 0.0
-        }
-
-        var totalRepsAtTopWeight: Int {
-            let top = topWeightKg
-            if top > 0.0 {
-                return workingSets.filter { ($0.weightKg ?? 0.0) >= (top * 0.95) }
-                    .reduce(0) { $0 + ($1.reps ?? 0) }
-            } else {
-                return workingSets.reduce(0) { $0 + ($1.reps ?? 0) }
-            }
-        }
+        let targetSets: Int?
+        let ambiguous: Bool
+        var workingSets: [SessionSetLog] { sets.filter { !$0.isWarmup }.sorted { $0.setNumber < $1.setNumber } }
     }
 
-    private static func findHistoricalSessions(
-        exercise: Exercise,
-        history: [WorkoutSessionRecord]
-    ) -> [HistoricalSessionSets] {
-        var results: [HistoricalSessionSets] = []
-
-        let sortedRecords = history.sorted { a, b in
-            let dateA = a.completedAt.isEmpty ? a.startedAt : a.completedAt
-            let dateB = b.completedAt.isEmpty ? b.startedAt : b.completedAt
-            return dateA > dateB
-        }
-
-        for record in sortedRecords {
-            for log in record.exerciseLogs {
-                if !ExerciseCatalog.sameExercise(
-                    leftId: exercise.exerciseId, leftName: exercise.name,
-                    rightId: log.exerciseId, rightName: log.exerciseName
-                ) { continue }
-
-                let validSets = log.sets.filter { ($0.reps ?? 0) > 0 && !$0.isWarmup }
-                if !validSets.isEmpty {
-                    results.append(
-                        HistoricalSessionSets(
-                            dateString: record.completedAt.isEmpty ? record.startedAt : record.completedAt,
-                            sets: validSets
-                        )
-                    )
-                }
+    private static func findHistoricalSessions(exercise: Exercise, history: [WorkoutSessionRecord]) -> [HistoricalSessionSets] {
+        var seen = Set<String>()
+        return history.filter { seen.insert($0.id).inserted }.sorted {
+            ($0.completedAt.isEmpty ? $0.startedAt : $0.completedAt) > ($1.completedAt.isEmpty ? $1.startedAt : $1.completedAt)
+        }.compactMap { record in
+            let logs = record.exerciseLogs.filter {
+                ExerciseCatalog.sameExercise(leftId: exercise.exerciseId, leftName: exercise.name, rightId: $0.exerciseId, rightName: $0.exerciseName)
             }
+            guard logs.contains(where: { $0.sets.contains(where: { !$0.isWarmup }) }) else { return nil }
+            return HistoricalSessionSets(sets: logs.flatMap { $0.sets }, targetSets: logs.count == 1 ? logs[0].targetSets : nil, ambiguous: logs.count != 1)
         }
-        return results
     }
 
     public static func computeProgression(
@@ -113,199 +77,81 @@ public enum ProgressionEngine {
         guard let (repMin, repMax) = parseRepRange(exercise: exercise) else { return nil }
         let exerciseId = exercise.exerciseId ?? ExerciseCatalog.key(exercise.name)
         let category = EquipmentCatalog.shared.categoryId(exerciseId)
-
+        let expectedSets = WorkoutSessionUtils.initialSetCount(exercise: exercise)
         let sessions = findHistoricalSessions(exercise: exercise, history: history)
-        if sessions.isEmpty {
-            return ExerciseProgressionRecommendation(
-                exerciseId: exerciseId,
-                exerciseName: exercise.name,
-                action: .firstSession,
-                suggestedWeightKg: nil,
-                suggestedWeightDisplay: "--",
-                suggestedRepsMin: repMin,
-                suggestedRepsMax: repMax,
-                weightDeltaDisplay: nil,
-                rationaleKey: "progression.rationale.first_session",
-                rationaleArgs: ["reps": repMin == repMax ? "\(repMin)" : "\(repMin)–\(repMax)"],
-                isPlateau: false,
-                consecutiveStagnantSessions: 0
-            )
+
+        func guidance(_ action: ProgressionAction, _ key: String, _ args: [String: String] = [:], plateau: Bool = false,
+                      summary: String? = nil) -> ExerciseProgressionRecommendation {
+            ExerciseProgressionRecommendation(exerciseId: exerciseId, exerciseName: exercise.name, action: action,
+                suggestedWeightKg: nil, suggestedWeightDisplay: "--", suggestedRepsMin: repMin, suggestedRepsMax: repMax,
+                rationaleKey: key, rationaleArgs: args, isPlateau: plateau, consecutiveStagnantSessions: plateau ? 3 : 0,
+                lastSessionSummary: summary)
         }
-
-        let lastSession = sessions[0]
-        let lastTopWeightKg = lastSession.topWeightKg
-        let lastWorkingSets = lastSession.workingSets
-
-        let incrementKg: Double = {
-            switch category {
-            case "bar": return weightUnit == .lbs ? 2.268 : 2.5
-            case "dumbbell": return weightUnit == .lbs ? 2.268 : 2.0
-            case "machine": return weightUnit == .lbs ? 2.268 : 2.5
-            default: return weightUnit == .lbs ? 1.134 : 1.25
-            }
-        }()
-
-        // Every logged working set must reach the ceiling before load increases.
-        let allHitCeiling = lastWorkingSets.allSatisfy { ($0.reps ?? 0) >= repMax }
-        let anyMissedFloor = lastWorkingSets.contains { ($0.reps ?? 0) < repMin }
-        let hasMixedWorkingLoads = lastWorkingSets.contains { ($0.weightKg ?? 0.0) < lastTopWeightKg - 0.01 }
-
-        // Match Android: no load or top-weight rep improvement across the last 3 sessions.
-        var isPlateau = false
-        var consecutiveStagnant = 0
-        if sessions.count >= 3 {
-            let s1 = sessions[0]
-            let s2 = sessions[1]
-            let s3 = sessions[2]
-
-            let w1 = s1.topWeightKg
-            let w2 = s2.topWeightKg
-            let w3 = s3.topWeightKg
-
-            let weightStagnant = w1 <= w2 && w2 <= w3
-            let r1 = s1.totalRepsAtTopWeight
-            let r2 = s2.totalRepsAtTopWeight
-            let r3 = s3.totalRepsAtTopWeight
-
-            let repsStagnant = r1 <= r2 && r2 <= r3
-
-            if weightStagnant && repsStagnant && !allHitCeiling {
-                isPlateau = true
-                consecutiveStagnant = 3
-            }
+        guard let last = sessions.first else {
+            return guidance(.firstSession, "progression.rationale.first_session", ["reps": repMin == repMax ? "\(repMin)" : "\(repMin)–\(repMax)"])
         }
-
-        // 1. Plateau
+        func complete(_ session: HistoricalSessionSets) -> Bool {
+            let sets = session.workingSets
+            return !session.ambiguous && sets.count == expectedSets &&
+                (session.targetSets == nil || session.targetSets == sets.count) &&
+                Set(sets.map { $0.setNumber }).count == sets.count && sets.allSatisfy { set in
+                    guard let reps = set.reps, let weight = set.weightKg else { return false }
+                    return (1...999).contains(reps) && weight.isFinite && weight >= 0 && weightUnit.toDisplay(weight) <= 9999.99 &&
+                        (!["bar", "dumbbell", "machine", "kettlebell", "weight-plate"].contains(category) || weight > 0)
+                }
+        }
+        // Do not silently fall back to an older, easier or more complete workout.
+        guard complete(last) else {
+            return guidance(.insufficientData, "progression.rationale.insufficient_data", ["sets": "\(expectedSets)"])
+        }
+        let workingSets = last.workingSets
+        let topWeight = workingSets.map { $0.weightKg! }.max()!
+        let mixedLoads = workingSets.contains { abs($0.weightKg! - topWeight) > 0.01 }
+        func comparable(_ session: HistoricalSessionSets) -> Bool {
+            complete(session) && zip(session.workingSets, workingSets).allSatisfy { abs($0.weightKg! - $1.weightKg!) <= 0.01 }
+        }
+        let allHitCeiling = workingSets.allSatisfy { $0.reps! >= repMax }
+        let recent = Array(sessions.prefix(3))
+        let isPlateau = recent.count == 3 && recent.allSatisfy(comparable) && !allHitCeiling &&
+            zip(recent, recent.dropFirst()).allSatisfy { newer, older in
+                newer.workingSets.reduce(0) { $0 + $1.reps! } <= older.workingSets.reduce(0) { $0 + $1.reps! }
+            }
         if isPlateau {
-            let deloadWeightKg: Double = {
-                if weightUnit == .lbs {
-                    let lbs = weightUnit.toDisplay(lastTopWeightKg) * 0.9
-                    let roundedLbs = (lbs / 2.5).rounded() * 2.5
-                    return weightUnit.toCanonicalKg(roundedLbs)
-                } else {
-                    let roundedKg = (lastTopWeightKg * 0.9 * 2.0).rounded() / 2.0
-                    return roundedKg
-                }
-            }()
-
-            let swap = variationSwaps[exerciseId]
-            let deltaKg = deloadWeightKg - lastTopWeightKg
-            let deltaInUnit = weightUnit.toDisplay(deltaKg)
-            let roundedDelta = (deltaInUnit * 10).rounded() / 10.0
-            let formattedDelta = roundedDelta.truncatingRemainder(dividingBy: 1.0) == 0 ? "\(Int(roundedDelta))" : String(format: "%.1f", roundedDelta)
-
-            return ExerciseProgressionRecommendation(
-                exerciseId: exerciseId,
-                exerciseName: exercise.name,
-                action: .deload,
-                suggestedWeightKg: hasMixedWorkingLoads ? nil : deloadWeightKg,
-                suggestedWeightDisplay: formatWeight(deloadWeightKg, unit: weightUnit),
-                suggestedRepsMin: repMin,
-                suggestedRepsMax: repMax,
-                weightDeltaDisplay: "\(formattedDelta) \(weightUnit.label)",
-                rationaleKey: "progression.rationale.plateau",
-                rationaleArgs: [
-                    "weight": formatWeight(lastTopWeightKg, unit: weightUnit),
-                    "unit": weightUnit.label,
-                    "sessions": "\(consecutiveStagnant)",
-                    "variation": swap?.name ?? exercise.name
-                ],
-                isPlateau: true,
-                consecutiveStagnantSessions: consecutiveStagnant,
-                suggestedVariationId: swap?.id,
-                suggestedVariationName: swap?.name,
-                lastSessionSummary: formatSessionSummary(lastWorkingSets, unit: weightUnit)
-            )
+            return guidance(.deload, "progression.rationale.plateau", ["sessions": "3"], plateau: true,
+                            summary: formatSessionSummary(workingSets, unit: weightUnit))
         }
-
-        // 2. Rep ceiling achieved -> INCREASE_LOAD
-        if allHitCeiling {
-            let newWeightKg: Double = {
-                if weightUnit == .lbs {
-                    let currentLbs = weightUnit.toDisplay(lastTopWeightKg)
-                    let newLbs = (currentLbs + 5.0).rounded()
-                    return weightUnit.toCanonicalKg(newLbs)
-                } else {
-                    return lastTopWeightKg + incrementKg
-                }
-            }()
-
-            let deltaKg = newWeightKg - lastTopWeightKg
-            let deltaInUnit = weightUnit.toDisplay(deltaKg)
-            let roundedDelta = (deltaInUnit * 10).rounded() / 10.0
-            let formattedDelta = roundedDelta.truncatingRemainder(dividingBy: 1.0) == 0 ? "\(Int(roundedDelta))" : String(format: "%.1f", roundedDelta)
-
-            return ExerciseProgressionRecommendation(
-                exerciseId: exerciseId,
-                exerciseName: exercise.name,
-                action: .increaseLoad,
-                suggestedWeightKg: hasMixedWorkingLoads ? nil : newWeightKg,
-                suggestedWeightDisplay: formatWeight(newWeightKg, unit: weightUnit),
-                suggestedRepsMin: repMin,
-                suggestedRepsMax: repMax,
-                weightDeltaDisplay: "+\(formattedDelta) \(weightUnit.label)",
-                rationaleKey: hasMixedWorkingLoads ? "progression.rationale.increase_load_mixed" : "progression.rationale.increase_load",
-                rationaleArgs: [
-                    "ceiling": "\(repMax)",
-                    "lastWeight": formatWeight(lastTopWeightKg, unit: weightUnit),
-                    "newWeight": formatWeight(newWeightKg, unit: weightUnit),
-                    "unit": weightUnit.label,
-                    "targetReps": "\(repMin)"
-                ],
-                isPlateau: false,
-                consecutiveStagnantSessions: 0,
-                lastSessionSummary: formatSessionSummary(lastWorkingSets, unit: weightUnit)
-            )
+        // A second full session at the same set-by-set loads confirms the ceiling.
+        let confirmedCeiling = allHitCeiling && sessions.dropFirst().first.map { previous in
+            comparable(previous) && previous.workingSets.allSatisfy { $0.reps! >= repMax }
+        } == true
+        let incrementKg: Double
+        switch category {
+        case "bar", "machine": incrementKg = weightUnit == .lbs ? weightUnit.toCanonicalKg(5) : 2.5
+        case "dumbbell": incrementKg = weightUnit == .lbs ? weightUnit.toCanonicalKg(5) : 2
+        default: incrementKg = 0 // Unknown equipment, bands and bodyweight have no inferred load step.
         }
-
-        // 3. Within rep bracket -> ADD_REPS
-        if !anyMissedFloor {
-            let lowestRepsAchieved = lastWorkingSets.map { $0.reps ?? 0 }.min() ?? repMin
-            let nextRepTarget = min(lowestRepsAchieved + 1, repMax)
-            let weightDisplay = lastTopWeightKg <= 0.0 ? "BW" : formatWeight(lastTopWeightKg, unit: weightUnit)
-
-            return ExerciseProgressionRecommendation(
-                exerciseId: exerciseId,
-                exerciseName: exercise.name,
-                action: .addReps,
-                suggestedWeightKg: hasMixedWorkingLoads ? nil : lastTopWeightKg,
-                suggestedWeightDisplay: weightDisplay,
-                suggestedRepsMin: nextRepTarget,
-                suggestedRepsMax: repMax,
-                weightDeltaDisplay: nil,
-                rationaleKey: hasMixedWorkingLoads ? "progression.rationale.add_reps_mixed" : "progression.rationale.add_reps",
-                rationaleArgs: [
-                    "weight": weightDisplay,
-                    "unit": lastTopWeightKg <= 0.0 ? "" : weightUnit.label,
-                    "ceiling": "\(repMax)"
-                ],
-                isPlateau: false,
-                consecutiveStagnantSessions: 0,
-                lastSessionSummary: formatSessionSummary(lastWorkingSets, unit: weightUnit)
-            )
+        let canIncrease = confirmedCeiling && incrementKg > 0 && workingSets.allSatisfy {
+            $0.weightKg! > 0 && incrementKg <= $0.weightKg! * 0.10 && weightUnit.toDisplay($0.weightKg! + incrementKg) <= 9999.99
         }
-
-        // 4. Failed to hit floor -> HOLD_LOAD
-        let holdWeightDisplay = lastTopWeightKg <= 0.0 ? "BW" : formatWeight(lastTopWeightKg, unit: weightUnit)
-        return ExerciseProgressionRecommendation(
-            exerciseId: exerciseId,
-            exerciseName: exercise.name,
-            action: .holdLoad,
-            suggestedWeightKg: hasMixedWorkingLoads ? nil : lastTopWeightKg,
-            suggestedWeightDisplay: holdWeightDisplay,
-            suggestedRepsMin: repMin,
-            suggestedRepsMax: repMax,
-            weightDeltaDisplay: nil,
-            rationaleKey: hasMixedWorkingLoads ? "progression.rationale.hold_load_mixed" : "progression.rationale.hold_load",
-            rationaleArgs: [
-                "weight": holdWeightDisplay,
-                "unit": lastTopWeightKg <= 0.0 ? "" : weightUnit.label,
-                "floor": "\(repMin)"
-            ],
-            isPlateau: false,
-            consecutiveStagnantSessions: 0,
-            lastSessionSummary: formatSessionSummary(lastWorkingSets, unit: weightUnit)
-        )
+        let missedFloor = workingSets.contains { $0.reps! < repMin }
+        let action: ProgressionAction = canIncrease ? .increaseLoad : (allHitCeiling || missedFloor ? .holdLoad : .addReps)
+        let targets = workingSets.map { set in
+            ProgressionSetTarget(weightKg: canIncrease ? set.weightKg! + incrementKg : set.weightKg,
+                reps: canIncrease ? repMin : (allHitCeiling ? repMax : min(set.reps! + 1, repMax)))
+        }
+        let key: String
+        if canIncrease { key = mixedLoads ? "progression.rationale.increase_load_mixed" : "progression.rationale.increase_load" }
+        else if allHitCeiling { key = confirmedCeiling ? "progression.rationale.load_step_unavailable" : "progression.rationale.repeat_ceiling" }
+        else if missedFloor { key = mixedLoads ? "progression.rationale.hold_load_mixed" : "progression.rationale.hold_load" }
+        else { key = mixedLoads ? "progression.rationale.add_reps_mixed" : "progression.rationale.add_reps" }
+        let weights = Set(targets.compactMap { $0.weightKg })
+        let uniformWeight = weights.count == 1 ? weights.first : nil
+        return ExerciseProgressionRecommendation(exerciseId: exerciseId, exerciseName: exercise.name, action: action,
+            suggestedWeightKg: uniformWeight, suggestedWeightDisplay: formatWeight(uniformWeight ?? topWeight, unit: weightUnit),
+            suggestedRepsMin: targets.map { $0.reps }.min()!, suggestedRepsMax: targets.map { $0.reps }.max()!,
+            weightDeltaDisplay: canIncrease ? "+\(formatWeight(incrementKg, unit: weightUnit)) \(weightUnit.label)" : nil,
+            rationaleKey: key, rationaleArgs: ["ceiling": "\(repMax)", "floor": "\(repMin)", "targetReps": "\(repMin)"],
+            lastSessionSummary: formatSessionSummary(workingSets, unit: weightUnit), setTargets: targets)
     }
 
     public static func evaluateMesocycleFatigue(

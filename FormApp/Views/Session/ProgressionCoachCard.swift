@@ -2,6 +2,8 @@ import SwiftUI
 
 public struct ProgressionCoachCard: View {
     let recommendation: ExerciseProgressionRecommendation
+    let weightUnit: WeightUnit
+    let canApplyTarget: Bool
     let onApplyTarget: () -> Void
     let onOpenInfo: () -> Void
     var onLockedClick: (() -> Void)? = nil
@@ -13,12 +15,16 @@ public struct ProgressionCoachCard: View {
 
     public init(
         recommendation: ExerciseProgressionRecommendation,
+        weightUnit: WeightUnit = .kg,
+        canApplyTarget: Bool = true,
         onApplyTarget: @escaping () -> Void,
         onOpenInfo: @escaping () -> Void,
         onLockedClick: (() -> Void)? = nil,
         onDismissLocked: (() -> Void)? = nil
     ) {
         self.recommendation = recommendation
+        self.weightUnit = weightUnit
+        self.canApplyTarget = canApplyTarget
         self.onApplyTarget = onApplyTarget
         self.onOpenInfo = onOpenInfo
         self.onLockedClick = onLockedClick
@@ -115,6 +121,7 @@ public struct ProgressionCoachCard: View {
 
                         Text(LanguageManager.t(recommendation.action.titleKey))
                             .font(.system(size: 11, weight: .bold))
+                            .fixedSize(horizontal: false, vertical: true)
                             .foregroundColor(recommendation.action.color)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 3)
@@ -130,6 +137,7 @@ public struct ProgressionCoachCard: View {
                             .font(.system(size: 14, weight: .medium))
                             .foregroundColor(AppColors.muted)
                             .padding(4)
+                            .frame(minWidth: 48, minHeight: 48)
                     }
                     .accessibilityLabel(LanguageManager.t("progression.info.title"))
                 }
@@ -147,16 +155,21 @@ public struct ProgressionCoachCard: View {
                                 : "\(recommendation.suggestedRepsMin)–\(recommendation.suggestedRepsMax)"
 
                             let targetHeadline: String = {
-                                if recommendation.suggestedWeightKg != nil {
-                                    return "\(LanguageManager.t("progression.coach.target")): \(recommendation.suggestedWeightDisplay) × \(repStr)"
+                                if recommendation.setTargets.isEmpty {
+                                    return LanguageManager.t(recommendation.isPlateau ? "progression.coach.review" : "progression.coach.no_target")
+                                } else if hasDifferentTargets {
+                                    return LanguageManager.t("progression.coach.by_set")
+                                } else if (recommendation.suggestedWeightKg ?? 0) > 0 {
+                                    return "\(LanguageManager.t("progression.coach.target")): \(recommendation.suggestedWeightDisplay) \(weightUnit.label) × \(repStr)"
                                 } else {
-                                    return "\(LanguageManager.t("progression.coach.target")): \(repStr) reps"
+                                    return "\(LanguageManager.t("progression.coach.target")): \(LanguageManager.t("progression.coach.reps", ["reps": repStr]))"
                                 }
                             }()
 
                             Text(targetHeadline)
                                 .font(.system(size: 14, weight: .bold))
                                 .foregroundColor(AppColors.text)
+                                .fixedSize(horizontal: false, vertical: true)
                         }
 
                         if let delta = recommendation.weightDeltaDisplay {
@@ -169,7 +182,7 @@ public struct ProgressionCoachCard: View {
 
                     Spacer()
 
-                    if recommendation.suggestedWeightKg != nil {
+                    if !recommendation.setTargets.isEmpty {
                         Button(action: {
                             onApplyTarget()
                             wasApplied = true
@@ -186,11 +199,33 @@ public struct ProgressionCoachCard: View {
                             .foregroundColor(wasApplied ? AppColors.accent : AppColors.text)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 5)
+                            .frame(minHeight: 48)
                             .background(wasApplied ? AppColors.positiveBg : AppColors.surface)
                             .overlay(RoundedRectangle(cornerRadius: 8).stroke(wasApplied ? AppColors.accent.opacity(0.5) : AppColors.border, lineWidth: 1))
                             .cornerRadius(8)
                         }
+                        .disabled(!canApplyTarget)
+                        .accessibilityIdentifier("apply-progression-target")
                     }
+                }
+
+                if hasDifferentTargets {
+                    ForEach(Array(recommendation.setTargets.enumerated()), id: \.offset) { index, target in
+                        let load = (target.weightKg ?? 0) > 0 ? "\(weightUnit.formatWeight(target.weightKg!)) \(weightUnit.label) × " : ""
+                        Text(LanguageManager.t("progression.coach.set_target", ["set": "\(index + 1)", "target": load.isEmpty ? LanguageManager.t("progression.coach.reps", ["reps": "\(target.reps)"]) : "\(load)\(target.reps)"]))
+                            .font(.system(size: 12))
+                            .foregroundColor(AppColors.text)
+                    }
+                }
+                if let summary = recommendation.lastSessionSummary {
+                    Text(LanguageManager.t("progression.coach.last_logged", ["summary": summary, "unit": weightUnit.label]))
+                        .font(.system(size: 11))
+                        .foregroundColor(AppColors.muted)
+                }
+                if !recommendation.setTargets.isEmpty && !canApplyTarget {
+                    Text(LanguageManager.t("progression.coach.set_count_changed"))
+                        .font(.system(size: 12))
+                        .foregroundColor(AppColors.secondaryText)
                 }
 
                 // Rationale text
@@ -204,10 +239,16 @@ public struct ProgressionCoachCard: View {
             .background(AppColors.surfaceRaised)
             .overlay(RoundedRectangle(cornerRadius: 16).stroke(recommendation.action.color.opacity(0.35), lineWidth: 1))
             .cornerRadius(16)
+            .onChange(of: recommendation) { _, _ in wasApplied = false }
             .contentShape(Rectangle())
             .onTapGesture {
                 onOpenInfo()
             }
         }
+    }
+
+    private var hasDifferentTargets: Bool {
+        guard let first = recommendation.setTargets.first else { return false }
+        return recommendation.setTargets.contains { $0 != first }
     }
 }

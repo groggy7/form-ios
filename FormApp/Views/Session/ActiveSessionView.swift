@@ -345,18 +345,12 @@ public struct ActiveSessionView: View {
                                     if let recommendation, store.showProgressionTargets {
                                         ProgressionCoachCard(
                                             recommendation: recommendation,
+                                            weightUnit: store.weightUnit,
+                                            canApplyTarget: !recommendation.applicableTargets(sets: currentSets).isEmpty,
                                             onApplyTarget: {
-                                                for (setIdx, setLog) in currentSets.enumerated() {
-                                                    if !setLog.isCompleted {
-                                                        let targetWeight: String = {
-                                                            if let suggestedKg = recommendation.suggestedWeightKg {
-                                                                return store.weightUnit.formatWeight(suggestedKg)
-                                                            }
-                                                            return setLog.weightInput
-                                                        }()
-                                                        let targetReps = "\(recommendation.suggestedRepsMin)"
-                                                        updateSet(exerciseId: exercise.id, index: setIdx, weight: targetWeight, reps: targetReps)
-                                                    }
+                                                for (setIdx, target) in recommendation.applicableTargets(sets: currentSets) {
+                                                    let targetWeight = target.weightKg.flatMap { $0 > 0 ? store.weightUnit.formatWeight($0) : nil } ?? currentSets[setIdx].weightInput
+                                                    updateSet(exerciseId: exercise.id, index: setIdx, weight: targetWeight, reps: "\(target.reps)")
                                                 }
                                             },
                                             onOpenInfo: {

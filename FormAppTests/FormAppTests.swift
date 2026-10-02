@@ -5334,7 +5334,10 @@ final class FormAppTests: XCTestCase {
             )
         ]
 
-        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)!
+        var previous = history[0]
+        previous.id = "previous"
+        previous.completedAt = "2026-09-01T11:00:00Z"
+        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history + [previous], weightUnit: .kg)!
         XCTAssertEqual(rec.action, .increaseLoad)
         XCTAssertEqual(rec.suggestedWeightKg ?? 0, 82.5, accuracy: 0.01)
         XCTAssertEqual(rec.suggestedRepsMin, 8)
@@ -5362,7 +5365,10 @@ final class FormAppTests: XCTestCase {
                     ]
                 )]
             )
-            return ProgressionEngine.computeProgression(exercise: benchPress, history: [record], weightUnit: .kg)!
+            var previous = record
+            previous.id = "previous"
+            previous.completedAt = "2026-09-10T11:00:00Z"
+            return ProgressionEngine.computeProgression(exercise: benchPress, history: [record, previous], weightUnit: .kg)!
         }
 
         let addReps = recommendationFor(10)
@@ -5370,6 +5376,8 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(addReps.suggestedRepsMin, 11)
         XCTAssertNil(addReps.suggestedWeightKg)
         XCTAssertEqual(addReps.rationaleKey, "progression.rationale.add_reps_mixed")
+        XCTAssertEqual(addReps.setTargets.map { $0.weightKg }, [80, 60])
+        XCTAssertEqual(addReps.setTargets.map { $0.reps }, [12, 11])
 
         let hold = recommendationFor(7)
         XCTAssertEqual(hold.action, .holdLoad)
@@ -5431,7 +5439,7 @@ final class FormAppTests: XCTestCase {
             durationSeconds: 3600,
             exerciseLogs: [SessionExerciseLog(
                 exerciseName: "Previous bench label",
-                sets: [SessionSetLog(setNumber: 1, weightKg: 80, reps: 10)],
+                sets: (1...3).map { SessionSetLog(setNumber: $0, weightKg: 80, reps: 10) },
                 exerciseId: "barbell-bench-press"
             )]
         )
@@ -5476,8 +5484,9 @@ final class FormAppTests: XCTestCase {
         let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)!
         XCTAssertEqual(rec.action, .holdLoad)
         XCTAssertEqual(rec.suggestedWeightKg ?? 0, 80.0, accuracy: 0.01)
-        XCTAssertEqual(rec.suggestedRepsMin, 8)
-        XCTAssertEqual(rec.suggestedRepsMax, 12)
+        XCTAssertEqual(rec.suggestedRepsMin, 7)
+        XCTAssertEqual(rec.suggestedRepsMax, 9)
+        XCTAssertEqual(rec.setTargets.map { $0.reps }, [9, 8, 7])
         XCTAssertFalse(rec.isPlateau)
     }
 
@@ -5514,9 +5523,10 @@ final class FormAppTests: XCTestCase {
         let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history, weightUnit: .kg)!
         XCTAssertTrue(rec.isPlateau)
         XCTAssertEqual(rec.action, .deload)
-        XCTAssertEqual(rec.suggestedWeightKg ?? 0, 72.0, accuracy: 0.01)
-        XCTAssertEqual(rec.suggestedVariationId, "incline-dumbbell-press")
-        XCTAssertEqual(rec.suggestedVariationName, "Incline Dumbbell Press")
+        XCTAssertNil(rec.suggestedWeightKg)
+        XCTAssertTrue(rec.setTargets.isEmpty)
+        XCTAssertNil(rec.suggestedVariationId)
+        XCTAssertNil(rec.suggestedVariationName)
     }
 
     func testEveryProgressionSwapResolvesToCatalogExercises() {
@@ -5583,7 +5593,7 @@ final class FormAppTests: XCTestCase {
             durationSeconds: 3600,
             exerciseLogs: [SessionExerciseLog(
                 exerciseName: "Barbell Bench Press",
-                sets: [SessionSetLog(setNumber: 1, weightKg: 80, reps: 3)]
+                sets: (1...3).map { SessionSetLog(setNumber: $0, weightKg: 80, reps: 3) }
             )]
         )]
         XCTAssertEqual(ProgressionEngine.computeProgression(exercise: legacy, history: history)?.action, .holdLoad)
@@ -7399,5 +7409,169 @@ final class FormAppTests: XCTestCase {
         )
 
         XCTAssertTrue(WorkoutCalendar.isSessionComplete(session: session, workout: workout))
+    }
+}
+
+final class ProgressionReliabilityTests: XCTestCase {
+    private let bench = Exercise(name: "Barbell Bench Press", exerciseId: "barbell-bench-press", sets: 3, reps: RepTarget(min: 8, max: 12))
+    private func record(_ day: Int, reps: [Int] = [8, 8, 8], loads: [Double?]? = nil) -> WorkoutSessionRecord {
+        let weights = loads ?? Array(repeating: 65.0, count: reps.count)
+        let date = String(format: "2026-09-%02d", day)
+        return WorkoutSessionRecord(id: "s\(day)", programId: "p", workoutId: "w", workoutTitle: "Fixture",
+            startedAt: "\(date)T10:00:00Z", completedAt: "\(date)T11:00:00Z", durationSeconds: 60,
+            exerciseLogs: [SessionExerciseLog(exerciseName: bench.name,
+                sets: reps.enumerated().map { SessionSetLog(setNumber: $0.offset + 1, weightKg: weights[$0.offset], reps: $0.element) },
+                targetSets: 3, exerciseId: bench.exerciseId)])
+    }
+
+    func testEightRepsNeverJumpToTwelveEvenBelowPrescriptionFloor() {
+        for range in [RepTarget(min: 8, max: 12), RepTarget(min: 12, max: 12), RepTarget(min: 12, max: 15)] {
+            var exercise = bench
+            exercise.reps = range
+            let rec = ProgressionEngine.computeProgression(exercise: exercise, history: [record(1)])!
+            XCTAssertEqual(rec.setTargets.map { $0.reps }, [9, 9, 9])
+            XCTAssertEqual(rec.setTargets.map { $0.weightKg }, [65, 65, 65])
+            XCTAssertEqual(rec.suggestedRepsMax, 9)
+        }
+    }
+
+    func testTargetsPreserveSetOrderLoadsAndRepCeilings() {
+        var source = record(1, reps: [12, 10, 8], loads: [80, 70, 60])
+        source.exerciseLogs[0].sets = Array(source.exerciseLogs[0].sets.reversed()) + [SessionSetLog(setNumber: 0, weightKg: 20, reps: 2, isWarmup: true)]
+        let rec = ProgressionEngine.computeProgression(exercise: bench, history: [source])!
+        XCTAssertEqual(rec.setTargets.map { $0.reps }, [12, 11, 9])
+        XCTAssertEqual(rec.setTargets.map { $0.weightKg }, [80, 70, 60])
+        XCTAssertEqual(rec.action, .addReps)
+    }
+
+    func testIncompleteLatestLogDoesNotFallBackToOlderCeilingPerformance() {
+        let rec = ProgressionEngine.computeProgression(exercise: bench, history: [record(1, reps: [12, 12, 12]), record(2, reps: [8])])!
+        XCTAssertEqual(rec.action, .insufficientData)
+        XCTAssertTrue(rec.setTargets.isEmpty)
+        XCTAssertNil(rec.suggestedWeightKg)
+    }
+
+    func testLoadIncreaseNeedsTwoFullSessionsAtTheSameLoadsAndCeiling() {
+        let ceiling = record(2, reps: [12, 12, 12])
+        let single = ProgressionEngine.computeProgression(exercise: bench, history: [ceiling])!
+        XCTAssertEqual(single.action, .holdLoad)
+        XCTAssertEqual(single.rationaleKey, "progression.rationale.repeat_ceiling")
+        XCTAssertEqual(single.suggestedWeightKg!, 65, accuracy: 0.001)
+        let confirmed = ProgressionEngine.computeProgression(exercise: bench, history: [ceiling, record(1, reps: [12, 12, 12])])!
+        XCTAssertEqual(confirmed.action, .increaseLoad)
+        XCTAssertEqual(confirmed.setTargets.map { $0.reps }, [8, 8, 8])
+        XCTAssertEqual(confirmed.suggestedWeightKg!, 67.5, accuracy: 0.001)
+        for previous in [record(1, reps: [12, 12, 11]), record(1, reps: [12]), record(1, reps: [12, 12, 12], loads: [60, 60, 60])] {
+            XCTAssertEqual(ProgressionEngine.computeProgression(exercise: bench, history: [previous, ceiling])!.action, .holdLoad)
+        }
+        XCTAssertEqual(ProgressionEngine.computeProgression(exercise: bench, history: [ceiling, ceiling])!.action, .holdLoad)
+    }
+
+    func testLoadStepsRespectUnitsEquipmentBodyweightAndTenPercentLimit() {
+        let full = [record(1, reps: [12, 12, 12]), record(2, reps: [12, 12, 12])]
+        let pounds = ProgressionEngine.computeProgression(exercise: bench, history: full, weightUnit: .lbs)!
+        XCTAssertEqual(WeightUnit.lbs.toDisplay(pounds.suggestedWeightKg! - 65), 5, accuracy: 0.001)
+        let light = [record(1, reps: [12, 12, 12], loads: [10, 10, 10]), record(2, reps: [12, 12, 12], loads: [10, 10, 10])]
+        XCTAssertEqual(ProgressionEngine.computeProgression(exercise: bench, history: light)!.action, .holdLoad)
+        var bodyweight = bench
+        bodyweight.name = "Pull-Ups"
+        bodyweight.exerciseId = "pull-ups"
+        let bwLogs = full.map { source -> WorkoutSessionRecord in
+            var source = source
+            source.exerciseLogs[0].exerciseName = bodyweight.name
+            source.exerciseLogs[0].exerciseId = bodyweight.exerciseId
+            source.exerciseLogs[0].sets = source.exerciseLogs[0].sets.map { set in
+                var set = set
+                set.weightKg = 0
+                return set
+            }
+            return source
+        }
+        let bw = ProgressionEngine.computeProgression(exercise: bodyweight, history: bwLogs)!
+        XCTAssertEqual(bw.action, .holdLoad)
+        XCTAssertTrue(bw.setTargets.allSatisfy { $0.weightKg == 0 })
+        var custom = bench
+        custom.name = "Custom movement"
+        custom.exerciseId = "custom-movement"
+        let customLogs = full.map { source -> WorkoutSessionRecord in
+            var source = source
+            source.exerciseLogs[0].exerciseName = custom.name
+            source.exerciseLogs[0].exerciseId = custom.exerciseId
+            return source
+        }
+        XCTAssertEqual(ProgressionEngine.computeProgression(exercise: custom, history: customLogs)!.action, .holdLoad)
+    }
+
+    func testInvalidOrAmbiguousLogsProduceNoApplicableTarget() {
+        for load: Double? in [nil, .nan, .infinity, -1, 0, 1e100] {
+            let rec = ProgressionEngine.computeProgression(exercise: bench, history: [record(1, loads: [load, load, load])])!
+            XCTAssertEqual(rec.action, .insufficientData)
+            XCTAssertTrue(rec.setTargets.isEmpty)
+        }
+        var duplicated = record(1)
+        duplicated.exerciseLogs += duplicated.exerciseLogs
+        XCTAssertEqual(ProgressionEngine.computeProgression(exercise: bench, history: [duplicated])!.action, .insufficientData)
+        XCTAssertTrue(ProgressionEngine.computeProgression(exercise: bench, history: [record(1, reps: [8, 0, 8])])!.setTargets.isEmpty)
+    }
+
+    func testPlateauRequiresComparableFullSessionsAndNeverAppliesAutomaticDeload() {
+        let history = (1...3).map { record($0) }
+        let plateau = ProgressionEngine.computeProgression(exercise: bench, history: history)!
+        XCTAssertTrue(plateau.isPlateau)
+        XCTAssertTrue(plateau.setTargets.isEmpty)
+        XCTAssertNil(plateau.suggestedWeightKg)
+        let changingLoads = (1...3).map { record($0, loads: Array(repeating: 72.5 - Double($0) * 2.5, count: 3)) }
+        XCTAssertFalse(ProgressionEngine.computeProgression(exercise: bench, history: changingLoads)!.isPlateau)
+        XCTAssertFalse(ProgressionEngine.computeProgression(exercise: bench, history: [record(1, reps: [8, 8]), record(2), record(3)])!.isPlateau)
+        XCTAssertFalse(ProgressionEngine.computeProgression(exercise: bench, history: [record(1), record(2), record(3, reps: [8, 9, 8])])!.isPlateau)
+    }
+
+    func testApplyProtectsWarmupsCompletedRowsAndChangedSetCounts() {
+        let rec = ProgressionEngine.computeProgression(exercise: bench, history: [record(1, reps: [12, 10, 8], loads: [80, 70, 60])])!
+        let active = [ExerciseSetLog(setNumber: 0, isWarmup: true), ExerciseSetLog(setNumber: 1, isCompleted: true), ExerciseSetLog(setNumber: 2), ExerciseSetLog(setNumber: 3)]
+        let applicable = rec.applicableTargets(sets: active)
+        XCTAssertEqual(Set(applicable.keys), [2, 3])
+        XCTAssertEqual(applicable[2], ProgressionSetTarget(weightKg: 70, reps: 11))
+        XCTAssertEqual(applicable[3], ProgressionSetTarget(weightKg: 60, reps: 9))
+        XCTAssertTrue(rec.applicableTargets(sets: active + [ExerciseSetLog(setNumber: 4)]).isEmpty)
+        XCTAssertTrue(rec.applicableTargets(sets: active.map { set in var set = set; set.isCompleted = true; return set }).isEmpty)
+    }
+
+    func testNoHistoryWarmupsAndFailureNeverOfferAnApplicableTarget() {
+        var warmups = record(1)
+        warmups.exerciseLogs[0].sets = [SessionSetLog(setNumber: 0, weightKg: 20, reps: 10, isWarmup: true)]
+        for history in [[WorkoutSessionRecord](), [warmups]] {
+            let rec = ProgressionEngine.computeProgression(exercise: bench, history: history)!
+            XCTAssertEqual(rec.action, .firstSession)
+            XCTAssertTrue(rec.setTargets.isEmpty)
+        }
+        var failure = bench
+        failure.reps = RepTarget(toFailure: true)
+        XCTAssertNil(ProgressionEngine.computeProgression(exercise: failure, history: [record(1)]))
+    }
+
+    @MainActor func testCoachCardsAtNarrowWidthAndLargeLocalizedText() throws {
+        let previous = LanguageManager.shared.currentLanguage
+        let manager = ProAccessManager.shared
+        manager.setFeatureOverride(.autoProgression, unlocked: true)
+        defer { LanguageManager.setLanguage(previous); manager.setFeatureOverride(.autoProgression, unlocked: nil) }
+        let cases: [(String, [WorkoutSessionRecord])] = [("uniform", [record(1)]), ("by-set", [record(1, reps: [12, 10, 8], loads: [80, 70, 60])]), ("incomplete", [record(1, reps: [8])])]
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            for (name, history) in cases {
+                let rec = ProgressionEngine.computeProgression(exercise: bench, history: history)!
+                let content = ProgressionCoachCard(recommendation: rec, onApplyTarget: {}, onOpenInfo: {})
+                    .padding(20).frame(width: 320).background(AppColors.background)
+                    .environment(\.sizeCategory, .extraExtraExtraLarge)
+                let renderer = ImageRenderer(content: content)
+                renderer.scale = 1
+                let image = try XCTUnwrap(renderer.uiImage)
+                XCTAssertEqual(image.size.width, 320)
+                let attachment = XCTAttachment(image: image)
+                attachment.name = "progression-\(language)-\(name)"
+                attachment.lifetime = .keepAlways
+                add(attachment)
+            }
+        }
     }
 }

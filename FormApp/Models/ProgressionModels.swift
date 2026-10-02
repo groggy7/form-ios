@@ -6,6 +6,7 @@ public enum ProgressionAction: String, CaseIterable, Identifiable {
     case holdLoad = "hold_load"
     case deload = "deload"
     case firstSession = "first_session"
+    case insufficientData = "insufficient_data"
 
     public var id: String { rawValue }
 
@@ -16,6 +17,7 @@ public enum ProgressionAction: String, CaseIterable, Identifiable {
         case .holdLoad: return "progression.action.hold_load"
         case .deload: return "progression.action.deload"
         case .firstSession: return "progression.action.first_session"
+        case .insufficientData: return "progression.action.insufficient_data"
         }
     }
 
@@ -25,7 +27,7 @@ public enum ProgressionAction: String, CaseIterable, Identifiable {
         case .addReps: return Color(hex: 0x12D8D2)
         case .holdLoad: return Color(hex: 0xFEB447)
         case .deload: return Color(hex: 0xB18AFF)
-        case .firstSession: return Color(hex: 0x8F999F)
+        case .firstSession, .insufficientData: return Color(hex: 0x8F999F)
         }
     }
 
@@ -35,8 +37,18 @@ public enum ProgressionAction: String, CaseIterable, Identifiable {
         case .addReps: return Color(hex: 0x0C292B)
         case .holdLoad: return Color(hex: 0x2C1E14)
         case .deload: return Color(hex: 0x28203D)
-        case .firstSession: return Color(hex: 0x1D2227)
+        case .firstSession, .insufficientData: return Color(hex: 0x1D2227)
         }
+    }
+}
+
+public struct ProgressionSetTarget: Equatable {
+    public let weightKg: Double?
+    public let reps: Int
+
+    public init(weightKg: Double?, reps: Int) {
+        self.weightKg = weightKg
+        self.reps = reps
     }
 }
 
@@ -56,6 +68,7 @@ public struct ExerciseProgressionRecommendation: Equatable {
     public let suggestedVariationId: String?
     public let suggestedVariationName: String?
     public let lastSessionSummary: String?
+    public let setTargets: [ProgressionSetTarget]
 
     public init(
         exerciseId: String,
@@ -72,7 +85,8 @@ public struct ExerciseProgressionRecommendation: Equatable {
         consecutiveStagnantSessions: Int = 0,
         suggestedVariationId: String? = nil,
         suggestedVariationName: String? = nil,
-        lastSessionSummary: String? = nil
+        lastSessionSummary: String? = nil,
+        setTargets: [ProgressionSetTarget] = []
     ) {
         self.exerciseId = exerciseId
         self.exerciseName = exerciseName
@@ -89,6 +103,16 @@ public struct ExerciseProgressionRecommendation: Equatable {
         self.suggestedVariationId = suggestedVariationId
         self.suggestedVariationName = suggestedVariationName
         self.lastSessionSummary = lastSessionSummary
+        self.setTargets = setTargets
+    }
+
+    /// Match working-set positions, never warmups, completed rows or added sets.
+    public func applicableTargets(sets: [ExerciseSetLog]) -> [Int: ProgressionSetTarget] {
+        let workingIndices = sets.indices.filter { !sets[$0].isWarmup }
+        guard !setTargets.isEmpty, workingIndices.count == setTargets.count else { return [:] }
+        return Dictionary(uniqueKeysWithValues: workingIndices.enumerated().compactMap { ordinal, index in
+            sets[index].isCompleted ? nil : (index, setTargets[ordinal])
+        })
     }
 }
 
