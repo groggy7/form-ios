@@ -347,6 +347,7 @@ public struct ActiveSessionView: View {
                                             recommendation: recommendation,
                                             weightUnit: store.weightUnit,
                                             canApplyTarget: !recommendation.applicableTargets(sets: currentSets).isEmpty,
+                                            sessionSets: currentSets,
                                             onApplyTarget: {
                                                 for (setIdx, target) in recommendation.applicableTargets(sets: currentSets) {
                                                     let targetWeight = target.weightKg.flatMap { $0 > 0 ? store.weightUnit.formatWeight($0) : nil } ?? currentSets[setIdx].weightInput

@@ -52,6 +52,17 @@ public struct ProgressionSetTarget: Equatable {
     }
 }
 
+public struct ProgressionLoggingProgress: Equatable {
+    public let recordedSets: Int
+    public let totalSets: Int
+    public var remainingSets: Int { totalSets - recordedSets }
+
+    public static func from(sets: [ExerciseSetLog]) -> ProgressionLoggingProgress {
+        let workingSets = sets.filter { !$0.isWarmup }
+        return ProgressionLoggingProgress(recordedSets: workingSets.filter { $0.isCompleted }.count, totalSets: workingSets.count)
+    }
+}
+
 public struct ExerciseProgressionRecommendation: Equatable {
     public let exerciseId: String
     public let exerciseName: String

@@ -7489,6 +7489,23 @@ final class FormAppTests: XCTestCase {
 }
 
 final class ProgressionReliabilityTests: XCTestCase {
+    func testLoggingProgressExcludesWarmupsAndPrefillsAndTracksWorkingSetChanges() {
+        let workingSets = (1...6).map { index in ExerciseSetLog(
+            setNumber: index, weightKg: 65, completedReps: 8, isCompleted: index <= 4
+        ) }
+        let warmup = ExerciseSetLog(setNumber: 0, isCompleted: true, isWarmup: true)
+        XCTAssertEqual(ProgressionLoggingProgress.from(sets: [warmup] + workingSets), ProgressionLoggingProgress(recordedSets: 4, totalSets: 6))
+        XCTAssertEqual(ProgressionLoggingProgress.from(sets: workingSets).remainingSets, 2)
+        var undone = workingSets
+        undone[3].isCompleted = false
+        XCTAssertEqual(ProgressionLoggingProgress.from(sets: undone), ProgressionLoggingProgress(recordedSets: 3, totalSets: 6))
+        XCTAssertEqual(ProgressionLoggingProgress.from(sets: workingSets + [ExerciseSetLog(setNumber: 7)]), ProgressionLoggingProgress(recordedSets: 4, totalSets: 7))
+        XCTAssertEqual(ProgressionLoggingProgress.from(sets: Array(workingSets.dropLast())), ProgressionLoggingProgress(recordedSets: 4, totalSets: 5))
+        let completed = workingSets.map { set in var result = set; result.isCompleted = true; return result }
+        XCTAssertEqual(ProgressionLoggingProgress.from(sets: completed).remainingSets, 0)
+        XCTAssertEqual(ProgressionLoggingProgress.from(sets: [warmup]), ProgressionLoggingProgress(recordedSets: 0, totalSets: 0))
+    }
+
     private let bench = Exercise(name: "Barbell Bench Press", exerciseId: "barbell-bench-press", sets: 3, reps: RepTarget(min: 8, max: 12))
     private func record(_ day: Int, reps: [Int] = [8, 8, 8], loads: [Double?]? = nil) -> WorkoutSessionRecord {
         let weights = loads ?? Array(repeating: 65.0, count: reps.count)
@@ -7631,18 +7648,26 @@ final class ProgressionReliabilityTests: XCTestCase {
         let manager = ProAccessManager.shared
         manager.setFeatureOverride(.autoProgression, unlocked: true)
         defer { LanguageManager.setLanguage(previous); manager.setFeatureOverride(.autoProgression, unlocked: nil) }
-        let cases: [(String, [WorkoutSessionRecord])] = [("uniform", [record(1)]), ("by-set", [record(1, reps: [12, 10, 8], loads: [80, 70, 60])]), ("incomplete", [record(1, reps: [8])]), ("incomplete-six", [record(1, reps: [8])]), ("baseline", [])]
+        let cases: [(String, [WorkoutSessionRecord])] = [("uniform", [record(1)]), ("by-set", [record(1, reps: [12, 10, 8], loads: [80, 70, 60])]),
+            ("incomplete", [record(1, reps: [8])]), ("incomplete-six", [record(1, reps: [8])]),
+            ("incomplete-one-left", [record(1, reps: [8])]), ("incomplete-recorded", [record(1, reps: [8])]), ("baseline", [])]
         for language in ["en", "tr"] {
             LanguageManager.setLanguage(language)
             for (name, history) in cases {
                 var exercise = bench
-                if name == "incomplete-six" { exercise.sets = 6 }
+                let total = name == "incomplete" ? 3 : 6
+                let recorded = name == "incomplete" ? 1 : name == "incomplete-one-left" ? 5 : name == "incomplete-recorded" ? 6 : 4
+                if name.hasPrefix("incomplete") { exercise.sets = total }
+                let sessionSets: [ExerciseSetLog]? = name.hasPrefix("incomplete")
+                    ? [ExerciseSetLog(setNumber: 0, isCompleted: true, isWarmup: true)] + (1...total).map { index in
+                        ExerciseSetLog(setNumber: index, weightKg: 65, completedReps: 8, isCompleted: index <= recorded)
+                    } : nil
                 let rec = ProgressionEngine.computeProgression(exercise: exercise, history: history)!
                 let layouts: [(CGFloat, ContentSizeCategory)] = name == "baseline" || name.hasPrefix("incomplete")
                     ? [(393, .large), (320, .extraExtraExtraLarge)]
                     : [(320, .extraExtraExtraLarge)]
                 for (width, textSize) in layouts {
-                    let content = ProgressionCoachCard(recommendation: rec, onApplyTarget: {}, onOpenInfo: {})
+                    let content = ProgressionCoachCard(recommendation: rec, sessionSets: sessionSets, onApplyTarget: {}, onOpenInfo: {})
                         .padding(20).frame(width: width).background(AppColors.background)
                         .environment(\.sizeCategory, textSize)
                     let renderer = ImageRenderer(content: content)

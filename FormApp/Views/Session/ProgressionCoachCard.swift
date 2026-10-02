@@ -4,6 +4,7 @@ public struct ProgressionCoachCard: View {
     let recommendation: ExerciseProgressionRecommendation
     let weightUnit: WeightUnit
     let canApplyTarget: Bool
+    let sessionSets: [ExerciseSetLog]?
     let onApplyTarget: () -> Void
     let onOpenInfo: () -> Void
     var onLockedClick: (() -> Void)? = nil
@@ -20,6 +21,7 @@ public struct ProgressionCoachCard: View {
         recommendation: ExerciseProgressionRecommendation,
         weightUnit: WeightUnit = .kg,
         canApplyTarget: Bool = true,
+        sessionSets: [ExerciseSetLog]? = nil,
         onApplyTarget: @escaping () -> Void,
         onOpenInfo: @escaping () -> Void,
         onLockedClick: (() -> Void)? = nil,
@@ -28,6 +30,7 @@ public struct ProgressionCoachCard: View {
         self.recommendation = recommendation
         self.weightUnit = weightUnit
         self.canApplyTarget = canApplyTarget
+        self.sessionSets = sessionSets
         self.onApplyTarget = onApplyTarget
         self.onOpenInfo = onOpenInfo
         self.onLockedClick = onLockedClick
@@ -290,16 +293,13 @@ public struct ProgressionCoachCard: View {
             }
             .padding(.bottom, 4)
 
-            Text(LanguageManager.t(recommendation.action == .firstSession ? "progression.coach.no_target" : "progression.coach.more_history"))
-                .font(.system(size: emptyHeadlineSize, weight: .semibold))
+            Text(emptyHistoryCopy.headline)
+                .font(.system(size: emptyHeadlineSize, weight: loggingProgress == nil ? .semibold : .bold))
                 .foregroundColor(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.bottom, 6)
 
-            Text(LanguageManager.t(
-                recommendation.action == .firstSession ? "progression.coach.first_session_hint" : "progression.coach.insufficient_data_hint",
-                recommendation.rationaleArgs
-            ))
+            Text(emptyHistoryCopy.description)
                 .font(.system(size: emptyBodySize))
                 .lineSpacing(2)
                 .foregroundColor(AppColors.muted)
@@ -315,6 +315,27 @@ public struct ProgressionCoachCard: View {
         .contentShape(Rectangle())
         .onTapGesture(perform: onOpenInfo)
         .accessibilityIdentifier("progression-coach-card")
+    }
+
+    private var loggingProgress: ProgressionLoggingProgress? {
+        guard recommendation.action == .insufficientData, let sessionSets else { return nil }
+        let progress = ProgressionLoggingProgress.from(sets: sessionSets)
+        return progress.totalSets > 0 ? progress : nil
+    }
+
+    private var emptyHistoryCopy: (headline: String, description: String) {
+        if recommendation.action == .firstSession {
+            return (LanguageManager.t("progression.coach.no_target"), LanguageManager.t("progression.coach.first_session_hint"))
+        }
+        guard let progress = loggingProgress else {
+            return (LanguageManager.t("progression.coach.more_history"),
+                    LanguageManager.t("progression.coach.insufficient_data_hint", recommendation.rationaleArgs))
+        }
+        let args = ["recorded": "\(progress.recordedSets)", "sets": "\(progress.totalSets)", "remaining": "\(progress.remainingSets)"]
+        let headlineKey = progress.totalSets == 1 ? "progression.coach.recorded_set" : "progression.coach.recorded_sets"
+        let descriptionKey = progress.remainingSets == 0 ? "progression.coach.working_sets_recorded_hint"
+            : progress.remainingSets == 1 ? "progression.coach.remaining_set_hint" : "progression.coach.remaining_sets_hint"
+        return (LanguageManager.t(headlineKey, args), LanguageManager.t(descriptionKey, args))
     }
 
     private var emptyHistoryHeader: some View {
