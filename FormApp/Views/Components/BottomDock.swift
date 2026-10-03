@@ -1,20 +1,48 @@
 import SwiftUI
+import UIKit
 
 public struct BottomDock: View {
     @Binding var currentView: ViewMode
+    var dragPosition: CGFloat?
 
-    public init(currentView: Binding<ViewMode>) {
+    public init(currentView: Binding<ViewMode>, dragPosition: CGFloat? = nil) {
         self._currentView = currentView
+        self.dragPosition = dragPosition
     }
 
+    private let destinations: [(mode: ViewMode, title: String, icon: String)] = [
+        (.today, LanguageManager.t("nav.home"), "bolt.fill"),
+        (.plan, LanguageManager.t("nav.plan"), "calendar"),
+        (.library, LanguageManager.t("nav.library"), "dumbbell.fill"),
+        (.history, LanguageManager.t("nav.progress"), "chart.xyaxis.line")
+    ]
+
     public var body: some View {
-        HStack(spacing: 4) {
-            dockItem(mode: .today, title: LanguageManager.t("nav.home"), icon: "bolt.fill")
-            dockItem(mode: .plan, title: LanguageManager.t("nav.plan"), icon: "calendar")
-            dockItem(mode: .library, title: LanguageManager.t("nav.library"), icon: "dumbbell.fill")
-            dockItem(mode: .history, title: LanguageManager.t("nav.progress"), icon: "chart.xyaxis.line")
+        GeometryReader { proxy in
+            let innerPadding: CGFloat = 6
+            let spacing: CGFloat = 4
+            let totalAvailableWidth = proxy.size.width - (innerPadding * 2)
+            let itemWidth = max(0, (totalAvailableWidth - (spacing * CGFloat(destinations.count - 1))) / CGFloat(destinations.count))
+            let currentIndex = CGFloat(destinations.firstIndex(where: { $0.mode == currentView }) ?? 0)
+            let activePosition = max(0, min(CGFloat(destinations.count - 1), dragPosition ?? currentIndex))
+            let pillOffset = innerPadding + activePosition * (itemWidth + spacing)
+
+            ZStack(alignment: .leading) {
+                // Sliding active pill
+                RoundedRectangle(cornerRadius: 17, style: .continuous)
+                    .fill(AppColors.positiveBg)
+                    .frame(width: itemWidth, height: proxy.size.height - (innerPadding * 2))
+                    .offset(x: pillOffset, y: 0)
+                    .allowsHitTesting(false)
+
+                HStack(spacing: spacing) {
+                    ForEach(Array(destinations.enumerated()), id: \.offset) { index, item in
+                        dockItem(mode: item.mode, title: item.title, icon: item.icon, index: CGFloat(index), activePosition: activePosition)
+                    }
+                }
+                .padding(innerPadding)
+            }
         }
-        .padding(6)
         .frame(maxWidth: 360)
         .frame(height: 72)
         .background(
@@ -30,32 +58,43 @@ public struct BottomDock: View {
         .padding(.bottom, 20)
     }
 
-    private func dockItem(mode: ViewMode, title: String, icon: String) -> some View {
-        let isSelected = currentView == mode
+    private func dockItem(mode: ViewMode, title: String, icon: String, index: CGFloat, activePosition: CGFloat) -> some View {
+        let distance = abs(activePosition - index)
+        let selectionFraction = max(0, min(1, 1 - distance))
+        let foreground = interpolatedForeground(selectionFraction)
 
         return Button(action: {
-            withAnimation(.linear(duration: 0.1)) {
-                currentView = mode
-            }
+            currentView = mode
         }) {
             VStack(spacing: 4) {
                 Image(systemName: icon)
-                    .font(.system(size: 20, weight: isSelected ? .semibold : .regular))
-                    .foregroundColor(isSelected ? AppColors.accent : AppColors.secondaryText)
+                    .font(.system(size: 20, weight: .regular))
+                    .foregroundColor(foreground)
                     .frame(height: 22)
 
                 Text(title)
-                    .font(.system(size: 11, weight: isSelected ? .semibold : .medium))
-                    .foregroundColor(isSelected ? AppColors.accent : AppColors.secondaryText)
+                    .font(.system(size: 11, weight: .medium))
+                    .foregroundColor(foreground)
                     .lineLimit(1)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .background(
-                RoundedRectangle(cornerRadius: 17, style: .continuous)
-                    .fill(isSelected ? AppColors.positiveBg : Color.clear)
-            )
             .contentShape(RoundedRectangle(cornerRadius: 17, style: .continuous))
         }
         .buttonStyle(.plain)
+        .accessibilityIdentifier("dock-\(mode.rawValue)")
+        .accessibilityAddTraits(currentView == mode ? .isSelected : [])
     }
+
+    private func interpolatedForeground(_ fraction: CGFloat) -> Color {
+        var r0: CGFloat = 0, g0: CGFloat = 0, b0: CGFloat = 0, a0: CGFloat = 0
+        var r1: CGFloat = 0, g1: CGFloat = 0, b1: CGFloat = 0, a1: CGFloat = 0
+        UIColor(AppColors.secondaryText).getRed(&r0, green: &g0, blue: &b0, alpha: &a0)
+        UIColor(AppColors.accent).getRed(&r1, green: &g1, blue: &b1, alpha: &a1)
+        return Color(.sRGB,
+                     red: Double(r0 + (r1 - r0) * fraction),
+                     green: Double(g0 + (g1 - g0) * fraction),
+                     blue: Double(b0 + (b1 - b0) * fraction),
+                     opacity: Double(a0 + (a1 - a0) * fraction))
+    }
+
 }

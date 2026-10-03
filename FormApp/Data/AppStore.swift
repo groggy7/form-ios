@@ -83,11 +83,37 @@ public final class AppStore: ObservableObject {
         }
     }
 
+    public static let mainTabs: [ViewMode] = [.today, .plan, .library, .history]
+
     public func navigate(to view: ViewMode) {
         self.selectedExerciseId = nil
         self.selectedHistoryDetailDay = nil
         self.returnView = nil
         self.currentView = view
+    }
+
+    @discardableResult
+    public func navigateToNextTab() -> Bool {
+        guard let currentIndex = Self.mainTabs.firstIndex(of: currentView),
+              currentIndex < Self.mainTabs.count - 1 else {
+            return false
+        }
+        navigate(to: Self.mainTabs[currentIndex + 1])
+        return true
+    }
+
+    @discardableResult
+    public func navigateToPreviousTab() -> Bool {
+        guard let currentIndex = Self.mainTabs.firstIndex(of: currentView),
+              currentIndex > 0 else {
+            return false
+        }
+        let target = Self.mainTabs[currentIndex - 1]
+        if target == .today {
+            selectedWorkoutId = nil
+        }
+        navigate(to: target)
+        return true
     }
 
     public func findExercise(id: String) -> Exercise? {

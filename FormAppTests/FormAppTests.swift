@@ -7803,4 +7803,275 @@ final class ProgressionReliabilityTests: XCTestCase {
             }
         }
     }
+
+    @MainActor
+    func testTabSwipeTransitionsFollowCorrectOrder() {
+        let store = AppStore.shared
+        store.navigate(to: .today)
+        XCTAssertEqual(store.currentView, .today)
+
+        XCTAssertTrue(store.navigateToNextTab())
+        XCTAssertEqual(store.currentView, .plan)
+
+        XCTAssertTrue(store.navigateToNextTab())
+        XCTAssertEqual(store.currentView, .library)
+
+        XCTAssertTrue(store.navigateToNextTab())
+        XCTAssertEqual(store.currentView, .history)
+
+        XCTAssertFalse(store.navigateToNextTab())
+        XCTAssertEqual(store.currentView, .history)
+
+        XCTAssertTrue(store.navigateToPreviousTab())
+        XCTAssertEqual(store.currentView, .library)
+
+        XCTAssertTrue(store.navigateToPreviousTab())
+        XCTAssertEqual(store.currentView, .plan)
+
+        XCTAssertTrue(store.navigateToPreviousTab())
+        XCTAssertEqual(store.currentView, .today)
+
+        XCTAssertFalse(store.navigateToPreviousTab())
+        XCTAssertEqual(store.currentView, .today)
+    }
+
+    @MainActor
+    func testDirectClickTabSwitchesPageAndActivePill() {
+        let store = AppStore.shared
+        store.isOnboardingCompleted = true
+        store.navigate(to: .today)
+
+        let rootView = RootView()
+        let controller = UIHostingController(rootView: rootView)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 390, height: 844))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        XCTAssertEqual(store.currentView, .today)
+
+        store.navigate(to: .library)
+        controller.view.setNeedsLayout()
+        controller.view.layoutIfNeeded()
+
+        XCTAssertEqual(store.currentView, .library)
+    }
 }
+
+final class TabPagingTests: XCTestCase {
+    @MainActor
+    func testTabPagerKeepsFractionalOffsetAndDockInSync() throws {
+        for width in [CGFloat(320), CGFloat(440)] {
+            try withTabPager(width: width) { store, controller, pager in
+                // Include both sides of each selection boundary, a reversal
+                // before release, and all four settled pages.
+                for position in [CGFloat(0), -0.2, 0, 0.25, 0.6, 0.85, 0.3, 0,
+                                 1, 1.25, 1.6, 2, 2.4, 2.75, 3, 3.2, 3, 2, 1, 0] {
+                    pager.setContentOffset(CGPoint(x: pager.bounds.width * position, y: 0), animated: false)
+                    pumpTabPager(controller)
+                    XCTAssertEqual(pager.contentOffset.x / pager.bounds.width, position, accuracy: 0.01,
+                                   "Crossing the selection boundary must not snap an unfinished drag")
+                    try assertDockPosition(max(0, min(3, position)), in: controller)
+                    if position.rounded() == position {
+                        XCTAssertEqual(store.currentView, AppStore.mainTabs[Int(position)])
+                    }
+                    if position == 0.6 || position == 2.4 {
+                        let attachment = XCTAttachment(image: tabPagerImage(controller))
+                        attachment.name = "interactive-tab-swipe-\(Int(width))-\(position)"
+                        attachment.lifetime = .keepAlways
+                        add(attachment)
+                    }
+                }
+            }
+        }
+    }
+
+    @MainActor
+    func testTabPagerExternalNavigationOverridesPartialSwipe() throws {
+        try withTabPager { store, controller, pager in
+            for destination in [ViewMode.history, .today, .library, .plan, .history, .today] {
+                let source = CGFloat(try XCTUnwrap(AppStore.mainTabs.firstIndex(of: store.currentView)))
+                let partialPosition = source + (source < 3 ? 0.35 : -0.35)
+                pager.setContentOffset(CGPoint(x: pager.bounds.width * partialPosition, y: 0), animated: false)
+                pumpTabPager(controller)
+                store.navigate(to: destination)
+                pumpTabPager(controller)
+                let index = try XCTUnwrap(AppStore.mainTabs.firstIndex(of: destination))
+                XCTAssertEqual(pager.contentOffset.x / pager.bounds.width, CGFloat(index), accuracy: 0.01)
+                XCTAssertEqual(store.currentView, destination)
+                try assertDockPosition(CGFloat(index), in: controller)
+            }
+        }
+    }
+
+    @MainActor
+    func testTabPagerDisablesOnlyPagingInExerciseDetails() throws {
+        try withTabPager { store, controller, pager in
+            store.openExercise(id: "barbell-bench-press")
+            pumpTabPager(controller)
+            XCTAssertEqual(pager.contentOffset.x / pager.bounds.width, 2, accuracy: 0.01)
+            XCTAssertEqual(store.selectedExerciseId, "barbell-bench-press")
+            XCTAssertFalse(pager.isScrollEnabled)
+            let attachment = XCTAttachment(image: tabPagerImage(controller))
+            attachment.name = "pager-exercise-detail-scroll"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+            let detailScroll = try XCTUnwrap(tabScrollViews(in: controller.view).first {
+                $0 !== pager && $0.bounds.width > 300 && $0.isScrollEnabled
+                    && $0.convert($0.bounds, to: controller.view).intersects(controller.view.bounds)
+            })
+            XCTAssertTrue(detailScroll.panGestureRecognizer.isEnabled,
+                          "Blocking page swipes must preserve detail scrolling")
+            store.selectExerciseInLibrary(id: nil)
+            pumpTabPager(controller)
+            XCTAssertEqual(store.currentView, .today)
+            XCTAssertEqual(pager.contentOffset.x, 0, accuracy: 1)
+            XCTAssertTrue(pager.isScrollEnabled)
+            try assertDockPosition(0, in: controller)
+        }
+    }
+
+    @MainActor
+    func testTabPagerOpensOnCurrentNavigationSelection() throws {
+        for destination in AppStore.mainTabs {
+            try withTabPager(initialView: destination) { store, controller, pager in
+                let index = try XCTUnwrap(AppStore.mainTabs.firstIndex(of: destination))
+                XCTAssertEqual(store.currentView, destination)
+                XCTAssertEqual(pager.contentOffset.x / pager.bounds.width, CGFloat(index), accuracy: 0.01)
+                try assertDockPosition(CGFloat(index), in: controller)
+            }
+        }
+    }
+
+    @MainActor
+    func testTabPagerKeepsHistoryDetailsScrollable() throws {
+        try withTabPager(initialView: .history) { store, controller, pager in
+            store.selectedHistoryDetailDay = WorkoutCalendar.mondayOfCurrentWeek()
+            pumpTabPager(controller)
+            XCTAssertFalse(pager.isScrollEnabled)
+            let detailScroll = try XCTUnwrap(tabScrollViews(in: controller.view).first {
+                $0 !== pager && $0.bounds.width > 300 && $0.isScrollEnabled
+                    && $0.convert($0.bounds, to: controller.view).intersects(controller.view.bounds)
+            })
+            XCTAssertTrue(detailScroll.panGestureRecognizer.isEnabled)
+            store.selectedHistoryDetailDay = nil
+            pumpTabPager(controller)
+            XCTAssertTrue(pager.isScrollEnabled)
+            XCTAssertEqual(store.currentView, .history)
+            XCTAssertEqual(pager.contentOffset.x / pager.bounds.width, 3, accuracy: 0.01)
+            try assertDockPosition(3, in: controller)
+        }
+    }
+
+    @MainActor
+    func testTabPagerTracksSwipeWithTurkishLabels() throws {
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        LanguageManager.setLanguage("tr")
+        defer { LanguageManager.setLanguage(previousLanguage) }
+        try withTabPager(width: 320) { store, controller, pager in
+            for position in [CGFloat(0.4), 1, 1.6, 2, 2.5, 3, 0] {
+                pager.setContentOffset(CGPoint(x: pager.bounds.width * position, y: 0), animated: false)
+                pumpTabPager(controller)
+                XCTAssertEqual(pager.contentOffset.x / pager.bounds.width, position, accuracy: 0.01)
+                try assertDockPosition(position, in: controller)
+            }
+            XCTAssertEqual(store.currentView, .today)
+            let attachment = XCTAttachment(image: tabPagerImage(controller))
+            attachment.name = "interactive-tab-swipe-320-turkish"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+        }
+    }
+
+    @MainActor
+    private func withTabPager(width: CGFloat = 393, initialView: ViewMode = .today,
+        _ body: (AppStore, UIHostingController<RootView>, UIScrollView) throws -> Void) throws {
+        let store = AppStore.shared
+        let originalOnboarding = store.isOnboardingCompleted
+        let originalView = store.currentView
+        let originalExercise = store.selectedExerciseId
+        let originalHistoryDay = store.selectedHistoryDetailDay
+        let originalReturnView = store.returnView
+        let originalWorkout = store.selectedWorkoutId
+        let originalSession = store.activeSession
+        store.isOnboardingCompleted = true
+        store.activeSession = nil
+        store.navigate(to: initialView)
+        let controller = UIHostingController(rootView: RootView())
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 852))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.frame = window.bounds
+        defer {
+            window.isHidden = true
+            window.rootViewController = nil
+            store.currentView = originalView
+            store.selectedExerciseId = originalExercise
+            store.selectedHistoryDetailDay = originalHistoryDay
+            store.returnView = originalReturnView
+            store.selectedWorkoutId = originalWorkout
+            store.activeSession = originalSession
+            store.isOnboardingCompleted = originalOnboarding
+        }
+        pumpTabPager(controller)
+        let pager = try XCTUnwrap(tabScrollViews(in: controller.view).first {
+            $0.bounds.width > 300 && $0.contentSize.width > 3 * $0.bounds.width
+        })
+        XCTAssertTrue(pager.isScrollEnabled)
+        try body(store, controller, pager)
+    }
+
+    @MainActor
+    private func tabScrollViews(in view: UIView) -> [UIScrollView] {
+        ((view as? UIScrollView).map { [$0] } ?? []) + view.subviews.flatMap { tabScrollViews(in: $0) }
+    }
+
+    @MainActor
+    private func pumpTabPager(_ controller: UIViewController) {
+        controller.view.setNeedsLayout()
+        controller.view.layoutIfNeeded()
+        RunLoop.main.run(until: Date().addingTimeInterval(0.12))
+        controller.view.layoutIfNeeded()
+    }
+
+    @MainActor
+    private func tabPagerImage(_ controller: UIViewController) -> UIImage {
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        return UIGraphicsImageRenderer(size: controller.view.bounds.size, format: format).image { _ in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+    }
+
+    @MainActor
+    private func assertDockPosition(_ position: CGFloat, in controller: UIViewController,
+                                    file: StaticString = #filePath, line: UInt = #line) throws {
+        let image = try XCTUnwrap(tabPagerImage(controller).cgImage, file: file, line: line)
+        var pixels = [UInt8](repeating: 0, count: image.width * image.height * 4)
+        let context = try XCTUnwrap(CGContext(data: &pixels, width: image.width, height: image.height,
+            bitsPerComponent: 8, bytesPerRow: image.width * 4,
+            space: CGColorSpaceCreateDeviceRGB(),
+            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue), file: file, line: line)
+        context.draw(image, in: CGRect(x: 0, y: 0, width: image.width, height: image.height))
+        var filledColumns = Set<Int>()
+        for y in (image.height - 82)..<(image.height - 26) {
+            for x in 0..<image.width {
+                let offset = (y * image.width + x) * 4
+                if abs(Int(pixels[offset]) - 20) <= 1,
+                   abs(Int(pixels[offset + 1]) - 45) <= 1,
+                   abs(Int(pixels[offset + 2]) - 41) <= 1 {
+                    filledColumns.insert(x)
+                }
+            }
+        }
+        let left = try XCTUnwrap(filledColumns.min(), "The active dock rectangle must be visible", file: file, line: line)
+        let right = try XCTUnwrap(filledColumns.max(), file: file, line: line)
+        let dockWidth = min(CGFloat(image.width) - 40, 360)
+        let itemWidth = (dockWidth - 24) / 4
+        let expectedLeft = (CGFloat(image.width) - dockWidth) / 2 + 6 + position * (itemWidth + 4)
+        XCTAssertEqual(CGFloat(left), expectedLeft, accuracy: 2, file: file, line: line)
+        XCTAssertEqual(CGFloat(right + 1), expectedLeft + itemWidth, accuracy: 2, file: file, line: line)
+    }
+
+}
+
