@@ -1142,6 +1142,22 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(cache.entries(catalogue: aliases, query: "RDL", equipmentKey: "bar", muscleKey: "hamstrings").map(\.key), ["barbell-romanian-deadlift"])
     }
 
+    func testLibraryDefaultsToCardView() {
+        let previous = UserDefaults.standard.object(forKey: "library_is_card_view")
+        UserDefaults.standard.removeObject(forKey: "library_is_card_view")
+        defer {
+            if let previous = previous {
+                UserDefaults.standard.set(previous, forKey: "library_is_card_view")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "library_is_card_view")
+            }
+        }
+        let view = LibraryView(store: AppStore.shared, onSelectExercise: { _ in }, onOpenSettings: {})
+        let mirror = Mirror(reflecting: view)
+        let isCardViewProp = mirror.children.first { $0.label == "_isCardView" }?.value as? AppStorage<Bool>
+        XCTAssertEqual(isCardViewProp?.wrappedValue, true)
+    }
+
     func testLibraryMuscleFilteringAndMatching() {
         let bench = Exercise(name: "Barbell Bench Press", exerciseId: "barbell-bench-press", movementType: "press")
         let squat = Exercise(name: "Barbell Squat", exerciseId: "barbell-back-squat", movementType: "squat")

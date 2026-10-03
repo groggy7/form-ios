@@ -17,7 +17,7 @@ public struct LibraryView: View {
     @State private var selectedEquipment: String? = nil
     @State private var selectedMuscle: String? = nil
     @State private var activeModal: LibraryFilterModal? = nil
-    @AppStorage("library_is_card_view") private var isCardView: Bool = false
+    @AppStorage("library_is_card_view") private var isCardView: Bool = true
 
     public init(
         store: AppStore,
