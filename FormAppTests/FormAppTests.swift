@@ -7702,9 +7702,15 @@ final class ProgressionReliabilityTests: XCTestCase {
         }
         let review = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: bodyweight, history: reviewLogs))
         XCTAssertTrue(review.isPlateau)
+        var bodyweightTargetExercise = bodyweight
+        bodyweightTargetExercise.reps = RepTarget(min: 3, max: 6)
+        var bodyweightSource = record(1, reps: [5, 5, 4], loads: [0, 0, 0])
+        bodyweightSource.exerciseLogs[0].exerciseName = bodyweight.name
+        bodyweightSource.exerciseLogs[0].exerciseId = bodyweight.exerciseId
+        let bodyweightTargets = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: bodyweightTargetExercise, history: [bodyweightSource]))
         for language in ["en", "tr"] {
             LanguageManager.setLanguage(language)
-            for (name, recommendation) in [("targets", targets), ("review", review)] {
+            for (name, recommendation) in [("targets", targets), ("bodyweight-targets", bodyweightTargets), ("review", review)] {
                 let layouts: [(CGFloat, ContentSizeCategory)] = [(393, .large), (320, .extraExtraExtraLarge)]
                 for (width, textSize) in layouts {
                     var compactHeight: CGFloat = 0
@@ -7718,8 +7724,10 @@ final class ProgressionReliabilityTests: XCTestCase {
                         renderer.scale = 1
                         let image = try XCTUnwrap(renderer.uiImage)
                         XCTAssertEqual(image.size.width, width)
-                        if expanded { XCTAssertGreaterThan(image.size.height, compactHeight) }
-                        else { compactHeight = image.size.height }
+                        if expanded {
+                            if recommendation.isPlateau { XCTAssertEqual(image.size.height, compactHeight) }
+                            else { XCTAssertGreaterThan(image.size.height, compactHeight) }
+                        } else { compactHeight = image.size.height }
                         let attachment = XCTAttachment(image: image)
                         attachment.name = "progression-inline-\(language)-\(name)-\(expanded ? "expanded" : "compact")-\(Int(width))"
                         attachment.lifetime = .keepAlways

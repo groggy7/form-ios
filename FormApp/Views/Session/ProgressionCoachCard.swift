@@ -331,62 +331,32 @@ struct ProgressionRecommendationCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             ProgressionCoachHeader(onOpenInfo: onOpenInfo).padding(.bottom, 8)
-            Text(LanguageManager.t(review ? "progression.coach.review_compact" : "progression.coach.add_reps_title"))
+            Text(LanguageManager.t(review ? "progression.coach.review_compact" : "progression.coach.add_reps_title", recommendation.rationaleArgs))
                 .font(.system(size: headlineSize, weight: .bold)).foregroundColor(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true).padding(.bottom, 6)
-            Text(LanguageManager.t(review ? "progression.coach.review_observation"
-                : wasApplied ? "progression.coach.applied_hint" : "progression.coach.add_reps_hint", recommendation.rationaleArgs))
+            Text(LanguageManager.t(descriptionKey, recommendation.rationaleArgs))
                 .font(.system(size: bodySize)).lineSpacing(2).foregroundColor(AppColors.muted)
                 .fixedSize(horizontal: false, vertical: true)
-            if review, let summary = lastSummary {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(LanguageManager.t("progression.coach.last_logged_label"))
-                        .font(.system(size: metadataSize, weight: .semibold)).foregroundColor(AppColors.muted)
-                    Text(summary).font(.system(size: bodySize)).foregroundColor(AppColors.secondaryText)
-                        .fixedSize(horizontal: false, vertical: true)
-                }.padding(.top, 10)
-            }
-            if expanded {
-                if review {
-                    Text(LanguageManager.t("progression.coach.review_options_hint"))
-                        .font(.system(size: bodySize)).lineSpacing(2).foregroundColor(AppColors.secondaryText)
-                        .fixedSize(horizontal: false, vertical: true).padding(.top, 10)
-                        .accessibilityIdentifier("progression-review-options")
-                } else {
+            if !review {
+                if expanded {
                     targetDetails.padding(.top, 10)
                     if !canApplyTarget {
                         Text(LanguageManager.t("progression.coach.set_count_changed"))
                             .font(.system(size: bodySize)).foregroundColor(AppColors.secondaryText)
                             .fixedSize(horizontal: false, vertical: true).padding(.top, 8)
                     }
-                    Button {
-                        onApplyTarget()
-                        wasApplied = true
-                        expanded = false
-                    } label: {
-                        Text(LanguageManager.t(wasApplied ? "progression.coach.applied" : "progression.coach.apply"))
-                            .font(.system(size: bodySize, weight: .bold))
-                            .frame(maxWidth: .infinity).padding(12).frame(minHeight: 48)
-                            .foregroundColor(wasApplied ? AppColors.accent : AppColors.background)
-                            .background(wasApplied ? AppColors.positiveBg : AppColors.accent)
-                            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                    }.buttonStyle(.plain).disabled(!canApplyTarget).opacity(canApplyTarget ? 1 : 0.5)
-                        .accessibilityIdentifier("apply-progression-target").padding(.top, 10)
                 }
+                ViewThatFits(in: .horizontal) {
+                    HStack(spacing: 8) {
+                        toggleButton
+                        if expanded { applyButton }
+                    }.fixedSize(horizontal: true, vertical: false)
+                    VStack(alignment: .leading, spacing: 0) {
+                        toggleButton
+                        if expanded { applyButton }
+                    }
+                }.padding(.top, 4)
             }
-            Button { expanded.toggle() } label: {
-                HStack(spacing: 8) {
-                    Text(LanguageManager.t(toggleKey)).font(.system(size: bodySize, weight: .bold))
-                        .fixedSize(horizontal: false, vertical: true).frame(maxWidth: .infinity, alignment: .leading)
-                    Image(systemName: expanded ? "chevron.up" : "chevron.down").font(.system(size: 14, weight: .semibold))
-                        .frame(width: 18, height: 18).accessibilityHidden(true)
-                }
-                .foregroundColor(AppColors.purple).padding(12).frame(minHeight: 48)
-                .background(AppColors.purpleBg).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(AppColors.purple.opacity(0.5), lineWidth: 1))
-            }.buttonStyle(.plain).padding(.top, 10)
-                .accessibilityValue(LanguageManager.t(expanded ? "progression.coach.expanded" : "progression.coach.collapsed"))
-                .accessibilityIdentifier("toggle-progression-details")
         }
         .padding(.horizontal, 18).padding(.vertical, 12).frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surface).clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
@@ -394,52 +364,111 @@ struct ProgressionRecommendationCard: View {
         .accessibilityIdentifier("progression-coach-card")
     }
 
-    private var targetDetails: some View {
-        VStack(spacing: 8) {
-            HStack(alignment: .bottom, spacing: 8) {
-                Text(LanguageManager.t("progression.coach.set_column")).frame(width: 26, alignment: .leading)
-                Text(LanguageManager.t("progression.coach.weight_column")).frame(maxWidth: .infinity, alignment: .leading)
-                VStack(alignment: .trailing, spacing: 0) {
-                    Text(LanguageManager.t("progression.coach.reps_column"))
-                    Text(LanguageManager.t("progression.coach.last_to_target"))
-                }.frame(maxWidth: .infinity, alignment: .trailing)
-            }.font(.system(size: metadataSize)).foregroundColor(AppColors.muted)
-            ForEach(Array(recommendation.setTargets.enumerated()), id: \.offset) { index, target in
-                HStack(spacing: 8) {
-                    Text("\(index + 1)").foregroundColor(AppColors.secondaryText).frame(width: 26, alignment: .leading)
-                    Text(weight(target)).foregroundColor(AppColors.text).fixedSize(horizontal: false, vertical: true)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    repComparison(index: index, target: target).monospacedDigit().fixedSize(horizontal: false, vertical: true)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                }.font(.system(size: bodySize)).accessibilityIdentifier("progression-target-row-\(index + 1)")
-            }
-        }.accessibilityIdentifier("progression-target-details")
+    private var descriptionKey: String {
+        if review { return "progression.coach.review_observation" }
+        if wasApplied { return "progression.coach.applied_hint" }
+        return expanded ? "progression.coach.add_reps_expanded_hint" : "progression.coach.add_reps_hint"
     }
 
-    private func repComparison(index: Int, target: ProgressionSetTarget) -> Text {
-        let previous = recommendation.lastSessionSets.indices.contains(index) ? recommendation.lastSessionSets[index] : nil
-        return Text(previous.map { "\($0.reps) → " } ?? "").foregroundColor(AppColors.muted)
-            + Text("\(target.reps)").fontWeight(.bold).foregroundColor(AppColors.text)
+    private var toggleButton: some View {
+        CompactCoachButton(label: LanguageManager.t(expanded ? "progression.coach.hide_targets" : "progression.coach.show_targets"),
+            expanded: expanded) { expanded.toggle() }
+            .accessibilityValue(LanguageManager.t(expanded ? "progression.coach.expanded" : "progression.coach.collapsed"))
+            .accessibilityIdentifier("toggle-progression-details")
+    }
+
+    private var applyButton: some View {
+        CompactCoachButton(label: LanguageManager.t(wasApplied ? "progression.coach.applied" : "progression.coach.apply"), primary: true) {
+            onApplyTarget()
+            wasApplied = true
+            expanded = false
+        }.disabled(!canApplyTarget).opacity(canApplyTarget ? 1 : 0.5)
+            .accessibilityIdentifier("apply-progression-target")
+    }
+
+    private var targetDetails: some View {
+        VStack(spacing: 0) {
+            ProgressionTableRow {
+                Text(LanguageManager.t("progression.coach.set_column"))
+                Text(LanguageManager.t("progression.coach.weight_column"))
+                Text(LanguageManager.t("progression.coach.last_reps_column")).multilineTextAlignment(.center)
+                Color.clear.frame(height: 0)
+                Text(LanguageManager.t("progression.coach.target_reps_column")).multilineTextAlignment(.center)
+            }.font(.system(size: metadataSize)).foregroundColor(AppColors.muted).padding(.vertical, 8)
+            ForEach(Array(recommendation.setTargets.enumerated()), id: \.offset) { index, target in
+                Rectangle().fill(AppColors.border).frame(height: 1)
+                ProgressionTableRow {
+                    Text("\(index + 1)").foregroundColor(AppColors.secondaryText)
+                    Text(weight(target)).foregroundColor(AppColors.text)
+                    Text(recommendation.lastSessionSets.indices.contains(index) ? "\(recommendation.lastSessionSets[index].reps)" : "—")
+                        .foregroundColor(AppColors.muted).accessibilityIdentifier("progression-last-reps-\(index + 1)")
+                    Image(systemName: "arrow.right").font(.system(size: 10)).foregroundColor(AppColors.muted).accessibilityHidden(true)
+                    Text("\(target.reps)").fontWeight(.bold).foregroundColor(AppColors.text)
+                        .accessibilityIdentifier("progression-target-reps-\(index + 1)")
+                }.font(.system(size: bodySize)).monospacedDigit().padding(.vertical, 8)
+                    .accessibilityIdentifier("progression-target-row-\(index + 1)")
+            }
+        }.padding(.horizontal, 10)
+            .background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+            .accessibilityIdentifier("progression-target-details")
     }
 
     private func weight(_ target: ProgressionSetTarget) -> String {
         guard let load = target.weightKg else { return "—" }
         return load == 0 ? LanguageManager.t("progression.coach.bodyweight") : "\(weightUnit.formatWeight(load)) \(weightUnit.label)"
     }
+}
 
-    private var lastSummary: String? {
-        let last = recommendation.lastSessionSets
-        guard !last.isEmpty else { return recommendation.lastSessionSummary }
-        if last.allSatisfy({ $0.weightKg == 0 }) {
-            return "\(LanguageManager.t("progression.coach.bodyweight")) · "
-                + LanguageManager.t("progression.coach.reps", ["reps": last.map { "\($0.reps)" }.joined(separator: " / ")])
-        }
-        return last.map { "\(weight($0)) × \($0.reps)" }.joined(separator: " · ")
+// Shared column widths keep headers and values aligned while allowing large text to wrap.
+private struct ProgressionTableRow: Layout {
+    private let fractions: [CGFloat] = [0.15, 0.32, 0.22, 0.06, 0.25]
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        let width = proposal.width ?? 300
+        let height = subviews.enumerated().map { index, view in
+            view.sizeThatFits(ProposedViewSize(width: width * fractions[index], height: nil)).height
+        }.max() ?? 0
+        return CGSize(width: width, height: height)
     }
 
-    private var toggleKey: String {
-        if review { return expanded ? "progression.coach.hide_options" : "progression.coach.review_options" }
-        return expanded ? "progression.coach.hide_targets" : "progression.coach.show_targets"
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        var x = bounds.minX
+        for (index, view) in subviews.enumerated() {
+            let width = bounds.width * fractions[index]
+            let size = view.sizeThatFits(ProposedViewSize(width: width, height: nil))
+            let offset = index < 2 ? 0 : (width - size.width) / 2
+            view.place(at: CGPoint(x: x + offset, y: bounds.midY - size.height / 2),
+                proposal: ProposedViewSize(width: width, height: nil))
+            x += width
+        }
+    }
+}
+
+private struct CompactCoachButton: View {
+    let label: String
+    var primary = false
+    var expanded: Bool? = nil
+    let action: () -> Void
+    @ScaledMetric(relativeTo: .caption) private var fontSize = 12.0
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 6) {
+                Text(label).font(.system(size: fontSize, weight: .semibold))
+                    .fixedSize(horizontal: false, vertical: true)
+                if let expanded {
+                    Image(systemName: expanded ? "chevron.up" : "chevron.down")
+                        .font(.system(size: 10, weight: .semibold)).frame(width: 14, height: 14).accessibilityHidden(true)
+                }
+            }
+            .foregroundColor(primary ? AppColors.background : AppColors.secondaryText)
+            .padding(.horizontal, 10).padding(.vertical, 6).frame(minHeight: 32)
+            .background(primary ? AppColors.accent : AppColors.surfaceRaised)
+            .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).stroke(primary ? Color.clear : AppColors.border, lineWidth: 1))
+            .frame(minWidth: 48, minHeight: 48).contentShape(Rectangle())
+        }.buttonStyle(.plain)
     }
 }
 
