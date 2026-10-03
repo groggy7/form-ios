@@ -7735,13 +7735,14 @@ final class ProgressionReliabilityTests: XCTestCase {
         let bodyweightTargets = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: bodyweightTargetExercise, history: [bodyweightSource]))
         for language in ["en", "tr"] {
             LanguageManager.setLanguage(language)
-            for (name, recommendation) in [("targets", targets), ("bodyweight-targets", bodyweightTargets), ("review", review)] {
+            for (name, recommendation, applied) in [("targets", targets, false), ("applied-targets", targets, true),
+                ("bodyweight-targets", bodyweightTargets, false), ("review", review, false)] {
                 let layouts: [(CGFloat, ContentSizeCategory)] = [(393, .large), (320, .extraExtraExtraLarge)]
                 for (width, textSize) in layouts {
                     var compactHeight: CGFloat = 0
                     for expanded in [false, true] {
                         let card = ProgressionRecommendationCard(recommendation: recommendation, weightUnit: .kg,
-                            canApplyTarget: true, expanded: .constant(expanded), wasApplied: .constant(false),
+                            canApplyTarget: true, expanded: .constant(expanded), wasApplied: .constant(applied),
                             onApplyTarget: {}, onOpenInfo: {})
                             .padding(20).frame(width: width).background(AppColors.background)
                             .environment(\.sizeCategory, textSize)

@@ -340,20 +340,20 @@ struct ProgressionRecommendationCard: View {
             if !review {
                 if expanded {
                     targetDetails.padding(.top, 10)
-                    if !canApplyTarget {
-                        Text(LanguageManager.t("progression.coach.set_count_changed"))
-                            .font(.system(size: bodySize)).foregroundColor(AppColors.secondaryText)
-                            .fixedSize(horizontal: false, vertical: true).padding(.top, 8)
-                    }
+                }
+                if !canApplyTarget {
+                    Text(LanguageManager.t("progression.coach.set_count_changed"))
+                        .font(.system(size: bodySize)).foregroundColor(AppColors.secondaryText)
+                        .fixedSize(horizontal: false, vertical: true).padding(.top, 8)
                 }
                 ViewThatFits(in: .horizontal) {
                     HStack(spacing: 8) {
                         toggleButton
-                        if expanded { applyButton }
+                        applyButton
                     }.fixedSize(horizontal: true, vertical: false)
                     VStack(alignment: .leading, spacing: 0) {
                         toggleButton
-                        if expanded { applyButton }
+                        applyButton
                     }
                 }.padding(.top, 4)
             }
