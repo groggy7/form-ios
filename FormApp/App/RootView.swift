@@ -229,6 +229,7 @@ public struct RootView: View {
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .active {
+                store.refreshForCurrentDate()
                 store.checkAndArchiveStaleSession()
                 Task { await ExerciseReportStore.shared.retryPendingReports() }
             }

@@ -57,6 +57,19 @@ public struct WeeklyGoalProgressMetrics: Equatable {
 
 public enum PersonalRecordTracker {
 
+    /// A resumed draft replaces its saved partial record; both contain the same completed sets.
+    private static func recordsWithActiveSession(
+        history: [WorkoutSessionRecord], activeSession: ActiveSessionDraft?, now: Date
+    ) -> [WorkoutSessionRecord] {
+        guard let active = activeSession else { return history }
+        let nowMillis = Int64(now.timeIntervalSince1970 * 1000)
+        var record = SessionProgress.from(draft: active, nowEpochMillis: nowMillis)
+            .record(draft: active, completedAtEpochMillis: nowMillis)
+        // Live totals belong to the assigned training day, including sessions spanning Monday.
+        record.completedAt = active.assignedCalendarDate ?? active.startedAt
+        return history.filter { $0.id != active.id } + [record]
+    }
+
     public static func normalizeExerciseKey(_ name: String) -> String {
         name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
     }
@@ -96,17 +109,7 @@ public enum PersonalRecordTracker {
         now: Date = Date(),
         timeZone: TimeZone = .current
     ) -> Int {
-        var records = history
-
-        if let active = activeSession {
-            let activeSets = active.setsByExercise.values.flatMap { $0 }
-            if activeSets.contains(where: { $0.isCompleted && ($0.weightKg ?? 0.0) > 0.0 }) {
-                let nowMillis = Int64(now.timeIntervalSince1970 * 1000.0)
-                let activeRecord = SessionProgress.from(draft: active, nowEpochMillis: nowMillis)
-                    .record(draft: active, completedAtEpochMillis: nowMillis)
-                records.append(activeRecord)
-            }
-        }
+        let records = recordsWithActiveSession(history: history, activeSession: activeSession, now: now)
 
         let sortedRecords = records.sorted { (r1, r2) -> Bool in
             let d1 = r1.startedAt.isEmpty ? r1.completedAt : r1.startedAt
@@ -159,23 +162,10 @@ public enum PersonalRecordTracker {
             return completedKeys.contains(key)
         }.count ?? 0
 
-        let currentWeekRecords = history.filter { isRecordInWeek($0, targetWeekKey: currentWeekKey, timeZone: timeZone) }
-
-        var volume: Double = currentWeekRecords.reduce(0.0) { $0 + $1.totalVolumeKg }
-        var duration: Int = currentWeekRecords.reduce(0) { $0 + $1.durationSeconds }
-
-        if let active = activeSession {
-            let activeSets = active.setsByExercise.values.flatMap { $0 }
-            let completedActive = activeSets.filter { $0.isCompleted }
-            for s in completedActive {
-                let w = s.weightKg ?? 0.0
-                let r = Double(s.completedReps ?? 0)
-                volume += w * r
-            }
-            let nowMillis = Int64(now.timeIntervalSince1970 * 1000.0)
-            let elapsed = Int(max(0, (nowMillis - active.startedAtEpochMillis) / 1000))
-            duration += elapsed
-        }
+        let currentWeekRecords = recordsWithActiveSession(history: history, activeSession: activeSession, now: now)
+            .filter { isRecordInWeek($0, targetWeekKey: currentWeekKey, timeZone: timeZone) }
+        let volume = currentWeekRecords.reduce(0.0) { $0 + $1.totalVolumeKg }
+        let duration = currentWeekRecords.reduce(0) { $0 + $1.durationSeconds }
 
         let prsCount = countPrsForWeek(
             history: history,

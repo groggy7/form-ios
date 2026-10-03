@@ -4,6 +4,256 @@ import UIKit
 import SwiftUI
 @testable import FormApp
 
+final class WeeklyProgressTests: XCTestCase {
+    private let utc = TimeZone(identifier: "UTC")!
+    private let now = WorkoutCalendar.parseIsoTimestamp("2026-09-14T10:30:00Z")!
+    private var exercise: Exercise { Exercise(id: "bench", name: "Bench", sets: 2) }
+    private var workout: Workout { Workout(id: "w1", day: 1, title: "Upper", exercises: [exercise]) }
+    private var program: Program {
+        Program(id: "p", name: "Fixture", workouts: [workout] + (2...5).map { Workout(id: "w\($0)", day: $0, title: "Day \($0)") })
+    }
+
+    private func draft(weight: Double = 60, assignedDay: String? = "2026-09-14") -> ActiveSessionDraft {
+        ActiveSessionDraft(id: "resumed", programId: program.id, workout: workout,
+            startedAt: "2026-09-14T10:00:00Z", startedAtEpochMillis: Int64(now.timeIntervalSince1970 * 1000) - 1_800_000,
+            setsByExercise: [exercise.id: [
+                ExerciseSetLog(setNumber: 1, weightKg: 20, completedReps: 10, isCompleted: true, isWarmup: true),
+                ExerciseSetLog(setNumber: 1, weightKg: weight, completedReps: 10, isCompleted: true),
+                ExerciseSetLog(setNumber: 2, weightKg: weight, completedReps: 10, isCompleted: false)
+            ]], assignedCalendarDate: assignedDay)
+    }
+
+    private func record(id: String, date: String, volume: Double, complete: Bool = false, workoutId: String = "w1") -> WorkoutSessionRecord {
+        WorkoutSessionRecord(id: id, programId: program.id, workoutId: workoutId, workoutTitle: workout.title,
+            startedAt: date, completedAt: date, durationSeconds: 1800, totalVolumeKg: volume,
+            totalCompletedSets: 1, exerciseLogs: [], isComplete: complete)
+    }
+
+    func testPartialSessionCanShowVolumeAndTimeWithZeroCompletedDays() {
+        let history = [record(id: "partial", date: "2026-09-14T10:00:00Z", volume: 4840),
+            record(id: "old", date: "2026-09-07T10:00:00Z", volume: 99999, complete: true)]
+        let metrics = PersonalRecordTracker.computeWeeklyMetrics(program: program, completedKeys: [], history: history,
+            currentWeekKey: "2026-W38", timeZone: utc)
+        XCTAssertEqual(metrics.completedWorkouts, 0)
+        XCTAssertEqual(metrics.totalWorkouts, 5)
+        XCTAssertEqual(metrics.totalVolumeKg, 4840)
+        XCTAssertEqual(metrics.activeDurationSeconds, 1800)
+        XCTAssertEqual(metrics.prsHitCount, 0)
+    }
+
+    func testResumedDraftReplacesSavedPartialAndExcludesWarmups() {
+        let active = draft(weight: 70)
+        let earlier = Int64(now.timeIntervalSince1970 * 1000) - 600_000
+        let saved = SessionProgress.from(draft: draft(), nowEpochMillis: earlier).record(draft: draft(), completedAtEpochMillis: earlier)
+        var baseline = saved
+        baseline.id = "baseline"
+        baseline.startedAt = "2026-09-07T10:00:00Z"
+        baseline.completedAt = baseline.startedAt
+        baseline.exerciseLogs = [SessionExerciseLog(exerciseName: "Bench", sets: [SessionSetLog(setNumber: 1, weightKg: 50, reps: 10)], targetSets: 2)]
+        let metrics = PersonalRecordTracker.computeWeeklyMetrics(program: program, completedKeys: [], history: [saved, baseline],
+            currentWeekKey: "2026-W38", activeSession: active, unfinishedKeys: ["p:w1"], now: now, timeZone: utc)
+        XCTAssertEqual(metrics.totalVolumeKg, 700)
+        XCTAssertEqual(metrics.activeDurationSeconds, 1800)
+        XCTAssertEqual(metrics.completedWorkouts, 0)
+        XCTAssertEqual(metrics.prsHitCount, 1)
+        let nowMillis = Int64(now.timeIntervalSince1970 * 1000)
+        let finished = SessionProgress.from(draft: active, nowEpochMillis: nowMillis).record(draft: active, completedAtEpochMillis: nowMillis)
+        XCTAssertEqual(metrics, PersonalRecordTracker.computeWeeklyMetrics(program: program, completedKeys: [], history: [finished, baseline],
+            currentWeekKey: "2026-W38", unfinishedKeys: ["p:w1"], now: now, timeZone: utc))
+    }
+
+    func testResumedFirstSessionStillEstablishesOnlyOneBaseline() {
+        let nowMillis = Int64(now.timeIntervalSince1970 * 1000)
+        let saved = SessionProgress.from(draft: draft(), nowEpochMillis: nowMillis).record(draft: draft(), completedAtEpochMillis: nowMillis)
+        XCTAssertEqual(PersonalRecordTracker.countPrsForWeek(history: [saved], currentWeekKey: "2026-W38",
+            activeSession: draft(weight: 70), now: now, timeZone: utc), 0)
+    }
+
+    func testPriorWeekActiveSessionDoesNotLeakIntoNewWeek() {
+        let metrics = PersonalRecordTracker.computeWeeklyMetrics(program: program, completedKeys: [], history: [],
+            currentWeekKey: "2026-W38", activeSession: draft(weight: 70, assignedDay: "2026-09-13"), now: now, timeZone: utc)
+        XCTAssertEqual(metrics.totalVolumeKg, 0)
+        XCTAssertEqual(metrics.activeDurationSeconds, 0)
+        XCTAssertEqual(metrics.prsHitCount, 0)
+    }
+
+    func testLegacyDraftUsesStartingWeekAndDurationMatchesSavedCap() {
+        var active = draft(assignedDay: nil)
+        active.startedAt = "2026-09-13T23:55:00Z"
+        let metrics = PersonalRecordTracker.computeWeeklyMetrics(program: program, completedKeys: [], history: [],
+            currentWeekKey: "2026-W38", activeSession: active, now: now, timeZone: utc)
+        XCTAssertEqual(metrics.totalVolumeKg, 0)
+        XCTAssertEqual(metrics.activeDurationSeconds, 0)
+        var longRunning = draft()
+        longRunning.startedAtEpochMillis = Int64(now.timeIntervalSince1970 * 1000) - 24 * 3_600_000
+        let capped = PersonalRecordTracker.computeWeeklyMetrics(program: program, completedKeys: [], history: [],
+            currentWeekKey: "2026-W38", activeSession: longRunning, now: now, timeZone: utc)
+        XCTAssertEqual(capped.activeDurationSeconds, 6 * 3600)
+    }
+
+    func testMondayRolloverUsesLocalISOYearAndArchivesOnlyOnce() throws {
+        let zone = TimeZone(identifier: "Europe/Istanbul")!
+        let sunday = WorkoutCalendar.parseIsoTimestamp("2027-01-03T20:59:59Z")!
+        let monday = sunday.addingTimeInterval(1)
+        let history = [record(id: "old", date: "2026-12-28T10:00:00Z", volume: 4840, complete: true)]
+        let state = StoredAppState(programs: [program], activeProgramId: program.id, completed: ["p:w1"],
+            currentWeekKey: "2026-W53", history: history)
+        XCTAssertEqual(AppStore.rotateWeek(state, now: sunday, timeZone: zone).completed, ["p:w1"])
+        let rotated = AppStore.rotateWeek(state, now: monday, timeZone: zone)
+        XCTAssertEqual(rotated.currentWeekKey, "2027-W01")
+        XCTAssertTrue(rotated.completed.isEmpty)
+        XCTAssertEqual(rotated.weeklyArchives.count, 1)
+        XCTAssertEqual(rotated.weeklyArchives.first?.weekKey, "2026-W53")
+        XCTAssertEqual(rotated.weeklyArchives.first?.completed, ["p:w1"])
+        XCTAssertEqual(rotated.history, history)
+        let repeated = AppStore.rotateWeek(rotated, now: monday.addingTimeInterval(60), timeZone: zone)
+        XCTAssertEqual(repeated.weeklyArchives, rotated.weeklyArchives)
+        let metrics = PersonalRecordTracker.computeWeeklyMetrics(program: program, completedKeys: rotated.completed,
+            history: rotated.history, currentWeekKey: rotated.currentWeekKey, timeZone: zone)
+        XCTAssertEqual(metrics.completedWorkouts, 0)
+        XCTAssertEqual(metrics.totalVolumeKg, 0)
+        XCTAssertEqual(metrics.activeDurationSeconds, 0)
+    }
+
+    func testFrozenWeekRecoversCurrentCompletionsWithoutCountingPartialSessions() {
+        let history = [record(id: "old", date: "2026-08-31T10:00:00Z", volume: 99999, complete: true),
+            record(id: "current", date: "2026-09-14T10:00:00Z", volume: 2000, complete: true, workoutId: "w2"),
+            record(id: "repeat", date: "2026-09-14T10:10:00Z", volume: 500, complete: true, workoutId: "w2"),
+            record(id: "partial", date: "2026-09-14T10:15:00Z", volume: 4840)]
+        let state = StoredAppState(programs: [program], activeProgramId: program.id, completed: ["p:w1", "p:w2"],
+            currentWeekKey: "2026-W36", history: history)
+        let rotated = AppStore.rotateWeek(state, now: now, timeZone: utc)
+        XCTAssertEqual(rotated.currentWeekKey, "2026-W38")
+        XCTAssertEqual(rotated.completed, ["p:w2"])
+        XCTAssertEqual(rotated.history, history)
+        XCTAssertEqual(rotated.programs, state.programs)
+        let metrics = PersonalRecordTracker.computeWeeklyMetrics(program: program, completedKeys: rotated.completed,
+            history: rotated.history, currentWeekKey: rotated.currentWeekKey, timeZone: utc)
+        XCTAssertEqual(metrics.completedWorkouts, 1)
+        XCTAssertEqual(metrics.totalVolumeKg, 7340)
+        XCTAssertEqual(metrics.activeDurationSeconds, 5400)
+    }
+
+    @MainActor
+    private func withStoredFixture(_ body: (AppStore, StoredAppState) throws -> Void) throws {
+        let defaults = UserDefaults.standard
+        let domain = try XCTUnwrap(Bundle.main.bundleIdentifier)
+        let original = defaults.persistentDomain(forName: domain) ?? [:]
+        defer { defaults.setPersistentDomain(original, forName: domain) }
+        let access = ProAccessManager.shared
+        let cloudAccess = access.isFeatureUnlocked(.cloudBackup)
+        access.setFeatureOverride(.cloudBackup, unlocked: false)
+        defer { access.setFeatureOverride(.cloudBackup, unlocked: cloudAccess == access.isProSubscribed ? nil : cloudAccess) }
+        defaults.removeObject(forKey: "active_session_v1")
+        defaults.set(true, forKey: "seeded_starters_v9")
+        let timestamp = ISO8601DateFormatter().string(from: Date())
+        let fixture = StoredAppState(programs: [program], activeProgramId: program.id, completed: ["p:w1", "p:w2"],
+            currentWeekKey: "2020-W01", history: [
+                record(id: "old", date: "2019-12-30T10:00:00Z", volume: 99999, complete: true),
+                record(id: "current", date: timestamp, volume: 2000, complete: true, workoutId: "w2"),
+                record(id: "partial", date: timestamp, volume: 4840)
+            ])
+        defaults.set(try JSONEncoder().encode(fixture), forKey: "stored_app_state")
+        try body(AppStore(), fixture)
+    }
+
+    @MainActor
+    func testLaunchAndBackupRestoreNormalizeFrozenWeekAndPersistHistory() throws {
+        try withStoredFixture { store, fixture in
+            XCTAssertNotEqual(store.state.currentWeekKey, fixture.currentWeekKey)
+            XCTAssertEqual(store.state.completed, ["p:w2"])
+            XCTAssertEqual(store.state.history, fixture.history)
+            XCTAssertEqual(store.state.weeklyArchives.count, 1)
+            XCTAssertTrue(store.restoreBackupJson(String(decoding: try JSONEncoder().encode(fixture), as: UTF8.self)))
+            XCTAssertEqual(store.state.completed, ["p:w2"])
+            XCTAssertEqual(store.state.weeklyArchives.count, 1)
+            let exported = try JSONDecoder().decode(StoredAppState.self, from: Data(store.exportBackupJson().utf8))
+            XCTAssertEqual(exported.history, fixture.history)
+            XCTAssertEqual(exported.completed, ["p:w2"])
+            let reloaded = AppStore()
+            XCTAssertEqual(reloaded.state.currentWeekKey, store.state.currentWeekKey)
+            XCTAssertEqual(reloaded.state.completed, store.state.completed)
+            XCTAssertEqual(reloaded.state.weeklyArchives, store.state.weeklyArchives)
+        }
+    }
+
+    @MainActor
+    func testDateNotificationsAndOrdinaryWritesRefreshFrozenWeek() throws {
+        try withStoredFixture { store, fixture in
+            for notification in [UIApplication.willEnterForegroundNotification, UIApplication.significantTimeChangeNotification, .NSCalendarDayChanged] {
+                store.state = fixture
+                store.selectedWorkoutId = "w1"
+                NotificationCenter.default.post(name: notification, object: nil)
+                XCTAssertNotEqual(store.state.currentWeekKey, fixture.currentWeekKey)
+                XCTAssertEqual(store.state.completed, ["p:w2"])
+                XCTAssertNil(store.selectedWorkoutId)
+                XCTAssertEqual(store.state.history, fixture.history)
+            }
+            store.saveState(fixture)
+            XCTAssertEqual(store.state.completed, ["p:w2"])
+            XCTAssertEqual(store.state.weeklyArchives.count, 1)
+        }
+    }
+
+    @MainActor
+    func testSavingPastWeekSessionDoesNotCompleteCurrentWeekWorkout() throws {
+        try withStoredFixture { store, fixture in
+            let past = record(id: "past", date: "2019-12-30T10:00:00Z", volume: 600, complete: true, workoutId: "w3")
+            store.completeActiveSession(past)
+            XCTAssertEqual(store.state.completed, ["p:w2"])
+            XCTAssertEqual(store.state.history.count, fixture.history.count + 1)
+            XCTAssertEqual(store.state.history.first?.isComplete, true)
+            XCTAssertTrue(store.state.calendarHistory?.entries.contains { $0.id == "session:past" && $0.status == .completed } == true)
+        }
+    }
+
+    @MainActor
+    func testRealResumeAndSaveKeepWeeklyTotalsStableAndCompletionRequiresEveryWorkingSet() throws {
+        try withStoredFixture { store, _ in
+            XCTAssertTrue(store.startActiveSession(programId: program.id, workout: workout, allowPast: true))
+            XCTAssertEqual(store.activeSession?.id, "partial")
+            store.updateActiveSession { draft in
+                var copy = draft
+                copy.setsByExercise[self.exercise.id] = [
+                    ExerciseSetLog(setNumber: 1, weightInput: "60", repsInput: "10", weightKg: 60, completedReps: 10, isCompleted: true),
+                    ExerciseSetLog(setNumber: 2)
+                ]
+                return copy
+            }
+            func metrics(now: Date) -> WeeklyGoalProgressMetrics {
+                PersonalRecordTracker.computeWeeklyMetrics(program: program, completedKeys: store.state.completed, history: store.state.history,
+                    currentWeekKey: store.state.currentWeekKey, activeSession: store.activeSession, now: now)
+            }
+            let moment = Date()
+            let active = try XCTUnwrap(store.activeSession)
+            let live = metrics(now: moment)
+            XCTAssertEqual(live.totalVolumeKg, 2600)
+            XCTAssertEqual(live.completedWorkouts, 1)
+            let millis = Int64(moment.timeIntervalSince1970 * 1000)
+            store.completeActiveSession(SessionProgress.from(draft: active, nowEpochMillis: millis).record(draft: active, completedAtEpochMillis: millis))
+            XCTAssertNil(store.activeSession)
+            XCTAssertEqual(metrics(now: moment).totalVolumeKg, live.totalVolumeKg)
+            XCTAssertEqual(metrics(now: moment).activeDurationSeconds, live.activeDurationSeconds)
+            XCTAssertEqual(store.state.history.count, 3)
+            XCTAssertEqual(store.state.history.first?.isComplete, false)
+            XCTAssertTrue(store.startActiveSession(programId: program.id, workout: workout, allowPast: true))
+            store.updateActiveSession { draft in
+                var copy = draft
+                copy.setsByExercise[self.exercise.id] = (1...2).map {
+                    ExerciseSetLog(setNumber: $0, weightInput: "60", repsInput: "10", weightKg: 60, completedReps: 10, isCompleted: true)
+                }
+                return copy
+            }
+            let completed = try XCTUnwrap(store.activeSession)
+            store.completeActiveSession(SessionProgress.from(draft: completed, nowEpochMillis: millis).record(draft: completed, completedAtEpochMillis: millis))
+            XCTAssertEqual(Set(store.state.completed), ["p:w1", "p:w2"])
+            XCTAssertEqual(store.state.history.first?.isComplete, true)
+            XCTAssertEqual(store.state.history.count, 3)
+            XCTAssertEqual(metrics(now: moment).completedWorkouts, 2)
+        }
+    }
+}
+
 final class FormAppTests: XCTestCase {
     @MainActor
     func testHomeDayStripOpensOnCurrentWorkoutWindow() throws {
@@ -8102,4 +8352,3 @@ final class TabPagingTests: XCTestCase {
     }
 
 }
-

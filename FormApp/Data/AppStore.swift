@@ -177,7 +177,7 @@ public final class AppStore: ObservableObject {
             self.showWarmupCalculator = true
         }
 
-        var loadedState = Self.loadStoredState()
+        var loadedState = Self.rotateWeek(Self.loadStoredState(), now: Date())
 
         let hasCompleted = UserDefaults.standard.bool(forKey: onboardingCompletedKey)
         let hasExistingData = UserDefaults.standard.object(forKey: stateKey) != nil || UserDefaults.standard.object(forKey: activeSessionKey) != nil || !loadedState.history.isEmpty
@@ -266,9 +266,14 @@ public final class AppStore: ObservableObject {
         #if canImport(UIKit)
         CloudMirrorManager.shared.retryPendingSyncIfAny()
         NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
-            .sink { _ in
+            .sink { [weak self] _ in
+                self?.refreshForCurrentDate()
                 CloudMirrorManager.shared.retryPendingSyncIfAny()
             }
+            .store(in: &cancellables)
+        NotificationCenter.default.publisher(for: UIApplication.significantTimeChangeNotification)
+            .merge(with: NotificationCenter.default.publisher(for: .NSCalendarDayChanged))
+            .sink { [weak self] _ in self?.refreshForCurrentDate() }
             .store(in: &cancellables)
         #endif
     }
@@ -594,6 +599,7 @@ public final class AppStore: ObservableObject {
     }
 
     public func completeActiveSession(_ record: WorkoutSessionRecord) {
+        refreshForCurrentDate()
         let workout = resolveWorkout(for: record)
         let isComplete = activeSession.map(WorkoutSessionUtils.isComplete)
             ?? WorkoutCalendar.isSessionComplete(session: record, workout: workout)
@@ -675,7 +681,8 @@ public final class AppStore: ObservableObject {
 
         var newCompleted = state.completed
         let key = "\(finalRecord.programId):\(finalRecord.workoutId)"
-        if isComplete && !newCompleted.contains(key) {
+        if isComplete && PersonalRecordTracker.isRecordInWeek(adjustedRecord, targetWeekKey: state.currentWeekKey)
+            && !newCompleted.contains(key) {
             newCompleted.append(key)
         }
 
@@ -893,9 +900,38 @@ public final class AppStore: ObservableObject {
         return statuses
     }
 
-    private func refreshCalendarState(_ st: StoredAppState) -> StoredAppState {
+    public func refreshForCurrentDate(now: Date = Date()) {
+        let rotated = Self.rotateWeek(state, now: now)
+        let refreshed = refreshCalendarState(rotated, now: now)
+        guard refreshed.currentWeekKey != state.currentWeekKey || refreshed.calendarHistory != state.calendarHistory else { return }
+        saveState(refreshed, now: now)
+    }
+
+    /// Recover current-week completions from history when upgrading a store whose week key was frozen.
+    static func rotateWeek(_ state: StoredAppState, now: Date, timeZone: TimeZone = .current) -> StoredAppState {
+        let weekKey = currentWeekIsoKeyStatic(now: now, timeZone: timeZone)
+        guard state.currentWeekKey != weekKey else { return state }
+        var next = state
+        if !state.completed.isEmpty && !state.currentWeekKey.isEmpty {
+            next.weeklyArchives.insert(WeeklyArchive(
+                weekKey: state.currentWeekKey,
+                completed: state.completed,
+                archivedAt: ISO8601DateFormatter().string(from: now)
+            ), at: 0)
+        }
+        next.currentWeekKey = weekKey
+        next.completed = Array(Set(state.history.filter { record in
+            guard PersonalRecordTracker.isRecordInWeek(record, targetWeekKey: weekKey, timeZone: timeZone) else { return false }
+            if let isComplete = record.isComplete { return isComplete }
+            let workout = state.programs.first { $0.id == record.programId }?.workouts.first { $0.id == record.workoutId }
+            return WorkoutCalendar.isSessionComplete(session: record, workout: workout)
+        }.map { "\($0.programId):\($0.workoutId)" })).sorted()
+        return next
+    }
+
+    private func refreshCalendarState(_ st: StoredAppState, now: Date = Date()) -> StoredAppState {
         let weekdays = WorkoutCalendar.weekdays(state: st)
-        let today = Date()
+        let today = now
         let todayStr = WorkoutCalendar.formatDate(today)
         let curCal = st.calendarHistory ?? WorkoutCalendarHistory(
             nextScheduledDate: WorkoutCalendar.mondayOfCurrentWeek(for: today),
@@ -1025,11 +1061,15 @@ public final class AppStore: ObservableObject {
         return true
     }
 
-    func saveState(_ newState: StoredAppState) {
-        self.state = newState
+    func saveState(_ newState: StoredAppState, now: Date = Date()) {
+        let normalized = Self.rotateWeek(newState, now: now)
+        if normalized.currentWeekKey != state.currentWeekKey {
+            selectedWorkoutId = nil
+        }
+        self.state = normalized
         do {
             let encoder = JSONEncoder()
-            let data = try encoder.encode(newState)
+            let data = try encoder.encode(normalized)
             UserDefaults.standard.set(data, forKey: stateKey)
         } catch {
             print("Failed to save state: \(error)")
@@ -1037,6 +1077,7 @@ public final class AppStore: ObservableObject {
     }
 
     public func exportBackupJson() -> String {
+        refreshForCurrentDate()
         do {
             let encoder = JSONEncoder()
             encoder.outputFormatting = .prettyPrinted
@@ -1052,8 +1093,16 @@ public final class AppStore: ObservableObject {
         guard let data = jsonString.data(using: .utf8) else { return false }
         do {
             let decoder = JSONDecoder()
-            let decodedState = try decoder.decode(StoredAppState.self, from: data)
-            saveState(decodedState)
+            var decodedState = Self.rotateWeek(try decoder.decode(StoredAppState.self, from: data), now: Date())
+            decodedState.calendarHistory = WorkoutCalendar.restore(
+                raw: decodedState.calendarHistory,
+                sessions: decodedState.history,
+                today: WorkoutCalendar.formatDate(Date()),
+                weekdays: WorkoutCalendar.weekdays(state: decodedState),
+                activeSessionId: activeSession?.id,
+                programs: decodedState.programs
+            )
+            saveState(refreshCalendarState(decodedState))
             return true
         } catch {
             print("Failed to restore backup: \(error)")
@@ -1263,9 +1312,9 @@ public final class AppStore: ObservableObject {
         Self.currentWeekIsoKeyStatic()
     }
 
-    private static func currentWeekIsoKeyStatic() -> String {
-        let calendar = Calendar(identifier: .iso8601)
-        let now = Date()
+    private static func currentWeekIsoKeyStatic(now: Date = Date(), timeZone: TimeZone = .current) -> String {
+        var calendar = Calendar(identifier: .iso8601)
+        calendar.timeZone = timeZone
         let year = calendar.component(.yearForWeekOfYear, from: now)
         let week = calendar.component(.weekOfYear, from: now)
         return String(format: "%04d-W%02d", year, week)
