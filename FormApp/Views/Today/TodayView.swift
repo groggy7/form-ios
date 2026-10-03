@@ -97,7 +97,7 @@ public struct TodayView: View {
                 // Exercise list preview
                 if let workout = workout, !workout.exercises.isEmpty {
                     VStack(alignment: .leading, spacing: 10) {
-                        Text(LanguageManager.t("today.exercises"))
+                        Text(exerciseHeading(for: workout))
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundColor(AppColors.text)
                             .padding(.horizontal, 20)
@@ -150,6 +150,16 @@ public struct TodayView: View {
                 Spacer().frame(height: 16)
             }
         }
+    }
+
+    private func exerciseHeading(for workout: Workout) -> String {
+        if workout.day == store.weekCalendar.today + 1 {
+            return LanguageManager.t("today.exercises")
+        }
+        guard LanguageManager.workoutDays.indices.contains(workout.day - 1) else {
+            return LanguageManager.t("history.exercises")
+        }
+        return LanguageManager.t("today.dayExercises", ["day": LanguageManager.workoutDays[workout.day - 1]])
     }
 
     private func formattedWeekRange() -> String {
