@@ -292,7 +292,7 @@ public struct ActiveSessionView: View {
                                                             .fill(AppColors.surface)
                                                             .overlay(
                                                                 RoundedRectangle(cornerRadius: 13, style: .continuous)
-                                                                    .stroke(isSel ? AppColors.accent : AppColors.border, lineWidth: 1)
+                                                                    .strokeBorder(isSel ? AppColors.accent : AppColors.border, lineWidth: 1)
                                                             )
                                                     )
 
