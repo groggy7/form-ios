@@ -323,18 +323,10 @@ public struct ActiveSessionView: View {
                             // Current Exercise Card
                             if let exercise = currentExercise {
                                 VStack(alignment: .leading, spacing: 14) {
-                                    HStack(alignment: .top) {
-                                        VStack(alignment: .leading, spacing: 4) {
-                                            Text(exercise.displayName)
-                                                .font(.system(size: 20, weight: .bold))
-                                                .foregroundColor(AppColors.text)
-                                        }
-                                        Spacer()
-                                        MovementIcon(
-                                            exerciseId: exercise.exerciseId,
-                                            size: 56
-                                        )
-                                    }
+                                    Text(exercise.displayName)
+                                        .font(.system(size: 20, weight: .bold))
+                                        .foregroundColor(AppColors.text)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
 
                                     let recommendation = ProgressionEngine.computeProgression(
                                         exercise: exercise,
@@ -449,67 +441,69 @@ public struct ActiveSessionView: View {
                                 )
                                 .padding(.horizontal, 20)
                             }
-
-                            // Navigation Row: Previous & Next Exercise buttons
-                            HStack(spacing: 10) {
-                                Button(action: {
-                                    if currentIndex > 0 {
-                                        store.updateActiveSession { d in
-                                            var copy = d
-                                            copy.currentExerciseIndex = currentIndex - 1
-                                            return copy
-                                        }
-                                    }
-                                }) {
-                                    Image(systemName: "arrow.left")
-                                        .font(.system(size: 16, weight: .semibold))
-                                        .foregroundColor(currentIndex > 0 ? AppColors.text : AppColors.muted.opacity(0.3))
-                                        .frame(width: 50, height: 50)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 11, style: .continuous)
-                                                .fill(AppColors.surfaceRaised)
-                                                .overlay(
-                                                    RoundedRectangle(cornerRadius: 11, style: .continuous)
-                                                        .stroke(AppColors.border, lineWidth: 1)
-                                                )
-                                        )
-                                }
-                                .buttonStyle(.plain)
-                                .disabled(currentIndex <= 0)
-
-                                Button(action: {
-                                    if currentIndex < exercises.count - 1 {
-                                        store.updateActiveSession { d in
-                                            var copy = d
-                                            copy.currentExerciseIndex = currentIndex + 1
-                                            return copy
-                                        }
-                                    } else {
-                                        presentWorkoutSummary()
-                                    }
-                                }) {
-                                    HStack(spacing: 8) {
-                                        Text(LanguageManager.t(currentIndex < exercises.count - 1 ? "session.nextExercise" : "session.review"))
-                                            .font(.system(size: 14, weight: .semibold))
-                                            .foregroundColor(.black)
-                                        Image(systemName: "arrow.right")
-                                            .font(.system(size: 14, weight: .semibold))
-                                            .foregroundColor(.black)
-                                    }
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 50)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 11, style: .continuous)
-                                            .fill(AppColors.accent)
-                                    )
-                                }
-                                .buttonStyle(.plain)
-                            }
-                            .padding(.horizontal, 20)
-
-                            Spacer().frame(height: 148) // Space for floating rest timer
                         }
+                        .padding(.bottom, 20)
                     }
+
+                    // Keep exercise navigation outside the scrolling content.
+                    HStack(spacing: 10) {
+                        Button(action: {
+                            if currentIndex > 0 {
+                                store.updateActiveSession { d in
+                                    var copy = d
+                                    copy.currentExerciseIndex = currentIndex - 1
+                                    return copy
+                                }
+                            }
+                        }) {
+                            Image(systemName: "arrow.left")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(currentIndex > 0 ? AppColors.text : AppColors.muted.opacity(0.3))
+                                .frame(width: 50, height: 50)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 11, style: .continuous)
+                                        .fill(AppColors.surfaceRaised)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 11, style: .continuous)
+                                                .stroke(AppColors.border, lineWidth: 1)
+                                        )
+                                )
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(currentIndex <= 0)
+                        .accessibilityLabel(LanguageManager.t("session.prevExercise"))
+
+                        Button(action: {
+                            if currentIndex < exercises.count - 1 {
+                                store.updateActiveSession { d in
+                                    var copy = d
+                                    copy.currentExerciseIndex = currentIndex + 1
+                                    return copy
+                                }
+                            } else {
+                                presentWorkoutSummary()
+                            }
+                        }) {
+                            HStack(spacing: 8) {
+                                Text(LanguageManager.t(currentIndex < exercises.count - 1 ? "session.nextExercise" : "session.review"))
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .foregroundColor(.black)
+                                Image(systemName: "arrow.right")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .foregroundColor(.black)
+                            }
+                            .frame(maxWidth: .infinity)
+                            .frame(minHeight: 50)
+                            .background(
+                                RoundedRectangle(cornerRadius: 11, style: .continuous)
+                                    .fill(AppColors.accent)
+                            )
+                        }
+                        .buttonStyle(.plain)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 8)
+                    .background(AppColors.background)
 
                     // Floating Rest Timer Bar
                     if let rest = restTimer {
@@ -553,7 +547,7 @@ public struct ActiveSessionView: View {
                             .shadow(color: Color.black.opacity(0.4), radius: 10, x: 0, y: 4)
                     )
                     .transition(.move(edge: .bottom).combined(with: .opacity))
-                    .padding(.bottom, restTimer != nil ? 96 : 24)
+                    .padding(.bottom, restTimer != nil ? 162 : 90)
                 }
                 .animation(.easeInOut(duration: 0.25), value: isCelebrationVisible)
             }
@@ -578,7 +572,7 @@ public struct ActiveSessionView: View {
                             .shadow(color: Color.black.opacity(0.4), radius: 10, x: 0, y: 4)
                     )
                     .transition(.move(edge: .bottom).combined(with: .opacity))
-                    .padding(.bottom, restTimer != nil ? 96 : 24)
+                    .padding(.bottom, restTimer != nil ? 162 : 90)
                 }
                 .animation(.easeInOut(duration: 0.25), value: isWarningVisible)
             }
@@ -607,7 +601,7 @@ public struct ActiveSessionView: View {
                 .transition(.opacity)
             }
 
-            ToastOverlay(item: store.currentToast, bottomPadding: restTimer != nil ? 96 : 36)
+            ToastOverlay(item: store.currentToast, bottomPadding: restTimer != nil ? 162 : 102)
         }
         .sheet(item: $reportingExercise) { exercise in
             ExerciseReportSheet(
