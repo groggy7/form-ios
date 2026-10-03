@@ -3597,6 +3597,9 @@ final class FormAppTests: XCTestCase {
         let target = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: exercise, history: [record]))
         XCTAssertEqual(target.setTargets.count, 2)
         XCTAssertEqual(target.setTargets.map { $0.weightKg }, [0, 0])
+        XCTAssertEqual(target.setTargets.map { $0.weightInput(unit: .kg, fallback: "5") }, ["0", "0"])
+        XCTAssertEqual(ProgressionSetTarget(weightKg: nil, reps: 2).weightInput(unit: .kg, fallback: "5"), "5")
+        XCTAssertEqual(target.setTargets.first?.weightInput(unit: .lbs, fallback: "5"), "0")
     }
 
     func testEmptySetWarningTranslationsParity() {

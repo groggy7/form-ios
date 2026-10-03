@@ -50,6 +50,11 @@ public struct ProgressionSetTarget: Equatable {
         self.weightKg = weightKg
         self.reps = reps
     }
+
+    public func weightInput(unit: WeightUnit, fallback: String) -> String {
+        guard let weightKg, weightKg.isFinite, weightKg >= 0 else { return fallback }
+        return unit.formatWeight(weightKg)
+    }
 }
 
 public struct ProgressionLoggingProgress: Equatable {

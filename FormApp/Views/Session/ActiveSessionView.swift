@@ -350,7 +350,7 @@ public struct ActiveSessionView: View {
                                             sessionSets: currentSets,
                                             onApplyTarget: {
                                                 for (setIdx, target) in recommendation.applicableTargets(sets: currentSets) {
-                                                    let targetWeight = target.weightKg.flatMap { $0 > 0 ? store.weightUnit.formatWeight($0) : nil } ?? currentSets[setIdx].weightInput
+                                                    let targetWeight = target.weightInput(unit: store.weightUnit, fallback: currentSets[setIdx].weightInput)
                                                     updateSet(exerciseId: exercise.id, index: setIdx, weight: targetWeight, reps: "\(target.reps)")
                                                 }
                                             },
