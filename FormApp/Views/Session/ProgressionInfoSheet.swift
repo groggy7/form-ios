@@ -6,7 +6,28 @@ public struct ProgressionInfoSheet: View {
     public init() {}
 
     public var body: some View {
-        NavigationStack {
+        VStack(spacing: 0) {
+            HStack(spacing: 8) {
+                Text(LanguageManager.t("progression.info.title"))
+                    .font(.headline)
+                    .foregroundColor(AppColors.text)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .accessibilityAddTraits(.isHeader)
+                Button(action: { dismiss() }) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 24, weight: .regular))
+                        .foregroundColor(AppColors.secondaryText)
+                        .frame(width: 48, height: 48)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(LanguageManager.t("common.close"))
+                .accessibilityIdentifier("progression-info-close")
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 16)
+
             ScrollView {
                 VStack(spacing: 16) {
                     overviewSection
@@ -15,39 +36,30 @@ public struct ProgressionInfoSheet: View {
                     tipSection
                 }
                 .padding(.horizontal, 20)
-                .padding(.top, 16)
+                .padding(.top, 12)
                 .padding(.bottom, 32)
             }
-            .background(AppColors.background.ignoresSafeArea())
-            .navigationTitle(LanguageManager.t("progression.info.title"))
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: { dismiss() }) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 13, weight: .semibold))
-                            .foregroundColor(AppColors.secondaryText)
-                    }
-                }
-            }
         }
+        .background(AppColors.background.ignoresSafeArea())
     }
 
     private var overviewSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
+            HStack(alignment: .top, spacing: 8) {
                 Image(systemName: "chart.line.uptrend.xyaxis")
                     .font(.system(size: 14, weight: .bold))
                     .foregroundColor(AppColors.accent)
                 Text(LanguageManager.t("progression.info.ddpTitle"))
-                    .font(.system(size: 15, weight: .semibold))
+                    .font(.subheadline.weight(.semibold))
                     .foregroundColor(AppColors.text)
+                    .fixedSize(horizontal: false, vertical: true)
             }
 
             Text(LanguageManager.t("progression.info.ddpText"))
-                .font(.system(size: 13))
+                .font(.footnote)
                 .lineSpacing(3)
                 .foregroundColor(AppColors.secondaryText)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -57,12 +69,12 @@ public struct ProgressionInfoSheet: View {
     }
 
     private var actionsSection: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 12) {
             Text(LanguageManager.t("progression.info.rules"))
-                .font(.system(size: 15, weight: .semibold))
+                .font(.subheadline.weight(.semibold))
                 .foregroundColor(AppColors.text)
 
-            VStack(spacing: 10) {
+            VStack(alignment: .leading, spacing: 12) {
                 actionRow(
                     action: .increaseLoad,
                     desc: LanguageManager.t("progression.info.rule_load")
@@ -89,40 +101,43 @@ public struct ProgressionInfoSheet: View {
     }
 
     private func actionRow(action: ProgressionAction, desc: String) -> some View {
-        HStack(alignment: .top, spacing: 12) {
+        VStack(alignment: .leading, spacing: 4) {
             Text(LanguageManager.t(action.titleKey))
-                .font(.system(size: 11, weight: .bold))
+                .font(.caption2.weight(.bold))
                 .foregroundColor(action.color)
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)
                 .background(action.badgeBgColor)
                 .overlay(RoundedRectangle(cornerRadius: 6).stroke(action.color.opacity(0.4), lineWidth: 1))
                 .cornerRadius(6)
-                .frame(width: 140, alignment: .leading)
+                .fixedSize(horizontal: false, vertical: true)
 
             Text(desc)
-                .font(.system(size: 12))
+                .font(.caption)
                 .lineSpacing(2)
                 .foregroundColor(AppColors.secondaryText)
                 .frame(maxWidth: .infinity, alignment: .leading)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 
     private var plateauSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
+            HStack(alignment: .top, spacing: 8) {
                 Image(systemName: "shield.lefthalf.filled")
                     .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(Color(hex: 0xB18AFF))
+                    .foregroundColor(AppColors.purple)
                 Text(LanguageManager.t("progression.info.plateauTitle"))
-                    .font(.system(size: 15, weight: .semibold))
+                    .font(.subheadline.weight(.semibold))
                     .foregroundColor(AppColors.text)
+                    .fixedSize(horizontal: false, vertical: true)
             }
 
             Text(LanguageManager.t("progression.info.plateauText"))
-                .font(.system(size: 13))
+                .font(.footnote)
                 .lineSpacing(3)
                 .foregroundColor(AppColors.secondaryText)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -133,24 +148,26 @@ public struct ProgressionInfoSheet: View {
 
     private var tipSection: some View {
         VStack(alignment: .leading, spacing: 8) {
-            HStack(spacing: 8) {
+            HStack(alignment: .top, spacing: 8) {
                 Image(systemName: "lightbulb.fill")
                     .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(Color(hex: 0xF2AF61))
+                    .foregroundColor(AppColors.accent)
                 Text(LanguageManager.t("progression.info.tipTitle"))
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(AppColors.text)
+                    .font(.subheadline.weight(.semibold))
+                    .foregroundColor(AppColors.accent)
+                    .fixedSize(horizontal: false, vertical: true)
             }
 
             Text(LanguageManager.t("progression.info.tipText"))
-                .font(.system(size: 13))
+                .font(.footnote)
                 .lineSpacing(3)
                 .foregroundColor(AppColors.secondaryText)
+                .fixedSize(horizontal: false, vertical: true)
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color(hex: 0x1A1E24))
-        .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color(hex: 0xF2AF61).opacity(0.3), lineWidth: 1))
+        .background(AppColors.surfaceRaised)
+        .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.accent.opacity(0.35), lineWidth: 1))
         .cornerRadius(16)
     }
 }

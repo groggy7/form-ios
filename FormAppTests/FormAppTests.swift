@@ -5780,26 +5780,51 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
-    func testProgressionInfoSheetSnapshot() {
-        let sheet = ProgressionInfoSheet()
-        let controller = UIHostingController(rootView: sheet)
-        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
-        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
-
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
-        window.rootViewController = controller
-        window.makeKeyAndVisible()
-        controller.view.layoutIfNeeded()
-
-        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
-        let image = renderer.image { ctx in
-            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+    func testProgressionInfoSheetSnapshot() throws {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        func scrollViews(in view: UIView) -> [UIScrollView] {
+            (view as? UIScrollView).map { [$0] } ?? view.subviews.flatMap { scrollViews(in: $0) }
         }
-
-        if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_progression_info_sheet_snapshot.png"
-            try? data.write(to: URL(fileURLWithPath: path))
-            print("Successfully wrote snapshot to \(path)")
+        for language in ["en", "tr"] {
+            for (width, sizeCategory) in [
+                (CGFloat(393), ContentSizeCategory.large),
+                (CGFloat(320), ContentSizeCategory.extraExtraExtraLarge)
+            ] {
+                LanguageManager.setLanguage(language)
+                let sheet = ProgressionInfoSheet()
+                    .environment(\.sizeCategory, sizeCategory)
+                    .frame(width: width, height: 852)
+                let controller = UIHostingController(rootView: sheet)
+                controller.safeAreaRegions = []
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 852))
+                window.rootViewController = controller
+                window.makeKeyAndVisible()
+                controller.view.frame = window.bounds
+                controller.view.layoutIfNeeded()
+                RunLoop.main.run(until: Date().addingTimeInterval(0.2))
+                controller.view.layoutIfNeeded()
+                let scroll = try XCTUnwrap(scrollViews(in: controller.view).first)
+                XCTAssertLessThanOrEqual(scroll.contentSize.width, scroll.bounds.width + 1)
+                XCTAssertGreaterThan(scroll.contentSize.height, 0)
+                for position in ["top", "bottom"] {
+                    if position == "bottom" {
+                        let bottom = max(-scroll.adjustedContentInset.top,
+                            scroll.contentSize.height - scroll.bounds.height + scroll.adjustedContentInset.bottom)
+                        scroll.setContentOffset(CGPoint(x: 0, y: bottom), animated: false)
+                        RunLoop.main.run(until: Date().addingTimeInterval(0.1))
+                        controller.view.layoutIfNeeded()
+                    }
+                    let image = UIGraphicsImageRenderer(size: controller.view.bounds.size).image { context in
+                        controller.view.layer.render(in: context.cgContext)
+                    }
+                    let attachment = XCTAttachment(image: image)
+                    attachment.name = "progression-info-\(language)-\(Int(width))-\(position)"
+                    attachment.lifetime = .keepAlways
+                    add(attachment)
+                }
+                window.isHidden = true
+            }
         }
     }
 
