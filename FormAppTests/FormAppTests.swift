@@ -7572,6 +7572,8 @@ final class ProgressionReliabilityTests: XCTestCase {
         XCTAssertEqual(rec.setTargets.map { $0.reps }, [12, 11, 9])
         XCTAssertEqual(rec.setTargets.map { $0.weightKg }, [80, 70, 60])
         XCTAssertEqual(rec.action, .addReps)
+        XCTAssertEqual(rec.lastSessionSets.map { $0.reps }, [12, 10, 8])
+        XCTAssertEqual(rec.lastSessionSets.map { $0.weightKg }, [80, 70, 60])
     }
 
     func testIncompleteLatestLogDoesNotFallBackToOlderCeilingPerformance() {
@@ -7579,6 +7581,7 @@ final class ProgressionReliabilityTests: XCTestCase {
         XCTAssertEqual(rec.action, .insufficientData)
         XCTAssertTrue(rec.setTargets.isEmpty)
         XCTAssertNil(rec.suggestedWeightKg)
+        XCTAssertTrue(rec.lastSessionSets.isEmpty)
     }
 
     func testLoadIncreaseNeedsTwoFullSessionsAtTheSameLoadsAndCeiling() {
@@ -7650,6 +7653,7 @@ final class ProgressionReliabilityTests: XCTestCase {
         XCTAssertTrue(plateau.isPlateau)
         XCTAssertTrue(plateau.setTargets.isEmpty)
         XCTAssertNil(plateau.suggestedWeightKg)
+        XCTAssertEqual(plateau.lastSessionSets.map { $0.reps }, [8, 8, 8])
         let changingLoads = (1...3).map { record($0, loads: Array(repeating: 72.5 - Double($0) * 2.5, count: 3)) }
         XCTAssertFalse(ProgressionEngine.computeProgression(exercise: bench, history: changingLoads)!.isPlateau)
         XCTAssertFalse(ProgressionEngine.computeProgression(exercise: bench, history: [record(1, reps: [8, 8]), record(2), record(3)])!.isPlateau)
@@ -7678,6 +7682,52 @@ final class ProgressionReliabilityTests: XCTestCase {
         var failure = bench
         failure.reps = RepTarget(toFailure: true)
         XCTAssertNil(ProgressionEngine.computeProgression(exercise: failure, history: [record(1)]))
+    }
+
+    @MainActor func testInlineCoachDetailsAtNarrowWidthAndLargeLocalizedText() throws {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        var exercise = bench
+        exercise.reps = RepTarget(min: 3, max: 6)
+        let targets = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: exercise,
+            history: [record(1, reps: [5, 5, 4], loads: [77.5, 82.5, 87.5])]))
+        var bodyweight = bench
+        bodyweight.name = "Push Ups"
+        bodyweight.exerciseId = "push-ups"
+        let reviewLogs = (1...3).map { day -> WorkoutSessionRecord in
+            var source = record(day, reps: [12, 12, 10], loads: [0, 0, 0])
+            source.exerciseLogs[0].exerciseName = bodyweight.name
+            source.exerciseLogs[0].exerciseId = bodyweight.exerciseId
+            return source
+        }
+        let review = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: bodyweight, history: reviewLogs))
+        XCTAssertTrue(review.isPlateau)
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            for (name, recommendation) in [("targets", targets), ("review", review)] {
+                let layouts: [(CGFloat, ContentSizeCategory)] = [(393, .large), (320, .extraExtraExtraLarge)]
+                for (width, textSize) in layouts {
+                    var compactHeight: CGFloat = 0
+                    for expanded in [false, true] {
+                        let card = ProgressionRecommendationCard(recommendation: recommendation, weightUnit: .kg,
+                            canApplyTarget: true, expanded: .constant(expanded), wasApplied: .constant(false),
+                            onApplyTarget: {}, onOpenInfo: {})
+                            .padding(20).frame(width: width).background(AppColors.background)
+                            .environment(\.sizeCategory, textSize)
+                        let renderer = ImageRenderer(content: card)
+                        renderer.scale = 1
+                        let image = try XCTUnwrap(renderer.uiImage)
+                        XCTAssertEqual(image.size.width, width)
+                        if expanded { XCTAssertGreaterThan(image.size.height, compactHeight) }
+                        else { compactHeight = image.size.height }
+                        let attachment = XCTAttachment(image: image)
+                        attachment.name = "progression-inline-\(language)-\(name)-\(expanded ? "expanded" : "compact")-\(Int(width))"
+                        attachment.lifetime = .keepAlways
+                        add(attachment)
+                    }
+                }
+            }
+        }
     }
 
     @MainActor func testCoachCardsAtNarrowWidthAndLargeLocalizedText() throws {

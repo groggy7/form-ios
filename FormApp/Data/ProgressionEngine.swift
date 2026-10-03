@@ -81,11 +81,11 @@ public enum ProgressionEngine {
         let sessions = findHistoricalSessions(exercise: exercise, history: history)
 
         func guidance(_ action: ProgressionAction, _ key: String, _ args: [String: String] = [:], plateau: Bool = false,
-                      summary: String? = nil) -> ExerciseProgressionRecommendation {
+                      summary: String? = nil, sourceSets: [ProgressionSetTarget] = []) -> ExerciseProgressionRecommendation {
             ExerciseProgressionRecommendation(exerciseId: exerciseId, exerciseName: exercise.name, action: action,
                 suggestedWeightKg: nil, suggestedWeightDisplay: "--", suggestedRepsMin: repMin, suggestedRepsMax: repMax,
                 rationaleKey: key, rationaleArgs: args, isPlateau: plateau, consecutiveStagnantSessions: plateau ? 3 : 0,
-                lastSessionSummary: summary)
+                lastSessionSummary: summary, lastSessionSets: sourceSets)
         }
         guard let last = sessions.first else {
             return guidance(.firstSession, "progression.rationale.first_session", ["reps": repMin == repMax ? "\(repMin)" : "\(repMin)–\(repMax)"])
@@ -105,6 +105,7 @@ public enum ProgressionEngine {
             return guidance(.insufficientData, "progression.rationale.insufficient_data", ["sets": "\(expectedSets)"])
         }
         let workingSets = last.workingSets
+        let lastSessionSets = workingSets.map { ProgressionSetTarget(weightKg: $0.weightKg, reps: $0.reps!) }
         let topWeight = workingSets.map { $0.weightKg! }.max()!
         let mixedLoads = workingSets.contains { abs($0.weightKg! - topWeight) > 0.01 }
         func comparable(_ session: HistoricalSessionSets) -> Bool {
@@ -118,7 +119,7 @@ public enum ProgressionEngine {
             }
         if isPlateau {
             return guidance(.deload, "progression.rationale.plateau", ["sessions": "3"], plateau: true,
-                            summary: formatSessionSummary(workingSets, unit: weightUnit))
+                            summary: formatSessionSummary(workingSets, unit: weightUnit), sourceSets: lastSessionSets)
         }
         // A second full session at the same set-by-set loads confirms the ceiling.
         let confirmedCeiling = allHitCeiling && sessions.dropFirst().first.map { previous in
@@ -151,7 +152,7 @@ public enum ProgressionEngine {
             suggestedRepsMin: targets.map { $0.reps }.min()!, suggestedRepsMax: targets.map { $0.reps }.max()!,
             weightDeltaDisplay: canIncrease ? "+\(formatWeight(incrementKg, unit: weightUnit)) \(weightUnit.label)" : nil,
             rationaleKey: key, rationaleArgs: ["ceiling": "\(repMax)", "floor": "\(repMin)", "targetReps": "\(repMin)"],
-            lastSessionSummary: formatSessionSummary(workingSets, unit: weightUnit), setTargets: targets)
+            lastSessionSummary: formatSessionSummary(workingSets, unit: weightUnit), setTargets: targets, lastSessionSets: lastSessionSets)
     }
 
     public static func evaluateMesocycleFatigue(

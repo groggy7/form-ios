@@ -85,6 +85,7 @@ public struct ExerciseProgressionRecommendation: Equatable {
     public let suggestedVariationName: String?
     public let lastSessionSummary: String?
     public let setTargets: [ProgressionSetTarget]
+    public let lastSessionSets: [ProgressionSetTarget]
 
     public init(
         exerciseId: String,
@@ -102,7 +103,8 @@ public struct ExerciseProgressionRecommendation: Equatable {
         suggestedVariationId: String? = nil,
         suggestedVariationName: String? = nil,
         lastSessionSummary: String? = nil,
-        setTargets: [ProgressionSetTarget] = []
+        setTargets: [ProgressionSetTarget] = [],
+        lastSessionSets: [ProgressionSetTarget] = []
     ) {
         self.exerciseId = exerciseId
         self.exerciseName = exerciseName
@@ -120,6 +122,7 @@ public struct ExerciseProgressionRecommendation: Equatable {
         self.suggestedVariationName = suggestedVariationName
         self.lastSessionSummary = lastSessionSummary
         self.setTargets = setTargets
+        self.lastSessionSets = lastSessionSets
     }
 
     /// Match working-set positions, never warmups, completed rows or added sets.
