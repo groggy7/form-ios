@@ -101,7 +101,7 @@ public struct ProgressionInfoSheet: View {
     }
 
     private func actionRow(action: ProgressionAction, desc: String) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
+        HStack(alignment: .top, spacing: 12) {
             Text(LanguageManager.t(action.titleKey))
                 .font(.caption2.weight(.bold))
                 .foregroundColor(action.color)
@@ -111,6 +111,7 @@ public struct ProgressionInfoSheet: View {
                 .overlay(RoundedRectangle(cornerRadius: 6).stroke(action.color.opacity(0.4), lineWidth: 1))
                 .cornerRadius(6)
                 .fixedSize(horizontal: false, vertical: true)
+                .frame(width: 140, alignment: .leading)
 
             Text(desc)
                 .font(.caption)
