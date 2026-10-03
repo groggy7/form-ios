@@ -133,7 +133,7 @@ public enum WorkoutSessionUtils {
 
     public static func prefillSet(_ target: ExerciseSetLog, from previous: ExerciseSetLog?, unit: WeightUnit = .kg) -> ExerciseSetLog {
         guard target.inputTouched != true, !target.isCompleted, target.weightInput.isEmpty, target.repsInput.isEmpty,
-              target.weightKg == nil, target.completedReps == nil, let previous, canCompleteSet(previous) else { return target }
+              target.weightKg == nil, target.completedReps == nil, let previous, canCompleteSet(previous, allowsZeroWeight: true) else { return target }
         let weight = previous.weightInput.isEmpty ? previous.weightKg.map { formatWeight($0, unit: unit) } ?? "" : previous.weightInput
         let reps = previous.repsInput.isEmpty ? previous.completedReps.map { "\($0)" } ?? "" : previous.repsInput
         guard let weight = sanitizedWeightInput(weight), let reps = sanitizedRepsInput(reps) else { return target }
@@ -370,7 +370,7 @@ public enum WorkoutSessionUtils {
     public static func sanitizedWeightInput(_ value: String) -> String? {
         var normalized = value.replacingOccurrences(of: ",", with: ".").trimmingCharacters(in: .whitespaces)
         if normalized.isEmpty { return "" }
-        if normalized.range(of: #"^0+$"#, options: .regularExpression) != nil { return nil }
+        if normalized.range(of: #"^0+$"#, options: .regularExpression) != nil { normalized = "0" }
         if normalized.hasPrefix(".") { normalized = "0" + normalized }
         if let regex = try? NSRegularExpression(pattern: #"^0+(?=[1-9]|0\.)"#) {
             let range = NSRange(location: 0, length: normalized.utf16.count)
@@ -394,11 +394,23 @@ public enum WorkoutSessionUtils {
         return normalized
     }
 
-    public static func canCompleteSet(_ set: ExerciseSetLog) -> Bool {
+    public static func allowsZeroWeight(_ exercise: Exercise) -> Bool {
+        let id = ExerciseCatalog.resolveCanonicalId(stableId: exercise.exerciseId, name: exercise.name)
+        return !["bar", "dumbbell", "machine", "kettlebell", "weight-plate"].contains(EquipmentCatalog.shared.categoryId(id))
+    }
+
+    public static func setValidationError(_ set: ExerciseSetLog, allowsZeroWeight: Bool = false) -> String? {
         let weight = set.weightKg ?? Double(set.weightInput.replacingOccurrences(of: ",", with: ".").trimmingCharacters(in: .whitespaces))
         let reps = set.completedReps ?? Int(set.repsInput.trimmingCharacters(in: .whitespaces))
-        guard let w = weight, let r = reps else { return false }
-        return w >= 1.0 && r >= 1
+        guard let w = weight, w.isFinite, w >= 0, allowsZeroWeight || w > 0 else {
+            return allowsZeroWeight ? "table.validation.weight_zero_allowed" : "table.validation.weight_positive"
+        }
+        guard let r = reps, (1...999).contains(r) else { return "table.validation.reps" }
+        return nil
+    }
+
+    public static func canCompleteSet(_ set: ExerciseSetLog, allowsZeroWeight: Bool = false) -> Bool {
+        setValidationError(set, allowsZeroWeight: allowsZeroWeight) == nil
     }
 
     public static func findPreviousSessionWorkingSets(

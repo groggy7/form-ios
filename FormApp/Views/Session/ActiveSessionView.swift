@@ -424,9 +424,6 @@ public struct ActiveSessionView: View {
                                         onRemoveSet: { setIdx in
                                             removeSet(exerciseId: exercise.id, index: setIdx)
                                         },
-                                        onEmptyWarning: {
-                                            showEmptyWarning()
-                                        },
                                         onRestWarning: {
                                             showRestWarning()
                                         },
@@ -439,6 +436,7 @@ public struct ActiveSessionView: View {
                                             store.toggleWarmup(exerciseId: exercise.id, index: setIdx)
                                         },
                                         weightUnit: store.weightUnit,
+                                        allowsZeroWeight: WorkoutSessionUtils.allowsZeroWeight(exercise),
                                         ghostTargets: ghostTargets,
                                         logbookBeatenSets: logbookBeatenSets
                                     )
@@ -701,19 +699,6 @@ public struct ActiveSessionView: View {
 
     // MARK: - Actions
 
-    private func showEmptyWarning() {
-        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-        warningNoticeMessage = LanguageManager.t("notice.emptySetWarning")
-        withAnimation(.easeOut(duration: 0.28)) {
-            isWarningVisible = true
-        }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-            withAnimation(.easeIn(duration: 0.24)) {
-                isWarningVisible = false
-            }
-        }
-    }
-
     private func showRestWarning() {
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         warningNoticeMessage = LanguageManager.t("notice.restActiveWarning")
@@ -784,7 +769,7 @@ public struct ActiveSessionView: View {
             if isRestActive {
                 return copy
             }
-            if !currentSet.isCompleted && (!WorkoutSessionUtils.canCompleteSet(currentSet) || !WorkoutSessionUtils.isSetEnabled(sets: sets, index: index)) {
+            if !currentSet.isCompleted && (!WorkoutSessionUtils.canCompleteSet(currentSet, allowsZeroWeight: WorkoutSessionUtils.allowsZeroWeight(exercise)) || !WorkoutSessionUtils.isSetEnabled(sets: sets, index: index)) {
                 return copy
             }
             let willComplete = !currentSet.isCompleted

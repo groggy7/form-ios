@@ -7,6 +7,7 @@ public struct SetLoggingTable: View {
     }
     @FocusState private var focusedField: Field?
     @State private var selectedField: Field?
+    @State private var validationSetId: String?
     let sets: [ExerciseSetLog]
     let prescription: String
     var isRestActive: Bool = false
@@ -16,11 +17,11 @@ public struct SetLoggingTable: View {
     var onToggleCompleteSet: (Int) -> Void
     var onAddSet: () -> Void
     var onRemoveSet: (Int) -> Void
-    var onEmptyWarning: (() -> Void)? = nil
     var onRestWarning: (() -> Void)? = nil
     var onInspectPlates: ((Double) -> Void)? = nil
     var onToggleWarmup: ((Int) -> Void)? = nil
     var weightUnit: WeightUnit = .kg
+    var allowsZeroWeight: Bool = false
     var ghostTargets: [Int: GhostTarget] = [:]
     var logbookBeatenSets: [Int: LogbookBeatResult] = [:]
 
@@ -34,11 +35,11 @@ public struct SetLoggingTable: View {
         onToggleCompleteSet: @escaping (Int) -> Void,
         onAddSet: @escaping () -> Void,
         onRemoveSet: @escaping (Int) -> Void,
-        onEmptyWarning: (() -> Void)? = nil,
         onRestWarning: (() -> Void)? = nil,
         onInspectPlates: ((Double) -> Void)? = nil,
         onToggleWarmup: ((Int) -> Void)? = nil,
         weightUnit: WeightUnit = .kg,
+        allowsZeroWeight: Bool = false,
         ghostTargets: [Int: GhostTarget] = [:],
         logbookBeatenSets: [Int: LogbookBeatResult] = [:]
     ) {
@@ -51,11 +52,11 @@ public struct SetLoggingTable: View {
         self.onToggleCompleteSet = onToggleCompleteSet
         self.onAddSet = onAddSet
         self.onRemoveSet = onRemoveSet
-        self.onEmptyWarning = onEmptyWarning
         self.onRestWarning = onRestWarning
         self.onInspectPlates = onInspectPlates
         self.onToggleWarmup = onToggleWarmup
         self.weightUnit = weightUnit
+        self.allowsZeroWeight = allowsZeroWeight
         self.ghostTargets = ghostTargets
         self.logbookBeatenSets = logbookBeatenSets
     }
@@ -106,6 +107,11 @@ public struct SetLoggingTable: View {
             .foregroundColor(AppColors.muted)
             .padding(.horizontal, 14)
 
+            if allowsZeroWeight {
+                Text(LanguageManager.t("table.no_added_weight"))
+                    .font(.system(size: 12)).foregroundColor(AppColors.muted)
+                    .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
+            }
             let currentLoggedIndex = (isRestActive && isRestForCurrentExercise) ? sets.lastIndex(where: { $0.isCompleted }) : nil
             // Set Rows
             ForEach(Array(sets.enumerated()), id: \.element.id) { index, set in
@@ -122,16 +128,10 @@ public struct SetLoggingTable: View {
                 }()
                 let weightBinding = Binding<String>(
                     get: {
-                        if set.weightInput == "0" { return "" }
-                        return set.weightInput.isEmpty ? (set.weightKg.flatMap { $0 > 0 ? WorkoutSessionUtils.formatWeight($0) : nil } ?? "") : set.weightInput
+                        return set.weightInput.isEmpty ? (set.weightKg.flatMap { $0 >= 0 ? WorkoutSessionUtils.formatWeight($0, unit: weightUnit) : nil } ?? "") : set.weightInput
                     },
                     set: { newVal in
                         guard isSetInputEnabled else { return }
-                        if newVal == "0" || newVal == "00" {
-                            let reps = (set.repsInput == "0" || set.repsInput.isEmpty) ? (set.completedReps.flatMap { $0 > 0 ? "\($0)" : nil } ?? "") : set.repsInput
-                            onUpdateSet(index, "", reps)
-                            return
-                        }
                         if let sanitized = WorkoutSessionUtils.sanitizedWeightInput(newVal) {
                             let reps = (set.repsInput == "0" || set.repsInput.isEmpty) ? (set.completedReps.flatMap { $0 > 0 ? "\($0)" : nil } ?? "") : set.repsInput
                             onUpdateSet(index, sanitized, reps)
@@ -147,18 +147,18 @@ public struct SetLoggingTable: View {
                     set: { newVal in
                         guard isSetInputEnabled else { return }
                         if newVal == "0" || newVal == "00" {
-                            let weight = (set.weightInput == "0" || set.weightInput.isEmpty) ? (set.weightKg.flatMap { $0 > 0 ? WorkoutSessionUtils.formatWeight($0) : nil } ?? "") : set.weightInput
+                            let weight = set.weightInput.isEmpty ? (set.weightKg.flatMap { $0 >= 0 ? WorkoutSessionUtils.formatWeight($0, unit: weightUnit) : nil } ?? "") : set.weightInput
                             onUpdateSet(index, weight, "")
                             return
                         }
                         if let sanitized = WorkoutSessionUtils.sanitizedRepsInput(newVal) {
-                            let weight = (set.weightInput == "0" || set.weightInput.isEmpty) ? (set.weightKg.flatMap { $0 > 0 ? WorkoutSessionUtils.formatWeight($0) : nil } ?? "") : set.weightInput
+                            let weight = set.weightInput.isEmpty ? (set.weightKg.flatMap { $0 >= 0 ? WorkoutSessionUtils.formatWeight($0, unit: weightUnit) : nil } ?? "") : set.weightInput
                             onUpdateSet(index, weight, sanitized)
                         }
                     }
                 )
 
-                let canComplete = set.isCompleted || (WorkoutSessionUtils.canCompleteSet(set) && !isRestActive)
+                let canComplete = set.isCompleted || (WorkoutSessionUtils.canCompleteSet(set, allowsZeroWeight: allowsZeroWeight) && !isRestActive)
 
                 HStack(spacing: 8) {
                     Text(set.isWarmup ? "W\(set.setNumber)" : "\(set.setNumber)")
@@ -256,11 +256,12 @@ public struct SetLoggingTable: View {
                             focusedField = nil
                             selectedField = nil
                         } else if canComplete {
+                            validationSetId = nil
                             onToggleCompleteSet(index)
                             focusedField = nil
                             selectedField = nil
                         } else {
-                            onEmptyWarning?()
+                            validationSetId = set.id
                         }
                     }) {
                         Image(systemName: set.isCompleted ? "checkmark.circle.fill" : "circle")
@@ -275,6 +276,8 @@ public struct SetLoggingTable: View {
                             .frame(width: 44, height: 44)
                     }
                     .buttonStyle(.plain)
+                    .accessibilityLabel("\(LanguageManager.t("table.doneHeading")) \(LanguageManager.t("table.set")) \(set.setNumber)")
+                    .accessibilityIdentifier("set-complete-\(set.id)")
                     .disabled(!isSetEnabled && !set.isCompleted)
                 }
                 .padding(.horizontal, 14)
@@ -314,6 +317,12 @@ public struct SetLoggingTable: View {
                     }
                 }
 
+                if validationSetId == set.id, !set.isCompleted,
+                   let key = WorkoutSessionUtils.setValidationError(set, allowsZeroWeight: allowsZeroWeight) {
+                    Text(LanguageManager.t(key)).font(.system(size: 12)).foregroundColor(AppColors.danger)
+                        .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
+                        .accessibilityIdentifier("set-validation-\(set.id)")
+                }
                 if let selected = selectedField, selected.id == set.id, isSetInputEnabled {
                     let weightLabelKey = weightUnit == .lbs ? "table.weightLbs" : "table.weightKg"
                     let fieldLabel = LanguageManager.t(selected.weight ? weightLabelKey : "table.actualReps")

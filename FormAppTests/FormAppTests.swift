@@ -746,8 +746,8 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(WorkoutSessionUtils.sanitizedWeightInput("52.5"), "52.5")
         XCTAssertEqual(WorkoutSessionUtils.sanitizedWeightInput("52,5"), "52.5")
         XCTAssertEqual(WorkoutSessionUtils.sanitizedWeightInput(""), "")
-        XCTAssertNil(WorkoutSessionUtils.sanitizedWeightInput("0"))
-        XCTAssertNil(WorkoutSessionUtils.sanitizedWeightInput("00"))
+        XCTAssertEqual(WorkoutSessionUtils.sanitizedWeightInput("0"), "0")
+        XCTAssertEqual(WorkoutSessionUtils.sanitizedWeightInput("00"), "0")
         XCTAssertEqual(WorkoutSessionUtils.sanitizedWeightInput("015"), "15")
         XCTAssertEqual(WorkoutSessionUtils.sanitizedWeightInput("05"), "5")
         XCTAssertEqual(WorkoutSessionUtils.sanitizedWeightInput("0.5"), "0.5")
@@ -3553,16 +3553,50 @@ final class FormAppTests: XCTestCase {
         XCTAssertFalse(added.isCompleted)
     }
 
-    func testCanCompleteSetValidatesKgAndRepsAboveOrEqualToOne() {
+    func testCanCompleteSetAcceptsPositiveFractionalLoadsAndValidReps() {
         XCTAssertFalse(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1)))
         XCTAssertFalse(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "", repsInput: "10")))
         XCTAssertFalse(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "0", repsInput: "10", weightKg: 0, completedReps: 10)))
-        XCTAssertFalse(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "0.9", repsInput: "10", weightKg: 0.9, completedReps: 10)))
+        XCTAssertTrue(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "0.9", repsInput: "10", weightKg: 0.9, completedReps: 10)))
         XCTAssertFalse(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "50", repsInput: "", weightKg: 50)))
         XCTAssertFalse(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "50", repsInput: "0", weightKg: 50, completedReps: 0)))
         XCTAssertTrue(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "1", repsInput: "1", weightKg: 1, completedReps: 1)))
         XCTAssertTrue(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "50", repsInput: "12", weightKg: 50, completedReps: 12)))
         XCTAssertTrue(WorkoutSessionUtils.canCompleteSet(ExerciseSetLog(setNumber: 1, weightInput: "2.5", repsInput: "15")))
+    }
+
+    func testBodyweightSetsAcceptZeroAndProduceAUsableSavedBaseline() throws {
+        let exercise = Exercise(id: "bodyweight", name: "Push Ups", exerciseId: "push-ups", sets: 2, reps: RepTarget(min: 8, max: 12))
+        let weighted = Exercise(name: "Barbell Bench Press", exerciseId: "barbell-bench-press")
+        XCTAssertTrue(WorkoutSessionUtils.allowsZeroWeight(exercise))
+        XCTAssertFalse(WorkoutSessionUtils.allowsZeroWeight(weighted))
+        var legacy = weighted; legacy.exerciseId = nil
+        XCTAssertFalse(WorkoutSessionUtils.allowsZeroWeight(legacy))
+        let zero = ExerciseSetLog(setNumber: 1, weightInput: "0", repsInput: "1", weightKg: 0, completedReps: 1)
+        XCTAssertTrue(WorkoutSessionUtils.canCompleteSet(zero, allowsZeroWeight: true))
+        XCTAssertFalse(WorkoutSessionUtils.canCompleteSet(zero))
+        for weight in [-1.0, Double.nan, Double.infinity] {
+            var invalid = zero; invalid.weightKg = weight
+            XCTAssertFalse(WorkoutSessionUtils.canCompleteSet(invalid, allowsZeroWeight: true))
+        }
+        var invalid = zero; invalid.completedReps = 1000
+        XCTAssertEqual(WorkoutSessionUtils.setValidationError(invalid, allowsZeroWeight: true), "table.validation.reps")
+        invalid = zero; invalid.weightKg = nil; invalid.weightInput = ""
+        XCTAssertEqual(WorkoutSessionUtils.setValidationError(invalid, allowsZeroWeight: true), "table.validation.weight_zero_allowed")
+        var completed = zero; completed.isCompleted = true
+        let nextRow = WorkoutSessionUtils.prefillSet(ExerciseSetLog(setNumber: 2), from: completed)
+        XCTAssertEqual(nextRow.weightInput, "0")
+        XCTAssertEqual(nextRow.weightKg, 0)
+        XCTAssertFalse(nextRow.isCompleted)
+        var second = completed; second.setNumber = 2
+        let workout = Workout(id: "body", day: 1, title: "Bodyweight", exercises: [exercise])
+        let draft = ActiveSessionDraft(id: "draft-body", programId: "p", workout: workout,
+            startedAt: "2026-10-03T10:00:00Z", startedAtEpochMillis: 1000,
+            setsByExercise: [exercise.id: [completed, second]])
+        let record = SessionProgress.from(draft: draft, nowEpochMillis: 2000).record(draft: draft, completedAtEpochMillis: 2000)
+        let target = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: exercise, history: [record]))
+        XCTAssertEqual(target.setTargets.count, 2)
+        XCTAssertEqual(target.setTargets.map { $0.weightKg }, [0, 0])
     }
 
     func testEmptySetWarningTranslationsParity() {
@@ -7650,20 +7684,20 @@ final class ProgressionReliabilityTests: XCTestCase {
         defer { LanguageManager.setLanguage(previous); manager.setFeatureOverride(.autoProgression, unlocked: nil) }
         let cases: [(String, [WorkoutSessionRecord])] = [("uniform", [record(1)]), ("by-set", [record(1, reps: [12, 10, 8], loads: [80, 70, 60])]),
             ("incomplete", [record(1, reps: [8])]), ("incomplete-zero", [record(1, reps: [8])]), ("incomplete-six", [record(1, reps: [8])]),
-            ("incomplete-one-left", [record(1, reps: [8])]), ("incomplete-recorded", [record(1, reps: [8])]), ("baseline", [])]
+            ("incomplete-one-left", [record(1, reps: [8])]), ("incomplete-recorded", [record(1, reps: [8])]), ("baseline-zero", []), ("baseline", []), ("baseline-recorded", [])]
         for language in ["en", "tr"] {
             LanguageManager.setLanguage(language)
             for (name, history) in cases {
                 var exercise = bench
-                let total = name == "incomplete" ? 3 : name == "incomplete-zero" ? 5 : 6
-                let recorded = name == "incomplete-zero" ? 0 : name == "incomplete" ? 1 : name == "incomplete-one-left" ? 5 : name == "incomplete-recorded" ? 6 : 4
-                if name.hasPrefix("incomplete") { exercise.sets = total }
-                let sessionSets: [ExerciseSetLog]? = name.hasPrefix("incomplete")
+                let total = name == "incomplete" ? 3 : (name == "incomplete-zero" || name == "baseline-zero") ? 5 : 6
+                let recorded = (name == "incomplete-zero" || name == "baseline-zero") ? 0 : name == "incomplete" ? 1 : name == "incomplete-one-left" ? 5 : (name == "incomplete-recorded" || name == "baseline-recorded") ? 6 : 4
+                if name.hasPrefix("incomplete") || name.hasPrefix("baseline") { exercise.sets = total }
+                let sessionSets: [ExerciseSetLog]? = (name.hasPrefix("incomplete") || name.hasPrefix("baseline"))
                     ? [ExerciseSetLog(setNumber: 0, isCompleted: true, isWarmup: true)] + (1...total).map { index in
                         ExerciseSetLog(setNumber: index, weightKg: 65, completedReps: 8, isCompleted: index <= recorded)
                     } : nil
                 let rec = ProgressionEngine.computeProgression(exercise: exercise, history: history)!
-                let layouts: [(CGFloat, ContentSizeCategory)] = name == "baseline" || name.hasPrefix("incomplete")
+                let layouts: [(CGFloat, ContentSizeCategory)] = name.hasPrefix("baseline") || name.hasPrefix("incomplete")
                     ? [(393, .large), (320, .extraExtraExtraLarge)]
                     : [(320, .extraExtraExtraLarge)]
                 for (width, textSize) in layouts {

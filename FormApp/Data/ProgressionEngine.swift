@@ -97,7 +97,7 @@ public enum ProgressionEngine {
                 Set(sets.map { $0.setNumber }).count == sets.count && sets.allSatisfy { set in
                     guard let reps = set.reps, let weight = set.weightKg else { return false }
                     return (1...999).contains(reps) && weight.isFinite && weight >= 0 && weightUnit.toDisplay(weight) <= 9999.99 &&
-                        (!["bar", "dumbbell", "machine", "kettlebell", "weight-plate"].contains(category) || weight > 0)
+                        (WorkoutSessionUtils.allowsZeroWeight(exercise) || weight > 0)
                 }
         }
         // Do not silently fall back to an older, easier or more complete workout.

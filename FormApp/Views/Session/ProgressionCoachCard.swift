@@ -300,18 +300,15 @@ public struct ProgressionCoachCard: View {
     }
 
     private var loggingProgress: ProgressionLoggingProgress? {
-        guard recommendation.action == .insufficientData, let sessionSets else { return nil }
+        guard let sessionSets else { return nil }
         let progress = ProgressionLoggingProgress.from(sets: sessionSets)
         return progress.totalSets > 0 ? progress : nil
     }
 
     private var emptyHistoryCopy: (headline: String, description: String) {
-        if recommendation.action == .firstSession {
-            return (LanguageManager.t("progression.coach.no_target"), LanguageManager.t("progression.coach.first_session_hint"))
-        }
         guard let progress = loggingProgress else {
-            return (LanguageManager.t("progression.coach.more_history"),
-                    LanguageManager.t("progression.coach.insufficient_data_hint", recommendation.rationaleArgs))
+            return (LanguageManager.t("progression.coach.no_target"),
+                    LanguageManager.t("progression.coach.first_session_hint"))
         }
         let args = ["recorded": "\(progress.recordedSets)", "sets": "\(progress.totalSets)", "remaining": "\(progress.remainingSets)"]
         let headlineKey = progress.totalSets == 1 ? "progression.coach.recorded_set" : "progression.coach.recorded_sets"
