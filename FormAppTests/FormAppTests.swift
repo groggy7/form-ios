@@ -7215,65 +7215,77 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
-    func testVolumeMatrixLockedBlurredPreviewSnapshot() {
-        let store = AppStore.shared
-        ProAccessManager.shared.updateSubscriptionStatus(active: false)
-        ProAccessManager.shared.resetOverrides()
+    func testLockedAnalyticsBlurredPreviewSnapshots() async throws {
+        let store = AppStore()
+        let original = store.state
+        let manager = ProAccessManager.shared
+        let subscription = manager.isProSubscribed
+        let features: [ProFeature] = [.volumeMatrix, .formLab]
+        let access = features.map { manager.isFeatureUnlocked($0) }
+        let language = LanguageManager.shared.currentLanguage
+        store.state.history = ProPreviewData.previewHistory()
+        store.selectedHistoryDetailDay = nil
+        LanguageManager.setLanguage("en")
+        defer {
+            store.state = original
+            LanguageManager.setLanguage(language)
+            for (feature, unlocked) in zip(features, access) {
+                manager.setFeatureOverride(feature, unlocked: unlocked == subscription ? nil : unlocked)
+            }
+        }
 
-        // Populate a completed workout so heatmaps and metrics glow through
-        let session = WorkoutSessionRecord(
-            id: UUID().uuidString,
-            programId: "prog_test",
-            workoutId: "w1",
-            workoutTitle: "Push Strength",
-            startedAt: "2026-09-20T10:00:00.000Z",
-            completedAt: "2026-09-20T10:45:00.000Z",
-            durationSeconds: 2700,
-            totalVolumeKg: 4250.0,
-            totalCompletedSets: 5,
-            exerciseLogs: [
-                SessionExerciseLog(
-                    exerciseName: "Barbell Bench Press",
-                    sets: [
-                        SessionSetLog(setNumber: 1, weightKg: 80, reps: 10),
-                        SessionSetLog(setNumber: 2, weightKg: 90, reps: 8),
-                        SessionSetLog(setNumber: 3, weightKg: 100, reps: 6)
-                    ]
-                ),
-                SessionExerciseLog(
-                    exerciseName: "Barbell Squat",
-                    sets: [
-                        SessionSetLog(setNumber: 1, weightKg: 120, reps: 8),
-                        SessionSetLog(setNumber: 2, weightKg: 130, reps: 8)
-                    ]
-                )
-            ]
-        )
-        store.state.history.append(session)
+        func snapshot(_ tab: HistoryView.HistoryTab, name: String) async throws -> UIImage {
+            let content = HistoryView(store: store, initialTab: tab, onOpenSettings: {}, onSelectRecord: { _ in })
+                .background(AppColors.background)
+            let controller = UIHostingController(rootView: content)
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+            window.rootViewController = controller
+            window.makeKeyAndVisible()
+            controller.view.frame = window.bounds
+            controller.view.layoutIfNeeded()
+            defer { window.isHidden = true }
+            try await Task.sleep(nanoseconds: 200_000_000)
+            let format = UIGraphicsImageRendererFormat()
+            format.scale = 1
+            let image = UIGraphicsImageRenderer(size: window.bounds.size, format: format).image { _ in
+                controller.view.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
+            }
+            let attachment = XCTAttachment(image: image)
+            attachment.name = name
+            attachment.lifetime = .keepAlways
+            add(attachment)
+            return image
+        }
 
-        let view = HistoryView(
-            store: store,
-            initialTab: .volumeMatrix,
-            onOpenSettings: {},
-            onSelectRecord: { _ in }
-        )
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(AppColors.background)
+        func edgeDetail(_ image: UIImage) throws -> Double {
+            let crop = try XCTUnwrap(image.cgImage?.cropping(to: CGRect(x: 20, y: 210, width: 353, height: 100)))
+            var pixels = [UInt8](repeating: 0, count: crop.width * crop.height * 4)
+            let context = try XCTUnwrap(CGContext(data: &pixels, width: crop.width, height: crop.height,
+                bitsPerComponent: 8, bytesPerRow: crop.width * 4, space: CGColorSpaceCreateDeviceRGB(),
+                bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue))
+            context.draw(crop, in: CGRect(x: 0, y: 0, width: crop.width, height: crop.height))
+            var detail = 0.0
+            for y in 1..<crop.height {
+                for x in 1..<crop.width {
+                    let offset = (y * crop.width + x) * 4
+                    for channel in 0..<3 {
+                        detail += Double(abs(Int(pixels[offset + channel]) - Int(pixels[offset - 4 + channel])))
+                        detail += Double(abs(Int(pixels[offset + channel]) - Int(pixels[offset - crop.width * 4 + channel])))
+                    }
+                }
+            }
+            return detail / Double((crop.width - 1) * (crop.height - 1) * 6)
+        }
 
-        let controller = UIHostingController(rootView: view)
-        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
-        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
-        window.rootViewController = controller
-        window.makeKeyAndVisible()
-        controller.view.layoutIfNeeded()
-
-        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
-        let image = renderer.image { _ in controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true) }
-        if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_volume_matrix_locked_blurred_snapshot.png"
-            try? data.write(to: URL(fileURLWithPath: path))
-            print("Successfully wrote Volume Matrix Locked Blurred snapshot to \(path)")
+        for feature in features {
+            let tab: HistoryView.HistoryTab = feature == .volumeMatrix ? .volumeMatrix : .formLab
+            manager.setFeatureOverride(feature, unlocked: false)
+            let locked = try await snapshot(tab, name: "locked-\(feature.rawValue)")
+            manager.setFeatureOverride(feature, unlocked: true)
+            let unlocked = try await snapshot(tab, name: "unlocked-\(feature.rawValue)")
+            let sharpDetail = try edgeDetail(unlocked)
+            XCTAssertGreaterThan(sharpDetail, 0.3, "The sample must contain visible analytics")
+            XCTAssertLessThan(try edgeDetail(locked), sharpDetail * 0.5, "Locked analytics must lose fine detail through blur")
         }
     }
 
