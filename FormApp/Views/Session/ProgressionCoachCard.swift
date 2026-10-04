@@ -109,7 +109,7 @@ public struct ProgressionCoachCard: View {
             .padding(.vertical, 10)
             .background(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(AppColors.surfaceRaised)
+                    .fill(AppColors.surface)
                     .overlay(
                         RoundedRectangle(cornerRadius: 16, style: .continuous)
                             .stroke(AppColors.purple.opacity(0.35), lineWidth: 1)
@@ -219,7 +219,7 @@ public struct ProgressionCoachCard: View {
                     .foregroundColor(AppColors.secondaryText)
             }
             .padding(14)
-            .background(AppColors.surfaceRaised)
+            .background(AppColors.surface)
             .overlay(RoundedRectangle(cornerRadius: 16).stroke(recommendation.action.color.opacity(0.35), lineWidth: 1))
             .cornerRadius(16)
             .contentShape(Rectangle())

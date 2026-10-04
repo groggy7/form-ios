@@ -6501,34 +6501,53 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
-    func testWarmupPlateCardInactiveSnapshot() {
-        let card = WarmupPlateCard(
-            warmupSets: [],
-            onGenerateWarmup: {},
-            onOpenPlates: {},
-            onClearWarmups: {},
-            onDismissLocked: {}
-        )
-        .padding(.horizontal, 16)
-        .padding(.vertical, 24)
-        .background(AppColors.background)
-
-        let controller = UIHostingController(rootView: card)
-        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 120)
-        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 120))
-        window.rootViewController = controller
-        window.makeKeyAndVisible()
-        controller.view.layoutIfNeeded()
-
-        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
-        let image = renderer.image { ctx in
-            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+    func testWarmupPlateCardInactiveSnapshot() async throws {
+        let manager = ProAccessManager.shared
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows).first(where: \.isKeyWindow)
+        defer {
+            previousWindow?.makeKeyAndVisible()
+            LanguageManager.setLanguage(previousLanguage)
+            manager.setFeatureOverride(.warmupCalculator, unlocked: nil)
         }
-        if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_warmup_plate_card_inactive_snapshot.png"
-            try? data.write(to: URL(fileURLWithPath: path))
-            print("Successfully wrote inactive warmup plate card snapshot to \(path)")
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            for (width, textSize) in [(CGFloat(393), ContentSizeCategory.large), (320, .extraExtraExtraLarge)] {
+                var lockedHeight: CGFloat = 0
+                for unlocked in [false, true] {
+                    manager.setFeatureOverride(.warmupCalculator, unlocked: unlocked)
+                    for dismissible in [false, true] where !unlocked || !dismissible {
+                        let card = WarmupPlateCard(warmupSets: [], onGenerateWarmup: {}, onOpenPlates: {},
+                            onClearWarmups: {}, onDismissLocked: dismissible ? {} : nil)
+                            .padding(20).frame(width: width).background(AppColors.background).ignoresSafeArea()
+                            .environment(\.sizeCategory, textSize)
+                        let controller = UIHostingController(rootView: card)
+                        let size = controller.sizeThatFits(in: CGSize(width: width, height: 1000))
+                        let window = UIWindow(frame: CGRect(origin: .zero, size: size))
+                        window.rootViewController = controller
+                        window.makeKeyAndVisible()
+                        controller.view.frame = window.bounds
+                        controller.view.layoutIfNeeded()
+                        try await Task.sleep(nanoseconds: 250_000_000)
+                        let image = UIGraphicsImageRenderer(size: size).image { context in
+                            controller.view.layer.render(in: context.cgContext)
+                        }
+                        window.isHidden = true
+                        XCTAssertGreaterThan(try XCTUnwrap(image.pngData()).count, 3000, "Card content must be visible")
+                        XCTAssertEqual(image.size.width, width)
+                        XCTAssertGreaterThan(image.size.height, 130)
+                        if !dismissible {
+                            if unlocked { XCTAssertEqual(image.size.height, lockedHeight, accuracy: 1) }
+                            else { lockedHeight = image.size.height }
+                        }
+                        let attachment = XCTAttachment(image: image)
+                        attachment.name = "warmup-\(language)-\(unlocked ? "unlocked" : "locked")-\(dismissible ? "dismissible" : "plain")-\(Int(width))"
+                        attachment.lifetime = .keepAlways
+                        add(attachment)
+                    }
+                }
+            }
         }
     }
 
