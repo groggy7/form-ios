@@ -6073,11 +6073,13 @@ final class FormAppTests: XCTestCase {
                 let scroll = try XCTUnwrap(scrollViews(in: controller.view).first)
                 XCTAssertLessThanOrEqual(scroll.contentSize.width, scroll.bounds.width + 1)
                 XCTAssertGreaterThan(scroll.contentSize.height, 0)
-                for position in ["top", "bottom"] {
-                    if position == "bottom" {
+                for position in ["top", "rules-upper", "rules-lower", "bottom"] {
+                    if position != "top" {
                         let bottom = max(-scroll.adjustedContentInset.top,
                             scroll.contentSize.height - scroll.bounds.height + scroll.adjustedContentInset.bottom)
-                        scroll.setContentOffset(CGPoint(x: 0, y: bottom), animated: false)
+                        let offset = position == "bottom" ? bottom : min(bottom,
+                            scroll.contentSize.height * (position == "rules-upper" ? 0.2 : 0.4))
+                        scroll.setContentOffset(CGPoint(x: 0, y: offset), animated: false)
                         RunLoop.main.run(until: Date().addingTimeInterval(0.1))
                         controller.view.layoutIfNeeded()
                     }

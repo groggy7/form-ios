@@ -71,8 +71,10 @@ public struct ProgressionInfoSheet: View {
     private var actionsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(LanguageManager.t("progression.info.rules"))
-                .font(.subheadline.weight(.semibold))
+                .font(.headline)
                 .foregroundColor(AppColors.text)
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityAddTraits(.isHeader)
 
             VStack(alignment: .leading, spacing: 12) {
                 actionRow(
@@ -95,30 +97,49 @@ public struct ProgressionInfoSheet: View {
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(AppColors.surfaceRaised)
+        .background(AppColors.progressionRulesSurface)
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
         .cornerRadius(16)
     }
 
     private func actionRow(action: ProgressionAction, desc: String) -> some View {
         HStack(alignment: .top, spacing: 12) {
-            Text(LanguageManager.t(action.titleKey))
-                .font(.caption2.weight(.bold))
+            Image(systemName: ruleIcon(action))
+                .font(.system(size: 24, weight: .bold))
                 .foregroundColor(action.color)
-                .padding(.horizontal, 8)
-                .padding(.vertical, 4)
-                .background(action.badgeBgColor)
-                .overlay(RoundedRectangle(cornerRadius: 6).stroke(action.color.opacity(0.4), lineWidth: 1))
-                .cornerRadius(6)
-                .fixedSize(horizontal: false, vertical: true)
-                .frame(width: 140, alignment: .leading)
+                .frame(width: 44, height: 44)
+                .background(action.color.opacity(0.06))
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(action.color.opacity(0.24), lineWidth: 1))
+                .cornerRadius(12)
+                .accessibilityHidden(true)
 
-            Text(desc)
-                .font(.caption)
-                .lineSpacing(2)
-                .foregroundColor(AppColors.secondaryText)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .fixedSize(horizontal: false, vertical: true)
+            VStack(alignment: .leading, spacing: 6) {
+                Text(LanguageManager.t(action.titleKey).uppercased(with: Locale(identifier: LanguageManager.shared.currentLanguage)))
+                    .font(.footnote.weight(.bold))
+                    .foregroundColor(action.color)
+                    .fixedSize(horizontal: false, vertical: true)
+                Text(desc)
+                    .font(.footnote)
+                    .lineSpacing(3)
+                    .foregroundColor(AppColors.secondaryText)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(action.color.opacity(0.06))
+        .overlay(RoundedRectangle(cornerRadius: 12).stroke(action.color.opacity(0.22), lineWidth: 1))
+        .cornerRadius(12)
+        .accessibilityElement(children: .combine)
+    }
+
+    private func ruleIcon(_ action: ProgressionAction) -> String {
+        switch action {
+        case .increaseLoad: return "chart.bar.fill"
+        case .addReps: return "dumbbell.fill"
+        case .holdLoad: return "target"
+        default: return "doc.text.fill"
         }
     }
 

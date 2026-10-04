@@ -4,6 +4,7 @@ public enum AppColors {
     public static let background = Color(hex: 0x090C0F)
     public static let surface = Color(hex: 0x13171B)
     public static let surfaceRaised = Color(hex: 0x1D2227)
+    public static let progressionRulesSurface = Color(hex: 0x0E181E)
     public static let exerciseVideoSurface = Color(hex: 0x051216)
     public static let exerciseThumbnailSurface = EllipticalGradient(
         colors: [
