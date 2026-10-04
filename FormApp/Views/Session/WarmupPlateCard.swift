@@ -38,11 +38,17 @@ public struct WarmupPlateCard: View {
 
     public var body: some View {
         let isLocked = !proManager.isFeatureUnlocked(.warmupCalculator)
-        if isLocked || warmupSets.isEmpty {
-            introCard(isLocked: isLocked)
+        if isLocked {
+            LockedSessionFeatureCard(
+                title: LanguageManager.t("warmup.card_title"), description: LanguageManager.t("warmup.locked_desc"),
+                cardIdentifier: "warmup-plate-card", dismissIdentifier: "dismiss-warmup-card",
+                onUnlock: openPaywall, onDismiss: onDismissLocked, icon: barbellIcon
+            )
                 .sheet(isPresented: $showInternalPaywall) {
                     ProPaywallSheet(feature: .warmupCalculator, onDismiss: { showInternalPaywall = false })
                 }
+        } else if warmupSets.isEmpty {
+            introCard()
         } else {
             let hasUncompletedWarmups = warmupSets.contains { !$0.isCompleted }
             VStack(spacing: 10) {
@@ -129,47 +135,38 @@ public struct WarmupPlateCard: View {
             .fixedSize(horizontal: false, vertical: true)
     }
 
-    private func introCard(isLocked: Bool) -> some View {
+    private var barbellIcon: some View {
+        HStack(spacing: 1) {
+            Capsule().frame(width: 2.5, height: 9)
+            Capsule().frame(width: 3.5, height: 15)
+            Rectangle().frame(width: 8, height: 3)
+            Capsule().frame(width: 3.5, height: 15)
+            Capsule().frame(width: 2.5, height: 9)
+        }
+        .foregroundColor(AppColors.accent)
+        .frame(width: 24, height: 24)
+        .accessibilityHidden(true)
+    }
+
+    private func introCard() -> some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(alignment: .top, spacing: 10) {
-                HStack(spacing: 1) {
-                    Capsule().frame(width: 2.5, height: 9)
-                    Capsule().frame(width: 3.5, height: 15)
-                    Rectangle().frame(width: 8, height: 3)
-                    Capsule().frame(width: 3.5, height: 15)
-                    Capsule().frame(width: 2.5, height: 9)
-                }
-                .foregroundColor(AppColors.accent)
-                .frame(width: 24, height: 24)
-                .accessibilityHidden(true)
+                barbellIcon
                 ViewThatFits(in: .horizontal) {
                     HStack(spacing: 8) { title; ProBadge() }
                         .fixedSize(horizontal: true, vertical: false)
                     VStack(alignment: .leading, spacing: 4) { title; ProBadge() }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
-                if isLocked, let onDismissLocked {
-                    Button(action: onDismissLocked) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 16))
-                            .foregroundColor(AppColors.muted)
-                            .frame(width: 48, height: 48)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel(LanguageManager.t("common.close"))
-                    .accessibilityIdentifier("dismiss-warmup-card")
-                    .frame(width: 24, height: 24)
-                }
             }
-            Text(LanguageManager.t(!isLocked && !hasWorkingLoad ? "warmup.enter_working_load" : "warmup.card_desc"))
+            Text(LanguageManager.t(!hasWorkingLoad ? "warmup.enter_working_load" : "warmup.card_desc"))
                 .font(.system(size: bodySize))
                 .foregroundColor(AppColors.muted)
                 .fixedSize(horizontal: false, vertical: true)
-            if isLocked || hasWorkingLoad {
+            if hasWorkingLoad {
                 WarmupPlateActionsLayout {
-                    WarmupPlateAction(warmup: true, action: isLocked ? openPaywall : onGenerateWarmup)
-                    WarmupPlateAction(warmup: false, action: isLocked ? openPaywall : onOpenPlates)
+                    WarmupPlateAction(warmup: true, action: onGenerateWarmup)
+                    WarmupPlateAction(warmup: false, action: onOpenPlates)
                 }
             }
         }

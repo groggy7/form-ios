@@ -40,82 +40,15 @@ public struct ProgressionCoachCard: View {
     public var body: some View {
         Group {
         if !proManager.isFeatureUnlocked(.autoProgression) {
-            HStack(spacing: 6) {
-                Button(action: {
-                    if let onLockedClick = onLockedClick {
-                        onLockedClick()
-                    } else {
-                        showInternalPaywall = true
-                    }
-                }) {
-                    HStack(spacing: 10) {
-                        // Left Icon
-                        ZStack {
-                            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                .fill(AppColors.purpleBg)
-                                .frame(width: 36, height: 36)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                        .stroke(AppColors.purple.opacity(0.4), lineWidth: 1)
-                                )
-
-                            Image(systemName: "chart.line.uptrend.xyaxis")
-                                .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(AppColors.purple)
-                        }
-
-                        // Text details
-                        VStack(alignment: .leading, spacing: 2) {
-                            HStack(spacing: 6) {
-                                ProBadge()
-                                Text(LanguageManager.t("pro.auto_progression.title"))
-                                    .font(.system(size: 13, weight: .bold))
-                                    .foregroundColor(AppColors.text)
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.75)
-                            }
-
-                            Text(LanguageManager.t("pro.auto_progression.teaser"))
-                                .font(.system(size: 11))
-                                .foregroundColor(AppColors.secondaryText)
-                                .lineLimit(1)
-                                .minimumScaleFactor(0.75)
-                        }
-
-                        Spacer(minLength: 2)
-
-                        Image(systemName: "lock.fill")
-                            .font(.system(size: 13))
-                            .foregroundColor(AppColors.purple)
-                    }
-                    .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain)
-
-                if let onDismissLocked = onDismissLocked {
-                    Button(action: onDismissLocked) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundColor(AppColors.muted)
-                            .frame(width: 24, height: 24)
-                            .contentShape(Rectangle())
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityIdentifier("dismiss-progression-card")
-                }
-            }
-            .padding(.leading, 14)
-            .padding(.trailing, onDismissLocked != nil ? 8 : 14)
-            .padding(.vertical, 10)
-            .background(
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(AppColors.surface)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .stroke(AppColors.purple.opacity(0.35), lineWidth: 1)
-                    )
+            LockedSessionFeatureCard(
+                title: LanguageManager.t("progression.coach.locked_title"),
+                description: LanguageManager.t("progression.coach.locked_desc"),
+                cardIdentifier: "progression-coach-card", dismissIdentifier: "dismiss-progression-card",
+                onUnlock: { if let onLockedClick { onLockedClick() } else { showInternalPaywall = true } },
+                onDismiss: onDismissLocked,
+                icon: LockedProgressionTrend().stroke(AppColors.purple, style: StrokeStyle(lineWidth: 2.4, lineCap: .round, lineJoin: .round))
+                    .frame(width: 24, height: 24)
             )
-            .accessibilityIdentifier("progression-coach-card")
             .sheet(isPresented: $showInternalPaywall) {
                 ProPaywallSheet(feature: .autoProgression, onDismiss: { showInternalPaywall = false })
             }
@@ -484,5 +417,90 @@ private struct ProgressionHeaderBolt: Shape {
         path.addLine(to: CGPoint(x: 11, y: 8))
         path.closeSubpath()
         return path.applying(CGAffineTransform(scaleX: rect.width / 20, y: rect.height / 20))
+    }
+}
+
+/// Shared locked presentation: the card opens Premium; the close control only dismisses.
+struct LockedSessionFeatureCard<Icon: View>: View {
+    let title: String
+    let description: String
+    let cardIdentifier: String
+    let dismissIdentifier: String
+    let onUnlock: () -> Void
+    let onDismiss: (() -> Void)?
+    let icon: Icon
+    @ScaledMetric(relativeTo: .headline) private var titleSize = 16.0
+    @ScaledMetric(relativeTo: .subheadline) private var bodySize = 13.0
+
+    private var heading: some View {
+        Text(title)
+            .font(.system(size: titleSize, weight: .bold))
+            .foregroundColor(AppColors.text)
+            .fixedSize(horizontal: false, vertical: true)
+    }
+
+    var body: some View {
+        ZStack(alignment: .topTrailing) {
+            Button(action: onUnlock) {
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack(alignment: .top, spacing: 10) {
+                        icon.frame(width: 24, height: 24).accessibilityHidden(true)
+                        ViewThatFits(in: .horizontal) {
+                            HStack(spacing: 8) { heading; ProBadge() }
+                                .fixedSize(horizontal: true, vertical: false)
+                            VStack(alignment: .leading, spacing: 4) { heading; ProBadge() }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        Image(systemName: "lock.fill")
+                            .font(.system(size: 20))
+                            .foregroundColor(AppColors.purple)
+                            .frame(width: 24, height: 24)
+                            .accessibilityHidden(true)
+                    }
+                    .padding(.trailing, onDismiss != nil ? 34 : 0)
+                    Text(description)
+                        .font(.system(size: bodySize))
+                        .foregroundColor(AppColors.secondaryText)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .padding(.horizontal, 14)
+                .padding(.vertical, 12)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityValue(LanguageManager.t("pro.premium_required"))
+            .accessibilityIdentifier(cardIdentifier)
+            if let onDismiss {
+                Button(action: onDismiss) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 18))
+                        .foregroundColor(AppColors.muted)
+                        .frame(width: 48, height: 48)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .padding(.trailing, 2)
+                .accessibilityLabel(LanguageManager.t("common.close"))
+                .accessibilityIdentifier(dismissIdentifier)
+            }
+        }
+        .background(AppColors.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous)
+            .stroke(AppColors.purple.opacity(0.35), lineWidth: 1))
+    }
+}
+
+private struct LockedProgressionTrend: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        func point(_ x: CGFloat, _ y: CGFloat) -> CGPoint {
+            CGPoint(x: rect.minX + x * rect.width / 24, y: rect.minY + y * rect.height / 24)
+        }
+        path.move(to: point(3, 17)); path.addLine(to: point(9, 11))
+        path.addLine(to: point(13, 15)); path.addLine(to: point(21, 7))
+        path.move(to: point(15, 7)); path.addLine(to: point(21, 7)); path.addLine(to: point(21, 13))
+        return path
     }
 }
