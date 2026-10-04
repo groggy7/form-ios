@@ -5,6 +5,18 @@ public enum AppColors {
     public static let surface = Color(hex: 0x13171B)
     public static let surfaceRaised = Color(hex: 0x1D2227)
     public static let progressionRulesSurface = Color(hex: 0x0E181E)
+
+    public struct ProgressionRuleColors {
+        public let accent: Color
+        public let surface: Color
+        public let iconSurface: Color
+    }
+
+    public static let progressionRuleLoad = ProgressionRuleColors(accent: Color(hex: 0x00F0AA), surface: Color(hex: 0x0C2325), iconSurface: Color(hex: 0x092A29))
+    public static let progressionRuleReps = ProgressionRuleColors(accent: Color(hex: 0x00E5F4), surface: Color(hex: 0x0A2028), iconSurface: Color(hex: 0x092832))
+    public static let progressionRuleHold = ProgressionRuleColors(accent: Color(hex: 0xFFA91F), surface: Color(hex: 0x231C16), iconSurface: Color(hex: 0x382614))
+    public static let progressionRuleReview = ProgressionRuleColors(accent: Color(hex: 0xB176FF), surface: Color(hex: 0x1A1A2C), iconSurface: Color(hex: 0x23203A))
+
     public static let exerciseVideoSurface = Color(hex: 0x051216)
     public static let exerciseThumbnailSurface = EllipticalGradient(
         colors: [

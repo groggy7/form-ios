@@ -103,20 +103,21 @@ public struct ProgressionInfoSheet: View {
     }
 
     private func actionRow(action: ProgressionAction, desc: String) -> some View {
-        HStack(alignment: .top, spacing: 12) {
+        let colors = ruleColors(action)
+        return HStack(alignment: .top, spacing: 12) {
             Image(systemName: ruleIcon(action))
                 .font(.system(size: 24, weight: .bold))
-                .foregroundColor(action.color)
+                .foregroundColor(colors.accent)
                 .frame(width: 44, height: 44)
-                .background(action.color.opacity(0.06))
-                .overlay(RoundedRectangle(cornerRadius: 12).stroke(action.color.opacity(0.24), lineWidth: 1))
+                .background(colors.iconSurface)
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(colors.accent.opacity(0.24), lineWidth: 1))
                 .cornerRadius(12)
                 .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 6) {
                 Text(LanguageManager.t(action.titleKey).uppercased(with: Locale(identifier: LanguageManager.shared.currentLanguage)))
                     .font(.footnote.weight(.bold))
-                    .foregroundColor(action.color)
+                    .foregroundColor(colors.accent)
                     .fixedSize(horizontal: false, vertical: true)
                 Text(desc)
                     .font(.footnote)
@@ -128,10 +129,19 @@ public struct ProgressionInfoSheet: View {
         }
         .padding(12)
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(action.color.opacity(0.06))
-        .overlay(RoundedRectangle(cornerRadius: 12).stroke(action.color.opacity(0.22), lineWidth: 1))
+        .background(colors.surface)
+        .overlay(RoundedRectangle(cornerRadius: 12).stroke(colors.accent.opacity(0.22), lineWidth: 1))
         .cornerRadius(12)
         .accessibilityElement(children: .combine)
+    }
+
+    private func ruleColors(_ action: ProgressionAction) -> AppColors.ProgressionRuleColors {
+        switch action {
+        case .increaseLoad: return AppColors.progressionRuleLoad
+        case .addReps: return AppColors.progressionRuleReps
+        case .holdLoad: return AppColors.progressionRuleHold
+        default: return AppColors.progressionRuleReview
+        }
     }
 
     private func ruleIcon(_ action: ProgressionAction) -> String {
