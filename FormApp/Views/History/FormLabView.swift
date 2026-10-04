@@ -31,11 +31,18 @@ public struct FormLabView: View {
     @State private var selectedPointIndex: Int? = nil
 
     private let customHistory: [WorkoutSessionRecord]?
+    private let isPreview: Bool
 
-    public init(store: AppStore, initialTab: FormLabTab = .repMax, customHistory: [WorkoutSessionRecord]? = nil) {
+    public init(
+        store: AppStore,
+        initialTab: FormLabTab = .repMax,
+        customHistory: [WorkoutSessionRecord]? = nil,
+        isPreview: Bool = false
+    ) {
         self.store = store
         self._activeTab = State(initialValue: initialTab)
         self.customHistory = customHistory
+        self.isPreview = isPreview
     }
 
     private var effectiveHistory: [WorkoutSessionRecord] {
@@ -43,6 +50,9 @@ public struct FormLabView: View {
     }
 
     private var distinctExercises: [String] {
+        if isPreview {
+            return ["Barbell Bench Press", "Barbell Squat", "Barbell Deadlift"]
+        }
         var names = Set<String>()
         for record in effectiveHistory {
             for log in record.exerciseLogs {
@@ -60,7 +70,10 @@ public struct FormLabView: View {
     }
 
     private var currentExerciseSummary: ExerciseRepMaxSummary? {
-        FormLabEngine.computeExerciseRepMax(
+        if isPreview {
+            return ProPreviewData.formLabRepMaxSummary
+        }
+        return FormLabEngine.computeExerciseRepMax(
             exerciseName: selectedExercise,
             history: effectiveHistory,
             formula: selectedFormula
@@ -68,7 +81,10 @@ public struct FormLabView: View {
     }
 
     private var currentCurveReport: LongitudinalCurveReport {
-        FormLabEngine.computeLongitudinalCurve(
+        if isPreview {
+            return ProPreviewData.formLabCurveReport
+        }
+        return FormLabEngine.computeLongitudinalCurve(
             exerciseName: selectedExercise,
             history: effectiveHistory,
             timeframe: selectedTimeframe,
@@ -77,7 +93,10 @@ public struct FormLabView: View {
     }
 
     private var balanceReport: AntagonistBalanceReport {
-        FormLabEngine.computeAntagonistBalance(
+        if isPreview {
+            return ProPreviewData.formLabBalanceReport
+        }
+        return FormLabEngine.computeAntagonistBalance(
             history: effectiveHistory,
             timeframe: balanceTimeframe
         )

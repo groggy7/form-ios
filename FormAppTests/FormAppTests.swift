@@ -5354,6 +5354,7 @@ final class FormAppTests: XCTestCase {
 
         let warmupOnly = [
             WorkoutSessionRecord(
+                id: "p1",
                 programId: "p",
                 workoutId: "w",
                 workoutTitle: "Warmup",
@@ -5370,55 +5371,73 @@ final class FormAppTests: XCTestCase {
         ]
         XCTAssertFalse(ProPreviewData.hasWorkingHistory(warmupOnly))
 
-        var calendar = Calendar(identifier: .iso8601)
-        calendar.timeZone = TimeZone(secondsFromGMT: 0) ?? .current
-        let testDate = calendar.date(from: DateComponents(year: 2026, month: 9, day: 20)) ?? Date()
-        let preview = ProPreviewData.previewHistory(today: testDate)
-        XCTAssertTrue(ProPreviewData.hasWorkingHistory(preview))
+        let validSession = [
+            WorkoutSessionRecord(
+                id: "p2",
+                programId: "p",
+                workoutId: "w",
+                workoutTitle: "Workout",
+                startedAt: "2026-09-20T10:00:00Z",
+                completedAt: "2026-09-20T10:45:00Z",
+                durationSeconds: 2700,
+                exerciseLogs: [
+                    SessionExerciseLog(
+                        exerciseName: "Barbell Bench Press",
+                        sets: [SessionSetLog(setNumber: 1, weightKg: 80.0, reps: 8, isWarmup: false)]
+                    )
+                ]
+            )
+        ]
+        XCTAssertTrue(ProPreviewData.hasWorkingHistory(validSession))
 
-        // Volume Matrix computation
-        guard let catalog = ExerciseMuscleCatalog.shared else {
-            XCTFail("ExerciseMuscleCatalog must load")
-            return
-        }
-        let report = VolumeMatrixEngine.computeLoggedVolume(
-            targetWeekKey: "2026-W38",
-            history: preview,
-            catalog: catalog,
-            language: "en"
-        )
+        // Static Volume Matrix preview report verification
+        let report = ProPreviewData.volumeMatrixPreviewReport
         XCTAssertGreaterThan(report.totalEffectiveSets, 20)
-        XCTAssertGreaterThanOrEqual(report.muscleSummaries["chest"]?.directSets ?? 0, 6)
-        XCTAssertGreaterThanOrEqual(report.muscleSummaries["quads"]?.directSets ?? 0, 6)
-        XCTAssertGreaterThanOrEqual(report.muscleSummaries["lats"]?.directSets ?? 0, 6)
+        XCTAssertEqual(report.optimalMuscleCount, 5)
+        XCTAssertEqual(report.highFatigueCount, 3)
 
-        // Form Lab balance and progression computation
-        let balance = FormLabEngine.computeAntagonistBalance(
-            history: preview,
-            today: testDate
-        )
-        XCTAssertNotNil(balance.pushPull.ratio)
-        XCTAssertTrue(balance.pushPull.status != AntagonistStatus.insufficientData)
-        XCTAssertNotNil(balance.quadHamstring.ratio)
-        XCTAssertTrue(balance.quadHamstring.status != AntagonistStatus.insufficientData)
-        XCTAssertNotNil(balance.upperLower.ratio)
-        XCTAssertTrue(balance.upperLower.status != AntagonistStatus.insufficientData)
+        // Front view muscles have vibrant, non-gray zones
+        let chest = report.muscleSummaries["chest"]
+        XCTAssertNotNil(chest)
+        XCTAssertEqual(chest?.zone, .optimalMav)
+        XCTAssertEqual(chest?.defaultView, "front")
 
-        let benchRepMax = FormLabEngine.computeExerciseRepMax(
-            exerciseName: "Barbell Bench Press",
-            history: preview
-        )
-        XCTAssertNotNil(benchRepMax)
-        XCTAssertGreaterThan(benchRepMax?.estimated1rmKg ?? 0.0, 100.0)
+        let quads = report.muscleSummaries["quads"]
+        XCTAssertNotNil(quads)
+        XCTAssertEqual(quads?.zone, .optimalMav)
 
-        let benchCurve = FormLabEngine.computeLongitudinalCurve(
-            exerciseName: "Barbell Bench Press",
-            history: preview,
-            today: testDate
-        )
+        let sideDelts = report.muscleSummaries["side-delts"]
+        XCTAssertNotNil(sideDelts)
+        XCTAssertEqual(sideDelts?.zone, .highFatigue)
+
+        // Back view muscles have vibrant, non-gray zones
+        let lats = report.muscleSummaries["lats"]
+        XCTAssertNotNil(lats)
+        XCTAssertEqual(lats?.zone, .optimalMav)
+        XCTAssertEqual(lats?.defaultView, "back")
+
+        let triceps = report.muscleSummaries["triceps"]
+        XCTAssertNotNil(triceps)
+        XCTAssertEqual(triceps?.zone, .overMrv)
+
+        // Static Form Lab preview data verification
+        let benchRepMax = ProPreviewData.formLabRepMaxSummary
+        XCTAssertEqual(benchRepMax.exerciseName, "Barbell Bench Press")
+        XCTAssertGreaterThan(benchRepMax.estimated1rmKg, 100.0)
+        XCTAssertFalse(benchRepMax.targets.isEmpty)
+
+        let benchCurve = ProPreviewData.formLabCurveReport
         XCTAssertGreaterThanOrEqual(benchCurve.points.count, 4)
         XCTAssertGreaterThan(benchCurve.deltaKg, 0.0)
         XCTAssertGreaterThan(benchCurve.percentageGain, 0.0)
+
+        let balance = ProPreviewData.formLabBalanceReport
+        XCTAssertNotNil(balance.pushPull.ratio)
+        XCTAssertEqual(balance.pushPull.status, .optimal)
+        XCTAssertNotNil(balance.quadHamstring.ratio)
+        XCTAssertEqual(balance.quadHamstring.status, .optimal)
+        XCTAssertNotNil(balance.upperLower.ratio)
+        XCTAssertEqual(balance.upperLower.status, .optimal)
     }
 
     func testVolumeMatrixEngineComputation() {
@@ -7508,7 +7527,40 @@ final class FormAppTests: XCTestCase {
         let features: [ProFeature] = [.volumeMatrix, .formLab]
         let access = features.map { manager.isFeatureUnlocked($0) }
         let language = LanguageManager.shared.currentLanguage
-        store.state.history = ProPreviewData.previewHistory()
+        store.state.history = [
+            WorkoutSessionRecord(
+                id: "snap-sample-1",
+                programId: "p",
+                workoutId: "w",
+                workoutTitle: "Upper Body",
+                startedAt: "2026-09-20T10:00:00Z",
+                completedAt: "2026-09-20T11:00:00Z",
+                durationSeconds: 3600,
+                totalVolumeKg: 1500.0,
+                totalCompletedSets: 6,
+                exerciseLogs: [
+                    SessionExerciseLog(
+                        exerciseName: "Barbell Bench Press",
+                        sets: [
+                            SessionSetLog(setNumber: 1, weightKg: 100.0, reps: 5, isWarmup: false),
+                            SessionSetLog(setNumber: 2, weightKg: 100.0, reps: 5, isWarmup: false),
+                            SessionSetLog(setNumber: 3, weightKg: 100.0, reps: 5, isWarmup: false)
+                        ],
+                        targetSets: 3
+                    ),
+                    SessionExerciseLog(
+                        exerciseName: "Barbell Back Squat",
+                        sets: [
+                            SessionSetLog(setNumber: 1, weightKg: 120.0, reps: 5, isWarmup: false),
+                            SessionSetLog(setNumber: 2, weightKg: 120.0, reps: 5, isWarmup: false),
+                            SessionSetLog(setNumber: 3, weightKg: 120.0, reps: 5, isWarmup: false)
+                        ],
+                        targetSets: 3
+                    )
+                ],
+                isComplete: true
+            )
+        ]
         store.selectedHistoryDetailDay = nil
         LanguageManager.setLanguage("en")
         defer {

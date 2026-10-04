@@ -11,10 +11,16 @@ public struct VolumeMatrixView: View {
     @State private var showInfoSheet: Bool = false
 
     private let customHistory: [WorkoutSessionRecord]?
+    private let customReport: VolumeMatrixReport?
 
-    public init(store: AppStore, customHistory: [WorkoutSessionRecord]? = nil) {
+    public init(
+        store: AppStore,
+        customHistory: [WorkoutSessionRecord]? = nil,
+        customReport: VolumeMatrixReport? = nil
+    ) {
         self.store = store
         self.customHistory = customHistory
+        self.customReport = customReport
     }
 
     private var currentWeekKey: String {
@@ -31,6 +37,9 @@ public struct VolumeMatrixView: View {
     }
 
     private var report: VolumeMatrixReport {
+        if let customReport = customReport {
+            return customReport
+        }
         guard let catalog = ExerciseMuscleCatalog.shared else {
             return VolumeMatrixReport(
                 weekKey: effectiveWeekKey,

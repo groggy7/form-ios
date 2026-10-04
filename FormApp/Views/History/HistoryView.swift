@@ -114,10 +114,9 @@ public struct HistoryView: View {
                                 .padding(.bottom, 24)
                         }
                     } else {
-                        let effectiveHistory = ProPreviewData.hasWorkingHistory(store.state.history) ? store.state.history : ProPreviewData.previewHistory()
                         ZStack {
                             ScrollView(showsIndicators: false) {
-                                VolumeMatrixView(store: store, customHistory: effectiveHistory)
+                                VolumeMatrixView(store: store, customReport: ProPreviewData.volumeMatrixPreviewReport)
                                     .padding(.horizontal, 20)
                                     .padding(.bottom, 24)
                             }
@@ -157,10 +156,9 @@ public struct HistoryView: View {
                                 .padding(.bottom, 24)
                         }
                     } else {
-                        let effectiveHistory = ProPreviewData.hasWorkingHistory(store.state.history) ? store.state.history : ProPreviewData.previewHistory()
                         ZStack {
                             ScrollView(showsIndicators: false) {
-                                FormLabView(store: store, customHistory: effectiveHistory)
+                                FormLabView(store: store, isPreview: true)
                                     .padding(.horizontal, 20)
                                     .padding(.bottom, 24)
                             }
