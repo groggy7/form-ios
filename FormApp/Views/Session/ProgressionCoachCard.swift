@@ -445,12 +445,7 @@ struct LockedSessionFeatureCard<Icon: View>: View {
                 VStack(alignment: .leading, spacing: 10) {
                     HStack(alignment: .top, spacing: 10) {
                         icon.frame(width: 24, height: 24).accessibilityHidden(true)
-                        ViewThatFits(in: .horizontal) {
-                            HStack(spacing: 8) { heading; ProBadge() }
-                                .fixedSize(horizontal: true, vertical: false)
-                            VStack(alignment: .leading, spacing: 4) { heading; ProBadge() }
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                        heading.frame(maxWidth: .infinity, alignment: .leading)
                         Image(systemName: "lock.fill")
                             .font(.system(size: 20))
                             .foregroundColor(AppColors.purple)
