@@ -4020,6 +4020,7 @@ final class FormAppTests: XCTestCase {
             "warmup.modal_title",
             "warmup.tab_warmup",
             "warmup.tab_plates",
+            "warmup.plates_btn",
             "warmup.card_title",
             "warmup.card_desc",
             "warmup.enter_working_load",
@@ -6513,7 +6514,7 @@ final class FormAppTests: XCTestCase {
         }
         for language in ["en", "tr"] {
             LanguageManager.setLanguage(language)
-            for (width, textSize) in [(CGFloat(393), ContentSizeCategory.large), (320, .extraExtraExtraLarge)] {
+            for (width, textSize) in [(CGFloat(393), ContentSizeCategory.large), (320, .large), (320, .extraExtraExtraLarge)] {
                 var lockedHeight: CGFloat = 0
                 for unlocked in [false, true] {
                     manager.setFeatureOverride(.warmupCalculator, unlocked: unlocked)
@@ -6542,7 +6543,7 @@ final class FormAppTests: XCTestCase {
                             else { lockedHeight = image.size.height }
                         }
                         let attachment = XCTAttachment(image: image)
-                        attachment.name = "warmup-\(language)-\(unlocked ? "unlocked" : "locked")-\(dismissible ? "dismissible" : "plain")-\(Int(width))"
+                        attachment.name = "warmup-\(language)-\(unlocked ? "unlocked" : "locked")-\(dismissible ? "dismissible" : "plain")-\(Int(width))-\(textSize == .large ? "normal" : "large")"
                         attachment.lifetime = .keepAlways
                         add(attachment)
                     }

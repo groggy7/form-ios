@@ -192,23 +192,25 @@ private struct WarmupPlateAction: View {
         Button(action: action) {
             HStack(spacing: 6) {
                 Image(systemName: warmup ? "flame.fill" : "square.stack.3d.up.fill")
-                    .font(.system(size: 18))
-                    .frame(width: 18, height: 20)
+                    .font(.system(size: 16))
+                    .frame(width: 16, height: 18)
                     .foregroundColor(warmup ? AppColors.warmupAmber : AppColors.secondaryText)
                     .accessibilityHidden(true)
-                Text(LanguageManager.t(warmup ? "warmup.generate_btn" : "warmup.tab_plates"))
+                Text(LanguageManager.t(warmup ? "warmup.generate_btn" : "warmup.plates_btn"))
                     .font(.system(size: labelSize, weight: .bold))
                     .fixedSize(horizontal: false, vertical: true)
             }
             .foregroundColor(warmup ? AppColors.warmupAmber : AppColors.text)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 10)
-            .frame(maxWidth: .infinity, minHeight: 48)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 6)
+            .frame(maxWidth: .infinity, minHeight: 36)
             .background(warmup ? AppColors.warmupAmberBg : Color.clear)
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .stroke(warmup ? AppColors.warmupAmber.opacity(0.7) : AppColors.secondaryText.opacity(0.35), lineWidth: 1))
-            .contentShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+            .padding(.vertical, 6)
+            .frame(maxWidth: .infinity, minHeight: 48)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityIdentifier(warmup ? "generate-warmup-sets" : "open-plate-calculator")
@@ -216,12 +218,16 @@ private struct WarmupPlateAction: View {
 }
 
 private struct WarmupPlateActionsLayout: Layout {
-    private func dimensions(width: CGFloat, subviews: Subviews) -> (stacked: Bool, buttonWidth: CGFloat, height: CGFloat) {
-        let rowWidth = max(0, (width - 8) / 2)
-        let stacked = subviews.contains { $0.sizeThatFits(.unspecified).width > rowWidth }
-        let buttonWidth = stacked ? width : rowWidth
-        let heights = subviews.map { $0.sizeThatFits(ProposedViewSize(width: buttonWidth, height: nil)).height }
-        return (stacked, buttonWidth, stacked ? heights.reduce(0, +) + 8 : heights.max() ?? 48)
+    private func dimensions(width: CGFloat, subviews: Subviews) -> (stacked: Bool, widths: [CGFloat], height: CGFloat) {
+        let idealWidths = subviews.map { $0.sizeThatFits(.unspecified).width }
+        let availableWidth = max(0, width - 8)
+        let stacked = idealWidths.reduce(0, +) > availableWidth
+        let firstWidth = min(max(availableWidth / 2, idealWidths[0]), availableWidth - idealWidths[1])
+        let widths = stacked ? [width, width] : [firstWidth, availableWidth - firstWidth]
+        let heights = subviews.enumerated().map { index, view in
+            view.sizeThatFits(ProposedViewSize(width: widths[index], height: nil)).height
+        }
+        return (stacked, widths, stacked ? heights.reduce(0, +) + 8 : heights.max() ?? 48)
     }
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
@@ -231,13 +237,16 @@ private struct WarmupPlateActionsLayout: Layout {
 
     func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
         let layout = dimensions(width: bounds.width, subviews: subviews)
+        var x = bounds.minX
         var y = bounds.minY
         for (index, subview) in subviews.enumerated() {
+            let buttonWidth = layout.widths[index]
             let height = layout.stacked
-                ? subview.sizeThatFits(ProposedViewSize(width: layout.buttonWidth, height: nil)).height : layout.height
-            subview.place(at: CGPoint(x: layout.stacked ? bounds.minX : bounds.minX + CGFloat(index) * (layout.buttonWidth + 8), y: y),
-                anchor: .topLeading, proposal: ProposedViewSize(width: layout.buttonWidth, height: height))
+                ? subview.sizeThatFits(ProposedViewSize(width: buttonWidth, height: nil)).height : layout.height
+            subview.place(at: CGPoint(x: x, y: y), anchor: .topLeading,
+                proposal: ProposedViewSize(width: buttonWidth, height: height))
             if layout.stacked { y += height + 8 }
+            else { x += buttonWidth + 8 }
         }
     }
 }
