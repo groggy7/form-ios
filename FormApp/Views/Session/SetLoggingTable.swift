@@ -211,7 +211,7 @@ public struct SetLoggingTable: View {
                             }
                         })
                         .disabled(!isSetInputEnabled)
-                        .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \(LanguageManager.t("table.weightKg"))")
+                        .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \(LanguageManager.t(weightUnit == .lbs ? "table.weightLbs" : "table.weightKg"))")
                         .keyboardType(.decimalPad)
                         .multilineTextAlignment(.center)
                         .font(.system(size: 15, weight: .semibold))
