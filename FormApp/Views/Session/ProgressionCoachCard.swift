@@ -482,8 +482,6 @@ struct LockedSessionFeatureCard<Icon: View>: View {
         }
         .background(AppColors.surface)
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous)
-            .stroke(AppColors.purple.opacity(0.35), lineWidth: 1))
     }
 }
 
