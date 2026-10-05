@@ -18,7 +18,6 @@ public struct ProPaywallSheet: View {
     public var onUnlocked: (() -> Void)?
 
     @ObservedObject private var proManager = ProAccessManager.shared
-    @ObservedObject private var appStore = AppStore.shared
     @ScaledMetric(relativeTo: .title2) private var headlineSize = 22.0
     @ScaledMetric(relativeTo: .subheadline) private var subtitleSize = 13.5
     @ScaledMetric(relativeTo: .subheadline) private var actionSize = 15.0
@@ -318,10 +317,6 @@ public struct ProPaywallSheet: View {
                             .lineSpacing(3)
                     }
 
-                    if isSessionFeature, let feature {
-                        PaywallFeaturePreview(feature: feature, unit: appStore.weightUnit)
-                    }
-
                     // Benefit List Card
                     VStack(spacing: 14) {
                         ForEach(benefits) { benefit in
@@ -361,7 +356,7 @@ public struct ProPaywallSheet: View {
 
                     if isSessionFeature {
                         if feature == .autoProgression {
-                            Text(LanguageManager.t("paywall.preview.history_hint"))
+                            Text(LanguageManager.t("paywall.auto_progression.history_hint"))
                                 .font(.system(size: 12)).foregroundColor(AppColors.muted)
                                 .fixedSize(horizontal: false, vertical: true)
                         }
@@ -685,80 +680,6 @@ public struct ProPaywallPreview: View {
         .cornerRadius(16)
         .sheet(isPresented: $showSheet) {
             ProPaywallSheet(feature: feature, onDismiss: { showSheet = false })
-        }
-    }
-}
-
-
-/// Sample data only; this view never grants access or writes workout data.
-private struct PaywallFeaturePreview: View {
-    let feature: ProFeature
-    let unit: WeightUnit
-    @ScaledMetric(relativeTo: .subheadline) private var titleSize = 14.0
-    @ScaledMetric(relativeTo: .caption) private var bodySize = 12.0
-    @ScaledMetric(relativeTo: .headline) private var targetSize = 17.0
-    private var weight: Double { unit == .lbs ? 185 : 80 }
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            Text(LanguageManager.t("paywall.preview.example"))
-                .font(.system(size: bodySize - 1)).foregroundColor(AppColors.muted)
-            if feature == .autoProgression {
-                Text(LanguageManager.t("paywall.preview.bench_press"))
-                    .font(.system(size: titleSize, weight: .bold)).foregroundColor(AppColors.text)
-                HStack(alignment: .top, spacing: 10) {
-                    target(label: "paywall.preview.last_workout", reps: 10, next: false)
-                    target(label: "paywall.preview.next_target", reps: 11, next: true)
-                }
-                Text(LanguageManager.t("paywall.preview.rep_hint"))
-                    .font(.system(size: bodySize)).foregroundColor(AppColors.secondaryText)
-                    .fixedSize(horizontal: false, vertical: true)
-            } else {
-                warmupPreview
-            }
-        }
-        .padding(14).frame(maxWidth: .infinity, alignment: .leading)
-        .background(AppColors.surfaceRaised)
-        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(AppColors.border, lineWidth: 1))
-        .accessibilityIdentifier("paywall-feature-preview")
-    }
-
-    private func target(label: String, reps: Int, next: Bool) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(LanguageManager.t(label)).font(.system(size: bodySize - 1))
-                .foregroundColor(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
-            Text("\(WarmupPlateEngine.formatPlateWeight(weight)) \(unit.label) × \(reps)")
-                .font(.system(size: targetSize, weight: .bold)).foregroundColor(next ? AppColors.accent : AppColors.text)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .padding(10).frame(maxWidth: .infinity, alignment: .leading)
-        .background(next ? AppColors.positiveBg : AppColors.surface)
-        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-    }
-
-    private var warmupPreview: some View {
-        let bar: Double = unit == .lbs ? 45 : 20
-        let ramp = WarmupPlateEngine.generateWarmupRamp(workingWeightKg: unit.toCanonicalKg(weight),
-            barWeightKg: unit.toCanonicalKg(bar), availablePlatesKg: WarmupPlateEngine.defaultPlates(for: unit), unit: unit)
-        let plates = WarmupPlateEngine.calculatePlates(targetWeight: weight, barWeight: bar,
-            availablePlates: unit == .lbs ? [45, 25] : [20, 10], unit: unit)
-        let steps = ramp.steps.map { "\(WarmupPlateEngine.formatPlateWeight(unit.toDisplay($0.weightKg))) × \($0.reps)" }.joined(separator: "  ·  ")
-        let perSide = plates.platesPerSide.map { "\(WarmupPlateEngine.formatPlateWeight($0.weight)) \(unit.label)" }.joined(separator: " + ")
-        return VStack(alignment: .leading, spacing: 10) {
-            Text("\(LanguageManager.t("warmup.working_load_label")): \(WarmupPlateEngine.formatPlateWeight(weight)) \(unit.label)")
-                .font(.system(size: titleSize, weight: .bold)).foregroundColor(AppColors.text)
-                .fixedSize(horizontal: false, vertical: true)
-            VStack(alignment: .leading, spacing: 4) {
-                Text(LanguageManager.t("paywall.preview.warmup_sequence", ["unit": unit.label]))
-                    .font(.system(size: bodySize - 1)).foregroundColor(AppColors.secondaryText)
-                Text(steps).font(.system(size: bodySize + 1, weight: .semibold)).foregroundColor(AppColors.warmupAmber)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            BarbellPlateVisualizerView(result: plates, unit: unit).barbellDiagram
-            Text("\(LanguageManager.t("warmup.bar")): \(WarmupPlateEngine.formatPlateWeight(bar)) \(unit.label)\n\(LanguageManager.t("warmup.per_side")): \(perSide)")
-                .font(.system(size: bodySize)).foregroundColor(AppColors.secondaryText)
-                .fixedSize(horizontal: false, vertical: true)
         }
     }
 }
