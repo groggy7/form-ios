@@ -54,7 +54,7 @@ public struct ProgressionCoachCard: View {
             }
         } else if recommendation.setTargets.isEmpty && (recommendation.action == .firstSession || recommendation.action == .insufficientData) {
             emptyHistoryCard
-        } else if recommendation.isPlateau || (recommendation.action == .addReps && !recommendation.setTargets.isEmpty) {
+        } else if recommendation.isPlateau || !recommendation.setTargets.isEmpty {
             ProgressionRecommendationCard(recommendation: recommendation, weightUnit: weightUnit,
                 canApplyTarget: canApplyTarget, expanded: $detailsExpanded, wasApplied: $wasApplied,
                 onApplyTarget: onApplyTarget, onOpenInfo: onOpenInfo)
@@ -261,10 +261,10 @@ struct ProgressionRecommendationCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             ProgressionCoachHeader(onOpenInfo: onOpenInfo).padding(.bottom, 8)
-            Text(LanguageManager.t(review ? "progression.coach.review_compact" : "progression.coach.add_reps_title", recommendation.rationaleArgs))
+            Text(headlineTitle)
                 .font(.system(size: headlineSize, weight: .bold)).foregroundColor(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true).padding(.bottom, 6)
-            Text(LanguageManager.t(descriptionKey, recommendation.rationaleArgs))
+            Text(descriptionText)
                 .font(.system(size: bodySize)).lineSpacing(2).foregroundColor(AppColors.muted)
                 .fixedSize(horizontal: false, vertical: true)
             if !review {
@@ -294,10 +294,31 @@ struct ProgressionRecommendationCard: View {
         .accessibilityIdentifier("progression-coach-card")
     }
 
-    private var descriptionKey: String {
-        if review { return "progression.coach.review_observation" }
-        if wasApplied { return "progression.coach.applied_hint" }
-        return expanded ? "progression.coach.add_reps_expanded_hint" : "progression.coach.add_reps_hint"
+    private var headlineTitle: String {
+        if review { return LanguageManager.t("progression.coach.review_compact", recommendation.rationaleArgs) }
+        switch recommendation.action {
+        case .increaseLoad:
+            return LanguageManager.t("progression.action.increase_load")
+        case .holdLoad:
+            let repsAdded = zip(recommendation.setTargets, recommendation.lastSessionSets).contains { target, last in
+                target.reps > last.reps
+            }
+            return repsAdded
+                ? LanguageManager.t("progression.coach.add_reps_title", recommendation.rationaleArgs)
+                : LanguageManager.t("progression.action.hold_load")
+        default:
+            return LanguageManager.t("progression.coach.add_reps_title", recommendation.rationaleArgs)
+        }
+    }
+
+    private var descriptionText: String {
+        if review { return LanguageManager.t("progression.coach.review_observation", recommendation.rationaleArgs) }
+        if wasApplied { return LanguageManager.t("progression.coach.applied_hint") }
+        if expanded { return LanguageManager.t("progression.coach.add_reps_expanded_hint") }
+        if recommendation.action == .holdLoad || recommendation.action == .increaseLoad {
+            return LanguageManager.t(recommendation.rationaleKey, recommendation.rationaleArgs)
+        }
+        return LanguageManager.t("progression.coach.add_reps_hint", recommendation.rationaleArgs)
     }
 
     private var toggleButton: some View {

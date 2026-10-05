@@ -8105,10 +8105,18 @@ final class ProgressionReliabilityTests: XCTestCase {
         bodyweightSource.exerciseLogs[0].exerciseName = bodyweight.name
         bodyweightSource.exerciseLogs[0].exerciseId = bodyweight.exerciseId
         let bodyweightTargets = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: bodyweightTargetExercise, history: [bodyweightSource]))
+        var holdLoadExercise = bench
+        holdLoadExercise.reps = RepTarget(min: 6, max: 10)
+        let holdLoadTargets = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: holdLoadExercise,
+            history: [record(1, reps: [6, 5, 5], loads: [105, 110, 115])]))
+        XCTAssertEqual(holdLoadTargets.action, .holdLoad)
+        XCTAssertEqual(holdLoadTargets.rationaleKey, "progression.rationale.hold_load_mixed")
+        XCTAssertEqual(holdLoadTargets.setTargets.map { $0.reps }, [7, 6, 6])
+        XCTAssertEqual(holdLoadTargets.setTargets.map { $0.weightKg }, [105, 110, 115])
         for language in ["en", "tr"] {
             LanguageManager.setLanguage(language)
             for (name, recommendation, applied) in [("targets", targets, false), ("applied-targets", targets, true),
-                ("bodyweight-targets", bodyweightTargets, false), ("review", review, false)] {
+                ("bodyweight-targets", bodyweightTargets, false), ("hold-load", holdLoadTargets, false), ("review", review, false)] {
                 let layouts: [(CGFloat, ContentSizeCategory)] = [(393, .large), (320, .extraExtraExtraLarge)]
                 for (width, textSize) in layouts {
                     var compactHeight: CGFloat = 0
@@ -8142,12 +8150,14 @@ final class ProgressionReliabilityTests: XCTestCase {
         manager.setFeatureOverride(.autoProgression, unlocked: true)
         defer { LanguageManager.setLanguage(previous); manager.setFeatureOverride(.autoProgression, unlocked: nil) }
         let cases: [(String, [WorkoutSessionRecord])] = [("uniform", [record(1)]), ("by-set", [record(1, reps: [12, 10, 8], loads: [80, 70, 60])]),
+            ("hold-load-mixed", [record(1, reps: [6, 5, 5], loads: [105, 110, 115])]),
             ("incomplete", [record(1, reps: [8])]), ("incomplete-zero", [record(1, reps: [8])]), ("incomplete-six", [record(1, reps: [8])]),
             ("incomplete-one-left", [record(1, reps: [8])]), ("incomplete-recorded", [record(1, reps: [8])]), ("baseline-zero", []), ("baseline", []), ("baseline-recorded", [])]
         for language in ["en", "tr"] {
             LanguageManager.setLanguage(language)
             for (name, history) in cases {
                 var exercise = bench
+                if name == "hold-load-mixed" { exercise.reps = RepTarget(min: 6, max: 10) }
                 let total = name == "incomplete" ? 3 : (name == "incomplete-zero" || name == "baseline-zero") ? 5 : 6
                 let recorded = (name == "incomplete-zero" || name == "baseline-zero") ? 0 : name == "incomplete" ? 1 : name == "incomplete-one-left" ? 5 : (name == "incomplete-recorded" || name == "baseline-recorded") ? 6 : 4
                 if name.hasPrefix("incomplete") || name.hasPrefix("baseline") { exercise.sets = total }
