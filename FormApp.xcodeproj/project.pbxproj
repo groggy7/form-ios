@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		SP0000000000000000000002 /* SmartProgressionPaywall.swift in Sources */ = {isa = PBXBuildFile; fileRef = SP0000000000000000000001 /* SmartProgressionPaywall.swift */; };
 		A13B29C1D4E5F60718293A4B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A13B29C1D4E5F60718293A4A /* PrivacyInfo.xcprivacy */; };
 		PW0000000000000000000002 /* ProPaywallSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = PW0000000000000000000001 /* ProPaywallSheet.swift */; };
 		VM0000000000000000000002 /* ProFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000001 /* ProFeature.swift */; };
@@ -127,6 +128,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		SP0000000000000000000001 /* SmartProgressionPaywall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmartProgressionPaywall.swift; sourceTree = "<group>"; };
 		A13B29C1D4E5F60718293A4A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		PW0000000000000000000001 /* ProPaywallSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPaywallSheet.swift; sourceTree = "<group>"; };
 		VM0000000000000000000001 /* ProFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeature.swift; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 			children = (
 				VM0000000000000000000001 /* ProFeature.swift */,
 				PW0000000000000000000001 /* ProPaywallSheet.swift */,
+				SP0000000000000000000001 /* SmartProgressionPaywall.swift */,
 				PP0000000000000000000001 /* ProPreviewData.swift */,
 				SK0000000000000000000001 /* StoreKitSubscriptionManager.swift */,
 			);
@@ -648,6 +651,7 @@
 			files = (
 				VM0000000000000000000002 /* ProFeature.swift in Sources */,
 				PW0000000000000000000002 /* ProPaywallSheet.swift in Sources */,
+				SP0000000000000000000002 /* SmartProgressionPaywall.swift in Sources */,
 				PP0000000000000000000002 /* ProPreviewData.swift in Sources */,
 				SK0000000000000000000002 /* StoreKitSubscriptionManager.swift in Sources */,
 				VM0000000000000000000004 /* VolumeMatrixModels.swift in Sources */,

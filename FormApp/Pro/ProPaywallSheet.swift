@@ -264,6 +264,41 @@ public struct ProPaywallSheet: View {
     }
 
     public var body: some View {
+        Group {
+            if feature == .autoProgression {
+                SmartProgressionPaywallContent(
+                    annual: ProgressionPaywallOffer(price: storeKit.annualProduct?.displayPrice,
+                        hasTrial: storeKit.hasFreeTrial(for: .annual), monthlyBreakdown: storeKit.annualPerMonthDisplayPrice,
+                        savingsPercent: storeKit.annualSavingsPercentage),
+                    monthly: ProgressionPaywallOffer(price: storeKit.monthlyProduct?.displayPrice,
+                        hasTrial: storeKit.hasFreeTrial(for: .monthly)),
+                    selectedPlan: selectedPlan, isPurchasing: storeKit.isPurchasing, isRestoring: isRestoring,
+                    purchaseError: purchaseErrorMessage, restoreMessage: restoreStatusMessage, isRestoreError: isRestoreError,
+                    onSelectPlan: { plan in
+                        userInteractedWithPlan = true
+                        selectedPlan = plan
+                        purchaseErrorMessage = nil
+                        restoreStatusMessage = nil
+                    },
+                    onPurchase: performPurchase, onRestore: performRestore,
+                    onRetryPrices: { Task { await storeKit.requestProducts() } },
+                    onTerms: { if let url = URL(string: LegalUrls.termsOfService) { openURL(url) } },
+                    onPrivacy: { if let url = URL(string: LegalUrls.privacyPolicy) { openURL(url) } },
+                    onClose: dismissSelf
+                )
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(28)
+                .presentationBackground(AppColors.progressionPaywallSurface)
+            } else {
+                standardPaywall
+            }
+        }
+        .onAppear(perform: selectDefaultPlanIfNeeded)
+        .onChange(of: storeKit.products) { selectDefaultPlanIfNeeded() }
+        .onChange(of: storeKit.eligibleFreeTrialProductIds) { selectDefaultPlanIfNeeded() }
+    }
+
+    private var standardPaywall: some View {
         ZStack {
             AppColors.background.ignoresSafeArea()
 
@@ -591,9 +626,6 @@ public struct ProPaywallSheet: View {
                         .overlay(alignment: .top) { Rectangle().fill(AppColors.border).frame(height: 1) }
                 }
             }
-            .onAppear(perform: selectDefaultPlanIfNeeded)
-            .onChange(of: storeKit.products) { selectDefaultPlanIfNeeded() }
-            .onChange(of: storeKit.eligibleFreeTrialProductIds) { selectDefaultPlanIfNeeded() }
         }
     }
 }

@@ -8456,3 +8456,55 @@ final class TabPagingTests: XCTestCase {
     }
 
 }
+
+
+final class SmartProgressionPaywallTests: XCTestCase {
+    @MainActor
+    func testLocalizedPaywallSnapshotsKeepFooterFixedWhileContentScrolls() async throws {
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows).first(where: \.isKeyWindow)
+        defer { LanguageManager.setLanguage(previousLanguage); previousWindow?.makeKeyAndVisible() }
+        let artwork = try XCTUnwrap(UIImage(named: "paywall_smart_progression"))
+        XCTAssertEqual(artwork.size.width, artwork.size.height)
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            for (width, textSize) in [(CGFloat(393), ContentSizeCategory.large), (320, .large), (320, .extraExtraExtraLarge)] {
+                let view = SmartProgressionPaywallContent(
+                    annual: ProgressionPaywallOffer(price: "TRY 999.99", monthlyBreakdown: "TRY 83.33 / month", savingsPercent: 44),
+                    monthly: ProgressionPaywallOffer(price: "TRY 149.99"), selectedPlan: .annual,
+                    isPurchasing: false, isRestoring: false, purchaseError: nil, restoreMessage: nil, isRestoreError: false,
+                    onSelectPlan: { _ in }, onPurchase: {}, onRestore: {}, onRetryPrices: {}, onTerms: {}, onPrivacy: {}, onClose: {})
+                    .environment(\.sizeCategory, textSize)
+                let controller = UIHostingController(rootView: view)
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 820))
+                window.rootViewController = controller
+                window.makeKeyAndVisible()
+                controller.view.frame = window.bounds
+                controller.view.layoutIfNeeded()
+                try await Task.sleep(nanoseconds: 300_000_000)
+                func descendants(_ view: UIView) -> [UIView] { [view] + view.subviews.flatMap(descendants) }
+                let scroll = try XCTUnwrap(descendants(controller.view).compactMap { $0 as? UIScrollView }.first)
+                XCTAssertLessThanOrEqual(scroll.contentSize.width, scroll.bounds.width + 1, "Content must never scroll horizontally")
+                XCTAssertGreaterThan(scroll.contentSize.height, 400, "Hero and plans must have complete content")
+                let footerOrigin = scroll.frame.maxY
+                for position in ["top", "plans"] {
+                    if position == "plans" {
+                        scroll.setContentOffset(CGPoint(x: 0, y: max(0, scroll.contentSize.height - scroll.bounds.height + scroll.adjustedContentInset.bottom)), animated: false)
+                        try await Task.sleep(nanoseconds: 150_000_000)
+                    }
+                    XCTAssertEqual(scroll.frame.maxY, footerOrigin, "Scrolling cannot move the purchase footer")
+                    let image = UIGraphicsImageRenderer(size: window.bounds.size).image { context in
+                        controller.view.layer.render(in: context.cgContext)
+                    }
+                    XCTAssertGreaterThan(try XCTUnwrap(image.pngData()).count, 10_000)
+                    let attachment = XCTAttachment(image: image)
+                    attachment.name = "progression-paywall-\(language)-\(Int(width))-\(textSize == .large ? "normal" : "large")-\(position)"
+                    attachment.lifetime = .keepAlways
+                    add(attachment)
+                }
+                window.isHidden = true
+            }
+        }
+    }
+}
