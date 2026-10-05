@@ -47,7 +47,7 @@ public final class VideoMetadataStore {
 
         var request = URLRequest(url: endpoint)
         request.timeoutInterval = 3.0
-        request.setValue("FormGym/1.0 (iOS)", forHTTPHeaderField: "User-Agent")
+        request.setValue("ForcedRep/1.0 (iOS)", forHTTPHeaderField: "User-Agent")
 
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
