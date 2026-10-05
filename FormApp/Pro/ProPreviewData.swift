@@ -36,33 +36,26 @@ public enum ProPreviewData {
 
     public static let volumeMatrixPreviewReport: VolumeMatrixReport = {
         let map: [String: MuscleVolumeSummary] = [
-            // Front view
+            // Front view muscles with diverse vibrant colors visible through the paywall blur
             "chest": summary(muscle: "chest", name: "Chest", effective: 14, direct: 14, indirect: 0, zone: .optimalMav, view: "front"),
-            "front-delts": summary(muscle: "front-delts", name: "Front shoulders", effective: 8, direct: 4, indirect: 8, zone: .progressive, view: "front"),
-            "side-delts": summary(muscle: "side-delts", name: "Side shoulders", effective: 22, direct: 22, indirect: 0, zone: .highFatigue, view: "front"),
-            "biceps": summary(muscle: "biceps", name: "Biceps", effective: 14, direct: 12, indirect: 4, zone: .optimalMav, view: "front"),
-            "abs": summary(muscle: "abs", name: "Abs", effective: 10, direct: 10, indirect: 0, zone: .progressive, view: "front"),
-            "obliques": summary(muscle: "obliques", name: "Obliques", effective: 0, direct: 0, indirect: 0, zone: .underMev, view: "front"),
-            "quads": summary(muscle: "quads", name: "Quads", effective: 16, direct: 16, indirect: 0, zone: .optimalMav, view: "front"),
-            // Back view
-            "upper-back": summary(muscle: "upper-back", name: "Upper back", effective: 22, direct: 18, indirect: 8, zone: .highFatigue, view: "back"),
-            "lats": summary(muscle: "lats", name: "Lats", effective: 16, direct: 16, indirect: 0, zone: .optimalMav, view: "back"),
-            "triceps": summary(muscle: "triceps", name: "Triceps", effective: 24, direct: 16, indirect: 16, zone: .overMrv, view: "back"),
-            "rear-delts": summary(muscle: "rear-delts", name: "Rear shoulders", effective: 10, direct: 8, indirect: 4, zone: .progressive, view: "back"),
-            "glutes": summary(muscle: "glutes", name: "Glutes", effective: 12, direct: 12, indirect: 0, zone: .optimalMav, view: "back"),
-            "hamstrings": summary(muscle: "hamstrings", name: "Hamstrings", effective: 8, direct: 8, indirect: 0, zone: .progressive, view: "back"),
-            "calves": summary(muscle: "calves", name: "Calves", effective: 4, direct: 4, indirect: 0, zone: .underMev, view: "back")
+            "front-delts": summary(muscle: "front-delts", name: "Front shoulders", effective: 5, direct: 2, indirect: 6, zone: .progressive, view: "front"),
+            "side-delts": summary(muscle: "side-delts", name: "Side shoulders", effective: 32, direct: 32, indirect: 0, zone: .overMrv, view: "front"),
+            "biceps": summary(muscle: "biceps", name: "Biceps", effective: 22, direct: 18, indirect: 8, zone: .highFatigue, view: "front"),
+            "abs": summary(muscle: "abs", name: "Abs", effective: 8, direct: 8, indirect: 0, zone: .progressive, view: "front"),
+            "obliques": summary(muscle: "obliques", name: "Obliques", effective: 16, direct: 16, indirect: 0, zone: .highFatigue, view: "front"),
+            "quads": summary(muscle: "quads", name: "Quads", effective: 24, direct: 24, indirect: 0, zone: .overMrv, view: "front")
+            // Back view muscles omitted since user cannot view them behind paywall
         ]
 
         return VolumeMatrixReport(
             weekKey: "2026-W38",
             isPlannedRoutine: false,
             muscleSummaries: map,
-            totalEffectiveSets: 170,
-            optimalMuscleCount: 5,
-            underTrainedCount: 2,
-            highFatigueCount: 3,
-            totalWorkingSets: 140,
+            totalEffectiveSets: 121,
+            optimalMuscleCount: 1,
+            underTrainedCount: 0,
+            highFatigueCount: 4,
+            totalWorkingSets: 128,
             unmappedExercises: [:]
         )
     }()

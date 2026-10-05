@@ -5393,10 +5393,10 @@ final class FormAppTests: XCTestCase {
         // Static Volume Matrix preview report verification
         let report = ProPreviewData.volumeMatrixPreviewReport
         XCTAssertGreaterThan(report.totalEffectiveSets, 20)
-        XCTAssertEqual(report.optimalMuscleCount, 5)
-        XCTAssertEqual(report.highFatigueCount, 3)
+        XCTAssertEqual(report.optimalMuscleCount, 1)
+        XCTAssertEqual(report.highFatigueCount, 4)
 
-        // Front view muscles have vibrant, non-gray zones
+        // Front view muscles have diverse vibrant non-gray zones
         let chest = report.muscleSummaries["chest"]
         XCTAssertNotNil(chest)
         XCTAssertEqual(chest?.zone, .optimalMav)
@@ -5404,21 +5404,28 @@ final class FormAppTests: XCTestCase {
 
         let quads = report.muscleSummaries["quads"]
         XCTAssertNotNil(quads)
-        XCTAssertEqual(quads?.zone, .optimalMav)
+        XCTAssertEqual(quads?.zone, .overMrv)
+
+        let biceps = report.muscleSummaries["biceps"]
+        XCTAssertNotNil(biceps)
+        XCTAssertEqual(biceps?.zone, .highFatigue)
+
+        let abs = report.muscleSummaries["abs"]
+        XCTAssertNotNil(abs)
+        XCTAssertEqual(abs?.zone, .progressive)
 
         let sideDelts = report.muscleSummaries["side-delts"]
         XCTAssertNotNil(sideDelts)
-        XCTAssertEqual(sideDelts?.zone, .highFatigue)
+        XCTAssertEqual(sideDelts?.zone, .overMrv)
 
-        // Back view muscles have vibrant, non-gray zones
-        let lats = report.muscleSummaries["lats"]
-        XCTAssertNotNil(lats)
-        XCTAssertEqual(lats?.zone, .optimalMav)
-        XCTAssertEqual(lats?.defaultView, "back")
+        let obliques = report.muscleSummaries["obliques"]
+        XCTAssertNotNil(obliques)
+        XCTAssertEqual(obliques?.zone, .highFatigue)
 
-        let triceps = report.muscleSummaries["triceps"]
-        XCTAssertNotNil(triceps)
-        XCTAssertEqual(triceps?.zone, .overMrv)
+        // Back view muscles are omitted since user cannot view them behind paywall
+        XCTAssertNil(report.muscleSummaries["upper-back"])
+        XCTAssertNil(report.muscleSummaries["lats"])
+        XCTAssertNil(report.muscleSummaries["triceps"])
 
         // Static Form Lab preview data verification
         let benchRepMax = ProPreviewData.formLabRepMaxSummary
