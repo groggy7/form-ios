@@ -149,7 +149,7 @@ public struct BarbellPlateVisualizerView: View {
         )
     }
 
-    private var barbellDiagram: some View {
+    var barbellDiagram: some View {
         Canvas { context, size in
             let centerY = size.height / 2
             let edge: CGFloat = 12

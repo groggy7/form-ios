@@ -18,6 +18,11 @@ public struct ProPaywallSheet: View {
     public var onUnlocked: (() -> Void)?
 
     @ObservedObject private var proManager = ProAccessManager.shared
+    @ObservedObject private var appStore = AppStore.shared
+    @ScaledMetric(relativeTo: .title2) private var headlineSize = 22.0
+    @ScaledMetric(relativeTo: .subheadline) private var subtitleSize = 13.5
+    @ScaledMetric(relativeTo: .subheadline) private var actionSize = 15.0
+    @ScaledMetric(relativeTo: .caption) private var footnoteSize = 11.0
     @ObservedObject private var storeKit = StoreKitSubscriptionManager.shared
     @State private var selectedPlan: PaywallPlan = .annual
     @State private var userInteractedWithPlan: Bool = false
@@ -62,16 +67,14 @@ public struct ProPaywallSheet: View {
         case .autoProgression:
             return [
                 PaywallBenefit(titleKey: "paywall.auto_progression.benefit1", descKey: "paywall.auto_progression.benefit1_desc", iconName: "arrow.up.forward.circle.fill"),
-                PaywallBenefit(titleKey: "paywall.auto_progression.benefit2", descKey: "paywall.auto_progression.benefit2_desc", iconName: "slider.horizontal.3"),
-                PaywallBenefit(titleKey: "paywall.auto_progression.benefit3", descKey: "paywall.auto_progression.benefit3_desc", iconName: "brain.head.profile"),
-                PaywallBenefit(titleKey: "paywall.auto_progression.benefit4", descKey: "paywall.auto_progression.benefit4_desc", iconName: "shield.checkered")
+                PaywallBenefit(titleKey: "paywall.auto_progression.benefit2", descKey: "paywall.auto_progression.benefit2_desc", iconName: "info.circle.fill"),
+                PaywallBenefit(titleKey: "paywall.auto_progression.benefit3", descKey: "paywall.auto_progression.benefit3_desc", iconName: "checkmark.circle.fill")
             ]
         case .warmupCalculator:
             return [
                 PaywallBenefit(titleKey: "paywall.warmup_calculator.benefit1", descKey: "paywall.warmup_calculator.benefit1_desc", iconName: "flame.fill"),
                 PaywallBenefit(titleKey: "paywall.warmup_calculator.benefit2", descKey: "paywall.warmup_calculator.benefit2_desc", iconName: "circle.grid.cross.fill"),
-                PaywallBenefit(titleKey: "paywall.warmup_calculator.benefit3", descKey: "paywall.warmup_calculator.benefit3_desc", iconName: "gauge.with.needle.fill"),
-                PaywallBenefit(titleKey: "paywall.warmup_calculator.benefit4", descKey: "paywall.warmup_calculator.benefit4_desc", iconName: "bolt.badge.clock.fill")
+                PaywallBenefit(titleKey: "paywall.warmup_calculator.benefit3", descKey: "paywall.warmup_calculator.benefit3_desc", iconName: "plus.circle.fill")
             ]
         case .none:
             return [
@@ -135,6 +138,7 @@ public struct ProPaywallSheet: View {
                     restoreStatusMessage = LanguageManager.t("paywall.restored_success")
                     isRestoreError = false
                     onUnlocked?()
+                    dismissSelf()
                 } else {
                     restoreStatusMessage = LanguageManager.t("paywall.restore_no_purchases")
                     isRestoreError = true
@@ -143,6 +147,120 @@ public struct ProPaywallSheet: View {
                 restoreStatusMessage = LanguageManager.t("paywall.restore_failed")
                 isRestoreError = true
             }
+        }
+    }
+
+    private var isSessionFeature: Bool {
+        feature == .autoProgression || feature == .warmupCalculator
+    }
+
+    private var headlineKey: String {
+        switch feature {
+        case .autoProgression: return "paywall.auto_progression.headline"
+        case .warmupCalculator: return "paywall.warmup_calculator.headline"
+        default: return feature?.titleKey ?? "pro.upgrade_cta"
+        }
+    }
+
+    private var subtitleKey: String {
+        switch feature {
+        case .autoProgression: return "paywall.auto_progression.subtitle"
+        case .warmupCalculator: return "paywall.warmup_calculator.subtitle"
+        default: return feature?.descriptionKey ?? "paywall.cancel_anytime"
+        }
+    }
+
+    private var purchaseFooter: some View {
+        // Primary Call to Action Button
+        VStack(spacing: 8) {
+            if isSessionFeature {
+                let annual = selectedPlan == .annual
+                let price = annual ? storeKit.annualProduct?.displayPrice : storeKit.monthlyProduct?.displayPrice
+                Text(price.map { LanguageManager.t(annual ? "paywall.selected_annual_price" : "paywall.selected_monthly_price", ["price": $0]) }
+                    ?? LanguageManager.t("paywall.price_unavailable_short"))
+                    .font(.system(size: subtitleSize, weight: .bold))
+                    .foregroundColor(AppColors.text)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                let trial = storeKit.hasFreeTrial(for: selectedPlan)
+                let termsKey = annual ? (trial ? "paywall.annual_trial_subtitle" : "paywall.annual_subtitle")
+                    : (trial ? "paywall.monthly_trial_subtitle" : "paywall.monthly_subtitle")
+                Text(LanguageManager.t(termsKey))
+                    .font(.system(size: footnoteSize))
+                    .foregroundColor(AppColors.secondaryText)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Button(action: {
+                performPurchase()
+            }) {
+                if storeKit.isPurchasing {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: AppColors.background))
+                        .frame(maxWidth: .infinity)
+                        .frame(minHeight: 52)
+                        .background(AppColors.accent)
+                        .cornerRadius(14)
+                } else {
+                    HStack(spacing: 8) {
+                        Image(systemName: "lock.open.fill")
+                            .font(.system(size: 14, weight: .bold))
+                        let planHasTrial = storeKit.hasFreeTrial(for: selectedPlan)
+                        let ctaText = planHasTrial ? LanguageManager.t("paywall.cta_trial") : LanguageManager.t("paywall.cta_continue")
+                        Text(ctaText)
+                            .font(.system(size: actionSize, weight: .bold))
+                            .fixedSize(horizontal: false, vertical: true)
+                            .multilineTextAlignment(.center)
+                    }
+                    .foregroundColor(AppColors.background)
+                    .frame(maxWidth: .infinity)
+                    .frame(minHeight: 52)
+                    .background(AppColors.accent)
+                    .cornerRadius(14)
+                }
+            }
+            .buttonStyle(.plain)
+            .disabled(storeKit.isPurchasing || !selectedPriceAvailable)
+
+            if let purchaseError = purchaseErrorMessage {
+                HStack(alignment: .center, spacing: 10) {
+                    Image(systemName: "exclamationmark.circle.fill")
+                        .foregroundColor(AppColors.danger)
+                        .font(.system(size: 14))
+
+                    Text(purchaseError)
+                        .font(.system(size: 11.5))
+                        .foregroundColor(AppColors.text)
+                        .lineLimit(3)
+
+                    Spacer()
+
+                    Button(action: {
+                        performPurchase()
+                    }) {
+                        Text(LanguageManager.t("paywall.retry"))
+                            .font(.system(size: 11.5, weight: .bold))
+                            .foregroundColor(AppColors.accent)
+                            .padding(.horizontal, 10)
+                            .padding(.vertical, 5)
+                            .background(AppColors.accent.opacity(0.12))
+                            .cornerRadius(6)
+                    }
+                    .buttonStyle(.plain)
+                }
+                .padding(10)
+                .background(AppColors.avoidBg)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(AppColors.avoidBorder, lineWidth: 1)
+                )
+                .cornerRadius(10)
+            }
+
+            Text(LanguageManager.t("paywall.cancel_anytime"))
+                .font(.system(size: 11))
+                .foregroundColor(AppColors.secondaryText)
+                .multilineTextAlignment(.center)
         }
     }
 
@@ -173,24 +291,35 @@ public struct ProPaywallSheet: View {
                             Image(systemName: "xmark.circle.fill")
                                 .font(.system(size: 24))
                                 .foregroundColor(AppColors.secondaryText)
+                                .frame(width: 48, height: 48)
+                                .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
+                        .accessibilityLabel(LanguageManager.t("common.close"))
                     }
 
                     // Headline & Subtitle
                     VStack(spacing: 6) {
-                        let headline = feature != nil ? LanguageManager.t(feature!.titleKey) : LanguageManager.t("pro.upgrade_cta")
+                        if isSessionFeature {
+                            Text(LanguageManager.t(feature == .autoProgression ? "progression.coach.locked_title" : "warmup.card_title"))
+                                .font(.system(size: 12, weight: .medium)).foregroundColor(AppColors.muted)
+                        }
+                        let headline = LanguageManager.t(headlineKey)
                         Text(headline)
-                            .font(.system(size: 22, weight: .bold))
+                            .font(.system(size: headlineSize, weight: .bold))
                             .foregroundColor(AppColors.text)
                             .multilineTextAlignment(.center)
 
-                        let subtitle = feature != nil ? LanguageManager.t(feature!.descriptionKey) : LanguageManager.t("paywall.cancel_anytime")
+                        let subtitle = LanguageManager.t(subtitleKey)
                         Text(subtitle)
-                            .font(.system(size: 13.5))
+                            .font(.system(size: subtitleSize))
                             .foregroundColor(AppColors.secondaryText)
                             .multilineTextAlignment(.center)
                             .lineSpacing(3)
+                    }
+
+                    if isSessionFeature, let feature {
+                        PaywallFeaturePreview(feature: feature, unit: appStore.weightUnit)
                     }
 
                     // Benefit List Card
@@ -208,12 +337,14 @@ public struct ProPaywallSheet: View {
 
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(LanguageManager.t(benefit.titleKey))
-                                        .font(.system(size: 13.5, weight: .semibold))
+                                        .font(.system(size: subtitleSize, weight: .semibold))
                                         .foregroundColor(AppColors.text)
+                                        .fixedSize(horizontal: false, vertical: true)
                                     Text(LanguageManager.t(benefit.descKey))
-                                        .font(.system(size: 11.5))
+                                        .font(.system(size: footnoteSize + 1))
                                         .foregroundColor(AppColors.secondaryText)
                                         .lineSpacing(2)
+                                        .fixedSize(horizontal: false, vertical: true)
                                 }
 
                                 Spacer()
@@ -227,6 +358,17 @@ public struct ProPaywallSheet: View {
                             .stroke(AppColors.border, lineWidth: 1)
                     )
                     .cornerRadius(16)
+
+                    if isSessionFeature {
+                        if feature == .autoProgression {
+                            Text(LanguageManager.t("paywall.preview.history_hint"))
+                                .font(.system(size: 12)).foregroundColor(AppColors.muted)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        Text(LanguageManager.t("paywall.all_features"))
+                            .font(.system(size: 12)).foregroundColor(AppColors.secondaryText)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
 
                     // Pricing Plans
                     VStack(spacing: 12) {
@@ -365,77 +507,7 @@ public struct ProPaywallSheet: View {
                         }
                     }
 
-                    // Primary Call to Action Button
-                    VStack(spacing: 8) {
-                        Button(action: {
-                            performPurchase()
-                        }) {
-                            if storeKit.isPurchasing {
-                                ProgressView()
-                                    .progressViewStyle(CircularProgressViewStyle(tint: AppColors.background))
-                                    .frame(maxWidth: .infinity)
-                                    .frame(height: 52)
-                                    .background(AppColors.accent)
-                                    .cornerRadius(14)
-                            } else {
-                                HStack(spacing: 8) {
-                                    Image(systemName: "lock.open.fill")
-                                        .font(.system(size: 14, weight: .bold))
-                                    let planHasTrial = storeKit.hasFreeTrial(for: selectedPlan)
-                                    let ctaText = planHasTrial ? LanguageManager.t("paywall.cta_trial") : LanguageManager.t("paywall.cta_continue")
-                                    Text(ctaText)
-                                        .font(.system(size: 15, weight: .bold))
-                                }
-                                .foregroundColor(AppColors.background)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 52)
-                                .background(AppColors.accent)
-                                .cornerRadius(14)
-                            }
-                        }
-                        .buttonStyle(.plain)
-                        .disabled(storeKit.isPurchasing || !selectedPriceAvailable)
-
-                        if let purchaseError = purchaseErrorMessage {
-                            HStack(alignment: .center, spacing: 10) {
-                                Image(systemName: "exclamationmark.circle.fill")
-                                    .foregroundColor(AppColors.danger)
-                                    .font(.system(size: 14))
-
-                                Text(purchaseError)
-                                    .font(.system(size: 11.5))
-                                    .foregroundColor(AppColors.text)
-                                    .lineLimit(3)
-
-                                Spacer()
-
-                                Button(action: {
-                                    performPurchase()
-                                }) {
-                                    Text(LanguageManager.t("paywall.retry"))
-                                        .font(.system(size: 11.5, weight: .bold))
-                                        .foregroundColor(AppColors.accent)
-                                        .padding(.horizontal, 10)
-                                        .padding(.vertical, 5)
-                                        .background(AppColors.accent.opacity(0.12))
-                                        .cornerRadius(6)
-                                }
-                                .buttonStyle(.plain)
-                            }
-                            .padding(10)
-                            .background(AppColors.avoidBg)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(AppColors.avoidBorder, lineWidth: 1)
-                            )
-                            .cornerRadius(10)
-                        }
-
-                        Text(LanguageManager.t("paywall.cancel_anytime"))
-                            .font(.system(size: 11))
-                            .foregroundColor(AppColors.secondaryText)
-                            .multilineTextAlignment(.center)
-                    }
+                    if !isSessionFeature { purchaseFooter }
 
                     // Restore Purchases & Legal Links
                     VStack(spacing: 10) {
@@ -514,6 +586,15 @@ public struct ProPaywallSheet: View {
                 }
                 .padding(.horizontal, 20)
                 .padding(.vertical, 24)
+            }
+            .safeAreaInset(edge: .bottom, spacing: 0) {
+                if isSessionFeature {
+                    purchaseFooter
+                        .padding(.horizontal, 20).padding(.vertical, 12)
+                        .frame(maxWidth: .infinity)
+                        .background(AppColors.surface)
+                        .overlay(alignment: .top) { Rectangle().fill(AppColors.border).frame(height: 1) }
+                }
             }
             .onAppear(perform: selectDefaultPlanIfNeeded)
             .onChange(of: storeKit.products) { selectDefaultPlanIfNeeded() }
@@ -604,6 +685,80 @@ public struct ProPaywallPreview: View {
         .cornerRadius(16)
         .sheet(isPresented: $showSheet) {
             ProPaywallSheet(feature: feature, onDismiss: { showSheet = false })
+        }
+    }
+}
+
+
+/// Sample data only; this view never grants access or writes workout data.
+private struct PaywallFeaturePreview: View {
+    let feature: ProFeature
+    let unit: WeightUnit
+    @ScaledMetric(relativeTo: .subheadline) private var titleSize = 14.0
+    @ScaledMetric(relativeTo: .caption) private var bodySize = 12.0
+    @ScaledMetric(relativeTo: .headline) private var targetSize = 17.0
+    private var weight: Double { unit == .lbs ? 185 : 80 }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(LanguageManager.t("paywall.preview.example"))
+                .font(.system(size: bodySize - 1)).foregroundColor(AppColors.muted)
+            if feature == .autoProgression {
+                Text(LanguageManager.t("paywall.preview.bench_press"))
+                    .font(.system(size: titleSize, weight: .bold)).foregroundColor(AppColors.text)
+                HStack(alignment: .top, spacing: 10) {
+                    target(label: "paywall.preview.last_workout", reps: 10, next: false)
+                    target(label: "paywall.preview.next_target", reps: 11, next: true)
+                }
+                Text(LanguageManager.t("paywall.preview.rep_hint"))
+                    .font(.system(size: bodySize)).foregroundColor(AppColors.secondaryText)
+                    .fixedSize(horizontal: false, vertical: true)
+            } else {
+                warmupPreview
+            }
+        }
+        .padding(14).frame(maxWidth: .infinity, alignment: .leading)
+        .background(AppColors.surfaceRaised)
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+        .accessibilityIdentifier("paywall-feature-preview")
+    }
+
+    private func target(label: String, reps: Int, next: Bool) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(LanguageManager.t(label)).font(.system(size: bodySize - 1))
+                .foregroundColor(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
+            Text("\(WarmupPlateEngine.formatPlateWeight(weight)) \(unit.label) × \(reps)")
+                .font(.system(size: targetSize, weight: .bold)).foregroundColor(next ? AppColors.accent : AppColors.text)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(10).frame(maxWidth: .infinity, alignment: .leading)
+        .background(next ? AppColors.positiveBg : AppColors.surface)
+        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+    }
+
+    private var warmupPreview: some View {
+        let bar: Double = unit == .lbs ? 45 : 20
+        let ramp = WarmupPlateEngine.generateWarmupRamp(workingWeightKg: unit.toCanonicalKg(weight),
+            barWeightKg: unit.toCanonicalKg(bar), availablePlatesKg: WarmupPlateEngine.defaultPlates(for: unit), unit: unit)
+        let plates = WarmupPlateEngine.calculatePlates(targetWeight: weight, barWeight: bar,
+            availablePlates: unit == .lbs ? [45, 25] : [20, 10], unit: unit)
+        let steps = ramp.steps.map { "\(WarmupPlateEngine.formatPlateWeight(unit.toDisplay($0.weightKg))) × \($0.reps)" }.joined(separator: "  ·  ")
+        let perSide = plates.platesPerSide.map { "\(WarmupPlateEngine.formatPlateWeight($0.weight)) \(unit.label)" }.joined(separator: " + ")
+        return VStack(alignment: .leading, spacing: 10) {
+            Text("\(LanguageManager.t("warmup.working_load_label")): \(WarmupPlateEngine.formatPlateWeight(weight)) \(unit.label)")
+                .font(.system(size: titleSize, weight: .bold)).foregroundColor(AppColors.text)
+                .fixedSize(horizontal: false, vertical: true)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(LanguageManager.t("paywall.preview.warmup_sequence", ["unit": unit.label]))
+                    .font(.system(size: bodySize - 1)).foregroundColor(AppColors.secondaryText)
+                Text(steps).font(.system(size: bodySize + 1, weight: .semibold)).foregroundColor(AppColors.warmupAmber)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            BarbellPlateVisualizerView(result: plates, unit: unit).barbellDiagram
+            Text("\(LanguageManager.t("warmup.bar")): \(WarmupPlateEngine.formatPlateWeight(bar)) \(unit.label)\n\(LanguageManager.t("warmup.per_side")): \(perSide)")
+                .font(.system(size: bodySize)).foregroundColor(AppColors.secondaryText)
+                .fixedSize(horizontal: false, vertical: true)
         }
     }
 }

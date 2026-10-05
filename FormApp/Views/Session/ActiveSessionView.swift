@@ -23,6 +23,7 @@ public struct ActiveSessionView: View {
     @State private var warmupModalTab: WarmupPlateTab = .warmupRamp
     @State private var selectedPlateWeight: Double? = nil
     @State private var paywallFeature: ProFeature? = nil
+    @State private var openWarmupAfterUnlock = false
 
     private let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
 
@@ -671,10 +672,18 @@ public struct ActiveSessionView: View {
                 )
             }
         }
-        .sheet(item: $paywallFeature) { feat in
+        .sheet(item: $paywallFeature, onDismiss: {
+            if openWarmupAfterUnlock && supportsBarbellWarmup {
+                selectedPlateWeight = nil
+                warmupModalTab = .warmupRamp
+                showWarmupPlateSheet = true
+            }
+            openWarmupAfterUnlock = false
+        }) { feat in
             ProPaywallSheet(
                 feature: feat,
-                onDismiss: { paywallFeature = nil }
+                onDismiss: { paywallFeature = nil },
+                onUnlocked: { openWarmupAfterUnlock = feat == .warmupCalculator }
             )
         }
         .onReceive(timer) { _ in
