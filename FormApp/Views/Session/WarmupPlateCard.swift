@@ -69,13 +69,10 @@ public struct WarmupPlateCard: View {
                     }
 
                     VStack(alignment: .leading, spacing: 2) {
-                        HStack(spacing: 6) {
-                            ProBadge()
-                            Text(LanguageManager.t("warmup.active_badge"))
-                                .font(.system(size: 13, weight: .bold))
-                                .foregroundColor(AppColors.warmupAmber)
-                                .lineLimit(1)
-                        }
+                        Text(LanguageManager.t("warmup.active_badge"))
+                            .font(.system(size: 13, weight: .bold))
+                            .foregroundColor(AppColors.warmupAmber)
+                            .lineLimit(1)
 
                         Text(LanguageManager.t("warmup.active_desc", ["count": warmupSets.count]))
                             .font(.system(size: 11))
@@ -150,14 +147,10 @@ public struct WarmupPlateCard: View {
 
     private func introCard() -> some View {
         VStack(alignment: .leading, spacing: 10) {
-            HStack(alignment: .top, spacing: 10) {
+            HStack(alignment: .center, spacing: 10) {
                 barbellIcon
-                ViewThatFits(in: .horizontal) {
-                    HStack(spacing: 8) { title; ProBadge() }
-                        .fixedSize(horizontal: true, vertical: false)
-                    VStack(alignment: .leading, spacing: 4) { title; ProBadge() }
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                title
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
             Text(LanguageManager.t(!hasWorkingLoad ? "warmup.enter_working_load" : "warmup.card_desc"))
                 .font(.system(size: bodySize))
@@ -175,7 +168,7 @@ public struct WarmupPlateCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surface)
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+        .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(AppColors.purple.opacity(0.5), lineWidth: 1))
         .accessibilityIdentifier("warmup-plate-card")
     }
 }

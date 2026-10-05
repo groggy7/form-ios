@@ -153,7 +153,7 @@ public struct ProgressionCoachCard: View {
             }
             .padding(14)
             .background(AppColors.surface)
-            .overlay(RoundedRectangle(cornerRadius: 16).stroke(recommendation.action.color.opacity(0.35), lineWidth: 1))
+            .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.purple.opacity(0.5), lineWidth: 1))
             .cornerRadius(16)
             .contentShape(Rectangle())
             .onTapGesture {
@@ -184,7 +184,7 @@ public struct ProgressionCoachCard: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surface)
         .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(AppColors.purple.opacity(0.5), lineWidth: 1))
         .contentShape(Rectangle())
         .onTapGesture(perform: onOpenInfo)
         .accessibilityIdentifier("progression-coach-card")
@@ -225,13 +225,10 @@ private struct ProgressionCoachHeader: View {
     }
 
     var body: some View {
-        HStack(alignment: .top, spacing: 4) {
+        HStack(alignment: .center, spacing: 4) {
             ProgressionHeaderBolt().fill(AppColors.purple)
                 .frame(width: 16, height: 16).frame(width: 20, height: 24).accessibilityHidden(true)
-            ViewThatFits(in: .horizontal) {
-                HStack(spacing: 8) { title; ProBadge() }.fixedSize(horizontal: true, vertical: false)
-                VStack(alignment: .leading, spacing: 4) { title; ProBadge() }
-            }.frame(maxWidth: .infinity, alignment: .leading)
+            title.frame(maxWidth: .infinity, alignment: .leading)
             Button(action: onOpenInfo) {
                 ZStack {
                     Circle().stroke(AppColors.muted, lineWidth: 1.5).frame(width: 12.5, height: 12.5)
@@ -293,7 +290,7 @@ struct ProgressionRecommendationCard: View {
         }
         .padding(.horizontal, 18).padding(.vertical, 12).frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surface).clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(AppColors.purple.opacity(0.5), lineWidth: 1))
         .accessibilityIdentifier("progression-coach-card")
     }
 
