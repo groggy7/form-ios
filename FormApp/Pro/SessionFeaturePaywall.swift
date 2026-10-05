@@ -25,6 +25,7 @@ struct SessionFeaturePaywallContent: View {
     let onPrivacy: () -> Void
     let onClose: () -> Void
     var feature: ProFeature = .autoProgression
+    var weightUnit: WeightUnit = .kg
 
     @Environment(\.sizeCategory) private var textSize
     @ScaledMetric(relativeTo: .title) private var headlineSize = 26.0
@@ -143,7 +144,7 @@ struct SessionFeaturePaywallContent: View {
         .padding(.horizontal, 24).padding(.top, 4).padding(.bottom, 22)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(alignment: .top) {
-            Image(isWarmup ? "paywall_warmup_plates" : "paywall_smart_progression").resizable().scaledToFit()
+            Image(isWarmup ? (weightUnit == .lbs ? "paywall_warmup_plates_lbs" : "paywall_warmup_plates") : "paywall_smart_progression").resizable().scaledToFit()
                 .frame(width: width, height: width * 1.1, alignment: .topTrailing).clipped()
                 .overlay(LinearGradient(stops: [
                     .init(color: AppColors.progressionPaywallSurface.opacity(0.5), location: 0),
@@ -159,13 +160,20 @@ struct SessionFeaturePaywallContent: View {
         }
     }
 
+    private var exampleValues: [String: String] {
+        ["total": weightUnit == .lbs ? "185" : "85",
+         "plates": weightUnit == .lbs ? "40 + 25 + 5" : (LanguageManager.shared.currentLanguage == "tr" ? "20 + 10 + 2,5" : "20 + 10 + 2.5"),
+         "bar": weightUnit == .lbs ? "45" : "20",
+         "unit": weightUnit.label]
+    }
+
     private var plateExample: some View {
         VStack(alignment: .leading, spacing: 3) {
-            Text(LanguageManager.t("paywall.warmup_calculator.example_total"))
+            Text(LanguageManager.t("paywall.warmup_calculator.example_total", exampleValues))
                 .font(.system(size: footnoteSize, weight: .semibold)).foregroundStyle(AppColors.text)
-            Text(LanguageManager.t("paywall.warmup_calculator.example_plates"))
+            Text(LanguageManager.t("paywall.warmup_calculator.example_plates", exampleValues))
                 .font(.system(size: footnoteSize - 1)).foregroundStyle(AppColors.secondaryText)
-            Text(LanguageManager.t("paywall.warmup_calculator.example_bar"))
+            Text(LanguageManager.t("paywall.warmup_calculator.example_bar", exampleValues))
                 .font(.system(size: footnoteSize - 2)).foregroundStyle(AppColors.secondaryText)
         }
         .fixedSize(horizontal: false, vertical: true).padding(8)

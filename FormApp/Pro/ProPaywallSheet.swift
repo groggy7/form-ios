@@ -18,6 +18,7 @@ public struct ProPaywallSheet: View {
     public var onUnlocked: (() -> Void)?
 
     @ObservedObject private var proManager = ProAccessManager.shared
+    @ObservedObject private var appStore = AppStore.shared
     @ScaledMetric(relativeTo: .title2) private var headlineSize = 22.0
     @ScaledMetric(relativeTo: .subheadline) private var subtitleSize = 13.5
     @ScaledMetric(relativeTo: .subheadline) private var actionSize = 15.0
@@ -285,7 +286,7 @@ public struct ProPaywallSheet: View {
                     onTerms: { if let url = URL(string: LegalUrls.termsOfService) { openURL(url) } },
                     onPrivacy: { if let url = URL(string: LegalUrls.privacyPolicy) { openURL(url) } },
                     onClose: dismissSelf,
-                    feature: feature ?? .autoProgression
+                    feature: feature ?? .autoProgression, weightUnit: appStore.weightUnit
                 )
                 .presentationDragIndicator(.visible)
                 .presentationCornerRadius(28)

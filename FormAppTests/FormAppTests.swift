@@ -8465,8 +8465,8 @@ final class SessionFeaturePaywallTests: XCTestCase {
         let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
             .flatMap(\.windows).first(where: \.isKeyWindow)
         defer { LanguageManager.setLanguage(previousLanguage); previousWindow?.makeKeyAndVisible() }
-        for feature in [ProFeature.autoProgression, .warmupCalculator] {
-            let imageName = feature == .warmupCalculator ? "paywall_warmup_plates" : "paywall_smart_progression"
+        for (feature, unit) in [(ProFeature.autoProgression, WeightUnit.kg), (.warmupCalculator, .kg), (.warmupCalculator, .lbs)] {
+            let imageName = feature == .warmupCalculator ? (unit == .lbs ? "paywall_warmup_plates_lbs" : "paywall_warmup_plates") : "paywall_smart_progression"
             let tag = feature == .warmupCalculator ? "warmup-paywall" : "progression-paywall"
             let artwork = try XCTUnwrap(UIImage(named: imageName))
             XCTAssertEqual(artwork.size.width, artwork.size.height)
@@ -8477,7 +8477,7 @@ final class SessionFeaturePaywallTests: XCTestCase {
                         annual: SessionPaywallOffer(price: "TRY 999.99", monthlyBreakdown: "TRY 83.33 / month", savingsPercent: 44),
                         monthly: SessionPaywallOffer(price: "TRY 149.99"), selectedPlan: .annual,
                         isPurchasing: false, isRestoring: false, purchaseError: nil, restoreMessage: nil, isRestoreError: false,
-                        onSelectPlan: { _ in }, onPurchase: {}, onRestore: {}, onRetryPrices: {}, onTerms: {}, onPrivacy: {}, onClose: {}, feature: feature)
+                        onSelectPlan: { _ in }, onPurchase: {}, onRestore: {}, onRetryPrices: {}, onTerms: {}, onPrivacy: {}, onClose: {}, feature: feature, weightUnit: unit)
                         .environment(\.sizeCategory, textSize)
                     let controller = UIHostingController(rootView: view)
                     let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 820))
@@ -8502,7 +8502,7 @@ final class SessionFeaturePaywallTests: XCTestCase {
                         }
                         XCTAssertGreaterThan(try XCTUnwrap(image.pngData()).count, 10_000)
                         let attachment = XCTAttachment(image: image)
-                        attachment.name = "\(tag)-\(language)-\(Int(width))-\(textSize == .large ? "normal" : "large")-\(position)"
+                        attachment.name = "\(tag)-\(unit.rawValue)-\(language)-\(Int(width))-\(textSize == .large ? "normal" : "large")-\(position)"
                         attachment.lifetime = .keepAlways
                         add(attachment)
                     }
