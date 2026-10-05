@@ -265,12 +265,12 @@ public struct ProPaywallSheet: View {
 
     public var body: some View {
         Group {
-            if feature == .autoProgression {
-                SmartProgressionPaywallContent(
-                    annual: ProgressionPaywallOffer(price: storeKit.annualProduct?.displayPrice,
+            if isSessionFeature {
+                SessionFeaturePaywallContent(
+                    annual: SessionPaywallOffer(price: storeKit.annualProduct?.displayPrice,
                         hasTrial: storeKit.hasFreeTrial(for: .annual), monthlyBreakdown: storeKit.annualPerMonthDisplayPrice,
                         savingsPercent: storeKit.annualSavingsPercentage),
-                    monthly: ProgressionPaywallOffer(price: storeKit.monthlyProduct?.displayPrice,
+                    monthly: SessionPaywallOffer(price: storeKit.monthlyProduct?.displayPrice,
                         hasTrial: storeKit.hasFreeTrial(for: .monthly)),
                     selectedPlan: selectedPlan, isPurchasing: storeKit.isPurchasing, isRestoring: isRestoring,
                     purchaseError: purchaseErrorMessage, restoreMessage: restoreStatusMessage, isRestoreError: isRestoreError,
@@ -284,7 +284,8 @@ public struct ProPaywallSheet: View {
                     onRetryPrices: { Task { await storeKit.requestProducts() } },
                     onTerms: { if let url = URL(string: LegalUrls.termsOfService) { openURL(url) } },
                     onPrivacy: { if let url = URL(string: LegalUrls.privacyPolicy) { openURL(url) } },
-                    onClose: dismissSelf
+                    onClose: dismissSelf,
+                    feature: feature ?? .autoProgression
                 )
                 .presentationDragIndicator(.visible)
                 .presentationCornerRadius(28)

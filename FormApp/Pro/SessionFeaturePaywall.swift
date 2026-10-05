@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct ProgressionPaywallOffer {
+struct SessionPaywallOffer {
     let price: String?
     var hasTrial = false
     var monthlyBreakdown: String? = nil
@@ -8,9 +8,9 @@ struct ProgressionPaywallOffer {
 }
 
 /// A store-independent presentation; ProPaywallSheet owns billing and entitlement changes.
-struct SmartProgressionPaywallContent: View {
-    let annual: ProgressionPaywallOffer
-    let monthly: ProgressionPaywallOffer
+struct SessionFeaturePaywallContent: View {
+    let annual: SessionPaywallOffer
+    let monthly: SessionPaywallOffer
     let selectedPlan: PaywallPlan
     let isPurchasing: Bool
     let isRestoring: Bool
@@ -24,15 +24,20 @@ struct SmartProgressionPaywallContent: View {
     let onTerms: () -> Void
     let onPrivacy: () -> Void
     let onClose: () -> Void
+    var feature: ProFeature = .autoProgression
 
     @Environment(\.sizeCategory) private var textSize
     @ScaledMetric(relativeTo: .title) private var headlineSize = 26.0
+    @ScaledMetric(relativeTo: .title) private var warmupHeadlineSize = 24.0
     @ScaledMetric(relativeTo: .subheadline) private var titleSize = 13.0
     @ScaledMetric(relativeTo: .subheadline) private var subtitleSize = 12.0
     @ScaledMetric(relativeTo: .caption) private var bodySize = 11.0
     @ScaledMetric(relativeTo: .caption2) private var footnoteSize = 10.0
     private let accent = AppColors.progressionPaywallAccent
-    private var selected: ProgressionPaywallOffer { selectedPlan == .annual ? annual : monthly }
+    private var isWarmup: Bool { feature == .warmupCalculator }
+    private var copyPrefix: String { "paywall.\(feature.rawValue)" }
+    private var tagPrefix: String { isWarmup ? "warmup-paywall" : "progression-paywall" }
+    private var selected: SessionPaywallOffer { selectedPlan == .annual ? annual : monthly }
 
     var body: some View {
         GeometryReader { geometry in
@@ -43,7 +48,7 @@ struct SmartProgressionPaywallContent: View {
                         Rectangle().fill(AppColors.border.opacity(0.65)).frame(height: 1).padding(.horizontal, 4)
                         HStack(spacing: 12) {
                             benefitIcon("infinity", size: 32)
-                            (Text(LanguageManager.t("paywall.auto_progression.unlock_title"))
+                            (Text(LanguageManager.t("\(copyPrefix).unlock_title"))
                                 .font(.system(size: subtitleSize, weight: .semibold)).foregroundColor(AppColors.text)
                              + Text(LanguageManager.t("paywall.auto_progression.unlock_suffix"))
                                 .font(.system(size: subtitleSize)).foregroundColor(AppColors.secondaryText))
@@ -75,7 +80,7 @@ struct SmartProgressionPaywallContent: View {
                     .padding(.horizontal, 20).padding(.bottom, 4)
                 }
             }
-            .accessibilityIdentifier("progression-paywall-scroll")
+            .accessibilityIdentifier("\(tagPrefix)-scroll")
             .safeAreaInset(edge: .bottom, spacing: 0) { footer }
         }
         .background(AppColors.progressionPaywallSurface.ignoresSafeArea())
@@ -100,32 +105,45 @@ struct SmartProgressionPaywallContent: View {
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain).accessibilityLabel(LanguageManager.t("common.close"))
-                .accessibilityIdentifier("progression-paywall-close")
+                .accessibilityIdentifier("\(tagPrefix)-close")
             }
             .padding(.bottom, 18)
-            Text(LanguageManager.t("progression.coach.locked_title"))
+            Text(LanguageManager.t(isWarmup ? "warmup.card_title" : "progression.coach.locked_title"))
                 .font(.system(size: subtitleSize)).foregroundStyle(AppColors.secondaryText)
                 .padding(.bottom, 8)
-            Text(LanguageManager.t("paywall.auto_progression.headline"))
-                .font(.system(size: headlineSize, weight: .bold))
+            Text(LanguageManager.t("\(copyPrefix).headline"))
+                .font(.system(size: isWarmup ? warmupHeadlineSize : headlineSize, weight: .bold))
                 .foregroundStyle(AppColors.text).fixedSize(horizontal: false, vertical: true)
-                .frame(width: comfortableText ? (width - 48) * 0.64 : width - 48, alignment: .leading)
+                .frame(width: comfortableText ? (width - 48) * (isWarmup ? 0.84 : 0.64) : width - 48, alignment: .leading)
                 .padding(.bottom, 10)
-            Text(LanguageManager.t("paywall.auto_progression.subtitle"))
+            Text(LanguageManager.t("\(copyPrefix).subtitle"))
                 .font(.system(size: subtitleSize)).foregroundStyle(AppColors.secondaryText).lineSpacing(3)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(width: comfortableText ? (width - 48) * 0.68 : width - 48, alignment: .leading)
                 .padding(.bottom, 22)
-            VStack(spacing: 16) {
-                benefit(1, icon: "arrow.up.right", width: comfortableText ? (width - 48) * 0.78 : width - 48)
-                benefit(2, icon: "info.circle.fill", width: comfortableText ? (width - 48) * 0.78 : width - 48)
-                benefit(3, icon: "bolt.fill", width: comfortableText ? (width - 48) * 0.78 : width - 48)
+            VStack(alignment: .leading, spacing: 16) {
+                if isWarmup {
+                    if comfortableText {
+                        HStack(alignment: .top, spacing: 0) {
+                            benefit(1, icon: "chart.bar.fill", width: (width - 48) * 0.68)
+                            Spacer(minLength: 0)
+                            plateExample.frame(width: (width - 48) * 0.30).padding(.top, 4)
+                        }
+                    } else {
+                        plateExample.frame(maxWidth: .infinity, alignment: .trailing)
+                        benefit(1, icon: "chart.bar.fill", width: width - 48)
+                    }
+                } else {
+                    benefit(1, icon: "arrow.up.right", width: comfortableText ? (width - 48) * 0.78 : width - 48)
+                }
+                benefit(2, icon: isWarmup ? "paywall.plates" : "info.circle.fill", width: comfortableText ? (width - 48) * 0.78 : width - 48)
+                benefit(3, icon: isWarmup ? "plus" : "bolt.fill", width: comfortableText ? (width - 48) * 0.78 : width - 48)
             }
         }
         .padding(.horizontal, 24).padding(.top, 4).padding(.bottom, 22)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(alignment: .top) {
-            Image("paywall_smart_progression").resizable().scaledToFit()
+            Image(isWarmup ? "paywall_warmup_plates" : "paywall_smart_progression").resizable().scaledToFit()
                 .frame(width: width, height: width * 1.1, alignment: .topTrailing).clipped()
                 .overlay(LinearGradient(stops: [
                     .init(color: AppColors.progressionPaywallSurface.opacity(0.5), location: 0),
@@ -141,13 +159,28 @@ struct SmartProgressionPaywallContent: View {
         }
     }
 
+    private var plateExample: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(LanguageManager.t("paywall.warmup_calculator.example_total"))
+                .font(.system(size: footnoteSize, weight: .semibold)).foregroundStyle(AppColors.text)
+            Text(LanguageManager.t("paywall.warmup_calculator.example_plates"))
+                .font(.system(size: footnoteSize - 1)).foregroundStyle(AppColors.secondaryText)
+            Text(LanguageManager.t("paywall.warmup_calculator.example_bar"))
+                .font(.system(size: footnoteSize - 2)).foregroundStyle(AppColors.secondaryText)
+        }
+        .fixedSize(horizontal: false, vertical: true).padding(8)
+        .background(AppColors.progressionPaywallPlanSurface.opacity(0.95), in: RoundedRectangle(cornerRadius: 8))
+        .overlay(RoundedRectangle(cornerRadius: 8).stroke(AppColors.border, lineWidth: 1))
+        .accessibilityIdentifier("warmup-paywall-example")
+    }
+
     private func benefit(_ number: Int, icon: String, width: CGFloat) -> some View {
         HStack(alignment: .top, spacing: 14) {
             benefitIcon(icon)
             VStack(alignment: .leading, spacing: 3) {
-                Text(LanguageManager.t("paywall.auto_progression.benefit\(number)"))
+                Text(LanguageManager.t("\(copyPrefix).benefit\(number)"))
                     .font(.system(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.text)
-                Text(LanguageManager.t("paywall.auto_progression.benefit\(number)_desc"))
+                Text(LanguageManager.t("\(copyPrefix).benefit\(number)_desc"))
                     .font(.system(size: bodySize)).foregroundStyle(AppColors.secondaryText).lineSpacing(2)
             }
             .fixedSize(horizontal: false, vertical: true).frame(maxWidth: .infinity, alignment: .leading)
@@ -156,12 +189,18 @@ struct SmartProgressionPaywallContent: View {
     }
 
     private func benefitIcon(_ name: String, size: CGFloat = 34) -> some View {
-        Image(systemName: name).font(.system(size: 19, weight: .semibold)).foregroundStyle(accent)
+        Group {
+            if name == "paywall.plates" {
+                WarmupPlateStack().fill(accent).frame(width: 22, height: 22)
+                    .overlay(Ellipse().fill(AppColors.progressionPaywallIconSurface).frame(width: 6, height: 3).offset(y: -5))
+            }
+            else { Image(systemName: name).font(.system(size: 19, weight: .semibold)).foregroundStyle(accent) }
+        }
             .frame(width: size, height: size).background(AppColors.progressionPaywallIconSurface, in: Circle())
             .accessibilityHidden(true)
     }
 
-    private func plan(_ plan: PaywallPlan, offer: ProgressionPaywallOffer, width: CGFloat) -> some View {
+    private func plan(_ plan: PaywallPlan, offer: SessionPaywallOffer, width: CGFloat) -> some View {
         let isAnnual = plan == .annual
         let isSelected = selectedPlan == plan
         let stackPrice = width < 340 || textSize > .large
@@ -197,7 +236,7 @@ struct SmartProgressionPaywallContent: View {
                                                              lineWidth: isSelected ? 1.5 : 1))
         }
         .buttonStyle(.plain).accessibilityAddTraits(isSelected ? [.isSelected] : [])
-        .accessibilityIdentifier(isAnnual ? "progression-paywall-annual" : "progression-paywall-monthly")
+        .accessibilityIdentifier(isAnnual ? "\(tagPrefix)-annual" : "\(tagPrefix)-monthly")
     }
 
     private func planTitle(_ annual: Bool) -> some View {
@@ -206,7 +245,7 @@ struct SmartProgressionPaywallContent: View {
             .fixedSize(horizontal: false, vertical: true)
     }
 
-    private func planPrice(_ offer: ProgressionPaywallOffer, selected: Bool) -> some View {
+    private func planPrice(_ offer: SessionPaywallOffer, selected: Bool) -> some View {
         VStack(alignment: .trailing, spacing: 4) {
             Text(offer.price ?? "—").font(.system(size: titleSize, weight: .bold))
                 .foregroundStyle(selected ? accent : AppColors.text)
@@ -217,7 +256,7 @@ struct SmartProgressionPaywallContent: View {
         .fixedSize(horizontal: false, vertical: true)
     }
 
-    @ViewBuilder private func planTags(_ offer: ProgressionPaywallOffer) -> some View {
+    @ViewBuilder private func planTags(_ offer: SessionPaywallOffer) -> some View {
         if let savings = offer.savingsPercent {
             planTag(LanguageManager.t("paywall.annual_savings_template", ["savings": "\(savings)%"]))
         }
@@ -261,7 +300,7 @@ struct SmartProgressionPaywallContent: View {
                     .opacity(selected.price == nil ? 0.4 : 1)
                 }
                 .buttonStyle(.plain).disabled(isPurchasing || selected.price == nil)
-                .accessibilityIdentifier("progression-paywall-purchase")
+                .accessibilityIdentifier("\(tagPrefix)-purchase")
                 Text(selected.price.map { LanguageManager.t(selectedPlan == .annual
                     ? "paywall.auto_progression.annual_footer" : "paywall.auto_progression.monthly_footer", ["price": $0]) }
                      ?? LanguageManager.t("paywall.price_unavailable_short"))
@@ -277,7 +316,7 @@ struct SmartProgressionPaywallContent: View {
             .padding(.horizontal, 20).padding(.vertical, 16)
         }
         .background(AppColors.progressionPaywallSurface)
-        .accessibilityIdentifier("progression-paywall-footer")
+        .accessibilityIdentifier("\(tagPrefix)-footer")
     }
 
     private func feedback(_ message: String, isError: Bool, retry: @escaping () -> Void) -> some View {
@@ -291,5 +330,20 @@ struct SmartProgressionPaywallContent: View {
         }
         .padding(10).frame(maxWidth: .infinity)
         .background(isError ? AppColors.avoidBg : AppColors.positiveBg, in: RoundedRectangle(cornerRadius: 10))
+    }
+}
+
+private struct WarmupPlateStack: Shape {
+    func path(in rect: CGRect) -> Path {
+        var path = Path()
+        path.addEllipse(in: CGRect(x: 3, y: 2, width: 18, height: 12))
+        for y in [CGFloat(13), CGFloat(18)] {
+            path.move(to: CGPoint(x: 3, y: y))
+            path.addCurve(to: CGPoint(x: 21, y: y), control1: CGPoint(x: 7, y: y + 4), control2: CGPoint(x: 17, y: y + 4))
+            path.addLine(to: CGPoint(x: 21, y: y + 3))
+            path.addCurve(to: CGPoint(x: 3, y: y + 3), control1: CGPoint(x: 17, y: y + 7), control2: CGPoint(x: 7, y: y + 7))
+            path.closeSubpath()
+        }
+        return path.applying(CGAffineTransform(scaleX: rect.width / 24, y: rect.height / 24))
     }
 }
