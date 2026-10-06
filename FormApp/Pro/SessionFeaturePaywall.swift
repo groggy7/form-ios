@@ -24,7 +24,7 @@ struct SessionFeaturePaywallContent: View {
     let onTerms: () -> Void
     let onPrivacy: () -> Void
     let onClose: () -> Void
-    var feature: ProFeature = .autoProgression
+    var feature: ProFeature? = .autoProgression
     var weightUnit: WeightUnit = .kg
 
     @Environment(\.sizeCategory) private var textSize
@@ -41,12 +41,14 @@ struct SessionFeaturePaywallContent: View {
     private var isWarmup: Bool { feature == .warmupCalculator }
     private var isVolumeMatrix: Bool { feature == .volumeMatrix }
     private var isRepLab: Bool { feature == .formLab }
-    private var copyPrefix: String { "paywall.\(feature.rawValue)" }
+    private var isGeneral: Bool { feature == nil }
+    private var copyPrefix: String { feature == nil ? "paywall.general" : "paywall.\(feature!.rawValue)" }
     private var tagPrefix: String {
         switch feature {
         case .warmupCalculator: return "warmup-paywall"
         case .volumeMatrix: return "volume-paywall"
         case .formLab: return "rep-lab-paywall"
+        case .none: return "general-paywall"
         default: return "progression-paywall"
         }
     }
@@ -55,13 +57,14 @@ struct SessionFeaturePaywallContent: View {
         case .warmupCalculator: return weightUnit == .lbs ? "paywall_warmup_plates_lbs" : "paywall_warmup_plates"
         case .volumeMatrix: return "paywall_volume_matrix"
         case .formLab: return "paywall_rep_lab"
+        case .none: return "paywall_general"
         default: return "paywall_smart_progression"
         }
     }
     private var featureTitleKey: String {
         switch feature {
         case .warmupCalculator: return "warmup.card_title"
-        case .volumeMatrix, .formLab: return "\(copyPrefix).feature_title"
+        case .volumeMatrix, .formLab, .none: return "\(copyPrefix).feature_title"
         default: return "progression.coach.locked_title"
         }
     }
@@ -158,7 +161,7 @@ struct SessionFeaturePaywallContent: View {
             Text(LanguageManager.t("\(copyPrefix).headline"))
                 .font(.system(size: isWarmup ? warmupHeadlineSize : headlineSize, weight: .bold))
                 .foregroundStyle(AppColors.text).fixedSize(horizontal: false, vertical: true)
-                .frame(width: comfortableText ? (width - 48) * (isWarmup ? 0.84 : (isVolumeMatrix || isRepLab ? 0.72 : 0.64)) : width - 48, alignment: .leading)
+                .frame(width: comfortableText ? (width - 48) * (isWarmup ? 0.84 : (isVolumeMatrix || isRepLab || isGeneral ? 0.72 : 0.64)) : width - 48, alignment: .leading)
                 .padding(.bottom, 10)
             Text(LanguageManager.t("\(copyPrefix).subtitle"))
                 .font(.system(size: subtitleSize)).foregroundStyle(AppColors.secondaryText).lineSpacing(3)
@@ -178,10 +181,10 @@ struct SessionFeaturePaywallContent: View {
                         benefit(1, icon: "chart.bar.fill", width: width - 48)
                     }
                 } else {
-                    benefit(1, icon: isVolumeMatrix ? "chart.bar.fill" : (isRepLab ? "number.circle.fill" : "arrow.up.right"), width: comfortableText ? (width - 48) * 0.78 : width - 48)
+                    benefit(1, icon: isVolumeMatrix ? "chart.bar.fill" : (isRepLab ? "number.circle.fill" : (isGeneral ? "arrow.up.forward.circle.fill" : "arrow.up.right")), width: comfortableText ? (width - 48) * 0.78 : width - 48)
                 }
-                benefit(2, icon: isWarmup ? "paywall.plates" : (isVolumeMatrix ? "square.grid.3x3.fill" : (isRepLab ? "chart.xyaxis.line" : "info.circle.fill")), width: comfortableText ? (width - 48) * 0.78 : width - 48)
-                benefit(3, icon: isWarmup ? "plus" : (isVolumeMatrix ? "calendar" : (isRepLab ? "chart.bar.fill" : "bolt.fill")), width: comfortableText ? (width - 48) * 0.78 : width - 48)
+                benefit(2, icon: isWarmup ? "paywall.plates" : (isVolumeMatrix || isGeneral ? "square.grid.3x3.fill" : (isRepLab ? "chart.xyaxis.line" : "info.circle.fill")), width: comfortableText ? (width - 48) * 0.78 : width - 48)
+                benefit(3, icon: isWarmup ? "plus" : (isVolumeMatrix ? "calendar" : (isRepLab ? "chart.bar.fill" : (isGeneral ? "chart.xyaxis.line" : "bolt.fill"))), width: comfortableText ? (width - 48) * 0.78 : width - 48)
             }
             if isRepLab {
                 Text(LanguageManager.t("\(copyPrefix).reference_note"))

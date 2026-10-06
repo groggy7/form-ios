@@ -151,7 +151,7 @@ public struct ProPaywallSheet: View {
     }
 
     private var isIllustratedFeature: Bool {
-        feature == .autoProgression || feature == .warmupCalculator || feature == .volumeMatrix || feature == .formLab
+        feature == nil || feature == .autoProgression || feature == .warmupCalculator || feature == .volumeMatrix || feature == .formLab
     }
 
     private var headlineKey: String {
@@ -286,7 +286,7 @@ public struct ProPaywallSheet: View {
                     onTerms: { if let url = URL(string: LegalUrls.termsOfService) { openURL(url) } },
                     onPrivacy: { if let url = URL(string: LegalUrls.privacyPolicy) { openURL(url) } },
                     onClose: dismissSelf,
-                    feature: feature ?? .autoProgression, weightUnit: appStore.weightUnit
+                    feature: feature, weightUnit: appStore.weightUnit
                 )
                 .presentationDragIndicator(.visible)
                 .presentationCornerRadius(28)
