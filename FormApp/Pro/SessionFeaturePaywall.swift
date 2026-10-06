@@ -194,7 +194,7 @@ struct SessionFeaturePaywallContent: View {
                 benefit(2, icon: isWarmup ? "paywall.plates" : (isVolumeMatrix ? "square.grid.3x3.fill" : (isRepLab ? "chart.xyaxis.line" : "info.circle.fill")), width: comfortableText ? (width - 48) * 0.78 : width - 48)
                 benefit(3, icon: isWarmup ? "plus" : (isVolumeMatrix ? "calendar" : (isRepLab ? "chart.bar.fill" : "bolt.fill")), width: comfortableText ? (width - 48) * 0.78 : width - 48)
             }
-            if isVolumeMatrix || isRepLab {
+            if isRepLab {
                 Text(LanguageManager.t("\(copyPrefix).reference_note"))
                     .font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).lineSpacing(2)
                     .fixedSize(horizontal: false, vertical: true)
