@@ -169,20 +169,7 @@ struct SessionFeaturePaywallContent: View {
                 .frame(width: comfortableText ? (width - 48) * 0.68 : width - 48, alignment: .leading)
                 .padding(.bottom, 22)
             VStack(alignment: .leading, spacing: 16) {
-                if isWarmup {
-                    if comfortableText {
-                        HStack(alignment: .top, spacing: 0) {
-                            benefit(1, icon: "chart.bar.fill", width: (width - 48) * 0.68)
-                            Spacer(minLength: 0)
-                            plateExample.frame(width: (width - 48) * 0.30).padding(.top, 4)
-                        }
-                    } else {
-                        plateExample.frame(maxWidth: .infinity, alignment: .trailing)
-                        benefit(1, icon: "chart.bar.fill", width: width - 48)
-                    }
-                } else {
-                    benefit(1, icon: isVolumeMatrix ? "chart.bar.fill" : (isRepLab ? "number.circle.fill" : (isGeneral ? "arrow.up.forward.circle.fill" : "arrow.up.right")), width: comfortableText ? (width - 48) * 0.78 : width - 48)
-                }
+                benefit(1, icon: (isVolumeMatrix || isWarmup) ? "chart.bar.fill" : (isRepLab ? "number.circle.fill" : (isGeneral ? "arrow.up.forward.circle.fill" : "arrow.up.right")), width: comfortableText ? (width - 48) * 0.78 : width - 48)
                 benefit(2, icon: isWarmup ? "paywall.plates" : (isVolumeMatrix || isGeneral ? "square.grid.3x3.fill" : (isRepLab ? "chart.xyaxis.line" : "info.circle.fill")), width: comfortableText ? (width - 48) * 0.78 : width - 48)
                 benefit(3, icon: isWarmup ? "plus" : (isVolumeMatrix ? "calendar" : (isRepLab ? "chart.bar.fill" : (isGeneral ? "chart.xyaxis.line" : "bolt.fill"))), width: comfortableText ? (width - 48) * 0.78 : width - 48)
             }
@@ -216,27 +203,6 @@ struct SessionFeaturePaywallContent: View {
 
 
 
-    private var exampleValues: [String: String] {
-        ["total": weightUnit == .lbs ? "185" : "85",
-         "plates": weightUnit == .lbs ? "40 + 25 + 5" : (LanguageManager.shared.currentLanguage == "tr" ? "20 + 10 + 2,5" : "20 + 10 + 2.5"),
-         "bar": weightUnit == .lbs ? "45" : "20",
-         "unit": weightUnit.label]
-    }
-
-    private var plateExample: some View {
-        VStack(alignment: .leading, spacing: 3) {
-            Text(LanguageManager.t("paywall.warmup_calculator.example_total", exampleValues))
-                .font(.system(size: footnoteSize, weight: .semibold)).foregroundStyle(AppColors.text)
-            Text(LanguageManager.t("paywall.warmup_calculator.example_plates", exampleValues))
-                .font(.system(size: footnoteSize - 1)).foregroundStyle(AppColors.secondaryText)
-            Text(LanguageManager.t("paywall.warmup_calculator.example_bar", exampleValues))
-                .font(.system(size: footnoteSize - 2)).foregroundStyle(AppColors.secondaryText)
-        }
-        .fixedSize(horizontal: false, vertical: true).padding(8)
-        .background(AppColors.progressionPaywallPlanSurface.opacity(0.95), in: RoundedRectangle(cornerRadius: 8))
-        .overlay(RoundedRectangle(cornerRadius: 8).stroke(AppColors.border, lineWidth: 1))
-        .accessibilityIdentifier("warmup-paywall-example")
-    }
 
     private func benefit(_ number: Int, icon: String, width: CGFloat) -> some View {
         HStack(alignment: .top, spacing: 14) {
