@@ -169,15 +169,15 @@ struct SessionFeaturePaywallContent: View {
                 .frame(width: comfortableText ? (width - 48) * 0.68 : width - 48, alignment: .leading)
                 .padding(.bottom, 22)
             VStack(alignment: .leading, spacing: 16) {
-                benefit(1, icon: (isVolumeMatrix || isWarmup) ? "chart.bar.fill" : (isRepLab ? "number.circle.fill" : (isGeneral ? "arrow.up.forward.circle.fill" : "arrow.up.right")), width: comfortableText ? (width - 48) * 0.78 : width - 48)
-                benefit(2, icon: isWarmup ? "paywall.plates" : (isVolumeMatrix || isGeneral ? "square.grid.3x3.fill" : (isRepLab ? "chart.xyaxis.line" : "info.circle.fill")), width: comfortableText ? (width - 48) * 0.78 : width - 48)
-                benefit(3, icon: isWarmup ? "plus" : (isVolumeMatrix ? "calendar" : (isRepLab ? "chart.bar.fill" : (isGeneral ? "chart.xyaxis.line" : "bolt.fill"))), width: comfortableText ? (width - 48) * 0.78 : width - 48)
+                benefit(1, icon: (isVolumeMatrix || isWarmup) ? "chart.bar.fill" : (isRepLab ? "number.circle.fill" : (isGeneral ? "arrow.up.forward.circle.fill" : "arrow.up.right")), width: comfortableText ? (width - 48) * 0.66 : width - 48)
+                benefit(2, icon: isWarmup ? "paywall.plates" : (isVolumeMatrix || isGeneral ? "square.grid.3x3.fill" : (isRepLab ? "chart.xyaxis.line" : "info.circle.fill")), width: comfortableText ? (width - 48) * 0.66 : width - 48)
+                benefit(3, icon: isWarmup ? "plus" : (isVolumeMatrix ? "calendar" : (isRepLab ? "chart.bar.fill" : (isGeneral ? "chart.xyaxis.line" : "bolt.fill"))), width: comfortableText ? (width - 48) * 0.66 : width - 48)
             }
             if isRepLab {
                 Text(LanguageManager.t("\(copyPrefix).reference_note"))
                     .font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).lineSpacing(2)
                     .fixedSize(horizontal: false, vertical: true)
-                    .frame(width: comfortableText ? (width - 48) * 0.78 : width - 48, alignment: .leading)
+                    .frame(width: comfortableText ? (width - 48) * 0.66 : width - 48, alignment: .leading)
                     .padding(.top, 12)
             }
         }
