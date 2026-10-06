@@ -435,6 +435,10 @@ public struct SetLoggingTable: View {
                     .foregroundColor(sets.count > 1 ? AppColors.muted : AppColors.muted.opacity(0.35))
                     .frame(height: 44)
                     .padding(.horizontal, 8)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .stroke(sets.count > 1 ? AppColors.muted : AppColors.muted.opacity(0.35), lineWidth: 1)
+                    )
                 }
                 .buttonStyle(.plain)
                 .disabled(sets.count <= 1)

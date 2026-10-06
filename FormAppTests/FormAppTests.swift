@@ -5007,7 +5007,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_set_logging_table_buttons_snapshot.png"
+            let path = "/Users/groggy/.gemini/antigravity/brain/2bb02c35-faa1-4975-a6c9-c57da1990fda/ios_set_logging_table_buttons_snapshot.png"
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
