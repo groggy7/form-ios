@@ -577,6 +577,9 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
     public var setsByExercise: [String: [ExerciseSetLog]]
     public var restTimer: RestTimerState?
     public var assignedCalendarDate: String?
+    public var accumulatedSeconds: Int
+    public var isPaused: Bool
+    public var lastResumedAtEpochMillis: Int64
 
     public init(
         schemaVersion: Int = 1,
@@ -589,7 +592,10 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         currentExerciseIndex: Int = 0,
         setsByExercise: [String: [ExerciseSetLog]] = [:],
         restTimer: RestTimerState? = nil,
-        assignedCalendarDate: String? = nil
+        assignedCalendarDate: String? = nil,
+        accumulatedSeconds: Int = 0,
+        isPaused: Bool = false,
+        lastResumedAtEpochMillis: Int64? = nil
     ) {
         self.schemaVersion = schemaVersion
         self.id = id
@@ -602,6 +608,9 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         self.setsByExercise = setsByExercise
         self.restTimer = restTimer
         self.assignedCalendarDate = assignedCalendarDate
+        self.accumulatedSeconds = accumulatedSeconds
+        self.isPaused = isPaused
+        self.lastResumedAtEpochMillis = lastResumedAtEpochMillis ?? startedAtEpochMillis
     }
 
     public init(from decoder: Decoder) throws {
@@ -617,6 +626,42 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         self.setsByExercise = try container.decodeIfPresent([String: [ExerciseSetLog]].self, forKey: .setsByExercise) ?? [:]
         self.restTimer = try container.decodeIfPresent(RestTimerState.self, forKey: .restTimer)
         self.assignedCalendarDate = try container.decodeIfPresent(String.self, forKey: .assignedCalendarDate)
+        self.accumulatedSeconds = try container.decodeIfPresent(Int.self, forKey: .accumulatedSeconds) ?? 0
+        self.isPaused = try container.decodeIfPresent(Bool.self, forKey: .isPaused) ?? false
+        self.lastResumedAtEpochMillis = try container.decodeIfPresent(Int64.self, forKey: .lastResumedAtEpochMillis) ?? self.startedAtEpochMillis
+    }
+
+    public func currentDurationSeconds(nowEpochMillis: Int64) -> Int {
+        if isPaused { return min(max(0, accumulatedSeconds), 6 * 3600) }
+        let runningFrom = accumulatedSeconds > 0 ? lastResumedAtEpochMillis : startedAtEpochMillis
+        let additionalSeconds = Int(max(0, (nowEpochMillis - runningFrom) / 1000))
+        return min(max(0, accumulatedSeconds + additionalSeconds), 6 * 3600)
+    }
+
+    public func paused(nowEpochMillis: Int64) -> ActiveSessionDraft {
+        if isPaused { return self }
+        var copy = self
+        let runningFrom = accumulatedSeconds > 0 ? lastResumedAtEpochMillis : startedAtEpochMillis
+        let additionalSeconds = Int(max(0, (nowEpochMillis - runningFrom) / 1000))
+        copy.accumulatedSeconds = min(max(0, accumulatedSeconds + additionalSeconds), 6 * 3600)
+        copy.isPaused = true
+        copy.lastActivityEpochMillis = nowEpochMillis
+        if var rest = copy.restTimer, rest.isRunning {
+            let remaining = rest.secondsRemaining(nowEpochMillis: nowEpochMillis)
+            rest.isRunning = false
+            rest.pausedSecondsRemaining = remaining
+            rest.endsAtEpochMillis = nil
+            copy.restTimer = rest
+        }
+        return copy
+    }
+
+    public func resumed(nowEpochMillis: Int64) -> ActiveSessionDraft {
+        var copy = self
+        copy.isPaused = false
+        copy.lastResumedAtEpochMillis = nowEpochMillis
+        copy.lastActivityEpochMillis = nowEpochMillis
+        return copy
     }
 }
 

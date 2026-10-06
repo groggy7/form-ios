@@ -23,6 +23,7 @@ public final class AppStore: ObservableObject {
 
     @Published public var state: StoredAppState
     @Published public var activeSession: ActiveSessionDraft?
+    @Published public var isSessionPresented: Bool = false
     @Published public var isOnboardingCompleted: Bool
     @Published public var showProgressionTargets: Bool
     @Published public var showWarmupCalculator: Bool
@@ -205,7 +206,14 @@ public final class AppStore: ObservableObject {
         )
         loadedState.calendarHistory = refreshed
         self.state = loadedState
-        self.activeSession = activeDraft
+        if let draft = activeDraft, !draft.isPaused {
+            let paused = draft.paused(nowEpochMillis: Int64(Date().timeIntervalSince1970 * 1000))
+            self.activeSession = paused
+            self.saveActiveSession(paused)
+        } else {
+            self.activeSession = activeDraft
+        }
+        self.isSessionPresented = false
         self.selectedWorkoutId = nil
         if let targetView = ProcessInfo.processInfo.environment["INITIAL_VIEW"], targetView == "history" {
             self.currentView = .history
@@ -294,6 +302,9 @@ public final class AppStore: ObservableObject {
         if let id = selectedWorkoutId, let w = program.workouts.first(where: { $0.id == id }) {
             return w
         }
+        if let active = activeSession, active.programId == program.id {
+            return active.workout
+        }
         let todayDay = currentWeekDayNumber() // 1 = Mon, ..., 7 = Sun
         return program.workouts.first(where: { $0.day == todayDay })
     }
@@ -345,12 +356,7 @@ public final class AppStore: ObservableObject {
 
         var fromActive: Set<String> = []
         if let active = activeSession, active.programId == program.id {
-            let hasSets = active.setsByExercise.values.flatMap { $0 }.contains {
-                $0.isCompleted || !$0.weightInput.isEmpty || !$0.repsInput.isEmpty
-            }
-            if hasSets {
-                fromActive.insert("\(active.programId):\(active.workout.id)")
-            }
+            fromActive.insert("\(active.programId):\(active.workout.id)")
         }
         return Set(fromHistory + fromActive)
     }
@@ -365,10 +371,18 @@ public final class AppStore: ObservableObject {
         assignedCalendarDate: String? = nil
     ) -> Bool {
         checkAndArchiveStaleSession()
-        if activeSession != nil || workout.exercises.isEmpty || !canStartWorkout(workout, allowPast: allowPast) {
+        if let active = activeSession {
+            if active.workout.id == workout.id {
+                resumeActiveSession()
+                return true
+            }
+            return false
+        }
+        if workout.exercises.isEmpty || !canStartWorkout(workout, allowPast: allowPast) {
             return false
         }
         let now = Date()
+        let nowMillis = Int64(now.timeIntervalSince1970 * 1000)
         let currentWeek = currentWeekIsoKey()
         let unfinishedRecord = (unfinishedRecordId.flatMap { recId in
             state.history.first { $0.id == recId }
@@ -418,11 +432,15 @@ public final class AppStore: ObservableObject {
             startedAtEpochMillis: startedAtEpoch,
             currentExerciseIndex: initialIndex,
             setsByExercise: setsByExercise,
-            assignedCalendarDate: sessionDay
+            assignedCalendarDate: sessionDay,
+            accumulatedSeconds: clampedPrevSecs,
+            isPaused: false,
+            lastResumedAtEpochMillis: nowMillis
         )
 
         saveActiveSession(draft)
         self.activeSession = draft
+        self.isSessionPresented = true
 
         var curCal = state.calendarHistory ?? WorkoutCalendarHistory(
             nextScheduledDate: WorkoutCalendar.mondayOfCurrentWeek(for: now),
@@ -438,6 +456,25 @@ public final class AppStore: ObservableObject {
 
         FormAudioPlayer.playWorkoutStartSound()
         return true
+    }
+
+    public func pauseActiveSession() {
+        guard let active = activeSession, !active.isPaused else { return }
+        let nowMillis = Int64(Date().timeIntervalSince1970 * 1000)
+        let paused = active.paused(nowEpochMillis: nowMillis)
+        saveActiveSession(paused)
+        self.activeSession = paused
+        self.isSessionPresented = false
+    }
+
+    public func resumeActiveSession() {
+        guard let active = activeSession else { return }
+        let nowMillis = Int64(Date().timeIntervalSince1970 * 1000)
+        let resumed = active.resumed(nowEpochMillis: nowMillis)
+        saveActiveSession(resumed)
+        self.activeSession = resumed
+        self.isSessionPresented = true
+        FormAudioPlayer.playWorkoutStartSound()
     }
 
     public func updateActiveSession(_ transform: (ActiveSessionDraft) -> ActiveSessionDraft) {
@@ -569,6 +606,7 @@ public final class AppStore: ObservableObject {
         }
         saveActiveSession(nil)
         self.activeSession = nil
+        self.isSessionPresented = false
     }
 
     private func resolveWorkout(for record: WorkoutSessionRecord) -> Workout? {
@@ -733,6 +771,7 @@ public final class AppStore: ObservableObject {
         
         saveActiveSession(nil)
         self.activeSession = nil
+        self.isSessionPresented = false
 
         showNotice(LanguageManager.t("notice.workoutRecorded", [
             "sets": finalRecord.totalCompletedSets,
@@ -1039,7 +1078,7 @@ public final class AppStore: ObservableObject {
 
         let isStartedOnPreviousDay = startedDate < todayStr && (now - lastActivity) > (2 * 3600 * 1000)
         let isInactive = (now - lastActivity) > (4 * 3600 * 1000)
-        let isOverMaxDuration = (now - draft.startedAtEpochMillis) > (6 * 3600 * 1000)
+        let isOverMaxDuration = draft.currentDurationSeconds(nowEpochMillis: now) >= (6 * 3600)
 
         let isStale = isStartedOnPreviousDay || isInactive || isOverMaxDuration
         guard isStale else { return false }
@@ -1047,7 +1086,7 @@ public final class AppStore: ObservableObject {
         let allSets = draft.setsByExercise.values.flatMap { $0 }
         let hasCompleted = allSets.contains { $0.isCompleted }
         if hasCompleted {
-            let elapsedActivitySeconds = Int((lastActivity - draft.startedAtEpochMillis) / 1000)
+            let elapsedActivitySeconds = draft.accumulatedSeconds
             let effectiveDurationSeconds = elapsedActivitySeconds >= 60 ? min(max(60, elapsedActivitySeconds), 4 * 3600) : (30 * 60)
             let effectiveCompletionMillis = draft.startedAtEpochMillis + Int64(effectiveDurationSeconds * 1000)
             var rec = SessionProgress.from(draft: draft, nowEpochMillis: effectiveCompletionMillis)

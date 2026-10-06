@@ -79,10 +79,14 @@ public struct TodayView: View {
                     isCompleted: isCompleted,
                     isAvailable: isAvailable,
                     availableDay: availableDay,
-                    hasUnfinishedProgress: !isCompleted && store.unfinishedWorkoutKeys().contains(workoutKey),
+                    hasUnfinishedProgress: !isCompleted && (store.activeSession?.workout.id == workout?.id || store.unfinishedWorkoutKeys().contains(workoutKey)),
                     onStart: {
                         if let w = workout, let p = program {
-                            _ = store.startActiveSession(programId: p.id, workout: w, allowPast: true)
+                            if let active = store.activeSession, active.workout.id == w.id {
+                                store.resumeActiveSession()
+                            } else {
+                                _ = store.startActiveSession(programId: p.id, workout: w, allowPast: true)
+                            }
                         }
                     }
                 )

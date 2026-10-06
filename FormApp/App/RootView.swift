@@ -197,11 +197,10 @@ public struct RootView: View {
                     ToastOverlay(item: store.currentToast, bottomPadding: isBottomDockVisible ? 80 : 36)
                 }
                 // Fullscreen Active Workout Session
-                .fullScreenCover(item: Binding<ActiveSessionDraft?>(
-                    get: { store.activeSession },
-                    set: { _ in }
-                )) { draft in
-                    ActiveSessionView(store: store, draft: draft)
+                .fullScreenCover(isPresented: $store.isSessionPresented) {
+                    if let draft = store.activeSession {
+                        ActiveSessionView(store: store, draft: draft)
+                    }
                 }
                 // Sheets
                 .sheet(isPresented: $showProgramsSheet) {
@@ -228,7 +227,11 @@ public struct RootView: View {
             await ExerciseReportStore.shared.retryPendingReports()
         }
         .onChange(of: scenePhase) { _, phase in
-            if phase == .active {
+            if phase == .background || phase == .inactive {
+                if store.activeSession != nil && store.isSessionPresented {
+                    store.pauseActiveSession()
+                }
+            } else if phase == .active {
                 store.refreshForCurrentDate()
                 store.checkAndArchiveStaleSession()
                 Task { await ExerciseReportStore.shared.retryPendingReports() }

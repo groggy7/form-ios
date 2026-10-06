@@ -371,6 +371,7 @@ public struct HistoryView: View {
         guard let progId = programId else { return }
 
         if let active = store.activeSession, active.workout.id == workout.id {
+            store.resumeActiveSession()
             store.currentView = .today
             return
         }

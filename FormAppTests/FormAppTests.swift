@@ -91,6 +91,81 @@ final class WeeklyProgressTests: XCTestCase {
         XCTAssertEqual(capped.activeDurationSeconds, 6 * 3600)
     }
 
+    func testActiveSessionPauseAndResumeDurationAccuracy() {
+        let t0: Int64 = 1_000_000_000_000
+        let w = Workout(id: "w1", day: 1, title: "Push", exercises: [])
+        let initialDraft = ActiveSessionDraft(
+            programId: "p1",
+            workout: w,
+            startedAt: "2026-10-06T10:00:00Z",
+            startedAtEpochMillis: t0,
+            accumulatedSeconds: 0,
+            isPaused: false,
+            lastResumedAtEpochMillis: t0
+        )
+
+        // 1. Running for 120 seconds
+        let t1 = t0 + 120_000
+        XCTAssertEqual(initialDraft.currentDurationSeconds(nowEpochMillis: t1), 120)
+        let progress1 = SessionProgress.from(draft: initialDraft, nowEpochMillis: t1)
+        XCTAssertEqual(progress1.durationSeconds, 120)
+
+        // 2. Pause session at t1
+        let pausedDraft = initialDraft.paused(nowEpochMillis: t1)
+        XCTAssertTrue(pausedDraft.isPaused)
+        XCTAssertEqual(pausedDraft.accumulatedSeconds, 120)
+
+        // 3. User leaves app for 1 hour (3600 seconds). Time must not tick.
+        let t2 = t1 + 3_600_000
+        XCTAssertEqual(pausedDraft.currentDurationSeconds(nowEpochMillis: t2), 120)
+        let progressPaused = SessionProgress.from(draft: pausedDraft, nowEpochMillis: t2)
+        XCTAssertEqual(progressPaused.durationSeconds, 120)
+
+        // 4. User resumes session at t2 (clicks resume)
+        let resumedDraft = pausedDraft.resumed(nowEpochMillis: t2)
+        XCTAssertFalse(resumedDraft.isPaused)
+        XCTAssertEqual(resumedDraft.accumulatedSeconds, 120)
+        XCTAssertEqual(resumedDraft.lastResumedAtEpochMillis, t2)
+
+        // 5. User trains for another 30 seconds
+        let t3 = t2 + 30_000
+        XCTAssertEqual(resumedDraft.currentDurationSeconds(nowEpochMillis: t3), 150)
+        let progressResumed = SessionProgress.from(draft: resumedDraft, nowEpochMillis: t3)
+        XCTAssertEqual(progressResumed.durationSeconds, 150)
+    }
+
+    func testRestTimerIsPausedWhenActiveSessionIsPaused() {
+        let t0: Int64 = 1_000_000_000_000
+        let w = Workout(id: "w1", day: 1, title: "Push", exercises: [])
+        let rest = RestTimerState(
+            exerciseName: "Bench Press",
+            totalSeconds: 90,
+            isRunning: true,
+            endsAtEpochMillis: t0 + 90_000,
+            pausedSecondsRemaining: 0
+        )
+        let draft = ActiveSessionDraft(
+            programId: "p1",
+            workout: w,
+            startedAt: "2026-10-06T10:00:00Z",
+            startedAtEpochMillis: t0,
+            restTimer: rest,
+            accumulatedSeconds: 0,
+            isPaused: false,
+            lastResumedAtEpochMillis: t0
+        )
+
+        // Pause 30 seconds later (60 seconds remaining on rest timer)
+        let paused = draft.paused(nowEpochMillis: t0 + 30_000)
+        guard let pausedRest = paused.restTimer else {
+            XCTFail("Rest timer should not be nil")
+            return
+        }
+        XCTAssertFalse(pausedRest.isRunning)
+        XCTAssertEqual(pausedRest.pausedSecondsRemaining, 60)
+        XCTAssertNil(pausedRest.endsAtEpochMillis)
+    }
+
     func testMondayRolloverUsesLocalISOYearAndArchivesOnlyOnce() throws {
         let zone = TimeZone(identifier: "Europe/Istanbul")!
         let sunday = WorkoutCalendar.parseIsoTimestamp("2027-01-03T20:59:59Z")!
