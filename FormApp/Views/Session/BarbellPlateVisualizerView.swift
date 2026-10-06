@@ -53,15 +53,15 @@ public enum BarbellPlateColors {
         case 19.0...:
             return 20
         case 14.0...:
-            return 17
+            return 18
         case 9.0...:
-            return 15
+            return 16
         case 4.0...:
-            return 13
+            return 15
         case 2.0...:
-            return 11
+            return 14
         default:
-            return 9
+            return 13
         }
     }
 }
@@ -181,8 +181,13 @@ public struct BarbellPlateVisualizerView: View {
                 let width = BarbellPlateColors.widthFor(weight: plate.weight) * scale
                 let height = BarbellPlateColors.heightFor(weight: plate.weight) * scale
                 let label = WarmupPlateEngine.formatPlateWeight(plate.weight)
+                let fontSize: CGFloat = {
+                    if label.count >= 4 { return 6 }
+                    if label.count == 3 { return 6.5 }
+                    return 8
+                }()
                 let text = context.resolve(Text(label)
-                    .font(.system(size: label.count > 2 ? 7 : 8.5, weight: .bold))
+                    .font(.system(size: fontSize, weight: .bold))
                     .foregroundColor(BarbellPlateColors.textColorFor(weight: plate.weight)))
                 let textSize = text.measure(in: CGSize(width: CGFloat.infinity, height: CGFloat.infinity))
                 for _ in 0..<plate.count {
@@ -191,7 +196,7 @@ public struct BarbellPlateVisualizerView: View {
                             Path(roundedRect: CGRect(x: x, y: centerY - height / 2, width: width, height: height), cornerRadius: 3 * scale),
                             with: .color(BarbellPlateColors.colorFor(weight: plate.weight))
                         )
-                        if textSize.width + 2 <= width && textSize.height <= height {
+                        if textSize.width + 1.5 <= width && textSize.height <= height {
                             context.draw(text, at: CGPoint(x: x + width / 2, y: centerY))
                         }
                     }
