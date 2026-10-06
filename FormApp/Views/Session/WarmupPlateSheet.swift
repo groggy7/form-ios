@@ -46,9 +46,11 @@ public struct WarmupPlateSheet: View {
         self.onSaveBarType = onSaveBarType
         self.onSavePlates = onSavePlates
 
-        let defaultWeight = initialWorkingWeightKg > 0.0
-            ? (unit == .lbs ? unit.toDisplay(initialWorkingWeightKg) : initialWorkingWeightKg)
-            : 0.0
+        let defaultWeight: Double = {
+            guard initialWorkingWeightKg > 0.0 else { return 0.0 }
+            let raw = unit == .lbs ? unit.toDisplay(initialWorkingWeightKg) : initialWorkingWeightKg
+            return (raw * 100.0).rounded() / 100.0
+        }()
 
         _activeTab = State(initialValue: initialTab)
         _selectedBarType = State(initialValue: initialBarType)
@@ -216,19 +218,24 @@ public struct WarmupPlateSheet: View {
 
                 HStack(spacing: 6) {
                     let step = unit == .lbs ? 5.0 : 2.5
-                    let barWeight = unit == .lbs ? unit.toDisplay(ramp.barWeightKg) : ramp.barWeightKg
+                    let rawBar = unit == .lbs ? unit.toDisplay(ramp.barWeightKg) : ramp.barWeightKg
+                    let barWeight = ((rawBar * 100.0).rounded()) / 100.0
                     let maxWeight = unit == .lbs ? 1000.0 : 500.0
                     quickStepButton("-\(WarmupPlateEngine.formatPlateWeight(step * 2))") {
-                        workingWeightInput = max(barWeight, workingWeightInput - step * 2)
+                        let next = ((workingWeightInput - step * 2) * 100.0).rounded() / 100.0
+                        workingWeightInput = max(barWeight, next)
                     }
                     quickStepButton("-\(WarmupPlateEngine.formatPlateWeight(step))") {
-                        workingWeightInput = max(barWeight, workingWeightInput - step)
+                        let next = ((workingWeightInput - step) * 100.0).rounded() / 100.0
+                        workingWeightInput = max(barWeight, next)
                     }
                     quickStepButton("+\(WarmupPlateEngine.formatPlateWeight(step))") {
-                        workingWeightInput = min(maxWeight, workingWeightInput + step)
+                        let next = ((workingWeightInput + step) * 100.0).rounded() / 100.0
+                        workingWeightInput = min(maxWeight, next)
                     }
                     quickStepButton("+\(WarmupPlateEngine.formatPlateWeight(step * 2))") {
-                        workingWeightInput = min(maxWeight, workingWeightInput + step * 2)
+                        let next = ((workingWeightInput + step * 2) * 100.0).rounded() / 100.0
+                        workingWeightInput = min(maxWeight, next)
                     }
                 }
             }
@@ -373,16 +380,20 @@ public struct WarmupPlateSheet: View {
                     let step = unit == .lbs ? 5.0 : 2.5
                     let maxWeight = unit == .lbs ? 1000.0 : 500.0
                     quickStepButton("-\(WarmupPlateEngine.formatPlateWeight(step * 2))") {
-                        plateTargetInput = max(plateResult.barWeight, plateTargetInput - step * 2)
+                        let next = ((plateTargetInput - step * 2) * 100.0).rounded() / 100.0
+                        plateTargetInput = max(plateResult.barWeight, next)
                     }
                     quickStepButton("-\(WarmupPlateEngine.formatPlateWeight(step))") {
-                        plateTargetInput = max(plateResult.barWeight, plateTargetInput - step)
+                        let next = ((plateTargetInput - step) * 100.0).rounded() / 100.0
+                        plateTargetInput = max(plateResult.barWeight, next)
                     }
                     quickStepButton("+\(WarmupPlateEngine.formatPlateWeight(step))") {
-                        plateTargetInput = min(maxWeight, plateTargetInput + step)
+                        let next = ((plateTargetInput + step) * 100.0).rounded() / 100.0
+                        plateTargetInput = min(maxWeight, next)
                     }
                     quickStepButton("+\(WarmupPlateEngine.formatPlateWeight(step * 2))") {
-                        plateTargetInput = min(maxWeight, plateTargetInput + step * 2)
+                        let next = ((plateTargetInput + step * 2) * 100.0).rounded() / 100.0
+                        plateTargetInput = min(maxWeight, next)
                     }
                 }
             }

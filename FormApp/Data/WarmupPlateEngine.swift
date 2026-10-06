@@ -181,9 +181,11 @@ public enum WarmupPlateEngine {
     }
 
     public static func formatPlateWeight(_ weight: Double) -> String {
-        if weight.truncatingRemainder(dividingBy: 1.0) == 0.0 {
-            return "\(Int(weight))"
+        guard weight.isFinite else { return "0" }
+        let safe = (weight * 100.0).rounded() / 100.0
+        if safe.truncatingRemainder(dividingBy: 1.0) == 0.0 {
+            return "\(Int(safe))"
         }
-        return String(format: "%.2f", weight).replacingOccurrences(of: "\\.?0+$", with: "", options: .regularExpression)
+        return String(format: "%.2f", safe).replacingOccurrences(of: "\\.?0+$", with: "", options: .regularExpression)
     }
 }

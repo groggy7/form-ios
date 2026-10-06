@@ -6359,6 +6359,16 @@ final class FormAppTests: XCTestCase {
         XCTAssertTrue(resultUnder.platesPerSide.isEmpty)
     }
 
+    func testFormatPlateWeightEliminatesFloatingPointNoise() {
+        XCTAssertEqual(WarmupPlateEngine.formatPlateWeight(65.00000000000361), "65")
+        XCTAssertEqual(WarmupPlateEngine.formatPlateWeight(64.99999999999999), "65")
+        XCTAssertEqual(WarmupPlateEngine.formatPlateWeight(2.5000000000001), "2.5")
+        XCTAssertEqual(WarmupPlateEngine.formatPlateWeight(1.2500000000002), "1.25")
+        XCTAssertEqual(WarmupPlateEngine.formatPlateWeight(20.0), "20")
+        XCTAssertEqual(WarmupPlateEngine.formatPlateWeight(5.0), "5")
+        XCTAssertEqual(WarmupPlateEngine.formatPlateWeight(0.0), "0")
+    }
+
     func testWarmupSetsExcludedFromVolumeAndCompletedCount() {
         let exercise = Exercise(
             id: "ex-bench",
