@@ -34,88 +34,128 @@ struct SessionFeaturePaywallContent: View {
     @ScaledMetric(relativeTo: .subheadline) private var subtitleSize = 12.0
     @ScaledMetric(relativeTo: .caption) private var bodySize = 11.0
     @ScaledMetric(relativeTo: .caption2) private var footnoteSize = 10.0
+    private let headerTopPadding: CGFloat = 12
+    private let headerRowHeight: CGFloat = 48
+    private let headerBottomPadding: CGFloat = 10
     private let accent = AppColors.progressionPaywallAccent
     private var isWarmup: Bool { feature == .warmupCalculator }
+    private var isVolumeMatrix: Bool { feature == .volumeMatrix }
     private var copyPrefix: String { "paywall.\(feature.rawValue)" }
-    private var tagPrefix: String { isWarmup ? "warmup-paywall" : "progression-paywall" }
+    private var tagPrefix: String {
+        switch feature {
+        case .warmupCalculator: return "warmup-paywall"
+        case .volumeMatrix: return "volume-paywall"
+        default: return "progression-paywall"
+        }
+    }
+    private var heroArtwork: String {
+        switch feature {
+        case .warmupCalculator: return weightUnit == .lbs ? "paywall_warmup_plates_lbs" : "paywall_warmup_plates"
+        case .volumeMatrix: return "paywall_volume_matrix"
+        default: return "paywall_smart_progression"
+        }
+    }
+    private var featureTitleKey: String {
+        switch feature {
+        case .warmupCalculator: return "warmup.card_title"
+        case .volumeMatrix: return "\(copyPrefix).feature_title"
+        default: return "progression.coach.locked_title"
+        }
+    }
     private var selected: SessionPaywallOffer { selectedPlan == .annual ? annual : monthly }
 
     var body: some View {
         GeometryReader { geometry in
-            ScrollView {
-                VStack(spacing: 0) {
-                    hero(width: geometry.size.width)
-                    VStack(spacing: 10) {
-                        Rectangle().fill(AppColors.border.opacity(0.65)).frame(height: 1).padding(.horizontal, 4)
-                        HStack(spacing: 12) {
-                            benefitIcon("infinity", size: 32)
-                            (Text(LanguageManager.t("\(copyPrefix).unlock_title"))
-                                .font(.system(size: subtitleSize, weight: .semibold)).foregroundColor(AppColors.text)
-                             + Text(LanguageManager.t("paywall.auto_progression.unlock_suffix"))
-                                .font(.system(size: subtitleSize)).foregroundColor(AppColors.secondaryText))
-                                .fixedSize(horizontal: false, vertical: true)
-                            Spacer(minLength: 0)
-                        }
-                        .padding(.horizontal, 4).padding(.vertical, 8)
-                        VStack(spacing: 8) {
-                            plan(.annual, offer: annual, width: geometry.size.width - 40)
-                            plan(.monthly, offer: monthly, width: geometry.size.width - 40)
-                        }
-                        if annual.price == nil || monthly.price == nil {
-                            HStack {
-                                Text(LanguageManager.t("paywall.price_unavailable"))
-                                    .font(.system(size: subtitleSize)).foregroundStyle(AppColors.secondaryText)
-                                Spacer(minLength: 8)
-                                Button(LanguageManager.t("paywall.retry"), action: onRetryPrices)
-                                    .font(.system(size: subtitleSize, weight: .semibold)).foregroundStyle(accent)
-                                    .frame(minHeight: 48)
+            VStack(spacing: 0) {
+                ScrollView {
+                    VStack(spacing: 0) {
+                        header(width: geometry.size.width)
+                        hero(width: geometry.size.width)
+                        VStack(spacing: 10) {
+                            Rectangle().fill(AppColors.border.opacity(0.65)).frame(height: 1).padding(.horizontal, 4)
+                            HStack(spacing: 12) {
+                                benefitIcon("infinity", size: 32)
+                                (Text(LanguageManager.t("\(copyPrefix).unlock_title"))
+                                    .font(.system(size: subtitleSize, weight: .semibold)).foregroundColor(AppColors.text)
+                                 + Text(LanguageManager.t("paywall.auto_progression.unlock_suffix"))
+                                    .font(.system(size: subtitleSize)).foregroundColor(AppColors.secondaryText))
+                                    .fixedSize(horizontal: false, vertical: true)
+                                Spacer(minLength: 0)
+                            }
+                            .padding(.horizontal, 4).padding(.vertical, 8)
+                            VStack(spacing: 8) {
+                                plan(.annual, offer: annual, width: geometry.size.width - 40)
+                                plan(.monthly, offer: monthly, width: geometry.size.width - 40)
+                            }
+                            if annual.price == nil || monthly.price == nil {
+                                HStack {
+                                    Text(LanguageManager.t("paywall.price_unavailable"))
+                                        .font(.system(size: subtitleSize)).foregroundStyle(AppColors.secondaryText)
+                                    Spacer(minLength: 8)
+                                    Button(LanguageManager.t("paywall.retry"), action: onRetryPrices)
+                                        .font(.system(size: subtitleSize, weight: .semibold)).foregroundStyle(accent)
+                                        .frame(minHeight: 48)
+                                }
                             }
                         }
+                        .padding(.horizontal, 20)
                         ViewThatFits(in: .horizontal) {
-                            HStack(spacing: 10) { legalLinks }
-                            VStack(spacing: 0) { legalLinks }
+                            HStack(spacing: 0) { legalLinks(singleLine: true) }
+                            VStack(spacing: 0) { legalLinks(singleLine: false) }
                         }
-                        .frame(maxWidth: .infinity)
-                        if let restoreMessage { feedback(restoreMessage, isError: isRestoreError, retry: onRestore) }
+                        .frame(maxWidth: .infinity).padding(.horizontal, 20).padding(.top, 4)
+                        if let restoreMessage {
+                            feedback(restoreMessage, isError: isRestoreError, retry: onRestore)
+                                .padding(.horizontal, 20).padding(.top, 10)
+                        }
                     }
-                    .padding(.horizontal, 20).padding(.bottom, 4)
                 }
+                .clipped()
+                .accessibilityIdentifier("\(tagPrefix)-scroll")
             }
-            .accessibilityIdentifier("\(tagPrefix)-scroll")
             .safeAreaInset(edge: .bottom, spacing: 0) { footer }
         }
         .background(AppColors.progressionPaywallSurface.ignoresSafeArea())
     }
 
+    private func header(width: CGFloat) -> some View {
+        ZStack(alignment: .trailing) {
+            HStack(spacing: 8) {
+                Image(systemName: "crown.fill").font(.system(size: 18, weight: .semibold)).frame(width: 20, height: 20)
+                Text(LanguageManager.t("paywall.auto_progression.badge"))
+                    .font(.system(size: bodySize, weight: .bold)).tracking(1.3)
+                    .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+            }
+            .foregroundStyle(accent).padding(.horizontal, 12).padding(.vertical, 9)
+            .background(accent.opacity(0.1), in: RoundedRectangle(cornerRadius: 10))
+            .overlay(RoundedRectangle(cornerRadius: 10).stroke(accent.opacity(0.4), lineWidth: 1))
+            // Equal clearance on both sides keeps the badge centered and clear of Close.
+            .frame(maxWidth: max(48, width - 48 - 112))
+            .frame(maxWidth: .infinity)
+            Button(action: onClose) {
+                Image(systemName: "xmark").font(.system(size: 22, weight: .regular))
+                    .foregroundStyle(AppColors.secondaryText).frame(width: headerRowHeight, height: headerRowHeight)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain).accessibilityLabel(LanguageManager.t("common.close"))
+            .accessibilityIdentifier("\(tagPrefix)-close")
+        }
+        .frame(maxWidth: .infinity, minHeight: headerRowHeight)
+        .padding(.horizontal, 24).padding(.top, headerTopPadding).padding(.bottom, headerBottomPadding)
+    }
+
     private func hero(width: CGFloat) -> some View {
         let comfortableText = width >= 350 && textSize <= .large
+        // The header replaces the space it previously occupied inside the photographic hero.
+        let heroHeight = max(0, width * 1.1 - headerTopPadding - headerRowHeight - headerBottomPadding)
         return VStack(alignment: .leading, spacing: 0) {
-            HStack {
-                HStack(spacing: 8) {
-                    Image(systemName: "crown.fill").font(.system(size: 18, weight: .semibold)).frame(width: 20, height: 20)
-                    Text(LanguageManager.t("paywall.auto_progression.badge"))
-                        .font(.system(size: bodySize, weight: .bold)).tracking(1.3)
-                }
-                .foregroundStyle(accent).padding(.horizontal, 12).padding(.vertical, 9)
-                .background(accent.opacity(0.1), in: RoundedRectangle(cornerRadius: 10))
-                .overlay(RoundedRectangle(cornerRadius: 10).stroke(accent.opacity(0.4), lineWidth: 1))
-                Spacer(minLength: 4)
-                Button(action: onClose) {
-                    Image(systemName: "xmark").font(.system(size: 22, weight: .regular))
-                        .foregroundStyle(AppColors.secondaryText).frame(width: 48, height: 48)
-                        .contentShape(Rectangle())
-                }
-                .buttonStyle(.plain).accessibilityLabel(LanguageManager.t("common.close"))
-                .accessibilityIdentifier("\(tagPrefix)-close")
-            }
-            .padding(.bottom, 18)
-            Text(LanguageManager.t(isWarmup ? "warmup.card_title" : "progression.coach.locked_title"))
+            Text(LanguageManager.t(featureTitleKey))
                 .font(.system(size: subtitleSize)).foregroundStyle(AppColors.secondaryText)
                 .padding(.bottom, 8)
             Text(LanguageManager.t("\(copyPrefix).headline"))
                 .font(.system(size: isWarmup ? warmupHeadlineSize : headlineSize, weight: .bold))
                 .foregroundStyle(AppColors.text).fixedSize(horizontal: false, vertical: true)
-                .frame(width: comfortableText ? (width - 48) * (isWarmup ? 0.84 : 0.64) : width - 48, alignment: .leading)
+                .frame(width: comfortableText ? (width - 48) * (isWarmup ? 0.84 : (isVolumeMatrix ? 0.72 : 0.64)) : width - 48, alignment: .leading)
                 .padding(.bottom, 10)
             Text(LanguageManager.t("\(copyPrefix).subtitle"))
                 .font(.system(size: subtitleSize)).foregroundStyle(AppColors.secondaryText).lineSpacing(3)
@@ -135,17 +175,25 @@ struct SessionFeaturePaywallContent: View {
                         benefit(1, icon: "chart.bar.fill", width: width - 48)
                     }
                 } else {
-                    benefit(1, icon: "arrow.up.right", width: comfortableText ? (width - 48) * 0.78 : width - 48)
+                    benefit(1, icon: isVolumeMatrix ? "chart.bar.fill" : "arrow.up.right", width: comfortableText ? (width - 48) * 0.78 : width - 48)
                 }
-                benefit(2, icon: isWarmup ? "paywall.plates" : "info.circle.fill", width: comfortableText ? (width - 48) * 0.78 : width - 48)
-                benefit(3, icon: isWarmup ? "plus" : "bolt.fill", width: comfortableText ? (width - 48) * 0.78 : width - 48)
+                benefit(2, icon: isWarmup ? "paywall.plates" : (isVolumeMatrix ? "square.grid.3x3.fill" : "info.circle.fill"), width: comfortableText ? (width - 48) * 0.78 : width - 48)
+                benefit(3, icon: isWarmup ? "plus" : (isVolumeMatrix ? "calendar" : "bolt.fill"), width: comfortableText ? (width - 48) * 0.78 : width - 48)
+            }
+            if isVolumeMatrix {
+                Text(LanguageManager.t("\(copyPrefix).reference_note"))
+                    .font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).lineSpacing(2)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(width: comfortableText ? (width - 48) * 0.78 : width - 48, alignment: .leading)
+                    .padding(.top, 12)
             }
         }
-        .padding(.horizontal, 24).padding(.top, 4).padding(.bottom, 22)
+        .padding(.horizontal, 24).padding(.top, 8).padding(.bottom, 22)
+        .frame(minHeight: heroHeight, alignment: .topLeading)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(alignment: .top) {
-            Image(isWarmup ? (weightUnit == .lbs ? "paywall_warmup_plates_lbs" : "paywall_warmup_plates") : "paywall_smart_progression").resizable().scaledToFit()
-                .frame(width: width, height: width * 1.1, alignment: .topTrailing).clipped()
+            Image(heroArtwork).resizable().scaledToFill()
+                .frame(width: width, height: heroHeight, alignment: .topTrailing).clipped()
                 .overlay(LinearGradient(stops: [
                     .init(color: AppColors.progressionPaywallSurface.opacity(0.5), location: 0),
                     .init(color: AppColors.progressionPaywallSurface.opacity(0.35), location: 0.52),
@@ -211,7 +259,6 @@ struct SessionFeaturePaywallContent: View {
     private func plan(_ plan: PaywallPlan, offer: SessionPaywallOffer, width: CGFloat) -> some View {
         let isAnnual = plan == .annual
         let isSelected = selectedPlan == plan
-        let stackPrice = width < 340 || textSize > .large
         return Button { onSelectPlan(plan) } label: {
             HStack(alignment: .top, spacing: 16) {
                 Circle().stroke(isSelected ? accent : AppColors.secondaryText, lineWidth: 1.5)
@@ -225,15 +272,14 @@ struct SessionFeaturePaywallContent: View {
                                 HStack(spacing: 6) { planTitle(isAnnual); planTags(offer) }
                                 VStack(alignment: .leading, spacing: 4) { planTitle(isAnnual); planTags(offer) }
                             }
-                            let terms = isAnnual ? (offer.hasTrial ? "paywall.annual_trial_subtitle" : "paywall.annual_subtitle")
-                                : (offer.hasTrial ? "paywall.monthly_trial_subtitle" : "paywall.auto_progression.monthly_subtitle")
+                            let terms = isAnnual ? (offer.hasTrial ? "paywall.auto_progression.annual_trial_subtitle" : "paywall.annual_subtitle")
+                                : (offer.hasTrial ? "paywall.auto_progression.monthly_trial_subtitle" : "paywall.auto_progression.monthly_subtitle")
                             Text(LanguageManager.t(terms)).font(.system(size: footnoteSize))
                                 .foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        if !stackPrice { planPrice(offer, selected: isSelected) }
+                        planPrice(offer, selected: isSelected, maxWidth: width * 0.4).layoutPriority(1)
                     }
-                    if stackPrice { planPrice(offer, selected: isSelected) }
                 }
                 .fixedSize(horizontal: false, vertical: true)
             }
@@ -253,22 +299,23 @@ struct SessionFeaturePaywallContent: View {
             .fixedSize(horizontal: false, vertical: true)
     }
 
-    private func planPrice(_ offer: SessionPaywallOffer, selected: Bool) -> some View {
-        VStack(alignment: .trailing, spacing: 4) {
-            Text(offer.price ?? "—").font(.system(size: titleSize, weight: .bold))
-                .foregroundStyle(selected ? accent : AppColors.text)
-            if let breakdown = offer.monthlyBreakdown {
-                Text(breakdown).font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText)
+    private func planPrice(_ offer: SessionPaywallOffer, selected: Bool, maxWidth: CGFloat) -> some View {
+        PaywallPriceWidth(maxWidth: maxWidth) {
+            VStack(alignment: .trailing, spacing: 4) {
+                Text(offer.price ?? "—").font(.system(size: titleSize, weight: .bold))
+                    .foregroundStyle(selected ? accent : AppColors.text)
+                if let breakdown = offer.monthlyBreakdown {
+                    Text(breakdown).font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText)
+                }
             }
+            .multilineTextAlignment(.trailing).fixedSize(horizontal: false, vertical: true)
         }
-        .fixedSize(horizontal: false, vertical: true)
     }
 
     @ViewBuilder private func planTags(_ offer: SessionPaywallOffer) -> some View {
         if let savings = offer.savingsPercent {
             planTag(LanguageManager.t("paywall.annual_savings_template", ["savings": "\(savings)%"]))
         }
-        if offer.hasTrial { planTag(LanguageManager.t("paywall.trial_badge")) }
     }
 
     private func planTag(_ text: String) -> some View {
@@ -277,22 +324,29 @@ struct SessionFeaturePaywallContent: View {
             .overlay(RoundedRectangle(cornerRadius: 3).stroke(accent.opacity(0.55), lineWidth: 1))
     }
 
-    @ViewBuilder private var legalLinks: some View {
+    @ViewBuilder private func legalLinks(singleLine: Bool) -> some View {
         Button(action: onRestore) {
-            if isRestoring { ProgressView().tint(AppColors.secondaryText) }
-            else { Text(LanguageManager.t("paywall.restore")) }
-        }.disabled(isRestoring).frame(minHeight: 48)
+            Group {
+                if isRestoring { ProgressView().tint(AppColors.secondaryText) }
+                else { Text(LanguageManager.t("paywall.auto_progression.restore")).fixedSize(horizontal: singleLine, vertical: true) }
+            }
+            .padding(.horizontal, 6).frame(minWidth: 48, minHeight: 48).contentShape(Rectangle())
+        }.disabled(isRestoring)
             .font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).buttonStyle(.plain)
-        Button(LanguageManager.t("paywall.terms"), action: onTerms)
-            .font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).buttonStyle(.plain).frame(minHeight: 48)
-        Button(LanguageManager.t("paywall.privacy"), action: onPrivacy)
-            .font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).buttonStyle(.plain).frame(minHeight: 48)
+        Button(action: onTerms) {
+            Text(LanguageManager.t("paywall.terms")).fixedSize(horizontal: singleLine, vertical: true)
+                .padding(.horizontal, 6).frame(minWidth: 48, minHeight: 48).contentShape(Rectangle())
+        }.font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).buttonStyle(.plain)
+        Button(action: onPrivacy) {
+            Text(LanguageManager.t("paywall.privacy")).fixedSize(horizontal: singleLine, vertical: true)
+                .padding(.horizontal, 6).frame(minWidth: 48, minHeight: 48).contentShape(Rectangle())
+        }.font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).buttonStyle(.plain)
     }
 
     private var footer: some View {
         VStack(spacing: 0) {
             Rectangle().fill(AppColors.border.opacity(0.65)).frame(height: 1)
-            VStack(spacing: 10) {
+            VStack(spacing: 6) {
                 Button(action: onPurchase) {
                     HStack(spacing: 10) {
                         if isPurchasing { ProgressView().tint(AppColors.background) }
@@ -309,19 +363,16 @@ struct SessionFeaturePaywallContent: View {
                 }
                 .buttonStyle(.plain).disabled(isPurchasing || selected.price == nil)
                 .accessibilityIdentifier("\(tagPrefix)-purchase")
-                Text(selected.price.map { LanguageManager.t(selectedPlan == .annual
-                    ? "paywall.auto_progression.annual_footer" : "paywall.auto_progression.monthly_footer", ["price": $0]) }
+                let footerTerms = selectedPlan == .annual
+                    ? (selected.hasTrial ? "paywall.auto_progression.annual_trial_footer" : "paywall.auto_progression.annual_footer")
+                    : (selected.hasTrial ? "paywall.auto_progression.monthly_trial_footer" : "paywall.auto_progression.monthly_footer")
+                Text(selected.price.map { LanguageManager.t(footerTerms, ["price": $0]) }
                      ?? LanguageManager.t("paywall.price_unavailable_short"))
                     .font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText)
                     .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
-                if selected.hasTrial {
-                    Text(LanguageManager.t(selectedPlan == .annual ? "paywall.annual_trial_subtitle" : "paywall.monthly_trial_subtitle"))
-                        .font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText)
-                        .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
-                }
                 if let purchaseError { feedback(purchaseError, isError: true, retry: onPurchase) }
             }
-            .padding(.horizontal, 20).padding(.vertical, 16)
+            .padding(.horizontal, 20).padding(.vertical, 10)
         }
         .background(AppColors.progressionPaywallSurface)
         .accessibilityIdentifier("\(tagPrefix)-footer")
@@ -338,6 +389,24 @@ struct SessionFeaturePaywallContent: View {
         }
         .padding(10).frame(maxWidth: .infinity)
         .background(isError ? AppColors.avoidBg : AppColors.positiveBg, in: RoundedRectangle(cornerRadius: 10))
+    }
+}
+
+/// Keep short prices at their natural width and wrap long prices within the trailing column.
+private struct PaywallPriceWidth: Layout {
+    let maxWidth: CGFloat
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        guard let content = subviews.first else { return .zero }
+        let limit = max(0, min(maxWidth, proposal.width ?? maxWidth))
+        let width = min(limit, content.sizeThatFits(.unspecified).width)
+        guard width > 0 else { return .zero }
+        let size = content.sizeThatFits(ProposedViewSize(width: width, height: nil))
+        return CGSize(width: width, height: size.height)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        subviews.first?.place(at: bounds.origin, proposal: ProposedViewSize(width: bounds.width, height: bounds.height))
     }
 }
 

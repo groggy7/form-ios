@@ -150,8 +150,8 @@ public struct ProPaywallSheet: View {
         }
     }
 
-    private var isSessionFeature: Bool {
-        feature == .autoProgression || feature == .warmupCalculator
+    private var isIllustratedFeature: Bool {
+        feature == .autoProgression || feature == .warmupCalculator || feature == .volumeMatrix
     }
 
     private var headlineKey: String {
@@ -173,7 +173,7 @@ public struct ProPaywallSheet: View {
     private var purchaseFooter: some View {
         // Primary Call to Action Button
         VStack(spacing: 8) {
-            if isSessionFeature {
+            if isIllustratedFeature {
                 let annual = selectedPlan == .annual
                 let price = annual ? storeKit.annualProduct?.displayPrice : storeKit.monthlyProduct?.displayPrice
                 Text(price.map { LanguageManager.t(annual ? "paywall.selected_annual_price" : "paywall.selected_monthly_price", ["price": $0]) }
@@ -266,7 +266,7 @@ public struct ProPaywallSheet: View {
 
     public var body: some View {
         Group {
-            if isSessionFeature {
+            if isIllustratedFeature {
                 SessionFeaturePaywallContent(
                     annual: SessionPaywallOffer(price: storeKit.annualProduct?.displayPrice,
                         hasTrial: storeKit.hasFreeTrial(for: .annual), monthlyBreakdown: storeKit.annualPerMonthDisplayPrice,
@@ -336,7 +336,7 @@ public struct ProPaywallSheet: View {
 
                     // Headline & Subtitle
                     VStack(spacing: 6) {
-                        if isSessionFeature {
+                        if isIllustratedFeature {
                             Text(LanguageManager.t(feature == .autoProgression ? "progression.coach.locked_title" : "warmup.card_title"))
                                 .font(.system(size: 12, weight: .medium)).foregroundColor(AppColors.muted)
                         }
@@ -391,7 +391,7 @@ public struct ProPaywallSheet: View {
                     )
                     .cornerRadius(16)
 
-                    if isSessionFeature {
+                    if isIllustratedFeature {
                         if feature == .autoProgression {
                             Text(LanguageManager.t("paywall.auto_progression.history_hint"))
                                 .font(.system(size: 12)).foregroundColor(AppColors.muted)
@@ -539,7 +539,7 @@ public struct ProPaywallSheet: View {
                         }
                     }
 
-                    if !isSessionFeature { purchaseFooter }
+                    if !isIllustratedFeature { purchaseFooter }
 
                     // Restore Purchases & Legal Links
                     VStack(spacing: 10) {
@@ -620,7 +620,7 @@ public struct ProPaywallSheet: View {
                 .padding(.vertical, 24)
             }
             .safeAreaInset(edge: .bottom, spacing: 0) {
-                if isSessionFeature {
+                if isIllustratedFeature {
                     purchaseFooter
                         .padding(.horizontal, 20).padding(.vertical, 12)
                         .frame(maxWidth: .infinity)
