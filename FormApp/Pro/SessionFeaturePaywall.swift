@@ -177,19 +177,8 @@ struct SessionFeaturePaywallContent: View {
                         plateExample.frame(maxWidth: .infinity, alignment: .trailing)
                         benefit(1, icon: "chart.bar.fill", width: width - 48)
                     }
-                } else if isRepLab {
-                    if comfortableText {
-                        HStack(alignment: .top, spacing: 0) {
-                            benefit(1, icon: "number.circle.fill", width: (width - 48) * 0.65)
-                            Spacer(minLength: 0)
-                            repLabExample.frame(width: (width - 48) * 0.33)
-                        }
-                    } else {
-                        repLabExample.frame(width: min(220, width - 48)).frame(maxWidth: .infinity, alignment: .trailing)
-                        benefit(1, icon: "number.circle.fill", width: width - 48)
-                    }
                 } else {
-                    benefit(1, icon: isVolumeMatrix ? "chart.bar.fill" : "arrow.up.right", width: comfortableText ? (width - 48) * 0.78 : width - 48)
+                    benefit(1, icon: isVolumeMatrix ? "chart.bar.fill" : (isRepLab ? "number.circle.fill" : "arrow.up.right"), width: comfortableText ? (width - 48) * 0.78 : width - 48)
                 }
                 benefit(2, icon: isWarmup ? "paywall.plates" : (isVolumeMatrix ? "square.grid.3x3.fill" : (isRepLab ? "chart.xyaxis.line" : "info.circle.fill")), width: comfortableText ? (width - 48) * 0.78 : width - 48)
                 benefit(3, icon: isWarmup ? "plus" : (isVolumeMatrix ? "calendar" : (isRepLab ? "chart.bar.fill" : "bolt.fill")), width: comfortableText ? (width - 48) * 0.78 : width - 48)
@@ -222,59 +211,7 @@ struct SessionFeaturePaywallContent: View {
         }
     }
 
-    private func repLabExampleWeight(_ value: Double) -> String {
-        let formatted = weightUnit.formatWeightWithUnit(value)
-        return LanguageManager.shared.currentLanguage == "tr" ? formatted.replacingOccurrences(of: ".", with: ",") : formatted
-    }
 
-    private var repLabExample: some View {
-        // Explicit sample sets use Rep Lab's own formulas, never personal history.
-        let samples = [(65.0, 8), (70.0, 8), (70.0, 10), (70.0, 10), (75.0, 10)]
-            .map { FormLabEngine.calculateEstimated1RM(weightKg: $0.0, reps: $0.1, formula: .epley) }
-        let oneRm = samples.last ?? 100
-        return VStack(alignment: .leading, spacing: 4) {
-            Text(LanguageManager.t("paywall.form_lab.example_title"))
-                .font(.system(size: bodySize - 2, weight: .semibold)).foregroundStyle(AppColors.secondaryText)
-            HStack(alignment: .top, spacing: 4) {
-                Text("1RM").foregroundStyle(AppColors.text)
-                Spacer(minLength: 0)
-                Text(repLabExampleWeight(oneRm)).foregroundStyle(accent).multilineTextAlignment(.trailing)
-            }
-            .font(.system(size: footnoteSize, weight: .bold))
-            GeometryReader { geometry in
-                let points = samples.enumerated().map { index, value in
-                    CGPoint(x: 3 + (geometry.size.width - 6) * CGFloat(index) / CGFloat(samples.count - 1),
-                            y: 3 + (geometry.size.height - 6) * (1 - CGFloat((value - 80) / 22)))
-                }
-                ZStack(alignment: .topLeading) {
-                    Path { path in
-                        for (index, point) in points.enumerated() {
-                            if index == 0 { path.move(to: point) } else { path.addLine(to: point) }
-                        }
-                    }.stroke(accent, style: StrokeStyle(lineWidth: 1.5, lineCap: .round, lineJoin: .round))
-                    ForEach(Array(points.enumerated()), id: \.offset) { item in
-                        Circle().fill(accent).frame(width: 4, height: 4).position(item.element)
-                    }
-                }
-            }
-            .frame(height: 32).accessibilityHidden(true)
-            ForEach([5, 10], id: \.self) { reps in
-                HStack(alignment: .top, spacing: 4) {
-                    Text("\(reps)RM").foregroundStyle(AppColors.secondaryText)
-                    Spacer(minLength: 0)
-                    Text(repLabExampleWeight(FormLabEngine.calculateTargetNRM(oneRmKg: oneRm, targetReps: reps, formula: .epley)))
-                        .foregroundStyle(AppColors.text).multilineTextAlignment(.trailing)
-                }
-                .font(.system(size: bodySize - 2))
-            }
-            Text(LanguageManager.t("paywall.form_lab.example_source", ["weight": repLabExampleWeight(75)]))
-                .font(.system(size: footnoteSize - 2)).foregroundStyle(AppColors.secondaryText)
-        }
-        .fixedSize(horizontal: false, vertical: true).padding(8)
-        .background(AppColors.progressionPaywallPlanSurface.opacity(0.95), in: RoundedRectangle(cornerRadius: 8))
-        .overlay(RoundedRectangle(cornerRadius: 8).stroke(AppColors.border, lineWidth: 1))
-        .accessibilityIdentifier("rep-lab-paywall-example")
-    }
 
     private var exampleValues: [String: String] {
         ["total": weightUnit == .lbs ? "185" : "85",
