@@ -19,7 +19,7 @@ without the previous 12pt padding or fixed 224pt height. An oversized, offset
 AVPlayerLayer inside a clipped view applies the fixed crop without stretching,
 animated zoom or panning. The rounded card and border remain.
 AVPlayerLooper loops silently at 1.2× speed without activating audio.
-Playback pauses for inactive scenes, disappeared detail views, reduced motion
+Playback pauses for inactive scenes, disappeared detail views,
 and view removal, and resources are released on dismissal.
 
 The original focused native tests covered catalogue URLs, real playback/pause,

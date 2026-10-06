@@ -73,7 +73,6 @@ enum ExerciseVideoCatalog {
 struct ExerciseDetailVideo: View {
     let exerciseId: String?
     @Environment(\.scenePhase) private var scenePhase
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var visible = true
 
     var body: some View {
@@ -81,7 +80,7 @@ struct ExerciseDetailVideo: View {
         Group {
             if let url = ExerciseVideoCatalog.url(for: exerciseId) {
                 LocalExerciseVideo(url: url, framing: framing,
-                                   playing: visible && scenePhase == .active && !reduceMotion)
+                                   playing: visible && scenePhase == .active)
                     .id(url)
             } else {
                 Color.clear

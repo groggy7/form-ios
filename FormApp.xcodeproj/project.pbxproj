@@ -7,63 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		SP0000000000000000000002 /* SessionFeaturePaywall.swift in Sources */ = {isa = PBXBuildFile; fileRef = SP0000000000000000000001 /* SessionFeaturePaywall.swift */; };
-		A13B29C1D4E5F60718293A4B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A13B29C1D4E5F60718293A4A /* PrivacyInfo.xcprivacy */; };
-		PW0000000000000000000002 /* ProPaywallSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = PW0000000000000000000001 /* ProPaywallSheet.swift */; };
-		VM0000000000000000000002 /* ProFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000001 /* ProFeature.swift */; };
-		SK0000000000000000000002 /* StoreKitSubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = SK0000000000000000000001 /* StoreKitSubscriptionManager.swift */; };
-		PP0000000000000000000002 /* ProPreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = PP0000000000000000000001 /* ProPreviewData.swift */; };
-		VM0000000000000000000004 /* VolumeMatrixModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000003 /* VolumeMatrixModels.swift */; };
-		VM0000000000000000000006 /* VolumeMatrixEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000005 /* VolumeMatrixEngine.swift */; };
-		VM0000000000000000000008 /* VolumeMatrixView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000007 /* VolumeMatrixView.swift */; };
-		VM0000000000000000000010 /* VolumeMatrixInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000009 /* VolumeMatrixInfoSheet.swift */; };
-		FL0000000000000000000002 /* FormLabModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = FL0000000000000000000001 /* FormLabModels.swift */; };
-		FL0000000000000000000004 /* FormLabEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FL0000000000000000000003 /* FormLabEngine.swift */; };
-		FL0000000000000000000006 /* CloudMirrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FL0000000000000000000005 /* CloudMirrorManager.swift */; };
-		FL0000000000000000000008 /* FormLabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FL0000000000000000000007 /* FormLabView.swift */; };
-		FL0000000000000000000010 /* FormLabInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FL0000000000000000000009 /* FormLabInfoSheet.swift */; };
-		PG0000000000000000000002 /* ProgressionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000001 /* ProgressionModels.swift */; };
-		PG0000000000000000000004 /* ProgressionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000003 /* ProgressionEngine.swift */; };
-		PG0000000000000000000006 /* ProgressionCoachCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000005 /* ProgressionCoachCard.swift */; };
-		PG0000000000000000000008 /* ProgressionInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000007 /* ProgressionInfoSheet.swift */; };
-		WP0000000000000000000002 /* WarmupPlateModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000001 /* WarmupPlateModels.swift */; };
-		WP0000000000000000000004 /* WarmupPlateEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000003 /* WarmupPlateEngine.swift */; };
-		WP0000000000000000000006 /* BarbellPlateVisualizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000005 /* BarbellPlateVisualizerView.swift */; };
-		WP0000000000000000000008 /* WarmupPlateSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000007 /* WarmupPlateSheet.swift */; };
-		WP0000000000000000000010 /* WarmupPlateCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000009 /* WarmupPlateCard.swift */; };
-        A90000000000000000000002 /* 07_upper_lower.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001; };
-        A90000000000000000000003 /* 07_upper_lower.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001; };
-        A90000000000000000000005 /* 08_machine_foundation.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000004; };
-        A90000000000000000000006 /* 08_machine_foundation.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000004; };
-        E30000000000000000000001 /* ExerciseEquipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30000000000000000000002; };
-        E30000000000000000000003 /* equipment_catalog.json in Resources */ = {isa = PBXBuildFile; fileRef = E30000000000000000000004; };
-        RP0000000000000000000001 /* ExerciseReportStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = RP0000000000000000000002 /* ExerciseReportStore.swift */; };
-        RP0000000000000000000003 /* ExerciseReportSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = RP0000000000000000000004 /* ExerciseReportSheet.swift */; };
-        V10000000000000000000001 /* ExerciseDetailVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = V10000000000000000000002 /* ExerciseDetailVideo.swift */; };
-        M20000000000000000000001 /* ExerciseMusclesCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = M20000000000000000000002 /* ExerciseMusclesCard.swift */; };
-        M20000000000000000000003 /* ExerciseMuscles in Resources */ = {isa = PBXBuildFile; fileRef = M20000000000000000000004 /* ExerciseMuscles */; };
-        V10000000000000000000003 /* ExerciseVideos in Resources */ = {isa = PBXBuildFile; fileRef = V10000000000000000000004 /* ExerciseVideos */; };
-        T10000000000000000000003 /* ExerciseThumbnails in Resources */ = {isa = PBXBuildFile; fileRef = T10000000000000000000004 /* ExerciseThumbnails */; };
-		L100000000000000000000002 /* Locales in Resources */ = {isa = PBXBuildFile; fileRef = L100000000000000000000001 /* Locales */; };
-		L100000000000000000000003 /* Locales in Resources */ = {isa = PBXBuildFile; fileRef = L100000000000000000000001 /* Locales */; };
-		C10000000000000000000002 /* ContentLocalizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000001 /* ContentLocalizer.swift */; };
-		E10000000000000000000002 /* exercises.json in Resources */ = {isa = PBXBuildFile; fileRef = E10000000000000000000001 /* exercises.json */; };
-		E10000000000000000000003 /* exercises.json in Resources */ = {isa = PBXBuildFile; fileRef = E10000000000000000000001 /* exercises.json */; };
 		0020D035F786CD915922D766 /* TodayHeroCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D6F413D877B7E332EEF6D /* TodayHeroCard.swift */; };
 		0667E5D4E4CF923DF66A2C24 /* 01_aesthetic_hypertrophy.json in Resources */ = {isa = PBXBuildFile; fileRef = 92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */; };
 		075B0F9BA865F79FB856122B /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D5A75502FFC600D48A992 /* AudioPlayer.swift */; };
 		08B89BB8E61779D8274FFEFD /* WorkoutSessionUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829AB05F70AD9B7E6DEE97CC /* WorkoutSessionUtils.swift */; };
 		09436475DDB7B1F05D128B14 /* 06_athletic_performance.json in Resources */ = {isa = PBXBuildFile; fileRef = 53F83778D712B708C519860F /* 06_athletic_performance.json */; };
 		11494E03B6F140F80312218E /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10AEC969AB339D9720AB880B /* AppStore.swift */; };
-        S10000000000000000000001 /* ExerciseSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = S10000000000000000000002 /* ExerciseSearch.swift */; };
-        P10000000000000000000001 /* ExercisePriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = P10000000000000000000002 /* ExercisePriority.swift */; };
 		1D60B4E438B90C3F62FC88A9 /* form_rest_complete.wav in Resources */ = {isa = PBXBuildFile; fileRef = 90A44CC582072D671FF45DE4 /* form_rest_complete.wav */; };
 		20E655D806FE5C84BC7BACFB /* 05_home_forge_dumbbells.json in Resources */ = {isa = PBXBuildFile; fileRef = 3D4F0446A030E749B3A34E82 /* 05_home_forge_dumbbells.json */; };
 		2201C284B87CAEF60491DE58 /* 04_full_body_classic.json in Resources */ = {isa = PBXBuildFile; fileRef = 9A2948074308DABA9A07E42E /* 04_full_body_classic.json */; };
 		2882774490C67FC9F67AB522 /* form_workout_complete.wav in Resources */ = {isa = PBXBuildFile; fileRef = C151465400D7E4ECECCC89F9 /* form_workout_complete.wav */; };
 		2BD3BC2D8BB759DB9AFE8F34 /* WorkoutDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023D09DFD513B3F32B009541 /* WorkoutDetailSheet.swift */; };
 		3255EAF86BCBDCDD24C59363 /* ProgramBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F223343B153857F9D2B8C6 /* ProgramBuilderView.swift */; };
-		A4BDFEAE4E7AC75AF6DFA3A1 /* ProgramExerciseEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4BDFEAE4E7AC75AF6DFA3A2 /* ProgramExerciseEditorSheet.swift */; };
 		329E21359E0ADED851ABBD02 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FE39F02FA4EAA1A43D7CA8 /* AppColors.swift */; };
 		36BD5962CDF814CE9F9A4F6C /* 02_powerbuilding_strength.json in Resources */ = {isa = PBXBuildFile; fileRef = EC5E4B6045ADD51D2CA59D20 /* 02_powerbuilding_strength.json */; };
 		3F7B9B586131F615F225CDD2 /* ActiveSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF19DF767A0483E3295C1ED /* ActiveSessionView.swift */; };
@@ -73,8 +28,6 @@
 		5D41713C889C9CD0DA0DB048 /* WorkoutModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CE78AD9510C658344F7888 /* WorkoutModels.swift */; };
 		5F57A702A0F84F27F8CB9EC7 /* FormAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2282260300C11D1B7F29AE /* FormAppTests.swift */; };
 		64479F749C98F6E9114D49BC /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D279DACF295D9BB86905005 /* HistoryView.swift */; };
-		A1B2C3D4E5F60718293A4B02 /* HistoryDayPreviewCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B01 /* HistoryDayPreviewCard.swift */; };
-		A1B2C3D4E5F60718293A4B04 /* HistoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B03 /* HistoryDetailView.swift */; };
 		6A9E544F2449FD22D50B7E46 /* 04_full_body_classic.json in Resources */ = {isa = PBXBuildFile; fileRef = 9A2948074308DABA9A07E42E /* 04_full_body_classic.json */; };
 		6F9CAA3F576D5057AF0C84E3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFA8F5B27849C8BE2611AF /* SettingsView.swift */; };
 		6FB272E05E6155F86E8A481E /* RestTimerBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89F4479A1065BF741953378 /* RestTimerBar.swift */; };
@@ -87,22 +40,17 @@
 		9D47D0FB61D291A7727C96C3 /* ProgramsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152BA0CBC21F574ECF6F0EE6 /* ProgramsView.swift */; };
 		9F2ABB85EAA74F04A28E14F6 /* ToastOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08997E0EACD6176BFF508687 /* ToastOverlay.swift */; };
 		A07185A4CA1062B6F7D59B91 /* 05_home_forge_dumbbells.json in Resources */ = {isa = PBXBuildFile; fileRef = 3D4F0446A030E749B3A34E82 /* 05_home_forge_dumbbells.json */; };
+		A13B29C1D4E5F60718293A4B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A13B29C1D4E5F60718293A4A /* PrivacyInfo.xcprivacy */; };
+		A1B2C3D4E5F60718293A4B02 /* HistoryDayPreviewCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B01 /* HistoryDayPreviewCard.swift */; };
+		A1B2C3D4E5F60718293A4B04 /* HistoryDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D4E5F60718293A4B03 /* HistoryDetailView.swift */; };
 		A22DDBC41558C55465A714BD /* 06_athletic_performance.json in Resources */ = {isa = PBXBuildFile; fileRef = 53F83778D712B708C519860F /* 06_athletic_performance.json */; };
+		A4BDFEAE4E7AC75AF6DFA3A1 /* ProgramExerciseEditorSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A4BDFEAE4E7AC75AF6DFA3A2 /* ProgramExerciseEditorSheet.swift */; };
 		A79CAAC595702B45728DC715 /* ExerciseDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F464967A46FF2F7447C7602 /* ExerciseDetailSheet.swift */; };
 		A7A3F0240CBA5F2AEF5EB481 /* form_set_undo.wav in Resources */ = {isa = PBXBuildFile; fileRef = 13527F9CECF51E5936498509 /* form_set_undo.wav */; };
-		BFD7E7CFFD180073EA634E28 /* MuscleMasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA4284A1943107F23B87DCD /* MuscleMasks.swift */; };
-		C07F25C1E8D200C36DCFFE4B /* WeekStripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C86D18E36BC5C24BB99CF16 /* WeekStripView.swift */; };
-		C0E82546129BB4114FE21B90 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68AD20F92BF7286266D03EB /* TodayView.swift */; };
-		C10EBC98F5843C3C6F20A4B7 /* FormHeaderIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */; };
-		CDE6B5B32A4C412F8D40C7B7 /* BottomDock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F733A913348412862B8CDF1E /* BottomDock.swift */; };
-		D5DDC5DF3C8A6E620BADA5A7 /* SetLoggingTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303A307ACE2A1CA19B710636 /* SetLoggingTable.swift */; };
-		DBF8CF30B08C1B8DF1992BA1 /* form_workout_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = 400B4993DD7FAF3B3E8C9936 /* form_workout_start.wav */; };
-		DD65F19A9F064CC90CE953C3 /* MuscleArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955CAB74DAB1D7D264DD689E /* MuscleArtwork.swift */; };
-		E502AEF3D69EC46BD7225892 /* 03_classic_ppl.json in Resources */ = {isa = PBXBuildFile; fileRef = ECB10B35D7F6895ECBECEDBF /* 03_classic_ppl.json */; };
-		E9AA6F2CC609F97E3FE35804 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5F87CCEA6BEE84FC15E6B7 /* RootView.swift */; };
-		ECAED6399ED27E48237E4DD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77203A709542614D89DFF819 /* Assets.xcassets */; };
-		ECF655C211A97E2025683749 /* 01_aesthetic_hypertrophy.json in Resources */ = {isa = PBXBuildFile; fileRef = 92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */; };
-		F89F85797C04B79378A6EF20 /* 03_classic_ppl.json in Resources */ = {isa = PBXBuildFile; fileRef = ECB10B35D7F6895ECBECEDBF /* 03_classic_ppl.json */; };
+		A90000000000000000000002 /* 07_upper_lower.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001 /* 07_upper_lower.json */; };
+		A90000000000000000000003 /* 07_upper_lower.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001 /* 07_upper_lower.json */; };
+		A90000000000000000000005 /* 08_machine_foundation.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000004 /* 08_machine_foundation.json */; };
+		A90000000000000000000006 /* 08_machine_foundation.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000004 /* 08_machine_foundation.json */; };
 		B10000000000000000000001 /* YouTubeVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000001 /* YouTubeVideo.swift */; };
 		B10000000000000000000002 /* YouTubeEmbed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000002 /* YouTubeEmbed.swift */; };
 		B10000000000000000000003 /* VideoMetadataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000003 /* VideoMetadataStore.swift */; };
@@ -110,11 +58,63 @@
 		B10000000000000000000005 /* VideoPlayerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000005 /* VideoPlayerSheet.swift */; };
 		B10000000000000000000006 /* ExerciseVideosView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000006 /* ExerciseVideosView.swift */; };
 		B10000000000000000000007 /* ExerciseVideoLinksSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000007 /* ExerciseVideoLinksSheet.swift */; };
-		PR0000000000000000000002 /* PersonalRecordTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = PR0000000000000000000001 /* PersonalRecordTracker.swift */; };
-		WG0000000000000000000002 /* WeeklyGoalProgressCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = WG0000000000000000000001 /* WeeklyGoalProgressCard.swift */; };
-		WU0000000000000000000002 /* WeightUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = WU0000000000000000000001 /* WeightUnit.swift */; };
+		BFD7E7CFFD180073EA634E28 /* MuscleMasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DA4284A1943107F23B87DCD /* MuscleMasks.swift */; };
+		C07F25C1E8D200C36DCFFE4B /* WeekStripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C86D18E36BC5C24BB99CF16 /* WeekStripView.swift */; };
+		C0E82546129BB4114FE21B90 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68AD20F92BF7286266D03EB /* TodayView.swift */; };
+		C10000000000000000000002 /* ContentLocalizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000001 /* ContentLocalizer.swift */; };
+		C10EBC98F5843C3C6F20A4B7 /* FormHeaderIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */; };
+		CDE6B5B32A4C412F8D40C7B7 /* BottomDock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F733A913348412862B8CDF1E /* BottomDock.swift */; };
+		D5DDC5DF3C8A6E620BADA5A7 /* SetLoggingTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303A307ACE2A1CA19B710636 /* SetLoggingTable.swift */; };
+		DBF8CF30B08C1B8DF1992BA1 /* form_workout_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = 400B4993DD7FAF3B3E8C9936 /* form_workout_start.wav */; };
+		DD65F19A9F064CC90CE953C3 /* MuscleArtwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = 955CAB74DAB1D7D264DD689E /* MuscleArtwork.swift */; };
+		E10000000000000000000002 /* exercises.json in Resources */ = {isa = PBXBuildFile; fileRef = E10000000000000000000001 /* exercises.json */; };
+		E10000000000000000000003 /* exercises.json in Resources */ = {isa = PBXBuildFile; fileRef = E10000000000000000000001 /* exercises.json */; };
+		E30000000000000000000001 /* ExerciseEquipment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E30000000000000000000002 /* ExerciseEquipment.swift */; };
+		E30000000000000000000003 /* equipment_catalog.json in Resources */ = {isa = PBXBuildFile; fileRef = E30000000000000000000004 /* equipment_catalog.json */; };
+		E502AEF3D69EC46BD7225892 /* 03_classic_ppl.json in Resources */ = {isa = PBXBuildFile; fileRef = ECB10B35D7F6895ECBECEDBF /* 03_classic_ppl.json */; };
+		E9AA6F2CC609F97E3FE35804 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5F87CCEA6BEE84FC15E6B7 /* RootView.swift */; };
+		ECAED6399ED27E48237E4DD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77203A709542614D89DFF819 /* Assets.xcassets */; };
+		ECF655C211A97E2025683749 /* 01_aesthetic_hypertrophy.json in Resources */ = {isa = PBXBuildFile; fileRef = 92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */; };
+		F89F85797C04B79378A6EF20 /* 03_classic_ppl.json in Resources */ = {isa = PBXBuildFile; fileRef = ECB10B35D7F6895ECBECEDBF /* 03_classic_ppl.json */; };
+		FL0000000000000000000002 /* FormLabModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = FL0000000000000000000001 /* FormLabModels.swift */; };
+		FL0000000000000000000004 /* FormLabEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FL0000000000000000000003 /* FormLabEngine.swift */; };
+		FL0000000000000000000006 /* CloudMirrorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FL0000000000000000000005 /* CloudMirrorManager.swift */; };
+		FL0000000000000000000008 /* FormLabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FL0000000000000000000007 /* FormLabView.swift */; };
+		FL0000000000000000000010 /* FormLabInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = FL0000000000000000000009 /* FormLabInfoSheet.swift */; };
+		L100000000000000000000002 /* Locales in Resources */ = {isa = PBXBuildFile; fileRef = L100000000000000000000001 /* Locales */; };
+		L100000000000000000000003 /* Locales in Resources */ = {isa = PBXBuildFile; fileRef = L100000000000000000000001 /* Locales */; };
+		M20000000000000000000001 /* ExerciseMusclesCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = M20000000000000000000002 /* ExerciseMusclesCard.swift */; };
+		M20000000000000000000003 /* ExerciseMuscles in Resources */ = {isa = PBXBuildFile; fileRef = M20000000000000000000004 /* ExerciseMuscles */; };
 		OB0000000000000000000002 /* OnboardingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = OB0000000000000000000001 /* OnboardingModels.swift */; };
 		OV0000000000000000000002 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OV0000000000000000000001 /* OnboardingView.swift */; };
+		P10000000000000000000001 /* ExercisePriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = P10000000000000000000002 /* ExercisePriority.swift */; };
+		PG0000000000000000000002 /* ProgressionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000001 /* ProgressionModels.swift */; };
+		PG0000000000000000000004 /* ProgressionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000003 /* ProgressionEngine.swift */; };
+		PG0000000000000000000006 /* ProgressionCoachCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000005 /* ProgressionCoachCard.swift */; };
+		PG0000000000000000000008 /* ProgressionInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000007 /* ProgressionInfoSheet.swift */; };
+		PP0000000000000000000002 /* ProPreviewData.swift in Sources */ = {isa = PBXBuildFile; fileRef = PP0000000000000000000001 /* ProPreviewData.swift */; };
+		PR0000000000000000000002 /* PersonalRecordTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = PR0000000000000000000001 /* PersonalRecordTracker.swift */; };
+		PW0000000000000000000002 /* ProPaywallSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = PW0000000000000000000001 /* ProPaywallSheet.swift */; };
+		RP0000000000000000000001 /* ExerciseReportStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = RP0000000000000000000002 /* ExerciseReportStore.swift */; };
+		RP0000000000000000000003 /* ExerciseReportSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = RP0000000000000000000004 /* ExerciseReportSheet.swift */; };
+		S10000000000000000000001 /* ExerciseSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = S10000000000000000000002 /* ExerciseSearch.swift */; };
+		SK0000000000000000000002 /* StoreKitSubscriptionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = SK0000000000000000000001 /* StoreKitSubscriptionManager.swift */; };
+		SP0000000000000000000002 /* SessionFeaturePaywall.swift in Sources */ = {isa = PBXBuildFile; fileRef = SP0000000000000000000001 /* SessionFeaturePaywall.swift */; };
+		T10000000000000000000003 /* ExerciseThumbnails in Resources */ = {isa = PBXBuildFile; fileRef = T10000000000000000000004 /* ExerciseThumbnails */; };
+		V10000000000000000000001 /* ExerciseDetailVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = V10000000000000000000002 /* ExerciseDetailVideo.swift */; };
+		V10000000000000000000003 /* ExerciseVideos in Resources */ = {isa = PBXBuildFile; fileRef = V10000000000000000000004 /* ExerciseVideos */; };
+		VM0000000000000000000002 /* ProFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000001 /* ProFeature.swift */; };
+		VM0000000000000000000004 /* VolumeMatrixModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000003 /* VolumeMatrixModels.swift */; };
+		VM0000000000000000000006 /* VolumeMatrixEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000005 /* VolumeMatrixEngine.swift */; };
+		VM0000000000000000000008 /* VolumeMatrixView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000007 /* VolumeMatrixView.swift */; };
+		VM0000000000000000000010 /* VolumeMatrixInfoSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000009 /* VolumeMatrixInfoSheet.swift */; };
+		WG0000000000000000000002 /* WeeklyGoalProgressCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = WG0000000000000000000001 /* WeeklyGoalProgressCard.swift */; };
+		WP0000000000000000000002 /* WarmupPlateModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000001 /* WarmupPlateModels.swift */; };
+		WP0000000000000000000004 /* WarmupPlateEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000003 /* WarmupPlateEngine.swift */; };
+		WP0000000000000000000006 /* BarbellPlateVisualizerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000005 /* BarbellPlateVisualizerView.swift */; };
+		WP0000000000000000000008 /* WarmupPlateSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000007 /* WarmupPlateSheet.swift */; };
+		WP0000000000000000000010 /* WarmupPlateCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000009 /* WarmupPlateCard.swift */; };
+		WU0000000000000000000002 /* WeightUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = WU0000000000000000000001 /* WeightUnit.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -128,69 +128,22 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		SP0000000000000000000001 /* SessionFeaturePaywall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionFeaturePaywall.swift; sourceTree = "<group>"; };
-		A13B29C1D4E5F60718293A4A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		PW0000000000000000000001 /* ProPaywallSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPaywallSheet.swift; sourceTree = "<group>"; };
-		VM0000000000000000000001 /* ProFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeature.swift; sourceTree = "<group>"; };
-		SK0000000000000000000001 /* StoreKitSubscriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitSubscriptionManager.swift; sourceTree = "<group>"; };
-		SK0000000000000000000003 /* ForcedRep.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = ForcedRep.storekit; sourceTree = "<group>"; };
-		PP0000000000000000000001 /* ProPreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPreviewData.swift; sourceTree = "<group>"; };
-		VM0000000000000000000003 /* VolumeMatrixModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixModels.swift; sourceTree = "<group>"; };
-		VM0000000000000000000005 /* VolumeMatrixEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixEngine.swift; sourceTree = "<group>"; };
-		VM0000000000000000000007 /* VolumeMatrixView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixView.swift; sourceTree = "<group>"; };
-		VM0000000000000000000009 /* VolumeMatrixInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixInfoSheet.swift; sourceTree = "<group>"; };
-		FL0000000000000000000001 /* FormLabModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabModels.swift; sourceTree = "<group>"; };
-		FL0000000000000000000003 /* FormLabEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabEngine.swift; sourceTree = "<group>"; };
-		FL0000000000000000000005 /* CloudMirrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudMirrorManager.swift; sourceTree = "<group>"; };
-		FL0000000000000000000007 /* FormLabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabView.swift; sourceTree = "<group>"; };
-		FL0000000000000000000009 /* FormLabInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabInfoSheet.swift; sourceTree = "<group>"; };
-		PG0000000000000000000001 /* ProgressionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionModels.swift; sourceTree = "<group>"; };
-		PG0000000000000000000003 /* ProgressionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionEngine.swift; sourceTree = "<group>"; };
-		PG0000000000000000000005 /* ProgressionCoachCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionCoachCard.swift; sourceTree = "<group>"; };
-		PG0000000000000000000007 /* ProgressionInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionInfoSheet.swift; sourceTree = "<group>"; };
-		WP0000000000000000000001 /* WarmupPlateModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupPlateModels.swift; sourceTree = "<group>"; };
-		WP0000000000000000000003 /* WarmupPlateEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupPlateEngine.swift; sourceTree = "<group>"; };
-		WP0000000000000000000005 /* BarbellPlateVisualizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarbellPlateVisualizerView.swift; sourceTree = "<group>"; };
-		WP0000000000000000000007 /* WarmupPlateSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupPlateSheet.swift; sourceTree = "<group>"; };
-		WP0000000000000000000009 /* WarmupPlateCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupPlateCard.swift; sourceTree = "<group>"; };
-		OB0000000000000000000001 /* OnboardingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModels.swift; sourceTree = "<group>"; };
-		OV0000000000000000000001 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
-		PR0000000000000000000001 /* PersonalRecordTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordTracker.swift; sourceTree = "<group>"; };
-		WU0000000000000000000001 /* WeightUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightUnit.swift; sourceTree = "<group>"; };
-		WG0000000000000000000001 /* WeeklyGoalProgressCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyGoalProgressCard.swift; sourceTree = "<group>"; };
-        A90000000000000000000001 /* 07_upper_lower.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 07_upper_lower.json; sourceTree = "<group>"; };
-        A90000000000000000000004 /* 08_machine_foundation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 08_machine_foundation.json; sourceTree = "<group>"; };
-        E30000000000000000000002 /* ExerciseEquipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseEquipment.swift; sourceTree = "<group>"; };
-        E30000000000000000000004 /* equipment_catalog.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = equipment_catalog.json; sourceTree = "<group>"; };
-        RP0000000000000000000002 /* ExerciseReportStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseReportStore.swift; sourceTree = "<group>"; };
-        RP0000000000000000000004 /* ExerciseReportSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseReportSheet.swift; sourceTree = "<group>"; };
-        V10000000000000000000002 /* ExerciseDetailVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDetailVideo.swift; sourceTree = "<group>"; };
-        M20000000000000000000002 /* ExerciseMusclesCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMusclesCard.swift; sourceTree = "<group>"; };
-        M20000000000000000000004 /* ExerciseMuscles */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseMuscles; sourceTree = "<group>"; };
-        V10000000000000000000004 /* ExerciseVideos */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseVideos; sourceTree = "<group>"; };
-        T10000000000000000000004 /* ExerciseThumbnails */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseThumbnails; sourceTree = "<group>"; };
 		023D09DFD513B3F32B009541 /* WorkoutDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetailSheet.swift; sourceTree = "<group>"; };
 		08997E0EACD6176BFF508687 /* ToastOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastOverlay.swift; sourceTree = "<group>"; };
 		10AEC969AB339D9720AB880B /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
-        S10000000000000000000002 /* ExerciseSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSearch.swift; sourceTree = "<group>"; };
-        P10000000000000000000002 /* ExercisePriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisePriority.swift; sourceTree = "<group>"; };
 		13527F9CECF51E5936498509 /* form_set_undo.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_set_undo.wav; sourceTree = "<group>"; };
 		152BA0CBC21F574ECF6F0EE6 /* ProgramsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramsView.swift; sourceTree = "<group>"; };
 		1F5316FB7A7498CCB8FE13BF /* WeeklyPlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyPlanView.swift; sourceTree = "<group>"; };
 		26BB808F3B2A565E934878C4 /* FormAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FormAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		FAENT0000000000000000001 /* FormApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FormApp.entitlements; sourceTree = "<group>"; };
 		29875CA77E7BA2C02CDFFA36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2D97FA7035F2317DFBE57498 /* MovementIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovementIcon.swift; sourceTree = "<group>"; };
 		303A307ACE2A1CA19B710636 /* SetLoggingTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetLoggingTable.swift; sourceTree = "<group>"; };
 		35F223343B153857F9D2B8C6 /* ProgramBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramBuilderView.swift; sourceTree = "<group>"; };
-		A4BDFEAE4E7AC75AF6DFA3A2 /* ProgramExerciseEditorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramExerciseEditorSheet.swift; sourceTree = "<group>"; };
 		37340E67B2D12B2C6BCBBBC6 /* LibraryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryView.swift; sourceTree = "<group>"; };
 		3D4F0446A030E749B3A34E82 /* 05_home_forge_dumbbells.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 05_home_forge_dumbbells.json; sourceTree = "<group>"; };
 		3F76831712F5D29B631895CD /* Translations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Translations.swift; sourceTree = "<group>"; };
 		400B4993DD7FAF3B3E8C9936 /* form_workout_start.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_workout_start.wav; sourceTree = "<group>"; };
 		4D279DACF295D9BB86905005 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
-		A1B2C3D4E5F60718293A4B01 /* HistoryDayPreviewCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDayPreviewCard.swift; sourceTree = "<group>"; };
-		A1B2C3D4E5F60718293A4B03 /* HistoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailView.swift; sourceTree = "<group>"; };
 		53F83778D712B708C519860F /* 06_athletic_performance.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 06_athletic_performance.json; sourceTree = "<group>"; };
 		685D6F413D877B7E332EEF6D /* TodayHeroCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayHeroCard.swift; sourceTree = "<group>"; };
 		68CE78AD9510C658344F7888 /* WorkoutModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutModels.swift; sourceTree = "<group>"; };
@@ -201,29 +154,11 @@
 		829AB05F70AD9B7E6DEE97CC /* WorkoutSessionUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSessionUtils.swift; sourceTree = "<group>"; };
 		90A44CC582072D671FF45DE4 /* form_rest_complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_rest_complete.wav; sourceTree = "<group>"; };
 		91FE39F02FA4EAA1A43D7CA8 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
-		L100000000000000000000001 /* Locales */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Locales; sourceTree = "<group>"; };
-		C10000000000000000000001 /* ContentLocalizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentLocalizer.swift; sourceTree = "<group>"; };
-		E10000000000000000000001 /* exercises.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = exercises.json; sourceTree = "<group>"; };
 		92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 01_aesthetic_hypertrophy.json; sourceTree = "<group>"; };
 		955CAB74DAB1D7D264DD689E /* MuscleArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleArtwork.swift; sourceTree = "<group>"; };
 		9A2948074308DABA9A07E42E /* 04_full_body_classic.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 04_full_body_classic.json; sourceTree = "<group>"; };
 		9D2282260300C11D1B7F29AE /* FormAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAppTests.swift; sourceTree = "<group>"; };
 		9F464967A46FF2F7447C7602 /* ExerciseDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDetailSheet.swift; sourceTree = "<group>"; };
-		A68AD20F92BF7286266D03EB /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
-		B16D5A75502FFC600D48A992 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
-		C151465400D7E4ECECCC89F9 /* form_workout_complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_workout_complete.wav; sourceTree = "<group>"; };
-		D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormHeaderIconButton.swift; sourceTree = "<group>"; };
-		DECFA8F5B27849C8BE2611AF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
-		DF6E74CE9A7C510C260498C8 /* SessionSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryView.swift; sourceTree = "<group>"; };
-		E3493C594E48AD17563A8CC2 /* FormApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormApp.swift; sourceTree = "<group>"; };
-		E898602344E70BEEF05AB8B3 /* FormApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FormApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		EC5E4B6045ADD51D2CA59D20 /* 02_powerbuilding_strength.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 02_powerbuilding_strength.json; sourceTree = "<group>"; };
-		ECB10B35D7F6895ECBECEDBF /* 03_classic_ppl.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 03_classic_ppl.json; sourceTree = "<group>"; };
-		ECF19DF767A0483E3295C1ED /* ActiveSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionView.swift; sourceTree = "<group>"; };
-		F733A913348412862B8CDF1E /* BottomDock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomDock.swift; sourceTree = "<group>"; };
-		F89F4479A1065BF741953378 /* RestTimerBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerBar.swift; sourceTree = "<group>"; };
-		FC5F87CCEA6BEE84FC15E6B7 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
-		FCF84D563B45992D3D9DCB77 /* AppHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppHeader.swift; sourceTree = "<group>"; };
 		A10000000000000000000001 /* YouTubeVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeVideo.swift; sourceTree = "<group>"; };
 		A10000000000000000000002 /* YouTubeEmbed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YouTubeEmbed.swift; sourceTree = "<group>"; };
 		A10000000000000000000003 /* VideoMetadataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoMetadataStore.swift; sourceTree = "<group>"; };
@@ -231,21 +166,74 @@
 		A10000000000000000000005 /* VideoPlayerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerSheet.swift; sourceTree = "<group>"; };
 		A10000000000000000000006 /* ExerciseVideosView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseVideosView.swift; sourceTree = "<group>"; };
 		A10000000000000000000007 /* ExerciseVideoLinksSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseVideoLinksSheet.swift; sourceTree = "<group>"; };
+		A13B29C1D4E5F60718293A4A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B01 /* HistoryDayPreviewCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDayPreviewCard.swift; sourceTree = "<group>"; };
+		A1B2C3D4E5F60718293A4B03 /* HistoryDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryDetailView.swift; sourceTree = "<group>"; };
+		A4BDFEAE4E7AC75AF6DFA3A2 /* ProgramExerciseEditorSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramExerciseEditorSheet.swift; sourceTree = "<group>"; };
+		A68AD20F92BF7286266D03EB /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
+		A90000000000000000000001 /* 07_upper_lower.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 07_upper_lower.json; sourceTree = "<group>"; };
+		A90000000000000000000004 /* 08_machine_foundation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 08_machine_foundation.json; sourceTree = "<group>"; };
+		B16D5A75502FFC600D48A992 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		C10000000000000000000001 /* ContentLocalizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentLocalizer.swift; sourceTree = "<group>"; };
+		C151465400D7E4ECECCC89F9 /* form_workout_complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_workout_complete.wav; sourceTree = "<group>"; };
+		D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormHeaderIconButton.swift; sourceTree = "<group>"; };
+		DECFA8F5B27849C8BE2611AF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		DF6E74CE9A7C510C260498C8 /* SessionSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryView.swift; sourceTree = "<group>"; };
+		E10000000000000000000001 /* exercises.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = exercises.json; sourceTree = "<group>"; };
+		E30000000000000000000002 /* ExerciseEquipment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseEquipment.swift; sourceTree = "<group>"; };
+		E30000000000000000000004 /* equipment_catalog.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = equipment_catalog.json; sourceTree = "<group>"; };
+		E3493C594E48AD17563A8CC2 /* FormApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormApp.swift; sourceTree = "<group>"; };
+		E898602344E70BEEF05AB8B3 /* FormApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FormApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC5E4B6045ADD51D2CA59D20 /* 02_powerbuilding_strength.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 02_powerbuilding_strength.json; sourceTree = "<group>"; };
+		ECB10B35D7F6895ECBECEDBF /* 03_classic_ppl.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 03_classic_ppl.json; sourceTree = "<group>"; };
+		ECF19DF767A0483E3295C1ED /* ActiveSessionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveSessionView.swift; sourceTree = "<group>"; };
+		F733A913348412862B8CDF1E /* BottomDock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomDock.swift; sourceTree = "<group>"; };
+		F89F4479A1065BF741953378 /* RestTimerBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerBar.swift; sourceTree = "<group>"; };
+		FAENT0000000000000000001 /* FormApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FormApp.entitlements; sourceTree = "<group>"; };
+		FC5F87CCEA6BEE84FC15E6B7 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		FCF84D563B45992D3D9DCB77 /* AppHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppHeader.swift; sourceTree = "<group>"; };
+		FL0000000000000000000001 /* FormLabModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabModels.swift; sourceTree = "<group>"; };
+		FL0000000000000000000003 /* FormLabEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabEngine.swift; sourceTree = "<group>"; };
+		FL0000000000000000000005 /* CloudMirrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudMirrorManager.swift; sourceTree = "<group>"; };
+		FL0000000000000000000007 /* FormLabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabView.swift; sourceTree = "<group>"; };
+		FL0000000000000000000009 /* FormLabInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabInfoSheet.swift; sourceTree = "<group>"; };
+		L100000000000000000000001 /* Locales */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Locales; sourceTree = "<group>"; };
+		M20000000000000000000002 /* ExerciseMusclesCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMusclesCard.swift; sourceTree = "<group>"; };
+		M20000000000000000000004 /* ExerciseMuscles */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseMuscles; sourceTree = "<group>"; };
+		OB0000000000000000000001 /* OnboardingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModels.swift; sourceTree = "<group>"; };
+		OV0000000000000000000001 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		P10000000000000000000002 /* ExercisePriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisePriority.swift; sourceTree = "<group>"; };
+		PG0000000000000000000001 /* ProgressionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionModels.swift; sourceTree = "<group>"; };
+		PG0000000000000000000003 /* ProgressionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionEngine.swift; sourceTree = "<group>"; };
+		PG0000000000000000000005 /* ProgressionCoachCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionCoachCard.swift; sourceTree = "<group>"; };
+		PG0000000000000000000007 /* ProgressionInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionInfoSheet.swift; sourceTree = "<group>"; };
+		PP0000000000000000000001 /* ProPreviewData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPreviewData.swift; sourceTree = "<group>"; };
+		PR0000000000000000000001 /* PersonalRecordTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalRecordTracker.swift; sourceTree = "<group>"; };
+		PW0000000000000000000001 /* ProPaywallSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProPaywallSheet.swift; sourceTree = "<group>"; };
+		RP0000000000000000000002 /* ExerciseReportStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseReportStore.swift; sourceTree = "<group>"; };
+		RP0000000000000000000004 /* ExerciseReportSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseReportSheet.swift; sourceTree = "<group>"; };
+		S10000000000000000000002 /* ExerciseSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSearch.swift; sourceTree = "<group>"; };
+		SK0000000000000000000001 /* StoreKitSubscriptionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreKitSubscriptionManager.swift; sourceTree = "<group>"; };
+		SK0000000000000000000003 /* ForcedRep.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = ForcedRep.storekit; sourceTree = "<group>"; };
+		SP0000000000000000000001 /* SessionFeaturePaywall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionFeaturePaywall.swift; sourceTree = "<group>"; };
+		T10000000000000000000004 /* ExerciseThumbnails */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseThumbnails; sourceTree = "<group>"; };
+		V10000000000000000000002 /* ExerciseDetailVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDetailVideo.swift; sourceTree = "<group>"; };
+		V10000000000000000000004 /* ExerciseVideos */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseVideos; sourceTree = "<group>"; };
+		VM0000000000000000000001 /* ProFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeature.swift; sourceTree = "<group>"; };
+		VM0000000000000000000003 /* VolumeMatrixModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixModels.swift; sourceTree = "<group>"; };
+		VM0000000000000000000005 /* VolumeMatrixEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixEngine.swift; sourceTree = "<group>"; };
+		VM0000000000000000000007 /* VolumeMatrixView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixView.swift; sourceTree = "<group>"; };
+		VM0000000000000000000009 /* VolumeMatrixInfoSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixInfoSheet.swift; sourceTree = "<group>"; };
+		WG0000000000000000000001 /* WeeklyGoalProgressCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyGoalProgressCard.swift; sourceTree = "<group>"; };
+		WP0000000000000000000001 /* WarmupPlateModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupPlateModels.swift; sourceTree = "<group>"; };
+		WP0000000000000000000003 /* WarmupPlateEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupPlateEngine.swift; sourceTree = "<group>"; };
+		WP0000000000000000000005 /* BarbellPlateVisualizerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BarbellPlateVisualizerView.swift; sourceTree = "<group>"; };
+		WP0000000000000000000007 /* WarmupPlateSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupPlateSheet.swift; sourceTree = "<group>"; };
+		WP0000000000000000000009 /* WarmupPlateCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupPlateCard.swift; sourceTree = "<group>"; };
+		WU0000000000000000000001 /* WeightUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightUnit.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
-		VM0000000000000000000000 /* Pro */ = {
-			isa = PBXGroup;
-			children = (
-				VM0000000000000000000001 /* ProFeature.swift */,
-				PW0000000000000000000001 /* ProPaywallSheet.swift */,
-				SP0000000000000000000001 /* SessionFeaturePaywall.swift */,
-				PP0000000000000000000001 /* ProPreviewData.swift */,
-				SK0000000000000000000001 /* StoreKitSubscriptionManager.swift */,
-			);
-			path = Pro;
-			sourceTree = "<group>";
-		};
 		12E39561EAB2ACA42229972D = {
 			isa = PBXGroup;
 			children = (
@@ -273,9 +261,9 @@
 				F733A913348412862B8CDF1E /* BottomDock.swift */,
 				D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */,
 				2D97FA7035F2317DFBE57498 /* MovementIcon.swift */,
-                V10000000000000000000002 /* ExerciseDetailVideo.swift */,
-                M20000000000000000000002 /* ExerciseMusclesCard.swift */,
-                E30000000000000000000002 /* ExerciseEquipment.swift */,
+				V10000000000000000000002 /* ExerciseDetailVideo.swift */,
+				M20000000000000000000002 /* ExerciseMusclesCard.swift */,
+				E30000000000000000000002 /* ExerciseEquipment.swift */,
 				08997E0EACD6176BFF508687 /* ToastOverlay.swift */,
 			);
 			path = Components;
@@ -290,8 +278,8 @@
 				9A2948074308DABA9A07E42E /* 04_full_body_classic.json */,
 				3D4F0446A030E749B3A34E82 /* 05_home_forge_dumbbells.json */,
 				53F83778D712B708C519860F /* 06_athletic_performance.json */,
-                A90000000000000000000001 /* 07_upper_lower.json */,
-                A90000000000000000000004 /* 08_machine_foundation.json */,
+				A90000000000000000000001 /* 07_upper_lower.json */,
+				A90000000000000000000004 /* 08_machine_foundation.json */,
 			);
 			path = StarterPrograms;
 			sourceTree = "<group>";
@@ -329,14 +317,6 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		OB0000000000000000000000 /* Onboarding */ = {
-			isa = PBXGroup;
-			children = (
-				OV0000000000000000000001 /* OnboardingView.swift */,
-			);
-			path = Onboarding;
-			sourceTree = "<group>";
-		};
 		67DA0294140D96EFABF0317E /* Plan */ = {
 			isa = PBXGroup;
 			children = (
@@ -350,9 +330,9 @@
 			children = (
 				10AEC969AB339D9720AB880B /* AppStore.swift */,
 				VM0000000000000000000005 /* VolumeMatrixEngine.swift */,
-                RP0000000000000000000002 /* ExerciseReportStore.swift */,
-                S10000000000000000000002 /* ExerciseSearch.swift */,
-                P10000000000000000000002 /* ExercisePriority.swift */,
+				RP0000000000000000000002 /* ExerciseReportStore.swift */,
+				S10000000000000000000002 /* ExerciseSearch.swift */,
+				P10000000000000000000002 /* ExercisePriority.swift */,
 				B16D5A75502FFC600D48A992 /* AudioPlayer.swift */,
 				PG0000000000000000000003 /* ProgressionEngine.swift */,
 				WP0000000000000000000003 /* WarmupPlateEngine.swift */,
@@ -405,20 +385,6 @@
 			path = FormApp;
 			sourceTree = "<group>";
 		};
-		A10000000000000000000000 /* Video */ = {
-			isa = PBXGroup;
-			children = (
-				A10000000000000000000001 /* YouTubeVideo.swift */,
-				A10000000000000000000002 /* YouTubeEmbed.swift */,
-				A10000000000000000000003 /* VideoMetadataStore.swift */,
-				A10000000000000000000004 /* YouTubeWebPlayerView.swift */,
-				A10000000000000000000005 /* VideoPlayerSheet.swift */,
-				A10000000000000000000006 /* ExerciseVideosView.swift */,
-				A10000000000000000000007 /* ExerciseVideoLinksSheet.swift */,
-			);
-			path = Video;
-			sourceTree = "<group>";
-		};
 		92387770BAF9161F9576E05F /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
@@ -438,6 +404,20 @@
 				FC5F87CCEA6BEE84FC15E6B7 /* RootView.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000000 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000001 /* YouTubeVideo.swift */,
+				A10000000000000000000002 /* YouTubeEmbed.swift */,
+				A10000000000000000000003 /* VideoMetadataStore.swift */,
+				A10000000000000000000004 /* YouTubeWebPlayerView.swift */,
+				A10000000000000000000005 /* VideoPlayerSheet.swift */,
+				A10000000000000000000006 /* ExerciseVideosView.swift */,
+				A10000000000000000000007 /* ExerciseVideoLinksSheet.swift */,
+			);
+			path = Video;
 			sourceTree = "<group>";
 		};
 		B5DCAF1657F6166FF66909F6 /* History */ = {
@@ -474,11 +454,11 @@
 		C071DCC6D32719D73DD50011 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-                77203A709542614D89DFF819 /* Assets.xcassets */,
-                V10000000000000000000004 /* ExerciseVideos */,
-                M20000000000000000000004 /* ExerciseMuscles */,
-                E30000000000000000000004 /* equipment_catalog.json */,
-                T10000000000000000000004 /* ExerciseThumbnails */,
+				77203A709542614D89DFF819 /* Assets.xcassets */,
+				V10000000000000000000004 /* ExerciseVideos */,
+				M20000000000000000000004 /* ExerciseMuscles */,
+				E30000000000000000000004 /* equipment_catalog.json */,
+				T10000000000000000000004 /* ExerciseThumbnails */,
 				E10000000000000000000001 /* exercises.json */,
 				L100000000000000000000001 /* Locales */,
 				92387770BAF9161F9576E05F /* Sounds */,
@@ -504,7 +484,7 @@
 			isa = PBXGroup;
 			children = (
 				9F464967A46FF2F7447C7602 /* ExerciseDetailSheet.swift */,
-                RP0000000000000000000004 /* ExerciseReportSheet.swift */,
+				RP0000000000000000000004 /* ExerciseReportSheet.swift */,
 				37340E67B2D12B2C6BCBBBC6 /* LibraryView.swift */,
 			);
 			path = Library;
@@ -525,6 +505,26 @@
 				DECFA8F5B27849C8BE2611AF /* SettingsView.swift */,
 			);
 			path = Settings;
+			sourceTree = "<group>";
+		};
+		OB0000000000000000000000 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				OV0000000000000000000001 /* OnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		VM0000000000000000000000 /* Pro */ = {
+			isa = PBXGroup;
+			children = (
+				VM0000000000000000000001 /* ProFeature.swift */,
+				PW0000000000000000000001 /* ProPaywallSheet.swift */,
+				SP0000000000000000000001 /* SessionFeaturePaywall.swift */,
+				PP0000000000000000000001 /* ProPreviewData.swift */,
+				SK0000000000000000000001 /* StoreKitSubscriptionManager.swift */,
+			);
+			path = Pro;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -574,7 +574,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 2660;
+				LastUpgradeCheck = 2700;
 			};
 			buildConfigurationList = 1E35BB50B77467AD218BDEF1 /* Build configuration list for PBXProject "FormApp" */;
 			developmentRegion = en;
@@ -603,10 +603,10 @@
 			files = (
 				A13B29C1D4E5F60718293A4B /* PrivacyInfo.xcprivacy in Resources */,
 				E10000000000000000000002 /* exercises.json in Resources */,
-                V10000000000000000000003 /* ExerciseVideos in Resources */,
-                M20000000000000000000003 /* ExerciseMuscles in Resources */,
-                E30000000000000000000003 /* equipment_catalog.json in Resources */,
-                T10000000000000000000003 /* ExerciseThumbnails in Resources */,
+				V10000000000000000000003 /* ExerciseVideos in Resources */,
+				M20000000000000000000003 /* ExerciseMuscles in Resources */,
+				E30000000000000000000003 /* equipment_catalog.json in Resources */,
+				T10000000000000000000003 /* ExerciseThumbnails in Resources */,
 				L100000000000000000000002 /* Locales in Resources */,
 				ECF655C211A97E2025683749 /* 01_aesthetic_hypertrophy.json in Resources */,
 				48390A60D9C62EB7A6171580 /* 02_powerbuilding_strength.json in Resources */,
@@ -614,8 +614,8 @@
 				2201C284B87CAEF60491DE58 /* 04_full_body_classic.json in Resources */,
 				A07185A4CA1062B6F7D59B91 /* 05_home_forge_dumbbells.json in Resources */,
 				A22DDBC41558C55465A714BD /* 06_athletic_performance.json in Resources */,
-                A90000000000000000000002 /* 07_upper_lower.json in Resources */,
-                A90000000000000000000005 /* 08_machine_foundation.json in Resources */,
+				A90000000000000000000002 /* 07_upper_lower.json in Resources */,
+				A90000000000000000000005 /* 08_machine_foundation.json in Resources */,
 				ECAED6399ED27E48237E4DD6 /* Assets.xcassets in Resources */,
 				1D60B4E438B90C3F62FC88A9 /* form_rest_complete.wav in Resources */,
 				9698074E6A4564D0918CD7E1 /* form_set_complete.wav in Resources */,
@@ -637,8 +637,8 @@
 				6A9E544F2449FD22D50B7E46 /* 04_full_body_classic.json in Resources */,
 				20E655D806FE5C84BC7BACFB /* 05_home_forge_dumbbells.json in Resources */,
 				09436475DDB7B1F05D128B14 /* 06_athletic_performance.json in Resources */,
-                A90000000000000000000003 /* 07_upper_lower.json in Resources */,
-                A90000000000000000000006 /* 08_machine_foundation.json in Resources */,
+				A90000000000000000000003 /* 07_upper_lower.json in Resources */,
+				A90000000000000000000006 /* 08_machine_foundation.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -676,13 +676,13 @@
 				329E21359E0ADED851ABBD02 /* AppColors.swift in Sources */,
 				90857D8F8161417A3E7FCFE1 /* AppHeader.swift in Sources */,
 				11494E03B6F140F80312218E /* AppStore.swift in Sources */,
-                S10000000000000000000001 /* ExerciseSearch.swift in Sources */,
-                P10000000000000000000001 /* ExercisePriority.swift in Sources */,
+				S10000000000000000000001 /* ExerciseSearch.swift in Sources */,
+				P10000000000000000000001 /* ExercisePriority.swift in Sources */,
 				075B0F9BA865F79FB856122B /* AudioPlayer.swift in Sources */,
 				CDE6B5B32A4C412F8D40C7B7 /* BottomDock.swift in Sources */,
 				A79CAAC595702B45728DC715 /* ExerciseDetailSheet.swift in Sources */,
-                RP0000000000000000000003 /* ExerciseReportSheet.swift in Sources */,
-                RP0000000000000000000001 /* ExerciseReportStore.swift in Sources */,
+				RP0000000000000000000003 /* ExerciseReportSheet.swift in Sources */,
+				RP0000000000000000000001 /* ExerciseReportStore.swift in Sources */,
 				947A3D0C40441B9379ABD063 /* FormApp.swift in Sources */,
 				C10EBC98F5843C3C6F20A4B7 /* FormHeaderIconButton.swift in Sources */,
 				64479F749C98F6E9114D49BC /* HistoryView.swift in Sources */,
@@ -690,9 +690,9 @@
 				A1B2C3D4E5F60718293A4B04 /* HistoryDetailView.swift in Sources */,
 				9BCC80499A86D74EE5B5FEDF /* LibraryView.swift in Sources */,
 				45546ACE7DF72EB335DD41FA /* MovementIcon.swift in Sources */,
-                V10000000000000000000001 /* ExerciseDetailVideo.swift in Sources */,
-                M20000000000000000000001 /* ExerciseMusclesCard.swift in Sources */,
-                E30000000000000000000001 /* ExerciseEquipment.swift in Sources */,
+				V10000000000000000000001 /* ExerciseDetailVideo.swift in Sources */,
+				M20000000000000000000001 /* ExerciseMusclesCard.swift in Sources */,
+				E30000000000000000000001 /* ExerciseEquipment.swift in Sources */,
 				DD65F19A9F064CC90CE953C3 /* MuscleArtwork.swift in Sources */,
 				BFD7E7CFFD180073EA634E28 /* MuscleMasks.swift in Sources */,
 				3255EAF86BCBDCDD24C59363 /* ProgramBuilderView.swift in Sources */,
@@ -754,7 +754,6 @@
 				CODE_SIGN_ENTITLEMENTS = FormApp/FormApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = D38SU6U4FN;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = FormApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -805,6 +804,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = D38SU6U4FN;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -835,7 +835,6 @@
 				CODE_SIGN_ENTITLEMENTS = FormApp/FormApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = D38SU6U4FN;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = FormApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -856,7 +855,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = D38SU6U4FN;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -875,7 +873,6 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = D38SU6U4FN;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -924,6 +921,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = D38SU6U4FN;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
