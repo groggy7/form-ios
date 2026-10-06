@@ -125,8 +125,11 @@ public struct ExerciseDetailView: View {
                                     RoundedRectangle(cornerRadius: 8)
                                         .stroke(isSelected ? AppColors.accent.opacity(0.35) : Color.clear, lineWidth: 1)
                                 )
+                                .contentShape(RoundedRectangle(cornerRadius: 8))
                         }
                         .buttonStyle(.plain)
+                        .contentShape(RoundedRectangle(cornerRadius: 8))
+                        .accessibilityAddTraits(isSelected ? .isSelected : [])
                     }
                 }
                 .padding(4)
