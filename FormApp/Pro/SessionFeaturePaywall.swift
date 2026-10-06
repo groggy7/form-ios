@@ -200,7 +200,7 @@ struct SessionFeaturePaywallContent: View {
                     .init(color: .clear, location: 0.78), .init(color: .clear, location: 1)
                 ], startPoint: .leading, endPoint: .trailing))
                 .overlay(LinearGradient(stops: [
-                    .init(color: .clear, location: 0), .init(color: .clear, location: 0.58),
+                    .init(color: .clear, location: 0), .init(color: .clear, location: isVolumeMatrix ? 0.80 : 0.58),
                     .init(color: AppColors.progressionPaywallSurface, location: 1)
                 ], startPoint: .top, endPoint: .bottom))
                 .overlay(comfortableText ? .clear : AppColors.progressionPaywallSurface.opacity(0.6))
