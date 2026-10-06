@@ -41,6 +41,12 @@ public struct ExerciseDetailView: View {
     }
 
     private var currentExercise: Exercise {
+        if let exId = initialExercise.exerciseId, !exId.isEmpty,
+           let catalogExercise = store.exerciseCatalogue.first(where: { $0.exercise.exerciseId == exId || $0.key == exId })?.exercise {
+            if !catalogExercise.videos.isEmpty || initialExercise.videos.isEmpty {
+                return catalogExercise
+            }
+        }
         let key = initialExercise.name.trimmingCharacters(in: .whitespaces).lowercased()
         if let catalogExercise = store.exerciseCatalogue.first(where: { $0.key == key })?.exercise {
             if !catalogExercise.videos.isEmpty || initialExercise.videos.isEmpty {
@@ -138,7 +144,7 @@ public struct ExerciseDetailView: View {
                 VStack(alignment: .leading, spacing: 16) {
                     switch selectedTab {
                     case .main:
-                        ExerciseDetailVideo(exerciseId: currentExercise.exerciseId)
+                        ExerciseDetailVideo(exerciseId: currentExercise.exerciseId ?? initialExercise.exerciseId ?? initialExercise.id)
                             .frame(maxWidth: .infinity)
                             .background(AppColors.exerciseVideoSurface)
                             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))

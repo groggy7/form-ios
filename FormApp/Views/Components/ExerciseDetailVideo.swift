@@ -48,9 +48,25 @@ enum ExerciseVideoCatalog {
     }()
 
     static func url(for exerciseId: String?) -> URL? {
-        guard let id = exerciseId, let entry = entries[id] else { return nil }
-        return Bundle.main.url(forResource: entry.file, withExtension: nil,
-                               subdirectory: "ExerciseVideos")
+        guard let id = exerciseId else { return nil }
+        if let entry = entries[id] {
+            return Bundle.main.url(forResource: entry.file, withExtension: nil,
+                                   subdirectory: "ExerciseVideos")
+                ?? Bundle.main.url(forResource: entry.file, withExtension: nil)
+        }
+        let normalized = id.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        if let entry = entries[normalized] {
+            return Bundle.main.url(forResource: entry.file, withExtension: nil,
+                                   subdirectory: "ExerciseVideos")
+                ?? Bundle.main.url(forResource: entry.file, withExtension: nil)
+        }
+        let slug = normalized.replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "_", with: "-")
+        if let entry = entries[slug] {
+            return Bundle.main.url(forResource: entry.file, withExtension: nil,
+                                   subdirectory: "ExerciseVideos")
+                ?? Bundle.main.url(forResource: entry.file, withExtension: nil)
+        }
+        return nil
     }
 }
 
@@ -58,7 +74,7 @@ struct ExerciseDetailVideo: View {
     let exerciseId: String?
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var visible = false
+    @State private var visible = true
 
     var body: some View {
         let framing = ExerciseVideoCatalog.framing(for: exerciseId)
@@ -102,6 +118,8 @@ final class ExercisePlayerView: UIView {
     private let queue = AVQueuePlayer()
     private var looper: AVPlayerLooper?
     private var wantsPlayback = false
+    private var itemStatusObserver: NSKeyValueObservation?
+
     var playbackTime: CMTime { queue.currentTime() }
     var playbackRate: Float { queue.rate }
     var renderedVideoFrame: CGRect { playerLayer.frame }
@@ -117,13 +135,38 @@ final class ExercisePlayerView: UIView {
         queue.volume = 0
         queue.defaultRate = Self.playbackSpeed
         // No audio-session activation: exercise demos must not interrupt music.
-        looper = AVPlayerLooper(player: queue, templateItem: AVPlayerItem(url: url))
+        let templateItem = AVPlayerItem(url: url)
+        looper = AVPlayerLooper(player: queue, templateItem: templateItem)
         playerLayer.player = queue
+
+        observeItemStatus(item: templateItem)
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
+    private func observeItemStatus(item: AVPlayerItem) {
+        itemStatusObserver?.invalidate()
+        itemStatusObserver = item.observe(\.status, options: [.new, .initial]) { [weak self] observedItem, _ in
+            guard let self = self else { return }
+            DispatchQueue.main.async {
+                switch observedItem.status {
+                case .readyToPlay:
+                    if self.wantsPlayback && self.window != nil {
+                        self.queue.rate = Self.playbackSpeed
+                    }
+                case .failed:
+                    #if DEBUG
+                    print("[ExercisePlayerView] Video item failed to load: \(String(describing: observedItem.error))")
+                    #endif
+                default:
+                    break
+                }
+            }
+        }
+    }
+
     override func layoutSubviews() {
         super.layoutSubviews()
+        guard bounds.width > 0, bounds.height > 0 else { return }
         // Match Android's constant source viewport. No per-frame zoom or panning.
         CATransaction.begin()
         CATransaction.setDisableActions(true)
@@ -141,16 +184,27 @@ final class ExercisePlayerView: UIView {
     }
     private func syncPlayback() {
         if wantsPlayback && window != nil {
-            queue.rate = Self.playbackSpeed
+            queue.defaultRate = Self.playbackSpeed
+            if queue.currentItem?.status == .readyToPlay {
+                queue.rate = Self.playbackSpeed
+            } else {
+                queue.play()
+            }
         } else {
             queue.pause()
         }
     }
     func release() {
+        itemStatusObserver?.invalidate()
+        itemStatusObserver = nil
         queue.pause()
         looper?.disableLooping()
         looper = nil
         queue.removeAllItems()
         playerLayer.player = nil
+    }
+
+    deinit {
+        release()
     }
 }
