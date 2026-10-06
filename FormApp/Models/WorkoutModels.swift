@@ -579,7 +579,7 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
     public var assignedCalendarDate: String?
     public var accumulatedSeconds: Int
     public var isPaused: Bool
-    public var lastResumedAtEpochMillis: Int64
+    public var lastResumedAtEpochMillis: Int64?
 
     public init(
         schemaVersion: Int = 1,
@@ -610,7 +610,7 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         self.assignedCalendarDate = assignedCalendarDate
         self.accumulatedSeconds = accumulatedSeconds
         self.isPaused = isPaused
-        self.lastResumedAtEpochMillis = lastResumedAtEpochMillis ?? startedAtEpochMillis
+        self.lastResumedAtEpochMillis = lastResumedAtEpochMillis
     }
 
     public init(from decoder: Decoder) throws {
@@ -628,12 +628,12 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         self.assignedCalendarDate = try container.decodeIfPresent(String.self, forKey: .assignedCalendarDate)
         self.accumulatedSeconds = try container.decodeIfPresent(Int.self, forKey: .accumulatedSeconds) ?? 0
         self.isPaused = try container.decodeIfPresent(Bool.self, forKey: .isPaused) ?? false
-        self.lastResumedAtEpochMillis = try container.decodeIfPresent(Int64.self, forKey: .lastResumedAtEpochMillis) ?? self.startedAtEpochMillis
+        self.lastResumedAtEpochMillis = try container.decodeIfPresent(Int64.self, forKey: .lastResumedAtEpochMillis)
     }
 
     public func currentDurationSeconds(nowEpochMillis: Int64) -> Int {
         if isPaused { return min(max(0, accumulatedSeconds), 6 * 3600) }
-        let runningFrom = accumulatedSeconds > 0 ? lastResumedAtEpochMillis : startedAtEpochMillis
+        let runningFrom = lastResumedAtEpochMillis ?? startedAtEpochMillis
         let additionalSeconds = Int(max(0, (nowEpochMillis - runningFrom) / 1000))
         return min(max(0, accumulatedSeconds + additionalSeconds), 6 * 3600)
     }
@@ -641,7 +641,7 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
     public func paused(nowEpochMillis: Int64) -> ActiveSessionDraft {
         if isPaused { return self }
         var copy = self
-        let runningFrom = accumulatedSeconds > 0 ? lastResumedAtEpochMillis : startedAtEpochMillis
+        let runningFrom = lastResumedAtEpochMillis ?? startedAtEpochMillis
         let additionalSeconds = Int(max(0, (nowEpochMillis - runningFrom) / 1000))
         copy.accumulatedSeconds = min(max(0, accumulatedSeconds + additionalSeconds), 6 * 3600)
         copy.isPaused = true

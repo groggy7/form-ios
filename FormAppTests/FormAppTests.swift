@@ -134,6 +134,40 @@ final class WeeklyProgressTests: XCTestCase {
         XCTAssertEqual(progressResumed.durationSeconds, 150)
     }
 
+    func testPauseAtZeroSecondsAndResumeKeepsAccurateDuration() {
+        let t0: Int64 = 1_000_000_000_000
+        let w = Workout(id: "w1", day: 1, title: "Push", exercises: [])
+        let initialDraft = ActiveSessionDraft(
+            programId: "p1",
+            workout: w,
+            startedAt: "2026-10-06T10:00:00Z",
+            startedAtEpochMillis: t0,
+            accumulatedSeconds: 0,
+            isPaused: false,
+            lastResumedAtEpochMillis: t0
+        )
+
+        // Paused immediately within the same second (0 accumulated seconds)
+        let pausedDraft = initialDraft.paused(nowEpochMillis: t0 + 200)
+        XCTAssertTrue(pausedDraft.isPaused)
+        XCTAssertEqual(pausedDraft.accumulatedSeconds, 0)
+
+        // Stays paused for 2 hours
+        let t1 = t0 + 7_200_000
+        XCTAssertEqual(pausedDraft.currentDurationSeconds(nowEpochMillis: t1), 0)
+
+        // Resume at t1
+        let resumedDraft = pausedDraft.resumed(nowEpochMillis: t1)
+        XCTAssertFalse(resumedDraft.isPaused)
+        XCTAssertEqual(resumedDraft.accumulatedSeconds, 0)
+        XCTAssertEqual(resumedDraft.lastResumedAtEpochMillis, t1)
+
+        // Trains for 45 seconds
+        let t2 = t1 + 45_000
+        XCTAssertEqual(resumedDraft.currentDurationSeconds(nowEpochMillis: t2), 45)
+        XCTAssertEqual(SessionProgress.from(draft: resumedDraft, nowEpochMillis: t2).durationSeconds, 45)
+    }
+
     func testRestTimerIsPausedWhenActiveSessionIsPaused() {
         let t0: Int64 = 1_000_000_000_000
         let w = Workout(id: "w1", day: 1, title: "Push", exercises: [])

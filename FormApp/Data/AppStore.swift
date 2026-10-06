@@ -1086,7 +1086,7 @@ public final class AppStore: ObservableObject {
         let allSets = draft.setsByExercise.values.flatMap { $0 }
         let hasCompleted = allSets.contains { $0.isCompleted }
         if hasCompleted {
-            let elapsedActivitySeconds = draft.accumulatedSeconds
+            let elapsedActivitySeconds = draft.currentDurationSeconds(nowEpochMillis: now)
             let effectiveDurationSeconds = elapsedActivitySeconds >= 60 ? min(max(60, elapsedActivitySeconds), 4 * 3600) : (30 * 60)
             let effectiveCompletionMillis = draft.startedAtEpochMillis + Int64(effectiveDurationSeconds * 1000)
             var rec = SessionProgress.from(draft: draft, nowEpochMillis: effectiveCompletionMillis)
