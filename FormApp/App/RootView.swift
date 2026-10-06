@@ -227,7 +227,7 @@ public struct RootView: View {
             await ExerciseReportStore.shared.retryPendingReports()
         }
         .onChange(of: scenePhase) { _, phase in
-            if phase == .background || phase == .inactive {
+            if phase == .background {
                 if store.activeSession != nil && store.isSessionPresented {
                     store.pauseActiveSession()
                 }
@@ -235,6 +235,11 @@ public struct RootView: View {
                 store.refreshForCurrentDate()
                 store.checkAndArchiveStaleSession()
                 Task { await ExerciseReportStore.shared.retryPendingReports() }
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification)) { _ in
+            if store.activeSession != nil && store.isSessionPresented {
+                store.pauseActiveSession()
             }
         }
     }
