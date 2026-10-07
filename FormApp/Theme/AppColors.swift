@@ -55,6 +55,18 @@ public enum AppColors {
     public static let completedGreen = Color(hex: 0x65D69B)
     public static let unfinishedOrange = Color(hex: 0xF2AF61)
     public static let missedRed = Color(hex: 0xF17E7B)
+
+    // Glossy Progress calendar pills; other workout status surfaces keep their own palette.
+    public struct CalendarPillColors {
+        public let light: Color
+        public let body: Color
+        public let shade: Color
+    }
+
+    public static let calendarCompletedPill = CalendarPillColors(light: Color(hex: 0x72FFC0), body: Color(hex: 0x2DE58F), shade: Color(hex: 0x13AD63))
+    public static let calendarUnfinishedPill = CalendarPillColors(light: Color(hex: 0xFFD396), body: Color(hex: 0xFF9C59), shade: Color(hex: 0xE46A32))
+    public static let calendarMissedPill = CalendarPillColors(light: Color(hex: 0xFF9AAF), body: Color(hex: 0xFF4D69), shade: Color(hex: 0xD92747))
+
     public static let restTimerAccent = Color(hex: 0x12D8D2)
     public static let restTimerBorder = Color(hex: 0x117D79)
     public static let restTimerSurfaceStart = Color(hex: 0x071A1E)

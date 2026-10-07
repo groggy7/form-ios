@@ -571,11 +571,11 @@ public struct HistoryView: View {
                     // Calendar Legend Row
                     HStack {
                         Spacer()
-                        legendItem(color: AppColors.completedGreen, label: LanguageManager.t("history.completed"))
+                        legendItem(colors: AppColors.calendarCompletedPill, label: LanguageManager.t("history.completed"))
                         Spacer()
-                        legendItem(color: AppColors.unfinishedOrange, label: LanguageManager.t("history.unfinished"))
+                        legendItem(colors: AppColors.calendarUnfinishedPill, label: LanguageManager.t("history.unfinished"))
                         Spacer()
-                        legendItem(color: AppColors.missedRed, label: LanguageManager.t("history.missed"))
+                        legendItem(colors: AppColors.calendarMissedPill, label: LanguageManager.t("history.missed"))
                         Spacer()
                     }
                     .padding(.horizontal, 20)
@@ -669,10 +669,9 @@ public struct HistoryView: View {
         }
     }
 
-    private func legendItem(color: Color, label: String) -> some View {
+    private func legendItem(colors: AppColors.CalendarPillColors, label: String) -> some View {
         HStack(spacing: 6) {
-            Circle()
-                .fill(color)
+            CalendarPill(colors: colors)
                 .frame(width: 6, height: 6)
             Text(label)
                 .font(.system(size: 12))
@@ -803,6 +802,63 @@ public struct HistoryView: View {
 }
 
 // MARK: - Calendar Day Cell
+private struct CalendarPill: View {
+    let colors: AppColors.CalendarPillColors
+
+    var body: some View {
+        GeometryReader { geometry in
+            let diameter = min(geometry.size.width, geometry.size.height)
+            let rimWidth = min(1.15, diameter * 0.065)
+
+            Circle()
+                .fill(LinearGradient(
+                    stops: [
+                        .init(color: colors.light, location: 0),
+                        .init(color: colors.body, location: 0.5),
+                        .init(color: colors.shade, location: 1)
+                    ],
+                    startPoint: .topTrailing,
+                    endPoint: .bottomLeading
+                ))
+                .overlay {
+                    Circle().fill(RadialGradient(
+                        stops: [
+                            .init(color: .white.opacity(0.46), location: 0),
+                            .init(color: .white.opacity(0.14), location: 0.38),
+                            .init(color: .clear, location: 1)
+                        ],
+                        center: UnitPoint(x: 0.28, y: 0.18),
+                        startRadius: 0,
+                        endRadius: diameter * 0.78
+                    ))
+                }
+                .overlay {
+                    Circle().fill(RadialGradient(
+                        colors: [.white.opacity(0.14), .clear],
+                        center: UnitPoint(x: 0.65, y: 0.88),
+                        startRadius: 0,
+                        endRadius: diameter * 0.65
+                    ))
+                }
+                .overlay {
+                    // The specular rim disappears before the bottom-right edge.
+                    Circle().strokeBorder(LinearGradient(
+                        stops: [
+                            .init(color: .white.opacity(0.88), location: 0),
+                            .init(color: .white.opacity(0.5), location: 0.3),
+                            .init(color: .clear, location: 0.65),
+                            .init(color: .clear, location: 1)
+                        ],
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    ), lineWidth: rimWidth)
+                }
+        }
+        .allowsHitTesting(false)
+        .accessibilityHidden(true)
+    }
+}
+
 private struct BoxDayCell: View {
     let dateOpt: Date?
     let todayStr: String
@@ -834,16 +890,15 @@ private struct BoxDayCell: View {
 
                     // Status colored circle
                     if let status = status {
-                        let color: Color = {
+                        let colors: AppColors.CalendarPillColors = {
                             switch status {
-                            case .completed: return AppColors.completedGreen
-                            case .unfinished: return AppColors.unfinishedOrange
-                            case .missed: return AppColors.missedRed
+                            case .completed: return AppColors.calendarCompletedPill
+                            case .unfinished: return AppColors.calendarUnfinishedPill
+                            case .missed: return AppColors.calendarMissedPill
                             }
                         }()
 
-                        Circle()
-                            .fill(color)
+                        CalendarPill(colors: colors)
                             .frame(width: 32, height: 32)
 
                         Text("\(dayNumber)")
