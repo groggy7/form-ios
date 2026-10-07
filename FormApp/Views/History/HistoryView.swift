@@ -815,45 +815,67 @@ private struct CalendarPill: View {
             let cornerRadius = height * calendarDayPillCornerRadiusFraction
             let rimWidth = min(1.15, min(width, height) * 0.065)
 
-            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                .fill(LinearGradient(
+            let shape = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+            let shineRadius = width * 0.68
+            let shineHeight = height * 0.35
+
+            ZStack {
+                shape.fill(colors.body)
+                shape.fill(LinearGradient(
                     stops: [
-                        .init(color: colors.light, location: 0),
-                        .init(color: colors.body, location: 0.3),
-                        .init(color: colors.body, location: 0.7),
-                        .init(color: colors.shade, location: 1)
+                        .init(color: colors.light.opacity(0.25), location: 0),
+                        .init(color: .clear, location: 0.45),
+                        .init(color: .clear, location: 0.55),
+                        .init(color: colors.shade.opacity(0.3), location: 1)
                     ],
-                    startPoint: .topTrailing,
-                    endPoint: .bottomLeading
+                    startPoint: .top,
+                    endPoint: .bottom
                 ))
-                .overlay {
-                    // Light wraps around the pill without washing out its vivid center.
-                    RoundedRectangle(cornerRadius: cornerRadius, style: .continuous).fill(RadialGradient(
-                        stops: [
-                            .init(color: .clear, location: 0),
-                            .init(color: .clear, location: 0.45),
-                            .init(color: .white.opacity(0.06), location: 0.64),
-                            .init(color: .white.opacity(0.24), location: 0.86),
-                            .init(color: .white.opacity(0.42), location: 1)
-                        ],
-                        center: .center,
-                        startRadius: 0,
-                        endRadius: max(width, height) * 0.5
-                    ))
-                }
-                .overlay {
-                    // The specular rim disappears before the bottom-right edge.
-                    RoundedRectangle(cornerRadius: cornerRadius, style: .continuous).strokeBorder(LinearGradient(
-                        stops: [
-                            .init(color: .white.opacity(0.88), location: 0),
-                            .init(color: .white.opacity(0.5), location: 0.3),
-                            .init(color: .clear, location: 0.65),
-                            .init(color: .clear, location: 1)
-                        ],
-                        startPoint: .topLeading,
-                        endPoint: .bottomTrailing
-                    ), lineWidth: rimWidth)
-                }
+
+                // A wide, tilted reflection peaks inside the upper third and dissolves by ~65% height.
+                Circle().fill(RadialGradient(
+                    stops: [
+                        .init(color: colors.light.opacity(0.48), location: 0),
+                        .init(color: colors.light.opacity(0.35), location: 0.3),
+                        .init(color: colors.light.opacity(0.15), location: 0.6),
+                        .init(color: colors.light.opacity(0.03), location: 0.85),
+                        .init(color: colors.light.opacity(0), location: 1)
+                    ],
+                    center: .center,
+                    startRadius: 0,
+                    endRadius: shineRadius
+                ))
+                .frame(width: shineRadius * 2, height: shineRadius * 2)
+                .scaleEffect(x: 1, y: shineHeight / shineRadius)
+                .rotationEffect(.degrees(12))
+                .position(x: width * 0.4, y: height * 0.28)
+
+                shape.fill(LinearGradient(
+                    stops: [
+                        .init(color: .clear, location: 0),
+                        .init(color: .clear, location: 0.58),
+                        .init(color: .black.opacity(0.02), location: 0.78),
+                        .init(color: .black.opacity(0.08), location: 0.93),
+                        .init(color: .black.opacity(0.14), location: 1)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                ))
+                shape.strokeBorder(LinearGradient(
+                    stops: [
+                        .init(color: .white.opacity(0.18), location: 0),
+                        .init(color: .white.opacity(0.06), location: 0.24),
+                        .init(color: .clear, location: 0.45),
+                        .init(color: .clear, location: 1)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                ), lineWidth: rimWidth)
+            }
+            .frame(width: width, height: height)
+            .clipShape(shape)
+            // Exterior light remains separate and much weaker than the internal reflection.
+            .shadow(color: colors.body.opacity(0.04), radius: min(2, height * 0.06), x: 0, y: 0)
         }
         .allowsHitTesting(false)
         .accessibilityHidden(true)
