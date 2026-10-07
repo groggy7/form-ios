@@ -973,7 +973,9 @@ public enum WorkoutCalendar {
         history: WorkoutCalendarHistory,
         today: String,
         weekdays: [Int],
-        calendar: Calendar = Calendar(identifier: .gregorian)
+        calendar: Calendar = Calendar(identifier: .gregorian),
+        programs: [Program] = [],
+        sessions: [WorkoutSessionRecord] = []
     ) -> WorkoutCalendarHistory {
         var cal = calendar
         cal.firstWeekday = 2 // Monday
@@ -981,16 +983,59 @@ public enum WorkoutCalendar {
         guard let minDate = cal.date(byAdding: .year, value: -100, to: todayDate) else { return history }
         let startDate = parseDate(history.nextScheduledDate).map { max($0, minDate) } ?? todayDate
 
-        var missedSet = Set(history.missedDates)
+        let entriesByDate = Set(history.entries.map { $0.date })
+        var missedSet = Set(history.missedDates).subtracting(entriesByDate)
         var cursor = startDate
         while cursor < todayDate {
             let weekday = (cal.component(.weekday, from: cursor) + 5) % 7 + 1 // 1=Mon..7=Sun
             let cursorStr = formatDate(cursor)
-            if history.scheduledWeekdays.contains(weekday) {
+            if history.scheduledWeekdays.contains(weekday) && !entriesByDate.contains(cursorStr) {
                 missedSet.insert(cursorStr)
             }
             guard let next = cal.date(byAdding: .day, value: 1, to: cursor) else { break }
             cursor = next
+        }
+
+        var activeWeekMondays = Set<String>()
+        for missedStr in missedSet {
+            if let d = parseDate(missedStr, timeZone: cal.timeZone) {
+                activeWeekMondays.insert(mondayOfCurrentWeek(for: d, calendar: cal))
+            }
+        }
+        for session in sessions {
+            if let sDate = parseIsoTimestamp(session.startedAt) ?? parseIsoTimestamp(session.completedAt) {
+                activeWeekMondays.insert(mondayOfCurrentWeek(for: sDate, calendar: cal))
+            }
+        }
+
+        for weekMondayStr in activeWeekMondays {
+            guard let weekMonday = parseDate(weekMondayStr, timeZone: cal.timeZone) else { continue }
+            let weekSessions = sessions.filter { session in
+                guard let sDate = parseIsoTimestamp(session.startedAt) ?? parseIsoTimestamp(session.completedAt) else { return false }
+                return mondayOfCurrentWeek(for: sDate, calendar: cal) == weekMondayStr
+            }
+            let weekProgramId = weekSessions.first?.programId
+            let weekProgram = programs.first(where: { $0.id == weekProgramId }) ?? programs.first
+            let activeDays = weekProgram?.workouts.filter { !$0.exercises.isEmpty }.map { $0.day }.sorted() ?? []
+            let weekWeekdays = !activeDays.isEmpty ? activeDays : (!history.scheduledWeekdays.isEmpty ? history.scheduledWeekdays : weekdays)
+
+            let loggedWorkoutIds = Set(weekSessions.filter { session in
+                session.totalCompletedSets > 0 || session.exerciseLogs.contains { log in
+                    log.sets.contains { ($0.reps ?? 0) > 0 || ($0.weightKg ?? 0.0) > 0.0 }
+                }
+            }.map { $0.workoutId })
+
+            for dayIndex in weekWeekdays {
+                if let dayDate = cal.date(byAdding: .day, value: dayIndex - 1, to: weekMonday) {
+                    let dayStr = formatDate(dayDate, timeZone: cal.timeZone)
+                    let workoutForDay = weekProgram?.workouts.first(where: { $0.day == dayIndex })
+                        ?? programs.flatMap(\.workouts).first(where: { $0.day == dayIndex })
+                    let isWorkoutDoneThisWeek = (workoutForDay != nil && loggedWorkoutIds.contains(workoutForDay!.id))
+                    if isWorkoutDoneThisWeek {
+                        missedSet.remove(dayStr)
+                    }
+                }
+            }
         }
 
         return WorkoutCalendarHistory(

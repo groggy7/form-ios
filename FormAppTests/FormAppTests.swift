@@ -3873,6 +3873,86 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(statuses["2026-10-04"], WorkoutDayStatus.completed)
     }
 
+    func testWorkoutCalendarRefreshReconcilesWorkoutCompletedOnDifferentDayOfWeek() {
+        let testToday = "2026-10-07" // Wednesday
+        let wednesdaySession = WorkoutSessionRecord(
+            id: "s-wed", programId: "p1", workoutId: "w-mon",
+            workoutTitle: "Mon Push", startedAt: "2026-10-07T10:00:00Z", completedAt: "2026-10-07T11:00:00Z",
+            durationSeconds: 3600, totalVolumeKg: 500.0, totalCompletedSets: 3,
+            exerciseLogs: [SessionExerciseLog(exerciseName: "Bench", sets: [SessionSetLog(setNumber: 1, weightKg: 100.0, reps: 5)], targetSets: 1)],
+            isComplete: true
+        )
+        let program = Program(
+            id: "p1", name: "Split",
+            workouts: [
+                Workout(id: "w-mon", day: 1, title: "Mon Push", exercises: [Exercise(name: "Bench", sets: 1)]),
+                Workout(id: "w-wed", day: 3, title: "Wed Pull", exercises: [Exercise(name: "Pullup", sets: 1)])
+            ]
+        )
+        let history = WorkoutCalendarHistory(
+            nextScheduledDate: "2026-10-05", // Monday
+            scheduledWeekdays: [1, 3],
+            missedDates: [],
+            entries: [
+                WorkoutDayEntry(id: "session:s-wed", date: "2026-10-07", status: .completed)
+            ]
+        )
+        let refreshed = WorkoutCalendar.refresh(
+            history: history,
+            today: testToday,
+            weekdays: [1, 3],
+            programs: [program],
+            sessions: [wednesdaySession]
+        )
+        let statuses = WorkoutCalendar.statuses(history: refreshed, today: testToday)
+        // Monday 2026-10-05 was performed on Wednesday -> Monday remains NEUTRAL (not in missedDates, not in statuses)
+        XCTAssertFalse(refreshed.missedDates.contains("2026-10-05"), "Monday 2026-10-05 must not be in missedDates")
+        XCTAssertNil(statuses["2026-10-05"], "Monday 2026-10-05 must be neutral (nil status)")
+        // Wednesday 2026-10-07 has the completed session
+        XCTAssertEqual(statuses["2026-10-07"], WorkoutDayStatus.completed)
+    }
+
+    func testCalendarStatusesMissedDayWhoseWorkoutWasCompletedInSameWeekBecomesNeutral() {
+        let monday = "2026-10-05"
+        let wednesday = "2026-10-07"
+        let program = Program(
+            id: "prog", name: "P",
+            workouts: [
+                Workout(id: "w-mon", day: 1, title: "Mon", exercises: [Exercise(name: "Squat", sets: 1)])
+            ]
+        )
+        let session = WorkoutSessionRecord(
+            id: "s1", programId: "prog", workoutId: "w-mon", workoutTitle: "Mon",
+            startedAt: "2026-10-07T09:00:00Z", completedAt: "2026-10-07T10:00:00Z",
+            durationSeconds: 3600, totalVolumeKg: 100.0, totalCompletedSets: 1,
+            exerciseLogs: [SessionExerciseLog(exerciseName: "Squat", sets: [SessionSetLog(setNumber: 1, weightKg: 100.0, reps: 5)], targetSets: 1)],
+            isComplete: true
+        )
+        let calHistory = WorkoutCalendarHistory(
+            nextScheduledDate: "2026-10-05",
+            scheduledWeekdays: [1],
+            missedDates: ["2026-10-05"],
+            entries: [
+                WorkoutDayEntry(id: "session:s1", date: "2026-10-07", status: .completed)
+            ]
+        )
+        let st = StoredAppState(
+            programs: [program],
+            activeProgramId: "prog",
+            completed: [],
+            currentWeekKey: "2026-W41",
+            weeklyArchives: [],
+            history: [session],
+            calendarHistory: calHistory
+        )
+        let store = AppStore.shared
+        store.state = st
+        let wedDate = WorkoutCalendar.parseDate(wednesday)!
+        let statuses = store.calendarStatuses(today: wedDate)
+        XCTAssertNil(statuses[monday], "Monday must be neutral (nil) because its workout was completed on Wednesday")
+        XCTAssertEqual(statuses[wednesday], WorkoutDayStatus.completed)
+    }
+
     func testProgramExerciseFixedSetsAndRepTargetModificationPersists() {
         let store = AppStore.shared
         guard var program = store.state.programs.first else {

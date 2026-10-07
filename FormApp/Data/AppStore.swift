@@ -202,7 +202,9 @@ public final class AppStore: ObservableObject {
         let refreshed = WorkoutCalendar.refresh(
             history: restored,
             today: todayStr,
-            weekdays: weekdays
+            weekdays: weekdays,
+            programs: loadedState.programs,
+            sessions: loadedState.history
         )
         loadedState.calendarHistory = refreshed
         self.state = loadedState
@@ -879,7 +881,9 @@ public final class AppStore: ObservableObject {
         let refreshed = WorkoutCalendar.refresh(
             history: curCal,
             today: todayStr,
-            weekdays: WorkoutCalendar.weekdays(state: state)
+            weekdays: WorkoutCalendar.weekdays(state: state),
+            programs: state.programs,
+            sessions: state.history
         )
         var statuses = WorkoutCalendar.statuses(history: refreshed, today: todayStr)
 
@@ -935,6 +939,32 @@ public final class AppStore: ObservableObject {
             }
         }
 
+        // 3. Any missed day whose scheduled workout was completed elsewhere in the same week -> neutral (remove)
+        for (dateStr, status) in statuses {
+            if status == .missed, let date = WorkoutCalendar.parseDate(dateStr) {
+                let weekMonday = WorkoutCalendar.mondayOfCurrentWeek(for: date)
+                var cal = Calendar(identifier: .gregorian)
+                cal.firstWeekday = 2 // Monday
+                let weekday = (cal.component(.weekday, from: date) + 5) % 7 + 1
+                let weekSessions = state.history.filter { rec in
+                    guard let sDate = WorkoutCalendar.parseIsoTimestamp(rec.startedAt) ?? WorkoutCalendar.parseIsoTimestamp(rec.completedAt) else { return false }
+                    return WorkoutCalendar.mondayOfCurrentWeek(for: sDate, calendar: cal) == weekMonday
+                }
+                let loggedWorkoutIds = Set(weekSessions.filter { rec in
+                    rec.totalCompletedSets > 0 || rec.exerciseLogs.contains { log in
+                        log.sets.contains { ($0.reps ?? 0) > 0 || ($0.weightKg ?? 0) > 0 }
+                    }
+                }.map { $0.workoutId })
+                let weekProgramId = weekSessions.first?.programId
+                let weekProgram = state.programs.first(where: { $0.id == weekProgramId }) ?? state.programs.first
+                let workoutForDay = weekProgram?.workouts.first(where: { $0.day == weekday })
+                    ?? state.programs.flatMap(\.workouts).first(where: { $0.day == weekday })
+                if let w = workoutForDay, loggedWorkoutIds.contains(w.id) {
+                    statuses.removeValue(forKey: dateStr)
+                }
+            }
+        }
+
         return statuses
     }
 
@@ -975,7 +1005,13 @@ public final class AppStore: ObservableObject {
             nextScheduledDate: WorkoutCalendar.mondayOfCurrentWeek(for: today),
             scheduledWeekdays: weekdays
         )
-        let refreshed = WorkoutCalendar.refresh(history: curCal, today: todayStr, weekdays: weekdays)
+        let refreshed = WorkoutCalendar.refresh(
+            history: curCal,
+            today: todayStr,
+            weekdays: weekdays,
+            programs: st.programs,
+            sessions: st.history
+        )
         var copy = st
         copy.calendarHistory = refreshed
         return copy

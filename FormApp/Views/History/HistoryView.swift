@@ -495,11 +495,13 @@ public struct HistoryView: View {
             if hasSets {
                 return .unfinished
             }
-            if isToday {
-                return status ?? .unfinished
-            } else {
+            if sessionRecord != nil && !isToday {
                 return .missed
             }
+            if let status = status {
+                return status
+            }
+            return isToday ? .unfinished : .missed
         }()
 
         return HistoryDayDetailData(

@@ -80,6 +80,26 @@ public struct HistoryDayPreviewCard: View {
         return "DAY \(dayNum)"
     }
 
+    private var scheduledOriginDateString: String? {
+        guard detail.sessionRecord != nil,
+              let workout = detail.workout,
+              workout.day >= 1 && workout.day <= 7 else { return nil }
+        var cal = Calendar(identifier: .gregorian)
+        cal.firstWeekday = 2 // Monday
+        let weekMondayStr = WorkoutCalendar.mondayOfCurrentWeek(for: detail.date, calendar: cal)
+        guard let weekMonday = WorkoutCalendar.parseDate(weekMondayStr) else { return nil }
+        guard let scheduledDate = cal.date(byAdding: .day, value: workout.day - 1, to: weekMonday) else { return nil }
+        let scheduledStr = WorkoutCalendar.formatDate(scheduledDate)
+        if scheduledStr != detail.dateString {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .none
+            formatter.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
+            return formatter.string(from: scheduledDate)
+        }
+        return nil
+    }
+
     private var timeDurationText: String {
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "HH:mm"
@@ -275,6 +295,13 @@ public struct HistoryDayPreviewCard: View {
                             .font(.system(size: 11, weight: .bold))
                             .foregroundColor(statusColor)
                             .tracking(0.6)
+
+                        if let origin = scheduledOriginDateString {
+                            Text("· 🗓️ \(LanguageManager.t("history.originallyScheduled", ["date": origin]))")
+                                .font(.system(size: 11, weight: .medium))
+                                .foregroundColor(AppColors.secondaryText)
+                                .lineLimit(1)
+                        }
                     }
 
                     Text(workoutTitle)

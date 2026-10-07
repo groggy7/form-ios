@@ -88,6 +88,26 @@ public struct HistoryDetailView: View {
             }
         }()
 
+        let scheduledOriginDateString: String? = {
+            guard detail.sessionRecord != nil,
+                  let workout = detail.workout,
+                  workout.day >= 1 && workout.day <= 7 else { return nil }
+            var cal = Calendar(identifier: .gregorian)
+            cal.firstWeekday = 2 // Monday
+            let weekMondayStr = WorkoutCalendar.mondayOfCurrentWeek(for: detail.date, calendar: cal)
+            guard let weekMonday = WorkoutCalendar.parseDate(weekMondayStr) else { return nil }
+            guard let scheduledDate = cal.date(byAdding: .day, value: workout.day - 1, to: weekMonday) else { return nil }
+            let scheduledStr = WorkoutCalendar.formatDate(scheduledDate)
+            if scheduledStr != detail.dateString {
+                let formatter = DateFormatter()
+                formatter.dateStyle = .medium
+                formatter.timeStyle = .none
+                formatter.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
+                return formatter.string(from: scheduledDate)
+            }
+            return nil
+        }()
+
         VStack(spacing: 0) {
             // Top Navigation Bar
             HStack(spacing: 12) {
@@ -126,21 +146,40 @@ public struct HistoryDetailView: View {
                                 .accessibilityIdentifier("history-detail-title")
                         }
 
-                        // Status Pill Tag
-                        Text(statusText)
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundColor(statusColor)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 6)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                    .fill(statusBg)
-                                    .overlay(
+                        // Status Pill Tag & Scheduled Origin
+                        HStack(spacing: 8) {
+                            Text(statusText)
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundColor(statusColor)
+                                .padding(.horizontal, 12)
+                                .padding(.vertical, 6)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                        .fill(statusBg)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                                .stroke(statusColor.opacity(0.35), lineWidth: 1)
+                                        )
+                                )
+                                .accessibilityIdentifier("history-detail-status")
+
+                            if let scheduledOrigin = scheduledOriginDateString {
+                                Text("🗓️ \(LanguageManager.t("history.originallyScheduled", ["date": scheduledOrigin]))")
+                                    .font(.system(size: 12, weight: .medium))
+                                    .foregroundColor(AppColors.secondaryText)
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 6)
+                                    .background(
                                         RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                            .stroke(statusColor.opacity(0.35), lineWidth: 1)
+                                            .fill(AppColors.surfaceRaised)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                                    .stroke(AppColors.border, lineWidth: 1)
+                                            )
                                     )
-                            )
-                            .accessibilityIdentifier("history-detail-status")
+                                    .accessibilityIdentifier("history-detail-scheduled-origin")
+                            }
+                        }
 
                         // Key Stats (Sets | Duration | Volume)
                         HStack(spacing: 0) {
