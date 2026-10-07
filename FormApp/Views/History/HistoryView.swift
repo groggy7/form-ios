@@ -670,9 +670,9 @@ public struct HistoryView: View {
     }
 
     private func legendItem(colors: AppColors.CalendarPillColors, label: String) -> some View {
-        HStack(spacing: 6) {
+        HStack(spacing: 8) {
             CalendarPill(colors: colors)
-                .frame(width: 6, height: 6)
+                .frame(width: 16, height: 16)
             Text(label)
                 .font(.system(size: 12))
                 .foregroundColor(AppColors.secondaryText)
