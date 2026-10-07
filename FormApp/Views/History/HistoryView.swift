@@ -835,10 +835,10 @@ private struct CalendarPill: View {
                 // A wide, tilted reflection peaks inside the upper third and dissolves by ~65% height.
                 Circle().fill(RadialGradient(
                     stops: [
-                        .init(color: colors.light.opacity(0.48), location: 0),
-                        .init(color: colors.light.opacity(0.35), location: 0.3),
-                        .init(color: colors.light.opacity(0.15), location: 0.6),
-                        .init(color: colors.light.opacity(0.03), location: 0.85),
+                        .init(color: colors.light.opacity(0.82), location: 0),
+                        .init(color: colors.light.opacity(0.62), location: 0.3),
+                        .init(color: colors.light.opacity(0.26), location: 0.6),
+                        .init(color: colors.light.opacity(0.05), location: 0.85),
                         .init(color: colors.light.opacity(0), location: 1)
                     ],
                     center: .center,
