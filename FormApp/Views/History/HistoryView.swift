@@ -803,7 +803,7 @@ public struct HistoryView: View {
 
 // MARK: - Calendar Day Cell
 private let calendarDayPillAspectRatio: CGFloat = 1.12
-private let calendarDayPillCornerRadiusFraction: CGFloat = 0.48
+private let calendarDayPillCornerRadiusFraction: CGFloat = 0.5
 
 private struct CalendarPill: View {
     let colors: AppColors.CalendarPillColors
@@ -885,19 +885,17 @@ private struct BoxDayCell: View {
                     let isClickable = (status == .unfinished || status == .missed || status == .completed)
 
                     ZStack {
-                        let ringHeight = status == nil ? min(38, ringWidth) : ringWidth / calendarDayPillAspectRatio
-                        let ringRadius = status == nil ? ringHeight / 2 : ringHeight * calendarDayPillCornerRadiusFraction
+                        let ringHeight = ringWidth / calendarDayPillAspectRatio
+                        let ringRadius = ringHeight * calendarDayPillCornerRadiusFraction
                         // Outer border ring for selected day or today
                         if isSelected {
                             RoundedRectangle(cornerRadius: ringRadius, style: .continuous)
                                 .strokeBorder(AppColors.accent, lineWidth: 2)
-                                .frame(width: status == nil ? min(38, ringWidth) : ringWidth,
-                                       height: ringHeight)
+                                .frame(width: ringWidth, height: ringHeight)
                         } else if isToday {
                             RoundedRectangle(cornerRadius: ringRadius, style: .continuous)
                                 .strokeBorder(AppColors.text.opacity(0.8), lineWidth: 1)
-                                .frame(width: status == nil ? min(38, ringWidth) : ringWidth,
-                                       height: ringHeight)
+                                .frame(width: ringWidth, height: ringHeight)
                         }
 
                         // Aggressively rounded rectangle status pill
