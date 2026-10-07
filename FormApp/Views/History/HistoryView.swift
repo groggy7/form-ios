@@ -885,17 +885,23 @@ private struct BoxDayCell: View {
                     let isClickable = (status == .unfinished || status == .missed || status == .completed)
 
                     ZStack {
+                        let pillHeight = pillWidth / calendarDayPillAspectRatio
+                        let pillRadius = pillHeight * calendarDayPillCornerRadiusFraction
                         let ringHeight = ringWidth / calendarDayPillAspectRatio
                         let ringRadius = ringHeight * calendarDayPillCornerRadiusFraction
+
                         // Outer border ring for selected day or today
                         if isSelected {
                             RoundedRectangle(cornerRadius: ringRadius, style: .continuous)
                                 .strokeBorder(AppColors.accent, lineWidth: 2)
                                 .frame(width: ringWidth, height: ringHeight)
                         } else if isToday {
-                            RoundedRectangle(cornerRadius: ringRadius, style: .continuous)
+                            let todayWidth = status == nil ? pillWidth : ringWidth
+                            let todayHeight = status == nil ? pillHeight : ringHeight
+                            let todayRadius = status == nil ? pillRadius : ringRadius
+                            RoundedRectangle(cornerRadius: todayRadius, style: .continuous)
                                 .strokeBorder(AppColors.text.opacity(0.8), lineWidth: 1)
-                                .frame(width: ringWidth, height: ringHeight)
+                                .frame(width: todayWidth, height: todayHeight)
                         }
 
                         // Aggressively rounded rectangle status pill
@@ -909,7 +915,7 @@ private struct BoxDayCell: View {
                             }()
 
                             CalendarPill(colors: colors)
-                                .frame(width: pillWidth, height: pillWidth / calendarDayPillAspectRatio)
+                                .frame(width: pillWidth, height: pillHeight)
 
                             Text("\(dayNumber)")
                                 .font(.system(size: 15, weight: .semibold))
