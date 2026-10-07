@@ -803,7 +803,7 @@ public struct HistoryView: View {
 
 // MARK: - Calendar Day Cell
 private let calendarDayPillAspectRatio: CGFloat = 1.12
-private let calendarDayPillCornerRadiusFraction: CGFloat = 0.45
+private let calendarDayPillCornerRadiusFraction: CGFloat = 0.48
 
 private struct CalendarPill: View {
     let colors: AppColors.CalendarPillColors
