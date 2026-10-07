@@ -828,9 +828,9 @@ private struct CalendarPill: View {
                     Ellipse().fill(EllipticalGradient(
                         stops: [
                             .init(color: .clear, location: 0),
-                            .init(color: .clear, location: 0.55),
-                            .init(color: .white.opacity(0.06), location: 0.72),
-                            .init(color: .white.opacity(0.24), location: 0.9),
+                            .init(color: .clear, location: 0.45),
+                            .init(color: .white.opacity(0.06), location: 0.64),
+                            .init(color: .white.opacity(0.24), location: 0.86),
                             .init(color: .white.opacity(0.42), location: 1)
                         ],
                         center: .center,
