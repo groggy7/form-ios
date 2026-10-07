@@ -8584,9 +8584,20 @@ final class SessionFeaturePaywallTests: XCTestCase {
         let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
             .flatMap(\.windows).first(where: \.isKeyWindow)
         defer { LanguageManager.setLanguage(previousLanguage); previousWindow?.makeKeyAndVisible() }
-        for (feature, unit) in [(ProFeature.autoProgression, WeightUnit.kg), (.warmupCalculator, .kg), (.warmupCalculator, .lbs)] {
-            let imageName = feature == .warmupCalculator ? (unit == .lbs ? "paywall_warmup_plates_lbs" : "paywall_warmup_plates") : "paywall_smart_progression"
-            let tag = feature == .warmupCalculator ? "warmup-paywall" : "progression-paywall"
+        for (feature, unit) in [(ProFeature.autoProgression, WeightUnit.kg), (.cloudBackup, .kg), (.warmupCalculator, .kg), (.warmupCalculator, .lbs)] {
+            let imageName: String
+            let tag: String
+            switch feature {
+            case .cloudBackup:
+                imageName = "paywall_cloud_backup"
+                tag = "cloud-backup-paywall"
+            case .warmupCalculator:
+                imageName = unit == .lbs ? "paywall_warmup_plates_lbs" : "paywall_warmup_plates"
+                tag = "warmup-paywall"
+            default:
+                imageName = "paywall_smart_progression"
+                tag = "progression-paywall"
+            }
             let artwork = try XCTUnwrap(UIImage(named: imageName))
             XCTAssertEqual(artwork.size.width, artwork.size.height)
             for language in ["en", "tr"] {

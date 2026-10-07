@@ -41,6 +41,7 @@ struct SessionFeaturePaywallContent: View {
     private var isWarmup: Bool { feature == .warmupCalculator }
     private var isVolumeMatrix: Bool { feature == .volumeMatrix }
     private var isRepLab: Bool { feature == .formLab }
+    private var isCloudBackup: Bool { feature == .cloudBackup }
     private var isGeneral: Bool { feature == nil }
     private var copyPrefix: String { feature == nil ? "paywall.general" : "paywall.\(feature!.rawValue)" }
     private var tagPrefix: String {
@@ -48,6 +49,7 @@ struct SessionFeaturePaywallContent: View {
         case .warmupCalculator: return "warmup-paywall"
         case .volumeMatrix: return "volume-paywall"
         case .formLab: return "rep-lab-paywall"
+        case .cloudBackup: return "cloud-backup-paywall"
         case .none: return "general-paywall"
         default: return "progression-paywall"
         }
@@ -57,6 +59,7 @@ struct SessionFeaturePaywallContent: View {
         case .warmupCalculator: return weightUnit == .lbs ? "paywall_warmup_plates_lbs" : "paywall_warmup_plates"
         case .volumeMatrix: return "paywall_volume_matrix"
         case .formLab: return "paywall_rep_lab"
+        case .cloudBackup: return "paywall_cloud_backup"
         case .none: return "paywall_general"
         default: return "paywall_smart_progression"
         }
@@ -64,7 +67,7 @@ struct SessionFeaturePaywallContent: View {
     private var featureTitleKey: String {
         switch feature {
         case .warmupCalculator: return "warmup.card_title"
-        case .volumeMatrix, .formLab, .none: return "\(copyPrefix).feature_title"
+        case .volumeMatrix, .formLab, .cloudBackup, .none: return "\(copyPrefix).feature_title"
         default: return "progression.coach.locked_title"
         }
     }
@@ -161,7 +164,7 @@ struct SessionFeaturePaywallContent: View {
             Text(LanguageManager.t("\(copyPrefix).headline"))
                 .font(.system(size: isWarmup ? warmupHeadlineSize : headlineSize, weight: .bold))
                 .foregroundStyle(AppColors.text).fixedSize(horizontal: false, vertical: true)
-                .frame(width: comfortableText ? (width - 48) * (isWarmup ? 0.84 : (isVolumeMatrix || isRepLab || isGeneral ? 0.72 : 0.64)) : width - 48, alignment: .leading)
+                .frame(width: comfortableText ? (width - 48) * (isWarmup ? 0.84 : (isVolumeMatrix || isRepLab || isGeneral || isCloudBackup ? 0.72 : 0.64)) : width - 48, alignment: .leading)
                 .padding(.bottom, 10)
             Text(LanguageManager.t("\(copyPrefix).subtitle"))
                 .font(.system(size: subtitleSize)).foregroundStyle(AppColors.secondaryText).lineSpacing(3)
@@ -169,9 +172,9 @@ struct SessionFeaturePaywallContent: View {
                 .frame(width: comfortableText ? (width - 48) * 0.68 : width - 48, alignment: .leading)
                 .padding(.bottom, 22)
             VStack(alignment: .leading, spacing: 16) {
-                benefit(1, icon: (isVolumeMatrix || isWarmup) ? "chart.bar.fill" : (isRepLab ? "number.circle.fill" : (isGeneral ? "arrow.up.forward.circle.fill" : "arrow.up.right")), width: comfortableText ? (width - 48) * 0.66 : width - 48)
-                benefit(2, icon: isWarmup ? "paywall.plates" : (isVolumeMatrix || isGeneral ? "square.grid.3x3.fill" : (isRepLab ? "chart.xyaxis.line" : "info.circle.fill")), width: comfortableText ? (width - 48) * 0.66 : width - 48)
-                benefit(3, icon: isWarmup ? "plus" : (isVolumeMatrix ? "calendar" : (isRepLab ? "chart.bar.fill" : (isGeneral ? "chart.xyaxis.line" : "bolt.fill"))), width: comfortableText ? (width - 48) * 0.66 : width - 48)
+                benefit(1, icon: isCloudBackup ? "cloud.fill" : ((isVolumeMatrix || isWarmup) ? "chart.bar.fill" : (isRepLab ? "number.circle.fill" : (isGeneral ? "arrow.up.forward.circle.fill" : "arrow.up.right"))), width: comfortableText ? (width - 48) * 0.66 : width - 48)
+                benefit(2, icon: isCloudBackup ? "person.fill" : (isWarmup ? "paywall.plates" : (isVolumeMatrix || isGeneral ? "square.grid.3x3.fill" : (isRepLab ? "chart.xyaxis.line" : "info.circle.fill"))), width: comfortableText ? (width - 48) * 0.66 : width - 48)
+                benefit(3, icon: isCloudBackup ? "arrow.triangle.2.circlepath" : (isWarmup ? "plus" : (isVolumeMatrix ? "calendar" : (isRepLab ? "chart.bar.fill" : (isGeneral ? "chart.xyaxis.line" : "bolt.fill")))), width: comfortableText ? (width - 48) * 0.66 : width - 48)
             }
             if isRepLab {
                 Text(LanguageManager.t("\(copyPrefix).reference_note"))

@@ -151,7 +151,7 @@ public struct ProPaywallSheet: View {
     }
 
     private var isIllustratedFeature: Bool {
-        feature == nil || feature == .autoProgression || feature == .warmupCalculator || feature == .volumeMatrix || feature == .formLab
+        feature == nil || feature == .autoProgression || feature == .warmupCalculator || feature == .volumeMatrix || feature == .formLab || feature == .cloudBackup
     }
 
     private var headlineKey: String {
