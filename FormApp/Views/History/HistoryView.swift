@@ -865,60 +865,71 @@ private struct BoxDayCell: View {
     let onSelectDay: (Date, String, WorkoutDayStatus) -> Void
 
     var body: some View {
-        ZStack {
-            if let date = dateOpt {
-                let dateString = WorkoutCalendar.formatDate(date)
-                let status = statuses[dateString]
-                let isToday = (dateString == todayStr)
-                let calendar = Calendar.current
-                let dayNumber = calendar.component(.day, from: date)
-                let isClickable = (status == .unfinished || status == .missed || status == .completed)
+        GeometryReader { geometry in
+            let cellSize = min(geometry.size.width, geometry.size.height)
+            // Include the selection ring in the fit calculation, not just the fill.
+            let canGrow = cellSize >= 44
+            let pillWidth = canGrow ? min(48, cellSize - 6) : min(32, max(0, cellSize - 6))
+            let ringWidth = canGrow ? pillWidth + 4 : min(38, max(0, cellSize - 2))
 
-                ZStack {
-                    // Outer border ring for selected day or today
-                    if isSelected {
-                        Ellipse()
-                            .stroke(AppColors.accent, lineWidth: 2)
-                            .frame(width: 38, height: status == nil ? 38 : 38 / calendarDayPillAspectRatio)
-                    } else if isToday {
-                        Ellipse()
-                            .stroke(AppColors.text.opacity(0.8), lineWidth: 1)
-                            .frame(width: 38, height: status == nil ? 38 : 38 / calendarDayPillAspectRatio)
+            ZStack {
+                if let date = dateOpt {
+                    let dateString = WorkoutCalendar.formatDate(date)
+                    let status = statuses[dateString]
+                    let isToday = (dateString == todayStr)
+                    let calendar = Calendar.current
+                    let dayNumber = calendar.component(.day, from: date)
+                    let isClickable = (status == .unfinished || status == .missed || status == .completed)
+
+                    ZStack {
+                        // Outer border ring for selected day or today
+                        if isSelected {
+                            Ellipse()
+                                .strokeBorder(AppColors.accent, lineWidth: 2)
+                                .frame(width: status == nil ? min(38, ringWidth) : ringWidth,
+                                       height: status == nil ? min(38, ringWidth) : ringWidth / calendarDayPillAspectRatio)
+                        } else if isToday {
+                            Ellipse()
+                                .strokeBorder(AppColors.text.opacity(0.8), lineWidth: 1)
+                                .frame(width: status == nil ? min(38, ringWidth) : ringWidth,
+                                       height: status == nil ? min(38, ringWidth) : ringWidth / calendarDayPillAspectRatio)
+                        }
+
+                        // Slightly elliptical status pill
+                        if let status = status {
+                            let colors: AppColors.CalendarPillColors = {
+                                switch status {
+                                case .completed: return AppColors.calendarCompletedPill
+                                case .unfinished: return AppColors.calendarUnfinishedPill
+                                case .missed: return AppColors.calendarMissedPill
+                                }
+                            }()
+
+                            CalendarPill(colors: colors)
+                                .frame(width: pillWidth, height: pillWidth / calendarDayPillAspectRatio)
+
+                            Text("\(dayNumber)")
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundColor(AppColors.background)
+                        } else {
+                            Text("\(dayNumber)")
+                                .font(.system(size: 15, weight: isToday ? .semibold : .regular))
+                                .foregroundColor(dateString > todayStr ? AppColors.muted.opacity(0.45) : AppColors.secondaryText)
+                        }
                     }
-
-                    // Slightly elliptical status pill
-                    if let status = status {
-                        let colors: AppColors.CalendarPillColors = {
-                            switch status {
-                            case .completed: return AppColors.calendarCompletedPill
-                            case .unfinished: return AppColors.calendarUnfinishedPill
-                            case .missed: return AppColors.calendarMissedPill
-                            }
-                        }()
-
-                        CalendarPill(colors: colors)
-                            .frame(width: 32, height: 32 / calendarDayPillAspectRatio)
-
-                        Text("\(dayNumber)")
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(AppColors.background)
-                    } else {
-                        Text("\(dayNumber)")
-                            .font(.system(size: 15, weight: isToday ? .semibold : .regular))
-                            .foregroundColor(dateString > todayStr ? AppColors.muted.opacity(0.45) : AppColors.secondaryText)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        if isClickable, let status = status {
+                            onSelectDay(date, dateString, status)
+                        }
                     }
+                    .accessibilityIdentifier("history-day-\(dateString)")
+                } else {
+                    Color.clear
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    if isClickable, let status = status {
-                        onSelectDay(date, dateString, status)
-                    }
-                }
-                .accessibilityIdentifier("history-day-\(dateString)")
-            } else {
-                Color.clear
             }
+            .frame(width: geometry.size.width, height: geometry.size.height)
         }
         .aspectRatio(1, contentMode: .fit)
     }
