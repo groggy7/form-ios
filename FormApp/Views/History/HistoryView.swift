@@ -816,30 +816,26 @@ private struct CalendarPill: View {
                 .fill(LinearGradient(
                     stops: [
                         .init(color: colors.light, location: 0),
-                        .init(color: colors.body, location: 0.5),
+                        .init(color: colors.body, location: 0.3),
+                        .init(color: colors.body, location: 0.7),
                         .init(color: colors.shade, location: 1)
                     ],
                     startPoint: .topTrailing,
                     endPoint: .bottomLeading
                 ))
                 .overlay {
-                    Ellipse().fill(RadialGradient(
+                    // Light wraps around the ellipse without washing out its vivid center.
+                    Ellipse().fill(EllipticalGradient(
                         stops: [
-                            .init(color: .white.opacity(0.46), location: 0),
-                            .init(color: .white.opacity(0.14), location: 0.38),
-                            .init(color: .clear, location: 1)
+                            .init(color: .clear, location: 0),
+                            .init(color: .clear, location: 0.55),
+                            .init(color: .white.opacity(0.06), location: 0.72),
+                            .init(color: .white.opacity(0.24), location: 0.9),
+                            .init(color: .white.opacity(0.42), location: 1)
                         ],
-                        center: UnitPoint(x: 0.28, y: 0.18),
-                        startRadius: 0,
-                        endRadius: width * 0.78
-                    ))
-                }
-                .overlay {
-                    Ellipse().fill(RadialGradient(
-                        colors: [.white.opacity(0.14), .clear],
-                        center: UnitPoint(x: 0.65, y: 0.88),
-                        startRadius: 0,
-                        endRadius: width * 0.65
+                        center: .center,
+                        startRadiusFraction: 0,
+                        endRadiusFraction: 0.5
                     ))
                 }
                 .overlay {
