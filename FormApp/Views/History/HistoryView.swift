@@ -869,7 +869,7 @@ private struct BoxDayCell: View {
             let cellSize = min(geometry.size.width, geometry.size.height)
             // Include the selection ring in the fit calculation, not just the fill.
             let canGrow = cellSize >= 44
-            let pillWidth = canGrow ? min(48, cellSize - 6) : min(32, max(0, cellSize - 6))
+            let pillWidth = canGrow ? min(40, cellSize - 6) : min(32, max(0, cellSize - 6))
             let ringWidth = canGrow ? pillWidth + 4 : min(38, max(0, cellSize - 2))
 
             ZStack {
