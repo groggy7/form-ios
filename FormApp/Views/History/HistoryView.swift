@@ -436,7 +436,6 @@ public struct HistoryView: View {
             let activeDay = draft.assignedCalendarDate
                 ?? store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(draft.id)" })?.date
                 ?? WorkoutCalendar.localDate(from: draft.startedAt)
-                ?? WorkoutCalendar.scheduledDate(forWeekday: draft.workout.day, relativeTo: Date())
             if activeDay == dateString {
                 let now = Int64(Date().timeIntervalSince1970 * 1000)
                 return SessionProgress.from(draft: draft, nowEpochMillis: now)

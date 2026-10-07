@@ -770,9 +770,9 @@ public enum WorkoutCalendar {
         let weekday = cal.component(.weekday, from: date)
         let leadingDays = (weekday + 5) % 7
         if let monday = cal.date(byAdding: .day, value: -leadingDays, to: date) {
-            return formatDate(monday)
+            return formatDate(monday, timeZone: cal.timeZone)
         }
-        return formatDate(date)
+        return formatDate(date, timeZone: cal.timeZone)
     }
 
     public static func scheduledDate(
@@ -894,7 +894,9 @@ public enum WorkoutCalendar {
                 entriesMap[entry.id] = entry
             }
         }
-        let cal = Calendar(identifier: .gregorian)
+        var cal = Calendar(identifier: .gregorian)
+        cal.timeZone = timeZone
+        cal.firstWeekday = 2 // Monday
         for session in sessions {
             let id = "session:\(session.id)"
             // Preserve an explicit past-day assignment; otherwise use the actual
@@ -912,38 +914,48 @@ public enum WorkoutCalendar {
         }
         let entriesByDate = Set(entriesMap.values.map { $0.date })
         var missedSet = Set(history.missedDates).subtracting(entriesByDate)
-        let todayDate = parseDate(today) ?? Date()
+        let todayDate = parseDate(today, timeZone: timeZone) ?? Date()
 
         var activeWeekMondays = Set<String>()
         for missedStr in history.missedDates {
-            if let d = parseDate(missedStr) {
+            if let d = parseDate(missedStr, timeZone: timeZone) {
                 activeWeekMondays.insert(mondayOfCurrentWeek(for: d, calendar: cal))
             }
         }
         if raw != nil, let recentThreshold = cal.date(byAdding: .day, value: -14, to: todayDate) {
             for entry in entriesMap.values {
-                if let d = parseDate(entry.date), d >= recentThreshold {
+                if let d = parseDate(entry.date, timeZone: timeZone), d >= recentThreshold {
                     activeWeekMondays.insert(mondayOfCurrentWeek(for: d, calendar: cal))
                 }
             }
         }
 
         for weekMondayStr in activeWeekMondays {
-            guard let weekMonday = parseDate(weekMondayStr) else { continue }
+            guard let weekMonday = parseDate(weekMondayStr, timeZone: timeZone) else { continue }
             let weekSessions = sessions.filter { session in
                 guard let sDate = parseIsoTimestamp(session.startedAt) ?? parseIsoTimestamp(session.completedAt) else { return false }
                 return mondayOfCurrentWeek(for: sDate, calendar: cal) == weekMondayStr
             }
             let weekProgramId = weekSessions.first?.programId
             let weekProgram = programs.first(where: { $0.id == weekProgramId })
-            let weekWeekdays = weekProgram?.workouts.filter { !$0.exercises.isEmpty }.map { $0.day }.sorted()
-                ?? (!history.scheduledWeekdays.isEmpty ? history.scheduledWeekdays : weekdays)
+            let activeDays = weekProgram?.workouts.filter { !$0.exercises.isEmpty }.map { $0.day }.sorted() ?? []
+            let weekWeekdays = !activeDays.isEmpty ? activeDays : (!history.scheduledWeekdays.isEmpty ? history.scheduledWeekdays : weekdays)
+
+            let loggedWorkoutIds = Set(weekSessions.filter { session in
+                session.totalCompletedSets > 0 || session.exerciseLogs.contains { log in
+                    log.sets.contains { ($0.reps ?? 0) > 0 || ($0.weightKg ?? 0.0) > 0.0 }
+                }
+            }.map { $0.workoutId })
 
             for dayIndex in weekWeekdays {
                 if let dayDate = cal.date(byAdding: .day, value: dayIndex - 1, to: weekMonday) {
-                    let dayStr = formatDate(dayDate)
-                    if dayDate < todayDate && !entriesByDate.contains(dayStr) {
+                    let dayStr = formatDate(dayDate, timeZone: timeZone)
+                    let workoutForDay = weekProgram?.workouts.first(where: { $0.day == dayIndex })
+                    let isWorkoutDoneThisWeek = (workoutForDay != nil && loggedWorkoutIds.contains(workoutForDay!.id))
+                    if dayDate < todayDate && !entriesByDate.contains(dayStr) && !isWorkoutDoneThisWeek {
                         missedSet.insert(dayStr)
+                    } else if isWorkoutDoneThisWeek {
+                        missedSet.remove(dayStr)
                     }
                 }
             }

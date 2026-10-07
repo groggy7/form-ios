@@ -3830,6 +3830,49 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(migrated.entries.first?.date, "2026-09-05")
     }
 
+    func testWorkoutPerformedOnDifferentDayKeepsPlanDayNeutral() {
+        let testToday = "2026-10-05" // Monday
+        // Friday workout (w-fri, day 5) performed on Sunday (2026-10-04)
+        let sundaySession = WorkoutSessionRecord(
+            id: "s-sun", programId: "p1", workoutId: "w-fri", workoutTitle: "Friday Upper",
+            startedAt: "2026-10-04T10:00:00Z", completedAt: "2026-10-04T10:45:00Z",
+            durationSeconds: 2700, totalVolumeKg: 400, totalCompletedSets: 3,
+            exerciseLogs: [SessionExerciseLog(exerciseName: "OHP", sets: [SessionSetLog(setNumber: 1, weightKg: 40, reps: 10)], targetSets: 1)],
+            isComplete: true
+        )
+        let program = Program(
+            id: "p1", name: "Split",
+            workouts: [
+                Workout(id: "w-mon", day: 1, title: "Mon", exercises: [Exercise(name: "Bench", sets: 1)]),
+                Workout(id: "w-fri", day: 5, title: "Friday Upper", exercises: [Exercise(name: "OHP", sets: 1)])
+            ]
+        )
+        let history = WorkoutCalendarHistory(
+            nextScheduledDate: "2026-09-28",
+            scheduledWeekdays: [1, 5],
+            missedDates: [],
+            entries: [
+                WorkoutDayEntry(id: "session:s-sun", date: "2026-10-04", status: .completed)
+            ]
+        )
+        let utc = TimeZone(identifier: "UTC")!
+        let restored = WorkoutCalendar.restore(
+            raw: history,
+            sessions: [sundaySession],
+            today: testToday,
+            timeZone: utc,
+            weekdays: [1, 5],
+            programs: [program]
+        )
+        let statuses = WorkoutCalendar.statuses(history: restored, today: testToday)
+        // Monday 2026-09-28 was never done -> missed
+        XCTAssertEqual(statuses["2026-09-28"], WorkoutDayStatus.missed)
+        // Friday 2026-10-02 was performed on Sunday 2026-10-04 -> Friday remains neutral (nil), NOT missed
+        XCTAssertNil(statuses["2026-10-02"], "Friday must remain neutral since its workout was performed on Sunday")
+        // Sunday 2026-10-04 has the completed session
+        XCTAssertEqual(statuses["2026-10-04"], WorkoutDayStatus.completed)
+    }
+
     func testProgramExerciseFixedSetsAndRepTargetModificationPersists() {
         let store = AppStore.shared
         guard var program = store.state.programs.first else {

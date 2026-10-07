@@ -400,22 +400,21 @@ public final class AppStore: ObservableObject {
             ? WorkoutSessionUtils.firstIncompleteExerciseIndex(workout: workout, setsByExercise: setsByExercise)
             : 0
 
-        let previousDuration = unfinishedRecord?.durationSeconds ?? 0
-        let clampedPrevSecs = min(max(0, previousDuration), 4 * 3600)
-
-        let scheduledDay = WorkoutCalendar.scheduledDate(forWeekday: workout.day, relativeTo: now)
-        let isPastOrScheduled = allowPast || workout.day <= currentWeekDayNumber()
+        let unfinishedRecordDate: String? = {
+            guard let recId = unfinishedRecord?.id else { return nil }
+            return state.calendarHistory?.entries.first(where: { $0.id == "session:\(recId)" })?.date
+                ?? WorkoutCalendar.localDate(from: unfinishedRecord?.startedAt)
+        }()
+        let todayStr = WorkoutCalendar.formatDate(now)
+        let isSameDayUnfinished = (unfinishedRecordDate == nil || unfinishedRecordDate == todayStr)
         let sessionDay: String = {
             if let assigned = assignedCalendarDate { return assigned }
-            if isPastOrScheduled {
-                return scheduledDay
-            }
-            if let recId = unfinishedRecord?.id,
-               let existingDate = state.calendarHistory?.entries.first(where: { $0.id == "session:\(recId)" })?.date {
-                return existingDate
-            }
-            return WorkoutCalendar.formatDate(now)
+            if isSameDayUnfinished, let recDate = unfinishedRecordDate { return recDate }
+            return todayStr
         }()
+
+        let previousDuration = isSameDayUnfinished ? (unfinishedRecord?.durationSeconds ?? 0) : 0
+        let clampedPrevSecs = min(max(0, previousDuration), 4 * 3600)
 
         let startedAtDate = now.addingTimeInterval(-Double(clampedPrevSecs))
         let startedAtEpoch = Int64(startedAtDate.timeIntervalSince1970 * 1000)
@@ -425,7 +424,7 @@ public final class AppStore: ObservableObject {
         let startedAtTimestamp = formatter.string(from: startedAtDate)
 
         let draft = ActiveSessionDraft(
-            id: unfinishedRecord?.id ?? UUID().uuidString,
+            id: (assignedCalendarDate != nil || isSameDayUnfinished) ? (unfinishedRecord?.id ?? UUID().uuidString) : UUID().uuidString,
             programId: programId,
             workout: workout,
             startedAt: startedAtTimestamp,
