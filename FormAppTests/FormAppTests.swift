@@ -2550,6 +2550,123 @@ final class FormAppTests: XCTestCase {
         }
     }
 
+    func testMultiSessionWorkoutDayDetailSections() {
+        // Wednesday Oct 7, 2026
+        let wedDate = WorkoutCalendar.parseDate("2026-10-07")!
+        let monDate = WorkoutCalendar.parseDate("2026-10-05")!
+
+        let exMon = Exercise(id: "ex_mon", name: "Barbell Bench Press", sets: 3)
+        let workoutMon = Workout(id: "w_mon", day: 1, title: "Heavy Bench & Push", exercises: [exMon])
+
+        let exWed = Exercise(id: "ex_wed", name: "Barbell Deadlift", sets: 3)
+        let workoutWed = Workout(id: "w_wed", day: 3, title: "Heavy Pull & Upper Back", exercises: [exWed])
+
+        let logMon = SessionExerciseLog(exerciseName: "Barbell Bench Press", sets: [
+            SessionSetLog(setNumber: 1, weightKg: 80, reps: 5)
+        ], targetSets: 3)
+        let recordMon = WorkoutSessionRecord(
+            id: "rec_mon",
+            programId: "p",
+            workoutId: "w_mon",
+            workoutTitle: "Heavy Bench & Push",
+            startedAt: "2026-10-07T14:00:00Z",
+            completedAt: "2026-10-07T14:45:00Z",
+            durationSeconds: 2700,
+            totalVolumeKg: 400.0,
+            totalCompletedSets: 1,
+            exerciseLogs: [logMon],
+            isComplete: false
+        )
+
+        let logWed = SessionExerciseLog(exerciseName: "Barbell Deadlift", sets: [
+            SessionSetLog(setNumber: 1, weightKg: 120, reps: 5),
+            SessionSetLog(setNumber: 2, weightKg: 120, reps: 5),
+            SessionSetLog(setNumber: 3, weightKg: 120, reps: 5)
+        ], targetSets: 3)
+        let recordWed = WorkoutSessionRecord(
+            id: "rec_wed",
+            programId: "p",
+            workoutId: "w_wed",
+            workoutTitle: "Heavy Pull & Upper Back",
+            startedAt: "2026-10-07T10:00:00Z",
+            completedAt: "2026-10-07T10:45:00Z",
+            durationSeconds: 2700,
+            totalVolumeKg: 1800.0,
+            totalCompletedSets: 3,
+            exerciseLogs: [logWed],
+            isComplete: true
+        )
+
+        let itemsWed = HistoryDayDetailData.buildExerciseProgress(sessionRecord: recordWed, workout: workoutWed)
+        XCTAssertEqual(itemsWed.count, 1)
+        XCTAssertEqual(itemsWed.first?.completedSets, 3)
+
+        let itemsMon = HistoryDayDetailData.buildExerciseProgress(sessionRecord: recordMon, workout: workoutMon)
+        XCTAssertEqual(itemsMon.count, 1)
+        XCTAssertEqual(itemsMon.first?.completedSets, 1)
+
+        let secWed = WorkoutDaySection(
+            sessionRecord: recordWed,
+            workout: workoutWed,
+            workoutTitle: workoutWed.title,
+            originDate: nil,
+            originDateFormatted: nil,
+            completedSets: 3,
+            plannedSets: 3,
+            totalVolumeKg: 1800.0,
+            durationSeconds: 2700,
+            isComplete: true,
+            exerciseItems: itemsWed
+        )
+
+        let secMon = WorkoutDaySection(
+            sessionRecord: recordMon,
+            workout: workoutMon,
+            workoutTitle: workoutMon.title,
+            originDate: monDate,
+            originDateFormatted: "Oct 5, 2026",
+            completedSets: 1,
+            plannedSets: 3,
+            totalVolumeKg: 400.0,
+            durationSeconds: 2700,
+            isComplete: false,
+            exerciseItems: itemsMon
+        )
+
+        let detail = HistoryDayDetailData(
+            date: wedDate,
+            dateString: "2026-10-07",
+            status: .completed,
+            sessionRecord: recordWed,
+            workout: workoutWed,
+            sections: [secWed, secMon]
+        )
+
+        XCTAssertEqual(detail.sections.count, 2)
+        XCTAssertNil(detail.sections[0].originDate)
+        XCTAssertNotNil(detail.sections[1].originDate)
+        XCTAssertEqual(detail.sections[1].originDateFormatted, "Oct 5, 2026")
+
+        // Translations verification
+        LanguageManager.setLanguage("en")
+        XCTAssertEqual(LanguageManager.t("history.todayExercises"), "Today's Exercises")
+        XCTAssertEqual(LanguageManager.t("history.multipleWorkouts", ["count": "2"]), "2 Workouts")
+        XCTAssertEqual(LanguageManager.t("history.originallyScheduled", ["date": "Oct 5, 2026"]), "Originally scheduled: Oct 5, 2026")
+
+        LanguageManager.setLanguage("tr")
+        XCTAssertEqual(LanguageManager.t("history.todayExercises"), "Bugünün Egzersizleri")
+        XCTAssertEqual(LanguageManager.t("history.multipleWorkouts", ["count": "2"]), "2 Antrenman")
+        XCTAssertEqual(LanguageManager.t("history.originallyScheduled", ["date": "5 Eki 2026"]), "Planlanan gün: 5 Eki 2026")
+        LanguageManager.setLanguage("en")
+
+        // Verify views construct cleanly
+        let detailView = HistoryDetailView(detail: detail, onBack: {})
+        XCTAssertNotNil(detailView)
+
+        let previewCard = HistoryDayPreviewCard(detail: detail, history: [recordWed, recordMon], onOpenDetail: {})
+        XCTAssertNotNil(previewCard)
+    }
+
     func testWorkoutCalendarRefreshPreservesEntries() {
         let initial = WorkoutCalendarHistory(
             nextScheduledDate: "2026-08-24",

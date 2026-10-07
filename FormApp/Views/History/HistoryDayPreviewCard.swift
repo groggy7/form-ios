@@ -45,12 +45,20 @@ public struct HistoryDayPreviewCard: View {
     }
 
     private var prExercises: Set<String> {
+        if detail.sections.count > 1 {
+            return Set(detail.sections.compactMap { $0.sessionRecord }.flatMap {
+                PersonalRecordTracker.findSessionPrExercises(history: history, targetRecord: $0)
+            })
+        }
         guard let record = detail.sessionRecord else { return [] }
         return PersonalRecordTracker.findSessionPrExercises(history: history, targetRecord: record)
     }
 
     private var workoutTitle: String {
-        detail.sessionRecord?.workoutTitle
+        if detail.sections.count > 1 {
+            return detail.sections.map { $0.workoutTitle }.joined(separator: " + ")
+        }
+        return detail.sessionRecord?.workoutTitle
             ?? detail.workout?.title
             ?? LanguageManager.t("history.scheduledWorkout")
     }
@@ -72,6 +80,9 @@ public struct HistoryDayPreviewCard: View {
     }
 
     private var dayNumberText: String {
+        if detail.sections.count > 1 {
+            return "\(detail.sections.count) WORKOUTS"
+        }
         if let workout = detail.workout {
             return "DAY \(workout.day)"
         }
@@ -81,6 +92,9 @@ public struct HistoryDayPreviewCard: View {
     }
 
     private var scheduledOriginDateString: String? {
+        if detail.sections.count > 1 {
+            return detail.sections.compactMap { $0.originDateFormatted }.first
+        }
         guard detail.sessionRecord != nil,
               let workout = detail.workout,
               workout.day >= 1 && workout.day <= 7 else { return nil }
@@ -101,6 +115,12 @@ public struct HistoryDayPreviewCard: View {
     }
 
     private var timeDurationText: String {
+        if detail.sections.count > 1 {
+            let durationSeconds = detail.sections.reduce(0) { $0 + $1.durationSeconds }
+            let durationMinutes = max(1, durationSeconds / 60)
+            return LanguageManager.t("history.activeDuration", ["duration": "\(durationMinutes) min"])
+        }
+
         let timeFormatter = DateFormatter()
         timeFormatter.dateFormat = "HH:mm"
 
@@ -134,6 +154,9 @@ public struct HistoryDayPreviewCard: View {
     }
 
     private var volumeKg: Double {
+        if detail.sections.count > 1 {
+            return detail.sections.reduce(0.0) { $0 + $1.totalVolumeKg }
+        }
         if let vol = detail.sessionRecord?.totalVolumeKg, vol > 0.0 {
             return vol
         }
@@ -150,6 +173,29 @@ public struct HistoryDayPreviewCard: View {
     }
 
     private var allExercises: [PreviewExerciseItem] {
+        if detail.sections.count > 1 {
+            var result: [PreviewExerciseItem] = []
+            var idx = 1
+            for sec in detail.sections {
+                for item in sec.exerciseItems {
+                    result.append(
+                        PreviewExerciseItem(
+                            index: idx,
+                            name: item.name,
+                            setsCount: item.completedSets,
+                            targetSets: item.plannedSets,
+                            topSetWeight: item.topSetWeight,
+                            topSetReps: item.topSetReps,
+                            isPr: item.isPr,
+                            isCompleted: item.completedSets >= item.plannedSets && item.completedSets > 0
+                        )
+                    )
+                    idx += 1
+                }
+            }
+            return result
+        }
+
         let planned = detail.workout?.exercises ?? []
         let logs = detail.sessionRecord?.exerciseLogs ?? []
         let activePrs = prExercises

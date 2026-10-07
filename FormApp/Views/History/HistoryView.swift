@@ -1,5 +1,75 @@
 import SwiftUI
 
+public struct HistoryDayExerciseProgress: Identifiable, Equatable {
+    public var id: String { "\(name)-\(prescription)" }
+    public let name: String
+    public let prescription: String
+    public let completedSets: Int
+    public let plannedSets: Int
+    public let topSetWeight: Double?
+    public let topSetReps: Int?
+    public let isPr: Bool
+
+    public init(
+        name: String,
+        prescription: String,
+        completedSets: Int,
+        plannedSets: Int,
+        topSetWeight: Double? = nil,
+        topSetReps: Int? = nil,
+        isPr: Bool = false
+    ) {
+        self.name = name
+        self.prescription = prescription
+        self.completedSets = completedSets
+        self.plannedSets = plannedSets
+        self.topSetWeight = topSetWeight
+        self.topSetReps = topSetReps
+        self.isPr = isPr
+    }
+}
+
+public struct WorkoutDaySection: Identifiable {
+    public var id: String { sessionRecord?.id ?? workout?.id ?? workoutTitle }
+    public let sessionRecord: WorkoutSessionRecord?
+    public let workout: Workout?
+    public let workoutTitle: String
+    public let originDate: Date?
+    public let originDateFormatted: String?
+    public let completedSets: Int
+    public let plannedSets: Int
+    public let totalVolumeKg: Double
+    public let durationSeconds: Int
+    public let isComplete: Bool
+    public let exerciseItems: [HistoryDayExerciseProgress]
+
+    public init(
+        sessionRecord: WorkoutSessionRecord?,
+        workout: Workout?,
+        workoutTitle: String,
+        originDate: Date? = nil,
+        originDateFormatted: String? = nil,
+        completedSets: Int,
+        plannedSets: Int,
+        totalVolumeKg: Double,
+        durationSeconds: Int,
+        isComplete: Bool,
+        exerciseItems: [HistoryDayExerciseProgress]
+    ) {
+        self.sessionRecord = sessionRecord
+        self.workout = workout
+        self.workoutTitle = workoutTitle
+        self.originDate = originDate
+        self.originDateFormatted = originDateFormatted
+        self.completedSets = completedSets
+        self.plannedSets = plannedSets
+        self.totalVolumeKg = totalVolumeKg
+        self.durationSeconds = durationSeconds
+        self.isComplete = isComplete
+        self.exerciseItems = exerciseItems
+    }
+}
+
 public struct HistoryDayDetailData: Identifiable {
     public var id: String { dateString }
     public let date: Date
@@ -7,19 +77,118 @@ public struct HistoryDayDetailData: Identifiable {
     public let status: WorkoutDayStatus
     public let sessionRecord: WorkoutSessionRecord?
     public let workout: Workout?
+    public let sections: [WorkoutDaySection]
 
     public init(
         date: Date,
         dateString: String,
         status: WorkoutDayStatus,
         sessionRecord: WorkoutSessionRecord?,
-        workout: Workout?
+        workout: Workout?,
+        sections: [WorkoutDaySection] = []
     ) {
         self.date = date
         self.dateString = dateString
         self.status = status
         self.sessionRecord = sessionRecord
         self.workout = workout
+        self.sections = sections
+    }
+
+    public static func buildExerciseProgress(
+        sessionRecord: WorkoutSessionRecord?,
+        workout: Workout?,
+        history: [WorkoutSessionRecord] = []
+    ) -> [HistoryDayExerciseProgress] {
+        let isExplicitlyCompleted = sessionRecord?.isComplete == true
+        let prExercises: Set<String> = {
+            if let rec = sessionRecord {
+                return PersonalRecordTracker.findSessionPrExercises(history: history, targetRecord: rec)
+            }
+            return []
+        }()
+
+        func extractTopSet(log: SessionExerciseLog?) -> (Double?, Int?) {
+            guard let validSets = log?.sets.filter({ ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }), !validSets.isEmpty else {
+                return (nil, nil)
+            }
+            let top = validSets.max { a, b in
+                if (a.weightKg ?? 0.0) != (b.weightKg ?? 0.0) {
+                    return (a.weightKg ?? 0.0) < (b.weightKg ?? 0.0)
+                }
+                return (a.reps ?? 0) < (b.reps ?? 0)
+            }
+            return (top?.weightKg, top?.reps)
+        }
+
+        let plannedExercises = workout?.exercises ?? []
+        if !plannedExercises.isEmpty {
+            let planned = plannedExercises.map { ex in
+                let nameKey = ex.name.trimmingCharacters(in: .whitespaces).lowercased()
+                let displayKey = ex.displayName.trimmingCharacters(in: .whitespaces).lowercased()
+                let log = sessionRecord?.exerciseLogs.first { l in
+                    let logKey = l.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
+                    return logKey == nameKey || logKey == displayKey
+                }
+                let plannedCount = log?.targetSets ?? WorkoutSessionUtils.initialSetCount(exercise: ex)
+                let completed = log?.sets.count ?? (isExplicitlyCompleted && sessionRecord == nil ? plannedCount : 0)
+                let prescription: String = {
+                    if let targetSets = log?.targetSets, let reps = ex.reps {
+                        return "\(targetSets) × \(reps.displayText)"
+                    }
+                    return ex.displayPrescription
+                }()
+                let (topWeight, topReps) = extractTopSet(log: log)
+                let rawName = log?.exerciseName ?? ex.name
+                let isPr = prExercises.contains(PersonalRecordTracker.normalizeExerciseKey(rawName))
+                return HistoryDayExerciseProgress(
+                    name: ex.displayName,
+                    prescription: prescription,
+                    completedSets: completed,
+                    plannedSets: plannedCount,
+                    topSetWeight: topWeight,
+                    topSetReps: topReps,
+                    isPr: isPr
+                )
+            }
+            let extraLogs = (sessionRecord?.exerciseLogs ?? []).filter { log in
+                let logKey = log.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
+                return !plannedExercises.contains { ex in
+                    ex.name.trimmingCharacters(in: .whitespaces).lowercased() == logKey ||
+                    ex.displayName.trimmingCharacters(in: .whitespaces).lowercased() == logKey
+                }
+            }.map { log in
+                let planned = log.targetSets ?? max(log.sets.count, 1)
+                let (topWeight, topReps) = extractTopSet(log: log)
+                let isPr = prExercises.contains(PersonalRecordTracker.normalizeExerciseKey(log.exerciseName))
+                return HistoryDayExerciseProgress(
+                    name: ContentLocalizer.shared.exerciseName(exerciseId: nil, fallback: log.exerciseName),
+                    prescription: "",
+                    completedSets: log.sets.count,
+                    plannedSets: planned,
+                    topSetWeight: topWeight,
+                    topSetReps: topReps,
+                    isPr: isPr
+                )
+            }
+            return planned + extraLogs
+        } else if let rec = sessionRecord {
+            return rec.exerciseLogs.map { log in
+                let planned = log.targetSets ?? max(log.sets.count, 1)
+                let (topWeight, topReps) = extractTopSet(log: log)
+                let isPr = prExercises.contains(PersonalRecordTracker.normalizeExerciseKey(log.exerciseName))
+                return HistoryDayExerciseProgress(
+                    name: ContentLocalizer.shared.exerciseName(exerciseId: nil, fallback: log.exerciseName),
+                    prescription: "",
+                    completedSets: log.sets.count,
+                    plannedSets: planned,
+                    topSetWeight: topWeight,
+                    topSetReps: topReps,
+                    isPr: isPr
+                )
+            }
+        }
+        return []
     }
 }
 
@@ -444,7 +613,11 @@ public struct HistoryView: View {
             return nil
         }()
 
-        let sessionRecord: WorkoutSessionRecord? = activeRecord ?? store.state.history.first { rec in
+        var daySessions: [WorkoutSessionRecord] = []
+        if let active = activeRecord {
+            daySessions.append(active)
+        }
+        let completedForDay = store.state.history.filter { rec in
             if let calDate = store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(rec.id)" })?.date {
                 return calDate == dateString
             }
@@ -452,50 +625,143 @@ public struct HistoryView: View {
             let completedDate = WorkoutCalendar.localDate(from: rec.completedAt)
             return startDate == dateString || completedDate == dateString
         }
-
-        let workout: Workout?
-        if let rec = sessionRecord {
-            workout = store.state.programs.first(where: { $0.id == rec.programId })?.workouts.first(where: { $0.id == rec.workoutId })
-                ?? store.activeProgram?.workouts.first(where: { $0.id == rec.workoutId })
-                ?? store.state.programs.flatMap(\.workouts).first(where: { $0.id == rec.workoutId })
-                ?? store.activeProgram?.workouts.first(where: { $0.day == dayOfWeek })
-        } else {
-            workout = store.activeProgram?.workouts.first(where: { $0.day == dayOfWeek })
-                ?? store.state.programs.flatMap(\.workouts).first(where: { $0.day == dayOfWeek })
+        for rec in completedForDay {
+            if !daySessions.contains(where: { $0.id == rec.id }) {
+                daySessions.append(rec)
+            }
         }
 
-        let hasSets: Bool = {
-            if let rec = sessionRecord {
-                if rec.totalCompletedSets > 0 { return true }
-                return rec.exerciseLogs.contains { log in
-                    log.sets.contains { ($0.reps ?? 0) > 0 || ($0.weightKg ?? 0) > 0 }
-                }
+        let scheduledWorkout = store.activeProgram?.workouts.first(where: { $0.day == dayOfWeek })
+            ?? store.state.programs.flatMap(\.workouts).first(where: { $0.day == dayOfWeek })
+
+        var rawSections: [WorkoutDaySection] = []
+        if daySessions.isEmpty {
+            if let scheduled = scheduledWorkout {
+                let items = HistoryDayDetailData.buildExerciseProgress(sessionRecord: nil, workout: scheduled, history: store.state.history)
+                let completedSets = items.reduce(0) { $0 + $1.completedSets }
+                let plannedSets = max(1, items.reduce(0) { $0 + $1.plannedSets })
+                rawSections.append(
+                    WorkoutDaySection(
+                        sessionRecord: nil,
+                        workout: scheduled,
+                        workoutTitle: scheduled.title,
+                        originDate: nil,
+                        originDateFormatted: nil,
+                        completedSets: completedSets,
+                        plannedSets: plannedSets,
+                        totalVolumeKg: 0.0,
+                        durationSeconds: 0,
+                        isComplete: false,
+                        exerciseItems: items
+                    )
+                )
             }
-            if let active = store.activeSession {
-                let allSets = active.setsByExercise.values.flatMap { $0 }
-                if allSets.contains(where: { $0.isCompleted }) { return true }
+        } else {
+            for rec in daySessions {
+                let recWorkout: Workout? = store.state.programs.first(where: { $0.id == rec.programId })?.workouts.first(where: { $0.id == rec.workoutId })
+                    ?? store.activeProgram?.workouts.first(where: { $0.id == rec.workoutId })
+                    ?? store.state.programs.flatMap(\.workouts).first(where: { $0.id == rec.workoutId })
+                    ?? (daySessions.count == 1 ? scheduledWorkout : nil)
+
+                let originDate: Date? = {
+                    guard let w = recWorkout, w.day >= 1 && w.day <= 7 else { return nil }
+                    var calWeek = Calendar(identifier: .gregorian)
+                    calWeek.firstWeekday = 2 // Monday
+                    let weekMondayStr = WorkoutCalendar.mondayOfCurrentWeek(for: date, calendar: calWeek)
+                    guard let weekMonday = WorkoutCalendar.parseDate(weekMondayStr) else { return nil }
+                    guard let scheduledDate = calWeek.date(byAdding: .day, value: w.day - 1, to: weekMonday) else { return nil }
+                    let scheduledStr = WorkoutCalendar.formatDate(scheduledDate)
+                    return scheduledStr != dateString ? scheduledDate : nil
+                }()
+
+                let originDateFormatted: String? = {
+                    guard let od = originDate else { return nil }
+                    let formatter = DateFormatter()
+                    formatter.dateStyle = .medium
+                    formatter.timeStyle = .none
+                    formatter.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
+                    return formatter.string(from: od)
+                }()
+
+                let items = HistoryDayDetailData.buildExerciseProgress(sessionRecord: rec, workout: recWorkout, history: store.state.history)
+                let completedSets = items.reduce(0) { $0 + $1.completedSets }
+                let plannedSets = max(1, items.reduce(0) { $0 + $1.plannedSets })
+
+                let isSessionComplete: Bool = {
+                    if let active = store.activeSession, rec.id == activeRecord?.id {
+                        return WorkoutSessionUtils.isComplete(draft: active)
+                    }
+                    return WorkoutCalendar.isSessionComplete(session: rec, workout: recWorkout)
+                }()
+
+                let secVolumeKg = rec.totalVolumeKg > 0.0 ? rec.totalVolumeKg : rec.exerciseLogs.reduce(0.0) { sum, log in
+                    sum + log.sets.reduce(0.0) { setSum, s in setSum + (s.weightKg ?? 0.0) * Double(s.reps ?? 0) }
+                }
+
+                rawSections.append(
+                    WorkoutDaySection(
+                        sessionRecord: rec,
+                        workout: recWorkout,
+                        workoutTitle: rec.workoutTitle.isEmpty ? (recWorkout?.title ?? LanguageManager.t("history.scheduledWorkout")) : rec.workoutTitle,
+                        originDate: originDate,
+                        originDateFormatted: originDateFormatted,
+                        completedSets: completedSets,
+                        plannedSets: plannedSets,
+                        totalVolumeKg: secVolumeKg,
+                        durationSeconds: rec.durationSeconds,
+                        isComplete: isSessionComplete,
+                        exerciseItems: items
+                    )
+                )
+            }
+        }
+
+        let sortedSections = rawSections.sorted { (a, b) -> Bool in
+            if (a.originDate == nil) != (b.originDate == nil) {
+                return a.originDate == nil
+            }
+            if let da = a.originDate, let db = b.originDate {
+                return da < db
             }
             return false
-        }()
-        let isFullyComplete: Bool = {
-            if let active = store.activeSession, activeRecord != nil {
-                return WorkoutSessionUtils.isComplete(draft: active)
-            }
-            if let rec = sessionRecord {
-                return WorkoutCalendar.isSessionComplete(session: rec, workout: workout)
+        }
+
+        let primarySection = sortedSections.first { $0.isComplete }
+            ?? sortedSections.first { $0.originDate == nil }
+            ?? sortedSections.first
+
+        let primarySessionRecord = primarySection?.sessionRecord ?? daySessions.first
+        let primaryWorkout = primarySection?.workout ?? scheduledWorkout
+
+        let hasAnySets: Bool = {
+            if daySessions.contains(where: { rec in
+                rec.totalCompletedSets > 0 || rec.exerciseLogs.contains { log in
+                    log.sets.contains { ($0.weightKg ?? 0) > 0 || ($0.reps ?? 0) > 0 }
+                }
+            }) { return true }
+            if let active = store.activeSession {
+                let activeDay = active.assignedCalendarDate
+                    ?? store.state.calendarHistory?.entries.first(where: { $0.id == "session:\(active.id)" })?.date
+                    ?? WorkoutCalendar.localDate(from: active.startedAt)
+                if activeDay == dateString {
+                    let allSets = active.setsByExercise.values.flatMap { $0 }
+                    if allSets.contains(where: { $0.isCompleted }) { return true }
+                }
             }
             return false
         }()
 
+        let anyComplete = sortedSections.contains { $0.isComplete }
         let isToday = (dateString == WorkoutCalendar.formatDate(Date()))
+
         let effectiveStatus: WorkoutDayStatus = {
-            if isFullyComplete {
+            if anyComplete {
                 return .completed
             }
-            if hasSets {
+            if hasAnySets {
                 return .unfinished
             }
-            if sessionRecord != nil && !isToday {
+            if !daySessions.isEmpty && !isToday {
                 return .missed
             }
             if let status = status {
@@ -508,8 +774,9 @@ public struct HistoryView: View {
             date: date,
             dateString: dateString,
             status: effectiveStatus,
-            sessionRecord: sessionRecord,
-            workout: workout
+            sessionRecord: primarySessionRecord,
+            workout: primaryWorkout,
+            sections: sortedSections
         )
     }
 }
@@ -606,9 +873,9 @@ public struct HistoryDayDetailSheet: View {
     public var body: some View {
         let formattedDate = formattedFullDate(for: detail.date)
 
-        let workoutTitle = detail.sessionRecord?.workoutTitle
-            ?? detail.workout?.title
-            ?? LanguageManager.t("history.scheduledWorkout")
+        let workoutTitle = detail.sections.count > 1
+            ? detail.sections.map { $0.workoutTitle }.joined(separator: " + ")
+            : (detail.sessionRecord?.workoutTitle ?? detail.workout?.title ?? LanguageManager.t("history.scheduledWorkout"))
 
         let items = exerciseProgressList()
         let allCompleted = !items.isEmpty && items.allSatisfy { $0.completedSets >= $0.plannedSets && $0.plannedSets > 0 }
@@ -621,11 +888,19 @@ public struct HistoryDayDetailSheet: View {
         let halfwayExercises = items.filter { $0.completedSets > 0 && $0.completedSets < $0.plannedSets }
         let unstartedExercises = items.filter { $0.completedSets == 0 }
 
-        let totalCompletedSets = detail.sessionRecord?.totalCompletedSets ?? items.reduce(0) { $0 + $1.completedSets }
-        let totalPlannedSets = max(1, items.reduce(0) { $0 + $1.plannedSets })
+        let totalCompletedSets = detail.sections.count > 1
+            ? detail.sections.reduce(0) { $0 + $1.completedSets }
+            : (detail.sessionRecord?.totalCompletedSets ?? items.reduce(0) { $0 + $1.completedSets })
+        let totalPlannedSets = max(1, detail.sections.count > 1
+            ? detail.sections.reduce(0) { $0 + $1.plannedSets }
+            : items.reduce(0) { $0 + $1.plannedSets })
         let displayCompletedSets = effectiveStatus == .missed ? 0 : totalCompletedSets
-        let durationSeconds = detail.sessionRecord?.durationSeconds ?? 0
-        let totalVolumeKg = detail.sessionRecord?.totalVolumeKg ?? 0.0
+        let durationSeconds = detail.sections.count > 1
+            ? detail.sections.reduce(0) { $0 + $1.durationSeconds }
+            : (detail.sessionRecord?.durationSeconds ?? 0)
+        let totalVolumeKg = detail.sections.count > 1
+            ? detail.sections.reduce(0.0) { $0 + $1.totalVolumeKg }
+            : (detail.sessionRecord?.totalVolumeKg ?? 0.0)
 
         let progressFraction: Double = effectiveStatus == .missed ? 0.0 : min(1.0, max(0.0, Double(totalCompletedSets) / Double(totalPlannedSets)))
         let progressPercent = Int(progressFraction * 100)
@@ -759,7 +1034,76 @@ public struct HistoryDayDetailSheet: View {
                 }
 
                 // Content Sections
-                if allCompleted {
+                if detail.sections.count > 1 {
+                    VStack(alignment: .leading, spacing: 20) {
+                        ForEach(Array(detail.sections.enumerated()), id: \.element.id) { sIndex, sec in
+                            VStack(alignment: .leading, spacing: 10) {
+                                VStack(alignment: .leading, spacing: 4) {
+                                    HStack(alignment: .firstTextBaseline) {
+                                        let headerTitle = sec.originDate == nil
+                                            ? "\(LanguageManager.t("history.todayExercises")) · \(sec.workoutTitle)"
+                                            : sec.workoutTitle
+                                        Text(headerTitle)
+                                            .font(.system(size: 17, weight: .bold))
+                                            .foregroundColor(AppColors.text)
+                                        Spacer()
+                                        Text("\(sec.exerciseItems.count)")
+                                            .font(.system(size: 15, weight: .regular))
+                                            .foregroundColor(AppColors.secondaryText)
+                                            .frame(width: 20, alignment: .center)
+                                    }
+
+                                    if let origin = sec.originDateFormatted {
+                                        Text("🗓️ \(LanguageManager.t("history.originallyScheduled", ["date": origin]))")
+                                            .font(.system(size: 11, weight: .medium))
+                                            .foregroundColor(AppColors.secondaryText)
+                                            .padding(.horizontal, 8)
+                                            .padding(.vertical, 4)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                                    .fill(AppColors.surfaceRaised)
+                                                    .overlay(
+                                                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                                            .stroke(AppColors.border, lineWidth: 1)
+                                                    )
+                                            )
+                                    }
+
+                                    let setsStr = LanguageManager.formatSetsFraction(completed: sec.completedSets, total: sec.plannedSets)
+                                    let secVolumeStr = sec.totalVolumeKg > 0.0 ? " · \(WorkoutSessionUtils.formatWeight(sec.totalVolumeKg)) kg" : ""
+                                    Text("\(setsStr)\(secVolumeStr)")
+                                        .font(.system(size: 12, weight: .regular))
+                                        .foregroundColor(AppColors.secondaryText)
+                                }
+
+                                VStack(spacing: 0) {
+                                    ForEach(Array(sec.exerciseItems.enumerated()), id: \.element.id) { index, item in
+                                        let isItemComplete = item.completedSets >= item.plannedSets && item.plannedSets > 0
+                                        let progItem = ExerciseProgressItem(
+                                            name: item.name,
+                                            prescription: item.prescription,
+                                            completedSets: item.completedSets,
+                                            plannedSets: item.plannedSets,
+                                            topSetWeight: item.topSetWeight,
+                                            topSetReps: item.topSetReps,
+                                            isPr: item.isPr
+                                        )
+                                        exerciseRow(item: progItem, isCompleted: isItemComplete)
+                                        if index < sec.exerciseItems.count - 1 {
+                                            Divider()
+                                                .background(Color.white.opacity(0.08))
+                                        }
+                                    }
+                                }
+                            }
+
+                            if sIndex < detail.sections.count - 1 {
+                                Divider()
+                                    .background(Color.white.opacity(0.12))
+                            }
+                        }
+                    }
+                } else if allCompleted {
                     // Completed Day (Picture 1)
                     VStack(alignment: .leading, spacing: 12) {
                         HStack(alignment: .firstTextBaseline) {
@@ -1087,6 +1431,21 @@ public struct HistoryDayDetailSheet: View {
     }
 
     private func exerciseProgressList() -> [ExerciseProgressItem] {
+        if !detail.sections.isEmpty {
+            return detail.sections.flatMap { sec in
+                sec.exerciseItems.map { item in
+                    ExerciseProgressItem(
+                        name: item.name,
+                        prescription: item.prescription,
+                        completedSets: item.completedSets,
+                        plannedSets: item.plannedSets,
+                        topSetWeight: item.topSetWeight,
+                        topSetReps: item.topSetReps,
+                        isPr: item.isPr
+                    )
+                }
+            }
+        }
         let isExplicitlyCompleted = detail.status == .completed || detail.sessionRecord?.isComplete == true
         let prExercises: Set<String> = {
             if let rec = detail.sessionRecord {

@@ -24,9 +24,14 @@ public struct HistoryDetailView: View {
     public var body: some View {
         let formattedDate = formattedFullDate(for: detail.date)
 
-        let workoutTitle = detail.sessionRecord?.workoutTitle
-            ?? detail.workout?.title
-            ?? LanguageManager.t("history.scheduledWorkout")
+        let workoutTitle: String = {
+            if detail.sections.count > 1 {
+                return detail.sections.map { $0.workoutTitle }.joined(separator: " + ")
+            }
+            return detail.sessionRecord?.workoutTitle
+                ?? detail.workout?.title
+                ?? LanguageManager.t("history.scheduledWorkout")
+        }()
 
         let items = exerciseProgressList()
         let allCompleted = !items.isEmpty && items.allSatisfy { $0.completedSets >= $0.plannedSets && $0.plannedSets > 0 }
@@ -47,11 +52,19 @@ public struct HistoryDetailView: View {
         let halfwayExercises = items.filter { $0.completedSets > 0 && $0.completedSets < $0.plannedSets }
         let unstartedExercises = items.filter { $0.completedSets == 0 }
 
-        let totalCompletedSets = items.reduce(0) { $0 + $1.completedSets }
-        let totalPlannedSets = max(1, items.reduce(0) { $0 + $1.plannedSets })
+        let totalCompletedSets = detail.sections.count > 1
+            ? detail.sections.reduce(0) { $0 + $1.completedSets }
+            : items.reduce(0) { $0 + $1.completedSets }
+        let totalPlannedSets = max(1, detail.sections.count > 1
+            ? detail.sections.reduce(0) { $0 + $1.plannedSets }
+            : items.reduce(0) { $0 + $1.plannedSets })
         let displayCompletedSets = effectiveStatus == .missed ? 0 : totalCompletedSets
-        let durationSeconds = detail.sessionRecord?.durationSeconds ?? 0
-        let totalVolumeKg = detail.sessionRecord?.totalVolumeKg ?? 0.0
+        let durationSeconds = detail.sections.count > 1
+            ? detail.sections.reduce(0) { $0 + $1.durationSeconds }
+            : (detail.sessionRecord?.durationSeconds ?? 0)
+        let totalVolumeKg = detail.sections.count > 1
+            ? detail.sections.reduce(0.0) { $0 + $1.totalVolumeKg }
+            : (detail.sessionRecord?.totalVolumeKg ?? 0.0)
 
         let progressFraction: Double = effectiveStatus == .missed ? 0.0 : min(1.0, max(0.0, Double(totalCompletedSets) / Double(totalPlannedSets)))
         let progressPercent = Int(progressFraction * 100)
@@ -163,7 +176,22 @@ public struct HistoryDetailView: View {
                                 )
                                 .accessibilityIdentifier("history-detail-status")
 
-                            if let scheduledOrigin = scheduledOriginDateString {
+                            if detail.sections.count > 1 {
+                                Text(LanguageManager.t("history.multipleWorkouts", ["count": "\(detail.sections.count)"]))
+                                    .font(.system(size: 12, weight: .medium))
+                                    .foregroundColor(AppColors.secondaryText)
+                                    .padding(.horizontal, 10)
+                                    .padding(.vertical, 6)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                            .fill(AppColors.surfaceRaised)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                                    .stroke(AppColors.border, lineWidth: 1)
+                                            )
+                                    )
+                                    .accessibilityIdentifier("history-detail-multiple-workouts")
+                            } else if let scheduledOrigin = scheduledOriginDateString {
                                 Text("🗓️ \(LanguageManager.t("history.originallyScheduled", ["date": scheduledOrigin]))")
                                     .font(.system(size: 12, weight: .medium))
                                     .foregroundColor(AppColors.secondaryText)
@@ -248,7 +276,67 @@ public struct HistoryDetailView: View {
                         }
 
                         // Content Sections
-                        if allCompleted {
+                        if detail.sections.count > 1 {
+                            VStack(alignment: .leading, spacing: 20) {
+                                ForEach(Array(detail.sections.enumerated()), id: \.element.id) { sIndex, sec in
+                                    VStack(alignment: .leading, spacing: 10) {
+                                        VStack(alignment: .leading, spacing: 4) {
+                                            HStack(alignment: .firstTextBaseline) {
+                                                let headerTitle = sec.originDate == nil
+                                                    ? "\(LanguageManager.t("history.todayExercises")) · \(sec.workoutTitle)"
+                                                    : sec.workoutTitle
+                                                Text(headerTitle)
+                                                    .font(.system(size: 17, weight: .bold))
+                                                    .foregroundColor(AppColors.text)
+                                                Spacer()
+                                                Text("\(sec.exerciseItems.count)")
+                                                    .font(.system(size: 15, weight: .regular))
+                                                    .foregroundColor(AppColors.secondaryText)
+                                                    .frame(width: 20, alignment: .center)
+                                            }
+
+                                            if let origin = sec.originDateFormatted {
+                                                Text("🗓️ \(LanguageManager.t("history.originallyScheduled", ["date": origin]))")
+                                                    .font(.system(size: 11, weight: .medium))
+                                                    .foregroundColor(AppColors.secondaryText)
+                                                    .padding(.horizontal, 8)
+                                                    .padding(.vertical, 4)
+                                                    .background(
+                                                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                                            .fill(AppColors.surfaceRaised)
+                                                            .overlay(
+                                                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                                                    .stroke(AppColors.border, lineWidth: 1)
+                                                            )
+                                                    )
+                                            }
+
+                                            let setsStr = LanguageManager.formatSetsFraction(completed: sec.completedSets, total: sec.plannedSets)
+                                            let secVolumeStr = sec.totalVolumeKg > 0.0 ? " · \(weightUnit.formatVolume(sec.totalVolumeKg))" : ""
+                                            Text("\(setsStr)\(secVolumeStr)")
+                                                .font(.system(size: 12, weight: .regular))
+                                                .foregroundColor(AppColors.secondaryText)
+                                        }
+
+                                        VStack(spacing: 0) {
+                                            ForEach(Array(sec.exerciseItems.enumerated()), id: \.element.id) { index, item in
+                                                let isItemComplete = item.completedSets >= item.plannedSets && item.plannedSets > 0
+                                                exerciseRow(item: item, isCompleted: isItemComplete)
+                                                if index < sec.exerciseItems.count - 1 {
+                                                    Divider()
+                                                        .background(Color.white.opacity(0.08))
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if sIndex < detail.sections.count - 1 {
+                                        Divider()
+                                            .background(Color.white.opacity(0.12))
+                                    }
+                                }
+                            }
+                        } else if allCompleted {
                         // Completed Day (Picture 1)
                         VStack(alignment: .leading, spacing: 12) {
                             HStack(alignment: .firstTextBaseline) {
@@ -556,106 +644,16 @@ public struct HistoryDetailView: View {
         return df.string(from: date).capitalized
     }
 
-    private struct ExerciseProgressItem: Identifiable {
-        var id: String { name }
-        let name: String
-        let prescription: String
-        let completedSets: Int
-        let plannedSets: Int
-        let topSetWeight: Double?
-        let topSetReps: Int?
-        let isPr: Bool
-    }
+    private typealias ExerciseProgressItem = HistoryDayExerciseProgress
 
     private func exerciseProgressList() -> [ExerciseProgressItem] {
-        let isExplicitlyCompleted = detail.status == .completed || detail.sessionRecord?.isComplete == true
-        let prExercises: Set<String> = {
-            if let rec = detail.sessionRecord {
-                return PersonalRecordTracker.findSessionPrExercises(history: history, targetRecord: rec)
-            }
-            return []
-        }()
-
-        func extractTopSet(log: SessionExerciseLog?) -> (Double?, Int?) {
-            guard let validSets = log?.sets.filter({ ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }), !validSets.isEmpty else {
-                return (nil, nil)
-            }
-            let top = validSets.max { a, b in
-                if (a.weightKg ?? 0.0) != (b.weightKg ?? 0.0) {
-                    return (a.weightKg ?? 0.0) < (b.weightKg ?? 0.0)
-                }
-                return (a.reps ?? 0) < (b.reps ?? 0)
-            }
-            return (top?.weightKg, top?.reps)
+        if !detail.sections.isEmpty {
+            return detail.sections.flatMap { $0.exerciseItems }
         }
-
-        let plannedExercises = detail.workout?.exercises ?? []
-        if !plannedExercises.isEmpty {
-            let planned = plannedExercises.map { ex in
-                let nameKey = ex.name.trimmingCharacters(in: .whitespaces).lowercased()
-                let displayKey = ex.displayName.trimmingCharacters(in: .whitespaces).lowercased()
-                let log = detail.sessionRecord?.exerciseLogs.first { l in
-                    let logKey = l.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
-                    return logKey == nameKey || logKey == displayKey
-                }
-                let plannedCount = log?.targetSets ?? WorkoutSessionUtils.initialSetCount(exercise: ex)
-                let completed = log?.sets.count ?? (isExplicitlyCompleted && detail.sessionRecord == nil ? plannedCount : 0)
-                let prescription: String = {
-                    if let targetSets = log?.targetSets, let reps = ex.reps {
-                        return "\(targetSets) × \(reps.displayText)"
-                    }
-                    return ex.displayPrescription
-                }()
-                let (topWeight, topReps) = extractTopSet(log: log)
-                let rawName = log?.exerciseName ?? ex.name
-                let isPr = prExercises.contains(PersonalRecordTracker.normalizeExerciseKey(rawName))
-                return ExerciseProgressItem(
-                    name: ex.displayName,
-                    prescription: prescription,
-                    completedSets: completed,
-                    plannedSets: plannedCount,
-                    topSetWeight: topWeight,
-                    topSetReps: topReps,
-                    isPr: isPr
-                )
-            }
-            let extraLogs = (detail.sessionRecord?.exerciseLogs ?? []).filter { log in
-                let logKey = log.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
-                return !plannedExercises.contains { ex in
-                    ex.name.trimmingCharacters(in: .whitespaces).lowercased() == logKey ||
-                    ex.displayName.trimmingCharacters(in: .whitespaces).lowercased() == logKey
-                }
-            }.map { log in
-                let planned = log.targetSets ?? max(log.sets.count, 1)
-                let (topWeight, topReps) = extractTopSet(log: log)
-                let isPr = prExercises.contains(PersonalRecordTracker.normalizeExerciseKey(log.exerciseName))
-                return ExerciseProgressItem(
-                    name: ContentLocalizer.shared.exerciseName(exerciseId: nil, fallback: log.exerciseName),
-                    prescription: "",
-                    completedSets: log.sets.count,
-                    plannedSets: planned,
-                    topSetWeight: topWeight,
-                    topSetReps: topReps,
-                    isPr: isPr
-                )
-            }
-            return planned + extraLogs
-        } else if let rec = detail.sessionRecord {
-            return rec.exerciseLogs.map { log in
-                let planned = log.targetSets ?? max(log.sets.count, 1)
-                let (topWeight, topReps) = extractTopSet(log: log)
-                let isPr = prExercises.contains(PersonalRecordTracker.normalizeExerciseKey(log.exerciseName))
-                return ExerciseProgressItem(
-                    name: ContentLocalizer.shared.exerciseName(exerciseId: nil, fallback: log.exerciseName),
-                    prescription: "",
-                    completedSets: log.sets.count,
-                    plannedSets: planned,
-                    topSetWeight: topWeight,
-                    topSetReps: topReps,
-                    isPr: isPr
-                )
-            }
-        }
-        return []
+        return HistoryDayDetailData.buildExerciseProgress(
+            sessionRecord: detail.sessionRecord,
+            workout: detail.workout,
+            history: history
+        )
     }
 }
