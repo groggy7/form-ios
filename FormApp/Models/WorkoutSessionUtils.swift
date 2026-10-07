@@ -100,7 +100,9 @@ public struct SessionProgress {
             totalVolumeKg: volumeKg,
             totalCompletedSets: completedSets,
             exerciseLogs: exerciseLogs,
-            isComplete: WorkoutSessionUtils.isComplete(draft: draft)
+            isComplete: WorkoutSessionUtils.isComplete(draft: draft),
+            scheduledDate: draft.scheduledDate,
+            workoutSnapshot: draft.workout
         )
     }
 }

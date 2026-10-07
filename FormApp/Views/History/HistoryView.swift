@@ -29,11 +29,18 @@ public struct HistoryDayExerciseProgress: Identifiable, Equatable {
     }
 }
 
+public enum HistoryScheduleSource {
+    case recorded, workoutSnapshot, currentPlan, unknown
+}
+
 public struct WorkoutDaySection: Identifiable {
     public var id: String { sessionRecord?.id ?? workout?.id ?? workoutTitle }
     public let sessionRecord: WorkoutSessionRecord?
     public let workout: Workout?
     public let workoutTitle: String
+    public let scheduledDate: Date?
+    public let scheduleSource: HistoryScheduleSource
+    public let isLiveSession: Bool
     public let originDate: Date?
     public let originDateFormatted: String?
     public let completedSets: Int
@@ -54,11 +61,17 @@ public struct WorkoutDaySection: Identifiable {
         totalVolumeKg: Double,
         durationSeconds: Int,
         isComplete: Bool,
-        exerciseItems: [HistoryDayExerciseProgress]
+        exerciseItems: [HistoryDayExerciseProgress],
+        scheduledDate: Date? = nil,
+        scheduleSource: HistoryScheduleSource = .unknown,
+        isLiveSession: Bool = false
     ) {
         self.sessionRecord = sessionRecord
         self.workout = workout
         self.workoutTitle = workoutTitle
+        self.scheduledDate = scheduledDate ?? originDate
+        self.scheduleSource = scheduleSource
+        self.isLiveSession = isLiveSession
         self.originDate = originDate
         self.originDateFormatted = originDateFormatted
         self.completedSets = completedSets
@@ -67,6 +80,42 @@ public struct WorkoutDaySection: Identifiable {
         self.durationSeconds = durationSeconds
         self.isComplete = isComplete
         self.exerciseItems = exerciseItems
+    }
+
+    public func canAct(on day: Date, today: Date = Date()) -> Bool {
+        Calendar.current.startOfDay(for: day) <= Calendar.current.startOfDay(for: today)
+            && !isComplete && !(workout?.exercises.isEmpty ?? true)
+    }
+
+    public func contextText(on day: Date, today: Date = Date(), index: Int = 0) -> String {
+        guard let scheduledDate else { return LanguageManager.t("history.additionalWorkout") }
+        if Calendar.current.isDate(scheduledDate, inSameDayAs: day) {
+            if index > 0 { return LanguageManager.t("history.alsoScheduledDay") }
+            return Calendar.current.isDate(day, inSameDayAs: today)
+                ? LanguageManager.t("history.todayWorkout")
+                : LanguageManager.t("history.workoutForDate", ["date": Self.formattedDate(day)])
+        }
+        return LanguageManager.t(scheduledDate < day ? "history.earlierWorkout" : "history.otherScheduledDay")
+    }
+
+    public func scheduleLabel(on day: Date) -> String? {
+        guard let scheduledDate else { return LanguageManager.t("history.scheduleUnknown") }
+        let key = scheduleSource == .recorded ? "history.originallyScheduled"
+            : sessionRecord == nil ? "history.scheduledFor" : "history.usualSchedule"
+        if key == "history.usualSchedule", Calendar.current.isDate(scheduledDate, inSameDayAs: day) { return nil }
+        return LanguageManager.t(key, ["date": Self.formattedDate(scheduledDate)])
+    }
+
+    public var statusText: String {
+        LanguageManager.t(isComplete ? "history.completed" : isLiveSession ? "history.inProgress"
+            : sessionRecord == nil ? "history.notStarted" : "history.unfinished")
+    }
+
+    private static func formattedDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .full
+        formatter.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
+        return formatter.string(from: date)
     }
 }
 
@@ -95,11 +144,81 @@ public struct HistoryDayDetailData: Identifiable {
         self.sections = sections
     }
 
+    public var recordedSections: [WorkoutDaySection] {
+        let recorded = sections.filter { $0.sessionRecord != nil }
+        return recorded.isEmpty ? sections : recorded
+    }
+
+    /// A legacy weekly schedule is display context, never a claim about the saved origin.
+    public static func scheduleContext(record: WorkoutSessionRecord, workout: Workout?, day: Date) -> (Date?, HistoryScheduleSource) {
+        if let recorded = record.scheduledDate.flatMap({ WorkoutCalendar.parseDate($0) }) { return (recorded, .recorded) }
+        guard let weekday = (record.workoutSnapshot ?? workout)?.day, (1...7).contains(weekday),
+              var usual = WorkoutCalendar.parseDate(WorkoutCalendar.scheduledDate(forWeekday: weekday, relativeTo: day)) else {
+            return (nil, .unknown)
+        }
+        if usual > day { usual = Calendar.current.date(byAdding: .day, value: -7, to: usual) ?? usual }
+        return (usual, record.workoutSnapshot == nil ? .currentPlan : .workoutSnapshot)
+    }
+
+    public static func groupSections(day: Date, records: [WorkoutSessionRecord], scheduledWorkout: Workout?,
+        activeProgramId: String?, programs: [Program], history: [WorkoutSessionRecord], activeRecordId: String? = nil,
+        manuallyCompleted: Bool = false) -> [WorkoutDaySection] {
+        let dayString = WorkoutCalendar.formatDate(day)
+        var sections = records.map { record -> WorkoutDaySection in
+            let workout = record.workoutSnapshot ?? programs.first { $0.id == record.programId }?.workouts.first { $0.id == record.workoutId }
+            let (scheduledDate, source) = scheduleContext(record: record, workout: workout, day: day)
+            let origin = scheduledDate.flatMap { Calendar.current.isDate($0, inSameDayAs: day) ? nil : $0 }
+            let items = buildExerciseProgress(sessionRecord: record, workout: workout, history: history)
+            let volume = record.totalVolumeKg > 0 ? record.totalVolumeKg : record.exerciseLogs.reduce(0.0) { sum, log in
+                sum + log.sets.filter { !$0.isWarmup }.reduce(0.0) { $0 + ($1.weightKg ?? 0) * Double($1.reps ?? 0) }
+            }
+            return WorkoutDaySection(sessionRecord: record, workout: workout,
+                workoutTitle: record.workoutTitle.isEmpty ? workout?.title ?? LanguageManager.t("history.scheduledWorkout") : record.workoutTitle,
+                originDate: origin, originDateFormatted: origin.map { $0.formatted(date: .long, time: .omitted) },
+                completedSets: items.reduce(0) { $0 + $1.completedSets }, plannedSets: max(1, items.reduce(0) { $0 + $1.plannedSets }),
+                totalVolumeKg: volume, durationSeconds: record.durationSeconds,
+                isComplete: record.id != activeRecordId && WorkoutCalendar.isSessionComplete(session: record, workout: workout),
+                exerciseItems: items, scheduledDate: scheduledDate, scheduleSource: source, isLiveSession: record.id == activeRecordId)
+        }
+        if let scheduled = scheduledWorkout, !scheduled.exercises.isEmpty, !sections.contains(where: {
+            $0.scheduledDate.map { WorkoutCalendar.formatDate($0) } == dayString && $0.sessionRecord?.programId == activeProgramId
+                && $0.sessionRecord?.workoutId == scheduled.id
+        }) {
+            var items = buildExerciseProgress(sessionRecord: nil, workout: scheduled, history: history)
+            let complete = records.isEmpty && manuallyCompleted
+            if complete { items = items.map { HistoryDayExerciseProgress(name: $0.name, prescription: $0.prescription,
+                completedSets: $0.plannedSets, plannedSets: $0.plannedSets) } }
+            sections.append(WorkoutDaySection(sessionRecord: nil, workout: scheduled, workoutTitle: scheduled.title,
+                completedSets: items.reduce(0) { $0 + $1.completedSets }, plannedSets: max(1, items.reduce(0) { $0 + $1.plannedSets }),
+                totalVolumeKg: 0, durationSeconds: 0, isComplete: complete, exerciseItems: items,
+                scheduledDate: day, scheduleSource: .currentPlan))
+        }
+        return sections.enumerated().sorted { a, b in
+            let aToday = a.element.scheduledDate.map { WorkoutCalendar.formatDate($0) } == dayString
+            let bToday = b.element.scheduledDate.map { WorkoutCalendar.formatDate($0) } == dayString
+            if aToday != bToday { return aToday }
+            let aPlan = aToday && a.element.workout?.id == scheduledWorkout?.id && (a.element.sessionRecord == nil || a.element.sessionRecord?.programId == activeProgramId)
+            let bPlan = bToday && b.element.workout?.id == scheduledWorkout?.id && (b.element.sessionRecord == nil || b.element.sessionRecord?.programId == activeProgramId)
+            if aPlan != bPlan { return aPlan }
+            if (a.element.scheduledDate == nil) != (b.element.scheduledDate == nil) { return a.element.scheduledDate != nil }
+            if let ad = a.element.scheduledDate, let bd = b.element.scheduledDate, ad != bd { return ad < bd }
+            return a.offset < b.offset
+        }.map(\.element)
+    }
+
     public static func buildExerciseProgress(
         sessionRecord: WorkoutSessionRecord?,
         workout: Workout?,
         history: [WorkoutSessionRecord] = []
     ) -> [HistoryDayExerciseProgress] {
+        let workout = sessionRecord?.workoutSnapshot ?? workout
+        let workingLogs: [SessionExerciseLog] = sessionRecord?.exerciseLogs.map { log in
+            var workingLog = log
+            workingLog.sets = log.sets.filter { !$0.isWarmup }
+            return workingLog
+        } ?? []
+        var sessionRecord = sessionRecord
+        sessionRecord?.exerciseLogs = workingLogs
         let isExplicitlyCompleted = sessionRecord?.isComplete == true
         let prExercises: Set<String> = {
             if let rec = sessionRecord {
@@ -230,11 +349,9 @@ public struct HistoryView: View {
                 onBack: {
                     store.selectedHistoryDetailDay = nil
                 },
-                onActionWorkout: {
-                    store.selectedHistoryDetailDay = nil
-                    handleWorkoutAction(detail: detail)
-                },
-                weightUnit: store.weightUnit
+                onActionWorkout: { handleWorkoutAction(detail: detail) },
+                weightUnit: store.weightUnit,
+                onActionSection: { section in handleWorkoutAction(detail: detail, section: section) }
             )
         } else {
             VStack(spacing: 16) {
@@ -532,27 +649,23 @@ public struct HistoryView: View {
         .accessibilityAddTraits(isSelected ? .isSelected : [])
     }
 
-    private func handleWorkoutAction(detail: HistoryDayDetailData) {
-        guard let workout = detail.workout else { return }
-        let programId = detail.sessionRecord?.programId
+    private func handleWorkoutAction(detail: HistoryDayDetailData, section: WorkoutDaySection? = nil) {
+        let target = section ?? detail.sections.first { $0.canAct(on: detail.date) }
+        guard let workout = target?.workout ?? detail.workout else { return }
+        let record = target?.sessionRecord ?? (target == nil ? detail.sessionRecord : nil)
+        let programId = record?.programId
             ?? store.state.programs.first(where: { $0.workouts.contains(where: { $0.id == workout.id }) })?.id
-            ?? store.activeProgram?.id
-        guard let progId = programId else { return }
-
-        if let active = store.activeSession, active.workout.id == workout.id {
-            store.resumeActiveSession()
+        guard let programId else { return }
+        let sameDay = Calendar.current.isDateInToday(detail.date)
+        if store.startActiveSession(programId: programId, workout: workout, allowPast: true,
+            unfinishedRecordId: sameDay ? record?.id : nil,
+            assignedCalendarDate: WorkoutCalendar.formatDate(Date()),
+            startNewSession: record == nil || (!sameDay && target?.isLiveSession != true),
+            scheduledDate: target?.scheduledDate.map { WorkoutCalendar.formatDate($0) } ?? detail.dateString) {
+            store.selectedHistoryDetailDay = nil
             store.currentView = .today
-            return
-        }
-
-        if store.startActiveSession(
-            programId: progId,
-            workout: workout,
-            allowPast: true,
-            unfinishedRecordId: detail.sessionRecord?.id,
-            assignedCalendarDate: detail.dateString
-        ) {
-            store.currentView = .today
+        } else if store.activeSession != nil {
+            store.noticeMessage = LanguageManager.t("history.finishActiveFirst")
         }
     }
 
@@ -623,7 +736,7 @@ public struct HistoryView: View {
             }
             let startDate = WorkoutCalendar.localDate(from: rec.startedAt)
             let completedDate = WorkoutCalendar.localDate(from: rec.completedAt)
-            return startDate == dateString || completedDate == dateString
+            return (startDate ?? completedDate) == dateString
         }
         for rec in completedForDay {
             if !daySessions.contains(where: { $0.id == rec.id }) {
@@ -631,106 +744,14 @@ public struct HistoryView: View {
             }
         }
 
-        let scheduledWorkout = store.activeProgram?.workouts.first(where: { $0.day == dayOfWeek })
-            ?? store.state.programs.flatMap(\.workouts).first(where: { $0.day == dayOfWeek })
+        let scheduledWorkout = store.activeProgram?.workouts.first(where: { $0.day == dayOfWeek && !$0.exercises.isEmpty })
 
-        var rawSections: [WorkoutDaySection] = []
-        if daySessions.isEmpty {
-            if let scheduled = scheduledWorkout {
-                let items = HistoryDayDetailData.buildExerciseProgress(sessionRecord: nil, workout: scheduled, history: store.state.history)
-                let completedSets = items.reduce(0) { $0 + $1.completedSets }
-                let plannedSets = max(1, items.reduce(0) { $0 + $1.plannedSets })
-                rawSections.append(
-                    WorkoutDaySection(
-                        sessionRecord: nil,
-                        workout: scheduled,
-                        workoutTitle: scheduled.title,
-                        originDate: nil,
-                        originDateFormatted: nil,
-                        completedSets: completedSets,
-                        plannedSets: plannedSets,
-                        totalVolumeKg: 0.0,
-                        durationSeconds: 0,
-                        isComplete: false,
-                        exerciseItems: items
-                    )
-                )
-            }
-        } else {
-            for rec in daySessions {
-                let recWorkout: Workout? = store.state.programs.first(where: { $0.id == rec.programId })?.workouts.first(where: { $0.id == rec.workoutId })
-                    ?? store.activeProgram?.workouts.first(where: { $0.id == rec.workoutId })
-                    ?? store.state.programs.flatMap(\.workouts).first(where: { $0.id == rec.workoutId })
-                    ?? (daySessions.count == 1 ? scheduledWorkout : nil)
-
-                let originDate: Date? = {
-                    guard let w = recWorkout, w.day >= 1 && w.day <= 7 else { return nil }
-                    var calWeek = Calendar(identifier: .gregorian)
-                    calWeek.firstWeekday = 2 // Monday
-                    let weekMondayStr = WorkoutCalendar.mondayOfCurrentWeek(for: date, calendar: calWeek)
-                    guard let weekMonday = WorkoutCalendar.parseDate(weekMondayStr) else { return nil }
-                    guard let scheduledDate = calWeek.date(byAdding: .day, value: w.day - 1, to: weekMonday) else { return nil }
-                    let scheduledStr = WorkoutCalendar.formatDate(scheduledDate)
-                    return scheduledStr != dateString ? scheduledDate : nil
-                }()
-
-                let originDateFormatted: String? = {
-                    guard let od = originDate else { return nil }
-                    let formatter = DateFormatter()
-                    formatter.dateStyle = .medium
-                    formatter.timeStyle = .none
-                    formatter.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
-                    return formatter.string(from: od)
-                }()
-
-                let items = HistoryDayDetailData.buildExerciseProgress(sessionRecord: rec, workout: recWorkout, history: store.state.history)
-                let completedSets = items.reduce(0) { $0 + $1.completedSets }
-                let plannedSets = max(1, items.reduce(0) { $0 + $1.plannedSets })
-
-                let isSessionComplete: Bool = {
-                    if let active = store.activeSession, rec.id == activeRecord?.id {
-                        return WorkoutSessionUtils.isComplete(draft: active)
-                    }
-                    return WorkoutCalendar.isSessionComplete(session: rec, workout: recWorkout)
-                }()
-
-                let secVolumeKg = rec.totalVolumeKg > 0.0 ? rec.totalVolumeKg : rec.exerciseLogs.reduce(0.0) { sum, log in
-                    sum + log.sets.reduce(0.0) { setSum, s in setSum + (s.weightKg ?? 0.0) * Double(s.reps ?? 0) }
-                }
-
-                rawSections.append(
-                    WorkoutDaySection(
-                        sessionRecord: rec,
-                        workout: recWorkout,
-                        workoutTitle: rec.workoutTitle.isEmpty ? (recWorkout?.title ?? LanguageManager.t("history.scheduledWorkout")) : rec.workoutTitle,
-                        originDate: originDate,
-                        originDateFormatted: originDateFormatted,
-                        completedSets: completedSets,
-                        plannedSets: plannedSets,
-                        totalVolumeKg: secVolumeKg,
-                        durationSeconds: rec.durationSeconds,
-                        isComplete: isSessionComplete,
-                        exerciseItems: items
-                    )
-                )
-            }
-        }
-
-        let sortedSections = rawSections.sorted { (a, b) -> Bool in
-            if (a.originDate == nil) != (b.originDate == nil) {
-                return a.originDate == nil
-            }
-            if let da = a.originDate, let db = b.originDate {
-                return da < db
-            }
-            return false
-        }
-
-        let primarySection = sortedSections.first { $0.isComplete }
-            ?? sortedSections.first { $0.originDate == nil }
-            ?? sortedSections.first
-
-        let primarySessionRecord = primarySection?.sessionRecord ?? daySessions.first
+        let sortedSections = HistoryDayDetailData.groupSections(day: date, records: daySessions,
+            scheduledWorkout: scheduledWorkout, activeProgramId: store.activeProgram?.id,
+            programs: store.state.programs, history: store.state.history, activeRecordId: activeRecord?.id,
+            manuallyCompleted: status == .completed)
+        let primarySection = sortedSections.first
+        let primarySessionRecord = primarySection?.sessionRecord
         let primaryWorkout = primarySection?.workout ?? scheduledWorkout
 
         let hasAnySets: Bool = {

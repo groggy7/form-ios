@@ -506,6 +506,8 @@ public struct WorkoutSessionRecord: Identifiable, Codable, Hashable {
     public var totalCompletedSets: Int
     public var exerciseLogs: [SessionExerciseLog]
     public var isComplete: Bool?
+    public var scheduledDate: String?
+    public var workoutSnapshot: Workout?
 
     public init(
         id: String = UUID().uuidString,
@@ -518,7 +520,9 @@ public struct WorkoutSessionRecord: Identifiable, Codable, Hashable {
         totalVolumeKg: Double = 0.0,
         totalCompletedSets: Int = 0,
         exerciseLogs: [SessionExerciseLog] = [],
-        isComplete: Bool? = nil
+        isComplete: Bool? = nil,
+        scheduledDate: String? = nil,
+        workoutSnapshot: Workout? = nil
     ) {
         self.id = id
         self.programId = programId
@@ -531,6 +535,8 @@ public struct WorkoutSessionRecord: Identifiable, Codable, Hashable {
         self.totalCompletedSets = totalCompletedSets
         self.exerciseLogs = exerciseLogs
         self.isComplete = isComplete
+        self.scheduledDate = scheduledDate
+        self.workoutSnapshot = workoutSnapshot
     }
 }
 
@@ -577,6 +583,7 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
     public var setsByExercise: [String: [ExerciseSetLog]]
     public var restTimer: RestTimerState?
     public var assignedCalendarDate: String?
+    public var scheduledDate: String?
     public var accumulatedSeconds: Int
     public var isPaused: Bool
     public var lastResumedAtEpochMillis: Int64?
@@ -595,7 +602,8 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         assignedCalendarDate: String? = nil,
         accumulatedSeconds: Int = 0,
         isPaused: Bool = false,
-        lastResumedAtEpochMillis: Int64? = nil
+        lastResumedAtEpochMillis: Int64? = nil,
+        scheduledDate: String? = nil
     ) {
         self.schemaVersion = schemaVersion
         self.id = id
@@ -608,6 +616,7 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         self.setsByExercise = setsByExercise
         self.restTimer = restTimer
         self.assignedCalendarDate = assignedCalendarDate
+        self.scheduledDate = scheduledDate
         self.accumulatedSeconds = accumulatedSeconds
         self.isPaused = isPaused
         self.lastResumedAtEpochMillis = lastResumedAtEpochMillis
@@ -626,6 +635,7 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         self.setsByExercise = try container.decodeIfPresent([String: [ExerciseSetLog]].self, forKey: .setsByExercise) ?? [:]
         self.restTimer = try container.decodeIfPresent(RestTimerState.self, forKey: .restTimer)
         self.assignedCalendarDate = try container.decodeIfPresent(String.self, forKey: .assignedCalendarDate)
+        self.scheduledDate = try container.decodeIfPresent(String.self, forKey: .scheduledDate)
         self.accumulatedSeconds = try container.decodeIfPresent(Int.self, forKey: .accumulatedSeconds) ?? 0
         self.isPaused = try container.decodeIfPresent(Bool.self, forKey: .isPaused) ?? false
         self.lastResumedAtEpochMillis = try container.decodeIfPresent(Int64.self, forKey: .lastResumedAtEpochMillis)

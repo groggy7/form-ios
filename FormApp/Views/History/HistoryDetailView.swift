@@ -6,19 +6,22 @@ public struct HistoryDetailView: View {
     var onBack: () -> Void
     var onActionWorkout: (() -> Void)? = nil
     var weightUnit: WeightUnit = .kg
+    var onActionSection: ((WorkoutDaySection) -> Void)? = nil
 
     public init(
         detail: HistoryDayDetailData,
         history: [WorkoutSessionRecord] = [],
         onBack: @escaping () -> Void,
         onActionWorkout: (() -> Void)? = nil,
-        weightUnit: WeightUnit = .kg
+        weightUnit: WeightUnit = .kg,
+        onActionSection: ((WorkoutDaySection) -> Void)? = nil
     ) {
         self.detail = detail
         self.history = history
         self.onBack = onBack
         self.onActionWorkout = onActionWorkout
         self.weightUnit = weightUnit
+        self.onActionSection = onActionSection
     }
 
     public var body: some View {
@@ -26,7 +29,7 @@ public struct HistoryDetailView: View {
 
         let workoutTitle: String = {
             if detail.sections.count > 1 {
-                return detail.sections.map { $0.workoutTitle }.joined(separator: " + ")
+                return LanguageManager.t("history.dayBreakdown")
             }
             return detail.sessionRecord?.workoutTitle
                 ?? detail.workout?.title
@@ -34,19 +37,16 @@ public struct HistoryDetailView: View {
         }()
 
         let items = exerciseProgressList()
-        let allCompleted = !items.isEmpty && items.allSatisfy { $0.completedSets >= $0.plannedSets && $0.plannedSets > 0 }
-        let effectiveStatus: WorkoutDayStatus = {
-            if allCompleted {
-                return .completed
-            } else if items.contains(where: { $0.completedSets > 0 }) || (detail.sessionRecord?.totalCompletedSets ?? 0) > 0 {
-                return .unfinished
-            } else {
-                return detail.status
-            }
-        }()
+        let allCompleted = detail.sections.isEmpty
+            ? !items.isEmpty && items.allSatisfy { $0.completedSets >= $0.plannedSets && $0.plannedSets > 0 }
+            : detail.sections.allSatisfy(\.isComplete)
+        let effectiveStatus = detail.status
         let isMissed = effectiveStatus == .missed || (!items.isEmpty && items.allSatisfy { $0.completedSets == 0 } && detail.date < Calendar.current.startOfDay(for: Date()))
-        let showActionButton = onActionWorkout != nil && !allCompleted
-        let actionButtonText = isMissed ? LanguageManager.t("history.startWorkout") : LanguageManager.t("history.resumeWorkout")
+        let showActionButton = detail.sections.count <= 1 && onActionWorkout != nil && !allCompleted
+        let actionSection = detail.sections.first { $0.canAct(on: detail.date) }
+        let resumeAction = actionSection?.isLiveSession == true
+            || (Calendar.current.isDateInToday(detail.date) && (actionSection?.sessionRecord ?? detail.sessionRecord) != nil)
+        let actionButtonText = LanguageManager.t(resumeAction ? "history.resumeWorkout" : "history.startWorkout")
 
         let completedExercises = items.filter { $0.completedSets >= $0.plannedSets && $0.plannedSets > 0 }
         let halfwayExercises = items.filter { $0.completedSets > 0 && $0.completedSets < $0.plannedSets }
@@ -56,7 +56,7 @@ public struct HistoryDetailView: View {
             ? detail.sections.reduce(0) { $0 + $1.completedSets }
             : items.reduce(0) { $0 + $1.completedSets }
         let totalPlannedSets = max(1, detail.sections.count > 1
-            ? detail.sections.reduce(0) { $0 + $1.plannedSets }
+            ? detail.recordedSections.reduce(0) { $0 + $1.plannedSets }
             : items.reduce(0) { $0 + $1.plannedSets })
         let displayCompletedSets = effectiveStatus == .missed ? 0 : totalCompletedSets
         let durationSeconds = detail.sections.count > 1
@@ -91,6 +91,9 @@ public struct HistoryDetailView: View {
         }()
 
         let (statusColor, statusBg, statusText): (Color, Color, String) = {
+            if detail.sections.count > 1 {
+                return (AppColors.secondaryText, AppColors.surfaceRaised, LanguageManager.t("history.recordedActivity"))
+            }
             switch effectiveStatus {
             case .unfinished:
                 return (AppColors.unfinishedOrange, AppColors.unfinishedOrange.opacity(0.15), LanguageManager.t("history.unfinished"))
@@ -101,24 +104,15 @@ public struct HistoryDetailView: View {
             }
         }()
 
-        let scheduledOriginDateString: String? = {
-            guard detail.sessionRecord != nil,
-                  let workout = detail.workout,
-                  workout.day >= 1 && workout.day <= 7 else { return nil }
-            var cal = Calendar(identifier: .gregorian)
-            cal.firstWeekday = 2 // Monday
-            let weekMondayStr = WorkoutCalendar.mondayOfCurrentWeek(for: detail.date, calendar: cal)
-            guard let weekMonday = WorkoutCalendar.parseDate(weekMondayStr) else { return nil }
-            guard let scheduledDate = cal.date(byAdding: .day, value: workout.day - 1, to: weekMonday) else { return nil }
-            let scheduledStr = WorkoutCalendar.formatDate(scheduledDate)
-            if scheduledStr != detail.dateString {
-                let formatter = DateFormatter()
-                formatter.dateStyle = .medium
-                formatter.timeStyle = .none
-                formatter.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
-                return formatter.string(from: scheduledDate)
+        let scheduledOriginLabel: String? = {
+            if let section = detail.sections.first, section.originDate != nil {
+                return section.scheduleLabel(on: detail.date)
             }
-            return nil
+            guard let record = detail.sessionRecord else { return nil }
+            let (scheduled, source) = HistoryDayDetailData.scheduleContext(record: record, workout: detail.workout, day: detail.date)
+            guard let scheduled, !Calendar.current.isDate(scheduled, inSameDayAs: detail.date) else { return nil }
+            return LanguageManager.t(source == .recorded ? "history.originallyScheduled" : "history.usualSchedule",
+                ["date": formattedFullDate(for: scheduled)])
         }()
 
         VStack(spacing: 0) {
@@ -191,8 +185,8 @@ public struct HistoryDetailView: View {
                                             )
                                     )
                                     .accessibilityIdentifier("history-detail-multiple-workouts")
-                            } else if let scheduledOrigin = scheduledOriginDateString {
-                                Text("🗓️ \(LanguageManager.t("history.originallyScheduled", ["date": scheduledOrigin]))")
+                            } else if let scheduledOrigin = scheduledOriginLabel {
+                                Text("🗓️ \(scheduledOrigin)")
                                     .font(.system(size: 12, weight: .medium))
                                     .foregroundColor(AppColors.secondaryText)
                                     .padding(.horizontal, 10)
@@ -256,79 +250,33 @@ public struct HistoryDetailView: View {
                         }
 
                         // Progress Bar + Percentage Row
-                        HStack(spacing: 12) {
-                            GeometryReader { geometry in
-                                ZStack(alignment: .leading) {
-                                    Capsule()
-                                        .fill(AppColors.progressTrack)
-                                        .frame(height: 8)
+                        if detail.sections.count <= 1 {
+                            HStack(spacing: 12) {
+                                GeometryReader { geometry in
+                                    ZStack(alignment: .leading) {
+                                        Capsule()
+                                            .fill(AppColors.progressTrack)
+                                            .frame(height: 8)
 
-                                    Capsule()
-                                        .fill(effectiveStatus == .completed ? AppColors.completedGreen : AppColors.accent)
-                                        .frame(width: geometry.size.width * CGFloat(progressFraction), height: 8)
+                                        Capsule()
+                                            .fill(effectiveStatus == .completed ? AppColors.completedGreen : AppColors.accent)
+                                            .frame(width: geometry.size.width * CGFloat(progressFraction), height: 8)
+                                    }
                                 }
-                            }
-                            .frame(height: 8)
+                                .frame(height: 8)
 
-                            Text(LanguageManager.formatPercent(progressPercent))
-                                .font(.system(size: 14, weight: .bold))
-                                .foregroundColor(AppColors.text)
+                                Text(LanguageManager.formatPercent(progressPercent))
+                                    .font(.system(size: 14, weight: .bold))
+                                    .foregroundColor(AppColors.text)
+                            }
+
                         }
 
                         // Content Sections
                         if detail.sections.count > 1 {
                             VStack(alignment: .leading, spacing: 20) {
                                 ForEach(Array(detail.sections.enumerated()), id: \.element.id) { sIndex, sec in
-                                    VStack(alignment: .leading, spacing: 10) {
-                                        VStack(alignment: .leading, spacing: 4) {
-                                            HStack(alignment: .firstTextBaseline) {
-                                                let headerTitle = sec.originDate == nil
-                                                    ? "\(LanguageManager.t("history.todayExercises")) · \(sec.workoutTitle)"
-                                                    : sec.workoutTitle
-                                                Text(headerTitle)
-                                                    .font(.system(size: 17, weight: .bold))
-                                                    .foregroundColor(AppColors.text)
-                                                Spacer()
-                                                Text("\(sec.exerciseItems.count)")
-                                                    .font(.system(size: 15, weight: .regular))
-                                                    .foregroundColor(AppColors.secondaryText)
-                                                    .frame(width: 20, alignment: .center)
-                                            }
-
-                                            if let origin = sec.originDateFormatted {
-                                                Text("🗓️ \(LanguageManager.t("history.originallyScheduled", ["date": origin]))")
-                                                    .font(.system(size: 11, weight: .medium))
-                                                    .foregroundColor(AppColors.secondaryText)
-                                                    .padding(.horizontal, 8)
-                                                    .padding(.vertical, 4)
-                                                    .background(
-                                                        RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                                            .fill(AppColors.surfaceRaised)
-                                                            .overlay(
-                                                                RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                                                    .stroke(AppColors.border, lineWidth: 1)
-                                                            )
-                                                    )
-                                            }
-
-                                            let setsStr = LanguageManager.formatSetsFraction(completed: sec.completedSets, total: sec.plannedSets)
-                                            let secVolumeStr = sec.totalVolumeKg > 0.0 ? " · \(weightUnit.formatVolume(sec.totalVolumeKg))" : ""
-                                            Text("\(setsStr)\(secVolumeStr)")
-                                                .font(.system(size: 12, weight: .regular))
-                                                .foregroundColor(AppColors.secondaryText)
-                                        }
-
-                                        VStack(spacing: 0) {
-                                            ForEach(Array(sec.exerciseItems.enumerated()), id: \.element.id) { index, item in
-                                                let isItemComplete = item.completedSets >= item.plannedSets && item.plannedSets > 0
-                                                exerciseRow(item: item, isCompleted: isItemComplete)
-                                                if index < sec.exerciseItems.count - 1 {
-                                                    Divider()
-                                                        .background(Color.white.opacity(0.08))
-                                                }
-                                            }
-                                        }
-                                    }
+                                    workoutSection(sec, index: sIndex)
 
                                     if sIndex < detail.sections.count - 1 {
                                         Divider()
@@ -599,7 +547,7 @@ public struct HistoryDetailView: View {
                 }
 
                 let subText: String = {
-                    if isCompleted {
+                    if isCompleted || item.completedSets > 0 {
                         let setsFraction = LanguageManager.formatSetsFraction(completed: item.completedSets, total: item.plannedSets)
                         let topLabel = LanguageManager.t("history.top").isEmpty ? "Top" : LanguageManager.t("history.top")
                         if let w = item.topSetWeight, let r = item.topSetReps {
@@ -626,6 +574,11 @@ public struct HistoryDetailView: View {
                     .font(.system(size: 15, weight: .bold))
                     .foregroundColor(Color(hex: 0x3DDB84))
                     .frame(width: 20, height: 20)
+            } else if item.completedSets > 0 {
+                Image(systemName: "clock")
+                    .font(.system(size: 15, weight: .bold))
+                    .foregroundColor(AppColors.unfinishedOrange)
+                    .frame(width: 20, height: 20)
             } else {
                 Image(systemName: "xmark")
                     .font(.system(size: 15, weight: .bold))
@@ -635,6 +588,53 @@ public struct HistoryDetailView: View {
         }
         .padding(.vertical, 12)
         .accessibilityIdentifier("history-exercise-\(item.name)")
+    }
+
+    private func workoutSection(_ section: WorkoutDaySection, index: Int) -> some View {
+        let statusColor = section.isComplete ? AppColors.completedGreen
+            : section.sessionRecord != nil ? AppColors.unfinishedOrange : AppColors.secondaryText
+        return VStack(alignment: .leading, spacing: 10) {
+            HStack(alignment: .firstTextBaseline) {
+                Text(section.workoutTitle)
+                    .font(.system(size: 17, weight: .bold)).foregroundColor(AppColors.text)
+                    .accessibilityIdentifier("history-section-title-\(section.id)")
+                Spacer()
+                Text("\(section.exerciseItems.count)")
+                    .font(.system(size: 15)).foregroundColor(AppColors.secondaryText).frame(width: 20)
+            }
+            Text(section.contextText(on: detail.date, index: index))
+                .font(.system(size: 12, weight: .semibold))
+                .foregroundColor(section.scheduledDate.map { Calendar.current.isDate($0, inSameDayAs: detail.date) } == true
+                    ? AppColors.accent : AppColors.secondaryText)
+                .accessibilityIdentifier("history-section-context-\(section.id)")
+            if let label = section.scheduleLabel(on: detail.date) {
+                Text(label).font(.system(size: 12)).foregroundColor(AppColors.secondaryText)
+                    .accessibilityIdentifier("history-section-date-\(section.id)")
+            }
+            Text(section.statusText).font(.system(size: 12, weight: .medium)).foregroundColor(statusColor)
+                .padding(.horizontal, 10).padding(.vertical, 5)
+                .background(RoundedRectangle(cornerRadius: 8).fill(statusColor.opacity(0.12)))
+                .overlay(RoundedRectangle(cornerRadius: 8).stroke(statusColor.opacity(0.3), lineWidth: 1))
+                .accessibilityIdentifier("history-section-status-\(section.id)")
+            Text(LanguageManager.formatSetsFraction(completed: section.completedSets, total: section.plannedSets)
+                + (section.totalVolumeKg > 0 ? " · \(weightUnit.formatVolume(section.totalVolumeKg))" : ""))
+                .font(.system(size: 12)).foregroundColor(AppColors.secondaryText)
+            if section.canAct(on: detail.date), let onActionSection {
+                Button { onActionSection(section) } label: {
+                    Text(LanguageManager.t(section.isLiveSession || (Calendar.current.isDateInToday(detail.date) && section.sessionRecord != nil)
+                        ? "history.resumeWorkout" : "history.startWorkout"))
+                        .font(.system(size: 16, weight: .semibold)).foregroundColor(AppColors.accent)
+                        .frame(maxWidth: .infinity, minHeight: 48)
+                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.accent, lineWidth: 1))
+                }.buttonStyle(.plain).accessibilityIdentifier("history-section-action-\(section.id)")
+            }
+            VStack(spacing: 0) {
+                ForEach(Array(section.exerciseItems.enumerated()), id: \.element.id) { index, item in
+                    exerciseRow(item: item, isCompleted: item.completedSets >= item.plannedSets && item.plannedSets > 0)
+                    if index < section.exerciseItems.count - 1 { Divider().background(Color.white.opacity(0.08)) }
+                }
+            }
+        }
     }
 
     private func formattedFullDate(for date: Date) -> String {

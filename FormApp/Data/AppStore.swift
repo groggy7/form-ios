@@ -370,11 +370,14 @@ public final class AppStore: ObservableObject {
         workout: Workout,
         allowPast: Bool = false,
         unfinishedRecordId: String? = nil,
-        assignedCalendarDate: String? = nil
+        assignedCalendarDate: String? = nil,
+        startNewSession: Bool = false,
+        scheduledDate: String? = nil
     ) -> Bool {
         checkAndArchiveStaleSession()
         if let active = activeSession {
-            if active.workout.id == workout.id {
+            if !startNewSession && active.programId == programId && active.workout.id == workout.id
+                && (unfinishedRecordId == nil || unfinishedRecordId == active.id) {
                 resumeActiveSession()
                 return true
             }
@@ -386,14 +389,14 @@ public final class AppStore: ObservableObject {
         let now = Date()
         let nowMillis = Int64(now.timeIntervalSince1970 * 1000)
         let currentWeek = currentWeekIsoKey()
-        let unfinishedRecord = (unfinishedRecordId.flatMap { recId in
+        let unfinishedRecord = startNewSession ? nil : ((unfinishedRecordId.flatMap { recId in
             state.history.first { $0.id == recId }
         }) ?? state.history.first { r in
             r.programId == programId &&
             r.workoutId == workout.id &&
             r.isComplete == false &&
             recordWeekIsoKey(r) == currentWeek
-        }
+        })
 
         let setsByExercise = unfinishedRecord != nil
             ? WorkoutSessionUtils.restoreSetsFromHistory(workout: workout, record: unfinishedRecord!)
@@ -436,7 +439,9 @@ public final class AppStore: ObservableObject {
             assignedCalendarDate: sessionDay,
             accumulatedSeconds: clampedPrevSecs,
             isPaused: false,
-            lastResumedAtEpochMillis: nowMillis
+            lastResumedAtEpochMillis: nowMillis,
+            scheduledDate: unfinishedRecord?.scheduledDate ?? scheduledDate
+                ?? WorkoutCalendar.scheduledDate(forWeekday: workout.day, relativeTo: now)
         )
 
         saveActiveSession(draft)
@@ -653,7 +658,9 @@ public final class AppStore: ObservableObject {
             totalVolumeKg: record.totalVolumeKg,
             totalCompletedSets: record.totalCompletedSets,
             exerciseLogs: record.exerciseLogs,
-            isComplete: isComplete
+            isComplete: isComplete,
+            scheduledDate: record.scheduledDate ?? activeSession?.scheduledDate,
+            workoutSnapshot: record.workoutSnapshot ?? activeSession?.workout
         )
 
         var cal = state.calendarHistory ?? WorkoutCalendarHistory(
@@ -710,7 +717,9 @@ public final class AppStore: ObservableObject {
                 totalVolumeKg: finalRecord.totalVolumeKg,
                 totalCompletedSets: finalRecord.totalCompletedSets,
                 exerciseLogs: finalRecord.exerciseLogs,
-                isComplete: finalRecord.isComplete
+                isComplete: finalRecord.isComplete,
+                scheduledDate: finalRecord.scheduledDate,
+                workoutSnapshot: finalRecord.workoutSnapshot
             )
         }()
 

@@ -8882,3 +8882,187 @@ final class SessionFeaturePaywallTests: XCTestCase {
         }
     }
 }
+
+final class HistoryBreakdownTests: XCTestCase {
+    private let day = WorkoutCalendar.parseDate("2026-10-06")!
+    private var bench: Workout { Workout(id: "bench", day: 1, title: "Heavy Bench & Push", exercises: [Exercise(id: "bench-e", name: "Bench Press", sets: 2)]) }
+    private var pull: Workout { Workout(id: "pull", day: 2, title: "Heavy Pull & Upper Back", exercises: [Exercise(id: "pull-e", name: "Barbell Row", sets: 2)]) }
+    private var program: Program { Program(id: "breakdown-p", name: "Heavy", workouts: [bench, pull]) }
+
+    private func record(_ workout: Workout, complete: Bool, scheduled: String? = nil) -> WorkoutSessionRecord {
+        WorkoutSessionRecord(id: "s-\(workout.id)", programId: program.id, workoutId: workout.id,
+            workoutTitle: workout.title, startedAt: "2026-10-06T09:00:00Z", completedAt: "2026-10-06T10:00:00Z",
+            durationSeconds: 600, totalVolumeKg: complete ? 1000 : 500, totalCompletedSets: complete ? 2 : 1,
+            exerciseLogs: [SessionExerciseLog(exerciseName: workout.exercises[0].name,
+                sets: (1...(complete ? 2 : 1)).map { SessionSetLog(setNumber: $0, weightKg: 50, reps: 10) }, targetSets: 2)],
+            isComplete: complete, scheduledDate: scheduled)
+    }
+
+    private func sections(_ records: [WorkoutSessionRecord], program: Program? = nil, active: String? = nil) -> [WorkoutDaySection] {
+        let p = program ?? self.program
+        return HistoryDayDetailData.groupSections(day: day, records: records,
+            scheduledWorkout: p.workouts.first { $0.day == 2 }, activeProgramId: p.id,
+            programs: [p], history: records, activeRecordId: active)
+    }
+
+    @MainActor
+    func testLegacyCurrentWorkoutFirstWithoutRedundantScheduleAndCarryoverDated() {
+        let old = record(bench, complete: true)
+        let current = record(pull, complete: false)
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previousLanguage) }
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            for records in [[old, current], [current, old]] {
+                let result = sections(records)
+                XCTAssertEqual(result.map(\.workoutTitle), [pull.title, bench.title])
+                XCTAssertNil(result[0].scheduleLabel(on: day))
+                XCTAssertEqual(result[0].contextText(on: day, today: day), LanguageManager.t("history.todayWorkout"))
+                XCTAssertEqual(result[1].contextText(on: day, today: day), LanguageManager.t("history.earlierWorkout"))
+                XCTAssertTrue(result[1].scheduleLabel(on: day)!.hasPrefix(language == "en" ? "Usual schedule" : "Normal plan"))
+                XCTAssertTrue(result[0].canAct(on: day, today: day))
+                XCTAssertFalse(result[1].canAct(on: day, today: day))
+            }
+        }
+        XCTAssertNil(old.scheduledDate)
+    }
+
+    func testUnstartedPlanAboveCompletedCarryoverAndExcludedFromRecordedTotals() {
+        let old = record(bench, complete: true, scheduled: "2026-10-05")
+        let result = sections([old])
+        XCTAssertEqual(result.count, 2)
+        XCTAssertEqual(result[0].workout?.id, pull.id)
+        XCTAssertNil(result[0].sessionRecord)
+        XCTAssertEqual(result[0].completedSets, 0)
+        XCTAssertFalse(result[0].isComplete)
+        XCTAssertTrue(result[0].canAct(on: day, today: day))
+        let detail = HistoryDayDetailData(date: day, dateString: "2026-10-06", status: .completed,
+            sessionRecord: nil, workout: pull, sections: result)
+        XCTAssertEqual(detail.recordedSections.reduce(0) { $0 + $1.plannedSets }, 2)
+        XCTAssertEqual(detail.recordedSections.reduce(0) { $0 + $1.totalVolumeKg }, 1000)
+    }
+
+    func testSavedOriginAndPrescriptionSurvivePlanEditsAndUnknownIsNotToday() {
+        var saved = record(bench, complete: false, scheduled: "2026-10-04")
+        saved.workoutSnapshot = bench
+        var edited = bench
+        edited.day = 2
+        edited.exercises[0].sets = 7
+        let p = Program(id: program.id, name: "Edited", workouts: [edited, pull])
+        let savedSection = sections([saved], program: p).first { $0.sessionRecord != nil }!
+        XCTAssertEqual(WorkoutCalendar.formatDate(savedSection.scheduledDate!), "2026-10-04")
+        XCTAssertEqual(savedSection.scheduleSource, .recorded)
+        XCTAssertEqual(savedSection.plannedSets, 2)
+        saved.scheduledDate = nil
+        XCTAssertEqual(WorkoutCalendar.formatDate(sections([saved], program: p).first { $0.sessionRecord != nil }!.scheduledDate!), "2026-10-05")
+        saved.workoutSnapshot = nil
+        saved.programId = "deleted"
+        XCTAssertNil(sections([saved]).last!.scheduledDate)
+        XCTAssertEqual(sections([saved]).last!.scheduleSource, .unknown)
+    }
+
+    func testNoDuplicatePlanRestDayAndLiveCompletionRemainSeparate() {
+        let current = record(pull, complete: true, scheduled: "2026-10-06")
+        XCTAssertEqual(sections([current]).count, 1)
+        let live = sections([current], active: current.id).first!
+        XCTAssertFalse(live.isComplete)
+        XCTAssertTrue(live.isLiveSession)
+        XCTAssertTrue(live.canAct(on: day, today: day))
+        let rest = Program(id: program.id, name: "Rest", workouts: [bench])
+        XCTAssertEqual(sections([record(bench, complete: true)], program: rest).count, 1)
+        var sunday = bench
+        sunday.day = 7
+        let monday = WorkoutCalendar.parseDate("2026-10-05")!
+        XCTAssertEqual(WorkoutCalendar.formatDate(HistoryDayDetailData.scheduleContext(record: record(sunday, complete: true), workout: sunday, day: monday).0!), "2026-10-04")
+    }
+
+    func testScheduleSnapshotRoundTripAndLegacyDecoding() throws {
+        let timestamp = Int64(Date().timeIntervalSince1970 * 1000)
+        let draft = ActiveSessionDraft(programId: program.id, workout: bench,
+            startedAt: "2026-10-06T09:00:00Z", startedAtEpochMillis: timestamp,
+            scheduledDate: "2026-10-05")
+        let result = SessionProgress.from(draft: draft, nowEpochMillis: timestamp).record(draft: draft, completedAtEpochMillis: timestamp)
+        let restored = try JSONDecoder().decode(WorkoutSessionRecord.self, from: JSONEncoder().encode(result))
+        XCTAssertEqual(restored.scheduledDate, "2026-10-05")
+        XCTAssertEqual(restored.workoutSnapshot, bench)
+        var legacy = try XCTUnwrap(JSONSerialization.jsonObject(with: JSONEncoder().encode(result)) as? [String: Any])
+        legacy.removeValue(forKey: "scheduledDate")
+        legacy.removeValue(forKey: "workoutSnapshot")
+        let decoded = try JSONDecoder().decode(WorkoutSessionRecord.self, from: JSONSerialization.data(withJSONObject: legacy))
+        XCTAssertNil(decoded.scheduledDate)
+        XCTAssertNil(decoded.workoutSnapshot)
+        let restoredDraft = try JSONDecoder().decode(ActiveSessionDraft.self, from: JSONEncoder().encode(draft))
+        XCTAssertEqual(restoredDraft.scheduledDate, "2026-10-05")
+    }
+
+    @MainActor
+    func testFreshPlanActionDoesNotResumeSameIdCarryoverOrReplaceLiveDraft() throws {
+        let access = ProAccessManager.shared
+        let cloudAccess = access.isFeatureUnlocked(.cloudBackup)
+        access.setFeatureOverride(.cloudBackup, unlocked: false)
+        defer { access.setFeatureOverride(.cloudBackup, unlocked: cloudAccess == access.isProSubscribed ? nil : cloudAccess) }
+        let defaults = UserDefaults.standard
+        let domain = try XCTUnwrap(Bundle.main.bundleIdentifier)
+        let original = defaults.persistentDomain(forName: domain) ?? [:]
+        defer { defaults.setPersistentDomain(original, forName: domain) }
+        defaults.removeObject(forKey: "active_session_v1")
+        defaults.set(true, forKey: "seeded_starters_v9")
+        var carryover = record(pull, complete: false)
+        carryover.startedAt = ISO8601DateFormatter().string(from: Date())
+        carryover.completedAt = carryover.startedAt
+        let fixture = StoredAppState(programs: [program], activeProgramId: program.id,
+            currentWeekKey: "", history: [carryover])
+        defaults.set(try JSONEncoder().encode(fixture), forKey: "stored_app_state")
+        let store = AppStore()
+        XCTAssertTrue(store.startActiveSession(programId: program.id, workout: pull, allowPast: true,
+            assignedCalendarDate: WorkoutCalendar.formatDate(Date()), startNewSession: true,
+            scheduledDate: "2026-10-06"))
+        let active = try XCTUnwrap(store.activeSession)
+        XCTAssertNotEqual(active.id, carryover.id)
+        XCTAssertFalse(active.setsByExercise.values.flatMap { $0 }.contains(where: \.isCompleted))
+        XCTAssertEqual(active.scheduledDate, "2026-10-06")
+        XCTAssertFalse(store.startActiveSession(programId: program.id, workout: pull, allowPast: true, startNewSession: true))
+        XCTAssertEqual(store.activeSession?.id, active.id)
+    }
+
+    @MainActor
+    func testBreakdownLocalizedNarrowScreensRenderCurrentAndCarryoverSections() async throws {
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows).first(where: \.isKeyWindow)
+        defer { LanguageManager.setLanguage(previousLanguage); previousWindow?.makeKeyAndVisible() }
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            let records = [record(bench, complete: true), record(pull, complete: false)]
+            let result = sections(records)
+            let detail = HistoryDayDetailData(date: day, dateString: "2026-10-06", status: .completed,
+                sessionRecord: result.first?.sessionRecord, workout: result.first?.workout, sections: result)
+            let view = HistoryDetailView(detail: detail, history: records, onBack: {}, onActionSection: { _ in })
+                .environment(\.sizeCategory, .extraExtraExtraLarge)
+            let controller = UIHostingController(rootView: view)
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 640))
+            window.rootViewController = controller
+            window.makeKeyAndVisible()
+            controller.view.frame = window.bounds
+            controller.view.layoutIfNeeded()
+            try await Task.sleep(nanoseconds: 200_000_000)
+            func descendants(_ view: UIView) -> [UIView] { [view] + view.subviews.flatMap(descendants) }
+            let scroll = try XCTUnwrap(descendants(controller.view).compactMap { $0 as? UIScrollView }.first)
+            XCTAssertLessThanOrEqual(scroll.contentSize.width, scroll.bounds.width + 1)
+            XCTAssertGreaterThan(scroll.contentSize.height, scroll.bounds.height)
+            for position in ["top", "carryover"] {
+                if position == "carryover" {
+                    scroll.setContentOffset(CGPoint(x: 0, y: max(0, scroll.contentSize.height - scroll.bounds.height)), animated: false)
+                    try await Task.sleep(nanoseconds: 100_000_000)
+                }
+                let image = UIGraphicsImageRenderer(size: window.bounds.size).image { controller.view.layer.render(in: $0.cgContext) }
+                let attachment = XCTAttachment(image: image)
+                attachment.name = "ios-breakdown-\(language)-\(position)"
+                attachment.lifetime = .keepAlways
+                add(attachment)
+                try image.pngData()?.write(to: URL(fileURLWithPath: "/tmp/ios-breakdown-\(language)-\(position).png"))
+            }
+            window.isHidden = true
+        }
+    }
+}

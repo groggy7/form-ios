@@ -56,7 +56,7 @@ public struct HistoryDayPreviewCard: View {
 
     private var workoutTitle: String {
         if detail.sections.count > 1 {
-            return detail.sections.map { $0.workoutTitle }.joined(separator: " + ")
+            return detail.recordedSections.map { $0.workoutTitle }.joined(separator: " + ")
         }
         return detail.sessionRecord?.workoutTitle
             ?? detail.workout?.title
@@ -92,26 +92,17 @@ public struct HistoryDayPreviewCard: View {
     }
 
     private var scheduledOriginDateString: String? {
-        if detail.sections.count > 1 {
-            return detail.sections.compactMap { $0.originDateFormatted }.first
+        if let section = detail.sections.first(where: { $0.originDate != nil }) {
+            return section.scheduleLabel(on: detail.date)
         }
-        guard detail.sessionRecord != nil,
-              let workout = detail.workout,
-              workout.day >= 1 && workout.day <= 7 else { return nil }
-        var cal = Calendar(identifier: .gregorian)
-        cal.firstWeekday = 2 // Monday
-        let weekMondayStr = WorkoutCalendar.mondayOfCurrentWeek(for: detail.date, calendar: cal)
-        guard let weekMonday = WorkoutCalendar.parseDate(weekMondayStr) else { return nil }
-        guard let scheduledDate = cal.date(byAdding: .day, value: workout.day - 1, to: weekMonday) else { return nil }
-        let scheduledStr = WorkoutCalendar.formatDate(scheduledDate)
-        if scheduledStr != detail.dateString {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .medium
-            formatter.timeStyle = .none
-            formatter.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
-            return formatter.string(from: scheduledDate)
-        }
-        return nil
+        guard let record = detail.sessionRecord else { return nil }
+        let (date, source) = HistoryDayDetailData.scheduleContext(record: record, workout: detail.workout, day: detail.date)
+        guard let date, !Calendar.current.isDate(date, inSameDayAs: detail.date) else { return nil }
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
+        return LanguageManager.t(source == .recorded ? "history.originallyScheduled" : "history.usualSchedule",
+            ["date": formatter.string(from: date)])
     }
 
     private var timeDurationText: String {
@@ -176,7 +167,7 @@ public struct HistoryDayPreviewCard: View {
         if detail.sections.count > 1 {
             var result: [PreviewExerciseItem] = []
             var idx = 1
-            for sec in detail.sections {
+            for sec in detail.recordedSections {
                 for item in sec.exerciseItems {
                     result.append(
                         PreviewExerciseItem(
@@ -343,7 +334,7 @@ public struct HistoryDayPreviewCard: View {
                             .tracking(0.6)
 
                         if let origin = scheduledOriginDateString {
-                            Text("· 🗓️ \(LanguageManager.t("history.originallyScheduled", ["date": origin]))")
+                            Text("· 🗓️ \(origin)")
                                 .font(.system(size: 11, weight: .medium))
                                 .foregroundColor(AppColors.secondaryText)
                                 .lineLimit(1)
