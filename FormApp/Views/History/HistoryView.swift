@@ -803,6 +803,7 @@ public struct HistoryView: View {
 
 // MARK: - Calendar Day Cell
 private let calendarDayPillAspectRatio: CGFloat = 1.12
+private let calendarDayPillCornerRadiusFraction: CGFloat = 0.36
 
 private struct CalendarPill: View {
     let colors: AppColors.CalendarPillColors
@@ -810,9 +811,11 @@ private struct CalendarPill: View {
     var body: some View {
         GeometryReader { geometry in
             let width = geometry.size.width
-            let rimWidth = min(1.15, min(width, geometry.size.height) * 0.065)
+            let height = geometry.size.height
+            let cornerRadius = height * calendarDayPillCornerRadiusFraction
+            let rimWidth = min(1.15, min(width, height) * 0.065)
 
-            Ellipse()
+            RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                 .fill(LinearGradient(
                     stops: [
                         .init(color: colors.light, location: 0),
@@ -824,8 +827,8 @@ private struct CalendarPill: View {
                     endPoint: .bottomLeading
                 ))
                 .overlay {
-                    // Light wraps around the ellipse without washing out its vivid center.
-                    Ellipse().fill(EllipticalGradient(
+                    // Light wraps around the pill without washing out its vivid center.
+                    RoundedRectangle(cornerRadius: cornerRadius, style: .continuous).fill(RadialGradient(
                         stops: [
                             .init(color: .clear, location: 0),
                             .init(color: .clear, location: 0.45),
@@ -834,13 +837,13 @@ private struct CalendarPill: View {
                             .init(color: .white.opacity(0.42), location: 1)
                         ],
                         center: .center,
-                        startRadiusFraction: 0,
-                        endRadiusFraction: 0.5
+                        startRadius: 0,
+                        endRadius: max(width, height) * 0.5
                     ))
                 }
                 .overlay {
                     // The specular rim disappears before the bottom-right edge.
-                    Ellipse().strokeBorder(LinearGradient(
+                    RoundedRectangle(cornerRadius: cornerRadius, style: .continuous).strokeBorder(LinearGradient(
                         stops: [
                             .init(color: .white.opacity(0.88), location: 0),
                             .init(color: .white.opacity(0.5), location: 0.3),
@@ -882,20 +885,22 @@ private struct BoxDayCell: View {
                     let isClickable = (status == .unfinished || status == .missed || status == .completed)
 
                     ZStack {
+                        let ringHeight = status == nil ? min(38, ringWidth) : ringWidth / calendarDayPillAspectRatio
+                        let ringRadius = status == nil ? ringHeight / 2 : ringHeight * calendarDayPillCornerRadiusFraction
                         // Outer border ring for selected day or today
                         if isSelected {
-                            Ellipse()
+                            RoundedRectangle(cornerRadius: ringRadius, style: .continuous)
                                 .strokeBorder(AppColors.accent, lineWidth: 2)
                                 .frame(width: status == nil ? min(38, ringWidth) : ringWidth,
-                                       height: status == nil ? min(38, ringWidth) : ringWidth / calendarDayPillAspectRatio)
+                                       height: ringHeight)
                         } else if isToday {
-                            Ellipse()
+                            RoundedRectangle(cornerRadius: ringRadius, style: .continuous)
                                 .strokeBorder(AppColors.text.opacity(0.8), lineWidth: 1)
                                 .frame(width: status == nil ? min(38, ringWidth) : ringWidth,
-                                       height: status == nil ? min(38, ringWidth) : ringWidth / calendarDayPillAspectRatio)
+                                       height: ringHeight)
                         }
 
-                        // Slightly elliptical status pill
+                        // Aggressively rounded rectangle status pill
                         if let status = status {
                             let colors: AppColors.CalendarPillColors = {
                                 switch status {
