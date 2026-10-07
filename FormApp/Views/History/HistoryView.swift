@@ -802,15 +802,17 @@ public struct HistoryView: View {
 }
 
 // MARK: - Calendar Day Cell
+private let calendarDayPillAspectRatio: CGFloat = 1.12
+
 private struct CalendarPill: View {
     let colors: AppColors.CalendarPillColors
 
     var body: some View {
         GeometryReader { geometry in
-            let diameter = min(geometry.size.width, geometry.size.height)
-            let rimWidth = min(1.15, diameter * 0.065)
+            let width = geometry.size.width
+            let rimWidth = min(1.15, min(width, geometry.size.height) * 0.065)
 
-            Circle()
+            Ellipse()
                 .fill(LinearGradient(
                     stops: [
                         .init(color: colors.light, location: 0),
@@ -821,7 +823,7 @@ private struct CalendarPill: View {
                     endPoint: .bottomLeading
                 ))
                 .overlay {
-                    Circle().fill(RadialGradient(
+                    Ellipse().fill(RadialGradient(
                         stops: [
                             .init(color: .white.opacity(0.46), location: 0),
                             .init(color: .white.opacity(0.14), location: 0.38),
@@ -829,20 +831,20 @@ private struct CalendarPill: View {
                         ],
                         center: UnitPoint(x: 0.28, y: 0.18),
                         startRadius: 0,
-                        endRadius: diameter * 0.78
+                        endRadius: width * 0.78
                     ))
                 }
                 .overlay {
-                    Circle().fill(RadialGradient(
+                    Ellipse().fill(RadialGradient(
                         colors: [.white.opacity(0.14), .clear],
                         center: UnitPoint(x: 0.65, y: 0.88),
                         startRadius: 0,
-                        endRadius: diameter * 0.65
+                        endRadius: width * 0.65
                     ))
                 }
                 .overlay {
                     // The specular rim disappears before the bottom-right edge.
-                    Circle().strokeBorder(LinearGradient(
+                    Ellipse().strokeBorder(LinearGradient(
                         stops: [
                             .init(color: .white.opacity(0.88), location: 0),
                             .init(color: .white.opacity(0.5), location: 0.3),
@@ -879,16 +881,16 @@ private struct BoxDayCell: View {
                 ZStack {
                     // Outer border ring for selected day or today
                     if isSelected {
-                        Circle()
+                        Ellipse()
                             .stroke(AppColors.accent, lineWidth: 2)
-                            .frame(width: 38, height: 38)
+                            .frame(width: 38, height: status == nil ? 38 : 38 / calendarDayPillAspectRatio)
                     } else if isToday {
-                        Circle()
+                        Ellipse()
                             .stroke(AppColors.text.opacity(0.8), lineWidth: 1)
-                            .frame(width: 38, height: 38)
+                            .frame(width: 38, height: status == nil ? 38 : 38 / calendarDayPillAspectRatio)
                     }
 
-                    // Status colored circle
+                    // Slightly elliptical status pill
                     if let status = status {
                         let colors: AppColors.CalendarPillColors = {
                             switch status {
@@ -899,7 +901,7 @@ private struct BoxDayCell: View {
                         }()
 
                         CalendarPill(colors: colors)
-                            .frame(width: 32, height: 32)
+                            .frame(width: 32, height: 32 / calendarDayPillAspectRatio)
 
                         Text("\(dayNumber)")
                             .font(.system(size: 15, weight: .semibold))
