@@ -91,20 +91,6 @@ public struct HistoryDayPreviewCard: View {
         return "DAY \(dayNum)"
     }
 
-    private var scheduledOriginDateString: String? {
-        if let section = detail.sections.first(where: { $0.originDate != nil }) {
-            return section.scheduleLabel(on: detail.date)
-        }
-        guard let record = detail.sessionRecord else { return nil }
-        let (date, source) = HistoryDayDetailData.scheduleContext(record: record, workout: detail.workout, day: detail.date)
-        guard let date, !Calendar.current.isDate(date, inSameDayAs: detail.date) else { return nil }
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
-        return LanguageManager.t(source == .recorded ? "history.originallyScheduled" : "history.usualSchedule",
-            ["date": formatter.string(from: date)])
-    }
-
     private var timeDurationText: String {
         if detail.sections.count > 1 {
             let durationSeconds = detail.sections.reduce(0) { $0 + $1.durationSeconds }
@@ -332,13 +318,6 @@ public struct HistoryDayPreviewCard: View {
                             .font(.system(size: 11, weight: .bold))
                             .foregroundColor(statusColor)
                             .tracking(0.6)
-
-                        if let origin = scheduledOriginDateString {
-                            Text("· 🗓️ \(origin)")
-                                .font(.system(size: 11, weight: .medium))
-                                .foregroundColor(AppColors.secondaryText)
-                                .lineLimit(1)
-                        }
                     }
 
                     Text(workoutTitle)
