@@ -870,6 +870,7 @@ private struct CalendarPill: View {
             let shape = RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
             let shineRadius = width * 0.68
             let shineHeight = height * 0.35
+            let internalShineStrength = 0.9
 
             ZStack {
                 shape.fill(colors.body)
@@ -887,10 +888,10 @@ private struct CalendarPill: View {
                 // A wide, tilted reflection peaks inside the upper third and dissolves by ~65% height.
                 Circle().fill(RadialGradient(
                     stops: [
-                        .init(color: colors.light.opacity(0.82), location: 0),
-                        .init(color: colors.light.opacity(0.62), location: 0.3),
-                        .init(color: colors.light.opacity(0.26), location: 0.6),
-                        .init(color: colors.light.opacity(0.05), location: 0.85),
+                        .init(color: colors.light.opacity(0.82 * internalShineStrength), location: 0),
+                        .init(color: colors.light.opacity(0.62 * internalShineStrength), location: 0.3),
+                        .init(color: colors.light.opacity(0.26 * internalShineStrength), location: 0.6),
+                        .init(color: colors.light.opacity(0.05 * internalShineStrength), location: 0.85),
                         .init(color: colors.light.opacity(0), location: 1)
                     ],
                     center: .center,
@@ -900,10 +901,10 @@ private struct CalendarPill: View {
                 .overlay {
                     Circle().fill(RadialGradient(
                         stops: [
-                            .init(color: .white.opacity(0.18), location: 0),
-                            .init(color: .white.opacity(0.135), location: 0.3),
-                            .init(color: .white.opacity(0.057), location: 0.6),
-                            .init(color: .white.opacity(0.011), location: 0.85),
+                            .init(color: .white.opacity(0.18 * internalShineStrength), location: 0),
+                            .init(color: .white.opacity(0.135 * internalShineStrength), location: 0.3),
+                            .init(color: .white.opacity(0.057 * internalShineStrength), location: 0.6),
+                            .init(color: .white.opacity(0.011 * internalShineStrength), location: 0.85),
                             .init(color: .clear, location: 1)
                         ],
                         center: .center,
