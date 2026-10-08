@@ -313,10 +313,18 @@ public struct Exercise: Identifiable, Codable, Hashable {
 }
 
 public struct Workout: Identifiable, Codable, Hashable {
+    public static let minTitleLength = 1
     public static let maxTitleLength = 24
 
     public static func titleLength(_ title: String) -> Int {
         title.trimmingCharacters(in: .whitespacesAndNewlines).unicodeScalars.count
+    }
+
+    public static func isValidTitle(_ title: String, originalTitle: String? = nil) -> Bool {
+        let trimmed = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        let length = titleLength(trimmed)
+        return length >= minTitleLength && (length <= maxTitleLength ||
+            trimmed == originalTitle?.trimmingCharacters(in: .whitespacesAndNewlines))
     }
 
     public var id: String

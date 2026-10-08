@@ -9639,3 +9639,106 @@ final class HistoryActionPolicyTests: XCTestCase {
         }
     }
 }
+
+
+final class WorkoutDayPresentationTests: XCTestCase {
+    func testWorkoutDayNameBoundsAndUnchangedLegacyNames() {
+        XCTAssertFalse(Workout.isValidTitle(""))
+        XCTAssertFalse(Workout.isValidTitle(" \n\t "))
+        XCTAssertTrue(Workout.isValidTitle(" W "))
+        XCTAssertTrue(Workout.isValidTitle(String(repeating: "W", count: 24)))
+        XCTAssertFalse(Workout.isValidTitle(String(repeating: "W", count: 25)))
+        XCTAssertTrue(Workout.isValidTitle("Göğüs Hipertrofisi"))
+        XCTAssertEqual(Workout.titleLength(" 💪 "), 1)
+        let legacy = "Existing workout name longer than 24 characters"
+        XCTAssertTrue(Workout.isValidTitle(legacy, originalTitle: legacy))
+        XCTAssertFalse(Workout.isValidTitle(legacy + "!", originalTitle: legacy))
+        XCTAssertFalse(Workout.isValidTitle(" ", originalTitle: " "))
+    }
+
+    @MainActor
+    func testWorkoutDayHeadersWrapAndCardsGrowAtNarrowWidthsAndLargerText() throws {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        let titles = ["Chest Hypertrophy", String(repeating: "W", count: 24),
+            "Chest and shoulders with a much longer imported workout name"]
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            for width: CGFloat in [320, 393] {
+                for category in [ContentSizeCategory.large, .extraExtraExtraLarge] {
+                    var heights: [CGFloat] = []
+                    for (index, title) in titles.enumerated() {
+                        let workout = Workout(id: "hero-name-fixture", day: 5, title: title,
+                            focus: language == "en" ? "Heavy Dumbbell Bench Overload" : "Ağır Dambıl Bench Press Çalışması",
+                            exercises: [Exercise(id: "bench", name: "Bench", sets: 3)],
+                            targetMuscles: ["chest", "lats", "quadriceps", "hamstrings"])
+                        let content = TodayHeroCard(workout: workout, programId: "hero-name-fixture",
+                            todayIndex: 0, isCompleted: false, isAvailable: false,
+                            availableDay: LanguageManager.workoutDays[4], hasUnfinishedProgress: false,
+                            onStart: {})
+                            .environment(\.sizeCategory, category)
+                            .frame(width: width)
+                            .background(AppColors.background)
+                        let image = try renderCard(content, hasViewControls: true)
+                        XCTAssertEqual(image.size.width, width, accuracy: 1)
+                        XCTAssertGreaterThanOrEqual(image.size.height, 420)
+                        heights.append(image.size.height)
+                        let attachment = XCTAttachment(image: image)
+                        attachment.name = "workout-day-header-\(language)-\(Int(width))-\(category)-\(index)"
+                        attachment.lifetime = .keepAlways
+                        add(attachment)
+                    }
+                    XCTAssertGreaterThan(heights[2], heights[0], "Imported names must grow the card instead of ellipsizing")
+                }
+            }
+        }
+        let content = TodayHeroCard(workout: nil, todayIndex: 0, isCompleted: false,
+            isAvailable: false, availableDay: nil, hasUnfinishedProgress: false, onStart: {})
+            .environment(\.sizeCategory, .extraExtraExtraLarge)
+            .frame(width: 320)
+        let image = try renderCard(content, hasViewControls: false)
+        XCTAssertGreaterThanOrEqual(image.size.height, 420)
+        let attachment = XCTAttachment(image: image)
+        attachment.name = "workout-day-recovery-larger-text"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
+    @MainActor
+    private func renderCard<Content: View>(_ content: Content, hasViewControls: Bool) throws -> UIImage {
+        // ImageRenderer measures the intrinsic card, but native hosting is needed
+        // to capture the horizontal view-control scroll view.
+        let size = try XCTUnwrap(ImageRenderer(content: content).uiImage).size
+        let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows).first(where: \.isKeyWindow)
+        let controller = UIHostingController(rootView: content)
+        controller.safeAreaRegions = []
+        let window = UIWindow(frame: CGRect(origin: .zero, size: size))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        defer {
+            window.isHidden = true
+            previousWindow?.makeKey()
+        }
+        controller.view.frame = window.bounds
+        controller.view.layoutIfNeeded()
+        RunLoop.main.run(until: Date().addingTimeInterval(0.05))
+        controller.view.layoutIfNeeded()
+        if hasViewControls {
+            func scrollViews(_ view: UIView) -> [UIScrollView] {
+                (view as? UIScrollView).map { [$0] } ?? view.subviews.flatMap(scrollViews)
+            }
+            let controls = try XCTUnwrap(scrollViews(controller.view).first)
+            XCTAssertGreaterThanOrEqual(controls.bounds.height, 48)
+            XCTAssertGreaterThanOrEqual(controls.contentSize.height, 48)
+            if size.width == 320 {
+                XCTAssertGreaterThan(controls.contentSize.width, controls.bounds.width,
+                    "The four body views must remain reachable by scrolling on narrow phones")
+            }
+        }
+        return UIGraphicsImageRenderer(size: size).image { _ in
+            controller.view.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
+        }
+    }
+
+}

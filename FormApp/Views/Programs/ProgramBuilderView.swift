@@ -13,7 +13,7 @@ public struct ProgramBuilderView: View {
 
     private var canSave: Bool {
         program.workouts.allSatisfy {
-            !$0.title.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && !titleTooLong($0)
+            Workout.isValidTitle($0.title, originalTitle: originalTitles[$0.id])
         }
     }
     var onDismiss: () -> Void
