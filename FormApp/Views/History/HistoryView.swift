@@ -501,11 +501,14 @@ public struct HistoryView: View {
                                     .font(.system(size: 16, weight: .semibold))
                                     .foregroundColor(AppColors.secondaryText)
                                     .frame(width: 40, height: 40)
-                                    .background(CalendarChrome(
-                                        cornerRadius: 12,
-                                        startColor: AppColors.calendarNavigationStart,
-                                        endColor: AppColors.calendarNavigationEnd
-                                    ))
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                            .fill(AppColors.surfaceRaised)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                                    .strokeBorder(AppColors.border, lineWidth: 1)
+                                            )
+                                    )
                                     .frame(width: 48, height: 48)
                                     .contentShape(Rectangle())
                             }
@@ -524,11 +527,14 @@ public struct HistoryView: View {
                                     .font(.system(size: 16, weight: .semibold))
                                     .foregroundColor(isCurrentMonth ? AppColors.muted.opacity(0.3) : AppColors.secondaryText)
                                     .frame(width: 40, height: 40)
-                                    .background(CalendarChrome(
-                                        cornerRadius: 12,
-                                        startColor: AppColors.calendarNavigationStart,
-                                        endColor: AppColors.calendarNavigationEnd
-                                    ))
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                            .fill(AppColors.surfaceRaised)
+                                            .overlay(
+                                                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                                    .strokeBorder(AppColors.border, lineWidth: 1)
+                                            )
+                                    )
                                     .frame(width: 48, height: 48)
                                     .contentShape(Rectangle())
                             }

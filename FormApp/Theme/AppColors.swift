@@ -6,8 +6,6 @@ public enum AppColors {
     public static let surfaceRaised = Color(hex: 0x1D2227)
     public static let calendarSurfaceStart = Color(hex: 0x151A1E)
     public static let calendarSurfaceEnd = Color(hex: 0x101418)
-    public static let calendarNavigationStart = Color(hex: 0x1E252B)
-    public static let calendarNavigationEnd = Color(hex: 0x151B20)
     public static let progressionRulesSurface = Color(hex: 0x0E181E)
 
     public static let progressionPaywallSurface = Color(hex: 0x101519)
