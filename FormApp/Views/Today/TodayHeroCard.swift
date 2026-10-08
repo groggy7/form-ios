@@ -10,7 +10,7 @@ public struct TodayHeroCard: View {
     let hasUnfinishedProgress: Bool
     let onStart: () -> Void
 
-    @State private var selectedViewIndex: Int = 0
+    @State private var selectedViewIndex: Int?
 
     @ScaledMetric(relativeTo: .title) private var titleSize: CGFloat = 32
     @ScaledMetric(relativeTo: .subheadline) private var bodySize: CGFloat = 14
@@ -32,7 +32,7 @@ public struct TodayHeroCard: View {
         isAvailable: Bool,
         availableDay: String?,
         hasUnfinishedProgress: Bool,
-        initialViewIndex: Int = 0,
+        initialViewIndex: Int? = nil,
         onStart: @escaping () -> Void
     ) {
         self.workout = workout
@@ -55,8 +55,10 @@ public struct TodayHeroCard: View {
     }
 
     private func workoutCard(_ workout: Workout) -> some View {
-        let bodyViews = workout.bodyViews()
-        let activeView = bodyViews.indices.contains(selectedViewIndex) ? bodyViews[selectedViewIndex] : (bodyViews.first ?? .front)
+        let bodyViews = Self.bodyViewOptions(for: workout)
+        let activeIndex = selectedViewIndex.flatMap { bodyViews.indices.contains($0) ? $0 : nil }
+            ?? Self.defaultBodyViewIndex(for: workout)
+        let activeView = bodyViews[activeIndex]
 
         return VStack(alignment: .leading, spacing: 0) {
             // Top row
@@ -119,7 +121,7 @@ public struct TodayHeroCard: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack(spacing: 6) {
                         ForEach(Array(bodyViews.enumerated()), id: \.offset) { idx, v in
-                            let isSel = idx == selectedViewIndex
+                            let isSel = idx == activeIndex
                             Button(action: { selectedViewIndex = idx }) {
                                 Text(LanguageManager.t("muscles.view.\(v.rawValue)"))
                                     .font(.system(size: captionSize, weight: .medium))
@@ -137,6 +139,7 @@ public struct TodayHeroCard: View {
                             }
                             .buttonStyle(.plain)
                             .accessibilityIdentifier("muscle-view-\(v.rawValue)")
+                            .accessibilityAddTraits(isSel ? .isSelected : [])
                         }
                     }
                 }
@@ -242,6 +245,25 @@ public struct TodayHeroCard: View {
         }
         .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
         .padding(.horizontal, 20)
+        .onChange(of: workout.id) { _, _ in selectedViewIndex = nil }
+    }
+
+    // Keep both sides of each relevant body region available even when all
+    // tagged muscles fit on one side. Muscle tags still choose the initial view.
+    static func bodyViewOptions(for workout: Workout) -> [BodyView] {
+        let required = workout.bodyViews()
+        var options: [BodyView] = []
+        if required.contains(.front) || required.contains(.back) {
+            options += [.front, .back]
+        }
+        if required.contains(.legsFront) || required.contains(.legsBack) {
+            options += [.legsFront, .legsBack]
+        }
+        return options
+    }
+
+    static func defaultBodyViewIndex(for workout: Workout) -> Int {
+        bodyViewOptions(for: workout).firstIndex(of: workout.bodyViews().first ?? .front) ?? 0
     }
 
     private func buttonTitle() -> String {

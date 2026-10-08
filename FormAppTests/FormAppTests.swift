@@ -9679,7 +9679,7 @@ final class WorkoutDayPresentationTests: XCTestCase {
                             .environment(\.sizeCategory, category)
                             .frame(width: width)
                             .background(AppColors.background)
-                        let image = try renderCard(content, hasViewControls: true)
+                        let image = try renderCard(content, hasViewControls: true, requiresScrolling: true)
                         XCTAssertEqual(image.size.width, width, accuracy: 1)
                         XCTAssertGreaterThanOrEqual(image.size.height, 420)
                         heights.append(image.size.height)
@@ -9704,8 +9704,53 @@ final class WorkoutDayPresentationTests: XCTestCase {
         add(attachment)
     }
 
+    func testSingleSidedWorkoutsKeepPairedViewsAndStartOnTaggedSide() {
+        let back = Workout(day: 4, title: "Heavy Pull & Upper Back", targetMuscles: ["back", "lats", "trapezius"])
+        XCTAssertEqual(back.bodyViews(), [.back], "Reproduce the single required view in the reported workout")
+        XCTAssertEqual(TodayHeroCard.bodyViewOptions(for: back), [.front, .back])
+        XCTAssertEqual(TodayHeroCard.defaultBodyViewIndex(for: back), 1)
+        let chest = Workout(day: 5, title: "Chest", targetMuscles: ["chest"])
+        XCTAssertEqual(TodayHeroCard.bodyViewOptions(for: chest), [.front, .back])
+        XCTAssertEqual(TodayHeroCard.defaultBodyViewIndex(for: chest), 0)
+        let calves = Workout(day: 2, title: "Calves", targetMuscles: ["calves"])
+        XCTAssertEqual(TodayHeroCard.bodyViewOptions(for: calves), [.legsFront, .legsBack])
+        XCTAssertEqual(TodayHeroCard.defaultBodyViewIndex(for: calves), 1)
+        let mixed = Workout(day: 1, title: "Full Body", targetMuscles: ["lats", "quadriceps"])
+        XCTAssertEqual(TodayHeroCard.bodyViewOptions(for: mixed), [.front, .back, .legsFront, .legsBack])
+        XCTAssertEqual(TodayHeroCard.defaultBodyViewIndex(for: mixed), 1)
+    }
+
     @MainActor
-    private func renderCard<Content: View>(_ content: Content, hasViewControls: Bool) throws -> UIImage {
+    func testHeavyPullCardKeepsFrontBackControlsInNativeLayout() throws {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        let workout = Workout(id: "heavy-pull-controls", day: 4, title: "Heavy Pull & Upper Back",
+            focus: "Heavy Barbell Rows, Lat & Trap Overload",
+            exercises: (0..<4).map { Exercise(id: "fixture-\($0)", name: "Fixture") },
+            targetMuscles: ["back", "lats", "trapezius"])
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            for width: CGFloat in [320, 393] {
+                for category in [ContentSizeCategory.large, .extraExtraExtraLarge] {
+                    for selection: Int? in [nil, 0] {
+                        let card = TodayHeroCard(workout: workout, todayIndex: 3,
+                            isCompleted: false, isAvailable: true, availableDay: nil,
+                            hasUnfinishedProgress: false, initialViewIndex: selection, onStart: {})
+                            .environment(\.sizeCategory, category)
+                            .frame(width: width).background(AppColors.background)
+                        let image = try renderCard(card, hasViewControls: true)
+                        let attachment = XCTAttachment(image: image)
+                        attachment.name = "heavy-pull-controls-\(language)-\(Int(width))-\(category)-\(selection == nil ? "back" : "front")"
+                        attachment.lifetime = .keepAlways
+                        add(attachment)
+                    }
+                }
+            }
+        }
+    }
+
+    @MainActor
+    private func renderCard<Content: View>(_ content: Content, hasViewControls: Bool, requiresScrolling: Bool = false) throws -> UIImage {
         // ImageRenderer measures the intrinsic card, but native hosting is needed
         // to capture the horizontal view-control scroll view.
         let size = try XCTUnwrap(ImageRenderer(content: content).uiImage).size
@@ -9731,7 +9776,7 @@ final class WorkoutDayPresentationTests: XCTestCase {
             let controls = try XCTUnwrap(scrollViews(controller.view).first)
             XCTAssertGreaterThanOrEqual(controls.bounds.height, 48)
             XCTAssertGreaterThanOrEqual(controls.contentSize.height, 48)
-            if size.width == 320 {
+            if size.width == 320 && requiresScrolling {
                 XCTAssertGreaterThan(controls.contentSize.width, controls.bounds.width,
                     "The four body views must remain reachable by scrolling on narrow phones")
             }
