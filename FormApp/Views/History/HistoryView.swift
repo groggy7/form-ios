@@ -500,7 +500,14 @@ public struct HistoryView: View {
                                 Image(systemName: "chevron.left")
                                     .font(.system(size: 16, weight: .semibold))
                                     .foregroundColor(AppColors.secondaryText)
-                                    .frame(width: 36, height: 36)
+                                    .frame(width: 40, height: 40)
+                                    .background(CalendarChrome(
+                                        cornerRadius: 12,
+                                        startColor: AppColors.calendarNavigationStart,
+                                        endColor: AppColors.calendarNavigationEnd
+                                    ))
+                                    .frame(width: 48, height: 48)
+                                    .contentShape(Rectangle())
                             }
                             .buttonStyle(.plain)
 
@@ -516,7 +523,14 @@ public struct HistoryView: View {
                                 Image(systemName: "chevron.right")
                                     .font(.system(size: 16, weight: .semibold))
                                     .foregroundColor(isCurrentMonth ? AppColors.muted.opacity(0.3) : AppColors.secondaryText)
-                                    .frame(width: 36, height: 36)
+                                    .frame(width: 40, height: 40)
+                                    .background(CalendarChrome(
+                                        cornerRadius: 12,
+                                        startColor: AppColors.calendarNavigationStart,
+                                        endColor: AppColors.calendarNavigationEnd
+                                    ))
+                                    .frame(width: 48, height: 48)
+                                    .contentShape(Rectangle())
                             }
                             .disabled(isCurrentMonth)
                             .buttonStyle(.plain)
@@ -559,12 +573,11 @@ public struct HistoryView: View {
                     .padding(.horizontal, 10)
                     .padding(.vertical, 12)
                     .background(
-                        RoundedRectangle(cornerRadius: 24, style: .continuous)
-                            .fill(AppColors.surface)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 24, style: .continuous)
-                                    .stroke(AppColors.border, lineWidth: 1)
-                            )
+                        CalendarChrome(
+                            cornerRadius: 24,
+                            startColor: AppColors.calendarSurfaceStart,
+                            endColor: AppColors.calendarSurfaceEnd
+                        )
                     )
                     .padding(.horizontal, 20)
 
@@ -804,6 +817,39 @@ public struct HistoryView: View {
 // MARK: - Calendar Day Cell
 private let calendarDayPillAspectRatio: CGFloat = 1.12
 private let calendarDayPillCornerRadiusFraction: CGFloat = 0.5
+
+private struct CalendarChrome: View {
+    let cornerRadius: CGFloat
+    let startColor: Color
+    let endColor: Color
+
+    var body: some View {
+        RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+            .fill(LinearGradient(colors: [startColor, endColor], startPoint: .topLeading, endPoint: .bottomTrailing))
+            .overlay {
+                GeometryReader { geometry in
+                    let squaredWidth = geometry.size.width * geometry.size.width
+                    let squaredHeight = geometry.size.height * geometry.size.height
+                    let squaredDiagonal = max(squaredWidth + squaredHeight, 1)
+                    // Normalize the fade to both axes; neither the bottom nor
+                    // the right perimeter receives a visible outline.
+                    RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                        .strokeBorder(LinearGradient(
+                            stops: [
+                                .init(color: AppColors.border.opacity(0.85), location: 0),
+                                .init(color: AppColors.border.opacity(0.45), location: 0.22),
+                                .init(color: AppColors.border.opacity(0), location: 0.45)
+                            ],
+                            startPoint: .topLeading,
+                            endPoint: UnitPoint(
+                                x: 2 * squaredHeight / squaredDiagonal,
+                                y: 2 * squaredWidth / squaredDiagonal
+                            )
+                        ), lineWidth: 1)
+                }
+            }
+    }
+}
 
 private struct CalendarPill: View {
     let colors: AppColors.CalendarPillColors
@@ -1713,4 +1759,3 @@ public struct HistoryDayDetailSheet: View {
         return []
     }
 }
-
