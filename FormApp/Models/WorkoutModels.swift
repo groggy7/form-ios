@@ -846,38 +846,57 @@ public enum WorkoutCalendar {
 
     public static func isSessionComplete(session: WorkoutSessionRecord, workout: Workout?) -> Bool {
         if session.isComplete == false { return false }
-        if session.exerciseLogs.isEmpty {
-            return session.isComplete != false
+        let logs = session.exerciseLogs.map { log in
+            var workingLog = log
+            workingLog.sets = log.sets.filter { !$0.isWarmup }
+            return workingLog
         }
-        if let w = workout, !w.exercises.isEmpty {
-            let planned = w.exercises
-            let allPlannedDone = planned.allSatisfy { ex in
-                let log = session.exerciseLogs.first {
-                    $0.exerciseName.trimmingCharacters(in: .whitespaces).caseInsensitiveCompare(ex.name.trimmingCharacters(in: .whitespaces)) == .orderedSame ||
-                    $0.exerciseName.trimmingCharacters(in: .whitespaces).caseInsensitiveCompare(ex.displayName.trimmingCharacters(in: .whitespaces)) == .orderedSame
-                }
-                let target = log?.targetSets ?? WorkoutSessionUtils.initialSetCount(exercise: ex)
-                let completed = log?.sets.count ?? 0
-                return completed >= target && target > 0
+        let planned = session.workoutSnapshot?.exercises ?? []
+        if !planned.isEmpty {
+            func matches(_ log: SessionExerciseLog, _ exercise: Exercise) -> Bool {
+                let key = PersonalRecordTracker.normalizeExerciseKey(log.exerciseName)
+                return key == PersonalRecordTracker.normalizeExerciseKey(exercise.name)
+                    || key == PersonalRecordTracker.normalizeExerciseKey(exercise.displayName)
             }
-            if !allPlannedDone { return false }
-            let extraLogs = session.exerciseLogs.filter { log in
-                !planned.contains { ex in
-                    log.exerciseName.trimmingCharacters(in: .whitespaces).caseInsensitiveCompare(ex.name.trimmingCharacters(in: .whitespaces)) == .orderedSame ||
-                    log.exerciseName.trimmingCharacters(in: .whitespaces).caseInsensitiveCompare(ex.displayName.trimmingCharacters(in: .whitespaces)) == .orderedSame
-                }
-            }
-            let allExtrasDone = extraLogs.allSatisfy { log in
+            guard planned.allSatisfy({ exercise in
+                let log = logs.first { matches($0, exercise) }
+                let target = log?.targetSets ?? WorkoutSessionUtils.initialSetCount(exercise: exercise)
+                return target > 0 && (log?.sets.count ?? 0) >= target
+            }) else { return false }
+            return logs.filter { log in !planned.contains { matches(log, $0) } }.allSatisfy { log in
                 let target = log.targetSets ?? max(log.sets.count, 1)
-                return log.sets.count >= target && target > 0
-            }
-            return allExtrasDone
-        } else {
-            return session.exerciseLogs.allSatisfy { log in
-                let target = log.targetSets ?? max(log.sets.count, 1)
-                return log.sets.count >= target && target > 0
+                return target > 0 && log.sets.count >= target
             }
         }
+        // A mutable plan is not evidence about a saved bout's prescription.
+        guard !logs.isEmpty else { return session.isComplete == true }
+        return logs.allSatisfy { log in
+            let target = log.targetSets ?? max(log.sets.count, 1)
+            return target > 0 && log.sets.count >= target
+        }
+    }
+
+    static func scheduledOriginsWithActivity(sessions: [WorkoutSessionRecord], entries: [WorkoutDayEntry], timeZone: TimeZone = .current) -> Set<String> {
+        Set(sessions.compactMap { session in
+            guard let origin = session.scheduledDate, parseDate(origin, timeZone: timeZone) != nil,
+                  let performed = entries.first(where: { $0.id == "session:\(session.id)" })?.date
+                    ?? localDate(from: session.startedAt, timeZone: timeZone) ?? localDate(from: session.completedAt, timeZone: timeZone),
+                  origin != performed,
+                  session.totalCompletedSets > 0 || session.exerciseLogs.contains(where: { !$0.sets.isEmpty }) else { return nil }
+            return origin
+        })
+    }
+
+    private static func reconcileScheduledOrigins(missed: Set<String>, sessions: [WorkoutSessionRecord], entries: [WorkoutDayEntry], today: String, timeZone: TimeZone) -> Set<String> {
+        let activeOrigins = scheduledOriginsWithActivity(sessions: sessions, entries: entries, timeZone: timeZone)
+        var result = missed.subtracting(activeOrigins)
+        let recordedDates = Set(entries.map(\.date))
+        for session in sessions {
+            guard let origin = session.scheduledDate, parseDate(origin, timeZone: timeZone) != nil,
+                  origin < today, !activeOrigins.contains(origin), !recordedDates.contains(origin) else { continue }
+            result.insert(origin)
+        }
+        return result
     }
 
     public static func restore(
@@ -942,34 +961,17 @@ public enum WorkoutCalendar {
 
         for weekMondayStr in activeWeekMondays {
             guard let weekMonday = parseDate(weekMondayStr, timeZone: timeZone) else { continue }
-            let weekSessions = sessions.filter { session in
-                guard let sDate = parseIsoTimestamp(session.startedAt) ?? parseIsoTimestamp(session.completedAt) else { return false }
-                return mondayOfCurrentWeek(for: sDate, calendar: cal) == weekMondayStr
-            }
-            let weekProgramId = weekSessions.first?.programId
-            let weekProgram = programs.first(where: { $0.id == weekProgramId })
-            let activeDays = weekProgram?.workouts.filter { !$0.exercises.isEmpty }.map { $0.day }.sorted() ?? []
-            let weekWeekdays = !activeDays.isEmpty ? activeDays : (!history.scheduledWeekdays.isEmpty ? history.scheduledWeekdays : weekdays)
-
-            let loggedWorkoutIds = Set(weekSessions.filter { session in
-                session.totalCompletedSets > 0 || session.exerciseLogs.contains { log in
-                    log.sets.contains { ($0.reps ?? 0) > 0 || ($0.weightKg ?? 0.0) > 0.0 }
-                }
-            }.map { $0.workoutId })
-
+            let weekWeekdays = !history.scheduledWeekdays.isEmpty ? history.scheduledWeekdays : weekdays
             for dayIndex in weekWeekdays {
                 if let dayDate = cal.date(byAdding: .day, value: dayIndex - 1, to: weekMonday) {
                     let dayStr = formatDate(dayDate, timeZone: timeZone)
-                    let workoutForDay = weekProgram?.workouts.first(where: { $0.day == dayIndex })
-                    let isWorkoutDoneThisWeek = (workoutForDay != nil && loggedWorkoutIds.contains(workoutForDay!.id))
-                    if dayDate < todayDate && !entriesByDate.contains(dayStr) && !isWorkoutDoneThisWeek {
-                        missedSet.insert(dayStr)
-                    } else if isWorkoutDoneThisWeek {
-                        missedSet.remove(dayStr)
-                    }
+                    if dayDate < todayDate && !entriesByDate.contains(dayStr) { missedSet.insert(dayStr) }
                 }
             }
         }
+
+        missedSet = reconcileScheduledOrigins(missed: missedSet, sessions: sessions,
+            entries: Array(entriesMap.values), today: today, timeZone: timeZone)
 
         return WorkoutCalendarHistory(
             nextScheduledDate: history.nextScheduledDate,
@@ -1006,47 +1008,8 @@ public enum WorkoutCalendar {
             cursor = next
         }
 
-        var activeWeekMondays = Set<String>()
-        for missedStr in missedSet {
-            if let d = parseDate(missedStr, timeZone: cal.timeZone) {
-                activeWeekMondays.insert(mondayOfCurrentWeek(for: d, calendar: cal))
-            }
-        }
-        for session in sessions {
-            if let sDate = parseIsoTimestamp(session.startedAt) ?? parseIsoTimestamp(session.completedAt) {
-                activeWeekMondays.insert(mondayOfCurrentWeek(for: sDate, calendar: cal))
-            }
-        }
-
-        for weekMondayStr in activeWeekMondays {
-            guard let weekMonday = parseDate(weekMondayStr, timeZone: cal.timeZone) else { continue }
-            let weekSessions = sessions.filter { session in
-                guard let sDate = parseIsoTimestamp(session.startedAt) ?? parseIsoTimestamp(session.completedAt) else { return false }
-                return mondayOfCurrentWeek(for: sDate, calendar: cal) == weekMondayStr
-            }
-            let weekProgramId = weekSessions.first?.programId
-            let weekProgram = programs.first(where: { $0.id == weekProgramId }) ?? programs.first
-            let activeDays = weekProgram?.workouts.filter { !$0.exercises.isEmpty }.map { $0.day }.sorted() ?? []
-            let weekWeekdays = !activeDays.isEmpty ? activeDays : (!history.scheduledWeekdays.isEmpty ? history.scheduledWeekdays : weekdays)
-
-            let loggedWorkoutIds = Set(weekSessions.filter { session in
-                session.totalCompletedSets > 0 || session.exerciseLogs.contains { log in
-                    log.sets.contains { ($0.reps ?? 0) > 0 || ($0.weightKg ?? 0.0) > 0.0 }
-                }
-            }.map { $0.workoutId })
-
-            for dayIndex in weekWeekdays {
-                if let dayDate = cal.date(byAdding: .day, value: dayIndex - 1, to: weekMonday) {
-                    let dayStr = formatDate(dayDate, timeZone: cal.timeZone)
-                    let workoutForDay = weekProgram?.workouts.first(where: { $0.day == dayIndex })
-                        ?? programs.flatMap(\.workouts).first(where: { $0.day == dayIndex })
-                    let isWorkoutDoneThisWeek = (workoutForDay != nil && loggedWorkoutIds.contains(workoutForDay!.id))
-                    if isWorkoutDoneThisWeek {
-                        missedSet.remove(dayStr)
-                    }
-                }
-            }
-        }
+        missedSet = reconcileScheduledOrigins(missed: missedSet, sessions: sessions,
+            entries: history.entries, today: today, timeZone: cal.timeZone)
 
         return WorkoutCalendarHistory(
             nextScheduledDate: today,

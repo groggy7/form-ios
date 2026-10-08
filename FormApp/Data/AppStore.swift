@@ -939,40 +939,31 @@ public final class AppStore: ObservableObject {
             if dateStr < todayStr && status == .unfinished && !hasLoggedSets(for: dateStr) {
                 statuses[dateStr] = .missed
             } else if status == .completed {
-                if let rec = sessionForDate(dateStr) {
-                    let workout = resolveWorkout(for: rec)
-                    if !WorkoutCalendar.isSessionComplete(session: rec, workout: workout) {
-                        statuses[dateStr] = .unfinished
-                    }
+                let records = state.history.filter { record in
+                    let date = curCal.entries.first(where: { $0.id == "session:\(record.id)" })?.date
+                        ?? WorkoutCalendar.localDate(from: record.startedAt) ?? WorkoutCalendar.localDate(from: record.completedAt)
+                    return date == dateStr
+                }
+                let hasCompletionMark = curCal.entries.contains {
+                    $0.date == dateStr && $0.status == .completed && !$0.id.hasPrefix("session:")
+                }
+                if !hasCompletionMark && !records.isEmpty
+                    && !records.contains(where: { WorkoutCalendar.isSessionComplete(session: $0, workout: nil) }) {
+                    statuses[dateStr] = .unfinished
                 }
             }
         }
 
-        // 3. Any missed day whose scheduled workout was completed elsewhere in the same week -> neutral (remove)
-        for (dateStr, status) in statuses {
-            if status == .missed, let date = WorkoutCalendar.parseDate(dateStr) {
-                let weekMonday = WorkoutCalendar.mondayOfCurrentWeek(for: date)
-                var cal = Calendar(identifier: .gregorian)
-                cal.firstWeekday = 2 // Monday
-                let weekday = (cal.component(.weekday, from: date) + 5) % 7 + 1
-                let weekSessions = state.history.filter { rec in
-                    guard let sDate = WorkoutCalendar.parseIsoTimestamp(rec.startedAt) ?? WorkoutCalendar.parseIsoTimestamp(rec.completedAt) else { return false }
-                    return WorkoutCalendar.mondayOfCurrentWeek(for: sDate, calendar: cal) == weekMonday
-                }
-                let loggedWorkoutIds = Set(weekSessions.filter { rec in
-                    rec.totalCompletedSets > 0 || rec.exerciseLogs.contains { log in
-                        log.sets.contains { ($0.reps ?? 0) > 0 || ($0.weightKg ?? 0) > 0 }
-                    }
-                }.map { $0.workoutId })
-                let weekProgramId = weekSessions.first?.programId
-                let weekProgram = state.programs.first(where: { $0.id == weekProgramId }) ?? state.programs.first
-                let workoutForDay = weekProgram?.workouts.first(where: { $0.day == weekday })
-                    ?? state.programs.flatMap(\.workouts).first(where: { $0.day == weekday })
-                if let w = workoutForDay, loggedWorkoutIds.contains(w.id) {
-                    statuses.removeValue(forKey: dateStr)
-                }
-            }
+        // Only a recorded scheduled origin can neutralize a missed day. A mutable plan cannot relabel history.
+        var origins = WorkoutCalendar.scheduledOriginsWithActivity(sessions: state.history, entries: curCal.entries)
+        if let active = activeSession, let origin = active.scheduledDate, WorkoutCalendar.parseDate(origin) != nil,
+           active.setsByExercise.values.flatMap({ $0 }).contains(where: { $0.isCompleted }) {
+            let performed = active.assignedCalendarDate
+                ?? curCal.entries.first(where: { $0.id == "session:\(active.id)" })?.date
+                ?? WorkoutCalendar.localDate(from: active.startedAt)
+            if performed != nil && performed != origin { origins.insert(origin) }
         }
+        for origin in origins where statuses[origin] == .missed { statuses.removeValue(forKey: origin) }
 
         return statuses
     }

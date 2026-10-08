@@ -27,10 +27,40 @@ public struct HistoryDetailView: View {
         self.onActionSection = onActionSection
     }
 
+    /// Resolve the exact section before exposing any control that can open a workout.
+    var singleActionSection: WorkoutDaySection? {
+        guard detail.sections.count <= 1 else { return nil }
+        let section: WorkoutDaySection
+        if let saved = detail.sections.first {
+            section = saved
+        } else {
+            guard let workout = detail.sessionRecord?.workoutSnapshot ?? detail.workout else { return nil }
+            let context = detail.sessionRecord.map {
+                HistoryDayDetailData.scheduleContext(record: $0, workout: workout, day: detail.date)
+            }
+            section = WorkoutDaySection(sessionRecord: detail.sessionRecord, workout: workout,
+                isComplete: detail.status == .completed,
+                scheduledDate: context?.0 ?? detail.date, scheduleSource: context?.1 ?? .currentPlan)
+        }
+        return section.canAct(on: detail.date, today: today) ? section : nil
+    }
+
+    var singleWorkoutAction: (() -> Void)? {
+        guard let section = singleActionSection else { return nil }
+        if let onActionSection { return { onActionSection(section) } }
+        return onActionWorkout
+    }
+
+    var resumesSingleWorkout: Bool {
+        guard let section = singleActionSection else { return false }
+        return section.isLiveSession || (Calendar.current.isDate(detail.date, inSameDayAs: today) && section.sessionRecord != nil)
+    }
+
     public var body: some View {
         let formattedDate = formattedFullDate(for: detail.date)
 
         let workoutTitle: String = {
+            if detail.isCompletionMark { return LanguageManager.t("history.markedComplete") }
             if detail.sections.count > 1 {
                 return LanguageManager.t("history.dayBreakdown")
             }
@@ -45,20 +75,9 @@ public struct HistoryDetailView: View {
             : detail.sections.allSatisfy(\.isComplete)
         let effectiveStatus = detail.status
         let isMissed = effectiveStatus == .missed || (!items.isEmpty && items.allSatisfy { $0.completedSets == 0 } && detail.date < Calendar.current.startOfDay(for: today))
-        let actionSection = detail.sections.first { $0.canAct(on: detail.date, today: today) }
-        let canActOnSingle: Bool = {
-            if let first = detail.sections.first, detail.sections.count == 1 {
-                return first.canAct(on: detail.date, today: today)
-            }
-            if detail.sections.isEmpty, let workout = detail.workout {
-                return WorkoutDaySection(sessionRecord: detail.sessionRecord, workout: workout).canAct(on: detail.date, today: today)
-            }
-            return false
-        }()
-        let showActionButton = detail.sections.count <= 1 && canActOnSingle && onActionWorkout != nil && !allCompleted
-        let resumeAction = actionSection?.isLiveSession == true
-            || (Calendar.current.isDate(detail.date, inSameDayAs: today) && (actionSection?.sessionRecord ?? detail.sessionRecord) != nil)
-        let actionButtonText = LanguageManager.t(resumeAction ? "history.resumeWorkout" : "history.startWorkout")
+        let action = singleWorkoutAction
+        let showActionButton = action != nil && !allCompleted
+        let actionButtonText = LanguageManager.t(resumesSingleWorkout ? "history.resumeWorkout" : "history.startWorkout")
 
         let completedExercises = items.filter { $0.completedSets >= $0.plannedSets && $0.plannedSets > 0 }
         let halfwayExercises = items.filter { $0.completedSets > 0 && $0.completedSets < $0.plannedSets }
@@ -67,18 +86,18 @@ public struct HistoryDetailView: View {
         let totalCompletedSets = detail.sections.count > 1
             ? detail.sections.reduce(0) { $0 + $1.completedSets }
             : items.reduce(0) { $0 + $1.completedSets }
-        let totalPlannedSets = max(1, detail.sections.count > 1
+        let totalPlannedSets = max(0, detail.sections.count > 1
             ? detail.recordedSections.reduce(0) { $0 + $1.plannedSets }
             : items.reduce(0) { $0 + $1.plannedSets })
         let displayCompletedSets = effectiveStatus == .missed ? 0 : totalCompletedSets
         let durationSeconds = detail.sections.count > 1
             ? detail.sections.reduce(0) { $0 + $1.durationSeconds }
             : (detail.sessionRecord?.durationSeconds ?? 0)
-        let totalVolumeKg = detail.sections.count > 1
+        let totalVolumeKg = !detail.sections.isEmpty
             ? detail.sections.reduce(0.0) { $0 + $1.totalVolumeKg }
-            : (detail.sessionRecord?.totalVolumeKg ?? 0.0)
+            : HistoryDayDetailData.workingVolumeKg(detail.sessionRecord)
 
-        let progressFraction: Double = effectiveStatus == .missed ? 0.0 : min(1.0, max(0.0, Double(totalCompletedSets) / Double(totalPlannedSets)))
+        let progressFraction: Double = effectiveStatus == .missed ? 0.0 : min(1.0, max(0.0, Double(totalCompletedSets) / Double(max(1, totalPlannedSets))))
         let progressPercent = Int(progressFraction * 100)
 
         let formattedDuration: String = {
@@ -262,7 +281,7 @@ public struct HistoryDetailView: View {
                         }
 
                         // Progress Bar + Percentage Row
-                        if detail.sections.count <= 1 {
+                        if detail.sections.count <= 1 && !detail.isCompletionMark && totalPlannedSets > 0 {
                             HStack(spacing: 12) {
                                 GeometryReader { geometry in
                                     ZStack(alignment: .leading) {
@@ -285,7 +304,12 @@ public struct HistoryDetailView: View {
                         }
 
                         // Content Sections
-                        if detail.sections.count > 1 {
+                        if detail.isCompletionMark {
+                            Text(LanguageManager.t("history.noLoggedSets"))
+                                .font(.system(size: 15))
+                                .foregroundColor(AppColors.secondaryText)
+                                .accessibilityIdentifier("history-completion-mark")
+                        } else if detail.sections.count > 1 {
                             VStack(alignment: .leading, spacing: 20) {
                                 ForEach(Array(detail.sections.enumerated()), id: \.element.id) { sIndex, sec in
                                     workoutSection(sec, index: sIndex)
@@ -347,89 +371,103 @@ public struct HistoryDetailView: View {
                     } else {
                         // Half-Done / In-Progress Workout (Picture 2)
                         VStack(alignment: .leading, spacing: 20) {
-                            // Section 1: Continue Workout Card (Compact, Chevron, No Resume Button)
+                            // Partial progress offers an action only when this section can start or resume.
                             if !halfwayExercises.isEmpty {
                                 VStack(alignment: .leading, spacing: 10) {
-                                    Text(LanguageManager.t("history.continueWorkout").isEmpty ? "Continue workout" : LanguageManager.t("history.continueWorkout"))
+                                    Text(LanguageManager.t(showActionButton
+                                        ? (resumesSingleWorkout ? "history.continueWorkout" : "history.startWorkout")
+                                        : "history.partialSection"))
                                         .font(.system(size: 17, weight: .bold))
                                         .foregroundColor(AppColors.text)
 
-                                    ForEach(halfwayExercises) { item in
-                                        let setsLeft = max(0, item.plannedSets - item.completedSets)
-                                        let progress = min(1.0, max(0.0, Double(item.completedSets) / Double(max(1, item.plannedSets))))
+                                    if showActionButton, let action {
+                                        ForEach(halfwayExercises) { item in
+                                            let setsLeft = max(0, item.plannedSets - item.completedSets)
+                                            let progress = min(1.0, max(0.0, Double(item.completedSets) / Double(max(1, item.plannedSets))))
 
-                                        Button(action: { onActionWorkout?() }) {
-                                            VStack(alignment: .leading, spacing: 10) {
-                                                // Row 1: Exercise title & Sets left badge
-                                                HStack {
-                                                    Text(item.name)
-                                                        .font(.system(size: 16, weight: .bold))
-                                                        .foregroundColor(AppColors.text)
-                                                        .lineLimit(1)
+                                            Button(action: action) {
+                                                VStack(alignment: .leading, spacing: 10) {
+                                                    // Row 1: Exercise title & Sets left badge
+                                                    HStack {
+                                                        Text(item.name)
+                                                            .font(.system(size: 16, weight: .bold))
+                                                            .foregroundColor(AppColors.text)
+                                                            .lineLimit(1)
 
-                                                    Spacer()
+                                                        Spacer()
 
-                                                    Text(LanguageManager.formatSetsLeft(setsLeft))
-                                                        .font(.system(size: 12, weight: .semibold))
-                                                        .foregroundColor(AppColors.accent)
-                                                        .padding(.horizontal, 8)
-                                                        .padding(.vertical, 4)
-                                                        .background(
-                                                            RoundedRectangle(cornerRadius: 6, style: .continuous)
-                                                                .fill(Color(hex: 0x15322F))
-                                                        )
-                                                }
-
-                                                // Row 2: Subtitle & Chevron right
-                                                HStack {
-                                                    let setsText = LanguageManager.formatExerciseSetsCompleted(completed: item.completedSets, planned: item.plannedSets)
-                                                    let topLabel = LanguageManager.t("history.top").isEmpty ? "Top" : LanguageManager.t("history.top")
-                                                    let repsLabel = LanguageManager.shared.currentLanguage.lowercased().hasPrefix("tr") ? "tekrar" : "reps"
-                                                    let detailText: String = {
-                                                        if let w = item.topSetWeight, let r = item.topSetReps {
-                                                            return "\(setsText) · \(topLabel): \(weightUnit.formatWeight(w)) \(weightUnit.label) × \(r) \(repsLabel)"
-                                                        }
-                                                        return setsText
-                                                    }()
-
-                                                    Text(detailText)
-                                                        .font(.system(size: 13))
-                                                        .foregroundColor(AppColors.secondaryText)
-                                                        .lineLimit(1)
-
-                                                    Spacer()
-
-                                                    Image(systemName: "chevron.right")
-                                                        .font(.system(size: 14, weight: .semibold))
-                                                        .foregroundColor(AppColors.secondaryText)
-                                                }
-
-                                                // Row 3: Mini Progress Bar
-                                                GeometryReader { geo in
-                                                    ZStack(alignment: .leading) {
-                                                        Capsule()
-                                                            .fill(Color(hex: 0x192524))
-                                                            .frame(height: 6)
-                                                        Capsule()
-                                                            .fill(AppColors.accent)
-                                                            .frame(width: geo.size.width * CGFloat(progress), height: 6)
+                                                        Text(LanguageManager.formatSetsLeft(setsLeft))
+                                                            .font(.system(size: 12, weight: .semibold))
+                                                            .foregroundColor(AppColors.accent)
+                                                            .padding(.horizontal, 8)
+                                                            .padding(.vertical, 4)
+                                                            .background(
+                                                                RoundedRectangle(cornerRadius: 6, style: .continuous)
+                                                                    .fill(Color(hex: 0x15322F))
+                                                            )
                                                     }
+
+                                                    // Row 2: Subtitle & Chevron right
+                                                    HStack {
+                                                        let setsText = LanguageManager.formatExerciseSetsCompleted(completed: item.completedSets, planned: item.plannedSets)
+                                                        let topLabel = LanguageManager.t("history.top").isEmpty ? "Top" : LanguageManager.t("history.top")
+                                                        let repsLabel = LanguageManager.shared.currentLanguage.lowercased().hasPrefix("tr") ? "tekrar" : "reps"
+                                                        let detailText: String = {
+                                                            if let w = item.topSetWeight, let r = item.topSetReps {
+                                                                return "\(setsText) · \(topLabel): \(weightUnit.formatWeight(w)) \(weightUnit.label) × \(r) \(repsLabel)"
+                                                            }
+                                                            return setsText
+                                                        }()
+
+                                                        Text(detailText)
+                                                            .font(.system(size: 13))
+                                                            .foregroundColor(AppColors.secondaryText)
+                                                            .lineLimit(1)
+
+                                                        Spacer()
+
+                                                        Image(systemName: "chevron.right")
+                                                            .font(.system(size: 14, weight: .semibold))
+                                                            .foregroundColor(AppColors.secondaryText)
+                                                    }
+
+                                                    // Row 3: Mini Progress Bar
+                                                    GeometryReader { geo in
+                                                        ZStack(alignment: .leading) {
+                                                            Capsule()
+                                                                .fill(Color(hex: 0x192524))
+                                                                .frame(height: 6)
+                                                            Capsule()
+                                                                .fill(AppColors.accent)
+                                                                .frame(width: geo.size.width * CGFloat(progress), height: 6)
+                                                        }
+                                                    }
+                                                    .frame(height: 6)
                                                 }
-                                                .frame(height: 6)
+                                                .padding(.horizontal, 16)
+                                                .padding(.vertical, 14)
+                                                .background(
+                                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                                        .fill(AppColors.toContinueSurface)
+                                                        .overlay(
+                                                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                                                .stroke(AppColors.accent, lineWidth: 1.5)
+                                                        )
+                                                )
                                             }
-                                            .padding(.horizontal, 16)
-                                            .padding(.vertical, 14)
-                                            .background(
-                                                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                                    .fill(AppColors.toContinueSurface)
-                                                    .overlay(
-                                                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                                            .stroke(AppColors.accent, lineWidth: 1.5)
-                                                    )
-                                            )
+                                            .buttonStyle(.plain)
+                                            .accessibilityIdentifier("history-continue-card")
                                         }
-                                        .buttonStyle(.plain)
-                                        .accessibilityIdentifier("history-continue-card")
+                                    } else {
+                                        VStack(spacing: 0) {
+                                            ForEach(Array(halfwayExercises.enumerated()), id: \.element.id) { index, item in
+                                                exerciseRow(item: item, isCompleted: false)
+                                                if index < halfwayExercises.count - 1 {
+                                                    Divider().background(Color.white.opacity(0.08))
+                                                }
+                                            }
+                                        }
+                                        .accessibilityIdentifier("history-read-only-partial")
                                     }
                                 }
                             }
@@ -496,7 +534,7 @@ public struct HistoryDetailView: View {
                 .padding(.bottom, showActionButton ? 96 : 24)
             }
 
-            if showActionButton, let action = onActionWorkout {
+            if showActionButton, let action {
                 VStack(spacing: 0) {
                     LinearGradient(
                         gradient: Gradient(colors: [
@@ -662,6 +700,7 @@ public struct HistoryDetailView: View {
         if !detail.sections.isEmpty {
             return detail.sections.flatMap { $0.exerciseItems }
         }
+        if detail.sessionRecord == nil && detail.status == .completed { return detail.exerciseProgress }
         return HistoryDayDetailData.buildExerciseProgress(
             sessionRecord: detail.sessionRecord,
             workout: detail.workout,

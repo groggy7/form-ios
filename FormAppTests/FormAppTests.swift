@@ -3955,7 +3955,7 @@ final class FormAppTests: XCTestCase {
             startedAt: "2026-10-04T10:00:00Z", completedAt: "2026-10-04T10:45:00Z",
             durationSeconds: 2700, totalVolumeKg: 400, totalCompletedSets: 3,
             exerciseLogs: [SessionExerciseLog(exerciseName: "OHP", sets: [SessionSetLog(setNumber: 1, weightKg: 40, reps: 10)], targetSets: 1)],
-            isComplete: true
+            isComplete: true, scheduledDate: "2026-10-02"
         )
         let program = Program(
             id: "p1", name: "Split",
@@ -3997,7 +3997,7 @@ final class FormAppTests: XCTestCase {
             workoutTitle: "Mon Push", startedAt: "2026-10-07T10:00:00Z", completedAt: "2026-10-07T11:00:00Z",
             durationSeconds: 3600, totalVolumeKg: 500.0, totalCompletedSets: 3,
             exerciseLogs: [SessionExerciseLog(exerciseName: "Bench", sets: [SessionSetLog(setNumber: 1, weightKg: 100.0, reps: 5)], targetSets: 1)],
-            isComplete: true
+            isComplete: true, scheduledDate: "2026-10-05"
         )
         let program = Program(
             id: "p1", name: "Split",
@@ -4043,7 +4043,7 @@ final class FormAppTests: XCTestCase {
             startedAt: "2026-10-07T09:00:00Z", completedAt: "2026-10-07T10:00:00Z",
             durationSeconds: 3600, totalVolumeKg: 100.0, totalCompletedSets: 1,
             exerciseLogs: [SessionExerciseLog(exerciseName: "Squat", sets: [SessionSetLog(setNumber: 1, weightKg: 100.0, reps: 5)], targetSets: 1)],
-            isComplete: true
+            isComplete: true, scheduledDate: "2026-10-05"
         )
         let calHistory = WorkoutCalendarHistory(
             nextScheduledDate: "2026-10-05",
@@ -8203,7 +8203,8 @@ final class FormAppTests: XCTestCase {
                 SessionExerciseLog(exerciseName: "Cable Lateral Raise", sets: (1...3).map { SessionSetLog(setNumber: $0, weightKg: 15.0, reps: 12) }, targetSets: 3),
                 SessionExerciseLog(exerciseName: "Rope Triceps Pressdown", sets: (1...3).map { SessionSetLog(setNumber: $0, weightKg: 35.0, reps: 10) }, targetSets: 3)
             ],
-            isComplete: true
+            isComplete: true,
+            workoutSnapshot: workout
         )
 
         XCTAssertFalse(WorkoutCalendar.isSessionComplete(session: session, workout: workout))
@@ -8227,7 +8228,8 @@ final class FormAppTests: XCTestCase {
             exerciseLogs: [
                 SessionExerciseLog(exerciseName: "Ex 1", sets: (1...4).map { SessionSetLog(setNumber: $0, weightKg: 50.0, reps: 10) }, targetSets: 4)
             ],
-            isComplete: true
+            isComplete: true,
+            workoutSnapshot: workout
         )
 
         XCTAssertFalse(WorkoutCalendar.isSessionComplete(session: session, workout: workout))
@@ -8928,7 +8930,8 @@ final class HistoryBreakdownTests: XCTestCase {
             XCTAssertEqual(result.first?.completedSets, 1)
             XCTAssertFalse(result.first!.isComplete)
             XCTAssertFalse(result.contains { $0.sessionRecord == nil })
-            XCTAssertEqual(result.first?.exerciseItems.first?.name, snapshot == nil ? edited.exercises[0].displayName : pull.exercises[0].displayName)
+            XCTAssertEqual(result.first?.exerciseItems.first?.name, pull.exercises[0].displayName)
+            XCTAssertFalse(result.first!.exerciseItems.contains { $0.name == edited.exercises[0].displayName })
         }
     }
 
@@ -9173,3 +9176,250 @@ final class HistoryBreakdownTests: XCTestCase {
     }
 }
 
+final class HistoryActionPolicyTests: XCTestCase {
+    private let today = WorkoutCalendar.parseDate("2026-10-08")!
+    private let oldDay = WorkoutCalendar.parseDate("2026-09-07")!
+    private let monday = WorkoutCalendar.parseDate("2026-10-05")!
+    private var workout: Workout {
+        Workout(id: "bench", day: 1, title: "Heavy Bench & Push", exercises: [
+            Exercise(id: "bench-e", name: "Barbell Bench Press", sets: 6),
+            Exercise(id: "fly-e", name: "Pec Deck Fly", sets: 4)
+        ])
+    }
+    private func record(snapshot: Bool = true) -> WorkoutSessionRecord {
+        WorkoutSessionRecord(id: "partial", programId: "history-p", workoutId: workout.id,
+            workoutTitle: workout.title, startedAt: "2026-09-07T09:00:00Z", completedAt: "2026-09-07T10:00:00Z",
+            durationSeconds: 600, totalVolumeKg: 500, totalCompletedSets: 1,
+            exerciseLogs: [SessionExerciseLog(exerciseName: "Barbell Bench Press",
+                sets: [SessionSetLog(setNumber: 1, weightKg: 50, reps: 10)], targetSets: 6)],
+            isComplete: false, scheduledDate: "2026-09-07", workoutSnapshot: snapshot ? workout : nil)
+    }
+    private func detail(day: Date, record: WorkoutSessionRecord?, sections: Bool = true) -> HistoryDayDetailData {
+        let resolved = sections ? HistoryDayDetailData.groupSections(day: day, records: record.map { [$0] } ?? [],
+            scheduledWorkout: workout, activeProgramId: "history-p",
+            programs: [Program(id: "history-p", name: "Heavy", workouts: [workout])], history: [], today: today) : []
+        return HistoryDayDetailData(date: day, dateString: WorkoutCalendar.formatDate(day),
+            status: .unfinished, sessionRecord: record, workout: workout, sections: resolved)
+    }
+
+    @MainActor
+    func testPreviousMonthIsReadOnlyWithBothCallbacksAndLegacyFallback() {
+        for resolvedSections in [true, false] {
+            let view = HistoryDetailView(detail: detail(day: oldDay, record: record(), sections: resolvedSections), today: today,
+                onBack: {}, onActionWorkout: { XCTFail("Old history must not start a workout") },
+                onActionSection: { _ in XCTFail("Old history must not start a section") })
+            XCTAssertNil(view.singleActionSection)
+            XCTAssertNil(view.singleWorkoutAction)
+        }
+        var currentWeek = record()
+        currentWeek.scheduledDate = "2026-10-05"
+        let currentView = HistoryDetailView(detail: detail(day: monday, record: currentWeek), today: today,
+            onBack: {}, onActionWorkout: {})
+        XCTAssertNotNil(currentView.singleWorkoutAction)
+        XCTAssertFalse(currentView.resumesSingleWorkout, "An earlier date starts a fresh bout today")
+    }
+
+    @MainActor
+    func testCurrentWorkoutRequiresCallbackAndTargetsOwnSection() {
+        var current = record()
+        current.scheduledDate = "2026-10-08"
+        let data = detail(day: today, record: current)
+        let noCallback = HistoryDetailView(detail: data, today: today, onBack: {})
+        XCTAssertNotNil(noCallback.singleActionSection)
+        XCTAssertNil(noCallback.singleWorkoutAction)
+        var calledId: String?
+        let view = HistoryDetailView(detail: data, today: today, onBack: {},
+            onActionWorkout: { XCTFail("Section callback must target its own workout") },
+            onActionSection: { calledId = $0.sessionRecord?.id })
+        XCTAssertTrue(view.resumesSingleWorkout)
+        view.singleWorkoutAction?()
+        XCTAssertEqual(calledId, current.id)
+    }
+
+    func testActionWeekBoundaryFutureOriginsCompletionAndEmptyWorkouts() {
+        let sunday = WorkoutCalendar.parseDate("2026-10-04")!
+        let future = WorkoutCalendar.parseDate("2026-10-09")!
+        let nextWeek = WorkoutCalendar.parseDate("2026-10-12")!
+        let plan = WorkoutDaySection(workout: workout)
+        XCTAssertFalse(plan.canAct(on: sunday, today: today))
+        XCTAssertTrue(plan.canAct(on: monday, today: today))
+        XCTAssertFalse(plan.canAct(on: future, today: today))
+        XCTAssertTrue(WorkoutDaySection(workout: workout, scheduledDate: future).canAct(on: today, today: today), "Early performance within this week can resume today")
+        XCTAssertFalse(WorkoutDaySection(workout: workout, scheduledDate: nextWeek).canAct(on: today, today: today))
+        var complete = record()
+        complete.isComplete = true
+        complete.workoutSnapshot = nil
+        complete.exerciseLogs[0].targetSets = 1
+        XCTAssertFalse(WorkoutDaySection(sessionRecord: complete, workout: workout).canAct(on: today, today: today))
+        XCTAssertTrue(WorkoutDaySection(sessionRecord: complete, workout: workout, isLiveSession: true).canAct(on: today, today: today))
+        var empty = workout
+        empty.exercises = []
+        XCTAssertFalse(WorkoutDaySection(workout: empty).canAct(on: today, today: today))
+    }
+
+    func testLegacyLogsNeverAcquireExercisesOrTargetsFromEditedPlan() {
+        let legacy = record(snapshot: false)
+        var edited = workout
+        edited.exercises[0].sets = 99
+        edited.exercises.append(Exercise(id: "new", name: "Lat Pulldown", sets: 8))
+        let rows = HistoryDayDetailData.buildExerciseProgress(sessionRecord: legacy, workout: edited)
+        XCTAssertEqual(rows.map(\.name), [workout.exercises[0].displayName])
+        XCTAssertEqual(rows.map(\.plannedSets), [6])
+        XCTAssertEqual(rows.map(\.completedSets), [1])
+        var withoutTarget = legacy
+        withoutTarget.exerciseLogs[0].targetSets = nil
+        XCTAssertEqual(HistoryDayDetailData.buildExerciseProgress(sessionRecord: withoutTarget, workout: edited)[0].plannedSets, 1)
+        let savedRows = HistoryDayDetailData.buildExerciseProgress(sessionRecord: record(), workout: edited)
+        XCTAssertEqual(savedRows.map(\.name), workout.exercises.map(\.displayName))
+        XCTAssertEqual(savedRows.map(\.plannedSets), [6, 4])
+    }
+
+    func testPreviewAndDetailExcludeWarmupsAndAgreeOnRecordedSetsAndVolume() {
+        var mixed = record()
+        mixed.totalVolumeKg = 0
+        mixed.exerciseLogs[0].sets.insert(SessionSetLog(setNumber: 0, weightKg: 999, reps: 99, isWarmup: true), at: 0)
+        let data = detail(day: oldDay, record: mixed)
+        let preview = HistoryDayPreviewCard(detail: data, history: [], onOpenDetail: {})
+        XCTAssertEqual(preview.exerciseProgress, data.exerciseProgress)
+        XCTAssertEqual(preview.exerciseProgress[0].completedSets, 1)
+        XCTAssertEqual(preview.exerciseProgress[0].plannedSets, 6)
+        XCTAssertEqual(preview.exerciseProgress[0].topSetWeight, 50)
+        XCTAssertEqual(preview.volumeKg, 500)
+        let fallback = HistoryDayPreviewCard(detail: detail(day: oldDay, record: mixed, sections: false), history: [], onOpenDetail: {})
+        XCTAssertEqual(fallback.volumeKg, preview.volumeKg)
+        XCTAssertEqual(fallback.exerciseProgress, preview.exerciseProgress)
+    }
+
+    @MainActor
+    func testManualCompletionIsReadOnlyAndConsistentWithoutRecordedSets() {
+        let data = HistoryDayDetailData(date: today, dateString: "2026-10-08", status: .completed,
+            sessionRecord: nil, workout: workout)
+        let preview = HistoryDayPreviewCard(detail: data, history: [], onOpenDetail: {})
+        XCTAssertTrue(data.isCompletionMark)
+        XCTAssertTrue(data.exerciseProgress.isEmpty)
+        XCTAssertEqual(preview.exerciseProgress, data.exerciseProgress)
+        XCTAssertEqual(preview.volumeKg, 0)
+        let resolved = HistoryDayDetailData.groupSections(day: today, records: [], scheduledWorkout: workout,
+            activeProgramId: "history-p", programs: [], history: [], manuallyCompleted: true, today: today)
+        XCTAssertTrue(resolved.isEmpty, "A completion mark cannot identify today's edited prescription")
+        XCTAssertNil(HistoryDetailView(detail: data, today: today, onBack: {}, onActionWorkout: {}).singleWorkoutAction)
+    }
+
+    func testCompletionUsesSavedPrescriptionAndTargetsInsteadOfEditedPlan() {
+        var saved = record(snapshot: false)
+        saved.isComplete = true
+        saved.exerciseLogs[0].targetSets = 1
+        var edited = workout
+        edited.exercises.append(Exercise(id: "new", name: "Lat Pulldown", sets: 99))
+        XCTAssertTrue(WorkoutCalendar.isSessionComplete(session: saved, workout: edited))
+        XCTAssertTrue(WorkoutCalendar.isSessionComplete(session: saved, workout: nil))
+        saved.exerciseLogs[0].targetSets = 2
+        XCTAssertFalse(WorkoutCalendar.isSessionComplete(session: saved, workout: edited), "A saved incomplete target contradicts a legacy completion flag")
+        saved.exerciseLogs[0].targetSets = 1
+        saved.workoutSnapshot = workout
+        XCTAssertFalse(WorkoutCalendar.isSessionComplete(session: saved, workout: edited), "Missing exercises in a saved snapshot remain unfinished")
+    }
+
+    func testWarmupsNeverCompleteWorkingTargetsAndEmptyLegacyIsNotComplete() {
+        var saved = record(snapshot: false)
+        saved.isComplete = nil
+        saved.exerciseLogs[0].targetSets = 2
+        saved.exerciseLogs[0].sets.append(SessionSetLog(setNumber: 0, weightKg: 20, reps: 10, isWarmup: true))
+        XCTAssertFalse(WorkoutCalendar.isSessionComplete(session: saved, workout: workout))
+        saved.exerciseLogs[0].sets.append(SessionSetLog(setNumber: 2, weightKg: 50, reps: 10))
+        XCTAssertTrue(WorkoutCalendar.isSessionComplete(session: saved, workout: nil))
+        saved.exerciseLogs = []
+        XCTAssertFalse(WorkoutCalendar.isSessionComplete(session: saved, workout: workout))
+        saved.isComplete = true
+        XCTAssertTrue(WorkoutCalendar.isSessionComplete(session: saved, workout: workout), "An explicit legacy completion mark is preserved when no saved target contradicts it")
+    }
+
+    @MainActor
+    func testMixedCalendarCompletionWinsRegardlessOfRecordOrderAndManualMark() throws {
+        let store = AppStore.shared
+        let original = store.state
+        let originalActive = store.activeSession
+        defer { store.state = original; store.activeSession = originalActive }
+        store.activeSession = nil
+        var complete = record(snapshot: false)
+        complete.id = "complete"
+        complete.isComplete = true
+        complete.exerciseLogs[0].targetSets = 1
+        let partial = record()
+        let calendar = WorkoutCalendarHistory(nextScheduledDate: "2026-10-08", entries: [
+            WorkoutDayEntry(id: "session:partial", date: "2026-09-07", status: .unfinished),
+            WorkoutDayEntry(id: "session:complete", date: "2026-09-07", status: .completed)
+        ])
+        for records in [[partial, complete], [complete, partial]] {
+            store.state = StoredAppState(programs: [], history: records, calendarHistory: calendar)
+            XCTAssertEqual(store.calendarStatuses(today: today)["2026-09-07"], .completed)
+        }
+        var manual = calendar
+        manual.entries = [WorkoutDayEntry(id: "session:partial", date: "2026-09-07", status: .unfinished),
+            WorkoutDayEntry(id: "manual:other-workout", date: "2026-09-07", status: .completed)]
+        store.state = StoredAppState(programs: [], history: [partial], calendarHistory: manual)
+        XCTAssertEqual(store.calendarStatuses(today: today)["2026-09-07"], .completed)
+    }
+
+    @MainActor
+    func testSavedOriginNeutralizesOnlyItsOwnMissAndRemovingProgressRestoresIt() {
+        var saved = record(snapshot: false)
+        saved.startedAt = "2026-10-08T09:00:00Z"
+        saved.completedAt = "2026-10-08T10:00:00Z"
+        saved.scheduledDate = "2026-10-05"
+        var edited = workout
+        edited.day = 4
+        let calendar = WorkoutCalendarHistory(nextScheduledDate: "2026-10-05", scheduledWeekdays: [1, 2],
+            missedDates: ["2026-10-05", "2026-10-06"], entries: [WorkoutDayEntry(id: "session:partial", date: "2026-10-08", status: .unfinished)])
+        let programs = [Program(id: "history-p", name: "Edited", workouts: [edited])]
+        let restored = WorkoutCalendar.restore(raw: calendar, sessions: [saved], today: "2026-10-08",
+            weekdays: [4], programs: programs)
+        XCTAssertFalse(restored.missedDates.contains("2026-10-05"))
+        XCTAssertTrue(restored.missedDates.contains("2026-10-06"))
+        let refreshed = WorkoutCalendar.refresh(history: calendar, today: "2026-10-08", weekdays: [4], programs: programs, sessions: [saved])
+        XCTAssertFalse(refreshed.missedDates.contains("2026-10-05"))
+        var legacy = saved
+        legacy.scheduledDate = nil
+        XCTAssertTrue(WorkoutCalendar.refresh(history: calendar, today: "2026-10-08", weekdays: [4], programs: programs, sessions: [legacy]).missedDates.contains("2026-10-05"))
+        saved.totalCompletedSets = 0
+        saved.exerciseLogs = []
+        XCTAssertTrue(WorkoutCalendar.refresh(history: refreshed, today: "2026-10-08", weekdays: [4], programs: programs, sessions: [saved]).missedDates.contains("2026-10-05"))
+        var marked = calendar
+        marked.entries.append(WorkoutDayEntry(id: "manual:other", date: "2026-10-05", status: .completed))
+        XCTAssertEqual(WorkoutCalendar.statuses(history: WorkoutCalendar.refresh(history: marked, today: "2026-10-08", weekdays: [4], programs: programs, sessions: [legacy]), today: "2026-10-08")["2026-10-05"], .completed)
+    }
+
+    @MainActor
+    func testLocalizedPreviousMonthPartialProgressRendersWithoutContinuationAffordance() async throws {
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows).first(where: \.isKeyWindow)
+        defer { LanguageManager.setLanguage(previousLanguage); previousWindow?.makeKeyAndVisible() }
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            let data = detail(day: oldDay, record: record())
+            let fullPage = HistoryDetailView(detail: data, today: today, onBack: {}, onActionWorkout: { XCTFail("Read only") })
+            XCTAssertNil(fullPage.singleWorkoutAction)
+            let view = HistoryDayDetailSheet(detail: data, history: [record()], onDismiss: {},
+                onActionWorkout: { XCTFail("Compatibility sheet must share read-only policy") }, today: today)
+                .environment(\.sizeCategory, .extraExtraExtraLarge)
+            let controller = UIHostingController(rootView: view)
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 850))
+            window.rootViewController = controller
+            window.makeKeyAndVisible()
+            controller.view.frame = window.bounds
+            controller.view.layoutIfNeeded()
+            try await Task.sleep(nanoseconds: 200_000_000)
+            func descendants(_ view: UIView) -> [UIView] { [view] + view.subviews.flatMap(descendants) }
+            let scroll = try XCTUnwrap(descendants(controller.view).compactMap { $0 as? UIScrollView }.first)
+            XCTAssertLessThanOrEqual(scroll.contentSize.width, scroll.bounds.width + 1)
+            let image = UIGraphicsImageRenderer(size: window.bounds.size).image { controller.view.layer.render(in: $0.cgContext) }
+            let attachment = XCTAttachment(image: image)
+            attachment.name = "ios-history-old-partial-\(language)"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+            try image.pngData()?.write(to: URL(fileURLWithPath: "/tmp/ios-history-old-partial-\(language).png"))
+            window.isHidden = true
+        }
+    }
+}
