@@ -165,8 +165,9 @@ public enum ProgressionEngine {
         let missedFloor = workingSets.contains { $0.reps! < repMin }
         let action: ProgressionAction = canIncrease ? .increaseLoad : (allHitCeiling || missedFloor ? .holdLoad : .addReps)
         let targets = workingSets.map { set in
+            // Preserve the prescribed rep goal when adding load; this is an attempt, not a capacity prediction.
             ProgressionSetTarget(weightKg: canIncrease ? set.weightKg! + incrementKg : set.weightKg,
-                reps: canIncrease ? repMin : (allHitCeiling ? repMax : min(set.reps! + 1, repMax)))
+                reps: allHitCeiling ? repMax : min(set.reps! + 1, repMax))
         }
         let key: String
         if canIncrease { key = mixedLoads ? "progression.rationale.increase_load_mixed" : "progression.rationale.increase_load" }
@@ -179,7 +180,7 @@ public enum ProgressionEngine {
             suggestedWeightKg: uniformWeight, suggestedWeightDisplay: formatWeight(uniformWeight ?? topWeight, unit: weightUnit),
             suggestedRepsMin: targets.map { $0.reps }.min()!, suggestedRepsMax: targets.map { $0.reps }.max()!,
             weightDeltaDisplay: canIncrease ? "+\(formatWeight(incrementKg, unit: weightUnit)) \(weightUnit.label)" : nil,
-            rationaleKey: key, rationaleArgs: ["ceiling": "\(repMax)", "floor": "\(repMin)", "targetReps": "\(repMin)"],
+            rationaleKey: key, rationaleArgs: ["ceiling": "\(repMax)", "floor": "\(repMin)", "targetReps": "\(repMax)"],
             lastSessionSummary: formatSessionSummary(workingSets, unit: weightUnit), setTargets: targets, lastSessionSets: lastSessionSets)
     }
 

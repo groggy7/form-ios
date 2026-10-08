@@ -6173,7 +6173,7 @@ final class FormAppTests: XCTestCase {
         let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: history + [previous], weightUnit: .kg)!
         XCTAssertEqual(rec.action, .increaseLoad)
         XCTAssertEqual(rec.suggestedWeightKg ?? 0, 82.5, accuracy: 0.01)
-        XCTAssertEqual(rec.suggestedRepsMin, 8)
+        XCTAssertEqual(rec.suggestedRepsMin, 12)
         XCTAssertFalse(rec.isPlateau)
         XCTAssertTrue(rec.weightDeltaDisplay?.contains("+2.5") == true)
     }
@@ -8424,7 +8424,7 @@ final class ProgressionReliabilityTests: XCTestCase {
         XCTAssertEqual(single.suggestedWeightKg!, 65, accuracy: 0.001)
         let confirmed = ProgressionEngine.computeProgression(exercise: bench, history: [ceiling, record(1, reps: [12, 12, 12])])!
         XCTAssertEqual(confirmed.action, .increaseLoad)
-        XCTAssertEqual(confirmed.setTargets.map { $0.reps }, [8, 8, 8])
+        XCTAssertEqual(confirmed.setTargets.map { $0.reps }, [12, 12, 12])
         XCTAssertEqual(confirmed.suggestedWeightKg!, 67.5, accuracy: 0.001)
         for previous in [record(1, reps: [12, 12, 11]), record(1, reps: [12]), record(1, reps: [12, 12, 12], loads: [60, 60, 60])] {
             XCTAssertEqual(ProgressionEngine.computeProgression(exercise: bench, history: [previous, ceiling])!.action, .holdLoad)
@@ -8432,7 +8432,7 @@ final class ProgressionReliabilityTests: XCTestCase {
         XCTAssertEqual(ProgressionEngine.computeProgression(exercise: bench, history: [ceiling, ceiling])!.action, .holdLoad)
     }
 
-    func testSixSetBenchLoadIncreaseResetsToPlanFloorAndAppliesTheDisplayedTargets() throws {
+    func testSixSetBenchLoadIncreaseKeepsFiveRepsAndAppliesTheDisplayedTargets() throws {
         var exercise = bench
         exercise.sets = 6
         exercise.reps = RepTarget(min: 3, max: 5)
@@ -8440,12 +8440,18 @@ final class ProgressionReliabilityTests: XCTestCase {
         let recommendation = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: exercise, history: history))
         XCTAssertEqual(recommendation.action, .increaseLoad)
         XCTAssertEqual(recommendation.lastSessionSets, Array(repeating: ProgressionSetTarget(weightKg: 100, reps: 5), count: 6))
-        XCTAssertEqual(recommendation.setTargets, Array(repeating: ProgressionSetTarget(weightKg: 102.5, reps: 3), count: 6))
-        XCTAssertEqual(recommendation.rationaleArgs["targetReps"], "3")
+        XCTAssertEqual(recommendation.setTargets, Array(repeating: ProgressionSetTarget(weightKg: 102.5, reps: 5), count: 6))
+        XCTAssertEqual(recommendation.rationaleArgs["targetReps"], "5")
         let rows = (1...6).map { ExerciseSetLog(setNumber: $0) }
         let applied = recommendation.applicableTargets(sets: rows)
         XCTAssertEqual(rows.indices.compactMap { applied[$0] }, recommendation.setTargets)
         XCTAssertEqual(applied[0]?.weightInput(unit: .kg, fallback: "0"), "102.5")
+        for actualReps in [3, 4] {
+            let actual = record(3, reps: Array(repeating: actualReps, count: 6), loads: Array(repeating: 102.5, count: 6), targetSets: 6)
+            let next = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: exercise, history: history + [actual]))
+            XCTAssertEqual(next.action, .addReps)
+            XCTAssertEqual(next.setTargets, Array(repeating: ProgressionSetTarget(weightKg: 102.5, reps: actualReps + 1), count: 6))
+        }
     }
 
     @MainActor func testExpandedLoadIncreaseShowsPreviousAndTargetSetsInBothLanguages() throws {
@@ -8482,10 +8488,25 @@ final class ProgressionReliabilityTests: XCTestCase {
         }
     }
 
+    func testLoadIncreasesKeepThePrescribedCeilingAcrossRangesAndMixedLoads() throws {
+        for range in [RepTarget(min: 3, max: 5), RepTarget(min: 8, max: 12), RepTarget(min: 5, max: 5)] {
+            var exercise = bench
+            exercise.reps = range
+            let ceiling = try XCTUnwrap(range.max)
+            let history = [1, 2].map { record($0, reps: Array(repeating: ceiling + 2, count: 3), loads: [100, 90, 80]) }
+            let rec = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: exercise, history: history))
+            XCTAssertEqual(rec.action, .increaseLoad)
+            XCTAssertEqual(rec.setTargets.map { $0.weightKg }, [102.5, 92.5, 82.5])
+            XCTAssertEqual(rec.setTargets.map { $0.reps }, Array(repeating: ceiling, count: 3))
+            XCTAssertEqual(rec.rationaleArgs["targetReps"], "\(ceiling)")
+        }
+    }
+
     func testLoadStepsRespectUnitsEquipmentBodyweightAndTenPercentLimit() {
         let full = [record(1, reps: [12, 12, 12]), record(2, reps: [12, 12, 12])]
         let pounds = ProgressionEngine.computeProgression(exercise: bench, history: full, weightUnit: .lbs)!
         XCTAssertEqual(WeightUnit.lbs.toDisplay(pounds.suggestedWeightKg! - 65), 5, accuracy: 0.001)
+        XCTAssertEqual(pounds.setTargets.map { $0.reps }, [12, 12, 12])
         let light = [record(1, reps: [12, 12, 12], loads: [10, 10, 10]), record(2, reps: [12, 12, 12], loads: [10, 10, 10])]
         XCTAssertEqual(ProgressionEngine.computeProgression(exercise: bench, history: light)!.action, .holdLoad)
         var bodyweight = bench
