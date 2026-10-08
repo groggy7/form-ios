@@ -33,6 +33,7 @@ struct SessionFeaturePaywallContent: View {
     @ScaledMetric(relativeTo: .subheadline) private var titleSize = 13.0
     @ScaledMetric(relativeTo: .subheadline) private var subtitleSize = 12.0
     @ScaledMetric(relativeTo: .caption) private var bodySize = 11.0
+    @ScaledMetric(relativeTo: .caption) private var descriptionSize = 12.0
     @ScaledMetric(relativeTo: .caption2) private var footnoteSize = 10.0
     private let headerTopPadding: CGFloat = 12
     private let headerRowHeight: CGFloat = 48
@@ -159,7 +160,7 @@ struct SessionFeaturePaywallContent: View {
         let heroHeight = max(0, width * 1.1 - headerTopPadding - headerRowHeight - headerBottomPadding)
         return VStack(alignment: .leading, spacing: 0) {
             Text(LanguageManager.t(featureTitleKey))
-                .font(.system(size: subtitleSize)).foregroundStyle(AppColors.secondaryText)
+                .font(.system(size: subtitleSize)).foregroundStyle(AppColors.progressionPaywallBody)
                 .padding(.bottom, 8)
             Text(LanguageManager.t("\(copyPrefix).headline"))
                 .font(.system(size: isWarmup ? warmupHeadlineSize : headlineSize, weight: .bold))
@@ -167,7 +168,8 @@ struct SessionFeaturePaywallContent: View {
                 .frame(width: comfortableText ? (width - 48) * (isWarmup ? 0.84 : (isVolumeMatrix || isRepLab || isGeneral || isCloudBackup ? 0.72 : 0.64)) : width - 48, alignment: .leading)
                 .padding(.bottom, 10)
             Text(LanguageManager.t("\(copyPrefix).subtitle"))
-                .font(.system(size: subtitleSize)).foregroundStyle(AppColors.secondaryText).lineSpacing(3)
+                .font(.system(size: subtitleSize)).foregroundStyle(AppColors.progressionPaywallBody)
+                .shadow(color: .black.opacity(0.85), radius: 2, x: 0, y: 1).lineSpacing(3)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(width: comfortableText ? (width - 48) * 0.68 : width - 48, alignment: .leading)
                 .padding(.bottom, 22)
@@ -178,7 +180,8 @@ struct SessionFeaturePaywallContent: View {
             }
             if isRepLab {
                 Text(LanguageManager.t("\(copyPrefix).reference_note"))
-                    .font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).lineSpacing(2)
+                    .font(.system(size: footnoteSize)).foregroundStyle(AppColors.progressionPaywallBody)
+                    .shadow(color: .black.opacity(0.85), radius: 2, x: 0, y: 1).lineSpacing(2)
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(width: comfortableText ? (width - 48) * 0.66 : width - 48, alignment: .leading)
                     .padding(.top, 12)
@@ -214,7 +217,8 @@ struct SessionFeaturePaywallContent: View {
                 Text(LanguageManager.t("\(copyPrefix).benefit\(number)"))
                     .font(.system(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.text)
                 Text(LanguageManager.t("\(copyPrefix).benefit\(number)_desc"))
-                    .font(.system(size: bodySize)).foregroundStyle(AppColors.secondaryText).lineSpacing(2)
+                    .font(.system(size: descriptionSize)).foregroundStyle(AppColors.progressionPaywallBody)
+                    .shadow(color: .black.opacity(0.85), radius: 2, x: 0, y: 1).lineSpacing(3)
             }
             .fixedSize(horizontal: false, vertical: true).frame(maxWidth: .infinity, alignment: .leading)
         }

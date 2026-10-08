@@ -8826,13 +8826,26 @@ final class SessionFeaturePaywallTests: XCTestCase {
         let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
             .flatMap(\.windows).first(where: \.isKeyWindow)
         defer { LanguageManager.setLanguage(previousLanguage); previousWindow?.makeKeyAndVisible() }
-        for (feature, unit) in [(ProFeature.autoProgression, WeightUnit.kg), (.cloudBackup, .kg), (.warmupCalculator, .kg), (.warmupCalculator, .lbs)] {
+        let cases: [(ProFeature?, WeightUnit)] = [
+            (.autoProgression, .kg), (.cloudBackup, .kg), (.volumeMatrix, .kg),
+            (.formLab, .kg), (nil, .kg), (.warmupCalculator, .kg), (.warmupCalculator, .lbs)
+        ]
+        for (feature, unit) in cases {
             let imageName: String
             let tag: String
             switch feature {
             case .cloudBackup:
                 imageName = "paywall_cloud_backup"
                 tag = "cloud-backup-paywall"
+            case .volumeMatrix:
+                imageName = "paywall_volume_matrix"
+                tag = "volume-paywall"
+            case .formLab:
+                imageName = "paywall_rep_lab"
+                tag = "rep-lab-paywall"
+            case .none:
+                imageName = "paywall_general"
+                tag = "general-paywall"
             case .warmupCalculator:
                 imageName = unit == .lbs ? "paywall_warmup_plates_lbs" : "paywall_warmup_plates"
                 tag = "warmup-paywall"

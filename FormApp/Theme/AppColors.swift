@@ -9,6 +9,7 @@ public enum AppColors {
     public static let progressionRulesSurface = Color(hex: 0x0E181E)
 
     public static let progressionPaywallSurface = Color(hex: 0x101519)
+    public static let progressionPaywallBody = Color(hex: 0xD1D8DE)
     public static let progressionPaywallAccent = Color(hex: 0x47E4CF)
     public static let progressionPaywallIconSurface = Color(hex: 0x193234)
     public static let progressionPaywallPlanSurface = Color(hex: 0x181F24)
