@@ -23,6 +23,9 @@ public struct TodayHeroCard: View {
 
     private let cardSurface = Color(hex: 0x1E242B)
     private let cardBorder = Color(hex: 0x303B46)
+    private let selectedViewSurface = Color(hex: 0x25232D)
+    private let selectedViewBorder = Color(hex: 0x51455F)
+    private let selectedViewText = Color(hex: 0xD8CFDF)
 
     public init(
         workout: Workout?,
@@ -125,19 +128,19 @@ public struct TodayHeroCard: View {
                             Button(action: { selectedViewIndex = idx }) {
                                 Text(LanguageManager.t("muscles.view.\(v.rawValue)"))
                                     .font(.system(size: captionSize, weight: .medium))
-                                    .foregroundColor(isSel ? Color(hex: 0xE3DAF1) : AppColors.secondaryText)
+                                    .foregroundColor(isSel ? selectedViewText : AppColors.secondaryText)
                                     .padding(.horizontal, 14)
                                     .frame(height: 38)
                                     .background(
                                         RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                             .fill(isSel ? Color(hex: 0x343044) : cardSurface)
+                                             .fill(isSel ? selectedViewSurface : cardSurface)
                                     )
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                             .strokeBorder(isSel ? Color(hex: 0x494260) : cardBorder, lineWidth: 1)
+                                             .strokeBorder(isSel ? selectedViewBorder : cardBorder, lineWidth: 1)
                                     )
                             }
-                            .buttonStyle(.plain)
+                            .buttonStyle(TodayHeroActionButtonStyle())
                             .disabled(isSel)
                             .accessibilityIdentifier("muscle-view-\(v.rawValue)")
                             .accessibilityAddTraits(isSel ? .isSelected : [])
