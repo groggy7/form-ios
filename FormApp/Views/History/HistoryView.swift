@@ -826,7 +826,7 @@ private struct CalendarPill: View {
                         .init(color: colors.light.opacity(0.25), location: 0),
                         .init(color: .clear, location: 0.45),
                         .init(color: .clear, location: 0.55),
-                        .init(color: colors.shade.opacity(0.3), location: 1)
+                        .init(color: colors.shade.opacity(0.2), location: 1)
                     ],
                     startPoint: .top,
                     endPoint: .bottom
@@ -845,6 +845,20 @@ private struct CalendarPill: View {
                     startRadius: 0,
                     endRadius: shineRadius
                 ))
+                .overlay {
+                    Circle().fill(RadialGradient(
+                        stops: [
+                            .init(color: .white.opacity(0.18), location: 0),
+                            .init(color: .white.opacity(0.135), location: 0.3),
+                            .init(color: .white.opacity(0.057), location: 0.6),
+                            .init(color: .white.opacity(0.011), location: 0.85),
+                            .init(color: .clear, location: 1)
+                        ],
+                        center: .center,
+                        startRadius: 0,
+                        endRadius: shineRadius
+                    ))
+                }
                 .frame(width: shineRadius * 2, height: shineRadius * 2)
                 .scaleEffect(x: 1, y: shineHeight / shineRadius)
                 .rotationEffect(.degrees(12))
@@ -854,28 +868,41 @@ private struct CalendarPill: View {
                     stops: [
                         .init(color: .clear, location: 0),
                         .init(color: .clear, location: 0.58),
-                        .init(color: .black.opacity(0.02), location: 0.78),
-                        .init(color: .black.opacity(0.08), location: 0.93),
-                        .init(color: .black.opacity(0.14), location: 1)
+                        .init(color: .black.opacity(0.01), location: 0.78),
+                        .init(color: .black.opacity(0.035), location: 0.93),
+                        .init(color: .black.opacity(0.06), location: 1)
                     ],
                     startPoint: .top,
                     endPoint: .bottom
                 ))
+                // A low-contrast inward edge reflection gives the sides volume without a white ring.
+                shape.fill(RadialGradient(
+                    stops: [
+                        .init(color: .clear, location: 0),
+                        .init(color: .clear, location: 0.58),
+                        .init(color: .white.opacity(0.025), location: 0.72),
+                        .init(color: .white.opacity(0.065), location: 0.88),
+                        .init(color: .white.opacity(0.12), location: 1)
+                    ],
+                    center: .center,
+                    startRadius: 0,
+                    endRadius: max(width, height) * 0.5
+                ))
                 shape.strokeBorder(LinearGradient(
                     stops: [
-                        .init(color: .white.opacity(0.18), location: 0),
-                        .init(color: .white.opacity(0.06), location: 0.24),
-                        .init(color: .clear, location: 0.45),
+                        .init(color: .white.opacity(0.42), location: 0),
+                        .init(color: .white.opacity(0.18), location: 0.3),
+                        .init(color: .clear, location: 0.65),
                         .init(color: .clear, location: 1)
                     ],
-                    startPoint: .top,
-                    endPoint: .bottom
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
                 ), lineWidth: rimWidth)
             }
             .frame(width: width, height: height)
             .clipShape(shape)
             // Exterior light remains separate and much weaker than the internal reflection.
-            .shadow(color: colors.body.opacity(0.04), radius: min(2, height * 0.06), x: 0, y: 0)
+            .shadow(color: colors.body.opacity(0.08), radius: min(3, height * 0.09), x: 0, y: 0)
         }
         .allowsHitTesting(false)
         .accessibilityHidden(true)
