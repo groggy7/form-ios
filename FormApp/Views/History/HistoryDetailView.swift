@@ -136,13 +136,14 @@ public struct HistoryDetailView: View {
         }()
 
         let scheduledOriginLabel: String? = {
-            if let section = detail.sections.first, section.originDate != nil {
+            if let section = detail.sections.first, section.sessionRecord != nil {
                 return section.scheduleLabel(on: detail.date)
             }
             guard let record = detail.sessionRecord else { return nil }
             let (scheduled, source) = HistoryDayDetailData.scheduleContext(record: record, workout: detail.workout, day: detail.date)
-            guard let scheduled, !Calendar.current.isDate(scheduled, inSameDayAs: detail.date) else { return nil }
-            return LanguageManager.t(source == .recorded ? "history.originallyScheduled" : "history.usualSchedule",
+            guard let scheduled else { return LanguageManager.t("history.scheduleUnknown") }
+            guard !Calendar.current.isDate(scheduled, inSameDayAs: detail.date) else { return nil }
+            return LanguageManager.t("history.originallyScheduled",
                 ["date": formattedFullDate(for: scheduled)])
         }()
 

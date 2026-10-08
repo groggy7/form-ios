@@ -44,6 +44,7 @@ public struct WorkoutDaySection: Identifiable {
     public let scheduledDate: Date?
     public let scheduleSource: HistoryScheduleSource
     public let isLiveSession: Bool
+    public let isCurrentPlanMatch: Bool
     public let originDate: Date?
     public let originDateFormatted: String?
     public let completedSets: Int
@@ -67,7 +68,8 @@ public struct WorkoutDaySection: Identifiable {
         exerciseItems: [HistoryDayExerciseProgress] = [],
         scheduledDate: Date? = nil,
         scheduleSource: HistoryScheduleSource = .unknown,
-        isLiveSession: Bool = false
+        isLiveSession: Bool = false,
+        isCurrentPlanMatch: Bool = false
     ) {
         self.sessionRecord = sessionRecord
         self.workout = workout
@@ -75,6 +77,7 @@ public struct WorkoutDaySection: Identifiable {
         self.scheduledDate = scheduledDate ?? originDate
         self.scheduleSource = scheduleSource
         self.isLiveSession = isLiveSession
+        self.isCurrentPlanMatch = isCurrentPlanMatch
         self.originDate = originDate
         self.originDateFormatted = originDateFormatted
         self.completedSets = completedSets
@@ -104,6 +107,7 @@ public struct WorkoutDaySection: Identifiable {
     }
 
     public func contextText(on day: Date, today: Date = Date(), index: Int = 0) -> String {
+        if isCurrentPlanMatch { return LanguageManager.t("history.recordedToday") }
         guard let scheduledDate else { return LanguageManager.t("history.additionalWorkout") }
         if Calendar.current.isDate(scheduledDate, inSameDayAs: day) {
             if index > 0 { return LanguageManager.t("history.alsoScheduledDay") }
@@ -116,8 +120,7 @@ public struct WorkoutDaySection: Identifiable {
 
     public func scheduleLabel(on day: Date) -> String? {
         guard let scheduledDate else { return LanguageManager.t("history.scheduleUnknown") }
-        let key = scheduleSource == .recorded ? "history.originallyScheduled"
-            : sessionRecord == nil ? "history.scheduledFor" : "history.usualSchedule"
+        let key = sessionRecord == nil ? "history.scheduledFor" : "history.originallyScheduled"
         if Calendar.current.isDate(scheduledDate, inSameDayAs: day) { return nil }
         return LanguageManager.t(key, ["date": Self.formattedDate(scheduledDate)])
     }
@@ -183,15 +186,10 @@ public struct HistoryDayDetailData: Identifiable {
         }
     }
 
-    /// A legacy weekly schedule is display context, never a claim about the saved origin.
+    /// A saved date is required; a workout weekday cannot establish its historical origin.
     public static func scheduleContext(record: WorkoutSessionRecord, workout: Workout?, day: Date) -> (Date?, HistoryScheduleSource) {
         if let recorded = record.scheduledDate.flatMap({ WorkoutCalendar.parseDate($0) }) { return (recorded, .recorded) }
-        guard let weekday = (record.workoutSnapshot ?? workout)?.day, (1...7).contains(weekday),
-              var usual = WorkoutCalendar.parseDate(WorkoutCalendar.scheduledDate(forWeekday: weekday, relativeTo: day)) else {
-            return (nil, .unknown)
-        }
-        if usual > day { usual = Calendar.current.date(byAdding: .day, value: -7, to: usual) ?? usual }
-        return (usual, record.workoutSnapshot == nil ? .currentPlan : .workoutSnapshot)
+        return (nil, .unknown)
     }
 
     public static func groupSections(day: Date, records: [WorkoutSessionRecord], scheduledWorkout: Workout?,
@@ -212,12 +210,14 @@ public struct HistoryDayDetailData: Identifiable {
                 completedSets: items.reduce(0) { $0 + $1.completedSets }, plannedSets: max(1, items.reduce(0) { $0 + $1.plannedSets }),
                 totalVolumeKg: volume, durationSeconds: record.durationSeconds,
                 isComplete: record.id != activeRecordId && WorkoutCalendar.isSessionComplete(session: record, workout: workout),
-                exerciseItems: items, scheduledDate: scheduledDate, scheduleSource: source, isLiveSession: record.id == activeRecordId)
+                exerciseItems: items, scheduledDate: scheduledDate, scheduleSource: source, isLiveSession: record.id == activeRecordId,
+                isCurrentPlanMatch: Calendar.current.isDate(day, inSameDayAs: today) && scheduledDate == nil
+                    && record.programId == activeProgramId && record.workoutId == scheduledWorkout?.id)
         }
         // Current plans can supplement today's activity, but cannot add invented workouts to recorded history.
         if (records.isEmpty || Calendar.current.isDate(day, inSameDayAs: today)),
            let scheduled = scheduledWorkout, !scheduled.exercises.isEmpty, !sections.contains(where: {
-            $0.scheduledDate.map { WorkoutCalendar.formatDate($0) } == dayString && $0.sessionRecord?.programId == activeProgramId
+            ($0.scheduledDate.map { WorkoutCalendar.formatDate($0) } == dayString || $0.isCurrentPlanMatch) && $0.sessionRecord?.programId == activeProgramId
                 && $0.sessionRecord?.workoutId == scheduled.id
         }) {
             let items = buildExerciseProgress(sessionRecord: nil, workout: scheduled, history: history)
@@ -227,8 +227,8 @@ public struct HistoryDayDetailData: Identifiable {
                 scheduledDate: day, scheduleSource: .currentPlan))
         }
         return sections.enumerated().sorted { a, b in
-            let aToday = a.element.scheduledDate.map { WorkoutCalendar.formatDate($0) } == dayString
-            let bToday = b.element.scheduledDate.map { WorkoutCalendar.formatDate($0) } == dayString
+            let aToday = a.element.scheduledDate.map { WorkoutCalendar.formatDate($0) } == dayString || a.element.isCurrentPlanMatch
+            let bToday = b.element.scheduledDate.map { WorkoutCalendar.formatDate($0) } == dayString || b.element.isCurrentPlanMatch
             if aToday != bToday { return aToday }
             let aPlan = aToday && a.element.workout?.id == scheduledWorkout?.id && (a.element.sessionRecord == nil || a.element.sessionRecord?.programId == activeProgramId)
             let bPlan = bToday && b.element.workout?.id == scheduledWorkout?.id && (b.element.sessionRecord == nil || b.element.sessionRecord?.programId == activeProgramId)

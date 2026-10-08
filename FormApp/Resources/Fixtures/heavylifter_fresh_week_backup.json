@@ -187,7 +187,7 @@
         },
         {
           "id": "hl-deadlift-back",
-          "day": 3,
+          "day": 4,
           "title": "Heavy Pull & Upper Back",
           "focus": "Barbell Rows, Lat Pulldown & Heavy Shrugs",
           "tone": "emerald",
@@ -259,7 +259,7 @@
         },
         {
           "id": "hl-hypertrophy-finisher",
-          "day": 4,
+          "day": 5,
           "title": "Chest Hypertrophy & Overload",
           "focus": "Heavy Dumbbell Bench Overload",
           "tone": "amber",
@@ -3164,7 +3164,64 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-09-18",
+      "scheduledDate": "2026-09-18",
+      "workoutSnapshot": {
+        "id": "hl-hypertrophy-finisher",
+        "day": 5,
+        "title": "Chest Hypertrophy & Overload",
+        "focus": "Heavy Dumbbell Bench Overload",
+        "tone": "amber",
+        "targetMuscles": [
+          "chest",
+          "triceps",
+          "deltoids"
+        ],
+        "exercises": [
+          {
+            "id": "hl-db-1",
+            "exerciseId": "dumbbell-bench-press",
+            "name": "Dumbbell Bench Press",
+            "prescription": "5 × 6–10",
+            "sets": 5,
+            "reps": {
+              "min": 6,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-1",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "3 × 10–15"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-2",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "2 × 10–12"
+          }
+        ]
+      }
     },
     {
       "id": "74b022e1-e90d-4f51-b998-558d58041a11",
@@ -3180,7 +3237,7 @@
         {
           "exerciseName": "Conventional Barbell Deadlift",
           "exerciseId": "conventional-barbell-deadlift",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -3308,7 +3365,80 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-09-17",
+      "scheduledDate": "2026-09-17",
+      "workoutSnapshot": {
+        "id": "hl-deadlift-back",
+        "day": 4,
+        "title": "Heavy Pull & Upper Back",
+        "focus": "Barbell Rows, Lat Pulldown & Heavy Shrugs",
+        "tone": "emerald",
+        "targetMuscles": [
+          "upper-back",
+          "lats",
+          "rear-delts",
+          "trapezius"
+        ],
+        "exercises": [
+          {
+            "id": "hl-deadlift-back-recorded-0",
+            "exerciseId": "conventional-barbell-deadlift",
+            "name": "Conventional Barbell Deadlift",
+            "sets": 4,
+            "reps": {
+              "min": 2,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "4 × 2–5"
+          },
+          {
+            "id": "hl-dl-1",
+            "exerciseId": "barbell-row",
+            "name": "Barbell Row",
+            "prescription": "4 × 5–8",
+            "sets": 4,
+            "reps": {
+              "min": 5,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "row"
+          },
+          {
+            "id": "hl-dl-2",
+            "exerciseId": "lat-pulldown",
+            "name": "Lat Pulldown",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-dl-3",
+            "exerciseId": "barbell-shrug",
+            "name": "Barbell Shrug",
+            "prescription": "3 × 6–12",
+            "sets": 3,
+            "reps": {
+              "min": 6,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "2fff1eb1-3d46-4fba-9a8c-d582753ae13a",
@@ -3324,7 +3454,7 @@
         {
           "exerciseName": "Barbell Back Squat",
           "exerciseId": "barbell-back-squat",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -3446,7 +3576,81 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-09-15",
+      "scheduledDate": "2026-09-15",
+      "workoutSnapshot": {
+        "id": "hl-squat-lower",
+        "day": 2,
+        "title": "Heavy Squat & Legs",
+        "focus": "Heavy Back Squat, Quad Hypertrophy & Hamstrings",
+        "tone": "blue",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "calves"
+        ],
+        "exercises": [
+          {
+            "id": "hl-sq-1",
+            "exerciseId": "barbell-back-squat",
+            "name": "Barbell Back Squat",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "squat"
+          },
+          {
+            "id": "hl-sq-2",
+            "exerciseId": "leg-extension",
+            "name": "Leg Extension",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-3",
+            "exerciseId": "lying-leg-curl",
+            "name": "Lying Leg Curl",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-4",
+            "exerciseId": "ab-wheel-rollout",
+            "name": "Ab Wheel Rollout",
+            "prescription": "3 × 12–15",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "8cb58cbf-32a2-4d46-b8e1-45edd550e8ae",
@@ -3462,7 +3666,7 @@
         {
           "exerciseName": "Barbell Bench Press",
           "exerciseId": "barbell-bench-press",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -3603,7 +3807,96 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-09-14",
+      "scheduledDate": "2026-09-14",
+      "workoutSnapshot": {
+        "id": "hl-bench-push",
+        "day": 1,
+        "title": "Heavy Bench & Push",
+        "focus": "Heavy Barbell Bench, Incline Overload & Shoulders",
+        "tone": "violet",
+        "targetMuscles": [
+          "chest",
+          "deltoids",
+          "triceps"
+        ],
+        "exercises": [
+          {
+            "id": "hl-bp-1",
+            "exerciseId": "barbell-bench-press",
+            "name": "Barbell Bench Press",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-2",
+            "exerciseId": "incline-barbell-bench-press",
+            "name": "Incline Barbell Bench Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-4",
+            "exerciseId": "standing-barbell-overhead-press",
+            "name": "Standing Barbell Overhead Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "overhead-press"
+          },
+          {
+            "id": "hl-bp-5",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "prescription": "3 × 10–15",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 75
+          },
+          {
+            "id": "hl-bp-6",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "2b6cd989-c702-443d-9e8d-b0eae32a9d88",
@@ -3698,7 +3991,64 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-09-11",
+      "scheduledDate": "2026-09-11",
+      "workoutSnapshot": {
+        "id": "hl-hypertrophy-finisher",
+        "day": 5,
+        "title": "Chest Hypertrophy & Overload",
+        "focus": "Heavy Dumbbell Bench Overload",
+        "tone": "amber",
+        "targetMuscles": [
+          "chest",
+          "triceps",
+          "deltoids"
+        ],
+        "exercises": [
+          {
+            "id": "hl-db-1",
+            "exerciseId": "dumbbell-bench-press",
+            "name": "Dumbbell Bench Press",
+            "prescription": "5 × 6–10",
+            "sets": 5,
+            "reps": {
+              "min": 6,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-1",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "3 × 10–15"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-2",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "2 × 10–12"
+          }
+        ]
+      }
     },
     {
       "id": "b719912b-11af-43e5-8059-800cf4cfdb55",
@@ -3714,7 +4064,7 @@
         {
           "exerciseName": "Conventional Barbell Deadlift",
           "exerciseId": "conventional-barbell-deadlift",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -3842,7 +4192,80 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-09-10",
+      "scheduledDate": "2026-09-10",
+      "workoutSnapshot": {
+        "id": "hl-deadlift-back",
+        "day": 4,
+        "title": "Heavy Pull & Upper Back",
+        "focus": "Barbell Rows, Lat Pulldown & Heavy Shrugs",
+        "tone": "emerald",
+        "targetMuscles": [
+          "upper-back",
+          "lats",
+          "rear-delts",
+          "trapezius"
+        ],
+        "exercises": [
+          {
+            "id": "hl-deadlift-back-recorded-0",
+            "exerciseId": "conventional-barbell-deadlift",
+            "name": "Conventional Barbell Deadlift",
+            "sets": 4,
+            "reps": {
+              "min": 2,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "4 × 2–5"
+          },
+          {
+            "id": "hl-dl-1",
+            "exerciseId": "barbell-row",
+            "name": "Barbell Row",
+            "prescription": "4 × 5–8",
+            "sets": 4,
+            "reps": {
+              "min": 5,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "row"
+          },
+          {
+            "id": "hl-dl-2",
+            "exerciseId": "lat-pulldown",
+            "name": "Lat Pulldown",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-dl-3",
+            "exerciseId": "barbell-shrug",
+            "name": "Barbell Shrug",
+            "prescription": "3 × 6–12",
+            "sets": 3,
+            "reps": {
+              "min": 6,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "2aad8bcc-f1a0-47e5-8f4f-ff166a42df54",
@@ -3858,7 +4281,7 @@
         {
           "exerciseName": "Barbell Back Squat",
           "exerciseId": "barbell-back-squat",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -3980,7 +4403,81 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-09-08",
+      "scheduledDate": "2026-09-08",
+      "workoutSnapshot": {
+        "id": "hl-squat-lower",
+        "day": 2,
+        "title": "Heavy Squat & Legs",
+        "focus": "Heavy Back Squat, Quad Hypertrophy & Hamstrings",
+        "tone": "blue",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "calves"
+        ],
+        "exercises": [
+          {
+            "id": "hl-sq-1",
+            "exerciseId": "barbell-back-squat",
+            "name": "Barbell Back Squat",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "squat"
+          },
+          {
+            "id": "hl-sq-2",
+            "exerciseId": "leg-extension",
+            "name": "Leg Extension",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-3",
+            "exerciseId": "lying-leg-curl",
+            "name": "Lying Leg Curl",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-4",
+            "exerciseId": "ab-wheel-rollout",
+            "name": "Ab Wheel Rollout",
+            "prescription": "3 × 12–15",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "72f57818-b6fb-435e-b86b-c7da9cd80fb6",
@@ -3996,7 +4493,7 @@
         {
           "exerciseName": "Barbell Bench Press",
           "exerciseId": "barbell-bench-press",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -4137,7 +4634,96 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-09-07",
+      "scheduledDate": "2026-09-07",
+      "workoutSnapshot": {
+        "id": "hl-bench-push",
+        "day": 1,
+        "title": "Heavy Bench & Push",
+        "focus": "Heavy Barbell Bench, Incline Overload & Shoulders",
+        "tone": "violet",
+        "targetMuscles": [
+          "chest",
+          "deltoids",
+          "triceps"
+        ],
+        "exercises": [
+          {
+            "id": "hl-bp-1",
+            "exerciseId": "barbell-bench-press",
+            "name": "Barbell Bench Press",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-2",
+            "exerciseId": "incline-barbell-bench-press",
+            "name": "Incline Barbell Bench Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-4",
+            "exerciseId": "standing-barbell-overhead-press",
+            "name": "Standing Barbell Overhead Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "overhead-press"
+          },
+          {
+            "id": "hl-bp-5",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "prescription": "3 × 10–15",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 75
+          },
+          {
+            "id": "hl-bp-6",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "8a8601b8-9897-4f90-827c-1fbb845c54db",
@@ -4232,7 +4818,64 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-09-04",
+      "scheduledDate": "2026-09-04",
+      "workoutSnapshot": {
+        "id": "hl-hypertrophy-finisher",
+        "day": 5,
+        "title": "Chest Hypertrophy & Overload",
+        "focus": "Heavy Dumbbell Bench Overload",
+        "tone": "amber",
+        "targetMuscles": [
+          "chest",
+          "triceps",
+          "deltoids"
+        ],
+        "exercises": [
+          {
+            "id": "hl-db-1",
+            "exerciseId": "dumbbell-bench-press",
+            "name": "Dumbbell Bench Press",
+            "prescription": "5 × 6–10",
+            "sets": 5,
+            "reps": {
+              "min": 6,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-1",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "3 × 10–15"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-2",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "2 × 10–12"
+          }
+        ]
+      }
     },
     {
       "id": "86b09a82-d7d8-4d27-96d9-2846ad5cea52",
@@ -4248,7 +4891,7 @@
         {
           "exerciseName": "Conventional Barbell Deadlift",
           "exerciseId": "conventional-barbell-deadlift",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -4376,7 +5019,80 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-09-03",
+      "scheduledDate": "2026-09-03",
+      "workoutSnapshot": {
+        "id": "hl-deadlift-back",
+        "day": 4,
+        "title": "Heavy Pull & Upper Back",
+        "focus": "Barbell Rows, Lat Pulldown & Heavy Shrugs",
+        "tone": "emerald",
+        "targetMuscles": [
+          "upper-back",
+          "lats",
+          "rear-delts",
+          "trapezius"
+        ],
+        "exercises": [
+          {
+            "id": "hl-deadlift-back-recorded-0",
+            "exerciseId": "conventional-barbell-deadlift",
+            "name": "Conventional Barbell Deadlift",
+            "sets": 4,
+            "reps": {
+              "min": 2,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "4 × 2–5"
+          },
+          {
+            "id": "hl-dl-1",
+            "exerciseId": "barbell-row",
+            "name": "Barbell Row",
+            "prescription": "4 × 5–8",
+            "sets": 4,
+            "reps": {
+              "min": 5,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "row"
+          },
+          {
+            "id": "hl-dl-2",
+            "exerciseId": "lat-pulldown",
+            "name": "Lat Pulldown",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-dl-3",
+            "exerciseId": "barbell-shrug",
+            "name": "Barbell Shrug",
+            "prescription": "3 × 6–12",
+            "sets": 3,
+            "reps": {
+              "min": 6,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "593a1a84-3098-4353-8fea-605cb41a2a59",
@@ -4392,7 +5108,7 @@
         {
           "exerciseName": "Barbell Back Squat",
           "exerciseId": "barbell-back-squat",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -4514,7 +5230,81 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-09-01",
+      "scheduledDate": "2026-09-01",
+      "workoutSnapshot": {
+        "id": "hl-squat-lower",
+        "day": 2,
+        "title": "Heavy Squat & Legs",
+        "focus": "Heavy Back Squat, Quad Hypertrophy & Hamstrings",
+        "tone": "blue",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "calves"
+        ],
+        "exercises": [
+          {
+            "id": "hl-sq-1",
+            "exerciseId": "barbell-back-squat",
+            "name": "Barbell Back Squat",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "squat"
+          },
+          {
+            "id": "hl-sq-2",
+            "exerciseId": "leg-extension",
+            "name": "Leg Extension",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-3",
+            "exerciseId": "lying-leg-curl",
+            "name": "Lying Leg Curl",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-4",
+            "exerciseId": "ab-wheel-rollout",
+            "name": "Ab Wheel Rollout",
+            "prescription": "3 × 12–15",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "8b41f75a-716e-4b57-907f-d24a576a3d6c",
@@ -4530,7 +5320,7 @@
         {
           "exerciseName": "Barbell Bench Press",
           "exerciseId": "barbell-bench-press",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -4671,7 +5461,96 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-08-31",
+      "scheduledDate": "2026-08-31",
+      "workoutSnapshot": {
+        "id": "hl-bench-push",
+        "day": 1,
+        "title": "Heavy Bench & Push",
+        "focus": "Heavy Barbell Bench, Incline Overload & Shoulders",
+        "tone": "violet",
+        "targetMuscles": [
+          "chest",
+          "deltoids",
+          "triceps"
+        ],
+        "exercises": [
+          {
+            "id": "hl-bp-1",
+            "exerciseId": "barbell-bench-press",
+            "name": "Barbell Bench Press",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-2",
+            "exerciseId": "incline-barbell-bench-press",
+            "name": "Incline Barbell Bench Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-4",
+            "exerciseId": "standing-barbell-overhead-press",
+            "name": "Standing Barbell Overhead Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "overhead-press"
+          },
+          {
+            "id": "hl-bp-5",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "prescription": "3 × 10–15",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 75
+          },
+          {
+            "id": "hl-bp-6",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "a7ab4a30-43ac-46a6-880c-c16d2dc75c85",
@@ -4766,7 +5645,64 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-08-28",
+      "scheduledDate": "2026-08-28",
+      "workoutSnapshot": {
+        "id": "hl-hypertrophy-finisher",
+        "day": 5,
+        "title": "Chest Hypertrophy & Overload",
+        "focus": "Heavy Dumbbell Bench Overload",
+        "tone": "amber",
+        "targetMuscles": [
+          "chest",
+          "triceps",
+          "deltoids"
+        ],
+        "exercises": [
+          {
+            "id": "hl-db-1",
+            "exerciseId": "dumbbell-bench-press",
+            "name": "Dumbbell Bench Press",
+            "prescription": "5 × 6–10",
+            "sets": 5,
+            "reps": {
+              "min": 6,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-1",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "3 × 10–15"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-2",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "2 × 10–12"
+          }
+        ]
+      }
     },
     {
       "id": "00302dc5-d853-4b6f-b7ac-014ae159f8dd",
@@ -4782,7 +5718,7 @@
         {
           "exerciseName": "Conventional Barbell Deadlift",
           "exerciseId": "conventional-barbell-deadlift",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -4910,7 +5846,80 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-08-27",
+      "scheduledDate": "2026-08-27",
+      "workoutSnapshot": {
+        "id": "hl-deadlift-back",
+        "day": 4,
+        "title": "Heavy Pull & Upper Back",
+        "focus": "Barbell Rows, Lat Pulldown & Heavy Shrugs",
+        "tone": "emerald",
+        "targetMuscles": [
+          "upper-back",
+          "lats",
+          "rear-delts",
+          "trapezius"
+        ],
+        "exercises": [
+          {
+            "id": "hl-deadlift-back-recorded-0",
+            "exerciseId": "conventional-barbell-deadlift",
+            "name": "Conventional Barbell Deadlift",
+            "sets": 4,
+            "reps": {
+              "min": 2,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "4 × 2–5"
+          },
+          {
+            "id": "hl-dl-1",
+            "exerciseId": "barbell-row",
+            "name": "Barbell Row",
+            "prescription": "4 × 5–8",
+            "sets": 4,
+            "reps": {
+              "min": 5,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "row"
+          },
+          {
+            "id": "hl-dl-2",
+            "exerciseId": "lat-pulldown",
+            "name": "Lat Pulldown",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-dl-3",
+            "exerciseId": "barbell-shrug",
+            "name": "Barbell Shrug",
+            "prescription": "3 × 6–12",
+            "sets": 3,
+            "reps": {
+              "min": 6,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "6275d7a7-5457-41c7-a255-95a24f4e3e0a",
@@ -4926,7 +5935,7 @@
         {
           "exerciseName": "Barbell Back Squat",
           "exerciseId": "barbell-back-squat",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -5048,7 +6057,81 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-08-25",
+      "scheduledDate": "2026-08-25",
+      "workoutSnapshot": {
+        "id": "hl-squat-lower",
+        "day": 2,
+        "title": "Heavy Squat & Legs",
+        "focus": "Heavy Back Squat, Quad Hypertrophy & Hamstrings",
+        "tone": "blue",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "calves"
+        ],
+        "exercises": [
+          {
+            "id": "hl-sq-1",
+            "exerciseId": "barbell-back-squat",
+            "name": "Barbell Back Squat",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "squat"
+          },
+          {
+            "id": "hl-sq-2",
+            "exerciseId": "leg-extension",
+            "name": "Leg Extension",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-3",
+            "exerciseId": "lying-leg-curl",
+            "name": "Lying Leg Curl",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-4",
+            "exerciseId": "ab-wheel-rollout",
+            "name": "Ab Wheel Rollout",
+            "prescription": "3 × 12–15",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "fef94501-c74a-489b-a288-0eb138778fb0",
@@ -5064,7 +6147,7 @@
         {
           "exerciseName": "Barbell Bench Press",
           "exerciseId": "barbell-bench-press",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -5205,7 +6288,96 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-08-24",
+      "scheduledDate": "2026-08-24",
+      "workoutSnapshot": {
+        "id": "hl-bench-push",
+        "day": 1,
+        "title": "Heavy Bench & Push",
+        "focus": "Heavy Barbell Bench, Incline Overload & Shoulders",
+        "tone": "violet",
+        "targetMuscles": [
+          "chest",
+          "deltoids",
+          "triceps"
+        ],
+        "exercises": [
+          {
+            "id": "hl-bp-1",
+            "exerciseId": "barbell-bench-press",
+            "name": "Barbell Bench Press",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-2",
+            "exerciseId": "incline-barbell-bench-press",
+            "name": "Incline Barbell Bench Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-4",
+            "exerciseId": "standing-barbell-overhead-press",
+            "name": "Standing Barbell Overhead Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "overhead-press"
+          },
+          {
+            "id": "hl-bp-5",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "prescription": "3 × 10–15",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 75
+          },
+          {
+            "id": "hl-bp-6",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "0f43d16c-5f73-4293-a5f9-7d58527344d0",
@@ -5300,7 +6472,64 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-08-21",
+      "scheduledDate": "2026-08-21",
+      "workoutSnapshot": {
+        "id": "hl-hypertrophy-finisher",
+        "day": 5,
+        "title": "Chest Hypertrophy & Overload",
+        "focus": "Heavy Dumbbell Bench Overload",
+        "tone": "amber",
+        "targetMuscles": [
+          "chest",
+          "triceps",
+          "deltoids"
+        ],
+        "exercises": [
+          {
+            "id": "hl-db-1",
+            "exerciseId": "dumbbell-bench-press",
+            "name": "Dumbbell Bench Press",
+            "prescription": "5 × 6–10",
+            "sets": 5,
+            "reps": {
+              "min": 6,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-1",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "3 × 10–15"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-2",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "2 × 10–12"
+          }
+        ]
+      }
     },
     {
       "id": "a3224707-f90f-4204-859f-230f52ba22b5",
@@ -5316,7 +6545,7 @@
         {
           "exerciseName": "Conventional Barbell Deadlift",
           "exerciseId": "conventional-barbell-deadlift",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -5444,7 +6673,80 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-08-20",
+      "scheduledDate": "2026-08-20",
+      "workoutSnapshot": {
+        "id": "hl-deadlift-back",
+        "day": 4,
+        "title": "Heavy Pull & Upper Back",
+        "focus": "Barbell Rows, Lat Pulldown & Heavy Shrugs",
+        "tone": "emerald",
+        "targetMuscles": [
+          "upper-back",
+          "lats",
+          "rear-delts",
+          "trapezius"
+        ],
+        "exercises": [
+          {
+            "id": "hl-deadlift-back-recorded-0",
+            "exerciseId": "conventional-barbell-deadlift",
+            "name": "Conventional Barbell Deadlift",
+            "sets": 4,
+            "reps": {
+              "min": 2,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "4 × 2–5"
+          },
+          {
+            "id": "hl-dl-1",
+            "exerciseId": "barbell-row",
+            "name": "Barbell Row",
+            "prescription": "4 × 5–8",
+            "sets": 4,
+            "reps": {
+              "min": 5,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "row"
+          },
+          {
+            "id": "hl-dl-2",
+            "exerciseId": "lat-pulldown",
+            "name": "Lat Pulldown",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-dl-3",
+            "exerciseId": "barbell-shrug",
+            "name": "Barbell Shrug",
+            "prescription": "3 × 6–12",
+            "sets": 3,
+            "reps": {
+              "min": 6,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "83f85e2a-0b8e-4310-8027-b4d35b3eed7a",
@@ -5460,7 +6762,7 @@
         {
           "exerciseName": "Barbell Back Squat",
           "exerciseId": "barbell-back-squat",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -5582,7 +6884,81 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-08-18",
+      "scheduledDate": "2026-08-18",
+      "workoutSnapshot": {
+        "id": "hl-squat-lower",
+        "day": 2,
+        "title": "Heavy Squat & Legs",
+        "focus": "Heavy Back Squat, Quad Hypertrophy & Hamstrings",
+        "tone": "blue",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "calves"
+        ],
+        "exercises": [
+          {
+            "id": "hl-sq-1",
+            "exerciseId": "barbell-back-squat",
+            "name": "Barbell Back Squat",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "squat"
+          },
+          {
+            "id": "hl-sq-2",
+            "exerciseId": "leg-extension",
+            "name": "Leg Extension",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-3",
+            "exerciseId": "lying-leg-curl",
+            "name": "Lying Leg Curl",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-4",
+            "exerciseId": "ab-wheel-rollout",
+            "name": "Ab Wheel Rollout",
+            "prescription": "3 × 12–15",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "0815c208-365b-43e5-8f05-173bc2c37ff9",
@@ -5598,7 +6974,7 @@
         {
           "exerciseName": "Barbell Bench Press",
           "exerciseId": "barbell-bench-press",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -5739,7 +7115,96 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-08-17",
+      "scheduledDate": "2026-08-17",
+      "workoutSnapshot": {
+        "id": "hl-bench-push",
+        "day": 1,
+        "title": "Heavy Bench & Push",
+        "focus": "Heavy Barbell Bench, Incline Overload & Shoulders",
+        "tone": "violet",
+        "targetMuscles": [
+          "chest",
+          "deltoids",
+          "triceps"
+        ],
+        "exercises": [
+          {
+            "id": "hl-bp-1",
+            "exerciseId": "barbell-bench-press",
+            "name": "Barbell Bench Press",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-2",
+            "exerciseId": "incline-barbell-bench-press",
+            "name": "Incline Barbell Bench Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-4",
+            "exerciseId": "standing-barbell-overhead-press",
+            "name": "Standing Barbell Overhead Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "overhead-press"
+          },
+          {
+            "id": "hl-bp-5",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "prescription": "3 × 10–15",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 75
+          },
+          {
+            "id": "hl-bp-6",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "792d79e5-7e58-4e74-a870-bc67757edfc3",
@@ -5834,7 +7299,64 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-08-14",
+      "scheduledDate": "2026-08-14",
+      "workoutSnapshot": {
+        "id": "hl-hypertrophy-finisher",
+        "day": 5,
+        "title": "Chest Hypertrophy & Overload",
+        "focus": "Heavy Dumbbell Bench Overload",
+        "tone": "amber",
+        "targetMuscles": [
+          "chest",
+          "triceps",
+          "deltoids"
+        ],
+        "exercises": [
+          {
+            "id": "hl-db-1",
+            "exerciseId": "dumbbell-bench-press",
+            "name": "Dumbbell Bench Press",
+            "prescription": "5 × 6–10",
+            "sets": 5,
+            "reps": {
+              "min": 6,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-1",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "3 × 10–15"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-2",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "2 × 10–12"
+          }
+        ]
+      }
     },
     {
       "id": "ba190d72-f4fb-4717-80b6-3226a494d864",
@@ -5850,7 +7372,7 @@
         {
           "exerciseName": "Conventional Barbell Deadlift",
           "exerciseId": "conventional-barbell-deadlift",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -5978,7 +7500,80 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-08-13",
+      "scheduledDate": "2026-08-13",
+      "workoutSnapshot": {
+        "id": "hl-deadlift-back",
+        "day": 4,
+        "title": "Heavy Pull & Upper Back",
+        "focus": "Barbell Rows, Lat Pulldown & Heavy Shrugs",
+        "tone": "emerald",
+        "targetMuscles": [
+          "upper-back",
+          "lats",
+          "rear-delts",
+          "trapezius"
+        ],
+        "exercises": [
+          {
+            "id": "hl-deadlift-back-recorded-0",
+            "exerciseId": "conventional-barbell-deadlift",
+            "name": "Conventional Barbell Deadlift",
+            "sets": 4,
+            "reps": {
+              "min": 2,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "4 × 2–5"
+          },
+          {
+            "id": "hl-dl-1",
+            "exerciseId": "barbell-row",
+            "name": "Barbell Row",
+            "prescription": "4 × 5–8",
+            "sets": 4,
+            "reps": {
+              "min": 5,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "row"
+          },
+          {
+            "id": "hl-dl-2",
+            "exerciseId": "lat-pulldown",
+            "name": "Lat Pulldown",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-dl-3",
+            "exerciseId": "barbell-shrug",
+            "name": "Barbell Shrug",
+            "prescription": "3 × 6–12",
+            "sets": 3,
+            "reps": {
+              "min": 6,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "16d77749-f54c-4d72-af7f-7b6e525ea8cd",
@@ -5994,7 +7589,7 @@
         {
           "exerciseName": "Barbell Back Squat",
           "exerciseId": "barbell-back-squat",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -6116,7 +7711,81 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-08-11",
+      "scheduledDate": "2026-08-11",
+      "workoutSnapshot": {
+        "id": "hl-squat-lower",
+        "day": 2,
+        "title": "Heavy Squat & Legs",
+        "focus": "Heavy Back Squat, Quad Hypertrophy & Hamstrings",
+        "tone": "blue",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "calves"
+        ],
+        "exercises": [
+          {
+            "id": "hl-sq-1",
+            "exerciseId": "barbell-back-squat",
+            "name": "Barbell Back Squat",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "squat"
+          },
+          {
+            "id": "hl-sq-2",
+            "exerciseId": "leg-extension",
+            "name": "Leg Extension",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-3",
+            "exerciseId": "lying-leg-curl",
+            "name": "Lying Leg Curl",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-4",
+            "exerciseId": "ab-wheel-rollout",
+            "name": "Ab Wheel Rollout",
+            "prescription": "3 × 12–15",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "8e07d03a-626b-4fda-97f2-b8988b139876",
@@ -6132,7 +7801,7 @@
         {
           "exerciseName": "Barbell Bench Press",
           "exerciseId": "barbell-bench-press",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -6273,7 +7942,96 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-08-10",
+      "scheduledDate": "2026-08-10",
+      "workoutSnapshot": {
+        "id": "hl-bench-push",
+        "day": 1,
+        "title": "Heavy Bench & Push",
+        "focus": "Heavy Barbell Bench, Incline Overload & Shoulders",
+        "tone": "violet",
+        "targetMuscles": [
+          "chest",
+          "deltoids",
+          "triceps"
+        ],
+        "exercises": [
+          {
+            "id": "hl-bp-1",
+            "exerciseId": "barbell-bench-press",
+            "name": "Barbell Bench Press",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-2",
+            "exerciseId": "incline-barbell-bench-press",
+            "name": "Incline Barbell Bench Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-4",
+            "exerciseId": "standing-barbell-overhead-press",
+            "name": "Standing Barbell Overhead Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "overhead-press"
+          },
+          {
+            "id": "hl-bp-5",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "prescription": "3 × 10–15",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 75
+          },
+          {
+            "id": "hl-bp-6",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "c53dbd0f-59a8-4ee4-aec6-cbbaa735e1ea",
@@ -6368,7 +8126,64 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-08-07",
+      "scheduledDate": "2026-08-07",
+      "workoutSnapshot": {
+        "id": "hl-hypertrophy-finisher",
+        "day": 5,
+        "title": "Chest Hypertrophy & Overload",
+        "focus": "Heavy Dumbbell Bench Overload",
+        "tone": "amber",
+        "targetMuscles": [
+          "chest",
+          "triceps",
+          "deltoids"
+        ],
+        "exercises": [
+          {
+            "id": "hl-db-1",
+            "exerciseId": "dumbbell-bench-press",
+            "name": "Dumbbell Bench Press",
+            "prescription": "5 × 6–10",
+            "sets": 5,
+            "reps": {
+              "min": 6,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-1",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "3 × 10–15"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-2",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "2 × 10–12"
+          }
+        ]
+      }
     },
     {
       "id": "cbeabcda-b488-4c45-8919-329ba1703429",
@@ -6384,7 +8199,7 @@
         {
           "exerciseName": "Conventional Barbell Deadlift",
           "exerciseId": "conventional-barbell-deadlift",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -6512,7 +8327,80 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-08-06",
+      "scheduledDate": "2026-08-06",
+      "workoutSnapshot": {
+        "id": "hl-deadlift-back",
+        "day": 4,
+        "title": "Heavy Pull & Upper Back",
+        "focus": "Barbell Rows, Lat Pulldown & Heavy Shrugs",
+        "tone": "emerald",
+        "targetMuscles": [
+          "upper-back",
+          "lats",
+          "rear-delts",
+          "trapezius"
+        ],
+        "exercises": [
+          {
+            "id": "hl-deadlift-back-recorded-0",
+            "exerciseId": "conventional-barbell-deadlift",
+            "name": "Conventional Barbell Deadlift",
+            "sets": 4,
+            "reps": {
+              "min": 2,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "4 × 2–5"
+          },
+          {
+            "id": "hl-dl-1",
+            "exerciseId": "barbell-row",
+            "name": "Barbell Row",
+            "prescription": "4 × 5–8",
+            "sets": 4,
+            "reps": {
+              "min": 5,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "row"
+          },
+          {
+            "id": "hl-dl-2",
+            "exerciseId": "lat-pulldown",
+            "name": "Lat Pulldown",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-dl-3",
+            "exerciseId": "barbell-shrug",
+            "name": "Barbell Shrug",
+            "prescription": "3 × 6–12",
+            "sets": 3,
+            "reps": {
+              "min": 6,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "a1936c82-f64f-4d11-a5a2-c1a8ccc8fbea",
@@ -6528,7 +8416,7 @@
         {
           "exerciseName": "Barbell Back Squat",
           "exerciseId": "barbell-back-squat",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -6650,7 +8538,81 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-08-04",
+      "scheduledDate": "2026-08-04",
+      "workoutSnapshot": {
+        "id": "hl-squat-lower",
+        "day": 2,
+        "title": "Heavy Squat & Legs",
+        "focus": "Heavy Back Squat, Quad Hypertrophy & Hamstrings",
+        "tone": "blue",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "calves"
+        ],
+        "exercises": [
+          {
+            "id": "hl-sq-1",
+            "exerciseId": "barbell-back-squat",
+            "name": "Barbell Back Squat",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "squat"
+          },
+          {
+            "id": "hl-sq-2",
+            "exerciseId": "leg-extension",
+            "name": "Leg Extension",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-3",
+            "exerciseId": "lying-leg-curl",
+            "name": "Lying Leg Curl",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-4",
+            "exerciseId": "ab-wheel-rollout",
+            "name": "Ab Wheel Rollout",
+            "prescription": "3 × 12–15",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "2a648b46-ce66-4571-b868-25022af30bec",
@@ -6666,7 +8628,7 @@
         {
           "exerciseName": "Barbell Bench Press",
           "exerciseId": "barbell-bench-press",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -6807,7 +8769,96 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-08-03",
+      "scheduledDate": "2026-08-03",
+      "workoutSnapshot": {
+        "id": "hl-bench-push",
+        "day": 1,
+        "title": "Heavy Bench & Push",
+        "focus": "Heavy Barbell Bench, Incline Overload & Shoulders",
+        "tone": "violet",
+        "targetMuscles": [
+          "chest",
+          "deltoids",
+          "triceps"
+        ],
+        "exercises": [
+          {
+            "id": "hl-bp-1",
+            "exerciseId": "barbell-bench-press",
+            "name": "Barbell Bench Press",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-2",
+            "exerciseId": "incline-barbell-bench-press",
+            "name": "Incline Barbell Bench Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-4",
+            "exerciseId": "standing-barbell-overhead-press",
+            "name": "Standing Barbell Overhead Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "overhead-press"
+          },
+          {
+            "id": "hl-bp-5",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "prescription": "3 × 10–15",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 75
+          },
+          {
+            "id": "hl-bp-6",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "77b8fe9e-1431-43fa-9f09-e0a7a2efd0b0",
@@ -6902,7 +8953,64 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-07-31",
+      "scheduledDate": "2026-07-31",
+      "workoutSnapshot": {
+        "id": "hl-hypertrophy-finisher",
+        "day": 5,
+        "title": "Chest Hypertrophy & Overload",
+        "focus": "Heavy Dumbbell Bench Overload",
+        "tone": "amber",
+        "targetMuscles": [
+          "chest",
+          "triceps",
+          "deltoids"
+        ],
+        "exercises": [
+          {
+            "id": "hl-db-1",
+            "exerciseId": "dumbbell-bench-press",
+            "name": "Dumbbell Bench Press",
+            "prescription": "5 × 6–10",
+            "sets": 5,
+            "reps": {
+              "min": 6,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-1",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "3 × 10–15"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-2",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "2 × 10–12"
+          }
+        ]
+      }
     },
     {
       "id": "c97c4250-417d-4e73-bd4d-f7d30afdd9ac",
@@ -6918,7 +9026,7 @@
         {
           "exerciseName": "Conventional Barbell Deadlift",
           "exerciseId": "conventional-barbell-deadlift",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -7046,7 +9154,80 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-07-30",
+      "scheduledDate": "2026-07-30",
+      "workoutSnapshot": {
+        "id": "hl-deadlift-back",
+        "day": 4,
+        "title": "Heavy Pull & Upper Back",
+        "focus": "Barbell Rows, Lat Pulldown & Heavy Shrugs",
+        "tone": "emerald",
+        "targetMuscles": [
+          "upper-back",
+          "lats",
+          "rear-delts",
+          "trapezius"
+        ],
+        "exercises": [
+          {
+            "id": "hl-deadlift-back-recorded-0",
+            "exerciseId": "conventional-barbell-deadlift",
+            "name": "Conventional Barbell Deadlift",
+            "sets": 4,
+            "reps": {
+              "min": 2,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "4 × 2–5"
+          },
+          {
+            "id": "hl-dl-1",
+            "exerciseId": "barbell-row",
+            "name": "Barbell Row",
+            "prescription": "4 × 5–8",
+            "sets": 4,
+            "reps": {
+              "min": 5,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "row"
+          },
+          {
+            "id": "hl-dl-2",
+            "exerciseId": "lat-pulldown",
+            "name": "Lat Pulldown",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-dl-3",
+            "exerciseId": "barbell-shrug",
+            "name": "Barbell Shrug",
+            "prescription": "3 × 6–12",
+            "sets": 3,
+            "reps": {
+              "min": 6,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "7a28a76d-df09-41c5-99d9-a371f2518d5f",
@@ -7062,7 +9243,7 @@
         {
           "exerciseName": "Barbell Back Squat",
           "exerciseId": "barbell-back-squat",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -7184,7 +9365,81 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-07-28",
+      "scheduledDate": "2026-07-28",
+      "workoutSnapshot": {
+        "id": "hl-squat-lower",
+        "day": 2,
+        "title": "Heavy Squat & Legs",
+        "focus": "Heavy Back Squat, Quad Hypertrophy & Hamstrings",
+        "tone": "blue",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "calves"
+        ],
+        "exercises": [
+          {
+            "id": "hl-sq-1",
+            "exerciseId": "barbell-back-squat",
+            "name": "Barbell Back Squat",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "squat"
+          },
+          {
+            "id": "hl-sq-2",
+            "exerciseId": "leg-extension",
+            "name": "Leg Extension",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-3",
+            "exerciseId": "lying-leg-curl",
+            "name": "Lying Leg Curl",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-4",
+            "exerciseId": "ab-wheel-rollout",
+            "name": "Ab Wheel Rollout",
+            "prescription": "3 × 12–15",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "f08e2f03-1586-4860-9073-406fab20700c",
@@ -7200,7 +9455,7 @@
         {
           "exerciseName": "Barbell Bench Press",
           "exerciseId": "barbell-bench-press",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -7341,7 +9596,96 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-07-27",
+      "scheduledDate": "2026-07-27",
+      "workoutSnapshot": {
+        "id": "hl-bench-push",
+        "day": 1,
+        "title": "Heavy Bench & Push",
+        "focus": "Heavy Barbell Bench, Incline Overload & Shoulders",
+        "tone": "violet",
+        "targetMuscles": [
+          "chest",
+          "deltoids",
+          "triceps"
+        ],
+        "exercises": [
+          {
+            "id": "hl-bp-1",
+            "exerciseId": "barbell-bench-press",
+            "name": "Barbell Bench Press",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-2",
+            "exerciseId": "incline-barbell-bench-press",
+            "name": "Incline Barbell Bench Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-4",
+            "exerciseId": "standing-barbell-overhead-press",
+            "name": "Standing Barbell Overhead Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "overhead-press"
+          },
+          {
+            "id": "hl-bp-5",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "prescription": "3 × 10–15",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 75
+          },
+          {
+            "id": "hl-bp-6",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "e7d00428-7ae1-476f-a8c9-e23a56b0baae",
@@ -7436,7 +9780,64 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-07-24",
+      "scheduledDate": "2026-07-24",
+      "workoutSnapshot": {
+        "id": "hl-hypertrophy-finisher",
+        "day": 5,
+        "title": "Chest Hypertrophy & Overload",
+        "focus": "Heavy Dumbbell Bench Overload",
+        "tone": "amber",
+        "targetMuscles": [
+          "chest",
+          "triceps",
+          "deltoids"
+        ],
+        "exercises": [
+          {
+            "id": "hl-db-1",
+            "exerciseId": "dumbbell-bench-press",
+            "name": "Dumbbell Bench Press",
+            "prescription": "5 × 6–10",
+            "sets": 5,
+            "reps": {
+              "min": 6,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-1",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "3 × 10–15"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-2",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "2 × 10–12"
+          }
+        ]
+      }
     },
     {
       "id": "7958de6c-c913-45ac-a104-c362678429bc",
@@ -7452,7 +9853,7 @@
         {
           "exerciseName": "Conventional Barbell Deadlift",
           "exerciseId": "conventional-barbell-deadlift",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -7580,7 +9981,80 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-07-23",
+      "scheduledDate": "2026-07-23",
+      "workoutSnapshot": {
+        "id": "hl-deadlift-back",
+        "day": 4,
+        "title": "Heavy Pull & Upper Back",
+        "focus": "Barbell Rows, Lat Pulldown & Heavy Shrugs",
+        "tone": "emerald",
+        "targetMuscles": [
+          "upper-back",
+          "lats",
+          "rear-delts",
+          "trapezius"
+        ],
+        "exercises": [
+          {
+            "id": "hl-deadlift-back-recorded-0",
+            "exerciseId": "conventional-barbell-deadlift",
+            "name": "Conventional Barbell Deadlift",
+            "sets": 4,
+            "reps": {
+              "min": 2,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "4 × 2–5"
+          },
+          {
+            "id": "hl-dl-1",
+            "exerciseId": "barbell-row",
+            "name": "Barbell Row",
+            "prescription": "4 × 5–8",
+            "sets": 4,
+            "reps": {
+              "min": 5,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "row"
+          },
+          {
+            "id": "hl-dl-2",
+            "exerciseId": "lat-pulldown",
+            "name": "Lat Pulldown",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-dl-3",
+            "exerciseId": "barbell-shrug",
+            "name": "Barbell Shrug",
+            "prescription": "3 × 6–12",
+            "sets": 3,
+            "reps": {
+              "min": 6,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "f33bfdfd-8cbd-4cd3-8ac9-ba64a32b45aa",
@@ -7596,7 +10070,7 @@
         {
           "exerciseName": "Barbell Back Squat",
           "exerciseId": "barbell-back-squat",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -7718,7 +10192,81 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-07-21",
+      "scheduledDate": "2026-07-21",
+      "workoutSnapshot": {
+        "id": "hl-squat-lower",
+        "day": 2,
+        "title": "Heavy Squat & Legs",
+        "focus": "Heavy Back Squat, Quad Hypertrophy & Hamstrings",
+        "tone": "blue",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "calves"
+        ],
+        "exercises": [
+          {
+            "id": "hl-sq-1",
+            "exerciseId": "barbell-back-squat",
+            "name": "Barbell Back Squat",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "squat"
+          },
+          {
+            "id": "hl-sq-2",
+            "exerciseId": "leg-extension",
+            "name": "Leg Extension",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-3",
+            "exerciseId": "lying-leg-curl",
+            "name": "Lying Leg Curl",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-4",
+            "exerciseId": "ab-wheel-rollout",
+            "name": "Ab Wheel Rollout",
+            "prescription": "3 × 12–15",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "0f14ec9d-5029-40ce-9a5d-1f0be833e9d2",
@@ -7734,7 +10282,7 @@
         {
           "exerciseName": "Barbell Bench Press",
           "exerciseId": "barbell-bench-press",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -7875,7 +10423,96 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-07-20",
+      "scheduledDate": "2026-07-20",
+      "workoutSnapshot": {
+        "id": "hl-bench-push",
+        "day": 1,
+        "title": "Heavy Bench & Push",
+        "focus": "Heavy Barbell Bench, Incline Overload & Shoulders",
+        "tone": "violet",
+        "targetMuscles": [
+          "chest",
+          "deltoids",
+          "triceps"
+        ],
+        "exercises": [
+          {
+            "id": "hl-bp-1",
+            "exerciseId": "barbell-bench-press",
+            "name": "Barbell Bench Press",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-2",
+            "exerciseId": "incline-barbell-bench-press",
+            "name": "Incline Barbell Bench Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-4",
+            "exerciseId": "standing-barbell-overhead-press",
+            "name": "Standing Barbell Overhead Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "overhead-press"
+          },
+          {
+            "id": "hl-bp-5",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "prescription": "3 × 10–15",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 75
+          },
+          {
+            "id": "hl-bp-6",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "2de77dde-826b-4ca1-b879-f3aa03287e7d",
@@ -7970,7 +10607,64 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-07-17",
+      "scheduledDate": "2026-07-17",
+      "workoutSnapshot": {
+        "id": "hl-hypertrophy-finisher",
+        "day": 5,
+        "title": "Chest Hypertrophy & Overload",
+        "focus": "Heavy Dumbbell Bench Overload",
+        "tone": "amber",
+        "targetMuscles": [
+          "chest",
+          "triceps",
+          "deltoids"
+        ],
+        "exercises": [
+          {
+            "id": "hl-db-1",
+            "exerciseId": "dumbbell-bench-press",
+            "name": "Dumbbell Bench Press",
+            "prescription": "5 × 6–10",
+            "sets": 5,
+            "reps": {
+              "min": 6,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-1",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "3 × 10–15"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-2",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "2 × 10–12"
+          }
+        ]
+      }
     },
     {
       "id": "93ff436c-276d-47d3-b55f-1c158051cae0",
@@ -7986,7 +10680,7 @@
         {
           "exerciseName": "Conventional Barbell Deadlift",
           "exerciseId": "conventional-barbell-deadlift",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -8114,7 +10808,80 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-07-16",
+      "scheduledDate": "2026-07-16",
+      "workoutSnapshot": {
+        "id": "hl-deadlift-back",
+        "day": 4,
+        "title": "Heavy Pull & Upper Back",
+        "focus": "Barbell Rows, Lat Pulldown & Heavy Shrugs",
+        "tone": "emerald",
+        "targetMuscles": [
+          "upper-back",
+          "lats",
+          "rear-delts",
+          "trapezius"
+        ],
+        "exercises": [
+          {
+            "id": "hl-deadlift-back-recorded-0",
+            "exerciseId": "conventional-barbell-deadlift",
+            "name": "Conventional Barbell Deadlift",
+            "sets": 4,
+            "reps": {
+              "min": 2,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "4 × 2–5"
+          },
+          {
+            "id": "hl-dl-1",
+            "exerciseId": "barbell-row",
+            "name": "Barbell Row",
+            "prescription": "4 × 5–8",
+            "sets": 4,
+            "reps": {
+              "min": 5,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "row"
+          },
+          {
+            "id": "hl-dl-2",
+            "exerciseId": "lat-pulldown",
+            "name": "Lat Pulldown",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-dl-3",
+            "exerciseId": "barbell-shrug",
+            "name": "Barbell Shrug",
+            "prescription": "3 × 6–12",
+            "sets": 3,
+            "reps": {
+              "min": 6,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "8c312674-14cd-447e-afbf-691c754e4bc2",
@@ -8130,7 +10897,7 @@
         {
           "exerciseName": "Barbell Back Squat",
           "exerciseId": "barbell-back-squat",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -8252,7 +11019,81 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-07-14",
+      "scheduledDate": "2026-07-14",
+      "workoutSnapshot": {
+        "id": "hl-squat-lower",
+        "day": 2,
+        "title": "Heavy Squat & Legs",
+        "focus": "Heavy Back Squat, Quad Hypertrophy & Hamstrings",
+        "tone": "blue",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "calves"
+        ],
+        "exercises": [
+          {
+            "id": "hl-sq-1",
+            "exerciseId": "barbell-back-squat",
+            "name": "Barbell Back Squat",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "squat"
+          },
+          {
+            "id": "hl-sq-2",
+            "exerciseId": "leg-extension",
+            "name": "Leg Extension",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-3",
+            "exerciseId": "lying-leg-curl",
+            "name": "Lying Leg Curl",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-4",
+            "exerciseId": "ab-wheel-rollout",
+            "name": "Ab Wheel Rollout",
+            "prescription": "3 × 12–15",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "4d5a44ba-a240-4ab7-b5fd-24e117b52086",
@@ -8268,7 +11109,7 @@
         {
           "exerciseName": "Barbell Bench Press",
           "exerciseId": "barbell-bench-press",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -8409,7 +11250,96 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-07-13",
+      "scheduledDate": "2026-07-13",
+      "workoutSnapshot": {
+        "id": "hl-bench-push",
+        "day": 1,
+        "title": "Heavy Bench & Push",
+        "focus": "Heavy Barbell Bench, Incline Overload & Shoulders",
+        "tone": "violet",
+        "targetMuscles": [
+          "chest",
+          "deltoids",
+          "triceps"
+        ],
+        "exercises": [
+          {
+            "id": "hl-bp-1",
+            "exerciseId": "barbell-bench-press",
+            "name": "Barbell Bench Press",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-2",
+            "exerciseId": "incline-barbell-bench-press",
+            "name": "Incline Barbell Bench Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-4",
+            "exerciseId": "standing-barbell-overhead-press",
+            "name": "Standing Barbell Overhead Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "overhead-press"
+          },
+          {
+            "id": "hl-bp-5",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "prescription": "3 × 10–15",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 75
+          },
+          {
+            "id": "hl-bp-6",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "987a6b55-784e-46f3-b645-1037d40cc6cb",
@@ -8504,7 +11434,64 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-07-10",
+      "scheduledDate": "2026-07-10",
+      "workoutSnapshot": {
+        "id": "hl-hypertrophy-finisher",
+        "day": 5,
+        "title": "Chest Hypertrophy & Overload",
+        "focus": "Heavy Dumbbell Bench Overload",
+        "tone": "amber",
+        "targetMuscles": [
+          "chest",
+          "triceps",
+          "deltoids"
+        ],
+        "exercises": [
+          {
+            "id": "hl-db-1",
+            "exerciseId": "dumbbell-bench-press",
+            "name": "Dumbbell Bench Press",
+            "prescription": "5 × 6–10",
+            "sets": 5,
+            "reps": {
+              "min": 6,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-1",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "3 × 10–15"
+          },
+          {
+            "id": "hl-hypertrophy-finisher-recorded-2",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "2 × 10–12"
+          }
+        ]
+      }
     },
     {
       "id": "beee2979-2e24-489b-8894-9085b94a0eb2",
@@ -8520,7 +11507,7 @@
         {
           "exerciseName": "Conventional Barbell Deadlift",
           "exerciseId": "conventional-barbell-deadlift",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -8648,7 +11635,80 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-07-09",
+      "scheduledDate": "2026-07-09",
+      "workoutSnapshot": {
+        "id": "hl-deadlift-back",
+        "day": 4,
+        "title": "Heavy Pull & Upper Back",
+        "focus": "Barbell Rows, Lat Pulldown & Heavy Shrugs",
+        "tone": "emerald",
+        "targetMuscles": [
+          "upper-back",
+          "lats",
+          "rear-delts",
+          "trapezius"
+        ],
+        "exercises": [
+          {
+            "id": "hl-deadlift-back-recorded-0",
+            "exerciseId": "conventional-barbell-deadlift",
+            "name": "Conventional Barbell Deadlift",
+            "sets": 4,
+            "reps": {
+              "min": 2,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "prescription": "4 × 2–5"
+          },
+          {
+            "id": "hl-dl-1",
+            "exerciseId": "barbell-row",
+            "name": "Barbell Row",
+            "prescription": "4 × 5–8",
+            "sets": 4,
+            "reps": {
+              "min": 5,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "row"
+          },
+          {
+            "id": "hl-dl-2",
+            "exerciseId": "lat-pulldown",
+            "name": "Lat Pulldown",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-dl-3",
+            "exerciseId": "barbell-shrug",
+            "name": "Barbell Shrug",
+            "prescription": "3 × 6–12",
+            "sets": 3,
+            "reps": {
+              "min": 6,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "a25c6a40-84b1-4dd5-8f4a-ea9c138caae3",
@@ -8664,7 +11724,7 @@
         {
           "exerciseName": "Barbell Back Squat",
           "exerciseId": "barbell-back-squat",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -8786,7 +11846,81 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-07-07",
+      "scheduledDate": "2026-07-07",
+      "workoutSnapshot": {
+        "id": "hl-squat-lower",
+        "day": 2,
+        "title": "Heavy Squat & Legs",
+        "focus": "Heavy Back Squat, Quad Hypertrophy & Hamstrings",
+        "tone": "blue",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "calves"
+        ],
+        "exercises": [
+          {
+            "id": "hl-sq-1",
+            "exerciseId": "barbell-back-squat",
+            "name": "Barbell Back Squat",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "squat"
+          },
+          {
+            "id": "hl-sq-2",
+            "exerciseId": "leg-extension",
+            "name": "Leg Extension",
+            "prescription": "4 × 8–12",
+            "sets": 4,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-3",
+            "exerciseId": "lying-leg-curl",
+            "name": "Lying Leg Curl",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hl-sq-4",
+            "exerciseId": "ab-wheel-rollout",
+            "name": "Ab Wheel Rollout",
+            "prescription": "3 × 12–15",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     },
     {
       "id": "dc01e9af-7ce0-46aa-b550-112c94905a74",
@@ -8802,7 +11936,7 @@
         {
           "exerciseName": "Barbell Bench Press",
           "exerciseId": "barbell-bench-press",
-          "targetSets": 6,
+          "targetSets": 4,
           "sets": [
             {
               "setNumber": 1,
@@ -8943,7 +12077,96 @@
           ]
         }
       ],
-      "isComplete": true
+      "isComplete": true,
+      "performedDate": "2026-07-06",
+      "scheduledDate": "2026-07-06",
+      "workoutSnapshot": {
+        "id": "hl-bench-push",
+        "day": 1,
+        "title": "Heavy Bench & Push",
+        "focus": "Heavy Barbell Bench, Incline Overload & Shoulders",
+        "tone": "violet",
+        "targetMuscles": [
+          "chest",
+          "deltoids",
+          "triceps"
+        ],
+        "exercises": [
+          {
+            "id": "hl-bp-1",
+            "exerciseId": "barbell-bench-press",
+            "name": "Barbell Bench Press",
+            "prescription": "4 × 3–5",
+            "sets": 4,
+            "reps": {
+              "min": 3,
+              "max": 5,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 240,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-2",
+            "exerciseId": "incline-barbell-bench-press",
+            "name": "Incline Barbell Bench Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "bench-press"
+          },
+          {
+            "id": "hl-bp-4",
+            "exerciseId": "standing-barbell-overhead-press",
+            "name": "Standing Barbell Overhead Press",
+            "prescription": "3 × 4–6",
+            "sets": 3,
+            "reps": {
+              "min": 4,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 180,
+            "movementType": "overhead-press"
+          },
+          {
+            "id": "hl-bp-5",
+            "exerciseId": "cable-lateral-raise",
+            "name": "Cable Lateral Raise",
+            "prescription": "3 × 10–15",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 75
+          },
+          {
+            "id": "hl-bp-6",
+            "exerciseId": "rope-triceps-pressdown",
+            "name": "Rope Triceps Pressdown",
+            "prescription": "3 × 8–12",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ]
+      }
     }
   ],
   "calendarHistory": null

@@ -8971,6 +8971,25 @@ final class HistoryBreakdownTests: XCTestCase {
     }
 
     @MainActor
+    func testLegacyThursdayDoesNotInventWednesdayFromCurrentPlanOrSnapshot() {
+        let thursday = WorkoutCalendar.parseDate("2026-09-03")!
+        var saved = record(pull, complete: false)
+        saved.startedAt = "2026-09-03T17:45:00Z"
+        saved.completedAt = "2026-09-03T19:10:00Z"
+        var wednesday = pull
+        wednesday.day = 3
+        for weekday in [3, 4, 5] {
+            var current = pull
+            current.day = weekday
+            XCTAssertNil(HistoryDayDetailData.scheduleContext(record: saved, workout: current, day: thursday).0)
+        }
+        saved.workoutSnapshot = wednesday
+        XCTAssertNil(HistoryDayDetailData.scheduleContext(record: saved, workout: pull, day: thursday).0)
+        saved.scheduledDate = "2026-09-02"
+        XCTAssertEqual(WorkoutCalendar.formatDate(HistoryDayDetailData.scheduleContext(record: saved, workout: pull, day: thursday).0!), "2026-09-02")
+    }
+
+    @MainActor
     func testLegacyCurrentWorkoutFirstWithoutRedundantScheduleAndCarryoverDated() {
         let old = record(bench, complete: true)
         let current = record(pull, complete: false)
@@ -8981,10 +9000,10 @@ final class HistoryBreakdownTests: XCTestCase {
             for records in [[old, current], [current, old]] {
                 let result = sections(records)
                 XCTAssertEqual(result.map(\.workoutTitle), [pull.title, bench.title])
-                XCTAssertNil(result[0].scheduleLabel(on: day))
-                XCTAssertEqual(result[0].contextText(on: day, today: day), LanguageManager.t("history.todayWorkout"))
-                XCTAssertEqual(result[1].contextText(on: day, today: day), LanguageManager.t("history.earlierWorkout"))
-                XCTAssertTrue(result[1].scheduleLabel(on: day)!.hasPrefix(language == "en" ? "Usual schedule" : "Normal plan"))
+                XCTAssertEqual(result[0].scheduleLabel(on: day), LanguageManager.t("history.scheduleUnknown"))
+                XCTAssertEqual(result[0].contextText(on: day, today: day), LanguageManager.t("history.recordedToday"))
+                XCTAssertEqual(result[1].contextText(on: day, today: day), LanguageManager.t("history.additionalWorkout"))
+                XCTAssertEqual(result[1].scheduleLabel(on: day), LanguageManager.t("history.scheduleUnknown"))
                 XCTAssertTrue(result[0].canAct(on: day, today: day))
                 XCTAssertFalse(result[1].canAct(on: day, today: day))
             }
@@ -9023,7 +9042,7 @@ final class HistoryBreakdownTests: XCTestCase {
         XCTAssertEqual(savedSection.scheduleSource, .recorded)
         XCTAssertEqual(savedSection.plannedSets, 2)
         saved.scheduledDate = nil
-        XCTAssertEqual(WorkoutCalendar.formatDate(sections([saved], program: p).first { $0.sessionRecord != nil }!.scheduledDate!), "2026-10-05")
+        XCTAssertNil(sections([saved], program: p).first { $0.sessionRecord != nil }!.scheduledDate)
         saved.workoutSnapshot = nil
         saved.programId = "deleted"
         XCTAssertNil(sections([saved]).last!.scheduledDate)
@@ -9042,7 +9061,7 @@ final class HistoryBreakdownTests: XCTestCase {
         var sunday = bench
         sunday.day = 7
         let monday = WorkoutCalendar.parseDate("2026-10-05")!
-        XCTAssertEqual(WorkoutCalendar.formatDate(HistoryDayDetailData.scheduleContext(record: record(sunday, complete: true), workout: sunday, day: monday).0!), "2026-10-04")
+        XCTAssertNil(HistoryDayDetailData.scheduleContext(record: record(sunday, complete: true), workout: sunday, day: monday).0)
     }
 
     func testScheduleSnapshotRoundTripAndLegacyDecoding() throws {
