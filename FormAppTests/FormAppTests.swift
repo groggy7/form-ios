@@ -8376,14 +8376,14 @@ final class ProgressionReliabilityTests: XCTestCase {
     }
 
     private let bench = Exercise(name: "Barbell Bench Press", exerciseId: "barbell-bench-press", sets: 3, reps: RepTarget(min: 8, max: 12))
-    private func record(_ day: Int, reps: [Int] = [8, 8, 8], loads: [Double?]? = nil) -> WorkoutSessionRecord {
+    private func record(_ day: Int, reps: [Int] = [8, 8, 8], loads: [Double?]? = nil, targetSets: Int = 3) -> WorkoutSessionRecord {
         let weights = loads ?? Array(repeating: 65.0, count: reps.count)
         let date = String(format: "2026-09-%02d", day)
         return WorkoutSessionRecord(id: "s\(day)", programId: "p", workoutId: "w", workoutTitle: "Fixture",
             startedAt: "\(date)T10:00:00Z", completedAt: "\(date)T11:00:00Z", durationSeconds: 60,
             exerciseLogs: [SessionExerciseLog(exerciseName: bench.name,
                 sets: reps.enumerated().map { SessionSetLog(setNumber: $0.offset + 1, weightKg: weights[$0.offset], reps: $0.element) },
-                targetSets: 3, exerciseId: bench.exerciseId)])
+                targetSets: targetSets, exerciseId: bench.exerciseId)])
     }
 
     func testEightRepsNeverJumpToTwelveEvenBelowPrescriptionFloor() {
@@ -8430,6 +8430,56 @@ final class ProgressionReliabilityTests: XCTestCase {
             XCTAssertEqual(ProgressionEngine.computeProgression(exercise: bench, history: [previous, ceiling])!.action, .holdLoad)
         }
         XCTAssertEqual(ProgressionEngine.computeProgression(exercise: bench, history: [ceiling, ceiling])!.action, .holdLoad)
+    }
+
+    func testSixSetBenchLoadIncreaseResetsToPlanFloorAndAppliesTheDisplayedTargets() throws {
+        var exercise = bench
+        exercise.sets = 6
+        exercise.reps = RepTarget(min: 3, max: 5)
+        let history = [1, 2].map { record($0, reps: Array(repeating: 5, count: 6), loads: Array(repeating: 100, count: 6), targetSets: 6) }
+        let recommendation = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: exercise, history: history))
+        XCTAssertEqual(recommendation.action, .increaseLoad)
+        XCTAssertEqual(recommendation.lastSessionSets, Array(repeating: ProgressionSetTarget(weightKg: 100, reps: 5), count: 6))
+        XCTAssertEqual(recommendation.setTargets, Array(repeating: ProgressionSetTarget(weightKg: 102.5, reps: 3), count: 6))
+        XCTAssertEqual(recommendation.rationaleArgs["targetReps"], "3")
+        let rows = (1...6).map { ExerciseSetLog(setNumber: $0) }
+        let applied = recommendation.applicableTargets(sets: rows)
+        XCTAssertEqual(rows.indices.compactMap { applied[$0] }, recommendation.setTargets)
+        XCTAssertEqual(applied[0]?.weightInput(unit: .kg, fallback: "0"), "102.5")
+    }
+
+    @MainActor func testExpandedLoadIncreaseShowsPreviousAndTargetSetsInBothLanguages() throws {
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previousLanguage) }
+        var exercise = bench
+        exercise.sets = 6
+        exercise.reps = RepTarget(min: 3, max: 5)
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            for (name, loads, unit) in [
+                ("bench-kg", Array(repeating: Double(100), count: 6), WeightUnit.kg),
+                ("bench-lbs", Array(repeating: Double(100), count: 6), WeightUnit.lbs),
+                ("mixed-kg", [100.0, 100, 95, 95, 90, 90], WeightUnit.kg)
+            ] {
+                let history = [1, 2].map { record($0, reps: Array(repeating: 5, count: 6), loads: loads.map { Optional($0) }, targetSets: 6) }
+                let recommendation = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: exercise, history: history, weightUnit: unit))
+                XCTAssertEqual(recommendation.action, .increaseLoad)
+                for (width, textSize) in [(CGFloat(440), ContentSizeCategory.large), (CGFloat(320), ContentSizeCategory.extraExtraExtraLarge)] {
+                    let card = ProgressionRecommendationCard(recommendation: recommendation, weightUnit: unit,
+                        canApplyTarget: true, expanded: .constant(true), wasApplied: .constant(false), onApplyTarget: {}, onOpenInfo: {})
+                        .padding(20).frame(width: width).background(AppColors.background)
+                        .environment(\.sizeCategory, textSize)
+                    let renderer = ImageRenderer(content: card)
+                    renderer.scale = 1
+                    let image = try XCTUnwrap(renderer.uiImage)
+                    XCTAssertEqual(image.size.width, width)
+                    let attachment = XCTAttachment(image: image)
+                    attachment.name = "progression-increase-\(language)-\(name)-\(Int(width))"
+                    attachment.lifetime = .keepAlways
+                    add(attachment)
+                }
+            }
+        }
     }
 
     func testLoadStepsRespectUnitsEquipmentBodyweightAndTenPercentLimit() {

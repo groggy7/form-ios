@@ -314,8 +314,11 @@ struct ProgressionRecommendationCard: View {
     private var descriptionText: String {
         if review { return LanguageManager.t("progression.coach.review_observation", recommendation.rationaleArgs) }
         if wasApplied { return LanguageManager.t("progression.coach.applied_hint") }
+        if recommendation.action == .increaseLoad {
+            return LanguageManager.t(recommendation.rationaleKey, recommendation.rationaleArgs)
+        }
         if expanded { return LanguageManager.t("progression.coach.add_reps_expanded_hint") }
-        if recommendation.action == .holdLoad || recommendation.action == .increaseLoad {
+        if recommendation.action == .holdLoad {
             return LanguageManager.t(recommendation.rationaleKey, recommendation.rationaleArgs)
         }
         return LanguageManager.t("progression.coach.add_reps_hint", recommendation.rationaleArgs)
@@ -339,30 +342,70 @@ struct ProgressionRecommendationCard: View {
 
     private var targetDetails: some View {
         VStack(spacing: 0) {
-            ProgressionTableRow {
-                Text(LanguageManager.t("progression.coach.set_column"))
-                Text(LanguageManager.t("progression.coach.weight_column"))
-                Text(LanguageManager.t("progression.coach.last_reps_column")).multilineTextAlignment(.center)
-                Color.clear.frame(height: 0)
-                Text(LanguageManager.t("progression.coach.target_reps_column")).multilineTextAlignment(.center)
-            }.font(.system(size: metadataSize)).foregroundColor(AppColors.muted).padding(.vertical, 8)
-            ForEach(Array(recommendation.setTargets.enumerated()), id: \.offset) { index, target in
-                Rectangle().fill(AppColors.border).frame(height: 1)
+            if recommendation.action == .increaseLoad {
+                loadIncreaseDetails
+            } else {
                 ProgressionTableRow {
-                    Text("\(index + 1)").foregroundColor(AppColors.secondaryText)
-                    Text(weight(target)).foregroundColor(AppColors.text)
-                    Text(recommendation.lastSessionSets.indices.contains(index) ? "\(recommendation.lastSessionSets[index].reps)" : "—")
-                        .foregroundColor(AppColors.muted).accessibilityIdentifier("progression-last-reps-\(index + 1)")
-                    Image(systemName: "arrow.right").font(.system(size: 10)).foregroundColor(AppColors.muted).accessibilityHidden(true)
-                    Text("\(target.reps)").fontWeight(.bold).foregroundColor(AppColors.text)
-                        .accessibilityIdentifier("progression-target-reps-\(index + 1)")
-                }.font(.system(size: bodySize)).monospacedDigit().padding(.vertical, 8)
-                    .accessibilityIdentifier("progression-target-row-\(index + 1)")
+                    Text(LanguageManager.t("progression.coach.set_column"))
+                    Text(LanguageManager.t("progression.coach.weight_column"))
+                    Text(LanguageManager.t("progression.coach.last_reps_column")).multilineTextAlignment(.center)
+                    Color.clear.frame(height: 0)
+                    Text(LanguageManager.t("progression.coach.target_reps_column")).multilineTextAlignment(.center)
+                }.font(.system(size: metadataSize)).foregroundColor(AppColors.muted).padding(.vertical, 8)
+                ForEach(Array(recommendation.setTargets.enumerated()), id: \.offset) { index, target in
+                    Rectangle().fill(AppColors.border).frame(height: 1)
+                    ProgressionTableRow {
+                        Text("\(index + 1)").foregroundColor(AppColors.secondaryText)
+                        Text(weight(target)).foregroundColor(AppColors.text)
+                        Text(recommendation.lastSessionSets.indices.contains(index) ? "\(recommendation.lastSessionSets[index].reps)" : "—")
+                            .foregroundColor(AppColors.muted).accessibilityIdentifier("progression-last-reps-\(index + 1)")
+                        Image(systemName: "arrow.right").font(.system(size: 10)).foregroundColor(AppColors.muted).accessibilityHidden(true)
+                        Text("\(target.reps)").fontWeight(.bold).foregroundColor(AppColors.text)
+                            .accessibilityIdentifier("progression-target-reps-\(index + 1)")
+                    }.font(.system(size: bodySize)).monospacedDigit().padding(.vertical, 8)
+                        .accessibilityIdentifier("progression-target-row-\(index + 1)")
+                }
             }
         }.padding(.horizontal, 10)
             .background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(AppColors.border, lineWidth: 1))
             .accessibilityIdentifier("progression-target-details")
+    }
+
+    private var loadIncreaseDetails: some View {
+        Group {
+            ProgressionTableRow(fractions: [0.16, 0.36, 0.08, 0.40]) {
+                Text(LanguageManager.t("progression.coach.set_column"))
+                Text(LanguageManager.t("progression.coach.last_set_column"))
+                Color.clear.frame(height: 0)
+                Text(LanguageManager.t("progression.coach.target_set_column"))
+            }.font(.system(size: metadataSize)).foregroundColor(AppColors.muted).padding(.vertical, 8)
+            ForEach(Array(recommendation.setTargets.enumerated()), id: \.offset) { index, target in
+                Rectangle().fill(AppColors.border).frame(height: 1)
+                ProgressionTableRow(fractions: [0.16, 0.36, 0.08, 0.40]) {
+                    Text("\(index + 1)").foregroundColor(AppColors.secondaryText)
+                    if recommendation.lastSessionSets.indices.contains(index) {
+                        setDetails(recommendation.lastSessionSets[index], index: index, isTarget: false)
+                    } else {
+                        Text("—").foregroundColor(AppColors.muted)
+                    }
+                    Image(systemName: "arrow.right").font(.system(size: 10)).foregroundColor(AppColors.muted).accessibilityHidden(true)
+                    setDetails(target, index: index, isTarget: true)
+                }.font(.system(size: bodySize)).monospacedDigit().padding(.vertical, 8)
+                    .accessibilityIdentifier("progression-target-row-\(index + 1)")
+            }
+        }
+    }
+
+    private func setDetails(_ set: ProgressionSetTarget, index: Int, isTarget: Bool) -> some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(weight(set))
+                .accessibilityIdentifier("progression-\(isTarget ? "target" : "last")-weight-\(index + 1)")
+            Text(LanguageManager.t("progression.coach.reps", ["reps": "\(set.reps)"]))
+                .accessibilityIdentifier("progression-\(isTarget ? "target" : "last")-reps-\(index + 1)")
+        }.fontWeight(isTarget ? .bold : .regular)
+            .foregroundColor(isTarget ? AppColors.text : AppColors.muted)
+            .fixedSize(horizontal: false, vertical: true)
     }
 
     private func weight(_ target: ProgressionSetTarget) -> String {
@@ -373,7 +416,7 @@ struct ProgressionRecommendationCard: View {
 
 // Shared column widths keep headers and values aligned while allowing large text to wrap.
 private struct ProgressionTableRow: Layout {
-    private let fractions: [CGFloat] = [0.15, 0.32, 0.22, 0.06, 0.25]
+    var fractions: [CGFloat] = [0.15, 0.32, 0.22, 0.06, 0.25]
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         let width = proposal.width ?? 300
