@@ -374,15 +374,16 @@ struct ProgressionRecommendationCard: View {
 
     private var loadIncreaseDetails: some View {
         Group {
-            ProgressionTableRow(fractions: [0.16, 0.36, 0.08, 0.40]) {
+            ProgressionTableRow(fractions: [0.10, 0.42, 0.06, 0.42], spacing: 4) {
                 Text(LanguageManager.t("progression.coach.set_column"))
                 Text(LanguageManager.t("progression.coach.last_set_column"))
                 Color.clear.frame(height: 0)
                 Text(LanguageManager.t("progression.coach.target_set_column"))
-            }.font(.system(size: metadataSize)).foregroundColor(AppColors.muted).padding(.vertical, 8)
+            }.font(.system(size: metadataSize)).foregroundColor(AppColors.muted)
+                .lineLimit(1).minimumScaleFactor(0.1).padding(.vertical, 8)
             ForEach(Array(recommendation.setTargets.enumerated()), id: \.offset) { index, target in
                 Rectangle().fill(AppColors.border).frame(height: 1)
-                ProgressionTableRow(fractions: [0.16, 0.36, 0.08, 0.40]) {
+                ProgressionTableRow(fractions: [0.10, 0.42, 0.06, 0.42], spacing: 4) {
                     Text("\(index + 1)").foregroundColor(AppColors.secondaryText)
                     if recommendation.lastSessionSets.indices.contains(index) {
                         setDetails(recommendation.lastSessionSets[index], index: index, isTarget: false)
@@ -391,50 +392,53 @@ struct ProgressionRecommendationCard: View {
                     }
                     Image(systemName: "arrow.right").font(.system(size: 10)).foregroundColor(AppColors.muted).accessibilityHidden(true)
                     setDetails(target, index: index, isTarget: true)
-                }.font(.system(size: bodySize)).monospacedDigit().padding(.vertical, 8)
+                }.font(.system(size: bodySize)).monospacedDigit()
+                    .lineLimit(1).minimumScaleFactor(0.1).padding(.vertical, 8)
                     .accessibilityIdentifier("progression-target-row-\(index + 1)")
             }
         }
     }
 
     private func setDetails(_ set: ProgressionSetTarget, index: Int, isTarget: Bool) -> some View {
-        VStack(alignment: .leading, spacing: 3) {
-            Text(weight(set))
-                .accessibilityIdentifier("progression-\(isTarget ? "target" : "last")-weight-\(index + 1)")
-            Text(LanguageManager.t("progression.coach.reps", ["reps": "\(set.reps)"]))
-                .accessibilityIdentifier("progression-\(isTarget ? "target" : "last")-reps-\(index + 1)")
-        }.fontWeight(isTarget ? .bold : .regular)
+        Text("\(weight(set, compact: true)) × \(set.reps)")
+            .fontWeight(isTarget ? .bold : .regular)
             .foregroundColor(isTarget ? AppColors.text : AppColors.muted)
-            .fixedSize(horizontal: false, vertical: true)
+            .lineLimit(1).minimumScaleFactor(0.1).allowsTightening(true)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .accessibilityLabel("\(weight(set)), \(LanguageManager.t("progression.coach.reps", ["reps": "\(set.reps)"]))")
+            .accessibilityIdentifier("progression-\(isTarget ? "target" : "last")-set-\(index + 1)")
     }
 
-    private func weight(_ target: ProgressionSetTarget) -> String {
+    private func weight(_ target: ProgressionSetTarget, compact: Bool = false) -> String {
         guard let load = target.weightKg else { return "—" }
-        return load == 0 ? LanguageManager.t("progression.coach.bodyweight") : "\(weightUnit.formatWeight(load)) \(weightUnit.label)"
+        return load == 0 ? LanguageManager.t("progression.coach.bodyweight") : "\(weightUnit.formatWeight(load))\(compact ? "" : " ")\(weightUnit.label)"
     }
 }
 
 // Shared column widths keep headers and values aligned while allowing large text to wrap.
 private struct ProgressionTableRow: Layout {
     var fractions: [CGFloat] = [0.15, 0.32, 0.22, 0.06, 0.25]
+    var spacing: CGFloat = 0
 
     func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
         let width = proposal.width ?? 300
+        let columnSpace = max(0, width - spacing * CGFloat(max(0, subviews.count - 1)))
         let height = subviews.enumerated().map { index, view in
-            view.sizeThatFits(ProposedViewSize(width: width * fractions[index], height: nil)).height
+            view.sizeThatFits(ProposedViewSize(width: columnSpace * fractions[index], height: nil)).height
         }.max() ?? 0
         return CGSize(width: width, height: height)
     }
 
     func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
         var x = bounds.minX
+        let columnSpace = max(0, bounds.width - spacing * CGFloat(max(0, subviews.count - 1)))
         for (index, view) in subviews.enumerated() {
-            let width = bounds.width * fractions[index]
+            let width = columnSpace * fractions[index]
             let size = view.sizeThatFits(ProposedViewSize(width: width, height: nil))
             let offset = index < 2 ? 0 : (width - size.width) / 2
             view.place(at: CGPoint(x: x + offset, y: bounds.midY - size.height / 2),
                 proposal: ProposedViewSize(width: width, height: nil))
-            x += width
+            x += width + spacing
         }
     }
 }
