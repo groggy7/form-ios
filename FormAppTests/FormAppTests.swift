@@ -1034,7 +1034,8 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(WorkoutSessionUtils.adjustWeight("7,5", by: 5), "12.5")
         XCTAssertEqual(WorkoutSessionUtils.adjustWeight("2.5", by: -10), "0")
         XCTAssertEqual(WorkoutSessionUtils.adjustWeight("", by: 10), "10")
-        XCTAssertEqual(WorkoutSessionUtils.adjustWeight("9999.99", by: 10), "9999.99")
+        XCTAssertEqual(WorkoutSessionUtils.adjustWeight("1500", by: 10), "1500")
+        XCTAssertEqual(WorkoutSessionUtils.adjustWeight("3000", by: 10, unit: .lbs), "3000")
         XCTAssertEqual(WorkoutSessionUtils.adjustReps("1", by: -1), "")
         XCTAssertEqual(WorkoutSessionUtils.adjustReps("", by: 1), "1")
         XCTAssertEqual(WorkoutSessionUtils.adjustReps("999", by: 1), "999")
@@ -1115,6 +1116,79 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(WorkoutSessionUtils.sanitizedWeightInput("0."), "0.")
         XCTAssertNil(WorkoutSessionUtils.sanitizedWeightInput("abc"))
         XCTAssertNil(WorkoutSessionUtils.sanitizedWeightInput("12345.67"))
+        XCTAssertEqual(WorkoutSessionUtils.sanitizedWeightInput("1500", unit: .kg), "1500")
+        XCTAssertNil(WorkoutSessionUtils.sanitizedWeightInput("1500.5", unit: .kg))
+        XCTAssertEqual(WorkoutSessionUtils.sanitizedWeightInput("3000", unit: .lbs), "3000")
+        XCTAssertNil(WorkoutSessionUtils.sanitizedWeightInput("3000.5", unit: .lbs))
+    }
+
+    func testIsAnomalousWeight() {
+        XCTAssertFalse(WorkoutSessionUtils.isAnomalousWeight(weightKg: 0, previousTopWeightKg: nil))
+        XCTAssertFalse(WorkoutSessionUtils.isAnomalousWeight(weightKg: -5, previousTopWeightKg: nil))
+        XCTAssertTrue(WorkoutSessionUtils.isAnomalousWeight(weightKg: 501, previousTopWeightKg: nil))
+        XCTAssertTrue(WorkoutSessionUtils.isAnomalousWeight(weightKg: 1000, previousTopWeightKg: nil))
+        XCTAssertFalse(WorkoutSessionUtils.isAnomalousWeight(weightKg: 100, previousTopWeightKg: nil))
+
+        XCTAssertFalse(WorkoutSessionUtils.isAnomalousWeight(weightKg: 110, previousTopWeightKg: 100))
+        XCTAssertFalse(WorkoutSessionUtils.isAnomalousWeight(weightKg: 140, previousTopWeightKg: 100))
+        XCTAssertTrue(WorkoutSessionUtils.isAnomalousWeight(weightKg: 160, previousTopWeightKg: 100))
+        XCTAssertTrue(WorkoutSessionUtils.isAnomalousWeight(weightKg: 1000, previousTopWeightKg: 100))
+
+        XCTAssertFalse(WorkoutSessionUtils.isAnomalousWeight(weightKg: 10, previousTopWeightKg: 5))
+        XCTAssertFalse(WorkoutSessionUtils.isAnomalousWeight(weightKg: 25, previousTopWeightKg: 10))
+        XCTAssertTrue(WorkoutSessionUtils.isAnomalousWeight(weightKg: 125, previousTopWeightKg: 12.5))
+    }
+
+    func testProgressionEngineHoldsLoadOnUnverifiedJump() {
+        let benchPress = Exercise(
+            id: "bench-1",
+            name: "Barbell Bench Press",
+            exerciseId: "barbell-bench-press",
+            sets: 3,
+            reps: RepTarget(min: 8, max: 12)
+        )
+        let s1 = WorkoutSessionRecord(
+            id: "s1",
+            programId: "p1",
+            workoutId: "w1",
+            workoutTitle: "Push",
+            startedAt: "2026-09-10T10:00:00Z",
+            completedAt: "2026-09-10T11:00:00Z",
+            durationSeconds: 3600,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 80.0, reps: 12),
+                        SessionSetLog(setNumber: 2, weightKg: 80.0, reps: 12),
+                        SessionSetLog(setNumber: 3, weightKg: 80.0, reps: 12)
+                    ]
+                )
+            ]
+        )
+        let s2 = WorkoutSessionRecord(
+            id: "s2",
+            programId: "p1",
+            workoutId: "w1",
+            workoutTitle: "Push",
+            startedAt: "2026-09-17T10:00:00Z",
+            completedAt: "2026-09-17T11:00:00Z",
+            durationSeconds: 3600,
+            exerciseLogs: [
+                SessionExerciseLog(
+                    exerciseName: "Barbell Bench Press",
+                    sets: [
+                        SessionSetLog(setNumber: 1, weightKg: 140.0, reps: 12),
+                        SessionSetLog(setNumber: 2, weightKg: 140.0, reps: 12),
+                        SessionSetLog(setNumber: 3, weightKg: 140.0, reps: 12)
+                    ]
+                )
+            ]
+        )
+        let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: [s2, s1], weightUnit: .kg)!
+        XCTAssertEqual(rec.action, ProgressionAction.holdLoad)
+        XCTAssertEqual(rec.rationaleKey, "progression.rationale.unverified_jump")
+        XCTAssertEqual(rec.suggestedWeightDisplay, "140")
     }
 
     func testFormatSecondsToTime() {

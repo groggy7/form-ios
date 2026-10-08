@@ -117,9 +117,14 @@ public enum WorkoutSessionUtils {
         return sets[..<index].allSatisfy { $0.isCompleted }
     }
 
-    public static func adjustWeight(_ input: String, by delta: Int) -> String {
-        let current = sanitizedWeightInput(input).flatMap { Double($0) } ?? 0
-        let adjusted = (min(9999.99, max(0, current + Double(delta))) * 100).rounded() / 100
+    public static func maxAllowedWeight(unit: WeightUnit = .kg) -> Double {
+        return unit == .lbs ? 3000.0 : 1500.0
+    }
+
+    public static func adjustWeight(_ input: String, by delta: Int, unit: WeightUnit = .kg) -> String {
+        let current = sanitizedWeightInput(input, unit: unit).flatMap { Double($0) } ?? 0
+        let maxLimit = maxAllowedWeight(unit: unit)
+        let adjusted = (min(maxLimit, max(0, current + Double(delta))) * 100).rounded() / 100
         if adjusted.truncatingRemainder(dividingBy: 1.0) == 0 {
             return "\(Int(adjusted))"
         }
@@ -371,7 +376,7 @@ public enum WorkoutSessionUtils {
         return unit.formatWeight(value)
     }
 
-    public static func sanitizedWeightInput(_ value: String) -> String? {
+    public static func sanitizedWeightInput(_ value: String, unit: WeightUnit = .kg) -> String? {
         var normalized = value.replacingOccurrences(of: ",", with: ".").trimmingCharacters(in: .whitespaces)
         if normalized.isEmpty { return "" }
         if normalized.range(of: #"^0+$"#, options: .regularExpression) != nil { normalized = "0" }
@@ -384,7 +389,20 @@ public enum WorkoutSessionUtils {
         let regex = try! NSRegularExpression(pattern: #"^\d{0,4}(\.\d{0,2})?$"#)
         let range = NSRange(location: 0, length: normalized.utf16.count)
         guard regex.firstMatch(in: normalized, options: [], range: range) != nil else { return nil }
+        guard let numeric = Double(normalized), numeric <= maxAllowedWeight(unit: unit) else { return nil }
         return normalized
+    }
+
+    public static func isAnomalousWeight(weightKg: Double, previousTopWeightKg: Double?) -> Bool {
+        guard weightKg.isFinite, weightKg > 0 else { return false }
+        if weightKg > 500.0 { return true }
+        if let prev = previousTopWeightKg, prev.isFinite, prev > 0 {
+            let diff = weightKg - prev
+            if weightKg > prev * 1.5 && diff >= 20.0 {
+                return true
+            }
+        }
+        return false
     }
 
     public static func sanitizedRepsInput(_ value: String) -> String? {

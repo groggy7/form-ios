@@ -96,7 +96,7 @@ public enum ProgressionEngine {
                 (session.targetSets == nil || session.targetSets == sets.count) &&
                 Set(sets.map { $0.setNumber }).count == sets.count && sets.allSatisfy { set in
                     guard let reps = set.reps, let weight = set.weightKg else { return false }
-                    return (1...999).contains(reps) && weight.isFinite && weight >= 0 && weightUnit.toDisplay(weight) <= 9999.99 &&
+                    return (1...999).contains(reps) && weight.isFinite && weight >= 0 && weightUnit.toDisplay(weight) <= WorkoutSessionUtils.maxAllowedWeight(unit: weightUnit) &&
                         (WorkoutSessionUtils.allowsZeroWeight(exercise) || weight > 0)
                 }
         }
@@ -121,6 +121,32 @@ public enum ProgressionEngine {
             return guidance(.deload, "progression.rationale.plateau", ["sessions": "3"], plateau: true,
                             summary: formatSessionSummary(workingSets, unit: weightUnit), sourceSets: lastSessionSets)
         }
+
+        let previousCompleted = sessions.dropFirst().first(where: complete)
+        let previousTopWeight = previousCompleted?.workingSets.compactMap { $0.weightKg }.filter { $0 > 0.0 }.max()
+        let hasUnverifiedJump = (previousTopWeight != nil && topWeight > previousTopWeight! * 1.35 && (topWeight - previousTopWeight!) >= 20.0) || topWeight > 500.0
+        if hasUnverifiedJump {
+            let targets = workingSets.map { ProgressionSetTarget(weightKg: $0.weightKg, reps: min($0.reps!, repMax)) }
+            let uniformWeight = Set(targets.map { $0.weightKg }).count == 1 ? targets.first?.weightKg : nil
+            return ExerciseProgressionRecommendation(
+                exerciseId: exerciseId,
+                exerciseName: exercise.name,
+                action: .holdLoad,
+                suggestedWeightKg: uniformWeight,
+                suggestedWeightDisplay: formatWeight(uniformWeight ?? topWeight, unit: weightUnit),
+                suggestedRepsMin: targets.map { $0.reps }.min() ?? repMin,
+                suggestedRepsMax: targets.map { $0.reps }.max() ?? repMax,
+                weightDeltaDisplay: nil,
+                rationaleKey: "progression.rationale.unverified_jump",
+                rationaleArgs: [:],
+                isPlateau: false,
+                consecutiveStagnantSessions: 0,
+                lastSessionSummary: formatSessionSummary(workingSets, unit: weightUnit),
+                setTargets: targets,
+                lastSessionSets: lastSessionSets
+            )
+        }
+
         // A second full session at the same set-by-set loads confirms the ceiling.
         let confirmedCeiling = allHitCeiling && sessions.dropFirst().first.map { previous in
             comparable(previous) && previous.workingSets.allSatisfy { $0.reps! >= repMax }
@@ -132,7 +158,7 @@ public enum ProgressionEngine {
         default: incrementKg = 0 // Unknown equipment, bands and bodyweight have no inferred load step.
         }
         let canIncrease = confirmedCeiling && incrementKg > 0 && workingSets.allSatisfy {
-            $0.weightKg! > 0 && incrementKg <= $0.weightKg! * 0.10 && weightUnit.toDisplay($0.weightKg! + incrementKg) <= 9999.99
+            $0.weightKg! > 0 && incrementKg <= $0.weightKg! * 0.10 && weightUnit.toDisplay($0.weightKg! + incrementKg) <= WorkoutSessionUtils.maxAllowedWeight(unit: weightUnit)
         }
         let missedFloor = workingSets.contains { $0.reps! < repMin }
         let action: ProgressionAction = canIncrease ? .increaseLoad : (allHitCeiling || missedFloor ? .holdLoad : .addReps)

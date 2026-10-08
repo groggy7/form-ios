@@ -132,7 +132,7 @@ public struct SetLoggingTable: View {
                     },
                     set: { newVal in
                         guard isSetInputEnabled else { return }
-                        if let sanitized = WorkoutSessionUtils.sanitizedWeightInput(newVal) {
+                        if let sanitized = WorkoutSessionUtils.sanitizedWeightInput(newVal, unit: weightUnit) {
                             let reps = (set.repsInput == "0" || set.repsInput.isEmpty) ? (set.completedReps.flatMap { $0 > 0 ? "\($0)" : nil } ?? "") : set.repsInput
                             onUpdateSet(index, sanitized, reps)
                         }
@@ -341,7 +341,7 @@ public struct SetLoggingTable: View {
                                 let label = step > 0 ? "+\(step)" : "−\(-step)"
                                 Button {
                                     if selected.weight {
-                                        weightBinding.wrappedValue = WorkoutSessionUtils.adjustWeight(weightBinding.wrappedValue, by: step)
+                                        weightBinding.wrappedValue = WorkoutSessionUtils.adjustWeight(weightBinding.wrappedValue, by: step, unit: weightUnit)
                                     } else {
                                         repsBinding.wrappedValue = WorkoutSessionUtils.adjustReps(repsBinding.wrappedValue, by: step)
                                     }

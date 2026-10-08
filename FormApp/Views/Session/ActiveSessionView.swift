@@ -24,6 +24,7 @@ public struct ActiveSessionView: View {
     @State private var selectedPlateWeight: Double? = nil
     @State private var paywallFeature: ProFeature? = nil
     @State private var openWarmupAfterUnlock = false
+    @State private var pendingAnomalousSet: PendingAnomalousSet? = nil
 
     private let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
 
@@ -698,6 +699,33 @@ public struct ActiveSessionView: View {
         } message: {
             Text(LanguageManager.t("session.exitConfirm"))
         }
+        .alert(
+            LanguageManager.t("session.anomalous_weight.title"),
+            isPresented: Binding(
+                get: { pendingAnomalousSet != nil },
+                set: { if !$0 { pendingAnomalousSet = nil } }
+            ),
+            presenting: pendingAnomalousSet
+        ) { pending in
+            Button(LanguageManager.t("session.anomalous_weight.edit"), role: .cancel) {
+                pendingAnomalousSet = nil
+            }
+            Button(LanguageManager.t("session.anomalous_weight.confirm")) {
+                let exercise = pending.exercise
+                let index = pending.index
+                let target = pending.ghostTarget
+                pendingAnomalousSet = nil
+                executeToggleSet(exercise: exercise, index: index, ghostTarget: target)
+            }
+        } message: { pending in
+            let weightStr = "\(store.weightUnit.formatWeight(pending.weightKg)) \(store.weightUnit.label)"
+            if let prev = pending.prevTopKg, prev > 0 {
+                let prevStr = "\(store.weightUnit.formatWeight(prev)) \(store.weightUnit.label)"
+                Text(LanguageManager.t("session.anomalous_weight.message_with_previous", ["weight": weightStr, "previous": prevStr]))
+            } else {
+                Text(LanguageManager.t("session.anomalous_weight.message_standalone", ["weight": weightStr]))
+            }
+        }
     }
 
     // MARK: - Actions
@@ -740,6 +768,22 @@ public struct ActiveSessionView: View {
     }
 
     private func toggleSet(exercise: Exercise, index: Int, ghostTarget: GhostTarget? = nil) {
+        let currentSets = currentDraft.setsByExercise[exercise.id] ?? []
+        guard currentSets.indices.contains(index) else { return }
+        let currentSet = currentSets[index]
+        if !currentSet.isCompleted {
+            let weightKg = currentSet.weightKg ?? (Double(currentSet.weightInput.replacingOccurrences(of: ",", with: ".")).map { WeightUnit.toCanonicalKg($0, unit: store.weightUnit) } ?? 0.0)
+            let prevSets = WorkoutSessionUtils.findPreviousSessionWorkingSets(history: store.state.history, exercise: exercise)
+            let prevTopKg = prevSets.filter { !$0.isWarmup }.compactMap { $0.weightKg }.filter { $0 > 0 }.max()
+            if WorkoutSessionUtils.isAnomalousWeight(weightKg: weightKg, previousTopWeightKg: prevTopKg) {
+                pendingAnomalousSet = PendingAnomalousSet(exercise: exercise, index: index, weightKg: weightKg, prevTopKg: prevTopKg, ghostTarget: ghostTarget)
+                return
+            }
+        }
+        executeToggleSet(exercise: exercise, index: index, ghostTarget: ghostTarget)
+    }
+
+    private func executeToggleSet(exercise: Exercise, index: Int, ghostTarget: GhostTarget? = nil) {
         let currentSets = currentDraft.setsByExercise[exercise.id] ?? []
         if currentSets.indices.contains(index) {
             let currentSet = currentSets[index]
@@ -1023,4 +1067,13 @@ private struct MiniExerciseDetailModal: View {
             .accessibilityIdentifier("mini-exercise-detail-modal")
         }
     }
+}
+
+private struct PendingAnomalousSet: Identifiable {
+    let id = UUID()
+    let exercise: Exercise
+    let index: Int
+    let weightKg: Double
+    let prevTopKg: Double?
+    let ghostTarget: GhostTarget?
 }
