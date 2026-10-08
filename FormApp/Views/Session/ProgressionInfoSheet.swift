@@ -103,6 +103,7 @@ public struct ProgressionInfoSheet: View {
     }
 
     private func actionRow(action: ProgressionAction, desc: String) -> some View {
+        let titleKey = action == .increaseLoad ? "progression.info.rule_load_title" : action.titleKey
         let colors = ruleColors(action)
         return HStack(alignment: .top, spacing: 12) {
             Image(systemName: ruleIcon(action))
@@ -115,7 +116,7 @@ public struct ProgressionInfoSheet: View {
                 .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 6) {
-                Text(LanguageManager.t(action.titleKey).uppercased(with: Locale(identifier: LanguageManager.shared.currentLanguage)))
+                Text(LanguageManager.t(titleKey).uppercased(with: Locale(identifier: LanguageManager.shared.currentLanguage)))
                     .font(.footnote.weight(.bold))
                     .foregroundColor(colors.accent)
                     .fixedSize(horizontal: false, vertical: true)
