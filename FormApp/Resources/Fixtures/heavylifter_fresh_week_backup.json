@@ -3044,8 +3044,7 @@
       "completed": [
         "heavylifter-strength-power:hl-bench-push",
         "heavylifter-strength-power:hl-squat-lower",
-        "heavylifter-strength-power:hl-deadlift-back",
-        "heavylifter-strength-power:hl-hypertrophy-finisher"
+        "heavylifter-strength-power:hl-deadlift-back"
       ],
       "archivedAt": "2026-09-06T22:00:00.000Z"
     },
@@ -4731,15 +4730,15 @@
       "workoutId": "hl-hypertrophy-finisher",
       "workoutTitle": "Chest Hypertrophy & Overload",
       "startedAt": "2026-09-04T16:30:00.000Z",
-      "completedAt": "2026-09-04T17:40:00.000Z",
-      "durationSeconds": 4200,
-      "totalVolumeKg": 3130,
-      "totalCompletedSets": 10,
+      "completedAt": "2026-09-04T16:50:00.000Z",
+      "durationSeconds": 1200,
+      "totalVolumeKg": 784,
+      "totalCompletedSets": 2,
       "exerciseLogs": [
         {
           "exerciseName": "Dumbbell Bench Press",
           "exerciseId": "dumbbell-bench-press",
-          "targetSets": 5,
+          "targetSets": 8,
           "sets": [
             {
               "setNumber": 1,
@@ -4752,73 +4751,11 @@
               "weightKg": 50,
               "reps": 8,
               "isWarmup": false
-            },
-            {
-              "setNumber": 3,
-              "weightKg": 52,
-              "reps": 6,
-              "isWarmup": false
-            },
-            {
-              "setNumber": 4,
-              "weightKg": 54,
-              "reps": 6,
-              "isWarmup": false
-            },
-            {
-              "setNumber": 5,
-              "weightKg": 56,
-              "reps": 5,
-              "isWarmup": false
-            }
-          ]
-        },
-        {
-          "exerciseName": "Cable Lateral Raise",
-          "exerciseId": "cable-lateral-raise",
-          "targetSets": 3,
-          "sets": [
-            {
-              "setNumber": 1,
-              "weightKg": 15,
-              "reps": 15,
-              "isWarmup": false
-            },
-            {
-              "setNumber": 2,
-              "weightKg": 17.5,
-              "reps": 12,
-              "isWarmup": false
-            },
-            {
-              "setNumber": 3,
-              "weightKg": 17.5,
-              "reps": 10,
-              "isWarmup": false
-            }
-          ]
-        },
-        {
-          "exerciseName": "Rope Triceps Pressdown",
-          "exerciseId": "rope-triceps-pressdown",
-          "targetSets": 2,
-          "sets": [
-            {
-              "setNumber": 1,
-              "weightKg": 35,
-              "reps": 12,
-              "isWarmup": false
-            },
-            {
-              "setNumber": 2,
-              "weightKg": 40,
-              "reps": 10,
-              "isWarmup": false
             }
           ]
         }
       ],
-      "isComplete": true,
+      "isComplete": false,
       "performedDate": "2026-09-04",
       "scheduledDate": "2026-09-04",
       "workoutSnapshot": {
@@ -4837,8 +4774,8 @@
             "id": "hl-db-1",
             "exerciseId": "dumbbell-bench-press",
             "name": "Dumbbell Bench Press",
-            "prescription": "5 × 6–10",
-            "sets": 5,
+            "prescription": "8 × 6–10",
+            "sets": 8,
             "reps": {
               "min": 6,
               "max": 10,
@@ -4847,32 +4784,6 @@
             },
             "restSeconds": 180,
             "movementType": "bench-press"
-          },
-          {
-            "id": "hl-hypertrophy-finisher-recorded-1",
-            "exerciseId": "cable-lateral-raise",
-            "name": "Cable Lateral Raise",
-            "sets": 3,
-            "reps": {
-              "min": 10,
-              "max": 15,
-              "toFailure": false,
-              "perSide": false
-            },
-            "prescription": "3 × 10–15"
-          },
-          {
-            "id": "hl-hypertrophy-finisher-recorded-2",
-            "exerciseId": "rope-triceps-pressdown",
-            "name": "Rope Triceps Pressdown",
-            "sets": 2,
-            "reps": {
-              "min": 10,
-              "max": 12,
-              "toFailure": false,
-              "perSide": false
-            },
-            "prescription": "2 × 10–12"
           }
         ]
       }
@@ -12169,5 +12080,295 @@
       }
     }
   ],
-  "calendarHistory": null
+  "calendarHistory": {
+    "nextScheduledDate": "2026-09-21",
+    "scheduledWeekdays": [
+      1,
+      2,
+      4,
+      5
+    ],
+    "missedDates": [
+      "2026-08-11",
+      "2026-09-01"
+    ],
+    "entries": [
+      {
+        "id": "session:bffad353-ccd4-477c-b526-1eb446900815",
+        "date": "2026-09-18",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-09-18"
+      },
+      {
+        "id": "session:74b022e1-e90d-4f51-b998-558d58041a11",
+        "date": "2026-09-17",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-09-17"
+      },
+      {
+        "id": "session:2fff1eb1-3d46-4fba-9a8c-d582753ae13a",
+        "date": "2026-09-15",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-09-15"
+      },
+      {
+        "id": "session:8cb58cbf-32a2-4d46-b8e1-45edd550e8ae",
+        "date": "2026-09-14",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-09-14"
+      },
+      {
+        "id": "session:2b6cd989-c702-443d-9e8d-b0eae32a9d88",
+        "date": "2026-09-11",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-09-11"
+      },
+      {
+        "id": "session:b719912b-11af-43e5-8059-800cf4cfdb55",
+        "date": "2026-09-10",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-09-10"
+      },
+      {
+        "id": "session:2aad8bcc-f1a0-47e5-8f4f-ff166a42df54",
+        "date": "2026-09-08",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-09-08"
+      },
+      {
+        "id": "session:72f57818-b6fb-435e-b86b-c7da9cd80fb6",
+        "date": "2026-09-07",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-09-07"
+      },
+      {
+        "id": "session:8a8601b8-9897-4f90-827c-1fbb845c54db",
+        "date": "2026-09-04",
+        "status": "UNFINISHED",
+        "scheduledDate": "2026-09-04"
+      },
+      {
+        "id": "session:86b09a82-d7d8-4d27-96d9-2846ad5cea52",
+        "date": "2026-09-03",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-09-03"
+      },
+      {
+        "id": "session:593a1a84-3098-4353-8fea-605cb41a2a59",
+        "date": "2026-09-01",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-09-01"
+      },
+      {
+        "id": "session:8b41f75a-716e-4b57-907f-d24a576a3d6c",
+        "date": "2026-08-31",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-08-31"
+      },
+      {
+        "id": "session:a7ab4a30-43ac-46a6-880c-c16d2dc75c85",
+        "date": "2026-08-28",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-08-28"
+      },
+      {
+        "id": "session:00302dc5-d853-4b6f-b7ac-014ae159f8dd",
+        "date": "2026-08-27",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-08-27"
+      },
+      {
+        "id": "session:6275d7a7-5457-41c7-a255-95a24f4e3e0a",
+        "date": "2026-08-25",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-08-25"
+      },
+      {
+        "id": "session:fef94501-c74a-489b-a288-0eb138778fb0",
+        "date": "2026-08-24",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-08-24"
+      },
+      {
+        "id": "session:0f43d16c-5f73-4293-a5f9-7d58527344d0",
+        "date": "2026-08-21",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-08-21"
+      },
+      {
+        "id": "session:a3224707-f90f-4204-859f-230f52ba22b5",
+        "date": "2026-08-20",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-08-20"
+      },
+      {
+        "id": "session:83f85e2a-0b8e-4310-8027-b4d35b3eed7a",
+        "date": "2026-08-18",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-08-18"
+      },
+      {
+        "id": "session:0815c208-365b-43e5-8f05-173bc2c37ff9",
+        "date": "2026-08-17",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-08-17"
+      },
+      {
+        "id": "session:792d79e5-7e58-4e74-a870-bc67757edfc3",
+        "date": "2026-08-14",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-08-14"
+      },
+      {
+        "id": "session:ba190d72-f4fb-4717-80b6-3226a494d864",
+        "date": "2026-08-13",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-08-13"
+      },
+      {
+        "id": "session:16d77749-f54c-4d72-af7f-7b6e525ea8cd",
+        "date": "2026-08-11",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-08-11"
+      },
+      {
+        "id": "session:8e07d03a-626b-4fda-97f2-b8988b139876",
+        "date": "2026-08-10",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-08-10"
+      },
+      {
+        "id": "session:c53dbd0f-59a8-4ee4-aec6-cbbaa735e1ea",
+        "date": "2026-08-07",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-08-07"
+      },
+      {
+        "id": "session:cbeabcda-b488-4c45-8919-329ba1703429",
+        "date": "2026-08-06",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-08-06"
+      },
+      {
+        "id": "session:a1936c82-f64f-4d11-a5a2-c1a8ccc8fbea",
+        "date": "2026-08-04",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-08-04"
+      },
+      {
+        "id": "session:2a648b46-ce66-4571-b868-25022af30bec",
+        "date": "2026-08-03",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-08-03"
+      },
+      {
+        "id": "session:77b8fe9e-1431-43fa-9f09-e0a7a2efd0b0",
+        "date": "2026-07-31",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-07-31"
+      },
+      {
+        "id": "session:c97c4250-417d-4e73-bd4d-f7d30afdd9ac",
+        "date": "2026-07-30",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-07-30"
+      },
+      {
+        "id": "session:7a28a76d-df09-41c5-99d9-a371f2518d5f",
+        "date": "2026-07-28",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-07-28"
+      },
+      {
+        "id": "session:f08e2f03-1586-4860-9073-406fab20700c",
+        "date": "2026-07-27",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-07-27"
+      },
+      {
+        "id": "session:e7d00428-7ae1-476f-a8c9-e23a56b0baae",
+        "date": "2026-07-24",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-07-24"
+      },
+      {
+        "id": "session:7958de6c-c913-45ac-a104-c362678429bc",
+        "date": "2026-07-23",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-07-23"
+      },
+      {
+        "id": "session:f33bfdfd-8cbd-4cd3-8ac9-ba64a32b45aa",
+        "date": "2026-07-21",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-07-21"
+      },
+      {
+        "id": "session:0f14ec9d-5029-40ce-9a5d-1f0be833e9d2",
+        "date": "2026-07-20",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-07-20"
+      },
+      {
+        "id": "session:2de77dde-826b-4ca1-b879-f3aa03287e7d",
+        "date": "2026-07-17",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-07-17"
+      },
+      {
+        "id": "session:93ff436c-276d-47d3-b55f-1c158051cae0",
+        "date": "2026-07-16",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-07-16"
+      },
+      {
+        "id": "session:8c312674-14cd-447e-afbf-691c754e4bc2",
+        "date": "2026-07-14",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-07-14"
+      },
+      {
+        "id": "session:4d5a44ba-a240-4ab7-b5fd-24e117b52086",
+        "date": "2026-07-13",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-07-13"
+      },
+      {
+        "id": "session:987a6b55-784e-46f3-b645-1037d40cc6cb",
+        "date": "2026-07-10",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-07-10"
+      },
+      {
+        "id": "session:beee2979-2e24-489b-8894-9085b94a0eb2",
+        "date": "2026-07-09",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-07-09"
+      },
+      {
+        "id": "session:a25c6a40-84b1-4dd5-8f4a-ea9c138caae3",
+        "date": "2026-07-07",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-07-07"
+      },
+      {
+        "id": "session:dc01e9af-7ce0-46aa-b550-112c94905a74",
+        "date": "2026-07-06",
+        "status": "COMPLETED",
+        "scheduledDate": "2026-07-06"
+      },
+      {
+        "id": "missed:2026-08-11",
+        "date": "2026-08-11",
+        "status": "MISSED",
+        "scheduledDate": "2026-08-11"
+      },
+      {
+        "id": "missed:2026-09-01",
+        "date": "2026-09-01",
+        "status": "MISSED",
+        "scheduledDate": "2026-09-01"
+      }
+    ]
+  }
 }
