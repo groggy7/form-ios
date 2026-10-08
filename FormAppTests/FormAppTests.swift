@@ -9704,24 +9704,22 @@ final class WorkoutDayPresentationTests: XCTestCase {
         add(attachment)
     }
 
-    func testSingleSidedWorkoutsKeepPairedViewsAndStartOnTaggedSide() {
+    func testWorkoutControlsOnlyListRequiredViews() {
         let back = Workout(day: 4, title: "Heavy Pull & Upper Back", targetMuscles: ["back", "lats", "trapezius"])
         XCTAssertEqual(back.bodyViews(), [.back], "Reproduce the single required view in the reported workout")
-        XCTAssertEqual(TodayHeroCard.bodyViewOptions(for: back), [.front, .back])
-        XCTAssertEqual(TodayHeroCard.defaultBodyViewIndex(for: back), 1)
+        XCTAssertEqual(TodayHeroCard.bodyViewOptions(for: back), [.back])
         let chest = Workout(day: 5, title: "Chest", targetMuscles: ["chest"])
-        XCTAssertEqual(TodayHeroCard.bodyViewOptions(for: chest), [.front, .back])
-        XCTAssertEqual(TodayHeroCard.defaultBodyViewIndex(for: chest), 0)
+        XCTAssertEqual(TodayHeroCard.bodyViewOptions(for: chest), [.front])
         let calves = Workout(day: 2, title: "Calves", targetMuscles: ["calves"])
-        XCTAssertEqual(TodayHeroCard.bodyViewOptions(for: calves), [.legsFront, .legsBack])
-        XCTAssertEqual(TodayHeroCard.defaultBodyViewIndex(for: calves), 1)
+        XCTAssertEqual(TodayHeroCard.bodyViewOptions(for: calves), [.legsBack])
         let mixed = Workout(day: 1, title: "Full Body", targetMuscles: ["lats", "quadriceps"])
-        XCTAssertEqual(TodayHeroCard.bodyViewOptions(for: mixed), [.front, .back, .legsFront, .legsBack])
-        XCTAssertEqual(TodayHeroCard.defaultBodyViewIndex(for: mixed), 1)
+        XCTAssertEqual(TodayHeroCard.bodyViewOptions(for: mixed), [.back, .legsFront])
+        let bothSides = Workout(day: 3, title: "Chest & Triceps", targetMuscles: ["chest", "triceps"])
+        XCTAssertEqual(TodayHeroCard.bodyViewOptions(for: bothSides), [.front, .back])
     }
 
     @MainActor
-    func testHeavyPullCardKeepsFrontBackControlsInNativeLayout() throws {
+    func testHeavyPullCardShowsOnlySelectedBackControlInNativeLayout() throws {
         let previous = LanguageManager.shared.currentLanguage
         defer { LanguageManager.setLanguage(previous) }
         let workout = Workout(id: "heavy-pull-controls", day: 4, title: "Heavy Pull & Upper Back",
@@ -9732,18 +9730,16 @@ final class WorkoutDayPresentationTests: XCTestCase {
             LanguageManager.setLanguage(language)
             for width: CGFloat in [320, 393] {
                 for category in [ContentSizeCategory.large, .extraExtraExtraLarge] {
-                    for selection: Int? in [nil, 0] {
-                        let card = TodayHeroCard(workout: workout, todayIndex: 3,
-                            isCompleted: false, isAvailable: true, availableDay: nil,
-                            hasUnfinishedProgress: false, initialViewIndex: selection, onStart: {})
-                            .environment(\.sizeCategory, category)
-                            .frame(width: width).background(AppColors.background)
-                        let image = try renderCard(card, hasViewControls: true)
-                        let attachment = XCTAttachment(image: image)
-                        attachment.name = "heavy-pull-controls-\(language)-\(Int(width))-\(category)-\(selection == nil ? "back" : "front")"
-                        attachment.lifetime = .keepAlways
-                        add(attachment)
-                    }
+                    let card = TodayHeroCard(workout: workout, todayIndex: 3,
+                        isCompleted: false, isAvailable: true, availableDay: nil,
+                        hasUnfinishedProgress: false, onStart: {})
+                        .environment(\.sizeCategory, category)
+                        .frame(width: width).background(AppColors.background)
+                    let image = try renderCard(card, hasViewControls: true)
+                    let attachment = XCTAttachment(image: image)
+                    attachment.name = "heavy-pull-back-only-\(language)-\(Int(width))-\(category)"
+                    attachment.lifetime = .keepAlways
+                    add(attachment)
                 }
             }
         }
@@ -9774,8 +9770,8 @@ final class WorkoutDayPresentationTests: XCTestCase {
                 (view as? UIScrollView).map { [$0] } ?? view.subviews.flatMap(scrollViews)
             }
             let controls = try XCTUnwrap(scrollViews(controller.view).first)
-            XCTAssertGreaterThanOrEqual(controls.bounds.height, 48)
-            XCTAssertGreaterThanOrEqual(controls.contentSize.height, 48)
+            XCTAssertEqual(controls.bounds.height, 38, accuracy: 1)
+            XCTAssertEqual(controls.contentSize.height, 38, accuracy: 1)
             if size.width == 320 && requiresScrolling {
                 XCTAssertGreaterThan(controls.contentSize.width, controls.bounds.width,
                     "The four body views must remain reachable by scrolling on narrow phones")
