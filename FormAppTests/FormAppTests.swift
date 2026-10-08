@@ -9113,6 +9113,104 @@ final class HistoryBreakdownTests: XCTestCase {
         XCTAssertEqual(store.activeSession?.id, active.id)
     }
 
+    func testHistoryRestorePreservesWarmupsAndRepeatedSnapshotOccurrences() {
+        let repeated = Workout(id: "repeated", day: 1, title: "Repeated row", exercises: [
+            Exercise(id: "first", name: "Barbell Row", sets: 2),
+            Exercise(id: "second", name: "Barbell Row", sets: 3)])
+        let saved = WorkoutSessionRecord(id: "repeat", programId: "p", workoutId: repeated.id,
+            workoutTitle: repeated.title, startedAt: "2026-10-05T09:00:00Z", completedAt: "2026-10-05T09:10:00Z",
+            durationSeconds: 600, totalVolumeKg: 1500, totalCompletedSets: 3, exerciseLogs: [
+                SessionExerciseLog(exerciseName: "Barbell Row", sets: [
+                    SessionSetLog(setNumber: 0, weightKg: 20, reps: 10, isWarmup: true),
+                    SessionSetLog(setNumber: 1, weightKg: 50, reps: 10)], targetSets: 2),
+                SessionExerciseLog(exerciseName: "Barbell Row", sets: [
+                    SessionSetLog(setNumber: 1, weightKg: 60, reps: 10),
+                    SessionSetLog(setNumber: 2, weightKg: 60, reps: 10)], targetSets: 3)],
+            isComplete: false, scheduledDate: "2026-10-05", workoutSnapshot: repeated)
+        let restored = WorkoutSessionUtils.restoreSetsFromHistory(workout: repeated, record: saved)
+        let first = restored["first"]!
+        let second = restored["second"]!
+        XCTAssertEqual(first.filter(\.isWarmup).count, 1)
+        XCTAssertEqual(first.filter { !$0.isWarmup }.count, 2)
+        XCTAssertEqual(first.filter { $0.isCompleted && !$0.isWarmup }.map(\.weightKg), [50])
+        XCTAssertEqual(second.filter(\.isCompleted).map(\.weightKg), [60, 60])
+        XCTAssertEqual(second.count, 3)
+        XCTAssertFalse(second.last!.isCompleted)
+    }
+
+    @MainActor
+    func testCurrentWeekHistoryResumeRestoresProgressSnapshotAndDuration() throws {
+        let defaults = UserDefaults.standard
+        let domain = try XCTUnwrap(Bundle.main.bundleIdentifier)
+        let original = defaults.persistentDomain(forName: domain) ?? [:]
+        defer { defaults.setPersistentDomain(original, forName: domain) }
+        defaults.removeObject(forKey: "active_session_v1")
+        defaults.set(true, forKey: "seeded_starters_v9")
+        let calendar = Calendar(identifier: .gregorian)
+        let monday = try XCTUnwrap(WorkoutCalendar.parseDate(WorkoutCalendar.mondayOfCurrentWeek()))
+        let performed = calendar.date(byAdding: .hour, value: 9, to: monday)!
+        let formatter = ISO8601DateFormatter()
+        let snapshot = pull
+        let saved = WorkoutSessionRecord(id: "resume-week", programId: program.id, workoutId: snapshot.id,
+            workoutTitle: snapshot.title, startedAt: formatter.string(from: performed),
+            completedAt: formatter.string(from: performed.addingTimeInterval(600)), durationSeconds: 600,
+            totalVolumeKg: 500, totalCompletedSets: 1,
+            exerciseLogs: [SessionExerciseLog(exerciseName: "Barbell Row",
+                sets: [SessionSetLog(setNumber: 1, weightKg: 50, reps: 10)], targetSets: 2)],
+            isComplete: false, scheduledDate: WorkoutCalendar.formatDate(monday), workoutSnapshot: snapshot)
+        var changed = snapshot
+        changed.exercises[0].sets = 8
+        let fixtureProgram = Program(id: program.id, name: "Edited", workouts: [changed])
+        let fixture = StoredAppState(programs: [fixtureProgram], activeProgramId: program.id,
+            currentWeekKey: "", history: [saved], calendarHistory: WorkoutCalendarHistory(
+                nextScheduledDate: WorkoutCalendar.mondayOfCurrentWeek(), scheduledWeekdays: [2], entries: [
+                    WorkoutDayEntry(id: "session:resume-week", date: WorkoutCalendar.formatDate(monday), status: .unfinished)]))
+        defaults.set(try JSONEncoder().encode(fixture), forKey: "stored_app_state")
+        let store = AppStore()
+        XCTAssertTrue(store.startActiveSession(programId: program.id, workout: changed, allowPast: true,
+            unfinishedRecordId: saved.id, resumeHistory: true))
+        let draft = try XCTUnwrap(store.activeSession)
+        XCTAssertEqual(draft.id, saved.id)
+        XCTAssertEqual(draft.workout, snapshot)
+        XCTAssertEqual(draft.startedAt, saved.startedAt)
+        XCTAssertEqual(draft.assignedCalendarDate, WorkoutCalendar.formatDate(monday))
+        XCTAssertEqual(draft.accumulatedSeconds, 600)
+        XCTAssertEqual(draft.setsByExercise.values.flatMap { $0 }.count, 2)
+        XCTAssertEqual(draft.setsByExercise.values.flatMap { $0 }.filter(\.isCompleted).count, 1)
+        XCTAssertEqual(draft.setsByExercise.values.flatMap { $0 }.first?.weightKg, 50)
+        XCTAssertFalse(store.checkAndArchiveStaleSession())
+        store.updateActiveSession { current in
+            var copy = current
+            copy.setsByExercise = current.setsByExercise.mapValues { sets in sets.map { value in
+                var set = value; set.isCompleted = true; set.weightKg = 50; set.completedReps = 10; return set
+            } }
+            return copy
+        }
+        let finished = try XCTUnwrap(store.activeSession)
+        let now = Int64(Date().timeIntervalSince1970 * 1000)
+        store.completeActiveSession(SessionProgress.from(draft: finished, nowEpochMillis: now).record(draft: finished, completedAtEpochMillis: now))
+        XCTAssertEqual(store.state.history.count, 1)
+        XCTAssertEqual(store.state.history.first?.id, saved.id)
+        XCTAssertEqual(store.state.history.first?.totalCompletedSets, 2)
+        XCTAssertEqual(store.state.history.first?.startedAt, saved.startedAt)
+        XCTAssertEqual(WorkoutCalendar.localDate(from: store.state.history.first?.completedAt), WorkoutCalendar.formatDate(Date()))
+        XCTAssertEqual(store.state.calendarHistory?.entries.first { $0.id == "session:resume-week" }?.date,
+            WorkoutCalendar.formatDate(monday))
+        // An explicit old-week request is rejected by the store, even if a UI callback is stale.
+        let previousSunday = calendar.date(byAdding: .day, value: -1, to: monday)!
+        var old = saved
+        old.id = "previous-week"
+        old.startedAt = formatter.string(from: previousSunday)
+        old.scheduledDate = WorkoutCalendar.formatDate(previousSunday)
+        var state = store.state
+        state.history = [old]
+        state.calendarHistory?.entries = []
+        store.saveState(state)
+        XCTAssertFalse(store.startActiveSession(programId: program.id, workout: changed, allowPast: true,
+            unfinishedRecordId: old.id, resumeHistory: true))
+        XCTAssertNil(store.activeSession)
+    }
+
     @MainActor
     func testBreakdownLocalizedNarrowScreensRenderCurrentAndCarryoverSections() async throws {
         let previousLanguage = LanguageManager.shared.currentLanguage
@@ -9151,6 +9249,53 @@ final class HistoryBreakdownTests: XCTestCase {
                 try image.pngData()?.write(to: URL(fileURLWithPath: "/tmp/ios-breakdown-\(language)-\(position).png"))
             }
             window.isHidden = true
+        }
+    }
+
+    @MainActor
+    func testCompactSingleWorkoutMixedProgressLocalizedSnapshots() async throws {
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows).first(where: \.isKeyWindow)
+        defer { LanguageManager.setLanguage(previousLanguage); previousWindow?.makeKeyAndVisible() }
+        let names = ["Barbell Row", "Lat Pulldown", "Barbell Shrug", "Cable Lateral Raise", "Seated Cable Row", "Face Pull"]
+        let exercises = names.enumerated().map { Exercise(id: "compact-\($0.offset)", name: $0.element, sets: 3) }
+        let workout = Workout(id: "compact", day: 2, title: "Heavy Pull & Upper Back", exercises: exercises)
+        let counts = [1, 2, 3, 3, 0, 0]
+        let logs = names.enumerated().map { index, name in SessionExerciseLog(exerciseName: name,
+            sets: (0..<counts[index]).map { SessionSetLog(setNumber: $0 + 1, weightKg: 50, reps: 10) }, targetSets: 3) }
+        let saved = WorkoutSessionRecord(id: "compact", programId: "compact-p", workoutId: workout.id,
+            workoutTitle: workout.title, startedAt: "2026-10-06T09:00:00Z", completedAt: "2026-10-06T09:20:00Z",
+            durationSeconds: 1200, totalVolumeKg: 4500, totalCompletedSets: 9, exerciseLogs: logs,
+            isComplete: false, scheduledDate: "2026-10-06", workoutSnapshot: workout)
+        let detail = HistoryDayDetailData(date: day, dateString: "2026-10-06", status: .unfinished,
+            sessionRecord: saved, workout: workout)
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            for width: CGFloat in [393, 320] {
+                let view = HistoryDetailView(detail: detail, history: [saved], today: day, onBack: {}, onActionWorkout: {})
+                    .environment(\.sizeCategory, width == 320 ? .extraExtraLarge : .large)
+                let controller = UIHostingController(rootView: view)
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 850))
+                window.rootViewController = controller
+                window.makeKeyAndVisible()
+                controller.view.frame = window.bounds
+                controller.view.layoutIfNeeded()
+                try await Task.sleep(nanoseconds: 200_000_000)
+                func descendants(_ view: UIView) -> [UIView] { [view] + view.subviews.flatMap(descendants) }
+                let scroll = try XCTUnwrap(descendants(controller.view).compactMap { $0 as? UIScrollView }.first)
+                XCTAssertLessThanOrEqual(scroll.contentSize.width, scroll.bounds.width + 1)
+                for position in ["top", "bottom"] {
+                    if position == "bottom" { scroll.setContentOffset(CGPoint(x: 0, y: max(0, scroll.contentSize.height - scroll.bounds.height)), animated: false) }
+                    try await Task.sleep(nanoseconds: 100_000_000)
+                    let image = UIGraphicsImageRenderer(size: window.bounds.size).image { controller.view.layer.render(in: $0.cgContext) }
+                    let attachment = XCTAttachment(image: image)
+                    attachment.name = "ios-breakdown-compact-\(language)-\(Int(width))-\(position)"
+                    attachment.lifetime = .keepAlways
+                    add(attachment)
+                }
+                window.isHidden = true
+            }
         }
     }
 
@@ -9235,7 +9380,7 @@ final class HistoryActionPolicyTests: XCTestCase {
         let currentView = HistoryDetailView(detail: detail(day: monday, record: currentWeek), today: today,
             onBack: {}, onActionWorkout: {})
         XCTAssertNotNil(currentView.singleWorkoutAction)
-        XCTAssertFalse(currentView.resumesSingleWorkout, "An earlier date starts a fresh bout today")
+        XCTAssertTrue(currentView.resumesSingleWorkout, "Current-week History resumes saved progress")
     }
 
     @MainActor
@@ -9262,6 +9407,10 @@ final class HistoryActionPolicyTests: XCTestCase {
         let plan = WorkoutDaySection(workout: workout)
         XCTAssertFalse(plan.canAct(on: sunday, today: today))
         XCTAssertTrue(plan.canAct(on: monday, today: today))
+        let currentSunday = WorkoutCalendar.parseDate("2026-10-11")!
+        let nextMonday = WorkoutCalendar.parseDate("2026-10-12")!
+        XCTAssertTrue(plan.canAct(on: monday, today: currentSunday))
+        XCTAssertFalse(plan.canAct(on: currentSunday, today: nextMonday))
         XCTAssertFalse(plan.canAct(on: future, today: today))
         XCTAssertTrue(WorkoutDaySection(workout: workout, scheduledDate: future).canAct(on: today, today: today), "Early performance within this week can resume today")
         XCTAssertFalse(WorkoutDaySection(workout: workout, scheduledDate: nextWeek).canAct(on: today, today: today))

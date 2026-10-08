@@ -200,6 +200,8 @@ public enum WorkoutSessionUtils {
             }
         }
 
+        let usesSnapshot = record.workoutSnapshot == workout
+        let snapshotIndices = WorkoutCalendar.snapshotLogIndices(exercises: workout.exercises, logs: record.exerciseLogs)
         var result: [String: [ExerciseSetLog]] = [:]
         for (idx, ex) in workout.exercises.enumerated() {
             let targetCount = initialSetCount(exercise: ex)
@@ -207,15 +209,16 @@ public enum WorkoutSessionUtils {
             let displayKey = ex.displayName.trimmingCharacters(in: .whitespaces).lowercased()
 
             let stableId = ExerciseCatalog.resolveCanonicalId(stableId: ex.exerciseId, name: ex.name)
-            var matchedLog = stableId.flatMap { logsById[$0] } ?? logsByName[nameKey] ?? logsByName[displayKey]
-            if matchedLog == nil, idx < record.exerciseLogs.count {
+            var matchedLog = usesSnapshot ? snapshotIndices[idx].map { record.exerciseLogs[$0] }
+                : (stableId.flatMap { logsById[$0] } ?? logsByName[nameKey] ?? logsByName[displayKey])
+            if !usesSnapshot, matchedLog == nil, idx < record.exerciseLogs.count {
                 let positionalLog = record.exerciseLogs[idx]
                 let posKey = positionalLog.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
                 if posKey == nameKey || posKey == displayKey {
                     matchedLog = positionalLog
                 }
             }
-            if matchedLog == nil {
+            if !usesSnapshot && matchedLog == nil {
                 if let exId = ex.exerciseId ?? ExerciseCatalog.canonicalExercises.first(where: { $0.value.name.lowercased() == nameKey })?.key {
                     let enName = ContentLocalizer.shared.exerciseName(exerciseId: exId, fallback: ex.name, lang: "en").trimmingCharacters(in: .whitespaces).lowercased()
                     let trName = ContentLocalizer.shared.exerciseName(exerciseId: exId, fallback: ex.name, lang: "tr").trimmingCharacters(in: .whitespaces).lowercased()
@@ -234,15 +237,15 @@ public enum WorkoutSessionUtils {
                         repsInput: (s.reps ?? 0) > 0 ? "\(s.reps!)" : "",
                         weightKg: s.weightKg,
                         completedReps: (s.reps ?? 0) > 0 ? s.reps : nil,
-                        isCompleted: true
+                        isCompleted: true,
+                        isWarmup: s.isWarmup
                     )
                 }
-                let maxNum = restored.map { $0.setNumber }.max() ?? 0
-                let needed = max(safeTarget, maxNum)
-                if needed > restored.count {
-                    for num in (restored.count + 1)...needed {
-                        restored.append(ExerciseSetLog(setNumber: num))
-                    }
+                let working = restored.filter { !$0.isWarmup }
+                let needed = max(safeTarget, working.map { $0.setNumber }.max() ?? 0)
+                let completedNumbers = Set(working.map(\.setNumber))
+                for number in 1...needed where !completedNumbers.contains(number) {
+                    restored.append(ExerciseSetLog(setNumber: number))
                 }
                 result[ex.id] = restored
             } else {

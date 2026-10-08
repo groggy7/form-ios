@@ -708,12 +708,11 @@ public struct HistoryView: View {
         let record = target.sessionRecord
         let programId = record?.programId ?? store.activeProgram?.id
         guard let programId else { return }
-        let sameDay = Calendar.current.isDateInToday(detail.date)
         if store.startActiveSession(programId: programId, workout: workout, allowPast: true,
-            unfinishedRecordId: sameDay ? record?.id : nil,
-            assignedCalendarDate: WorkoutCalendar.formatDate(Date()),
-            startNewSession: record == nil || (!sameDay && !target.isLiveSession),
-            scheduledDate: target.scheduledDate.map { WorkoutCalendar.formatDate($0) } ?? detail.dateString) {
+            unfinishedRecordId: record?.id,
+            startNewSession: record == nil,
+            scheduledDate: target.scheduledDate.map { WorkoutCalendar.formatDate($0) } ?? (record == nil ? detail.dateString : nil),
+            resumeHistory: record != nil) {
             store.selectedHistoryDetailDay = nil
             store.currentView = .today
         } else if store.activeSession != nil {

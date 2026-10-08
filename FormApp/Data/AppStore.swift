@@ -372,12 +372,25 @@ public final class AppStore: ObservableObject {
         unfinishedRecordId: String? = nil,
         assignedCalendarDate: String? = nil,
         startNewSession: Bool = false,
-        scheduledDate: String? = nil
+        scheduledDate: String? = nil,
+        resumeHistory: Bool = false
     ) -> Bool {
         checkAndArchiveStaleSession()
+        let now = Date()
+        let todayStr = WorkoutCalendar.formatDate(now)
+        let monday = WorkoutCalendar.mondayOfCurrentWeek(for: now)
+        let calendar = Calendar(identifier: .gregorian)
+        let nextMonday = WorkoutCalendar.parseDate(monday).flatMap { calendar.date(byAdding: .day, value: 7, to: $0) }
+        func resumableDate(_ performed: String?, _ scheduled: String?) -> Bool {
+            guard let performed, performed >= monday, performed <= todayStr else { return false }
+            guard let scheduledDate = scheduled.flatMap({ WorkoutCalendar.parseDate($0) }), let nextMonday else { return true }
+            return scheduledDate >= WorkoutCalendar.parseDate(monday)! && scheduledDate < nextMonday
+        }
+        if resumeHistory && (startNewSession || unfinishedRecordId == nil) { return false }
         if let active = activeSession {
             if !startNewSession && active.programId == programId && active.workout.id == workout.id
                 && (unfinishedRecordId == nil || unfinishedRecordId == active.id) {
+                if resumeHistory && !resumableDate(active.assignedCalendarDate ?? WorkoutCalendar.localDate(from: active.startedAt), active.scheduledDate) { return false }
                 resumeActiveSession()
                 return true
             }
@@ -386,7 +399,6 @@ public final class AppStore: ObservableObject {
         if workout.exercises.isEmpty || !canStartWorkout(workout, allowPast: allowPast) {
             return false
         }
-        let now = Date()
         let nowMillis = Int64(now.timeIntervalSince1970 * 1000)
         let currentWeek = currentWeekIsoKey()
         let unfinishedRecord = startNewSession ? nil : ((unfinishedRecordId.flatMap { recId in
@@ -398,50 +410,45 @@ public final class AppStore: ObservableObject {
             recordWeekIsoKey(r) == currentWeek
         })
 
-        let setsByExercise = unfinishedRecord != nil
-            ? WorkoutSessionUtils.restoreSetsFromHistory(workout: workout, record: unfinishedRecord!)
-            : WorkoutSessionUtils.initialSets(for: workout)
-        let initialIndex = unfinishedRecord != nil
-            ? WorkoutSessionUtils.firstIncompleteExerciseIndex(workout: workout, setsByExercise: setsByExercise)
-            : 0
-
         let unfinishedRecordDate: String? = {
-            guard let recId = unfinishedRecord?.id else { return nil }
-            return state.calendarHistory?.entries.first(where: { $0.id == "session:\(recId)" })?.date
-                ?? WorkoutCalendar.localDate(from: unfinishedRecord?.startedAt)
+            guard let record = unfinishedRecord else { return nil }
+            return state.calendarHistory?.entries.first(where: { $0.id == "session:\(record.id)" })?.date
+                ?? WorkoutCalendar.localDate(from: record.startedAt)
         }()
-        let todayStr = WorkoutCalendar.formatDate(now)
-        let isSameDayUnfinished = (unfinishedRecordDate == nil || unfinishedRecordDate == todayStr)
-        let sessionDay: String = {
-            if let assigned = assignedCalendarDate { return assigned }
-            if isSameDayUnfinished, let recDate = unfinishedRecordDate { return recDate }
-            return todayStr
-        }()
-
-        let previousDuration = isSameDayUnfinished ? (unfinishedRecord?.durationSeconds ?? 0) : 0
+        if resumeHistory {
+            guard let record = unfinishedRecord, record.id == unfinishedRecordId,
+                  record.programId == programId, record.workoutId == workout.id,
+                  !WorkoutCalendar.isSessionComplete(session: record, workout: workout),
+                  resumableDate(unfinishedRecordDate, record.scheduledDate) else { return false }
+        }
+        let sessionWorkout = resumeHistory ? (unfinishedRecord?.workoutSnapshot ?? workout) : workout
+        let setsByExercise = unfinishedRecord.map { WorkoutSessionUtils.restoreSetsFromHistory(workout: sessionWorkout, record: $0) }
+            ?? WorkoutSessionUtils.initialSets(for: sessionWorkout)
+        let initialIndex = WorkoutSessionUtils.firstIncompleteExerciseIndex(workout: sessionWorkout, setsByExercise: setsByExercise)
+        let isSameDayUnfinished = unfinishedRecordDate == nil || unfinishedRecordDate == todayStr
+        let sessionDay = resumeHistory ? unfinishedRecordDate! : (assignedCalendarDate ?? (isSameDayUnfinished ? unfinishedRecordDate : nil) ?? todayStr)
+        let previousDuration = resumeHistory || isSameDayUnfinished ? (unfinishedRecord?.durationSeconds ?? 0) : 0
         let clampedPrevSecs = min(max(0, previousDuration), 4 * 3600)
-
         let startedAtDate = now.addingTimeInterval(-Double(clampedPrevSecs))
-        let startedAtEpoch = Int64(startedAtDate.timeIntervalSince1970 * 1000)
-
         let formatter = ISO8601DateFormatter()
         formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        let startedAtTimestamp = formatter.string(from: startedAtDate)
-
+        let startedAtTimestamp = resumeHistory ? unfinishedRecord!.startedAt : formatter.string(from: startedAtDate)
+        let startedAtEpoch = Int64((WorkoutCalendar.parseIsoTimestamp(startedAtTimestamp) ?? startedAtDate).timeIntervalSince1970 * 1000)
         let draft = ActiveSessionDraft(
-            id: (assignedCalendarDate != nil || isSameDayUnfinished) ? (unfinishedRecord?.id ?? UUID().uuidString) : UUID().uuidString,
+            id: (resumeHistory || assignedCalendarDate != nil || isSameDayUnfinished) ? (unfinishedRecord?.id ?? UUID().uuidString) : UUID().uuidString,
             programId: programId,
-            workout: workout,
+            workout: sessionWorkout,
             startedAt: startedAtTimestamp,
             startedAtEpochMillis: startedAtEpoch,
+            lastActivityEpochMillis: nowMillis,
             currentExerciseIndex: initialIndex,
             setsByExercise: setsByExercise,
             assignedCalendarDate: sessionDay,
             accumulatedSeconds: clampedPrevSecs,
             isPaused: false,
             lastResumedAtEpochMillis: nowMillis,
-            scheduledDate: unfinishedRecord?.scheduledDate ?? scheduledDate
-                ?? WorkoutCalendar.scheduledDate(forWeekday: workout.day, relativeTo: now)
+            scheduledDate: resumeHistory ? unfinishedRecord?.scheduledDate : (unfinishedRecord?.scheduledDate ?? scheduledDate
+                ?? WorkoutCalendar.scheduledDate(forWeekday: sessionWorkout.day, relativeTo: now))
         )
 
         saveActiveSession(draft)
@@ -688,6 +695,7 @@ public final class AppStore: ObservableObject {
         let adjustedRecord: WorkoutSessionRecord = {
             let todayStr = WorkoutCalendar.formatDate(Date())
             guard sessionDate != todayStr,
+                  WorkoutCalendar.localDate(from: finalRecord.startedAt) != sessionDate,
                   let targetDay = WorkoutCalendar.parseDate(sessionDate) else {
                 return finalRecord
             }
