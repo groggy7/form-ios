@@ -875,14 +875,14 @@ private struct CalendarPill: View {
                     startPoint: .top,
                     endPoint: .bottom
                 ))
-                // A low-contrast inward edge reflection gives the sides volume without a white ring.
+                // Full-perimeter reflection complements the upper satin sheen; the center stays vivid.
                 shape.fill(RadialGradient(
                     stops: [
                         .init(color: .clear, location: 0),
-                        .init(color: .clear, location: 0.58),
-                        .init(color: .white.opacity(0.025), location: 0.72),
-                        .init(color: .white.opacity(0.065), location: 0.88),
-                        .init(color: .white.opacity(0.12), location: 1)
+                        .init(color: .clear, location: 0.45),
+                        .init(color: .white.opacity(0.06), location: 0.64),
+                        .init(color: .white.opacity(0.18), location: 0.86),
+                        .init(color: .white.opacity(0.32), location: 1)
                     ],
                     center: .center,
                     startRadius: 0,
