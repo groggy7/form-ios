@@ -379,6 +379,7 @@ struct ProgressionRecommendationCard: View {
                 Text(LanguageManager.t("progression.coach.last_set_column"))
                 Color.clear.frame(height: 0)
                 Text(LanguageManager.t("progression.coach.target_set_column"))
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }.font(.system(size: metadataSize)).foregroundColor(AppColors.muted)
                 .lineLimit(1).minimumScaleFactor(0.1).padding(.vertical, 8)
             ForEach(Array(recommendation.setTargets.enumerated()), id: \.offset) { index, target in
