@@ -124,7 +124,9 @@ public enum ProgressionEngine {
 
         let previousCompleted = sessions.dropFirst().first(where: complete)
         let previousTopWeight = previousCompleted?.workingSets.compactMap { $0.weightKg }.filter { $0 > 0.0 }.max()
-        let hasUnverifiedJump = (previousTopWeight != nil && topWeight > previousTopWeight! * 1.35 && (topWeight - previousTopWeight!) >= 20.0) || topWeight > 500.0
+        let repeatedLoads = sessions.dropFirst().first.map(comparable) ?? false
+        let hasUnverifiedJump = (previousTopWeight != nil && topWeight > previousTopWeight! * 1.35 && (topWeight - previousTopWeight!) >= 20.0) ||
+            (topWeight > 500.0 && !repeatedLoads)
         if hasUnverifiedJump {
             let targets = workingSets.map { ProgressionSetTarget(weightKg: $0.weightKg, reps: min($0.reps!, repMax)) }
             let uniformWeight = Set(targets.map { $0.weightKg }).count == 1 ? targets.first?.weightKg : nil

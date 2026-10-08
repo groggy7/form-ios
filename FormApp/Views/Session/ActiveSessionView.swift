@@ -715,7 +715,13 @@ public struct ActiveSessionView: View {
                 let index = pending.index
                 let target = pending.ghostTarget
                 pendingAnomalousSet = nil
-                executeToggleSet(exercise: exercise, index: index, ghostTarget: target)
+                let sets = currentDraft.setsByExercise[exercise.id] ?? []
+                guard sets.indices.contains(index), sets[index].id == pending.setId else { return }
+                if let weight = pending.editWeight, let reps = pending.editReps {
+                    executeUpdateSet(exerciseId: exercise.id, index: index, weight: weight, reps: reps, expectedSetId: pending.setId)
+                } else {
+                    executeToggleSet(exercise: exercise, index: index, ghostTarget: target)
+                }
             }
         } message: { pending in
             let weightStr = "\(store.weightUnit.formatWeight(pending.weightKg)) \(store.weightUnit.label)"
@@ -744,10 +750,30 @@ public struct ActiveSessionView: View {
     }
 
     private func updateSet(exerciseId: String, index: Int, weight: String, reps: String) {
+        let sets = currentDraft.setsByExercise[exerciseId] ?? []
+        guard sets.indices.contains(index), let exercise = currentDraft.workout.exercises.first(where: { $0.id == exerciseId }) else { return }
+        let previous = WorkoutSessionUtils.findPreviousSessionWorkingSets(history: store.state.history, exercise: exercise)
+        let prevTopKg = previous.compactMap { $0.weightKg }.filter { $0 > 0 }.max()
+        if WorkoutSessionUtils.completedSetEditNeedsWeightConfirmation(sets[index], weightInput: weight, unit: store.weightUnit, previousTopWeightKg: prevTopKg),
+           let normalized = WorkoutSessionUtils.sanitizedWeightInput(weight, unit: store.weightUnit), let displayWeight = Double(normalized) {
+            let weightKg = store.weightUnit.toCanonicalKg(displayWeight)
+            pendingAnomalousSet = PendingAnomalousSet(
+                exercise: exercise, index: index, setId: sets[index].id, weightKg: weightKg, prevTopKg: prevTopKg,
+                ghostTarget: nil, editWeight: weight, editReps: reps
+            )
+            return
+        }
+        executeUpdateSet(exerciseId: exerciseId, index: index, weight: weight, reps: reps)
+    }
+
+    private func executeUpdateSet(exerciseId: String, index: Int, weight: String, reps: String, expectedSetId: String? = nil) {
+        guard let weight = WorkoutSessionUtils.sanitizedWeightInput(weight, unit: store.weightUnit),
+              let reps = WorkoutSessionUtils.sanitizedRepsInput(reps) else { return }
         store.updateActiveSession { d in
             var copy = d
             var sets = copy.setsByExercise[exerciseId] ?? []
             guard sets.indices.contains(index) else { return copy }
+            if let expectedSetId, sets[index].id != expectedSetId { return copy }
             let displayVal = Double(weight)
             let wKg = displayVal.map { store.weightUnit.toCanonicalKg($0) }
             let rInt = Int(reps).flatMap { $0 > 0 ? $0 : nil }
@@ -776,7 +802,7 @@ public struct ActiveSessionView: View {
             let prevSets = WorkoutSessionUtils.findPreviousSessionWorkingSets(history: store.state.history, exercise: exercise)
             let prevTopKg = prevSets.filter { !$0.isWarmup }.compactMap { $0.weightKg }.filter { $0 > 0 }.max()
             if WorkoutSessionUtils.isAnomalousWeight(weightKg: weightKg, previousTopWeightKg: prevTopKg) {
-                pendingAnomalousSet = PendingAnomalousSet(exercise: exercise, index: index, weightKg: weightKg, prevTopKg: prevTopKg, ghostTarget: ghostTarget)
+                pendingAnomalousSet = PendingAnomalousSet(exercise: exercise, index: index, setId: currentSet.id, weightKg: weightKg, prevTopKg: prevTopKg, ghostTarget: ghostTarget)
                 return
             }
         }
@@ -1073,7 +1099,10 @@ private struct PendingAnomalousSet: Identifiable {
     let id = UUID()
     let exercise: Exercise
     let index: Int
+    let setId: String
     let weightKg: Double
     let prevTopKg: Double?
     let ghostTarget: GhostTarget?
+    var editWeight: String? = nil
+    var editReps: String? = nil
 }

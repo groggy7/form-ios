@@ -142,7 +142,7 @@ public enum WorkoutSessionUtils {
               target.weightKg == nil, target.completedReps == nil, let previous, canCompleteSet(previous, allowsZeroWeight: true) else { return target }
         let weight = previous.weightInput.isEmpty ? previous.weightKg.map { formatWeight($0, unit: unit) } ?? "" : previous.weightInput
         let reps = previous.repsInput.isEmpty ? previous.completedReps.map { "\($0)" } ?? "" : previous.repsInput
-        guard let weight = sanitizedWeightInput(weight), let reps = sanitizedRepsInput(reps) else { return target }
+        guard let weight = sanitizedWeightInput(weight, unit: unit), let reps = sanitizedRepsInput(reps) else { return target }
         var result = target
         result.weightInput = weight
         result.weightKg = Double(weight).map { unit.toCanonicalKg($0) }
@@ -391,6 +391,18 @@ public enum WorkoutSessionUtils {
         guard regex.firstMatch(in: normalized, options: [], range: range) != nil else { return nil }
         guard let numeric = Double(normalized), numeric <= maxAllowedWeight(unit: unit) else { return nil }
         return normalized
+    }
+
+    public static func completedSetEditNeedsWeightConfirmation(
+        _ set: ExerciseSetLog, weightInput: String, unit: WeightUnit, previousTopWeightKg: Double?
+    ) -> Bool {
+        guard set.isCompleted,
+              let sanitized = sanitizedWeightInput(weightInput, unit: unit),
+              let displayWeight = Double(sanitized) else { return false }
+        let weightKg = unit.toCanonicalKg(displayWeight)
+        let oldInput = set.weightInput.isEmpty ? set.weightKg.map { formatWeight($0, unit: unit) } ?? "" : set.weightInput
+        if Double(oldInput.replacingOccurrences(of: ",", with: ".")) == displayWeight { return false }
+        return isAnomalousWeight(weightKg: weightKg, previousTopWeightKg: previousTopWeightKg)
     }
 
     public static func isAnomalousWeight(weightKg: Double, previousTopWeightKg: Double?) -> Bool {

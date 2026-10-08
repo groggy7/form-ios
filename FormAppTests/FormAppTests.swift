@@ -9870,3 +9870,112 @@ final class WorkoutDayPresentationTests: XCTestCase {
     }
 
 }
+
+
+final class WeightConfirmationRegressionTests: XCTestCase {
+    private let bench = Exercise(id: "bench", name: "Barbell Bench Press", exerciseId: "barbell-bench-press", sets: 3, reps: RepTarget(min: 8, max: 12))
+    private func session(_ date: String, loads: [Double] = [600, 600, 600]) -> WorkoutSessionRecord {
+        WorkoutSessionRecord(id: date, programId: "p", workoutId: "w", workoutTitle: "Push",
+            startedAt: "\(date)T10:00:00Z", completedAt: "\(date)T11:00:00Z", durationSeconds: 3600,
+            exerciseLogs: [SessionExerciseLog(exerciseName: bench.name, sets: loads.enumerated().map {
+                SessionSetLog(setNumber: $0.offset + 1, weightKg: $0.element, reps: 12)
+            })])
+    }
+
+    func testRepeatedFullHeavySessionsClearTheUnverifiedHold() throws {
+        let last = session("2026-10-08")
+        let first = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: bench, history: [last]))
+        XCTAssertEqual(first.rationaleKey, "progression.rationale.unverified_jump")
+        let verified = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: bench, history: [last, session("2026-10-01")]))
+        XCTAssertEqual(verified.action, .increaseLoad)
+        XCTAssertEqual(try XCTUnwrap(verified.suggestedWeightKg), 602.5, accuracy: 0.001)
+    }
+
+    func testHeavyVerificationRequiresTheImmediatelyPreviousFullSetBySetLoads() throws {
+        let last = session("2026-10-08", loads: [600, 550, 500])
+        for previous in [session("2026-10-01", loads: [600, 500, 500]), session("2026-10-01", loads: [600])] {
+            let rec = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: bench,
+                history: [last, previous, session("2026-09-24", loads: [600, 550, 500])]))
+            XCTAssertEqual(rec.rationaleKey, "progression.rationale.unverified_jump")
+        }
+    }
+
+    func testPoundsAboveKgCeilingPrefillWithoutChangingCanonicalWeight() throws {
+        let canonical = WeightUnit.lbs.toCanonicalKg(1600)
+        for input in ["1600", ""] {
+            let source = ExerciseSetLog(setNumber: 1, weightInput: input, repsInput: "12", weightKg: canonical, completedReps: 12, isCompleted: true)
+            let next = WorkoutSessionUtils.prefillSet(ExerciseSetLog(setNumber: 2), from: source, unit: .lbs)
+            XCTAssertEqual(next.weightInput, "1600")
+            XCTAssertEqual(try XCTUnwrap(next.weightKg), canonical, accuracy: 0.00001)
+            XCTAssertEqual(next.completedReps, 12)
+            XCTAssertFalse(next.isCompleted)
+        }
+    }
+
+    func testCompletedWeightEditsRequireConfirmationButUnchangedLoadsDoNot() {
+        let logged = ExerciseSetLog(setNumber: 1, weightInput: "80", weightKg: 80, isCompleted: true)
+        func needs(_ weight: String, set: ExerciseSetLog? = nil, unit: WeightUnit = .kg) -> Bool {
+            WorkoutSessionUtils.completedSetEditNeedsWeightConfirmation(set ?? logged, weightInput: weight, unit: unit, previousTopWeightKg: 80)
+        }
+        XCTAssertTrue(needs("800"))
+        XCTAssertTrue(needs("1800", unit: .lbs))
+        XCTAssertFalse(needs("90"))
+        XCTAssertFalse(needs(""))
+        XCTAssertFalse(needs("1600"))
+        var incomplete = logged
+        incomplete.isCompleted = false
+        XCTAssertFalse(needs("800", set: incomplete))
+        XCTAssertFalse(needs("800.00", set: ExerciseSetLog(setNumber: 1, weightInput: "800", weightKg: 800, isCompleted: true)))
+        let canonicalOnly = ExerciseSetLog(setNumber: 1, weightKg: 600.1, isCompleted: true)
+        XCTAssertFalse(needs(WeightUnit.lbs.formatWeight(600.1), set: canonicalOnly, unit: .lbs))
+    }
+
+    @MainActor
+    func testCompletedWeightEditPresentsConfirmationBeforePersisting() throws {
+        let store = AppStore.shared
+        let previousDraft = store.activeSession
+        let previousHistory = store.state.history
+        let previousUnit = store.weightUnit
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        defer {
+            window.endEditing(true)
+            window.isHidden = true
+            store.activeSession = previousDraft
+            store.state.history = previousHistory
+            store.weightUnit = previousUnit
+            LanguageManager.setLanguage(previousLanguage)
+            previousWindow?.makeKeyAndVisible()
+        }
+        LanguageManager.setLanguage("en")
+        store.weightUnit = .kg
+        store.state.history = []
+        let workout = Workout(id: "weight-confirmation", day: 1, title: "Fixture", exercises: [bench])
+        let draft = ActiveSessionDraft(id: "weight-edit", programId: "p", workout: workout, startedAt: "2026-10-08T10:00:00Z",
+            startedAtEpochMillis: Int64(Date().timeIntervalSince1970 * 1000), setsByExercise: [bench.id: [
+                ExerciseSetLog(id: "logged", setNumber: 1, weightInput: "80", repsInput: "12", weightKg: 80, completedReps: 12, isCompleted: true)
+            ]])
+        store.activeSession = draft
+        let host = UIHostingController(rootView: ActiveSessionView(store: store, draft: draft))
+        window.rootViewController = host
+        window.makeKeyAndVisible()
+        host.view.frame = window.bounds
+        host.view.layoutIfNeeded()
+        RunLoop.main.run(until: Date().addingTimeInterval(0.4))
+        func fields(_ view: UIView) -> [UITextField] {
+            (view as? UITextField).map { [$0] } ?? view.subviews.flatMap { fields($0) }
+        }
+        let weight = try XCTUnwrap(fields(host.view).first)
+        weight.text = "800"
+        weight.sendActions(for: .editingChanged)
+        RunLoop.main.run(until: Date().addingTimeInterval(0.5))
+        let alert = try XCTUnwrap(host.presentedViewController as? UIAlertController)
+        XCTAssertEqual(alert.title, LanguageManager.t("session.anomalous_weight.title"))
+        XCTAssertTrue(alert.message?.contains("800 kg") == true)
+        XCTAssertEqual(store.activeSession?.setsByExercise[bench.id]?.first?.weightKg, 80)
+        XCTAssertEqual(store.activeSession?.setsByExercise[bench.id]?.first?.isCompleted, true)
+        XCTAssertEqual(Set(alert.actions.compactMap(\.title)), Set([LanguageManager.t("session.anomalous_weight.edit"), LanguageManager.t("session.anomalous_weight.confirm")]))
+        alert.dismiss(animated: false)
+    }
+}
