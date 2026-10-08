@@ -844,6 +844,22 @@ public enum WorkoutCalendar {
         )
     }
 
+    static func snapshotLogIndices(exercises: [Exercise], logs: [SessionExerciseLog]) -> [Int?] {
+        var used = Set<Int>()
+        return exercises.enumerated().map { index, exercise in
+            func matches(_ log: SessionExerciseLog) -> Bool {
+                let key = PersonalRecordTracker.normalizeExerciseKey(log.exerciseName)
+                return key == PersonalRecordTracker.normalizeExerciseKey(exercise.name)
+                    || key == PersonalRecordTracker.normalizeExerciseKey(exercise.displayName)
+            }
+            // Captured logs follow snapshot row order, including repeated movements.
+            let captured = logs.indices.contains(index) && !used.contains(index) && matches(logs[index]) ? index : nil
+            let resolved = captured ?? logs.indices.first { !used.contains($0) && matches(logs[$0]) }
+            if let resolved { used.insert(resolved) }
+            return resolved
+        }
+    }
+
     public static func isSessionComplete(session: WorkoutSessionRecord, workout: Workout?) -> Bool {
         if session.isComplete == false { return false }
         let logs = session.exerciseLogs.map { log in
@@ -853,17 +869,14 @@ public enum WorkoutCalendar {
         }
         let planned = session.workoutSnapshot?.exercises ?? []
         if !planned.isEmpty {
-            func matches(_ log: SessionExerciseLog, _ exercise: Exercise) -> Bool {
-                let key = PersonalRecordTracker.normalizeExerciseKey(log.exerciseName)
-                return key == PersonalRecordTracker.normalizeExerciseKey(exercise.name)
-                    || key == PersonalRecordTracker.normalizeExerciseKey(exercise.displayName)
-            }
-            guard planned.allSatisfy({ exercise in
-                let log = logs.first { matches($0, exercise) }
+            let indices = snapshotLogIndices(exercises: planned, logs: logs)
+            guard planned.enumerated().allSatisfy({ index, exercise in
+                let log = indices[index].map { logs[$0] }
                 let target = log?.targetSets ?? WorkoutSessionUtils.initialSetCount(exercise: exercise)
                 return target > 0 && (log?.sets.count ?? 0) >= target
             }) else { return false }
-            return logs.filter { log in !planned.contains { matches(log, $0) } }.allSatisfy { log in
+            let used = Set(indices.compactMap { $0 })
+            return logs.enumerated().filter { !used.contains($0.offset) }.allSatisfy { _, log in
                 let target = log.targetSets ?? max(log.sets.count, 1)
                 return target > 0 && log.sets.count >= target
             }

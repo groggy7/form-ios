@@ -1,7 +1,8 @@
 import SwiftUI
 
 public struct HistoryDayExerciseProgress: Identifiable, Equatable {
-    public var id: String { "\(name)-\(prescription)" }
+    public var id: String { occurrenceID ?? "\(name)-\(prescription)" }
+    public let occurrenceID: String?
     public let name: String
     public let prescription: String
     public let completedSets: Int
@@ -17,8 +18,10 @@ public struct HistoryDayExerciseProgress: Identifiable, Equatable {
         plannedSets: Int,
         topSetWeight: Double? = nil,
         topSetReps: Int? = nil,
-        isPr: Bool = false
+        isPr: Bool = false,
+        occurrenceID: String? = nil
     ) {
+        self.occurrenceID = occurrenceID
         self.name = name
         self.prescription = prescription
         self.completedSets = completedSets
@@ -272,13 +275,10 @@ public struct HistoryDayDetailData: Identifiable {
         // Without a saved prescription, today's edited plan cannot supply historical exercises or targets.
         let plannedExercises = sessionRecord != nil && sessionRecord?.workoutSnapshot == nil ? [] : workout?.exercises ?? []
         if !plannedExercises.isEmpty {
-            let planned = plannedExercises.map { ex in
-                let nameKey = ex.name.trimmingCharacters(in: .whitespaces).lowercased()
-                let displayKey = ex.displayName.trimmingCharacters(in: .whitespaces).lowercased()
-                let log = sessionRecord?.exerciseLogs.first { l in
-                    let logKey = l.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
-                    return logKey == nameKey || logKey == displayKey
-                }
+            let logs = sessionRecord?.exerciseLogs ?? []
+            let indices = WorkoutCalendar.snapshotLogIndices(exercises: plannedExercises, logs: logs)
+            let planned = plannedExercises.enumerated().map { index, ex in
+                let log = indices[index].map { logs[$0] }
                 let plannedCount = log?.targetSets ?? WorkoutSessionUtils.initialSetCount(exercise: ex)
                 let completed = log?.sets.count ?? 0
                 let prescription: String = {
@@ -297,16 +297,12 @@ public struct HistoryDayDetailData: Identifiable {
                     plannedSets: plannedCount,
                     topSetWeight: topWeight,
                     topSetReps: topReps,
-                    isPr: isPr
+                    isPr: isPr,
+                    occurrenceID: "planned-\(ex.id)-\(index)"
                 )
             }
-            let extraLogs = (sessionRecord?.exerciseLogs ?? []).filter { log in
-                let logKey = log.exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
-                return !plannedExercises.contains { ex in
-                    ex.name.trimmingCharacters(in: .whitespaces).lowercased() == logKey ||
-                    ex.displayName.trimmingCharacters(in: .whitespaces).lowercased() == logKey
-                }
-            }.map { log in
+            let used = Set(indices.compactMap { $0 })
+            let extraLogs = logs.enumerated().filter { !used.contains($0.offset) }.map { index, log in
                 let planned = log.targetSets ?? max(log.sets.count, 1)
                 let (topWeight, topReps) = extractTopSet(log: log)
                 let isPr = prExercises.contains(PersonalRecordTracker.normalizeExerciseKey(log.exerciseName))
@@ -317,12 +313,13 @@ public struct HistoryDayDetailData: Identifiable {
                     plannedSets: planned,
                     topSetWeight: topWeight,
                     topSetReps: topReps,
-                    isPr: isPr
+                    isPr: isPr,
+                    occurrenceID: "logged-\(index)"
                 )
             }
             return planned + extraLogs
         } else if let rec = sessionRecord {
-            return rec.exerciseLogs.map { log in
+            return rec.exerciseLogs.enumerated().map { index, log in
                 let planned = log.targetSets ?? max(log.sets.count, 1)
                 let (topWeight, topReps) = extractTopSet(log: log)
                 let isPr = prExercises.contains(PersonalRecordTracker.normalizeExerciseKey(log.exerciseName))
@@ -338,7 +335,8 @@ public struct HistoryDayDetailData: Identifiable {
                     plannedSets: planned,
                     topSetWeight: topWeight,
                     topSetReps: topReps,
-                    isPr: isPr
+                    isPr: isPr,
+                    occurrenceID: "logged-\(index)"
                 )
             }
         }

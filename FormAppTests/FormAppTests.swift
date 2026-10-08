@@ -9389,6 +9389,54 @@ final class HistoryActionPolicyTests: XCTestCase {
         XCTAssertEqual(WorkoutCalendar.statuses(history: WorkoutCalendar.refresh(history: marked, today: "2026-10-08", weekdays: [4], programs: programs, sessions: [legacy]), today: "2026-10-08")["2026-10-05"], .completed)
     }
 
+    func testRepeatedSnapshotExercisesPreserveEachOccurrenceAndPartialCompletion() {
+        let repeated = Workout(id: "repeated", day: 1, title: "Bench twice", exercises: [
+            Exercise(id: "bench-first", name: "Barbell Bench Press", sets: 2),
+            Exercise(id: "bench-second", name: "Barbell Bench Press", sets: 3)
+        ])
+        for counts in [[2, 1], [1, 3], [2, 3]] {
+            var saved = record()
+            saved.isComplete = true // Exercise evidence must still detect an incomplete occurrence.
+            saved.workoutSnapshot = repeated
+            saved.exerciseLogs = counts.enumerated().map { index, count in
+                SessionExerciseLog(exerciseName: "Barbell Bench Press",
+                    sets: (1...count).map { SessionSetLog(setNumber: $0, weightKg: index == 0 ? 70 : 50, reps: 10) },
+                    targetSets: index == 0 ? 2 : 3)
+            }
+            let rows = HistoryDayDetailData.buildExerciseProgress(sessionRecord: saved, workout: repeated)
+            XCTAssertEqual(rows.map(\.completedSets), counts)
+            XCTAssertEqual(rows.map(\.plannedSets), [2, 3])
+            XCTAssertEqual(rows.map(\.topSetWeight), [70, 50])
+            XCTAssertEqual(Set(rows.map(\.id)).count, 2)
+            XCTAssertEqual(WorkoutCalendar.isSessionComplete(session: saved, workout: repeated), counts == [2, 3])
+        }
+        var samePrescription = repeated
+        samePrescription.exercises[1].sets = 2
+        var saved = record()
+        saved.workoutSnapshot = samePrescription
+        saved.exerciseLogs = [SessionExerciseLog(exerciseName: "Barbell Bench Press", sets: [], targetSets: 2),
+            SessionExerciseLog(exerciseName: "Barbell Bench Press", sets: [], targetSets: 2)]
+        XCTAssertEqual(Set(HistoryDayDetailData.buildExerciseProgress(sessionRecord: saved, workout: samePrescription).map(\.id)).count, 2,
+            "Repeated rows retain separate SwiftUI identity even with identical names and prescriptions")
+    }
+
+    func testSnapshotFallbackPairsEachSavedLogOnlyOnce() {
+        let repeated = Workout(id: "repeated", day: 1, title: "Bench twice", exercises: [
+            Exercise(id: "bench-first", name: "Barbell Bench Press", sets: 2),
+            Exercise(id: "row", name: "Barbell Row", sets: 1),
+            Exercise(id: "bench-second", name: "Barbell Bench Press", sets: 3)
+        ])
+        var saved = record()
+        saved.isComplete = true
+        saved.workoutSnapshot = repeated
+        saved.exerciseLogs = [SessionExerciseLog(exerciseName: "Barbell Row", sets: [SessionSetLog(setNumber: 1, reps: 10)], targetSets: 1),
+            SessionExerciseLog(exerciseName: "Barbell Bench Press", sets: [SessionSetLog(setNumber: 1, reps: 10)], targetSets: 2)]
+        let rows = HistoryDayDetailData.buildExerciseProgress(sessionRecord: saved, workout: repeated)
+        XCTAssertEqual(rows.map(\.completedSets), [1, 1, 0])
+        XCTAssertEqual(rows.map(\.plannedSets), [2, 1, 3])
+        XCTAssertFalse(WorkoutCalendar.isSessionComplete(session: saved, workout: repeated))
+    }
+
     @MainActor
     func testLocalizedPreviousMonthPartialProgressRendersWithoutContinuationAffordance() async throws {
         let previousLanguage = LanguageManager.shared.currentLanguage
