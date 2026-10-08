@@ -3,6 +3,7 @@ import SwiftUI
 public struct HistoryDetailView: View {
     let detail: HistoryDayDetailData
     let history: [WorkoutSessionRecord]
+    var today: Date = Date()
     var onBack: () -> Void
     var onActionWorkout: (() -> Void)? = nil
     var weightUnit: WeightUnit = .kg
@@ -11,6 +12,7 @@ public struct HistoryDetailView: View {
     public init(
         detail: HistoryDayDetailData,
         history: [WorkoutSessionRecord] = [],
+        today: Date = Date(),
         onBack: @escaping () -> Void,
         onActionWorkout: (() -> Void)? = nil,
         weightUnit: WeightUnit = .kg,
@@ -18,6 +20,7 @@ public struct HistoryDetailView: View {
     ) {
         self.detail = detail
         self.history = history
+        self.today = today
         self.onBack = onBack
         self.onActionWorkout = onActionWorkout
         self.weightUnit = weightUnit
@@ -41,11 +44,20 @@ public struct HistoryDetailView: View {
             ? !items.isEmpty && items.allSatisfy { $0.completedSets >= $0.plannedSets && $0.plannedSets > 0 }
             : detail.sections.allSatisfy(\.isComplete)
         let effectiveStatus = detail.status
-        let isMissed = effectiveStatus == .missed || (!items.isEmpty && items.allSatisfy { $0.completedSets == 0 } && detail.date < Calendar.current.startOfDay(for: Date()))
-        let showActionButton = detail.sections.count <= 1 && onActionWorkout != nil && !allCompleted
-        let actionSection = detail.sections.first { $0.canAct(on: detail.date) }
+        let isMissed = effectiveStatus == .missed || (!items.isEmpty && items.allSatisfy { $0.completedSets == 0 } && detail.date < Calendar.current.startOfDay(for: today))
+        let actionSection = detail.sections.first { $0.canAct(on: detail.date, today: today) }
+        let canActOnSingle: Bool = {
+            if let first = detail.sections.first, detail.sections.count == 1 {
+                return first.canAct(on: detail.date, today: today)
+            }
+            if detail.sections.isEmpty, let workout = detail.workout {
+                return WorkoutDaySection(sessionRecord: detail.sessionRecord, workout: workout).canAct(on: detail.date, today: today)
+            }
+            return false
+        }()
+        let showActionButton = detail.sections.count <= 1 && canActOnSingle && onActionWorkout != nil && !allCompleted
         let resumeAction = actionSection?.isLiveSession == true
-            || (Calendar.current.isDateInToday(detail.date) && (actionSection?.sessionRecord ?? detail.sessionRecord) != nil)
+            || (Calendar.current.isDate(detail.date, inSameDayAs: today) && (actionSection?.sessionRecord ?? detail.sessionRecord) != nil)
         let actionButtonText = LanguageManager.t(resumeAction ? "history.resumeWorkout" : "history.startWorkout")
 
         let completedExercises = items.filter { $0.completedSets >= $0.plannedSets && $0.plannedSets > 0 }
@@ -602,7 +614,7 @@ public struct HistoryDetailView: View {
                 Text("\(section.exerciseItems.count)")
                     .font(.system(size: 15)).foregroundColor(AppColors.secondaryText).frame(width: 20)
             }
-            Text(section.contextText(on: detail.date, index: index))
+            Text(section.contextText(on: detail.date, today: today, index: index))
                 .font(.system(size: 12, weight: .semibold))
                 .foregroundColor(section.scheduledDate.map { Calendar.current.isDate($0, inSameDayAs: detail.date) } == true
                     ? AppColors.accent : AppColors.secondaryText)
@@ -619,9 +631,9 @@ public struct HistoryDetailView: View {
             Text(LanguageManager.formatSetsFraction(completed: section.completedSets, total: section.plannedSets)
                 + (section.totalVolumeKg > 0 ? " · \(weightUnit.formatVolume(section.totalVolumeKg))" : ""))
                 .font(.system(size: 12)).foregroundColor(AppColors.secondaryText)
-            if section.canAct(on: detail.date), let onActionSection {
+            if section.canAct(on: detail.date, today: today), let onActionSection {
                 Button { onActionSection(section) } label: {
-                    Text(LanguageManager.t(section.isLiveSession || (Calendar.current.isDateInToday(detail.date) && section.sessionRecord != nil)
+                    Text(LanguageManager.t(section.isLiveSession || (Calendar.current.isDate(detail.date, inSameDayAs: today) && section.sessionRecord != nil)
                         ? "history.resumeWorkout" : "history.startWorkout"))
                         .font(.system(size: 16, weight: .semibold)).foregroundColor(AppColors.accent)
                         .frame(maxWidth: .infinity, minHeight: 48)

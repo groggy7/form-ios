@@ -51,17 +51,17 @@ public struct WorkoutDaySection: Identifiable {
     public let exerciseItems: [HistoryDayExerciseProgress]
 
     public init(
-        sessionRecord: WorkoutSessionRecord?,
-        workout: Workout?,
-        workoutTitle: String,
+        sessionRecord: WorkoutSessionRecord? = nil,
+        workout: Workout? = nil,
+        workoutTitle: String = "",
         originDate: Date? = nil,
         originDateFormatted: String? = nil,
-        completedSets: Int,
-        plannedSets: Int,
-        totalVolumeKg: Double,
-        durationSeconds: Int,
-        isComplete: Bool,
-        exerciseItems: [HistoryDayExerciseProgress],
+        completedSets: Int = 0,
+        plannedSets: Int = 0,
+        totalVolumeKg: Double = 0.0,
+        durationSeconds: Int = 0,
+        isComplete: Bool = false,
+        exerciseItems: [HistoryDayExerciseProgress] = [],
         scheduledDate: Date? = nil,
         scheduleSource: HistoryScheduleSource = .unknown,
         isLiveSession: Bool = false
@@ -83,8 +83,17 @@ public struct WorkoutDaySection: Identifiable {
     }
 
     public func canAct(on day: Date, today: Date = Date()) -> Bool {
-        Calendar.current.startOfDay(for: day) <= Calendar.current.startOfDay(for: today)
-            && !isComplete && !(workout?.exercises.isEmpty ?? true)
+        var cal = Calendar(identifier: .gregorian)
+        cal.firstWeekday = 2 // Monday
+        let todayStart = cal.startOfDay(for: today)
+        let dayStart = cal.startOfDay(for: day)
+        let weekday = cal.component(.weekday, from: todayStart)
+        let leadingDays = (weekday + 5) % 7
+        guard let weekStart = cal.date(byAdding: .day, value: -leadingDays, to: todayStart) else { return false }
+
+        let isInsideCurrentWeek = dayStart >= weekStart && dayStart <= todayStart
+            && (scheduledDate.map { cal.startOfDay(for: $0) >= weekStart } ?? true)
+        return isInsideCurrentWeek && !isComplete && !(workout?.exercises.isEmpty ?? true)
     }
 
     public func contextText(on day: Date, today: Date = Date(), index: Int = 0) -> String {
@@ -670,8 +679,9 @@ public struct HistoryView: View {
 
     private func handleWorkoutAction(detail: HistoryDayDetailData, section: WorkoutDaySection? = nil) {
         let target = section ?? detail.sections.first { $0.canAct(on: detail.date) }
-        guard let workout = target?.workout ?? detail.workout else { return }
-        let record = target?.sessionRecord ?? (target == nil ? detail.sessionRecord : nil)
+        guard let target, target.canAct(on: detail.date) else { return }
+        guard let workout = target.workout ?? detail.workout else { return }
+        let record = target.sessionRecord ?? detail.sessionRecord
         let programId = record?.programId
             ?? store.state.programs.first(where: { $0.workouts.contains(where: { $0.id == workout.id }) })?.id
         guard let programId else { return }
@@ -679,8 +689,8 @@ public struct HistoryView: View {
         if store.startActiveSession(programId: programId, workout: workout, allowPast: true,
             unfinishedRecordId: sameDay ? record?.id : nil,
             assignedCalendarDate: WorkoutCalendar.formatDate(Date()),
-            startNewSession: record == nil || (!sameDay && target?.isLiveSession != true),
-            scheduledDate: target?.scheduledDate.map { WorkoutCalendar.formatDate($0) } ?? detail.dateString) {
+            startNewSession: record == nil || (!sameDay && !target.isLiveSession),
+            scheduledDate: target.scheduledDate.map { WorkoutCalendar.formatDate($0) } ?? detail.dateString) {
             store.selectedHistoryDetailDay = nil
             store.currentView = .today
         } else if store.activeSession != nil {

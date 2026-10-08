@@ -9069,4 +9069,45 @@ final class HistoryBreakdownTests: XCTestCase {
             window.isHidden = true
         }
     }
+
+    @MainActor
+    func testPastWeekWorkoutsDoNotOfferActionButtons() {
+        let lastWeekSunday = WorkoutCalendar.parseDate("2026-10-04")! // Sunday of previous week
+        let currentTuesday = WorkoutCalendar.parseDate("2026-10-06")! // Tuesday of current week
+        let currentMonday = WorkoutCalendar.parseDate("2026-10-05")!  // Monday of current week
+
+        let unstartedBench = WorkoutDaySection(workout: bench)
+        XCTAssertFalse(unstartedBench.canAct(on: lastWeekSunday, today: currentTuesday),
+            "Unstarted workout on last week's date must not be actionable")
+        XCTAssertTrue(unstartedBench.canAct(on: currentMonday, today: currentTuesday),
+            "Unstarted workout on current week Monday must be actionable")
+        XCTAssertTrue(unstartedBench.canAct(on: currentTuesday, today: currentTuesday),
+            "Unstarted workout on current day must be actionable")
+
+        let lastWeekRecord = record(bench, complete: false, scheduled: "2026-10-04")
+        let pastSection = WorkoutDaySection(sessionRecord: lastWeekRecord, workout: bench)
+        XCTAssertFalse(pastSection.canAct(on: lastWeekSunday, today: currentTuesday),
+            "Workout session from last week must not be actionable")
+
+        let carryoverFromPastWeek = WorkoutDaySection(sessionRecord: lastWeekRecord, workout: bench, scheduledDate: lastWeekSunday)
+        XCTAssertFalse(carryoverFromPastWeek.canAct(on: currentTuesday, today: currentTuesday),
+            "Carryover originally scheduled for last week must not be actionable")
+
+        let detail = HistoryDayDetailData(date: lastWeekSunday, dateString: "2026-10-04", status: .unfinished,
+            sessionRecord: lastWeekRecord, workout: bench, sections: [pastSection])
+        var actionInvoked = false
+        let view = HistoryDetailView(detail: detail, history: [lastWeekRecord], today: currentTuesday,
+            onBack: {}, onActionWorkout: { actionInvoked = true },
+            onActionSection: { _ in actionInvoked = true })
+        let controller = UIHostingController(rootView: view)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 375, height: 812))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.frame = window.bounds
+        controller.view.layoutIfNeeded()
+
+        XCTAssertFalse(actionInvoked)
+        window.isHidden = true
+    }
 }
+
