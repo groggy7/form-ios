@@ -8936,6 +8936,10 @@ final class HistoryBreakdownTests: XCTestCase {
         XCTAssertEqual(result[0].completedSets, 0)
         XCTAssertFalse(result[0].isComplete)
         XCTAssertTrue(result[0].canAct(on: day, today: day))
+        XCTAssertNil(result[0].scheduleLabel(on: day))
+        XCTAssertEqual(result[0].contextText(on: day, today: day), LanguageManager.t("history.todayWorkout"))
+        XCTAssertEqual(result[1].contextText(on: day, today: day), LanguageManager.t("history.earlierWorkout"))
+        XCTAssertNotNil(result[1].scheduleLabel(on: day))
         let detail = HistoryDayDetailData(date: day, dateString: "2026-10-06", status: .completed,
             sessionRecord: nil, workout: pull, sections: result)
         XCTAssertEqual(detail.recordedSections.reduce(0) { $0 + $1.plannedSets }, 2)

@@ -102,7 +102,7 @@ public struct WorkoutDaySection: Identifiable {
         guard let scheduledDate else { return LanguageManager.t("history.scheduleUnknown") }
         let key = scheduleSource == .recorded ? "history.originallyScheduled"
             : sessionRecord == nil ? "history.scheduledFor" : "history.usualSchedule"
-        if key == "history.usualSchedule", Calendar.current.isDate(scheduledDate, inSameDayAs: day) { return nil }
+        if Calendar.current.isDate(scheduledDate, inSameDayAs: day) { return nil }
         return LanguageManager.t(key, ["date": Self.formattedDate(scheduledDate)])
     }
 
