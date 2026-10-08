@@ -171,7 +171,7 @@ public struct HistoryDayDetailData: Identifiable {
 
     public static func groupSections(day: Date, records: [WorkoutSessionRecord], scheduledWorkout: Workout?,
         activeProgramId: String?, programs: [Program], history: [WorkoutSessionRecord], activeRecordId: String? = nil,
-        manuallyCompleted: Bool = false) -> [WorkoutDaySection] {
+        manuallyCompleted: Bool = false, today: Date = Date()) -> [WorkoutDaySection] {
         let dayString = WorkoutCalendar.formatDate(day)
         var sections = records.map { record -> WorkoutDaySection in
             let workout = record.workoutSnapshot ?? programs.first { $0.id == record.programId }?.workouts.first { $0.id == record.workoutId }
@@ -189,7 +189,9 @@ public struct HistoryDayDetailData: Identifiable {
                 isComplete: record.id != activeRecordId && WorkoutCalendar.isSessionComplete(session: record, workout: workout),
                 exerciseItems: items, scheduledDate: scheduledDate, scheduleSource: source, isLiveSession: record.id == activeRecordId)
         }
-        if let scheduled = scheduledWorkout, !scheduled.exercises.isEmpty, !sections.contains(where: {
+        // Current plans can supplement today's activity, but cannot add invented workouts to recorded history.
+        if (records.isEmpty || Calendar.current.isDate(day, inSameDayAs: today)),
+           let scheduled = scheduledWorkout, !scheduled.exercises.isEmpty, !sections.contains(where: {
             $0.scheduledDate.map { WorkoutCalendar.formatDate($0) } == dayString && $0.sessionRecord?.programId == activeProgramId
                 && $0.sessionRecord?.workoutId == scheduled.id
         }) {

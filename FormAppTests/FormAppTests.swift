@@ -8898,11 +8898,73 @@ final class HistoryBreakdownTests: XCTestCase {
             isComplete: complete, scheduledDate: scheduled)
     }
 
-    private func sections(_ records: [WorkoutSessionRecord], program: Program? = nil, active: String? = nil) -> [WorkoutDaySection] {
+    private func sections(_ records: [WorkoutSessionRecord], program: Program? = nil, active: String? = nil,
+        viewedDay: Date? = nil, today: Date? = nil) -> [WorkoutDaySection] {
         let p = program ?? self.program
-        return HistoryDayDetailData.groupSections(day: day, records: records,
-            scheduledWorkout: p.workouts.first { $0.day == 2 }, activeProgramId: p.id,
-            programs: [p], history: records, activeRecordId: active)
+        let selectedDay = viewedDay ?? day
+        let weekday = (Calendar.current.component(.weekday, from: selectedDay) + 5) % 7 + 1
+        return HistoryDayDetailData.groupSections(day: selectedDay, records: records,
+            scheduledWorkout: p.workouts.first { $0.day == weekday }, activeProgramId: p.id,
+            programs: [p], history: records, activeRecordId: active, today: today ?? day)
+    }
+
+    func testLastMonthUnfinishedRecordDoesNotAddEditedCurrentPlan() {
+        let historicalDay = WorkoutCalendar.parseDate("2026-09-10")!
+        let today = WorkoutCalendar.parseDate("2026-10-08")!
+        var edited = pull
+        edited.day = 4
+        edited.title = "Current Thursday Plan"
+        edited.exercises = [Exercise(id: "new-e", name: "Dumbbell Bench Press", sets: 8)]
+        let p = Program(id: program.id, name: "Edited", workouts: [bench, edited])
+        var partial = record(pull, complete: false)
+        partial.startedAt = "2026-09-10T09:00:00Z"
+        partial.completedAt = "2026-09-10T10:00:00Z"
+        for snapshot in [nil, pull] as [Workout?] {
+            partial.workoutSnapshot = snapshot
+            let result = sections([partial], program: p, viewedDay: historicalDay, today: today)
+            XCTAssertEqual(result.count, 1)
+            XCTAssertEqual(result.first?.sessionRecord?.id, partial.id)
+            XCTAssertEqual(result.first?.workoutTitle, pull.title)
+            XCTAssertEqual(result.first?.completedSets, 1)
+            XCTAssertFalse(result.first!.isComplete)
+            XCTAssertFalse(result.contains { $0.sessionRecord == nil })
+            XCTAssertEqual(result.first?.exerciseItems.first?.name, snapshot == nil ? edited.exercises[0].displayName : pull.exercises[0].displayName)
+        }
+    }
+
+    func testHistoricalDayRetainsEveryRecordedSessionWithoutUnstartedPlan() {
+        let historicalDay = WorkoutCalendar.parseDate("2026-09-10")!
+        var planned = pull
+        planned.day = 4
+        let p = Program(id: program.id, name: "Edited", workouts: [bench, planned])
+        var first = record(bench, complete: true, scheduled: "2026-09-07")
+        var second = record(pull, complete: false, scheduled: "2026-09-09")
+        first.workoutSnapshot = bench
+        second.workoutSnapshot = pull
+        let result = sections([first, second], program: p, viewedDay: historicalDay)
+        XCTAssertEqual(Set(result.compactMap { $0.sessionRecord?.id }), Set([first.id, second.id]))
+        XCTAssertEqual(result.count, 2)
+        XCTAssertEqual(result.reduce(0) { $0 + $1.completedSets }, 3)
+    }
+
+    func testEmptyHistoricalDayKeepsScheduledFallback() {
+        let historicalDay = WorkoutCalendar.parseDate("2026-09-08")!
+        let result = sections([], viewedDay: historicalDay)
+        XCTAssertEqual(result.count, 1)
+        XCTAssertEqual(result.first?.workout?.id, pull.id)
+        XCTAssertNil(result.first?.sessionRecord)
+        XCTAssertEqual(result.first?.completedSets, 0)
+        XCTAssertEqual(result.first?.plannedSets, 2)
+    }
+
+    func testTodayAtDifferentTimeStillIncludesUnstartedPlanAboveCarryover() {
+        let laterToday = Calendar.current.date(byAdding: .hour, value: 23, to: day)!
+        let carryover = record(bench, complete: false, scheduled: "2026-10-05")
+        let result = sections([carryover], today: laterToday)
+        XCTAssertEqual(result.count, 2)
+        XCTAssertEqual(result.first?.workout?.id, pull.id)
+        XCTAssertNil(result.first?.sessionRecord)
+        XCTAssertEqual(result.last?.sessionRecord?.id, carryover.id)
     }
 
     @MainActor
