@@ -46,11 +46,7 @@ public class ProAccessManager: ObservableObject {
     @Published public var isProSubscribed: Bool = false
     private var featureOverrides: [ProFeature: Bool] = [:]
 
-    public init() {
-        #if DEBUG && CLOUD_BACKUP_TESTING
-        featureOverrides[.cloudBackup] = true
-        #endif
-    }
+    public init() {}
 
     public func isFeatureUnlocked(_ feature: ProFeature) -> Bool {
         return featureOverrides[feature] ?? isProSubscribed

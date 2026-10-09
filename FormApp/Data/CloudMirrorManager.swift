@@ -86,17 +86,9 @@ enum CloudMirrorError: LocalizedError {
 
 public final class CloudMirrorManager: ObservableObject {
     public static let shared = CloudMirrorManager()
-    #if DEBUG && CLOUD_BACKUP_TESTING
-    // Manual-device builds isolate test snapshots and bookkeeping from the
-    // TestFlight/production mirror, even when updating the same app in place.
-    static let backupFileName = "form_safety_mirror_test.json"
-    private static let pendingBackupFileName = "pending_form_safety_mirror_test.json"
-    private static let preferencePrefix = "cloud_mirror_test_"
-    #else
     static let backupFileName = "form_safety_mirror.json"
     private static let pendingBackupFileName = "pending_form_safety_mirror.json"
     private static let preferencePrefix = "cloud_mirror_"
-    #endif
     private let keyEnabled = CloudMirrorManager.preferencePrefix + "enabled"
     private let keyLastLocalWrite = CloudMirrorManager.preferencePrefix + "last_local_write"
     private let keyLastCloudUpload = CloudMirrorManager.preferencePrefix + "last_cloud_upload"
