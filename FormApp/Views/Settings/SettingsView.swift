@@ -11,6 +11,7 @@ public struct SettingsView: View {
     @State private var showPaywall: Bool = false
     @State private var paywallFeature: ProFeature? = nil
     @State private var showCloudBackupSheet: Bool = false
+    @State private var showLanguageSheet: Bool = false
     @Environment(\.openURL) private var openURL
     @State private var showExportSheet: Bool = false
     @State private var exportText: String = ""
@@ -192,24 +193,10 @@ public struct SettingsView: View {
                         .padding(14)
                     }
 
-                    // Language
-                    settingsSection(title: LanguageManager.t("settings.language")) {
-                        HStack {
-                            Text(LanguageManager.t("settings.language"))
-                                .font(.system(size: 15))
-                                .foregroundColor(AppColors.text)
-                            Spacer()
-                            Picker("", selection: $langManager.languagePreference) {
-                                Text(LanguageManager.t("settings.deviceLanguage")).tag(LanguageManager.system)
-                                ForEach(LanguageManager.supportedLanguages, id: \.code) { language in
-                                    Text(language.name).tag(language.code)
-                                }
-                            }
-                            .pickerStyle(.segmented)
-                            .frame(width: 160)
-                        }
-                        .padding(14)
+                    SettingsLanguageRow(value: languagePreferenceLabel) {
+                        showLanguageSheet = true
                     }
+                    .padding(.horizontal, 20)
 
                     // Weight Unit
                     settingsSection(title: LanguageManager.t("settings.weightUnit")) {
@@ -413,6 +400,21 @@ public struct SettingsView: View {
                     }
                 }
             }
+            .sheet(isPresented: $showLanguageSheet) {
+                LanguageSelectionSheet(
+                    preference: langManager.languagePreference,
+                    deviceLanguageName: deviceLanguageName,
+                    onSelect: { code in
+                        showLanguageSheet = false
+                        if code != langManager.languagePreference { LanguageManager.setLanguage(code) }
+                    },
+                    onDismiss: { showLanguageSheet = false }
+                )
+                .presentationDetents([.height(520), .large])
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(28)
+                .presentationBackground(AppColors.background)
+            }
             .sheet(isPresented: $showExportSheet) {
                 ShareSheet(text: exportText)
             }
@@ -492,6 +494,18 @@ public struct SettingsView: View {
         }
     }
 
+    private var deviceLanguageName: String {
+        let code = LanguageManager.resolveLanguage(Locale.preferredLanguages)
+        return LanguageManager.supportedLanguages.first { $0.code == code }?.name ?? "English"
+    }
+
+    private var languagePreferenceLabel: String {
+        if langManager.languagePreference == LanguageManager.system {
+            return "\(LanguageManager.t("settings.deviceLanguage")) · \(deviceLanguageName)"
+        }
+        return LanguageManager.supportedLanguages.first { $0.code == langManager.languagePreference }?.name ?? "English"
+    }
+
     private func settingsSection<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
@@ -514,6 +528,135 @@ public struct SettingsView: View {
             exportText = str
             showExportSheet = true
         }
+    }
+}
+
+// A single preference row keeps every supported language out of the main settings layout.
+struct SettingsLanguageRow: View {
+    let value: String
+    var onTap: () -> Void
+
+    var body: some View {
+        Button(action: onTap) {
+            HStack(spacing: 14) {
+                Image(systemName: "globe")
+                    .font(.system(size: 21, weight: .medium))
+                    .foregroundColor(AppColors.secondaryText)
+                    .frame(width: 24)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(LanguageManager.t("settings.language"))
+                        .font(.body.weight(.medium))
+                        .foregroundColor(AppColors.text)
+                    Text(value)
+                        .font(.subheadline)
+                        .foregroundColor(AppColors.secondaryText)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundColor(AppColors.muted)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .frame(minHeight: 64)
+            .background(AppColors.surface)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
+            .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
+            .contentShape(RoundedRectangle(cornerRadius: 16))
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(LanguageManager.t("settings.language"))
+        .accessibilityValue(value)
+        .accessibilityIdentifier("settings-language-row")
+    }
+}
+
+struct LanguageSelectionSheet: View {
+    let preference: String
+    let deviceLanguageName: String
+    var onSelect: (String) -> Void
+    var onDismiss: () -> Void
+
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack(spacing: 12) {
+                Text(LanguageManager.t("settings.language"))
+                    .font(.title2.weight(.semibold))
+                    .foregroundColor(AppColors.text)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Button(action: onDismiss) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(AppColors.secondaryText)
+                        .frame(width: 48, height: 48)
+                        .background(AppColors.surfaceRaised, in: Circle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(LanguageManager.t("common.close"))
+                .accessibilityIdentifier("language-picker-close")
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 12)
+            .padding(.bottom, 16)
+
+            ScrollView {
+                VStack(spacing: 12) {
+                    languageOption(code: LanguageManager.system,
+                        title: LanguageManager.t("settings.deviceLanguage"), subtitle: deviceLanguageName)
+                        .background(AppColors.surface)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
+                        .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
+
+                    VStack(spacing: 0) {
+                        ForEach(Array(LanguageManager.supportedLanguages.enumerated()), id: \.element.code) { index, language in
+                            if index > 0 {
+                                Rectangle().fill(AppColors.border).frame(height: 1).padding(.horizontal, 16)
+                            }
+                            languageOption(code: language.code, title: language.name)
+                        }
+                    }
+                    .background(AppColors.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
+                    .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 24)
+            }
+        }
+        .background(AppColors.background)
+        .accessibilityIdentifier("language-picker-sheet")
+    }
+
+    private func languageOption(code: String, title: String, subtitle: String? = nil) -> some View {
+        let selected = preference == code
+        return Button { onSelect(code) } label: {
+            HStack(spacing: 14) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(title)
+                        .font(.body.weight(selected ? .semibold : .medium))
+                        .foregroundColor(AppColors.text)
+                        .fixedSize(horizontal: false, vertical: true)
+                    if let subtitle {
+                        Text(subtitle).font(.subheadline).foregroundColor(AppColors.secondaryText)
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                Image(systemName: selected ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 21, weight: .medium))
+                    .foregroundColor(selected ? AppColors.accent : AppColors.border)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .frame(minHeight: 54)
+            .background(selected ? AppColors.positiveBg.opacity(0.5) : Color.clear)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityAddTraits(selected ? .isSelected : [])
+        .accessibilityIdentifier("language-option-\(code)")
     }
 }
 

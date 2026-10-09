@@ -10878,3 +10878,45 @@ final class LocalizationExpansionTests: XCTestCase {
         }
     }
 }
+
+@MainActor
+final class SettingsLanguagePickerLayoutTests: XCTestCase {
+    func testCompactRowAndFullNamesAtNarrowWidth() async throws {
+        let previous = LanguageManager.shared.languagePreference
+        let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }.first { $0.isKeyWindow }
+        defer { LanguageManager.setLanguage(previous); previousWindow?.makeKeyAndVisible() }
+        for lang in ["en","tr","de","fr","es"] {
+            LanguageManager.setLanguage(lang)
+            for (size, suffix) in [(DynamicTypeSize.large,"normal"),(.xxxLarge,"large")] {
+                let row = SettingsLanguageRow(value: "English", onTap: {})
+                let rowController = UIHostingController(rootView:VStack(spacing:0) { row; Spacer(minLength:0) }
+                    .padding(20).background(AppColors.background).environment(\.dynamicTypeSize,size))
+                let rowWindow = UIWindow(frame:CGRect(x:0,y:0,width:320,height:180))
+                rowWindow.rootViewController = rowController;rowWindow.makeKeyAndVisible()
+                rowController.view.frame = rowWindow.bounds;rowController.view.layoutIfNeeded()
+                try await Task.sleep(nanoseconds:150_000_000)
+                let rowImage = UIGraphicsImageRenderer(bounds:rowController.view.bounds).image { _ in
+                    rowController.view.drawHierarchy(in:rowController.view.bounds,afterScreenUpdates:true)
+                }
+                rowWindow.isHidden = true
+                let rowAttachment = XCTAttachment(image:rowImage);rowAttachment.name="language-row-\(lang)-\(suffix)";rowAttachment.lifetime = .keepAlways;add(rowAttachment)
+                if lang=="en" || lang=="de" { try rowImage.pngData()?.write(to:URL(fileURLWithPath:"/private/tmp/language-row-\(lang)-\(suffix)-ios.png")) }
+
+                let sheet = LanguageSelectionSheet(preference:lang,deviceLanguageName:"English",onSelect:{_ in},onDismiss:{})
+                let sheetController = UIHostingController(rootView:sheet.environment(\.dynamicTypeSize,size))
+                let sheetWindow = UIWindow(frame:CGRect(x:0,y:0,width:320,height:size == .large ? 540 : 820))
+                sheetWindow.rootViewController = sheetController;sheetWindow.makeKeyAndVisible()
+                sheetController.view.frame = sheetWindow.bounds;sheetController.view.layoutIfNeeded()
+                try await Task.sleep(nanoseconds:150_000_000)
+                let sheetImage = UIGraphicsImageRenderer(bounds:sheetController.view.bounds).image { _ in
+                    sheetController.view.drawHierarchy(in:sheetController.view.bounds,afterScreenUpdates:true)
+                }
+                sheetWindow.isHidden = true
+                let attachment = XCTAttachment(image:sheetImage);attachment.name="language-sheet-\(lang)-\(suffix)";attachment.lifetime = .keepAlways;add(attachment)
+                try sheetImage.pngData()?.write(to:URL(fileURLWithPath:"/private/tmp/language-sheet-\(lang)-\(suffix)-ios.png"))
+                XCTAssertEqual(sheetImage.size.width,320)
+            }
+        }
+    }
+}
