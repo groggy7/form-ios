@@ -129,6 +129,24 @@ public struct ActiveSessionView: View {
                             .record(draft: activeDraft, completedAtEpochMillis: completedAt)
                         store.completeActiveSession(record)
                     },
+                    onDiscard: {
+                        showSummary = false
+                        finishedAt = nil
+                        if progress.hasProgress {
+                            showExitConfirmation = true
+                        } else {
+                            store.abandonActiveSession()
+                        }
+                    },
+                    onSelectExercise: { index in
+                        showSummary = false
+                        finishedAt = nil
+                        store.updateActiveSession { draft in
+                            var copy = draft
+                            copy.currentExerciseIndex = index
+                            return copy
+                        }
+                    },
                     weightUnit: store.weightUnit
                 )
             } else {

@@ -8,6 +8,8 @@ public struct SessionSummaryView: View {
     let exerciseLogs: [SessionExerciseLog]
     var onBack: () -> Void
     var onSaveAndClose: () -> Void
+    var onDiscard: (() -> Void)? = nil
+    var onSelectExercise: ((Int) -> Void)? = nil
     var weightUnit: WeightUnit = .kg
 
     public init(
@@ -18,6 +20,8 @@ public struct SessionSummaryView: View {
         exerciseLogs: [SessionExerciseLog],
         onBack: @escaping () -> Void,
         onSaveAndClose: @escaping () -> Void,
+        onDiscard: (() -> Void)? = nil,
+        onSelectExercise: ((Int) -> Void)? = nil,
         weightUnit: WeightUnit = .kg
     ) {
         self.workoutTitle = workoutTitle
@@ -27,130 +31,326 @@ public struct SessionSummaryView: View {
         self.exerciseLogs = exerciseLogs
         self.onBack = onBack
         self.onSaveAndClose = onSaveAndClose
+        self.onDiscard = onDiscard
+        self.onSelectExercise = onSelectExercise
         self.weightUnit = weightUnit
     }
+
+    private var totalExercises: Int { exerciseLogs.count }
+    private var completedExercisesCount: Int {
+        exerciseLogs.filter { log in
+            let working = log.sets.filter { !$0.isWarmup }
+            let target = (log.targetSets ?? 0) > 0 ? (log.targetSets ?? 0) : max(working.count, 1)
+            return working.count >= target && target > 0
+        }.count
+    }
+    private var isWorkoutEmpty: Bool { totalCompletedSets == 0 }
+    private var isWorkoutComplete: Bool { !isWorkoutEmpty && totalExercises > 0 && completedExercisesCount == totalExercises }
+    private var isWorkoutPartial: Bool { !isWorkoutEmpty && !isWorkoutComplete }
 
     public var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
                 ScrollView {
-                    VStack(alignment: .leading, spacing: 24) {
-                        VStack(alignment: .leading, spacing: 6) {
-                            Text(workoutTitle)
-                                .font(.system(size: 28, weight: .bold))
-                                .foregroundColor(AppColors.text)
-                            Text(LanguageManager.t("summary.badge"))
-                                .font(.system(size: 14, weight: .semibold))
-                                .foregroundColor(AppColors.accent)
-                        }
+                    VStack(alignment: .leading, spacing: 20) {
+                        Text(workoutTitle)
+                            .font(.system(size: 28, weight: .bold))
+                            .foregroundColor(AppColors.text)
 
-                        // Metrics Row
+                        // 3 KPI Metric Cards
                         HStack(spacing: 8) {
                             summaryMetric(
+                                icon: "clock",
                                 title: LanguageManager.t("summary.totalDuration"),
                                 value: RestTimerUtils.formatSecondsToTime(durationSeconds)
                             )
                             summaryMetric(
+                                icon: "dumbbell.fill",
                                 title: LanguageManager.t("summary.setsCompleted"),
                                 value: "\(totalCompletedSets)"
                             )
                             summaryMetric(
+                                icon: "square.stack.3d.up",
                                 title: LanguageManager.t("summary.estimatedVolume"),
                                 value: "\(weightUnit.formatVolume(totalVolumeKg)) \(weightUnit.label)"
                             )
                         }
 
-                        // Exercise Recap
-                        VStack(alignment: .leading, spacing: 14) {
+                        if isWorkoutEmpty {
+                            // Empty State: No sets logged yet
                             Text(LanguageManager.t("summary.exerciseRecap"))
                                 .font(.system(size: 16, weight: .bold))
                                 .foregroundColor(AppColors.secondaryText)
 
-                            ForEach(exerciseLogs, id: \.exerciseName) { log in
-                                HStack(spacing: 14) {
-                                    Image(systemName: "checkmark.circle.fill")
-                                        .font(.system(size: 18))
-                                        .foregroundColor(log.sets.isEmpty ? AppColors.muted.opacity(0.35) : AppColors.accent)
+                            VStack(spacing: 16) {
+                                ZStack {
+                                    Circle()
+                                        .fill(AppColors.accent.opacity(0.12))
+                                        .frame(width: 80, height: 80)
+                                        .overlay(
+                                            Circle()
+                                                .stroke(AppColors.accent.opacity(0.25), lineWidth: 1)
+                                        )
+                                    Image(systemName: "doc.text.fill")
+                                        .font(.system(size: 34))
+                                        .foregroundColor(AppColors.accent)
+                                }
 
-                                    VStack(alignment: .leading, spacing: 3) {
-                                        Text(log.exerciseName)
-                                            .font(.system(size: 14, weight: .medium))
+                                VStack(spacing: 6) {
+                                    Text(LanguageManager.t("summary.noSetsTitle"))
+                                        .font(.system(size: 18, weight: .bold))
+                                        .foregroundColor(AppColors.text)
+                                        .multilineTextAlignment(.center)
+
+                                    Text(LanguageManager.t("summary.noSetsSubtitle"))
+                                        .font(.system(size: 13))
+                                        .foregroundColor(AppColors.muted)
+                                        .multilineTextAlignment(.center)
+                                }
+
+                                Button(action: onBack) {
+                                    Text(LanguageManager.t("summary.continueWorkout"))
+                                        .font(.system(size: 15, weight: .bold))
+                                        .frame(maxWidth: .infinity)
+                                        .frame(height: 50)
+                                        .background(
+                                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                                .fill(AppColors.accent)
+                                        )
+                                        .foregroundColor(AppColors.todaySelectionText)
+                                }
+                                .buttonStyle(.plain)
+                                .padding(.top, 8)
+
+                                Button(action: {
+                                    if let onDiscard = onDiscard {
+                                        onDiscard()
+                                    } else {
+                                        onBack()
+                                    }
+                                }) {
+                                    Text(LanguageManager.t("summary.discardSession"))
+                                        .font(.system(size: 13, weight: .medium))
+                                        .foregroundColor(AppColors.secondaryText)
+                                }
+                                .buttonStyle(.plain)
+                            }
+                            .padding(.horizontal, 24)
+                            .padding(.vertical, 32)
+                            .frame(maxWidth: .infinity)
+                            .background(AppColors.surface)
+                            .cornerRadius(16)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                    .stroke(AppColors.border, lineWidth: 1)
+                            )
+                        } else {
+                            // Status Banners
+                            if isWorkoutComplete {
+                                HStack(spacing: 12) {
+                                    Text("🎉")
+                                        .font(.system(size: 24))
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(LanguageManager.t("summary.completeBannerTitle", ["count": totalExercises]))
+                                            .font(.system(size: 14, weight: .bold))
                                             .foregroundColor(AppColors.text)
-
-                                        Text(LanguageManager.t("summary.setsDone", ["count": log.sets.count]))
+                                        Text(LanguageManager.t("summary.completeBannerSubtitle"))
                                             .font(.system(size: 12))
                                             .foregroundColor(AppColors.muted)
                                     }
-
                                     Spacer()
                                 }
-                                .padding(.vertical, 7)
+                                .padding(14)
+                                .background(Color(hex: 0x14241D))
+                                .cornerRadius(12)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .stroke(AppColors.completedGreen.opacity(0.35), lineWidth: 1)
+                                )
+                            } else if isWorkoutPartial {
+                                HStack(spacing: 12) {
+                                    Image(systemName: "clock.fill")
+                                        .font(.system(size: 22))
+                                        .foregroundColor(AppColors.unfinishedOrange)
+                                    VStack(alignment: .leading, spacing: 2) {
+                                        Text(LanguageManager.t("summary.partialBannerTitle", ["completed": completedExercisesCount, "total": totalExercises]))
+                                            .font(.system(size: 14, weight: .bold))
+                                            .foregroundColor(AppColors.text)
+                                        Text(LanguageManager.t("summary.partialBannerSubtitle"))
+                                            .font(.system(size: 12))
+                                            .foregroundColor(AppColors.muted)
+                                    }
+                                    Spacer()
+                                }
+                                .padding(14)
+                                .background(Color(hex: 0x261D13))
+                                .cornerRadius(12)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                        .stroke(AppColors.unfinishedOrange.opacity(0.35), lineWidth: 1)
+                                )
+                            }
+
+                            // Exercise Recap Section
+                            VStack(alignment: .leading, spacing: 10) {
+                                Text(LanguageManager.t("summary.exerciseRecap"))
+                                    .font(.system(size: 16, weight: .bold))
+                                    .foregroundColor(AppColors.secondaryText)
+
+                                ForEach(Array(exerciseLogs.enumerated()), id: \.offset) { index, log in
+                                    let working = log.sets.filter { !$0.isWarmup }
+                                    let completedCount = working.count
+                                    let targetCount = (log.targetSets ?? 0) > 0 ? (log.targetSets ?? 0) : max(working.count, 1)
+                                    let isDone = completedCount >= targetCount && targetCount > 0
+                                    let isHalfway = completedCount > 0 && !isDone
+                                    let isUnstarted = completedCount == 0
+                                    let exerciseVolumeKg = working.reduce(0.0) { sum, set in sum + ((set.weightKg ?? 0.0) * Double(set.reps ?? 0)) }
+
+                                    Button(action: {
+                                        onSelectExercise?(index)
+                                    }) {
+                                        HStack(spacing: 12) {
+                                            if isDone {
+                                                Circle()
+                                                    .fill(AppColors.accent)
+                                                    .frame(width: 28, height: 28)
+                                                    .overlay(
+                                                        Image(systemName: "checkmark")
+                                                            .font(.system(size: 13, weight: .bold))
+                                                            .foregroundColor(AppColors.todaySelectionText)
+                                                    )
+                                            } else if isHalfway {
+                                                Circle()
+                                                    .fill(AppColors.unfinishedOrange.opacity(0.15))
+                                                    .overlay(
+                                                        Circle().stroke(AppColors.unfinishedOrange, lineWidth: 1.5)
+                                                    )
+                                                    .frame(width: 28, height: 28)
+                                                    .overlay(
+                                                        Image(systemName: "clock.fill")
+                                                            .font(.system(size: 12))
+                                                            .foregroundColor(AppColors.unfinishedOrange)
+                                                    )
+                                            } else {
+                                                Circle()
+                                                    .stroke(AppColors.muted.opacity(0.4), lineWidth: 1.5)
+                                                    .frame(width: 28, height: 28)
+                                            }
+
+                                            VStack(alignment: .leading, spacing: 3) {
+                                                Text(log.exerciseName)
+                                                    .font(.system(size: 14, weight: .semibold))
+                                                    .foregroundColor(AppColors.text)
+
+                                                let subtitleText: String = {
+                                                    if isUnstarted {
+                                                        return "0/\(targetCount) sets • \(LanguageManager.t("history.notStarted"))"
+                                                    } else if exerciseVolumeKg <= 0.0 {
+                                                        return "\(completedCount)/\(targetCount) sets • \(LanguageManager.t("exercise.history.bodyweight"))"
+                                                    } else {
+                                                        return "\(completedCount)/\(targetCount) sets • \(weightUnit.formatVolume(exerciseVolumeKg)) \(weightUnit.label)"
+                                                    }
+                                                }()
+
+                                                Text(subtitleText)
+                                                    .font(.system(size: 12))
+                                                    .foregroundColor(AppColors.muted)
+                                            }
+
+                                            Spacer()
+
+                                            Image(systemName: "chevron.right")
+                                                .font(.system(size: 14, weight: .semibold))
+                                                .foregroundColor(AppColors.muted.opacity(0.6))
+                                        }
+                                        .padding(.horizontal, 14)
+                                        .padding(.vertical, 14)
+                                        .background(AppColors.surface)
+                                        .cornerRadius(12)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                                                .stroke(AppColors.border, lineWidth: 1)
+                                        )
+                                    }
+                                    .buttonStyle(.plain)
+                                }
                             }
                         }
                     }
                     .padding(20)
                 }
 
-                // Pinned Bottom Actions
-                VStack(spacing: 8) {
-                    Button(action: onSaveAndClose) {
-                        HStack(spacing: 8) {
-                            Image(systemName: "checkmark")
-                                .font(.system(size: 16, weight: .bold))
-                            Text(LanguageManager.t("summary.saveAndClose"))
-                                .font(.system(size: 16, weight: .bold))
+                // Pinned Bottom Actions for Non-Empty Workout
+                if !isWorkoutEmpty {
+                    VStack(spacing: 8) {
+                        Button(action: onSaveAndClose) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "checkmark")
+                                    .font(.system(size: 16, weight: .bold))
+                                Text(LanguageManager.t("summary.saveAndClose"))
+                                    .font(.system(size: 16, weight: .bold))
+                            }
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 52)
+                            .background(
+                                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                    .fill(AppColors.accent)
+                            )
+                            .foregroundColor(AppColors.todaySelectionText)
                         }
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 52)
-                        .background(
-                            RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                .fill(AppColors.accent)
-                        )
-                        .foregroundColor(AppColors.todaySelectionText)
-                    }
-                    .buttonStyle(.plain)
+                        .buttonStyle(.plain)
 
-                    Button(action: onBack) {
-                        Text(LanguageManager.t("summary.back"))
-                            .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(AppColors.secondaryText)
+                        Button(action: onBack) {
+                            Text(LanguageManager.t("summary.back"))
+                                .font(.system(size: 14, weight: .medium))
+                                .foregroundColor(AppColors.secondaryText)
+                        }
+                        .buttonStyle(.plain)
+                        .padding(.top, 4)
                     }
-                    .buttonStyle(.plain)
-                    .padding(.top, 4)
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 24)
+                    .padding(.top, 8)
+                    .background(AppColors.background)
                 }
-                .padding(.horizontal, 20)
-                .padding(.bottom, 24)
-                .padding(.top, 8)
-                .background(AppColors.background)
             }
             .background(AppColors.background)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(action: onBack) {
-                        Image(systemName: "arrow.backward")
-                            .font(.system(size: 16, weight: .semibold))
-                            .foregroundColor(AppColors.muted)
+                        HStack(spacing: 8) {
+                            Image(systemName: "arrow.backward")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(AppColors.text)
+                            Text(LanguageManager.t("summary.badge"))
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundColor(AppColors.text)
+                        }
                     }
                 }
             }
         }
     }
 
-    private func summaryMetric(title: String, value: String) -> some View {
-        VStack(spacing: 4) {
+    private func summaryMetric(icon: String, title: String, value: String) -> some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Image(systemName: icon)
+                .font(.system(size: 15))
+                .foregroundColor(AppColors.muted)
             Text(title)
                 .font(.system(size: 11, weight: .medium))
                 .foregroundColor(AppColors.muted)
-                .multilineTextAlignment(.center)
+                .lineLimit(1)
             Text(value)
                 .font(.system(size: 16, weight: .bold))
                 .foregroundColor(AppColors.text)
+                .lineLimit(1)
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 12)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(12)
         .background(AppColors.surface)
         .cornerRadius(12)
-        .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
+        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(AppColors.border, lineWidth: 1))
     }
 }
