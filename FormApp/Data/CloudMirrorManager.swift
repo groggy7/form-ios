@@ -86,12 +86,22 @@ enum CloudMirrorError: LocalizedError {
 
 public final class CloudMirrorManager: ObservableObject {
     public static let shared = CloudMirrorManager()
+    #if DEBUG && CLOUD_BACKUP_TESTING
+    // Manual-device builds isolate test snapshots and bookkeeping from the
+    // TestFlight/production mirror, even when updating the same app in place.
+    static let backupFileName = "form_safety_mirror_test.json"
+    private static let pendingBackupFileName = "pending_form_safety_mirror_test.json"
+    private static let preferencePrefix = "cloud_mirror_test_"
+    #else
     static let backupFileName = "form_safety_mirror.json"
-    private let keyEnabled = "cloud_mirror_enabled"
-    private let keyLastLocalWrite = "cloud_mirror_last_local_write"
-    private let keyLastCloudUpload = "cloud_mirror_last_cloud_upload"
-    private let keyLastIdentity = "cloud_mirror_last_identity"
-    private let keyLocalIdentity = "cloud_mirror_local_identity"
+    private static let pendingBackupFileName = "pending_form_safety_mirror.json"
+    private static let preferencePrefix = "cloud_mirror_"
+    #endif
+    private let keyEnabled = CloudMirrorManager.preferencePrefix + "enabled"
+    private let keyLastLocalWrite = CloudMirrorManager.preferencePrefix + "last_local_write"
+    private let keyLastCloudUpload = CloudMirrorManager.preferencePrefix + "last_cloud_upload"
+    private let keyLastIdentity = CloudMirrorManager.preferencePrefix + "last_identity"
+    private let keyLocalIdentity = CloudMirrorManager.preferencePrefix + "local_identity"
 
     @Published public private(set) var status = CloudMirrorStatus(isEnabled: true, lastSyncTimestamp: nil, snapshotSizeBytes: nil, providerName: "iCloud Drive", isCheckingCloud: true)
     private let defaults: UserDefaults
@@ -178,7 +188,7 @@ public final class CloudMirrorManager: ObservableObject {
         queryObservers.forEach { NotificationCenter.default.removeObserver($0) }
     }
 
-    private var pendingBackupFile: URL { documents.appendingPathComponent("pending_form_safety_mirror.json") }
+    private var pendingBackupFile: URL { documents.appendingPathComponent(Self.pendingBackupFileName) }
     public var localMirrorDirectory: URL {
         let dir = documents.appendingPathComponent("CloudMirror")
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
