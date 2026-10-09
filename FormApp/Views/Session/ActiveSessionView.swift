@@ -431,6 +431,7 @@ public struct ActiveSessionView: View {
                                         },
                                         weightUnit: store.weightUnit,
                                         allowsZeroWeight: WorkoutSessionUtils.allowsZeroWeight(exercise),
+                                        isAssisted: WorkoutSessionUtils.isAssisted(exercise),
                                         ghostTargets: ghostTargets,
                                         logbookBeatenSets: logbookBeatenSets
                                     )
@@ -774,19 +775,8 @@ public struct ActiveSessionView: View {
             var sets = copy.setsByExercise[exerciseId] ?? []
             guard sets.indices.contains(index) else { return copy }
             if let expectedSetId, sets[index].id != expectedSetId { return copy }
-            let wKg = WorkoutSessionUtils.weightForEditedInput(weight, existing: sets[index], unit: store.weightUnit)
-            let rInt = Int(reps).flatMap { $0 > 0 ? $0 : nil }
-            sets[index] = ExerciseSetLog(
-                id: sets[index].id,
-                setNumber: sets[index].setNumber,
-                weightInput: weight,
-                repsInput: reps,
-                weightKg: wKg,
-                completedReps: rInt,
-                isCompleted: sets[index].isCompleted,
-                inputTouched: true,
-                isWarmup: sets[index].isWarmup
-            )
+            guard let exercise = copy.workout.exercises.first(where: { $0.id == exerciseId }) else { return copy }
+            sets[index] = WorkoutSessionUtils.editedSet(sets[index], weight: weight, reps: reps, exercise: exercise, unit: store.weightUnit)
             copy.setsByExercise[exerciseId] = sets
             return copy
         }
@@ -882,11 +872,8 @@ public struct ActiveSessionView: View {
             var copy = d
             var sets = copy.setsByExercise[exerciseId] ?? []
             let workingCount = sets.filter { !$0.isWarmup }.count
-            let newSet = ExerciseSetLog(
-                setNumber: workingCount + 1,
-                isCompleted: false,
-                isWarmup: false
-            )
+            guard let exercise = copy.workout.exercises.first(where: { $0.id == exerciseId }) else { return copy }
+            let newSet = WorkoutSessionUtils.newSet(exercise: exercise, number: workingCount + 1)
             let lastWorking = sets.filter { !$0.isWarmup }.last
             sets.append(store.prefillNextSet ? WorkoutSessionUtils.prefillSet(newSet, from: lastWorking, unit: store.weightUnit) : newSet)
             copy.setsByExercise[exerciseId] = AppStore.reindexSets(sets)

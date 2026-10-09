@@ -441,7 +441,7 @@ struct ExerciseHistoryStatsRow: View {
             HStack(spacing: 10) {
                 // Card 1: Personal Best
                 let prValue: String = {
-                    if let w = stats.prWeightKg, w > 0.0 {
+                    if let w = stats.prWeightKg, w > 0.0 || stats.isAssisted {
                         return "\(weightUnit.formatWeight(w)) \(weightUnit.label)"
                     } else if let r = stats.prReps, r > 0 {
                         return "\(r) \(LanguageManager.t("exercise.history.reps"))"
@@ -450,9 +450,10 @@ struct ExerciseHistoryStatsRow: View {
                     }
                 }()
                 let prSubtitle: String = {
+                    if stats.isAssisted { return LanguageManager.t("table.assistance") }
                     if let w = stats.prWeightKg, w > 0.0, let r = stats.prReps, r > 0 {
                         return "× \(r) \(LanguageManager.t("exercise.history.reps"))"
-                    } else if let w = stats.prWeightKg, w > 0.0 {
+                    } else if let w = stats.prWeightKg, w > 0.0 || stats.isAssisted {
                         return "—"
                     } else if let r = stats.prReps, r > 0 {
                         return LanguageManager.t("exercise.history.bodyweight")

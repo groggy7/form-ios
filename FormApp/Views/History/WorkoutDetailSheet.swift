@@ -29,7 +29,7 @@ public struct WorkoutDetailSheet: View {
                     HStack(spacing: 12) {
                         metricTile(title: LanguageManager.t("summary.totalDuration"), value: RestTimerUtils.formatSecondsToTime(record.durationSeconds))
                         metricTile(title: LanguageManager.t("summary.setsCompleted"), value: "\(record.totalCompletedSets)")
-                        metricTile(title: LanguageManager.t("summary.estimatedVolume"), value: "\(weightUnit.formatVolume(record.totalVolumeKg)) \(weightUnit.label)")
+                        metricTile(title: LanguageManager.t("summary.estimatedVolume"), value: "\(weightUnit.formatVolume(WorkoutSessionUtils.resistanceVolume(record))) \(weightUnit.label)")
                     }
 
                     Divider().background(AppColors.border)

@@ -295,6 +295,7 @@ struct ProgressionRecommendationCard: View {
     }
 
     private var headlineTitle: String {
+        if !review && WorkoutSessionUtils.isAssisted(exerciseId: recommendation.exerciseId, name: recommendation.exerciseName) { return LanguageManager.t("progression.coach.assistance_title") }
         if review { return LanguageManager.t("progression.coach.review_compact", recommendation.rationaleArgs) }
         switch recommendation.action {
         case .increaseLoad:
@@ -314,6 +315,7 @@ struct ProgressionRecommendationCard: View {
     private var descriptionText: String {
         if review { return LanguageManager.t("progression.coach.review_observation", recommendation.rationaleArgs) }
         if wasApplied { return LanguageManager.t("progression.coach.applied_hint") }
+        if WorkoutSessionUtils.isAssisted(exerciseId: recommendation.exerciseId, name: recommendation.exerciseName) { return LanguageManager.t(recommendation.rationaleKey, recommendation.rationaleArgs) }
         if recommendation.action == .increaseLoad || recommendation.action == .holdLoad {
             return LanguageManager.t(recommendation.rationaleKey, recommendation.rationaleArgs)
         }
@@ -344,7 +346,7 @@ struct ProgressionRecommendationCard: View {
             } else {
                 ProgressionTableRow {
                     Text(LanguageManager.t("progression.coach.set_column"))
-                    Text(LanguageManager.t("progression.coach.weight_column"))
+                    Text(LanguageManager.t(WorkoutSessionUtils.isAssisted(exerciseId: recommendation.exerciseId, name: recommendation.exerciseName) ? "table.assistance" : "progression.coach.weight_column"))
                     Text(LanguageManager.t("progression.coach.last_reps_column")).multilineTextAlignment(.center)
                     Color.clear.frame(height: 0)
                     Text(LanguageManager.t("progression.coach.target_reps_column")).multilineTextAlignment(.center)
@@ -409,7 +411,7 @@ struct ProgressionRecommendationCard: View {
 
     private func weight(_ target: ProgressionSetTarget, compact: Bool = false) -> String {
         guard let load = target.weightKg else { return "—" }
-        return load == 0 ? LanguageManager.t("progression.coach.bodyweight") : "\(weightUnit.formatWeight(load))\(compact ? "" : " ")\(weightUnit.label)"
+        return load == 0 && !WorkoutSessionUtils.isAssisted(exerciseId: recommendation.exerciseId, name: recommendation.exerciseName) ? LanguageManager.t("progression.coach.bodyweight") : "\(weightUnit.formatWeight(load))\(compact ? "" : " ")\(weightUnit.label)"
     }
 }
 

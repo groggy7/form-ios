@@ -8156,7 +8156,7 @@ final class FormAppTests: XCTestCase {
     }
 
     func testLogbookBeatDetectionAndFormatting() {
-        let exercise = Exercise(id: "bench", name: "Bench Press", prescription: "3 × 8–12", sets: 3)
+        let exercise = Exercise(id: "bench", name: "Barbell Bench Press", exerciseId: "barbell-bench-press", prescription: "3 × 8–12", sets: 3)
         let prevSets = [SessionSetLog(setNumber: 1, weightKg: 100.0, reps: 8)]
         let target = WorkoutSessionUtils.computeGhostTarget(previousSets: prevSets, workingSetIndex: 0, exercise: exercise, unit: .kg)
 
@@ -10661,5 +10661,101 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
             XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.weightKg, 100)
             XCTAssertNil(host.presentedViewController as? UIAlertController)
         }
+    }
+}
+
+final class BodyweightLoggingTests: XCTestCase {
+    private let push = Exercise(id: "push", name: "Push-Ups", exerciseId: "push-ups", sets: 2, reps: RepTarget(min: 8, max: 12))
+    private var assisted: Exercise { var ex = push; ex.name = "Assisted Pull-up"; ex.exerciseId = "assisted-pull-up"; return ex }
+    private func record(_ n: Int, exercise: Exercise? = nil, weights: [Double?] = [0, 0], reps: [Int] = [10, 9]) -> WorkoutSessionRecord {
+        let ex = exercise ?? push
+        return WorkoutSessionRecord(id: "r\(n)", programId: "p", workoutId: "w", workoutTitle: "Test", startedAt: "2026-10-0\(n)T10:00:00Z", completedAt: "2026-10-0\(n)T11:00:00Z", durationSeconds: 60,
+            totalVolumeKg: zip(weights, reps).reduce(0) { $0 + ($1.0 ?? 0) * Double($1.1) }, exerciseLogs: [SessionExerciseLog(exerciseName: ex.name, sets: weights.enumerated().map { SessionSetLog(setNumber: $0.offset + 1, weightKg: $0.element, reps: reps[$0.offset]) }, targetSets: 2, exerciseId: ex.exerciseId)])
+    }
+    private func draft(_ ex: Exercise? = nil) -> ActiveSessionDraft {
+        let workout = Workout(id: "w", day: 1, title: "Test", exercises: [ex ?? push])
+        return ActiveSessionDraft(id: "d", programId: "p", workout: workout, startedAt: "2026-10-09T10:00:00Z", startedAtEpochMillis: 1000, setsByExercise: WorkoutSessionUtils.initialSets(for: workout))
+    }
+    func testActualZeroDefaultsAndUntouchedRowsRemainEligibleForPrefill() {
+        let initial = draft()
+        XCTAssertTrue(initial.setsByExercise[push.id]!.allSatisfy { $0.weightInput == "0" && $0.weightKg == 0 && !$0.isCompleted && $0.inputTouched != true })
+        XCTAssertFalse(SessionProgress.from(draft: initial, nowEpochMillis: 2000).hasProgress)
+        for ex in [Exercise(name: "Weighted Pull-Ups", exerciseId: "weighted-pull-ups"), Exercise(name: "Custom"), assisted] {
+            XCTAssertEqual(WorkoutSessionUtils.newSet(exercise: ex, number: 1).weightInput, "")
+        }
+        let previous = ExerciseSetLog(setNumber: 1, repsInput: "8", weightKg: 5, completedReps: 8, isCompleted: true)
+        let next = WorkoutSessionUtils.prefillSet(WorkoutSessionUtils.newSet(exercise: push, number: 2), from: previous)
+        XCTAssertEqual(next.weightKg, 5); XCTAssertEqual(next.repsInput, "8"); XCTAssertFalse(next.isCompleted)
+    }
+    func testZeroAndMixedBaselinesKeepLatestSetPositionsAndRecognizeRepGains() {
+        let previous = WorkoutSessionUtils.findPreviousSessionWorkingSets(history: [record(2), record(1, weights: [10, 10])], exercise: push)
+        XCTAssertEqual(previous.map { $0.weightKg }, [0, 0])
+        let target = WorkoutSessionUtils.computeGhostTarget(previousSets: previous, workingSetIndex: 0, exercise: push)
+        XCTAssertFalse(target.isFirstSession); XCTAssertNil(target.altWeightKg)
+        XCTAssertNotNil(WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: 0, loggedReps: 11, target: target))
+        XCTAssertNil(WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: 10, loggedReps: 1, target: target))
+        XCTAssertEqual(WorkoutSessionUtils.findExercisePr(history: [record(2)], exercise: push), "×10")
+        let mixed = WorkoutSessionUtils.findPreviousSessionWorkingSets(history: [record(2, weights: [0, 10])], exercise: push)
+        XCTAssertEqual(mixed.map { $0.setNumber }, [1, 2])
+        XCTAssertEqual(WorkoutSessionUtils.computeGhostTarget(previousSets: mixed, workingSetIndex: 0, exercise: push).lastWeekWeightKg, 0)
+        XCTAssertTrue(WorkoutSessionUtils.findPreviousSessionWorkingSets(history: [record(3, weights: [nil, 0]), record(2)], exercise: push).isEmpty)
+    }
+    func testInvalidCompletedEditsNeedExplicitCompletionAgainAndNeverSaveMissingValues() {
+        let row = ExerciseSetLog(setNumber: 1, weightInput: "0", repsInput: "10", weightKg: 0, completedReps: 10, isCompleted: true)
+        let cleared = WorkoutSessionUtils.editedSet(row, weight: "", reps: "10", exercise: push, unit: .kg)
+        XCTAssertFalse(cleared.isCompleted)
+        XCTAssertFalse(WorkoutSessionUtils.editedSet(cleared, weight: "0", reps: "10", exercise: push, unit: .kg).isCompleted)
+        XCTAssertFalse(WorkoutSessionUtils.editedSet(row, weight: "0", reps: "", exercise: push, unit: .kg).isCompleted)
+        XCTAssertTrue(WorkoutSessionUtils.editedSet(row, weight: "0", reps: "11", exercise: push, unit: .kg).isCompleted)
+        var active = draft(); active.setsByExercise[push.id] = [cleared]
+        XCTAssertFalse(WorkoutSessionUtils.isComplete(draft: active))
+        let progress = SessionProgress.from(draft: active, nowEpochMillis: 3000)
+        XCTAssertEqual(progress.completedSets, 0); XCTAssertTrue(progress.exerciseLogs.first!.sets.isEmpty)
+    }
+    func testAssistanceDoesNotIncreaseAutomaticallyAndLessAssistanceBeatsAtSameReps() throws {
+        let history = [record(1, exercise: assisted, weights: [40, 40], reps: [12, 12]), record(2, exercise: assisted, weights: [40, 40], reps: [12, 12])]
+        let rec = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: assisted, history: history))
+        XCTAssertEqual(rec.action, .holdLoad); XCTAssertEqual(rec.setTargets.map { $0.weightKg }, [40, 40])
+        XCTAssertEqual(rec.rationaleKey, "progression.rationale.assistance_ceiling")
+        let ghost = WorkoutSessionUtils.computeGhostTarget(previousSets: history.last!.exerciseLogs.first!.sets, workingSetIndex: 0, exercise: assisted)
+        XCTAssertNil(ghost.altWeightKg)
+        XCTAssertNil(WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: 42.5, loggedReps: 12, target: ghost))
+        let beat = try XCTUnwrap(WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: 37.5, loggedReps: 12, target: ghost))
+        XCTAssertEqual(WorkoutSessionUtils.formatLogbookBeatBadge(result: beat), "−2.5 KG")
+        XCTAssertNil(WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: 37.5, loggedReps: 10, target: ghost))
+        XCTAssertTrue(WorkoutSessionUtils.allowsZeroWeight(assisted))
+    }
+    func testAssistanceIsExcludedFromResistanceMetricsButRetainsSetsAndReps() {
+        let history = [record(1, exercise: assisted, weights: [40, 40]), record(2, exercise: assisted, weights: [45, 45])]
+        XCTAssertEqual(PersonalRecordTracker.countPrsForWeek(history: history, currentWeekKey: "2026-W40", timeZone: TimeZone(secondsFromGMT: 0)!), 0)
+        XCTAssertEqual(WorkoutSessionUtils.resistanceVolume(history.first!), 0)
+        XCTAssertNil(FormLabEngine.computeExerciseRepMax(exerciseName: assisted.name, history: history))
+        let stats = PersonalRecordTracker.computeExerciseHistoryStats(history: history, exerciseName: assisted.name)
+        XCTAssertEqual(stats.prWeightKg, 40); XCTAssertEqual(stats.lifetimeSets, 4)
+        XCTAssertEqual(stats.totalVolumeKg, 0); XCTAssertNil(stats.estimated1rmKg); XCTAssertTrue(stats.isAssisted)
+        var active = draft(assisted)
+        active.setsByExercise[assisted.id] = [ExerciseSetLog(setNumber: 1, weightKg: 40, completedReps: 10, isCompleted: true)]
+        let progress = SessionProgress.from(draft: active, nowEpochMillis: 2000)
+        XCTAssertEqual(progress.completedSets, 1); XCTAssertEqual(progress.volumeKg, 0)
+    }
+    @MainActor func testLoggingSnapshotsAtNarrowLocalizedLargeText() {
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap { $0.windows }.first { $0.isKeyWindow }
+        defer { LanguageManager.setLanguage(previousLanguage); previousWindow?.makeKeyAndVisible() }
+        for language in ["en", "tr"] { for isAssisted in [false, true] {
+            LanguageManager.setLanguage(language)
+            let ex = isAssisted ? assisted : push
+            let rows = [ExerciseSetLog(setNumber: 1, weightInput: isAssisted ? "40" : "0", repsInput: "11", weightKg: isAssisted ? 40 : 0, completedReps: 11, isCompleted: true), WorkoutSessionUtils.newSet(exercise: ex, number: 2)]
+            let ghost = WorkoutSessionUtils.computeGhostTarget(previousSets: [SessionSetLog(setNumber: 1, weightKg: isAssisted ? 40 : 0, reps: 10)], workingSetIndex: 0, exercise: ex)
+            let view = ScrollView { SetLoggingTable(sets: rows, prescription: "2 × 8–12", onUpdateSet: { _,_,_ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in }, allowsZeroWeight: true, isAssisted: isAssisted, ghostTargets: [0: ghost]).padding(16) }.background(AppColors.background).environment(\.sizeCategory, .accessibilityMedium)
+            let controller = UIHostingController(rootView: view)
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 852))
+            window.rootViewController = controller; window.makeKeyAndVisible(); controller.view.layoutIfNeeded()
+            RunLoop.main.run(until: Date().addingTimeInterval(0.1))
+            let image = UIGraphicsImageRenderer(size: window.bounds.size).image { _ in controller.view.drawHierarchy(in: window.bounds, afterScreenUpdates: true) }
+            let attachment = XCTAttachment(image: image)
+            attachment.name = "logging-\(isAssisted ? "assistance" : "bodyweight")-\(language)-320-large"; attachment.lifetime = .keepAlways; add(attachment)
+            XCTAssertEqual(controller.view.bounds.width, 320); window.isHidden = true
+        } }
     }
 }

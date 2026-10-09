@@ -120,7 +120,7 @@ public struct FormLabEngine {
                 } else {
                     isMatch = (ExerciseCatalog.key(log.exerciseName) == targetKey)
                 }
-                guard isMatch else { continue }
+                guard isMatch, !WorkoutSessionUtils.isAssisted(exerciseId: log.exerciseId, name: log.exerciseName) else { continue }
 
                 for set in log.sets {
                     guard !set.isWarmup else { continue }
@@ -202,7 +202,7 @@ public struct FormLabEngine {
                 } else {
                     isMatch = (ExerciseCatalog.key(log.exerciseName) == targetKey)
                 }
-                guard isMatch else { continue }
+                guard isMatch, !WorkoutSessionUtils.isAssisted(exerciseId: log.exerciseId, name: log.exerciseName) else { continue }
 
                 var sessionPeak1RM: Double = 0
                 var sessionTopWeight: Double = 0

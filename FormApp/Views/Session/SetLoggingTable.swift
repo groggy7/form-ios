@@ -22,6 +22,7 @@ public struct SetLoggingTable: View {
     var onToggleWarmup: ((Int) -> Void)? = nil
     var weightUnit: WeightUnit = .kg
     var allowsZeroWeight: Bool = false
+    var isAssisted: Bool = false
     var ghostTargets: [Int: GhostTarget] = [:]
     var logbookBeatenSets: [Int: LogbookBeatResult] = [:]
 
@@ -40,6 +41,7 @@ public struct SetLoggingTable: View {
         onToggleWarmup: ((Int) -> Void)? = nil,
         weightUnit: WeightUnit = .kg,
         allowsZeroWeight: Bool = false,
+        isAssisted: Bool = false,
         ghostTargets: [Int: GhostTarget] = [:],
         logbookBeatenSets: [Int: LogbookBeatResult] = [:]
     ) {
@@ -57,6 +59,7 @@ public struct SetLoggingTable: View {
         self.onToggleWarmup = onToggleWarmup
         self.weightUnit = weightUnit
         self.allowsZeroWeight = allowsZeroWeight
+        self.isAssisted = isAssisted
         self.ghostTargets = ghostTargets
         self.logbookBeatenSets = logbookBeatenSets
     }
@@ -108,7 +111,7 @@ public struct SetLoggingTable: View {
             .padding(.horizontal, 14)
 
             if allowsZeroWeight {
-                Text(LanguageManager.t("table.no_added_weight"))
+                Text(LanguageManager.t(isAssisted ? "table.assistance_hint" : "table.no_added_weight"))
                     .font(.system(size: 12)).foregroundColor(AppColors.muted)
                     .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
             }
@@ -117,12 +120,12 @@ public struct SetLoggingTable: View {
             ForEach(Array(sets.enumerated()), id: \.element.id) { index, set in
                 let isSetEnabled = set.isCompleted || WorkoutSessionUtils.isSetEnabled(sets: sets, index: index)
                 let isSetInputEnabled = isRestActive
-                    ? (currentLoggedIndex == index)
+                    ? (currentLoggedIndex == index || (isRestForCurrentExercise && selectedField?.id == set.id))
                     : isSetEnabled
                 let ghostTarget = ghostTargets[index]
                 let contextualPr: String = {
-                    if let gt = ghostTarget, let prevW = gt.lastWeekWeightKg, let prevR = gt.lastWeekReps, prevW > 0.0, prevR > 0 {
-                        return "\(WorkoutSessionUtils.formatWeight(prevW, unit: weightUnit))x\(prevR)"
+                    if let gt = ghostTarget, let prevW = gt.lastWeekWeightKg, let prevR = gt.lastWeekReps, prevW >= 0.0, prevR > 0 {
+                        return !isAssisted && prevW == 0 ? "×\(prevR)" : "\(WorkoutSessionUtils.formatWeight(prevW, unit: weightUnit))x\(prevR)"
                     }
                     return prText.isEmpty ? "-" : prText
                 }()
@@ -193,6 +196,7 @@ public struct SetLoggingTable: View {
                             .frame(width: 56, alignment: .center)
                     } else {
                         Text(contextualPr)
+                            .accessibilityLabel(contextualPr.hasPrefix("×") ? "\(contextualPr.dropFirst()) \(LanguageManager.t("exercise.history.reps"))" : contextualPr)
                             .font(.system(size: 13, weight: .medium))
                             .foregroundColor(
                                 set.isCompleted
@@ -211,7 +215,7 @@ public struct SetLoggingTable: View {
                             }
                         })
                         .disabled(!isSetInputEnabled)
-                        .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \(LanguageManager.t(weightUnit == .lbs ? "table.weightLbs" : "table.weightKg"))")
+                        .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \((isAssisted ? "\(LanguageManager.t("table.assistance")) (\(weightUnit.label))" : LanguageManager.t(weightUnit == .lbs ? "table.weightLbs" : "table.weightKg")))")
                         .keyboardType(.decimalPad)
                         .multilineTextAlignment(.center)
                         .font(.system(size: 15, weight: .semibold))

@@ -45,21 +45,20 @@ public struct SessionProgress {
 
     public static func from(draft: ActiveSessionDraft, nowEpochMillis: Int64) -> SessionProgress {
         let allSets = draft.setsByExercise.values.flatMap { $0 }
-        let completed = allSets.filter { $0.isCompleted }
+        let completed = draft.workout.exercises.flatMap { ex in
+            (draft.setsByExercise[ex.id] ?? []).filter { $0.isCompleted && WorkoutSessionUtils.canCompleteSet($0, allowsZeroWeight: WorkoutSessionUtils.allowsZeroWeight(ex)) }
+        }
         let completedWorking = completed.filter { !$0.isWarmup }
         let duration = draft.currentDurationSeconds(nowEpochMillis: nowEpochMillis)
         
-        var volume: Double = 0
-        for s in completedWorking {
-            let w = s.weightKg ?? 0
-            let r = s.completedReps ?? 0
-            volume += w * Double(r)
+        let volume = draft.workout.exercises.filter { !WorkoutSessionUtils.isAssisted($0) }.reduce(0.0) { total, ex in
+            total + (draft.setsByExercise[ex.id] ?? []).filter { completedWorking.contains($0) }.reduce(0) { $0 + ($1.weightKg ?? 0) * Double($1.completedReps ?? 0) }
         }
 
         let logs = draft.workout.exercises.map { ex -> SessionExerciseLog in
             let configured = draft.setsByExercise[ex.id] ?? []
             let workingCount = configured.filter { !$0.isWarmup }.count
-            let sets = configured.filter { $0.isCompleted }.map {
+            let sets = configured.filter { completed.contains($0) }.map {
                 SessionSetLog(setNumber: $0.setNumber, weightKg: $0.weightKg, reps: $0.completedReps, isWarmup: $0.isWarmup)
             }
             let target = workingCount > 0 ? workingCount : WorkoutSessionUtils.initialSetCount(exercise: ex)
@@ -72,7 +71,7 @@ public struct SessionProgress {
         }
 
         let hasProg = allSets.contains {
-            $0.isCompleted || !$0.weightInput.trimmingCharacters(in: .whitespaces).isEmpty || !$0.repsInput.trimmingCharacters(in: .whitespaces).isEmpty
+            $0.isCompleted || (!$0.weightInput.trimmingCharacters(in: .whitespaces).isEmpty && ($0.inputTouched == true || $0.weightInput != "0")) || !$0.repsInput.trimmingCharacters(in: .whitespaces).isEmpty
         }
 
         return SessionProgress(
@@ -108,6 +107,43 @@ public struct SessionProgress {
 }
 
 public enum WorkoutSessionUtils {
+    public static func isAssisted(exerciseId: String?, name: String) -> Bool {
+        let id = ExerciseCatalog.resolveCanonicalId(stableId: exerciseId, name: name)
+        return id == "assisted-pull-up" || id == "assisted-dip-machine"
+    }
+
+    public static func isAssisted(_ exercise: Exercise) -> Bool { isAssisted(exerciseId: exercise.exerciseId, name: exercise.name) }
+
+    public static func defaultsToZeroAddedWeight(_ exercise: Exercise) -> Bool {
+        guard let id = ExerciseCatalog.resolveCanonicalId(stableId: exercise.exerciseId, name: exercise.name) else { return false }
+        return ExerciseCatalog.canonicalExercises[id]?.searchKeywords.contains { $0.lowercased() == "bodyweight" } == true
+    }
+
+    public static func newSet(exercise: Exercise, number: Int) -> ExerciseSetLog {
+        defaultsToZeroAddedWeight(exercise)
+            ? ExerciseSetLog(setNumber: number, weightInput: "0", weightKg: 0)
+            : ExerciseSetLog(setNumber: number)
+    }
+
+    public static func editedSet(_ set: ExerciseSetLog, weight: String, reps: String, exercise: Exercise, unit: WeightUnit) -> ExerciseSetLog {
+        var edited = set
+        edited.weightInput = weight; edited.repsInput = reps
+        edited.weightKg = weightForEditedInput(weight, existing: set, unit: unit)
+        edited.completedReps = Int(reps); edited.inputTouched = true
+        edited.isCompleted = set.isCompleted && canCompleteSet(edited, allowsZeroWeight: allowsZeroWeight(exercise))
+        return edited
+    }
+
+    public static func resistanceVolume(_ log: SessionExerciseLog) -> Double {
+        guard !isAssisted(exerciseId: log.exerciseId, name: log.exerciseName) else { return 0 }
+        return log.sets.filter { !$0.isWarmup }.reduce(0) { $0 + ($1.weightKg ?? 0) * Double($1.reps ?? 0) }
+    }
+
+    public static func resistanceVolume(_ record: WorkoutSessionRecord) -> Double {
+        record.exerciseLogs.contains { isAssisted(exerciseId: $0.exerciseId, name: $0.exerciseName) }
+            ? record.exerciseLogs.reduce(0) { $0 + resistanceVolume($1) } : record.totalVolumeKg
+    }
+
     public static func currentSetNumber(_ sets: [ExerciseSetLog]) -> Int {
         sets.firstIndex(where: { !$0.isCompleted }).map { $0 + 1 } ?? sets.count
     }
@@ -138,8 +174,8 @@ public enum WorkoutSessionUtils {
     }
 
     public static func prefillSet(_ target: ExerciseSetLog, from previous: ExerciseSetLog?, unit: WeightUnit = .kg) -> ExerciseSetLog {
-        guard target.inputTouched != true, !target.isCompleted, target.weightInput.isEmpty, target.repsInput.isEmpty,
-              target.weightKg == nil, target.completedReps == nil, let previous, canCompleteSet(previous, allowsZeroWeight: true) else { return target }
+        guard target.inputTouched != true, !target.isCompleted, (target.weightInput.isEmpty || target.weightInput == "0"), target.repsInput.isEmpty,
+              (target.weightKg == nil || (target.weightKg == 0 && target.weightInput == "0")), target.completedReps == nil, let previous, canCompleteSet(previous, allowsZeroWeight: true) else { return target }
         let canonicalWeight = previous.weightKg.flatMap { $0.isFinite && $0 >= 0 ? $0 : nil }
         let weight = canonicalWeight.map { formatWeight($0, unit: unit) } ?? previous.weightInput
         let reps = previous.repsInput.isEmpty ? previous.completedReps.map { "\($0)" } ?? "" : previous.repsInput
@@ -191,9 +227,9 @@ public enum WorkoutSessionUtils {
             let sets = draft.setsByExercise[ex.id] ?? []
             let workingSets = sets.filter { !$0.isWarmup }
             if !workingSets.isEmpty {
-                return workingSets.allSatisfy { $0.isCompleted }
+                return workingSets.allSatisfy { $0.isCompleted && canCompleteSet($0, allowsZeroWeight: allowsZeroWeight(ex)) }
             } else {
-                return !sets.isEmpty && sets.allSatisfy { $0.isCompleted }
+                return !sets.isEmpty && sets.allSatisfy { $0.isCompleted && canCompleteSet($0, allowsZeroWeight: allowsZeroWeight(ex)) }
             }
         }
     }
@@ -222,7 +258,7 @@ public enum WorkoutSessionUtils {
         var map: [String: [ExerciseSetLog]] = [:]
         for ex in workout.exercises {
             let count = initialSetCount(exercise: ex)
-            map[ex.id] = (1...count).map { ExerciseSetLog(setNumber: $0) }
+            map[ex.id] = (1...count).map { newSet(exercise: ex, number: $0) }
         }
         return map
     }
@@ -283,11 +319,11 @@ public enum WorkoutSessionUtils {
                 let needed = max(safeTarget, working.map { $0.setNumber }.max() ?? 0)
                 let completedNumbers = Set(working.map(\.setNumber))
                 for number in 1...needed where !completedNumbers.contains(number) {
-                    restored.append(ExerciseSetLog(setNumber: number))
+                    restored.append(newSet(exercise: ex, number: number))
                 }
                 result[ex.id] = restored
             } else {
-                result[ex.id] = (1...safeTarget).map { ExerciseSetLog(setNumber: $0) }
+                result[ex.id] = (1...safeTarget).map { newSet(exercise: ex, number: $0) }
             }
         }
         return result
@@ -303,111 +339,29 @@ public enum WorkoutSessionUtils {
         return 0
     }
 
-    public static func findExercisePr(
-        history: [WorkoutSessionRecord],
-        exerciseName: String,
-        exerciseId: String? = nil,
-        unit: WeightUnit = .kg
-    ) -> String? {
-        let targetId = exerciseId?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        let targetName = exerciseName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-
-        var bestWeight: Double = 0.0
-        var bestReps: Int = 0
-
-        for record in history {
-            for log in record.exerciseLogs {
-                let logName = log.exerciseName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-
-                var matches = logName == targetName
-
-                if !matches {
-                    if let exId = targetId ?? ExerciseCatalog.canonicalExercises.first(where: { $0.value.name.lowercased() == targetName })?.key {
-                        let enName = ContentLocalizer.shared.exerciseName(exerciseId: exId, fallback: exerciseName, lang: "en").trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-                        let trName = ContentLocalizer.shared.exerciseName(exerciseId: exId, fallback: exerciseName, lang: "tr").trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-                        if logName == enName || logName == trName {
-                            matches = true
-                        }
-                    }
-                }
-
-                if !matches { continue }
-
-                for set in log.sets {
-                    if set.isWarmup { continue }
-                    let weight = set.weightKg ?? 0.0
-                    let reps = set.reps ?? 0
-                    if weight > 0.0 && reps > 0 {
-                        if weight > bestWeight || (weight == bestWeight && reps > bestReps) {
-                            bestWeight = weight
-                            bestReps = reps
-                        }
-                    }
-                }
-            }
-        }
-
-        if bestWeight > 0.0 && bestReps > 0 {
-            return "\(formatWeight(bestWeight, unit: unit))x\(bestReps)"
-        } else {
-            return nil
-        }
+    public static func findExercisePr(history: [WorkoutSessionRecord], exerciseName: String, exerciseId: String? = nil, unit: WeightUnit = .kg) -> String? {
+        findExercisePr(history: history, exercise: Exercise(name: exerciseName, exerciseId: exerciseId), unit: unit)
     }
 
-    public static func findExercisePr(
-        history: [WorkoutSessionRecord],
-        exercise: Exercise,
-        unit: WeightUnit = .kg
-    ) -> String? {
-        let targetId = exercise.exerciseId?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        let targetName = exercise.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        let targetDisplay = exercise.displayName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-
-        var bestWeight: Double = 0.0
-        var bestReps: Int = 0
-
-        for record in history {
-            for log in record.exerciseLogs {
-                let logName = log.exerciseName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-
-                var matches = logName == targetName || logName == targetDisplay
-
-                if !matches {
-                    if let exId = targetId ?? ExerciseCatalog.canonicalExercises.first(where: { $0.value.name.lowercased() == targetName })?.key {
-                        let enName = ContentLocalizer.shared.exerciseName(exerciseId: exId, fallback: exercise.name, lang: "en").trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-                        let trName = ContentLocalizer.shared.exerciseName(exerciseId: exId, fallback: exercise.name, lang: "tr").trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-                        if logName == enName || logName == trName {
-                            matches = true
-                        }
-                    }
-                }
-
-                if !matches { continue }
-
-                for set in log.sets {
-                    if set.isWarmup { continue }
-                    let weight = set.weightKg ?? 0.0
-                    let reps = set.reps ?? 0
-                    if weight > 0.0 && reps > 0 {
-                        if weight > bestWeight || (weight == bestWeight && reps > bestReps) {
-                            bestWeight = weight
-                            bestReps = reps
-                        }
-                    }
-                }
-            }
+    public static func findExercisePr(history: [WorkoutSessionRecord], exercise: Exercise, unit: WeightUnit = .kg) -> String? {
+        let assisted = isAssisted(exercise)
+        let candidates = history.flatMap { $0.exerciseLogs }.filter {
+            ExerciseCatalog.sameExercise(leftId: exercise.exerciseId, leftName: exercise.name, rightId: $0.exerciseId, rightName: $0.exerciseName)
+        }.flatMap { $0.sets }.filter { !$0.isWarmup && validHistoricalSet($0, exercise: exercise) }
+        let best = candidates.max { a, b in
+            if a.weightKg != b.weightKg { return assisted ? a.weightKg! > b.weightKg! : a.weightKg! < b.weightKg! }
+            return a.reps! < b.reps!
         }
-
-        if bestWeight > 0.0 && bestReps > 0 {
-            return "\(formatWeight(bestWeight, unit: unit))x\(bestReps)"
-        } else {
-            return nil
-        }
+        guard let best else { return nil }
+        return !assisted && best.weightKg == 0 ? "×\(best.reps!)" : "\(formatWeight(best.weightKg!, unit: unit))x\(best.reps!)"
     }
 
-    public static func formatWeight(_ value: Double, unit: WeightUnit = .kg) -> String {
-        return unit.formatWeight(value)
+    private static func validHistoricalSet(_ set: SessionSetLog, exercise: Exercise) -> Bool {
+        guard let reps = set.reps, (1...999).contains(reps), let weight = set.weightKg, weight.isFinite, weight >= 0 else { return false }
+        return allowsZeroWeight(exercise) || weight > 0
     }
+
+    public static func formatWeight(_ value: Double, unit: WeightUnit = .kg) -> String { unit.formatWeight(value) }
 
     public static func sanitizedWeightInput(_ value: String, unit: WeightUnit = .kg) -> String? {
         var normalized = value.replacingOccurrences(of: ",", with: ".").trimmingCharacters(in: .whitespaces)
@@ -463,7 +417,7 @@ public enum WorkoutSessionUtils {
 
     public static func allowsZeroWeight(_ exercise: Exercise) -> Bool {
         let id = ExerciseCatalog.resolveCanonicalId(stableId: exercise.exerciseId, name: exercise.name)
-        return !["bar", "dumbbell", "machine", "kettlebell", "weight-plate"].contains(EquipmentCatalog.shared.categoryId(id))
+        return isAssisted(exercise) || !["bar", "dumbbell", "machine", "kettlebell", "weight-plate"].contains(EquipmentCatalog.shared.categoryId(id))
     }
 
     public static func setValidationError(_ set: ExerciseSetLog, allowsZeroWeight: Bool = false) -> String? {
@@ -484,32 +438,15 @@ public enum WorkoutSessionUtils {
         history: [WorkoutSessionRecord],
         exercise: Exercise
     ) -> [SessionSetLog] {
-        let targetId = exercise.exerciseId?.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        let targetName = exercise.name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        let targetCanonical = ExerciseCatalog.key(exercise.name)
-
-        let sortedRecords = history.sorted { a, b in
-            let dateA = a.completedAt.isEmpty ? a.startedAt : a.completedAt
-            let dateB = b.completedAt.isEmpty ? b.startedAt : b.completedAt
-            return dateA > dateB
-        }
-
-        for record in sortedRecords {
-            for log in record.exerciseLogs {
-                let logName = log.exerciseName.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-                let logCanonical = ExerciseCatalog.key(log.exerciseName)
-
-                let matches = (targetId != nil && (targetId == logName || targetId == logCanonical)) ||
-                    logName == targetName ||
-                    logCanonical == targetCanonical
-
-                if !matches { continue }
-
-                let validSets = log.sets.filter { !$0.isWarmup && ($0.reps ?? 0) > 0 && ($0.weightKg ?? 0.0) > 0.0 }
-                if !validSets.isEmpty {
-                    return validSets
-                }
+        for record in history.sorted(by: { ($0.completedAt.isEmpty ? $0.startedAt : $0.completedAt) > ($1.completedAt.isEmpty ? $1.startedAt : $1.completedAt) }) {
+            let logs = record.exerciseLogs.filter {
+                ExerciseCatalog.sameExercise(leftId: exercise.exerciseId, leftName: exercise.name, rightId: $0.exerciseId, rightName: $0.exerciseName)
             }
+            let working = logs.flatMap { $0.sets }.filter { !$0.isWarmup }
+            if working.isEmpty { continue }
+            // Keep set positions and the latest baseline, including explicit zero loads.
+            return logs.count == 1 && working.allSatisfy { validHistoricalSet($0, exercise: exercise) } && Set(working.map { $0.setNumber }).count == working.count
+                ? working.sorted { $0.setNumber < $1.setNumber } : []
         }
         return []
     }
@@ -521,14 +458,18 @@ public enum WorkoutSessionUtils {
         unit: WeightUnit = .kg
     ) -> GhostTarget {
         if !previousSets.isEmpty {
-            let prev = (workingSetIndex < previousSets.count) ? previousSets[workingSetIndex] : previousSets.last!
+            guard let prev = previousSets.first(where: { $0.setNumber == workingSetIndex + 1 })
+                ?? (workingSetIndex + 1 > previousSets.last!.setNumber ? previousSets.last : nil) else {
+                return computeGhostTarget(previousSets: [], workingSetIndex: workingSetIndex, exercise: exercise, unit: unit)
+            }
             let prevWeightKg = prev.weightKg ?? 0.0
             let prevReps = prev.reps ?? 8
             let targetWeightKg = prevWeightKg
             let targetReps = prevReps + 1
             let deltaKg = (unit == .lbs) ? WeightUnit.toCanonicalKg(5.0, unit: .lbs) : 2.5
-            let altWeightKg = prevWeightKg + deltaKg
-            let altReps = max(1, prevReps - 1)
+            let supportsLoadStep = prevWeightKg > 0 && !isAssisted(exercise) && ["bar", "dumbbell", "machine"].contains(EquipmentCatalog.shared.categoryId(ExerciseCatalog.resolveCanonicalId(stableId: exercise.exerciseId, name: exercise.name)))
+            let altWeightKg: Double? = supportsLoadStep ? prevWeightKg + deltaKg : nil
+            let altReps: Int? = supportsLoadStep ? max(1, prevReps - 1) : nil
             return GhostTarget(
                 lastWeekWeightKg: prevWeightKg,
                 lastWeekReps: prevReps,
@@ -537,7 +478,8 @@ public enum WorkoutSessionUtils {
                 altWeightKg: altWeightKg,
                 altReps: altReps,
                 isFirstSession: false,
-                prescription: exercise.displayPrescription
+                prescription: exercise.displayPrescription,
+                isAssisted: isAssisted(exercise)
             )
         } else {
             let minReps = ProgressionEngine.parseRepRange(exercise: exercise)?.min
@@ -549,7 +491,8 @@ public enum WorkoutSessionUtils {
                 altWeightKg: nil,
                 altReps: nil,
                 isFirstSession: true,
-                prescription: exercise.displayPrescription
+                prescription: exercise.displayPrescription,
+                isAssisted: isAssisted(exercise)
             )
         }
     }
@@ -560,7 +503,11 @@ public enum WorkoutSessionUtils {
         target: GhostTarget
     ) -> LogbookBeatResult? {
         guard let prevW = target.lastWeekWeightKg, let prevR = target.lastWeekReps else { return nil }
-        if target.isFirstSession || prevW <= 0.0 || prevR <= 0 { return nil }
+        if target.isFirstSession || !prevW.isFinite || prevW < 0 || prevR <= 0 || !loggedWeightKg.isFinite || loggedWeightKg < 0 || !(1...999).contains(loggedReps) { return nil }
+        if target.isAssisted {
+            let improved = (abs(loggedWeightKg - prevW) <= 0.01 && loggedReps > prevR) || (loggedWeightKg < prevW - 0.01 && loggedReps >= prevR)
+            return improved ? LogbookBeatResult(repDelta: loggedReps - prevR, weightDeltaKg: loggedWeightKg - prevW, currentWeightKg: loggedWeightKg, currentReps: loggedReps, previousWeightKg: prevW, previousReps: prevR, isAssisted: true) : nil
+        }
 
         let isSameOrHigherWeightMoreReps = loggedWeightKg >= (prevW - 0.01) && loggedReps > prevR
         let isHigherWeightEqualOrMoreReps = loggedWeightKg > (prevW + 0.01) && loggedReps >= prevR
@@ -569,7 +516,7 @@ public enum WorkoutSessionUtils {
 
         let current1RM = loggedWeightKg * (1.0 + Double(loggedReps) / 30.0)
         let prev1RM = prevW * (1.0 + Double(prevR) / 30.0)
-        let isEstimated1RMHigher = current1RM > (prev1RM * 1.005) && loggedWeightKg >= (prevW * 0.95)
+        let isEstimated1RMHigher = prevW > 0 && target.altWeightKg != nil && current1RM > (prev1RM * 1.005) && loggedWeightKg >= (prevW * 0.95)
 
         if isSameOrHigherWeightMoreReps || isHigherWeightEqualOrMoreReps || isAltLoadTargetMet || isEstimated1RMHigher {
             return LogbookBeatResult(
@@ -619,6 +566,7 @@ public enum WorkoutSessionUtils {
     }
 
     public static func formatLogbookBeatBadge(result: LogbookBeatResult, unit: WeightUnit = .kg) -> String {
+        if result.isAssisted && result.weightDeltaKg < -0.01 { return "−\(formatWeight(-result.weightDeltaKg, unit: unit)) \(unit.uppercaseLabel)" }
         if result.repDelta > 0 && result.weightDeltaKg <= 0.01 {
             return LanguageManager.t("session.logbook.badge_rep", ["count": result.repDelta])
         } else if result.weightDeltaKg > 0.01 {
@@ -630,8 +578,13 @@ public enum WorkoutSessionUtils {
     }
 
     public static func formatLogbookBeatNotice(result: LogbookBeatResult, unit: WeightUnit = .kg) -> String {
-        let currStr = "\(formatWeight(result.currentWeightKg, unit: unit)) \(unit.label) × \(result.currentReps)"
-        let prevStr = "\(formatWeight(result.previousWeightKg, unit: unit)) \(unit.label) × \(result.previousReps)"
+        func value(_ weight: Double, _ reps: Int) -> String {
+            if result.isAssisted { return "\(formatWeight(weight, unit: unit)) \(unit.label) \(LanguageManager.t("table.assistance")) × \(reps)" }
+            if weight == 0 { return "\(reps) \(LanguageManager.t("exercise.history.reps"))" }
+            return "\(formatWeight(weight, unit: unit)) \(unit.label) × \(reps)"
+        }
+        let currStr = value(result.currentWeightKg, result.currentReps)
+        let prevStr = value(result.previousWeightKg, result.previousReps)
         return LanguageManager.t("session.logbook.beat_notice", ["current": currStr, "previous": prevStr])
     }
 
@@ -644,6 +597,7 @@ public enum WorkoutSessionUtils {
         public let altReps: Int?
         public let isFirstSession: Bool
         public let prescription: String
+        public let isAssisted: Bool
 
         public init(
             lastWeekWeightKg: Double?,
@@ -653,7 +607,8 @@ public enum WorkoutSessionUtils {
             altWeightKg: Double?,
             altReps: Int?,
             isFirstSession: Bool,
-            prescription: String = ""
+            prescription: String = "",
+            isAssisted: Bool = false
         ) {
             self.lastWeekWeightKg = lastWeekWeightKg
             self.lastWeekReps = lastWeekReps
@@ -663,6 +618,7 @@ public enum WorkoutSessionUtils {
             self.altReps = altReps
             self.isFirstSession = isFirstSession
             self.prescription = prescription
+            self.isAssisted = isAssisted
         }
     }
 
@@ -673,6 +629,7 @@ public enum WorkoutSessionUtils {
         public let currentReps: Int
         public let previousWeightKg: Double
         public let previousReps: Int
+        public let isAssisted: Bool
 
         public init(
             repDelta: Int,
@@ -680,7 +637,8 @@ public enum WorkoutSessionUtils {
             currentWeightKg: Double,
             currentReps: Int,
             previousWeightKg: Double,
-            previousReps: Int
+            previousReps: Int,
+            isAssisted: Bool = false
         ) {
             self.repDelta = repDelta
             self.weightDeltaKg = weightDeltaKg
@@ -688,6 +646,7 @@ public enum WorkoutSessionUtils {
             self.currentReps = currentReps
             self.previousWeightKg = previousWeightKg
             self.previousReps = previousReps
+            self.isAssisted = isAssisted
         }
     }
 }

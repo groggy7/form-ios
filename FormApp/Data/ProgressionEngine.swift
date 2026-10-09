@@ -154,7 +154,7 @@ public enum ProgressionEngine {
             comparable(previous) && previous.workingSets.allSatisfy { $0.reps! >= repMax }
         } == true
         let incrementKg: Double
-        switch category {
+        switch WorkoutSessionUtils.isAssisted(exercise) ? "assistance" : category {
         case "bar", "machine": incrementKg = weightUnit == .lbs ? weightUnit.toCanonicalKg(5) : 2.5
         case "dumbbell": incrementKg = weightUnit == .lbs ? weightUnit.toCanonicalKg(5) : 2
         default: incrementKg = 0 // Unknown equipment, bands and bodyweight have no inferred load step.
@@ -170,7 +170,8 @@ public enum ProgressionEngine {
                 reps: allHitCeiling ? repMax : min(set.reps! + 1, repMax))
         }
         let key: String
-        if canIncrease { key = mixedLoads ? "progression.rationale.increase_load_mixed" : "progression.rationale.increase_load" }
+        if WorkoutSessionUtils.isAssisted(exercise) { key = allHitCeiling ? "progression.rationale.assistance_ceiling" : "progression.rationale.assistance_reps" }
+        else if canIncrease { key = mixedLoads ? "progression.rationale.increase_load_mixed" : "progression.rationale.increase_load" }
         else if allHitCeiling { key = confirmedCeiling ? "progression.rationale.load_step_unavailable" : "progression.rationale.repeat_ceiling" }
         else if missedFloor { key = mixedLoads ? "progression.rationale.hold_load_mixed" : "progression.rationale.hold_load" }
         else { key = mixedLoads ? "progression.rationale.add_reps_mixed" : "progression.rationale.add_reps" }

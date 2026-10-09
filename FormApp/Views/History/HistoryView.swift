@@ -180,6 +180,7 @@ public struct HistoryDayDetailData: Identifiable {
 
     public static func workingVolumeKg(_ record: WorkoutSessionRecord?) -> Double {
         guard let record else { return 0 }
+        if record.exerciseLogs.contains(where: { WorkoutSessionUtils.isAssisted(exerciseId: $0.exerciseId, name: $0.exerciseName) }) { return WorkoutSessionUtils.resistanceVolume(record) }
         if record.totalVolumeKg > 0 { return record.totalVolumeKg }
         return record.exerciseLogs.reduce(0) { sum, log in
             sum + log.sets.filter { !$0.isWarmup }.reduce(0) { $0 + ($1.weightKg ?? 0) * Double($1.reps ?? 0) }
@@ -260,12 +261,12 @@ public struct HistoryDayDetailData: Identifiable {
         }()
 
         func extractTopSet(log: SessionExerciseLog?) -> (Double?, Int?) {
-            guard let validSets = log?.sets.filter({ ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }), !validSets.isEmpty else {
+            guard let validSets = log?.sets.filter({ $0.weightKg.map { $0.isFinite && $0 >= 0 } == true && ($0.reps ?? 0) > 0 }), !validSets.isEmpty else {
                 return (nil, nil)
             }
             let top = validSets.max { a, b in
                 if (a.weightKg ?? 0.0) != (b.weightKg ?? 0.0) {
-                    return (a.weightKg ?? 0.0) < (b.weightKg ?? 0.0)
+                    return WorkoutSessionUtils.isAssisted(exerciseId: log?.exerciseId, name: log?.exerciseName ?? "") ? (a.weightKg ?? 0.0) > (b.weightKg ?? 0.0) : (a.weightKg ?? 0.0) < (b.weightKg ?? 0.0)
                 }
                 return (a.reps ?? 0) < (b.reps ?? 0)
             }

@@ -123,6 +123,7 @@ public enum PersonalRecordTracker {
         for record in sortedRecords {
             let isThisWeek = isRecordInWeek(record, targetWeekKey: currentWeekKey, timeZone: timeZone)
             for exerciseLog in record.exerciseLogs {
+                if WorkoutSessionUtils.isAssisted(exerciseId: exerciseLog.exerciseId, name: exerciseLog.exerciseName) { continue }
                 let key = normalizeExerciseKey(exerciseLog.exerciseName)
                 let validSets = exerciseLog.sets.filter { ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }
                 guard let maxSessionWeight = validSets.compactMap({ $0.weightKg }).max() else {
@@ -164,7 +165,7 @@ public enum PersonalRecordTracker {
 
         let currentWeekRecords = recordsWithActiveSession(history: history, activeSession: activeSession, now: now)
             .filter { isRecordInWeek($0, targetWeekKey: currentWeekKey, timeZone: timeZone) }
-        let volume = currentWeekRecords.reduce(0.0) { $0 + $1.totalVolumeKg }
+        let volume = currentWeekRecords.reduce(0.0) { $0 + WorkoutSessionUtils.resistanceVolume($1) }
         let duration = currentWeekRecords.reduce(0) { $0 + $1.durationSeconds }
 
         let prsCount = countPrsForWeek(
@@ -208,6 +209,7 @@ public enum PersonalRecordTracker {
         var maxWeightByExercise: [String: Double] = [:]
         for record in priorRecords {
             for exerciseLog in record.exerciseLogs {
+                if WorkoutSessionUtils.isAssisted(exerciseId: exerciseLog.exerciseId, name: exerciseLog.exerciseName) { continue }
                 let key = normalizeExerciseKey(exerciseLog.exerciseName)
                 let maxSessionWeight = exerciseLog.sets
                     .filter { ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }
@@ -227,6 +229,7 @@ public enum PersonalRecordTracker {
 
         var prExercises = Set<String>()
         for exerciseLog in targetRecord.exerciseLogs {
+            if WorkoutSessionUtils.isAssisted(exerciseId: exerciseLog.exerciseId, name: exerciseLog.exerciseName) { continue }
             let key = normalizeExerciseKey(exerciseLog.exerciseName)
             let maxSessionWeight = exerciseLog.sets
                 .filter { ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }
@@ -251,6 +254,7 @@ public enum PersonalRecordTracker {
         exerciseName: String,
         exerciseDisplayName: String? = nil
     ) -> ExerciseHistoryStats {
+        let assisted = WorkoutSessionUtils.isAssisted(exerciseId: nil, name: exerciseName)
         let targetKey = normalizeExerciseKey(exerciseName)
         let targetDisplayKey = exerciseDisplayName.map { normalizeExerciseKey($0) }
 
@@ -278,14 +282,14 @@ public enum PersonalRecordTracker {
                         sessionId: record.id,
                         date: dateStr,
                         workoutTitle: record.workoutTitle,
-                        sets: validSets
+                        sets: validSets, isAssisted: assisted
                     )
                 )
                 for s in validSets {
                     allValidSets.append(s)
                     let w = s.weightKg ?? 0.0
                     let r = Double(s.reps ?? 0)
-                    if w > 0.0 && r > 0 {
+                    if !assisted && w > 0.0 && r > 0 {
                         totalVolume += w * r
                     }
                 }
@@ -298,7 +302,12 @@ public enum PersonalRecordTracker {
 
         let weightedSets = allValidSets.filter { ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }
         let prSet: SessionSetLog?
-        if !weightedSets.isEmpty {
+        if assisted {
+            prSet = allValidSets.filter { !$0.isWarmup && ($0.reps ?? 0) > 0 && $0.weightKg.map { $0.isFinite && $0 >= 0 } == true }.max { a, b in
+                if a.weightKg != b.weightKg { return a.weightKg! > b.weightKg! }
+                return (a.reps ?? 0) < (b.reps ?? 0)
+            }
+        } else if !weightedSets.isEmpty {
             prSet = weightedSets.max { s1, s2 in
                 if let w1 = s1.weightKg, let w2 = s2.weightKg, abs(w1 - w2) > 0.001 {
                     return w1 < w2
@@ -313,7 +322,7 @@ public enum PersonalRecordTracker {
         var estimateSourceSet: SessionSetLog? = nil
         var estimateSourceDate: String? = nil
         for session in matchingSessions {
-            for set in session.sets where !set.isWarmup {
+            for set in session.sets where !set.isWarmup && !assisted {
                 let estimate = calculateEstimated1RM(weightKg: set.weightKg ?? 0, reps: set.reps ?? 0)
                 if estimate > (est1rm ?? 0) {
                     est1rm = estimate
@@ -331,7 +340,7 @@ public enum PersonalRecordTracker {
             estimateSourceDate: estimateSourceDate,
             totalVolumeKg: totalVolume,
             lifetimeSets: allValidSets.count,
-            recentSessions: matchingSessions
+            recentSessions: matchingSessions, isAssisted: assisted
         )
     }
 }
@@ -342,12 +351,14 @@ public struct ExerciseSessionHistoryEntry: Identifiable, Hashable {
     public var date: String
     public var workoutTitle: String
     public var sets: [SessionSetLog]
+    public var isAssisted: Bool = false
 
-    public init(sessionId: String, date: String, workoutTitle: String, sets: [SessionSetLog]) {
+    public init(sessionId: String, date: String, workoutTitle: String, sets: [SessionSetLog], isAssisted: Bool = false) {
         self.sessionId = sessionId
         self.date = date
         self.workoutTitle = workoutTitle
         self.sets = sets
+        self.isAssisted = isAssisted
     }
 
     public func bestSet(weightUnit: WeightUnit) -> String? {
@@ -355,6 +366,14 @@ public struct ExerciseSessionHistoryEntry: Identifiable, Hashable {
         let candidates = nonWarmup.isEmpty ? sets.filter { ($0.weightKg ?? 0) > 0 || ($0.reps ?? 0) > 0 } : nonWarmup
         guard !candidates.isEmpty else { return nil }
 
+        if isAssisted {
+            let eligible = candidates.filter { ($0.reps ?? 0) > 0 && $0.weightKg.map { $0.isFinite && $0 >= 0 } == true }
+            guard let best = eligible.max(by: { a, b in
+                if a.weightKg != b.weightKg { return a.weightKg! > b.weightKg! }
+                return (a.reps ?? 0) < (b.reps ?? 0)
+            }) else { return nil }
+            return "\(weightUnit.formatWeight(best.weightKg!)) \(weightUnit.label) \(LanguageManager.t("table.assistance")) × \(best.reps!)"
+        }
         let weighted = candidates.filter { ($0.weightKg ?? 0) > 0 && ($0.reps ?? 0) > 0 }
         if let bestWeighted = weighted.max(by: { s1, s2 in
             let w1 = s1.weightKg ?? 0
@@ -381,6 +400,7 @@ public struct ExerciseHistoryStats: Hashable {
     public var totalVolumeKg: Double
     public var lifetimeSets: Int
     public var recentSessions: [ExerciseSessionHistoryEntry]
+    public var isAssisted: Bool
 
     public init(
         prWeightKg: Double? = nil,
@@ -390,7 +410,8 @@ public struct ExerciseHistoryStats: Hashable {
         estimateSourceDate: String? = nil,
         totalVolumeKg: Double = 0.0,
         lifetimeSets: Int = 0,
-        recentSessions: [ExerciseSessionHistoryEntry] = []
+        recentSessions: [ExerciseSessionHistoryEntry] = [],
+        isAssisted: Bool = false
     ) {
         self.prWeightKg = prWeightKg
         self.prReps = prReps
@@ -400,5 +421,6 @@ public struct ExerciseHistoryStats: Hashable {
         self.totalVolumeKg = totalVolumeKg
         self.lifetimeSets = lifetimeSets
         self.recentSessions = recentSessions
+        self.isAssisted = isAssisted
     }
 }
