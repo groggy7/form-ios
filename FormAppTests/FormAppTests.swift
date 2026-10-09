@@ -7639,7 +7639,9 @@ final class FormAppTests: XCTestCase {
         let exp = expectation(description: "Wait for autoSync")
         let start = Date()
         let timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { t in
-            if !CloudMirrorManager.shared.hasPendingSync || Date().timeIntervalSince(start) > 4.0 {
+            let localFile = CloudMirrorManager.shared.localMirrorDirectory.appendingPathComponent("form_safety_mirror.json")
+            let localReady = (try? String(contentsOf: localFile, encoding: .utf8)) == payload
+            if localReady || Date().timeIntervalSince(start) > 4.0 {
                 t.invalidate()
                 exp.fulfill()
             }
@@ -7649,7 +7651,8 @@ final class FormAppTests: XCTestCase {
 
         let readJson = try CloudMirrorManager.shared.readLatestSnapshot()
         XCTAssertEqual(readJson, payload)
-        XCTAssertFalse(CloudMirrorManager.shared.hasPendingSync)
+        // A successful local save must remain staged until iCloud accepts it.
+        XCTAssertEqual(CloudMirrorManager.shared.hasPendingSync, !CloudMirrorManager.shared.isICloudAvailable)
     }
 
     @MainActor
@@ -10060,5 +10063,350 @@ final class WeightConfirmationRegressionTests: XCTestCase {
         XCTAssertEqual(store.activeSession?.setsByExercise[bench.id]?.first?.isCompleted, true)
         XCTAssertEqual(Set(alert.actions.compactMap(\.title)), Set([LanguageManager.t("session.anomalous_weight.edit"), LanguageManager.t("session.anomalous_weight.confirm")]))
         alert.dismiss(animated: false)
+    }
+}
+
+@MainActor
+final class CloudBackupReliabilityTests: XCTestCase {
+    private var roots: [URL] = []
+    private var suites: [String] = []
+    private let older = #"{"schemaVersion":4,"programs":[],"activeProgramId":"older","completed":[],"currentWeekKey":"","weeklyArchives":[],"history":[]}"#
+    private let newer = #"{"schemaVersion":4,"programs":[],"activeProgramId":"newer","completed":[],"currentWeekKey":"","weeklyArchives":[],"history":[]}"#
+
+    private final class Environment: @unchecked Sendable {
+        private let lock = NSLock()
+        private var _container: URL?
+        private var _identity: Data? = try! NSKeyedArchiver.archivedData(withRootObject: "account-A", requiringSecureCoding: false)
+        private var _premium = true
+        private var _uploaded = false
+        private var _uploadError: Error?
+        var container: URL? { get { lock.withLock { _container } } set { lock.withLock { _container = newValue } } }
+        var identity: Data? { get { lock.withLock { _identity } } set { lock.withLock { _identity = newValue } } }
+        var premium: Bool { get { lock.withLock { _premium } } set { lock.withLock { _premium = newValue } } }
+        var uploaded: Bool { get { lock.withLock { _uploaded } } set { lock.withLock { _uploaded = newValue } } }
+        var uploadError: Error? { get { lock.withLock { _uploadError } } set { lock.withLock { _uploadError = newValue } } }
+    }
+
+    override func tearDown() {
+        roots.forEach { try? FileManager.default.removeItem(at: $0) }
+        suites.forEach { UserDefaults.standard.removePersistentDomain(forName: $0) }
+        super.tearDown()
+    }
+
+    private func fixture() throws -> (URL, UserDefaults, Environment) {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent("cloud-regression-" + UUID().uuidString)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        roots.append(root)
+        let suite = "cloud-regression-" + UUID().uuidString
+        suites.append(suite)
+        return (root, UserDefaults(suiteName: suite)!, Environment())
+    }
+
+    private func manager(_ root: URL, _ defaults: UserDefaults, _ environment: Environment,
+                         discover: @escaping (URL) async throws -> CloudSnapshot? = { _ in nil },
+                         download: @escaping (URL) async throws -> Void = { _ in }) -> CloudMirrorManager {
+        CloudMirrorManager(documentsDirectory: root.appendingPathComponent("local"), defaults: defaults,
+            containerResolver: { XCTAssertFalse(Thread.isMainThread); return environment.container },
+            identityProvider: { environment.identity }, premiumAvailable: { environment.premium },
+            discoverSnapshot: discover, prepareDownload: download,
+            uploadStatus: { _ in (environment.uploaded, !environment.uploaded, environment.uploadError) }, observesSystem: false)
+    }
+
+    private func write(_ payload: String, to url: URL, at date: Date = Date()) throws {
+        try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try payload.write(to: url, atomically: true, encoding: .utf8)
+        try FileManager.default.setAttributes([.modificationDate: date], ofItemAtPath: url.path)
+    }
+
+    private func waitUntil(_ predicate: @escaping () -> Bool) async throws {
+        let end = Date().addingTimeInterval(5)
+        while !predicate() && Date() < end { try await Task.sleep(nanoseconds: 20_000_000) }
+        XCTAssertTrue(predicate(), "Timed out waiting for cloud backup work")
+    }
+
+    func testCloudOnlyPlaceholderRestoresForFreeWhileSyncIsPaused() async throws {
+        let (root, defaults, environment) = try fixture()
+        environment.container = root.appendingPathComponent("cloud")
+        environment.premium = false
+        let remote = environment.container!.appendingPathComponent("Documents/CloudMirror/form_safety_mirror.json")
+        let payload = newer
+        let subject = manager(root, defaults, environment, discover: { _ in
+            XCTAssertFalse(FileManager.default.fileExists(atPath: remote.path))
+            return CloudSnapshot(url: remote, modifiedAt: Date())
+        }, download: { url in
+            // This test stub inherits the test's MainActor; the production downloader
+            // runs file access in a utility task. Model the placeholder becoming local.
+            try FileManager.default.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+            try payload.write(to: url, atomically: true, encoding: .utf8)
+        })
+        subject.isEnabled = false
+        let result = try await subject.readLatestSnapshotAsync()
+        XCTAssertEqual(result, newer)
+        XCTAssertFalse(subject.hasPendingSync)
+        do { _ = try await subject.syncNowAsync(backupJson: older); XCTFail("Free users cannot write backups") }
+        catch { XCTAssertEqual((error as NSError).code, 403) }
+    }
+
+    func testColdRestoreWaitsForDiscoveryInsteadOfReadingStaleLocalBackup() async throws {
+        let (root, defaults, environment) = try fixture()
+        environment.container = root.appendingPathComponent("cloud")
+        let remote = environment.container!.appendingPathComponent("Documents/CloudMirror/form_safety_mirror.json")
+        try write(newer, to: remote, at: Date(timeIntervalSince1970: 200))
+        let subject = manager(root, defaults, environment, discover: { _ in
+            try await Task.sleep(nanoseconds: 150_000_000)
+            return CloudSnapshot(url: remote, modifiedAt: Date(timeIntervalSince1970: 200))
+        })
+        try write(older, to: subject.localMirrorDirectory.appendingPathComponent(CloudMirrorManager.backupFileName), at: Date(timeIntervalSince1970: 100))
+        let result = try await subject.readLatestSnapshotAsync()
+        XCTAssertEqual(result, newer)
+    }
+
+    func testDiscoveryFailureNeverSilentlyRestoresOlderLocalData() async throws {
+        let (root, defaults, environment) = try fixture()
+        environment.container = root.appendingPathComponent("cloud")
+        let subject = manager(root, defaults, environment, discover: { _ in throw CloudMirrorError.discoveryTimedOut })
+        try write(older, to: subject.localMirrorDirectory.appendingPathComponent(CloudMirrorManager.backupFileName))
+        do { _ = try await subject.readLatestSnapshotAsync(); XCTFail("Discovery must succeed before selecting local data") }
+        catch { XCTAssertEqual(error.localizedDescription, CloudMirrorError.discoveryTimedOut.localizedDescription) }
+        XCTAssertEqual(try subject.readLatestSnapshot(), older)
+    }
+
+    func testOfflineBackupSurvivesManagerRestartAndUploadsOnReconnect() async throws {
+        let (root, defaults, environment) = try fixture()
+        let first = manager(root, defaults, environment)
+        first.autoSync(backupJson: newer)
+        try await waitUntil { FileManager.default.fileExists(atPath: first.localMirrorDirectory.appendingPathComponent(CloudMirrorManager.backupFileName).path) && !first.getStatus().isCheckingCloud }
+        XCTAssertTrue(first.hasPendingSync)
+        XCTAssertNil(first.getStatus().lastSyncTimestamp)
+        environment.container = root.appendingPathComponent("cloud")
+        let relaunched = manager(root, defaults, environment)
+        relaunched.retryPendingSyncIfAny()
+        try await waitUntil { !relaunched.hasPendingSync }
+        let file = environment.container!.appendingPathComponent("Documents/CloudMirror/form_safety_mirror.json")
+        XCTAssertEqual(try String(contentsOf: file, encoding: .utf8), newer)
+        XCTAssertTrue(relaunched.getStatus().isUploadPending)
+        XCTAssertNil(relaunched.getStatus().lastSyncTimestamp)
+    }
+
+    func testRefreshNeverMigratesWhenPausedOrPremiumExpired() async throws {
+        for paused in [true, false] {
+            let (root, defaults, environment) = try fixture()
+            environment.container = root.appendingPathComponent("cloud")
+            environment.premium = paused
+            let subject = manager(root, defaults, environment)
+            subject.isEnabled = !paused
+            try write(newer, to: subject.localMirrorDirectory.appendingPathComponent(CloudMirrorManager.backupFileName))
+            XCTAssertTrue(subject.savePendingSync(backupJson: newer))
+            subject.refreshUbiquityURL()
+            try await waitUntil { !subject.getStatus().isCheckingCloud }
+            try await Task.sleep(nanoseconds: 100_000_000)
+            XCTAssertTrue(subject.hasPendingSync)
+            let remote = environment.container!.appendingPathComponent("Documents/CloudMirror/form_safety_mirror.json")
+            XCTAssertFalse(FileManager.default.fileExists(atPath: remote.path))
+        }
+    }
+
+    func testQueuedBackupNeverCrossesAppleAccounts() async throws {
+        let (root, defaults, environment) = try fixture()
+        let subject = manager(root, defaults, environment)
+        XCTAssertTrue(subject.savePendingSync(backupJson: older))
+        environment.identity = try NSKeyedArchiver.archivedData(withRootObject: "account-B", requiringSecureCoding: false)
+        environment.container = root.appendingPathComponent("cloud-B")
+        subject.retryPendingSyncIfAny()
+        try await waitUntil { subject.getStatus().errorMessage != nil }
+        XCTAssertTrue(subject.hasPendingSync)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: environment.container!.appendingPathComponent("Documents/CloudMirror/form_safety_mirror.json").path))
+        XCTAssertEqual(subject.getStatus().errorMessage, CloudMirrorError.accountChanged.localizedDescription)
+    }
+
+    func testLegacyUnboundPendingBackupNeedsExplicitSync() async throws {
+        let (root, defaults, environment) = try fixture()
+        let subject = manager(root, defaults, environment)
+        try write(older, to: root.appendingPathComponent("local/pending_form_safety_mirror.json"))
+        environment.container = root.appendingPathComponent("cloud")
+        subject.retryPendingSyncIfAny()
+        try await waitUntil { subject.getStatus().errorMessage != nil }
+        XCTAssertTrue(subject.hasPendingSync)
+        _ = try await subject.syncNowAsync(backupJson: newer)
+        XCTAssertFalse(subject.hasPendingSync)
+        XCTAssertEqual(try String(contentsOf: environment.container!.appendingPathComponent("Documents/CloudMirror/form_safety_mirror.json"), encoding: .utf8), newer)
+    }
+
+    func testNewerCloudBackupIsPreservedDuringAutomaticRetry() async throws {
+        let (root, defaults, environment) = try fixture()
+        environment.container = root.appendingPathComponent("cloud")
+        let remote = environment.container!.appendingPathComponent("Documents/CloudMirror/form_safety_mirror.json")
+        let date = Date().addingTimeInterval(60)
+        try write(newer, to: remote, at: date)
+        let subject = manager(root, defaults, environment, discover: { _ in CloudSnapshot(url: remote, modifiedAt: date) })
+        subject.autoSync(backupJson: older)
+        try await waitUntil { subject.getStatus().errorMessage != nil }
+        XCTAssertTrue(subject.hasPendingSync)
+        XCTAssertEqual(try String(contentsOf: remote, encoding: .utf8), newer)
+        XCTAssertEqual(subject.getStatus().errorMessage, CloudMirrorError.newerCloudBackup.localizedDescription)
+    }
+
+    func testAccountChangeDuringRestoreAbortsBeforeApplyingSnapshot() async throws {
+        let (root, defaults, environment) = try fixture()
+        environment.container = root.appendingPathComponent("cloud-A")
+        let subject = manager(root, defaults, environment, discover: { _ in
+            environment.identity = try NSKeyedArchiver.archivedData(withRootObject: "account-B", requiringSecureCoding: false)
+            return nil
+        })
+        try write(older, to: subject.localMirrorDirectory.appendingPathComponent(CloudMirrorManager.backupFileName))
+        do { _ = try await subject.readLatestSnapshotAsync(); XCTFail("Account change must abort restore") }
+        catch { XCTAssertEqual(error.localizedDescription, CloudMirrorError.accountChanged.localizedDescription) }
+    }
+
+    func testUploadCompletionAndErrorPublishWithoutAnotherSync() async throws {
+        let (root, defaults, environment) = try fixture()
+        environment.container = root.appendingPathComponent("cloud")
+        let subject = manager(root, defaults, environment)
+        _ = try await subject.syncNowAsync(backupJson: newer)
+        try await waitUntil { subject.status.isUploadPending }
+        XCTAssertNil(subject.status.lastSyncTimestamp)
+        environment.uploaded = true
+        subject.refreshStatus()
+        try await waitUntil { subject.status.lastSyncTimestamp != nil && !subject.status.isUploadPending }
+        environment.uploaded = false
+        environment.uploadError = NSError(domain: "iCloud", code: 1, userInfo: [NSLocalizedDescriptionKey: "Storage is full"])
+        subject.refreshStatus()
+        try await waitUntil { subject.status.errorMessage == "Storage is full" }
+        XCTAssertTrue(subject.status.isUploadPending)
+    }
+
+    func testMalformedPendingBackupPreservesLastReadableMirror() async throws {
+        let (root, defaults, environment) = try fixture()
+        let subject = manager(root, defaults, environment)
+        try write(older, to: subject.localMirrorDirectory.appendingPathComponent(CloudMirrorManager.backupFileName))
+        XCTAssertTrue(subject.savePendingSync(backupJson: "not JSON"))
+        subject.retryPendingSyncIfAny()
+        try await waitUntil { subject.getStatus().errorMessage != nil }
+        XCTAssertEqual(try subject.readLatestSnapshot(), older)
+        XCTAssertTrue(subject.hasPendingSync)
+    }
+
+    func testFirstOfflineBackupBindsToFirstAvailableAppleAccount() async throws {
+        let (root, defaults, environment) = try fixture()
+        environment.identity = nil
+        let subject = manager(root, defaults, environment)
+        subject.autoSync(backupJson: older)
+        try await waitUntil { !subject.getStatus().isCheckingCloud }
+        XCTAssertTrue(subject.hasPendingSync)
+        environment.identity = try NSKeyedArchiver.archivedData(withRootObject: "account-A", requiringSecureCoding: false)
+        environment.container = root.appendingPathComponent("cloud")
+        subject.retryPendingSyncIfAny()
+        try await waitUntil { !subject.hasPendingSync }
+        XCTAssertEqual(try String(contentsOf: environment.container!.appendingPathComponent("Documents/CloudMirror/form_safety_mirror.json"), encoding: .utf8), older)
+    }
+
+    func testPausingDuringDiscoveryPreventsCloudWrite() async throws {
+        let (root, defaults, environment) = try fixture()
+        environment.container = root.appendingPathComponent("cloud")
+        let subject = manager(root, defaults, environment, discover: { _ in
+            defaults.set(false, forKey: "cloud_mirror_enabled")
+            return nil
+        })
+        subject.autoSync(backupJson: older)
+        try await waitUntil { subject.getStatus().errorMessage != nil }
+        XCTAssertTrue(subject.hasPendingSync)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: environment.container!.appendingPathComponent("Documents/CloudMirror/form_safety_mirror.json").path))
+    }
+
+    func testRestoreUsesCurrentAccountInsteadOfNewerLocalCopyFromPreviousAccount() async throws {
+        let (root, defaults, environment) = try fixture()
+        let remote = root.appendingPathComponent("cloud-B/Documents/CloudMirror/form_safety_mirror.json")
+        let subject = manager(root, defaults, environment, discover: { _ in CloudSnapshot(url: remote, modifiedAt: Date(timeIntervalSince1970: 100)) })
+        _ = try await subject.syncNowAsync(backupJson: newer)
+        environment.identity = try NSKeyedArchiver.archivedData(withRootObject: "account-B", requiringSecureCoding: false)
+        environment.container = root.appendingPathComponent("cloud-B")
+        try write(older, to: remote, at: Date(timeIntervalSince1970: 100))
+        let restored = try await subject.readLatestSnapshotAsync()
+        XCTAssertEqual(restored, older)
+    }
+
+    func testEquivalentIdentityArchivesRemainTheSameAppleAccount() async throws {
+        let (root, defaults, environment) = try fixture()
+        let subject = manager(root, defaults, environment)
+        XCTAssertTrue(subject.savePendingSync(backupJson: older))
+        let binaryIdentity = environment.identity
+        let archiver = NSKeyedArchiver(requiringSecureCoding: false)
+        archiver.outputFormat = .xml
+        archiver.encode("account-A", forKey: NSKeyedArchiveRootObjectKey)
+        archiver.finishEncoding()
+        environment.identity = archiver.encodedData
+        XCTAssertNotEqual(binaryIdentity, environment.identity)
+        environment.container = root.appendingPathComponent("cloud")
+        subject.retryPendingSyncIfAny()
+        try await waitUntil { !subject.hasPendingSync }
+        XCTAssertEqual(try String(contentsOf: environment.container!.appendingPathComponent("Documents/CloudMirror/form_safety_mirror.json"), encoding: .utf8), older)
+    }
+
+    func testSuccessfulRestoreDiscardsOlderPendingExport() async throws {
+        let (root, defaults, environment) = try fixture()
+        let subject = manager(root, defaults, environment)
+        XCTAssertTrue(subject.savePendingSync(backupJson: older))
+        subject.didRestoreSnapshot()
+        environment.container = root.appendingPathComponent("cloud")
+        subject.retryPendingSyncIfAny()
+        XCTAssertFalse(subject.hasPendingSync)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: environment.container!.appendingPathComponent("Documents/CloudMirror/form_safety_mirror.json").path))
+    }
+
+    func testNewWorkoutStagedDuringDiscoveryWinsOverOlderQueuedExport() async throws {
+        let (root, defaults, environment) = try fixture()
+        environment.container = root.appendingPathComponent("cloud")
+        var discoveryCount = 0
+        var releaseFirst: CheckedContinuation<Void, Never>?
+        let subject = manager(root, defaults, environment, discover: { _ in
+            discoveryCount += 1
+            if discoveryCount == 1 {
+                await withCheckedContinuation { releaseFirst = $0 }
+            }
+            return nil
+        })
+        subject.autoSync(backupJson: older)
+        try await waitUntil { releaseFirst != nil }
+        subject.autoSync(backupJson: newer)
+        releaseFirst?.resume()
+        try await waitUntil { !subject.hasPendingSync }
+        XCTAssertEqual(try subject.readLatestSnapshot(), newer)
+        XCTAssertEqual(try String(contentsOf: environment.container!.appendingPathComponent("Documents/CloudMirror/form_safety_mirror.json"), encoding: .utf8), newer)
+    }
+
+    func testBackupSheetLocalizedNarrowLayoutWithFreeRestore() async throws {
+        let (root, defaults, environment) = try fixture()
+        environment.premium = false
+        let subject = manager(root, defaults, environment)
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        let access = ProAccessManager.shared.isProSubscribed
+        defer { LanguageManager.setLanguage(previousLanguage); ProAccessManager.shared.updateSubscriptionStatus(active: access) }
+        ProAccessManager.shared.updateSubscriptionStatus(active: false)
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            subject.refreshUbiquityURL()
+            try await waitUntil { !subject.status.isCheckingCloud }
+            let view = CloudBackupSheet(store: AppStore(), mirrorManager: subject)
+                .environment(\.dynamicTypeSize, .xxxLarge)
+            let host = UIHostingController(rootView: view)
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 800))
+            window.rootViewController = host
+            window.makeKeyAndVisible()
+            host.view.frame = window.bounds
+            host.view.layoutIfNeeded()
+            try await Task.sleep(nanoseconds: 200_000_000)
+            host.view.layoutIfNeeded()
+            func descendants(_ view: UIView) -> [UIView] { [view] + view.subviews.flatMap(descendants) }
+            let scroll = try XCTUnwrap(descendants(host.view).compactMap { $0 as? UIScrollView }.first)
+            XCTAssertLessThanOrEqual(scroll.contentSize.width, scroll.bounds.width + 1)
+            let image = UIGraphicsImageRenderer(size: window.bounds.size).image { context in host.view.layer.render(in: context.cgContext) }
+            XCTAssertGreaterThan(try XCTUnwrap(image.pngData()).count, 10_000, "A rendered sheet must contain visible content")
+            let attachment = XCTAttachment(image: image)
+            attachment.name = "cloud-backup-free-\(language)-320-large"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+            XCTAssertEqual(host.view.bounds.width, 320)
+            window.isHidden = true
+        }
     }
 }

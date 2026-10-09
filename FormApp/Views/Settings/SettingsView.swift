@@ -5,6 +5,7 @@ public struct SettingsView: View {
     @ObservedObject var store: AppStore
     @ObservedObject var langManager = LanguageManager.shared
     @ObservedObject private var proManager = ProAccessManager.shared
+    @ObservedObject private var cloudMirror = CloudMirrorManager.shared
     var onDismiss: () -> Void
 
     @State private var showPaywall: Bool = false
@@ -20,9 +21,9 @@ public struct SettingsView: View {
 
     private var cloudBackupSubtitle: String {
         if !proManager.isProSubscribed {
-            return LanguageManager.t("settings.cloudBackupSubtitle")
+            return LanguageManager.t("form_lab.mirror_free_restore")
         }
-        let status = CloudMirrorManager.shared.getStatus()
+        let status = cloudMirror.status
         let lastSyncStr = status.lastSyncTimestamp.map { timestamp -> String in
             let df = DateFormatter()
             df.dateFormat = "HH:mm, dd MMM"
@@ -32,11 +33,12 @@ public struct SettingsView: View {
         if let str = lastSyncStr {
             syncLabel = LanguageManager.t("form_lab.mirror_last_synced", ["time": str])
         } else if status.isCloudConnected {
-            syncLabel = status.isUploadPending ? "Upload pending..." : LanguageManager.t("form_lab.mirror_never_synced")
+            syncLabel = LanguageManager.t(status.isCheckingCloud ? "form_lab.mirror_checking" : status.isUploadPending ? "form_lab.mirror_pending" : "form_lab.mirror_never_synced")
         } else {
-            syncLabel = "Local only"
+            syncLabel = LanguageManager.t(status.isCheckingCloud ? "form_lab.mirror_checking" : "form_lab.mirror_local_only")
         }
-        return "\(status.providerName) · \(syncLabel)"
+        let provider = status.isCloudConnected ? "iCloud Drive" : LanguageManager.t("form_lab.mirror_local_provider")
+        return "\(provider) · \(syncLabel)"
     }
 
     public init(store: AppStore, onDismiss: @escaping () -> Void) {
@@ -233,12 +235,7 @@ public struct SettingsView: View {
                     settingsSection(title: LanguageManager.t("settings.dataManagement")) {
                         VStack(spacing: 0) {
                             Button(action: {
-                                if proManager.isProSubscribed {
-                                    showCloudBackupSheet = true
-                                } else {
-                                    paywallFeature = .cloudBackup
-                                    showPaywall = true
-                                }
+                                showCloudBackupSheet = true
                             }) {
                                 HStack {
                                     VStack(alignment: .leading, spacing: 2) {
@@ -522,41 +519,55 @@ public struct CloudBackupSheet: View {
     @ObservedObject var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
-    @State private var isMirrorEnabled: Bool = CloudMirrorManager.shared.isEnabled
+    @ObservedObject private var mirrorManager: CloudMirrorManager
+    @ObservedObject private var proManager = ProAccessManager.shared
+    @ObservedObject private var langManager = LanguageManager.shared
+    @State private var showPaywall = false
+    @State private var isWorking = false
+    @State private var isRestoring = false
+    @State private var operationTask: Task<Void, Never>?
+    private var isMirrorEnabled: Bool { mirrorManager.isEnabled }
     @State private var syncStatusMessage: String? = nil
     @State private var syncIsError: Bool = false
     @State private var showRestoreConfirm: Bool = false
-    @State private var lastSyncTime: Date? = CloudMirrorManager.shared.getStatus().lastSyncTimestamp.map { Date(timeIntervalSince1970: $0) }
 
     private var mirrorStatus: CloudMirrorStatus {
-        CloudMirrorManager.shared.getStatus()
+        mirrorManager.status
     }
 
     private var isBadgeActive: Bool {
-        isMirrorEnabled && mirrorStatus.isCloudConnected && !mirrorStatus.isUploadPending && mirrorStatus.lastSyncTimestamp != nil
+        isMirrorEnabled && mirrorStatus.isCloudConnected && !mirrorStatus.isUploadPending && mirrorStatus.errorMessage == nil && mirrorStatus.lastSyncTimestamp != nil
     }
 
     private var badgeLabel: String {
-        if !isMirrorEnabled { return "Paused" }
-        if mirrorStatus.isCloudConnected {
-            if mirrorStatus.isUploadPending { return "Pending" }
-            return mirrorStatus.lastSyncTimestamp == nil ? "Ready" : "Active"
-        }
-        return "Local Only"
+        let key: String
+        if mirrorStatus.isCheckingCloud { key = "form_lab.mirror_checking" }
+        else if mirrorStatus.errorMessage != nil { key = "form_lab.mirror_error" }
+        else if !isMirrorEnabled { key = "form_lab.mirror_paused" }
+        else if !mirrorStatus.isCloudConnected { key = "form_lab.mirror_local_only" }
+        else if mirrorStatus.isUploadPending { key = "form_lab.mirror_pending" }
+        else { key = mirrorStatus.lastSyncTimestamp == nil ? "form_lab.mirror_ready" : "form_lab.mirror_active" }
+        return LanguageManager.t(key)
     }
 
     private var syncSubtitleText: String {
-        if let syncTime = lastSyncTime {
-            return LanguageManager.t("form_lab.mirror_last_synced", ["time": formatSyncTime(syncTime)])
+        if mirrorStatus.isCheckingCloud { return LanguageManager.t("form_lab.mirror_checking") }
+        if let error = mirrorStatus.errorMessage { return error }
+        if mirrorStatus.isUploadPending { return LanguageManager.t("form_lab.mirror_upload_pending") }
+        if let timestamp = mirrorStatus.lastSyncTimestamp {
+            return LanguageManager.t("form_lab.mirror_last_synced", ["time": formatSyncTime(Date(timeIntervalSince1970: timestamp))])
         }
-        if mirrorStatus.isCloudConnected {
-            return mirrorStatus.isUploadPending ? "Upload pending..." : LanguageManager.t("form_lab.mirror_never_synced")
-        }
-        return "No cloud backup (local only)"
+        return LanguageManager.t(mirrorStatus.isCloudConnected ? "form_lab.mirror_never_synced" : "form_lab.mirror_local_help")
     }
 
     public init(store: AppStore) {
         self.store = store
+        self.mirrorManager = .shared
+    }
+
+    init(store: AppStore, mirrorManager: CloudMirrorManager) {
+        self.store = store
+        self.mirrorManager = mirrorManager
     }
 
     public var body: some View {
@@ -573,7 +584,7 @@ public struct CloudBackupSheet: View {
                                 Text(LanguageManager.t("settings.cloudBackup"))
                                     .font(.system(size: 16, weight: .bold))
                                     .foregroundColor(AppColors.text)
-                                Text(LanguageManager.t("settings.cloudBackupSubtitle"))
+                                Text(LanguageManager.t(proManager.isFeatureUnlocked(.cloudBackup) ? "settings.cloudBackupSubtitle" : "form_lab.mirror_free_restore"))
                                     .font(.system(size: 12))
                                     .foregroundColor(AppColors.secondaryText)
                             }
@@ -589,7 +600,7 @@ public struct CloudBackupSheet: View {
                     VStack(spacing: 12) {
                         HStack {
                             VStack(alignment: .leading, spacing: 2) {
-                                Text(mirrorStatus.providerName)
+                                Text(mirrorStatus.isCloudConnected ? "iCloud Drive" : LanguageManager.t("form_lab.mirror_local_provider"))
                                     .font(.system(size: 14, weight: .semibold))
                                     .foregroundColor(AppColors.text)
                                 Text(syncSubtitleText)
@@ -609,6 +620,7 @@ public struct CloudBackupSheet: View {
                             .padding(.vertical, 4)
                             .background(isBadgeActive ? AppColors.positiveBg : AppColors.surface)
                             .cornerRadius(8)
+                            .fixedSize(horizontal: true, vertical: false)
                             .overlay(RoundedRectangle(cornerRadius: 8).stroke(isBadgeActive ? AppColors.accent.opacity(0.4) : AppColors.border, lineWidth: 1))
                         }
 
@@ -624,11 +636,16 @@ public struct CloudBackupSheet: View {
                                     .foregroundColor(AppColors.muted)
                             }
                             Spacer()
-                            Toggle("", isOn: $isMirrorEnabled)
-                                .labelsHidden()
-                                .onChange(of: isMirrorEnabled) { _, val in
-                                    CloudMirrorManager.shared.isEnabled = val
+                            Toggle("", isOn: Binding(get: { isMirrorEnabled }, set: { value in
+                                if proManager.isFeatureUnlocked(.cloudBackup) {
+                                    mirrorManager.isEnabled = value
+                                } else {
+                                    showPaywall = true
                                 }
+                            }))
+                                .labelsHidden()
+                                .disabled(isWorking)
+                                .accessibilityIdentifier("cloud-backup-toggle")
                         }
                     }
                     .padding(16)
@@ -640,9 +657,9 @@ public struct CloudBackupSheet: View {
                     VStack(spacing: 10) {
                         Button(action: syncNow) {
                             HStack {
-                                Image(systemName: "arrow.triangle.2.circlepath")
-                                    .font(.system(size: 14, weight: .bold))
-                                Text(LanguageManager.t("form_lab.mirror_sync_now"))
+                                if isWorking && !isRestoring { ProgressView().tint(AppColors.background) }
+                                else { Image(systemName: "arrow.triangle.2.circlepath").font(.system(size: 14, weight: .bold)) }
+                                Text(LanguageManager.t(isWorking && !isRestoring ? "form_lab.mirror_syncing" : "form_lab.mirror_sync_now"))
                                     .font(.system(size: 14, weight: .bold))
                             }
                             .foregroundColor(AppColors.background)
@@ -652,12 +669,14 @@ public struct CloudBackupSheet: View {
                             .cornerRadius(12)
                         }
                         .buttonStyle(.plain)
+                        .disabled(isWorking || (proManager.isFeatureUnlocked(.cloudBackup) && !isMirrorEnabled))
+                        .accessibilityIdentifier("cloud-backup-sync")
 
                         Button(action: { showRestoreConfirm = true }) {
                             HStack {
-                                Image(systemName: "arrow.counterclockwise")
-                                    .font(.system(size: 13, weight: .medium))
-                                Text(LanguageManager.t("form_lab.mirror_restore_cta"))
+                                if isRestoring { ProgressView().tint(AppColors.accent) }
+                                else { Image(systemName: "arrow.counterclockwise").font(.system(size: 13, weight: .medium)) }
+                                Text(LanguageManager.t(isRestoring ? "form_lab.mirror_restoring" : "form_lab.mirror_restore_cta"))
                                     .font(.system(size: 13, weight: .medium))
                             }
                             .foregroundColor(AppColors.accent)
@@ -668,6 +687,8 @@ public struct CloudBackupSheet: View {
                             .cornerRadius(12)
                         }
                         .buttonStyle(.plain)
+                        .disabled(isWorking)
+                        .accessibilityIdentifier("cloud-backup-restore")
                     }
 
                     if let msg = syncStatusMessage {
@@ -716,6 +737,21 @@ public struct CloudBackupSheet: View {
                     .foregroundColor(AppColors.accent)
                 }
             }
+            .onAppear { mirrorManager.refreshUbiquityURL() }
+            .onChange(of: langManager.currentLanguage) { _, _ in mirrorManager.refreshStatus() }
+            .onChange(of: mirrorManager.status) { _, status in
+                let isWaitingMessage = syncStatusMessage == LanguageManager.t("form_lab.mirror_upload_pending") || syncStatusMessage == LanguageManager.t("form_lab.mirror_local_saved")
+                if !isWorking && !syncIsError && isWaitingMessage && status.isCloudConnected && !status.isUploadPending && status.lastSyncTimestamp != nil && status.errorMessage == nil {
+                    syncStatusMessage = LanguageManager.t("form_lab.mirror_success")
+                }
+            }
+            .task(id: syncStatusMessage) {
+                guard let message = syncStatusMessage else { return }
+                try? await Task.sleep(nanoseconds: 4_000_000_000)
+                if !Task.isCancelled && syncStatusMessage == message { syncStatusMessage = nil }
+            }
+            .onDisappear { operationTask?.cancel() }
+            .sheet(isPresented: $showPaywall) { ProPaywallSheet(feature: .cloudBackup) }
             .alert(LanguageManager.t("form_lab.mirror_restore_confirm"), isPresented: $showRestoreConfirm) {
                 Button(LanguageManager.t("form_lab.restore_btn"), role: .destructive) {
                     restoreFromMirror()
@@ -728,39 +764,45 @@ public struct CloudBackupSheet: View {
     }
 
     private func syncNow() {
+        guard proManager.isFeatureUnlocked(.cloudBackup) else { showPaywall = true; return }
+        guard !isWorking else { return }
         let json = store.exportBackupJson()
-        do {
-            _ = try CloudMirrorManager.shared.syncNow(backupJson: json)
-            let status = CloudMirrorManager.shared.getStatus()
-            lastSyncTime = status.lastSyncTimestamp.map { Date(timeIntervalSince1970: $0) }
-            syncIsError = false
-            if status.isCloudConnected {
-                syncStatusMessage = status.isUploadPending || status.lastSyncTimestamp == nil
-                    ? LanguageManager.t("form_lab.mirror_upload_pending")
-                    : LanguageManager.t("form_lab.mirror_success")
-            } else {
-                syncStatusMessage = "Saved local backup. Sign in to iCloud Drive for cloud backup."
+        isWorking = true
+        syncStatusMessage = nil
+        operationTask = Task { @MainActor in
+            defer { isWorking = false }
+            do {
+                _ = try await mirrorManager.syncNowAsync(backupJson: json)
+                let status = mirrorManager.getStatus()
+                syncIsError = false
+                syncStatusMessage = LanguageManager.t(!status.isCloudConnected ? "form_lab.mirror_local_saved" : status.isUploadPending || status.lastSyncTimestamp == nil ? "form_lab.mirror_upload_pending" : "form_lab.mirror_success")
+            } catch {
+                syncIsError = true
+                syncStatusMessage = LanguageManager.t("form_lab.mirror_sync_failed", ["error": error.localizedDescription])
             }
-        } catch {
-            syncIsError = true
-            syncStatusMessage = "Sync failed: \(error.localizedDescription)"
         }
     }
 
     private func restoreFromMirror() {
-        do {
-            let json = try CloudMirrorManager.shared.readLatestSnapshot()
-            let success = store.restoreBackupJson(json)
-            if success {
-                syncIsError = false
-                syncStatusMessage = LanguageManager.t("notice.backupRestored")
-            } else {
+        guard !isWorking else { return }
+        isWorking = true
+        isRestoring = true
+        syncStatusMessage = nil
+        operationTask = Task { @MainActor in
+            defer { isWorking = false; isRestoring = false }
+            do {
+                let json = try await mirrorManager.readLatestSnapshotAsync()
+                try Task.checkCancellation()
+                let success = store.restoreBackupJson(json)
+                if success { mirrorManager.didRestoreSnapshot() }
+                syncIsError = !success
+                syncStatusMessage = LanguageManager.t(success ? "notice.backupRestored" : "notice.restoreFailed")
+            } catch is CancellationError {
+                return
+            } catch {
                 syncIsError = true
-                syncStatusMessage = LanguageManager.t("notice.restoreFailed")
+                syncStatusMessage = LanguageManager.t("form_lab.mirror_restore_failed", ["error": error.localizedDescription])
             }
-        } catch {
-            syncIsError = true
-            syncStatusMessage = "Restore failed: \(error.localizedDescription)"
         }
     }
 

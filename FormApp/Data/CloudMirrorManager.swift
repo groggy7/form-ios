@@ -1,427 +1,615 @@
 import Foundation
+import Combine
+import Network
 #if canImport(UIKit)
 import UIKit
 #endif
 
-public class CloudMirrorManager {
-    public static let shared = CloudMirrorManager()
+struct CloudSnapshot {
+    let url: URL
+    let modifiedAt: Date
+}
 
+/// Runs on the main run loop, as required by NSMetadataQuery. Remote placeholders
+/// are results too: do not use fileExists to decide whether an iCloud backup exists.
+@MainActor
+private final class CloudSnapshotDiscovery {
+    private let query = NSMetadataQuery()
+    private var observers: [NSObjectProtocol] = []
+    private var timeout: Task<Void, Never>?
+    private var continuation: CheckedContinuation<CloudSnapshot?, Error>?
+
+    func find(in container: URL) async throws -> CloudSnapshot? {
+        try await withTaskCancellationHandler(operation: {
+            try await withCheckedThrowingContinuation { continuation in
+                self.continuation = continuation
+                query.searchScopes = [NSMetadataQueryUbiquitousDocumentsScope]
+                query.predicate = NSPredicate(format: "%K == %@", NSMetadataItemFSNameKey, CloudMirrorManager.backupFileName)
+                observers.append(NotificationCenter.default.addObserver(forName: .NSMetadataQueryDidFinishGathering, object: query, queue: .main) { [weak self] _ in
+                    Task { @MainActor [weak self] in
+                        guard let self else { return }
+                        self.finish(.success(Self.latestSnapshot(in: self.query, container: container)))
+                    }
+                })
+                timeout = Task { [weak self] in
+                    try? await Task.sleep(nanoseconds: 15_000_000_000)
+                    guard !Task.isCancelled else { return }
+                    self?.finish(.failure(CloudMirrorError.discoveryTimedOut))
+                }
+                if Task.isCancelled { finish(.failure(CancellationError())) }
+                else if !query.start() { finish(.failure(CloudMirrorError.discoveryFailed)) }
+            }
+        }, onCancel: { Task { @MainActor [weak self] in self?.finish(.failure(CancellationError())) } })
+    }
+
+    static func latestSnapshot(in query: NSMetadataQuery, container: URL) -> CloudSnapshot? {
+        query.disableUpdates()
+        defer { query.enableUpdates() }
+        let prefix = container.standardizedFileURL.path + "/"
+        return (query.results as? [NSMetadataItem] ?? []).compactMap { item -> CloudSnapshot? in
+            guard let url = item.value(forAttribute: NSMetadataItemURLKey) as? URL,
+                  url.standardizedFileURL.path.hasPrefix(prefix) else { return nil }
+            let date = item.value(forAttribute: NSMetadataItemFSContentChangeDateKey) as? Date ?? .distantFuture
+            return CloudSnapshot(url: url, modifiedAt: date)
+        }.max { $0.modifiedAt < $1.modifiedAt }
+    }
+
+    private func finish(_ result: Result<CloudSnapshot?, Error>) {
+        guard let continuation else { return }
+        self.continuation = nil
+        query.stop()
+        observers.forEach { NotificationCenter.default.removeObserver($0) }
+        observers.removeAll()
+        timeout?.cancel()
+        timeout = nil
+        continuation.resume(with: result)
+    }
+}
+
+enum CloudMirrorError: LocalizedError {
+    case premiumRequired, disabled, noBackup, discoveryTimedOut, discoveryFailed, downloadTimedOut, accountChanged, newerCloudBackup, invalidBackup
+    var errorDescription: String? {
+        let key: String
+        switch self {
+        case .premiumRequired: key = "form_lab.mirror_premium_required"
+        case .disabled: key = "form_lab.mirror_disabled"
+        case .noBackup: key = "form_lab.mirror_no_backup"
+        case .discoveryTimedOut, .discoveryFailed: key = "form_lab.mirror_discovery_failed"
+        case .downloadTimedOut: key = "form_lab.mirror_download_failed"
+        case .accountChanged: key = "form_lab.mirror_account_changed"
+        case .newerCloudBackup: key = "form_lab.mirror_newer_cloud"
+        case .invalidBackup: key = "form_lab.mirror_invalid_backup"
+        }
+        return LanguageManager.t(key)
+    }
+}
+
+public final class CloudMirrorManager: ObservableObject {
+    public static let shared = CloudMirrorManager()
+    static let backupFileName = "form_safety_mirror.json"
     private let keyEnabled = "cloud_mirror_enabled"
-    private let keyLastSync = "cloud_mirror_last_sync" // Legacy key
     private let keyLastLocalWrite = "cloud_mirror_last_local_write"
     private let keyLastCloudUpload = "cloud_mirror_last_cloud_upload"
+    private let keyLastIdentity = "cloud_mirror_last_identity"
+    private let keyLocalIdentity = "cloud_mirror_local_identity"
 
-    private let mirrorDirName = "CloudMirror"
-    private let backupFileName = "form_safety_mirror.json"
-    private let pendingBackupFileName = "pending_form_safety_mirror.json"
+    @Published public private(set) var status = CloudMirrorStatus(isEnabled: true, lastSyncTimestamp: nil, snapshotSizeBytes: nil, providerName: "iCloud Drive", isCheckingCloud: true)
+    private let defaults: UserDefaults
+    private let documents: URL
+    private let containerResolver: () -> URL?
+    private let identityProvider: () -> Data?
+    private let premiumAvailable: () -> Bool
+    private let discoverSnapshot: (URL) async throws -> CloudSnapshot?
+    private let prepareDownload: (URL) async throws -> Void
+    private let uploadStatus: (URL) throws -> (isUploaded: Bool, isUploading: Bool, error: Error?)
+    private let observesSystem: Bool
     private let pendingLock = NSLock()
+    private let stateLock = NSLock()
     private let syncQueue = DispatchQueue(label: "com.form.CloudMirror.sync", qos: .utility)
+    private var cachedContainer: URL?
+    private var observedSnapshot: CloudSnapshot?
+    private var checkingCloud = true
+    private var operationError: String?
+    private var isRetrying = false
+    private var cachedStatus: CloudMirrorStatus?
+    private var systemObservers: [NSObjectProtocol] = []
+    private var networkMonitor: NWPathMonitor?
+    // Main-thread-only metadata observation. It drives status when iCloud finishes uploading.
+    private var liveQuery: NSMetadataQuery?
+    private var queryObservers: [NSObjectProtocol] = []
 
-    private var pendingBackupFile: URL {
-        let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        return docs.appendingPathComponent(pendingBackupFileName)
+    private struct PendingBackup: Codable {
+        let payload: String
+        let identity: Data?
+        let canBindFirstAccount: Bool
+        let createdAt: Date
+        let generation: UUID
     }
+
+    init(documentsDirectory: URL? = nil, defaults: UserDefaults = .standard,
+         containerResolver: @escaping () -> URL? = { FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.com.perseverancesoftware.forcedrep") },
+         identityProvider: @escaping () -> Data? = {
+             guard let token = FileManager.default.ubiquityIdentityToken else { return nil }
+             return try? NSKeyedArchiver.archivedData(withRootObject: token, requiringSecureCoding: false)
+         },
+         premiumAvailable: @escaping () -> Bool = { ProAccessManager.shared.isFeatureUnlocked(.cloudBackup) },
+         discoverSnapshot: @escaping (URL) async throws -> CloudSnapshot? = { container in
+             try await CloudSnapshotDiscovery().find(in: container)
+         },
+         prepareDownload: @escaping (URL) async throws -> Void = CloudMirrorManager.downloadSnapshot,
+         uploadStatus: @escaping (URL) throws -> (isUploaded: Bool, isUploading: Bool, error: Error?) = { url in
+             var refreshedURL = url
+             refreshedURL.removeAllCachedResourceValues()
+             let values = try refreshedURL.resourceValues(forKeys: [.ubiquitousItemIsUploadedKey, .ubiquitousItemIsUploadingKey, .ubiquitousItemUploadingErrorKey])
+             return (values.ubiquitousItemIsUploaded ?? false, values.ubiquitousItemIsUploading ?? false, values.ubiquitousItemUploadingError)
+         }, observesSystem: Bool = true) {
+        self.documents = documentsDirectory ?? FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        self.defaults = defaults
+        self.containerResolver = containerResolver
+        self.identityProvider = identityProvider
+        self.premiumAvailable = premiumAvailable
+        self.discoverSnapshot = discoverSnapshot
+        self.prepareDownload = prepareDownload
+        self.uploadStatus = uploadStatus
+        self.observesSystem = observesSystem
+        if observesSystem {
+            let monitor = NWPathMonitor()
+            monitor.pathUpdateHandler = { [weak self] path in
+                if path.status == .satisfied { self?.refreshUbiquityURL() }
+            }
+            monitor.start(queue: DispatchQueue(label: "com.form.CloudMirror.network", qos: .utility))
+            networkMonitor = monitor
+            systemObservers.append(NotificationCenter.default.addObserver(forName: .NSUbiquityIdentityDidChange, object: nil, queue: .main) { [weak self] _ in
+                self?.invalidateCloudIdentity()
+                self?.refreshUbiquityURL()
+            })
+            #if canImport(UIKit)
+            systemObservers.append(NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] _ in
+                self?.refreshUbiquityURL()
+            })
+            #endif
+            refreshUbiquityURL()
+        }
+    }
+
+    deinit {
+        networkMonitor?.cancel()
+        systemObservers.forEach { NotificationCenter.default.removeObserver($0) }
+        queryObservers.forEach { NotificationCenter.default.removeObserver($0) }
+    }
+
+    private var pendingBackupFile: URL { documents.appendingPathComponent("pending_form_safety_mirror.json") }
+    public var localMirrorDirectory: URL {
+        let dir = documents.appendingPathComponent("CloudMirror")
+        try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        return dir
+    }
+    private func cloudMirrorDirectory(in container: URL) throws -> URL {
+        let dir = container.appendingPathComponent("Documents/CloudMirror")
+        try FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
+        return dir
+    }
+    public var ubiquitousMirrorDirectory: URL? {
+        stateLock.lock(); let container = cachedContainer; stateLock.unlock()
+        return container?.appendingPathComponent("Documents/CloudMirror")
+    }
+    public var mirrorDirectory: URL { ubiquitousMirrorDirectory ?? localMirrorDirectory }
+    public var isICloudAvailable: Bool { ubiquitousMirrorDirectory != nil }
+    public var isEnabled: Bool {
+        get { defaults.object(forKey: keyEnabled) as? Bool ?? true }
+        set {
+            defaults.set(newValue, forKey: keyEnabled)
+            refreshStatus()
+            if newValue { retryPendingSyncIfAny() }
+        }
+    }
+    public var isEncrypted: Bool { get { false } set {} }
+    public var hasPendingSync: Bool { readPendingSync() != nil }
 
     @discardableResult
     public func savePendingSync(backupJson: String) -> Bool {
-        pendingLock.lock()
-        defer { pendingLock.unlock() }
+        pendingLock.lock(); defer { pendingLock.unlock() }
+        let identity = identityProvider() ?? defaults.data(forKey: keyLastIdentity)
+        let record = PendingBackup(payload: backupJson, identity: identity, canBindFirstAccount: identity == nil, createdAt: Date(), generation: UUID())
         do {
-            try backupJson.write(to: pendingBackupFile, atomically: true, encoding: .utf8)
+            try FileManager.default.createDirectory(at: documents, withIntermediateDirectories: true)
+            try JSONEncoder().encode(record).write(to: pendingBackupFile, options: .atomic)
             return true
-        } catch {
-            print("[CloudMirror] Could not stage pending backup: \(error.localizedDescription)")
-            return false
-        }
+        } catch { recordError(error); return false }
     }
 
-    private func readPendingSync() -> String? {
-        pendingLock.lock()
-        defer { pendingLock.unlock() }
-        return try? String(contentsOf: pendingBackupFile, encoding: .utf8)
+    private func readPendingSync() -> PendingBackup? {
+        pendingLock.lock(); defer { pendingLock.unlock() }
+        guard let data = try? Data(contentsOf: pendingBackupFile) else { return nil }
+        if let record = try? JSONDecoder().decode(PendingBackup.self, from: data) { return record }
+        // Preserve old staged payloads, but never silently send an unbound legacy
+        // backup to a different Apple account. Manual Sync Now binds it explicitly.
+        guard let payload = String(data: data, encoding: .utf8) else { return nil }
+        let date = (try? pendingBackupFile.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) ?? .distantPast
+        return PendingBackup(payload: payload, identity: nil, canBindFirstAccount: false, createdAt: date, generation: UUID(uuidString: "00000000-0000-0000-0000-000000000000")!)
     }
 
     public func clearPendingSync(onlyIfMatching payload: String? = nil) {
-        pendingLock.lock()
-        defer { pendingLock.unlock() }
-        if let payload, (try? String(contentsOf: pendingBackupFile, encoding: .utf8)) != payload { return }
+        pendingLock.lock(); defer { pendingLock.unlock() }
+        if let payload {
+            guard let data = try? Data(contentsOf: pendingBackupFile) else { return }
+            let staged = (try? JSONDecoder().decode(PendingBackup.self, from: data).payload) ?? String(data: data, encoding: .utf8)
+            guard staged == payload else { return }
+        }
         try? FileManager.default.removeItem(at: pendingBackupFile)
     }
 
-    public var hasPendingSync: Bool {
-        FileManager.default.fileExists(atPath: pendingBackupFile.path)
-    }
-
-    public func retryPendingSyncIfAny() {
-        guard ProAccessManager.shared.isFeatureUnlocked(.cloudBackup), isEnabled, hasPendingSync else { return }
-        guard let payload = readPendingSync(), !payload.isEmpty else {
-            clearPendingSync()
-            return
-        }
-        autoSync(backupJson: payload)
-    }
-
-#if canImport(UIKit)
-private final class BackgroundTaskTracker: @unchecked Sendable {
-    private var taskId: UIBackgroundTaskIdentifier = .invalid
-    private var isEnded = false
-    private let lock = NSLock()
-
-    func start(name: String) {
-        lock.lock()
-        defer { lock.unlock() }
-        guard !isEnded else { return }
-        taskId = UIApplication.shared.beginBackgroundTask(withName: name) { [weak self] in
-            self?.end()
-        }
-    }
-
-    func end() {
-        lock.lock()
-        isEnded = true
-        let id = taskId
-        taskId = .invalid
-        lock.unlock()
-        if id != .invalid {
-            UIApplication.shared.endBackgroundTask(id)
-        }
-    }
-}
-#endif
-
-    private var _cachedUbiquityURL: URL? = nil
-    private let ubiquityLock = NSLock()
-    private let ubiquityQueue = DispatchQueue(label: "com.form.CloudMirror.ubiquity", qos: .utility)
-
-    private var cachedUbiquityURL: URL? {
-        get {
-            ubiquityLock.lock()
-            defer { ubiquityLock.unlock() }
-            return _cachedUbiquityURL
-        }
-        set {
-            ubiquityLock.lock()
-            _cachedUbiquityURL = newValue
-            ubiquityLock.unlock()
-        }
-    }
-
-    private init() {
-        refreshUbiquityURL()
-        NotificationCenter.default.addObserver(
-            forName: NSNotification.Name.NSUbiquityIdentityDidChange,
-            object: nil,
-            queue: nil
-        ) { [weak self] _ in
-            self?.refreshUbiquityURL()
-        }
+    private func clearPendingSync(generation: UUID) {
+        pendingLock.lock(); defer { pendingLock.unlock() }
+        guard let data = try? Data(contentsOf: pendingBackupFile),
+              let record = try? JSONDecoder().decode(PendingBackup.self, from: data), record.generation == generation else { return }
+        try? FileManager.default.removeItem(at: pendingBackupFile)
     }
 
     public func refreshUbiquityURL() {
-        ubiquityQueue.async { [weak self] in
-            guard let self = self else { return }
-            let url = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.com.perseverancesoftware.forcedrep")
-            self.cachedUbiquityURL = url
-            if url != nil {
-                self.migrateLocalToCloudIfNewer()
-            }
+        Task { [weak self] in
+            guard let self else { return }
+            _ = try? await self.resolveContainer()
+            self.retryPendingSyncIfAny()
         }
     }
 
-    private func migrateLocalToCloudIfNewer() {
-        guard let ubiDir = ubiquitousMirrorDirectory else { return }
-        let localFile = localMirrorDirectory.appendingPathComponent(backupFileName)
-        guard FileManager.default.fileExists(atPath: localFile.path) else { return }
+    private func invalidateCloudIdentity() {
+        stateLock.lock()
+        cachedContainer = nil
+        observedSnapshot = nil
+        checkingCloud = true
+        operationError = nil
+        stateLock.unlock()
+        defaults.removeObject(forKey: keyLastCloudUpload)
+        startObservingCloud(nil)
+        refreshStatus()
+    }
 
-        let ubiFile = ubiDir.appendingPathComponent(backupFileName)
-        let localDate = (try? FileManager.default.attributesOfItem(atPath: localFile.path)[.modificationDate] as? Date) ?? Date.distantPast
-        let ubiDate = (try? FileManager.default.attributesOfItem(atPath: ubiFile.path)[.modificationDate] as? Date) ?? Date.distantPast
-
-        if !FileManager.default.fileExists(atPath: ubiFile.path) || localDate > ubiDate {
-            guard let localContent = try? Data(contentsOf: localFile) else { return }
-            var coordinatorError: NSError?
-            var writeError: Error?
-            let coordinator = NSFileCoordinator(filePresenter: nil)
-            coordinator.coordinate(writingItemAt: ubiFile, options: .forReplacing, error: &coordinatorError) { writeURL in
-                do {
-                    try localContent.write(to: writeURL, options: .atomic)
-                } catch {
-                    writeError = error
+    private func resolveContainer() async throws -> URL? {
+        try await runIO {
+            let identity = self.identityProvider()
+            let container = self.containerResolver()
+            guard Self.sameIdentity(identity, self.identityProvider()) else { throw CloudMirrorError.accountChanged }
+            if let identity {
+                if let previous = self.defaults.data(forKey: self.keyLastIdentity), !Self.sameIdentity(previous, identity) {
+                    self.defaults.removeObject(forKey: self.keyLastCloudUpload)
                 }
+                self.defaults.set(identity, forKey: self.keyLastIdentity)
             }
-            if coordinatorError == nil && writeError == nil {
-                print("[CloudMirror] Successfully migrated newer local backup to iCloud Drive.")
+            self.stateLock.lock()
+            if self.cachedContainer != container { self.observedSnapshot = nil }
+            self.cachedContainer = container
+            self.checkingCloud = false
+            self.stateLock.unlock()
+            self.startObservingCloud(container)
+            self.updateStatus()
+            return container
+        }
+    }
+
+    public func retryPendingSyncIfAny() {
+        guard premiumAvailable(), isEnabled, hasPendingSync else { return }
+        stateLock.lock()
+        guard !isRetrying else { stateLock.unlock(); return }
+        isRetrying = true
+        stateLock.unlock()
+        Task { [weak self] in
+            guard let self else { return }
+            let generation = self.readPendingSync()?.generation
+            let backgroundTask = await self.beginBackgroundTask()
+            defer {
+                self.endBackgroundTask(backgroundTask)
+                self.finishRetry(previousGeneration: generation)
             }
+            do { try await self.flushPendingSync() }
+            catch { self.recordError(error) }
         }
     }
 
-    private func resolveUbiquityURL() -> URL? {
-        if let cached = cachedUbiquityURL { return cached }
-        if !Thread.isMainThread {
-            let url = FileManager.default.url(forUbiquityContainerIdentifier: "iCloud.com.perseverancesoftware.forcedrep")
-            cachedUbiquityURL = url
-            if url != nil {
-                migrateLocalToCloudIfNewer()
-            }
-            return url
+    private func finishRetry(previousGeneration: UUID?) {
+        stateLock.lock(); isRetrying = false; stateLock.unlock()
+        if let current = readPendingSync()?.generation, current != previousGeneration {
+            retryPendingSyncIfAny()
         }
-        refreshUbiquityURL()
-        return nil
-    }
-
-    public var isICloudAvailable: Bool {
-        return resolveUbiquityURL() != nil
-    }
-
-    public var localMirrorDirectory: URL {
-        let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let dir = docs.appendingPathComponent(mirrorDirName)
-        if !FileManager.default.fileExists(atPath: dir.path) {
-            try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
-        }
-        return dir
-    }
-
-    public var ubiquitousMirrorDirectory: URL? {
-        guard let ubiquityURL = resolveUbiquityURL() else { return nil }
-        let docs = ubiquityURL.appendingPathComponent("Documents").appendingPathComponent(mirrorDirName)
-        if !FileManager.default.fileExists(atPath: docs.path) {
-            try? FileManager.default.createDirectory(at: docs, withIntermediateDirectories: true)
-        }
-        return docs
-    }
-
-    public var mirrorDirectory: URL {
-        return ubiquitousMirrorDirectory ?? localMirrorDirectory
-    }
-
-    public func checkICloudUploadStatus() -> (isUploaded: Bool, isUploading: Bool, error: Error?) {
-        guard let ubiDir = ubiquitousMirrorDirectory else {
-            return (false, false, nil)
-        }
-        let file = ubiDir.appendingPathComponent(backupFileName)
-        guard FileManager.default.fileExists(atPath: file.path) else {
-            return (false, false, nil)
-        }
-        do {
-            let resourceValues = try file.resourceValues(forKeys: [
-                .ubiquitousItemIsUploadedKey,
-                .ubiquitousItemIsUploadingKey,
-                .ubiquitousItemUploadingErrorKey
-            ])
-            let isUploaded = resourceValues.ubiquitousItemIsUploaded ?? false
-            let isUploading = resourceValues.ubiquitousItemIsUploading ?? false
-            let error = resourceValues.ubiquitousItemUploadingError
-            return (isUploaded, isUploading, error)
-        } catch {
-            return (false, false, error)
-        }
-    }
-
-    public var isEnabled: Bool {
-        get { UserDefaults.standard.object(forKey: keyEnabled) as? Bool ?? true }
-        set { UserDefaults.standard.set(newValue, forKey: keyEnabled) }
-    }
-
-    public var isEncrypted: Bool {
-        get { false }
-        set { }
-    }
-
-    public func getStatus() -> CloudMirrorStatus {
-        let isCloud = isICloudAvailable
-        var confirmedSyncTimestamp: TimeInterval? = nil
-        var isUploadPending = false
-        var provider = "No Cloud Storage (Local Only)"
-
-        if isCloud {
-            let uploadStatus = checkICloudUploadStatus()
-            let ubiFile = ubiquitousMirrorDirectory?.appendingPathComponent(backupFileName)
-            let ubiExists = ubiFile != nil && FileManager.default.fileExists(atPath: ubiFile!.path)
-
-            if uploadStatus.isUploaded {
-                let modDate = (try? FileManager.default.attributesOfItem(atPath: ubiFile!.path)[.modificationDate] as? Date)?.timeIntervalSince1970
-                let recorded = UserDefaults.standard.object(forKey: keyLastCloudUpload) as? TimeInterval
-                let finalTs = [recorded, modDate].compactMap { $0 }.max()
-                confirmedSyncTimestamp = finalTs
-                if let finalTs = finalTs {
-                    UserDefaults.standard.set(finalTs, forKey: keyLastCloudUpload)
-                }
-                provider = "iCloud Drive"
-            } else if uploadStatus.isUploading {
-                isUploadPending = true
-                provider = "iCloud Drive (Uploading...)"
-                confirmedSyncTimestamp = UserDefaults.standard.object(forKey: keyLastCloudUpload) as? TimeInterval
-            } else if ubiExists {
-                isUploadPending = true
-                provider = "iCloud Drive (Pending Upload)"
-                confirmedSyncTimestamp = UserDefaults.standard.object(forKey: keyLastCloudUpload) as? TimeInterval
-            } else {
-                provider = "iCloud Drive"
-                confirmedSyncTimestamp = nil
-            }
-        } else {
-            // Local fallback only: no off-device copy exists
-            confirmedSyncTimestamp = nil
-            provider = "No Cloud Storage (Local Only)"
-        }
-
-        let file = (isCloud ? ubiquitousMirrorDirectory?.appendingPathComponent(backupFileName) : nil)
-            ?? localMirrorDirectory.appendingPathComponent(backupFileName)
-        let size = (try? FileManager.default.attributesOfItem(atPath: file.path)[.size] as? Int64)
-
-        return CloudMirrorStatus(
-            isEnabled: isEnabled,
-            isEncrypted: false,
-            lastSyncTimestamp: confirmedSyncTimestamp,
-            snapshotSizeBytes: size,
-            providerName: provider,
-            isCloudConnected: isCloud,
-            isUploadPending: isUploadPending
-        )
     }
 
     public func autoSync(backupJson: String) {
-        guard ProAccessManager.shared.isFeatureUnlocked(.cloudBackup) else { return }
-        guard isEnabled else { return }
+        guard premiumAvailable(), isEnabled, savePendingSync(backupJson: backupJson) else { return }
+        retryPendingSyncIfAny()
+    }
 
-        // 1. Stage pending backup to disk so it survives process suspension/termination
-        guard savePendingSync(backupJson: backupJson) else { return }
-
-        // 2. Request background execution time from iOS to prevent immediate suspension
-        #if canImport(UIKit)
-        let bgTracker = BackgroundTaskTracker()
-        if Thread.isMainThread {
-            bgTracker.start(name: "CloudMirrorAutoSync")
-        } else {
-            DispatchQueue.main.async {
-                bgTracker.start(name: "CloudMirrorAutoSync")
-            }
+    private func flushPendingSync() async throws {
+        guard let pending = readPendingSync() else { return }
+        let localSize = try await runIO {
+            try self.checkWriteAccess()
+            guard self.readPendingSync()?.generation == pending.generation else { return Int64(0) }
+            return try self.writeLocal(pending)
         }
-        #endif
-
-        syncQueue.async { [weak self] in
-            #if canImport(UIKit)
-            defer {
-                bgTracker.end()
-            }
-            #endif
-            guard let self, let pending = self.readPendingSync(), !pending.isEmpty else { return }
-            do {
-                _ = try self.syncNow(backupJson: pending)
-                self.clearPendingSync(onlyIfMatching: pending)
-                print("[CloudMirror] Durable autoSync succeeded.")
-            } catch {
-                print("[CloudMirror] AutoSync failed (retained on disk to retry on next app launch/foreground): \(error.localizedDescription)")
-            }
+        guard localSize > 0 else { return }
+        guard let container = try await resolveContainer() else { return } // Keep the offline payload on disk.
+        guard let identity = identityProvider() else { throw CloudMirrorError.accountChanged }
+        guard Self.sameIdentity(pending.identity, identity) || (pending.canBindFirstAccount && pending.identity == nil) else { throw CloudMirrorError.accountChanged }
+        let remote = try await discoverSnapshot(container)
+        if let remote, remote.modifiedAt > pending.createdAt { throw CloudMirrorError.newerCloudBackup }
+        try await runIO {
+            try self.checkWriteAccess()
+            guard Self.sameIdentity(identity, self.identityProvider()) else { throw CloudMirrorError.accountChanged }
+            guard self.readPendingSync()?.generation == pending.generation else { return }
+            try self.writeCloud(pending, container: container, identity: identity)
+            self.clearPendingSync(generation: pending.generation)
+            self.clearOperationError()
+            self.updateStatus()
         }
     }
 
+    /// Synchronous compatibility entry point; UI uses syncNowAsync so file coordination never blocks it.
     @discardableResult
     public func syncNow(backupJson: String) throws -> Int64 {
-        guard ProAccessManager.shared.isFeatureUnlocked(.cloudBackup) else {
-            throw NSError(domain: "CloudMirror", code: 403, userInfo: [NSLocalizedDescriptionKey: "Cloud Mirror sync requires Forced Rep Premium"])
+        try checkWriteAccess()
+        guard savePendingSync(backupJson: backupJson), let pending = readPendingSync() else { throw CloudMirrorError.invalidBackup }
+        let size = try writeLocal(pending)
+        let identity = identityProvider()
+        if let container = containerResolver() {
+            guard identity != nil, Self.sameIdentity(pending.identity, identity) || (pending.canBindFirstAccount && pending.identity == nil) else { throw CloudMirrorError.accountChanged }
+            guard Self.sameIdentity(identity, identityProvider()) else { throw CloudMirrorError.accountChanged }
+            try writeCloud(pending, container: container, identity: identity)
+            clearPendingSync(generation: pending.generation)
+            stateLock.lock(); cachedContainer = container; checkingCloud = false; stateLock.unlock()
+            startObservingCloud(container)
+        } else {
+            stateLock.lock(); cachedContainer = nil; checkingCloud = false; stateLock.unlock()
         }
-        guard isEnabled else {
-            throw NSError(domain: "CloudMirror", code: 1, userInfo: [NSLocalizedDescriptionKey: "Cloud Mirror is disabled"])
-        }
-        guard let data = backupJson.data(using: .utf8) else {
-            throw NSError(domain: "CloudMirror", code: 2, userInfo: [NSLocalizedDescriptionKey: "Invalid UTF-8 payload"])
-        }
-
-        let now = Date().timeIntervalSince1970
-
-        // 1. Always write local mirror snapshot atomically
-        let localFile = localMirrorDirectory.appendingPathComponent(backupFileName)
-        try data.write(to: localFile, options: .atomic)
-        UserDefaults.standard.set(now, forKey: keyLastLocalWrite)
-
-        var writtenSize: Int64 = (try? FileManager.default.attributesOfItem(atPath: localFile.path)[.size] as? Int64) ?? Int64(data.count)
-
-        // 2. If iCloud is available, write to ubiquitous container via NSFileCoordinator
-        if let ubiDir = ubiquitousMirrorDirectory {
-            let ubiFile = ubiDir.appendingPathComponent(backupFileName)
-            var coordinatorError: NSError?
-            var writeError: Error?
-            let coordinator = NSFileCoordinator(filePresenter: nil)
-            coordinator.coordinate(writingItemAt: ubiFile, options: .forReplacing, error: &coordinatorError) { writeURL in
-                do {
-                    try data.write(to: writeURL, options: .atomic)
-                } catch {
-                    writeError = error
-                }
-            }
-            if let err = writeError { throw err }
-            if let err = coordinatorError { throw err }
-
-            let attrs = try FileManager.default.attributesOfItem(atPath: ubiFile.path)
-            writtenSize = (attrs[.size] as? Int64) ?? writtenSize
-            UserDefaults.standard.set(now, forKey: keyLastSync)
-        }
-
-        return writtenSize
+        clearOperationError()
+        updateStatus()
+        return size
     }
 
-    public func readLatestSnapshot() throws -> String {
-        let localFile = localMirrorDirectory.appendingPathComponent(backupFileName)
-        let localExists = FileManager.default.fileExists(atPath: localFile.path)
+    public func syncNowAsync(backupJson: String) async throws -> Int64 {
+        do { return try await runIO { try self.syncNow(backupJson: backupJson) } }
+        catch { recordError(error); throw error }
+    }
 
-        var ubiFile: URL? = nil
-        var ubiExists = false
-        if let ubiDir = ubiquitousMirrorDirectory {
-            let candidate = ubiDir.appendingPathComponent(backupFileName)
-            if FileManager.default.fileExists(atPath: candidate.path) {
-                ubiFile = candidate
-                ubiExists = true
+    private static func sameIdentity(_ lhs: Data?, _ rhs: Data?) -> Bool {
+        if lhs == rhs { return true }
+        guard let lhs, let rhs,
+              let left = decodeIdentity(lhs), let right = decodeIdentity(rhs) else { return false }
+        // Archives need not be byte-identical across launches; compare Apple's
+        // opaque NSCoding identity tokens by equality, as the platform intends.
+        return left.isEqual(right)
+    }
+
+    private static func decodeIdentity(_ data: Data) -> NSObject? {
+        guard let decoder = try? NSKeyedUnarchiver(forReadingFrom: data) else { return nil }
+        // Apple's opaque identity contract guarantees NSCoding, not NSSecureCoding.
+        // These archives originate from the local FileManager identity token.
+        decoder.requiresSecureCoding = false
+        defer { decoder.finishDecoding() }
+        return decoder.decodeObject(forKey: NSKeyedArchiveRootObjectKey) as? NSObject
+    }
+
+    private func checkWriteAccess() throws {
+        // Keep the legacy error domain/code consumed by the existing manager tests.
+        guard premiumAvailable() else { throw NSError(domain: "CloudMirror", code: 403, userInfo: [NSLocalizedDescriptionKey: CloudMirrorError.premiumRequired.localizedDescription]) }
+        guard isEnabled else { throw CloudMirrorError.disabled }
+    }
+
+    private func writeLocal(_ pending: PendingBackup) throws -> Int64 {
+        let file = localMirrorDirectory.appendingPathComponent(Self.backupFileName)
+        let data = Data(pending.payload.utf8)
+        guard let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any], object["schemaVersion"] != nil else { throw CloudMirrorError.invalidBackup }
+        try data.write(to: file, options: .atomic)
+        try FileManager.default.setAttributes([.modificationDate: pending.createdAt], ofItemAtPath: file.path)
+        defaults.set(pending.createdAt.timeIntervalSince1970, forKey: keyLastLocalWrite)
+        defaults.set(pending.identity, forKey: keyLocalIdentity)
+        updateStatus()
+        return Int64(data.count)
+    }
+
+    private func writeCloud(_ pending: PendingBackup, container: URL, identity: Data?) throws {
+        let file = try cloudMirrorDirectory(in: container).appendingPathComponent(Self.backupFileName)
+        var coordinationError: NSError?
+        var writeError: Error?
+        NSFileCoordinator(filePresenter: nil).coordinate(writingItemAt: file, options: .forReplacing, error: &coordinationError) { url in
+            do {
+                try self.checkWriteAccess()
+                guard Self.sameIdentity(identity, self.identityProvider()) else { throw CloudMirrorError.accountChanged }
+                guard self.readPendingSync()?.generation == pending.generation else { return }
+                try Data(pending.payload.utf8).write(to: url, options: .atomic)
+                try FileManager.default.setAttributes([.modificationDate: pending.createdAt], ofItemAtPath: url.path)
+            } catch { writeError = error }
+        }
+        if let error = writeError ?? coordinationError { throw error }
+        if let identity {
+            defaults.set(identity, forKey: keyLocalIdentity)
+            if let previous = defaults.data(forKey: keyLastIdentity), !Self.sameIdentity(previous, identity) {
+                defaults.removeObject(forKey: keyLastCloudUpload)
             }
+            defaults.set(identity, forKey: keyLastIdentity)
         }
+    }
 
-        if !localExists && !ubiExists {
-            throw NSError(domain: "CloudMirror", code: 5, userInfo: [NSLocalizedDescriptionKey: "No cloud mirror backup snapshot found."])
-        }
-
-        // If both exist, inspect modification dates to pick the newer one so local offline workouts are never lost
-        let readTarget: URL
-        let isUbiquitous: Bool
-        if localExists && ubiExists, let ubi = ubiFile {
-            let localDate = (try? FileManager.default.attributesOfItem(atPath: localFile.path)[.modificationDate] as? Date) ?? Date.distantPast
-            let ubiDate = (try? FileManager.default.attributesOfItem(atPath: ubi.path)[.modificationDate] as? Date) ?? Date.distantPast
-            if ubiDate >= localDate {
-                readTarget = ubi
-                isUbiquitous = true
+    public func readLatestSnapshotAsync() async throws -> String {
+        do {
+            let container = try await resolveContainer()
+            let identity = identityProvider()
+            let remote: CloudSnapshot?
+            if let container { remote = try await discoverSnapshot(container) }
+            else { remote = nil }
+            let local = localMirrorDirectory.appendingPathComponent(Self.backupFileName)
+            let localDate = try await runIO { () -> Date? in
+                let boundIdentity = self.defaults.data(forKey: self.keyLocalIdentity)
+                if let identity, let boundIdentity, !Self.sameIdentity(identity, boundIdentity) { return nil }
+                return try? local.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate
+            }
+            guard Self.sameIdentity(identity, identityProvider()) else { throw CloudMirrorError.accountChanged }
+            let result: String
+            if let remote, localDate == nil || remote.modifiedAt >= localDate! {
+                try await prepareDownload(remote.url)
+                result = try await runIO {
+                    guard Self.sameIdentity(identity, self.identityProvider()) else { throw CloudMirrorError.accountChanged }
+                    return try self.readCoordinated(remote.url)
+                }
             } else {
-                readTarget = localFile
-                isUbiquitous = false
-            }
-        } else if let ubi = ubiFile {
-            readTarget = ubi
-            isUbiquitous = true
-        } else {
-            readTarget = localFile
-            isUbiquitous = false
-        }
-
-        var resultString: String?
-        if isUbiquitous {
-            var coordinatorError: NSError?
-            var readError: Error?
-            let coordinator = NSFileCoordinator(filePresenter: nil)
-            coordinator.coordinate(readingItemAt: readTarget, options: .withoutChanges, error: &coordinatorError) { readURL in
-                do {
-                    resultString = try String(contentsOf: readURL, encoding: .utf8)
-                } catch {
-                    readError = error
+                guard localDate != nil else { throw CloudMirrorError.noBackup }
+                result = try await runIO {
+                    guard Self.sameIdentity(identity, self.identityProvider()) else { throw CloudMirrorError.accountChanged }
+                    return try String(contentsOf: local, encoding: .utf8)
                 }
             }
-            if let err = readError { throw err }
-            if let err = coordinatorError { throw err }
-        } else {
-            resultString = try String(contentsOf: readTarget, encoding: .utf8)
-        }
+            try Task.checkCancellation()
+            guard Self.sameIdentity(identity, identityProvider()) else { throw CloudMirrorError.accountChanged }
+            clearOperationError()
+            refreshStatus()
+            return result
+        } catch { recordError(error); throw error }
+    }
 
-        guard let result = resultString else {
-            throw NSError(domain: "CloudMirror", code: 6, userInfo: [NSLocalizedDescriptionKey: "Failed to read cloud mirror."])
+    public func didRestoreSnapshot() {
+        // Restoring replaces the saved app data, so an older queued export must
+        // never upload later and undo that deliberate restore.
+        clearPendingSync()
+        clearOperationError()
+        refreshStatus()
+    }
+
+    /// Local read for old callers/tests. Remote restore must use the async discovery path.
+    public func readLatestSnapshot() throws -> String {
+        let local = localMirrorDirectory.appendingPathComponent(Self.backupFileName)
+        guard FileManager.default.fileExists(atPath: local.path) else { throw CloudMirrorError.noBackup }
+        return try String(contentsOf: local, encoding: .utf8)
+    }
+
+    private func readCoordinated(_ file: URL) throws -> String {
+        var coordinationError: NSError?
+        var result: Result<String, Error>?
+        NSFileCoordinator(filePresenter: nil).coordinate(readingItemAt: file, options: .withoutChanges, error: &coordinationError) { url in
+            result = Result { try String(contentsOf: url, encoding: .utf8) }
         }
-        return result
+        if let coordinationError { throw coordinationError }
+        guard let result else { throw CloudMirrorError.noBackup }
+        return try result.get()
+    }
+
+    private static func downloadSnapshot(_ url: URL) async throws {
+        let download = Task.detached(priority: .utility) {
+            try FileManager.default.startDownloadingUbiquitousItem(at: url)
+            let deadline = Date().addingTimeInterval(30)
+            repeat {
+                try Task.checkCancellation()
+                var refreshedURL = url
+                refreshedURL.removeAllCachedResourceValues()
+                let values = try refreshedURL.resourceValues(forKeys: [.ubiquitousItemDownloadingStatusKey, .ubiquitousItemDownloadingErrorKey])
+                if let error = values.ubiquitousItemDownloadingError { throw error }
+                if values.ubiquitousItemDownloadingStatus == .current { return }
+                try await Task.sleep(nanoseconds: 250_000_000)
+            } while Date() < deadline
+            throw CloudMirrorError.downloadTimedOut
+        }
+        try await withTaskCancellationHandler(operation: { try await download.value }, onCancel: { download.cancel() })
+    }
+
+    private func runIO<T>(_ work: @escaping () throws -> T) async throws -> T {
+        try await withCheckedThrowingContinuation { continuation in
+            syncQueue.async { continuation.resume(with: Result(catching: work)) }
+        }
+    }
+
+    public func getStatus() -> CloudMirrorStatus {
+        stateLock.lock(); defer { stateLock.unlock() }
+        return cachedStatus ?? status
+    }
+    public func checkICloudUploadStatus() -> (isUploaded: Bool, isUploading: Bool, error: Error?) {
+        guard let file = ubiquitousMirrorDirectory?.appendingPathComponent(Self.backupFileName), FileManager.default.fileExists(atPath: file.path) else { return (false, false, nil) }
+        do { return try uploadStatus(file) } catch { return (false, false, error) }
+    }
+    public func refreshStatus() { syncQueue.async { [weak self] in self?.updateStatus() } }
+    private func recordError(_ error: Error) {
+        stateLock.lock(); operationError = error.localizedDescription; stateLock.unlock()
+        refreshStatus()
+    }
+    private func clearOperationError() { stateLock.lock(); operationError = nil; stateLock.unlock() }
+
+    private func updateStatus() {
+        stateLock.lock(); let container = cachedContainer; let observed = observedSnapshot; let checking = checkingCloud; let failure = operationError; stateLock.unlock()
+        let file = observed?.url ?? container?.appendingPathComponent("Documents/CloudMirror").appendingPathComponent(Self.backupFileName)
+        let exists = observed != nil || (file.map { FileManager.default.fileExists(atPath: $0.path) } ?? false)
+        let upload: (isUploaded: Bool, isUploading: Bool, error: Error?)
+        if exists, let file {
+            do { upload = try uploadStatus(file) } catch { upload = (false, false, error) }
+        } else { upload = (false, false, nil) }
+        if upload.isUploaded, let file, let date = try? file.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate {
+            defaults.set(date.timeIntervalSince1970, forKey: keyLastCloudUpload)
+        }
+        let local = localMirrorDirectory.appendingPathComponent(Self.backupFileName)
+        let size = try? (exists ? file! : local).resourceValues(forKeys: [.fileSizeKey]).fileSize
+        let newStatus = CloudMirrorStatus(isEnabled: isEnabled,
+            lastSyncTimestamp: container == nil ? nil : defaults.object(forKey: keyLastCloudUpload) as? TimeInterval,
+            snapshotSizeBytes: size.map(Int64.init),
+            providerName: container == nil ? LanguageManager.t("form_lab.mirror_local_provider") : "iCloud Drive",
+            isCloudConnected: container != nil, isUploadPending: exists && !upload.isUploaded,
+            isCheckingCloud: checking, errorMessage: upload.error?.localizedDescription ?? failure)
+        stateLock.lock(); cachedStatus = newStatus; stateLock.unlock()
+        DispatchQueue.main.async { [weak self] in self?.status = newStatus }
+    }
+
+    private func setObservedSnapshot(_ snapshot: CloudSnapshot?, container: URL) {
+        stateLock.lock(); defer { stateLock.unlock() }
+        if cachedContainer == container { observedSnapshot = snapshot }
+    }
+
+    private func startObservingCloud(_ container: URL?) {
+        guard observesSystem else { return }
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.liveQuery?.stop()
+            self.queryObservers.forEach { NotificationCenter.default.removeObserver($0) }
+            self.queryObservers.removeAll()
+            guard let container else { self.liveQuery = nil; return }
+            let query = NSMetadataQuery()
+            query.searchScopes = [NSMetadataQueryUbiquitousDocumentsScope]
+            query.predicate = NSPredicate(format: "%K == %@", NSMetadataItemFSNameKey, Self.backupFileName)
+            for name in [Notification.Name.NSMetadataQueryDidFinishGathering, .NSMetadataQueryDidUpdate] {
+                self.queryObservers.append(NotificationCenter.default.addObserver(forName: name, object: query, queue: .main) { [weak self] _ in
+                    // Query notifications are the upload completion/error signal, even
+                    // when the backup sheet stays open without further user input.
+                    Task { @MainActor [weak self] in
+                        guard let self else { return }
+                        let snapshot = CloudSnapshotDiscovery.latestSnapshot(in: query, container: container)
+                        self.setObservedSnapshot(snapshot, container: container)
+                        self.refreshStatus()
+                    }
+                })
+            }
+            self.liveQuery = query
+            _ = query.start()
+        }
+    }
+
+    private func beginBackgroundTask() async -> BackgroundAssertion {
+        let assertion = BackgroundAssertion()
+        #if canImport(UIKit)
+        await MainActor.run { assertion.start() }
+        #endif
+        return assertion
+    }
+    private func endBackgroundTask(_ assertion: BackgroundAssertion) { assertion.end() }
+}
+
+private final class BackgroundAssertion: @unchecked Sendable {
+    #if canImport(UIKit)
+    private var identifier = UIBackgroundTaskIdentifier.invalid
+    @MainActor func start() {
+        identifier = UIApplication.shared.beginBackgroundTask(withName: "CloudMirrorAutoSync") { [weak self] in self?.end() }
+    }
+    #endif
+    func end() {
+        #if canImport(UIKit)
+        DispatchQueue.main.async { [self] in
+            guard identifier != .invalid else { return }
+            UIApplication.shared.endBackgroundTask(identifier)
+            identifier = .invalid
+        }
+        #endif
     }
 }

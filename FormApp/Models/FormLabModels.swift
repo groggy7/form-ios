@@ -229,6 +229,8 @@ public struct CloudMirrorStatus: Equatable {
     public let providerName: String
     public let isCloudConnected: Bool
     public let isUploadPending: Bool
+    public let isCheckingCloud: Bool
+    public let errorMessage: String?
 
     public init(
         isEnabled: Bool,
@@ -237,7 +239,9 @@ public struct CloudMirrorStatus: Equatable {
         snapshotSizeBytes: Int64?,
         providerName: String,
         isCloudConnected: Bool = false,
-        isUploadPending: Bool = false
+        isUploadPending: Bool = false,
+        isCheckingCloud: Bool = false,
+        errorMessage: String? = nil
     ) {
         self.isEnabled = isEnabled
         self.isEncrypted = isEncrypted
@@ -246,5 +250,7 @@ public struct CloudMirrorStatus: Equatable {
         self.providerName = providerName
         self.isCloudConnected = isCloudConnected
         self.isUploadPending = isUploadPending
+        self.isCheckingCloud = isCheckingCloud
+        self.errorMessage = errorMessage
     }
 }
