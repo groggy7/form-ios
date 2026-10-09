@@ -8619,10 +8619,22 @@ final class ProgressionReliabilityTests: XCTestCase {
         XCTAssertEqual(holdLoadTargets.rationaleKey, "progression.rationale.hold_load_mixed")
         XCTAssertEqual(holdLoadTargets.setTargets.map { $0.reps }, [7, 6, 6])
         XCTAssertEqual(holdLoadTargets.setTargets.map { $0.weightKg }, [105, 110, 115])
+        var pecDeck = bench
+        pecDeck.name = "Pec Deck Fly"
+        pecDeck.exerciseId = "pec-deck-fly"
+        pecDeck.sets = 4
+        var pecDeckSource = record(1, reps: [12, 12, 12, 12], loads: [65, 65, 65, 65], targetSets: 4)
+        pecDeckSource.exerciseLogs[0].exerciseName = pecDeck.name
+        pecDeckSource.exerciseLogs[0].exerciseId = pecDeck.exerciseId
+        let holdCeiling = try XCTUnwrap(ProgressionEngine.computeProgression(exercise: pecDeck, history: [pecDeckSource]))
+        XCTAssertEqual(holdCeiling.action, .holdLoad)
+        XCTAssertEqual(holdCeiling.rationaleKey, "progression.rationale.repeat_ceiling")
+        XCTAssertEqual(holdCeiling.setTargets, Array(repeating: ProgressionSetTarget(weightKg: 65, reps: 12), count: 4))
         for language in ["en", "tr"] {
             LanguageManager.setLanguage(language)
             for (name, recommendation, applied) in [("targets", targets, false), ("applied-targets", targets, true),
-                ("bodyweight-targets", bodyweightTargets, false), ("hold-load", holdLoadTargets, false), ("review", review, false)] {
+                ("bodyweight-targets", bodyweightTargets, false), ("hold-load", holdLoadTargets, false),
+                ("hold-ceiling", holdCeiling, false), ("review", review, false)] {
                 let layouts: [(CGFloat, ContentSizeCategory)] = [(393, .large), (320, .extraExtraExtraLarge)]
                 for (width, textSize) in layouts {
                     var compactHeight: CGFloat = 0

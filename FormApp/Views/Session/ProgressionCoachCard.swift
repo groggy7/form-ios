@@ -314,13 +314,10 @@ struct ProgressionRecommendationCard: View {
     private var descriptionText: String {
         if review { return LanguageManager.t("progression.coach.review_observation", recommendation.rationaleArgs) }
         if wasApplied { return LanguageManager.t("progression.coach.applied_hint") }
-        if recommendation.action == .increaseLoad {
+        if recommendation.action == .increaseLoad || recommendation.action == .holdLoad {
             return LanguageManager.t(recommendation.rationaleKey, recommendation.rationaleArgs)
         }
         if expanded { return LanguageManager.t("progression.coach.add_reps_expanded_hint") }
-        if recommendation.action == .holdLoad {
-            return LanguageManager.t(recommendation.rationaleKey, recommendation.rationaleArgs)
-        }
         return LanguageManager.t("progression.coach.add_reps_hint", recommendation.rationaleArgs)
     }
 
