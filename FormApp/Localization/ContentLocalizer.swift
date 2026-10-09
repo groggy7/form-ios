@@ -25,6 +25,7 @@ public final class ContentLocalizer {
 
     private var exercisesCache: [String: [String: ExerciseLocaleData]] = [:]
     private var programsCache: [String: [String: ProgramLocaleData]] = [:]
+    private var uiCache: [String: [String: String]] = [:]
 
     private init() {}
 
@@ -78,6 +79,14 @@ public final class ContentLocalizer {
             return [:]
         }
         exercisesCache[lang] = dict
+        return dict
+    }
+
+    public func loadUI(lang: String) -> [String: String] {
+        if let cached = uiCache[lang] { return cached }
+        guard let data = loadFileData(filename: "ui", lang: lang),
+              let dict = try? JSONDecoder().decode([String: String].self, from: data) else { return [:] }
+        uiCache[lang] = dict
         return dict
     }
 

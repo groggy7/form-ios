@@ -83,7 +83,7 @@ public struct ProgramExerciseEditorSheet: View {
                     // Header card with exercise info and live preview
                     VStack(alignment: .leading, spacing: 8) {
                         HStack {
-                            Text(exercise.resolvedMovement.rawValue.uppercased())
+                            Text(LanguageManager.t("category.\(exercise.resolvedMovement.key)").uppercased(with: LanguageManager.locale))
                                 .font(.system(size: 11, weight: .bold))
                                 .foregroundColor(AppColors.accent)
                                 .padding(.horizontal, 8)
@@ -183,7 +183,7 @@ public struct ProgramExerciseEditorSheet: View {
                                             Text(LanguageManager.t("targets.min"))
                                                 .font(.system(size: 12))
                                                 .foregroundColor(AppColors.muted)
-                                            TextField("Min", text: $minRepsString)
+                                            TextField(LanguageManager.t("editor.min"), text: $minRepsString)
                                                 .keyboardType(.numberPad)
                                                 .font(.system(size: 16, weight: .semibold))
                                                 .foregroundColor(AppColors.text)
@@ -197,7 +197,7 @@ public struct ProgramExerciseEditorSheet: View {
                                             Text(LanguageManager.t("targets.max"))
                                                 .font(.system(size: 12))
                                                 .foregroundColor(AppColors.muted)
-                                            TextField("Max", text: $maxRepsString)
+                                            TextField(LanguageManager.t("editor.max"), text: $maxRepsString)
                                                 .keyboardType(.numberPad)
                                                 .font(.system(size: 16, weight: .semibold))
                                                 .foregroundColor(AppColors.text)
@@ -224,7 +224,7 @@ public struct ProgramExerciseEditorSheet: View {
                             } else {
                                 // Custom prescription input
                                 VStack(alignment: .leading, spacing: 6) {
-                                    TextField("e.g. 3 rounds, hold 30s", text: $customPrescription)
+                                    TextField(LanguageManager.t("editor.customPlaceholder"), text: $customPrescription)
                                         .font(.system(size: 15))
                                         .foregroundColor(AppColors.text)
                                         .padding(12)

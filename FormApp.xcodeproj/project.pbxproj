@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A11000000000000000000001 /* TranslationTables.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11000000000000000000002; };
+		A11000000000000000000003 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A11000000000000000000004; };
 		0020D035F786CD915922D766 /* TodayHeroCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D6F413D877B7E332EEF6D /* TodayHeroCard.swift */; };
 		0667E5D4E4CF923DF66A2C24 /* 01_aesthetic_hypertrophy.json in Resources */ = {isa = PBXBuildFile; fileRef = 92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */; };
 		075B0F9BA865F79FB856122B /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D5A75502FFC600D48A992 /* AudioPlayer.swift */; };
@@ -128,6 +130,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A11000000000000000000002 /* TranslationTables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationTables.swift; sourceTree = "<group>"; };
+		A11000000000000000000004 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		023D09DFD513B3F32B009541 /* WorkoutDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetailSheet.swift; sourceTree = "<group>"; };
 		08997E0EACD6176BFF508687 /* ToastOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastOverlay.swift; sourceTree = "<group>"; };
 		10AEC969AB339D9720AB880B /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
@@ -289,6 +293,7 @@
 			children = (
 				C10000000000000000000001 /* ContentLocalizer.swift */,
 				3F76831712F5D29B631895CD /* Translations.swift */,
+				A11000000000000000000002 /* TranslationTables.swift */,
 			);
 			path = Localization;
 			sourceTree = "<group>";
@@ -458,6 +463,7 @@
 				V10000000000000000000004 /* ExerciseVideos */,
 				M20000000000000000000004 /* ExerciseMuscles */,
 				E30000000000000000000004 /* equipment_catalog.json */,
+				A11000000000000000000004 /* Localizable.xcstrings */,
 				T10000000000000000000004 /* ExerciseThumbnails */,
 				E10000000000000000000001 /* exercises.json */,
 				L100000000000000000000001 /* Locales */,
@@ -582,6 +588,10 @@
 			knownRegions = (
 				Base,
 				en,
+				tr,
+				de,
+				fr,
+				es,
 			);
 			mainGroup = 12E39561EAB2ACA42229972D;
 			minimizedProjectReferenceProxies = 1;
@@ -601,6 +611,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A11000000000000000000003 /* Localizable.xcstrings in Resources */,
 				A13B29C1D4E5F60718293A4B /* PrivacyInfo.xcprivacy in Resources */,
 				E10000000000000000000002 /* exercises.json in Resources */,
 				V10000000000000000000003 /* ExerciseVideos in Resources */,
@@ -708,6 +719,7 @@
 				C0E82546129BB4114FE21B90 /* TodayView.swift in Sources */,
 				C10000000000000000000002 /* ContentLocalizer.swift in Sources */,
 				8CE7A1BF601A16FFB8419C60 /* Translations.swift in Sources */,
+				A11000000000000000000001 /* TranslationTables.swift in Sources */,
 				C07F25C1E8D200C36DCFFE4B /* WeekStripView.swift in Sources */,
 				5ADDC53EC8EAFFB482F36B20 /* WeeklyPlanView.swift in Sources */,
 				2BD3BC2D8BB759DB9AFE8F34 /* WorkoutDetailSheet.swift in Sources */,
@@ -765,6 +777,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
+				SWIFT_EMIT_LOCALIZATION_STRINGS = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -825,6 +838,7 @@
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
+				SWIFT_EMIT_LOCALIZATION_STRINGS = NO;
 			};
 			name = Release;
 		};
@@ -846,6 +860,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
+				SWIFT_EMIT_LOCALIZATION_STRINGS = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -863,6 +878,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.perseverancesoftware.forcedrep.tests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
+				SWIFT_EMIT_LOCALIZATION_STRINGS = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FormApp.app/FormApp";
 			};
@@ -881,6 +897,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.perseverancesoftware.forcedrep.tests;
 				SDKROOT = iphoneos;
 				SWIFT_VERSION = 5.0;
+				SWIFT_EMIT_LOCALIZATION_STRINGS = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FormApp.app/FormApp";
 			};
@@ -949,6 +966,7 @@
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
+				SWIFT_EMIT_LOCALIZATION_STRINGS = NO;
 			};
 			name = Debug;
 		};

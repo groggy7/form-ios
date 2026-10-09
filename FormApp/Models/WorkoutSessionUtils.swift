@@ -538,7 +538,7 @@ public enum WorkoutSessionUtils {
         }
         let prevW = formatWeight(target.lastWeekWeightKg ?? 0.0, unit: unit)
         let prevR = target.lastWeekReps ?? 0
-        let repsLabel = (LanguageManager.shared.currentLanguage == "tr") ? "tekrar" : "reps"
+        let repsLabel = LanguageManager.t("units.reps")
         let lastWeekStr = LanguageManager.t(
             "session.ghost.last_week",
             ["weight": "\(prevW) \(unit.label)", "reps": "\(prevR) \(repsLabel)"]

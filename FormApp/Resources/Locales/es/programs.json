@@ -1,0 +1,235 @@
+{
+  "aesthetic-hypertrophy": {
+    "name": "Motor estético: hipertrofia de 5 días",
+    "description": "Para levantadores experimentados que disfrutan de cinco días de gimnasio. Desarrollo muscular equilibrado superior/inferior con trabajo adicional de hombros. Gimnasio completo; aproximadamente entre 55 y 75 minutos por sesión.",
+    "guidelines": [
+      "Tren lunes, martes, jueves, viernes y sábado. Mantenga el miércoles y el domingo libres para recuperación; agregue tiempo entre sesiones si la recuperación se ve afectada.",
+      "Los series listados son series efectivas. Calienta primero, luego practica progresivamente con más peso series antes de tus primeros levantamientos pesados.",
+      "Termine la mayor parte de series con aproximadamente 2 buenas repeticiones restantes. Mantenga el mismo rango de movimiento controlado; El fracaso no es necesario.",
+      "Cuando cada serie alcance la cima de su rango de repeticiones con forma limpia en dos sesiones, intente el menor aumento de peso disponible mientras intenta mantener el mismo repeticiones. Si repeticiones o la forma sufren, use un aumento menor o repita la carga anterior. De lo contrario, mantenga el peso y construya repeticiones.",
+      "Mantenga el plan durante 6 a 8 semanas antes de juzgar el progreso. Si la fatiga se acumula o el rendimiento disminuye en varias sesiones, utilice menos series y cargas más ligeras durante una semana. No entrenes a través del dolor."
+    ],
+    "workouts": {
+      "aesthetic-push-a": {
+        "title": "Pecho y tríceps",
+        "focus": "Pressing, aislamiento torácico y deltoides laterales."
+      },
+      "aesthetic-pull-a": {
+        "title": "Espalda y bíceps",
+        "focus": "Tirón vertical, remo apoyado y deltoides posteriores"
+      },
+      "aesthetic-legs-a": {
+        "title": "Cuádriceps y pantorrillas",
+        "focus": "Patrón de sentadillas, extensión de rodillas e isquiotibiales."
+      },
+      "aesthetic-upper-b": {
+        "title": "Parte superior del cuerpo y hombros",
+        "focus": "Segunda exposición de pecho/espalda con trabajo de hombros y brazos."
+      },
+      "aesthetic-lower-b": {
+        "title": "Glúteos e isquiotibiales",
+        "focus": "Bisagra de cadera, sentadilla con una sola pierna y flexión del tronco"
+      }
+    }
+  },
+  "powerbuilding-strength": {
+    "name": "Pesado y construido: construcción de energía de 4 días",
+    "description": "Para levantadores intermedios que desean sentadillas, banco y peso muerto más fuertes junto con crecimiento muscular. Bastidor, barra, banco, mancuernas y cable/máquinas; alrededor de 60 a 80 minutos.",
+    "guidelines": [
+      "Tren lunes, martes, jueves y viernes. Descanse 3 minutos en los ascensores principales, más tiempo si es necesario; Mantenga el series pesado controlado, nunca puliendo hasta fallar.",
+      "Los series listados son series efectivas. Calienta primero, luego practica progresivamente con más peso series antes de tus primeros levantamientos pesados.",
+      "Termine la mayor parte de series con aproximadamente 2 buenas repeticiones restantes. Mantenga el mismo rango de movimiento controlado; El fracaso no es necesario.",
+      "Cuando cada serie alcance la cima de su rango de repeticiones con forma limpia en dos sesiones, intente el menor aumento de peso disponible mientras intenta mantener el mismo repeticiones. Si repeticiones o la forma sufren, use un aumento menor o repita la carga anterior. De lo contrario, mantenga el peso y construya repeticiones.",
+      "Mantenga el plan durante 6 a 8 semanas antes de juzgar el progreso. Si la fatiga se acumula o el rendimiento disminuye en varias sesiones, utilice menos series y cargas más ligeras durante una semana. No entrenes a través del dolor."
+    ],
+    "workouts": {
+      "pb-squat-strength": {
+        "title": "Inferior: sentadilla",
+        "focus": "Práctica de sentadillas con isquiotibiales y pantorrillas."
+      },
+      "pb-bench-strength": {
+        "title": "Superior: Banco",
+        "focus": "Banco pesado con tracción equilibrada."
+      },
+      "pb-deadlift-strength": {
+        "title": "Inferior: peso muerto",
+        "focus": "Peso muerto de bajo volumen seguido de asistencia en sentadilla"
+      },
+      "pb-press-volume": {
+        "title": "Superior: Presione y Volumen",
+        "focus": "Press de hombros, banco y espalda más ligeros"
+      }
+    }
+  },
+  "classic-ppl": {
+    "name": "PPL pura: hipertrofia de 6 días",
+    "description": "Para levantadores experimentados que pueden recuperarse constantemente después de seis días de gimnasio. Dos sesiones de empujar, tirar y piernas con distintos énfasis. Gimnasio completo; alrededor de 45 a 65 minutos.",
+    "guidelines": [
+      "El domingo es descanso. Elija el plan Superior/Inferior de 4 días si seis días son difíciles de mantener. Los días de tracción utilizan remo con apoyo, dejando las pesadas bisagras de la cadera para los días de piernas.",
+      "Los series listados son series efectivas. Calienta primero, luego practica progresivamente con más peso series antes de tus primeros levantamientos pesados.",
+      "Termine la mayor parte de series con aproximadamente 2 buenas repeticiones restantes. Mantenga el mismo rango de movimiento controlado; El fracaso no es necesario.",
+      "Cuando cada serie alcance la cima de su rango de repeticiones con forma limpia en dos sesiones, intente el menor aumento de peso disponible mientras intenta mantener el mismo repeticiones. Si repeticiones o la forma sufren, use un aumento menor o repita la carga anterior. De lo contrario, mantenga el peso y construya repeticiones.",
+      "Mantenga el plan durante 6 a 8 semanas antes de juzgar el progreso. Si la fatiga se acumula o el rendimiento disminuye en varias sesiones, utilice menos series y cargas más ligeras durante una semana. No entrenes a través del dolor."
+    ],
+    "workouts": {
+      "ppl-push-1": {
+        "title": "Empuje A: Pecho",
+        "focus": "Press plano con asistencia de hombros y tríceps"
+      },
+      "ppl-pull-1": {
+        "title": "Tirar A: dorsales",
+        "focus": "Tirón vertical, remo apoyado y bíceps"
+      },
+      "ppl-legs-1": {
+        "title": "Piernas A: Sentadilla",
+        "focus": "Cuádriceps, flexión de rodilla y pantorrillas."
+      },
+      "ppl-push-2": {
+        "title": "Empuje B: Inclinación",
+        "focus": "Press inclinado, aislamiento de pecho y tríceps por encima de la cabeza"
+      },
+      "ppl-pull-2": {
+        "title": "Tirar B: Filas",
+        "focus": "Tirón horizontal con deltoides posteriores y curls"
+      },
+      "ppl-legs-2": {
+        "title": "Patas B: Bisagra",
+        "focus": "Cadena posterior con un segundo patrón de sentadilla."
+      }
+    }
+  },
+  "full-body-classic": {
+    "name": "Base clásica: cuerpo completo de 3 días",
+    "description": "Un punto de partida manejable para principiantes y levantadores recurrentes. Repita patrones de movimiento clave en lugar de aprender una nueva rutina todos los días. Gimnasio con mancuernas, banco, prensa de piernas y cables; alrededor de 40 a 55 minutos.",
+    "guidelines": [
+      "Utilice días no consecutivos. Durante las primeras dos semanas, deje de 3 a 4 buenas repeticiones en reserva y priorice aprender la configuración antes que agregar peso. Pida ayuda con equipos desconocidos.",
+      "Los series listados son series efectivas. Calienta primero, luego practica progresivamente con más peso series antes de tus primeros levantamientos pesados.",
+      "Termine la mayor parte de series con aproximadamente 2 buenas repeticiones restantes. Mantenga el mismo rango de movimiento controlado; El fracaso no es necesario.",
+      "Cuando cada serie alcance la cima de su rango de repeticiones con forma limpia en dos sesiones, intente el menor aumento de peso disponible mientras intenta mantener el mismo repeticiones. Si repeticiones o la forma sufren, use un aumento menor o repita la carga anterior. De lo contrario, mantenga el peso y construya repeticiones.",
+      "Mantenga el plan durante 6 a 8 semanas antes de juzgar el progreso. Si la fatiga se acumula o el rendimiento disminuye en varias sesiones, utilice menos series y cargas más ligeras durante una semana. No entrenes a través del dolor."
+    ],
+    "workouts": {
+      "fb-workout-a": {
+        "title": "Cuerpo completo A",
+        "focus": "Press de piernas, press de pecho, remo y bisagra"
+      },
+      "fb-workout-b": {
+        "title": "Cuerpo completo B",
+        "focus": "Sentadilla en copa, pulldown y press con apoyo"
+      },
+      "fb-workout-c": {
+        "title": "Cuerpo completo C",
+        "focus": "Repite lo básico con el trabajo de pantorrillas y tronco."
+      }
+    }
+  },
+  "home-forge-dumbbells": {
+    "name": "Forja casera: mancuernas de 4 días",
+    "description": "Entrenamiento superior/inferior con mancuernas ajustable y banco ajustable; sin cables, barra ni estación de dominadas. Para levantadores que se sienten cómodos con lo básico. Aproximadamente entre 40 y 60 minutos.",
+    "guidelines": [
+      "Tren lunes, martes, jueves y viernes. Utilice una plataforma baja y estable para la sentadilla dividida con el pie delantero elevado. Si tu mancuernas se vuelve demasiado liviano, usa la parte superior del rango de repeticiones con forma controlada; No invente peso extra en el tronco.",
+      "Los series listados son series efectivas. Calienta primero, luego practica progresivamente con más peso series antes de tus primeros levantamientos pesados.",
+      "Termine la mayor parte de series con aproximadamente 2 buenas repeticiones restantes. Mantenga el mismo rango de movimiento controlado; El fracaso no es necesario.",
+      "Cuando cada serie alcance la cima de su rango de repeticiones con forma limpia en dos sesiones, intente el menor aumento de peso disponible mientras intenta mantener el mismo repeticiones. Si repeticiones o la forma sufren, use un aumento menor o repita la carga anterior. De lo contrario, mantenga el peso y construya repeticiones.",
+      "Mantenga el plan durante 6 a 8 semanas antes de juzgar el progreso. Si la fatiga se acumula o el rendimiento disminuye en varias sesiones, utilice menos series y cargas más ligeras durante una semana. No entrenes a través del dolor."
+    ],
+    "workouts": {
+      "hf-upper-a": {
+        "title": "Superior A: Prensa plana",
+        "focus": "Press plano, remo a un solo brazo y hombros"
+      },
+      "hf-lower-a": {
+        "title": "Inferior A: sentadilla y bisagra",
+        "focus": "Sentadilla, peso muerto rumano y piernas unilaterales"
+      },
+      "hf-upper-b": {
+        "title": "Superior B: inclinación y remo",
+        "focus": "Press inclinado, remo apoyado y deltoides posteriores"
+      },
+      "hf-lower-b": {
+        "title": "Inferior B: Fuerza con una sola pierna",
+        "focus": "Sentadilla dividida, bisagra y puente de glúteos"
+      }
+    }
+  },
+  "athletic-performance": {
+    "name": "Motor atlético: fuerza y ​​potencia de 3 días",
+    "description": "Práctica de fuerza general y potencia baja-repetición para levantadores experimentados, no un plan de acondicionamiento específico para un deporte. Gimnasio completo con trap bar, pesas rusas y plataforma baja; alrededor de 50 a 65 minutos.",
+    "guidelines": [
+      "Entrena en días no consecutivos y contabiliza tus sesiones deportivas. Aprenda los columpios y los push press antes de utilizar este plan. Utilice cargas de ligeras a moderadas en estos dos levantamientos y detenga la serie tan pronto como la velocidad o la técnica bajen, incluso antes del objetivo repeticiones.",
+      "No aplique la progresión automática del rango repetición a los swings o push press: agregue carga solo mientras cada repetición se mantenga rápida y controlada. Este plan no sustituye al entrenamiento aeróbico ni a la práctica deportiva.",
+      "Los series listados son series efectivas. Calienta primero, luego practica progresivamente con más peso series antes de tus primeros levantamientos pesados.",
+      "Termine la mayor parte de series con aproximadamente 2 buenas repeticiones restantes. Mantenga el mismo rango de movimiento controlado; El fracaso no es necesario.",
+      "Cuando cada serie alcance la cima de su rango de repeticiones con forma limpia en dos sesiones, intente el menor aumento de peso disponible mientras intenta mantener el mismo repeticiones. Si repeticiones o la forma sufren, use un aumento menor o repita la carga anterior. De lo contrario, mantenga el peso y construya repeticiones.",
+      "Mantenga el plan durante 6 a 8 semanas antes de juzgar el progreso. Si la fatiga se acumula o el rendimiento disminuye en varias sesiones, utilice menos series y cargas más ligeras durante una semana. No entrenes a través del dolor."
+    ],
+    "workouts": {
+      "ap-lower-power": {
+        "title": "Potencia y menor resistencia",
+        "focus": "Bisagra rápida, fuerza de barra trampa y trabajo superior equilibrado"
+      },
+      "ap-upper-power": {
+        "title": "Potencia y fuerza con una sola pierna",
+        "focus": "Press de empuje seguido de piernas unilaterales y tirando."
+      },
+      "ap-work-capacity": {
+        "title": "Fuerza de todo el cuerpo",
+        "focus": "Sentadilla, bisagra, press inclinado y remo apoyado"
+      }
+    }
+  },
+  "upper-lower-balanced": {
+    "name": "Construcción equilibrada: 4 días superior/inferior",
+    "description": "Un siguiente paso práctico después del entrenamiento de cuerpo completo: cada área principal dos veces por semana, sin trabajo pesado de fuerza baja ni seis días de entrenamiento. Gimnasio completo; alrededor de 50 a 70 minutos.",
+    "guidelines": [
+      "Entrena la parte superior del cuerpo lunes/jueves y la parte inferior martes/viernes. Mantenga libres los fines de semana o mueva los días conservando un día de descanso entre sesiones para la misma región.",
+      "Los series listados son series efectivas. Calienta primero, luego practica progresivamente con más peso series antes de tus primeros levantamientos pesados.",
+      "Termine la mayor parte de series con aproximadamente 2 buenas repeticiones restantes. Mantenga el mismo rango de movimiento controlado; El fracaso no es necesario.",
+      "Cuando cada serie alcance la cima de su rango de repeticiones con forma limpia en dos sesiones, intente el menor aumento de peso disponible mientras intenta mantener el mismo repeticiones. Si repeticiones o la forma sufren, use un aumento menor o repita la carga anterior. De lo contrario, mantenga el peso y construya repeticiones.",
+      "Mantenga el plan durante 6 a 8 semanas antes de juzgar el progreso. Si la fatiga se acumula o el rendimiento disminuye en varias sesiones, utilice menos series y cargas más ligeras durante una semana. No entrenes a través del dolor."
+    ],
+    "workouts": {
+      "ul-upper-a": {
+        "title": "Superior A: Plano y Fila",
+        "focus": "Trabajo equilibrado horizontal y vertical de la parte superior del cuerpo."
+      },
+      "ul-lower-a": {
+        "title": "Inferior A: Cuádriceps",
+        "focus": "Hack en cuclillas, bisagras y pantorrillas."
+      },
+      "ul-upper-b": {
+        "title": "Superior B: inclinación y tracción",
+        "focus": "Press inclinado, dorsales y deltoides"
+      },
+      "ul-lower-b": {
+        "title": "Inferior B: Glúteos e Isquiotibiales",
+        "focus": "Press de piernas, extensión de glúteos y flexión de rodillas."
+      }
+    }
+  },
+  "machine-foundation": {
+    "name": "Machine Foundation: cuerpo completo de 3 días",
+    "description": "Para principiantes, levantadores que regresan o cualquier persona que prefiera configuraciones de máquina a pesas libres. Tres sesiones repetibles de cuerpo completo utilizando máquinas y cables selectorizados/de trineo. Aproximadamente entre 40 y 55 minutos; Comprueba que tu gimnasio dispone de las máquinas indicadas.",
+    "guidelines": [
+      "Utilice días no consecutivos. Configure el asiento, las almohadillas y el rango de movimiento antes de cargar; registre la carga de la misma máquina cada vez, ya que los números de pila difieren entre máquinas. Deje de 3 a 4 repeticiones en reserva mientras aprende.",
+      "Los series listados son series efectivas. Calienta primero, luego practica progresivamente con más peso series antes de tus primeros levantamientos pesados.",
+      "Termine la mayor parte de series con aproximadamente 2 buenas repeticiones restantes. Mantenga el mismo rango de movimiento controlado; El fracaso no es necesario.",
+      "Cuando cada serie alcance la cima de su rango de repeticiones con forma limpia en dos sesiones, intente el menor aumento de peso disponible mientras intenta mantener el mismo repeticiones. Si repeticiones o la forma sufren, use un aumento menor o repita la carga anterior. De lo contrario, mantenga el peso y construya repeticiones.",
+      "Mantenga el plan durante 6 a 8 semanas antes de juzgar el progreso. Si la fatiga se acumula o el rendimiento disminuye en varias sesiones, utilice menos series y cargas más ligeras durante una semana. No entrenes a través del dolor."
+    ],
+    "workouts": {
+      "mf-a": {
+        "title": "Máquinas A",
+        "focus": "Press de piernas, press de pecho y remo apoyado"
+      },
+      "mf-b": {
+        "title": "Máquinas B",
+        "focus": "Máquina de sentadillas, pulldown y press de hombros"
+      },
+      "mf-c": {
+        "title": "Máquinas C",
+        "focus": "Repite las máquinas principales con deltoides posteriores y trabajo de tronco."
+      }
+    }
+  }
+}

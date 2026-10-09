@@ -242,8 +242,7 @@ public struct OnboardingView: View {
     // MARK: - Step 4: Schedule Days
     private var scheduleStep: some View {
         let currentDays = preferences.selectedDays.isEmpty ? preferences.frequency.defaultWeekdays : preferences.selectedDays
-        let isTr = langManager.currentLanguage == "tr"
-        let dayLabels = isTr ? ["PZT", "SAL", "ÇAR", "PER", "CUM", "CTS", "PAZ"] : ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
+        let dayLabels = LanguageManager.dayLabels
         let dayFullNames = LanguageManager.workoutDays
 
         return StepContainer(

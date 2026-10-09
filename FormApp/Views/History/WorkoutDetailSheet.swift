@@ -55,7 +55,7 @@ public struct WorkoutDetailSheet: View {
 
                                         Spacer()
 
-                                        let weightText = setLog.weightKg.map { weightUnit.formatWeight($0) + " " + weightUnit.label } ?? "—"
+                                        let weightText = setLog.weightKg.map { weightUnit.formatDisplayWeight($0) + " " + weightUnit.label } ?? "—"
                                         Text(weightText)
                                             .font(.system(size: 14, weight: .semibold))
                                             .foregroundColor(AppColors.text)

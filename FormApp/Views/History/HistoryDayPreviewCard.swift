@@ -125,7 +125,7 @@ public struct HistoryDayPreviewCard: View {
             return durationStr
         } else {
             let df = DateFormatter()
-            df.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
+            df.locale = LanguageManager.locale
             df.dateFormat = "d MMMM yyyy"
             return df.string(from: detail.date)
         }
@@ -347,20 +347,20 @@ public struct HistoryDayPreviewCard: View {
     }
 
     private func formatSubInfo(for item: PreviewExerciseItem) -> String {
-        let repsWord = LanguageManager.shared.currentLanguage == "tr" ? "tekrar" : "reps"
-        let setsWord = LanguageManager.shared.currentLanguage == "tr" ? "set" : "sets"
+        let repsWord = LanguageManager.t("units.reps")
+        let setsWord = LanguageManager.t("units.sets")
         let topLabel = LanguageManager.t("history.top").isEmpty ? "Top" : LanguageManager.t("history.top")
         if item.setsCount > 0 && item.setsCount < item.targetSets {
             let setsText = "\(item.setsCount) / \(item.targetSets) \(setsWord)"
             if let w = item.topSetWeight, let r = item.topSetReps {
-                return "\(setsText) · \(topLabel): \(weightUnit.formatWeight(w)) \(weightUnit.label) × \(r) \(repsWord)"
+                return "\(setsText) · \(topLabel): \(weightUnit.formatDisplayWeight(w)) \(weightUnit.label) × \(r) \(repsWord)"
             } else {
                 return setsText
             }
         } else if item.isCompleted {
             let setsText = "\(item.setsCount) \(setsWord)"
             if let w = item.topSetWeight, let r = item.topSetReps {
-                return "\(setsText) · \(topLabel): \(weightUnit.formatWeight(w)) \(weightUnit.label) × \(r) \(repsWord)"
+                return "\(setsText) · \(topLabel): \(weightUnit.formatDisplayWeight(w)) \(weightUnit.label) × \(r) \(repsWord)"
             } else {
                 return setsText
             }

@@ -184,12 +184,12 @@ public struct FormLabView: View {
                 Menu {
                     ForEach(distinctExercises, id: \.self) { ex in
                         Button(action: { selectedExercise = ex }) {
-                            Text(ex)
+                            Text(ContentLocalizer.shared.exerciseName(exerciseId:nil,fallback:ex))
                         }
                     }
                 } label: {
                     HStack {
-                        Text(selectedExercise)
+                        Text(ContentLocalizer.shared.exerciseName(exerciseId:nil,fallback:selectedExercise))
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(AppColors.text)
                         Spacer()
@@ -258,7 +258,7 @@ public struct FormLabView: View {
                     let formatted = LanguageManager.t(
                         "form_lab.achieved_with",
                         [
-                            "weight": String(format: "%.1f %@", displayWeight, unitStr),
+                            "weight": String(format: "%.1f %@", locale: LanguageManager.numberLocale, displayWeight, unitStr),
                             "reps": "\(summary.bestReps)",
                             "date": dateStr,
                             "formula": LanguageManager.t(selectedFormula.titleKey)
@@ -319,7 +319,7 @@ public struct FormLabView: View {
                     .foregroundColor(AppColors.muted)
             }
 
-            Text(String(format: "%.1f %@", displayVal, unitStr))
+            Text(String(format: "%.1f %@", locale: LanguageManager.numberLocale, displayVal, unitStr))
                 .font(.system(size: 22, weight: .bold, design: .rounded))
                 .foregroundColor(AppColors.text)
 
@@ -354,12 +354,12 @@ public struct FormLabView: View {
                 Menu {
                     ForEach(distinctExercises, id: \.self) { ex in
                         Button(action: { selectedExercise = ex }) {
-                            Text(ex)
+                            Text(ContentLocalizer.shared.exerciseName(exerciseId:nil,fallback:ex))
                         }
                     }
                 } label: {
                     HStack {
-                        Text(selectedExercise)
+                        Text(ContentLocalizer.shared.exerciseName(exerciseId:nil,fallback:selectedExercise))
                             .font(.system(size: 14, weight: .semibold))
                             .foregroundColor(AppColors.text)
                         Spacer()
@@ -416,7 +416,7 @@ public struct FormLabView: View {
                     )
                     statCard(
                         title: LanguageManager.t("form_lab.net_gain"),
-                        value: report.points.count >= 2 ? String(format: "%@ (%.1f%%)", formatDelta(report.deltaKg), report.percentageGain) : "—",
+                        value: report.points.count >= 2 ? String(format: "%@ (%.1f%%)", locale: LanguageManager.numberLocale, formatDelta(report.deltaKg), report.percentageGain) : "—",
                         color: report.deltaKg >= 0 ? AppColors.accent : Color.red
                     )
                 }
@@ -632,7 +632,7 @@ public struct FormLabView: View {
 
                 Spacer()
 
-                Text(ratio.ratio.map { String(format: "%.2f : 1.0", $0) } ?? "—")
+                Text(ratio.ratio.map { String(format: "%.2f : 1.0", locale: LanguageManager.numberLocale, $0) } ?? "—")
                     .font(.system(size: 15, weight: .bold, design: .monospaced))
                     .foregroundColor(statusColor(ratio.status))
                     .lineLimit(1)
@@ -710,13 +710,13 @@ public struct FormLabView: View {
 
     private func formatWeight(_ kg: Double) -> String {
         let val = store.weightUnit.toDisplay(kg)
-        return String(format: "%.1f %@", val, store.weightUnit.label)
+        return String(format: "%.1f %@", locale: LanguageManager.numberLocale, val, store.weightUnit.label)
     }
 
     private func formatDelta(_ kg: Double) -> String {
         let val = store.weightUnit.toDisplay(kg)
         let prefix = val >= 0 ? "+" : ""
-        return String(format: "%@%.1f %@", prefix, val, store.weightUnit.label)
+        return String(format: "%@%.1f %@", locale: LanguageManager.numberLocale, prefix, val, store.weightUnit.label)
     }
 }
 
@@ -835,7 +835,7 @@ private func formatAchievedDate(_ dateStr: String) -> String {
         return String(dateStr.prefix(10))
     }
     let displayFormatter = DateFormatter()
-    displayFormatter.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
+    displayFormatter.locale = LanguageManager.locale
     displayFormatter.dateFormat = "d MMM yyyy"
     return displayFormatter.string(from: parsedDate)
 }

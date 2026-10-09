@@ -5,7 +5,7 @@ struct EquipmentCategory: Decodable, Identifiable {
     let en: String
     let tr: String
     let icon: String
-    var title: String { LanguageManager.shared.currentLanguage == "tr" ? tr : en }
+    var title: String { LanguageManager.t("equipment.\(id)") }
 }
 struct EquipmentCatalog: Decodable {
     let categories: [EquipmentCategory]

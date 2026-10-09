@@ -197,7 +197,7 @@ public final class ExerciseReportStore {
 
     public func submitReport(_ report: ExerciseIssueReport, endpoint: String = defaultEndpoint) async -> SubmissionResult {
         guard let url = URL(string: endpoint) else {
-            return .error("Invalid URL")
+            return .error(LanguageManager.t("errors.reportSubmit"))
         }
 
         let installationId = Self.getInstallationId()
@@ -223,7 +223,7 @@ public final class ExerciseReportStore {
         }
 
         guard let httpBody = try? JSONSerialization.data(withJSONObject: payload) else {
-            return .error("Failed to serialize request")
+            return .error(LanguageManager.t("errors.reportSubmit"))
         }
 
         var request = URLRequest(url: url)
@@ -235,7 +235,7 @@ public final class ExerciseReportStore {
         do {
             let (data, response) = try await URLSession.shared.data(for: request)
             guard let httpResponse = response as? HTTPURLResponse else {
-                return .error("Invalid server response")
+                return .error(LanguageManager.t("errors.reportSubmit"))
             }
 
             if (200...299).contains(httpResponse.statusCode) {
@@ -263,20 +263,20 @@ public final class ExerciseReportStore {
                 let nextAllowedDate = Self.parseServerDate(nextAllowedStr) ?? Date().addingTimeInterval(3600)
                 let retryAfterSec = json["retry_after"] as? Int ?? 3600
                 do { _ = try deleteReport(id: report.id) }
-                catch { return .error(error.localizedDescription) }
+                catch { return .error(LanguageManager.t("errors.reportSubmit")) }
 
                 return .rateLimited(isDaily: code == "DAILY_LIMIT", nextAllowedAt: nextAllowedDate, retryAfterSec: retryAfterSec)
             } else if httpResponse.statusCode == 408 || httpResponse.statusCode == 425 || httpResponse.statusCode >= 500 {
                 return .offlineSaved
             } else {
                 do { _ = try deleteReport(id: report.id) }
-                catch { return .error(error.localizedDescription) }
+                catch { return .error(LanguageManager.t("errors.reportSubmit")) }
                 return .error(LanguageManager.t("report.rejected"))
             }
         } catch is URLError {
             return .offlineSaved
         } catch {
-            return .error(error.localizedDescription)
+            return .error(LanguageManager.t("errors.reportSubmit"))
         }
     }
 
@@ -301,11 +301,7 @@ public final class ExerciseReportStore {
     public static func formatLocalDateTime(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "d MMM, HH:mm"
-        if LanguageManager.shared.currentLanguage == "tr" {
-            formatter.locale = Locale(identifier: "tr_TR")
-        } else {
-            formatter.locale = Locale(identifier: "en_US")
-        }
+        formatter.locale = LanguageManager.locale
         return formatter.string(from: date)
     }
 }

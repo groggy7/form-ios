@@ -1,0 +1,235 @@
+{
+  "aesthetic-hypertrophy": {
+    "name": "Ästhetische Engine: 5-Tage-Hypertrophie",
+    "description": "Für erfahrene Kraftsportler, die fünf Tage im Fitnessstudio genießen. Ausgewogener oberer/unterer Muskelaufbau mit zusätzlicher Schulterarbeit. Voll ausgestattetes Fitnessstudio; etwa 55–75 Minuten pro Sitzung.",
+    "guidelines": [
+      "Trainieren Sie montags, dienstags, donnerstags, freitags und samstags. Halten Sie Mittwoch und Sonntag zur Erholung frei; Fügen Sie Zeit zwischen den Sitzungen hinzu, wenn die Erholung beeinträchtigt ist.",
+      "Die aufgeführten Sätze sind Arbeitssätze. Wärmen Sie sich zuerst auf und trainieren Sie dann mit zunehmend schwereren Gewichten Sätze, bevor Sie mit den ersten schweren Übungen beginnen.",
+      "Beenden Sie die meisten Sätze mit etwa 2 verbleibenden guten Wiederholungen. Behalten Sie den gleichen kontrollierten Bewegungsbereich bei; Ein Scheitern ist nicht erforderlich.",
+      "Wenn jeder Satz in zwei Sitzungen mit sauberer Form die Spitze seines Wiederholungsbereichs erreicht, versuchen Sie es mit der kleinsten verfügbaren Gewichtszunahme und versuchen Sie dabei, das gleiche Wiederholungen beizubehalten. Wenn Wiederholungen oder Form leiden, verwenden Sie eine geringere Erhöhung oder wiederholen Sie die vorherige Belastung. Ansonsten behalte das Gewicht und baue Wiederholungen.",
+      "Behalten Sie den Plan sechs bis acht Wochen lang bei, bevor Sie den Fortschritt beurteilen. Wenn sich über mehrere Sitzungen hinweg Ermüdungserscheinungen häufen oder die Leistung nachlässt, verwenden Sie eine Woche lang weniger Sätze und leichtere Belastungen. Trainieren Sie nicht unter Schmerzen."
+    ],
+    "workouts": {
+      "aesthetic-push-a": {
+        "title": "Brust und Trizeps",
+        "focus": "Pressen, Brustisolierung und seitliche Deltamuskeln"
+      },
+      "aesthetic-pull-a": {
+        "title": "Rücken und Bizeps",
+        "focus": "Vertikaler Zug, unterstütztes Rudern und hintere Deltamuskeln"
+      },
+      "aesthetic-legs-a": {
+        "title": "Quadrizeps und Waden",
+        "focus": "Kniebeugenmuster, Kniestreckung und Kniesehnen"
+      },
+      "aesthetic-upper-b": {
+        "title": "Oberkörper und Schultern",
+        "focus": "Zweite Brust-/Rückenexposition mit Schulter- und Armarbeit"
+      },
+      "aesthetic-lower-b": {
+        "title": "Gesäßmuskeln und Kniesehnen",
+        "focus": "Hüftgelenk, einbeinige Kniebeuge und Rumpfbeugung"
+      }
+    }
+  },
+  "powerbuilding-strength": {
+    "name": "Heavy & Built: 4-Tage-Powerbuilding",
+    "description": "Für fortgeschrittene Kraftsportler, die neben dem Muskelwachstum auch stärkere Kniebeugen, Bankdrücken und Kreuzheben wünschen. Rack, Langhantel, Bank, Kurzhanteln und Kabel/Maschinen; ca. 60–80 Minuten.",
+    "guidelines": [
+      "Trainieren Sie montags, dienstags, donnerstags und freitags. Ruhen Sie sich auf den Hauptliften 3 Minuten aus, bei Bedarf auch länger; Halten Sie schwere Sätze unter Kontrolle und schleifen Sie niemals bis zum Versagen.",
+      "Die aufgeführten Sätze sind Arbeitssätze. Wärmen Sie sich zuerst auf und trainieren Sie dann mit zunehmend schwereren Gewichten Sätze, bevor Sie mit den ersten schweren Übungen beginnen.",
+      "Beenden Sie die meisten Sätze mit etwa 2 verbleibenden guten Wiederholungen. Behalten Sie den gleichen kontrollierten Bewegungsbereich bei; Ein Scheitern ist nicht erforderlich.",
+      "Wenn jeder Satz in zwei Sitzungen mit sauberer Form die Spitze seines Wiederholungsbereichs erreicht, versuchen Sie es mit der kleinsten verfügbaren Gewichtszunahme und versuchen Sie dabei, das gleiche Wiederholungen beizubehalten. Wenn Wiederholungen oder Form leiden, verwenden Sie eine geringere Erhöhung oder wiederholen Sie die vorherige Belastung. Ansonsten behalte das Gewicht und baue Wiederholungen.",
+      "Behalten Sie den Plan sechs bis acht Wochen lang bei, bevor Sie den Fortschritt beurteilen. Wenn sich über mehrere Sitzungen hinweg Ermüdungserscheinungen häufen oder die Leistung nachlässt, verwenden Sie eine Woche lang weniger Sätze und leichtere Belastungen. Trainieren Sie nicht unter Schmerzen."
+    ],
+    "workouts": {
+      "pb-squat-strength": {
+        "title": "Unten: Kniebeuge",
+        "focus": "Kniebeugenübungen mit Kniesehnen und Waden"
+      },
+      "pb-bench-strength": {
+        "title": "Obermaterial: Bank",
+        "focus": "Schwere Bank mit ausgewogenem Zug"
+      },
+      "pb-deadlift-strength": {
+        "title": "Unten: Kreuzheben",
+        "focus": "Kreuzheben mit geringem Volumen, gefolgt von Kniebeugenunterstützung"
+      },
+      "pb-press-volume": {
+        "title": "Oben: Drücken Sie & Lautstärke",
+        "focus": "Überkopfdrücken, leichtere Bank und Rücken"
+      }
+    }
+  },
+  "classic-ppl": {
+    "name": "Reines PPL: 6-Tage-Hypertrophie",
+    "description": "Für erfahrene Kraftsportler, die sich nach sechs Trainingstagen kontinuierlich erholen können. Zwei Push-, Pull- und Beineinheiten mit unterschiedlichen Schwerpunkten. Voll ausgestattetes Fitnessstudio; ca. 45–65 Minuten.",
+    "guidelines": [
+      "Der Sonntag ist Ruhe. Wählen Sie den 4-Tage-Upper/Lower-Plan, wenn sechs Tage schwer durchzuhalten sind. An Zugtagen werden unterstützte Reihen verwendet, während an Beintagen schwere Hüftscharniere übrig bleiben.",
+      "Die aufgeführten Sätze sind Arbeitssätze. Wärmen Sie sich zuerst auf und trainieren Sie dann mit zunehmend schwereren Gewichten Sätze, bevor Sie mit den ersten schweren Übungen beginnen.",
+      "Beenden Sie die meisten Sätze mit etwa 2 verbleibenden guten Wiederholungen. Behalten Sie den gleichen kontrollierten Bewegungsbereich bei; Ein Scheitern ist nicht erforderlich.",
+      "Wenn jeder Satz in zwei Sitzungen mit sauberer Form die Spitze seines Wiederholungsbereichs erreicht, versuchen Sie es mit der kleinsten verfügbaren Gewichtszunahme und versuchen Sie dabei, das gleiche Wiederholungen beizubehalten. Wenn Wiederholungen oder Form leiden, verwenden Sie eine geringere Erhöhung oder wiederholen Sie die vorherige Belastung. Ansonsten behalte das Gewicht und baue Wiederholungen.",
+      "Behalten Sie den Plan sechs bis acht Wochen lang bei, bevor Sie den Fortschritt beurteilen. Wenn sich über mehrere Sitzungen hinweg Ermüdungserscheinungen häufen oder die Leistung nachlässt, verwenden Sie eine Woche lang weniger Sätze und leichtere Belastungen. Trainieren Sie nicht unter Schmerzen."
+    ],
+    "workouts": {
+      "ppl-push-1": {
+        "title": "Drücken Sie A: Brust",
+        "focus": "Flachdrücken mit Schulter- und Trizepsunterstützung"
+      },
+      "ppl-pull-1": {
+        "title": "Zug A: Latissimus",
+        "focus": "Vertikaler Zug, unterstütztes Rudern und Bizeps"
+      },
+      "ppl-legs-1": {
+        "title": "Beine A: Kniebeuge",
+        "focus": "Quadrizeps, Kniebeugung und Waden"
+      },
+      "ppl-push-2": {
+        "title": "Drücken Sie B: Steigung",
+        "focus": "Schrägdrücken, Brustisolierung und Trizeps über Kopf"
+      },
+      "ppl-pull-2": {
+        "title": "Ziehen Sie B: Reihen",
+        "focus": "Horizontaler Zug mit hinteren Deltamuskeln und Locken"
+      },
+      "ppl-legs-2": {
+        "title": "Beine B: Scharnier",
+        "focus": "Hintere Kette mit einem zweiten Kniebeugenmuster"
+      }
+    }
+  },
+  "full-body-classic": {
+    "name": "Klassische Foundation: 3-Tage-Ganzkörper",
+    "description": "Ein überschaubarer Ausgangspunkt für Anfänger und Wiedereinsteiger. Wiederholen Sie wichtige Bewegungsmuster, anstatt jeden Tag eine neue Routine zu erlernen. Fitnessstudio mit Kurzhanteln, Bank, Beinpresse und Kabelzügen; ca. 40–55 Minuten.",
+    "guidelines": [
+      "Verwenden Sie nicht aufeinanderfolgende Tage. Lassen Sie in den ersten zwei Wochen drei bis vier gute Wiederholungen in Reserve und geben Sie dem Erlernen des Aufbaus Vorrang vor der Gewichtszunahme. Bitten Sie um Hilfe bei unbekannter Ausrüstung.",
+      "Die aufgeführten Sätze sind Arbeitssätze. Wärmen Sie sich zuerst auf und trainieren Sie dann mit zunehmend schwereren Gewichten Sätze, bevor Sie mit den ersten schweren Übungen beginnen.",
+      "Beenden Sie die meisten Sätze mit etwa 2 verbleibenden guten Wiederholungen. Behalten Sie den gleichen kontrollierten Bewegungsbereich bei; Ein Scheitern ist nicht erforderlich.",
+      "Wenn jeder Satz in zwei Sitzungen mit sauberer Form die Spitze seines Wiederholungsbereichs erreicht, versuchen Sie es mit der kleinsten verfügbaren Gewichtszunahme und versuchen Sie dabei, das gleiche Wiederholungen beizubehalten. Wenn Wiederholungen oder Form leiden, verwenden Sie eine geringere Erhöhung oder wiederholen Sie die vorherige Belastung. Ansonsten behalte das Gewicht und baue Wiederholungen.",
+      "Behalten Sie den Plan sechs bis acht Wochen lang bei, bevor Sie den Fortschritt beurteilen. Wenn sich über mehrere Sitzungen hinweg Ermüdungserscheinungen häufen oder die Leistung nachlässt, verwenden Sie eine Woche lang weniger Sätze und leichtere Belastungen. Trainieren Sie nicht unter Schmerzen."
+    ],
+    "workouts": {
+      "fb-workout-a": {
+        "title": "Ganzkörper A",
+        "focus": "Beinpresse, Brustpresse, Rudern und Scharnieren"
+      },
+      "fb-workout-b": {
+        "title": "Ganzkörper B",
+        "focus": "Goblet Squat, Pulldown und unterstütztes Drücken"
+      },
+      "fb-workout-c": {
+        "title": "Ganzkörper C",
+        "focus": "Wiederholen Sie die Grundlagen mit Waden- und Rumpfarbeit"
+      }
+    }
+  },
+  "home-forge-dumbbells": {
+    "name": "Home Forge: 4-Tage Kurzhanteln",
+    "description": "Ober-/Untertraining mit verstellbarem Kurzhanteln und einer verstellbaren Bank; Keine Kabel, Langhantel oder Klimmzugstation. Für Lifter, die mit den Grundlagen vertraut sind. Etwa 40–60 Minuten.",
+    "guidelines": [
+      "Trainieren Sie montags, dienstags, donnerstags und freitags. Verwenden Sie eine stabile niedrige Plattform für die geteilte Kniebeuge mit erhöhtem Vorderfuß. Wenn Ihr Kurzhanteln zu leicht wird, verwenden Sie den oberen Wiederholungsbereich mit kontrollierter Form; Erfinden Sie kein zusätzliches Gewicht im Protokoll.",
+      "Die aufgeführten Sätze sind Arbeitssätze. Wärmen Sie sich zuerst auf und trainieren Sie dann mit zunehmend schwereren Gewichten Sätze, bevor Sie mit den ersten schweren Übungen beginnen.",
+      "Beenden Sie die meisten Sätze mit etwa 2 verbleibenden guten Wiederholungen. Behalten Sie den gleichen kontrollierten Bewegungsbereich bei; Ein Scheitern ist nicht erforderlich.",
+      "Wenn jeder Satz in zwei Sitzungen mit sauberer Form die Spitze seines Wiederholungsbereichs erreicht, versuchen Sie es mit der kleinsten verfügbaren Gewichtszunahme und versuchen Sie dabei, das gleiche Wiederholungen beizubehalten. Wenn Wiederholungen oder Form leiden, verwenden Sie eine geringere Erhöhung oder wiederholen Sie die vorherige Belastung. Ansonsten behalte das Gewicht und baue Wiederholungen.",
+      "Behalten Sie den Plan sechs bis acht Wochen lang bei, bevor Sie den Fortschritt beurteilen. Wenn sich über mehrere Sitzungen hinweg Ermüdungserscheinungen häufen oder die Leistung nachlässt, verwenden Sie eine Woche lang weniger Sätze und leichtere Belastungen. Trainieren Sie nicht unter Schmerzen."
+    ],
+    "workouts": {
+      "hf-upper-a": {
+        "title": "Oberes A: Flache Presse",
+        "focus": "Flachdrücken, einarmiges Rudern und Schultern"
+      },
+      "hf-lower-a": {
+        "title": "Unteres A: Kniebeuge und Scharnier",
+        "focus": "Kniebeugen, rumänisches Kreuzheben und einseitige Beine"
+      },
+      "hf-upper-b": {
+        "title": "Oberes B: Steigung und Rudern",
+        "focus": "Schrägdrücken, unterstütztes Rudern und hintere Deltamuskeln"
+      },
+      "hf-lower-b": {
+        "title": "Unteres B: Einbeinige Kraft",
+        "focus": "Split Squat, Hinge und Glute Bridge"
+      }
+    }
+  },
+  "athletic-performance": {
+    "name": "Athletic Engine: 3-Tage-Kraft und Kraft",
+    "description": "Allgemeine Kraft- und Low-Wiederholung-Kraftübungen für erfahrene Lifter, kein sportspezifischer Konditionsplan. Voll ausgestattetes Fitnessstudio mit Trap-Bar, Kettlebell und niedriger Plattform; ca. 50–65 Minuten.",
+    "guidelines": [
+      "Trainieren Sie an nicht aufeinanderfolgenden Tagen und berücksichtigen Sie Ihre Sporteinheiten. Lernen Sie Schwünge und Push-Presses, bevor Sie diesen Plan anwenden. Verwenden Sie bei diesen beiden Übungen leichte bis mittelschwere Belastungen und beenden Sie den Satz, sobald Geschwindigkeit oder Technik nachlassen, noch bevor das Ziel Wiederholungen erreicht ist.",
+      "Wenden Sie die automatische Wiederholung-Bereichsprogression nicht auf Schwünge oder Drückübungen an: Erhöhen Sie die Belastung nur, während jede Wiederholung schnell und kontrolliert bleibt. Dieser Plan ersetzt kein Aerobic-Training oder Sportübungen.",
+      "Die aufgeführten Sätze sind Arbeitssätze. Wärmen Sie sich zuerst auf und trainieren Sie dann mit zunehmend schwereren Gewichten Sätze, bevor Sie mit den ersten schweren Übungen beginnen.",
+      "Beenden Sie die meisten Sätze mit etwa 2 verbleibenden guten Wiederholungen. Behalten Sie den gleichen kontrollierten Bewegungsbereich bei; Ein Scheitern ist nicht erforderlich.",
+      "Wenn jeder Satz in zwei Sitzungen mit sauberer Form die Spitze seines Wiederholungsbereichs erreicht, versuchen Sie es mit der kleinsten verfügbaren Gewichtszunahme und versuchen Sie dabei, das gleiche Wiederholungen beizubehalten. Wenn Wiederholungen oder Form leiden, verwenden Sie eine geringere Erhöhung oder wiederholen Sie die vorherige Belastung. Ansonsten behalte das Gewicht und baue Wiederholungen.",
+      "Behalten Sie den Plan sechs bis acht Wochen lang bei, bevor Sie den Fortschritt beurteilen. Wenn sich über mehrere Sitzungen hinweg Ermüdungserscheinungen häufen oder die Leistung nachlässt, verwenden Sie eine Woche lang weniger Sätze und leichtere Belastungen. Trainieren Sie nicht unter Schmerzen."
+    ],
+    "workouts": {
+      "ap-lower-power": {
+        "title": "Kraft und geringere Stärke",
+        "focus": "Schnelles Scharnier, Trap-Bar-Stärke und ausgewogene obere Arbeit"
+      },
+      "ap-upper-power": {
+        "title": "Kraft und einbeinige Kraft",
+        "focus": "Drücken, drücken, gefolgt von einseitigen Beinen und Ziehen"
+      },
+      "ap-work-capacity": {
+        "title": "Ganzkörperkraft",
+        "focus": "Kniebeugen, Scharnier, Schrägdrücken und unterstütztes Rudern"
+      }
+    }
+  },
+  "upper-lower-balanced": {
+    "name": "Ausgewogener Körperbau: 4-Tage-Upper/Lower",
+    "description": "Ein praktischer nächster Schritt nach dem Ganzkörpertraining: jeden Hauptbereich zweimal pro Woche, ohne schweres Krafttraining mit geringer Kraftausübung oder sechs Trainingstage. Voll ausgestattetes Fitnessstudio; ca. 50–70 Minuten.",
+    "guidelines": [
+      "Trainieren Sie den Oberkörper Montag/Donnerstag und den Unterkörper Dienstag/Freitag. Halten Sie die Wochenenden frei oder verschieben Sie die Tage, während Sie zwischen den Sitzungen für dieselbe Region einen Ruhetag einhalten.",
+      "Die aufgeführten Sätze sind Arbeitssätze. Wärmen Sie sich zuerst auf und trainieren Sie dann mit zunehmend schwereren Gewichten Sätze, bevor Sie mit den ersten schweren Übungen beginnen.",
+      "Beenden Sie die meisten Sätze mit etwa 2 verbleibenden guten Wiederholungen. Behalten Sie den gleichen kontrollierten Bewegungsbereich bei; Ein Scheitern ist nicht erforderlich.",
+      "Wenn jeder Satz in zwei Sitzungen mit sauberer Form die Spitze seines Wiederholungsbereichs erreicht, versuchen Sie es mit der kleinsten verfügbaren Gewichtszunahme und versuchen Sie dabei, das gleiche Wiederholungen beizubehalten. Wenn Wiederholungen oder Form leiden, verwenden Sie eine geringere Erhöhung oder wiederholen Sie die vorherige Belastung. Ansonsten behalte das Gewicht und baue Wiederholungen.",
+      "Behalten Sie den Plan sechs bis acht Wochen lang bei, bevor Sie den Fortschritt beurteilen. Wenn sich über mehrere Sitzungen hinweg Ermüdungserscheinungen häufen oder die Leistung nachlässt, verwenden Sie eine Woche lang weniger Sätze und leichtere Belastungen. Trainieren Sie nicht unter Schmerzen."
+    ],
+    "workouts": {
+      "ul-upper-a": {
+        "title": "Oberes A: Flach und Reihe",
+        "focus": "Ausgewogene horizontale und vertikale Oberkörperarbeit"
+      },
+      "ul-lower-a": {
+        "title": "Unteres A: Quadrizeps",
+        "focus": "Hacken Sie Kniebeugen, Scharnier und Waden"
+      },
+      "ul-upper-b": {
+        "title": "Oberes B: Neigung und Zug",
+        "focus": "Schrägdrücken, Latissimus und Deltamuskeln"
+      },
+      "ul-lower-b": {
+        "title": "Unteres B: Gesäßmuskeln und Oberschenkelmuskulatur",
+        "focus": "Beinpresse, Gesäßstreckung und Kniebeugung"
+      }
+    }
+  },
+  "machine-foundation": {
+    "name": "Maschinenfundament: 3-Tage-Ganzkörper",
+    "description": "Für Anfänger, Wiedereinsteiger oder alle, die Maschinen-Setups den Hanteln vorziehen. Drei wiederholbare Ganzkörpersitzungen mit ausgewählten Maschinen/Schlittengeräten und Kabeln. Etwa 40–55 Minuten; Überprüfen Sie, ob Ihr Fitnessstudio über die aufgeführten Geräte verfügt.",
+    "guidelines": [
+      "Verwenden Sie nicht aufeinanderfolgende Tage. Stellen Sie den Sitz, die Polster und den Bewegungsbereich vor dem Beladen ein; Zeichnen Sie jedes Mal die Auslastung derselben Maschine auf, da die Stapelanzahl zwischen den Maschinen unterschiedlich ist. Lassen Sie beim Lernen 3–4 Wiederholungen in Reserve.",
+      "Die aufgeführten Sätze sind Arbeitssätze. Wärmen Sie sich zuerst auf und trainieren Sie dann mit zunehmend schwereren Gewichten Sätze, bevor Sie mit den ersten schweren Übungen beginnen.",
+      "Beenden Sie die meisten Sätze mit etwa 2 verbleibenden guten Wiederholungen. Behalten Sie den gleichen kontrollierten Bewegungsbereich bei; Ein Scheitern ist nicht erforderlich.",
+      "Wenn jeder Satz in zwei Sitzungen mit sauberer Form die Spitze seines Wiederholungsbereichs erreicht, versuchen Sie es mit der kleinsten verfügbaren Gewichtszunahme und versuchen Sie dabei, das gleiche Wiederholungen beizubehalten. Wenn Wiederholungen oder Form leiden, verwenden Sie eine geringere Erhöhung oder wiederholen Sie die vorherige Belastung. Ansonsten behalte das Gewicht und baue Wiederholungen.",
+      "Behalten Sie den Plan sechs bis acht Wochen lang bei, bevor Sie den Fortschritt beurteilen. Wenn sich über mehrere Sitzungen hinweg Ermüdungserscheinungen häufen oder die Leistung nachlässt, verwenden Sie eine Woche lang weniger Sätze und leichtere Belastungen. Trainieren Sie nicht unter Schmerzen."
+    ],
+    "workouts": {
+      "mf-a": {
+        "title": "Maschinen A",
+        "focus": "Beinpresse, Brustpresse und unterstütztes Rudern"
+      },
+      "mf-b": {
+        "title": "Maschinen B",
+        "focus": "Kniebeugenmaschine, Pulldown und Schulterdrücken"
+      },
+      "mf-c": {
+        "title": "Maschinen C",
+        "focus": "Wiederholen Sie die Hauptübungen mit den hinteren Deltamuskeln und dem Rumpf"
+      }
+    }
+  }
+}

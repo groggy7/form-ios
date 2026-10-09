@@ -294,7 +294,7 @@ public struct HistoryDetailView: View {
         }
         let sets = LanguageManager.formatSetsFraction(completed: item.completedSets, total: item.plannedSets)
         if let weight = item.topSetWeight, let reps = item.topSetReps {
-            return sets + " · \(LanguageManager.t("history.top")): \(weightUnit.formatWeight(weight)) \(weightUnit.label) × \(reps)"
+            return sets + " · \(LanguageManager.t("history.top")): \(weightUnit.formatDisplayWeight(weight)) \(weightUnit.label) × \(reps)"
         }
         return sets
     }
@@ -310,7 +310,7 @@ public struct HistoryDetailView: View {
 
     private func formattedFullDate(_ date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
+        formatter.locale = LanguageManager.locale
         formatter.dateStyle = .full
         return formatter.string(from: date)
     }

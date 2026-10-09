@@ -442,7 +442,7 @@ struct ExerciseHistoryStatsRow: View {
                 // Card 1: Personal Best
                 let prValue: String = {
                     if let w = stats.prWeightKg, w > 0.0 || stats.isAssisted {
-                        return "\(weightUnit.formatWeight(w)) \(weightUnit.label)"
+                        return "\(weightUnit.formatDisplayWeight(w)) \(weightUnit.label)"
                     } else if let r = stats.prReps, r > 0 {
                         return "\(r) \(LanguageManager.t("exercise.history.reps"))"
                     } else {
@@ -475,7 +475,7 @@ struct ExerciseHistoryStatsRow: View {
                 // Card 2: Estimated 1RM
                 let est1rmValue: String = {
                     if let est = stats.estimated1rmKg {
-                        return "\(weightUnit.formatWeight(est)) \(weightUnit.label)"
+                        return "\(weightUnit.formatDisplayWeight(est)) \(weightUnit.label)"
                     } else {
                         return "—"
                     }
@@ -663,7 +663,7 @@ struct Estimated1RmInfoSheet: View {
                         // Calculation highlight card
                         let est1rmValue: String = {
                             if let est = stats.estimated1rmKg {
-                                return "\(weightUnit.formatWeight(est)) \(weightUnit.label)"
+                                return "\(weightUnit.formatDisplayWeight(est)) \(weightUnit.label)"
                             } else {
                                 return "—"
                             }
@@ -677,7 +677,7 @@ struct Estimated1RmInfoSheet: View {
                             let sourceText: String = {
                                 if let source = stats.estimateSourceSet {
                                     return LanguageManager.t("form_lab.achieved_with", [
-                                        "weight": "\(weightUnit.formatWeight(source.weightKg ?? 0)) \(weightUnit.label)",
+                                        "weight": "\(weightUnit.formatDisplayWeight(source.weightKg ?? 0)) \(weightUnit.label)",
                                         "reps": "\(source.reps ?? 0)",
                                         "date": formatSessionDate(stats.estimateSourceDate ?? ""),
                                         "formula": "Brzycki"
@@ -765,7 +765,7 @@ private func formatSessionDate(_ isoString: String) -> String {
         return String(isoString.prefix(10))
     }
     let displayFormatter = DateFormatter()
-    displayFormatter.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
+    displayFormatter.locale = LanguageManager.locale
     displayFormatter.dateFormat = "d MMM yyyy"
     return displayFormatter.string(from: parsedDate)
 }
@@ -793,7 +793,7 @@ private func extractMonthKeyAndTitle(_ isoString: String) -> (key: String, title
     let key = keyFormatter.string(from: parsedDate)
 
     let titleFormatter = DateFormatter()
-    titleFormatter.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
+    titleFormatter.locale = LanguageManager.locale
     titleFormatter.dateFormat = "MMMM yyyy"
     let title = titleFormatter.string(from: parsedDate)
 
@@ -882,7 +882,7 @@ struct ExerciseSessionHistoryCard: View {
 
                             HStack {
                                 HStack(spacing: 6) {
-                                    Text("Set \(setLog.setNumber)")
+                                    Text(LanguageManager.t("table.setNumber", ["count":setLog.setNumber]))
                                         .font(.system(size: 14))
                                         .foregroundColor(AppColors.historyStatCardTitle)
 
@@ -901,7 +901,7 @@ struct ExerciseSessionHistoryCard: View {
 
                                 let setDetail: String = {
                                     if let w = setLog.weightKg, w > 0.0 {
-                                        return "\(weightUnit.formatWeight(w)) \(weightUnit.label) × \(setLog.reps ?? 0)"
+                                        return "\(weightUnit.formatDisplayWeight(w)) \(weightUnit.label) × \(setLog.reps ?? 0)"
                                     } else {
                                         return "\(setLog.reps ?? 0) reps"
                                     }

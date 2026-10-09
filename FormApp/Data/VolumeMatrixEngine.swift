@@ -219,9 +219,7 @@ struct VolumeMatrixEngine {
             default: break
             }
 
-            let localized = catalog.muscles[muscle]?[language]
-                ?? catalog.muscles[muscle]?["en"]
-                ?? muscle
+            let localized = LanguageManager.shared.translate("anatomy.muscle.\(muscle)", language:language)
 
             let defaultView = frontRegions.contains(muscle) ? "front" : "back"
             let sortedContribs = (contributionsMap[muscle] ?? [])

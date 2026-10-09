@@ -133,7 +133,7 @@ public struct WorkoutDaySection: Identifiable {
     private static func formattedDate(_ date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateStyle = .full
-        formatter.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
+        formatter.locale = LanguageManager.locale
         return formatter.string(from: date)
     }
 }
@@ -740,14 +740,14 @@ public struct HistoryView: View {
 
     private func monthYearString(from date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
+        formatter.locale = LanguageManager.locale
         formatter.dateFormat = "LLLL yyyy"
         return formatter.string(from: date).capitalized
     }
 
     private func weekdaySymbols() -> [String] {
         var cal = Calendar(identifier: .gregorian)
-        cal.locale = Locale(identifier: LanguageManager.shared.currentLanguage)
+        cal.locale = LanguageManager.locale
         cal.firstWeekday = 2 // Monday
         let symbols = cal.shortWeekdaySymbols
         return [symbols[1], symbols[2], symbols[3], symbols[4], symbols[5], symbols[6], symbols[0]]

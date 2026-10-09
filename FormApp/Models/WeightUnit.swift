@@ -93,13 +93,24 @@ public enum WeightUnit: String, Codable, CaseIterable {
     }
 
     public func formatWeightWithUnit(_ weightKg: Double) -> String {
-        return "\(formatWeight(weightKg)) \(label)"
+        return "\(formatDisplayWeight(weightKg)) \(label)"
+    }
+
+    // Keep formatWeight stable for input drafts, and localize only presentation.
+    public func formatDisplayWeight(_ weightKg: Double) -> String {
+        let formatter = NumberFormatter()
+        formatter.locale = LanguageManager.numberLocale
+        formatter.numberStyle = .decimal
+        formatter.usesGroupingSeparator = false
+        formatter.maximumFractionDigits = 1
+        return formatter.string(from: NSNumber(value: Double(formatWeight(weightKg)) ?? 0)) ?? formatWeight(weightKg)
     }
 
     public func formatVolume(_ volumeKg: Double) -> String {
         let display = toDisplay(volumeKg)
         let rounded = Int(display.rounded())
         let formatter = NumberFormatter()
+        formatter.locale = LanguageManager.numberLocale
         formatter.numberStyle = .decimal
         return formatter.string(from: NSNumber(value: rounded)) ?? "\(rounded)"
     }

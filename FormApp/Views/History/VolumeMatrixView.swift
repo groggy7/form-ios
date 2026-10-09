@@ -225,7 +225,7 @@ public struct VolumeMatrixView: View {
             HStack(alignment: .top, spacing: 10) {
                 kpiCard(title: LanguageManager.t(report.isPlannedRoutine ? "matrix.stat.plannedSets" : "matrix.stat.totalSets"),
                     value: "\(report.totalWorkingSets)", subtitle: LanguageManager.t("matrix.setsUnit"), icon: "dumbbell.fill", color: AppColors.purple, tone: .purple)
-                kpiCard(title: LanguageManager.t("matrix.stat.credits"), value: String(format: "%.1f", report.totalEffectiveSets),
+                kpiCard(title: LanguageManager.t("matrix.stat.credits"), value: String(format: "%.1f", locale: LanguageManager.numberLocale, report.totalEffectiveSets),
                     subtitle: LanguageManager.t("matrix.creditsUnit"), icon: "chart.bar.fill", color: AppColors.accent, tone: .teal)
             }
             Text(LanguageManager.t("matrix.creditNote"))
@@ -351,7 +351,7 @@ public struct VolumeMatrixView: View {
                                 Text(summary?.localizedName ?? muscleKey)
                                     .font(.system(size: 12, weight: isSelected ? .semibold : .medium))
                                     .foregroundColor(isSelected ? AppColors.text : AppColors.secondaryText)
-                                Text(String(format: "%.1f", summary?.totalEffectiveSets ?? 0))
+                                Text(String(format: "%.1f", locale: LanguageManager.numberLocale, summary?.totalEffectiveSets ?? 0))
                                     .font(.system(size: 11, weight: .bold))
                                     .foregroundColor(zoneColor)
                             }
@@ -552,7 +552,7 @@ public struct VolumeMatrixView: View {
                     .overlay(RoundedRectangle(cornerRadius: 8).stroke(summary.zone.color.opacity(0.5), lineWidth: 1))
                     .cornerRadius(8)
                 Text(LanguageManager.t("matrix.breakdown", [
-                    "credits": String(format: "%.1f", summary.totalEffectiveSets),
+                    "credits": String(format: "%.1f", locale: LanguageManager.numberLocale, summary.totalEffectiveSets),
                     "direct": summary.directSets,
                     "indirect": summary.indirectSets
                 ]))
@@ -578,7 +578,7 @@ public struct VolumeMatrixView: View {
                     ForEach(summary.contributions) { item in
                         HStack {
                             VStack(alignment: .leading, spacing: 1) {
-                                Text(item.exerciseName)
+                                Text(ContentLocalizer.shared.exerciseName(exerciseId:nil,fallback:item.exerciseName))
                                     .font(.system(size: 13, weight: .medium))
                                     .foregroundColor(AppColors.text)
                                     .lineLimit(1)
@@ -587,7 +587,7 @@ public struct VolumeMatrixView: View {
                                     .foregroundColor(item.isPrimary ? AppColors.purple : AppColors.secondaryText)
                             }
                             Spacer()
-                            Text(LanguageManager.t("matrix.contribution", ["sets": item.completedSets, "credits": String(format: "%.1f", item.effectiveSets)]))
+                            Text(LanguageManager.t("matrix.contribution", ["sets": item.completedSets, "credits": String(format: "%.1f", locale: LanguageManager.numberLocale, item.effectiveSets)]))
                                 .font(.system(size: 12, weight: .semibold))
                                 .foregroundColor(AppColors.text)
                         }

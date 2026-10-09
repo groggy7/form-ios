@@ -221,6 +221,7 @@ public struct RootView: View {
             }
         }
         .preferredColorScheme(.dark)
+        .environment(\.locale, LanguageManager.locale)
         .task {
             // Restore subscriptions on every app launch, not only when a paywall opens.
             _ = StoreKitSubscriptionManager.shared
@@ -232,6 +233,7 @@ public struct RootView: View {
                     store.pauseActiveSession()
                 }
             } else if phase == .active {
+                langManager.refreshDeviceLanguage()
                 store.refreshForCurrentDate()
                 store.checkAndArchiveStaleSession()
                 Task { await ExerciseReportStore.shared.retryPendingReports() }

@@ -199,9 +199,11 @@ public struct SettingsView: View {
                                 .font(.system(size: 15))
                                 .foregroundColor(AppColors.text)
                             Spacer()
-                            Picker("", selection: $langManager.currentLanguage) {
-                                Text("English").tag("en")
-                                Text("Türkçe").tag("tr")
+                            Picker("", selection: $langManager.languagePreference) {
+                                Text(LanguageManager.t("settings.deviceLanguage")).tag(LanguageManager.system)
+                                ForEach(LanguageManager.supportedLanguages, id: \.code) { language in
+                                    Text(language.name).tag(language.code)
+                                }
                             }
                             .pickerStyle(.segmented)
                             .frame(width: 160)
@@ -436,10 +438,10 @@ public struct SettingsView: View {
                             importErrorMessage = "The selected backup file is not valid UTF-8 text."
                         }
                     } catch {
-                        importErrorMessage = error.localizedDescription
+                        importErrorMessage = LanguageManager.t("errors.fileRead")
                     }
                 case .failure(let error):
-                    importErrorMessage = error.localizedDescription
+                    importErrorMessage = LanguageManager.t("errors.fileRead")
                 }
             }
             .alert(

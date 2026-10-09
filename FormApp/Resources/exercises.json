@@ -15,6 +15,9 @@
     "searchKeywords": [
       "Ab Wheel Rollout",
       "Karın Çarkı Açılışı (Ab Wheel)",
+      "Bauchroller",
+      "Roue abdominale",
+      "Rueda abdominal",
       "Wheel Rollout",
       "Wheel roller",
       "ab roller",
@@ -41,6 +44,9 @@
     "searchKeywords": [
       "Barbell Back Squat",
       "Barbell Squat",
+      "Kniebeuge mit Langhantel",
+      "Squat arrière à la barre",
+      "Sentadilla trasera con barra",
       "Barbell High Bar Squat",
       "Barbell",
       "bb",
@@ -64,9 +70,16 @@
     ],
     "searchKeywords": [
       "Barbell Bench Press",
+      "Langhantel-Bankdrücken",
+      "Développé couché à la barre",
+      "Press de banca con barra",
       "Barbell",
       "bb",
-      "barbel"
+      "barbel",
+      "bankdrücken",
+      "bankdruecken",
+      "développé couché",
+      "press de banca"
     ]
   },
   {
@@ -87,6 +100,9 @@
     "searchKeywords": [
       "Barbell Front Squat",
       "Front Squat",
+      "Frontkniebeuge",
+      "Squat avant à la barre",
+      "Sentadilla frontal con barra",
       "Barbell",
       "bb",
       "barbel"
@@ -106,6 +122,9 @@
     ],
     "searchKeywords": [
       "Barbell Hip Thrust",
+      "Hip Thrust mit Langhantel",
+      "Hip thrust à la barre",
+      "Hip thrust con barra",
       "Barbell",
       "bb",
       "barbel",
@@ -130,6 +149,9 @@
     "searchKeywords": [
       "Barbell Romanian Deadlift",
       "Romanian Deadlift (RDL)",
+      "Rumänisches Kreuzheben mit Langhantel",
+      "Soulevé de terre roumain à la barre",
+      "Peso muerto rumano con barra",
       "Barbell",
       "bb",
       "barbel",
@@ -137,7 +159,10 @@
       "romanian deadlift",
       "romen deadlift",
       "deadlift",
-      "dead lift"
+      "dead lift",
+      "kreuzheben",
+      "soulevé de terre",
+      "peso muerto"
     ]
   },
   {
@@ -155,6 +180,9 @@
     ],
     "searchKeywords": [
       "Barbell Row",
+      "Langhantelrudern",
+      "Rowing à la barre",
+      "Remo con barra",
       "Barbell Bent Over Row",
       "Barbell",
       "bb",
@@ -177,6 +205,9 @@
     ],
     "searchKeywords": [
       "Bulgarian Split Squat",
+      "Bulgarische Kniebeuge",
+      "Fente bulgare",
+      "Sentadilla búlgara",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı",
@@ -198,10 +229,16 @@
     ],
     "searchKeywords": [
       "Cable Lateral Raise",
+      "Seitheben am Kabel",
+      "Élévation latérale à la poulie",
+      "Elevación lateral en polea",
       "Cable",
       "pulley",
       "kablo",
-      "makara"
+      "makara",
+      "seitheben",
+      "élévations latérales",
+      "elevaciones laterales"
     ]
   },
   {
@@ -218,7 +255,10 @@
     ],
     "searchKeywords": [
       "Chest-Supported Dumbbell Row",
-      "Dumbbell Chest Supported Row",
+      "Brustgestütztes Kurzhantelrudern",
+      "Rowing aux haltères avec appui thoracique",
+      "Remo con mancuernas y apoyo de pecho",
+      "Dumbbell Hammer Grip Incline Bench Two Arm Row",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -242,12 +282,18 @@
     ],
     "searchKeywords": [
       "Deadlift",
+      "Kreuzheben",
+      "Soulevé de terre",
+      "Peso muerto",
       "Barbell Deadlift",
       "Barbell",
       "bb",
       "barbel",
       "deadlift",
-      "dead lift"
+      "dead lift",
+      "kreuzheben",
+      "soulevé de terre",
+      "peso muerto"
     ]
   },
   {
@@ -264,6 +310,7 @@
     ],
     "searchKeywords": [
       "Dead Bug",
+      "Dead bug",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -285,11 +332,18 @@
     ],
     "searchKeywords": [
       "Dumbbell Bench Press",
+      "Kurzhantel-Bankdrücken",
+      "Développé couché aux haltères",
+      "Press de banca con mancuernas",
       "Dumbbell",
       "db",
       "dumbbells",
       "dambıl",
-      "dambil"
+      "dambil",
+      "bankdrücken",
+      "bankdruecken",
+      "développé couché",
+      "press de banca"
     ]
   },
   {
@@ -308,6 +362,9 @@
     "searchKeywords": [
       "Dumbbell Floor Press",
       "Dambıl Yer Presi (Floor Press)",
+      "Floor Press mit Kurzhanteln",
+      "Développé au sol aux haltères",
+      "Press de suelo con mancuernas",
       "Dumbbell Lying on Floor Chest Press",
       "Dumbbell",
       "db",
@@ -331,6 +388,9 @@
     "searchKeywords": [
       "Dumbbell Hammer Curl",
       "Hammer Curl",
+      "Hammercurl mit Kurzhanteln",
+      "Curl marteau aux haltères",
+      "Curl martillo con mancuernas",
       "Dumbbell Hammer Curl (version 2)",
       "Dumbbell",
       "db",
@@ -355,11 +415,17 @@
     ],
     "searchKeywords": [
       "Dumbbell Lateral Raise",
+      "Seitheben mit Kurzhanteln",
+      "Élévation latérale aux haltères",
+      "Elevación lateral con mancuernas",
       "Dumbbell",
       "db",
       "dumbbells",
       "dambıl",
-      "dambil"
+      "dambil",
+      "seitheben",
+      "élévations latérales",
+      "elevaciones laterales"
     ]
   },
   {
@@ -378,6 +444,9 @@
     "searchKeywords": [
       "Dumbbell Romanian Deadlift",
       "Dumbbell RDL",
+      "Rumänisches Kreuzheben mit Kurzhanteln",
+      "Soulevé de terre roumain aux haltères",
+      "Peso muerto rumano con mancuernas",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -387,7 +456,10 @@
       "romanian deadlift",
       "romen deadlift",
       "deadlift",
-      "dead lift"
+      "dead lift",
+      "kreuzheben",
+      "soulevé de terre",
+      "peso muerto"
     ]
   },
   {
@@ -405,6 +477,9 @@
     "searchKeywords": [
       "Dumbbell Step-Up",
       "Dambıl Sehpaya Adımlama (Step-Up)",
+      "Kurzhantel Step-Up",
+      "haltère Intensification",
+      "mancuerna intensificación",
       "Dumbbell Step-up",
       "Dumbbell",
       "db",
@@ -430,6 +505,9 @@
     ],
     "searchKeywords": [
       "EZ-Bar Curl",
+      "SZ-Curl",
+      "Curl à la barre EZ",
+      "Curl con barra EZ",
       "EZ Barbell Curl",
       "EZ Barbell",
       "bb",
@@ -451,6 +529,8 @@
     ],
     "searchKeywords": [
       "Face Pull",
+      "Tirage au visage",
+      "Face pull",
       "Cable Standing Face Pull (with rope)",
       "Cable",
       "pulley",
@@ -474,6 +554,9 @@
     "searchKeywords": [
       "Farmer Carry",
       "Çift Ağırlık Taşıma (Farmer Carry)",
+      "Farmer’s Walk",
+      "Marche du fermier",
+      "Paseo del granjero",
       "Dumbbell Farmers Carry",
       "Dumbbell",
       "db",
@@ -498,6 +581,9 @@
     "searchKeywords": [
       "Goblet Squat",
       "Dambıl Goblet Squat",
+      "Goblet-Kniebeuge",
+      "Goblet squat",
+      "Sentadilla goblet",
       "Dumbbell Goblet Squat",
       "Dumbbell",
       "db",
@@ -522,6 +608,9 @@
     "searchKeywords": [
       "Hanging Knee Raise",
       "Asılarak Diz Çekme (Hanging Knee Raise)",
+      "Hängendes Knieheben",
+      "Relevé de genoux suspendu",
+      "Elevación de rodillas colgado",
       "Hanging Knee Raise (male)",
       "Body weight",
       "bodyweight",
@@ -545,10 +634,17 @@
     ],
     "searchKeywords": [
       "Incline Barbell Bench Press",
+      "Schrägbankdrücken mit Langhantel",
+      "Développé incliné à la barre",
+      "Press inclinado con barra",
       "Barbell Incline Bench Press",
       "Barbell",
       "bb",
-      "barbel"
+      "barbel",
+      "bankdrücken",
+      "bankdruecken",
+      "développé couché",
+      "press de banca"
     ]
   },
   {
@@ -567,6 +663,9 @@
     ],
     "searchKeywords": [
       "Incline Dumbbell Curl",
+      "Steigung Kurzhantel Curl",
+      "Inclinaison haltère Boucle",
+      "Inclinación mancuerna Curl",
       "Dumbbell Incline Curl",
       "Dumbbell",
       "db",
@@ -591,12 +690,19 @@
     ],
     "searchKeywords": [
       "Incline Dumbbell Press",
+      "Schrägbankdrücken mit Kurzhanteln",
+      "Développé incliné aux haltères",
+      "Press inclinado con mancuernas",
       "Dumbbell Incline Bench Press",
       "Dumbbell",
       "db",
       "dumbbells",
       "dambıl",
-      "dambil"
+      "dambil",
+      "bankdrücken",
+      "bankdruecken",
+      "développé couché",
+      "press de banca"
     ]
   },
   {
@@ -615,6 +721,9 @@
     "searchKeywords": [
       "Jump Rope",
       "İp Atlama (Jump Rope)",
+      "Seilspringen",
+      "Corde à sauter",
+      "Salto de comba",
       "Jump Rope (male)",
       "Rope"
     ]
@@ -635,6 +744,9 @@
     "searchKeywords": [
       "Kettlebell Swing",
       "Kettlebell Salınımı (Kettlebell Swing)",
+      "Kettlebell-Swing",
+      "Swing avec kettlebell",
+      "Swing con kettlebell",
       "Kettlebell",
       "kb"
     ]
@@ -655,6 +767,9 @@
     "searchKeywords": [
       "Kneeling Cable Crunch",
       "Cable Crunch",
+      "Kniender Cable Crunch",
+      "Crunch du câble à genoux",
+      "Crujido de cable de rodillas",
       "Cable Kneeling Crunch",
       "Cable",
       "pulley",
@@ -678,7 +793,10 @@
     ],
     "searchKeywords": [
       "Lat Pulldown",
-      "Cable Neutral Grip Lat Pulldown (male)",
+      "Latziehen",
+      "Tirage vertical",
+      "Jalón al pecho",
+      "Cable Lat Pulldown Full Range Of Motion",
       "Cable",
       "pulley",
       "kablo",
@@ -703,6 +821,9 @@
     ],
     "searchKeywords": [
       "Leg Extension",
+      "Beinstrecken",
+      "Extension des jambes",
+      "Extensión de piernas",
       "Lever Leg Extension",
       "Leverage machine",
       "machine",
@@ -725,6 +846,9 @@
     ],
     "searchKeywords": [
       "Leg Press",
+      "Beinpresse",
+      "Presse à cuisses",
+      "Prensa de piernas",
       "Sled 45 degrees Leg Press",
       "Sled machine",
       "machine",
@@ -747,6 +871,9 @@
     ],
     "searchKeywords": [
       "Lying Leg Curl",
+      "Liegender Beinbeuger",
+      "Leg curl allongé",
+      "Curl femoral tumbado",
       "Lever Lying Leg Curl",
       "Leverage machine",
       "machine",
@@ -768,6 +895,9 @@
     ],
     "searchKeywords": [
       "One-Arm Dumbbell Row",
+      "Einarmiges Kurzhantelrudern",
+      "Rowing à un bras avec haltère",
+      "Remo con mancuerna a una mano",
       "Dumbbell One Arm Row (rack support)",
       "Dumbbell",
       "db",
@@ -793,6 +923,9 @@
     "searchKeywords": [
       "Overhead Cable Triceps Extension",
       "Overhead Cable Extension",
+      "Trizepsverlängerung am Kabelzug über dem Kopf",
+      "Extension de triceps à câble aérien",
+      "Extensión de tríceps con cable aéreo",
       "Cable Overhead Triceps Extension (rope attachment)",
       "Cable",
       "pulley",
@@ -816,6 +949,8 @@
     "searchKeywords": [
       "Pallof Press",
       "Kablolu Gövde Sabitleme (Pallof Press)",
+      "Presse Pallof",
+      "Prensa Pallof",
       "Cable horizontal Pallof Press",
       "Cable",
       "pulley",
@@ -838,6 +973,9 @@
     ],
     "searchKeywords": [
       "Pec Deck Fly",
+      "Butterfly-Maschine",
+      "Écarté à la machine",
+      "Aperturas en máquina",
       "Lever Seated Fly",
       "Leverage machine",
       "machine",
@@ -864,6 +1002,9 @@
     "searchKeywords": [
       "Pull-Ups",
       "Barfiks",
+      "Klimmzüge",
+      "Tractions",
+      "Dominadas",
       "Pull-up",
       "Body weight",
       "bodyweight",
@@ -872,7 +1013,11 @@
       "pull ups",
       "pullup",
       "pullups",
-      "barfiks"
+      "barfiks",
+      "klimmzüge",
+      "klimmzuege",
+      "tractions",
+      "dominadas"
     ]
   },
   {
@@ -891,13 +1036,20 @@
     "searchKeywords": [
       "Weighted Pull-Ups",
       "Ağırlıklı Barfiks",
+      "Klimmzüge mit Zusatzgewicht",
+      "Tractions lestées",
+      "Dominadas con lastre",
       "Weighted Pull-up",
       "Weighted",
       "pull up",
       "pull ups",
       "pullup",
       "pullups",
-      "barfiks"
+      "barfiks",
+      "klimmzüge",
+      "klimmzuege",
+      "tractions",
+      "dominadas"
     ]
   },
   {
@@ -917,6 +1069,9 @@
     "searchKeywords": [
       "Push Press",
       "İtişli Omuz Presi (Push Press)",
+      "Drücken Drücken",
+      "Pousser Presse",
+      "Empujar prensa",
       "Barbell",
       "bb",
       "barbel"
@@ -937,6 +1092,9 @@
     "searchKeywords": [
       "Push-Ups",
       "Şınav",
+      "Liegestütze",
+      "Pompes",
+      "Flexiones",
       "Push-up",
       "Body weight",
       "bodyweight",
@@ -945,7 +1103,11 @@
       "push ups",
       "pushup",
       "pushups",
-      "şınav"
+      "şınav",
+      "liegestütze",
+      "liegestuetze",
+      "pompes",
+      "flexiones"
     ]
   },
   {
@@ -963,6 +1125,9 @@
     "searchKeywords": [
       "Rope Triceps Pressdown",
       "Rope Triceps Pushdown",
+      "Trizepsdrücken am Seil",
+      "Extension triceps à la corde",
+      "Extensión de tríceps con cuerda",
       "Cable Pushdown (with rope attachment)",
       "Cable",
       "pulley",
@@ -990,6 +1155,9 @@
     ],
     "searchKeywords": [
       "Seated Leg Curl",
+      "Sitzender Beinbeuger",
+      "Leg curl assis",
+      "Curl femoral sentado",
       "Lever Seated Leg Curl",
       "Leverage machine",
       "machine",
@@ -1012,6 +1180,9 @@
     "searchKeywords": [
       "Seated Machine Calf Raise",
       "Seated Calf Raise",
+      "Wadenheben mit Maschine im Sitzen",
+      "Élévation des mollets à la machine assise",
+      "Elevación de pantorrillas en máquina sentado",
       "Lever Seated Calf Raise (plate loaded)",
       "Leverage machine",
       "machine",
@@ -1034,6 +1205,9 @@
     "searchKeywords": [
       "Side Plank",
       "Yan Plank (Side Plank)",
+      "Seitstütz",
+      "Gainage latéral",
+      "Plancha lateral",
       "Side Plank (male)",
       "Body weight",
       "bodyweight",
@@ -1055,6 +1229,9 @@
     "searchKeywords": [
       "Single-Leg Calf Raise",
       "Tek Bacak Baldır Kaldırma (Single-Leg Calf Raise)",
+      "Einbeiniges Wadenheben",
+      "Élévation des mollets sur une jambe",
+      "Elevación de pantorrilla con una sola pierna",
       "Single Leg Calf Raise Off Step",
       "Body weight",
       "bodyweight",
@@ -1077,6 +1254,9 @@
     "searchKeywords": [
       "Standing Barbell Overhead Press",
       "Overhead Press (OHP)",
+      "Stehendes Langhantel-Schulterdrücken",
+      "Développé militaire debout à la barre",
+      "Press militar de pie con barra",
       "Barbell Standing Military Press",
       "Barbell",
       "bb",
@@ -1102,6 +1282,9 @@
     "searchKeywords": [
       "Standing Machine Calf Raise",
       "Standing Calf Raise",
+      "Wadenheben mit Maschine im Stehen",
+      "Élévation des mollets à la machine debout",
+      "Elevación de pantorrillas en máquina de pie",
       "Lever Standing Calf Raise",
       "Leverage machine",
       "machine",
@@ -1123,6 +1306,9 @@
     "searchKeywords": [
       "Straight Bar Cable Triceps Pressdown",
       "Straight Bar Cable Pushdown",
+      "Trizepsdrücken mit gerader Stange",
+      "Extension triceps à la poulie avec barre droite",
+      "Extensión de tríceps en polea con barra recta",
       "Cable Pushdown",
       "Cable",
       "pulley",
@@ -1151,9 +1337,15 @@
     ],
     "searchKeywords": [
       "Trap Bar Deadlift",
+      "Kreuzheben mit Trap Bar",
+      "Soulevé de terre à la trap bar",
+      "Peso muerto con barra hexagonal",
       "Trap bar",
       "deadlift",
       "dead lift",
+      "kreuzheben",
+      "soulevé de terre",
+      "peso muerto",
       "hex bar"
     ]
   },
@@ -1171,6 +1363,9 @@
     "searchKeywords": [
       "Cable Seated Row",
       "Seated Cable Row",
+      "Sitzendes Kabelrudern",
+      "Tirage horizontal à la poulie",
+      "Remo sentado en polea",
       "Cable seated row",
       "Cable",
       "pulley",
@@ -1193,6 +1388,9 @@
     "searchKeywords": [
       "Dumbbell Seated Shoulder Press",
       "Dumbbell Shoulder Press",
+      "Sitzendes Kurzhantel-Schulterdrücken",
+      "Développé épaules assis aux haltères",
+      "Press de hombros sentado con mancuernas",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -1219,6 +1417,9 @@
     "searchKeywords": [
       "Lever Chest Press",
       "Makine Göğüs Presi (Chest Press)",
+      "Hebel-Brustpresse",
+      "Presse pectorale à levier",
+      "Press de pecho con palanca",
       "Leverage machine",
       "machine",
       "makine"
@@ -1240,6 +1441,9 @@
     "searchKeywords": [
       "Lever Seated Shoulder Press",
       "Makine Oturarak Omuz Presi (Shoulder Press)",
+      "Schulterdrücken im Sitzen mit Hebel",
+      "Presse à épaules assise à levier",
+      "Press de hombros sentado con palanca",
       "Leverage machine",
       "machine",
       "makine",
@@ -1264,6 +1468,9 @@
     "searchKeywords": [
       "Bodyweight Rear Lunge",
       "Vücut Ağırlığıyla Geriye Lunge (Reverse Lunge)",
+      "Ausfallschritt hinten im Körpergewicht",
+      "Fente arrière au poids du corps",
+      "Estocada trasera con peso corporal",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -1285,6 +1492,9 @@
     "searchKeywords": [
       "Walking Lunge",
       "Yürüyüş Lunge (Walking Lunge)",
+      "Gehender Ausfallschritt",
+      "Fente de marche",
+      "estocada caminando",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -1305,6 +1515,9 @@
     "searchKeywords": [
       "Bodyweight Squat",
       "Vücut Ağırlığıyla Squat (Bodyweight Squat)",
+      "Kniebeugen im Körpergewicht",
+      "Squat au poids du corps",
+      "Sentadilla con peso corporal",
       "Bodyweight Squat (male)",
       "Body weight",
       "bodyweight",
@@ -1327,6 +1540,9 @@
     "searchKeywords": [
       "Lever Seated Reverse Fly",
       "Makinede Ters Omuz Açış (Reverse Fly)",
+      "Rückwärtsfliegen mit Hebelsitz",
+      "Mouche inversée à levier",
+      "Mosca inversa con palanca sentada",
       "Leverage machine",
       "machine",
       "makine"
@@ -1346,6 +1562,9 @@
     "searchKeywords": [
       "Cable Curl",
       "Kablolu Biceps Büküş (Cable Curl)",
+      "Kabelaufrollung",
+      "Boucle de câble",
+      "Enrollamiento del cable",
       "Cable",
       "pulley",
       "kablo",
@@ -1367,6 +1586,9 @@
     "searchKeywords": [
       "Barbell Preacher Curl",
       "Barbell Preacher Büküş (Preacher Curl)",
+      "Langhantel Preacher Curl",
+      "Boucle de prédicateur barre",
+      "barra Curl predicador",
       "Barbell",
       "bb",
       "barbel"
@@ -1385,6 +1607,9 @@
     ],
     "searchKeywords": [
       "Chest Dip",
+      "Brust-Dip",
+      "Trempette de poitrine",
+      "Inmersión en el pecho",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -1405,6 +1630,9 @@
     "searchKeywords": [
       "Chin-up",
       "Chin-Up",
+      "Klimmzug im Untergriff",
+      "Traction en supination",
+      "Dominada supina",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı",
@@ -1429,6 +1657,9 @@
     "searchKeywords": [
       "Front Plank",
       "Ön Plank (Plank)",
+      "Unterarmstütz",
+      "Gainage ventral",
+      "Plancha frontal",
       "Front Plank (male)",
       "Body weight",
       "bodyweight",
@@ -1450,6 +1681,9 @@
     "searchKeywords": [
       "Cable Standing Fly",
       "Kablolu Ayakta Göğüs Açışı (Cable Fly)",
+      "Kabelstehende Fliege",
+      "Mouche sur pied à câble",
+      "Mosca de pie de cable",
       "Cable",
       "pulley",
       "kablo",
@@ -1472,6 +1706,9 @@
     "searchKeywords": [
       "Sled Hack Squat",
       "Hack Squat",
+      "Schlitten-Hack-Kniebeuge",
+      "Squat Hack Squat",
+      "Sentadilla en trineo",
       "Sled machine",
       "machine",
       "makine"
@@ -1491,6 +1728,9 @@
     "searchKeywords": [
       "Dumbbell Glute Bridge",
       "Dambıl Kalça Köprüsü (Glute Bridge)",
+      "Kurzhantel Gesäßbrücke",
+      "Pont fessier haltère",
+      "Puente de glúteos mancuerna",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -1514,11 +1754,17 @@
     ],
     "searchKeywords": [
       "Barbell Sumo Deadlift",
+      "Langhantel Sumo-Kreuzheben",
+      "barre Soulevé de terre sumo",
+      "barra Peso muerto de sumo",
       "Barbell",
       "bb",
       "barbel",
       "deadlift",
-      "dead lift"
+      "dead lift",
+      "kreuzheben",
+      "soulevé de terre",
+      "peso muerto"
     ]
   },
   {
@@ -1537,6 +1783,8 @@
     "searchKeywords": [
       "Smith Machine Squat",
       "Smith Makinesi Squat",
+      "Squat à la machine Smith",
+      "Sentadilla con máquina Smith",
       "Smith Squat",
       "Smith machine",
       "machine",
@@ -1560,9 +1808,16 @@
     "searchKeywords": [
       "Smith Bench Press",
       "Smith Makinesi Bench Press",
+      "Smith-Bankdrücken",
+      "Presse d'établi Smith",
+      "Press de banca Smith",
       "Smith machine",
       "machine",
-      "makine"
+      "makine",
+      "bankdrücken",
+      "bankdruecken",
+      "développé couché",
+      "press de banca"
     ]
   },
   {
@@ -1582,9 +1837,16 @@
     "searchKeywords": [
       "Smith Incline Bench Press",
       "Smith Makinesi Eğimli Bench Press",
+      "Smith Schrägbankdrücken",
+      "Presse à banc incliné Smith",
+      "Press de banca inclinado Smith",
       "Smith machine",
       "machine",
-      "makine"
+      "makine",
+      "bankdrücken",
+      "bankdruecken",
+      "développé couché",
+      "press de banca"
     ]
   },
   {
@@ -1603,11 +1865,17 @@
     "searchKeywords": [
       "Smith Stiff Legged Deadlift",
       "Smith Makinesi Düz Bacak Deadlift",
+      "Smith-Kreuzheben mit steifen Beinen",
+      "Soulevé de terre à jambes raides Smith",
+      "Peso muerto con piernas rígidas de Smith",
       "Smith machine",
       "machine",
       "makine",
       "deadlift",
-      "dead lift"
+      "dead lift",
+      "kreuzheben",
+      "soulevé de terre",
+      "peso muerto"
     ]
   },
   {
@@ -1625,6 +1893,9 @@
     "searchKeywords": [
       "Smith Hip Thrust",
       "Smith Makinesi Hip Thrust",
+      "Smith-Hüftstoß",
+      "Poussée de hanche Smith",
+      "Empuje de cadera de Smith",
       "Smith machine",
       "machine",
       "makine",
@@ -1649,6 +1920,9 @@
     "searchKeywords": [
       "Pendulum Squat",
       "Sarkaç Çömelme (Pendulum Squat)",
+      "Pendelkniebeuge",
+      "Squat pendulaire",
+      "Sentadilla con péndulo",
       "Lever Pendulum Squat (plate loaded)",
       "Leverage machine",
       "machine",
@@ -1670,6 +1944,9 @@
     "searchKeywords": [
       "Lever Belt Squat",
       "Kemerli Squat Makinesi (Belt Squat)",
+      "Hebelgürtel-Kniebeuge",
+      "Squat avec ceinture à levier",
+      "Sentadilla con cinturón de palanca",
       "Leverage machine",
       "machine",
       "makine"
@@ -1690,6 +1967,9 @@
     "searchKeywords": [
       "Lever Vertical Squat",
       "Dikey Squat Makinesi (Vertical Squat)",
+      "Vertikale Kniebeuge mit Hebel",
+      "Squat vertical à levier",
+      "Sentadilla vertical con palanca",
       "Leverage machine",
       "machine",
       "makine"
@@ -1712,6 +1992,9 @@
     "searchKeywords": [
       "Sled 45 Degrees One Leg Press",
       "45° Tek Bacak İtişi (Single-Leg Press)",
+      "Schlitten 45 Grad Einbeinpresse",
+      "Presse à une jambe sur traîneau à 45 degrés",
+      "Press con una pierna en trineo a 45 grados",
       "Sled 45 degrees One Leg Press",
       "Sled machine",
       "machine",
@@ -1735,6 +2018,9 @@
     "searchKeywords": [
       "Dumbbell Split Squat Front Foot Elevanted",
       "Ön Ayak Yükseltmeli Split Squat (Front-Foot Elevated)",
+      "Split Squat mit erhöhtem Vorderfuß und Kurzhanteln",
+      "Fente avec pied avant surélevé et haltères",
+      "Sentadilla dividida con pie delantero elevado y mancuernas",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -1758,6 +2044,9 @@
     "searchKeywords": [
       "Barbell Good Morning",
       "Barbell Bel Bükme (Good Morning)",
+      "Langhantel Guten Morgen",
+      "barre Bonjour",
+      "barra Buenos días",
       "Barbell",
       "bb",
       "barbel"
@@ -1779,6 +2068,9 @@
     "searchKeywords": [
       "Dumbbell Single-Leg Romanian Deadlift",
       "Dambıl Tek Bacak Romen Deadlift (Single-Leg RDL)",
+      "Kurzhantel Einbeiniges rumänisches Kreuzheben",
+      "haltère Soulevé de terre roumain sur une jambe",
+      "mancuerna Peso muerto rumano con una sola pierna",
       "Dumbbell Single Leg Romanian Deadlift (male)",
       "Dumbbell",
       "db",
@@ -1789,7 +2081,10 @@
       "romanian deadlift",
       "romen deadlift",
       "deadlift",
-      "dead lift"
+      "dead lift",
+      "kreuzheben",
+      "soulevé de terre",
+      "peso muerto"
     ]
   },
   {
@@ -1806,6 +2101,9 @@
     "searchKeywords": [
       "Dumbbell 45° Back Extension",
       "Dambıl 45° Bel Uzatma (Back Extension)",
+      "Kurzhantel 45° Rückenverlängerung",
+      "haltère Extension arrière 45°",
+      "Extensión de espalda de 45° mancuerna",
       "Dumbbell 45 degrees Back Extension (male)",
       "Dumbbell",
       "db",
@@ -1829,6 +2127,9 @@
     "searchKeywords": [
       "Nordic Hamstring Curl",
       "Nordic Arka Bacak Büküşü (Nordic Hamstring Curl)",
+      "Nordischer Oberschenkelcurl",
+      "Curl ischio-jambier nordique",
+      "Curl nórdico de isquiotibiales",
       "Nordic Hamstring Curl (male)",
       "Body weight",
       "bodyweight",
@@ -1851,6 +2152,8 @@
     "searchKeywords": [
       "Glute-Ham Raise",
       "Kalça ve Arka Bacak Kaldırışı (Glute-Ham Raise)",
+      "Augmentation des fessiers et du jambon",
+      "Elevación de glúteos y jamón",
       "Glute Ham Raise (VERSION 2)",
       "Body weight",
       "bodyweight",
@@ -1873,6 +2176,9 @@
     "searchKeywords": [
       "Cable Pull Through",
       "Kablolu Bacak Arasından Kalça Çekişi (Pull-Through)",
+      "Kabeldurchzug",
+      "Câble passant à travers",
+      "Pasar el cable",
       "Cable pull through",
       "Cable",
       "pulley",
@@ -1894,6 +2200,8 @@
     "searchKeywords": [
       "Cable Kneeling Glute Kickback",
       "Kablolu Diz Üstü Kalça Geriye İtiş (Glute Kickback)",
+      "Câble à genoux et rebond des fessiers",
+      "Contragolpe de glúteos arrodillado con cable",
       "Cable Kneeling Glute Kickback (male)",
       "Cable",
       "pulley",
@@ -1915,6 +2223,9 @@
     "searchKeywords": [
       "Lever Seated Hip Abduction",
       "Makinede Oturarak Bacak Açma (Hip Abduction)",
+      "Hebelsitzende Hüftabduktion",
+      "Abduction de la hanche en position assise par levier",
+      "Abducción de cadera sentado con palanca",
       "Leverage machine",
       "machine",
       "makine"
@@ -1935,6 +2246,9 @@
     "searchKeywords": [
       "Lever Seated Hip Adduction",
       "Makinede Oturarak Bacak Kapatma (Hip Adduction)",
+      "Hebelsitzende Hüftadduktion",
+      "Adduction de la hanche en position assise par levier",
+      "Aducción de cadera sentado con palanca",
       "Leverage machine",
       "machine",
       "makine"
@@ -1955,6 +2269,9 @@
     "searchKeywords": [
       "Sled Calf Press on Leg Press",
       "Bacak Presinde Baldır İtişi (Calf Press)",
+      "Schlitten-Wadenpresse auf Beinpresse",
+      "Presse à mollets sur traîneau sur presse à jambes",
+      "Prensa de pantorrillas en trineo sobre prensa de piernas",
       "Sled Calf Press On Leg Press",
       "Sled machine",
       "machine",
@@ -1976,6 +2293,9 @@
     "searchKeywords": [
       "Donkey Calf Raise",
       "Eğilerek Baldır Kaldırma (Donkey Calf Raise)",
+      "Eselkalbaufzucht",
+      "Élevage d'âne",
+      "Crianza de crías en burro",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -1995,6 +2315,9 @@
     "searchKeywords": [
       "Wall-Supported Tibialis Raise",
       "Duvar Destekli Ön Kaval Kaldırışı (Tibialis Raise)",
+      "Wandgestützte Tibialis-Hebung",
+      "Élévation du tibia avec support mural",
+      "Elevación de tibial con apoyo en la pared",
       "Standing Tibialis Raise Wall Supported (male)",
       "Body weight",
       "bodyweight",
@@ -2018,9 +2341,16 @@
     "searchKeywords": [
       "Barbell Decline Bench Press",
       "Ters Eğimli Barbell Pres (Decline Bench Press)",
+      "Langhantel Bankdrücken ablehnen",
+      "barre Décliner le développé couché",
+      "barra Press de banca declinado",
       "Barbell",
       "bb",
-      "barbel"
+      "barbel",
+      "bankdrücken",
+      "bankdruecken",
+      "développé couché",
+      "press de banca"
     ]
   },
   {
@@ -2039,11 +2369,18 @@
     "searchKeywords": [
       "Dumbbell Decline Bench Press",
       "Ters Eğimli Dambıl Pres (Decline Dumbbell Press)",
+      "Kurzhantel Bankdrücken ablehnen",
+      "haltère Décliner le développé couché",
+      "mancuerna Press de banca declinado",
       "Dumbbell",
       "db",
       "dumbbells",
       "dambıl",
-      "dambil"
+      "dambil",
+      "bankdrücken",
+      "bankdruecken",
+      "développé couché",
+      "press de banca"
     ]
   },
   {
@@ -2061,6 +2398,9 @@
     "searchKeywords": [
       "Lever Incline Chest Press",
       "Eğimli Makine Göğüs Presi (Incline Chest Press)",
+      "Hebel-Schrägbrustpresse",
+      "Presse pectorale inclinée à levier",
+      "Press de pecho inclinado con palanca",
       "Leverage machine",
       "machine",
       "makine"
@@ -2081,6 +2421,9 @@
     "searchKeywords": [
       "Cable Low Fly",
       "Kablolu Aşağıdan Yukarı Göğüs Açış (Low Cable Fly)",
+      "Kabel-Low-Fly",
+      "Câble à mouche basse",
+      "Cable de vuelo bajo",
       "Cable",
       "pulley",
       "kablo",
@@ -2102,6 +2445,8 @@
     "searchKeywords": [
       "Cable Decline Fly",
       "Kablolu Yukarıdan Aşağı Göğüs Açış (Decline Cable Fly)",
+      "Mouche de déclin de câble",
+      "Mosca de rechazo de cable",
       "Cable",
       "pulley",
       "kablo",
@@ -2123,6 +2468,9 @@
     "searchKeywords": [
       "Dumbbell Fly",
       "Dambıl Göğüs Açış (Dumbbell Fly)",
+      "Kurzhantel Fliegen",
+      "haltère Mouche",
+      "mancuerna Mosca",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -2147,9 +2495,16 @@
     "searchKeywords": [
       "Barbell Close Grip Bench Press",
       "Dar Tutuş Barbell Pres (Close-Grip Bench Press)",
+      "Langhantel Bankdrücken mit engem Griff",
+      "Presse d'établi à prise fermée barre",
+      "barra Press de banca con agarre cerrado",
       "Barbell",
       "bb",
-      "barbel"
+      "barbel",
+      "bankdrücken",
+      "bankdruecken",
+      "développé couché",
+      "press de banca"
     ]
   },
   {
@@ -2167,6 +2522,9 @@
     "searchKeywords": [
       "Dumbbell Pullover",
       "Dambıl Pullover",
+      "Kurzhantel Pullover",
+      "haltère Pull",
+      "Sudadera ligera mancuerna",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -2188,6 +2546,9 @@
     "searchKeywords": [
       "Lever Chest-Supported Row",
       "Sehpaya Dayalı Makine Kürek (Chest-Supported Row)",
+      "Rudern mit Brustunterstützung",
+      "Rangée supportée par la poitrine",
+      "Remo con palanca y apoyo en el pecho",
       "Lever Bent Over Row (with chest support)",
       "Leverage machine",
       "machine",
@@ -2208,6 +2569,9 @@
     "searchKeywords": [
       "Lever T-Bar Row",
       "Makine T-Bar Kürek (T-Bar Row)",
+      "Hebel-T-Bar-Reihe",
+      "Rangée de barres en T à levier",
+      "Remo con barra en T con palanca",
       "Lever T-bar Row (plate loaded)",
       "Leverage machine",
       "machine",
@@ -2229,6 +2593,9 @@
     "searchKeywords": [
       "Barbell Pendlay Row",
       "Barbell Pendlay Kürek (Pendlay Row)",
+      "Langhantel Pendlay-Reihe",
+      "Ligne Pendlay barre",
+      "Fila colgante barra",
       "Barbell",
       "bb",
       "barbel"
@@ -2249,6 +2616,9 @@
     "searchKeywords": [
       "Inverted Row",
       "Bar Altında Ters Kürek (Inverted Row)",
+      "Umgekehrte Reihe",
+      "Rangée inversée",
+      "Fila invertida",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -2270,7 +2640,10 @@
     "searchKeywords": [
       "Dual Cable Lat Pulldown",
       "Çift Makaralı Lat Pulldown",
-      "Cable Lat Pulldown Full Range Of Motion",
+      "Dual-Kabel-Latzug",
+      "Pulldown latéral à double câble",
+      "Jalón lateral con doble cable",
+      "Cable Neutral Grip Lat Pulldown (male)",
       "Cable",
       "pulley",
       "kablo",
@@ -2295,6 +2668,9 @@
     "searchKeywords": [
       "Cable Close Grip Front Lat Pulldown",
       "Kablolu Dar Tutuş Göğse Çekiş (Close-Grip Lat Pulldown)",
+      "Vorderer Latzug am Kabelzug mit engem Griff",
+      "Poignée de fermeture de câble, traction latérale avant",
+      "Jalón lateral frontal con agarre cerrado y cable",
       "Cable",
       "pulley",
       "kablo",
@@ -2319,6 +2695,9 @@
     "searchKeywords": [
       "Cable Underhand Pulldown",
       "Kablolu Ters Tutuş Göğse Çekiş (Underhand Lat Pulldown)",
+      "Kabel-Unterhand-Pulldown",
+      "Câble déroulant par le bas",
+      "Pulldown con cable por debajo",
       "Cable",
       "pulley",
       "kablo",
@@ -2342,6 +2721,9 @@
     "searchKeywords": [
       "Cable Straight-Arm Pulldown",
       "Kablolu Düz Kol Sırta Çekiş (Straight-Arm Pulldown)",
+      "Kabelzug mit geradem Arm",
+      "Câble déroulant à bras droit",
+      "Cable desplegable con brazo recto",
       "Cable Straight Arm Pulldown",
       "Cable",
       "pulley",
@@ -2366,6 +2748,9 @@
     "searchKeywords": [
       "Cable Kneeling Pullover",
       "Kablolu Diz Üstü Pullover (Kneeling Pullover)",
+      "Knielanger Pullover mit Zopfmuster",
+      "Pull à genoux torsadé",
+      "Sudadera con capucha Cable arrodillado",
       "Cable",
       "pulley",
       "kablo",
@@ -2388,6 +2773,9 @@
     "searchKeywords": [
       "Assisted Pull-up",
       "Destekli Barfiks (Assisted Pull-Up)",
+      "Unterstützter Klimmzug",
+      "Traction assistée",
+      "Dominadas asistidas",
       "Leverage machine",
       "machine",
       "makine",
@@ -2395,7 +2783,11 @@
       "pull ups",
       "pullup",
       "pullups",
-      "barfiks"
+      "barfiks",
+      "klimmzüge",
+      "klimmzuege",
+      "tractions",
+      "dominadas"
     ]
   },
   {
@@ -2413,6 +2805,9 @@
     "searchKeywords": [
       "Assisted Dip Machine",
       "Destekli Dips Makinesi (Assisted Dips)",
+      "Unterstützte Tauchmaschine",
+      "Machine de trempage assistée",
+      "Máquina de fondos asistidos",
       "Lever Graviton Assisted Dip (male)",
       "Leverage machine",
       "machine",
@@ -2434,6 +2829,9 @@
     "searchKeywords": [
       "Dumbbell Rear Fly",
       "Dambıl Arka Omuz Açış (Rear Delt Fly)",
+      "Kurzhantel Heckfliege",
+      "haltère Volet arrière",
+      "Mosca trasera mancuerna",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -2456,6 +2854,9 @@
     "searchKeywords": [
       "Barbell Shrug",
       "Barbell Omuz Silkme (Barbell Shrug)",
+      "Langhantel Achselzucken",
+      "barre Haussement d'épaules",
+      "barra Encogimiento de hombros",
       "Barbell",
       "bb",
       "barbel"
@@ -2476,6 +2877,9 @@
     "searchKeywords": [
       "Dumbbell Shrug",
       "Dambıl Omuz Silkme (Dumbbell Shrug)",
+      "Kurzhantel Achselzucken",
+      "haltère Haussement d'épaules",
+      "mancuerna Encogimiento de hombros",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -2498,6 +2902,9 @@
     "searchKeywords": [
       "Lever Machine Shrug",
       "Makinede Omuz Silkme (Machine Shrug)",
+      "Achselzucken der Hebelmaschine",
+      "Haussement d'épaules de machine à levier",
+      "Encogimiento de hombros con máquina de palanca",
       "Lever Shrug (plate loaded)",
       "Leverage machine",
       "machine",
@@ -2520,6 +2927,9 @@
     "searchKeywords": [
       "Dumbbell Arnold Press",
       "Dambıl Arnold Pres (Arnold Press)",
+      "Kurzhantel Arnold Press",
+      "Presse Arnold haltère",
+      "Prensa Arnold mancuerna",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -2542,6 +2952,9 @@
     "searchKeywords": [
       "Barbell Seated Overhead Press",
       "Barbell Oturarak Baş Üstü Pres (Seated Overhead Press)",
+      "Langhantel Sitzendes Überkopfdrücken",
+      "Presse aérienne assise barre",
+      "Prensa aérea sentado barra",
       "Barbell",
       "bb",
       "barbel",
@@ -2566,6 +2979,9 @@
     "searchKeywords": [
       "Dumbbell One-Arm Shoulder Press",
       "Tek Kol Dambıl Omuz Presi (Single-Arm Dumbbell Press)",
+      "Kurzhantel Einarmige Schulterpresse",
+      "Presse à épaules à un bras haltère",
+      "mancuerna Press de hombros con un brazo",
       "Dumbbell One Arm Shoulder Press (VERSION 2)",
       "Dumbbell",
       "db",
@@ -2593,6 +3009,8 @@
     "searchKeywords": [
       "Landmine Press",
       "Landmine Omuz Presi (Landmine Press)",
+      "Presse sur les mines terrestres",
+      "Prensa de minas terrestres",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -2612,9 +3030,15 @@
     "searchKeywords": [
       "Lever Lateral Raise",
       "Makinede Yan Açış (Machine Lateral Raise)",
+      "Hebel zum seitlichen Anheben",
+      "Levier de levage latéral",
+      "Levantamiento lateral de palanca",
       "Leverage machine",
       "machine",
-      "makine"
+      "makine",
+      "seitheben",
+      "élévations latérales",
+      "elevaciones laterales"
     ]
   },
   {
@@ -2632,6 +3056,9 @@
     "searchKeywords": [
       "Cable Seated Rear Delt Fly with Chest Support",
       "Sehpaya Dayalı Kablolu Arka Omuz Açış (Supported Rear Delt Fly)",
+      "Kabelgebundene hintere Delt Fly mit Bruststütze",
+      "Delt Fly arrière à câble avec support de poitrine",
+      "Delt Fly trasero sentado en cable con soporte para el pecho",
       "Cable",
       "pulley",
       "kablo",
@@ -2653,6 +3080,9 @@
     "searchKeywords": [
       "Barbell Upright Row",
       "Barbell Çeneye Çekiş (Upright Row)",
+      "Langhantel Aufrechte Reihe",
+      "Rangée verticala barre",
+      "barra Remo vertical",
       "EZ Barbell",
       "bb",
       "barbel"
@@ -2671,6 +3101,9 @@
     ],
     "searchKeywords": [
       "Barbell Curl",
+      "Langhantel Locken",
+      "Boucla barre",
+      "barra Rizado",
       "Barbell",
       "bb",
       "barbel"
@@ -2690,6 +3123,9 @@
     "searchKeywords": [
       "Dumbbell Alternate Biceps Curl",
       "Sıralı Dambıl Biceps Büküş (Alternate Dumbbell Curl)",
+      "Kurzhantel Abwechselnder Bizeps-Curl",
+      "haltère Curl biceps alternatif",
+      "mancuerna Curl de bíceps alternativo",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -2711,6 +3147,9 @@
     "searchKeywords": [
       "Dumbbell Concentration Curl",
       "Dambıl Konsantrasyon Büküşü (Concentration Curl)",
+      "Kurzhantel Konzentrationslocke",
+      "Boucle de concentration haltère",
+      "Curl de concentración mancuerna",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -2733,6 +3172,9 @@
     "searchKeywords": [
       "EZ Barbell Spider Curl",
       "Z-Bar Spider Büküş (Spider Curl)",
+      "EZ Langhantel Spinnenlocke",
+      "EZ barre Boucle d'araignée",
+      "EZ barra Rizo de araña",
       "EZ Barbell",
       "bb",
       "barbel"
@@ -2752,6 +3194,9 @@
     "searchKeywords": [
       "Cable Rope Hammer Curl",
       "Kablolu Halatla Çekiç Büküş (Rope Hammer Curl)",
+      "Kabelseil-Hammercurl",
+      "Boucle de marteau de câble de câble",
+      "Curl de martillo de cuerda de cable",
       "Cable Hammer Curl (with rope) (male)",
       "Cable",
       "pulley",
@@ -2775,6 +3220,9 @@
     "searchKeywords": [
       "Cable Incline Biceps Curl",
       "Kablolu Eğimli Biceps Büküş (Incline Cable Curl)",
+      "Kabelneigungs-Bizeps-Curl",
+      "Curl des biceps inclinés par câble",
+      "Curl de bíceps inclinado con cable",
       "Cable",
       "pulley",
       "kablo",
@@ -2796,6 +3244,8 @@
     "searchKeywords": [
       "Lever Preacher Curl",
       "Makinede Preacher Büküş (Machine Preacher Curl)",
+      "Boucle de prédicateur à levier",
+      "Curl predicador de palanca",
       "Leverage machine",
       "machine",
       "makine"
@@ -2817,6 +3267,9 @@
     "searchKeywords": [
       "EZ-Bar Lying Triceps Extension",
       "Skull Crusher (EZ-Bar)",
+      "EZ-Bar Trizepsverlängerung im Liegen",
+      "Extension des triceps couchés EZ-Bar",
+      "Extensión de tríceps acostado con barra EZ",
       "EZ Barbell Lying Triceps Extension (male)",
       "EZ Barbell",
       "bb",
@@ -2841,6 +3294,9 @@
     "searchKeywords": [
       "Dumbbell Standing Triceps Extension",
       "Dambıl Ayakta Baş Üstü Triceps Pres (Overhead Triceps Extension)",
+      "Kurzhantel Stehende Trizepsverlängerung",
+      "Extension des triceps debout haltère",
+      "mancuerna Extensión de tríceps de pie",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -2862,6 +3318,9 @@
     "searchKeywords": [
       "Cable One Arm Triceps Pushdown",
       "Kablolu Tek Kol Triceps İtişi (Single-Arm Pushdown)",
+      "Kabelgebundener einarmiger Trizeps-Pushdown",
+      "Câble Pushdown pour triceps à un bras",
+      "Flexión de tríceps con un brazo con cable",
       "Cable",
       "pulley",
       "kablo",
@@ -2886,6 +3345,9 @@
     "searchKeywords": [
       "Cable Reverse Grip Pushdown",
       "Kablolu Ters Tutuş Triceps İtişi (Reverse-Grip Pushdown)",
+      "Kabel-Rückwärtsgriff-Pushdown",
+      "Câble à poignée inversée",
+      "Empuje hacia abajo con agarre inverso del cable",
       "Cable Reverse grip Pushdown",
       "Cable",
       "pulley",
@@ -2911,6 +3373,9 @@
     "searchKeywords": [
       "Dumbbell Kickback",
       "Dambıl Geriye Triceps İtiş (Dumbbell Kickback)",
+      "Kurzhantel Rückschlag",
+      "haltère Rebond",
+      "mancuerna Contragolpe",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -2933,6 +3398,9 @@
     "searchKeywords": [
       "Hanging Leg Raise",
       "Asılarak Bacak Kaldırma (Hanging Leg Raise)",
+      "Hängendes Beinheben",
+      "Relevé de jambes suspendu",
+      "Elevación de piernas colgado",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -2952,6 +3420,8 @@
     "searchKeywords": [
       "Reverse Crunch",
       "Ters Mekik (Reverse Crunch)",
+      "Crunch inversé",
+      "Crujido inverso",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -2972,6 +3442,9 @@
     "searchKeywords": [
       "Bicycle Crunch",
       "Bisiklet Mekiği (Bicycle Crunch)",
+      "Fahrrad-Crunch",
+      "Crunch à vélo",
+      "Crujido de bicicleta",
       "Bicycle Crunch (male)",
       "Body weight",
       "bodyweight",
@@ -2994,6 +3467,9 @@
     "searchKeywords": [
       "Cable Woodchopper",
       "Kablolu Oduncu Çekişi (Woodchopper)",
+      "Kabel-Holzhacker",
+      "Hachoir à bois à câble",
+      "Cable leñador",
       "Cable Standing Wood Chopper (male)",
       "Cable",
       "pulley",
@@ -3017,6 +3493,9 @@
     "searchKeywords": [
       "Russian Twist",
       "Rus Dönüşü (Russian Twist)",
+      "Russische Wendung",
+      "Torsion russe",
+      "Giro ruso",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -3036,6 +3515,7 @@
     "searchKeywords": [
       "Bird Dog",
       "Çapraz Kol Bacak Uzatma (Bird Dog)",
+      "Bird dog",
       "Bird Dog (male)",
       "Body weight",
       "bodyweight",
@@ -3057,6 +3537,9 @@
     "searchKeywords": [
       "Mountain Climber",
       "Dağ Tırmanışı Hareketi (Mountain Climber)",
+      "Bergsteiger",
+      "Alpiniste",
+      "escalador de montaña",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -3097,6 +3580,8 @@
     "searchKeywords": [
       "Jumping Jack",
       "Yıldız Zıplayışı (Jumping Jack)",
+      "Hampelmann",
+      "saltando jack",
       "Jumping Jack (male)",
       "Body weight",
       "bodyweight",
@@ -3118,6 +3603,9 @@
     "searchKeywords": [
       "Box Jump",
       "Kutuya Sıçrama (Box Jump)",
+      "Boxsprung",
+      "Saut de boîte",
+      "Salto de caja",
       "Jump Box (male)",
       "Body weight",
       "bodyweight",
@@ -3138,6 +3626,9 @@
     "searchKeywords": [
       "Jump Squat",
       "Sıçramalı Squat (Jump Squat)",
+      "Sprung-Kniebeuge",
+      "Sauter Squat",
+      "Sentadilla con salto",
       "Jump Squat (VERSION 2)",
       "Body weight",
       "bodyweight",
@@ -3159,11 +3650,17 @@
     ],
     "searchKeywords": [
       "Kettlebell Deadlift",
+      "Kettlebell-Kreuzheben",
+      "Soulevé de terre Kettlebell",
+      "Peso muerto con pesas rusas",
       "Kettlebell deadlift",
       "Kettlebell",
       "kb",
       "deadlift",
-      "dead lift"
+      "dead lift",
+      "kreuzheben",
+      "soulevé de terre",
+      "peso muerto"
     ]
   },
   {
@@ -3183,6 +3680,9 @@
     "searchKeywords": [
       "Kettlebell One Arm Clean",
       "Kettlebell Tek Kol Clean",
+      "Kettlebell einarmig reinigen",
+      "Kettlebell un bras propre",
+      "Pesa rusa con un brazo limpio",
       "Kettlebell",
       "kb"
     ]
@@ -3202,6 +3702,8 @@
     "searchKeywords": [
       "Kettlebell Strict Press",
       "Kettlebell Omuz Presi (Strict Press)",
+      "Presse stricte Kettlebell",
+      "Press estricto con pesas rusas",
       "Kettlebell",
       "kb"
     ]
@@ -3223,6 +3725,9 @@
     "searchKeywords": [
       "Kettlebell One Arm Snatch",
       "Kettlebell Tek Kol Koparma (Snatch)",
+      "Kettlebell einarmiges Reißen",
+      "Kettlebell à un bras",
+      "Arranque con un brazo con pesa rusa",
       "Kettlebell",
       "kb"
     ]
@@ -3242,6 +3747,9 @@
     "searchKeywords": [
       "Dumbbell Suitcase Carry",
       "Dambıl Tek Kol Çanta Taşıma (Suitcase Carry)",
+      "Kurzhantel Koffer tragen",
+      "haltère Valise de transport",
+      "mancuerna Maleta de transporte",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -3263,6 +3771,9 @@
     "searchKeywords": [
       "Barbell Standing Calf Raise",
       "Barbell Ayakta Baldır Kaldırma (Standing Calf Raise)",
+      "Langhantel Wadenheben im Stehen",
+      "barre Élévation des mollets debout",
+      "barra Elevación de pantorrillas de pie",
       "Barbell",
       "bb",
       "barbel"
@@ -3282,6 +3793,9 @@
     "searchKeywords": [
       "Bodyweight Standing Calf Raise",
       "Vücut Ağırlığıyla Baldır Kaldırma (Calf Raise)",
+      "Wadenheben im Stehen mit Körpergewicht",
+      "Élévation des mollets debout au poids du corps",
+      "Elevación de pantorrillas de pie con peso corporal",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -3301,6 +3815,9 @@
     "searchKeywords": [
       "Lever Machine Hip Thrust",
       "Makinede Kalça İtişi (Machine Hip Thrust)",
+      "Hebel-Maschinen-Hüftschub",
+      "Poussée de hanche de machine à levier",
+      "Empuje de cadera con máquina de palanca",
       "Lever Hip Thrust (male)",
       "Leverage machine",
       "machine",
@@ -3324,6 +3841,9 @@
     "searchKeywords": [
       "Floor Crunch",
       "Zemin Mekiği (Floor Crunch)",
+      "Bodenknirschen",
+      "Crunch au sol",
+      "Crujido del piso",
       "Crunch Floor (male)",
       "Body weight",
       "bodyweight",
@@ -3346,6 +3866,9 @@
     "searchKeywords": [
       "Dumbbell Lying Hammer Press",
       "Dambıl Nötr Tutuş Göğüs Presi (Hammer Press)",
+      "Kurzhantel Liegende Hammerpresse",
+      "Presse à marteau couché haltère",
+      "Prensa de martillo acostado mancuerna",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -3370,11 +3893,18 @@
     "searchKeywords": [
       "Dumbbell Squeeze Bench Press",
       "Dambıl Bitişik Göğüs Presi (Squeeze Press)",
+      "Kurzhantel Squeeze-Bankdrücken",
+      "Presse d'établi à compression haltère",
+      "mancuerna Press de banca apretado",
       "Dumbbell",
       "db",
       "dumbbells",
       "dambıl",
-      "dambil"
+      "dambil",
+      "bankdrücken",
+      "bankdruecken",
+      "développé couché",
+      "press de banca"
     ]
   },
   {
@@ -3395,9 +3925,16 @@
     "searchKeywords": [
       "Barbell Reverse Grip Bench Press",
       "Ters Tutuş Barbell Pres (Reverse-Grip Bench Press)",
+      "Langhantel Bankdrücken mit umgekehrtem Griff",
+      "Presse d'établi à prise inversée barre",
+      "barra Press de banca con agarre inverso",
       "Barbell",
       "bb",
-      "barbel"
+      "barbel",
+      "bankdrücken",
+      "bankdruecken",
+      "développé couché",
+      "press de banca"
     ]
   },
   {
@@ -3416,6 +3953,9 @@
     "searchKeywords": [
       "Barbell Floor Chest Press",
       "Yerde Barbell Göğüs Presi (Barbell Floor Press)",
+      "Langhantel Boden-Brustpresse",
+      "Presse pectorale au sol barre",
+      "Press de pecho en el suelo barra",
       "Barbell",
       "bb",
       "barbel"
@@ -3438,6 +3978,9 @@
     "searchKeywords": [
       "Barbell Spoto Press",
       "Duraklamalı Barbell Pres (Spoto Press)",
+      "Langhantel Spoto Press",
+      "Presse Spoto barre",
+      "Prensa puntual barra",
       "Barbell",
       "bb",
       "barbel"
@@ -3460,6 +4003,9 @@
     "searchKeywords": [
       "Barbell Larsen Press",
       "Ayaklar Havada Barbell Pres (Larsen Press)",
+      "Langhantel Larsen Press",
+      "Presse Larsen barre",
+      "Prensa Larsen barra",
       "Barbell Larsen Press (male)",
       "Barbell",
       "bb",
@@ -3483,9 +4029,16 @@
     "searchKeywords": [
       "Barbell Incline Close Grip Bench Press",
       "Eğimli Dar Tutuş Barbell Pres (Incline Close-Grip Bench)",
+      "Langhantel Schrägbankdrücken mit engem Griff",
+      "Presse d'établi à poignée fermée et inclinée barre",
+      "barra Press de banca inclinado con agarre cerrado",
       "Barbell",
       "bb",
-      "barbel"
+      "barbel",
+      "bankdrücken",
+      "bankdruecken",
+      "développé couché",
+      "press de banca"
     ]
   },
   {
@@ -3503,6 +4056,9 @@
     "searchKeywords": [
       "Dumbbell Incline Fly",
       "Eğimli Dambıl Göğüs Açış (Incline Dumbbell Fly)",
+      "Kurzhantel Steigungsfliege",
+      "haltère Vol incliné",
+      "mancuerna Mosca inclinada",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -3525,6 +4081,9 @@
     "searchKeywords": [
       "Dumbbell Decline Fly",
       "Ters Eğimli Dambıl Açış (Decline Dumbbell Fly)",
+      "Kurzhantel Decline Fly",
+      "haltère Refuser la mouche",
+      "mancuerna Rechazar vuelo",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -3549,6 +4108,9 @@
     "searchKeywords": [
       "Dumbbell Lying One Arm Press",
       "Tek Kol Dambıl Göğüs Presi (Single-Arm Dumbbell Press)",
+      "Kurzhantel Einarmdrücken im Liegen",
+      "Presse à un bras couchée haltère",
+      "mancuerna Press acostado con un brazo",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -3571,6 +4133,9 @@
     "searchKeywords": [
       "Cable Standing Single Arm Chest Press",
       "Kablolu Ayakta Tek Kol Göğüs Presi (Single-Arm Cable Press)",
+      "Kabelgebundene einarmige Brustpresse im Stehen",
+      "Presse pectorale à bras unique sur pied par câble",
+      "Prensa de pecho con un solo brazo y pie con cable",
       "Cable",
       "pulley",
       "kablo",
@@ -3591,6 +4156,9 @@
     "searchKeywords": [
       "Cable Standing Chest Press",
       "Kablolu Ayakta Göğüs Presi (Standing Cable Chest Press)",
+      "Kabelgebundene Brustpresse im Stehen",
+      "Presse pectorale debout avec câble",
+      "Press de pecho con cable",
       "Cable",
       "pulley",
       "kablo",
@@ -3612,6 +4180,9 @@
     "searchKeywords": [
       "Cable Middle Fly",
       "Kablolu Orta Seviye Göğüs Açış (Cable Chest Fly)",
+      "Kabel-Mittelfliege",
+      "Mouche centrale à câble",
+      "Mosca media del cable",
       "Cable",
       "pulley",
       "kablo",
@@ -3633,6 +4204,9 @@
     "searchKeywords": [
       "Cable Standing Single Arm Fly",
       "Kablolu Tek Kol Göğüs Açış (Single-Arm Cable Fly)",
+      "Kabelstehende einarmige Fliege",
+      "Mouche à bras unique sur pied à câble",
+      "Mosca de un solo brazo con soporte de cable",
       "Cable",
       "pulley",
       "kablo",
@@ -3655,6 +4229,8 @@
     "searchKeywords": [
       "Svend Press",
       "Plaka Sıkıştırma Presi (Svend Press)",
+      "Presse Svend",
+      "Prensa Svend",
       "Weighted"
     ]
   },
@@ -3672,6 +4248,9 @@
     "searchKeywords": [
       "Incline Push-up",
       "Eğimli Şınav (Incline Push-Up)",
+      "Schräglage-Liegestütz",
+      "Pompes inclinées",
+      "Flexiones inclinadas",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı",
@@ -3679,7 +4258,11 @@
       "push ups",
       "pushup",
       "pushups",
-      "şınav"
+      "şınav",
+      "liegestütze",
+      "liegestuetze",
+      "pompes",
+      "flexiones"
     ]
   },
   {
@@ -3696,6 +4279,9 @@
     "searchKeywords": [
       "Decline Push-up",
       "Ters Eğimli Şınav (Decline Push-Up)",
+      "Liegestütz ablehnen",
+      "Refuser les pompes",
+      "Rechazar flexiones",
       "Decline Push-Up",
       "Body weight",
       "bodyweight",
@@ -3704,7 +4290,11 @@
       "push ups",
       "pushup",
       "pushups",
-      "şınav"
+      "şınav",
+      "liegestütze",
+      "liegestuetze",
+      "pompes",
+      "flexiones"
     ]
   },
   {
@@ -3721,6 +4311,9 @@
     "searchKeywords": [
       "Diamond Push-up",
       "Elmas Şınav (Diamond Push-Up)",
+      "Diamant-Push-up",
+      "Pompes en diamant",
+      "Flexiones de diamante",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı",
@@ -3728,7 +4321,11 @@
       "push ups",
       "pushup",
       "pushups",
-      "şınav"
+      "şınav",
+      "liegestütze",
+      "liegestuetze",
+      "pompes",
+      "flexiones"
     ]
   },
   {
@@ -3746,6 +4343,9 @@
     "searchKeywords": [
       "Archer Push-up",
       "Okçu Şınavı (Archer Push-Up)",
+      "Bogenschützen-Liegestütz",
+      "Pompes Archer",
+      "Flexiones de arquero",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı",
@@ -3753,7 +4353,11 @@
       "push ups",
       "pushup",
       "pushups",
-      "şınav"
+      "şınav",
+      "liegestütze",
+      "liegestuetze",
+      "pompes",
+      "flexiones"
     ]
   },
   {
@@ -3770,12 +4374,19 @@
     "searchKeywords": [
       "Weighted Push-up with Vest",
       "Ağırlık Yelekli Şınav (Weighted Push-Up)",
+      "Gewichteter Liegestütz mit Weste",
+      "Push-up lesté avec gilet",
+      "Flexiones lastradas con chaleco",
       "Weighted",
       "push up",
       "push ups",
       "pushup",
       "pushups",
-      "şınav"
+      "şınav",
+      "liegestütze",
+      "liegestuetze",
+      "pompes",
+      "flexiones"
     ]
   },
   {
@@ -3794,6 +4405,9 @@
     "searchKeywords": [
       "Lever Seated Wide Lat Pulldown",
       "Makinede Geniş Tutuş Göğse Çekiş (Wide Lat Pulldown)",
+      "Hebelsitzender breiter Latzug",
+      "Tirage latéral large à levier",
+      "Jalón lateral ancho sentado con palanca",
       "Lever Seated Wide Lat Pulldown (male)",
       "Leverage machine",
       "machine",
@@ -3818,6 +4432,9 @@
     "searchKeywords": [
       "Cable One Arm Lat Pulldown",
       "Kablolu Tek Kol Göğse Çekiş (Single-Arm Lat Pulldown)",
+      "Einarmiger Latzug mit Kabelzug",
+      "Câble Pulldown latéral à un bras",
+      "Jalón lateral con un brazo con cable",
       "Cable one arm lat pulldown",
       "Cable",
       "pulley",
@@ -3842,6 +4459,9 @@
     "searchKeywords": [
       "Cable Kneeling One Arm Lat Pulldown",
       "Kablolu Diz Üstü Tek Kol Çekiş (Kneeling One-Arm Pulldown)",
+      "Einarmiger Latzug im Kniebeugen am Kabelzug",
+      "Câble à genoux à un bras, traction latérale",
+      "Jalón lateral con un brazo arrodillado con cable",
       "Cable",
       "pulley",
       "kablo",
@@ -3865,6 +4485,9 @@
     "searchKeywords": [
       "Cable Kneeling Lat Pulldown",
       "Kablolu Diz Üstü Göğse Çekiş (Kneeling Lat Pulldown)",
+      "Kniender Latzug am Kabelzug",
+      "Câble à genoux Lat Pulldown",
+      "Jalón lateral de rodillas con cable",
       "Cable Kneeling Pulldown (VERSION 3)",
       "Cable",
       "pulley",
@@ -3890,6 +4513,9 @@
     "searchKeywords": [
       "Cable Lateral Pulldown with V-BAR",
       "Kablolu V-Bar Göğse Çekiş (V-Bar Lat Pulldown)",
+      "Seitlicher Kabelzug mit V-BAR",
+      "Câble latéral déroulant avec V-BAR",
+      "Cable Desmontable Lateral con V-BAR",
       "Cable Lateral Pulldown with V-bar",
       "Cable",
       "pulley",
@@ -3914,6 +4540,9 @@
     "searchKeywords": [
       "Lever Machine Pullover",
       "Makinede Pullover (Machine Pullover)",
+      "Hebelmaschinenpullover",
+      "Pull machine à levier",
+      "Sudadera ligera Máquina de palanca",
       "Lever Pullover (plate loaded)",
       "Leverage machine",
       "machine",
@@ -3935,6 +4564,9 @@
     "searchKeywords": [
       "Cable Rope Straight-Arm Pulldown",
       "Kablolu Halatlı Düz Kol Çekiş (Rope Straight-Arm Pulldown)",
+      "Kabelseil-Pulldown mit geradem Arm",
+      "Câble de traction à bras droit",
+      "Cable de cuerda con brazo recto",
       "Cable Straight Arm Pulldown (with rope)",
       "Cable",
       "pulley",
@@ -3959,6 +4591,9 @@
     "searchKeywords": [
       "Cable Single-Arm Straight-Arm Pulldown",
       "Kablolu Tek Kol Düz Kol Çekiş (Single-Arm Straight-Arm Pulldown)",
+      "Kabel-Einarm-Pulldown mit geradem Arm",
+      "Câble déroulant à bras droit à un seul bras",
+      "Cable Pulldown de brazo recto de un solo brazo",
       "Single Arm Side Straight Arm Lat Pulldown (male)",
       "Cable",
       "pulley",
@@ -3982,6 +4617,9 @@
     "searchKeywords": [
       "Barbell Lying Seal Row on Rack",
       "Sehpada Yatarak Barbell Kürek (Seal Row)",
+      "Langhantel Liegende Robbenreihe auf dem Gestell",
+      "Rangée de joints couchés barre sur support",
+      "barra Fila de sellos tumbados sobre rejilla",
       "Barbell",
       "bb",
       "barbel"
@@ -4002,6 +4640,9 @@
     "searchKeywords": [
       "Landmine One-Arm Bent-Over Row",
       "Landmine Tek Kol Eğilerek Kürek (One-Arm Landmine Row)",
+      "Landmine Einarmiges vorgebeugtes Rudern",
+      "Rangée courbée à un bras contre les mines terrestres",
+      "Remo inclinado con un brazo y minas terrestres",
       "Landmine One Arm Bent Over Row (VERSION 2)",
       "Barbell",
       "bb",
@@ -4023,6 +4664,9 @@
     "searchKeywords": [
       "Landmine V-Bar Bent-Over Row",
       "Landmine V-Bar Eğilerek Kürek (V-Bar Landmine Row)",
+      "Landmine V-Bar vorgebeugtes Rudern",
+      "Rangée courbée en V pour mines terrestres",
+      "Remo inclinado con barra en V para minas terrestres",
       "Landmine Bent over Row with V-bar (plate loaded)",
       "Barbell",
       "bb",
@@ -4043,6 +4687,9 @@
     "searchKeywords": [
       "Lever Lying T-BAR Row",
       "Sehpada Makine T-Bar Kürek (Lying T-Bar Row)",
+      "Hebel liegende T-BAR-Reihe",
+      "Rangée de barres en T couchées à levier",
+      "Remo con barra en T tumbado con palanca",
       "Lever Lying T-bar Row",
       "Leverage machine",
       "machine",
@@ -4063,6 +4710,9 @@
     "searchKeywords": [
       "Cable Seated Wide Grip Row",
       "Kablolu Oturarak Geniş Tutuş Kürek (Wide-Grip Cable Row)",
+      "Rudern mit breitem Griff am Kabelzug",
+      "Rangée à prise large avec câble",
+      "Remo con agarre ancho sentado en cables",
       "Cable Seated Wide grip Row",
       "Cable",
       "pulley",
@@ -4084,6 +4734,9 @@
     "searchKeywords": [
       "Cable Seated Row with V-BAR",
       "Kablolu Oturarak V-Bar Kürek (V-Bar Cable Row)",
+      "Kabelsitzrudern mit V-BAR",
+      "Rangée de câbles avec V-BAR",
+      "Remo sentado con cables con V-BAR",
       "Cable Seated Row with V-bar",
       "Cable",
       "pulley",
@@ -4105,6 +4758,9 @@
     "searchKeywords": [
       "Cable One Arm Twisting Seated Row",
       "Kablolu Tek Kol Dönüşlü Kürek (Single-Arm Twisting Row)",
+      "Kabelzug, einarmiges Drehen im Sitzen",
+      "Câble à un bras tordant une rangée assise",
+      "Remo sentado con torsión de un brazo con cable",
       "Cable one arm twisting seated row",
       "Cable",
       "pulley",
@@ -4126,6 +4782,9 @@
     "searchKeywords": [
       "Cable High Row",
       "Kablolu Yüksekten Kürek (Cable High Row)",
+      "Kabelhohe Reihe",
+      "Câble haute rangée",
+      "Cable fila alta",
       "Cable",
       "pulley",
       "kablo",
@@ -4146,6 +4805,9 @@
     "searchKeywords": [
       "Cable Low Seated Row",
       "Kablolu Alçak Oturarak Kürek (Low Cable Row)",
+      "Cable Low Seat Row",
+      "Câble, rangée assise basse",
+      "Remo sentado bajo con cable",
       "Cable",
       "pulley",
       "kablo",
@@ -4166,6 +4828,9 @@
     "searchKeywords": [
       "Cable Rope Seated Row",
       "Kablolu Halatla Oturarak Kürek (Rope Seated Row)",
+      "Kabelseil-Sitzreihe",
+      "Rangée assise de corde de câble",
+      "Remo sentado con cuerda y cable",
       "Cable",
       "pulley",
       "kablo",
@@ -4186,6 +4851,9 @@
     "searchKeywords": [
       "Lever High Row",
       "Makinede Yüksek Kürek (Lever High Row)",
+      "Hebel hohe Reihe",
+      "Levier rangée haute",
+      "Palanca de remo alto",
       "Lever High Row (male)",
       "Leverage machine",
       "machine",
@@ -4206,6 +4874,9 @@
     "searchKeywords": [
       "Lever Machine Low Row",
       "Makinede Alçak Kürek (Lever Low Row)",
+      "Hebelmaschine, niedrige Reihe",
+      "Machine à levier rangée basse",
+      "Máquina De Palanca Remo Bajo",
       "Lever Low Row (plate loaded)",
       "Leverage machine",
       "machine",
@@ -4226,6 +4897,9 @@
     "searchKeywords": [
       "Lever Unilateral Row",
       "Makinede Tek Taraflı Kürek (Unilateral Row)",
+      "Hebel einseitige Reihe",
+      "Rangée unilatérale à levier",
+      "Remo unilateral con palanca",
       "Leverage machine",
       "machine",
       "makine"
@@ -4246,6 +4920,9 @@
     "searchKeywords": [
       "Dumbbell Renegade Row",
       "Dambıl Şınav Pozisyonunda Kürek (Renegade Row)",
+      "Kurzhantel Renegade Row",
+      "Ligne Renegade haltère",
+      "mancuerna Fila Renegado",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -4267,6 +4944,9 @@
     "searchKeywords": [
       "Dumbbell Kroc Row",
       "Ağır Dambıl Tek Kol Kürek (Kroc Row)",
+      "Kurzhantel Kroc-Reihe",
+      "Ligne Kroc haltère",
+      "mancuerna Fila Kroc",
       "Dumbbell Kroc Row (male)",
       "Dumbbell",
       "db",
@@ -4290,6 +4970,9 @@
     "searchKeywords": [
       "Dumbbell Gorilla Row",
       "Dambıl Çift Kol Yerden Kürek (Gorilla Row)",
+      "Kurzhantel Gorilla Row",
+      "Rangée de gorilles haltère",
+      "mancuerna Fila de gorilas",
       "Dumbbell Gorilla Row (male)",
       "Dumbbell",
       "db",
@@ -4313,6 +4996,9 @@
     "searchKeywords": [
       "Suspension Trainer Row",
       "Askı Kayışında Ters Kürek (TRX / Suspension Row)",
+      "Suspension-Trainer-Reihe",
+      "Rangée d'entraîneur de suspension",
+      "Remo de entrenador en suspensión",
       "Suspender Row (male)",
       "Suspension"
     ]
@@ -4333,6 +5019,9 @@
     "searchKeywords": [
       "Ring Inverted Row",
       "Jimnastik Halkasında Ters Kürek (Ring Row)",
+      "Ring invertierte Reihe",
+      "Rangée inversée d'anneau",
+      "Anillo Fila Invertida",
       "Ring Inverted Row parallel to the floor (male)",
       "Suspension"
     ]
@@ -4352,6 +5041,9 @@
     "searchKeywords": [
       "Scapular Pull-Up",
       "Skapular Barfiks (Scapular Pull-Up)",
+      "Schulterblatt-Klimmzug",
+      "Traction scapulaire",
+      "Dominadas escapulares",
       "Scapular Pull-up (VERSION 2)",
       "Body weight",
       "bodyweight",
@@ -4360,7 +5052,11 @@
       "pull ups",
       "pullup",
       "pullups",
-      "barfiks"
+      "barfiks",
+      "klimmzüge",
+      "klimmzuege",
+      "tractions",
+      "dominadas"
     ]
   },
   {
@@ -4378,6 +5074,9 @@
     "searchKeywords": [
       "Parallel-Grip Chin-Up",
       "Paralel Tutuş Barfiks (Neutral-Grip Chin-Up)",
+      "Klimmzug im Parallelgriff",
+      "Traction à prise parallèle",
+      "Dominadas con agarre paralelo",
       "Chin-ups (narrow parallel grip)",
       "Body weight",
       "bodyweight",
@@ -4405,6 +5104,9 @@
     "searchKeywords": [
       "Barbell Rack Pull",
       "Bloktan Barbell Yarım Çekiş (Rack Pull)",
+      "Langhantel Rack-Zug",
+      "Poignée de crémaillère barre",
+      "Tirador de estante barra",
       "Barbell",
       "bb",
       "barbel"
@@ -4424,11 +5126,17 @@
     "searchKeywords": [
       "Dumbbell Seated Lateral Raise",
       "Oturarak Dambıl Yan Açış (Seated Lateral Raise)",
+      "Kurzhantel Sitzendes Seitheben",
+      "haltère Élévation latérale assise",
+      "mancuerna Elevación lateral sentado",
       "Dumbbell",
       "db",
       "dumbbells",
       "dambıl",
-      "dambil"
+      "dambil",
+      "seitheben",
+      "élévations latérales",
+      "elevaciones laterales"
     ]
   },
   {
@@ -4445,10 +5153,16 @@
     "searchKeywords": [
       "Cable Leaning Lateral Raise",
       "Kablolu Yana Eğilerek Yan Açış (Leaning Lateral Raise)",
+      "Seitliches Anheben mit Kabelneigung",
+      "Élévation latérale inclinée par câble",
+      "Elevación lateral inclinada con cable",
       "Cable",
       "pulley",
       "kablo",
-      "makara"
+      "makara",
+      "seitheben",
+      "élévations latérales",
+      "elevaciones laterales"
     ]
   },
   {
@@ -4465,11 +5179,17 @@
     "searchKeywords": [
       "Cable Behind-the-Back Lateral Raise",
       "Kablolu Arkadan Yan Açış (Behind-the-Back Lateral Raise)",
+      "Seitliches Anheben am Kabel hinter dem Rücken",
+      "Élévation latérale par câble derrière le dos",
+      "Elevación lateral con cable detrás de la espalda",
       "Cable Behind The Back Cuffed Lateral Raise (male)",
       "Cable",
       "pulley",
       "kablo",
-      "makara"
+      "makara",
+      "seitheben",
+      "élévations latérales",
+      "elevaciones laterales"
     ]
   },
   {
@@ -4486,10 +5206,16 @@
     "searchKeywords": [
       "Cable One Arm Lateral Raise",
       "Kablolu Tek Kol Yan Açış (Single-Arm Lateral Raise)",
+      "Seitliches Heben eines Arms am Kabel",
+      "Câble d'élévation latérale à un bras",
+      "Elevación lateral con un brazo con cable",
       "Cable",
       "pulley",
       "kablo",
-      "makara"
+      "makara",
+      "seitheben",
+      "élévations latérales",
+      "elevaciones laterales"
     ]
   },
   {
@@ -4506,6 +5232,9 @@
     "searchKeywords": [
       "Cable Y Raise",
       "Kablolu Y Şeklinde Omuz Kaldırışı (Cable Y-Raise)",
+      "Kabel-Y-Anhebung",
+      "Câble Y Augmenter",
+      "Elevación en Y del cable",
       "Cable Y raise",
       "Cable",
       "pulley",
@@ -4527,6 +5256,9 @@
     "searchKeywords": [
       "Dumbbell Incline Y Raise",
       "Eğimli Sehpada Dambıl Y Kaldırışı (Incline Y-Raise)",
+      "Kurzhantel Neigung Y-Anhebung",
+      "haltère Inclinaison en Y",
+      "mancuerna Inclinación Y Elevación",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -4548,6 +5280,9 @@
     "searchKeywords": [
       "Dumbbell Front Raise",
       "Dambıl Öne Kaldırış (Dumbbell Front Raise)",
+      "Kurzhantel Frontanhebung",
+      "haltère Élévation avant",
+      "Elevación frontal mancuerna",
       "Dumbbell Front Raise (version 2)",
       "Dumbbell",
       "db",
@@ -4570,6 +5305,9 @@
     "searchKeywords": [
       "Cable Front Raise",
       "Kablolu Öne Kaldırış (Cable Front Raise)",
+      "Kabelvorderseite anheben",
+      "Élévation avant par câble",
+      "Elevación frontal del cable",
       "Cable",
       "pulley",
       "kablo",
@@ -4590,6 +5328,9 @@
     "searchKeywords": [
       "Weighted Front Raise",
       "Plaka ile Öne Kaldırış (Plate Front Raise)",
+      "Gewichteter Frontheben",
+      "Élévation avant pondérée",
+      "Elevación frontal ponderada",
       "Weighted"
     ]
   },
@@ -4607,6 +5348,9 @@
     "searchKeywords": [
       "Barbell Front Raise",
       "Barbell Öne Kaldırış (Barbell Front Raise)",
+      "Langhantel Frontanhebung",
+      "barre Élévation avant",
+      "Elevación frontal barra",
       "Barbell",
       "bb",
       "barbel"
@@ -4627,6 +5371,9 @@
     "searchKeywords": [
       "Cable Standing Reverse Fly",
       "Kablolu Ayakta Ters Omuz Açış (Reverse Cable Fly)",
+      "Kabelstehendes Rückwärtsfliegen",
+      "Mouche inversée sur pied à câble",
+      "Mosca inversa de pie de cable",
       "Cable Standing Reverse Fly (VERSION 3)",
       "Cable",
       "pulley",
@@ -4649,12 +5396,18 @@
     "searchKeywords": [
       "Head-Supported Dumbbell Rear Lateral Raise",
       "Alın Destekli Dambıl Arka Omuz Açış (Head-Supported Rear Fly)",
+      "Kopfgestütztes seitliches Heben der Rückseite Kurzhantel",
+      "Élévation latérale arrière haltère avec support de tête",
+      "Elevación lateral trasera mancuerna con apoyo para la cabeza",
       "Dumbbell Rear Lateral Raise (support head)",
       "Dumbbell",
       "db",
       "dumbbells",
       "dambıl",
-      "dambil"
+      "dambil",
+      "seitheben",
+      "élévations latérales",
+      "elevaciones laterales"
     ]
   },
   {
@@ -4672,6 +5425,9 @@
     "searchKeywords": [
       "Dumbbell Incline Rear Fly",
       "Eğimli Sehpada Dambıl Arka Omuz Açış (Incline Rear Fly)",
+      "Kurzhantel Schräge Heckfliege",
+      "haltère Volet arrière incliné",
+      "mancuerna Mosca trasera inclinada",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -4693,6 +5449,9 @@
     "searchKeywords": [
       "Lever Seated Rear Delt Row",
       "Makinede Oturarak Arka Omuz Çekişi (Rear Delt Row)",
+      "Hebelsitzende hintere Delt-Reihe",
+      "Rangée de delt arrière à levier",
+      "Remo de deltoides trasero sentado con palanca",
       "Lever Seated Delt Row (male)",
       "Leverage machine",
       "machine",
@@ -4714,6 +5473,9 @@
     "searchKeywords": [
       "Barbell Wide Grip Upright Row",
       "Geniş Tutuş Barbell Çeneye Çekiş (Wide-Grip Upright Row)",
+      "Langhantel aufrechtes Rudern mit breitem Griff",
+      "Rangée verticale à prise large barre",
+      "barra Remo vertical con agarre ancho",
       "Barbell",
       "bb",
       "barbel"
@@ -4734,6 +5496,9 @@
     "searchKeywords": [
       "Dumbbell Upright Row",
       "Dambıl Çeneye Çekiş (Dumbbell Upright Row)",
+      "Kurzhantel Aufrechte Reihe",
+      "Rangée verticale haltère",
+      "mancuerna Remo vertical",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -4757,6 +5522,9 @@
     "searchKeywords": [
       "Barbell Z Press",
       "Yerde Oturarak Barbell Omuz Presi (Z-Press)",
+      "Langhantel Z Drücken",
+      "Presse barre Z",
+      "Prensa Z barra",
       "Barbell",
       "bb",
       "barbel"
@@ -4777,6 +5545,9 @@
     "searchKeywords": [
       "Landmine Single Arm Press",
       "Landmine Tek Kol Omuz Presi (Single-Arm Landmine Press)",
+      "Landmine-Einarmpresse",
+      "Presse à bras unique pour mines terrestres",
+      "Prensa de un solo brazo para minas terrestres",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -4798,6 +5569,9 @@
     "searchKeywords": [
       "Lever Viking Press",
       "Viking Omuz Presi Makinesi (Viking Press)",
+      "Hebel Viking Press",
+      "Presse Viking à levier",
+      "Prensa vikinga de palanca",
       "Lever Standing Viking Press (male)",
       "Leverage machine",
       "machine",
@@ -4819,6 +5593,9 @@
     "searchKeywords": [
       "Pike Push-up",
       "Pike Şınavı (Pike Push-Up)",
+      "Hecht-Liegestütz",
+      "Pompes pour brochet",
+      "Flexión de pica",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı",
@@ -4826,7 +5603,11 @@
       "push ups",
       "pushup",
       "pushups",
-      "şınav"
+      "şınav",
+      "liegestütze",
+      "liegestuetze",
+      "pompes",
+      "flexiones"
     ]
   },
   {
@@ -4844,6 +5625,9 @@
     "searchKeywords": [
       "EZ Barbell Preacher Curl",
       "Z-Bar Preacher Büküş (EZ Preacher Curl)",
+      "EZ Langhantel Preacher Curl",
+      "EZ barre Boucle de prédicateur",
+      "EZ barra Curl predicador",
       "EZ Barbell",
       "bb",
       "barbel"
@@ -4864,6 +5648,9 @@
     "searchKeywords": [
       "Dumbbell Preacher Curl",
       "Dambıl Preacher Büküş (Dumbbell Preacher Curl)",
+      "Kurzhantel Preacher Curl",
+      "Boucle de prédicateur haltère",
+      "mancuerna Curl predicador",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -4886,6 +5673,9 @@
     "searchKeywords": [
       "Dumbbell One Arm Hammer Preacher Curl",
       "Dambıl Tek Kol Çekiç Preacher Büküş (Hammer Preacher Curl)",
+      "Kurzhantel Einarmiger Hammer-Preacher-Curl",
+      "haltère Curl de prédicateur à marteau à un bras",
+      "mancuerna Curl predicador con martillo a un brazo",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -4910,6 +5700,8 @@
     "searchKeywords": [
       "Cable Preacher Curl",
       "Kablolu Preacher Büküş (Cable Preacher Curl)",
+      "Boucle de prédicateur de câble",
+      "Curl de predicador de cable",
       "Cable",
       "pulley",
       "kablo",
@@ -4931,6 +5723,9 @@
     "searchKeywords": [
       "Barbell Reverse Curl",
       "Barbell Ters Tutuş Büküş (Reverse Curl)",
+      "Langhantel Reverse Curl",
+      "Boucle inversée barre",
+      "barra Curl inverso",
       "Barbell",
       "bb",
       "barbel"
@@ -4951,6 +5746,9 @@
     "searchKeywords": [
       "EZ Barbell Reverse Grip Curl",
       "Z-Bar Ters Tutuş Büküş (EZ Reverse Curl)",
+      "EZ Langhantel Reverse Grip Curl",
+      "EZ barre Boucle à poignée inversée",
+      "EZ barra Curl con agarre inverso",
       "EZ Barbell",
       "bb",
       "barbel"
@@ -4971,6 +5769,9 @@
     "searchKeywords": [
       "Dumbbell Biceps Curl Reverse",
       "Dambıl Ters Tutuş Büküş (Reverse Dumbbell Curl)",
+      "Kurzhantel Bizeps-Curl umgekehrt",
+      "haltère Curl biceps inversé",
+      "mancuerna Curl de bíceps inverso",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -4993,6 +5794,9 @@
     "searchKeywords": [
       "Dumbbell Zottman Curl",
       "Dambıl Zottman Büküş (Zottman Curl)",
+      "Kurzhantel Zottman Curl",
+      "haltère Boucle Zottman",
+      "mancuerna Curl Zottman",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -5015,6 +5819,9 @@
     "searchKeywords": [
       "Dumbbell Cross Body Hammer Curl",
       "Gövdeye Çapraz Dambıl Çekiç Büküş (Cross-Body Hammer Curl)",
+      "Kurzhantel Cross Body Hammer Curl",
+      "haltère Boucle de marteau à corps croisé",
+      "mancuerna Curl de martillo con cuerpo cruzado",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -5038,6 +5845,9 @@
     "searchKeywords": [
       "Dumbbell Seated Curl",
       "Oturarak Dambıl Biceps Büküş (Seated Dumbbell Curl)",
+      "Kurzhantel Locken im Sitzen",
+      "haltère Curl assis",
+      "mancuerna Curl sentado",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -5059,6 +5869,9 @@
     "searchKeywords": [
       "Dumbbell Standing Biceps Curl",
       "Ayakta Dambıl Biceps Büküş (Standing Dumbbell Curl)",
+      "Kurzhantel Bizepscurl im Stehen",
+      "haltère Curl biceps debout",
+      "mancuerna Curl de bíceps de pie",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -5081,6 +5894,9 @@
     "searchKeywords": [
       "Barbell Drag Curl",
       "Barbell Vücuda Bitişik Büküş (Drag Curl)",
+      "Langhantel Drag Curl",
+      "Boucle de traînée barre",
+      "barra Arrastrar Curl",
       "Barbell",
       "bb",
       "barbel"
@@ -5101,6 +5917,8 @@
     "searchKeywords": [
       "Cable Drag Curl",
       "Kablolu Vücuda Bitişik Büküş (Cable Drag Curl)",
+      "Boucle de traînée de câble",
+      "Curl de arrastre de cable",
       "Cable",
       "pulley",
       "kablo",
@@ -5121,6 +5939,9 @@
     "searchKeywords": [
       "Cable Standing Inner Curl",
       "Kablolu İç Biceps Büküş (Inner Biceps Curl)",
+      "Kabel stehende innere Locke",
+      "Boucle intérieure debout sur câble",
+      "Curl interior de pie de cable",
       "Cable",
       "pulley",
       "kablo",
@@ -5141,6 +5962,9 @@
     "searchKeywords": [
       "Cable One Arm Curl",
       "Kablolu Tek Kol Biceps Büküş (Single-Arm Cable Curl)",
+      "Ein-Arm-Curl am Kabel",
+      "Câble Curl à un bras",
+      "Curl con cable a un brazo",
       "Cable",
       "pulley",
       "kablo",
@@ -5162,6 +5986,9 @@
     "searchKeywords": [
       "Cable Overhead Curl",
       "Kablolu Çift Kol Yüksek Büküş (Overhead Cable Curl)",
+      "Kabel-Overhead-Curl",
+      "Boucle aérienne de câble",
+      "Curl aéreo del cable",
       "Cable",
       "pulley",
       "kablo",
@@ -5182,6 +6009,9 @@
     "searchKeywords": [
       "Lever Biceps Curl",
       "Makinede Biceps Büküş (Machine Biceps Curl)",
+      "Hebel-Bizeps-Curl",
+      "Curl biceps à levier",
+      "Curl de bíceps con palanca",
       "Leverage machine",
       "machine",
       "makine"
@@ -5202,6 +6032,9 @@
     "searchKeywords": [
       "Dumbbell Spider Curl",
       "Eğimli Sehpada Dambıl Spider Büküş (Spider Curl)",
+      "Kurzhantel Spinnenlocke",
+      "Boucle d'araignée haltère",
+      "mancuerna Rizo de araña",
       "Dumbbell Spider Curl (male)",
       "Dumbbell",
       "db",
@@ -5225,6 +6058,9 @@
     "searchKeywords": [
       "Dumbbell Hammer Preacher Curl",
       "Çift Dambıl Çekiç Preacher Büküş (Hammer Preacher Curl)",
+      "Kurzhantel Hammer Preacher Curl",
+      "Boucle de prédicateur marteau haltère",
+      "mancuerna Curl predicador con martillo",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -5250,6 +6086,9 @@
     "searchKeywords": [
       "Dumbbell Incline Hammer Curl",
       "Eğimli Sehpada Dambıl Çekiç Büküş (Incline Hammer Curl)",
+      "Kurzhantel Schräg-Hammercurl",
+      "Curl marteau incliné haltère",
+      "mancuerna Curl de martillo inclinado",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -5275,6 +6114,9 @@
     "searchKeywords": [
       "Dumbbell Skull Crusher",
       "Dambıl Alına Triceps Presi (Skull Crusher)",
+      "Kurzhantel Schädelbrecher",
+      "Broyeur de crâne haltère",
+      "mancuerna Trituradora de cráneos",
       "Dumbbell Lying Triceps Extension Skull Crusher (VERSION 2)",
       "Dumbbell",
       "db",
@@ -5301,6 +6143,9 @@
     "searchKeywords": [
       "EZ Barbell Incline Triceps Extension",
       "Eğimli Sehpada Z-Bar Triceps Uzatma (Incline Triceps Extension)",
+      "EZ Langhantel Schräg-Trizepsverlängerung",
+      "Extension de triceps inclinée EZ barre",
+      "Extensión de tríceps inclinada EZ barra",
       "EZ Barbell",
       "bb",
       "barbel"
@@ -5322,6 +6167,9 @@
     "searchKeywords": [
       "EZ Barbell Decline Triceps Extension",
       "Ters Eğimli Sehpada Z-Bar Triceps Presi (Decline Triceps Extension)",
+      "EZ Langhantel Decline Triceps Extension",
+      "EZ barre Extension du déclin des triceps",
+      "EZ barra Extensión de tríceps declinada",
       "EZ Barbell",
       "bb",
       "barbel"
@@ -5344,10 +6192,17 @@
     "searchKeywords": [
       "Barbell Jm-bench Press",
       "Barbell JM Triceps Presi (JM Press)",
+      "Langhantel Jm-Bankdrücken",
+      "Presse d'établi Jm barre",
+      "barra Prensa de banco Jm",
       "Barbell JM-Bench Press",
       "Barbell",
       "bb",
-      "barbel"
+      "barbel",
+      "bankdrücken",
+      "bankdruecken",
+      "développé couché",
+      "press de banca"
     ]
   },
   {
@@ -5366,6 +6221,9 @@
     "searchKeywords": [
       "Dumbbell Tate Press",
       "Dambıl Tate Presi (Tate Press)",
+      "Kurzhantel Tate Press",
+      "Presse Tate haltère",
+      "Prensa Tate mancuerna",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -5388,6 +6246,9 @@
     "searchKeywords": [
       "Cable Standing High Cross Triceps Extension",
       "Kablolu Çapraz Yüksek Triceps Uzatma (High Cross Triceps Extension)",
+      "Trizepsstreckung im Stehen mit hohem Kreuz am Kabelzug",
+      "Extension de triceps croisée haute sur pied avec câble",
+      "Extensión de tríceps cruzada alta de pie con cable",
       "Cable",
       "pulley",
       "kablo",
@@ -5410,6 +6271,9 @@
     "searchKeywords": [
       "Cable Single-Arm Overhead Triceps Extension",
       "Kablolu Tek Kol Baş Üstü Triceps Uzatma (Single-Arm Overhead Extension)",
+      "Einarmige Overhead-Trizepsverlängerung mit Kabel",
+      "Extension de triceps aérienne à bras unique par câble",
+      "Extensión de tríceps aérea de un solo brazo con cable",
       "Cable Standing Single Arm Overhead Triceps Extension (VERSION 3)",
       "Cable",
       "pulley",
@@ -5431,6 +6295,9 @@
     "searchKeywords": [
       "Cable V-Bar Triceps Pushdown",
       "Kablolu V-Bar Triceps İtişi (V-Bar Pushdown)",
+      "Kabel-V-Bar-Trizeps-Pushdown",
+      "Câble V-Bar Triceps Pushdown",
+      "Flexión de tríceps con barra en V con cable",
       "Cable Triceps Pushdown (V bar)",
       "Cable",
       "pulley",
@@ -5456,6 +6323,9 @@
     "searchKeywords": [
       "Cable Kickback",
       "Kablolu Triceps Geriye İtiş (Cable Kickback)",
+      "Kabelrückschlag",
+      "Rebond du câble",
+      "Retroceso del cable",
       "Cable kickback",
       "Cable",
       "pulley",
@@ -5478,6 +6348,9 @@
     "searchKeywords": [
       "Lever Seated Dip",
       "Makinede Oturarak Dips (Machine Seated Dip)",
+      "Dip im Sitzen mit Hebel",
+      "Trempette assise à levier",
+      "Inmersión sentada con palanca",
       "Leverage machine",
       "machine",
       "makine"
@@ -5500,6 +6373,9 @@
     "searchKeywords": [
       "Barbell Low Bar Squat",
       "Barbell Alçak Bar Squat (Low-Bar Squat)",
+      "Langhantel Kniebeuge mit niedriger Stange",
+      "Squat à barre basse barre",
+      "barra Sentadilla con barra baja",
       "Barbell",
       "bb",
       "barbel"
@@ -5522,6 +6398,9 @@
     "searchKeywords": [
       "Barbell Box Squat",
       "Kutuya Barbell Squat (Box Squat)",
+      "Langhantel Box Squat",
+      "barre Box Squat",
+      "barra Sentadilla en caja",
       "Barbell",
       "bb",
       "barbel"
@@ -5544,6 +6423,9 @@
     "searchKeywords": [
       "Barbell Pause Full Squat",
       "Duraklamalı Tam Squat (Pause Squat)",
+      "Langhantel Volle Kniebeuge pausieren",
+      "barre Pause Squat complet",
+      "barra Pausa Sentadilla Completa",
       "Barbell",
       "bb",
       "barbel"
@@ -5565,6 +6447,9 @@
     "searchKeywords": [
       "Barbell Full Zercher Squat",
       "Kollarda Barbell Zercher Squat (Zercher Squat)",
+      "Langhantel Vollständige Zercher-Kniebeuge",
+      "barre Squat Zercher complet",
+      "barra Sentadilla Zercher completa",
       "Barbell full Zercher Squat",
       "Barbell",
       "bb",
@@ -5587,6 +6472,9 @@
     "searchKeywords": [
       "Barbell Overhead Squat",
       "Baş Üstü Barbell Squat (Overhead Squat)",
+      "Langhantel Überkopfkniebeuge",
+      "Squat aérien barre",
+      "barra Sentadilla por encima de la cabeza",
       "Barbell",
       "bb",
       "barbel"
@@ -5606,6 +6494,9 @@
     ],
     "searchKeywords": [
       "Landmine Squat",
+      "Landminen-Squat",
+      "Squat contre les mines terrestres",
+      "Sentadilla con minas terrestres",
       "Landmine Squat (male)",
       "Body weight",
       "bodyweight",
@@ -5627,6 +6518,9 @@
     "searchKeywords": [
       "Dumbbell Goblet Sumo Squat",
       "Dambıl Geniş Duruş Goblet Squat (Sumo Goblet Squat)",
+      "Kurzhantel Goblet Sumo Squat",
+      "haltère Gobelet Sumo Squat",
+      "mancuerna Sentadilla de sumo con copa",
       "Dumbbell Goblet Sumo Squat (male)",
       "Dumbbell",
       "db",
@@ -5652,6 +6546,9 @@
     "searchKeywords": [
       "Smith Front Squat",
       "Smith Makinesi Ön Squat",
+      "Smith-Frontkniebeuge",
+      "Squat avant Smith",
+      "Sentadilla frontal Smith",
       "Smith machine",
       "machine",
       "makine"
@@ -5674,6 +6571,8 @@
     "searchKeywords": [
       "Smith Split Squat",
       "Smith Makinesi Split Squat",
+      "Squat divisé Smith",
+      "Sentadilla dividida Smith",
       "Smith machine",
       "machine",
       "makine"
@@ -5695,6 +6594,9 @@
     "searchKeywords": [
       "Smith Rear Lunge",
       "Smith Makinesi Geriye Lunge",
+      "Smith-Ausfallschritt von hinten",
+      "Fente arrière Smith",
+      "Estocada trasera de Smith",
       "Smith Rear Lunge (version 2) (male)",
       "Smith machine",
       "machine",
@@ -5719,6 +6621,8 @@
     "searchKeywords": [
       "Smith Deficit Bulgarian Split Squat",
       "Smith Makinesi Deficit Bulgarian Split Squat",
+      "Smith Deficit Bulgare Split Squat",
+      "Sentadilla dividida búlgara con déficit de Smith",
       "Smith Unilateral Bulgarian Split Squat from Deficit (male)",
       "Smith machine",
       "machine",
@@ -5743,6 +6647,9 @@
     "searchKeywords": [
       "Smith Bent Knee Good Morning",
       "Smith Makinesi Good Morning",
+      "Smith beugte das Knie. Guten Morgen",
+      "Smith genou plié bonjour",
+      "Smith doblado rodilla buenos días",
       "Smith Bent Knee Good morning",
       "Smith machine",
       "machine",
@@ -5765,6 +6672,9 @@
     "searchKeywords": [
       "Smith Calf Raise",
       "Smith Makinesi Kalf Kaldırma",
+      "Smith Wadenheben",
+      "Augmentation des mollets Smith",
+      "Elevación de pantorrilla Smith",
       "Smith Calf Raise (version 2)",
       "Smith machine",
       "machine",
@@ -5786,6 +6696,9 @@
     "searchKeywords": [
       "Sissy Squat Bodyweight",
       "Vücut Ağırlığıyla Sissy Squat (Sissy Squat)",
+      "Sissy Squat Körpergewicht",
+      "Sissy Squat Poids corporel",
+      "Peso corporal en cuclillas sissy",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -5807,6 +6720,8 @@
     "searchKeywords": [
       "Sled Reverse Hack Squat",
       "Kızaklı Ters Hack Squat (Reverse Hack Squat)",
+      "Squat inversé en traîneau",
+      "Sentadilla Hack Inversa En Trineo",
       "Sled machine",
       "machine",
       "makine"
@@ -5828,6 +6743,9 @@
     "searchKeywords": [
       "Heel-Elevated Bodyweight Squat",
       "Topuk Yükseltmeli Squat (Heel-Elevated Squat)",
+      "Kniebeuge mit erhöhtem Körpergewicht",
+      "Squat de poids corporel surélevé",
+      "Sentadilla con peso corporal y elevación del talón",
       "Bodyweight Heel Elevated Squat (male)",
       "Body weight",
       "bodyweight",
@@ -5850,6 +6768,9 @@
     "searchKeywords": [
       "Dumbbell Elevated Heel Goblet Squat",
       "Topuk Yükseltmeli Dambıl Goblet Squat (Heel-Elevated Goblet Squat)",
+      "Kurzhantel Goblet Squat mit erhöhtem Absatz",
+      "haltère Squat avec gobelet à talon surélevé",
+      "mancuerna Sentadilla en copa con talón elevado",
       "Dumbbell",
       "db",
       "dumbbells",
@@ -5872,6 +6793,9 @@
     "searchKeywords": [
       "Cossack Squat",
       "Yan Çömelme (Cossack Squat)",
+      "Kosaken-Hocke",
+      "Squat cosaque",
+      "Sentadilla cosaca",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -5891,6 +6815,9 @@
     "searchKeywords": [
       "Side Lunge",
       "Yana Adımlama (Side Lunge)",
+      "Seitlicher Ausfallschritt",
+      "Fente latérale",
+      "estocada lateral",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -5913,6 +6840,9 @@
     "searchKeywords": [
       "Dumbbell Curtsey Lunge",
       "Dambıl Çapraz Lunge (Curtsy Lunge)",
+      "Kurzhantel Curtsey Ausfallschritt",
+      "Fente de révérence haltère",
+      "mancuerna Estocada de reverencia",
       "Dumbbell Curtsey Lunge (male)",
       "Dumbbell",
       "db",
@@ -5937,6 +6867,9 @@
     "searchKeywords": [
       "Dumbbell Deficit Reverse Lunge",
       "Blok Üstü Dambıl Geriye Lunge (Deficit Reverse Lunge)",
+      "Kurzhantel Defizit-Reverse-Ausfallschritt",
+      "Fente inversée avec déficit haltère",
+      "mancuerna Estocada inversa con déficit",
       "Dumbbell Reverse Lunge from Deficit (male)",
       "Dumbbell",
       "db",
@@ -5961,6 +6894,9 @@
     "searchKeywords": [
       "Barbell Walking Lunge",
       "Barbell Yürüyüş Lunge (Walking Lunge)",
+      "Langhantel Ausfallschritt beim Gehen",
+      "Fente de marche barre",
+      "barra Estocada caminando",
       "Barbell",
       "bb",
       "barbel"
@@ -5980,6 +6916,9 @@
     "searchKeywords": [
       "Barbell Step-up",
       "Barbell Sehpaya Adımlama (Step-Up)",
+      "Langhantel Step-up",
+      "barre Intensification",
+      "barra Intensificación",
       "Barbell",
       "bb",
       "barbel",
@@ -6003,6 +6942,9 @@
     "searchKeywords": [
       "Cable Reverse Lunge",
       "Kablolu Geriye Lunge (Cable Reverse Lunge)",
+      "Kabel-Reverse-Ausfallschritt",
+      "Fente inversée par câble",
+      "Estocada inversa con cable",
       "Cable Reverse Lunge (male)",
       "Cable",
       "pulley",
@@ -6024,6 +6966,9 @@
     "searchKeywords": [
       "Cable Lateral Lunge",
       "Kablolu Yana Lunge (Cable Lateral Lunge)",
+      "Seitlicher Ausfallschritt am Kabel",
+      "Fente latérale du câble",
+      "Estocada lateral con cable",
       "Cable Lateral Lunge (VERSION 3)",
       "Cable",
       "pulley",
@@ -6047,6 +6992,9 @@
     "searchKeywords": [
       "Lever Standing Single-Leg Curl",
       "Ayakta Makine Tek Bacak Bükme (Standing Leg Curl)",
+      "Einbeiniger Curl im Stehen mit Hebelwirkung",
+      "Curl sur une jambe debout avec levier",
+      "Curl con una sola pierna de pie con palanca",
       "Lever Standing Single Leg Curl (plate loaded)",
       "Leverage machine",
       "machine",
@@ -6069,6 +7017,9 @@
     "searchKeywords": [
       "Lever Lying Single Leg Curl",
       "Yatarak Makine Tek Bacak Bükme (Lying Single-Leg Curl)",
+      "Hebel-Einbeinbeuger im Liegen",
+      "Flexion d'une jambe allongée à levier",
+      "Curl con una sola pierna tumbado en palanca",
       "Leverage machine",
       "machine",
       "makine"
@@ -6090,6 +7041,9 @@
     "searchKeywords": [
       "Lever Seated One Leg Curl",
       "Oturarak Makine Tek Bacak Bükme (Seated Single-Leg Curl)",
+      "Hebelsitzender Einbeinbeuger",
+      "Curl d'une jambe assis à levier",
+      "Curl con una pierna sentado en palanca",
       "Leverage machine",
       "machine",
       "makine"
@@ -6112,6 +7066,9 @@
     "searchKeywords": [
       "Dumbbell Lying Leg Curl",
       "Yatarak Dambıl Bacak Bükme (Dumbbell Leg Curl)",
+      "Kurzhantel Liegender Beinbeuger",
+      "haltère Curl des jambes allongées",
+      "mancuerna Curl de piernas acostado",
       "Dumbbell Lying Leg Curl (male)",
       "Dumbbell",
       "db",
@@ -6136,6 +7093,9 @@
     "searchKeywords": [
       "Cable Lying Single-Leg Curl",
       "Yatarak Kablolu Tek Bacak Bükme (Cable Leg Curl)",
+      "Einbeiniger Curl am Kabelzug",
+      "Curl sur une jambe allongé avec câble",
+      "Curl con una sola pierna acostado con cable",
       "Cable Lying Single Leg Curl (male)",
       "Cable",
       "pulley",
@@ -6157,6 +7117,9 @@
     "searchKeywords": [
       "Bodyweight Frog Hip Thrust",
       "Kurbağa Duruşu Kalça İtişi (Frog Hip Thrust)",
+      "Körpergewichts-Frosch-Hüft-Schub",
+      "Poussée de hanche de grenouille au poids du corps",
+      "Empuje de cadera de rana con peso corporal",
       "Bodyweight Frog Hip Thrust (male)",
       "Body weight",
       "bodyweight",
@@ -6182,6 +7145,9 @@
     "searchKeywords": [
       "Single Leg Hip Thrust",
       "Tek Bacak Kalça İtişi (Single-Leg Hip Thrust)",
+      "Einbeiniger Hüftstoß",
+      "Poussée de hanche sur une seule jambe",
+      "Empuje de cadera con una sola pierna",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı",
@@ -6204,6 +7170,9 @@
     "searchKeywords": [
       "Barbell Kas Glute Bridge",
       "Barbell Kas Kalça Köprüsü (Kas Glute Bridge)",
+      "Langhantel Kas Glute Bridge",
+      "barre Kas Pont fessier",
+      "barra Puente de Glúteos Kas",
       "Barbell KAS Glute Bridge (male)",
       "Barbell",
       "bb",
@@ -6224,6 +7193,9 @@
     "searchKeywords": [
       "Cable Hip Abduction",
       "Kablolu Kalça Dışa Açma (Cable Hip Abduction)",
+      "Kabel-Hüftabduktion",
+      "Abduction de la hanche par câble",
+      "Abducción de cadera con cable",
       "Cable hip abduction (version 2) (male)",
       "Cable",
       "pulley",
@@ -6245,6 +7217,9 @@
     "searchKeywords": [
       "Reverse Hyperextension on Box",
       "Sehpada Ters Bel ve Kalça Kaldırışı (Reverse Hyperextension)",
+      "Umgekehrte Hyperextension auf Box",
+      "Hyperextension inversée sur Box",
+      "Hiperextensión inversa en Box",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -6266,6 +7241,9 @@
     "searchKeywords": [
       "Handstand Push-up",
       "Amuda Kalkarak Şınav (Handstand Push-Up)",
+      "Handstand-Liegestütz",
+      "Pompes en poirier",
+      "Flexiones de manos",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı",
@@ -6273,7 +7251,11 @@
       "push ups",
       "pushup",
       "pushups",
-      "şınav"
+      "şınav",
+      "liegestütze",
+      "liegestuetze",
+      "pompes",
+      "flexiones"
     ]
   },
   {
@@ -6291,6 +7273,9 @@
     "searchKeywords": [
       "Ring Dip",
       "Jimnastik Halkasında Dips (Ring Dip)",
+      "Ring-Dip",
+      "Trempette en anneau",
+      "Inmersión del anillo",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -6311,13 +7296,20 @@
     "searchKeywords": [
       "Ring Incline Push-Up",
       "Jimnastik Halkasında Eğimli Şınav (Ring Incline Push-Up)",
+      "Ring-Steigungs-Liegestütz",
+      "Push-up incliné avec anneau",
+      "Flexiones con anillo inclinado",
       "Ring Incline Push-up (male)",
       "Suspension",
       "push up",
       "push ups",
       "pushup",
       "pushups",
-      "şınav"
+      "şınav",
+      "liegestütze",
+      "liegestuetze",
+      "pompes",
+      "flexiones"
     ]
   },
   {
@@ -6336,6 +7328,9 @@
     "searchKeywords": [
       "Bench Dip",
       "Sehpada Dips (Bench Dip)",
+      "Bank-Dip",
+      "Trempette sur banc",
+      "Inmersión en banco",
       "Bench Dip (knees bent)",
       "Body weight",
       "bodyweight",
@@ -6356,6 +7351,9 @@
     "searchKeywords": [
       "Resistance Band Standing Chest Press",
       "Direnç Bandı Ayakta Göğüs Presi (Band Chest Press)",
+      "Widerstandsband-Brustpresse im Stehen",
+      "Presse pectorale debout avec bande de résistance",
+      "Press de pecho de pie con banda de resistencia",
       "Resistance Band Standing Chest Press (male)",
       "Resistance Band"
     ]
@@ -6374,6 +7372,9 @@
     "searchKeywords": [
       "Resistance Band Seated Row",
       "Direnç Bandı Oturarak Kürek (Band Seated Row)",
+      "Widerstandsband-Sitzreihe",
+      "Rangée assise avec bande de résistance",
+      "Remo sentado con banda de resistencia",
       "Resistance Band Seated Row (male)",
       "Resistance Band"
     ]
@@ -6394,6 +7395,9 @@
     "searchKeywords": [
       "Resistance Band Lat Pulldown",
       "Direnç Bandı Göğse Çekiş (Band Lat Pulldown)",
+      "Latzug mit Widerstandsband",
+      "Bande de résistance Lat Pulldown",
+      "Jalón lateral con banda de resistencia",
       "Resistance Band Standing Lat Pulldown (male)",
       "Resistance Band",
       "pulldown",
@@ -6415,6 +7419,9 @@
     "searchKeywords": [
       "Resistance Band Face Pull",
       "Direnç Bandı Yüze Çekiş (Band Face Pull)",
+      "Widerstandsband-Gesichtszug",
+      "Tirage facial de bande de résistance",
+      "Tirador facial con banda de resistencia",
       "Band Face Pull (male)",
       "Band"
     ]
@@ -6433,6 +7440,9 @@
     "searchKeywords": [
       "Band Biceps Curl",
       "Direnç Bandı Biceps Büküş (Band Biceps Curl)",
+      "Band-Bizeps-Curl",
+      "Boucle de biceps en bande",
+      "Curl de bíceps con banda",
       "Band"
     ]
   },
@@ -6450,6 +7460,9 @@
     "searchKeywords": [
       "Resistance Band Triceps Pushdown",
       "Direnç Bandı Triceps İtişi (Band Pushdown)",
+      "Widerstandsband-Trizeps-Pushdown",
+      "Bande de résistance pour triceps",
+      "Flexión de tríceps con banda de resistencia",
       "Resistance Band",
       "pressdown",
       "press down",
@@ -6471,8 +7484,14 @@
     "searchKeywords": [
       "Band Lateral Raise",
       "Direnç Bandı Yan Açış (Band Lateral Raise)",
+      "Seitliches Anheben des Bandes",
+      "Élévation latérale de la bande",
+      "Elevación lateral de banda",
       "Band Lateral Raise (Version 2)",
-      "Band"
+      "Band",
+      "seitheben",
+      "élévations latérales",
+      "elevaciones laterales"
     ]
   },
   {
@@ -6491,6 +7510,8 @@
     "searchKeywords": [
       "Landmine 180",
       "Landmine Gövde Dönüşü (Landmine 180)",
+      "Mine terrestre 180",
+      "Mina terrestre 180",
       "Leverage machine",
       "machine",
       "makine"
@@ -6512,6 +7533,9 @@
     "searchKeywords": [
       "Hanging Toes to Bar",
       "Asılarak Ayakları Bara Çekme (Toes to Bar)",
+      "Hängende Zehen an der Stange",
+      "Suspendre les orteils à la barre",
+      "Dedos de los pies colgantes a la barra",
       "Body weight",
       "bodyweight",
       "vücut ağırlığı"
@@ -6532,6 +7556,9 @@
     "searchKeywords": [
       "Battling Ropes High Waves",
       "Dalgalı Halat Savurma (Battle Ropes)",
+      "Kampfseile, hohe Wellen",
+      "Combattre les cordes et les hautes vagues",
+      "Luchando contra las cuerdas y las olas altas",
       "Battling Rope"
     ]
   },
@@ -6550,6 +7577,8 @@
     "searchKeywords": [
       "Power Sled Push",
       "Ağırlık Kızağı İtişi (Sled Push)",
+      "Poussée du traîneau électrique",
+      "Empuje de trineo eléctrico",
       "Power Sled Push (male)",
       "Power Sled",
       "machine",

@@ -1387,9 +1387,8 @@ final class FormAppTests: XCTestCase {
         LanguageManager.setLanguage("tr")
         defer { LanguageManager.setLanguage("en") }
 
-        let store = AppStore.shared
-        guard let exercise = store.state.programs.flatMap({ $0.workouts }).flatMap({ $0.exercises }).first(where: { $0.name == "Barbell Bench Press" }) else {
-            XCTFail("Barbell Bench Press not found")
+        guard let exercise = ExerciseCatalog.canonicalExercises["barbell-bench-press"]?.toExercise() else {
+            XCTFail("Bundled Barbell Bench Press not found")
             return
         }
 
@@ -1999,8 +1998,8 @@ final class FormAppTests: XCTestCase {
     func testVolumeMatrixViewSnapshot() {
         let store = AppStore.shared
         let originalLang = LanguageManager.shared.currentLanguage
-        LanguageManager.shared.currentLanguage = "tr"
-        defer { LanguageManager.shared.currentLanguage = originalLang }
+        LanguageManager.setLanguage("tr")
+        defer { LanguageManager.setLanguage(originalLang) }
 
         let view = ScrollView(showsIndicators: false) {
             VolumeMatrixView(store: store)
@@ -3067,7 +3066,10 @@ final class FormAppTests: XCTestCase {
 
     func testAppStoreExerciseCatalogueContainsAll300Exercises() {
         let store = AppStore()
-        XCTAssertEqual(store.exerciseCatalogue.count, 300)
+        let canonicalIDs = Set(ExerciseCatalog.canonicalExercises.keys)
+        XCTAssertEqual(canonicalIDs.count, 300)
+        let availableIDs = Set(store.exerciseCatalogue.compactMap { $0.exercise.exerciseId })
+        XCTAssertTrue(canonicalIDs.isSubset(of:availableIDs), "All canonical exercises must be available alongside custom exercises")
     }
 
     func testLegacyExerciseNameWithCanonicalExerciseIdMergesUnderCanonicalName() {
@@ -3479,6 +3481,15 @@ final class FormAppTests: XCTestCase {
 
     func testResumeWorkoutRestoresCompletedSetsAndTimer() {
         let store = AppStore.shared
+        // Use a deterministic bundled fixture instead of depending on previous tests or saved user programs.
+        let previousState = store.state
+        let previousSession = store.activeSession
+        defer { store.abandonActiveSession(); store.saveState(previousState); store.activeSession = previousSession }
+        let bundled = AppStore.loadBundledStarterPrograms()
+        var fixtureState = store.state
+        fixtureState.programs = bundled
+        fixtureState.activeProgramId = bundled.first?.id ?? ""
+        store.saveState(fixtureState)
         guard let program = store.activeProgram,
               let workout = program.workouts.first(where: { $0.exercises.count >= 2 }) else {
             XCTFail("Requires a workout with at least 2 exercises")
@@ -3723,6 +3734,15 @@ final class FormAppTests: XCTestCase {
     @MainActor
     func testCompletedSetsAndDeletedSetReflectedInHistoryDetail() {
         let store = AppStore.shared
+        // Use a deterministic bundled fixture instead of depending on previous tests or saved user programs.
+        let previousState = store.state
+        let previousSession = store.activeSession
+        defer { store.abandonActiveSession(); store.saveState(previousState); store.activeSession = previousSession }
+        let bundled = AppStore.loadBundledStarterPrograms()
+        var fixtureState = store.state
+        fixtureState.programs = bundled
+        fixtureState.activeProgramId = bundled.first?.id ?? ""
+        store.saveState(fixtureState)
         guard let program = store.activeProgram,
               let workout = program.workouts.first(where: { $0.exercises.count >= 3 }) else {
             XCTFail("Requires a workout with at least 3 exercises")
@@ -10757,5 +10777,104 @@ final class BodyweightLoggingTests: XCTestCase {
             attachment.name = "logging-\(isAssisted ? "assistance" : "bodyweight")-\(language)-320-large"; attachment.lifetime = .keepAlways; add(attachment)
             XCTAssertEqual(controller.view.bounds.width, 320); window.isHidden = true
         } }
+    }
+}
+
+@MainActor
+final class LocalizationExpansionTests: XCTestCase {
+    private var previousPreference = "system"
+    override func setUp() { super.setUp(); previousPreference = LanguageManager.shared.languagePreference }
+    override func tearDown() { LanguageManager.setLanguage(previousPreference); super.tearDown() }
+
+    func testLanguageResolutionAndCompleteBundles() throws {
+        XCTAssertEqual(LanguageManager.resolveLanguage(["pt-BR","de-CH","fr-CA"]), "de")
+        XCTAssertEqual(LanguageManager.resolveLanguage(["fr_CA"]), "fr")
+        XCTAssertEqual(LanguageManager.resolveLanguage(["es-MX"]), "es")
+        XCTAssertEqual(LanguageManager.resolveLanguage(["ja"]), "en")
+        XCTAssertEqual(LanguageManager.normalizePreference(nil), "system")
+        let english = ContentLocalizer.shared.loadExercises(lang: "en")
+        XCTAssertEqual(english.count, 300)
+        for (lang, _) in LanguageManager.supportedLanguages {
+            let dictionary = Translations.forLanguage(lang)
+            XCTAssertEqual(Set(dictionary.keys), Set(Translations.en.keys), lang)
+            let localized = ContentLocalizer.shared.loadExercises(lang: lang)
+            XCTAssertEqual(Set(localized.keys), Set(english.keys), lang)
+            for (id, source) in english {
+                let target = try XCTUnwrap(localized[id])
+                XCTAssertFalse(target.name?.isEmpty ?? true, "\(lang)/\(id)")
+                XCTAssertEqual(source.cues?.count, target.cues?.count)
+                XCTAssertEqual(source.avoid?.count, target.avoid?.count)
+                XCTAssertEqual(source.cuesDetails?.count, target.cuesDetails?.count)
+                XCTAssertEqual(source.avoidDetails?.count, target.avoidDetails?.count)
+            }
+            XCTAssertEqual(ContentLocalizer.shared.loadPrograms(lang:lang).count, 8)
+        }
+    }
+
+    func testNativePluralFormattingAndLiteralArguments() {
+        for (lang, expected) in [("de","Noch 1 Satz"),("fr","1 série restante"),("es","Queda 1 serie")] {
+            LanguageManager.setLanguage(lang)
+            XCTAssertEqual(LanguageManager.formatSetsLeft(1),expected)
+            XCTAssertNotEqual(LanguageManager.formatSetsLeft(1),LanguageManager.formatSetsLeft(2))
+            XCTAssertFalse(LanguageManager.formatExerciseSetsCompleted(completed:2,planned:3).contains("{"))
+            XCTAssertTrue(LanguageManager.t("form_lab.mirror_folder_connected",["name":"{time}","time":"changed"]).contains("{time}"))
+            XCTAssertEqual(WeightUnit.kg.formatDisplayWeight(52.5),"52,5")
+            XCTAssertEqual(WeightUnit.kg.formatWeight(52.5),"52.5")
+        }
+        LanguageManager.setLanguage("fr")
+        XCTAssertEqual(LanguageManager.formatSetsLeft(0),"0 série restante")
+        XCTAssertEqual(LanguageManager.t("library.resultCount",["count":1]),"1 exercice")
+        XCTAssertEqual(LanguageManager.t("library.resultCount",["count":2]),"2 exercices")
+        XCTAssertEqual(LanguageManager.t("programs.counts",["workouts":1,"exercises":2]),"1 séance · 2 exercices")
+        LanguageManager.setLanguage("tr")
+        XCTAssertTrue(LanguageManager.formatSetsProgress(done:3,total:5).contains("3'ü"))
+    }
+
+    func testSearchAndLanguageSwitchKeepStoredExerciseIdentity() throws {
+        let definition = try XCTUnwrap(ExerciseCatalog.canonicalExercises["barbell-bench-press"])
+        let exercise = definition.toExercise()
+        let encoder = JSONEncoder(); encoder.outputFormatting = .sortedKeys
+        let before = try encoder.encode(exercise)
+        for (lang, query) in [("de","bankdruecken"),("fr","développé couché"),("es","press de banca")] {
+            LanguageManager.setLanguage(lang)
+            XCTAssertNotNil(ExerciseSearch.score(ExerciseSearch.Query(query),exercise:exercise))
+            XCTAssertNotEqual(exercise.displayName, exercise.name)
+            XCTAssertEqual(before, try encoder.encode(exercise))
+        }
+    }
+
+    func testExpandedLanguageSettingsAndLibraryAtNarrowWidth() async throws {
+        for lang in ["de","fr","es"] {
+            LanguageManager.setLanguage(lang)
+            let store = AppStore.shared
+            let views: [(String,AnyView)] = [
+                ("settings",AnyView(SettingsView(store:store,onDismiss:{}))),
+                ("library",AnyView(LibraryView(store:store,onSelectExercise:{_ in},onOpenSettings:{}))),
+                ("onboarding",AnyView(OnboardingView(store:store))),
+                ("muscles",AnyView(ExerciseMusclesCard(exerciseId:"barbell-bench-press"))),
+                ("paywall",AnyView(ProPaywallSheet(feature:.autoProgression,onDismiss:{})))
+            ]
+            for (name,view) in views {
+                // ImageRenderer cannot draw native scroll views; render the actual hosted UIKit hierarchy.
+                let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+                    .flatMap { $0.windows }.first { $0.isKeyWindow }
+                let controller = UIHostingController(rootView:view.environment(\.locale,LanguageManager.locale)
+                    .environment(\.dynamicTypeSize,DynamicTypeSize.xxxLarge))
+                let window = UIWindow(frame:CGRect(x:0,y:0,width:320,height:900))
+                window.rootViewController = controller
+                window.makeKeyAndVisible()
+                controller.view.frame = window.bounds
+                controller.view.layoutIfNeeded()
+                try await Task.sleep(nanoseconds:300_000_000)
+                controller.view.layoutIfNeeded()
+                let renderer = UIGraphicsImageRenderer(bounds:controller.view.bounds)
+                let image = renderer.image { _ in controller.view.drawHierarchy(in:controller.view.bounds,afterScreenUpdates:true) }
+                window.isHidden = true
+                previousWindow?.makeKeyAndVisible()
+                XCTAssertEqual(image.size.width,320)
+                let attachment = XCTAttachment(image:image);attachment.name="i18n-\(lang)-\(name)-320-large";attachment.lifetime = .keepAlways;add(attachment)
+                try image.pngData()?.write(to:URL(fileURLWithPath:"/private/tmp/i18n-\(lang)-\(name)-ios.png"))
+            }
+        }
     }
 }

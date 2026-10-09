@@ -725,9 +725,9 @@ public struct ActiveSessionView: View {
                 }
             }
         } message: { pending in
-            let weightStr = "\(store.weightUnit.formatWeight(pending.weightKg)) \(store.weightUnit.label)"
+            let weightStr = "\(store.weightUnit.formatDisplayWeight(pending.weightKg)) \(store.weightUnit.label)"
             if let prev = pending.prevTopKg, prev > 0 {
-                let prevStr = "\(store.weightUnit.formatWeight(prev)) \(store.weightUnit.label)"
+                let prevStr = "\(store.weightUnit.formatDisplayWeight(prev)) \(store.weightUnit.label)"
                 Text(LanguageManager.t("session.anomalous_weight.message_with_previous", ["weight": weightStr, "previous": prevStr]))
             } else {
                 Text(LanguageManager.t("session.anomalous_weight.message_standalone", ["weight": weightStr]))

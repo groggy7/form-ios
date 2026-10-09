@@ -208,7 +208,7 @@ struct ExerciseMusclesCard: View {
                 HStack(alignment: .top, spacing: 8) {
                     Circle().fill(primary ? AppColors.purple : AppColors.muscleSecondary)
                         .frame(width: 8, height: 8).padding(.top, bodySize * 0.3).accessibilityHidden(true)
-                    Text(catalog.muscles[muscle]?[language.currentLanguage] ?? muscle)
+                    Text(LanguageManager.t("anatomy.muscle.\(muscle)"))
                         .font(.system(size: bodySize, weight: .medium)).foregroundColor(AppColors.text)
                         .lineSpacing(3).fixedSize(horizontal: false, vertical: true)
                 }

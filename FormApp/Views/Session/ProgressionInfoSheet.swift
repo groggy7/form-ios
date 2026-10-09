@@ -116,7 +116,7 @@ public struct ProgressionInfoSheet: View {
                 .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 6) {
-                Text(LanguageManager.t(titleKey).uppercased(with: Locale(identifier: LanguageManager.shared.currentLanguage)))
+                Text(LanguageManager.t(titleKey).uppercased(with: LanguageManager.locale))
                     .font(.footnote.weight(.bold))
                     .foregroundColor(colors.accent)
                     .fixedSize(horizontal: false, vertical: true)

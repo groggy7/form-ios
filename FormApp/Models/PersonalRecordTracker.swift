@@ -34,8 +34,7 @@ public struct WeeklyGoalProgressMetrics: Equatable {
         let rounded = Int(display.rounded())
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
-        let lang = LanguageManager.shared.currentLanguage
-        formatter.locale = Locale(identifier: lang == "tr" ? "tr_TR" : "en_US")
+        formatter.locale = LanguageManager.numberLocale
         return formatter.string(from: NSNumber(value: rounded)) ?? "\(rounded)"
     }
 
@@ -46,12 +45,7 @@ public struct WeeklyGoalProgressMetrics: Equatable {
     public var formattedActiveTime: String {
         let hours = activeDurationSeconds / 3600
         let minutes = (activeDurationSeconds % 3600) / 60
-        let isTr = LanguageManager.shared.currentLanguage == "tr"
-        if hours > 0 {
-            return isTr ? "\(hours) sa \(minutes) dk" : "\(hours)h \(minutes)m"
-        } else {
-            return isTr ? "\(minutes) dk" : "\(minutes)m"
-        }
+        return LanguageManager.t(hours > 0 ? "duration.short" : "duration.minutes", ["hours":hours,"minutes":minutes])
     }
 }
 
