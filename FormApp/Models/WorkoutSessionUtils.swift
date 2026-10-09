@@ -140,16 +140,49 @@ public enum WorkoutSessionUtils {
     public static func prefillSet(_ target: ExerciseSetLog, from previous: ExerciseSetLog?, unit: WeightUnit = .kg) -> ExerciseSetLog {
         guard target.inputTouched != true, !target.isCompleted, target.weightInput.isEmpty, target.repsInput.isEmpty,
               target.weightKg == nil, target.completedReps == nil, let previous, canCompleteSet(previous, allowsZeroWeight: true) else { return target }
-        let weight = previous.weightInput.isEmpty ? previous.weightKg.map { formatWeight($0, unit: unit) } ?? "" : previous.weightInput
+        let canonicalWeight = previous.weightKg.flatMap { $0.isFinite && $0 >= 0 ? $0 : nil }
+        let weight = canonicalWeight.map { formatWeight($0, unit: unit) } ?? previous.weightInput
         let reps = previous.repsInput.isEmpty ? previous.completedReps.map { "\($0)" } ?? "" : previous.repsInput
         guard let weight = sanitizedWeightInput(weight, unit: unit), let reps = sanitizedRepsInput(reps) else { return target }
         var result = target
         result.weightInput = weight
-        result.weightKg = Double(weight).map { unit.toCanonicalKg($0) }
+        // Formatting a kg value as rounded pounds must not round-trip back into
+        // storage. Only legacy input-only rows need a one-time interpretation.
+        result.weightKg = canonicalWeight ?? Double(weight).map { unit.toCanonicalKg($0) }
         result.repsInput = reps
         result.completedReps = Int(reps)
         result.inputTouched = true
         return result
+    }
+
+    public static func rebaseWeightInputs(_ draft: ActiveSessionDraft, from oldUnit: WeightUnit, to newUnit: WeightUnit) -> ActiveSessionDraft {
+        var result = draft
+        result.setsByExercise = draft.setsByExercise.mapValues { sets in
+            sets.map { set in
+                var copy = set
+                let inputHasDigits = set.weightInput.rangeOfCharacter(from: .decimalDigits) != nil
+                let canonical = set.weightKg.flatMap { $0.isFinite && $0 >= 0 ? $0 : nil }
+                    ?? (inputHasDigits ? sanitizedWeightInput(set.weightInput, unit: oldUnit).flatMap(Double.init).map { oldUnit.toCanonicalKg($0) } : nil)
+                if let canonical {
+                    copy.weightKg = canonical
+                    copy.weightInput = formatWeight(canonical, unit: newUnit)
+                }
+                return copy
+            }
+        }
+        result.weightInputUnit = newUnit
+        return result
+    }
+
+    public static func weightForEditedInput(_ input: String, existing set: ExerciseSetLog, unit: WeightUnit) -> Double? {
+        guard let normalized = sanitizedWeightInput(input, unit: unit), let display = Double(normalized) else { return nil }
+        if let canonical = set.weightKg, canonical.isFinite, canonical >= 0 {
+            let previousInput = set.weightInput.isEmpty ? formatWeight(canonical, unit: unit) : set.weightInput
+            if normalized == sanitizedWeightInput(previousInput, unit: unit) {
+                return canonical // Reps-only edits do not reinterpret rounded display text.
+            }
+        }
+        return unit.toCanonicalKg(display)
     }
 
     public static func isComplete(draft: ActiveSessionDraft) -> Bool {

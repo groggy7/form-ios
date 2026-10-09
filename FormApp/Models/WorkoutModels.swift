@@ -589,6 +589,7 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
     public var lastActivityEpochMillis: Int64
     public var currentExerciseIndex: Int
     public var setsByExercise: [String: [ExerciseSetLog]]
+    public var weightInputUnit: WeightUnit?
     public var restTimer: RestTimerState?
     public var assignedCalendarDate: String?
     public var scheduledDate: String?
@@ -611,7 +612,8 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         accumulatedSeconds: Int = 0,
         isPaused: Bool = false,
         lastResumedAtEpochMillis: Int64? = nil,
-        scheduledDate: String? = nil
+        scheduledDate: String? = nil,
+        weightInputUnit: WeightUnit? = nil
     ) {
         self.schemaVersion = schemaVersion
         self.id = id
@@ -622,6 +624,7 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         self.lastActivityEpochMillis = lastActivityEpochMillis ?? startedAtEpochMillis
         self.currentExerciseIndex = currentExerciseIndex
         self.setsByExercise = setsByExercise
+        self.weightInputUnit = weightInputUnit
         self.restTimer = restTimer
         self.assignedCalendarDate = assignedCalendarDate
         self.scheduledDate = scheduledDate
@@ -641,6 +644,7 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         self.lastActivityEpochMillis = try container.decodeIfPresent(Int64.self, forKey: .lastActivityEpochMillis) ?? self.startedAtEpochMillis
         self.currentExerciseIndex = try container.decodeIfPresent(Int.self, forKey: .currentExerciseIndex) ?? 0
         self.setsByExercise = try container.decodeIfPresent([String: [ExerciseSetLog]].self, forKey: .setsByExercise) ?? [:]
+        self.weightInputUnit = try container.decodeIfPresent(WeightUnit.self, forKey: .weightInputUnit)
         self.restTimer = try container.decodeIfPresent(RestTimerState.self, forKey: .restTimer)
         self.assignedCalendarDate = try container.decodeIfPresent(String.self, forKey: .assignedCalendarDate)
         self.scheduledDate = try container.decodeIfPresent(String.self, forKey: .scheduledDate)

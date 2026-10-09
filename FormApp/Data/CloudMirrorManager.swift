@@ -398,6 +398,10 @@ public final class CloudMirrorManager: ObservableObject {
         let file = localMirrorDirectory.appendingPathComponent(Self.backupFileName)
         let data = Data(pending.payload.utf8)
         guard let object = try? JSONSerialization.jsonObject(with: data) as? [String: Any], object["schemaVersion"] != nil else { throw CloudMirrorError.invalidBackup }
+        if let unitValue = object["weightUnit"], !(unitValue is NSNull) {
+            guard let code = unitValue as? String,
+                  WeightUnit(rawValue: code.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()) != nil else { throw CloudMirrorError.invalidBackup }
+        }
         try data.write(to: file, options: .atomic)
         try FileManager.default.setAttributes([.modificationDate: pending.createdAt], ofItemAtPath: file.path)
         defaults.set(pending.createdAt.timeIntervalSince1970, forKey: keyLastLocalWrite)

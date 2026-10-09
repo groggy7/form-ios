@@ -48,7 +48,14 @@ public final class AppStore: ObservableObject {
     @Published public var soundEnabled: Bool
     @Published public var defaultRestSeconds: Int
     @Published public var prefillNextSet: Bool
-    @Published public var weightUnit: WeightUnit
+    @Published public var weightUnit: WeightUnit {
+        didSet {
+            guard weightUnit != oldValue, let draft = activeSession else { return }
+            let rebased = WorkoutSessionUtils.rebaseWeightInputs(draft, from: draft.weightInputUnit ?? oldValue, to: weightUnit)
+            saveActiveSession(rebased)
+            activeSession = rebased
+        }
+    }
     @Published public var barType: BarType
     @Published public var availablePlatesKg: [Double]
     @Published public var currentToast: ToastItem?
@@ -147,11 +154,13 @@ public final class AppStore: ObservableObject {
         self.soundEnabled = UserDefaults.standard.object(forKey: soundKey) as? Bool ?? true
         self.defaultRestSeconds = UserDefaults.standard.object(forKey: defaultRestKey) as? Int ?? 90
         self.prefillNextSet = UserDefaults.standard.object(forKey: prefillNextSetKey) as? Bool ?? true
+        let initialWeightUnit: WeightUnit
         if let savedUnitCode = UserDefaults.standard.string(forKey: weightUnitKey) {
-            self.weightUnit = WeightUnit.fromCode(savedUnitCode)
+            initialWeightUnit = WeightUnit.fromCode(savedUnitCode)
         } else {
-            self.weightUnit = WeightUnit.defaultForLocale()
+            initialWeightUnit = WeightUnit.defaultForLocale()
         }
+        self.weightUnit = initialWeightUnit
         if let savedBarKey = UserDefaults.standard.string(forKey: barTypeKey) {
             self.barType = BarType.fromKey(savedBarKey)
         } else {
@@ -190,7 +199,13 @@ public final class AppStore: ObservableObject {
         }
         let todayStr = WorkoutCalendar.formatDate(Date())
         let weekdays = WorkoutCalendar.weekdays(state: loadedState)
-        let activeDraft = Self.loadActiveSession()
+        let currentWeightUnit = initialWeightUnit
+        let activeDraft = Self.loadActiveSession().map { draft in
+            // Legacy drafts may contain stale display text from the old unit-switch
+            // bug. Prefer their canonical weights and bind the input unit on load.
+            guard draft.weightInputUnit == nil || draft.weightInputUnit != currentWeightUnit else { return draft }
+            return WorkoutSessionUtils.rebaseWeightInputs(draft, from: draft.weightInputUnit ?? currentWeightUnit, to: currentWeightUnit)
+        }
         let restored = WorkoutCalendar.restore(
             raw: loadedState.calendarHistory,
             sessions: loadedState.history,
@@ -214,6 +229,7 @@ public final class AppStore: ObservableObject {
             self.saveActiveSession(paused)
         } else {
             self.activeSession = activeDraft
+            if let activeDraft { self.saveActiveSession(activeDraft) }
         }
         self.isSessionPresented = false
         self.selectedWorkoutId = nil
@@ -422,7 +438,7 @@ public final class AppStore: ObservableObject {
                   resumableDate(unfinishedRecordDate, record.scheduledDate) else { return false }
         }
         let sessionWorkout = resumeHistory ? (unfinishedRecord?.workoutSnapshot ?? workout) : workout
-        let setsByExercise = unfinishedRecord.map { WorkoutSessionUtils.restoreSetsFromHistory(workout: sessionWorkout, record: $0) }
+        let setsByExercise = unfinishedRecord.map { WorkoutSessionUtils.restoreSetsFromHistory(workout: sessionWorkout, record: $0, unit: weightUnit) }
             ?? WorkoutSessionUtils.initialSets(for: sessionWorkout)
         let initialIndex = WorkoutSessionUtils.firstIncompleteExerciseIndex(workout: sessionWorkout, setsByExercise: setsByExercise)
         let isSameDayUnfinished = unfinishedRecordDate == nil || unfinishedRecordDate == todayStr
@@ -448,7 +464,8 @@ public final class AppStore: ObservableObject {
             isPaused: false,
             lastResumedAtEpochMillis: nowMillis,
             scheduledDate: resumeHistory ? unfinishedRecord?.scheduledDate : (unfinishedRecord?.scheduledDate ?? scheduledDate
-                ?? WorkoutCalendar.scheduledDate(forWeekday: sessionWorkout.day, relativeTo: now))
+                ?? WorkoutCalendar.scheduledDate(forWeekday: sessionWorkout.day, relativeTo: now)),
+            weightInputUnit: weightUnit
         )
 
         saveActiveSession(draft)
@@ -493,6 +510,7 @@ public final class AppStore: ObservableObject {
     public func updateActiveSession(_ transform: (ActiveSessionDraft) -> ActiveSessionDraft) {
         guard let current = activeSession else { return }
         var updated = transform(current)
+        updated.weightInputUnit = weightUnit
         updated.lastActivityEpochMillis = Int64(Date().timeIntervalSince1970 * 1000)
         saveActiveSession(updated)
         self.activeSession = updated
@@ -1163,7 +1181,7 @@ public final class AppStore: ObservableObject {
         do {
             let encoder = JSONEncoder()
             encoder.outputFormatting = .prettyPrinted
-            let data = try encoder.encode(state)
+            let data = try encoder.encode(FullBackupDocument(state: state, weightUnit: weightUnit))
             return String(data: data, encoding: .utf8) ?? "{}"
         } catch {
             return "{}"
@@ -1175,7 +1193,8 @@ public final class AppStore: ObservableObject {
         guard let data = jsonString.data(using: .utf8) else { return false }
         do {
             let decoder = JSONDecoder()
-            var decodedState = Self.rotateWeek(try decoder.decode(StoredAppState.self, from: data), now: Date())
+            let backup = try decoder.decode(FullBackupDocument.self, from: data)
+            var decodedState = Self.rotateWeek(backup.state, now: Date())
             decodedState.calendarHistory = WorkoutCalendar.restore(
                 raw: decodedState.calendarHistory,
                 sessions: decodedState.history,
@@ -1185,6 +1204,9 @@ public final class AppStore: ObservableObject {
                 programs: decodedState.programs
             )
             saveState(refreshCalendarState(decodedState))
+            // Metadata restores the display preference, never the numeric weights.
+            // The property observer also rebases the live workout we preserve.
+            if let restoredUnit = backup.weightUnit { weightUnit = restoredUnit }
             return true
         } catch {
             print("Failed to restore backup: \(error)")
@@ -1625,5 +1647,38 @@ public enum ExerciseCatalog {
         if merged.movementType == nil { merged.movementType = fallback.movementType }
         if merged.movementAssetId == nil { merged.movementAssetId = fallback.movementAssetId }
         return merged
+    }
+}
+
+/// Flat, backward-compatible full-backup document. `weightUnit` is the preferred
+/// display/input unit; numeric fields named `weightKg`/`totalVolumeKg` stay in kg.
+/// Plain program exports and on-device StoredAppState persistence are unaffected.
+struct FullBackupDocument: Codable {
+    let state: StoredAppState
+    let weightUnit: WeightUnit?
+    private enum MetadataKeys: String, CodingKey { case weightUnit }
+
+    init(state: StoredAppState, weightUnit: WeightUnit) {
+        self.state = state
+        self.weightUnit = weightUnit
+    }
+
+    init(from decoder: Decoder) throws {
+        state = try StoredAppState(from: decoder)
+        let metadata = try decoder.container(keyedBy: MetadataKeys.self)
+        if let code = try metadata.decodeIfPresent(String.self, forKey: .weightUnit) {
+            guard let unit = WeightUnit(rawValue: code.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()) else {
+                throw DecodingError.dataCorruptedError(forKey: .weightUnit, in: metadata, debugDescription: "Backup weight unit must be kg or lbs")
+            }
+            weightUnit = unit
+        } else {
+            weightUnit = nil // Old backups preserve this device's preference without guessing.
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        try state.encode(to: encoder)
+        var metadata = encoder.container(keyedBy: MetadataKeys.self)
+        try metadata.encodeIfPresent(weightUnit, forKey: .weightUnit)
     }
 }

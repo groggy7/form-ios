@@ -774,8 +774,7 @@ public struct ActiveSessionView: View {
             var sets = copy.setsByExercise[exerciseId] ?? []
             guard sets.indices.contains(index) else { return copy }
             if let expectedSetId, sets[index].id != expectedSetId { return copy }
-            let displayVal = Double(weight)
-            let wKg = displayVal.map { store.weightUnit.toCanonicalKg($0) }
+            let wKg = WorkoutSessionUtils.weightForEditedInput(weight, existing: sets[index], unit: store.weightUnit)
             let rInt = Int(reps).flatMap { $0 > 0 ? $0 : nil }
             sets[index] = ExerciseSetLog(
                 id: sets[index].id,

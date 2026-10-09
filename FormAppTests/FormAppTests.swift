@@ -10286,6 +10286,16 @@ final class CloudBackupReliabilityTests: XCTestCase {
         XCTAssertTrue(subject.hasPendingSync)
     }
 
+    func testInvalidBackupUnitNeverOverwritesTheLastReadableMirror() async throws {
+        let (root, defaults, environment) = try fixture()
+        let subject = manager(root, defaults, environment)
+        try write(older, to: subject.localMirrorDirectory.appendingPathComponent(CloudMirrorManager.backupFileName))
+        let invalid = "{\"schemaVersion\":4,\"weightUnit\":\"stone\"}"
+        do { _ = try await subject.syncNowAsync(backupJson: invalid); XCTFail("Invalid unit must fail before writing any snapshot") }
+        catch { XCTAssertEqual(error.localizedDescription, CloudMirrorError.invalidBackup.localizedDescription) }
+        XCTAssertEqual(try subject.readLatestSnapshot(), older)
+    }
+
     func testFirstOfflineBackupBindsToFirstAvailableAppleAccount() async throws {
         let (root, defaults, environment) = try fixture()
         environment.identity = nil
@@ -10407,6 +10417,249 @@ final class CloudBackupReliabilityTests: XCTestCase {
             add(attachment)
             XCTAssertEqual(host.view.bounds.width, 320)
             window.isHidden = true
+        }
+    }
+}
+
+@MainActor
+final class BackupWeightUnitSafetyTests: XCTestCase {
+    private let exercise = Exercise(id: "unit-bench", name: "Bench Press", sets: 2, restSeconds: 0)
+    private var workout: Workout { Workout(id: "unit-workout", day: 1, title: "Units", exercises: [exercise]) }
+
+    private func withStore(_ body: (AppStore) throws -> Void) rethrows {
+        let defaults = UserDefaults.standard
+        let keys = ["stored_app_state", "active_session_v1", "weight_unit", "is_onboarding_completed", "seeded_starters_v9"]
+        let saved = keys.map { ($0, defaults.object(forKey: $0)) }
+        let enabled = CloudMirrorManager.shared.isEnabled
+        CloudMirrorManager.shared.isEnabled = false
+        defer {
+            for (key, value) in saved { if let value { defaults.set(value, forKey: key) } else { defaults.removeObject(forKey: key) } }
+            CloudMirrorManager.shared.isEnabled = enabled
+        }
+        defaults.removeObject(forKey: "active_session_v1")
+        defaults.set("kg", forKey: "weight_unit")
+        defaults.set(true, forKey: "seeded_starters_v9")
+        let store = AppStore()
+        store.activeSession = nil
+        try body(store)
+    }
+
+    private func history(_ weight: Double) -> WorkoutSessionRecord {
+        let date = ISO8601DateFormatter().string(from: Date())
+        return WorkoutSessionRecord(id: "unit-history", programId: "unit-plan", workoutId: workout.id, workoutTitle: workout.title,
+            startedAt: date, completedAt: date, durationSeconds: 900, totalVolumeKg: weight * 10, totalCompletedSets: 1,
+            exerciseLogs: [SessionExerciseLog(exerciseName: exercise.name, sets: [SessionSetLog(setNumber: 1, weightKg: weight, reps: 10)], targetSets: 2)])
+    }
+
+    private func install(_ store: AppStore, weight: Double) {
+        var state = store.state
+        state.programs = [Program(id: "unit-plan", name: "Units", workouts: [workout])]
+        state.activeProgramId = "unit-plan"
+        state.history = [history(weight)]
+        state.calendarHistory = nil
+        store.saveState(state)
+    }
+
+    private func draft(weight: Double? = 100, input: String = "100", unit: WeightUnit? = .kg) -> ActiveSessionDraft {
+        ActiveSessionDraft(id: "unit-live", programId: "unit-plan", workout: workout,
+            startedAt: ISO8601DateFormatter().string(from: Date()), startedAtEpochMillis: Int64(Date().timeIntervalSince1970 * 1000),
+            setsByExercise: [exercise.id: [ExerciseSetLog(id: "unit-set", setNumber: 1, weightInput: input, repsInput: "10", weightKg: weight, completedReps: 10, isCompleted: true, isWarmup: true)]],
+            isPaused: true, weightInputUnit: unit)
+    }
+
+    func testKgAndPoundsBackupsRestorePreferenceWithoutConvertingCanonicalHistory() throws {
+        try withStore { store in
+            for unit in [WeightUnit.kg, .lbs] {
+                let canonical = unit == .kg ? 100 : WeightUnit.lbs.toCanonicalKg(220)
+                install(store, weight: canonical)
+                store.weightUnit = unit
+                let backup = store.exportBackupJson()
+                let root = try XCTUnwrap(try JSONSerialization.jsonObject(with: Data(backup.utf8)) as? [String: Any])
+                XCTAssertEqual(root["weightUnit"] as? String, unit.rawValue)
+                XCTAssertNotNil(root["programs"])
+                XCTAssertNil(root["state"], "The backup remains flat and compatible with Android")
+                store.weightUnit = unit == .kg ? .lbs : .kg
+                store.state.history = []
+                XCTAssertTrue(store.restoreBackupJson(backup))
+                XCTAssertEqual(store.weightUnit, unit)
+                XCTAssertEqual(store.state.history.first?.exerciseLogs.first?.sets.first?.weightKg, canonical)
+                XCTAssertEqual(store.state.history.first?.totalVolumeKg, canonical * 10)
+                let reloaded = AppStore()
+                XCTAssertEqual(reloaded.weightUnit, unit)
+                XCTAssertEqual(reloaded.state.history.first?.exerciseLogs.first?.sets.first?.weightKg, canonical)
+                for _ in 0..<6 { store.weightUnit = .lbs; store.weightUnit = .kg }
+                XCTAssertEqual(store.state.history.first?.exerciseLogs.first?.sets.first?.weightKg, canonical)
+            }
+        }
+    }
+
+    func testLegacyBackupWithoutUnitKeepsDevicePreferenceAndCanonicalWeights() throws {
+        try withStore { store in
+            install(store, weight: 100)
+            let legacy = String(data: try JSONEncoder().encode(store.state), encoding: .utf8)!
+            store.weightUnit = .lbs
+            XCTAssertTrue(store.restoreBackupJson(legacy))
+            XCTAssertEqual(store.weightUnit, .lbs)
+            XCTAssertEqual(store.state.history.first?.exerciseLogs.first?.sets.first?.weightKg, 100)
+            XCTAssertEqual(WeightUnit.lbs.formatWeightWithUnit(100), "220 lbs")
+            store.weightUnit = .kg
+            XCTAssertEqual(store.state.history.first?.exerciseLogs.first?.sets.first?.weightKg, 100)
+        }
+    }
+
+    func testInvalidUnitMetadataCannotPartiallyChangeStatePreferenceOrLiveWorkout() throws {
+        try withStore { store in
+            install(store, weight: 100)
+            store.activeSession = draft()
+            let before = store.exportBackupJson()
+            let active = store.activeSession
+            for value: Any in ["stone", 42, true, ["kg"], ["unit": "kg"]] {
+                var json = try XCTUnwrap(try JSONSerialization.jsonObject(with: Data(before.utf8)) as? [String: Any])
+                json["weightUnit"] = value
+                let invalid = String(data: try JSONSerialization.data(withJSONObject: json), encoding: .utf8)!
+                XCTAssertFalse(store.restoreBackupJson(invalid))
+                let after = try XCTUnwrap(try JSONSerialization.jsonObject(with: Data(store.exportBackupJson().utf8)) as? [String: Any])
+                let beforeObject = try XCTUnwrap(try JSONSerialization.jsonObject(with: Data(before.utf8)) as? [String: Any])
+                XCTAssertTrue(NSDictionary(dictionary: after).isEqual(to: beforeObject))
+                XCTAssertEqual(store.weightUnit, .kg)
+                XCTAssertEqual(store.activeSession, active)
+            }
+        }
+    }
+
+    func testUnitChangesRebaseCompletedWarmupInputsAndPersistWithoutChangingWeights() throws {
+        try withStore { store in
+            store.activeSession = draft()
+            for _ in 0..<8 {
+                store.weightUnit = .lbs
+                let set = try XCTUnwrap(store.activeSession?.setsByExercise[exercise.id]?.first)
+                XCTAssertEqual(set.weightInput, "220")
+                XCTAssertEqual(set.weightKg, 100)
+                XCTAssertTrue(set.isCompleted && set.isWarmup)
+                XCTAssertEqual(store.activeSession?.weightInputUnit, .lbs)
+                store.weightUnit = .kg
+                XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "100")
+                XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.weightKg, 100)
+            }
+            store.weightUnit = .lbs
+            let reloaded = AppStore()
+            XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightKg, 100)
+            XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "220")
+            XCTAssertEqual(reloaded.activeSession?.weightInputUnit, .lbs)
+        }
+    }
+
+    func testRestoreUnitRebasesPreservedActiveWorkoutWithoutConvertingItsCanonicalValues() throws {
+        withStore { store in
+            install(store, weight: 100)
+            store.weightUnit = .lbs
+            let poundsBackup = store.exportBackupJson()
+            store.weightUnit = .kg
+            store.activeSession = draft(weight: 75, input: "75")
+            XCTAssertTrue(store.restoreBackupJson(poundsBackup))
+            XCTAssertEqual(store.weightUnit, .lbs)
+            XCTAssertEqual(store.activeSession?.id, "unit-live")
+            XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.weightKg, 75)
+            XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "165")
+        }
+    }
+
+    func testHistoryResumeUsesCurrentDisplayUnitWithoutChangingRecordedWeight() throws {
+        try withStore { store in
+            install(store, weight: 100)
+            store.weightUnit = .lbs
+            XCTAssertTrue(store.startActiveSession(programId: "unit-plan", workout: workout, allowPast: true,
+                unfinishedRecordId: "unit-history", resumeHistory: true))
+            let first = try XCTUnwrap(store.activeSession?.setsByExercise[exercise.id]?.first)
+            XCTAssertEqual(first.weightInput, "220")
+            XCTAssertEqual(first.weightKg, 100)
+            XCTAssertEqual(store.activeSession?.weightInputUnit, .lbs)
+        }
+    }
+
+    func testStartupRepairsStaleLegacyInputFromCanonicalWeight() throws {
+        try withStore { _ in
+            let old = draft(unit: nil)
+            UserDefaults.standard.set(try JSONEncoder().encode(old), forKey: "active_session_v1")
+            UserDefaults.standard.set("lbs", forKey: "weight_unit")
+            let reloaded = AppStore()
+            XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightKg, 100)
+            XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "220")
+            XCTAssertEqual(reloaded.activeSession?.weightInputUnit, .lbs)
+        }
+    }
+
+    func testUnreadableActiveDraftRemainsOnDiskForRecovery() {
+        withStore { _ in
+            let invalidDraft = Data("{\"weightInputUnit\":\"unsupported\"}".utf8)
+            UserDefaults.standard.set(invalidDraft, forKey: "active_session_v1")
+            let reloaded = AppStore()
+            XCTAssertNil(reloaded.activeSession)
+            XCTAssertEqual(UserDefaults.standard.data(forKey: "active_session_v1"), invalidDraft)
+        }
+    }
+
+    func testInputOnlyLegacyDraftUsesItsRecordedUnitAndKeepsPartialAndEmptyEdits() {
+        var old = draft(weight: nil, input: "100", unit: .kg)
+        old.setsByExercise[exercise.id]?.append(ExerciseSetLog(id: "partial", setNumber: 2, weightInput: ".", repsInput: ""))
+        old.setsByExercise[exercise.id]?.append(ExerciseSetLog(id: "empty", setNumber: 3))
+        let rebased = WorkoutSessionUtils.rebaseWeightInputs(old, from: .kg, to: .lbs)
+        XCTAssertEqual(rebased.setsByExercise[exercise.id]?.first?.weightKg, 100)
+        XCTAssertEqual(rebased.setsByExercise[exercise.id]?.first?.weightInput, "220")
+        XCTAssertEqual(rebased.setsByExercise[exercise.id]?[1].weightInput, ".")
+        XCTAssertNil(rebased.setsByExercise[exercise.id]?[1].weightKg)
+        XCTAssertEqual(rebased.setsByExercise[exercise.id]?[2].weightInput, "")
+    }
+
+    func testPrefillIgnoresStaleDisplayTextAndRetainsFullCanonicalPrecision() throws {
+        for weight in [100.0, 100.1234567] {
+            let previous = ExerciseSetLog(setNumber: 1, weightInput: "100", repsInput: "10", weightKg: weight, completedReps: 10, isCompleted: true)
+            let next = WorkoutSessionUtils.prefillSet(ExerciseSetLog(setNumber: 2), from: previous, unit: .lbs)
+            XCTAssertEqual(next.weightInput, WeightUnit.lbs.formatWeight(weight))
+            XCTAssertEqual(next.weightKg, weight)
+            XCTAssertFalse(next.isCompleted)
+            XCTAssertEqual(WorkoutSessionUtils.weightForEditedInput(next.weightInput, existing: next, unit: .lbs), weight)
+        }
+    }
+
+    func testExplicitWeightEditConvertsOnceAndClearingRemovesValue() {
+        let existing = ExerciseSetLog(setNumber: 1, weightInput: "220", weightKg: 100)
+        XCTAssertEqual(WorkoutSessionUtils.weightForEditedInput("225", existing: existing, unit: .lbs), WeightUnit.lbs.toCanonicalKg(225))
+        XCTAssertNil(WorkoutSessionUtils.weightForEditedInput("", existing: existing, unit: .lbs))
+        XCTAssertEqual(WorkoutSessionUtils.weightForEditedInput("0", existing: existing, unit: .lbs), 0)
+    }
+
+    func testRepsOnlyUIKitEditAfterUnitSwitchDoesNotReparseRoundedPounds() throws {
+        try withStore { store in
+            store.weightUnit = .kg
+            var active = draft()
+            active.setsByExercise[exercise.id]?[0].isCompleted = false
+            active.setsByExercise[exercise.id]?[0].isWarmup = false
+            store.activeSession = active
+            store.weightUnit = .lbs
+            let current = try XCTUnwrap(store.activeSession)
+            let host = UIHostingController(rootView: ActiveSessionView(store: store, draft: current))
+            let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+            defer { window.endEditing(true); window.isHidden = true; previousWindow?.makeKeyAndVisible() }
+            window.rootViewController = host
+            window.makeKeyAndVisible()
+            host.view.frame = window.bounds
+            host.view.layoutIfNeeded()
+            RunLoop.main.run(until: Date().addingTimeInterval(0.4))
+            @MainActor func fields(_ view: UIView) -> [UITextField] {
+                if let field = view as? UITextField { return [field] }
+                return view.subviews.flatMap { fields($0) }
+            }
+            let inputs = fields(host.view)
+            XCTAssertGreaterThanOrEqual(inputs.count, 2)
+            let reps = try XCTUnwrap(inputs.dropFirst().first)
+            reps.text = "12"
+            reps.sendActions(for: .editingChanged)
+            RunLoop.main.run(until: Date().addingTimeInterval(0.2))
+            XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.completedReps, 12)
+            XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.weightKg, 100)
+            XCTAssertNil(host.presentedViewController as? UIAlertController)
         }
     }
 }
