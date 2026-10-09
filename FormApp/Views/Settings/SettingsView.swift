@@ -529,7 +529,11 @@ public struct CloudBackupSheet: View {
     private var isMirrorEnabled: Bool { mirrorManager.isEnabled }
     @State private var syncStatusMessage: String? = nil
     @State private var syncIsError: Bool = false
-    @State private var showRestoreConfirm: Bool = false
+    private enum BackupAlert: Equatable {
+        case restore
+        case firstUpload(Data)
+    }
+    @State private var activeAlert: BackupAlert?
 
     private var mirrorStatus: CloudMirrorStatus {
         mirrorManager.status
@@ -672,7 +676,7 @@ public struct CloudBackupSheet: View {
                         .disabled(isWorking || (proManager.isFeatureUnlocked(.cloudBackup) && !isMirrorEnabled))
                         .accessibilityIdentifier("cloud-backup-sync")
 
-                        Button(action: { showRestoreConfirm = true }) {
+                        Button(action: { activeAlert = .restore }) {
                             HStack {
                                 if isRestoring { ProgressView().tint(AppColors.accent) }
                                 else { Image(systemName: "arrow.counterclockwise").font(.system(size: 13, weight: .medium)) }
@@ -737,7 +741,22 @@ public struct CloudBackupSheet: View {
                     .foregroundColor(AppColors.accent)
                 }
             }
-            .onAppear { mirrorManager.refreshUbiquityURL() }
+            .onAppear { mirrorManager.refreshUbiquityURL(); presentFirstUploadConfirmationIfReady() }
+            .onChange(of: mirrorManager.status.needsFirstUploadConfirmation) { _, needed in
+                if needed { presentFirstUploadConfirmationIfReady() }
+                else if case .firstUpload = activeAlert { activeAlert = nil }
+            }
+            .onChange(of: isWorking) { _, working in
+                if !working { presentFirstUploadConfirmationIfReady() }
+            }
+            .onChange(of: activeAlert) { _, alert in
+                if alert == nil {
+                    Task { @MainActor in
+                        try? await Task.sleep(nanoseconds: 300_000_000)
+                        presentFirstUploadConfirmationIfReady()
+                    }
+                }
+            }
             .onChange(of: langManager.currentLanguage) { _, _ in mirrorManager.refreshStatus() }
             .onChange(of: mirrorManager.status) { _, status in
                 let isWaitingMessage = syncStatusMessage == LanguageManager.t("form_lab.mirror_upload_pending") || syncStatusMessage == LanguageManager.t("form_lab.mirror_local_saved")
@@ -752,15 +771,33 @@ public struct CloudBackupSheet: View {
             }
             .onDisappear { operationTask?.cancel() }
             .sheet(isPresented: $showPaywall) { ProPaywallSheet(feature: .cloudBackup) }
-            .alert(LanguageManager.t("form_lab.mirror_restore_confirm"), isPresented: $showRestoreConfirm) {
-                Button(LanguageManager.t("form_lab.restore_btn"), role: .destructive) {
-                    restoreFromMirror()
+            .alert(alertTitle, isPresented: Binding(get: { activeAlert != nil }, set: { if !$0 { activeAlert = nil } }), presenting: activeAlert) { alert in
+                switch alert {
+                case .restore:
+                    Button(LanguageManager.t("form_lab.restore_btn"), role: .destructive) { restoreFromMirror() }
+                    Button(LanguageManager.t("modal.cancel"), role: .cancel) {}
+                case .firstUpload(let identity):
+                    Button(LanguageManager.t("common.done")) { mirrorManager.acknowledgeFirstUploadConfirmation(identity: identity) }
                 }
-                Button(LanguageManager.t("modal.cancel"), role: .cancel) {}
-            } message: {
-                Text(LanguageManager.t("form_lab.mirror_restore_warning"))
+            } message: { alert in
+                switch alert {
+                case .restore:
+                    Text(LanguageManager.t("form_lab.mirror_restore_warning"))
+                case .firstUpload:
+                    Text(LanguageManager.t("form_lab.mirror_first_upload_message", ["file": CloudMirrorManager.backupFileName]))
+                }
             }
         }
+    }
+
+    private var alertTitle: String {
+        LanguageManager.t(activeAlert == .restore ? "form_lab.mirror_restore_confirm" : "form_lab.mirror_first_upload_title")
+    }
+
+    private func presentFirstUploadConfirmationIfReady() {
+        guard activeAlert == nil, !isWorking,
+              let identity = mirrorManager.firstUploadConfirmationIdentity() else { return }
+        activeAlert = .firstUpload(identity)
     }
 
     private func syncNow() {

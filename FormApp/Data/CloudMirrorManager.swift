@@ -102,6 +102,7 @@ public final class CloudMirrorManager: ObservableObject {
     private let keyLastCloudUpload = CloudMirrorManager.preferencePrefix + "last_cloud_upload"
     private let keyLastIdentity = CloudMirrorManager.preferencePrefix + "last_identity"
     private let keyLocalIdentity = CloudMirrorManager.preferencePrefix + "local_identity"
+    private let keyConfirmedUploadIdentities = CloudMirrorManager.preferencePrefix + "confirmed_upload_identities"
 
     @Published public private(set) var status = CloudMirrorStatus(isEnabled: true, lastSyncTimestamp: nil, snapshotSizeBytes: nil, providerName: "iCloud Drive", isCheckingCloud: true)
     private let defaults: UserDefaults
@@ -533,6 +534,24 @@ public final class CloudMirrorManager: ObservableObject {
         stateLock.lock(); defer { stateLock.unlock() }
         return cachedStatus ?? status
     }
+    public func firstUploadConfirmationIdentity() -> Data? {
+        guard getStatus().needsFirstUploadConfirmation, let identity = identityProvider(),
+              Self.sameIdentity(identity, defaults.data(forKey: keyLastIdentity)) else { return nil }
+        let acknowledged = defaults.array(forKey: keyConfirmedUploadIdentities) as? [Data] ?? []
+        guard !acknowledged.contains(where: { Self.sameIdentity($0, identity) }) else { return nil }
+        return identity
+    }
+
+    public func acknowledgeFirstUploadConfirmation(identity: Data) {
+        guard Self.sameIdentity(identity, identityProvider()) else { return }
+        var acknowledged = defaults.array(forKey: keyConfirmedUploadIdentities) as? [Data] ?? []
+        if !acknowledged.contains(where: { Self.sameIdentity($0, identity) }) {
+            acknowledged.append(identity)
+            defaults.set(acknowledged, forKey: keyConfirmedUploadIdentities)
+        }
+        refreshStatus()
+    }
+
     public func checkICloudUploadStatus() -> (isUploaded: Bool, isUploading: Bool, error: Error?) {
         guard let file = ubiquitousMirrorDirectory?.appendingPathComponent(Self.backupFileName), FileManager.default.fileExists(atPath: file.path) else { return (false, false, nil) }
         do { return try uploadStatus(file) } catch { return (false, false, error) }
@@ -557,12 +576,19 @@ public final class CloudMirrorManager: ObservableObject {
         }
         let local = localMirrorDirectory.appendingPathComponent(Self.backupFileName)
         let size = try? (exists ? file! : local).resourceValues(forKeys: [.fileSizeKey]).fileSize
+        let identity = identityProvider()
+        let acknowledged = defaults.array(forKey: keyConfirmedUploadIdentities) as? [Data] ?? []
+        let needsConfirmation = upload.isUploaded && upload.error == nil && failure == nil && !hasPendingSync && container != nil && identity.map { token in
+            Self.sameIdentity(token, defaults.data(forKey: keyLastIdentity)) &&
+                !acknowledged.contains(where: { Self.sameIdentity($0, token) })
+        } == true
         let newStatus = CloudMirrorStatus(isEnabled: isEnabled,
             lastSyncTimestamp: container == nil ? nil : defaults.object(forKey: keyLastCloudUpload) as? TimeInterval,
             snapshotSizeBytes: size.map(Int64.init),
             providerName: container == nil ? LanguageManager.t("form_lab.mirror_local_provider") : "iCloud Drive",
             isCloudConnected: container != nil, isUploadPending: exists && !upload.isUploaded,
-            isCheckingCloud: checking, errorMessage: upload.error?.localizedDescription ?? failure)
+            isCheckingCloud: checking, needsFirstUploadConfirmation: needsConfirmation,
+            errorMessage: upload.error?.localizedDescription ?? failure)
         stateLock.lock(); cachedStatus = newStatus; stateLock.unlock()
         DispatchQueue.main.async { [weak self] in self?.status = newStatus }
     }

@@ -230,6 +230,7 @@ public struct CloudMirrorStatus: Equatable {
     public let isCloudConnected: Bool
     public let isUploadPending: Bool
     public let isCheckingCloud: Bool
+    public let needsFirstUploadConfirmation: Bool
     public let errorMessage: String?
 
     public init(
@@ -241,6 +242,7 @@ public struct CloudMirrorStatus: Equatable {
         isCloudConnected: Bool = false,
         isUploadPending: Bool = false,
         isCheckingCloud: Bool = false,
+        needsFirstUploadConfirmation: Bool = false,
         errorMessage: String? = nil
     ) {
         self.isEnabled = isEnabled
@@ -251,6 +253,7 @@ public struct CloudMirrorStatus: Equatable {
         self.isCloudConnected = isCloudConnected
         self.isUploadPending = isUploadPending
         self.isCheckingCloud = isCheckingCloud
+        self.needsFirstUploadConfirmation = needsFirstUploadConfirmation
         self.errorMessage = errorMessage
     }
 }
