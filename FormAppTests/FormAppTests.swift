@@ -10981,6 +10981,125 @@ final class LocalizationExpansionTests: XCTestCase {
 }
 
 @MainActor
+final class PremiumSettingsTests: XCTestCase {
+    func testLockedBindingsPreserveIndependentPreferences() {
+        var targets = false
+        var warmup = true
+        let targetsBinding = Binding(get: { targets }, set: { targets = $0 })
+        let warmupBinding = Binding(get: { warmup }, set: { warmup = $0 })
+        for unlocked in [false, true, false, true] {
+            let targetRow = SettingsPremiumToggle(titleKey: "settings.showProgressionTargets",
+                subtitleKey: "settings.showProgressionTargetsSubtitle", preference: targetsBinding,
+                isUnlocked: unlocked, identifier: "targets")
+            let warmupRow = SettingsPremiumToggle(titleKey: "settings.showWarmupCalculator",
+                subtitleKey: "settings.showWarmupCalculatorSubtitle", preference: warmupBinding,
+                isUnlocked: unlocked, identifier: "warmup")
+            XCTAssertEqual(targetRow.selection.wrappedValue, !unlocked || targets)
+            XCTAssertEqual(warmupRow.selection.wrappedValue, !unlocked || warmup)
+            let previousTargets = targets
+            let previousWarmup = warmup
+            targetRow.selection.wrappedValue.toggle()
+            XCTAssertEqual(targets, unlocked ? !previousTargets : previousTargets)
+            XCTAssertEqual(warmup, previousWarmup)
+            warmupRow.selection.wrappedValue.toggle()
+            XCTAssertEqual(warmup, unlocked ? !previousWarmup : previousWarmup)
+        }
+    }
+
+    func testSettingsRespondsToSubscriptionChangesWithoutOverwritingPreferences() async throws {
+        let store = AppStore.shared
+        let manager = ProAccessManager.shared
+        let previousTargets = store.showProgressionTargets
+        let previousWarmup = store.showWarmupCalculator
+        let previousSubscription = manager.isProSubscribed
+        let previousWindow = keyWindow
+        defer {
+            store.showProgressionTargets = previousTargets
+            store.showWarmupCalculator = previousWarmup
+            manager.updateSubscriptionStatus(active: previousSubscription)
+            previousWindow?.makeKeyAndVisible()
+        }
+        store.showProgressionTargets = false
+        store.showWarmupCalculator = false
+        manager.updateSubscriptionStatus(active: false)
+        let controller = UIHostingController(rootView: SettingsView(store: store, onDismiss: {}))
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 1100))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        defer { window.isHidden = true }
+        controller.view.frame = window.bounds
+        for unlocked in [false, true, false, true] {
+            manager.updateSubscriptionStatus(active: unlocked)
+            controller.view.layoutIfNeeded()
+            try await Task.sleep(nanoseconds: 250_000_000)
+            controller.view.layoutIfNeeded()
+            let switches = descendants(controller.view).compactMap { $0 as? UISwitch }
+            // The training section follows the free pre-fill switch.
+            XCTAssertGreaterThanOrEqual(switches.count, 3)
+            for control in switches.dropFirst().prefix(2) {
+                XCTAssertEqual(control.isEnabled, unlocked)
+                XCTAssertEqual(control.isOn, !unlocked)
+            }
+            XCTAssertFalse(store.showProgressionTargets)
+            XCTAssertFalse(store.showWarmupCalculator)
+            let image = UIGraphicsImageRenderer(bounds: controller.view.bounds).image { _ in
+                controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+            }
+            try image.pngData()?.write(to: URL(fileURLWithPath: "/private/tmp/settings-\(unlocked ? "premium" : "free")-ios.png"))
+        }
+    }
+
+    func testPremiumRowsRemainReadableAcrossLanguagesAndTextSizes() async throws {
+        let previousLanguage = LanguageManager.shared.languagePreference
+        let previousWindow = keyWindow
+        defer { LanguageManager.setLanguage(previousLanguage); previousWindow?.makeKeyAndVisible() }
+        for lang in ["en", "tr", "de", "fr", "es"] {
+            LanguageManager.setLanguage(lang)
+            for unlocked in [false, true] {
+                for (width, size, suffix) in [(393.0, DynamicTypeSize.large, "normal"), (320.0, .xxxLarge, "large")] {
+                    let rows = VStack(spacing: 0) {
+                        SettingsPremiumToggle(titleKey: "settings.showProgressionTargets",
+                            subtitleKey: "settings.showProgressionTargetsSubtitle", preference: .constant(true),
+                            isUnlocked: unlocked, identifier: "targets")
+                        Divider().background(AppColors.border)
+                        SettingsPremiumToggle(titleKey: "settings.showWarmupCalculator",
+                            subtitleKey: "settings.showWarmupCalculatorSubtitle", preference: .constant(true),
+                            isUnlocked: unlocked, identifier: "warmup")
+                    }
+                    .background(AppColors.surface)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
+                    let controller = UIHostingController(rootView: VStack { rows; Spacer(minLength: 0) }
+                        .padding(20).background(AppColors.background).environment(\.dynamicTypeSize, size))
+                    let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 460))
+                    window.rootViewController = controller
+                    window.makeKeyAndVisible()
+                    controller.view.frame = window.bounds
+                    controller.view.layoutIfNeeded()
+                    try await Task.sleep(nanoseconds: 150_000_000)
+                    let image = UIGraphicsImageRenderer(bounds: controller.view.bounds).image { _ in
+                        controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+                    }
+                    window.isHidden = true
+                    let name = "premium-settings-\(lang)-\(unlocked ? "premium" : "free")-\(suffix)"
+                    let attachment = XCTAttachment(image: image)
+                    attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
+                    try image.pngData()?.write(to: URL(fileURLWithPath: "/private/tmp/\(name)-ios.png"))
+                }
+            }
+        }
+    }
+
+    private var keyWindow: UIWindow? {
+        UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }.first { $0.isKeyWindow }
+    }
+    private func descendants(_ view: UIView) -> [UIView] {
+        view.subviews.flatMap { [$0] + descendants($0) }
+    }
+}
+
+@MainActor
 final class SettingsLanguagePickerLayoutTests: XCTestCase {
     func testCompactRowAndFullNamesAtNarrowWidth() async throws {
         let previous = LanguageManager.shared.languagePreference

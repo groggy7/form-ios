@@ -146,39 +146,23 @@ public struct SettingsView: View {
 
                             Divider().background(AppColors.border)
 
-                            Toggle(isOn: $store.showProgressionTargets) {
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(LanguageManager.t("settings.showProgressionTargets"))
-                                        .font(.system(size: 15))
-                                        .foregroundColor(AppColors.text)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                    Text(LanguageManager.t("settings.showProgressionTargetsSubtitle"))
-                                        .font(.system(size: 12))
-                                        .foregroundColor(AppColors.secondaryText)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                            }
-                            .tint(AppColors.accent)
-                            .padding(14)
-                            .accessibilityIdentifier("toggle-progression-targets")
+                            SettingsPremiumToggle(
+                                titleKey: "settings.showProgressionTargets",
+                                subtitleKey: "settings.showProgressionTargetsSubtitle",
+                                preference: $store.showProgressionTargets,
+                                isUnlocked: proManager.isProSubscribed,
+                                identifier: "toggle-progression-targets"
+                            )
 
                             Divider().background(AppColors.border)
 
-                            Toggle(isOn: $store.showWarmupCalculator) {
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(LanguageManager.t("settings.showWarmupCalculator"))
-                                        .font(.system(size: 15))
-                                        .foregroundColor(AppColors.text)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                    Text(LanguageManager.t("settings.showWarmupCalculatorSubtitle"))
-                                        .font(.system(size: 12))
-                                        .foregroundColor(AppColors.secondaryText)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                            }
-                            .tint(AppColors.accent)
-                            .padding(14)
-                            .accessibilityIdentifier("toggle-warmup-calculator")
+                            SettingsPremiumToggle(
+                                titleKey: "settings.showWarmupCalculator",
+                                subtitleKey: "settings.showWarmupCalculatorSubtitle",
+                                preference: $store.showWarmupCalculator,
+                                isUnlocked: proManager.isProSubscribed,
+                                identifier: "toggle-warmup-calculator"
+                            )
                         }
                     }
 
@@ -539,6 +523,50 @@ public struct SettingsView: View {
             exportText = str
             showExportSheet = true
         }
+    }
+}
+
+struct SettingsPremiumToggle: View {
+    let titleKey: String
+    let subtitleKey: String
+    @Binding var preference: Bool
+    let isUnlocked: Bool
+    let identifier: String
+
+    // Locked switches show the default on state without changing the saved preference.
+    var selection: Binding<Bool> {
+        Binding(get: { !isUnlocked || preference }, set: { value in
+            if isUnlocked { preference = value }
+        })
+    }
+
+    private var title: Text {
+        if isUnlocked { return Text(LanguageManager.t(titleKey)) }
+        return Text(LanguageManager.t(titleKey)) + Text(" ")
+            + Text(Image(systemName: "lock.fill")).font(.system(size: 11))
+    }
+
+    var body: some View {
+        Toggle(isOn: selection) {
+            VStack(alignment: .leading, spacing: 2) {
+                title
+                    .font(.system(size: 15))
+                    .foregroundColor(isUnlocked ? AppColors.text : AppColors.muted)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .accessibilityLabel(LanguageManager.t(titleKey))
+                Text(LanguageManager.t(subtitleKey))
+                    .font(.system(size: 12))
+                    .foregroundColor(isUnlocked ? AppColors.secondaryText : AppColors.muted)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+        .tint(isUnlocked ? AppColors.accent : AppColors.accent.opacity(0.35))
+        .disabled(!isUnlocked)
+        .padding(14)
+        .accessibilityHint(isUnlocked ? "" : LanguageManager.t("pro.premium_required"))
+        .accessibilityIdentifier(identifier)
     }
 }
 
