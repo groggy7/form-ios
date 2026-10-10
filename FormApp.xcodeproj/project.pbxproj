@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A41A7C6F20EF4E568EBC0E01 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A41A7C6F20EF4E568EBC0E02; };
 		A11000000000000000000001 /* TranslationTables.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11000000000000000000002; };
 		A11000000000000000000003 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A11000000000000000000004; };
 		0020D035F786CD915922D766 /* TodayHeroCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D6F413D877B7E332EEF6D /* TodayHeroCard.swift */; };
@@ -130,6 +131,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		A41A7C6F20EF4E568EBC0E02 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A11000000000000000000002 /* TranslationTables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationTables.swift; sourceTree = "<group>"; };
 		A11000000000000000000004 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		023D09DFD513B3F32B009541 /* WorkoutDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetailSheet.swift; sourceTree = "<group>"; };
@@ -459,6 +461,7 @@
 		C071DCC6D32719D73DD50011 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				A41A7C6F20EF4E568EBC0E02 /* LaunchScreen.storyboard */,
 				77203A709542614D89DFF819 /* Assets.xcassets */,
 				V10000000000000000000004 /* ExerciseVideos */,
 				M20000000000000000000004 /* ExerciseMuscles */,
@@ -611,6 +614,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A41A7C6F20EF4E568EBC0E01 /* LaunchScreen.storyboard in Resources */,
 				A11000000000000000000003 /* Localizable.xcstrings in Resources */,
 				A13B29C1D4E5F60718293A4B /* PrivacyInfo.xcprivacy in Resources */,
 				E10000000000000000000002 /* exercises.json in Resources */,
