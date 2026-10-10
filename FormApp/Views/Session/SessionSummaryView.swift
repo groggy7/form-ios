@@ -58,24 +58,8 @@ public struct SessionSummaryView: View {
                             .font(.system(size: 28, weight: .bold))
                             .foregroundColor(AppColors.text)
 
-                        // 3 KPI Metric Cards
-                        HStack(spacing: 8) {
-                            summaryMetric(
-                                icon: "clock",
-                                title: LanguageManager.t("summary.totalDuration"),
-                                value: RestTimerUtils.formatSecondsToTime(durationSeconds)
-                            )
-                            summaryMetric(
-                                icon: "dumbbell.fill",
-                                title: LanguageManager.t("summary.setsCompleted"),
-                                value: "\(totalCompletedSets)"
-                            )
-                            summaryMetric(
-                                icon: "square.stack.3d.up",
-                                title: LanguageManager.t("summary.estimatedVolume"),
-                                value: "\(weightUnit.formatVolume(totalVolumeKg)) \(weightUnit.label)"
-                            )
-                        }
+                        // Unified Segmented KPI Metrics Card
+                        summaryMetricsCard
 
                         Text(LanguageManager.t("summary.exerciseRecap"))
                             .font(.system(size: 16, weight: .bold))
@@ -125,24 +109,8 @@ public struct SessionSummaryView: View {
                                 .font(.system(size: 28, weight: .bold))
                                 .foregroundColor(AppColors.text)
 
-                            // 3 KPI Metric Cards
-                            HStack(spacing: 8) {
-                                summaryMetric(
-                                    icon: "clock",
-                                    title: LanguageManager.t("summary.totalDuration"),
-                                    value: RestTimerUtils.formatSecondsToTime(durationSeconds)
-                                )
-                                summaryMetric(
-                                    icon: "dumbbell.fill",
-                                    title: LanguageManager.t("summary.setsCompleted"),
-                                    value: "\(totalCompletedSets)"
-                                )
-                                summaryMetric(
-                                    icon: "square.stack.3d.up",
-                                    title: LanguageManager.t("summary.estimatedVolume"),
-                                    value: "\(weightUnit.formatVolume(totalVolumeKg)) \(weightUnit.label)"
-                                )
-                            }
+                            // Unified Segmented KPI Metrics Card
+                            summaryMetricsCard
 
                             // Status Banners
                             if isWorkoutComplete {
@@ -359,24 +327,61 @@ public struct SessionSummaryView: View {
         }
     }
 
-    private func summaryMetric(icon: String, title: String, value: String) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
+    private var summaryMetricsCard: some View {
+        HStack(spacing: 0) {
+            summaryMetricColumn(
+                icon: "clock",
+                value: RestTimerUtils.formatSecondsToTime(durationSeconds),
+                title: LanguageManager.t("summary.totalDuration")
+            )
+
+            Rectangle()
+                .fill(AppColors.border)
+                .frame(width: 1, height: 44)
+
+            summaryMetricColumn(
+                icon: "dumbbell.fill",
+                value: "\(totalCompletedSets)",
+                title: LanguageManager.t("summary.setsCompleted")
+            )
+
+            Rectangle()
+                .fill(AppColors.border)
+                .frame(width: 1, height: 44)
+
+            summaryMetricColumn(
+                icon: "square.stack.3d.up",
+                value: "\(weightUnit.formatVolume(totalVolumeKg)) \(weightUnit.label)",
+                title: LanguageManager.t("summary.estimatedVolume")
+            )
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 16)
+        .background(AppColors.surface)
+        .cornerRadius(16)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .stroke(AppColors.border, lineWidth: 1)
+        )
+    }
+
+    private func summaryMetricColumn(icon: String, value: String, title: String) -> some View {
+        VStack(alignment: .center, spacing: 6) {
             Image(systemName: icon)
-                .font(.system(size: 15))
+                .font(.system(size: 18))
                 .foregroundColor(AppColors.muted)
+            Text(value)
+                .font(.system(size: 20, weight: .bold))
+                .foregroundColor(AppColors.text)
+                .lineLimit(1)
+                .multilineTextAlignment(.center)
             Text(title)
                 .font(.system(size: 11, weight: .medium))
                 .foregroundColor(AppColors.muted)
-                .lineLimit(1)
-            Text(value)
-                .font(.system(size: 16, weight: .bold))
-                .foregroundColor(AppColors.text)
-                .lineLimit(1)
+                .lineLimit(2)
+                .multilineTextAlignment(.center)
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(12)
-        .background(AppColors.surface)
-        .cornerRadius(12)
-        .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+        .frame(maxWidth: .infinity)
+        .padding(.horizontal, 4)
     }
 }
