@@ -23,6 +23,7 @@ public struct SetLoggingTable: View {
     var weightUnit: WeightUnit = .kg
     var allowsZeroWeight: Bool = false
     var isAssisted: Bool = false
+    var isBodyweight: Bool = false
     var ghostTargets: [Int: GhostTarget] = [:]
     var logbookBeatenSets: [Int: LogbookBeatResult] = [:]
 
@@ -42,6 +43,7 @@ public struct SetLoggingTable: View {
         weightUnit: WeightUnit = .kg,
         allowsZeroWeight: Bool = false,
         isAssisted: Bool = false,
+        isBodyweight: Bool = false,
         ghostTargets: [Int: GhostTarget] = [:],
         logbookBeatenSets: [Int: LogbookBeatResult] = [:]
     ) {
@@ -60,6 +62,7 @@ public struct SetLoggingTable: View {
         self.weightUnit = weightUnit
         self.allowsZeroWeight = allowsZeroWeight
         self.isAssisted = isAssisted
+        self.isBodyweight = isBodyweight
         self.ghostTargets = ghostTargets
         self.logbookBeatenSets = logbookBeatenSets
     }
@@ -125,7 +128,7 @@ public struct SetLoggingTable: View {
                 let ghostTarget = ghostTargets[index]
                 let contextualPr: String = {
                     if let gt = ghostTarget, let prevW = gt.lastWeekWeightKg, let prevR = gt.lastWeekReps, prevW >= 0.0, prevR > 0 {
-                        return !isAssisted && prevW == 0 ? "×\(prevR)" : "\(WorkoutSessionUtils.formatWeight(prevW, unit: weightUnit))x\(prevR)"
+                        return WorkoutSessionUtils.formatSessionPr(weightKg: prevW, reps: prevR, unit: weightUnit, isBodyweight: isBodyweight, isAssisted: isAssisted)
                     }
                     return prText.isEmpty ? "-" : prText
                 }()
@@ -195,15 +198,17 @@ public struct SetLoggingTable: View {
                             .overlay(RoundedRectangle(cornerRadius: 4).stroke(AppColors.accent.opacity(0.35)))
                             .frame(width: 56, alignment: .center)
                     } else {
-                        Text(contextualPr)
-                            .accessibilityLabel(contextualPr.hasPrefix("×") ? "\(contextualPr.dropFirst()) \(LanguageManager.t("exercise.history.reps"))" : contextualPr)
+                        Text(contextualPr.replacingOccurrences(of: " ×", with: "\n×").replacingOccurrences(of: "BW +", with: "BW+"))
+                            .accessibilityLabel(WorkoutSessionUtils.sessionPrAccessibilityLabel(contextualPr, unit: weightUnit))
                             .font(.system(size: 13, weight: .medium))
                             .foregroundColor(
                                 set.isCompleted
                                     ? AppColors.secondaryText.opacity(0.6)
                                     : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35))
                             )
-                            .lineLimit(1)
+                            .lineLimit(contextualPr.hasPrefix("BW") ? 2 : 1)
+                            .multilineTextAlignment(.center)
+                            .minimumScaleFactor(contextualPr.hasPrefix("BW") ? 0.7 : 1)
                             .frame(width: 56, alignment: .center)
                     }
 

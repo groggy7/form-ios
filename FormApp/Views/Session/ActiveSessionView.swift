@@ -441,6 +441,7 @@ public struct ActiveSessionView: View {
                                         weightUnit: store.weightUnit,
                                         allowsZeroWeight: WorkoutSessionUtils.allowsZeroWeight(exercise),
                                         isAssisted: WorkoutSessionUtils.isAssisted(exercise),
+                                        isBodyweight: WorkoutSessionUtils.usesBodyweightResistance(exercise),
                                         ghostTargets: ghostTargets,
                                         logbookBeatenSets: logbookBeatenSets
                                     )

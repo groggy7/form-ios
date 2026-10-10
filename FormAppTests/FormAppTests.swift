@@ -10815,7 +10815,12 @@ final class BodyweightLoggingTests: XCTestCase {
         XCTAssertFalse(target.isFirstSession); XCTAssertNil(target.altWeightKg)
         XCTAssertNotNil(WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: 0, loggedReps: 11, target: target))
         XCTAssertNil(WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: 10, loggedReps: 1, target: target))
-        XCTAssertEqual(WorkoutSessionUtils.findExercisePr(history: [record(2)], exercise: push), "×10")
+        XCTAssertEqual(WorkoutSessionUtils.findExercisePr(history: [record(2)], exercise: push), "BW ×10")
+        XCTAssertEqual(WorkoutSessionUtils.findExercisePr(history: [record(2, weights: [20, 0])], exercise: push), "BW +20 ×10")
+        let weightedPullUp = Exercise(name: "Weighted Pull-Ups", exerciseId: "weighted-pull-ups")
+        XCTAssertEqual(WorkoutSessionUtils.findExercisePr(history: [record(2, exercise: weightedPullUp, weights: [20, 20])], exercise: weightedPullUp), "BW +20 ×10")
+        XCTAssertEqual(WorkoutSessionUtils.findExercisePr(history: [record(2, weights: [20, 0])], exercise: push, unit: .lbs), "BW +44 ×10")
+        XCTAssertEqual(WorkoutSessionUtils.findExercisePr(history: [record(2, exercise: assisted)], exercise: assisted), "0x10")
         let mixed = WorkoutSessionUtils.findPreviousSessionWorkingSets(history: [record(2, weights: [0, 10])], exercise: push)
         XCTAssertEqual(mixed.map { $0.setNumber }, [1, 2])
         XCTAssertEqual(WorkoutSessionUtils.computeGhostTarget(previousSets: mixed, workingSetIndex: 0, exercise: push).lastWeekWeightKg, 0)
@@ -10863,19 +10868,19 @@ final class BodyweightLoggingTests: XCTestCase {
         let previousLanguage = LanguageManager.shared.currentLanguage
         let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap { $0.windows }.first { $0.isKeyWindow }
         defer { LanguageManager.setLanguage(previousLanguage); previousWindow?.makeKeyAndVisible() }
-        for language in ["en", "tr"] { for isAssisted in [false, true] {
+        for language in ["en", "tr"] { for (isAssisted, load) in [(false, 0.0), (false, 20.0), (false, 2.5), (true, 40.0)] {
             LanguageManager.setLanguage(language)
             let ex = isAssisted ? assisted : push
             let rows = [ExerciseSetLog(setNumber: 1, weightInput: isAssisted ? "40" : "0", repsInput: "11", weightKg: isAssisted ? 40 : 0, completedReps: 11, isCompleted: true), WorkoutSessionUtils.newSet(exercise: ex, number: 2)]
-            let ghost = WorkoutSessionUtils.computeGhostTarget(previousSets: [SessionSetLog(setNumber: 1, weightKg: isAssisted ? 40 : 0, reps: 10)], workingSetIndex: 0, exercise: ex)
-            let view = ScrollView { SetLoggingTable(sets: rows, prescription: "2 × 8–12", onUpdateSet: { _,_,_ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in }, allowsZeroWeight: true, isAssisted: isAssisted, ghostTargets: [0: ghost]).padding(16) }.background(AppColors.background).environment(\.sizeCategory, .accessibilityMedium)
+            let ghost = WorkoutSessionUtils.computeGhostTarget(previousSets: [SessionSetLog(setNumber: 1, weightKg: load, reps: 10)], workingSetIndex: 0, exercise: ex)
+            let view = ScrollView { SetLoggingTable(sets: rows, prescription: "2 × 8–12", onUpdateSet: { _,_,_ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in }, allowsZeroWeight: true, isAssisted: isAssisted, isBodyweight: !isAssisted, ghostTargets: [0: ghost]).padding(16) }.background(AppColors.background).environment(\.sizeCategory, .accessibilityMedium)
             let controller = UIHostingController(rootView: view)
             let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 852))
             window.rootViewController = controller; window.makeKeyAndVisible(); controller.view.layoutIfNeeded()
             RunLoop.main.run(until: Date().addingTimeInterval(0.1))
             let image = UIGraphicsImageRenderer(size: window.bounds.size).image { _ in controller.view.drawHierarchy(in: window.bounds, afterScreenUpdates: true) }
             let attachment = XCTAttachment(image: image)
-            attachment.name = "logging-\(isAssisted ? "assistance" : "bodyweight")-\(language)-320-large"; attachment.lifetime = .keepAlways; add(attachment)
+            attachment.name = "logging-\(isAssisted ? "assistance" : "bodyweight")-\(load)-\(language)-320-large"; attachment.lifetime = .keepAlways; add(attachment)
             XCTAssertEqual(controller.view.bounds.width, 320); window.isHidden = true
         } }
     }

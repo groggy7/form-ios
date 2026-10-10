@@ -133,6 +133,28 @@ public enum WorkoutSessionUtils {
         return ExerciseCatalog.canonicalExercises[id]?.searchKeywords.contains { $0.lowercased() == "bodyweight" } == true
     }
 
+    public static func usesBodyweightResistance(_ exercise: Exercise) -> Bool {
+        defaultsToZeroAddedWeight(exercise) || ["weighted-pull-ups", "weighted-push-up-with-vest"].contains(
+            ExerciseCatalog.resolveCanonicalId(stableId: exercise.exerciseId, name: exercise.name) ?? "")
+    }
+
+    public static func formatSessionPr(weightKg: Double, reps: Int, unit: WeightUnit = .kg, isBodyweight: Bool = false, isAssisted: Bool = false) -> String {
+        if isBodyweight && !isAssisted {
+            let added = weightKg == 0 ? "" : " +\(formatWeight(weightKg, unit: unit))"
+            return "BW\(added) ×\(reps)"
+        }
+        return !isAssisted && weightKg == 0 ? "×\(reps)" : "\(formatWeight(weightKg, unit: unit))x\(reps)"
+    }
+
+    public static func sessionPrAccessibilityLabel(_ text: String, unit: WeightUnit) -> String {
+        if text.hasPrefix("BW") {
+            let parts = String(text.dropFirst(2)).components(separatedBy: " ×")
+            let load = parts[0].isEmpty ? "" : " \(parts[0].trimmingCharacters(in: .whitespaces)) \(unit.label)"
+            return "\(LanguageManager.t("exercise.history.bodyweight"))\(load), \(parts.last!) \(LanguageManager.t("exercise.history.reps"))"
+        }
+        return text.hasPrefix("×") ? "\(text.dropFirst()) \(LanguageManager.t("exercise.history.reps"))" : text
+    }
+
     public static func newSet(exercise: Exercise, number: Int) -> ExerciseSetLog {
         defaultsToZeroAddedWeight(exercise)
             ? ExerciseSetLog(setNumber: number, weightInput: "0", weightKg: 0)
@@ -367,7 +389,7 @@ public enum WorkoutSessionUtils {
             return a.reps! < b.reps!
         }
         guard let best else { return nil }
-        return !assisted && best.weightKg == 0 ? "×\(best.reps!)" : "\(formatWeight(best.weightKg!, unit: unit))x\(best.reps!)"
+        return formatSessionPr(weightKg: best.weightKg!, reps: best.reps!, unit: unit, isBodyweight: usesBodyweightResistance(exercise), isAssisted: assisted)
     }
 
     private static func validHistoricalSet(_ set: SessionSetLog, exercise: Exercise) -> Bool {
