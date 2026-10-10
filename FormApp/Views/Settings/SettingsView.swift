@@ -442,7 +442,7 @@ public struct SettingsView: View {
                     } catch {
                         importErrorMessage = LanguageManager.t("errors.fileRead")
                     }
-                case .failure(let error):
+                case .failure:
                     importErrorMessage = LanguageManager.t("errors.fileRead")
                 }
             }
