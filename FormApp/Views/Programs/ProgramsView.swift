@@ -109,10 +109,11 @@ public struct ProgramsView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: onDismiss) {
-                        Image(systemName: "xmark").font(.system(size: 18, weight: .semibold))
-                            .foregroundStyle(AppColors.secondaryText).frame(width: 48, height: 48)
-                            .background(AppColors.surfaceRaised, in: Circle())
-                    }.accessibilityLabel(LanguageManager.t("common.close"))
+                        Image(systemName: "xmark")
+                            .font(.system(size: 13, weight: .semibold))
+                            .foregroundColor(AppColors.secondaryText)
+                    }
+                    .accessibilityLabel(LanguageManager.t("common.close"))
                 }
             }
             .sheet(item: $editingProgram) { program in
