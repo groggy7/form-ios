@@ -5756,9 +5756,9 @@ final class FormAppTests: XCTestCase {
         manager.resetOverrides()
         manager.updateSubscriptionStatus(active: false)
 
-        // 1. Free Tier Baseline: All 5 features strictly locked
-        let allFeatures: [ProFeature] = [.volumeMatrix, .autoProgression, .warmupCalculator, .formLab, .cloudBackup]
-        XCTAssertEqual(ProFeature.allCases.count, 5)
+        // 1. Free Tier Baseline: All 6 features strictly locked
+        let allFeatures: [ProFeature] = [.volumeMatrix, .autoProgression, .warmupCalculator, .formLab, .cloudBackup, .customThemes]
+        XCTAssertEqual(ProFeature.allCases.count, 6)
         for feature in allFeatures {
             XCTAssertFalse(manager.isFeatureUnlocked(feature), "Feature \(feature.rawValue) must be locked for free tier")
             XCTAssertFalse(feature.titleKey.isEmpty)
@@ -5766,7 +5766,7 @@ final class FormAppTests: XCTestCase {
             XCTAssertFalse(feature.teaserKey.isEmpty)
         }
 
-        // 2. Subscription Activation: All 5 features unlock immediately
+        // 2. Subscription Activation: All 6 features unlock immediately
         manager.updateSubscriptionStatus(active: true)
         XCTAssertTrue(manager.isProSubscribed)
         for feature in allFeatures {
@@ -11255,3 +11255,59 @@ final class SettingsLanguagePickerLayoutTests: XCTestCase {
         }
     }
 }
+
+final class AppThemesTests: XCTestCase {
+    override func tearDown() {
+        super.tearDown()
+        ThemeManager.shared.setThemeId(AppThemes.default.id)
+    }
+
+    func testAllSevenThemesAreDefinedAndDistinct() {
+        XCTAssertEqual(AppThemes.all.count, 7)
+        let ids = Set(AppThemes.all.map { $0.id })
+        XCTAssertEqual(ids.count, 7)
+        XCTAssertTrue(ids.contains("default"))
+        XCTAssertTrue(ids.contains("espresso"))
+        XCTAssertTrue(ids.contains("stealth"))
+        XCTAssertTrue(ids.contains("cobalt"))
+        XCTAssertTrue(ids.contains("alpine"))
+        XCTAssertTrue(ids.contains("crimson"))
+        XCTAssertTrue(ids.contains("amethyst"))
+    }
+
+    func testDefaultThemeIsFreeAndOthersArePremium() {
+        XCTAssertFalse(AppThemes.default.isPremium)
+        for theme in AppThemes.all where theme.id != "default" {
+            XCTAssertTrue(theme.isPremium, "Theme \(theme.id) must be premium")
+        }
+    }
+
+    func testThemeLookupAndFallback() {
+        XCTAssertEqual(AppThemes.fromId("espresso").id, "espresso")
+        XCTAssertEqual(AppThemes.fromId("unknown_xyz").id, "default")
+    }
+
+    func testThemeManagerSwitchesAndPersistsTheme() {
+        let manager = ThemeManager.shared
+        manager.setThemeId("espresso")
+        XCTAssertEqual(manager.currentTheme.id, "espresso")
+        XCTAssertEqual(UserDefaults.standard.string(forKey: "app_theme_id"), "espresso")
+
+        XCTAssertEqual(AppColors.background, AppThemes.espresso.background)
+        XCTAssertEqual(AppColors.surface, AppThemes.espresso.surface)
+        XCTAssertEqual(AppColors.accent, AppThemes.espresso.accent)
+
+        manager.setThemeId("default")
+        XCTAssertEqual(manager.currentTheme.id, "default")
+        XCTAssertEqual(AppColors.background, AppThemes.default.background)
+    }
+
+    func testAppStoreForwardsThemeId() {
+        let store = AppStore.shared
+        store.appThemeId = "cobalt"
+        XCTAssertEqual(ThemeManager.shared.currentTheme.id, "cobalt")
+        XCTAssertEqual(store.appThemeId, "cobalt")
+        store.appThemeId = "default"
+    }
+}
+

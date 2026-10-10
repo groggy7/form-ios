@@ -6,12 +6,14 @@ public struct SettingsView: View {
     @ObservedObject var langManager = LanguageManager.shared
     @ObservedObject private var proManager = ProAccessManager.shared
     @ObservedObject private var cloudMirror = CloudMirrorManager.shared
+    @ObservedObject private var themeManager = ThemeManager.shared
     var onDismiss: () -> Void
 
     @State private var showPaywall: Bool = false
     @State private var paywallFeature: ProFeature? = nil
     @State private var showCloudBackupSheet: Bool = false
     @State private var showLanguageSheet: Bool = false
+    @State private var showThemeSheet: Bool = false
     @Environment(\.openURL) private var openURL
     @State private var showImportExportSheet: Bool = false
 
@@ -154,6 +156,46 @@ public struct SettingsView: View {
                         showLanguageSheet = true
                     }
                     .padding(.horizontal, 20)
+
+                    // Appearance
+                    settingsSection(title: LanguageManager.t("settings.appearance")) {
+                        Button(action: { showThemeSheet = true }) {
+                            HStack(spacing: 12) {
+                                HStack(spacing: 3) {
+                                    Circle().fill(themeManager.currentTheme.background).frame(width: 8, height: 8)
+                                    Circle().fill(themeManager.currentTheme.surfaceRaised).frame(width: 8, height: 8)
+                                    Circle().fill(themeManager.currentTheme.accent).frame(width: 8, height: 8)
+                                }
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 4)
+                                .background(AppColors.surfaceRaised)
+                                .clipShape(Capsule())
+                                .overlay(Capsule().stroke(AppColors.border, lineWidth: 1))
+
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(LanguageManager.t("settings.appTheme"))
+                                        .font(.system(size: 15))
+                                        .foregroundColor(AppColors.text)
+                                    Text(LanguageManager.t("settings.appThemeSubtitle"))
+                                        .font(.system(size: 12))
+                                        .foregroundColor(AppColors.secondaryText)
+                                }
+
+                                Spacer()
+
+                                Text(LanguageManager.t(themeManager.currentTheme.nameKey))
+                                    .font(.subheadline)
+                                    .foregroundColor(AppColors.secondaryText)
+
+                                Image(systemName: "chevron.right")
+                                    .font(.system(size: 13, weight: .semibold))
+                                    .foregroundColor(AppColors.muted)
+                            }
+                            .padding(14)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("settings-theme-row")
+                    }
 
                     // Weight Unit
                     settingsSection(title: LanguageManager.t("settings.weightUnit")) {
@@ -356,6 +398,23 @@ public struct SettingsView: View {
                     onDismiss: { showLanguageSheet = false }
                 )
                 .presentationDetents([.height(520), .large])
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(28)
+                .presentationBackground(AppColors.background)
+            }
+            .sheet(isPresented: $showThemeSheet) {
+                ThemeSelectionSheet(
+                    onSelectTheme: { theme in
+                        themeManager.setThemeId(theme.id)
+                    },
+                    onShowPaywall: { feature in
+                        showThemeSheet = false
+                        paywallFeature = feature
+                        showPaywall = true
+                    },
+                    onDismiss: { showThemeSheet = false }
+                )
+                .presentationDetents([.height(580), .large])
                 .presentationDragIndicator(.visible)
                 .presentationCornerRadius(28)
                 .presentationBackground(AppColors.background)
@@ -1163,3 +1222,120 @@ public struct CloudBackupSheet: View {
         return df.string(from: date)
     }
 }
+
+struct ThemeSelectionSheet: View {
+    @ObservedObject private var themeManager = ThemeManager.shared
+    @ObservedObject private var proManager = ProAccessManager.shared
+    var onSelectTheme: (AppThemePalette) -> Void
+    var onShowPaywall: (ProFeature) -> Void
+    var onDismiss: () -> Void
+
+    var body: some View {
+        VStack(spacing: 0) {
+            HStack(spacing: 12) {
+                Text(LanguageManager.t("settings.appTheme"))
+                    .font(.title2.weight(.semibold))
+                    .foregroundColor(AppColors.text)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                Button(action: onDismiss) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(AppColors.secondaryText)
+                        .frame(width: 48, height: 48)
+                        .background(AppColors.surfaceRaised, in: Circle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(LanguageManager.t("common.close"))
+                .accessibilityIdentifier("theme-picker-close")
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 12)
+            .padding(.bottom, 16)
+
+            ScrollView {
+                VStack(spacing: 12) {
+                    ForEach(AppThemes.all) { theme in
+                        let isSelected = theme.id == themeManager.currentTheme.id
+                        let isUnlocked = !theme.isPremium || proManager.isProSubscribed
+
+                        Button {
+                            if isUnlocked {
+                                onSelectTheme(theme)
+                            } else {
+                                onShowPaywall(.customThemes)
+                            }
+                        } label: {
+                            HStack(spacing: 14) {
+                                ZStack {
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(theme.background)
+                                        .frame(width: 44, height: 44)
+                                        .overlay(
+                                            RoundedRectangle(cornerRadius: 12)
+                                                .stroke(theme.border, lineWidth: 1.5)
+                                        )
+
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .fill(theme.surfaceRaised)
+                                        .frame(width: 28, height: 28)
+
+                                    Circle()
+                                        .fill(theme.accent)
+                                        .frame(width: 14, height: 14)
+                                }
+
+                                VStack(alignment: .leading, spacing: 3) {
+                                    HStack(spacing: 6) {
+                                        Text(LanguageManager.t(theme.nameKey))
+                                            .font(.system(size: 15, weight: .semibold))
+                                            .foregroundColor(AppColors.text)
+
+                                        if theme.isPremium {
+                                            ProBadge()
+                                        }
+                                    }
+
+                                    Text(LanguageManager.t(theme.descriptionKey))
+                                        .font(.system(size: 12))
+                                        .foregroundColor(AppColors.secondaryText)
+                                        .multilineTextAlignment(.leading)
+                                        .lineLimit(2)
+                                }
+
+                                Spacer()
+
+                                if isSelected {
+                                    Image(systemName: "checkmark.circle.fill")
+                                        .font(.system(size: 20))
+                                        .foregroundColor(AppColors.accent)
+                                } else if !isUnlocked {
+                                    Image(systemName: "lock.fill")
+                                        .font(.system(size: 15))
+                                        .foregroundColor(AppColors.muted)
+                                }
+                            }
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 14)
+                            .frame(minHeight: 68)
+                            .background(isSelected ? AppColors.surfaceRaised : AppColors.surface)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .stroke(isSelected ? AppColors.accent.opacity(0.8) : AppColors.border, lineWidth: isSelected ? 1.5 : 1)
+                            )
+                            .contentShape(RoundedRectangle(cornerRadius: 16))
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("theme-option-\(theme.id)")
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 24)
+            }
+        }
+        .background(AppColors.background)
+        .accessibilityIdentifier("theme-picker-sheet")
+    }
+}
+

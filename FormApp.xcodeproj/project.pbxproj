@@ -23,6 +23,7 @@
 		2BD3BC2D8BB759DB9AFE8F34 /* WorkoutDetailSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 023D09DFD513B3F32B009541 /* WorkoutDetailSheet.swift */; };
 		3255EAF86BCBDCDD24C59363 /* ProgramBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F223343B153857F9D2B8C6 /* ProgramBuilderView.swift */; };
 		329E21359E0ADED851ABBD02 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FE39F02FA4EAA1A43D7CA8 /* AppColors.swift */; };
+		TH0000000000000000000001 /* AppThemes.swift in Sources */ = {isa = PBXBuildFile; fileRef = TH0000000000000000000002 /* AppThemes.swift */; };
 		36BD5962CDF814CE9F9A4F6C /* 02_powerbuilding_strength.json in Resources */ = {isa = PBXBuildFile; fileRef = EC5E4B6045ADD51D2CA59D20 /* 02_powerbuilding_strength.json */; };
 		3F7B9B586131F615F225CDD2 /* ActiveSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF19DF767A0483E3295C1ED /* ActiveSessionView.swift */; };
 		45546ACE7DF72EB335DD41FA /* MovementIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D97FA7035F2317DFBE57498 /* MovementIcon.swift */; };
@@ -160,6 +161,7 @@
 		829AB05F70AD9B7E6DEE97CC /* WorkoutSessionUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutSessionUtils.swift; sourceTree = "<group>"; };
 		90A44CC582072D671FF45DE4 /* form_rest_complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_rest_complete.wav; sourceTree = "<group>"; };
 		91FE39F02FA4EAA1A43D7CA8 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
+		TH0000000000000000000002 /* AppThemes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppThemes.swift; sourceTree = "<group>"; };
 		92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 01_aesthetic_hypertrophy.json; sourceTree = "<group>"; };
 		955CAB74DAB1D7D264DD689E /* MuscleArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleArtwork.swift; sourceTree = "<group>"; };
 		9A2948074308DABA9A07E42E /* 04_full_body_classic.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 04_full_body_classic.json; sourceTree = "<group>"; };
@@ -353,6 +355,7 @@
 			isa = PBXGroup;
 			children = (
 				91FE39F02FA4EAA1A43D7CA8 /* AppColors.swift */,
+				TH0000000000000000000002 /* AppThemes.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -689,6 +692,7 @@
 				WP0000000000000000000010 /* WarmupPlateCard.swift in Sources */,
 				3F7B9B586131F615F225CDD2 /* ActiveSessionView.swift in Sources */,
 				329E21359E0ADED851ABBD02 /* AppColors.swift in Sources */,
+				TH0000000000000000000001 /* AppThemes.swift in Sources */,
 				90857D8F8161417A3E7FCFE1 /* AppHeader.swift in Sources */,
 				11494E03B6F140F80312218E /* AppStore.swift in Sources */,
 				S10000000000000000000001 /* ExerciseSearch.swift in Sources */,
@@ -874,6 +878,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -893,6 +898,7 @@
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
+				GENERATE_INFOPLIST_FILE = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

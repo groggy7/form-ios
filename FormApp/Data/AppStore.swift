@@ -37,6 +37,11 @@ public final class AppStore: ObservableObject {
         get { !showWarmupCalculator }
         set { showWarmupCalculator = !newValue }
     }
+
+    public var appThemeId: String {
+        get { ThemeManager.shared.currentTheme.id }
+        set { ThemeManager.shared.setThemeId(newValue) }
+    }
     @Published public var currentView: ViewMode = .today {
         didSet {
             if currentView != .library {

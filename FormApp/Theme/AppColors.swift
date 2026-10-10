@@ -1,11 +1,11 @@
 import SwiftUI
 
 public enum AppColors {
-    public static let background = Color(hex: 0x090C0F)
-    public static let surface = Color(hex: 0x13171B)
-    public static let surfaceRaised = Color(hex: 0x1D2227)
-    public static let calendarSurfaceStart = Color(hex: 0x151A1E)
-    public static let calendarSurfaceEnd = Color(hex: 0x101418)
+    public static var background: Color { ThemeManager.shared.currentTheme.background }
+    public static var surface: Color { ThemeManager.shared.currentTheme.surface }
+    public static var surfaceRaised: Color { ThemeManager.shared.currentTheme.surfaceRaised }
+    public static var calendarSurfaceStart: Color { ThemeManager.shared.currentTheme.calendarSurfaceStart }
+    public static var calendarSurfaceEnd: Color { ThemeManager.shared.currentTheme.calendarSurfaceEnd }
     public static let progressionRulesSurface = Color(hex: 0x0E181E)
 
     public static let progressionPaywallSurface = Color(hex: 0x101519)
@@ -37,18 +37,18 @@ public enum AppColors {
         startRadiusFraction: 0,
         endRadiusFraction: 0.75
     )
-    public static let text = Color(hex: 0xF3F5F5)
-    public static let secondaryText = Color(hex: 0xB6BEC4)
-    public static let muted = Color(hex: 0x8F999F)
-    public static let border = Color(hex: 0x2A3238)
-    public static let accent = Color(hex: 0x49C7AF)
-    public static let positive = Color(hex: 0x49C7AF)
-    public static let positiveBg = Color(hex: 0x142D29)
-    public static let purple = Color(hex: 0xB18AFF)
+    public static var text: Color { ThemeManager.shared.currentTheme.text }
+    public static var secondaryText: Color { ThemeManager.shared.currentTheme.secondaryText }
+    public static var muted: Color { ThemeManager.shared.currentTheme.muted }
+    public static var border: Color { ThemeManager.shared.currentTheme.border }
+    public static var accent: Color { ThemeManager.shared.currentTheme.accent }
+    public static var positive: Color { ThemeManager.shared.currentTheme.accent }
+    public static var positiveBg: Color { ThemeManager.shared.currentTheme.positiveBg }
+    public static var purple: Color { ThemeManager.shared.currentTheme.purple }
     public static let muscleSecondary = Color(hex: 0x8EA9F4)
-    public static let purpleBg = Color(hex: 0x28203D)
-    public static let coral = Color(hex: 0xFF8C78)
-    public static let danger = Color(hex: 0xFF897B)
+    public static var purpleBg: Color { ThemeManager.shared.currentTheme.purpleBg }
+    public static var coral: Color { ThemeManager.shared.currentTheme.coral }
+    public static var danger: Color { ThemeManager.shared.currentTheme.danger }
     public static let cuesBg = Color(hex: 0x061F20)
     public static let cuesBorder = Color(hex: 0x0E5B53)
     public static let avoidBg = Color(hex: 0x1D1416)

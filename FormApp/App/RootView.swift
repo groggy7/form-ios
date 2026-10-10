@@ -60,6 +60,7 @@ public struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var store = AppStore.shared
     @StateObject private var langManager = LanguageManager.shared
+    @ObservedObject private var themeManager = ThemeManager.shared
 
     @State private var showProgramsSheet: Bool = false
     @State private var showSettingsSheet: Bool = false

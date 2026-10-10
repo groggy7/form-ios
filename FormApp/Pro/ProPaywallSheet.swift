@@ -76,6 +76,12 @@ public struct ProPaywallSheet: View {
                 PaywallBenefit(titleKey: "paywall.warmup_calculator.benefit2", descKey: "paywall.warmup_calculator.benefit2_desc", iconName: "circle.grid.cross.fill"),
                 PaywallBenefit(titleKey: "paywall.warmup_calculator.benefit3", descKey: "paywall.warmup_calculator.benefit3_desc", iconName: "plus.circle.fill")
             ]
+        case .customThemes:
+            return [
+                PaywallBenefit(titleKey: "pro.custom_themes.title", descKey: "pro.custom_themes.description", iconName: "paintpalette.fill"),
+                PaywallBenefit(titleKey: "pro.volume_matrix.title", descKey: "pro.volume_matrix.description", iconName: "chart.bar.fill"),
+                PaywallBenefit(titleKey: "pro.form_lab.title", descKey: "pro.form_lab.description", iconName: "number.circle.fill")
+            ]
         case .none:
             return [
                 PaywallBenefit(titleKey: "paywall.general.benefit1", descKey: "paywall.general.benefit1_desc", iconName: "figure.strengthtraining.traditional"),
