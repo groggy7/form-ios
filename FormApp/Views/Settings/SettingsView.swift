@@ -13,34 +13,7 @@ public struct SettingsView: View {
     @State private var showCloudBackupSheet: Bool = false
     @State private var showLanguageSheet: Bool = false
     @Environment(\.openURL) private var openURL
-    @State private var showExportSheet: Bool = false
-    @State private var exportText: String = ""
-    @State private var isShowingBackupImporter: Bool = false
-    @State private var backupToRestore: String? = nil
-    @State private var showRestoreBackupAlert: Bool = false
-    @State private var importErrorMessage: String? = nil
-
-    private var cloudBackupSubtitle: String {
-        if !proManager.isProSubscribed {
-            return LanguageManager.t("form_lab.mirror_free_restore")
-        }
-        let status = cloudMirror.status
-        let lastSyncStr = status.lastSyncTimestamp.map { timestamp -> String in
-            let df = DateFormatter()
-            df.dateFormat = "HH:mm, dd MMM"
-            return df.string(from: Date(timeIntervalSince1970: timestamp))
-        }
-        let syncLabel: String
-        if let str = lastSyncStr {
-            syncLabel = LanguageManager.t("form_lab.mirror_last_synced", ["time": str])
-        } else if status.isCloudConnected {
-            syncLabel = LanguageManager.t(status.isCheckingCloud ? "form_lab.mirror_checking" : status.isUploadPending ? "form_lab.mirror_pending" : "form_lab.mirror_never_synced")
-        } else {
-            syncLabel = LanguageManager.t(status.isCheckingCloud ? "form_lab.mirror_checking" : "form_lab.mirror_local_only")
-        }
-        let provider = status.isCloudConnected ? "iCloud Drive" : LanguageManager.t("form_lab.mirror_local_provider")
-        return "\(provider) · \(syncLabel)"
-    }
+    @State private var showImportExportSheet: Bool = false
 
     public init(store: AppStore, onDismiss: @escaping () -> Void) {
         self.store = store
@@ -211,20 +184,9 @@ public struct SettingsView: View {
                                 showCloudBackupSheet = true
                             }) {
                                 HStack {
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        HStack(spacing: 6) {
-                                            Text(LanguageManager.t("settings.cloudBackup"))
-                                                .font(.system(size: 15))
-                                                .foregroundColor(AppColors.text)
-                                            if !proManager.isProSubscribed {
-                                                ProBadge(text: "PREMIUM")
-                                            }
-                                        }
-                                        Text(cloudBackupSubtitle)
-                                            .font(.system(size: 12))
-                                            .foregroundColor(AppColors.secondaryText)
-                                            .multilineTextAlignment(.leading)
-                                    }
+                                    Text(LanguageManager.t("settings.cloudBackup"))
+                                        .font(.system(size: 15))
+                                        .foregroundColor(AppColors.text)
                                     Spacer()
                                     Image(systemName: "chevron.right")
                                         .font(.system(size: 13, weight: .semibold))
@@ -232,36 +194,25 @@ public struct SettingsView: View {
                                 }
                                 .padding(14)
                             }
+                            .accessibilityIdentifier("settings-cloud-backup-row")
 
                             Divider().background(AppColors.border)
 
-                            Button(action: exportBackup) {
+                            Button(action: {
+                                showImportExportSheet = true
+                            }) {
                                 HStack {
-                                    Text(LanguageManager.t("settings.exportBackup"))
+                                    Text(LanguageManager.t("settings.importExportData"))
                                         .font(.system(size: 15))
-                                        .foregroundColor(AppColors.accent)
+                                        .foregroundColor(AppColors.text)
                                     Spacer()
-                                    Image(systemName: "square.and.arrow.up")
-                                        .font(.system(size: 14))
-                                        .foregroundColor(AppColors.accent)
-                                }
-                                .padding(14)
-                            }
-
-                            Divider().background(AppColors.border)
-
-                            Button(action: { isShowingBackupImporter = true }) {
-                                HStack {
-                                    Text(LanguageManager.t("settings.restoreBackup"))
-                                        .font(.system(size: 15))
-                                        .foregroundColor(AppColors.secondaryText)
-                                    Spacer()
-                                    Image(systemName: "arrow.counterclockwise")
-                                        .font(.system(size: 14))
+                                    Image(systemName: "chevron.right")
+                                        .font(.system(size: 13, weight: .semibold))
                                         .foregroundColor(AppColors.muted)
                                 }
                                 .padding(14)
                             }
+                            .accessibilityIdentifier("settings-import-export-row")
                         }
                     }
 
@@ -401,73 +352,15 @@ public struct SettingsView: View {
                 .presentationCornerRadius(28)
                 .presentationBackground(AppColors.background)
             }
-            .sheet(isPresented: $showExportSheet) {
-                ShareSheet(text: exportText)
+            .sheet(isPresented: $showImportExportSheet) {
+                ImportExportDataSheet(store: store, onDismiss: {
+                    showImportExportSheet = false
+                })
+                .presentationDetents([.medium, .large])
+                .presentationDragIndicator(.visible)
+                .presentationCornerRadius(28)
+                .presentationBackground(AppColors.background)
             }
-            .fileImporter(
-                isPresented: $isShowingBackupImporter,
-                allowedContentTypes: [.json],
-                allowsMultipleSelection: false
-            ) { result in
-                switch result {
-                case .success(let urls):
-                    guard let url = urls.first else { return }
-                    guard url.startAccessingSecurityScopedResource() else {
-                        importErrorMessage = "Could not access selected backup file."
-                        return
-                    }
-                    defer { url.stopAccessingSecurityScopedResource() }
-                    do {
-                        let data = try Data(contentsOf: url)
-                        if let jsonString = String(data: data, encoding: .utf8) {
-                            backupToRestore = jsonString
-                            showRestoreBackupAlert = true
-                        } else {
-                            importErrorMessage = "The selected backup file is not valid UTF-8 text."
-                        }
-                    } catch {
-                        importErrorMessage = LanguageManager.t("errors.fileRead")
-                    }
-                case .failure:
-                    importErrorMessage = LanguageManager.t("errors.fileRead")
-                }
-            }
-            .alert(
-                LanguageManager.t("form_lab.mirror_restore_confirm"),
-                isPresented: $showRestoreBackupAlert,
-                actions: {
-                    Button(LanguageManager.t("settings.restoreBackup"), role: .destructive) {
-                        if let json = backupToRestore {
-                            let success = store.restoreBackupJson(json)
-                            if success {
-                                store.noticeMessage = LanguageManager.t("notice.backupRestored")
-                            } else {
-                                importErrorMessage = LanguageManager.t("notice.restoreFailed")
-                            }
-                            backupToRestore = nil
-                        }
-                    }
-                    Button(LanguageManager.t("modal.cancel"), role: .cancel) {
-                        backupToRestore = nil
-                    }
-                },
-                message: {
-                    Text(LanguageManager.t("form_lab.mirror_restore_warning"))
-                }
-            )
-            .alert(
-                "Import Error",
-                isPresented: Binding(
-                    get: { importErrorMessage != nil },
-                    set: { if !$0 { importErrorMessage = nil } }
-                ),
-                actions: {
-                    Button("OK") { importErrorMessage = nil }
-                },
-                message: {
-                    Text(importErrorMessage ?? "")
-                }
-            )
             .sheet(isPresented: $showPaywall) {
                 ProPaywallSheet(feature: paywallFeature, onDismiss: {
                     showPaywall = false
@@ -517,13 +410,6 @@ public struct SettingsView: View {
             .cornerRadius(14)
             .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
             .padding(.horizontal, 20)
-        }
-    }
-
-    private func exportBackup() {
-        if let data = try? JSONEncoder().encode(store.state), let str = String(data: data, encoding: .utf8) {
-            exportText = str
-            showExportSheet = true
         }
     }
 }
@@ -718,6 +604,219 @@ struct LanguageSelectionSheet: View {
         .buttonStyle(.plain)
         .accessibilityAddTraits(selected ? .isSelected : [])
         .accessibilityIdentifier("language-option-\(code)")
+    }
+}
+
+struct ImportExportDataSheet: View {
+    @ObservedObject var store: AppStore
+    var onDismiss: () -> Void
+
+    @State private var showExportSheet: Bool = false
+    @State private var exportText: String = ""
+    @State private var isShowingBackupImporter: Bool = false
+    @State private var backupToRestore: String? = nil
+    @State private var showRestoreBackupAlert: Bool = false
+    @State private var importErrorMessage: String? = nil
+
+    var body: some View {
+        VStack(spacing: 0) {
+            // Header Row
+            HStack(spacing: 12) {
+                HStack(spacing: 12) {
+                    ZStack {
+                        Circle()
+                            .fill(AppColors.purpleBg)
+                            .frame(width: 36, height: 36)
+                        Image(systemName: "arrow.left.arrow.right")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(AppColors.purple)
+                    }
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(LanguageManager.t("settings.importExportData"))
+                            .font(.system(size: 17, weight: .bold))
+                            .foregroundColor(AppColors.text)
+                        Text(LanguageManager.t("settings.importExportSubtitle"))
+                            .font(.system(size: 12))
+                            .foregroundColor(AppColors.muted)
+                            .lineLimit(1)
+                    }
+                }
+                Spacer()
+                Button(action: onDismiss) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 14, weight: .semibold))
+                        .foregroundColor(AppColors.secondaryText)
+                        .frame(width: 36, height: 36)
+                        .background(AppColors.surfaceRaised, in: Circle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(LanguageManager.t("common.close"))
+                .accessibilityIdentifier("import-export-close")
+            }
+            .padding(.horizontal, 20)
+            .padding(.top, 16)
+            .padding(.bottom, 20)
+
+            ScrollView {
+                VStack(spacing: 16) {
+                    // Export Data Card
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "square.and.arrow.up")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(AppColors.accent)
+                            Text(LanguageManager.t("settings.exportData"))
+                                .font(.system(size: 15, weight: .bold))
+                                .foregroundColor(AppColors.text)
+                        }
+
+                        Text(LanguageManager.t("settings.exportDataDesc"))
+                            .font(.system(size: 12))
+                            .foregroundColor(AppColors.secondaryText)
+                            .lineSpacing(2)
+                            .fixedSize(horizontal: false, vertical: true)
+
+                        Button(action: {
+                            exportText = store.exportBackupJson()
+                            showExportSheet = true
+                        }) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "square.and.arrow.up")
+                                    .font(.system(size: 15, weight: .bold))
+                                Text(LanguageManager.t("settings.exportData"))
+                                    .font(.system(size: 13, weight: .bold))
+                            }
+                            .foregroundColor(.black)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 44)
+                            .background(AppColors.accent)
+                            .cornerRadius(10)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("export-data-button")
+                    }
+                    .padding(16)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(AppColors.surfaceRaised)
+                    .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
+                    .cornerRadius(16)
+
+                    // Import Data Card
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "square.and.arrow.down")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(AppColors.purple)
+                            Text(LanguageManager.t("settings.importData"))
+                                .font(.system(size: 15, weight: .bold))
+                                .foregroundColor(AppColors.text)
+                        }
+
+                        Text(LanguageManager.t("settings.importDataDesc"))
+                            .font(.system(size: 12))
+                            .foregroundColor(AppColors.secondaryText)
+                            .lineSpacing(2)
+                            .fixedSize(horizontal: false, vertical: true)
+
+                        Button(action: {
+                            isShowingBackupImporter = true
+                        }) {
+                            HStack(spacing: 8) {
+                                Image(systemName: "square.and.arrow.down")
+                                    .font(.system(size: 15, weight: .semibold))
+                                Text(LanguageManager.t("settings.importData"))
+                                    .font(.system(size: 13, weight: .semibold))
+                            }
+                            .foregroundColor(AppColors.text)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 44)
+                            .background(AppColors.surface)
+                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.border, lineWidth: 1))
+                            .cornerRadius(10)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("import-data-button")
+                    }
+                    .padding(16)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(AppColors.surfaceRaised)
+                    .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
+                    .cornerRadius(16)
+                }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 36)
+            }
+        }
+        .background(AppColors.background.ignoresSafeArea())
+        .accessibilityIdentifier("import-export-data-sheet")
+        .sheet(isPresented: $showExportSheet) {
+            ShareSheet(text: exportText)
+        }
+        .fileImporter(
+            isPresented: $isShowingBackupImporter,
+            allowedContentTypes: [.json],
+            allowsMultipleSelection: false
+        ) { result in
+            switch result {
+            case .success(let urls):
+                guard let url = urls.first else { return }
+                guard url.startAccessingSecurityScopedResource() else {
+                    importErrorMessage = "Could not access selected backup file."
+                    return
+                }
+                defer { url.stopAccessingSecurityScopedResource() }
+                do {
+                    let data = try Data(contentsOf: url)
+                    if let jsonString = String(data: data, encoding: .utf8) {
+                        backupToRestore = jsonString
+                        showRestoreBackupAlert = true
+                    } else {
+                        importErrorMessage = "The selected backup file is not valid UTF-8 text."
+                    }
+                } catch {
+                    importErrorMessage = LanguageManager.t("errors.fileRead")
+                }
+            case .failure:
+                importErrorMessage = LanguageManager.t("errors.fileRead")
+            }
+        }
+        .alert(
+            LanguageManager.t("form_lab.mirror_restore_confirm"),
+            isPresented: $showRestoreBackupAlert,
+            actions: {
+                Button(LanguageManager.t("settings.restoreBackup"), role: .destructive) {
+                    if let json = backupToRestore {
+                        let success = store.restoreBackupJson(json)
+                        if success {
+                            store.noticeMessage = LanguageManager.t("notice.backupRestored")
+                            onDismiss()
+                        } else {
+                            importErrorMessage = LanguageManager.t("notice.restoreFailed")
+                        }
+                        backupToRestore = nil
+                    }
+                }
+                Button(LanguageManager.t("modal.cancel"), role: .cancel) {
+                    backupToRestore = nil
+                }
+            },
+            message: {
+                Text(LanguageManager.t("form_lab.mirror_restore_warning"))
+            }
+        )
+        .alert(
+            "Import Error",
+            isPresented: Binding(
+                get: { importErrorMessage != nil },
+                set: { if !$0 { importErrorMessage = nil } }
+            ),
+            actions: {
+                Button("OK") { importErrorMessage = nil }
+            },
+            message: {
+                Text(importErrorMessage ?? "")
+            }
+        )
     }
 }
 
