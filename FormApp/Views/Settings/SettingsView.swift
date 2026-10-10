@@ -193,7 +193,7 @@ public struct SettingsView: View {
                         .padding(14)
                     }
 
-                    SettingsLanguageRow(value: languagePreferenceLabel) {
+                    SettingsLanguageRow(value: languagePreferenceLabel, flagImageName: activeLanguageFlagImage) {
                         showLanguageSheet = true
                     }
                     .padding(.horizontal, 20)
@@ -506,6 +506,17 @@ public struct SettingsView: View {
         return LanguageManager.supportedLanguages.first { $0.code == langManager.languagePreference }?.name ?? "English"
     }
 
+    private var activeLanguageCode: String {
+        if langManager.languagePreference == LanguageManager.system {
+            return LanguageManager.resolveLanguage(Locale.preferredLanguages)
+        }
+        return langManager.languagePreference
+    }
+
+    private var activeLanguageFlagImage: String {
+        LanguageManager.flagImageName(for: activeLanguageCode)
+    }
+
     private func settingsSection<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
@@ -534,25 +545,29 @@ public struct SettingsView: View {
 // A single preference row keeps every supported language out of the main settings layout.
 struct SettingsLanguageRow: View {
     let value: String
+    var flagImageName: String? = nil
     var onTap: () -> Void
 
     var body: some View {
         Button(action: onTap) {
             HStack(spacing: 14) {
-                Image(systemName: "globe")
-                    .font(.system(size: 21, weight: .medium))
+                let resolvedFlag = flagImageName ?? LanguageManager.flagImageName(for: LanguageManager.shared.currentLanguage)
+                Image(resolvedFlag)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 25, height: 25)
+                    .clipShape(RoundedRectangle(cornerRadius: 7))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 7)
+                            .stroke(AppColors.border.opacity(0.6), lineWidth: 1)
+                    )
+                Text(LanguageManager.t("settings.language"))
+                    .font(.body.weight(.medium))
+                    .foregroundColor(AppColors.text)
+                Spacer()
+                Text(value)
+                    .font(.subheadline)
                     .foregroundColor(AppColors.secondaryText)
-                    .frame(width: 24)
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(LanguageManager.t("settings.language"))
-                        .font(.body.weight(.medium))
-                        .foregroundColor(AppColors.text)
-                    Text(value)
-                        .font(.subheadline)
-                        .foregroundColor(AppColors.secondaryText)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
                 Image(systemName: "chevron.right")
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundColor(AppColors.muted)
@@ -567,7 +582,7 @@ struct SettingsLanguageRow: View {
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel(LanguageManager.t("settings.language"))
+        .accessibilityLabel(LanguageManager.t("settings.language") + ", " + value)
         .accessibilityValue(value)
         .accessibilityIdentifier("settings-language-row")
     }
