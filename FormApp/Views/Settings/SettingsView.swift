@@ -638,7 +638,7 @@ struct ImportExportDataSheet: View {
                         Text(LanguageManager.t("settings.importExportSubtitle"))
                             .font(.system(size: 12))
                             .foregroundColor(AppColors.muted)
-                            .lineLimit(1)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                 }
                 Spacer()
@@ -654,7 +654,7 @@ struct ImportExportDataSheet: View {
                 .accessibilityIdentifier("import-export-close")
             }
             .padding(.horizontal, 20)
-            .padding(.top, 16)
+            .padding(.top, 30)
             .padding(.bottom, 20)
 
             ScrollView {
