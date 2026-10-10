@@ -3043,6 +3043,8 @@ final class FormAppTests: XCTestCase {
     func testProgramExportTranslation() {
         XCTAssertEqual(Translations.en["programs.export"], "Export")
         XCTAssertEqual(Translations.tr["programs.export"], "Dışa aktar")
+        XCTAssertEqual(Translations.en["programs.share"], "Share")
+        XCTAssertEqual(Translations.tr["programs.share"], "Paylaş")
     }
 
     func testExerciseLinksAcceptOnlyYouTubeVideosAndShorts() {

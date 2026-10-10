@@ -62,6 +62,8 @@ public struct ProgramsView: View {
     @State private var editingProgram: Program? = nil
     @State private var isCreatingNew = false
     @State private var showFileImporter = false
+    @State private var sharingItem: ProgramShareItem? = nil
+    @State private var deletingProgram: Program? = nil
     @ScaledMetric(relativeTo: .headline) private var titleSize: CGFloat = 18
     @ScaledMetric(relativeTo: .body) private var bodySize: CGFloat = 13
     @ScaledMetric(relativeTo: .subheadline) private var daysSize: CGFloat = 12
@@ -70,6 +72,19 @@ public struct ProgramsView: View {
     public init(store: AppStore, onDismiss: @escaping () -> Void) {
         self.store = store
         self.onDismiss = onDismiss
+    }
+
+    private func shareProgram(_ program: Program) {
+        guard let data = try? JSONEncoder().encode(program) else { return }
+        let safeName = program.displayName.replacingOccurrences(of: "[^\\p{L}\\p{N} ._-]", with: "_", options: .regularExpression)
+        let filename = "\(safeName.prefix(80)).form-program.json"
+        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(filename)
+        do {
+            try data.write(to: tempURL)
+            sharingItem = ProgramShareItem(url: tempURL)
+        } catch {
+            print("Share error: \(error)")
+        }
     }
 
     public var body: some View {
@@ -106,7 +121,9 @@ public struct ProgramsView: View {
                             ProgramHeroCard(program: program, isActive: program.id == store.state.activeProgramId,
                                 width: width, height: height, titleSize: titleSize, bodySize: bodySize, daysSize: daysSize, countsSize: countsSize,
                                 onSelect: { store.switchProgram(to: program.id); onDismiss() },
-                                onEdit: { editingProgram = program })
+                                onEdit: { editingProgram = program },
+                                onShare: { shareProgram(program) },
+                                onDelete: { deletingProgram = program })
                         }
                     }.padding(.horizontal, 20).padding(.top, 10).padding(.bottom, 24)
                 }
@@ -130,6 +147,23 @@ public struct ProgramsView: View {
             .sheet(isPresented: $isCreatingNew) {
                 ProgramBuilderView(store: store) { isCreatingNew = false }
             }
+            .sheet(item: $sharingItem) { item in
+                ProgramShareSheet(url: item.url)
+            }
+            .alert(
+                LanguageManager.t("programs.deleteTitle", ["name": deletingProgram?.displayName ?? ""]),
+                isPresented: Binding(get: { deletingProgram != nil }, set: { if !$0 { deletingProgram = nil } })
+            ) {
+                Button(LanguageManager.t("modal.cancel"), role: .cancel) { deletingProgram = nil }
+                Button(LanguageManager.t("modal.delete"), role: .destructive) {
+                    if let prog = deletingProgram {
+                        store.deleteProgram(withId: prog.id)
+                        deletingProgram = nil
+                    }
+                }
+            } message: {
+                Text(LanguageManager.t("programs.deleteHint"))
+            }
             .fileImporter(isPresented: $showFileImporter, allowedContentTypes: [.json], allowsMultipleSelection: false) { result in
                 if case .success(let urls) = result, let url = urls.first, url.startAccessingSecurityScopedResource() {
                     defer { url.stopAccessingSecurityScopedResource() }
@@ -138,6 +172,21 @@ public struct ProgramsView: View {
             }
         }
     }
+}
+
+struct ProgramShareItem: Identifiable {
+    let id = UUID()
+    let url: URL
+}
+
+struct ProgramShareSheet: UIViewControllerRepresentable {
+    let url: URL
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: [url], applicationActivities: nil)
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }
 
 struct ProgramHeroCard: View {
@@ -151,8 +200,10 @@ struct ProgramHeroCard: View {
     var countsSize: CGFloat = 11
     let onSelect: () -> Void
     let onEdit: () -> Void
+    var onShare: (() -> Void)? = nil
+    var onDelete: (() -> Void)? = nil
 
-    init(program: Program, isActive: Bool, width: CGFloat, height: CGFloat, titleSize: CGFloat, bodySize: CGFloat, daysSize: CGFloat, countsSize: CGFloat = 11, onSelect: @escaping () -> Void, onEdit: @escaping () -> Void) {
+    init(program: Program, isActive: Bool, width: CGFloat, height: CGFloat, titleSize: CGFloat, bodySize: CGFloat, daysSize: CGFloat, countsSize: CGFloat = 11, onSelect: @escaping () -> Void, onEdit: @escaping () -> Void, onShare: (() -> Void)? = nil, onDelete: (() -> Void)? = nil) {
         self.program = program
         self.isActive = isActive
         self.width = width
@@ -163,6 +214,8 @@ struct ProgramHeroCard: View {
         self.countsSize = countsSize
         self.onSelect = onSelect
         self.onEdit = onEdit
+        self.onShare = onShare
+        self.onDelete = onDelete
     }
 
     var body: some View {
@@ -182,7 +235,7 @@ struct ProgramHeroCard: View {
                 .init(color: .clear, location: 1)], startPoint: .leading, endPoint: .trailing)
             LinearGradient(stops: [.init(color: AppColors.background.opacity(0.15), location: 0),
                 .init(color: .clear, location: 0.70), .init(color: AppColors.background.opacity(0.8), location: 1)], startPoint: .top, endPoint: .bottom)
-            // The switch button and edit button are siblings, so editing never switches programs.
+            // The switch button and menu button are siblings, so menu taps never switch programs.
             Button(action: onSelect) {
                 VStack(alignment: .leading, spacing: 0) {
                     Text(program.displayName).font(.system(size: titleSize, weight: .semibold)).lineSpacing(2)
@@ -207,18 +260,37 @@ struct ProgramHeroCard: View {
                             .font(.system(size: countsSize))
                             .foregroundStyle(AppColors.muted)
                         }
-                        Spacer(minLength: 8)
-                        Image(systemName: "chevron.right").font(.system(size: 18)).foregroundStyle(AppColors.secondaryText)
+                        Spacer()
                     }.frame(minHeight: 48)
                 }.padding(16).frame(width: width, height: height, alignment: .topLeading).contentShape(Rectangle())
             }.buttonStyle(.plain)
                 .accessibilityIdentifier("program-card-\(program.id)")
                 .accessibilityAddTraits(isActive ? [.isSelected] : [])
-            Button(action: onEdit) {
-                Image(systemName: "pencil").font(.system(size: 18)).foregroundStyle(AppColors.secondaryText)
-                    .frame(width: 48, height: 48).background(AppColors.surfaceRaised.opacity(0.9), in: Circle())
-            }.buttonStyle(.plain).padding(12)
-                .accessibilityLabel("\(LanguageManager.t("programs.edit")) \(program.displayName)")
+            Menu {
+                Button(action: onEdit) {
+                    Label(LanguageManager.t("programs.edit"), systemImage: "pencil")
+                }
+                if let onShare {
+                    Button(action: onShare) {
+                        Label(LanguageManager.t("programs.share"), systemImage: "square.and.arrow.up")
+                    }
+                }
+                if let onDelete {
+                    Button(role: .destructive, action: onDelete) {
+                        Label(LanguageManager.t("modal.delete"), systemImage: "trash")
+                    }
+                }
+            } label: {
+                Image(systemName: "ellipsis")
+                    .rotationEffect(.degrees(90))
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(AppColors.secondaryText)
+                    .frame(width: 48, height: 48)
+                    .background(AppColors.surfaceRaised.opacity(0.9), in: Circle())
+            }
+            .menuOrder(.priority)
+            .accessibilityLabel("\(LanguageManager.t("programs.more")) \(program.displayName)")
+            .padding(12)
             if isActive {
                 Image(systemName: "checkmark.circle.fill").font(.system(size: 24)).foregroundStyle(AppColors.accent)
                     .padding(.top, 72).padding(.trailing, 24).accessibilityHidden(true)

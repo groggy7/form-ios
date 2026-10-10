@@ -601,6 +601,7 @@
   "header.newProgram": "Nouveau programme",
   "programs.import": "Importer du JSON",
   "programs.export": "Exporter",
+  "programs.share": "Partager",
   "programs.edit": "Modifier",
   "programs.active": "ACTIF",
   "programs.daysPerWeek": "{days} jours/semaine",

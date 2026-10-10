@@ -601,6 +601,7 @@
   "header.newProgram": "Yeni program",
   "programs.import": "JSON içe aktar",
   "programs.export": "Dışa aktar",
+  "programs.share": "Paylaş",
   "programs.edit": "Düzenle",
   "programs.active": "AKTİF",
   "programs.daysPerWeek": "Haftada {days} gün",
