@@ -223,6 +223,7 @@ public struct SettingsView: View {
                                         Text(cloudBackupSubtitle)
                                             .font(.system(size: 12))
                                             .foregroundColor(AppColors.secondaryText)
+                                            .multilineTextAlignment(.leading)
                                     }
                                     Spacer()
                                     Image(systemName: "chevron.right")
@@ -302,6 +303,7 @@ public struct SettingsView: View {
                                         Text(LanguageManager.t("settings.manage_subscription_desc"))
                                             .font(.system(size: 12))
                                             .foregroundColor(AppColors.secondaryText)
+                                            .multilineTextAlignment(.leading)
                                     }
                                     Spacer()
                                     Image(systemName: "arrow.up.right")
@@ -795,6 +797,7 @@ public struct CloudBackupSheet: View {
                                 Text(LanguageManager.t(proManager.isFeatureUnlocked(.cloudBackup) ? "settings.cloudBackupSubtitle" : "form_lab.mirror_free_restore"))
                                     .font(.system(size: 12))
                                     .foregroundColor(AppColors.secondaryText)
+                                    .multilineTextAlignment(.leading)
                             }
                         }
                     }
