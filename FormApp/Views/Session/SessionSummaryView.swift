@@ -164,83 +164,61 @@ public struct SessionSummaryView: View {
                                     .font(.system(size: 16, weight: .bold))
                                     .foregroundColor(AppColors.secondaryText)
 
-                                ForEach(Array(exerciseLogs.enumerated()), id: \.offset) { index, log in
-                                    let working = log.sets.filter { !$0.isWarmup }
-                                    let completedCount = working.count
-                                    let targetCount = (log.targetSets ?? 0) > 0 ? (log.targetSets ?? 0) : max(working.count, 1)
-                                    let isDone = completedCount >= targetCount && targetCount > 0
-                                    let isHalfway = completedCount > 0 && !isDone
-                                    let isUnstarted = completedCount == 0
-                                    let exerciseVolumeKg = working.reduce(0.0) { sum, set in sum + ((set.weightKg ?? 0.0) * Double(set.reps ?? 0)) }
+                                VStack(spacing: 0) {
+                                    ForEach(Array(exerciseLogs.enumerated()), id: \.offset) { index, log in
+                                        let working = log.sets.filter { !$0.isWarmup }
+                                        let completedCount = working.count
+                                        let targetCount = (log.targetSets ?? 0) > 0 ? (log.targetSets ?? 0) : max(working.count, 1)
+                                        let isUnstarted = completedCount == 0
+                                        let exerciseVolumeKg = working.reduce(0.0) { sum, set in sum + ((set.weightKg ?? 0.0) * Double(set.reps ?? 0)) }
 
-                                    Button(action: {
-                                        onSelectExercise?(index)
-                                    }) {
-                                        HStack(spacing: 12) {
-                                            if isDone {
-                                                Circle()
-                                                    .fill(AppColors.accent)
-                                                    .frame(width: 28, height: 28)
-                                                    .overlay(
-                                                        Image(systemName: "checkmark")
-                                                            .font(.system(size: 13, weight: .bold))
-                                                            .foregroundColor(AppColors.todaySelectionText)
-                                                    )
-                                            } else if isHalfway {
-                                                Circle()
-                                                    .fill(AppColors.unfinishedOrange.opacity(0.15))
-                                                    .overlay(
-                                                        Circle().stroke(AppColors.unfinishedOrange, lineWidth: 1.5)
-                                                    )
-                                                    .frame(width: 28, height: 28)
-                                                    .overlay(
-                                                        Image(systemName: "clock.fill")
-                                                            .font(.system(size: 12))
-                                                            .foregroundColor(AppColors.unfinishedOrange)
-                                                    )
-                                            } else {
-                                                Circle()
-                                                    .stroke(AppColors.muted.opacity(0.4), lineWidth: 1.5)
-                                                    .frame(width: 28, height: 28)
-                                            }
+                                        Button(action: {
+                                            onSelectExercise?(index)
+                                        }) {
+                                            HStack(spacing: 12) {
+                                                exerciseStatusBadge(completedCount: completedCount, targetCount: targetCount)
 
-                                            VStack(alignment: .leading, spacing: 3) {
-                                                Text(log.exerciseName)
+                                                VStack(alignment: .leading, spacing: 3) {
+                                                    Text(log.exerciseName)
+                                                        .font(.system(size: 14, weight: .semibold))
+                                                        .foregroundColor(AppColors.text)
+
+                                                    let subtitleText: String = {
+                                                        if isUnstarted {
+                                                            return "0/\(targetCount) sets • \(LanguageManager.t("history.notStarted"))"
+                                                        } else if exerciseVolumeKg <= 0.0 {
+                                                            return "\(completedCount)/\(targetCount) sets • \(LanguageManager.t("exercise.history.bodyweight"))"
+                                                        } else {
+                                                            return "\(completedCount)/\(targetCount) sets • \(weightUnit.formatVolume(exerciseVolumeKg)) \(weightUnit.label)"
+                                                        }
+                                                    }()
+
+                                                    Text(subtitleText)
+                                                        .font(.system(size: 12))
+                                                        .foregroundColor(AppColors.muted)
+                                                }
+
+                                                Spacer()
+
+                                                Image(systemName: "chevron.right")
                                                     .font(.system(size: 14, weight: .semibold))
-                                                    .foregroundColor(AppColors.text)
-
-                                                let subtitleText: String = {
-                                                    if isUnstarted {
-                                                        return "0/\(targetCount) sets • \(LanguageManager.t("history.notStarted"))"
-                                                    } else if exerciseVolumeKg <= 0.0 {
-                                                        return "\(completedCount)/\(targetCount) sets • \(LanguageManager.t("exercise.history.bodyweight"))"
-                                                    } else {
-                                                        return "\(completedCount)/\(targetCount) sets • \(weightUnit.formatVolume(exerciseVolumeKg)) \(weightUnit.label)"
-                                                    }
-                                                }()
-
-                                                Text(subtitleText)
-                                                    .font(.system(size: 12))
-                                                    .foregroundColor(AppColors.muted)
+                                                    .foregroundColor(AppColors.muted.opacity(0.6))
                                             }
-
-                                            Spacer()
-
-                                            Image(systemName: "chevron.right")
-                                                .font(.system(size: 14, weight: .semibold))
-                                                .foregroundColor(AppColors.muted.opacity(0.6))
+                                            .padding(.horizontal, 14)
+                                            .padding(.vertical, 10)
+                                            .frame(maxWidth: .infinity, minHeight: 56, alignment: .leading)
+                                            .contentShape(Rectangle())
                                         }
-                                        .padding(.horizontal, 14)
-                                        .padding(.vertical, 14)
-                                        .background(AppColors.surface)
-                                        .cornerRadius(12)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                                .stroke(AppColors.border, lineWidth: 1)
-                                        )
+                                        .buttonStyle(.plain)
                                     }
-                                    .buttonStyle(.plain)
                                 }
+                                .padding(.vertical, 4)
+                                .background(AppColors.surface)
+                                .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                        .stroke(AppColors.border, lineWidth: 1)
+                                )
                             }
                         }
                         .padding(20)
@@ -325,6 +303,47 @@ public struct SessionSummaryView: View {
                 }
             }
         }
+    }
+
+    private func exerciseStatusBadge(completedCount: Int, targetCount: Int) -> some View {
+        let isDone = completedCount >= targetCount
+        let isStarted = completedCount > 0
+        let statusColor = isDone ? AppColors.accent : (isStarted ? AppColors.unfinishedOrange : AppColors.muted)
+
+        return ZStack {
+            Circle()
+                .fill(isDone ? statusColor : statusColor.opacity(0.12))
+                .overlay(Circle().stroke(statusColor.opacity(isDone ? 0 : 0.35), lineWidth: 1))
+
+            if isDone {
+                Image(systemName: "checkmark")
+                    .font(.system(size: 13, weight: .bold))
+                    .foregroundColor(AppColors.background)
+            } else if isStarted {
+                ZStack {
+                    Circle().fill(statusColor.opacity(0.2))
+                    Path { path in
+                        let center = CGPoint(x: 6, y: 6)
+                        path.move(to: center)
+                        path.addArc(
+                            center: center, radius: 6,
+                            startAngle: .degrees(-90),
+                            endAngle: .degrees(-90 + 360 * min(Double(completedCount) / Double(targetCount), 1)),
+                            clockwise: false
+                        )
+                        path.closeSubpath()
+                    }
+                    .fill(statusColor)
+                }
+                .frame(width: 12, height: 12)
+            } else {
+                Image(systemName: "minus")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundColor(statusColor)
+            }
+        }
+        .frame(width: 28, height: 28)
+        .accessibilityHidden(true)
     }
 
     private var summaryMetricsCard: some View {
