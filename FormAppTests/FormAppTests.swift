@@ -1768,6 +1768,46 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
+    func testProgramHeroCardMenuOpenSnapshot() {
+        let programs = AppStore.loadBundledStarterPrograms()
+        guard let program = programs.first else { return }
+        let width: CGFloat = 353
+        let height: CGFloat = 240
+        let card = ProgramHeroCard(
+            program: program,
+            isActive: true,
+            width: width,
+            height: height,
+            titleSize: 18,
+            bodySize: 13,
+            daysSize: 12,
+            countsSize: 11,
+            onSelect: {},
+            onEdit: {},
+            onShare: {},
+            onDelete: {},
+            isMenuOpen: true
+        )
+        let controller = UIHostingController(rootView: card.padding(20))
+        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 280)
+        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 280))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        controller.view.layoutIfNeeded()
+
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { _ in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+        if let data = image.pngData() {
+            let path = "/Users/groggy/.gemini/antigravity/brain/5c1700b8-ad4e-4b3e-811c-dbe165a5b15c/ios_program_card_compact_menu.png"
+            try? data.write(to: URL(fileURLWithPath: path))
+            print("Successfully wrote snapshot to \(path)")
+        }
+    }
+
+    @MainActor
     func testTodayHeroCardDisabledButtonSnapshot() {
         let store = AppStore.shared
         guard let workout = store.activeProgram?.workouts.first(where: { $0.day == 5 }) ?? store.activeWorkout else {

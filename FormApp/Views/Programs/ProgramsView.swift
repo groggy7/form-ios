@@ -64,6 +64,7 @@ public struct ProgramsView: View {
     @State private var showFileImporter = false
     @State private var sharingItem: ProgramShareItem? = nil
     @State private var deletingProgram: Program? = nil
+    @State private var menuProgramId: String? = nil
     @ScaledMetric(relativeTo: .headline) private var titleSize: CGFloat = 18
     @ScaledMetric(relativeTo: .body) private var bodySize: CGFloat = 13
     @ScaledMetric(relativeTo: .subheadline) private var daysSize: CGFloat = 12
@@ -120,13 +121,47 @@ public struct ProgramsView: View {
                         ForEach(store.state.programs) { program in
                             ProgramHeroCard(program: program, isActive: program.id == store.state.activeProgramId,
                                 width: width, height: height, titleSize: titleSize, bodySize: bodySize, daysSize: daysSize, countsSize: countsSize,
-                                onSelect: { store.switchProgram(to: program.id); onDismiss() },
+                                onSelect: {
+                                    if menuProgramId != nil {
+                                        withAnimation(.spring(response: 0.2, dampingFraction: 0.85)) {
+                                            menuProgramId = nil
+                                        }
+                                    } else {
+                                        store.switchProgram(to: program.id)
+                                        onDismiss()
+                                    }
+                                },
                                 onEdit: { editingProgram = program },
                                 onShare: { shareProgram(program) },
-                                onDelete: { deletingProgram = program })
+                                onDelete: { deletingProgram = program },
+                                isMenuOpen: menuProgramId == program.id,
+                                onToggleMenu: {
+                                    withAnimation(.spring(response: 0.22, dampingFraction: 0.8)) {
+                                        if menuProgramId == program.id {
+                                            menuProgramId = nil
+                                        } else {
+                                            menuProgramId = program.id
+                                        }
+                                    }
+                                },
+                                onCloseMenu: {
+                                    withAnimation(.spring(response: 0.2, dampingFraction: 0.85)) {
+                                        menuProgramId = nil
+                                    }
+                                })
+                            .zIndex(menuProgramId == program.id ? 10 : 0)
                         }
                     }.padding(.horizontal, 20).padding(.top, 10).padding(.bottom, 24)
                 }
+                .simultaneousGesture(
+                    TapGesture().onEnded {
+                        if menuProgramId != nil {
+                            withAnimation(.spring(response: 0.2, dampingFraction: 0.85)) {
+                                menuProgramId = nil
+                            }
+                        }
+                    }
+                )
             }
             .background(AppColors.background)
             .navigationTitle(LanguageManager.t("programs.title"))
@@ -202,8 +237,52 @@ struct ProgramHeroCard: View {
     let onEdit: () -> Void
     var onShare: (() -> Void)? = nil
     var onDelete: (() -> Void)? = nil
+    var isMenuOpen: Bool = false
+    var onToggleMenu: (() -> Void)? = nil
+    var onCloseMenu: (() -> Void)? = nil
+    @State private var localMenuOpen = false
 
-    init(program: Program, isActive: Bool, width: CGFloat, height: CGFloat, titleSize: CGFloat, bodySize: CGFloat, daysSize: CGFloat, countsSize: CGFloat = 11, onSelect: @escaping () -> Void, onEdit: @escaping () -> Void, onShare: (() -> Void)? = nil, onDelete: (() -> Void)? = nil) {
+    private var menuVisible: Bool {
+        onToggleMenu != nil ? isMenuOpen : (isMenuOpen || localMenuOpen)
+    }
+
+    private func toggleMenu() {
+        if let onToggleMenu {
+            onToggleMenu()
+        } else {
+            withAnimation(.spring(response: 0.22, dampingFraction: 0.8)) {
+                localMenuOpen.toggle()
+            }
+        }
+    }
+
+    private func closeMenu() {
+        if let onCloseMenu {
+            onCloseMenu()
+        } else {
+            withAnimation(.spring(response: 0.2, dampingFraction: 0.85)) {
+                localMenuOpen = false
+            }
+        }
+    }
+
+    init(
+        program: Program,
+        isActive: Bool,
+        width: CGFloat,
+        height: CGFloat,
+        titleSize: CGFloat,
+        bodySize: CGFloat,
+        daysSize: CGFloat,
+        countsSize: CGFloat = 11,
+        onSelect: @escaping () -> Void,
+        onEdit: @escaping () -> Void,
+        onShare: (() -> Void)? = nil,
+        onDelete: (() -> Void)? = nil,
+        isMenuOpen: Bool = false,
+        onToggleMenu: (() -> Void)? = nil,
+        onCloseMenu: (() -> Void)? = nil
+    ) {
         self.program = program
         self.isActive = isActive
         self.width = width
@@ -216,6 +295,9 @@ struct ProgramHeroCard: View {
         self.onEdit = onEdit
         self.onShare = onShare
         self.onDelete = onDelete
+        self.isMenuOpen = isMenuOpen
+        self.onToggleMenu = onToggleMenu
+        self.onCloseMenu = onCloseMenu
     }
 
     var body: some View {
@@ -266,34 +348,126 @@ struct ProgramHeroCard: View {
             }.buttonStyle(.plain)
                 .accessibilityIdentifier("program-card-\(program.id)")
                 .accessibilityAddTraits(isActive ? [.isSelected] : [])
-            Menu {
-                Button(action: onEdit) {
-                    Label(LanguageManager.t("programs.edit"), systemImage: "pencil")
-                }
-                if let onShare {
-                    Button(action: onShare) {
-                        Label(LanguageManager.t("programs.share"), systemImage: "square.and.arrow.up")
+
+            if menuVisible {
+                Color.black.opacity(0.001)
+                    .frame(width: width, height: height)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        closeMenu()
                     }
-                }
-                if let onDelete {
-                    Button(role: .destructive, action: onDelete) {
-                        Label(LanguageManager.t("modal.delete"), systemImage: "trash")
-                    }
-                }
-            } label: {
-                Image(systemName: "ellipsis")
-                    .rotationEffect(.degrees(90))
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundStyle(AppColors.secondaryText)
-                    .frame(width: 48, height: 48)
-                    .background(AppColors.surfaceRaised.opacity(0.9), in: Circle())
             }
-            .menuOrder(.priority)
-            .accessibilityLabel("\(LanguageManager.t("programs.more")) \(program.displayName)")
-            .padding(12)
+
             if isActive {
                 Image(systemName: "checkmark.circle.fill").font(.system(size: 24)).foregroundStyle(AppColors.accent)
                     .padding(.top, 72).padding(.trailing, 24).accessibilityHidden(true)
+            }
+
+            Button(action: toggleMenu) {
+                Image(systemName: "ellipsis")
+                    .rotationEffect(.degrees(90))
+                    .font(.system(size: 18, weight: .semibold))
+                    .foregroundStyle(menuVisible ? AppColors.text : AppColors.secondaryText)
+                    .frame(width: 48, height: 48)
+                    .background(AppColors.surfaceRaised.opacity(0.9), in: Circle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel("\(LanguageManager.t("programs.more")) \(program.displayName)")
+            .padding(12)
+
+            if menuVisible {
+                VStack(spacing: 0) {
+                    Button(action: {
+                        closeMenu()
+                        onEdit()
+                    }) {
+                        HStack(spacing: 10) {
+                            Image(systemName: "pencil")
+                                .font(.system(size: 14, weight: .semibold))
+                                .foregroundStyle(AppColors.secondaryText)
+                                .frame(width: 18, alignment: .center)
+                            Text(LanguageManager.t("programs.edit"))
+                                .font(.system(size: 14, weight: .medium))
+                                .foregroundStyle(AppColors.text)
+                            Spacer()
+                        }
+                        .padding(.horizontal, 14)
+                        .frame(height: 38)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+
+                    if let onShare {
+                        Rectangle()
+                            .fill(AppColors.border.opacity(0.6))
+                            .frame(height: 1)
+                            .padding(.horizontal, 8)
+
+                        Button(action: {
+                            closeMenu()
+                            onShare()
+                        }) {
+                            HStack(spacing: 10) {
+                                Image(systemName: "square.and.arrow.up")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .foregroundStyle(AppColors.secondaryText)
+                                    .frame(width: 18, alignment: .center)
+                                Text(LanguageManager.t("programs.share"))
+                                    .font(.system(size: 14, weight: .medium))
+                                    .foregroundStyle(AppColors.text)
+                                Spacer()
+                            }
+                            .padding(.horizontal, 14)
+                            .frame(height: 38)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                    }
+
+                    if let onDelete {
+                        Rectangle()
+                            .fill(AppColors.border.opacity(0.6))
+                            .frame(height: 1)
+                            .padding(.horizontal, 8)
+
+                        Button(action: {
+                            closeMenu()
+                            onDelete()
+                        }) {
+                            HStack(spacing: 10) {
+                                Image(systemName: "trash")
+                                    .font(.system(size: 14, weight: .semibold))
+                                    .foregroundStyle(AppColors.danger)
+                                    .frame(width: 18, alignment: .center)
+                                Text(LanguageManager.t("modal.delete"))
+                                    .font(.system(size: 14, weight: .medium))
+                                    .foregroundStyle(AppColors.danger)
+                                Spacer()
+                            }
+                            .padding(.horizontal, 14)
+                            .frame(height: 38)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                    }
+                }
+                .padding(.vertical, 4)
+                .frame(width: 148)
+                .background(AppColors.surfaceRaised)
+                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .stroke(AppColors.border, lineWidth: 1)
+                )
+                .shadow(color: Color.black.opacity(0.45), radius: 12, x: 0, y: 6)
+                .padding(.top, 64)
+                .padding(.trailing, 12)
+                .transition(
+                    .asymmetric(
+                        insertion: .scale(scale: 0.85, anchor: .topTrailing).combined(with: .opacity),
+                        removal: .scale(scale: 0.85, anchor: .topTrailing).combined(with: .opacity)
+                    )
+                )
             }
         }
         .frame(width: width, height: height).clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
