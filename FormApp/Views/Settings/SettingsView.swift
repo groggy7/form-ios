@@ -579,6 +579,11 @@ struct LanguageSelectionSheet: View {
     var onSelect: (String) -> Void
     var onDismiss: () -> Void
 
+    private var deviceLanguageFlagImage: String {
+        let code = LanguageManager.resolveLanguage(Locale.preferredLanguages)
+        return LanguageManager.flagImageName(for: code)
+    }
+
     var body: some View {
         VStack(spacing: 0) {
             HStack(spacing: 12) {
@@ -604,7 +609,8 @@ struct LanguageSelectionSheet: View {
             ScrollView {
                 VStack(spacing: 12) {
                     languageOption(code: LanguageManager.system,
-                        title: LanguageManager.t("settings.deviceLanguage"), subtitle: deviceLanguageName)
+                        title: LanguageManager.t("settings.deviceLanguage"), subtitle: deviceLanguageName,
+                        flagImageName: deviceLanguageFlagImage)
                         .background(AppColors.surface)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
                         .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
@@ -614,7 +620,8 @@ struct LanguageSelectionSheet: View {
                             if index > 0 {
                                 Rectangle().fill(AppColors.border).frame(height: 1).padding(.horizontal, 16)
                             }
-                            languageOption(code: language.code, title: language.name)
+                            languageOption(code: language.code, title: language.name,
+                                flagImageName: LanguageManager.flagImageName(for: language.code))
                         }
                     }
                     .background(AppColors.surface)
@@ -629,10 +636,15 @@ struct LanguageSelectionSheet: View {
         .accessibilityIdentifier("language-picker-sheet")
     }
 
-    private func languageOption(code: String, title: String, subtitle: String? = nil) -> some View {
+    private func languageOption(code: String, title: String, subtitle: String? = nil, flagImageName: String) -> some View {
         let selected = preference == code
         return Button { onSelect(code) } label: {
             HStack(spacing: 14) {
+                Image(flagImageName)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 26, height: 26)
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
                         .font(.body.weight(selected ? .semibold : .medium))

@@ -43,6 +43,12 @@ public final class LanguageManager: ObservableObject {
         if languagePreference == Self.system { currentLanguage = Self.resolveLanguage(Locale.preferredLanguages) }
     }
     public static func setLanguage(_ lang: String) { shared.languagePreference = normalizePreference(lang) }
+    public static func flagImageName(for code: String) -> String {
+        switch code {
+        case "en", "tr", "de", "fr", "es": return "ic_flag_\(code)"
+        default: return "ic_flag_en"
+        }
+    }
     public static var workoutDays: [String] {
         let formatter = DateFormatter(); formatter.locale = locale
         let names = formatter.weekdaySymbols!
