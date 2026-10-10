@@ -140,7 +140,7 @@ public enum WorkoutSessionUtils {
 
     public static func formatSessionPr(weightKg: Double, reps: Int, unit: WeightUnit = .kg, isBodyweight: Bool = false, isAssisted: Bool = false) -> String {
         if isBodyweight && !isAssisted {
-            let added = weightKg == 0 ? "" : " +\(formatWeight(weightKg, unit: unit))"
+            let added = weightKg == 0 ? "" : " +\(unit.formatDisplayWeight(weightKg))"
             return "BW\(added) ×\(reps)"
         }
         return !isAssisted && weightKg == 0 ? "×\(reps)" : "\(formatWeight(weightKg, unit: unit))x\(reps)"

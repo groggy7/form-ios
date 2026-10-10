@@ -113,8 +113,12 @@ public struct SetLoggingTable: View {
             .foregroundColor(AppColors.muted)
             .padding(.horizontal, 14)
 
-            if allowsZeroWeight {
-                Text(LanguageManager.t(isAssisted ? "table.assistance_hint" : "table.no_added_weight"))
+            let weightHint = isAssisted ? LanguageManager.t("table.assistance_hint") : [
+                isBodyweight ? "BW = \(LanguageManager.t("exercise.history.bodyweight"))." : nil,
+                allowsZeroWeight ? LanguageManager.t("table.no_added_weight") : nil
+            ].compactMap { $0 }.joined(separator: " ")
+            if !weightHint.isEmpty {
+                Text(weightHint)
                     .font(.system(size: 12)).foregroundColor(AppColors.muted)
                     .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
             }

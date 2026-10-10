@@ -10868,9 +10868,12 @@ final class BodyweightLoggingTests: XCTestCase {
         let previousLanguage = LanguageManager.shared.currentLanguage
         let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap { $0.windows }.first { $0.isKeyWindow }
         defer { LanguageManager.setLanguage(previousLanguage); previousWindow?.makeKeyAndVisible() }
-        for language in ["en", "tr"] { for (isAssisted, load) in [(false, 0.0), (false, 20.0), (false, 2.5), (true, 40.0)] {
+        for language in ["en", "tr", "de", "fr", "es"] { for (isAssisted, load) in [(false, 0.0), (false, 20.0), (false, 2.5), (true, 40.0)] {
             LanguageManager.setLanguage(language)
             let ex = isAssisted ? assisted : push
+            if load == 2.5 {
+                XCTAssertEqual(WorkoutSessionUtils.formatSessionPr(weightKg: load, reps: 10, isBodyweight: true), language == "en" ? "BW +2.5 ×10" : "BW +2,5 ×10")
+            }
             let rows = [ExerciseSetLog(setNumber: 1, weightInput: isAssisted ? "40" : "0", repsInput: "11", weightKg: isAssisted ? 40 : 0, completedReps: 11, isCompleted: true), WorkoutSessionUtils.newSet(exercise: ex, number: 2)]
             let ghost = WorkoutSessionUtils.computeGhostTarget(previousSets: [SessionSetLog(setNumber: 1, weightKg: load, reps: 10)], workingSetIndex: 0, exercise: ex)
             let view = ScrollView { SetLoggingTable(sets: rows, prescription: "2 × 8–12", onUpdateSet: { _,_,_ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in }, allowsZeroWeight: true, isAssisted: isAssisted, isBodyweight: !isAssisted, ghostTargets: [0: ghost]).padding(16) }.background(AppColors.background).environment(\.sizeCategory, .accessibilityMedium)
