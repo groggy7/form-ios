@@ -10704,6 +10704,71 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
     }
 }
 
+@MainActor
+final class SessionSetCountPersistenceTests: XCTestCase {
+    func testRemovingWorkingSetsDoesNotChangeProgramAfterSavingAndReloading() throws {
+        let defaults = UserDefaults.standard
+        let domain = try XCTUnwrap(Bundle.main.bundleIdentifier)
+        let original = defaults.persistentDomain(forName: domain) ?? [:]
+        defer { defaults.setPersistentDomain(original, forName: domain) }
+        let access = ProAccessManager.shared
+        let cloudAccess = access.isFeatureUnlocked(.cloudBackup)
+        access.setFeatureOverride(.cloudBackup, unlocked: false)
+        defer { access.setFeatureOverride(.cloudBackup, unlocked: cloudAccess == access.isProSubscribed ? nil : cloudAccess) }
+        defaults.removeObject(forKey: "active_session_v1")
+        defaults.set(true, forKey: "seeded_starters_v9")
+        let squat = Exercise(id: "squat", name: "Barbell Back Squat", exerciseId: "barbell-back-squat",
+            sets: 6, reps: RepTarget(min: 5, max: 5), restSeconds: 0)
+        let program = Program(id: "six-set-squats", name: "Six-set squats", workouts: [
+            Workout(id: "squat-day", day: 1, title: "Squats", exercises: [squat])])
+        defaults.set(try JSONEncoder().encode(StoredAppState(programs: [program], activeProgramId: program.id,
+            currentWeekKey: "2020-W01")), forKey: "stored_app_state")
+        var store = AppStore()
+        let savedProgram = try XCTUnwrap(store.state.programs.first)
+        let workout = try XCTUnwrap(savedProgram.workouts.first)
+        XCTAssertTrue(store.startActiveSession(programId: program.id, workout: workout, allowPast: true))
+        XCTAssertEqual(store.activeSession?.setsByExercise[squat.id]?.count, 6)
+        for _ in 0..<4 {
+            store.updateActiveSession { draft in
+                var copy = draft
+                var sets = copy.setsByExercise[squat.id]!
+                sets.removeLast()
+                copy.setsByExercise[squat.id] = AppStore.reindexSets(sets)
+                return copy
+            }
+        }
+        XCTAssertEqual(store.activeSession?.setsByExercise[squat.id]?.count, 2)
+        XCTAssertEqual(store.state.programs, [savedProgram])
+        store.updateActiveSession { draft in
+            var copy = draft
+            copy.setsByExercise[squat.id] = copy.setsByExercise[squat.id]!.map { set in
+                var result = set
+                result.weightInput = "100"; result.repsInput = "5"
+                result.weightKg = 100; result.completedReps = 5; result.isCompleted = true
+                return result
+            }
+            return copy
+        }
+        let finished = try XCTUnwrap(store.activeSession)
+        let now = Int64(Date().timeIntervalSince1970 * 1000)
+        store.completeActiveSession(SessionProgress.from(draft: finished, nowEpochMillis: now)
+            .record(draft: finished, completedAtEpochMillis: now))
+        let record = try XCTUnwrap(store.state.history.first)
+        XCTAssertEqual(record.isComplete, true)
+        XCTAssertEqual(record.totalCompletedSets, 2)
+        XCTAssertEqual(record.exerciseLogs.first?.targetSets, 2)
+        XCTAssertEqual(record.exerciseLogs.first?.sets.count, 2)
+        XCTAssertEqual(record.workoutSnapshot?.exercises.first?.sets, 6)
+        store = AppStore()
+        XCTAssertEqual(store.state.programs, [savedProgram])
+        XCTAssertEqual(store.state.history, [record])
+        XCTAssertTrue(store.startActiveSession(programId: program.id, workout: store.state.programs[0].workouts[0], allowPast: true))
+        let freshSets = try XCTUnwrap(store.activeSession?.setsByExercise[squat.id])
+        XCTAssertEqual(freshSets.count, 6)
+        XCTAssertTrue(freshSets.allSatisfy { !$0.isCompleted })
+    }
+}
+
 final class SessionCompletionTimerTests: XCTestCase {
     private let now: Int64 = 10_000
     private var exercises: [Exercise] {
