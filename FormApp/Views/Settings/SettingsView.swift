@@ -183,7 +183,11 @@ public struct SettingsView: View {
                             Button(action: {
                                 showCloudBackupSheet = true
                             }) {
-                                HStack {
+                                HStack(spacing: 12) {
+                                    Image(systemName: "icloud.fill")
+                                        .font(.system(size: 18))
+                                        .foregroundColor(AppColors.secondaryText)
+                                        .frame(width: 24, height: 24)
                                     Text(LanguageManager.t("settings.cloudBackup"))
                                         .font(.system(size: 15))
                                         .foregroundColor(AppColors.text)
@@ -201,7 +205,11 @@ public struct SettingsView: View {
                             Button(action: {
                                 showImportExportSheet = true
                             }) {
-                                HStack {
+                                HStack(spacing: 12) {
+                                    Image(systemName: "arrow.left.arrow.right")
+                                        .font(.system(size: 15, weight: .semibold))
+                                        .foregroundColor(AppColors.secondaryText)
+                                        .frame(width: 24, height: 24)
                                     Text(LanguageManager.t("settings.importExportData"))
                                         .font(.system(size: 15))
                                         .foregroundColor(AppColors.text)
