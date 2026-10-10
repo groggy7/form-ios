@@ -321,7 +321,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 180
+              "restSeconds": 180,
+              "name": "Incline Barbell Bench Press",
+              "prescription": "",
+              "cues": "Set a stable position on the bench and keep wrists over forearms.\nLower the weight toward your chest with control, then press it back up.\nSafety: Check rack safeties and arrange a competent spotter when needed before pressing.\nSupport: Keep feet secure and upper back settled on the bench.",
+              "avoid": "Avoid bouncing the weight or losing control of your shoulder position.\nKeep wrists stacked over forearms; use less weight if they fold back or the load wobbles.",
+              "movementType": "press",
+              "movementAssetId": "incline-barbell-bench-press",
+              "videos": []
             },
             {
               "id": "aesthetic-push-a-lever-chest-press",
@@ -333,7 +340,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Lever Chest Press",
+              "prescription": "",
+              "cues": "Adjust the seat so the handles start near chest height; keep your back supported.\nPress the handles forward, then return through a controlled range.\nGrip: Keep wrists over forearms and follow the machine’s comfortable path.",
+              "avoid": "Avoid lifting your torso off the pad or letting the machine pull you back.",
+              "movementType": "press",
+              "videos": []
             },
             {
               "id": "aesthetic-push-a-cable-standing-fly",
@@ -345,7 +358,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Cable Standing Fly",
+              "prescription": "",
+              "cues": "Set the handles for your chosen fly angle and keep a small bend at the elbows.\nBring your arms together in front of your chest, then open slowly.",
+              "avoid": "Avoid turning the fly into a press or stretching past shoulder control.\nDo not chase a deep stretch; shorten the arc if the shoulders roll forward or lose control.",
+              "movementType": "press",
+              "videos": []
             },
             {
               "id": "aesthetic-push-a-cable-lateral-raise",
@@ -357,7 +376,14 @@
                 "toFailure": false,
                 "perSide": true
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Cable Lateral Raise",
+              "prescription": "",
+              "cues": "Start with your arms low and elbows softly bent.\nRaise your arms out to a comfortable shoulder height, then lower slowly.",
+              "avoid": "Do not swing the torso or jerk the neck to lift higher; use less weight and a comfortable range.",
+              "movementType": "shoulder-raise",
+              "movementAssetId": "cable-lateral-raise",
+              "videos": []
             },
             {
               "id": "aesthetic-push-a-rope-triceps-pressdown",
@@ -369,7 +395,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Rope Triceps Pressdown",
+              "prescription": "",
+              "cues": "Set a high cable or band and keep your upper arms near your sides.\nStraighten your elbows to press down, then return slowly.",
+              "avoid": "Do not swing the upper arm or lean body weight onto the handle; reduce resistance and move at the elbow.",
+              "movementType": "triceps",
+              "movementAssetId": "rope-triceps-pressdown",
+              "videos": []
             }
           ],
           "tone": "violet"
@@ -396,7 +429,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dual Cable Lat Pulldown",
+              "prescription": "",
+              "cues": "Set a stable seat or stance and take a comfortable grip on the handle.\nPull toward your upper chest, then let your arms rise slowly.\nSupport: Secure the seat pad or band anchor before pulling.",
+              "avoid": "Avoid throwing your torso backward or pulling behind your neck.\nDo not heave the torso backward; reduce resistance if you need momentum.",
+              "movementType": "pull-up",
+              "videos": []
             },
             {
               "id": "aesthetic-pull-a-chest-supported-dumbbell-row",
@@ -408,7 +447,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Chest-Supported Dumbbell Row",
+              "prescription": "",
+              "cues": "Set your torso against the support or brace it in a stable position.\nPull the load toward your torso with your elbows, then let your arms extend slowly.",
+              "avoid": "Do not jerk with the torso or let the load pull you forward; lighten it and control the return.",
+              "movementType": "row",
+              "movementAssetId": "chest-supported-dumbbell-row",
+              "videos": []
             },
             {
               "id": "aesthetic-pull-a-lever-seated-reverse-fly",
@@ -420,7 +466,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Lever Seated Reverse Fly",
+              "prescription": "",
+              "cues": "Support your chest or hinge at the hips with arms hanging below you.\nOpen your arms to the sides with soft elbows, then return slowly.\nFit: Adjust the seat so handles or arm pads match shoulder height.",
+              "avoid": "Avoid turning the fly into a row or lifting by swinging your torso.\nUse less weight if you swing the torso or jerk the weights upward.",
+              "movementType": "shoulder-raise",
+              "videos": []
             },
             {
               "id": "aesthetic-pull-a-incline-dumbbell-curl",
@@ -432,7 +484,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Incline Dumbbell Curl",
+              "prescription": "",
+              "cues": "Sit back against the incline bench with arms hanging by your sides.\nCurl without lifting your upper arms, then lower slowly.\nIncline: Keep the back supported; reduce recline if the starting shoulder position feels forced.",
+              "avoid": "Avoid leaning off the bench or swinging the weights.\nDo not swing the body to finish; lighten the load and control the lowering.",
+              "movementType": "curl",
+              "movementAssetId": "incline-dumbbell-curl",
+              "videos": []
             },
             {
               "id": "aesthetic-pull-a-dumbbell-hammer-curl",
@@ -444,7 +503,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Dumbbell Hammer Curl",
+              "prescription": "",
+              "cues": "Hold the weights with palms facing inward and elbows near your sides.\nCurl without rotating your wrists, then lower slowly.",
+              "avoid": "Do not swing the body or fold the wrists to finish; lighten the load and control the lowering.",
+              "movementType": "curl",
+              "movementAssetId": "dumbbell-hammer-curl",
+              "videos": []
             }
           ],
           "tone": "blue"
@@ -471,7 +537,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 180
+              "restSeconds": 180,
+              "name": "Sled Hack Squat",
+              "prescription": "",
+              "cues": "Set the seat or pads to fit the machine; keep your feet stable on the platform.\nBend hips and knees through a comfortable range, then press to stand.\nSafety: Locate and test the release and safety stops before loading.",
+              "avoid": "Avoid lifting your heels or forcing the machine past your controlled range.\nDo not let the sled drop; reduce the load if you cannot reverse smoothly.",
+              "movementType": "squat",
+              "videos": []
             },
             {
               "id": "aesthetic-legs-a-leg-press",
@@ -483,7 +555,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Leg Press",
+              "prescription": "",
+              "cues": "Set a stable foot position on the platform and keep hips against the seat.\nLower the sled as far as you can keep your pelvis stable, then press it away.\nSafety: Locate and test the release and safety stops before loading.",
+              "avoid": "Avoid letting your pelvis lift or snapping your knees straight.\nDo not let the sled drop; reduce the load if you cannot reverse smoothly.",
+              "movementType": "squat",
+              "movementAssetId": "leg-press-45-degree",
+              "videos": []
             },
             {
               "id": "aesthetic-legs-a-leg-extension",
@@ -495,7 +574,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Leg Extension",
+              "prescription": "",
+              "cues": "Align your knees with the machine pivot and place the pad above your ankles.\nStraighten your knees smoothly, then lower the lever with control.\nFit: Align your knee with the machine pivot and place the pad above the ankle.",
+              "avoid": "Avoid kicking the weight up or letting the stack slam.\nKeep hips on the seat; reduce the load if you swing backward to lift it.",
+              "movementType": "squat",
+              "movementAssetId": "leg-extension",
+              "videos": []
             },
             {
               "id": "aesthetic-legs-a-seated-leg-curl",
@@ -507,7 +593,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Seated Leg Curl",
+              "prescription": "",
+              "cues": "Align your knee with the machine pivot and secure the pads.\nBend your knee to pull the pad toward you, then return slowly.\nFit: Secure the pad or ankle strap; on a machine, align the knee with its pivot.",
+              "avoid": "Keep hips on the support; lower resistance if they lift to finish.\nDo not let the stack slam or cable snap back; control the return.",
+              "movementType": "hinge",
+              "movementAssetId": "seated-leg-curl",
+              "videos": []
             },
             {
               "id": "aesthetic-legs-a-standing-machine-calf-raise",
@@ -519,7 +612,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Standing Machine Calf Raise",
+              "prescription": "",
+              "cues": "Place the balls of your feet securely on the platform with knees softly straight.\nRaise your heels, then lower through a comfortable ankle range.",
+              "avoid": "Do not bounce or roll the ankles outward; slow down and reduce resistance if needed.",
+              "movementType": "calf",
+              "movementAssetId": "standing-machine-calf-raise",
+              "videos": []
             }
           ],
           "tone": "orange"
@@ -547,7 +647,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Incline Dumbbell Press",
+              "prescription": "",
+              "cues": "Set a stable position on the bench and keep wrists over forearms.\nLower the weight toward your chest with control, then press it back up.\nSupport: Keep feet secure and upper back settled on the bench.",
+              "avoid": "Avoid bouncing the weight or losing control of your shoulder position.\nKeep wrists stacked over forearms; use less weight if they fold back or the load wobbles.",
+              "movementType": "press",
+              "movementAssetId": "incline-dumbbell-press",
+              "videos": []
             },
             {
               "id": "aesthetic-upper-b-cable-seated-row",
@@ -559,7 +666,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Cable Seated Row",
+              "prescription": "",
+              "cues": "Set your torso against the support or brace it in a stable position.\nPull the load toward your torso with your elbows, then let your arms extend slowly.",
+              "avoid": "Do not jerk with the torso or let the load pull you forward; lighten it and control the return.",
+              "movementType": "row",
+              "videos": []
             },
             {
               "id": "aesthetic-upper-b-dumbbell-seated-shoulder-press",
@@ -571,7 +684,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dumbbell Seated Shoulder Press",
+              "prescription": "",
+              "cues": "Start with the weight near shoulder height, wrists supported and trunk braced.\nPress overhead, then lower back to your comfortable start position.\nShoulders: Let the shoulder blades rotate upward as you press; keep ribs over the pelvis.",
+              "avoid": "Do not lean farther back to finish; reduce the load and keep ribs over the pelvis.",
+              "movementType": "press",
+              "videos": []
             },
             {
               "id": "aesthetic-upper-b-dumbbell-lateral-raise",
@@ -583,7 +702,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Dumbbell Lateral Raise",
+              "prescription": "",
+              "cues": "Start with your arms low and elbows softly bent.\nRaise your arms out to a comfortable shoulder height, then lower slowly.",
+              "avoid": "Do not swing the torso or jerk the neck to lift higher; use less weight and a comfortable range.",
+              "movementType": "shoulder-raise",
+              "movementAssetId": "dumbbell-lateral-raise",
+              "videos": []
             },
             {
               "id": "aesthetic-upper-b-cable-curl",
@@ -595,7 +721,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Cable Curl",
+              "prescription": "",
+              "cues": "Keep your upper arms near your torso and hold the load with steady wrists.\nBend your elbows to lift the load, then lower with control.",
+              "avoid": "Do not swing the body or fold the wrists to finish; lighten the load and control the lowering.",
+              "movementType": "curl",
+              "videos": []
             },
             {
               "id": "aesthetic-upper-b-overhead-cable-triceps-extension",
@@ -607,7 +739,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Overhead Cable Triceps Extension",
+              "prescription": "",
+              "cues": "Hold the load overhead with elbows aimed generally forward and trunk braced.\nBend your elbows to lower the load, then extend them under control.\nControl: Start light and establish a repeatable path that keeps the weight clear of your face.",
+              "avoid": "Avoid arching your lower back or letting the load fall behind you.\nDo not drop into the stretched position; shorten the range if elbow or shoulder control fails.",
+              "movementType": "triceps",
+              "movementAssetId": "overhead-cable-triceps-extension",
+              "videos": []
             }
           ],
           "tone": "lime"
@@ -635,7 +774,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 180
+              "restSeconds": 180,
+              "name": "Barbell Romanian Deadlift",
+              "prescription": "",
+              "cues": "Soften your knees, brace, and move your hips back while keeping the weight close.\nLower to a controlled hamstring stretch, then extend your hips to stand.\nRange: Stop when the hips cannot travel farther back without changing your trunk position.",
+              "avoid": "Do not round farther to gain depth; shorten the hinge and keep the hips moving backward.",
+              "movementType": "hinge",
+              "movementAssetId": "barbell-romanian-deadlift",
+              "videos": []
             },
             {
               "id": "aesthetic-lower-b-smith-split-squat",
@@ -647,7 +793,13 @@
                 "toFailure": false,
                 "perSide": true
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Smith Split Squat",
+              "prescription": "",
+              "cues": "Take a stable staggered stance; bend both knees while keeping your front foot planted.\nLower to a comfortable depth and rise through the front leg.\nBalance: Leave some width between your feet; let the front knee follow the toes.\nSmith: Set safety stops, practise the hooks, and match your stance or bench to the fixed track.",
+              "avoid": "Avoid pushing off the back foot so hard that you lose balance.\nDo not hit the rear knee on the floor; shorten the descent if needed.",
+              "movementType": "lunge",
+              "videos": []
             },
             {
               "id": "aesthetic-lower-b-lever-machine-hip-thrust",
@@ -659,7 +811,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Lever Machine Hip Thrust",
+              "prescription": "",
+              "cues": "Support your upper back on the bench, plant your feet, and secure the load over your hips.\nLift your hips until your trunk and thighs align; lower with control.",
+              "avoid": "Do not arch the lower back for height; finish with the hips and reduce the lift if ribs flare.",
+              "movementType": "hinge",
+              "videos": []
             },
             {
               "id": "aesthetic-lower-b-lying-leg-curl",
@@ -671,7 +829,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Lying Leg Curl",
+              "prescription": "",
+              "cues": "Align your knee with the machine pivot and secure the pads.\nBend your knee to pull the pad toward you, then return slowly.\nFit: Secure the pad or ankle strap; on a machine, align the knee with its pivot.",
+              "avoid": "Keep hips on the support; lower resistance if they lift to finish.\nDo not let the stack slam or cable snap back; control the return.",
+              "movementType": "hinge",
+              "movementAssetId": "lying-leg-curl",
+              "videos": []
             },
             {
               "id": "aesthetic-lower-b-seated-machine-calf-raise",
@@ -683,7 +848,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Seated Machine Calf Raise",
+              "prescription": "",
+              "cues": "Set the thigh pad securely and place the balls of your feet on the platform.\nLift your heels, then lower slowly through a comfortable range.",
+              "avoid": "Avoid bouncing the load or lifting your thighs off the pad.\nDo not bounce through the bottom; reduce the load until each rise and lowering is controlled.",
+              "movementType": "calf",
+              "movementAssetId": "seated-machine-calf-raise",
+              "videos": []
             },
             {
               "id": "aesthetic-lower-b-kneeling-cable-crunch",
@@ -695,7 +867,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Kneeling Cable Crunch",
+              "prescription": "",
+              "cues": "Kneel facing the high cable with the rope held near your head.\nCurl your ribs toward your pelvis, then return slowly.",
+              "avoid": "Avoid pulling mainly with your arms or swinging your hips.\nAvoid yanking the neck or using leg momentum; make the movement smaller and slower.",
+              "movementType": "core",
+              "movementAssetId": "kneeling-cable-crunch",
+              "videos": []
             }
           ],
           "tone": "rose"
@@ -736,7 +915,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 180
+              "restSeconds": 180,
+              "name": "Barbell Back Squat",
+              "prescription": "",
+              "cues": "Set your feet at a comfortable width; brace and bend your hips and knees together.\nKeep your whole foot planted, squat to a controlled depth, then stand.\nRack: Test hooks and safety bars with an empty bar before loading.",
+              "avoid": "Avoid losing foot contact or letting the load pull you out of balance.\nIf knees collapse and feet roll, reduce the load or depth and rebuild a stable descent.",
+              "movementType": "squat",
+              "movementAssetId": "barbell-back-squat",
+              "videos": []
             },
             {
               "id": "pb-squat-strength-barbell-romanian-deadlift",
@@ -748,7 +934,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 180
+              "restSeconds": 180,
+              "name": "Barbell Romanian Deadlift",
+              "prescription": "",
+              "cues": "Soften your knees, brace, and move your hips back while keeping the weight close.\nLower to a controlled hamstring stretch, then extend your hips to stand.\nRange: Stop when the hips cannot travel farther back without changing your trunk position.",
+              "avoid": "Do not round farther to gain depth; shorten the hinge and keep the hips moving backward.",
+              "movementType": "hinge",
+              "movementAssetId": "barbell-romanian-deadlift",
+              "videos": []
             },
             {
               "id": "pb-squat-strength-leg-extension",
@@ -760,7 +953,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Leg Extension",
+              "prescription": "",
+              "cues": "Align your knees with the machine pivot and place the pad above your ankles.\nStraighten your knees smoothly, then lower the lever with control.\nFit: Align your knee with the machine pivot and place the pad above the ankle.",
+              "avoid": "Avoid kicking the weight up or letting the stack slam.\nKeep hips on the seat; reduce the load if you swing backward to lift it.",
+              "movementType": "squat",
+              "movementAssetId": "leg-extension",
+              "videos": []
             },
             {
               "id": "pb-squat-strength-seated-leg-curl",
@@ -772,7 +972,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Seated Leg Curl",
+              "prescription": "",
+              "cues": "Align your knee with the machine pivot and secure the pads.\nBend your knee to pull the pad toward you, then return slowly.\nFit: Secure the pad or ankle strap; on a machine, align the knee with its pivot.",
+              "avoid": "Keep hips on the support; lower resistance if they lift to finish.\nDo not let the stack slam or cable snap back; control the return.",
+              "movementType": "hinge",
+              "movementAssetId": "seated-leg-curl",
+              "videos": []
             },
             {
               "id": "pb-squat-strength-standing-machine-calf-raise",
@@ -784,7 +991,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Standing Machine Calf Raise",
+              "prescription": "",
+              "cues": "Place the balls of your feet securely on the platform with knees softly straight.\nRaise your heels, then lower through a comfortable ankle range.",
+              "avoid": "Do not bounce or roll the ankles outward; slow down and reduce resistance if needed.",
+              "movementType": "calf",
+              "movementAssetId": "standing-machine-calf-raise",
+              "videos": []
             }
           ],
           "tone": "violet"
@@ -811,7 +1025,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 180
+              "restSeconds": 180,
+              "name": "Barbell Bench Press",
+              "prescription": "",
+              "cues": "Set a stable position on the bench and keep wrists over forearms.\nLower the weight toward your chest with control, then press it back up.\nSafety: Check rack safeties and arrange a competent spotter when needed before pressing.\nSupport: Keep feet secure and upper back settled on the bench.",
+              "avoid": "Avoid bouncing the weight or losing control of your shoulder position.\nKeep wrists stacked over forearms; use less weight if they fold back or the load wobbles.",
+              "movementType": "press",
+              "movementAssetId": "barbell-bench-press",
+              "videos": []
             },
             {
               "id": "pb-bench-strength-chest-supported-dumbbell-row",
@@ -823,7 +1044,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Chest-Supported Dumbbell Row",
+              "prescription": "",
+              "cues": "Set your torso against the support or brace it in a stable position.\nPull the load toward your torso with your elbows, then let your arms extend slowly.",
+              "avoid": "Do not jerk with the torso or let the load pull you forward; lighten it and control the return.",
+              "movementType": "row",
+              "movementAssetId": "chest-supported-dumbbell-row",
+              "videos": []
             },
             {
               "id": "pb-bench-strength-incline-dumbbell-press",
@@ -835,7 +1063,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Incline Dumbbell Press",
+              "prescription": "",
+              "cues": "Set a stable position on the bench and keep wrists over forearms.\nLower the weight toward your chest with control, then press it back up.\nSupport: Keep feet secure and upper back settled on the bench.",
+              "avoid": "Avoid bouncing the weight or losing control of your shoulder position.\nKeep wrists stacked over forearms; use less weight if they fold back or the load wobbles.",
+              "movementType": "press",
+              "movementAssetId": "incline-dumbbell-press",
+              "videos": []
             },
             {
               "id": "pb-bench-strength-lat-pulldown",
@@ -847,7 +1082,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Lat Pulldown",
+              "prescription": "",
+              "cues": "Set a stable seat or stance and take a comfortable grip on the handle.\nPull toward your upper chest, then let your arms rise slowly.\nSupport: Secure the seat pad or band anchor before pulling.",
+              "avoid": "Avoid throwing your torso backward or pulling behind your neck.\nDo not heave the torso backward; reduce resistance if you need momentum.",
+              "movementType": "pull-up",
+              "movementAssetId": "lat-pulldown",
+              "videos": []
             },
             {
               "id": "pb-bench-strength-cable-lateral-raise",
@@ -859,7 +1101,14 @@
                 "toFailure": false,
                 "perSide": true
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Cable Lateral Raise",
+              "prescription": "",
+              "cues": "Start with your arms low and elbows softly bent.\nRaise your arms out to a comfortable shoulder height, then lower slowly.",
+              "avoid": "Do not swing the torso or jerk the neck to lift higher; use less weight and a comfortable range.",
+              "movementType": "shoulder-raise",
+              "movementAssetId": "cable-lateral-raise",
+              "videos": []
             },
             {
               "id": "pb-bench-strength-rope-triceps-pressdown",
@@ -871,7 +1120,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Rope Triceps Pressdown",
+              "prescription": "",
+              "cues": "Set a high cable or band and keep your upper arms near your sides.\nStraighten your elbows to press down, then return slowly.",
+              "avoid": "Do not swing the upper arm or lean body weight onto the handle; reduce resistance and move at the elbow.",
+              "movementType": "triceps",
+              "movementAssetId": "rope-triceps-pressdown",
+              "videos": []
             }
           ],
           "tone": "blue"
@@ -898,7 +1154,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 180
+              "restSeconds": 180,
+              "name": "Deadlift",
+              "prescription": "",
+              "cues": "Set your stance and grip so the weight stays close; brace before lifting.\nPush through the floor to stand tall, then lower by bending hips and knees.\nStart: Take slack out of the bar before pushing the floor away; hips and shoulders rise together.",
+              "avoid": "Do not jerk the bar off the floor; establish tension first and reduce weight if the hips shoot up.\nFinish standing tall rather than leaning backward.",
+              "movementType": "hinge",
+              "movementAssetId": "conventional-barbell-deadlift",
+              "videos": []
             },
             {
               "id": "pb-deadlift-strength-barbell-back-squat",
@@ -910,7 +1173,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 180
+              "restSeconds": 180,
+              "name": "Barbell Back Squat",
+              "prescription": "",
+              "cues": "Set your feet at a comfortable width; brace and bend your hips and knees together.\nKeep your whole foot planted, squat to a controlled depth, then stand.\nRack: Test hooks and safety bars with an empty bar before loading.",
+              "avoid": "Avoid losing foot contact or letting the load pull you out of balance.\nIf knees collapse and feet roll, reduce the load or depth and rebuild a stable descent.",
+              "movementType": "squat",
+              "movementAssetId": "barbell-back-squat",
+              "videos": []
             },
             {
               "id": "pb-deadlift-strength-lying-leg-curl",
@@ -922,7 +1192,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Lying Leg Curl",
+              "prescription": "",
+              "cues": "Align your knee with the machine pivot and secure the pads.\nBend your knee to pull the pad toward you, then return slowly.\nFit: Secure the pad or ankle strap; on a machine, align the knee with its pivot.",
+              "avoid": "Keep hips on the support; lower resistance if they lift to finish.\nDo not let the stack slam or cable snap back; control the return.",
+              "movementType": "hinge",
+              "movementAssetId": "lying-leg-curl",
+              "videos": []
             },
             {
               "id": "pb-deadlift-strength-seated-machine-calf-raise",
@@ -934,7 +1211,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Seated Machine Calf Raise",
+              "prescription": "",
+              "cues": "Set the thigh pad securely and place the balls of your feet on the platform.\nLift your heels, then lower slowly through a comfortable range.",
+              "avoid": "Avoid bouncing the load or lifting your thighs off the pad.\nDo not bounce through the bottom; reduce the load until each rise and lowering is controlled.",
+              "movementType": "calf",
+              "movementAssetId": "seated-machine-calf-raise",
+              "videos": []
             },
             {
               "id": "pb-deadlift-strength-kneeling-cable-crunch",
@@ -946,7 +1230,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Kneeling Cable Crunch",
+              "prescription": "",
+              "cues": "Kneel facing the high cable with the rope held near your head.\nCurl your ribs toward your pelvis, then return slowly.",
+              "avoid": "Avoid pulling mainly with your arms or swinging your hips.\nAvoid yanking the neck or using leg momentum; make the movement smaller and slower.",
+              "movementType": "core",
+              "movementAssetId": "kneeling-cable-crunch",
+              "videos": []
             }
           ],
           "tone": "orange"
@@ -974,7 +1265,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 180
+              "restSeconds": 180,
+              "name": "Standing Barbell Overhead Press",
+              "prescription": "",
+              "cues": "Start with the weight near shoulder height, wrists supported and trunk braced.\nPress overhead, then lower back to your comfortable start position.\nShoulders: Let the shoulder blades rotate upward as you press; keep ribs over the pelvis.",
+              "avoid": "Do not lean farther back to finish; reduce the load and keep ribs over the pelvis.",
+              "movementType": "press",
+              "movementAssetId": "standing-barbell-overhead-press",
+              "videos": []
             },
             {
               "id": "pb-press-volume-barbell-bench-press",
@@ -986,7 +1284,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Barbell Bench Press",
+              "prescription": "",
+              "cues": "Set a stable position on the bench and keep wrists over forearms.\nLower the weight toward your chest with control, then press it back up.\nSafety: Check rack safeties and arrange a competent spotter when needed before pressing.\nSupport: Keep feet secure and upper back settled on the bench.",
+              "avoid": "Avoid bouncing the weight or losing control of your shoulder position.\nKeep wrists stacked over forearms; use less weight if they fold back or the load wobbles.",
+              "movementType": "press",
+              "movementAssetId": "barbell-bench-press",
+              "videos": []
             },
             {
               "id": "pb-press-volume-cable-seated-row",
@@ -998,7 +1303,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Cable Seated Row",
+              "prescription": "",
+              "cues": "Set your torso against the support or brace it in a stable position.\nPull the load toward your torso with your elbows, then let your arms extend slowly.",
+              "avoid": "Do not jerk with the torso or let the load pull you forward; lighten it and control the return.",
+              "movementType": "row",
+              "videos": []
             },
             {
               "id": "pb-press-volume-cable-neutral-grip-lat-pulldown",
@@ -1010,7 +1321,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dual Cable Lat Pulldown",
+              "prescription": "",
+              "cues": "Set a stable seat or stance and take a comfortable grip on the handle.\nPull toward your upper chest, then let your arms rise slowly.\nSupport: Secure the seat pad or band anchor before pulling.",
+              "avoid": "Avoid throwing your torso backward or pulling behind your neck.\nDo not heave the torso backward; reduce resistance if you need momentum.",
+              "movementType": "pull-up",
+              "videos": []
             },
             {
               "id": "pb-press-volume-ez-bar-curl",
@@ -1022,7 +1339,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "EZ-Bar Curl",
+              "prescription": "",
+              "cues": "Keep your upper arms near your torso and hold the load with steady wrists.\nBend your elbows to lift the load, then lower with control.",
+              "avoid": "Do not swing the body or fold the wrists to finish; lighten the load and control the lowering.",
+              "movementType": "curl",
+              "movementAssetId": "ez-bar-curl",
+              "videos": []
             },
             {
               "id": "pb-press-volume-overhead-cable-triceps-extension",
@@ -1034,7 +1358,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Overhead Cable Triceps Extension",
+              "prescription": "",
+              "cues": "Hold the load overhead with elbows aimed generally forward and trunk braced.\nBend your elbows to lower the load, then extend them under control.\nControl: Start light and establish a repeatable path that keeps the weight clear of your face.",
+              "avoid": "Avoid arching your lower back or letting the load fall behind you.\nDo not drop into the stretched position; shorten the range if elbow or shoulder control fails.",
+              "movementType": "triceps",
+              "movementAssetId": "overhead-cable-triceps-extension",
+              "videos": []
             }
           ],
           "tone": "lime"
@@ -1074,7 +1405,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 180
+              "restSeconds": 180,
+              "name": "Barbell Bench Press",
+              "prescription": "",
+              "cues": "Set a stable position on the bench and keep wrists over forearms.\nLower the weight toward your chest with control, then press it back up.\nSafety: Check rack safeties and arrange a competent spotter when needed before pressing.\nSupport: Keep feet secure and upper back settled on the bench.",
+              "avoid": "Avoid bouncing the weight or losing control of your shoulder position.\nKeep wrists stacked over forearms; use less weight if they fold back or the load wobbles.",
+              "movementType": "press",
+              "movementAssetId": "barbell-bench-press",
+              "videos": []
             },
             {
               "id": "ppl-push-1-dumbbell-seated-shoulder-press",
@@ -1086,7 +1424,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dumbbell Seated Shoulder Press",
+              "prescription": "",
+              "cues": "Start with the weight near shoulder height, wrists supported and trunk braced.\nPress overhead, then lower back to your comfortable start position.\nShoulders: Let the shoulder blades rotate upward as you press; keep ribs over the pelvis.",
+              "avoid": "Do not lean farther back to finish; reduce the load and keep ribs over the pelvis.",
+              "movementType": "press",
+              "videos": []
             },
             {
               "id": "ppl-push-1-pec-deck-fly",
@@ -1098,7 +1442,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Pec Deck Fly",
+              "prescription": "",
+              "cues": "Adjust the seat so your arms meet the pads or handles at chest height.\nBring your arms together, then open them slowly.\nFit: Adjust the seat so handles or arm pads match shoulder height.",
+              "avoid": "Do not let the machine pull the shoulders too far back; shorten the arc and keep the return controlled.",
+              "movementType": "press",
+              "movementAssetId": "pec-deck-fly",
+              "videos": []
             },
             {
               "id": "ppl-push-1-cable-lateral-raise",
@@ -1110,7 +1461,14 @@
                 "toFailure": false,
                 "perSide": true
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Cable Lateral Raise",
+              "prescription": "",
+              "cues": "Start with your arms low and elbows softly bent.\nRaise your arms out to a comfortable shoulder height, then lower slowly.",
+              "avoid": "Do not swing the torso or jerk the neck to lift higher; use less weight and a comfortable range.",
+              "movementType": "shoulder-raise",
+              "movementAssetId": "cable-lateral-raise",
+              "videos": []
             },
             {
               "id": "ppl-push-1-rope-triceps-pressdown",
@@ -1122,7 +1480,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Rope Triceps Pressdown",
+              "prescription": "",
+              "cues": "Set a high cable or band and keep your upper arms near your sides.\nStraighten your elbows to press down, then return slowly.",
+              "avoid": "Do not swing the upper arm or lean body weight onto the handle; reduce resistance and move at the elbow.",
+              "movementType": "triceps",
+              "movementAssetId": "rope-triceps-pressdown",
+              "videos": []
             }
           ],
           "tone": "violet"
@@ -1149,7 +1514,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Lat Pulldown",
+              "prescription": "",
+              "cues": "Set a stable seat or stance and take a comfortable grip on the handle.\nPull toward your upper chest, then let your arms rise slowly.\nSupport: Secure the seat pad or band anchor before pulling.",
+              "avoid": "Avoid throwing your torso backward or pulling behind your neck.\nDo not heave the torso backward; reduce resistance if you need momentum.",
+              "movementType": "pull-up",
+              "movementAssetId": "lat-pulldown",
+              "videos": []
             },
             {
               "id": "ppl-pull-1-lever-chest-supported-row",
@@ -1161,7 +1533,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Lever Chest-Supported Row",
+              "prescription": "",
+              "cues": "Set your torso against the support or brace it in a stable position.\nPull the load toward your torso with your elbows, then let your arms extend slowly.",
+              "avoid": "Do not jerk with the torso or let the load pull you forward; lighten it and control the return.",
+              "movementType": "row",
+              "videos": []
             },
             {
               "id": "ppl-pull-1-lever-seated-reverse-fly",
@@ -1173,7 +1551,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Lever Seated Reverse Fly",
+              "prescription": "",
+              "cues": "Support your chest or hinge at the hips with arms hanging below you.\nOpen your arms to the sides with soft elbows, then return slowly.\nFit: Adjust the seat so handles or arm pads match shoulder height.",
+              "avoid": "Avoid turning the fly into a row or lifting by swinging your torso.\nUse less weight if you swing the torso or jerk the weights upward.",
+              "movementType": "shoulder-raise",
+              "videos": []
             },
             {
               "id": "ppl-pull-1-incline-dumbbell-curl",
@@ -1185,7 +1569,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Incline Dumbbell Curl",
+              "prescription": "",
+              "cues": "Sit back against the incline bench with arms hanging by your sides.\nCurl without lifting your upper arms, then lower slowly.\nIncline: Keep the back supported; reduce recline if the starting shoulder position feels forced.",
+              "avoid": "Avoid leaning off the bench or swinging the weights.\nDo not swing the body to finish; lighten the load and control the lowering.",
+              "movementType": "curl",
+              "movementAssetId": "incline-dumbbell-curl",
+              "videos": []
             }
           ],
           "tone": "blue"
@@ -1212,7 +1603,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 180
+              "restSeconds": 180,
+              "name": "Barbell Back Squat",
+              "prescription": "",
+              "cues": "Set your feet at a comfortable width; brace and bend your hips and knees together.\nKeep your whole foot planted, squat to a controlled depth, then stand.\nRack: Test hooks and safety bars with an empty bar before loading.",
+              "avoid": "Avoid losing foot contact or letting the load pull you out of balance.\nIf knees collapse and feet roll, reduce the load or depth and rebuild a stable descent.",
+              "movementType": "squat",
+              "movementAssetId": "barbell-back-squat",
+              "videos": []
             },
             {
               "id": "ppl-legs-1-leg-press",
@@ -1224,7 +1622,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Leg Press",
+              "prescription": "",
+              "cues": "Set a stable foot position on the platform and keep hips against the seat.\nLower the sled as far as you can keep your pelvis stable, then press it away.\nSafety: Locate and test the release and safety stops before loading.",
+              "avoid": "Avoid letting your pelvis lift or snapping your knees straight.\nDo not let the sled drop; reduce the load if you cannot reverse smoothly.",
+              "movementType": "squat",
+              "movementAssetId": "leg-press-45-degree",
+              "videos": []
             },
             {
               "id": "ppl-legs-1-seated-leg-curl",
@@ -1236,7 +1641,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Seated Leg Curl",
+              "prescription": "",
+              "cues": "Align your knee with the machine pivot and secure the pads.\nBend your knee to pull the pad toward you, then return slowly.\nFit: Secure the pad or ankle strap; on a machine, align the knee with its pivot.",
+              "avoid": "Keep hips on the support; lower resistance if they lift to finish.\nDo not let the stack slam or cable snap back; control the return.",
+              "movementType": "hinge",
+              "movementAssetId": "seated-leg-curl",
+              "videos": []
             },
             {
               "id": "ppl-legs-1-standing-machine-calf-raise",
@@ -1248,7 +1660,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Standing Machine Calf Raise",
+              "prescription": "",
+              "cues": "Place the balls of your feet securely on the platform with knees softly straight.\nRaise your heels, then lower through a comfortable ankle range.",
+              "avoid": "Do not bounce or roll the ankles outward; slow down and reduce resistance if needed.",
+              "movementType": "calf",
+              "movementAssetId": "standing-machine-calf-raise",
+              "videos": []
             },
             {
               "id": "ppl-legs-1-kneeling-cable-crunch",
@@ -1260,7 +1679,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Kneeling Cable Crunch",
+              "prescription": "",
+              "cues": "Kneel facing the high cable with the rope held near your head.\nCurl your ribs toward your pelvis, then return slowly.",
+              "avoid": "Avoid pulling mainly with your arms or swinging your hips.\nAvoid yanking the neck or using leg momentum; make the movement smaller and slower.",
+              "movementType": "core",
+              "movementAssetId": "kneeling-cable-crunch",
+              "videos": []
             }
           ],
           "tone": "orange"
@@ -1286,7 +1712,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Incline Dumbbell Press",
+              "prescription": "",
+              "cues": "Set a stable position on the bench and keep wrists over forearms.\nLower the weight toward your chest with control, then press it back up.\nSupport: Keep feet secure and upper back settled on the bench.",
+              "avoid": "Avoid bouncing the weight or losing control of your shoulder position.\nKeep wrists stacked over forearms; use less weight if they fold back or the load wobbles.",
+              "movementType": "press",
+              "movementAssetId": "incline-dumbbell-press",
+              "videos": []
             },
             {
               "id": "ppl-push-2-lever-chest-press",
@@ -1298,7 +1731,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Lever Chest Press",
+              "prescription": "",
+              "cues": "Adjust the seat so the handles start near chest height; keep your back supported.\nPress the handles forward, then return through a controlled range.\nGrip: Keep wrists over forearms and follow the machine’s comfortable path.",
+              "avoid": "Avoid lifting your torso off the pad or letting the machine pull you back.",
+              "movementType": "press",
+              "videos": []
             },
             {
               "id": "ppl-push-2-cable-standing-fly",
@@ -1310,7 +1749,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Cable Standing Fly",
+              "prescription": "",
+              "cues": "Set the handles for your chosen fly angle and keep a small bend at the elbows.\nBring your arms together in front of your chest, then open slowly.",
+              "avoid": "Avoid turning the fly into a press or stretching past shoulder control.\nDo not chase a deep stretch; shorten the arc if the shoulders roll forward or lose control.",
+              "movementType": "press",
+              "videos": []
             },
             {
               "id": "ppl-push-2-dumbbell-lateral-raise",
@@ -1322,7 +1767,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Dumbbell Lateral Raise",
+              "prescription": "",
+              "cues": "Start with your arms low and elbows softly bent.\nRaise your arms out to a comfortable shoulder height, then lower slowly.",
+              "avoid": "Do not swing the torso or jerk the neck to lift higher; use less weight and a comfortable range.",
+              "movementType": "shoulder-raise",
+              "movementAssetId": "dumbbell-lateral-raise",
+              "videos": []
             },
             {
               "id": "ppl-push-2-overhead-cable-triceps-extension",
@@ -1334,7 +1786,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Overhead Cable Triceps Extension",
+              "prescription": "",
+              "cues": "Hold the load overhead with elbows aimed generally forward and trunk braced.\nBend your elbows to lower the load, then extend them under control.\nControl: Start light and establish a repeatable path that keeps the weight clear of your face.",
+              "avoid": "Avoid arching your lower back or letting the load fall behind you.\nDo not drop into the stretched position; shorten the range if elbow or shoulder control fails.",
+              "movementType": "triceps",
+              "movementAssetId": "overhead-cable-triceps-extension",
+              "videos": []
             }
           ],
           "tone": "lime"
@@ -1361,7 +1820,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Cable Seated Row",
+              "prescription": "",
+              "cues": "Set your torso against the support or brace it in a stable position.\nPull the load toward your torso with your elbows, then let your arms extend slowly.",
+              "avoid": "Do not jerk with the torso or let the load pull you forward; lighten it and control the return.",
+              "movementType": "row",
+              "videos": []
             },
             {
               "id": "ppl-pull-2-cable-neutral-grip-lat-pulldown",
@@ -1373,7 +1838,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dual Cable Lat Pulldown",
+              "prescription": "",
+              "cues": "Set a stable seat or stance and take a comfortable grip on the handle.\nPull toward your upper chest, then let your arms rise slowly.\nSupport: Secure the seat pad or band anchor before pulling.",
+              "avoid": "Avoid throwing your torso backward or pulling behind your neck.\nDo not heave the torso backward; reduce resistance if you need momentum.",
+              "movementType": "pull-up",
+              "videos": []
             },
             {
               "id": "ppl-pull-2-face-pull",
@@ -1385,7 +1856,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Face Pull",
+              "prescription": "",
+              "cues": "Set the cable or band around face height and take a stable stance.\nPull toward your face with elbows opening outward, then return slowly.",
+              "avoid": "Avoid leaning back or snapping the handle toward your face.\nDo not lean backward to finish; use lighter resistance and keep the rope clear of your face.",
+              "movementType": "row",
+              "movementAssetId": "band-face-pull",
+              "videos": []
             },
             {
               "id": "ppl-pull-2-dumbbell-hammer-curl",
@@ -1397,7 +1875,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Dumbbell Hammer Curl",
+              "prescription": "",
+              "cues": "Hold the weights with palms facing inward and elbows near your sides.\nCurl without rotating your wrists, then lower slowly.",
+              "avoid": "Do not swing the body or fold the wrists to finish; lighten the load and control the lowering.",
+              "movementType": "curl",
+              "movementAssetId": "dumbbell-hammer-curl",
+              "videos": []
             }
           ],
           "tone": "rose"
@@ -1424,7 +1909,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 180
+              "restSeconds": 180,
+              "name": "Barbell Romanian Deadlift",
+              "prescription": "",
+              "cues": "Soften your knees, brace, and move your hips back while keeping the weight close.\nLower to a controlled hamstring stretch, then extend your hips to stand.\nRange: Stop when the hips cannot travel farther back without changing your trunk position.",
+              "avoid": "Do not round farther to gain depth; shorten the hinge and keep the hips moving backward.",
+              "movementType": "hinge",
+              "movementAssetId": "barbell-romanian-deadlift",
+              "videos": []
             },
             {
               "id": "ppl-legs-2-sled-hack-squat",
@@ -1436,7 +1928,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Sled Hack Squat",
+              "prescription": "",
+              "cues": "Set the seat or pads to fit the machine; keep your feet stable on the platform.\nBend hips and knees through a comfortable range, then press to stand.\nSafety: Locate and test the release and safety stops before loading.",
+              "avoid": "Avoid lifting your heels or forcing the machine past your controlled range.\nDo not let the sled drop; reduce the load if you cannot reverse smoothly.",
+              "movementType": "squat",
+              "videos": []
             },
             {
               "id": "ppl-legs-2-lying-leg-curl",
@@ -1448,7 +1946,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Lying Leg Curl",
+              "prescription": "",
+              "cues": "Align your knee with the machine pivot and secure the pads.\nBend your knee to pull the pad toward you, then return slowly.\nFit: Secure the pad or ankle strap; on a machine, align the knee with its pivot.",
+              "avoid": "Keep hips on the support; lower resistance if they lift to finish.\nDo not let the stack slam or cable snap back; control the return.",
+              "movementType": "hinge",
+              "movementAssetId": "lying-leg-curl",
+              "videos": []
             },
             {
               "id": "ppl-legs-2-seated-machine-calf-raise",
@@ -1460,7 +1965,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Seated Machine Calf Raise",
+              "prescription": "",
+              "cues": "Set the thigh pad securely and place the balls of your feet on the platform.\nLift your heels, then lower slowly through a comfortable range.",
+              "avoid": "Avoid bouncing the load or lifting your thighs off the pad.\nDo not bounce through the bottom; reduce the load until each rise and lowering is controlled.",
+              "movementType": "calf",
+              "movementAssetId": "seated-machine-calf-raise",
+              "videos": []
             },
             {
               "id": "ppl-legs-2-pallof-press",
@@ -1472,7 +1984,14 @@
                 "toFailure": false,
                 "perSide": true
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Pallof Press",
+              "prescription": "",
+              "cues": "Stand sideways to the cable or band with the handle at chest height.\nPress your hands forward without rotating, then bring them back.\nAnchor: Secure the band or cable at chest height; move farther away only while staying square.",
+              "avoid": "Avoid twisting toward the anchor or leaning to counter the load.",
+              "movementType": "core",
+              "movementAssetId": "pallof-press",
+              "videos": []
             }
           ],
           "tone": "sand"
@@ -1514,7 +2033,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Leg Press",
+              "prescription": "",
+              "cues": "Set a stable foot position on the platform and keep hips against the seat.\nLower the sled as far as you can keep your pelvis stable, then press it away.\nSafety: Locate and test the release and safety stops before loading.",
+              "avoid": "Avoid letting your pelvis lift or snapping your knees straight.\nDo not let the sled drop; reduce the load if you cannot reverse smoothly.",
+              "movementType": "squat",
+              "movementAssetId": "leg-press-45-degree",
+              "videos": []
             },
             {
               "id": "fb-workout-a-dumbbell-bench-press",
@@ -1526,7 +2052,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dumbbell Bench Press",
+              "prescription": "",
+              "cues": "Set a stable position on the bench and keep wrists over forearms.\nLower the weight toward your chest with control, then press it back up.\nSupport: Keep feet secure and upper back settled on the bench.",
+              "avoid": "Avoid bouncing the weight or losing control of your shoulder position.\nKeep wrists stacked over forearms; use less weight if they fold back or the load wobbles.",
+              "movementType": "press",
+              "movementAssetId": "dumbbell-bench-press",
+              "videos": []
             },
             {
               "id": "fb-workout-a-cable-seated-row",
@@ -1538,7 +2071,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Cable Seated Row",
+              "prescription": "",
+              "cues": "Set your torso against the support or brace it in a stable position.\nPull the load toward your torso with your elbows, then let your arms extend slowly.",
+              "avoid": "Do not jerk with the torso or let the load pull you forward; lighten it and control the return.",
+              "movementType": "row",
+              "videos": []
             },
             {
               "id": "fb-workout-a-dumbbell-romanian-deadlift",
@@ -1550,7 +2089,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Dumbbell Romanian Deadlift",
+              "prescription": "",
+              "cues": "Soften your knees, brace, and move your hips back while keeping the weight close.\nLower to a controlled hamstring stretch, then extend your hips to stand.\nRange: Stop when the hips cannot travel farther back without changing your trunk position.",
+              "avoid": "Do not round farther to gain depth; shorten the hinge and keep the hips moving backward.",
+              "movementType": "hinge",
+              "movementAssetId": "dumbbell-romanian-deadlift",
+              "videos": []
             },
             {
               "id": "fb-workout-a-dumbbell-lateral-raise",
@@ -1562,7 +2108,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Dumbbell Lateral Raise",
+              "prescription": "",
+              "cues": "Start with your arms low and elbows softly bent.\nRaise your arms out to a comfortable shoulder height, then lower slowly.",
+              "avoid": "Do not swing the torso or jerk the neck to lift higher; use less weight and a comfortable range.",
+              "movementType": "shoulder-raise",
+              "movementAssetId": "dumbbell-lateral-raise",
+              "videos": []
             }
           ],
           "tone": "violet"
@@ -1591,7 +2144,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Goblet Squat",
+              "prescription": "",
+              "cues": "Set your feet at a comfortable width; brace and bend your hips and knees together.\nKeep your whole foot planted, squat to a controlled depth, then stand.",
+              "avoid": "Avoid losing foot contact or letting the load pull you out of balance.\nIf knees collapse and feet roll, reduce the load or depth and rebuild a stable descent.",
+              "movementType": "squat",
+              "movementAssetId": "kettlebell-goblet-squat",
+              "videos": []
             },
             {
               "id": "fb-workout-b-lat-pulldown",
@@ -1603,7 +2163,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Lat Pulldown",
+              "prescription": "",
+              "cues": "Set a stable seat or stance and take a comfortable grip on the handle.\nPull toward your upper chest, then let your arms rise slowly.\nSupport: Secure the seat pad or band anchor before pulling.",
+              "avoid": "Avoid throwing your torso backward or pulling behind your neck.\nDo not heave the torso backward; reduce resistance if you need momentum.",
+              "movementType": "pull-up",
+              "movementAssetId": "lat-pulldown",
+              "videos": []
             },
             {
               "id": "fb-workout-b-dumbbell-bench-press",
@@ -1615,7 +2182,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dumbbell Bench Press",
+              "prescription": "",
+              "cues": "Set a stable position on the bench and keep wrists over forearms.\nLower the weight toward your chest with control, then press it back up.\nSupport: Keep feet secure and upper back settled on the bench.",
+              "avoid": "Avoid bouncing the weight or losing control of your shoulder position.\nKeep wrists stacked over forearms; use less weight if they fold back or the load wobbles.",
+              "movementType": "press",
+              "movementAssetId": "dumbbell-bench-press",
+              "videos": []
             },
             {
               "id": "fb-workout-b-seated-leg-curl",
@@ -1627,7 +2201,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Seated Leg Curl",
+              "prescription": "",
+              "cues": "Align your knee with the machine pivot and secure the pads.\nBend your knee to pull the pad toward you, then return slowly.\nFit: Secure the pad or ankle strap; on a machine, align the knee with its pivot.",
+              "avoid": "Keep hips on the support; lower resistance if they lift to finish.\nDo not let the stack slam or cable snap back; control the return.",
+              "movementType": "hinge",
+              "movementAssetId": "seated-leg-curl",
+              "videos": []
             },
             {
               "id": "fb-workout-b-dumbbell-seated-shoulder-press",
@@ -1639,7 +2220,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dumbbell Seated Shoulder Press",
+              "prescription": "",
+              "cues": "Start with the weight near shoulder height, wrists supported and trunk braced.\nPress overhead, then lower back to your comfortable start position.\nShoulders: Let the shoulder blades rotate upward as you press; keep ribs over the pelvis.",
+              "avoid": "Do not lean farther back to finish; reduce the load and keep ribs over the pelvis.",
+              "movementType": "press",
+              "videos": []
             }
           ],
           "tone": "blue"
@@ -1669,7 +2256,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Leg Press",
+              "prescription": "",
+              "cues": "Set a stable foot position on the platform and keep hips against the seat.\nLower the sled as far as you can keep your pelvis stable, then press it away.\nSafety: Locate and test the release and safety stops before loading.",
+              "avoid": "Avoid letting your pelvis lift or snapping your knees straight.\nDo not let the sled drop; reduce the load if you cannot reverse smoothly.",
+              "movementType": "squat",
+              "movementAssetId": "leg-press-45-degree",
+              "videos": []
             },
             {
               "id": "fb-workout-c-dumbbell-bench-press",
@@ -1681,7 +2275,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dumbbell Bench Press",
+              "prescription": "",
+              "cues": "Set a stable position on the bench and keep wrists over forearms.\nLower the weight toward your chest with control, then press it back up.\nSupport: Keep feet secure and upper back settled on the bench.",
+              "avoid": "Avoid bouncing the weight or losing control of your shoulder position.\nKeep wrists stacked over forearms; use less weight if they fold back or the load wobbles.",
+              "movementType": "press",
+              "movementAssetId": "dumbbell-bench-press",
+              "videos": []
             },
             {
               "id": "fb-workout-c-cable-seated-row",
@@ -1693,7 +2294,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Cable Seated Row",
+              "prescription": "",
+              "cues": "Set your torso against the support or brace it in a stable position.\nPull the load toward your torso with your elbows, then let your arms extend slowly.",
+              "avoid": "Do not jerk with the torso or let the load pull you forward; lighten it and control the return.",
+              "movementType": "row",
+              "videos": []
             },
             {
               "id": "fb-workout-c-dumbbell-romanian-deadlift",
@@ -1705,7 +2312,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Dumbbell Romanian Deadlift",
+              "prescription": "",
+              "cues": "Soften your knees, brace, and move your hips back while keeping the weight close.\nLower to a controlled hamstring stretch, then extend your hips to stand.\nRange: Stop when the hips cannot travel farther back without changing your trunk position.",
+              "avoid": "Do not round farther to gain depth; shorten the hinge and keep the hips moving backward.",
+              "movementType": "hinge",
+              "movementAssetId": "dumbbell-romanian-deadlift",
+              "videos": []
             },
             {
               "id": "fb-workout-c-standing-machine-calf-raise",
@@ -1717,7 +2331,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Standing Machine Calf Raise",
+              "prescription": "",
+              "cues": "Place the balls of your feet securely on the platform with knees softly straight.\nRaise your heels, then lower through a comfortable ankle range.",
+              "avoid": "Do not bounce or roll the ankles outward; slow down and reduce resistance if needed.",
+              "movementType": "calf",
+              "movementAssetId": "standing-machine-calf-raise",
+              "videos": []
             },
             {
               "id": "fb-workout-c-kneeling-cable-crunch",
@@ -1729,7 +2350,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Kneeling Cable Crunch",
+              "prescription": "",
+              "cues": "Kneel facing the high cable with the rope held near your head.\nCurl your ribs toward your pelvis, then return slowly.",
+              "avoid": "Avoid pulling mainly with your arms or swinging your hips.\nAvoid yanking the neck or using leg momentum; make the movement smaller and slower.",
+              "movementType": "core",
+              "movementAssetId": "kneeling-cable-crunch",
+              "videos": []
             }
           ],
           "tone": "orange"
@@ -1771,7 +2399,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dumbbell Bench Press",
+              "prescription": "",
+              "cues": "Set a stable position on the bench and keep wrists over forearms.\nLower the weight toward your chest with control, then press it back up.\nSupport: Keep feet secure and upper back settled on the bench.",
+              "avoid": "Avoid bouncing the weight or losing control of your shoulder position.\nKeep wrists stacked over forearms; use less weight if they fold back or the load wobbles.",
+              "movementType": "press",
+              "movementAssetId": "dumbbell-bench-press",
+              "videos": []
             },
             {
               "id": "hf-upper-a-one-arm-dumbbell-row",
@@ -1783,7 +2418,14 @@
                 "toFailure": false,
                 "perSide": true
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "One-Arm Dumbbell Row",
+              "prescription": "",
+              "cues": "Hinge at the hips and brace your torso with the weight hanging below you.\nPull toward your lower ribs or waist, then lower until your arms extend.",
+              "avoid": "Avoid standing upright on each rep or jerking the weight.\nAvoid a sudden lower-back jerk; use a load that lets you control the return.",
+              "movementType": "row",
+              "movementAssetId": "one-arm-dumbbell-row",
+              "videos": []
             },
             {
               "id": "hf-upper-a-dumbbell-seated-shoulder-press",
@@ -1795,7 +2437,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dumbbell Seated Shoulder Press",
+              "prescription": "",
+              "cues": "Start with the weight near shoulder height, wrists supported and trunk braced.\nPress overhead, then lower back to your comfortable start position.\nShoulders: Let the shoulder blades rotate upward as you press; keep ribs over the pelvis.",
+              "avoid": "Do not lean farther back to finish; reduce the load and keep ribs over the pelvis.",
+              "movementType": "press",
+              "videos": []
             },
             {
               "id": "hf-upper-a-dumbbell-lateral-raise",
@@ -1807,7 +2455,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Dumbbell Lateral Raise",
+              "prescription": "",
+              "cues": "Start with your arms low and elbows softly bent.\nRaise your arms out to a comfortable shoulder height, then lower slowly.",
+              "avoid": "Do not swing the torso or jerk the neck to lift higher; use less weight and a comfortable range.",
+              "movementType": "shoulder-raise",
+              "movementAssetId": "dumbbell-lateral-raise",
+              "videos": []
             },
             {
               "id": "hf-upper-a-dumbbell-hammer-curl",
@@ -1819,7 +2474,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Dumbbell Hammer Curl",
+              "prescription": "",
+              "cues": "Hold the weights with palms facing inward and elbows near your sides.\nCurl without rotating your wrists, then lower slowly.",
+              "avoid": "Do not swing the body or fold the wrists to finish; lighten the load and control the lowering.",
+              "movementType": "curl",
+              "movementAssetId": "dumbbell-hammer-curl",
+              "videos": []
             },
             {
               "id": "hf-upper-a-dumbbell-skull-crusher",
@@ -1831,7 +2493,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Dumbbell Skull Crusher",
+              "prescription": "",
+              "cues": "Lie on a bench and hold the load above your chest with steady upper arms.\nBend your elbows to lower toward or behind your head, then extend.\nControl: Start light and establish a repeatable path that keeps the weight clear of your face.",
+              "avoid": "Avoid dropping the weight quickly or letting your wrists collapse.\nDo not drop into the stretched position; shorten the range if elbow or shoulder control fails.",
+              "movementType": "triceps",
+              "videos": []
             }
           ],
           "tone": "violet"
@@ -1857,7 +2525,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Goblet Squat",
+              "prescription": "",
+              "cues": "Set your feet at a comfortable width; brace and bend your hips and knees together.\nKeep your whole foot planted, squat to a controlled depth, then stand.",
+              "avoid": "Avoid losing foot contact or letting the load pull you out of balance.\nIf knees collapse and feet roll, reduce the load or depth and rebuild a stable descent.",
+              "movementType": "squat",
+              "movementAssetId": "kettlebell-goblet-squat",
+              "videos": []
             },
             {
               "id": "hf-lower-a-dumbbell-romanian-deadlift",
@@ -1869,7 +2544,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Dumbbell Romanian Deadlift",
+              "prescription": "",
+              "cues": "Soften your knees, brace, and move your hips back while keeping the weight close.\nLower to a controlled hamstring stretch, then extend your hips to stand.\nRange: Stop when the hips cannot travel farther back without changing your trunk position.",
+              "avoid": "Do not round farther to gain depth; shorten the hinge and keep the hips moving backward.",
+              "movementType": "hinge",
+              "movementAssetId": "dumbbell-romanian-deadlift",
+              "videos": []
             },
             {
               "id": "hf-lower-a-dumbbell-split-squat-front-foot-elevanted",
@@ -1881,7 +2563,13 @@
                 "toFailure": false,
                 "perSide": true
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dumbbell Split Squat Front Foot Elevanted",
+              "prescription": "",
+              "cues": "Plant your front foot on a stable low step and take a balanced split stance.\nLower by bending the front knee, then push through that foot to rise.\nBalance: Leave some width between your feet; let the front knee follow the toes.\nPlatform: Secure the raised surface; extra depth is optional and must stay controlled.",
+              "avoid": "Avoid rocking off the step or losing your balance.\nDo not hit the rear knee on the floor; shorten the descent if needed.",
+              "movementType": "lunge",
+              "videos": []
             },
             {
               "id": "hf-lower-a-dumbbell-glute-bridge",
@@ -1893,7 +2581,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dumbbell Glute Bridge",
+              "prescription": "",
+              "cues": "Lie on your back with feet planted and the load secure over your hips.\nLift your hips by pressing through your feet; lower with control.",
+              "avoid": "Do not arch the lower back for height; finish with the hips and reduce the lift if ribs flare.",
+              "movementType": "hinge",
+              "videos": []
             }
           ],
           "tone": "blue"
@@ -1921,7 +2615,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Incline Dumbbell Press",
+              "prescription": "",
+              "cues": "Set a stable position on the bench and keep wrists over forearms.\nLower the weight toward your chest with control, then press it back up.\nSupport: Keep feet secure and upper back settled on the bench.",
+              "avoid": "Avoid bouncing the weight or losing control of your shoulder position.\nKeep wrists stacked over forearms; use less weight if they fold back or the load wobbles.",
+              "movementType": "press",
+              "movementAssetId": "incline-dumbbell-press",
+              "videos": []
             },
             {
               "id": "hf-upper-b-chest-supported-dumbbell-row",
@@ -1933,7 +2634,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Chest-Supported Dumbbell Row",
+              "prescription": "",
+              "cues": "Set your torso against the support or brace it in a stable position.\nPull the load toward your torso with your elbows, then let your arms extend slowly.",
+              "avoid": "Do not jerk with the torso or let the load pull you forward; lighten it and control the return.",
+              "movementType": "row",
+              "movementAssetId": "chest-supported-dumbbell-row",
+              "videos": []
             },
             {
               "id": "hf-upper-b-dumbbell-pullover",
@@ -1945,7 +2653,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dumbbell Pullover",
+              "prescription": "",
+              "cues": "Secure your torso and start with arms reaching overhead.\nPull the weight in an arc toward your torso, then return slowly.",
+              "avoid": "Avoid using a trunk swing or changing your elbow bend to move the weight.\nShorten the reach if ribs flare or the back arches to gain range.",
+              "movementType": "pull-up",
+              "videos": []
             },
             {
               "id": "hf-upper-b-dumbbell-rear-fly",
@@ -1957,7 +2671,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Dumbbell Rear Fly",
+              "prescription": "",
+              "cues": "Support your chest or hinge at the hips with arms hanging below you.\nOpen your arms to the sides with soft elbows, then return slowly.",
+              "avoid": "Avoid turning the fly into a row or lifting by swinging your torso.\nUse less weight if you swing the torso or jerk the weights upward.",
+              "movementType": "press",
+              "videos": []
             },
             {
               "id": "hf-upper-b-dumbbell-standing-biceps-curl",
@@ -1969,7 +2689,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Dumbbell Standing Biceps Curl",
+              "prescription": "",
+              "cues": "Keep your upper arms near your torso and hold the load with steady wrists.\nBend your elbows to lift the load, then lower with control.",
+              "avoid": "Do not swing the body or fold the wrists to finish; lighten the load and control the lowering.",
+              "movementType": "curl",
+              "videos": []
             },
             {
               "id": "hf-upper-b-dumbbell-standing-triceps-extension",
@@ -1981,7 +2707,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Dumbbell Standing Triceps Extension",
+              "prescription": "",
+              "cues": "Hold the load overhead with elbows aimed generally forward and trunk braced.\nBend your elbows to lower the load, then extend them under control.\nControl: Start light and establish a repeatable path that keeps the weight clear of your face.",
+              "avoid": "Avoid arching your lower back or letting the load fall behind you.\nDo not drop into the stretched position; shorten the range if elbow or shoulder control fails.",
+              "movementType": "triceps",
+              "videos": []
             }
           ],
           "tone": "orange"
@@ -2007,7 +2739,13 @@
                 "toFailure": false,
                 "perSide": true
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dumbbell Split Squat Front Foot Elevanted",
+              "prescription": "",
+              "cues": "Plant your front foot on a stable low step and take a balanced split stance.\nLower by bending the front knee, then push through that foot to rise.\nBalance: Leave some width between your feet; let the front knee follow the toes.\nPlatform: Secure the raised surface; extra depth is optional and must stay controlled.",
+              "avoid": "Avoid rocking off the step or losing your balance.\nDo not hit the rear knee on the floor; shorten the descent if needed.",
+              "movementType": "lunge",
+              "videos": []
             },
             {
               "id": "hf-lower-b-dumbbell-romanian-deadlift",
@@ -2019,7 +2757,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Dumbbell Romanian Deadlift",
+              "prescription": "",
+              "cues": "Soften your knees, brace, and move your hips back while keeping the weight close.\nLower to a controlled hamstring stretch, then extend your hips to stand.\nRange: Stop when the hips cannot travel farther back without changing your trunk position.",
+              "avoid": "Do not round farther to gain depth; shorten the hinge and keep the hips moving backward.",
+              "movementType": "hinge",
+              "movementAssetId": "dumbbell-romanian-deadlift",
+              "videos": []
             },
             {
               "id": "hf-lower-b-goblet-squat",
@@ -2031,7 +2776,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Goblet Squat",
+              "prescription": "",
+              "cues": "Set your feet at a comfortable width; brace and bend your hips and knees together.\nKeep your whole foot planted, squat to a controlled depth, then stand.",
+              "avoid": "Avoid losing foot contact or letting the load pull you out of balance.\nIf knees collapse and feet roll, reduce the load or depth and rebuild a stable descent.",
+              "movementType": "squat",
+              "movementAssetId": "kettlebell-goblet-squat",
+              "videos": []
             },
             {
               "id": "hf-lower-b-dumbbell-glute-bridge",
@@ -2043,7 +2795,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dumbbell Glute Bridge",
+              "prescription": "",
+              "cues": "Lie on your back with feet planted and the load secure over your hips.\nLift your hips by pressing through your feet; lower with control.",
+              "avoid": "Do not arch the lower back for height; finish with the hips and reduce the lift if ribs flare.",
+              "movementType": "hinge",
+              "videos": []
             }
           ],
           "tone": "lime"
@@ -2087,7 +2845,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Kettlebell Swing",
+              "prescription": "",
+              "cues": "Hike the kettlebell between your legs and drive your hips forward.\nLet the bell float from hip power, then hinge as it swings back.\nDrive: Use the hip extension to move the bell; keep a clear space around you.",
+              "avoid": "Do not lift mainly with the arms or lean back for height; reduce weight and restore hip-driven timing.",
+              "movementType": "hinge",
+              "movementAssetId": "kettlebell-swing",
+              "videos": []
             },
             {
               "id": "ap-lower-power-trap-bar-deadlift",
@@ -2099,7 +2864,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 180
+              "restSeconds": 180,
+              "name": "Trap Bar Deadlift",
+              "prescription": "",
+              "cues": "Set your stance and grip so the weight stays close; brace before lifting.\nPush through the floor to stand tall, then lower by bending hips and knees.\nStart: Take slack out of the bar before pushing the floor away; hips and shoulders rise together.\nTrap bar: Stand centered, grip evenly and keep the frame level.",
+              "avoid": "Do not jerk the bar off the floor; establish tension first and reduce weight if the hips shoot up.\nFinish standing tall rather than leaning backward.",
+              "movementType": "hinge",
+              "movementAssetId": "trap-bar-deadlift",
+              "videos": []
             },
             {
               "id": "ap-lower-power-dumbbell-bench-press",
@@ -2111,7 +2883,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dumbbell Bench Press",
+              "prescription": "",
+              "cues": "Set a stable position on the bench and keep wrists over forearms.\nLower the weight toward your chest with control, then press it back up.\nSupport: Keep feet secure and upper back settled on the bench.",
+              "avoid": "Avoid bouncing the weight or losing control of your shoulder position.\nKeep wrists stacked over forearms; use less weight if they fold back or the load wobbles.",
+              "movementType": "press",
+              "movementAssetId": "dumbbell-bench-press",
+              "videos": []
             },
             {
               "id": "ap-lower-power-cable-seated-row",
@@ -2123,7 +2902,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Cable Seated Row",
+              "prescription": "",
+              "cues": "Set your torso against the support or brace it in a stable position.\nPull the load toward your torso with your elbows, then let your arms extend slowly.",
+              "avoid": "Do not jerk with the torso or let the load pull you forward; lighten it and control the return.",
+              "movementType": "row",
+              "videos": []
             },
             {
               "id": "ap-lower-power-pallof-press",
@@ -2135,7 +2920,14 @@
                 "toFailure": false,
                 "perSide": true
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Pallof Press",
+              "prescription": "",
+              "cues": "Stand sideways to the cable or band with the handle at chest height.\nPress your hands forward without rotating, then bring them back.\nAnchor: Secure the band or cable at chest height; move farther away only while staying square.",
+              "avoid": "Avoid twisting toward the anchor or leaning to counter the load.",
+              "movementType": "core",
+              "movementAssetId": "pallof-press",
+              "videos": []
             }
           ],
           "tone": "violet"
@@ -2163,7 +2955,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Push Press",
+              "prescription": "",
+              "cues": "Hold the weight at your shoulders; dip a little by bending hips and knees.\nDrive through your legs and finish by pressing overhead; lower under control.\nTiming: Keep the dip short and balanced, then drive the legs before pressing.",
+              "avoid": "Avoid a deep forward-folding dip or pressing from an unstable stance.\nDo not chase an unstable overhead catch; practise with a lighter load.",
+              "movementType": "press",
+              "movementAssetId": "push-press",
+              "videos": []
             },
             {
               "id": "ap-upper-power-dumbbell-split-squat-front-foot-elevanted",
@@ -2175,7 +2974,13 @@
                 "toFailure": false,
                 "perSide": true
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dumbbell Split Squat Front Foot Elevanted",
+              "prescription": "",
+              "cues": "Plant your front foot on a stable low step and take a balanced split stance.\nLower by bending the front knee, then push through that foot to rise.\nBalance: Leave some width between your feet; let the front knee follow the toes.\nPlatform: Secure the raised surface; extra depth is optional and must stay controlled.",
+              "avoid": "Avoid rocking off the step or losing your balance.\nDo not hit the rear knee on the floor; shorten the descent if needed.",
+              "movementType": "lunge",
+              "videos": []
             },
             {
               "id": "ap-upper-power-cable-neutral-grip-lat-pulldown",
@@ -2187,7 +2992,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dual Cable Lat Pulldown",
+              "prescription": "",
+              "cues": "Set a stable seat or stance and take a comfortable grip on the handle.\nPull toward your upper chest, then let your arms rise slowly.\nSupport: Secure the seat pad or band anchor before pulling.",
+              "avoid": "Avoid throwing your torso backward or pulling behind your neck.\nDo not heave the torso backward; reduce resistance if you need momentum.",
+              "movementType": "pull-up",
+              "videos": []
             },
             {
               "id": "ap-upper-power-seated-leg-curl",
@@ -2199,7 +3010,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Seated Leg Curl",
+              "prescription": "",
+              "cues": "Align your knee with the machine pivot and secure the pads.\nBend your knee to pull the pad toward you, then return slowly.\nFit: Secure the pad or ankle strap; on a machine, align the knee with its pivot.",
+              "avoid": "Keep hips on the support; lower resistance if they lift to finish.\nDo not let the stack slam or cable snap back; control the return.",
+              "movementType": "hinge",
+              "movementAssetId": "seated-leg-curl",
+              "videos": []
             },
             {
               "id": "ap-upper-power-standing-machine-calf-raise",
@@ -2211,7 +3029,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Standing Machine Calf Raise",
+              "prescription": "",
+              "cues": "Place the balls of your feet securely on the platform with knees softly straight.\nRaise your heels, then lower through a comfortable ankle range.",
+              "avoid": "Do not bounce or roll the ankles outward; slow down and reduce resistance if needed.",
+              "movementType": "calf",
+              "movementAssetId": "standing-machine-calf-raise",
+              "videos": []
             }
           ],
           "tone": "blue"
@@ -2240,7 +3065,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 180
+              "restSeconds": 180,
+              "name": "Barbell Front Squat",
+              "prescription": "",
+              "cues": "Rest the bar across the front shoulders; keep elbows lifted and brace.\nSquat between your legs with full-foot contact, then stand without losing the rack position.\nRack: Test hooks and safety bars with an empty bar before loading.\nFront rack: Let the shoulders carry the bar, rather than the bent wrists.",
+              "avoid": "Avoid letting the bar roll off the shoulders or forcing a depth you cannot control.\nIf knees collapse and feet roll, reduce the load or depth and rebuild a stable descent.",
+              "movementType": "squat",
+              "movementAssetId": "barbell-front-squat",
+              "videos": []
             },
             {
               "id": "ap-work-capacity-barbell-romanian-deadlift",
@@ -2252,7 +3084,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Barbell Romanian Deadlift",
+              "prescription": "",
+              "cues": "Soften your knees, brace, and move your hips back while keeping the weight close.\nLower to a controlled hamstring stretch, then extend your hips to stand.\nRange: Stop when the hips cannot travel farther back without changing your trunk position.",
+              "avoid": "Do not round farther to gain depth; shorten the hinge and keep the hips moving backward.",
+              "movementType": "hinge",
+              "movementAssetId": "barbell-romanian-deadlift",
+              "videos": []
             },
             {
               "id": "ap-work-capacity-incline-dumbbell-press",
@@ -2264,7 +3103,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Incline Dumbbell Press",
+              "prescription": "",
+              "cues": "Set a stable position on the bench and keep wrists over forearms.\nLower the weight toward your chest with control, then press it back up.\nSupport: Keep feet secure and upper back settled on the bench.",
+              "avoid": "Avoid bouncing the weight or losing control of your shoulder position.\nKeep wrists stacked over forearms; use less weight if they fold back or the load wobbles.",
+              "movementType": "press",
+              "movementAssetId": "incline-dumbbell-press",
+              "videos": []
             },
             {
               "id": "ap-work-capacity-chest-supported-dumbbell-row",
@@ -2276,7 +3122,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Chest-Supported Dumbbell Row",
+              "prescription": "",
+              "cues": "Set your torso against the support or brace it in a stable position.\nPull the load toward your torso with your elbows, then let your arms extend slowly.",
+              "avoid": "Do not jerk with the torso or let the load pull you forward; lighten it and control the return.",
+              "movementType": "row",
+              "movementAssetId": "chest-supported-dumbbell-row",
+              "videos": []
             },
             {
               "id": "ap-work-capacity-pallof-press",
@@ -2288,7 +3141,14 @@
                 "toFailure": false,
                 "perSide": true
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Pallof Press",
+              "prescription": "",
+              "cues": "Stand sideways to the cable or band with the handle at chest height.\nPress your hands forward without rotating, then bring them back.\nAnchor: Secure the band or cable at chest height; move farther away only while staying square.",
+              "avoid": "Avoid twisting toward the anchor or leaning to counter the load.",
+              "movementType": "core",
+              "movementAssetId": "pallof-press",
+              "videos": []
             }
           ],
           "tone": "orange"
@@ -2330,7 +3190,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dumbbell Bench Press",
+              "prescription": "",
+              "cues": "Set a stable position on the bench and keep wrists over forearms.\nLower the weight toward your chest with control, then press it back up.\nSupport: Keep feet secure and upper back settled on the bench.",
+              "avoid": "Avoid bouncing the weight or losing control of your shoulder position.\nKeep wrists stacked over forearms; use less weight if they fold back or the load wobbles.",
+              "movementType": "press",
+              "movementAssetId": "dumbbell-bench-press",
+              "videos": []
             },
             {
               "id": "ul-upper-a-cable-seated-row",
@@ -2342,7 +3209,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Cable Seated Row",
+              "prescription": "",
+              "cues": "Set your torso against the support or brace it in a stable position.\nPull the load toward your torso with your elbows, then let your arms extend slowly.",
+              "avoid": "Do not jerk with the torso or let the load pull you forward; lighten it and control the return.",
+              "movementType": "row",
+              "videos": []
             },
             {
               "id": "ul-upper-a-lat-pulldown",
@@ -2354,7 +3227,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Lat Pulldown",
+              "prescription": "",
+              "cues": "Set a stable seat or stance and take a comfortable grip on the handle.\nPull toward your upper chest, then let your arms rise slowly.\nSupport: Secure the seat pad or band anchor before pulling.",
+              "avoid": "Avoid throwing your torso backward or pulling behind your neck.\nDo not heave the torso backward; reduce resistance if you need momentum.",
+              "movementType": "pull-up",
+              "movementAssetId": "lat-pulldown",
+              "videos": []
             },
             {
               "id": "ul-upper-a-dumbbell-seated-shoulder-press",
@@ -2366,7 +3246,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dumbbell Seated Shoulder Press",
+              "prescription": "",
+              "cues": "Start with the weight near shoulder height, wrists supported and trunk braced.\nPress overhead, then lower back to your comfortable start position.\nShoulders: Let the shoulder blades rotate upward as you press; keep ribs over the pelvis.",
+              "avoid": "Do not lean farther back to finish; reduce the load and keep ribs over the pelvis.",
+              "movementType": "press",
+              "videos": []
             },
             {
               "id": "ul-upper-a-cable-curl",
@@ -2378,7 +3264,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Cable Curl",
+              "prescription": "",
+              "cues": "Keep your upper arms near your torso and hold the load with steady wrists.\nBend your elbows to lift the load, then lower with control.",
+              "avoid": "Do not swing the body or fold the wrists to finish; lighten the load and control the lowering.",
+              "movementType": "curl",
+              "videos": []
             },
             {
               "id": "ul-upper-a-rope-triceps-pressdown",
@@ -2390,7 +3282,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Rope Triceps Pressdown",
+              "prescription": "",
+              "cues": "Set a high cable or band and keep your upper arms near your sides.\nStraighten your elbows to press down, then return slowly.",
+              "avoid": "Do not swing the upper arm or lean body weight onto the handle; reduce resistance and move at the elbow.",
+              "movementType": "triceps",
+              "movementAssetId": "rope-triceps-pressdown",
+              "videos": []
             }
           ],
           "tone": "violet"
@@ -2418,7 +3317,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Sled Hack Squat",
+              "prescription": "",
+              "cues": "Set the seat or pads to fit the machine; keep your feet stable on the platform.\nBend hips and knees through a comfortable range, then press to stand.\nSafety: Locate and test the release and safety stops before loading.",
+              "avoid": "Avoid lifting your heels or forcing the machine past your controlled range.\nDo not let the sled drop; reduce the load if you cannot reverse smoothly.",
+              "movementType": "squat",
+              "videos": []
             },
             {
               "id": "ul-lower-a-barbell-romanian-deadlift",
@@ -2430,7 +3335,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Barbell Romanian Deadlift",
+              "prescription": "",
+              "cues": "Soften your knees, brace, and move your hips back while keeping the weight close.\nLower to a controlled hamstring stretch, then extend your hips to stand.\nRange: Stop when the hips cannot travel farther back without changing your trunk position.",
+              "avoid": "Do not round farther to gain depth; shorten the hinge and keep the hips moving backward.",
+              "movementType": "hinge",
+              "movementAssetId": "barbell-romanian-deadlift",
+              "videos": []
             },
             {
               "id": "ul-lower-a-leg-extension",
@@ -2442,7 +3354,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Leg Extension",
+              "prescription": "",
+              "cues": "Align your knees with the machine pivot and place the pad above your ankles.\nStraighten your knees smoothly, then lower the lever with control.\nFit: Align your knee with the machine pivot and place the pad above the ankle.",
+              "avoid": "Avoid kicking the weight up or letting the stack slam.\nKeep hips on the seat; reduce the load if you swing backward to lift it.",
+              "movementType": "squat",
+              "movementAssetId": "leg-extension",
+              "videos": []
             },
             {
               "id": "ul-lower-a-seated-leg-curl",
@@ -2454,7 +3373,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Seated Leg Curl",
+              "prescription": "",
+              "cues": "Align your knee with the machine pivot and secure the pads.\nBend your knee to pull the pad toward you, then return slowly.\nFit: Secure the pad or ankle strap; on a machine, align the knee with its pivot.",
+              "avoid": "Keep hips on the support; lower resistance if they lift to finish.\nDo not let the stack slam or cable snap back; control the return.",
+              "movementType": "hinge",
+              "movementAssetId": "seated-leg-curl",
+              "videos": []
             },
             {
               "id": "ul-lower-a-standing-machine-calf-raise",
@@ -2466,7 +3392,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Standing Machine Calf Raise",
+              "prescription": "",
+              "cues": "Place the balls of your feet securely on the platform with knees softly straight.\nRaise your heels, then lower through a comfortable ankle range.",
+              "avoid": "Do not bounce or roll the ankles outward; slow down and reduce resistance if needed.",
+              "movementType": "calf",
+              "movementAssetId": "standing-machine-calf-raise",
+              "videos": []
             },
             {
               "id": "ul-lower-a-kneeling-cable-crunch",
@@ -2478,7 +3411,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Kneeling Cable Crunch",
+              "prescription": "",
+              "cues": "Kneel facing the high cable with the rope held near your head.\nCurl your ribs toward your pelvis, then return slowly.",
+              "avoid": "Avoid pulling mainly with your arms or swinging your hips.\nAvoid yanking the neck or using leg momentum; make the movement smaller and slower.",
+              "movementType": "core",
+              "movementAssetId": "kneeling-cable-crunch",
+              "videos": []
             }
           ],
           "tone": "blue"
@@ -2506,7 +3446,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Incline Dumbbell Press",
+              "prescription": "",
+              "cues": "Set a stable position on the bench and keep wrists over forearms.\nLower the weight toward your chest with control, then press it back up.\nSupport: Keep feet secure and upper back settled on the bench.",
+              "avoid": "Avoid bouncing the weight or losing control of your shoulder position.\nKeep wrists stacked over forearms; use less weight if they fold back or the load wobbles.",
+              "movementType": "press",
+              "movementAssetId": "incline-dumbbell-press",
+              "videos": []
             },
             {
               "id": "ul-upper-b-cable-neutral-grip-lat-pulldown",
@@ -2518,7 +3465,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Dual Cable Lat Pulldown",
+              "prescription": "",
+              "cues": "Set a stable seat or stance and take a comfortable grip on the handle.\nPull toward your upper chest, then let your arms rise slowly.\nSupport: Secure the seat pad or band anchor before pulling.",
+              "avoid": "Avoid throwing your torso backward or pulling behind your neck.\nDo not heave the torso backward; reduce resistance if you need momentum.",
+              "movementType": "pull-up",
+              "videos": []
             },
             {
               "id": "ul-upper-b-lever-chest-supported-row",
@@ -2530,7 +3483,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Lever Chest-Supported Row",
+              "prescription": "",
+              "cues": "Set your torso against the support or brace it in a stable position.\nPull the load toward your torso with your elbows, then let your arms extend slowly.",
+              "avoid": "Do not jerk with the torso or let the load pull you forward; lighten it and control the return.",
+              "movementType": "row",
+              "videos": []
             },
             {
               "id": "ul-upper-b-pec-deck-fly",
@@ -2542,7 +3501,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Pec Deck Fly",
+              "prescription": "",
+              "cues": "Adjust the seat so your arms meet the pads or handles at chest height.\nBring your arms together, then open them slowly.\nFit: Adjust the seat so handles or arm pads match shoulder height.",
+              "avoid": "Do not let the machine pull the shoulders too far back; shorten the arc and keep the return controlled.",
+              "movementType": "press",
+              "movementAssetId": "pec-deck-fly",
+              "videos": []
             },
             {
               "id": "ul-upper-b-cable-lateral-raise",
@@ -2554,7 +3520,14 @@
                 "toFailure": false,
                 "perSide": true
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Cable Lateral Raise",
+              "prescription": "",
+              "cues": "Start with your arms low and elbows softly bent.\nRaise your arms out to a comfortable shoulder height, then lower slowly.",
+              "avoid": "Do not swing the torso or jerk the neck to lift higher; use less weight and a comfortable range.",
+              "movementType": "shoulder-raise",
+              "movementAssetId": "cable-lateral-raise",
+              "videos": []
             },
             {
               "id": "ul-upper-b-dumbbell-hammer-curl",
@@ -2566,7 +3539,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Dumbbell Hammer Curl",
+              "prescription": "",
+              "cues": "Hold the weights with palms facing inward and elbows near your sides.\nCurl without rotating your wrists, then lower slowly.",
+              "avoid": "Do not swing the body or fold the wrists to finish; lighten the load and control the lowering.",
+              "movementType": "curl",
+              "movementAssetId": "dumbbell-hammer-curl",
+              "videos": []
             },
             {
               "id": "ul-upper-b-overhead-cable-triceps-extension",
@@ -2578,7 +3558,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Overhead Cable Triceps Extension",
+              "prescription": "",
+              "cues": "Hold the load overhead with elbows aimed generally forward and trunk braced.\nBend your elbows to lower the load, then extend them under control.\nControl: Start light and establish a repeatable path that keeps the weight clear of your face.",
+              "avoid": "Avoid arching your lower back or letting the load fall behind you.\nDo not drop into the stretched position; shorten the range if elbow or shoulder control fails.",
+              "movementType": "triceps",
+              "movementAssetId": "overhead-cable-triceps-extension",
+              "videos": []
             }
           ],
           "tone": "orange"
@@ -2606,7 +3593,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Leg Press",
+              "prescription": "",
+              "cues": "Set a stable foot position on the platform and keep hips against the seat.\nLower the sled as far as you can keep your pelvis stable, then press it away.\nSafety: Locate and test the release and safety stops before loading.",
+              "avoid": "Avoid letting your pelvis lift or snapping your knees straight.\nDo not let the sled drop; reduce the load if you cannot reverse smoothly.",
+              "movementType": "squat",
+              "movementAssetId": "leg-press-45-degree",
+              "videos": []
             },
             {
               "id": "ul-lower-b-lever-machine-hip-thrust",
@@ -2618,7 +3612,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Lever Machine Hip Thrust",
+              "prescription": "",
+              "cues": "Support your upper back on the bench, plant your feet, and secure the load over your hips.\nLift your hips until your trunk and thighs align; lower with control.",
+              "avoid": "Do not arch the lower back for height; finish with the hips and reduce the lift if ribs flare.",
+              "movementType": "hinge",
+              "videos": []
             },
             {
               "id": "ul-lower-b-lying-leg-curl",
@@ -2630,7 +3630,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Lying Leg Curl",
+              "prescription": "",
+              "cues": "Align your knee with the machine pivot and secure the pads.\nBend your knee to pull the pad toward you, then return slowly.\nFit: Secure the pad or ankle strap; on a machine, align the knee with its pivot.",
+              "avoid": "Keep hips on the support; lower resistance if they lift to finish.\nDo not let the stack slam or cable snap back; control the return.",
+              "movementType": "hinge",
+              "movementAssetId": "lying-leg-curl",
+              "videos": []
             },
             {
               "id": "ul-lower-b-leg-extension",
@@ -2642,7 +3649,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Leg Extension",
+              "prescription": "",
+              "cues": "Align your knees with the machine pivot and place the pad above your ankles.\nStraighten your knees smoothly, then lower the lever with control.\nFit: Align your knee with the machine pivot and place the pad above the ankle.",
+              "avoid": "Avoid kicking the weight up or letting the stack slam.\nKeep hips on the seat; reduce the load if you swing backward to lift it.",
+              "movementType": "squat",
+              "movementAssetId": "leg-extension",
+              "videos": []
             },
             {
               "id": "ul-lower-b-seated-machine-calf-raise",
@@ -2654,7 +3668,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Seated Machine Calf Raise",
+              "prescription": "",
+              "cues": "Set the thigh pad securely and place the balls of your feet on the platform.\nLift your heels, then lower slowly through a comfortable range.",
+              "avoid": "Avoid bouncing the load or lifting your thighs off the pad.\nDo not bounce through the bottom; reduce the load until each rise and lowering is controlled.",
+              "movementType": "calf",
+              "movementAssetId": "seated-machine-calf-raise",
+              "videos": []
             },
             {
               "id": "ul-lower-b-pallof-press",
@@ -2666,7 +3687,14 @@
                 "toFailure": false,
                 "perSide": true
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Pallof Press",
+              "prescription": "",
+              "cues": "Stand sideways to the cable or band with the handle at chest height.\nPress your hands forward without rotating, then bring them back.\nAnchor: Secure the band or cable at chest height; move farther away only while staying square.",
+              "avoid": "Avoid twisting toward the anchor or leaning to counter the load.",
+              "movementType": "core",
+              "movementAssetId": "pallof-press",
+              "videos": []
             }
           ],
           "tone": "lime"
@@ -2709,7 +3737,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Leg Press",
+              "prescription": "",
+              "cues": "Set a stable foot position on the platform and keep hips against the seat.\nLower the sled as far as you can keep your pelvis stable, then press it away.\nSafety: Locate and test the release and safety stops before loading.",
+              "avoid": "Avoid letting your pelvis lift or snapping your knees straight.\nDo not let the sled drop; reduce the load if you cannot reverse smoothly.",
+              "movementType": "squat",
+              "movementAssetId": "leg-press-45-degree",
+              "videos": []
             },
             {
               "id": "mf-a-lever-chest-press",
@@ -2721,7 +3756,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Lever Chest Press",
+              "prescription": "",
+              "cues": "Adjust the seat so the handles start near chest height; keep your back supported.\nPress the handles forward, then return through a controlled range.\nGrip: Keep wrists over forearms and follow the machine’s comfortable path.",
+              "avoid": "Avoid lifting your torso off the pad or letting the machine pull you back.",
+              "movementType": "press",
+              "videos": []
             },
             {
               "id": "mf-a-lever-chest-supported-row",
@@ -2733,7 +3774,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Lever Chest-Supported Row",
+              "prescription": "",
+              "cues": "Set your torso against the support or brace it in a stable position.\nPull the load toward your torso with your elbows, then let your arms extend slowly.",
+              "avoid": "Do not jerk with the torso or let the load pull you forward; lighten it and control the return.",
+              "movementType": "row",
+              "videos": []
             },
             {
               "id": "mf-a-seated-leg-curl",
@@ -2745,7 +3792,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Seated Leg Curl",
+              "prescription": "",
+              "cues": "Align your knee with the machine pivot and secure the pads.\nBend your knee to pull the pad toward you, then return slowly.\nFit: Secure the pad or ankle strap; on a machine, align the knee with its pivot.",
+              "avoid": "Keep hips on the support; lower resistance if they lift to finish.\nDo not let the stack slam or cable snap back; control the return.",
+              "movementType": "hinge",
+              "movementAssetId": "seated-leg-curl",
+              "videos": []
             },
             {
               "id": "mf-a-standing-machine-calf-raise",
@@ -2757,7 +3811,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Standing Machine Calf Raise",
+              "prescription": "",
+              "cues": "Place the balls of your feet securely on the platform with knees softly straight.\nRaise your heels, then lower through a comfortable ankle range.",
+              "avoid": "Do not bounce or roll the ankles outward; slow down and reduce resistance if needed.",
+              "movementType": "calf",
+              "movementAssetId": "standing-machine-calf-raise",
+              "videos": []
             },
             {
               "id": "mf-a-cable-curl",
@@ -2769,7 +3830,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Cable Curl",
+              "prescription": "",
+              "cues": "Keep your upper arms near your torso and hold the load with steady wrists.\nBend your elbows to lift the load, then lower with control.",
+              "avoid": "Do not swing the body or fold the wrists to finish; lighten the load and control the lowering.",
+              "movementType": "curl",
+              "videos": []
             }
           ],
           "tone": "violet"
@@ -2797,7 +3864,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Sled Hack Squat",
+              "prescription": "",
+              "cues": "Set the seat or pads to fit the machine; keep your feet stable on the platform.\nBend hips and knees through a comfortable range, then press to stand.\nSafety: Locate and test the release and safety stops before loading.",
+              "avoid": "Avoid lifting your heels or forcing the machine past your controlled range.\nDo not let the sled drop; reduce the load if you cannot reverse smoothly.",
+              "movementType": "squat",
+              "videos": []
             },
             {
               "id": "mf-b-lat-pulldown",
@@ -2809,7 +3882,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Lat Pulldown",
+              "prescription": "",
+              "cues": "Set a stable seat or stance and take a comfortable grip on the handle.\nPull toward your upper chest, then let your arms rise slowly.\nSupport: Secure the seat pad or band anchor before pulling.",
+              "avoid": "Avoid throwing your torso backward or pulling behind your neck.\nDo not heave the torso backward; reduce resistance if you need momentum.",
+              "movementType": "pull-up",
+              "movementAssetId": "lat-pulldown",
+              "videos": []
             },
             {
               "id": "mf-b-lever-seated-shoulder-press",
@@ -2821,7 +3901,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Lever Seated Shoulder Press",
+              "prescription": "",
+              "cues": "Start with the weight near shoulder height, wrists supported and trunk braced.\nPress overhead, then lower back to your comfortable start position.\nShoulders: Let the shoulder blades rotate upward as you press; keep ribs over the pelvis.\nMachine: Adjust handles and support to your height; follow its arc.",
+              "avoid": "Do not lean farther back to finish; reduce the load and keep ribs over the pelvis.",
+              "movementType": "press",
+              "videos": []
             },
             {
               "id": "mf-b-lever-machine-hip-thrust",
@@ -2833,7 +3919,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Lever Machine Hip Thrust",
+              "prescription": "",
+              "cues": "Support your upper back on the bench, plant your feet, and secure the load over your hips.\nLift your hips until your trunk and thighs align; lower with control.",
+              "avoid": "Do not arch the lower back for height; finish with the hips and reduce the lift if ribs flare.",
+              "movementType": "hinge",
+              "videos": []
             },
             {
               "id": "mf-b-pec-deck-fly",
@@ -2845,7 +3937,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Pec Deck Fly",
+              "prescription": "",
+              "cues": "Adjust the seat so your arms meet the pads or handles at chest height.\nBring your arms together, then open them slowly.\nFit: Adjust the seat so handles or arm pads match shoulder height.",
+              "avoid": "Do not let the machine pull the shoulders too far back; shorten the arc and keep the return controlled.",
+              "movementType": "press",
+              "movementAssetId": "pec-deck-fly",
+              "videos": []
             },
             {
               "id": "mf-b-rope-triceps-pressdown",
@@ -2857,7 +3956,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Rope Triceps Pressdown",
+              "prescription": "",
+              "cues": "Set a high cable or band and keep your upper arms near your sides.\nStraighten your elbows to press down, then return slowly.",
+              "avoid": "Do not swing the upper arm or lean body weight onto the handle; reduce resistance and move at the elbow.",
+              "movementType": "triceps",
+              "movementAssetId": "rope-triceps-pressdown",
+              "videos": []
             }
           ],
           "tone": "blue"
@@ -2887,7 +3993,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 150
+              "restSeconds": 150,
+              "name": "Leg Press",
+              "prescription": "",
+              "cues": "Set a stable foot position on the platform and keep hips against the seat.\nLower the sled as far as you can keep your pelvis stable, then press it away.\nSafety: Locate and test the release and safety stops before loading.",
+              "avoid": "Avoid letting your pelvis lift or snapping your knees straight.\nDo not let the sled drop; reduce the load if you cannot reverse smoothly.",
+              "movementType": "squat",
+              "movementAssetId": "leg-press-45-degree",
+              "videos": []
             },
             {
               "id": "mf-c-lever-chest-press",
@@ -2899,7 +4012,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Lever Chest Press",
+              "prescription": "",
+              "cues": "Adjust the seat so the handles start near chest height; keep your back supported.\nPress the handles forward, then return through a controlled range.\nGrip: Keep wrists over forearms and follow the machine’s comfortable path.",
+              "avoid": "Avoid lifting your torso off the pad or letting the machine pull you back.",
+              "movementType": "press",
+              "videos": []
             },
             {
               "id": "mf-c-lever-chest-supported-row",
@@ -2911,7 +4030,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 120
+              "restSeconds": 120,
+              "name": "Lever Chest-Supported Row",
+              "prescription": "",
+              "cues": "Set your torso against the support or brace it in a stable position.\nPull the load toward your torso with your elbows, then let your arms extend slowly.",
+              "avoid": "Do not jerk with the torso or let the load pull you forward; lighten it and control the return.",
+              "movementType": "row",
+              "videos": []
             },
             {
               "id": "mf-c-seated-leg-curl",
@@ -2923,7 +4048,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Seated Leg Curl",
+              "prescription": "",
+              "cues": "Align your knee with the machine pivot and secure the pads.\nBend your knee to pull the pad toward you, then return slowly.\nFit: Secure the pad or ankle strap; on a machine, align the knee with its pivot.",
+              "avoid": "Keep hips on the support; lower resistance if they lift to finish.\nDo not let the stack slam or cable snap back; control the return.",
+              "movementType": "hinge",
+              "movementAssetId": "seated-leg-curl",
+              "videos": []
             },
             {
               "id": "mf-c-lever-seated-reverse-fly",
@@ -2935,7 +4067,13 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Lever Seated Reverse Fly",
+              "prescription": "",
+              "cues": "Support your chest or hinge at the hips with arms hanging below you.\nOpen your arms to the sides with soft elbows, then return slowly.\nFit: Adjust the seat so handles or arm pads match shoulder height.",
+              "avoid": "Avoid turning the fly into a row or lifting by swinging your torso.\nUse less weight if you swing the torso or jerk the weights upward.",
+              "movementType": "shoulder-raise",
+              "videos": []
             },
             {
               "id": "mf-c-kneeling-cable-crunch",
@@ -2947,7 +4085,14 @@
                 "toFailure": false,
                 "perSide": false
               },
-              "restSeconds": 90
+              "restSeconds": 90,
+              "name": "Kneeling Cable Crunch",
+              "prescription": "",
+              "cues": "Kneel facing the high cable with the rope held near your head.\nCurl your ribs toward your pelvis, then return slowly.",
+              "avoid": "Avoid pulling mainly with your arms or swinging your hips.\nAvoid yanking the neck or using leg momentum; make the movement smaller and slower.",
+              "movementType": "core",
+              "movementAssetId": "kneeling-cable-crunch",
+              "videos": []
             }
           ],
           "tone": "orange"
