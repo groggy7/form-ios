@@ -643,10 +643,10 @@ struct LanguageSelectionSheet: View {
                 Image(flagImageName)
                     .resizable()
                     .scaledToFill()
-                    .frame(width: 28, height: 28)
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .frame(width: 25, height: 25)
+                    .clipShape(RoundedRectangle(cornerRadius: 7))
                     .overlay(
-                        RoundedRectangle(cornerRadius: 8)
+                        RoundedRectangle(cornerRadius: 7)
                             .stroke(AppColors.border.opacity(0.6), lineWidth: 1)
                     )
                 VStack(alignment: .leading, spacing: 4) {
