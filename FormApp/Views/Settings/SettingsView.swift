@@ -642,9 +642,13 @@ struct LanguageSelectionSheet: View {
             HStack(spacing: 14) {
                 Image(flagImageName)
                     .resizable()
-                    .scaledToFit()
-                    .frame(width: 26, height: 26)
-                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                    .scaledToFill()
+                    .frame(width: 28, height: 28)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(AppColors.border.opacity(0.6), lineWidth: 1)
+                    )
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
                         .font(.body.weight(selected ? .semibold : .medium))
