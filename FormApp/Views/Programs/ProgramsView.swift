@@ -37,13 +37,20 @@ enum ProgramHeroLayout {
             options: [.usesLineFragmentOrigin, .usesFontLeading],
             attributes: [.font: UIFont.systemFont(ofSize: size, weight: weight), .paragraphStyle: paragraph], context: nil).height)
     }
-    static func height(programs: [Program], width: CGFloat, titleSize: CGFloat, bodySize: CGFloat, daysSize: CGFloat) -> CGFloat {
+    static func height(programs: [Program], width: CGFloat, titleSize: CGFloat, bodySize: CGFloat, daysSize: CGFloat, countsSize: CGFloat = 11) -> CGFloat {
         let contentWidth = max(1, width - 32)
+        let footerWidth = max(1, contentWidth - 48)
         return programs.reduce(CGFloat(240)) { current, program in
             let title = textHeight(program.displayName, width: contentWidth - 56, size: titleSize, weight: .semibold, spacing: 2)
             let description = program.displayDescription.isEmpty ? 0 : 10 + textHeight(program.displayDescription, width: contentWidth * descriptionFraction(width: width, bodySize: bodySize), size: bodySize, weight: .regular, spacing: 3)
             let days = LanguageManager.t("programs.daysPerWeek", ["days": "\(program.workouts.filter { !$0.exercises.isEmpty }.count)"])
-            let footer = max(48, textHeight(days, width: contentWidth - 48, size: daysSize, weight: .semibold))
+            let counts = LanguageManager.t("programs.counts", [
+                "workouts": program.workouts.count,
+                "exercises": program.workouts.reduce(0) { $0 + $1.exercises.count }
+            ])
+            let daysHeight = textHeight(days, width: max(1, footerWidth - 24), size: daysSize, weight: .semibold)
+            let countsHeight = textHeight(counts, width: footerWidth, size: countsSize, weight: .regular)
+            let footer = max(48, daysHeight + 4 + countsHeight)
             return max(current, 32 + title + description + 14 + footer + 4)
         }
     }
@@ -58,6 +65,7 @@ public struct ProgramsView: View {
     @ScaledMetric(relativeTo: .headline) private var titleSize: CGFloat = 18
     @ScaledMetric(relativeTo: .body) private var bodySize: CGFloat = 13
     @ScaledMetric(relativeTo: .subheadline) private var daysSize: CGFloat = 12
+    @ScaledMetric(relativeTo: .caption) private var countsSize: CGFloat = 11
 
     public init(store: AppStore, onDismiss: @escaping () -> Void) {
         self.store = store
@@ -68,7 +76,7 @@ public struct ProgramsView: View {
         NavigationStack {
             GeometryReader { geometry in
                 let width = max(1, geometry.size.width - 40)
-                let height = ProgramHeroLayout.height(programs: store.state.programs, width: width, titleSize: titleSize, bodySize: bodySize, daysSize: daysSize)
+                let height = ProgramHeroLayout.height(programs: store.state.programs, width: width, titleSize: titleSize, bodySize: bodySize, daysSize: daysSize, countsSize: countsSize)
                 ScrollView {
                     VStack(spacing: 14) {
                         HStack(spacing: 12) {
@@ -96,7 +104,7 @@ public struct ProgramsView: View {
                         }
                         ForEach(store.state.programs) { program in
                             ProgramHeroCard(program: program, isActive: program.id == store.state.activeProgramId,
-                                width: width, height: height, titleSize: titleSize, bodySize: bodySize, daysSize: daysSize,
+                                width: width, height: height, titleSize: titleSize, bodySize: bodySize, daysSize: daysSize, countsSize: countsSize,
                                 onSelect: { store.switchProgram(to: program.id); onDismiss() },
                                 onEdit: { editingProgram = program })
                         }
@@ -140,8 +148,22 @@ struct ProgramHeroCard: View {
     let titleSize: CGFloat
     let bodySize: CGFloat
     let daysSize: CGFloat
+    var countsSize: CGFloat = 11
     let onSelect: () -> Void
     let onEdit: () -> Void
+
+    init(program: Program, isActive: Bool, width: CGFloat, height: CGFloat, titleSize: CGFloat, bodySize: CGFloat, daysSize: CGFloat, countsSize: CGFloat = 11, onSelect: @escaping () -> Void, onEdit: @escaping () -> Void) {
+        self.program = program
+        self.isActive = isActive
+        self.width = width
+        self.height = height
+        self.titleSize = titleSize
+        self.bodySize = bodySize
+        self.daysSize = daysSize
+        self.countsSize = countsSize
+        self.onSelect = onSelect
+        self.onEdit = onEdit
+    }
 
     var body: some View {
         let contentWidth = max(1, width - 32)
@@ -171,10 +193,20 @@ struct ProgramHeroCard: View {
                             .fixedSize(horizontal: false, vertical: true).padding(.top, 10)
                     }
                     Spacer(minLength: 14)
-                    HStack(spacing: 6) {
-                        Image(systemName: "calendar").font(.system(size: 16)).foregroundStyle(AppColors.accent)
-                        Text(LanguageManager.t("programs.daysPerWeek", ["days": "\(program.workouts.filter { !$0.exercises.isEmpty }.count)"]))
-                            .font(.system(size: daysSize, weight: .semibold)).foregroundStyle(AppColors.accent)
+                    HStack(alignment: .center, spacing: 0) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            HStack(spacing: 6) {
+                                Image(systemName: "calendar").font(.system(size: 16)).foregroundStyle(AppColors.accent)
+                                Text(LanguageManager.t("programs.daysPerWeek", ["days": "\(program.workouts.filter { !$0.exercises.isEmpty }.count)"]))
+                                    .font(.system(size: daysSize, weight: .semibold)).foregroundStyle(AppColors.accent)
+                            }
+                            Text(LanguageManager.t("programs.counts", [
+                                "workouts": program.workouts.count,
+                                "exercises": program.workouts.reduce(0) { $0 + $1.exercises.count }
+                            ]))
+                            .font(.system(size: countsSize))
+                            .foregroundStyle(AppColors.muted)
+                        }
                         Spacer(minLength: 8)
                         Image(systemName: "chevron.right").font(.system(size: 18)).foregroundStyle(AppColors.secondaryText)
                     }.frame(minHeight: 48)
