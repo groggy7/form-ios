@@ -501,7 +501,7 @@ public struct SettingsView: View {
 
     private var languagePreferenceLabel: String {
         if langManager.languagePreference == LanguageManager.system {
-            return "\(LanguageManager.t("settings.deviceLanguage")) · \(deviceLanguageName)"
+            return deviceLanguageName
         }
         return LanguageManager.supportedLanguages.first { $0.code == langManager.languagePreference }?.name ?? "English"
     }
