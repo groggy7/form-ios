@@ -4123,7 +4123,18 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(statuses["2026-10-07"], WorkoutDayStatus.completed)
     }
 
-    func testCalendarStatusesMissedDayWhoseWorkoutWasCompletedInSameWeekBecomesNeutral() {
+    func testCalendarStatusesMissedDayWhoseWorkoutWasCompletedInSameWeekBecomesNeutral() throws {
+        let defaults = UserDefaults.standard
+        let domain = try XCTUnwrap(Bundle.main.bundleIdentifier)
+        let previousPreferences = defaults.persistentDomain(forName: domain) ?? [:]
+        let store = AppStore.shared
+        let previousState = store.state
+        let previousSession = store.activeSession
+        defer {
+            store.state = previousState
+            store.activeSession = previousSession
+            defaults.setPersistentDomain(previousPreferences, forName: domain)
+        }
         let monday = "2026-10-05"
         let wednesday = "2026-10-07"
         let program = Program(
@@ -4156,7 +4167,6 @@ final class FormAppTests: XCTestCase {
             history: [session],
             calendarHistory: calHistory
         )
-        let store = AppStore.shared
         store.state = st
         let wedDate = WorkoutCalendar.parseDate(wednesday)!
         let statuses = store.calendarStatuses(today: wedDate)
@@ -4164,16 +4174,26 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(statuses[wednesday], WorkoutDayStatus.completed)
     }
 
-    func testProgramExerciseFixedSetsAndRepTargetModificationPersists() {
+    func testProgramExerciseFixedSetsAndRepTargetModificationPersists() throws {
+        let defaults = UserDefaults.standard
+        let domain = try XCTUnwrap(Bundle.main.bundleIdentifier)
+        let previousPreferences = defaults.persistentDomain(forName: domain) ?? [:]
         let store = AppStore.shared
-        guard var program = store.state.programs.first else {
-            XCTFail("No programs found in store")
-            return
+        let previousState = store.state
+        let previousSession = store.activeSession
+        defer {
+            store.state = previousState
+            store.activeSession = previousSession
+            defaults.setPersistentDomain(previousPreferences, forName: domain)
         }
-        guard !program.workouts.isEmpty && !program.workouts[0].exercises.isEmpty else {
-            XCTFail("First workout has no exercises")
-            return
-        }
+        var program = Program(id: "program-edit-fixture", name: "Program edit fixture", workouts: [
+            Workout(id: "workout-edit-fixture", day: 1, title: "Upper", exercises: [
+                Exercise(name: "Barbell Bench Press", sets: 3)
+            ])
+        ])
+        store.state = StoredAppState(programs: [program], activeProgramId: program.id,
+            currentWeekKey: store.state.currentWeekKey)
+        store.activeSession = nil
 
         // Modify exercise 0 to fixed 4 sets of 10-12 reps
         var modifiedEx = program.workouts[0].exercises[0]
