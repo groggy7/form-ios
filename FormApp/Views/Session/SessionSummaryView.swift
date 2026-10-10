@@ -51,8 +51,9 @@ public struct SessionSummaryView: View {
     public var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: 20) {
+                if isWorkoutEmpty {
+                    // Empty State: Body stretched with centered card
+                    VStack(alignment: .leading, spacing: 16) {
                         Text(workoutTitle)
                             .font(.system(size: 28, weight: .bold))
                             .foregroundColor(AppColors.text)
@@ -76,75 +77,73 @@ public struct SessionSummaryView: View {
                             )
                         }
 
-                        if isWorkoutEmpty {
-                            // Empty State: No sets logged yet
-                            Text(LanguageManager.t("summary.exerciseRecap"))
-                                .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(AppColors.secondaryText)
+                        Text(LanguageManager.t("summary.exerciseRecap"))
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundColor(AppColors.secondaryText)
 
-                            VStack(spacing: 16) {
-                                ZStack {
-                                    Circle()
-                                        .fill(AppColors.accent.opacity(0.12))
-                                        .frame(width: 80, height: 80)
-                                        .overlay(
-                                            Circle()
-                                                .stroke(AppColors.accent.opacity(0.25), lineWidth: 1)
-                                        )
-                                    Image(systemName: "doc.text.fill")
-                                        .font(.system(size: 34))
-                                        .foregroundColor(AppColors.accent)
-                                }
-
-                                VStack(spacing: 6) {
-                                    Text(LanguageManager.t("summary.noSetsTitle"))
-                                        .font(.system(size: 18, weight: .bold))
-                                        .foregroundColor(AppColors.text)
-                                        .multilineTextAlignment(.center)
-
-                                    Text(LanguageManager.t("summary.noSetsSubtitle"))
-                                        .font(.system(size: 13))
-                                        .foregroundColor(AppColors.muted)
-                                        .multilineTextAlignment(.center)
-                                }
-
-                                Button(action: onBack) {
-                                    Text(LanguageManager.t("summary.continueWorkout"))
-                                        .font(.system(size: 15, weight: .bold))
-                                        .frame(maxWidth: .infinity)
-                                        .frame(height: 50)
-                                        .background(
-                                            RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                                .fill(AppColors.accent)
-                                        )
-                                        .foregroundColor(AppColors.todaySelectionText)
-                                }
-                                .buttonStyle(.plain)
-                                .padding(.top, 8)
-
-                                Button(action: {
-                                    if let onDiscard = onDiscard {
-                                        onDiscard()
-                                    } else {
-                                        onBack()
-                                    }
-                                }) {
-                                    Text(LanguageManager.t("summary.discardSession"))
-                                        .font(.system(size: 13, weight: .medium))
-                                        .foregroundColor(AppColors.secondaryText)
-                                }
-                                .buttonStyle(.plain)
+                        VStack(spacing: 16) {
+                            ZStack {
+                                Circle()
+                                    .fill(AppColors.accent.opacity(0.12))
+                                    .frame(width: 80, height: 80)
+                                    .overlay(
+                                        Circle()
+                                            .stroke(AppColors.accent.opacity(0.25), lineWidth: 1)
+                                    )
+                                Image(systemName: "doc.text.fill")
+                                    .font(.system(size: 34))
+                                    .foregroundColor(AppColors.accent)
                             }
-                            .padding(.horizontal, 24)
-                            .padding(.vertical, 32)
-                            .frame(maxWidth: .infinity)
-                            .background(AppColors.surface)
-                            .cornerRadius(16)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                    .stroke(AppColors.border, lineWidth: 1)
-                            )
-                        } else {
+
+                            VStack(spacing: 6) {
+                                Text(LanguageManager.t("summary.noSetsTitle"))
+                                    .font(.system(size: 18, weight: .bold))
+                                    .foregroundColor(AppColors.text)
+                                    .multilineTextAlignment(.center)
+
+                                Text(LanguageManager.t("summary.noSetsSubtitle"))
+                                    .font(.system(size: 13))
+                                    .foregroundColor(AppColors.muted)
+                                    .multilineTextAlignment(.center)
+                            }
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .padding(24)
+                        .background(AppColors.surface)
+                        .cornerRadius(16)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .stroke(AppColors.border, lineWidth: 1)
+                        )
+                    }
+                    .padding(20)
+                } else {
+                    // Non-Empty State: Scrollable Body
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 20) {
+                            Text(workoutTitle)
+                                .font(.system(size: 28, weight: .bold))
+                                .foregroundColor(AppColors.text)
+
+                            // 3 KPI Metric Cards
+                            HStack(spacing: 8) {
+                                summaryMetric(
+                                    icon: "clock",
+                                    title: LanguageManager.t("summary.totalDuration"),
+                                    value: RestTimerUtils.formatSecondsToTime(durationSeconds)
+                                )
+                                summaryMetric(
+                                    icon: "dumbbell.fill",
+                                    title: LanguageManager.t("summary.setsCompleted"),
+                                    value: "\(totalCompletedSets)"
+                                )
+                                summaryMetric(
+                                    icon: "square.stack.3d.up",
+                                    title: LanguageManager.t("summary.estimatedVolume"),
+                                    value: "\(weightUnit.formatVolume(totalVolumeKg)) \(weightUnit.label)"
+                                )
+                            }
+
                             // Status Banners
                             if isWorkoutComplete {
                                 HStack(spacing: 12) {
@@ -276,13 +275,40 @@ public struct SessionSummaryView: View {
                                 }
                             }
                         }
+                        .padding(20)
                     }
-                    .padding(20)
                 }
 
-                // Pinned Bottom Actions for Non-Empty Workout
-                if !isWorkoutEmpty {
-                    VStack(spacing: 8) {
+                // Pinned Bottom Actions (Always stretched to the bottom across all states)
+                VStack(spacing: 8) {
+                    if isWorkoutEmpty {
+                        Button(action: onBack) {
+                            Text(LanguageManager.t("summary.continueWorkout"))
+                                .font(.system(size: 15, weight: .bold))
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 52)
+                                .background(
+                                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                        .fill(AppColors.accent)
+                                )
+                                .foregroundColor(AppColors.todaySelectionText)
+                        }
+                        .buttonStyle(.plain)
+
+                        Button(action: {
+                            if let onDiscard = onDiscard {
+                                onDiscard()
+                            } else {
+                                onBack()
+                            }
+                        }) {
+                            Text(LanguageManager.t("summary.exitSession"))
+                                .font(.system(size: 14, weight: .medium))
+                                .foregroundColor(AppColors.secondaryText)
+                        }
+                        .buttonStyle(.plain)
+                        .padding(.top, 4)
+                    } else {
                         Button(action: onSaveAndClose) {
                             HStack(spacing: 8) {
                                 Image(systemName: "checkmark")
@@ -308,11 +334,11 @@ public struct SessionSummaryView: View {
                         .buttonStyle(.plain)
                         .padding(.top, 4)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.bottom, 24)
-                    .padding(.top, 8)
-                    .background(AppColors.background)
                 }
+                .padding(.horizontal, 20)
+                .padding(.bottom, 24)
+                .padding(.top, 8)
+                .background(AppColors.background)
             }
             .background(AppColors.background)
             .navigationBarTitleDisplayMode(.inline)
