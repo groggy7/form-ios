@@ -957,8 +957,8 @@
   "summary.exitSession": "Antrenmandan çık",
   "summary.partialBannerTitle": "{completed} / {total} egzersiz tamamlandı",
   "summary.partialBannerSubtitle": "Kaydetmek bu antrenmanı bitmemiş olarak kaydeder.",
-  "summary.completeBannerTitle": "{count} egzersiz tamamlandı",
-  "summary.completeBannerSubtitle": "Harika iş! Antrenmanını tamamladın.",
+  "summary.completeBannerTitle": "Antrenman tamamlandı",
+  "summary.completeBannerSubtitle": "{exercises} · {sets}",
   "notice.backupRestored": "Yedek başarıyla geri yüklendi.",
   "notice.restoreFailed": "Yedek geri yüklenemedi.",
   "notice.backupDownloaded": "Yedek indirildi.",
@@ -1185,5 +1185,7 @@
   "programs.workoutQuantity.other": "{count} antrenman",
   "programs.exerciseQuantity.one": "{count} egzersiz",
   "programs.exerciseQuantity.other": "{count} egzersiz",
-  "programs.countParts": "{workouts} · {exercises}"
+  "programs.countParts": "{workouts} · {exercises}",
+  "summary.completedSetQuantity.one": "{count} set tamamlandı",
+  "summary.completedSetQuantity.other": "{count} set tamamlandı"
 }

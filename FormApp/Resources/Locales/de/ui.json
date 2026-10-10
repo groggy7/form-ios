@@ -957,8 +957,8 @@
   "summary.exitSession": "Sitzung beenden",
   "summary.partialBannerTitle": "{completed} von {total} Übungen abgeschlossen",
   "summary.partialBannerSubtitle": "Durch das Speichern wird dieses Training als unvollständig erfasst.",
-  "summary.completeBannerTitle": "{count} Übungen abgeschlossen",
-  "summary.completeBannerSubtitle": "Gute Arbeit! Du hast dein Training abgeschlossen.",
+  "summary.completeBannerTitle": "Training abgeschlossen",
+  "summary.completeBannerSubtitle": "{exercises} · {sets}",
   "notice.backupRestored": "Sicherung erfolgreich wiederhergestellt.",
   "notice.restoreFailed": "Sicherung konnte nicht wiederhergestellt werden.",
   "notice.backupDownloaded": "Backup heruntergeladen.",
@@ -1185,5 +1185,7 @@
   "programs.workoutQuantity.other": "{count} Trainings",
   "programs.exerciseQuantity.one": "{count} Übung",
   "programs.exerciseQuantity.other": "{count} Übungen",
-  "programs.countParts": "{workouts} · {exercises}"
+  "programs.countParts": "{workouts} · {exercises}",
+  "summary.completedSetQuantity.one": "{count} Satz abgeschlossen",
+  "summary.completedSetQuantity.other": "{count} Sätze abgeschlossen"
 }

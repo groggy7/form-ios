@@ -957,8 +957,8 @@
   "summary.exitSession": "Exit session",
   "summary.partialBannerTitle": "{completed} of {total} exercises completed",
   "summary.partialBannerSubtitle": "Saving will record this workout as unfinished.",
-  "summary.completeBannerTitle": "{count} exercises completed",
-  "summary.completeBannerSubtitle": "Great work! You completed your workout.",
+  "summary.completeBannerTitle": "Workout complete",
+  "summary.completeBannerSubtitle": "{exercises} · {sets}",
   "notice.backupRestored": "Backup restored successfully.",
   "notice.restoreFailed": "Failed to restore backup.",
   "notice.backupDownloaded": "Backup downloaded.",
@@ -1185,5 +1185,7 @@
   "programs.workoutQuantity.other": "{count} workouts",
   "programs.exerciseQuantity.one": "{count} exercise",
   "programs.exerciseQuantity.other": "{count} exercises",
-  "programs.countParts": "{workouts} · {exercises}"
+  "programs.countParts": "{workouts} · {exercises}",
+  "summary.completedSetQuantity.one": "{count} set completed",
+  "summary.completedSetQuantity.other": "{count} sets completed"
 }

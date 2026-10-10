@@ -957,8 +957,8 @@
   "summary.exitSession": "Salir de la sesión",
   "summary.partialBannerTitle": "{completed} de {total} ejercicios completados",
   "summary.partialBannerSubtitle": "Guardar registrará este entrenamiento como incompleto.",
-  "summary.completeBannerTitle": "{count} ejercicios completados",
-  "summary.completeBannerSubtitle": "¡Gran trabajo! Completaste tu entrenamiento.",
+  "summary.completeBannerTitle": "Entrenamiento completado",
+  "summary.completeBannerSubtitle": "{exercises} · {sets}",
   "notice.backupRestored": "Copia de seguridad restaurada exitosamente.",
   "notice.restoreFailed": "No se pudo restaurar la copia de seguridad.",
   "notice.backupDownloaded": "Copia de seguridad descargada.",
@@ -1185,5 +1185,7 @@
   "programs.workoutQuantity.other": "{count} sesiones",
   "programs.exerciseQuantity.one": "{count} ejercicio",
   "programs.exerciseQuantity.other": "{count} ejercicios",
-  "programs.countParts": "{workouts} · {exercises}"
+  "programs.countParts": "{workouts} · {exercises}",
+  "summary.completedSetQuantity.one": "{count} serie completada",
+  "summary.completedSetQuantity.other": "{count} series completadas"
 }

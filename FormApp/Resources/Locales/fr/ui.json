@@ -957,8 +957,8 @@
   "summary.exitSession": "Quitter la séance",
   "summary.partialBannerTitle": "{completed} sur {total} exercices terminés",
   "summary.partialBannerSubtitle": "L'enregistrement marquera cet entraînement comme inachevé.",
-  "summary.completeBannerTitle": "{count} exercices terminés",
-  "summary.completeBannerSubtitle": "Beau travail ! Vous avez terminé votre entraînement.",
+  "summary.completeBannerTitle": "Entraînement terminé",
+  "summary.completeBannerSubtitle": "{exercises} · {sets}",
   "notice.backupRestored": "Sauvegarde restaurée avec succès.",
   "notice.restoreFailed": "Échec de la restauration de la sauvegarde.",
   "notice.backupDownloaded": "Sauvegarde téléchargée.",
@@ -1185,5 +1185,7 @@
   "programs.workoutQuantity.other": "{count} séances",
   "programs.exerciseQuantity.one": "{count} exercice",
   "programs.exerciseQuantity.other": "{count} exercices",
-  "programs.countParts": "{workouts} · {exercises}"
+  "programs.countParts": "{workouts} · {exercises}",
+  "summary.completedSetQuantity.one": "{count} série terminée",
+  "summary.completedSetQuantity.other": "{count} séries terminées"
 }

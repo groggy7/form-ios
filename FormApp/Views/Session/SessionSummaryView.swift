@@ -112,13 +112,19 @@ public struct SessionSummaryView: View {
                             // Status Banners
                             if isWorkoutComplete {
                                 HStack(spacing: 12) {
-                                    Text("🎉")
-                                        .font(.system(size: 24))
+                                    Image(systemName: "checkmark")
+                                        .font(.system(size: 22, weight: .semibold))
+                                        .foregroundColor(AppColors.accent)
+                                        .frame(width: 24, height: 24)
+                                        .accessibilityHidden(true)
                                     VStack(alignment: .leading, spacing: 2) {
-                                        Text(LanguageManager.t("summary.completeBannerTitle", ["count": totalExercises]))
+                                        Text(LanguageManager.t("summary.completeBannerTitle"))
                                             .font(.system(size: 14, weight: .bold))
                                             .foregroundColor(AppColors.text)
-                                        Text(LanguageManager.t("summary.completeBannerSubtitle"))
+                                        Text(LanguageManager.t("summary.completeBannerSubtitle", [
+                                            "exercises": LanguageManager.t("programs.exerciseQuantity", ["count": totalExercises]),
+                                            "sets": LanguageManager.t("summary.completedSetQuantity", ["count": totalCompletedSets])
+                                        ]))
                                             .font(.system(size: 12))
                                             .foregroundColor(AppColors.muted)
                                     }
