@@ -162,7 +162,7 @@ public struct SessionSummaryView: View {
                                     .foregroundColor(AppColors.secondaryText)
 
                                 VStack(spacing: 0) {
-                                    ForEach(Array(exerciseLogs.enumerated()), id: \.offset) { _, log in
+                                    ForEach(Array(exerciseLogs.enumerated()), id: \.offset) { index, log in
                                         let working = log.sets.filter { !$0.isWarmup }
                                         let completedCount = working.count
                                         let targetCount = (log.targetSets ?? 0) > 0 ? (log.targetSets ?? 0) : max(working.count, 1)
@@ -197,6 +197,15 @@ public struct SessionSummaryView: View {
                                         .padding(.horizontal, 14)
                                         .padding(.vertical, 10)
                                         .frame(maxWidth: .infinity, minHeight: 56, alignment: .leading)
+
+                                        if index < exerciseLogs.count - 1 {
+                                            Rectangle()
+                                                .fill(AppColors.border.opacity(0.6))
+                                                .frame(height: 1)
+                                                .padding(.leading, 54)
+                                                .padding(.trailing, 14)
+                                                .accessibilityHidden(true)
+                                        }
                                     }
                                 }
                                 .padding(.vertical, 4)
