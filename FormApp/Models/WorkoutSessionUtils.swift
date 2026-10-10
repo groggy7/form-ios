@@ -3,6 +3,20 @@ import Foundation
 public enum RestTimerUtils {
     public static let restPresets: [Int] = [60, 90, 120, 180, 240]
 
+    /// Evaluate the latest draft after logging the set, independent of exercise order.
+    public static func afterCompletingSet(in draft: ActiveSessionDraft, exercise: Exercise, nowEpochMillis: Int64) -> RestTimerState? {
+        guard !WorkoutSessionUtils.isComplete(draft: draft) else { return nil }
+        let seconds = restSeconds(for: exercise)
+        guard seconds > 0 else { return nil }
+        return RestTimerState(
+            exerciseName: exercise.name,
+            totalSeconds: seconds,
+            isRunning: true,
+            endsAtEpochMillis: nowEpochMillis + Int64(seconds) * 1000,
+            pausedSecondsRemaining: seconds
+        )
+    }
+
     public static func formatSecondsToTime(_ totalSeconds: Int) -> String {
         let clamped = max(0, totalSeconds)
         let hours = clamped / 3600

@@ -10704,6 +10704,87 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
     }
 }
 
+final class SessionCompletionTimerTests: XCTestCase {
+    private let now: Int64 = 10_000
+    private var exercises: [Exercise] {
+        (0..<3).map { Exercise(id: "exercise-\($0)", name: "Bench \($0)", exerciseId: "barbell-bench-press",
+            sets: 2, reps: RepTarget(min: 8, max: 12), restSeconds: 90) }
+    }
+    private func draft() -> ActiveSessionDraft {
+        let workout = Workout(id: "w", day: 1, title: "Test", exercises: exercises)
+        return ActiveSessionDraft(id: "d", programId: "p", workout: workout, startedAt: "2026-10-10T10:00:00Z",
+            startedAtEpochMillis: 1000, setsByExercise: Dictionary(uniqueKeysWithValues: exercises.map { ex in
+                (ex.id, (1...2).map { ExerciseSetLog(setNumber: $0, weightInput: "60", repsInput: "10", weightKg: 60, completedReps: 10) })
+            }))
+    }
+    private func complete(_ draft: inout ActiveSessionDraft, _ exercise: Exercise, _ index: Int) {
+        draft.setsByExercise[exercise.id]![index].isCompleted = true
+        draft.restTimer = RestTimerUtils.afterCompletingSet(in: draft, exercise: exercise, nowEpochMillis: now)
+    }
+    func testWorkoutCompletionSkipsRestForEveryExerciseOrder() {
+        for order in [[0, 1, 2], [0, 2, 1], [1, 0, 2], [1, 2, 0], [2, 0, 1], [2, 1, 0]] {
+            var active = draft()
+            for (position, exerciseIndex) in order.enumerated() {
+                let ex = active.workout.exercises[exerciseIndex]
+                for setIndex in 0...1 {
+                    complete(&active, ex, setIndex)
+                    let finished = position == 2 && setIndex == 1
+                    XCTAssertEqual(WorkoutSessionUtils.isComplete(draft: active), finished)
+                    XCTAssertEqual(active.restTimer == nil, finished, "Order \(order), exercise \(exerciseIndex), set \(setIndex)")
+                    if !finished {
+                        XCTAssertEqual(active.restTimer?.endsAtEpochMillis, now + 90_000)
+                        XCTAssertEqual(active.restTimer?.exerciseName, ex.name)
+                    }
+                }
+            }
+        }
+    }
+    func testAddedRemovedAndWarmupSetsUseSessionCompletionRules() {
+        var active = draft()
+        for ex in active.workout.exercises {
+            complete(&active, ex, 0)
+            complete(&active, ex, 1)
+        }
+        let ex = active.workout.exercises[0]
+        active.setsByExercise[ex.id]!.append(WorkoutSessionUtils.prefillSet(
+            WorkoutSessionUtils.newSet(exercise: ex, number: 3), from: active.setsByExercise[ex.id]![1]))
+        active.setsByExercise[ex.id]![0].isCompleted = false
+        complete(&active, ex, 0)
+        XCTAssertNotNil(active.restTimer)
+        complete(&active, ex, 2)
+        XCTAssertNil(active.restTimer)
+        active.setsByExercise[ex.id]!.removeLast()
+        active.setsByExercise[ex.id]!.insert(ExerciseSetLog(setNumber: 1, isWarmup: true), at: 0)
+        active.setsByExercise[ex.id]![1].isCompleted = false
+        complete(&active, ex, 1)
+        XCTAssertTrue(WorkoutSessionUtils.isComplete(draft: active))
+        XCTAssertNil(active.restTimer)
+    }
+    func testMissingAndInvalidOtherExerciseLogsStillRequireRest() {
+        for invalid in [false, true] {
+            var active = draft()
+            let ex = active.workout.exercises[0]
+            for other in active.workout.exercises.dropFirst() {
+                active.setsByExercise[other.id] = invalid
+                    ? [ExerciseSetLog(setNumber: 1, weightKg: 60, isCompleted: true)] : []
+            }
+            complete(&active, ex, 0)
+            complete(&active, ex, 1)
+            XCTAssertFalse(WorkoutSessionUtils.isComplete(draft: active))
+            XCTAssertNotNil(active.restTimer)
+        }
+    }
+    func testZeroRestDoesNotStartTimerWhileWorkoutIsUnfinished() {
+        var active = draft()
+        var ex = active.workout.exercises[0]
+        ex.restSeconds = 0
+        active.workout.exercises[0] = ex
+        complete(&active, ex, 0)
+        XCTAssertFalse(WorkoutSessionUtils.isComplete(draft: active))
+        XCTAssertNil(active.restTimer)
+    }
+}
+
 final class BodyweightLoggingTests: XCTestCase {
     private let push = Exercise(id: "push", name: "Push-Ups", exerciseId: "push-ups", sets: 2, reps: RepTarget(min: 8, max: 12))
     private var assisted: Exercise { var ex = push; ex.name = "Assisted Pull-up"; ex.exerciseId = "assisted-pull-up"; return ex }

@@ -852,17 +852,7 @@ public struct ActiveSessionView: View {
 
             if willComplete {
                 FormAudioPlayer.playSetCompleteSound()
-                let restSecs = RestTimerUtils.restSeconds(for: exercise)
-                if restSecs > 0 {
-                    let endEpoch = nowEpochMillis + Int64(restSecs * 1000)
-                    copy.restTimer = RestTimerState(
-                        exerciseName: exercise.name,
-                        totalSeconds: restSecs,
-                        isRunning: true,
-                        endsAtEpochMillis: endEpoch,
-                        pausedSecondsRemaining: restSecs
-                    )
-                }
+                copy.restTimer = RestTimerUtils.afterCompletingSet(in: copy, exercise: exercise, nowEpochMillis: nowEpochMillis)
             } else {
                 FormAudioPlayer.playSetUndoSound()
             }
