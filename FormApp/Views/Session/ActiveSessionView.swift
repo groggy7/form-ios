@@ -138,15 +138,6 @@ public struct ActiveSessionView: View {
                             store.abandonActiveSession()
                         }
                     },
-                    onSelectExercise: { index in
-                        showSummary = false
-                        finishedAt = nil
-                        store.updateActiveSession { draft in
-                            var copy = draft
-                            copy.currentExerciseIndex = index
-                            return copy
-                        }
-                    },
                     weightUnit: store.weightUnit
                 )
             } else {

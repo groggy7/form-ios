@@ -9,7 +9,6 @@ public struct SessionSummaryView: View {
     var onBack: () -> Void
     var onSaveAndClose: () -> Void
     var onDiscard: (() -> Void)? = nil
-    var onSelectExercise: ((Int) -> Void)? = nil
     var weightUnit: WeightUnit = .kg
 
     public init(
@@ -21,7 +20,6 @@ public struct SessionSummaryView: View {
         onBack: @escaping () -> Void,
         onSaveAndClose: @escaping () -> Void,
         onDiscard: (() -> Void)? = nil,
-        onSelectExercise: ((Int) -> Void)? = nil,
         weightUnit: WeightUnit = .kg
     ) {
         self.workoutTitle = workoutTitle
@@ -32,7 +30,6 @@ public struct SessionSummaryView: View {
         self.onBack = onBack
         self.onSaveAndClose = onSaveAndClose
         self.onDiscard = onDiscard
-        self.onSelectExercise = onSelectExercise
         self.weightUnit = weightUnit
     }
 
@@ -165,51 +162,41 @@ public struct SessionSummaryView: View {
                                     .foregroundColor(AppColors.secondaryText)
 
                                 VStack(spacing: 0) {
-                                    ForEach(Array(exerciseLogs.enumerated()), id: \.offset) { index, log in
+                                    ForEach(Array(exerciseLogs.enumerated()), id: \.offset) { _, log in
                                         let working = log.sets.filter { !$0.isWarmup }
                                         let completedCount = working.count
                                         let targetCount = (log.targetSets ?? 0) > 0 ? (log.targetSets ?? 0) : max(working.count, 1)
                                         let isUnstarted = completedCount == 0
                                         let exerciseVolumeKg = working.reduce(0.0) { sum, set in sum + ((set.weightKg ?? 0.0) * Double(set.reps ?? 0)) }
 
-                                        Button(action: {
-                                            onSelectExercise?(index)
-                                        }) {
-                                            HStack(spacing: 12) {
-                                                exerciseStatusBadge(completedCount: completedCount, targetCount: targetCount)
+                                        HStack(spacing: 12) {
+                                            exerciseStatusBadge(completedCount: completedCount, targetCount: targetCount)
 
-                                                VStack(alignment: .leading, spacing: 3) {
-                                                    Text(log.exerciseName)
-                                                        .font(.system(size: 14, weight: .semibold))
-                                                        .foregroundColor(AppColors.text)
-
-                                                    let subtitleText: String = {
-                                                        if isUnstarted {
-                                                            return "0/\(targetCount) sets • \(LanguageManager.t("history.notStarted"))"
-                                                        } else if exerciseVolumeKg <= 0.0 {
-                                                            return "\(completedCount)/\(targetCount) sets • \(LanguageManager.t("exercise.history.bodyweight"))"
-                                                        } else {
-                                                            return "\(completedCount)/\(targetCount) sets • \(weightUnit.formatVolume(exerciseVolumeKg)) \(weightUnit.label)"
-                                                        }
-                                                    }()
-
-                                                    Text(subtitleText)
-                                                        .font(.system(size: 12))
-                                                        .foregroundColor(AppColors.muted)
-                                                }
-
-                                                Spacer()
-
-                                                Image(systemName: "chevron.right")
+                                            VStack(alignment: .leading, spacing: 3) {
+                                                Text(log.exerciseName)
                                                     .font(.system(size: 14, weight: .semibold))
-                                                    .foregroundColor(AppColors.muted.opacity(0.6))
+                                                    .foregroundColor(AppColors.text)
+
+                                                let subtitleText: String = {
+                                                    if isUnstarted {
+                                                        return "0/\(targetCount) sets • \(LanguageManager.t("history.notStarted"))"
+                                                    } else if exerciseVolumeKg <= 0.0 {
+                                                        return "\(completedCount)/\(targetCount) sets • \(LanguageManager.t("exercise.history.bodyweight"))"
+                                                    } else {
+                                                        return "\(completedCount)/\(targetCount) sets • \(weightUnit.formatVolume(exerciseVolumeKg)) \(weightUnit.label)"
+                                                    }
+                                                }()
+
+                                                Text(subtitleText)
+                                                    .font(.system(size: 12))
+                                                    .foregroundColor(AppColors.muted)
                                             }
-                                            .padding(.horizontal, 14)
-                                            .padding(.vertical, 10)
-                                            .frame(maxWidth: .infinity, minHeight: 56, alignment: .leading)
-                                            .contentShape(Rectangle())
+
+                                            Spacer()
                                         }
-                                        .buttonStyle(.plain)
+                                        .padding(.horizontal, 14)
+                                        .padding(.vertical, 10)
+                                        .frame(maxWidth: .infinity, minHeight: 56, alignment: .leading)
                                     }
                                 }
                                 .padding(.vertical, 4)
