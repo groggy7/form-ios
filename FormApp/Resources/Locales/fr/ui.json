@@ -558,7 +558,7 @@
   "progression.coach.by_set": "Objectifs par série de travail",
   "progression.coach.set_target": "Ensemble {set} : {target}",
   "progression.coach.last_logged": "Dernière connexion ({unit}) : {summary}",
-  "progression.coach.set_count_changed": "L’application est disponible lorsque les séries de travail non terminées correspondent à ce plan.",
+  "progression.coach.set_count_changed": "L’option « Appliquer » est disponible lorsque les séries de travail non terminées correspondent à ce plan.",
   "progression.coach.review_compact": "Aucune augmentation de répétition dans les sessions {sessions}",
   "progression.coach.add_reps_title": "Gardez le poids, ajoutez répétitions",
   "progression.coach.add_reps_hint": "Essayez une répétition supplémentaire par série, jusqu'à {ceiling}, si cela est gérable.",
