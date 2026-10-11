@@ -664,14 +664,6 @@ public final class AppStore: ObservableObject {
         return nil
     }
 
-    private func sessionForDate(_ dateStr: String) -> WorkoutSessionRecord? {
-        state.history.first { rec in
-            let calDate = state.calendarHistory?.entries.first(where: { entry in entry.id == "session:\(rec.id)" })?.date
-            let d = calDate ?? WorkoutCalendar.localDate(from: rec.startedAt) ?? WorkoutCalendar.localDate(from: rec.completedAt)
-            return d == dateStr
-        }
-    }
-
     public func completeActiveSession(_ record: WorkoutSessionRecord) {
         refreshForCurrentDate()
         let workout = resolveWorkout(for: record)
