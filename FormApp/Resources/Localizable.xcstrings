@@ -15342,7 +15342,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ces formules calculent votre estimation de 1-répétition max (1RM) à partir de votre lourd séries de travail (1-10 répétitions), vous n'aurez donc jamais à risquer de tester un vrai maximum dangereux dans la salle de sport. Brzycki est largement préféré pour les répétitions inférieurs (1 à 6), tandis que Epley fonctionne très bien sur les répétitions 6 à 10. Les échauffements et les séries élevés (11+) sont exclus en toute sécurité pour que vos estimations restent réalistes."
+            "value": "Ces formules calculent votre estimation de 1-répétition max (1RM) à partir de votre lourd séries de travail (1–10 répétitions), vous n'aurez donc jamais à risquer de tester un vrai maximum dangereux dans la salle de sport. Brzycki est largement préféré pour les répétitions inférieurs (1 à 6), tandis que Epley fonctionne très bien sur les répétitions 6 à 10. Les échauffements et les séries élevés (11+) sont exclus en toute sécurité pour que vos estimations restent réalistes."
           }
         },
         "es": {
@@ -26810,31 +26810,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Describe what looks incorrect or missing..."
+            "value": "Describe what looks incorrect or missing…"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Neyin yanlış veya eksik olduğunu açıklayın..."
+            "value": "Neyin yanlış veya eksik olduğunu açıklayın…"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Beschreiben Sie, was falsch aussieht oder fehlt ..."
+            "value": "Beschreiben Sie, was falsch aussieht oder fehlt …"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Décrivez ce qui semble incorrect ou manquant..."
+            "value": "Décrivez ce qui semble incorrect ou manquant…"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Describe lo que parece incorrecto o faltante..."
+            "value": "Describe lo que parece incorrecto o faltante…"
           }
         }
       }
@@ -39557,7 +39557,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Comprobando iCloud..."
+            "value": "Comprobando iCloud…"
           }
         }
       }
@@ -39942,7 +39942,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Encontrar y restaurar la copia de seguridad..."
+            "value": "Encontrar y restaurar la copia de seguridad…"
           }
         }
       }

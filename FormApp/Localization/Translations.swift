@@ -155,8 +155,12 @@ public final class LanguageManager: ObservableObject {
         for match in regex.matches(in: raw, range: NSRange(raw.startIndex..., in: raw)).reversed() {
             guard let keyRange = Range(match.range(at:1), in: raw), let range = Range(match.range, in: result) else { continue }
             let name = String(raw[keyRange]); guard let value = params[name] else { continue }
-            let text = (language ?? translationLanguage) == "tr" && key == "history.setsProgress" && name == "done" && value is Int
-                ? Self.turkishPossessiveNumber(value as! Int) : "\(value)"
+            let text: String
+            if (language ?? translationLanguage) == "tr", key == "history.setsProgress", name == "done", let count = value as? Int {
+                text = Self.turkishPossessiveNumber(count)
+            } else {
+                text = "\(value)"
+            }
             result.replaceSubrange(range, with: text)
         }
         return result
