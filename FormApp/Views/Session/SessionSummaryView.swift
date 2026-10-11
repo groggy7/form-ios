@@ -53,14 +53,14 @@ public struct SessionSummaryView: View {
                     VStack(alignment: .leading, spacing: 16) {
                         Text(workoutTitle)
                             .font(.system(size: 28, weight: .bold))
-                            .foregroundColor(AppColors.text)
+                            .foregroundStyle(AppColors.text)
 
                         // Unified Segmented KPI Metrics Card
                         summaryMetricsCard
 
                         Text(LanguageManager.t("summary.exerciseRecap"))
                             .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(AppColors.secondaryText)
+                            .foregroundStyle(AppColors.secondaryText)
 
                         VStack(spacing: 16) {
                             ZStack {
@@ -73,18 +73,18 @@ public struct SessionSummaryView: View {
                                     )
                                 Image(systemName: "doc.text.fill")
                                     .font(.system(size: 34))
-                                    .foregroundColor(AppColors.accent)
+                                    .foregroundStyle(AppColors.accent)
                             }
 
                             VStack(spacing: 6) {
                                 Text(LanguageManager.t("summary.noSetsTitle"))
                                     .font(.system(size: 18, weight: .bold))
-                                    .foregroundColor(AppColors.text)
+                                    .foregroundStyle(AppColors.text)
                                     .multilineTextAlignment(.center)
 
                                 Text(LanguageManager.t("summary.noSetsSubtitle"))
                                     .font(.system(size: 13))
-                                    .foregroundColor(AppColors.muted)
+                                    .foregroundStyle(AppColors.muted)
                                     .multilineTextAlignment(.center)
                             }
                         }
@@ -104,7 +104,7 @@ public struct SessionSummaryView: View {
                         VStack(alignment: .leading, spacing: 20) {
                             Text(workoutTitle)
                                 .font(.system(size: 28, weight: .bold))
-                                .foregroundColor(AppColors.text)
+                                .foregroundStyle(AppColors.text)
 
                             // Unified Segmented KPI Metrics Card
                             summaryMetricsCard
@@ -114,19 +114,19 @@ public struct SessionSummaryView: View {
                                 HStack(spacing: 12) {
                                     Image(systemName: "checkmark")
                                         .font(.system(size: 22, weight: .semibold))
-                                        .foregroundColor(AppColors.accent)
+                                        .foregroundStyle(AppColors.accent)
                                         .frame(width: 24, height: 24)
                                         .accessibilityHidden(true)
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(LanguageManager.t("summary.completeBannerTitle"))
                                             .font(.system(size: 14, weight: .bold))
-                                            .foregroundColor(AppColors.text)
+                                            .foregroundStyle(AppColors.text)
                                         Text(LanguageManager.t("summary.completeBannerSubtitle", [
                                             "exercises": LanguageManager.t("programs.exerciseQuantity", ["count": totalExercises]),
                                             "sets": LanguageManager.t("summary.completedSetQuantity", ["count": totalCompletedSets])
                                         ]))
                                             .font(.system(size: 12))
-                                            .foregroundColor(AppColors.muted)
+                                            .foregroundStyle(AppColors.muted)
                                     }
                                     Spacer()
                                 }
@@ -141,14 +141,14 @@ public struct SessionSummaryView: View {
                                 HStack(spacing: 12) {
                                     Image(systemName: "clock.fill")
                                         .font(.system(size: 22))
-                                        .foregroundColor(AppColors.unfinishedOrange)
+                                        .foregroundStyle(AppColors.unfinishedOrange)
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(LanguageManager.t("summary.partialBannerTitle", ["completed": completedExercisesCount, "total": totalExercises]))
                                             .font(.system(size: 14, weight: .bold))
-                                            .foregroundColor(AppColors.text)
+                                            .foregroundStyle(AppColors.text)
                                         Text(LanguageManager.t("summary.partialBannerSubtitle"))
                                             .font(.system(size: 12))
-                                            .foregroundColor(AppColors.muted)
+                                            .foregroundStyle(AppColors.muted)
                                     }
                                     Spacer()
                                 }
@@ -165,7 +165,7 @@ public struct SessionSummaryView: View {
                             VStack(alignment: .leading, spacing: 10) {
                                 Text(LanguageManager.t("summary.exerciseRecap"))
                                     .font(.system(size: 16, weight: .bold))
-                                    .foregroundColor(AppColors.secondaryText)
+                                    .foregroundStyle(AppColors.secondaryText)
 
                                 VStack(spacing: 0) {
                                     ForEach(Array(exerciseLogs.enumerated()), id: \.offset) { index, log in
@@ -181,7 +181,7 @@ public struct SessionSummaryView: View {
                                             VStack(alignment: .leading, spacing: 3) {
                                                 Text(log.exerciseName)
                                                     .font(.system(size: 14, weight: .semibold))
-                                                    .foregroundColor(AppColors.text)
+                                                    .foregroundStyle(AppColors.text)
 
                                                 let subtitleText: String = {
                                                     if isUnstarted {
@@ -195,7 +195,7 @@ public struct SessionSummaryView: View {
 
                                                 Text(subtitleText)
                                                     .font(.system(size: 12))
-                                                    .foregroundColor(AppColors.muted)
+                                                    .foregroundStyle(AppColors.muted)
                                             }
 
                                             Spacer()
@@ -239,7 +239,7 @@ public struct SessionSummaryView: View {
                                     RoundedRectangle(cornerRadius: 14, style: .continuous)
                                         .fill(AppColors.accent)
                                 )
-                                .foregroundColor(AppColors.todaySelectionText)
+                                .foregroundStyle(AppColors.todaySelectionText)
                         }
                         .buttonStyle(.plain)
 
@@ -252,7 +252,7 @@ public struct SessionSummaryView: View {
                         }) {
                             Text(LanguageManager.t("summary.exitSession"))
                                 .font(.system(size: 14, weight: .medium))
-                                .foregroundColor(AppColors.secondaryText)
+                                .foregroundStyle(AppColors.secondaryText)
                         }
                         .buttonStyle(.plain)
                         .padding(.top, 4)
@@ -270,14 +270,14 @@ public struct SessionSummaryView: View {
                                 RoundedRectangle(cornerRadius: 14, style: .continuous)
                                     .fill(AppColors.accent)
                             )
-                            .foregroundColor(AppColors.todaySelectionText)
+                            .foregroundStyle(AppColors.todaySelectionText)
                         }
                         .buttonStyle(.plain)
 
                         Button(action: onBack) {
                             Text(LanguageManager.t("summary.back"))
                                 .font(.system(size: 14, weight: .medium))
-                                .foregroundColor(AppColors.secondaryText)
+                                .foregroundStyle(AppColors.secondaryText)
                         }
                         .buttonStyle(.plain)
                         .padding(.top, 4)
@@ -296,10 +296,10 @@ public struct SessionSummaryView: View {
                         HStack(spacing: 8) {
                             Image(systemName: "arrow.backward")
                                 .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(AppColors.text)
+                                .foregroundStyle(AppColors.text)
                             Text(LanguageManager.t("summary.badge"))
                                 .font(.system(size: 18, weight: .semibold))
-                                .foregroundColor(AppColors.text)
+                                .foregroundStyle(AppColors.text)
                         }
                     }
                 }
@@ -320,7 +320,7 @@ public struct SessionSummaryView: View {
             if isDone {
                 Image(systemName: "checkmark")
                     .font(.system(size: 13, weight: .bold))
-                    .foregroundColor(AppColors.background)
+                    .foregroundStyle(AppColors.background)
             } else if isStarted {
                 ZStack {
                     Circle().fill(statusColor.opacity(0.2))
@@ -341,7 +341,7 @@ public struct SessionSummaryView: View {
             } else {
                 Image(systemName: "minus")
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(statusColor)
+                    .foregroundStyle(statusColor)
             }
         }
         .frame(width: 28, height: 28)
@@ -390,15 +390,15 @@ public struct SessionSummaryView: View {
         VStack(alignment: .center, spacing: 6) {
             Image(systemName: icon)
                 .font(.system(size: 18))
-                .foregroundColor(AppColors.muted)
+                .foregroundStyle(AppColors.muted)
             Text(value)
                 .font(.system(size: 20, weight: .bold))
-                .foregroundColor(AppColors.text)
+                .foregroundStyle(AppColors.text)
                 .lineLimit(1)
                 .multilineTextAlignment(.center)
             Text(title)
                 .font(.system(size: 11, weight: .medium))
-                .foregroundColor(AppColors.muted)
+                .foregroundStyle(AppColors.muted)
                 .lineLimit(2)
                 .multilineTextAlignment(.center)
         }

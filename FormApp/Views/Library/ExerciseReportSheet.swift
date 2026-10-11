@@ -59,7 +59,7 @@ public struct ExerciseReportSheet: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(LanguageManager.t("report.title"))
                             .font(.system(size: 20, weight: .semibold))
-                            .foregroundColor(AppColors.text)
+                            .foregroundStyle(AppColors.text)
                     }
 
                     Spacer()
@@ -67,7 +67,7 @@ public struct ExerciseReportSheet: View {
                     Button(action: onDismiss) {
                         Image(systemName: "xmark")
                             .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(AppColors.muted)
+                            .foregroundStyle(AppColors.muted)
                             .frame(width: 36, height: 36)
                     }
                     .buttonStyle(.plain)
@@ -85,11 +85,11 @@ public struct ExerciseReportSheet: View {
                         HStack(alignment: .top, spacing: 10) {
                             Image(systemName: "info.circle")
                                 .font(.system(size: 14))
-                                .foregroundColor(AppColors.muted)
+                                .foregroundStyle(AppColors.muted)
                                 .padding(.top, 2)
                             Text(LanguageManager.t("report.disclosure"))
                                 .font(.system(size: 12))
-                                .foregroundColor(AppColors.secondaryText)
+                                .foregroundStyle(AppColors.secondaryText)
                                 .lineSpacing(3)
                         }
                         .padding(12)
@@ -114,13 +114,13 @@ public struct ExerciseReportSheet: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(exercise.displayName)
                                     .font(.system(size: 17, weight: .bold))
-                                    .foregroundColor(AppColors.text)
+                                    .foregroundStyle(AppColors.text)
                                     .lineLimit(2)
 
                                 Text(LanguageManager.t("category.\(exercise.resolvedMovement.key)").uppercased())
                                     .font(.system(size: 11, weight: .semibold))
                                     .tracking(0.6)
-                                    .foregroundColor(AppColors.accent)
+                                    .foregroundStyle(AppColors.accent)
                                     .padding(.horizontal, 10)
                                     .padding(.vertical, 4)
                                     .background(
@@ -142,7 +142,7 @@ public struct ExerciseReportSheet: View {
                         VStack(alignment: .leading, spacing: 10) {
                             Text(LanguageManager.t("report.category"))
                                 .font(.system(size: 14, weight: .semibold))
-                                .foregroundColor(AppColors.text)
+                                .foregroundStyle(AppColors.text)
 
                             VStack(spacing: 8) {
                                 ForEach(ExerciseReportStore.categories, id: \.self) { cat in
@@ -153,13 +153,13 @@ public struct ExerciseReportSheet: View {
                                         HStack {
                                             Text(LanguageManager.t("report.category.\(cat)"))
                                                 .font(.system(size: 14, weight: isSelected ? .semibold : .regular))
-                                                .foregroundColor(isSelected ? AppColors.accent : AppColors.text)
+                                                .foregroundStyle(isSelected ? AppColors.accent : AppColors.text)
 
                                             Spacer()
 
                                             Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
                                                 .font(.system(size: 18))
-                                                .foregroundColor(isSelected ? AppColors.accent : AppColors.muted)
+                                                .foregroundStyle(isSelected ? AppColors.accent : AppColors.muted)
                                         }
                                         .padding(.horizontal, 14)
                                         .padding(.vertical, 12)
@@ -189,20 +189,20 @@ public struct ExerciseReportSheet: View {
                             HStack {
                                 Text(LanguageManager.t("report.detailsLabel"))
                                     .font(.system(size: 14, weight: .semibold))
-                                    .foregroundColor(AppColors.text)
+                                    .foregroundStyle(AppColors.text)
 
                                 Spacer()
 
                                 Text("\(comments.count) / 1000")
                                     .font(.system(size: 12, weight: .medium))
-                                    .foregroundColor(comments.count > 950 ? AppColors.danger : AppColors.muted)
+                                    .foregroundStyle(comments.count > 950 ? AppColors.danger : AppColors.muted)
                             }
 
                             ZStack(alignment: .topLeading) {
                                 if comments.isEmpty {
                                     Text(LanguageManager.t("report.detailsPlaceholder"))
                                         .font(.system(size: 14))
-                                        .foregroundColor(AppColors.muted)
+                                        .foregroundStyle(AppColors.muted)
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 10)
                                 }
@@ -210,7 +210,7 @@ public struct ExerciseReportSheet: View {
                                 TextEditor(text: $comments)
                                     .scrollContentBackground(.hidden)
                                     .font(.system(size: 14))
-                                    .foregroundColor(AppColors.text)
+                                    .foregroundStyle(AppColors.text)
                                     .frame(minHeight: 90)
                                     .padding(.horizontal, 8)
                                     .padding(.vertical, 6)
@@ -241,7 +241,7 @@ public struct ExerciseReportSheet: View {
                         if let toast = inlineToast {
                             Text(toast)
                                 .font(.system(size: 13, weight: .medium))
-                                .foregroundColor(AppColors.danger)
+                                .foregroundStyle(AppColors.danger)
                                 .multilineTextAlignment(.center)
                                 .padding(12)
                                 .frame(maxWidth: .infinity)
@@ -312,7 +312,7 @@ public struct ExerciseReportSheet: View {
                             }
                             Text(LanguageManager.t("report.submit"))
                                 .font(.system(size: 15, weight: .semibold))
-                                .foregroundColor(AppColors.background)
+                                .foregroundStyle(AppColors.background)
                         }
                         .frame(maxWidth: .infinity)
                         .frame(height: 50)
@@ -355,7 +355,7 @@ public struct ExerciseReportCooldownSheet: View {
         VStack(spacing: 20) {
             Text(LanguageManager.t(isDaily ? "report.dailyLimitModalTitle" : "report.hourlyCooldownModalTitle"))
                 .font(.system(size: 18, weight: .bold))
-                .foregroundColor(AppColors.text)
+                .foregroundStyle(AppColors.text)
                 .multilineTextAlignment(.center)
 
             let bodyText = isDaily
@@ -364,14 +364,14 @@ public struct ExerciseReportCooldownSheet: View {
 
             Text(bodyText)
                 .font(.system(size: 14))
-                .foregroundColor(AppColors.secondaryText)
+                .foregroundStyle(AppColors.secondaryText)
                 .multilineTextAlignment(.center)
                 .lineSpacing(4)
 
             if !isDaily {
                 Text(LanguageManager.t("report.allowanceRemaining", ["remaining": remaining24h]))
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(AppColors.accent)
+                    .foregroundStyle(AppColors.accent)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 6)
                     .background(
@@ -382,13 +382,13 @@ public struct ExerciseReportCooldownSheet: View {
             } else {
                 Link(LanguageManager.t("report.supportSafetyNotice"), destination: URL(string: "https://forcedrep.com/support")!)
                     .font(.system(size: 13, weight: .medium))
-                    .foregroundColor(AppColors.accent)
+                    .foregroundStyle(AppColors.accent)
             }
 
             Button(action: onDismiss) {
                 Text(LanguageManager.t("report.gotIt"))
                     .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(AppColors.background)
+                    .foregroundStyle(AppColors.background)
                     .frame(maxWidth: .infinity)
                     .frame(height: 48)
                     .background(
@@ -426,24 +426,24 @@ public struct PendingReportSheet: View {
         VStack(spacing: 18) {
             Text(LanguageManager.t("report.pendingModalTitle"))
                 .font(.system(size: 18, weight: .bold))
-                .foregroundColor(AppColors.text)
+                .foregroundStyle(AppColors.text)
 
             Text(LanguageManager.t("report.pendingModalBody"))
                 .font(.system(size: 14))
-                .foregroundColor(AppColors.secondaryText)
+                .foregroundStyle(AppColors.secondaryText)
                 .multilineTextAlignment(.center)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(report.exerciseName)
                     .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(AppColors.text)
+                    .foregroundStyle(AppColors.text)
                 Text(LanguageManager.t("report.category.\(report.category)"))
                     .font(.system(size: 12))
-                    .foregroundColor(AppColors.accent)
+                    .foregroundStyle(AppColors.accent)
                 if !report.comment.isEmpty {
                     Text(report.comment)
                         .font(.system(size: 12))
-                        .foregroundColor(AppColors.muted)
+                        .foregroundStyle(AppColors.muted)
                         .lineLimit(2)
                 }
             }
@@ -459,7 +459,7 @@ public struct PendingReportSheet: View {
                 Button(action: onSendNow) {
                     Text(LanguageManager.t("report.pendingSendNow"))
                         .font(.system(size: 15, weight: .semibold))
-                        .foregroundColor(AppColors.background)
+                        .foregroundStyle(AppColors.background)
                         .frame(maxWidth: .infinity)
                         .frame(height: 48)
                         .background(
@@ -473,7 +473,7 @@ public struct PendingReportSheet: View {
                     Button(action: onDiscard) {
                         Text(LanguageManager.t("report.pendingDiscard"))
                             .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(AppColors.danger)
+                            .foregroundStyle(AppColors.danger)
                             .frame(maxWidth: .infinity)
                             .frame(height: 44)
                     }
@@ -482,7 +482,7 @@ public struct PendingReportSheet: View {
                     Button(action: onDismiss) {
                         Text(LanguageManager.t("report.pendingKeep"))
                             .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(AppColors.secondaryText)
+                            .foregroundStyle(AppColors.secondaryText)
                             .frame(maxWidth: .infinity)
                             .frame(height: 44)
                     }

@@ -45,7 +45,7 @@ public struct LibraryView: View {
                 HStack(alignment: .center) {
                     Text(LanguageManager.t("library.title"))
                         .font(.system(size: 26, weight: .semibold))
-                        .foregroundColor(AppColors.text)
+                        .foregroundStyle(AppColors.text)
 
                     Spacer()
 
@@ -64,18 +64,18 @@ public struct LibraryView: View {
                     HStack(spacing: 10) {
                         Image(systemName: "magnifyingglass")
                             .font(.system(size: 16, weight: .medium))
-                            .foregroundColor(AppColors.muted)
+                            .foregroundStyle(AppColors.muted)
 
                         TextField(LanguageManager.t("library.search"), text: $query)
                             .font(.system(size: 14))
-                            .foregroundColor(AppColors.text)
+                            .foregroundStyle(AppColors.text)
                             .accentColor(AppColors.accent)
 
                         if !query.isEmpty {
                             Button(action: { query = "" }) {
                                 Image(systemName: "xmark.circle.fill")
                                     .font(.system(size: 16))
-                                    .foregroundColor(AppColors.muted)
+                                    .foregroundStyle(AppColors.muted)
                             }
                             .buttonStyle(.plain)
                         }
@@ -147,14 +147,14 @@ public struct LibraryView: View {
                                     VStack(alignment: .leading, spacing: 3) {
                                         Text(exercise.displayName)
                                             .font(.system(size: 13, weight: .semibold))
-                                            .foregroundColor(AppColors.text)
+                                            .foregroundStyle(AppColors.text)
                                             .lineLimit(2)
                                             .multilineTextAlignment(.leading)
                                             .frame(maxWidth: .infinity, minHeight: 34, alignment: .topLeading)
 
                                         Text(exercise.metadataSubtitle)
                                             .font(.system(size: 11))
-                                            .foregroundColor(AppColors.muted)
+                                            .foregroundStyle(AppColors.muted)
                                             .lineLimit(1)
                                             .frame(maxWidth: .infinity, alignment: .leading)
                                     }
@@ -177,7 +177,7 @@ public struct LibraryView: View {
                     if filtered.isEmpty {
                         Text(LanguageManager.t("library.noResults"))
                             .font(.system(size: 14))
-                            .foregroundColor(AppColors.muted)
+                            .foregroundStyle(AppColors.muted)
                             .padding(.top, 40)
                     }
                 } else {
@@ -196,20 +196,20 @@ public struct LibraryView: View {
                                         Text(exercise.displayName)
                                             .font(.system(size: 15, weight: .medium))
                                             .lineSpacing(2)
-                                            .foregroundColor(AppColors.text)
+                                            .foregroundStyle(AppColors.text)
                                             .lineLimit(2)
                                             .multilineTextAlignment(.leading)
 
                                         Text(exercise.metadataSubtitle)
                                             .font(.system(size: 11))
-                                            .foregroundColor(AppColors.muted)
+                                            .foregroundStyle(AppColors.muted)
                                     }
 
                                     Spacer()
 
                                     Image(systemName: "chevron.right")
                                         .font(.system(size: 14, weight: .semibold))
-                                        .foregroundColor(AppColors.muted.opacity(0.6))
+                                        .foregroundStyle(AppColors.muted.opacity(0.6))
                                 }
                                 .padding(12)
                                 .background(
@@ -227,7 +227,7 @@ public struct LibraryView: View {
                         if filtered.isEmpty {
                             Text(LanguageManager.t("library.noResults"))
                                 .font(.system(size: 14))
-                                .foregroundColor(AppColors.muted)
+                                .foregroundStyle(AppColors.muted)
                                 .padding(.top, 40)
                         }
                     }
@@ -281,12 +281,12 @@ public struct LibraryView: View {
         HStack {
             Text(title)
                 .font(.system(size: 18, weight: .semibold))
-                .foregroundColor(AppColors.text)
+                .foregroundStyle(AppColors.text)
             Spacer()
             Button(action: { activeModal = nil }) {
                 Image(systemName: "xmark")
                     .font(.system(size: 14, weight: .semibold))
-                    .foregroundColor(AppColors.muted)
+                    .foregroundStyle(AppColors.muted)
                     .frame(width: 32, height: 32)
             }
             .buttonStyle(.plain)
@@ -325,7 +325,7 @@ public struct LibraryView: View {
 
                                     Text(category.title)
                                         .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
-                                        .foregroundColor(isSelected ? AppColors.accent : AppColors.text)
+                                        .foregroundStyle(isSelected ? AppColors.accent : AppColors.text)
                                         .lineLimit(2)
                                         .multilineTextAlignment(.center)
                                         .padding(.horizontal, 6)
@@ -383,7 +383,7 @@ public struct LibraryView: View {
 
                                     Text(LanguageManager.t(muscle.translationKey))
                                         .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
-                                        .foregroundColor(isSelected ? AppColors.accent : AppColors.text)
+                                        .foregroundStyle(isSelected ? AppColors.accent : AppColors.text)
                                         .lineLimit(1)
                                         .padding(.horizontal, 6)
                                         .padding(.vertical, 8)
@@ -424,7 +424,7 @@ struct LibraryFilterPill: View {
                     }
                     Text(title)
                         .font(.system(size: labelSize, weight: isSelected ? .semibold : .medium))
-                        .foregroundColor(isSelected ? AppColors.accent : AppColors.secondaryText)
+                        .foregroundStyle(isSelected ? AppColors.accent : AppColors.secondaryText)
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
                         .truncationMode(.tail)
@@ -432,7 +432,7 @@ struct LibraryFilterPill: View {
                     if !isSelected {
                         Image(systemName: "chevron.down")
                             .font(.system(size: 10, weight: .semibold))
-                            .foregroundColor(AppColors.muted)
+                            .foregroundStyle(AppColors.muted)
                     }
                 }
                 .padding(.horizontal, 10)
@@ -445,7 +445,7 @@ struct LibraryFilterPill: View {
                 Button(action: onClear) {
                     Image(systemName: "xmark")
                         .font(.system(size: 11, weight: .bold))
-                        .foregroundColor(AppColors.accent)
+                        .foregroundStyle(AppColors.accent)
                         .frame(width: 36, height: 44)
                         .contentShape(Rectangle())
                 }
@@ -489,7 +489,7 @@ struct LibraryFilterOption: View {
                     .fixedSize(horizontal: false, vertical: true)
                 Spacer(minLength: 0)
             }
-            .foregroundColor(selected ? AppColors.accent : AppColors.secondaryText)
+            .foregroundStyle(selected ? AppColors.accent : AppColors.secondaryText)
             .padding(.horizontal, 12).padding(.vertical, 10)
             .frame(maxWidth: .infinity, minHeight: 48)
             .background(selected ? AppColors.positiveBg : AppColors.surface, in: RoundedRectangle(cornerRadius: 10))

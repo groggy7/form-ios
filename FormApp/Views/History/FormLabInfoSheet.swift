@@ -26,7 +26,7 @@ public struct FormLabInfoSheet: View {
                     Button(action: { dismiss() }) {
                         Image(systemName: "xmark")
                             .font(.system(size: 13, weight: .semibold))
-                            .foregroundColor(AppColors.secondaryText)
+                            .foregroundStyle(AppColors.secondaryText)
                     }
                 }
             }
@@ -37,11 +37,11 @@ public struct FormLabInfoSheet: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(LanguageManager.t("form_lab.info_title"))
                 .font(.system(size: 15, weight: .semibold))
-                .foregroundColor(AppColors.text)
+                .foregroundStyle(AppColors.text)
             Text(LanguageManager.t("form_lab.info_subtitle"))
                 .font(.system(size: 13))
                 .lineSpacing(3)
-                .foregroundColor(AppColors.secondaryText)
+                .foregroundStyle(AppColors.secondaryText)
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -54,15 +54,15 @@ public struct FormLabInfoSheet: View {
         VStack(alignment: .leading, spacing: 14) {
             Text(LanguageManager.t("form_lab.info_brzycki_epley_title"))
                 .font(.system(size: 15, weight: .semibold))
-                .foregroundColor(AppColors.text)
+                .foregroundStyle(AppColors.text)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("Brzycki")
                     .font(.system(size: 13, weight: .bold))
-                    .foregroundColor(AppColors.accent)
+                    .foregroundStyle(AppColors.accent)
                 Text(LanguageManager.t("form_lab.info_brzycki_subtitle"))
                     .font(.system(size: 12))
-                    .foregroundColor(AppColors.secondaryText)
+                    .foregroundStyle(AppColors.secondaryText)
             }
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -72,10 +72,10 @@ public struct FormLabInfoSheet: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text("Epley")
                     .font(.system(size: 13, weight: .bold))
-                    .foregroundColor(AppColors.accent)
+                    .foregroundStyle(AppColors.accent)
                 Text(LanguageManager.t("form_lab.info_epley_subtitle"))
                     .font(.system(size: 12))
-                    .foregroundColor(AppColors.secondaryText)
+                    .foregroundStyle(AppColors.secondaryText)
             }
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -85,7 +85,7 @@ public struct FormLabInfoSheet: View {
             Text(LanguageManager.t("form_lab.info_brzycki_epley_desc"))
                 .font(.system(size: 13))
                 .lineSpacing(3)
-                .foregroundColor(AppColors.secondaryText)
+                .foregroundStyle(AppColors.secondaryText)
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -98,12 +98,12 @@ public struct FormLabInfoSheet: View {
         VStack(alignment: .leading, spacing: 12) {
             Text(LanguageManager.t("form_lab.info_antagonist_title"))
                 .font(.system(size: 15, weight: .semibold))
-                .foregroundColor(AppColors.text)
+                .foregroundStyle(AppColors.text)
 
             Text(LanguageManager.t("form_lab.info_antagonist_desc"))
                 .font(.system(size: 13))
                 .lineSpacing(3)
-                .foregroundColor(AppColors.secondaryText)
+                .foregroundStyle(AppColors.secondaryText)
 
             VStack(spacing: 8) {
                 ratioRow(label: LanguageManager.t("form_lab.balance.push_pull_title"), range: "0.80 – 1.25", desc: LanguageManager.t("form_lab.info_push_pull_desc"))
@@ -124,15 +124,15 @@ public struct FormLabInfoSheet: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(label)
                     .font(.system(size: 13, weight: .semibold))
-                    .foregroundColor(AppColors.text)
+                    .foregroundStyle(AppColors.text)
                 Text(desc)
                     .font(.system(size: 11))
-                    .foregroundColor(AppColors.muted)
+                    .foregroundStyle(AppColors.muted)
             }
             Spacer()
             Text(range)
                 .font(.system(size: 12, weight: .bold, design: .monospaced))
-                .foregroundColor(AppColors.accent)
+                .foregroundStyle(AppColors.accent)
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)
                 .background(AppColors.positiveBg)

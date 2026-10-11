@@ -148,7 +148,7 @@ public struct ActiveSessionView: View {
                         VStack(spacing: 2) {
                             Text(activeDraft.workout.displayTitle(programId: activeDraft.programId))
                                 .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(AppColors.text)
+                                .foregroundStyle(AppColors.text)
                                 .lineLimit(1)
 
                             HStack(spacing: 6) {
@@ -200,16 +200,16 @@ public struct ActiveSessionView: View {
 
                                 Text(RestTimerUtils.formatSecondsToTime(progress.durationSeconds))
                                     .font(.system(size: 12, weight: .semibold, design: .monospaced))
-                                    .foregroundColor(AppColors.accent)
+                                    .foregroundStyle(AppColors.accent)
 
                                 if !programLabel.isEmpty {
                                     Text("·")
                                         .font(.system(size: 12))
-                                        .foregroundColor(AppColors.muted)
+                                        .foregroundStyle(AppColors.muted)
 
                                     Text(programLabel)
                                         .font(.system(size: 12))
-                                        .foregroundColor(AppColors.muted)
+                                        .foregroundStyle(AppColors.muted)
                                         .lineLimit(1)
                                 }
                             }
@@ -227,7 +227,7 @@ public struct ActiveSessionView: View {
                             }) {
                                 Image(systemName: "chevron.left")
                                     .font(.system(size: 16, weight: .bold))
-                                    .foregroundColor(AppColors.text)
+                                    .foregroundStyle(AppColors.text)
                                     .frame(width: 38, height: 38)
                                     .background(AppColors.surface)
                                     .cornerRadius(10)
@@ -242,7 +242,7 @@ public struct ActiveSessionView: View {
                             }) {
                                 Text(LanguageManager.t("session.finishBtn"))
                                     .font(.system(size: 13, weight: .semibold))
-                                    .foregroundColor(AppColors.accent)
+                                    .foregroundStyle(AppColors.accent)
                                     .padding(.horizontal, 14)
                                     .padding(.vertical, 6)
                                     .background(Color.clear)
@@ -291,7 +291,7 @@ public struct ActiveSessionView: View {
 
                                                         Text("\(idx + 1). \(ex.displayName)")
                                                             .font(.system(size: 11, weight: isSel ? .bold : .medium))
-                                                            .foregroundColor(isSel ? AppColors.text : AppColors.muted)
+                                                            .foregroundStyle(isSel ? AppColors.text : AppColors.muted)
                                                             .lineLimit(2)
                                                             .multilineTextAlignment(.center)
                                                             .frame(maxWidth: .infinity, minHeight: 28)
@@ -310,7 +310,7 @@ public struct ActiveSessionView: View {
                                                     if isAllDone {
                                                         Image(systemName: "checkmark.circle.fill")
                                                             .font(.system(size: 16))
-                                                            .foregroundColor(AppColors.accent)
+                                                            .foregroundStyle(AppColors.accent)
                                                             .padding(4)
                                                     }
                                                 }
@@ -336,7 +336,7 @@ public struct ActiveSessionView: View {
                                 VStack(alignment: .leading, spacing: 14) {
                                     Text(exercise.displayName)
                                         .font(.system(size: 20, weight: .bold))
-                                        .foregroundColor(AppColors.text)
+                                        .foregroundStyle(AppColors.text)
                                         .frame(maxWidth: .infinity, alignment: .leading)
 
                                     let recommendation = ProgressionEngine.computeProgression(
@@ -471,7 +471,7 @@ public struct ActiveSessionView: View {
                         }) {
                             Image(systemName: "arrow.left")
                                 .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(currentIndex > 0 ? AppColors.text : AppColors.muted.opacity(0.3))
+                                .foregroundStyle(currentIndex > 0 ? AppColors.text : AppColors.muted.opacity(0.3))
                                 .frame(width: 50, height: 50)
                                 .background(
                                     RoundedRectangle(cornerRadius: 11, style: .continuous)
@@ -500,10 +500,10 @@ public struct ActiveSessionView: View {
                             HStack(spacing: 8) {
                                 Text(LanguageManager.t(currentIndex < exercises.count - 1 ? "session.nextExercise" : "session.review"))
                                     .font(.system(size: 14, weight: .semibold))
-                                    .foregroundColor(.black)
+                                    .foregroundStyle(.black)
                                 Image(systemName: "arrow.right")
                                     .font(.system(size: 14, weight: .semibold))
-                                    .foregroundColor(.black)
+                                    .foregroundStyle(.black)
                             }
                             .frame(maxWidth: .infinity)
                             .frame(minHeight: 50)
@@ -546,10 +546,10 @@ public struct ActiveSessionView: View {
                     HStack(spacing: 8) {
                         Image(systemName: "bolt.fill")
                             .font(.system(size: 14, weight: .bold))
-                            .foregroundColor(AppColors.accent)
+                            .foregroundStyle(AppColors.accent)
                         Text(msg)
                             .font(.system(size: 13, weight: .bold))
-                            .foregroundColor(AppColors.accent)
+                            .foregroundStyle(AppColors.accent)
                     }
                     .padding(.horizontal, 18)
                     .padding(.vertical, 10)
@@ -571,10 +571,10 @@ public struct ActiveSessionView: View {
                     HStack(spacing: 8) {
                         Image(systemName: "exclamationmark.triangle.fill")
                             .font(.system(size: 14, weight: .bold))
-                            .foregroundColor(AppColors.danger)
+                            .foregroundStyle(AppColors.danger)
                         Text(warning)
                             .font(.system(size: 13, weight: .bold))
-                            .foregroundColor(AppColors.danger)
+                            .foregroundStyle(AppColors.danger)
                     }
                     .padding(.horizontal, 18)
                     .padding(.vertical, 10)
@@ -980,11 +980,11 @@ private struct MiniExerciseDetailModal: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(exercise.displayName)
                             .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(AppColors.text)
+                            .foregroundStyle(AppColors.text)
                             .lineLimit(2)
                         Text(exercise.metadataSubtitle)
                             .font(.system(size: 11, weight: .medium))
-                            .foregroundColor(AppColors.accent)
+                            .foregroundStyle(AppColors.accent)
                     }
 
                     Spacer()
@@ -992,7 +992,7 @@ private struct MiniExerciseDetailModal: View {
                     Button(action: onDismiss) {
                         Image(systemName: "xmark")
                             .font(.system(size: 14, weight: .semibold))
-                            .foregroundColor(AppColors.secondaryText)
+                            .foregroundStyle(AppColors.secondaryText)
                             .frame(width: 44, height: 44)
                     }
                     .accessibilityLabel(LanguageManager.t("common.close"))
@@ -1048,7 +1048,7 @@ private struct MiniExerciseDetailModal: View {
                                         Text(LanguageManager.t("report.action"))
                                             .font(.system(size: 13, weight: .medium))
                                     }
-                                    .foregroundColor(AppColors.danger)
+                                    .foregroundStyle(AppColors.danger)
                                     .padding(.horizontal, 16)
                                     .frame(minHeight: 40)
                                     .background(AppColors.danger.opacity(0.12))

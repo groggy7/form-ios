@@ -23,18 +23,18 @@ public struct AppHeader: View {
             VStack(alignment: .leading, spacing: 3) {
                 Text(title)
                     .font(.system(size: 26, weight: .semibold))
-                    .foregroundColor(AppColors.text)
+                    .foregroundStyle(AppColors.text)
 
                 if let sub = subtitle {
                     Button(action: { onSubtitleClick?() }) {
                         HStack(spacing: 4) {
                             Text(sub)
                                 .font(.system(size: 13, weight: .medium))
-                                .foregroundColor(AppColors.accent)
+                                .foregroundStyle(AppColors.accent)
                             if onSubtitleClick != nil {
                                 Image(systemName: "chevron.up.chevron.down")
                                     .font(.system(size: 11, weight: .bold))
-                                    .foregroundColor(AppColors.accent)
+                                    .foregroundStyle(AppColors.accent)
                             }
                         }
                     }

@@ -28,7 +28,7 @@ public struct OnboardingView: View {
                         }) {
                             Image(systemName: "arrow.left")
                                 .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(AppColors.text)
+                                .foregroundStyle(AppColors.text)
                                 .frame(width: 36, height: 36)
                         }
                     } else {
@@ -53,7 +53,7 @@ public struct OnboardingView: View {
                         }) {
                             Text(LanguageManager.t("onboarding.skip"))
                                 .font(.system(size: 14, weight: .medium))
-                                .foregroundColor(AppColors.muted)
+                                .foregroundStyle(AppColors.muted)
                                 .padding(.horizontal, 8)
                                 .frame(height: 36)
                         }
@@ -93,7 +93,7 @@ public struct OnboardingView: View {
                         }) {
                             Text(LanguageManager.t("onboarding.next"))
                                 .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(AppColors.background)
+                                .foregroundStyle(AppColors.background)
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 52)
                                 .background(AppColors.accent)
@@ -255,7 +255,7 @@ public struct OnboardingView: View {
                     ["selected": "\(currentDays.count)", "total": "\(preferences.frequency.rawValue)"]
                 ))
                 .font(.system(size: 13, weight: .medium))
-                .foregroundColor(currentDays.count == preferences.frequency.rawValue ? AppColors.accent : AppColors.secondaryText)
+                .foregroundStyle(currentDays.count == preferences.frequency.rawValue ? AppColors.accent : AppColors.secondaryText)
 
                 Spacer()
             }
@@ -282,14 +282,14 @@ public struct OnboardingView: View {
                             HStack(spacing: 12) {
                                 Text(label)
                                     .font(.system(size: 11, weight: .bold))
-                                    .foregroundColor(isSelected ? AppColors.accent : AppColors.muted)
+                                    .foregroundStyle(isSelected ? AppColors.accent : AppColors.muted)
                                     .frame(width: 32, height: 32)
                                     .background(isSelected ? AppColors.accent.opacity(0.2) : AppColors.surfaceRaised)
                                     .cornerRadius(6)
 
                                 Text(fullName)
                                     .font(.system(size: 15, weight: isSelected ? .semibold : .regular))
-                                    .foregroundColor(isSelected ? AppColors.text : AppColors.secondaryText)
+                                    .foregroundStyle(isSelected ? AppColors.text : AppColors.secondaryText)
                             }
 
                             Spacer()
@@ -304,7 +304,7 @@ public struct OnboardingView: View {
                                 if isSelected {
                                     Image(systemName: "checkmark")
                                         .font(.system(size: 11, weight: .bold))
-                                        .foregroundColor(AppColors.background)
+                                        .foregroundStyle(AppColors.background)
                                 }
                             }
                         }
@@ -335,7 +335,7 @@ public struct OnboardingView: View {
                 // Badge
                 Text(LanguageManager.t("onboarding.rec.badge"))
                     .font(.system(size: 11, weight: .bold))
-                    .foregroundColor(AppColors.accent)
+                    .foregroundStyle(AppColors.accent)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
                     .background(AppColors.positiveBg)
@@ -348,12 +348,12 @@ public struct OnboardingView: View {
                 // Title
                 Text(recommendation.program.displayName)
                     .font(.system(size: 24, weight: .bold))
-                    .foregroundColor(AppColors.text)
+                    .foregroundStyle(AppColors.text)
 
                 // Reason Card
                 Text(LanguageManager.t(recommendation.explanationKey))
                     .font(.system(size: 14))
-                    .foregroundColor(AppColors.secondaryText)
+                    .foregroundStyle(AppColors.secondaryText)
                     .lineSpacing(4)
                     .padding(14)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -367,7 +367,7 @@ public struct OnboardingView: View {
                 // Workouts in this split
                 Text(LanguageManager.t("onboarding.rec.workoutsTitle"))
                     .font(.system(size: 16, weight: .bold))
-                    .foregroundColor(AppColors.text)
+                    .foregroundStyle(AppColors.text)
                     .padding(.top, 8)
 
                 VStack(spacing: 8) {
@@ -376,13 +376,13 @@ public struct OnboardingView: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(workout.displayTitle(programId: recommendation.program.id))
                                     .font(.system(size: 15, weight: .semibold))
-                                    .foregroundColor(AppColors.text)
+                                    .foregroundStyle(AppColors.text)
 
                                 let focus = workout.displayFocus(programId: recommendation.program.id)
                                 if !focus.isEmpty {
                                     Text(focus)
                                         .font(.system(size: 12))
-                                        .foregroundColor(AppColors.secondaryText)
+                                        .foregroundStyle(AppColors.secondaryText)
                                 }
                             }
 
@@ -390,7 +390,7 @@ public struct OnboardingView: View {
 
                             Text("\(workout.exercises.count) ex")
                                 .font(.system(size: 12, weight: .medium))
-                                .foregroundColor(AppColors.muted)
+                                .foregroundStyle(AppColors.muted)
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 4)
                                 .background(AppColors.surfaceRaised)
@@ -413,7 +413,7 @@ public struct OnboardingView: View {
                     }) {
                         Text(LanguageManager.t("onboarding.rec.startCta"))
                             .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(AppColors.background)
+                            .foregroundStyle(AppColors.background)
                             .frame(maxWidth: .infinity)
                             .frame(height: 52)
                             .background(AppColors.accent)
@@ -426,7 +426,7 @@ public struct OnboardingView: View {
                     }) {
                         Text(LanguageManager.t("onboarding.rec.browseAll"))
                             .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(AppColors.secondaryText)
+                            .foregroundStyle(AppColors.secondaryText)
                             .padding(.vertical, 8)
                     }
                 }
@@ -451,14 +451,14 @@ private struct StepContainer<Content: View>: View {
             VStack(alignment: .leading, spacing: 0) {
                 Text(title)
                     .font(.system(size: 22, weight: .bold))
-                    .foregroundColor(AppColors.text)
+                    .foregroundStyle(AppColors.text)
                     .lineSpacing(4)
 
                 Spacer().frame(height: 6)
 
                 Text(subtitle)
                     .font(.system(size: 14))
-                    .foregroundColor(AppColors.secondaryText)
+                    .foregroundStyle(AppColors.secondaryText)
                     .lineSpacing(4)
 
                 Spacer().frame(height: 20)
@@ -487,13 +487,13 @@ private struct OptionCard: View {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
                         .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(isSelected ? AppColors.text : AppColors.text.opacity(0.9))
+                        .foregroundStyle(isSelected ? AppColors.text : AppColors.text.opacity(0.9))
                         .frame(maxWidth: .infinity, alignment: .leading)
 
                     if !description.isEmpty {
                         Text(description)
                             .font(.system(size: 13))
-                            .foregroundColor(AppColors.secondaryText)
+                            .foregroundStyle(AppColors.secondaryText)
                             .lineSpacing(3)
                             .multilineTextAlignment(.leading)
                             .frame(maxWidth: .infinity, alignment: .leading)

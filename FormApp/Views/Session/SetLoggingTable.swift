@@ -87,12 +87,12 @@ public struct SetLoggingTable: View {
                 if !prescription.isEmpty {
                     Text(prescription)
                         .font(.system(size: 16, weight: .semibold))
-                        .foregroundColor(AppColors.accent)
+                        .foregroundStyle(AppColors.accent)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 Text(progressText)
                     .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(AppColors.secondaryText)
+                    .foregroundStyle(AppColors.secondaryText)
                     .multilineTextAlignment(.trailing)
                     .frame(maxWidth: .infinity, alignment: .trailing)
             }
@@ -110,7 +110,7 @@ public struct SetLoggingTable: View {
                 Text(LanguageManager.t("table.doneHeading")).frame(width: 44)
             }
             .font(.system(size: 11, weight: .bold))
-            .foregroundColor(AppColors.muted)
+            .foregroundStyle(AppColors.muted)
             .padding(.horizontal, 14)
 
             let weightHint = isAssisted ? LanguageManager.t("table.assistance_hint") : [
@@ -119,7 +119,7 @@ public struct SetLoggingTable: View {
             ].compactMap { $0 }.joined(separator: " ")
             if !weightHint.isEmpty {
                 Text(weightHint)
-                    .font(.system(size: 12)).foregroundColor(AppColors.muted)
+                    .font(.system(size: 12)).foregroundStyle(AppColors.muted)
                     .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
             }
             let currentLoggedIndex = (isRestActive && isRestForCurrentExercise) ? sets.lastIndex(where: { $0.isCompleted }) : nil
@@ -173,7 +173,7 @@ public struct SetLoggingTable: View {
                 HStack(spacing: 8) {
                     Text(set.isWarmup ? "W\(set.setNumber)" : "\(set.setNumber)")
                         .font(.system(size: set.isWarmup ? 13 : 14, weight: .bold))
-                        .foregroundColor(
+                        .foregroundStyle(
                             set.isWarmup
                                 ? AppColors.warmupAmber
                                 : (set.isCompleted
@@ -186,13 +186,13 @@ public struct SetLoggingTable: View {
                     if set.isWarmup {
                         Text(LanguageManager.t("warmup.badge"))
                             .font(.system(size: 10.5, weight: .bold))
-                            .foregroundColor(AppColors.warmupAmber.opacity(0.85))
+                            .foregroundStyle(AppColors.warmupAmber.opacity(0.85))
                             .lineLimit(1)
                             .frame(width: 56, alignment: .center)
                     } else if let beat = beatResult {
                         Text(WorkoutSessionUtils.formatLogbookBeatBadge(result: beat, unit: weightUnit))
                             .font(.system(size: 10, weight: .bold))
-                            .foregroundColor(AppColors.accent)
+                            .foregroundStyle(AppColors.accent)
                             .lineLimit(1)
                             .minimumScaleFactor(0.75)
                             .padding(.horizontal, 4)
@@ -205,7 +205,7 @@ public struct SetLoggingTable: View {
                         Text(contextualPr.replacingOccurrences(of: " ×", with: "\n×").replacingOccurrences(of: "BW +", with: "BW+"))
                             .accessibilityLabel(WorkoutSessionUtils.sessionPrAccessibilityLabel(contextualPr, unit: weightUnit))
                             .font(.system(size: 13, weight: .medium))
-                            .foregroundColor(
+                            .foregroundStyle(
                                 set.isCompleted
                                     ? AppColors.secondaryText.opacity(0.6)
                                     : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35))
@@ -216,7 +216,7 @@ public struct SetLoggingTable: View {
                             .frame(width: 56, alignment: .center)
                     }
 
-                    TextField("0", text: weightBinding, prompt: Text("0").foregroundColor(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
+                    TextField("0", text: weightBinding, prompt: Text("0").foregroundStyle(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
                         .focused($focusedField, equals: Field(id: set.id, weight: true))
                         .simultaneousGesture(TapGesture().onEnded {
                             if isSetInputEnabled {
@@ -228,7 +228,7 @@ public struct SetLoggingTable: View {
                         .keyboardType(.decimalPad)
                         .multilineTextAlignment(.center)
                         .font(.system(size: 15, weight: .semibold))
-                        .foregroundColor(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
+                        .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
                         .padding(.vertical, 8)
                         .background(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5))
                         .cornerRadius(8)
@@ -236,7 +236,7 @@ public struct SetLoggingTable: View {
                         .frame(minHeight: 48)
                         .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: true) && isSetInputEnabled ? AppColors.accent : .clear))
 
-                    TextField("0", text: repsBinding, prompt: Text("0").foregroundColor(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
+                    TextField("0", text: repsBinding, prompt: Text("0").foregroundStyle(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
                         .focused($focusedField, equals: Field(id: set.id, weight: false))
                         .simultaneousGesture(TapGesture().onEnded {
                             if isSetInputEnabled {
@@ -248,7 +248,7 @@ public struct SetLoggingTable: View {
                         .keyboardType(.numberPad)
                         .multilineTextAlignment(.center)
                         .font(.system(size: 15, weight: .semibold))
-                        .foregroundColor(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
+                        .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
                         .padding(.vertical, 8)
                         .background(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5))
                         .cornerRadius(8)
@@ -279,7 +279,7 @@ public struct SetLoggingTable: View {
                     }) {
                         Image(systemName: set.isCompleted ? "checkmark.circle.fill" : "circle")
                             .font(.system(size: 24))
-                            .foregroundColor(
+                            .foregroundStyle(
                                 set.isCompleted
                                     ? (set.isWarmup ? AppColors.warmupAmber : AppColors.accent)
                                     : (!isSetEnabled
@@ -332,7 +332,7 @@ public struct SetLoggingTable: View {
 
                 if validationSetId == set.id, !set.isCompleted,
                    let key = WorkoutSessionUtils.setValidationError(set, allowsZeroWeight: allowsZeroWeight) {
-                    Text(LanguageManager.t(key)).font(.system(size: 12)).foregroundColor(AppColors.danger)
+                    Text(LanguageManager.t(key)).font(.system(size: 12)).foregroundStyle(AppColors.danger)
                         .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
                         .accessibilityIdentifier("set-validation-\(set.id)")
                 }
@@ -343,10 +343,10 @@ public struct SetLoggingTable: View {
                     VStack(spacing: 4) {
                         HStack {
                             Text("\(setLabel) · \(fieldLabel)")
-                                .font(.system(size: 12)).foregroundColor(AppColors.secondaryText)
+                                .font(.system(size: 12)).foregroundStyle(AppColors.secondaryText)
                             Spacer()
                             Button(LanguageManager.t("table.done")) { focusedField = nil; selectedField = nil }
-                                .font(.system(size: 12)).foregroundColor(AppColors.accent)
+                                .font(.system(size: 12)).foregroundStyle(AppColors.accent)
                                 .frame(minWidth: 48, minHeight: 48)
                         }
                         HStack(spacing: 8) {
@@ -359,7 +359,7 @@ public struct SetLoggingTable: View {
                                         repsBinding.wrappedValue = WorkoutSessionUtils.adjustReps(repsBinding.wrappedValue, by: step)
                                     }
                                 } label: {
-                                    Text(label).font(.system(size: 16)).foregroundColor(AppColors.text)
+                                    Text(label).font(.system(size: 16)).foregroundStyle(AppColors.text)
                                         .frame(maxWidth: .infinity, minHeight: 48)
                                         .background(RoundedRectangle(cornerRadius: 8).stroke(AppColors.border))
                                 }
@@ -383,7 +383,7 @@ public struct SetLoggingTable: View {
                                         Text(LanguageManager.t("warmup.tab_plates"))
                                             .font(.system(size: 12, weight: .medium))
                                     }
-                                    .foregroundColor(AppColors.accent)
+                                    .foregroundStyle(AppColors.accent)
                                     .frame(maxWidth: .infinity, minHeight: 40)
                                 }
                                 .buttonStyle(.plain)
@@ -398,7 +398,7 @@ public struct SetLoggingTable: View {
                                     Text(LanguageManager.t(set.isWarmup ? "warmup.convert_to_working" : "warmup.convert_to_warmup"))
                                         .font(.system(size: 12, weight: .medium))
                                 }
-                                .foregroundColor(set.isWarmup ? AppColors.secondaryText : AppColors.warmupAmber)
+                                .foregroundStyle(set.isWarmup ? AppColors.secondaryText : AppColors.warmupAmber)
                                 .frame(maxWidth: .infinity, minHeight: 40)
                             }
                             .buttonStyle(.plain)
@@ -420,7 +420,7 @@ public struct SetLoggingTable: View {
                         Text(LanguageManager.t("table.addSet"))
                             .font(.system(size: 13, weight: .semibold))
                     }
-                    .foregroundColor(AppColors.accent)
+                    .foregroundStyle(AppColors.accent)
                     .frame(maxWidth: .infinity)
                     .frame(height: 44)
                     .background(
@@ -445,7 +445,7 @@ public struct SetLoggingTable: View {
                         Text(LanguageManager.t("table.removeSet"))
                             .font(.system(size: 12, weight: .medium))
                     }
-                    .foregroundColor(sets.count > 1 ? AppColors.muted : AppColors.muted.opacity(0.35))
+                    .foregroundStyle(sets.count > 1 ? AppColors.muted : AppColors.muted.opacity(0.35))
                     .frame(height: 44)
                     .padding(.horizontal, 8)
                     .background(

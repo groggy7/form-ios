@@ -44,11 +44,11 @@ public struct TodayView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(LanguageManager.t("nav.home"))
                             .font(.system(size: 26, weight: .semibold))
-                            .foregroundColor(AppColors.text)
+                            .foregroundStyle(AppColors.text)
 
                         Text(formattedWeekRange())
                             .font(.system(size: 12))
-                            .foregroundColor(AppColors.muted)
+                            .foregroundStyle(AppColors.muted)
                     }
 
                     Spacer()
@@ -103,7 +103,7 @@ public struct TodayView: View {
                     VStack(alignment: .leading, spacing: 10) {
                         Text(exerciseHeading(for: workout))
                             .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(AppColors.text)
+                            .foregroundStyle(AppColors.text)
                             .padding(.horizontal, 20)
                             .padding(.bottom, 4)
 
@@ -120,19 +120,19 @@ public struct TodayView: View {
                                             Text(exercise.displayName)
                                                 .font(.system(size: 14, weight: .medium))
                                                 .lineSpacing(2)
-                                                .foregroundColor(AppColors.text)
+                                                .foregroundStyle(AppColors.text)
                                                 .lineLimit(2)
 
                                             Text(exercise.displayPrescription)
                                                 .font(.system(size: 12))
-                                                .foregroundColor(AppColors.muted)
+                                                .foregroundStyle(AppColors.muted)
                                         }
 
                                         Spacer()
 
                                         Text(String(format: "%02d", index + 1))
                                             .font(.system(size: 11, weight: .medium))
-                                            .foregroundColor(AppColors.muted)
+                                            .foregroundStyle(AppColors.muted)
                                     }
                                     .padding(9)
                                     .background(

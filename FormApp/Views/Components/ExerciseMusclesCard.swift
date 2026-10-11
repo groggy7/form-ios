@@ -84,13 +84,13 @@ struct ExerciseMusclesCard: View {
         VStack(alignment: .leading, spacing: isExpanded ? 14 : 0) {
             HStack {
                 Text(LanguageManager.t("anatomy.title"))
-                    .font(.system(size: titleSize, weight: .semibold)).foregroundColor(AppColors.text)
+                    .font(.system(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.text)
 
                 Spacer()
 
                 Image(systemName: "chevron.down")
                     .font(.system(size: 12, weight: .semibold))
-                    .foregroundColor(AppColors.muted)
+                    .foregroundStyle(AppColors.muted)
                     .rotationEffect(.degrees(isExpanded ? 180 : 0))
             }
             .contentShape(Rectangle())
@@ -123,10 +123,10 @@ struct ExerciseMusclesCard: View {
                         }
                     }
                     Text(LanguageManager.t("anatomy.note"))
-                        .font(.system(size: noteSize)).foregroundColor(AppColors.muted).fixedSize(horizontal: false, vertical: true)
+                        .font(.system(size: noteSize)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)
                 } else {
                     Text(LanguageManager.t("anatomy.unavailable"))
-                        .font(.system(size: bodySize)).foregroundColor(AppColors.muted).fixedSize(horizontal: false, vertical: true)
+                        .font(.system(size: bodySize)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)
                 }
             }
         }
@@ -169,7 +169,7 @@ struct ExerciseMusclesCard: View {
                 } label: {
                     Text(LanguageManager.t(option == "front" ? "anatomy.front" : "anatomy.back"))
                         .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
-                        .foregroundColor(isSelected ? AppColors.purple : AppColors.muted)
+                        .foregroundStyle(isSelected ? AppColors.purple : AppColors.muted)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .background(isSelected ? AppColors.purpleBg : Color.clear)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
@@ -203,13 +203,13 @@ struct ExerciseMusclesCard: View {
     private func muscleList(_ catalog: ExerciseMuscleCatalog, _ muscles: [String], primary: Bool) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(LanguageManager.t(primary ? "anatomy.primary" : "anatomy.secondary"))
-                .font(.system(size: labelSize, weight: .medium)).foregroundColor(AppColors.secondaryText)
+                .font(.system(size: labelSize, weight: .medium)).foregroundStyle(AppColors.secondaryText)
             ForEach(muscles, id: \.self) { muscle in
                 HStack(alignment: .top, spacing: 8) {
                     Circle().fill(primary ? AppColors.purple : AppColors.muscleSecondary)
                         .frame(width: 8, height: 8).padding(.top, bodySize * 0.3).accessibilityHidden(true)
                     Text(LanguageManager.t("anatomy.muscle.\(muscle)"))
-                        .font(.system(size: bodySize, weight: .medium)).foregroundColor(AppColors.text)
+                        .font(.system(size: bodySize, weight: .medium)).foregroundStyle(AppColors.text)
                         .lineSpacing(3).fixedSize(horizontal: false, vertical: true)
                 }
             }

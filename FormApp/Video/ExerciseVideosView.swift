@@ -22,7 +22,7 @@ public struct ExerciseVideosView: View {
         VStack(alignment: .leading, spacing: 10) {
             Text(LanguageManager.t("library.videos"))
                 .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(AppColors.text)
+                .foregroundStyle(AppColors.text)
 
             ForEach(Array(exercise.videos.enumerated()), id: \.offset) { index, url in
                 let isYouTube = YouTubeVideo.isYouTubeUrl(url)
@@ -60,18 +60,18 @@ public struct ExerciseVideosView: View {
                     HStack(spacing: 12) {
                         Image(systemName: isUnavailable ? "wifi.slash" : "play.circle.fill")
                             .font(.system(size: 24))
-                            .foregroundColor(isUnavailable ? AppColors.danger : AppColors.coral)
+                            .foregroundStyle(isUnavailable ? AppColors.danger : AppColors.coral)
 
                         VStack(alignment: .leading, spacing: 3) {
                             Text(title)
                                 .font(.system(size: 14, weight: .medium))
-                                .foregroundColor(isUnavailable ? AppColors.danger : AppColors.text)
+                                .foregroundStyle(isUnavailable ? AppColors.danger : AppColors.text)
                                 .lineLimit(2)
                                 .multilineTextAlignment(.leading)
 
                             Text(subtitle)
                                 .font(.system(size: 11))
-                                .foregroundColor(AppColors.muted)
+                                .foregroundStyle(AppColors.muted)
                                 .lineLimit(1)
                         }
 
@@ -88,13 +88,13 @@ public struct ExerciseVideosView: View {
                                     Text(LanguageManager.t("library.remove"))
                                         .font(.system(size: 12, weight: .medium))
                                 }
-                                .foregroundColor(AppColors.danger)
+                                .foregroundStyle(AppColors.danger)
                             }
                             .buttonStyle(.plain)
                         } else {
                             Image(systemName: isYouTube ? "chevron.right" : "arrow.up.right")
                                 .font(.system(size: 12, weight: .semibold))
-                                .foregroundColor(AppColors.muted.opacity(0.7))
+                                .foregroundStyle(AppColors.muted.opacity(0.7))
                         }
                     }
                     .padding(.horizontal, 14)
@@ -125,7 +125,7 @@ public struct ExerciseVideosView: View {
                         Text(LanguageManager.t("library.attachVideoCta"))
                             .font(.system(size: 13, weight: .medium))
                     }
-                    .foregroundColor(AppColors.accent)
+                    .foregroundStyle(AppColors.accent)
                     .frame(maxWidth: .infinity)
                     .frame(height: 44)
                     .background(

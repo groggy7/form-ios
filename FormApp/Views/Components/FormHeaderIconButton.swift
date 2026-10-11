@@ -22,7 +22,7 @@ public struct FormHeaderIconButton: View {
         Button(action: onClick) {
             Image(systemName: icon)
                 .font(.system(size: 19, weight: .medium))
-                .foregroundColor(tint)
+                .foregroundStyle(tint)
                 .frame(width: 48, height: 48)
                 .background(AppColors.surface)
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))

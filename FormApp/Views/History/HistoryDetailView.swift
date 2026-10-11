@@ -66,7 +66,7 @@ public struct HistoryDetailView: View {
                 Button(action: onBack) {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(AppColors.text)
+                        .foregroundStyle(AppColors.text)
                         .frame(width: 48, height: 48)
                         .contentShape(Rectangle())
                 }
@@ -74,7 +74,7 @@ public struct HistoryDetailView: View {
                 .accessibilityLabel(LanguageManager.t("common.back"))
                 .accessibilityIdentifier("history-detail-back")
                 Text(LanguageManager.t("history.workoutDetail"))
-                    .font(.system(size: cardFont, weight: .semibold)).foregroundColor(AppColors.text)
+                    .font(.system(size: cardFont, weight: .semibold)).foregroundStyle(AppColors.text)
                 Spacer(minLength: 0)
             }
             .padding(.horizontal, 12).padding(.vertical, 6)
@@ -82,22 +82,22 @@ public struct HistoryDetailView: View {
                 VStack(alignment: .leading, spacing: 18) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(formattedFullDate(detail.date)).font(.system(size: detailFont, weight: .medium))
-                            .foregroundColor(AppColors.secondaryText)
+                            .foregroundStyle(AppColors.secondaryText)
                         Text(LanguageManager.t(detail.isCompletionMark ? "history.markedComplete" : "history.dayBreakdown"))
-                            .font(.system(size: headingFont, weight: .bold)).foregroundColor(AppColors.text)
+                            .font(.system(size: headingFont, weight: .bold)).foregroundStyle(AppColors.text)
                             .accessibilityIdentifier("history-detail-title")
                         if sections.count > 1 {
                             Text(LanguageManager.t("history.multipleWorkouts", ["count": sections.count]))
-                                .font(.system(size: detailFont)).foregroundColor(AppColors.secondaryText)
+                                .font(.system(size: detailFont)).foregroundStyle(AppColors.secondaryText)
                                 .accessibilityIdentifier("history-detail-multiple-workouts")
                             Text(LanguageManager.t("history.recordedActivity"))
-                                .font(.system(size: detailFont)).foregroundColor(AppColors.secondaryText)
+                                .font(.system(size: detailFont)).foregroundStyle(AppColors.secondaryText)
                                 .accessibilityIdentifier("history-detail-status")
                         }
                     }
                     VStack(alignment: .leading, spacing: 10) {
                         Text(LanguageManager.t("history.dayTotals"))
-                            .font(.system(size: detailFont, weight: .medium)).foregroundColor(AppColors.secondaryText)
+                            .font(.system(size: detailFont, weight: .medium)).foregroundStyle(AppColors.secondaryText)
                         HStack(alignment: .top, spacing: 10) {
                             metric(LanguageManager.t("history.sets"), "\(totalSections.reduce(0) { $0 + $1.completedSets }) / \(totalSections.reduce(0) { $0 + $1.plannedSets })")
                             metric(LanguageManager.t("history.duration"), formattedDuration(sections.reduce(0) { $0 + $1.durationSeconds }))
@@ -111,7 +111,7 @@ public struct HistoryDetailView: View {
                     .accessibilityIdentifier("history-day-totals")
                     if detail.isCompletionMark {
                         Text(LanguageManager.t("history.noLoggedSets"))
-                            .font(.system(size: rowFont)).foregroundColor(AppColors.secondaryText)
+                            .font(.system(size: rowFont)).foregroundStyle(AppColors.secondaryText)
                             .frame(maxWidth: .infinity, alignment: .leading).padding(16)
                             .background(AppColors.surface).clipShape(RoundedRectangle(cornerRadius: 20))
                             .overlay(RoundedRectangle(cornerRadius: 20).stroke(AppColors.border, lineWidth: 1))
@@ -131,8 +131,8 @@ public struct HistoryDetailView: View {
 
     private func metric(_ label: String, _ value: String) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(label).font(.system(size: detailFont)).foregroundColor(AppColors.secondaryText)
-            Text(value).font(.system(size: cardFont, weight: .bold)).foregroundColor(AppColors.text)
+            Text(label).font(.system(size: detailFont)).foregroundStyle(AppColors.secondaryText)
+            Text(value).font(.system(size: cardFont, weight: .bold)).foregroundStyle(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
         }.frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -162,20 +162,20 @@ public struct HistoryDetailView: View {
                     statusPill(statusText, color: statusColor, id: single ? "history-detail-status" : "history-section-status-\(section.id)")
                 }
             }
-            Text(section.workoutTitle).font(.system(size: cardFont, weight: .bold)).foregroundColor(AppColors.text)
+            Text(section.workoutTitle).font(.system(size: cardFont, weight: .bold)).foregroundStyle(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityIdentifier("history-section-title-\(section.id)")
             if let label = section.scheduleLabel(on: detail.date) {
-                Text(label).font(.system(size: detailFont)).foregroundColor(AppColors.secondaryText)
+                Text(label).font(.system(size: detailFont)).foregroundStyle(AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
                     .accessibilityIdentifier(section.scheduledDate == nil ? "history-section-schedule-unknown-\(section.id)" : "history-section-date-\(section.id)")
             }
             Text(LanguageManager.t(items.count == 1 ? "builder.exerciseCountOne" : "weekly.exerciseCount", ["count": items.count]) + " · "
                 + LanguageManager.formatSetsFraction(completed: section.completedSets, total: section.plannedSets))
-                .font(.system(size: detailFont)).foregroundColor(AppColors.secondaryText)
+                .font(.system(size: detailFont)).foregroundStyle(AppColors.secondaryText)
             if !single {
                 Text(formattedDuration(section.durationSeconds) + " · \(weightUnit.formatVolume(section.totalVolumeKg)) \(weightUnit.label)")
-                    .font(.system(size: detailFont)).foregroundColor(AppColors.secondaryText)
+                    .font(.system(size: detailFont)).foregroundStyle(AppColors.secondaryText)
             }
             HStack(spacing: 10) {
                 GeometryReader { geometry in
@@ -186,7 +186,7 @@ public struct HistoryDetailView: View {
                     }
                 }.frame(height: 5)
                 Text(LanguageManager.formatPercent(Int(progress * 100)))
-                    .font(.system(size: detailFont)).foregroundColor(AppColors.secondaryText)
+                    .font(.system(size: detailFont)).foregroundStyle(AppColors.secondaryText)
             }
             Button {
                 if expanded { collapsedSections.insert(key) } else { collapsedSections.remove(key) }
@@ -197,7 +197,7 @@ public struct HistoryDetailView: View {
                     Text("\(items.count)")
                     Image(systemName: expanded ? "chevron.up" : "chevron.down")
                 }
-                .font(.system(size: detailFont)).foregroundColor(AppColors.secondaryText)
+                .font(.system(size: detailFont)).foregroundStyle(AppColors.secondaryText)
                 .frame(maxWidth: .infinity, minHeight: 48).contentShape(Rectangle())
             }
             .buttonStyle(.plain)
@@ -218,7 +218,7 @@ public struct HistoryDetailView: View {
             if section.canAct(on: detail.date, today: today), let action = sectionAction(section, single: single) {
                 Button(action: action) {
                     Text(LanguageManager.t(section.sessionRecord != nil ? "history.resumeWorkout" : "history.startWorkout"))
-                        .font(.system(size: rowFont, weight: .semibold)).foregroundColor(AppColors.accent)
+                        .font(.system(size: rowFont, weight: .semibold)).foregroundStyle(AppColors.accent)
                         .frame(maxWidth: .infinity, minHeight: 48).padding(.horizontal, 8)
                         .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.accent, lineWidth: 1))
                         .contentShape(Rectangle())
@@ -241,13 +241,13 @@ public struct HistoryDetailView: View {
 
     private func contextLabel(_ section: WorkoutDaySection, index: Int) -> some View {
         Text(section.contextText(on: detail.date, today: today, index: index))
-            .font(.system(size: detailFont)).foregroundColor(AppColors.secondaryText)
+            .font(.system(size: detailFont)).foregroundStyle(AppColors.secondaryText)
             .fixedSize(horizontal: false, vertical: true)
             .accessibilityIdentifier("history-section-context-\(section.id)")
     }
 
     private func statusPill(_ key: String, color: Color, id: String) -> some View {
-        Text(LanguageManager.t(key)).font(.system(size: detailFont, weight: .medium)).foregroundColor(color)
+        Text(LanguageManager.t(key)).font(.system(size: detailFont, weight: .medium)).foregroundStyle(color)
             .padding(.horizontal, 8).padding(.vertical, 4)
             .background(RoundedRectangle(cornerRadius: 8).fill(color.opacity(0.12)))
             .overlay(RoundedRectangle(cornerRadius: 8).stroke(color.opacity(0.3), lineWidth: 1))
@@ -266,20 +266,20 @@ public struct HistoryDetailView: View {
         return HStack(spacing: 10) {
             VStack(alignment: .leading, spacing: 4) {
                 HStack(spacing: 6) {
-                    Text(item.name).font(.system(size: rowFont, weight: .semibold)).foregroundColor(AppColors.text)
+                    Text(item.name).font(.system(size: rowFont, weight: .semibold)).foregroundStyle(AppColors.text)
                         .fixedSize(horizontal: false, vertical: true)
                     if item.isPr {
-                        Text("PR").font(.system(size: detailFont, weight: .bold)).foregroundColor(AppColors.orangePrText)
+                        Text("PR").font(.system(size: detailFont, weight: .bold)).foregroundStyle(AppColors.orangePrText)
                             .padding(.horizontal, 5).padding(.vertical, 1).background(AppColors.orangePrBg)
                             .clipShape(RoundedRectangle(cornerRadius: 4))
                     }
                 }
-                Text(exerciseSubtitle(item)).font(.system(size: detailFont)).foregroundColor(AppColors.secondaryText)
+                Text(exerciseSubtitle(item)).font(.system(size: detailFont)).foregroundStyle(AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
             }.frame(maxWidth: .infinity, alignment: .leading)
             Image(systemName: completed ? "checkmark" : partial ? "clock" : "minus")
                 .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(completed ? AppColors.completedGreen : partial ? AppColors.unfinishedOrange : AppColors.muted)
+                .foregroundStyle(completed ? AppColors.completedGreen : partial ? AppColors.unfinishedOrange : AppColors.muted)
                 .frame(width: 20, height: 20)
                 .accessibilityLabel(LanguageManager.t(completed ? "history.completed" : partial ? "history.unfinished" : past ? "history.notCompleted" : "history.notStarted"))
         }

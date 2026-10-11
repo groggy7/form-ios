@@ -19,11 +19,11 @@ public struct WorkoutDetailSheet: View {
                     VStack(alignment: .leading, spacing: 6) {
                         Text(record.workoutTitle)
                             .font(.system(size: 24, weight: .bold))
-                            .foregroundColor(AppColors.text)
+                            .foregroundStyle(AppColors.text)
 
                         Text(formattedDate(record.completedAt))
                             .font(.system(size: 13))
-                            .foregroundColor(AppColors.muted)
+                            .foregroundStyle(AppColors.muted)
                     }
 
                     HStack(spacing: 12) {
@@ -38,19 +38,19 @@ public struct WorkoutDetailSheet: View {
                     VStack(alignment: .leading, spacing: 14) {
                         Text(LanguageManager.t("summary.exerciseRecap"))
                             .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(AppColors.text)
+                            .foregroundStyle(AppColors.text)
 
                         ForEach(record.exerciseLogs, id: \.exerciseName) { exLog in
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(exLog.exerciseName)
                                     .font(.system(size: 15, weight: .semibold))
-                                    .foregroundColor(AppColors.accent)
+                                    .foregroundStyle(AppColors.accent)
 
                                 ForEach(exLog.sets, id: \.setNumber) { setLog in
                                     HStack {
                                         Text("\(LanguageManager.t("table.set")) \(setLog.setNumber)")
                                             .font(.system(size: 13, weight: .medium))
-                                            .foregroundColor(AppColors.muted)
+                                            .foregroundStyle(AppColors.muted)
                                             .frame(width: 60, alignment: .leading)
 
                                         Spacer()
@@ -58,15 +58,15 @@ public struct WorkoutDetailSheet: View {
                                         let weightText = setLog.weightKg.map { weightUnit.formatDisplayWeight($0) + " " + weightUnit.label } ?? "—"
                                         Text(weightText)
                                             .font(.system(size: 14, weight: .semibold))
-                                            .foregroundColor(AppColors.text)
+                                            .foregroundStyle(AppColors.text)
 
                                         Text("×")
-                                            .foregroundColor(AppColors.muted)
+                                            .foregroundStyle(AppColors.muted)
 
                                         let repsText = setLog.reps.map { "\($0) reps" } ?? "—"
                                         Text(repsText)
                                             .font(.system(size: 14, weight: .semibold))
-                                            .foregroundColor(AppColors.text)
+                                            .foregroundStyle(AppColors.text)
                                     }
                                     .padding(.horizontal, 14)
                                     .padding(.vertical, 8)
@@ -91,7 +91,7 @@ public struct WorkoutDetailSheet: View {
                     Button(action: onDismiss) {
                         Image(systemName: "xmark")
                             .font(.system(size: 13, weight: .semibold))
-                            .foregroundColor(AppColors.secondaryText)
+                            .foregroundStyle(AppColors.secondaryText)
                     }
                 }
             }
@@ -102,10 +102,10 @@ public struct WorkoutDetailSheet: View {
         VStack(spacing: 4) {
             Text(title)
                 .font(.system(size: 11, weight: .medium))
-                .foregroundColor(AppColors.muted)
+                .foregroundStyle(AppColors.muted)
             Text(value)
                 .font(.system(size: 16, weight: .bold))
-                .foregroundColor(AppColors.text)
+                .foregroundStyle(AppColors.text)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)

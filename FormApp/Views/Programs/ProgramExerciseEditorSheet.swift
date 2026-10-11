@@ -85,7 +85,7 @@ public struct ProgramExerciseEditorSheet: View {
                         HStack {
                             Text(LanguageManager.t("category.\(exercise.resolvedMovement.key)").uppercased(with: LanguageManager.locale))
                                 .font(.system(size: 11, weight: .bold))
-                                .foregroundColor(AppColors.accent)
+                                .foregroundStyle(AppColors.accent)
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 4)
                                 .background(AppColors.positiveBg)
@@ -95,21 +95,21 @@ public struct ProgramExerciseEditorSheet: View {
 
                             Text("\(restSeconds)s rest")
                                 .font(.system(size: 12, weight: .medium))
-                                .foregroundColor(AppColors.muted)
+                                .foregroundStyle(AppColors.muted)
                         }
 
                         Text(exercise.displayName)
                             .font(.system(size: 20, weight: .bold))
-                            .foregroundColor(AppColors.text)
+                            .foregroundStyle(AppColors.text)
 
                         HStack(spacing: 6) {
                             Image(systemName: "figure.strengthtraining.traditional")
                                 .font(.system(size: 13))
-                                .foregroundColor(AppColors.accent)
+                                .foregroundStyle(AppColors.accent)
 
                             Text(previewPrescription)
                                 .font(.system(size: 14, weight: .semibold))
-                                .foregroundColor(AppColors.accent)
+                                .foregroundStyle(AppColors.accent)
                         }
                         .padding(.top, 2)
                     }
@@ -124,10 +124,10 @@ public struct ProgramExerciseEditorSheet: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text("\(sets) \(LanguageManager.t("targets.sets").lowercased())")
                                     .font(.system(size: 16, weight: .bold))
-                                    .foregroundColor(AppColors.text)
+                                    .foregroundStyle(AppColors.text)
                                 Text("1–10")
                                     .font(.system(size: 12))
-                                    .foregroundColor(AppColors.muted)
+                                    .foregroundStyle(AppColors.muted)
                             }
 
                             Spacer()
@@ -136,20 +136,20 @@ public struct ProgramExerciseEditorSheet: View {
                                 Button(action: { if sets > 1 { sets -= 1 } }) {
                                     Image(systemName: "minus.circle.fill")
                                         .font(.system(size: 30))
-                                        .foregroundColor(sets > 1 ? AppColors.accent : AppColors.muted.opacity(0.3))
+                                        .foregroundStyle(sets > 1 ? AppColors.accent : AppColors.muted.opacity(0.3))
                                 }
                                 .disabled(sets <= 1)
                                 .buttonStyle(.plain)
 
                                 Text("\(sets)")
                                     .font(.system(size: 22, weight: .bold))
-                                    .foregroundColor(AppColors.text)
+                                    .foregroundStyle(AppColors.text)
                                     .frame(minWidth: 28)
 
                                 Button(action: { if sets < 10 { sets += 1 } }) {
                                     Image(systemName: "plus.circle.fill")
                                         .font(.system(size: 30))
-                                        .foregroundColor(sets < 10 ? AppColors.accent : AppColors.muted.opacity(0.3))
+                                        .foregroundStyle(sets < 10 ? AppColors.accent : AppColors.muted.opacity(0.3))
                                 }
                                 .disabled(sets >= 10)
                                 .buttonStyle(.plain)
@@ -167,7 +167,7 @@ public struct ProgramExerciseEditorSheet: View {
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(LanguageManager.t("targets.failure"))
                                             .font(.system(size: 15, weight: .medium))
-                                            .foregroundColor(AppColors.text)
+                                            .foregroundStyle(AppColors.text)
                                     }
                                 }
                                 .tint(AppColors.accent)
@@ -182,11 +182,11 @@ public struct ProgramExerciseEditorSheet: View {
                                         VStack(alignment: .leading, spacing: 4) {
                                             Text(LanguageManager.t("targets.min"))
                                                 .font(.system(size: 12))
-                                                .foregroundColor(AppColors.muted)
+                                                .foregroundStyle(AppColors.muted)
                                             TextField(LanguageManager.t("editor.min"), text: $minRepsString)
                                                 .keyboardType(.numberPad)
                                                 .font(.system(size: 16, weight: .semibold))
-                                                .foregroundColor(AppColors.text)
+                                                .foregroundStyle(AppColors.text)
                                                 .padding(10)
                                                 .background(AppColors.surfaceRaised)
                                                 .cornerRadius(8)
@@ -196,11 +196,11 @@ public struct ProgramExerciseEditorSheet: View {
                                         VStack(alignment: .leading, spacing: 4) {
                                             Text(LanguageManager.t("targets.max"))
                                                 .font(.system(size: 12))
-                                                .foregroundColor(AppColors.muted)
+                                                .foregroundStyle(AppColors.muted)
                                             TextField(LanguageManager.t("editor.max"), text: $maxRepsString)
                                                 .keyboardType(.numberPad)
                                                 .font(.system(size: 16, weight: .semibold))
-                                                .foregroundColor(AppColors.text)
+                                                .foregroundStyle(AppColors.text)
                                                 .padding(10)
                                                 .background(AppColors.surfaceRaised)
                                                 .cornerRadius(8)
@@ -216,7 +216,7 @@ public struct ProgramExerciseEditorSheet: View {
                                 Toggle(isOn: $perSide) {
                                     Text(LanguageManager.t("targets.perSide"))
                                         .font(.system(size: 15, weight: .medium))
-                                        .foregroundColor(AppColors.text)
+                                        .foregroundStyle(AppColors.text)
                                 }
                                 .tint(AppColors.accent)
                                 .padding(.horizontal, 14)
@@ -226,7 +226,7 @@ public struct ProgramExerciseEditorSheet: View {
                                 VStack(alignment: .leading, spacing: 6) {
                                     TextField(LanguageManager.t("editor.customPlaceholder"), text: $customPrescription)
                                         .font(.system(size: 15))
-                                        .foregroundColor(AppColors.text)
+                                        .foregroundStyle(AppColors.text)
                                         .padding(12)
                                         .background(AppColors.surfaceRaised)
                                         .cornerRadius(8)
@@ -243,7 +243,7 @@ public struct ProgramExerciseEditorSheet: View {
                     }) {
                         Text(LanguageManager.t(isCustom ? "targets.structured" : "targets.custom"))
                             .font(.system(size: 14, weight: .medium))
-                            .foregroundColor(AppColors.accent)
+                            .foregroundStyle(AppColors.accent)
                     }
                     .padding(.horizontal, 4)
 
@@ -253,7 +253,7 @@ public struct ProgramExerciseEditorSheet: View {
                             HStack {
                                 Text("\(restSeconds)s")
                                     .font(.system(size: 16, weight: .bold))
-                                    .foregroundColor(AppColors.text)
+                                    .foregroundStyle(AppColors.text)
 
                                 Spacer()
 
@@ -270,7 +270,7 @@ public struct ProgramExerciseEditorSheet: View {
                                     Button(action: { restSeconds = preset }) {
                                         Text("\(preset)s")
                                             .font(.system(size: 12, weight: isSel ? .bold : .medium))
-                                            .foregroundColor(isSel ? AppColors.todaySelectionText : AppColors.secondaryText)
+                                            .foregroundStyle(isSel ? AppColors.todaySelectionText : AppColors.secondaryText)
                                             .padding(.horizontal, 12)
                                             .padding(.vertical, 6)
                                             .background(
@@ -292,7 +292,7 @@ public struct ProgramExerciseEditorSheet: View {
                     if !isValid {
                         Text(LanguageManager.t("targets.invalid"))
                             .font(.system(size: 13))
-                            .foregroundColor(AppColors.danger)
+                            .foregroundStyle(AppColors.danger)
                             .padding(.horizontal, 4)
                     }
 
@@ -301,7 +301,7 @@ public struct ProgramExerciseEditorSheet: View {
                         Button(action: save) {
                             Text(LanguageManager.t("modal.exercise.save"))
                                 .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(isValid ? AppColors.todaySelectionText : AppColors.muted)
+                                .foregroundStyle(isValid ? AppColors.todaySelectionText : AppColors.muted)
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 48)
                                 .background(isValid ? AppColors.accent : AppColors.surface)
@@ -325,7 +325,7 @@ public struct ProgramExerciseEditorSheet: View {
                                     Text(LanguageManager.t("modal.delete"))
                                         .font(.system(size: 14, weight: .semibold))
                                 }
-                                .foregroundColor(AppColors.danger)
+                                .foregroundStyle(AppColors.danger)
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 44)
                             }
@@ -342,12 +342,12 @@ public struct ProgramExerciseEditorSheet: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(LanguageManager.t("modal.cancel")) { dismiss() }
-                        .foregroundColor(AppColors.muted)
+                        .foregroundStyle(AppColors.muted)
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(LanguageManager.t("programs.save")) { save() }
                         .font(.system(size: 15, weight: .bold))
-                        .foregroundColor(isValid ? AppColors.accent : AppColors.muted)
+                        .foregroundStyle(isValid ? AppColors.accent : AppColors.muted)
                         .disabled(!isValid)
                 }
             }
@@ -358,7 +358,7 @@ public struct ProgramExerciseEditorSheet: View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
                 .font(.system(size: 13, weight: .bold))
-                .foregroundColor(AppColors.secondaryText)
+                .foregroundStyle(AppColors.secondaryText)
                 .padding(.horizontal, 4)
 
             VStack(spacing: 0) {

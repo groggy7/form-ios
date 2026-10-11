@@ -77,7 +77,7 @@ public struct TodayHeroCard: View {
 
                 Text(dayText)
                     .font(.system(size: captionSize, weight: .medium))
-                    .foregroundColor(Color(hex: 0xD3D0C7))
+                    .foregroundStyle(Color(hex: 0xD3D0C7))
 
                 Spacer()
 
@@ -88,7 +88,7 @@ public struct TodayHeroCard: View {
                             .frame(width: 24, height: 24)
                         Image(systemName: "checkmark")
                             .font(.system(size: captionSize, weight: .bold))
-                            .foregroundColor(AppColors.accent)
+                            .foregroundStyle(AppColors.accent)
                     }
                 }
             }
@@ -99,7 +99,7 @@ public struct TodayHeroCard: View {
             // Title
             Text(workout.displayTitle(programId: programId))
                 .font(.system(size: titleSize, weight: .semibold))
-                .foregroundColor(Color(hex: 0xF3EFE5))
+                .foregroundStyle(Color(hex: 0xF3EFE5))
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: textWidth, alignment: .leading)
                 .accessibilityIdentifier("today-workout-title")
@@ -111,7 +111,7 @@ public struct TodayHeroCard: View {
                 Text(workout.displayFocus(programId: programId))
                     .font(.system(size: bodySize, weight: .regular))
                     .lineSpacing(4)
-                    .foregroundColor(AppColors.secondaryText)
+                    .foregroundStyle(AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: textWidth, minHeight: 42, alignment: .topLeading)
                     .accessibilityIdentifier("today-workout-focus")
@@ -128,7 +128,7 @@ public struct TodayHeroCard: View {
                             Button(action: { selectedViewIndex = idx }) {
                                 Text(LanguageManager.t("muscles.view.\(v.rawValue)"))
                                     .font(.system(size: captionSize, weight: .medium))
-                                    .foregroundColor(isSel ? selectedViewText : AppColors.secondaryText)
+                                    .foregroundStyle(isSel ? selectedViewText : AppColors.secondaryText)
                                     .padding(.horizontal, 14)
                                     .frame(height: 38)
                                     .background(
@@ -160,7 +160,7 @@ public struct TodayHeroCard: View {
             ])
             Text(meta)
                 .font(.system(size: captionSize, weight: .regular))
-                .foregroundColor(Color(hex: 0xB1BAC2))
+                .foregroundStyle(Color(hex: 0xB1BAC2))
                 .fixedSize(horizontal: false, vertical: true)
 
             Spacer().frame(height: 22)
@@ -190,7 +190,7 @@ public struct TodayHeroCard: View {
                             lineWidth: 1
                         )
                 )
-                .foregroundColor(
+                .foregroundStyle(
                     (isAvailable && !isCompleted)
                         ? AppColors.background
                         : (isCompleted ? AppColors.accent : Color(hex: 0xB1BAC2))
@@ -278,7 +278,7 @@ public struct TodayHeroCard: View {
             // Top row
             Text(weekdayName)
                 .font(.system(size: captionSize, weight: .medium))
-                .foregroundColor(Color(hex: 0xD3D0C7))
+                .foregroundStyle(Color(hex: 0xD3D0C7))
                 .frame(minHeight: 20)
 
             Spacer().frame(height: 20)
@@ -286,7 +286,7 @@ public struct TodayHeroCard: View {
             // Title
             Text(LanguageManager.t("today.restDay"))
                 .font(.system(size: titleSize, weight: .semibold))
-                .foregroundColor(Color(hex: 0xF3EFE5))
+                .foregroundStyle(Color(hex: 0xF3EFE5))
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: textWidth, alignment: .leading)
 
@@ -296,7 +296,7 @@ public struct TodayHeroCard: View {
             Text(LanguageManager.restMotivationQuote(for: todayIndex))
                 .font(.system(size: bodySize, weight: .regular))
                 .lineSpacing(4)
-                .foregroundColor(AppColors.secondaryText)
+                .foregroundStyle(AppColors.secondaryText)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: textWidth, alignment: .leading)
 
@@ -306,7 +306,7 @@ public struct TodayHeroCard: View {
             Text(LanguageManager.t("today.restDescription"))
                 .font(.system(size: captionSize, weight: .regular))
                 .lineSpacing(3)
-                .foregroundColor(Color(hex: 0x9AA4AC))
+                .foregroundStyle(Color(hex: 0x9AA4AC))
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: textWidth, alignment: .leading)
 

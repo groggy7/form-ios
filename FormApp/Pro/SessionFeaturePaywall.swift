@@ -86,9 +86,9 @@ struct SessionFeaturePaywallContent: View {
                             HStack(spacing: 12) {
                                 benefitIcon("infinity", size: 32)
                                 (Text(LanguageManager.t("\(copyPrefix).unlock_title"))
-                                    .font(.system(size: subtitleSize, weight: .semibold)).foregroundColor(AppColors.text)
+                                    .font(.system(size: subtitleSize, weight: .semibold)).foregroundStyle(AppColors.text)
                                  + Text(LanguageManager.t("paywall.auto_progression.unlock_suffix"))
-                                    .font(.system(size: subtitleSize)).foregroundColor(AppColors.secondaryText))
+                                    .font(.system(size: subtitleSize)).foregroundStyle(AppColors.secondaryText))
                                     .fixedSize(horizontal: false, vertical: true)
                                 Spacer(minLength: 0)
                             }

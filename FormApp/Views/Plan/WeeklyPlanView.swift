@@ -37,17 +37,17 @@ public struct WeeklyPlanView: View {
                             VStack(alignment: .leading, spacing: 3) {
                                 Text(LanguageManager.t("weekly.title"))
                                     .font(.system(size: 26, weight: .semibold))
-                                    .foregroundColor(AppColors.text)
+                                    .foregroundStyle(AppColors.text)
 
                                 HStack(spacing: 4) {
                                     Text(program.name)
                                         .font(.system(size: 13, weight: .medium))
-                                        .foregroundColor(AppColors.accent)
+                                        .foregroundStyle(AppColors.accent)
                                         .lineLimit(1)
 
                                     Image(systemName: "chevron.up.chevron.down")
                                         .font(.system(size: 12, weight: .bold))
-                                        .foregroundColor(AppColors.accent)
+                                        .foregroundStyle(AppColors.accent)
                                 }
                             }
                         }
@@ -93,11 +93,11 @@ public struct WeeklyPlanView: View {
                                     VStack(alignment: .leading, spacing: 1) {
                                         Text(String(dayName.prefix(3)).uppercased())
                                             .font(.system(size: 10, weight: .bold))
-                                            .foregroundColor(isToday ? AppColors.accent : (isUnfinished ? Color(hex: 0xFDE8CC) : AppColors.muted))
+                                            .foregroundStyle(isToday ? AppColors.accent : (isUnfinished ? Color(hex: 0xFDE8CC) : AppColors.muted))
 
                                         Text("\(dayNumber)")
                                             .font(.system(size: 18, weight: .bold))
-                                            .foregroundColor(AppColors.text)
+                                            .foregroundStyle(AppColors.text)
                                     }
                                     .frame(width: 46, alignment: .leading)
 
@@ -105,12 +105,12 @@ public struct WeeklyPlanView: View {
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(workout?.title ?? LanguageManager.t("plan.recover"))
                                             .font(.system(size: 15, weight: selected ? .bold : .semibold))
-                                            .foregroundColor(workout == nil ? AppColors.muted : AppColors.text)
+                                            .foregroundStyle(workout == nil ? AppColors.muted : AppColors.text)
                                             .lineLimit(1)
 
                                         Text(Self.workoutSubtitle(workout: workout, isUnfinished: isUnfinished, isMissed: isMissed))
                                             .font(.system(size: 12))
-                                            .foregroundColor(isUnfinished ? Color(hex: 0xFDE8CC).opacity(0.8) : AppColors.muted)
+                                            .foregroundStyle(isUnfinished ? Color(hex: 0xFDE8CC).opacity(0.8) : AppColors.muted)
                                     }
 
                                     Spacer()
@@ -118,7 +118,7 @@ public struct WeeklyPlanView: View {
                                     if isCompleted {
                                         Image(systemName: "checkmark.circle.fill")
                                             .font(.system(size: 20))
-                                            .foregroundColor(AppColors.accent)
+                                            .foregroundStyle(AppColors.accent)
                                     }
                                 }
                                 .padding(.horizontal, 16)
@@ -152,7 +152,7 @@ public struct WeeklyPlanView: View {
                             Text(LanguageManager.t("weekly.changeProgram"))
                                 .font(.system(size: 14, weight: .semibold))
                         }
-                        .foregroundColor(AppColors.text)
+                        .foregroundStyle(AppColors.text)
                         .frame(maxWidth: .infinity)
                         .frame(height: 48)
                         .background(

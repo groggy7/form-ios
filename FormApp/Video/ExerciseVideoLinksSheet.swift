@@ -54,11 +54,11 @@ public struct ExerciseVideoLinksSheet: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(LanguageManager.t("video.linkTitle"))
                             .font(.system(size: 20, weight: .semibold))
-                            .foregroundColor(AppColors.text)
+                            .foregroundStyle(AppColors.text)
 
                         Text(LanguageManager.t("video.linkSubtitle"))
                             .font(.system(size: 12))
-                            .foregroundColor(AppColors.muted)
+                            .foregroundStyle(AppColors.muted)
                     }
 
                     Spacer()
@@ -66,7 +66,7 @@ public struct ExerciseVideoLinksSheet: View {
                     Button(action: onDismiss) {
                         Image(systemName: "xmark")
                             .font(.system(size: 16, weight: .bold))
-                            .foregroundColor(AppColors.muted)
+                            .foregroundStyle(AppColors.muted)
                             .frame(width: 36, height: 36)
                     }
                 }
@@ -93,13 +93,13 @@ public struct ExerciseVideoLinksSheet: View {
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(exercise.displayName)
                                     .font(.system(size: 17, weight: .bold))
-                                    .foregroundColor(AppColors.text)
+                                    .foregroundStyle(AppColors.text)
                                     .lineLimit(2)
 
                                 Text(LanguageManager.t("category.\(exercise.resolvedMovement.key)").uppercased())
                                     .font(.system(size: 11, weight: .semibold))
                                     .tracking(0.6)
-                                    .foregroundColor(AppColors.accent)
+                                    .foregroundStyle(AppColors.accent)
                                     .padding(.horizontal, 10)
                                     .padding(.vertical, 4)
                                     .background(
@@ -121,7 +121,7 @@ public struct ExerciseVideoLinksSheet: View {
                         HStack {
                             Text(LanguageManager.t("video.linkedCount", ["count": "\(linkedUrls.count)"]))
                                 .font(.system(size: 15, weight: .semibold))
-                                .foregroundColor(AppColors.text)
+                                .foregroundStyle(AppColors.text)
 
                             Spacer()
                         }
@@ -130,11 +130,11 @@ public struct ExerciseVideoLinksSheet: View {
                             VStack(spacing: 8) {
                                 Image(systemName: "play.rectangle.on.rectangle")
                                     .font(.system(size: 32))
-                                    .foregroundColor(AppColors.muted)
+                                    .foregroundStyle(AppColors.muted)
 
                                 Text(LanguageManager.t("video.noVideos"))
                                     .font(.system(size: 13))
-                                    .foregroundColor(AppColors.muted)
+                                    .foregroundStyle(AppColors.muted)
                                     .multilineTextAlignment(.center)
                             }
                             .frame(maxWidth: .infinity)
@@ -181,18 +181,18 @@ public struct ExerciseVideoLinksSheet: View {
                                             HStack(spacing: 12) {
                                                 Image(systemName: isUnavailable ? "wifi.slash" : "play.circle.fill")
                                                     .font(.system(size: 24))
-                                                    .foregroundColor(isUnavailable ? AppColors.danger : AppColors.coral)
+                                                    .foregroundStyle(isUnavailable ? AppColors.danger : AppColors.coral)
 
                                                 VStack(alignment: .leading, spacing: 2) {
                                                     Text(title)
                                                         .font(.system(size: 13, weight: .medium))
-                                                        .foregroundColor(isUnavailable ? AppColors.danger : AppColors.text)
+                                                        .foregroundStyle(isUnavailable ? AppColors.danger : AppColors.text)
                                                         .lineLimit(2)
                                                         .multilineTextAlignment(.leading)
 
                                                     Text(subtitle)
                                                         .font(.system(size: 11))
-                                                        .foregroundColor(AppColors.muted)
+                                                        .foregroundStyle(AppColors.muted)
                                                         .lineLimit(1)
                                                 }
 
@@ -216,7 +216,7 @@ public struct ExerciseVideoLinksSheet: View {
                                         }) {
                                             Image(systemName: "trash")
                                                 .font(.system(size: 15))
-                                                .foregroundColor(AppColors.danger)
+                                                .foregroundStyle(AppColors.danger)
                                                 .frame(width: 42, height: 42)
                                                 .contentShape(Rectangle())
                                         }
@@ -242,13 +242,13 @@ public struct ExerciseVideoLinksSheet: View {
                             VStack(alignment: .leading, spacing: 12) {
                                 Text(LanguageManager.t("library.attachVideoCta"))
                                     .font(.system(size: 14, weight: .semibold))
-                                    .foregroundColor(AppColors.text)
+                                    .foregroundStyle(AppColors.text)
 
                                 // Input box with inline Paste / Clear button
                                 HStack(spacing: 8) {
                                     TextField(LanguageManager.t("video.urlInputLabel"), text: $inputUrl)
                                         .font(.system(size: 14))
-                                        .foregroundColor(AppColors.text)
+                                        .foregroundStyle(AppColors.text)
                                         .accentColor(AppColors.accent)
                                         .autocorrectionDisabled()
                                         .textInputAutocapitalization(.never)
@@ -267,7 +267,7 @@ public struct ExerciseVideoLinksSheet: View {
                                                 Text(LanguageManager.t("video.paste"))
                                                     .font(.system(size: 12, weight: .medium))
                                             }
-                                            .foregroundColor(AppColors.accent)
+                                            .foregroundStyle(AppColors.accent)
                                             .padding(.vertical, 6)
                                             .padding(.horizontal, 4)
                                         }
@@ -276,7 +276,7 @@ public struct ExerciseVideoLinksSheet: View {
                                         Button(action: { inputUrl = "" }) {
                                             Image(systemName: "xmark.circle.fill")
                                                 .font(.system(size: 16))
-                                                .foregroundColor(AppColors.muted)
+                                                .foregroundStyle(AppColors.muted)
                                                 .padding(.vertical, 6)
                                                 .padding(.horizontal, 4)
                                         }
@@ -298,13 +298,13 @@ public struct ExerciseVideoLinksSheet: View {
                                 Group {
                                     if isDuplicate {
                                         Text(LanguageManager.t("video.alreadyAdded"))
-                                            .foregroundColor(AppColors.danger)
+                                            .foregroundStyle(AppColors.danger)
                                     } else if !inputUrl.isEmpty && !isValidUrl {
                                         Text(LanguageManager.t("video.youtubeOnly"))
-                                            .foregroundColor(AppColors.danger)
+                                            .foregroundStyle(AppColors.danger)
                                     } else {
                                         Text(LanguageManager.t("programs.videoHint"))
-                                            .foregroundColor(AppColors.muted)
+                                            .foregroundStyle(AppColors.muted)
                                     }
                                 }
                                 .font(.system(size: 12))
@@ -318,7 +318,7 @@ public struct ExerciseVideoLinksSheet: View {
                                         Text(LanguageManager.t("video.addUrlButton"))
                                             .font(.system(size: 14, weight: .semibold))
                                     }
-                                    .foregroundColor(canAdd ? AppColors.background : AppColors.muted)
+                                    .foregroundStyle(canAdd ? AppColors.background : AppColors.muted)
                                     .frame(maxWidth: .infinity)
                                     .frame(height: 44)
                                     .background(
@@ -339,11 +339,11 @@ public struct ExerciseVideoLinksSheet: View {
                             HStack(spacing: 10) {
                                 Image(systemName: "info.circle.fill")
                                     .font(.system(size: 16))
-                                    .foregroundColor(AppColors.accent)
+                                    .foregroundStyle(AppColors.accent)
 
                                 Text(LanguageManager.t("video.maxReached"))
                                     .font(.system(size: 13))
-                                    .foregroundColor(AppColors.muted)
+                                    .foregroundStyle(AppColors.muted)
 
                                 Spacer()
                             }
@@ -365,7 +365,7 @@ public struct ExerciseVideoLinksSheet: View {
 
                     if !validLinkedUrls {
                         Text(LanguageManager.t("video.youtubeOnly"))
-                            .font(.system(size: 12)).foregroundColor(AppColors.danger)
+                            .font(.system(size: 12)).foregroundStyle(AppColors.danger)
                             .padding(.horizontal, 20).padding(.top, 8)
                     }
 
@@ -379,7 +379,7 @@ public struct ExerciseVideoLinksSheet: View {
                     }) {
                         Text(LanguageManager.t("video.saveLinks"))
                             .font(.system(size: 15, weight: .semibold))
-                            .foregroundColor(AppColors.background)
+                            .foregroundStyle(AppColors.background)
                             .frame(maxWidth: .infinity)
                             .frame(height: 50)
                             .background(

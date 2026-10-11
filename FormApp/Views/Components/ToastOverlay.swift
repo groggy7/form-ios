@@ -53,11 +53,11 @@ public struct ToastOverlay: View {
                     if displayed.style == .error {
                         Image(systemName: "exclamationmark.triangle.fill")
                             .font(.system(size: 13, weight: .bold))
-                            .foregroundColor(AppColors.danger)
+                            .foregroundStyle(AppColors.danger)
                     }
                     Text(displayed.message)
                         .font(.system(size: 13, weight: .bold))
-                        .foregroundColor(displayed.style == .error ? AppColors.danger : AppColors.accent)
+                        .foregroundStyle(displayed.style == .error ? AppColors.danger : AppColors.accent)
                         .multilineTextAlignment(.center)
                 }
                 .padding(.horizontal, 18)

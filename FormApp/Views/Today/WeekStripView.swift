@@ -157,17 +157,17 @@ struct WorkoutDayStrip: View {
 
                                 Text(dayLabel)
                                     .font(.system(size: labelSize, weight: .medium))
-                                    .foregroundColor(textColor)
+                                    .foregroundStyle(textColor)
                                     .lineLimit(1)
 
                                 Text("\(dayNumber)")
                                     .font(.system(size: numberSize, weight: .semibold))
-                                    .foregroundColor(textColor)
+                                    .foregroundStyle(textColor)
                                     .lineLimit(1)
 
                                 Text(workout.displayTitle(programId: program.id))
                                     .font(.system(size: labelSize))
-                                    .foregroundColor(textColor)
+                                    .foregroundStyle(textColor)
                                     .multilineTextAlignment(.center)
                                     .lineLimit(2, reservesSpace: true)
                                     .fixedSize(horizontal: false, vertical: true)

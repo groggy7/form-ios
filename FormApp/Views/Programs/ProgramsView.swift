@@ -171,7 +171,7 @@ public struct ProgramsView: View {
                     Button(action: onDismiss) {
                         Image(systemName: "xmark")
                             .font(.system(size: 13, weight: .semibold))
-                            .foregroundColor(AppColors.secondaryText)
+                            .foregroundStyle(AppColors.secondaryText)
                     }
                     .accessibilityLabel(LanguageManager.t("common.close"))
                 }

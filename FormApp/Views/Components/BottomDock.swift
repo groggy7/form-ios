@@ -69,12 +69,12 @@ public struct BottomDock: View {
             VStack(spacing: 4) {
                 Image(systemName: icon)
                     .font(.system(size: 20, weight: .regular))
-                    .foregroundColor(foreground)
+                    .foregroundStyle(foreground)
                     .frame(height: 22)
 
                 Text(title)
                     .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(foreground)
+                    .foregroundStyle(foreground)
                     .lineLimit(1)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)

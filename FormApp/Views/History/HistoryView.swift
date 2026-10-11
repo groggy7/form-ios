@@ -393,7 +393,7 @@ public struct HistoryView: View {
                 HStack(alignment: .center) {
                     Text(LanguageManager.t("nav.progress"))
                         .font(.system(size: 28, weight: .semibold))
-                        .foregroundColor(AppColors.text)
+                        .foregroundStyle(AppColors.text)
 
                     Spacer()
 
@@ -404,7 +404,7 @@ public struct HistoryView: View {
                         }) {
                             Text(LanguageManager.t("history.thisMonth"))
                                 .font(.system(size: 14, weight: .medium))
-                                .foregroundColor(AppColors.secondaryText)
+                                .foregroundStyle(AppColors.secondaryText)
                         }
                         .buttonStyle(.plain)
                         .padding(.trailing, 8)
@@ -533,7 +533,7 @@ public struct HistoryView: View {
                             Button(action: { changeMonth(by: -1) }) {
                                 Image(systemName: "chevron.left")
                                     .font(.system(size: 16, weight: .semibold))
-                                    .foregroundColor(AppColors.secondaryText)
+                                    .foregroundStyle(AppColors.secondaryText)
                                     .frame(width: 40, height: 40)
                                     .background(
                                         RoundedRectangle(cornerRadius: 12, style: .continuous)
@@ -552,14 +552,14 @@ public struct HistoryView: View {
 
                             Text(monthYearString(from: displayedDate))
                                 .font(.system(size: 19, weight: .medium))
-                                .foregroundColor(AppColors.text)
+                                .foregroundStyle(AppColors.text)
 
                             Spacer()
 
                             Button(action: { changeMonth(by: 1) }) {
                                 Image(systemName: "chevron.right")
                                     .font(.system(size: 16, weight: .semibold))
-                                    .foregroundColor(isCurrentMonth ? AppColors.muted.opacity(0.3) : AppColors.secondaryText)
+                                    .foregroundStyle(isCurrentMonth ? AppColors.muted.opacity(0.3) : AppColors.secondaryText)
                                     .frame(width: 40, height: 40)
                                     .background(
                                         RoundedRectangle(cornerRadius: 12, style: .continuous)
@@ -581,7 +581,7 @@ public struct HistoryView: View {
                             ForEach(weekdaySymbols(), id: \.self) { symbol in
                                 Text(symbol)
                                     .font(.system(size: 11, weight: .medium))
-                                    .foregroundColor(AppColors.muted)
+                                    .foregroundStyle(AppColors.muted)
                                     .frame(maxWidth: .infinity)
                             }
                         }
@@ -678,14 +678,14 @@ public struct HistoryView: View {
             HStack(spacing: 4) {
                 Text(label)
                     .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
-                    .foregroundColor(isSelected ? AppColors.text : AppColors.muted)
+                    .foregroundStyle(isSelected ? AppColors.text : AppColors.muted)
                     .lineLimit(2)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                 if isPro {
                     Image(systemName: "crown.fill")
                         .font(.system(size: 12))
-                        .foregroundColor(AppColors.purple)
+                        .foregroundStyle(AppColors.purple)
                         .accessibilityHidden(true)
                 }
             }
@@ -727,7 +727,7 @@ public struct HistoryView: View {
                 .frame(width: 16, height: 16)
             Text(label)
                 .font(.system(size: 12))
-                .foregroundColor(AppColors.secondaryText)
+                .foregroundStyle(AppColors.secondaryText)
         }
     }
 
@@ -1054,11 +1054,11 @@ private struct BoxDayCell: View {
 
                             Text("\(dayNumber)")
                                 .font(.system(size: 15, weight: .semibold))
-                                .foregroundColor(AppColors.background)
+                                .foregroundStyle(AppColors.background)
                         } else {
                             Text("\(dayNumber)")
                                 .font(.system(size: 15, weight: isToday ? .semibold : .regular))
-                                .foregroundColor(dateString > todayStr ? AppColors.muted.opacity(0.45) : AppColors.secondaryText)
+                                .foregroundStyle(dateString > todayStr ? AppColors.muted.opacity(0.45) : AppColors.secondaryText)
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)

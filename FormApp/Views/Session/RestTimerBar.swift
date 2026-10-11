@@ -59,10 +59,10 @@ public struct RestTimerBar: View {
                     Text(LanguageManager.t("rest.title").uppercased())
                         .font(.system(size: 11, weight: .bold))
                         .tracking(1.25)
-                        .foregroundColor(AppColors.restTimerAccent)
+                        .foregroundStyle(AppColors.restTimerAccent)
                     Text(exerciseName)
                         .font(.system(size: 16, weight: .bold))
-                        .foregroundColor(AppColors.text)
+                        .foregroundStyle(AppColors.text)
                         .lineLimit(1)
                 }
 
@@ -72,11 +72,11 @@ public struct RestTimerBar: View {
                     Text(timeText)
                         .font(.system(size: 31, weight: .bold))
                         .monospacedDigit()
-                        .foregroundColor(AppColors.restTimerAccent)
+                        .foregroundStyle(AppColors.restTimerAccent)
 
                     Image(systemName: "chevron.right")
                         .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(AppColors.secondaryText)
+                        .foregroundStyle(AppColors.secondaryText)
                         .frame(width: 22, height: 22)
                 }
             }
@@ -90,7 +90,7 @@ public struct RestTimerBar: View {
                 Button(action: { onAddSeconds(-15) }) {
                     Text("-15s")
                         .font(.system(size: 13))
-                        .foregroundColor(AppColors.muted)
+                        .foregroundStyle(AppColors.muted)
                         .frame(width: 60, height: 32)
                         .background(
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
@@ -106,7 +106,7 @@ public struct RestTimerBar: View {
                 Button(action: { onAddSeconds(30) }) {
                     Text("+30s")
                         .font(.system(size: 13))
-                        .foregroundColor(AppColors.muted)
+                        .foregroundStyle(AppColors.muted)
                         .frame(width: 60, height: 32)
                         .background(
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
@@ -246,21 +246,21 @@ public struct RestTimerFullScreenModal: View {
                     Button(action: onDismiss) {
                         Image(systemName: "chevron.down")
                             .font(.system(size: 20, weight: .medium))
-                            .foregroundColor(AppColors.text)
+                            .foregroundStyle(AppColors.text)
                             .frame(width: 44, height: 44)
                     }
                     .buttonStyle(.plain)
 
                     Text(LanguageManager.t("rest.title"))
                         .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(AppColors.text)
+                        .foregroundStyle(AppColors.text)
 
                     Spacer()
 
                     Button(action: onToggleMute) {
                         Image(systemName: isMuted ? "speaker.slash.fill" : "speaker.wave.2.fill")
                             .font(.system(size: 18))
-                            .foregroundColor(isMuted ? AppColors.muted : AppColors.purple)
+                            .foregroundStyle(isMuted ? AppColors.muted : AppColors.purple)
                             .frame(width: 44, height: 44)
                     }
                     .buttonStyle(.plain)
@@ -273,7 +273,7 @@ public struct RestTimerFullScreenModal: View {
                         // Exercise Name
                         Text(exerciseName)
                             .font(.system(size: 14))
-                            .foregroundColor(AppColors.muted)
+                            .foregroundStyle(AppColors.muted)
                             .lineLimit(2)
                             .multilineTextAlignment(.center)
                             .padding(.top, 4)
@@ -309,15 +309,15 @@ public struct RestTimerFullScreenModal: View {
                                 Text(stateLabel)
                                     .font(.system(size: 12, weight: .bold))
                                     .tracking(1)
-                                    .foregroundColor(complete ? AppColors.accent : AppColors.secondaryText)
+                                    .foregroundStyle(complete ? AppColors.accent : AppColors.secondaryText)
 
                                 Text(timeText)
                                     .font(.system(size: 58, weight: .medium, design: .monospaced))
-                                    .foregroundColor(AppColors.text)
+                                    .foregroundStyle(AppColors.text)
 
                                 Text(LanguageManager.t("rest.target", ["time": RestTimerUtils.formatSecondsToTime(totalSeconds)]))
                                     .font(.system(size: 13))
-                                    .foregroundColor(AppColors.muted)
+                                    .foregroundStyle(AppColors.muted)
                             }
                         }
                         .frame(maxWidth: 280, maxHeight: 280)
@@ -331,7 +331,7 @@ public struct RestTimerFullScreenModal: View {
                                 Button(action: { onSetDuration(duration) }) {
                                     Text("\(duration)s")
                                         .font(.system(size: 12, weight: isSel ? .bold : .medium))
-                                        .foregroundColor(isSel ? AppColors.purple : AppColors.secondaryText)
+                                        .foregroundStyle(isSel ? AppColors.purple : AppColors.secondaryText)
                                         .frame(maxWidth: .infinity)
                                         .frame(height: 48)
                                         .background(
@@ -353,7 +353,7 @@ public struct RestTimerFullScreenModal: View {
                             Button(action: { onAddSeconds(-15) }) {
                                 Text("−15s")
                                     .font(.system(size: 16, weight: .medium))
-                                    .foregroundColor(AppColors.text)
+                                    .foregroundStyle(AppColors.text)
                                     .frame(maxWidth: .infinity)
                                     .frame(height: 50)
                                     .background(
@@ -377,7 +377,7 @@ public struct RestTimerFullScreenModal: View {
 
                                     Image(systemName: complete ? "checkmark" : (isRunning ? "pause.fill" : "play.fill"))
                                         .font(.system(size: 30, weight: .semibold))
-                                        .foregroundColor(AppColors.purple)
+                                        .foregroundStyle(AppColors.purple)
                                 }
                             }
                             .buttonStyle(.plain)
@@ -385,7 +385,7 @@ public struct RestTimerFullScreenModal: View {
                             Button(action: { onAddSeconds(15) }) {
                                 Text("+15s")
                                     .font(.system(size: 16, weight: .medium))
-                                    .foregroundColor(AppColors.text)
+                                    .foregroundStyle(AppColors.text)
                                     .frame(maxWidth: .infinity)
                                     .frame(height: 50)
                                     .background(
@@ -401,7 +401,7 @@ public struct RestTimerFullScreenModal: View {
                         Button(action: onSkip) {
                             Text(LanguageManager.t("rest.skip"))
                                 .font(.system(size: 14, weight: .medium))
-                                .foregroundColor(AppColors.secondaryText)
+                                .foregroundStyle(AppColors.secondaryText)
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 52)
                                 .overlay(

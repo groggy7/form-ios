@@ -65,18 +65,18 @@ public struct WarmupPlateCard: View {
 
                         Image(systemName: "flame.fill")
                             .font(.system(size: 16))
-                            .foregroundColor(AppColors.warmupAmber)
+                            .foregroundStyle(AppColors.warmupAmber)
                     }
 
                     VStack(alignment: .leading, spacing: 2) {
                         Text(LanguageManager.t("warmup.active_badge"))
                             .font(.system(size: 13, weight: .bold))
-                            .foregroundColor(AppColors.warmupAmber)
+                            .foregroundStyle(AppColors.warmupAmber)
                             .lineLimit(1)
 
                         Text(LanguageManager.t("warmup.active_desc", ["count": warmupSets.count]))
                             .font(.system(size: 11))
-                            .foregroundColor(AppColors.muted)
+                            .foregroundStyle(AppColors.muted)
                             .lineLimit(1)
                             .minimumScaleFactor(0.8)
                     }
@@ -87,7 +87,7 @@ public struct WarmupPlateCard: View {
                         if supportsBarbellWarmup && hasWorkingLoad { Button(action: onOpenPlates) {
                             Image(systemName: "square.stack.3d.up.fill")
                                 .font(.system(size: 15))
-                                .foregroundColor(AppColors.secondaryText)
+                                .foregroundStyle(AppColors.secondaryText)
                                 .frame(width: 32, height: 32)
                         }
                         .buttonStyle(.plain)
@@ -98,7 +98,7 @@ public struct WarmupPlateCard: View {
                             Button(action: onClearWarmups) {
                                 Image(systemName: "trash")
                                     .font(.system(size: 15))
-                                    .foregroundColor(AppColors.muted)
+                                    .foregroundStyle(AppColors.muted)
                                     .frame(width: 32, height: 32)
                             }
                             .buttonStyle(.plain)
@@ -128,7 +128,7 @@ public struct WarmupPlateCard: View {
     private var title: some View {
         Text(LanguageManager.t("warmup.card_title"))
             .font(.system(size: titleSize, weight: .bold))
-            .foregroundColor(AppColors.text)
+            .foregroundStyle(AppColors.text)
             .fixedSize(horizontal: false, vertical: true)
     }
 
@@ -140,7 +140,7 @@ public struct WarmupPlateCard: View {
             Capsule().frame(width: 3.5, height: 15)
             Capsule().frame(width: 2.5, height: 9)
         }
-        .foregroundColor(AppColors.accent)
+        .foregroundStyle(AppColors.accent)
         .frame(width: 24, height: 24)
         .accessibilityHidden(true)
     }
@@ -154,7 +154,7 @@ public struct WarmupPlateCard: View {
             }
             Text(LanguageManager.t(!hasWorkingLoad ? "warmup.enter_working_load" : "warmup.card_desc"))
                 .font(.system(size: bodySize))
-                .foregroundColor(AppColors.muted)
+                .foregroundStyle(AppColors.muted)
                 .fixedSize(horizontal: false, vertical: true)
             if hasWorkingLoad {
                 WarmupPlateActionsLayout {
@@ -184,13 +184,13 @@ private struct WarmupPlateAction: View {
                 Image(systemName: warmup ? "flame.fill" : "square.stack.3d.up.fill")
                     .font(.system(size: 16))
                     .frame(width: 16, height: 18)
-                    .foregroundColor(warmup ? AppColors.warmupAmber : AppColors.secondaryText)
+                    .foregroundStyle(warmup ? AppColors.warmupAmber : AppColors.secondaryText)
                     .accessibilityHidden(true)
                 Text(LanguageManager.t(warmup ? "warmup.generate_btn" : "warmup.plates_btn"))
                     .font(.system(size: labelSize, weight: .bold))
                     .fixedSize(horizontal: false, vertical: true)
             }
-            .foregroundColor(warmup ? AppColors.warmupAmber : AppColors.text)
+            .foregroundStyle(warmup ? AppColors.warmupAmber : AppColors.text)
             .padding(.horizontal, 8)
             .padding(.vertical, 6)
             .frame(maxWidth: .infinity, minHeight: 36)

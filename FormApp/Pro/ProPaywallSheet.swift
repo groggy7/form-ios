@@ -185,7 +185,7 @@ public struct ProPaywallSheet: View {
                 Text(price.map { LanguageManager.t(annual ? "paywall.selected_annual_price" : "paywall.selected_monthly_price", ["price": $0]) }
                     ?? LanguageManager.t("paywall.price_unavailable_short"))
                     .font(.system(size: subtitleSize, weight: .bold))
-                    .foregroundColor(AppColors.text)
+                    .foregroundStyle(AppColors.text)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
                 let trial = storeKit.hasFreeTrial(for: selectedPlan)
@@ -193,7 +193,7 @@ public struct ProPaywallSheet: View {
                     : (trial ? "paywall.monthly_trial_subtitle" : "paywall.monthly_subtitle")
                 Text(LanguageManager.t(termsKey))
                     .font(.system(size: footnoteSize))
-                    .foregroundColor(AppColors.secondaryText)
+                    .foregroundStyle(AppColors.secondaryText)
                     .multilineTextAlignment(.center)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -218,7 +218,7 @@ public struct ProPaywallSheet: View {
                             .fixedSize(horizontal: false, vertical: true)
                             .multilineTextAlignment(.center)
                     }
-                    .foregroundColor(AppColors.background)
+                    .foregroundStyle(AppColors.background)
                     .frame(maxWidth: .infinity)
                     .frame(minHeight: 52)
                     .background(AppColors.accent)
@@ -231,12 +231,12 @@ public struct ProPaywallSheet: View {
             if let purchaseError = purchaseErrorMessage {
                 HStack(alignment: .center, spacing: 10) {
                     Image(systemName: "exclamationmark.circle.fill")
-                        .foregroundColor(AppColors.danger)
+                        .foregroundStyle(AppColors.danger)
                         .font(.system(size: 14))
 
                     Text(purchaseError)
                         .font(.system(size: 11.5))
-                        .foregroundColor(AppColors.text)
+                        .foregroundStyle(AppColors.text)
                         .lineLimit(3)
 
                     Spacer()
@@ -246,7 +246,7 @@ public struct ProPaywallSheet: View {
                     }) {
                         Text(LanguageManager.t("paywall.retry"))
                             .font(.system(size: 11.5, weight: .bold))
-                            .foregroundColor(AppColors.accent)
+                            .foregroundStyle(AppColors.accent)
                             .padding(.horizontal, 10)
                             .padding(.vertical, 5)
                             .background(AppColors.accent.opacity(0.12))
@@ -265,7 +265,7 @@ public struct ProPaywallSheet: View {
 
             Text(LanguageManager.t("paywall.cancel_anytime"))
                 .font(.system(size: 11))
-                .foregroundColor(AppColors.secondaryText)
+                .foregroundStyle(AppColors.secondaryText)
                 .multilineTextAlignment(.center)
         }
     }
@@ -321,7 +321,7 @@ public struct ProPaywallSheet: View {
                                     .frame(width: 36, height: 36)
                                 Image(systemName: "crown.fill")
                                     .font(.system(size: 18))
-                                    .foregroundColor(AppColors.purple)
+                                    .foregroundStyle(AppColors.purple)
                             }
 
                             ProBadge(text: LanguageManager.t("paywall.badge"))
@@ -332,7 +332,7 @@ public struct ProPaywallSheet: View {
                         Button(action: { dismissSelf() }) {
                             Image(systemName: "xmark.circle.fill")
                                 .font(.system(size: 24))
-                                .foregroundColor(AppColors.secondaryText)
+                                .foregroundStyle(AppColors.secondaryText)
                                 .frame(width: 48, height: 48)
                                 .contentShape(Rectangle())
                         }
@@ -344,18 +344,18 @@ public struct ProPaywallSheet: View {
                     VStack(spacing: 6) {
                         if isIllustratedFeature {
                             Text(LanguageManager.t(feature == .autoProgression ? "progression.coach.locked_title" : "warmup.card_title"))
-                                .font(.system(size: 12, weight: .medium)).foregroundColor(AppColors.muted)
+                                .font(.system(size: 12, weight: .medium)).foregroundStyle(AppColors.muted)
                         }
                         let headline = LanguageManager.t(headlineKey)
                         Text(headline)
                             .font(.system(size: headlineSize, weight: .bold))
-                            .foregroundColor(AppColors.text)
+                            .foregroundStyle(AppColors.text)
                             .multilineTextAlignment(.center)
 
                         let subtitle = LanguageManager.t(subtitleKey)
                         Text(subtitle)
                             .font(.system(size: subtitleSize))
-                            .foregroundColor(AppColors.secondaryText)
+                            .foregroundStyle(AppColors.secondaryText)
                             .multilineTextAlignment(.center)
                             .lineSpacing(3)
                     }
@@ -370,17 +370,17 @@ public struct ProPaywallSheet: View {
                                         .frame(width: 32, height: 32)
                                     Image(systemName: benefit.iconName)
                                         .font(.system(size: 14))
-                                        .foregroundColor(AppColors.accent)
+                                        .foregroundStyle(AppColors.accent)
                                 }
 
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(LanguageManager.t(benefit.titleKey))
                                         .font(.system(size: subtitleSize, weight: .semibold))
-                                        .foregroundColor(AppColors.text)
+                                        .foregroundStyle(AppColors.text)
                                         .fixedSize(horizontal: false, vertical: true)
                                     Text(LanguageManager.t(benefit.descKey))
                                         .font(.system(size: footnoteSize + 1))
-                                        .foregroundColor(AppColors.secondaryText)
+                                        .foregroundStyle(AppColors.secondaryText)
                                         .lineSpacing(2)
                                         .fixedSize(horizontal: false, vertical: true)
                                 }
@@ -400,11 +400,11 @@ public struct ProPaywallSheet: View {
                     if isIllustratedFeature {
                         if feature == .autoProgression {
                             Text(LanguageManager.t("paywall.auto_progression.history_hint"))
-                                .font(.system(size: 12)).foregroundColor(AppColors.muted)
+                                .font(.system(size: 12)).foregroundStyle(AppColors.muted)
                                 .fixedSize(horizontal: false, vertical: true)
                         }
                         Text(LanguageManager.t("paywall.all_features"))
-                            .font(.system(size: 12)).foregroundColor(AppColors.secondaryText)
+                            .font(.system(size: 12)).foregroundStyle(AppColors.secondaryText)
                             .fixedSize(horizontal: false, vertical: true)
                     }
 
@@ -445,10 +445,10 @@ public struct ProPaywallSheet: View {
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(LanguageManager.t("paywall.annual_plan"))
                                             .font(.system(size: 15, weight: .bold))
-                                            .foregroundColor(AppColors.text)
+                                            .foregroundStyle(AppColors.text)
                                         Text(storeKit.hasFreeTrial(for: .annual) ? LanguageManager.t("paywall.annual_trial_subtitle") : LanguageManager.t("paywall.annual_subtitle"))
                                             .font(.system(size: 11.5))
-                                            .foregroundColor(AppColors.secondaryText)
+                                            .foregroundStyle(AppColors.secondaryText)
                                     }
 
                                     Spacer()
@@ -457,11 +457,11 @@ public struct ProPaywallSheet: View {
                                         let annualPrice = storeKit.annualProduct?.displayPrice ?? "—"
                                         Text(annualPrice)
                                             .font(.system(size: 15, weight: .bold))
-                                            .foregroundColor(AppColors.accent)
+                                            .foregroundStyle(AppColors.accent)
                                         let annualBreakdown = storeKit.annualPerMonthDisplayPrice ?? LanguageManager.t("paywall.price_unavailable_short")
                                         Text(annualBreakdown)
                                             .font(.system(size: 11.5))
-                                            .foregroundColor(AppColors.secondaryText)
+                                            .foregroundStyle(AppColors.secondaryText)
                                     }
                                 }
                             }
@@ -507,10 +507,10 @@ public struct ProPaywallSheet: View {
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(LanguageManager.t("paywall.monthly_plan"))
                                             .font(.system(size: 15, weight: .bold))
-                                            .foregroundColor(AppColors.text)
+                                            .foregroundStyle(AppColors.text)
                                         Text(storeKit.hasFreeTrial(for: .monthly) ? LanguageManager.t("paywall.monthly_trial_subtitle") : LanguageManager.t("paywall.monthly_subtitle"))
                                             .font(.system(size: 11.5))
-                                            .foregroundColor(AppColors.secondaryText)
+                                            .foregroundStyle(AppColors.secondaryText)
                                     }
 
                                     Spacer()
@@ -518,7 +518,7 @@ public struct ProPaywallSheet: View {
                                     let monthlyPrice = storeKit.monthlyProduct?.displayPrice ?? "—"
                                     Text(monthlyPrice)
                                         .font(.system(size: 15, weight: .bold))
-                                        .foregroundColor(isMonthly ? AppColors.accent : AppColors.text)
+                                        .foregroundStyle(isMonthly ? AppColors.accent : AppColors.text)
                                 }
                             }
                             .padding(16)
@@ -534,13 +534,13 @@ public struct ProPaywallSheet: View {
                             HStack(spacing: 8) {
                                 Text(LanguageManager.t("paywall.price_unavailable"))
                                     .font(.system(size: 12))
-                                    .foregroundColor(AppColors.secondaryText)
+                                    .foregroundStyle(AppColors.secondaryText)
                                 Spacer()
                                 Button(LanguageManager.t("paywall.retry")) {
                                     Task { await storeKit.requestProducts() }
                                 }
                                 .font(.system(size: 12, weight: .semibold))
-                                .foregroundColor(AppColors.accent)
+                                .foregroundStyle(AppColors.accent)
                             }
                         }
                     }
@@ -560,14 +560,14 @@ public struct ProPaywallSheet: View {
                                 } else {
                                     Text(LanguageManager.t("paywall.restore"))
                                         .font(.system(size: 11.5))
-                                        .foregroundColor(AppColors.secondaryText)
+                                        .foregroundStyle(AppColors.secondaryText)
                                 }
                             }
                             .buttonStyle(.plain)
                             .disabled(isRestoring)
 
                             Text("·")
-                                .foregroundColor(AppColors.border)
+                                .foregroundStyle(AppColors.border)
 
                             Button(action: {
                                 if let url = URL(string: LegalUrls.termsOfService) {
@@ -576,12 +576,12 @@ public struct ProPaywallSheet: View {
                             }) {
                                 Text(LanguageManager.t("paywall.terms"))
                                     .font(.system(size: 11.5))
-                                    .foregroundColor(AppColors.secondaryText)
+                                    .foregroundStyle(AppColors.secondaryText)
                             }
                             .buttonStyle(.plain)
 
                             Text("·")
-                                .foregroundColor(AppColors.border)
+                                .foregroundStyle(AppColors.border)
 
                             Button(action: {
                                 if let url = URL(string: LegalUrls.privacyPolicy) {
@@ -590,7 +590,7 @@ public struct ProPaywallSheet: View {
                             }) {
                                 Text(LanguageManager.t("paywall.privacy"))
                                     .font(.system(size: 11.5))
-                                    .foregroundColor(AppColors.secondaryText)
+                                    .foregroundStyle(AppColors.secondaryText)
                             }
                             .buttonStyle(.plain)
                         }
@@ -598,12 +598,12 @@ public struct ProPaywallSheet: View {
                         if let status = restoreStatusMessage {
                             HStack(alignment: .center, spacing: 6) {
                                 Image(systemName: isRestoreError ? "exclamationmark.circle" : "checkmark.circle.fill")
-                                    .foregroundColor(isRestoreError ? AppColors.danger : AppColors.accent)
+                                    .foregroundStyle(isRestoreError ? AppColors.danger : AppColors.accent)
                                     .font(.system(size: 12))
 
                                 Text(status)
                                     .font(.system(size: 11.5, weight: .medium))
-                                    .foregroundColor(isRestoreError ? AppColors.danger : AppColors.accent)
+                                    .foregroundStyle(isRestoreError ? AppColors.danger : AppColors.accent)
                                     .multilineTextAlignment(.center)
 
                                 if isRestoreError {
@@ -612,7 +612,7 @@ public struct ProPaywallSheet: View {
                                     }) {
                                         Text(LanguageManager.t("paywall.retry"))
                                             .font(.system(size: 11.5, weight: .bold))
-                                            .foregroundColor(AppColors.accent)
+                                            .foregroundStyle(AppColors.accent)
                                             .underline()
                                     }
                                     .buttonStyle(.plain)
@@ -656,10 +656,10 @@ public struct ProPaywallPreview: View {
             HStack(spacing: 5) {
                 Image(systemName: "crown.fill")
                     .font(.system(size: 11, weight: .bold))
-                    .foregroundColor(AppColors.purple)
+                    .foregroundStyle(AppColors.purple)
                 Text(LanguageManager.t("paywall.badge"))
                     .font(.system(size: 10.5, weight: .bold))
-                    .foregroundColor(AppColors.purple)
+                    .foregroundStyle(AppColors.purple)
                     .tracking(0.5)
             }
             .padding(.horizontal, 8)
@@ -669,13 +669,13 @@ public struct ProPaywallPreview: View {
 
             Text(LanguageManager.t(feature.titleKey))
                 .font(.system(size: 15, weight: .bold))
-                .foregroundColor(AppColors.text)
+                .foregroundStyle(AppColors.text)
                 .multilineTextAlignment(.center)
                 .lineLimit(1)
 
             Text(LanguageManager.t(feature.teaserKey))
                 .font(.system(size: 12))
-                .foregroundColor(AppColors.secondaryText)
+                .foregroundStyle(AppColors.secondaryText)
                 .multilineTextAlignment(.center)
                 .lineSpacing(2)
                 .lineLimit(2)
@@ -694,7 +694,7 @@ public struct ProPaywallPreview: View {
                     Text(LanguageManager.t("pro.upgrade_cta"))
                         .font(.system(size: 13.5, weight: .bold))
                 }
-                .foregroundColor(AppColors.background)
+                .foregroundStyle(AppColors.background)
                 .frame(maxWidth: .infinity)
                 .frame(height: 40)
                 .background(AppColors.accent)
@@ -705,7 +705,7 @@ public struct ProPaywallPreview: View {
 
             Text(LanguageManager.t("paywall.cancel_anytime_short"))
                 .font(.system(size: 10))
-                .foregroundColor(AppColors.secondaryText)
+                .foregroundStyle(AppColors.secondaryText)
                 .multilineTextAlignment(.center)
                 .lineLimit(1)
         }

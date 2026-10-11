@@ -764,7 +764,7 @@ final class FormAppTests: XCTestCase {
         for (language, width, type) in [("en", 390.0, DynamicTypeSize.large), ("tr", 320.0, DynamicTypeSize.xxxLarge)] {
             LanguageManager.setLanguage(language)
             let content = VStack(alignment: .leading, spacing: 16) {
-                Text(LanguageManager.t("library.equipment")).foregroundColor(AppColors.text)
+                Text(LanguageManager.t("library.equipment")).foregroundStyle(AppColors.text)
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 140))], spacing: 10) {
                     ForEach(EquipmentCatalog.shared.categories) { category in
                         LibraryFilterOption(title: category.title, selected: category.id == "resistance-band", equipment: category, action: {})
@@ -1502,7 +1502,7 @@ final class FormAppTests: XCTestCase {
 
                         Text(LanguageManager.t(muscle.translationKey))
                             .font(.system(size: 12, weight: .medium))
-                            .foregroundColor(AppColors.text)
+                            .foregroundStyle(AppColors.text)
                     }
                 }
             }

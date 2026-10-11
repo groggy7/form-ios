@@ -98,7 +98,7 @@ public struct ProBadge: View {
             .font(.system(size: fontSize, weight: .bold))
             .tracking(0.2)
             .fixedSize(horizontal: true, vertical: true)
-            .foregroundColor(AppColors.purple)
+            .foregroundStyle(AppColors.purple)
             .padding(.horizontal, 6)
             .padding(.vertical, 3)
             .background(AppColors.purpleBg)

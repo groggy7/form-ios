@@ -56,15 +56,15 @@ public struct ProgramBuilderView: View {
                     VStack(alignment: .leading, spacing: 12) {
                         Text(LanguageManager.t("builder.details"))
                             .font(.system(size: 15, weight: .bold))
-                            .foregroundColor(AppColors.secondaryText)
+                            .foregroundStyle(AppColors.secondaryText)
 
                         VStack(alignment: .leading, spacing: 4) {
                             Text(LanguageManager.t("modal.program.name"))
                                 .font(.system(size: 12))
-                                .foregroundColor(AppColors.muted)
+                                .foregroundStyle(AppColors.muted)
                             TextField(LanguageManager.t("editor.programName"), text: $program.name)
                                 .font(.system(size: 16, weight: .semibold))
-                                .foregroundColor(AppColors.text)
+                                .foregroundStyle(AppColors.text)
                                 .padding(12)
                                 .background(AppColors.surface)
                                 .cornerRadius(10)
@@ -74,10 +74,10 @@ public struct ProgramBuilderView: View {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(LanguageManager.t("modal.program.desc"))
                                 .font(.system(size: 12))
-                                .foregroundColor(AppColors.muted)
+                                .foregroundStyle(AppColors.muted)
                             TextField(LanguageManager.t("editor.description"), text: $program.description)
                                 .font(.system(size: 14))
-                                .foregroundColor(AppColors.text)
+                                .foregroundStyle(AppColors.text)
                                 .padding(12)
                                 .background(AppColors.surface)
                                 .cornerRadius(10)
@@ -92,7 +92,7 @@ public struct ProgramBuilderView: View {
                     VStack(alignment: .leading, spacing: 14) {
                         Text(LanguageManager.t("builder.trainingDays"))
                             .font(.system(size: 15, weight: .bold))
-                            .foregroundColor(AppColors.secondaryText)
+                            .foregroundStyle(AppColors.secondaryText)
 
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 8) {
@@ -104,7 +104,7 @@ public struct ProgramBuilderView: View {
                                     Button(action: { selectedDay = day }) {
                                         Text("\(dayName) (\(day))")
                                             .font(.system(size: 13, weight: isSel ? .bold : .medium))
-                                            .foregroundColor(isSel ? AppColors.todaySelectionText : AppColors.secondaryText)
+                                            .foregroundStyle(isSel ? AppColors.todaySelectionText : AppColors.secondaryText)
                                             .padding(.horizontal, 14)
                                             .padding(.vertical, 8)
                                             .background(
@@ -126,10 +126,10 @@ public struct ProgramBuilderView: View {
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(LanguageManager.t("modal.workout.name"))
                                         .font(.system(size: 12))
-                                        .foregroundColor(AppColors.muted)
+                                        .foregroundStyle(AppColors.muted)
                                     TextField(LanguageManager.t("modal.workout.namePlaceholder"), text: $program.workouts[workoutIdx].title)
                                         .font(.system(size: 16, weight: .semibold))
-                                        .foregroundColor(AppColors.text)
+                                        .foregroundStyle(AppColors.text)
                                         .padding(10)
                                         .background(AppColors.surface)
                                         .cornerRadius(8)
@@ -138,7 +138,7 @@ public struct ProgramBuilderView: View {
                                         "count": Workout.titleLength(workout.title), "limit": Workout.maxTitleLength
                                     ]))
                                         .font(.caption)
-                                        .foregroundColor(titleTooLong(workout) ? AppColors.danger : AppColors.muted)
+                                        .foregroundStyle(titleTooLong(workout) ? AppColors.danger : AppColors.muted)
                                 }
 
                                 // Exercise List for Day
@@ -146,19 +146,19 @@ public struct ProgramBuilderView: View {
                                     HStack {
                                         Text(LanguageManager.t("history.exercises"))
                                             .font(.system(size: 14, weight: .bold))
-                                            .foregroundColor(AppColors.text)
+                                            .foregroundStyle(AppColors.text)
                                         Spacer()
                                         Button(action: { showAddExerciseSheet = true }) {
                                             Label(LanguageManager.t("builder.addExercises"), systemImage: "plus")
                                                 .font(.system(size: 12, weight: .bold))
-                                                .foregroundColor(AppColors.accent)
+                                                .foregroundStyle(AppColors.accent)
                                         }
                                     }
 
                                     if workout.exercises.isEmpty {
                                         Text(LanguageManager.t("weekly.restDay"))
                                             .font(.system(size: 13))
-                                            .foregroundColor(AppColors.muted)
+                                            .foregroundStyle(AppColors.muted)
                                             .padding(.vertical, 12)
                                     } else {
                                         ForEach(Array(workout.exercises.enumerated()), id: \.element.id) { exIdx, exercise in
@@ -174,10 +174,10 @@ public struct ProgramBuilderView: View {
                                                     VStack(alignment: .leading, spacing: 2) {
                                                         Text(exercise.displayName)
                                                             .font(.system(size: 14, weight: .semibold))
-                                                            .foregroundColor(AppColors.text)
+                                                            .foregroundStyle(AppColors.text)
                                                         Text(exercise.displayPrescription)
                                                             .font(.system(size: 12))
-                                                            .foregroundColor(AppColors.accent)
+                                                            .foregroundStyle(AppColors.accent)
                                                     }
                                                     .frame(maxWidth: .infinity, alignment: .leading)
                                                 }
@@ -194,7 +194,7 @@ public struct ProgramBuilderView: View {
                                                 }) {
                                                     Image(systemName: "pencil")
                                                         .font(.system(size: 13))
-                                                        .foregroundColor(AppColors.muted)
+                                                        .foregroundStyle(AppColors.muted)
                                                         .padding(4)
                                                 }
                                                 .buttonStyle(.plain)
@@ -203,14 +203,14 @@ public struct ProgramBuilderView: View {
                                                 Button(action: { moveExercise(workoutIndex: workoutIdx, from: exIdx, to: exIdx - 1) }) {
                                                     Image(systemName: "chevron.up")
                                                         .font(.system(size: 12))
-                                                        .foregroundColor(exIdx > 0 ? AppColors.text : AppColors.muted.opacity(0.3))
+                                                        .foregroundStyle(exIdx > 0 ? AppColors.text : AppColors.muted.opacity(0.3))
                                                 }
                                                 .disabled(exIdx == 0)
 
                                                 Button(action: { moveExercise(workoutIndex: workoutIdx, from: exIdx, to: exIdx + 1) }) {
                                                     Image(systemName: "chevron.down")
                                                         .font(.system(size: 12))
-                                                        .foregroundColor(exIdx < workout.exercises.count - 1 ? AppColors.text : AppColors.muted.opacity(0.3))
+                                                        .foregroundStyle(exIdx < workout.exercises.count - 1 ? AppColors.text : AppColors.muted.opacity(0.3))
                                                 }
                                                 .disabled(exIdx >= workout.exercises.count - 1)
 
@@ -218,7 +218,7 @@ public struct ProgramBuilderView: View {
                                                 Button(action: { deleteExercise(workoutIndex: workoutIdx, at: exIdx) }) {
                                                     Image(systemName: "trash")
                                                         .font(.system(size: 13))
-                                                        .foregroundColor(AppColors.danger)
+                                                        .foregroundStyle(AppColors.danger)
                                                 }
                                             }
                                             .padding(12)
@@ -240,7 +240,7 @@ public struct ProgramBuilderView: View {
                         Button(action: saveProgram) {
                             Text(LanguageManager.t("modal.program.save"))
                                 .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(AppColors.todaySelectionText)
+                                .foregroundStyle(AppColors.todaySelectionText)
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 48)
                                 .background(AppColors.accent)
@@ -253,7 +253,7 @@ public struct ProgramBuilderView: View {
                         Button(action: exportProgram) {
                             Text(LanguageManager.t("programs.export"))
                                 .font(.system(size: 15, weight: .semibold))
-                                .foregroundColor(AppColors.muted)
+                                .foregroundStyle(AppColors.muted)
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 44)
                                 .background(AppColors.surface)
@@ -272,7 +272,7 @@ public struct ProgramBuilderView: View {
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button(LanguageManager.t("modal.cancel"), action: onDismiss)
-                        .foregroundColor(AppColors.muted)
+                        .foregroundStyle(AppColors.muted)
                 }
             }
             .sheet(isPresented: $showAddExerciseSheet) {
@@ -365,10 +365,10 @@ struct AddExercisePickerSheet: View {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(entry.exercise.displayName)
                                 .font(.system(size: 15, weight: .semibold))
-                                .foregroundColor(AppColors.text)
+                                .foregroundStyle(AppColors.text)
                             Text(entry.exercise.metadataSubtitle)
                                 .font(.system(size: 12))
-                                .foregroundColor(AppColors.muted)
+                                .foregroundStyle(AppColors.muted)
                         }
                         .padding(.vertical, 4)
                     }

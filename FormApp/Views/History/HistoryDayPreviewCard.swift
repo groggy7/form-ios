@@ -205,18 +205,18 @@ public struct HistoryDayPreviewCard: View {
 
                         Text("\(dayNumberText) · \(statusLabel.uppercased())")
                             .font(.system(size: 11, weight: .bold))
-                            .foregroundColor(statusColor)
+                            .foregroundStyle(statusColor)
                             .tracking(0.6)
                     }
 
                     Text(workoutTitle)
                         .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(AppColors.text)
+                        .foregroundStyle(AppColors.text)
                         .lineLimit(2)
 
                     Text(timeDurationText)
                         .font(.system(size: 12, weight: .regular))
-                        .foregroundColor(AppColors.muted)
+                        .foregroundStyle(AppColors.muted)
                 }
 
                 Spacer()
@@ -230,7 +230,7 @@ public struct HistoryDayPreviewCard: View {
 
                     Image(systemName: statusSystemImage)
                         .font(.system(size: 17, weight: .semibold))
-                        .foregroundColor(statusColor)
+                        .foregroundStyle(statusColor)
                 }
             }
 
@@ -262,7 +262,7 @@ public struct HistoryDayPreviewCard: View {
             if detail.isCompletionMark {
                 Text(LanguageManager.t("history.noLoggedSets"))
                     .font(.system(size: 13))
-                    .foregroundColor(AppColors.secondaryText)
+                    .foregroundStyle(AppColors.secondaryText)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             VStack(spacing: 8) {
@@ -286,7 +286,7 @@ public struct HistoryDayPreviewCard: View {
                     let hint = LanguageManager.t("history.moreExercisesInBreakdown", ["count": "\(remaining)"])
                     Text(hint.isEmpty ? "+\(remaining) more exercises in full breakdown" : hint)
                         .font(.system(size: 12))
-                        .foregroundColor(AppColors.muted)
+                        .foregroundStyle(AppColors.muted)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.leading, 4)
                         .padding(.top, 2)
@@ -298,7 +298,7 @@ public struct HistoryDayPreviewCard: View {
                 HStack {
                     Text(LanguageManager.t("history.fullLogBreakdown").isEmpty ? "Full Log Breakdown →" : LanguageManager.t("history.fullLogBreakdown"))
                         .font(.system(size: 15, weight: .bold))
-                        .foregroundColor(Color(hex: 0x090C0F))
+                        .foregroundStyle(Color(hex: 0x090C0F))
                 }
                 .frame(maxWidth: .infinity)
                 .frame(height: 48)
@@ -324,12 +324,12 @@ public struct HistoryDayPreviewCard: View {
         VStack(spacing: 4) {
             Text(title)
                 .font(.system(size: 9, weight: .bold))
-                .foregroundColor(isPrTile ? AppColors.orangePrText : AppColors.muted)
+                .foregroundStyle(isPrTile ? AppColors.orangePrText : AppColors.muted)
                 .tracking(0.5)
                 .lineLimit(1)
             Text(value)
                 .font(.system(size: 13, weight: .bold))
-                .foregroundColor(isPrTile ? AppColors.orangePrText : AppColors.text)
+                .foregroundStyle(isPrTile ? AppColors.orangePrText : AppColors.text)
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
         }
@@ -385,11 +385,11 @@ public struct HistoryDayPreviewCard: View {
         VStack(alignment: .leading, spacing: 4) {
             Text(LanguageManager.formatUncompletedExercisesCount(items.count))
                 .font(.system(size: 14, weight: .semibold))
-                .foregroundColor(AppColors.text)
+                .foregroundStyle(AppColors.text)
 
             Text(items.map(\.name).joined(separator: ", "))
                 .font(.system(size: 12))
-                .foregroundColor(AppColors.secondaryText)
+                .foregroundStyle(AppColors.secondaryText)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -416,7 +416,7 @@ public struct HistoryDayPreviewCard: View {
 
                 Text("\(item.index)")
                     .font(.system(size: 13, weight: .bold))
-                    .foregroundColor(AppColors.text)
+                    .foregroundStyle(AppColors.text)
             }
 
             // Exercise name & sub-info (sets + top set)
@@ -424,13 +424,13 @@ public struct HistoryDayPreviewCard: View {
                 HStack(spacing: 6) {
                     Text(item.name)
                         .font(.system(size: 14, weight: .semibold))
-                        .foregroundColor(AppColors.text)
+                        .foregroundStyle(AppColors.text)
                         .lineLimit(1)
 
                     if item.isPr {
                         Text("PR")
                             .font(.system(size: 10, weight: .bold))
-                            .foregroundColor(AppColors.orangePrText)
+                            .foregroundStyle(AppColors.orangePrText)
                             .padding(.horizontal, 5)
                             .padding(.vertical, 1)
                             .background(
@@ -446,7 +446,7 @@ public struct HistoryDayPreviewCard: View {
 
                 Text(formatSubInfo(for: item))
                     .font(.system(size: 11))
-                    .foregroundColor(AppColors.secondaryText)
+                    .foregroundStyle(AppColors.secondaryText)
                     .lineLimit(1)
             }
 
@@ -461,7 +461,7 @@ public struct HistoryDayPreviewCard: View {
                         .overlay(Circle().stroke(AppColors.completedGreen.opacity(0.35), lineWidth: 1))
                     Image(systemName: "checkmark")
                         .font(.system(size: 12, weight: .bold))
-                        .foregroundColor(AppColors.completedGreen)
+                        .foregroundStyle(AppColors.completedGreen)
                 }
             } else if item.setsCount > 0 {
                 ZStack {
@@ -471,7 +471,7 @@ public struct HistoryDayPreviewCard: View {
                         .overlay(Circle().stroke(AppColors.unfinishedOrange.opacity(0.35), lineWidth: 1))
                     Image(systemName: "clock")
                         .font(.system(size: 12, weight: .medium))
-                        .foregroundColor(AppColors.unfinishedOrange)
+                        .foregroundStyle(AppColors.unfinishedOrange)
                 }
             }
         }
