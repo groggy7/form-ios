@@ -1657,7 +1657,10 @@ final class FormAppTests: XCTestCase {
         defer { LanguageManager.setLanguage(previous) }
         let bench = try XCTUnwrap(ExerciseCatalog.canonicalExercises["barbell-bench-press"])
         for (language, width, category) in [("en", CGFloat(393), ContentSizeCategory.large),
-                                            ("tr", CGFloat(320), ContentSizeCategory.accessibilityExtraLarge)] {
+                                            ("tr", CGFloat(320), ContentSizeCategory.accessibilityExtraLarge),
+                                            ("de", CGFloat(320), ContentSizeCategory.accessibilityExtraLarge),
+                                            ("fr", CGFloat(320), ContentSizeCategory.accessibilityExtraLarge),
+                                            ("es", CGFloat(320), ContentSizeCategory.accessibilityExtraLarge)] {
             LanguageManager.setLanguage(language)
             let fullView = VStack(spacing: 16) {
                 TechniqueSectionView(title: LanguageManager.t("modal.exercise.cues"),
@@ -7843,25 +7846,33 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
-    func testFormLabInfoSheetSnapshot() {
-        let sheet = FormLabInfoSheet()
-
-        let controller = UIHostingController(rootView: sheet)
-        controller.view.frame = CGRect(x: 0, y: 0, width: 393, height: 700)
-        controller.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 700))
-        window.rootViewController = controller
-        window.makeKeyAndVisible()
-        controller.view.layoutIfNeeded()
-
-        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
-        let image = renderer.image { _ in
-            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
-        }
-        if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_form_lab_info_sheet_snapshot.png"
-            try? data.write(to: URL(fileURLWithPath: path))
-            print("Successfully wrote Form Lab Info Sheet snapshot to \(path)")
+    func testFormLabInfoSheetSnapshot() async throws {
+        let previous = LanguageManager.shared.languagePreference
+        let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }.first { $0.isKeyWindow }
+        defer { LanguageManager.setLanguage(previous); previousWindow?.makeKeyAndVisible() }
+        for language in ["en", "tr", "de", "fr", "es"] {
+            LanguageManager.setLanguage(language)
+            let controller = UIHostingController(rootView: FormLabInfoSheet()
+                .environment(\.locale, LanguageManager.locale)
+                .environment(\.dynamicTypeSize, DynamicTypeSize.xxxLarge))
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 900))
+            window.rootViewController = controller
+            window.makeKeyAndVisible()
+            controller.view.frame = window.bounds
+            controller.view.layoutIfNeeded()
+            try await Task.sleep(nanoseconds: 300_000_000)
+            controller.view.layoutIfNeeded()
+            let image = UIGraphicsImageRenderer(bounds: controller.view.bounds).image { _ in
+                controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+            }
+            window.isHidden = true
+            XCTAssertEqual(image.size.width, 320)
+            let attachment = XCTAttachment(image: image)
+            attachment.name = "rep-lab-info-\(language)-320-large"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+            try XCTUnwrap(image.pngData()).write(to: URL(fileURLWithPath: "/private/tmp/rep-lab-info-\(language)-ios.png"))
         }
     }
 

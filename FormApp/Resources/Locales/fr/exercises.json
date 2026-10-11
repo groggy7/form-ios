@@ -15,7 +15,7 @@
       "Contrôle : atteignez seulement aussi loin que vous pouvez contrôler le bas de votre dos, puis reculez.",
       "Gainage : gardez l’abdomen contracté et respirez sans laisser les côtes s’ouvrir. Le mouvement des membres ne doit pas entraîner le tronc hors de sa position.",
       "Atteindre : étendez-vous délibérément et arrêtez-vous avant que votre dos ou votre bassin ne tourne. Raccourcir le levier est un moyen utile de réduire les difficultés.",
-      "Retour : Reprenez le contrôle des membres et réinitialisez votre corset. Maintenez le même tronc stable plutôt que de vous précipiter entre les répétitions."
+      "Retour : ramenez les bras et les jambes de façon contrôlée et gainez à nouveau le tronc. Gardez le tronc stable sans vous précipiter entre les répétitions."
     ],
     "avoidDetails": [
       "Évitez de laisser le bas de votre dos s'affaisser ou de reculer en vous asseyant sur vos talons.",
@@ -56,7 +56,7 @@
     "cues": [
       "Adoptez une position stable sur le banc et gardez les poignets sur les avant-bras.",
       "Abaissez le poids vers votre poitrine avec contrôle, puis poussez-le vers le haut.",
-      "Sécurité : Vérifiez la sécurité des racks et organisez un observateur compétent si nécessaire avant de presser.",
+      "Sécurité : vérifiez les supports de sécurité et prévoyez l’assistance d’une personne expérimentée si nécessaire avant le développé.",
       "Soutien : Gardez les pieds en sécurité et le haut du dos posé sur le banc."
     ],
     "avoid": [
@@ -70,8 +70,8 @@
       "Prise en main : gardez le poids sur l’avant-bras plutôt que replié sur le poignet. Choisissez une trajectoire de coude que vous pouvez contrôler confortablement.",
       "Descente : guidez la charge vers une position inférieure reproductible. Gardez le haut du dos soutenu et résistez à une chute soudaine dans la dernière partie.",
       "Appuyez : Poussez doucement entre les mains tout en maintenant votre appui. Gardez les deux côtés en mouvement uniformément plutôt que de se tordre pour terminer.",
-      "Plan de répétition en cas d'échec : définissez les sécurités appropriées des racks et faites appel à un observateur compétent si nécessaire. Vérifiez la protection avant d'appuyer; ne comptez pas sur la récupération d’une barre coincée.",
-      "Support de banc : Gardez les pieds bien fixés sur le sol ou les supports de banc et le haut du dos posé sur le coussin. Réinitialisez votre souffle et votre attelle entre répétitions."
+      "En cas d’échec : réglez les supports de sécurité et faites-vous assister par une personne expérimentée si nécessaire. Vérifiez ces protections avant le développé. Ne comptez pas sur votre capacité à dégager une barre qui vous bloque.",
+      "Appuis sur le banc : gardez les pieds bien appuyés au sol ou sur les repose-pieds et le haut du dos posé sur le dossier. Reprenez votre respiration et votre gainage entre les répétitions."
     ],
     "avoidDetails": [
       "Évitez de faire rebondir le poids ou de perdre le contrôle de la position de vos épaules.",
@@ -172,7 +172,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Inclinez-vous en fléchissant les hanches et gainez le tronc, la charge suspendue sous vous.",
       "Contrôle : tirez vers le bas de vos côtes ou vers votre taille, puis abaissez-le jusqu'à ce que vos bras s'étendent.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -199,7 +199,7 @@
       "Mouvement : Placez votre pied arrière sur un banc stable et plantez le pied avant pour l'équilibre.",
       "Contrôle : Pliez le genou avant pour abaisser, puis poussez le pied avant pour monter.",
       "Jambe avant : Gardez le talon avant et l'avant-pied soutenus ; laissez le genou suivre les orteils pendant que vos hanches s'abaissent entre vos pieds.",
-      "Torse : Une inclinaison contrôlée vers l’avant peut être appropriée. Gardez votre tronc renforcé au lieu de forcer un torse droit en cambrant votre dos.",
+      "Buste : une inclinaison contrôlée vers l’avant peut convenir. Gardez le tronc gainé plutôt que de cambrer le dos pour forcer une posture verticale.",
       "Équilibre : Montez principalement par la jambe avant tandis que la jambe arrière aide à l'équilibre. Réinitialisez vos pieds si le prochain répétition démarre dans une position instable.",
       "Support arrière-pied : Utilisez un support stable qui vous permet d’équilibrer sans forcer la hanche arrière. La jambe avant fournit l’essentiel de l’effort de levage."
     ],
@@ -220,7 +220,7 @@
       "Ne balancez pas le torse et ne secouez pas le cou pour soulever plus haut ; utilisez moins de poids et une portée confortable."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Commencez avec les bras bas et les coudes légèrement pliés.",
       "Contrôle : Levez vos bras jusqu'à une hauteur d'épaule confortable, puis abaissez-les lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -247,7 +247,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Contrôle : tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -270,12 +270,12 @@
       "Finissez de vous tenir droit plutôt que de vous pencher en arrière."
     ],
     "cuesDetails": [
-      "Mise en place : rapprochez la charge, prenez-la fermement et éliminez le jeu avant de la soulever. Réglez la hauteur de départ pour pouvoir vous préparer en équilibre.",
+      "Mise en place : rapprochez la charge, prenez une prise ferme et mettez l’ensemble sous tension avant de soulever. Réglez la hauteur de départ pour pouvoir vous gainer en gardant l’équilibre.",
       "Mouvement : Choisissez une position et une prise qui gardent la charge près du corps. Gainez le tronc avant de soulever.",
       "Contrôle : Poussez sur le sol pour vous tenir droit, puis abaissez-vous en pliant les hanches et les genoux.",
       "Entraînement des jambes : repoussez le sol lorsque les hanches et les épaules se lèvent ensemble. Gardez les bras longs ; ils retiennent la charge plutôt que de la courber.",
       "Trajectoire de charge : Gardez le poids près de vos jambes tout en laissant un espace libre pour les genoux. Terminez debout avec les hanches et les genoux étendus.",
-      "Réinitialisation : Abaissez avec une charnière de hanche et une flexion du genou contrôlées. Rétablissez votre adhérence, votre équilibre et votre renfort avant chaque nouvelle traction."
+      "Repositionnement : abaissez la charge de façon contrôlée en reculant les hanches et en fléchissant les genoux. Rétablissez votre prise, votre équilibre et votre gainage avant chaque nouveau tirage."
     ],
     "avoidDetails": [
       "Évitez de retirer le poids du sol ou de vous pencher en arrière vers le haut.",
@@ -299,7 +299,7 @@
       "Contrôle : Tendez un bras et la jambe opposée, revenez, puis changez de côté.",
       "Gainage : gardez l’abdomen contracté et respirez sans laisser les côtes s’ouvrir. Le mouvement des membres ne doit pas entraîner le tronc hors de sa position.",
       "Atteindre : étendez-vous délibérément et arrêtez-vous avant que votre dos ou votre bassin ne tourne. Raccourcir le levier est un moyen utile de réduire les difficultés.",
-      "Retour : Reprenez le contrôle des membres et réinitialisez votre corset. Maintenez le même tronc stable plutôt que de vous précipiter entre les répétitions."
+      "Retour : ramenez les bras et les jambes de façon contrôlée et gainez à nouveau le tronc. Gardez le tronc stable sans vous précipiter entre les répétitions."
     ],
     "avoidDetails": [
       "Évitez de laisser le bas de votre dos se soulever lorsque les membres s'étendent.",
@@ -326,7 +326,7 @@
       "Prise en main : gardez le poids sur l’avant-bras plutôt que replié sur le poignet. Choisissez une trajectoire de coude que vous pouvez contrôler confortablement.",
       "Descente : guidez la charge vers une position inférieure reproductible. Gardez le haut du dos soutenu et résistez à une chute soudaine dans la dernière partie.",
       "Appuyez : Poussez doucement entre les mains tout en maintenant votre appui. Gardez les deux côtés en mouvement uniformément plutôt que de se tordre pour terminer.",
-      "Support de banc : Gardez les pieds bien fixés sur le sol ou les supports de banc et le haut du dos posé sur le coussin. Réinitialisez votre souffle et votre attelle entre répétitions."
+      "Appuis sur le banc : gardez les pieds bien appuyés au sol ou sur les repose-pieds et le haut du dos posé sur le dossier. Reprenez votre respiration et votre gainage entre les répétitions."
     ],
     "avoidDetails": [
       "Évitez de faire rebondir le poids ou de perdre le contrôle de la position de vos épaules.",
@@ -364,7 +364,7 @@
     "name": "Curl marteau aux haltères",
     "cues": [
       "Tenez les poids avec les paumes tournées vers l’intérieur et les coudes près de vos côtés.",
-      "Bouclez-vous sans faire pivoter vos poignets, puis abaissez-le lentement."
+      "Fléchissez les coudes sans tourner les poignets, puis redescendez lentement."
     ],
     "avoid": [
       "Ne balancez pas le corps et ne pliez pas les poignets pour finir ; alléger la charge et contrôler la descente."
@@ -372,7 +372,7 @@
     "cuesDetails": [
       "Mise en place : choisissez la prise prévue et fixez n'importe quel banc ou accoudoir. Commencez par une résistance que vous pouvez boucler sans bouger le tronc.",
       "Mouvement : Tenez les poids avec les paumes tournées vers l’intérieur et les coudes près de vos côtés.",
-      "Contrôle : Bouclez sans faire tourner vos poignets, puis abaissez lentement.",
+      "Contrôle : Fléchissez les coudes sans tourner les poignets, puis redescendez lentement.",
       "Mouvement du coude : pliez le coude tout en gardant le haut du bras raisonnablement stable dans la position pour cette variation.",
       "Poignet : Gardez le poignet aligné avec l’avant-bras. Toute rotation de la poignée doit être délibérée plutôt que provoquée par le poids qui tire votre main.",
       "Retour : étendez le coude en douceur dans une plage confortable. Gardez le contrôle près du bas plutôt que de tomber dans le tronçon."
@@ -394,7 +394,7 @@
       "Ne balancez pas le torse et ne secouez pas le cou pour soulever plus haut ; utilisez moins de poids et une portée confortable."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Commencez avec les bras bas et les coudes légèrement pliés.",
       "Contrôle : Levez vos bras jusqu'à une hauteur d'épaule confortable, puis abaissez-les lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -586,7 +586,7 @@
     "cues": [
       "Adoptez une position stable sur le banc et gardez les poignets sur les avant-bras.",
       "Abaissez le poids vers votre poitrine avec contrôle, puis poussez-le vers le haut.",
-      "Sécurité : Vérifiez la sécurité des racks et organisez un observateur compétent si nécessaire avant de presser.",
+      "Sécurité : vérifiez les supports de sécurité et prévoyez l’assistance d’une personne expérimentée si nécessaire avant le développé.",
       "Soutien : Gardez les pieds en sécurité et le haut du dos posé sur le banc."
     ],
     "avoid": [
@@ -600,8 +600,8 @@
       "Prise en main : gardez le poids sur l’avant-bras plutôt que replié sur le poignet. Choisissez une trajectoire de coude que vous pouvez contrôler confortablement.",
       "Descente : guidez la charge vers une position inférieure reproductible. Gardez le haut du dos soutenu et résistez à une chute soudaine dans la dernière partie.",
       "Appuyez : Poussez doucement entre les mains tout en maintenant votre appui. Gardez les deux côtés en mouvement uniformément plutôt que de se tordre pour terminer.",
-      "Plan de répétition en cas d'échec : définissez les sécurités appropriées des racks et faites appel à un observateur compétent si nécessaire. Vérifiez la protection avant d'appuyer; ne comptez pas sur la récupération d’une barre coincée.",
-      "Support de banc : Gardez les pieds bien fixés sur le sol ou les supports de banc et le haut du dos posé sur le coussin. Réinitialisez votre souffle et votre attelle entre répétitions."
+      "En cas d’échec : réglez les supports de sécurité et faites-vous assister par une personne expérimentée si nécessaire. Vérifiez ces protections avant le développé. Ne comptez pas sur votre capacité à dégager une barre qui vous bloque.",
+      "Appuis sur le banc : gardez les pieds bien appuyés au sol ou sur les repose-pieds et le haut du dos posé sur le dossier. Reprenez votre respiration et votre gainage entre les répétitions."
     ],
     "avoidDetails": [
       "Évitez de faire rebondir le poids ou de perdre le contrôle de la position de vos épaules.",
@@ -611,10 +611,10 @@
     ]
   },
   "incline-dumbbell-curl": {
-    "name": "Inclinaison haltère Boucle",
+    "name": "Curl incliné aux haltères",
     "cues": [
       "Asseyez-vous contre le banc incliné, les bras suspendus à vos côtés.",
-      "Bouclez-vous sans lever le haut des bras, puis abaissez-le lentement.",
+      "Fléchissez les coudes sans relever les bras, puis redescendez lentement.",
       "Inclinaison : Gardez le dos soutenu ; réduisez l’inclinaison si la position de départ des épaules semble forcée."
     ],
     "avoid": [
@@ -624,7 +624,7 @@
     "cuesDetails": [
       "Mise en place : choisissez la prise prévue et fixez n'importe quel banc ou accoudoir. Commencez par une résistance que vous pouvez boucler sans bouger le tronc.",
       "Mouvement : Asseyez-vous contre le banc incliné, les bras pendants à vos côtés.",
-      "Contrôle : Bouclez-vous sans lever le haut des bras, puis abaissez-le lentement.",
+      "Contrôle : Fléchissez les coudes sans relever les bras, puis redescendez lentement.",
       "Mouvement du coude : pliez le coude tout en gardant le haut du bras raisonnablement stable dans la position pour cette variation.",
       "Poignet : Gardez le poignet aligné avec l’avant-bras. Toute rotation de la poignée doit être délibérée plutôt que provoquée par le poids qui tire votre main.",
       "Retour : étendez le coude en douceur dans une plage confortable. Gardez le contrôle près du bas plutôt que de tomber dans le tronçon.",
@@ -655,7 +655,7 @@
       "Prise en main : gardez le poids sur l’avant-bras plutôt que replié sur le poignet. Choisissez une trajectoire de coude que vous pouvez contrôler confortablement.",
       "Descente : guidez la charge vers une position inférieure reproductible. Gardez le haut du dos soutenu et résistez à une chute soudaine dans la dernière partie.",
       "Appuyez : Poussez doucement entre les mains tout en maintenant votre appui. Gardez les deux côtés en mouvement uniformément plutôt que de se tordre pour terminer.",
-      "Support de banc : Gardez les pieds bien fixés sur le sol ou les supports de banc et le haut du dos posé sur le coussin. Réinitialisez votre souffle et votre attelle entre répétitions."
+      "Appuis sur le banc : gardez les pieds bien appuyés au sol ou sur les repose-pieds et le haut du dos posé sur le dossier. Reprenez votre respiration et votre gainage entre les répétitions."
     ],
     "avoidDetails": [
       "Évitez de faire rebondir le poids ou de perdre le contrôle de la position de vos épaules.",
@@ -858,7 +858,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Inclinez-vous en fléchissant les hanches et gainez le tronc, la charge suspendue sous vous.",
       "Contrôle : tirez vers le bas de vos côtes ou vers votre taille, puis abaissez-le jusqu'à ce que vos bras s'étendent.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -928,10 +928,10 @@
       "Ajustement : Ajustez le siège de manière à ce que les poignées ou les accoudoirs correspondent à la hauteur des épaules."
     ],
     "avoid": [
-      "Ne laissez pas la machine tirer les épaules trop en arrière ; raccourcir l'arc et garder le retour contrôlé."
+      "Ne laissez pas la machine tirer les épaules trop loin en arrière. Réduisez l’amplitude et gardez le retour contrôlé."
     ],
     "cuesDetails": [
-      "Mise en place : sécurisez votre position ou votre position de banc et sélectionnez la résistance à la lumière. Trouvez une position de départ confortable pour le bras avant d’ouvrir plus largement.",
+      "Mise en place : adoptez une position stable debout ou sur le banc et choisissez une résistance légère. Trouvez une position de départ confortable pour les bras avant de les écarter davantage.",
       "Mouvement : Ajustez le siège de manière à ce que vos bras rencontrent les coussinets ou les poignées à hauteur de poitrine.",
       "Contrôle : Rapprochez vos bras, puis ouvrez-les lentement.",
       "Arc des bras : gardez une légère flexion du coude assez constante lorsque le haut des bras bouge. Pensez à rapprocher les bras plutôt que de pousser les mains.",
@@ -961,7 +961,7 @@
       "Mouvement : Suspendez-vous à une barre stable avec une prise confortable et le tronc gainé.",
       "Contrôle : tirez votre corps vers la barre, puis abaissez-le avec contrôle.",
       "Tirer : pensez à ramener les coudes vers les côtes à mesure que le corps se lève. Laissez les omoplates bouger plutôt que de les forcer.",
-      "Position du corps : Préparez-vous légèrement et gardez les jambes calmes. Terminez à une hauteur que vous pouvez atteindre sans pousser le menton vers l’avant.",
+      "Position du corps : gainez légèrement le tronc et gardez les jambes immobiles. Montez uniquement à une hauteur que vous pouvez atteindre sans avancer le menton.",
       "Descente : Abaissez jusqu'à ce que les bras atteignent une position étendue confortable tout en gardant le contrôle des épaules et des poignées."
     ],
     "avoidDetails": [
@@ -986,7 +986,7 @@
       "Mouvement : Suspendez-vous à une barre stable avec une prise confortable et le tronc gainé.",
       "Contrôle : tirez votre corps vers la barre, puis abaissez-le avec contrôle.",
       "Tirer : pensez à ramener les coudes vers les côtes à mesure que le corps se lève. Laissez les omoplates bouger plutôt que de les forcer.",
-      "Position du corps : Préparez-vous légèrement et gardez les jambes calmes. Terminez à une hauteur que vous pouvez atteindre sans pousser le menton vers l’avant.",
+      "Position du corps : gainez légèrement le tronc et gardez les jambes immobiles. Montez uniquement à une hauteur que vous pouvez atteindre sans avancer le menton.",
       "Descente : Abaissez jusqu'à ce que les bras atteignent une position étendue confortable tout en gardant le contrôle des épaules et des poignées."
     ],
     "avoidDetails": [
@@ -997,7 +997,7 @@
     ]
   },
   "push-press": {
-    "name": "Pousser Presse",
+    "name": "Push press",
     "cues": [
       "Tenez le poids sur vos épaules ; plongez un peu en pliant les hanches et les genoux.",
       "Traversez vos jambes et terminez en appuyant au-dessus de votre tête ; baisser sous contrôle.",
@@ -1008,7 +1008,7 @@
       "Ne poursuivez pas une prise aérienne instable ; pratiquez avec une charge plus légère."
     ],
     "cuesDetails": [
-      "Mise en place : placez le poids près des épaules et placez-vous dans une position debout équilibrée. Apprenez une presse stricte avant d'ajouter un entraînement de jambe.",
+      "Mise en place : placez la charge près des épaules et gainez le tronc en position debout stable. Apprenez d’abord le développé sans impulsion des jambes avant d’ajouter celle-ci.",
       "Mouvement : Tenez le poids sur vos épaules ; plongez un peu en pliant les hanches et les genoux.",
       "Contrôle : Traversez vos jambes et terminez en appuyant au-dessus de votre tête ; baisser sous contrôle.",
       "Dip : Pliez légèrement les hanches et les genoux tout en gardant le poids soutenu et le torse haut. Maintenez la pression sur tout le pied pendant le plongeon.",
@@ -1035,7 +1035,7 @@
       "Mise en place : utilisez une surface antidérapante ou des poignées sécurisées. Choisissez une hauteur de support qui vous permet d'abaisser et d'appuyer avec un tronc ferme.",
       "Mouvement : Posez les mains sur un appui stable et maintenez le corps droit et gainé de la tête aux talons.",
       "Contrôle : abaissez votre poitrine vers votre support, puis appuyez avec contrôle.",
-      "Ligne du corps : Renforcez l’abdomen et les fessiers ; laissez les épaules, les hanches et les jambes voyager ensemble plutôt que de décoller la poitrine en premier.",
+      "Alignement du corps : contractez les abdominaux et les fessiers. Faites monter les épaules, les hanches et les jambes ensemble plutôt que de relever la poitrine en premier.",
       "Mains et coudes : répartissez la pression entre les mains et choisissez une trajectoire de coude confortable. Gardez le cou aligné avec le tronc.",
       "Position haute : Repoussez le support et laissez les omoplates bouger naturellement. Terminez chaque répétition sur une planche stable avant de redescendre."
     ],
@@ -1060,7 +1060,7 @@
       "Mouvement : placez un câble ou une bande haute et gardez le haut de vos bras près de vos côtés.",
       "Contrôle : Redressez vos coudes pour appuyer, puis revenez lentement.",
       "Coude : Gardez le haut du bras raisonnablement stable pendant que l'avant-bras bouge. Redressez en douceur sans forcer une butée de joint dure.",
-      "Poignet : Gardez le poignet aligné avec l’avant-bras et la poignée bien fixée. Ne remplacez pas le mouvement du poignet par l’extension du coude.",
+      "Poignet : gardez le poignet aligné avec l’avant-bras et tenez fermement la poignée. Effectuez l’extension au niveau du coude, sans la remplacer par un mouvement du poignet.",
       "Retour : Pliez le coude sous contrôle et gardez la même position du haut du bras. Utilisez une résistance qui ne fait pas glisser l’épaule vers l’avant."
     ],
     "avoidDetails": [
@@ -1233,7 +1233,7 @@
       "Mouvement : placez un câble ou une bande haute et gardez le haut de vos bras près de vos côtés.",
       "Contrôle : Redressez vos coudes pour appuyer, puis revenez lentement.",
       "Coude : Gardez le haut du bras raisonnablement stable pendant que l'avant-bras bouge. Redressez en douceur sans forcer une butée de joint dure.",
-      "Poignet : Gardez le poignet aligné avec l’avant-bras et la poignée bien fixée. Ne remplacez pas le mouvement du poignet par l’extension du coude.",
+      "Poignet : gardez le poignet aligné avec l’avant-bras et tenez fermement la poignée. Effectuez l’extension au niveau du coude, sans la remplacer par un mouvement du poignet.",
       "Retour : Pliez le coude sous contrôle et gardez la même position du haut du bras. Utilisez une résistance qui ne fait pas glisser l’épaule vers l’avant."
     ],
     "avoidDetails": [
@@ -1256,12 +1256,12 @@
       "Finissez de vous tenir droit plutôt que de vous pencher en arrière."
     ],
     "cuesDetails": [
-      "Mise en place : rapprochez la charge, prenez-la fermement et éliminez le jeu avant de la soulever. Réglez la hauteur de départ pour pouvoir vous préparer en équilibre.",
+      "Mise en place : rapprochez la charge, prenez une prise ferme et mettez l’ensemble sous tension avant de soulever. Réglez la hauteur de départ pour pouvoir vous gainer en gardant l’équilibre.",
       "Mouvement : Choisissez une position et une prise qui gardent la charge près du corps. Gainez le tronc avant de soulever.",
       "Contrôle : Poussez sur le sol pour vous tenir droit, puis abaissez-vous en pliant les hanches et les genoux.",
       "Entraînement des jambes : repoussez le sol lorsque les hanches et les épaules se lèvent ensemble. Gardez les bras longs ; ils retiennent la charge plutôt que de la courber.",
       "Trajectoire de charge : Gardez le poids près de vos jambes tout en laissant un espace libre pour les genoux. Terminez debout avec les hanches et les genoux étendus.",
-      "Réinitialisation : Abaissez avec une charnière de hanche et une flexion du genou contrôlées. Rétablissez votre adhérence, votre équilibre et votre renfort avant chaque nouvelle traction.",
+      "Repositionnement : abaissez la charge de façon contrôlée en reculant les hanches et en fléchissant les genoux. Rétablissez votre prise, votre équilibre et votre gainage avant chaque nouveau tirage.",
       "Barre de piège : Tenez-vous centré à l’intérieur du cadre et saisissez les deux poignées uniformément. Utilisez une hauteur de poignée appropriée et maintenez le cadre à niveau lorsque vous montez."
     ],
     "avoidDetails": [
@@ -1284,7 +1284,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Contrôle : tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -1387,7 +1387,7 @@
       "Mouvement : reculez dans une position stable et abaissez-vous en pliant les deux genoux.",
       "Contrôle : Gardez le pied avant planté ; poussez-le pour revenir en position debout.",
       "Jambe avant : Gardez le talon avant et l'avant-pied soutenus ; laissez le genou suivre les orteils pendant que vos hanches s'abaissent entre vos pieds.",
-      "Torse : Une inclinaison contrôlée vers l’avant peut être appropriée. Gardez votre tronc renforcé au lieu de forcer un torse droit en cambrant votre dos.",
+      "Buste : une inclinaison contrôlée vers l’avant peut convenir. Gardez le tronc gainé plutôt que de cambrer le dos pour forcer une posture verticale.",
       "Équilibre : Montez principalement par la jambe avant tandis que la jambe arrière aide à l'équilibre. Réinitialisez vos pieds si le prochain répétition démarre dans une position instable."
     ],
     "avoidDetails": [
@@ -1413,7 +1413,7 @@
       "Mouvement : Avancez suffisamment pour rester en équilibre ; abaissez en pliant les deux genoux.",
       "Contrôle : poussez la jambe avant et contrôlez l'étape suivante.",
       "Jambe avant : Gardez le talon avant et l'avant-pied soutenus ; laissez le genou suivre les orteils pendant que vos hanches s'abaissent entre vos pieds.",
-      "Torse : Une inclinaison contrôlée vers l’avant peut être appropriée. Gardez votre tronc renforcé au lieu de forcer un torse droit en cambrant votre dos.",
+      "Buste : une inclinaison contrôlée vers l’avant peut convenir. Gardez le tronc gainé plutôt que de cambrer le dos pour forcer une posture verticale.",
       "Équilibre : Montez principalement par la jambe avant tandis que la jambe arrière aide à l'équilibre. Réinitialisez vos pieds si le prochain répétition démarre dans une position instable."
     ],
     "avoidDetails": [
@@ -1460,7 +1460,7 @@
       "Utilisez moins de poids si vous balancez le torse ou si vous tirez les poids vers le haut."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Soutenez votre poitrine ou votre charnière au niveau des hanches avec les bras pendants sous vous.",
       "Contrôle : Ouvrez vos bras sur les côtés avec des coudes souples, puis revenez lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -1476,7 +1476,7 @@
     ]
   },
   "cable-curl": {
-    "name": "Boucle de câble",
+    "name": "Curl à la poulie",
     "cues": [
       "Gardez vos bras près de votre torse et maintenez la charge avec les poignets stables.",
       "Pliez vos coudes pour soulever la charge, puis abaissez-la avec contrôle."
@@ -1500,7 +1500,7 @@
     ]
   },
   "barbell-preacher-curl": {
-    "name": "Boucle de prédicateur barre",
+    "name": "Curl au pupitre à la barre",
     "cues": [
       "Posez le haut de vos bras sur le coussin et gardez vos poignets stables.",
       "Enroulez la charge, puis abaissez-la jusqu'à ce que vos coudes soient confortablement étendus."
@@ -1563,7 +1563,7 @@
       "Mouvement : Suspendez-vous à une barre stable avec une prise confortable et le tronc gainé.",
       "Contrôle : tirez votre corps vers la barre, puis abaissez-le avec contrôle.",
       "Tirer : pensez à ramener les coudes vers les côtes à mesure que le corps se lève. Laissez les omoplates bouger plutôt que de les forcer.",
-      "Position du corps : Préparez-vous légèrement et gardez les jambes calmes. Terminez à une hauteur que vous pouvez atteindre sans pousser le menton vers l’avant.",
+      "Position du corps : gainez légèrement le tronc et gardez les jambes immobiles. Montez uniquement à une hauteur que vous pouvez atteindre sans avancer le menton.",
       "Descente : Abaissez jusqu'à ce que les bras atteignent une position étendue confortable tout en gardant le contrôle des épaules et des poignées."
     ],
     "avoidDetails": [
@@ -1609,7 +1609,7 @@
       "Ne poursuivez pas un tronçon profond ; raccourcissez l’arc si les épaules roulent vers l’avant ou perdent le contrôle."
     ],
     "cuesDetails": [
-      "Mise en place : sécurisez votre position ou votre position de banc et sélectionnez la résistance à la lumière. Trouvez une position de départ confortable pour le bras avant d’ouvrir plus largement.",
+      "Mise en place : adoptez une position stable debout ou sur le banc et choisissez une résistance légère. Trouvez une position de départ confortable pour les bras avant de les écarter davantage.",
       "Mouvement : Réglez les poignées selon l'angle de vol choisi et gardez une petite courbure au niveau des coudes.",
       "Contrôle : Rapprochez vos bras devant votre poitrine, puis ouvrez lentement.",
       "Arc des bras : gardez une légère flexion du coude assez constante lorsque le haut des bras bouge. Pensez à rapprocher les bras plutôt que de pousser les mains.",
@@ -1686,12 +1686,12 @@
       "Finissez de vous tenir droit plutôt que de vous pencher en arrière."
     ],
     "cuesDetails": [
-      "Mise en place : rapprochez la charge, prenez-la fermement et éliminez le jeu avant de la soulever. Réglez la hauteur de départ pour pouvoir vous préparer en équilibre.",
+      "Mise en place : rapprochez la charge, prenez une prise ferme et mettez l’ensemble sous tension avant de soulever. Réglez la hauteur de départ pour pouvoir vous gainer en gardant l’équilibre.",
       "Mouvement : Choisissez une position et une prise qui gardent la charge près du corps. Gainez le tronc avant de soulever.",
       "Contrôle : Poussez sur le sol pour vous tenir droit, puis abaissez-vous en pliant les hanches et les genoux.",
       "Entraînement des jambes : repoussez le sol lorsque les hanches et les épaules se lèvent ensemble. Gardez les bras longs ; ils retiennent la charge plutôt que de la courber.",
       "Trajectoire de charge : Gardez le poids près de vos jambes tout en laissant un espace libre pour les genoux. Terminez debout avec les hanches et les genoux étendus.",
-      "Réinitialisation : Abaissez avec une charnière de hanche et une flexion du genou contrôlées. Rétablissez votre adhérence, votre équilibre et votre renfort avant chaque nouvelle traction.",
+      "Repositionnement : abaissez la charge de façon contrôlée en reculant les hanches et en fléchissant les genoux. Rétablissez votre prise, votre équilibre et votre gainage avant chaque nouveau tirage.",
       "Position sumo : utilisez une position plus large avec les genoux suivant les orteils et les mains à l’intérieur des jambes. Choisissez une largeur qui vous permet toujours de pousser uniformément entre les pieds."
     ],
     "avoidDetails": [
@@ -1706,7 +1706,7 @@
     "cues": [
       "Placez les pieds à une largeur confortable, gainez le tronc et fléchissez les hanches et les genoux ensemble.",
       "Gardez tout votre pied planté, accroupissez-vous à une profondeur contrôlée, puis levez-vous.",
-      "Smith : Réglez les arrêts de sécurité, entraînez-vous aux crochets et faites correspondre votre position ou votre banc à la piste fixe."
+      "Smith : réglez les butées de sécurité, entraînez-vous à raccrocher la barre et adaptez les appuis ou le banc à la trajectoire guidée."
     ],
     "avoid": [
       "Évitez de perdre le contact de vos pieds ou de laisser la charge vous déséquilibrer.",
@@ -1719,7 +1719,7 @@
       "Pression du pied : Maintenez votre talon et les deux côtés de l’avant-pied soutenus. Laissez les genoux suivre la direction des orteils.",
       "Gainage : contractez l’abdomen avant de descendre. Gardez la charge équilibrée au-dessus de vos appuis pendant que les hanches et les épaules remontent ensemble.",
       "Profondeur : utilisez la plage répétable la plus profonde que vous puissiez contrôler sans perdre l'équilibre. Le déplacement du genou au-delà des orteils n’est pas automatiquement une erreur.",
-      "Machine Smith : réglez les butées de sécurité et entraînez-vous à réengager les crochets avec une barre lumineuse. Placez vos pieds ou votre banc en fonction de la piste fixe."
+      "Machine Smith : réglez les butées de sécurité et entraînez-vous à raccrocher la barre avec une charge légère. Placez les pieds ou le banc en fonction de la trajectoire guidée."
     ],
     "avoidDetails": [
       "Évitez de perdre le contact de vos pieds ou de laisser la charge vous déséquilibrer.",
@@ -1729,11 +1729,11 @@
     ]
   },
   "smith-bench-press": {
-    "name": "Presse d'établi Smith",
+    "name": "Développé couché à la machine Smith",
     "cues": [
       "Adoptez une position stable sur le banc et gardez les poignets sur les avant-bras.",
       "Abaissez le poids vers votre poitrine avec contrôle, puis poussez-le vers le haut.",
-      "Smith : Réglez les arrêts de sécurité, entraînez-vous aux crochets et faites correspondre votre position ou votre banc à la piste fixe.",
+      "Smith : réglez les butées de sécurité, entraînez-vous à raccrocher la barre et adaptez les appuis ou le banc à la trajectoire guidée.",
       "Soutien : Gardez les pieds en sécurité et le haut du dos posé sur le banc."
     ],
     "avoid": [
@@ -1747,8 +1747,8 @@
       "Prise en main : gardez le poids sur l’avant-bras plutôt que replié sur le poignet. Choisissez une trajectoire de coude que vous pouvez contrôler confortablement.",
       "Descente : guidez la charge vers une position inférieure reproductible. Gardez le haut du dos soutenu et résistez à une chute soudaine dans la dernière partie.",
       "Appuyez : Poussez doucement entre les mains tout en maintenant votre appui. Gardez les deux côtés en mouvement uniformément plutôt que de se tordre pour terminer.",
-      "Machine Smith : réglez les butées de sécurité et entraînez-vous à réengager les crochets avec une barre lumineuse. Placez vos pieds ou votre banc en fonction de la piste fixe.",
-      "Support de banc : Gardez les pieds bien fixés sur le sol ou les supports de banc et le haut du dos posé sur le coussin. Réinitialisez votre souffle et votre attelle entre répétitions."
+      "Machine Smith : réglez les butées de sécurité et entraînez-vous à raccrocher la barre avec une charge légère. Placez les pieds ou le banc en fonction de la trajectoire guidée.",
+      "Appuis sur le banc : gardez les pieds bien appuyés au sol ou sur les repose-pieds et le haut du dos posé sur le dossier. Reprenez votre respiration et votre gainage entre les répétitions."
     ],
     "avoidDetails": [
       "Évitez de faire rebondir le poids ou de perdre le contrôle de la position de vos épaules.",
@@ -1758,11 +1758,11 @@
     ]
   },
   "smith-incline-bench-press": {
-    "name": "Presse à banc incliné Smith",
+    "name": "Développé incliné à la machine Smith",
     "cues": [
       "Adoptez une position stable sur le banc et gardez les poignets sur les avant-bras.",
       "Abaissez le poids vers votre poitrine avec contrôle, puis poussez-le vers le haut.",
-      "Smith : Réglez les arrêts de sécurité, entraînez-vous aux crochets et faites correspondre votre position ou votre banc à la piste fixe.",
+      "Smith : réglez les butées de sécurité, entraînez-vous à raccrocher la barre et adaptez les appuis ou le banc à la trajectoire guidée.",
       "Soutien : Gardez les pieds en sécurité et le haut du dos posé sur le banc."
     ],
     "avoid": [
@@ -1776,8 +1776,8 @@
       "Prise en main : gardez le poids sur l’avant-bras plutôt que replié sur le poignet. Choisissez une trajectoire de coude que vous pouvez contrôler confortablement.",
       "Descente : guidez la charge vers une position inférieure reproductible. Gardez le haut du dos soutenu et résistez à une chute soudaine dans la dernière partie.",
       "Appuyez : Poussez doucement entre les mains tout en maintenant votre appui. Gardez les deux côtés en mouvement uniformément plutôt que de se tordre pour terminer.",
-      "Machine Smith : réglez les butées de sécurité et entraînez-vous à réengager les crochets avec une barre lumineuse. Placez vos pieds ou votre banc en fonction de la piste fixe.",
-      "Support de banc : Gardez les pieds bien fixés sur le sol ou les supports de banc et le haut du dos posé sur le coussin. Réinitialisez votre souffle et votre attelle entre répétitions."
+      "Machine Smith : réglez les butées de sécurité et entraînez-vous à raccrocher la barre avec une charge légère. Placez les pieds ou le banc en fonction de la trajectoire guidée.",
+      "Appuis sur le banc : gardez les pieds bien appuyés au sol ou sur les repose-pieds et le haut du dos posé sur le dossier. Reprenez votre respiration et votre gainage entre les répétitions."
     ],
     "avoidDetails": [
       "Évitez de faire rebondir le poids ou de perdre le contrôle de la position de vos épaules.",
@@ -1792,7 +1792,7 @@
       "Fléchissez légèrement les genoux, gainez le tronc et reculez les hanches en gardant la charge près du corps.",
       "Abaissez jusqu'à un étirement contrôlé des ischio-jambiers, puis étendez vos hanches pour vous tenir debout.",
       "Portée : arrêtez-vous lorsque les hanches ne peuvent pas reculer plus loin sans changer la position de votre tronc.",
-      "Smith : Réglez les arrêts de sécurité, entraînez-vous aux crochets et faites correspondre votre position ou votre banc à la piste fixe."
+      "Smith : réglez les butées de sécurité, entraînez-vous à raccrocher la barre et adaptez les appuis ou le banc à la trajectoire guidée."
     ],
     "avoid": [
       "N'arrondissez pas plus loin pour gagner en profondeur ; raccourcissez la charnière et faites reculer les hanches."
@@ -1804,7 +1804,7 @@
       "Chemin des hanches : pensez à fermer une porte avec vos hanches. Le torse s’incline grâce à la charnière tandis que la forme de votre dos reste contrôlée.",
       "Position inférieure : arrêtez-vous lorsqu'une portée plus grande modifierait la position de votre dos ou de votre bassin. Atteindre le sol n’est pas le but.",
       "Retour : Poussez à travers le ou les pieds d’appui et ramenez les hanches vers l’avant pour vous tenir debout. Terminez haut sans ajouter de inclinaison vers l’arrière.",
-      "Machine Smith : réglez les butées de sécurité et entraînez-vous à réengager les crochets avec une barre lumineuse. Placez vos pieds ou votre banc en fonction de la piste fixe."
+      "Machine Smith : réglez les butées de sécurité et entraînez-vous à raccrocher la barre avec une charge légère. Placez les pieds ou le banc en fonction de la trajectoire guidée."
     ],
     "avoidDetails": [
       "Évitez de descendre plus bas en arrondissant votre dos ou en le transformant en squat.",
@@ -1818,7 +1818,7 @@
     "cues": [
       "Soutenez le haut de votre dos sur le banc, plantez vos pieds et fixez la charge sur vos hanches.",
       "Soulevez vos hanches jusqu'à ce que votre tronc et vos cuisses soient alignés ; abaisser avec contrôle.",
-      "Smith : Réglez les arrêts de sécurité, entraînez-vous aux crochets et faites correspondre votre position ou votre banc à la piste fixe."
+      "Smith : réglez les butées de sécurité, entraînez-vous à raccrocher la barre et adaptez les appuis ou le banc à la trajectoire guidée."
     ],
     "avoid": [
       "Ne cambrez pas le bas du dos pour obtenir de la hauteur ; terminer par les hanches et réduire la portance si les côtes s'évasent."
@@ -1830,7 +1830,7 @@
       "Entraînement des hanches : appuyez sur les pieds vers le bas et soulevez-les à partir des hanches. Empêchez vos côtes de s'évaser à mesure que le bassin monte.",
       "Position haute : Terminez en contractant les fessiers avec le tronc contrôlé. Arrêtez-vous lorsque les hanches sont étendues plutôt que de vous cambrer pour monter plus haut.",
       "Position des pieds : Ajustez les pieds si vous ne parvenez pas à maintenir une pression stable. Maintenez la même orientation du bassin et la même trajectoire contrôlée sur chaque répétition.",
-      "Machine Smith : réglez les butées de sécurité et entraînez-vous à réengager les crochets avec une barre lumineuse. Placez vos pieds ou votre banc en fonction de la piste fixe."
+      "Machine Smith : réglez les butées de sécurité et entraînez-vous à raccrocher la barre avec une charge légère. Placez les pieds ou le banc en fonction de la trajectoire guidée."
     ],
     "avoidDetails": [
       "Évitez de cambrer le bas du dos pour soulever la charge plus haut.",
@@ -1960,7 +1960,7 @@
       "Mouvement : placez votre pied avant sur une marche basse et stable et adoptez une position divisée et équilibrée.",
       "Contrôle : Abaissez en pliant le genou avant, puis poussez ce pied pour monter.",
       "Jambe avant : Gardez le talon avant et l'avant-pied soutenus ; laissez le genou suivre les orteils pendant que vos hanches s'abaissent entre vos pieds.",
-      "Torse : Une inclinaison contrôlée vers l’avant peut être appropriée. Gardez votre tronc renforcé au lieu de forcer un torse droit en cambrant votre dos.",
+      "Buste : une inclinaison contrôlée vers l’avant peut convenir. Gardez le tronc gainé plutôt que de cambrer le dos pour forcer une posture verticale.",
       "Équilibre : Montez principalement par la jambe avant tandis que la jambe arrière aide à l'équilibre. Réinitialisez vos pieds si le prochain répétition démarre dans une position instable.",
       "Plate-forme surélevée : une profondeur supplémentaire est facultative. Utilisez une plate-forme sécurisée de hauteur modeste et descendez uniquement pendant que le contrôle du pied et du bassin reste stable."
     ],
@@ -2274,11 +2274,11 @@
     ]
   },
   "barbell-decline-bench-press": {
-    "name": "barre Décliner le développé couché",
+    "name": "Développé décliné à la barre",
     "cues": [
       "Adoptez une position stable sur le banc et gardez les poignets sur les avant-bras.",
       "Abaissez le poids vers votre poitrine avec contrôle, puis poussez-le vers le haut.",
-      "Sécurité : Vérifiez la sécurité des racks et organisez un observateur compétent si nécessaire avant de presser.",
+      "Sécurité : vérifiez les supports de sécurité et prévoyez l’assistance d’une personne expérimentée si nécessaire avant le développé.",
       "Soutien : Gardez les pieds en sécurité et le haut du dos posé sur le banc."
     ],
     "avoid": [
@@ -2292,8 +2292,8 @@
       "Prise en main : gardez le poids sur l’avant-bras plutôt que replié sur le poignet. Choisissez une trajectoire de coude que vous pouvez contrôler confortablement.",
       "Descente : guidez la charge vers une position inférieure reproductible. Gardez le haut du dos soutenu et résistez à une chute soudaine dans la dernière partie.",
       "Appuyez : Poussez doucement entre les mains tout en maintenant votre appui. Gardez les deux côtés en mouvement uniformément plutôt que de se tordre pour terminer.",
-      "Plan de répétition en cas d'échec : définissez les sécurités appropriées des racks et faites appel à un observateur compétent si nécessaire. Vérifiez la protection avant d'appuyer; ne comptez pas sur la récupération d’une barre coincée.",
-      "Support de banc : Gardez les pieds bien fixés sur le sol ou les supports de banc et le haut du dos posé sur le coussin. Réinitialisez votre souffle et votre attelle entre répétitions."
+      "En cas d’échec : réglez les supports de sécurité et faites-vous assister par une personne expérimentée si nécessaire. Vérifiez ces protections avant le développé. Ne comptez pas sur votre capacité à dégager une barre qui vous bloque.",
+      "Appuis sur le banc : gardez les pieds bien appuyés au sol ou sur les repose-pieds et le haut du dos posé sur le dossier. Reprenez votre respiration et votre gainage entre les répétitions."
     ],
     "avoidDetails": [
       "Évitez de faire rebondir le poids ou de perdre le contrôle de la position de vos épaules.",
@@ -2303,7 +2303,7 @@
     ]
   },
   "dumbbell-decline-bench-press": {
-    "name": "haltère Décliner le développé couché",
+    "name": "Développé décliné aux haltères",
     "cues": [
       "Adoptez une position stable sur le banc et gardez les poignets sur les avant-bras.",
       "Abaissez le poids vers votre poitrine avec contrôle, puis poussez-le vers le haut.",
@@ -2320,7 +2320,7 @@
       "Prise en main : gardez le poids sur l’avant-bras plutôt que replié sur le poignet. Choisissez une trajectoire de coude que vous pouvez contrôler confortablement.",
       "Descente : guidez la charge vers une position inférieure reproductible. Gardez le haut du dos soutenu et résistez à une chute soudaine dans la dernière partie.",
       "Appuyez : Poussez doucement entre les mains tout en maintenant votre appui. Gardez les deux côtés en mouvement uniformément plutôt que de se tordre pour terminer.",
-      "Support de banc : Gardez les pieds bien fixés sur le sol ou les supports de banc et le haut du dos posé sur le coussin. Réinitialisez votre souffle et votre attelle entre répétitions."
+      "Appuis sur le banc : gardez les pieds bien appuyés au sol ou sur les repose-pieds et le haut du dos posé sur le dossier. Reprenez votre respiration et votre gainage entre les répétitions."
     ],
     "avoidDetails": [
       "Évitez de faire rebondir le poids ou de perdre le contrôle de la position de vos épaules.",
@@ -2355,7 +2355,7 @@
     ]
   },
   "cable-low-fly": {
-    "name": "Câble à mouche basse",
+    "name": "Écartés à la poulie basse",
     "cues": [
       "Réglez les poignées en fonction de l'angle de vol choisi et gardez une petite courbure au niveau des coudes.",
       "Rapprochez vos bras devant votre poitrine, puis ouvrez lentement."
@@ -2365,7 +2365,7 @@
       "Ne poursuivez pas un tronçon profond ; raccourcissez l’arc si les épaules roulent vers l’avant ou perdent le contrôle."
     ],
     "cuesDetails": [
-      "Mise en place : sécurisez votre position ou votre position de banc et sélectionnez la résistance à la lumière. Trouvez une position de départ confortable pour le bras avant d’ouvrir plus largement.",
+      "Mise en place : adoptez une position stable debout ou sur le banc et choisissez une résistance légère. Trouvez une position de départ confortable pour les bras avant de les écarter davantage.",
       "Mouvement : Réglez les poignées selon l'angle de vol choisi et gardez une petite courbure au niveau des coudes.",
       "Contrôle : Rapprochez vos bras devant votre poitrine, puis ouvrez lentement.",
       "Arc des bras : gardez une légère flexion du coude assez constante lorsque le haut des bras bouge. Pensez à rapprocher les bras plutôt que de pousser les mains.",
@@ -2380,7 +2380,7 @@
     ]
   },
   "cable-decline-fly": {
-    "name": "Mouche de déclin de câble",
+    "name": "Écartés déclinés à la poulie",
     "cues": [
       "Réglez les poignées en fonction de l'angle de vol choisi et gardez une petite courbure au niveau des coudes.",
       "Rapprochez vos bras devant votre poitrine, puis ouvrez lentement."
@@ -2390,7 +2390,7 @@
       "Ne poursuivez pas un tronçon profond ; raccourcissez l’arc si les épaules roulent vers l’avant ou perdent le contrôle."
     ],
     "cuesDetails": [
-      "Mise en place : sécurisez votre position ou votre position de banc et sélectionnez la résistance à la lumière. Trouvez une position de départ confortable pour le bras avant d’ouvrir plus largement.",
+      "Mise en place : adoptez une position stable debout ou sur le banc et choisissez une résistance légère. Trouvez une position de départ confortable pour les bras avant de les écarter davantage.",
       "Mouvement : Réglez les poignées selon l'angle de vol choisi et gardez une petite courbure au niveau des coudes.",
       "Contrôle : Rapprochez vos bras devant votre poitrine, puis ouvrez lentement.",
       "Arc des bras : gardez une légère flexion du coude assez constante lorsque le haut des bras bouge. Pensez à rapprocher les bras plutôt que de pousser les mains.",
@@ -2415,7 +2415,7 @@
       "Ne poursuivez pas un tronçon profond ; raccourcissez l’arc si les épaules roulent vers l’avant ou perdent le contrôle."
     ],
     "cuesDetails": [
-      "Mise en place : sécurisez votre position ou votre position de banc et sélectionnez la résistance à la lumière. Trouvez une position de départ confortable pour le bras avant d’ouvrir plus largement.",
+      "Mise en place : adoptez une position stable debout ou sur le banc et choisissez une résistance légère. Trouvez une position de départ confortable pour les bras avant de les écarter davantage.",
       "Mouvement : Allongez-vous sur le banc avec haltères au-dessus de votre poitrine et les coudes doucement pliés.",
       "Contrôle : ouvrez vos bras en formant un large arc de cercle, puis rapprochez les poids.",
       "Arc des bras : gardez une légère flexion du coude assez constante lorsque le haut des bras bouge. Pensez à rapprocher les bras plutôt que de pousser les mains.",
@@ -2430,11 +2430,11 @@
     ]
   },
   "barbell-close-grip-bench-press": {
-    "name": "Presse d'établi à prise fermée barre",
+    "name": "Développé couché prise serrée à la barre",
     "cues": [
       "Adoptez une position stable sur le banc et gardez les poignets sur les avant-bras.",
       "Abaissez le poids vers votre poitrine avec contrôle, puis poussez-le vers le haut.",
-      "Sécurité : Vérifiez la sécurité des racks et organisez un observateur compétent si nécessaire avant de presser.",
+      "Sécurité : vérifiez les supports de sécurité et prévoyez l’assistance d’une personne expérimentée si nécessaire avant le développé.",
       "Soutien : Gardez les pieds en sécurité et le haut du dos posé sur le banc."
     ],
     "avoid": [
@@ -2448,8 +2448,8 @@
       "Prise en main : gardez le poids sur l’avant-bras plutôt que replié sur le poignet. Choisissez une trajectoire de coude que vous pouvez contrôler confortablement.",
       "Descente : guidez la charge vers une position inférieure reproductible. Gardez le haut du dos soutenu et résistez à une chute soudaine dans la dernière partie.",
       "Appuyez : Poussez doucement entre les mains tout en maintenant votre appui. Gardez les deux côtés en mouvement uniformément plutôt que de se tordre pour terminer.",
-      "Plan de répétition en cas d'échec : définissez les sécurités appropriées des racks et faites appel à un observateur compétent si nécessaire. Vérifiez la protection avant d'appuyer; ne comptez pas sur la récupération d’une barre coincée.",
-      "Support de banc : Gardez les pieds bien fixés sur le sol ou les supports de banc et le haut du dos posé sur le coussin. Réinitialisez votre souffle et votre attelle entre répétitions."
+      "En cas d’échec : réglez les supports de sécurité et faites-vous assister par une personne expérimentée si nécessaire. Vérifiez ces protections avant le développé. Ne comptez pas sur votre capacité à dégager une barre qui vous bloque.",
+      "Appuis sur le banc : gardez les pieds bien appuyés au sol ou sur les repose-pieds et le haut du dos posé sur le dossier. Reprenez votre respiration et votre gainage entre les répétitions."
     ],
     "avoidDetails": [
       "Évitez de faire rebondir le poids ou de perdre le contrôle de la position de vos épaules.",
@@ -2459,7 +2459,7 @@
     ]
   },
   "dumbbell-pullover": {
-    "name": "haltère Pull",
+    "name": "Pull-over avec haltère",
     "cues": [
       "Sécurisez votre torse et commencez avec les bras tendus au-dessus de votre tête.",
       "Tirez le poids en arc de cercle vers votre torse, puis revenez lentement."
@@ -2484,7 +2484,7 @@
     ]
   },
   "lever-chest-supported-row": {
-    "name": "Rangée supportée par la poitrine",
+    "name": "Rowing à la machine avec appui thoracique",
     "cues": [
       "Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement."
@@ -2496,7 +2496,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Contrôle : tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -2508,7 +2508,7 @@
     ]
   },
   "lever-t-bar-row": {
-    "name": "Rangée de barres en T à levier",
+    "name": "Rowing T-bar à la machine",
     "cues": [
       "Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement."
@@ -2520,7 +2520,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Contrôle : tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -2532,7 +2532,7 @@
     ]
   },
   "barbell-pendlay-row": {
-    "name": "Ligne Pendlay barre",
+    "name": "Rowing Pendlay à la barre",
     "cues": [
       "Inclinez-vous au-dessus de la barre en fléchissant les hanches et gainez le tronc, la barre au sol.",
       "Tirez-le vers le bas de votre poitrine ou le haut de votre abdomen ; remettre au sol chaque répétition."
@@ -2545,7 +2545,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Inclinez-vous au-dessus de la barre en fléchissant les hanches et gainez le tronc, la barre au sol.",
       "Contrôle : tirez-le vers le bas de votre poitrine ou le haut de votre abdomen ; remettre au sol chaque répétition.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -2557,7 +2557,7 @@
     ]
   },
   "inverted-row": {
-    "name": "Rangée inversée",
+    "name": "Rowing inversé",
     "cues": [
       "Tenez la barre ou les poignées et maintenez une ligne gainée des épaules aux talons.",
       "Tirez votre poitrine vers vos mains, puis abaissez-la sous contrôle.",
@@ -2582,7 +2582,7 @@
     ]
   },
   "cable-neutral-grip-lat-pulldown": {
-    "name": "Pulldown latéral à double câble",
+    "name": "Tirage vertical à deux poulies",
     "cues": [
       "Installez un siège ou une position stable et prenez confortablement la poignée.",
       "Tirez vers le haut de votre poitrine, puis laissez vos bras se lever lentement.",
@@ -2634,7 +2634,7 @@
     ]
   },
   "cable-underhand-pulldown": {
-    "name": "Câble déroulant par le bas",
+    "name": "Tirage vertical en supination à la poulie",
     "cues": [
       "Installez un siège ou une position stable et prenez confortablement la poignée.",
       "Tirez vers le haut de votre poitrine, puis laissez vos bras se lever lentement.",
@@ -2685,7 +2685,7 @@
     ]
   },
   "cable-kneeling-pullover": {
-    "name": "Pull à genoux torsadé",
+    "name": "Pull-over à la poulie à genoux",
     "cues": [
       "Sécurisez votre torse et commencez avec les bras tendus au-dessus de votre tête.",
       "Tirez le poids en arc de cercle vers votre torse, puis revenez lentement."
@@ -2725,7 +2725,7 @@
       "Mouvement : Suspendez-vous à une barre stable avec une prise confortable et le tronc gainé.",
       "Contrôle : tirez votre corps vers la barre, puis abaissez-le avec contrôle.",
       "Tirer : pensez à ramener les coudes vers les côtes à mesure que le corps se lève. Laissez les omoplates bouger plutôt que de les forcer.",
-      "Position du corps : Préparez-vous légèrement et gardez les jambes calmes. Terminez à une hauteur que vous pouvez atteindre sans pousser le menton vers l’avant.",
+      "Position du corps : gainez légèrement le tronc et gardez les jambes immobiles. Montez uniquement à une hauteur que vous pouvez atteindre sans avancer le menton.",
       "Descente : Abaissez jusqu'à ce que les bras atteignent une position étendue confortable tout en gardant le contrôle des épaules et des poignées.",
       "Assistance : Vérifiez les instructions de la machine ; un contrepoids plus sélectionné signifie généralement plus d'aide. Utilisez suffisamment d’assistance pour contrôler le montage, le répétitions et le démontage."
     ],
@@ -2773,7 +2773,7 @@
       "Utilisez moins de poids si vous balancez le torse ou si vous tirez les poids vers le haut."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Soutenez votre poitrine ou votre charnière au niveau des hanches avec les bras pendants sous vous.",
       "Contrôle : Ouvrez vos bras sur les côtés avec des coudes souples, puis revenez lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -2863,7 +2863,7 @@
     ]
   },
   "dumbbell-arnold-press": {
-    "name": "Presse Arnold haltère",
+    "name": "Développé Arnold aux haltères",
     "cues": [
       "Commencez haltères devant vos épaules avec les paumes face à vous.",
       "Faites pivoter vos paumes vers l'extérieur lorsque vous appuyez vers le haut ; inversez lentement le chemin.",
@@ -2890,7 +2890,7 @@
     ]
   },
   "barbell-seated-overhead-press": {
-    "name": "Presse aérienne assise barre",
+    "name": "Développé épaules assis à la barre",
     "cues": [
       "Commencez avec la charge près de la hauteur des épaules, les poignets stables et le tronc gainé.",
       "Appuyez au-dessus de votre tête, puis redescendez jusqu'à votre position de départ confortable.",
@@ -2915,7 +2915,7 @@
     ]
   },
   "dumbbell-one-arm-shoulder-press": {
-    "name": "Presse à épaules à un bras haltère",
+    "name": "Développé épaules à un bras avec haltère",
     "cues": [
       "Commencez avec la charge près de la hauteur des épaules, les poignets stables et le tronc gainé.",
       "Appuyez au-dessus de votre tête, puis redescendez jusqu'à votre position de départ confortable.",
@@ -2940,7 +2940,7 @@
     ]
   },
   "landmine-press": {
-    "name": "Presse sur les mines terrestres",
+    "name": "Développé landmine",
     "cues": [
       "Tenez l’extrémité de la barre près de l’épaule et gainez le tronc dans une position stable.",
       "Appuyez-le vers l'avant et vers le haut le long du chemin de la barre ; abaisser avec contrôle.",
@@ -2974,7 +2974,7 @@
       "Ne balancez pas le torse et ne secouez pas le cou pour soulever plus haut ; utilisez moins de poids et une portée confortable."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Commencez avec les bras bas et les coudes légèrement pliés.",
       "Contrôle : Levez vos bras jusqu'à une hauteur d'épaule confortable, puis abaissez-les lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -2999,7 +2999,7 @@
       "Utilisez moins de poids si vous balancez le torse ou si vous tirez les poids vers le haut."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Soutenez votre poitrine ou votre charnière au niveau des hanches avec les bras pendants sous vous.",
       "Contrôle : Ouvrez vos bras sur les côtés avec des coudes souples, puis revenez lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -3014,7 +3014,7 @@
     ]
   },
   "barbell-upright-row": {
-    "name": "Rangée verticala barre",
+    "name": "Tirage menton à la barre",
     "cues": [
       "Tenez la barre ou le haltères devant vos cuisses avec une prise confortable.",
       "Dirigez avec vos coudes pendant que vous soulevez la charge à une hauteur confortable ; descendre lentement."
@@ -3039,7 +3039,7 @@
     ]
   },
   "barbell-curl": {
-    "name": "Boucla barre",
+    "name": "Curl à la barre",
     "cues": [
       "Gardez vos bras près de votre torse et maintenez la charge avec les poignets stables.",
       "Pliez vos coudes pour soulever la charge, puis abaissez-la avec contrôle."
@@ -3087,7 +3087,7 @@
     ]
   },
   "dumbbell-concentration-curl": {
-    "name": "Boucle de concentration haltère",
+    "name": "Curl concentré avec haltère",
     "cues": [
       "Gardez vos bras près de votre torse et maintenez la charge avec les poignets stables.",
       "Pliez vos coudes pour soulever la charge, puis abaissez-la avec contrôle."
@@ -3111,7 +3111,7 @@
     ]
   },
   "ez-barbell-spider-curl": {
-    "name": "EZ barre Boucle d'araignée",
+    "name": "Spider curl à la barre EZ",
     "cues": [
       "Allongez-vous sur un banc incliné, les bras pendant librement.",
       "Courbez le poids sans soulever votre poitrine, puis abaissez-le lentement."
@@ -3127,7 +3127,7 @@
       "Mouvement du coude : pliez le coude tout en gardant le haut du bras raisonnablement stable dans la position pour cette variation.",
       "Poignet : Gardez le poignet aligné avec l’avant-bras. Toute rotation de la poignée doit être délibérée plutôt que provoquée par le poids qui tire votre main.",
       "Retour : étendez le coude en douceur dans une plage confortable. Gardez le contrôle près du bas plutôt que de tomber dans le tronçon.",
-      "Support araignée : gardez la poitrine sur le banc incliné et laissez pendre le haut des bras. Curl sans soulever la poitrine pour faire face aux poids."
+      "Appui du spider curl : gardez la poitrine sur le banc incliné et laissez les bras pendre. Fléchissez les coudes sans soulever la poitrine pour rejoindre les haltères."
     ],
     "avoidDetails": [
       "Évitez de balancer les bras ou de décoller votre torse du coussin.",
@@ -3137,10 +3137,10 @@
     ]
   },
   "cable-rope-hammer-curl": {
-    "name": "Boucle de marteau de câble de câble",
+    "name": "Curl marteau à la poulie avec corde",
     "cues": [
       "Tenez les poids avec les paumes tournées vers l’intérieur et les coudes près de vos côtés.",
-      "Bouclez-vous sans faire pivoter vos poignets, puis abaissez-le lentement."
+      "Fléchissez les coudes sans tourner les poignets, puis redescendez lentement."
     ],
     "avoid": [
       "Ne balancez pas le corps et ne pliez pas les poignets pour finir ; alléger la charge et contrôler la descente."
@@ -3148,7 +3148,7 @@
     "cuesDetails": [
       "Mise en place : choisissez la prise prévue et fixez n'importe quel banc ou accoudoir. Commencez par une résistance que vous pouvez boucler sans bouger le tronc.",
       "Mouvement : Tenez les poids avec les paumes tournées vers l’intérieur et les coudes près de vos côtés.",
-      "Contrôle : Bouclez sans faire tourner vos poignets, puis abaissez lentement.",
+      "Contrôle : Fléchissez les coudes sans tourner les poignets, puis redescendez lentement.",
       "Mouvement du coude : pliez le coude tout en gardant le haut du bras raisonnablement stable dans la position pour cette variation.",
       "Poignet : Gardez le poignet aligné avec l’avant-bras. Toute rotation de la poignée doit être délibérée plutôt que provoquée par le poids qui tire votre main.",
       "Retour : étendez le coude en douceur dans une plage confortable. Gardez le contrôle près du bas plutôt que de tomber dans le tronçon."
@@ -3185,7 +3185,7 @@
     ]
   },
   "lever-preacher-curl": {
-    "name": "Boucle de prédicateur à levier",
+    "name": "Curl au pupitre à la machine",
     "cues": [
       "Posez le haut de vos bras sur le coussin et gardez vos poignets stables.",
       "Enroulez la charge, puis abaissez-la jusqu'à ce que vos coudes soient confortablement étendus."
@@ -3275,7 +3275,7 @@
       "Mouvement : placez un câble ou une bande haute et gardez le haut de vos bras près de vos côtés.",
       "Contrôle : Redressez vos coudes pour appuyer, puis revenez lentement.",
       "Coude : Gardez le haut du bras raisonnablement stable pendant que l'avant-bras bouge. Redressez en douceur sans forcer une butée de joint dure.",
-      "Poignet : Gardez le poignet aligné avec l’avant-bras et la poignée bien fixée. Ne remplacez pas le mouvement du poignet par l’extension du coude.",
+      "Poignet : gardez le poignet aligné avec l’avant-bras et tenez fermement la poignée. Effectuez l’extension au niveau du coude, sans la remplacer par un mouvement du poignet.",
       "Retour : Pliez le coude sous contrôle et gardez la même position du haut du bras. Utilisez une résistance qui ne fait pas glisser l’épaule vers l’avant."
     ],
     "avoidDetails": [
@@ -3299,7 +3299,7 @@
       "Mouvement : placez un câble ou une bande haute et gardez le haut de vos bras près de vos côtés.",
       "Contrôle : Redressez vos coudes pour appuyer, puis revenez lentement.",
       "Coude : Gardez le haut du bras raisonnablement stable pendant que l'avant-bras bouge. Redressez en douceur sans forcer une butée de joint dure.",
-      "Poignet : Gardez le poignet aligné avec l’avant-bras et la poignée bien fixée. Ne remplacez pas le mouvement du poignet par l’extension du coude.",
+      "Poignet : gardez le poignet aligné avec l’avant-bras et tenez fermement la poignée. Effectuez l’extension au niveau du coude, sans la remplacer par un mouvement du poignet.",
       "Retour : Pliez le coude sous contrôle et gardez la même position du haut du bras. Utilisez une résistance qui ne fait pas glisser l’épaule vers l’avant."
     ],
     "avoidDetails": [
@@ -3323,7 +3323,7 @@
       "Mouvement : Charnière et soutien de votre torse ; gardez le haut de votre bras près de vous.",
       "Contrôle : Redressez votre coude pour faire reculer le poids, puis pliez-le lentement.",
       "Coude : Gardez le haut du bras raisonnablement stable pendant que l'avant-bras bouge. Redressez en douceur sans forcer une butée de joint dure.",
-      "Poignet : Gardez le poignet aligné avec l’avant-bras et la poignée bien fixée. Ne remplacez pas le mouvement du poignet par l’extension du coude.",
+      "Poignet : gardez le poignet aligné avec l’avant-bras et tenez fermement la poignée. Effectuez l’extension au niveau du coude, sans la remplacer par un mouvement du poignet.",
       "Retour : Pliez le coude sous contrôle et gardez la même position du haut du bras. Utilisez une résistance qui ne fait pas glisser l’épaule vers l’avant."
     ],
     "avoidDetails": [
@@ -3478,7 +3478,7 @@
       "Contrôle : Atteignez un bras et la jambe opposée, revenez en arrière, puis changez de côté.",
       "Gainage : gardez l’abdomen contracté et respirez sans laisser les côtes s’ouvrir. Le mouvement des membres ne doit pas entraîner le tronc hors de sa position.",
       "Atteindre : étendez-vous délibérément et arrêtez-vous avant que votre dos ou votre bassin ne tourne. Raccourcir le levier est un moyen utile de réduire les difficultés.",
-      "Retour : Reprenez le contrôle des membres et réinitialisez votre corset. Maintenez le même tronc stable plutôt que de vous précipiter entre les répétitions."
+      "Retour : ramenez les bras et les jambes de façon contrôlée et gainez à nouveau le tronc. Gardez le tronc stable sans vous précipiter entre les répétitions."
     ],
     "avoidDetails": [
       "Évitez de faire pivoter vos hanches ou de cambrer le bas du dos.",
@@ -3626,12 +3626,12 @@
       "Finissez de vous tenir droit plutôt que de vous pencher en arrière."
     ],
     "cuesDetails": [
-      "Mise en place : rapprochez la charge, prenez-la fermement et éliminez le jeu avant de la soulever. Réglez la hauteur de départ pour pouvoir vous préparer en équilibre.",
+      "Mise en place : rapprochez la charge, prenez une prise ferme et mettez l’ensemble sous tension avant de soulever. Réglez la hauteur de départ pour pouvoir vous gainer en gardant l’équilibre.",
       "Mouvement : Choisissez une position et une prise qui gardent la charge près du corps. Gainez le tronc avant de soulever.",
       "Contrôle : Poussez sur le sol pour vous tenir droit, puis abaissez-vous en pliant les hanches et les genoux.",
       "Entraînement des jambes : repoussez le sol lorsque les hanches et les épaules se lèvent ensemble. Gardez les bras longs ; ils retiennent la charge plutôt que de la courber.",
       "Trajectoire de charge : Gardez le poids près de vos jambes tout en laissant un espace libre pour les genoux. Terminez debout avec les hanches et les genoux étendus.",
-      "Réinitialisation : Abaissez avec une charnière de hanche et une flexion du genou contrôlées. Rétablissez votre adhérence, votre équilibre et votre renfort avant chaque nouvelle traction."
+      "Repositionnement : abaissez la charge de façon contrôlée en reculant les hanches et en fléchissant les genoux. Rétablissez votre prise, votre équilibre et votre gainage avant chaque nouveau tirage."
     ],
     "avoidDetails": [
       "Évitez de retirer le poids du sol ou de vous pencher en arrière vers le haut.",
@@ -3844,7 +3844,7 @@
     ]
   },
   "dumbbell-lying-hammer-press": {
-    "name": "Presse à marteau couché haltère",
+    "name": "Développé couché aux haltères en prise neutre",
     "cues": [
       "Adoptez une position stable sur le banc et gardez les poignets sur les avant-bras.",
       "Abaissez le poids vers votre poitrine avec contrôle, puis poussez-le vers le haut.",
@@ -3861,7 +3861,7 @@
       "Prise en main : gardez le poids sur l’avant-bras plutôt que replié sur le poignet. Choisissez une trajectoire de coude que vous pouvez contrôler confortablement.",
       "Descente : guidez la charge vers une position inférieure reproductible. Gardez le haut du dos soutenu et résistez à une chute soudaine dans la dernière partie.",
       "Appuyez : Poussez doucement entre les mains tout en maintenant votre appui. Gardez les deux côtés en mouvement uniformément plutôt que de se tordre pour terminer.",
-      "Support de banc : Gardez les pieds bien fixés sur le sol ou les supports de banc et le haut du dos posé sur le coussin. Réinitialisez votre souffle et votre attelle entre répétitions."
+      "Appuis sur le banc : gardez les pieds bien appuyés au sol ou sur les repose-pieds et le haut du dos posé sur le dossier. Reprenez votre respiration et votre gainage entre les répétitions."
     ],
     "avoidDetails": [
       "Évitez de faire rebondir le poids ou de perdre le contrôle de la position de vos épaules.",
@@ -3871,7 +3871,7 @@
     ]
   },
   "dumbbell-squeeze-bench-press": {
-    "name": "Presse d'établi à compression haltère",
+    "name": "Développé couché aux haltères serrés",
     "cues": [
       "Allongez-vous sur le banc et appuyez sur le haltères au-dessus de votre poitrine.",
       "Gardez-les en contact lorsque vous abaissez et appuyez vers le haut.",
@@ -3889,7 +3889,7 @@
       "Prise en main : gardez le poids sur l’avant-bras plutôt que replié sur le poignet. Choisissez une trajectoire de coude que vous pouvez contrôler confortablement.",
       "Descente : guidez la charge vers une position inférieure reproductible. Gardez le haut du dos soutenu et résistez à une chute soudaine dans la dernière partie.",
       "Appuyez : Poussez doucement entre les mains tout en maintenant votre appui. Gardez les deux côtés en mouvement uniformément plutôt que de se tordre pour terminer.",
-      "Support de banc : Gardez les pieds bien fixés sur le sol ou les supports de banc et le haut du dos posé sur le coussin. Réinitialisez votre souffle et votre attelle entre répétitions.",
+      "Appuis sur le banc : gardez les pieds bien appuyés au sol ou sur les repose-pieds et le haut du dos posé sur le dossier. Reprenez votre respiration et votre gainage entre les répétitions.",
       "Presser : Maintenez une pression contrôlée vers l’intérieur entre les poids ou la plaque tout en appuyant. Utilisez une charge que vous pouvez tenir sans glisser."
     ],
     "avoidDetails": [
@@ -3900,11 +3900,11 @@
     ]
   },
   "barbell-reverse-grip-bench-press": {
-    "name": "Presse d'établi à prise inversée barre",
+    "name": "Développé couché à la barre en supination",
     "cues": [
       "Adoptez une position stable sur le banc et gardez les poignets sur les avant-bras.",
       "Abaissez le poids vers votre poitrine avec contrôle, puis poussez-le vers le haut.",
-      "Sécurité : Vérifiez la sécurité des racks et organisez un observateur compétent si nécessaire avant de presser.",
+      "Sécurité : vérifiez les supports de sécurité et prévoyez l’assistance d’une personne expérimentée si nécessaire avant le développé.",
       "Prise inversée : utilisez une prise complète par le bas ; pratiquez le contrôle du poignet et organisez un transfert si nécessaire.",
       "Soutien : Gardez les pieds en sécurité et le haut du dos posé sur le banc."
     ],
@@ -3919,9 +3919,9 @@
       "Prise en main : gardez le poids sur l’avant-bras plutôt que replié sur le poignet. Choisissez une trajectoire de coude que vous pouvez contrôler confortablement.",
       "Descente : guidez la charge vers une position inférieure reproductible. Gardez le haut du dos soutenu et résistez à une chute soudaine dans la dernière partie.",
       "Appuyez : Poussez doucement entre les mains tout en maintenant votre appui. Gardez les deux côtés en mouvement uniformément plutôt que de se tordre pour terminer.",
-      "Plan de répétition en cas d'échec : définissez les sécurités appropriées des racks et faites appel à un observateur compétent si nécessaire. Vérifiez la protection avant d'appuyer; ne comptez pas sur la récupération d’une barre coincée.",
-      "Prise inversée : utilisez une prise complète par le dessous et un transfert compétent si nécessaire. Établissez le contrôle du poignet avec une barre lumineuse avant de charger cette variation.",
-      "Support de banc : Gardez les pieds bien fixés sur le sol ou les supports de banc et le haut du dos posé sur le coussin. Réinitialisez votre souffle et votre attelle entre répétitions."
+      "En cas d’échec : réglez les supports de sécurité et faites-vous assister par une personne expérimentée si nécessaire. Vérifiez ces protections avant le développé. Ne comptez pas sur votre capacité à dégager une barre qui vous bloque.",
+      "Prise en supination : prenez une prise complète et faites-vous aider pour sortir la barre si nécessaire. Apprenez à stabiliser les poignets avec une barre légèrement chargée avant d’augmenter la charge de cette variante.",
+      "Appuis sur le banc : gardez les pieds bien appuyés au sol ou sur les repose-pieds et le haut du dos posé sur le dossier. Reprenez votre respiration et votre gainage entre les répétitions."
     ],
     "avoidDetails": [
       "Évitez de faire rebondir le poids ou de perdre le contrôle de la position de vos épaules.",
@@ -3931,11 +3931,11 @@
     ]
   },
   "barbell-floor-chest-press": {
-    "name": "Presse pectorale au sol barre",
+    "name": "Développé au sol à la barre",
     "cues": [
       "Allongez-vous sur le sol avec une prise stable et les coudes confortablement sous vos poignets.",
       "Abaissez jusqu'à ce que vos bras touchent légèrement le sol, puis appuyez vers le haut.",
-      "Sécurité : Vérifiez la sécurité des racks et organisez un observateur compétent si nécessaire avant de presser."
+      "Sécurité : vérifiez les supports de sécurité et prévoyez l’assistance d’une personne expérimentée si nécessaire avant le développé."
     ],
     "avoid": [
       "Évitez de cogner vos coudes contre le sol ou de vous tordre sous la charge.",
@@ -3948,7 +3948,7 @@
       "Prise en main : gardez le poids sur l’avant-bras plutôt que replié sur le poignet. Choisissez une trajectoire de coude que vous pouvez contrôler confortablement.",
       "Descente : guidez la charge vers une position inférieure reproductible. Gardez le haut du dos soutenu et résistez à une chute soudaine dans la dernière partie.",
       "Appuyez : Poussez doucement entre les mains tout en maintenant votre appui. Gardez les deux côtés en mouvement uniformément plutôt que de se tordre pour terminer.",
-      "Plan de répétition en cas d'échec : définissez les sécurités appropriées des racks et faites appel à un observateur compétent si nécessaire. Vérifiez la protection avant d'appuyer; ne comptez pas sur la récupération d’une barre coincée."
+      "En cas d’échec : réglez les supports de sécurité et faites-vous assister par une personne expérimentée si nécessaire. Vérifiez ces protections avant le développé. Ne comptez pas sur votre capacité à dégager une barre qui vous bloque."
     ],
     "avoidDetails": [
       "Évitez de cogner vos coudes contre le sol ou de vous tordre sous la charge.",
@@ -3958,11 +3958,11 @@
     ]
   },
   "barbell-spoto-press": {
-    "name": "Presse Spoto barre",
+    "name": "Développé Spoto à la barre",
     "cues": [
       "Installé sur le banc avec une prise stable et des poignets soutenus.",
       "Abaissez la barre juste au-dessus de votre poitrine, faites une pause sans la toucher, puis appuyez.",
-      "Sécurité : Vérifiez la sécurité des racks et organisez un observateur compétent si nécessaire avant de presser.",
+      "Sécurité : vérifiez les supports de sécurité et prévoyez l’assistance d’une personne expérimentée si nécessaire avant le développé.",
       "Soutien : Gardez les pieds en sécurité et le haut du dos posé sur le banc."
     ],
     "avoid": [
@@ -3976,9 +3976,9 @@
       "Prise en main : gardez le poids sur l’avant-bras plutôt que replié sur le poignet. Choisissez une trajectoire de coude que vous pouvez contrôler confortablement.",
       "Descente : guidez la charge vers une position inférieure reproductible. Gardez le haut du dos soutenu et résistez à une chute soudaine dans la dernière partie.",
       "Appuyez : Poussez doucement entre les mains tout en maintenant votre appui. Gardez les deux côtés en mouvement uniformément plutôt que de se tordre pour terminer.",
-      "Plan de répétition en cas d'échec : définissez les sécurités appropriées des racks et faites appel à un observateur compétent si nécessaire. Vérifiez la protection avant d'appuyer; ne comptez pas sur la récupération d’une barre coincée.",
+      "En cas d’échec : réglez les supports de sécurité et faites-vous assister par une personne expérimentée si nécessaire. Vérifiez ces protections avant le développé. Ne comptez pas sur votre capacité à dégager une barre qui vous bloque.",
       "Pause Spoto : arrêtez la barre juste au-dessus de la poitrine et maintenez-la immobile sans la toucher. Maintenez le même soutien du haut du dos lorsque vous reprenez la pression.",
-      "Support de banc : Gardez les pieds bien fixés sur le sol ou les supports de banc et le haut du dos posé sur le coussin. Réinitialisez votre souffle et votre attelle entre répétitions."
+      "Appuis sur le banc : gardez les pieds bien appuyés au sol ou sur les repose-pieds et le haut du dos posé sur le dossier. Reprenez votre respiration et votre gainage entre les répétitions."
     ],
     "avoidDetails": [
       "Évitez de poser la barre sur votre poitrine ou de perdre le contrôle pendant la pause.",
@@ -3988,11 +3988,11 @@
     ]
   },
   "barbell-larsen-press": {
-    "name": "Presse Larsen barre",
+    "name": "Développé Larsen à la barre",
     "cues": [
       "Adoptez une position stable sur le banc et gardez les poignets sur les avant-bras.",
       "Abaissez le poids vers votre poitrine avec contrôle, puis poussez-le vers le haut.",
-      "Sécurité : Vérifiez la sécurité des racks et organisez un observateur compétent si nécessaire avant de presser.",
+      "Sécurité : vérifiez les supports de sécurité et prévoyez l’assistance d’une personne expérimentée si nécessaire avant le développé.",
       "Larsen : Les pieds ne touchent pas le sol ; Gardez le bassin et le haut du dos soutenus et utilisez moins de poids."
     ],
     "avoid": [
@@ -4006,7 +4006,7 @@
       "Prise en main : gardez le poids sur l’avant-bras plutôt que replié sur le poignet. Choisissez une trajectoire de coude que vous pouvez contrôler confortablement.",
       "Descente : guidez la charge vers une position inférieure reproductible. Gardez le haut du dos soutenu et résistez à une chute soudaine dans la dernière partie.",
       "Appuyez : Poussez doucement entre les mains tout en maintenant votre appui. Gardez les deux côtés en mouvement uniformément plutôt que de se tordre pour terminer.",
-      "Plan de répétition en cas d'échec : définissez les sécurités appropriées des racks et faites appel à un observateur compétent si nécessaire. Vérifiez la protection avant d'appuyer; ne comptez pas sur la récupération d’une barre coincée.",
+      "En cas d’échec : réglez les supports de sécurité et faites-vous assister par une personne expérimentée si nécessaire. Vérifiez ces protections avant le développé. Ne comptez pas sur votre capacité à dégager une barre qui vous bloque.",
       "Configuration Larsen : Les pieds sont intentionnellement décollés du sol. Gardez le bassin et le haut du dos soutenus ; utilisez une charge plus légère sans entraînement des jambes."
     ],
     "avoidDetails": [
@@ -4017,11 +4017,11 @@
     ]
   },
   "barbell-incline-close-grip-bench-press": {
-    "name": "Presse d'établi à poignée fermée et inclinée barre",
+    "name": "Développé incliné prise serrée à la barre",
     "cues": [
       "Adoptez une position stable sur le banc et gardez les poignets sur les avant-bras.",
       "Abaissez le poids vers votre poitrine avec contrôle, puis poussez-le vers le haut.",
-      "Sécurité : Vérifiez la sécurité des racks et organisez un observateur compétent si nécessaire avant de presser.",
+      "Sécurité : vérifiez les supports de sécurité et prévoyez l’assistance d’une personne expérimentée si nécessaire avant le développé.",
       "Soutien : Gardez les pieds en sécurité et le haut du dos posé sur le banc."
     ],
     "avoid": [
@@ -4035,8 +4035,8 @@
       "Prise en main : gardez le poids sur l’avant-bras plutôt que replié sur le poignet. Choisissez une trajectoire de coude que vous pouvez contrôler confortablement.",
       "Descente : guidez la charge vers une position inférieure reproductible. Gardez le haut du dos soutenu et résistez à une chute soudaine dans la dernière partie.",
       "Appuyez : Poussez doucement entre les mains tout en maintenant votre appui. Gardez les deux côtés en mouvement uniformément plutôt que de se tordre pour terminer.",
-      "Plan de répétition en cas d'échec : définissez les sécurités appropriées des racks et faites appel à un observateur compétent si nécessaire. Vérifiez la protection avant d'appuyer; ne comptez pas sur la récupération d’une barre coincée.",
-      "Support de banc : Gardez les pieds bien fixés sur le sol ou les supports de banc et le haut du dos posé sur le coussin. Réinitialisez votre souffle et votre attelle entre répétitions."
+      "En cas d’échec : réglez les supports de sécurité et faites-vous assister par une personne expérimentée si nécessaire. Vérifiez ces protections avant le développé. Ne comptez pas sur votre capacité à dégager une barre qui vous bloque.",
+      "Appuis sur le banc : gardez les pieds bien appuyés au sol ou sur les repose-pieds et le haut du dos posé sur le dossier. Reprenez votre respiration et votre gainage entre les répétitions."
     ],
     "avoidDetails": [
       "Évitez de faire rebondir le poids ou de perdre le contrôle de la position de vos épaules.",
@@ -4056,7 +4056,7 @@
       "Ne poursuivez pas un tronçon profond ; raccourcissez l’arc si les épaules roulent vers l’avant ou perdent le contrôle."
     ],
     "cuesDetails": [
-      "Mise en place : sécurisez votre position ou votre position de banc et sélectionnez la résistance à la lumière. Trouvez une position de départ confortable pour le bras avant d’ouvrir plus largement.",
+      "Mise en place : adoptez une position stable debout ou sur le banc et choisissez une résistance légère. Trouvez une position de départ confortable pour les bras avant de les écarter davantage.",
       "Mouvement : Allongez-vous sur le banc avec haltères au-dessus de votre poitrine et les coudes doucement pliés.",
       "Contrôle : ouvrez vos bras en formant un large arc de cercle, puis rapprochez les poids.",
       "Arc des bras : gardez une légère flexion du coude assez constante lorsque le haut des bras bouge. Pensez à rapprocher les bras plutôt que de pousser les mains.",
@@ -4071,7 +4071,7 @@
     ]
   },
   "dumbbell-decline-fly": {
-    "name": "haltère Refuser la mouche",
+    "name": "Écartés déclinés aux haltères",
     "cues": [
       "Allongez-vous sur le banc avec haltères au-dessus de votre poitrine et les coudes doucement pliés.",
       "Ouvrez vos bras en formant un large arc, puis rapprochez les poids."
@@ -4081,7 +4081,7 @@
       "Ne poursuivez pas un tronçon profond ; raccourcissez l’arc si les épaules roulent vers l’avant ou perdent le contrôle."
     ],
     "cuesDetails": [
-      "Mise en place : sécurisez votre position ou votre position de banc et sélectionnez la résistance à la lumière. Trouvez une position de départ confortable pour le bras avant d’ouvrir plus largement.",
+      "Mise en place : adoptez une position stable debout ou sur le banc et choisissez une résistance légère. Trouvez une position de départ confortable pour les bras avant de les écarter davantage.",
       "Mouvement : Allongez-vous sur le banc avec haltères au-dessus de votre poitrine et les coudes doucement pliés.",
       "Contrôle : ouvrez vos bras en formant un large arc de cercle, puis rapprochez les poids.",
       "Arc des bras : gardez une légère flexion du coude assez constante lorsque le haut des bras bouge. Pensez à rapprocher les bras plutôt que de pousser les mains.",
@@ -4096,7 +4096,7 @@
     ]
   },
   "dumbbell-lying-one-arm-press": {
-    "name": "Presse à un bras couchée haltère",
+    "name": "Développé couché à un bras avec haltère",
     "cues": [
       "Adoptez une position stable sur le banc et gardez les poignets sur les avant-bras.",
       "Abaissez le poids vers votre poitrine avec contrôle, puis poussez-le vers le haut.",
@@ -4114,7 +4114,7 @@
       "Prise en main : gardez le poids sur l’avant-bras plutôt que replié sur le poignet. Choisissez une trajectoire de coude que vous pouvez contrôler confortablement.",
       "Descente : guidez la charge vers une position inférieure reproductible. Gardez le haut du dos soutenu et résistez à une chute soudaine dans la dernière partie.",
       "Appuyez : Poussez doucement entre les mains tout en maintenant votre appui. Gardez les deux côtés en mouvement uniformément plutôt que de se tordre pour terminer.",
-      "Support de banc : Gardez les pieds bien fixés sur le sol ou les supports de banc et le haut du dos posé sur le coussin. Réinitialisez votre souffle et votre attelle entre répétitions.",
+      "Appuis sur le banc : gardez les pieds bien appuyés au sol ou sur les repose-pieds et le haut du dos posé sur le dossier. Reprenez votre respiration et votre gainage entre les répétitions.",
       "Stabilité avec un seul bras : gardez les côtes et le bassin sous contrôle lorsqu'un seul bras appuie. Ne roulez pas vers le côté travaillant pour terminer la répétition."
     ],
     "avoidDetails": [
@@ -4125,7 +4125,7 @@
     ]
   },
   "cable-standing-single-arm-chest-press": {
-    "name": "Presse pectorale à bras unique sur pied par câble",
+    "name": "Développé à un bras debout à la poulie",
     "cues": [
       "Réglez les poignées près de la hauteur de la poitrine et adoptez une position stable et décalée.",
       "Avancez sans tordre le tronc, puis revenez lentement.",
@@ -4151,7 +4151,7 @@
     ]
   },
   "cable-standing-chest-press": {
-    "name": "Presse pectorale debout avec câble",
+    "name": "Développé debout à la poulie",
     "cues": [
       "Réglez les poignées près de la hauteur de la poitrine et adoptez une position stable et décalée.",
       "Avancez sans tordre le tronc, puis revenez lentement."
@@ -4185,7 +4185,7 @@
       "Ne poursuivez pas un tronçon profond ; raccourcissez l’arc si les épaules roulent vers l’avant ou perdent le contrôle."
     ],
     "cuesDetails": [
-      "Mise en place : sécurisez votre position ou votre position de banc et sélectionnez la résistance à la lumière. Trouvez une position de départ confortable pour le bras avant d’ouvrir plus largement.",
+      "Mise en place : adoptez une position stable debout ou sur le banc et choisissez une résistance légère. Trouvez une position de départ confortable pour les bras avant de les écarter davantage.",
       "Mouvement : Réglez les poignées selon l'angle de vol choisi et gardez une petite courbure au niveau des coudes.",
       "Contrôle : Rapprochez vos bras devant votre poitrine, puis ouvrez lentement.",
       "Arc des bras : gardez une légère flexion du coude assez constante lorsque le haut des bras bouge. Pensez à rapprocher les bras plutôt que de pousser les mains.",
@@ -4210,7 +4210,7 @@
       "Ne poursuivez pas un tronçon profond ; raccourcissez l’arc si les épaules roulent vers l’avant ou perdent le contrôle."
     ],
     "cuesDetails": [
-      "Mise en place : sécurisez votre position ou votre position de banc et sélectionnez la résistance à la lumière. Trouvez une position de départ confortable pour le bras avant d’ouvrir plus largement.",
+      "Mise en place : adoptez une position stable debout ou sur le banc et choisissez une résistance légère. Trouvez une position de départ confortable pour les bras avant de les écarter davantage.",
       "Mouvement : Réglez les poignées selon l'angle de vol choisi et gardez une petite courbure au niveau des coudes.",
       "Contrôle : Rapprochez vos bras devant votre poitrine, puis ouvrez lentement.",
       "Arc des bras : gardez une légère flexion du coude assez constante lorsque le haut des bras bouge. Pensez à rapprocher les bras plutôt que de pousser les mains.",
@@ -4225,9 +4225,9 @@
     ]
   },
   "svend-press": {
-    "name": "Presse Svend",
+    "name": "Développé Svend",
     "cues": [
-      "Tenez deux plaques lumineuses ensemble à hauteur de poitrine entre vos paumes.",
+      "Maintenez deux disques légers serrés entre les paumes à hauteur de poitrine.",
       "Continuez à les serrer pendant que vous avancez, puis retirez-les.",
       "Presser : maintenir une pression constante vers l'intérieur tout en appuyant ; utilisez une charge qui ne peut pas glisser."
     ],
@@ -4237,7 +4237,7 @@
     ],
     "cuesDetails": [
       "Mise en place : Choisissez une position stable et maintenez fermement la résistance près de la poitrine. Entraînez-vous à avancer sans vous pencher pour le déplacer.",
-      "Mouvement : Tenez deux plaques lumineuses ensemble à hauteur de poitrine entre vos paumes.",
+      "Mouvement : Maintenez deux disques légers serrés entre les paumes à hauteur de poitrine.",
       "Contrôle : continuez à les serrer pendant que vous avancez, puis retirez-les.",
       "Tronc : Gardez les côtes et le bassin contrôlés lorsque les bras s'étendent. Pour un répétition à un seul bras, résistez à la tendance à vous tourner vers la main qui travaille.",
       "Mains : Gardez la poignée sécurisée et les poignets alignés avec les avant-bras. Utilisez un chemin de coude confortable au lieu de forcer un angle fixe.",
@@ -4264,7 +4264,7 @@
       "Mise en place : utilisez une surface antidérapante ou des poignées sécurisées. Choisissez une hauteur de support qui vous permet d'abaisser et d'appuyer avec un tronc ferme.",
       "Mouvement : Posez les mains sur un appui stable et maintenez le corps droit et gainé de la tête aux talons.",
       "Contrôle : abaissez votre poitrine vers votre support, puis appuyez avec contrôle.",
-      "Ligne du corps : Renforcez l’abdomen et les fessiers ; laissez les épaules, les hanches et les jambes voyager ensemble plutôt que de décoller la poitrine en premier.",
+      "Alignement du corps : contractez les abdominaux et les fessiers. Faites monter les épaules, les hanches et les jambes ensemble plutôt que de relever la poitrine en premier.",
       "Mains et coudes : répartissez la pression entre les mains et choisissez une trajectoire de coude confortable. Gardez le cou aligné avec le tronc.",
       "Position haute : Repoussez le support et laissez les omoplates bouger naturellement. Terminez chaque répétition sur une planche stable avant de redescendre."
     ],
@@ -4288,7 +4288,7 @@
       "Mise en place : utilisez une surface antidérapante ou des poignées sécurisées. Choisissez une hauteur de support qui vous permet d'abaisser et d'appuyer avec un tronc ferme.",
       "Mouvement : Posez les mains sur un appui stable et maintenez le corps droit et gainé de la tête aux talons.",
       "Contrôle : abaissez votre poitrine vers votre support, puis appuyez avec contrôle.",
-      "Ligne du corps : Renforcez l’abdomen et les fessiers ; laissez les épaules, les hanches et les jambes voyager ensemble plutôt que de décoller la poitrine en premier.",
+      "Alignement du corps : contractez les abdominaux et les fessiers. Faites monter les épaules, les hanches et les jambes ensemble plutôt que de relever la poitrine en premier.",
       "Mains et coudes : répartissez la pression entre les mains et choisissez une trajectoire de coude confortable. Gardez le cou aligné avec le tronc.",
       "Position haute : Repoussez le support et laissez les omoplates bouger naturellement. Terminez chaque répétition sur une planche stable avant de redescendre."
     ],
@@ -4312,7 +4312,7 @@
       "Mise en place : utilisez une surface antidérapante ou des poignées sécurisées. Choisissez une hauteur de support qui vous permet d'abaisser et d'appuyer avec un tronc ferme.",
       "Mouvement : Posez les mains sur un appui stable et maintenez le corps droit et gainé de la tête aux talons.",
       "Contrôle : abaissez votre poitrine vers votre support, puis appuyez avec contrôle.",
-      "Ligne du corps : Renforcez l’abdomen et les fessiers ; laissez les épaules, les hanches et les jambes voyager ensemble plutôt que de décoller la poitrine en premier.",
+      "Alignement du corps : contractez les abdominaux et les fessiers. Faites monter les épaules, les hanches et les jambes ensemble plutôt que de relever la poitrine en premier.",
       "Mains et coudes : répartissez la pression entre les mains et choisissez une trajectoire de coude confortable. Gardez le cou aligné avec le tronc.",
       "Position haute : Repoussez le support et laissez les omoplates bouger naturellement. Terminez chaque répétition sur une planche stable avant de redescendre."
     ],
@@ -4337,7 +4337,7 @@
       "Mise en place : utilisez une surface antidérapante ou des poignées sécurisées. Choisissez une hauteur de support qui vous permet d'abaisser et d'appuyer avec un tronc ferme.",
       "Mouvement : Écartez les mains et maintenez le corps gainé en position de planche.",
       "Contrôle : déplacez-vous vers un bras lorsqu'il se plie ; appuyez vers le haut et alternez les côtés.",
-      "Ligne du corps : Renforcez l’abdomen et les fessiers ; laissez les épaules, les hanches et les jambes voyager ensemble plutôt que de décoller la poitrine en premier.",
+      "Alignement du corps : contractez les abdominaux et les fessiers. Faites monter les épaules, les hanches et les jambes ensemble plutôt que de relever la poitrine en premier.",
       "Mains et coudes : répartissez la pression entre les mains et choisissez une trajectoire de coude confortable. Gardez le cou aligné avec le tronc.",
       "Position haute : Repoussez le support et laissez les omoplates bouger naturellement. Terminez chaque répétition sur une planche stable avant de redescendre."
     ],
@@ -4361,7 +4361,7 @@
       "Mise en place : utilisez une surface antidérapante ou des poignées sécurisées. Choisissez une hauteur de support qui vous permet d'abaisser et d'appuyer avec un tronc ferme.",
       "Mouvement : Posez les mains sur un appui stable et maintenez le corps droit et gainé de la tête aux talons.",
       "Contrôle : abaissez votre poitrine vers votre support, puis appuyez avec contrôle.",
-      "Ligne du corps : Renforcez l’abdomen et les fessiers ; laissez les épaules, les hanches et les jambes voyager ensemble plutôt que de décoller la poitrine en premier.",
+      "Alignement du corps : contractez les abdominaux et les fessiers. Faites monter les épaules, les hanches et les jambes ensemble plutôt que de relever la poitrine en premier.",
       "Mains et coudes : répartissez la pression entre les mains et choisissez une trajectoire de coude confortable. Gardez le cou aligné avec le tronc.",
       "Position haute : Repoussez le support et laissez les omoplates bouger naturellement. Terminez chaque répétition sur une planche stable avant de redescendre."
     ],
@@ -4501,7 +4501,7 @@
     ]
   },
   "lever-machine-pullover": {
-    "name": "Pull machine à levier",
+    "name": "Pull-over à la machine",
     "cues": [
       "Sécurisez votre torse et commencez avec les bras tendus au-dessus de votre tête.",
       "Tirez le poids en arc de cercle vers votre torse, puis revenez lentement."
@@ -4526,7 +4526,7 @@
     ]
   },
   "cable-rope-straight-arm-pulldown": {
-    "name": "Câble de traction à bras droit",
+    "name": "Tirage bras tendus à la poulie avec corde",
     "cues": [
       "Tenez-vous face au câble, les bras longs et les coudes légèrement pliés.",
       "Balayez la poignée vers vos cuisses, puis revenez lentement au-dessus de votre tête."
@@ -4551,7 +4551,7 @@
     ]
   },
   "cable-single-arm-straight-arm-pulldown": {
-    "name": "Câble déroulant à bras droit à un seul bras",
+    "name": "Tirage à un bras tendu à la poulie",
     "cues": [
       "Tenez-vous face au câble, les bras longs et les coudes légèrement pliés.",
       "Balayez la poignée vers vos cuisses, puis revenez lentement au-dessus de votre tête."
@@ -4576,7 +4576,7 @@
     ]
   },
   "barbell-lying-seal-row-on-rack": {
-    "name": "Rangée de joints couchés barre sur support",
+    "name": "Seal row à la barre sur rack",
     "cues": [
       "Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement."
@@ -4588,7 +4588,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Contrôle : tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -4600,7 +4600,7 @@
     ]
   },
   "landmine-one-arm-bent-over-row": {
-    "name": "Rangée courbée à un bras contre les mines terrestres",
+    "name": "Rowing landmine à un bras buste penché",
     "cues": [
       "Inclinez-vous en fléchissant les hanches et gainez le tronc, la charge suspendue sous vous.",
       "Tirez vers le bas de vos côtes ou vers votre taille, puis abaissez-le jusqu'à ce que vos bras s'étendent."
@@ -4613,7 +4613,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Inclinez-vous en fléchissant les hanches et gainez le tronc, la charge suspendue sous vous.",
       "Contrôle : tirez vers le bas de vos côtes ou vers votre taille, puis abaissez-le jusqu'à ce que vos bras s'étendent.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -4625,7 +4625,7 @@
     ]
   },
   "landmine-v-bar-bent-over-row": {
-    "name": "Rangée courbée en V pour mines terrestres",
+    "name": "Rowing landmine buste penché avec poignée en V",
     "cues": [
       "Inclinez-vous en fléchissant les hanches et gainez le tronc, la charge suspendue sous vous.",
       "Tirez vers le bas de vos côtes ou vers votre taille, puis abaissez-le jusqu'à ce que vos bras s'étendent."
@@ -4638,7 +4638,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Inclinez-vous en fléchissant les hanches et gainez le tronc, la charge suspendue sous vous.",
       "Contrôle : tirez vers le bas de vos côtes ou vers votre taille, puis abaissez-le jusqu'à ce que vos bras s'étendent.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -4650,7 +4650,7 @@
     ]
   },
   "lever-lying-t-bar-row": {
-    "name": "Rangée de barres en T couchées à levier",
+    "name": "Rowing T-bar allongé à la machine",
     "cues": [
       "Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement."
@@ -4662,7 +4662,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Contrôle : tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -4674,7 +4674,7 @@
     ]
   },
   "cable-seated-wide-grip-row": {
-    "name": "Rangée à prise large avec câble",
+    "name": "Rowing assis prise large à la poulie",
     "cues": [
       "Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement."
@@ -4686,7 +4686,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Contrôle : tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -4698,7 +4698,7 @@
     ]
   },
   "cable-seated-row-with-v-bar": {
-    "name": "Rangée de câbles avec V-BAR",
+    "name": "Rowing assis à la poulie avec poignée en V",
     "cues": [
       "Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement."
@@ -4710,7 +4710,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Contrôle : tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -4722,17 +4722,17 @@
     ]
   },
   "cable-one-arm-twisting-seated-row": {
-    "name": "Câble à un bras tordant une rangée assise",
+    "name": "Rowing assis à un bras avec rotation à la poulie",
     "cues": [
-      "Asseyez-vous face au câble avec un bras tendu et les pieds renforcés.",
+      "Asseyez-vous face à la poulie, un bras tendu et les pieds bien calés.",
       "Ramez vers votre taille en tournant légèrement votre torse, puis détendez-vous lentement."
     ],
     "avoid": [
       "Ne tirez pas dans la torsion ; réduisez la charge jusqu'à ce que la rotation reste délibérée."
     ],
     "cuesDetails": [
-      "Mise en place : Asseyez-vous bien face au câble et prenez une seule poignée. Utilisez une résistance légère pour apprendre la rangée et la rotation intentionnelle du tronc ensemble.",
-      "Mouvement : Asseyez-vous face au câble avec un bras tendu et les pieds renforcés.",
+      "Mise en place : asseyez-vous de façon stable face à la poulie et prenez une poignée simple. Utilisez une résistance légère pour apprendre à associer le rowing et la rotation volontaire du tronc.",
+      "Mouvement : Asseyez-vous face à la poulie, un bras tendu et les pieds bien calés.",
       "Contrôle : Ramez vers votre taille tout en tournant légèrement votre torse, puis détendez-vous lentement.",
       "Tourner : laissez les côtes se tourner vers le côté actif pendant que le coude recule. Gardez le mouvement progressif plutôt que de fouetter la poignée.",
       "Base : Gardez les pieds soutenus et le bassin contrôlé. La rotation fait partie de cette variation, mais pas le basculement du siège.",
@@ -4746,7 +4746,7 @@
     ]
   },
   "cable-high-row": {
-    "name": "Câble haute rangée",
+    "name": "Rowing à la poulie haute",
     "cues": [
       "Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement."
@@ -4758,7 +4758,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Contrôle : tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -4770,7 +4770,7 @@
     ]
   },
   "cable-low-seated-row": {
-    "name": "Câble, rangée assise basse",
+    "name": "Rowing assis à la poulie basse",
     "cues": [
       "Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement."
@@ -4782,7 +4782,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Contrôle : tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -4794,7 +4794,7 @@
     ]
   },
   "cable-rope-seated-row": {
-    "name": "Rangée assise de corde de câble",
+    "name": "Rowing assis à la poulie avec corde",
     "cues": [
       "Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement."
@@ -4806,7 +4806,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Contrôle : tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -4818,7 +4818,7 @@
     ]
   },
   "lever-high-row": {
-    "name": "Levier rangée haute",
+    "name": "Rowing haut à la machine",
     "cues": [
       "Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement."
@@ -4830,7 +4830,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Contrôle : tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -4842,7 +4842,7 @@
     ]
   },
   "lever-machine-low-row": {
-    "name": "Machine à levier rangée basse",
+    "name": "Rowing bas à la machine",
     "cues": [
       "Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement."
@@ -4854,7 +4854,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Contrôle : tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -4866,7 +4866,7 @@
     ]
   },
   "lever-unilateral-row": {
-    "name": "Rangée unilatérale à levier",
+    "name": "Rowing unilatéral à la machine",
     "cues": [
       "Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement."
@@ -4878,7 +4878,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Contrôle : tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -4890,7 +4890,7 @@
     ]
   },
   "dumbbell-renegade-row": {
-    "name": "Ligne Renegade haltère",
+    "name": "Renegade row aux haltères",
     "cues": [
       "Tenez une planche sur le haltères avec les pieds écartés pour l'équilibre.",
       "Ramez un poids vers votre hanche, posez-le, puis changez de côté.",
@@ -4915,7 +4915,7 @@
     ]
   },
   "dumbbell-kroc-row": {
-    "name": "Ligne Kroc haltère",
+    "name": "Rowing Kroc avec haltère",
     "cues": [
       "Adoptez une position stable et décalée avec une main soutenue et le haltère suspendu.",
       "Ramez vers votre hanche avec une contribution contrôlée du torse, puis abaissez-vous délibérément."
@@ -4927,7 +4927,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Adoptez une position stable et décalée avec une main appuyée et le haltère suspendu.",
       "Contrôle : Ramez vers votre hanche avec une contribution contrôlée du torse, puis abaissez-vous délibérément.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé.",
       "Variation Kroc : Une contribution modeste et délibérée du torse peut faire partie de cette rangée. Gardez le contrôle plutôt que d’utiliser une secousse soudaine dans le bas du dos."
@@ -4940,7 +4940,7 @@
     ]
   },
   "dumbbell-gorilla-row": {
-    "name": "Rangée de gorilles haltère",
+    "name": "Rowing gorilla aux haltères",
     "cues": [
       "Placez-vous au-dessus des haltères avec les pieds écartés, fléchissez les hanches et les genoux et gainez le tronc.",
       "Ramez un haltère vers votre hanche tandis que l'autre reste au sol ; alterner."
@@ -4953,7 +4953,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Placez-vous au-dessus des haltères avec les pieds écartés, fléchissez les hanches et les genoux et gainez le tronc.",
       "Contrôle : Ramez un haltère vers votre hanche pendant que l'autre reste au sol ; alterner.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -4965,7 +4965,7 @@
     ]
   },
   "suspension-trainer-row": {
-    "name": "Rangée d'entraîneur de suspension",
+    "name": "Rowing en suspension",
     "cues": [
       "Tenez la barre ou les poignées et maintenez une ligne gainée des épaules aux talons.",
       "Tirez votre poitrine vers vos mains, puis abaissez-la sous contrôle.",
@@ -4990,7 +4990,7 @@
     ]
   },
   "ring-inverted-row": {
-    "name": "Rangée inversée d'anneau",
+    "name": "Rowing inversé aux anneaux",
     "cues": [
       "Tenez la barre ou les poignées et maintenez une ligne gainée des épaules aux talons.",
       "Tirez votre poitrine vers vos mains, puis abaissez-la sous contrôle.",
@@ -5056,7 +5056,7 @@
       "Mouvement : Suspendez-vous à une barre stable avec une prise confortable et le tronc gainé.",
       "Contrôle : tirez votre corps vers la barre, puis abaissez-le avec contrôle.",
       "Tirer : pensez à ramener les coudes vers les côtes à mesure que le corps se lève. Laissez les omoplates bouger plutôt que de les forcer.",
-      "Position du corps : Préparez-vous légèrement et gardez les jambes calmes. Terminez à une hauteur que vous pouvez atteindre sans pousser le menton vers l’avant.",
+      "Position du corps : gainez légèrement le tronc et gardez les jambes immobiles. Montez uniquement à une hauteur que vous pouvez atteindre sans avancer le menton.",
       "Descente : Abaissez jusqu'à ce que les bras atteignent une position étendue confortable tout en gardant le contrôle des épaules et des poignées."
     ],
     "avoidDetails": [
@@ -5075,16 +5075,16 @@
       "Tirage à crémaillère : installez la barre sur les deux supports après chaque répétition ; ne rebondissez pas."
     ],
     "avoid": [
-      "Ne rebondissez pas sur les sécurités ; réglez la barre avant de réinitialiser votre corset.",
+      "Ne faites pas rebondir la barre sur les supports de sécurité. Laissez-la se stabiliser, puis gainez à nouveau le tronc.",
       "Finissez de vous tenir droit plutôt que de vous pencher en arrière."
     ],
     "cuesDetails": [
-      "Mise en place : rapprochez la charge, prenez-la fermement et éliminez le jeu avant de la soulever. Réglez la hauteur de départ pour pouvoir vous préparer en équilibre.",
+      "Mise en place : rapprochez la charge, prenez une prise ferme et mettez l’ensemble sous tension avant de soulever. Réglez la hauteur de départ pour pouvoir vous gainer en gardant l’équilibre.",
       "Mouvement : Posez la barre sur des supports de sécurité solides à la hauteur choisie et gainez le tronc avant de tirer.",
       "Contrôle : gardez-le à proximité lorsque vous vous tenez droit, puis abaissez-le sur les sécurités.",
       "Entraînement des jambes : repoussez le sol lorsque les hanches et les épaules se lèvent ensemble. Gardez les bras longs ; ils retiennent la charge plutôt que de la courber.",
       "Trajectoire de charge : Gardez le poids près de vos jambes tout en laissant un espace libre pour les genoux. Terminez debout avec les hanches et les genoux étendus.",
-      "Réinitialisation : Abaissez avec une charnière de hanche et une flexion du genou contrôlées. Rétablissez votre adhérence, votre équilibre et votre renfort avant chaque nouvelle traction.",
+      "Repositionnement : abaissez la charge de façon contrôlée en reculant les hanches et en fléchissant les genoux. Rétablissez votre prise, votre équilibre et votre gainage avant chaque nouveau tirage.",
       "Hauteur du rack : Commencez par la barre supportée à la hauteur choisie. Installez-le sur les deux supports après chaque répétition au lieu de rebondir lors de la traction suivante."
     ],
     "avoidDetails": [
@@ -5104,7 +5104,7 @@
       "Ne balancez pas le torse et ne secouez pas le cou pour soulever plus haut ; utilisez moins de poids et une portée confortable."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Commencez avec les bras bas et les coudes légèrement pliés.",
       "Contrôle : Levez vos bras jusqu'à une hauteur d'épaule confortable, puis abaissez-les lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -5128,7 +5128,7 @@
       "Ne balancez pas le torse et ne secouez pas le cou pour soulever plus haut ; utilisez moins de poids et une portée confortable."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Commencez avec les bras bas et les coudes légèrement pliés.",
       "Contrôle : Levez vos bras jusqu'à une hauteur d'épaule confortable, puis abaissez-les lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -5152,7 +5152,7 @@
       "Ne balancez pas le torse et ne secouez pas le cou pour soulever plus haut ; utilisez moins de poids et une portée confortable."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Commencez avec les bras bas et les coudes légèrement pliés.",
       "Contrôle : Levez vos bras jusqu'à une hauteur d'épaule confortable, puis abaissez-les lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -5176,7 +5176,7 @@
       "Ne balancez pas le torse et ne secouez pas le cou pour soulever plus haut ; utilisez moins de poids et une portée confortable."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Commencez avec les bras bas et les coudes légèrement pliés.",
       "Contrôle : Levez vos bras jusqu'à une hauteur d'épaule confortable, puis abaissez-les lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -5200,7 +5200,7 @@
       "Ne balancez pas le torse et ne secouez pas le cou pour soulever plus haut ; utilisez moins de poids et une portée confortable."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Appuyez le torse ou gainez le tronc, les bras dirigés vers le bas.",
       "Contrôle : Levez vos bras en diagonale en Y, puis abaissez-les lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -5224,7 +5224,7 @@
       "Ne balancez pas le torse et ne secouez pas le cou pour soulever plus haut ; utilisez moins de poids et une portée confortable."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Appuyez le torse ou gainez le tronc, les bras dirigés vers le bas.",
       "Contrôle : Levez vos bras en diagonale en Y, puis abaissez-les lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -5248,7 +5248,7 @@
       "Ne balancez pas le torse et ne secouez pas le cou pour soulever plus haut ; utilisez moins de poids et une portée confortable."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Tenez la charge devant vos cuisses en pliant doucement le coude.",
       "Contrôle : soulevez-le vers l'avant jusqu'à une hauteur d'épaule confortable, puis abaissez-le lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -5272,7 +5272,7 @@
       "Ne balancez pas le torse et ne secouez pas le cou pour soulever plus haut ; utilisez moins de poids et une portée confortable."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Tenez la charge devant vos cuisses en pliant doucement le coude.",
       "Contrôle : soulevez-le vers l'avant jusqu'à une hauteur d'épaule confortable, puis abaissez-le lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -5296,7 +5296,7 @@
       "Ne balancez pas le torse et ne secouez pas le cou pour soulever plus haut ; utilisez moins de poids et une portée confortable."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Tenez la charge devant vos cuisses en pliant doucement le coude.",
       "Contrôle : soulevez-le vers l'avant jusqu'à une hauteur d'épaule confortable, puis abaissez-le lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -5320,7 +5320,7 @@
       "Ne balancez pas le torse et ne secouez pas le cou pour soulever plus haut ; utilisez moins de poids et une portée confortable."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Tenez la charge devant vos cuisses en pliant doucement le coude.",
       "Contrôle : soulevez-le vers l'avant jusqu'à une hauteur d'épaule confortable, puis abaissez-le lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -5345,7 +5345,7 @@
       "Utilisez moins de poids si vous balancez le torse ou si vous tirez les poids vers le haut."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Soutenez votre poitrine ou votre charnière au niveau des hanches avec les bras pendants sous vous.",
       "Contrôle : Ouvrez vos bras sur les côtés avec des coudes souples, puis revenez lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -5370,7 +5370,7 @@
       "Utilisez moins de poids si vous balancez le torse ou si vous tirez les poids vers le haut."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Soutenez votre poitrine ou votre charnière au niveau des hanches avec les bras pendants sous vous.",
       "Contrôle : Ouvrez vos bras sur les côtés avec des coudes souples, puis revenez lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -5395,7 +5395,7 @@
       "Utilisez moins de poids si vous balancez le torse ou si vous tirez les poids vers le haut."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Soutenez votre poitrine ou votre charnière au niveau des hanches avec les bras pendants sous vous.",
       "Contrôle : Ouvrez vos bras sur les côtés avec des coudes souples, puis revenez lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",
@@ -5410,7 +5410,7 @@
     ]
   },
   "lever-seated-rear-delt-row": {
-    "name": "Rangée de delt arrière à levier",
+    "name": "Rowing assis pour deltoïdes postérieurs à la machine",
     "cues": [
       "Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement."
@@ -5422,7 +5422,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Contrôle : tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -5434,7 +5434,7 @@
     ]
   },
   "barbell-wide-grip-upright-row": {
-    "name": "Rangée verticale à prise large barre",
+    "name": "Tirage menton prise large à la barre",
     "cues": [
       "Tenez la barre ou le haltères devant vos cuisses avec une prise confortable.",
       "Dirigez avec vos coudes pendant que vous soulevez la charge à une hauteur confortable ; descendre lentement."
@@ -5459,7 +5459,7 @@
     ]
   },
   "dumbbell-upright-row": {
-    "name": "Rangée verticale haltère",
+    "name": "Tirage menton aux haltères",
     "cues": [
       "Tenez la barre ou le haltères devant vos cuisses avec une prise confortable.",
       "Dirigez avec vos coudes pendant que vous soulevez la charge à une hauteur confortable ; descendre lentement."
@@ -5484,12 +5484,12 @@
     ]
   },
   "barbell-z-press": {
-    "name": "Presse barre Z",
+    "name": "Z press à la barre",
     "cues": [
       "Asseyez-vous sur le sol avec les jambes étendues et la barre à hauteur d’épaule.",
       "Gainez le tronc, poussez la charge au-dessus de la tête et redescendez avec contrôle.",
       "Épaules : laissez les omoplates tourner vers le haut lorsque vous appuyez ; gardez les côtes au-dessus du bassin.",
-      "Appuyez sur Z : Asseyez-vous avec les jambes étendues et le tronc stable ; allumer la lumière sans forcer la position assise."
+      "Z press : asseyez-vous les jambes tendues et le tronc stable. Commencez avec une charge légère sans forcer la position assise."
     ],
     "avoid": [
       "Ne vous penchez pas plus en arrière pour terminer ; réduisez la charge et gardez les côtes au-dessus du bassin."
@@ -5501,7 +5501,7 @@
       "Gainage : gardez les côtes au-dessus d’un bassin stable pendant la poussée. Contractez l’abdomen sans transformer le mouvement en inclinaison vers l’arrière.",
       "Épaules : laissez les omoplates tourner naturellement vers le haut à mesure que les bras se lèvent. N'essayez pas de les cerner lors d'une presse suspendue.",
       "Retour : Ramenez la charge le long d'un chemin confortable et reproductible. Gardez les poignets soutenus et reprenez le contrôle avant la prochaine pression.",
-      "Posture au sol : Asseyez-vous avec les jambes étendues seulement aussi loin que vous pouvez maintenir un tronc stable. Utilisez une barre lumineuse ; ne forcez pas la position en arrondissant ou en vous penchant en arrière."
+      "Position au sol : tendez les jambes uniquement dans la mesure où le tronc reste stable. Utilisez une barre légèrement chargée et ne forcez pas la position en arrondissant le dos ou en vous penchant en arrière."
     ],
     "avoidDetails": [
       "Évitez de vous pencher en arrière pour le transformer en presse inclinée.",
@@ -5511,7 +5511,7 @@
     ]
   },
   "landmine-single-arm-press": {
-    "name": "Presse à bras unique pour mines terrestres",
+    "name": "Développé landmine à un bras",
     "cues": [
       "Tenez l’extrémité de la barre près de l’épaule et gainez le tronc dans une position stable.",
       "Appuyez-le vers l'avant et vers le haut le long du chemin de la barre ; abaisser avec contrôle.",
@@ -5582,13 +5582,13 @@
     ],
     "avoidDetails": [
       "Évitez de tomber sur la tête ou de perdre le contact des mains.",
-      "Impact sur la tête : Ne vous reposez pas et ne laissez pas tomber votre poids sur la tête ou le cou en bas. Arrêtez-vous avant que le support de bras ne tombe en panne.",
+      "Appui sur la tête : ne posez pas votre poids sur la tête ou le cou et ne vous laissez pas tomber dessus en position basse. Arrêtez avant que les bras ne puissent plus vous soutenir.",
       "Évasement et glissement : Ne laissez pas les coudes tirer sur le côté ou les mains glisser lorsque vous descendez. Réinitialisez la surface et la difficulté.",
-      "Sortie imprévue : ne tentez pas un répétition inversé sans un support fiable et une descente expérimentée. Utilisez une variante plus simple si nécessaire."
+      "Sortie non préparée : ne tentez pas une répétition en position inversée sans appui fiable ni façon de redescendre déjà pratiquée. Choisissez une variante plus facile si nécessaire."
     ]
   },
   "ez-barbell-preacher-curl": {
-    "name": "EZ barre Boucle de prédicateur",
+    "name": "Curl au pupitre à la barre EZ",
     "cues": [
       "Posez le haut de vos bras sur le coussin et gardez vos poignets stables.",
       "Enroulez la charge, puis abaissez-la jusqu'à ce que vos coudes soient confortablement étendus."
@@ -5613,7 +5613,7 @@
     ]
   },
   "dumbbell-preacher-curl": {
-    "name": "Boucle de prédicateur haltère",
+    "name": "Curl au pupitre avec haltère",
     "cues": [
       "Posez le haut de vos bras sur le coussin et gardez vos poignets stables.",
       "Enroulez la charge, puis abaissez-la jusqu'à ce que vos coudes soient confortablement étendus."
@@ -5638,7 +5638,7 @@
     ]
   },
   "dumbbell-one-arm-hammer-preacher-curl": {
-    "name": "haltère Curl de prédicateur à marteau à un bras",
+    "name": "Curl marteau au pupitre à un bras avec haltère",
     "cues": [
       "Posez le haut de vos bras sur le coussin et gardez vos poignets stables.",
       "Enroulez la charge, puis abaissez-la jusqu'à ce que vos coudes soient confortablement étendus."
@@ -5663,7 +5663,7 @@
     ]
   },
   "cable-preacher-curl": {
-    "name": "Boucle de prédicateur de câble",
+    "name": "Curl au pupitre à la poulie",
     "cues": [
       "Posez le haut de vos bras sur le coussin et gardez vos poignets stables.",
       "Enroulez la charge, puis abaissez-la jusqu'à ce que vos coudes soient confortablement étendus."
@@ -5688,7 +5688,7 @@
     ]
   },
   "barbell-reverse-curl": {
-    "name": "Boucle inversée barre",
+    "name": "Curl inversé à la barre",
     "cues": [
       "Prenez une prise paume vers le bas avec un alignement confortable du poignet.",
       "Pliez vos coudes pour soulever le poids, puis abaissez-les lentement."
@@ -5713,7 +5713,7 @@
     ]
   },
   "ez-barbell-reverse-grip-curl": {
-    "name": "EZ barre Boucle à poignée inversée",
+    "name": "Curl inversé à la barre EZ",
     "cues": [
       "Prenez une prise paume vers le bas avec un alignement confortable du poignet.",
       "Pliez vos coudes pour soulever le poids, puis abaissez-les lentement."
@@ -5738,7 +5738,7 @@
     ]
   },
   "dumbbell-biceps-curl-reverse": {
-    "name": "haltère Curl biceps inversé",
+    "name": "Curl inversé aux haltères",
     "cues": [
       "Prenez une prise paume vers le bas avec un alignement confortable du poignet.",
       "Pliez vos coudes pour soulever le poids, puis abaissez-les lentement."
@@ -5763,9 +5763,9 @@
     ]
   },
   "dumbbell-zottman-curl": {
-    "name": "haltère Boucle Zottman",
+    "name": "Curl Zottman aux haltères",
     "cues": [
-      "Curl haltères avec les paumes vers le haut tout en gardant le haut des bras près de vos côtés.",
+      "Fléchissez les coudes avec les haltères, paumes vers le haut, en gardant les bras près du corps.",
       "Tournez les paumes vers le haut, abaissez lentement, puis réinitialisez la poignée."
     ],
     "avoid": [
@@ -5774,12 +5774,12 @@
     ],
     "cuesDetails": [
       "Mise en place : choisissez la prise prévue et fixez n'importe quel banc ou accoudoir. Commencez par une résistance que vous pouvez boucler sans bouger le tronc.",
-      "Mouvement : Curl haltères avec les paumes vers le haut tout en gardant le haut des bras près de vos côtés.",
+      "Mouvement : Fléchissez les coudes avec les haltères, paumes vers le haut, en gardant les bras près du corps.",
       "Contrôle : tournez les paumes vers le haut, abaissez lentement, puis réinitialisez la poignée.",
       "Mouvement du coude : pliez le coude tout en gardant le haut du bras raisonnablement stable dans la position pour cette variation.",
       "Poignet : Gardez le poignet aligné avec l’avant-bras. Toute rotation de la poignée doit être délibérée plutôt que provoquée par le poids qui tire votre main.",
       "Retour : étendez le coude en douceur dans une plage confortable. Gardez le contrôle près du bas plutôt que de tomber dans le tronçon.",
-      "Virage Zottman : courbez les paumes vers le haut, tournez délibérément vers le haut et les paumes inférieures vers le bas. Utilisez une charge plus légère pour une descente contrôlée en prise inversée."
+      "Rotation Zottman : montez les haltères paumes vers le haut, tournez les avant-bras de façon contrôlée près du sommet, puis descendez paumes vers le bas. Utilisez une charge plus légère pour contrôler la descente en pronation."
     ],
     "avoidDetails": [
       "Évitez de précipiter le tour du poignet ou de balancer le haltères.",
@@ -5789,10 +5789,10 @@
     ]
   },
   "dumbbell-cross-body-hammer-curl": {
-    "name": "haltère Boucle de marteau à corps croisé",
+    "name": "Curl marteau croisé avec haltère",
     "cues": [
       "Tenez les poids avec les paumes tournées vers l’intérieur et les coudes près de vos côtés.",
-      "Bouclez-vous sans faire pivoter vos poignets, puis abaissez-le lentement.",
+      "Fléchissez les coudes sans tourner les poignets, puis redescendez lentement.",
       "En bandoulière : gardez la paume vers l’intérieur et déplacez-vous vers la poitrine opposée sans tordre le torse."
     ],
     "avoid": [
@@ -5801,7 +5801,7 @@
     "cuesDetails": [
       "Mise en place : choisissez la prise prévue et fixez n'importe quel banc ou accoudoir. Commencez par une résistance que vous pouvez boucler sans bouger le tronc.",
       "Mouvement : Tenez les poids avec les paumes tournées vers l’intérieur et les coudes près de vos côtés.",
-      "Contrôle : Bouclez sans faire tourner vos poignets, puis abaissez lentement.",
+      "Contrôle : Fléchissez les coudes sans tourner les poignets, puis redescendez lentement.",
       "Mouvement du coude : pliez le coude tout en gardant le haut du bras raisonnablement stable dans la position pour cette variation.",
       "Poignet : Gardez le poignet aligné avec l’avant-bras. Toute rotation de la poignée doit être délibérée plutôt que provoquée par le poids qui tire votre main.",
       "Retour : étendez le coude en douceur dans une plage confortable. Gardez le contrôle près du bas plutôt que de tomber dans le tronçon.",
@@ -5815,7 +5815,7 @@
     ]
   },
   "dumbbell-seated-curl": {
-    "name": "haltère Curl assis",
+    "name": "Curl assis aux haltères",
     "cues": [
       "Gardez vos bras près de votre torse et maintenez la charge avec les poignets stables.",
       "Pliez vos coudes pour soulever la charge, puis abaissez-la avec contrôle."
@@ -5839,7 +5839,7 @@
     ]
   },
   "dumbbell-standing-biceps-curl": {
-    "name": "haltère Curl biceps debout",
+    "name": "Curl debout aux haltères",
     "cues": [
       "Gardez vos bras près de votre torse et maintenez la charge avec les poignets stables.",
       "Pliez vos coudes pour soulever la charge, puis abaissez-la avec contrôle."
@@ -5863,7 +5863,7 @@
     ]
   },
   "barbell-drag-curl": {
-    "name": "Boucle de traînée barre",
+    "name": "Drag curl à la barre",
     "cues": [
       "Tenez la charge près de vos cuisses avec le haut des bras près de vos côtés.",
       "Tirez légèrement vos coudes vers l'arrière pendant que vous vous courbez le long de votre torse ; descendre lentement."
@@ -5876,7 +5876,7 @@
       "Mise en place : Tenez-vous debout en équilibre avec une prise complète et la barre ou la poignée près de l’avant des cuisses. Commencez par une légère résistance.",
       "Mouvement : Tenez la charge près de vos cuisses avec le haut des bras près de vos côtés.",
       "Contrôle : tirez légèrement vos coudes vers l'arrière pendant que vous vous courbez le long de votre torse ; descendre lentement.",
-      "Coudes : laissez les coudes reculer pendant que vous vous courbez. Ce déplacement délibéré vers l'arrière distingue une boucle de traînée d'une boucle conventionnelle.",
+      "Coudes : laissez les coudes reculer pendant la flexion. Ce déplacement volontaire vers l’arrière distingue le drag curl du curl classique.",
       "Chemin de charge : rapprochez le poids le long du torse au lieu de le balancer vers l'extérieur en formant un grand arc.",
       "Retour : Inversez progressivement le trajet du coude et de la main, en gardant les poignets confortables et le tronc stable."
     ],
@@ -5888,7 +5888,7 @@
     ]
   },
   "cable-drag-curl": {
-    "name": "Boucle de traînée de câble",
+    "name": "Drag curl à la poulie",
     "cues": [
       "Tenez la charge près de vos cuisses avec le haut des bras près de vos côtés.",
       "Tirez légèrement vos coudes vers l'arrière pendant que vous vous courbez le long de votre torse ; descendre lentement."
@@ -5901,7 +5901,7 @@
       "Mise en place : Tenez-vous debout en équilibre avec une prise complète et la barre ou la poignée près de l’avant des cuisses. Commencez par une légère résistance.",
       "Mouvement : Tenez la charge près de vos cuisses avec le haut des bras près de vos côtés.",
       "Contrôle : tirez légèrement vos coudes vers l'arrière pendant que vous vous courbez le long de votre torse ; descendre lentement.",
-      "Coudes : laissez les coudes reculer pendant que vous vous courbez. Ce déplacement délibéré vers l'arrière distingue une boucle de traînée d'une boucle conventionnelle.",
+      "Coudes : laissez les coudes reculer pendant la flexion. Ce déplacement volontaire vers l’arrière distingue le drag curl du curl classique.",
       "Chemin de charge : rapprochez le poids le long du torse au lieu de le balancer vers l'extérieur en formant un grand arc.",
       "Retour : Inversez progressivement le trajet du coude et de la main, en gardant les poignets confortables et le tronc stable."
     ],
@@ -5913,7 +5913,7 @@
     ]
   },
   "cable-standing-inner-curl": {
-    "name": "Boucle intérieure debout sur câble",
+    "name": "Curl debout vers l’intérieur à la poulie",
     "cues": [
       "Gardez vos bras près de votre torse et maintenez la charge avec les poignets stables.",
       "Pliez vos coudes pour soulever la charge, puis abaissez-la avec contrôle."
@@ -5961,7 +5961,7 @@
     ]
   },
   "cable-overhead-curl": {
-    "name": "Boucle aérienne de câble",
+    "name": "Curl bras levés à la poulie haute",
     "cues": [
       "Placez les câbles hauts et tenez vos bras sur les côtés.",
       "Pliez vos coudes pour amener vos mains vers votre tête ; s'étendre lentement."
@@ -6010,7 +6010,7 @@
     ]
   },
   "dumbbell-spider-curl": {
-    "name": "Boucle d'araignée haltère",
+    "name": "Spider curl aux haltères",
     "cues": [
       "Allongez-vous sur un banc incliné, les bras pendant librement.",
       "Courbez le poids sans soulever votre poitrine, puis abaissez-le lentement."
@@ -6026,7 +6026,7 @@
       "Mouvement du coude : pliez le coude tout en gardant le haut du bras raisonnablement stable dans la position pour cette variation.",
       "Poignet : Gardez le poignet aligné avec l’avant-bras. Toute rotation de la poignée doit être délibérée plutôt que provoquée par le poids qui tire votre main.",
       "Retour : étendez le coude en douceur dans une plage confortable. Gardez le contrôle près du bas plutôt que de tomber dans le tronçon.",
-      "Support araignée : gardez la poitrine sur le banc incliné et laissez pendre le haut des bras. Curl sans soulever la poitrine pour faire face aux poids."
+      "Appui du spider curl : gardez la poitrine sur le banc incliné et laissez les bras pendre. Fléchissez les coudes sans soulever la poitrine pour rejoindre les haltères."
     ],
     "avoidDetails": [
       "Évitez de balancer les bras ou de décoller votre torse du coussin.",
@@ -6036,7 +6036,7 @@
     ]
   },
   "dumbbell-hammer-preacher-curl": {
-    "name": "Boucle de prédicateur marteau haltère",
+    "name": "Curl marteau au pupitre aux haltères",
     "cues": [
       "Posez le haut de vos bras sur le coussin et gardez vos poignets stables.",
       "Enroulez la charge, puis abaissez-la jusqu'à ce que vos coudes soient confortablement étendus."
@@ -6061,10 +6061,10 @@
     ]
   },
   "dumbbell-incline-hammer-curl": {
-    "name": "Curl marteau incliné haltère",
+    "name": "Curl marteau incliné aux haltères",
     "cues": [
       "Asseyez-vous contre le banc incliné, les bras suspendus à vos côtés.",
-      "Bouclez-vous sans lever le haut des bras, puis abaissez-le lentement.",
+      "Fléchissez les coudes sans relever les bras, puis redescendez lentement.",
       "Inclinaison : Gardez le dos soutenu ; réduisez l’inclinaison si la position de départ des épaules semble forcée."
     ],
     "avoid": [
@@ -6074,7 +6074,7 @@
     "cuesDetails": [
       "Mise en place : choisissez la prise prévue et fixez n'importe quel banc ou accoudoir. Commencez par une résistance que vous pouvez boucler sans bouger le tronc.",
       "Mouvement : Asseyez-vous contre le banc incliné, les bras pendants à vos côtés.",
-      "Contrôle : Bouclez-vous sans lever le haut des bras, puis abaissez-le lentement.",
+      "Contrôle : Fléchissez les coudes sans relever les bras, puis redescendez lentement.",
       "Mouvement du coude : pliez le coude tout en gardant le haut du bras raisonnablement stable dans la position pour cette variation.",
       "Poignet : Gardez le poignet aligné avec l’avant-bras. Toute rotation de la poignée doit être délibérée plutôt que provoquée par le poids qui tire votre main.",
       "Retour : étendez le coude en douceur dans une plage confortable. Gardez le contrôle près du bas plutôt que de tomber dans le tronçon.",
@@ -6166,12 +6166,12 @@
     ]
   },
   "barbell-jm-bench-press": {
-    "name": "Presse d'établi Jm barre",
+    "name": "JM press à la barre",
     "cues": [
       "Allongez-vous sur le banc avec une prise sûre et les coudes pointés vers l’avant.",
       "Pliez les coudes pour abaisser la barre vers le haut de votre poitrine ou la ligne de votre cou, puis appuyez vers le haut.",
       "Contrôle : démarrez léger et établissez un chemin reproductible qui maintient le poids loin de votre visage.",
-      "Sécurité : Vérifiez la sécurité des racks et organisez un observateur compétent si nécessaire avant de presser."
+      "Sécurité : vérifiez les supports de sécurité et prévoyez l’assistance d’une personne expérimentée si nécessaire avant le développé."
     ],
     "avoid": [
       "Évitez de laisser la barre tomber sur votre cou ou de la transformer en développé couché complet.",
@@ -6184,7 +6184,7 @@
       "Trajet du coude : suivez le mouvement spécifique du coude et de la main pour la variation. Gardez les poignets soutenus et les deux côtés coordonnés.",
       "Portée : utilisez une portée courte que vous pouvez inverser sans gêne au niveau du coude ou de l'épaule. Augmentez le contrôle avant d’augmenter le poids.",
       "Retour : Étendre délibérément tout en gardant le haut du dos soutenu. Arrêtez l'appareil lorsque le chemin prévu devient difficile à maintenir.",
-      "Plan de répétition en cas d'échec : définissez les sécurités appropriées des racks et faites appel à un observateur compétent si nécessaire. Vérifiez la protection avant d'appuyer; ne comptez pas sur la récupération d’une barre coincée."
+      "En cas d’échec : réglez les supports de sécurité et faites-vous assister par une personne expérimentée si nécessaire. Vérifiez ces protections avant le développé. Ne comptez pas sur votre capacité à dégager une barre qui vous bloque."
     ],
     "avoidDetails": [
       "Évitez de laisser la barre tomber sur votre cou ou de la transformer en développé couché complet.",
@@ -6194,7 +6194,7 @@
     ]
   },
   "dumbbell-tate-press": {
-    "name": "Presse Tate haltère",
+    "name": "Tate press aux haltères",
     "cues": [
       "Allongez-vous sur un banc avec haltères au-dessus de votre poitrine et les coudes sur les côtés.",
       "Pliez vos coudes pour amener le haltères vers votre poitrine, puis étendez-le.",
@@ -6234,7 +6234,7 @@
       "Mouvement : placez les poignées du câble en hauteur et maintenez-les sur le haut de votre poitrine.",
       "Contrôle : étendez vos coudes vers l’extérieur et vers le bas, puis revenez lentement.",
       "Coude : Gardez le haut du bras raisonnablement stable pendant que l'avant-bras bouge. Redressez en douceur sans forcer une butée de joint dure.",
-      "Poignet : Gardez le poignet aligné avec l’avant-bras et la poignée bien fixée. Ne remplacez pas le mouvement du poignet par l’extension du coude.",
+      "Poignet : gardez le poignet aligné avec l’avant-bras et tenez fermement la poignée. Effectuez l’extension au niveau du coude, sans la remplacer par un mouvement du poignet.",
       "Retour : Pliez le coude sous contrôle et gardez la même position du haut du bras. Utilisez une résistance qui ne fait pas glisser l’épaule vers l’avant."
     ],
     "avoidDetails": [
@@ -6284,7 +6284,7 @@
       "Mouvement : placez un câble ou une bande haute et gardez le haut de vos bras près de vos côtés.",
       "Contrôle : Redressez vos coudes pour appuyer, puis revenez lentement.",
       "Coude : Gardez le haut du bras raisonnablement stable pendant que l'avant-bras bouge. Redressez en douceur sans forcer une butée de joint dure.",
-      "Poignet : Gardez le poignet aligné avec l’avant-bras et la poignée bien fixée. Ne remplacez pas le mouvement du poignet par l’extension du coude.",
+      "Poignet : gardez le poignet aligné avec l’avant-bras et tenez fermement la poignée. Effectuez l’extension au niveau du coude, sans la remplacer par un mouvement du poignet.",
       "Retour : Pliez le coude sous contrôle et gardez la même position du haut du bras. Utilisez une résistance qui ne fait pas glisser l’épaule vers l’avant."
     ],
     "avoidDetails": [
@@ -6308,7 +6308,7 @@
       "Mouvement : Charnière et soutien de votre torse ; gardez le haut de votre bras près de vous.",
       "Contrôle : Redressez votre coude pour faire reculer le poids, puis pliez-le lentement.",
       "Coude : Gardez le haut du bras raisonnablement stable pendant que l'avant-bras bouge. Redressez en douceur sans forcer une butée de joint dure.",
-      "Poignet : Gardez le poignet aligné avec l’avant-bras et la poignée bien fixée. Ne remplacez pas le mouvement du poignet par l’extension du coude.",
+      "Poignet : gardez le poignet aligné avec l’avant-bras et tenez fermement la poignée. Effectuez l’extension au niveau du coude, sans la remplacer par un mouvement du poignet.",
       "Retour : Pliez le coude sous contrôle et gardez la même position du haut du bras. Utilisez une résistance qui ne fait pas glisser l’épaule vers l’avant."
     ],
     "avoidDetails": [
@@ -6333,7 +6333,7 @@
       "Mouvement : Asseyez-vous contre le support de la machine et saisissez les poignées à côté de votre torse.",
       "Contrôle : Étendez vos coudes pour appuyer sur les poignées, puis revenez lentement.",
       "Coude : Gardez le haut du bras raisonnablement stable pendant que l'avant-bras bouge. Redressez en douceur sans forcer une butée de joint dure.",
-      "Poignet : Gardez le poignet aligné avec l’avant-bras et la poignée bien fixée. Ne remplacez pas le mouvement du poignet par l’extension du coude.",
+      "Poignet : gardez le poignet aligné avec l’avant-bras et tenez fermement la poignée. Effectuez l’extension au niveau du coude, sans la remplacer par un mouvement du poignet.",
       "Retour : Pliez le coude sous contrôle et gardez la même position du haut du bras. Utilisez une résistance qui ne fait pas glisser l’épaule vers l’avant.",
       "Dip assis : restez assis contre le support et appuyez sur les poignées vers le bas. Ce mouvement de machine ne nécessite pas de descendre le corps entre des barres parallèles."
     ],
@@ -6408,7 +6408,7 @@
       "Placez les pieds à une largeur confortable, gainez le tronc et fléchissez les hanches et les genoux ensemble.",
       "Gardez tout votre pied planté, accroupissez-vous à une profondeur contrôlée, puis levez-vous.",
       "Rack : Testez les crochets et les barres de sécurité avec une barre vide avant le chargement.",
-      "Pause : maintenez le bas avec votre attelle et la pression de votre pied intacte avant de vous lever."
+      "Pause : maintenez la position basse avec le tronc gainé et les appuis des pieds stables avant de remonter."
     ],
     "avoid": [
       "Évitez de perdre le contact de vos pieds ou de laisser la charge vous déséquilibrer.",
@@ -6540,7 +6540,7 @@
     "cues": [
       "Placez la barre sur l’avant des épaules. Gardez les coudes hauts et gainez le tronc.",
       "Accroupissez-vous entre vos jambes avec un contact complet du pied, puis tenez-vous debout sans perdre la position de rack.",
-      "Smith : Réglez les arrêts de sécurité, entraînez-vous aux crochets et faites correspondre votre position ou votre banc à la piste fixe.",
+      "Smith : réglez les butées de sécurité, entraînez-vous à raccrocher la barre et adaptez les appuis ou le banc à la trajectoire guidée.",
       "Support avant : laissez les épaules porter la barre plutôt que les poignets pliés."
     ],
     "avoid": [
@@ -6554,7 +6554,7 @@
       "Pression du pied : Maintenez votre talon et les deux côtés de l’avant-pied soutenus. Laissez les genoux suivre la direction des orteils.",
       "Gainage : contractez l’abdomen avant de descendre. Gardez la charge équilibrée au-dessus de vos appuis pendant que les hanches et les épaules remontent ensemble.",
       "Profondeur : utilisez la plage répétable la plus profonde que vous puissiez contrôler sans perdre l'équilibre. Le déplacement du genou au-delà des orteils n’est pas automatiquement une erreur.",
-      "Machine Smith : réglez les butées de sécurité et entraînez-vous à réengager les crochets avec une barre lumineuse. Placez vos pieds ou votre banc en fonction de la piste fixe.",
+      "Machine Smith : réglez les butées de sécurité et entraînez-vous à raccrocher la barre avec une charge légère. Placez les pieds ou le banc en fonction de la trajectoire guidée.",
       "Support avant : laissez les épaules porter la barre avec les coudes levés. N'essayez pas de maintenir toute la charge avec les poignets pliés."
     ],
     "avoidDetails": [
@@ -6570,7 +6570,7 @@
       "Adoptez une position stable et décalée ; pliez les deux genoux tout en gardant votre pied avant planté.",
       "Descendez à une profondeur confortable et montez à travers la jambe avant.",
       "Équilibre : Laissez une certaine largeur entre vos pieds ; laissez le genou avant suivre les orteils.",
-      "Smith : Réglez les arrêts de sécurité, entraînez-vous aux crochets et faites correspondre votre position ou votre banc à la piste fixe."
+      "Smith : réglez les butées de sécurité, entraînez-vous à raccrocher la barre et adaptez les appuis ou le banc à la trajectoire guidée."
     ],
     "avoid": [
       "Évitez de pousser le pied arrière si fort que vous perdriez l'équilibre.",
@@ -6581,9 +6581,9 @@
       "Mouvement : Adoptez une position stable et décalée ; pliez les deux genoux tout en gardant votre pied avant planté.",
       "Contrôle : Descendez à une profondeur confortable et montez à travers la jambe avant.",
       "Jambe avant : Gardez le talon avant et l'avant-pied soutenus ; laissez le genou suivre les orteils pendant que vos hanches s'abaissent entre vos pieds.",
-      "Torse : Une inclinaison contrôlée vers l’avant peut être appropriée. Gardez votre tronc renforcé au lieu de forcer un torse droit en cambrant votre dos.",
+      "Buste : une inclinaison contrôlée vers l’avant peut convenir. Gardez le tronc gainé plutôt que de cambrer le dos pour forcer une posture verticale.",
       "Équilibre : Montez principalement par la jambe avant tandis que la jambe arrière aide à l'équilibre. Réinitialisez vos pieds si le prochain répétition démarre dans une position instable.",
-      "Machine Smith : réglez les butées de sécurité et entraînez-vous à réengager les crochets avec une barre lumineuse. Placez vos pieds ou votre banc en fonction de la piste fixe."
+      "Machine Smith : réglez les butées de sécurité et entraînez-vous à raccrocher la barre avec une charge légère. Placez les pieds ou le banc en fonction de la trajectoire guidée."
     ],
     "avoidDetails": [
       "Évitez de pousser le pied arrière si fort que vous perdriez l'équilibre.",
@@ -6598,7 +6598,7 @@
       "Reculez dans une position stable et abaissez-vous en pliant les deux genoux.",
       "Gardez le pied avant planté ; poussez-le pour revenir en position debout.",
       "Équilibre : Laissez une certaine largeur entre vos pieds ; laissez le genou avant suivre les orteils.",
-      "Smith : Réglez les arrêts de sécurité, entraînez-vous aux crochets et faites correspondre votre position ou votre banc à la piste fixe."
+      "Smith : réglez les butées de sécurité, entraînez-vous à raccrocher la barre et adaptez les appuis ou le banc à la trajectoire guidée."
     ],
     "avoid": [
       "Ne précipitez pas la marche et ne laissez pas tomber le genou arrière sur le sol ; ralentir et raccourcir la descente."
@@ -6608,9 +6608,9 @@
       "Mouvement : reculez dans une position stable et abaissez-vous en pliant les deux genoux.",
       "Contrôle : Gardez le pied avant planté ; poussez-le pour revenir en position debout.",
       "Jambe avant : Gardez le talon avant et l'avant-pied soutenus ; laissez le genou suivre les orteils pendant que vos hanches s'abaissent entre vos pieds.",
-      "Torse : Une inclinaison contrôlée vers l’avant peut être appropriée. Gardez votre tronc renforcé au lieu de forcer un torse droit en cambrant votre dos.",
+      "Buste : une inclinaison contrôlée vers l’avant peut convenir. Gardez le tronc gainé plutôt que de cambrer le dos pour forcer une posture verticale.",
       "Équilibre : Montez principalement par la jambe avant tandis que la jambe arrière aide à l'équilibre. Réinitialisez vos pieds si le prochain répétition démarre dans une position instable.",
-      "Machine Smith : réglez les butées de sécurité et entraînez-vous à réengager les crochets avec une barre lumineuse. Placez vos pieds ou votre banc en fonction de la piste fixe."
+      "Machine Smith : réglez les butées de sécurité et entraînez-vous à raccrocher la barre avec une charge légère. Placez les pieds ou le banc en fonction de la trajectoire guidée."
     ],
     "avoidDetails": [
       "Évitez de faire un pas précipité ou de laisser tomber le genou arrière sur le sol.",
@@ -6625,7 +6625,7 @@
       "Placez votre pied arrière sur un banc et votre pied avant sur une plateforme basse et stable.",
       "Descendez entre les supports, puis remontez par le pied avant.",
       "Équilibre : Laissez une certaine largeur entre vos pieds ; laissez le genou avant suivre les orteils.",
-      "Smith : Réglez les arrêts de sécurité, entraînez-vous aux crochets et faites correspondre votre position ou votre banc à la piste fixe.",
+      "Smith : réglez les butées de sécurité, entraînez-vous à raccrocher la barre et adaptez les appuis ou le banc à la trajectoire guidée.",
       "Plateforme : Sécurisez la surface surélevée ; une profondeur supplémentaire est facultative et doit rester contrôlée."
     ],
     "avoid": [
@@ -6637,9 +6637,9 @@
       "Mouvement : Placez votre pied arrière sur un banc et votre pied avant sur une plateforme basse et stable.",
       "Contrôle : Descendre entre les appuis, puis remonter par le pied avant.",
       "Jambe avant : Gardez le talon avant et l'avant-pied soutenus ; laissez le genou suivre les orteils pendant que vos hanches s'abaissent entre vos pieds.",
-      "Torse : Une inclinaison contrôlée vers l’avant peut être appropriée. Gardez votre tronc renforcé au lieu de forcer un torse droit en cambrant votre dos.",
+      "Buste : une inclinaison contrôlée vers l’avant peut convenir. Gardez le tronc gainé plutôt que de cambrer le dos pour forcer une posture verticale.",
       "Équilibre : Montez principalement par la jambe avant tandis que la jambe arrière aide à l'équilibre. Réinitialisez vos pieds si le prochain répétition démarre dans une position instable.",
-      "Machine Smith : réglez les butées de sécurité et entraînez-vous à réengager les crochets avec une barre lumineuse. Placez vos pieds ou votre banc en fonction de la piste fixe.",
+      "Machine Smith : réglez les butées de sécurité et entraînez-vous à raccrocher la barre avec une charge légère. Placez les pieds ou le banc en fonction de la trajectoire guidée.",
       "Support arrière-pied : Utilisez un support stable qui vous permet d’équilibrer sans forcer la hanche arrière. La jambe avant fournit l’essentiel de l’effort de levage.",
       "Plate-forme surélevée : une profondeur supplémentaire est facultative. Utilisez une plate-forme sécurisée de hauteur modeste et descendez uniquement pendant que le contrôle du pied et du bassin reste stable."
     ],
@@ -6656,7 +6656,7 @@
       "Placez la barre sur le haut du dos, fléchissez légèrement les genoux et gainez le tronc.",
       "Ramenez vos hanches vers la charnière, puis étendez vos hanches pour vous tenir debout.",
       "Portée : arrêtez-vous lorsque les hanches ne peuvent pas reculer plus loin sans changer la position de votre tronc.",
-      "Smith : Réglez les arrêts de sécurité, entraînez-vous aux crochets et faites correspondre votre position ou votre banc à la piste fixe."
+      "Smith : réglez les butées de sécurité, entraînez-vous à raccrocher la barre et adaptez les appuis ou le banc à la trajectoire guidée."
     ],
     "avoid": [
       "N'arrondissez pas plus loin pour gagner en profondeur ; raccourcissez la charnière et faites reculer les hanches."
@@ -6668,7 +6668,7 @@
       "Chemin des hanches : pensez à fermer une porte avec vos hanches. Le torse s’incline grâce à la charnière tandis que la forme de votre dos reste contrôlée.",
       "Position inférieure : arrêtez-vous lorsqu'une portée plus grande modifierait la position de votre dos ou de votre bassin. Atteindre le sol n’est pas le but.",
       "Retour : Poussez à travers le ou les pieds d’appui et ramenez les hanches vers l’avant pour vous tenir debout. Terminez haut sans ajouter de inclinaison vers l’arrière.",
-      "Machine Smith : réglez les butées de sécurité et entraînez-vous à réengager les crochets avec une barre lumineuse. Placez vos pieds ou votre banc en fonction de la piste fixe."
+      "Machine Smith : réglez les butées de sécurité et entraînez-vous à raccrocher la barre avec une charge légère. Placez les pieds ou le banc en fonction de la trajectoire guidée."
     ],
     "avoidDetails": [
       "Évitez d'arrondir votre dos ou de forcer une charnière plus profonde que ce que vous pouvez contrôler.",
@@ -6682,7 +6682,7 @@
     "cues": [
       "Placez la barre solidement sur le haut de votre dos et tenez-vous debout avec les pieds plantés.",
       "Levez vos talons, puis abaissez-les avec contrôle.",
-      "Smith : Réglez les arrêts de sécurité, entraînez-vous aux crochets et faites correspondre votre position ou votre banc à la piste fixe."
+      "Smith : réglez les butées de sécurité, entraînez-vous à raccrocher la barre et adaptez les appuis ou le banc à la trajectoire guidée."
     ],
     "avoid": [
       "Évitez de rebondir ou de laisser la barre glisser de sa position.",
@@ -6695,7 +6695,7 @@
       "Chemin de la cheville : Montez et abaissez la cheville tout en maintenant la pression sur l’avant-pied. Gardez l’angle du genou adapté à la variation.",
       "Portée : Si vous utilisez une plate-forme surélevée, abaissez le talon seulement aussi loin que vous pouvez le contrôler. Au sol, ramenez doucement le talon à la surface.",
       "Position haute : Monter sans rouler sur le bord extérieur ou intérieur du pied. Faites une brève pause et revenez en douceur.",
-      "Machine Smith : réglez les butées de sécurité et entraînez-vous à réengager les crochets avec une barre lumineuse. Placez vos pieds ou votre banc en fonction de la piste fixe."
+      "Machine Smith : réglez les butées de sécurité et entraînez-vous à raccrocher la barre avec une charge légère. Placez les pieds ou le banc en fonction de la trajectoire guidée."
     ],
     "avoidDetails": [
       "Évitez de rebondir ou de laisser la barre glisser de sa position.",
@@ -6876,7 +6876,7 @@
       "Mouvement : placez une jambe en diagonale derrière l’autre et gardez votre position équilibrée.",
       "Contrôle : Pliez le genou avant, puis appuyez sur le pied avant pour revenir.",
       "Jambe avant : Gardez le talon avant et l'avant-pied soutenus ; laissez le genou suivre les orteils pendant que vos hanches s'abaissent entre vos pieds.",
-      "Torse : Une inclinaison contrôlée vers l’avant peut être appropriée. Gardez votre tronc renforcé au lieu de forcer un torse droit en cambrant votre dos.",
+      "Buste : une inclinaison contrôlée vers l’avant peut convenir. Gardez le tronc gainé plutôt que de cambrer le dos pour forcer une posture verticale.",
       "Équilibre : Montez principalement par la jambe avant tandis que la jambe arrière aide à l'équilibre. Réinitialisez vos pieds si le prochain répétition démarre dans une position instable.",
       "Pas croisé : Gardez le pas arrière modeste et le genou avant suivant son pied. Ne forcez pas une croix profonde qui tord le genou chargé."
     ],
@@ -6903,7 +6903,7 @@
       "Mouvement : reculez dans une position stable et abaissez-vous en pliant les deux genoux.",
       "Contrôle : Gardez le pied avant planté ; poussez-le pour revenir en position debout.",
       "Jambe avant : Gardez le talon avant et l'avant-pied soutenus ; laissez le genou suivre les orteils pendant que vos hanches s'abaissent entre vos pieds.",
-      "Torse : Une inclinaison contrôlée vers l’avant peut être appropriée. Gardez votre tronc renforcé au lieu de forcer un torse droit en cambrant votre dos.",
+      "Buste : une inclinaison contrôlée vers l’avant peut convenir. Gardez le tronc gainé plutôt que de cambrer le dos pour forcer une posture verticale.",
       "Équilibre : Montez principalement par la jambe avant tandis que la jambe arrière aide à l'équilibre. Réinitialisez vos pieds si le prochain répétition démarre dans une position instable.",
       "Plate-forme surélevée : une profondeur supplémentaire est facultative. Utilisez une plate-forme sécurisée de hauteur modeste et descendez uniquement pendant que le contrôle du pied et du bassin reste stable."
     ],
@@ -6930,7 +6930,7 @@
       "Mouvement : Avancez suffisamment pour rester en équilibre ; abaissez en pliant les deux genoux.",
       "Contrôle : poussez la jambe avant et contrôlez l'étape suivante.",
       "Jambe avant : Gardez le talon avant et l'avant-pied soutenus ; laissez le genou suivre les orteils pendant que vos hanches s'abaissent entre vos pieds.",
-      "Torse : Une inclinaison contrôlée vers l’avant peut être appropriée. Gardez votre tronc renforcé au lieu de forcer un torse droit en cambrant votre dos.",
+      "Buste : une inclinaison contrôlée vers l’avant peut convenir. Gardez le tronc gainé plutôt que de cambrer le dos pour forcer une posture verticale.",
       "Équilibre : Montez principalement par la jambe avant tandis que la jambe arrière aide à l'équilibre. Réinitialisez vos pieds si le prochain répétition démarre dans une position instable."
     ],
     "avoidDetails": [
@@ -6979,7 +6979,7 @@
       "Mouvement : reculez dans une position stable et abaissez-vous en pliant les deux genoux.",
       "Contrôle : Gardez le pied avant planté ; poussez-le pour revenir en position debout.",
       "Jambe avant : Gardez le talon avant et l'avant-pied soutenus ; laissez le genou suivre les orteils pendant que vos hanches s'abaissent entre vos pieds.",
-      "Torse : Une inclinaison contrôlée vers l’avant peut être appropriée. Gardez votre tronc renforcé au lieu de forcer un torse droit en cambrant votre dos.",
+      "Buste : une inclinaison contrôlée vers l’avant peut convenir. Gardez le tronc gainé plutôt que de cambrer le dos pour forcer une posture verticale.",
       "Équilibre : Montez principalement par la jambe avant tandis que la jambe arrière aide à l'équilibre. Réinitialisez vos pieds si le prochain répétition démarre dans une position instable."
     ],
     "avoidDetails": [
@@ -7097,7 +7097,7 @@
       "Allongez-vous face contre terre et tenez fermement un haltère léger entre vos pieds.",
       "Pliez les genoux pour le soulever, puis abaissez-le lentement tout en gardant les hanches sur le banc.",
       "Ajustement : fixez le coussinet ou la sangle de cheville ; sur une machine, alignez le genou avec son pivot.",
-      "Maintien : Utilisez une lumière haltère fixée entre les pieds ; changer d'équipement s'il risque de glisser."
+      "Maintien : tenez un haltère léger fermement entre les pieds. Changez de matériel s’il risque de glisser."
     ],
     "avoid": [
       "Évitez d'utiliser un poids que vous ne pouvez pas tenir fermement entre vos pieds.",
@@ -7291,9 +7291,9 @@
     ],
     "avoidDetails": [
       "Évitez de tenter le répétition sans une sortie sûre ou un équilibre fiable.",
-      "Impact sur la tête : Ne vous reposez pas et ne laissez pas tomber votre poids sur la tête ou le cou en bas. Arrêtez-vous avant que le support de bras ne tombe en panne.",
+      "Appui sur la tête : ne posez pas votre poids sur la tête ou le cou et ne vous laissez pas tomber dessus en position basse. Arrêtez avant que les bras ne puissent plus vous soutenir.",
       "Évasement et glissement : Ne laissez pas les coudes tirer sur le côté ou les mains glisser lorsque vous descendez. Réinitialisez la surface et la difficulté.",
-      "Sortie imprévue : ne tentez pas un répétition inversé sans un support fiable et une descente expérimentée. Utilisez une variante plus simple si nécessaire."
+      "Sortie non préparée : ne tentez pas une répétition en position inversée sans appui fiable ni façon de redescendre déjà pratiquée. Choisissez une variante plus facile si nécessaire."
     ]
   },
   "ring-dip": {
@@ -7336,7 +7336,7 @@
       "Mise en place : utilisez une surface antidérapante ou des poignées sécurisées. Choisissez une hauteur de support qui vous permet d'abaisser et d'appuyer avec un tronc ferme.",
       "Mouvement : Posez les mains sur un appui stable et maintenez le corps droit et gainé de la tête aux talons.",
       "Contrôle : abaissez votre poitrine vers votre support, puis appuyez avec contrôle.",
-      "Ligne du corps : Renforcez l’abdomen et les fessiers ; laissez les épaules, les hanches et les jambes voyager ensemble plutôt que de décoller la poitrine en premier.",
+      "Alignement du corps : contractez les abdominaux et les fessiers. Faites monter les épaules, les hanches et les jambes ensemble plutôt que de relever la poitrine en premier.",
       "Mains et coudes : répartissez la pression entre les mains et choisissez une trajectoire de coude confortable. Gardez le cou aligné avec le tronc.",
       "Position haute : Repoussez le support et laissez les omoplates bouger naturellement. Terminez chaque répétition sur une planche stable avant de redescendre.",
       "Anneaux : vérifiez les sangles et l'ancrage, puis choisissez une hauteur que vous pouvez contrôler. Gardez les anneaux stables avant d’augmenter la profondeur ou la difficulté."
@@ -7400,7 +7400,7 @@
     ]
   },
   "resistance-band-seated-row": {
-    "name": "Rangée assise avec bande de résistance",
+    "name": "Rowing assis avec bande élastique",
     "cues": [
       "Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement."
@@ -7412,7 +7412,7 @@
       "Mise en place : Choisissez un support ou une position de charnière de hanche que vous pouvez maintenir pour l'ensemble. Prenez une prise sûre et testez le chemin de traction avec une légère résistance.",
       "Mouvement : Placez le torse contre l’appui ou maintenez-le gainé dans une position stable.",
       "Contrôle : tirez la charge vers votre torse avec vos coudes, puis laissez vos bras s'étendre lentement.",
-      "Trajectoire des coudes : tirez les coudes vers la cible de la rangée prévue tout en gardant les poignets alignés. La largeur de préhension et l’angle du coude peuvent varier en fonction de l’exercice.",
+      "Trajectoire des coudes : dirigez les coudes vers la zone visée par le rowing en gardant les poignets alignés. La largeur de prise et l’angle des coudes peuvent varier selon l’exercice.",
       "Mouvement des épaules : laissez les omoplates glisser lorsque les bras atteignent et tirent ; ne les serrez pas de manière rigide dans tout le répétition.",
       "Position finale : Terminez la traction avant de devoir balancer le torse ou faire rouler les épaules vers l'avant. Retour par le même chemin contrôlé."
     ],
@@ -7475,7 +7475,7 @@
     ]
   },
   "band-biceps-curl": {
-    "name": "Boucle de biceps en bande",
+    "name": "Curl avec bande élastique",
     "cues": [
       "Gardez vos bras près de votre torse et maintenez la charge avec les poignets stables.",
       "Pliez vos coudes pour soulever la charge, puis abaissez-la avec contrôle."
@@ -7512,7 +7512,7 @@
       "Mouvement : placez un câble ou une bande haute et gardez le haut de vos bras près de vos côtés.",
       "Contrôle : Redressez vos coudes pour appuyer, puis revenez lentement.",
       "Coude : Gardez le haut du bras raisonnablement stable pendant que l'avant-bras bouge. Redressez en douceur sans forcer une butée de joint dure.",
-      "Poignet : Gardez le poignet aligné avec l’avant-bras et la poignée bien fixée. Ne remplacez pas le mouvement du poignet par l’extension du coude.",
+      "Poignet : gardez le poignet aligné avec l’avant-bras et tenez fermement la poignée. Effectuez l’extension au niveau du coude, sans la remplacer par un mouvement du poignet.",
       "Retour : Pliez le coude sous contrôle et gardez la même position du haut du bras. Utilisez une résistance qui ne fait pas glisser l’épaule vers l’avant."
     ],
     "avoidDetails": [
@@ -7532,7 +7532,7 @@
       "Ne balancez pas le torse et ne secouez pas le cou pour soulever plus haut ; utilisez moins de poids et une portée confortable."
     ],
     "cuesDetails": [
-      "Mise en place : utilisez une résistance à la lumière et un support stable. Commencez par un coude doux et trouvez un chemin d’épaule que vous pouvez répéter confortablement.",
+      "Mise en place : utilisez une résistance légère et un appui stable. Fléchissez légèrement les coudes et trouvez une trajectoire d’épaule que vous pouvez répéter confortablement.",
       "Mouvement : Commencez avec les bras bas et les coudes légèrement pliés.",
       "Contrôle : Levez vos bras jusqu'à une hauteur d'épaule confortable, puis abaissez-les lentement.",
       "Plomb : Déplacez le haut des bras le long de la trajectoire de levée prévue plutôt que d'effleurer les poignets. Gardez votre cou détendu.",

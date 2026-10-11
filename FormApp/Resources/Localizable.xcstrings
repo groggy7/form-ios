@@ -6263,19 +6263,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Jeder Arbeitssatz zählt einmal. Primäre Muskeln erhalten 1,0 Punkte und unterstützende Muskeln 0,5 Punkte, was widerspiegelt, wie zusammengesetzte Übungen mehrere Bereiche beanspruchen."
+            "value": "Jeder Arbeitssatz zählt einmal. Hauptmuskeln werden mit 1,0 und unterstützende Muskeln mit 0,5 gewichtet, da Mehrgelenksübungen mehrere Bereiche beanspruchen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chaque série de travail compte une fois. Les muscles primaires obtiennent 1,0 crédit et les muscles auxiliaires 0,5, reflétant la façon dont les ascenseurs composés travaillent sur plusieurs domaines."
+            "value": "Chaque série de travail compte une fois. Les muscles principaux sont comptabilisés avec un coefficient de 1,0 et les muscles secondaires avec 0,5, car les exercices polyarticulaires sollicitent plusieurs zones."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cada serie efectiva cuenta una vez. Los músculos primarios obtienen 1,0 crédito y los músculos auxiliares obtienen 0,5, lo que refleja cómo los levantamientos compuestos trabajan en múltiples áreas."
+            "value": "Cada serie efectiva cuenta una vez. Los músculos principales se contabilizan con un coeficiente de 1,0 y los secundarios con 0,5, ya que los ejercicios multiarticulares trabajan varias zonas."
           }
         }
       }
@@ -6584,13 +6584,13 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "séries de travail"
+            "value": "Séries de travail"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "series efectivas"
+            "value": "Series efectivas"
           }
         }
       }
@@ -7453,19 +7453,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Verfolgt Ihr wöchentliches Arbeitssätze über 14 Muskelgruppen im Vergleich zu Benchmark-Volumenzielen. Es bietet einen klaren visuellen Leitfaden für das Muskelgleichgewicht und die Arbeitsbelastung – keine Diagnose von Erholung oder Müdigkeit, die je nach Schlaf, Ernährung und Erfahrung variieren kann."
+            "value": "Vergleicht deine wöchentlichen Arbeitssätze für 14 Muskelgruppen mit Volumenreferenzen. Die Übersicht zeigt die Verteilung des Trainingsvolumens. Sie stellt keine Diagnose von Erholung oder Ermüdung dar; diese hängen unter anderem von Schlaf, Ernährung und Erfahrung ab."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Suit votre séries de travail hebdomadaire sur 14 groupes musculaires par rapport aux objectifs de volume de référence. Il fournit un guide visuel clair sur l'équilibre musculaire et la charge de travail, et non un diagnostic de récupération ou de fatigue, qui varie en fonction du sommeil, de la nutrition et de l'expérience."
+            "value": "Compare vos séries de travail hebdomadaires pour 14 groupes musculaires à des références de volume. Cette vue montre la répartition du volume d’entraînement. Elle ne diagnostique ni la récupération ni la fatigue, qui dépendent notamment du sommeil, de l’alimentation et de l’expérience."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Realiza un seguimiento de tu series efectivas semanal en 14 grupos de músculos frente a objetivos de volumen de referencia. Proporciona una guía visual clara para el equilibrio muscular y la carga de trabajo, no un diagnóstico de recuperación o fatiga, que varía según el sueño, la nutrición y la experiencia."
+            "value": "Compara tus series efectivas semanales de 14 grupos musculares con referencias de volumen. Esta vista muestra la distribución del volumen de entrenamiento. No diagnostica la recuperación ni la fatiga, que dependen, entre otros factores, del sueño, la alimentación y la experiencia."
           }
         }
       }
@@ -8398,19 +8398,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Optional Aufwärmsätze und Plattenbelastung für Stangenübungen mit bekannter Arbeitsbelastung."
+            "value": "Optionale Aufwärmsätze und Scheibenberechnung für Langhantelübungen mit bekanntem Arbeitsgewicht."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "séries d’échauffement et chargement de plaques en option pour les exercices à la barre avec une charge de travail connue."
+            "value": "Séries d’échauffement et calcul des disques en option pour les exercices à la barre dont la charge de travail est connue."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "series de calentamiento opcional y carga con placa para ejercicios con barra con carga de trabajo conocida."
+            "value": "Series de calentamiento y cálculo de discos opcionales para ejercicios con barra con una carga de trabajo conocida."
           }
         }
       }
@@ -11657,19 +11657,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Schätzungen von 1–10 Wiederholung Arbeitssätze, nicht getestete Höchstwerte. Wiederholung-Ziele sind Schätzungen, keine vorgeschriebenen Lasten."
+            "value": "Schätzungen aus Arbeitssätzen mit 1–10 Wiederholungen, keine getesteten Höchstleistungen. Die Wiederholungsziele sind Schätzungen, keine vorgeschriebenen Lasten."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Estimations de 1 à 10 répétition séries de travail, maximums non testés. Les cibles répétition sont des estimations et non des charges prescrites."
+            "value": "Estimations à partir de séries de travail de 1 à 10 répétitions, pas de maximums testés. Les objectifs de répétitions sont des estimations, pas des charges prescrites."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Estimaciones del 1 al 10 repetición series efectivas, máximos no probados. Los objetivos de repetición son estimaciones, no cargas prescritas."
+            "value": "Estimaciones a partir de series efectivas de 1–10 repeticiones, no de máximos comprobados. Los objetivos de repeticiones son estimaciones, no cargas prescritas."
           }
         }
       }
@@ -11727,19 +11727,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Keine berechtigten 1–10 Wiederholung Arbeitssätze in dieser Auswahl. Höhere Werte-Wiederholung Sätze bleiben in Ihrem Verlauf."
+            "value": "Keine geeigneten Arbeitssätze mit 1–10 Wiederholungen in dieser Auswahl. Sätze mit mehr Wiederholungen bleiben im Verlauf erhalten."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aucun 1 à 10 répétition séries de travail éligible dans cette sélection. Les séries supérieurs-répétition restent dans votre historique."
+            "value": "Aucune série de travail admissible de 1 à 10 répétitions dans cette sélection. Les séries plus longues restent dans votre historique."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "No hay 1–10 repetición series efectivas elegibles en esta selección. Los superiores-repetición series permanecen en su historial."
+            "value": "No hay series efectivas válidas de 1–10 repeticiones en esta selección. Las series de más repeticiones siguen en tu historial."
           }
         }
       }
@@ -11750,31 +11750,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Estimated from your heavy working sets (1–10 reps). Sets done with reps in reserve may show a slightly lower estimate than your true maximum."
+            "value": "Estimated from logged working sets of 1–10 reps. Sets stopped with reps in reserve do not establish your maximum capacity."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ağır çalışma setlerinize (1–10 tekrar) göre tahmin edilir. Tükenişe gitmeden bıraktığınız setler, gerçek maksimum gücünüzün biraz altında görünebilir."
+            "value": "Kaydedilen 1–10 tekrarlı çalışma setlerinden tahmin edilir. Tekrar rezerviyle bitirilen setler maksimum kapasiteni göstermez."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Geschätzt aus Ihrem schweren Arbeitssätze (1–10 Wiederholungen). Sätze, durchgeführt mit Wiederholungen in Reserve, kann einen etwas niedrigeren Schätzwert als Ihr wahres Maximum anzeigen."
+            "value": "Geschätzt anhand aufgezeichneter Arbeitssätze mit 1–10 Wiederholungen. Sätze mit Wiederholungen in Reserve belegen deine maximale Leistungsfähigkeit nicht."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Estimé à partir de votre séries de travail lourd (1–10 répétitions). séries effectué avec répétitions en réserve peut afficher une estimation légèrement inférieure à votre véritable maximum."
+            "value": "Estimation à partir des séries de travail enregistrées de 1 à 10 répétitions. Les séries terminées avec des répétitions en réserve ne permettent pas d’établir votre capacité maximale."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Estimado a partir de su pesado series efectivas (1–10 repeticiones). series realizado con repeticiones en reserva puede mostrar una estimación ligeramente inferior a su máximo real."
+            "value": "Estimación a partir de series efectivas registradas de 1–10 repeticiones. Las series terminadas con repeticiones en reserva no determinan tu capacidad máxima."
           }
         }
       }
@@ -12042,19 +12042,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Verfolgen Sie, wie sich Ihre geschätzte 1RM-Kraft im Laufe der Zeit entwickelt"
+            "value": "Verfolge die Entwicklung deines geschätzten 1RM im Laufe der Zeit."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Suivez l'évolution de votre force 1RM estimée au fil du temps"
+            "value": "Suivez l’évolution de votre 1RM estimé au fil du temps."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Realice un seguimiento de cómo progresa su fuerza estimada de 1RM con el tiempo"
+            "value": "Sigue la evolución de tu 1RM estimado con el tiempo."
           }
         }
       }
@@ -12077,19 +12077,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Erste Schätzung 1RM"
+            "value": "Erstes geschätztes 1RM"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Première estimation 1RM"
+            "value": "Premier 1RM estimé"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Primer estimado 1RM"
+            "value": "Primera estimación de 1RM"
           }
         }
       }
@@ -12252,13 +12252,13 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Spitzenschätzung"
+            "value": "Höchste Schätzung"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Estimation de pointe"
+            "value": "Estimation la plus élevée"
           }
         },
         "es": {
@@ -13584,19 +13584,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Für diesen Vergleich wurden nicht genügend Arbeitssätze protokolliert."
+            "value": "Für diesen Vergleich sind nicht genügend Arbeitssätze aufgezeichnet."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pas assez de séries de travail connectés pour cette comparaison."
+            "value": "Pas assez de séries de travail enregistrées pour cette comparaison."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "No hay suficientes series efectivas registrados para esta comparación."
+            "value": "No hay suficientes series efectivas registradas para esta comparación."
           }
         }
       }
@@ -15324,31 +15324,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "These formulas calculate your estimated 1-rep max (1RM) from your heavy working sets (1–10 reps), so you never have to risk testing a dangerous true max in the gym. Brzycki is widely favored for lower reps (1–6), while Epley works great across 6–10 reps. Warmups and high-rep sets (11+) are safely excluded to keep your estimates realistic."
+            "value": "Brzycki and Epley estimate your one-repetition maximum (1RM) from logged working sets of 1–10 reps. Warm-up sets and sets of 11 or more reps are excluded from these estimates but stay in your history. These are estimates, not tested maximums or prescribed loads. Sets stopped with reps in reserve do not establish your maximum capacity."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu yöntemler, salonda sakatlık riski alıp gerçek 1 tekrar maksimumu denemenize gerek kalmadan, ağır çalışma setlerinizden (1–10 tekrar) tahmini gücünüzü hesaplar. Brzycki genellikle düşük tekrarlarda (1–6) çok tutarlıyken, Epley 6–10 tekrar aralığında sıkça tercih edilir. Tahminlerin gerçekçi kalması için ısınmalar ve yüksek tekrarlı setler (11+) hesaplamaya dahil edilmez."
+            "value": "Brzycki ve Epley, kaydedilen 1–10 tekrarlı çalışma setlerinden bir tekrar maksimumunu (1RM) tahmin eder. Isınma setleri ve 11 veya daha fazla tekrarlı setler bu tahminlere dahil edilmez; geçmişte kalır. Bunlar test edilmiş maksimumlar veya uygulanması gereken yükler değil, tahminlerdir. Tekrar rezerviyle bitirilen setler maksimum kapasiteni göstermez."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Diese Formeln berechnen Ihr geschätztes 1-Wiederholung-Maximum (1RM) aus Ihrem schweren Arbeitssätze (1–10 Wiederholungen), sodass Sie nie das Risiko eingehen müssen, im Fitnessstudio ein gefährliches echtes Maximum zu testen. Brzycki wird allgemein für niedrigere Wiederholungen (1–6) bevorzugt, während Epley bei Wiederholungen 6–10 hervorragend funktioniert. Aufwärmübungen und High-Wiederholung Sätze (11+) sind sicher ausgeschlossen, um Ihre Schätzungen realistisch zu halten."
+            "value": "Brzycki und Epley schätzen dein Ein-Wiederholungs-Maximum (1RM) anhand aufgezeichneter Arbeitssätze mit 1–10 Wiederholungen. Aufwärmsätze und Sätze mit 11 oder mehr Wiederholungen werden nicht einbezogen, bleiben aber im Verlauf erhalten. Die Werte sind Schätzungen, keine getesteten Höchstleistungen oder vorgeschriebenen Lasten. Sätze mit Wiederholungen in Reserve belegen deine maximale Leistungsfähigkeit nicht."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ces formules calculent votre estimation de 1-répétition max (1RM) à partir de votre lourd séries de travail (1–10 répétitions), vous n'aurez donc jamais à risquer de tester un vrai maximum dangereux dans la salle de sport. Brzycki est largement préféré pour les répétitions inférieurs (1 à 6), tandis que Epley fonctionne très bien sur les répétitions 6 à 10. Les échauffements et les séries élevés (11+) sont exclus en toute sécurité pour que vos estimations restent réalistes."
+            "value": "Brzycki et Epley estiment votre charge maximale pour une répétition (1RM) à partir des séries de travail enregistrées de 1 à 10 répétitions. Les séries d’échauffement et celles de 11 répétitions ou plus sont exclues de ces estimations, mais restent dans votre historique. Ces valeurs sont des estimations, pas des maximums testés ni des charges prescrites. Les séries terminées avec des répétitions en réserve ne permettent pas d’établir votre capacité maximale."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Estas fórmulas calculan tu 1-repetición máximo estimado (1RM) a partir de tu pesado series efectivas (1–10 repeticiones), por lo que nunca tendrás que arriesgarte a probar un verdadero máximo peligroso en el gimnasio. Brzycki es ampliamente preferido para repeticiones inferiores (1–6), mientras que Epley funciona muy bien en 6–10 repeticiones. Los calentamientos y repetición series alto (11+) se excluyen de forma segura para mantener sus estimaciones realistas."
+            "value": "Brzycki y Epley estiman tu repetición máxima (1RM) a partir de las series efectivas registradas de 1–10 repeticiones. Las series de calentamiento y las de 11 repeticiones o más se excluyen de estas estimaciones, pero siguen en tu historial. Son estimaciones, no máximos comprobados ni cargas prescritas. Las series terminadas con repeticiones en reserva no determinan tu capacidad máxima."
           }
         }
       }
@@ -15359,31 +15359,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Most accurate for heavy sets (1–6 reps)"
+            "value": "Based on load and reps (1–10)"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ağır setler için idealdir (1–6 tekrar)"
+            "value": "Yük ve tekrar sayısına göre (1–10)"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Am genauesten für schwere Sätze (1–6 Wiederholungen)"
+            "value": "Anhand von Gewicht und Wiederholungen (1–10)"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Plus précis pour les séries lourds (1 à 6 répétitions)"
+            "value": "À partir de la charge et des répétitions (1–10)"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Más preciso para series pesado (1–6 repeticiones)"
+            "value": "Según la carga y las repeticiones (1–10)"
           }
         }
       }
@@ -15394,31 +15394,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Well-suited for moderate sets (6–10 reps)"
+            "value": "Based on load and reps (1–10)"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Orta tekrarlı setler için idealdir (6–10 tekrar)"
+            "value": "Yük ve tekrar sayısına göre (1–10)"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gut geeignet für moderate Sätze (6–10 Wiederholungen)"
+            "value": "Anhand von Gewicht und Wiederholungen (1–10)"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bien adapté aux séries modérés (6 à 10 répétitions)"
+            "value": "À partir de la charge et des répétitions (1–10)"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Muy adecuado para series moderado (6–10 repeticiones)"
+            "value": "Según la carga y las repeticiones (1–10)"
           }
         }
       }
@@ -15464,31 +15464,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Compares your logged sets between opposing movement patterns (such as push vs. pull or quads vs. hamstrings). Keeping these ratios in a healthy range helps maintain balanced posture and well-rounded strength—though they are programming guides, not medical diagnoses. If you are intentionally specializing in one area, a temporary imbalance is completely normal."
+            "value": "Compares logged working sets across movement patterns and muscle groups, such as push/pull and quadriceps/hamstrings. These ratios describe training distribution, not posture, joint health or recovery. Use them as a programming reference; a plan that prioritizes one area may have different ratios."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Karşıt hareket kalıpları arasındaki (örneğin itiş/çekiş veya ön/arka bacak) set dağılımınızı karşılaştırır. Bu oranları dengeli tutmak, duruşunuzu ve genel kuvvetinizi destekler; ancak bunlar antrenman planlama rehberidir, tıbbi tanı niteliği taşımaz. Belirli bir bölgeye bilerek öncelik veriyorsanız dağılımın farklı çıkması gayet doğaldır."
+            "value": "İtiş/çekiş ve ön bacak/arka bacak gibi hareket kalıpları ve kas grupları arasında kaydedilen çalışma setlerini karşılaştırır. Bu oranlar duruşu, eklem sağlığını veya toparlanmayı değil, antrenman dağılımını gösterir. Tıbbi tanı değildir. Programlama için referans olarak kullan; belirli bir bölgeye öncelik veren planlarda oranlar farklı olabilir."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vergleicht Ihr protokolliertes Sätze zwischen gegensätzlichen Bewegungsmustern (z. B. Drücken vs. Ziehen oder Quadrizeps vs. Oberschenkelmuskulatur). Wenn Sie diese Verhältnisse in einem gesunden Bereich halten, tragen Sie dazu bei, eine ausgeglichene Körperhaltung und eine ausgewogene Kraft aufrechtzuerhalten – obwohl es sich hierbei um Programmierrichtlinien und nicht um medizinische Diagnosen handelt. Wenn Sie sich bewusst auf einen Bereich spezialisieren, ist ein vorübergehendes Ungleichgewicht völlig normal."
+            "value": "Vergleicht aufgezeichnete Arbeitssätze zwischen Bewegungsmustern und Muskelgruppen, etwa Drücken/Ziehen und Quadrizeps/hinterer Oberschenkelmuskulatur. Die Verhältnisse beschreiben die Trainingsverteilung, nicht Haltung, Gelenkgesundheit oder Erholung. Nutze sie als Orientierung für die Trainingsplanung. Ein Plan mit einem bestimmten Schwerpunkt kann andere Verhältnisse haben."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Compare votre séries enregistré entre des modèles de mouvements opposés (tels que pousser contre tirer ou quadriceps contre ischio-jambiers). Maintenir ces ratios dans une fourchette saine aide à maintenir une posture équilibrée et une force équilibrée, bien qu’il s’agisse de guides de programmation et non de diagnostics médicaux. Si vous vous spécialisez intentionnellement dans un domaine, un déséquilibre temporaire est tout à fait normal."
+            "value": "Compare les séries de travail enregistrées entre les schémas de mouvement et les groupes musculaires, comme poussée/tirage et quadriceps/ischio-jambiers. Ces ratios décrivent la répartition de l’entraînement, pas la posture, la santé articulaire ni la récupération. Utilisez-les comme repères de programmation ; un programme qui privilégie une zone peut présenter d’autres ratios."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Compara su series registrado entre patrones de movimiento opuestos (como empujar versus tirar o cuádriceps versus isquiotibiales). Mantener estas proporciones en un rango saludable ayuda a mantener una postura equilibrada y una fuerza equilibrada, aunque son guías de programación, no diagnósticos médicos. Si te especializas intencionalmente en un área, un desequilibrio temporal es completamente normal."
+            "value": "Compara las series efectivas registradas entre patrones de movimiento y grupos musculares, como empuje/tirón y cuádriceps/isquiotibiales. Estas proporciones describen la distribución del entrenamiento, no la postura, la salud articular ni la recuperación. Úsalas como referencia para programar; un plan que priorice una zona puede tener otras proporciones."
           }
         }
       }
@@ -15499,31 +15499,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Upper body posture & shoulder balance"
+            "value": "Upper-body push/pull set distribution"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Üst vücut duruş ve omuz dengesi"
+            "value": "Üst vücut itiş/çekiş set dağılımı"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Oberkörperhaltung und Schulterbalance"
+            "value": "Verteilung der Oberkörper-Drück- und Zugsätze"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Posture du haut du corps et équilibre des épaules"
+            "value": "Répartition des séries de poussée et de tirage du haut du corps"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Postura de la parte superior del cuerpo y equilibrio de los hombros."
+            "value": "Distribución de series de empuje y tirón de torso"
           }
         }
       }
@@ -15534,31 +15534,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Leg & knee movement balance"
+            "value": "Quadriceps/hamstrings set distribution"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ön ve arka bacak hareket dengesi"
+            "value": "Ön bacak/arka bacak set dağılımı"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gleichgewicht der Bein- und Kniebewegungen"
+            "value": "Satzverteilung für vordere und hintere Oberschenkel"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Équilibre des mouvements des jambes et des genoux"
+            "value": "Répartition des séries quadriceps/ischio-jambiers"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Equilibrio del movimiento de piernas y rodillas."
+            "value": "Distribución de series de cuádriceps e isquiotibiales"
           }
         }
       }
@@ -19956,19 +19956,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Geben Sie Gewicht und Wiederholungen für jedes Arbeitssatz ein, markieren Sie jedes einzelne ✓, beenden Sie dann Ihr Training und speichern Sie es."
+            "value": "Gib für jeden Arbeitssatz Gewicht und Wiederholungen ein, markiere ihn mit ✓ und beende und speichere dann dein Training."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Entrez le poids et répétitions pour chaque série de travail, marquez chacun ✓, puis terminez et enregistrez votre entraînement."
+            "value": "Saisissez la charge et les répétitions de chaque série de travail, validez chaque série avec ✓, puis terminez et enregistrez la séance."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ingrese el peso y repeticiones para cada serie efectiva, marque cada uno ✓, luego finalice y guarde su entrenamiento."
+            "value": "Introduce el peso y las repeticiones de cada serie efectiva, márcala con ✓ y después termina y guarda la sesión."
           }
         }
       }
@@ -20026,19 +20026,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Stammgewichte und Wiederholungen für alle {sets} Arbeitssätze. Ihr nächstes Ziel wird hier angezeigt, sobald genügend Daten vorhanden sind."
+            "value": "Zeichne Gewicht und Wiederholungen für alle {sets} Arbeitssätze auf. Dein nächstes Ziel erscheint hier, sobald genügend Daten vorhanden sind."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Poids des journaux et répétitions pour tous les {sets} séries de travail. Votre prochaine cible apparaîtra ici une fois qu’il y aura suffisamment de données."
+            "value": "Enregistrez les charges et les répétitions des {sets} séries de travail. Votre prochain objectif apparaîtra ici dès que les données seront suffisantes."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pesos de troncos y repeticiones para todos los {sets} series efectivas. Su próximo objetivo aparecerá aquí una vez que haya suficientes datos."
+            "value": "Registra el peso y las repeticiones de las {sets} series efectivas. Tu próximo objetivo aparecerá aquí cuando haya suficientes datos."
           }
         }
       }
@@ -20131,19 +20131,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Um ein Ziel zu erstellen, geben Sie Gewicht und Wiederholungen für die verbleibenden {remaining} Arbeitssätze ein und tippen Sie dann auf ✓, um sie aufzuzeichnen."
+            "value": "Gib Gewicht und Wiederholungen für die verbleibenden {remaining} Arbeitssätze ein und tippe auf ✓, um sie aufzuzeichnen und ein Ziel zu erstellen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pour créer un objectif, saisissez le poids et répétitions pour les {remaining} séries de travail restants, puis appuyez sur ✓ pour les enregistrer."
+            "value": "Pour créer un objectif, saisissez la charge et les répétitions des {remaining} séries de travail restantes, puis appuyez sur ✓ pour les enregistrer."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Para crear un objetivo, ingrese el peso y repeticiones para el {remaining} series efectivas restante, luego toque ✓ para registrarlos."
+            "value": "Para crear un objetivo, introduce el peso y las repeticiones de las {remaining} series efectivas restantes y pulsa ✓ para registrarlas."
           }
         }
       }
@@ -20166,19 +20166,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Um ein Ziel zu erstellen, geben Sie das Gewicht und Wiederholungen für die verbleibenden {remaining} Arbeitssatz ein und tippen Sie dann auf ✓, um es aufzuzeichnen."
+            "value": "Gib Gewicht und Wiederholungen für den verbleibenden {remaining} Arbeitssatz ein und tippe auf ✓, um ihn aufzuzeichnen und ein Ziel zu erstellen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pour créer un objectif, entrez le poids et répétitions pour le {remaining} série de travail restant, puis appuyez sur ✓ pour l'enregistrer."
+            "value": "Pour créer un objectif, saisissez la charge et les répétitions de la {remaining} série de travail restante, puis appuyez sur ✓ pour l’enregistrer."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Para crear un objetivo, ingrese el peso y repeticiones para el {remaining} serie efectiva restante, luego toque ✓ para registrarlo."
+            "value": "Para crear un objetivo, introduce el peso y las repeticiones de la {remaining} serie efectiva restante y pulsa ✓ para registrarla."
           }
         }
       }
@@ -20271,19 +20271,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ziele von Arbeitssatz"
+            "value": "Ziele je Arbeitssatz"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cibles par série de travail"
+            "value": "Objectifs par série de travail"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Objetivos de serie efectiva"
+            "value": "Objetivos por serie efectiva"
           }
         }
       }
@@ -20376,19 +20376,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "„Anwenden“ ist verfügbar, wenn noch nicht abgeschlossene Arbeitssätze mit diesem Plan übereinstimmen."
+            "value": "„Anwenden“ ist verfügbar, wenn die noch offenen Arbeitssätze diesem Plan entsprechen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Appliquer est disponible lorsque les séries de travail inachevés correspondent à ce plan."
+            "value": "L’application est disponible lorsque les séries de travail non terminées correspondent à ce plan."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "La solicitud está disponible cuando el series efectivas sin terminar coincide con este plan."
+            "value": "Puedes aplicar el objetivo cuando las series efectivas pendientes coincidan con este plan."
           }
         }
       }
@@ -21006,19 +21006,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Das neueste Protokoll bietet keine vollständige Basis für diesen Plan. Protokollieren Sie alle {sets} Arbeitssätze mit Gewichten und Wiederholungen."
+            "value": "Die letzte Aufzeichnung bietet keine vollständige Grundlage für diesen Plan. Zeichne alle {sets} Arbeitssätze mit Gewicht und Wiederholungen auf."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Le dernier journal ne fournit pas une référence complète pour ce plan. Enregistrez tous les {sets} séries de travail avec les poids et les répétitions."
+            "value": "Le dernier enregistrement ne fournit pas de référence complète pour ce plan. Enregistrez les {sets} séries de travail avec leurs charges et leurs répétitions."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El registro más reciente no proporciona una base de referencia completa para este plan. Registre todos los {sets} series efectivas con pesos y repeticiones."
+            "value": "El último registro no proporciona una referencia completa para este plan. Registra las {sets} series efectivas con sus pesos y repeticiones."
           }
         }
       }
@@ -21496,19 +21496,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Noch keine Arbeitssatz-Basislinie. Wählen Sie eine überschaubare Last für {reps} Wiederholungen und protokollieren Sie alle Arbeitssatz."
+            "value": "Noch keine Grundlage aus Arbeitssätzen vorhanden. Wähle ein gut kontrollierbares Gewicht für {reps} Wiederholungen und zeichne jeden Arbeitssatz auf."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pas encore de référence de travail. Choisissez une charge gérable pour {reps} répétitions et enregistrez chaque série de travail."
+            "value": "Aucune référence de séries de travail pour le moment. Choisissez une charge maîtrisable pour {reps} répétitions et enregistrez chaque série de travail."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aún no hay una base de trabajo establecida. Elija una carga manejable para {reps} repeticiones y registre cada serie efectiva."
+            "value": "Todavía no hay una referencia de series efectivas. Elige una carga que puedas controlar durante {reps} repeticiones y registra cada serie efectiva."
           }
         }
       }
@@ -25278,19 +25278,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Schätzung: 1RM"
+            "value": "Gesch. 1RM"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "HNE. 1RM"
+            "value": "1RM estimé"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Est. 1RM"
+            "value": "1RM est."
           }
         }
       }
@@ -25313,19 +25313,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Geschätzter Wert 1RM"
+            "value": "Geschätztes 1RM"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Estimation 1RM"
+            "value": "1RM estimé"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Estimado 1RM"
+            "value": "1RM estimado"
           }
         }
       }
@@ -26262,19 +26262,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tragen Sie diese Übung in ein Training ein, um Ihre persönliche Bestleistung, Ihren geschätzten 1RM und Ihr Volumen zu verfolgen."
+            "value": "Zeichne diese Übung in einem Training auf, um deine persönliche Bestleistung, dein geschätztes 1RM und dein Volumen zu verfolgen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Enregistrez cet exercice dans une séance d'entraînement pour suivre votre PR, votre 1RM estimé et votre volume."
+            "value": "Enregistrez cet exercice dans une séance pour suivre votre record personnel, votre 1RM estimé et votre volume."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Registre este ejercicio en un entrenamiento para realizar un seguimiento de su PR, 1RM estimado y volumen."
+            "value": "Registra este ejercicio en una sesión para seguir tu récord personal, tu 1RM estimado y tu volumen."
           }
         }
       }

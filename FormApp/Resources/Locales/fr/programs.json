@@ -3,10 +3,10 @@
     "name": "Moteur esthétique : hypertrophie de 5 jours",
     "description": "Pour les haltérophiles expérimentés qui apprécient cinq jours de gym. Renforcement musculaire supérieur/inférieur équilibré avec un travail supplémentaire des épaules. Salle de sport complète ; environ 55 à 75 minutes par séance.",
     "guidelines": [
-      "Train lundi, mardi, jeudi, vendredi et samedi. Gardez le mercredi et le dimanche libres pour la récupération ; ajoutez du temps entre les séances si la récupération souffre.",
-      "Les séries répertoriés sont séries de travail. Échauffez-vous d'abord, puis utilisez un entraînement de plus en plus lourd séries avant vos premiers mouvements lourds.",
-      "Terminez la plupart des séries avec environ 2 bonnes répétitions restantes. Gardez la même amplitude de mouvement contrôlée ; l’échec n’est pas requis.",
-      "Lorsque chaque série atteint le sommet de sa plage de répétitions avec une forme nette en deux séances, essayez la plus petite augmentation de poids disponible tout en visant à conserver le même répétitions. Si répétitions ou la forme souffrent, utilisez une augmentation plus petite ou répétez la charge précédente. Sinon, gardez le poids et construisez répétitions.",
+      "Entraînez-vous lundi, mardi, jeudi, vendredi et samedi. Gardez mercredi et dimanche pour la récupération et espacez davantage les séances si vous récupérez mal.",
+      "Les séries indiquées sont des séries de travail. Échauffez-vous d’abord, puis augmentez progressivement la charge sur des séries d’échauffement avant les premiers exercices lourds.",
+      "Terminez la plupart des séries avec environ 2 répétitions propres en réserve. Gardez la même amplitude contrôlée. Il n’est pas nécessaire d’aller à l’échec.",
+      "Lorsque toutes les séries atteignent le haut de la plage de répétitions avec une technique propre lors de deux séances, essayez la plus petite augmentation de charge disponible en visant le même nombre de répétitions. Si les répétitions ou la technique se dégradent, augmentez moins ou reprenez la charge précédente. Sinon, gardez la charge et augmentez les répétitions.",
       "Conservez le plan pendant 6 à 8 semaines avant de juger des progrès. Si la fatigue s'accumule ou si les performances diminuent au cours de plusieurs séances, utilisez moins de séries et des charges plus légères pendant une semaine. Ne vous entraînez pas dans la douleur."
     ],
     "workouts": {
@@ -16,7 +16,7 @@
       },
       "aesthetic-pull-a": {
         "title": "Dos et biceps",
-        "focus": "Tirage vertical, rangée supportée et delts arrière"
+        "focus": "Tirage vertical, rowing avec appui et deltoïdes postérieurs"
       },
       "aesthetic-legs-a": {
         "title": "Quads et veaux",
@@ -36,10 +36,10 @@
     "name": "Lourd et construit : renforcement de la puissance de 4 jours",
     "description": "Pour les haltérophiles intermédiaires qui souhaitent des squats, des bancs et des soulevés de terre plus forts parallèlement à la croissance musculaire. Rack, barre, banc, haltères et câble/machines ; environ 60 à 80 minutes.",
     "guidelines": [
-      "Train lundi, mardi, jeudi et vendredi. Reposez-vous 3 minutes sur les remontées mécaniques principales, plus longtemps si nécessaire ; Gardez le séries lourd sous contrôle, sans jamais grincer jusqu'à l'échec.",
-      "Les séries répertoriés sont séries de travail. Échauffez-vous d'abord, puis utilisez un entraînement de plus en plus lourd séries avant vos premiers mouvements lourds.",
-      "Terminez la plupart des séries avec environ 2 bonnes répétitions restantes. Gardez la même amplitude de mouvement contrôlée ; l’échec n’est pas requis.",
-      "Lorsque chaque série atteint le sommet de sa plage de répétitions avec une forme nette en deux séances, essayez la plus petite augmentation de poids disponible tout en visant à conserver le même répétitions. Si répétitions ou la forme souffrent, utilisez une augmentation plus petite ou répétez la charge précédente. Sinon, gardez le poids et construisez répétitions.",
+      "Entraînez-vous lundi, mardi, jeudi et vendredi. Prenez 3 minutes de repos entre les séries des exercices principaux, davantage si nécessaire. Gardez le contrôle des séries lourdes sans forcer jusqu’à l’échec.",
+      "Les séries indiquées sont des séries de travail. Échauffez-vous d’abord, puis augmentez progressivement la charge sur des séries d’échauffement avant les premiers exercices lourds.",
+      "Terminez la plupart des séries avec environ 2 répétitions propres en réserve. Gardez la même amplitude contrôlée. Il n’est pas nécessaire d’aller à l’échec.",
+      "Lorsque toutes les séries atteignent le haut de la plage de répétitions avec une technique propre lors de deux séances, essayez la plus petite augmentation de charge disponible en visant le même nombre de répétitions. Si les répétitions ou la technique se dégradent, augmentez moins ou reprenez la charge précédente. Sinon, gardez la charge et augmentez les répétitions.",
       "Conservez le plan pendant 6 à 8 semaines avant de juger des progrès. Si la fatigue s'accumule ou si les performances diminuent au cours de plusieurs séances, utilisez moins de séries et des charges plus légères pendant une semaine. Ne vous entraînez pas dans la douleur."
     ],
     "workouts": {
@@ -56,7 +56,7 @@
         "focus": "Soulevé de terre à faible volume suivi d'une assistance au squat"
       },
       "pb-press-volume": {
-        "title": "Supérieur : Presse et volume",
+        "title": "Haut du corps : développé et volume",
         "focus": "Presse aérienne, banc et dos plus légers"
       }
     }
@@ -65,10 +65,10 @@
     "name": "PPL pure : hypertrophie de 6 jours",
     "description": "Pour les haltérophiles expérimentés qui peuvent régulièrement récupérer après six jours de gym. Deux séances de poussée, de traction et de jambe avec des accents distincts. Salle de sport complète ; environ 45 à 65 minutes.",
     "guidelines": [
-      "Le dimanche c'est repos. Choisissez le plan supérieur/inférieur de 4 jours si six jours sont difficiles à maintenir. Les jours de traction utilisent des rangées soutenues, laissant de lourdes charnières de hanche aux jours de jambe.",
-      "Les séries répertoriés sont séries de travail. Échauffez-vous d'abord, puis utilisez un entraînement de plus en plus lourd séries avant vos premiers mouvements lourds.",
-      "Terminez la plupart des séries avec environ 2 bonnes répétitions restantes. Gardez la même amplitude de mouvement contrôlée ; l’échec n’est pas requis.",
-      "Lorsque chaque série atteint le sommet de sa plage de répétitions avec une forme nette en deux séances, essayez la plus petite augmentation de poids disponible tout en visant à conserver le même répétitions. Si répétitions ou la forme souffrent, utilisez une augmentation plus petite ou répétez la charge précédente. Sinon, gardez le poids et construisez répétitions.",
+      "Le dimanche est un jour de repos. Choisissez le programme haut/bas du corps sur 4 jours si six jours sont difficiles à tenir. Les séances de tirage utilisent des rowings avec appui ; les mouvements lourds de charnière de hanche sont réservés aux séances jambes.",
+      "Les séries indiquées sont des séries de travail. Échauffez-vous d’abord, puis augmentez progressivement la charge sur des séries d’échauffement avant les premiers exercices lourds.",
+      "Terminez la plupart des séries avec environ 2 répétitions propres en réserve. Gardez la même amplitude contrôlée. Il n’est pas nécessaire d’aller à l’échec.",
+      "Lorsque toutes les séries atteignent le haut de la plage de répétitions avec une technique propre lors de deux séances, essayez la plus petite augmentation de charge disponible en visant le même nombre de répétitions. Si les répétitions ou la technique se dégradent, augmentez moins ou reprenez la charge précédente. Sinon, gardez la charge et augmentez les répétitions.",
       "Conservez le plan pendant 6 à 8 semaines avant de juger des progrès. Si la fatigue s'accumule ou si les performances diminuent au cours de plusieurs séances, utilisez moins de séries et des charges plus légères pendant une semaine. Ne vous entraînez pas dans la douleur."
     ],
     "workouts": {
@@ -78,22 +78,22 @@
       },
       "ppl-pull-1": {
         "title": "Tirer A : lats",
-        "focus": "Tirage vertical, rameur et biceps soutenus"
+        "focus": "Tirage vertical, rowing avec appui et biceps"
       },
       "ppl-legs-1": {
         "title": "Jambes A : Squat",
         "focus": "Quads, flexion du genou et mollets"
       },
       "ppl-push-2": {
-        "title": "Poussée B : Inclinaison",
+        "title": "Poussée B : développé incliné",
         "focus": "Presse inclinée, isolation thoracique et triceps aériens"
       },
       "ppl-pull-2": {
-        "title": "Tirer B : lignes",
-        "focus": "Tirage horizontal avec deltoïdes arrière et boucles"
+        "title": "Tirage B : rowings",
+        "focus": "Tirage horizontal, deltoïdes postérieurs et curls"
       },
       "ppl-legs-2": {
-        "title": "Pieds B : charnière",
+        "title": "Jambes B : charnière de hanche",
         "focus": "Chaîne postérieure avec un deuxième motif de squat"
       }
     }
@@ -102,16 +102,16 @@
     "name": "Fond de Teint Classique : Corps Complet 3 Jours",
     "description": "Un point de départ gérable pour les débutants et les haltérophiles confirmés. Répétez les principaux mouvements au lieu d’apprendre une nouvelle routine chaque jour. Salle de sport avec haltères, banc, presse jambes et câbles ; environ 40 à 55 minutes.",
     "guidelines": [
-      "Utilisez des jours non consécutifs. Pendant les deux premières semaines, laissez 3 à 4 bonnes répétitions en réserve et donnez la priorité à l'apprentissage de la configuration plutôt qu'à l'ajout de poids. Demandez de l’aide avec un équipement inconnu.",
-      "Les séries répertoriés sont séries de travail. Échauffez-vous d'abord, puis utilisez un entraînement de plus en plus lourd séries avant vos premiers mouvements lourds.",
-      "Terminez la plupart des séries avec environ 2 bonnes répétitions restantes. Gardez la même amplitude de mouvement contrôlée ; l’échec n’est pas requis.",
-      "Lorsque chaque série atteint le sommet de sa plage de répétitions avec une forme nette en deux séances, essayez la plus petite augmentation de poids disponible tout en visant à conserver le même répétitions. Si répétitions ou la forme souffrent, utilisez une augmentation plus petite ou répétez la charge précédente. Sinon, gardez le poids et construisez répétitions.",
+      "Entraînez-vous des jours non consécutifs. Pendant les deux premières semaines, gardez 3–4 répétitions propres en réserve et privilégiez l’apprentissage de la mise en place avant d’augmenter la charge. Demandez de l’aide pour les appareils que vous ne connaissez pas.",
+      "Les séries indiquées sont des séries de travail. Échauffez-vous d’abord, puis augmentez progressivement la charge sur des séries d’échauffement avant les premiers exercices lourds.",
+      "Terminez la plupart des séries avec environ 2 répétitions propres en réserve. Gardez la même amplitude contrôlée. Il n’est pas nécessaire d’aller à l’échec.",
+      "Lorsque toutes les séries atteignent le haut de la plage de répétitions avec une technique propre lors de deux séances, essayez la plus petite augmentation de charge disponible en visant le même nombre de répétitions. Si les répétitions ou la technique se dégradent, augmentez moins ou reprenez la charge précédente. Sinon, gardez la charge et augmentez les répétitions.",
       "Conservez le plan pendant 6 à 8 semaines avant de juger des progrès. Si la fatigue s'accumule ou si les performances diminuent au cours de plusieurs séances, utilisez moins de séries et des charges plus légères pendant une semaine. Ne vous entraînez pas dans la douleur."
     ],
     "workouts": {
       "fb-workout-a": {
         "title": "Corps entier A",
-        "focus": "Presse à jambes, presse pectorale, rangée et charnière"
+        "focus": "Presse à cuisses, développé, rowing et charnière de hanche"
       },
       "fb-workout-b": {
         "title": "Corps entier B",
@@ -127,24 +127,24 @@
     "name": "Forge à domicile : 4 jours haltères",
     "description": "Entraînement supérieur/inférieur avec haltères réglable et un banc réglable ; pas de câbles, barre ou station de traction. Pour les haltérophiles à l’aise avec les bases. Environ 40 à 60 minutes.",
     "guidelines": [
-      "Train lundi, mardi, jeudi et vendredi. Utilisez une plate-forme basse et stable pour le squat divisé surélevé avec l'avant-pied. Si votre haltères devient trop légère, utilisez le haut de la plage de répétition avec une forme contrôlée ; n'inventez pas de poids supplémentaire dans la bûche.",
-      "Les séries répertoriés sont séries de travail. Échauffez-vous d'abord, puis utilisez un entraînement de plus en plus lourd séries avant vos premiers mouvements lourds.",
-      "Terminez la plupart des séries avec environ 2 bonnes répétitions restantes. Gardez la même amplitude de mouvement contrôlée ; l’échec n’est pas requis.",
-      "Lorsque chaque série atteint le sommet de sa plage de répétitions avec une forme nette en deux séances, essayez la plus petite augmentation de poids disponible tout en visant à conserver le même répétitions. Si répétitions ou la forme souffrent, utilisez une augmentation plus petite ou répétez la charge précédente. Sinon, gardez le poids et construisez répétitions.",
+      "Entraînez-vous lundi, mardi, jeudi et vendredi. Utilisez une plateforme basse et stable pour le split squat avec le pied avant surélevé. Si vos haltères deviennent trop légers, visez le haut de la plage de répétitions avec une technique contrôlée. N’ajoutez pas de poids fictif dans le journal.",
+      "Les séries indiquées sont des séries de travail. Échauffez-vous d’abord, puis augmentez progressivement la charge sur des séries d’échauffement avant les premiers exercices lourds.",
+      "Terminez la plupart des séries avec environ 2 répétitions propres en réserve. Gardez la même amplitude contrôlée. Il n’est pas nécessaire d’aller à l’échec.",
+      "Lorsque toutes les séries atteignent le haut de la plage de répétitions avec une technique propre lors de deux séances, essayez la plus petite augmentation de charge disponible en visant le même nombre de répétitions. Si les répétitions ou la technique se dégradent, augmentez moins ou reprenez la charge précédente. Sinon, gardez la charge et augmentez les répétitions.",
       "Conservez le plan pendant 6 à 8 semaines avant de juger des progrès. Si la fatigue s'accumule ou si les performances diminuent au cours de plusieurs séances, utilisez moins de séries et des charges plus légères pendant une semaine. Ne vous entraînez pas dans la douleur."
     ],
     "workouts": {
       "hf-upper-a": {
-        "title": "Supérieur A : Presse plate",
-        "focus": "Presse à plat, rangée à un seul bras et épaules"
+        "title": "Haut du corps A : développé couché",
+        "focus": "Développé couché, rowing à un bras et épaules"
       },
       "hf-lower-a": {
         "title": "Inférieur A : Squat et charnière",
         "focus": "Squat, soulevé de terre roumain et jambes unilatérales"
       },
       "hf-upper-b": {
-        "title": "Supérieur B : inclinaison et rangée",
-        "focus": "Presse inclinée, rangée supportée et delts arrière"
+        "title": "Haut du corps B : développé incliné et rowing",
+        "focus": "Développé incliné, rowing avec appui et deltoïdes postérieurs"
       },
       "hf-lower-b": {
         "title": "B inférieur : force sur une seule jambe",
@@ -156,17 +156,17 @@
     "name": "Moteur athlétique : 3 jours de force et de puissance",
     "description": "Pratique générale de force et de puissance faible pour les haltérophiles expérimentés, pas un plan de conditionnement spécifique au sport. Salle de sport complète avec trap bar, kettlebell et plateforme basse ; environ 50 à 65 minutes.",
     "guidelines": [
-      "Entraînez-vous des jours non consécutifs et comptabilisez vos séances de sport. Apprenez les swings et les push press avant d’utiliser ce plan. Utilisez des charges légères à modérées sur ces deux levées et arrêtez l'ensemble dès que la vitesse ou la technique diminue, avant même la cible répétitions.",
-      "N'appliquez pas la progression automatique de la plage répétition aux balançoires ou aux presses à poussée : ajoutez de la charge uniquement pendant que chaque répétition reste rapide et contrôlée. Ce plan ne remplace pas l'entraînement aérobique ou la pratique sportive.",
-      "Les séries répertoriés sont séries de travail. Échauffez-vous d'abord, puis utilisez un entraînement de plus en plus lourd séries avant vos premiers mouvements lourds.",
-      "Terminez la plupart des séries avec environ 2 bonnes répétitions restantes. Gardez la même amplitude de mouvement contrôlée ; l’échec n’est pas requis.",
-      "Lorsque chaque série atteint le sommet de sa plage de répétitions avec une forme nette en deux séances, essayez la plus petite augmentation de poids disponible tout en visant à conserver le même répétitions. Si répétitions ou la forme souffrent, utilisez une augmentation plus petite ou répétez la charge précédente. Sinon, gardez le poids et construisez répétitions.",
+      "Entraînez-vous des jours non consécutifs en tenant compte de vos autres séances de sport. Apprenez les swings et le push press avant de suivre ce programme. Utilisez des charges légères à modérées sur ces deux exercices et arrêtez la série dès que la vitesse ou la technique se dégrade, même avant le nombre de répétitions prévu.",
+      "N’appliquez pas la progression automatique par plage de répétitions aux swings ou au push press. Augmentez la charge uniquement si chaque répétition reste rapide et contrôlée. Ce programme ne remplace pas le travail aérobie ni la pratique de votre sport.",
+      "Les séries indiquées sont des séries de travail. Échauffez-vous d’abord, puis augmentez progressivement la charge sur des séries d’échauffement avant les premiers exercices lourds.",
+      "Terminez la plupart des séries avec environ 2 répétitions propres en réserve. Gardez la même amplitude contrôlée. Il n’est pas nécessaire d’aller à l’échec.",
+      "Lorsque toutes les séries atteignent le haut de la plage de répétitions avec une technique propre lors de deux séances, essayez la plus petite augmentation de charge disponible en visant le même nombre de répétitions. Si les répétitions ou la technique se dégradent, augmentez moins ou reprenez la charge précédente. Sinon, gardez la charge et augmentez les répétitions.",
       "Conservez le plan pendant 6 à 8 semaines avant de juger des progrès. Si la fatigue s'accumule ou si les performances diminuent au cours de plusieurs séances, utilisez moins de séries et des charges plus légères pendant une semaine. Ne vous entraînez pas dans la douleur."
     ],
     "workouts": {
       "ap-lower-power": {
         "title": "Puissance et résistance inférieure",
-        "focus": "Charnière rapide, résistance de la barre de piège et travail supérieur équilibré"
+        "focus": "Charnière de hanche explosive, force avec trap bar et travail équilibré du haut du corps"
       },
       "ap-upper-power": {
         "title": "Puissance et force sur une seule jambe",
@@ -174,7 +174,7 @@
       },
       "ap-work-capacity": {
         "title": "Force de tout le corps",
-        "focus": "Squat, charnière, presse inclinée et rangée supportée"
+        "focus": "Squat, charnière de hanche, développé incliné et rowing avec appui"
       }
     }
   },
@@ -183,14 +183,14 @@
     "description": "Une étape pratique après un entraînement complet du corps : chaque zone principale deux fois par semaine, sans travail de force intense ou six jours d'entraînement. Salle de sport complète ; environ 50 à 70 minutes.",
     "guidelines": [
       "Entraînez le haut du corps lundi/jeudi et le bas du corps mardi/vendredi. Gardez les week-ends libres ou décalez les jours tout en préservant un jour de repos entre les séances pour une même région.",
-      "Les séries répertoriés sont séries de travail. Échauffez-vous d'abord, puis utilisez un entraînement de plus en plus lourd séries avant vos premiers mouvements lourds.",
-      "Terminez la plupart des séries avec environ 2 bonnes répétitions restantes. Gardez la même amplitude de mouvement contrôlée ; l’échec n’est pas requis.",
-      "Lorsque chaque série atteint le sommet de sa plage de répétitions avec une forme nette en deux séances, essayez la plus petite augmentation de poids disponible tout en visant à conserver le même répétitions. Si répétitions ou la forme souffrent, utilisez une augmentation plus petite ou répétez la charge précédente. Sinon, gardez le poids et construisez répétitions.",
+      "Les séries indiquées sont des séries de travail. Échauffez-vous d’abord, puis augmentez progressivement la charge sur des séries d’échauffement avant les premiers exercices lourds.",
+      "Terminez la plupart des séries avec environ 2 répétitions propres en réserve. Gardez la même amplitude contrôlée. Il n’est pas nécessaire d’aller à l’échec.",
+      "Lorsque toutes les séries atteignent le haut de la plage de répétitions avec une technique propre lors de deux séances, essayez la plus petite augmentation de charge disponible en visant le même nombre de répétitions. Si les répétitions ou la technique se dégradent, augmentez moins ou reprenez la charge précédente. Sinon, gardez la charge et augmentez les répétitions.",
       "Conservez le plan pendant 6 à 8 semaines avant de juger des progrès. Si la fatigue s'accumule ou si les performances diminuent au cours de plusieurs séances, utilisez moins de séries et des charges plus légères pendant une semaine. Ne vous entraînez pas dans la douleur."
     ],
     "workouts": {
       "ul-upper-a": {
-        "title": "Supérieur A : plat et rangée",
+        "title": "Haut du corps A : développé couché et rowing",
         "focus": "Travail équilibré du haut du corps horizontal et vertical"
       },
       "ul-lower-a": {
@@ -211,16 +211,16 @@
     "name": "Fond de teint machine : 3 jours pour tout le corps",
     "description": "Pour les débutants, les haltérophiles confirmés ou toute personne préférant les configurations de machines aux poids libres. Trois séances répétables sur tout le corps utilisant des machines et des câbles sélecteurs/traîneaux. Environ 40 à 55 minutes ; vérifiez que votre salle de sport dispose des machines répertoriées.",
     "guidelines": [
-      "Utilisez des jours non consécutifs. Réglez le siège, les coussins et l'amplitude de mouvement avant le chargement ; enregistrez la charge de la même machine à chaque fois, car les numéros de pile diffèrent d’une machine à l’autre. Laissez 3 à 4 répétitions en réserve pendant l'apprentissage.",
-      "Les séries répertoriés sont séries de travail. Échauffez-vous d'abord, puis utilisez un entraînement de plus en plus lourd séries avant vos premiers mouvements lourds.",
-      "Terminez la plupart des séries avec environ 2 bonnes répétitions restantes. Gardez la même amplitude de mouvement contrôlée ; l’échec n’est pas requis.",
-      "Lorsque chaque série atteint le sommet de sa plage de répétitions avec une forme nette en deux séances, essayez la plus petite augmentation de poids disponible tout en visant à conserver le même répétitions. Si répétitions ou la forme souffrent, utilisez une augmentation plus petite ou répétez la charge précédente. Sinon, gardez le poids et construisez répétitions.",
+      "Entraînez-vous des jours non consécutifs. Réglez le siège, les coussins et l’amplitude avant de charger. Notez toujours la charge du même appareil, car les indications des piles de poids diffèrent d’une machine à l’autre. Gardez 3–4 répétitions en réserve pendant l’apprentissage.",
+      "Les séries indiquées sont des séries de travail. Échauffez-vous d’abord, puis augmentez progressivement la charge sur des séries d’échauffement avant les premiers exercices lourds.",
+      "Terminez la plupart des séries avec environ 2 répétitions propres en réserve. Gardez la même amplitude contrôlée. Il n’est pas nécessaire d’aller à l’échec.",
+      "Lorsque toutes les séries atteignent le haut de la plage de répétitions avec une technique propre lors de deux séances, essayez la plus petite augmentation de charge disponible en visant le même nombre de répétitions. Si les répétitions ou la technique se dégradent, augmentez moins ou reprenez la charge précédente. Sinon, gardez la charge et augmentez les répétitions.",
       "Conservez le plan pendant 6 à 8 semaines avant de juger des progrès. Si la fatigue s'accumule ou si les performances diminuent au cours de plusieurs séances, utilisez moins de séries et des charges plus légères pendant une semaine. Ne vous entraînez pas dans la douleur."
     ],
     "workouts": {
       "mf-a": {
         "title": "Appareils A",
-        "focus": "Presse à jambes, presse pectorale et rangée soutenue"
+        "focus": "Presse à cuisses, développé et rowing avec appui"
       },
       "mf-b": {
         "title": "Machines B",

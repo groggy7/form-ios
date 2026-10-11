@@ -15,7 +15,7 @@
       "Control: Llegue sólo hasta donde pueda controlar la zona lumbar y luego retroceda.",
       "Tensión abdominal: mantén el abdomen activo y respira sin abrir las costillas. El movimiento de brazos o piernas no debe sacar al tronco de su posición.",
       "Alcance: extiéndase deliberadamente y deténgase antes de que la espalda se arquee o la pelvis gire. Acortar la palanca es una forma útil de reducir la dificultad.",
-      "Regreso: recupera el control de las extremidades y reinicia tu aparato ortopédico. Mantenga el mismo tronco estable en lugar de apresurarse entre repeticiones."
+      "Regreso: vuelve con los brazos y las piernas de forma controlada y recupera la tensión abdominal. Mantén el tronco estable sin apresurarte entre repeticiones."
     ],
     "avoidDetails": [
       "Evite que la parte baja de la espalda se hunda o retroceda sentándose sobre los talones.",
@@ -56,7 +56,7 @@
     "cues": [
       "Establezca una posición estable en el banco y mantenga las muñecas sobre los antebrazos.",
       "Baje el peso hacia su pecho con control, luego presiónelo nuevamente hacia arriba.",
-      "Seguridad: Verifique los dispositivos de seguridad de las rejillas y contrate a un observador competente cuando sea necesario antes de presionar.",
+      "Seguridad: comprueba los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario antes del press.",
       "Soporte: Mantenga los pies seguros y la parte superior de la espalda apoyada en el banco."
     ],
     "avoid": [
@@ -70,8 +70,8 @@
       "Agarre: Mantenga el peso sobre el antebrazo en lugar de doblarlo hacia atrás sobre la muñeca. Elija una trayectoria del codo que pueda controlar cómodamente.",
       "Descenso: Guíe la carga a una posición inferior repetible. Mantenga la parte superior de la espalda apoyada y resista una caída brusca en la última parte.",
       "Presione: Empuje suavemente a través de las manos mientras mantiene el apoyo. Mantenga ambos lados moviéndose uniformemente en lugar de girar para terminar.",
-      "Plan de repetición fallida: establezca dispositivos de seguridad apropiados en las rejillas y utilice un observador competente cuando sea necesario. Verifique la protección antes de presionar; No confíe en recuperar una barra atrapada.",
-      "Soporte de banco: Mantenga los pies asegurados en el piso o en los soportes del banco y la parte superior de la espalda apoyada sobre la almohadilla. Restablezca su respiración y prepárese entre repeticiones."
+      "Plan ante una repetición fallida: ajusta los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario. Comprueba la protección antes del press. No cuentes con poder liberar una barra que te deje atrapado.",
+      "Apoyos en el banco: mantén los pies firmes en el suelo o en los reposapiés y la espalda alta apoyada en el respaldo. Recupera la respiración y la tensión abdominal entre repeticiones."
     ],
     "avoidDetails": [
       "Evite rebotar el peso o perder el control de la posición de los hombros.",
@@ -172,7 +172,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Inclínate desde las caderas y mantén el abdomen activo con el peso colgando debajo de ti.",
       "Control: tire hacia las costillas inferiores o la cintura, luego baje hasta que los brazos se extiendan.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -199,7 +199,7 @@
       "Movimiento: Coloque el pie trasero sobre un banco estable y plante el pie delantero para mantener el equilibrio.",
       "Control: Doble la rodilla delantera para bajar, luego empuje con el pie delantero para subir.",
       "Pierna delantera: Mantenga apoyados el talón delantero y el antepié; permita que la rodilla siga los dedos de los pies mientras las caderas descienden entre los pies.",
-      "Torso: una inclinación controlada hacia adelante puede ser apropiada. Mantenga el tronco firme en lugar de forzar un torso erguido arqueando la espalda.",
+      "Torso: una inclinación controlada hacia delante puede ser adecuada. Mantén el abdomen tenso en lugar de arquear la espalda para forzar una postura erguida.",
       "Equilibrio: Elévate principalmente a través de la pierna delantera mientras que la pierna trasera ayuda al equilibrio. Reinicie sus pies si el próximo repetición comienza desde una postura inestable.",
       "Soporte para el pie trasero: Utilice un soporte estable que le permita mantener el equilibrio sin forzar la cadera trasera. La pierna delantera realiza la mayor parte del esfuerzo de elevación."
     ],
@@ -220,7 +220,7 @@
       "No balancee el torso ni sacuda el cuello para levantarlo más alto; Utilice menos peso y un rango cómodo."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: comience con los brazos bajos y los codos suavemente doblados.",
       "Control: Levante los brazos hasta una altura cómoda de los hombros y luego bájelos lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -247,7 +247,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Control: Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -270,12 +270,12 @@
       "Termine de pie erguido en lugar de inclinarse hacia atrás."
     ],
     "cuesDetails": [
-      "Preparación: Acerque la carga, sujétela con seguridad y elimine la holgura antes de levantarla. Establezca la altura inicial para poder apuntalar en equilibrio.",
+      "Preparación: acerca la carga, agárrala con firmeza y elimina la holgura antes de levantarla. Ajusta la altura inicial para poder tensar el abdomen sin perder el equilibrio.",
       "Movimiento: Elige una postura y un agarre que mantengan el peso cerca del cuerpo. Activa el abdomen antes de levantarlo.",
       "Control: Empuje a través del piso para mantenerse erguido, luego baje doblando las caderas y las rodillas.",
       "Impulso de las piernas: Empuje el suelo mientras las caderas y los hombros se elevan juntos. Mantenga los brazos largos; sostienen la carga en lugar de rizarla.",
       "Ruta de carga: Mantenga el peso cerca de las piernas dejando espacio para las rodillas. Termine de pie con las caderas y las rodillas extendidas.",
-      "Reiniciar: Baje con una bisagra de cadera controlada y una flexión de rodilla. Restablezca su agarre, equilibrio y apoyo antes de cada nuevo tirón."
+      "Reinicio: baja la carga de forma controlada llevando las caderas hacia atrás y flexionando las rodillas. Recupera el agarre, el equilibrio y la tensión abdominal antes de cada nuevo tirón."
     ],
     "avoidDetails": [
       "Evite tirar del peso del suelo o inclinarse hacia atrás en la parte superior.",
@@ -299,7 +299,7 @@
       "Control: Extiende un brazo y la pierna opuesta, regresa y luego cambia de lado.",
       "Tensión abdominal: mantén el abdomen activo y respira sin abrir las costillas. El movimiento de brazos o piernas no debe sacar al tronco de su posición.",
       "Alcance: extiéndase deliberadamente y deténgase antes de que la espalda se arquee o la pelvis gire. Acortar la palanca es una forma útil de reducir la dificultad.",
-      "Regreso: recupera el control de las extremidades y reinicia tu aparato ortopédico. Mantenga el mismo tronco estable en lugar de apresurarse entre repeticiones."
+      "Regreso: vuelve con los brazos y las piernas de forma controlada y recupera la tensión abdominal. Mantén el tronco estable sin apresurarte entre repeticiones."
     ],
     "avoidDetails": [
       "Evite dejar que la parte baja de la espalda se levante mientras las extremidades se extienden.",
@@ -326,7 +326,7 @@
       "Agarre: Mantenga el peso sobre el antebrazo en lugar de doblarlo hacia atrás sobre la muñeca. Elija una trayectoria del codo que pueda controlar cómodamente.",
       "Descenso: Guíe la carga a una posición inferior repetible. Mantenga la parte superior de la espalda apoyada y resista una caída brusca en la última parte.",
       "Presione: Empuje suavemente a través de las manos mientras mantiene el apoyo. Mantenga ambos lados moviéndose uniformemente en lugar de girar para terminar.",
-      "Soporte de banco: Mantenga los pies asegurados en el piso o en los soportes del banco y la parte superior de la espalda apoyada sobre la almohadilla. Restablezca su respiración y prepárese entre repeticiones."
+      "Apoyos en el banco: mantén los pies firmes en el suelo o en los reposapiés y la espalda alta apoyada en el respaldo. Recupera la respiración y la tensión abdominal entre repeticiones."
     ],
     "avoidDetails": [
       "Evite rebotar el peso o perder el control de la posición de los hombros.",
@@ -364,7 +364,7 @@
     "name": "Curl martillo con mancuernas",
     "cues": [
       "Sostenga las pesas con las palmas hacia adentro y los codos cerca de los costados.",
-      "Curl sin rotar las muñecas, luego bájelas lentamente."
+      "Flexiona los codos sin girar las muñecas y baja después lentamente."
     ],
     "avoid": [
       "No balancee el cuerpo ni doble las muñecas para terminar; aligerar la carga y controlar el descenso."
@@ -372,7 +372,7 @@
     "cuesDetails": [
       "Preparación: elija el agarre deseado y asegure cualquier banco o soporte para brazos. Comienza con resistencia que puedas hacer curl sin mover el tronco.",
       "Movimiento: Sostenga las pesas con las palmas hacia adentro y los codos cerca de los costados.",
-      "Control: Curl sin rotar las muñecas, luego baje lentamente.",
+      "Control: Flexiona los codos sin girar las muñecas y baja después lentamente.",
       "Movimiento del codo: Doble el codo mientras mantiene la parte superior del brazo razonablemente estable en la posición para esta variación.",
       "Muñeca: Mantenga la muñeca alineada con el antebrazo. Cualquier rotación del agarre debe ser deliberada y no causada por el peso que tira de la mano.",
       "Regreso: Extienda el codo suavemente en un rango cómodo. Mantenga el control cerca del final en lugar de caer en el tramo."
@@ -394,7 +394,7 @@
       "No balancee el torso ni sacuda el cuello para levantarlo más alto; Utilice menos peso y un rango cómodo."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: comience con los brazos bajos y los codos suavemente doblados.",
       "Control: Levante los brazos hasta una altura cómoda de los hombros y luego bájelos lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -586,7 +586,7 @@
     "cues": [
       "Establezca una posición estable en el banco y mantenga las muñecas sobre los antebrazos.",
       "Baje el peso hacia su pecho con control, luego presiónelo nuevamente hacia arriba.",
-      "Seguridad: Verifique los dispositivos de seguridad de las rejillas y contrate a un observador competente cuando sea necesario antes de presionar.",
+      "Seguridad: comprueba los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario antes del press.",
       "Soporte: Mantenga los pies seguros y la parte superior de la espalda apoyada en el banco."
     ],
     "avoid": [
@@ -600,8 +600,8 @@
       "Agarre: Mantenga el peso sobre el antebrazo en lugar de doblarlo hacia atrás sobre la muñeca. Elija una trayectoria del codo que pueda controlar cómodamente.",
       "Descenso: Guíe la carga a una posición inferior repetible. Mantenga la parte superior de la espalda apoyada y resista una caída brusca en la última parte.",
       "Presione: Empuje suavemente a través de las manos mientras mantiene el apoyo. Mantenga ambos lados moviéndose uniformemente en lugar de girar para terminar.",
-      "Plan de repetición fallida: establezca dispositivos de seguridad apropiados en las rejillas y utilice un observador competente cuando sea necesario. Verifique la protección antes de presionar; No confíe en recuperar una barra atrapada.",
-      "Soporte de banco: Mantenga los pies asegurados en el piso o en los soportes del banco y la parte superior de la espalda apoyada sobre la almohadilla. Restablezca su respiración y prepárese entre repeticiones."
+      "Plan ante una repetición fallida: ajusta los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario. Comprueba la protección antes del press. No cuentes con poder liberar una barra que te deje atrapado.",
+      "Apoyos en el banco: mantén los pies firmes en el suelo o en los reposapiés y la espalda alta apoyada en el respaldo. Recupera la respiración y la tensión abdominal entre repeticiones."
     ],
     "avoidDetails": [
       "Evite rebotar el peso o perder el control de la posición de los hombros.",
@@ -611,10 +611,10 @@
     ]
   },
   "incline-dumbbell-curl": {
-    "name": "Inclinación mancuerna Curl",
+    "name": "Curl inclinado con mancuernas",
     "cues": [
       "Siéntese contra el banco inclinado con los brazos colgando a los costados.",
-      "Doble sin levantar la parte superior de los brazos, luego bájelos lentamente.",
+      "Flexiona los codos sin levantar los brazos y baja después lentamente.",
       "Inclinación: Mantenga la espalda apoyada; reduzca la reclinación si la posición inicial de los hombros se siente forzada."
     ],
     "avoid": [
@@ -624,7 +624,7 @@
     "cuesDetails": [
       "Preparación: elija el agarre deseado y asegure cualquier banco o soporte para brazos. Comienza con resistencia que puedas hacer curl sin mover el tronco.",
       "Movimiento: Siéntese contra el banco inclinado con los brazos colgando a los costados.",
-      "Control: Doble sin levantar la parte superior de los brazos, luego bájelos lentamente.",
+      "Control: Flexiona los codos sin levantar los brazos y baja después lentamente.",
       "Movimiento del codo: Doble el codo mientras mantiene la parte superior del brazo razonablemente estable en la posición para esta variación.",
       "Muñeca: Mantenga la muñeca alineada con el antebrazo. Cualquier rotación del agarre debe ser deliberada y no causada por el peso que tira de la mano.",
       "Regreso: Extienda el codo suavemente en un rango cómodo. Mantenga el control cerca del final en lugar de caer en el tramo.",
@@ -655,7 +655,7 @@
       "Agarre: Mantenga el peso sobre el antebrazo en lugar de doblarlo hacia atrás sobre la muñeca. Elija una trayectoria del codo que pueda controlar cómodamente.",
       "Descenso: Guíe la carga a una posición inferior repetible. Mantenga la parte superior de la espalda apoyada y resista una caída brusca en la última parte.",
       "Presione: Empuje suavemente a través de las manos mientras mantiene el apoyo. Mantenga ambos lados moviéndose uniformemente en lugar de girar para terminar.",
-      "Soporte de banco: Mantenga los pies asegurados en el piso o en los soportes del banco y la parte superior de la espalda apoyada sobre la almohadilla. Restablezca su respiración y prepárese entre repeticiones."
+      "Apoyos en el banco: mantén los pies firmes en el suelo o en los reposapiés y la espalda alta apoyada en el respaldo. Recupera la respiración y la tensión abdominal entre repeticiones."
     ],
     "avoidDetails": [
       "Evite rebotar el peso o perder el control de la posición de los hombros.",
@@ -858,7 +858,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Inclínate desde las caderas y mantén el abdomen activo con el peso colgando debajo de ti.",
       "Control: tire hacia las costillas inferiores o la cintura, luego baje hasta que los brazos se extiendan.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -928,10 +928,10 @@
       "Ajuste: Ajuste el asiento de modo que las manijas o las almohadillas para los brazos coincidan con la altura de los hombros."
     ],
     "avoid": [
-      "No deje que la máquina tire demasiado de los hombros hacia atrás; acortar el arco y mantener el retorno controlado."
+      "No dejes que la máquina tire de los hombros demasiado hacia atrás. Acorta el arco del movimiento y controla el regreso."
     ],
     "cuesDetails": [
-      "Preparación: Asegure su postura o posición de banco y seleccione una resistencia ligera. Encuentre una posición inicial cómoda para el brazo antes de abrir más.",
+      "Preparación: busca una postura estable de pie o en el banco y elige poca resistencia. Encuentra una posición inicial cómoda para los brazos antes de abrirlos más.",
       "Movimiento: Ajuste el asiento de modo que sus brazos se encuentren con las almohadillas o manijas a la altura del pecho.",
       "Control: Junte los brazos y luego ábralos lentamente.",
       "Arco del brazo: mantenga una flexión pequeña y bastante constante del codo mientras se mueve la parte superior de los brazos. Piense en juntar los brazos en lugar de empujar las manos.",
@@ -961,7 +961,7 @@
       "Movimiento: Cuélgate de una barra segura con un agarre cómodo y el abdomen activo.",
       "Control: tira de tu cuerpo hacia la barra, luego baja con control.",
       "Tirar: piense en llevar los codos hacia las costillas a medida que el cuerpo se eleva. Deje que los omóplatos se muevan en lugar de forzarlos.",
-      "Posición del cuerpo: apóyese ligeramente y mantenga las piernas quietas. Termine a una altura que pueda alcanzar sin empujar la barbilla hacia adelante.",
+      "Posición del cuerpo: tensa ligeramente el abdomen y mantén las piernas quietas. Sube solo hasta donde puedas llegar sin adelantar la barbilla.",
       "Descenso: Baje hasta que los brazos alcancen una posición extendida cómoda mientras mantiene el control de los hombros y el agarre."
     ],
     "avoidDetails": [
@@ -986,7 +986,7 @@
       "Movimiento: Cuélgate de una barra segura con un agarre cómodo y el abdomen activo.",
       "Control: tira de tu cuerpo hacia la barra, luego baja con control.",
       "Tirar: piense en llevar los codos hacia las costillas a medida que el cuerpo se eleva. Deje que los omóplatos se muevan en lugar de forzarlos.",
-      "Posición del cuerpo: apóyese ligeramente y mantenga las piernas quietas. Termine a una altura que pueda alcanzar sin empujar la barbilla hacia adelante.",
+      "Posición del cuerpo: tensa ligeramente el abdomen y mantén las piernas quietas. Sube solo hasta donde puedas llegar sin adelantar la barbilla.",
       "Descenso: Baje hasta que los brazos alcancen una posición extendida cómoda mientras mantiene el control de los hombros y el agarre."
     ],
     "avoidDetails": [
@@ -997,7 +997,7 @@
     ]
   },
   "push-press": {
-    "name": "Empujar prensa",
+    "name": "Push press",
     "cues": [
       "Sostenga el peso sobre sus hombros; sumérgete un poco doblando las caderas y las rodillas.",
       "Conduce a través de tus piernas y termina presionando sobre tu cabeza; bajar bajo control.",
@@ -1008,7 +1008,7 @@
       "No persiga un cierre aéreo inestable; Practica con una carga más ligera."
     ],
     "cuesDetails": [
-      "Preparación: coloque el peso cerca de los hombros y apóyelo en una posición de pie equilibrada. Aprenda a presionar estrictamente antes de agregar el impulso de las piernas.",
+      "Preparación: coloca la carga cerca de los hombros y tensa el abdomen en una postura estable. Aprende primero el press sin impulso de piernas antes de añadirlo.",
       "Movimiento: Sostenga el peso sobre sus hombros; sumérgete un poco doblando las caderas y las rodillas.",
       "Control: Conduce a través de tus piernas y termina presionando sobre tu cabeza; bajar bajo control.",
       "Inmersión: Doble ligeramente las caderas y las rodillas mientras mantiene el peso apoyado y el torso erguido. Mantenga presión en todo el pie durante el baño.",
@@ -1035,7 +1035,7 @@
       "Preparación: utilice una superficie antideslizante o asas seguras. Elige una altura de apoyo que te permita bajar y presionar con el tronco firme.",
       "Movimiento: Apoya bien las manos y mantén el cuerpo recto y activo de la cabeza a los talones.",
       "Control: Baje el pecho hacia su soporte, luego presione hacia afuera con control.",
-      "Línea del cuerpo: Apoye el abdomen y los glúteos; Deje que los hombros, las caderas y las piernas viajen juntos en lugar de levantar el pecho primero.",
+      "Alineación del cuerpo: tensa el abdomen y los glúteos. Mueve los hombros, las caderas y las piernas a la vez en lugar de levantar primero el pecho.",
       "Manos y codos: Distribuya la presión entre las manos y elija una trayectoria cómoda para los codos. Mantenga el cuello alineado con el tronco.",
       "Posición superior: Aleje el soporte y deje que los omóplatos se muevan con naturalidad. Termina cada repetición en una tabla estable antes de descender nuevamente."
     ],
@@ -1060,7 +1060,7 @@
       "Movimiento: coloque un cable o banda alto y mantenga la parte superior de los brazos cerca de los costados.",
       "Control: Estire los codos para presionar hacia abajo y luego regrese lentamente.",
       "Codo: Mantenga la parte superior del brazo razonablemente estable mientras el antebrazo se mueve. Enderece suavemente sin forzar un tope de unión duro.",
-      "Muñeca: Mantenga la muñeca alineada con el antebrazo y el mango asegurado. No sustituyas el movimiento de la muñeca por la extensión del codo.",
+      "Muñeca: mantén la muñeca alineada con el antebrazo y sujeta bien el agarre. Extiende el codo sin sustituir esa acción por un movimiento de la muñeca.",
       "Regreso: Doble el codo bajo control y mantenga la misma posición de la parte superior del brazo. Utilice una resistencia que no arrastre el hombro hacia adelante."
     ],
     "avoidDetails": [
@@ -1233,7 +1233,7 @@
       "Movimiento: coloque un cable o banda alto y mantenga la parte superior de los brazos cerca de los costados.",
       "Control: Estire los codos para presionar hacia abajo y luego regrese lentamente.",
       "Codo: Mantenga la parte superior del brazo razonablemente estable mientras el antebrazo se mueve. Enderece suavemente sin forzar un tope de unión duro.",
-      "Muñeca: Mantenga la muñeca alineada con el antebrazo y el mango asegurado. No sustituyas el movimiento de la muñeca por la extensión del codo.",
+      "Muñeca: mantén la muñeca alineada con el antebrazo y sujeta bien el agarre. Extiende el codo sin sustituir esa acción por un movimiento de la muñeca.",
       "Regreso: Doble el codo bajo control y mantenga la misma posición de la parte superior del brazo. Utilice una resistencia que no arrastre el hombro hacia adelante."
     ],
     "avoidDetails": [
@@ -1256,12 +1256,12 @@
       "Termine de pie erguido en lugar de inclinarse hacia atrás."
     ],
     "cuesDetails": [
-      "Preparación: Acerque la carga, sujétela con seguridad y elimine la holgura antes de levantarla. Establezca la altura inicial para poder apuntalar en equilibrio.",
+      "Preparación: acerca la carga, agárrala con firmeza y elimina la holgura antes de levantarla. Ajusta la altura inicial para poder tensar el abdomen sin perder el equilibrio.",
       "Movimiento: Elige una postura y un agarre que mantengan el peso cerca del cuerpo. Activa el abdomen antes de levantarlo.",
       "Control: Empuje a través del piso para mantenerse erguido, luego baje doblando las caderas y las rodillas.",
       "Impulso de las piernas: Empuje el suelo mientras las caderas y los hombros se elevan juntos. Mantenga los brazos largos; sostienen la carga en lugar de rizarla.",
       "Ruta de carga: Mantenga el peso cerca de las piernas dejando espacio para las rodillas. Termine de pie con las caderas y las rodillas extendidas.",
-      "Reiniciar: Baje con una bisagra de cadera controlada y una flexión de rodilla. Restablezca su agarre, equilibrio y apoyo antes de cada nuevo tirón.",
+      "Reinicio: baja la carga de forma controlada llevando las caderas hacia atrás y flexionando las rodillas. Recupera el agarre, el equilibrio y la tensión abdominal antes de cada nuevo tirón.",
       "Barra trampa: Párese centrado dentro del marco y agarre ambas manijas de manera uniforme. Utilice una altura de mango adecuada y mantenga el marco nivelado a medida que se eleva."
     ],
     "avoidDetails": [
@@ -1284,7 +1284,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Control: Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -1387,7 +1387,7 @@
       "Movimiento: Da un paso hacia atrás hasta adoptar una postura estable y baja doblando ambas rodillas.",
       "Control: Mantenga el pie delantero plantado; empújalo para volver a estar de pie.",
       "Pierna delantera: Mantenga apoyados el talón delantero y el antepié; permita que la rodilla siga los dedos de los pies mientras las caderas descienden entre los pies.",
-      "Torso: una inclinación controlada hacia adelante puede ser apropiada. Mantenga el tronco firme en lugar de forzar un torso erguido arqueando la espalda.",
+      "Torso: una inclinación controlada hacia delante puede ser adecuada. Mantén el abdomen tenso en lugar de arquear la espalda para forzar una postura erguida.",
       "Equilibrio: Elévate principalmente a través de la pierna delantera mientras que la pierna trasera ayuda al equilibrio. Reinicie sus pies si el próximo repetición comienza desde una postura inestable."
     ],
     "avoidDetails": [
@@ -1413,7 +1413,7 @@
       "Movimiento: Da un paso adelante lo suficiente para mantener el equilibrio; baje doblando ambas rodillas.",
       "Control: Empuje a través de la pierna delantera y controle el siguiente paso.",
       "Pierna delantera: Mantenga apoyados el talón delantero y el antepié; permita que la rodilla siga los dedos de los pies mientras las caderas descienden entre los pies.",
-      "Torso: una inclinación controlada hacia adelante puede ser apropiada. Mantenga el tronco firme en lugar de forzar un torso erguido arqueando la espalda.",
+      "Torso: una inclinación controlada hacia delante puede ser adecuada. Mantén el abdomen tenso en lugar de arquear la espalda para forzar una postura erguida.",
       "Equilibrio: Elévate principalmente a través de la pierna delantera mientras que la pierna trasera ayuda al equilibrio. Reinicie sus pies si el próximo repetición comienza desde una postura inestable."
     ],
     "avoidDetails": [
@@ -1460,7 +1460,7 @@
       "Use menos peso si balancea el torso o tira de las pesas hacia arriba."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: Apoye su pecho o gire a la altura de las caderas con los brazos colgando debajo de usted.",
       "Control: Abre los brazos hacia los lados con los codos suaves, luego regresa lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -1476,7 +1476,7 @@
     ]
   },
   "cable-curl": {
-    "name": "Enrollamiento del cable",
+    "name": "Curl en polea",
     "cues": [
       "Mantenga la parte superior de los brazos cerca del torso y sostenga la carga con las muñecas firmes.",
       "Doble los codos para levantar la carga y luego bájela con control."
@@ -1500,7 +1500,7 @@
     ]
   },
   "barbell-preacher-curl": {
-    "name": "barra Curl predicador",
+    "name": "Curl predicador con barra",
     "cues": [
       "Apoye la parte superior de los brazos sobre la almohadilla y mantenga las muñecas firmes.",
       "Doble la carga, luego bájela hasta que sus codos estén cómodamente extendidos."
@@ -1563,7 +1563,7 @@
       "Movimiento: Cuélgate de una barra segura con un agarre cómodo y el abdomen activo.",
       "Control: tira de tu cuerpo hacia la barra, luego baja con control.",
       "Tirar: piense en llevar los codos hacia las costillas a medida que el cuerpo se eleva. Deje que los omóplatos se muevan en lugar de forzarlos.",
-      "Posición del cuerpo: apóyese ligeramente y mantenga las piernas quietas. Termine a una altura que pueda alcanzar sin empujar la barbilla hacia adelante.",
+      "Posición del cuerpo: tensa ligeramente el abdomen y mantén las piernas quietas. Sube solo hasta donde puedas llegar sin adelantar la barbilla.",
       "Descenso: Baje hasta que los brazos alcancen una posición extendida cómoda mientras mantiene el control de los hombros y el agarre."
     ],
     "avoidDetails": [
@@ -1609,7 +1609,7 @@
       "No persigas un tramo profundo; acorte el arco si los hombros giran hacia adelante o pierden el control."
     ],
     "cuesDetails": [
-      "Preparación: Asegure su postura o posición de banco y seleccione una resistencia ligera. Encuentre una posición inicial cómoda para el brazo antes de abrir más.",
+      "Preparación: busca una postura estable de pie o en el banco y elige poca resistencia. Encuentra una posición inicial cómoda para los brazos antes de abrirlos más.",
       "Movimiento: Ajuste las manijas para el ángulo de vuelo elegido y mantenga una pequeña curvatura en los codos.",
       "Control: Junte los brazos frente al pecho y luego ábralos lentamente.",
       "Arco del brazo: mantenga una flexión pequeña y bastante constante del codo mientras se mueve la parte superior de los brazos. Piense en juntar los brazos en lugar de empujar las manos.",
@@ -1686,12 +1686,12 @@
       "Termine de pie erguido en lugar de inclinarse hacia atrás."
     ],
     "cuesDetails": [
-      "Preparación: Acerque la carga, sujétela con seguridad y elimine la holgura antes de levantarla. Establezca la altura inicial para poder apuntalar en equilibrio.",
+      "Preparación: acerca la carga, agárrala con firmeza y elimina la holgura antes de levantarla. Ajusta la altura inicial para poder tensar el abdomen sin perder el equilibrio.",
       "Movimiento: Elige una postura y un agarre que mantengan el peso cerca del cuerpo. Activa el abdomen antes de levantarlo.",
       "Control: Empuje a través del piso para mantenerse erguido, luego baje doblando las caderas y las rodillas.",
       "Impulso de las piernas: Empuje el suelo mientras las caderas y los hombros se elevan juntos. Mantenga los brazos largos; sostienen la carga en lugar de rizarla.",
       "Ruta de carga: Mantenga el peso cerca de las piernas dejando espacio para las rodillas. Termine de pie con las caderas y las rodillas extendidas.",
-      "Reiniciar: Baje con una bisagra de cadera controlada y una flexión de rodilla. Restablezca su agarre, equilibrio y apoyo antes de cada nuevo tirón.",
+      "Reinicio: baja la carga de forma controlada llevando las caderas hacia atrás y flexionando las rodillas. Recupera el agarre, el equilibrio y la tensión abdominal antes de cada nuevo tirón.",
       "Postura de sumo: use una postura más amplia con las rodillas siguiendo los dedos de los pies y las manos dentro de las piernas. Elija un ancho que aún le permita empujar uniformemente a través de los pies."
     ],
     "avoidDetails": [
@@ -1706,7 +1706,7 @@
     "cues": [
       "Coloca los pies a una anchura cómoda, activa el abdomen y flexiona las caderas y las rodillas a la vez.",
       "Mantenga todo el pie plantado, agáchese a una profundidad controlada y luego párese.",
-      "Smith: establezca topes de seguridad, practique los ganchos y combine su postura o banco con la pista fija."
+      "Smith: ajusta los topes de seguridad, practica enganchar la barra y adapta la postura o el banco a la trayectoria guiada."
     ],
     "avoid": [
       "Evite perder el contacto con los pies o dejar que la carga lo desequilibre.",
@@ -1719,7 +1719,7 @@
       "Presión del pie: Mantenga apoyados el talón y ambos lados del antepié. Deja que las rodillas sigan la dirección de los dedos de los pies.",
       "Tensión abdominal: activa el abdomen antes de bajar. Mantén la carga equilibrada sobre tus apoyos mientras las caderas y los hombros suben a la vez.",
       "Profundidad: utilice el rango repetible más profundo que pueda controlar sin perder el equilibrio. El desplazamiento de la rodilla más allá de los dedos de los pies no es automáticamente un error.",
-      "Máquina Smith: coloque los topes de seguridad y practique volver a enganchar los ganchos con una barra de luz. Coloque sus pies o banco para adaptarse a la pista fija."
+      "Máquina Smith: ajusta los topes de seguridad y practica volver a enganchar la barra con poco peso. Coloca los pies o el banco según la trayectoria guiada."
     ],
     "avoidDetails": [
       "Evite perder el contacto con los pies o dejar que la carga lo desequilibre.",
@@ -1729,11 +1729,11 @@
     ]
   },
   "smith-bench-press": {
-    "name": "Press de banca Smith",
+    "name": "Press de banca en máquina Smith",
     "cues": [
       "Establezca una posición estable en el banco y mantenga las muñecas sobre los antebrazos.",
       "Baje el peso hacia su pecho con control, luego presiónelo nuevamente hacia arriba.",
-      "Smith: establezca topes de seguridad, practique los ganchos y combine su postura o banco con la pista fija.",
+      "Smith: ajusta los topes de seguridad, practica enganchar la barra y adapta la postura o el banco a la trayectoria guiada.",
       "Soporte: Mantenga los pies seguros y la parte superior de la espalda apoyada en el banco."
     ],
     "avoid": [
@@ -1747,8 +1747,8 @@
       "Agarre: Mantenga el peso sobre el antebrazo en lugar de doblarlo hacia atrás sobre la muñeca. Elija una trayectoria del codo que pueda controlar cómodamente.",
       "Descenso: Guíe la carga a una posición inferior repetible. Mantenga la parte superior de la espalda apoyada y resista una caída brusca en la última parte.",
       "Presione: Empuje suavemente a través de las manos mientras mantiene el apoyo. Mantenga ambos lados moviéndose uniformemente en lugar de girar para terminar.",
-      "Máquina Smith: coloque los topes de seguridad y practique volver a enganchar los ganchos con una barra de luz. Coloque sus pies o banco para adaptarse a la pista fija.",
-      "Soporte de banco: Mantenga los pies asegurados en el piso o en los soportes del banco y la parte superior de la espalda apoyada sobre la almohadilla. Restablezca su respiración y prepárese entre repeticiones."
+      "Máquina Smith: ajusta los topes de seguridad y practica volver a enganchar la barra con poco peso. Coloca los pies o el banco según la trayectoria guiada.",
+      "Apoyos en el banco: mantén los pies firmes en el suelo o en los reposapiés y la espalda alta apoyada en el respaldo. Recupera la respiración y la tensión abdominal entre repeticiones."
     ],
     "avoidDetails": [
       "Evite rebotar el peso o perder el control de la posición de los hombros.",
@@ -1758,11 +1758,11 @@
     ]
   },
   "smith-incline-bench-press": {
-    "name": "Press de banca inclinado Smith",
+    "name": "Press inclinado en máquina Smith",
     "cues": [
       "Establezca una posición estable en el banco y mantenga las muñecas sobre los antebrazos.",
       "Baje el peso hacia su pecho con control, luego presiónelo nuevamente hacia arriba.",
-      "Smith: establezca topes de seguridad, practique los ganchos y combine su postura o banco con la pista fija.",
+      "Smith: ajusta los topes de seguridad, practica enganchar la barra y adapta la postura o el banco a la trayectoria guiada.",
       "Soporte: Mantenga los pies seguros y la parte superior de la espalda apoyada en el banco."
     ],
     "avoid": [
@@ -1776,8 +1776,8 @@
       "Agarre: Mantenga el peso sobre el antebrazo en lugar de doblarlo hacia atrás sobre la muñeca. Elija una trayectoria del codo que pueda controlar cómodamente.",
       "Descenso: Guíe la carga a una posición inferior repetible. Mantenga la parte superior de la espalda apoyada y resista una caída brusca en la última parte.",
       "Presione: Empuje suavemente a través de las manos mientras mantiene el apoyo. Mantenga ambos lados moviéndose uniformemente en lugar de girar para terminar.",
-      "Máquina Smith: coloque los topes de seguridad y practique volver a enganchar los ganchos con una barra de luz. Coloque sus pies o banco para adaptarse a la pista fija.",
-      "Soporte de banco: Mantenga los pies asegurados en el piso o en los soportes del banco y la parte superior de la espalda apoyada sobre la almohadilla. Restablezca su respiración y prepárese entre repeticiones."
+      "Máquina Smith: ajusta los topes de seguridad y practica volver a enganchar la barra con poco peso. Coloca los pies o el banco según la trayectoria guiada.",
+      "Apoyos en el banco: mantén los pies firmes en el suelo o en los reposapiés y la espalda alta apoyada en el respaldo. Recupera la respiración y la tensión abdominal entre repeticiones."
     ],
     "avoidDetails": [
       "Evite rebotar el peso o perder el control de la posición de los hombros.",
@@ -1792,7 +1792,7 @@
       "Flexiona ligeramente las rodillas, activa el abdomen y lleva las caderas hacia atrás manteniendo el peso cerca.",
       "Baje hasta un estiramiento controlado de los isquiotibiales, luego extienda las caderas para ponerse de pie.",
       "Rango: Deténgase cuando las caderas no puedan viajar más hacia atrás sin cambiar la posición del tronco.",
-      "Smith: establezca topes de seguridad, practique los ganchos y combine su postura o banco con la pista fija."
+      "Smith: ajusta los topes de seguridad, practica enganchar la barra y adapta la postura o el banco a la trayectoria guiada."
     ],
     "avoid": [
       "No redondees más para ganar profundidad; acorte la bisagra y mantenga las caderas moviéndose hacia atrás."
@@ -1804,7 +1804,7 @@
       "Camino de la cadera: piensa en cerrar una puerta con las caderas. El torso se inclina como resultado de la bisagra mientras la forma de la espalda se mantiene controlada.",
       "Posición inferior: deténgase cuando un mayor alcance cambiaría la posición de su espalda o pelvis. Llegar al suelo no es el objetivo.",
       "Regreso: Empuje a través del pie o pies de apoyo y lleve las caderas hacia adelante para levantarse. Termine alto sin agregar una inclinación hacia atrás.",
-      "Máquina Smith: coloque los topes de seguridad y practique volver a enganchar los ganchos con una barra de luz. Coloque sus pies o banco para adaptarse a la pista fija."
+      "Máquina Smith: ajusta los topes de seguridad y practica volver a enganchar la barra con poco peso. Coloca los pies o el banco según la trayectoria guiada."
     ],
     "avoidDetails": [
       "Evite llegar más abajo redondeando la espalda o convirtiéndola en una sentadilla.",
@@ -1818,7 +1818,7 @@
     "cues": [
       "Apoye la parte superior de la espalda en el banco, plante los pies y asegure la carga sobre las caderas.",
       "Levanta las caderas hasta que el tronco y los muslos se alineen; bajar con control.",
-      "Smith: establezca topes de seguridad, practique los ganchos y combine su postura o banco con la pista fija."
+      "Smith: ajusta los topes de seguridad, practica enganchar la barra y adapta la postura o el banco a la trayectoria guiada."
     ],
     "avoid": [
       "No arquee la parte baja de la espalda para aumentar la altura; Termine con las caderas y reduzca el levantamiento si las costillas se ensanchan."
@@ -1830,7 +1830,7 @@
       "Impulso de la cadera: presione los pies hacia abajo y levántelos desde las caderas. Evite que las costillas se ensanchen a medida que se eleva la pelvis.",
       "Posición superior: Finaliza apretando los glúteos con el tronco controlado. Deténgase cuando las caderas estén extendidas en lugar de arquearse para subir más.",
       "Posición de los pies: ajuste los pies si no puede mantener una presión estable. Mantenga la misma orientación de la pelvis y la misma trayectoria controlada en cada repetición.",
-      "Máquina Smith: coloque los topes de seguridad y practique volver a enganchar los ganchos con una barra de luz. Coloque sus pies o banco para adaptarse a la pista fija."
+      "Máquina Smith: ajusta los topes de seguridad y practica volver a enganchar la barra con poco peso. Coloca los pies o el banco según la trayectoria guiada."
     ],
     "avoidDetails": [
       "Evite arquear la zona lumbar para levantar la carga más.",
@@ -1960,7 +1960,7 @@
       "Movimiento: coloque el pie delantero en un escalón bajo y estable y adopte una postura dividida equilibrada.",
       "Control: Baje doblando la rodilla delantera, luego empuje ese pie para subir.",
       "Pierna delantera: Mantenga apoyados el talón delantero y el antepié; permita que la rodilla siga los dedos de los pies mientras las caderas descienden entre los pies.",
-      "Torso: una inclinación controlada hacia adelante puede ser apropiada. Mantenga el tronco firme en lugar de forzar un torso erguido arqueando la espalda.",
+      "Torso: una inclinación controlada hacia delante puede ser adecuada. Mantén el abdomen tenso en lugar de arquear la espalda para forzar una postura erguida.",
       "Equilibrio: Elévate principalmente a través de la pierna delantera mientras que la pierna trasera ayuda al equilibrio. Reinicie sus pies si el próximo repetición comienza desde una postura inestable.",
       "Plataforma elevada: La profundidad adicional es opcional. Utilice una plataforma segura y de altura modesta y descienda sólo mientras el control del pie y la pelvis permanezca estable."
     ],
@@ -2274,11 +2274,11 @@
     ]
   },
   "barbell-decline-bench-press": {
-    "name": "barra Press de banca declinado",
+    "name": "Press declinado con barra",
     "cues": [
       "Establezca una posición estable en el banco y mantenga las muñecas sobre los antebrazos.",
       "Baje el peso hacia su pecho con control, luego presiónelo nuevamente hacia arriba.",
-      "Seguridad: Verifique los dispositivos de seguridad de las rejillas y contrate a un observador competente cuando sea necesario antes de presionar.",
+      "Seguridad: comprueba los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario antes del press.",
       "Soporte: Mantenga los pies seguros y la parte superior de la espalda apoyada en el banco."
     ],
     "avoid": [
@@ -2292,8 +2292,8 @@
       "Agarre: Mantenga el peso sobre el antebrazo en lugar de doblarlo hacia atrás sobre la muñeca. Elija una trayectoria del codo que pueda controlar cómodamente.",
       "Descenso: Guíe la carga a una posición inferior repetible. Mantenga la parte superior de la espalda apoyada y resista una caída brusca en la última parte.",
       "Presione: Empuje suavemente a través de las manos mientras mantiene el apoyo. Mantenga ambos lados moviéndose uniformemente en lugar de girar para terminar.",
-      "Plan de repetición fallida: establezca dispositivos de seguridad apropiados en las rejillas y utilice un observador competente cuando sea necesario. Verifique la protección antes de presionar; No confíe en recuperar una barra atrapada.",
-      "Soporte de banco: Mantenga los pies asegurados en el piso o en los soportes del banco y la parte superior de la espalda apoyada sobre la almohadilla. Restablezca su respiración y prepárese entre repeticiones."
+      "Plan ante una repetición fallida: ajusta los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario. Comprueba la protección antes del press. No cuentes con poder liberar una barra que te deje atrapado.",
+      "Apoyos en el banco: mantén los pies firmes en el suelo o en los reposapiés y la espalda alta apoyada en el respaldo. Recupera la respiración y la tensión abdominal entre repeticiones."
     ],
     "avoidDetails": [
       "Evite rebotar el peso o perder el control de la posición de los hombros.",
@@ -2303,7 +2303,7 @@
     ]
   },
   "dumbbell-decline-bench-press": {
-    "name": "mancuerna Press de banca declinado",
+    "name": "Press declinado con mancuernas",
     "cues": [
       "Establezca una posición estable en el banco y mantenga las muñecas sobre los antebrazos.",
       "Baje el peso hacia su pecho con control, luego presiónelo nuevamente hacia arriba.",
@@ -2320,7 +2320,7 @@
       "Agarre: Mantenga el peso sobre el antebrazo en lugar de doblarlo hacia atrás sobre la muñeca. Elija una trayectoria del codo que pueda controlar cómodamente.",
       "Descenso: Guíe la carga a una posición inferior repetible. Mantenga la parte superior de la espalda apoyada y resista una caída brusca en la última parte.",
       "Presione: Empuje suavemente a través de las manos mientras mantiene el apoyo. Mantenga ambos lados moviéndose uniformemente en lugar de girar para terminar.",
-      "Soporte de banco: Mantenga los pies asegurados en el piso o en los soportes del banco y la parte superior de la espalda apoyada sobre la almohadilla. Restablezca su respiración y prepárese entre repeticiones."
+      "Apoyos en el banco: mantén los pies firmes en el suelo o en los reposapiés y la espalda alta apoyada en el respaldo. Recupera la respiración y la tensión abdominal entre repeticiones."
     ],
     "avoidDetails": [
       "Evite rebotar el peso o perder el control de la posición de los hombros.",
@@ -2355,7 +2355,7 @@
     ]
   },
   "cable-low-fly": {
-    "name": "Cable de vuelo bajo",
+    "name": "Aperturas en polea baja",
     "cues": [
       "Ajuste las manijas para el ángulo de vuelo elegido y mantenga una pequeña curva en los codos.",
       "Junte los brazos frente a su pecho y luego ábralos lentamente."
@@ -2365,7 +2365,7 @@
       "No persigas un tramo profundo; acorte el arco si los hombros giran hacia adelante o pierden el control."
     ],
     "cuesDetails": [
-      "Preparación: Asegure su postura o posición de banco y seleccione una resistencia ligera. Encuentre una posición inicial cómoda para el brazo antes de abrir más.",
+      "Preparación: busca una postura estable de pie o en el banco y elige poca resistencia. Encuentra una posición inicial cómoda para los brazos antes de abrirlos más.",
       "Movimiento: Ajuste las manijas para el ángulo de vuelo elegido y mantenga una pequeña curvatura en los codos.",
       "Control: Junte los brazos frente al pecho y luego ábralos lentamente.",
       "Arco del brazo: mantenga una flexión pequeña y bastante constante del codo mientras se mueve la parte superior de los brazos. Piense en juntar los brazos en lugar de empujar las manos.",
@@ -2380,7 +2380,7 @@
     ]
   },
   "cable-decline-fly": {
-    "name": "Mosca de rechazo de cable",
+    "name": "Aperturas declinadas en polea",
     "cues": [
       "Ajuste las manijas para el ángulo de vuelo elegido y mantenga una pequeña curva en los codos.",
       "Junte los brazos frente a su pecho y luego ábralos lentamente."
@@ -2390,7 +2390,7 @@
       "No persigas un tramo profundo; acorte el arco si los hombros giran hacia adelante o pierden el control."
     ],
     "cuesDetails": [
-      "Preparación: Asegure su postura o posición de banco y seleccione una resistencia ligera. Encuentre una posición inicial cómoda para el brazo antes de abrir más.",
+      "Preparación: busca una postura estable de pie o en el banco y elige poca resistencia. Encuentra una posición inicial cómoda para los brazos antes de abrirlos más.",
       "Movimiento: Ajuste las manijas para el ángulo de vuelo elegido y mantenga una pequeña curvatura en los codos.",
       "Control: Junte los brazos frente al pecho y luego ábralos lentamente.",
       "Arco del brazo: mantenga una flexión pequeña y bastante constante del codo mientras se mueve la parte superior de los brazos. Piense en juntar los brazos en lugar de empujar las manos.",
@@ -2415,7 +2415,7 @@
       "No persigas un tramo profundo; acorte el arco si los hombros giran hacia adelante o pierden el control."
     ],
     "cuesDetails": [
-      "Preparación: Asegure su postura o posición de banco y seleccione una resistencia ligera. Encuentre una posición inicial cómoda para el brazo antes de abrir más.",
+      "Preparación: busca una postura estable de pie o en el banco y elige poca resistencia. Encuentra una posición inicial cómoda para los brazos antes de abrirlos más.",
       "Movimiento: Acuéstese en el banco con mancuernas encima del pecho y los codos suavemente doblados.",
       "Control: abre los brazos formando un amplio arco y luego junta las pesas.",
       "Arco del brazo: mantenga una flexión pequeña y bastante constante del codo mientras se mueve la parte superior de los brazos. Piense en juntar los brazos en lugar de empujar las manos.",
@@ -2430,11 +2430,11 @@
     ]
   },
   "barbell-close-grip-bench-press": {
-    "name": "barra Press de banca con agarre cerrado",
+    "name": "Press de banca con barra y agarre cerrado",
     "cues": [
       "Establezca una posición estable en el banco y mantenga las muñecas sobre los antebrazos.",
       "Baje el peso hacia su pecho con control, luego presiónelo nuevamente hacia arriba.",
-      "Seguridad: Verifique los dispositivos de seguridad de las rejillas y contrate a un observador competente cuando sea necesario antes de presionar.",
+      "Seguridad: comprueba los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario antes del press.",
       "Soporte: Mantenga los pies seguros y la parte superior de la espalda apoyada en el banco."
     ],
     "avoid": [
@@ -2448,8 +2448,8 @@
       "Agarre: Mantenga el peso sobre el antebrazo en lugar de doblarlo hacia atrás sobre la muñeca. Elija una trayectoria del codo que pueda controlar cómodamente.",
       "Descenso: Guíe la carga a una posición inferior repetible. Mantenga la parte superior de la espalda apoyada y resista una caída brusca en la última parte.",
       "Presione: Empuje suavemente a través de las manos mientras mantiene el apoyo. Mantenga ambos lados moviéndose uniformemente en lugar de girar para terminar.",
-      "Plan de repetición fallida: establezca dispositivos de seguridad apropiados en las rejillas y utilice un observador competente cuando sea necesario. Verifique la protección antes de presionar; No confíe en recuperar una barra atrapada.",
-      "Soporte de banco: Mantenga los pies asegurados en el piso o en los soportes del banco y la parte superior de la espalda apoyada sobre la almohadilla. Restablezca su respiración y prepárese entre repeticiones."
+      "Plan ante una repetición fallida: ajusta los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario. Comprueba la protección antes del press. No cuentes con poder liberar una barra que te deje atrapado.",
+      "Apoyos en el banco: mantén los pies firmes en el suelo o en los reposapiés y la espalda alta apoyada en el respaldo. Recupera la respiración y la tensión abdominal entre repeticiones."
     ],
     "avoidDetails": [
       "Evite rebotar el peso o perder el control de la posición de los hombros.",
@@ -2459,7 +2459,7 @@
     ]
   },
   "dumbbell-pullover": {
-    "name": "Sudadera ligera mancuerna",
+    "name": "Pullover con mancuerna",
     "cues": [
       "Asegure su torso y comience con los brazos extendidos hacia arriba.",
       "Tire del peso formando un arco hacia su torso y luego regrese lentamente."
@@ -2484,7 +2484,7 @@
     ]
   },
   "lever-chest-supported-row": {
-    "name": "Remo con palanca y apoyo en el pecho",
+    "name": "Remo en máquina con apoyo de pecho",
     "cues": [
       "Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente."
@@ -2496,7 +2496,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Control: Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -2508,7 +2508,7 @@
     ]
   },
   "lever-t-bar-row": {
-    "name": "Remo con barra en T con palanca",
+    "name": "Remo en T en máquina",
     "cues": [
       "Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente."
@@ -2520,7 +2520,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Control: Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -2532,7 +2532,7 @@
     ]
   },
   "barbell-pendlay-row": {
-    "name": "Fila colgante barra",
+    "name": "Remo Pendlay con barra",
     "cues": [
       "Inclínate desde las caderas sobre la barra y activa el abdomen mientras la barra descansa en el suelo.",
       "Tire de él hacia la parte inferior del pecho o la parte superior del abdomen; restablecer en el piso cada repetición."
@@ -2545,7 +2545,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Inclínate desde las caderas sobre la barra y activa el abdomen mientras la barra descansa en el suelo.",
       "Control: tire de él hacia la parte inferior del pecho o la parte superior del abdomen; restablecer en el piso cada repetición.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -2557,7 +2557,7 @@
     ]
   },
   "inverted-row": {
-    "name": "Fila invertida",
+    "name": "Remo invertido",
     "cues": [
       "Sujeta la barra o las asas y mantén el cuerpo activo y alineado desde los hombros hasta los talones.",
       "Tire de su pecho hacia sus manos y luego bájelo bajo control.",
@@ -2582,7 +2582,7 @@
     ]
   },
   "cable-neutral-grip-lat-pulldown": {
-    "name": "Jalón lateral con doble cable",
+    "name": "Jalón al pecho con doble polea",
     "cues": [
       "Establezca un asiento o una postura estable y sujete cómodamente el mango.",
       "Tire hacia la parte superior del pecho y luego deje que los brazos se levanten lentamente.",
@@ -2634,7 +2634,7 @@
     ]
   },
   "cable-underhand-pulldown": {
-    "name": "Pulldown con cable por debajo",
+    "name": "Jalón en polea con agarre supino",
     "cues": [
       "Establezca un asiento o una postura estable y sujete cómodamente el mango.",
       "Tire hacia la parte superior del pecho y luego deje que los brazos se levanten lentamente.",
@@ -2685,7 +2685,7 @@
     ]
   },
   "cable-kneeling-pullover": {
-    "name": "Sudadera con capucha Cable arrodillado",
+    "name": "Pullover en polea de rodillas",
     "cues": [
       "Asegure su torso y comience con los brazos extendidos hacia arriba.",
       "Tire del peso formando un arco hacia su torso y luego regrese lentamente."
@@ -2725,7 +2725,7 @@
       "Movimiento: Cuélgate de una barra segura con un agarre cómodo y el abdomen activo.",
       "Control: tira de tu cuerpo hacia la barra, luego baja con control.",
       "Tirar: piense en llevar los codos hacia las costillas a medida que el cuerpo se eleva. Deje que los omóplatos se muevan en lugar de forzarlos.",
-      "Posición del cuerpo: apóyese ligeramente y mantenga las piernas quietas. Termine a una altura que pueda alcanzar sin empujar la barbilla hacia adelante.",
+      "Posición del cuerpo: tensa ligeramente el abdomen y mantén las piernas quietas. Sube solo hasta donde puedas llegar sin adelantar la barbilla.",
       "Descenso: Baje hasta que los brazos alcancen una posición extendida cómoda mientras mantiene el control de los hombros y el agarre.",
       "Asistencia: Consultar las instrucciones de la máquina; Un contrapeso más seleccionado suele significar más ayuda. Utilice suficiente asistencia para controlar el montaje, repeticiones y el desmontaje."
     ],
@@ -2773,7 +2773,7 @@
       "Use menos peso si balancea el torso o tira de las pesas hacia arriba."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: Apoye su pecho o gire a la altura de las caderas con los brazos colgando debajo de usted.",
       "Control: Abre los brazos hacia los lados con los codos suaves, luego regresa lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -2863,7 +2863,7 @@
     ]
   },
   "dumbbell-arnold-press": {
-    "name": "Prensa Arnold mancuerna",
+    "name": "Press Arnold con mancuernas",
     "cues": [
       "Comience mancuernas frente a sus hombros con las palmas hacia usted.",
       "Gire las palmas hacia afuera mientras presiona hacia arriba; invertir el camino lentamente.",
@@ -2890,7 +2890,7 @@
     ]
   },
   "barbell-seated-overhead-press": {
-    "name": "Prensa aérea sentado barra",
+    "name": "Press de hombros sentado con barra",
     "cues": [
       "Empieza con el peso cerca de la altura de los hombros, las muñecas estables y el abdomen activo.",
       "Presione sobre la cabeza y luego baje la espalda hasta su cómoda posición inicial.",
@@ -2915,7 +2915,7 @@
     ]
   },
   "dumbbell-one-arm-shoulder-press": {
-    "name": "mancuerna Press de hombros con un brazo",
+    "name": "Press de hombros a una mano con mancuerna",
     "cues": [
       "Empieza con el peso cerca de la altura de los hombros, las muñecas estables y el abdomen activo.",
       "Presione sobre la cabeza y luego baje la espalda hasta su cómoda posición inicial.",
@@ -2940,7 +2940,7 @@
     ]
   },
   "landmine-press": {
-    "name": "Prensa de minas terrestres",
+    "name": "Press landmine",
     "cues": [
       "Sujeta el extremo de la barra cerca del hombro y activa el abdomen con una postura estable.",
       "Presiónelo hacia adelante y hacia arriba a lo largo del recorrido de la barra; bajar con control.",
@@ -2974,7 +2974,7 @@
       "No balancee el torso ni sacuda el cuello para levantarlo más alto; Utilice menos peso y un rango cómodo."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: comience con los brazos bajos y los codos suavemente doblados.",
       "Control: Levante los brazos hasta una altura cómoda de los hombros y luego bájelos lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -2999,7 +2999,7 @@
       "Use menos peso si balancea el torso o tira de las pesas hacia arriba."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: Apoye su pecho o gire a la altura de las caderas con los brazos colgando debajo de usted.",
       "Control: Abre los brazos hacia los lados con los codos suaves, luego regresa lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -3014,7 +3014,7 @@
     ]
   },
   "barbell-upright-row": {
-    "name": "barra Remo vertical",
+    "name": "Remo al mentón con barra",
     "cues": [
       "Sostenga la barra o mancuernas frente a sus muslos con un agarre cómodo.",
       "Conduzca con los codos mientras levanta la carga a una altura cómoda; baje lentamente."
@@ -3039,7 +3039,7 @@
     ]
   },
   "barbell-curl": {
-    "name": "barra Rizado",
+    "name": "Curl de bíceps con barra",
     "cues": [
       "Mantenga la parte superior de los brazos cerca del torso y sostenga la carga con las muñecas firmes.",
       "Doble los codos para levantar la carga y luego bájela con control."
@@ -3087,7 +3087,7 @@
     ]
   },
   "dumbbell-concentration-curl": {
-    "name": "Curl de concentración mancuerna",
+    "name": "Curl concentrado con mancuerna",
     "cues": [
       "Mantenga la parte superior de los brazos cerca del torso y sostenga la carga con las muñecas firmes.",
       "Doble los codos para levantar la carga y luego bájela con control."
@@ -3111,7 +3111,7 @@
     ]
   },
   "ez-barbell-spider-curl": {
-    "name": "EZ barra Rizo de araña",
+    "name": "Curl araña con barra EZ",
     "cues": [
       "Acuéstese boca abajo en un banco inclinado con los brazos colgando libremente.",
       "Doble el peso sin levantar el pecho, luego bájelo lentamente."
@@ -3127,7 +3127,7 @@
       "Movimiento del codo: Doble el codo mientras mantiene la parte superior del brazo razonablemente estable en la posición para esta variación.",
       "Muñeca: Mantenga la muñeca alineada con el antebrazo. Cualquier rotación del agarre debe ser deliberada y no causada por el peso que tira de la mano.",
       "Regreso: Extienda el codo suavemente en un rango cómodo. Mantenga el control cerca del final en lugar de caer en el tramo.",
-      "Soporte de araña: Mantenga el cofre en el banco inclinado y deje que la parte superior de los brazos cuelgue. Curl sin levantar el pecho para alcanzar las pesas."
+      "Apoyo del curl araña: mantén el pecho sobre el banco inclinado y deja colgar los brazos. Flexiona los codos sin levantar el pecho hacia las pesas."
     ],
     "avoidDetails": [
       "Evite balancear los brazos o despegar el torso de la almohadilla.",
@@ -3137,10 +3137,10 @@
     ]
   },
   "cable-rope-hammer-curl": {
-    "name": "Curl de martillo de cuerda de cable",
+    "name": "Curl martillo en polea con cuerda",
     "cues": [
       "Sostenga las pesas con las palmas hacia adentro y los codos cerca de los costados.",
-      "Curl sin rotar las muñecas, luego bájelas lentamente."
+      "Flexiona los codos sin girar las muñecas y baja después lentamente."
     ],
     "avoid": [
       "No balancee el cuerpo ni doble las muñecas para terminar; aligerar la carga y controlar el descenso."
@@ -3148,7 +3148,7 @@
     "cuesDetails": [
       "Preparación: elija el agarre deseado y asegure cualquier banco o soporte para brazos. Comienza con resistencia que puedas hacer curl sin mover el tronco.",
       "Movimiento: Sostenga las pesas con las palmas hacia adentro y los codos cerca de los costados.",
-      "Control: Curl sin rotar las muñecas, luego baje lentamente.",
+      "Control: Flexiona los codos sin girar las muñecas y baja después lentamente.",
       "Movimiento del codo: Doble el codo mientras mantiene la parte superior del brazo razonablemente estable en la posición para esta variación.",
       "Muñeca: Mantenga la muñeca alineada con el antebrazo. Cualquier rotación del agarre debe ser deliberada y no causada por el peso que tira de la mano.",
       "Regreso: Extienda el codo suavemente en un rango cómodo. Mantenga el control cerca del final en lugar de caer en el tramo."
@@ -3185,7 +3185,7 @@
     ]
   },
   "lever-preacher-curl": {
-    "name": "Curl predicador de palanca",
+    "name": "Curl predicador en máquina",
     "cues": [
       "Apoye la parte superior de los brazos sobre la almohadilla y mantenga las muñecas firmes.",
       "Doble la carga, luego bájela hasta que sus codos estén cómodamente extendidos."
@@ -3275,7 +3275,7 @@
       "Movimiento: coloque un cable o banda alto y mantenga la parte superior de los brazos cerca de los costados.",
       "Control: Estire los codos para presionar hacia abajo y luego regrese lentamente.",
       "Codo: Mantenga la parte superior del brazo razonablemente estable mientras el antebrazo se mueve. Enderece suavemente sin forzar un tope de unión duro.",
-      "Muñeca: Mantenga la muñeca alineada con el antebrazo y el mango asegurado. No sustituyas el movimiento de la muñeca por la extensión del codo.",
+      "Muñeca: mantén la muñeca alineada con el antebrazo y sujeta bien el agarre. Extiende el codo sin sustituir esa acción por un movimiento de la muñeca.",
       "Regreso: Doble el codo bajo control y mantenga la misma posición de la parte superior del brazo. Utilice una resistencia que no arrastre el hombro hacia adelante."
     ],
     "avoidDetails": [
@@ -3299,7 +3299,7 @@
       "Movimiento: coloque un cable o banda alto y mantenga la parte superior de los brazos cerca de los costados.",
       "Control: Estire los codos para presionar hacia abajo y luego regrese lentamente.",
       "Codo: Mantenga la parte superior del brazo razonablemente estable mientras el antebrazo se mueve. Enderece suavemente sin forzar un tope de unión duro.",
-      "Muñeca: Mantenga la muñeca alineada con el antebrazo y el mango asegurado. No sustituyas el movimiento de la muñeca por la extensión del codo.",
+      "Muñeca: mantén la muñeca alineada con el antebrazo y sujeta bien el agarre. Extiende el codo sin sustituir esa acción por un movimiento de la muñeca.",
       "Regreso: Doble el codo bajo control y mantenga la misma posición de la parte superior del brazo. Utilice una resistencia que no arrastre el hombro hacia adelante."
     ],
     "avoidDetails": [
@@ -3323,7 +3323,7 @@
       "Movimiento: articula y sostiene el torso; Mantenga la parte superior del brazo cerca de su costado.",
       "Control: Estire el codo para mover el peso hacia atrás y luego dóblelo lentamente.",
       "Codo: Mantenga la parte superior del brazo razonablemente estable mientras el antebrazo se mueve. Enderece suavemente sin forzar un tope de unión duro.",
-      "Muñeca: Mantenga la muñeca alineada con el antebrazo y el mango asegurado. No sustituyas el movimiento de la muñeca por la extensión del codo.",
+      "Muñeca: mantén la muñeca alineada con el antebrazo y sujeta bien el agarre. Extiende el codo sin sustituir esa acción por un movimiento de la muñeca.",
       "Regreso: Doble el codo bajo control y mantenga la misma posición de la parte superior del brazo. Utilice una resistencia que no arrastre el hombro hacia adelante."
     ],
     "avoidDetails": [
@@ -3478,7 +3478,7 @@
       "Control: Extienda un brazo y la pierna opuesta, regrese y luego cambie de lado.",
       "Tensión abdominal: mantén el abdomen activo y respira sin abrir las costillas. El movimiento de brazos o piernas no debe sacar al tronco de su posición.",
       "Alcance: extiéndase deliberadamente y deténgase antes de que la espalda se arquee o la pelvis gire. Acortar la palanca es una forma útil de reducir la dificultad.",
-      "Regreso: recupera el control de las extremidades y reinicia tu aparato ortopédico. Mantenga el mismo tronco estable en lugar de apresurarse entre repeticiones."
+      "Regreso: vuelve con los brazos y las piernas de forma controlada y recupera la tensión abdominal. Mantén el tronco estable sin apresurarte entre repeticiones."
     ],
     "avoidDetails": [
       "Evite rotar las caderas o arquear la zona lumbar.",
@@ -3626,12 +3626,12 @@
       "Termine de pie erguido en lugar de inclinarse hacia atrás."
     ],
     "cuesDetails": [
-      "Preparación: Acerque la carga, sujétela con seguridad y elimine la holgura antes de levantarla. Establezca la altura inicial para poder apuntalar en equilibrio.",
+      "Preparación: acerca la carga, agárrala con firmeza y elimina la holgura antes de levantarla. Ajusta la altura inicial para poder tensar el abdomen sin perder el equilibrio.",
       "Movimiento: Elige una postura y un agarre que mantengan el peso cerca del cuerpo. Activa el abdomen antes de levantarlo.",
       "Control: Empuje a través del piso para mantenerse erguido, luego baje doblando las caderas y las rodillas.",
       "Impulso de las piernas: Empuje el suelo mientras las caderas y los hombros se elevan juntos. Mantenga los brazos largos; sostienen la carga en lugar de rizarla.",
       "Ruta de carga: Mantenga el peso cerca de las piernas dejando espacio para las rodillas. Termine de pie con las caderas y las rodillas extendidas.",
-      "Reiniciar: Baje con una bisagra de cadera controlada y una flexión de rodilla. Restablezca su agarre, equilibrio y apoyo antes de cada nuevo tirón."
+      "Reinicio: baja la carga de forma controlada llevando las caderas hacia atrás y flexionando las rodillas. Recupera el agarre, el equilibrio y la tensión abdominal antes de cada nuevo tirón."
     ],
     "avoidDetails": [
       "Evite tirar del peso del suelo o inclinarse hacia atrás en la parte superior.",
@@ -3844,7 +3844,7 @@
     ]
   },
   "dumbbell-lying-hammer-press": {
-    "name": "Prensa de martillo acostado mancuerna",
+    "name": "Press de banca con mancuernas y agarre neutro",
     "cues": [
       "Establezca una posición estable en el banco y mantenga las muñecas sobre los antebrazos.",
       "Baje el peso hacia su pecho con control, luego presiónelo nuevamente hacia arriba.",
@@ -3861,7 +3861,7 @@
       "Agarre: Mantenga el peso sobre el antebrazo en lugar de doblarlo hacia atrás sobre la muñeca. Elija una trayectoria del codo que pueda controlar cómodamente.",
       "Descenso: Guíe la carga a una posición inferior repetible. Mantenga la parte superior de la espalda apoyada y resista una caída brusca en la última parte.",
       "Presione: Empuje suavemente a través de las manos mientras mantiene el apoyo. Mantenga ambos lados moviéndose uniformemente en lugar de girar para terminar.",
-      "Soporte de banco: Mantenga los pies asegurados en el piso o en los soportes del banco y la parte superior de la espalda apoyada sobre la almohadilla. Restablezca su respiración y prepárese entre repeticiones."
+      "Apoyos en el banco: mantén los pies firmes en el suelo o en los reposapiés y la espalda alta apoyada en el respaldo. Recupera la respiración y la tensión abdominal entre repeticiones."
     ],
     "avoidDetails": [
       "Evite rebotar el peso o perder el control de la posición de los hombros.",
@@ -3871,7 +3871,7 @@
     ]
   },
   "dumbbell-squeeze-bench-press": {
-    "name": "mancuerna Press de banca apretado",
+    "name": "Press de banca con mancuernas juntas",
     "cues": [
       "Acuéstese en el banco y presione los mancuernas juntos sobre su pecho.",
       "Manténgalos tocándose mientras baja y presiona hacia arriba.",
@@ -3889,7 +3889,7 @@
       "Agarre: Mantenga el peso sobre el antebrazo en lugar de doblarlo hacia atrás sobre la muñeca. Elija una trayectoria del codo que pueda controlar cómodamente.",
       "Descenso: Guíe la carga a una posición inferior repetible. Mantenga la parte superior de la espalda apoyada y resista una caída brusca en la última parte.",
       "Presione: Empuje suavemente a través de las manos mientras mantiene el apoyo. Mantenga ambos lados moviéndose uniformemente en lugar de girar para terminar.",
-      "Soporte de banco: Mantenga los pies asegurados en el piso o en los soportes del banco y la parte superior de la espalda apoyada sobre la almohadilla. Restablezca su respiración y prepárese entre repeticiones.",
+      "Apoyos en el banco: mantén los pies firmes en el suelo o en los reposapiés y la espalda alta apoyada en el respaldo. Recupera la respiración y la tensión abdominal entre repeticiones.",
       "Apretar: Mantenga una presión interna controlada entre las pesas o el plato mientras presiona. Utilice una carga que pueda sostener sin resbalar."
     ],
     "avoidDetails": [
@@ -3900,11 +3900,11 @@
     ]
   },
   "barbell-reverse-grip-bench-press": {
-    "name": "barra Press de banca con agarre inverso",
+    "name": "Press de banca con barra y agarre supino",
     "cues": [
       "Establezca una posición estable en el banco y mantenga las muñecas sobre los antebrazos.",
       "Baje el peso hacia su pecho con control, luego presiónelo nuevamente hacia arriba.",
-      "Seguridad: Verifique los dispositivos de seguridad de las rejillas y contrate a un observador competente cuando sea necesario antes de presionar.",
+      "Seguridad: comprueba los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario antes del press.",
       "Agarre inverso: utilice un agarre completo por debajo; practique el control de la muñeca y organice un traspaso si es necesario.",
       "Soporte: Mantenga los pies seguros y la parte superior de la espalda apoyada en el banco."
     ],
@@ -3919,9 +3919,9 @@
       "Agarre: Mantenga el peso sobre el antebrazo en lugar de doblarlo hacia atrás sobre la muñeca. Elija una trayectoria del codo que pueda controlar cómodamente.",
       "Descenso: Guíe la carga a una posición inferior repetible. Mantenga la parte superior de la espalda apoyada y resista una caída brusca en la última parte.",
       "Presione: Empuje suavemente a través de las manos mientras mantiene el apoyo. Mantenga ambos lados moviéndose uniformemente en lugar de girar para terminar.",
-      "Plan de repetición fallida: establezca dispositivos de seguridad apropiados en las rejillas y utilice un observador competente cuando sea necesario. Verifique la protección antes de presionar; No confíe en recuperar una barra atrapada.",
-      "Agarre inverso: utilice un agarre completo por debajo y un traspaso competente cuando sea necesario. Establezca el control de la muñeca con una barra de luz antes de cargar esta variación.",
-      "Soporte de banco: Mantenga los pies asegurados en el piso o en los soportes del banco y la parte superior de la espalda apoyada sobre la almohadilla. Restablezca su respiración y prepárese entre repeticiones."
+      "Plan ante una repetición fallida: ajusta los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario. Comprueba la protección antes del press. No cuentes con poder liberar una barra que te deje atrapado.",
+      "Agarre supino: rodea la barra con toda la mano y pide ayuda a una persona experimentada para sacarla si hace falta. Practica el control de las muñecas con poco peso antes de aumentar la carga en esta variante.",
+      "Apoyos en el banco: mantén los pies firmes en el suelo o en los reposapiés y la espalda alta apoyada en el respaldo. Recupera la respiración y la tensión abdominal entre repeticiones."
     ],
     "avoidDetails": [
       "Evite rebotar el peso o perder el control de la posición de los hombros.",
@@ -3931,11 +3931,11 @@
     ]
   },
   "barbell-floor-chest-press": {
-    "name": "Press de pecho en el suelo barra",
+    "name": "Press de suelo con barra",
     "cues": [
       "Acuéstese en el suelo con un agarre estable y los codos cómodamente debajo de las muñecas.",
       "Baje hasta que la parte superior de sus brazos toque ligeramente el suelo, luego presione hacia arriba.",
-      "Seguridad: Verifique los dispositivos de seguridad de las rejillas y contrate a un observador competente cuando sea necesario antes de presionar."
+      "Seguridad: comprueba los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario antes del press."
     ],
     "avoid": [
       "Evite golpear los codos contra el suelo o girar bajo la carga.",
@@ -3948,7 +3948,7 @@
       "Agarre: Mantenga el peso sobre el antebrazo en lugar de doblarlo hacia atrás sobre la muñeca. Elija una trayectoria del codo que pueda controlar cómodamente.",
       "Descenso: Guíe la carga a una posición inferior repetible. Mantenga la parte superior de la espalda apoyada y resista una caída brusca en la última parte.",
       "Presione: Empuje suavemente a través de las manos mientras mantiene el apoyo. Mantenga ambos lados moviéndose uniformemente en lugar de girar para terminar.",
-      "Plan de repetición fallida: establezca dispositivos de seguridad apropiados en las rejillas y utilice un observador competente cuando sea necesario. Verifique la protección antes de presionar; No confíe en recuperar una barra atrapada."
+      "Plan ante una repetición fallida: ajusta los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario. Comprueba la protección antes del press. No cuentes con poder liberar una barra que te deje atrapado."
     ],
     "avoidDetails": [
       "Evite golpear los codos contra el suelo o girar bajo la carga.",
@@ -3958,11 +3958,11 @@
     ]
   },
   "barbell-spoto-press": {
-    "name": "Prensa puntual barra",
+    "name": "Press Spoto con barra",
     "cues": [
       "Colóquese en el banco con un agarre estable y las muñecas apoyadas.",
       "Baje la barra justo encima de su pecho, haga una pausa sin tocarla y luego presione.",
-      "Seguridad: Verifique los dispositivos de seguridad de las rejillas y contrate a un observador competente cuando sea necesario antes de presionar.",
+      "Seguridad: comprueba los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario antes del press.",
       "Soporte: Mantenga los pies seguros y la parte superior de la espalda apoyada en el banco."
     ],
     "avoid": [
@@ -3976,9 +3976,9 @@
       "Agarre: Mantenga el peso sobre el antebrazo en lugar de doblarlo hacia atrás sobre la muñeca. Elija una trayectoria del codo que pueda controlar cómodamente.",
       "Descenso: Guíe la carga a una posición inferior repetible. Mantenga la parte superior de la espalda apoyada y resista una caída brusca en la última parte.",
       "Presione: Empuje suavemente a través de las manos mientras mantiene el apoyo. Mantenga ambos lados moviéndose uniformemente en lugar de girar para terminar.",
-      "Plan de repetición fallida: establezca dispositivos de seguridad apropiados en las rejillas y utilice un observador competente cuando sea necesario. Verifique la protección antes de presionar; No confíe en recuperar una barra atrapada.",
+      "Plan ante una repetición fallida: ajusta los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario. Comprueba la protección antes del press. No cuentes con poder liberar una barra que te deje atrapado.",
       "Pausa puntual: detén la barra justo encima del pecho y mantenla quieta sin tocar el suelo. Mantenga el mismo apoyo en la parte superior de la espalda mientras continúa presionando.",
-      "Soporte de banco: Mantenga los pies asegurados en el piso o en los soportes del banco y la parte superior de la espalda apoyada sobre la almohadilla. Restablezca su respiración y prepárese entre repeticiones."
+      "Apoyos en el banco: mantén los pies firmes en el suelo o en los reposapiés y la espalda alta apoyada en el respaldo. Recupera la respiración y la tensión abdominal entre repeticiones."
     ],
     "avoidDetails": [
       "Evita apoyar la barra sobre tu pecho o perder el control durante la pausa.",
@@ -3988,11 +3988,11 @@
     ]
   },
   "barbell-larsen-press": {
-    "name": "Prensa Larsen barra",
+    "name": "Press Larsen con barra",
     "cues": [
       "Establezca una posición estable en el banco y mantenga las muñecas sobre los antebrazos.",
       "Baje el peso hacia su pecho con control, luego presiónelo nuevamente hacia arriba.",
-      "Seguridad: Verifique los dispositivos de seguridad de las rejillas y contrate a un observador competente cuando sea necesario antes de presionar.",
+      "Seguridad: comprueba los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario antes del press.",
       "Larsen: Los pies no tocan el suelo; Mantenga la pelvis y la parte superior de la espalda apoyadas y use menos peso."
     ],
     "avoid": [
@@ -4006,7 +4006,7 @@
       "Agarre: Mantenga el peso sobre el antebrazo en lugar de doblarlo hacia atrás sobre la muñeca. Elija una trayectoria del codo que pueda controlar cómodamente.",
       "Descenso: Guíe la carga a una posición inferior repetible. Mantenga la parte superior de la espalda apoyada y resista una caída brusca en la última parte.",
       "Presione: Empuje suavemente a través de las manos mientras mantiene el apoyo. Mantenga ambos lados moviéndose uniformemente en lugar de girar para terminar.",
-      "Plan de repetición fallida: establezca dispositivos de seguridad apropiados en las rejillas y utilice un observador competente cuando sea necesario. Verifique la protección antes de presionar; No confíe en recuperar una barra atrapada.",
+      "Plan ante una repetición fallida: ajusta los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario. Comprueba la protección antes del press. No cuentes con poder liberar una barra que te deje atrapado.",
       "Configuración de Larsen: los pies están intencionalmente alejados del suelo. Mantenga la pelvis y la parte superior de la espalda apoyadas; Utilice cargas más ligeras sin tracción por las piernas."
     ],
     "avoidDetails": [
@@ -4017,11 +4017,11 @@
     ]
   },
   "barbell-incline-close-grip-bench-press": {
-    "name": "barra Press de banca inclinado con agarre cerrado",
+    "name": "Press inclinado con barra y agarre cerrado",
     "cues": [
       "Establezca una posición estable en el banco y mantenga las muñecas sobre los antebrazos.",
       "Baje el peso hacia su pecho con control, luego presiónelo nuevamente hacia arriba.",
-      "Seguridad: Verifique los dispositivos de seguridad de las rejillas y contrate a un observador competente cuando sea necesario antes de presionar.",
+      "Seguridad: comprueba los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario antes del press.",
       "Soporte: Mantenga los pies seguros y la parte superior de la espalda apoyada en el banco."
     ],
     "avoid": [
@@ -4035,8 +4035,8 @@
       "Agarre: Mantenga el peso sobre el antebrazo en lugar de doblarlo hacia atrás sobre la muñeca. Elija una trayectoria del codo que pueda controlar cómodamente.",
       "Descenso: Guíe la carga a una posición inferior repetible. Mantenga la parte superior de la espalda apoyada y resista una caída brusca en la última parte.",
       "Presione: Empuje suavemente a través de las manos mientras mantiene el apoyo. Mantenga ambos lados moviéndose uniformemente en lugar de girar para terminar.",
-      "Plan de repetición fallida: establezca dispositivos de seguridad apropiados en las rejillas y utilice un observador competente cuando sea necesario. Verifique la protección antes de presionar; No confíe en recuperar una barra atrapada.",
-      "Soporte de banco: Mantenga los pies asegurados en el piso o en los soportes del banco y la parte superior de la espalda apoyada sobre la almohadilla. Restablezca su respiración y prepárese entre repeticiones."
+      "Plan ante una repetición fallida: ajusta los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario. Comprueba la protección antes del press. No cuentes con poder liberar una barra que te deje atrapado.",
+      "Apoyos en el banco: mantén los pies firmes en el suelo o en los reposapiés y la espalda alta apoyada en el respaldo. Recupera la respiración y la tensión abdominal entre repeticiones."
     ],
     "avoidDetails": [
       "Evite rebotar el peso o perder el control de la posición de los hombros.",
@@ -4056,7 +4056,7 @@
       "No persigas un tramo profundo; acorte el arco si los hombros giran hacia adelante o pierden el control."
     ],
     "cuesDetails": [
-      "Preparación: Asegure su postura o posición de banco y seleccione una resistencia ligera. Encuentre una posición inicial cómoda para el brazo antes de abrir más.",
+      "Preparación: busca una postura estable de pie o en el banco y elige poca resistencia. Encuentra una posición inicial cómoda para los brazos antes de abrirlos más.",
       "Movimiento: Acuéstese en el banco con mancuernas encima del pecho y los codos suavemente doblados.",
       "Control: abre los brazos formando un amplio arco y luego junta las pesas.",
       "Arco del brazo: mantenga una flexión pequeña y bastante constante del codo mientras se mueve la parte superior de los brazos. Piense en juntar los brazos en lugar de empujar las manos.",
@@ -4071,7 +4071,7 @@
     ]
   },
   "dumbbell-decline-fly": {
-    "name": "mancuerna Rechazar vuelo",
+    "name": "Aperturas declinadas con mancuernas",
     "cues": [
       "Acuéstese en el banco con mancuernas encima del pecho y los codos suavemente doblados.",
       "Abra los brazos formando un amplio arco y luego junte las pesas."
@@ -4081,7 +4081,7 @@
       "No persigas un tramo profundo; acorte el arco si los hombros giran hacia adelante o pierden el control."
     ],
     "cuesDetails": [
-      "Preparación: Asegure su postura o posición de banco y seleccione una resistencia ligera. Encuentre una posición inicial cómoda para el brazo antes de abrir más.",
+      "Preparación: busca una postura estable de pie o en el banco y elige poca resistencia. Encuentra una posición inicial cómoda para los brazos antes de abrirlos más.",
       "Movimiento: Acuéstese en el banco con mancuernas encima del pecho y los codos suavemente doblados.",
       "Control: abre los brazos formando un amplio arco y luego junta las pesas.",
       "Arco del brazo: mantenga una flexión pequeña y bastante constante del codo mientras se mueve la parte superior de los brazos. Piense en juntar los brazos en lugar de empujar las manos.",
@@ -4096,7 +4096,7 @@
     ]
   },
   "dumbbell-lying-one-arm-press": {
-    "name": "mancuerna Press acostado con un brazo",
+    "name": "Press de banca a una mano con mancuerna",
     "cues": [
       "Establezca una posición estable en el banco y mantenga las muñecas sobre los antebrazos.",
       "Baje el peso hacia su pecho con control, luego presiónelo nuevamente hacia arriba.",
@@ -4114,7 +4114,7 @@
       "Agarre: Mantenga el peso sobre el antebrazo en lugar de doblarlo hacia atrás sobre la muñeca. Elija una trayectoria del codo que pueda controlar cómodamente.",
       "Descenso: Guíe la carga a una posición inferior repetible. Mantenga la parte superior de la espalda apoyada y resista una caída brusca en la última parte.",
       "Presione: Empuje suavemente a través de las manos mientras mantiene el apoyo. Mantenga ambos lados moviéndose uniformemente en lugar de girar para terminar.",
-      "Soporte de banco: Mantenga los pies asegurados en el piso o en los soportes del banco y la parte superior de la espalda apoyada sobre la almohadilla. Restablezca su respiración y prepárese entre repeticiones.",
+      "Apoyos en el banco: mantén los pies firmes en el suelo o en los reposapiés y la espalda alta apoyada en el respaldo. Recupera la respiración y la tensión abdominal entre repeticiones.",
       "Estabilidad con un solo brazo: mantenga las costillas y la pelvis controladas mientras presiona con un brazo. No gire hacia el lado de trabajo para terminar la repetición."
     ],
     "avoidDetails": [
@@ -4125,7 +4125,7 @@
     ]
   },
   "cable-standing-single-arm-chest-press": {
-    "name": "Prensa de pecho con un solo brazo y pie con cable",
+    "name": "Press de pecho a una mano de pie en polea",
     "cues": [
       "Coloque las manijas cerca de la altura del pecho y adopte una postura estable y escalonada.",
       "Empuja hacia adelante sin torcer el tronco y luego regresa lentamente.",
@@ -4151,7 +4151,7 @@
     ]
   },
   "cable-standing-chest-press": {
-    "name": "Press de pecho con cable",
+    "name": "Press de pecho de pie en polea",
     "cues": [
       "Coloque las manijas cerca de la altura del pecho y adopte una postura estable y escalonada.",
       "Empuja hacia adelante sin torcer el tronco y luego regresa lentamente."
@@ -4185,7 +4185,7 @@
       "No persigas un tramo profundo; acorte el arco si los hombros giran hacia adelante o pierden el control."
     ],
     "cuesDetails": [
-      "Preparación: Asegure su postura o posición de banco y seleccione una resistencia ligera. Encuentre una posición inicial cómoda para el brazo antes de abrir más.",
+      "Preparación: busca una postura estable de pie o en el banco y elige poca resistencia. Encuentra una posición inicial cómoda para los brazos antes de abrirlos más.",
       "Movimiento: Ajuste las manijas para el ángulo de vuelo elegido y mantenga una pequeña curvatura en los codos.",
       "Control: Junte los brazos frente al pecho y luego ábralos lentamente.",
       "Arco del brazo: mantenga una flexión pequeña y bastante constante del codo mientras se mueve la parte superior de los brazos. Piense en juntar los brazos en lugar de empujar las manos.",
@@ -4210,7 +4210,7 @@
       "No persigas un tramo profundo; acorte el arco si los hombros giran hacia adelante o pierden el control."
     ],
     "cuesDetails": [
-      "Preparación: Asegure su postura o posición de banco y seleccione una resistencia ligera. Encuentre una posición inicial cómoda para el brazo antes de abrir más.",
+      "Preparación: busca una postura estable de pie o en el banco y elige poca resistencia. Encuentra una posición inicial cómoda para los brazos antes de abrirlos más.",
       "Movimiento: Ajuste las manijas para el ángulo de vuelo elegido y mantenga una pequeña curvatura en los codos.",
       "Control: Junte los brazos frente al pecho y luego ábralos lentamente.",
       "Arco del brazo: mantenga una flexión pequeña y bastante constante del codo mientras se mueve la parte superior de los brazos. Piense en juntar los brazos en lugar de empujar las manos.",
@@ -4225,9 +4225,9 @@
     ]
   },
   "svend-press": {
-    "name": "Prensa Svend",
+    "name": "Press Svend",
     "cues": [
-      "Sostenga dos placas ligeras juntas a la altura del pecho entre las palmas.",
+      "Mantén dos discos ligeros juntos entre las palmas a la altura del pecho.",
       "Sigue apretándolos mientras empujas hacia adelante y luego retíralos.",
       "Apretar: Mantenga una presión constante hacia adentro mientras presiona; Utilice una carga que no pueda deslizarse."
     ],
@@ -4237,7 +4237,7 @@
     ],
     "cuesDetails": [
       "Preparación: Elija una postura estable y sostenga la resistencia de forma segura cerca del pecho. Practica el camino de avance sin inclinarte para moverlo.",
-      "Movimiento: Sujete dos placas ligeras juntas a la altura del pecho entre las palmas de las manos.",
+      "Movimiento: Mantén dos discos ligeros juntos entre las palmas a la altura del pecho.",
       "Control: sigue apretándolos mientras presionas hacia adelante, luego retíralos.",
       "Tronco: Mantenga controladas las costillas y la pelvis mientras los brazos se extienden. Para un repetición de un solo brazo, resista la tendencia a girar hacia la mano que trabaja.",
       "Manos: Mantenga el agarre seguro y las muñecas alineadas con los antebrazos. Utilice una trayectoria cómoda para los codos en lugar de forzar un ángulo fijo.",
@@ -4264,7 +4264,7 @@
       "Preparación: utilice una superficie antideslizante o asas seguras. Elige una altura de apoyo que te permita bajar y presionar con el tronco firme.",
       "Movimiento: Apoya bien las manos y mantén el cuerpo recto y activo de la cabeza a los talones.",
       "Control: Baje el pecho hacia su soporte, luego presione hacia afuera con control.",
-      "Línea del cuerpo: Apoye el abdomen y los glúteos; Deje que los hombros, las caderas y las piernas viajen juntos en lugar de levantar el pecho primero.",
+      "Alineación del cuerpo: tensa el abdomen y los glúteos. Mueve los hombros, las caderas y las piernas a la vez en lugar de levantar primero el pecho.",
       "Manos y codos: Distribuya la presión entre las manos y elija una trayectoria cómoda para los codos. Mantenga el cuello alineado con el tronco.",
       "Posición superior: Aleje el soporte y deje que los omóplatos se muevan con naturalidad. Termina cada repetición en una tabla estable antes de descender nuevamente."
     ],
@@ -4288,7 +4288,7 @@
       "Preparación: utilice una superficie antideslizante o asas seguras. Elige una altura de apoyo que te permita bajar y presionar con el tronco firme.",
       "Movimiento: Apoya bien las manos y mantén el cuerpo recto y activo de la cabeza a los talones.",
       "Control: Baje el pecho hacia su soporte, luego presione hacia afuera con control.",
-      "Línea del cuerpo: Apoye el abdomen y los glúteos; Deje que los hombros, las caderas y las piernas viajen juntos en lugar de levantar el pecho primero.",
+      "Alineación del cuerpo: tensa el abdomen y los glúteos. Mueve los hombros, las caderas y las piernas a la vez en lugar de levantar primero el pecho.",
       "Manos y codos: Distribuya la presión entre las manos y elija una trayectoria cómoda para los codos. Mantenga el cuello alineado con el tronco.",
       "Posición superior: Aleje el soporte y deje que los omóplatos se muevan con naturalidad. Termina cada repetición en una tabla estable antes de descender nuevamente."
     ],
@@ -4312,7 +4312,7 @@
       "Preparación: utilice una superficie antideslizante o asas seguras. Elige una altura de apoyo que te permita bajar y presionar con el tronco firme.",
       "Movimiento: Apoya bien las manos y mantén el cuerpo recto y activo de la cabeza a los talones.",
       "Control: Baje el pecho hacia su soporte, luego presione hacia afuera con control.",
-      "Línea del cuerpo: Apoye el abdomen y los glúteos; Deje que los hombros, las caderas y las piernas viajen juntos en lugar de levantar el pecho primero.",
+      "Alineación del cuerpo: tensa el abdomen y los glúteos. Mueve los hombros, las caderas y las piernas a la vez en lugar de levantar primero el pecho.",
       "Manos y codos: Distribuya la presión entre las manos y elija una trayectoria cómoda para los codos. Mantenga el cuello alineado con el tronco.",
       "Posición superior: Aleje el soporte y deje que los omóplatos se muevan con naturalidad. Termina cada repetición en una tabla estable antes de descender nuevamente."
     ],
@@ -4337,7 +4337,7 @@
       "Preparación: utilice una superficie antideslizante o asas seguras. Elige una altura de apoyo que te permita bajar y presionar con el tronco firme.",
       "Movimiento: Coloca las manos separadas y mantén el cuerpo activo en posición de plancha.",
       "Control: Cambie hacia un brazo mientras se dobla; presione hacia arriba y alterne los lados.",
-      "Línea del cuerpo: Apoye el abdomen y los glúteos; Deje que los hombros, las caderas y las piernas viajen juntos en lugar de levantar el pecho primero.",
+      "Alineación del cuerpo: tensa el abdomen y los glúteos. Mueve los hombros, las caderas y las piernas a la vez en lugar de levantar primero el pecho.",
       "Manos y codos: Distribuya la presión entre las manos y elija una trayectoria cómoda para los codos. Mantenga el cuello alineado con el tronco.",
       "Posición superior: Aleje el soporte y deje que los omóplatos se muevan con naturalidad. Termina cada repetición en una tabla estable antes de descender nuevamente."
     ],
@@ -4361,7 +4361,7 @@
       "Preparación: utilice una superficie antideslizante o asas seguras. Elige una altura de apoyo que te permita bajar y presionar con el tronco firme.",
       "Movimiento: Apoya bien las manos y mantén el cuerpo recto y activo de la cabeza a los talones.",
       "Control: Baje el pecho hacia su soporte, luego presione hacia afuera con control.",
-      "Línea del cuerpo: Apoye el abdomen y los glúteos; Deje que los hombros, las caderas y las piernas viajen juntos en lugar de levantar el pecho primero.",
+      "Alineación del cuerpo: tensa el abdomen y los glúteos. Mueve los hombros, las caderas y las piernas a la vez en lugar de levantar primero el pecho.",
       "Manos y codos: Distribuya la presión entre las manos y elija una trayectoria cómoda para los codos. Mantenga el cuello alineado con el tronco.",
       "Posición superior: Aleje el soporte y deje que los omóplatos se muevan con naturalidad. Termina cada repetición en una tabla estable antes de descender nuevamente."
     ],
@@ -4501,7 +4501,7 @@
     ]
   },
   "lever-machine-pullover": {
-    "name": "Sudadera ligera Máquina de palanca",
+    "name": "Pullover en máquina",
     "cues": [
       "Asegure su torso y comience con los brazos extendidos hacia arriba.",
       "Tire del peso formando un arco hacia su torso y luego regrese lentamente."
@@ -4526,7 +4526,7 @@
     ]
   },
   "cable-rope-straight-arm-pulldown": {
-    "name": "Cable de cuerda con brazo recto",
+    "name": "Jalón con brazos rectos en polea con cuerda",
     "cues": [
       "Párese frente al cable con los brazos extendidos y los codos suavemente doblados.",
       "Desliza el mango hacia tus muslos y luego regresa lentamente sobre tu cabeza."
@@ -4551,7 +4551,7 @@
     ]
   },
   "cable-single-arm-straight-arm-pulldown": {
-    "name": "Cable Pulldown de brazo recto de un solo brazo",
+    "name": "Jalón a una mano con el brazo recto en polea",
     "cues": [
       "Párese frente al cable con los brazos extendidos y los codos suavemente doblados.",
       "Desliza el mango hacia tus muslos y luego regresa lentamente sobre tu cabeza."
@@ -4576,7 +4576,7 @@
     ]
   },
   "barbell-lying-seal-row-on-rack": {
-    "name": "barra Fila de sellos tumbados sobre rejilla",
+    "name": "Remo seal con barra sobre rack",
     "cues": [
       "Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente."
@@ -4588,7 +4588,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Control: Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -4600,7 +4600,7 @@
     ]
   },
   "landmine-one-arm-bent-over-row": {
-    "name": "Remo inclinado con un brazo y minas terrestres",
+    "name": "Remo landmine a una mano con torso inclinado",
     "cues": [
       "Inclínate desde las caderas y mantén el abdomen activo con el peso colgando debajo de ti.",
       "Tire hacia las costillas inferiores o la cintura, luego baje hasta que los brazos se extiendan."
@@ -4613,7 +4613,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Inclínate desde las caderas y mantén el abdomen activo con el peso colgando debajo de ti.",
       "Control: tire hacia las costillas inferiores o la cintura, luego baje hasta que los brazos se extiendan.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -4625,7 +4625,7 @@
     ]
   },
   "landmine-v-bar-bent-over-row": {
-    "name": "Remo inclinado con barra en V para minas terrestres",
+    "name": "Remo landmine con torso inclinado y agarre en V",
     "cues": [
       "Inclínate desde las caderas y mantén el abdomen activo con el peso colgando debajo de ti.",
       "Tire hacia las costillas inferiores o la cintura, luego baje hasta que los brazos se extiendan."
@@ -4638,7 +4638,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Inclínate desde las caderas y mantén el abdomen activo con el peso colgando debajo de ti.",
       "Control: tire hacia las costillas inferiores o la cintura, luego baje hasta que los brazos se extiendan.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -4650,7 +4650,7 @@
     ]
   },
   "lever-lying-t-bar-row": {
-    "name": "Remo con barra en T tumbado con palanca",
+    "name": "Remo en T tumbado en máquina",
     "cues": [
       "Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente."
@@ -4662,7 +4662,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Control: Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -4674,7 +4674,7 @@
     ]
   },
   "cable-seated-wide-grip-row": {
-    "name": "Remo con agarre ancho sentado en cables",
+    "name": "Remo sentado en polea con agarre ancho",
     "cues": [
       "Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente."
@@ -4686,7 +4686,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Control: Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -4698,7 +4698,7 @@
     ]
   },
   "cable-seated-row-with-v-bar": {
-    "name": "Remo sentado con cables con V-BAR",
+    "name": "Remo sentado en polea con agarre en V",
     "cues": [
       "Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente."
@@ -4710,7 +4710,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Control: Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -4722,17 +4722,17 @@
     ]
   },
   "cable-one-arm-twisting-seated-row": {
-    "name": "Remo sentado con torsión de un brazo con cable",
+    "name": "Remo sentado a una mano con rotación en polea",
     "cues": [
-      "Siéntese frente al cable con un brazo extendido y los pies apoyados.",
+      "Siéntate frente a la polea con un brazo extendido y los pies bien apoyados.",
       "Rema hacia tu cintura mientras giras ligeramente el torso y luego relájate lentamente."
     ],
     "avoid": [
       "No tire del giro; reduzca la carga hasta que la rotación permanezca deliberada."
     ],
     "cuesDetails": [
-      "Preparación: siéntese de forma segura frente al cable y tome una sola manija. Utilice una ligera resistencia para aprender a realizar el remo y el giro intencional del tronco al mismo tiempo.",
-      "Movimiento: Siéntate frente al cable con un brazo extendido y los pies apoyados.",
+      "Preparación: siéntate de forma estable frente a la polea y toma un agarre individual. Usa poca resistencia para aprender a combinar el remo con el giro intencionado del tronco.",
+      "Movimiento: Siéntate frente a la polea con un brazo extendido y los pies bien apoyados.",
       "Control: rema hacia la cintura mientras giras ligeramente el torso y luego relájate lentamente.",
       "Giro: Deje que las costillas giren hacia el lado de trabajo a medida que el codo retrocede. Mantenga el movimiento gradual en lugar de golpear el mango.",
       "Base: Mantener los pies apoyados y la pelvis controlada. La rotación es parte de esta variación, pero balancearse desde el asiento no lo es.",
@@ -4746,7 +4746,7 @@
     ]
   },
   "cable-high-row": {
-    "name": "Cable fila alta",
+    "name": "Remo en polea alta",
     "cues": [
       "Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente."
@@ -4758,7 +4758,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Control: Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -4770,7 +4770,7 @@
     ]
   },
   "cable-low-seated-row": {
-    "name": "Remo sentado bajo con cable",
+    "name": "Remo sentado en polea baja",
     "cues": [
       "Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente."
@@ -4782,7 +4782,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Control: Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -4794,7 +4794,7 @@
     ]
   },
   "cable-rope-seated-row": {
-    "name": "Remo sentado con cuerda y cable",
+    "name": "Remo sentado en polea con cuerda",
     "cues": [
       "Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente."
@@ -4806,7 +4806,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Control: Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -4818,7 +4818,7 @@
     ]
   },
   "lever-high-row": {
-    "name": "Palanca de remo alto",
+    "name": "Remo alto en máquina",
     "cues": [
       "Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente."
@@ -4830,7 +4830,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Control: Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -4842,7 +4842,7 @@
     ]
   },
   "lever-machine-low-row": {
-    "name": "Máquina De Palanca Remo Bajo",
+    "name": "Remo bajo en máquina",
     "cues": [
       "Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente."
@@ -4854,7 +4854,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Control: Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -4866,7 +4866,7 @@
     ]
   },
   "lever-unilateral-row": {
-    "name": "Remo unilateral con palanca",
+    "name": "Remo unilateral en máquina",
     "cues": [
       "Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente."
@@ -4878,7 +4878,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Control: Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -4890,7 +4890,7 @@
     ]
   },
   "dumbbell-renegade-row": {
-    "name": "mancuerna Fila Renegado",
+    "name": "Remo renegado con mancuernas",
     "cues": [
       "Sostenga una tabla en el mancuernas con los pies separados para mantener el equilibrio.",
       "Rema un peso hacia tu cadera, déjalo y luego cambia de lado.",
@@ -4915,7 +4915,7 @@
     ]
   },
   "dumbbell-kroc-row": {
-    "name": "mancuerna Fila Kroc",
+    "name": "Remo Kroc con mancuerna",
     "cues": [
       "Adopte una postura estable y escalonada con una mano apoyada y el mancuerna colgando.",
       "Rema hacia tu cadera con una contribución controlada del torso, luego baja deliberadamente."
@@ -4927,7 +4927,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Adopte una postura estable y escalonada con una mano apoyada y el mancuerna colgando.",
       "Control: Rema hacia la cadera con una contribución controlada del torso, luego baja deliberadamente.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado.",
       "Variación de Kroc: una contribución modesta y deliberada del torso puede ser parte de esta fila. Manténgalo controlado en lugar de utilizar un tirón repentino en la parte baja de la espalda."
@@ -4940,7 +4940,7 @@
     ]
   },
   "dumbbell-gorilla-row": {
-    "name": "mancuerna Fila de gorilas",
+    "name": "Remo gorila con mancuernas",
     "cues": [
       "Colócate sobre las mancuernas con los pies separados, flexiona las caderas y las rodillas y activa el abdomen.",
       "Rema un mancuerna hacia tu cadera mientras el otro permanece en el suelo; alternar."
@@ -4953,7 +4953,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Colócate sobre las mancuernas con los pies separados, flexiona las caderas y las rodillas y activa el abdomen.",
       "Control: Rema un mancuerna hacia tu cadera mientras el otro permanece en el suelo; alternar.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -4965,7 +4965,7 @@
     ]
   },
   "suspension-trainer-row": {
-    "name": "Remo de entrenador en suspensión",
+    "name": "Remo en suspensión",
     "cues": [
       "Sujeta la barra o las asas y mantén el cuerpo activo y alineado desde los hombros hasta los talones.",
       "Tire de su pecho hacia sus manos y luego bájelo bajo control.",
@@ -4990,7 +4990,7 @@
     ]
   },
   "ring-inverted-row": {
-    "name": "Anillo Fila Invertida",
+    "name": "Remo invertido en anillas",
     "cues": [
       "Sujeta la barra o las asas y mantén el cuerpo activo y alineado desde los hombros hasta los talones.",
       "Tire de su pecho hacia sus manos y luego bájelo bajo control.",
@@ -5056,7 +5056,7 @@
       "Movimiento: Cuélgate de una barra segura con un agarre cómodo y el abdomen activo.",
       "Control: tira de tu cuerpo hacia la barra, luego baja con control.",
       "Tirar: piense en llevar los codos hacia las costillas a medida que el cuerpo se eleva. Deje que los omóplatos se muevan en lugar de forzarlos.",
-      "Posición del cuerpo: apóyese ligeramente y mantenga las piernas quietas. Termine a una altura que pueda alcanzar sin empujar la barbilla hacia adelante.",
+      "Posición del cuerpo: tensa ligeramente el abdomen y mantén las piernas quietas. Sube solo hasta donde puedas llegar sin adelantar la barbilla.",
       "Descenso: Baje hasta que los brazos alcancen una posición extendida cómoda mientras mantiene el control de los hombros y el agarre."
     ],
     "avoidDetails": [
@@ -5075,16 +5075,16 @@
       "Tiro de cremallera: Colocar la barra en ambos soportes después de cada repetición; no rebotes."
     ],
     "avoid": [
-      "No rebote en los seguros; Establezca la barra antes de restablecer su aparato ortopédico.",
+      "No hagas rebotar la barra en los soportes de seguridad. Deja que se estabilice y vuelve a tensar el abdomen.",
       "Termine de pie erguido en lugar de inclinarse hacia atrás."
     ],
     "cuesDetails": [
-      "Preparación: Acerque la carga, sujétela con seguridad y elimine la holgura antes de levantarla. Establezca la altura inicial para poder apuntalar en equilibrio.",
+      "Preparación: acerca la carga, agárrala con firmeza y elimina la holgura antes de levantarla. Ajusta la altura inicial para poder tensar el abdomen sin perder el equilibrio.",
       "Movimiento: Coloca la barra sobre soportes de seguridad firmes a la altura elegida y activa el abdomen antes de tirar.",
       "Control: manténgalo cerca mientras se mantiene erguido, luego bájelo nuevamente sobre los seguros.",
       "Impulso de las piernas: Empuje el suelo mientras las caderas y los hombros se elevan juntos. Mantenga los brazos largos; sostienen la carga en lugar de rizarla.",
       "Ruta de carga: Mantenga el peso cerca de las piernas dejando espacio para las rodillas. Termine de pie con las caderas y las rodillas extendidas.",
-      "Reiniciar: Baje con una bisagra de cadera controlada y una flexión de rodilla. Restablezca su agarre, equilibrio y apoyo antes de cada nuevo tirón.",
+      "Reinicio: baja la carga de forma controlada llevando las caderas hacia atrás y flexionando las rodillas. Recupera el agarre, el equilibrio y la tensión abdominal antes de cada nuevo tirón.",
       "Altura del rack: Comience con la barra apoyada a la altura elegida. Colóquelo en ambos soportes después de cada repetición en lugar de rebotar en el siguiente tirón."
     ],
     "avoidDetails": [
@@ -5104,7 +5104,7 @@
       "No balancee el torso ni sacuda el cuello para levantarlo más alto; Utilice menos peso y un rango cómodo."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: comience con los brazos bajos y los codos suavemente doblados.",
       "Control: Levante los brazos hasta una altura cómoda de los hombros y luego bájelos lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -5128,7 +5128,7 @@
       "No balancee el torso ni sacuda el cuello para levantarlo más alto; Utilice menos peso y un rango cómodo."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: comience con los brazos bajos y los codos suavemente doblados.",
       "Control: Levante los brazos hasta una altura cómoda de los hombros y luego bájelos lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -5152,7 +5152,7 @@
       "No balancee el torso ni sacuda el cuello para levantarlo más alto; Utilice menos peso y un rango cómodo."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: comience con los brazos bajos y los codos suavemente doblados.",
       "Control: Levante los brazos hasta una altura cómoda de los hombros y luego bájelos lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -5176,7 +5176,7 @@
       "No balancee el torso ni sacuda el cuello para levantarlo más alto; Utilice menos peso y un rango cómodo."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: comience con los brazos bajos y los codos suavemente doblados.",
       "Control: Levante los brazos hasta una altura cómoda de los hombros y luego bájelos lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -5200,7 +5200,7 @@
       "No balancee el torso ni sacuda el cuello para levantarlo más alto; Utilice menos peso y un rango cómodo."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: Apoya el torso o mantén el abdomen activo con los brazos hacia abajo.",
       "Control: levante los brazos en diagonal formando una Y, luego bájelos lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -5224,7 +5224,7 @@
       "No balancee el torso ni sacuda el cuello para levantarlo más alto; Utilice menos peso y un rango cómodo."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: Apoya el torso o mantén el abdomen activo con los brazos hacia abajo.",
       "Control: levante los brazos en diagonal formando una Y, luego bájelos lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -5248,7 +5248,7 @@
       "No balancee el torso ni sacuda el cuello para levantarlo más alto; Utilice menos peso y un rango cómodo."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: Sostenga la carga frente a sus muslos con una suave flexión del codo.",
       "Control: levántelo hacia adelante hasta una altura cómoda para los hombros, luego bájelo lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -5272,7 +5272,7 @@
       "No balancee el torso ni sacuda el cuello para levantarlo más alto; Utilice menos peso y un rango cómodo."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: Sostenga la carga frente a sus muslos con una suave flexión del codo.",
       "Control: levántelo hacia adelante hasta una altura cómoda para los hombros, luego bájelo lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -5296,7 +5296,7 @@
       "No balancee el torso ni sacuda el cuello para levantarlo más alto; Utilice menos peso y un rango cómodo."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: Sostenga la carga frente a sus muslos con una suave flexión del codo.",
       "Control: levántelo hacia adelante hasta una altura cómoda para los hombros, luego bájelo lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -5320,7 +5320,7 @@
       "No balancee el torso ni sacuda el cuello para levantarlo más alto; Utilice menos peso y un rango cómodo."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: Sostenga la carga frente a sus muslos con una suave flexión del codo.",
       "Control: levántelo hacia adelante hasta una altura cómoda para los hombros, luego bájelo lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -5345,7 +5345,7 @@
       "Use menos peso si balancea el torso o tira de las pesas hacia arriba."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: Apoye su pecho o gire a la altura de las caderas con los brazos colgando debajo de usted.",
       "Control: Abre los brazos hacia los lados con los codos suaves, luego regresa lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -5370,7 +5370,7 @@
       "Use menos peso si balancea el torso o tira de las pesas hacia arriba."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: Apoye su pecho o gire a la altura de las caderas con los brazos colgando debajo de usted.",
       "Control: Abre los brazos hacia los lados con los codos suaves, luego regresa lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -5395,7 +5395,7 @@
       "Use menos peso si balancea el torso o tira de las pesas hacia arriba."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: Apoye su pecho o gire a la altura de las caderas con los brazos colgando debajo de usted.",
       "Control: Abre los brazos hacia los lados con los codos suaves, luego regresa lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
@@ -5410,7 +5410,7 @@
     ]
   },
   "lever-seated-rear-delt-row": {
-    "name": "Remo de deltoides trasero sentado con palanca",
+    "name": "Remo sentado para deltoides posteriores en máquina",
     "cues": [
       "Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente."
@@ -5422,7 +5422,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Control: Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -5434,7 +5434,7 @@
     ]
   },
   "barbell-wide-grip-upright-row": {
-    "name": "barra Remo vertical con agarre ancho",
+    "name": "Remo al mentón con barra y agarre ancho",
     "cues": [
       "Sostenga la barra o mancuernas frente a sus muslos con un agarre cómodo.",
       "Conduzca con los codos mientras levanta la carga a una altura cómoda; baje lentamente."
@@ -5459,7 +5459,7 @@
     ]
   },
   "dumbbell-upright-row": {
-    "name": "mancuerna Remo vertical",
+    "name": "Remo al mentón con mancuernas",
     "cues": [
       "Sostenga la barra o mancuernas frente a sus muslos con un agarre cómodo.",
       "Conduzca con los codos mientras levanta la carga a una altura cómoda; baje lentamente."
@@ -5484,12 +5484,12 @@
     ]
   },
   "barbell-z-press": {
-    "name": "Prensa Z barra",
+    "name": "Press Z con barra",
     "cues": [
       "Siéntate en el suelo con las piernas extendidas y la barra a la altura de los hombros.",
       "Activa el abdomen, empuja la carga por encima de la cabeza y bájala con control.",
       "Hombros: Deje que los omóplatos giren hacia arriba mientras presiona; Mantenga las costillas sobre la pelvis.",
-      "Press Z: Siéntate con las piernas extendidas y el tronco estable; enciende la luz sin forzar la posición sentada."
+      "Press Z: siéntate con las piernas extendidas y el tronco estable. Empieza con poco peso sin forzar la posición sentada."
     ],
     "avoid": [
       "No te inclines más hacia atrás para terminar; reduzca la carga y mantenga las costillas sobre la pelvis."
@@ -5501,7 +5501,7 @@
       "Tensión abdominal: mantén las costillas sobre una pelvis estable al empujar. Activa el abdomen sin convertir el movimiento en una inclinación hacia atrás.",
       "Hombros: Deje que los omóplatos giren hacia arriba de forma natural a medida que se elevan los brazos. No intentes inmovilizarlos durante un press por encima de la cabeza.",
       "Regreso: Lleve la carga de regreso por un camino cómodo y repetible. Mantén las muñecas apoyadas y recupera el control antes de la siguiente pulsación.",
-      "Postura en el suelo: Siéntate con las piernas extendidas sólo hasta donde puedas mantener un tronco estable. Utilice una barra de luz; no fuerce la posición inclinándose o inclinándose hacia atrás."
+      "Postura en el suelo: extiende las piernas solo hasta donde puedas mantener el tronco estable. Usa una barra con poco peso y no fuerces la posición redondeando la espalda o inclinándote hacia atrás."
     ],
     "avoidDetails": [
       "Evite inclinarse hacia atrás para convertirlo en una prensa inclinada.",
@@ -5511,7 +5511,7 @@
     ]
   },
   "landmine-single-arm-press": {
-    "name": "Prensa de un solo brazo para minas terrestres",
+    "name": "Press landmine a una mano",
     "cues": [
       "Sujeta el extremo de la barra cerca del hombro y activa el abdomen con una postura estable.",
       "Presiónelo hacia adelante y hacia arriba a lo largo del recorrido de la barra; bajar con control.",
@@ -5582,13 +5582,13 @@
     ],
     "avoidDetails": [
       "Evite caer sobre su cabeza o perder el contacto con las manos.",
-      "Impacto en la cabeza: No descanse ni deje caer el peso del cuerpo sobre la cabeza o el cuello en la parte inferior. Deténgase antes de que falle el soporte del brazo.",
+      "Apoyo sobre la cabeza: no apoyes ni dejes caer el peso del cuerpo sobre la cabeza o el cuello en la posición baja. Detente antes de que los brazos dejen de sostenerte.",
       "Ensanchamiento y deslizamiento: No permita que los codos se disparen hacia los lados ni las manos se deslicen mientras baja. Restablece la superficie y la dificultad.",
-      "Salida no planificada: No intentes un repetición invertido sin un apoyo confiable y un descenso practicado. Utilice una variación más fácil si es necesario."
+      "Salida sin preparar: no intentes una repetición en posición invertida sin un apoyo fiable y una forma de bajar que ya hayas practicado. Usa una variante más fácil si hace falta."
     ]
   },
   "ez-barbell-preacher-curl": {
-    "name": "EZ barra Curl predicador",
+    "name": "Curl predicador con barra EZ",
     "cues": [
       "Apoye la parte superior de los brazos sobre la almohadilla y mantenga las muñecas firmes.",
       "Doble la carga, luego bájela hasta que sus codos estén cómodamente extendidos."
@@ -5613,7 +5613,7 @@
     ]
   },
   "dumbbell-preacher-curl": {
-    "name": "mancuerna Curl predicador",
+    "name": "Curl predicador con mancuerna",
     "cues": [
       "Apoye la parte superior de los brazos sobre la almohadilla y mantenga las muñecas firmes.",
       "Doble la carga, luego bájela hasta que sus codos estén cómodamente extendidos."
@@ -5638,7 +5638,7 @@
     ]
   },
   "dumbbell-one-arm-hammer-preacher-curl": {
-    "name": "mancuerna Curl predicador con martillo a un brazo",
+    "name": "Curl martillo predicador a una mano con mancuerna",
     "cues": [
       "Apoye la parte superior de los brazos sobre la almohadilla y mantenga las muñecas firmes.",
       "Doble la carga, luego bájela hasta que sus codos estén cómodamente extendidos."
@@ -5663,7 +5663,7 @@
     ]
   },
   "cable-preacher-curl": {
-    "name": "Curl de predicador de cable",
+    "name": "Curl predicador en polea",
     "cues": [
       "Apoye la parte superior de los brazos sobre la almohadilla y mantenga las muñecas firmes.",
       "Doble la carga, luego bájela hasta que sus codos estén cómodamente extendidos."
@@ -5688,7 +5688,7 @@
     ]
   },
   "barbell-reverse-curl": {
-    "name": "barra Curl inverso",
+    "name": "Curl inverso con barra",
     "cues": [
       "Agarre con las palmas hacia abajo y alinee cómodamente las muñecas.",
       "Doble los codos para levantar el peso y luego bájelos lentamente."
@@ -5713,7 +5713,7 @@
     ]
   },
   "ez-barbell-reverse-grip-curl": {
-    "name": "EZ barra Curl con agarre inverso",
+    "name": "Curl inverso con barra EZ",
     "cues": [
       "Agarre con las palmas hacia abajo y alinee cómodamente las muñecas.",
       "Doble los codos para levantar el peso y luego bájelos lentamente."
@@ -5738,7 +5738,7 @@
     ]
   },
   "dumbbell-biceps-curl-reverse": {
-    "name": "mancuerna Curl de bíceps inverso",
+    "name": "Curl inverso con mancuernas",
     "cues": [
       "Agarre con las palmas hacia abajo y alinee cómodamente las muñecas.",
       "Doble los codos para levantar el peso y luego bájelos lentamente."
@@ -5763,9 +5763,9 @@
     ]
   },
   "dumbbell-zottman-curl": {
-    "name": "mancuerna Curl Zottman",
+    "name": "Curl Zottman con mancuernas",
     "cues": [
-      "Curl mancuernas con las palmas hacia arriba mientras mantienes la parte superior de los brazos cerca de los costados.",
+      "Flexiona los codos con las mancuernas y las palmas hacia arriba, manteniendo los brazos cerca del cuerpo.",
       "Gire las palmas hacia abajo en la parte superior, bájelas lentamente y luego reinicie el agarre."
     ],
     "avoid": [
@@ -5774,12 +5774,12 @@
     ],
     "cuesDetails": [
       "Preparación: elija el agarre deseado y asegure cualquier banco o soporte para brazos. Comienza con resistencia que puedas hacer curl sin mover el tronco.",
-      "Movimiento: Curl mancuernas con las palmas hacia arriba mientras mantienes la parte superior de los brazos cerca de los costados.",
+      "Movimiento: Flexiona los codos con las mancuernas y las palmas hacia arriba, manteniendo los brazos cerca del cuerpo.",
       "Control: gire las palmas hacia abajo en la parte superior, bájelas lentamente y luego reinicie el agarre.",
       "Movimiento del codo: Doble el codo mientras mantiene la parte superior del brazo razonablemente estable en la posición para esta variación.",
       "Muñeca: Mantenga la muñeca alineada con el antebrazo. Cualquier rotación del agarre debe ser deliberada y no causada por el peso que tira de la mano.",
       "Regreso: Extienda el codo suavemente en un rango cómodo. Mantenga el control cerca del final en lugar de caer en el tramo.",
-      "Giro de Zottman: doble las palmas hacia arriba, gire deliberadamente cerca de la parte superior e inferior con las palmas hacia abajo. Utilice una carga más ligera para un descenso controlado con agarre inverso."
+      "Giro Zottman: sube las mancuernas con las palmas hacia arriba, gira los antebrazos de forma controlada cerca de la posición alta y baja con las palmas hacia abajo. Usa menos peso para controlar el descenso con agarre prono."
     ],
     "avoidDetails": [
       "Evite apresurar el giro de muñeca o balancear el mancuernas.",
@@ -5789,10 +5789,10 @@
     ]
   },
   "dumbbell-cross-body-hammer-curl": {
-    "name": "mancuerna Curl de martillo con cuerpo cruzado",
+    "name": "Curl martillo cruzado con mancuerna",
     "cues": [
       "Sostenga las pesas con las palmas hacia adentro y los codos cerca de los costados.",
-      "Curl sin rotar las muñecas, luego bájelas lentamente.",
+      "Flexiona los codos sin girar las muñecas y baja después lentamente.",
       "Cruzado: Mantenga la palma hacia adentro y muévase hacia el pecho opuesto sin girar el torso."
     ],
     "avoid": [
@@ -5801,7 +5801,7 @@
     "cuesDetails": [
       "Preparación: elija el agarre deseado y asegure cualquier banco o soporte para brazos. Comienza con resistencia que puedas hacer curl sin mover el tronco.",
       "Movimiento: Sostenga las pesas con las palmas hacia adentro y los codos cerca de los costados.",
-      "Control: Curl sin rotar las muñecas, luego baje lentamente.",
+      "Control: Flexiona los codos sin girar las muñecas y baja después lentamente.",
       "Movimiento del codo: Doble el codo mientras mantiene la parte superior del brazo razonablemente estable en la posición para esta variación.",
       "Muñeca: Mantenga la muñeca alineada con el antebrazo. Cualquier rotación del agarre debe ser deliberada y no causada por el peso que tira de la mano.",
       "Regreso: Extienda el codo suavemente en un rango cómodo. Mantenga el control cerca del final en lugar de caer en el tramo.",
@@ -5815,7 +5815,7 @@
     ]
   },
   "dumbbell-seated-curl": {
-    "name": "mancuerna Curl sentado",
+    "name": "Curl sentado con mancuernas",
     "cues": [
       "Mantenga la parte superior de los brazos cerca del torso y sostenga la carga con las muñecas firmes.",
       "Doble los codos para levantar la carga y luego bájela con control."
@@ -5839,7 +5839,7 @@
     ]
   },
   "dumbbell-standing-biceps-curl": {
-    "name": "mancuerna Curl de bíceps de pie",
+    "name": "Curl de bíceps de pie con mancuernas",
     "cues": [
       "Mantenga la parte superior de los brazos cerca del torso y sostenga la carga con las muñecas firmes.",
       "Doble los codos para levantar la carga y luego bájela con control."
@@ -5863,7 +5863,7 @@
     ]
   },
   "barbell-drag-curl": {
-    "name": "barra Arrastrar Curl",
+    "name": "Curl de arrastre con barra",
     "cues": [
       "Sostenga la carga cerca de sus muslos con la parte superior de los brazos cerca de sus costados.",
       "Tire los codos ligeramente hacia atrás mientras se curva a lo largo del torso; baje lentamente."
@@ -5876,7 +5876,7 @@
       "Preparación: Párese en equilibrio con un agarre total y la barra o mango cerca de la parte delantera de los muslos. Comience con una resistencia ligera.",
       "Movimiento: Sostenga la carga cerca de los muslos con la parte superior de los brazos cerca de los costados.",
       "Control: Tire los codos ligeramente hacia atrás mientras se curva a lo largo del torso; baje lentamente.",
-      "Codos: deja que los codos se muevan hacia atrás mientras te flexionas. Este desplazamiento deliberado hacia atrás distingue un curl de arrastre de un curl convencional.",
+      "Codos: deja que los codos se desplacen hacia atrás durante la flexión. Este movimiento intencionado distingue el curl de arrastre del curl convencional.",
       "Ruta de carga: acerque el peso a lo largo del torso en lugar de balancearlo hacia afuera formando un gran arco.",
       "Regreso: Invierta gradualmente la trayectoria del codo y la mano, manteniendo las muñecas cómodas y el tronco firme."
     ],
@@ -5888,7 +5888,7 @@
     ]
   },
   "cable-drag-curl": {
-    "name": "Curl de arrastre de cable",
+    "name": "Curl de arrastre en polea",
     "cues": [
       "Sostenga la carga cerca de sus muslos con la parte superior de los brazos cerca de sus costados.",
       "Tire los codos ligeramente hacia atrás mientras se curva a lo largo del torso; baje lentamente."
@@ -5901,7 +5901,7 @@
       "Preparación: Párese en equilibrio con un agarre total y la barra o mango cerca de la parte delantera de los muslos. Comience con una resistencia ligera.",
       "Movimiento: Sostenga la carga cerca de los muslos con la parte superior de los brazos cerca de los costados.",
       "Control: Tire los codos ligeramente hacia atrás mientras se curva a lo largo del torso; baje lentamente.",
-      "Codos: deja que los codos se muevan hacia atrás mientras te flexionas. Este desplazamiento deliberado hacia atrás distingue un curl de arrastre de un curl convencional.",
+      "Codos: deja que los codos se desplacen hacia atrás durante la flexión. Este movimiento intencionado distingue el curl de arrastre del curl convencional.",
       "Ruta de carga: acerque el peso a lo largo del torso en lugar de balancearlo hacia afuera formando un gran arco.",
       "Regreso: Invierta gradualmente la trayectoria del codo y la mano, manteniendo las muñecas cómodas y el tronco firme."
     ],
@@ -5913,7 +5913,7 @@
     ]
   },
   "cable-standing-inner-curl": {
-    "name": "Curl interior de pie de cable",
+    "name": "Curl hacia dentro de pie en polea",
     "cues": [
       "Mantenga la parte superior de los brazos cerca del torso y sostenga la carga con las muñecas firmes.",
       "Doble los codos para levantar la carga y luego bájela con control."
@@ -5961,7 +5961,7 @@
     ]
   },
   "cable-overhead-curl": {
-    "name": "Curl aéreo del cable",
+    "name": "Curl con brazos elevados en polea alta",
     "cues": [
       "Coloque los cables altos y mantenga la parte superior de los brazos hacia los lados.",
       "Doble los codos para llevar las manos hacia la cabeza; extender lentamente."
@@ -6010,7 +6010,7 @@
     ]
   },
   "dumbbell-spider-curl": {
-    "name": "mancuerna Rizo de araña",
+    "name": "Curl araña con mancuernas",
     "cues": [
       "Acuéstese boca abajo en un banco inclinado con los brazos colgando libremente.",
       "Doble el peso sin levantar el pecho, luego bájelo lentamente."
@@ -6026,7 +6026,7 @@
       "Movimiento del codo: Doble el codo mientras mantiene la parte superior del brazo razonablemente estable en la posición para esta variación.",
       "Muñeca: Mantenga la muñeca alineada con el antebrazo. Cualquier rotación del agarre debe ser deliberada y no causada por el peso que tira de la mano.",
       "Regreso: Extienda el codo suavemente en un rango cómodo. Mantenga el control cerca del final en lugar de caer en el tramo.",
-      "Soporte de araña: Mantenga el cofre en el banco inclinado y deje que la parte superior de los brazos cuelgue. Curl sin levantar el pecho para alcanzar las pesas."
+      "Apoyo del curl araña: mantén el pecho sobre el banco inclinado y deja colgar los brazos. Flexiona los codos sin levantar el pecho hacia las pesas."
     ],
     "avoidDetails": [
       "Evite balancear los brazos o despegar el torso de la almohadilla.",
@@ -6036,7 +6036,7 @@
     ]
   },
   "dumbbell-hammer-preacher-curl": {
-    "name": "mancuerna Curl predicador con martillo",
+    "name": "Curl martillo predicador con mancuernas",
     "cues": [
       "Apoye la parte superior de los brazos sobre la almohadilla y mantenga las muñecas firmes.",
       "Doble la carga, luego bájela hasta que sus codos estén cómodamente extendidos."
@@ -6061,10 +6061,10 @@
     ]
   },
   "dumbbell-incline-hammer-curl": {
-    "name": "mancuerna Curl de martillo inclinado",
+    "name": "Curl martillo inclinado con mancuernas",
     "cues": [
       "Siéntese contra el banco inclinado con los brazos colgando a los costados.",
-      "Doble sin levantar la parte superior de los brazos, luego bájelos lentamente.",
+      "Flexiona los codos sin levantar los brazos y baja después lentamente.",
       "Inclinación: Mantenga la espalda apoyada; reduzca la reclinación si la posición inicial de los hombros se siente forzada."
     ],
     "avoid": [
@@ -6074,7 +6074,7 @@
     "cuesDetails": [
       "Preparación: elija el agarre deseado y asegure cualquier banco o soporte para brazos. Comienza con resistencia que puedas hacer curl sin mover el tronco.",
       "Movimiento: Siéntese contra el banco inclinado con los brazos colgando a los costados.",
-      "Control: Doble sin levantar la parte superior de los brazos, luego bájelos lentamente.",
+      "Control: Flexiona los codos sin levantar los brazos y baja después lentamente.",
       "Movimiento del codo: Doble el codo mientras mantiene la parte superior del brazo razonablemente estable en la posición para esta variación.",
       "Muñeca: Mantenga la muñeca alineada con el antebrazo. Cualquier rotación del agarre debe ser deliberada y no causada por el peso que tira de la mano.",
       "Regreso: Extienda el codo suavemente en un rango cómodo. Mantenga el control cerca del final en lugar de caer en el tramo.",
@@ -6166,12 +6166,12 @@
     ]
   },
   "barbell-jm-bench-press": {
-    "name": "barra Prensa de banco Jm",
+    "name": "Press JM con barra",
     "cues": [
       "Acuéstese en el banco con un agarre seguro y los codos apuntando hacia adelante.",
       "Doble los codos para bajar la barra hacia la parte superior del pecho o la línea del cuello, luego presione hacia arriba.",
       "Control: comience ligero y establezca una trayectoria repetible que mantenga el peso alejado de su cara.",
-      "Seguridad: Verifique los dispositivos de seguridad de las rejillas y contrate a un observador competente cuando sea necesario antes de presionar."
+      "Seguridad: comprueba los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario antes del press."
     ],
     "avoid": [
       "Evite dejar que la barra caiga sobre su cuello o convertirla en un press de banca completo.",
@@ -6184,7 +6184,7 @@
       "Ruta del codo: siga el movimiento específico del codo y la mano para la variación. Mantenga las muñecas apoyadas y ambos lados coordinados.",
       "Rango: Utilice un rango corto que pueda revertir sin molestias en el codo o el hombro. Aumentar el control antes de aumentar de peso.",
       "Regreso: Extienda deliberadamente manteniendo la parte superior de la espalda apoyada. Detenga el equipo cuando resulte difícil mantener el camino previsto.",
-      "Plan de repetición fallida: establezca dispositivos de seguridad apropiados en las rejillas y utilice un observador competente cuando sea necesario. Verifique la protección antes de presionar; No confíe en recuperar una barra atrapada."
+      "Plan ante una repetición fallida: ajusta los soportes de seguridad y pide ayuda a una persona experimentada cuando sea necesario. Comprueba la protección antes del press. No cuentes con poder liberar una barra que te deje atrapado."
     ],
     "avoidDetails": [
       "Evite dejar que la barra caiga sobre su cuello o convertirla en un press de banca completo.",
@@ -6194,7 +6194,7 @@
     ]
   },
   "dumbbell-tate-press": {
-    "name": "Prensa Tate mancuerna",
+    "name": "Press Tate con mancuernas",
     "cues": [
       "Acuéstese en un banco con mancuernas encima del pecho y los codos hacia los lados.",
       "Doble los codos para llevar el mancuernas hacia el pecho y luego extiéndalo.",
@@ -6234,7 +6234,7 @@
       "Movimiento: coloque las manijas de los cables en alto y sosténgalas sobre la parte superior del pecho.",
       "Control: Extienda los codos hacia afuera y hacia abajo, luego regrese lentamente.",
       "Codo: Mantenga la parte superior del brazo razonablemente estable mientras el antebrazo se mueve. Enderece suavemente sin forzar un tope de unión duro.",
-      "Muñeca: Mantenga la muñeca alineada con el antebrazo y el mango asegurado. No sustituyas el movimiento de la muñeca por la extensión del codo.",
+      "Muñeca: mantén la muñeca alineada con el antebrazo y sujeta bien el agarre. Extiende el codo sin sustituir esa acción por un movimiento de la muñeca.",
       "Regreso: Doble el codo bajo control y mantenga la misma posición de la parte superior del brazo. Utilice una resistencia que no arrastre el hombro hacia adelante."
     ],
     "avoidDetails": [
@@ -6284,7 +6284,7 @@
       "Movimiento: coloque un cable o banda alto y mantenga la parte superior de los brazos cerca de los costados.",
       "Control: Estire los codos para presionar hacia abajo y luego regrese lentamente.",
       "Codo: Mantenga la parte superior del brazo razonablemente estable mientras el antebrazo se mueve. Enderece suavemente sin forzar un tope de unión duro.",
-      "Muñeca: Mantenga la muñeca alineada con el antebrazo y el mango asegurado. No sustituyas el movimiento de la muñeca por la extensión del codo.",
+      "Muñeca: mantén la muñeca alineada con el antebrazo y sujeta bien el agarre. Extiende el codo sin sustituir esa acción por un movimiento de la muñeca.",
       "Regreso: Doble el codo bajo control y mantenga la misma posición de la parte superior del brazo. Utilice una resistencia que no arrastre el hombro hacia adelante."
     ],
     "avoidDetails": [
@@ -6308,7 +6308,7 @@
       "Movimiento: articula y sostiene el torso; Mantenga la parte superior del brazo cerca de su costado.",
       "Control: Estire el codo para mover el peso hacia atrás y luego dóblelo lentamente.",
       "Codo: Mantenga la parte superior del brazo razonablemente estable mientras el antebrazo se mueve. Enderece suavemente sin forzar un tope de unión duro.",
-      "Muñeca: Mantenga la muñeca alineada con el antebrazo y el mango asegurado. No sustituyas el movimiento de la muñeca por la extensión del codo.",
+      "Muñeca: mantén la muñeca alineada con el antebrazo y sujeta bien el agarre. Extiende el codo sin sustituir esa acción por un movimiento de la muñeca.",
       "Regreso: Doble el codo bajo control y mantenga la misma posición de la parte superior del brazo. Utilice una resistencia que no arrastre el hombro hacia adelante."
     ],
     "avoidDetails": [
@@ -6333,7 +6333,7 @@
       "Movimiento: Siéntese contra el soporte de la máquina y agarre las manijas al lado de su torso.",
       "Control: Extienda los codos para presionar las manijas hacia abajo, luego regrese lentamente.",
       "Codo: Mantenga la parte superior del brazo razonablemente estable mientras el antebrazo se mueve. Enderece suavemente sin forzar un tope de unión duro.",
-      "Muñeca: Mantenga la muñeca alineada con el antebrazo y el mango asegurado. No sustituyas el movimiento de la muñeca por la extensión del codo.",
+      "Muñeca: mantén la muñeca alineada con el antebrazo y sujeta bien el agarre. Extiende el codo sin sustituir esa acción por un movimiento de la muñeca.",
       "Regreso: Doble el codo bajo control y mantenga la misma posición de la parte superior del brazo. Utilice una resistencia que no arrastre el hombro hacia adelante.",
       "Inmersión sentado: Permanezca sentado contra el soporte y presione las manijas hacia abajo. Este movimiento de máquina no requiere bajar el cuerpo entre barras paralelas."
     ],
@@ -6408,7 +6408,7 @@
       "Coloca los pies a una anchura cómoda, activa el abdomen y flexiona las caderas y las rodillas a la vez.",
       "Mantenga todo el pie plantado, agáchese a una profundidad controlada y luego párese.",
       "Rack: Pruebe los ganchos y las barras de seguridad con una barra vacía antes de cargar.",
-      "Pausa: sostenga la parte inferior con el aparato ortopédico y la presión del pie intactas antes de levantarse."
+      "Pausa: mantén la posición baja con el abdomen tenso y los apoyos de los pies estables antes de subir."
     ],
     "avoid": [
       "Evite perder el contacto con los pies o dejar que la carga lo desequilibre.",
@@ -6540,7 +6540,7 @@
     "cues": [
       "Apoya la barra sobre la parte delantera de los hombros, mantén los codos elevados y activa el abdomen.",
       "Póngase en cuclillas entre las piernas con contacto completo con los pies, luego párese sin perder la posición de rejilla.",
-      "Smith: establezca topes de seguridad, practique los ganchos y combine su postura o banco con la pista fija.",
+      "Smith: ajusta los topes de seguridad, practica enganchar la barra y adapta la postura o el banco a la trayectoria guiada.",
       "Bastidor frontal: Deje que los hombros lleven la barra, en lugar de las muñecas dobladas."
     ],
     "avoid": [
@@ -6554,7 +6554,7 @@
       "Presión del pie: Mantenga apoyados el talón y ambos lados del antepié. Deja que las rodillas sigan la dirección de los dedos de los pies.",
       "Tensión abdominal: activa el abdomen antes de bajar. Mantén la carga equilibrada sobre tus apoyos mientras las caderas y los hombros suben a la vez.",
       "Profundidad: utilice el rango repetible más profundo que pueda controlar sin perder el equilibrio. El desplazamiento de la rodilla más allá de los dedos de los pies no es automáticamente un error.",
-      "Máquina Smith: coloque los topes de seguridad y practique volver a enganchar los ganchos con una barra de luz. Coloque sus pies o banco para adaptarse a la pista fija.",
+      "Máquina Smith: ajusta los topes de seguridad y practica volver a enganchar la barra con poco peso. Coloca los pies o el banco según la trayectoria guiada.",
       "Parrilla delantera: Deje que los hombros lleven la barra con los codos levantados. No intente sostener toda la carga con las muñecas dobladas."
     ],
     "avoidDetails": [
@@ -6570,7 +6570,7 @@
       "Adopte una postura estable y escalonada; Doble ambas rodillas mientras mantiene el pie delantero plantado.",
       "Baje a una profundidad cómoda y suba por la pierna delantera.",
       "Equilibrio: Deje algo de ancho entre los pies; Deje que la rodilla delantera siga los dedos del pie.",
-      "Smith: establezca topes de seguridad, practique los ganchos y combine su postura o banco con la pista fija."
+      "Smith: ajusta los topes de seguridad, practica enganchar la barra y adapta la postura o el banco a la trayectoria guiada."
     ],
     "avoid": [
       "Evite empujar el pie trasero con tanta fuerza que pierda el equilibrio.",
@@ -6581,9 +6581,9 @@
       "Movimiento: Adopte una postura estable y escalonada; Doble ambas rodillas mientras mantiene el pie delantero plantado.",
       "Control: Baje hasta una profundidad cómoda y suba por la pierna delantera.",
       "Pierna delantera: Mantenga apoyados el talón delantero y el antepié; permita que la rodilla siga los dedos de los pies mientras las caderas descienden entre los pies.",
-      "Torso: una inclinación controlada hacia adelante puede ser apropiada. Mantenga el tronco firme en lugar de forzar un torso erguido arqueando la espalda.",
+      "Torso: una inclinación controlada hacia delante puede ser adecuada. Mantén el abdomen tenso en lugar de arquear la espalda para forzar una postura erguida.",
       "Equilibrio: Elévate principalmente a través de la pierna delantera mientras que la pierna trasera ayuda al equilibrio. Reinicie sus pies si el próximo repetición comienza desde una postura inestable.",
-      "Máquina Smith: coloque los topes de seguridad y practique volver a enganchar los ganchos con una barra de luz. Coloque sus pies o banco para adaptarse a la pista fija."
+      "Máquina Smith: ajusta los topes de seguridad y practica volver a enganchar la barra con poco peso. Coloca los pies o el banco según la trayectoria guiada."
     ],
     "avoidDetails": [
       "Evite empujar el pie trasero con tanta fuerza que pierda el equilibrio.",
@@ -6598,7 +6598,7 @@
       "Da un paso atrás hasta adoptar una postura estable y baja doblando ambas rodillas.",
       "Mantenga el pie delantero plantado; empújalo para volver a estar de pie.",
       "Equilibrio: Deje algo de ancho entre los pies; Deje que la rodilla delantera siga los dedos del pie.",
-      "Smith: establezca topes de seguridad, practique los ganchos y combine su postura o banco con la pista fija."
+      "Smith: ajusta los topes de seguridad, practica enganchar la barra y adapta la postura o el banco a la trayectoria guiada."
     ],
     "avoid": [
       "No apresure el paso ni deje caer la rodilla trasera al suelo; ralentizar y acortar el descenso."
@@ -6608,9 +6608,9 @@
       "Movimiento: Da un paso hacia atrás hasta adoptar una postura estable y baja doblando ambas rodillas.",
       "Control: Mantenga el pie delantero plantado; empújalo para volver a estar de pie.",
       "Pierna delantera: Mantenga apoyados el talón delantero y el antepié; permita que la rodilla siga los dedos de los pies mientras las caderas descienden entre los pies.",
-      "Torso: una inclinación controlada hacia adelante puede ser apropiada. Mantenga el tronco firme en lugar de forzar un torso erguido arqueando la espalda.",
+      "Torso: una inclinación controlada hacia delante puede ser adecuada. Mantén el abdomen tenso en lugar de arquear la espalda para forzar una postura erguida.",
       "Equilibrio: Elévate principalmente a través de la pierna delantera mientras que la pierna trasera ayuda al equilibrio. Reinicie sus pies si el próximo repetición comienza desde una postura inestable.",
-      "Máquina Smith: coloque los topes de seguridad y practique volver a enganchar los ganchos con una barra de luz. Coloque sus pies o banco para adaptarse a la pista fija."
+      "Máquina Smith: ajusta los topes de seguridad y practica volver a enganchar la barra con poco peso. Coloca los pies o el banco según la trayectoria guiada."
     ],
     "avoidDetails": [
       "Evite dar un paso apresurado o dejar caer la rodilla trasera al suelo.",
@@ -6625,7 +6625,7 @@
       "Coloque el pie trasero sobre un banco y el pie delantero sobre una plataforma baja estable.",
       "Baje entre los soportes, luego suba por el pie delantero.",
       "Equilibrio: Deje algo de ancho entre los pies; Deje que la rodilla delantera siga los dedos del pie.",
-      "Smith: establezca topes de seguridad, practique los ganchos y combine su postura o banco con la pista fija.",
+      "Smith: ajusta los topes de seguridad, practica enganchar la barra y adapta la postura o el banco a la trayectoria guiada.",
       "Plataforma: Asegure la superficie elevada; La profundidad adicional es opcional y debe permanecer controlada."
     ],
     "avoid": [
@@ -6637,9 +6637,9 @@
       "Movimiento: Coloque el pie trasero sobre un banco y el pie delantero sobre una plataforma baja estable.",
       "Control: Bajar entre los apoyos, luego subir por el pie delantero.",
       "Pierna delantera: Mantenga apoyados el talón delantero y el antepié; permita que la rodilla siga los dedos de los pies mientras las caderas descienden entre los pies.",
-      "Torso: una inclinación controlada hacia adelante puede ser apropiada. Mantenga el tronco firme en lugar de forzar un torso erguido arqueando la espalda.",
+      "Torso: una inclinación controlada hacia delante puede ser adecuada. Mantén el abdomen tenso en lugar de arquear la espalda para forzar una postura erguida.",
       "Equilibrio: Elévate principalmente a través de la pierna delantera mientras que la pierna trasera ayuda al equilibrio. Reinicie sus pies si el próximo repetición comienza desde una postura inestable.",
-      "Máquina Smith: coloque los topes de seguridad y practique volver a enganchar los ganchos con una barra de luz. Coloque sus pies o banco para adaptarse a la pista fija.",
+      "Máquina Smith: ajusta los topes de seguridad y practica volver a enganchar la barra con poco peso. Coloca los pies o el banco según la trayectoria guiada.",
       "Soporte para el pie trasero: Utilice un soporte estable que le permita mantener el equilibrio sin forzar la cadera trasera. La pierna delantera realiza la mayor parte del esfuerzo de elevación.",
       "Plataforma elevada: La profundidad adicional es opcional. Utilice una plataforma segura y de altura modesta y descienda sólo mientras el control del pie y la pelvis permanezca estable."
     ],
@@ -6656,7 +6656,7 @@
       "Apoya la barra sobre la espalda alta, flexiona ligeramente las rodillas y activa el abdomen.",
       "Mueva las caderas hacia atrás para girar, luego extienda las caderas para ponerse de pie.",
       "Rango: Deténgase cuando las caderas no puedan viajar más hacia atrás sin cambiar la posición del tronco.",
-      "Smith: establezca topes de seguridad, practique los ganchos y combine su postura o banco con la pista fija."
+      "Smith: ajusta los topes de seguridad, practica enganchar la barra y adapta la postura o el banco a la trayectoria guiada."
     ],
     "avoid": [
       "No redondees más para ganar profundidad; acorte la bisagra y mantenga las caderas moviéndose hacia atrás."
@@ -6668,7 +6668,7 @@
       "Camino de la cadera: piensa en cerrar una puerta con las caderas. El torso se inclina como resultado de la bisagra mientras la forma de la espalda se mantiene controlada.",
       "Posición inferior: deténgase cuando un mayor alcance cambiaría la posición de su espalda o pelvis. Llegar al suelo no es el objetivo.",
       "Regreso: Empuje a través del pie o pies de apoyo y lleve las caderas hacia adelante para levantarse. Termine alto sin agregar una inclinación hacia atrás.",
-      "Máquina Smith: coloque los topes de seguridad y practique volver a enganchar los ganchos con una barra de luz. Coloque sus pies o banco para adaptarse a la pista fija."
+      "Máquina Smith: ajusta los topes de seguridad y practica volver a enganchar la barra con poco peso. Coloca los pies o el banco según la trayectoria guiada."
     ],
     "avoidDetails": [
       "Evite redondear la espalda o forzar una bisagra más profunda de lo que pueda controlar.",
@@ -6682,7 +6682,7 @@
     "cues": [
       "Coloque la barra de forma segura en la parte superior de la espalda y párese con los pies plantados.",
       "Levanta los talones y luego bájalos con control.",
-      "Smith: establezca topes de seguridad, practique los ganchos y combine su postura o banco con la pista fija."
+      "Smith: ajusta los topes de seguridad, practica enganchar la barra y adapta la postura o el banco a la trayectoria guiada."
     ],
     "avoid": [
       "Evite rebotar o dejar que la barra se deslice de su posición.",
@@ -6695,7 +6695,7 @@
       "Ruta del tobillo: suba y baje a través del tobillo mientras mantiene presión en el antepié. Mantenga el ángulo de la rodilla apropiado para la variación.",
       "Alcance: si utiliza una plataforma elevada, baje el talón sólo hasta donde pueda controlar. En el suelo, regresa el talón suavemente a la superficie.",
       "Posición superior: levántese sin rodar hacia el borde exterior o interior del pie. Haga una pausa breve y retroceda suavemente.",
-      "Máquina Smith: coloque los topes de seguridad y practique volver a enganchar los ganchos con una barra de luz. Coloque sus pies o banco para adaptarse a la pista fija."
+      "Máquina Smith: ajusta los topes de seguridad y practica volver a enganchar la barra con poco peso. Coloca los pies o el banco según la trayectoria guiada."
     ],
     "avoidDetails": [
       "Evite rebotar o dejar que la barra se deslice de su posición.",
@@ -6876,7 +6876,7 @@
       "Movimiento: coloque una pierna en diagonal detrás de la otra y mantenga la postura equilibrada.",
       "Control: Doble la rodilla delantera, luego presione con el pie delantero para regresar.",
       "Pierna delantera: Mantenga apoyados el talón delantero y el antepié; permita que la rodilla siga los dedos de los pies mientras las caderas descienden entre los pies.",
-      "Torso: una inclinación controlada hacia adelante puede ser apropiada. Mantenga el tronco firme en lugar de forzar un torso erguido arqueando la espalda.",
+      "Torso: una inclinación controlada hacia delante puede ser adecuada. Mantén el abdomen tenso en lugar de arquear la espalda para forzar una postura erguida.",
       "Equilibrio: Elévate principalmente a través de la pierna delantera mientras que la pierna trasera ayuda al equilibrio. Reinicie sus pies si el próximo repetición comienza desde una postura inestable.",
       "Paso cruzado: Mantenga el paso trasero modesto y la rodilla delantera siguiendo su pie. No fuerces una cruz profunda que tuerza la rodilla cargada."
     ],
@@ -6903,7 +6903,7 @@
       "Movimiento: Da un paso hacia atrás hasta adoptar una postura estable y baja doblando ambas rodillas.",
       "Control: Mantenga el pie delantero plantado; empújalo para volver a estar de pie.",
       "Pierna delantera: Mantenga apoyados el talón delantero y el antepié; permita que la rodilla siga los dedos de los pies mientras las caderas descienden entre los pies.",
-      "Torso: una inclinación controlada hacia adelante puede ser apropiada. Mantenga el tronco firme en lugar de forzar un torso erguido arqueando la espalda.",
+      "Torso: una inclinación controlada hacia delante puede ser adecuada. Mantén el abdomen tenso en lugar de arquear la espalda para forzar una postura erguida.",
       "Equilibrio: Elévate principalmente a través de la pierna delantera mientras que la pierna trasera ayuda al equilibrio. Reinicie sus pies si el próximo repetición comienza desde una postura inestable.",
       "Plataforma elevada: La profundidad adicional es opcional. Utilice una plataforma segura y de altura modesta y descienda sólo mientras el control del pie y la pelvis permanezca estable."
     ],
@@ -6930,7 +6930,7 @@
       "Movimiento: Da un paso adelante lo suficiente para mantener el equilibrio; baje doblando ambas rodillas.",
       "Control: Empuje a través de la pierna delantera y controle el siguiente paso.",
       "Pierna delantera: Mantenga apoyados el talón delantero y el antepié; permita que la rodilla siga los dedos de los pies mientras las caderas descienden entre los pies.",
-      "Torso: una inclinación controlada hacia adelante puede ser apropiada. Mantenga el tronco firme en lugar de forzar un torso erguido arqueando la espalda.",
+      "Torso: una inclinación controlada hacia delante puede ser adecuada. Mantén el abdomen tenso en lugar de arquear la espalda para forzar una postura erguida.",
       "Equilibrio: Elévate principalmente a través de la pierna delantera mientras que la pierna trasera ayuda al equilibrio. Reinicie sus pies si el próximo repetición comienza desde una postura inestable."
     ],
     "avoidDetails": [
@@ -6979,7 +6979,7 @@
       "Movimiento: Da un paso hacia atrás hasta adoptar una postura estable y baja doblando ambas rodillas.",
       "Control: Mantenga el pie delantero plantado; empújalo para volver a estar de pie.",
       "Pierna delantera: Mantenga apoyados el talón delantero y el antepié; permita que la rodilla siga los dedos de los pies mientras las caderas descienden entre los pies.",
-      "Torso: una inclinación controlada hacia adelante puede ser apropiada. Mantenga el tronco firme en lugar de forzar un torso erguido arqueando la espalda.",
+      "Torso: una inclinación controlada hacia delante puede ser adecuada. Mantén el abdomen tenso en lugar de arquear la espalda para forzar una postura erguida.",
       "Equilibrio: Elévate principalmente a través de la pierna delantera mientras que la pierna trasera ayuda al equilibrio. Reinicie sus pies si el próximo repetición comienza desde una postura inestable."
     ],
     "avoidDetails": [
@@ -7097,7 +7097,7 @@
       "Acuéstese boca abajo y sostenga un mancuerna ligero de forma segura entre sus pies.",
       "Doble las rodillas para levantarlo, luego bájelo lentamente mientras mantiene las caderas en el banco.",
       "Ajuste: Asegure la almohadilla o la correa del tobillo; en una máquina, alinee la rodilla con su pivote.",
-      "Sostener: Use una luz mancuerna asegurada entre los pies; Cambie el equipo si puede resbalar."
+      "Sujeción: mantén una mancuerna ligera bien sujeta entre los pies. Cambia de material si puede resbalarse."
     ],
     "avoid": [
       "Evite usar un peso que no pueda sostener de forma segura entre sus pies.",
@@ -7291,9 +7291,9 @@
     ],
     "avoidDetails": [
       "Evite intentar el repetición sin una salida segura o un equilibrio confiable.",
-      "Impacto en la cabeza: No descanse ni deje caer el peso del cuerpo sobre la cabeza o el cuello en la parte inferior. Deténgase antes de que falle el soporte del brazo.",
+      "Apoyo sobre la cabeza: no apoyes ni dejes caer el peso del cuerpo sobre la cabeza o el cuello en la posición baja. Detente antes de que los brazos dejen de sostenerte.",
       "Ensanchamiento y deslizamiento: No permita que los codos se disparen hacia los lados ni las manos se deslicen mientras baja. Restablece la superficie y la dificultad.",
-      "Salida no planificada: No intentes un repetición invertido sin un apoyo confiable y un descenso practicado. Utilice una variación más fácil si es necesario."
+      "Salida sin preparar: no intentes una repetición en posición invertida sin un apoyo fiable y una forma de bajar que ya hayas practicado. Usa una variante más fácil si hace falta."
     ]
   },
   "ring-dip": {
@@ -7336,7 +7336,7 @@
       "Preparación: utilice una superficie antideslizante o asas seguras. Elige una altura de apoyo que te permita bajar y presionar con el tronco firme.",
       "Movimiento: Apoya bien las manos y mantén el cuerpo recto y activo de la cabeza a los talones.",
       "Control: Baje el pecho hacia su soporte, luego presione hacia afuera con control.",
-      "Línea del cuerpo: Apoye el abdomen y los glúteos; Deje que los hombros, las caderas y las piernas viajen juntos en lugar de levantar el pecho primero.",
+      "Alineación del cuerpo: tensa el abdomen y los glúteos. Mueve los hombros, las caderas y las piernas a la vez en lugar de levantar primero el pecho.",
       "Manos y codos: Distribuya la presión entre las manos y elija una trayectoria cómoda para los codos. Mantenga el cuello alineado con el tronco.",
       "Posición superior: Aleje el soporte y deje que los omóplatos se muevan con naturalidad. Termina cada repetición en una tabla estable antes de descender nuevamente.",
       "Anillos: revisa las correas y el anclaje, luego elige una altura que puedas controlar. Mantenga los anillos firmes antes de aumentar la profundidad o la dificultad."
@@ -7412,7 +7412,7 @@
       "Preparación: elija un soporte o una posición de bisagra de cadera que pueda mantener durante la serie. Tome un agarre seguro y pruebe la trayectoria de tracción con una ligera resistencia.",
       "Movimiento: Apoya el torso contra el soporte o mantenlo activo en una posición estable.",
       "Control: Tire de la carga hacia el torso con los codos y luego deje que los brazos se extiendan lentamente.",
-      "Ruta del codo: tire de los codos hacia el objetivo de remo previsto mientras mantiene las muñecas alineadas. El ancho del agarre y el ángulo del codo pueden variar según el ejercicio.",
+      "Trayectoria de los codos: dirige los codos hacia la zona prevista para el remo y mantén las muñecas alineadas. La anchura del agarre y el ángulo de los codos pueden variar según el ejercicio.",
       "Movimiento de los hombros: permita que los omóplatos se deslicen a medida que los brazos se extienden y tiran; no los aprietes rígidamente por todo el repetición.",
       "Posición final: finalice el tirón antes de tener que balancear el torso o girar los hombros hacia adelante. Regreso por el mismo camino controlado."
     ],
@@ -7512,7 +7512,7 @@
       "Movimiento: coloque un cable o banda alto y mantenga la parte superior de los brazos cerca de los costados.",
       "Control: Estire los codos para presionar hacia abajo y luego regrese lentamente.",
       "Codo: Mantenga la parte superior del brazo razonablemente estable mientras el antebrazo se mueve. Enderece suavemente sin forzar un tope de unión duro.",
-      "Muñeca: Mantenga la muñeca alineada con el antebrazo y el mango asegurado. No sustituyas el movimiento de la muñeca por la extensión del codo.",
+      "Muñeca: mantén la muñeca alineada con el antebrazo y sujeta bien el agarre. Extiende el codo sin sustituir esa acción por un movimiento de la muñeca.",
       "Regreso: Doble el codo bajo control y mantenga la misma posición de la parte superior del brazo. Utilice una resistencia que no arrastre el hombro hacia adelante."
     ],
     "avoidDetails": [
@@ -7532,7 +7532,7 @@
       "No balancee el torso ni sacuda el cuello para levantarlo más alto; Utilice menos peso y un rango cómodo."
     ],
     "cuesDetails": [
-      "Preparación: Utilice resistencia ligera y soporte estable. Comience con una suave flexión del codo y encuentre una trayectoria de hombros que pueda repetir cómodamente.",
+      "Preparación: usa poca resistencia y un apoyo estable. Flexiona ligeramente los codos y encuentra una trayectoria del hombro que puedas repetir con comodidad.",
       "Movimiento: comience con los brazos bajos y los codos suavemente doblados.",
       "Control: Levante los brazos hasta una altura cómoda de los hombros y luego bájelos lentamente.",
       "Liderar: Mueva la parte superior de los brazos a lo largo de la trayectoria de elevación prevista en lugar de mover las muñecas. Mantenga el cuello relajado.",
