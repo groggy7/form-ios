@@ -1208,5 +1208,7 @@
   "programs.exerciseQuantity.other": "{count} exercices",
   "programs.countParts": "{workouts} · {exercises}",
   "summary.completedSetQuantity.one": "{count} série terminée",
-  "summary.completedSetQuantity.other": "{count} séries terminées"
+  "summary.completedSetQuantity.other": "{count} séries terminées",
+  "notice.openLinkFailed": "Impossible d’ouvrir ce lien. Vérifiez qu’un navigateur est installé.",
+  "notice.storageFailed": "Impossible d’enregistrer les données d’entraînement. Les données existantes sont conservées. Vérifiez l’espace disponible et réessayez."
 }

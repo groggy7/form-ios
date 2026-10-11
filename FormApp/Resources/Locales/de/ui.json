@@ -1208,5 +1208,7 @@
   "programs.exerciseQuantity.other": "{count} Übungen",
   "programs.countParts": "{workouts} · {exercises}",
   "summary.completedSetQuantity.one": "{count} Satz abgeschlossen",
-  "summary.completedSetQuantity.other": "{count} Sätze abgeschlossen"
+  "summary.completedSetQuantity.other": "{count} Sätze abgeschlossen",
+  "notice.openLinkFailed": "Dieser Link konnte nicht geöffnet werden. Bitte prüfen, ob ein Browser installiert ist.",
+  "notice.storageFailed": "Trainingsdaten konnten nicht gespeichert werden. Vorhandene Daten bleiben erhalten. Prüfe den freien Speicher und versuche es erneut."
 }

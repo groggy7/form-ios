@@ -263,7 +263,7 @@ final class WeeklyProgressTests: XCTestCase {
                 record(id: "partial", date: timestamp, volume: 4840)
             ])
         defaults.set(try JSONEncoder().encode(fixture), forKey: "stored_app_state")
-        try body(AppStore(), fixture)
+        try body(AppStore(persistence: AppStatePersistence(inMemory: true)), fixture)
     }
 
     @MainActor
@@ -279,7 +279,7 @@ final class WeeklyProgressTests: XCTestCase {
             let exported = try JSONDecoder().decode(StoredAppState.self, from: Data(store.exportBackupJson().utf8))
             XCTAssertEqual(exported.history, fixture.history)
             XCTAssertEqual(exported.completed, ["p:w2"])
-            let reloaded = AppStore()
+            let reloaded = AppStore(persistence: store.statePersistence)
             XCTAssertEqual(reloaded.state.currentWeekKey, store.state.currentWeekKey)
             XCTAssertEqual(reloaded.state.completed, store.state.completed)
             XCTAssertEqual(reloaded.state.weeklyArchives, store.state.weeklyArchives)
@@ -573,7 +573,7 @@ final class FormAppTests: XCTestCase {
     func testRepMaxSourceSnapshots() {
         let previous = LanguageManager.shared.currentLanguage
         defer { LanguageManager.setLanguage(previous) }
-        let store = AppStore()
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
         let oldState = store.state
         defer { store.state = oldState }
         store.state.history = [WorkoutSessionRecord(id: "estimate-ui", programId: "p", workoutId: "w", workoutTitle: "Workout",
@@ -2812,23 +2812,27 @@ final class FormAppTests: XCTestCase {
 
     @MainActor
     func testTuesdayWorkoutPartialCompletionMarksTuesdayUnfinishedNotMissed() {
-        let store = AppStore.shared
-        guard let program = store.activeProgram,
-              let tuesdayWorkout = program.workouts.first(where: { $0.day == 2 }) else {
-            return
-        }
-
-        // Clean state
-        store.activeSession = nil
+        let defaults = UserDefaults.standard
+        let domain = Bundle.main.bundleIdentifier!
+        let previous = defaults.persistentDomain(forName: domain) ?? [:]
+        defer { defaults.setPersistentDomain(previous, forName: domain) }
+        defaults.removeObject(forKey: "active_session_v1")
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        let tuesdayWorkout = Workout(id: "tuesday-fixture", day: 2, title: "Pull", exercises: [
+            Exercise(id: "pulldown-fixture", name: "Lat Pulldown", sets: 2),
+            Exercise(id: "row-fixture", name: "Seated Cable Row", sets: 2)])
+        let program = Program(id: "tuesday-plan", name: "Tuesday fixture", workouts: [tuesdayWorkout])
         let tuesdayDate = WorkoutCalendar.scheduledDate(forWeekday: 2, relativeTo: Date())
-        var st = store.state
+        var st = StoredAppState(programs: [program], activeProgramId: program.id,
+            calendarHistory: WorkoutCalendarHistory(nextScheduledDate: tuesdayDate, scheduledWeekdays: [2]))
         st.history.removeAll { $0.workoutId == tuesdayWorkout.id }
         st.completed.removeAll { $0.contains(tuesdayWorkout.id) }
         st.calendarHistory?.entries.removeAll { $0.date == tuesdayDate }
         store.saveState(st)
 
         // Start Tuesday workout
-        _ = store.startActiveSession(programId: program.id, workout: tuesdayWorkout, allowPast: true)
+        XCTAssertTrue(store.startActiveSession(programId: program.id, workout: tuesdayWorkout, allowPast: true,
+            assignedCalendarDate: tuesdayDate, scheduledDate: tuesdayDate))
         guard let draft = store.activeSession else {
             XCTFail("Active session failed to start")
             return
@@ -3107,7 +3111,7 @@ final class FormAppTests: XCTestCase {
     }
 
     func testAppStoreExerciseCatalogueContainsAll300Exercises() {
-        let store = AppStore()
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
         let canonicalIDs = Set(ExerciseCatalog.canonicalExercises.keys)
         XCTAssertEqual(canonicalIDs.count, 300)
         let availableIDs = Set(store.exerciseCatalogue.compactMap { $0.exercise.exerciseId })
@@ -4256,12 +4260,11 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(exInStore?.reps?.max, 12)
         XCTAssertEqual(exInStore?.displayPrescription, "4 × 10–12")
 
-        // Verify persistence in UserDefaults
-        guard let data = UserDefaults.standard.data(forKey: "stored_app_state"),
-              let persistedState = try? JSONDecoder().decode(StoredAppState.self, from: data),
+        // The queued save must be visible through the durable store.
+        guard let persistedState = try? store.statePersistence.load(),
               let persistedProgram = persistedState.programs.first(where: { $0.id == program.id }),
               let persistedExercise = persistedProgram.workouts.first?.exercises.first else {
-            XCTFail("Failed to read persisted program from UserDefaults")
+            XCTFail("Failed to read persisted program from SQLite")
             return
         }
         XCTAssertEqual(persistedExercise.sets, 4)
@@ -7094,7 +7097,7 @@ final class FormAppTests: XCTestCase {
 
     @MainActor
     func testClearWarmupSetsPreservesCompletedSets() {
-        let store = AppStore()
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
         let exercise = Exercise(id: "bench", name: "Bench", sets: 2, reps: RepTarget(min: 8, max: 12), restSeconds: 90)
         let workout = Workout(id: "w1", day: 1, title: "Push", exercises: [exercise])
         let session = ActiveSessionDraft(
@@ -7739,7 +7742,7 @@ final class FormAppTests: XCTestCase {
 
     @MainActor
     func testFormLabViewSnapshot() {
-        let store = AppStore()
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
         // Provide mock history
         let session = WorkoutSessionRecord(
             id: "s-lab-snap",
@@ -7792,7 +7795,7 @@ final class FormAppTests: XCTestCase {
 
     @MainActor
     func testFormLabRepMaxEmptySnapshot() {
-        let store = AppStore()
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
         // Provide mock history with only >10 rep sets for Barbell Bench Press so no 1-10 rep sets exist
         let session = WorkoutSessionRecord(
             id: "s-lab-empty-snap",
@@ -7864,7 +7867,7 @@ final class FormAppTests: XCTestCase {
 
     @MainActor
     func testFormLabCurvesSnapshot() {
-        let store = AppStore()
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
         let session1 = WorkoutSessionRecord(
             id: "s1", programId: "p1", workoutId: "w1", workoutTitle: "Chest Day 1",
             startedAt: "2026-06-01T10:00:00Z", completedAt: "2026-06-01T11:00:00Z",
@@ -7911,7 +7914,7 @@ final class FormAppTests: XCTestCase {
 
     @MainActor
     func testFormLabBalanceSnapshot() {
-        let store = AppStore()
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
         let session = WorkoutSessionRecord(
             id: "s-bal-snap", programId: "p1", workoutId: "w1", workoutTitle: "Full Body Structural",
             startedAt: "2026-09-12T10:00:00Z", completedAt: "2026-09-12T11:30:00Z",
@@ -7951,7 +7954,7 @@ final class FormAppTests: XCTestCase {
 
     @MainActor
     func testSettingsCloudBackupSnapshot() {
-        let store = AppStore()
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
         let backupView = CloudBackupSheet(store: store)
             .background(AppColors.background)
 
@@ -8045,7 +8048,7 @@ final class FormAppTests: XCTestCase {
 
     @MainActor
     func testLockedAnalyticsBlurredPreviewSnapshots() async throws {
-        let store = AppStore()
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
         let original = store.state
         let manager = ProAccessManager.shared
         let subscription = manager.isProSubscribed
@@ -9356,7 +9359,7 @@ final class HistoryBreakdownTests: XCTestCase {
         let fixture = StoredAppState(programs: [program], activeProgramId: program.id,
             currentWeekKey: "", history: [carryover])
         defaults.set(try JSONEncoder().encode(fixture), forKey: "stored_app_state")
-        let store = AppStore()
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
         XCTAssertTrue(store.startActiveSession(programId: program.id, workout: pull, allowPast: true,
             assignedCalendarDate: WorkoutCalendar.formatDate(Date()), startNewSession: true,
             scheduledDate: "2026-10-06"))
@@ -9421,7 +9424,7 @@ final class HistoryBreakdownTests: XCTestCase {
                 nextScheduledDate: WorkoutCalendar.mondayOfCurrentWeek(), scheduledWeekdays: [2], entries: [
                     WorkoutDayEntry(id: "session:resume-week", date: WorkoutCalendar.formatDate(monday), status: .unfinished)]))
         defaults.set(try JSONEncoder().encode(fixture), forKey: "stored_app_state")
-        let store = AppStore()
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
         XCTAssertTrue(store.startActiveSession(programId: program.id, workout: changed, allowPast: true,
             unfinishedRecordId: saved.id, resumeHistory: true))
         let draft = try XCTUnwrap(store.activeSession)
@@ -10478,7 +10481,7 @@ final class CloudBackupReliabilityTests: XCTestCase {
             LanguageManager.setLanguage(language)
             subject.refreshUbiquityURL()
             try await waitUntil { !subject.status.isCheckingCloud }
-            let view = CloudBackupSheet(store: AppStore(), mirrorManager: subject)
+            let view = CloudBackupSheet(store: AppStore(persistence: AppStatePersistence(inMemory: true)), mirrorManager: subject)
                 .environment(\.dynamicTypeSize, .xxxLarge)
             let host = UIHostingController(rootView: view)
             let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 800))
@@ -10521,7 +10524,7 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
         defaults.removeObject(forKey: "active_session_v1")
         defaults.set("kg", forKey: "weight_unit")
         defaults.set(true, forKey: "seeded_starters_v9")
-        let store = AppStore()
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
         store.activeSession = nil
         try body(store)
     }
@@ -10566,7 +10569,7 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
                 XCTAssertEqual(store.weightUnit, unit)
                 XCTAssertEqual(store.state.history.first?.exerciseLogs.first?.sets.first?.weightKg, canonical)
                 XCTAssertEqual(store.state.history.first?.totalVolumeKg, canonical * 10)
-                let reloaded = AppStore()
+                let reloaded = AppStore(persistence: store.statePersistence)
                 XCTAssertEqual(reloaded.weightUnit, unit)
                 XCTAssertEqual(reloaded.state.history.first?.exerciseLogs.first?.sets.first?.weightKg, canonical)
                 for _ in 0..<6 { store.weightUnit = .lbs; store.weightUnit = .kg }
@@ -10624,7 +10627,7 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
                 XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.weightKg, 100)
             }
             store.weightUnit = .lbs
-            let reloaded = AppStore()
+            let reloaded = AppStore(persistence: store.statePersistence)
             XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightKg, 100)
             XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "220")
             XCTAssertEqual(reloaded.activeSession?.weightInputUnit, .lbs)
@@ -10660,11 +10663,11 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
     }
 
     func testStartupRepairsStaleLegacyInputFromCanonicalWeight() throws {
-        try withStore { _ in
+        try withStore { store in
             let old = draft(unit: nil)
             UserDefaults.standard.set(try JSONEncoder().encode(old), forKey: "active_session_v1")
             UserDefaults.standard.set("lbs", forKey: "weight_unit")
-            let reloaded = AppStore()
+            let reloaded = AppStore(persistence: store.statePersistence)
             XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightKg, 100)
             XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "220")
             XCTAssertEqual(reloaded.activeSession?.weightInputUnit, .lbs)
@@ -10672,10 +10675,10 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
     }
 
     func testUnreadableActiveDraftRemainsOnDiskForRecovery() {
-        withStore { _ in
+        withStore { store in
             let invalidDraft = Data("{\"weightInputUnit\":\"unsupported\"}".utf8)
             UserDefaults.standard.set(invalidDraft, forKey: "active_session_v1")
-            let reloaded = AppStore()
+            let reloaded = AppStore(persistence: store.statePersistence)
             XCTAssertNil(reloaded.activeSession)
             XCTAssertEqual(UserDefaults.standard.data(forKey: "active_session_v1"), invalidDraft)
         }
@@ -10765,7 +10768,7 @@ final class SessionSetCountPersistenceTests: XCTestCase {
             Workout(id: "squat-day", day: 1, title: "Squats", exercises: [squat])])
         defaults.set(try JSONEncoder().encode(StoredAppState(programs: [program], activeProgramId: program.id,
             currentWeekKey: "2020-W01")), forKey: "stored_app_state")
-        var store = AppStore()
+        var store = AppStore(persistence: AppStatePersistence(inMemory: true))
         let savedProgram = try XCTUnwrap(store.state.programs.first)
         let workout = try XCTUnwrap(savedProgram.workouts.first)
         XCTAssertTrue(store.startActiveSession(programId: program.id, workout: workout, allowPast: true))
@@ -10801,7 +10804,7 @@ final class SessionSetCountPersistenceTests: XCTestCase {
         XCTAssertEqual(record.exerciseLogs.first?.targetSets, 2)
         XCTAssertEqual(record.exerciseLogs.first?.sets.count, 2)
         XCTAssertEqual(record.workoutSnapshot?.exercises.first?.sets, 6)
-        store = AppStore()
+        store = AppStore(persistence: store.statePersistence)
         XCTAssertEqual(store.state.programs, [savedProgram])
         XCTAssertEqual(store.state.history, [record])
         XCTAssertTrue(store.startActiveSession(programId: program.id, workout: store.state.programs[0].workouts[0], allowPast: true))
@@ -11044,6 +11047,26 @@ final class LocalizationExpansionTests: XCTestCase {
         XCTAssertEqual(LanguageManager.t("programs.counts",["workouts":1,"exercises":2]),"1 séance · 2 exercices")
         LanguageManager.setLanguage("tr")
         XCTAssertTrue(LanguageManager.formatSetsProgress(done:3,total:5).contains("3'ü"))
+    }
+
+    func testAllNativePluralResourcesIncludeLargeCounts() throws {
+        for language in ["en", "tr", "de", "fr", "es"] {
+            let path = try XCTUnwrap(Bundle.main.path(forResource: language, ofType: "lproj"))
+            let bundle = try XCTUnwrap(Bundle(path: path))
+            let dictionary = Translations.forLanguage(language)
+            let formatter = NumberFormatter()
+            formatter.locale = Locale(identifier: language)
+            formatter.numberStyle = .decimal
+            for (key, parameter) in Translations.quantityParameters {
+                XCTAssertNotEqual(bundle.localizedString(forKey: key, value: nil, table: nil), key)
+                for count in [0, 1, 2, 1_000_000] {
+                    let quantity = count == 1 || (language == "fr" && count == 0) ? "one" : "other"
+                    let expected = try XCTUnwrap(dictionary["\(key).\(quantity)"])
+                        .replacingOccurrences(of: "{\(parameter)}", with: try XCTUnwrap(formatter.string(from: NSNumber(value: count))))
+                    XCTAssertEqual(LanguageManager.shared.plural(key, count, language: language), expected, "\(language)/\(key)/\(count)")
+                }
+            }
+        }
     }
 
     func testSearchAndLanguageSwitchKeepStoredExerciseIdentity() throws {
@@ -11311,3 +11334,314 @@ final class AppThemesTests: XCTestCase {
     }
 }
 
+
+final class AppStatePersistenceTests: XCTestCase {
+    private func fixture(count: Int = 3) -> StoredAppState {
+        StoredAppState(programs: [Program(id: "p", name: "Fixture")], activeProgramId: "p",
+            completed: ["p:w"], currentWeekKey: "2026-W41", history: (0..<count).map { i in
+                WorkoutSessionRecord(id: "s\(i)", programId: "p", workoutId: "w", workoutTitle: "Upper",
+                    startedAt: "2026-10-05T09:00:00Z", completedAt: "2026-10-05T10:00:00Z",
+                    durationSeconds: 3600, totalVolumeKg: 123.45, totalCompletedSets: 1,
+                    exerciseLogs: [SessionExerciseLog(exerciseName: "Bench", sets: [SessionSetLog(setNumber: 1, weightKg: 50.125, reps: 8)])])
+            })
+    }
+
+    private func assertSame(_ actual: StoredAppState?, _ expected: StoredAppState, file: StaticString = #filePath, line: UInt = #line) throws {
+        let encoder = JSONEncoder(); encoder.outputFormatting = .sortedKeys
+        XCTAssertEqual(try encoder.encode(XCTUnwrap(actual)), try encoder.encode(expected), file: file, line: line)
+    }
+
+    func testLegacyMigrationSurvivesReopenAndRetainsExactOrderAndDuplicateIDs() throws {
+        let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: folder) }
+        let url = folder.appendingPathComponent("state.sqlite")
+        let suite = "audit.migration.\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        var state = fixture(); state.history[1].id = state.history[0].id
+        let data = try JSONEncoder().encode(state)
+        defaults.set(data, forKey: "legacy")
+        let store = AppStatePersistence(databaseURL: url)
+        try store.migrate(state, defaults: defaults, legacyKey: "legacy")
+        XCTAssertNil(defaults.data(forKey: "legacy"))
+        try assertSame(AppStatePersistence(databaseURL: url).load(), state)
+        // Repeated migration is idempotent, including explicit fixture reinjection.
+        defaults.set(data, forKey: "legacy")
+        try store.migrate(state, defaults: defaults, legacyKey: "legacy")
+        try assertSame(store.load(), state)
+    }
+
+    func testMetadataHistoryReplacementAndDeletionAreCommittedTogether() throws {
+        let store = AppStatePersistence(inMemory: true)
+        let original = fixture(count: 1000)
+        try store.saveAndWait(original)
+        var updated = original
+        updated.activeProgramId = "different"
+        updated.history = Array(original.history.suffix(2).reversed())
+        updated.history[0].exerciseLogs[0].sets[0].weightKg = 99.7903214
+        try store.saveAndWait(updated)
+        try assertSame(store.load(), updated)
+    }
+
+    func testCommitFailureRollsBackBothTablesAndRetainsLegacyBlob() throws {
+        struct InjectedFailure: Error {}
+        var fail = false
+        let store = AppStatePersistence(inMemory: true, beforeCommit: { if fail { throw InjectedFailure() } })
+        let original = fixture()
+        try store.saveAndWait(original)
+        let suite = "audit.failure.\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        var changed = fixture(count: 5); changed.activeProgramId = "replacement"
+        let raw = try JSONEncoder().encode(changed); defaults.set(raw, forKey: "legacy")
+        fail = true
+        XCTAssertThrowsError(try store.migrate(changed, defaults: defaults, legacyKey: "legacy"))
+        XCTAssertEqual(defaults.data(forKey: "legacy"), raw)
+        try assertSame(store.load(), original)
+    }
+
+    func testEncodingFailurePreservesCommittedState() throws {
+        let store = AppStatePersistence(inMemory: true)
+        let original = fixture(); try store.saveAndWait(original)
+        var bad = original; bad.history[0].totalVolumeKg = .nan
+        XCTAssertThrowsError(try store.saveAndWait(bad))
+        try assertSame(store.load(), original)
+    }
+
+    func testAsyncWritesAreOrderedAndRunOffMainThread() throws {
+        let done = expectation(description: "ordered saves")
+        done.expectedFulfillmentCount = 20
+        let store = AppStatePersistence(inMemory: true, beforeCommit: { XCTAssertFalse(Thread.isMainThread) })
+        let original = fixture(count: 1000)
+        for i in 0..<20 {
+            var state = original; state.activeProgramId = "selection-\(i)"
+            store.save(state) { error in XCTAssertNil(error); done.fulfill() }
+        }
+        wait(for: [done], timeout: 20)
+        XCTAssertEqual(try store.load()?.activeProgramId, "selection-19")
+    }
+
+    func testUnreadableDatabaseIsPreserved() throws {
+        let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: folder) }
+        let url = folder.appendingPathComponent("state.sqlite")
+        let raw = Data("preserve corrupt recovery bytes".utf8); try raw.write(to: url)
+        let store = AppStatePersistence(databaseURL: url)
+        XCTAssertThrowsError(try store.load())
+        XCTAssertThrowsError(try store.saveAndWait(fixture()))
+        XCTAssertEqual(try Data(contentsOf: url), raw)
+    }
+
+    @MainActor
+    func testFailedRestoreLeavesCurrentStateUnchanged() throws {
+        struct InjectedFailure: Error {}
+        var fail = false
+        let persistence = AppStatePersistence(inMemory: true, beforeCommit: { if fail { throw InjectedFailure() } })
+        let store = AppStore(persistence: persistence)
+        try persistence.flush()
+        XCTAssertTrue(store.saveState(fixture(), durable: true))
+        let oldHistory = store.state.history
+        let backup = try JSONEncoder().encode(FullBackupDocument(state: fixture(count: 5), weightUnit: .lbs))
+        fail = true
+        XCTAssertFalse(store.restoreBackupJson(try XCTUnwrap(String(data: backup, encoding: .utf8))))
+        XCTAssertEqual(store.state.history, oldHistory)
+        XCTAssertEqual(try persistence.load()?.history, oldHistory)
+    }
+
+    @MainActor
+    func testFailedCompletionRetainsDraftAndRetryCommitsHistory() throws {
+        struct Failure: Error {}
+        let defaults = UserDefaults.standard
+        let domain = try XCTUnwrap(Bundle.main.bundleIdentifier)
+        let original = defaults.persistentDomain(forName: domain) ?? [:]
+        defer { defaults.setPersistentDomain(original, forName: domain) }
+        defaults.removeObject(forKey: "active_session_v1")
+        var fail = false
+        let persistence = AppStatePersistence(inMemory: true, beforeCommit: { if fail { throw Failure() } })
+        let store = AppStore(persistence: persistence)
+        let exercise = Exercise(id: "bench", name: "Bench", sets: 1, restSeconds: 0)
+        let workout = Workout(id: "w", day: 1, title: "Upper", exercises: [exercise])
+        let program = Program(id: "p", name: "Fixture", workouts: [workout])
+        XCTAssertTrue(store.saveState(StoredAppState(programs: [program], activeProgramId: program.id), durable: true))
+        XCTAssertTrue(store.startActiveSession(programId: program.id, workout: workout, allowPast: true))
+        store.updateActiveSession { draft in
+            var copy = draft
+            copy.setsByExercise[exercise.id] = [ExerciseSetLog(setNumber: 1, weightInput: "50", repsInput: "8", weightKg: 50, completedReps: 8, isCompleted: true)]
+            return copy
+        }
+        try persistence.flush()
+        let draft = try XCTUnwrap(store.activeSession)
+        let rawDraft = defaults.data(forKey: "active_session_v1")
+        let now = Int64(Date().timeIntervalSince1970 * 1000)
+        let record = SessionProgress.from(draft: draft, nowEpochMillis: now).record(draft: draft, completedAtEpochMillis: now)
+        fail = true
+        store.completeActiveSession(record)
+        XCTAssertEqual(store.activeSession?.id, draft.id)
+        XCTAssertEqual(defaults.data(forKey: "active_session_v1"), rawDraft)
+        XCTAssertTrue(store.state.history.isEmpty)
+        XCTAssertTrue(try XCTUnwrap(persistence.load()).history.isEmpty)
+        fail = false
+        store.completeActiveSession(record)
+        XCTAssertNil(store.activeSession)
+        XCTAssertNil(defaults.data(forKey: "active_session_v1"))
+        XCTAssertEqual(try persistence.load()?.history.map(\.id), [record.id])
+    }
+
+}
+
+final class AudioPlaybackLifecycleTests: XCTestCase {
+    private final class Player: EffectAudioPlayer {
+        var isPlaying = false
+        var succeeds = true
+        var starts = 0
+        func restart() -> Bool { starts += 1; isPlaying = succeeds; return succeeds }
+        func stop() { isPlaying = false }
+    }
+
+    func testDisabledPlaybackAndMissingAssetNeverActivate() {
+        var activations = 0
+        var creations = 0
+        let controller = AudioPlaybackController(activate: { activations += 1 }, deactivate: {}, makePlayer: { _ in creations += 1; return nil })
+        XCTAssertEqual(activations, 0)
+        controller.play("set", enabled: false)
+        XCTAssertEqual(creations, 0)
+        controller.play("missing", enabled: true)
+        controller.releaseIfIdle()
+        XCTAssertEqual(activations, 0)
+    }
+
+    func testOverlappingAndRepeatedEffectsReleaseOnlyAfterLastFinishThenReactivate() {
+        let set = Player(), rest = Player()
+        var activations = 0, releases = 0
+        let controller = AudioPlaybackController(activate: { activations += 1 }, deactivate: { releases += 1 },
+            makePlayer: { $0 == "set" ? set : rest })
+        controller.play("set", enabled: true)
+        controller.play("rest", enabled: true)
+        controller.play("set", enabled: true)
+        XCTAssertEqual(activations, 1)
+        XCTAssertEqual(set.starts, 2)
+        controller.releaseIfIdle() // Backgrounding while effects still play.
+        XCTAssertEqual(releases, 0)
+        set.stop(); controller.releaseIfIdle()
+        XCTAssertEqual(releases, 0)
+        rest.stop(); controller.releaseIfIdle(); controller.releaseIfIdle()
+        XCTAssertEqual(releases, 1)
+        controller.play("set", enabled: true)
+        XCTAssertEqual(activations, 2)
+    }
+
+    func testPlaybackAndActivationFailureLeaveNoIdleSession() {
+        struct Failure: Error {}
+        let player = Player(); player.succeeds = false
+        var releases = 0, failActivation = false
+        let controller = AudioPlaybackController(activate: { if failActivation { throw Failure() } },
+            deactivate: { releases += 1 }, makePlayer: { _ in player })
+        controller.play("set", enabled: true)
+        XCTAssertEqual(releases, 1)
+        failActivation = true
+        controller.play("set", enabled: true)
+        XCTAssertEqual(player.starts, 1)
+        XCTAssertEqual(releases, 1)
+    }
+
+    func testInterruptionStopsPlaybackAndNextExplicitEffectReactivates() {
+        let player = Player()
+        var activations = 0
+        let controller = AudioPlaybackController(activate: { activations += 1 }, deactivate: {}, makePlayer: { _ in player })
+        controller.play("set", enabled: true)
+        controller.interruptionBegan()
+        XCTAssertFalse(player.isPlaying)
+        controller.play("set", enabled: true)
+        XCTAssertEqual(activations, 1)
+        controller.interruptionEnded()
+        XCTAssertFalse(player.isPlaying)
+        controller.play("set", enabled: true)
+        XCTAssertEqual(activations, 2)
+        controller.mediaServicesReset()
+        XCTAssertFalse(player.isPlaying)
+        controller.play("set", enabled: true)
+        XCTAssertEqual(activations, 3)
+    }
+
+    func testFailedIdleReleaseCanBeRetried() {
+        struct Failure: Error {}
+        let player = Player()
+        var attempts = 0
+        let controller = AudioPlaybackController(activate: {}, deactivate: { attempts += 1; if attempts == 1 { throw Failure() } }, makePlayer: { _ in player })
+        controller.play("set", enabled: true)
+        player.stop(); controller.releaseIfIdle(); controller.releaseIfIdle()
+        XCTAssertEqual(attempts, 2)
+    }
+}
+
+
+final class AudioEffectIntegrationTests: XCTestCase {
+    func testBundledEffectCreatedOffMainReportsCompletionOnAudioQueue() throws {
+        let url = try XCTUnwrap(Bundle.main.url(forResource: "form_set_complete", withExtension: "wav"))
+        let queue = DispatchQueue(label: "audit.audio.integration")
+        let done = expectation(description: "real AVAudioPlayer completion")
+        var effect: EffectPlayer?
+        queue.async {
+            do {
+                effect = try EffectPlayer(url: url, audioQueue: queue) {
+                    XCTAssertFalse(Thread.isMainThread)
+                    done.fulfill()
+                }
+                XCTAssertTrue(try XCTUnwrap(effect).restart())
+            } catch { XCTFail("Bundled effect failed: \(error)"); done.fulfill() }
+        }
+        wait(for: [done], timeout: 10)
+        let released = expectation(description: "audio cleanup off main")
+        queue.async {
+            XCTAssertFalse(Thread.isMainThread)
+            effect?.stop(); effect = nil
+            try? AVAudioSession.sharedInstance().setActive(false, options: [.notifyOthersOnDeactivation])
+            released.fulfill()
+        }
+        wait(for: [released], timeout: 10)
+    }
+}
+
+
+final class LocalizationConcurrencyTests: XCTestCase {
+    // Only synchronized lookup APIs cross threads; published setters stay on MainActor.
+    private struct Worker: @unchecked Sendable { let read: () -> Void }
+    func testConcurrentColdCacheLoadsAndTranslationsRetainAllLanguages() {
+        let localizer = ContentLocalizer()
+        let manager = LanguageManager()
+        let languages = ["en", "tr", "de", "fr", "es"]
+        DispatchQueue.concurrentPerform(iterations: 1000) { index in
+            let language = languages[index % languages.count]
+            XCTAssertEqual(localizer.loadExercises(lang: language).count, 300)
+            XCTAssertEqual(localizer.loadPrograms(lang: language).count, 8)
+            XCTAssertNotNil(localizer.loadUI(lang: language)["notice.openLinkFailed"])
+            XCTAssertNotEqual(manager.translate("form_lab.mirror_local_provider", language: language), "form_lab.mirror_local_provider")
+            XCTAssertFalse(manager.plural("library.resultCount", 2, language: language).contains("{"))
+            XCTAssertFalse(ContentDictionary.localize("Fixture", lang: language).isEmpty)
+        }
+    }
+
+    @MainActor
+    func testWorkerTranslationsRemainValidWhileUiSwitchesLanguage() {
+        let previous = UserDefaults.standard.object(forKey: "app_language")
+        defer { UserDefaults.standard.set(previous, forKey: "app_language") }
+        let manager = LanguageManager()
+        let group = DispatchGroup()
+        let worker = Worker {
+            XCTAssertNotEqual(manager.translate("form_lab.mirror_local_provider"), "form_lab.mirror_local_provider")
+            XCTAssertFalse(manager.plural("library.resultCount", 2).contains("{"))
+        }
+        for _ in 0..<4 {
+            group.enter()
+            DispatchQueue.global().async {
+                defer { group.leave() }
+                for _ in 0..<1000 { worker.read() }
+            }
+        }
+        for _ in 0..<100 {
+            for language in ["en", "tr", "de", "fr", "es"] { manager.languagePreference = language }
+        }
+        XCTAssertEqual(group.wait(timeout: .now() + 20), .success)
+    }
+}

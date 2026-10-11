@@ -1208,5 +1208,7 @@
   "programs.exerciseQuantity.other": "{count} egzersiz",
   "programs.countParts": "{workouts} · {exercises}",
   "summary.completedSetQuantity.one": "{count} set tamamlandı",
-  "summary.completedSetQuantity.other": "{count} set tamamlandı"
+  "summary.completedSetQuantity.other": "{count} set tamamlandı",
+  "notice.openLinkFailed": "Bağlantı açılamadı. Bir tarayıcının yüklü olduğundan emin olun.",
+  "notice.storageFailed": "Antrenman verileri kaydedilemedi. Mevcut verileriniz korundu. Boş depolama alanını kontrol edip tekrar deneyin."
 }

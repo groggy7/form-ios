@@ -230,6 +230,7 @@ public struct RootView: View {
         }
         .onChange(of: scenePhase) { _, phase in
             if phase == .background {
+                store.flushPendingState()
                 if store.activeSession != nil && store.isSessionPresented {
                     store.pauseActiveSession()
                 }
@@ -241,6 +242,7 @@ public struct RootView: View {
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification)) { _ in
+            store.flushPendingState()
             if store.activeSession != nil && store.isSessionPresented {
                 store.pauseActiveSession()
             }

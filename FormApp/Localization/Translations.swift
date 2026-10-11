@@ -6,7 +6,18 @@ public final class LanguageManager: ObservableObject {
     public static let system = "system"
     public static var supportedLanguages: [(code: String, name: String)] { Translations.languages }
     private static let userDefaultsKey = "app_language"
-    @Published public private(set) var currentLanguage: String
+    private let languageLock = NSLock()
+    private var workerLanguage = "en"
+    @Published public private(set) var currentLanguage: String {
+        didSet {
+            languageLock.lock(); workerLanguage = currentLanguage; languageLock.unlock()
+        }
+    }
+    // Workers use this snapshot instead of reading a UI-owned Published value.
+    var translationLanguage: String {
+        languageLock.lock(); defer { languageLock.unlock() }
+        return workerLanguage
+    }
     @Published public var languagePreference: String {
         didSet {
             let preference = Self.normalizePreference(languagePreference)
@@ -15,12 +26,16 @@ public final class LanguageManager: ObservableObject {
             currentLanguage = preference == Self.system ? Self.resolveLanguage(Locale.preferredLanguages) : preference
         }
     }
-    private var bundles: [String: Bundle] = [:]
+    // All supported bundles are fixed for this app build; reads never mutate a cache.
+    private let bundles: [String: Bundle] = Dictionary(uniqueKeysWithValues: Translations.languages.map { language in
+        (language.code, Bundle.main.path(forResource: language.code, ofType: "lproj").flatMap(Bundle.init(path:)) ?? Bundle.main)
+    })
 
-    private init() {
+    init() {
         let saved = Self.normalizePreference(UserDefaults.standard.string(forKey: Self.userDefaultsKey))
         languagePreference = saved
         currentLanguage = saved == Self.system ? Self.resolveLanguage(Locale.preferredLanguages) : saved
+        workerLanguage = currentLanguage
     }
 
     public static func normalizePreference(_ tag: String?) -> String {
@@ -36,9 +51,9 @@ public final class LanguageManager: ObservableObject {
     }
     public static var locale: Locale {
         let region = Locale.current.region?.identifier ?? "US"
-        return Locale(identifier: "\(shared.currentLanguage)_\(region)")
+        return Locale(identifier: "\(shared.translationLanguage)_\(region)")
     }
-    public static var numberLocale: Locale { Locale(identifier: shared.currentLanguage) }
+    public static var numberLocale: Locale { Locale(identifier: shared.translationLanguage) }
     public func refreshDeviceLanguage() {
         if languagePreference == Self.system { currentLanguage = Self.resolveLanguage(Locale.preferredLanguages) }
     }
@@ -55,13 +70,13 @@ public final class LanguageManager: ObservableObject {
         return [1,2,3,4,5,6,0].map { names[$0] }
     }
     public static var dayLabels: [String] {
-        if shared.currentLanguage == "tr" { return ["PZT","SAL","ÇAR","PER","CUM","CTS","PAZ"] }
+        if shared.translationLanguage == "tr" { return ["PZT","SAL","ÇAR","PER","CUM","CTS","PAZ"] }
         let formatter = DateFormatter(); formatter.locale = locale
         let names = formatter.shortWeekdaySymbols!
         return [1,2,3,4,5,6,0].map { names[$0].trimmingCharacters(in: CharacterSet(charactersIn: ".")).uppercased(with: locale) }
     }
     public static func t(_ key: String, _ params: [String: Any] = [:]) -> String { shared.translate(key, params: params) }
-    public static func content(_ text: String) -> String { ContentDictionary.localize(text, lang: shared.currentLanguage) }
+    public static func content(_ text: String) -> String { ContentDictionary.localize(text, lang: shared.translationLanguage) }
     public static func restMotivationQuote(for index: Int) -> String { t("today.restMotivation.\(index.magnitude % 7)") }
 
     public static func turkishPossessiveNumber(_ n: Int) -> String {
@@ -103,13 +118,10 @@ public final class LanguageManager: ObservableObject {
     public static func formatExerciseSetsCompleted(completed: Int, planned: Int) -> String { shared.plural("counts.setsCompleted", planned, ["done":completed]) }
 
     private func languageBundle(_ lang: String) -> Bundle {
-        if let cached = bundles[lang] { return cached }
-        let bundle = Bundle.main.path(forResource: lang, ofType: "lproj").flatMap(Bundle.init(path:)) ?? Bundle.main
-        bundles[lang] = bundle
-        return bundle
+        bundles[lang] ?? Bundle.main
     }
     public func plural(_ key: String, _ count: Int, _ params: [String: Any] = [:], language: String? = nil) -> String {
-        let effective = language ?? currentLanguage
+        let effective = language ?? translationLanguage
         let native = languageBundle(effective).localizedString(forKey: key, value: nil, table: nil)
         var values = params; values[Translations.quantityParameters[key] ?? "count"] = count
         if native != key {
@@ -120,7 +132,7 @@ public final class LanguageManager: ObservableObject {
         return translate("\(key).\(quantity)", params: values, language:effective)
     }
     public func translate(_ key: String, params: [String: Any] = [:], language: String? = nil) -> String {
-        let effective = language.map { Self.resolveLanguage([$0]) } ?? currentLanguage
+        let effective = language.map { Self.resolveLanguage([$0]) } ?? translationLanguage
         if key == "programs.counts", let w = params["workouts"], let e = params["exercises"],
            let workouts = Int("\(w)"), let exercises = Int("\(e)") {
             return translate("programs.countParts", params:[
@@ -134,14 +146,16 @@ public final class LanguageManager: ObservableObject {
         let raw = Translations.quantityParameters[key] == nil ? languageBundle(effective).localizedString(forKey: key, value: fallback, table: nil) : fallback
         return interpolate(key, raw, params, language:effective)
     }
+    private static let placeholderRegex = try! NSRegularExpression(pattern: "\\{(\\w+)\\}")
+
     private func interpolate(_ key: String, _ raw: String, _ params: [String: Any], language: String? = nil) -> String {
         // Replace only source placeholders; never interpret braces inside user-provided values.
-        let regex = try! NSRegularExpression(pattern: "\\{(\\w+)\\}")
+        let regex = Self.placeholderRegex
         var result = raw
         for match in regex.matches(in: raw, range: NSRange(raw.startIndex..., in: raw)).reversed() {
             guard let keyRange = Range(match.range(at:1), in: raw), let range = Range(match.range, in: result) else { continue }
             let name = String(raw[keyRange]); guard let value = params[name] else { continue }
-            let text = (language ?? currentLanguage) == "tr" && key == "history.setsProgress" && name == "done" && value is Int
+            let text = (language ?? translationLanguage) == "tr" && key == "history.setsProgress" && name == "done" && value is Int
                 ? Self.turkishPossessiveNumber(value as! Int) : "\(value)"
             result.replaceSubrange(range, with: text)
         }
@@ -150,10 +164,12 @@ public final class LanguageManager: ObservableObject {
 }
 
 public enum ContentDictionary {
+    private static let mapLock = NSLock()
     private static var canonicalMaps: [String: [String: String]] = [:]
 
-    public static var canonicalMap: [String: String] { canonicalMap(for: LanguageManager.shared.currentLanguage) }
+    public static var canonicalMap: [String: String] { canonicalMap(for: LanguageManager.shared.translationLanguage) }
     private static func canonicalMap(for lang: String) -> [String: String] {
+        mapLock.lock(); defer { mapLock.unlock() }
         if let cached = canonicalMaps[lang] { return cached }
         var map: [String: String] = [:]
         let enDict = ContentLocalizer.shared.loadExercises(lang: "en")

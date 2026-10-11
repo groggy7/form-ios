@@ -5,7 +5,6 @@ public struct SettingsView: View {
     @ObservedObject var store: AppStore
     @ObservedObject var langManager = LanguageManager.shared
     @ObservedObject private var proManager = ProAccessManager.shared
-    @ObservedObject private var cloudMirror = CloudMirrorManager.shared
     @ObservedObject private var themeManager = ThemeManager.shared
     var onDismiss: () -> Void
 

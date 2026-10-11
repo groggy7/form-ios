@@ -13,7 +13,6 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct FormApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @StateObject private var themeManager = ThemeManager.shared
 
     init() {
         _ = FormAudioPlayer.shared

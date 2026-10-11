@@ -4232,6 +4232,12 @@
                   "value": "%lld séance"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld séances"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -4248,6 +4254,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld sesión"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld sesiones"
                 }
               },
               "other": {
@@ -4502,6 +4514,12 @@
                   "value": "{done} sur %lld série"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "{done} sur %lld séries"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -4518,6 +4536,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "{done} de %lld serie"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "{done} de %lld series"
                 }
               },
               "other": {
@@ -4597,6 +4621,12 @@
                   "value": "%lld série terminée"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld séries terminées"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -4613,6 +4643,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld serie completada"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld series completadas"
                 }
               },
               "other": {
@@ -4692,6 +4728,12 @@
                   "value": "%lld série restante"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld séries restantes"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -4708,6 +4750,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "Queda %lld serie"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Quedan %lld series"
                 }
               },
               "other": {
@@ -4962,6 +5010,12 @@
                   "value": "{completed} / %lld série"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "{completed} / %lld séries"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -4978,6 +5032,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "{completed} / %lld serie"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "{completed} / %lld series"
                 }
               },
               "other": {
@@ -5652,6 +5712,12 @@
                   "value": "+%lld autre exercice dans le détail complet"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "+%lld plus d'exercices en répartition complète"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -5668,6 +5734,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "+%lld ejercicio más en el detalle completo"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "+%lld más ejercicios en desglose completo"
                 }
               },
               "other": {
@@ -6027,6 +6099,12 @@
                   "value": "%lld série provient d’un exercice personnalisé sans muscle associé. Elle compte dans le total des séries, mais pas dans le détail musculaire."
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld séries proviennent d’exercices personnalisés sans muscle associé. Elles comptent dans le total des séries, mais pas dans le détail musculaire."
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -6043,6 +6121,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld serie pertenece a un ejercicio personalizado sin músculos asociados. Cuenta en el total de series, pero no aparece en el detalle muscular."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld series pertenecen a ejercicios personalizados sin músculos asociados. Cuentan en el total de series, pero no aparecen en el detalle muscular."
                 }
               },
               "other": {
@@ -8957,6 +9041,12 @@
                   "value": "%lld série d’échauffement · Exclue du volume de travail"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld séries d’échauffement · Exclues du volume de travail"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -8973,6 +9063,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld serie de calentamiento · Excluida del volumen de trabajo"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld series de calentamiento · Excluidas del volumen de trabajo"
                 }
               },
               "other": {
@@ -9367,6 +9463,12 @@
                   "value": "Ajouter %lld série d’échauffement"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Ajouter %lld séries d’échauffement"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -9383,6 +9485,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "Añadir %lld serie de calentamiento"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Añadir %lld series de calentamiento"
                 }
               },
               "other": {
@@ -12262,6 +12370,12 @@
                   "value": "%lld séance suivie"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld séances suivies"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -12278,6 +12392,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld sesión registrada"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld sesiones registradas"
                 }
               },
               "other": {
@@ -13582,6 +13702,12 @@
                   "value": "%lld série d’un exercice personnalisé sans mouvement associé a été exclue de ces ratios."
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld séries d’exercices personnalisés sans mouvement associé ont été exclues de ces ratios."
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -13598,6 +13724,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld serie de un ejercicio personalizado sin patrón de movimiento se excluyó de estas proporciones."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld series de ejercicios personalizados sin patrón de movimiento se excluyeron de estas proporciones."
                 }
               },
               "other": {
@@ -24422,6 +24554,12 @@
                   "value": "%lld exercice"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld exercices"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -24438,6 +24576,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld ejercicio"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld ejercicios"
                 }
               },
               "other": {
@@ -25637,6 +25781,12 @@
                   "value": "Tout l’historique · %lld séance"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Tout l’historique · %lld séances"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -25653,6 +25803,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "Todo el historial · %lld sesión"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Todo el historial · %lld sesiones"
                 }
               },
               "other": {
@@ -26012,6 +26168,12 @@
                   "value": "%lld série"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld séries"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -26028,6 +26190,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld serie"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld series"
                 }
               },
               "other": {
@@ -28487,6 +28655,12 @@
                   "value": "%lld exercice · environ {minutes} min"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld exercices · environ {minutes} min"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -28503,6 +28677,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld ejercicio · unos {minutes} min"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld ejercicios · unos {minutes} min"
                 }
               },
               "other": {
@@ -28616,7 +28796,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "dia de descanso"
+            "value": "día de descanso"
           }
         }
       }
@@ -29212,6 +29392,12 @@
                   "value": "%lld exercice"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld exercices"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -29228,6 +29414,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld ejercicio"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld ejercicios"
                 }
               },
               "other": {
@@ -29271,7 +29463,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "dia de recuperacion"
+            "value": "día de recuperación"
           }
         }
       }
@@ -31372,6 +31564,12 @@
                   "value": "%lld jour sur 7"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld jours sur 7"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -31388,6 +31586,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld día de 7"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld días de 7"
                 }
               },
               "other": {
@@ -31572,6 +31776,12 @@
                   "value": "%lld exercice"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld exercices"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -31588,6 +31798,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld ejercicio"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld ejercicios"
                 }
               },
               "other": {
@@ -31842,6 +32058,12 @@
                   "value": "%lld jour d’entraînement ne contient aucun exercice et ne peut pas encore être lancé."
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld jours d’entraînement ne contiennent aucun exercice et ne peuvent pas encore être lancés."
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -31858,6 +32080,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld día de entrenamiento no tiene ejercicios y todavía no se puede iniciar."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld días de entrenamiento no tienen ejercicios y todavía no se pueden iniciar."
                 }
               },
               "other": {
@@ -32006,7 +32234,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ya en este dia"
+            "value": "Ya en este día"
           }
         }
       }
@@ -32496,7 +32724,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "dia de la semana"
+            "value": "día de la semana"
           }
         }
       }
@@ -34527,6 +34755,12 @@
                   "value": "%lld série terminée"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Toutes les %lld séries terminées"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -34543,6 +34777,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld serie completada"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Todas las %lld series completadas"
                 }
               },
               "other": {
@@ -35217,6 +35457,12 @@
                   "value": "%lld série terminée"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld séries terminées"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -35233,6 +35479,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld serie completada"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld series completadas"
                 }
               },
               "other": {
@@ -37832,6 +38084,12 @@
                   "value": "Choisissez %lld jour qui convient le mieux à votre semaine."
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Choisissez %lld jours qui conviennent le mieux à votre semaine."
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -37848,6 +38106,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "Elige %lld día que encaje mejor con tu semana."
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Elige %lld días que encajen mejor con tu semana."
                 }
               },
               "other": {
@@ -37927,6 +38191,12 @@
                   "value": "{selected} sur %lld jour sélectionné"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "{selected} sur %lld jours sélectionnés"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -37943,6 +38213,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "{selected} de %lld día seleccionado"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "{selected} de %lld días seleccionados"
                 }
               },
               "other": {
@@ -39316,7 +39592,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "necesita atencion"
+            "value": "necesita atención"
           }
         }
       }
@@ -41491,6 +41767,76 @@
         }
       }
     },
+    "notice.openLinkFailed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not open this link. Please check that a browser is installed."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağlantı açılamadı. Bir tarayıcının yüklü olduğundan emin olun."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieser Link konnte nicht geöffnet werden. Bitte prüfen, ob ein Browser installiert ist."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible d’ouvrir ce lien. Vérifiez qu’un navigateur est installé."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudo abrir este enlace. Comprueba que haya un navegador instalado."
+          }
+        }
+      }
+    },
+    "notice.storageFailed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Could not save workout data. Your existing data has been kept. Check available storage and try again."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antrenman verileri kaydedilemedi. Mevcut verileriniz korundu. Boş depolama alanını kontrol edip tekrar deneyin."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trainingsdaten konnten nicht gespeichert werden. Vorhandene Daten bleiben erhalten. Prüfe den freien Speicher und versuche es erneut."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible d’enregistrer les données d’entraînement. Les données existantes sont conservées. Vérifiez l’espace disponible et réessayez."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudieron guardar los datos del entrenamiento. Se conservaron los datos existentes. Comprueba el espacio disponible e inténtalo de nuevo."
+          }
+        }
+      }
+    },
     "counts.setsLeft": {
       "extractionState": "manual",
       "localizations": {
@@ -41557,6 +41903,12 @@
                   "value": "%lld série restante"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld séries restantes"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -41573,6 +41925,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "Queda %lld serie"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "Quedan %lld series"
                 }
               },
               "other": {
@@ -41652,6 +42010,12 @@
                   "value": "%lld autre exercice"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld autres exercices"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -41668,6 +42032,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld ejercicio más"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld ejercicios más"
                 }
               },
               "other": {
@@ -41747,6 +42117,12 @@
                   "value": "%lld exercice non terminé"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld exercices non terminés"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -41763,6 +42139,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld ejercicio sin completar"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld ejercicios sin completar"
                 }
               },
               "other": {
@@ -41842,6 +42224,12 @@
                   "value": "%lld exercice terminé"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld exercices terminés"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -41858,6 +42246,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld ejercicio completado"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld ejercicios completados"
                 }
               },
               "other": {
@@ -41937,6 +42331,12 @@
                   "value": "{done} / %lld série"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "{done} / %lld séries"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -41953,6 +42353,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "{done} / %lld serie"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "{done} / %lld series"
                 }
               },
               "other": {
@@ -42032,6 +42438,12 @@
                   "value": "{done} / %lld série terminée"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "{done} / %lld séries terminées"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -42048,6 +42460,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "{done} / %lld serie completada"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "{done} / %lld series completadas"
                 }
               },
               "other": {
@@ -42127,6 +42545,12 @@
                   "value": "%lld séance"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld séances"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -42143,6 +42567,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld sesión"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld sesiones"
                 }
               },
               "other": {
@@ -42222,6 +42652,12 @@
                   "value": "%lld exercice"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld exercices"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -42238,6 +42674,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld ejercicio"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld ejercicios"
                 }
               },
               "other": {
@@ -42317,6 +42759,12 @@
                   "value": "%lld série terminée"
                 }
               },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld séries terminées"
+                }
+              },
               "other": {
                 "stringUnit": {
                   "state": "translated",
@@ -42333,6 +42781,12 @@
                 "stringUnit": {
                   "state": "translated",
                   "value": "%lld serie completada"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld series completadas"
                 }
               },
               "other": {

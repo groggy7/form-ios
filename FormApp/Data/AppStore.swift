@@ -8,6 +8,8 @@ public final class AppStore: ObservableObject {
     public static let shared = AppStore()
 
     private let stateKey = "stored_app_state"
+    let statePersistence: AppStatePersistence
+    private var persistenceEnabled = true
     private let activeSessionKey = "active_session_v1"
     private let soundKey = "sound_enabled"
     private let defaultRestKey = "default_rest_seconds"
@@ -155,7 +157,12 @@ public final class AppStore: ObservableObject {
 
     private var cancellables = Set<AnyCancellable>()
 
-    public init() {
+    public convenience init() {
+        self.init(persistence: .shared)
+    }
+
+    init(persistence: AppStatePersistence) {
+        self.statePersistence = persistence
         self.soundEnabled = UserDefaults.standard.object(forKey: soundKey) as? Bool ?? true
         self.defaultRestSeconds = UserDefaults.standard.object(forKey: defaultRestKey) as? Int ?? 90
         self.prefillNextSet = UserDefaults.standard.object(forKey: prefillNextSetKey) as? Bool ?? true
@@ -192,10 +199,12 @@ public final class AppStore: ObservableObject {
             self.showWarmupCalculator = true
         }
 
-        var loadedState = Self.rotateWeek(Self.loadStoredState(), now: Date())
+        let loaded = Self.loadStoredState(persistence: persistence)
+        self.persistenceEnabled = loaded.canPersist
+        var loadedState = Self.rotateWeek(loaded.state, now: Date())
 
         let hasCompleted = UserDefaults.standard.bool(forKey: onboardingCompletedKey)
-        let hasExistingData = UserDefaults.standard.object(forKey: stateKey) != nil || UserDefaults.standard.object(forKey: activeSessionKey) != nil || !loadedState.history.isEmpty
+        let hasExistingData = loaded.hasSavedState || UserDefaults.standard.object(forKey: stateKey) != nil || UserDefaults.standard.object(forKey: activeSessionKey) != nil || !loadedState.history.isEmpty
         if !hasCompleted && hasExistingData {
             UserDefaults.standard.set(true, forKey: onboardingCompletedKey)
             self.isOnboardingCompleted = true
@@ -246,6 +255,7 @@ public final class AppStore: ObservableObject {
         self.checkAndArchiveStaleSession()
         self.refreshCatalogue()
         self.saveState(self.state)
+        if !persistenceEnabled { showErrorNotice(LanguageManager.t("notice.storageFailed")) }
 
         // Sync sound preferences
         $soundEnabled
@@ -796,7 +806,7 @@ public final class AppStore: ObservableObject {
         newState.history = newHistory
         newState.completed = newCompleted
         newState.calendarHistory = cal
-        saveState(newState)
+        guard saveState(newState, durable: true) else { return }
 
         if ProAccessManager.shared.isFeatureUnlocked(.cloudBackup) {
             CloudMirrorManager.shared.autoSync(backupJson: exportBackupJson())
@@ -1155,22 +1165,36 @@ public final class AppStore: ObservableObject {
         } else {
             abandonActiveSession()
         }
+        return activeSession == nil
+    }
+
+    @discardableResult
+    func saveState(_ newState: StoredAppState, now: Date = Date(), durable: Bool = false) -> Bool {
+        guard persistenceEnabled else {
+            showErrorNotice(LanguageManager.t("notice.storageFailed"))
+            return false
+        }
+        let normalized = Self.rotateWeek(newState, now: now)
+        if durable {
+            do { try statePersistence.saveAndWait(normalized) }
+            catch {
+                showErrorNotice(LanguageManager.t("notice.storageFailed"))
+                return false
+            }
+        } else {
+            statePersistence.save(normalized) { [weak self] error in
+                guard error != nil else { return }
+                DispatchQueue.main.async { self?.showErrorNotice(LanguageManager.t("notice.storageFailed")) }
+            }
+        }
+        if normalized.currentWeekKey != state.currentWeekKey { selectedWorkoutId = nil }
+        self.state = normalized
         return true
     }
 
-    func saveState(_ newState: StoredAppState, now: Date = Date()) {
-        let normalized = Self.rotateWeek(newState, now: now)
-        if normalized.currentWeekKey != state.currentWeekKey {
-            selectedWorkoutId = nil
-        }
-        self.state = normalized
-        do {
-            let encoder = JSONEncoder()
-            let data = try encoder.encode(normalized)
-            UserDefaults.standard.set(data, forKey: stateKey)
-        } catch {
-            print("Failed to save state: \(error)")
-        }
+    func flushPendingState() {
+        do { try statePersistence.flush() }
+        catch { showErrorNotice(LanguageManager.t("notice.storageFailed")) }
     }
 
     public func exportBackupJson() -> String {
@@ -1200,7 +1224,7 @@ public final class AppStore: ObservableObject {
                 activeSessionId: activeSession?.id,
                 programs: decodedState.programs
             )
-            saveState(refreshCalendarState(decodedState))
+            guard saveState(refreshCalendarState(decodedState), durable: true) else { return false }
             // Metadata restores the display preference, never the numeric weights.
             // The property observer also rebases the live workout we preserve.
             if let restoredUnit = backup.weightUnit { weightUnit = restoredUnit }
@@ -1229,7 +1253,30 @@ public final class AppStore: ObservableObject {
         return try? JSONDecoder().decode(ActiveSessionDraft.self, from: data)
     }
 
-    private static func loadStoredState() -> StoredAppState {
+    private static func loadStoredState(persistence: AppStatePersistence) -> (state: StoredAppState, canPersist: Bool, hasSavedState: Bool) {
+        let defaults = UserDefaults.standard
+        let hasLegacy = defaults.data(forKey: "stored_app_state") != nil
+        var legacy: StoredAppState?
+        do {
+            if hasLegacy {
+                let restored = loadLegacyState()
+                legacy = restored
+                try persistence.migrate(restored, defaults: defaults, legacyKey: "stored_app_state")
+                return (restored, true, true)
+            }
+            if var stored = try persistence.load() {
+                stored.programs = enrichStandardizedTechniqueCues(stored.programs, bundled: loadBundledStarterPrograms())
+                return (stored, true, true)
+            }
+            return (loadLegacyState(), true, false)
+        } catch {
+            // Preserve the database and legacy blob. Never overwrite unreadable storage with defaults.
+            print("[AppStore] Workout persistence unavailable; recovery data retained.")
+            return (legacy ?? loadLegacyState(), false, hasLegacy)
+        }
+    }
+
+    private static func loadLegacyState() -> StoredAppState {
         let bundled = loadBundledStarterPrograms()
         if let data = UserDefaults.standard.data(forKey: "stored_app_state") {
             do {

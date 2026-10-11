@@ -399,17 +399,20 @@ public enum WorkoutSessionUtils {
 
     public static func formatWeight(_ value: Double, unit: WeightUnit = .kg) -> String { unit.formatWeight(value) }
 
+    private static let allZerosRegex = try! NSRegularExpression(pattern: #"^0+$"#)
+    private static let leadingZerosRegex = try! NSRegularExpression(pattern: #"^0+(?=[1-9]|0\.)"#)
+    private static let weightInputRegex = try! NSRegularExpression(pattern: #"^\d{0,4}(\.\d{0,2})?$"#)
+    private static let repsInputRegex = try! NSRegularExpression(pattern: #"^[1-9]\d{0,2}$"#)
+
     public static func sanitizedWeightInput(_ value: String, unit: WeightUnit = .kg) -> String? {
         var normalized = value.replacingOccurrences(of: ",", with: ".").trimmingCharacters(in: .whitespaces)
         if normalized.isEmpty { return "" }
-        if normalized.range(of: #"^0+$"#, options: .regularExpression) != nil { normalized = "0" }
+        if allZerosRegex.firstMatch(in: normalized, range: NSRange(normalized.startIndex..., in: normalized)) != nil { normalized = "0" }
         if normalized.hasPrefix(".") { normalized = "0" + normalized }
-        if let regex = try? NSRegularExpression(pattern: #"^0+(?=[1-9]|0\.)"#) {
-            let range = NSRange(location: 0, length: normalized.utf16.count)
-            normalized = regex.stringByReplacingMatches(in: normalized, options: [], range: range, withTemplate: "")
-        }
+        let leadingRange = NSRange(normalized.startIndex..., in: normalized)
+        normalized = leadingZerosRegex.stringByReplacingMatches(in: normalized, range: leadingRange, withTemplate: "")
         guard normalized.count <= 7 else { return nil }
-        let regex = try! NSRegularExpression(pattern: #"^\d{0,4}(\.\d{0,2})?$"#)
+        let regex = weightInputRegex
         let range = NSRange(location: 0, length: normalized.utf16.count)
         guard regex.firstMatch(in: normalized, options: [], range: range) != nil else { return nil }
         guard let numeric = Double(normalized), numeric <= maxAllowedWeight(unit: unit) else { return nil }
@@ -445,7 +448,7 @@ public enum WorkoutSessionUtils {
         if normalized.isEmpty { return "" }
         guard normalized.count <= 3 else { return nil }
         // Must start with 1-9; rejects "0", "00", "05", etc.
-        let regex = try! NSRegularExpression(pattern: #"^[1-9]\d{0,2}$"#)
+        let regex = repsInputRegex
         let range = NSRange(location: 0, length: normalized.utf16.count)
         guard regex.firstMatch(in: normalized, options: [], range: range) != nil else { return nil }
         return normalized

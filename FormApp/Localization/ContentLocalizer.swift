@@ -23,14 +23,15 @@ public struct ProgramLocaleData: Codable {
 public final class ContentLocalizer {
     public static let shared = ContentLocalizer()
 
+    private let cacheLock = NSLock()
     private var exercisesCache: [String: [String: ExerciseLocaleData]] = [:]
     private var programsCache: [String: [String: ProgramLocaleData]] = [:]
     private var uiCache: [String: [String: String]] = [:]
 
-    private init() {}
+    init() {}
 
     private var activeLanguage: String {
-        LanguageManager.shared.currentLanguage
+        LanguageManager.shared.translationLanguage
     }
 
     private func loadFileData(filename: String, lang: String) -> Data? {
@@ -73,6 +74,7 @@ public final class ContentLocalizer {
     }
 
     public func loadExercises(lang: String) -> [String: ExerciseLocaleData] {
+        cacheLock.lock(); defer { cacheLock.unlock() }
         if let cached = exercisesCache[lang] { return cached }
         guard let data = loadFileData(filename: "exercises", lang: lang),
               let dict = try? JSONDecoder().decode([String: ExerciseLocaleData].self, from: data) else {
@@ -83,6 +85,7 @@ public final class ContentLocalizer {
     }
 
     public func loadUI(lang: String) -> [String: String] {
+        cacheLock.lock(); defer { cacheLock.unlock() }
         if let cached = uiCache[lang] { return cached }
         guard let data = loadFileData(filename: "ui", lang: lang),
               let dict = try? JSONDecoder().decode([String: String].self, from: data) else { return [:] }
@@ -91,6 +94,7 @@ public final class ContentLocalizer {
     }
 
     public func loadPrograms(lang: String) -> [String: ProgramLocaleData] {
+        cacheLock.lock(); defer { cacheLock.unlock() }
         if let cached = programsCache[lang] { return cached }
         guard let data = loadFileData(filename: "programs", lang: lang),
               let dict = try? JSONDecoder().decode([String: ProgramLocaleData].self, from: data) else {

@@ -1208,5 +1208,7 @@
   "programs.exerciseQuantity.other": "{count} exercises",
   "programs.countParts": "{workouts} · {exercises}",
   "summary.completedSetQuantity.one": "{count} set completed",
-  "summary.completedSetQuantity.other": "{count} sets completed"
+  "summary.completedSetQuantity.other": "{count} sets completed",
+  "notice.openLinkFailed": "Could not open this link. Please check that a browser is installed.",
+  "notice.storageFailed": "Could not save workout data. Your existing data has been kept. Check available storage and try again."
 }

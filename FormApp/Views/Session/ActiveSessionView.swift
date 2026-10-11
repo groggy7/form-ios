@@ -3,7 +3,6 @@ import Combine
 
 public struct ActiveSessionView: View {
     @ObservedObject var store: AppStore
-    @ObservedObject private var proManager = ProAccessManager.shared
     let draft: ActiveSessionDraft
 
     @State private var nowEpochMillis: Int64 = Int64(Date().timeIntervalSince1970 * 1000)

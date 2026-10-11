@@ -119,6 +119,7 @@
 		WP0000000000000000000008 /* WarmupPlateSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000007 /* WarmupPlateSheet.swift */; };
 		WP0000000000000000000010 /* WarmupPlateCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000009 /* WarmupPlateCard.swift */; };
 		WU0000000000000000000002 /* WeightUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = WU0000000000000000000001 /* WeightUnit.swift */; };
+		C011A0000000000000000002 /* AppStatePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = C011A0000000000000000001 /* AppStatePersistence.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -239,6 +240,7 @@
 		WP0000000000000000000007 /* WarmupPlateSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupPlateSheet.swift; sourceTree = "<group>"; };
 		WP0000000000000000000009 /* WarmupPlateCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupPlateCard.swift; sourceTree = "<group>"; };
 		WU0000000000000000000001 /* WeightUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightUnit.swift; sourceTree = "<group>"; };
+		C011A0000000000000000001 /* AppStatePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStatePersistence.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -337,6 +339,7 @@
 		6B884E9359482E3EEF287C4A /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				C011A0000000000000000001 /* AppStatePersistence.swift */,
 				10AEC969AB339D9720AB880B /* AppStore.swift */,
 				VM0000000000000000000005 /* VolumeMatrixEngine.swift */,
 				RP0000000000000000000002 /* ExerciseReportStore.swift */,
@@ -694,6 +697,7 @@
 				329E21359E0ADED851ABBD02 /* AppColors.swift in Sources */,
 				TH0000000000000000000001 /* AppThemes.swift in Sources */,
 				90857D8F8161417A3E7FCFE1 /* AppHeader.swift in Sources */,
+				C011A0000000000000000002 /* AppStatePersistence.swift in Sources */,
 				11494E03B6F140F80312218E /* AppStore.swift in Sources */,
 				S10000000000000000000001 /* ExerciseSearch.swift in Sources */,
 				P10000000000000000000001 /* ExercisePriority.swift in Sources */,
