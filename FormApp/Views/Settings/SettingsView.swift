@@ -57,7 +57,7 @@ public struct SettingsView: View {
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 38)
                                 .background(AppColors.purple)
-                                .cornerRadius(10)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
                             }
                             .buttonStyle(.plain)
                         } else {
@@ -68,7 +68,7 @@ public struct SettingsView: View {
                                     .frame(maxWidth: .infinity)
                                     .frame(height: 38)
                                     .background(AppColors.accent)
-                                    .cornerRadius(10)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
                             }
                             .buttonStyle(.plain)
                         }
@@ -79,7 +79,7 @@ public struct SettingsView: View {
                         RoundedRectangle(cornerRadius: 16)
                             .stroke(proManager.isProSubscribed ? AppColors.purple.opacity(0.5) : AppColors.border, lineWidth: 1)
                     )
-                    .cornerRadius(16)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
                     .padding(.horizontal, 20)
 
                     // Training section
@@ -278,7 +278,7 @@ public struct SettingsView: View {
                                     .padding(.horizontal, 6)
                                     .padding(.vertical, 2)
                                     .background(AppColors.accent.opacity(0.15))
-                                    .cornerRadius(6)
+                                    .clipShape(RoundedRectangle(cornerRadius: 6))
                             }
                             Text(LanguageManager.t("settings.aboutDescription"))
                                 .font(.system(size: 14))
@@ -473,7 +473,7 @@ public struct SettingsView: View {
                 content()
             }
             .background(AppColors.surface)
-            .cornerRadius(14)
+            .clipShape(RoundedRectangle(cornerRadius: 14))
             .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
             .padding(.horizontal, 20)
         }
@@ -756,7 +756,7 @@ struct ImportExportDataSheet: View {
                             .frame(maxWidth: .infinity)
                             .frame(height: 44)
                             .background(AppColors.accent)
-                            .cornerRadius(10)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
                         .buttonStyle(.plain)
                         .accessibilityIdentifier("export-data-button")
@@ -765,7 +765,7 @@ struct ImportExportDataSheet: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(AppColors.surfaceRaised)
                     .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-                    .cornerRadius(16)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
 
                     // Import Data Card
                     VStack(alignment: .leading, spacing: 12) {
@@ -798,7 +798,7 @@ struct ImportExportDataSheet: View {
                             .frame(height: 44)
                             .background(AppColors.surface)
                             .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.border, lineWidth: 1))
-                            .cornerRadius(10)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
                         .buttonStyle(.plain)
                         .accessibilityIdentifier("import-data-button")
@@ -807,7 +807,7 @@ struct ImportExportDataSheet: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(AppColors.surfaceRaised)
                     .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-                    .cornerRadius(16)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 36)
@@ -970,7 +970,7 @@ public struct CloudBackupSheet: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(AppColors.surfaceRaised)
                     .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-                    .cornerRadius(16)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
 
                     // Sync Status Card
                     VStack(spacing: 12) {
@@ -995,7 +995,7 @@ public struct CloudBackupSheet: View {
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
                             .background(isBadgeActive ? AppColors.positiveBg : AppColors.surface)
-                            .cornerRadius(8)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
                             .fixedSize(horizontal: true, vertical: false)
                             .overlay(RoundedRectangle(cornerRadius: 8).stroke(isBadgeActive ? AppColors.accent.opacity(0.4) : AppColors.border, lineWidth: 1))
                         }
@@ -1027,7 +1027,7 @@ public struct CloudBackupSheet: View {
                     .padding(16)
                     .background(AppColors.surfaceRaised)
                     .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-                    .cornerRadius(16)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
 
                     // Action Buttons
                     VStack(spacing: 10) {
@@ -1042,7 +1042,7 @@ public struct CloudBackupSheet: View {
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 14)
                             .background(AppColors.accent)
-                            .cornerRadius(12)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
                         .buttonStyle(.plain)
                         .disabled(isWorking || (proManager.isFeatureUnlocked(.cloudBackup) && !isMirrorEnabled))
@@ -1060,7 +1060,7 @@ public struct CloudBackupSheet: View {
                             .padding(.vertical, 12)
                             .background(AppColors.surfaceRaised)
                             .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
-                            .cornerRadius(12)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
                         .buttonStyle(.plain)
                         .disabled(isWorking)
@@ -1079,7 +1079,7 @@ public struct CloudBackupSheet: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(syncIsError ? AppColors.avoidBg : AppColors.positiveBg)
                         .overlay(RoundedRectangle(cornerRadius: 10).stroke(syncIsError ? AppColors.danger : AppColors.accent, lineWidth: 1))
-                        .cornerRadius(10)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
                     }
 
                     // Zero-Tracking Privacy Note
@@ -1095,7 +1095,7 @@ public struct CloudBackupSheet: View {
                     .padding(14)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(AppColors.surfaceRaised)
-                    .cornerRadius(12)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 16)

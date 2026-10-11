@@ -89,7 +89,7 @@ public struct ProgramExerciseEditorSheet: View {
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 4)
                                 .background(AppColors.positiveBg)
-                                .cornerRadius(6)
+                                .clipShape(RoundedRectangle(cornerRadius: 6))
 
                             Spacer()
 
@@ -116,7 +116,7 @@ public struct ProgramExerciseEditorSheet: View {
                     .padding(16)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(AppColors.surfaceRaised)
-                    .cornerRadius(14)
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
 
                     // Fixed Sets Card
                     editorSection(title: LanguageManager.t("targets.sets")) {
@@ -189,7 +189,7 @@ public struct ProgramExerciseEditorSheet: View {
                                                 .foregroundStyle(AppColors.text)
                                                 .padding(10)
                                                 .background(AppColors.surfaceRaised)
-                                                .cornerRadius(8)
+                                                .clipShape(RoundedRectangle(cornerRadius: 8))
                                                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(AppColors.border, lineWidth: 1))
                                         }
 
@@ -203,7 +203,7 @@ public struct ProgramExerciseEditorSheet: View {
                                                 .foregroundStyle(AppColors.text)
                                                 .padding(10)
                                                 .background(AppColors.surfaceRaised)
-                                                .cornerRadius(8)
+                                                .clipShape(RoundedRectangle(cornerRadius: 8))
                                                 .overlay(RoundedRectangle(cornerRadius: 8).stroke(AppColors.border, lineWidth: 1))
                                         }
                                     }
@@ -229,7 +229,7 @@ public struct ProgramExerciseEditorSheet: View {
                                         .foregroundStyle(AppColors.text)
                                         .padding(12)
                                         .background(AppColors.surfaceRaised)
-                                        .cornerRadius(8)
+                                        .clipShape(RoundedRectangle(cornerRadius: 8))
                                         .overlay(RoundedRectangle(cornerRadius: 8).stroke(AppColors.border, lineWidth: 1))
                                 }
                                 .padding(14)
@@ -305,7 +305,7 @@ public struct ProgramExerciseEditorSheet: View {
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 48)
                                 .background(isValid ? AppColors.accent : AppColors.surface)
-                                .cornerRadius(12)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12)
                                         .stroke(isValid ? AppColors.accent : AppColors.border, lineWidth: 1)
@@ -365,7 +365,7 @@ public struct ProgramExerciseEditorSheet: View {
                 content()
             }
             .background(AppColors.surface)
-            .cornerRadius(12)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
             .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
         }
     }

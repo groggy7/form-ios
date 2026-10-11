@@ -97,7 +97,7 @@ public struct OnboardingView: View {
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 52)
                                 .background(AppColors.accent)
-                                .cornerRadius(12)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
                     }
                     .padding(.horizontal, 20)
@@ -285,7 +285,7 @@ public struct OnboardingView: View {
                                     .foregroundStyle(isSelected ? AppColors.accent : AppColors.muted)
                                     .frame(width: 32, height: 32)
                                     .background(isSelected ? AppColors.accent.opacity(0.2) : AppColors.surfaceRaised)
-                                    .cornerRadius(6)
+                                    .clipShape(RoundedRectangle(cornerRadius: 6))
 
                                 Text(fullName)
                                     .font(.system(size: 15, weight: isSelected ? .semibold : .regular))
@@ -311,7 +311,7 @@ public struct OnboardingView: View {
                         .padding(.horizontal, 16)
                         .padding(.vertical, 14)
                         .background(isSelected ? AppColors.positiveBg : AppColors.surface)
-                        .cornerRadius(12)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(isSelected ? AppColors.accent : AppColors.border, lineWidth: isSelected ? 1.5 : 1)
@@ -339,7 +339,7 @@ public struct OnboardingView: View {
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
                     .background(AppColors.positiveBg)
-                    .cornerRadius(6)
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
                     .overlay(
                         RoundedRectangle(cornerRadius: 6)
                             .stroke(AppColors.accent.opacity(0.3), lineWidth: 1)
@@ -358,7 +358,7 @@ public struct OnboardingView: View {
                     .padding(14)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(AppColors.surface)
-                    .cornerRadius(12)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
                             .stroke(AppColors.border, lineWidth: 1)
@@ -394,11 +394,11 @@ public struct OnboardingView: View {
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 4)
                                 .background(AppColors.surfaceRaised)
-                                .cornerRadius(6)
+                                .clipShape(RoundedRectangle(cornerRadius: 6))
                         }
                         .padding(14)
                         .background(AppColors.surface)
-                        .cornerRadius(12)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(AppColors.border, lineWidth: 1)
@@ -417,7 +417,7 @@ public struct OnboardingView: View {
                             .frame(maxWidth: .infinity)
                             .frame(height: 52)
                             .background(AppColors.accent)
-                            .cornerRadius(12)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
                     }
 
                     Button(action: {
@@ -515,7 +515,7 @@ private struct OptionCard: View {
             }
             .padding(16)
             .background(isSelected ? AppColors.positiveBg : AppColors.surface)
-            .cornerRadius(14)
+            .clipShape(RoundedRectangle(cornerRadius: 14))
             .overlay(
                 RoundedRectangle(cornerRadius: 14)
                     .stroke(isSelected ? AppColors.accent : AppColors.border, lineWidth: isSelected ? 1.5 : 1)

@@ -229,7 +229,7 @@ public struct ActiveSessionView: View {
                                     .foregroundStyle(AppColors.text)
                                     .frame(width: 38, height: 38)
                                     .background(AppColors.surface)
-                                    .cornerRadius(10)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
                             }
                             .buttonStyle(.plain)
                             .accessibilityLabel(LanguageManager.t("session.exit"))

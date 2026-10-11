@@ -120,7 +120,7 @@ public struct FormLabView: View {
                                         RoundedRectangle(cornerRadius: 10)
                                             .stroke(activeTab == tab ? AppColors.accent.opacity(0.6) : AppColors.border, lineWidth: 1)
                                     )
-                                    .cornerRadius(10)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
                             }
                             .buttonStyle(.plain)
                         }
@@ -133,7 +133,7 @@ public struct FormLabView: View {
                         .foregroundStyle(AppColors.secondaryText)
                         .padding(8)
                         .background(AppColors.surfaceRaised)
-                        .cornerRadius(8)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
                 }
                 .buttonStyle(.plain)
             }
@@ -201,7 +201,7 @@ public struct FormLabView: View {
                     .padding(.vertical, 10)
                     .background(AppColors.surface)
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.border, lineWidth: 1))
-                    .cornerRadius(10)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
 
                 // Formula Toggle (Brzycki vs Epley)
@@ -220,7 +220,7 @@ public struct FormLabView: View {
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 5)
                                 .background(selectedFormula == .brzycki ? AppColors.positiveBg : Color.clear)
-                                .cornerRadius(8)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
                         }
                         .buttonStyle(.plain)
 
@@ -231,19 +231,19 @@ public struct FormLabView: View {
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 5)
                                 .background(selectedFormula == .epley ? AppColors.positiveBg : Color.clear)
-                                .cornerRadius(8)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
                         }
                         .buttonStyle(.plain)
                     }
                     .padding(3)
                     .background(AppColors.surface)
-                    .cornerRadius(10)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
             }
             .padding(16)
             .background(AppColors.surfaceRaised)
             .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-            .cornerRadius(16)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
 
             // PR Set Traceability Banner
             if let summary = summary {
@@ -274,7 +274,7 @@ public struct FormLabView: View {
                 .padding(12)
                 .background(Color(hex: 0xF59E0B).opacity(0.12))
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color(hex: 0xF59E0B).opacity(0.4), lineWidth: 1))
-                .cornerRadius(10)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
             }
 
             // Rep Max Targets Grid
@@ -299,7 +299,7 @@ public struct FormLabView: View {
                 .frame(maxWidth: .infinity)
                 .background(AppColors.surfaceRaised)
                 .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-                .cornerRadius(16)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
             }
         }
     }
@@ -331,7 +331,7 @@ public struct FormLabView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surfaceRaised)
         .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
-        .cornerRadius(14)
+        .clipShape(RoundedRectangle(cornerRadius: 14))
     }
 
     // MARK: - 2. Longitudinal Strength Curves Tab
@@ -371,7 +371,7 @@ public struct FormLabView: View {
                     .padding(.vertical, 10)
                     .background(AppColors.surface)
                     .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.border, lineWidth: 1))
-                    .cornerRadius(10)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
 
                 // Timeframe Selector
@@ -388,7 +388,7 @@ public struct FormLabView: View {
                                     RoundedRectangle(cornerRadius: 8)
                                         .stroke(selectedTimeframe == tf ? AppColors.accent.opacity(0.5) : AppColors.border, lineWidth: 1)
                                 )
-                                .cornerRadius(8)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
                         }
                         .buttonStyle(.plain)
                     }
@@ -397,7 +397,7 @@ public struct FormLabView: View {
             .padding(16)
             .background(AppColors.surfaceRaised)
             .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-            .cornerRadius(16)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
 
             if report.points.count == 1, let point = report.points.first {
                 firstEstimateCard(point: point)
@@ -474,7 +474,7 @@ public struct FormLabView: View {
                             }
                             .padding(10)
                             .background(AppColors.surface)
-                            .cornerRadius(8)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
                             .overlay(RoundedRectangle(cornerRadius: 8).stroke(AppColors.accent.opacity(0.4), lineWidth: 1))
                         }
 
@@ -490,7 +490,7 @@ public struct FormLabView: View {
                 .padding(16)
                 .background(AppColors.surfaceRaised)
                 .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-                .cornerRadius(16)
+                .clipShape(RoundedRectangle(cornerRadius: 16))
             }
         }
     }
@@ -529,7 +529,7 @@ public struct FormLabView: View {
         .padding(16)
         .background(AppColors.surfaceRaised)
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-        .cornerRadius(16)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
     private func statCard(title: String, value: String, color: Color) -> some View {
@@ -547,7 +547,7 @@ public struct FormLabView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surfaceRaised)
         .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
-        .cornerRadius(12)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 
     // MARK: - 3. Structural Balance Tab
@@ -570,7 +570,7 @@ public struct FormLabView: View {
                                 RoundedRectangle(cornerRadius: 8)
                                     .stroke(balanceTimeframe == tf ? AppColors.accent.opacity(0.5) : AppColors.border, lineWidth: 1)
                             )
-                            .cornerRadius(8)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
                     }
                     .buttonStyle(.plain)
                 }
@@ -578,7 +578,7 @@ public struct FormLabView: View {
             .padding(12)
             .background(AppColors.surfaceRaised)
             .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
-            .cornerRadius(14)
+            .clipShape(RoundedRectangle(cornerRadius: 14))
 
             // Balance Summary Header
             VStack(alignment: .leading, spacing: 4) {
@@ -602,7 +602,7 @@ public struct FormLabView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(AppColors.surfaceRaised)
             .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-            .cornerRadius(16)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
 
             // Antagonist Ratio Cards
             antagonistRatioCard(ratio: balance.pushPull)
@@ -627,7 +627,7 @@ public struct FormLabView: View {
                         .padding(.vertical, 4)
                         .background(statusColor(ratio.status).opacity(0.12))
                         .overlay(RoundedRectangle(cornerRadius: 6).stroke(statusColor(ratio.status).opacity(0.5), lineWidth: 1))
-                        .cornerRadius(6)
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
                 }
 
                 Spacer()
@@ -690,12 +690,12 @@ public struct FormLabView: View {
             .padding(10)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(AppColors.surface)
-            .cornerRadius(8)
+            .clipShape(RoundedRectangle(cornerRadius: 8))
         }
         .padding(16)
         .background(AppColors.surfaceRaised)
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-        .cornerRadius(16)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
     private func statusColor(_ status: AntagonistStatus) -> Color {

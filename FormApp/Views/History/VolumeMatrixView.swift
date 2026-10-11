@@ -95,7 +95,7 @@ public struct VolumeMatrixView: View {
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(!isPlannedMode ? Color(hex: 0x1D5350) : Color.clear, lineWidth: 1.5)
                         )
-                        .cornerRadius(12)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
                 .buttonStyle(.plain)
 
@@ -112,7 +112,7 @@ public struct VolumeMatrixView: View {
                             RoundedRectangle(cornerRadius: 12)
                                 .stroke(isPlannedMode ? Color(hex: 0x1D5350) : Color.clear, lineWidth: 1.5)
                         )
-                        .cornerRadius(12)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
                 .buttonStyle(.plain)
             }
@@ -120,7 +120,7 @@ public struct VolumeMatrixView: View {
             .padding(4)
             .background(Color(hex: 0x0F1518))
             .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color(hex: 0x2B373C), lineWidth: 1))
-            .cornerRadius(16)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
 
             // Week Navigator (for Logged Mode)
             if !isPlannedMode {
@@ -211,7 +211,7 @@ public struct VolumeMatrixView: View {
                 .frame(height: 70)
                 .background(Color(hex: 0x0A1B1E))
                 .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color(hex: 0x1A4547), lineWidth: 1))
-                .cornerRadius(18)
+                .clipShape(RoundedRectangle(cornerRadius: 18))
             }
 
             if isPlannedMode {
@@ -242,7 +242,7 @@ public struct VolumeMatrixView: View {
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading).padding(14)
-                .background(AppColors.surface).cornerRadius(14)
+                .background(AppColors.surface).clipShape(RoundedRectangle(cornerRadius: 14))
                 .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
             }
 
@@ -284,7 +284,7 @@ public struct VolumeMatrixView: View {
                                             RoundedRectangle(cornerRadius: 9.5)
                                                 .stroke(isSelected ? Color(hex: 0xA855F7) : Color.clear, lineWidth: 1.0)
                                         )
-                                        .cornerRadius(9.5)
+                                        .clipShape(RoundedRectangle(cornerRadius: 9.5))
                                 }
                                 .buttonStyle(.plain)
                             }
@@ -293,7 +293,7 @@ public struct VolumeMatrixView: View {
                         .padding(2.5)
                         .background(Color(hex: 0x161B20))
                         .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color(hex: 0x2B373C), lineWidth: 1))
-                        .cornerRadius(12)
+                        .clipShape(RoundedRectangle(cornerRadius: 12))
 
                         Spacer().frame(height: 12)
 
@@ -329,7 +329,7 @@ public struct VolumeMatrixView: View {
                 .padding(.trailing, 14)
                 .background(AppColors.surface)
                 .overlay(RoundedRectangle(cornerRadius: 20).stroke(AppColors.border, lineWidth: 1))
-                .cornerRadius(20)
+                .clipShape(RoundedRectangle(cornerRadius: 20))
             }
 
             // Muscle Selectors
@@ -362,7 +362,7 @@ public struct VolumeMatrixView: View {
                                 RoundedRectangle(cornerRadius: 10)
                                     .stroke(isSelected ? AppColors.accent : AppColors.border, lineWidth: isSelected ? 1.5 : 1)
                             )
-                            .cornerRadius(10)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
                         .buttonStyle(.plain)
                     }
@@ -485,7 +485,7 @@ public struct VolumeMatrixView: View {
         .frame(height: 114)
         .background(tone.surfaceBottom)
         .overlay(RoundedRectangle(cornerRadius: 18).stroke(tone.border, lineWidth: 1))
-        .cornerRadius(18)
+        .clipShape(RoundedRectangle(cornerRadius: 18))
     }
 
     private func heatmapFigure(catalog: ExerciseMuscleCatalog, report: VolumeMatrixReport) -> some View {
@@ -550,7 +550,7 @@ public struct VolumeMatrixView: View {
                     .padding(.vertical, 4)
                     .background(summary.zone.badgeBgColor)
                     .overlay(RoundedRectangle(cornerRadius: 8).stroke(summary.zone.color.opacity(0.5), lineWidth: 1))
-                    .cornerRadius(8)
+                    .clipShape(RoundedRectangle(cornerRadius: 8))
                 Text(LanguageManager.t("matrix.breakdown", [
                     "credits": String(format: "%.1f", locale: LanguageManager.numberLocale, summary.totalEffectiveSets),
                     "direct": summary.directSets,
@@ -598,7 +598,7 @@ public struct VolumeMatrixView: View {
         .padding(16)
         .background(AppColors.surface)
         .overlay(RoundedRectangle(cornerRadius: 18).stroke(AppColors.border, lineWidth: 1))
-        .cornerRadius(18)
+        .clipShape(RoundedRectangle(cornerRadius: 18))
     }
 
     private func landmarkGauge(summary: MuscleVolumeSummary) -> some View {

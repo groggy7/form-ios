@@ -249,7 +249,7 @@ public struct ExerciseVideoLinksSheet: View {
                                     TextField(LanguageManager.t("video.urlInputLabel"), text: $inputUrl)
                                         .font(.system(size: 14))
                                         .foregroundStyle(AppColors.text)
-                                        .accentColor(AppColors.accent)
+                                        .tint(AppColors.accent)
                                         .autocorrectionDisabled()
                                         .textInputAutocapitalization(.never)
                                         .submitLabel(.done)

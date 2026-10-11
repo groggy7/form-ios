@@ -118,7 +118,7 @@ public struct ProgressionCoachCard: View {
                             .frame(minHeight: 48)
                             .background(wasApplied ? AppColors.positiveBg : AppColors.surface)
                             .overlay(RoundedRectangle(cornerRadius: 8).stroke(wasApplied ? AppColors.accent.opacity(0.5) : AppColors.border, lineWidth: 1))
-                            .cornerRadius(8)
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
                         }
                         .disabled(!canApplyTarget)
                         .accessibilityIdentifier("apply-progression-target")
@@ -154,7 +154,7 @@ public struct ProgressionCoachCard: View {
             .padding(14)
             .background(AppColors.surface)
             .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.purple.opacity(0.5), lineWidth: 1))
-            .cornerRadius(16)
+            .clipShape(RoundedRectangle(cornerRadius: 16))
             .contentShape(Rectangle())
             .onTapGesture {
                 onOpenInfo()

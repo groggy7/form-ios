@@ -303,7 +303,7 @@ public struct HistoryDayPreviewCard: View {
                 .frame(maxWidth: .infinity)
                 .frame(height: 48)
                 .background(AppColors.accent)
-                .cornerRadius(14)
+                .clipShape(RoundedRectangle(cornerRadius: 14))
             }
             .buttonStyle(.plain)
             .accessibilityIdentifier("history-full-log-breakdown-button")

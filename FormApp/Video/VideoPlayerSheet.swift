@@ -159,7 +159,7 @@ public struct VideoPlayerSheet: View {
                                     .padding(.horizontal, 16)
                                     .padding(.vertical, 8)
                                     .background(AppColors.surface)
-                                    .cornerRadius(8)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
                             }
                         }
                         .padding(16)

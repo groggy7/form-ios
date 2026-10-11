@@ -47,7 +47,7 @@ public struct FormLabInfoSheet: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surfaceRaised)
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-        .cornerRadius(16)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
     private var formulasSection: some View {
@@ -67,7 +67,7 @@ public struct FormLabInfoSheet: View {
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(AppColors.surface)
-            .cornerRadius(10)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("Epley")
@@ -80,7 +80,7 @@ public struct FormLabInfoSheet: View {
             .padding(12)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(AppColors.surface)
-            .cornerRadius(10)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
 
             Text(LanguageManager.t("form_lab.info_brzycki_epley_desc"))
                 .font(.system(size: 13))
@@ -91,7 +91,7 @@ public struct FormLabInfoSheet: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surfaceRaised)
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-        .cornerRadius(16)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
     private var balanceSection: some View {
@@ -116,7 +116,7 @@ public struct FormLabInfoSheet: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surfaceRaised)
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-        .cornerRadius(16)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
     private func ratioRow(label: String, range: String, desc: String) -> some View {
@@ -136,10 +136,10 @@ public struct FormLabInfoSheet: View {
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)
                 .background(AppColors.positiveBg)
-                .cornerRadius(6)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
         }
         .padding(10)
         .background(AppColors.surface)
-        .cornerRadius(10)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
     }
 }

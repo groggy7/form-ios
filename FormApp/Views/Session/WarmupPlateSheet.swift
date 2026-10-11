@@ -131,7 +131,7 @@ public struct WarmupPlateSheet: View {
                     }
                     .padding(3)
                     .background(AppColors.surface)
-                    .cornerRadius(12)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
                     .padding(.horizontal, 16)
 
                     // Bar Type Selector
@@ -151,7 +151,7 @@ public struct WarmupPlateSheet: View {
                                         .padding(.horizontal, 10)
                                         .padding(.vertical, 7)
                                         .background(isSel ? AppColors.positiveBg : AppColors.surface)
-                                        .cornerRadius(8)
+                                        .clipShape(RoundedRectangle(cornerRadius: 8))
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 8, style: .continuous)
                                                 .stroke(isSel ? AppColors.accent : AppColors.border, lineWidth: 1)
@@ -195,7 +195,7 @@ public struct WarmupPlateSheet: View {
             .frame(maxWidth: .infinity)
             .frame(height: 38)
             .background(isSelected ? AppColors.positiveBg : Color.clear)
-            .cornerRadius(10)
+            .clipShape(RoundedRectangle(cornerRadius: 10))
         }
         .buttonStyle(.plain)
     }
@@ -273,7 +273,7 @@ public struct WarmupPlateSheet: View {
                                 .padding(.horizontal, 7)
                                 .padding(.vertical, 3)
                                 .background(step.isPotentiation ? AppColors.purpleBg : AppColors.warmupAmberBg)
-                                .cornerRadius(6)
+                                .clipShape(RoundedRectangle(cornerRadius: 6))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 6, style: .continuous)
                                         .stroke((step.isPotentiation ? AppColors.purple : AppColors.warmupAmber).opacity(0.5), lineWidth: 1)
@@ -352,7 +352,7 @@ public struct WarmupPlateSheet: View {
                 .frame(maxWidth: .infinity)
                 .frame(height: 50)
                 .background(AppColors.accent)
-                .cornerRadius(12)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
             }
             .buttonStyle(.plain)
             .disabled(ramp.steps.isEmpty)
@@ -447,7 +447,7 @@ public struct WarmupPlateSheet: View {
                                 .padding(.horizontal, 8)
                                 .padding(.vertical, 6)
                                 .background(isAvail ? AppColors.surfaceRaised : AppColors.surface.opacity(0.4))
-                                .cornerRadius(8)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8, style: .continuous)
                                         .stroke(isAvail ? pColor.opacity(0.6) : AppColors.border.opacity(0.4), lineWidth: 1)
@@ -469,7 +469,7 @@ public struct WarmupPlateSheet: View {
                 .foregroundStyle(AppColors.secondaryText)
                 .frame(width: 40, height: 34)
                 .background(AppColors.surfaceRaised)
-                .cornerRadius(6)
+                .clipShape(RoundedRectangle(cornerRadius: 6))
                 .overlay(
                     RoundedRectangle(cornerRadius: 6, style: .continuous)
                         .stroke(AppColors.border, lineWidth: 1)

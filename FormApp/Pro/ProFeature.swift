@@ -106,7 +106,7 @@ public struct ProBadge: View {
                 RoundedRectangle(cornerRadius: 4)
                     .stroke(AppColors.purple.opacity(0.5), lineWidth: 1)
             )
-            .cornerRadius(4)
+            .clipShape(RoundedRectangle(cornerRadius: 4))
     }
 }
 

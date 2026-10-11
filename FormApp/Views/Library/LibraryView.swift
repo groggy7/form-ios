@@ -69,7 +69,7 @@ public struct LibraryView: View {
                         TextField(LanguageManager.t("library.search"), text: $query)
                             .font(.system(size: 14))
                             .foregroundStyle(AppColors.text)
-                            .accentColor(AppColors.accent)
+                            .tint(AppColors.accent)
 
                         if !query.isEmpty {
                             Button(action: { query = "" }) {

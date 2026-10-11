@@ -65,7 +65,7 @@ public struct ProgressionInfoSheet: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surfaceRaised)
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-        .cornerRadius(16)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
     private var actionsSection: some View {
@@ -99,7 +99,7 @@ public struct ProgressionInfoSheet: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.progressionRulesSurface)
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-        .cornerRadius(16)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
     private func actionRow(action: ProgressionAction, desc: String) -> some View {
@@ -112,7 +112,7 @@ public struct ProgressionInfoSheet: View {
                 .frame(width: 44, height: 44)
                 .background(colors.iconSurface)
                 .overlay(RoundedRectangle(cornerRadius: 12).stroke(colors.accent.opacity(0.24), lineWidth: 1))
-                .cornerRadius(12)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
                 .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 6) {
@@ -132,7 +132,7 @@ public struct ProgressionInfoSheet: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(colors.surface)
         .overlay(RoundedRectangle(cornerRadius: 12).stroke(colors.accent.opacity(0.22), lineWidth: 1))
-        .cornerRadius(12)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
         .accessibilityElement(children: .combine)
     }
 
@@ -176,7 +176,7 @@ public struct ProgressionInfoSheet: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surfaceRaised)
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-        .cornerRadius(16)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
     private var tipSection: some View {
@@ -201,6 +201,6 @@ public struct ProgressionInfoSheet: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surfaceRaised)
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.accent.opacity(0.35), lineWidth: 1))
-        .cornerRadius(16)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }

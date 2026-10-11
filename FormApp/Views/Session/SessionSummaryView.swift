@@ -91,7 +91,7 @@ public struct SessionSummaryView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .padding(24)
                         .background(AppColors.surface)
-                        .cornerRadius(16)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
                         .overlay(
                             RoundedRectangle(cornerRadius: 16, style: .continuous)
                                 .stroke(AppColors.border, lineWidth: 1)
@@ -132,7 +132,7 @@ public struct SessionSummaryView: View {
                                 }
                                 .padding(14)
                                 .background(Color(hex: 0x14241D))
-                                .cornerRadius(12)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                                         .stroke(AppColors.completedGreen.opacity(0.35), lineWidth: 1)
@@ -154,7 +154,7 @@ public struct SessionSummaryView: View {
                                 }
                                 .padding(14)
                                 .background(Color(hex: 0x261D13))
-                                .cornerRadius(12)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                                         .stroke(AppColors.unfinishedOrange.opacity(0.35), lineWidth: 1)
@@ -379,7 +379,7 @@ public struct SessionSummaryView: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 16)
         .background(AppColors.surface)
-        .cornerRadius(16)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
         .overlay(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
                 .stroke(AppColors.border, lineWidth: 1)

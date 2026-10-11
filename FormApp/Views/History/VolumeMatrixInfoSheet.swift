@@ -63,7 +63,7 @@ public struct VolumeMatrixInfoSheet: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surfaceRaised)
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-        .cornerRadius(16)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
     private var calculationSection: some View {
@@ -81,7 +81,7 @@ public struct VolumeMatrixInfoSheet: View {
                     .padding(.vertical, 3)
                     .background(AppColors.positiveBg)
                     .overlay(RoundedRectangle(cornerRadius: 6).stroke(AppColors.accent.opacity(0.5), lineWidth: 1))
-                    .cornerRadius(6)
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(LanguageManager.t("matrix.info.directSetsTitle"))
@@ -105,7 +105,7 @@ public struct VolumeMatrixInfoSheet: View {
                     .padding(.vertical, 3)
                     .background(AppColors.purpleBg)
                     .overlay(RoundedRectangle(cornerRadius: 6).stroke(AppColors.purple.opacity(0.5), lineWidth: 1))
-                    .cornerRadius(6)
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(LanguageManager.t("matrix.info.indirectSetsTitle"))
@@ -122,7 +122,7 @@ public struct VolumeMatrixInfoSheet: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surfaceRaised)
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-        .cornerRadius(16)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
     private var zonesSection: some View {
@@ -147,7 +147,7 @@ public struct VolumeMatrixInfoSheet: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surfaceRaised)
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-        .cornerRadius(16)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
     private func zoneRowView(item: ZoneInfoItem) -> some View {
@@ -169,7 +169,7 @@ public struct VolumeMatrixInfoSheet: View {
                     .padding(.vertical, 2)
                     .background(item.zone.badgeBgColor)
                     .overlay(RoundedRectangle(cornerRadius: 6).stroke(item.zone.color.opacity(0.4), lineWidth: 1))
-                    .cornerRadius(6)
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
             }
 
             Text(LanguageManager.t(item.detailKey))
@@ -200,6 +200,6 @@ public struct VolumeMatrixInfoSheet: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(AppColors.surfaceRaised)
         .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.accent.opacity(0.35), lineWidth: 1))
-        .cornerRadius(16)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 }

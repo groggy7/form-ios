@@ -120,7 +120,7 @@ public struct ExerciseDetailView: View {
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 36)
                                 .background(isSelected ? AppColors.surfaceRaised : Color.clear)
-                                .cornerRadius(8)
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)
                                         .stroke(isSelected ? AppColors.accent.opacity(0.35) : Color.clear, lineWidth: 1)
@@ -134,7 +134,7 @@ public struct ExerciseDetailView: View {
                 }
                 .padding(4)
                 .background(AppColors.surface)
-                .cornerRadius(12)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
                         .stroke(AppColors.border, lineWidth: 1)
@@ -219,7 +219,7 @@ public struct ExerciseDetailView: View {
                             .padding(24)
                             .frame(maxWidth: .infinity)
                             .background(AppColors.surface)
-                            .cornerRadius(12)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
                             .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
                         } else {
                             TechniqueGuideView(
@@ -258,7 +258,7 @@ public struct ExerciseDetailView: View {
                             .padding(28)
                             .frame(maxWidth: .infinity)
                             .background(AppColors.surface)
-                            .cornerRadius(14)
+                            .clipShape(RoundedRectangle(cornerRadius: 14))
                             .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
                         } else {
                             ExerciseHistoryStatsRow(
@@ -345,7 +345,7 @@ public struct ExerciseDetailView: View {
                                             .padding(.horizontal, 16)
                                             .padding(.vertical, 14)
                                             .background(AppColors.surfaceRaised)
-                                            .cornerRadius(14)
+                                            .clipShape(RoundedRectangle(cornerRadius: 14))
                                             .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
                                         }
                                         .buttonStyle(.plain)
@@ -602,7 +602,7 @@ struct HistoryStatCard: View {
         .frame(maxWidth: .infinity)
         .frame(height: 114)
         .background(AppColors.historyStatCardBg)
-        .cornerRadius(16)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
         .overlay(
             RoundedRectangle(cornerRadius: 16)
                 .stroke(AppColors.historyStatCardBorder, lineWidth: 1)
@@ -695,7 +695,7 @@ struct Estimated1RmInfoSheet: View {
                         .frame(maxWidth: .infinity)
                         .padding(18)
                         .background(AppColors.historyStatCardBg)
-                        .cornerRadius(16)
+                        .clipShape(RoundedRectangle(cornerRadius: 16))
                         .overlay(
                             RoundedRectangle(cornerRadius: 16)
                                 .stroke(AppColors.historyStatCardBorder, lineWidth: 1)
@@ -714,7 +714,7 @@ struct Estimated1RmInfoSheet: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(14)
                         .background(AppColors.surfaceRaised)
-                        .cornerRadius(14)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
                         .overlay(
                             RoundedRectangle(cornerRadius: 14)
                                 .stroke(AppColors.border, lineWidth: 1)
@@ -730,7 +730,7 @@ struct Estimated1RmInfoSheet: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(14)
                         .background(AppColors.surfaceRaised)
-                        .cornerRadius(14)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
                         .overlay(
                             RoundedRectangle(cornerRadius: 14)
                                 .stroke(AppColors.border, lineWidth: 1)
@@ -893,7 +893,7 @@ struct ExerciseSessionHistoryCard: View {
                                             .padding(.horizontal, 5)
                                             .padding(.vertical, 1)
                                             .background(AppColors.historyStat1RmAmber.opacity(0.15))
-                                            .cornerRadius(4)
+                                            .clipShape(RoundedRectangle(cornerRadius: 4))
                                     }
                                 }
 
@@ -939,7 +939,7 @@ struct ExerciseSessionHistoryCard: View {
             }
         }
         .background(AppColors.historyStatCardBg)
-        .cornerRadius(16)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
         .overlay(
             RoundedRectangle(cornerRadius: 16)
                 .stroke(AppColors.historyStatCardBorder, lineWidth: 1)
@@ -1072,7 +1072,7 @@ struct ExerciseHistoryArchiveView: View {
                         .padding(.horizontal, 12)
                         .padding(.vertical, 8)
                         .background(AppColors.surfaceRaised)
-                        .cornerRadius(10)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
                         .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.border, lineWidth: 1))
                     }
 
@@ -1107,7 +1107,7 @@ struct ExerciseHistoryArchiveView: View {
                                     .padding(.horizontal, 12)
                                     .padding(.vertical, 6)
                                     .background(isAllSelected ? AppColors.accent.opacity(0.2) : AppColors.surface)
-                                    .cornerRadius(8)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 8)
                                             .stroke(isAllSelected ? AppColors.accent : AppColors.border, lineWidth: 1)
@@ -1127,7 +1127,7 @@ struct ExerciseHistoryArchiveView: View {
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 6)
                                         .background(isSelected ? AppColors.accent.opacity(0.2) : AppColors.surface)
-                                        .cornerRadius(8)
+                                        .clipShape(RoundedRectangle(cornerRadius: 8))
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 8)
                                                 .stroke(isSelected ? AppColors.accent : AppColors.border, lineWidth: 1)
@@ -1196,7 +1196,7 @@ struct ExerciseHistoryArchiveView: View {
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 12)
                                 .background(AppColors.surfaceRaised)
-                                .cornerRadius(12)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
                                 .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
                             }
                             .buttonStyle(.plain)
@@ -1255,7 +1255,7 @@ struct TechniqueGuideView: View {
                     .padding(.vertical, 12)
                     .frame(maxWidth: .infinity, minHeight: 48, alignment: .leading)
                     .background(AppColors.surface)
-                    .cornerRadius(12)
+                    .clipShape(RoundedRectangle(cornerRadius: 12))
                     .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
                 }
                 .buttonStyle(.plain)
@@ -1332,7 +1332,7 @@ struct TechniqueSectionView: View {
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(isAvoid ? AppColors.avoidBg : AppColors.cuesBg)
-        .cornerRadius(12)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
         .overlay(RoundedRectangle(cornerRadius: 12).stroke(isAvoid ? AppColors.avoidBorder : AppColors.cuesBorder, lineWidth: 1))
         .contentShape(Rectangle())
         .onTapGesture {

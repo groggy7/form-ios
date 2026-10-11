@@ -96,7 +96,7 @@ public struct SetLoggingTable: View {
                     .multilineTextAlignment(.trailing)
                     .frame(maxWidth: .infinity, alignment: .trailing)
             }
-            .padding(12).background(AppColors.positiveBg).cornerRadius(10)
+            .padding(12).background(AppColors.positiveBg).clipShape(RoundedRectangle(cornerRadius: 10))
             // Table Header
             HStack(spacing: 8) {
                 Text(LanguageManager.t("table.set"))
@@ -198,7 +198,7 @@ public struct SetLoggingTable: View {
                             .padding(.horizontal, 4)
                             .padding(.vertical, 2)
                             .background(AppColors.positiveBg)
-                            .cornerRadius(4)
+                            .clipShape(RoundedRectangle(cornerRadius: 4))
                             .overlay(RoundedRectangle(cornerRadius: 4).stroke(AppColors.accent.opacity(0.35)))
                             .frame(width: 56, alignment: .center)
                     } else {
@@ -231,7 +231,7 @@ public struct SetLoggingTable: View {
                         .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
                         .padding(.vertical, 8)
                         .background(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5))
-                        .cornerRadius(8)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
                         .frame(maxWidth: .infinity)
                         .frame(minHeight: 48)
                         .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: true) && isSetInputEnabled ? AppColors.accent : .clear))
@@ -251,7 +251,7 @@ public struct SetLoggingTable: View {
                         .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
                         .padding(.vertical, 8)
                         .background(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5))
-                        .cornerRadius(8)
+                        .clipShape(RoundedRectangle(cornerRadius: 8))
                         .frame(maxWidth: .infinity)
                         .frame(minHeight: 48)
                         .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: false) && isSetInputEnabled ? AppColors.accent : .clear))
@@ -406,7 +406,7 @@ public struct SetLoggingTable: View {
                         .padding(.top, 4)
                     }
                     .padding(.horizontal, 8).padding(.vertical, 4)
-                    .background(AppColors.surfaceRaised).cornerRadius(10)
+                    .background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 10))
                     .accessibilityIdentifier("set-adjustments")
                 }
             }

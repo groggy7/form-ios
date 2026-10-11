@@ -206,7 +206,7 @@ public struct ProPaywallSheet: View {
                         .frame(maxWidth: .infinity)
                         .frame(minHeight: 52)
                         .background(AppColors.accent)
-                        .cornerRadius(14)
+                        .clipShape(RoundedRectangle(cornerRadius: 14))
                 } else {
                     HStack(spacing: 8) {
                         Image(systemName: "lock.open.fill")
@@ -222,7 +222,7 @@ public struct ProPaywallSheet: View {
                     .frame(maxWidth: .infinity)
                     .frame(minHeight: 52)
                     .background(AppColors.accent)
-                    .cornerRadius(14)
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
                 }
             }
             .buttonStyle(.plain)
@@ -250,7 +250,7 @@ public struct ProPaywallSheet: View {
                             .padding(.horizontal, 10)
                             .padding(.vertical, 5)
                             .background(AppColors.accent.opacity(0.12))
-                            .cornerRadius(6)
+                            .clipShape(RoundedRectangle(cornerRadius: 6))
                     }
                     .buttonStyle(.plain)
                 }
@@ -260,7 +260,7 @@ public struct ProPaywallSheet: View {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(AppColors.avoidBorder, lineWidth: 1)
                 )
-                .cornerRadius(10)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
             }
 
             Text(LanguageManager.t("paywall.cancel_anytime"))
@@ -395,7 +395,7 @@ public struct ProPaywallSheet: View {
                         RoundedRectangle(cornerRadius: 16)
                             .stroke(AppColors.border, lineWidth: 1)
                     )
-                    .cornerRadius(16)
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
 
                     if isIllustratedFeature {
                         if feature == .autoProgression {
@@ -471,7 +471,7 @@ public struct ProPaywallSheet: View {
                                 RoundedRectangle(cornerRadius: 16)
                                     .stroke(isAnnual ? AppColors.accent : AppColors.border, lineWidth: isAnnual ? 1.5 : 1)
                             )
-                            .cornerRadius(16)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
                         }
                         .buttonStyle(.plain)
 
@@ -527,7 +527,7 @@ public struct ProPaywallSheet: View {
                                 RoundedRectangle(cornerRadius: 16)
                                     .stroke(isMonthly ? AppColors.accent : AppColors.border, lineWidth: isMonthly ? 1.5 : 1)
                             )
-                            .cornerRadius(16)
+                            .clipShape(RoundedRectangle(cornerRadius: 16))
                         }
                         .buttonStyle(.plain)
                         if storeKit.annualProduct == nil || storeKit.monthlyProduct == nil {
@@ -665,7 +665,7 @@ public struct ProPaywallPreview: View {
             .padding(.horizontal, 8)
             .padding(.vertical, 3.5)
             .background(AppColors.purpleBg)
-            .cornerRadius(6)
+            .clipShape(RoundedRectangle(cornerRadius: 6))
 
             Text(LanguageManager.t(feature.titleKey))
                 .font(.system(size: 15, weight: .bold))
@@ -698,7 +698,7 @@ public struct ProPaywallPreview: View {
                 .frame(maxWidth: .infinity)
                 .frame(height: 40)
                 .background(AppColors.accent)
-                .cornerRadius(10)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
             }
             .buttonStyle(.plain)
             .padding(.top, 2)
@@ -717,7 +717,7 @@ public struct ProPaywallPreview: View {
             RoundedRectangle(cornerRadius: 16)
                 .stroke(AppColors.purple.opacity(0.4), lineWidth: 1)
         )
-        .cornerRadius(16)
+        .clipShape(RoundedRectangle(cornerRadius: 16))
         .sheet(isPresented: $showSheet) {
             ProPaywallSheet(feature: feature, onDismiss: { showSheet = false })
         }

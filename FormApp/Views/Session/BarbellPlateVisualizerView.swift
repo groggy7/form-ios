@@ -105,7 +105,7 @@ public struct BarbellPlateVisualizerView: View {
                         .padding(.horizontal, 6)
                         .padding(.vertical, 3)
                         .background(AppColors.surface)
-                        .cornerRadius(6)
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
                         .overlay(
                             RoundedRectangle(cornerRadius: 6, style: .continuous)
                                 .stroke(color.opacity(0.5), lineWidth: 1)

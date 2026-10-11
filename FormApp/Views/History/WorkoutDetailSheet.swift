@@ -71,12 +71,12 @@ public struct WorkoutDetailSheet: View {
                                     .padding(.horizontal, 14)
                                     .padding(.vertical, 8)
                                     .background(AppColors.surface)
-                                    .cornerRadius(8)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
                                 }
                             }
                             .padding(14)
                             .background(AppColors.surfaceRaised)
-                            .cornerRadius(12)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
                             .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
                         }
                     }
@@ -110,7 +110,7 @@ public struct WorkoutDetailSheet: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 12)
         .background(AppColors.surface)
-        .cornerRadius(12)
+        .clipShape(RoundedRectangle(cornerRadius: 12))
         .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
     }
 

@@ -67,7 +67,7 @@ public struct ProgramBuilderView: View {
                                 .foregroundStyle(AppColors.text)
                                 .padding(12)
                                 .background(AppColors.surface)
-                                .cornerRadius(10)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.border, lineWidth: 1))
                         }
 
@@ -80,13 +80,13 @@ public struct ProgramBuilderView: View {
                                 .foregroundStyle(AppColors.text)
                                 .padding(12)
                                 .background(AppColors.surface)
-                                .cornerRadius(10)
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
                                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.border, lineWidth: 1))
                         }
                     }
                     .padding(16)
                     .background(AppColors.surfaceRaised)
-                    .cornerRadius(14)
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
 
                     // Day Tabs
                     VStack(alignment: .leading, spacing: 14) {
@@ -132,7 +132,7 @@ public struct ProgramBuilderView: View {
                                         .foregroundStyle(AppColors.text)
                                         .padding(10)
                                         .background(AppColors.surface)
-                                        .cornerRadius(8)
+                                        .clipShape(RoundedRectangle(cornerRadius: 8))
                                         .overlay(RoundedRectangle(cornerRadius: 8).stroke(titleTooLong(workout) ? AppColors.danger : AppColors.border, lineWidth: 1))
                                     Text(LanguageManager.t("modal.workout.nameLimit", [
                                         "count": Workout.titleLength(workout.title), "limit": Workout.maxTitleLength
@@ -223,7 +223,7 @@ public struct ProgramBuilderView: View {
                                             }
                                             .padding(12)
                                             .background(AppColors.surface)
-                                            .cornerRadius(10)
+                                            .clipShape(RoundedRectangle(cornerRadius: 10))
                                             .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.border, lineWidth: 1))
                                         }
                                     }
@@ -231,7 +231,7 @@ public struct ProgramBuilderView: View {
                             }
                             .padding(16)
                             .background(AppColors.surfaceRaised)
-                            .cornerRadius(14)
+                            .clipShape(RoundedRectangle(cornerRadius: 14))
                         }
                     }
 
@@ -244,7 +244,7 @@ public struct ProgramBuilderView: View {
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 48)
                                 .background(AppColors.accent)
-                                .cornerRadius(12)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
                         }
                         .buttonStyle(.plain)
                         .disabled(!canSave)
@@ -257,7 +257,7 @@ public struct ProgramBuilderView: View {
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 44)
                                 .background(AppColors.surface)
-                                .cornerRadius(12)
+                                .clipShape(RoundedRectangle(cornerRadius: 12))
                                 .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
                         }
                         .buttonStyle(.plain)
