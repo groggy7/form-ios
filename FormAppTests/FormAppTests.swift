@@ -12131,3 +12131,40 @@ final class AuditVideoLifecycleTests: XCTestCase {
         XCTAssertFalse(controller.isPolling)
     }
 }
+
+
+final class AuditSearchPerformanceTests: XCTestCase {
+    @MainActor
+    func testCandidateSearchNormalizationBaseline() {
+        let previous = LanguageManager.shared.languagePreference
+        defer { LanguageManager.setLanguage(previous) }
+        LanguageManager.setLanguage("en")
+        let exercises = ExerciseCatalog.canonicalExercises.values.sorted { $0.id < $1.id }.map { $0.toExercise() }
+        let queries = ["b", "ba", "bar", "barbell", "bench", "press", "squat", "lunge", "cable", "dumbbell", "row", "pull", "leg", "curl", "hamstring", "neutral grip", "single leg", "unknown fixture"].map { ExerciseSearch.Query($0) }
+        var checksum = 0
+        let started = Date.timeIntervalSinceReferenceDate
+        for query in queries {
+            for exercise in exercises {
+                if let score = ExerciseSearch.score(query, exercise: exercise, localizedName: exercise.displayName, category: exercise.metadataSubtitle) { checksum += score + 1 }
+            }
+        }
+        let elapsed = Date.timeIntervalSinceReferenceDate - started
+        let preparationStarted = Date.timeIntervalSinceReferenceDate
+        let prepared = exercises.map { ExerciseSearch.Candidate(exercise: $0, localizedName: $0.displayName, category: $0.metadataSubtitle) }
+        let preparationElapsed = Date.timeIntervalSinceReferenceDate - preparationStarted
+        var preparedChecksum = 0
+        let preparedStarted = Date.timeIntervalSinceReferenceDate
+        for query in queries {
+            for candidate in prepared {
+                if let score = ExerciseSearch.score(query, candidate: candidate) { preparedChecksum += score + 1 }
+            }
+        }
+        let preparedElapsed = Date.timeIntervalSinceReferenceDate - preparedStarted
+        XCTAssertEqual(preparedChecksum, checksum)
+        XCTAssertGreaterThan(checksum, 0)
+        let attachment = XCTAttachment(string: "baselineSeconds=\(elapsed); preparedSeconds=\(preparedElapsed); preparationSeconds=\(preparationElapsed); candidates=\(exercises.count); queries=\(queries.count); checksum=\(checksum)")
+        attachment.name = "search-normalization-baseline"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+}

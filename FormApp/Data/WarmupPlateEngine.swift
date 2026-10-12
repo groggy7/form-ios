@@ -16,11 +16,7 @@ public enum WarmupPlateEngine {
     }
 
     public static func defaultPlates(unit: WeightUnit = .kg) -> [Double] {
-        return unit == .lbs ? defaultPlatesLbs : defaultPlatesKg
-    }
-
-    public static func defaultPlates(_ unit: WeightUnit) -> [Double] {
-        return unit == .lbs ? defaultPlatesLbs : defaultPlatesKg
+        defaultPlates(for: unit)
     }
 
     public static func calculatePlates(

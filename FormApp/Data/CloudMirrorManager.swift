@@ -206,7 +206,6 @@ public final class CloudMirrorManager: ObservableObject {
             if newValue { retryPendingSyncIfAny() }
         }
     }
-    public var isEncrypted: Bool { get { false } set {} }
     public var hasPendingSync: Bool { readPendingSync() != nil }
 
     @discardableResult

@@ -39,19 +39,6 @@ public struct ExerciseReportSheet: View {
         _comments = State(initialValue: initialDraft?.comment ?? "")
     }
 
-    public init(
-        exercise: Exercise,
-        onDismiss: @escaping () -> Void,
-        onSubmit: @escaping (ExerciseIssueReport) -> Void
-    ) {
-        self.exercise = exercise
-        self.initialDraft = nil
-        self.onDismiss = onDismiss
-        self.onSubmitNotice = { _ in }
-        _selectedCategory = State(initialValue: ExerciseReportStore.categories.first ?? "animation_form")
-        _comments = State(initialValue: "")
-    }
-
     public var body: some View {
         let _ = themeManager.currentTheme
         NavigationStack {
