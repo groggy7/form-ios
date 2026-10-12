@@ -1095,8 +1095,10 @@ private struct PendingAnomalousSet: Identifiable {
 
 
 private struct SessionElapsedTime: View {
+    @ObservedObject private var themeManager = ThemeManager.shared
     let draft: ActiveSessionDraft
     var body: some View {
+        let _ = themeManager.currentTheme
         TimelineView(.periodic(from: .now, by: 1)) { timeline in
             Text(RestTimerUtils.formatSecondsToTime(draft.currentDurationSeconds(
                 nowEpochMillis: Int64(timeline.date.timeIntervalSince1970 * 1000))))
