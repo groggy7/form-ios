@@ -22,6 +22,15 @@ public enum ProgressionAction: String, CaseIterable, Identifiable {
     }
 
     public var color: Color {
+        if !ThemeManager.shared.currentTheme.isDark {
+            switch self {
+            case .increaseLoad: return AppColors.historyStatPrGreen
+            case .addReps: return AppColors.historyStatCyan
+            case .holdLoad: return AppColors.warmupAmber
+            case .deload: return AppColors.purple
+            case .firstSession, .insufficientData: return AppColors.muted
+            }
+        }
         switch self {
         case .increaseLoad: return Color(hex: 0x20D791)
         case .addReps: return Color(hex: 0x12D8D2)
@@ -32,6 +41,15 @@ public enum ProgressionAction: String, CaseIterable, Identifiable {
     }
 
     public var badgeBgColor: Color {
+        if !ThemeManager.shared.currentTheme.isDark {
+            switch self {
+            case .increaseLoad: return AppColors.completedSurface
+            case .addReps: return Color(hex: 0xE3EBED)
+            case .holdLoad: return AppColors.warmupAmberBg
+            case .deload: return AppColors.purpleBg
+            case .firstSession, .insufficientData: return AppColors.surfaceRaised
+            }
+        }
         switch self {
         case .increaseLoad: return Color(hex: 0x142D29)
         case .addReps: return Color(hex: 0x0C292B)

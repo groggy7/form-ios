@@ -2,12 +2,12 @@ import SwiftUI
 
 private var cardBackground: Color { AppColors.heroSurface }
 private var cardBorder: Color { AppColors.heroBorder }
-private let segmentActive = Color(hex: 0x21E498)
-private let segmentBlinkingTarget = Color(hex: 0x1E946A)
+private var segmentActive: Color { AppColors.goalSegmentActive }
+private var segmentBlinkingTarget: Color { AppColors.goalSegmentPending }
 private var segmentTrack: Color { AppColors.surface }
 private var statBoxBg: Color { AppColors.surface }
 private var statBoxBorder: Color { AppColors.border }
-private let amberPr = Color(hex: 0xFBBF24)
+private var amberPr: Color { AppColors.lightThemeColor(Color(hex: 0xFBBF24), AppColors.warmupAmber) }
 
 public func isWeeklyGoalPillBlinking(
     pillIndex: Int,

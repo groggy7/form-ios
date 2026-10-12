@@ -300,7 +300,7 @@ public struct HistoryDayPreviewCard: View {
                 HStack {
                     Text(LanguageManager.t("history.fullLogBreakdown").isEmpty ? "Full Log Breakdown →" : LanguageManager.t("history.fullLogBreakdown"))
                         .font(.system(size: 15, weight: .bold))
-                        .foregroundStyle(Color(hex: 0x090C0F))
+                        .foregroundStyle(AppColors.background)
                 }
                 .frame(maxWidth: .infinity)
                 .frame(height: 48)

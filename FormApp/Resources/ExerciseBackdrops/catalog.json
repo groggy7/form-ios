@@ -78,6 +78,18 @@
       ],
       "dark": "0C0C10",
       "light": "393A40"
+    },
+    "oat": {
+      "file": "oat.png",
+      "sha256": "0c0f10f9026af00521f7203ed440d6892b316a1a773064af9b9aff9d52f8633e",
+      "bytes": 854126,
+      "perimeterRGB": [
+        209,
+        189,
+        163
+      ],
+      "dark": "CEB99E",
+      "light": "EFE4D5"
     }
   },
   "themes": {
@@ -87,6 +99,7 @@
     "stealth": "stealth",
     "cobalt": "cobalt",
     "crimson": "crimson",
-    "amethyst": "amethyst"
+    "amethyst": "amethyst",
+    "oat": "oat"
   }
 }

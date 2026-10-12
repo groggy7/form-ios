@@ -7,25 +7,25 @@ public enum WorkoutVisualRegion {
 
     var daySurface: Color {
         switch self {
-        case .upper: return Color(hex: 0x292539)
-        case .lower: return Color(hex: 0x202D3D)
-        case .fullBody: return Color(hex: 0x292F38)
+        case .upper: return AppColors.lightThemeColor(Color(hex: 0x292539), Color(hex: 0xF0E3EA))
+        case .lower: return AppColors.lightThemeColor(Color(hex: 0x202D3D), Color(hex: 0xE3E8EE))
+        case .fullBody: return AppColors.lightThemeColor(Color(hex: 0x292F38), Color(hex: 0xEBE3D7))
         }
     }
 
     var dayBorder: Color {
         switch self {
-        case .upper: return Color(hex: 0x494260)
-        case .lower: return Color(hex: 0x37485F)
-        case .fullBody: return Color(hex: 0x414C57)
+        case .upper: return AppColors.lightThemeColor(Color(hex: 0x494260), Color(hex: 0xC7AFBA))
+        case .lower: return AppColors.lightThemeColor(Color(hex: 0x37485F), Color(hex: 0xA8B8C6))
+        case .fullBody: return AppColors.lightThemeColor(Color(hex: 0x414C57), Color(hex: 0xC7B6A1))
         }
     }
 
     var dayText: Color {
         switch self {
-        case .upper: return Color(hex: 0xE3DAF1)
-        case .lower: return Color(hex: 0xD2E2F5)
-        case .fullBody: return Color(hex: 0xDBE2E9)
+        case .upper: return AppColors.lightThemeColor(Color(hex: 0xE3DAF1), Color(hex: 0x765064))
+        case .lower: return AppColors.lightThemeColor(Color(hex: 0xD2E2F5), Color(hex: 0x485E72))
+        case .fullBody: return AppColors.lightThemeColor(Color(hex: 0xDBE2E9), Color(hex: 0x65584A))
         }
     }
 }
@@ -90,6 +90,7 @@ public struct WeekStripView: View {
 }
 
 struct WorkoutDayStrip: View {
+    @ObservedObject private var themeManager = ThemeManager.shared
     let program: Program
     let workouts: [Workout]
     let calendar: WeekCalendar
@@ -126,23 +127,23 @@ struct WorkoutDayStrip: View {
                         let palette = workout.visualRegion
 
                         let textColor: Color = {
-                            if selected { return Color(hex: 0x1A2026) }
-                            if isCompleted { return Color(hex: 0xD8F3E5) }
-                            if isUnfinished { return Color(hex: 0xFDE8CC) }
+                            if selected { return AppColors.todaySelectionText }
+                            if isCompleted { return AppColors.completedDayText }
+                            if isUnfinished { return AppColors.unfinishedText }
                             return palette.dayText
                         }()
 
                         let surfaceColor: Color = {
-                            if selected { return Color(hex: 0xEEE8DC) }
-                            if isCompleted { return Color(hex: 0x1B332B) }
-                            if isUnfinished { return Color(hex: 0x332717) }
+                            if selected { return AppColors.todayIvory }
+                            if isCompleted { return AppColors.completedDaySurface }
+                            if isUnfinished { return AppColors.unfinishedSurface }
                             return palette.daySurface
                         }()
 
                         let borderColor: Color = {
-                            if selected { return Color(hex: 0xEEE8DC) }
-                            if isToday { return Color(hex: 0xEEE8DC).opacity(0.7) }
-                            if isCompleted { return Color(hex: 0x2D5949) }
+                            if selected { return AppColors.todayIvory }
+                            if isToday { return AppColors.todayIvory.opacity(0.7) }
+                            if isCompleted { return AppColors.completedDayBorder }
                             if isUnfinished { return Color(hex: 0x664923) }
                             return palette.dayBorder
                         }()

@@ -222,7 +222,7 @@ public struct RootView: View {
                 }
             }
         }
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(themeManager.currentTheme.colorScheme)
         .environment(\.locale, LanguageManager.locale)
         .task {
             // Restore subscriptions on every app launch, not only when a paywall opens.

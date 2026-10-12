@@ -761,7 +761,7 @@ struct ImportExportDataSheet: View {
                                 Text(LanguageManager.t("settings.exportData"))
                                     .font(.system(size: 13, weight: .bold))
                             }
-                            .foregroundStyle(.black)
+                            .foregroundStyle(AppColors.background)
                             .frame(maxWidth: .infinity)
                             .frame(height: 44)
                             .background(AppColors.accent)

@@ -33,7 +33,7 @@ public struct VideoPlayerSheet: View {
                 playerContent
             }
         }
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(themeManager.currentTheme.colorScheme)
     }
 
     private var invalidUrlContent: some View {

@@ -358,7 +358,7 @@ public struct VolumeMatrixView: View {
                                     .foregroundStyle(isSelected ? AppColors.text : AppColors.secondaryText)
                                 Text(String(format: "%.1f", locale: LanguageManager.numberLocale, summary?.totalEffectiveSets ?? 0))
                                     .font(.system(size: 11, weight: .bold))
-                                    .foregroundStyle(zoneColor)
+                                    .foregroundStyle(summary?.zone.textColor ?? AppColors.muted)
                             }
                             .padding(.horizontal, 10)
                             .padding(.vertical, 8)
@@ -550,7 +550,7 @@ public struct VolumeMatrixView: View {
                     .foregroundStyle(AppColors.text)
                 Text(LanguageManager.t(summary.zone.titleKey))
                     .font(.system(size: 11, weight: .semibold))
-                    .foregroundStyle(summary.zone.color)
+                    .foregroundStyle(summary.zone.textColor)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
                     .background(summary.zone.badgeBgColor)
@@ -630,11 +630,11 @@ public struct VolumeMatrixView: View {
                 Spacer()
                 Text("MAV: \(Int(summary.landmarks.mavMin))–\(Int(summary.landmarks.mavMax))")
                     .font(.system(size: 10, weight: .bold))
-                    .foregroundStyle(Color(hex: 0x20D791))
+                    .foregroundStyle(AppColors.historyStatPrGreen)
                 Spacer()
                 Text("MRV: \(Int(summary.landmarks.mrv))")
                     .font(.system(size: 10, weight: .medium))
-                    .foregroundStyle(Color(hex: 0xFF897B))
+                    .foregroundStyle(AppColors.lightThemeColor(Color(hex: 0xFF897B), AppColors.danger))
             }
         }
     }

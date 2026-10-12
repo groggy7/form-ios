@@ -11302,10 +11302,10 @@ final class AppThemesTests: XCTestCase {
         ThemeManager.shared.setThemeId(AppThemes.default.id)
     }
 
-    func testAllSevenThemesAreDefinedAndDistinct() {
-        XCTAssertEqual(AppThemes.all.count, 7)
+    func testAllEightThemesAreDefinedAndDistinct() {
+        XCTAssertEqual(AppThemes.all.count, 8)
         let ids = Set(AppThemes.all.map { $0.id })
-        XCTAssertEqual(ids.count, 7)
+        XCTAssertEqual(ids.count, 8)
         XCTAssertTrue(ids.contains("default"))
         XCTAssertTrue(ids.contains("espresso"))
         XCTAssertTrue(ids.contains("stealth"))
@@ -11313,6 +11313,9 @@ final class AppThemesTests: XCTestCase {
         XCTAssertTrue(ids.contains("alpine"))
         XCTAssertTrue(ids.contains("crimson"))
         XCTAssertTrue(ids.contains("amethyst"))
+        XCTAssertTrue(ids.contains("oat"))
+        XCTAssertEqual(AppThemes.oat.colorScheme, .light)
+        XCTAssertTrue(AppThemes.all.filter { $0.id != "oat" }.allSatisfy { $0.isDark })
     }
 
     func testDefaultThemeIsFreeAndOthersArePremium() {
@@ -11389,8 +11392,31 @@ final class AppThemesTests: XCTestCase {
                 XCTAssertEqual(AppColors.progressionPaywallAccent, theme.accent)
             }
             let expectedMedia: UInt32 = ["espresso": 0x1B130F, "stealth": 0x101015, "cobalt": 0x08131F,
-                "crimson": 0x1B0E13, "amethyst": 0x140E1E][theme.id] ?? 0x051214
+                "crimson": 0x1B0E13, "amethyst": 0x140E1E, "oat": 0xD1BDA3][theme.id] ?? 0x051214
             XCTAssertEqual(AppColors.exerciseVideoSurface, Color(hex: expectedMedia))
+        }
+    }
+
+    @MainActor
+    func testRootAppliesNativeLightAppearanceAndReturnsToDark() async throws {
+        let manager = ThemeManager.shared
+        let saved = manager.currentTheme.id
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
+        let previous = scene.windows.first(where: \.isKeyWindow)
+        let window = UIWindow(windowScene: scene)
+        window.frame = scene.coordinateSpace.bounds
+        let host = UIHostingController(rootView: RootView())
+        window.rootViewController = host
+        window.makeKeyAndVisible()
+        defer { window.isHidden = true; previous?.makeKey(); manager.setThemeId(saved) }
+        for (id, style) in [("oat", UIUserInterfaceStyle.light), ("default", .dark)] {
+            manager.setThemeId(id)
+            for _ in 0..<60 {
+                window.layoutIfNeeded()
+                if host.view.traitCollection.userInterfaceStyle == style { break }
+                try await Task.sleep(nanoseconds: 50_000_000)
+            }
+            XCTAssertEqual(host.view.traitCollection.userInterfaceStyle, style, id)
         }
     }
 
@@ -11750,7 +11776,7 @@ final class ThemeCoverageSnapshots: XCTestCase {
     }
 
     @MainActor
-    func testSevenThemeComponentSnapshotsAndLiveSwitch() async throws {
+    func testEightThemeComponentSnapshotsAndLiveSwitch() async throws {
         let original = ThemeManager.shared.currentTheme.id
         defer { ThemeManager.shared.setThemeId(original) }
         // Initialize the real weekly-card globals under the default theme, then switch live.
@@ -11809,7 +11835,7 @@ final class ThemeCoverageSnapshots: XCTestCase {
     }
 
     @MainActor
-    func testSevenThemesAcrossHeroAnalyticsDetailSummaryAndPaywall() async throws {
+    func testEightThemesAcrossHeroAnalyticsDetailSummaryAndPaywall() async throws {
         let original = ThemeManager.shared.currentTheme.id
         let language = LanguageManager.shared.currentLanguage
         defer { ThemeManager.shared.setThemeId(original); LanguageManager.setLanguage(language) }

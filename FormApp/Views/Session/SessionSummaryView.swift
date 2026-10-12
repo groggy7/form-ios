@@ -133,7 +133,7 @@ public struct SessionSummaryView: View {
                                     Spacer()
                                 }
                                 .padding(14)
-                                .background(Color(hex: 0x14241D))
+                                .background(AppColors.completedSurface)
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12, style: .continuous)
@@ -155,7 +155,7 @@ public struct SessionSummaryView: View {
                                     Spacer()
                                 }
                                 .padding(14)
-                                .background(Color(hex: 0x261D13))
+                                .background(AppColors.unfinishedSummarySurface)
                                 .clipShape(RoundedRectangle(cornerRadius: 12))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 12, style: .continuous)

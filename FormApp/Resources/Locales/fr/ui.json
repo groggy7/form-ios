@@ -290,6 +290,8 @@
   "theme.crimson.description": "Cordouan profond avec accents or rose discrets",
   "theme.amethyst.name": "Améthyste Noir",
   "theme.amethyst.description": "Prune obsidienne fumée avec violet lumineux",
+  "theme.oat.name": "Avoine & Braise",
+  "theme.oat.description": "Beige avoine clair et accents orange brûlé",
   "settings.cloudBackup": "Sauvegarde dans le cloud",
   "settings.cloudBackupSubtitle": "Sauvegardes locales ; iCloud Drive lorsqu'il est disponible (Premium)",
   "settings.cloudBackupConnectPrompt": "Liez votre compte Google pour sauvegarder vos données.",

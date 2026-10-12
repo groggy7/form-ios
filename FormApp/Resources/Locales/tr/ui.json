@@ -290,6 +290,8 @@
   "theme.crimson.description": "Derin kordovan ve yumuşak pembe altın vurgular",
   "theme.amethyst.name": "Ametist Noir",
   "theme.amethyst.description": "Füme obsidyen mürdüm ve parlak menekşe moru",
+  "theme.oat.name": "Yulaf & Kor",
+  "theme.oat.description": "Açık bej yüzeyler ve sıcak kiremit turuncusu",
   "settings.cloudBackup": "Bulut Yedekleme",
   "settings.cloudBackupSubtitle": "Yerel yedekleme; varsa iCloud Drive (Premium)",
   "settings.cloudBackupConnectPrompt": "Verilerinizi yedeklemek için Google hesabınızı bağlayın.",

@@ -252,7 +252,7 @@ public struct FormLabView: View {
                 HStack(spacing: 8) {
                     Image(systemName: "trophy.fill")
                         .font(.system(size: 13))
-                        .foregroundStyle(Color(hex: 0xF59E0B))
+                        .foregroundStyle(AppColors.lightThemeColor(Color(hex: 0xF59E0B), AppColors.warmupAmber))
 
                     let dateStr = summary.achievedDate.map { formatAchievedDate($0) } ?? ""
                     let displayWeight = store.weightUnit.toDisplay(summary.bestWeightKg)
@@ -419,7 +419,7 @@ public struct FormLabView: View {
                     statCard(
                         title: LanguageManager.t("form_lab.net_gain"),
                         value: report.points.count >= 2 ? String(format: "%@ (%.1f%%)", locale: LanguageManager.numberLocale, formatDelta(report.deltaKg), report.percentageGain) : "—",
-                        color: report.deltaKg >= 0 ? AppColors.accent : Color.red
+                        color: report.deltaKg >= 0 ? AppColors.accent : AppColors.lightThemeColor(.red, AppColors.danger)
                     )
                 }
 
@@ -683,7 +683,7 @@ public struct FormLabView: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(LanguageManager.t(ratio.alertMessageKey))
                     .font(.system(size: 12, weight: .medium))
-                    .foregroundStyle(ratio.status == .optimal ? AppColors.accent : (ratio.status == .insufficientData ? AppColors.muted : Color(hex: 0xF59E0B)))
+                    .foregroundStyle(ratio.status == .optimal ? AppColors.accent : (ratio.status == .insufficientData ? AppColors.muted : AppColors.lightThemeColor(Color(hex: 0xF59E0B), AppColors.warmupAmber)))
 
                 Text(LanguageManager.t(ratio.recommendationKey))
                     .font(.system(size: 11))
@@ -703,7 +703,7 @@ public struct FormLabView: View {
     private func statusColor(_ status: AntagonistStatus) -> Color {
         switch status {
         case .optimal: return AppColors.accent
-        case .primaryDominant, .antagonistDominant: return Color(hex: 0xF59E0B)
+        case .primaryDominant, .antagonistDominant: return AppColors.lightThemeColor(Color(hex: 0xF59E0B), AppColors.warmupAmber)
         case .insufficientData: return AppColors.muted
         }
     }

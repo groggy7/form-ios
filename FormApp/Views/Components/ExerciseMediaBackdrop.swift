@@ -3,7 +3,7 @@ import SwiftUI
 enum ExerciseBackdropStyle {
     static func file(for themeId: String) -> String {
         switch themeId {
-        case "espresso", "stealth", "cobalt", "crimson", "amethyst": return themeId + ".png"
+        case "espresso", "stealth", "cobalt", "crimson", "amethyst", "oat": return themeId + ".png"
         default: return "green.png"
         }
     }
@@ -14,6 +14,7 @@ enum ExerciseBackdropStyle {
         case "cobalt": return Color(hex: 0x08131F)
         case "crimson": return Color(hex: 0x1B0E13)
         case "amethyst": return Color(hex: 0x140E1E)
+        case "oat": return Color(hex: 0xD1BDA3)
         default: return Color(hex: 0x051214)
         }
     }

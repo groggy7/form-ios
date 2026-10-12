@@ -290,6 +290,8 @@
   "theme.crimson.description": "Deep cordovan with muted rose gold accents",
   "theme.amethyst.name": "Amethyst Noir",
   "theme.amethyst.description": "Smoked obsidian plum with luminous violet",
+  "theme.oat.name": "Oat & Ember",
+  "theme.oat.description": "Light oat paper with burnt-orange accents",
   "settings.cloudBackup": "Cloud Backup",
   "settings.cloudBackupSubtitle": "Local backups; iCloud Drive when available (Premium)",
   "settings.cloudBackupConnectPrompt": "Link your Google account to back up your data.",

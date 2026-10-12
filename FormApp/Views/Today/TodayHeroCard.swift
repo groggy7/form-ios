@@ -20,7 +20,29 @@ public struct TodayHeroCard: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     public static let cardHeight: CGFloat = 420
-    private var textWidth: CGFloat? { dynamicTypeSize >= .xxxLarge ? nil : 215 }
+    private var textWidth: CGFloat? { dynamicTypeSize >= .xxxLarge ? nil : (themeManager.currentTheme.isDark ? 215 : 172) }
+
+    private var workoutScrim: [Gradient.Stop] {
+        if !themeManager.currentTheme.isDark {
+            return [.init(color: cardSurface, location: 0),
+                    .init(color: cardSurface.opacity(0.98), location: 0.62),
+                    .init(color: cardSurface.opacity(0.03), location: 0.82),
+                    .init(color: .clear, location: 1)]
+        }
+        return [.init(color: cardSurface, location: 0),
+                .init(color: cardSurface.opacity(0.94), location: 0.25),
+                .init(color: cardSurface.opacity(0.50), location: 0.51),
+                .init(color: cardSurface.opacity(0.03), location: 0.76),
+                .init(color: .clear, location: 1)]
+    }
+    private var recoveryScrim: [Gradient.Stop] {
+        if !themeManager.currentTheme.isDark { return workoutScrim }
+        return [.init(color: cardSurface, location: 0),
+                .init(color: cardSurface.opacity(0.95), location: 0.26),
+                .init(color: cardSurface.opacity(0.50), location: 0.48),
+                .init(color: cardSurface.opacity(0.04), location: 0.64),
+                .init(color: .clear, location: 0.74), .init(color: .clear, location: 1)]
+    }
 
     private var cardSurface: Color { AppColors.heroSurface }
     private var cardBorder: Color { AppColors.heroBorder }
@@ -217,17 +239,12 @@ public struct TodayHeroCard: View {
 
                 // Muscle artwork underlay
                 MuscleArtwork(view: activeView, muscles: workout.resolvedMuscles)
+                    .opacity(!themeManager.currentTheme.isDark && dynamicTypeSize >= .xxxLarge ? 0.02 : 1)
                     .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
 
                 // Horizontal Gradient scrim (matching Android 1-to-1)
                 LinearGradient(
-                    stops: [
-                        .init(color: cardSurface, location: 0),
-                        .init(color: cardSurface.opacity(0.94), location: 0.25),
-                        .init(color: cardSurface.opacity(0.50), location: 0.51),
-                        .init(color: cardSurface.opacity(0.03), location: 0.76),
-                        .init(color: Color.clear, location: 1.0)
-                    ],
+                    stops: workoutScrim,
                     startPoint: .leading,
                     endPoint: .trailing
                 )
@@ -332,17 +349,11 @@ public struct TodayHeroCard: View {
                         .frame(width: geo.size.width, height: geo.size.height, alignment: .topTrailing)
                         .clipped()
                 }
+                .opacity(!themeManager.currentTheme.isDark && dynamicTypeSize >= .xxxLarge ? 0.02 : 1)
                 .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
 
                 LinearGradient(
-                    stops: [
-                        .init(color: cardSurface, location: 0),
-                        .init(color: cardSurface.opacity(0.95), location: 0.26),
-                        .init(color: cardSurface.opacity(0.50), location: 0.48),
-                        .init(color: cardSurface.opacity(0.04), location: 0.64),
-                        .init(color: Color.clear, location: 0.74),
-                        .init(color: Color.clear, location: 1.0)
-                    ],
+                    stops: recoveryScrim,
                     startPoint: .leading,
                     endPoint: .trailing
                 )

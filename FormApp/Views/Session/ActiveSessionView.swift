@@ -501,10 +501,10 @@ public struct ActiveSessionView: View {
                             HStack(spacing: 8) {
                                 Text(LanguageManager.t(currentIndex < exercises.count - 1 ? "session.nextExercise" : "session.review"))
                                     .font(.system(size: 14, weight: .semibold))
-                                    .foregroundStyle(.black)
+                                    .foregroundStyle(AppColors.background)
                                 Image(systemName: "arrow.right")
                                     .font(.system(size: 14, weight: .semibold))
-                                    .foregroundStyle(.black)
+                                    .foregroundStyle(AppColors.background)
                             }
                             .frame(maxWidth: .infinity)
                             .frame(minHeight: 50)

@@ -290,6 +290,8 @@
   "theme.crimson.description": "Tiefes Korduan mit dezenten Roségold-Akzenten",
   "theme.amethyst.name": "Amethyst Noir",
   "theme.amethyst.description": "Rauchiges Obsidian-Pflaumenblau mit leuchtendem Violett",
+  "theme.oat.name": "Hafer & Glut",
+  "theme.oat.description": "Helles Haferbeige mit Akzenten in gebranntem Orange",
   "settings.cloudBackup": "Cloud-Backup",
   "settings.cloudBackupSubtitle": "Lokale Backups; iCloud Drive, sofern verfügbar (Premium)",
   "settings.cloudBackupConnectPrompt": "Verknüpfen Sie Ihr Google-Konto, um Ihre Daten zu sichern.",

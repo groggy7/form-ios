@@ -290,6 +290,8 @@
   "theme.crimson.description": "Cordobán profundo con toques sutiles de oro rosa",
   "theme.amethyst.name": "Amatista Noir",
   "theme.amethyst.description": "Ciruela obsidiana ahumada con violeta luminoso",
+  "theme.oat.name": "Avena & Brasa",
+  "theme.oat.description": "Beige avena claro con acentos naranja tostado",
   "settings.cloudBackup": "Copia de seguridad en la nube",
   "settings.cloudBackupSubtitle": "Copias de seguridad locales; iCloud Drive cuando esté disponible (Premium)",
   "settings.cloudBackupConnectPrompt": "Vincula tu cuenta de Google para hacer una copia de seguridad de tus datos.",

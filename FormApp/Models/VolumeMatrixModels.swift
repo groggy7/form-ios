@@ -41,7 +41,29 @@ public enum VolumeZone: String, CaseIterable {
         }
     }
 
+    // Keep the reference paint unchanged; only native label tones adapt.
+    public var textColor: Color {
+        guard !ThemeManager.shared.currentTheme.isDark else { return color }
+        switch self {
+        case .noWeeklyReference: return AppColors.muted
+        case .underMev: return Color(hex: 0x526477)
+        case .progressive: return AppColors.historyStatCyan
+        case .optimalMav: return AppColors.historyStatPrGreen
+        case .highFatigue: return Color(hex: 0x79479E)
+        case .overMrv: return AppColors.danger
+        }
+    }
+
     public var badgeBgColor: Color {
+        if !ThemeManager.shared.currentTheme.isDark {
+            switch self {
+            case .noWeeklyReference, .underMev: return AppColors.surfaceRaised
+            case .progressive: return Color(hex: 0xE3EBED)
+            case .optimalMav: return AppColors.completedSurface
+            case .highFatigue: return Color(hex: 0xEADFEF)
+            case .overMrv: return AppColors.avoidBg
+            }
+        }
         switch self {
         case .noWeeklyReference: return Color(hex: 0x1E252B)
         case .underMev: return Color(hex: 0x1E252B)

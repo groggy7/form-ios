@@ -162,15 +162,15 @@ struct SessionFeaturePaywallContent: View {
         let heroHeight = max(0, width * 1.1 - headerTopPadding - headerRowHeight - headerBottomPadding)
         return VStack(alignment: .leading, spacing: 0) {
             Text(LanguageManager.t(featureTitleKey))
-                .font(.system(size: subtitleSize)).foregroundStyle(AppColors.progressionPaywallBody)
+                .font(.system(size: subtitleSize)).foregroundStyle(AppColors.progressionPaywallPhotoBody)
                 .padding(.bottom, 8)
             Text(LanguageManager.t("\(copyPrefix).headline"))
                 .font(.system(size: isWarmup ? warmupHeadlineSize : headlineSize, weight: .bold))
-                .foregroundStyle(AppColors.text).fixedSize(horizontal: false, vertical: true)
+                .foregroundStyle(AppColors.progressionPaywallPhotoTitle).fixedSize(horizontal: false, vertical: true)
                 .frame(width: comfortableText ? (width - 48) * (isWarmup ? 0.84 : (isVolumeMatrix || isRepLab || isGeneral || isCloudBackup ? 0.72 : 0.64)) : width - 48, alignment: .leading)
                 .padding(.bottom, 10)
             Text(LanguageManager.t("\(copyPrefix).subtitle"))
-                .font(.system(size: subtitleSize)).foregroundStyle(AppColors.progressionPaywallBody)
+                .font(.system(size: subtitleSize)).foregroundStyle(AppColors.progressionPaywallPhotoBody)
                 .shadow(color: .black.opacity(0.85), radius: 2, x: 0, y: 1).lineSpacing(3)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(width: comfortableText ? (width - 48) * 0.68 : width - 48, alignment: .leading)
@@ -182,7 +182,7 @@ struct SessionFeaturePaywallContent: View {
             }
             if isRepLab {
                 Text(LanguageManager.t("\(copyPrefix).reference_note"))
-                    .font(.system(size: footnoteSize)).foregroundStyle(AppColors.progressionPaywallBody)
+                    .font(.system(size: footnoteSize)).foregroundStyle(AppColors.progressionPaywallPhotoBody)
                     .shadow(color: .black.opacity(0.85), radius: 2, x: 0, y: 1).lineSpacing(2)
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(width: comfortableText ? (width - 48) * 0.66 : width - 48, alignment: .leading)
@@ -196,17 +196,18 @@ struct SessionFeaturePaywallContent: View {
             Image(heroArtwork).resizable().scaledToFill()
                 .frame(width: width, height: heroHeight, alignment: .topTrailing).clipped()
                 .overlay(LinearGradient(stops: [
-                    .init(color: AppColors.progressionPaywallSurface.opacity(0.5), location: 0),
-                    .init(color: AppColors.progressionPaywallSurface.opacity(0.35), location: 0.52),
+                    .init(color: AppColors.progressionPaywallPhotoSurface.opacity(0.5), location: 0),
+                    .init(color: AppColors.progressionPaywallPhotoSurface.opacity(0.35), location: 0.52),
                     .init(color: .clear, location: 0.78), .init(color: .clear, location: 1)
                 ], startPoint: .leading, endPoint: .trailing))
                 .overlay(LinearGradient(stops: [
                     .init(color: .clear, location: 0), .init(color: .clear, location: isVolumeMatrix ? 0.80 : 0.58),
-                    .init(color: AppColors.progressionPaywallSurface, location: 1)
+                    .init(color: AppColors.progressionPaywallPhotoSurface, location: 1)
                 ], startPoint: .top, endPoint: .bottom))
-                .overlay(comfortableText ? .clear : AppColors.progressionPaywallSurface.opacity(0.6))
+                .overlay(comfortableText ? .clear : AppColors.progressionPaywallPhotoSurface.opacity(0.6))
                 .accessibilityHidden(true)
         }
+        .background(AppColors.progressionPaywallPhotoSurface)
     }
 
 
@@ -217,9 +218,9 @@ struct SessionFeaturePaywallContent: View {
             benefitIcon(icon)
             VStack(alignment: .leading, spacing: 3) {
                 Text(LanguageManager.t("\(copyPrefix).benefit\(number)"))
-                    .font(.system(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.text)
+                    .font(.system(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.progressionPaywallPhotoTitle)
                 Text(LanguageManager.t("\(copyPrefix).benefit\(number)_desc"))
-                    .font(.system(size: descriptionSize)).foregroundStyle(AppColors.progressionPaywallBody)
+                    .font(.system(size: descriptionSize)).foregroundStyle(AppColors.progressionPaywallPhotoBody)
                     .shadow(color: .black.opacity(0.85), radius: 2, x: 0, y: 1).lineSpacing(3)
             }
             .fixedSize(horizontal: false, vertical: true).frame(maxWidth: .infinity, alignment: .leading)

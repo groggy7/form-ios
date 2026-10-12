@@ -166,7 +166,7 @@ public struct VolumeMatrixInfoSheet: View {
                 Spacer()
                 Text(LanguageManager.t(item.rangeKey))
                     .font(.system(size: 10, weight: .semibold))
-                    .foregroundStyle(item.zone.color)
+                    .foregroundStyle(item.zone.textColor)
                     .padding(.horizontal, 6)
                     .padding(.vertical, 2)
                     .background(item.zone.badgeBgColor)

@@ -1062,7 +1062,7 @@ private struct BoxDayCell: View {
 
                             Text("\(dayNumber)")
                                 .font(.system(size: 15, weight: .semibold))
-                                .foregroundStyle(AppColors.background)
+                                .foregroundStyle(AppColors.calendarPillText)
                         } else {
                             Text("\(dayNumber)")
                                 .font(.system(size: 15, weight: isToday ? .semibold : .regular))
@@ -1089,6 +1089,7 @@ private struct BoxDayCell: View {
 
 // MARK: - Compatibility sheet
 public struct HistoryDayDetailSheet: View {
+    @ObservedObject private var themeManager = ThemeManager.shared
     let detail: HistoryDayDetailData
     let history: [WorkoutSessionRecord]
     var today: Date
@@ -1115,6 +1116,6 @@ public struct HistoryDayDetailSheet: View {
             onBack: onDismiss, onActionWorkout: onActionWorkout)
             .presentationDetents([.fraction(0.8), .large])
             .presentationDragIndicator(.visible)
-            .preferredColorScheme(.dark)
+            .preferredColorScheme(themeManager.currentTheme.colorScheme)
     }
 }

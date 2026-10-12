@@ -10834,6 +10834,76 @@
         }
       }
     },
+    "theme.oat.name": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oat & Ember"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yulaf & Kor"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hafer & Glut"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avoine & Braise"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avena & Brasa"
+          }
+        }
+      }
+    },
+    "theme.oat.description": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Light oat paper with burnt-orange accents"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Açık bej yüzeyler ve sıcak kiremit turuncusu"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Helles Haferbeige mit Akzenten in gebranntem Orange"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beige avoine clair et accents orange brûlé"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beige avena claro con acentos naranja tostado"
+          }
+        }
+      }
+    },
     "settings.cloudBackup": {
       "extractionState": "manual",
       "localizations": {

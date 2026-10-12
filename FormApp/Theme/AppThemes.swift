@@ -20,6 +20,8 @@ public struct AppThemePalette: Identifiable, Equatable {
     public let danger: Color
     public let calendarSurfaceStart: Color
     public let calendarSurfaceEnd: Color
+    public var isDark: Bool = true
+    public var colorScheme: ColorScheme { isDark ? .dark : .light }
 
     public static func == (lhs: AppThemePalette, rhs: AppThemePalette) -> Bool {
         lhs.id == rhs.id
@@ -181,8 +183,31 @@ public enum AppThemes {
         calendarSurfaceEnd: Color(hex: 0x100B1A)
     )
 
+    public static let oat = AppThemePalette(
+        id: "oat",
+        nameKey: "theme.oat.name",
+        descriptionKey: "theme.oat.description",
+        isPremium: true,
+        background: Color(hex: 0xF4EFE6),
+        surface: Color(hex: 0xFFFBF4),
+        surfaceRaised: Color(hex: 0xEDE3D4),
+        border: Color(hex: 0xC7B6A1),
+        text: Color(hex: 0x312A23),
+        secondaryText: Color(hex: 0x65584A),
+        muted: Color(hex: 0x6F604F),
+        accent: Color(hex: 0x9F451B),
+        positiveBg: Color(hex: 0xF2DFC8),
+        purple: Color(hex: 0x765064),
+        purpleBg: Color(hex: 0xEDDFE4),
+        coral: Color(hex: 0xA84D32),
+        danger: Color(hex: 0xAA3E2F),
+        calendarSurfaceStart: Color(hex: 0xFFFBF4),
+        calendarSurfaceEnd: Color(hex: 0xF1E8DB),
+        isDark: false
+    )
+
     public static let all: [AppThemePalette] = [
-        `default`, espresso, stealth, cobalt, alpine, crimson, amethyst
+        `default`, espresso, stealth, cobalt, alpine, crimson, amethyst, oat
     ]
 
     public static func fromId(_ id: String) -> AppThemePalette {
