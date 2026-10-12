@@ -12015,3 +12015,51 @@ final class AuditStoreLifetimeTests: XCTestCase {
         XCTAssertNil(releasedPersistence)
     }
 }
+
+
+final class AuditCatalogConcurrencyTests: XCTestCase {
+    func testConcurrentCatalogAndLegacyLookupsKeepCanonicalIdentities() {
+        DispatchQueue.concurrentPerform(iterations: 1000) { _ in
+            XCTAssertEqual(ExerciseCatalog.canonicalExercises.count, 300)
+            XCTAssertEqual(ExerciseCatalog.resolveCanonicalId(stableId: nil, name: "  BARBELL   BENCH PRESS  "), "barbell-bench-press")
+            XCTAssertEqual(ExerciseCatalog.resolveCanonicalId(stableId: nil, name: "dumbbell-split-squat-front-foot-elevanted"), "dumbbell-split-squat-front-foot-elevanted")
+            XCTAssertEqual(ExerciseCatalog.resolveCanonicalId(stableId: "custom-id", name: "Barbell Bench Press"), "custom-id")
+            XCTAssertNil(ExerciseCatalog.resolveCanonicalId(stableId: nil, name: "unmapped fixture"))
+        }
+    }
+}
+
+final class AuditEntitlementConcurrencyTests: XCTestCase {
+    private struct Reader: @unchecked Sendable { let manager: ProAccessManager }
+
+    @MainActor
+    func testWorkerAuthorizationRemainsSafeDuringMainThreadEntitlementChanges() {
+        let manager = ProAccessManager()
+        let reader = Reader(manager: manager)
+        let group = DispatchGroup()
+        for _ in 0..<4 {
+            group.enter()
+            DispatchQueue.global().async {
+                defer { group.leave() }
+                for _ in 0..<5000 {
+                    _ = reader.manager.isFeatureUnlocked(.cloudBackup)
+                    _ = reader.manager.isFeatureUnlocked(.volumeMatrix)
+                }
+            }
+        }
+        for _ in 0..<100 {
+            manager.updateSubscriptionStatus(active: true)
+            manager.setFeatureOverride(.cloudBackup, unlocked: false)
+            XCTAssertFalse(manager.isFeatureUnlocked(.cloudBackup))
+            manager.setFeatureOverride(.cloudBackup, unlocked: nil)
+            XCTAssertTrue(manager.isFeatureUnlocked(.cloudBackup))
+            manager.resetOverrides()
+            XCTAssertFalse(manager.isFeatureUnlocked(.cloudBackup))
+        }
+        XCTAssertEqual(group.wait(timeout: .now() + 20), .success)
+        manager.updateSubscriptionStatus(active: true)
+        XCTAssertTrue(manager.isFeatureUnlocked(.cloudBackup))
+        XCTAssertFalse(manager.toggleSubscriptionStatus())
+        XCTAssertFalse(manager.isFeatureUnlocked(.cloudBackup))
+    }
+}

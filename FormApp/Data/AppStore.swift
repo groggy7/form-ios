@@ -1495,10 +1495,8 @@ public struct ExerciseCatalogEntry: Identifiable, Hashable {
 }
 
 public enum ExerciseCatalog {
-    private static var _canonicalExercises: [String: ExerciseDefinition]?
-
-    private static var _canonicalLookup: [String: String]?
-    private static let _canonicalLock = NSLock()
+    // Swift initializes static lets once, including simultaneous first access.
+    public static let canonicalExercises = AppStore.loadBundledExercises()
 
     private static func normalizeForLookup(_ name: String) -> String {
         name.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -1507,12 +1505,7 @@ public enum ExerciseCatalog {
             .joined(separator: " ")
     }
 
-    private static func ensureLookupLoaded() -> [String: String] {
-        if let lookup = _canonicalLookup { return lookup }
-        _canonicalLock.lock()
-        defer { _canonicalLock.unlock() }
-        if let lookup = _canonicalLookup { return lookup }
-
+    private static let canonicalLookup: [String: String] = {
         let loaded = canonicalExercises
         var lookup: [String: String] = [:]
         for def in loaded.values {
@@ -1529,9 +1522,8 @@ public enum ExerciseCatalog {
             let slugId = id.replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "_", with: "-")
             lookup[slugId] = id
         }
-        _canonicalLookup = lookup
         return lookup
-    }
+    }()
 
     public static func key(_ name: String) -> String {
         name.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
@@ -1544,7 +1536,7 @@ public enum ExerciseCatalog {
         }
         let normalized = normalizeForLookup(name)
         guard !normalized.isEmpty else { return nil }
-        let lookup = ensureLookupLoaded()
+        let lookup = canonicalLookup
         if let direct = lookup[normalized] { return direct }
         let slug = normalized.replacingOccurrences(of: " ", with: "-").replacingOccurrences(of: "_", with: "-")
         return lookup[slug]
@@ -1556,13 +1548,6 @@ public enum ExerciseCatalog {
         let right = resolveCanonicalId(stableId: rightId, name: rightName)
         if let left, let right { return left.caseInsensitiveCompare(right) == .orderedSame }
         return key(leftName) == key(rightName)
-    }
-
-    public static var canonicalExercises: [String: ExerciseDefinition] {
-        if let cached = _canonicalExercises { return cached }
-        let loaded = AppStore.loadBundledExercises()
-        _canonicalExercises = loaded
-        return loaded
     }
 
     public static func build(

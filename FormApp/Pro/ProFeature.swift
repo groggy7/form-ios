@@ -44,44 +44,55 @@ public enum ProFeature: String, CaseIterable, Identifiable {
     }
 }
 
-public class ProAccessManager: ObservableObject {
+public final class ProAccessManager: ObservableObject {
     public static let shared = ProAccessManager()
 
-    @Published public var isProSubscribed: Bool = false
+    @Published public private(set) var isProSubscribed: Bool = false
+    private let entitlementLock = NSLock()
+    private var subscribedSnapshot = false
     private var featureOverrides: [ProFeature: Bool] = [:]
 
     public init() {}
 
+    /// Background cloud authorization reads this snapshot, never Published state.
     public func isFeatureUnlocked(_ feature: ProFeature) -> Bool {
-        return featureOverrides[feature] ?? isProSubscribed
+        entitlementLock.lock()
+        defer { entitlementLock.unlock() }
+        return featureOverrides[feature] ?? subscribedSnapshot
     }
 
     public func setFeatureOverride(_ feature: ProFeature, unlocked: Bool?) {
-        if let unlocked = unlocked {
-            featureOverrides[feature] = unlocked
-        } else {
-            featureOverrides.removeValue(forKey: feature)
-        }
+        dispatchPrecondition(condition: .onQueue(.main))
         objectWillChange.send()
+        entitlementLock.lock()
+        featureOverrides[feature] = unlocked
+        entitlementLock.unlock()
     }
 
     public func resetOverrides() {
+        dispatchPrecondition(condition: .onQueue(.main))
+        entitlementLock.lock()
         featureOverrides.removeAll()
+        subscribedSnapshot = false
+        entitlementLock.unlock()
         isProSubscribed = false
-        objectWillChange.send()
     }
 
     @discardableResult
     public func toggleSubscriptionStatus() -> Bool {
+        dispatchPrecondition(condition: .onQueue(.main))
         let next = !isProSubscribed
-        isProSubscribed = next
-        objectWillChange.send()
+        updateSubscriptionStatus(active: next)
         return next
     }
 
     public func updateSubscriptionStatus(active: Bool) {
+        dispatchPrecondition(condition: .onQueue(.main))
+        entitlementLock.lock()
+        subscribedSnapshot = active
+        entitlementLock.unlock()
+        // Publish after releasing the lock so subscribers can read the snapshot.
         isProSubscribed = active
-        objectWillChange.send()
     }
 }
 
