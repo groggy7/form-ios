@@ -11861,6 +11861,17 @@ final class ThemeCoverageSnapshots: XCTestCase {
             ("home", AnyView(ScrollView { TodayHeroCard(workout: workout, programId: program.id,
                 todayIndex: workout.day - 1, isCompleted: false, isAvailable: true,
                 availableDay: nil, hasUnfinishedProgress: false, onStart: {}).padding(20) })),
+            ("home-recovery", AnyView(ScrollView { TodayHeroCard(workout: nil,
+                todayIndex: 0, isCompleted: false, isAvailable: false,
+                availableDay: nil, hasUnfinishedProgress: false, onStart: {}).padding(20) })),
+            ("home-back", AnyView(ScrollView { TodayHeroCard(workout: Workout(day: 1, title: "Back",
+                focus: "Back and arm strength", targetMuscles: ["lats", "trapezius"]),
+                todayIndex: 0, isCompleted: false, isAvailable: true,
+                availableDay: nil, hasUnfinishedProgress: false, onStart: {}).padding(20) })),
+            ("home-legs", AnyView(ScrollView { TodayHeroCard(workout: Workout(day: 1, title: "Legs",
+                focus: "Quad and hamstring strength", targetMuscles: ["quadriceps", "hamstrings"]),
+                todayIndex: 0, isCompleted: false, isAvailable: true,
+                availableDay: nil, hasUnfinishedProgress: false, onStart: {}).padding(20) })),
             ("matrix", AnyView(ScrollView { VolumeMatrixView(store: store, customHistory: []).padding(20) })),
             ("detail", AnyView(detail)), ("history", AnyView(history)),
             ("summary", AnyView(SessionSummaryView(workoutTitle: "Upper", durationSeconds: 600,
@@ -11878,7 +11889,7 @@ final class ThemeCoverageSnapshots: XCTestCase {
             let controller = UIHostingController(rootView: ObservedScreen(screen: screen))
             let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 900))
             controller.view.frame = window.bounds; window.rootViewController = controller; window.makeKeyAndVisible()
-            for theme in AppThemes.all {
+            for theme in name.hasPrefix("home-") ? AppThemes.all.filter({ !$0.isDark }) : AppThemes.all {
                 ThemeManager.shared.setThemeId(theme.id)
                 try await Task.sleep(nanoseconds: name == "detail" ? 1_200_000_000 : 300_000_000)
                 capture(controller, name: "theme-coverage-ios-\(name)-\(theme.id)")

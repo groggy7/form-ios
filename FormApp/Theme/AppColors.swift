@@ -31,6 +31,10 @@ public enum AppColors {
 
     public static var exerciseVideoSurface: Color { ExerciseBackdropStyle.perimeter(for: ThemeManager.shared.currentTheme.id) }
     public static var exerciseThumbnailSurface: Color { exerciseVideoSurface }
+    public static var heroPhotoSurface: Color { lightThemeColor(heroSurface, Color(hex: 0x1E242B)) }
+    public static var heroPhotoText: Color { lightThemeColor(text, Color(hex: 0xF3F5F5)) }
+    public static var heroPhotoSecondaryText: Color { lightThemeColor(secondaryText, Color(hex: 0xD1D8DE)) }
+    public static var heroPhotoMuted: Color { lightThemeColor(muted, Color(hex: 0xB6BEC4)) }
     public static var text: Color { ThemeManager.shared.currentTheme.text }
     public static var secondaryText: Color { ThemeManager.shared.currentTheme.secondaryText }
     public static var muted: Color { ThemeManager.shared.currentTheme.muted }
