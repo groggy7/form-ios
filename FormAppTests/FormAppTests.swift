@@ -11978,3 +11978,40 @@ final class ExerciseAlphaMediaTests: XCTestCase {
         }
     }
 }
+
+
+final class AuditStoreLifetimeTests: XCTestCase {
+    @MainActor
+    func testPreferencesPersistWithoutRetainingStoreOrPersistence() throws {
+        let defaults = UserDefaults.standard
+        let domain = try XCTUnwrap(Bundle.main.bundleIdentifier)
+        let original = defaults.persistentDomain(forName: domain) ?? [:]
+        defer { defaults.setPersistentDomain(original, forName: domain) }
+        defaults.removeObject(forKey: "active_session_v1")
+        weak var releasedStore: AppStore?
+        weak var releasedPersistence: AppStatePersistence?
+        try autoreleasepool {
+            let persistence = AppStatePersistence(inMemory: true)
+            let store = AppStore(persistence: persistence)
+            releasedStore = store
+            releasedPersistence = persistence
+            store.soundEnabled = false
+            store.defaultRestSeconds = 123
+            store.prefillNextSet = false
+            store.weightUnit = .lbs
+            store.barType = .technique10
+            store.availablePlatesKg = [10, 5, 1.25]
+            store.isOnboardingCompleted = true
+            try persistence.flush()
+            XCTAssertFalse(defaults.bool(forKey: "sound_enabled"))
+            XCTAssertEqual(defaults.integer(forKey: "default_rest_seconds"), 123)
+            XCTAssertFalse(defaults.bool(forKey: "prefill_next_set"))
+            XCTAssertEqual(defaults.string(forKey: "weight_unit"), "lbs")
+            XCTAssertEqual(defaults.string(forKey: "bar_type"), BarType.technique10.key)
+            XCTAssertEqual(defaults.array(forKey: "available_plates_kg") as? [Double], [10, 5, 1.25])
+            XCTAssertTrue(defaults.bool(forKey: "is_onboarding_completed"))
+        }
+        XCTAssertNil(releasedStore)
+        XCTAssertNil(releasedPersistence)
+    }
+}

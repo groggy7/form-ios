@@ -259,31 +259,31 @@ public final class AppStore: ObservableObject {
 
         // Sync sound preferences
         $soundEnabled
-            .sink { UserDefaults.standard.set($0, forKey: self.soundKey) }
+            .sink { [soundKey] in UserDefaults.standard.set($0, forKey: soundKey) }
             .store(in: &cancellables)
 
         $defaultRestSeconds
-            .sink { UserDefaults.standard.set($0, forKey: self.defaultRestKey) }
+            .sink { [defaultRestKey] in UserDefaults.standard.set($0, forKey: defaultRestKey) }
             .store(in: &cancellables)
 
         $prefillNextSet
-            .sink { UserDefaults.standard.set($0, forKey: self.prefillNextSetKey) }
+            .sink { [prefillNextSetKey] in UserDefaults.standard.set($0, forKey: prefillNextSetKey) }
             .store(in: &cancellables)
 
         $weightUnit
-            .sink { UserDefaults.standard.set($0.rawValue, forKey: self.weightUnitKey) }
+            .sink { [weightUnitKey] in UserDefaults.standard.set($0.rawValue, forKey: weightUnitKey) }
             .store(in: &cancellables)
 
         $barType
-            .sink { UserDefaults.standard.set($0.key, forKey: self.barTypeKey) }
+            .sink { [barTypeKey] in UserDefaults.standard.set($0.key, forKey: barTypeKey) }
             .store(in: &cancellables)
 
         $availablePlatesKg
-            .sink { UserDefaults.standard.set($0, forKey: self.availablePlatesKey) }
+            .sink { [availablePlatesKey] in UserDefaults.standard.set($0, forKey: availablePlatesKey) }
             .store(in: &cancellables)
 
         $isOnboardingCompleted
-            .sink { UserDefaults.standard.set($0, forKey: self.onboardingCompletedKey) }
+            .sink { [onboardingCompletedKey] in UserDefaults.standard.set($0, forKey: onboardingCompletedKey) }
             .store(in: &cancellables)
 
         $showProgressionTargets
