@@ -24,23 +24,26 @@ public struct TodayHeroCard: View {
     public static let cardHeight: CGFloat = 420
     private var textWidth: CGFloat? { dynamicTypeSize >= .xxxLarge ? nil : (themeManager.currentTheme.isDark ? 215 : 172) }
     private var lightPhoto: Bool { !themeManager.currentTheme.isDark && dynamicTypeSize < .xxxLarge }
-    private var photoSurface: Color { lightPhoto ? AppColors.heroPhotoSurface : cardSurface }
-    private var photoText: Color { lightPhoto ? AppColors.heroPhotoText : AppColors.text }
-    private var photoSecondaryText: Color { lightPhoto ? AppColors.heroPhotoSecondaryText : AppColors.secondaryText }
-    private var photoMuted: Color { lightPhoto ? AppColors.heroPhotoMuted : AppColors.muted }
 
     private var workoutScrim: [Gradient.Stop] {
-        return [.init(color: photoSurface, location: 0),
-                .init(color: photoSurface.opacity(0.94), location: 0.25),
-                .init(color: photoSurface.opacity(0.50), location: 0.51),
-                .init(color: photoSurface.opacity(0.03), location: 0.76),
+        return [.init(color: cardSurface, location: 0),
+                .init(color: cardSurface.opacity(0.94), location: 0.25),
+                .init(color: cardSurface.opacity(0.50), location: 0.51),
+                .init(color: cardSurface.opacity(0.03), location: 0.76),
                 .init(color: .clear, location: 1)]
     }
     private var recoveryScrim: [Gradient.Stop] {
-        return [.init(color: photoSurface, location: 0),
-                .init(color: photoSurface.opacity(0.95), location: 0.26),
-                .init(color: photoSurface.opacity(0.50), location: 0.48),
-                .init(color: photoSurface.opacity(0.04), location: 0.64),
+        if !themeManager.currentTheme.isDark {
+            return [.init(color: cardSurface, location: 0),
+                    .init(color: cardSurface.opacity(0.95), location: 0.24),
+                    .init(color: cardSurface.opacity(0.55), location: 0.40),
+                    .init(color: cardSurface.opacity(0.03), location: 0.56),
+                    .init(color: .clear, location: 0.64), .init(color: .clear, location: 1)]
+        }
+        return [.init(color: cardSurface, location: 0),
+                .init(color: cardSurface.opacity(0.95), location: 0.26),
+                .init(color: cardSurface.opacity(0.50), location: 0.48),
+                .init(color: cardSurface.opacity(0.04), location: 0.64),
                 .init(color: .clear, location: 0.74), .init(color: .clear, location: 1)]
     }
     private func workoutVerticalScrim(height: CGFloat) -> [Gradient.Stop] {
@@ -114,7 +117,7 @@ public struct TodayHeroCard: View {
 
                 Text(dayText)
                     .font(.system(size: captionSize, weight: .medium))
-                    .foregroundStyle(photoSecondaryText)
+                    .foregroundStyle(AppColors.secondaryText)
 
                 Spacer()
 
@@ -136,7 +139,7 @@ public struct TodayHeroCard: View {
             // Title
             Text(workout.displayTitle(programId: programId))
                 .font(.system(size: titleSize, weight: .semibold))
-                .foregroundStyle(photoText)
+                .foregroundStyle(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: textWidth, alignment: .leading)
                 .accessibilityIdentifier("today-workout-title")
@@ -148,7 +151,7 @@ public struct TodayHeroCard: View {
                 Text(workout.displayFocus(programId: programId))
                     .font(.system(size: bodySize, weight: .regular))
                     .lineSpacing(4)
-                    .foregroundStyle(photoSecondaryText)
+                    .foregroundStyle(AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: textWidth, minHeight: 42, alignment: .topLeading)
                     .accessibilityIdentifier("today-workout-focus")
@@ -244,24 +247,23 @@ public struct TodayHeroCard: View {
             ZStack(alignment: .topLeading) {
                 // Container background
                 RoundedRectangle(cornerRadius: 23, style: .continuous)
-                    .fill(photoSurface)
+                    .fill(cardSurface)
                     .overlay(
                         RoundedRectangle(cornerRadius: 23, style: .continuous)
                             .stroke(cardBorder, lineWidth: 1)
                     )
 
                 // Muscle artwork underlay
-                MuscleArtwork(view: activeView, muscles: workout.resolvedMuscles)
+                MuscleArtwork(view: activeView, muscles: workout.resolvedMuscles,
+                    subjectOnly: !themeManager.currentTheme.isDark)
                     .opacity(!themeManager.currentTheme.isDark && dynamicTypeSize >= .xxxLarge ? 0.02 : 1)
                     .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
 
-                // Horizontal Gradient scrim (matching Android 1-to-1)
-                LinearGradient(
-                    stops: workoutScrim,
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-                .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
+                // Light heroes put their own palette behind the athlete, without a horizontal cover.
+                if themeManager.currentTheme.isDark {
+                    LinearGradient(stops: workoutScrim, startPoint: .leading, endPoint: .trailing)
+                        .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
+                }
 
                 // Vertical Gradient scrim (matching Android 1-to-1)
                 GeometryReader { geometry in
@@ -302,7 +304,7 @@ public struct TodayHeroCard: View {
             // Top row
             Text(weekdayName)
                 .font(.system(size: captionSize, weight: .medium))
-                .foregroundStyle(photoSecondaryText)
+                .foregroundStyle(AppColors.secondaryText)
                 .frame(minHeight: 20)
 
             Spacer().frame(height: 20)
@@ -310,7 +312,7 @@ public struct TodayHeroCard: View {
             // Title
             Text(LanguageManager.t("today.restDay"))
                 .font(.system(size: titleSize, weight: .semibold))
-                .foregroundStyle(photoText)
+                .foregroundStyle(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: textWidth, alignment: .leading)
 
@@ -320,7 +322,7 @@ public struct TodayHeroCard: View {
             Text(LanguageManager.restMotivationQuote(for: todayIndex))
                 .font(.system(size: bodySize, weight: .regular))
                 .lineSpacing(4)
-                .foregroundStyle(photoSecondaryText)
+                .foregroundStyle(AppColors.secondaryText)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: textWidth, alignment: .leading)
 
@@ -330,7 +332,7 @@ public struct TodayHeroCard: View {
             Text(LanguageManager.t("today.restDescription"))
                 .font(.system(size: captionSize, weight: .regular))
                 .lineSpacing(3)
-                .foregroundStyle(photoMuted)
+                .foregroundStyle(AppColors.muted)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: textWidth, alignment: .leading)
 
@@ -341,7 +343,7 @@ public struct TodayHeroCard: View {
         .background {
             ZStack(alignment: .topLeading) {
                 RoundedRectangle(cornerRadius: 23, style: .continuous)
-                    .fill(photoSurface)
+                    .fill(cardSurface)
                     .overlay(
                         RoundedRectangle(cornerRadius: 23, style: .continuous)
                             .stroke(cardBorder, lineWidth: 1)
@@ -368,9 +370,9 @@ public struct TodayHeroCard: View {
                     stops: [
                         .init(color: Color.clear, location: 0),
                         .init(color: Color.clear, location: 0.70),
-                        .init(color: photoSurface.opacity(0.60), location: 0.84),
-                        .init(color: photoSurface.opacity(0.95), location: 0.94),
-                        .init(color: photoSurface, location: 1.0)
+                        .init(color: cardSurface.opacity(0.60), location: 0.84),
+                        .init(color: cardSurface.opacity(0.95), location: 0.94),
+                        .init(color: cardSurface, location: 1.0)
                     ],
                     startPoint: .top,
                     endPoint: .bottom

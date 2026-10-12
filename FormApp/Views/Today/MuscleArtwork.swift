@@ -7,13 +7,15 @@ public struct MuscleArtwork: View {
     var alpha: CGFloat = 1.0
     var centered: Bool = false
     var transparentBackground: Bool = false
+    var subjectOnly: Bool = false
 
-    public init(view: BodyView, muscles: [MuscleGroup], alpha: CGFloat = 1.0, centered: Bool = false, transparentBackground: Bool = false) {
+    public init(view: BodyView, muscles: [MuscleGroup], alpha: CGFloat = 1.0, centered: Bool = false, transparentBackground: Bool = false, subjectOnly: Bool = false) {
         self.view = view
         self.muscles = muscles
         self.alpha = alpha
         self.centered = centered
         self.transparentBackground = transparentBackground
+        self.subjectOnly = subjectOnly
     }
 
     public var body: some View {
@@ -111,6 +113,15 @@ public struct MuscleArtwork: View {
                     with: .color(tint.opacity(0.24)),
                     lineWidth: 1.2
                 )
+            }
+
+            // Use only the existing silhouette alpha; preserve the original photo and registered paths.
+            if subjectOnly, let silhouette = UIImage(named: "library_\(view.artworkName)") {
+                var maskContext = rootContext
+                maskContext.opacity = 1
+                maskContext.blendMode = .destinationIn
+                maskContext.draw(Image(uiImage: silhouette),
+                    in: CGRect(x: 0, y: 0, width: MuscleMasks.viewport, height: MuscleMasks.viewport))
             }
         }
     }
