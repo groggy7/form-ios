@@ -17,13 +17,10 @@ public struct TodayHeroCard: View {
     @ScaledMetric(relativeTo: .subheadline) private var bodySize: CGFloat = 14
     @ScaledMetric(relativeTo: .caption) private var captionSize: CGFloat = 13
     @ScaledMetric(relativeTo: .body) private var actionSize: CGFloat = 15
-    @ScaledMetric(relativeTo: .body) private var footerFadeStart: CGFloat = 176
-    @ScaledMetric(relativeTo: .body) private var footerFadeEnd: CGFloat = 124
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     public static let cardHeight: CGFloat = 420
     private var textWidth: CGFloat? { dynamicTypeSize >= .xxxLarge ? nil : (themeManager.currentTheme.isDark ? 215 : 172) }
-    private var lightPhoto: Bool { !themeManager.currentTheme.isDark && dynamicTypeSize < .xxxLarge }
 
     private var workoutScrim: [Gradient.Stop] {
         return [.init(color: cardSurface, location: 0),
@@ -46,14 +43,7 @@ public struct TodayHeroCard: View {
                 .init(color: cardSurface.opacity(0.04), location: 0.64),
                 .init(color: .clear, location: 0.74), .init(color: .clear, location: 1)]
     }
-    private func workoutVerticalScrim(height: CGFloat) -> [Gradient.Stop] {
-        if lightPhoto {
-            // Keep the photo text clear even when a localized title makes the card taller.
-            return [.init(color: .clear, location: 0),
-                    .init(color: .clear, location: max(0, 1 - footerFadeStart / height)),
-                    .init(color: cardSurface, location: max(0, 1 - footerFadeEnd / height)),
-                    .init(color: cardSurface, location: 1)]
-        }
+    private var workoutVerticalScrim: [Gradient.Stop] {
         return [.init(color: .clear, location: 0), .init(color: .clear, location: 0.20),
                 .init(color: cardSurface.opacity(0.12), location: 0.44),
                 .init(color: cardSurface.opacity(0.96), location: 0.83),
@@ -253,6 +243,12 @@ public struct TodayHeroCard: View {
                             .stroke(cardBorder, lineWidth: 1)
                     )
 
+                if !themeManager.currentTheme.isDark {
+                    // The open upper-right studio uses Oat's ivory, blending into beige on the left.
+                    AppColors.surface
+                    LinearGradient(stops: workoutScrim, startPoint: .leading, endPoint: .trailing)
+                }
+
                 // Muscle artwork underlay
                 MuscleArtwork(view: activeView, muscles: workout.resolvedMuscles,
                     subjectOnly: !themeManager.currentTheme.isDark)
@@ -266,11 +262,13 @@ public struct TodayHeroCard: View {
                 }
 
                 // Vertical Gradient scrim (matching Android 1-to-1)
-                GeometryReader { geometry in
-                    LinearGradient(stops: workoutVerticalScrim(height: geometry.size.height),
-                        startPoint: .top, endPoint: .bottom)
-                }
+                LinearGradient(stops: workoutVerticalScrim, startPoint: .top, endPoint: .bottom)
                 .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
+
+                if !themeManager.currentTheme.isDark {
+                    RoundedRectangle(cornerRadius: 23, style: .continuous)
+                        .stroke(cardBorder, lineWidth: 1)
+                }
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
