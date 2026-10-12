@@ -1132,13 +1132,12 @@ public struct CloudBackupSheet: View {
             .onChange(of: isWorking) { _, working in
                 if !working { presentFirstUploadConfirmationIfReady() }
             }
-            .onChange(of: activeAlert) { _, alert in
-                if alert == nil {
-                    Task { @MainActor in
-                        try? await Task.sleep(nanoseconds: 300_000_000)
-                        presentFirstUploadConfirmationIfReady()
-                    }
-                }
+            .task(id: activeAlert) {
+                guard activeAlert == nil else { return }
+                do { try await Task.sleep(nanoseconds: 300_000_000) }
+                catch { return }
+                guard !Task.isCancelled else { return }
+                presentFirstUploadConfirmationIfReady()
             }
             .onChange(of: langManager.currentLanguage) { _, _ in mirrorManager.refreshStatus() }
             .onChange(of: mirrorManager.status) { _, status in

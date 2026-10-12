@@ -1,5 +1,6 @@
 import XCTest
 import AVFoundation
+import WebKit
 import UIKit
 import SwiftUI
 @testable import FormApp
@@ -12106,5 +12107,27 @@ final class AuditSessionInsightsTests: XCTestCase {
             XCTAssertEqual(result.previousWorkingSets, WorkoutSessionUtils.findPreviousSessionWorkingSets(history: [record], exercise: exercise))
             XCTAssertEqual(result.prText, WorkoutSessionUtils.findExercisePr(history: [record], exercise: exercise, unit: unit))
         }
+    }
+}
+
+
+final class AuditVideoLifecycleTests: XCTestCase {
+    @MainActor
+    func testVisibilityAndDismantleStopPollingWithoutRetainingWebView() throws {
+        let controller = YouTubePlayerController(video: try XCTUnwrap(YouTubeVideo(id: "abcdefghijk")))
+        let webView = WKWebView(frame: .zero)
+        controller.webView = webView
+        controller.startPolling()
+        XCTAssertTrue(controller.isPolling)
+        controller.setVisible(false)
+        XCTAssertFalse(controller.isPolling)
+        controller.setVisible(true)
+        XCTAssertTrue(controller.isPolling)
+        let wrapper = YouTubeWebPlayerView(controller: controller, onExternalLink: { _ in })
+        YouTubeWebPlayerView.dismantleUIView(webView, coordinator: wrapper.makeCoordinator())
+        XCTAssertFalse(controller.isPolling)
+        XCTAssertNil(controller.webView)
+        controller.setVisible(true)
+        XCTAssertFalse(controller.isPolling)
     }
 }

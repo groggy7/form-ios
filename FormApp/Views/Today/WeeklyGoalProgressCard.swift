@@ -22,6 +22,8 @@ public func isWeeklyGoalPillBlinking(
 
 public struct WeeklyGoalProgressCard: View {
     @ObservedObject var themeManager = ThemeManager.shared
+    @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     public let metrics: WeeklyGoalProgressMetrics
     public let isCurrentWorkoutPending: Bool
     public var weightUnit: WeightUnit = .kg
@@ -31,6 +33,16 @@ public struct WeeklyGoalProgressCard: View {
         self.metrics = metrics
         self.isCurrentWorkoutPending = isCurrentWorkoutPending
         self.weightUnit = weightUnit
+    }
+
+    private var shouldBlink: Bool {
+        scenePhase == .active && !reduceMotion && metrics.totalWorkouts > 0 && metrics.completedWorkouts < metrics.totalWorkouts
+    }
+
+    private func updateBlinking(_ active: Bool) {
+        var transaction = Transaction(animation: active ? .easeInOut(duration: 1.25).repeatForever(autoreverses: true) : nil)
+        transaction.disablesAnimations = !active
+        withTransaction(transaction) { isBlinking = active }
     }
 
     public var body: some View {
@@ -83,14 +95,9 @@ public struct WeeklyGoalProgressCard: View {
                 }
             }
             .accessibilityIdentifier("weekly-goal-progress-segments")
-            .onAppear {
-                withAnimation(
-                    .easeInOut(duration: 1.25)
-                    .repeatForever(autoreverses: true)
-                ) {
-                    isBlinking = true
-                }
-            }
+            .onAppear { updateBlinking(shouldBlink) }
+            .onChange(of: shouldBlink) { _, active in updateBlinking(active) }
+            .onDisappear { updateBlinking(false) }
 
             // Subtle Divider
             Rectangle()

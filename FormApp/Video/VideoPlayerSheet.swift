@@ -2,6 +2,7 @@ import SwiftUI
 
 public struct VideoPlayerSheet: View {
     @ObservedObject var themeManager = ThemeManager.shared
+    @Environment(\.scenePhase) private var scenePhase
     let exerciseName: String
     let videoUrl: String
     var onClose: () -> Void
@@ -34,6 +35,8 @@ public struct VideoPlayerSheet: View {
             }
         }
         .preferredColorScheme(themeManager.currentTheme.colorScheme)
+        .onChange(of: scenePhase, initial: true) { _, phase in controller.setVisible(phase == .active) }
+        .onDisappear { controller.setVisible(false) }
     }
 
     private var invalidUrlContent: some View {

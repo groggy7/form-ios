@@ -9,6 +9,8 @@ public final class YouTubePlayerController: ObservableObject {
     weak var webView: WKWebView?
     private var timer: Timer?
     private var waitingTicks: Int = 0
+    var isPolling: Bool { timer?.isValid == true }
+    private(set) var isVisible = true
 
     public init(video: YouTubeVideo, initialSeconds: Double = 0.0, autoplay: Bool = true) {
         self.video = video
@@ -39,10 +41,17 @@ public final class YouTubePlayerController: ObservableObject {
     }
 
     func startPolling() {
+        guard isVisible, webView != nil, !isPolling else { return }
         stopPolling()
         timer = Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) { [weak self] _ in
             self?.pollState()
         }
+    }
+
+    func setVisible(_ visible: Bool) {
+        isVisible = visible
+        evaluate("window.formPlayer && window.formPlayer.setVisible(\(visible ? "true" : "false"));")
+        if visible { startPolling() } else { stopPolling() }
     }
 
     func stopPolling() {
@@ -121,7 +130,7 @@ public struct YouTubeWebPlayerView: UIViewRepresentable {
             video: controller.video,
             origin: origin,
             startSeconds: controller.state.currentSeconds,
-            autoplay: controller.autoplay
+            autoplay: controller.autoplay && controller.isVisible
         )
 
         webView.loadHTMLString(html, baseURL: URL(string: origin))
@@ -134,6 +143,9 @@ public struct YouTubeWebPlayerView: UIViewRepresentable {
     }
 
     public static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
+        let controller = coordinator.parent.controller
+        controller.stopPolling()
+        if controller.webView === uiView { controller.webView = nil }
         uiView.evaluateJavaScript("window.formPlayer && window.formPlayer.pause();", completionHandler: nil)
         uiView.stopLoading()
         uiView.navigationDelegate = nil

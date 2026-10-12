@@ -30,7 +30,6 @@ public struct ToastOverlay: View {
 
     @State private var currentItem: ToastItem? = nil
     @State private var isVisible: Bool = false
-    @State private var dismissTimer: DispatchWorkItem? = nil
 
     public init(item: ToastItem?, bottomPadding: CGFloat = 80) {
         self.item = item
@@ -82,27 +81,17 @@ public struct ToastOverlay: View {
             }
         }
         .animation(.easeInOut(duration: 0.25), value: isVisible)
-        .onChange(of: item) { _, newItem in
-            dismissTimer?.cancel()
-            guard let newItem = newItem, !newItem.message.isEmpty else {
-                withAnimation(.easeIn(duration: 0.2)) {
-                    isVisible = false
-                }
+        .task(id: item?.id) { @MainActor in
+            guard let item, !item.message.isEmpty else {
+                withAnimation(.easeIn(duration: 0.2)) { isVisible = false }
                 return
             }
-
-            currentItem = newItem
-            withAnimation(.easeOut(duration: 0.28)) {
-                isVisible = true
-            }
-
-            let work = DispatchWorkItem {
-                withAnimation(.easeIn(duration: 0.24)) {
-                    isVisible = false
-                }
-            }
-            dismissTimer = work
-            DispatchQueue.main.asyncAfter(deadline: .now() + newItem.duration, execute: work)
+            currentItem = item
+            withAnimation(.easeOut(duration: 0.28)) { isVisible = true }
+            do { try await Task.sleep(for: .seconds(max(0, item.duration))) }
+            catch { return }
+            guard !Task.isCancelled else { return }
+            withAnimation(.easeIn(duration: 0.24)) { isVisible = false }
         }
     }
 }
