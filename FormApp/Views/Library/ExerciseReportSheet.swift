@@ -14,6 +14,7 @@ public struct IdentifiableCooldown: Identifiable, Equatable {
 }
 
 public struct ExerciseReportSheet: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let exercise: Exercise
     var initialDraft: ExerciseIssueReport?
     var onDismiss: () -> Void
@@ -52,6 +53,7 @@ public struct ExerciseReportSheet: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         NavigationStack {
             VStack(spacing: 0) {
                 // Header
@@ -334,6 +336,7 @@ public struct ExerciseReportSheet: View {
 }
 
 public struct ExerciseReportCooldownSheet: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let isDaily: Bool
     let nextAllowedAt: Date
     let remaining24h: Int
@@ -352,6 +355,7 @@ public struct ExerciseReportCooldownSheet: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         VStack(spacing: 20) {
             Text(LanguageManager.t(isDaily ? "report.dailyLimitModalTitle" : "report.hourlyCooldownModalTitle"))
                 .font(.system(size: 18, weight: .bold))
@@ -405,6 +409,7 @@ public struct ExerciseReportCooldownSheet: View {
 }
 
 public struct PendingReportSheet: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let report: ExerciseIssueReport
     var onDismiss: () -> Void
     var onSendNow: () -> Void
@@ -423,6 +428,7 @@ public struct PendingReportSheet: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         VStack(spacing: 18) {
             Text(LanguageManager.t("report.pendingModalTitle"))
                 .font(.system(size: 18, weight: .bold))

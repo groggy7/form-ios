@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct FormHeaderIconButton: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let icon: String // SF Symbol name
     let contentDescription: String
     let tint: Color
@@ -19,6 +20,7 @@ public struct FormHeaderIconButton: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         Button(action: onClick) {
             Image(systemName: icon)
                 .font(.system(size: 19, weight: .medium))

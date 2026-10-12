@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct VolumeMatrixView: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
     @ObservedObject private var language = LanguageManager.shared
 
@@ -73,6 +74,7 @@ public struct VolumeMatrixView: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         let report = self.report
         return VStack(spacing: 16) {
             Text(LanguageManager.t("matrix.limitations"))
@@ -85,15 +87,15 @@ public struct VolumeMatrixView: View {
                 Button(action: { isPlannedMode = false }) {
                     Text(LanguageManager.t("matrix.mode.completed"))
                         .font(.system(size: 14, weight: !isPlannedMode ? .bold : .medium))
-                        .foregroundStyle(!isPlannedMode ? .white : Color(hex: 0x7E8B9B))
+                        .foregroundStyle(!isPlannedMode ? AppColors.text : AppColors.muted)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .background(LinearGradient(
-                            colors: !isPlannedMode ? [Color(hex: 0x0C292A), Color(hex: 0x0D2224)] : [.clear, .clear],
+                            colors: !isPlannedMode ? [AppColors.positiveBg, AppColors.surface] : [.clear, .clear],
                             startPoint: .leading, endPoint: .trailing
                         ))
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(!isPlannedMode ? Color(hex: 0x1D5350) : Color.clear, lineWidth: 1.5)
+                                .stroke(!isPlannedMode ? AppColors.accent : Color.clear, lineWidth: 1.5)
                         )
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
@@ -102,15 +104,15 @@ public struct VolumeMatrixView: View {
                 Button(action: { isPlannedMode = true }) {
                     Text(LanguageManager.t("matrix.mode.planned"))
                         .font(.system(size: 14, weight: isPlannedMode ? .bold : .medium))
-                        .foregroundStyle(isPlannedMode ? .white : Color(hex: 0x7E8B9B))
+                        .foregroundStyle(isPlannedMode ? AppColors.text : AppColors.muted)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .background(LinearGradient(
-                            colors: isPlannedMode ? [Color(hex: 0x0C292A), Color(hex: 0x0D2224)] : [.clear, .clear],
+                            colors: isPlannedMode ? [AppColors.positiveBg, AppColors.surface] : [.clear, .clear],
                             startPoint: .leading, endPoint: .trailing
                         ))
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(isPlannedMode ? Color(hex: 0x1D5350) : Color.clear, lineWidth: 1.5)
+                                .stroke(isPlannedMode ? AppColors.accent : Color.clear, lineWidth: 1.5)
                         )
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                 }
@@ -118,12 +120,15 @@ public struct VolumeMatrixView: View {
             }
             .frame(height: 48)
             .padding(4)
-            .background(Color(hex: 0x0F1518))
-            .overlay(RoundedRectangle(cornerRadius: 16).stroke(Color(hex: 0x2B373C), lineWidth: 1))
+            .background(AppColors.surface)
+            .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
             .clipShape(RoundedRectangle(cornerRadius: 16))
 
             // Week Navigator (for Logged Mode)
             if !isPlannedMode {
+                let weekSurface = AppColors.surface
+                let weekSelectedSurface = AppColors.positiveBg
+                let weekAccent = AppColors.accent
                 ZStack {
                     // Dark teal base and a low-contrast tone crossing behind the week label.
                     Canvas { context, size in
@@ -132,7 +137,7 @@ public struct VolumeMatrixView: View {
                         context.fill(
                             Path(CGRect(origin: .zero, size: size)),
                             with: .linearGradient(
-                                Gradient(colors: [Color(hex: 0x0C2427), Color(hex: 0x071719)]),
+                                Gradient(colors: [weekSelectedSurface, weekSurface]),
                                 startPoint: .zero,
                                 endPoint: CGPoint(x: w, y: h)
                             )
@@ -151,7 +156,7 @@ public struct VolumeMatrixView: View {
                         context.fill(
                             path,
                             with: .linearGradient(
-                                Gradient(colors: [Color(hex: 0x071D20), Color(hex: 0x062527)]),
+                                Gradient(colors: [weekSurface, weekSelectedSurface]),
                                 startPoint: CGPoint(x: w * 0.34, y: h),
                                 endPoint: CGPoint(x: w, y: 0)
                             )
@@ -164,7 +169,7 @@ public struct VolumeMatrixView: View {
                             control1: CGPoint(x: w * 0.62, y: h * 1.02),
                             control2: CGPoint(x: w * 0.76, y: h * 0.4)
                         )
-                        context.stroke(line, with: .color(Color(hex: 0x3A817C).opacity(0.14)), lineWidth: 1.2)
+                        context.stroke(line, with: .color(weekAccent.opacity(0.14)), lineWidth: 1.2)
                     }
 
                     HStack {
@@ -172,10 +177,10 @@ public struct VolumeMatrixView: View {
                         Button(action: { shiftWeek(-1) }) {
                             Image(systemName: "chevron.left")
                                 .font(.system(size: 13, weight: .bold))
-                                .foregroundStyle(Color(hex: 0xD0D9E3))
+                                .foregroundStyle(AppColors.secondaryText)
                                 .frame(width: 36, height: 36)
-                                .background(Color(hex: 0x161E26))
-                                .overlay(Circle().stroke(Color(hex: 0x26323E), lineWidth: 1))
+                                .background(AppColors.surfaceRaised)
+                                .overlay(Circle().stroke(AppColors.border, lineWidth: 1))
                                 .clipShape(Circle())
                         }
                         .buttonStyle(.plain)
@@ -185,10 +190,10 @@ public struct VolumeMatrixView: View {
                         VStack(spacing: 2) {
                             Text(effectiveWeekKey == currentWeekKey ? LanguageManager.t("matrix.thisWeek") : effectiveWeekKey)
                                 .font(.system(size: 16, weight: .bold))
-                                .foregroundStyle(.white)
+                                .foregroundStyle(AppColors.text)
                             Text(effectiveWeekKey)
                                 .font(.system(size: 12, weight: .medium))
-                                .foregroundStyle(Color(hex: 0x7E8B9B))
+                                .foregroundStyle(AppColors.muted)
                         }
 
                         Spacer()
@@ -197,10 +202,10 @@ public struct VolumeMatrixView: View {
                         Button(action: { shiftWeek(1) }) {
                             Image(systemName: "chevron.right")
                                 .font(.system(size: 13, weight: .bold))
-                                .foregroundStyle(effectiveWeekKey < currentWeekKey ? Color(hex: 0xD0D9E3) : Color(hex: 0x7E8B9B).opacity(0.35))
+                                .foregroundStyle(effectiveWeekKey < currentWeekKey ? AppColors.secondaryText : AppColors.muted.opacity(0.35))
                                 .frame(width: 36, height: 36)
-                                .background(Color(hex: 0x161E26))
-                                .overlay(Circle().stroke(Color(hex: 0x26323E), lineWidth: 1))
+                                .background(AppColors.surfaceRaised)
+                                .overlay(Circle().stroke(AppColors.border, lineWidth: 1))
                                 .clipShape(Circle())
                         }
                         .buttonStyle(.plain)
@@ -209,8 +214,8 @@ public struct VolumeMatrixView: View {
                     .padding(.horizontal, 14)
                 }
                 .frame(height: 70)
-                .background(Color(hex: 0x0A1B1E))
-                .overlay(RoundedRectangle(cornerRadius: 18).stroke(Color(hex: 0x1A4547), lineWidth: 1))
+                .background(AppColors.surface)
+                .overlay(RoundedRectangle(cornerRadius: 18).stroke(AppColors.border, lineWidth: 1))
                 .clipShape(RoundedRectangle(cornerRadius: 18))
             }
 
@@ -261,7 +266,7 @@ public struct VolumeMatrixView: View {
                             Button(action: { showInfoSheet = true }) {
                                 Image(systemName: "info.circle.fill")
                                     .font(.system(size: 22, weight: .regular))
-                                    .foregroundStyle(Color(hex: 0xC0CAD2))
+                                    .foregroundStyle(AppColors.secondaryText)
                             }
                             .buttonStyle(.plain)
                             .frame(width: 24, height: 24)
@@ -277,12 +282,12 @@ public struct VolumeMatrixView: View {
                                 Button(action: { currentView = view }) {
                                     Text(LanguageManager.t(view == "front" ? "anatomy.front" : "anatomy.back"))
                                         .font(.system(size: 12.5, weight: isSelected ? .semibold : .medium))
-                                        .foregroundStyle(isSelected ? Color(hex: 0xE8DEF8) : Color(hex: 0x8F999F))
+                                        .foregroundStyle(isSelected ? AppColors.text : AppColors.muted)
                                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                        .background(isSelected ? Color(hex: 0x28203D) : Color.clear)
+                                        .background(isSelected ? AppColors.purpleBg : Color.clear)
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 9.5)
-                                                .stroke(isSelected ? Color(hex: 0xA855F7) : Color.clear, lineWidth: 1.0)
+                                                .stroke(isSelected ? AppColors.purple : Color.clear, lineWidth: 1.0)
                                         )
                                         .clipShape(RoundedRectangle(cornerRadius: 9.5))
                                 }
@@ -291,8 +296,8 @@ public struct VolumeMatrixView: View {
                         }
                         .frame(height: 35)
                         .padding(2.5)
-                        .background(Color(hex: 0x161B20))
-                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color(hex: 0x2B373C), lineWidth: 1))
+                        .background(AppColors.surfaceRaised)
+                        .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
                         .clipShape(RoundedRectangle(cornerRadius: 12))
 
                         Spacer().frame(height: 12)
@@ -307,7 +312,7 @@ public struct VolumeMatrixView: View {
                                         .frame(width: 9, height: 9)
                                     Text(LanguageManager.t(zone.titleKey))
                                         .font(.system(size: 12, weight: .medium))
-                                        .foregroundStyle(Color(hex: 0xB6BEC4))
+                                        .foregroundStyle(AppColors.secondaryText)
                                         .lineLimit(1)
                                     Spacer()
                                 }
@@ -315,7 +320,7 @@ public struct VolumeMatrixView: View {
 
                                 if index < zones.count - 1 {
                                     Rectangle()
-                                        .fill(Color(hex: 0x1E242B))
+                                        .fill(AppColors.border)
                                         .frame(height: 1)
                                 }
                             }
@@ -387,16 +392,16 @@ public struct VolumeMatrixView: View {
         let border: Color
         let waveLine: Color
 
-        static let purple = KpiTone(
-            surfaceTop: Color(hex: 0x191A25), surfaceBottom: Color(hex: 0x10151C),
-            waveStart: Color(hex: 0x171824), waveEnd: Color(hex: 0x201F2D),
-            border: Color(hex: 0x3A3452), waveLine: Color(hex: 0x55496E)
-        )
-        static let teal = KpiTone(
-            surfaceTop: Color(hex: 0x0C1E1E), surfaceBottom: Color(hex: 0x091517),
-            waveStart: Color(hex: 0x0A1E1E), waveEnd: Color(hex: 0x0D2725),
-            border: Color(hex: 0x1B4841), waveLine: Color(hex: 0x286A5D)
-        )
+        static var purple: KpiTone { KpiTone(
+            surfaceTop: AppColors.purpleBg, surfaceBottom: AppColors.surface,
+            waveStart: AppColors.surface, waveEnd: AppColors.purpleBg,
+            border: AppColors.border, waveLine: AppColors.purple
+        ) }
+        static var teal: KpiTone { KpiTone(
+            surfaceTop: AppColors.positiveBg, surfaceBottom: AppColors.surface,
+            waveStart: AppColors.surface, waveEnd: AppColors.positiveBg,
+            border: AppColors.border, waveLine: AppColors.accent
+        ) }
     }
 
     private func kpiCard(title: String, value: String, subtitle: String, icon: String, color: Color, tone: KpiTone) -> some View {
@@ -459,7 +464,7 @@ public struct VolumeMatrixView: View {
 
                     Text(title)
                         .font(.system(size: 12.5, weight: .semibold))
-                        .foregroundStyle(Color(hex: 0xD1D8E0))
+                        .foregroundStyle(AppColors.secondaryText)
                         .lineSpacing(-2)
                         .lineLimit(2)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -471,7 +476,7 @@ public struct VolumeMatrixView: View {
                 VStack(alignment: .leading, spacing: 1) {
                     Text(value)
                         .font(.system(size: 24, weight: .bold))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(AppColors.text)
                     Text(subtitle)
                         .font(.system(size: 11, weight: .semibold))
                         .foregroundStyle(color)

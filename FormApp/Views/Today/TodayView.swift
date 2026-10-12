@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct TodayView: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
     var onOpenPrograms: () -> Void
     var onOpenSettings: () -> Void
@@ -19,6 +20,7 @@ public struct TodayView: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         let program = store.activeProgram
         let workout = store.activeWorkout
         let workoutKey = workout.map { "\(program?.id ?? ""):\($0.id)" } ?? ""

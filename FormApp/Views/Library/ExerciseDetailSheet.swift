@@ -15,6 +15,7 @@ public enum ExerciseDetailTab: String, CaseIterable {
 }
 
 public struct ExerciseDetailView: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore = AppStore.shared
     let initialExercise: Exercise
     var onBack: () -> Void
@@ -57,6 +58,7 @@ public struct ExerciseDetailView: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         Group {
             if showAllHistory {
                 let stats = PersonalRecordTracker.computeExerciseHistoryStats(
@@ -283,7 +285,7 @@ public struct ExerciseDetailView: View {
 
                                     Text(LanguageManager.t("exercise.history.recent"))
                                         .font(.system(size: 17, weight: .bold))
-                                        .foregroundStyle(.white)
+                                        .foregroundStyle(AppColors.text)
 
                                     Spacer()
                                         .frame(width: 4)
@@ -334,7 +336,7 @@ public struct ExerciseDetailView: View {
 
                                                 Text(LanguageManager.t("exercise.history.viewAll", ["count": "\(stats.recentSessions.count)"]))
                                                     .font(.system(size: 14, weight: .bold))
-                                                    .foregroundStyle(.white)
+                                                    .foregroundStyle(AppColors.text)
 
                                                 Spacer()
 
@@ -431,11 +433,13 @@ public struct ExerciseDetailView: View {
 public typealias ExerciseDetailSheet = ExerciseDetailView
 
 struct ExerciseHistoryStatsRow: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let stats: ExerciseHistoryStats
     let weightUnit: WeightUnit
     @State private var show1RmInfoSheet = false
 
     var body: some View {
+        let _ = themeManager.currentTheme
         VStack(spacing: 10) {
             // Row 1: Personal Best & Estimated 1RM
             HStack(spacing: 10) {
@@ -467,7 +471,7 @@ struct ExerciseHistoryStatsRow: View {
                     iconName: "trophy.fill",
                     iconColor: AppColors.historyStatPrGreen,
                     value: prValue,
-                    valueColor: .white,
+                    valueColor: AppColors.text,
                     subtitle: prSubtitle,
                     subtitleColor: AppColors.historyStatPrGreen
                 )
@@ -501,7 +505,7 @@ struct ExerciseHistoryStatsRow: View {
                     iconName: "repeat",
                     iconColor: AppColors.historyStatCyan,
                     value: "\(stats.lifetimeSets)",
-                    valueColor: .white,
+                    valueColor: AppColors.text,
                     subtitle: LanguageManager.t("exercise.history.lifetimeSetsSubtitle"),
                     subtitleColor: AppColors.historyStatCardTitle
                 )
@@ -520,7 +524,7 @@ struct ExerciseHistoryStatsRow: View {
                     iconName: "dumbbell.fill",
                     iconColor: AppColors.historyStatPurple,
                     value: volumeValue,
-                    valueColor: .white,
+                    valueColor: AppColors.text,
                     subtitle: LanguageManager.t("exercise.history.lifetimeVolumeSubtitle"),
                     subtitleColor: AppColors.historyStatCardTitle
                 )
@@ -538,6 +542,7 @@ struct ExerciseHistoryStatsRow: View {
 }
 
 struct HistoryStatCard: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let title: String
     let iconName: String
     let iconColor: Color
@@ -548,6 +553,7 @@ struct HistoryStatCard: View {
     var onTap: (() -> Void)? = nil
 
     var body: some View {
+        let _ = themeManager.currentTheme
         VStack(spacing: 0) {
             // Header Row: Circular Icon Badge + Title
             HStack(spacing: 8) {
@@ -615,11 +621,13 @@ struct HistoryStatCard: View {
 }
 
 struct Estimated1RmInfoSheet: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let stats: ExerciseHistoryStats
     let weightUnit: WeightUnit
     var onDismiss: () -> Void
 
     var body: some View {
+        let _ = themeManager.currentTheme
         NavigationStack {
             VStack(spacing: 0) {
                 // Header
@@ -801,6 +809,7 @@ private func extractMonthKeyAndTitle(_ isoString: String) -> (key: String, title
 }
 
 struct ExerciseSessionHistoryCard: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let session: ExerciseSessionHistoryEntry
     let isExpanded: Bool
     let weightUnit: WeightUnit
@@ -812,6 +821,7 @@ struct ExerciseSessionHistoryCard: View {
     }
 
     var body: some View {
+        let _ = themeManager.currentTheme
         VStack(alignment: .leading, spacing: 0) {
             // Header: full-bleed interactive area
             Button(action: onToggleExpand) {
@@ -819,7 +829,7 @@ struct ExerciseSessionHistoryCard: View {
                     HStack(alignment: .center) {
                         Text(session.workoutTitle.isEmpty ? "Workout" : session.workoutTitle)
                             .font(.system(size: 15, weight: .bold))
-                            .foregroundStyle(.white)
+                            .foregroundStyle(AppColors.text)
                             .lineLimit(1)
 
                         Spacer()
@@ -909,7 +919,7 @@ struct ExerciseSessionHistoryCard: View {
 
                                 Text(setDetail)
                                     .font(.system(size: 15, weight: .bold))
-                                    .foregroundStyle(.white)
+                                    .foregroundStyle(AppColors.text)
                             }
                         }
                     }
@@ -948,6 +958,7 @@ struct ExerciseSessionHistoryCard: View {
 }
 
 struct ExerciseHistoryArchiveView: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let exercise: Exercise
     let sessions: [ExerciseSessionHistoryEntry]
     let weightUnit: WeightUnit
@@ -990,6 +1001,7 @@ struct ExerciseHistoryArchiveView: View {
     }
 
     var body: some View {
+        let _ = themeManager.currentTheme
         VStack(spacing: 0) {
             // Header bar
             HStack(spacing: 8) {
@@ -1103,7 +1115,7 @@ struct ExerciseHistoryArchiveView: View {
                             }) {
                                 Text("\(LanguageManager.t("exercise.history.allMonths"))")
                                     .font(.system(size: 12, weight: isAllSelected ? .bold : .medium))
-                                    .foregroundStyle(isAllSelected ? .white : AppColors.secondaryText)
+                                    .foregroundStyle(isAllSelected ? AppColors.text : AppColors.secondaryText)
                                     .padding(.horizontal, 12)
                                     .padding(.vertical, 6)
                                     .background(isAllSelected ? AppColors.accent.opacity(0.2) : AppColors.surface)
@@ -1123,7 +1135,7 @@ struct ExerciseHistoryArchiveView: View {
                                 }) {
                                     Text("\(opt.title) (\(opt.count))")
                                         .font(.system(size: 12, weight: isSelected ? .bold : .medium))
-                                        .foregroundStyle(isSelected ? .white : AppColors.secondaryText)
+                                        .foregroundStyle(isSelected ? AppColors.text : AppColors.secondaryText)
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 6)
                                         .background(isSelected ? AppColors.accent.opacity(0.2) : AppColors.surface)
@@ -1218,6 +1230,7 @@ struct ExerciseHistoryArchiveView: View {
 }
 
 struct TechniqueGuideView: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let cues: String
     let avoid: String
     let cuesDetails: String
@@ -1226,6 +1239,7 @@ struct TechniqueGuideView: View {
     @ScaledMetric(relativeTo: .body) private var textSize: CGFloat = 14
 
     var body: some View {
+        let _ = themeManager.currentTheme
         let visibleCues = showDetails && !cuesDetails.isEmpty ? cuesDetails : cues
         let visibleAvoid = showDetails && !avoidDetails.isEmpty ? avoidDetails : avoid
         VStack(spacing: 16) {
@@ -1266,6 +1280,7 @@ struct TechniqueGuideView: View {
 }
 
 struct TechniqueSectionView: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let title: String
     let text: String
     let accent: Color
@@ -1288,6 +1303,7 @@ struct TechniqueSectionView: View {
     }
 
     var body: some View {
+        let _ = themeManager.currentTheme
         let lines = text.components(separatedBy: .newlines)
             .map { $0.trimmingCharacters(in: .whitespaces) }
             .filter { !$0.isEmpty }

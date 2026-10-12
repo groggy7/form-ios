@@ -917,7 +917,13 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(ExerciseVideoCatalog.playbackSpeed, 1.2, accuracy: 0.01)
         XCTAssertEqual(video.playbackRate, 1.2, accuracy: 0.01)
         XCTAssertGreaterThan(video.playbackTime.seconds, 0.1)
-        XCTAssertEqual(video.renderedVideoFrame, framing.videoFrame(in: video.bounds.size))
+        let expectedFrame = framing.videoFrame(in: video.bounds.size)
+        let renderedFrame = video.renderedVideoFrame
+        // Core Animation may round nonzero crop offsets by a few floating-point ulps.
+        XCTAssertEqual(renderedFrame.minX, expectedFrame.minX, accuracy: 0.000001)
+        XCTAssertEqual(renderedFrame.minY, expectedFrame.minY, accuracy: 0.000001)
+        XCTAssertEqual(renderedFrame.width, expectedFrame.width, accuracy: 0.000001)
+        XCTAssertEqual(renderedFrame.height, expectedFrame.height, accuracy: 0.000001)
         let image = UIGraphicsImageRenderer(size: video.bounds.size).image { _ in
             video.drawHierarchy(in: video.bounds, afterScreenUpdates: true)
         }
@@ -11343,6 +11349,49 @@ final class AppThemesTests: XCTestCase {
         XCTAssertEqual(store.appThemeId, "cobalt")
         store.appThemeId = "default"
     }
+    func testInformativeTextContrastAcrossThemesAndProminentSurfaces() {
+        func contrast(_ a: Color, _ b: Color) -> Double {
+            func luminance(_ color: Color) -> Double {
+                let c = color.resolve(in: EnvironmentValues())
+                func linear(_ v: Float) -> Double {
+                    let x = Double(v)
+                    return x <= 0.04045 ? x / 12.92 : pow((x + 0.055) / 1.055, 2.4)
+                }
+                return linear(c.red) * 0.2126 + linear(c.green) * 0.7152 + linear(c.blue) * 0.0722
+            }
+            let x = luminance(a), y = luminance(b)
+            return (max(x, y) + 0.05) / (min(x, y) + 0.05)
+        }
+        for theme in AppThemes.all {
+            ThemeManager.shared.setThemeId(theme.id)
+            for surface in [AppColors.surface, AppColors.surfaceRaised, AppColors.heroSurface,
+                AppColors.historyStatCardBg, AppColors.cuesBg, AppColors.avoidBg,
+                AppColors.positiveBg, AppColors.purpleBg] {
+                for text in [AppColors.text, AppColors.secondaryText, AppColors.muted] {
+                    XCTAssertGreaterThanOrEqual(contrast(text, surface), 4.5, "\(theme.id): informative text")
+                }
+            }
+            XCTAssertGreaterThanOrEqual(contrast(theme.background, AppColors.progressionPaywallAccent), 4.5, theme.id)
+            XCTAssertGreaterThanOrEqual(contrast(AppColors.accent, AppColors.cuesBg), 4.5, theme.id)
+            XCTAssertGreaterThanOrEqual(contrast(AppColors.danger, AppColors.avoidBg), 4.5, theme.id)
+        }
+    }
+
+    func testSpecialSurfacesFollowRepeatedThemeSwitches() {
+        for theme in AppThemes.all + AppThemes.all.reversed() {
+            ThemeManager.shared.setThemeId(theme.id)
+            if theme.id != "default" {
+                XCTAssertEqual(AppColors.heroSurface, theme.surfaceRaised)
+                XCTAssertEqual(AppColors.historyStatCardBg, theme.surface)
+                XCTAssertEqual(AppColors.historyStatCardTitle, theme.muted)
+                XCTAssertEqual(AppColors.restTimerAccent, theme.purple)
+                XCTAssertEqual(AppColors.progressionPaywallSurface, theme.surface)
+                XCTAssertEqual(AppColors.progressionPaywallAccent, theme.accent)
+            }
+            XCTAssertEqual(AppColors.exerciseVideoSurface, Color(hex: 0x161616))
+        }
+    }
+
 }
 
 
@@ -11655,4 +11704,169 @@ final class LocalizationConcurrencyTests: XCTestCase {
         }
         XCTAssertEqual(group.wait(timeout: .now() + 20), .success)
     }
+}
+
+
+final class ThemeCoverageSnapshots: XCTestCase {
+    private struct AuditComponents: View {
+        @ObservedObject private var manager = ThemeManager.shared
+        var body: some View {
+            VStack(spacing: 16) {
+                Text(manager.currentTheme.id).foregroundStyle(AppColors.text).padding(.horizontal, 20)
+                WeeklyGoalProgressCard(metrics: WeeklyGoalProgressMetrics(
+                    completedWorkouts: 2, totalWorkouts: 4, totalVolumeKg: 2500,
+                    activeDurationSeconds: 2400, prsHitCount: 1)).padding(.horizontal, 20)
+                MovementIcon(exerciseId: "barbell-bench-press", size: 108)
+                TechniqueSectionView(title: "Technique cues", text: "Keep your feet planted.",
+                    accent: AppColors.accent, isAvoid: false, collapsible: false).padding(.horizontal, 20)
+                TechniqueSectionView(title: "What to avoid", text: "Avoid bouncing the bar.",
+                    accent: AppColors.danger, isAvoid: true, collapsible: false).padding(.horizontal, 20)
+                RestTimerBar(secondsRemaining: 74, totalSeconds: 120, exerciseName: "Barbell Bench Press",
+                    isRunning: true, onTogglePause: {}, onAddSeconds: { _ in }, onSetDuration: { _ in },
+                    onSkip: {}, isMuted: false, onToggleMute: {})
+                Spacer(minLength: 0)
+            }
+            .padding(.vertical, 20)
+            .frame(width: 320, height: 900)
+            .background(AppColors.background)
+        }
+    }
+
+    @MainActor
+    @discardableResult
+    private func capture(_ controller: UIViewController, name: String) -> UIImage {
+        controller.view.layoutIfNeeded()
+        let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
+        let image = renderer.image { _ in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+        let attachment = XCTAttachment(image: image)
+        attachment.name = name
+        attachment.lifetime = .keepAlways
+        add(attachment)
+        return image
+    }
+
+    @MainActor
+    func testSevenThemeComponentSnapshotsAndLiveSwitch() async throws {
+        let original = ThemeManager.shared.currentTheme.id
+        defer { ThemeManager.shared.setThemeId(original) }
+        // Initialize the real weekly-card globals under the default theme, then switch live.
+        ThemeManager.shared.setThemeId("default")
+        let live = UIHostingController(rootView: AuditComponents())
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 900))
+        live.view.frame = window.bounds
+        window.rootViewController = live
+        window.makeKeyAndVisible()
+        try await Task.sleep(nanoseconds: 400_000_000)
+        capture(live, name: "theme-coverage-ios-live-default")
+        ThemeManager.shared.setThemeId("espresso")
+        try await Task.sleep(nanoseconds: 400_000_000)
+        let switched = capture(live, name: "theme-coverage-ios-live-espresso")
+        // Only the inset statistic tiles use ordinary surface within this card region.
+        // This catches a file-level color captured when Obsidian first rendered.
+        assertStatFill(switched, color: AppThemes.espresso.surface)
+        window.isHidden = true
+        for theme in AppThemes.all {
+            ThemeManager.shared.setThemeId(theme.id)
+            let controller = UIHostingController(rootView: AuditComponents())
+            let fixtureWindow = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 900))
+            controller.view.frame = fixtureWindow.bounds
+            fixtureWindow.rootViewController = controller
+            fixtureWindow.makeKeyAndVisible()
+            try await Task.sleep(nanoseconds: 300_000_000)
+            let image = capture(controller, name: "theme-coverage-ios-components-\(theme.id)")
+            assertStatFill(image, color: theme.surface)
+            fixtureWindow.isHidden = true
+        }
+    }
+    @MainActor
+    private func assertStatFill(_ image: UIImage, color: Color) {
+        let size = image.size
+        let width = Int(size.width), height = Int(size.height)
+        var bytes = [UInt8](repeating: 0, count: width * height * 4)
+        let context = CGContext(data: &bytes, width: width, height: height, bitsPerComponent: 8,
+            bytesPerRow: width * 4, space: CGColorSpace(name: CGColorSpace.sRGB)!,
+            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
+        context.draw(image.cgImage!, in: CGRect(origin: .zero, size: size))
+        let expected = color.resolve(in: EnvironmentValues())
+        let rgb = [Int(expected.red * 255), Int(expected.green * 255), Int(expected.blue * 255)]
+        var matching = 0
+        // Search the card's inset region, allowing native text metrics to vary slightly.
+        for y in 100..<270 { for x in 30..<290 {
+            let offset = (y * width + x) * 4
+            if (0..<3).allSatisfy({ abs(Int(bytes[offset + $0]) - rgb[$0]) <= 2 }) { matching += 1 }
+        } }
+        XCTAssertGreaterThan(matching, 500, "Weekly statistic fill must follow the live palette")
+    }
+
+    private struct ObservedScreen: View {
+        @ObservedObject private var manager = ThemeManager.shared
+        let screen: AnyView
+        var body: some View { screen.background(AppColors.background) }
+    }
+
+    @MainActor
+    func testSevenThemesAcrossHeroAnalyticsDetailSummaryAndPaywall() async throws {
+        let original = ThemeManager.shared.currentTheme.id
+        let language = LanguageManager.shared.currentLanguage
+        defer { ThemeManager.shared.setThemeId(original); LanguageManager.setLanguage(language) }
+        LanguageManager.setLanguage("en")
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        let program = AppStore.loadBundledStarterPrograms().first!
+        let workout = program.workouts.first!
+        let exercise = Exercise(id: "fixture-bench", name: "Barbell Bench Press",
+            exerciseId: "barbell-bench-press", sets: 1)
+        var fixtureState = store.state
+        fixtureState.history = [WorkoutSessionRecord(id: "theme-history-fixture", programId: program.id,
+            workoutId: workout.id, workoutTitle: "Upper", startedAt: "2026-10-05T09:00:00Z",
+            completedAt: "2026-10-05T09:10:00Z", durationSeconds: 600, totalVolumeKg: 400,
+            totalCompletedSets: 1, exerciseLogs: [SessionExerciseLog(exerciseName: "Barbell Bench Press",
+                sets: [SessionSetLog(setNumber: 1, weightKg: 50, reps: 8)], targetSets: 1,
+                exerciseId: "barbell-bench-press")], isComplete: true)]
+        XCTAssertTrue(store.saveState(fixtureState, durable: true))
+        var detail = ExerciseDetailView(exercise: exercise, onBack: {})
+        detail.store = store
+        var history = ExerciseDetailView(exercise: exercise, initialTab: .history, onBack: {})
+        history.store = store
+        let screens: [(String, AnyView)] = [
+            ("home", AnyView(ScrollView { TodayHeroCard(workout: workout, programId: program.id,
+                todayIndex: workout.day - 1, isCompleted: false, isAvailable: true,
+                availableDay: nil, hasUnfinishedProgress: false, onStart: {}).padding(20) })),
+            ("matrix", AnyView(ScrollView { VolumeMatrixView(store: store, customHistory: []).padding(20) })),
+            ("detail", AnyView(detail)), ("history", AnyView(history)),
+            ("summary", AnyView(SessionSummaryView(workoutTitle: "Upper", durationSeconds: 600,
+                totalCompletedSets: 1, totalVolumeKg: 400,
+                exerciseLogs: [SessionExerciseLog(exerciseName: "Barbell Bench Press",
+                    sets: [SessionSetLog(setNumber: 1, weightKg: 50, reps: 8)], targetSets: 1)],
+                onBack: {}, onSaveAndClose: {}))),
+            ("paywall", AnyView(SessionFeaturePaywallContent(
+                annual: SessionPaywallOffer(price: "$29.99"), monthly: SessionPaywallOffer(price: "$4.99"),
+                selectedPlan: .annual, isPurchasing: false, isRestoring: false, purchaseError: nil,
+                restoreMessage: nil, isRestoreError: false, onSelectPlan: { _ in }, onPurchase: {},
+                onRestore: {}, onRetryPrices: {}, onTerms: {}, onPrivacy: {}, onClose: {})))
+        ]
+        for (name, screen) in screens {
+            let controller = UIHostingController(rootView: ObservedScreen(screen: screen))
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 900))
+            controller.view.frame = window.bounds; window.rootViewController = controller; window.makeKeyAndVisible()
+            for theme in AppThemes.all {
+                ThemeManager.shared.setThemeId(theme.id)
+                try await Task.sleep(nanoseconds: name == "detail" ? 1_200_000_000 : 300_000_000)
+                capture(controller, name: "theme-coverage-ios-\(name)-\(theme.id)")
+            }
+            window.isHidden = true
+        }
+        for language in ["en", "tr", "de", "fr", "es"] {
+            LanguageManager.setLanguage(language)
+            ThemeManager.shared.setThemeId("espresso")
+            let controller = UIHostingController(rootView: AuditComponents().environment(\.sizeCategory, .accessibilityMedium))
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 900))
+            controller.view.frame = window.bounds; window.rootViewController = controller; window.makeKeyAndVisible()
+            try await Task.sleep(nanoseconds: 300_000_000)
+            capture(controller, name: "theme-coverage-ios-large-\(language)")
+            window.isHidden = true
+        }
+    }
+
 }

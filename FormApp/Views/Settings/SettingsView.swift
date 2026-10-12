@@ -22,6 +22,7 @@ public struct SettingsView: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
@@ -481,6 +482,7 @@ public struct SettingsView: View {
 }
 
 struct SettingsPremiumToggle: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let titleKey: String
     let subtitleKey: String
     @Binding var preference: Bool
@@ -501,6 +503,7 @@ struct SettingsPremiumToggle: View {
     }
 
     var body: some View {
+        let _ = themeManager.currentTheme
         Toggle(isOn: selection) {
             VStack(alignment: .leading, spacing: 2) {
                 title
@@ -526,11 +529,13 @@ struct SettingsPremiumToggle: View {
 
 // A single preference row keeps every supported language out of the main settings layout.
 struct SettingsLanguageRow: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let value: String
     var flagImageName: String? = nil
     var onTap: () -> Void
 
     var body: some View {
+        let _ = themeManager.currentTheme
         Button(action: onTap) {
             HStack(spacing: 14) {
                 let resolvedFlag = flagImageName ?? LanguageManager.flagImageName(for: LanguageManager.shared.currentLanguage)
@@ -571,6 +576,7 @@ struct SettingsLanguageRow: View {
 }
 
 struct LanguageSelectionSheet: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let preference: String
     let deviceLanguageName: String
     var onSelect: (String) -> Void
@@ -582,6 +588,7 @@ struct LanguageSelectionSheet: View {
     }
 
     var body: some View {
+        let _ = themeManager.currentTheme
         VStack(spacing: 0) {
             HStack(spacing: 12) {
                 Text(LanguageManager.t("settings.language"))
@@ -674,6 +681,7 @@ struct LanguageSelectionSheet: View {
 }
 
 struct ImportExportDataSheet: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
     var onDismiss: () -> Void
 
@@ -685,6 +693,7 @@ struct ImportExportDataSheet: View {
     @State private var importErrorMessage: String? = nil
 
     var body: some View {
+        let _ = themeManager.currentTheme
         VStack(spacing: 0) {
             // Header Row
             HStack(spacing: 12) {
@@ -887,6 +896,7 @@ struct ImportExportDataSheet: View {
 }
 
 public struct CloudBackupSheet: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
     @Environment(\.dismiss) private var dismiss
 
@@ -946,6 +956,7 @@ public struct CloudBackupSheet: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         NavigationStack {
             ScrollView {
                 VStack(spacing: 16) {
@@ -1230,6 +1241,7 @@ struct ThemeSelectionSheet: View {
     var onDismiss: () -> Void
 
     var body: some View {
+        let _ = themeManager.currentTheme
         VStack(spacing: 0) {
             HStack(spacing: 12) {
                 Text(LanguageManager.t("settings.appTheme"))

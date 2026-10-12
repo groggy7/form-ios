@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct SetLoggingTable: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     private struct Field: Hashable {
         let id: String
         let weight: Bool
@@ -68,6 +69,7 @@ public struct SetLoggingTable: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         VStack(spacing: 8) {
             let workingSets = sets.filter { !$0.isWarmup }
             let relevantSets = workingSets.isEmpty ? sets : workingSets

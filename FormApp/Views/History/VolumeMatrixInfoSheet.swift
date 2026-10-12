@@ -8,6 +8,7 @@ private struct ZoneInfoItem: Identifiable {
 }
 
 public struct VolumeMatrixInfoSheet: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var language = LanguageManager.shared
 
@@ -22,6 +23,7 @@ public struct VolumeMatrixInfoSheet: View {
     public init() {}
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         NavigationStack {
             ScrollView {
                 VStack(spacing: 16) {

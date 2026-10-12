@@ -346,6 +346,7 @@ public struct HistoryDayDetailData: Identifiable {
 }
 
 public struct HistoryView: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
     var onOpenSettings: () -> Void
     var onSelectRecord: (WorkoutSessionRecord) -> Void
@@ -375,6 +376,7 @@ public struct HistoryView: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         if let detailDay = store.selectedHistoryDetailDay,
            let detail = resolveDayDetail(for: detailDay) {
             HistoryDetailView(
@@ -858,11 +860,13 @@ private let calendarDayPillAspectRatio: CGFloat = 1.12
 private let calendarDayPillCornerRadiusFraction: CGFloat = 0.5
 
 private struct CalendarChrome: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let cornerRadius: CGFloat
     let startColor: Color
     let endColor: Color
 
     var body: some View {
+        let _ = themeManager.currentTheme
         RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
             .fill(LinearGradient(colors: [startColor, endColor], startPoint: .topLeading, endPoint: .bottomTrailing))
             .overlay {
@@ -891,9 +895,11 @@ private struct CalendarChrome: View {
 }
 
 private struct CalendarPill: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let colors: AppColors.CalendarPillColors
 
     var body: some View {
+        let _ = themeManager.currentTheme
         GeometryReader { geometry in
             let width = geometry.size.width
             let height = geometry.size.height
@@ -996,6 +1002,7 @@ private struct CalendarPill: View {
 }
 
 private struct BoxDayCell: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let dateOpt: Date?
     let todayStr: String
     let statuses: [String: WorkoutDayStatus]
@@ -1003,6 +1010,7 @@ private struct BoxDayCell: View {
     let onSelectDay: (Date, String, WorkoutDayStatus) -> Void
 
     var body: some View {
+        let _ = themeManager.currentTheme
         GeometryReader { geometry in
             let cellSize = min(geometry.size.width, geometry.size.height)
             // Include the selection ring in the fit calculation, not just the fill.

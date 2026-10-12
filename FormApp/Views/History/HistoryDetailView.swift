@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct HistoryDetailView: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let detail: HistoryDayDetailData
     let history: [WorkoutSessionRecord]
     var today: Date = Date()
@@ -58,6 +59,7 @@ public struct HistoryDetailView: View {
     var resumesSingleWorkout: Bool { singleActionSection?.sessionRecord != nil }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         let sections = effectiveSections
         let recorded = sections.filter { $0.sessionRecord != nil }
         let totalSections = recorded.isEmpty ? sections : recorded

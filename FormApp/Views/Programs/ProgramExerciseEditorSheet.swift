@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct ProgramExerciseEditorSheet: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let exercise: Exercise
     var onSave: (Exercise) -> Void
     var onDelete: (() -> Void)?
@@ -77,6 +78,7 @@ public struct ProgramExerciseEditorSheet: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {

@@ -9,6 +9,7 @@ struct SessionPaywallOffer {
 
 /// A store-independent presentation; ProPaywallSheet owns billing and entitlement changes.
 struct SessionFeaturePaywallContent: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let annual: SessionPaywallOffer
     let monthly: SessionPaywallOffer
     let selectedPlan: PaywallPlan
@@ -38,7 +39,7 @@ struct SessionFeaturePaywallContent: View {
     private let headerTopPadding: CGFloat = 12
     private let headerRowHeight: CGFloat = 48
     private let headerBottomPadding: CGFloat = 10
-    private let accent = AppColors.progressionPaywallAccent
+    private var accent: Color { AppColors.progressionPaywallAccent }
     private var isWarmup: Bool { feature == .warmupCalculator }
     private var isVolumeMatrix: Bool { feature == .volumeMatrix }
     private var isRepLab: Bool { feature == .formLab }
@@ -75,6 +76,7 @@ struct SessionFeaturePaywallContent: View {
     private var selected: SessionPaywallOffer { selectedPlan == .annual ? annual : monthly }
 
     var body: some View {
+        let _ = themeManager.currentTheme
         GeometryReader { geometry in
             VStack(spacing: 0) {
                 ScrollView {

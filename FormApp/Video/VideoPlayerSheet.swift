@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct VideoPlayerSheet: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let exerciseName: String
     let videoUrl: String
     var onClose: () -> Void
@@ -22,6 +23,7 @@ public struct VideoPlayerSheet: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         ZStack {
             AppColors.background.ignoresSafeArea()
 

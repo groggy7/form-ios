@@ -24,6 +24,7 @@ public struct ToastItem: Identifiable, Equatable {
 }
 
 public struct ToastOverlay: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let item: ToastItem?
     var bottomPadding: CGFloat
 
@@ -46,6 +47,7 @@ public struct ToastOverlay: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         VStack {
             Spacer()
             if isVisible, let displayed = currentItem, !displayed.message.isEmpty {

@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct WeeklyPlanView: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
     var onOpenToday: () -> Void
     var onOpenPrograms: () -> Void
@@ -19,6 +20,7 @@ public struct WeeklyPlanView: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         guard let program = store.activeProgram else {
             return AnyView(EmptyView())
         }

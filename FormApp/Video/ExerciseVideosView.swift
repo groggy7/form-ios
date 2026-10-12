@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct ExerciseVideosView: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let exercise: Exercise
     var onAddVideo: (() -> Void)? = nil
     var onRemoveVideo: ((String) -> Void)? = nil
@@ -19,6 +20,7 @@ public struct ExerciseVideosView: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         VStack(alignment: .leading, spacing: 10) {
             Text(LanguageManager.t("library.videos"))
                 .font(.system(size: 16, weight: .semibold))

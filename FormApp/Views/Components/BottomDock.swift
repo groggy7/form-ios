@@ -2,6 +2,7 @@ import SwiftUI
 import UIKit
 
 public struct BottomDock: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     @Binding var currentView: ViewMode
     var dragPosition: CGFloat?
 
@@ -18,6 +19,7 @@ public struct BottomDock: View {
     ]
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         GeometryReader { proxy in
             let innerPadding: CGFloat = 6
             let spacing: CGFloat = 4

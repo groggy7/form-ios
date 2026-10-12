@@ -2,6 +2,7 @@ import SwiftUI
 import Combine
 
 public struct ActiveSessionView: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
     let draft: ActiveSessionDraft
 
@@ -37,6 +38,7 @@ public struct ActiveSessionView: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         let activeDraft = currentDraft
         let effectiveNow = showSummary ? (finishedAt ?? nowEpochMillis) : nowEpochMillis
         let progress = SessionProgress.from(draft: activeDraft, nowEpochMillis: effectiveNow)
@@ -963,11 +965,13 @@ public struct ActiveSessionView: View {
 }
 
 private struct MiniExerciseDetailModal: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let exercise: Exercise
     var onDismiss: () -> Void
     var onReportIssue: (() -> Void)? = nil
 
     var body: some View {
+        let _ = themeManager.currentTheme
         ZStack {
             Color.black.opacity(0.6)
                 .ignoresSafeArea()

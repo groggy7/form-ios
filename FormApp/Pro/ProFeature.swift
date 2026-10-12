@@ -86,6 +86,7 @@ public class ProAccessManager: ObservableObject {
 }
 
 public struct ProBadge: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     public var text: String = "PREMIUM"
     @ScaledMetric(relativeTo: .caption2) private var fontSize = 8.5
 
@@ -94,6 +95,7 @@ public struct ProBadge: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         Text(text)
             .font(.system(size: fontSize, weight: .bold))
             .tracking(0.2)

@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct AppHeader: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let title: String
     var subtitle: String? = nil
     var onSubtitleClick: (() -> Void)? = nil
@@ -19,6 +20,7 @@ public struct AppHeader: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         HStack(alignment: .top) {
             VStack(alignment: .leading, spacing: 3) {
                 Text(title)

@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct OnboardingView: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
     @ObservedObject var langManager = LanguageManager.shared
 
@@ -14,6 +15,7 @@ public struct OnboardingView: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         ZStack {
             AppColors.background.ignoresSafeArea()
 
@@ -442,11 +444,13 @@ public struct OnboardingView: View {
 // MARK: - Supporting Views
 
 private struct StepContainer<Content: View>: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let title: String
     let subtitle: String
     @ViewBuilder let content: () -> Content
 
     var body: some View {
+        let _ = themeManager.currentTheme
         ScrollView {
             VStack(alignment: .leading, spacing: 0) {
                 Text(title)
@@ -476,12 +480,14 @@ private struct StepContainer<Content: View>: View {
 }
 
 private struct OptionCard: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let title: String
     let description: String
     let isSelected: Bool
     let onClick: () -> Void
 
     var body: some View {
+        let _ = themeManager.currentTheme
         Button(action: onClick) {
             HStack(spacing: 14) {
                 VStack(alignment: .leading, spacing: 4) {

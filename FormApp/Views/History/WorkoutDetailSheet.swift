@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct WorkoutDetailSheet: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let record: WorkoutSessionRecord
     var onDismiss: () -> Void
     var weightUnit: WeightUnit = .kg
@@ -12,6 +13,7 @@ public struct WorkoutDetailSheet: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {

@@ -67,6 +67,7 @@ public enum BarbellPlateColors {
 }
 
 public struct BarbellPlateVisualizerView: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     public let result: PlateCalculationResult
     public var unit: WeightUnit = .kg
     @ScaledMetric(relativeTo: .caption) private var chipSize: CGFloat = 11
@@ -79,6 +80,7 @@ public struct BarbellPlateVisualizerView: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         VStack(spacing: 14) {
             barbellDiagram
 

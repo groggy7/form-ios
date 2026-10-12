@@ -57,6 +57,7 @@ enum ProgramHeroLayout {
 }
 
 public struct ProgramsView: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
     var onDismiss: () -> Void
     @State private var editingProgram: Program? = nil
@@ -89,6 +90,7 @@ public struct ProgramsView: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         NavigationStack {
             GeometryReader { geometry in
                 let width = max(1, geometry.size.width - 40)
@@ -225,6 +227,7 @@ struct ProgramShareSheet: UIViewControllerRepresentable {
 }
 
 struct ProgramHeroCard: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let program: Program
     let isActive: Bool
     let width: CGFloat
@@ -301,6 +304,7 @@ struct ProgramHeroCard: View {
     }
 
     var body: some View {
+        let _ = themeManager.currentTheme
         let contentWidth = max(1, width - 32)
         let wideText = ProgramHeroLayout.descriptionFraction(width: width, bodySize: bodySize) > 0.7
         ZStack(alignment: .topTrailing) {

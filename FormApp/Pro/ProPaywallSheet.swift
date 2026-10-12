@@ -13,6 +13,7 @@ private struct PaywallBenefit: Identifiable {
 }
 
 public struct ProPaywallSheet: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     public var feature: ProFeature?
     public var onDismiss: (() -> Void)?
     public var onUnlocked: (() -> Void)?
@@ -271,6 +272,7 @@ public struct ProPaywallSheet: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         Group {
             if isIllustratedFeature {
                 SessionFeaturePaywallContent(
@@ -639,6 +641,7 @@ public struct ProPaywallSheet: View {
 }
 
 public struct ProPaywallPreview: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     public let feature: ProFeature
     public let onUpgradeClick: (() -> Void)?
     @State private var showSheet = false
@@ -652,6 +655,7 @@ public struct ProPaywallPreview: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         VStack(spacing: 8) {
             HStack(spacing: 5) {
                 Image(systemName: "crown.fill")

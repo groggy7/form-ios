@@ -1,12 +1,12 @@
 import SwiftUI
 
-private let cardBackground = Color(hex: 0x1E242B)
-private let cardBorder = Color(hex: 0x303B46)
+private var cardBackground: Color { AppColors.heroSurface }
+private var cardBorder: Color { AppColors.heroBorder }
 private let segmentActive = Color(hex: 0x21E498)
 private let segmentBlinkingTarget = Color(hex: 0x1E946A)
-private let segmentTrack = Color(hex: 0x13171B)
-private let statBoxBg = AppColors.surface
-private let statBoxBorder = AppColors.border
+private var segmentTrack: Color { AppColors.surface }
+private var statBoxBg: Color { AppColors.surface }
+private var statBoxBorder: Color { AppColors.border }
 private let amberPr = Color(hex: 0xFBBF24)
 
 public func isWeeklyGoalPillBlinking(
@@ -21,6 +21,7 @@ public func isWeeklyGoalPillBlinking(
 }
 
 public struct WeeklyGoalProgressCard: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     public let metrics: WeeklyGoalProgressMetrics
     public let isCurrentWorkoutPending: Bool
     public var weightUnit: WeightUnit = .kg
@@ -33,6 +34,7 @@ public struct WeeklyGoalProgressCard: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         VStack(spacing: 14) {
             // Header: "Weekly Goal Progress" and "X / Y Completed"
             HStack(alignment: .center) {

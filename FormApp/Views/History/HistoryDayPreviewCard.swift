@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct HistoryDayPreviewCard: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let detail: HistoryDayDetailData
     let history: [WorkoutSessionRecord]
     let onOpenDetail: () -> Void
@@ -193,6 +194,7 @@ public struct HistoryDayPreviewCard: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         VStack(spacing: 16) {
             // Header Row: Status tag, workout title, status icon, and time range
             HStack(alignment: .top) {

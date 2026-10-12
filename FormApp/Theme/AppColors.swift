@@ -6,14 +6,14 @@ public enum AppColors {
     public static var surfaceRaised: Color { ThemeManager.shared.currentTheme.surfaceRaised }
     public static var calendarSurfaceStart: Color { ThemeManager.shared.currentTheme.calendarSurfaceStart }
     public static var calendarSurfaceEnd: Color { ThemeManager.shared.currentTheme.calendarSurfaceEnd }
-    public static let progressionRulesSurface = Color(hex: 0x0E181E)
+    public static var progressionRulesSurface: Color { presentationColor(Color(hex: 0x0E181E), surface) }
 
-    public static let progressionPaywallSurface = Color(hex: 0x101519)
-    public static let progressionPaywallBody = Color(hex: 0xD1D8DE)
-    public static let progressionPaywallAccent = Color(hex: 0x47E4CF)
-    public static let progressionPaywallIconSurface = Color(hex: 0x193234)
-    public static let progressionPaywallPlanSurface = Color(hex: 0x181F24)
-    public static let progressionPaywallSelectedSurface = Color(hex: 0x13292A)
+    public static var progressionPaywallSurface: Color { presentationColor(Color(hex: 0x101519), surface) }
+    public static var progressionPaywallBody: Color { presentationColor(Color(hex: 0xD1D8DE), text) }
+    public static var progressionPaywallAccent: Color { presentationColor(Color(hex: 0x47E4CF), accent) }
+    public static var progressionPaywallIconSurface: Color { presentationColor(Color(hex: 0x193234), positiveBg) }
+    public static var progressionPaywallPlanSurface: Color { presentationColor(Color(hex: 0x181F24), surfaceRaised) }
+    public static var progressionPaywallSelectedSurface: Color { presentationColor(Color(hex: 0x13292A), positiveBg) }
 
     public struct ProgressionRuleColors {
         public let accent: Color
@@ -26,12 +26,12 @@ public enum AppColors {
     public static let progressionRuleHold = ProgressionRuleColors(accent: Color(hex: 0xFFA91F), surface: Color(hex: 0x231C16), iconSurface: Color(hex: 0x382614))
     public static let progressionRuleReview = ProgressionRuleColors(accent: Color(hex: 0xB176FF), surface: Color(hex: 0x1A1A2C), iconSurface: Color(hex: 0x23203A))
 
-    public static let exerciseVideoSurface = Color(hex: 0x051216)
+    public static let exerciseVideoSurface = Color(hex: 0x161616)
     public static let exerciseThumbnailSurface = EllipticalGradient(
         colors: [
-            Color(hex: 0x064844),
-            Color(hex: 0x052B2C),
-            Color(hex: 0x051216)
+            Color(hex: 0x383838),
+            Color(hex: 0x252525),
+            Color(hex: 0x161616)
         ],
         center: .center,
         startRadiusFraction: 0,
@@ -49,10 +49,10 @@ public enum AppColors {
     public static var purpleBg: Color { ThemeManager.shared.currentTheme.purpleBg }
     public static var coral: Color { ThemeManager.shared.currentTheme.coral }
     public static var danger: Color { ThemeManager.shared.currentTheme.danger }
-    public static let cuesBg = Color(hex: 0x061F20)
-    public static let cuesBorder = Color(hex: 0x0E5B53)
-    public static let avoidBg = Color(hex: 0x1D1416)
-    public static let avoidBorder = Color(hex: 0x54282A)
+    public static var cuesBg: Color { presentationColor(Color(hex: 0x061F20), positiveBg) }
+    public static var cuesBorder: Color { presentationColor(Color(hex: 0x0E5B53), Color.mix(border, accent, 0.35)) }
+    public static var avoidBg: Color { presentationColor(Color(hex: 0x1D1416), Color.mix(surface, danger, 0.06)) }
+    public static var avoidBorder: Color { presentationColor(Color(hex: 0x54282A), Color.mix(border, danger, 0.35)) }
     
     // Calendar History status colors matching Android Theme
     public static let completedGreen = Color(hex: 0x65D69B)
@@ -70,13 +70,13 @@ public enum AppColors {
     public static let calendarUnfinishedPill = CalendarPillColors(light: Color(hex: 0xFFD396), body: Color(hex: 0xFF9C59), shade: Color(hex: 0xE46A32))
     public static let calendarMissedPill = CalendarPillColors(light: Color(hex: 0xFF9AAF), body: Color(hex: 0xFF4D69), shade: Color(hex: 0xD92747))
 
-    public static let restTimerAccent = Color(hex: 0x12D8D2)
-    public static let restTimerBorder = Color(hex: 0x117D79)
-    public static let restTimerSurfaceStart = Color(hex: 0x071A1E)
-    public static let restTimerSurfaceEnd = Color(hex: 0x071116)
-    public static let restTimerTrack = Color(hex: 0x192831)
-    public static let restTimerControlSurface = Color(hex: 0x091216)
-    public static let restTimerControlBorder = Color(hex: 0x344047)
+    public static var restTimerAccent: Color { presentationColor(Color(hex: 0x12D8D2), purple) }
+    public static var restTimerBorder: Color { presentationColor(Color(hex: 0x117D79), Color.mix(border, purple, 0.4)) }
+    public static var restTimerSurfaceStart: Color { presentationColor(Color(hex: 0x071A1E), surfaceRaised) }
+    public static var restTimerSurfaceEnd: Color { presentationColor(Color(hex: 0x071116), surface) }
+    public static var restTimerTrack: Color { presentationColor(Color(hex: 0x192831), border) }
+    public static var restTimerControlSurface: Color { presentationColor(Color(hex: 0x091216), surface) }
+    public static var restTimerControlBorder: Color { presentationColor(Color(hex: 0x344047), border) }
     
     public static let unfinishedBorder = Color(hex: 0x664923)
     public static let missedDayBorder = Color(hex: 0x6B383B)
@@ -93,8 +93,8 @@ public enum AppColors {
     public static let fullBodyBorder = Color(hex: 0x414C57)
     
     // History Day Detail Sheet specific colors matching design reference
-    public static let toContinueSurface = Color(hex: 0x102523)
-    public static let progressTrack = Color(hex: 0x1D262B)
+    public static var toContinueSurface: Color { presentationColor(Color(hex: 0x102523), positiveBg) }
+    public static var progressTrack: Color { presentationColor(Color(hex: 0x1D262B), border) }
     
     // PR Badge & Tile colors (Orange identity)
     public static let orangePrBg = Color(hex: 0x2C1E14)
@@ -105,13 +105,25 @@ public enum AppColors {
     public static let goldPrText = Color(hex: 0xF2AF61)
 
     // Exercise Detail History Stat Card colors
-    public static let historyStatCardBg = Color(hex: 0x1A232A)
-    public static let historyStatCardBorder = Color(hex: 0x26323D)
-    public static let historyStatCardTitle = Color(hex: 0x8E9BAE)
+    public static var historyStatCardBg: Color { presentationColor(Color(hex: 0x1A232A), surface) }
+    public static var historyStatCardBorder: Color { presentationColor(Color(hex: 0x26323D), border) }
+    public static var historyStatCardTitle: Color { presentationColor(Color(hex: 0x8E9BAE), muted) }
     public static let historyStatPrGreen = Color(hex: 0x20D791)
     public static let historyStat1RmAmber = Color(hex: 0xFEB447)
     public static let historyStatCyan = Color(hex: 0x38BDF8)
     public static let historyStatPurple = Color(hex: 0xB18AFF)
+
+    public static var heroSurface: Color { presentationColor(Color(hex: 0x1E242B), surfaceRaised) }
+    public static var heroBorder: Color { presentationColor(Color(hex: 0x343A41), border) }
+    public static var restRingShade: Color { presentationColor(Color(hex: 0x7952D6), Color.mix(purple, background, 0.25)) }
+    public static var restRingLight: Color { presentationColor(Color(hex: 0xE0BCFF), Color.mix(purple, text, 0.3)) }
+
+    private static func presentationColor(_ original: Color, _ themed: Color) -> Color {
+        ThemeManager.shared.currentTheme.id == AppThemes.default.id ? original : themed
+    }
+    public static var bodyViewSelectedSurface: Color { presentationColor(Color(hex: 0x25232D), purpleBg) }
+    public static var bodyViewSelectedBorder: Color { presentationColor(Color(hex: 0x51455F), purple) }
+    public static var bodyViewSelectedText: Color { presentationColor(Color(hex: 0xD8CFDF), purple) }
 
     // Warmup Set demarcation
     public static let warmupAmber = Color(hex: 0xFEB447)
@@ -119,6 +131,16 @@ public enum AppColors {
 }
 
 extension Color {
+    // Resolve the explicit sRGB palette, then blend identically to Android's sRGB blend.
+    static func mix(_ first: Color, _ second: Color, _ fraction: Double) -> Color {
+        let a = first.resolve(in: EnvironmentValues())
+        let b = second.resolve(in: EnvironmentValues())
+        let f = Float(fraction)
+        return Color(.sRGB, red: Double(a.red + (b.red - a.red) * f),
+                     green: Double(a.green + (b.green - a.green) * f),
+                     blue: Double(a.blue + (b.blue - a.blue) * f), opacity: 1)
+    }
+
     public init(hex: UInt32, alpha: Double = 1.0) {
         let r = Double((hex >> 16) & 0xFF) / 255.0
         let g = Double((hex >> 8) & 0xFF) / 255.0

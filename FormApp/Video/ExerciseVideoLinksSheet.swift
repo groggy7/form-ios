@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct ExerciseVideoLinksSheet: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let exercise: Exercise
     var onDismiss: () -> Void
     var onSave: ((Exercise, [String]) -> Void)? = nil
@@ -47,6 +48,7 @@ public struct ExerciseVideoLinksSheet: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         NavigationStack {
             VStack(spacing: 0) {
                 // Header

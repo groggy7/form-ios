@@ -63,6 +63,7 @@ struct ExerciseMuscleCatalog: Decodable {
 }
 
 struct ExerciseMusclesCard: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let exerciseId: String?
     let initiallyExpanded: Bool
     @State private var isExpanded: Bool
@@ -81,6 +82,7 @@ struct ExerciseMusclesCard: View {
     }
 
     var body: some View {
+        let _ = themeManager.currentTheme
         VStack(alignment: .leading, spacing: isExpanded ? 14 : 0) {
             HStack {
                 Text(LanguageManager.t("anatomy.title"))
@@ -222,6 +224,8 @@ struct ExerciseMusclesCard: View {
             guard let raw = anatomy?.regions[muscle] else { return nil }
             return (muscle, SVGPathParser.parse(raw))
         }
+        let primaryColor = AppColors.purple
+        let secondaryColor = AppColors.muscleSecondary
         return Canvas { context, size in
             guard let anatomy, let image = ExerciseMuscleCatalog.images[view] else { return }
             let top: CGFloat = profile.focus == "lower" ? 410 : 0
@@ -236,7 +240,7 @@ struct ExerciseMusclesCard: View {
             context.blendMode = .color
             context.opacity = 0.7
             for (muscle, path) in paths {
-                context.fill(Path(path), with: .color(profile.primary.contains(muscle) ? AppColors.purple : AppColors.muscleSecondary))
+                context.fill(Path(path), with: .color(profile.primary.contains(muscle) ? primaryColor : secondaryColor))
             }
         }.accessibilityLabel(LanguageManager.t(view == "front" ? "anatomy.front" : "anatomy.back"))
     }

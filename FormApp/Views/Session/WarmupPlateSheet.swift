@@ -6,6 +6,7 @@ public enum WarmupPlateTab: Int, CaseIterable {
 }
 
 public struct WarmupPlateSheet: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     @Environment(\.dismiss) private var dismiss
 
     let exerciseName: String
@@ -84,6 +85,7 @@ public struct WarmupPlateSheet: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         NavigationStack {
             ZStack {
                 AppColors.background.ignoresSafeArea()
@@ -312,7 +314,7 @@ public struct WarmupPlateSheet: View {
                     .padding(12)
                     .background(
                         RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .fill(step.isPotentiation ? Color(hex: 0x1E192B) : AppColors.surface)
+                            .fill(step.isPotentiation ? AppColors.purpleBg : AppColors.surface)
                             .overlay(
                                 RoundedRectangle(cornerRadius: 12, style: .continuous)
                                     .stroke(step.isPotentiation ? AppColors.purple.opacity(0.5) : AppColors.border, lineWidth: 1)

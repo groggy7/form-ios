@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct WarmupPlateCard: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let warmupSets: [ExerciseSetLog]
     let hasWorkingLoad: Bool
     let supportsBarbellWarmup: Bool
@@ -37,6 +38,7 @@ public struct WarmupPlateCard: View {
     @ScaledMetric(relativeTo: .subheadline) private var bodySize = 13.0
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         let isLocked = !proManager.isFeatureUnlocked(.warmupCalculator)
         if isLocked {
             LockedSessionFeatureCard(
@@ -174,11 +176,13 @@ public struct WarmupPlateCard: View {
 }
 
 private struct WarmupPlateAction: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let warmup: Bool
     let action: () -> Void
     @ScaledMetric(relativeTo: .subheadline) private var labelSize = 13.0
 
     var body: some View {
+        let _ = themeManager.currentTheme
         Button(action: action) {
             HStack(spacing: 6) {
                 Image(systemName: warmup ? "flame.fill" : "square.stack.3d.up.fill")

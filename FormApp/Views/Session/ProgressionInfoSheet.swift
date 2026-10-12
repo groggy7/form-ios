@@ -1,11 +1,13 @@
 import SwiftUI
 
 public struct ProgressionInfoSheet: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     @Environment(\.dismiss) private var dismiss
 
     public init() {}
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         VStack(spacing: 0) {
             HStack(spacing: 8) {
                 Text(LanguageManager.t("progression.info.title"))

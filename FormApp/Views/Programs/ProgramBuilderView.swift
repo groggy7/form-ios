@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct ProgramBuilderView: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
     @State var program: Program
     let isNew: Bool
@@ -49,6 +50,7 @@ public struct ProgramBuilderView: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
@@ -352,12 +354,14 @@ public struct ProgramBuilderView: View {
 }
 
 struct AddExercisePickerSheet: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let catalogue: [ExerciseCatalogEntry]
     var onSelect: (Exercise) -> Void
     @Environment(\.dismiss) var dismiss
     @State private var search = ""
 
     var body: some View {
+        let _ = themeManager.currentTheme
         NavigationStack {
             List {
                 ForEach(filtered) { entry in

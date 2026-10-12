@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct SessionSummaryView: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let workoutTitle: String
     let durationSeconds: Int
     let totalCompletedSets: Int
@@ -46,6 +47,7 @@ public struct SessionSummaryView: View {
     private var isWorkoutPartial: Bool { !isWorkoutEmpty && !isWorkoutComplete }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         NavigationStack {
             VStack(spacing: 0) {
                 if isWorkoutEmpty {

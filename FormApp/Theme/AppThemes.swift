@@ -82,7 +82,7 @@ public enum AppThemes {
         border: Color(hex: 0x26262D),
         text: Color(hex: 0xFFFFFF),
         secondaryText: Color(hex: 0xC0C4CC),
-        muted: Color(hex: 0x7A7E85),
+        muted: Color(hex: 0x9498A1),
         accent: Color(hex: 0xE2E8F0),
         positiveBg: Color(hex: 0x1F2024),
         purple: Color(hex: 0xB8B8C8),
@@ -104,7 +104,7 @@ public enum AppThemes {
         border: Color(hex: 0x202D42),
         text: Color(hex: 0xF0F6FC),
         secondaryText: Color(hex: 0xA5B4C7),
-        muted: Color(hex: 0x6E8096),
+        muted: Color(hex: 0x8DA0B7),
         accent: Color(hex: 0x38BDF8),
         positiveBg: Color(hex: 0x0C2B3E),
         purple: Color(hex: 0x9382F8),
@@ -126,13 +126,13 @@ public enum AppThemes {
         border: Color(hex: 0x21362D),
         text: Color(hex: 0xEDF7F2),
         secondaryText: Color(hex: 0xA3BEB1),
-        muted: Color(hex: 0x6C8578),
+        muted: Color(hex: 0x8EAD9E),
         accent: Color(hex: 0x34D399),
         positiveBg: Color(hex: 0x113324),
         purple: Color(hex: 0xA78BFA),
         purpleBg: Color(hex: 0x202B27),
         coral: Color(hex: 0xF87171),
-        danger: Color(hex: 0xEF4444),
+        danger: Color(hex: 0xF87171),
         calendarSurfaceStart: Color(hex: 0x12201A),
         calendarSurfaceEnd: Color(hex: 0x0B1410)
     )
@@ -148,13 +148,13 @@ public enum AppThemes {
         border: Color(hex: 0x3D2228),
         text: Color(hex: 0xFAF0F1),
         secondaryText: Color(hex: 0xC9B0B4),
-        muted: Color(hex: 0x8F7377),
+        muted: Color(hex: 0xB09498),
         accent: Color(hex: 0xF4978E),
         positiveBg: Color(hex: 0x31161B),
         purple: Color(hex: 0xC084FC),
         purpleBg: Color(hex: 0x2B1520),
         coral: Color(hex: 0xFB7185),
-        danger: Color(hex: 0xF43F5E),
+        danger: Color(hex: 0xFB7185),
         calendarSurfaceStart: Color(hex: 0x201216),
         calendarSurfaceEnd: Color(hex: 0x150A0D)
     )
@@ -170,13 +170,13 @@ public enum AppThemes {
         border: Color(hex: 0x312747),
         text: Color(hex: 0xF5F0FF),
         secondaryText: Color(hex: 0xBDB3CE),
-        muted: Color(hex: 0x7C708F),
-        accent: Color(hex: 0xA855F7),
+        muted: Color(hex: 0xA397B8),
+        accent: Color(hex: 0xB66FF8),
         positiveBg: Color(hex: 0x26143D),
         purple: Color(hex: 0xC084FC),
         purpleBg: Color(hex: 0x2F1A45),
         coral: Color(hex: 0xFF758F),
-        danger: Color(hex: 0xF72585),
+        danger: Color(hex: 0xFF6CAC),
         calendarSurfaceStart: Color(hex: 0x1A1326),
         calendarSurfaceEnd: Color(hex: 0x100B1A)
     )
@@ -206,6 +206,5 @@ public final class ThemeManager: ObservableObject {
         let palette = AppThemes.fromId(id)
         currentTheme = palette
         UserDefaults.standard.set(id, forKey: themeKey)
-        objectWillChange.send()
     }
 }

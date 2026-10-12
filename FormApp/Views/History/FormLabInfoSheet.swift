@@ -1,12 +1,14 @@
 import SwiftUI
 
 public struct FormLabInfoSheet: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var language = LanguageManager.shared
 
     public init() {}
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         NavigationStack {
             ScrollView {
                 VStack(spacing: 16) {

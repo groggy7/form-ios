@@ -47,6 +47,7 @@ enum ExerciseThumbnails {
 
 /// Static thumbnail by default; can optionally play looping movement animation when animated is true.
 public struct MovementIcon: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     private let exerciseId: String?
     private let size: CGFloat
     private let large: Bool
@@ -65,6 +66,7 @@ public struct MovementIcon: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         let finalSize: CGFloat = large ? 108 : size
         let cornerRadius: CGFloat = finalSize >= 96 ? 12 : (finalSize >= 68 ? 11 : 10)
         let hasVideo = animated && ExerciseVideoCatalog.url(for: exerciseId) != nil

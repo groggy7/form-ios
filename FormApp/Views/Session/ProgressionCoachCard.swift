@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct ProgressionCoachCard: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let recommendation: ExerciseProgressionRecommendation
     let weightUnit: WeightUnit
     let canApplyTarget: Bool
@@ -38,6 +39,7 @@ public struct ProgressionCoachCard: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         Group {
         if !proManager.isFeatureUnlocked(.autoProgression) {
             LockedSessionFeatureCard(
@@ -215,6 +217,7 @@ public struct ProgressionCoachCard: View {
 }
 
 private struct ProgressionCoachHeader: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let onOpenInfo: () -> Void
     @ScaledMetric(relativeTo: .subheadline) private var titleSize = 14.0
 
@@ -225,6 +228,7 @@ private struct ProgressionCoachHeader: View {
     }
 
     var body: some View {
+        let _ = themeManager.currentTheme
         HStack(alignment: .center, spacing: 4) {
             ProgressionHeaderBolt().fill(AppColors.purple)
                 .frame(width: 16, height: 16).frame(width: 20, height: 24).accessibilityHidden(true)
@@ -246,6 +250,7 @@ private struct ProgressionCoachHeader: View {
 }
 
 struct ProgressionRecommendationCard: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let recommendation: ExerciseProgressionRecommendation
     let weightUnit: WeightUnit
     let canApplyTarget: Bool
@@ -259,6 +264,7 @@ struct ProgressionRecommendationCard: View {
     private var review: Bool { recommendation.isPlateau }
 
     var body: some View {
+        let _ = themeManager.currentTheme
         VStack(alignment: .leading, spacing: 0) {
             ProgressionCoachHeader(onOpenInfo: onOpenInfo).padding(.bottom, 8)
             Text(headlineTitle)
@@ -444,6 +450,7 @@ private struct ProgressionTableRow: Layout {
 }
 
 private struct CompactCoachButton: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let label: String
     var primary = false
     var expanded: Bool? = nil
@@ -451,6 +458,7 @@ private struct CompactCoachButton: View {
     @ScaledMetric(relativeTo: .caption) private var fontSize = 12.0
 
     var body: some View {
+        let _ = themeManager.currentTheme
         Button(action: action) {
             HStack(spacing: 6) {
                 Text(label).font(.system(size: fontSize, weight: .semibold))
@@ -487,6 +495,7 @@ private struct ProgressionHeaderBolt: Shape {
 
 /// Shared locked presentation: the card opens Premium; the close control only dismisses.
 struct LockedSessionFeatureCard<Icon: View>: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let title: String
     let description: String
     let cardIdentifier: String
@@ -505,6 +514,7 @@ struct LockedSessionFeatureCard<Icon: View>: View {
     }
 
     var body: some View {
+        let _ = themeManager.currentTheme
         ZStack(alignment: .topTrailing) {
             Button(action: onUnlock) {
                 VStack(alignment: .leading, spacing: 10) {

@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct RestTimerBar: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let secondsRemaining: Int
     let totalSeconds: Int
     let exerciseName: String
@@ -52,6 +53,7 @@ public struct RestTimerBar: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         VStack(alignment: .leading, spacing: 10) {
             // Top info row
             HStack(spacing: 12) {
@@ -73,6 +75,8 @@ public struct RestTimerBar: View {
                         .font(.system(size: 31, weight: .bold))
                         .monospacedDigit()
                         .foregroundStyle(AppColors.restTimerAccent)
+                        .fixedSize(horizontal: true, vertical: false)
+                        .layoutPriority(1)
 
                     Image(systemName: "chevron.right")
                         .font(.system(size: 18, weight: .semibold))
@@ -171,6 +175,7 @@ public struct RestTimerBar: View {
 }
 
 private struct RestTimerProgressBar: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let progress: Double
 
     @Environment(\.displayScale) private var displayScale
@@ -180,6 +185,7 @@ private struct RestTimerProgressBar: View {
     }
 
     var body: some View {
+        let _ = themeManager.currentTheme
         GeometryReader { proxy in
             let barWidth = proxy.size.width * 0.68
 
@@ -211,6 +217,7 @@ private struct RestTimerProgressBar: View {
 }
 
 public struct RestTimerFullScreenModal: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let secondsRemaining: Int
     let totalSeconds: Int
     let exerciseName: String
@@ -237,6 +244,7 @@ public struct RestTimerFullScreenModal: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         ZStack {
             AppColors.background.ignoresSafeArea()
 
@@ -290,10 +298,10 @@ public struct RestTimerFullScreenModal: View {
                                 .stroke(
                                     AngularGradient(
                                         gradient: Gradient(colors: [
-                                            Color(hex: 0x7952D6),
+                                            AppColors.restRingShade,
                                             AppColors.purple,
-                                            Color(hex: 0xE0BCFF),
-                                            Color(hex: 0x7952D6)
+                                            AppColors.restRingLight,
+                                            AppColors.restRingShade
                                         ]),
                                         center: .center,
                                         startAngle: .degrees(-90),

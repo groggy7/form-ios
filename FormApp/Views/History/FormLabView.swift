@@ -17,6 +17,7 @@ public enum FormLabTab: String, CaseIterable, Identifiable {
 }
 
 public struct FormLabView: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
     @ObservedObject private var language = LanguageManager.shared
 
@@ -103,6 +104,7 @@ public struct FormLabView: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         VStack(spacing: 16) {
             // Header with Sub-tab buttons and Info button
             HStack(spacing: 8) {
@@ -723,11 +725,13 @@ public struct FormLabView: View {
 // MARK: - Canvas Progression Chart
 
 private struct StrengthLineChart: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let points: [StrengthDataPoint]
     @Binding var selectedIndex: Int?
     let weightUnit: WeightUnit
 
     var body: some View {
+        let _ = themeManager.currentTheme
         GeometryReader { geo in
             let w = geo.size.width
             let h = geo.size.height

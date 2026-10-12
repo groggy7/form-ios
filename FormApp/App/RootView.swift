@@ -74,6 +74,7 @@ public struct RootView: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         Group {
             if !store.isOnboardingCompleted {
                 OnboardingView(store: store)

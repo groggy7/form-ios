@@ -8,6 +8,7 @@ public enum LibraryFilterModal: String, Identifiable {
 }
 
 public struct LibraryView: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
     @ObservedObject private var language = LanguageManager.shared
     var onSelectExercise: (Exercise) -> Void
@@ -32,6 +33,7 @@ public struct LibraryView: View {
     }
 
     public var body: some View {
+        let _ = themeManager.currentTheme
         if let selectedId = store.selectedExerciseId, let selectedExercise = store.findExercise(id: selectedId) {
             ExerciseDetailView(exercise: selectedExercise, onBack: {
                 store.selectExerciseInLibrary(id: nil)
@@ -408,6 +410,7 @@ public struct LibraryView: View {
 }
 
 struct LibraryFilterPill: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let title: String
     let isSelected: Bool
     var equipment: EquipmentCategory? = nil
@@ -416,6 +419,7 @@ struct LibraryFilterPill: View {
     @ScaledMetric(relativeTo: .subheadline) private var labelSize: CGFloat = 12
 
     var body: some View {
+        let _ = themeManager.currentTheme
         HStack(spacing: 0) {
             Button(action: onTap) {
                 HStack(spacing: 4) {
@@ -466,6 +470,7 @@ struct LibraryFilterPill: View {
 }
 
 struct LibraryFilterOption: View {
+    @ObservedObject var themeManager = ThemeManager.shared
     let title: String
     let selected: Bool
     var equipment: EquipmentCategory? = nil
@@ -480,6 +485,7 @@ struct LibraryFilterOption: View {
     }
 
     var body: some View {
+        let _ = themeManager.currentTheme
         Button(action: action) {
             HStack(spacing: 8) {
                 if let equipment {
