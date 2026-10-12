@@ -6,7 +6,8 @@ public struct ActiveSessionView: View {
     @ObservedObject var store: AppStore
     let draft: ActiveSessionDraft
 
-    @State private var nowEpochMillis: Int64 = Int64(Date().timeIntervalSince1970 * 1000)
+    // Event handlers read actual time; ticking display state belongs to child views.
+    private var nowEpochMillis: Int64 { Int64(Date().timeIntervalSince1970 * 1000) }
     @State private var showExitConfirmation: Bool = false
     @State private var showSummary: Bool = false
     @State private var finishedAt: Int64? = nil
@@ -58,9 +59,10 @@ public struct ActiveSessionView: View {
         }.first
         let restTimer = activeDraft.restTimer
 
-        let previousWorkingSets: [SessionSetLog] = currentExercise.map {
-            WorkoutSessionUtils.findPreviousSessionWorkingSets(history: store.state.history, exercise: $0)
-        } ?? []
+        let historyInsights = currentExercise.map {
+            store.sessionHistoryInsights.get(exercise: $0, history: store.state.history, unit: store.weightUnit)
+        }
+        let previousWorkingSets = historyInsights?.previousWorkingSets ?? []
 
         let ghostTargets: [Int: GhostTarget] = {
             guard let exercise = currentExercise else { return [:] }
@@ -199,9 +201,7 @@ public struct ActiveSessionView: View {
                                     .frame(width: 8, height: 8)
                                 }
 
-                                Text(RestTimerUtils.formatSecondsToTime(progress.durationSeconds))
-                                    .font(.system(size: 12, weight: .semibold, design: .monospaced))
-                                    .foregroundStyle(AppColors.accent)
+                                SessionElapsedTime(draft: activeDraft)
 
                                 if !programLabel.isEmpty {
                                     Text("·")
@@ -340,11 +340,7 @@ public struct ActiveSessionView: View {
                                         .foregroundStyle(AppColors.text)
                                         .frame(maxWidth: .infinity, alignment: .leading)
 
-                                    let recommendation = ProgressionEngine.computeProgression(
-                                        exercise: exercise,
-                                        history: store.state.history,
-                                        weightUnit: store.weightUnit
-                                    )
+                                    let recommendation = historyInsights?.recommendation
 
                                     if let recommendation, store.showProgressionTargets {
                                         ProgressionCoachCard(
@@ -408,7 +404,7 @@ public struct ActiveSessionView: View {
 
                                     let isRestActive = (activeDraft.restTimer?.secondsRemaining(nowEpochMillis: nowEpochMillis) ?? 0) > 0
                                     let isRestForCurrentExercise = isRestActive && activeDraft.restTimer?.exerciseName == exercise.name
-                                    let prText = WorkoutSessionUtils.findExercisePr(history: store.state.history, exercise: exercise, unit: store.weightUnit) ?? "-"
+                                    let prText = historyInsights?.prText ?? "-"
 
                                     SetLoggingTable(
                                         sets: currentSets,
@@ -521,21 +517,23 @@ public struct ActiveSessionView: View {
 
                     // Floating Rest Timer Bar
                     if let rest = restTimer {
-                        let remaining = rest.secondsRemaining(nowEpochMillis: nowEpochMillis)
-                        if remaining > 0 {
-                            RestTimerBar(
-                                secondsRemaining: remaining,
-                                totalSeconds: rest.totalSeconds,
-                                exerciseName: rest.exerciseName,
-                                isRunning: rest.isRunning,
-                                onTogglePause: { toggleRest() },
-                                onAddSeconds: { adjustRest(seconds: $0) },
-                                onSetDuration: { setRestDuration(seconds: $0) },
-                                onSkip: { skipRest() },
-                                isMuted: restMuted,
-                                onToggleMute: { restMuted.toggle() }
-                            )
-                            .padding(.bottom, 16)
+                        TimelineView(.periodic(from: .now, by: 0.25)) { timeline in
+                            let remaining = rest.secondsRemaining(nowEpochMillis: Int64(timeline.date.timeIntervalSince1970 * 1000))
+                            if remaining > 0 {
+                                RestTimerBar(
+                                    secondsRemaining: remaining,
+                                    totalSeconds: rest.totalSeconds,
+                                    exerciseName: rest.exerciseName,
+                                    isRunning: rest.isRunning,
+                                    onTogglePause: { toggleRest() },
+                                    onAddSeconds: { adjustRest(seconds: $0) },
+                                    onSetDuration: { setRestDuration(seconds: $0) },
+                                    onSkip: { skipRest() },
+                                    isMuted: restMuted,
+                                    onToggleMute: { restMuted.toggle() }
+                                )
+                                .padding(.bottom, 16)
+                            }
                         }
                     }
                 }
@@ -700,7 +698,6 @@ public struct ActiveSessionView: View {
             )
         }
         .onReceive(timer) { _ in
-            nowEpochMillis = Int64(Date().timeIntervalSince1970 * 1000)
             checkRestTimerAlarm()
         }
         .alert(LanguageManager.t("session.exit"), isPresented: $showExitConfirmation) {
@@ -1094,4 +1091,17 @@ private struct PendingAnomalousSet: Identifiable {
     let ghostTarget: GhostTarget?
     var editWeight: String? = nil
     var editReps: String? = nil
+}
+
+
+private struct SessionElapsedTime: View {
+    let draft: ActiveSessionDraft
+    var body: some View {
+        TimelineView(.periodic(from: .now, by: 1)) { timeline in
+            Text(RestTimerUtils.formatSecondsToTime(draft.currentDurationSeconds(
+                nowEpochMillis: Int64(timeline.date.timeIntervalSince1970 * 1000))))
+                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .foregroundStyle(AppColors.accent)
+        }
+    }
 }

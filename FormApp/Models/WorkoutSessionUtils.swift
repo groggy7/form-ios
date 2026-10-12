@@ -692,3 +692,36 @@ public enum WorkoutSessionUtils {
 
 public typealias GhostTarget = WorkoutSessionUtils.GhostTarget
 public typealias LogbookBeatResult = WorkoutSessionUtils.LogbookBeatResult
+
+
+/// One UI-owned history snapshot. Clock ticks and set edits reuse historical work.
+final class SessionHistoryInsightsCache {
+    struct Insights {
+        let previousWorkingSets: [SessionSetLog]
+        let recommendation: ExerciseProgressionRecommendation?
+        let prText: String
+    }
+    private struct Inputs: Equatable {
+        let exercise: Exercise
+        let history: [WorkoutSessionRecord]
+        let unit: WeightUnit
+        let language: String
+    }
+    private var entry: (Inputs, Insights)?
+    private let compute: (Exercise, [WorkoutSessionRecord], WeightUnit) -> Insights
+
+    init(compute: @escaping (Exercise, [WorkoutSessionRecord], WeightUnit) -> Insights = { exercise, history, unit in
+        Insights(previousWorkingSets: WorkoutSessionUtils.findPreviousSessionWorkingSets(history: history, exercise: exercise),
+            recommendation: ProgressionEngine.computeProgression(exercise: exercise, history: history, weightUnit: unit),
+            prText: WorkoutSessionUtils.findExercisePr(history: history, exercise: exercise, unit: unit) ?? "-")
+    }) { self.compute = compute }
+
+    func get(exercise: Exercise, history: [WorkoutSessionRecord], unit: WeightUnit) -> Insights {
+        dispatchPrecondition(condition: .onQueue(.main))
+        let inputs = Inputs(exercise: exercise, history: history, unit: unit, language: LanguageManager.shared.currentLanguage)
+        if let entry, entry.0 == inputs { return entry.1 }
+        let result = compute(exercise, history, unit)
+        entry = (inputs, result)
+        return result
+    }
+}

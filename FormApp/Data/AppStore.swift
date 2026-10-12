@@ -75,6 +75,7 @@ public final class AppStore: ObservableObject {
     }
     @Published public var exerciseCatalogue: [ExerciseCatalogEntry] = []
     let libraryResults = LibraryExerciseResults()
+    let sessionHistoryInsights = SessionHistoryInsightsCache()
     
     // Navigation selection
     @Published public var selectedWorkoutId: String?

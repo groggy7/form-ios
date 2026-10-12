@@ -12063,3 +12063,48 @@ final class AuditEntitlementConcurrencyTests: XCTestCase {
         XCTAssertFalse(manager.isFeatureUnlocked(.cloudBackup))
     }
 }
+
+
+final class AuditSessionInsightsTests: XCTestCase {
+    @MainActor
+    func testInsightsReuseHistoryAndInvalidatePrescriptionUnitLanguageAndCorrectedLogs() {
+        var computations = 0
+        let cache = SessionHistoryInsightsCache { _, _, _ in
+            computations += 1
+            return .init(previousWorkingSets: [], recommendation: nil, prText: "fixture")
+        }
+        var exercise = Exercise(id: "bench", name: "Barbell Bench Press", exerciseId: "barbell-bench-press", prescription: "3x8-12")
+        var record = WorkoutSessionRecord(id: "history", programId: "p", workoutId: "w", workoutTitle: "Fixture",
+            startedAt: "2026-10-12T09:00:00Z", completedAt: "2026-10-12T10:00:00Z", durationSeconds: 3600)
+        for _ in 0..<100 { _ = cache.get(exercise: exercise, history: [record], unit: .kg) }
+        XCTAssertEqual(computations, 1)
+        exercise.prescription = "3x5"
+        _ = cache.get(exercise: exercise, history: [record], unit: .kg)
+        XCTAssertEqual(computations, 2)
+        record.totalVolumeKg = 99
+        _ = cache.get(exercise: exercise, history: [record], unit: .kg)
+        XCTAssertEqual(computations, 3)
+        _ = cache.get(exercise: exercise, history: [record], unit: .lbs)
+        XCTAssertEqual(computations, 4)
+        let previous = LanguageManager.shared.languagePreference
+        defer { LanguageManager.setLanguage(previous) }
+        LanguageManager.setLanguage(LanguageManager.shared.currentLanguage == "tr" ? "en" : "tr")
+        _ = cache.get(exercise: exercise, history: [record], unit: .lbs)
+        XCTAssertEqual(computations, 5)
+    }
+
+    @MainActor
+    func testCachedInsightsMatchUncachedProgressionAndPrCalculations() {
+        let exercise = Exercise(id: "bench", name: "Barbell Bench Press", exerciseId: "barbell-bench-press", sets: 1, reps: RepTarget(min: 8, max: 12))
+        let record = WorkoutSessionRecord(id: "history", programId: "p", workoutId: "w", workoutTitle: "Fixture",
+            startedAt: "2026-10-12T09:00:00Z", completedAt: "2026-10-12T10:00:00Z", durationSeconds: 3600,
+            exerciseLogs: [SessionExerciseLog(exerciseName: exercise.name, sets: [SessionSetLog(setNumber: 1, weightKg: 50, reps: 12)], targetSets: 1, exerciseId: exercise.exerciseId)])
+        let cache = SessionHistoryInsightsCache()
+        for unit in WeightUnit.allCases {
+            let result = cache.get(exercise: exercise, history: [record], unit: unit)
+            XCTAssertEqual(result.recommendation, ProgressionEngine.computeProgression(exercise: exercise, history: [record], weightUnit: unit))
+            XCTAssertEqual(result.previousWorkingSets, WorkoutSessionUtils.findPreviousSessionWorkingSets(history: [record], exercise: exercise))
+            XCTAssertEqual(result.prText, WorkoutSessionUtils.findExercisePr(history: [record], exercise: exercise, unit: unit))
+        }
+    }
+}
