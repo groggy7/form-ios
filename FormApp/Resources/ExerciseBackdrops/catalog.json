@@ -1,0 +1,92 @@
+{
+  "width": 1280,
+  "height": 720,
+  "alpha": false,
+  "source": "scripts/assets/spotlight_background_1280x720.png",
+  "sourceSha256": "deb348619ebff164b72a0c35bdae8e2f00f3e07afa70b8168878074f79591f17",
+  "luminanceSha256": "d693a12e4a27143700ad8d300cecde6624eba0755bd50918a74150ab35fe92af",
+  "recipe": "linear sRGB channel grading of preserved neutral spotlight; no subject edits",
+  "files": {
+    "amethyst": {
+      "file": "amethyst.png",
+      "sha256": "511c24481805e34cda810e375d860b6dfe896c39b47e91bcf1b57b1e1f8a2341",
+      "bytes": 831265,
+      "perimeterRGB": [
+        20,
+        14,
+        30
+      ],
+      "dark": "100B19",
+      "light": "39264D"
+    },
+    "cobalt": {
+      "file": "cobalt.png",
+      "sha256": "6309ef29be9f39747b0195e8d5656f6cf4ce73d4375e7cc25ea0f0ba21bd4ff8",
+      "bytes": 935334,
+      "perimeterRGB": [
+        8,
+        19,
+        31
+      ],
+      "dark": "060E19",
+      "light": "163F59"
+    },
+    "crimson": {
+      "file": "crimson.png",
+      "sha256": "e65db63bf451c1057950db321e7934d32a0416855dd3a71ea5a408e6e6178ad7",
+      "bytes": 842164,
+      "perimeterRGB": [
+        27,
+        14,
+        19
+      ],
+      "dark": "160B10",
+      "light": "47252F"
+    },
+    "espresso": {
+      "file": "espresso.png",
+      "sha256": "926a62354bb0f9331862914861e3c86b71a088500d8f6dbc7ddcd990c2fe0368",
+      "bytes": 822162,
+      "perimeterRGB": [
+        27,
+        19,
+        15
+      ],
+      "dark": "160F0C",
+      "light": "49382D"
+    },
+    "green": {
+      "file": "green.png",
+      "sha256": "deb348619ebff164b72a0c35bdae8e2f00f3e07afa70b8168878074f79591f17",
+      "bytes": 1124925,
+      "perimeterRGB": [
+        5,
+        18,
+        20
+      ],
+      "dark": "051619",
+      "light": "064844"
+    },
+    "stealth": {
+      "file": "stealth.png",
+      "sha256": "65e4dacf27b9fafa03d6a2a0cfce7bcaa6601e40f1d170a525664c7703a17607",
+      "bytes": 866995,
+      "perimeterRGB": [
+        16,
+        16,
+        21
+      ],
+      "dark": "0C0C10",
+      "light": "393A40"
+    }
+  },
+  "themes": {
+    "default": "green",
+    "alpine": "green",
+    "espresso": "espresso",
+    "stealth": "stealth",
+    "cobalt": "cobalt",
+    "crimson": "crimson",
+    "amethyst": "amethyst"
+  }
+}

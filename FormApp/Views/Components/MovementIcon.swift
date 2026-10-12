@@ -72,7 +72,7 @@ public struct MovementIcon: View {
         let hasVideo = animated && ExerciseVideoCatalog.url(for: exerciseId) != nil
         ZStack {
             if animated && hasVideo {
-                ExerciseDetailVideo(exerciseId: exerciseId)
+                ExerciseDetailVideo(exerciseId: exerciseId, drawBackground: false)
                     .accessibilityIdentifier("movement-icon-video")
             } else {
                 MovementIllustration(exerciseId: exerciseId)
@@ -80,7 +80,7 @@ public struct MovementIcon: View {
             }
         }
         .frame(width: finalSize, height: finalSize)
-        .background(AppColors.exerciseThumbnailSurface)
+        .background(ExerciseMediaBackdrop())
         .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)

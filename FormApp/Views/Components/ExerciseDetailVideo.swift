@@ -72,15 +72,18 @@ enum ExerciseVideoCatalog {
 
 struct ExerciseDetailVideo: View {
     let exerciseId: String?
+    var drawBackground: Bool = true
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var visible = true
 
     var body: some View {
         let framing = ExerciseVideoCatalog.framing(for: exerciseId)
-        Group {
+        ZStack {
+            if drawBackground { ExerciseMediaBackdrop() }
             if let url = ExerciseVideoCatalog.url(for: exerciseId) {
                 LocalExerciseVideo(url: url, framing: framing,
-                                   playing: visible && scenePhase == .active)
+                                   playing: visible && scenePhase == .active && !reduceMotion)
                     .id(url)
             } else {
                 Color.clear
@@ -118,18 +121,22 @@ final class ExercisePlayerView: UIView {
     private var looper: AVPlayerLooper?
     private var wantsPlayback = false
     private var itemStatusObserver: NSKeyValueObservation?
+    private var queueObserver: NSKeyValueObservation?
 
     var playbackTime: CMTime { queue.currentTime() }
     var playbackRate: Float { queue.rate }
     var renderedVideoFrame: CGRect { playerLayer.frame }
+    var readyForDisplay: Bool { playerLayer.isReadyForDisplay }
 
     init(url: URL, framing: ExerciseVideoCatalog.Framing = .init()) {
         self.framing = framing
         super.init(frame: .zero)
         clipsToBounds = true
-        backgroundColor = UIColor(red: 22/255, green: 32/255, blue: 42/255, alpha: 1)
+        backgroundColor = .clear
+        isOpaque = false
         layer.addSublayer(playerLayer)
         playerLayer.videoGravity = .resizeAspect
+        playerLayer.isOpaque = false
         queue.isMuted = true
         queue.volume = 0
         queue.defaultRate = Self.playbackSpeed
@@ -138,7 +145,13 @@ final class ExercisePlayerView: UIView {
         looper = AVPlayerLooper(player: queue, templateItem: templateItem)
         playerLayer.player = queue
 
-        observeItemStatus(item: templateItem)
+        queueObserver = queue.observe(\.currentItem, options: [.initial, .new]) { [weak self] _, _ in
+            DispatchQueue.main.async {
+                guard let self else { return }
+                self.itemStatusObserver = nil
+                if let item = self.queue.currentItem { self.observeItemStatus(item: item) }
+            }
+        }
     }
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
@@ -147,6 +160,7 @@ final class ExercisePlayerView: UIView {
         itemStatusObserver = item.observe(\.status, options: [.new, .initial]) { [weak self] observedItem, _ in
             guard let self = self else { return }
             DispatchQueue.main.async {
+                guard self.queue.currentItem === observedItem else { return }
                 switch observedItem.status {
                 case .readyToPlay:
                     if self.wantsPlayback && self.window != nil {
@@ -196,6 +210,8 @@ final class ExercisePlayerView: UIView {
     func release() {
         itemStatusObserver?.invalidate()
         itemStatusObserver = nil
+        queueObserver?.invalidate()
+        queueObserver = nil
         queue.pause()
         looper?.disableLooping()
         looper = nil

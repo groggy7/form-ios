@@ -137,8 +137,8 @@ public struct LibraryView: View {
                             Button(action: { onSelectExercise(exercise) }) {
                                 VStack(alignment: .leading, spacing: 8) {
                                     ZStack {
-                                        RoundedRectangle(cornerRadius: 9, style: .continuous)
-                                            .fill(AppColors.exerciseThumbnailSurface)
+                                        ExerciseMediaBackdrop()
+                                            .clipShape(RoundedRectangle(cornerRadius: 9, style: .continuous))
 
                                         MovementIllustration(exerciseId: exercise.exerciseId)
                                         .padding(4)

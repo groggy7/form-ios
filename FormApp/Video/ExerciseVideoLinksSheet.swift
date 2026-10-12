@@ -83,8 +83,8 @@ public struct ExerciseVideoLinksSheet: View {
                         HStack(spacing: 14) {
                             // Left: Static STEP1 thumbnail
                             ZStack {
-                                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .fill(AppColors.exerciseThumbnailSurface)
+                                ExerciseMediaBackdrop()
+                                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
 
                                 MovementIllustration(exerciseId: exercise.exerciseId)
                                 .padding(4)

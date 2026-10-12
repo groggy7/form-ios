@@ -1,0 +1,13 @@
+{
+  "width": 960,
+  "height": 540,
+  "fps": 30,
+  "key": "chromakey=0x00FF00:0.12:0.06,despill=type=green",
+  "iosColorBitrate": 600000,
+  "iosAlphaQuality": 0.65,
+  "androidCRF": 18,
+  "androidProfile": "main",
+  "androidPacking": "premultiplied RGB left, grayscale alpha right; 1920x540",
+  "platform": "ios",
+  "codec": "HEVC with alpha"
+}

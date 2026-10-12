@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB01000000000000000000001 /* ExerciseMediaBackdrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB01000000000000000000002; };
+		AB01000000000000000000003 /* ExerciseBackdrops in Resources */ = {isa = PBXBuildFile; fileRef = AB01000000000000000000004; };
 		A41A7C6F20EF4E568EBC0E01 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A41A7C6F20EF4E568EBC0E02; };
 		A11000000000000000000001 /* TranslationTables.swift in Sources */ = {isa = PBXBuildFile; fileRef = A11000000000000000000002; };
 		A11000000000000000000003 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = A11000000000000000000004; };
@@ -133,6 +135,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AB01000000000000000000002 /* ExerciseMediaBackdrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMediaBackdrop.swift; sourceTree = "<group>"; };
+		AB01000000000000000000004 /* ExerciseBackdrops */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseBackdrops; sourceTree = "<group>"; };
 		A41A7C6F20EF4E568EBC0E02 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A11000000000000000000002 /* TranslationTables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationTables.swift; sourceTree = "<group>"; };
 		A11000000000000000000004 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
@@ -272,6 +276,7 @@
 				D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */,
 				2D97FA7035F2317DFBE57498 /* MovementIcon.swift */,
 				V10000000000000000000002 /* ExerciseDetailVideo.swift */,
+				AB01000000000000000000002 /* ExerciseMediaBackdrop.swift */,
 				M20000000000000000000002 /* ExerciseMusclesCard.swift */,
 				E30000000000000000000002 /* ExerciseEquipment.swift */,
 				08997E0EACD6176BFF508687 /* ToastOverlay.swift */,
@@ -470,6 +475,7 @@
 				A41A7C6F20EF4E568EBC0E02 /* LaunchScreen.storyboard */,
 				77203A709542614D89DFF819 /* Assets.xcassets */,
 				V10000000000000000000004 /* ExerciseVideos */,
+				AB01000000000000000000004 /* ExerciseBackdrops */,
 				M20000000000000000000004 /* ExerciseMuscles */,
 				E30000000000000000000004 /* equipment_catalog.json */,
 				A11000000000000000000004 /* Localizable.xcstrings */,
@@ -625,6 +631,7 @@
 				A13B29C1D4E5F60718293A4B /* PrivacyInfo.xcprivacy in Resources */,
 				E10000000000000000000002 /* exercises.json in Resources */,
 				V10000000000000000000003 /* ExerciseVideos in Resources */,
+				AB01000000000000000000003 /* ExerciseBackdrops in Resources */,
 				M20000000000000000000003 /* ExerciseMuscles in Resources */,
 				E30000000000000000000003 /* equipment_catalog.json in Resources */,
 				T10000000000000000000003 /* ExerciseThumbnails in Resources */,
@@ -714,6 +721,7 @@
 				9BCC80499A86D74EE5B5FEDF /* LibraryView.swift in Sources */,
 				45546ACE7DF72EB335DD41FA /* MovementIcon.swift in Sources */,
 				V10000000000000000000001 /* ExerciseDetailVideo.swift in Sources */,
+				AB01000000000000000000001 /* ExerciseMediaBackdrop.swift in Sources */,
 				M20000000000000000000001 /* ExerciseMusclesCard.swift in Sources */,
 				E30000000000000000000001 /* ExerciseEquipment.swift in Sources */,
 				DD65F19A9F064CC90CE953C3 /* MuscleArtwork.swift in Sources */,

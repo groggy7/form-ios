@@ -105,8 +105,8 @@ public struct ExerciseReportSheet: View {
                         // Exercise Info Card
                         HStack(spacing: 14) {
                             ZStack {
-                                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                                    .fill(AppColors.exerciseThumbnailSurface)
+                                ExerciseMediaBackdrop()
+                                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
 
                                 MovementIllustration(exerciseId: exercise.exerciseId)
                                     .padding(4)

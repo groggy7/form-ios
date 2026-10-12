@@ -20,9 +20,9 @@
       "Sartorius",
       "Teres Major"
     ],
-    "file": "085712.mp4",
+    "file": "085712.mov",
     "sourceFile": "08571201-Wheel-Rollout_Waist-FIX2.mp4",
-    "sha256": "b8a957b615dc175b2f7b69d023e0feebf28a685f1bfe0e9ac29b0a338b8fa01b"
+    "sha256": "baa0968b3e32b3d6c7183e438cb1c95d3987786e19354629732025ac691f12cd"
   },
   "barbell-back-squat": {
     "videoId": "143612",
@@ -40,9 +40,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "143612.mp4",
+    "file": "143612.mov",
     "sourceFile": "14361201-Barbell-High-Bar-Squat_Thighs.mp4",
-    "sha256": "ee2cbff529c4451301f332f8836f7e1f6a0886fc4380793d666173de22d1b418"
+    "sha256": "960951bfa86e972bf5912155114b901c9c0219748aa90d843e409704df0bb743"
   },
   "barbell-bench-press": {
     "videoId": "002512",
@@ -60,9 +60,9 @@
       "Pectoralis Major Clavicular Head",
       "Triceps Brachii"
     ],
-    "file": "002512.mp4",
+    "file": "002512.mov",
     "sourceFile": "00251201-Barbell-Bench-Press_Chest-FIX2.mp4",
-    "sha256": "daae15a86211bf14b574fb040444698b2a6c637467ec358588a764a3c191abdf"
+    "sha256": "4067edf199e74bc9447f99ca8995d3a6974550efbee8f1f08d50cfab97fc2712"
   },
   "barbell-front-squat": {
     "videoId": "004212",
@@ -80,9 +80,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "004212.mp4",
+    "file": "004212.mov",
     "sourceFile": "00421201-Barbell-Front-Squat_Hips-FIX.mp4",
-    "sha256": "e0bd7aff44f4bf329ca2337abbf3dc6ee04674978cc770a53ccd520054132293"
+    "sha256": "6ae03a723d913f402bc816bdd38d2d78390dc32d387239cf416a756dfff461ae"
   },
   "barbell-hip-thrust": {
     "videoId": "106012",
@@ -99,9 +99,9 @@
       "Hamstrings",
       "Quadriceps"
     ],
-    "file": "106012.mp4",
+    "file": "106012.mov",
     "sourceFile": "10601201-Barbell-Hip-Thrust_Hips-FIX.mp4",
-    "sha256": "1b17e6d0b153621e5050e8c5480edac6d2d63eb3f2afc2ff4cbb323c97fafa1c"
+    "sha256": "b0f9f0f5122cf12d0aa0b49c6adc70d9d2daaf3db68b68cc80ddaec1476cd1cd"
   },
   "barbell-romanian-deadlift": {
     "videoId": "008512",
@@ -121,9 +121,9 @@
       "Quadriceps",
       "Soleus"
     ],
-    "file": "008512.mp4",
+    "file": "008512.mov",
     "sourceFile": "00851201-Barbell-Romanian-Deadlift_Hips-FIX.mp4",
-    "sha256": "7b9aa518bf97249fc52780a87b3d249d863713d13db34ccb8bc831ac347f97ca"
+    "sha256": "4b0b773a0787f2231b90adf92080c07848c97fbd4fa3985a64654a69082e5649"
   },
   "barbell-row": {
     "videoId": "002712",
@@ -146,9 +146,9 @@
       "Brachioradialis",
       "Deltoid Posterior"
     ],
-    "file": "002712.mp4",
+    "file": "002712.mov",
     "sourceFile": "00271201-Barbell-Bent-Over-Row_Back.mp4",
-    "sha256": "6bf2872852e177f595dc95730f32bfc5b531e5bdbc8c1f418cb82415814089a9"
+    "sha256": "cd48185d81f6afb9a3fcdff67d91c4bb1aa64eeb84fe27035084c8a3592afc30"
   },
   "bulgarian-split-squat": {
     "videoId": "353312",
@@ -166,9 +166,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "353312.mp4",
+    "file": "353312.mov",
     "sourceFile": "35331201-Bulgarian-Split-Squat_Thighs-FIX.mp4",
-    "sha256": "1741c5020f9b88fbc2ec2dc88471d0fdfa1e7afce103599ac771cfbb91a0c637"
+    "sha256": "4691bfbfad3ec9f7265235bb8835fc23b6545d6c6f871b35e60650aaac2d3d34"
   },
   "cable-lateral-raise": {
     "videoId": "017812",
@@ -185,9 +185,9 @@
       "Deltoid Anterior",
       "Serratus Anterior"
     ],
-    "file": "017812.mp4",
+    "file": "017812.mov",
     "sourceFile": "01781201-Cable-Lateral-Raise_shoulder.mp4",
-    "sha256": "132f4d64864d38d7561fd5d6a88c47df87bb1e48b1c14afa42802c7fb7103c40"
+    "sha256": "765f4c7e86777075f7fb7ce125fd6503134f9081e6c3a4a6d92aeb2ed3975071"
   },
   "chest-supported-dumbbell-row": {
     "videoId": "332012",
@@ -199,9 +199,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "332012.mp4",
+    "file": "332012.mov",
     "sourceFile": "33201201-Dumbbell-Hammer-Grip-Incline-Bench-Two-Arm-Row_Bac.mp4",
-    "sha256": "1f49c5807b086bde01939535a02f3368e78a8f077be5c8ecb3ad31c755556204"
+    "sha256": "06b9fd52bff7b14f50f6a06e29153351d3a98009d6d29894f30d8da4ca90b827"
   },
   "conventional-barbell-deadlift": {
     "videoId": "003212",
@@ -221,9 +221,9 @@
       "Quadriceps",
       "Soleus"
     ],
-    "file": "003212.mp4",
+    "file": "003212.mov",
     "sourceFile": "00321201-Barbell-Deadlift_Hips-FIX.mp4",
-    "sha256": "64502b620b290782c32a2dd40f32c667e3d9b4c0ce5f3b64857a5ec9f4724106"
+    "sha256": "3f689c1759635d1cac7cc5016100e4dc9261cce9b01f9111f19d505a29247450"
   },
   "dead-bug": {
     "videoId": "027612",
@@ -240,9 +240,9 @@
       "Gluteus Maximus",
       "Quadriceps"
     ],
-    "file": "027612.mp4",
+    "file": "027612.mov",
     "sourceFile": "02761201-Dead-Bug_Waist.mp4",
-    "sha256": "ca2f08622351764d6d3a5056bf1db525d9d2ff6b93fe8fc45610b77803850c8a"
+    "sha256": "238a5a4c669aa96af0f81ffebbc3a6e51599d616c9f5a783f7cd6ea99375a88d"
   },
   "dumbbell-bench-press": {
     "videoId": "028912",
@@ -260,9 +260,9 @@
       "Deltoid Anterior",
       "Triceps Brachii"
     ],
-    "file": "028912.mp4",
+    "file": "028912.mov",
     "sourceFile": "02891201-Dumbbell-Bench-Press_Chest-FIX.mp4",
-    "sha256": "8c1a04a50aadfe95b867bf51e895cf00932eda7b441f63d6b7a4564e9525f370"
+    "sha256": "e50c5f4e1f2d107f741cd9589879e580ee994cd9f1e15c8f42b63f1e043a54f0"
   },
   "dumbbell-floor-press": {
     "videoId": "366812",
@@ -280,9 +280,9 @@
       "Deltoid Anterior",
       "Triceps Brachii"
     ],
-    "file": "366812.mp4",
+    "file": "366812.mov",
     "sourceFile": "36681201-Dumbbell-Lying-on-Floor-Chest-Press_Chest.mp4",
-    "sha256": "39ca2cd6395c70a8fb0176d3119829cb99502dc3b1ed56545e82e4753c2d700c"
+    "sha256": "c3769439991590a3f0d86c80e55cdb3fcdb5ac7bbcec13b5fccceaabec137bba"
   },
   "dumbbell-hammer-curl": {
     "videoId": "031212",
@@ -299,9 +299,9 @@
       "Biceps Brachii",
       "Brachialis"
     ],
-    "file": "031212.mp4",
+    "file": "031212.mov",
     "sourceFile": "03121201-Dumbbell-Hammer-Curl-(version-2)_Upper-Arms-FIX.mp4",
-    "sha256": "44b09dae433927553697af39b5f707bf825819c5810b0cb5aa81ff36c4f2e31d"
+    "sha256": "8c1efdc1f152aa659846bfd20b9cb4d54843e07a72e5433134a3b7312937000d"
   },
   "dumbbell-lateral-raise": {
     "videoId": "033412",
@@ -318,9 +318,9 @@
       "Deltoid Anterior",
       "Serratus Anterior"
     ],
-    "file": "033412.mp4",
+    "file": "033412.mov",
     "sourceFile": "03341201-Dumbbell-Lateral-Raise_shoulder-FIX.mp4",
-    "sha256": "70c94da31942e86a5f5d6d400fa6ca5f65b16cf87cf43d39541689e0413996cb"
+    "sha256": "89880748784f8db81fbf316f1f1355bce9ff3685ef1ff5746b38a7be343cde7a"
   },
   "dumbbell-romanian-deadlift": {
     "videoId": "145912",
@@ -338,9 +338,9 @@
       "Quadriceps",
       "Soleus"
     ],
-    "file": "145912.mp4",
+    "file": "145912.mov",
     "sourceFile": "14591201-Dumbbell-Romanian-Deadlift_Hips-FIX.mp4",
-    "sha256": "5a7001e7ec7292312b6d085a2f5aecfe136d313a03ff5b6404e9c5b272804ad0"
+    "sha256": "f3ffc37191816126f996a3595b4edaacfca5a7c10eb5d0fe212a2599fb57f608"
   },
   "dumbbell-step-up": {
     "videoId": "043112",
@@ -359,9 +359,9 @@
       "Gastrocnemius",
       "Soleus"
     ],
-    "file": "043112.mp4",
+    "file": "043112.mov",
     "sourceFile": "04311201-Dumbbell-Step-up_Hips.mp4",
-    "sha256": "fe181edfba931f72a80bfab5e076942a4e74df1e096d3daa124501036cdccee4"
+    "sha256": "9d088309200886ec41de9d7a1210fa80a0eef41619b4355c95e6c17ea6a135fd"
   },
   "ez-bar-curl": {
     "videoId": "044712",
@@ -378,9 +378,9 @@
       "Brachialis",
       "Brachioradialis"
     ],
-    "file": "044712.mp4",
+    "file": "044712.mov",
     "sourceFile": "04471201-EZ-Barbell-Curl_Upper-Arms-FIX.mp4",
-    "sha256": "2d49a6251ace540465eddcce15aef1a63fe120079b5d232e5e3dbce19b1f9c39"
+    "sha256": "7e5b60c7688c145b2ae0f8740c8cd3151244aa0769ed3bfa1643726b0f28db80"
   },
   "face-pull": {
     "videoId": "565612",
@@ -402,9 +402,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "565612.mp4",
+    "file": "565612.mov",
     "sourceFile": "56561201-Cable-Standing-Face-Pull-(with-rope)_Shoulders-FIX.mp4",
-    "sha256": "ddc87e4ed16c4c96f49cdcf116646bff9c25e8d07f3a50ca0542a1d21cb202f6"
+    "sha256": "3bfc92834465f738b5ea4d27e5fee5e92880869e6df0987ce34b15ce506f2a29"
   },
   "farmer-carry": {
     "videoId": "291712",
@@ -416,9 +416,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "291712.mp4",
+    "file": "291712.mov",
     "sourceFile": "29171201-Dumbbell-Farmers-Carry_Thighs.mp4",
-    "sha256": "7ad3ba73e1413cde3af8eb23a312b4096fc1eb14bf0d92e9fad540daab6c02a1"
+    "sha256": "d1f7fcee26882ba9129ecdeedc71a93f2c06f2f49364b8d3eadccc233d99e05a"
   },
   "goblet-squat": {
     "videoId": "176012",
@@ -438,9 +438,9 @@
       "Soleus",
       "Tensor Fasciae Latae"
     ],
-    "file": "176012.mp4",
+    "file": "176012.mov",
     "sourceFile": "17601201-Dumbbell-Goblet-Squat_Thighs-FIX.mp4",
-    "sha256": "aec95c5182bfed2e665de1f5855ee56a310ebeec55486b0638bad9c2c6263304"
+    "sha256": "68bad34711cb7a61aaaa35070e1150818ec76f036f334d5256e764a69dcdf48c"
   },
   "hanging-knee-raise": {
     "videoId": "981912",
@@ -452,9 +452,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "981912.mp4",
+    "file": "981912.mov",
     "sourceFile": "98191201-Hanging-Knee-Raise-(male)_Waist.mp4",
-    "sha256": "193dbea7e4cf3eb8f740afe6e5016d3580712b4127217c0cf2f5fa0792e4c7ce"
+    "sha256": "38640f2cd47828117cfacca09425bd91c5aa6ceb0776ae51ea0273a046c4a300"
   },
   "incline-barbell-bench-press": {
     "videoId": "004712",
@@ -471,9 +471,9 @@
       "Deltoid Anterior",
       "Triceps Brachii"
     ],
-    "file": "004712.mp4",
+    "file": "004712.mov",
     "sourceFile": "00471201-Barbell-Incline-Bench-Press_Chest-FIX2.mp4",
-    "sha256": "f444f8bd1824ab43fe993d326301b2d0a98b58dafddde4a2c6159d7dc19864ae"
+    "sha256": "e94447c73262955b43678d47052030942c7a426a3f1a97dbde6e62ce017644bb"
   },
   "incline-dumbbell-curl": {
     "videoId": "031712",
@@ -490,9 +490,9 @@
       "Biceps Brachii",
       "Brachioradialis"
     ],
-    "file": "031712.mp4",
+    "file": "031712.mov",
     "sourceFile": "03171201-Dumbbell-Incline-Curl-II_Upper-Arms.mp4",
-    "sha256": "a36d50821fe9cb9ae63a61ef4b3ed877a704c2aad3010c756bdf53afca628000"
+    "sha256": "2386347528eb807c2a47ea89861e5216d99704be3b0a2a9cc22ae75be8703103"
   },
   "incline-dumbbell-press": {
     "videoId": "031412",
@@ -509,9 +509,9 @@
       "Deltoid Anterior",
       "Triceps Brachii"
     ],
-    "file": "031412.mp4",
+    "file": "031412.mov",
     "sourceFile": "03141201-Dumbbell-Incline-Bench-Press_Chest-FIX2.mp4",
-    "sha256": "f2bb2d4fb140fb98a3303ce028890bb0af5e5702bf61fa0afdbddccd6816346a"
+    "sha256": "e76baa66c0f536fb85970d17ca5ab7566ec96df106cd518a65db3663e9c0aaa2"
   },
   "jump-rope": {
     "videoId": "261212",
@@ -530,9 +530,9 @@
       "Soleus"
     ],
     "secondaryMuscles": [],
-    "file": "261212.mp4",
+    "file": "261212.mov",
     "sourceFile": "26121201-Jump-Rope-(male)_Cardio.mp4",
-    "sha256": "fff40ea5c056305eae116182a2d15268f3c09c116100bffaca49eda86e8348dd"
+    "sha256": "26cbb9a7fc2be2e2dfa62f65e0d4162d273ac878fc8d39c5543b23df03f9ff1f"
   },
   "kettlebell-swing": {
     "videoId": "054912",
@@ -555,9 +555,9 @@
       "Serratus Anterior",
       "Soleus"
     ],
-    "file": "054912.mp4",
+    "file": "054912.mov",
     "sourceFile": "05491201-Kettlebell-Swing_Hips-FIX2.mp4",
-    "sha256": "fc1ce9bd12c5e4bc821a6cb33c88622e73626d5b6e249866c9063b548881a6e4"
+    "sha256": "93d311eda96151251fff080138f46ab0d38978dd6224bee363337ecc4ec031ef"
   },
   "kneeling-cable-crunch": {
     "videoId": "017512",
@@ -573,9 +573,9 @@
     "secondaryMuscles": [
       "Obliques"
     ],
-    "file": "017512.mp4",
+    "file": "017512.mov",
     "sourceFile": "01751201-Cable-Kneeling-Crunch_Waist-FIX2.mp4",
-    "sha256": "bce018ce6c379b83912eef9f59e3bd2da9fb9e69941e8ed8d5af8c5330b01b77"
+    "sha256": "f9246fc6611352e2623bc29fe3345a0d29f736aa57e5ef3e3f5549b6aa1c2fd7"
   },
   "lat-pulldown": {
     "videoId": "233012",
@@ -598,9 +598,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "233012.mp4",
+    "file": "233012.mov",
     "sourceFile": "23301201-Cable-Lat-Pulldown-Full-Range-Of-Motion_Back.mp4",
-    "sha256": "d8329e35e178affe91f2e5a7404df43a5bba14a890a2b8af37a92d4c527780dd"
+    "sha256": "d00bdf2af17f03d3996eee0ee6c9f83936d2361e0cce02525280cc56e13bddce"
   },
   "leg-extension": {
     "videoId": "058512",
@@ -614,9 +614,9 @@
       "Quadriceps"
     ],
     "secondaryMuscles": [],
-    "file": "058512.mp4",
+    "file": "058512.mov",
     "sourceFile": "05851201-Lever-Leg-Extension_Thighs.mp4",
-    "sha256": "2319a5ef268a1c561b29a857b5c0046445a74ea3f36746d6ec97a2ece53793d8"
+    "sha256": "aa624a8bd2ab77c5cb0aed4c3a90e3bf7a14e43f48f5813a2fc11949adc25968"
   },
   "leg-press": {
     "videoId": "073912",
@@ -634,9 +634,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "073912.mp4",
+    "file": "073912.mov",
     "sourceFile": "07391201-Sled-45-degrees-Leg-Press_Hips-FIX2.mp4",
-    "sha256": "c7cb010aecf9f790ebe826cc4536943455c6a4f451c2da193788529e460314c4"
+    "sha256": "edb4693f3468efe93b8f77ae101525ae5232834c8e2e094504b667b0d6ab5977"
   },
   "lying-leg-curl": {
     "videoId": "058612",
@@ -653,9 +653,9 @@
       "Gastrocnemius",
       "Soleus"
     ],
-    "file": "058612.mp4",
+    "file": "058612.mov",
     "sourceFile": "05861201-Lever-Lying-Leg-Curl_Thighs-FIX2.mp4",
-    "sha256": "b3c0b8c13f7d31432fc7666b65dbcf9bf85af93027f1010bdbbe2582316b1d69"
+    "sha256": "b382a77e89a2dc325744a1722024688447fc7ca98a26ee7b06199fe44ed110b7"
   },
   "one-arm-dumbbell-row": {
     "videoId": "123612",
@@ -679,9 +679,9 @@
       "Deltoid Posterior",
       "Pectoralis Major Sternal Head"
     ],
-    "file": "123612.mp4",
+    "file": "123612.mov",
     "sourceFile": "12361201-Dumbbell-One-Arm-Row-(rack-support)_Back.mp4",
-    "sha256": "89023c5ef583c4980422d25a13d5a2b07b204ce0d7431c28bd2fd7c0ec8c3732"
+    "sha256": "f54465f751cb91efc23b540fc488c1af024d8ad0de80634f982fe02e43793508"
   },
   "overhead-cable-triceps-extension": {
     "videoId": "019412",
@@ -695,9 +695,9 @@
       "Triceps Brachii"
     ],
     "secondaryMuscles": [],
-    "file": "019412.mp4",
+    "file": "019412.mov",
     "sourceFile": "01941201-Cable-Overhead-Triceps-Extension-(rope-attachment)_Upper-Arms-FIX.mp4",
-    "sha256": "ec478391a3eed50f04fa395f0c4a0198d5f6faa6f7496e739c5bc64f5f6e136c"
+    "sha256": "75bed0ed5f75e9847a2540d1cb83bd4b553d5c84a9002b7eea233a9b109f141b"
   },
   "pallof-press": {
     "videoId": "120212",
@@ -711,9 +711,9 @@
       "Obliques"
     ],
     "secondaryMuscles": [],
-    "file": "120212.mp4",
+    "file": "120212.mov",
     "sourceFile": "12021201-Cable-horizontal-Pallof-Press_waist.mp4",
-    "sha256": "bd59b64e74b8b3d020bebca2d5aa89f2c220a4167e0beb787ee6e3d099eaac27"
+    "sha256": "acd9e5ab7e9c6c7d5af01c4369a02c6277105300fabe6d0acb535ddcabf6e17c"
   },
   "pec-deck-fly": {
     "videoId": "059612",
@@ -731,9 +731,9 @@
       "Pectoralis Major Clavicular Head",
       "Serratus Anterior"
     ],
-    "file": "059612.mp4",
+    "file": "059612.mov",
     "sourceFile": "05961201-Lever-Seated-Fly_Chest-FIX.mp4",
-    "sha256": "7acb223f8f890eaf5a77b2837a4960d8b93dc345fd21cf1abb7ac7082ba7abfc"
+    "sha256": "573232b702584059d822fbe10c0da859f29ba06ddc716d01d75bba688345cf9c"
   },
   "pull-ups": {
     "videoId": "065212",
@@ -756,9 +756,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "065212.mp4",
+    "file": "065212.mov",
     "sourceFile": "06521201-Pull-up_Back-FIX3.mp4",
-    "sha256": "66ede5cdfd4d0e6a84737ac87b067286ab4ce43796514ff2e786d9132ce3e0ad"
+    "sha256": "8a3b4b39d1a3a4ba13e5184873e36c30fd4d110e6dfb011195084f32078ff1b0"
   },
   "weighted-pull-ups": {
     "videoId": "084112",
@@ -783,9 +783,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "084112.mp4",
+    "file": "084112.mov",
     "sourceFile": "08411201-Weighted-Pull-Up_Back.mp4",
-    "sha256": "1e8af8c78b834b044fe7d8c6f76b762ee2a3c39da8b7d0786d98539f8f4f3953"
+    "sha256": "595e0e2e3f7ffbb87b7df1e74db87977ac7977fa6ae4cc9409e5ad418636c60a"
   },
   "push-press": {
     "videoId": "120012",
@@ -807,9 +807,9 @@
       "Triceps Brachii"
     ],
     "secondaryMuscles": [],
-    "file": "120012.mp4",
+    "file": "120012.mov",
     "sourceFile": "12001201-Push-Press_Shoulders.mp4",
-    "sha256": "04f2dd3d5c0452d5a0be18c49dcefef7e427b9a0651d9ca20ccc168c3435c282"
+    "sha256": "8f3a7b9bf20559eff0f641c039efecf1591e44cb34b7224d8e611e1c04b2dc28"
   },
   "push-ups": {
     "videoId": "066212",
@@ -827,9 +827,9 @@
       "Pectoralis Major Clavicular Head",
       "Triceps Brachii"
     ],
-    "file": "066212.mp4",
+    "file": "066212.mov",
     "sourceFile": "06621201-Push-up-m_Chest.mp4",
-    "sha256": "2712e329999d64a4d8ed7eabc19f3f1f5465f732ca2f63be4800dc5da1e0cb8f"
+    "sha256": "bedf1d95a9899e7abb846f6fbc20d1d3dc03dafecab6394a9376cac0bb282aad"
   },
   "rope-triceps-pressdown": {
     "videoId": "020012",
@@ -843,9 +843,9 @@
       "Triceps Brachii"
     ],
     "secondaryMuscles": [],
-    "file": "020012.mp4",
+    "file": "020012.mov",
     "sourceFile": "02001201-Cable-Pushdown-(with-rope-attachment)_Upper-Arms-F.mp4",
-    "sha256": "02e03d7ac77f42101de834e70c205c9a6df157302030a22eaf5e73ff1025365e"
+    "sha256": "42534d5b88c6d6baa842f3cf47157b3a5e841cce770440e156af89a8c8574f28"
   },
   "seated-leg-curl": {
     "videoId": "059912",
@@ -862,9 +862,9 @@
       "Gastrocnemius",
       "Sartorius"
     ],
-    "file": "059912.mp4",
+    "file": "059912.mov",
     "sourceFile": "05991201-Lever-Seated-Leg-Curl_Thighs-FIX.mp4",
-    "sha256": "569b7bc3aa669d67fd67440d3e5931340442d167d143c212cce3f07e594e2f5d"
+    "sha256": "bfdca5ea980b7984c4039b4b76fa68c74218e3b048657f05abe7f17bf802ded6"
   },
   "seated-machine-calf-raise": {
     "videoId": "059412",
@@ -880,9 +880,9 @@
     "secondaryMuscles": [
       "Gastrocnemius"
     ],
-    "file": "059412.mp4",
+    "file": "059412.mov",
     "sourceFile": "05941201-Lever-Seated-Calf-Raise-(plate-loaded).mp4",
-    "sha256": "0f3c13c403aeab7de0cf2827c2b0d59f123ece3021bca62a9db8ac1a2b4b57d6"
+    "sha256": "e33bc80be2debf3ae83621455e04e7723cee7495df99b25c86245331eb5ad34f"
   },
   "side-plank": {
     "videoId": "071512",
@@ -896,9 +896,9 @@
       "Obliques"
     ],
     "secondaryMuscles": [],
-    "file": "071512.mp4",
+    "file": "071512.mov",
     "sourceFile": "07151201-Side-Plank-(male)_Waist-FIX.mp4",
-    "sha256": "f54f2e9842108310b7ed0aa406daf77dc4c8f4fce82ddafe05a78dff16fe5a53"
+    "sha256": "9f4736f1840ff59f4fc1e7905c05c052b655d83ce7ec90f5347015ac24d1c8d1"
   },
   "single-leg-calf-raise": {
     "videoId": "505212",
@@ -914,9 +914,9 @@
     "secondaryMuscles": [
       "Soleus"
     ],
-    "file": "505212.mp4",
+    "file": "505212.mov",
     "sourceFile": "50521201-Single-Leg-Calf-Raise-Off-Step_Calves.mp4",
-    "sha256": "ee5eee0d77f3cd8c9708eb8db4acc5fd9cdb8c3c9b0a499434e83738714eec84"
+    "sha256": "834d9fc247d4ecb8b157fc37ce4ad5c16124553ed184ced59c55ee3fc88e9174"
   },
   "standing-barbell-overhead-press": {
     "videoId": "116212",
@@ -935,9 +935,9 @@
       "Serratus Anterior",
       "Triceps Brachii"
     ],
-    "file": "116212.mp4",
+    "file": "116212.mov",
     "sourceFile": "11621201-Barbell-Standing-Military-Press_Shoulders-FIX.mp4",
-    "sha256": "0c0ab2c5f1757a85e5f5afb9e72bfb89261ffcbf8cda1e951f76c7f3899dcaf3"
+    "sha256": "8d2df3acc22d599284ae1affab1da1f8c79dffe8adb0ff894037a023397d2b12"
   },
   "standing-machine-calf-raise": {
     "videoId": "060512",
@@ -953,9 +953,9 @@
     "secondaryMuscles": [
       "Soleus"
     ],
-    "file": "060512.mp4",
+    "file": "060512.mov",
     "sourceFile": "06051201-Lever-Standing-Calf-Raise_Calf-FIX.mp4",
-    "sha256": "360ec7b984525274c0de1ab17ffc96169007ed1368e79afecb1fe37495bc1af0"
+    "sha256": "82a4517e61c63e4d020b8faebd0237ddb40bf8009fd34c10864a853e199cdda5"
   },
   "straight-bar-cable-triceps-pressdown": {
     "videoId": "020112",
@@ -969,9 +969,9 @@
       "Triceps Brachii"
     ],
     "secondaryMuscles": [],
-    "file": "020112.mp4",
+    "file": "020112.mov",
     "sourceFile": "02011201-Cable-Pushdown_Upper-Arms-FIX.mp4",
-    "sha256": "b8c8bc73981f07671dd440d2d5d8804978d1d118548fa4ca244cc8e17b16a327"
+    "sha256": "9ad4753ca9758c364031078435cc14db658388a131d5d489e365421c55ec8bc1"
   },
   "trap-bar-deadlift": {
     "videoId": "081112",
@@ -989,9 +989,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "081112.mp4",
+    "file": "081112.mov",
     "sourceFile": "08111201-Trap-Bar-Deadlift_Thighs-FIX.mp4",
-    "sha256": "ad145eca5228ad46a664fe07ef7f31acfe057d7b6fede2c07951d2f2b6a00882"
+    "sha256": "8c0b16c376ba76294035ab15d72fc83227d08f1553659b2794b585cea3aa1610"
   },
   "cable-seated-row": {
     "videoId": "086112",
@@ -1015,9 +1015,9 @@
       "Deltoid Posterior",
       "Pectoralis Major Sternal Head"
     ],
-    "file": "086112.mp4",
+    "file": "086112.mov",
     "sourceFile": "08611201-Cable-Seated-Row_Back-FIX.mp4",
-    "sha256": "fdc0b37c93a409ad1dba30499fd31377e89dc34b818269243bd2054a3b418281"
+    "sha256": "689d48a18ccc938fec045e12cc0c276960eb26f38a4e85c6dcc1af27c0c7edd3"
   },
   "dumbbell-seated-shoulder-press": {
     "videoId": "040512",
@@ -1036,9 +1036,9 @@
       "Serratus Anterior",
       "Triceps Brachii"
     ],
-    "file": "040512.mp4",
+    "file": "040512.mov",
     "sourceFile": "04051201-Dumbbell-Seated-Shoulder-Press_Shoulders-FIX2.mp4",
-    "sha256": "9a340119e77dad67b83f8a8f9252e3ecc7fafd64609e898b1687d567cc97d58a"
+    "sha256": "c9ae5c209b6aa8dd2cad28e63798c91ac9fe1c0187460bd8f45f4a1f4236e41f"
   },
   "lever-chest-press": {
     "videoId": "057712",
@@ -1056,9 +1056,9 @@
       "Pectoralis Major Clavicular Head",
       "Triceps Brachii"
     ],
-    "file": "057712.mp4",
+    "file": "057712.mov",
     "sourceFile": "05771201-Lever-Chest-Press_Chest-FIX.mp4",
-    "sha256": "5ad6678357a5e2a759b13b09295cb4959f80382cd89d2b9da5574f9dbaba7e7d"
+    "sha256": "f7c6eccbe2ce7b3410c9f745aaf083bcbe2c5a917788c9f95d4d628686de7f55"
   },
   "lever-seated-shoulder-press": {
     "videoId": "145412",
@@ -1077,9 +1077,9 @@
       "Serratus Anterior",
       "Triceps Brachii"
     ],
-    "file": "145412.mp4",
+    "file": "145412.mov",
     "sourceFile": "14541201-Lever-Seated-Shoulder-Press_Shoulders-FIX.mp4",
-    "sha256": "7fcda42f7b3f9019950e7898a2e13777813c0b78e91fe73f92dd34fa5ba63bb7"
+    "sha256": "6e0c5a7533360e4c3c52c5b9e00ef6d154408476bcb04336250a8ac0b0a720a6"
   },
   "bodyweight-rear-lunge": {
     "videoId": "158112",
@@ -1097,9 +1097,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "158112.mp4",
+    "file": "158112.mov",
     "sourceFile": "15811201-Bodyweight-Rear-Lunge_Thighs.mp4",
-    "sha256": "49e507a2a849d531e82369a67f07da1ae5b0f92175977f66156b68a23a6a7156"
+    "sha256": "358aecb45d22bfd42a6c4b7180c2d424ac435161f41645c10e1343032f5a641f"
   },
   "walking-lunge": {
     "videoId": "146012",
@@ -1117,9 +1117,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "146012.mp4",
+    "file": "146012.mov",
     "sourceFile": "14601201-Walking-Lunge-Male_Hips-FIX.mp4",
-    "sha256": "4f037334fed6f69842dc26c74448edc731e425e5eae027958052f07e56096716"
+    "sha256": "96eac1baba9e3fb015582a11577c493c352dcdbaaa1250b8be2c0cd71440412a"
   },
   "bodyweight-squat": {
     "videoId": "119712",
@@ -1137,9 +1137,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "119712.mp4",
+    "file": "119712.mov",
     "sourceFile": "11971201-Bodyweight-Squat-(male)_Thighs-FIX.mp4",
-    "sha256": "496b2b1e60d9d8196eb57cf2b302cd391a616aca769ae0a8544b716de8083af0"
+    "sha256": "0adedf0edffdbe390c74a73ce44c23a2d5398e30f46e650e27f16e1352e4d7b5"
   },
   "lever-seated-reverse-fly": {
     "videoId": "060212",
@@ -1159,9 +1159,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "060212.mp4",
+    "file": "060212.mov",
     "sourceFile": "06021201-Lever-Seated-Reverse-Fly_Shoulders-FIX.mp4",
-    "sha256": "9256f49f899b5d32c5d43c2b2bd036e47d036b6b0aa74f7d0831e392aac05581"
+    "sha256": "7535b63f2c5cbe2e48e103858d6c4038a858e28a19cc74882829e6a449a877ec"
   },
   "cable-curl": {
     "videoId": "086812",
@@ -1178,9 +1178,9 @@
       "Brachialis",
       "Brachioradialis"
     ],
-    "file": "086812.mp4",
+    "file": "086812.mov",
     "sourceFile": "08681201-Cable-Curl-(male)_Upper-Arms-FIX.mp4",
-    "sha256": "da2c99bcb3636850d086fb5775dbde7f898ce93998c10b3105a223474267d5af"
+    "sha256": "dd156b9b48d7f825db912ef086aa4ac4f70a2c0c4021670cedd9e3e83db7bbd0"
   },
   "barbell-preacher-curl": {
     "videoId": "007012",
@@ -1197,9 +1197,9 @@
       "Biceps Brachii",
       "Brachioradialis"
     ],
-    "file": "007012.mp4",
+    "file": "007012.mov",
     "sourceFile": "00701201-Barbell-Preacher-Curl_Upper-Arms.mp4",
-    "sha256": "8cb898d9bdeff5a046c71ab0e8e940ed79154931b4e7fedc557d26064fd4ca93"
+    "sha256": "86272df0581365f0a39b91e60c9ff9af6907573e5a703f7dd3b3102739bd20cd"
   },
   "chest-dip": {
     "videoId": "025112",
@@ -1219,9 +1219,9 @@
       "Pectoralis Major Clavicular Head",
       "Triceps Brachii"
     ],
-    "file": "025112.mp4",
+    "file": "025112.mov",
     "sourceFile": "02511201-Chest-Dip_Chest-FIX.mp4",
-    "sha256": "8c4704716495ed15bd2306474890656fec87d1346c85fc96e037bcb0e9396d37"
+    "sha256": "5bc28860a9582447b6088d834da6e0ddf37b5e5205faf563c8dcdb97b0664658"
   },
   "chin-up": {
     "videoId": "132612",
@@ -1243,9 +1243,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "132612.mp4",
+    "file": "132612.mov",
     "sourceFile": "13261201-Chin-Up_Back-FIX.mp4",
-    "sha256": "3e0d04290e4d0ccfb2eea9216ae85027e9ba443c8875dc29ba4ebd558af77706"
+    "sha256": "9086592ee3fea9d1524bab4b5c7bda1aafab5775bccd49bebf2b7e73feff2356"
   },
   "front-plank": {
     "videoId": "046312",
@@ -1266,9 +1266,9 @@
       "Sartorius",
       "Tensor Fasciae Latae"
     ],
-    "file": "046312.mp4",
+    "file": "046312.mov",
     "sourceFile": "04631201-Front-Elbow-Plank-(male)_Waist-FIX.mp4",
-    "sha256": "61f9d605b6653db54d96d72b3461da6820961d0b930ca86713151515d6fe5f79"
+    "sha256": "3e4135cda86209b2a332cdd6741ab8d4cc0510bfe553aff59132bb89ac26dfb3"
   },
   "cable-standing-fly": {
     "videoId": "022712",
@@ -1285,9 +1285,9 @@
       "Deltoid Anterior",
       "Pectoralis Major Clavicular Head"
     ],
-    "file": "022712.mp4",
+    "file": "022712.mov",
     "sourceFile": "02271201-Cable-Standing-Fly_Chest.mp4",
-    "sha256": "76db2084e25e9cf03a562b02223bcbfe65d208a181dc86770a3c01224a531836"
+    "sha256": "9b6d87d2a89db89662f7fc451648775b6de12363e1e0dc9fb796fd1edee1318a"
   },
   "sled-hack-squat": {
     "videoId": "074312",
@@ -1305,9 +1305,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "074312.mp4",
+    "file": "074312.mov",
     "sourceFile": "07431201-Sled-Hack-Squat_Hips.mp4",
-    "sha256": "c418b0932de0d561f47a27b3ff84623c9e7fba83d73109f8bdeacd334750f034"
+    "sha256": "98eeeeb5e8974d168ae88d842eff10dc8c17cc9900298970cf9df7f70ccdf8b0"
   },
   "dumbbell-glute-bridge": {
     "videoId": "333512",
@@ -1323,9 +1323,9 @@
     "secondaryMuscles": [
       "Hamstrings"
     ],
-    "file": "333512.mp4",
+    "file": "333512.mov",
     "sourceFile": "33351201-Dumbbell-Glute-Bridge_Hip.mp4",
-    "sha256": "66d19006d2cb1911a0dc69e60089c6cebc3c2e22d4b71fcf45f7a2912d739e72"
+    "sha256": "b9efcd2d398bf28ec1883c4acdb87890d1cd9233b9a5a94b46b81613a2e8c71c"
   },
   "barbell-sumo-deadlift": {
     "videoId": "011712",
@@ -1344,9 +1344,9 @@
       "Soleus",
       "Tensor Fasciae Latae"
     ],
-    "file": "011712.mp4",
+    "file": "011712.mov",
     "sourceFile": "01171201-Barbell-Sumo-Deadlift_Hips-FIX.mp4",
-    "sha256": "ed9e0e6569ce7856f85c1ad710e77d81cda15decb1fdc0e01ed82ec8e4da09b0"
+    "sha256": "3f759cface65827c13d5df31a4371758f0662a8e28837e4cd5fadb68e37d53a2"
   },
   "smith-squat": {
     "videoId": "077012",
@@ -1364,9 +1364,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "077012.mp4",
+    "file": "077012.mov",
     "sourceFile": "07701201-Smith-Squat_Hips.mp4",
-    "sha256": "737490ed19da647dd92cb1e1ad3c23dbdfe79e11e269c69f246fa4600d06fc1b"
+    "sha256": "9e534ed5ee2dccea6b04073f1d63083a666179b1c67dd9136635729157905cd9"
   },
   "smith-bench-press": {
     "videoId": "074812",
@@ -1384,9 +1384,9 @@
       "Deltoid Anterior",
       "Triceps Brachii"
     ],
-    "file": "074812.mp4",
+    "file": "074812.mov",
     "sourceFile": "07481201-Smith-Bench-Press_Chest-FIX.mp4",
-    "sha256": "7f4e2a22754f2d539c52d6c772da3bec3fbc7efdecf41735a3d67e146302e77c"
+    "sha256": "028025cae8384446f6bc2f917bbd777c34643ccec0309c26c91fe47c0358d047"
   },
   "smith-incline-bench-press": {
     "videoId": "075712",
@@ -1403,9 +1403,9 @@
       "Deltoid Anterior",
       "Triceps Brachii"
     ],
-    "file": "075712.mp4",
+    "file": "075712.mov",
     "sourceFile": "07571201-Smith-Incline-Bench-Press_Chest-FIX.mp4",
-    "sha256": "6df79c10d0f5b99b1eb796fa01055626a350d8b1f2aee505d64b45ef5c91f3ee"
+    "sha256": "563ec9e1272322c034df6201a49b5d039900bc718169826429bfc22fa7d946a3"
   },
   "smith-stiff-legged-deadlift": {
     "videoId": "159712",
@@ -1417,9 +1417,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "159712.mp4",
+    "file": "159712.mov",
     "sourceFile": "15971201-Smith-Stiff-Legged-Deadlift_Hips.mp4",
-    "sha256": "88331d34297021069fb8f71a68528fcf8c89dc50740ff9245071d07ffa338239"
+    "sha256": "a0655d747f071c4d6a26e6f8af718639b641cf91aab93e54b4549f9e611e2ea8"
   },
   "smith-hip-thrust": {
     "videoId": "311012",
@@ -1436,9 +1436,9 @@
       "Hamstrings",
       "Quadriceps"
     ],
-    "file": "311012.mp4",
+    "file": "311012.mov",
     "sourceFile": "31101201-Smith-Hip-Thrust_Hips-FIX.mp4",
-    "sha256": "5d343e75167f04540168d77c22b4631e9410e82b8a869dee32a6d538b6669209"
+    "sha256": "9066660f209eade4b1beb477256c8f4b3a9b8b5cc2e0a8c1b7005afa56a9424a"
   },
   "pendulum-squat": {
     "videoId": "495112",
@@ -1456,9 +1456,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "495112.mp4",
+    "file": "495112.mov",
     "sourceFile": "49511201-Lever-Pendulum-Squat-(plate-loaded)_Thighs.mp4",
-    "sha256": "d62140a557e3b5a48d8e2d917625cea16716944334e61b3c7e604ad74c0f8356"
+    "sha256": "10210174902cbd11bf21db745878ea211ef5b9bf69ba970e4ad933caa83c8451"
   },
   "lever-belt-squat": {
     "videoId": "295012",
@@ -1470,9 +1470,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "295012.mp4",
+    "file": "295012.mov",
     "sourceFile": "29501201-Lever-Belt-Squat_Thighs.mp4",
-    "sha256": "131e889aaaa177f47b33bf408ae912700b49d5fb9a50c68acc0369058142553a"
+    "sha256": "efab6508e791e8132f5877e648ea68d32bc10aecd93326d36e21f5617e6dc8d2"
   },
   "lever-vertical-squat": {
     "videoId": "552012",
@@ -1484,9 +1484,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "552012.mp4",
+    "file": "552012.mov",
     "sourceFile": "55201201-Lever-Vertical-Squat_Thighs.mp4",
-    "sha256": "47eff45eb2d44448be02bda184775effa24bfd3e9c456ddea414a26ddf2de335"
+    "sha256": "6af3e81f5cafe15f00ce492c0c00859cb4d253aead965a12953a80a8ad5d8b38"
   },
   "sled-45-degrees-one-leg-press": {
     "videoId": "142512",
@@ -1504,9 +1504,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "142512.mp4",
+    "file": "142512.mov",
     "sourceFile": "14251201-Sled-45-degrees-One-Leg-Press_Hips-FIX.mp4",
-    "sha256": "2c8b6c180916161da055ff1311a3c316b181715a42481bc5a5f52edc74ee0f52"
+    "sha256": "737d296bc855d0a4d6b450fa3c7c40e979688e3fbb614b23b7af34104e021da6"
   },
   "dumbbell-split-squat-front-foot-elevanted": {
     "videoId": "778412",
@@ -1518,9 +1518,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "778412.mp4",
+    "file": "778412.mov",
     "sourceFile": "77841201-Dumbbell-Split-Squat-Front-Foot-Elevanted_Thighs.mp4",
-    "sha256": "5377e4407af0026edc6d6b6de0793ee9b5050c886a72a2f745fb3f53c4fb368f"
+    "sha256": "a90716c774bc0f5d3b57a96765160b44e82f8fce1005218489ff0ffba9ce1cad"
   },
   "barbell-good-morning": {
     "videoId": "004412",
@@ -1537,9 +1537,9 @@
       "Adductor Magnus",
       "Gluteus Maximus"
     ],
-    "file": "004412.mp4",
+    "file": "004412.mov",
     "sourceFile": "00441201-Barbell-Good-Morning_Thighs-FIX.mp4",
-    "sha256": "51422f599b72bbe401a87fa658a0a876cb154eb7cc0c617ab4feccd8a988c8b5"
+    "sha256": "edb07c96ef9cd88f26952c26da44952ac7467093286aca27982e98c12e3b12d5"
   },
   "dumbbell-single-leg-romanian-deadlift": {
     "videoId": "975212",
@@ -1551,9 +1551,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "975212.mp4",
+    "file": "975212.mov",
     "sourceFile": "97521201-Dumbbell-Single-Leg-Romanian-Deadlift-(male)_Hips.mp4",
-    "sha256": "ae29ac3536b096c16c7e2e557cab66991efaf4ab17cb70ecfea693463117cfbb"
+    "sha256": "7192f7e325ac402ea48c60be602cf017a8253a0f362d03fd930b01f6ba58c86d"
   },
   "dumbbell-45-deg-back-extension": {
     "videoId": "1161712",
@@ -1565,9 +1565,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1161712.mp4",
+    "file": "1161712.mov",
     "sourceFile": "116171201-Dumbbell-45-degrees-Back-Extension-(male)_Hips.mp4",
-    "sha256": "8e4be58ae6a4ca4d8191995b4880876b0026f3f1a15c25435fa2a9078fcd1546"
+    "sha256": "c038bf9e545438b7b4bf6aa9e03ba25656baa21503b789e8d8ff3890cec38972"
   },
   "nordic-hamstring-curl": {
     "videoId": "774612",
@@ -1579,9 +1579,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "774612.mp4",
+    "file": "774612.mov",
     "sourceFile": "77461201-Nordic-Hamstring-Curl-(male)_Thighs.mp4",
-    "sha256": "239ae10abf1fde60d393ca0e7d310071ec6626ab67f3eb3f539b108f72f3f34e"
+    "sha256": "7401351baf7dd848f87939f095e6e3954aac8204f13784dd60f5c24132299cb7"
   },
   "glute-ham-raise": {
     "videoId": "445612",
@@ -1598,9 +1598,9 @@
       "Gastrocnemius",
       "Gluteus Maximus"
     ],
-    "file": "445612.mp4",
+    "file": "445612.mov",
     "sourceFile": "44561201-Glute-Ham-Raise-(VERSION-2)_Thighs-FIX.mp4",
-    "sha256": "a98433a626c266f729a8b9d14d65b873a4d5136ff52d647d7db7a7bd9ad331d0"
+    "sha256": "acf57b6878a0609253c7df00d210bd69175557334fb0c72d24f6fae08d4575ca"
   },
   "cable-pull-through": {
     "videoId": "120612",
@@ -1617,9 +1617,9 @@
       "Erector Spinae",
       "Hamstrings"
     ],
-    "file": "120612.mp4",
+    "file": "120612.mov",
     "sourceFile": "12061201-Cable-pull-through_hips.mp4",
-    "sha256": "7a2dba0d99a2667573c9ff7cde3c4c0f9bc23e18eb109aaac178540cfb29d629"
+    "sha256": "3c349cc5a3053742d3fca4c408271386cb8fe56ff1f6eb4325106f334f00b82a"
   },
   "cable-kneeling-glute-kickback": {
     "videoId": "808812",
@@ -1631,9 +1631,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "808812.mp4",
+    "file": "808812.mov",
     "sourceFile": "80881201-Cable-Kneeling-Glute-Kickback-(male)_Hips.mp4",
-    "sha256": "d641f942a9c0f2d42049e30d56e991aeb5664e2a6d3df59a15fd2beeb0a2d261"
+    "sha256": "251fb9cd0b7f37bfdf8fe7773ab6bc95ffb2c379fc41d1c3d745dc33be4d87f8"
   },
   "lever-seated-hip-abduction": {
     "videoId": "059712",
@@ -1650,9 +1650,9 @@
     "secondaryMuscles": [
       "Tensor Fasciae Latae"
     ],
-    "file": "059712.mp4",
+    "file": "059712.mov",
     "sourceFile": "05971201-Lever-Seated-Hip-Abduction_Hips-FIX.mp4",
-    "sha256": "ada9111b302d001d450165c7ad457335c35d784652f32698222ac6630737c042"
+    "sha256": "3a6e9311c320417b7164e9d3131f8ee9c1b0d18376b0e4545f47591ab201d8f4"
   },
   "lever-seated-hip-adduction": {
     "videoId": "059812",
@@ -1670,9 +1670,9 @@
       "Adductor Brevis",
       "Gracilis"
     ],
-    "file": "059812.mp4",
+    "file": "059812.mov",
     "sourceFile": "05981201-Lever-Seated-Hip-Adduction_Thighs-FIX.mp4",
-    "sha256": "0c4b061a0c7bb77052f35ed5524385f0af2dfdfe08d21e409be367b9b1126a8d"
+    "sha256": "38723161d00710a24b803913cb2508e34446cfc0ab08cbccb38bf26ea399d00f"
   },
   "sled-calf-press-on-leg-press": {
     "videoId": "139112",
@@ -1688,9 +1688,9 @@
     "secondaryMuscles": [
       "Soleus"
     ],
-    "file": "139112.mp4",
+    "file": "139112.mov",
     "sourceFile": "13911201-Sled-Calf-Press-On-Leg-Press_Calves-FIX.mp4",
-    "sha256": "a955b1fc310d264264d4cec94ff706867d83dde4ee2b4c539e433c133a4b5c57"
+    "sha256": "ae1b40707afe2bf7435abb4ce4dccd7a38407ae5836945bf2df9934a0f945a9d"
   },
   "donkey-calf-raise": {
     "videoId": "028412",
@@ -1706,9 +1706,9 @@
     "secondaryMuscles": [
       "Soleus"
     ],
-    "file": "028412.mp4",
+    "file": "028412.mov",
     "sourceFile": "02841201-Donkey-Calf-Raise_Calves.mp4",
-    "sha256": "d6553fb4536d88ce8da5cd2bf08ca76984efbac0c62facc12028bdebe0f22c5d"
+    "sha256": "90a70e903ae1ad14d38d19a36161ec4c5af07f02685ac02d0db53b1521e8fe42"
   },
   "wall-supported-tibialis-raise": {
     "videoId": "980312",
@@ -1720,9 +1720,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "980312.mp4",
+    "file": "980312.mov",
     "sourceFile": "98031201-Standing-Tibialis-Raise-Wall-Supported-(male)_Calv.mp4",
-    "sha256": "b2dbd9aba1b74e7355e9fcc31a428933115237a7ed3dcfa8a3ade0851dfc0e21"
+    "sha256": "53d3775ace92ade47bd2757c11e5b6ce05ef939fc4d0b85223f2f4c1b9b5e0ff"
   },
   "barbell-decline-bench-press": {
     "videoId": "003312",
@@ -1740,9 +1740,9 @@
       "Pectoralis Major Clavicular Head",
       "Triceps Brachii"
     ],
-    "file": "003312.mp4",
+    "file": "003312.mov",
     "sourceFile": "00331201-Barbell-Decline-Bench-Press_Chest-FIX.mp4",
-    "sha256": "2979ab1e6d8d73374949ee855946093ff76fc4bcd405dd3acd8084daefbc56ee"
+    "sha256": "0b1ea9890ca447b4346cbf292f91dbf0f601ef3c00523e2e59adc2716268e960"
   },
   "dumbbell-decline-bench-press": {
     "videoId": "030112",
@@ -1760,9 +1760,9 @@
       "Pectoralis Major Clavicular Head",
       "Triceps Brachii"
     ],
-    "file": "030112.mp4",
+    "file": "030112.mov",
     "sourceFile": "03011201-Dumbbell-Decline-Bench-Press_Chest-FIX.mp4",
-    "sha256": "f56ffa28151ac80a78c934c91965eecc73575fc63c6cb6efa38e53472e014697"
+    "sha256": "e9af8eb80bd42b2b863de43814e169de90d3d750372261b4be27d15d0c3c93f5"
   },
   "lever-incline-chest-press": {
     "videoId": "129912",
@@ -1779,9 +1779,9 @@
       "Deltoid Anterior",
       "Triceps Brachii"
     ],
-    "file": "129912.mp4",
+    "file": "129912.mov",
     "sourceFile": "12991201-Lever-Incline-Chest-Press_Chest-FIX2.mp4",
-    "sha256": "ee7623b6f671c25855e59235f0f8acd896623458882532319ae33549f584784e"
+    "sha256": "72a61d25d7f1c3fc8a3fd0eba9e1fceeae3cde57faffdf89cfe8de25a498a8d4"
   },
   "cable-low-fly": {
     "videoId": "017912",
@@ -1798,9 +1798,9 @@
       "Biceps Brachii",
       "Deltoid Anterior"
     ],
-    "file": "017912.mp4",
+    "file": "017912.mov",
     "sourceFile": "01791201-Cable-Low-Fly_Chest-FIX2.mp4",
-    "sha256": "fe7f37e5b447ef4286216fefa5d1cfaeed35c571ef53cce4d79e3525ce8a57b9"
+    "sha256": "0fbfe4663540d40292f4a235105dfb44fcb7d5253677f2f45bdfa20c24ee7047"
   },
   "cable-decline-fly": {
     "videoId": "015812",
@@ -1818,9 +1818,9 @@
       "Deltoid Anterior",
       "Pectoralis Major Clavicular Head"
     ],
-    "file": "015812.mp4",
+    "file": "015812.mov",
     "sourceFile": "01581201-Cable-Decline-Fly_Chest-FIX.mp4",
-    "sha256": "836494c18c1fd95b248831c2203cb79a3dcb7d07c0f560185b021d3ce595d72e"
+    "sha256": "1d67fe39d50078484cba5cdd545858537719370e92b20af071d1833c545287fe"
   },
   "dumbbell-fly": {
     "videoId": "030812",
@@ -1838,9 +1838,9 @@
       "Biceps Brachii",
       "Deltoid Anterior"
     ],
-    "file": "030812.mp4",
+    "file": "030812.mov",
     "sourceFile": "03081201-Dumbbell-Fly_Chest-FIX2.mp4",
-    "sha256": "959bc9c944078654a6f4c04a0bd6f55c5848cddbc7d6aba85a59d974e0bd794b"
+    "sha256": "357d29e39a2a4cb6c436a7bc62e64cc6bc095f2c6217ca714929978558af304f"
   },
   "barbell-close-grip-bench-press": {
     "videoId": "003012",
@@ -1858,9 +1858,9 @@
       "Pectoralis Major Clavicular Head",
       "Pectoralis Major Sternal Head"
     ],
-    "file": "003012.mp4",
+    "file": "003012.mov",
     "sourceFile": "00301201-Barbell-Close-Grip-Bench-Press_Upper-Arms-FIX.mp4",
-    "sha256": "21273ef8ce40a9ef5b6c214460fc930223f1af64c5b2877863eebc8bed309486"
+    "sha256": "b6406311460ca34a840ab9a3914ab192dec2e256b9f3ef2b591f6fa11a080c2b"
   },
   "dumbbell-pullover": {
     "videoId": "037512",
@@ -1879,9 +1879,9 @@
       "Teres Major",
       "Triceps Brachii"
     ],
-    "file": "037512.mp4",
+    "file": "037512.mov",
     "sourceFile": "03751201-Dumbbell-Pullover_Chest.mp4",
-    "sha256": "7b8131a280b5113ca192087f91bab5bfc81b58d9c3e4baaa5cb7b79534d2688c"
+    "sha256": "962e0e995d295459fa23f2d0f7811eb3023d58121fcc534b6a81d30a259eed8e"
   },
   "lever-chest-supported-row": {
     "videoId": "651312",
@@ -1893,9 +1893,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "651312.mp4",
+    "file": "651312.mov",
     "sourceFile": "65131201-Lever-Bent-Over-Row-(with-chest-support)_Back.mp4",
-    "sha256": "30a842c48ed43911f74448b7ba74ee5183ab240b1185e300fdc34cd6688c9c26"
+    "sha256": "aef439738d21d9d7fa032194ce95866d17183e117f3cd11955373a342557d2a7"
   },
   "lever-t-bar-row": {
     "videoId": "060612",
@@ -1919,9 +1919,9 @@
       "Deltoid Posterior",
       "Pectoralis Major Sternal Head"
     ],
-    "file": "060612.mp4",
+    "file": "060612.mov",
     "sourceFile": "06061201-Lever-T-bar-Row-(plate-loaded)_Back-FIX.mp4",
-    "sha256": "c4593e893585941ff7a0eee06405172f8bbab7b7936ca4486a7a83cbdce72a70"
+    "sha256": "4a136467887ffd60dde9f4002369462239d0bc1ed34ea1b7db4516a72f63b58c"
   },
   "barbell-pendlay-row": {
     "videoId": "301712",
@@ -1944,9 +1944,9 @@
       "Brachioradialis",
       "Deltoid Posterior"
     ],
-    "file": "301712.mp4",
+    "file": "301712.mov",
     "sourceFile": "30171201-Barbell-Pendlay-Row_Back.mp4",
-    "sha256": "2cb009cc9e5f55cf48c1f1d56e9eedc9c7e8cdd49dec3e0817a94c7e04b6ee85"
+    "sha256": "641dff93f483f07770c8accc69151326b0ec5d398dcac731fba28a615af29016"
   },
   "inverted-row": {
     "videoId": "049912",
@@ -1970,9 +1970,9 @@
       "Deltoid Posterior",
       "Pectoralis Major Sternal Head"
     ],
-    "file": "049912.mp4",
+    "file": "049912.mov",
     "sourceFile": "04991201-Inverted-Row_Back-FIX3.mp4",
-    "sha256": "15b830d3db4ce885d8d99a6b45fb2da3a1898705d639c760967b4a2812135d81"
+    "sha256": "6628e8e7ad174c925906435a9c8e239f46e1c92612b2a353d5b069ffbe6d484b"
   },
   "cable-neutral-grip-lat-pulldown": {
     "videoId": "758312",
@@ -1984,9 +1984,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "758312.mp4",
+    "file": "758312.mov",
     "sourceFile": "75831201-Cable-Neutral-Grip-Lat-Pulldown-(male)_Back.mp4",
-    "sha256": "ad9905e2661779d2c2d4b5648eae28fa76a35dd27e760ed0d4f6b6bc3ef14314"
+    "sha256": "71d73fe7e5dc3fefaddd2a7f6f1b30336675fc609453883ac94dd2826509d893"
   },
   "cable-close-grip-front-lat-pulldown": {
     "videoId": "104712",
@@ -2008,9 +2008,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "104712.mp4",
+    "file": "104712.mov",
     "sourceFile": "10471201-Cable-Close-Grip-Front-Lat-Pulldown_Back-FIX.mp4",
-    "sha256": "c51b8b7dea9f44a9bd4e2e863044334c13445a8432296fc79abea88fc7324b8c"
+    "sha256": "d3596a7a140ae38f2183ce5470d26a6899e77d42ec66060cc7f331656695ff23"
   },
   "cable-underhand-pulldown": {
     "videoId": "024512",
@@ -2031,9 +2031,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "024512.mp4",
+    "file": "024512.mov",
     "sourceFile": "02451201-Cable-Underhand-Pulldown_Back.mp4",
-    "sha256": "e71351b935421358d8650e176d1e52dd9eb19ab7e142e5b55bd246bbffce509a"
+    "sha256": "baf93fbe92e960b3c8b6daebd57c672637f8c986984121ffe9929945948f321a"
   },
   "cable-straight-arm-pulldown": {
     "videoId": "023812",
@@ -2051,9 +2051,9 @@
       "Teres Major",
       "Triceps Brachii"
     ],
-    "file": "023812.mp4",
+    "file": "023812.mov",
     "sourceFile": "02381201-Cable-Straight-Arm-Pulldown_Back-FIX.mp4",
-    "sha256": "0d3d38204e54c4adc4478bce3d1d4d020d11397027d34f47d2f0201b860e7c10"
+    "sha256": "b36480430dfb53ea00bf3e32bf28a0dc2c845107015339e63eba4e901be78c59"
   },
   "cable-kneeling-pullover": {
     "videoId": "1176812",
@@ -2065,9 +2065,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1176812.mp4",
+    "file": "1176812.mov",
     "sourceFile": "117681201-Cable-Kneeling-Pullover_Back.mp4",
-    "sha256": "d4408a504c2a7f003174b9419a95b60916b36a2e86748507084c4c990e467335"
+    "sha256": "f2350a8a67f2a7544c914e18bb483ec36690bb54e3c08ef7cf10747a0e672a5a"
   },
   "assisted-pull-up": {
     "videoId": "001712",
@@ -2090,9 +2090,9 @@
       "Trapezius Middle Fibers",
       "Trapezius Upper Fibers"
     ],
-    "file": "001712.mp4",
+    "file": "001712.mov",
     "sourceFile": "00171201-Assisted-Pull-up_Back.mp4",
-    "sha256": "fa701ac97478d1054dd4941545b64ae283c82a42c607ef910155951016483640"
+    "sha256": "c25e3c0ca37fd56fba1fc9bb38ea2ab38fc903d5a4bbf7072f314119657e026b"
   },
   "assisted-dip-machine": {
     "videoId": "1060512",
@@ -2104,9 +2104,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1060512.mp4",
+    "file": "1060512.mov",
     "sourceFile": "106051201-Lever-Graviton-Assisted-Dip-(male)_Upper-Arms.mp4",
-    "sha256": "69c78d3daedbd0a77148f8ffb47484f11bbbafbef39cf88392405c1c61159933"
+    "sha256": "6f0f0e49cb754f7a0416a117d911a57832a45ffb3bd3282299003e1875f7c4ae"
   },
   "dumbbell-rear-fly": {
     "videoId": "037812",
@@ -2126,9 +2126,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "037812.mp4",
+    "file": "037812.mov",
     "sourceFile": "03781201-Dumbbell-Rear-Fly_Shoulders.mp4",
-    "sha256": "07094628273bf524f3c2b0d03045c9a989fa6d78001b82f2b4616da55920c1c8"
+    "sha256": "ce24c7a583b90f53328319e2b65b97455bf3a1b289cd7fccfe8d532573af4938"
   },
   "barbell-shrug": {
     "videoId": "009512",
@@ -2145,9 +2145,9 @@
       "Levator Scapulae",
       "Trapezius Middle Fibers"
     ],
-    "file": "009512.mp4",
+    "file": "009512.mov",
     "sourceFile": "00951201-Barbell-Shrug_Back.mp4",
-    "sha256": "6ca21bcdcd71be9c35f461db16654ae755492481355bba1d2a88f501b77a1f35"
+    "sha256": "d7e60b26932deecb2d5ae3ea950514e1e58ef4883d179dba2d805b94fa017ec4"
   },
   "dumbbell-shrug": {
     "videoId": "040612",
@@ -2163,9 +2163,9 @@
     "secondaryMuscles": [
       "Trapezius Middle Fibers"
     ],
-    "file": "040612.mp4",
+    "file": "040612.mov",
     "sourceFile": "04061201-Dumbbell-Shrug_Back-FIX.mp4",
-    "sha256": "58608e90aac03428f1ba4e5fe927e202892ef637233822596e1ff6ae1993678a"
+    "sha256": "01e8816103ddee279543b50076de275caf089332645aaf136d05cb2174e9e80b"
   },
   "lever-machine-shrug": {
     "videoId": "060412",
@@ -2182,9 +2182,9 @@
       "Levator Scapulae",
       "Trapezius Middle Fibers"
     ],
-    "file": "060412.mp4",
+    "file": "060412.mov",
     "sourceFile": "06041201-Lever-Shrug-(plate-loaded)_Back.mp4",
-    "sha256": "49442308ee1e66a43b784efd7231419a6d34af74730f4a45f82f0ce4537f5787"
+    "sha256": "91f187c0713604ddedc8d7ad61781b7b3eec2ad21a7ca49c8b398b23227d2f8f"
   },
   "dumbbell-arnold-press": {
     "videoId": "213712",
@@ -2202,9 +2202,9 @@
       "Serratus Anterior",
       "Triceps Brachii"
     ],
-    "file": "213712.mp4",
+    "file": "213712.mov",
     "sourceFile": "21371201-Dumbbell-Arnold-Press_Shoulders.mp4",
-    "sha256": "fbc1b056189e2c8daa1aac449f9b3aafa8f58b83f73301d3f58b102a9be5b560"
+    "sha256": "1db1d22c4dacf1ecebcb4ab30ada2f44911136744229d55227c2385e130e103a"
   },
   "barbell-seated-overhead-press": {
     "videoId": "009112",
@@ -2222,9 +2222,9 @@
       "Serratus Anterior",
       "Triceps Brachii"
     ],
-    "file": "009112.mp4",
+    "file": "009112.mov",
     "sourceFile": "00911201-Barbell-Seated-Overhead-Press_Shoulders.mp4",
-    "sha256": "267aac7a763d660871ad9dd9975b54906cefe8223be92a57ead9b3640b77acfe"
+    "sha256": "8b9086cdab317e0d91f498541e056b1810720390cc6cbcc030ca5ded3bdeb6b7"
   },
   "dumbbell-one-arm-shoulder-press": {
     "videoId": "036012",
@@ -2243,9 +2243,9 @@
       "Serratus Anterior",
       "Triceps Brachii"
     ],
-    "file": "036012.mp4",
+    "file": "036012.mov",
     "sourceFile": "03601201-Dumbbell-One-Arm-Shoulder-Press-(VERSION-2)_Should.mp4",
-    "sha256": "86ccc68510652c44189e0a362684bf50e2f14e2b7f6d025f04916ce6edbf14ef"
+    "sha256": "2b25a080c2fc09e5532eeb48ba5d603cc54d9e1cad4be899b11b1dc130b94d85"
   },
   "landmine-press": {
     "videoId": "507412",
@@ -2257,9 +2257,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "507412.mp4",
+    "file": "507412.mov",
     "sourceFile": "50741201-Landmine-Press_Shoulders.mp4",
-    "sha256": "6cfe87be7fc188c3b2e11bc926a300aab8c8a9c03ded33965b9af9268b22c534"
+    "sha256": "ce14d268e5f730e2c0e477aa6b2a20461e0041764a41db870f69a11e6c34b940"
   },
   "lever-lateral-raise": {
     "videoId": "058412",
@@ -2276,9 +2276,9 @@
       "Deltoid Anterior",
       "Serratus Anterior"
     ],
-    "file": "058412.mp4",
+    "file": "058412.mov",
     "sourceFile": "05841201-Lever-Lateral-Raise_shoulder.mp4",
-    "sha256": "a88aa7634575a8d2557c6b3d47c5fa433ade010690e36b44bf1ee98645728122"
+    "sha256": "837f2588bfd0abad6958984356ecb21894256cac5984bd5a0c2ec2eb156e1bf7"
   },
   "cable-seated-rear-delt-fly-with-chest-support": {
     "videoId": "394312",
@@ -2298,9 +2298,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "394312.mp4",
+    "file": "394312.mov",
     "sourceFile": "39431201-Cable-Seated-Rear-Delt-Fly-with-Chest-Support_Shou.mp4",
-    "sha256": "3a28d25ffa07f5869777fbbbe370bc69e8d46d4d079704ff19e2f26140b334b6"
+    "sha256": "7c60fd7ddf3376504267893cc3a4417fd3e9af2e8e66fac38aa78d3e40e64396"
   },
   "barbell-upright-row": {
     "videoId": "012012",
@@ -2324,9 +2324,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "012012.mp4",
+    "file": "012012.mov",
     "sourceFile": "01201201-Barbell-Upright-Row_shoulder.mp4",
-    "sha256": "c42ee556624bf9b32a1301f2afd737f5baf0212622cdfea3c50e42406cb9f7e3"
+    "sha256": "794ad0913063caac315164c265c6c91b3532688c3cef850fb3ce0ca09a61f167"
   },
   "barbell-curl": {
     "videoId": "003112",
@@ -2343,9 +2343,9 @@
       "Brachialis",
       "Brachioradialis"
     ],
-    "file": "003112.mp4",
+    "file": "003112.mov",
     "sourceFile": "00311201-Barbell-Curl_Upper-Arms-FIX2.mp4",
-    "sha256": "2efaf6e5ac2ccc2da4e95107d9f9686d8cc2b66a22d66c27a8e6975f7a81705d"
+    "sha256": "956d269fdf880fa156d9272893434b3b8bba8f4226be52ecb7765a4144925abc"
   },
   "dumbbell-alternate-biceps-curl": {
     "videoId": "028512",
@@ -2362,9 +2362,9 @@
       "Brachialis",
       "Brachioradialis"
     ],
-    "file": "028512.mp4",
+    "file": "028512.mov",
     "sourceFile": "02851201-Dumbbell-Alternate-Biceps-Curl_Upper-Arms-FIX.mp4",
-    "sha256": "69785ce3b240bc78df0e81dc1ca224e292c405fdfbbc59ed7f60365722196854"
+    "sha256": "ca02539f8a73f4937bd2739248c9742e0e0bae71c3bf12b4ff31a2a9c762b889"
   },
   "dumbbell-concentration-curl": {
     "videoId": "029712",
@@ -2381,9 +2381,9 @@
       "Biceps Brachii",
       "Brachioradialis"
     ],
-    "file": "029712.mp4",
+    "file": "029712.mov",
     "sourceFile": "02971201-Dumbbell-Concentration-Curl_Upper-Arms-FIX.mp4",
-    "sha256": "e662d87e5003c54d626dd81f65a0d7f2a2e21526f53767c48344a4d4413c9034"
+    "sha256": "951ccb48973376aed3d2f34e71111149ff3daef21f6b98a4a98183a097ffe001"
   },
   "ez-barbell-spider-curl": {
     "videoId": "162812",
@@ -2400,9 +2400,9 @@
       "Brachialis",
       "Brachioradialis"
     ],
-    "file": "162812.mp4",
+    "file": "162812.mov",
     "sourceFile": "16281201-EZ-Barbell-Spider-Curl_Upper-Arms-FIX.mp4",
-    "sha256": "af9726ac097e8a4b34feb90a75947b2da29db30bf340382282b489d3be6300da"
+    "sha256": "519ebf72bbd8214ab0057d18ec0832047dbb491861546ef6e0271ebc8c923c07"
   },
   "cable-rope-hammer-curl": {
     "videoId": "016512",
@@ -2419,9 +2419,9 @@
       "Biceps Brachii",
       "Brachialis"
     ],
-    "file": "016512.mp4",
+    "file": "016512.mov",
     "sourceFile": "01651201-Cable-Hammer-Curl-(with-rope)-(male)_Forearms.mp4",
-    "sha256": "4b2fc8ed920ff5dbf9d107d7e98cbdc20a7117b3ce1e5ff6a60adbf518e67ee3"
+    "sha256": "8db8073f842a1332976e64ae00c108dd07233f3c2ba9e5840bc848854cde089f"
   },
   "cable-incline-biceps-curl": {
     "videoId": "570312",
@@ -2433,9 +2433,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "570312.mp4",
+    "file": "570312.mov",
     "sourceFile": "57031201-Cable-Incline-Biceps-Curl_Upper-Arms.mp4",
-    "sha256": "e0908591d303fd2879cf79a59a0f4c4092779b6577f8754a97d49c75dbcddf88"
+    "sha256": "0c66b4e72e74a7a48e299ee6bae5a22f9522e550b0e8e0bd1a9260f0eb627b0d"
   },
   "lever-preacher-curl": {
     "videoId": "059212",
@@ -2452,9 +2452,9 @@
       "Biceps Brachii",
       "Brachioradialis"
     ],
-    "file": "059212.mp4",
+    "file": "059212.mov",
     "sourceFile": "05921201-Lever-Preacher-Curl_Upper-Arms-FIX.mp4",
-    "sha256": "a6a3e9f0dc5484f2f8b0f39a0641248ce492d728266e2dc6d1fca7c29052ca65"
+    "sha256": "f562c73c287508109983d18649b6a2bf11454a613905648bca4de0c66c7d6e74"
   },
   "ez-bar-lying-triceps-extension": {
     "videoId": "587312",
@@ -2466,9 +2466,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "587312.mp4",
+    "file": "587312.mov",
     "sourceFile": "58731201-EZ-Barbell-Lying-Triceps-Extension-(male)_Upper-Ar.mp4",
-    "sha256": "c231692a7cd868b7896046de967597a36a5f64744b82696ee1a52efb2c224362"
+    "sha256": "ba37e59040a39203e846952cf1e95b56833011b739c7d5085dc3867975037404"
   },
   "dumbbell-standing-triceps-extension": {
     "videoId": "043012",
@@ -2482,9 +2482,9 @@
       "Triceps Brachii"
     ],
     "secondaryMuscles": [],
-    "file": "043012.mp4",
+    "file": "043012.mov",
     "sourceFile": "04301201-Dumbbell-Standing-Triceps-Extension_Upper-Arms-FIX.mp4",
-    "sha256": "2a351b7cc943e288d669e66355325f117eb35b083f627df721291736e86704e0"
+    "sha256": "3a777c80b2a9838990de300c911c5b0a8867c9863130fc93ace1eba7796d7964"
   },
   "cable-one-arm-triceps-pushdown": {
     "videoId": "172312",
@@ -2498,9 +2498,9 @@
       "Triceps Brachii"
     ],
     "secondaryMuscles": [],
-    "file": "172312.mp4",
+    "file": "172312.mov",
     "sourceFile": "17231201-Cable-One-Arm-Tricep-Pushdown_Upper-Arms.mp4",
-    "sha256": "186041fc399050273b940cda2e193ba7518f358e6a0831d8d19bc22a9004612a"
+    "sha256": "a458bd9028380c7c77210a7d7f814187c9e46dbb22a4cdd3dec24d6923a37a9b"
   },
   "cable-reverse-grip-pushdown": {
     "videoId": "020712",
@@ -2514,9 +2514,9 @@
       "Triceps Brachii"
     ],
     "secondaryMuscles": [],
-    "file": "020712.mp4",
+    "file": "020712.mov",
     "sourceFile": "02071201-Cable-Reverse-grip-Pushdown_Upper-Arms.mp4",
-    "sha256": "a54613f088ce3795cf59d61f53c15a49259ffdb94db37ba96ae02e933a2e9bd4"
+    "sha256": "7019de53e522c348de4f598f49a6b639682dc25a2c6d34fd72da07d807613e64"
   },
   "dumbbell-kickback": {
     "videoId": "033312",
@@ -2530,9 +2530,9 @@
       "Triceps Brachii"
     ],
     "secondaryMuscles": [],
-    "file": "033312.mp4",
+    "file": "033312.mov",
     "sourceFile": "03331201-Dumbbell-Kickback_Upper-Arms.mp4",
-    "sha256": "7cdc2f4c455379e28d2d88aa82bd9ca539616f1c30e5a38c8e287ddc02519734"
+    "sha256": "705f7847685fd5199a0faae0d281637be9f0ad907bce25eea000e632b8fcc002"
   },
   "hanging-leg-raise": {
     "videoId": "047212",
@@ -2552,9 +2552,9 @@
       "Serratus Anterior",
       "Tensor Fasciae Latae"
     ],
-    "file": "047212.mp4",
+    "file": "047212.mov",
     "sourceFile": "04721201-Hanging-Leg-Raise_Hips.mp4",
-    "sha256": "f1c1adc19b0faa47434f57e029a24d154eb3819aa3b2602dca2d854f8e2a6839"
+    "sha256": "4b8418bca2eeaab05dc877f2b543022e19216172067ce3c4fe899e67fad7ec5b"
   },
   "reverse-crunch": {
     "videoId": "087212",
@@ -2570,9 +2570,9 @@
     "secondaryMuscles": [
       "Obliques"
     ],
-    "file": "087212.mp4",
+    "file": "087212.mov",
     "sourceFile": "08721201-Reverse-Crunch-m_waist.mp4",
-    "sha256": "694dda78a19f015c97c1202205aac30ce18fdd13423cde6ea6a232f0fb7b969c"
+    "sha256": "d2a7c0393f89b2de36fcec407c69199997122f8080c5f718ef97651d28e6b87c"
   },
   "bicycle-crunch": {
     "videoId": "621112",
@@ -2584,9 +2584,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "621112.mp4",
+    "file": "621112.mov",
     "sourceFile": "62111201-Bicycle-Crunch-(male)_Waist.mp4",
-    "sha256": "634cb91698275b98bdbd0e6d513f35153a5d76668d5891721b7893bfeb061980"
+    "sha256": "5e0f515a9a45a0fceb704a169ae31171a5e9e1f01b0b58e65328bfc82a2c8247"
   },
   "cable-woodchopper": {
     "videoId": "802312",
@@ -2598,9 +2598,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "802312.mp4",
+    "file": "802312.mov",
     "sourceFile": "80231201-Cable-Standing-Wood-Chopper-(male)_Waist.mp4",
-    "sha256": "c442891f7a66a40ac7c612033865c56de5f90c184ad7432d5b6c3d74bb6db173"
+    "sha256": "169bfde82250d1f37bf872e3bcf2399cb654e4469a33b544ee17ef1015e1bc83"
   },
   "russian-twist": {
     "videoId": "068712",
@@ -2616,9 +2616,9 @@
     "secondaryMuscles": [
       "Iliopsoas"
     ],
-    "file": "068712.mp4",
+    "file": "068712.mov",
     "sourceFile": "06871201-Russian-Twist_waist.mp4",
-    "sha256": "5ecddba1668fd78792a710283924185a89e86cc738037d1fd445c0c8d87f546e"
+    "sha256": "7903c77bd5e1998c6a75f7fa19f98bcbd567354dbdc14778afbfaa7c13785542"
   },
   "bird-dog": {
     "videoId": "124112",
@@ -2636,9 +2636,9 @@
       "Deltoid Anterior",
       "Hamstrings"
     ],
-    "file": "124112.mp4",
+    "file": "124112.mov",
     "sourceFile": "12411201-Bird-Dog-male_Back.mp4",
-    "sha256": "628b59f25826bd0f8192215c2a368fd563621da3d024a187f6397e8b4deede46"
+    "sha256": "cc6a0da44c89d099f66c3c79cd1cf76531e5147b74df83a60da91f1a3755229e"
   },
   "mountain-climber": {
     "videoId": "063012",
@@ -2650,9 +2650,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "063012.mp4",
+    "file": "063012.mov",
     "sourceFile": "06301201-Mountain-Climber_Cardio-FIX.mp4",
-    "sha256": "16c15712498178ccdc4f760aaf4f81b42f328deeef379c4102448db3e66c41b2"
+    "sha256": "909bae534124fca445dfe376764041f000fb5c10895ae1417aa3b1e21bc67399"
   },
   "burpee": {
     "videoId": "116012",
@@ -2664,9 +2664,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "116012.mp4",
+    "file": "116012.mov",
     "sourceFile": "11601201-Burpee_Cardio-FIX.mp4",
-    "sha256": "0389cdbbe91de06f07a0d59a8abdd056be65e852ffbbcaf84a6f2bffdd24b09e"
+    "sha256": "eea2bfd24de009e76b3cf7d26d703f2d2e07a97c9f5eec7d46789ef0535aa69f"
   },
   "jumping-jack": {
     "videoId": "309412",
@@ -2678,9 +2678,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "309412.mp4",
+    "file": "309412.mov",
     "sourceFile": "30941201-Jumping-Jack-(male)_Cardio-FIX.mp4",
-    "sha256": "5e6932df95ad743a8073de21293d211127d98a4419dfad8f5f3ed08c27fff9cb"
+    "sha256": "b27cbb950560316aa9affa351c7039042951237fa6744406e5d5a94d6123492f"
   },
   "box-jump": {
     "videoId": "496512",
@@ -2692,9 +2692,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "496512.mp4",
+    "file": "496512.mov",
     "sourceFile": "49651201-Jump-Box-(male)_Plyometrics-FIX.mp4",
-    "sha256": "6209ef9d8b00e08ecdf524b2bdb8dcabb536fa120301a0f630e83100bca9b071"
+    "sha256": "47686edbe790707904500300fe85d1754da154b72e9cc2f0c413b1af545b2f0d"
   },
   "jump-squat": {
     "videoId": "051312",
@@ -2712,9 +2712,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "051312.mp4",
+    "file": "051312.mov",
     "sourceFile": "05131201-Jump-Squat-II_Thighs.mp4",
-    "sha256": "f777efff30f341aa3a085061affcc798d4c7f7b1e5df13a241a8694af5b28d97"
+    "sha256": "29ed8feb05afb8e94b58b3dd6ea610f52b1f5653466ce139fb90250472ef05b2"
   },
   "kettlebell-deadlift": {
     "videoId": "332212",
@@ -2734,9 +2734,9 @@
       "Hamstrings",
       "Soleus"
     ],
-    "file": "332212.mp4",
+    "file": "332212.mov",
     "sourceFile": "33221201-Kettlebell-deadlift_Hips.mp4",
-    "sha256": "61e56c8734f1ddf39afe50c2ed8b2e1dc4ab7c4792ba839da1cb0cc2b4681a53"
+    "sha256": "898bb45af65cce390d421a5775d08299407cfdd81dee98e791468acf6cc53d6b"
   },
   "kettlebell-one-arm-clean": {
     "videoId": "454312",
@@ -2748,9 +2748,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "454312.mp4",
+    "file": "454312.mov",
     "sourceFile": "45431201-Kettlebell-One-Arm-Clean_Weightlifting.mp4",
-    "sha256": "07979c3760c1d6a2df70c5aefd842dbd76395114aac2543a18ddb390a126b652"
+    "sha256": "6f870b375def90dd63999668dc94fc46bfbc423510b41c8363b9f4e156779da2"
   },
   "kettlebell-strict-press": {
     "videoId": "357212",
@@ -2769,9 +2769,9 @@
       "Serratus Anterior",
       "Triceps Brachii"
     ],
-    "file": "357212.mp4",
+    "file": "357212.mov",
     "sourceFile": "35721201-Kettlebell-Strict-Press_Shoulders.mp4",
-    "sha256": "1b2d5ca786b3d5957ac486cd86742771977048e0f1a49e226663ef41feb69483"
+    "sha256": "eeb60820d775254f64fb00e13cdef608bf69c8f91bc119ccbafcff6479d21d01"
   },
   "kettlebell-one-arm-snatch": {
     "videoId": "054212",
@@ -2794,9 +2794,9 @@
       "Triceps Brachii"
     ],
     "secondaryMuscles": [],
-    "file": "054212.mp4",
+    "file": "054212.mov",
     "sourceFile": "05421201-Kettlebell-One-Arm-Snatch_Shoulders.mp4",
-    "sha256": "0de69d22fb2d6e97ec5c4fdb27843a7c71c6764fff4e6239df70e5673b3078b2"
+    "sha256": "87d25316e125b8346420f6478eaa4beec6db681cac0e8ee71bff890d133e93e8"
   },
   "dumbbell-suitcase-carry": {
     "videoId": "291012",
@@ -2808,9 +2808,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "291012.mp4",
+    "file": "291012.mov",
     "sourceFile": "29101201-Dumbbell-Suitcase-Carry_Thighs.mp4",
-    "sha256": "f07c6681dc825f09d50405d37da42414ff38ffd0c5912a1ea857ab6bc836d4a8"
+    "sha256": "529dc6cac496697244de3501acd2643e97d8ef76dc9270f3578d567796f2fbdc"
   },
   "barbell-standing-calf-raise": {
     "videoId": "137212",
@@ -2826,9 +2826,9 @@
     "secondaryMuscles": [
       "Soleus"
     ],
-    "file": "137212.mp4",
+    "file": "137212.mov",
     "sourceFile": "13721201-Barbell-Standing-Calf-Raise_Calves.mp4",
-    "sha256": "1d82b5e624ac900a3ddd023cbc49b4415083148de240da8fb7cc8e207011d441"
+    "sha256": "4d5dd49a9ebc65d010873a943de328ab26082b732217e183f33e5056c4de4a87"
   },
   "bodyweight-standing-calf-raise": {
     "videoId": "137312",
@@ -2844,9 +2844,9 @@
     "secondaryMuscles": [
       "Soleus"
     ],
-    "file": "137312.mp4",
+    "file": "137312.mov",
     "sourceFile": "13731201-Bodyweight-Standing-Calf-Raise_Calves.mp4",
-    "sha256": "c7ab3ecb410d900fabffd9072d3c13ee8f3d1c7a4927ea095826179da7048c7b"
+    "sha256": "6261bb8d46e66c31f5ccb7e483a8a6cc7ec8806caf7955d273723b13a198096e"
   },
   "lever-machine-hip-thrust": {
     "videoId": "1078912",
@@ -2858,9 +2858,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1078912.mp4",
+    "file": "1078912.mov",
     "sourceFile": "107891201-Lever-Hip-Thrust-(male)_Hips.mp4",
-    "sha256": "6c4d512b244b6a04388fa6449b847e89c23deb4b00c8e1e2b44cc040da2f9b49"
+    "sha256": "a6e1205af66b4477023bf21b406d15fa4a1906ccdccaae011deaf33418e55857"
   },
   "floor-crunch": {
     "videoId": "027412",
@@ -2876,9 +2876,9 @@
     "secondaryMuscles": [
       "Obliques"
     ],
-    "file": "027412.mp4",
+    "file": "027412.mov",
     "sourceFile": "02741201-Crunch-Floor-(male)_waist.mp4",
-    "sha256": "9fe87e76f6ea61c4ea4101695211b5a3f1472fad28358029eac3ae8a4f9ed192"
+    "sha256": "aa1d4732b5f7402ccfca284a41d95ae4b820e48242ebf2a17a336ec00e47ce91"
   },
   "dumbbell-lying-hammer-press": {
     "videoId": "034012",
@@ -2896,9 +2896,9 @@
       "Deltoid Anterior",
       "Triceps Brachii"
     ],
-    "file": "034012.mp4",
+    "file": "034012.mov",
     "sourceFile": "03401201-Dumbbell-Lying-Hammer-Press_Chest-FIX2.mp4",
-    "sha256": "a3dfe4de6df4d5c6a22b1b1f7e4a2c550a65cca04d6d39f5f28b053e1881a9e0"
+    "sha256": "7e2e921624e36fd79942e25970f40e05b49cff7e1796cb5d19a8b745346e8052"
   },
   "dumbbell-squeeze-bench-press": {
     "videoId": "368112",
@@ -2916,9 +2916,9 @@
     "secondaryMuscles": [
       "Deltoid Anterior"
     ],
-    "file": "368112.mp4",
+    "file": "368112.mov",
     "sourceFile": "36811201-Dumbbell-Squeeze-Bench-Press_Chest-FIX.mp4",
-    "sha256": "b9aaf2a89812cdd18c7a7b0ac820f4d6258b7b194a5c85dec9fec872a08bebbf"
+    "sha256": "fa5ca999eab8dafae5e4d19e9e0152fc595ae9819f75b9d42ef10eb732ede842"
   },
   "barbell-reverse-grip-bench-press": {
     "videoId": "509112",
@@ -2936,9 +2936,9 @@
       "Pectoralis Major Clavicular Head",
       "Triceps Brachii"
     ],
-    "file": "509112.mp4",
+    "file": "509112.mov",
     "sourceFile": "50911201-Barbell-Reverse-Grip-Bench-Press_Chest.mp4",
-    "sha256": "4a11577f06041945b09dc7d9b0d80155380f35e55d4cde6663798ad56d67e0cc"
+    "sha256": "c5ca266a7aceb98234ced7e53909143d01302b903945248ce5d2b4d792a8563f"
   },
   "barbell-floor-chest-press": {
     "videoId": "372412",
@@ -2956,9 +2956,9 @@
       "Deltoid Anterior",
       "Triceps Brachii"
     ],
-    "file": "372412.mp4",
+    "file": "372412.mov",
     "sourceFile": "37241201-Barbell-Floor-Chest-Press_Chest.mp4",
-    "sha256": "5f522bede7eb3f7208ef71ac7e43db0c380cf533c29bd10540d188c77e40905c"
+    "sha256": "2cb88199402512d0b4831f4b2e873d2b3071b3bb91e0ebfc5b41f010e3e62603"
   },
   "barbell-spoto-press": {
     "videoId": "1120712",
@@ -2970,9 +2970,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1120712.mp4",
+    "file": "1120712.mov",
     "sourceFile": "112071201-Barbell-Spoto-Press_Chest.mp4",
-    "sha256": "78bf0abb330fc3a720ee73a142c88b073b1c84a88334c700d1e265fbf3baca50"
+    "sha256": "c7ef0c8313e66bb977f99ad393006b6a3bdd09609a5b491d050835eddab71f6b"
   },
   "barbell-larsen-press": {
     "videoId": "627012",
@@ -2984,9 +2984,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "627012.mp4",
+    "file": "627012.mov",
     "sourceFile": "62701201-Barbell-Larsen-Press-(male)_Chest.mp4",
-    "sha256": "5bba369a69ed0e29673370f2b1b1ca44be462b8b23ad962920864cc901254269"
+    "sha256": "5d8290e1c402e459cee15719ea192a100f2ca6e16369e67aff2b9e041ea6d887"
   },
   "barbell-incline-close-grip-bench-press": {
     "videoId": "171912",
@@ -3004,9 +3004,9 @@
       "Pectoralis Major Clavicular Head",
       "Pectoralis Major Sternal Head"
     ],
-    "file": "171912.mp4",
+    "file": "171912.mov",
     "sourceFile": "17191201-Barbell-Incline-Close-Grip-Bench-Press_Upper-Arms.mp4",
-    "sha256": "4a9edfeed1b68ccb6e3091f85886dd42477162516ccbef33a991053cfedf1846"
+    "sha256": "0a16c9213c368b53fef4848ac4cc7c91f299273e61c92fee44925c6ff7c6f0d1"
   },
   "dumbbell-incline-fly": {
     "videoId": "031912",
@@ -3023,9 +3023,9 @@
       "Biceps Brachii",
       "Deltoid Anterior"
     ],
-    "file": "031912.mp4",
+    "file": "031912.mov",
     "sourceFile": "03191201-Dumbbell-Incline-Fly_Chest-FIX2.mp4",
-    "sha256": "929c6c0f53ce9bf178d1fee52c11aa6bb09a01cdd9c9ad15a501bbee2dedf9d6"
+    "sha256": "e2aa0b547d481c4dda998a37b9ab7fb03370b67f8e8262587f243ed5b3bdfb85"
   },
   "dumbbell-decline-fly": {
     "videoId": "030212",
@@ -3043,9 +3043,9 @@
       "Deltoid Anterior",
       "Pectoralis Major Clavicular Head"
     ],
-    "file": "030212.mp4",
+    "file": "030212.mov",
     "sourceFile": "03021201-Dumbbell-Decline-Fly_Chest-FIX.mp4",
-    "sha256": "43c7b15374f421bfb1f7271b52123e0691417f31b4efc0f13e65be4b2374e6e2"
+    "sha256": "b566c5f00a830434e27e6e8aa1bc34e4ff0e2f74ff559393330f420ab5769a2b"
   },
   "dumbbell-lying-one-arm-press": {
     "videoId": "034312",
@@ -3063,9 +3063,9 @@
       "Deltoid Anterior",
       "Triceps Brachii"
     ],
-    "file": "034312.mp4",
+    "file": "034312.mov",
     "sourceFile": "03431201-Dumbbell-Lying-One-Arm-Press_Chest.mp4",
-    "sha256": "5d9cc9c4f82d1c8d3bbf3033b118bdfbcbe1ec0b222d5f9fbf4ce86af6541100"
+    "sha256": "eae8234bf246f47b6e3ad1e7a311f2f6c7afe30b84c2d0986fcbffc2b9c8d1a6"
   },
   "cable-standing-single-arm-chest-press": {
     "videoId": "981612",
@@ -3077,9 +3077,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "981612.mp4",
+    "file": "981612.mov",
     "sourceFile": "98161201-Cable-Standing-Single-Arm-Chest-Press_Chest.mp4",
-    "sha256": "cc97a328ae10270203af88861054b859c7470309863fb3c6e0079e91b21d74b2"
+    "sha256": "090f0376428cdf0f99153c754a20edd46e5065652567bc13024de2e6c4470bc9"
   },
   "cable-standing-chest-press": {
     "videoId": "335912",
@@ -3094,9 +3094,9 @@
       "Pectoralis Major Sternal Head"
     ],
     "secondaryMuscles": [],
-    "file": "335912.mp4",
+    "file": "335912.mov",
     "sourceFile": "33591201-Cable-Standing-Chest-Press_Chest.mp4",
-    "sha256": "5f64105de0a544a00c30531ddde5ad30d7c1585dcebcea7a73bdd44f21f7aa62"
+    "sha256": "c1b77ce6cbd89465f9a5cccb1bf1736e86b42c093b95a3aff460cd0b0e1548c3"
   },
   "cable-middle-fly": {
     "videoId": "018812",
@@ -3114,9 +3114,9 @@
       "Deltoid Lateral",
       "Pectoralis Major Clavicular Head"
     ],
-    "file": "018812.mp4",
+    "file": "018812.mov",
     "sourceFile": "01881201-Cable-Middle-Fly_Chest-FIX.mp4",
-    "sha256": "6504e8891da105cb179c414f9d8bd05d2234d25d30edc2fd8c885a6de30b32f6"
+    "sha256": "3f51c673846207142c3b79acb857a5f6301ec6450ef6f64b795cf07bcbc11eef"
   },
   "cable-standing-single-arm-fly": {
     "videoId": "621912",
@@ -3128,9 +3128,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "621912.mp4",
+    "file": "621912.mov",
     "sourceFile": "62191201-Cable-Standing-Single-Arm-Fly_Chest.mp4",
-    "sha256": "2843193c2d1bbffed71bf705de917de8663139f5d3db4a4038f7423c02ad2ab7"
+    "sha256": "7dd9966fadd642e009c1867213c2023346177ec1e36304758b1713297ca918d9"
   },
   "svend-press": {
     "videoId": "085612",
@@ -3148,9 +3148,9 @@
       "Pectoralis Major Clavicular Head",
       "Triceps Brachii"
     ],
-    "file": "085612.mp4",
+    "file": "085612.mov",
     "sourceFile": "08561201-Weighted-Svend-Press_Chest-FIX.mp4",
-    "sha256": "5a3adc62f1892a7e61a5b23387260819e32e7903be1f96168506de1ff36db8e0"
+    "sha256": "2d5f9da5982633b44112ac88deff769a4d302d2570cc12848b747e269a1a1571"
   },
   "incline-push-up": {
     "videoId": "049312",
@@ -3168,9 +3168,9 @@
       "Pectoralis Major Clavicular Head",
       "Triceps Brachii"
     ],
-    "file": "049312.mp4",
+    "file": "049312.mov",
     "sourceFile": "04931201-Incline-Push-up_Chest.mp4",
-    "sha256": "b9fcdd55b16125da29c9f54e1329430baa6d2d5d8e347cae64e0b7041507457e"
+    "sha256": "224345c5835f3fda61a7741de9d09739c40a1c53f1d62debced5c74c645f061e"
   },
   "decline-push-up": {
     "videoId": "027912",
@@ -3188,9 +3188,9 @@
       "Deltoid Anterior",
       "Triceps Brachii"
     ],
-    "file": "027912.mp4",
+    "file": "027912.mov",
     "sourceFile": "02791201-Decline-Push-Up_Chest-FIX.mp4",
-    "sha256": "bec3fee269a2c7fb1a497ee4c926815008aabdb3e1c42de43c2195857388722a"
+    "sha256": "a63aeeab2b7a0ecba5e49546e5f2e1f7bc8c71886adffba112a1c61c7fbf5b80"
   },
   "diamond-push-up": {
     "videoId": "028312",
@@ -3208,9 +3208,9 @@
       "Pectoralis Major Clavicular Head",
       "Pectoralis Major Sternal Head"
     ],
-    "file": "028312.mp4",
+    "file": "028312.mov",
     "sourceFile": "02831201-Diamond-Push-up_Upper-Arms.mp4",
-    "sha256": "0f511a64b8dc7e76d036b7a8ed470a033fbce57d17672cbf1842d1038b959a7f"
+    "sha256": "56566f03a1c38bce84966960691560b8b7c7f581229aa753d67297e5c039b69a"
   },
   "archer-push-up": {
     "videoId": "329412",
@@ -3228,9 +3228,9 @@
       "Deltoid Anterior",
       "Triceps Brachii"
     ],
-    "file": "329412.mp4",
+    "file": "329412.mov",
     "sourceFile": "32941201-Archer-Push-up_Chest.mp4",
-    "sha256": "cab84347f0677a8787917af324b4fc67f126086a08b3ebf7664de587ccdf1e2b"
+    "sha256": "3015d5b771fd2d3dac5e69b37954a27232c2d35ec6df9208fba1ceaed06162d4"
   },
   "weighted-push-up-with-vest": {
     "videoId": "391012",
@@ -3248,9 +3248,9 @@
       "Deltoid Anterior",
       "Triceps Brachii"
     ],
-    "file": "391012.mp4",
+    "file": "391012.mov",
     "sourceFile": "39101201-Weighted-Push-up-with-Vest_Chest.mp4",
-    "sha256": "04675457dd14a230c95db6af30d35f0d17f7a0ecf47f5e48d37dd2394d8101e9"
+    "sha256": "9c5c616c366aea3f97a8a6d21f26e844d0dd5175a00da22549d2705dca083298"
   },
   "lever-seated-wide-lat-pulldown": {
     "videoId": "864612",
@@ -3262,9 +3262,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "864612.mp4",
+    "file": "864612.mov",
     "sourceFile": "86461201-Lever-Seated-Wide-Lat-Pulldown-(male)_Back.mp4",
-    "sha256": "343ede45f87219dd76ad8d8e2203f3c0a50c23a7573eaee55af477c97a9822b6"
+    "sha256": "303a993ababcb0057119ddb51ef3aa83555ad34d546053ef1916f0e90dc3f13b"
   },
   "cable-one-arm-lat-pulldown": {
     "videoId": "120412",
@@ -3287,9 +3287,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "120412.mp4",
+    "file": "120412.mov",
     "sourceFile": "12041201-Cable-One-Arm-Lat-Pulldown_Back-FIX.mp4",
-    "sha256": "14bd26dcce3b3145ca7062f8f4958562384251d10cb40142e3e7535bba9cea94"
+    "sha256": "3b34f414adf3d76722d74fbd181ab93ca24321f4bbe8fa0b1937288bc5232a77"
   },
   "cable-kneeling-one-arm-lat-pulldown": {
     "videoId": "494812",
@@ -3313,9 +3313,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "494812.mp4",
+    "file": "494812.mov",
     "sourceFile": "49481201-Cable-Kneeling-One-Arm-Lat-Pulldown_Back.mp4",
-    "sha256": "9bee20a7ae1d22bf280168f182674851072b3d4cd7e48ff1adf028b98605d2b9"
+    "sha256": "c1bf5d0768cfa89a3d8fdc011e1b9ee2571a718ee7f457219a30db7ab82cb210"
   },
   "cable-kneeling-lat-pulldown": {
     "videoId": "1125312",
@@ -3327,9 +3327,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1125312.mp4",
+    "file": "1125312.mov",
     "sourceFile": "112531201-Cable-Kneeling-Pulldown-(VERSION-3)_Back.mp4",
-    "sha256": "6e6e673872bf8572396e38e09679cf1830870f18fd736d857351e242ab977fd8"
+    "sha256": "1fac8b2d969c89910a0411c8fdf720a2b561072b28c9d11587d3e8574a020bc8"
   },
   "cable-lateral-pulldown-with-v-bar": {
     "videoId": "261612",
@@ -3351,9 +3351,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "261612.mp4",
+    "file": "261612.mov",
     "sourceFile": "26161201-Cable-Lateral-Pulldown-with-V-bar_Back.mp4",
-    "sha256": "058fb2cccef1aafd97f68371f85f46e17b57df5525d8b054db122edffb764bf5"
+    "sha256": "bd91a1aa5825f9072ff5049e9da954a674284e819e2a8cfae5c525788f21ebd8"
   },
   "lever-machine-pullover": {
     "videoId": "228512",
@@ -3372,9 +3372,9 @@
       "Teres Major",
       "Triceps Brachii"
     ],
-    "file": "228512.mp4",
+    "file": "228512.mov",
     "sourceFile": "22851201-Lever-Pullover-(plate-loaded)_Back.mp4",
-    "sha256": "1a24cd7310ba01227382d6aab712a172a482505e805de96908cdb57563a54fae"
+    "sha256": "a8ddec64617700aa87124fb97623715d1bb4db435d089c25701542da51116e58"
   },
   "cable-rope-straight-arm-pulldown": {
     "videoId": "023712",
@@ -3392,9 +3392,9 @@
       "Teres Major",
       "Triceps Brachii"
     ],
-    "file": "023712.mp4",
+    "file": "023712.mov",
     "sourceFile": "02371201-Cable-Straight-Arm-Pulldown-(with-rope)_Back.mp4",
-    "sha256": "b6d2f986cdded7b64b9c7ee63c413de9dc5dedffe154d4d132f358a75f2670c6"
+    "sha256": "4bd8bd8cc03b464eb8baf4b7da60ccceca05d0ac9085fe7da9d6bf46d4ec66eb"
   },
   "cable-single-arm-straight-arm-pulldown": {
     "videoId": "584412",
@@ -3410,9 +3410,9 @@
     "secondaryMuscles": [
       "Teres Major"
     ],
-    "file": "584412.mp4",
+    "file": "584412.mov",
     "sourceFile": "58441201-Single-Arm-Side-Straight-Arm-Lat-Pulldown-(male)_B.mp4",
-    "sha256": "d148a9d70b37970dfb775937490bc6aa329fa7a3d3fdc636598f388a0c5987ec"
+    "sha256": "972c377314fb5c79d671b9640557221081a1a31e56bf9de94e29988cdf31d268"
   },
   "barbell-lying-seal-row-on-rack": {
     "videoId": "879812",
@@ -3424,9 +3424,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "879812.mp4",
+    "file": "879812.mov",
     "sourceFile": "87981201-Barbell-Lying-Seal-Row-on-Rack_Back.mp4",
-    "sha256": "43cb1ac70a9597c461cf48336cc190cf290513909ba149296a445d619c8fd5b1"
+    "sha256": "e7fa0b68b68a6515b046b777c053ab637a8190a7589e650a96bd36c42d12c0b8"
   },
   "landmine-one-arm-bent-over-row": {
     "videoId": "503412",
@@ -3449,9 +3449,9 @@
       "Brachioradialis",
       "Deltoid Posterior"
     ],
-    "file": "503412.mp4",
+    "file": "503412.mov",
     "sourceFile": "50341201-Landmine-One-Arm-Bent-Over-Row-(VERSION-2)_Back.mp4",
-    "sha256": "37c8a5133ab980c9f43fb791a0a022bf9c48810b9cc4f77bf8f813488a7c337c"
+    "sha256": "86adf69c0aeb79f3266f6a6916efd88dc445f1a3f81542dcdbde32c6f957383f"
   },
   "landmine-v-bar-bent-over-row": {
     "videoId": "320012",
@@ -3474,9 +3474,9 @@
       "Brachioradialis",
       "Deltoid Posterior"
     ],
-    "file": "320012.mp4",
+    "file": "320012.mov",
     "sourceFile": "32001201-Lever-Bent-over-Row-with-V-bar-(plate-loaded)_Back.mp4",
-    "sha256": "e526907da51f666e94c8fb634481ca2969eb77607f8b521a6b9ecff888dc49d9"
+    "sha256": "a0eb91d9c50c5df17edc5fbe57f846173b6ec27a8efcf2895de227261c573b6a"
   },
   "lever-lying-t-bar-row": {
     "videoId": "119412",
@@ -3502,9 +3502,9 @@
       "Pectoralis Major Sternal Head",
       "Triceps Brachii"
     ],
-    "file": "119412.mp4",
+    "file": "119412.mov",
     "sourceFile": "11941201-Lever-Lying-T-bar-Row_Back.mp4",
-    "sha256": "759b673d3bd5205bdd2642177c9808afe6da39f6862a60c2e64438883fed2224"
+    "sha256": "4550b3245d41ed9f9083e236b832b0d0d4140f6a55138a4b8429ee7d570426f2"
   },
   "cable-seated-wide-grip-row": {
     "videoId": "021812",
@@ -3527,9 +3527,9 @@
       "Brachioradialis",
       "Deltoid Posterior"
     ],
-    "file": "021812.mp4",
+    "file": "021812.mov",
     "sourceFile": "02181201-Cable-Seated-Wide-grip-Row_Back-FIX.mp4",
-    "sha256": "e12188ce03c1caeb5bdcc83e36a8c99359fbd49a5ebcef83292d98a272391a2b"
+    "sha256": "354185726ca108094dea627cf02a7c1c86005976afb75638c0a6083a998ab161"
   },
   "cable-seated-row-with-v-bar": {
     "videoId": "266112",
@@ -3552,9 +3552,9 @@
       "Brachioradialis",
       "Deltoid Posterior"
     ],
-    "file": "266112.mp4",
+    "file": "266112.mov",
     "sourceFile": "26611201-Cable-Seated-Row-with-V-bar_Back-FIX.mp4",
-    "sha256": "2d6dcf49151897087543bba01265a260c39e991f62f4e09026e513e6f4d0f172"
+    "sha256": "f9f7a8a3f88eea515e4a5cd8a9a29852bb04090fc8278d9096f812cf3f463405"
   },
   "cable-one-arm-twisting-seated-row": {
     "videoId": "120512",
@@ -3580,9 +3580,9 @@
       "Pectoralis Major Sternal Head",
       "Triceps Brachii"
     ],
-    "file": "120512.mp4",
+    "file": "120512.mov",
     "sourceFile": "12051201-Cable-one-arm-twisting-seated-row_back.mp4",
-    "sha256": "f24e3c789c65d46b492855e1e603d6c5cea0710034f093da93a392ba5e327d28"
+    "sha256": "915960580538eb35a913b39f5e540d0902413bf3d2c3d49053627fa4b6e820a3"
   },
   "cable-high-row": {
     "videoId": "650312",
@@ -3594,9 +3594,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "650312.mp4",
+    "file": "650312.mov",
     "sourceFile": "65031201-Cable-High-Row_Back.mp4",
-    "sha256": "998f7c87e593b202aa0bf405ef5d8b202b9c72096a5867afc36094a32e1690c9"
+    "sha256": "99995be15b7b30c7b891376f66ad77c2e47d0cf4f0eef330074b9c69cdc5d863"
   },
   "cable-low-seated-row": {
     "videoId": "018012",
@@ -3620,9 +3620,9 @@
       "Deltoid Posterior",
       "Pectoralis Major Sternal Head"
     ],
-    "file": "018012.mp4",
+    "file": "018012.mov",
     "sourceFile": "01801201-Cable-Low-Seated-Row_Back.mp4",
-    "sha256": "d79f62fec83a2ef670fbefcf113c4cdaa95f9869c27c2e813989fef4d4036737"
+    "sha256": "7fde1e3091d3cce2baa2c87d176e6c8c9ea4a84692b7e90ac046a0d2264f6953"
   },
   "cable-rope-seated-row": {
     "videoId": "132312",
@@ -3646,9 +3646,9 @@
       "Deltoid Posterior",
       "Pectoralis Major Sternal Head"
     ],
-    "file": "132312.mp4",
+    "file": "132312.mov",
     "sourceFile": "13231201-Cable-Rope-Seated-Row_Back.mp4",
-    "sha256": "cc914c9d430490504a8cee696db6b4029968653b5d37bfc289e117cb8c233d11"
+    "sha256": "72b32f8580cee817a7fb40d8b99433e361b999131ad50d85336003e837cca029"
   },
   "lever-high-row": {
     "videoId": "1063812",
@@ -3660,9 +3660,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1063812.mp4",
+    "file": "1063812.mov",
     "sourceFile": "106381201-Lever-High-Row-(male)_Back.mp4",
-    "sha256": "3c937fa2fa71420f15c77b4985236b23977fa4d386cd5902800326aab62cbd6c"
+    "sha256": "00337dbce21bfb5e3575fee5994ae9f95583654dd95890e2673f817e8fc1f778"
   },
   "lever-machine-low-row": {
     "videoId": "421412",
@@ -3685,9 +3685,9 @@
       "Brachioradialis",
       "Deltoid Posterior"
     ],
-    "file": "421412.mp4",
+    "file": "421412.mov",
     "sourceFile": "42141201-Lever-Low-Row-(plate-loaded)_Back.mp4",
-    "sha256": "483c1fd20b232ae3c6d9b7dfeaad22113a541b87fb8d64321e20603f3f57be26"
+    "sha256": "11613475ad6f606f7480e28550fb3a62af2cedffb0b5349305f7aa1accdb58e5"
   },
   "lever-unilateral-row": {
     "videoId": "131312",
@@ -3711,9 +3711,9 @@
       "Deltoid Posterior",
       "Pectoralis Major Sternal Head"
     ],
-    "file": "131312.mp4",
+    "file": "131312.mov",
     "sourceFile": "13131201-Lever-Unilateral-Row_Back.mp4",
-    "sha256": "9a132e0b35904d90fbab24bdba6cb155a8a91ce892710c1149a5576235227299"
+    "sha256": "0da9c03a0d046866e98f534818e9819a8571ae77ed6fd1c4d005f2c9c2deb8d7"
   },
   "dumbbell-renegade-row": {
     "videoId": "298012",
@@ -3737,9 +3737,9 @@
       "Deltoid Posterior",
       "Pectoralis Major Sternal Head"
     ],
-    "file": "298012.mp4",
+    "file": "298012.mov",
     "sourceFile": "29801201-Dumbbell-Renegade-Row_Back-FIX.mp4",
-    "sha256": "ccf074bb1ce136783893cdb23c2724dd1ad79fe06b79b7d7f3e7cc65794c7072"
+    "sha256": "45bd3593e74e3b453a15f87f51524d6ae41bb5dee56b6d51ed4df4b63bd88943"
   },
   "dumbbell-kroc-row": {
     "videoId": "1032912",
@@ -3751,9 +3751,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1032912.mp4",
+    "file": "1032912.mov",
     "sourceFile": "103291201-Dumbbell-Kroc-Row-(male)_Back.mp4",
-    "sha256": "2062791e2ad6324749f9822e53d434ea849e2752b848c355a82be0126c269f39"
+    "sha256": "7a8721b3e4f050340a9a1e6862fd58c1566f6a9a6b6b91cb7a27692826ef3b06"
   },
   "dumbbell-gorilla-row": {
     "videoId": "1124112",
@@ -3765,9 +3765,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1124112.mp4",
+    "file": "1124112.mov",
     "sourceFile": "112411201-Dumbbell-Gorilla-Row-(male)_Back.mp4",
-    "sha256": "5c58699d1a12420443c0643e92e69e08840e0a86a6af48970019f2b4acdf6438"
+    "sha256": "599e54da721aab3faa569f3618b059b532bba81953ed380c799f1a8e01cc978b"
   },
   "suspension-trainer-row": {
     "videoId": "622012",
@@ -3779,9 +3779,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "622012.mp4",
+    "file": "622012.mov",
     "sourceFile": "62201201-Suspender-Row-(male)_Back.mp4",
-    "sha256": "970299bb2d8db529313a960e24200aa2388b70ebd3d3dc22b05a75d89df5807e"
+    "sha256": "71a950cee01390d2f3f77beb8a67da80922692c0e3b07621d9d421d07aa0ff6a"
   },
   "ring-inverted-row": {
     "videoId": "765512",
@@ -3793,9 +3793,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "765512.mp4",
+    "file": "765512.mov",
     "sourceFile": "76551201-Ring-Inverted-Row-parallel-to-the-floor-(male)_Bac.mp4",
-    "sha256": "3f73c26f51f1ee881cb7257adafc83c6a5d21bffde729ef7cb0a9e7bbd732e38"
+    "sha256": "d8bf66a1beacdcad4f95dab98323d33cc0c993c61db934b443781bb54c1a164d"
   },
   "scapular-pull-up": {
     "videoId": "1101512",
@@ -3807,9 +3807,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1101512.mp4",
+    "file": "1101512.mov",
     "sourceFile": "110151201-Scapular-Pull-Up-(VERSION-2)_Back.mp4",
-    "sha256": "8a1f36c66a82032641a98cffbab40b56ae1c9d141faea95d7703627aeb5d0d93"
+    "sha256": "5e0ef562a595c6bd57cfa2e75c5f2321bb1885ed3926a0e0c61d2abfb355b88b"
   },
   "parallel-grip-chin-up": {
     "videoId": "025312",
@@ -3833,9 +3833,9 @@
       "Deltoid Posterior",
       "Pectoralis Major Sternal Head"
     ],
-    "file": "025312.mp4",
+    "file": "025312.mov",
     "sourceFile": "02531201-Chin-ups-(narrow-parallel-grip)_Back.mp4",
-    "sha256": "97bac13ff6876496b3ca7827bb71e343d34cf17ce10b41717463565162176221"
+    "sha256": "db96a22e7a332c30dfc9f389cd28a52cbd47cf44fcf4fada445ab52342c210dc"
   },
   "barbell-rack-pull": {
     "videoId": "007412",
@@ -3855,9 +3855,9 @@
       "Quadriceps",
       "Soleus"
     ],
-    "file": "007412.mp4",
+    "file": "007412.mov",
     "sourceFile": "00741201-Barbell-Rack-Pull_Hips.mp4",
-    "sha256": "62ff54ecc3e742c2a7aa3d573b6a678bcafc94d948c84cf99973f53f57c5be88"
+    "sha256": "186f358b3fb80e6e9d6ffbe44bcb2e44f1ae534f6553e087dd1505aa7ef2f5d2"
   },
   "dumbbell-seated-lateral-raise": {
     "videoId": "039512",
@@ -3874,9 +3874,9 @@
       "Deltoid Anterior",
       "Serratus Anterior"
     ],
-    "file": "039512.mp4",
+    "file": "039512.mov",
     "sourceFile": "03951201-Dumbbell-Seated-Lateral-Raise_Shoulders.mp4",
-    "sha256": "9ab816aabae217d424f089c6817ccf24ccd0ee1d863956c90ce39c1e39d1e17f"
+    "sha256": "2d1f96d8903570b5b6e88ef59995763006051005553fb80206dc6e859fc89aa1"
   },
   "cable-leaning-lateral-raise": {
     "videoId": "388012",
@@ -3888,9 +3888,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "388012.mp4",
+    "file": "388012.mov",
     "sourceFile": "38801201-Cable-Leaning-Lateral-Raise_Shoulders.mp4",
-    "sha256": "ba9028434dfd936e01b0e027d6d6f1a0be30b4f0053e2f0efcfe8715ef5a2fa7"
+    "sha256": "623c4a21665df1d01856f5aa121dd9bf083f32e05f0386c1a9db0a55eeb2762a"
   },
   "cable-behind-the-back-lateral-raise": {
     "videoId": "1040912",
@@ -3902,9 +3902,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1040912.mp4",
+    "file": "1040912.mov",
     "sourceFile": "104091201-Cable-Behind-The-Back-Cuffed-Lateral-Raise-(male).mp4",
-    "sha256": "8222eefc2f21c7ddea1a4b55a0e183785c1957d00edf97dab2458d15b554f91b"
+    "sha256": "79c40c313269cfa8e64a20662f684b5ded22cebb345a64c6cbd309bb69f2a4c8"
   },
   "cable-one-arm-lateral-raise": {
     "videoId": "019212",
@@ -3921,9 +3921,9 @@
       "Deltoid Anterior",
       "Serratus Anterior"
     ],
-    "file": "019212.mp4",
+    "file": "019212.mov",
     "sourceFile": "01921201-Cable-One-Arm-Lateral-Raise_Shoulders.mp4",
-    "sha256": "dfbe0311155c8ea01671094f3dd0df33f92007a418afcd2cebbaeeb0075c9c77"
+    "sha256": "233e596c356013d06c5445c566f382fb106e0be7f1a529de38251e73d9484575"
   },
   "cable-y-raise": {
     "videoId": "334212",
@@ -3937,9 +3937,9 @@
       "Deltoid Lateral"
     ],
     "secondaryMuscles": [],
-    "file": "334212.mp4",
+    "file": "334212.mov",
     "sourceFile": "33421201-Cable-Y-raise_Shoulders.mp4",
-    "sha256": "29bb588c1bfe9cb6446d899532150963698ebdc58a4e736f87cb2ae7aa50626b"
+    "sha256": "7dd1f556c311dd3cf29331f8eecf1d6f19c5a5250f1d493494927f8c13df2ea3"
   },
   "dumbbell-incline-y-raise": {
     "videoId": "354112",
@@ -3957,9 +3957,9 @@
       "Trapezius Middle Fibers"
     ],
     "secondaryMuscles": [],
-    "file": "354112.mp4",
+    "file": "354112.mov",
     "sourceFile": "35411201-Dumbbell-Incline-Y-Raise_Shoulders.mp4",
-    "sha256": "6a331d27c4b512189a48b9361c274dffeb67946a16cf35bd49e0e74d1a8af3c6"
+    "sha256": "0425f46bfa57e7ee65674ef702e2201faf253a3d8679e7dcf757625d485514b8"
   },
   "dumbbell-front-raise": {
     "videoId": "030912",
@@ -3977,9 +3977,9 @@
       "Pectoralis Major Clavicular Head",
       "Serratus Anterior"
     ],
-    "file": "030912.mp4",
+    "file": "030912.mov",
     "sourceFile": "03091201-Dumbbell-Front-Raise-(version-2)_Shoulders.mp4",
-    "sha256": "2ffdf0bd1558dc8095784a8f41b60129c1e8f1ac8bf83275b67c42adfbc70656"
+    "sha256": "3166962b97042084220a3d00754b51b887a5399fd6ec2400c1cf479101382960"
   },
   "cable-front-raise": {
     "videoId": "016212",
@@ -3997,9 +3997,9 @@
       "Pectoralis Major Clavicular Head",
       "Serratus Anterior"
     ],
-    "file": "016212.mp4",
+    "file": "016212.mov",
     "sourceFile": "01621201-Cable-Front-Raise_Shoulders-FIX.mp4",
-    "sha256": "f3930f1c813279090cf8e70c6f81aeda9b4f60d6f4844aedbcafdbe383f24587"
+    "sha256": "ced9ef101b97166197b01f9a690e7c445f1500b95e8fe0aa177c95b42f65ec8d"
   },
   "weighted-front-raise": {
     "videoId": "083412",
@@ -4017,9 +4017,9 @@
       "Pectoralis Major Clavicular Head",
       "Serratus Anterior"
     ],
-    "file": "083412.mp4",
+    "file": "083412.mov",
     "sourceFile": "08341201-Weighted-Front-Raise_Shoulders-FIX.mp4",
-    "sha256": "7b5413f3c5b554312eec5689f203da996f81efe8df6ec585bef35d384fe9e602"
+    "sha256": "68fac9697ff1d0bbcacc7978d9c5bf69f2e61382c8565b88fb48f3ca9dca1e1b"
   },
   "barbell-front-raise": {
     "videoId": "004112",
@@ -4037,9 +4037,9 @@
       "Pectoralis Major Clavicular Head",
       "Serratus Anterior"
     ],
-    "file": "004112.mp4",
+    "file": "004112.mov",
     "sourceFile": "00411201-Barbell-Front-Raise_Shoulders.mp4",
-    "sha256": "a442d5f32ebf1474c7eecc90c525479223f8c5cf675c4cf0595e80a92a1e2987"
+    "sha256": "ceba77ab618f88a6b76e77c0d75ac5882d8927478e540f2a315233cc98cd8592"
   },
   "cable-standing-reverse-fly": {
     "videoId": "1125412",
@@ -4051,9 +4051,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1125412.mp4",
+    "file": "1125412.mov",
     "sourceFile": "112541201-Cable-Standing-Reverse-Fly-(VERSION-3)_Shoulders.mp4",
-    "sha256": "35f9987f7e210b2a4abe48021f6c9593231ba903a41c2681088451a878e503d0"
+    "sha256": "2b14c3054859bb821bf7973a47c3432d341cee3e4c68ce640d44a232a551ad29"
   },
   "head-supported-dumbbell-rear-lateral-raise": {
     "videoId": "037912",
@@ -4073,9 +4073,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "037912.mp4",
+    "file": "037912.mov",
     "sourceFile": "03791201-Dumbbell-Rear-Lateral-Raise-(support-head)_Shoulde.mp4",
-    "sha256": "a5553367a7267db78066af9c5e4f055a84f4ab6361ad3b6f8a0f7dee521650f5"
+    "sha256": "942aebdd989e99d5e6b2d8f2723bf0f9f3dbc46be8071917d4cf4b8ea51497a8"
   },
   "dumbbell-incline-rear-fly": {
     "videoId": "032612",
@@ -4094,9 +4094,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "032612.mp4",
+    "file": "032612.mov",
     "sourceFile": "03261201-Dumbbell-Incline-Rear-Lateral-Raise_Shoulders-FIX.mp4",
-    "sha256": "54adbd6b80c739d2a6829a36e8c842f20fd07bfb1cc28191176c6aed2d57700e"
+    "sha256": "233d96dad8227d141bc32bea3c684261bd5f1cf3b885d0d8cd84330919af6096"
   },
   "lever-seated-rear-delt-row": {
     "videoId": "1109712",
@@ -4108,9 +4108,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1109712.mp4",
+    "file": "1109712.mov",
     "sourceFile": "110971201-Lever-Seated-Delt-Row-(male)_Shoulders.mp4",
-    "sha256": "c63d754b25a661e90fb7e5313c0261bb15f7c1eece8e84bda4ae73d91a43dd4e"
+    "sha256": "f68f1106e00f156852699c5900dd36dcd3841a61cb61885d565570551b6d8a26"
   },
   "barbell-wide-grip-upright-row": {
     "videoId": "012312",
@@ -4133,9 +4133,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "012312.mp4",
+    "file": "012312.mov",
     "sourceFile": "01231201-Barbell-Wide-Grip-Upright-Row_Shoulders.mp4",
-    "sha256": "df5c8c8c8b619517ac9f1b67675af454a0fb509139dd3fd9378388cfb3b94065"
+    "sha256": "e085d523c7c2a8a9fdefea7f36bf8cc638e321504de13a050c9c2e815cbcacd0"
   },
   "dumbbell-upright-row": {
     "videoId": "043712",
@@ -4159,9 +4159,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "043712.mp4",
+    "file": "043712.mov",
     "sourceFile": "04371201-Dumbbell-Upright-Row_Shoulders-FIX.mp4",
-    "sha256": "b422c6b8706b4c1e2f03c694163989b4566949936744bc38ab216b14764ed1c4"
+    "sha256": "f5dd7ece0e5f583847827f2152db9b75516f0c9675e1cceac72c2e675919b84f"
   },
   "barbell-z-press": {
     "videoId": "486612",
@@ -4173,9 +4173,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "486612.mp4",
+    "file": "486612.mov",
     "sourceFile": "48661201-Barbell-Z-Press_Shoulders.mp4",
-    "sha256": "1d5e29e1163e2ecce4b538f91f7e8f320030563923912a56141d7f061664f670"
+    "sha256": "5c7189b23091d58cbcdbc4a5d6bacf87bf499baf0c3ce2cb98b74c43420387c7"
   },
   "landmine-single-arm-press": {
     "videoId": "509412",
@@ -4193,9 +4193,9 @@
       "Pectoralis Major Clavicular Head",
       "Triceps Brachii"
     ],
-    "file": "509412.mp4",
+    "file": "509412.mov",
     "sourceFile": "50941201-Landmine-Single-Arm-Press_Shoulders.mp4",
-    "sha256": "2162a5c0946afd43124e0c1d8edc04cafee1cacdf0b9dcc2f5beee2a2bd12034"
+    "sha256": "03d5169d199a2cd4b3023118ac10d178fce8845ade217717f73e2bdc41736024"
   },
   "lever-viking-press": {
     "videoId": "885012",
@@ -4207,9 +4207,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "885012.mp4",
+    "file": "885012.mov",
     "sourceFile": "88501201-Lever-Standing-Viking-Press-(male)_Shoulders.mp4",
-    "sha256": "ae1cbea9a5539ed4876a09093f2a81fc397e2c58acc03c150fc8fc4ae0f64771"
+    "sha256": "4ef38d0a66a8a3c4c6bbcff66a9cf6a0e5658f11b76e7d628d560d25425be9e1"
   },
   "pike-push-up": {
     "videoId": "292112",
@@ -4228,9 +4228,9 @@
       "Serratus Anterior",
       "Triceps Brachii"
     ],
-    "file": "292112.mp4",
+    "file": "292112.mov",
     "sourceFile": "29211201-Pike-Push-up_Chest.mp4",
-    "sha256": "81f307050f87d77091f83bfe6aa1a7f1706f9ab62a6f81b66e987fd901ed41f0"
+    "sha256": "ad79e42eeb111c3406f74ae2b967c7bb15f5fe992fe365b4f09305305716a641"
   },
   "ez-barbell-preacher-curl": {
     "videoId": "640612",
@@ -4242,9 +4242,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "640612.mp4",
+    "file": "640612.mov",
     "sourceFile": "64061201-EZ-Barbell-Preacher-Curl_Upper-Arms.mp4",
-    "sha256": "2c6083421586768b7cbbc8c270d2c1a2385d3380680ef7905acdca67b407c94a"
+    "sha256": "48e210111f04ba96fb52c80c4ef182c0b460ca0dced978191e8d7063f17b56a6"
   },
   "dumbbell-preacher-curl": {
     "videoId": "037212",
@@ -4261,9 +4261,9 @@
       "Brachialis",
       "Brachioradialis"
     ],
-    "file": "037212.mp4",
+    "file": "037212.mov",
     "sourceFile": "03721201-Dumbbell-Preacher-Curl_Upper-Arms.mp4",
-    "sha256": "d7d59249917892ac0009d9b9b71cb8301b1f848cd157b89a42ff6a535a559e6c"
+    "sha256": "42a2b58a7a7ff50dfbc61f8d165090face7a7944da39e3333aaf02ba3e0260d3"
   },
   "dumbbell-one-arm-hammer-preacher-curl": {
     "videoId": "166312",
@@ -4275,9 +4275,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "166312.mp4",
+    "file": "166312.mov",
     "sourceFile": "16631201-Dumbbell-One-Arm-Hammer-Preacher-Curl_Upper-Arms.mp4",
-    "sha256": "6e9e28c42db888c6a5e873abbfd296a6cec10e161a32775e48512743ae5591ee"
+    "sha256": "35b02036a41bf974c54979ff333d01e74eeda3cbd36260bb0d76bd68b5e88552"
   },
   "cable-preacher-curl": {
     "videoId": "019512",
@@ -4294,9 +4294,9 @@
       "Biceps Brachii",
       "Brachioradialis"
     ],
-    "file": "019512.mp4",
+    "file": "019512.mov",
     "sourceFile": "01951201-Cable-Preacher-Curl_Upper-Arms.mp4",
-    "sha256": "df780ea3fd5012c6607ea142d659075ad1640533f848cf2a291f8bec15aa5d64"
+    "sha256": "4c8902aaa26c8fe23aa902ef6a6ef36215894fa2d6b084d37f962e19afdcfbf1"
   },
   "barbell-reverse-curl": {
     "videoId": "008012",
@@ -4313,9 +4313,9 @@
       "Biceps Brachii",
       "Brachialis"
     ],
-    "file": "008012.mp4",
+    "file": "008012.mov",
     "sourceFile": "00801201-Barbell-Reverse-Curl_Forearm.mp4",
-    "sha256": "40ff6bb3e668e4a71b126f427b25eabb40331365b8fd1a8291e65ce26a58abb9"
+    "sha256": "fd834a8b45efacf15bf49f6920640528403bbaa07469938cfc1af18b01da6147"
   },
   "ez-barbell-reverse-grip-curl": {
     "videoId": "045112",
@@ -4332,9 +4332,9 @@
       "Biceps Brachii",
       "Brachialis"
     ],
-    "file": "045112.mp4",
+    "file": "045112.mov",
     "sourceFile": "04511201-EZ-Barbell-Reverse-Grip-Curl_Forearms.mp4",
-    "sha256": "5a5c0343c50845b1bf9b51cd644935da1a6b4ad64e6add8c40a39d56b4e20bf6"
+    "sha256": "ee58d18b6c79f28c1a3a0bbf53a88f678d258c6058f755e5dfdeb65401954e09"
   },
   "dumbbell-biceps-curl-reverse": {
     "videoId": "165412",
@@ -4346,9 +4346,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "165412.mp4",
+    "file": "165412.mov",
     "sourceFile": "16541201-Dumbbell-Biceps-Curl-Reverse_Upper-Arms.mp4",
-    "sha256": "652923032e00439fb56d0da0f45afefdaaf93aee893b4967db0dde3c41a0d163"
+    "sha256": "af33cc14002ba28df4cd012c4354de222124f666990f6804c3b6e7052b5e9a55"
   },
   "dumbbell-zottman-curl": {
     "videoId": "043912",
@@ -4365,9 +4365,9 @@
       "Brachialis",
       "Brachioradialis"
     ],
-    "file": "043912.mp4",
+    "file": "043912.mov",
     "sourceFile": "04391201-Dumbbell-Zottman-Curl_Upper-Arms-FIX2.mp4",
-    "sha256": "d7d37cc5be09ad7648e274279dab9b04950a9752d5cea951e6482df7c1f16447"
+    "sha256": "a88ab99af597803dfe156797b4ac80c9fcfd44431be05fac880d1822aa499b4d"
   },
   "dumbbell-cross-body-hammer-curl": {
     "videoId": "029812",
@@ -4384,9 +4384,9 @@
       "Biceps Brachii",
       "Brachialis"
     ],
-    "file": "029812.mp4",
+    "file": "029812.mov",
     "sourceFile": "02981201-Dumbbell-Cross-Body-Hammer-Curl_Forearms.mp4",
-    "sha256": "942dfbf85a5cbb781455ef6f0f497d29badcbcebb2b86898837f84c57ed508e6"
+    "sha256": "9eb21d50a7ebca3aff7524a2995124c56672bf726d0a7f5f1329fbca742ee9ff"
   },
   "dumbbell-seated-curl": {
     "videoId": "039112",
@@ -4403,9 +4403,9 @@
       "Brachialis",
       "Brachioradialis"
     ],
-    "file": "039112.mp4",
+    "file": "039112.mov",
     "sourceFile": "03911201-Dumbbell-Seated-Curl_Upper-Arms.mp4",
-    "sha256": "69226447294cbe10e4c0b3966dece3ac6c29b9ae12f22678298745fa49b3e378"
+    "sha256": "29e551d720ee97d66ca9bb334dc77ab8ecf41cd47f3f3ca46b0de07277f2b40d"
   },
   "dumbbell-standing-biceps-curl": {
     "videoId": "029412",
@@ -4422,9 +4422,9 @@
       "Brachialis",
       "Brachioradialis"
     ],
-    "file": "029412.mp4",
+    "file": "029412.mov",
     "sourceFile": "02941201-Dumbbell-Biceps-Curl_Upper-Arms.mp4",
-    "sha256": "ebcd19e40f0d90fa7cf17e8b101502a2c4805146aca2635c985e5d7374f0841d"
+    "sha256": "f4e2eec7ab0e54c819d034520cc03a6d0fd7d166163c2f9ca53f79f6426f0caa"
   },
   "barbell-drag-curl": {
     "videoId": "003812",
@@ -4443,9 +4443,9 @@
       "Deltoid Anterior",
       "Deltoid Posterior"
     ],
-    "file": "003812.mp4",
+    "file": "003812.mov",
     "sourceFile": "00381201-Barbell-Drag-Curl_Upper-Arms-FIX.mp4",
-    "sha256": "44dabba73971f3aa3cc257bd103da9b45b49f937bf67db06d03797489f2028c0"
+    "sha256": "5ed1517ec26a16b36c16bad104e79b7a2c1ba8efbd21316dad8189e091454360"
   },
   "cable-drag-curl": {
     "videoId": "163212",
@@ -4457,9 +4457,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "163212.mp4",
+    "file": "163212.mov",
     "sourceFile": "16321201-Cable-Drag-Curl_Upper-Arms.mp4",
-    "sha256": "142c6aac80374fa1f26685680641b8c2d550c6810a748cf134fcdf41027b0fd7"
+    "sha256": "e85b44d79c0a96d64f8b49757622f2192b6c6b7ea0de4f4ca0e0b5781dc5691f"
   },
   "cable-standing-inner-curl": {
     "videoId": "022912",
@@ -4475,9 +4475,9 @@
     "secondaryMuscles": [
       "Brachialis"
     ],
-    "file": "022912.mp4",
+    "file": "022912.mov",
     "sourceFile": "02291201-Cable-Standing-Inner-Curl_Upper-Arms.mp4",
-    "sha256": "9008f4dc1854ce0705846503a416cca0a0e39e0893f6e9fb9e16aa339ee41b67"
+    "sha256": "fc263ea05835b0edc5b32682cd2ab21f1306fbcbe8b613213108a817cbe71861"
   },
   "cable-one-arm-curl": {
     "videoId": "019012",
@@ -4494,9 +4494,9 @@
       "Brachialis",
       "Brachioradialis"
     ],
-    "file": "019012.mp4",
+    "file": "019012.mov",
     "sourceFile": "01901201-Cable-One-Arm-Curl_Upper-Arms.mp4",
-    "sha256": "a1948a070f0a50f8603f1d118222e2887fad63962734711ec6e34df162b91082"
+    "sha256": "16ae53a2005da3862c9cafc6f9b8cff65bd3dfb5e5ca978986e91725cb24e241"
   },
   "cable-overhead-curl": {
     "videoId": "163612",
@@ -4513,9 +4513,9 @@
       "Brachialis",
       "Brachioradialis"
     ],
-    "file": "163612.mp4",
+    "file": "163612.mov",
     "sourceFile": "16361201-Cable-Overhead-Curl_Upper-Arms.mp4",
-    "sha256": "68153f905a198c5fd713f30068929fa098fb57cb8673c23091e9d194467c0244"
+    "sha256": "9cc32ca31e9ef454bb678792a79a9861562b66198a82de560932cabdcaa8390e"
   },
   "lever-biceps-curl": {
     "videoId": "057512",
@@ -4531,9 +4531,9 @@
     "secondaryMuscles": [
       "Biceps Brachii"
     ],
-    "file": "057512.mp4",
+    "file": "057512.mov",
     "sourceFile": "05751201-Lever-Bicep-Curl_Upper-Arms.mp4",
-    "sha256": "0dddca16f59a96c53ea551fa238661c07b070de544929f87824b9f94ff5ebb4f"
+    "sha256": "3e91ba238bf0a8dd27bcd53b4abde43f27ce3c4f14f0fabb08ac346c72ebad39"
   },
   "dumbbell-spider-curl": {
     "videoId": "993112",
@@ -4545,9 +4545,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "993112.mp4",
+    "file": "993112.mov",
     "sourceFile": "99311201-Dumbbell-Spider-Curl-(male)_Upper-Arms.mp4",
-    "sha256": "50f080446515c19825bd86aec80fcf5cce10c7ff6e038ee6345afa56d7df09e0"
+    "sha256": "76173a40c89da84ee272dffc048b9d460c4307a109dcdd2f67602409c329c04a"
   },
   "dumbbell-hammer-preacher-curl": {
     "videoId": "592112",
@@ -4559,9 +4559,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "592112.mp4",
+    "file": "592112.mov",
     "sourceFile": "59211201-Dumbbell-Hammer-Preacher-Curl_Upper-Arms.mp4",
-    "sha256": "0987d51c4f745b8d2495c05311571a51226d37376bdc13992eb6f63d69392c22"
+    "sha256": "c9e5b1e82a2b139a637862a6ab7231bd8772aa14deebf70a545a07cf2f1adfe6"
   },
   "dumbbell-incline-hammer-curl": {
     "videoId": "032012",
@@ -4578,9 +4578,9 @@
       "Brachialis",
       "Brachioradialis"
     ],
-    "file": "032012.mp4",
+    "file": "032012.mov",
     "sourceFile": "03201201-Dumbbell-Incline-Hammer-Curl_Upper-Arms.mp4",
-    "sha256": "cabb6a8245d0d996d5197e2ff4d704be22027b7f1b36140dc7a9bf6b580875eb"
+    "sha256": "53296da3c82b63421595521476be99a77da3ba10071c2103e67753de0f5c0530"
   },
   "dumbbell-skull-crusher": {
     "videoId": "1043212",
@@ -4592,9 +4592,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1043212.mp4",
+    "file": "1043212.mov",
     "sourceFile": "104321201-Dumbbell-Lying-Triceps-Extension-Skull-Crusher-(V.mp4",
-    "sha256": "e56544a77a4e00979ca0f8b86fcb88d98e024eb3bc0a7fc66eaddb54423b294f"
+    "sha256": "eb9164bcd1a9ead429caf459cb22172f1704a7375e9115dbcdfd96cfd17f34ac"
   },
   "ez-barbell-incline-triceps-extension": {
     "videoId": "044912",
@@ -4608,9 +4608,9 @@
       "Triceps Brachii"
     ],
     "secondaryMuscles": [],
-    "file": "044912.mp4",
+    "file": "044912.mov",
     "sourceFile": "04491201-EZ-Barbell-Incline-Triceps-Extension_Upper-Arms-FI.mp4",
-    "sha256": "10f1326a949849711f1f0de5c17af6d46cbad927763a3045386c75f4aa194596"
+    "sha256": "a1107f8096b0dae00fd57134648d54cf592a7546af3f064d7c5a99e1ef2a0e6f"
   },
   "ez-barbell-decline-triceps-extension": {
     "videoId": "218612",
@@ -4624,9 +4624,9 @@
       "Triceps Brachii"
     ],
     "secondaryMuscles": [],
-    "file": "218612.mp4",
+    "file": "218612.mov",
     "sourceFile": "21861201-EZ-Barbell-Decline-Triceps-Extension_Upper-Arms.mp4",
-    "sha256": "46a5ce0101319b4a5a938272672eccf78f041c58b6c05a5e9548d17606750e84"
+    "sha256": "80b9ed6feb5f7a768133ac963f6955d0fbd096524335746583cfb5e84bb8158b"
   },
   "barbell-jm-bench-press": {
     "videoId": "005212",
@@ -4643,9 +4643,9 @@
       "Deltoid Anterior",
       "Pectoralis Major Sternal Head"
     ],
-    "file": "005212.mp4",
+    "file": "005212.mov",
     "sourceFile": "00521201-Barbell-JM-Bench-Press_Upper-Arms-FIX.mp4",
-    "sha256": "a9e8dc59eb4d0e6fab2d5abb80baabc0e8a81596adc89c806193ba05dc64d6ca"
+    "sha256": "b38b0f421df90af9e8cfcd688e8738659e0c045ee44d9db09e45b84ba059aaba"
   },
   "dumbbell-tate-press": {
     "videoId": "043612",
@@ -4661,9 +4661,9 @@
     "secondaryMuscles": [
       "Deltoid Anterior"
     ],
-    "file": "043612.mp4",
+    "file": "043612.mov",
     "sourceFile": "04361201-Dumbbell-Tate-Press_Triceps.mp4",
-    "sha256": "a37d9c5def876e7d17fb79e6f9fe8c66bc2b34943aaed43900df6f3198b214d8"
+    "sha256": "6653b1f10f623d62a8a2a5bf1548d42cd1d17ccf326a3e1307d60769a30a8cce"
   },
   "cable-standing-high-cross-triceps-extension": {
     "videoId": "371912",
@@ -4677,9 +4677,9 @@
       "Triceps Brachii"
     ],
     "secondaryMuscles": [],
-    "file": "371912.mp4",
+    "file": "371912.mov",
     "sourceFile": "37191201-Cable-Standing-High-Cross-Triceps-Extension_Upper-.mp4",
-    "sha256": "ef658f80aade5d2d0875437bc36b6bbcc6bde77f0355c4390e2640f6b1ff1567"
+    "sha256": "ed37f033f27dbeac430762f61ec1c26f035fcb2359ba093862b394cfa361a472"
   },
   "cable-single-arm-overhead-triceps-extension": {
     "videoId": "1127912",
@@ -4691,9 +4691,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1127912.mp4",
+    "file": "1127912.mov",
     "sourceFile": "112791201-Cable-Standing-Single-Arm-Overhead-Triceps-Extens.mp4",
-    "sha256": "9d9ba949295838c5b6dc2e5a14c8a50217467f1ee2341d9ae204212d5338f3c1"
+    "sha256": "0b396f101105024e38b34b7f730cef924b12e8e1ff1f469dd8d9e0341dde9fc7"
   },
   "cable-v-bar-triceps-pushdown": {
     "videoId": "024112",
@@ -4707,9 +4707,9 @@
       "Triceps Brachii"
     ],
     "secondaryMuscles": [],
-    "file": "024112.mp4",
+    "file": "024112.mov",
     "sourceFile": "02411201-Cable-Triceps-Pushdown-(V-bar-attachment)_Upper-Ar.mp4",
-    "sha256": "62551feb7e784c5d4f4e05b9d5d42858258806198e5bca345d5f6782652cf670"
+    "sha256": "2f3bcdd0c5e552efaee6d63d91370959aa6e86f176f12d0f9ff7bf65b255c277"
   },
   "cable-kickback": {
     "videoId": "086012",
@@ -4723,9 +4723,9 @@
       "Triceps Brachii"
     ],
     "secondaryMuscles": [],
-    "file": "086012.mp4",
+    "file": "086012.mov",
     "sourceFile": "08601201-Cable-kickback_Upper-arms.mp4",
-    "sha256": "375a2e575a8435bca6374d5baf8d89467cdce838cbfb8f46c82cb57e55480990"
+    "sha256": "3febc7a419df0f77ee0b3b845863323910c0804bea6e38b5ad4e1a1873910795"
   },
   "lever-seated-dip": {
     "videoId": "145112",
@@ -4745,9 +4745,9 @@
       "Pectoralis Major Clavicular Head",
       "Pectoralis Major Sternal Head"
     ],
-    "file": "145112.mp4",
+    "file": "145112.mov",
     "sourceFile": "14511201-Lever-Seated-Dip_Upper-Arms.mp4",
-    "sha256": "91ad7d0b9cc0976d9039f428121ac9a8d7e8a440e3d7fe4e922a43348f763ef2"
+    "sha256": "06125f4acc06e689e02ab6a0ff6c951062d5a3455e46ec62a3dc78cb2728ab45"
   },
   "barbell-low-bar-squat": {
     "videoId": "143512",
@@ -4765,9 +4765,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "143512.mp4",
+    "file": "143512.mov",
     "sourceFile": "14351201-Barbell-Low-Bar-Squat_Thighs-FIX.mp4",
-    "sha256": "24b3a3ff41f3de551f7baf8c4305bd43c262e3fa268e4782c5cc70068c092176"
+    "sha256": "c539787b4af61d33d1c2ca4df9c1ac1befd7c40b2a042fa511289c59c0d2f27b"
   },
   "barbell-box-squat": {
     "videoId": "496212",
@@ -4785,9 +4785,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "496212.mp4",
+    "file": "496212.mov",
     "sourceFile": "49621201-Barbell-Box-Squat_Hips.mp4",
-    "sha256": "5685a39482363f8e351b15b5a3fbecd9b4b08722e5414e0c760b48fc17311a20"
+    "sha256": "84d9514cf1dd024a9239fabbdf024d6ca29b43d978ba05c02a69be0356d6a67f"
   },
   "barbell-pause-full-squat": {
     "videoId": "501612",
@@ -4799,9 +4799,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "501612.mp4",
+    "file": "501612.mov",
     "sourceFile": "50161201-Barbell-Pause-Full-Squat_Thighs.mp4",
-    "sha256": "ee0bdcf1b4a96a80f8bd0e6a1fb100407dc973105c86e908c9f80198c9a7579b"
+    "sha256": "c12e79159291462cc112a6dda82b3814e9fea4f41f7965d3e1aff5551014ce01"
   },
   "barbell-full-zercher-squat": {
     "videoId": "154512",
@@ -4819,9 +4819,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "154512.mp4",
+    "file": "154512.mov",
     "sourceFile": "15451201-Barbell-full-Zercher-Squat_Thighs.mp4",
-    "sha256": "48d8670a59881dcd455bc77f0ead1bdbef0ef1c6fafaf6cb7b74276e515af145"
+    "sha256": "84bb165fef43843ab3d76b0839237b5fdbc7a7ac6a262b2d28f29a4f8c6677d0"
   },
   "barbell-overhead-squat": {
     "videoId": "006912",
@@ -4839,9 +4839,9 @@
       "Gluteus Maximus",
       "Soleus"
     ],
-    "file": "006912.mp4",
+    "file": "006912.mov",
     "sourceFile": "00691201-Barbell-Overhead-Squat_Thighs-FIX.mp4",
-    "sha256": "f15e7cd726e542f0b56c0f640bdd1358b1775c5ed13e55b4501bf9c0bb7be9f7"
+    "sha256": "068c497668aa9ddc6983b44c6fddcea3962905a7bf979f90634df594f46b0dad"
   },
   "landmine-squat": {
     "videoId": "762612",
@@ -4853,9 +4853,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "762612.mp4",
+    "file": "762612.mov",
     "sourceFile": "76261201-Landmine-Squat-(male)_Thighs.mp4",
-    "sha256": "50efab6b33cc7b6887eb699417d04ac2b802372a1c4c23f519e4045454d71191"
+    "sha256": "6e4ef9934e3ad175aa3023561ac378de68b1f27b7fc615895a6f4f6a999cbff5"
   },
   "dumbbell-goblet-sumo-squat": {
     "videoId": "754712",
@@ -4867,9 +4867,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "754712.mp4",
+    "file": "754712.mov",
     "sourceFile": "75471201-Dumbbell-Goblet-Sumo-Squat-(male)_Thighs.mp4",
-    "sha256": "70eff64314dd6daa02bd88e99bfbf8b3feaf9a2a6986eeb1e423dbb0333d0466"
+    "sha256": "0c2e55af5bf5f74eafe431918cc8beff605971ca371ec6924e9b1fec66a10102"
   },
   "smith-front-squat": {
     "videoId": "159512",
@@ -4881,9 +4881,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "159512.mp4",
+    "file": "159512.mov",
     "sourceFile": "15951201-Smith-Front-Squat_Thighs.mp4",
-    "sha256": "b69fe9558c0a6ed1883b2aaccf4dfef42fee529097ff842b7539db1a4d2958e5"
+    "sha256": "a3a8d0a41816a5d94c54f8f019476082e8eb7a861bf39144d639cb4c01e8c8d8"
   },
   "smith-split-squat": {
     "videoId": "076912",
@@ -4901,9 +4901,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "076912.mp4",
+    "file": "076912.mov",
     "sourceFile": "07691201-Smith-Split-Squat_Thighs.mp4",
-    "sha256": "349e8b7bff18bf7d9062f041b6fdc2782f3459486b8b71618842ad64d6481678"
+    "sha256": "5b6fd215cfedd8703f2defc46d4f7dc7c1dd5dc836192d520ad2488a590fe2d6"
   },
   "smith-rear-lunge": {
     "videoId": "582512",
@@ -4915,9 +4915,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "582512.mp4",
+    "file": "582512.mov",
     "sourceFile": "58251201-Smith-Rear-Lunge-(version-2)-(male)_Thighs.mp4",
-    "sha256": "4a0b21b6726aed63d21d00da0c7b8e1b9f6f889eedd046e3f11b4fcbff6a4ba3"
+    "sha256": "d7e7c137d1708f5cc50b9731c210145fcc20a0ab924a887897823f35ce91cbe7"
   },
   "smith-deficit-bulgarian-split-squat": {
     "videoId": "1156812",
@@ -4929,9 +4929,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1156812.mp4",
+    "file": "1156812.mov",
     "sourceFile": "115681201-Smith-Unilateral-Bulgarian-Split-Squat-from-Defic.mp4",
-    "sha256": "08888444bc31d4e1b6d31b9c107a79e76cd5817b2ce721ef465429f4bd261a51"
+    "sha256": "2e61352301249defebfdf2a832830002fe4192a92aabb675303461af8d88def3"
   },
   "smith-bent-knee-good-morning": {
     "videoId": "074912",
@@ -4948,9 +4948,9 @@
     "secondaryMuscles": [
       "Hamstrings"
     ],
-    "file": "074912.mp4",
+    "file": "074912.mov",
     "sourceFile": "07491201-Smith-Bent-Knee-Good-morning_Hips.mp4",
-    "sha256": "8dfe004bb31970152a4fc8ea1095c8d7aedde70aee89ed9fa558c30e14ceb2a5"
+    "sha256": "c8a17b8cb6d549331d68c4997a319486e95945984dcc0055475a96e1e95d814b"
   },
   "smith-calf-raise": {
     "videoId": "116412",
@@ -4966,9 +4966,9 @@
     "secondaryMuscles": [
       "Soleus"
     ],
-    "file": "116412.mp4",
+    "file": "116412.mov",
     "sourceFile": "11641201-Smith-Calf-Raise-(version-2)_Calves-FIX.mp4",
-    "sha256": "0d7e95f90b291e1ed1d3d92fb932b24f3b3b3df9400625d75c3514e757274b52"
+    "sha256": "7756305e90f00825996aea1a5de38ae0096f59ba314a68ad7a66ec035f53667c"
   },
   "sissy-squat-bodyweight": {
     "videoId": "148912",
@@ -4982,9 +4982,9 @@
       "Quadriceps"
     ],
     "secondaryMuscles": [],
-    "file": "148912.mp4",
+    "file": "148912.mov",
     "sourceFile": "14891201-Sissy-Squat-Bodyweight_Thighs-FIX.mp4",
-    "sha256": "e41a33b4770b14fec0b2969255c211175c1d106dca47a5b9c344070b0079caef"
+    "sha256": "71658782ec6d8ee87fd42a5417fc3f9ade341aa77c1bf9d0cba028dfde76915b"
   },
   "sled-reverse-hack-squat": {
     "videoId": "158312",
@@ -5002,9 +5002,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "158312.mp4",
+    "file": "158312.mov",
     "sourceFile": "15831201-Sled-Reverse-Hack-Squat_Thighs-FIX.mp4",
-    "sha256": "eaf025e0a5156bb79299a42b0a3d362b9a746d90008938a3233d2c2fce120c6c"
+    "sha256": "7ef31b6104b99187ad4db57541998184176fba64eb2fa81aef4bd9e107983e38"
   },
   "heel-elevated-bodyweight-squat": {
     "videoId": "757712",
@@ -5016,9 +5016,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "757712.mp4",
+    "file": "757712.mov",
     "sourceFile": "75771201-Bodyweight-Heel-Elevated-Squat-(male)_Thighs.mp4",
-    "sha256": "290965dab46330dea91e20b09cdcc78c22d37fb1e32ae2c9dd7af60093e36e0a"
+    "sha256": "9731fcc5e907e4dfd8546b38c60fe1cd58c01bc6234e845d24bf1ae63337bcde"
   },
   "dumbbell-elevated-heel-goblet-squat": {
     "videoId": "1057412",
@@ -5030,9 +5030,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1057412.mp4",
+    "file": "1057412.mov",
     "sourceFile": "105741201-Dumbbell-Elevated-Heel-Goblet-Squat_Thighs.mp4",
-    "sha256": "94245f1f7995d50f8b970275e08516dc087b978075410227a0c94cc15f191ea4"
+    "sha256": "19372b938c29a8cbbfe51e96b623f0e10d01370dafddf2319332886289cd727a"
   },
   "cossack-squat": {
     "videoId": "463212",
@@ -5044,9 +5044,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "463212.mp4",
+    "file": "463212.mov",
     "sourceFile": "46321201-Cossack-Squat_Hips.mp4",
-    "sha256": "248941dfbeb6d13041d4c86ae2afbe6c57689b42d35f314193163dc9fffc529d"
+    "sha256": "b9e077e8256368a9b32a0bdd12d3ddc316738264cd9eacb87b3909cc8cee3779"
   },
   "side-lunge": {
     "videoId": "297212",
@@ -5066,9 +5066,9 @@
       "Soleus",
       "Tensor Fasciae Latae"
     ],
-    "file": "297212.mp4",
+    "file": "297212.mov",
     "sourceFile": "29721201-Side-Lunge_Thighs.mp4",
-    "sha256": "434516b7d06583cfe3d7529245ee2116e8f8d108bc6c3a059a4fd03ed96b2084"
+    "sha256": "2017023d2340c312a56590544be3c6db5aded8f5a28c72524ffa2cf88912727f"
   },
   "dumbbell-curtsey-lunge": {
     "videoId": "866412",
@@ -5080,9 +5080,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "866412.mp4",
+    "file": "866412.mov",
     "sourceFile": "86641201-Dumbbell-Curtsey-Lunge-(male)_Thighs.mp4",
-    "sha256": "1c72db6f144ea07ce683ac479f7e606ab61848a95036d09c9ca29866d7240c11"
+    "sha256": "f83c8988d58c46208ff5a914f75abf50c58178c259c3e2afef0dff055a2223a7"
   },
   "dumbbell-deficit-reverse-lunge": {
     "videoId": "732612",
@@ -5094,9 +5094,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "732612.mp4",
+    "file": "732612.mov",
     "sourceFile": "73261201-Dumbbell-Reverse-Lunge-from-Deficit-(male)_Thighs.mp4",
-    "sha256": "a9ef85aa45d43dcd938ecb0236e963c070a44e3d0cc54ad3361903e98aa1224a"
+    "sha256": "d8a683c3f93c9157de054b0fb8c18c673625da7d28c3ba3d1a3b4065db80cf7d"
   },
   "barbell-walking-lunge": {
     "videoId": "582312",
@@ -5108,9 +5108,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "582312.mp4",
+    "file": "582312.mov",
     "sourceFile": "58231201-Barbell-Walking-Lunge_Thighs.mp4",
-    "sha256": "2d0e25fd227f972098bf1de4714324c7dff5d62ca0cff1dac16db208eff0b702"
+    "sha256": "7bc446afdacebb4c12ce823adba7cf66c5406eae7cc010c9831114f3e650d0a6"
   },
   "barbell-step-up": {
     "videoId": "011412",
@@ -5128,9 +5128,9 @@
       "Adductor Magnus",
       "Soleus"
     ],
-    "file": "011412.mp4",
+    "file": "011412.mov",
     "sourceFile": "01141201-Barbell-Step-up_Hips-FIX.mp4",
-    "sha256": "5b75a730132c51ab89dc59e6d236688274b8a889cadb3ec47929ecb9e096f6ba"
+    "sha256": "7f844b19a01c73bffbb9b6d8e33b8e83dadc27b1768c38320f847a9f338144f5"
   },
   "cable-reverse-lunge": {
     "videoId": "1121512",
@@ -5142,9 +5142,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1121512.mp4",
+    "file": "1121512.mov",
     "sourceFile": "112151201-Cable-Reverse-Lunge-(male)_Thighs.mp4",
-    "sha256": "77cb01ebdc55cfba089bd74d9abe04a509fda9e0e4c1ccaf922982e03b8f1b96"
+    "sha256": "379fec77adba1e2bbd3127eef3b5b6d1d282be6ced83f0b12627ec1966ed71a5"
   },
   "cable-lateral-lunge": {
     "videoId": "1125512",
@@ -5156,9 +5156,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1125512.mp4",
+    "file": "1125512.mov",
     "sourceFile": "112551201-Cable-Lateral-Lunge-(VERSION-3)_Hips.mp4",
-    "sha256": "de7dccc3a7c4516970540a9c402459758c6abe77da6dda03c8344a6ce42a632a"
+    "sha256": "8fa584e7a101abb3a414155db246d9aedef079566974128c6cc275134960437f"
   },
   "lever-standing-single-leg-curl": {
     "videoId": "518112",
@@ -5170,9 +5170,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "518112.mp4",
+    "file": "518112.mov",
     "sourceFile": "51811201-Lever-Standing-Single-Leg-Curl-(plate-loaded)_Thig.mp4",
-    "sha256": "400fd7f7004a906e2ac95861084310b0e9e440724f877cfe2506302f45313e5a"
+    "sha256": "7ae5c2395f95d7c262656c2a9ebb9b9097b7ac2547e45bd53c310dbc0615218d"
   },
   "lever-lying-single-leg-curl": {
     "videoId": "159012",
@@ -5190,9 +5190,9 @@
       "Sartorius",
       "Soleus"
     ],
-    "file": "159012.mp4",
+    "file": "159012.mov",
     "sourceFile": "15901201-Lever-Lying-Single-Leg-Curl_Thighs-FIX.mp4",
-    "sha256": "1368c9bcbc1481e59b2c6a9720e7f9c1dabe9e16c2799d045026f07b000b831d"
+    "sha256": "17cdbc09afc0e15a1aa9bdf70d29609375e99c23ce10aaa5e9ccca6859b3b77e"
   },
   "lever-seated-one-leg-curl": {
     "videoId": "158612",
@@ -5210,9 +5210,9 @@
       "Sartorius",
       "Soleus"
     ],
-    "file": "158612.mp4",
+    "file": "158612.mov",
     "sourceFile": "15861201-Lever-Seated-One-Leg-Curl_Thighs.mp4",
-    "sha256": "3b562eb8c7cd4a506fff3c1ae4ff9830e52a3838404f244f4a96b17755ec42d0"
+    "sha256": "660b7817b9b3442ffd3a94bf5634be9881069d247ed7dc97ec133509bf961d22"
   },
   "dumbbell-lying-leg-curl": {
     "videoId": "616112",
@@ -5224,9 +5224,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "616112.mp4",
+    "file": "616112.mov",
     "sourceFile": "61611201-Dumbbell-Lying-Leg-Curl-(male)_Thighs.mp4",
-    "sha256": "e6847271e682896f943a2574d9b6d76ec98e126e032de8e0aa6b18fa332933e9"
+    "sha256": "486166b684d8fe8973d545673ed97928d97403b1388d3863ab01ed3a9eb0041c"
   },
   "cable-lying-single-leg-curl": {
     "videoId": "980412",
@@ -5238,9 +5238,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "980412.mp4",
+    "file": "980412.mov",
     "sourceFile": "98041201-Cable-Lying-Single-Leg-Curl-(male)_Thighs.mp4",
-    "sha256": "d8c445726c22eba55997949e2a8856df993b8d597528e96cd3ac7ad841095a8a"
+    "sha256": "dd913798722eaee1fe6256704f91ff9c6f58e1a3337bb7a45de6c4a274bef716"
   },
   "bodyweight-frog-hip-thrust": {
     "videoId": "646412",
@@ -5252,9 +5252,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "646412.mp4",
+    "file": "646412.mov",
     "sourceFile": "64641201-Bodyweight-Frog-Hip-Thrust-(male)_Hips.mp4",
-    "sha256": "72c58fbf9789c2ee47da1d24f65ccaf3fa14738c87dbea6235380c8a8665ed4a"
+    "sha256": "bf5ea944cf474c2b5ae6618bcc6356367abdddab9f9eba2da970abe2adf4c103"
   },
   "single-leg-hip-thrust": {
     "videoId": "207112",
@@ -5271,9 +5271,9 @@
       "Hamstrings",
       "Quadriceps"
     ],
-    "file": "207112.mp4",
+    "file": "207112.mov",
     "sourceFile": "20711201-Single-Leg-_Hip-Thrusts_Hips.mp4",
-    "sha256": "c38c27eec880ba9d90cecdc3b23619fd9800d6ddb6163b2bd577b08ea87a5154"
+    "sha256": "d99fa0b03e19731a496dbade3aaa37e5eb1717a27e9bfbbb1a3b41cd6ee883ec"
   },
   "barbell-kas-glute-bridge": {
     "videoId": "1083212",
@@ -5285,9 +5285,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1083212.mp4",
+    "file": "1083212.mov",
     "sourceFile": "108321201-Barbell-KAS-Glute-Bridge-(male)_Hips.mp4",
-    "sha256": "08c5521442bc825c40ff39456413bdf632b66faa95f6cb76c4e3d286432d347f"
+    "sha256": "a3c1fc01db564a37fa9705ba2ba08d60fa21782f9497f41a11aeb3ce7de7af58"
   },
   "cable-hip-abduction": {
     "videoId": "304812",
@@ -5303,9 +5303,9 @@
     "secondaryMuscles": [
       "Tensor Fasciae Latae"
     ],
-    "file": "304812.mp4",
+    "file": "304812.mov",
     "sourceFile": "30481201-Cable-hip-abduction-(version-2)-(male)_Hips.mp4",
-    "sha256": "47d66b3ffbb0f6dfcf4e49a75626bfe42ac589948eeab58264f546cef6b994e6"
+    "sha256": "16c3c7a513bbb93e5bb96cf3e79d9c4667ecef5f573289739a3fbb58031b7dcb"
   },
   "reverse-hyperextension-on-box": {
     "videoId": "1034212",
@@ -5317,9 +5317,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1034212.mp4",
+    "file": "1034212.mov",
     "sourceFile": "103421201-Reverse-Hyperextension-on-Box_Hips.mp4",
-    "sha256": "8f417bf2669240eecfec61ccbb198d5273bfddc0f0efbdf07c0a1cb2872e8484"
+    "sha256": "251e5e963e1bfdc6fd076075423a6c442e8d219155f8a1a79847968657b8e34a"
   },
   "handstand-push-up": {
     "videoId": "047112",
@@ -5340,9 +5340,9 @@
       "Serratus Anterior",
       "Teres Major"
     ],
-    "file": "047112.mp4",
+    "file": "047112.mov",
     "sourceFile": "04711201-Handstand-Push-Up_Shoulders.mp4",
-    "sha256": "f05ed061555448d7dc6132d75ef73dad0de1b37facb5c5d828ed0ffe7785d218"
+    "sha256": "e51ef7977383ce64f2d34cfc98902af6558e1aef32fb5dca72042a99b45e99f7"
   },
   "ring-dip": {
     "videoId": "067712",
@@ -5360,9 +5360,9 @@
       "Pectoralis Major Clavicular Head",
       "Pectoralis Major Sternal Head"
     ],
-    "file": "067712.mp4",
+    "file": "067712.mov",
     "sourceFile": "06771201-Ring-Dip_Upper-Arms.mp4",
-    "sha256": "7f78a570ade0f0fb26a6deb23886115c3e59202d7ec306999a26fe45b7f0ab97"
+    "sha256": "aa9b74b66852e4c93b34733e94d32c142bd2658ec72afc576758a706a6d5c90d"
   },
   "ring-incline-push-up": {
     "videoId": "786912",
@@ -5374,9 +5374,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "786912.mp4",
+    "file": "786912.mov",
     "sourceFile": "78691201-Ring-Incline-Push-up-(male)_Chest.mp4",
-    "sha256": "f0752d432c424b16beaf5cb8a232a57762e94bd5f6734e33ab894afa02ce3fb6"
+    "sha256": "a2d0aa49a5082dd3990785fd1e5b008bb630e47bea68b09c2eaafc7e7991b84a"
   },
   "bench-dip": {
     "videoId": "012912",
@@ -5395,9 +5395,9 @@
       "Levator Scapulae",
       "Pectoralis Major Sternal Head"
     ],
-    "file": "012912.mp4",
+    "file": "012912.mov",
     "sourceFile": "01291201-Bench-Dip-(knees-bent)_Upper-Arms.mp4",
-    "sha256": "4ec9b7d8a9b435be304facb1b9788ee8376d40d68f4df4522b68e81beaa5184b"
+    "sha256": "8eaf20a07a3bb8234cb3d2890fa3300fe0bb6c320db95b7bd09cca1735d3538b"
   },
   "resistance-band-standing-chest-press": {
     "videoId": "860612",
@@ -5409,9 +5409,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "860612.mp4",
+    "file": "860612.mov",
     "sourceFile": "86061201-Resistance-Band-Standing-Chest-Press-(male)_Chest.mp4",
-    "sha256": "3e176374aa4500ba0e09139c73a64c348c25fcd4b67520f32ded1d111441fcd3"
+    "sha256": "69d5899943e204ca76210eeebb720a01458059d14bc9ba90c34e08336b4cd781"
   },
   "resistance-band-seated-row": {
     "videoId": "835612",
@@ -5423,9 +5423,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "835612.mp4",
+    "file": "835612.mov",
     "sourceFile": "83561201-Resistance-Band-Seated-Row-(male)_Back.mp4",
-    "sha256": "34cbf4c16f384e386bf15e0a12f9d65c8edeee669c6865e85bc78824ab958c0a"
+    "sha256": "b94bf785bec9ddb1b74cf0b66b9bf17bf7dda7e8eb5f0141839d2bd59715a4d1"
   },
   "resistance-band-lat-pulldown": {
     "videoId": "1136712",
@@ -5437,9 +5437,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "1136712.mp4",
+    "file": "1136712.mov",
     "sourceFile": "113671201-Resistance-Band-Standing-Lat-Pulldown-(male)_Back.mp4",
-    "sha256": "15b4312f57729240f235ab3db1c58b6f7f3486d4c6bc19b2f8faad152b1e9cbb"
+    "sha256": "4861bf3440102c12898ae2e697a99fb6f751dd52277728fe144ece2cb0268a96"
   },
   "resistance-band-face-pull": {
     "videoId": "560712",
@@ -5461,9 +5461,9 @@
       "Trapezius Lower Fibers",
       "Trapezius Middle Fibers"
     ],
-    "file": "560712.mp4",
+    "file": "560712.mov",
     "sourceFile": "56071201-Band-Face-Pull-(male)_Shoulders.mp4",
-    "sha256": "7563d2fec31096e99c7b3f102065db8ee6a88ce88c8a8058a8bf4f59aaba4e25"
+    "sha256": "83c92491ee5a37e9aa17da52c6dd41f51a61195d7aef02a4ac70c8b7bc28c4e8"
   },
   "band-biceps-curl": {
     "videoId": "406312",
@@ -5475,9 +5475,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "406312.mp4",
+    "file": "406312.mov",
     "sourceFile": "40631201-Band-Biceps-Curl_Upper-Arms.mp4",
-    "sha256": "53e28c049ed1984f4a7f8f41a826ae0600d6221a79beaf075a5e1af2343cd5f9"
+    "sha256": "362647b6f956222de9c92fdf9bc29d4e4de1d3ea333cb0d9dc80a96bd22227c4"
   },
   "resistance-band-triceps-pushdown": {
     "videoId": "468812",
@@ -5491,9 +5491,9 @@
       "Triceps Brachii"
     ],
     "secondaryMuscles": [],
-    "file": "468812.mp4",
+    "file": "468812.mov",
     "sourceFile": "46881201-Resistance-Band-Triceps-Pushdown_Upper-Arms.mp4",
-    "sha256": "44e673383c85275b5b7325fb9899089778bf11507949c4cc72b0efd03d300535"
+    "sha256": "b1f9b51532310828495a243c9f636bf9068d4c90cbb57d6294aa6de1dbb8e85a"
   },
   "band-lateral-raise": {
     "videoId": "150812",
@@ -5510,9 +5510,9 @@
       "Deltoid Anterior",
       "Serratus Anterior"
     ],
-    "file": "150812.mp4",
+    "file": "150812.mov",
     "sourceFile": "15081201-Band-Lateral-Raise-(Version-2)_Shoulders.mp4",
-    "sha256": "fad131aac0344db49bb58f96a375ca19656a7392a9edd2b2145e2855eb4d8fec"
+    "sha256": "dfd733225670e93646eb64ea3d6a68aa2b5bbedb52c21d4c703eab737619e9f7"
   },
   "landmine-180": {
     "videoId": "056212",
@@ -5528,9 +5528,9 @@
     "secondaryMuscles": [
       "Rectus Abdominis"
     ],
-    "file": "056212.mp4",
+    "file": "056212.mov",
     "sourceFile": "05621201-Landmine-180_waist.mp4",
-    "sha256": "af3ca8b418ef1728a9f2e868aaf4243134095310b3cdde4726c68b6784baf79d"
+    "sha256": "f1eca2de8bcae0f8c68b81d98abfc402fac023d7e130b163c18118b7fb56715a"
   },
   "hanging-toes-to-bar": {
     "videoId": "389112",
@@ -5550,9 +5550,9 @@
       "Sartorius",
       "Tensor Fasciae Latae"
     ],
-    "file": "389112.mp4",
+    "file": "389112.mov",
     "sourceFile": "38911201-Hanging-Toes-to-Bar_Waist.mp4",
-    "sha256": "aaec7685a92a3233904cdd5018e68521a242f70f22e262582bef47f33484d395"
+    "sha256": "bcf02b0cf5f6fd83c8fcb22d78f8fda6c72f4823c91ac8add01e1908ccbf70e9"
   },
   "battling-ropes-high-waves": {
     "videoId": "337912",
@@ -5564,9 +5564,9 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "337912.mp4",
+    "file": "337912.mov",
     "sourceFile": "33791201-Battling-Ropes-High-Waves_Plyometrics.mp4",
-    "sha256": "cb93d77253b5c72753ce6073bffce996b463da501ec214cbb1a8f7d60ba5b1b8"
+    "sha256": "13b66b1a9ec6425bbb4c635cbf65fb45a194fb733311debbdf5106b8eac0507d"
   },
   "power-sled-push": {
     "videoId": "442812",
@@ -5578,8 +5578,8 @@
     "gender": "Male",
     "targetMuscles": [],
     "secondaryMuscles": [],
-    "file": "442812.mp4",
+    "file": "442812.mov",
     "sourceFile": "44281201-Power-Sled-Push-(male).mp4",
-    "sha256": "caeec36096ff73a8dd569e7764921165293bd3d053e3a4a6ba3bcb5c1a93bf62"
+    "sha256": "8b86f7559ac01f7593c86fcb9df9e60c376eb0844e88d1e76d022ebae84e159f"
   }
 }

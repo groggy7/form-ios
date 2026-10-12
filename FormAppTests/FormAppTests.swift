@@ -11388,7 +11388,9 @@ final class AppThemesTests: XCTestCase {
                 XCTAssertEqual(AppColors.progressionPaywallSurface, theme.surface)
                 XCTAssertEqual(AppColors.progressionPaywallAccent, theme.accent)
             }
-            XCTAssertEqual(AppColors.exerciseVideoSurface, Color(hex: 0x161616))
+            let expectedMedia: UInt32 = ["espresso": 0x1B130F, "stealth": 0x101015, "cobalt": 0x08131F,
+                "crimson": 0x1B0E13, "amethyst": 0x140E1E][theme.id] ?? 0x051214
+            XCTAssertEqual(AppColors.exerciseVideoSurface, Color(hex: expectedMedia))
         }
     }
 
@@ -11869,4 +11871,73 @@ final class ThemeCoverageSnapshots: XCTestCase {
         }
     }
 
+}
+
+final class ExerciseAlphaMediaTests: XCTestCase {
+    func testAllExerciseMoviesHaveNativeAlpha() async throws {
+        XCTAssertEqual(ExerciseVideoCatalog.entries.count, 300)
+        for id in ExerciseVideoCatalog.entries.keys.sorted() {
+            let asset = AVURLAsset(url: try XCTUnwrap(ExerciseVideoCatalog.url(for: id)))
+            let tracks = try await asset.loadTracks(withMediaType: .video)
+            let track = try XCTUnwrap(tracks.first, id)
+            let characteristics = try await track.load(.mediaCharacteristics)
+            XCTAssertTrue(characteristics.contains(.containsAlphaChannel), id)
+            let size = try await track.load(.naturalSize)
+            XCTAssertEqual(size, CGSize(width: 960, height: 540), id)
+        }
+    }
+
+    @MainActor
+    func testNativeAlphaBackgroundsSwitchWithoutReplacingPlayers() async throws {
+        let savedTheme = ThemeManager.shared.currentTheme.id
+        let previousKey = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows).first(where: \.isKeyWindow)
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
+        let window = UIWindow(windowScene: scene)
+        window.frame = scene.coordinateSpace.bounds
+        let host = UIHostingController(rootView: AnyView(Color.clear))
+        window.rootViewController = host
+        window.makeKeyAndVisible()
+        defer { window.isHidden = true; previousKey?.makeKey(); ThemeManager.shared.setThemeId(savedTheme) }
+        let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        func player(_ view: UIView) -> ExercisePlayerView? {
+            if let view = view as? ExercisePlayerView { return view }
+            for child in view.subviews { if let result = player(child) { return result } }
+            return nil
+        }
+        for id in ["barbell-bench-press", "barbell-back-squat", "push-ups", "face-pull", "dumbbell-lateral-raise", "ab-wheel-rollout"] {
+            host.rootView = AnyView(ExerciseDetailVideo(exerciseId: id).frame(width: 320)
+                .environment(\.scenePhase, .active)
+                .clipShape(RoundedRectangle(cornerRadius: 14))
+                .frame(maxWidth: .infinity, maxHeight: .infinity).background(Color(hex: 0x090C0F)))
+            var current: ExercisePlayerView?
+            for _ in 0..<100 {
+                window.layoutIfNeeded(); current = player(host.view)
+                if current?.readyForDisplay == true { break }
+                try await Task.sleep(nanoseconds: 50_000_000)
+            }
+            let retained = try XCTUnwrap(current, id)
+            XCTAssertTrue(retained.readyForDisplay, id)
+            for theme in AppThemes.all {
+                ThemeManager.shared.setThemeId(theme.id)
+                try await Task.sleep(nanoseconds: 250_000_000)
+                XCTAssertTrue(player(host.view) === retained, "Theme switch recreated player: \(id)")
+                XCTAssertEqual(retained.playbackRate, UIAccessibility.isReduceMotionEnabled ? 0 : 1.2, accuracy: 0.01)
+                let token = UUID().uuidString
+                let bounds = retained.convert(retained.bounds, to: nil)
+                let request: [String: Any] = ["token": token, "exercise": id, "theme": theme.id,
+                    "bounds": [bounds.minX,bounds.minY,bounds.width,bounds.height]]
+                try JSONSerialization.data(withJSONObject: request).write(
+                    to: directory.appendingPathComponent("alpha-capture-request.json"), options: .atomic)
+                if FileManager.default.fileExists(atPath: directory.appendingPathComponent("alpha-capture-enabled").path) {
+                    let ack = directory.appendingPathComponent("alpha-capture-ack-" + token)
+                    for _ in 0..<80 {
+                        if FileManager.default.fileExists(atPath: ack.path) { break }
+                        try await Task.sleep(nanoseconds: 50_000_000)
+                    }
+                    XCTAssertTrue(FileManager.default.fileExists(atPath: ack.path), "Missing native capture: \(id) \(theme.id)")
+                }
+            }
+        }
+    }
 }

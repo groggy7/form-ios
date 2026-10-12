@@ -26,17 +26,8 @@ public enum AppColors {
     public static let progressionRuleHold = ProgressionRuleColors(accent: Color(hex: 0xFFA91F), surface: Color(hex: 0x231C16), iconSurface: Color(hex: 0x382614))
     public static let progressionRuleReview = ProgressionRuleColors(accent: Color(hex: 0xB176FF), surface: Color(hex: 0x1A1A2C), iconSurface: Color(hex: 0x23203A))
 
-    public static let exerciseVideoSurface = Color(hex: 0x161616)
-    public static let exerciseThumbnailSurface = EllipticalGradient(
-        colors: [
-            Color(hex: 0x383838),
-            Color(hex: 0x252525),
-            Color(hex: 0x161616)
-        ],
-        center: .center,
-        startRadiusFraction: 0,
-        endRadiusFraction: 0.75
-    )
+    public static var exerciseVideoSurface: Color { ExerciseBackdropStyle.perimeter(for: ThemeManager.shared.currentTheme.id) }
+    public static var exerciseThumbnailSurface: Color { exerciseVideoSurface }
     public static var text: Color { ThemeManager.shared.currentTheme.text }
     public static var secondaryText: Color { ThemeManager.shared.currentTheme.secondaryText }
     public static var muted: Color { ThemeManager.shared.currentTheme.muted }
