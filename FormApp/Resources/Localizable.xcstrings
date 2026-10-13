@@ -11435,31 +11435,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Personalize Forced Rep with handcrafted themes designed for focus and OLED displays."
+            "value": "Handcrafted palettes designed for focus and OLED displays."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Forced Rep uygulamasını odaklanma ve OLED ekranlar için tasarlanmış özel temalarla kişiselleştir."
+            "value": "Odaklanma ve OLED ekranlar için özel paletler."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Personalisiere Forced Rep mit handgefertigten Themes, entwickelt für Fokus und OLED-Displays."
+            "value": "Handgefertigte Themes für Fokus und OLED-Displays."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Personnalisez Forced Rep avec des thèmes conçus pour la concentration et les écrans OLED."
+            "value": "Des thèmes exclusifs conçus pour la concentration et l'OLED."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Personaliza Forced Rep con temas exclusivos diseñados para la concentración y pantallas OLED."
+            "value": "Temas exclusivos diseñados para la concentración y OLED."
           }
         }
       }
@@ -11505,31 +11505,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bespoke color palettes"
+            "value": "Bespoke palettes"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Özel Renk Paletleri"
+            "value": "Özel paletler"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Maßgeschneiderte Farbpaletten"
+            "value": "Individuelle Paletten"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Palettes de couleurs sur mesure"
+            "value": "Palettes sur mesure"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Paletas de color a medida"
+            "value": "Paletas exclusivas"
           }
         }
       }
@@ -11540,31 +11540,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Switch between Espresso, Monochrome Stealth, Midnight Cobalt, Alpine Forest, and more."
+            "value": "Switch between Cobalt, Espresso, Alpine, and Stealth."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Espresso, Monokrom Stealth, Gece Yarısı Kobalt, Alpin Orman ve daha fazlası arasında geçiş yap."
+            "value": "Kobalt, Espresso, Alpin ve Stealth arasında geçiş yap."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wechsle zwischen Espresso, Monochrome Stealth, Mitternachts-Kobalt, Alpinwald und mehr."
+            "value": "Wähle zwischen Kobalt, Espresso, Alpin und Stealth."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Basculez entre Espresso, Monochrome Stealth, Cobalt Minuit, Forêt Alpine et plus encore."
+            "value": "Choisissez entre Cobalt, Espresso, Alpin et Stealth."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alterna entre Espresso, Monocromo Stealth, Cobalto Medianoche, Bosque Alpino y más."
+            "value": "Elige entre Cobalto, Espresso, Alpino y Stealth."
           }
         }
       }
@@ -11581,25 +11581,25 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yüksek Kontrast ve OLED Siyahı"
+            "value": "Yüksek kontrast ve OLED"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hoher Kontrast & OLED-Schwarz"
+            "value": "Hoher Kontrast & OLED"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Contraste élevé et noir OLED"
+            "value": "Contraste élevé et OLED"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alto contraste y negro OLED"
+            "value": "Alto contraste y OLED"
           }
         }
       }
@@ -11610,31 +11610,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Engineered for deep black levels, reduced glare in the gym, and clear visual hierarchy."
+            "value": "True blacks and reduced glare under gym lighting."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Derin siyah seviyeleri, salonda daha az parlama ve net görsel hiyerarşi için geliştirildi."
+            "value": "Gerçek siyah tonları ve salonda daha az parlama."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Optimiert für echtes Schwarz, reduzierte Blendung im Gym und klare Hierarchie."
+            "value": "Echtes Schwarz und weniger Blendung im Gym."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Conçu pour des noirs profonds, moins de reflets à la salle et une hiérarchie visuelle claire."
+            "value": "Noirs profonds et reflets réduits à l'entraînement."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Diseñado para negros puros, menos reflejos en el gimnasio y una jerarquía nítida."
+            "value": "Negros puros y menos reflejos en el gimnasio."
           }
         }
       }
@@ -11651,25 +11651,25 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Uygulama Genelinde Uyum"
+            "value": "Uygulama genelinde uyum"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "App-weite nahtlose Anpassung"
+            "value": "Nahtlose Anpassung"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cohérence dans toute l'application"
+            "value": "Cohérence parfaite"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Acabado uniforme en toda la app"
+            "value": "Acabado uniforme"
           }
         }
       }
@@ -11680,31 +11680,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Every screen, workout timer, heatmap, and analytics view adapts cleanly in real time."
+            "value": "Timers, heatmaps, and workout logs adapt in real time."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tüm ekranlar, antrenman sayacı, ısı haritası ve analizler anında uyum sağlar."
+            "value": "Sayaçlar, ısı haritaları ve analizler anında uyarlanır."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Jede Ansicht, jeder Pausen-Timer, jede Heatmap und Analyse passt sich sofort an."
+            "value": "Timer, Heatmaps und Analysen passen sich sofort an."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chaque écran, minuteur de repos, carte thermique et analyse s'adapte en temps réel."
+            "value": "Minuteurs, cartes thermiques et analyses en temps réel."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cada pantalla, temporizador, mapa de calor y análisis se adapta en tiempo real."
+            "value": "Temporizadores, mapas de calor y análisis en tiempo real."
           }
         }
       }
