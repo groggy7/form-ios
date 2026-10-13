@@ -192,6 +192,7 @@ public struct SettingsView: View {
                                     .foregroundStyle(AppColors.muted)
                             }
                             .padding(14)
+                            .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
                         .accessibilityIdentifier("settings-theme-row")
@@ -239,7 +240,9 @@ public struct SettingsView: View {
                                         .foregroundStyle(AppColors.muted)
                                 }
                                 .padding(14)
+                                .contentShape(Rectangle())
                             }
+                            .buttonStyle(.plain)
                             .accessibilityIdentifier("settings-cloud-backup-row")
 
                             Divider().background(AppColors.border)
@@ -261,7 +264,9 @@ public struct SettingsView: View {
                                         .foregroundStyle(AppColors.muted)
                                 }
                                 .padding(14)
+                                .contentShape(Rectangle())
                             }
+                            .buttonStyle(.plain)
                             .accessibilityIdentifier("settings-import-export-row")
                         }
                     }
@@ -312,7 +317,9 @@ public struct SettingsView: View {
                                         .foregroundStyle(AppColors.muted)
                                 }
                                 .padding(14)
+                                .contentShape(Rectangle())
                             }
+                            .buttonStyle(.plain)
                         }
 
                         Divider().background(AppColors.border)
@@ -332,7 +339,9 @@ public struct SettingsView: View {
                                     .foregroundStyle(AppColors.muted)
                             }
                             .padding(14)
+                            .contentShape(Rectangle())
                         }
+                        .buttonStyle(.plain)
 
                         Divider().background(AppColors.border)
 
@@ -351,7 +360,9 @@ public struct SettingsView: View {
                                     .foregroundStyle(AppColors.muted)
                             }
                             .padding(14)
+                            .contentShape(Rectangle())
                         }
+                        .buttonStyle(.plain)
 
                         Divider().background(AppColors.border)
 
