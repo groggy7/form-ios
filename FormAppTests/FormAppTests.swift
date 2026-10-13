@@ -4232,17 +4232,8 @@ final class FormAppTests: XCTestCase {
     }
 
     func testProgramExerciseFixedSetsAndRepTargetModificationPersists() throws {
-        let defaults = UserDefaults.standard
-        let domain = try XCTUnwrap(Bundle.main.bundleIdentifier)
-        let previousPreferences = defaults.persistentDomain(forName: domain) ?? [:]
-        let store = AppStore.shared
-        let previousState = store.state
-        let previousSession = store.activeSession
-        defer {
-            store.state = previousState
-            store.activeSession = previousSession
-            defaults.setPersistentDomain(previousPreferences, forName: domain)
-        }
+        let persistence = AppStatePersistence(inMemory: true)
+        let store = AppStore(persistence: persistence)
         var program = Program(id: "program-edit-fixture", name: "Program edit fixture", workouts: [
             Workout(id: "workout-edit-fixture", day: 1, title: "Upper", exercises: [
                 Exercise(name: "Barbell Bench Press", sets: 3)
