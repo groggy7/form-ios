@@ -838,7 +838,11 @@ public final class AppStore: ObservableObject {
 
     public func addProgram(_ program: Program) {
         var newState = state
-        newState.programs.append(program)
+        if let idx = newState.programs.firstIndex(where: { $0.id == program.id }) {
+            newState.programs[idx] = program
+        } else {
+            newState.programs.append(program)
+        }
         newState.activeProgramId = program.id
         newState = refreshCalendarState(newState)
         saveState(newState)
@@ -1055,14 +1059,115 @@ public final class AppStore: ObservableObject {
         public var format: String?
         public var schemaVersion: Int?
         public var program: Program
+
+        public init(format: String? = "form.program", schemaVersion: Int? = 4, program: Program) {
+            self.format = format
+            self.schemaVersion = schemaVersion
+            self.program = program
+        }
+    }
+
+    public enum ProgramImportError: LocalizedError {
+        case fileTooLarge
+        case notAnObject
+        case fullBackup
+        case invalidFormat(String)
+        case unsupportedVersion(Int)
+        case missingProgram
+        case invalidProgramName
+        case invalidWorkoutDays
+        case duplicateWorkoutDays
+        case duplicateWorkoutIds
+
+        public var errorDescription: String? {
+            switch self {
+            case .fileTooLarge:
+                return "Program file is too large (maximum 5MB)."
+            case .notAnObject:
+                return "The selected file must be a JSON object."
+            case .fullBackup:
+                return "This is a full backup. Use Restore backup in Settings, not Import program."
+            case .invalidFormat(let fmt):
+                return "Invalid format \"\(fmt)\". Expected \"form.program\"."
+            case .unsupportedVersion(let v):
+                return "Unsupported program schemaVersion: \(v). Supported versions are 1–4."
+            case .missingProgram:
+                return "File does not contain a program."
+            case .invalidProgramName:
+                return "Program name must be non-blank."
+            case .invalidWorkoutDays:
+                return "Workout days must be weekdays 1 to 7 (Monday = 1)."
+            case .duplicateWorkoutDays:
+                return "Only one workout per weekday is supported."
+            case .duplicateWorkoutIds:
+                return "Workouts within a program must have unique IDs."
+            }
+        }
     }
 
     public static func decodeProgram(from data: Data) throws -> Program {
-        let decoder = JSONDecoder()
-        if let envelope = try? decoder.decode(ProgramFileEnvelope.self, from: data) {
-            return envelope.program
+        guard data.count <= 5_000_000 else {
+            throw ProgramImportError.fileTooLarge
         }
-        return try decoder.decode(Program.self, from: data)
+
+        guard let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
+              let dict = jsonObject as? [String: Any] else {
+            throw ProgramImportError.notAnObject
+        }
+
+        // Full backup check
+        if dict["programs"] != nil || dict["backup"] != nil || dict["history"] != nil {
+            throw ProgramImportError.fullBackup
+        }
+
+        let decoder = JSONDecoder()
+        let program: Program
+
+        if let format = dict["format"] as? String {
+            guard format == "form.program" else {
+                throw ProgramImportError.invalidFormat(format)
+            }
+            if let version = dict["schemaVersion"] as? Int {
+                guard version >= 1 && version <= 4 else {
+                    throw ProgramImportError.unsupportedVersion(version)
+                }
+            } else {
+                throw ProgramImportError.unsupportedVersion(0)
+            }
+            guard let envelope = try? decoder.decode(ProgramFileEnvelope.self, from: data) else {
+                throw ProgramImportError.missingProgram
+            }
+            program = envelope.program
+        } else if let envelope = try? decoder.decode(ProgramFileEnvelope.self, from: data), envelope.format == "form.program" {
+            program = envelope.program
+        } else if let rawProgram = try? decoder.decode(Program.self, from: data) {
+            guard dict["name"] != nil && dict["workouts"] != nil else {
+                throw ProgramImportError.missingProgram
+            }
+            program = rawProgram
+        } else {
+            throw ProgramImportError.missingProgram
+        }
+
+        guard !program.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            throw ProgramImportError.invalidProgramName
+        }
+
+        var usedDays = Set<Int>()
+        var usedWorkoutIds = Set<String>()
+        for workout in program.workouts {
+            guard workout.day >= 1 && workout.day <= 7 else {
+                throw ProgramImportError.invalidWorkoutDays
+            }
+            guard usedDays.insert(workout.day).inserted else {
+                throw ProgramImportError.duplicateWorkoutDays
+            }
+            guard usedWorkoutIds.insert(workout.id).inserted else {
+                throw ProgramImportError.duplicateWorkoutIds
+            }
+        }
+
+        return program
     }
 
     public func importProgram(jsonData: Data) throws -> Program {

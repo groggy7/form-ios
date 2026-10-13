@@ -1772,7 +1772,7 @@ final class FormAppTests: XCTestCase {
             print("Successfully wrote snapshot to \(path)")
         }
 
-        XCTAssertEqual(LanguageManager.t("programs.import"), "Import JSON")
+        XCTAssertEqual(LanguageManager.t("programs.import"), "Import program")
         XCTAssertEqual(LanguageManager.t("programs.apply"), "Apply")
         XCTAssertEqual(LanguageManager.t("programs.applied"), "Applied")
         XCTAssertEqual(LanguageManager.t("modal.program.titleEdit"), "Edit program")
@@ -12170,5 +12170,147 @@ final class AuditSearchPerformanceTests: XCTestCase {
         attachment.name = "search-normalization-baseline"
         attachment.lifetime = .keepAlways
         add(attachment)
+    }
+
+    func testDecodeProgramValidEnvelope() throws {
+        let json = """
+        {
+          "format": "form.program",
+          "schemaVersion": 4,
+          "program": {
+            "id": "test-prog",
+            "name": "Test Program",
+            "description": "Test description",
+            "workouts": [
+              {
+                "id": "w1",
+                "day": 1,
+                "title": "Monday Workout",
+                "exercises": []
+              }
+            ]
+          }
+        }
+        """
+        let program = try AppStore.decodeProgram(from: Data(json.utf8))
+        XCTAssertEqual(program.id, "test-prog")
+        XCTAssertEqual(program.name, "Test Program")
+        XCTAssertEqual(program.workouts.count, 1)
+        XCTAssertEqual(program.workouts[0].day, 1)
+    }
+
+    func testDecodeProgramRejectsFullBackup() {
+        let json = """
+        {
+          "schemaVersion": 3,
+          "programs": [],
+          "history": []
+        }
+        """
+        XCTAssertThrowsError(try AppStore.decodeProgram(from: Data(json.utf8))) { error in
+            guard case AppStore.ProgramImportError.fullBackup = error else {
+                XCTFail("Expected fullBackup error, got: \(error)")
+                return
+            }
+        }
+    }
+
+    func testDecodeProgramRejectsInvalidFormat() {
+        let json = """
+        {
+          "format": "other.format",
+          "schemaVersion": 4,
+          "program": { "id": "p1", "name": "P1", "workouts": [] }
+        }
+        """
+        XCTAssertThrowsError(try AppStore.decodeProgram(from: Data(json.utf8))) { error in
+            guard case AppStore.ProgramImportError.invalidFormat(let fmt) = error else {
+                XCTFail("Expected invalidFormat error, got: \(error)")
+                return
+            }
+            XCTAssertEqual(fmt, "other.format")
+        }
+    }
+
+    func testDecodeProgramRejectsUnsupportedVersion() {
+        let json = """
+        {
+          "format": "form.program",
+          "schemaVersion": 99,
+          "program": { "id": "p1", "name": "P1", "workouts": [] }
+        }
+        """
+        XCTAssertThrowsError(try AppStore.decodeProgram(from: Data(json.utf8))) { error in
+            guard case AppStore.ProgramImportError.unsupportedVersion(let v) = error else {
+                XCTFail("Expected unsupportedVersion error, got: \(error)")
+                return
+            }
+            XCTAssertEqual(v, 99)
+        }
+    }
+
+    func testDecodeProgramRejectsBlankName() {
+        let json = """
+        {
+          "format": "form.program",
+          "schemaVersion": 4,
+          "program": { "id": "p1", "name": "   ", "workouts": [] }
+        }
+        """
+        XCTAssertThrowsError(try AppStore.decodeProgram(from: Data(json.utf8))) { error in
+            guard case AppStore.ProgramImportError.invalidProgramName = error else {
+                XCTFail("Expected invalidProgramName error, got: \(error)")
+                return
+            }
+        }
+    }
+
+    func testDecodeProgramRejectsDuplicateWorkoutDays() {
+        let json = """
+        {
+          "format": "form.program",
+          "schemaVersion": 4,
+          "program": {
+            "id": "p1",
+            "name": "P1",
+            "workouts": [
+              { "id": "w1", "day": 1, "title": "Day 1A", "exercises": [] },
+              { "id": "w2", "day": 1, "title": "Day 1B", "exercises": [] }
+            ]
+          }
+        }
+        """
+        XCTAssertThrowsError(try AppStore.decodeProgram(from: Data(json.utf8))) { error in
+            guard case AppStore.ProgramImportError.duplicateWorkoutDays = error else {
+                XCTFail("Expected duplicateWorkoutDays error, got: \(error)")
+                return
+            }
+        }
+    }
+
+    @MainActor
+    func testImportProgramUpdatesExistingProgramInPlace() throws {
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        let initialCount = store.state.programs.count
+        guard let first = store.state.programs.first else {
+            XCTFail("Starter programs should not be empty")
+            return
+        }
+        let updatedJson = """
+        {
+          "format": "form.program",
+          "schemaVersion": 4,
+          "program": {
+            "id": "\(first.id)",
+            "name": "Updated \(first.name)",
+            "workouts": []
+          }
+        }
+        """
+        let imported = try store.importProgram(jsonData: Data(updatedJson.utf8))
+        XCTAssertEqual(store.state.programs.count, initialCount, "Count should not increase when updating existing ID")
+        XCTAssertEqual(imported.name, "Updated \(first.name)")
+        let found = store.state.programs.first { $0.id == first.id }
+        XCTAssertEqual(found?.name, "Updated \(first.name)")
     }
 }

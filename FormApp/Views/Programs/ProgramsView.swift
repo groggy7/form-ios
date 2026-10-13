@@ -63,6 +63,8 @@ public struct ProgramsView: View {
     @State private var editingProgram: Program? = nil
     @State private var isCreatingNew = false
     @State private var showFileImporter = false
+    @State private var importErrorMessage: String? = nil
+    @State private var showImportError = false
     @State private var sharingItem: ProgramShareItem? = nil
     @State private var deletingProgram: Program? = nil
     @State private var menuProgramId: String? = nil
@@ -77,7 +79,10 @@ public struct ProgramsView: View {
     }
 
     private func shareProgram(_ program: Program) {
-        guard let data = try? JSONEncoder().encode(program) else { return }
+        let envelope = AppStore.ProgramFileEnvelope(format: "form.program", schemaVersion: 4, program: program)
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        guard let data = try? encoder.encode(envelope) else { return }
         let safeName = program.displayName.replacingOccurrences(of: "[^\\p{L}\\p{N} ._-]", with: "_", options: .regularExpression)
         let filename = "\(safeName.prefix(80)).form-program.json"
         let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(filename)
@@ -203,10 +208,32 @@ public struct ProgramsView: View {
                 Text(LanguageManager.t("programs.deleteHint"))
             }
             .fileImporter(isPresented: $showFileImporter, allowedContentTypes: [.json], allowsMultipleSelection: false) { result in
-                if case .success(let urls) = result, let url = urls.first, url.startAccessingSecurityScopedResource() {
-                    defer { url.stopAccessingSecurityScopedResource() }
-                    if let data = try? Data(contentsOf: url) { _ = try? store.importProgram(jsonData: data) }
+                switch result {
+                case .success(let urls):
+                    guard let url = urls.first else { return }
+                    let accessed = url.startAccessingSecurityScopedResource()
+                    defer {
+                        if accessed {
+                            url.stopAccessingSecurityScopedResource()
+                        }
+                    }
+                    do {
+                        let data = try Data(contentsOf: url)
+                        _ = try store.importProgram(jsonData: data)
+                        store.showNotice(LanguageManager.t("programs.imported"))
+                    } catch {
+                        importErrorMessage = error.localizedDescription
+                        showImportError = true
+                    }
+                case .failure(let error):
+                    importErrorMessage = error.localizedDescription
+                    showImportError = true
                 }
+            }
+            .alert(LanguageManager.t("programs.fileError"), isPresented: $showImportError) {
+                Button(LanguageManager.t("programs.close"), role: .cancel) { }
+            } message: {
+                Text(importErrorMessage ?? LanguageManager.t("errors.fileRead"))
             }
         }
     }

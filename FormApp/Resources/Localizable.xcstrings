@@ -22919,31 +22919,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Import JSON"
+            "value": "Import program"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "JSON içe aktar"
+            "value": "Program içe aktar"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "JSON importieren"
+            "value": "Programm importieren"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Importer du JSON"
+            "value": "Importer un programme"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Importar JSON"
+            "value": "Importar programa"
           }
         }
       }
@@ -23934,31 +23934,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "This replaces all programs, completion records and workout history, and discards any active workout. To change one program, cancel and use Programs → Import JSON instead."
+            "value": "This replaces all programs, completion records and workout history, and discards any active workout. To change one program, cancel and use Programs → Import program instead."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tüm programlar, tamamlanma kayıtları ve antrenman geçmişi değiştirilir, aktif antrenman iptal edilir. Tek programı değiştirmek için iptal et ve Programlar → JSON içe aktar seçeneğini kullan."
+            "value": "Tüm programlar, tamamlanma kayıtları ve antrenman geçmişi değiştirilir, aktif antrenman iptal edilir. Tek programı değiştirmek için iptal et ve Programlar → Program içe aktar seçeneğini kullan."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dadurch werden alle Programme, Abschlussaufzeichnungen und der Trainingsverlauf ersetzt und alle aktiven Trainingseinheiten verworfen. Um ein Programm zu ändern, brechen Sie den Vorgang ab und verwenden Sie stattdessen Programme → JSON importieren."
+            "value": "Dadurch werden alle Programme, Abschlussaufzeichnungen und der Trainingsverlauf ersetzt und alle aktiven Trainingseinheiten verworfen. Um ein Programm zu ändern, brechen Sie den Vorgang ab und verwenden Sie stattdessen Programme → Programm importieren."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cela remplace tous les programmes, les enregistrements d'achèvement et l'historique des entraînements, et supprime tout entraînement actif. Pour modifier un programme, annulez et utilisez Programmes → Importer JSON à la place."
+            "value": "Cela remplace tous les programmes, les enregistrements d'achèvement et l'historique des entraînements, et supprime tout entraînement actif. Pour modifier un programme, annulez et utilisez Programmes → Importer un programme à la place."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esto reemplaza todos los programas, registros de finalización e historial de entrenamiento, y descarta cualquier entrenamiento activo. Para cambiar un programa, cancele y use Programas → Importar JSON en su lugar."
+            "value": "Esto reemplaza todos los programas, registros de finalización e historial de entrenamiento, y descarta cualquier entrenamiento activo. Para cambiar un programa, cancele y use Programas → Importar programa en su lugar."
           }
         }
       }

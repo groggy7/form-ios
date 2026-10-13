@@ -346,7 +346,10 @@ public struct ProgramBuilderView: View {
     }
 
     private func exportProgram() {
-        if let data = try? JSONEncoder().encode(program), let str = String(data: data, encoding: .utf8) {
+        let envelope = AppStore.ProgramFileEnvelope(format: "form.program", schemaVersion: 4, program: program)
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        if let data = try? encoder.encode(envelope), let str = String(data: data, encoding: .utf8) {
             exportedJsonString = str
             showExportSheet = true
         }
