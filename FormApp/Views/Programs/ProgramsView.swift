@@ -39,7 +39,7 @@ enum ProgramHeroLayout {
     }
     static func height(programs: [Program], width: CGFloat, titleSize: CGFloat, bodySize: CGFloat, daysSize: CGFloat, countsSize: CGFloat = 11) -> CGFloat {
         let contentWidth = max(1, width - 32)
-        let footerWidth = max(1, contentWidth - 48)
+        let footerWidth = max(1, contentWidth - 96)
         return programs.reduce(CGFloat(240)) { current, program in
             let title = textHeight(program.displayName, width: contentWidth - 56, size: titleSize, weight: .semibold, spacing: 2)
             let description = program.displayDescription.isEmpty ? 0 : 10 + textHeight(program.displayDescription, width: contentWidth * descriptionFraction(width: width, bodySize: bodySize), size: bodySize, weight: .regular, spacing: 3)
@@ -352,6 +352,22 @@ struct ProgramHeroCard: View {
             }.buttonStyle(.plain)
                 .accessibilityIdentifier("program-card-\(program.id)")
                 .accessibilityAddTraits(isActive ? [.isSelected] : [])
+
+            if !isActive {
+                Button(action: onSelect) {
+                    Text(LanguageManager.t("programs.apply"))
+                        .font(.system(size: 13, weight: .bold))
+                        .foregroundStyle(AppColors.todaySelectionText)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 7)
+                        .background(AppColors.accent)
+                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                }
+                .buttonStyle(.plain)
+                .accessibilityIdentifier("program-apply-\(program.id)")
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+                .padding(16)
+            }
 
             if menuVisible {
                 Color.black.opacity(0.001)
