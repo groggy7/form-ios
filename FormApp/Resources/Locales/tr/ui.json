@@ -1007,6 +1007,8 @@
   "notice.programCreated": "Program oluşturuldu.",
   "notice.programUpdated": "Program güncellendi.",
   "notice.programDeleted": "Program silindi.",
+  "notice.cannotDeleteActiveProgram": "Aktif programı silemezsiniz.",
+  "notice.orphanedSessionCleared": "Önceki aktif antrenman taslağı temizlendi.",
   "notice.programApplied": "{name} programına geçildi.",
   "notice.videosUpdated": "{name} videoları güncellendi",
   "notice.emptySetWarning": "Tekrar ve ağırlık bilgisi boş bırakılamaz.",

@@ -1007,6 +1007,8 @@
   "notice.programCreated": "Programa creado.",
   "notice.programUpdated": "Programa actualizado.",
   "notice.programDeleted": "Programa eliminado.",
+  "notice.cannotDeleteActiveProgram": "No puedes eliminar el programa activo.",
+  "notice.orphanedSessionCleared": "Se borró el borrador de entrenamiento activo anterior.",
   "notice.programApplied": "Cambiado a {name}.",
   "notice.videosUpdated": "Vídeos {name} actualizados",
   "notice.emptySetWarning": "El peso y la inentrenamiento repetición no se pueden dejar vacíos.",

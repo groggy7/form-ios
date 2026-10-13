@@ -36793,6 +36793,76 @@
         }
       }
     },
+    "notice.cannotDeleteActiveProgram": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You cannot delete the active program."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aktif programı silemezsiniz."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sie können das aktive Programm nicht löschen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous ne pouvez pas supprimer le programme actif."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No puedes eliminar el programa activo."
+          }
+        }
+      }
+    },
+    "notice.orphanedSessionCleared": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Previous active workout draft was cleared."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Önceki aktif antrenman taslağı temizlendi."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der vorherige aktive Trainingsentwurf wurde gelöscht."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Le brouillon d'entraînement actif précédent a été effacé."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se borró el borrador de entrenamiento activo anterior."
+          }
+        }
+      }
+    },
     "notice.programApplied": {
       "extractionState": "manual",
       "localizations": {

@@ -140,9 +140,15 @@ public struct ProgramsView: View {
                                     }
                                 },
                                 onEdit: { editingProgram = program },
-                                onShare: { shareProgram(program) },
-                                onDelete: { deletingProgram = program },
-                                isMenuOpen: menuProgramId == program.id,
+                                onDelete: {
+                                    if program.id == store.state.activeProgramId {
+                                        store.showErrorNotice(LanguageManager.t("notice.cannotDeleteActiveProgram"))
+                                    } else if store.activeSession?.programId == program.id {
+                                        store.showErrorNotice(LanguageManager.t("history.finishActiveFirst"))
+                                    } else {
+                                        deletingProgram = program
+                                    }
+                                },
                                 onToggleMenu: {
                                     withAnimation(.spring(response: 0.22, dampingFraction: 0.8)) {
                                         menuProgramId = program.id

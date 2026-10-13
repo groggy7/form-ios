@@ -215,11 +215,21 @@ public final class AppStore: ObservableObject {
         let todayStr = WorkoutCalendar.formatDate(Date())
         let weekdays = WorkoutCalendar.weekdays(state: loadedState)
         let currentWeightUnit = initialWeightUnit
-        let activeDraft = Self.loadActiveSession().map { draft in
+        let rawDraft = Self.loadActiveSession().map { draft in
             // Legacy drafts may contain stale display text from the old unit-switch
             // bug. Prefer their canonical weights and bind the input unit on load.
             guard draft.weightInputUnit == nil || draft.weightInputUnit != currentWeightUnit else { return draft }
             return WorkoutSessionUtils.rebaseWeightInputs(draft, from: draft.weightInputUnit ?? currentWeightUnit, to: currentWeightUnit)
+        }
+        let isKnownDraft: Bool = {
+            guard let draft = rawDraft else { return false }
+            return loadedState.programs.contains { prog in
+                prog.id == draft.programId && prog.workouts.contains { $0.id == draft.workout.id }
+            }
+        }()
+        let activeDraft = isKnownDraft ? rawDraft : nil
+        if rawDraft != nil && !isKnownDraft {
+            Self.clearActiveSession()
         }
         let restored = WorkoutCalendar.restore(
             raw: loadedState.calendarHistory,
@@ -418,17 +428,30 @@ public final class AppStore: ObservableObject {
             guard let scheduledDate = scheduled.flatMap({ WorkoutCalendar.parseDate($0) }), let nextMonday else { return true }
             return scheduledDate >= WorkoutCalendar.parseDate(monday)! && scheduledDate < nextMonday
         }
-        if resumeHistory && (startNewSession || unfinishedRecordId == nil) { return false }
         if let active = activeSession {
-            if !startNewSession && active.programId == programId && active.workout.id == workout.id
+            let isKnown = state.programs.contains { prog in
+                prog.id == active.programId && prog.workouts.contains { $0.id == active.workout.id }
+            }
+            if !isKnown {
+                abandonActiveSession()
+                showErrorNotice(LanguageManager.t("notice.orphanedSessionCleared"))
+            } else if !startNewSession && active.programId == programId && active.workout.id == workout.id
                 && (unfinishedRecordId == nil || unfinishedRecordId == active.id) {
                 if resumeHistory && !resumableDate(active.assignedCalendarDate ?? WorkoutCalendar.localDate(from: active.startedAt), active.scheduledDate) { return false }
                 resumeActiveSession()
                 return true
+            } else {
+                showErrorNotice(LanguageManager.t("history.finishActiveFirst"))
+                return false
             }
+        }
+        if workout.exercises.isEmpty {
+            showErrorNotice(LanguageManager.t("notice.needOneExercise"))
             return false
         }
-        if workout.exercises.isEmpty || !canStartWorkout(workout, allowPast: allowPast) {
+        if !canStartWorkout(workout, allowPast: allowPast) {
+            let day = LanguageManager.workoutDays.indices.contains(workout.day - 1) ? LanguageManager.workoutDays[workout.day - 1] : ""
+            showErrorNotice(LanguageManager.t("today.availableOn", ["day": day]))
             return false
         }
         let nowMillis = Int64(now.timeIntervalSince1970 * 1000)
@@ -863,15 +886,21 @@ public final class AppStore: ObservableObject {
 
     public func deleteProgram(withId id: String) {
         guard state.programs.count > 1 else { return }
+        if id == state.activeProgramId {
+            showErrorNotice(LanguageManager.t("notice.cannotDeleteActiveProgram"))
+            return
+        }
+        if activeSession?.programId == id {
+            showErrorNotice(LanguageManager.t("history.finishActiveFirst"))
+            return
+        }
         var newState = state
         newState.programs.removeAll { $0.id == id }
-        if newState.activeProgramId == id {
-            newState.activeProgramId = newState.programs.first?.id ?? ""
-            selectedWorkoutId = nil
-        }
         newState = refreshCalendarState(newState)
         saveState(newState)
+        selectedWorkoutId = nil
         refreshCatalogue()
+        showNotice(LanguageManager.t("notice.programDeleted"))
     }
 
     public func completeOnboarding(preferences: OnboardingPreferences, targetProgramId: String? = nil) {
@@ -1245,6 +1274,14 @@ public final class AppStore: ObservableObject {
     @discardableResult
     public func checkAndArchiveStaleSession() -> Bool {
         guard let draft = activeSession else { return false }
+        let isKnown = state.programs.contains { prog in
+            prog.id == draft.programId && prog.workouts.contains { $0.id == draft.workout.id }
+        }
+        if !isKnown {
+            abandonActiveSession()
+            showErrorNotice(LanguageManager.t("notice.orphanedSessionCleared"))
+            return true
+        }
         let now = Int64(Date().timeIntervalSince1970 * 1000)
         let startedDate = WorkoutCalendar.localDate(from: draft.startedAt) ?? WorkoutCalendar.formatDate(Date())
         let todayStr = WorkoutCalendar.formatDate(Date())
@@ -1357,6 +1394,10 @@ public final class AppStore: ObservableObject {
     private static func loadActiveSession() -> ActiveSessionDraft? {
         guard let data = UserDefaults.standard.data(forKey: "active_session_v1") else { return nil }
         return try? JSONDecoder().decode(ActiveSessionDraft.self, from: data)
+    }
+
+    private static func clearActiveSession() {
+        UserDefaults.standard.removeObject(forKey: "active_session_v1")
     }
 
     private static func loadStoredState(persistence: AppStatePersistence) -> (state: StoredAppState, canPersist: Bool, hasSavedState: Bool) {

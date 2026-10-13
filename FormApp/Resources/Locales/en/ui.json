@@ -1007,6 +1007,8 @@
   "notice.programCreated": "Program created.",
   "notice.programUpdated": "Program updated.",
   "notice.programDeleted": "Program deleted.",
+  "notice.cannotDeleteActiveProgram": "You cannot delete the active program.",
+  "notice.orphanedSessionCleared": "Previous active workout draft was cleared.",
   "notice.programApplied": "Switched to {name}.",
   "notice.videosUpdated": "{name} videos updated",
   "notice.emptySetWarning": "Weight and rep info cannot be left empty.",

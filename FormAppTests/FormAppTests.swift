@@ -5065,11 +5065,78 @@ final class FormAppTests: XCTestCase {
         }
 
         // Clean up
-        store.deleteProgram(withId: customProgram.id)
-        if let firstProg = store.state.programs.first {
+        if let firstProg = store.state.programs.first(where: { $0.id != customProgram.id }) {
             store.switchProgram(to: firstProg.id)
         }
+        store.deleteProgram(withId: customProgram.id)
         store.selectedWorkoutId = nil
+    }
+
+    func testCannotDeleteActiveProgram() {
+        let persistence = AppStatePersistence(inMemory: true)
+        let store = AppStore(persistence: persistence)
+        let initialCount = store.state.programs.count
+        XCTAssertGreaterThan(initialCount, 1)
+
+        let activeId = store.state.activeProgramId
+        store.deleteProgram(withId: activeId)
+
+        XCTAssertEqual(store.state.programs.count, initialCount, "Active program must not be deleted")
+        XCTAssertEqual(store.state.activeProgramId, activeId)
+        XCTAssertEqual(store.currentToast?.message, LanguageManager.t("notice.cannotDeleteActiveProgram"))
+    }
+
+    func testCannotDeleteProgramWithActiveSession() {
+        let persistence = AppStatePersistence(inMemory: true)
+        let store = AppStore(persistence: persistence)
+        guard store.state.programs.count >= 2 else { return }
+
+        let prog1 = store.state.programs[0]
+        let prog2 = store.state.programs[1]
+        store.switchProgram(to: prog1.id)
+        _ = store.startActiveSession(programId: prog1.id, workout: prog1.workouts[0], allowPast: true)
+        XCTAssertNotNil(store.activeSession)
+
+        store.switchProgram(to: prog2.id)
+        XCTAssertEqual(store.state.activeProgramId, prog2.id)
+
+        // Try deleting prog1 while it still has an active session
+        let initialCount = store.state.programs.count
+        store.deleteProgram(withId: prog1.id)
+
+        XCTAssertEqual(store.state.programs.count, initialCount, "Program with active session must not be deleted")
+        XCTAssertEqual(store.currentToast?.message, LanguageManager.t("history.finishActiveFirst"))
+    }
+
+    func testOrphanedActiveSessionDiscardedOnStart() {
+        let persistence = AppStatePersistence(inMemory: true)
+        let store = AppStore(persistence: persistence)
+        guard let realProg = store.state.programs.first, let realWorkout = realProg.workouts.first else { return }
+
+        // Create an orphaned draft pointing to a non-existent program
+        let orphanDraft = ActiveSessionDraft(
+            id: UUID().uuidString,
+            programId: "non-existent-program",
+            workout: Workout(id: "fake-workout", day: 1, title: "Fake", exercises: []),
+            startedAt: "2026-10-13T10:00:00.000Z",
+            startedAtEpochMillis: 1791910000000,
+            lastActivityEpochMillis: 1791910000000,
+            currentExerciseIndex: 0,
+            setsByExercise: [:],
+            assignedCalendarDate: "2026-10-13",
+            accumulatedSeconds: 0,
+            isPaused: true,
+            lastResumedAtEpochMillis: 1791910000000,
+            scheduledDate: "2026-10-13",
+            weightInputUnit: .kg
+        )
+        store.activeSession = orphanDraft
+
+        // Starting a real workout must discard the orphan and succeed
+        let started = store.startActiveSession(programId: realProg.id, workout: realWorkout, allowPast: true)
+        XCTAssertTrue(started, "Starting workout must succeed after discarding orphan draft")
+        XCTAssertEqual(store.activeSession?.programId, realProg.id)
+        XCTAssertEqual(store.activeSession?.workout.id, realWorkout.id)
     }
 
     func testFindExercisePrReturnsBestSetOrNilWhenNoData() {

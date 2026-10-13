@@ -1007,6 +1007,8 @@
   "notice.programCreated": "Programme créé.",
   "notice.programUpdated": "Programme mis à jour.",
   "notice.programDeleted": "Programme supprimé.",
+  "notice.cannotDeleteActiveProgram": "Vous ne pouvez pas supprimer le programme actif.",
+  "notice.orphanedSessionCleared": "Le brouillon d'entraînement actif précédent a été effacé.",
   "notice.programApplied": "Passé à {name}.",
   "notice.videosUpdated": "Vidéos {name} mises à jour",
   "notice.emptySetWarning": "Les inentraînements sur le poids et le répétition ne peuvent pas être laissées vides.",

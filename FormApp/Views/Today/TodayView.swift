@@ -87,7 +87,11 @@ public struct TodayView: View {
                             if let active = store.activeSession, active.workout.id == w.id {
                                 store.resumeActiveSession()
                             } else {
-                                _ = store.startActiveSession(programId: p.id, workout: w, allowPast: true)
+                                if !store.startActiveSession(programId: p.id, workout: w, allowPast: true) {
+                                    if store.activeSession != nil {
+                                        store.showErrorNotice(LanguageManager.t("history.finishActiveFirst"))
+                                    }
+                                }
                             }
                         }
                     }

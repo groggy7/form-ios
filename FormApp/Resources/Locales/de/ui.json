@@ -1007,6 +1007,8 @@
   "notice.programCreated": "Programm erstellt.",
   "notice.programUpdated": "Programm aktualisiert.",
   "notice.programDeleted": "Programm gelöscht.",
+  "notice.cannotDeleteActiveProgram": "Sie können das aktive Programm nicht löschen.",
+  "notice.orphanedSessionCleared": "Der vorherige aktive Trainingsentwurf wurde gelöscht.",
   "notice.programApplied": "Auf {name} umgestellt.",
   "notice.videosUpdated": "{name}-Videos aktualisiert",
   "notice.emptySetWarning": "Angaben zu Gewicht und Wiederholung dürfen nicht leer bleiben.",
