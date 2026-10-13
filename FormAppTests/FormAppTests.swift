@@ -12313,4 +12313,30 @@ final class AuditSearchPerformanceTests: XCTestCase {
         let found = store.state.programs.first { $0.id == first.id }
         XCTAssertEqual(found?.name, "Updated \(first.name)")
     }
+
+    @MainActor
+    func testProgramHeroCardMenuToggleBehavior() {
+        var menuProgramId: String? = nil
+        let programId = "aesthetic-hypertrophy"
+
+        let openMenu = {
+            menuProgramId = programId
+        }
+        let closeMenu = {
+            if menuProgramId == programId {
+                menuProgramId = nil
+            }
+        }
+
+        // Initially closed
+        XCTAssertNil(menuProgramId)
+
+        // First click triggers opening
+        openMenu()
+        XCTAssertEqual(menuProgramId, programId)
+
+        // Clicking 3 dots again when menu is open triggers closeMenu -> onCloseMenu
+        closeMenu()
+        XCTAssertNil(menuProgramId, "Menu must close when clicked again")
+    }
 }

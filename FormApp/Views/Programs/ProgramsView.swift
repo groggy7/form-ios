@@ -145,11 +145,7 @@ public struct ProgramsView: View {
                                 isMenuOpen: menuProgramId == program.id,
                                 onToggleMenu: {
                                     withAnimation(.spring(response: 0.22, dampingFraction: 0.8)) {
-                                        if menuProgramId == program.id {
-                                            menuProgramId = nil
-                                        } else {
-                                            menuProgramId = program.id
-                                        }
+                                        menuProgramId = program.id
                                     }
                                 },
                                 onCloseMenu: {
@@ -278,23 +274,24 @@ struct ProgramHeroCard: View {
     }
 
     private func toggleMenu() {
-        if let onToggleMenu {
-            onToggleMenu()
+        if menuVisible {
+            closeMenu()
         } else {
-            withAnimation(.spring(response: 0.22, dampingFraction: 0.8)) {
-                localMenuOpen.toggle()
+            if let onToggleMenu {
+                onToggleMenu()
+            } else {
+                withAnimation(.spring(response: 0.22, dampingFraction: 0.8)) {
+                    localMenuOpen = true
+                }
             }
         }
     }
 
     private func closeMenu() {
-        if let onCloseMenu {
-            onCloseMenu()
-        } else {
-            withAnimation(.spring(response: 0.2, dampingFraction: 0.85)) {
-                localMenuOpen = false
-            }
+        withAnimation(.spring(response: 0.2, dampingFraction: 0.85)) {
+            localMenuOpen = false
         }
+        onCloseMenu?()
     }
 
     init(
