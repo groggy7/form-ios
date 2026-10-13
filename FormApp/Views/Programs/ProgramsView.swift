@@ -103,15 +103,16 @@ public struct ProgramsView: View {
                                     .font(.system(size: bodySize * 14 / 13, weight: .semibold))
                                     .frame(maxWidth: .infinity, minHeight: 52)
                                     .background(AppColors.accent).foregroundStyle(AppColors.todaySelectionText)
-                                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                             }.buttonStyle(.plain)
                             Button(action: { showFileImporter = true }) {
                                 Label(LanguageManager.t("programs.import"), systemImage: "square.and.arrow.down")
                                     .font(.system(size: bodySize * 14 / 13, weight: .semibold))
                                     .frame(maxWidth: .infinity, minHeight: 52)
                                     .foregroundStyle(AppColors.text)
-                                    .background(AppColors.surface)
-                                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
+                                    .background(AppColors.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+                                    .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(AppColors.border, lineWidth: 1))
                             }.buttonStyle(.plain)
                         }
                         if store.state.programs.isEmpty {
