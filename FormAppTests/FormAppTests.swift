@@ -9091,7 +9091,7 @@ final class SessionFeaturePaywallTests: XCTestCase {
         defer { LanguageManager.setLanguage(previousLanguage); previousWindow?.makeKeyAndVisible() }
         let cases: [(ProFeature?, WeightUnit)] = [
             (.autoProgression, .kg), (.cloudBackup, .kg), (.volumeMatrix, .kg),
-            (.formLab, .kg), (nil, .kg), (.warmupCalculator, .kg), (.warmupCalculator, .lbs)
+            (.formLab, .kg), (.customThemes, .kg), (nil, .kg), (.warmupCalculator, .kg), (.warmupCalculator, .lbs)
         ]
         for (feature, unit) in cases {
             let imageName: String
@@ -9106,6 +9106,9 @@ final class SessionFeaturePaywallTests: XCTestCase {
             case .formLab:
                 imageName = "paywall_rep_lab"
                 tag = "rep-lab-paywall"
+            case .customThemes:
+                imageName = "paywall_custom_themes"
+                tag = "custom-themes-paywall"
             case .none:
                 imageName = "paywall_general"
                 tag = "general-paywall"

@@ -79,9 +79,9 @@ public struct ProPaywallSheet: View {
             ]
         case .customThemes:
             return [
-                PaywallBenefit(titleKey: "pro.custom_themes.title", descKey: "pro.custom_themes.description", iconName: "paintpalette.fill"),
-                PaywallBenefit(titleKey: "pro.volume_matrix.title", descKey: "pro.volume_matrix.description", iconName: "chart.bar.fill"),
-                PaywallBenefit(titleKey: "pro.form_lab.title", descKey: "pro.form_lab.description", iconName: "number.circle.fill")
+                PaywallBenefit(titleKey: "paywall.custom_themes.benefit1", descKey: "paywall.custom_themes.benefit1_desc", iconName: "paintpalette.fill"),
+                PaywallBenefit(titleKey: "paywall.custom_themes.benefit2", descKey: "paywall.custom_themes.benefit2_desc", iconName: "circle.righthalf.filled"),
+                PaywallBenefit(titleKey: "paywall.custom_themes.benefit3", descKey: "paywall.custom_themes.benefit3_desc", iconName: "sparkles")
             ]
         case .none:
             return [
@@ -158,13 +158,17 @@ public struct ProPaywallSheet: View {
     }
 
     private var isIllustratedFeature: Bool {
-        feature == nil || feature == .autoProgression || feature == .warmupCalculator || feature == .volumeMatrix || feature == .formLab || feature == .cloudBackup
+        feature == nil || feature == .autoProgression || feature == .warmupCalculator || feature == .volumeMatrix || feature == .formLab || feature == .cloudBackup || feature == .customThemes
     }
 
     private var headlineKey: String {
         switch feature {
         case .autoProgression: return "paywall.auto_progression.headline"
         case .warmupCalculator: return "paywall.warmup_calculator.headline"
+        case .volumeMatrix: return "paywall.volume_matrix.headline"
+        case .formLab: return "paywall.form_lab.headline"
+        case .cloudBackup: return "paywall.cloud_backup.headline"
+        case .customThemes: return "paywall.custom_themes.headline"
         default: return feature?.titleKey ?? "pro.upgrade_cta"
         }
     }
@@ -173,6 +177,10 @@ public struct ProPaywallSheet: View {
         switch feature {
         case .autoProgression: return "paywall.auto_progression.subtitle"
         case .warmupCalculator: return "paywall.warmup_calculator.subtitle"
+        case .volumeMatrix: return "paywall.volume_matrix.subtitle"
+        case .formLab: return "paywall.form_lab.subtitle"
+        case .cloudBackup: return "paywall.cloud_backup.subtitle"
+        case .customThemes: return "paywall.custom_themes.subtitle"
         default: return feature?.descriptionKey ?? "paywall.cancel_anytime"
         }
     }
