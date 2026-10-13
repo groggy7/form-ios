@@ -1307,15 +1307,9 @@ struct ThemeSelectionSheet: View {
                                 }
 
                                 VStack(alignment: .leading, spacing: 3) {
-                                    HStack(spacing: 6) {
-                                        Text(LanguageManager.t(theme.nameKey))
-                                            .font(.system(size: 15, weight: .semibold))
-                                            .foregroundStyle(AppColors.text)
-
-                                        if theme.isPremium {
-                                            ProBadge()
-                                        }
-                                    }
+                                    Text(LanguageManager.t(theme.nameKey))
+                                        .font(.system(size: 15, weight: .semibold))
+                                        .foregroundStyle(AppColors.text)
 
                                     Text(LanguageManager.t(theme.descriptionKey))
                                         .font(.system(size: 12))
@@ -1331,7 +1325,9 @@ struct ThemeSelectionSheet: View {
                                         .font(.system(size: 20))
                                         .foregroundStyle(AppColors.accent)
                                 } else if !isUnlocked {
-                                    Image(systemName: "lock.fill")
+                                    ProBadge()
+                                } else if theme.isPremium {
+                                    Image(systemName: "lock.open.fill")
                                         .font(.system(size: 15))
                                         .foregroundStyle(AppColors.muted)
                                 }
