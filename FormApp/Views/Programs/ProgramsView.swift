@@ -140,6 +140,7 @@ public struct ProgramsView: View {
                                     }
                                 },
                                 onEdit: { editingProgram = program },
+                                onShare: { shareProgram(program) },
                                 onDelete: {
                                     if program.id == store.state.activeProgramId {
                                         store.showErrorNotice(LanguageManager.t("notice.cannotDeleteActiveProgram"))
@@ -149,6 +150,7 @@ public struct ProgramsView: View {
                                         deletingProgram = program
                                     }
                                 },
+                                isMenuOpen: menuProgramId == program.id,
                                 onToggleMenu: {
                                     withAnimation(.spring(response: 0.22, dampingFraction: 0.8)) {
                                         menuProgramId = program.id
@@ -163,15 +165,7 @@ public struct ProgramsView: View {
                         }
                     }.padding(.horizontal, 20).padding(.top, 10).padding(.bottom, 24)
                 }
-                .simultaneousGesture(
-                    TapGesture().onEnded {
-                        if menuProgramId != nil {
-                            withAnimation(.spring(response: 0.2, dampingFraction: 0.85)) {
-                                menuProgramId = nil
-                            }
-                        }
-                    }
-                )
+
             }
             .background(AppColors.background)
             .navigationTitle(LanguageManager.t("programs.title"))
