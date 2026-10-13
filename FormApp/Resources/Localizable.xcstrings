@@ -11505,31 +11505,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bespoke palettes"
+            "value": "Seven bespoke palettes"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Özel paletler"
+            "value": "Yedi özel palet"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Individuelle Paletten"
+            "value": "Sieben individuelle Paletten"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Palettes sur mesure"
+            "value": "Sept palettes sur mesure"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Paletas exclusivas"
+            "value": "Siete paletas exclusivas"
           }
         }
       }
@@ -11540,31 +11540,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Switch between Cobalt, Espresso, Alpine, and Stealth."
+            "value": "Switch between Cobalt, Crimson, Espresso, and more."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kobalt, Espresso, Alpin ve Stealth arasında geçiş yap."
+            "value": "Kobalt, Crimson, Espresso ve daha fazlası."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wähle zwischen Kobalt, Espresso, Alpin und Stealth."
+            "value": "Wähle zwischen Kobalt, Crimson, Espresso und mehr."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Choisissez entre Cobalt, Espresso, Alpin et Stealth."
+            "value": "Choisissez entre Cobalt, Crimson, Espresso et plus."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Elige entre Cobalto, Espresso, Alpino y Stealth."
+            "value": "Elige entre Cobalto, Crimson, Espresso y más."
           }
         }
       }
