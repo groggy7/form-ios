@@ -383,15 +383,17 @@ struct ProgramHeroCard: View {
 
             Button(action: toggleMenu) {
                 Image(systemName: "ellipsis")
-                    .rotationEffect(.degrees(90))
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundStyle(menuVisible ? AppColors.text : AppColors.secondaryText)
+                    .font(.system(size: 17, weight: .semibold))
+                    .foregroundStyle(AppColors.text)
+                    .frame(width: 38, height: 38)
+                    .background(AppColors.surfaceRaised.opacity(0.95), in: Circle())
+                    .overlay(Circle().stroke(Color.white.opacity(0.2), lineWidth: 1))
                     .frame(width: 48, height: 48)
-                    .background(AppColors.surfaceRaised.opacity(0.9), in: Circle())
+                    .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
             .accessibilityLabel("\(LanguageManager.t("programs.more")) \(program.displayName)")
-            .padding(12)
+            .padding(8)
 
             if menuVisible {
                 VStack(spacing: 0) {
@@ -478,7 +480,7 @@ struct ProgramHeroCard: View {
                         .stroke(AppColors.border, lineWidth: 1)
                 )
                 .shadow(color: Color.black.opacity(0.45), radius: 12, x: 0, y: 6)
-                .padding(.top, 64)
+                .padding(.top, 56)
                 .padding(.trailing, 12)
                 .transition(
                     .asymmetric(

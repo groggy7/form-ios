@@ -1812,7 +1812,7 @@ final class FormAppTests: XCTestCase {
             controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
         }
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/5c1700b8-ad4e-4b3e-811c-dbe165a5b15c/ios_program_card_compact_menu.png"
+            let path = "/Users/groggy/.gemini/antigravity/brain/49049143-92ae-4928-b11d-d8637d2ab36d/ios_program_card_menu_open.png"
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
