@@ -619,7 +619,7 @@ struct LanguageSelectionSheet: View {
             }
             .padding(.horizontal, 20)
             .padding(.top, 12)
-            .padding(.bottom, 16)
+            .padding(.bottom, 12)
 
             ScrollView {
                 VStack(spacing: 12) {
@@ -628,7 +628,7 @@ struct LanguageSelectionSheet: View {
                         flagImageName: deviceLanguageFlagImage)
                         .background(AppColors.surface)
                         .clipShape(RoundedRectangle(cornerRadius: 16))
-                        .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
+                        .overlay(RoundedRectangle(cornerRadius: 16).strokeBorder(AppColors.border, lineWidth: 1))
 
                     VStack(spacing: 0) {
                         ForEach(Array(LanguageManager.supportedLanguages.enumerated()), id: \.element.code) { index, language in
@@ -641,9 +641,10 @@ struct LanguageSelectionSheet: View {
                     }
                     .background(AppColors.surface)
                     .clipShape(RoundedRectangle(cornerRadius: 16))
-                    .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
+                    .overlay(RoundedRectangle(cornerRadius: 16).strokeBorder(AppColors.border, lineWidth: 1))
                 }
                 .padding(.horizontal, 20)
+                .padding(.top, 4)
                 .padding(.bottom, 24)
             }
         }
@@ -1272,7 +1273,7 @@ struct ThemeSelectionSheet: View {
             }
             .padding(.horizontal, 20)
             .padding(.top, 12)
-            .padding(.bottom, 16)
+            .padding(.bottom, 12)
 
             ScrollView {
                 VStack(spacing: 12) {
@@ -1294,7 +1295,7 @@ struct ThemeSelectionSheet: View {
                                         .frame(width: 44, height: 44)
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 12)
-                                                .stroke(theme.border, lineWidth: 1.5)
+                                                .strokeBorder(theme.border, lineWidth: 1.5)
                                         )
 
                                     RoundedRectangle(cornerRadius: 8)
@@ -1339,7 +1340,7 @@ struct ThemeSelectionSheet: View {
                             .clipShape(RoundedRectangle(cornerRadius: 16))
                             .overlay(
                                 RoundedRectangle(cornerRadius: 16)
-                                    .stroke(isSelected ? AppColors.accent.opacity(0.8) : AppColors.border, lineWidth: isSelected ? 1.5 : 1)
+                                    .strokeBorder(isSelected ? AppColors.accent.opacity(0.8) : AppColors.border, lineWidth: isSelected ? 1.5 : 1)
                             )
                             .contentShape(RoundedRectangle(cornerRadius: 16))
                         }
@@ -1348,6 +1349,7 @@ struct ThemeSelectionSheet: View {
                     }
                 }
                 .padding(.horizontal, 20)
+                .padding(.top, 4)
                 .padding(.bottom, 24)
             }
         }
