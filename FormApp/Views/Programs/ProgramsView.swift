@@ -40,9 +40,9 @@ enum ProgramHeroLayout {
     static func height(programs: [Program], width: CGFloat, titleSize: CGFloat, bodySize: CGFloat, daysSize: CGFloat, countsSize: CGFloat = 11) -> CGFloat {
         let contentWidth = max(1, width - 32)
         let footerWidth = max(1, contentWidth - 96)
-        return programs.reduce(CGFloat(240)) { current, program in
+        return programs.reduce(CGFloat(216)) { current, program in
             let title = textHeight(program.displayName, width: contentWidth - 56, size: titleSize, weight: .semibold, spacing: 2)
-            let description = program.displayDescription.isEmpty ? 0 : 10 + textHeight(program.displayDescription, width: contentWidth * descriptionFraction(width: width, bodySize: bodySize), size: bodySize, weight: .regular, spacing: 3)
+            let description = program.displayDescription.isEmpty ? 0 : 8 + textHeight(program.displayDescription, width: contentWidth * descriptionFraction(width: width, bodySize: bodySize), size: bodySize, weight: .regular, spacing: 3)
             let days = LanguageManager.t("programs.daysPerWeek", ["days": "\(program.workouts.filter { !$0.exercises.isEmpty }.count)"])
             let counts = LanguageManager.t("programs.counts", [
                 "workouts": program.workouts.count,
@@ -50,8 +50,8 @@ enum ProgramHeroLayout {
             ])
             let daysHeight = textHeight(days, width: max(1, footerWidth - 24), size: daysSize, weight: .semibold)
             let countsHeight = textHeight(counts, width: footerWidth, size: countsSize, weight: .regular)
-            let footer = max(48, daysHeight + 4 + countsHeight)
-            return max(current, 32 + title + description + 14 + footer + 4)
+            let footer = max(40, daysHeight + 4 + countsHeight)
+            return max(current, 32 + title + description + 10 + footer)
         }
     }
 }
@@ -329,9 +329,9 @@ struct ProgramHeroCard: View {
                     if !program.displayDescription.isEmpty {
                         Text(program.displayDescription).font(.system(size: bodySize)).lineSpacing(3)
                             .foregroundStyle(AppColors.secondaryText).frame(width: contentWidth * ProgramHeroLayout.descriptionFraction(width: width, bodySize: bodySize), alignment: .leading)
-                            .fixedSize(horizontal: false, vertical: true).padding(.top, 10)
+                            .fixedSize(horizontal: false, vertical: true).padding(.top, 8)
                     }
-                    Spacer(minLength: 14)
+                    Spacer(minLength: 10)
                     HStack(alignment: .center, spacing: 0) {
                         VStack(alignment: .leading, spacing: 4) {
                             HStack(spacing: 6) {
@@ -347,7 +347,7 @@ struct ProgramHeroCard: View {
                             .foregroundStyle(AppColors.muted)
                         }
                         Spacer()
-                    }.frame(minHeight: 48)
+                    }.frame(minHeight: 40)
                 }.padding(16).frame(width: width, height: height, alignment: .topLeading).contentShape(Rectangle())
             }.buttonStyle(.plain)
                 .accessibilityIdentifier("program-card-\(program.id)")
@@ -376,11 +376,6 @@ struct ProgramHeroCard: View {
                     .onTapGesture {
                         closeMenu()
                     }
-            }
-
-            if isActive {
-                Image(systemName: "checkmark.circle.fill").font(.system(size: 24)).foregroundStyle(AppColors.accent)
-                    .padding(.top, 72).padding(.trailing, 24).accessibilityHidden(true)
             }
 
             Button(action: toggleMenu) {
