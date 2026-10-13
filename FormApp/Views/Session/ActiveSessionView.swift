@@ -17,6 +17,7 @@ public struct ActiveSessionView: View {
     @State private var celebratoryNoticeMessage: String? = nil
     @State private var isCelebrationVisible: Bool = false
     @State private var inspectingExerciseId: String? = nil
+    @StateObject private var sessionMedia = SessionExerciseMedia()
     @State private var reportingExercise: Exercise? = nil
     @State private var pendingReport: ExerciseIssueReport? = nil
     @State private var showProgressionInfo: Bool = false
@@ -46,6 +47,8 @@ public struct ActiveSessionView: View {
         let exercises = activeDraft.workout.exercises
         let currentIndex = min(max(0, activeDraft.currentExerciseIndex), max(0, exercises.count - 1))
         let currentExercise = exercises.indices.contains(currentIndex) ? exercises[currentIndex] : nil
+        let mediaKey = SessionExerciseMedia.Key(workoutId: activeDraft.workout.id,
+            rows: exercises.map { .init(id: $0.id, exerciseId: $0.exerciseId) }, summary: showSummary)
         let currentSets = currentExercise.map { activeDraft.setsByExercise[$0.id] ?? [] } ?? []
         let supportsBarbellWarmup = currentExercise.map {
             WarmupPlateEngine.supportsExercise(equipmentCategory: EquipmentCatalog.shared.categoryId($0.exerciseId))
@@ -272,6 +275,7 @@ public struct ActiveSessionView: View {
                                             let isAllDone = !sets.isEmpty && sets.allSatisfy { $0.isCompleted }
 
                                             Button(action: {
+                                                sessionMedia.freezeActive()
                                                 if isSel {
                                                     inspectingExerciseId = ex.id
                                                 } else {
@@ -284,10 +288,9 @@ public struct ActiveSessionView: View {
                                             }) {
                                                 ZStack(alignment: .topTrailing) {
                                                     VStack(spacing: 4) {
-                                                        MovementIcon(
-                                                            exerciseId: ex.exerciseId,
-                                                            size: 72,
-                                                            animated: isSel && inspectingExerciseId == nil
+                                                        SessionMovementIcon(
+                                                            media: sessionMedia, rowId: ex.id,
+                                                            active: isSel && inspectingExerciseId == nil
                                                         )
 
                                                         Text("\(idx + 1). \(ex.displayName)")
@@ -459,6 +462,7 @@ public struct ActiveSessionView: View {
                     HStack(spacing: 10) {
                         Button(action: {
                             if currentIndex > 0 {
+                                sessionMedia.freezeActive()
                                 store.updateActiveSession { d in
                                     var copy = d
                                     copy.currentExerciseIndex = currentIndex - 1
@@ -485,6 +489,7 @@ public struct ActiveSessionView: View {
 
                         Button(action: {
                             if currentIndex < exercises.count - 1 {
+                                sessionMedia.freezeActive()
                                 store.updateActiveSession { d in
                                     var copy = d
                                     copy.currentExerciseIndex = currentIndex + 1
@@ -593,8 +598,10 @@ public struct ActiveSessionView: View {
                let inspectingExercise = exercises.first(where: { $0.id == inspectingId }) {
                 MiniExerciseDetailModal(
                     exercise: inspectingExercise,
-                    onDismiss: { inspectingExerciseId = nil },
+                    media: sessionMedia,
+                    onDismiss: { sessionMedia.freezeActive(); inspectingExerciseId = nil },
                     onReportIssue: {
+                        sessionMedia.freezeActive()
                         inspectingExerciseId = nil
                         let preflight = ExerciseReportStore.shared.checkPreflight()
                         switch preflight {
@@ -615,6 +622,10 @@ public struct ActiveSessionView: View {
 
             ToastOverlay(item: store.currentToast, bottomPadding: restTimer != nil ? 162 : 102)
         }
+        .task(id: mediaKey) {
+            await sessionMedia.prepare(key: mediaKey, initialRowId: currentExercise?.id)
+        }
+        .onDisappear { sessionMedia.close() }
         .sheet(item: $reportingExercise) { exercise in
             ExerciseReportSheet(
                 exercise: exercise,
@@ -860,6 +871,7 @@ public struct ActiveSessionView: View {
     }
 
     private func presentWorkoutSummary() {
+        sessionMedia.freezeActive()
         FormAudioPlayer.playWorkoutCompleteSound()
         finishedAt = Int64(Date().timeIntervalSince1970 * 1000)
         showSummary = true
@@ -964,6 +976,7 @@ public struct ActiveSessionView: View {
 private struct MiniExerciseDetailModal: View {
     @ObservedObject var themeManager = ThemeManager.shared
     let exercise: Exercise
+    @ObservedObject var media: SessionExerciseMedia
     var onDismiss: () -> Void
     var onReportIssue: (() -> Void)? = nil
 
@@ -1007,7 +1020,7 @@ private struct MiniExerciseDetailModal: View {
                 // Scrollable Content: Video + Cues + Avoid
                 ScrollView {
                     VStack(spacing: 14) {
-                        ExerciseDetailVideo(exerciseId: exercise.exerciseId)
+                        SessionExerciseDetailVideo(media: media, rowId: exercise.id, exerciseId: exercise.exerciseId)
                             .frame(maxWidth: .infinity)
                             .background(AppColors.exerciseVideoSurface)
                             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))

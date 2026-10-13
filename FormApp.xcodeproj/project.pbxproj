@@ -108,6 +108,7 @@
 		SP0000000000000000000002 /* SessionFeaturePaywall.swift in Sources */ = {isa = PBXBuildFile; fileRef = SP0000000000000000000001 /* SessionFeaturePaywall.swift */; };
 		T10000000000000000000003 /* ExerciseThumbnails in Resources */ = {isa = PBXBuildFile; fileRef = T10000000000000000000004 /* ExerciseThumbnails */; };
 		V10000000000000000000001 /* ExerciseDetailVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = V10000000000000000000002 /* ExerciseDetailVideo.swift */; };
+		C14000000000000000000001 /* SessionExerciseMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14000000000000000000002 /* SessionExerciseMedia.swift */; };
 		V10000000000000000000003 /* ExerciseVideos in Resources */ = {isa = PBXBuildFile; fileRef = V10000000000000000000004 /* ExerciseVideos */; };
 		VM0000000000000000000002 /* ProFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000001 /* ProFeature.swift */; };
 		VM0000000000000000000004 /* VolumeMatrixModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000003 /* VolumeMatrixModels.swift */; };
@@ -231,6 +232,7 @@
 		SP0000000000000000000001 /* SessionFeaturePaywall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionFeaturePaywall.swift; sourceTree = "<group>"; };
 		T10000000000000000000004 /* ExerciseThumbnails */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseThumbnails; sourceTree = "<group>"; };
 		V10000000000000000000002 /* ExerciseDetailVideo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseDetailVideo.swift; sourceTree = "<group>"; };
+		C14000000000000000000002 /* SessionExerciseMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionExerciseMedia.swift; sourceTree = "<group>"; };
 		V10000000000000000000004 /* ExerciseVideos */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseVideos; sourceTree = "<group>"; };
 		VM0000000000000000000001 /* ProFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeature.swift; sourceTree = "<group>"; };
 		VM0000000000000000000003 /* VolumeMatrixModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixModels.swift; sourceTree = "<group>"; };
@@ -276,6 +278,7 @@
 				D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */,
 				2D97FA7035F2317DFBE57498 /* MovementIcon.swift */,
 				V10000000000000000000002 /* ExerciseDetailVideo.swift */,
+				C14000000000000000000002 /* SessionExerciseMedia.swift */,
 				AB01000000000000000000002 /* ExerciseMediaBackdrop.swift */,
 				M20000000000000000000002 /* ExerciseMusclesCard.swift */,
 				E30000000000000000000002 /* ExerciseEquipment.swift */,
@@ -721,6 +724,7 @@
 				9BCC80499A86D74EE5B5FEDF /* LibraryView.swift in Sources */,
 				45546ACE7DF72EB335DD41FA /* MovementIcon.swift in Sources */,
 				V10000000000000000000001 /* ExerciseDetailVideo.swift in Sources */,
+				C14000000000000000000001 /* SessionExerciseMedia.swift in Sources */,
 				AB01000000000000000000001 /* ExerciseMediaBackdrop.swift in Sources */,
 				M20000000000000000000001 /* ExerciseMusclesCard.swift in Sources */,
 				E30000000000000000000001 /* ExerciseEquipment.swift in Sources */,
