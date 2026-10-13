@@ -353,21 +353,23 @@ struct ProgramHeroCard: View {
                 .accessibilityIdentifier("program-card-\(program.id)")
                 .accessibilityAddTraits(isActive ? [.isSelected] : [])
 
-            if !isActive {
-                Button(action: onSelect) {
-                    Text(LanguageManager.t("programs.apply"))
-                        .font(.system(size: 13, weight: .bold))
-                        .foregroundStyle(AppColors.todaySelectionText)
-                        .padding(.horizontal, 14)
-                        .padding(.vertical, 7)
-                        .background(AppColors.accent)
-                        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-                }
-                .buttonStyle(.plain)
-                .accessibilityIdentifier("program-apply-\(program.id)")
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
-                .padding(16)
+            Button(action: onSelect) {
+                Text(LanguageManager.t(isActive ? "programs.applied" : "programs.apply"))
+                    .font(.system(size: 13, weight: .bold))
+                    .foregroundStyle(isActive ? AppColors.accent : AppColors.todaySelectionText)
+                    .padding(.horizontal, 14)
+                    .padding(.vertical, 7)
+                    .background(isActive ? AppColors.positiveBg : AppColors.accent)
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .stroke(isActive ? AppColors.accent.opacity(0.5) : Color.clear, lineWidth: 1)
+                    )
             }
+            .buttonStyle(.plain)
+            .accessibilityIdentifier("program-apply-\(program.id)")
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .bottomTrailing)
+            .padding(16)
 
             if menuVisible {
                 Color.black.opacity(0.001)

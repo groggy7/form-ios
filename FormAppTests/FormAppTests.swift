@@ -1767,13 +1767,14 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_programs_fixed.png"
+            let path = "/Users/groggy/.gemini/antigravity/brain/49049143-92ae-4928-b11d-d8637d2ab36d/ios_programs_applied.png"
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
 
         XCTAssertEqual(LanguageManager.t("programs.import"), "Import JSON")
         XCTAssertEqual(LanguageManager.t("programs.apply"), "Apply")
+        XCTAssertEqual(LanguageManager.t("programs.applied"), "Applied")
         XCTAssertEqual(LanguageManager.t("modal.program.titleEdit"), "Edit program")
     }
 

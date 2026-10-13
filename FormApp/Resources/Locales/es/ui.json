@@ -1075,6 +1075,7 @@
   "settings.backgroundActive": "Configurado",
   "settings.backgroundNeedsReview": "Revisión requerida",
   "programs.apply": "Aplicar",
+  "programs.applied": "Aplicado",
   "library.scope": "Catalogar",
   "library.allExercises": "Todos los ejercicios",
   "library.currentProgram": "Programa actual",
