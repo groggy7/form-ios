@@ -444,24 +444,18 @@ private struct HomeDayGlassSurface: View {
 
 // MARK: - Home day tile, calm glass
 //
-// The default Home day tile. One light from the top-left: tinted glass, a thin specular arc, an inner top
-// highlight and bottom shade, and a soft shadow. No corner lights, sheens or bezel step.
+// The default Home day tile. Tinted glass with a plain one-colour border line, an inner top highlight and
+// bottom shade, and a soft shadow. No glow (outer or along the border), corner lights, sheens, specular arc
+// or bezel step.
 // Keep geometry, stops and alphas in sync with Android's `dayTileCalmGlass` (WorkoutWeekStrip.kt).
 // See docs/design/form-design-system.md, "Home day tile styles".
 private struct HomeDayCalmSurface: View {
-    private struct Look { let tint: Double; let tintGlow: Double; let under: Double; let ring: Double }
-    private static let statusDark = Look(tint: 0.19, tintGlow: 0.062, under: 0.058, ring: 0.445)
-    private static let neutralDark = Look(tint: 0.05, tintGlow: 0.022, under: 0.014, ring: 0.243)
-    private static let statusLight = Look(tint: 0.095, tintGlow: 0.035, under: 0.006, ring: 0.445)
-    private static let neutralLight = Look(tint: 0.05, tintGlow: 0.017, under: 0.002, ring: 0.365)
-
-    /// Specular arc alpha by angle (degrees clockwise from 3 o'clock, 46.7° corner angle): brightest top-left.
-    private static let specAngles: [Double] = [
-        0.0, 10.0, 32.0, 53.0, 78.0, 110.0, 145.0, 180.0, 210.0, 232.0, 255.0, 270.0, 292.0, 315.0, 360.0
-    ]
-    private static let specAlpha: [Double] = [
-        0.10, 0.10, 0.24, 0.66, 0.30, 0.14, 0.08, 0.26, 0.62, 1.00, 0.62, 0.40, 0.22, 0.10, 0.10
-    ]
+    /// `tint` is the body's blend of the light; `ring` is the opacity of the uniform border line.
+    private struct Look { let tint: Double; let ring: Double }
+    private static let statusDark = Look(tint: 0.19, ring: 0.60)
+    private static let neutralDark = Look(tint: 0.05, ring: 0.35)
+    private static let statusLight = Look(tint: 0.095, ring: 0.60)
+    private static let neutralLight = Look(tint: 0.05, ring: 0.45)
     /// Fractions of an edge ramp's reach (four time constants): alpha is `amp * exp(-4 * fraction)`, 0 at the end.
     private static let rampStops: [Double] = [0, 0.125, 0.25, 0.5, 0.75, 1]
     private static let warmShade = Color(hex: 0x71685C)
@@ -495,22 +489,18 @@ private struct HomeDayCalmSurface: View {
             let shade = isDark ? Color.black : Self.warmShade
             let width = Double(w)
 
-            // 1. Soft halos outside the shape: drop shadow, status underglow, selection glow.
+            // 1. Soft drop shadow outside the shape (black, or warm brown on light suites); no coloured glow.
             var outside = context
             outside.clip(to: shape, options: .inverse)
-            func halo(_ color: Color, peak: Double, ex: Double, ey: Double, dy: Double) {
-                let reachX = ex * width, reachY = ey * width, offsetY = dy * width
-                for inflation in HomeGlassRecipe.bloomInflations(peak: peak, alpha: HomeGlassRecipe.bloomLayerAlpha,
-                                                                  kappa: HomeGlassRecipe.bloomKappa) {
-                    var rect = tile.insetBy(dx: -CGFloat(inflation * reachX), dy: -CGFloat(inflation * reachY))
-                    rect.origin.y += CGFloat(offsetY)
-                    outside.fill(rounded(rect, radius + CGFloat(inflation * (reachX + reachY) / 2)),
-                                 with: .color(color.opacity(HomeGlassRecipe.bloomLayerAlpha)))
-                }
+            let reachX = 0.078 * width, reachY = 0.042 * width, offsetY = 0.058 * width
+            for inflation in HomeGlassRecipe.bloomInflations(peak: isDark ? 0.29 : 0.20,
+                                                              alpha: HomeGlassRecipe.bloomLayerAlpha,
+                                                              kappa: HomeGlassRecipe.bloomKappa) {
+                var rect = tile.insetBy(dx: -CGFloat(inflation * reachX), dy: -CGFloat(inflation * reachY))
+                rect.origin.y += CGFloat(offsetY)
+                outside.fill(rounded(rect, radius + CGFloat(inflation * (reachX + reachY) / 2)),
+                             with: .color(shade.opacity(HomeGlassRecipe.bloomLayerAlpha)))
             }
-            halo(shade, peak: isDark ? 0.29 : 0.20, ex: 0.078, ey: 0.042, dy: 0.058)
-            halo(light, peak: look.under, ex: 0.062, ey: 0.074, dy: 0.044)
-            if selected { halo(accent, peak: 0.10, ex: 0.03, ey: 0.05, dy: 0) }
 
             var glassContext = context
             glassContext.clip(to: shape)
@@ -525,7 +515,7 @@ private struct HomeDayCalmSurface: View {
                 .init(color: Color.white.opacity(gloss[2]), location: 1)
             ]), startPoint: CGPoint(x: tile.midX, y: tile.minY), endPoint: CGPoint(x: tile.midX, y: tile.maxY)))
 
-            // 3. Inner light: a faint tint at every edge, white edge glow (dark suites), top highlight, bottom shade.
+            // 3. Inner depth: a thin top highlight and a bottom shade. No glow along the border.
             // `side`: 0 top, 1 bottom, 2 left, 3 right.
             func ramp(_ side: Int, _ color: Color, amp: Double, tau: Double) {
                 let reach = CGFloat(4 * tau)
@@ -541,23 +531,14 @@ private struct HomeDayCalmSurface: View {
                 }
                 glassContext.fill(shape, with: .linearGradient(Gradient(stops: stops), startPoint: start, endPoint: end))
             }
-            for side in 0..<4 { ramp(side, light, amp: look.tintGlow, tau: 0.0623 * width) }
-            if isDark { for side in 0..<4 { ramp(side, .white, amp: 0.05, tau: 0.0231 * width) } }
             ramp(0, .white, amp: isDark ? 0.44 : 0.80, tau: 0.0106 * width)
             ramp(1, shade, amp: isDark ? 0.335 : 0.22, tau: 0.0181 * width)
 
-            // 4. Hairline in the status colour (accent when selected) plus one specular arc on the same path.
+            // 4. One plain border line in the status or neutral light (accent when selected): a single colour
+            // and opacity all the way round.
             let rimWidth: CGFloat = selected ? 1.5 : (today ? 1.25 : 1)
             let rimPath = insetPath(rimWidth / 2)
             glassContext.stroke(rimPath, with: .color(selected ? accent.opacity(0.95) : light.opacity(look.ring)),
-                                lineWidth: rimWidth)
-            let specScale = (isDark ? 1.06 : 0.9) * (selected ? 0.5 : 1)
-            let specStops = Self.specAngles.enumerated().map { index, angle in
-                Gradient.Stop(color: Color.white.opacity(min(1, Self.specAlpha[index] * specScale)),
-                              location: HomeGlassRecipe.rimFraction(angle, width: width, height: Double(h)))
-            }
-            glassContext.stroke(rimPath, with: .conicGradient(Gradient(stops: specStops),
-                                                              center: CGPoint(x: tile.midX, y: tile.midY)),
                                 lineWidth: rimWidth)
         }
         .accessibilityHidden(true)
