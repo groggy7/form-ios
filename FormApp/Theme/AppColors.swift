@@ -80,6 +80,49 @@ public enum AppColors {
     
     public static var todayIvory: Color { lightThemeColor(Color(hex: 0xEEE8DC), accent) }
     public static var todaySelectionText: Color { lightThemeColor(Color(hex: 0x1A2026), background) }
+
+    // Home day tiles: category and status fills keep each suite's undertone.
+    public struct HomeDayColors {
+        public let upper: Color
+        public let lower: Color
+        public let fullBody: Color
+        public let completed: Color
+        public let unfinished: Color
+        public let missed: Color
+        public let selected: Color
+
+        fileprivate init(upper: UInt32, lower: UInt32, fullBody: UInt32, completed: UInt32,
+                         unfinished: UInt32, missed: UInt32, selected: UInt32) {
+            self.upper = Color(hex: upper)
+            self.lower = Color(hex: lower)
+            self.fullBody = Color(hex: fullBody)
+            self.completed = Color(hex: completed)
+            self.unfinished = Color(hex: unfinished)
+            self.missed = Color(hex: missed)
+            self.selected = Color(hex: selected)
+        }
+    }
+
+    public static var homeDayColors: HomeDayColors {
+        switch ThemeManager.shared.currentTheme.id {
+        case "espresso": return HomeDayColors(upper: 0x3B2B2A, lower: 0x30323A, fullBody: 0x3B3028,
+            completed: 0x2B3D2D, unfinished: 0x4B331E, missed: 0x4A2928, selected: 0x51402D)
+        case "stealth": return HomeDayColors(upper: 0x2D2934, lower: 0x252E39, fullBody: 0x2B2C31,
+            completed: 0x223D32, unfinished: 0x413020, missed: 0x42282F, selected: 0x3A3C43)
+        case "cobalt": return HomeDayColors(upper: 0x2C2A45, lower: 0x1C354C, fullBody: 0x263340,
+            completed: 0x193D34, unfinished: 0x3D2E21, missed: 0x3E2633, selected: 0x15415A)
+        case "alpine": return HomeDayColors(upper: 0x2B3432, lower: 0x213A35, fullBody: 0x2B352E,
+            completed: 0x19432F, unfinished: 0x40331F, missed: 0x3E2829, selected: 0x1D4A37)
+        case "crimson": return HomeDayColors(upper: 0x402A38, lower: 0x30323E, fullBody: 0x3D2D2C,
+            completed: 0x2B3E31, unfinished: 0x4D3525, missed: 0x4F2831, selected: 0x5A3337)
+        case "amethyst": return HomeDayColors(upper: 0x3B2952, lower: 0x2C354C, fullBody: 0x352E43,
+            completed: 0x283F37, unfinished: 0x48352B, missed: 0x4C2B3D, selected: 0x44255E)
+        case "oat": return HomeDayColors(upper: 0xE6DACD, lower: 0xE3DBCE, fullBody: 0xEDE3D4,
+            completed: 0xE8EDE4, unfinished: 0xF3EADE, missed: 0xF7E8E0, selected: 0xF2DFC8)
+        default: return HomeDayColors(upper: 0x292539, lower: 0x202D3D, fullBody: 0x292F38,
+            completed: 0x1B3A2E, unfinished: 0x3D2C1B, missed: 0x3B2328, selected: 0x234A40)
+        }
+    }
     
     // Split presentation colors
     public static var upperBorder: Color { lightThemeColor(Color(hex: 0x494260), Color(hex: 0xC7AFBA)) }

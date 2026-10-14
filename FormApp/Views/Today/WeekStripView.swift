@@ -7,25 +7,9 @@ public enum WorkoutVisualRegion {
 
     var daySurface: Color {
         switch self {
-        case .upper: return AppColors.lightThemeColor(Color(hex: 0x292539), Color(hex: 0xF0E3EA))
-        case .lower: return AppColors.lightThemeColor(Color(hex: 0x202D3D), Color(hex: 0xE3E8EE))
-        case .fullBody: return AppColors.lightThemeColor(Color(hex: 0x292F38), Color(hex: 0xEBE3D7))
-        }
-    }
-
-    var dayBorder: Color {
-        switch self {
-        case .upper: return AppColors.lightThemeColor(Color(hex: 0x494260), Color(hex: 0xC7AFBA))
-        case .lower: return AppColors.lightThemeColor(Color(hex: 0x37485F), Color(hex: 0xA8B8C6))
-        case .fullBody: return AppColors.lightThemeColor(Color(hex: 0x414C57), Color(hex: 0xC7B6A1))
-        }
-    }
-
-    var dayText: Color {
-        switch self {
-        case .upper: return AppColors.lightThemeColor(Color(hex: 0xE3DAF1), Color(hex: 0x765064))
-        case .lower: return AppColors.lightThemeColor(Color(hex: 0xD2E2F5), Color(hex: 0x485E72))
-        case .fullBody: return AppColors.lightThemeColor(Color(hex: 0xDBE2E9), Color(hex: 0x65584A))
+        case .upper: return AppColors.homeDayColors.upper
+        case .lower: return AppColors.homeDayColors.lower
+        case .fullBody: return AppColors.homeDayColors.fullBody
         }
     }
 }
@@ -113,6 +97,7 @@ struct WorkoutDayStrip: View {
     }
 
     var body: some View {
+        let dayColors = AppColors.homeDayColors
         ScrollViewReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
@@ -123,30 +108,37 @@ struct WorkoutDayStrip: View {
                         let workoutKey = "\(program.id):\(workout.id)"
                         let isCompleted = completedKeys.contains(workoutKey)
                         let isUnfinished = !isCompleted && unfinishedKeys.contains(workoutKey)
+                        let isMissed = WeeklyPlanView.isMissedPlanDay(dayIndex: dayIndex, todayIndex: calendar.today,
+                            hasWorkout: true, completed: isCompleted, unfinished: isUnfinished)
                         let dayNumber = calendar.numbers.indices.contains(dayIndex) ? calendar.numbers[dayIndex] : (dayIndex + 1)
                         let palette = workout.visualRegion
-
-                        let textColor: Color = {
-                            if selected { return AppColors.todaySelectionText }
-                            if isCompleted { return AppColors.completedDayText }
-                            if isUnfinished { return AppColors.unfinishedText }
-                            return palette.dayText
-                        }()
+                        let textColor = AppColors.text
 
                         let surfaceColor: Color = {
-                            if selected { return AppColors.todayIvory }
-                            if isCompleted { return AppColors.completedDaySurface }
-                            if isUnfinished { return AppColors.unfinishedSurface }
+                            // Status survives selection, including a past-day preview.
+                            if isCompleted { return dayColors.completed }
+                            if isUnfinished { return dayColors.unfinished }
+                            if isMissed { return dayColors.missed }
+                            if selected { return dayColors.selected }
                             return palette.daySurface
                         }()
 
                         let borderColor: Color = {
-                            if selected { return AppColors.todayIvory }
-                            if isToday { return AppColors.todayIvory.opacity(0.7) }
-                            if isCompleted { return AppColors.completedDayBorder }
-                            if isUnfinished { return Color(hex: 0x664923) }
-                            return palette.dayBorder
+                            if selected { return AppColors.accent }
+                            if isToday { return AppColors.accent.opacity(0.65) }
+                            if isCompleted { return Color.mix(AppColors.border, AppColors.completedGreen, 0.25) }
+                            if isUnfinished { return Color.mix(AppColors.border, AppColors.unfinishedOrange, 0.25) }
+                            if isMissed { return Color.mix(AppColors.border, AppColors.missedRed, 0.25) }
+                            return Color.mix(AppColors.border, surfaceColor, 0.35)
                         }()
+                        let statuses: [String?] = [
+                            isToday ? LanguageManager.t("nav.today") : nil,
+                            dayIndex > calendar.today ? LanguageManager.t("history.future") : nil,
+                            isCompleted ? LanguageManager.t("history.completed") : nil,
+                            isUnfinished ? LanguageManager.t("history.unfinished") : nil,
+                            isMissed ? LanguageManager.t("history.missed") : nil
+                        ]
+                        let statusDescription = statuses.compactMap { $0 }.joined(separator: ", ")
 
                         Button(action: {
                             onSelectWorkout(workout.id)
@@ -187,7 +179,7 @@ struct WorkoutDayStrip: View {
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 20)
-                                    .strokeBorder(borderColor, lineWidth: (isToday && !selected) ? 2 : 1)
+                                    .strokeBorder(borderColor, lineWidth: (selected || isToday) ? 2 : 1)
                             )
                             .clipShape(RoundedRectangle(cornerRadius: 20))
                         }
@@ -195,6 +187,7 @@ struct WorkoutDayStrip: View {
                         .id(workout.id)
                         .accessibilityIdentifier("today-day-\(workout.id)")
                         .accessibilityLabel("\(LanguageManager.workoutDays[dayIndex]), \(dayNumber), \(workout.displayTitle(programId: program.id))")
+                        .accessibilityValue(statusDescription)
                         .accessibilityAddTraits(selected ? [.isSelected] : [])
                     }
                 }
