@@ -276,6 +276,8 @@
   "settings.appearance": "Apariencia",
   "settings.appTheme": "Tema de la aplicación",
   "settings.appThemeSubtitle": "Personalizar el tema visual de color",
+  "settings.glowTiles": "Casillas de día brillantes",
+  "settings.glowTilesSubtitle": "Resplandor neón en los bordes y brillos en las esquinas de las casillas de día de Inicio. Desactivado: cristal más sobrio.",
   "theme.default.name": "Obsidiana & Menta",
   "theme.default.description": "Tema oscuro canónico de alto contraste",
   "theme.espresso.name": "Espresso & Beige",

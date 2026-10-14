@@ -196,6 +196,30 @@ public struct SettingsView: View {
                         }
                         .buttonStyle(.plain)
                         .accessibilityIdentifier("settings-theme-row")
+
+                        Divider().background(AppColors.border)
+
+                        Toggle(isOn: $store.homeGlowTiles) {
+                            HStack(spacing: 12) {
+                                Image(systemName: "sparkles")
+                                    .font(.system(size: 16))
+                                    .foregroundStyle(store.homeGlowTiles ? AppColors.accent : AppColors.secondaryText)
+                                    .frame(width: 22)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(LanguageManager.t("settings.glowTiles"))
+                                        .font(.system(size: 15))
+                                        .foregroundStyle(AppColors.text)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    Text(LanguageManager.t("settings.glowTilesSubtitle"))
+                                        .font(.system(size: 12))
+                                        .foregroundStyle(AppColors.secondaryText)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                            }
+                        }
+                        .tint(AppColors.accent)
+                        .padding(14)
+                        .accessibilityIdentifier("toggle-glow-tiles")
                     }
 
                     // Weight Unit

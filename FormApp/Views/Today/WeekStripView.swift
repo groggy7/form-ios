@@ -60,7 +60,8 @@ public struct WeekStripView: View {
         return AnyView(WorkoutDayStrip(
             program: program, workouts: workouts, calendar: calendar,
             activeWorkoutId: activeWorkout?.id, completedKeys: completedKeys,
-            unfinishedKeys: unfinishedKeys, onSelectWorkout: onSelectWorkout
+            unfinishedKeys: unfinishedKeys, onSelectWorkout: onSelectWorkout,
+            glowTiles: store.homeGlowTiles
         ))
     }
 }
@@ -74,6 +75,8 @@ struct WorkoutDayStrip: View {
     let completedKeys: [String]
     let unfinishedKeys: Set<String>
     let onSelectWorkout: (String) -> Void
+    /// Opt-in neon glow; the default is the calmer single-light glass.
+    var glowTiles: Bool = false
 
     @ScaledMetric(relativeTo: .caption2) private var labelSize: CGFloat = 11
     @ScaledMetric(relativeTo: .title2) private var numberSize: CGFloat = 25
@@ -138,7 +141,9 @@ struct WorkoutDayStrip: View {
                                 Text("\(dayNumber)")
                                     .font(.system(size: numberSize, weight: .bold))
                                     .foregroundStyle(textColor)
-                                    .shadow(color: isDark ? (statusTint ?? glass.neutralRim).opacity(0.35) : .clear, radius: 5)
+                                    .shadow(color: !isDark ? .clear
+                                                : glowTiles ? (statusTint ?? glass.neutralRim).opacity(0.35) : Color.black.opacity(0.35),
+                                            radius: glowTiles ? 5 : 1, x: 0, y: glowTiles ? 0 : 1)
                                     .lineLimit(1)
 
                                 Text(workout.displayTitle(programId: program.id))
@@ -157,9 +162,16 @@ struct WorkoutDayStrip: View {
                             .frame(minHeight: 108, alignment: .top)
                             .frame(maxHeight: .infinity, alignment: .top)
                             .background(
-                                HomeDayGlassSurface(glass: glass, statusTint: statusTint, isDark: isDark,
-                                    selected: selected, today: isToday, accent: AppColors.accent)
-                                    .padding(-HomeDayGlassSurface.margin)
+                                Group {
+                                    if glowTiles {
+                                        HomeDayGlassSurface(glass: glass, statusTint: statusTint, isDark: isDark,
+                                            selected: selected, today: isToday, accent: AppColors.accent)
+                                    } else {
+                                        HomeDayCalmSurface(glass: glass, statusTint: statusTint, isDark: isDark,
+                                            selected: selected, today: isToday, accent: AppColors.accent)
+                                    }
+                                }
+                                .padding(-HomeDayGlassSurface.margin)
                             )
                             .contentShape(RoundedRectangle(cornerRadius: HomeDayGlassSurface.radius, style: .continuous))
                         }
@@ -197,7 +209,7 @@ struct WorkoutDayStrip: View {
 // Static optical layers shared with Android's `dayTileGlass` (WorkoutWeekStrip.kt): keep geometry, stops
 // and alphas in sync. Draw order: outer bloom, tinted body, edge glow, corner lights, sheens, sweep rim.
 // Every light fades to the same colour at alpha 0 so interpolation never shifts hue.
-// See docs/design/form-design-system.md, "Home day tile glass".
+// See docs/design/form-design-system.md, "Home day tile styles" (Glow style).
 private struct HomeGlassRecipe {
     /// Radial light; `radius` is a fraction of the tile width.
     struct Light { let alpha: Double; let radius: Double }
@@ -308,7 +320,7 @@ private struct HomeGlassRecipe {
 private struct HomeDayGlassSurface: View {
     static let radius: CGFloat = 14
     /// Room around the tile for the outer bloom; callers extend this view outward by the same amount.
-    static let margin: CGFloat = 12
+    static let margin: CGFloat = 14
 
     let glass: AppColors.HomeDayGlassColors
     let statusTint: Color?
@@ -424,6 +436,129 @@ private struct HomeDayGlassSurface: View {
                 ? .color(accent)
                 : .conicGradient(Gradient(stops: stops), center: CGPoint(x: tile.midX, y: tile.midY))
             glassContext.stroke(insetPath(rimWidth / 2), with: rimShading, lineWidth: rimWidth)
+        }
+        .accessibilityHidden(true)
+        .allowsHitTesting(false)
+    }
+}
+
+// MARK: - Home day tile, calm glass
+//
+// The default Home day tile. One light from the top-left: tinted glass, a thin specular arc, an inner top
+// highlight and bottom shade, and a soft shadow. No corner lights, sheens or bezel step.
+// Keep geometry, stops and alphas in sync with Android's `dayTileCalmGlass` (WorkoutWeekStrip.kt).
+// See docs/design/form-design-system.md, "Home day tile styles".
+private struct HomeDayCalmSurface: View {
+    private struct Look { let tint: Double; let tintGlow: Double; let under: Double; let ring: Double }
+    private static let statusDark = Look(tint: 0.19, tintGlow: 0.062, under: 0.058, ring: 0.445)
+    private static let neutralDark = Look(tint: 0.05, tintGlow: 0.022, under: 0.014, ring: 0.243)
+    private static let statusLight = Look(tint: 0.095, tintGlow: 0.035, under: 0.006, ring: 0.445)
+    private static let neutralLight = Look(tint: 0.05, tintGlow: 0.017, under: 0.002, ring: 0.365)
+
+    /// Specular arc alpha by angle (degrees clockwise from 3 o'clock, 46.7° corner angle): brightest top-left.
+    private static let specAngles: [Double] = [
+        0.0, 10.0, 32.0, 53.0, 78.0, 110.0, 145.0, 180.0, 210.0, 232.0, 255.0, 270.0, 292.0, 315.0, 360.0
+    ]
+    private static let specAlpha: [Double] = [
+        0.10, 0.10, 0.24, 0.66, 0.30, 0.14, 0.08, 0.26, 0.62, 1.00, 0.62, 0.40, 0.22, 0.10, 0.10
+    ]
+    /// Fractions of an edge ramp's reach (four time constants): alpha is `amp * exp(-4 * fraction)`, 0 at the end.
+    private static let rampStops: [Double] = [0, 0.125, 0.25, 0.5, 0.75, 1]
+    private static let warmShade = Color(hex: 0x71685C)
+
+    let glass: AppColors.HomeDayGlassColors
+    let statusTint: Color?
+    let isDark: Bool
+    let selected: Bool
+    let today: Bool
+    let accent: Color
+
+    var body: some View {
+        Canvas { context, size in
+            let edge = HomeDayGlassSurface.margin
+            let w = size.width - 2 * edge
+            let h = size.height - 2 * edge
+            guard w > 0, h > 0 else { return }
+            let radius = HomeDayGlassSurface.radius
+            let tile = CGRect(x: edge, y: edge, width: w, height: h)
+            func rounded(_ rect: CGRect, _ cornerRadius: CGFloat) -> Path {
+                Path(roundedRect: rect, cornerRadius: max(0, cornerRadius), style: .continuous)
+            }
+            func insetPath(_ amount: CGFloat) -> Path {
+                rounded(tile.insetBy(dx: amount, dy: amount), radius - amount)
+            }
+            let shape = insetPath(0)
+            let hasStatus = statusTint != nil
+            let look: Look = isDark ? (hasStatus ? Self.statusDark : Self.neutralDark)
+                : (hasStatus ? Self.statusLight : Self.neutralLight)
+            let light = statusTint ?? glass.neutralRim
+            let shade = isDark ? Color.black : Self.warmShade
+            let width = Double(w)
+
+            // 1. Soft halos outside the shape: drop shadow, status underglow, selection glow.
+            var outside = context
+            outside.clip(to: shape, options: .inverse)
+            func halo(_ color: Color, peak: Double, ex: Double, ey: Double, dy: Double) {
+                let reachX = ex * width, reachY = ey * width, offsetY = dy * width
+                for inflation in HomeGlassRecipe.bloomInflations(peak: peak, alpha: HomeGlassRecipe.bloomLayerAlpha,
+                                                                  kappa: HomeGlassRecipe.bloomKappa) {
+                    var rect = tile.insetBy(dx: -CGFloat(inflation * reachX), dy: -CGFloat(inflation * reachY))
+                    rect.origin.y += CGFloat(offsetY)
+                    outside.fill(rounded(rect, radius + CGFloat(inflation * (reachX + reachY) / 2)),
+                                 with: .color(color.opacity(HomeGlassRecipe.bloomLayerAlpha)))
+                }
+            }
+            halo(shade, peak: isDark ? 0.29 : 0.20, ex: 0.078, ey: 0.042, dy: 0.058)
+            halo(light, peak: look.under, ex: 0.062, ey: 0.074, dy: 0.044)
+            if selected { halo(accent, peak: 0.10, ex: 0.03, ey: 0.05, dy: 0) }
+
+            var glassContext = context
+            glassContext.clip(to: shape)
+
+            // 2. Glass body: status tint, then a top-to-bottom gloss (milky base first in light suites).
+            if !isDark { glassContext.fill(shape, with: .color(glass.base)) }
+            glassContext.fill(shape, with: .color(light.opacity(look.tint)))
+            let gloss: [Double] = isDark ? [0.17, 0.065, 0.075] : [0.50, 0.14, 0.22]
+            glassContext.fill(shape, with: .linearGradient(Gradient(stops: [
+                .init(color: Color.white.opacity(gloss[0]), location: 0),
+                .init(color: Color.white.opacity(gloss[1]), location: 0.38),
+                .init(color: Color.white.opacity(gloss[2]), location: 1)
+            ]), startPoint: CGPoint(x: tile.midX, y: tile.minY), endPoint: CGPoint(x: tile.midX, y: tile.maxY)))
+
+            // 3. Inner light: a faint tint at every edge, white edge glow (dark suites), top highlight, bottom shade.
+            // `side`: 0 top, 1 bottom, 2 left, 3 right.
+            func ramp(_ side: Int, _ color: Color, amp: Double, tau: Double) {
+                let reach = CGFloat(4 * tau)
+                let stops = Self.rampStops.map { fraction in
+                    Gradient.Stop(color: color.opacity(fraction >= 1 ? 0 : amp * exp(-4 * fraction)), location: CGFloat(fraction))
+                }
+                let start: CGPoint, end: CGPoint
+                switch side {
+                case 0: start = CGPoint(x: tile.midX, y: tile.minY); end = CGPoint(x: tile.midX, y: tile.minY + reach)
+                case 1: start = CGPoint(x: tile.midX, y: tile.maxY); end = CGPoint(x: tile.midX, y: tile.maxY - reach)
+                case 2: start = CGPoint(x: tile.minX, y: tile.midY); end = CGPoint(x: tile.minX + reach, y: tile.midY)
+                default: start = CGPoint(x: tile.maxX, y: tile.midY); end = CGPoint(x: tile.maxX - reach, y: tile.midY)
+                }
+                glassContext.fill(shape, with: .linearGradient(Gradient(stops: stops), startPoint: start, endPoint: end))
+            }
+            for side in 0..<4 { ramp(side, light, amp: look.tintGlow, tau: 0.0623 * width) }
+            if isDark { for side in 0..<4 { ramp(side, .white, amp: 0.05, tau: 0.0231 * width) } }
+            ramp(0, .white, amp: isDark ? 0.44 : 0.80, tau: 0.0106 * width)
+            ramp(1, shade, amp: isDark ? 0.335 : 0.22, tau: 0.0181 * width)
+
+            // 4. Hairline in the status colour (accent when selected) plus one specular arc on the same path.
+            let rimWidth: CGFloat = selected ? 1.5 : (today ? 1.25 : 1)
+            let rimPath = insetPath(rimWidth / 2)
+            glassContext.stroke(rimPath, with: .color(selected ? accent.opacity(0.95) : light.opacity(look.ring)),
+                                lineWidth: rimWidth)
+            let specScale = (isDark ? 1.06 : 0.9) * (selected ? 0.5 : 1)
+            let specStops = Self.specAngles.enumerated().map { index, angle in
+                Gradient.Stop(color: Color.white.opacity(min(1, Self.specAlpha[index] * specScale)),
+                              location: HomeGlassRecipe.rimFraction(angle, width: width, height: Double(h)))
+            }
+            glassContext.stroke(rimPath, with: .conicGradient(Gradient(stops: specStops),
+                                                              center: CGPoint(x: tile.midX, y: tile.midY)),
+                                lineWidth: rimWidth)
         }
         .accessibilityHidden(true)
         .allowsHitTesting(false)

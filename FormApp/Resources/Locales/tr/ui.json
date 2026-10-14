@@ -276,6 +276,8 @@
   "settings.appearance": "Görünüm",
   "settings.appTheme": "Uygulama teması",
   "settings.appThemeSubtitle": "Görsel renk temasını kişiselleştirin",
+  "settings.glowTiles": "Parlayan gün kutuları",
+  "settings.glowTilesSubtitle": "Ana sayfadaki gün kutularında neon kenar parlaması ve köşe vurguları. Kapalıyken daha sakin cam görünümü kullanılır.",
   "theme.default.name": "Obsidyen & Nane",
   "theme.default.description": "Orijinal yüksek kontrastlı koyu tema",
   "theme.espresso.name": "Espresso & Bej",

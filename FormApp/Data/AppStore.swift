@@ -14,6 +14,7 @@ public final class AppStore: ObservableObject {
     private let soundKey = "sound_enabled"
     private let defaultRestKey = "default_rest_seconds"
     private let prefillNextSetKey = "prefill_next_set"
+    private let homeGlowTilesKey = "home_glow_tiles"
     private let weightUnitKey = "weight_unit"
     private let barTypeKey = "bar_type"
     private let availablePlatesKey = "available_plates_kg"
@@ -57,6 +58,8 @@ public final class AppStore: ObservableObject {
     @Published public var soundEnabled: Bool
     @Published public var defaultRestSeconds: Int
     @Published public var prefillNextSet: Bool
+    /// Home day tiles use the calm glass by default; this opts back in to the earlier neon glow.
+    @Published public var homeGlowTiles: Bool
     @Published public var weightUnit: WeightUnit {
         didSet {
             guard weightUnit != oldValue, let draft = activeSession else { return }
@@ -182,6 +185,7 @@ public final class AppStore: ObservableObject {
         self.soundEnabled = UserDefaults.standard.object(forKey: soundKey) as? Bool ?? true
         self.defaultRestSeconds = UserDefaults.standard.object(forKey: defaultRestKey) as? Int ?? 90
         self.prefillNextSet = UserDefaults.standard.object(forKey: prefillNextSetKey) as? Bool ?? true
+        self.homeGlowTiles = UserDefaults.standard.object(forKey: homeGlowTilesKey) as? Bool ?? false
         let initialWeightUnit: WeightUnit
         if let savedUnitCode = UserDefaults.standard.string(forKey: weightUnitKey) {
             initialWeightUnit = WeightUnit.fromCode(savedUnitCode)
@@ -314,6 +318,10 @@ public final class AppStore: ObservableObject {
 
         $prefillNextSet
             .sink { [prefillNextSetKey] in UserDefaults.standard.set($0, forKey: prefillNextSetKey) }
+            .store(in: &cancellables)
+
+        $homeGlowTiles
+            .sink { [homeGlowTilesKey] in UserDefaults.standard.set($0, forKey: homeGlowTilesKey) }
             .store(in: &cancellables)
 
         $weightUnit

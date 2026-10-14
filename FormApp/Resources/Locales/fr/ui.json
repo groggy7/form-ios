@@ -276,6 +276,8 @@
   "settings.appearance": "Apparence",
   "settings.appTheme": "Thème de l'application",
   "settings.appThemeSubtitle": "Personnaliser le thème visuel des couleurs",
+  "settings.glowTiles": "Tuiles de jour lumineuses",
+  "settings.glowTilesSubtitle": "Halo néon sur les bords et reflets dans les coins des tuiles de jour de l’accueil. Désactivé : verre plus sobre.",
   "theme.default.name": "Obsidienne & Menthe",
   "theme.default.description": "Thème sombre canonique à fort contraste",
   "theme.espresso.name": "Espresso & Beige",

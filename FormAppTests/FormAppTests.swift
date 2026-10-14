@@ -493,6 +493,79 @@ final class FormAppTests: XCTestCase {
         }
     }
 
+    func testHomeGlowTilesDefaultToCalmAndPersistTheChoice() throws {
+        let key = "home_glow_tiles"
+        let previous = UserDefaults.standard.object(forKey: key)
+        defer {
+            if let previous { UserDefaults.standard.set(previous, forKey: key) }
+            else { UserDefaults.standard.removeObject(forKey: key) }
+        }
+        UserDefaults.standard.removeObject(forKey: key)
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        XCTAssertFalse(store.homeGlowTiles, "The calm glass is the default Home tile style")
+        store.homeGlowTiles = true
+        XCTAssertEqual(UserDefaults.standard.object(forKey: key) as? Bool, true)
+        XCTAssertTrue(AppStore(persistence: AppStatePersistence(inMemory: true)).homeGlowTiles)
+        store.homeGlowTiles = false
+        XCTAssertFalse(AppStore(persistence: AppStatePersistence(inMemory: true)).homeGlowTiles)
+    }
+
+    func testGlowTilesSettingIsTranslatedInEveryLanguage() {
+        XCTAssertEqual(Translations.en["settings.glowTiles"], "Glowing day tiles")
+        for language in ["tr", "de", "fr", "es"] {
+            let table = Translations.forLanguage(language)
+            for key in ["settings.glowTiles", "settings.glowTilesSubtitle"] {
+                let value = table[key] ?? ""
+                XCTAssertFalse(value.isEmpty, "\(language) \(key) is missing")
+                XCTAssertNotEqual(value, Translations.en[key], "\(language) \(key) still reads as English")
+            }
+        }
+    }
+
+    @MainActor
+    func testBothHomeTileStylesKeepTheSameLayoutAndRetainSnapshots() throws {
+        func scrollViews(in view: UIView) -> [UIScrollView] {
+            (view as? UIScrollView).map { [$0] } ?? view.subviews.flatMap { scrollViews(in: $0) }
+        }
+        let previousTheme = ThemeManager.shared.currentTheme.id
+        defer { ThemeManager.shared.setThemeId(previousTheme) }
+        let names = ["Chest & Triceps", "Back & Biceps", "Quads & Calves", "Upper Body & Shoulders", "Glutes & Hamstrings"]
+        let workouts = names.enumerated().map { Workout(id: "tile-\($0.offset)", day: $0.offset + 1, title: $0.element) }
+        let program = Program(id: "tile-fixture", name: "Fixture", workouts: workouts)
+        for theme in ["default", "oat"] {
+            ThemeManager.shared.setThemeId(theme)
+            var sizes: [CGSize] = []
+            for glow in [false, true] {
+                let content = WorkoutDayStrip(program: program, workouts: workouts,
+                    calendar: WeekCalendar(today: 4, numbers: [12, 13, 14, 15, 16, 17, 18]),
+                    activeWorkoutId: "tile-4", completedKeys: ["tile-fixture:tile-0"],
+                    unfinishedKeys: ["tile-fixture:tile-2"], onSelectWorkout: { _ in }, glowTiles: glow)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                    .background(AppColors.background)
+                let controller = UIHostingController(rootView: content)
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 200))
+                window.rootViewController = controller
+                window.makeKeyAndVisible()
+                controller.view.frame = window.bounds
+                controller.view.layoutIfNeeded()
+                RunLoop.main.run(until: Date().addingTimeInterval(0.3))
+                controller.view.layoutIfNeeded()
+                let scroll = try XCTUnwrap(scrollViews(in: controller.view).first)
+                sizes.append(scroll.contentSize)
+                let image = UIGraphicsImageRenderer(size: controller.view.bounds.size).image { _ in
+                    controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+                }
+                let attachment = XCTAttachment(image: image)
+                attachment.name = "home-day-tiles-\(glow ? "glow" : "calm")-\(theme)"
+                attachment.lifetime = .keepAlways
+                add(attachment)
+                window.isHidden = true
+            }
+            XCTAssertEqual(sizes[0].width, sizes[1].width, accuracy: 0.5, "Switching style must not resize the strip (\(theme))")
+            XCTAssertEqual(sizes[0].height, sizes[1].height, accuracy: 0.5, "Switching style must not resize the strip (\(theme))")
+        }
+    }
+
     @MainActor
     func testBarbellPlateSnapshotsAtNarrowAndLargerLocalizedText() throws {
         let previous = LanguageManager.shared.currentLanguage

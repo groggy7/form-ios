@@ -276,6 +276,8 @@
   "settings.appearance": "Erscheinungsbild",
   "settings.appTheme": "App-Design",
   "settings.appThemeSubtitle": "Visuelles Farbdesign anpassen",
+  "settings.glowTiles": "Leuchtende Tageskacheln",
+  "settings.glowTilesSubtitle": "Neon-Randleuchten und Eckenglanz auf den Tageskacheln der Startseite. Aus: ruhigere Glasoptik.",
   "theme.default.name": "Obsidian & Minze",
   "theme.default.description": "Kanonisches kontrastreiches dunkles Design",
   "theme.espresso.name": "Espresso & Beige",

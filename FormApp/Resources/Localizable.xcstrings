@@ -10344,6 +10344,76 @@
         }
       }
     },
+    "settings.glowTiles": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Glowing day tiles"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parlayan gün kutuları"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leuchtende Tageskacheln"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tuiles de jour lumineuses"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Casillas de día brillantes"
+          }
+        }
+      }
+    },
+    "settings.glowTilesSubtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neon edge glow and corner highlights on the Home day tiles. Off uses the calmer glass look."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ana sayfadaki gün kutularında neon kenar parlaması ve köşe vurguları. Kapalıyken daha sakin cam görünümü kullanılır."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Neon-Randleuchten und Eckenglanz auf den Tageskacheln der Startseite. Aus: ruhigere Glasoptik."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halo néon sur les bords et reflets dans les coins des tuiles de jour de l’accueil. Désactivé : verre plus sobre."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Resplandor neón en los bordes y brillos en las esquinas de las casillas de día de Inicio. Desactivado: cristal más sobrio."
+          }
+        }
+      }
+    },
     "theme.default.name": {
       "extractionState": "manual",
       "localizations": {

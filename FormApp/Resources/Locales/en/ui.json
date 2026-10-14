@@ -276,6 +276,8 @@
   "settings.appearance": "Appearance",
   "settings.appTheme": "App theme",
   "settings.appThemeSubtitle": "Personalize the visual color theme",
+  "settings.glowTiles": "Glowing day tiles",
+  "settings.glowTilesSubtitle": "Neon edge glow and corner highlights on the Home day tiles. Off uses the calmer glass look.",
   "theme.default.name": "Obsidian & Mint",
   "theme.default.description": "Canonical high-contrast dark theme",
   "theme.espresso.name": "Espresso & Beige",
