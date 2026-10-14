@@ -89,11 +89,11 @@ struct WorkoutDayStrip: View {
     }
 
     var body: some View {
-        let dayColors = AppColors.homeDayColors
+        let glass = AppColors.homeDayGlassColors
         ScrollViewReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
-                    ForEach(Array(workouts.enumerated()), id: \.element.id) { colorIndex, workout in
+                    ForEach(workouts) { workout in
                         let dayIndex = workout.day - 1
                         let selected = workout.id == activeWorkoutId
                         let isToday = dayIndex == calendar.today
@@ -105,21 +105,11 @@ struct WorkoutDayStrip: View {
                         let dayNumber = calendar.numbers.indices.contains(dayIndex) ? calendar.numbers[dayIndex] : (dayIndex + 1)
                         let textColor = AppColors.text
 
-                        let surfaceColor: Color = {
-                            // The schedule slot is independent of selection and other day statuses.
-                            if isCompleted { return dayColors.completed }
-                            if isUnfinished { return dayColors.unfinished }
-                            if isMissed { return dayColors.missed }
-                            return dayColors.neutral[colorIndex % dayColors.neutral.count]
-                        }()
-
-                        let borderColor: Color = {
-                            if selected { return AppColors.accent }
-                            if isToday { return Color.mix(AppColors.border, AppColors.text, 0.35) }
-                            if isCompleted { return Color.mix(AppColors.border, AppColors.completedGreen, 0.25) }
-                            if isUnfinished { return Color.mix(AppColors.border, AppColors.unfinishedOrange, 0.25) }
-                            if isMissed { return Color.mix(AppColors.border, AppColors.missedRed, 0.25) }
-                            return Color.mix(AppColors.border, surfaceColor, 0.35)
+                        let statusTint: Color? = {
+                            if isCompleted { return AppColors.completedGreen }
+                            if isUnfinished { return AppColors.unfinishedOrange }
+                            if isMissed { return AppColors.missedRed }
+                            return nil
                         }()
                         let statuses: [String?] = [
                             isToday ? LanguageManager.t("nav.today") : nil,
@@ -164,12 +154,9 @@ struct WorkoutDayStrip: View {
                             .frame(minHeight: 108, alignment: .top)
                             .frame(maxHeight: .infinity, alignment: .top)
                             .background(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .fill(surfaceColor)
-                            )
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 20)
-                                    .strokeBorder(borderColor, lineWidth: selected ? 2 : (isToday ? 1.5 : 1))
+                                HomeDayGlassSurface(glass: glass, statusTint: statusTint,
+                                    isDark: themeManager.currentTheme.isDark,
+                                    selected: selected, today: isToday, accent: AppColors.accent)
                             )
                             .clipShape(RoundedRectangle(cornerRadius: 20))
                         }
@@ -198,5 +185,81 @@ struct WorkoutDayStrip: View {
         let programId: String
         let today: Int
         let schedule: [String]
+    }
+}
+
+// Static optical layers match Android's dayTileGlass without live blur or animation.
+private struct HomeDayGlassSurface: View {
+    let glass: AppColors.HomeDayGlassColors
+    let statusTint: Color?
+    let isDark: Bool
+    let selected: Bool
+    let today: Bool
+    let accent: Color
+
+    var body: some View {
+        Canvas { context, size in
+            let w = size.width
+            let h = size.height
+            func rounded(_ inset: CGFloat) -> Path {
+                Path(roundedRect: CGRect(x: inset, y: inset, width: w - 2 * inset, height: h - 2 * inset),
+                     cornerRadius: max(0, 20 - inset))
+            }
+            let shape = rounded(0)
+            context.clip(to: shape)
+            context.fill(shape, with: .color(glass.base))
+            context.fill(shape, with: .linearGradient(Gradient(stops: [
+                .init(color: glass.shade.opacity(0), location: 0),
+                .init(color: glass.shade.opacity(isDark ? 0.12 : 0.04), location: 0.55),
+                .init(color: glass.shade.opacity(0), location: 1)
+            ]), startPoint: .zero, endPoint: CGPoint(x: w, y: h)))
+
+            let light = statusTint ?? glass.neutralRim
+            context.fill(shape, with: .radialGradient(Gradient(colors: [
+                light.opacity(statusTint != nil ? 0.18 : 0.10), light.opacity(0)
+            ]), center: CGPoint(x: w * 0.08, y: h * 0.98), startRadius: 0, endRadius: w * 0.90))
+            context.fill(shape, with: .radialGradient(Gradient(colors: [
+                light.opacity(statusTint != nil ? 0.08 : 0.04), light.opacity(0)
+            ]), center: CGPoint(x: w * 0.95, y: h * 0.02), startRadius: 0, endRadius: w * 0.75))
+
+            var topReflection = Path()
+            topReflection.move(to: CGPoint(x: 0, y: h * 0.62))
+            topReflection.addCurve(to: CGPoint(x: w, y: h * 0.02),
+                control1: CGPoint(x: w * 0.10, y: h * 0.24),
+                control2: CGPoint(x: w * 0.45, y: h * 0.08))
+            topReflection.addLine(to: CGPoint(x: w, y: 0))
+            topReflection.addLine(to: .zero)
+            topReflection.closeSubpath()
+            context.fill(topReflection, with: .linearGradient(Gradient(stops: [
+                .init(color: glass.reflection.opacity(isDark ? 0.18 : 0.48), location: 0),
+                .init(color: glass.reflection.opacity(0.03), location: 0.55),
+                .init(color: glass.reflection.opacity(0), location: 1)
+            ]), startPoint: .zero, endPoint: CGPoint(x: w * 0.85, y: h * 0.65)))
+
+            var lowerReflection = Path()
+            lowerReflection.move(to: CGPoint(x: w, y: h * 0.55))
+            lowerReflection.addCurve(to: CGPoint(x: 0, y: h),
+                control1: CGPoint(x: w * 0.83, y: h * 0.88),
+                control2: CGPoint(x: w * 0.53, y: h * 0.96))
+            lowerReflection.addLine(to: CGPoint(x: w, y: h))
+            lowerReflection.closeSubpath()
+            context.fill(lowerReflection, with: .color(glass.reflection.opacity(isDark ? 0.04 : 0.18)))
+
+            // Keep the status-lit inner rim when selection or today adds an outer ring.
+            let rimPath = rounded(selected || today ? 3.5 : 0.75)
+            context.stroke(rimPath, with: .color(light.opacity(statusTint != nil ? 0.14 : 0.06)), lineWidth: 4)
+            context.stroke(rimPath, with: .linearGradient(Gradient(stops: [
+                .init(color: Color.mix(light, glass.reflection, 0.28).opacity(isDark ? 0.90 : 0.70), location: 0),
+                .init(color: light.opacity(statusTint != nil ? 0.38 : 0.22), location: 0.45),
+                .init(color: light.opacity(statusTint != nil ? 0.80 : 0.50), location: 1)
+            ]), startPoint: .zero, endPoint: CGPoint(x: w, y: h)), lineWidth: 1)
+            if selected {
+                context.stroke(rounded(1), with: .color(accent), lineWidth: 2)
+            } else if today {
+                context.stroke(rounded(0.75), with: .color(glass.neutralRim.opacity(0.65)), lineWidth: 1.5)
+            }
+        }
+        .accessibilityHidden(true)
+        .allowsHitTesting(false)
     }
 }

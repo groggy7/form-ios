@@ -81,50 +81,29 @@ public enum AppColors {
     public static var todayIvory: Color { lightThemeColor(Color(hex: 0xEEE8DC), accent) }
     public static var todaySelectionText: Color { lightThemeColor(Color(hex: 0x1A2026), background) }
 
-    // Home day tiles: neutral identity, workout status and selection use separate roles.
-    public struct HomeDayColors {
-        public let neutral: [Color]
-        public let completed: Color
-        public let unfinished: Color
-        public let missed: Color
-
-        fileprivate init(neutral: [UInt32], completed: UInt32, unfinished: UInt32, missed: UInt32) {
-            self.neutral = neutral.map { Color(hex: $0) }
-            self.completed = Color(hex: completed)
-            self.unfinished = Color(hex: unfinished)
-            self.missed = Color(hex: missed)
-        }
+    // Home glass stays neutral; status light is independent of the theme accent.
+    public struct HomeDayGlassColors {
+        public let base: Color
+        public let reflection: Color
+        public let shade: Color
+        public let neutralRim: Color
     }
 
-    public static var homeDayColors: HomeDayColors {
-        switch ThemeManager.shared.currentTheme.id {
-        case "espresso": return HomeDayColors(
-            neutral: [0x333D49, 0x423C49, 0x3C3D40, 0x4B4946, 0x3B4953, 0x514E52],
-            completed: 0x2B3D2D, unfinished: 0x4B331E, missed: 0x4A2928)
-        case "stealth": return HomeDayColors(
-            neutral: [0x2D3847, 0x3D3546, 0x353A40, 0x464545, 0x3B454D, 0x504E53],
-            completed: 0x223D32, unfinished: 0x413020, missed: 0x42282F)
-        case "cobalt": return HomeDayColors(
-            neutral: [0x343A4A, 0x413C4C, 0x38383E, 0x4A4846, 0x424752, 0x524E54],
-            completed: 0x193D34, unfinished: 0x3D2E21, missed: 0x3E2633)
-        case "alpine": return HomeDayColors(
-            neutral: [0x303D4B, 0x433A49, 0x343C41, 0x474644, 0x3C4B55, 0x514E54],
-            completed: 0x19432F, unfinished: 0x40331F, missed: 0x3E2829)
-        case "crimson": return HomeDayColors(
-            neutral: [0x353D4C, 0x45404E, 0x3C3F43, 0x4C4A48, 0x3D4B55, 0x555256],
-            completed: 0x2B3E31, unfinished: 0x4D3525, missed: 0x4F2831)
-        case "amethyst": return HomeDayColors(
-            neutral: [0x354352, 0x45484D, 0x333B43, 0x504E4B, 0x3E4B56, 0x555559],
-            completed: 0x283F37, unfinished: 0x48352B, missed: 0x4C2B3D)
-        case "oat": return HomeDayColors(
-            neutral: [0xDFE5EC, 0xE5DFE9, 0xDEE1E5, 0xE8E6E3, 0xD5E0E8, 0xE1DFE3],
-            completed: 0xE8EDE4, unfinished: 0xF3EADE, missed: 0xF7E8E0)
-        default: return HomeDayColors(
-            neutral: [0x293949, 0x403646, 0x353A40, 0x484644, 0x344651, 0x4C484E],
-            completed: 0x1B3A2E, unfinished: 0x3D2C1B, missed: 0x3B2328)
+    public static var homeDayGlassColors: HomeDayGlassColors {
+        if ThemeManager.shared.currentTheme.isDark {
+            return HomeDayGlassColors(
+                base: Color(hex: 0x20262B, alpha: 0.74),
+                reflection: Color(hex: 0xECF2F5),
+                shade: Color(hex: 0x000000),
+                neutralRim: Color(hex: 0xCBD4DD))
         }
+        return HomeDayGlassColors(
+            base: Color(hex: 0xFFFBF4, alpha: 0.72),
+            reflection: Color(hex: 0xFFFFFF),
+            shade: Color(hex: 0x71685C),
+            neutralRim: Color(hex: 0x938879))
     }
-    
+
     // Split presentation colors
     public static var upperBorder: Color { lightThemeColor(Color(hex: 0x494260), Color(hex: 0xC7AFBA)) }
     public static var lowerBorder: Color { lightThemeColor(Color(hex: 0x37485F), Color(hex: 0xA8B8C6)) }
