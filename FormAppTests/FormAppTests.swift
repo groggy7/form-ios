@@ -1046,6 +1046,100 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
+    func testHomeWorkoutSwitchingLoadsThumbnails() async throws {
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        let ids = Array(ExerciseThumbnails.catalog.keys.sorted().prefix(11))
+        XCTAssertEqual(ids.count, 11)
+        let groups = [Array(ids[0..<1]), Array(ids[1..<5]), Array(ids[5..<11])]
+        let workouts = groups.enumerated().map { index, group in
+            Workout(id: "png-day-\(index)", day: index + 1, title: "PNG QA \(group.count)",
+                exercises: group.map { Exercise(name: $0, exerciseId: $0, sets: 3) })
+        }
+        store.state.programs = [Program(id: "png-qa", name: "PNG QA", workouts: workouts)]
+        store.state.activeProgramId = "png-qa"
+        store.selectedWorkoutId = workouts[0].id
+        let savedTheme = ThemeManager.shared.currentTheme.id
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
+        let previousKey = scene.windows.first(where: \.isKeyWindow)
+        let window = UIWindow(windowScene: scene)
+        window.frame = scene.coordinateSpace.bounds
+        let host = UIHostingController(rootView: TodayView(store: store,
+            onOpenPrograms: {}, onOpenSettings: {}, onSelectExercise: { _ in }))
+        window.rootViewController = host
+        window.makeKeyAndVisible()
+        defer {
+            window.isHidden = true
+            previousKey?.makeKeyAndVisible()
+            ThemeManager.shared.setThemeId(savedTheme)
+        }
+        for theme in ["default", "oat"] {
+            ThemeManager.shared.setThemeId(theme)
+            for workout in workouts + [workouts[0]] {
+                store.selectedWorkoutId = workout.id
+                host.view.layoutIfNeeded()
+                let deadline = Date().addingTimeInterval(2)
+                repeat {
+                    try await Task.sleep(nanoseconds: 50_000_000)
+                } while Date() < deadline && workout.exercises.contains {
+                    ExerciseThumbnails.cachedImage(for: $0.exerciseId) == nil
+                }
+                XCTAssertEqual(store.activeWorkout?.id, workout.id)
+                for exercise in workout.exercises {
+                    XCTAssertNotNil(ExerciseThumbnails.cachedImage(for: exercise.exerciseId), exercise.name)
+                }
+                host.view.layoutIfNeeded()
+                let image = UIGraphicsImageRenderer(size: window.bounds.size).image { _ in
+                    host.view.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
+                }
+                let attachment = XCTAttachment(image: image)
+                attachment.name = "home-png-\(theme)-\(workout.exercises.count)-exercises"
+                attachment.lifetime = .keepAlways
+                add(attachment)
+            }
+        }
+    }
+
+    func testBundledPNGDecodingPreservesArtworkPixels() throws {
+        let thumbnailFiles = ExerciseThumbnails.catalog.values.map { ("ExerciseThumbnails", $0.file) }
+        let backdropFiles = Set(AppThemes.all.map { ExerciseBackdropStyle.file(for: $0.id) })
+            .map { ("ExerciseBackdrops", $0) }
+        XCTAssertEqual(thumbnailFiles.count, 300)
+        XCTAssertEqual(backdropFiles.count, 7)
+
+        func pixels(_ image: CGImage) throws -> [UInt8] {
+            var bytes = [UInt8](repeating: 0, count: image.width * image.height * 4)
+            try bytes.withUnsafeMutableBytes { buffer in
+                let context = try XCTUnwrap(CGContext(data: buffer.baseAddress,
+                    width: image.width, height: image.height, bitsPerComponent: 8,
+                    bytesPerRow: image.width * 4, space: CGColorSpace(name: CGColorSpace.sRGB)!,
+                    bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue | CGBitmapInfo.byteOrder32Big.rawValue))
+                context.draw(image, in: CGRect(x: 0, y: 0, width: image.width, height: image.height))
+            }
+            return bytes
+        }
+
+        for (directory, file) in thumbnailFiles + backdropFiles {
+            try autoreleasepool {
+                let url = try XCTUnwrap(Bundle.main.url(forResource: file, withExtension: nil, subdirectory: directory), file)
+                let reference = try XCTUnwrap(UIImage(contentsOfFile: url.path)?.cgImage, file)
+                let decoded = try XCTUnwrap(BundledPNGImage.load(from: url)?.cgImage, file)
+                XCTAssertEqual(decoded.width, reference.width, file)
+                XCTAssertEqual(decoded.height, reference.height, file)
+                let actual = try pixels(decoded)
+                XCTAssertTrue(actual == (try pixels(reference)), "Decoded color or alpha changed: \(file)")
+                if directory == "ExerciseThumbnails" {
+                    XCTAssertEqual(actual[3], 0, "Transparent padding must remain clear: \(file)")
+                    XCTAssertTrue(stride(from: 3, to: actual.count, by: 4).contains { actual[$0] > 0 },
+                        "The exercise must remain visible: \(file)")
+                } else {
+                    XCTAssertTrue(stride(from: 3, to: actual.count, by: 4).allSatisfy { actual[$0] == 255 },
+                        "The studio backdrop must remain opaque: \(file)")
+                }
+            }
+        }
+    }
+
+    @MainActor
     func testStaticStepOneThumbnails() async throws {
         XCTAssertEqual(Set(ExerciseThumbnails.catalog.keys), Set(ExerciseCatalog.canonicalExercises.keys))
         for id in ExerciseThumbnails.catalog.keys {

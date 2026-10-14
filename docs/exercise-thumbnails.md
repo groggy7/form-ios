@@ -18,7 +18,17 @@ Lookup is by canonical exercise ID, never translated name or old artwork alias.
 Unknown custom exercises remain blank. Detail video playback, crop metadata,
 `#16202A` video surface, prescriptions and personal workout data are unchanged.
 
+Bundled thumbnails and studio backdrops decode through ImageIO with immediate
+caching on their serial worker queues. UIKit's `preparingForDisplay()` produces
+`Error -17102 decompressing image -- possibly corrupt` for these valid PNGs;
+the ImageIO path avoids that warning while preserving decoded color, alpha,
+dimensions and the existing 8 MiB caches. A native audit confirmed all 300 STEP1
+files and seven backdrops match their recorded hashes and decode successfully.
+
 Focused iOS tests verify complete thumbnail coverage, dimensions, transparency,
 blank unknown exercises, native rendering, and unchanged video mapping/framing.
+The PNG decoder regression compares all 307 images pixel-for-pixel, and the Home
+fixture switches between days with one, four and six exercises, then revisits a
+cached day in Obsidian and Oat.
 The native rendered sample is in `thumbnail-reviews/static-thumbnails-ios.png`.
 Full shared provenance: Android repo `docs/design/exercise-thumbnails.md`.

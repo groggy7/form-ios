@@ -32,11 +32,10 @@ private enum ExerciseBackdropImages {
             queue.async {
                 if let image = cached(file) { continuation.resume(returning: image); return }
                 guard let url = Bundle.main.url(forResource: file, withExtension: nil, subdirectory: "ExerciseBackdrops"),
-                      let image = UIImage(contentsOfFile: url.path) else { continuation.resume(returning: nil); return }
-                let prepared = image.preparingForDisplay() ?? image
-                let cost = prepared.cgImage.map { $0.bytesPerRow * $0.height } ?? 0
-                cache.setObject(prepared, forKey: file as NSString, cost: cost)
-                continuation.resume(returning: prepared)
+                      let image = BundledPNGImage.load(from: url) else { continuation.resume(returning: nil); return }
+                let cost = image.cgImage.map { $0.bytesPerRow * $0.height } ?? 0
+                cache.setObject(image, forKey: file as NSString, cost: cost)
+                continuation.resume(returning: image)
             }
         }
     }

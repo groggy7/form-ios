@@ -37,11 +37,10 @@ enum ExerciseThumbnails {
         if let image = cachedImage(for: exerciseId) { return image }
         guard let entry = catalog[exerciseId] else { return nil }
         guard let url = Bundle.main.url(forResource: entry.file, withExtension: nil, subdirectory: "ExerciseThumbnails"),
-              let image = UIImage(contentsOfFile: url.path) else { return nil }
-        let prepared = image.preparingForDisplay() ?? image
-        let cost = prepared.cgImage.map { $0.bytesPerRow * $0.height } ?? Int(image.size.width * image.size.height * 4)
-        cache.setObject(prepared, forKey: exerciseId as NSString, cost: cost)
-        return prepared
+              let image = BundledPNGImage.load(from: url) else { return nil }
+        let cost = image.cgImage.map { $0.bytesPerRow * $0.height } ?? 0
+        cache.setObject(image, forKey: exerciseId as NSString, cost: cost)
+        return image
     }
 }
 

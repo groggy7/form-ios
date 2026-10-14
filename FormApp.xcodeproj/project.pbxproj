@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB02000000000000000000001 /* BundledPNGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB02000000000000000000002; };
 		AB01000000000000000000001 /* ExerciseMediaBackdrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB01000000000000000000002; };
 		AB01000000000000000000003 /* ExerciseBackdrops in Resources */ = {isa = PBXBuildFile; fileRef = AB01000000000000000000004; };
 		A41A7C6F20EF4E568EBC0E01 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A41A7C6F20EF4E568EBC0E02; };
@@ -142,6 +143,7 @@
 
 /* Begin PBXFileReference section */
 		AB01000000000000000000002 /* ExerciseMediaBackdrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMediaBackdrop.swift; sourceTree = "<group>"; };
+		AB02000000000000000000002 /* BundledPNGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundledPNGImage.swift; sourceTree = "<group>"; };
 		AB01000000000000000000004 /* ExerciseBackdrops */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseBackdrops; sourceTree = "<group>"; };
 		A41A7C6F20EF4E568EBC0E02 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A11000000000000000000002 /* TranslationTables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationTables.swift; sourceTree = "<group>"; };
@@ -291,6 +293,7 @@
 				V10000000000000000000002 /* ExerciseDetailVideo.swift */,
 				C14000000000000000000002 /* SessionExerciseMedia.swift */,
 				AB01000000000000000000002 /* ExerciseMediaBackdrop.swift */,
+				AB02000000000000000000002 /* BundledPNGImage.swift */,
 				M20000000000000000000002 /* ExerciseMusclesCard.swift */,
 				E30000000000000000000002 /* ExerciseEquipment.swift */,
 				08997E0EACD6176BFF508687 /* ToastOverlay.swift */,
@@ -742,6 +745,7 @@
 				V10000000000000000000001 /* ExerciseDetailVideo.swift in Sources */,
 				C14000000000000000000001 /* SessionExerciseMedia.swift in Sources */,
 				AB01000000000000000000001 /* ExerciseMediaBackdrop.swift in Sources */,
+				AB02000000000000000000001 /* BundledPNGImage.swift in Sources */,
 				M20000000000000000000001 /* ExerciseMusclesCard.swift in Sources */,
 				E30000000000000000000001 /* ExerciseEquipment.swift in Sources */,
 				DD65F19A9F064CC90CE953C3 /* MuscleArtwork.swift in Sources */,
