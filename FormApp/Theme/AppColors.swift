@@ -81,11 +81,11 @@ public enum AppColors {
     public static var todayIvory: Color { lightThemeColor(Color(hex: 0xEEE8DC), accent) }
     public static var todaySelectionText: Color { lightThemeColor(Color(hex: 0x1A2026), background) }
 
-    // Home glass stays neutral; status light is independent of the theme accent.
+    // Home glass stays neutral; status light is independent of the theme accent. `base` is the
+    // milky fill used by light themes; dark suites tint the canvas with the tile's own light.
     public struct HomeDayGlassColors {
         public let base: Color
         public let reflection: Color
-        public let shade: Color
         public let neutralRim: Color
         public let completedLight: Color
         public let unfinishedLight: Color
@@ -97,7 +97,6 @@ public enum AppColors {
             return HomeDayGlassColors(
                 base: Color(hex: 0x20262B, alpha: 0.58),
                 reflection: Color(hex: 0xECF2F5),
-                shade: Color(hex: 0x000000),
                 neutralRim: Color(hex: 0xCBD4DD),
                 completedLight: Color(hex: 0x6AF5AD),
                 unfinishedLight: Color(hex: 0xFFB96A),
@@ -106,7 +105,6 @@ public enum AppColors {
         return HomeDayGlassColors(
             base: Color(hex: 0xFFFBF4, alpha: 0.60),
             reflection: Color(hex: 0xFFFFFF),
-            shade: Color(hex: 0x71685C),
             neutralRim: Color(hex: 0x938879),
             completedLight: Color(hex: 0x1D7050),
             unfinishedLight: Color(hex: 0x845014),
