@@ -848,65 +848,90 @@ public final class AppStore: ObservableObject {
 
     // MARK: - Program Management
 
-    public func switchProgram(to programId: String) {
-        guard let prog = state.programs.first(where: { $0.id == programId }) else { return }
-        var newState = state
-        newState.activeProgramId = prog.id
-        newState = refreshCalendarState(newState)
-        saveState(newState)
+    @discardableResult
+    public func switchProgram(to programId: String) -> Bool {
+        guard let prog = state.programs.first(where: { $0.id == programId }) else { return false }
+        var next = state
+        next.activeProgramId = prog.id
+        guard saveState(refreshCalendarState(next), durable: true) else { return false }
         selectedWorkoutId = nil
         refreshCatalogue()
-        showNotice(LanguageManager.t("notice.programApplied", ["name": prog.name]))
+        showNotice(LanguageManager.t("notice.programApplied", ["name": prog.displayName]))
+        return true
     }
 
-    public func addProgram(_ program: Program) {
-        var newState = state
-        if let idx = newState.programs.firstIndex(where: { $0.id == program.id }) {
-            newState.programs[idx] = program
+    @discardableResult
+    public func addProgram(_ program: Program, activate: Bool = true) -> Bool {
+        do { try ProgramEditing.validate(program) }
+        catch { showErrorNotice(error.localizedDescription); return false }
+        var next = state
+        if let index = next.programs.firstIndex(where: { $0.id == program.id }) {
+            guard activeSession?.programId != program.id else {
+                showErrorNotice(LanguageManager.t("history.finishActiveFirst")); return false
+            }
+            next.programs[index] = program
         } else {
-            newState.programs.append(program)
+            guard next.programs.count < ProgramEditing.maxPrograms else {
+                showErrorNotice(LanguageManager.t("builder.programLimit")); return false
+            }
+            next.programs.append(program)
         }
-        newState.activeProgramId = program.id
-        newState = refreshCalendarState(newState)
-        saveState(newState)
+        let validKeys = Set(next.programs.flatMap { p in p.workouts.map { "\(p.id):\($0.id)" } })
+        next.completed = next.completed.filter { validKeys.contains($0) }
+        if activate || state.programs.isEmpty { next.activeProgramId = program.id }
+        guard saveState(refreshCalendarState(next), durable: true) else { return false }
         selectedWorkoutId = nil
         refreshCatalogue()
-        showNotice(LanguageManager.t("notice.programApplied", ["name": program.name]))
+        showNotice(LanguageManager.t(activate ? "notice.programApplied" : "notice.programCreated", ["name": program.displayName]))
+        return true
     }
 
-    public func updateProgram(_ program: Program) {
-        var newState = state
-        if let idx = newState.programs.firstIndex(where: { $0.id == program.id }) {
-            newState.programs[idx] = program
-            newState = refreshCalendarState(newState)
-            saveState(newState)
-            refreshCatalogue()
+    @discardableResult
+    public func updateProgram(_ program: Program, expected: Program? = nil) -> Bool {
+        do { try ProgramEditing.validate(program) }
+        catch { showErrorNotice(error.localizedDescription); return false }
+        guard let index = state.programs.firstIndex(where: { $0.id == program.id }) else { return false }
+        if let expected, state.programs[index] != expected {
+            showErrorNotice(LanguageManager.t("builder.draftConflict")); return false
         }
+        if let active = activeSession, active.programId == program.id,
+           !program.workouts.contains(where: { $0.id == active.workout.id }) {
+            showErrorNotice(LanguageManager.t("history.finishActiveFirst")); return false
+        }
+        var next = state
+        next.programs[index] = program
+        let validKeys = Set(next.programs.flatMap { p in p.workouts.map { "\(p.id):\($0.id)" } })
+        next.completed = next.completed.filter { validKeys.contains($0) }
+        guard saveState(refreshCalendarState(next), durable: true) else { return false }
+        refreshCatalogue()
+        showNotice(LanguageManager.t("notice.programUpdated"))
+        return true
     }
 
-    public func deleteProgram(withId id: String) {
-        guard state.programs.count > 1 else { return }
-        if id == state.activeProgramId {
-            showErrorNotice(LanguageManager.t("notice.cannotDeleteActiveProgram"))
-            return
-        }
+    @discardableResult
+    public func deleteProgram(withId id: String) -> Bool {
+        guard state.programs.contains(where: { $0.id == id }) else { return false }
         if activeSession?.programId == id {
-            showErrorNotice(LanguageManager.t("history.finishActiveFirst"))
-            return
+            showErrorNotice(LanguageManager.t("history.finishActiveFirst")); return false
         }
-        var newState = state
-        newState.programs.removeAll { $0.id == id }
-        newState = refreshCalendarState(newState)
-        saveState(newState)
+        var next = state
+        next.programs.removeAll { $0.id == id }
+        if next.activeProgramId == id { next.activeProgramId = next.programs.first?.id ?? "" }
+        next.completed = next.completed.filter { !$0.hasPrefix("\(id):") }
+        guard saveState(refreshCalendarState(next), durable: true) else { return false }
         selectedWorkoutId = nil
         refreshCatalogue()
         showNotice(LanguageManager.t("notice.programDeleted"))
+        return true
     }
 
     public func completeOnboarding(preferences: OnboardingPreferences, targetProgramId: String? = nil) {
         let rec = OnboardingRecommender.recommendProgram(preferences: preferences, availablePrograms: state.programs)
         let chosenProgramId = targetProgramId ?? rec.targetProgramId
-        let currentProg = state.programs.first(where: { $0.id == chosenProgramId }) ?? activeProgram ?? state.programs[0]
+        guard let currentProg = state.programs.first(where: { $0.id == chosenProgramId }) ?? activeProgram ?? state.programs.first else {
+            setOnboardingCompleted(true)
+            return
+        }
 
         let updatedWorkouts = currentProg.workouts.enumerated().map { index, workout -> Workout in
             let newDay = index < rec.scheduledWeekdays.count ? rec.scheduledWeekdays[index] : workout.day
@@ -920,13 +945,8 @@ public final class AppStore: ObservableObject {
                 targetMuscles: workout.targetMuscles
             )
         }
-        let updatedProg = Program(
-            id: currentProg.id,
-            name: currentProg.name,
-            description: currentProg.description,
-            guidelines: currentProg.guidelines,
-            workouts: updatedWorkouts
-        )
+        var updatedProg = currentProg
+        updatedProg.workouts = updatedWorkouts
         var newState = state
         if let idx = newState.programs.firstIndex(where: { $0.id == updatedProg.id }) {
             newState.programs[idx] = updatedProg
@@ -1089,7 +1109,12 @@ public final class AppStore: ObservableObject {
         public var schemaVersion: Int?
         public var program: Program
 
-        public init(format: String? = "form.program", schemaVersion: Int? = 4, program: Program) {
+        public func encode(to encoder: Encoder) throws {
+            let value = try JSONDecoder().decode(ProgramFileJSONValue.self, from: ProgramFileCodec.encode(program))
+            try value.encode(to: encoder)
+        }
+
+        public init(format: String? = "form.program", schemaVersion: Int? = 5, program: Program) {
             self.format = format
             self.schemaVersion = schemaVersion
             self.program = program
@@ -1119,7 +1144,7 @@ public final class AppStore: ObservableObject {
             case .invalidFormat(let fmt):
                 return "Invalid format \"\(fmt)\". Expected \"form.program\"."
             case .unsupportedVersion(let v):
-                return "Unsupported program schemaVersion: \(v). Supported versions are 1–4."
+                return "Unsupported program schemaVersion: \(v). Supported versions are 1–5."
             case .missingProgram:
                 return "File does not contain a program."
             case .invalidProgramName:
@@ -1135,74 +1160,27 @@ public final class AppStore: ObservableObject {
     }
 
     public static func decodeProgram(from data: Data) throws -> Program {
-        guard data.count <= 5_000_000 else {
-            throw ProgramImportError.fileTooLarge
+        try ProgramFileCodec.decode(data)
+    }
+
+    public func previewProgramImport(jsonData: Data) throws -> ProgramImportPreview {
+        guard activeSession == nil else { throw ProgramEditing.ValidationError(message: LanguageManager.t("history.finishActiveFirst")) }
+        let program = try ProgramFileCodec.decode(jsonData, defaultRest: defaultRestSeconds)
+        return ProgramImportPreview(incoming: program, existing: state.programs.first { $0.id == program.id })
+    }
+
+    @discardableResult
+    public func applyProgramImport(_ preview: ProgramImportPreview) throws -> Program {
+        guard activeSession == nil else { throw ProgramEditing.ValidationError(message: LanguageManager.t("history.finishActiveFirst")) }
+        guard state.programs.first(where: { $0.id == preview.incoming.id }) == preview.existing else {
+            throw ProgramEditing.ValidationError(message: LanguageManager.t("builder.draftConflict"))
         }
-
-        guard let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
-              let dict = jsonObject as? [String: Any] else {
-            throw ProgramImportError.notAnObject
-        }
-
-        // Full backup check
-        if dict["programs"] != nil || dict["backup"] != nil || dict["history"] != nil {
-            throw ProgramImportError.fullBackup
-        }
-
-        let decoder = JSONDecoder()
-        let program: Program
-
-        if let format = dict["format"] as? String {
-            guard format == "form.program" else {
-                throw ProgramImportError.invalidFormat(format)
-            }
-            if let version = dict["schemaVersion"] as? Int {
-                guard version >= 1 && version <= 4 else {
-                    throw ProgramImportError.unsupportedVersion(version)
-                }
-            } else {
-                throw ProgramImportError.unsupportedVersion(0)
-            }
-            guard let envelope = try? decoder.decode(ProgramFileEnvelope.self, from: data) else {
-                throw ProgramImportError.missingProgram
-            }
-            program = envelope.program
-        } else if let envelope = try? decoder.decode(ProgramFileEnvelope.self, from: data), envelope.format == "form.program" {
-            program = envelope.program
-        } else if let rawProgram = try? decoder.decode(Program.self, from: data) {
-            guard dict["name"] != nil && dict["workouts"] != nil else {
-                throw ProgramImportError.missingProgram
-            }
-            program = rawProgram
-        } else {
-            throw ProgramImportError.missingProgram
-        }
-
-        guard !program.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
-            throw ProgramImportError.invalidProgramName
-        }
-
-        var usedDays = Set<Int>()
-        var usedWorkoutIds = Set<String>()
-        for workout in program.workouts {
-            guard workout.day >= 1 && workout.day <= 7 else {
-                throw ProgramImportError.invalidWorkoutDays
-            }
-            guard usedDays.insert(workout.day).inserted else {
-                throw ProgramImportError.duplicateWorkoutDays
-            }
-            guard usedWorkoutIds.insert(workout.id).inserted else {
-                throw ProgramImportError.duplicateWorkoutIds
-            }
-        }
-
-        return program
+        guard addProgram(preview.incoming) else { throw ProgramEditing.ValidationError(message: LanguageManager.t("builder.saveFailed")) }
+        return preview.incoming
     }
 
     public func importProgram(jsonData: Data) throws -> Program {
-        let program = try Self.decodeProgram(from: jsonData)
-        addProgram(program)
-        return program
+        try applyProgramImport(previewProgramImport(jsonData: jsonData))
     }
 
     public func setExerciseVideos(exerciseName: String, videoUrls: [String]) {
@@ -1510,9 +1488,9 @@ public final class AppStore: ObservableObject {
                     let key = e.name.trimmingCharacters(in: .whitespaces).lowercased()
                     if let std = standardNotes[key] {
                         var updatedE = e
-                        if updatedE.exerciseId == nil { updatedE.exerciseId = std.exerciseId }
-                        updatedE.cues = std.cues
-                        updatedE.avoid = std.avoid
+                        if updatedE.exerciseId == nil {
+                            updatedE.exerciseId = std.exerciseId
+                        }
                         return updatedE
                     }
                     return e
@@ -1791,14 +1769,10 @@ public enum ExerciseCatalog {
             if let def = def {
                 ex.name = def.name
                 if ex.exerciseId == nil { ex.exerciseId = def.id }
-                if ex.cues.trimmingCharacters(in: .whitespaces).isEmpty { ex.cues = def.cuesText }
-                if ex.avoid.trimmingCharacters(in: .whitespaces).isEmpty { ex.avoid = def.avoidText }
                 if ex.movementType == nil { ex.movementType = def.movementType }
                 if ex.movementAssetId == nil { ex.movementAssetId = def.movementAssetId }
             } else if let std = std {
                 if ex.exerciseId == nil { ex.exerciseId = std.exerciseId }
-                if ex.cues.trimmingCharacters(in: .whitespaces).isEmpty { ex.cues = std.cues }
-                if ex.avoid.trimmingCharacters(in: .whitespaces).isEmpty { ex.avoid = std.avoid }
                 if ex.movementType == nil { ex.movementType = std.movementType }
                 if ex.movementAssetId == nil { ex.movementAssetId = std.movementAssetId }
             }
@@ -1814,8 +1788,6 @@ public enum ExerciseCatalog {
     private static func merge(primary: Exercise, fallback: Exercise) -> Exercise {
         var merged = primary
         if merged.exerciseId == nil { merged.exerciseId = fallback.exerciseId }
-        if merged.cues.trimmingCharacters(in: .whitespaces).isEmpty { merged.cues = fallback.cues }
-        if merged.avoid.trimmingCharacters(in: .whitespaces).isEmpty { merged.avoid = fallback.avoid }
         if merged.videos.isEmpty { merged.videos = fallback.videos }
         if merged.sets == nil { merged.sets = fallback.sets }
         if merged.reps == nil { merged.reps = fallback.reps }

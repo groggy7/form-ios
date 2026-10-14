@@ -1,0 +1,46 @@
+{
+  "format": "form.program",
+  "schemaVersion": 5,
+  "program": {
+    "id": "builder-fixture",
+    "name": "Builder fixture",
+    "description": "Build a weekly plan.",
+    "guidelines": [
+      "Keep the targets controlled."
+    ],
+    "coverId": "machines",
+    "workouts": [
+      {
+        "id": "upper",
+        "day": 1,
+        "title": "Upper A",
+        "focus": "",
+        "tone": "violet",
+        "targetMuscles": [
+          "chest"
+        ],
+        "exercises": [
+          {
+            "id": "bench-instance",
+            "exerciseId": "barbell-bench-press",
+            "cues": [
+              "Controlled descent.",
+              "Keep your feet planted."
+            ],
+            "avoid": [
+              "Do not bounce."
+            ],
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          }
+        ]
+      }
+    ]
+  }
+}

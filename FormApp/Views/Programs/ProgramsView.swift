@@ -19,6 +19,9 @@ public enum ProgramCover: String, CaseIterable {
         case .machines: return "machine-foundation"
         }
     }
+    public static func forProgram(_ program: Program) -> ProgramCover {
+        program.coverId.flatMap(ProgramCover.init(rawValue:)) ?? forProgram(program.id)
+    }
     public static func forProgram(_ id: String) -> ProgramCover {
         allCases.first { $0.programID == id } ?? .fullBody
     }
@@ -62,7 +65,9 @@ public struct ProgramsView: View {
     var onDismiss: () -> Void
     @State private var editingProgram: Program? = nil
     @State private var isCreatingNew = false
+    @State private var copyingProgram: Program?
     @State private var showFileImporter = false
+    @State private var importPreview: ProgramImportPreview?
     @State private var importErrorMessage: String? = nil
     @State private var showImportError = false
     @State private var sharingItem: ProgramShareItem? = nil
@@ -79,19 +84,8 @@ public struct ProgramsView: View {
     }
 
     private func shareProgram(_ program: Program) {
-        let envelope = AppStore.ProgramFileEnvelope(format: "form.program", schemaVersion: 4, program: program)
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
-        guard let data = try? encoder.encode(envelope) else { return }
-        let safeName = program.displayName.replacingOccurrences(of: "[^\\p{L}\\p{N} ._-]", with: "_", options: .regularExpression)
-        let filename = "\(safeName.prefix(80)).form-program.json"
-        let tempURL = FileManager.default.temporaryDirectory.appendingPathComponent(filename)
-        do {
-            try data.write(to: tempURL)
-            sharingItem = ProgramShareItem(url: tempURL)
-        } catch {
-            print("Share error: \(error)")
-        }
+        do { sharingItem = ProgramShareItem(url: try ProgramFileCodec.shareURL(program, defaultRest: store.defaultRestSeconds)) }
+        catch { store.showErrorNotice(error.localizedDescription) }
     }
 
     public var body: some View {
@@ -135,21 +129,19 @@ public struct ProgramsView: View {
                                             menuProgramId = nil
                                         }
                                     } else {
-                                        store.switchProgram(to: program.id)
-                                        onDismiss()
+                                        if store.switchProgram(to: program.id) { onDismiss() }
                                     }
                                 },
                                 onEdit: { editingProgram = program },
                                 onShare: { shareProgram(program) },
                                 onDelete: {
-                                    if program.id == store.state.activeProgramId {
-                                        store.showErrorNotice(LanguageManager.t("notice.cannotDeleteActiveProgram"))
-                                    } else if store.activeSession?.programId == program.id {
+                                    if store.activeSession?.programId == program.id {
                                         store.showErrorNotice(LanguageManager.t("history.finishActiveFirst"))
                                     } else {
                                         deletingProgram = program
                                     }
                                 },
+                                onCopy: { copyingProgram = program },
                                 isMenuOpen: menuProgramId == program.id,
                                 onToggleMenu: {
                                     withAnimation(.spring(response: 0.22, dampingFraction: 0.8)) {
@@ -183,8 +175,17 @@ public struct ProgramsView: View {
             .sheet(item: $editingProgram) { program in
                 ProgramBuilderView(store: store, program: program) { editingProgram = nil }
             }
+            .sheet(item: $copyingProgram) { program in
+                ProgramBuilderView(store: store, template: program) { copyingProgram = nil }
+            }
             .sheet(isPresented: $isCreatingNew) {
                 ProgramBuilderView(store: store) { isCreatingNew = false }
+            }
+            .sheet(item: $importPreview) { preview in
+                ProgramImportReview(preview: preview) {
+                    do { _ = try store.applyProgramImport(preview); importPreview = nil; store.showNotice(LanguageManager.t("programs.imported")) }
+                    catch { store.showErrorNotice(error.localizedDescription) }
+                }
             }
             .sheet(item: $sharingItem) { item in
                 ProgramShareSheet(url: item.url)
@@ -196,8 +197,7 @@ public struct ProgramsView: View {
                 Button(LanguageManager.t("modal.cancel"), role: .cancel) { deletingProgram = nil }
                 Button(LanguageManager.t("modal.delete"), role: .destructive) {
                     if let prog = deletingProgram {
-                        store.deleteProgram(withId: prog.id)
-                        deletingProgram = nil
+                        if store.deleteProgram(withId: prog.id) { deletingProgram = nil }
                     }
                 }
             } message: {
@@ -215,8 +215,7 @@ public struct ProgramsView: View {
                     }
                     do {
                         let data = try Data(contentsOf: url)
-                        _ = try store.importProgram(jsonData: data)
-                        store.showNotice(LanguageManager.t("programs.imported"))
+                        importPreview = try store.previewProgramImport(jsonData: data)
                     } catch {
                         importErrorMessage = error.localizedDescription
                         showImportError = true
@@ -264,6 +263,7 @@ struct ProgramHeroCard: View {
     let onEdit: () -> Void
     var onShare: (() -> Void)? = nil
     var onDelete: (() -> Void)? = nil
+    var onCopy: (() -> Void)? = nil
     var isMenuOpen: Bool = false
     var onToggleMenu: (() -> Void)? = nil
     var onCloseMenu: (() -> Void)? = nil
@@ -307,6 +307,7 @@ struct ProgramHeroCard: View {
         onEdit: @escaping () -> Void,
         onShare: (() -> Void)? = nil,
         onDelete: (() -> Void)? = nil,
+        onCopy: (() -> Void)? = nil,
         isMenuOpen: Bool = false,
         onToggleMenu: (() -> Void)? = nil,
         onCloseMenu: (() -> Void)? = nil
@@ -323,6 +324,7 @@ struct ProgramHeroCard: View {
         self.onEdit = onEdit
         self.onShare = onShare
         self.onDelete = onDelete
+        self.onCopy = onCopy
         self.isMenuOpen = isMenuOpen
         self.onToggleMenu = onToggleMenu
         self.onCloseMenu = onCloseMenu
@@ -336,7 +338,7 @@ struct ProgramHeroCard: View {
             AppColors.surface
             let imageHeight = max(height, width / 1.5)
             let imageWidth = imageHeight * 1.5
-            Image(ProgramCover.forProgram(program.id).assetName).resizable()
+            Image(ProgramCover.forProgram(program).assetName).resizable()
                 .frame(width: imageWidth, height: imageHeight)
                 .position(x: imageWidth / 2 - (imageWidth - width) * 0.75, y: height / 2)
                 .accessibilityHidden(true)
@@ -418,7 +420,10 @@ struct ProgramHeroCard: View {
             .buttonStyle(.plain)
             .accessibilityLabel("\(LanguageManager.t("programs.more")) \(program.displayName)")
             .padding(8)
-
+        }
+        .frame(width: width, height: height).clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).stroke(isActive ? AppColors.accent : AppColors.border, lineWidth: isActive ? 2 : 1))
+        .overlay(alignment: .topTrailing) {
             if menuVisible {
                 VStack(spacing: 0) {
                     Button(action: {
@@ -436,11 +441,17 @@ struct ProgramHeroCard: View {
                             Spacer()
                         }
                         .padding(.horizontal, 14)
-                        .frame(height: 38)
+                        .frame(minHeight: 48)
                         .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
 
+                    if let onCopy {
+                        Button { closeMenu(); onCopy() } label: {
+                            Label(LanguageManager.t("builder.copyProgram"), systemImage: "doc.on.doc")
+                                .font(.subheadline).foregroundStyle(AppColors.text).frame(maxWidth: .infinity, minHeight: 48, alignment: .leading).padding(.horizontal, 14)
+                        }.buttonStyle(.plain)
+                    }
                     if let onShare {
                         Rectangle()
                             .fill(AppColors.border.opacity(0.6))
@@ -462,7 +473,7 @@ struct ProgramHeroCard: View {
                                 Spacer()
                             }
                             .padding(.horizontal, 14)
-                            .frame(height: 38)
+                            .frame(minHeight: 48)
                             .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
@@ -489,7 +500,7 @@ struct ProgramHeroCard: View {
                                 Spacer()
                             }
                             .padding(.horizontal, 14)
-                            .frame(height: 38)
+                            .frame(minHeight: 48)
                             .contentShape(Rectangle())
                         }
                         .buttonStyle(.plain)
@@ -514,7 +525,5 @@ struct ProgramHeroCard: View {
                 )
             }
         }
-        .frame(width: width, height: height).clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 20, style: .continuous).stroke(isActive ? AppColors.accent : AppColors.border, lineWidth: isActive ? 2 : 1))
     }
 }

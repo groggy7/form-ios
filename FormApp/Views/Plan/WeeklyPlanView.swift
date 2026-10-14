@@ -42,7 +42,7 @@ public struct WeeklyPlanView: View {
                                     .foregroundStyle(AppColors.text)
 
                                 HStack(spacing: 4) {
-                                    Text(program.name)
+                                    Text(program.displayName)
                                         .font(.system(size: 13, weight: .medium))
                                         .foregroundStyle(AppColors.accent)
                                         .lineLimit(1)
@@ -69,7 +69,7 @@ public struct WeeklyPlanView: View {
                     // 7 Weekday cards
                     VStack(spacing: 8) {
                         ForEach(0..<7, id: \.self) { index in
-                            let workout = program.workouts.first(where: { $0.day == index + 1 })
+                            let workout = program.workouts.first(where: { $0.day == index + 1 && !$0.exercises.isEmpty })
                             let selected = workout?.id == activeWorkout?.id
                             let workoutKey = workout.map { "\(program.id):\($0.id)" } ?? ""
                             let isCompleted = !workoutKey.isEmpty && completedKeys.contains(workoutKey)
@@ -105,7 +105,7 @@ public struct WeeklyPlanView: View {
 
                                     // Workout title & subtitle
                                     VStack(alignment: .leading, spacing: 2) {
-                                        Text(workout?.title ?? LanguageManager.t("plan.recover"))
+                                        Text(workout?.displayTitle(programId: program.id) ?? LanguageManager.t("plan.recover"))
                                             .font(.system(size: 15, weight: selected ? .bold : .semibold))
                                             .foregroundStyle(workout == nil ? AppColors.muted : AppColors.text)
                                             .lineLimit(1)

@@ -123,6 +123,11 @@
 		WP0000000000000000000010 /* WarmupPlateCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = WP0000000000000000000009 /* WarmupPlateCard.swift */; };
 		WU0000000000000000000002 /* WeightUnit.swift in Sources */ = {isa = PBXBuildFile; fileRef = WU0000000000000000000001 /* WeightUnit.swift */; };
 		C011A0000000000000000002 /* AppStatePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = C011A0000000000000000001 /* AppStatePersistence.swift */; };
+		C15000000000000000000002 /* ProgramEditing.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000001 /* ProgramEditing.swift */; };
+		C15000000000000000000004 /* ProgramBuilderComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000003 /* ProgramBuilderComponents.swift */; };
+		C15000000000000000000006 /* ProgramFileCodec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000005 /* ProgramFileCodec.swift */; };
+		C15000000000000000000008 /* ProgramBuilderRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000007 /* ProgramBuilderRegressionTests.swift */; };
+		C1500000000000000000000A /* android-builder-v5.json in Resources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000009 /* android-builder-v5.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -247,6 +252,11 @@
 		WP0000000000000000000009 /* WarmupPlateCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WarmupPlateCard.swift; sourceTree = "<group>"; };
 		WU0000000000000000000001 /* WeightUnit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeightUnit.swift; sourceTree = "<group>"; };
 		C011A0000000000000000001 /* AppStatePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStatePersistence.swift; sourceTree = "<group>"; };
+		C15000000000000000000001 /* ProgramEditing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramEditing.swift; sourceTree = "<group>"; };
+		C15000000000000000000003 /* ProgramBuilderComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramBuilderComponents.swift; sourceTree = "<group>"; };
+		C15000000000000000000005 /* ProgramFileCodec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramFileCodec.swift; sourceTree = "<group>"; };
+		C15000000000000000000007 /* ProgramBuilderRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramBuilderRegressionTests.swift; sourceTree = "<group>"; };
+		C15000000000000000000009 /* android-builder-v5.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = android-builder-v5.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -263,6 +273,7 @@
 		146614B978001041EF2542A8 /* Programs */ = {
 			isa = PBXGroup;
 			children = (
+				C15000000000000000000003 /* ProgramBuilderComponents.swift */,
 				35F223343B153857F9D2B8C6 /* ProgramBuilderView.swift */,
 				A4BDFEAE4E7AC75AF6DFA3A2 /* ProgramExerciseEditorSheet.swift */,
 				152BA0CBC21F574ECF6F0EE6 /* ProgramsView.swift */,
@@ -315,6 +326,8 @@
 		437F319122A3CF2DA68E58AD /* FormAppTests */ = {
 			isa = PBXGroup;
 			children = (
+				C15000000000000000000007 /* ProgramBuilderRegressionTests.swift */,
+				C15000000000000000000009 /* android-builder-v5.json */,
 				9D2282260300C11D1B7F29AE /* FormAppTests.swift */,
 			);
 			path = FormAppTests;
@@ -347,6 +360,8 @@
 		6B884E9359482E3EEF287C4A /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				C15000000000000000000001 /* ProgramEditing.swift */,
+				C15000000000000000000005 /* ProgramFileCodec.swift */,
 				C011A0000000000000000001 /* AppStatePersistence.swift */,
 				10AEC969AB339D9720AB880B /* AppStore.swift */,
 				VM0000000000000000000005 /* VolumeMatrixEngine.swift */,
@@ -660,6 +675,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C1500000000000000000000A /* android-builder-v5.json in Resources */,
 				E10000000000000000000003 /* exercises.json in Resources */,
 				L100000000000000000000003 /* Locales in Resources */,
 				0667E5D4E4CF923DF66A2C24 /* 01_aesthetic_hypertrophy.json in Resources */,
@@ -731,6 +747,9 @@
 				DD65F19A9F064CC90CE953C3 /* MuscleArtwork.swift in Sources */,
 				BFD7E7CFFD180073EA634E28 /* MuscleMasks.swift in Sources */,
 				3255EAF86BCBDCDD24C59363 /* ProgramBuilderView.swift in Sources */,
+				C15000000000000000000004 /* ProgramBuilderComponents.swift in Sources */,
+				C15000000000000000000002 /* ProgramEditing.swift in Sources */,
+				C15000000000000000000006 /* ProgramFileCodec.swift in Sources */,
 				A4BDFEAE4E7AC75AF6DFA3A1 /* ProgramExerciseEditorSheet.swift in Sources */,
 				9D47D0FB61D291A7727C96C3 /* ProgramsView.swift in Sources */,
 				6FB272E05E6155F86E8A481E /* RestTimerBar.swift in Sources */,
@@ -769,6 +788,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5F57A702A0F84F27F8CB9EC7 /* FormAppTests.swift in Sources */,
+				C15000000000000000000008 /* ProgramBuilderRegressionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

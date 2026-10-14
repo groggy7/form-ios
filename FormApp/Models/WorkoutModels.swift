@@ -110,6 +110,15 @@ public struct RepTarget: Codable, Hashable {
         self.perSide = perSide
     }
 
+    private enum CodingKeys: String, CodingKey { case min, max, toFailure, perSide }
+    public init(from decoder: Decoder) throws {
+        let fields = try decoder.container(keyedBy: CodingKeys.self)
+        min = try fields.decodeIfPresent(Int.self, forKey: .min)
+        max = try fields.decodeIfPresent(Int.self, forKey: .max)
+        toFailure = try fields.decodeIfPresent(Bool.self, forKey: .toFailure) ?? false
+        perSide = try fields.decodeIfPresent(Bool.self, forKey: .perSide) ?? false
+    }
+
     public var displayText: String {
         let base: String
         if toFailure {
@@ -226,8 +235,8 @@ public struct Exercise: Identifiable, Codable, Hashable {
         name: String,
         exerciseId: String? = nil,
         prescription: String = "",
-        cues: String = "",
-        avoid: String = "",
+        cues: String? = nil,
+        avoid: String? = nil,
         videos: [String] = [],
         sets: Int? = nil,
         reps: RepTarget? = nil,
@@ -239,8 +248,8 @@ public struct Exercise: Identifiable, Codable, Hashable {
         self.name = name
         self.exerciseId = exerciseId
         self.prescription = prescription
-        self.cues = cues
-        self.avoid = avoid
+        self.cues = cues ?? exerciseId.flatMap { ExerciseCatalog.canonicalExercises[$0]?.cuesText } ?? ""
+        self.avoid = avoid ?? exerciseId.flatMap { ExerciseCatalog.canonicalExercises[$0]?.avoidText } ?? ""
         self.videos = videos
         self.sets = sets
         self.reps = reps
@@ -282,8 +291,11 @@ public struct Exercise: Identifiable, Codable, Hashable {
         self.id = try container.decodeIfPresent(String.self, forKey: .id) ?? UUID().uuidString
         let exId = try container.decodeIfPresent(String.self, forKey: .exerciseId)
         self.exerciseId = exId
-        let def = exId.flatMap { ExerciseCatalog.canonicalExercises[$0] }
         let decodedName = try container.decodeIfPresent(String.self, forKey: .name)
+        let def = exId.flatMap { ExerciseCatalog.canonicalExercises[$0] }
+        let guidanceDefinition = def ?? (exId == nil ? ExerciseCatalog.canonicalExercises.values.first {
+            ExerciseCatalog.key($0.name) == ExerciseCatalog.key(decodedName ?? "")
+        } : nil)
         self.name = decodedName ?? def?.name ?? ""
         self.prescription = try container.decodeIfPresent(String.self, forKey: .prescription) ?? ""
         
@@ -292,7 +304,7 @@ public struct Exercise: Identifiable, Codable, Hashable {
         } else if let cuesArr = try? container.decode([String].self, forKey: .cues) {
             self.cues = cuesArr.joined(separator: "\n")
         } else {
-            self.cues = def?.cues.joined(separator: "\n") ?? ""
+            self.cues = guidanceDefinition?.cues.joined(separator: "\n") ?? ""
         }
 
         if let avoidStr = try? container.decode(String.self, forKey: .avoid) {
@@ -300,7 +312,7 @@ public struct Exercise: Identifiable, Codable, Hashable {
         } else if let avoidArr = try? container.decode([String].self, forKey: .avoid) {
             self.avoid = avoidArr.joined(separator: "\n")
         } else {
-            self.avoid = def?.avoid.joined(separator: "\n") ?? ""
+            self.avoid = guidanceDefinition?.avoid.joined(separator: "\n") ?? ""
         }
 
         self.videos = try container.decodeIfPresent([String].self, forKey: .videos) ?? []
@@ -381,23 +393,26 @@ public struct Program: Identifiable, Codable, Hashable {
     public var description: String
     public var guidelines: [String]
     public var workouts: [Workout]
+    public var coverId: String?
 
     public init(
         id: String = UUID().uuidString,
         name: String,
         description: String = "",
         guidelines: [String] = [],
-        workouts: [Workout] = []
+        workouts: [Workout] = [],
+        coverId: String? = nil
     ) {
         self.id = id
         self.name = name
         self.description = description
         self.guidelines = guidelines
         self.workouts = workouts
+        self.coverId = coverId
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, name, description, guidelines, workouts
+        case id, name, description, guidelines, workouts, coverId
     }
 
     public init(from decoder: Decoder) throws {
@@ -407,6 +422,7 @@ public struct Program: Identifiable, Codable, Hashable {
         self.description = try container.decodeIfPresent(String.self, forKey: .description) ?? ""
         self.guidelines = try container.decodeIfPresent([String].self, forKey: .guidelines) ?? []
         self.workouts = try container.decodeIfPresent([Workout].self, forKey: .workouts) ?? []
+        self.coverId = try container.decodeIfPresent(String.self, forKey: .coverId)
     }
 }
 

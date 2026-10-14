@@ -119,6 +119,7 @@ public final class ContentLocalizer {
     public func exerciseCues(exerciseId: String?, fallback: [String], lang: String? = nil) -> [String] {
         let currentLang = lang ?? activeLanguage
         guard let key = resolveExerciseKey(exerciseId: exerciseId, name: nil) else { return fallback }
+        if !fallback.isEmpty && fallback != loadExercises(lang: "en")[key]?.cues { return fallback }
         if let cues = loadExercises(lang: currentLang)[key]?.cues, !cues.isEmpty {
             return cues
         }
@@ -131,6 +132,7 @@ public final class ContentLocalizer {
     public func exerciseAvoid(exerciseId: String?, fallback: [String], lang: String? = nil) -> [String] {
         let currentLang = lang ?? activeLanguage
         guard let key = resolveExerciseKey(exerciseId: exerciseId, name: nil) else { return fallback }
+        if !fallback.isEmpty && fallback != loadExercises(lang: "en")[key]?.avoid { return fallback }
         if let avoid = loadExercises(lang: currentLang)[key]?.avoid, !avoid.isEmpty {
             return avoid
         }
@@ -158,7 +160,7 @@ public final class ContentLocalizer {
 
     public func workoutTitle(programId: String?, workoutId: String?, fallback: String, lang: String? = nil) -> String {
         let currentLang = lang ?? activeLanguage
-        if let pid = programId, let wid = workoutId {
+        if let pid = programId, let wid = workoutId, fallback == loadPrograms(lang: "en")[pid]?.workouts?[wid]?.title {
             if let title = loadPrograms(lang: currentLang)[pid]?.workouts?[wid]?.title, !title.isEmpty {
                 return title
             }
@@ -171,7 +173,7 @@ public final class ContentLocalizer {
 
     public func workoutFocus(programId: String?, workoutId: String?, fallback: String, lang: String? = nil) -> String {
         let currentLang = lang ?? activeLanguage
-        if let pid = programId, let wid = workoutId {
+        if let pid = programId, let wid = workoutId, fallback == loadPrograms(lang: "en")[pid]?.workouts?[wid]?.focus {
             if let focus = loadPrograms(lang: currentLang)[pid]?.workouts?[wid]?.focus, !focus.isEmpty {
                 return focus
             }
@@ -184,7 +186,7 @@ public final class ContentLocalizer {
 
     public func programName(programId: String?, fallback: String, lang: String? = nil) -> String {
         let currentLang = lang ?? activeLanguage
-        if let pid = programId {
+        if let pid = programId, fallback == loadPrograms(lang: "en")[pid]?.name {
             if let name = loadPrograms(lang: currentLang)[pid]?.name, !name.isEmpty {
                 return name
             }
@@ -197,7 +199,7 @@ public final class ContentLocalizer {
 
     public func programDescription(programId: String?, fallback: String, lang: String? = nil) -> String {
         let currentLang = lang ?? activeLanguage
-        if let pid = programId {
+        if let pid = programId, fallback == loadPrograms(lang: "en")[pid]?.description {
             if let desc = loadPrograms(lang: currentLang)[pid]?.description, !desc.isEmpty {
                 return desc
             }
@@ -210,7 +212,7 @@ public final class ContentLocalizer {
 
     public func programGuidelines(programId: String?, fallback: [String], lang: String? = nil) -> [String] {
         let currentLang = lang ?? activeLanguage
-        if let pid = programId {
+        if let pid = programId, fallback == loadPrograms(lang: "en")[pid]?.guidelines {
             if let guidelines = loadPrograms(lang: currentLang)[pid]?.guidelines, !guidelines.isEmpty {
                 return guidelines
             }
@@ -252,12 +254,14 @@ extension Exercise {
     }
 
     public var displayCues: String {
+        if cues.isEmpty { return "" }
         let raw = cues.components(separatedBy: .newlines).map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
         let localized = ContentLocalizer.shared.exerciseCues(exerciseId: exerciseId, fallback: raw)
         return localized.isEmpty ? cues : localized.joined(separator: "\n")
     }
 
     public var displayAvoid: String {
+        if avoid.isEmpty { return "" }
         let raw = avoid.components(separatedBy: .newlines).map { $0.trimmingCharacters(in: .whitespaces) }.filter { !$0.isEmpty }
         let localized = ContentLocalizer.shared.exerciseAvoid(exerciseId: exerciseId, fallback: raw)
         return localized.isEmpty ? avoid : localized.joined(separator: "\n")

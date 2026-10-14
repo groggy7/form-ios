@@ -3,6 +3,12 @@ import SwiftUI
 public struct ProgramExerciseEditorSheet: View {
     @ObservedObject var themeManager = ThemeManager.shared
     let exercise: Exercise
+    let isNew: Bool
+    @State private var name: String
+    @State private var cues: String
+    @State private var avoid: String
+    @State private var videos: String
+    @State private var movement: MovementType
     var onSave: (Exercise) -> Void
     var onDelete: (() -> Void)?
     @Environment(\.dismiss) var dismiss
@@ -19,13 +25,20 @@ public struct ProgramExerciseEditorSheet: View {
     public init(
         exercise: Exercise,
         onSave: @escaping (Exercise) -> Void,
-        onDelete: (() -> Void)? = nil
+        onDelete: (() -> Void)? = nil,
+        isNew: Bool = false
     ) {
         self.exercise = exercise
+        self.isNew = isNew
+        _name = State(initialValue: exercise.name)
+        _cues = State(initialValue: exercise.cues)
+        _avoid = State(initialValue: exercise.avoid)
+        _videos = State(initialValue: exercise.videos.joined(separator: "\n"))
+        _movement = State(initialValue: exercise.resolvedMovement)
         self.onSave = onSave
         self.onDelete = onDelete
 
-        let initialSets = exercise.sets ?? 3
+        let initialSets = WorkoutSessionUtils.initialSetCount(exercise: exercise)
         _sets = State(initialValue: max(1, min(10, initialSets)))
 
         let hasCustom = exercise.reps == nil && !exercise.prescription.trimmingCharacters(in: .whitespaces).isEmpty
@@ -44,11 +57,15 @@ public struct ProgramExerciseEditorSheet: View {
             _perSide = State(initialValue: false)
         }
 
-        _restSeconds = State(initialValue: exercise.restSeconds ?? 90)
+        _restSeconds = State(initialValue: RestTimerUtils.restSeconds(for: exercise))
     }
 
     private var isValid: Bool {
-        guard sets >= 1 && sets <= 10 else { return false }
+        guard sets >= 1 && sets <= 10 && (0...900).contains(restSeconds) &&
+            !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && name.utf16.count <= 100 &&
+            cues.utf16.count <= 1000 && avoid.utf16.count <= 1000 else { return false }
+        let urls = videos.components(separatedBy: "\n").map(YouTubeVideo.normalizeInput).filter { !$0.isEmpty }
+        if videos != exercise.videos.joined(separator: "\n") && YouTubeVideo.validatedLinks(urls) == nil { return false }
         if isCustom {
             let trimmed = customPrescription.trimmingCharacters(in: .whitespaces)
             return !trimmed.isEmpty && trimmed.count <= 100
@@ -66,15 +83,15 @@ public struct ProgramExerciseEditorSheet: View {
             return t.isEmpty ? "—" : t
         }
         if toFailure {
-            return "\(sets) × \(LanguageManager.t("targets.failure"))" + (perSide ? " / side" : "")
+            return "\(sets) × \(LanguageManager.t("targets.failure"))" + (perSide ? " · " + LanguageManager.t("targets.perSide") : "")
         }
         let cleanMin = minRepsString.trimmingCharacters(in: .whitespaces)
         let cleanMax = maxRepsString.trimmingCharacters(in: .whitespaces)
         if let min = Int(cleanMin), let max = Int(cleanMax), min <= max {
             let repStr = min == max ? "\(min)" : "\(min)–\(max)"
-            return "\(sets) × \(repStr)" + (perSide ? " / side" : "")
+            return "\(sets) × \(repStr)" + (perSide ? " · " + LanguageManager.t("targets.perSide") : "")
         }
-        return "\(sets) sets"
+        return "\(sets) " + LanguageManager.t("targets.sets")
     }
 
     public var body: some View {
@@ -95,7 +112,7 @@ public struct ProgramExerciseEditorSheet: View {
 
                             Spacer()
 
-                            Text("\(restSeconds)s rest")
+                            Text(LanguageManager.t("builder.restPreview", ["seconds": restSeconds]))
                                 .font(.system(size: 12, weight: .medium))
                                 .foregroundStyle(AppColors.muted)
                         }
@@ -119,6 +136,17 @@ public struct ProgramExerciseEditorSheet: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .background(AppColors.surfaceRaised)
                     .clipShape(RoundedRectangle(cornerRadius: 14))
+
+                    BuilderSurface {
+                        BuilderTextField("modal.exercise.name", text: $name, limit: 100)
+                        Picker(LanguageManager.t("programs.movement"), selection: $movement) {
+                            ForEach(MovementType.allCases, id: \.rawValue) { Text(LanguageManager.t("category.\($0.rawValue)")).tag($0) }
+                        }.tint(AppColors.accent)
+                        BuilderTextField("modal.exercise.cues", text: $cues, limit: 1000, multiline: true)
+                        BuilderTextField("modal.exercise.avoid", text: $avoid, limit: 1000, multiline: true)
+                        BuilderTextField("modal.exercise.videos", text: $videos, limit: nil, multiline: true)
+                        Text(LanguageManager.t("video.youtubeOnly")).font(.caption).foregroundStyle(AppColors.muted)
+                    }
 
                     // Fixed Sets Card
                     editorSection(title: LanguageManager.t("targets.sets")) {
@@ -339,7 +367,7 @@ public struct ProgramExerciseEditorSheet: View {
                 .padding(20)
             }
             .background(AppColors.background)
-            .navigationTitle(LanguageManager.t("modal.exercise.titleEdit"))
+            .navigationTitle(LanguageManager.t(isNew ? "modal.exercise.titleAdd" : "modal.exercise.titleEdit"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -375,6 +403,15 @@ public struct ProgramExerciseEditorSheet: View {
     private func save() {
         guard isValid else { return }
         var updated = exercise
+        updated.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        updated.cues = cues
+        updated.avoid = avoid
+        updated.videos = videos.components(separatedBy: "\n").map(YouTubeVideo.normalizeInput).filter { !$0.isEmpty }
+        updated.movementType = movement.rawValue
+        if updated.name != exercise.name || movement != exercise.resolvedMovement {
+            updated.exerciseId = nil
+            updated.movementAssetId = nil
+        }
         updated.sets = sets
         if isCustom {
             updated.reps = nil

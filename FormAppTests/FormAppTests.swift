@@ -3300,14 +3300,14 @@ final class FormAppTests: XCTestCase {
         let smithSquat = Exercise(name: "Smith Machine Squat", exerciseId: "smith-squat")
         XCTAssertEqual(smithSquat.displayName, "Smith Makinesi Squat")
 
-        let workout = Workout(id: "pb-squat-strength", day: 1, title: "Heavy Squat", focus: "Maximal squat power, quad density, and core bracing")
+        let workout = Workout(id: "pb-squat-strength", day: 1, title: "Lower: Squat", focus: "Squat practice with hamstrings and calves")
         XCTAssertEqual(workout.displayTitle(programId: "powerbuilding-strength"), "Alt Vücut: Squat")
         XCTAssertEqual(workout.displayFocus(programId: "powerbuilding-strength"), "Squat tekniği, arka bacak ve baldır")
 
         let program = Program(id: "powerbuilding-strength", name: "Heavy & Built: 4-Day Powerbuilding")
         XCTAssertEqual(program.displayName, "Heavy & Built: 4 Günlük Güç ve Kas")
-        XCTAssertEqual(Program(id: "machine-foundation", name: "fallback").displayName, "Machine Foundation: 3 Günlük Tüm Vücut")
-        XCTAssertEqual(Program(id: "upper-lower-balanced", name: "fallback").displayName, "Balanced Build: 4 Günlük Üst/Alt Vücut")
+        XCTAssertEqual(Program(id: "machine-foundation", name: "Machine Foundation: 3-Day Full Body").displayName, "Machine Foundation: 3 Günlük Tüm Vücut")
+        XCTAssertEqual(Program(id: "upper-lower-balanced", name: "Balanced Build: 4-Day Upper/Lower").displayName, "Balanced Build: 4 Günlük Üst/Alt Vücut")
 
         // English check
         LanguageManager.setLanguage("en")
@@ -5072,18 +5072,26 @@ final class FormAppTests: XCTestCase {
         store.selectedWorkoutId = nil
     }
 
-    func testCannotDeleteActiveProgram() {
-        let persistence = AppStatePersistence(inMemory: true)
-        let store = AppStore(persistence: persistence)
+    func testDeletingSelectedProgramChoosesAnotherSavedProgram() {
+        let defaults = UserDefaults.standard
+        let keys = ["stored_app_state", "active_session_v1"]
+        let saved = keys.map { ($0, defaults.object(forKey: $0)) }
+        defer {
+            for (key, value) in saved {
+                if let value { defaults.set(value, forKey: key) }
+                else { defaults.removeObject(forKey: key) }
+            }
+        }
+        keys.forEach { defaults.removeObject(forKey: $0) }
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
         let initialCount = store.state.programs.count
         XCTAssertGreaterThan(initialCount, 1)
-
-        let activeId = store.state.activeProgramId
-        store.deleteProgram(withId: activeId)
-
-        XCTAssertEqual(store.state.programs.count, initialCount, "Active program must not be deleted")
-        XCTAssertEqual(store.state.activeProgramId, activeId)
-        XCTAssertEqual(store.currentToast?.message, LanguageManager.t("notice.cannotDeleteActiveProgram"))
+        let selectedID = store.state.activeProgramId
+        XCTAssertTrue(store.deleteProgram(withId: selectedID))
+        XCTAssertEqual(store.state.programs.count, initialCount - 1)
+        XCTAssertNotEqual(store.state.activeProgramId, selectedID)
+        XCTAssertTrue(store.state.programs.contains { $0.id == store.state.activeProgramId })
+        XCTAssertEqual(store.currentToast?.message, LanguageManager.t("notice.programDeleted"))
     }
 
     func testCannotDeleteProgramWithActiveSession() {
@@ -10694,6 +10702,8 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
 
     func testUnitChangesRebaseCompletedWarmupInputsAndPersistWithoutChangingWeights() throws {
         try withStore { store in
+            install(store, weight: 100)
+            store.flushPendingState()
             store.activeSession = draft()
             for _ in 0..<8 {
                 store.weightUnit = .lbs
@@ -10744,6 +10754,8 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
 
     func testStartupRepairsStaleLegacyInputFromCanonicalWeight() throws {
         try withStore { store in
+            install(store, weight: 100)
+            store.flushPendingState()
             let old = draft(unit: nil)
             UserDefaults.standard.set(try JSONEncoder().encode(old), forKey: "active_session_v1")
             UserDefaults.standard.set("lbs", forKey: "weight_unit")
