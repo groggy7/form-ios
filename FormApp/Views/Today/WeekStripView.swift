@@ -201,7 +201,6 @@ struct WorkoutDayStrip: View {
 private struct HomeGlassRecipe {
     /// Radial light; `radius` is a fraction of the tile width.
     struct Light { let alpha: Double; let radius: Double }
-    struct Rim { let base: Double; let slope: Double; let whiteStart: Double; let whiteScale: Double }
 
     let body: Double
     let diagonal: Double
@@ -215,32 +214,67 @@ private struct HomeGlassRecipe {
     let sheenBottom: Light
     let sheenWhite: Double
     let bloom: Double
-    let rim: Rim
+    /// Bloom reach per axis as a fraction of the tile width.
+    let bloomX: Double
+    let bloomY: Double
+    /// Rim alpha and whiteness at each of `rimAngles`.
+    let rimAlpha: [Double]
+    let rimWhite: [Double]
 
     static let status = HomeGlassRecipe(
-        body: 0.055, diagonal: 0.06, edgeAlpha: 0.19, edgeDecay: 0.10,
-        topLeft: Light(alpha: 0.54, radius: 0.260), topRight: Light(alpha: 0.545, radius: 0.215),
-        bottomLeft: Light(alpha: 0.72, radius: 0.260), bottomRight: Light(alpha: 0.25, radius: 0.170),
-        sheenTop: Light(alpha: 0.57, radius: 0.39), sheenBottom: Light(alpha: 0.13, radius: 0.53),
-        sheenWhite: 0.58, bloom: 0.14,
-        rim: Rim(base: 0.613, slope: 1.079, whiteStart: 0.602, whiteScale: 0.826))
+        body: 0.065, diagonal: 0.06, edgeAlpha: 0.19, edgeDecay: 0.11,
+        topLeft: Light(alpha: 0.60, radius: 0.30), topRight: Light(alpha: 0.50, radius: 0.22),
+        bottomLeft: Light(alpha: 0.62, radius: 0.28), bottomRight: Light(alpha: 0.25, radius: 0.170),
+        sheenTop: Light(alpha: 0.62, radius: 0.41), sheenBottom: Light(alpha: 0.13, radius: 0.53),
+        sheenWhite: 0.35, bloom: 0.12, bloomX: 0.06, bloomY: 0.10,
+        rimAlpha: statusRimAlpha, rimWhite: statusRimWhite)
 
     static let neutral = HomeGlassRecipe(
         body: 0.07, diagonal: 0.04, edgeAlpha: 0.17, edgeDecay: 0.078,
         topLeft: Light(alpha: 0.52, radius: 0.275), topRight: Light(alpha: 0.64, radius: 0.255),
         bottomLeft: Light(alpha: 0.38, radius: 0.225), bottomRight: Light(alpha: 0.20, radius: 0.130),
         sheenTop: Light(alpha: 0.39, radius: 0.435), sheenBottom: Light(alpha: 0.12, radius: 0.57),
-        sheenWhite: 0.25, bloom: 0.09,
-        rim: Rim(base: 0.30, slope: 1.182, whiteStart: 0.62, whiteScale: 0.956))
+        sheenWhite: 0.25, bloom: 0.09, bloomX: 0.06, bloomY: 0.10,
+        rimAlpha: neutralRimAlpha, rimWhite: neutralRimWhite)
 
-    /// Rim brightness by angle (degrees clockwise from 3 o'clock) for a 46.7° corner angle.
-    static let rimLevels: [(angle: Double, level: Double)] = [
-        (0, 0.86), (20, 0.75), (40, 0.51), (46.7, 0.70), (59, 0.62), (70, 0.48), (90, 0.50), (109, 0.46),
-        (119, 0.72), (133.3, 0.93), (149, 0.55), (160, 0.47), (180, 0.53), (200, 0.71), (219, 0.71),
-        (226.7, 0.97), (239, 0.85), (260, 0.54), (270, 0.46), (290, 0.56), (299, 0.72), (313.3, 0.98),
-        (330, 0.69), (350, 0.84), (360, 0.86)
+    // Rim angles (degrees clockwise from 3 o'clock) for a 46.7° corner angle, with the rim's alpha and its
+    // mix toward white at each. Status values were measured from the reference tiles (completed and missed
+    // averaged); neutral values keep the earlier brightness curve.
+    static let rimAngles: [Double] = [
+        0.0, 20.0, 40.0, 46.7, 59.0, 70.0, 90.0, 109.0, 119.0,
+        133.3, 149.0, 160.0, 180.0, 200.0, 219.0, 226.7, 239.0, 260.0,
+        270.0, 290.0, 299.0, 313.3, 330.0, 350.0, 360.0
     ]
+
+    static let statusRimAlpha: [Double] = [
+        1.0, 0.89, 0.68, 0.87, 0.85, 0.71, 0.74, 0.73, 0.95,
+        0.99, 0.88, 0.72, 0.79, 0.99, 0.95, 1.0, 1.0, 0.85,
+        0.75, 0.84, 0.96, 1.0, 0.91, 0.99, 1.0
+    ]
+
+    static let statusRimWhite: [Double] = [
+        0.63, 0.45, 0.36, 0.52, 0.51, 0.44, 0.37, 0.27, 0.41,
+        0.82, 0.2, 0.15, 0.2, 0.48, 0.37, 0.68, 0.87, 0.32,
+        0.25, 0.36, 0.44, 0.75, 0.37, 0.61, 0.63
+    ]
+
+    static let neutralRimAlpha: [Double] = [
+        0.77, 0.64, 0.36, 0.58, 0.49, 0.32, 0.35, 0.3, 0.61,
+        0.86, 0.41, 0.31, 0.38, 0.6, 0.6, 0.9, 0.76, 0.39,
+        0.3, 0.42, 0.61, 0.91, 0.57, 0.75, 0.77
+    ]
+
+    static let neutralRimWhite: [Double] = [
+        0.76, 0.41, 0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.32,
+        0.96, 0.0, 0.0, 0.0, 0.29, 0.29, 0.96, 0.73, 0.0,
+        0.0, 0.0, 0.32, 0.96, 0.22, 0.7, 0.76
+    ]
+
     static let referenceCornerAngle = 46.7
+
+    /// Bloom layers use an exact 8-bit alpha (3/255) so both platforms accumulate identical steps.
+    static let bloomLayerAlpha = 3.0 / 255.0
+    static let bloomKappa = 2.0
 
     /// Maps a reference rim angle onto this tile's aspect ratio, anchoring corners and edge midpoints.
     static func rimFraction(_ angle: Double, width: Double, height: Double) -> Double {
@@ -274,7 +308,7 @@ private struct HomeGlassRecipe {
 private struct HomeDayGlassSurface: View {
     static let radius: CGFloat = 14
     /// Room around the tile for the outer bloom; callers extend this view outward by the same amount.
-    static let margin: CGFloat = 10
+    static let margin: CGFloat = 12
 
     let glass: AppColors.HomeDayGlassColors
     let statusTint: Color?
@@ -307,14 +341,15 @@ private struct HomeDayGlassSurface: View {
             let selectedNeutral = selected && !hasStatus
             let bloomColor = selectedNeutral ? accent : light
             let bloomPeak = recipe.bloom * lightScale * (selectedNeutral ? 1.3 : 1.0)
-            let bloomX = min(0.04 * Double(w), 4)
-            let bloomY = min(0.075 * Double(w), 8)
+            let bloomX = recipe.bloomX * Double(w)
+            let bloomY = recipe.bloomY * Double(w)
             var outside = context
             outside.clip(to: shape, options: .inverse)
-            for inflation in HomeGlassRecipe.bloomInflations(peak: bloomPeak, alpha: 0.01, kappa: 2) {
+            for inflation in HomeGlassRecipe.bloomInflations(peak: bloomPeak, alpha: HomeGlassRecipe.bloomLayerAlpha,
+                                                              kappa: HomeGlassRecipe.bloomKappa) {
                 let rect = tile.insetBy(dx: -CGFloat(inflation * bloomX), dy: -CGFloat(inflation * bloomY))
                 outside.fill(rounded(rect, radius + CGFloat(inflation * (bloomX + bloomY) / 2)),
-                             with: .color(bloomColor.opacity(0.01)))
+                             with: .color(bloomColor.opacity(HomeGlassRecipe.bloomLayerAlpha)))
             }
 
             var glassContext = context
@@ -375,16 +410,15 @@ private struct HomeDayGlassSurface: View {
 
             // 6. One sweep-gradient rim. Selection replaces it with a thicker, flat theme-accent stroke
             // (one colour, one alpha, no angular variation).
-            let rimWidth: CGFloat = selected ? 1.75 : (today ? 1.25 : 1)
-            let stops: [Gradient.Stop] = HomeGlassRecipe.rimLevels.map { entry in
-                var alpha = min(1, max(0.2, recipe.rim.base + (entry.level - 0.46) * recipe.rim.slope))
+            let rimWidth: CGFloat = selected ? 1.75 : (today ? 1.1 : 0.7)
+            let stops: [Gradient.Stop] = HomeGlassRecipe.rimAngles.enumerated().map { index, angle in
+                var alpha = recipe.rimAlpha[index]
                 if today && !hasStatus { alpha = min(1, alpha + 0.12) }
                 if !isDark { alpha *= 0.9 }
-                let white = isDark
-                    ? min(1, max(0, (entry.level - recipe.rim.whiteStart) / 0.30)) * recipe.rim.whiteScale : 0
+                let white = isDark ? recipe.rimWhite[index] : 0
                 return Gradient.Stop(
                     color: Color.mix(light, .white, white).opacity(alpha),
-                    location: HomeGlassRecipe.rimFraction(entry.angle, width: Double(w), height: Double(h)))
+                    location: HomeGlassRecipe.rimFraction(angle, width: Double(w), height: Double(h)))
             }
             let rimShading: GraphicsContext.Shading = selected
                 ? .color(accent)
