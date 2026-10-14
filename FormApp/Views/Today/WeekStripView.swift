@@ -106,9 +106,9 @@ struct WorkoutDayStrip: View {
                         let textColor = AppColors.text
 
                         let statusTint: Color? = {
-                            if isCompleted { return AppColors.completedGreen }
-                            if isUnfinished { return AppColors.unfinishedOrange }
-                            if isMissed { return AppColors.missedRed }
+                            if isCompleted { return glass.completedLight }
+                            if isUnfinished { return glass.unfinishedLight }
+                            if isMissed { return glass.missedLight }
                             return nil
                         }()
                         let statuses: [String?] = [
@@ -245,19 +245,21 @@ private struct HomeDayGlassSurface: View {
             lowerReflection.closeSubpath()
             context.fill(lowerReflection, with: .color(glass.reflection.opacity(isDark ? 0.04 : 0.18)))
 
-            // Keep the status-lit inner rim when selection or today adds an outer ring.
-            let rimPath = rounded(selected || today ? 3.5 : 0.75)
-            context.stroke(rimPath, with: .color(light.opacity(statusTint != nil ? 0.14 : 0.06)), lineWidth: 4)
-            context.stroke(rimPath, with: .linearGradient(Gradient(stops: [
-                .init(color: Color.mix(light, glass.reflection, 0.28).opacity(isDark ? 0.90 : 0.70), location: 0),
-                .init(color: light.opacity(statusTint != nil ? 0.38 : 0.22), location: 0.45),
-                .init(color: light.opacity(statusTint != nil ? 0.80 : 0.50), location: 1)
-            ]), startPoint: .zero, endPoint: CGPoint(x: w, y: h)), lineWidth: 1)
-            if selected {
-                context.stroke(rounded(1), with: .color(accent), lineWidth: 2)
-            } else if today {
-                context.stroke(rounded(0.75), with: .color(glass.neutralRim.opacity(0.65)), lineWidth: 1.5)
+            // One perimeter changes color/weight on selection; status light stays inside it.
+            let rimWidth: CGFloat = selected ? 2 : (today ? 1.5 : 1)
+            let rimPath = rounded(rimWidth / 2)
+            let rimLight = selected ? accent : light
+            let haloLight = statusTint ?? (selected ? accent : glass.neutralRim)
+            let haloAlpha: Double = statusTint != nil ? (isDark ? 0.28 : 0.20)
+                : (selected ? (isDark ? 0.18 : 0.14) : (today ? 0.09 : 0.06))
+            for (width, fraction) in [(CGFloat(6), 0.20), (4, 0.30), (2, 0.50)] {
+                context.stroke(rimPath, with: .color(haloLight.opacity(haloAlpha * fraction)), lineWidth: width)
             }
+            context.stroke(rimPath, with: .linearGradient(Gradient(stops: [
+                .init(color: Color.mix(rimLight, glass.reflection, 0.20).opacity(selected || isDark ? 1 : 0.85), location: 0),
+                .init(color: rimLight.opacity(selected ? 0.95 : (statusTint != nil ? 0.65 : (today ? 0.45 : 0.22))), location: 0.45),
+                .init(color: rimLight.opacity(selected ? 1 : (statusTint != nil ? 0.95 : (today ? 0.75 : 0.50))), location: 1)
+            ]), startPoint: .zero, endPoint: CGPoint(x: w, y: h)), lineWidth: rimWidth)
         }
         .accessibilityHidden(true)
         .allowsHitTesting(false)

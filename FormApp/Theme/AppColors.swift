@@ -87,21 +87,30 @@ public enum AppColors {
         public let reflection: Color
         public let shade: Color
         public let neutralRim: Color
+        public let completedLight: Color
+        public let unfinishedLight: Color
+        public let missedLight: Color
     }
 
     public static var homeDayGlassColors: HomeDayGlassColors {
         if ThemeManager.shared.currentTheme.isDark {
             return HomeDayGlassColors(
-                base: Color(hex: 0x20262B, alpha: 0.74),
+                base: Color(hex: 0x20262B, alpha: 0.58),
                 reflection: Color(hex: 0xECF2F5),
                 shade: Color(hex: 0x000000),
-                neutralRim: Color(hex: 0xCBD4DD))
+                neutralRim: Color(hex: 0xCBD4DD),
+                completedLight: Color(hex: 0x6AF5AD),
+                unfinishedLight: Color(hex: 0xFFB96A),
+                missedLight: Color(hex: 0xFF8294))
         }
         return HomeDayGlassColors(
-            base: Color(hex: 0xFFFBF4, alpha: 0.72),
+            base: Color(hex: 0xFFFBF4, alpha: 0.60),
             reflection: Color(hex: 0xFFFFFF),
             shade: Color(hex: 0x71685C),
-            neutralRim: Color(hex: 0x938879))
+            neutralRim: Color(hex: 0x938879),
+            completedLight: Color(hex: 0x1D7050),
+            unfinishedLight: Color(hex: 0x845014),
+            missedLight: Color(hex: 0xAA3E2F))
     }
 
     // Split presentation colors
