@@ -4,14 +4,6 @@ public enum WorkoutVisualRegion {
     case upper
     case lower
     case fullBody
-
-    var daySurface: Color {
-        switch self {
-        case .upper: return AppColors.homeDayColors.upper
-        case .lower: return AppColors.homeDayColors.lower
-        case .fullBody: return AppColors.homeDayColors.fullBody
-        }
-    }
 }
 
 public extension Workout {
@@ -101,7 +93,7 @@ struct WorkoutDayStrip: View {
         ScrollViewReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 8) {
-                    ForEach(workouts, id: \.id) { workout in
+                    ForEach(Array(workouts.enumerated()), id: \.element.id) { colorIndex, workout in
                         let dayIndex = workout.day - 1
                         let selected = workout.id == activeWorkoutId
                         let isToday = dayIndex == calendar.today
@@ -111,21 +103,19 @@ struct WorkoutDayStrip: View {
                         let isMissed = WeeklyPlanView.isMissedPlanDay(dayIndex: dayIndex, todayIndex: calendar.today,
                             hasWorkout: true, completed: isCompleted, unfinished: isUnfinished)
                         let dayNumber = calendar.numbers.indices.contains(dayIndex) ? calendar.numbers[dayIndex] : (dayIndex + 1)
-                        let palette = workout.visualRegion
                         let textColor = AppColors.text
 
                         let surfaceColor: Color = {
-                            // Status survives selection, including a past-day preview.
+                            // The schedule slot is independent of selection and other day statuses.
                             if isCompleted { return dayColors.completed }
                             if isUnfinished { return dayColors.unfinished }
                             if isMissed { return dayColors.missed }
-                            if selected { return dayColors.selected }
-                            return palette.daySurface
+                            return dayColors.neutral[colorIndex % dayColors.neutral.count]
                         }()
 
                         let borderColor: Color = {
                             if selected { return AppColors.accent }
-                            if isToday { return AppColors.accent.opacity(0.65) }
+                            if isToday { return Color.mix(AppColors.border, AppColors.text, 0.35) }
                             if isCompleted { return Color.mix(AppColors.border, AppColors.completedGreen, 0.25) }
                             if isUnfinished { return Color.mix(AppColors.border, AppColors.unfinishedOrange, 0.25) }
                             if isMissed { return Color.mix(AppColors.border, AppColors.missedRed, 0.25) }
@@ -179,7 +169,7 @@ struct WorkoutDayStrip: View {
                             )
                             .overlay(
                                 RoundedRectangle(cornerRadius: 20)
-                                    .strokeBorder(borderColor, lineWidth: (selected || isToday) ? 2 : 1)
+                                    .strokeBorder(borderColor, lineWidth: selected ? 2 : (isToday ? 1.5 : 1))
                             )
                             .clipShape(RoundedRectangle(cornerRadius: 20))
                         }

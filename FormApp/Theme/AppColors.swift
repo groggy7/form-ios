@@ -81,46 +81,47 @@ public enum AppColors {
     public static var todayIvory: Color { lightThemeColor(Color(hex: 0xEEE8DC), accent) }
     public static var todaySelectionText: Color { lightThemeColor(Color(hex: 0x1A2026), background) }
 
-    // Home day tiles: category and status fills keep each suite's undertone.
+    // Home day tiles: neutral identity, workout status and selection use separate roles.
     public struct HomeDayColors {
-        public let upper: Color
-        public let lower: Color
-        public let fullBody: Color
+        public let neutral: [Color]
         public let completed: Color
         public let unfinished: Color
         public let missed: Color
-        public let selected: Color
 
-        fileprivate init(upper: UInt32, lower: UInt32, fullBody: UInt32, completed: UInt32,
-                         unfinished: UInt32, missed: UInt32, selected: UInt32) {
-            self.upper = Color(hex: upper)
-            self.lower = Color(hex: lower)
-            self.fullBody = Color(hex: fullBody)
+        fileprivate init(neutral: [UInt32], completed: UInt32, unfinished: UInt32, missed: UInt32) {
+            self.neutral = neutral.map { Color(hex: $0) }
             self.completed = Color(hex: completed)
             self.unfinished = Color(hex: unfinished)
             self.missed = Color(hex: missed)
-            self.selected = Color(hex: selected)
         }
     }
 
     public static var homeDayColors: HomeDayColors {
         switch ThemeManager.shared.currentTheme.id {
-        case "espresso": return HomeDayColors(upper: 0x3B2B2A, lower: 0x30323A, fullBody: 0x3B3028,
-            completed: 0x2B3D2D, unfinished: 0x4B331E, missed: 0x4A2928, selected: 0x51402D)
-        case "stealth": return HomeDayColors(upper: 0x2D2934, lower: 0x252E39, fullBody: 0x2B2C31,
-            completed: 0x223D32, unfinished: 0x413020, missed: 0x42282F, selected: 0x3A3C43)
-        case "cobalt": return HomeDayColors(upper: 0x2C2A45, lower: 0x1C354C, fullBody: 0x263340,
-            completed: 0x193D34, unfinished: 0x3D2E21, missed: 0x3E2633, selected: 0x15415A)
-        case "alpine": return HomeDayColors(upper: 0x2B3432, lower: 0x213A35, fullBody: 0x2B352E,
-            completed: 0x19432F, unfinished: 0x40331F, missed: 0x3E2829, selected: 0x1D4A37)
-        case "crimson": return HomeDayColors(upper: 0x402A38, lower: 0x30323E, fullBody: 0x3D2D2C,
-            completed: 0x2B3E31, unfinished: 0x4D3525, missed: 0x4F2831, selected: 0x5A3337)
-        case "amethyst": return HomeDayColors(upper: 0x3B2952, lower: 0x2C354C, fullBody: 0x352E43,
-            completed: 0x283F37, unfinished: 0x48352B, missed: 0x4C2B3D, selected: 0x44255E)
-        case "oat": return HomeDayColors(upper: 0xE6DACD, lower: 0xE3DBCE, fullBody: 0xEDE3D4,
-            completed: 0xE8EDE4, unfinished: 0xF3EADE, missed: 0xF7E8E0, selected: 0xF2DFC8)
-        default: return HomeDayColors(upper: 0x292539, lower: 0x202D3D, fullBody: 0x292F38,
-            completed: 0x1B3A2E, unfinished: 0x3D2C1B, missed: 0x3B2328, selected: 0x234A40)
+        case "espresso": return HomeDayColors(
+            neutral: [0x333D49, 0x423C49, 0x3C3D40, 0x4B4946, 0x3B4953, 0x514E52],
+            completed: 0x2B3D2D, unfinished: 0x4B331E, missed: 0x4A2928)
+        case "stealth": return HomeDayColors(
+            neutral: [0x2D3847, 0x3D3546, 0x353A40, 0x464545, 0x3B454D, 0x504E53],
+            completed: 0x223D32, unfinished: 0x413020, missed: 0x42282F)
+        case "cobalt": return HomeDayColors(
+            neutral: [0x343A4A, 0x413C4C, 0x38383E, 0x4A4846, 0x424752, 0x524E54],
+            completed: 0x193D34, unfinished: 0x3D2E21, missed: 0x3E2633)
+        case "alpine": return HomeDayColors(
+            neutral: [0x303D4B, 0x433A49, 0x343C41, 0x474644, 0x3C4B55, 0x514E54],
+            completed: 0x19432F, unfinished: 0x40331F, missed: 0x3E2829)
+        case "crimson": return HomeDayColors(
+            neutral: [0x353D4C, 0x45404E, 0x3C3F43, 0x4C4A48, 0x3D4B55, 0x555256],
+            completed: 0x2B3E31, unfinished: 0x4D3525, missed: 0x4F2831)
+        case "amethyst": return HomeDayColors(
+            neutral: [0x354352, 0x45484D, 0x333B43, 0x504E4B, 0x3E4B56, 0x555559],
+            completed: 0x283F37, unfinished: 0x48352B, missed: 0x4C2B3D)
+        case "oat": return HomeDayColors(
+            neutral: [0xDFE5EC, 0xE5DFE9, 0xDEE1E5, 0xE8E6E3, 0xD5E0E8, 0xE1DFE3],
+            completed: 0xE8EDE4, unfinished: 0xF3EADE, missed: 0xF7E8E0)
+        default: return HomeDayColors(
+            neutral: [0x293949, 0x403646, 0x353A40, 0x484644, 0x344651, 0x4C484E],
+            completed: 0x1B3A2E, unfinished: 0x3D2C1B, missed: 0x3B2328)
         }
     }
     
