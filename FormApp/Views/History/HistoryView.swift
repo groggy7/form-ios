@@ -517,6 +517,17 @@ public struct HistoryView: View {
                     let today = Date()
                     let todayStr = WorkoutCalendar.formatDate(today)
                     let isCurrentMonth = calendar.isDate(displayedDate, equalTo: today, toGranularity: .month)
+                    let displayedMonthStr = String(WorkoutCalendar.formatDate(displayedDate).prefix(7))
+                    let currentMonthStr = String(WorkoutCalendar.formatDate(today).prefix(7))
+                    let earliestRecordedMonth = WorkoutCalendar.earliestWorkoutMonth(history: store.state.calendarHistory, sessions: store.state.history)
+                    let minMonthStr: String = {
+                        let start = store.calendarStartMonth
+                        if let earliest = earliestRecordedMonth {
+                            return min(start, earliest)
+                        }
+                        return min(start, currentMonthStr)
+                    }()
+                    let canGoBack = displayedMonthStr > minMonthStr
                     let statuses = store.calendarStatuses(today: today)
                     let weeks = WorkoutCalendar.monthWeeks(for: displayedDate)
 
@@ -532,10 +543,10 @@ public struct HistoryView: View {
                                 VStack(spacing: 10) {
                         // Month navigation row
                         HStack {
-                            Button(action: { changeMonth(by: -1) }) {
+                            Button(action: { changeMonth(by: -1, allowed: canGoBack) }) {
                                 Image(systemName: "chevron.left")
                                     .font(.system(size: 16, weight: .semibold))
-                                    .foregroundStyle(AppColors.secondaryText)
+                                    .foregroundStyle(canGoBack ? AppColors.secondaryText : AppColors.muted.opacity(0.3))
                                     .frame(width: 40, height: 40)
                                     .background(
                                         RoundedRectangle(cornerRadius: 12, style: .continuous)
@@ -548,6 +559,7 @@ public struct HistoryView: View {
                                     .frame(width: 48, height: 48)
                                     .contentShape(Rectangle())
                             }
+                            .disabled(!canGoBack)
                             .buttonStyle(.plain)
 
                             Spacer()
@@ -558,7 +570,7 @@ public struct HistoryView: View {
 
                             Spacer()
 
-                            Button(action: { changeMonth(by: 1) }) {
+                            Button(action: { changeMonth(by: 1, allowed: !isCurrentMonth) }) {
                                 Image(systemName: "chevron.right")
                                     .font(.system(size: 16, weight: .semibold))
                                     .foregroundStyle(isCurrentMonth ? AppColors.muted.opacity(0.3) : AppColors.secondaryText)
@@ -733,7 +745,8 @@ public struct HistoryView: View {
         }
     }
 
-    private func changeMonth(by value: Int) {
+    private func changeMonth(by value: Int, allowed: Bool = true) {
+        guard allowed else { return }
         if let newDate = Calendar.current.date(byAdding: .month, value: value, to: displayedDate) {
             displayedDate = newDate
             selectedDateString = nil

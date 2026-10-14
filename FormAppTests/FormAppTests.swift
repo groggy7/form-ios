@@ -12409,4 +12409,47 @@ final class AuditSearchPerformanceTests: XCTestCase {
         closeMenu()
         XCTAssertNil(menuProgramId, "Menu must close when clicked again")
     }
+
+    func testEarliestWorkoutMonth() {
+        XCTAssertNil(WorkoutCalendar.earliestWorkoutMonth(history: nil, sessions: []))
+        let emptyHistory = WorkoutCalendarHistory(nextScheduledDate: "2026-10-01", scheduledWeekdays: [1], missedDates: [], entries: [])
+        XCTAssertNil(WorkoutCalendar.earliestWorkoutMonth(history: emptyHistory, sessions: []))
+
+        let session1 = WorkoutSessionRecord(
+            programId: "p", workoutId: "w", workoutTitle: "T",
+            startedAt: "2025-06-15T10:00:00Z", completedAt: "2025-06-15T11:00:00Z",
+            durationSeconds: 3600, scheduledDate: "2025-06-15"
+        )
+        let session2 = WorkoutSessionRecord(
+            programId: "p", workoutId: "w", workoutTitle: "T",
+            startedAt: "2024-08-20T10:00:00Z", completedAt: "2024-08-20T11:00:00Z",
+            durationSeconds: 3600, scheduledDate: "2024-08-20"
+        )
+        let history = WorkoutCalendarHistory(
+            nextScheduledDate: "2026-01-01", scheduledWeekdays: [1], missedDates: [],
+            entries: [WorkoutDayEntry(id: "m1", date: "2024-03-10", status: .completed)]
+        )
+        let earliest = WorkoutCalendar.earliestWorkoutMonth(history: history, sessions: [session1, session2])
+        XCTAssertEqual(earliest, "2024-03")
+    }
+
+    func testRestoreBackupUpdatesCalendarStartMonthToEarliestLoggedWorkout() throws {
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        store.setCalendarStartMonth("2026-10")
+        XCTAssertEqual(store.calendarStartMonth, "2026-10")
+
+        let session = WorkoutSessionRecord(
+            programId: "p", workoutId: "w", workoutTitle: "T",
+            startedAt: "2024-05-10T10:00:00Z", completedAt: "2024-05-10T11:00:00Z",
+            durationSeconds: 3600, scheduledDate: "2024-05-10"
+        )
+        var state = store.state
+        state.history = [session]
+        let backupDoc = FullBackupDocument(state: state, weightUnit: .kg)
+        let json = try String(decoding: JSONEncoder().encode(backupDoc), as: UTF8.self)
+
+        XCTAssertTrue(store.restoreBackupJson(json))
+        XCTAssertEqual(store.calendarStartMonth, "2024-05")
+    }
 }
+

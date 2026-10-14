@@ -22,6 +22,7 @@ public final class AppStore: ObservableObject {
     private let showWarmupCalculatorKey = "show_warmup_calculator"
     private let progressionCardDismissedKey = "pro_progression_card_dismissed"
     private let warmupCardDismissedKey = "pro_warmup_card_dismissed"
+    private let calendarStartMonthKey = "calendar_start_month"
 
     @Published public var state: StoredAppState
     @Published public var activeSession: ActiveSessionDraft?
@@ -29,6 +30,7 @@ public final class AppStore: ObservableObject {
     @Published public var isOnboardingCompleted: Bool
     @Published public var showProgressionTargets: Bool
     @Published public var showWarmupCalculator: Bool
+    @Published public var calendarStartMonth: String
 
     public var isProgressionCardDismissed: Bool {
         get { !showProgressionTargets }
@@ -106,6 +108,19 @@ public final class AppStore: ObservableObject {
         self.selectedHistoryDetailDay = nil
         self.returnView = nil
         self.currentView = view
+    }
+
+    public func setCalendarStartMonth(_ month: String) {
+        guard month.count == 7 else { return }
+        self.calendarStartMonth = month
+        UserDefaults.standard.set(month, forKey: calendarStartMonthKey)
+    }
+
+    public func updateCalendarStartMonthIfEarlier(_ month: String) {
+        guard month.count == 7 else { return }
+        if month < calendarStartMonth {
+            setCalendarStartMonth(month)
+        }
     }
 
     @discardableResult
@@ -200,6 +215,23 @@ public final class AppStore: ObservableObject {
             self.showWarmupCalculator = true
         }
 
+        if let savedStartMonth = UserDefaults.standard.string(forKey: calendarStartMonthKey), savedStartMonth.count == 7 {
+            self.calendarStartMonth = savedStartMonth
+        } else {
+            let currentMonth = String(WorkoutCalendar.formatDate(Date()).prefix(7))
+            let installMonth: String
+            if let docsUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last,
+               let attrs = try? FileManager.default.attributesOfItem(atPath: docsUrl.path),
+               let date = attrs[.creationDate] as? Date {
+                installMonth = String(WorkoutCalendar.formatDate(date).prefix(7))
+            } else {
+                installMonth = currentMonth
+            }
+            let initial = min(installMonth, currentMonth)
+            self.calendarStartMonth = initial
+            UserDefaults.standard.set(initial, forKey: calendarStartMonthKey)
+        }
+
         let loaded = Self.loadStoredState(persistence: persistence)
         self.persistenceEnabled = loaded.canPersist
         var loadedState = Self.rotateWeek(loaded.state, now: Date())
@@ -248,6 +280,9 @@ public final class AppStore: ObservableObject {
         )
         loadedState.calendarHistory = refreshed
         self.state = loadedState
+        if let earliest = WorkoutCalendar.earliestWorkoutMonth(history: loadedState.calendarHistory, sessions: loadedState.history) {
+            updateCalendarStartMonthIfEarlier(earliest)
+        }
         if let draft = activeDraft, !draft.isPaused {
             let paused = draft.paused(nowEpochMillis: Int64(Date().timeIntervalSince1970 * 1000))
             self.activeSession = paused
@@ -1349,6 +1384,9 @@ public final class AppStore: ObservableObject {
             // Metadata restores the display preference, never the numeric weights.
             // The property observer also rebases the live workout we preserve.
             if let restoredUnit = backup.weightUnit { weightUnit = restoredUnit }
+            if let earliest = WorkoutCalendar.earliestWorkoutMonth(history: backup.state.calendarHistory, sessions: backup.state.history) {
+                updateCalendarStartMonthIfEarlier(earliest)
+            }
             return true
         } catch {
             print("Failed to restore backup: \(error)")

@@ -1133,7 +1133,31 @@ public enum WorkoutCalendar {
         }
         return weeks
     }
+
+    public static func earliestWorkoutMonth(
+        history: WorkoutCalendarHistory?,
+        sessions: [WorkoutSessionRecord],
+        timeZone: TimeZone = .current
+    ) -> String? {
+        var dates: [String] = []
+        for session in sessions {
+            if let d = localDate(from: session.startedAt, timeZone: timeZone) ?? localDate(from: session.completedAt, timeZone: timeZone) ?? session.scheduledDate {
+                dates.append(d)
+            }
+        }
+        if let history = history {
+            for entry in history.entries {
+                dates.append(entry.date)
+            }
+            for missed in history.missedDates {
+                dates.append(missed)
+            }
+        }
+        guard let earliest = dates.filter({ $0.count >= 7 }).min() else { return nil }
+        return String(earliest.prefix(7))
+    }
 }
+
 
 public struct StoredAppState: Codable {
     public var schemaVersion: Int
