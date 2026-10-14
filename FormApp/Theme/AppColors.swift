@@ -106,9 +106,9 @@ public enum AppColors {
             base: Color(hex: 0xFFFBF4, alpha: 0.60),
             reflection: Color(hex: 0xFFFFFF),
             neutralRim: Color(hex: 0x938879),
-            completedLight: Color(hex: 0x1D7050),
-            unfinishedLight: Color(hex: 0x845014),
-            missedLight: Color(hex: 0xAA3E2F))
+            completedLight: Color(hex: 0x1C965C),
+            unfinishedLight: Color(hex: 0xDE7612),
+            missedLight: Color(hex: 0xD0362E))
     }
 
     // Split presentation colors

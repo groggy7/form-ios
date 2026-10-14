@@ -347,7 +347,8 @@ private struct HomeDayGlassSurface: View {
             let hasStatus = statusTint != nil
             let recipe = hasStatus ? HomeGlassRecipe.status : HomeGlassRecipe.neutral
             let light = statusTint ?? glass.neutralRim
-            let lightScale = isDark ? 1.0 : 0.55
+            // Oat shows the status lights at full strength so green, orange and red stay vivid on the light canvas.
+            let lightScale = 1.0
 
             // 1. Bloom: faint light outside the rim; selection lights an otherwise neutral tile.
             let selectedNeutral = selected && !hasStatus
@@ -454,7 +455,7 @@ private struct HomeDayCalmSurface: View {
     private struct Look { let tint: Double; let ring: Double }
     private static let statusDark = Look(tint: 0.19, ring: 0.60)
     private static let neutralDark = Look(tint: 0.05, ring: 0.35)
-    private static let statusLight = Look(tint: 0.095, ring: 0.60)
+    private static let statusLight = Look(tint: 0.28, ring: 0.65)
     private static let neutralLight = Look(tint: 0.05, ring: 0.45)
     /// Fractions of an edge ramp's reach (four time constants): alpha is `amp * exp(-4 * fraction)`, 0 at the end.
     private static let rampStops: [Double] = [0, 0.125, 0.25, 0.5, 0.75, 1]
