@@ -356,7 +356,7 @@ public struct VolumeMatrixView: View {
                                 Text(summary?.localizedName ?? muscleKey)
                                     .font(.system(size: 12, weight: isSelected ? .semibold : .medium))
                                     .foregroundStyle(isSelected ? AppColors.text : AppColors.secondaryText)
-                                Text(String(format: "%.1f", locale: LanguageManager.numberLocale, summary?.totalEffectiveSets ?? 0))
+                                Text(String(format: "%.1f", locale: LanguageManager.numberLocale, summary?.totalEffectiveSets ?? Float(0)))
                                     .font(.system(size: 11, weight: .bold))
                                     .foregroundStyle(summary?.zone.textColor ?? AppColors.muted)
                             }
