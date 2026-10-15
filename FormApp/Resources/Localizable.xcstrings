@@ -1,461 +1,6 @@
 {
   "sourceLanguage": "en",
   "strings": {
-    "programs.cover.studio_lat_spread": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Shoulder pose"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Omuz pozu"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schulterpose"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pose épaules"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pose de hombros"
-          }
-        }
-      }
-    },
-    "programs.cover.studio_bench_press": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bench press portrait"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bench press portresi"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bankdrück-Porträt"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Portrait développé couché"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Retrato de press de banca"
-          }
-        }
-      }
-    },
-    "programs.cover.studio_chest_clasp": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Chest pose"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Göğüs pozu"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Brustpose"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pose pectoraux"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pose de pecho"
-          }
-        }
-      }
-    },
-    "programs.cover.studio_dumbbell_row": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dumbbell row portrait"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Dambıl row portresi"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kurzhantelrudern-Porträt"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Portrait rowing haltère"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Retrato de remo con mancuerna"
-          }
-        }
-      }
-    },
-    "programs.cover.studio_kettlebell_swing": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kettlebell portrait"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kettlebell portresi"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kettlebell-Porträt"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Portrait kettlebell"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Retrato con kettlebell"
-          }
-        }
-      }
-    },
-    "programs.cover.studio_machine_press": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Machine press portrait"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Makine press portresi"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Brustpresse-Porträt"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Portrait presse pectorale"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Retrato de press en máquina"
-          }
-        }
-      }
-    },
-    "programs.cover.chest_side_pose": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Side chest"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yan göğüs pozu"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seitliche Brustpose"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pectoraux de profil"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pecho de perfil"
-          }
-        }
-      }
-    },
-    "programs.cover.shoulders_press": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Shoulder press"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Omuz press"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schulterdrücken"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Développé épaules"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Press de hombros"
-          }
-        }
-      }
-    },
-    "programs.cover.biceps_peak_pose": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Biceps pose"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Biseps pozu"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bizepspose"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pose biceps"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pose de bíceps"
-          }
-        }
-      }
-    },
-    "programs.cover.triceps_side_pose": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Triceps pose"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Triseps pozu"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Trizepspose"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pose triceps"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pose de tríceps"
-          }
-        }
-      }
-    },
-    "programs.cover.core_abs_pose": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abdominal pose"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Karın pozu"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bauchmuskelpose"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pose abdominaux"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pose abdominal"
-          }
-        }
-      }
-    },
-    "programs.cover.obliques_side_pose": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Oblique pose"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yan karın pozu"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seitliche Bauchpose"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pose obliques"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pose de oblicuos"
-          }
-        }
-      }
-    },
-    "programs.cover.forearms_grip": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Grip strength"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kavrama gücü"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Griffkraft"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Force de préhension"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fuerza de agarre"
-          }
-        }
-      }
-    },
     "targets.sets": {
       "extractionState": "manual",
       "localizations": {
@@ -38456,7 +38001,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wählen Sie die Ausrüstung aus, auf die Sie zuverlässigen Zugriff haben."
+            "value": "Wähle die Ausrüstung, auf die du zuverlässig Zugriff hast."
           }
         },
         "fr": {
@@ -38468,7 +38013,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Seleccione el equipo al que tenga acceso confiable."
+            "value": "Elige el equipo al que tienes acceso de forma fiable."
           }
         }
       }
@@ -38491,19 +38036,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kommerzielles Fitnessstudio"
+            "value": "Fitnessstudio"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Salle de sport commerciale"
+            "value": "Salle de sport complète"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gimnasio Comercial"
+            "value": "Gimnasio completo"
           }
         }
       }
@@ -38526,19 +38071,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Voller Zugriff auf Hanteln, Ablagen, Kurzhanteln, Kabel und Maschinen."
+            "value": "Voller Zugang zu Langhanteln, Racks, Kurzhanteln, Kabelzügen und Maschinen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Accès complet aux haltères, racks, haltères, câbles et machines."
+            "value": "Accès complet aux barres, racks, haltères, poulies et machines."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Acceso completo a barras, bastidores, mancuernas, cables y máquinas."
+            "value": "Acceso completo a barras, racks, mancuernas, poleas y máquinas."
           }
         }
       }
@@ -38561,19 +38106,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nur Maschinen und Kabel"
+            "value": "Nur Maschinen & Kabelzüge"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Machines et câbles uniquement"
+            "value": "Machines et poulies uniquement"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sólo máquinas y cables"
+            "value": "Solo máquinas y poleas"
           }
         }
       }
@@ -38596,19 +38141,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ausgewählte Maschinen und Kabel mit geringer Eintrittsbarriere."
+            "value": "Steckgewichtsmaschinen und Kabelzüge mit niedriger Einstiegshürde."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Machines et câbles sélectionnés avec faible barrière à l’entrée."
+            "value": "Machines à charge guidée et poulies, faciles à prendre en main."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Máquinas y cables selectorizados con barrera de entrada baja."
+            "value": "Máquinas de placas y poleas, fáciles para empezar."
           }
         }
       }
@@ -38631,19 +38176,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Startseite / Nur Kurzhanteln"
+            "value": "Zu Hause / Nur Kurzhanteln"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Accueil / haltères uniquement"
+            "value": "Maison / haltères uniquement"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Inicio / Solo mancuernas"
+            "value": "Casa / Solo mancuernas"
           }
         }
       }
@@ -38666,19 +38211,159 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Verstellbarer Kurzhanteln und eine verstellbare Bank (kein Langhantel oder Rack)."
+            "value": "Verstellbare Kurzhanteln und eine verstellbare Bank (keine Langhantel, kein Rack)."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "haltères réglable et un banc réglable (pas de barre ni de rack)."
+            "value": "Haltères réglables et un banc réglable (pas de barre ni de rack)."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "mancuernas ajustable y un banco ajustable (sin barra ni estante)."
+            "value": "Mancuernas ajustables y un banco ajustable (sin barra ni rack)."
+          }
+        }
+      }
+    },
+    "onboarding.equipment.bodyweightHome.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Home / No Equipment"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ev / Ekipmansız"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu Hause / Ohne Geräte"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maison / sans équipement"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Casa / Sin equipo"
+          }
+        }
+      }
+    },
+    "onboarding.equipment.bodyweightHome.desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Floor space, a wall or counter, a sturdy chair and a step."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Boş bir zemin, duvar veya tezgâh, sağlam bir sandalye ve bir basamak."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Freie Bodenfläche, eine Wand oder Arbeitsplatte, ein stabiler Stuhl und eine Stufe."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un espace au sol, un mur ou un plan de travail, une chaise solide et une marche."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espacio en el suelo, una pared o encimera, una silla firme y un escalón."
+          }
+        }
+      }
+    },
+    "onboarding.equipment.pullUpBarHome.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Home / Pull-Up Bar"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ev / Barfiks Barı"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu Hause / Klimmzugstange"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maison / barre de traction"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Casa / Barra de dominadas"
+          }
+        }
+      }
+    },
+    "onboarding.equipment.pullUpBarHome.desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A securely installed pull-up bar, plus floor space, a chair and a step."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sağlam monte edilmiş bir barfiks barı; ayrıca boş zemin, sandalye ve basamak."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine sicher montierte Klimmzugstange, dazu Bodenfläche, ein Stuhl und eine Stufe."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Une barre de traction solidement fixée, plus un espace au sol, une chaise et une marche."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Una barra de dominadas bien fijada, además de suelo libre, una silla y un escalón."
           }
         }
       }
@@ -38707,7 +38392,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Combien de jours peut-on s'entraîner ?"
+            "value": "Combien de jours pouvez-vous vous entraîner ?"
           }
         },
         "es": {
@@ -38736,19 +38421,89 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Konsistenz ist wichtiger als zu viele Tage zu pauken."
+            "value": "Regelmäßigkeit zählt mehr als möglichst viele Tage."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "La cohérence compte plus que de bourrer trop de jours."
+            "value": "La régularité compte plus que d’accumuler trop de jours."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "La constancia importa más que estudiar demasiados días."
+            "value": "La constancia importa más que entrenar demasiados días."
+          }
+        }
+      }
+    },
+    "onboarding.frequency.days2.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2 Days / Week"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haftada 2 Gün"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2 Tage/Woche"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2 jours / semaine"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "2 días / semana"
+          }
+        }
+      }
+    },
+    "onboarding.frequency.days2.desc": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minimal and sustainable. Two full-body sessions for busy weeks."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Az ama sürdürülebilir. Yoğun haftalar için iki tüm vücut seansı."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minimal und gut durchzuhalten. Zwei Ganzkörpereinheiten für volle Wochen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Minimal et tenable. Deux séances corps entier pour les semaines chargées."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mínimo y sostenible. Dos sesiones de cuerpo completo para semanas ajetreadas."
           }
         }
       }
@@ -38783,7 +38538,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "3 Días / Semana"
+            "value": "3 días / semana"
           }
         }
       }
@@ -38806,19 +38561,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Überschaubar und mit hoher Wiederherstellung. Ideal für Ganzkörper- oder sportliche Spagat-Übungen."
+            "value": "Gut machbar mit viel Erholung. Ideal für Ganzkörper- oder Athletikpläne."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gérable et haute récupération. Idéal pour les grands écarts sur tout le corps ou athlétiques."
+            "value": "Facile à tenir, avec beaucoup de récupération. Idéal pour les programmes corps entier ou athlétiques."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Manejable y de alta recuperación. Ideal para divisiones atléticas o de cuerpo completo."
+            "value": "Manejable y con mucha recuperación. Ideal para planes de cuerpo completo o atléticos."
           }
         }
       }
@@ -38853,7 +38608,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "4 Días / Semana"
+            "value": "4 días / semana"
           }
         }
       }
@@ -38876,19 +38631,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Der Sweetspot. Ausgewogener oberer/unterer Split mit viel Erholung."
+            "value": "Der Sweetspot. Ausgewogene Ober-/Unterkörper-Splits mit viel Erholung."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Le point idéal. Divisions supérieures/inférieures équilibrées avec beaucoup de récupération."
+            "value": "Le juste milieu. Programmes haut/bas du corps équilibrés avec beaucoup de récupération."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El punto ideal. Divisiones superior/inferior equilibradas con mucha recuperación."
+            "value": "El punto ideal. Rutinas torso/pierna equilibradas con mucha recuperación."
           }
         }
       }
@@ -38923,7 +38678,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "5 Días / Semana"
+            "value": "5 días / semana"
           }
         }
       }
@@ -38946,13 +38701,13 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hohes Engagement. Spezielle Muskelgruppensitzungen mit gezielter Intensität."
+            "value": "Hoher Einsatz. Eigene Einheiten für Muskelgruppen mit gezielter Intensität."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Un grand dévouement. Séances de groupes musculaires dédiées avec une intensité ciblée."
+            "value": "Grand engagement. Séances dédiées par groupe musculaire avec une intensité ciblée."
           }
         },
         "es": {
@@ -38993,7 +38748,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "6 días/semana"
+            "value": "6 días / semana"
           }
         }
       }
@@ -39016,19 +38771,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Reine Push-, Pull- und Beinfrequenz für erfahrene Lifter mit hoher Erholung."
+            "value": "Push, Pull, Beine in voller Frequenz für erfahrene Lifter mit guter Erholung."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fréquence pure de poussée, de traction et de jambes pour les haltérophiles expérimentés à récupération élevée."
+            "value": "Push, pull, jambes à pleine fréquence pour les pratiquants expérimentés qui récupèrent bien."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Frecuencia pura de empuje, tracción y piernas para levantadores experimentados y de alta recuperación."
+            "value": "Empuje, tracción y piernas a plena frecuencia para levantadores experimentados que se recuperan bien."
           }
         }
       }
@@ -39523,6 +39278,111 @@
           "stringUnit": {
             "state": "translated",
             "value": "Combinado para entrenar en casa con mancuernas y un banco ajustable con frecuencia equilibrada."
+          }
+        }
+      }
+    },
+    "onboarding.reason.bodyweightBase": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Matched for home training without equipment: three short full-body sessions you progress with harder variations."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekipmansız ev antrenmanı için eşleştirildi: daha zor varyasyonlarla ilerleyen üç kısa tüm vücut seansı."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passend für Heimtraining ohne Geräte: drei kurze Ganzkörpereinheiten, die du mit schwereren Varianten steigerst."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adapté à l’entraînement à domicile sans équipement : trois courtes séances corps entier, à faire progresser avec des variantes plus difficiles."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elegido para entrenar en casa sin equipo: tres sesiones cortas de cuerpo completo que progresas con variantes más difíciles."
+          }
+        }
+      }
+    },
+    "onboarding.reason.barFloor": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Matched for home calisthenics with a pull-up bar: upper/lower sessions four days a week."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Barfiks barıyla evde kalistenik için eşleştirildi: haftada dört gün üst/alt vücut seansı."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passend für Calisthenics zu Hause mit Klimmzugstange: vier Tage pro Woche Ober- und Unterkörper."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adapté à la callisthénie à domicile avec une barre de traction : haut et bas du corps quatre jours par semaine."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elegido para calistenia en casa con barra de dominadas: torso y pierna cuatro días por semana."
+          }
+        }
+      }
+    },
+    "onboarding.reason.essentials": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Matched for two full-body gym sessions that practise every main movement pattern twice a week."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haftada iki tüm vücut salon seansı için eşleştirildi: her ana hareket kalıbı haftada iki kez çalışılır."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passend für zwei Ganzkörpereinheiten im Studio, die jedes wichtige Bewegungsmuster zweimal pro Woche üben."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adapté à deux séances corps entier en salle qui travaillent chaque mouvement principal deux fois par semaine."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elegido para dos sesiones de cuerpo completo en el gimnasio que practican cada patrón principal dos veces por semana."
           }
         }
       }
@@ -44703,6 +44563,461 @@
           "stringUnit": {
             "state": "translated",
             "value": "Este borrador se basa en una versión anterior. Consérvalo como programa nuevo o descártalo para editar la versión actual."
+          }
+        }
+      }
+    },
+    "programs.cover.studio_lat_spread": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shoulder pose"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Omuz pozu"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schulterpose"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pose épaules"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pose de hombros"
+          }
+        }
+      }
+    },
+    "programs.cover.studio_bench_press": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bench press portrait"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bench press portresi"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bankdrück-Porträt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Portrait développé couché"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retrato de press de banca"
+          }
+        }
+      }
+    },
+    "programs.cover.studio_chest_clasp": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chest pose"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Göğüs pozu"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brustpose"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pose pectoraux"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pose de pecho"
+          }
+        }
+      }
+    },
+    "programs.cover.studio_dumbbell_row": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dumbbell row portrait"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dambıl row portresi"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kurzhantelrudern-Porträt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Portrait rowing haltère"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retrato de remo con mancuerna"
+          }
+        }
+      }
+    },
+    "programs.cover.studio_kettlebell_swing": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kettlebell portrait"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kettlebell portresi"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kettlebell-Porträt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Portrait kettlebell"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retrato con kettlebell"
+          }
+        }
+      }
+    },
+    "programs.cover.studio_machine_press": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Machine press portrait"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Makine press portresi"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brustpresse-Porträt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Portrait presse pectorale"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retrato de press en máquina"
+          }
+        }
+      }
+    },
+    "programs.cover.chest_side_pose": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Side chest"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yan göğüs pozu"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seitliche Brustpose"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pectoraux de profil"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pecho de perfil"
+          }
+        }
+      }
+    },
+    "programs.cover.shoulders_press": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shoulder press"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Omuz press"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schulterdrücken"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Développé épaules"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Press de hombros"
+          }
+        }
+      }
+    },
+    "programs.cover.biceps_peak_pose": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biceps pose"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biseps pozu"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bizepspose"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pose biceps"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pose de bíceps"
+          }
+        }
+      }
+    },
+    "programs.cover.triceps_side_pose": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Triceps pose"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Triseps pozu"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trizepspose"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pose triceps"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pose de tríceps"
+          }
+        }
+      }
+    },
+    "programs.cover.core_abs_pose": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Abdominal pose"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Karın pozu"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bauchmuskelpose"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pose abdominaux"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pose abdominal"
+          }
+        }
+      }
+    },
+    "programs.cover.obliques_side_pose": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oblique pose"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yan karın pozu"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seitliche Bauchpose"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pose obliques"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pose de oblicuos"
+          }
+        }
+      }
+    },
+    "programs.cover.forearms_grip": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Grip strength"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kavrama gücü"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Griffkraft"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Force de préhension"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fuerza de agarre"
           }
         }
       }

@@ -5962,7 +5962,7 @@ final class FormAppTests: XCTestCase {
         let schedules: [Answer]
     }
 
-    private static let fullBodyProgramIds: Set<String> = ["full-body-classic", "machine-foundation", "athletic-performance"]
+    private static let fullBodyProgramIds: Set<String> = ["full-body-classic", "machine-foundation", "athletic-performance", "bodyweight-base", "essentials-2-day"]
 
     private func onboardingFixtures() throws -> OnboardingFixtures {
         let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("onboarding-fixtures.json")

@@ -193,6 +193,18 @@ public struct OnboardingView: View {
                 isSelected: preferences.equipment == .dumbbellsHome,
                 onClick: { preferences.equipment = .dumbbellsHome }
             )
+            OptionCard(
+                title: LanguageManager.t("onboarding.equipment.bodyweightHome.title"),
+                description: LanguageManager.t("onboarding.equipment.bodyweightHome.desc"),
+                isSelected: preferences.equipment == .bodyweightHome,
+                onClick: { preferences.equipment = .bodyweightHome }
+            )
+            OptionCard(
+                title: LanguageManager.t("onboarding.equipment.pullUpBarHome.title"),
+                description: LanguageManager.t("onboarding.equipment.pullUpBarHome.desc"),
+                isSelected: preferences.equipment == .pullUpBarHome,
+                onClick: { preferences.equipment = .pullUpBarHome }
+            )
         }
     }
 
@@ -202,6 +214,15 @@ public struct OnboardingView: View {
             title: LanguageManager.t("onboarding.frequency.title"),
             subtitle: LanguageManager.t("onboarding.frequency.subtitle")
         ) {
+            OptionCard(
+                title: LanguageManager.t("onboarding.frequency.days2.title"),
+                description: LanguageManager.t("onboarding.frequency.days2.desc"),
+                isSelected: preferences.frequency == .days2,
+                onClick: {
+                    preferences.frequency = .days2
+                    preferences.selectedDays = []
+                }
+            )
             OptionCard(
                 title: LanguageManager.t("onboarding.frequency.days3.title"),
                 description: LanguageManager.t("onboarding.frequency.days3.desc"),

@@ -17,9 +17,12 @@ public enum OnboardingEquipment: String, Codable, CaseIterable {
     case commercialGym = "commercial_gym"
     case machinesOnly = "machines_only"
     case dumbbellsHome = "dumbbells_home"
+    case bodyweightHome = "bodyweight_home"
+    case pullUpBarHome = "pull_up_bar_home"
 }
 
 public enum OnboardingFrequency: Int, Codable, CaseIterable {
+    case days2 = 2
     case days3 = 3
     case days4 = 4
     case days5 = 5
@@ -27,6 +30,7 @@ public enum OnboardingFrequency: Int, Codable, CaseIterable {
 
     public var defaultWeekdays: [Int] {
         switch self {
+        case .days2: return [1, 4]             // Mon, Thu
         case .days3: return [1, 3, 5]          // Mon, Wed, Fri
         case .days4: return [1, 2, 4, 5]       // Mon, Tue, Thu, Fri
         case .days5: return [1, 2, 4, 5, 6]    // Mon, Tue, Thu, Fri, Sat
@@ -70,7 +74,7 @@ public struct ProgramRecommendation {
 public enum OnboardingRecommender {
 
     /// Plans whose every session trains the whole body; they need a rest day between sessions.
-    private static let fullBodyProgramIds: Set<String> = ["full-body-classic", "machine-foundation", "athletic-performance"]
+    private static let fullBodyProgramIds: Set<String> = ["full-body-classic", "machine-foundation", "athletic-performance", "bodyweight-base", "essentials-2-day"]
 
     public static func recommendProgram(
         preferences: OnboardingPreferences,
@@ -113,14 +117,20 @@ public enum OnboardingRecommender {
 
     public static func targetProgramId(_ preferences: OnboardingPreferences) -> String {
         let tickedDays = Set(preferences.selectedDays.filter { (1...7).contains($0) }).count
-        let daysPerWeek = tickedDays == 0 ? preferences.frequency.rawValue : min(max(tickedDays, 3), 6)
+        let daysPerWeek = tickedDays == 0 ? preferences.frequency.rawValue : min(max(tickedDays, 2), 6)
         let experience = preferences.experience
         switch preferences.equipment {
         case .dumbbellsHome:
             return "home-forge-dumbbells"
         case .machinesOnly:
             return "machine-foundation"
+        case .bodyweightHome:
+            return "bodyweight-base"
+        case .pullUpBarHome:
+            // Bar & Floor needs 3 strict pull-ups, so beginners start without the bar.
+            return experience == .beginner ? "bodyweight-base" : "bar-floor-calisthenics"
         case .commercialGym:
+            if daysPerWeek == 2 { return "essentials-2-day" }
             if daysPerWeek == 3 {
                 return experience == .advanced ? "athletic-performance" : "full-body-classic"
             }
@@ -142,6 +152,9 @@ public enum OnboardingRecommender {
         case "upper-lower-balanced": return "onboarding.reason.upperLower"
         case "athletic-performance": return "onboarding.reason.athleticPerformance"
         case "full-body-classic": return "onboarding.reason.fullBodyClassic"
+        case "bodyweight-base": return "onboarding.reason.bodyweightBase"
+        case "bar-floor-calisthenics": return "onboarding.reason.barFloor"
+        case "essentials-2-day": return "onboarding.reason.essentials"
         default: return "onboarding.reason.default"
         }
     }
