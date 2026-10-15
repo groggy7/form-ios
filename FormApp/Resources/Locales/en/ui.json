@@ -1279,5 +1279,21 @@
   "programs.importRemoved": "Removed: {count}",
   "programs.invalidFile": "The program file has invalid or unsupported fields.",
   "builder.copyDraft": "Save draft as a new program",
-  "builder.conflictDraftMessage": "This saved draft is based on an earlier version. Keep it as a new program, or discard the draft to edit the current version."
+  "builder.conflictDraftMessage": "This saved draft is based on an earlier version. Keep it as a new program, or discard the draft to edit the current version.",
+  "programs.cover.studio_lat_spread": "Shoulder pose",
+  "programs.cover.studio_bench_press": "Bench press portrait",
+  "programs.cover.studio_chest_clasp": "Chest pose",
+  "programs.cover.studio_dumbbell_row": "Dumbbell row portrait",
+  "programs.cover.studio_kettlebell_swing": "Kettlebell portrait",
+  "programs.cover.studio_machine_press": "Machine press portrait",
+  "programs.cover.chest_side_pose": "Side chest",
+  "programs.cover.shoulders_press": "Shoulder press",
+  "programs.cover.biceps_peak_pose": "Biceps pose",
+  "programs.cover.triceps_side_pose": "Triceps pose",
+  "programs.cover.hamstrings_hinge": "Hamstring hinge",
+  "programs.cover.glutes_hip_thrust": "Hip thrust",
+  "programs.cover.calves_raise": "Calf raise",
+  "programs.cover.core_abs_pose": "Abdominal pose",
+  "programs.cover.obliques_side_pose": "Oblique pose",
+  "programs.cover.forearms_grip": "Grip strength"
 }

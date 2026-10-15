@@ -1279,5 +1279,21 @@
   "programs.importRemoved": "Entfernt: {count}",
   "programs.invalidFile": "Die Programmdatei enthält ungültige oder nicht unterstützte Felder.",
   "builder.copyDraft": "Entwurf als neues Programm speichern",
-  "builder.conflictDraftMessage": "Dieser Entwurf basiert auf einer früheren Version. Behalte ihn als neues Programm oder verwirf ihn, um die aktuelle Version zu bearbeiten."
+  "builder.conflictDraftMessage": "Dieser Entwurf basiert auf einer früheren Version. Behalte ihn als neues Programm oder verwirf ihn, um die aktuelle Version zu bearbeiten.",
+  "programs.cover.studio_lat_spread": "Schulterpose",
+  "programs.cover.studio_bench_press": "Bankdrück-Porträt",
+  "programs.cover.studio_chest_clasp": "Brustpose",
+  "programs.cover.studio_dumbbell_row": "Kurzhantelrudern-Porträt",
+  "programs.cover.studio_kettlebell_swing": "Kettlebell-Porträt",
+  "programs.cover.studio_machine_press": "Brustpresse-Porträt",
+  "programs.cover.chest_side_pose": "Seitliche Brustpose",
+  "programs.cover.shoulders_press": "Schulterdrücken",
+  "programs.cover.biceps_peak_pose": "Bizepspose",
+  "programs.cover.triceps_side_pose": "Trizepspose",
+  "programs.cover.hamstrings_hinge": "Beinrückseiten-Hinge",
+  "programs.cover.glutes_hip_thrust": "Hip Thrust",
+  "programs.cover.calves_raise": "Wadenheben",
+  "programs.cover.core_abs_pose": "Bauchmuskelpose",
+  "programs.cover.obliques_side_pose": "Seitliche Bauchpose",
+  "programs.cover.forearms_grip": "Griffkraft"
 }

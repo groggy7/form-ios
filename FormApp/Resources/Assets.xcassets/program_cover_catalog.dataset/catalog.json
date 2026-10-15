@@ -9,16 +9,18 @@
         "aesthetic-hypertrophy"
       ],
       "labels": {
-        "en": "Aesthetic Engine",
-        "tr": "Aesthetic Engine"
+        "en": "Hypertrophy",
+        "tr": "Hipertrofi",
+        "de": "Hypertrophie",
+        "es": "Hipertrofia",
+        "fr": "Hypertrophie"
       },
       "tags": [
-        "hypertrophy",
         "shoulders",
         "arms",
-        "full_body"
+        "hypertrophy"
       ],
-      "exportSha256": "631e0e725841361d52a0b53ed925ef0c139d60bb76c850b812dcb25c741ad24b"
+      "exportSha256": "db8e994a21a0865382d2007f28255608713996a4ce5e4fb99546e1c45b86d744"
     },
     {
       "id": "powerbuilding",
@@ -27,15 +29,18 @@
         "powerbuilding-strength"
       ],
       "labels": {
-        "en": "Heavy & Built",
-        "tr": "Heavy & Built"
+        "en": "Strength & muscle",
+        "tr": "Güç ve kas",
+        "de": "Kraft und Muskelaufbau",
+        "es": "Fuerza y músculo",
+        "fr": "Force et muscle"
       },
       "tags": [
         "strength",
         "barbell",
         "full_body"
       ],
-      "exportSha256": "6f0e953ed26bd1450b3b4cfe894d6433cf0a33dcdcb3be7be0e5c87e73472585"
+      "exportSha256": "358c936e5e435473a654bb38c3ad165b9e4116dee95a47d81a2b60dbb914b65a"
     },
     {
       "id": "push_pull_legs",
@@ -44,15 +49,17 @@
         "classic-ppl"
       ],
       "labels": {
-        "en": "Pure PPL",
-        "tr": "Pure PPL"
+        "en": "Push / pull / legs",
+        "tr": "İtiş / çekiş / bacak",
+        "de": "Drücken / Ziehen / Beine",
+        "es": "Empuje / tirón / piernas",
+        "fr": "Poussée / tirage / jambes"
       },
       "tags": [
-        "hypertrophy",
-        "push_pull_legs",
-        "full_body"
+        "back",
+        "double_biceps"
       ],
-      "exportSha256": "7d1d062e07f85781808da2af9988978e7eda8bbd4366c0b5853cb6c1270fc9f9"
+      "exportSha256": "cd9d8cdebe3e56fe99312dccb115d7b070fdcc53011c67a7b931e45dacb07211"
     },
     {
       "id": "full_body",
@@ -61,14 +68,17 @@
         "full-body-classic"
       ],
       "labels": {
-        "en": "Classic Foundation",
-        "tr": "Classic Foundation"
+        "en": "Full body",
+        "tr": "Tüm vücut",
+        "de": "Ganzkörper",
+        "es": "Cuerpo completo",
+        "fr": "Corps entier"
       },
       "tags": [
-        "foundation",
-        "full_body"
+        "full_body",
+        "strength"
       ],
-      "exportSha256": "665c40cc14c084cc85d6e65b8123b5495c0582770dcc086686646524397d7f76"
+      "exportSha256": "1ada33ae8864151645b1bf7743657bebaf1e96214583104795cd8f616314dfb5"
     },
     {
       "id": "home_dumbbells",
@@ -77,15 +87,17 @@
         "home-forge-dumbbells"
       ],
       "labels": {
-        "en": "Home Forge",
-        "tr": "Home Forge"
+        "en": "Home dumbbells",
+        "tr": "Evde dambıl",
+        "de": "Kurzhanteln zu Hause",
+        "es": "Mancuernas en casa",
+        "fr": "Haltères à domicile"
       },
       "tags": [
-        "dumbbells",
-        "home",
+        "dumbbell",
         "full_body"
       ],
-      "exportSha256": "a1743097adeaea59728e049f4482d289463c6b184780eacfec7aff60bf29f5cd"
+      "exportSha256": "25538799d3fc22c7476d64ec3b36fa3ea25c478aa7d44574023a288f0f42cc77"
     },
     {
       "id": "strength_power",
@@ -94,15 +106,18 @@
         "athletic-performance"
       ],
       "labels": {
-        "en": "Athletic Engine",
-        "tr": "Athletic Engine"
+        "en": "Strength & power",
+        "tr": "Güç ve patlayıcılık",
+        "de": "Kraft und Explosivität",
+        "es": "Fuerza y potencia",
+        "fr": "Force et puissance"
       },
       "tags": [
         "strength",
         "power",
-        "full_body"
+        "barbell"
       ],
-      "exportSha256": "80b6be6bcafef0bd5ab1d9ca454979d6342bcbeff3b40e1e28b847a8e7ab8758"
+      "exportSha256": "46c843a1acb6d6a54c4a0348e55aed1833ffb6e0619e8f72e911a8bf3c09e01d"
     },
     {
       "id": "upper_lower",
@@ -111,15 +126,17 @@
         "upper-lower-balanced"
       ],
       "labels": {
-        "en": "Balanced Build",
-        "tr": "Balanced Build"
+        "en": "Upper / lower",
+        "tr": "Üst / alt vücut",
+        "de": "Oberkörper / Unterkörper",
+        "es": "Tren superior / inferior",
+        "fr": "Haut / bas du corps"
       },
       "tags": [
-        "hypertrophy",
-        "upper_lower",
-        "full_body"
+        "quadriceps",
+        "legs"
       ],
-      "exportSha256": "5b753a8a21592e2094f87d87ea3d84cb7d1b53b03232312373f20cf2e1d9285a"
+      "exportSha256": "55c02ad123a52713fa2b3e9350f9c366dac70a419983cc45704fe348a416ae3f"
     },
     {
       "id": "machines",
@@ -128,15 +145,291 @@
         "machine-foundation"
       ],
       "labels": {
-        "en": "Machine Foundation",
-        "tr": "Machine Foundation"
+        "en": "Machines",
+        "tr": "Makineler",
+        "de": "Maschinen",
+        "es": "Máquinas",
+        "fr": "Machines"
       },
       "tags": [
-        "foundation",
         "machines",
+        "legs",
         "full_body"
       ],
-      "exportSha256": "bf242d2f619922f3524761cdb7e009562b3390d3b239e7e6a3bbace3a73cba9d"
+      "exportSha256": "db26858cf883cd962e504df65954c9cab824ad8493eadf9af43e33af66d6ee18"
+    },
+    {
+      "id": "studio_lat_spread",
+      "resourceName": "program_cover_studio_lat_spread",
+      "programIds": [],
+      "labels": {
+        "en": "Shoulder pose",
+        "tr": "Omuz pozu",
+        "de": "Schulterpose",
+        "es": "Pose de hombros",
+        "fr": "Pose épaules"
+      },
+      "tags": [
+        "hypertrophy"
+      ],
+      "exportSha256": "f9cb337c56f6b80afdcbdd8a7347e9c7db4c19b1dcca499f30ecf58181fcc860"
+    },
+    {
+      "id": "studio_bench_press",
+      "resourceName": "program_cover_studio_bench_press",
+      "programIds": [],
+      "labels": {
+        "en": "Bench press portrait",
+        "tr": "Bench press portresi",
+        "de": "Bankdrück-Porträt",
+        "es": "Retrato de press de banca",
+        "fr": "Portrait développé couché"
+      },
+      "tags": [
+        "powerbuilding"
+      ],
+      "exportSha256": "6f615a13ea1cd9c8dbe1b9f6cfdeec123b93af15640f85ccce6630d5980a172e"
+    },
+    {
+      "id": "studio_chest_clasp",
+      "resourceName": "program_cover_studio_chest_clasp",
+      "programIds": [],
+      "labels": {
+        "en": "Chest pose",
+        "tr": "Göğüs pozu",
+        "de": "Brustpose",
+        "es": "Pose de pecho",
+        "fr": "Pose pectoraux"
+      },
+      "tags": [
+        "full_body"
+      ],
+      "exportSha256": "bdf1966d4969f92b2e71468775c8540c5bc11f2fd309d0e2d53eb6bc2f7770cd"
+    },
+    {
+      "id": "studio_dumbbell_row",
+      "resourceName": "program_cover_studio_dumbbell_row",
+      "programIds": [],
+      "labels": {
+        "en": "Dumbbell row portrait",
+        "tr": "Dambıl row portresi",
+        "de": "Kurzhantelrudern-Porträt",
+        "es": "Retrato de remo con mancuerna",
+        "fr": "Portrait rowing haltère"
+      },
+      "tags": [
+        "home_dumbbells"
+      ],
+      "exportSha256": "58fc4c719b31c1b4e3278dfdb59fc173f28096bc6b50cdb6336aa1488fee4da5"
+    },
+    {
+      "id": "studio_kettlebell_swing",
+      "resourceName": "program_cover_studio_kettlebell_swing",
+      "programIds": [],
+      "labels": {
+        "en": "Kettlebell portrait",
+        "tr": "Kettlebell portresi",
+        "de": "Kettlebell-Porträt",
+        "es": "Retrato con kettlebell",
+        "fr": "Portrait kettlebell"
+      },
+      "tags": [
+        "strength_power"
+      ],
+      "exportSha256": "15d10f7a00fd9f39696f2ff7934ab29ee6bb4311190bf04e9de5faf2d6553e27"
+    },
+    {
+      "id": "studio_machine_press",
+      "resourceName": "program_cover_studio_machine_press",
+      "programIds": [],
+      "labels": {
+        "en": "Machine press portrait",
+        "tr": "Makine press portresi",
+        "de": "Brustpresse-Porträt",
+        "es": "Retrato de press en máquina",
+        "fr": "Portrait presse pectorale"
+      },
+      "tags": [
+        "machines"
+      ],
+      "exportSha256": "1576aeda04f48c2de8a47b30d0893fce4f888d480594ef4befa1dc59ede68d18"
+    },
+    {
+      "id": "chest_side_pose",
+      "resourceName": "program_cover_chest_side_pose",
+      "programIds": [],
+      "labels": {
+        "en": "Side chest",
+        "tr": "Yan göğüs pozu",
+        "de": "Seitliche Brustpose",
+        "es": "Pecho de perfil",
+        "fr": "Pectoraux de profil"
+      },
+      "tags": [
+        "chest",
+        "arms"
+      ],
+      "exportSha256": "ae3368bf125df4fe33e2a90847c3a50373b56f66e4ebad02082c1ac6808568b5"
+    },
+    {
+      "id": "shoulders_press",
+      "resourceName": "program_cover_shoulders_press",
+      "programIds": [],
+      "labels": {
+        "en": "Shoulder press",
+        "tr": "Omuz press",
+        "de": "Schulterdrücken",
+        "es": "Press de hombros",
+        "fr": "Développé épaules"
+      },
+      "tags": [
+        "shoulders",
+        "dumbbell"
+      ],
+      "exportSha256": "502c1d6b12cbdb3fd625af6a708c44001ab6005c272b54ad4b7a88ac266df30f"
+    },
+    {
+      "id": "biceps_peak_pose",
+      "resourceName": "program_cover_biceps_peak_pose",
+      "programIds": [],
+      "labels": {
+        "en": "Biceps pose",
+        "tr": "Biseps pozu",
+        "de": "Bizepspose",
+        "es": "Pose de bíceps",
+        "fr": "Pose biceps"
+      },
+      "tags": [
+        "biceps",
+        "arms"
+      ],
+      "exportSha256": "5f6d9f463ac5f9f944eaabe1dac21ce41afcec7c643c0a13ccf2fbf85556843e"
+    },
+    {
+      "id": "triceps_side_pose",
+      "resourceName": "program_cover_triceps_side_pose",
+      "programIds": [
+        "bar-floor-calisthenics"
+      ],
+      "labels": {
+        "en": "Triceps pose",
+        "tr": "Triseps pozu",
+        "de": "Trizepspose",
+        "es": "Pose de tríceps",
+        "fr": "Pose triceps"
+      },
+      "tags": [
+        "triceps",
+        "arms",
+        "calisthenics",
+        "bodyweight"
+      ],
+      "exportSha256": "b7645d3e61a1707b060bf253d07d325f3de10a97874e9a1c078d7755926142e0"
+    },
+    {
+      "id": "hamstrings_hinge",
+      "resourceName": "program_cover_hamstrings_hinge",
+      "programIds": [],
+      "labels": {
+        "en": "Hamstring hinge",
+        "tr": "Arka bacak çalışması",
+        "de": "Beinrückseiten-Hinge",
+        "es": "Bisagra de isquiotibiales",
+        "fr": "Charnière ischio-jambiers"
+      },
+      "tags": [
+        "hamstrings",
+        "dumbbell"
+      ],
+      "exportSha256": "2a551fc042507584f716b00cee5bf701fe8c4830848d7486bd393ce9700184ab"
+    },
+    {
+      "id": "glutes_hip_thrust",
+      "resourceName": "program_cover_glutes_hip_thrust",
+      "programIds": [],
+      "labels": {
+        "en": "Hip thrust",
+        "tr": "Kalça itiş",
+        "de": "Hip Thrust",
+        "es": "Empuje de cadera",
+        "fr": "Relevé de bassin"
+      },
+      "tags": [
+        "glutes",
+        "legs"
+      ],
+      "exportSha256": "d004855f173730b22b40e545d5a9a93461499e2f886c64b1d6aea905250128b8"
+    },
+    {
+      "id": "calves_raise",
+      "resourceName": "program_cover_calves_raise",
+      "programIds": [],
+      "labels": {
+        "en": "Calf raise",
+        "tr": "Baldır yükselişi",
+        "de": "Wadenheben",
+        "es": "Elevación de talones",
+        "fr": "Élévation des mollets"
+      },
+      "tags": [
+        "calves",
+        "legs"
+      ],
+      "exportSha256": "1f77d6813356ab6a5576de6ca9260b453c42a20c84eaf36c81718c8eab9293d5"
+    },
+    {
+      "id": "core_abs_pose",
+      "resourceName": "program_cover_core_abs_pose",
+      "programIds": [
+        "bodyweight-base"
+      ],
+      "labels": {
+        "en": "Abdominal pose",
+        "tr": "Karın pozu",
+        "de": "Bauchmuskelpose",
+        "es": "Pose abdominal",
+        "fr": "Pose abdominaux"
+      },
+      "tags": [
+        "abs",
+        "core",
+        "bodyweight"
+      ],
+      "exportSha256": "a89ab529931f858015034481bb994eecc4771020b5872d66aae45e6f37cb6052"
+    },
+    {
+      "id": "obliques_side_pose",
+      "resourceName": "program_cover_obliques_side_pose",
+      "programIds": [],
+      "labels": {
+        "en": "Oblique pose",
+        "tr": "Yan karın pozu",
+        "de": "Seitliche Bauchpose",
+        "es": "Pose de oblicuos",
+        "fr": "Pose obliques"
+      },
+      "tags": [
+        "obliques",
+        "core"
+      ],
+      "exportSha256": "9bfe929d83219164aeb7ad704b0907177f7a2f320b7f0f5b7bb61cb51a4d834b"
+    },
+    {
+      "id": "forearms_grip",
+      "resourceName": "program_cover_forearms_grip",
+      "programIds": [],
+      "labels": {
+        "en": "Grip strength",
+        "tr": "Kavrama gücü",
+        "de": "Griffkraft",
+        "es": "Fuerza de agarre",
+        "fr": "Force de préhension"
+      },
+      "tags": [
+        "forearms",
+        "grip"
+      ],
+      "exportSha256": "93ef943cad056d91cfcd5ebcc34e02dc6f30a18668c783d5e7235e986d53b069"
     }
   ]
 }

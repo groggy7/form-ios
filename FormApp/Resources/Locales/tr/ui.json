@@ -1279,5 +1279,21 @@
   "programs.importRemoved": "Kaldırılan: {count}",
   "programs.invalidFile": "Program dosyasında geçersiz veya desteklenmeyen alanlar var.",
   "builder.copyDraft": "Taslağı yeni program olarak kaydet",
-  "builder.conflictDraftMessage": "Bu taslak önceki bir sürüme dayanıyor. Yeni program olarak saklayın veya güncel sürümü düzenlemek için taslağı silin."
+  "builder.conflictDraftMessage": "Bu taslak önceki bir sürüme dayanıyor. Yeni program olarak saklayın veya güncel sürümü düzenlemek için taslağı silin.",
+  "programs.cover.studio_lat_spread": "Omuz pozu",
+  "programs.cover.studio_bench_press": "Bench press portresi",
+  "programs.cover.studio_chest_clasp": "Göğüs pozu",
+  "programs.cover.studio_dumbbell_row": "Dambıl row portresi",
+  "programs.cover.studio_kettlebell_swing": "Kettlebell portresi",
+  "programs.cover.studio_machine_press": "Makine press portresi",
+  "programs.cover.chest_side_pose": "Yan göğüs pozu",
+  "programs.cover.shoulders_press": "Omuz press",
+  "programs.cover.biceps_peak_pose": "Biseps pozu",
+  "programs.cover.triceps_side_pose": "Triseps pozu",
+  "programs.cover.hamstrings_hinge": "Arka bacak çalışması",
+  "programs.cover.glutes_hip_thrust": "Kalça itiş",
+  "programs.cover.calves_raise": "Baldır yükselişi",
+  "programs.cover.core_abs_pose": "Karın pozu",
+  "programs.cover.obliques_side_pose": "Yan karın pozu",
+  "programs.cover.forearms_grip": "Kavrama gücü"
 }

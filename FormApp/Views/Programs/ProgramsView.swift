@@ -5,9 +5,15 @@ import UIKit
 public enum ProgramCover: String, CaseIterable {
     case hypertrophy, powerbuilding, pushPullLegs = "push_pull_legs", fullBody = "full_body"
     case homeDumbbells = "home_dumbbells", strengthPower = "strength_power", upperLower = "upper_lower", machines
+    case studioLatSpread = "studio_lat_spread", studioBenchPress = "studio_bench_press", studioChestClasp = "studio_chest_clasp"
+    case studioDumbbellRow = "studio_dumbbell_row", studioKettlebellSwing = "studio_kettlebell_swing", studioMachinePress = "studio_machine_press"
+    case chestSidePose = "chest_side_pose", shouldersPress = "shoulders_press"
+    case bicepsPeakPose = "biceps_peak_pose", tricepsSidePose = "triceps_side_pose"
+    case hamstringsHinge = "hamstrings_hinge", glutesHipThrust = "glutes_hip_thrust"
+    case calvesRaise = "calves_raise", coreAbsPose = "core_abs_pose", obliquesSidePose = "obliques_side_pose", forearmsGrip = "forearms_grip"
 
     public var assetName: String { "program_cover_\(rawValue)" }
-    public var programID: String {
+    public var programID: String? {
         switch self {
         case .hypertrophy: return "aesthetic-hypertrophy"
         case .powerbuilding: return "powerbuilding-strength"
@@ -17,6 +23,9 @@ public enum ProgramCover: String, CaseIterable {
         case .strengthPower: return "athletic-performance"
         case .upperLower: return "upper-lower-balanced"
         case .machines: return "machine-foundation"
+        case .coreAbsPose: return "bodyweight-base"
+        case .tricepsSidePose: return "bar-floor-calisthenics"
+        default: return nil // Optional library covers never claim a built-in program mapping.
         }
     }
     public static func forProgram(_ program: Program) -> ProgramCover {

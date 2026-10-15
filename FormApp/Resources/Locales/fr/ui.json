@@ -1279,5 +1279,21 @@
   "programs.importRemoved": "Supprimés : {count}",
   "programs.invalidFile": "Le fichier du programme contient des champs invalides ou non pris en charge.",
   "builder.copyDraft": "Enregistrer le brouillon comme nouveau programme",
-  "builder.conflictDraftMessage": "Ce brouillon repose sur une version antérieure. Conservez-le comme nouveau programme ou abandonnez-le pour modifier la version actuelle."
+  "builder.conflictDraftMessage": "Ce brouillon repose sur une version antérieure. Conservez-le comme nouveau programme ou abandonnez-le pour modifier la version actuelle.",
+  "programs.cover.studio_lat_spread": "Pose épaules",
+  "programs.cover.studio_bench_press": "Portrait développé couché",
+  "programs.cover.studio_chest_clasp": "Pose pectoraux",
+  "programs.cover.studio_dumbbell_row": "Portrait rowing haltère",
+  "programs.cover.studio_kettlebell_swing": "Portrait kettlebell",
+  "programs.cover.studio_machine_press": "Portrait presse pectorale",
+  "programs.cover.chest_side_pose": "Pectoraux de profil",
+  "programs.cover.shoulders_press": "Développé épaules",
+  "programs.cover.biceps_peak_pose": "Pose biceps",
+  "programs.cover.triceps_side_pose": "Pose triceps",
+  "programs.cover.hamstrings_hinge": "Charnière ischio-jambiers",
+  "programs.cover.glutes_hip_thrust": "Relevé de bassin",
+  "programs.cover.calves_raise": "Élévation des mollets",
+  "programs.cover.core_abs_pose": "Pose abdominaux",
+  "programs.cover.obliques_side_pose": "Pose obliques",
+  "programs.cover.forearms_grip": "Force de préhension"
 }
