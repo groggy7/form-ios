@@ -30242,31 +30242,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Current program"
+            "value": "Active program"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mevcut program"
+            "value": "Aktif program"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aktuelles Programm"
+            "value": "Aktives Programm"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Programme actuel"
+            "value": "Programme actif"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Programa actual"
+            "value": "Programa activo"
           }
         }
       }

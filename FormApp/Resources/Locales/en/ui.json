@@ -819,7 +819,7 @@
   "today.openPlan": "Open weekly plan",
   "today.availableOn": "Available {day}",
   "weekly.title": "Weekly plan",
-  "weekly.currentProgram": "Current program",
+  "weekly.currentProgram": "Active program",
   "weekly.changeProgram": "Change program",
   "weekly.exerciseCount": "{count} exercises",
   "weekly.restDay": "Recovery day",

@@ -35,25 +35,9 @@ public struct WeeklyPlanView: View {
                 VStack(spacing: 20) {
                     // Header row
                     HStack(alignment: .top) {
-                        Button(action: onOpenPrograms) {
-                            VStack(alignment: .leading, spacing: 3) {
-                                Text(LanguageManager.t("weekly.title"))
-                                    .font(.system(size: 26, weight: .semibold))
-                                    .foregroundStyle(AppColors.text)
-
-                                HStack(spacing: 4) {
-                                    Text(program.displayName)
-                                        .font(.system(size: 13, weight: .medium))
-                                        .foregroundStyle(AppColors.accent)
-                                        .lineLimit(1)
-
-                                    Image(systemName: "chevron.up.chevron.down")
-                                        .font(.system(size: 12, weight: .bold))
-                                        .foregroundStyle(AppColors.accent)
-                                }
-                            }
-                        }
-                        .buttonStyle(.plain)
+                        Text(LanguageManager.t("weekly.title"))
+                            .font(.system(size: 26, weight: .semibold))
+                            .foregroundStyle(AppColors.text)
 
                         Spacer()
 
@@ -66,8 +50,21 @@ public struct WeeklyPlanView: View {
                     .padding(.horizontal, 20)
                     .padding(.top, 10)
 
-                    // 7 Weekday cards
-                    VStack(spacing: 8) {
+                    // Active program and 7 weekday cards
+                    VStack(alignment: .leading, spacing: 8) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(LanguageManager.t("weekly.currentProgram"))
+                                .font(.system(size: 11, weight: .medium))
+                                .foregroundStyle(AppColors.muted)
+
+                            Text(program.displayName)
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundStyle(AppColors.text)
+                                .fixedSize(horizontal: false, vertical: true)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.bottom, 4)
+
                         ForEach(0..<7, id: \.self) { index in
                             let workout = program.workouts.first(where: { $0.day == index + 1 && !$0.exercises.isEmpty })
                             let selected = workout?.id == activeWorkout?.id

@@ -819,7 +819,7 @@
   "today.openPlan": "Haftalık programı aç",
   "today.availableOn": "{day} günü açılır",
   "weekly.title": "Haftalık program",
-  "weekly.currentProgram": "Mevcut program",
+  "weekly.currentProgram": "Aktif program",
   "weekly.changeProgram": "Programı değiştir",
   "weekly.exerciseCount": "{count} egzersiz",
   "weekly.restDay": "Toparlanma günü",
