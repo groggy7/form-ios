@@ -713,29 +713,36 @@ final class SessionHistoryInsightsCache {
         let recommendation: ExerciseProgressionRecommendation?
         let prText: String
     }
+    /// The live session these insights serve: its own record and its workout day.
+    struct ActiveScope: Equatable {
+        let sessionId: String
+        let programId: String
+        let workoutId: String
+    }
     private struct Inputs: Equatable {
         let exercise: Exercise
         let history: [WorkoutSessionRecord]
         let unit: WeightUnit
-        let activeSessionId: String?
+        let scope: ActiveScope?
         let language: String
     }
     private var entry: (Inputs, Insights)?
-    private let compute: (Exercise, [WorkoutSessionRecord], WeightUnit, String?) -> Insights
+    private let compute: (Exercise, [WorkoutSessionRecord], WeightUnit, ActiveScope?) -> Insights
 
-    init(compute: @escaping (Exercise, [WorkoutSessionRecord], WeightUnit, String?) -> Insights = { exercise, history, unit, activeSessionId in
+    init(compute: @escaping (Exercise, [WorkoutSessionRecord], WeightUnit, ActiveScope?) -> Insights = { exercise, history, unit, scope in
         // A resumed session's own saved record is today's work, not the previous session.
-        let baseline = activeSessionId.map { id in history.filter { $0.id != id } } ?? history
+        let baseline = scope.map { scope in history.filter { $0.id != scope.sessionId } } ?? history
         return Insights(previousWorkingSets: WorkoutSessionUtils.findPreviousSessionWorkingSets(history: baseline, exercise: exercise),
-            recommendation: ProgressionEngine.computeProgression(exercise: exercise, history: history, weightUnit: unit, activeSessionId: activeSessionId),
+            recommendation: ProgressionEngine.computeProgression(exercise: exercise, history: history, weightUnit: unit, activeSessionId: scope?.sessionId,
+                context: scope.map { ProgressionContext(programId: $0.programId, workoutId: $0.workoutId, now: Date()) }),
             prText: WorkoutSessionUtils.findExercisePr(history: history, exercise: exercise, unit: unit) ?? "-")
     }) { self.compute = compute }
 
-    func get(exercise: Exercise, history: [WorkoutSessionRecord], unit: WeightUnit, activeSessionId: String? = nil) -> Insights {
+    func get(exercise: Exercise, history: [WorkoutSessionRecord], unit: WeightUnit, scope: ActiveScope? = nil) -> Insights {
         dispatchPrecondition(condition: .onQueue(.main))
-        let inputs = Inputs(exercise: exercise, history: history, unit: unit, activeSessionId: activeSessionId, language: LanguageManager.shared.currentLanguage)
+        let inputs = Inputs(exercise: exercise, history: history, unit: unit, scope: scope, language: LanguageManager.shared.currentLanguage)
         if let entry, entry.0 == inputs { return entry.1 }
-        let result = compute(exercise, history, unit, activeSessionId)
+        let result = compute(exercise, history, unit, scope)
         entry = (inputs, result)
         return result
     }

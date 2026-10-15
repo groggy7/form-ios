@@ -90,6 +90,19 @@ public struct ProgressionSetTarget: Equatable {
     }
 }
 
+/// The active workout day and current time, as the session screen sees them.
+public struct ProgressionContext: Equatable {
+    public let programId: String
+    public let workoutId: String
+    public let now: Date
+
+    public init(programId: String, workoutId: String, now: Date) {
+        self.programId = programId
+        self.workoutId = workoutId
+        self.now = now
+    }
+}
+
 public struct ProgressionLoggingProgress: Equatable {
     public let recordedSets: Int
     public let totalSets: Int

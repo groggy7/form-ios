@@ -63,7 +63,8 @@ public struct ActiveSessionView: View {
         let restTimer = activeDraft.restTimer
 
         let historyInsights = currentExercise.map {
-            store.sessionHistoryInsights.get(exercise: $0, history: store.state.history, unit: store.weightUnit, activeSessionId: activeDraft.id)
+            store.sessionHistoryInsights.get(exercise: $0, history: store.state.history, unit: store.weightUnit,
+                scope: .init(sessionId: activeDraft.id, programId: activeDraft.programId, workoutId: activeDraft.workout.id))
         }
         let previousWorkingSets = historyInsights?.previousWorkingSets ?? []
 

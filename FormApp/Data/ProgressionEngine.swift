@@ -1,6 +1,11 @@
 import Foundation
 
 public enum ProgressionEngine {
+    /// A latest log older than this is repeated before any progression.
+    static let staleBaselineDays: Double = 28
+    /// Two ceiling sessions confirm a load increase only this close together.
+    static let confirmationWindowDays: Double = 21
+    private static let daySeconds: Double = 86_400
 
     public static let variationSwaps: [String: (id: String, name: String)] = [
         "barbell-bench-press": ("incline-dumbbell-press", "Incline Dumbbell Press"),
@@ -53,6 +58,7 @@ public enum ProgressionEngine {
         let sets: [SessionSetLog]
         let targetSets: Int?
         let ambiguous: Bool
+        let timestamp: String
         var workingSets: [SessionSetLog] { sets.filter { !$0.isWarmup }.sorted { $0.setNumber < $1.setNumber } }
     }
 
@@ -67,16 +73,32 @@ public enum ProgressionEngine {
             // An exercise skipped entirely is not an occurrence. Warmups without working sets are
             // an incomplete one, so they block a recommendation instead of being passed over.
             guard logs.contains(where: { !$0.sets.isEmpty }) else { return nil }
-            return HistoricalSessionSets(sets: logs.flatMap { $0.sets }, targetSets: logs.count == 1 ? logs[0].targetSets : nil, ambiguous: logs.count != 1)
+            return HistoricalSessionSets(sets: logs.flatMap { $0.sets }, targetSets: logs.count == 1 ? logs[0].targetSets : nil, ambiguous: logs.count != 1,
+                                         timestamp: record.completedAt.isEmpty ? record.startedAt : record.completedAt)
         }
     }
 
+    /// A workout day uses its own history, and another day's only when the prescription saved with
+    /// that session has the same working-set count and rep range. Without a saved prescription it is not shared.
+    private static func sharesTrack(_ record: WorkoutSessionRecord, exercise: Exercise, repRange: (min: Int, max: Int), expectedSets: Int,
+                                    context: ProgressionContext) -> Bool {
+        if record.programId == context.programId && record.workoutId == context.workoutId { return true }
+        let prescribed = (record.workoutSnapshot?.exercises ?? []).filter {
+            ExerciseCatalog.sameExercise(leftId: exercise.exerciseId, leftName: exercise.name, rightId: $0.exerciseId, rightName: $0.name)
+        }
+        guard prescribed.count == 1, let range = parseRepRange(exercise: prescribed[0]) else { return false }
+        return range == repRange && WorkoutSessionUtils.initialSetCount(exercise: prescribed[0]) == expectedSets
+    }
+
     /// `activeSessionId` excludes a resumed session's own saved record: it is today's work, not the baseline.
+    /// The session screen passes `context`; it scopes history to the workout day and applies the recency
+    /// rules. Without it (analysis and legacy tests) every matching log is one track with no age limit.
     public static func computeProgression(
         exercise: Exercise,
         history: [WorkoutSessionRecord],
         weightUnit: WeightUnit = .kg,
-        activeSessionId: String? = nil
+        activeSessionId: String? = nil,
+        context: ProgressionContext? = nil
     ) -> ExerciseProgressionRecommendation? {
         guard let (repMin, repMax) = parseRepRange(exercise: exercise) else { return nil }
         // Equipment uses the same identity as history matching, so name-only catalog exercises keep their step.
@@ -84,7 +106,9 @@ public enum ProgressionEngine {
             ?? ExerciseCatalog.key(exercise.name)
         let category = EquipmentCatalog.shared.categoryId(exerciseId)
         let expectedSets = WorkoutSessionUtils.initialSetCount(exercise: exercise)
-        let sessions = findHistoricalSessions(exercise: exercise, history: activeSessionId.map { id in history.filter { $0.id != id } } ?? history)
+        let sessions = findHistoricalSessions(exercise: exercise, history: history.filter { record in
+            record.id != activeSessionId && (context.map { sharesTrack(record, exercise: exercise, repRange: (repMin, repMax), expectedSets: expectedSets, context: $0) } ?? true)
+        })
 
         func guidance(_ action: ProgressionAction, _ key: String, _ args: [String: String] = [:], plateau: Bool = false,
                       summary: String? = nil, sourceSets: [ProgressionSetTarget] = []) -> ExerciseProgressionRecommendation {
@@ -118,6 +142,37 @@ public enum ProgressionEngine {
             complete(session) && zip(session.workingSets, workingSets).allSatisfy { abs($0.weightKg! - $1.weightKg!) <= 0.01 }
         }
         let allHitCeiling = workingSets.allSatisfy { $0.reps! >= repMax }
+
+        // Repeat the logged loads with reps capped at the ceiling: no added rep or weight.
+        func repeatLogged(_ rationaleKey: String) -> ExerciseProgressionRecommendation {
+            let targets = workingSets.map { ProgressionSetTarget(weightKg: $0.weightKg, reps: min($0.reps!, repMax)) }
+            let uniformWeight = Set(targets.map { $0.weightKg }).count == 1 ? targets.first?.weightKg : nil
+            return ExerciseProgressionRecommendation(
+                exerciseId: exerciseId,
+                exerciseName: exercise.name,
+                action: .holdLoad,
+                suggestedWeightKg: uniformWeight,
+                suggestedWeightDisplay: formatWeight(uniformWeight ?? topWeight, unit: weightUnit),
+                suggestedRepsMin: targets.map { $0.reps }.min() ?? repMin,
+                suggestedRepsMax: targets.map { $0.reps }.max() ?? repMax,
+                weightDeltaDisplay: nil,
+                rationaleKey: rationaleKey,
+                rationaleArgs: [:],
+                isPlateau: false,
+                consecutiveStagnantSessions: 0,
+                lastSessionSummary: formatSessionSummary(workingSets, unit: weightUnit),
+                setTargets: targets,
+                lastSessionSets: lastSessionSets
+            )
+        }
+        // After a long break the latest log no longer shows current capacity; an unreadable date is treated as old.
+        if let context {
+            let logged = WorkoutCalendar.parseIsoTimestamp(last.timestamp)
+            if logged.map({ context.now.timeIntervalSince($0) > staleBaselineDays * daySeconds }) ?? true {
+                return repeatLogged("progression.rationale.stale_baseline")
+            }
+        }
+
         let recent = Array(sessions.prefix(3))
         let isPlateau = recent.count == 3 && recent.allSatisfy(comparable) && !allHitCeiling &&
             zip(recent, recent.dropFirst()).allSatisfy { newer, older in
@@ -133,31 +188,17 @@ public enum ProgressionEngine {
         let repeatedLoads = sessions.dropFirst().first.map(comparable) ?? false
         let hasUnverifiedJump = (previousTopWeight != nil && topWeight > previousTopWeight! * 1.35 && (topWeight - previousTopWeight!) >= 20.0) ||
             (topWeight > 500.0 && !repeatedLoads)
-        if hasUnverifiedJump {
-            let targets = workingSets.map { ProgressionSetTarget(weightKg: $0.weightKg, reps: min($0.reps!, repMax)) }
-            let uniformWeight = Set(targets.map { $0.weightKg }).count == 1 ? targets.first?.weightKg : nil
-            return ExerciseProgressionRecommendation(
-                exerciseId: exerciseId,
-                exerciseName: exercise.name,
-                action: .holdLoad,
-                suggestedWeightKg: uniformWeight,
-                suggestedWeightDisplay: formatWeight(uniformWeight ?? topWeight, unit: weightUnit),
-                suggestedRepsMin: targets.map { $0.reps }.min() ?? repMin,
-                suggestedRepsMax: targets.map { $0.reps }.max() ?? repMax,
-                weightDeltaDisplay: nil,
-                rationaleKey: "progression.rationale.unverified_jump",
-                rationaleArgs: [:],
-                isPlateau: false,
-                consecutiveStagnantSessions: 0,
-                lastSessionSummary: formatSessionSummary(workingSets, unit: weightUnit),
-                setTargets: targets,
-                lastSessionSets: lastSessionSets
-            )
-        }
+        if hasUnverifiedJump { return repeatLogged("progression.rationale.unverified_jump") }
 
-        // A second full session at the same set-by-set loads confirms the ceiling.
+        // A second full session at the same set-by-set loads, close enough in time, confirms the ceiling.
+        func withinConfirmationWindow(_ previous: HistoricalSessionSets) -> Bool {
+            guard context != nil else { return true }
+            guard let latest = WorkoutCalendar.parseIsoTimestamp(last.timestamp),
+                  let earlier = WorkoutCalendar.parseIsoTimestamp(previous.timestamp) else { return false }
+            return abs(latest.timeIntervalSince(earlier)) <= confirmationWindowDays * daySeconds
+        }
         let confirmedCeiling = allHitCeiling && sessions.dropFirst().first.map { previous in
-            comparable(previous) && previous.workingSets.allSatisfy { $0.reps! >= repMax }
+            comparable(previous) && previous.workingSets.allSatisfy { $0.reps! >= repMax } && withinConfirmationWindow(previous)
         } == true
         let incrementKg: Double
         switch WorkoutSessionUtils.isAssisted(exercise) ? "assistance" : category {

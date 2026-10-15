@@ -21659,31 +21659,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Reach the rep ceiling in every set twice at the same weights. Then try a small available increase while aiming to keep the same reps, if manageable. Use a smaller increase or repeat the load if reps or form suffer. No automatic increases for bodyweight or unsupported equipment."
+            "value": "Reach the rep ceiling in every set twice at the same weights, within 21 days. Then try a small available increase while aiming to keep the same reps, if manageable. Use a smaller increase or repeat the load if reps or form suffer. No automatic increases for bodyweight or unsupported equipment."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aynı ağırlıklarla iki tam antrenmanda her sette üst tekrar sınırına ulaş. Sonra uygunsa aynı tekrarları hedefleyerek ekipmanında bulunan küçük bir artışı dene. Tekrarlar veya form bozulursa daha küçük bir artış kullan ya da ağırlığı tekrarla. Vücut ağırlığı veya desteklenmeyen ekipmanda otomatik artış yoktur."
+            "value": "Aynı ağırlıklarla, 21 gün içindeki iki tam antrenmanda her sette üst tekrar sınırına ulaş. Sonra uygunsa aynı tekrarları hedefleyerek ekipmanında bulunan küçük bir artışı dene. Tekrarlar veya form bozulursa daha küçük bir artış kullan ya da ağırlığı tekrarla. Vücut ağırlığı veya desteklenmeyen ekipmanda otomatik artış yoktur."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Erreichen Sie die Wiederholungsobergrenze in jedem Satz zweimal mit den gleichen Gewichten. Versuchen Sie es dann mit einer kleinen verfügbaren Erhöhung und versuchen Sie dabei, den gleichen Wiederholungen beizubehalten, sofern dies machbar ist. Verwenden Sie eine geringere Steigerung oder wiederholen Sie die Belastung, wenn Wiederholungen oder die Form darunter leiden. Keine automatische Erhöhung des Körpergewichts oder der nicht unterstützten Ausrüstung."
+            "value": "Erreichen Sie die Wiederholungsobergrenze in jedem Satz zweimal innerhalb von 21 Tagen mit den gleichen Gewichten. Versuchen Sie dann eine kleine verfügbare Steigerung und halten Sie dabei möglichst die gleichen Wiederholungen. Wählen Sie eine kleinere Steigerung oder wiederholen Sie das Gewicht, wenn Wiederholungen oder Technik leiden. Keine automatische Steigerung bei Körpergewicht oder nicht unterstützter Ausrüstung."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Atteignez le plafond de répétition dans chaque série deux fois avec les mêmes poids. Essayez ensuite une petite augmentation disponible tout en visant à conserver le même répétitions, si cela est gérable. Utilisez une augmentation plus petite ou répétez la charge si répétitions ou la forme souffrent. Aucune augmentation automatique du poids corporel ou de l’équipement non pris en charge."
+            "value": "Atteignez le plafond de répétitions dans chaque série deux fois en 21 jours avec les mêmes charges. Essayez ensuite une petite augmentation disponible en visant les mêmes répétitions, si c’est gérable. Utilisez une augmentation plus petite ou répétez la charge si les répétitions ou la technique en souffrent. Aucune augmentation automatique pour le poids du corps ou l’équipement non pris en charge."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alcanza el límite de repeticiones en cada serie dos veces con el mismo peso. Luego intente con un pequeño aumento disponible mientras intenta mantener el mismo repeticiones, si es manejable. Utilice un aumento menor o repita la carga si repeticiones o la forma sufren. No hay aumentos automáticos de peso corporal o equipo sin soporte."
+            "value": "Alcanza el tope de repeticiones en cada serie dos veces en 21 días con los mismos pesos. Luego prueba un pequeño aumento disponible intentando mantener las mismas repeticiones, si es manejable. Usa un aumento menor o repite la carga si las repeticiones o la técnica empeoran. No hay aumentos automáticos con peso corporal ni con equipo no compatible."
           }
         }
       }
@@ -21729,31 +21729,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Below the rep minimum, add one rep at a time or go lighter. At the ceiling, repeat before adding weight."
+            "value": "Below the rep minimum, add one rep at a time or go lighter. At the ceiling, repeat before adding weight. After more than 4 weeks away, repeat your last session first."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alt tekrar sınırının altında birer tekrar ekle veya ağırlığı azalt. Üst sınırda ağırlık artırmadan önce performansını tekrarla."
+            "value": "Alt tekrar sınırının altında birer tekrar ekle veya ağırlığı azalt. Üst sınırda ağırlık artırmadan önce performansını tekrarla. 4 haftadan uzun aradan sonra önce son antrenmanını tekrarla."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Unterhalb des Wiederholung-Minimums fügen Sie jeweils einen Wiederholung hinzu oder reduzieren Sie die Menge. Wiederholen Sie den Vorgang an der Decke, bevor Sie Gewicht hinzufügen."
+            "value": "Unter dem Wiederholungsminimum fügen Sie jeweils eine Wiederholung hinzu oder wählen weniger Gewicht. An der Obergrenze wiederholen Sie, bevor Sie Gewicht hinzufügen. Nach mehr als 4 Wochen Pause wiederholen Sie zuerst Ihre letzte Sitzung."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "En dessous du minimum répétition, ajoutez un répétition à la fois ou allez plus léger. Au plafond, répétez avant d’ajouter du poids."
+            "value": "Sous le minimum de répétitions, ajoutez une répétition à la fois ou allégez la charge. Au plafond, répétez avant d’ajouter du poids. Après plus de 4 semaines d’arrêt, répétez d’abord votre dernière séance."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Por debajo del mínimo de repetición, agregue un repetición a la vez o vaya más ligero. En el techo, repita antes de agregar peso."
+            "value": "Por debajo del mínimo de repeticiones, añade una repetición cada vez o usa menos peso. En el tope, repite antes de añadir peso. Tras más de 4 semanas sin entrenar, repite primero tu última sesión."
           }
         }
       }
@@ -22283,6 +22283,41 @@
         }
       }
     },
+    "progression.rationale.stale_baseline": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your latest full log for this workout is more than 4 weeks old. Repeat those weights and reps to re-establish your baseline before adding reps or weight."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu antrenmandaki son tam kaydın 4 haftadan eski. Tekrar veya ağırlık eklemeden önce başlangıç verini yeniden oluşturmak için aynı ağırlık ve tekrarları tekrarla."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ihr letztes vollständiges Protokoll für dieses Training ist älter als 4 Wochen. Wiederholen Sie diese Gewichte und Wiederholungen, um Ihre Ausgangsbasis neu zu bestätigen, bevor Sie Wiederholungen oder Gewicht hinzufügen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre dernier enregistrement complet pour cette séance date de plus de 4 semaines. Répétez ces charges et répétitions pour rétablir votre base avant d’ajouter des répétitions ou du poids."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu último registro completo de este entrenamiento tiene más de 4 semanas. Repite esos pesos y repeticiones para restablecer tu referencia antes de añadir repeticiones o peso."
+          }
+        }
+      }
+    },
     "progression.deload.none_headline": {
       "extractionState": "manual",
       "localizations": {
@@ -22604,31 +22639,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Targets use your latest full session with this plan’s working-set count. Incomplete logs give no target. Warmups don’t count."
+            "value": "Targets use your latest full session from this workout day, or from another day with the same sets and rep range. Incomplete logs give no target. Warmups don’t count."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hedefler, planla aynı sayıda çalışma seti içeren son tam antrenmanına dayanır. Eksik kayıtta hedef verilmez. Isınma setleri sayılmaz."
+            "value": "Hedefler, bu antrenman gününün ya da aynı set sayısı ve tekrar aralığına sahip başka bir günün son tam kaydına dayanır. Eksik kayıtta hedef verilmez. Isınma setleri sayılmaz."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ziele verwenden Ihre letzte vollständige Sitzung mit der Arbeitssatzanzahl dieses Plans. Unvollständige Protokolle geben kein Ziel. Aufwärmübungen zählen nicht."
+            "value": "Ziele verwenden Ihre letzte vollständige Sitzung dieses Trainingstags oder eines anderen Tages mit gleicher Satzzahl und gleichem Wiederholungsbereich. Unvollständige Protokolle geben kein Ziel. Aufwärmsätze zählen nicht."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Les cibles utilisent votre dernière session complète avec le nombre d’ensembles de travail de ce plan. Les journaux incomplets ne donnent aucune cible. Les échauffements ne comptent pas."
+            "value": "Les cibles utilisent votre dernière séance complète de ce jour d’entraînement, ou d’un autre jour avec le même nombre de séries et la même plage de répétitions. Les enregistrements incomplets ne donnent aucune cible. Les échauffements ne comptent pas."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Los objetivos utilizan su última sesión completa con el recuento de conjuntos de trabajo de este plan. Los registros incompletos no dan ningún objetivo. Los calentamientos no cuentan."
+            "value": "Los objetivos usan tu última sesión completa de este día de entrenamiento, o de otro día con las mismas series y el mismo rango de repeticiones. Los registros incompletos no dan objetivo. Los calentamientos no cuentan."
           }
         }
       }

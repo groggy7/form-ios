@@ -19,9 +19,15 @@ final class ProgressionFixtureTests: XCTestCase {
         let name: String
         let unit: String
         let activeSessionId: String?
+        let context: Context?
         let exercise: FixtureExercise
         let history: [Record]
         let expected: Expected
+    }
+    private struct Context: Decodable {
+        let programId: String
+        let workoutId: String
+        let now: String
     }
     private struct FixtureExercise: Decodable {
         let exerciseId: String?
@@ -29,10 +35,18 @@ final class ProgressionFixtureTests: XCTestCase {
         let sets: Int
         let reps: [Int]
         let toFailure: Bool?
+
+        func exercise(id: String) -> Exercise {
+            Exercise(id: id, name: name, exerciseId: exerciseId, sets: sets,
+                     reps: RepTarget(min: reps[0], max: reps[1], toFailure: toFailure ?? false))
+        }
     }
     private struct Record: Decodable {
         let id: String
         let completedAt: String
+        let programId: String?
+        let workoutId: String?
+        let snapshot: [FixtureExercise]?
         let logs: [Log]
     }
     private struct Log: Decodable {
@@ -73,11 +87,13 @@ final class ProgressionFixtureTests: XCTestCase {
         for fixture in try load().progression {
             let name = fixture.name
             let unit = WeightUnit.fromCode(fixture.unit)
-            let exercise = Exercise(id: "fixture-exercise", name: fixture.exercise.name, exerciseId: fixture.exercise.exerciseId,
-                sets: fixture.exercise.sets,
-                reps: RepTarget(min: fixture.exercise.reps[0], max: fixture.exercise.reps[1], toFailure: fixture.exercise.toFailure ?? false))
+            let exercise = fixture.exercise.exercise(id: "fixture-exercise")
+            let context = try fixture.context.map { context in
+                ProgressionContext(programId: context.programId, workoutId: context.workoutId,
+                                   now: try XCTUnwrap(WorkoutCalendar.parseIsoTimestamp(context.now), name))
+            }
             let history = fixture.history.map { record in
-                WorkoutSessionRecord(id: record.id, programId: "fixture", workoutId: "fixture", workoutTitle: "Fixture",
+                WorkoutSessionRecord(id: record.id, programId: record.programId ?? "fixture", workoutId: record.workoutId ?? "fixture", workoutTitle: "Fixture",
                     startedAt: record.completedAt, completedAt: record.completedAt, durationSeconds: 60,
                     exerciseLogs: record.logs.map { log in
                         let loadUnit = WeightUnit.fromCode(log.loadUnit ?? fixture.unit)
@@ -89,10 +105,15 @@ final class ProgressionFixtureTests: XCTestCase {
                         return SessionExerciseLog(exerciseName: log.exerciseName,
                             sets: sets(log.warmups, warmup: true) + sets(log.working, warmup: false),
                             targetSets: log.targetSets, exerciseId: log.exerciseId)
+                    },
+                    workoutSnapshot: record.snapshot.map { snapshot in
+                        Workout(id: record.workoutId ?? "fixture", day: 1, title: "Fixture",
+                                exercises: snapshot.enumerated().map { $1.exercise(id: "snapshot-\($0)") })
                     })
             }
             let expected = fixture.expected
-            let rec = ProgressionEngine.computeProgression(exercise: exercise, history: history, weightUnit: unit, activeSessionId: fixture.activeSessionId)
+            let rec = ProgressionEngine.computeProgression(exercise: exercise, history: history, weightUnit: unit,
+                                                           activeSessionId: fixture.activeSessionId, context: context)
             guard let action = expected.action else { XCTAssertNil(rec, name); continue }
             guard let rec else { XCTFail("\(name): no recommendation"); continue }
             XCTAssertEqual(rec.action.rawValue, action, "\(name) action")
