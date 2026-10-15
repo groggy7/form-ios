@@ -103,35 +103,11 @@ public struct TodayHeroCard: View {
         let activeView = bodyViews[activeIndex]
 
         return VStack(alignment: .leading, spacing: 0) {
-            // Top row
-            HStack(alignment: .center) {
-                let dayText: String = {
-                    if workout.day == todayIndex + 1 {
-                        return LanguageManager.t("today.todayWorkout")
-                    } else if LanguageManager.workoutDays.indices.contains(workout.day - 1) {
-                        return LanguageManager.workoutDays[workout.day - 1]
-                    }
-                    return ""
-                }()
-
-                Text(dayText)
-                    .font(.system(size: captionSize, weight: .medium))
-                    .foregroundStyle(AppColors.secondaryText)
-
-                Spacer()
-
-                if isCompleted {
-                    ZStack {
-                        Circle()
-                            .fill(cardSurface)
-                            .frame(width: 24, height: 24)
-                        Image(systemName: "checkmark")
-                            .font(.system(size: captionSize, weight: .bold))
-                            .foregroundStyle(AppColors.accent)
-                    }
-                }
-            }
-            .frame(minHeight: 20)
+            workoutDayLabel(for: workout)
+                .font(.system(size: captionSize, weight: .medium))
+                .fixedSize(horizontal: false, vertical: true)
+                .frame(maxWidth: .infinity, minHeight: 20, alignment: .leading)
+                .accessibilityIdentifier("today-workout-day-status")
 
             Spacer().frame(height: 20)
 
@@ -207,8 +183,10 @@ public struct TodayHeroCard: View {
             // Button
             Button(action: onStart) {
                 HStack(spacing: 8) {
-                    Image(systemName: isCompleted ? "checkmark" : (availableDay != nil ? "clock" : "play.fill"))
-                        .font(.system(size: actionSize, weight: .semibold))
+                    if !isCompleted {
+                        Image(systemName: availableDay != nil ? "clock" : "play.fill")
+                            .font(.system(size: actionSize, weight: .semibold))
+                    }
 
                     Text(buttonTitle())
                         .font(.system(size: actionSize, weight: .semibold))
@@ -286,6 +264,26 @@ public struct TodayHeroCard: View {
 
     static func bodyViewOptions(for workout: Workout) -> [BodyView] {
         workout.bodyViews()
+    }
+
+    private func workoutDayLabel(for workout: Workout) -> Text {
+        let day = LanguageManager.workoutDays.indices.contains(workout.day - 1)
+            ? LanguageManager.workoutDays[workout.day - 1] : ""
+        let label = Text(verbatim: day).foregroundColor(AppColors.secondaryText)
+        let status: (text: String, color: Color)?
+        if isCompleted {
+            status = (LanguageManager.t("history.completed"), AppColors.completedGreen)
+        } else if hasUnfinishedProgress {
+            status = (LanguageManager.t("history.unfinished"), AppColors.unfinishedOrange)
+        } else if WeeklyPlanView.isMissedPlanDay(dayIndex: workout.day - 1, todayIndex: todayIndex,
+            hasWorkout: true, completed: isCompleted, unfinished: hasUnfinishedProgress) {
+            status = (LanguageManager.t("history.missed"), AppColors.missedRed)
+        } else {
+            status = nil
+        }
+        guard let status else { return label }
+        return label + Text(verbatim: " · ").foregroundColor(AppColors.secondaryText)
+            + Text(verbatim: status.text).foregroundColor(status.color)
     }
 
     private func buttonTitle() -> String {
