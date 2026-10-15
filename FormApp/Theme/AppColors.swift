@@ -141,6 +141,8 @@ public enum AppColors {
 
     public static var heroSurface: Color { presentationColor(Color(hex: 0x1E242B), surfaceRaised) }
     public static var heroBorder: Color { presentationColor(Color(hex: 0x343A41), border) }
+    // The original recovery photograph's neutral studio tone, beneath the native theme gradients.
+    public static let recoveryStudioBackdrop = Color(hex: 0x090909)
     public static var restRingShade: Color { presentationColor(Color(hex: 0x7952D6), Color.mix(purple, background, 0.25)) }
     public static var restRingLight: Color { presentationColor(Color(hex: 0xE0BCFF), Color.mix(purple, text, 0.3)) }
 

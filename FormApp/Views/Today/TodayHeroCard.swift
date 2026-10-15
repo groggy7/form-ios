@@ -356,7 +356,12 @@ public struct TodayHeroCard: View {
                     )
 
                 let isDark = themeManager.currentTheme.isDark
-                if !isDark { lightBackdrop }
+                if isDark {
+                    // Restore the studio beneath the cutout so the existing surface-to-studio gradient stays visible.
+                    AppColors.recoveryStudioBackdrop
+                } else {
+                    lightBackdrop
+                }
 
                 GeometryReader { geo in
                     restPhoto(size: geo.size)

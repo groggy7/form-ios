@@ -12134,7 +12134,10 @@ final class ThemeCoverageSnapshots: XCTestCase {
             for theme in ["home-back", "home-legs"].contains(name) ? AppThemes.all.filter({ !$0.isDark }) : AppThemes.all {
                 ThemeManager.shared.setThemeId(theme.id)
                 try await Task.sleep(nanoseconds: name == "detail" ? 1_200_000_000 : 300_000_000)
-                capture(controller, name: "theme-coverage-ios-\(name)-\(theme.id)")
+                let image = capture(controller, name: "theme-coverage-ios-\(name)-\(theme.id)")
+                if name == "home-recovery" && theme.isDark {
+                    assertRecoveryBackdropGradient(image, topInset: controller.view.safeAreaInsets.top, theme: theme.id)
+                }
             }
             window.isHidden = true
         }
@@ -12150,6 +12153,26 @@ final class ThemeCoverageSnapshots: XCTestCase {
         }
     }
 
+    @MainActor
+    private func assertRecoveryBackdropGradient(_ image: UIImage, topInset: CGFloat, theme: String) {
+        let cgImage = image.cgImage!
+        let scale = CGFloat(cgImage.width) / image.size.width
+        // The 320pt fixture has 20pt outer padding plus the card's 20pt horizontal padding.
+        // Sample an empty band above the athlete, safely inside the rounded corners.
+        func brightness(_ fraction: Double) -> Double {
+            let x = 40 + (image.size.width - 80) * fraction
+            let crop = cgImage.cropping(to: CGRect(x: (x - 1) * scale, y: (topInset + 29) * scale,
+                width: 3 * scale, height: 3 * scale).integral)!
+            var pixel = [UInt8](repeating: 0, count: 4)
+            let context = CGContext(data: &pixel, width: 1, height: 1, bitsPerComponent: 8,
+                bytesPerRow: 4, space: CGColorSpace(name: CGColorSpace.sRGB)!,
+                bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
+            context.draw(crop, in: CGRect(x: 0, y: 0, width: 1, height: 1))
+            return Double(Int(pixel[0]) + Int(pixel[1]) + Int(pixel[2])) / 3
+        }
+        XCTAssertGreaterThan(brightness(0.15) - brightness(0.90), 6,
+            "Recovery backdrop must visibly fade toward the studio in \(theme)")
+    }
 }
 
 final class ExerciseAlphaMediaTests: XCTestCase {
