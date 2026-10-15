@@ -129,7 +129,7 @@ public struct ProgressionCoachCard: View {
 
                 if hasDifferentTargets {
                     ForEach(Array(recommendation.setTargets.enumerated()), id: \.offset) { index, target in
-                        let load = (target.weightKg ?? 0) > 0 ? "\(weightUnit.formatDisplayWeight(target.weightKg!)) \(weightUnit.label) × " : ""
+                        let load = (target.weightKg ?? 0) > 0 ? "\(weightUnit.formatExactDisplayWeight(target.weightKg!)) \(weightUnit.label) × " : ""
                         Text(LanguageManager.t("progression.coach.set_target", ["set": "\(index + 1)", "target": load.isEmpty ? LanguageManager.t("progression.coach.reps", ["reps": "\(target.reps)"]) : "\(load)\(target.reps)"]))
                             .font(.system(size: 12))
                             .foregroundStyle(AppColors.text)
@@ -417,7 +417,7 @@ struct ProgressionRecommendationCard: View {
 
     private func weight(_ target: ProgressionSetTarget, compact: Bool = false) -> String {
         guard let load = target.weightKg else { return "—" }
-        return load == 0 && !WorkoutSessionUtils.isAssisted(exerciseId: recommendation.exerciseId, name: recommendation.exerciseName) ? LanguageManager.t("progression.coach.bodyweight") : "\(weightUnit.formatDisplayWeight(load))\(compact ? "" : " ")\(weightUnit.label)"
+        return load == 0 && !WorkoutSessionUtils.isAssisted(exerciseId: recommendation.exerciseId, name: recommendation.exerciseName) ? LanguageManager.t("progression.coach.bodyweight") : "\(weightUnit.formatExactDisplayWeight(load))\(compact ? "" : " ")\(weightUnit.label)"
     }
 }
 

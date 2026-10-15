@@ -57,6 +57,16 @@ public enum WeightUnit: String, Codable, CaseIterable {
         return unit.toCanonicalKg(displayWeight)
     }
 
+    /// The rounding rule both apps share: halves round away from zero (20.25 -> 20.3).
+    /// Keep the arithmetic identical to Android WeightUnit.roundHalfAwayFromZero.
+    public static func roundHalfAwayFromZero(_ value: Double, decimals: Int) -> Double {
+        let factor = pow(10.0, Double(decimals))
+        let scaled = abs(value) * factor
+        let whole = scaled.rounded(.down)
+        let rounded = scaled - whole >= 0.5 ? whole + 1.0 : whole
+        return (value < 0 ? -rounded : rounded) / factor
+    }
+
     public func formatWeight(_ weightKg: Double) -> String {
         guard weightKg != 0.0 else { return "0" }
         let isNegative = weightKg < 0.0
@@ -65,11 +75,11 @@ public enum WeightUnit: String, Codable, CaseIterable {
         let formatted: String
         switch self {
         case .lbs:
-            let rounded = display.rounded()
+            let rounded = Self.roundHalfAwayFromZero(display, decimals: 0)
             if abs(display - rounded) < 0.05 || display >= 10.0 {
                 formatted = "\(Int(rounded))"
             } else {
-                let oneDec = (display * 10.0).rounded() / 10.0
+                let oneDec = Self.roundHalfAwayFromZero(display, decimals: 1)
                 if oneDec.truncatingRemainder(dividingBy: 1.0) == 0 {
                     formatted = "\(Int(oneDec))"
                 } else {
@@ -77,11 +87,11 @@ public enum WeightUnit: String, Codable, CaseIterable {
                 }
             }
         case .kg:
-            let rounded = display.rounded()
+            let rounded = Self.roundHalfAwayFromZero(display, decimals: 0)
             if abs(display - rounded) < 0.001 {
                 formatted = "\(Int(rounded))"
             } else {
-                let oneDec = (display * 10.0).rounded() / 10.0
+                let oneDec = Self.roundHalfAwayFromZero(display, decimals: 1)
                 if oneDec.truncatingRemainder(dividingBy: 1.0) == 0 {
                     formatted = "\(Int(oneDec))"
                 } else {
@@ -90,6 +100,25 @@ public enum WeightUnit: String, Codable, CaseIterable {
             }
         }
         return isNegative ? "-\(formatted)" : formatted
+    }
+
+    /// Lossless input text at the logger's two-decimal precision ("102.5", "220.46").
+    /// Progression targets use it so the card shows exactly what Apply Target writes.
+    public func formatExactWeight(_ weightKg: Double) -> String {
+        var text = String(format: "%.2f", locale: Locale(identifier: "en_US_POSIX"), Self.roundHalfAwayFromZero(toDisplay(weightKg), decimals: 2))
+        while text.hasSuffix("0") { text.removeLast() }
+        if text.hasSuffix(".") { text.removeLast() }
+        return text == "-0" ? "0" : text
+    }
+
+    public func formatExactDisplayWeight(_ weightKg: Double) -> String {
+        let formatter = NumberFormatter()
+        formatter.locale = LanguageManager.numberLocale
+        formatter.numberStyle = .decimal
+        formatter.usesGroupingSeparator = false
+        formatter.maximumFractionDigits = 2
+        let exact = formatExactWeight(weightKg)
+        return formatter.string(from: NSNumber(value: Double(exact) ?? 0)) ?? exact
     }
 
     public func formatWeightWithUnit(_ weightKg: Double) -> String {

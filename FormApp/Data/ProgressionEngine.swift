@@ -64,21 +64,27 @@ public enum ProgressionEngine {
             let logs = record.exerciseLogs.filter {
                 ExerciseCatalog.sameExercise(leftId: exercise.exerciseId, leftName: exercise.name, rightId: $0.exerciseId, rightName: $0.exerciseName)
             }
-            guard logs.contains(where: { $0.sets.contains(where: { !$0.isWarmup }) }) else { return nil }
+            // An exercise skipped entirely is not an occurrence. Warmups without working sets are
+            // an incomplete one, so they block a recommendation instead of being passed over.
+            guard logs.contains(where: { !$0.sets.isEmpty }) else { return nil }
             return HistoricalSessionSets(sets: logs.flatMap { $0.sets }, targetSets: logs.count == 1 ? logs[0].targetSets : nil, ambiguous: logs.count != 1)
         }
     }
 
+    /// `activeSessionId` excludes a resumed session's own saved record: it is today's work, not the baseline.
     public static func computeProgression(
         exercise: Exercise,
         history: [WorkoutSessionRecord],
-        weightUnit: WeightUnit = .kg
+        weightUnit: WeightUnit = .kg,
+        activeSessionId: String? = nil
     ) -> ExerciseProgressionRecommendation? {
         guard let (repMin, repMax) = parseRepRange(exercise: exercise) else { return nil }
-        let exerciseId = exercise.exerciseId ?? ExerciseCatalog.key(exercise.name)
+        // Equipment uses the same identity as history matching, so name-only catalog exercises keep their step.
+        let exerciseId = ExerciseCatalog.resolveCanonicalId(stableId: exercise.exerciseId, name: exercise.name)
+            ?? ExerciseCatalog.key(exercise.name)
         let category = EquipmentCatalog.shared.categoryId(exerciseId)
         let expectedSets = WorkoutSessionUtils.initialSetCount(exercise: exercise)
-        let sessions = findHistoricalSessions(exercise: exercise, history: history)
+        let sessions = findHistoricalSessions(exercise: exercise, history: activeSessionId.map { id in history.filter { $0.id != id } } ?? history)
 
         func guidance(_ action: ProgressionAction, _ key: String, _ args: [String: String] = [:], plateau: Bool = false,
                       summary: String? = nil, sourceSets: [ProgressionSetTarget] = []) -> ExerciseProgressionRecommendation {
@@ -255,8 +261,9 @@ public enum ProgressionEngine {
         )
     }
 
+    // Exact input precision: the card must show the load Apply Target writes.
     private static func formatWeight(_ kg: Double, unit: WeightUnit) -> String {
-        kg <= 0.0 ? "BW" : unit.formatWeight(kg)
+        kg <= 0.0 ? "BW" : unit.formatExactWeight(kg)
     }
 
     private static func formatSessionSummary(_ sets: [SessionSetLog], unit: WeightUnit) -> String {

@@ -69,9 +69,24 @@ public struct ProgressionSetTarget: Equatable {
         self.reps = reps
     }
 
+    private var validWeightKg: Double? {
+        guard let weightKg, weightKg.isFinite, weightKg >= 0 else { return nil }
+        return weightKg
+    }
+
     public func weightInput(unit: WeightUnit, fallback: String) -> String {
-        guard let weightKg, weightKg.isFinite, weightKg >= 0 else { return fallback }
-        return unit.formatWeight(weightKg)
+        validWeightKg.map(unit.formatExactWeight) ?? fallback
+    }
+
+    /// Apply stores the canonical target itself; the input text only represents it, so no rounding reaches the log.
+    public func applied(to set: ExerciseSetLog, unit: WeightUnit) -> ExerciseSetLog {
+        var applied = set
+        applied.weightInput = weightInput(unit: unit, fallback: set.weightInput)
+        applied.weightKg = validWeightKg ?? set.weightKg
+        applied.repsInput = "\(reps)"
+        applied.completedReps = reps
+        applied.inputTouched = true
+        return applied
     }
 }
 

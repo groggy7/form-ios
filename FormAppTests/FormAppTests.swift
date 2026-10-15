@@ -8917,9 +8917,10 @@ final class ProgressionReliabilityTests: XCTestCase {
     func testNoHistoryWarmupsAndFailureNeverOfferAnApplicableTarget() {
         var warmups = record(1)
         warmups.exerciseLogs[0].sets = [SessionSetLog(setNumber: 0, weightKg: 20, reps: 10, isWarmup: true)]
-        for history in [[WorkoutSessionRecord](), [warmups]] {
+        // A warmup-only occurrence was started but has no working baseline: it is incomplete, not absent.
+        for (history, action) in [([WorkoutSessionRecord](), ProgressionAction.firstSession), ([warmups], .insufficientData)] {
             let rec = ProgressionEngine.computeProgression(exercise: bench, history: history)!
-            XCTAssertEqual(rec.action, .firstSession)
+            XCTAssertEqual(rec.action, action)
             XCTAssertTrue(rec.setTargets.isEmpty)
         }
         var failure = bench
@@ -12334,7 +12335,7 @@ final class AuditSessionInsightsTests: XCTestCase {
     @MainActor
     func testInsightsReuseHistoryAndInvalidatePrescriptionUnitLanguageAndCorrectedLogs() {
         var computations = 0
-        let cache = SessionHistoryInsightsCache { _, _, _ in
+        let cache = SessionHistoryInsightsCache { _, _, _, _ in
             computations += 1
             return .init(previousWorkingSets: [], recommendation: nil, prText: "fixture")
         }

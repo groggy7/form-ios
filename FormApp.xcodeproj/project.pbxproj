@@ -128,6 +128,7 @@
 		C15000000000000000000004 /* ProgramBuilderComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000003 /* ProgramBuilderComponents.swift */; };
 		C15000000000000000000006 /* ProgramFileCodec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000005 /* ProgramFileCodec.swift */; };
 		C15000000000000000000008 /* ProgramBuilderRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000007 /* ProgramBuilderRegressionTests.swift */; };
+		C1500000000000000000000C /* ProgressionFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1500000000000000000000B /* ProgressionFixtureTests.swift */; };
 		C1500000000000000000000A /* android-builder-v5.json in Resources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000009 /* android-builder-v5.json */; };
 /* End PBXBuildFile section */
 
@@ -258,6 +259,8 @@
 		C15000000000000000000003 /* ProgramBuilderComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramBuilderComponents.swift; sourceTree = "<group>"; };
 		C15000000000000000000005 /* ProgramFileCodec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramFileCodec.swift; sourceTree = "<group>"; };
 		C15000000000000000000007 /* ProgramBuilderRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramBuilderRegressionTests.swift; sourceTree = "<group>"; };
+		C1500000000000000000000B /* ProgressionFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionFixtureTests.swift; sourceTree = "<group>"; };
+		C1500000000000000000000D /* progression-fixtures.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "progression-fixtures.json"; sourceTree = "<group>"; };
 		C15000000000000000000009 /* android-builder-v5.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = android-builder-v5.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -332,6 +335,8 @@
 				C15000000000000000000007 /* ProgramBuilderRegressionTests.swift */,
 				C15000000000000000000009 /* android-builder-v5.json */,
 				9D2282260300C11D1B7F29AE /* FormAppTests.swift */,
+				C1500000000000000000000B /* ProgressionFixtureTests.swift */,
+				C1500000000000000000000D /* progression-fixtures.json */,
 			);
 			path = FormAppTests;
 			sourceTree = "<group>";
@@ -793,6 +798,7 @@
 			files = (
 				5F57A702A0F84F27F8CB9EC7 /* FormAppTests.swift in Sources */,
 				C15000000000000000000008 /* ProgramBuilderRegressionTests.swift in Sources */,
+				C1500000000000000000000C /* ProgressionFixtureTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

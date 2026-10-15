@@ -63,7 +63,7 @@ public struct ActiveSessionView: View {
         let restTimer = activeDraft.restTimer
 
         let historyInsights = currentExercise.map {
-            store.sessionHistoryInsights.get(exercise: $0, history: store.state.history, unit: store.weightUnit)
+            store.sessionHistoryInsights.get(exercise: $0, history: store.state.history, unit: store.weightUnit, activeSessionId: activeDraft.id)
         }
         let previousWorkingSets = historyInsights?.previousWorkingSets ?? []
 
@@ -352,10 +352,7 @@ public struct ActiveSessionView: View {
                                             canApplyTarget: !recommendation.applicableTargets(sets: currentSets).isEmpty,
                                             sessionSets: currentSets,
                                             onApplyTarget: {
-                                                for (setIdx, target) in recommendation.applicableTargets(sets: currentSets) {
-                                                    let targetWeight = target.weightInput(unit: store.weightUnit, fallback: currentSets[setIdx].weightInput)
-                                                    updateSet(exerciseId: exercise.id, index: setIdx, weight: targetWeight, reps: "\(target.reps)")
-                                                }
+                                                applyProgressionTargets(recommendation.applicableTargets(sets: currentSets), exerciseId: exercise.id)
                                             },
                                             onOpenInfo: {
                                                 showProgressionInfo = true
@@ -772,7 +769,7 @@ public struct ActiveSessionView: View {
     private func updateSet(exerciseId: String, index: Int, weight: String, reps: String) {
         let sets = currentDraft.setsByExercise[exerciseId] ?? []
         guard sets.indices.contains(index), let exercise = currentDraft.workout.exercises.first(where: { $0.id == exerciseId }) else { return }
-        let previous = WorkoutSessionUtils.findPreviousSessionWorkingSets(history: store.state.history, exercise: exercise)
+        let previous = WorkoutSessionUtils.findPreviousSessionWorkingSets(history: store.state.history.filter { $0.id != currentDraft.id }, exercise: exercise)
         let prevTopKg = previous.compactMap { $0.weightKg }.filter { $0 > 0 }.max()
         if WorkoutSessionUtils.completedSetEditNeedsWeightConfirmation(sets[index], weightInput: weight, unit: store.weightUnit, previousTopWeightKg: prevTopKg),
            let normalized = WorkoutSessionUtils.sanitizedWeightInput(weight, unit: store.weightUnit), let displayWeight = Double(normalized) {
@@ -784,6 +781,17 @@ public struct ActiveSessionView: View {
             return
         }
         executeUpdateSet(exerciseId: exerciseId, index: index, weight: weight, reps: reps)
+    }
+
+    /// Writes the coach's canonical targets in one update against the latest draft.
+    private func applyProgressionTargets(_ targets: [Int: ProgressionSetTarget], exerciseId: String) {
+        let unit = store.weightUnit
+        store.updateActiveSession { d in
+            var copy = d
+            guard let sets = copy.setsByExercise[exerciseId] else { return copy }
+            copy.setsByExercise[exerciseId] = WorkoutSessionUtils.applyingProgressionTargets(targets, to: sets, unit: unit)
+            return copy
+        }
     }
 
     private func executeUpdateSet(exerciseId: String, index: Int, weight: String, reps: String, expectedSetId: String? = nil) {
@@ -807,7 +815,7 @@ public struct ActiveSessionView: View {
         let currentSet = currentSets[index]
         if !currentSet.isCompleted {
             let weightKg = currentSet.weightKg ?? (Double(currentSet.weightInput.replacingOccurrences(of: ",", with: ".")).map { WeightUnit.toCanonicalKg($0, unit: store.weightUnit) } ?? 0.0)
-            let prevSets = WorkoutSessionUtils.findPreviousSessionWorkingSets(history: store.state.history, exercise: exercise)
+            let prevSets = WorkoutSessionUtils.findPreviousSessionWorkingSets(history: store.state.history.filter { $0.id != currentDraft.id }, exercise: exercise)
             let prevTopKg = prevSets.filter { !$0.isWarmup }.compactMap { $0.weightKg }.filter { $0 > 0 }.max()
             if WorkoutSessionUtils.isAnomalousWeight(weightKg: weightKg, previousTopWeightKg: prevTopKg) {
                 pendingAnomalousSet = PendingAnomalousSet(exercise: exercise, index: index, setId: currentSet.id, weightKg: weightKg, prevTopKg: prevTopKg, ghostTarget: ghostTarget)

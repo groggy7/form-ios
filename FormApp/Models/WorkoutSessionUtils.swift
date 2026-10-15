@@ -246,6 +246,15 @@ public enum WorkoutSessionUtils {
         return result
     }
 
+    /// Re-checked against the latest rows: only unfinished working rows receive a target.
+    public static func applyingProgressionTargets(_ targets: [Int: ProgressionSetTarget], to sets: [ExerciseSetLog], unit: WeightUnit) -> [ExerciseSetLog] {
+        sets.enumerated().map { index, set in
+            guard let target = targets[index], !set.isWarmup, !set.isCompleted,
+                  sanitizedWeightInput(target.weightInput(unit: unit, fallback: set.weightInput), unit: unit) != nil else { return set }
+            return target.applied(to: set, unit: unit)
+        }
+    }
+
     public static func weightForEditedInput(_ input: String, existing set: ExerciseSetLog, unit: WeightUnit) -> Double? {
         guard let normalized = sanitizedWeightInput(input, unit: unit), let display = Double(normalized) else { return nil }
         if let canonical = set.weightKg, canonical.isFinite, canonical >= 0 {
@@ -705,22 +714,25 @@ final class SessionHistoryInsightsCache {
         let exercise: Exercise
         let history: [WorkoutSessionRecord]
         let unit: WeightUnit
+        let activeSessionId: String?
         let language: String
     }
     private var entry: (Inputs, Insights)?
-    private let compute: (Exercise, [WorkoutSessionRecord], WeightUnit) -> Insights
+    private let compute: (Exercise, [WorkoutSessionRecord], WeightUnit, String?) -> Insights
 
-    init(compute: @escaping (Exercise, [WorkoutSessionRecord], WeightUnit) -> Insights = { exercise, history, unit in
-        Insights(previousWorkingSets: WorkoutSessionUtils.findPreviousSessionWorkingSets(history: history, exercise: exercise),
-            recommendation: ProgressionEngine.computeProgression(exercise: exercise, history: history, weightUnit: unit),
+    init(compute: @escaping (Exercise, [WorkoutSessionRecord], WeightUnit, String?) -> Insights = { exercise, history, unit, activeSessionId in
+        // A resumed session's own saved record is today's work, not the previous session.
+        let baseline = activeSessionId.map { id in history.filter { $0.id != id } } ?? history
+        return Insights(previousWorkingSets: WorkoutSessionUtils.findPreviousSessionWorkingSets(history: baseline, exercise: exercise),
+            recommendation: ProgressionEngine.computeProgression(exercise: exercise, history: history, weightUnit: unit, activeSessionId: activeSessionId),
             prText: WorkoutSessionUtils.findExercisePr(history: history, exercise: exercise, unit: unit) ?? "-")
     }) { self.compute = compute }
 
-    func get(exercise: Exercise, history: [WorkoutSessionRecord], unit: WeightUnit) -> Insights {
+    func get(exercise: Exercise, history: [WorkoutSessionRecord], unit: WeightUnit, activeSessionId: String? = nil) -> Insights {
         dispatchPrecondition(condition: .onQueue(.main))
-        let inputs = Inputs(exercise: exercise, history: history, unit: unit, language: LanguageManager.shared.currentLanguage)
+        let inputs = Inputs(exercise: exercise, history: history, unit: unit, activeSessionId: activeSessionId, language: LanguageManager.shared.currentLanguage)
         if let entry, entry.0 == inputs { return entry.1 }
-        let result = compute(exercise, history, unit)
+        let result = compute(exercise, history, unit, activeSessionId)
         entry = (inputs, result)
         return result
     }
