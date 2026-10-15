@@ -12131,7 +12131,7 @@ final class ThemeCoverageSnapshots: XCTestCase {
             let controller = UIHostingController(rootView: ObservedScreen(screen: screen))
             let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 900))
             controller.view.frame = window.bounds; window.rootViewController = controller; window.makeKeyAndVisible()
-            for theme in name.hasPrefix("home-") ? AppThemes.all.filter({ !$0.isDark }) : AppThemes.all {
+            for theme in ["home-back", "home-legs"].contains(name) ? AppThemes.all.filter({ !$0.isDark }) : AppThemes.all {
                 ThemeManager.shared.setThemeId(theme.id)
                 try await Task.sleep(nanoseconds: name == "detail" ? 1_200_000_000 : 300_000_000)
                 capture(controller, name: "theme-coverage-ios-\(name)-\(theme.id)")

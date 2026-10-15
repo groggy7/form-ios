@@ -391,20 +391,13 @@ public struct TodayHeroCard: View {
 }
 
 extension TodayHeroCard {
-    /// The seated photograph, filled to the card and anchored to its trailing top. With `subjectOnly` the photo is
-    /// replaced by `library_body_rest`, the same photograph with its black studio matted out to soft alpha.
+    /// The photograph and transparent cutout share the same top-trailing crop and horizontal placement.
     @ViewBuilder
     fileprivate func restPhoto(size: CGSize, subjectOnly: Bool) -> some View {
-        if subjectOnly {
-            // Nudged toward the trailing edge (the bench back has spare room there) so the knee and forearm
-            // clear the guidance note on the left.
-            Image("library_body_rest").resizable().scaledToFill()
-                .frame(width: size.width, height: size.height, alignment: .topTrailing).clipped()
-                .offset(x: size.width * 0.10)
-        } else {
-            Image("body_rest").resizable().scaledToFill()
-                .frame(width: size.width, height: size.height, alignment: .topTrailing).clipped()
-        }
+        // Keep the athlete toward the right edge in every suite, matching Android's recovery card.
+        Image(subjectOnly ? "library_body_rest" : "body_rest").resizable().scaledToFill()
+            .frame(width: size.width, height: size.height, alignment: .topTrailing).clipped()
+            .offset(x: size.width * 0.10)
     }
 }
 
