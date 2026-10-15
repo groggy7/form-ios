@@ -138,6 +138,15 @@ final class ProgressionFixtureTests: XCTestCase {
                 XCTAssertEqual(row.weightKg, target.weightKg, "\(name) applied set \(index + 1) keeps the canonical target")
                 XCTAssertEqual(row.completedReps, target.reps, "\(name) applied set \(index + 1) reps")
             }
+
+            // Prefill next must never overwrite applied targets: complete each set in order with it on.
+            var current = after
+            for index in after.indices {
+                current = WorkoutSessionUtils.togglingCompletion(of: index, in: current, prefillNextSet: true, unit: unit)
+                XCTAssertTrue(current[index].isCompleted, "\(name) set \(index + 1) completes")
+                XCTAssertEqual(current.map { row in var row = row; row.isCompleted = false; return row }, after,
+                               "\(name) rows keep their applied targets after completing set \(index + 1)")
+            }
         }
     }
 }

@@ -863,10 +863,7 @@ public struct ActiveSessionView: View {
                 return copy
             }
             let willComplete = !currentSet.isCompleted
-            sets[index].isCompleted = willComplete
-            if willComplete, store.prefillNextSet, sets.indices.contains(index + 1) {
-                sets[index + 1] = WorkoutSessionUtils.prefillSet(sets[index + 1], from: currentSet, unit: store.weightUnit)
-            }
+            sets = WorkoutSessionUtils.togglingCompletion(of: index, in: sets, prefillNextSet: store.prefillNextSet, unit: store.weightUnit)
             copy.setsByExercise[exercise.id] = sets
 
             if willComplete {

@@ -246,6 +246,19 @@ public enum WorkoutSessionUtils {
         return result
     }
 
+    /// Toggles one set's completion. Completing it prefills the next row when the setting is on;
+    /// prefill only fills untouched rows, so applied targets and user edits are never overwritten.
+    public static func togglingCompletion(of index: Int, in sets: [ExerciseSetLog], prefillNextSet: Bool, unit: WeightUnit) -> [ExerciseSetLog] {
+        guard sets.indices.contains(index) else { return sets }
+        var sets = sets
+        let currentSet = sets[index]
+        sets[index].isCompleted = !currentSet.isCompleted
+        if !currentSet.isCompleted, prefillNextSet, sets.indices.contains(index + 1) {
+            sets[index + 1] = prefillSet(sets[index + 1], from: currentSet, unit: unit)
+        }
+        return sets
+    }
+
     /// Re-checked against the latest rows: only unfinished working rows receive a target.
     public static func applyingProgressionTargets(_ targets: [Int: ProgressionSetTarget], to sets: [ExerciseSetLog], unit: WeightUnit) -> [ExerciseSetLog] {
         sets.enumerated().map { index, set in
