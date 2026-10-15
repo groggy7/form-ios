@@ -1,0 +1,4076 @@
+{
+  "version": 1,
+  "patterns": {
+    "horizontal-press": {
+      "family": "push",
+      "related": [
+        "incline-press",
+        "dip"
+      ]
+    },
+    "incline-press": {
+      "family": "push",
+      "related": [
+        "horizontal-press",
+        "vertical-press"
+      ]
+    },
+    "vertical-press": {
+      "family": "push",
+      "related": [
+        "incline-press"
+      ]
+    },
+    "dip": {
+      "family": "push",
+      "related": [
+        "horizontal-press",
+        "elbow-extension-pushdown"
+      ]
+    },
+    "chest-fly": {
+      "family": "push",
+      "related": []
+    },
+    "lateral-raise": {
+      "family": "shoulders",
+      "related": [
+        "upright-row",
+        "y-raise"
+      ]
+    },
+    "front-raise": {
+      "family": "shoulders",
+      "related": [
+        "y-raise"
+      ]
+    },
+    "y-raise": {
+      "family": "shoulders",
+      "related": [
+        "lateral-raise",
+        "front-raise",
+        "rear-delt-fly"
+      ]
+    },
+    "upright-row": {
+      "family": "shoulders",
+      "related": [
+        "lateral-raise",
+        "shrug"
+      ]
+    },
+    "rear-delt-fly": {
+      "family": "shoulders",
+      "related": [
+        "horizontal-row"
+      ]
+    },
+    "shrug": {
+      "family": "shoulders",
+      "related": [
+        "upright-row"
+      ]
+    },
+    "vertical-pull": {
+      "family": "pull",
+      "related": [
+        "shoulder-extension",
+        "horizontal-row"
+      ]
+    },
+    "horizontal-row": {
+      "family": "pull",
+      "related": [
+        "vertical-pull"
+      ]
+    },
+    "shoulder-extension": {
+      "family": "pull",
+      "related": [
+        "vertical-pull"
+      ]
+    },
+    "elbow-flexion": {
+      "family": "arms",
+      "related": []
+    },
+    "elbow-extension-overhead": {
+      "family": "arms",
+      "related": [
+        "elbow-extension-lying",
+        "elbow-extension-pushdown"
+      ]
+    },
+    "elbow-extension-lying": {
+      "family": "arms",
+      "related": [
+        "elbow-extension-overhead",
+        "elbow-extension-pushdown"
+      ]
+    },
+    "elbow-extension-pushdown": {
+      "family": "arms",
+      "related": [
+        "elbow-extension-overhead",
+        "elbow-extension-lying",
+        "dip"
+      ]
+    },
+    "squat-bilateral": {
+      "family": "legs",
+      "related": [
+        "squat-unilateral"
+      ]
+    },
+    "squat-unilateral": {
+      "family": "legs",
+      "related": [
+        "squat-bilateral",
+        "lateral-lunge"
+      ]
+    },
+    "lateral-lunge": {
+      "family": "legs",
+      "related": [
+        "squat-unilateral",
+        "hip-adduction"
+      ]
+    },
+    "hip-hinge": {
+      "family": "legs",
+      "related": [
+        "hip-extension"
+      ]
+    },
+    "hip-extension": {
+      "family": "legs",
+      "related": [
+        "hip-hinge"
+      ]
+    },
+    "knee-flexion": {
+      "family": "legs",
+      "related": [
+        "hip-hinge"
+      ]
+    },
+    "knee-extension": {
+      "family": "legs",
+      "related": [
+        "squat-bilateral",
+        "squat-unilateral"
+      ]
+    },
+    "hip-abduction": {
+      "family": "legs",
+      "related": []
+    },
+    "hip-adduction": {
+      "family": "legs",
+      "related": [
+        "lateral-lunge"
+      ]
+    },
+    "plantarflexion": {
+      "family": "legs",
+      "related": []
+    },
+    "dorsiflexion": {
+      "family": "legs",
+      "related": []
+    },
+    "trunk-flexion": {
+      "family": "core",
+      "related": [
+        "anti-extension"
+      ]
+    },
+    "anti-extension": {
+      "family": "core",
+      "related": [
+        "trunk-flexion"
+      ]
+    },
+    "anti-rotation": {
+      "family": "core",
+      "related": [
+        "anti-lateral-flexion",
+        "anti-extension",
+        "trunk-rotation"
+      ]
+    },
+    "anti-lateral-flexion": {
+      "family": "core",
+      "related": [
+        "anti-rotation",
+        "loaded-carry"
+      ]
+    },
+    "trunk-rotation": {
+      "family": "core",
+      "related": [
+        "anti-rotation"
+      ]
+    },
+    "loaded-carry": {
+      "family": "core",
+      "related": [
+        "anti-lateral-flexion"
+      ]
+    },
+    "plyometric-jump": {
+      "family": "conditioning",
+      "related": [
+        "conditioning"
+      ]
+    },
+    "conditioning": {
+      "family": "conditioning",
+      "related": [
+        "plyometric-jump"
+      ]
+    }
+  },
+  "stations": {
+    "dumbbells": {
+      "kind": "free"
+    },
+    "barbell": {
+      "kind": "free"
+    },
+    "ez-bar": {
+      "kind": "free"
+    },
+    "trap-bar": {
+      "kind": "free"
+    },
+    "kettlebell": {
+      "kind": "free"
+    },
+    "weight-plate": {
+      "kind": "free"
+    },
+    "resistance-band": {
+      "kind": "free"
+    },
+    "suspension-trainer": {
+      "kind": "free"
+    },
+    "ab-wheel": {
+      "kind": "free"
+    },
+    "jump-rope": {
+      "kind": "free"
+    },
+    "battle-ropes": {
+      "kind": "free"
+    },
+    "power-sled": {
+      "kind": "free"
+    },
+    "squat-rack": {
+      "kind": "rack"
+    },
+    "bench-press-station": {
+      "kind": "rack"
+    },
+    "incline-bench-station": {
+      "kind": "rack"
+    },
+    "decline-bench-station": {
+      "kind": "rack"
+    },
+    "landmine": {
+      "kind": "rack"
+    },
+    "preacher-bench": {
+      "kind": "rack"
+    },
+    "seal-row-bench": {
+      "kind": "rack"
+    },
+    "back-extension-bench": {
+      "kind": "rack"
+    },
+    "glute-ham-developer": {
+      "kind": "rack"
+    },
+    "pull-up-bar": {
+      "kind": "rack"
+    },
+    "dip-station": {
+      "kind": "rack"
+    },
+    "cable-station": {
+      "kind": "cable"
+    },
+    "lat-pulldown": {
+      "kind": "cable"
+    },
+    "seated-row": {
+      "kind": "cable"
+    },
+    "smith-machine": {
+      "kind": "machine"
+    },
+    "leg-press-sled": {
+      "kind": "machine"
+    },
+    "hack-squat-sled": {
+      "kind": "machine"
+    },
+    "pec-deck": {
+      "kind": "machine"
+    },
+    "assisted-pull-up-dip": {
+      "kind": "machine"
+    },
+    "lever-chest-press": {
+      "kind": "machine"
+    },
+    "lever-incline-chest-press": {
+      "kind": "machine"
+    },
+    "lever-shoulder-press": {
+      "kind": "machine"
+    },
+    "lever-viking-press": {
+      "kind": "machine"
+    },
+    "lever-seated-dip": {
+      "kind": "machine"
+    },
+    "lever-lateral-raise": {
+      "kind": "machine"
+    },
+    "lever-rear-delt-row": {
+      "kind": "machine"
+    },
+    "lever-shrug": {
+      "kind": "machine"
+    },
+    "lever-pulldown": {
+      "kind": "machine"
+    },
+    "lever-high-row": {
+      "kind": "machine"
+    },
+    "lever-pullover": {
+      "kind": "machine"
+    },
+    "lever-chest-supported-row": {
+      "kind": "machine"
+    },
+    "lever-t-bar-row": {
+      "kind": "machine"
+    },
+    "lever-lying-t-bar-row": {
+      "kind": "machine"
+    },
+    "lever-low-row": {
+      "kind": "machine"
+    },
+    "lever-unilateral-row": {
+      "kind": "machine"
+    },
+    "lever-preacher-curl": {
+      "kind": "machine"
+    },
+    "lever-biceps-curl": {
+      "kind": "machine"
+    },
+    "lever-leg-extension": {
+      "kind": "machine"
+    },
+    "lever-seated-leg-curl": {
+      "kind": "machine"
+    },
+    "lever-lying-leg-curl": {
+      "kind": "machine"
+    },
+    "lever-standing-leg-curl": {
+      "kind": "machine"
+    },
+    "lever-hip-thrust": {
+      "kind": "machine"
+    },
+    "lever-hip-abduction": {
+      "kind": "machine"
+    },
+    "lever-hip-adduction": {
+      "kind": "machine"
+    },
+    "lever-pendulum-squat": {
+      "kind": "machine"
+    },
+    "lever-belt-squat": {
+      "kind": "machine"
+    },
+    "lever-vertical-squat": {
+      "kind": "machine"
+    },
+    "lever-standing-calf-raise": {
+      "kind": "machine"
+    },
+    "lever-seated-calf-raise": {
+      "kind": "machine"
+    },
+    "bodyweight": {
+      "kind": "bodyweight"
+    }
+  },
+  "exercises": {
+    "ab-wheel-rollout": {
+      "pattern": "anti-extension",
+      "station": "ab-wheel",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "barbell-back-squat": {
+      "pattern": "squat-bilateral",
+      "station": "squat-rack",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 2
+    },
+    "barbell-bench-press": {
+      "pattern": "horizontal-press",
+      "station": "bench-press-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "barbell-front-squat": {
+      "pattern": "squat-bilateral",
+      "station": "squat-rack",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 2
+    },
+    "barbell-hip-thrust": {
+      "pattern": "hip-extension",
+      "station": "barbell",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "barbell-romanian-deadlift": {
+      "pattern": "hip-hinge",
+      "station": "barbell",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 2
+    },
+    "barbell-row": {
+      "pattern": "horizontal-row",
+      "station": "barbell",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 2
+    },
+    "bulgarian-split-squat": {
+      "pattern": "squat-unilateral",
+      "station": "bodyweight",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "cable-lateral-raise": {
+      "pattern": "lateral-raise",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "chest-supported-dumbbell-row": {
+      "pattern": "horizontal-row",
+      "station": "dumbbells",
+      "needs": [
+        "adjustable-bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "conventional-barbell-deadlift": {
+      "pattern": "hip-hinge",
+      "station": "barbell",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 2
+    },
+    "dead-bug": {
+      "pattern": "anti-extension",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-bench-press": {
+      "pattern": "horizontal-press",
+      "station": "dumbbells",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "dumbbell-floor-press": {
+      "pattern": "horizontal-press",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-hammer-curl": {
+      "pattern": "elbow-flexion",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-lateral-raise": {
+      "pattern": "lateral-raise",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-romanian-deadlift": {
+      "pattern": "hip-hinge",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 1
+    },
+    "dumbbell-step-up": {
+      "pattern": "squat-unilateral",
+      "station": "dumbbells",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 1
+    },
+    "ez-bar-curl": {
+      "pattern": "elbow-flexion",
+      "station": "ez-bar",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "face-pull": {
+      "pattern": "rear-delt-fly",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "farmer-carry": {
+      "pattern": "loaded-carry",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 1
+    },
+    "goblet-squat": {
+      "pattern": "squat-bilateral",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 1
+    },
+    "hanging-knee-raise": {
+      "pattern": "trunk-flexion",
+      "station": "pull-up-bar",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "incline-barbell-bench-press": {
+      "pattern": "incline-press",
+      "station": "incline-bench-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "incline-dumbbell-curl": {
+      "pattern": "elbow-flexion",
+      "station": "dumbbells",
+      "needs": [
+        "adjustable-bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "incline-dumbbell-press": {
+      "pattern": "incline-press",
+      "station": "dumbbells",
+      "needs": [
+        "adjustable-bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "jump-rope": {
+      "pattern": "conditioning",
+      "station": "jump-rope",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "kettlebell-swing": {
+      "pattern": "hip-hinge",
+      "station": "kettlebell",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": true,
+      "skill": 3,
+      "axialLoad": 1
+    },
+    "kneeling-cable-crunch": {
+      "pattern": "trunk-flexion",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lat-pulldown": {
+      "pattern": "vertical-pull",
+      "station": "lat-pulldown",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "leg-extension": {
+      "pattern": "knee-extension",
+      "station": "lever-leg-extension",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "leg-press": {
+      "pattern": "squat-bilateral",
+      "station": "leg-press-sled",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lying-leg-curl": {
+      "pattern": "knee-flexion",
+      "station": "lever-lying-leg-curl",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "one-arm-dumbbell-row": {
+      "pattern": "horizontal-row",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 1
+    },
+    "overhead-cable-triceps-extension": {
+      "pattern": "elbow-extension-overhead",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "pallof-press": {
+      "pattern": "anti-rotation",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "pec-deck-fly": {
+      "pattern": "chest-fly",
+      "station": "pec-deck",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "pull-ups": {
+      "pattern": "vertical-pull",
+      "station": "pull-up-bar",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "weighted-pull-ups": {
+      "pattern": "vertical-pull",
+      "station": "pull-up-bar",
+      "needs": [
+        "dip-belt"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "push-press": {
+      "pattern": "vertical-press",
+      "station": "squat-rack",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": true,
+      "skill": 3,
+      "axialLoad": 2
+    },
+    "push-ups": {
+      "pattern": "horizontal-press",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "rope-triceps-pressdown": {
+      "pattern": "elbow-extension-pushdown",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "seated-leg-curl": {
+      "pattern": "knee-flexion",
+      "station": "lever-seated-leg-curl",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "seated-machine-calf-raise": {
+      "pattern": "plantarflexion",
+      "station": "lever-seated-calf-raise",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "side-plank": {
+      "pattern": "anti-lateral-flexion",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "single-leg-calf-raise": {
+      "pattern": "plantarflexion",
+      "station": "bodyweight",
+      "needs": [
+        "step"
+      ],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "standing-barbell-overhead-press": {
+      "pattern": "vertical-press",
+      "station": "squat-rack",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 1
+    },
+    "standing-machine-calf-raise": {
+      "pattern": "plantarflexion",
+      "station": "lever-standing-calf-raise",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 1
+    },
+    "straight-bar-cable-triceps-pressdown": {
+      "pattern": "elbow-extension-pushdown",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "trap-bar-deadlift": {
+      "pattern": "hip-hinge",
+      "station": "trap-bar",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 2
+    },
+    "cable-seated-row": {
+      "pattern": "horizontal-row",
+      "station": "seated-row",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-seated-shoulder-press": {
+      "pattern": "vertical-press",
+      "station": "dumbbells",
+      "needs": [
+        "adjustable-bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "lever-chest-press": {
+      "pattern": "horizontal-press",
+      "station": "lever-chest-press",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lever-seated-shoulder-press": {
+      "pattern": "vertical-press",
+      "station": "lever-shoulder-press",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "bodyweight-rear-lunge": {
+      "pattern": "squat-unilateral",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "walking-lunge": {
+      "pattern": "squat-unilateral",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "bodyweight-squat": {
+      "pattern": "squat-bilateral",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lever-seated-reverse-fly": {
+      "pattern": "rear-delt-fly",
+      "station": "pec-deck",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-curl": {
+      "pattern": "elbow-flexion",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "barbell-preacher-curl": {
+      "pattern": "elbow-flexion",
+      "station": "preacher-bench",
+      "needs": [
+        "barbell"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "chest-dip": {
+      "pattern": "dip",
+      "station": "dip-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "chin-up": {
+      "pattern": "vertical-pull",
+      "station": "pull-up-bar",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "front-plank": {
+      "pattern": "anti-extension",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-standing-fly": {
+      "pattern": "chest-fly",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "sled-hack-squat": {
+      "pattern": "squat-bilateral",
+      "station": "hack-squat-sled",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 1
+    },
+    "dumbbell-glute-bridge": {
+      "pattern": "hip-extension",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "barbell-sumo-deadlift": {
+      "pattern": "hip-hinge",
+      "station": "barbell",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 2
+    },
+    "smith-squat": {
+      "pattern": "squat-bilateral",
+      "station": "smith-machine",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 2
+    },
+    "smith-bench-press": {
+      "pattern": "horizontal-press",
+      "station": "smith-machine",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "smith-incline-bench-press": {
+      "pattern": "incline-press",
+      "station": "smith-machine",
+      "needs": [
+        "adjustable-bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "smith-stiff-legged-deadlift": {
+      "pattern": "hip-hinge",
+      "station": "smith-machine",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 2
+    },
+    "smith-hip-thrust": {
+      "pattern": "hip-extension",
+      "station": "smith-machine",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "pendulum-squat": {
+      "pattern": "squat-bilateral",
+      "station": "lever-pendulum-squat",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 1
+    },
+    "lever-belt-squat": {
+      "pattern": "squat-bilateral",
+      "station": "lever-belt-squat",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lever-vertical-squat": {
+      "pattern": "squat-bilateral",
+      "station": "lever-vertical-squat",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 1
+    },
+    "sled-45-degrees-one-leg-press": {
+      "pattern": "squat-unilateral",
+      "station": "leg-press-sled",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-split-squat-front-foot-elevanted": {
+      "pattern": "squat-unilateral",
+      "station": "dumbbells",
+      "needs": [
+        "step"
+      ],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 1
+    },
+    "barbell-good-morning": {
+      "pattern": "hip-hinge",
+      "station": "squat-rack",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 2
+    },
+    "dumbbell-single-leg-romanian-deadlift": {
+      "pattern": "hip-hinge",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 1
+    },
+    "dumbbell-45-deg-back-extension": {
+      "pattern": "hip-hinge",
+      "station": "back-extension-bench",
+      "needs": [
+        "dumbbells"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "nordic-hamstring-curl": {
+      "pattern": "knee-flexion",
+      "station": "bodyweight",
+      "needs": [
+        "foot-anchor"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 0
+    },
+    "glute-ham-raise": {
+      "pattern": "knee-flexion",
+      "station": "glute-ham-developer",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "cable-pull-through": {
+      "pattern": "hip-hinge",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 1
+    },
+    "cable-kneeling-glute-kickback": {
+      "pattern": "hip-extension",
+      "station": "cable-station",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lever-seated-hip-abduction": {
+      "pattern": "hip-abduction",
+      "station": "lever-hip-abduction",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lever-seated-hip-adduction": {
+      "pattern": "hip-adduction",
+      "station": "lever-hip-adduction",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "sled-calf-press-on-leg-press": {
+      "pattern": "plantarflexion",
+      "station": "leg-press-sled",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "donkey-calf-raise": {
+      "pattern": "plantarflexion",
+      "station": "bodyweight",
+      "needs": [
+        "bench",
+        "step"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "wall-supported-tibialis-raise": {
+      "pattern": "dorsiflexion",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "barbell-decline-bench-press": {
+      "pattern": "horizontal-press",
+      "station": "decline-bench-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "dumbbell-decline-bench-press": {
+      "pattern": "horizontal-press",
+      "station": "dumbbells",
+      "needs": [
+        "decline-bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "lever-incline-chest-press": {
+      "pattern": "incline-press",
+      "station": "lever-incline-chest-press",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-low-fly": {
+      "pattern": "chest-fly",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-decline-fly": {
+      "pattern": "chest-fly",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-fly": {
+      "pattern": "chest-fly",
+      "station": "dumbbells",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "barbell-close-grip-bench-press": {
+      "pattern": "horizontal-press",
+      "station": "bench-press-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "dumbbell-pullover": {
+      "pattern": "shoulder-extension",
+      "station": "dumbbells",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "lever-chest-supported-row": {
+      "pattern": "horizontal-row",
+      "station": "lever-chest-supported-row",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lever-t-bar-row": {
+      "pattern": "horizontal-row",
+      "station": "lever-t-bar-row",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 2
+    },
+    "barbell-pendlay-row": {
+      "pattern": "horizontal-row",
+      "station": "barbell",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 2
+    },
+    "inverted-row": {
+      "pattern": "horizontal-row",
+      "station": "squat-rack",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-neutral-grip-lat-pulldown": {
+      "pattern": "vertical-pull",
+      "station": "lat-pulldown",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-close-grip-front-lat-pulldown": {
+      "pattern": "vertical-pull",
+      "station": "lat-pulldown",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-underhand-pulldown": {
+      "pattern": "vertical-pull",
+      "station": "lat-pulldown",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-straight-arm-pulldown": {
+      "pattern": "shoulder-extension",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-kneeling-pullover": {
+      "pattern": "shoulder-extension",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "assisted-pull-up": {
+      "pattern": "vertical-pull",
+      "station": "assisted-pull-up-dip",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "assisted-dip-machine": {
+      "pattern": "dip",
+      "station": "assisted-pull-up-dip",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-rear-fly": {
+      "pattern": "rear-delt-fly",
+      "station": "dumbbells",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "barbell-shrug": {
+      "pattern": "shrug",
+      "station": "barbell",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 1
+    },
+    "dumbbell-shrug": {
+      "pattern": "shrug",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 1
+    },
+    "lever-machine-shrug": {
+      "pattern": "shrug",
+      "station": "lever-shrug",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 1
+    },
+    "dumbbell-arnold-press": {
+      "pattern": "vertical-press",
+      "station": "dumbbells",
+      "needs": [
+        "adjustable-bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "barbell-seated-overhead-press": {
+      "pattern": "vertical-press",
+      "station": "squat-rack",
+      "needs": [
+        "adjustable-bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "dumbbell-one-arm-shoulder-press": {
+      "pattern": "vertical-press",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 1
+    },
+    "landmine-press": {
+      "pattern": "vertical-press",
+      "station": "landmine",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 1
+    },
+    "lever-lateral-raise": {
+      "pattern": "lateral-raise",
+      "station": "lever-lateral-raise",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-seated-rear-delt-fly-with-chest-support": {
+      "pattern": "rear-delt-fly",
+      "station": "cable-station",
+      "needs": [
+        "adjustable-bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "barbell-upright-row": {
+      "pattern": "upright-row",
+      "station": "ez-bar",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "barbell-curl": {
+      "pattern": "elbow-flexion",
+      "station": "barbell",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-alternate-biceps-curl": {
+      "pattern": "elbow-flexion",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-concentration-curl": {
+      "pattern": "elbow-flexion",
+      "station": "dumbbells",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "ez-barbell-spider-curl": {
+      "pattern": "elbow-flexion",
+      "station": "ez-bar",
+      "needs": [
+        "adjustable-bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-rope-hammer-curl": {
+      "pattern": "elbow-flexion",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-incline-biceps-curl": {
+      "pattern": "elbow-flexion",
+      "station": "cable-station",
+      "needs": [
+        "adjustable-bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lever-preacher-curl": {
+      "pattern": "elbow-flexion",
+      "station": "lever-preacher-curl",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "ez-bar-lying-triceps-extension": {
+      "pattern": "elbow-extension-lying",
+      "station": "ez-bar",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-standing-triceps-extension": {
+      "pattern": "elbow-extension-overhead",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-one-arm-triceps-pushdown": {
+      "pattern": "elbow-extension-pushdown",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-reverse-grip-pushdown": {
+      "pattern": "elbow-extension-pushdown",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-kickback": {
+      "pattern": "elbow-extension-pushdown",
+      "station": "dumbbells",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "hanging-leg-raise": {
+      "pattern": "trunk-flexion",
+      "station": "pull-up-bar",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "reverse-crunch": {
+      "pattern": "trunk-flexion",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "bicycle-crunch": {
+      "pattern": "trunk-flexion",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-woodchopper": {
+      "pattern": "trunk-rotation",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "russian-twist": {
+      "pattern": "trunk-rotation",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "bird-dog": {
+      "pattern": "anti-extension",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "mountain-climber": {
+      "pattern": "conditioning",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "burpee": {
+      "pattern": "conditioning",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "jumping-jack": {
+      "pattern": "conditioning",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "box-jump": {
+      "pattern": "plyometric-jump",
+      "station": "bodyweight",
+      "needs": [
+        "box"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": true,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "jump-squat": {
+      "pattern": "plyometric-jump",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": true,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "kettlebell-deadlift": {
+      "pattern": "hip-hinge",
+      "station": "kettlebell",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 1
+    },
+    "kettlebell-one-arm-clean": {
+      "pattern": "hip-hinge",
+      "station": "kettlebell",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": true,
+      "skill": 3,
+      "axialLoad": 1
+    },
+    "kettlebell-strict-press": {
+      "pattern": "vertical-press",
+      "station": "kettlebell",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 1
+    },
+    "kettlebell-one-arm-snatch": {
+      "pattern": "hip-hinge",
+      "station": "kettlebell",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": true,
+      "skill": 3,
+      "axialLoad": 1
+    },
+    "dumbbell-suitcase-carry": {
+      "pattern": "anti-lateral-flexion",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 1
+    },
+    "barbell-standing-calf-raise": {
+      "pattern": "plantarflexion",
+      "station": "squat-rack",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 2
+    },
+    "bodyweight-standing-calf-raise": {
+      "pattern": "plantarflexion",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lever-machine-hip-thrust": {
+      "pattern": "hip-extension",
+      "station": "lever-hip-thrust",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "floor-crunch": {
+      "pattern": "trunk-flexion",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-lying-hammer-press": {
+      "pattern": "horizontal-press",
+      "station": "dumbbells",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "dumbbell-squeeze-bench-press": {
+      "pattern": "horizontal-press",
+      "station": "dumbbells",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "barbell-reverse-grip-bench-press": {
+      "pattern": "horizontal-press",
+      "station": "bench-press-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 0
+    },
+    "barbell-floor-chest-press": {
+      "pattern": "horizontal-press",
+      "station": "barbell",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "barbell-spoto-press": {
+      "pattern": "horizontal-press",
+      "station": "bench-press-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "barbell-larsen-press": {
+      "pattern": "horizontal-press",
+      "station": "bench-press-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "barbell-incline-close-grip-bench-press": {
+      "pattern": "incline-press",
+      "station": "incline-bench-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "dumbbell-incline-fly": {
+      "pattern": "chest-fly",
+      "station": "dumbbells",
+      "needs": [
+        "adjustable-bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "dumbbell-decline-fly": {
+      "pattern": "chest-fly",
+      "station": "dumbbells",
+      "needs": [
+        "decline-bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "dumbbell-lying-one-arm-press": {
+      "pattern": "horizontal-press",
+      "station": "dumbbells",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "cable-standing-single-arm-chest-press": {
+      "pattern": "horizontal-press",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-standing-chest-press": {
+      "pattern": "horizontal-press",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-middle-fly": {
+      "pattern": "chest-fly",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-standing-single-arm-fly": {
+      "pattern": "chest-fly",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "svend-press": {
+      "pattern": "chest-fly",
+      "station": "weight-plate",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "incline-push-up": {
+      "pattern": "horizontal-press",
+      "station": "bodyweight",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "decline-push-up": {
+      "pattern": "incline-press",
+      "station": "bodyweight",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "diamond-push-up": {
+      "pattern": "horizontal-press",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "archer-push-up": {
+      "pattern": "horizontal-press",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 0
+    },
+    "weighted-push-up-with-vest": {
+      "pattern": "horizontal-press",
+      "station": "bodyweight",
+      "needs": [
+        "weight-vest"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "lever-seated-wide-lat-pulldown": {
+      "pattern": "vertical-pull",
+      "station": "lever-pulldown",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-one-arm-lat-pulldown": {
+      "pattern": "vertical-pull",
+      "station": "cable-station",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-kneeling-one-arm-lat-pulldown": {
+      "pattern": "vertical-pull",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-kneeling-lat-pulldown": {
+      "pattern": "vertical-pull",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-lateral-pulldown-with-v-bar": {
+      "pattern": "vertical-pull",
+      "station": "lat-pulldown",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lever-machine-pullover": {
+      "pattern": "shoulder-extension",
+      "station": "lever-pullover",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-rope-straight-arm-pulldown": {
+      "pattern": "shoulder-extension",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-single-arm-straight-arm-pulldown": {
+      "pattern": "shoulder-extension",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "barbell-lying-seal-row-on-rack": {
+      "pattern": "horizontal-row",
+      "station": "seal-row-bench",
+      "needs": [
+        "barbell"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "landmine-one-arm-bent-over-row": {
+      "pattern": "horizontal-row",
+      "station": "landmine",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 1
+    },
+    "landmine-v-bar-bent-over-row": {
+      "pattern": "horizontal-row",
+      "station": "landmine",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 2
+    },
+    "lever-lying-t-bar-row": {
+      "pattern": "horizontal-row",
+      "station": "lever-lying-t-bar-row",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-seated-wide-grip-row": {
+      "pattern": "horizontal-row",
+      "station": "seated-row",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-seated-row-with-v-bar": {
+      "pattern": "horizontal-row",
+      "station": "seated-row",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-one-arm-twisting-seated-row": {
+      "pattern": "horizontal-row",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-high-row": {
+      "pattern": "horizontal-row",
+      "station": "cable-station",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-low-seated-row": {
+      "pattern": "horizontal-row",
+      "station": "seated-row",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-rope-seated-row": {
+      "pattern": "horizontal-row",
+      "station": "seated-row",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lever-high-row": {
+      "pattern": "vertical-pull",
+      "station": "lever-high-row",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lever-machine-low-row": {
+      "pattern": "horizontal-row",
+      "station": "lever-low-row",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lever-unilateral-row": {
+      "pattern": "horizontal-row",
+      "station": "lever-unilateral-row",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-renegade-row": {
+      "pattern": "horizontal-row",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "dumbbell-kroc-row": {
+      "pattern": "horizontal-row",
+      "station": "dumbbells",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 1
+    },
+    "dumbbell-gorilla-row": {
+      "pattern": "horizontal-row",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 1
+    },
+    "suspension-trainer-row": {
+      "pattern": "horizontal-row",
+      "station": "suspension-trainer",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "ring-inverted-row": {
+      "pattern": "horizontal-row",
+      "station": "suspension-trainer",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "scapular-pull-up": {
+      "pattern": "vertical-pull",
+      "station": "pull-up-bar",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "parallel-grip-chin-up": {
+      "pattern": "vertical-pull",
+      "station": "pull-up-bar",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "barbell-rack-pull": {
+      "pattern": "hip-hinge",
+      "station": "squat-rack",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 2
+    },
+    "dumbbell-seated-lateral-raise": {
+      "pattern": "lateral-raise",
+      "station": "dumbbells",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-leaning-lateral-raise": {
+      "pattern": "lateral-raise",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-behind-the-back-lateral-raise": {
+      "pattern": "lateral-raise",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-one-arm-lateral-raise": {
+      "pattern": "lateral-raise",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-y-raise": {
+      "pattern": "y-raise",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-incline-y-raise": {
+      "pattern": "y-raise",
+      "station": "dumbbells",
+      "needs": [
+        "adjustable-bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-front-raise": {
+      "pattern": "front-raise",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-front-raise": {
+      "pattern": "front-raise",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "weighted-front-raise": {
+      "pattern": "front-raise",
+      "station": "weight-plate",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "barbell-front-raise": {
+      "pattern": "front-raise",
+      "station": "barbell",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-standing-reverse-fly": {
+      "pattern": "rear-delt-fly",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "head-supported-dumbbell-rear-lateral-raise": {
+      "pattern": "rear-delt-fly",
+      "station": "dumbbells",
+      "needs": [
+        "adjustable-bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-incline-rear-fly": {
+      "pattern": "rear-delt-fly",
+      "station": "dumbbells",
+      "needs": [
+        "adjustable-bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lever-seated-rear-delt-row": {
+      "pattern": "rear-delt-fly",
+      "station": "lever-rear-delt-row",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "barbell-wide-grip-upright-row": {
+      "pattern": "upright-row",
+      "station": "barbell",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "dumbbell-upright-row": {
+      "pattern": "upright-row",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "barbell-z-press": {
+      "pattern": "vertical-press",
+      "station": "squat-rack",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 1
+    },
+    "landmine-single-arm-press": {
+      "pattern": "vertical-press",
+      "station": "landmine",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 1
+    },
+    "lever-viking-press": {
+      "pattern": "vertical-press",
+      "station": "lever-viking-press",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 1
+    },
+    "pike-push-up": {
+      "pattern": "vertical-press",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "ez-barbell-preacher-curl": {
+      "pattern": "elbow-flexion",
+      "station": "preacher-bench",
+      "needs": [
+        "ez-bar"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-preacher-curl": {
+      "pattern": "elbow-flexion",
+      "station": "preacher-bench",
+      "needs": [
+        "dumbbells"
+      ],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-one-arm-hammer-preacher-curl": {
+      "pattern": "elbow-flexion",
+      "station": "preacher-bench",
+      "needs": [
+        "dumbbells"
+      ],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-preacher-curl": {
+      "pattern": "elbow-flexion",
+      "station": "cable-station",
+      "needs": [
+        "preacher-bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "barbell-reverse-curl": {
+      "pattern": "elbow-flexion",
+      "station": "barbell",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "ez-barbell-reverse-grip-curl": {
+      "pattern": "elbow-flexion",
+      "station": "ez-bar",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-biceps-curl-reverse": {
+      "pattern": "elbow-flexion",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-zottman-curl": {
+      "pattern": "elbow-flexion",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-cross-body-hammer-curl": {
+      "pattern": "elbow-flexion",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-seated-curl": {
+      "pattern": "elbow-flexion",
+      "station": "dumbbells",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-standing-biceps-curl": {
+      "pattern": "elbow-flexion",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "barbell-drag-curl": {
+      "pattern": "elbow-flexion",
+      "station": "barbell",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-drag-curl": {
+      "pattern": "elbow-flexion",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-standing-inner-curl": {
+      "pattern": "elbow-flexion",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-one-arm-curl": {
+      "pattern": "elbow-flexion",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-overhead-curl": {
+      "pattern": "elbow-flexion",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lever-biceps-curl": {
+      "pattern": "elbow-flexion",
+      "station": "lever-biceps-curl",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-spider-curl": {
+      "pattern": "elbow-flexion",
+      "station": "dumbbells",
+      "needs": [
+        "adjustable-bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-hammer-preacher-curl": {
+      "pattern": "elbow-flexion",
+      "station": "preacher-bench",
+      "needs": [
+        "dumbbells"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-incline-hammer-curl": {
+      "pattern": "elbow-flexion",
+      "station": "dumbbells",
+      "needs": [
+        "adjustable-bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-skull-crusher": {
+      "pattern": "elbow-extension-lying",
+      "station": "dumbbells",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "ez-barbell-incline-triceps-extension": {
+      "pattern": "elbow-extension-overhead",
+      "station": "ez-bar",
+      "needs": [
+        "adjustable-bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "ez-barbell-decline-triceps-extension": {
+      "pattern": "elbow-extension-lying",
+      "station": "ez-bar",
+      "needs": [
+        "decline-bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "barbell-jm-bench-press": {
+      "pattern": "elbow-extension-lying",
+      "station": "bench-press-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 0
+    },
+    "dumbbell-tate-press": {
+      "pattern": "elbow-extension-lying",
+      "station": "dumbbells",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "cable-standing-high-cross-triceps-extension": {
+      "pattern": "elbow-extension-pushdown",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-single-arm-overhead-triceps-extension": {
+      "pattern": "elbow-extension-overhead",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-v-bar-triceps-pushdown": {
+      "pattern": "elbow-extension-pushdown",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "cable-kickback": {
+      "pattern": "elbow-extension-pushdown",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lever-seated-dip": {
+      "pattern": "dip",
+      "station": "lever-seated-dip",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "barbell-low-bar-squat": {
+      "pattern": "squat-bilateral",
+      "station": "squat-rack",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 2
+    },
+    "barbell-box-squat": {
+      "pattern": "squat-bilateral",
+      "station": "squat-rack",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 2
+    },
+    "barbell-pause-full-squat": {
+      "pattern": "squat-bilateral",
+      "station": "squat-rack",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 2
+    },
+    "barbell-full-zercher-squat": {
+      "pattern": "squat-bilateral",
+      "station": "squat-rack",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 2
+    },
+    "barbell-overhead-squat": {
+      "pattern": "squat-bilateral",
+      "station": "squat-rack",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 2
+    },
+    "landmine-squat": {
+      "pattern": "squat-bilateral",
+      "station": "landmine",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 1
+    },
+    "dumbbell-goblet-sumo-squat": {
+      "pattern": "squat-bilateral",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 1
+    },
+    "smith-front-squat": {
+      "pattern": "squat-bilateral",
+      "station": "smith-machine",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 2
+    },
+    "smith-split-squat": {
+      "pattern": "squat-unilateral",
+      "station": "smith-machine",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 2
+    },
+    "smith-rear-lunge": {
+      "pattern": "squat-unilateral",
+      "station": "smith-machine",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 2
+    },
+    "smith-deficit-bulgarian-split-squat": {
+      "pattern": "squat-unilateral",
+      "station": "smith-machine",
+      "needs": [
+        "bench",
+        "step"
+      ],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 2
+    },
+    "smith-bent-knee-good-morning": {
+      "pattern": "hip-hinge",
+      "station": "smith-machine",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 2
+    },
+    "smith-calf-raise": {
+      "pattern": "plantarflexion",
+      "station": "smith-machine",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 2
+    },
+    "sissy-squat-bodyweight": {
+      "pattern": "knee-extension",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "sled-reverse-hack-squat": {
+      "pattern": "squat-bilateral",
+      "station": "hack-squat-sled",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 1
+    },
+    "heel-elevated-bodyweight-squat": {
+      "pattern": "squat-bilateral",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-elevated-heel-goblet-squat": {
+      "pattern": "squat-bilateral",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 1
+    },
+    "cossack-squat": {
+      "pattern": "lateral-lunge",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "side-lunge": {
+      "pattern": "lateral-lunge",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-curtsey-lunge": {
+      "pattern": "squat-unilateral",
+      "station": "dumbbells",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 1
+    },
+    "dumbbell-deficit-reverse-lunge": {
+      "pattern": "squat-unilateral",
+      "station": "dumbbells",
+      "needs": [
+        "step"
+      ],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 1
+    },
+    "barbell-walking-lunge": {
+      "pattern": "squat-unilateral",
+      "station": "squat-rack",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 2
+    },
+    "barbell-step-up": {
+      "pattern": "squat-unilateral",
+      "station": "squat-rack",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 2
+    },
+    "cable-reverse-lunge": {
+      "pattern": "squat-unilateral",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "cable-lateral-lunge": {
+      "pattern": "lateral-lunge",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 1
+    },
+    "lever-standing-single-leg-curl": {
+      "pattern": "knee-flexion",
+      "station": "lever-standing-leg-curl",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lever-lying-single-leg-curl": {
+      "pattern": "knee-flexion",
+      "station": "lever-lying-leg-curl",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "lever-seated-one-leg-curl": {
+      "pattern": "knee-flexion",
+      "station": "lever-seated-leg-curl",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "dumbbell-lying-leg-curl": {
+      "pattern": "knee-flexion",
+      "station": "dumbbells",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "cable-lying-single-leg-curl": {
+      "pattern": "knee-flexion",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "bodyweight-frog-hip-thrust": {
+      "pattern": "hip-extension",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "single-leg-hip-thrust": {
+      "pattern": "hip-extension",
+      "station": "bodyweight",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "barbell-kas-glute-bridge": {
+      "pattern": "hip-extension",
+      "station": "barbell",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "cable-hip-abduction": {
+      "pattern": "hip-abduction",
+      "station": "cable-station",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": true,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "reverse-hyperextension-on-box": {
+      "pattern": "hip-extension",
+      "station": "bodyweight",
+      "needs": [
+        "box"
+      ],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "handstand-push-up": {
+      "pattern": "vertical-press",
+      "station": "bodyweight",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 1
+    },
+    "ring-dip": {
+      "pattern": "dip",
+      "station": "suspension-trainer",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 0
+    },
+    "ring-incline-push-up": {
+      "pattern": "horizontal-press",
+      "station": "suspension-trainer",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 0
+    },
+    "bench-dip": {
+      "pattern": "dip",
+      "station": "bodyweight",
+      "needs": [
+        "bench"
+      ],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "resistance-band-standing-chest-press": {
+      "pattern": "horizontal-press",
+      "station": "resistance-band",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "resistance-band-seated-row": {
+      "pattern": "horizontal-row",
+      "station": "resistance-band",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "resistance-band-lat-pulldown": {
+      "pattern": "vertical-pull",
+      "station": "resistance-band",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "resistance-band-face-pull": {
+      "pattern": "rear-delt-fly",
+      "station": "resistance-band",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "band-biceps-curl": {
+      "pattern": "elbow-flexion",
+      "station": "resistance-band",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "resistance-band-triceps-pushdown": {
+      "pattern": "elbow-extension-pushdown",
+      "station": "resistance-band",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "band-lateral-raise": {
+      "pattern": "lateral-raise",
+      "station": "resistance-band",
+      "needs": [],
+      "mechanics": "isolation",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "landmine-180": {
+      "pattern": "trunk-rotation",
+      "station": "landmine",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 2,
+      "axialLoad": 1
+    },
+    "hanging-toes-to-bar": {
+      "pattern": "trunk-flexion",
+      "station": "pull-up-bar",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 3,
+      "axialLoad": 0
+    },
+    "battling-ropes-high-waves": {
+      "pattern": "conditioning",
+      "station": "battle-ropes",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    },
+    "power-sled-push": {
+      "pattern": "conditioning",
+      "station": "power-sled",
+      "needs": [],
+      "mechanics": "compound",
+      "unilateral": false,
+      "ballistic": false,
+      "skill": 1,
+      "axialLoad": 0
+    }
+  },
+  "alternatives": {
+    "barbell-back-squat": {
+      "samePattern": [
+        "smith-squat",
+        "sled-hack-squat",
+        "leg-press",
+        "lever-belt-squat",
+        "goblet-squat"
+      ],
+      "relatedPattern": []
+    },
+    "barbell-bench-press": {
+      "samePattern": [
+        "dumbbell-bench-press",
+        "smith-bench-press",
+        "lever-chest-press",
+        "push-ups",
+        "cable-standing-chest-press"
+      ],
+      "relatedPattern": []
+    },
+    "barbell-front-squat": {
+      "samePattern": [
+        "smith-front-squat",
+        "goblet-squat",
+        "sled-hack-squat",
+        "landmine-squat",
+        "leg-press"
+      ],
+      "relatedPattern": []
+    },
+    "barbell-romanian-deadlift": {
+      "samePattern": [
+        "dumbbell-romanian-deadlift",
+        "smith-stiff-legged-deadlift",
+        "dumbbell-45-deg-back-extension",
+        "cable-pull-through"
+      ],
+      "relatedPattern": []
+    },
+    "cable-lateral-raise": {
+      "samePattern": [
+        "lever-lateral-raise",
+        "dumbbell-lateral-raise",
+        "dumbbell-seated-lateral-raise",
+        "band-lateral-raise"
+      ],
+      "relatedPattern": []
+    },
+    "chest-supported-dumbbell-row": {
+      "samePattern": [
+        "lever-chest-supported-row",
+        "barbell-lying-seal-row-on-rack",
+        "lever-lying-t-bar-row",
+        "cable-seated-row",
+        "lever-machine-low-row"
+      ],
+      "relatedPattern": []
+    },
+    "conventional-barbell-deadlift": {
+      "samePattern": [
+        "trap-bar-deadlift",
+        "barbell-rack-pull",
+        "smith-stiff-legged-deadlift",
+        "dumbbell-romanian-deadlift"
+      ],
+      "relatedPattern": []
+    },
+    "dumbbell-bench-press": {
+      "samePattern": [
+        "barbell-bench-press",
+        "lever-chest-press",
+        "smith-bench-press",
+        "cable-standing-chest-press",
+        "push-ups"
+      ],
+      "relatedPattern": []
+    },
+    "dumbbell-hammer-curl": {
+      "samePattern": [
+        "cable-rope-hammer-curl",
+        "ez-barbell-reverse-grip-curl",
+        "barbell-reverse-curl",
+        "lever-biceps-curl",
+        "band-biceps-curl"
+      ],
+      "relatedPattern": []
+    },
+    "dumbbell-lateral-raise": {
+      "samePattern": [
+        "cable-lateral-raise",
+        "lever-lateral-raise",
+        "band-lateral-raise",
+        "cable-one-arm-lateral-raise"
+      ],
+      "relatedPattern": []
+    },
+    "dumbbell-romanian-deadlift": {
+      "samePattern": [
+        "barbell-romanian-deadlift",
+        "smith-stiff-legged-deadlift",
+        "cable-pull-through",
+        "dumbbell-45-deg-back-extension",
+        "kettlebell-deadlift"
+      ],
+      "relatedPattern": []
+    },
+    "ez-bar-curl": {
+      "samePattern": [
+        "barbell-curl",
+        "cable-curl",
+        "dumbbell-standing-biceps-curl",
+        "incline-dumbbell-curl",
+        "lever-biceps-curl"
+      ],
+      "relatedPattern": []
+    },
+    "face-pull": {
+      "samePattern": [
+        "resistance-band-face-pull",
+        "lever-seated-rear-delt-row",
+        "lever-seated-reverse-fly",
+        "dumbbell-incline-rear-fly"
+      ],
+      "relatedPattern": []
+    },
+    "goblet-squat": {
+      "samePattern": [
+        "landmine-squat",
+        "leg-press",
+        "sled-hack-squat",
+        "smith-squat",
+        "bodyweight-squat"
+      ],
+      "relatedPattern": []
+    },
+    "incline-barbell-bench-press": {
+      "samePattern": [
+        "smith-incline-bench-press",
+        "incline-dumbbell-press",
+        "lever-incline-chest-press",
+        "decline-push-up"
+      ],
+      "relatedPattern": []
+    },
+    "incline-dumbbell-curl": {
+      "samePattern": [
+        "cable-incline-biceps-curl",
+        "cable-curl",
+        "ez-bar-curl",
+        "lever-biceps-curl",
+        "band-biceps-curl"
+      ],
+      "relatedPattern": []
+    },
+    "incline-dumbbell-press": {
+      "samePattern": [
+        "incline-barbell-bench-press",
+        "smith-incline-bench-press",
+        "lever-incline-chest-press",
+        "decline-push-up"
+      ],
+      "relatedPattern": []
+    },
+    "kettlebell-swing": {
+      "samePattern": [
+        "cable-pull-through",
+        "dumbbell-romanian-deadlift",
+        "trap-bar-deadlift",
+        "barbell-romanian-deadlift"
+      ],
+      "relatedPattern": []
+    },
+    "kneeling-cable-crunch": {
+      "samePattern": [
+        "floor-crunch",
+        "hanging-knee-raise",
+        "reverse-crunch",
+        "hanging-leg-raise"
+      ],
+      "relatedPattern": []
+    },
+    "lat-pulldown": {
+      "samePattern": [
+        "lever-seated-wide-lat-pulldown",
+        "cable-kneeling-lat-pulldown",
+        "assisted-pull-up",
+        "pull-ups",
+        "lever-high-row"
+      ],
+      "relatedPattern": []
+    },
+    "leg-extension": {
+      "samePattern": [
+        "sissy-squat-bodyweight"
+      ],
+      "relatedPattern": [
+        "sled-hack-squat",
+        "pendulum-squat",
+        "dumbbell-elevated-heel-goblet-squat",
+        "leg-press"
+      ]
+    },
+    "leg-press": {
+      "samePattern": [
+        "sled-hack-squat",
+        "lever-belt-squat",
+        "pendulum-squat",
+        "lever-vertical-squat",
+        "goblet-squat"
+      ],
+      "relatedPattern": []
+    },
+    "lying-leg-curl": {
+      "samePattern": [
+        "seated-leg-curl",
+        "dumbbell-lying-leg-curl",
+        "lever-standing-single-leg-curl",
+        "cable-lying-single-leg-curl",
+        "glute-ham-raise"
+      ],
+      "relatedPattern": []
+    },
+    "one-arm-dumbbell-row": {
+      "samePattern": [
+        "lever-unilateral-row",
+        "landmine-one-arm-bent-over-row",
+        "cable-one-arm-twisting-seated-row",
+        "cable-seated-row",
+        "resistance-band-seated-row"
+      ],
+      "relatedPattern": []
+    },
+    "overhead-cable-triceps-extension": {
+      "samePattern": [
+        "dumbbell-standing-triceps-extension",
+        "ez-barbell-incline-triceps-extension"
+      ],
+      "relatedPattern": [
+        "ez-bar-lying-triceps-extension",
+        "dumbbell-skull-crusher"
+      ]
+    },
+    "pallof-press": {
+      "samePattern": [],
+      "relatedPattern": [
+        "dumbbell-suitcase-carry",
+        "side-plank",
+        "dead-bug"
+      ]
+    },
+    "pec-deck-fly": {
+      "samePattern": [
+        "cable-middle-fly",
+        "dumbbell-fly",
+        "cable-standing-fly",
+        "dumbbell-incline-fly"
+      ],
+      "relatedPattern": []
+    },
+    "push-press": {
+      "samePattern": [
+        "lever-viking-press",
+        "landmine-press",
+        "dumbbell-one-arm-shoulder-press",
+        "kettlebell-strict-press"
+      ],
+      "relatedPattern": []
+    },
+    "rope-triceps-pressdown": {
+      "samePattern": [
+        "resistance-band-triceps-pushdown",
+        "dumbbell-kickback"
+      ],
+      "relatedPattern": [
+        "lever-seated-dip",
+        "dumbbell-skull-crusher",
+        "dumbbell-standing-triceps-extension"
+      ]
+    },
+    "seated-leg-curl": {
+      "samePattern": [
+        "lying-leg-curl",
+        "lever-standing-single-leg-curl",
+        "cable-lying-single-leg-curl",
+        "dumbbell-lying-leg-curl",
+        "glute-ham-raise"
+      ],
+      "relatedPattern": []
+    },
+    "seated-machine-calf-raise": {
+      "samePattern": [
+        "sled-calf-press-on-leg-press",
+        "standing-machine-calf-raise",
+        "single-leg-calf-raise",
+        "donkey-calf-raise"
+      ],
+      "relatedPattern": []
+    },
+    "standing-barbell-overhead-press": {
+      "samePattern": [
+        "dumbbell-seated-shoulder-press",
+        "lever-viking-press",
+        "lever-seated-shoulder-press",
+        "dumbbell-one-arm-shoulder-press",
+        "landmine-press"
+      ],
+      "relatedPattern": []
+    },
+    "standing-machine-calf-raise": {
+      "samePattern": [
+        "smith-calf-raise",
+        "sled-calf-press-on-leg-press",
+        "single-leg-calf-raise",
+        "donkey-calf-raise",
+        "seated-machine-calf-raise"
+      ],
+      "relatedPattern": []
+    },
+    "trap-bar-deadlift": {
+      "samePattern": [
+        "conventional-barbell-deadlift",
+        "barbell-sumo-deadlift",
+        "kettlebell-deadlift",
+        "dumbbell-romanian-deadlift"
+      ],
+      "relatedPattern": []
+    },
+    "cable-seated-row": {
+      "samePattern": [
+        "lever-machine-low-row",
+        "chest-supported-dumbbell-row",
+        "lever-chest-supported-row",
+        "one-arm-dumbbell-row",
+        "resistance-band-seated-row"
+      ],
+      "relatedPattern": []
+    },
+    "dumbbell-seated-shoulder-press": {
+      "samePattern": [
+        "lever-seated-shoulder-press",
+        "barbell-seated-overhead-press",
+        "standing-barbell-overhead-press",
+        "landmine-press",
+        "pike-push-up"
+      ],
+      "relatedPattern": []
+    },
+    "lever-chest-press": {
+      "samePattern": [
+        "smith-bench-press",
+        "dumbbell-bench-press",
+        "cable-standing-chest-press",
+        "push-ups",
+        "barbell-bench-press"
+      ],
+      "relatedPattern": []
+    },
+    "lever-seated-shoulder-press": {
+      "samePattern": [
+        "dumbbell-seated-shoulder-press",
+        "lever-viking-press",
+        "barbell-seated-overhead-press",
+        "landmine-press",
+        "pike-push-up"
+      ],
+      "relatedPattern": []
+    },
+    "lever-seated-reverse-fly": {
+      "samePattern": [
+        "dumbbell-incline-rear-fly",
+        "cable-standing-reverse-fly",
+        "cable-seated-rear-delt-fly-with-chest-support",
+        "lever-seated-rear-delt-row",
+        "face-pull"
+      ],
+      "relatedPattern": []
+    },
+    "cable-curl": {
+      "samePattern": [
+        "barbell-curl",
+        "ez-bar-curl",
+        "dumbbell-standing-biceps-curl",
+        "lever-biceps-curl",
+        "band-biceps-curl"
+      ],
+      "relatedPattern": []
+    },
+    "cable-standing-fly": {
+      "samePattern": [
+        "pec-deck-fly",
+        "dumbbell-fly",
+        "dumbbell-incline-fly"
+      ],
+      "relatedPattern": []
+    },
+    "sled-hack-squat": {
+      "samePattern": [
+        "pendulum-squat",
+        "lever-vertical-squat",
+        "leg-press",
+        "smith-squat",
+        "lever-belt-squat"
+      ],
+      "relatedPattern": []
+    },
+    "dumbbell-glute-bridge": {
+      "samePattern": [
+        "barbell-hip-thrust",
+        "lever-machine-hip-thrust",
+        "smith-hip-thrust",
+        "single-leg-hip-thrust",
+        "bodyweight-frog-hip-thrust"
+      ],
+      "relatedPattern": []
+    },
+    "dumbbell-split-squat-front-foot-elevanted": {
+      "samePattern": [
+        "smith-split-squat",
+        "bulgarian-split-squat",
+        "cable-reverse-lunge",
+        "sled-45-degrees-one-leg-press",
+        "bodyweight-rear-lunge"
+      ],
+      "relatedPattern": []
+    },
+    "dumbbell-pullover": {
+      "samePattern": [
+        "lever-machine-pullover",
+        "cable-kneeling-pullover",
+        "cable-straight-arm-pulldown"
+      ],
+      "relatedPattern": []
+    },
+    "lever-chest-supported-row": {
+      "samePattern": [
+        "lever-lying-t-bar-row",
+        "chest-supported-dumbbell-row",
+        "barbell-lying-seal-row-on-rack",
+        "cable-seated-row",
+        "lever-machine-low-row"
+      ],
+      "relatedPattern": []
+    },
+    "cable-neutral-grip-lat-pulldown": {
+      "samePattern": [
+        "cable-kneeling-lat-pulldown",
+        "lever-seated-wide-lat-pulldown",
+        "assisted-pull-up",
+        "parallel-grip-chin-up",
+        "lever-high-row"
+      ],
+      "relatedPattern": []
+    },
+    "dumbbell-rear-fly": {
+      "samePattern": [
+        "lever-seated-reverse-fly",
+        "cable-standing-reverse-fly",
+        "resistance-band-face-pull",
+        "face-pull"
+      ],
+      "relatedPattern": []
+    },
+    "dumbbell-standing-triceps-extension": {
+      "samePattern": [
+        "overhead-cable-triceps-extension",
+        "ez-barbell-incline-triceps-extension",
+        "cable-single-arm-overhead-triceps-extension"
+      ],
+      "relatedPattern": []
+    },
+    "lever-machine-hip-thrust": {
+      "samePattern": [
+        "smith-hip-thrust",
+        "barbell-hip-thrust",
+        "dumbbell-glute-bridge",
+        "single-leg-hip-thrust",
+        "cable-kneeling-glute-kickback"
+      ],
+      "relatedPattern": []
+    },
+    "dumbbell-standing-biceps-curl": {
+      "samePattern": [
+        "cable-curl",
+        "ez-bar-curl",
+        "barbell-curl",
+        "lever-biceps-curl",
+        "band-biceps-curl"
+      ],
+      "relatedPattern": []
+    },
+    "dumbbell-skull-crusher": {
+      "samePattern": [
+        "ez-bar-lying-triceps-extension",
+        "ez-barbell-decline-triceps-extension"
+      ],
+      "relatedPattern": [
+        "overhead-cable-triceps-extension",
+        "rope-triceps-pressdown",
+        "resistance-band-triceps-pushdown"
+      ]
+    },
+    "smith-split-squat": {
+      "samePattern": [
+        "dumbbell-split-squat-front-foot-elevanted",
+        "bulgarian-split-squat",
+        "sled-45-degrees-one-leg-press",
+        "dumbbell-step-up",
+        "cable-reverse-lunge"
+      ],
+      "relatedPattern": []
+    }
+  }
+}
