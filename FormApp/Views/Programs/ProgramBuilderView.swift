@@ -186,8 +186,8 @@ public struct ProgramBuilderView: View {
         BuilderSurface {
             Text(LanguageManager.t("builder.details")).font(.headline)
             Text(LanguageManager.t("programs.cover")).font(.caption).foregroundStyle(AppColors.secondaryText)
-            Image(ProgramCover.forProgram(program).assetName).resizable().scaledToFill()
-                .frame(height: 150).frame(maxWidth: .infinity).clipped().clipShape(RoundedRectangle(cornerRadius: 12)).accessibilityHidden(true)
+            Image(ProgramCover.forProgram(program).assetName).resizable().aspectRatio(1.5, contentMode: .fit)
+                .frame(maxWidth: .infinity).clipShape(RoundedRectangle(cornerRadius: 12)).accessibilityHidden(true)
             BuilderActionButton("programs.cover.choose", systemImage: "photo") { showCoverPicker = true }
             BuilderTextField("modal.program.name", text: $program.name, limit: 100)
                 .accessibilityIdentifier("program-builder-name")
