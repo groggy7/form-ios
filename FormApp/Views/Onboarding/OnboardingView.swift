@@ -398,17 +398,14 @@ public struct OnboardingView: View {
                                         .font(.system(size: 12))
                                         .foregroundStyle(AppColors.secondaryText)
                                 }
+
+                                // Below the text rather than in a trailing chip, so longer localized counts never narrow the title.
+                                Text(LanguageManager.t("programs.exerciseQuantity", ["count": workout.exercises.count]))
+                                    .font(.system(size: 12, weight: .medium))
+                                    .foregroundStyle(AppColors.muted)
                             }
 
                             Spacer()
-
-                            Text("\(workout.exercises.count) ex")
-                                .font(.system(size: 12, weight: .medium))
-                                .foregroundStyle(AppColors.muted)
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 4)
-                                .background(AppColors.surfaceRaised)
-                                .clipShape(RoundedRectangle(cornerRadius: 6))
                         }
                         .padding(14)
                         .background(AppColors.surface)
