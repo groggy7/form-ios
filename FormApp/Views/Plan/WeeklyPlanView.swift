@@ -34,7 +34,7 @@ public struct WeeklyPlanView: View {
             ScrollView {
                 VStack(spacing: 20) {
                     // Header row
-                    HStack(alignment: .top) {
+                    HStack(alignment: .center) {
                         Text(LanguageManager.t("weekly.title"))
                             .font(.system(size: 26, weight: .semibold))
                             .foregroundStyle(AppColors.text)
