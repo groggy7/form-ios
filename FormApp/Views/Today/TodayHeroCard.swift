@@ -359,13 +359,12 @@ public struct TodayHeroCard: View {
                 if !isDark { lightBackdrop }
 
                 GeometryReader { geo in
-                    restPhoto(size: geo.size, subjectOnly: !isDark)
+                    restPhoto(size: geo.size)
                 }
                 .opacity(!isDark && dynamicTypeSize >= .xxxLarge ? 0.02 : 1)
                 .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
 
-                // Dark suites keep the photograph's own studio and fade it in from the surface; light suites
-                // isolate the athlete with `library_body_rest`, so no scrim crosses the photograph.
+                // Dark suites keep their diagonal text-contrast scrim over the shared athlete cutout.
                 if isDark {
                     LinearGradient(stops: recoveryScrim, startPoint: .topLeading, endPoint: Self.scrimEnd)
                         .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
@@ -391,11 +390,11 @@ public struct TodayHeroCard: View {
 }
 
 extension TodayHeroCard {
-    /// The photograph and transparent cutout share the same top-trailing crop and horizontal placement.
+    /// Every theme uses the detailed transparent joggers cutout with the same crop and placement.
     @ViewBuilder
-    fileprivate func restPhoto(size: CGSize, subjectOnly: Bool) -> some View {
+    fileprivate func restPhoto(size: CGSize) -> some View {
         // Keep the athlete toward the right edge in every suite, matching Android's recovery card.
-        Image(subjectOnly ? "library_body_rest" : "body_rest").resizable().scaledToFill()
+        Image("library_body_rest").resizable().scaledToFill()
             .frame(width: size.width, height: size.height, alignment: .topTrailing).clipped()
             .offset(x: size.width * 0.10)
     }
