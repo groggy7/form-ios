@@ -52,18 +52,12 @@ public struct WeeklyPlanView: View {
 
                     // Active program and 7 weekday cards
                     VStack(alignment: .leading, spacing: 8) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(LanguageManager.t("weekly.currentProgram"))
-                                .font(.system(size: 11, weight: .medium))
-                                .foregroundStyle(AppColors.muted)
-
-                            Text(program.displayName)
-                                .font(.system(size: 15, weight: .semibold))
-                                .foregroundStyle(AppColors.text)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.bottom, 4)
+                        Text(program.displayName)
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundStyle(AppColors.accent)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .padding(.bottom, 4)
 
                         ForEach(0..<7, id: \.self) { index in
                             let workout = program.workouts.first(where: { $0.day == index + 1 && !$0.exercises.isEmpty })
