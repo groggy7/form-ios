@@ -58,6 +58,10 @@
 		A90000000000000000000003 /* 07_upper_lower.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000001 /* 07_upper_lower.json */; };
 		A90000000000000000000005 /* 08_machine_foundation.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000004 /* 08_machine_foundation.json */; };
 		A90000000000000000000006 /* 08_machine_foundation.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000004 /* 08_machine_foundation.json */; };
+		A90000000000000000000008 /* 09_bodyweight_base.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000007 /* 09_bodyweight_base.json */; };
+		A90000000000000000000009 /* 09_bodyweight_base.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000007 /* 09_bodyweight_base.json */; };
+		A9000000000000000000000B /* 10_bar_floor_calisthenics.json in Resources */ = {isa = PBXBuildFile; fileRef = A9000000000000000000000A /* 10_bar_floor_calisthenics.json */; };
+		A9000000000000000000000C /* 10_bar_floor_calisthenics.json in Resources */ = {isa = PBXBuildFile; fileRef = A9000000000000000000000A /* 10_bar_floor_calisthenics.json */; };
 		B10000000000000000000001 /* YouTubeVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000001 /* YouTubeVideo.swift */; };
 		B10000000000000000000002 /* YouTubeEmbed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000002 /* YouTubeEmbed.swift */; };
 		B10000000000000000000003 /* VideoMetadataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000003 /* VideoMetadataStore.swift */; };
@@ -195,6 +199,8 @@
 		A68AD20F92BF7286266D03EB /* TodayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayView.swift; sourceTree = "<group>"; };
 		A90000000000000000000001 /* 07_upper_lower.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 07_upper_lower.json; sourceTree = "<group>"; };
 		A90000000000000000000004 /* 08_machine_foundation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 08_machine_foundation.json; sourceTree = "<group>"; };
+		A90000000000000000000007 /* 09_bodyweight_base.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 09_bodyweight_base.json; sourceTree = "<group>"; };
+		A9000000000000000000000A /* 10_bar_floor_calisthenics.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 10_bar_floor_calisthenics.json; sourceTree = "<group>"; };
 		B16D5A75502FFC600D48A992 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		C10000000000000000000001 /* ContentLocalizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentLocalizer.swift; sourceTree = "<group>"; };
 		C151465400D7E4ECECCC89F9 /* form_workout_complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_workout_complete.wav; sourceTree = "<group>"; };
@@ -315,6 +321,8 @@
 				53F83778D712B708C519860F /* 06_athletic_performance.json */,
 				A90000000000000000000001 /* 07_upper_lower.json */,
 				A90000000000000000000004 /* 08_machine_foundation.json */,
+				A90000000000000000000007 /* 09_bodyweight_base.json */,
+				A9000000000000000000000A /* 10_bar_floor_calisthenics.json */,
 			);
 			path = StarterPrograms;
 			sourceTree = "<group>";
@@ -670,6 +678,8 @@
 				A22DDBC41558C55465A714BD /* 06_athletic_performance.json in Resources */,
 				A90000000000000000000002 /* 07_upper_lower.json in Resources */,
 				A90000000000000000000005 /* 08_machine_foundation.json in Resources */,
+				A90000000000000000000008 /* 09_bodyweight_base.json in Resources */,
+				A9000000000000000000000B /* 10_bar_floor_calisthenics.json in Resources */,
 				ECAED6399ED27E48237E4DD6 /* Assets.xcassets in Resources */,
 				1D60B4E438B90C3F62FC88A9 /* form_rest_complete.wav in Resources */,
 				9698074E6A4564D0918CD7E1 /* form_set_complete.wav in Resources */,
@@ -694,6 +704,8 @@
 				09436475DDB7B1F05D128B14 /* 06_athletic_performance.json in Resources */,
 				A90000000000000000000003 /* 07_upper_lower.json in Resources */,
 				A90000000000000000000006 /* 08_machine_foundation.json in Resources */,
+				A90000000000000000000009 /* 09_bodyweight_base.json in Resources */,
+				A9000000000000000000000C /* 10_bar_floor_calisthenics.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

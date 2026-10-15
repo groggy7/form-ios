@@ -231,5 +231,63 @@
         "focus": "Ana makineleri tekrarlayın; arka omuz ve karın çalışması ekleyin"
       }
     }
+  },
+  "bodyweight-base": {
+    "name": "Bodyweight Base: 3 Günlük Ekipmansız",
+    "description": "Spor ekipmanı olmadan evde tüm vücut antrenmanı: boş bir zemin, duvar veya tezgâh, sabit bir sandalye ve bir merdiven basamağı yeterli. Yeni başlayanlar ve spora dönenler için. Yaklaşık 30–40 dakikalık üç kısa seans.",
+    "guidelines": [
+      "Haftada üç gün çalışın ve her seanstan sonra bir gün dinlenin. Her seanstan önce sandalye veya koltuğun kaymadığını ve basamağın sağlam olduğunu kontrol edin.",
+      "Bar veya başka bir ekipman olmadan sırt ve ön kol çalışması sınırlıdır ve doğrudan arka bacak bükme hareketi yoktur. Mümkün olduğunda sağlam monte edilmiş bir barfiks barı edinip Bar & Floor planına geçin.",
+      "Şınavda el desteğini adım adım alçaltarak yere kadar ilerleyin. Henüz yerde 3 şınav yapamıyorsanız, yapabilene kadar Tüm Vücut B’deki şınavı Eğimli Şınav olarak düzenleyin.",
+      "Listelenen setler çalışma setleridir. Önce birkaç dakika hafif hareketlerle ısının, ardından ilk hareketin daha kolay bir deneme setini yapın.",
+      "Çoğu seti düzgün yapabileceğiniz yaklaşık 2 tekrar kalınca bitirin. Kontrollü hareket açıklığını koruyun; tükenişe gitmek gerekmez.",
+      "Vücut ağırlığı setlerini 0 ek ağırlıkla kaydedin; uygulama bunları BW olarak gösterir. İki antrenmanda tüm setlerde tekrar aralığının üst sınırına düzgün formla ulaştığınızda tekrarları sürekli artırmak yerine hareketi zorlaştırın: inişi yavaşlatın, bu notlarda belirtilen daha zor varyasyona geçin veya yüklü bir sırt çantası ekleyip ağırlığını ek yük olarak kaydedin.",
+      "Gelişimi değerlendirmeden önce planı 6–8 hafta uygulayın. Yorgunluk birikirse veya birkaç antrenman boyunca performans düşerse bir hafta setleri azaltın ve daha kolay varyasyonlar kullanın. Ağrıya rağmen devam etmeyin."
+    ],
+    "workouts": {
+      "bb-full-a": {
+        "title": "Tüm Vücut A",
+        "focus": "Squat, eğimli şınav, kalça kaldırma ve gövde kontrolü"
+      },
+      "bb-full-b": {
+        "title": "Tüm Vücut B",
+        "focus": "Split squat, şınav, omuzlar ve baldır"
+      },
+      "bb-full-c": {
+        "title": "Tüm Vücut C",
+        "focus": "Topuk yükseltmeli squat, yana lunge ve gövde"
+      }
+    }
+  },
+  "bar-floor-calisthenics": {
+    "name": "Bar & Floor: 4 Günlük Kalistenik",
+    "description": "Barfiks barı, boş bir zemin, sabit bir sandalye ve bir merdiven basamağıyla üst/alt vücut ağırlığı antrenmanı. En az 3 temiz barfiks veya chin-up yapabilenler için. Yaklaşık 40–50 dakikalık dört seans.",
+    "guidelines": [
+      "Haftada dört gün, üst ve alt vücudu dönüşümlü çalışın; mümkünse ikinci ve üçüncü seans arasına bir dinlenme günü koyun. Her seanstan önce barın bağlantısını ve ağırlık sınırını kontrol edin; bara kontrollü bir adımla çıkıp inin.",
+      "En az 3 temiz barfiks veya chin-up yapabildiğinizde başlayın; o zamana kadar Bodyweight Base planını kullanın. Nordic curl için ayak bileklerinizi sağlam bir yere sabitleyin ve dizlerinizin altına yastık koyun: yalnızca kontrol edebildiğiniz kadar inin ve ellerinizle kendinizi tutun.",
+      "Kapı barı row hareketlerine izin vermez; bu nedenle üst sırt ve arka omuz çalışması sınırlıdır. Şınavı ters eğimli şınava ilerletin; barfikste inişi yavaşlatın veya ek ağırlık olarak kaydedilen yüklü bir sırt çantası kullanın.",
+      "Listelenen setler çalışma setleridir. Önce birkaç dakika hafif hareketlerle ısının, ardından ilk hareketin daha kolay bir deneme setini yapın.",
+      "Çoğu seti düzgün yapabileceğiniz yaklaşık 2 tekrar kalınca bitirin. Kontrollü hareket açıklığını koruyun; tükenişe gitmek gerekmez.",
+      "Vücut ağırlığı setlerini 0 ek ağırlıkla kaydedin; uygulama bunları BW olarak gösterir. İki antrenmanda tüm setlerde tekrar aralığının üst sınırına düzgün formla ulaştığınızda tekrarları sürekli artırmak yerine hareketi zorlaştırın: inişi yavaşlatın, bu notlarda belirtilen daha zor varyasyona geçin veya yüklü bir sırt çantası ekleyip ağırlığını ek yük olarak kaydedin.",
+      "Gelişimi değerlendirmeden önce planı 6–8 hafta uygulayın. Yorgunluk birikirse veya birkaç antrenman boyunca performans düşerse bir hafta setleri azaltın ve daha kolay varyasyonlar kullanın. Ağrıya rağmen devam etmeyin."
+    ],
+    "workouts": {
+      "bf-upper-a": {
+        "title": "Üst A: Barfiks ve Şınav",
+        "focus": "Dikey çekiş, şınav, omuzlar ve asılı karın çalışması"
+      },
+      "bf-lower-a": {
+        "title": "Alt A: Split Squat ve Kalça",
+        "focus": "Tek bacak squat, hip thrust ve baldır"
+      },
+      "bf-upper-b": {
+        "title": "Üst B: Chin-Up ve Ters Eğimli Şınav",
+        "focus": "Chin-up, ters eğimli şınav, dips ve bacak kaldırma"
+      },
+      "bf-lower-b": {
+        "title": "Alt B: Lunge ve Arka Bacak",
+        "focus": "Nordic curl, lunge, yan squat ve gövde"
+      }
+    }
   }
 }

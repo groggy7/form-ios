@@ -1,0 +1,349 @@
+{
+  "format": "form.program",
+  "schemaVersion": 4,
+  "program": {
+    "id": "bar-floor-calisthenics",
+    "name": "Bar & Floor: 4-Day Calisthenics",
+    "description": "Upper/lower bodyweight training with a pull-up bar, floor space, a stable chair and a stair step. For people who can already do at least 3 strict pull-ups or chin-ups. Four sessions of roughly 40–50 minutes.",
+    "guidelines": [
+      "Train four days a week, alternating upper and lower body, ideally with a rest day between the second and third sessions. Before every session, check the bar’s fixing and weight limit; mount and dismount with a controlled step.",
+      "Start when you can do at least 3 strict pull-ups or chin-ups; until then, use Bodyweight Base. Nordic curls need a secure ankle anchor and knee padding: lower only as far as you can control and catch yourself with your hands.",
+      "A doorway bar does not allow rows, so upper-back and rear-shoulder work is limited. Progress push-ups to decline push-ups; progress pull-ups with a slower lowering or a loaded backpack logged as added weight.",
+      "The listed sets are working sets. Warm up first with a few minutes of easy movement, then do an easier practice set of the first exercise.",
+      "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
+      "Log bodyweight sets with 0 added weight; the app shows them as BW. When every set reaches the top of its rep range with clean form in two sessions, make the exercise harder instead of adding endless reps: slow the lowering, use the harder variation named in these notes, or add a loaded backpack and log its weight as added load.",
+      "Keep the plan for 6–8 weeks before judging progress. If fatigue accumulates or performance drops across several sessions, use fewer sets and easier variations for a week. Do not train through pain."
+    ],
+    "workouts": [
+      {
+        "id": "bf-upper-a",
+        "day": 1,
+        "title": "Upper A: Pull-Up & Push-Up",
+        "focus": "Vertical pull, push-ups, shoulders and hanging core",
+        "targetMuscles": [
+          "lats",
+          "chest",
+          "shoulders",
+          "triceps",
+          "biceps",
+          "abs"
+        ],
+        "exercises": [
+          {
+            "id": "bf-upper-a-pull-ups",
+            "exerciseId": "pull-ups",
+            "sets": 3,
+            "reps": {
+              "min": 3,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 150
+          },
+          {
+            "id": "bf-upper-a-push-ups",
+            "exerciseId": "push-ups",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 20,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "bf-upper-a-scapular-pull-up",
+            "exerciseId": "scapular-pull-up",
+            "sets": 2,
+            "reps": {
+              "min": 6,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 60
+          },
+          {
+            "id": "bf-upper-a-pike-push-up",
+            "exerciseId": "pike-push-up",
+            "sets": 3,
+            "reps": {
+              "min": 5,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "bf-upper-a-diamond-push-up",
+            "exerciseId": "diamond-push-up",
+            "sets": 2,
+            "reps": {
+              "min": 5,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "bf-upper-a-hanging-knee-raise",
+            "exerciseId": "hanging-knee-raise",
+            "sets": 2,
+            "reps": {
+              "min": 6,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ],
+        "tone": "violet"
+      },
+      {
+        "id": "bf-lower-a",
+        "day": 2,
+        "title": "Lower A: Split Squat & Glutes",
+        "focus": "Single-leg squat, hip thrust and calves",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "calves",
+          "abs"
+        ],
+        "exercises": [
+          {
+            "id": "bf-lower-a-bulgarian-split-squat",
+            "exerciseId": "bulgarian-split-squat",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "bf-lower-a-single-leg-hip-thrust",
+            "exerciseId": "single-leg-hip-thrust",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 15,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 60
+          },
+          {
+            "id": "bf-lower-a-heel-elevated-bodyweight-squat",
+            "exerciseId": "heel-elevated-bodyweight-squat",
+            "sets": 2,
+            "reps": {
+              "min": 12,
+              "max": 20,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "bf-lower-a-single-leg-calf-raise",
+            "exerciseId": "single-leg-calf-raise",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 15,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 60
+          },
+          {
+            "id": "bf-lower-a-dead-bug",
+            "exerciseId": "dead-bug",
+            "sets": 2,
+            "reps": {
+              "min": 6,
+              "max": 10,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 60
+          }
+        ],
+        "tone": "blue"
+      },
+      {
+        "id": "bf-upper-b",
+        "day": 4,
+        "title": "Upper B: Chin-Up & Decline",
+        "focus": "Chin-ups, decline push-ups, dips and leg raises",
+        "targetMuscles": [
+          "lats",
+          "biceps",
+          "chest",
+          "triceps",
+          "abs"
+        ],
+        "exercises": [
+          {
+            "id": "bf-upper-b-chin-up",
+            "exerciseId": "chin-up",
+            "sets": 3,
+            "reps": {
+              "min": 3,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 150
+          },
+          {
+            "id": "bf-upper-b-decline-push-up",
+            "exerciseId": "decline-push-up",
+            "sets": 3,
+            "reps": {
+              "min": 5,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "bf-upper-b-pull-ups",
+            "exerciseId": "pull-ups",
+            "sets": 2,
+            "reps": {
+              "min": 3,
+              "max": 8,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 150
+          },
+          {
+            "id": "bf-upper-b-bench-dip",
+            "exerciseId": "bench-dip",
+            "sets": 2,
+            "reps": {
+              "min": 6,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "bf-upper-b-hanging-leg-raise",
+            "exerciseId": "hanging-leg-raise",
+            "sets": 2,
+            "reps": {
+              "min": 5,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ],
+        "tone": "orange"
+      },
+      {
+        "id": "bf-lower-b",
+        "day": 5,
+        "title": "Lower B: Lunge & Hamstrings",
+        "focus": "Nordic curl, lunges, lateral squat and trunk",
+        "targetMuscles": [
+          "hamstrings",
+          "glutes",
+          "quadriceps",
+          "calves",
+          "abs"
+        ],
+        "exercises": [
+          {
+            "id": "bf-lower-b-nordic-hamstring-curl",
+            "exerciseId": "nordic-hamstring-curl",
+            "sets": 2,
+            "reps": {
+              "min": 3,
+              "max": 6,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "bf-lower-b-bodyweight-rear-lunge",
+            "exerciseId": "bodyweight-rear-lunge",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "bf-lower-b-cossack-squat",
+            "exerciseId": "cossack-squat",
+            "sets": 2,
+            "reps": {
+              "min": 5,
+              "max": 10,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "bf-lower-b-bodyweight-frog-hip-thrust",
+            "exerciseId": "bodyweight-frog-hip-thrust",
+            "sets": 2,
+            "reps": {
+              "min": 15,
+              "max": 20,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 60
+          },
+          {
+            "id": "bf-lower-b-single-leg-calf-raise",
+            "exerciseId": "single-leg-calf-raise",
+            "sets": 2,
+            "reps": {
+              "min": 8,
+              "max": 15,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 60
+          },
+          {
+            "id": "bf-lower-b-reverse-crunch",
+            "exerciseId": "reverse-crunch",
+            "sets": 2,
+            "reps": {
+              "min": 8,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 60
+          }
+        ],
+        "tone": "lime"
+      }
+    ]
+  }
+}

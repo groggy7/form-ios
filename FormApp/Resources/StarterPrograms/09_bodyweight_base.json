@@ -1,0 +1,261 @@
+{
+  "format": "form.program",
+  "schemaVersion": 4,
+  "program": {
+    "id": "bodyweight-base",
+    "name": "Bodyweight Base: 3-Day No Equipment",
+    "description": "Full-body training at home without gym equipment: floor space, a wall or counter, a stable chair and a stair step. For beginners and returning lifters. Three short sessions of roughly 30–40 minutes.",
+    "guidelines": [
+      "Train three days a week with a rest day after each session. Before each session, check that the chair or sofa cannot slide and that the step is stable.",
+      "Without a bar or other equipment, back and biceps work is limited and there is no direct hamstring curl. When you can, add a securely installed pull-up bar and move to Bar & Floor.",
+      "Progress push-ups by lowering the hand support step by step until you reach the floor. If you cannot do 3 floor push-ups yet, edit Full Body B to use Incline Push-up until you can.",
+      "The listed sets are working sets. Warm up first with a few minutes of easy movement, then do an easier practice set of the first exercise.",
+      "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
+      "Log bodyweight sets with 0 added weight; the app shows them as BW. When every set reaches the top of its rep range with clean form in two sessions, make the exercise harder instead of adding endless reps: slow the lowering, use the harder variation named in these notes, or add a loaded backpack and log its weight as added load.",
+      "Keep the plan for 6–8 weeks before judging progress. If fatigue accumulates or performance drops across several sessions, use fewer sets and easier variations for a week. Do not train through pain."
+    ],
+    "workouts": [
+      {
+        "id": "bb-full-a",
+        "day": 1,
+        "title": "Full Body A",
+        "focus": "Squat, incline push-up, hip lift and trunk control",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "chest",
+          "triceps",
+          "abs"
+        ],
+        "exercises": [
+          {
+            "id": "bb-full-a-bodyweight-squat",
+            "exerciseId": "bodyweight-squat",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 20,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "bb-full-a-incline-push-up",
+            "exerciseId": "incline-push-up",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "bb-full-a-bodyweight-frog-hip-thrust",
+            "exerciseId": "bodyweight-frog-hip-thrust",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 20,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 60
+          },
+          {
+            "id": "bb-full-a-bodyweight-rear-lunge",
+            "exerciseId": "bodyweight-rear-lunge",
+            "sets": 2,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "bb-full-a-dead-bug",
+            "exerciseId": "dead-bug",
+            "sets": 2,
+            "reps": {
+              "min": 6,
+              "max": 10,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 60
+          }
+        ],
+        "tone": "violet"
+      },
+      {
+        "id": "bb-full-b",
+        "day": 3,
+        "title": "Full Body B",
+        "focus": "Split squat, push-up, shoulders and calves",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "chest",
+          "shoulders",
+          "calves",
+          "abs"
+        ],
+        "exercises": [
+          {
+            "id": "bb-full-b-bulgarian-split-squat",
+            "exerciseId": "bulgarian-split-squat",
+            "sets": 3,
+            "reps": {
+              "min": 6,
+              "max": 12,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "bb-full-b-push-ups",
+            "exerciseId": "push-ups",
+            "sets": 3,
+            "reps": {
+              "min": 3,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "bb-full-b-single-leg-hip-thrust",
+            "exerciseId": "single-leg-hip-thrust",
+            "sets": 2,
+            "reps": {
+              "min": 6,
+              "max": 12,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 60
+          },
+          {
+            "id": "bb-full-b-pike-push-up",
+            "exerciseId": "pike-push-up",
+            "sets": 2,
+            "reps": {
+              "min": 5,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "bb-full-b-single-leg-calf-raise",
+            "exerciseId": "single-leg-calf-raise",
+            "sets": 2,
+            "reps": {
+              "min": 8,
+              "max": 15,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 60
+          },
+          {
+            "id": "bb-full-b-reverse-crunch",
+            "exerciseId": "reverse-crunch",
+            "sets": 2,
+            "reps": {
+              "min": 8,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 60
+          }
+        ],
+        "tone": "blue"
+      },
+      {
+        "id": "bb-full-c",
+        "day": 5,
+        "title": "Full Body C",
+        "focus": "Heel-elevated squat, side lunge and trunk",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "chest",
+          "triceps",
+          "abs"
+        ],
+        "exercises": [
+          {
+            "id": "bb-full-c-heel-elevated-bodyweight-squat",
+            "exerciseId": "heel-elevated-bodyweight-squat",
+            "sets": 3,
+            "reps": {
+              "min": 10,
+              "max": 20,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "bb-full-c-incline-push-up",
+            "exerciseId": "incline-push-up",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "bb-full-c-side-lunge",
+            "exerciseId": "side-lunge",
+            "sets": 2,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "bb-full-c-bodyweight-frog-hip-thrust",
+            "exerciseId": "bodyweight-frog-hip-thrust",
+            "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 20,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 60
+          },
+          {
+            "id": "bb-full-c-bird-dog",
+            "exerciseId": "bird-dog",
+            "sets": 2,
+            "reps": {
+              "min": 6,
+              "max": 10,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 60
+          }
+        ],
+        "tone": "orange"
+      }
+    ]
+  }
+}

@@ -231,5 +231,63 @@
         "focus": "Répétez les machines principales avec les deltes arrière et le travail du coffre"
       }
     }
+  },
+  "bodyweight-base": {
+    "name": "Bodyweight Base : 3 jours sans équipement",
+    "description": "Entraînement du corps entier à la maison sans matériel de salle : un espace au sol, un mur ou un plan de travail, une chaise stable et une marche d’escalier. Pour les débutants et les personnes qui reprennent l’entraînement. Trois séances courtes d’environ 30 à 40 minutes.",
+    "guidelines": [
+      "Entraînez-vous trois jours par semaine avec un jour de repos après chaque séance. Avant chaque séance, vérifiez que la chaise ou le canapé ne peut pas glisser et que la marche est stable.",
+      "Sans barre ni autre matériel, le travail du dos et des biceps est limité et il n’y a pas de curl direct des ischio-jambiers. Dès que possible, installez solidement une barre de traction et passez à Bar & Floor.",
+      "Faites progresser les pompes en abaissant l’appui des mains étape par étape jusqu’au sol. Si vous ne réussissez pas encore 3 pompes au sol, modifiez Corps entier B pour utiliser Pompes inclinées jusqu’à ce que vous y arriviez.",
+      "Les séries indiquées sont des séries de travail. Échauffez-vous d’abord avec quelques minutes de mouvement léger, puis faites une série d’essai plus facile du premier exercice.",
+      "Terminez la plupart des séries avec environ 2 répétitions propres en réserve. Gardez la même amplitude contrôlée. Il n’est pas nécessaire d’aller à l’échec.",
+      "Enregistrez les séries au poids du corps avec 0 de charge ajoutée ; l’app les affiche comme BW. Lorsque chaque série atteint le haut de la plage de répétitions avec une technique propre lors de deux séances, rendez l’exercice plus difficile au lieu d’ajouter sans fin des répétitions : ralentissez la descente, passez à la variante plus difficile indiquée dans ces notes ou ajoutez un sac à dos lesté et enregistrez son poids comme charge ajoutée.",
+      "Conservez le plan pendant 6 à 8 semaines avant de juger vos progrès. Si la fatigue s’accumule ou si vos performances baissent sur plusieurs séances, faites moins de séries et des variantes plus faciles pendant une semaine. Ne vous entraînez pas malgré la douleur."
+    ],
+    "workouts": {
+      "bb-full-a": {
+        "title": "Corps entier A",
+        "focus": "Squat, pompes inclinées, élévation du bassin et contrôle du tronc"
+      },
+      "bb-full-b": {
+        "title": "Corps entier B",
+        "focus": "Split squat, pompes, épaules et mollets"
+      },
+      "bb-full-c": {
+        "title": "Corps entier C",
+        "focus": "Squat talons surélevés, fente latérale et gainage"
+      }
+    }
+  },
+  "bar-floor-calisthenics": {
+    "name": "Bar & Floor : calisthenics sur 4 jours",
+    "description": "Entraînement haut/bas du corps au poids du corps avec une barre de traction, un espace au sol, une chaise stable et une marche d’escalier. Pour les personnes qui réussissent déjà au moins 3 tractions strictes, en pronation ou en supination. Quatre séances d’environ 40 à 50 minutes.",
+    "guidelines": [
+      "Entraînez-vous quatre jours par semaine en alternant haut et bas du corps, idéalement avec un jour de repos entre la deuxième et la troisième séance. Avant chaque séance, vérifiez la fixation de la barre et sa charge maximale ; montez et descendez avec un pas contrôlé.",
+      "Commencez lorsque vous réussissez au moins 3 tractions strictes, en pronation ou en supination ; d’ici là, utilisez Bodyweight Base. Le curl nordique nécessite un ancrage sûr des chevilles et un rembourrage sous les genoux : ne descendez que tant que vous gardez le contrôle et rattrapez-vous avec les mains.",
+      "Une barre de porte ne permet pas de rowing : le travail du haut du dos et de l’arrière des épaules reste limité. Faites progresser les pompes vers les pompes déclinées ; faites progresser les tractions avec une descente plus lente ou un sac à dos lesté enregistré comme charge ajoutée.",
+      "Les séries indiquées sont des séries de travail. Échauffez-vous d’abord avec quelques minutes de mouvement léger, puis faites une série d’essai plus facile du premier exercice.",
+      "Terminez la plupart des séries avec environ 2 répétitions propres en réserve. Gardez la même amplitude contrôlée. Il n’est pas nécessaire d’aller à l’échec.",
+      "Enregistrez les séries au poids du corps avec 0 de charge ajoutée ; l’app les affiche comme BW. Lorsque chaque série atteint le haut de la plage de répétitions avec une technique propre lors de deux séances, rendez l’exercice plus difficile au lieu d’ajouter sans fin des répétitions : ralentissez la descente, passez à la variante plus difficile indiquée dans ces notes ou ajoutez un sac à dos lesté et enregistrez son poids comme charge ajoutée.",
+      "Conservez le plan pendant 6 à 8 semaines avant de juger vos progrès. Si la fatigue s’accumule ou si vos performances baissent sur plusieurs séances, faites moins de séries et des variantes plus faciles pendant une semaine. Ne vous entraînez pas malgré la douleur."
+    ],
+    "workouts": {
+      "bf-upper-a": {
+        "title": "Haut du corps A : tractions et pompes",
+        "focus": "Tirage vertical, pompes, épaules et gainage suspendu"
+      },
+      "bf-lower-a": {
+        "title": "Bas du corps A : split squat et fessiers",
+        "focus": "Squat unilatéral, hip thrust et mollets"
+      },
+      "bf-upper-b": {
+        "title": "Haut du corps B : supination et déclinées",
+        "focus": "Tractions en supination, pompes déclinées, dips et relevés de jambes"
+      },
+      "bf-lower-b": {
+        "title": "Bas du corps B : fentes et ischio-jambiers",
+        "focus": "Curl nordique, fentes, squat latéral et gainage"
+      }
+    }
   }
 }

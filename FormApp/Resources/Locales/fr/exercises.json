@@ -4276,7 +4276,7 @@
     ]
   },
   "decline-push-up": {
-    "name": "Refuser les pompes",
+    "name": "Pompes déclinées",
     "cues": [
       "Posez les mains sur un appui stable et maintenez le corps droit et gainé de la tête aux talons.",
       "Abaissez votre poitrine vers votre support, puis éloignez-vous avec contrôle."
@@ -5563,7 +5563,7 @@
     ]
   },
   "pike-push-up": {
-    "name": "Pompes pour brochet",
+    "name": "Pompes piquées",
     "cues": [
       "Placez fermement vos mains et soulevez vos hanches pour former un V inversé.",
       "Pliez vos coudes pour baisser votre tête entre vos mains, puis appuyez.",
@@ -6756,7 +6756,7 @@
     ]
   },
   "heel-elevated-bodyweight-squat": {
-    "name": "Squat de poids corporel surélevé",
+    "name": "Squat au poids du corps, talons surélevés",
     "cues": [
       "Placez les pieds à une largeur confortable, gainez le tronc et fléchissez les hanches et les genoux ensemble.",
       "Gardez tout votre pied planté, accroupissez-vous à une profondeur contrôlée, puis levez-vous.",
@@ -7349,7 +7349,7 @@
     ]
   },
   "bench-dip": {
-    "name": "Trempette sur banc",
+    "name": "Dips sur banc",
     "cues": [
       "Placez vos mains sur un banc stable derrière vos hanches et vos pieds devant vous.",
       "Pliez vos coudes à une profondeur confortable, puis appuyez à nouveau vers le haut.",

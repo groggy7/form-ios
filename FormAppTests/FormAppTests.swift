@@ -256,6 +256,7 @@ final class WeeklyProgressTests: XCTestCase {
         defer { access.setFeatureOverride(.cloudBackup, unlocked: cloudAccess == access.isProSubscribed ? nil : cloudAccess) }
         defaults.removeObject(forKey: "active_session_v1")
         defaults.set(true, forKey: "seeded_starters_v9")
+        defaults.set(true, forKey: "seeded_starters_v10")
         let timestamp = ISO8601DateFormatter().string(from: Date())
         let fixture = StoredAppState(programs: [program], activeProgramId: program.id, completed: ["p:w1", "p:w2"],
             currentWeekKey: "2020-W01", history: [
@@ -596,8 +597,10 @@ final class FormAppTests: XCTestCase {
     @MainActor
     func testProgramCoverLibraryResourcesAndMappings() throws {
         let programs = AppStore.loadBundledStarterPrograms()
-        XCTAssertEqual(Set(programs.map(\.id)), Set(ProgramCover.allCases.map(\.programID)))
+        // Home plans have no approved dedicated cover yet and use the default photograph.
+        XCTAssertEqual(Set(programs.map(\.id)).subtracting(AppStore.homeStarterProgramIds), Set(ProgramCover.allCases.map(\.programID)))
         XCTAssertEqual(ProgramCover.forProgram("custom-program"), .fullBody)
+        for id in AppStore.homeStarterProgramIds { XCTAssertEqual(ProgramCover.forProgram(id), .fullBody) }
         for cover in ProgramCover.allCases {
             let image = try XCTUnwrap(UIImage(named: cover.assetName)?.cgImage)
             XCTAssertEqual(image.width, 1152)
@@ -606,7 +609,7 @@ final class FormAppTests: XCTestCase {
         }
         let data = try XCTUnwrap(NSDataAsset(name: "program_cover_catalog")?.data)
         let catalog = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
-        XCTAssertEqual((catalog["covers"] as? [[String: Any]])?.count, programs.count)
+        XCTAssertEqual((catalog["covers"] as? [[String: Any]])?.count, ProgramCover.allCases.count)
     }
 
     @MainActor
@@ -1381,9 +1384,9 @@ final class FormAppTests: XCTestCase {
     func testStarterProgramsAreAvailable() {
         let bundled = AppStore.loadBundledStarterPrograms()
         XCTAssertFalse(bundled.isEmpty, "Starter programs should be bundled and loaded successfully")
-        XCTAssertEqual(bundled.count, 8, "Expected all 8 starter programs")
+        XCTAssertEqual(bundled.count, AppStore.starterProgramFiles.count, "Expected every bundled starter program")
         XCTAssertEqual(bundled.first?.name, "Aesthetic Engine: 5-Day Hypertrophy")
-        XCTAssertEqual(bundled.map { $0.workouts.count }, [5, 4, 6, 3, 4, 3, 4, 3])
+        XCTAssertEqual(bundled.map { $0.workouts.count }, [5, 4, 6, 3, 4, 3, 4, 3, 3, 4])
         let canonical = AppStore.loadBundledExercises()
         for exercise in bundled.flatMap({ $0.workouts }).flatMap({ $0.exercises }) {
             XCTAssertNotNil(exercise.exerciseId.flatMap { canonical[$0] })
@@ -1397,10 +1400,32 @@ final class FormAppTests: XCTestCase {
         let old = Program(id: "aesthetic-hypertrophy", name: "Old template")
         let custom = Program(id: "my-copy", name: "My edited plan")
         let refreshed = AppStore.refreshedStarterPrograms(existing: [old, custom], bundled: bundled)
-        XCTAssertEqual(refreshed.count, 9)
+        XCTAssertEqual(refreshed.count, bundled.count + 1)
         XCTAssertEqual(refreshed.first, bundled.first)
         XCTAssertEqual(refreshed.last, custom)
         XCTAssertEqual(AppStore.refreshedStarterPrograms(existing: refreshed, bundled: bundled), refreshed)
+    }
+
+    func testHomeStarterPlansAreAddedOnceWithoutReplacingAnything() {
+        let bundled = AppStore.loadBundledStarterPrograms()
+        let edited = Program(id: "aesthetic-hypertrophy", name: "My edited Aesthetic Engine")
+        let custom = Program(id: "my-copy", name: "My plan")
+        let added = AppStore.addingMissingStarterPrograms([edited, custom], bundled: bundled, ids: AppStore.homeStarterProgramIds)
+        XCTAssertEqual(Array(added.prefix(2)), [edited, custom])
+        XCTAssertEqual(Set(added.dropFirst(2).map(\.id)), AppStore.homeStarterProgramIds)
+        XCTAssertEqual(AppStore.addingMissingStarterPrograms(added, bundled: bundled, ids: AppStore.homeStarterProgramIds), added)
+        XCTAssertEqual(AppStore.addingMissingStarterPrograms([], bundled: bundled, ids: AppStore.homeStarterProgramIds), [])
+        let full = (0..<ProgramEditing.maxPrograms).map { Program(id: "p\($0)", name: "Plan \($0)") }
+        XCTAssertEqual(AppStore.addingMissingStarterPrograms(full, bundled: bundled, ids: AppStore.homeStarterProgramIds), full)
+    }
+
+    func testHomeStarterPlansLogEveryExerciseAsBodyweight() {
+        let home = AppStore.loadBundledStarterPrograms().filter { AppStore.homeStarterProgramIds.contains($0.id) }
+        XCTAssertEqual(home.count, 2)
+        for exercise in home.flatMap(\.workouts).flatMap(\.exercises) {
+            XCTAssertTrue(WorkoutSessionUtils.defaultsToZeroAddedWeight(exercise), exercise.name)
+            XCTAssertTrue(WorkoutSessionUtils.allowsZeroWeight(exercise), exercise.name)
+        }
     }
 
 
@@ -9678,6 +9703,7 @@ final class HistoryBreakdownTests: XCTestCase {
         defer { defaults.setPersistentDomain(original, forName: domain) }
         defaults.removeObject(forKey: "active_session_v1")
         defaults.set(true, forKey: "seeded_starters_v9")
+        defaults.set(true, forKey: "seeded_starters_v10")
         var carryover = record(pull, complete: false)
         carryover.startedAt = ISO8601DateFormatter().string(from: Date())
         carryover.completedAt = carryover.startedAt
@@ -9729,6 +9755,7 @@ final class HistoryBreakdownTests: XCTestCase {
         defer { defaults.setPersistentDomain(original, forName: domain) }
         defaults.removeObject(forKey: "active_session_v1")
         defaults.set(true, forKey: "seeded_starters_v9")
+        defaults.set(true, forKey: "seeded_starters_v10")
         let calendar = Calendar(identifier: .gregorian)
         let monday = try XCTUnwrap(WorkoutCalendar.parseDate(WorkoutCalendar.mondayOfCurrentWeek()))
         let performed = calendar.date(byAdding: .hour, value: 9, to: monday)!
@@ -10838,7 +10865,7 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
 
     private func withStore(_ body: (AppStore) throws -> Void) rethrows {
         let defaults = UserDefaults.standard
-        let keys = ["stored_app_state", "active_session_v1", "weight_unit", "is_onboarding_completed", "seeded_starters_v9"]
+        let keys = ["stored_app_state", "active_session_v1", "weight_unit", "is_onboarding_completed", "seeded_starters_v9", "seeded_starters_v10"]
         let saved = keys.map { ($0, defaults.object(forKey: $0)) }
         let enabled = CloudMirrorManager.shared.isEnabled
         CloudMirrorManager.shared.isEnabled = false
@@ -10849,6 +10876,7 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
         defaults.removeObject(forKey: "active_session_v1")
         defaults.set("kg", forKey: "weight_unit")
         defaults.set(true, forKey: "seeded_starters_v9")
+        defaults.set(true, forKey: "seeded_starters_v10")
         let store = AppStore(persistence: AppStatePersistence(inMemory: true))
         store.activeSession = nil
         try body(store)
@@ -11139,6 +11167,7 @@ final class SessionSetCountPersistenceTests: XCTestCase {
         defer { access.setFeatureOverride(.cloudBackup, unlocked: cloudAccess == access.isProSubscribed ? nil : cloudAccess) }
         defaults.removeObject(forKey: "active_session_v1")
         defaults.set(true, forKey: "seeded_starters_v9")
+        defaults.set(true, forKey: "seeded_starters_v10")
         let squat = Exercise(id: "squat", name: "Barbell Back Squat", exerciseId: "barbell-back-squat",
             sets: 6, reps: RepTarget(min: 5, max: 5), restSeconds: 0)
         let program = Program(id: "six-set-squats", name: "Six-set squats", workouts: [
@@ -11403,7 +11432,7 @@ final class LocalizationExpansionTests: XCTestCase {
                 XCTAssertEqual(source.cuesDetails?.count, target.cuesDetails?.count)
                 XCTAssertEqual(source.avoidDetails?.count, target.avoidDetails?.count)
             }
-            XCTAssertEqual(ContentLocalizer.shared.loadPrograms(lang:lang).count, 8)
+            XCTAssertEqual(ContentLocalizer.shared.loadPrograms(lang:lang).count, AppStore.starterProgramFiles.count)
         }
     }
 
@@ -12062,7 +12091,7 @@ final class LocalizationConcurrencyTests: XCTestCase {
         DispatchQueue.concurrentPerform(iterations: 1000) { index in
             let language = languages[index % languages.count]
             XCTAssertEqual(localizer.loadExercises(lang: language).count, 300)
-            XCTAssertEqual(localizer.loadPrograms(lang: language).count, 8)
+            XCTAssertEqual(localizer.loadPrograms(lang: language).count, AppStore.starterProgramFiles.count)
             XCTAssertNotNil(localizer.loadUI(lang: language)["notice.openLinkFailed"])
             XCTAssertNotEqual(manager.translate("form_lab.mirror_local_provider", language: language), "form_lab.mirror_local_provider")
             XCTAssertFalse(manager.plural("library.resultCount", 2, language: language).contains("{"))

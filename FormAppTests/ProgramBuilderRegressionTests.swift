@@ -8,11 +8,12 @@ final class ProgramBuilderRegressionTests: XCTestCase {
     override func setUp() {
         super.setUp()
         let defaults = UserDefaults.standard
-        let keys = ["stored_app_state", "active_session_v1", "seeded_starters_v9"]
+        let keys = ["stored_app_state", "active_session_v1", "seeded_starters_v9", "seeded_starters_v10"]
         savedDefaults = keys.map { ($0, defaults.object(forKey: $0)) }
         defaults.removeObject(forKey: "stored_app_state")
         defaults.removeObject(forKey: "active_session_v1")
         defaults.set(true, forKey: "seeded_starters_v9")
+        defaults.set(true, forKey: "seeded_starters_v10")
     }
 
     override func tearDown() {

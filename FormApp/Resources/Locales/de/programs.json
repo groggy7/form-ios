@@ -231,5 +231,63 @@
         "focus": "Wiederholen Sie die Hauptübungen mit den hinteren Deltamuskeln und dem Rumpf"
       }
     }
+  },
+  "bodyweight-base": {
+    "name": "Bodyweight Base: 3 Tage ohne Geräte",
+    "description": "Ganzkörpertraining zu Hause ohne Fitnessgeräte: freie Bodenfläche, eine Wand oder Arbeitsplatte, ein stabiler Stuhl und eine Treppenstufe. Für Anfänger und Wiedereinsteiger. Drei kurze Einheiten von etwa 30–40 Minuten.",
+    "guidelines": [
+      "Trainiere drei Tage pro Woche mit einem Ruhetag nach jeder Einheit. Prüfe vor jeder Einheit, dass Stuhl oder Sofa nicht wegrutschen können und die Stufe stabil ist.",
+      "Ohne Stange oder andere Geräte ist das Training für Rücken und Bizeps begrenzt, und es gibt keinen direkten Beinbeuger-Curl. Sobald es möglich ist, montiere eine sicher befestigte Klimmzugstange und wechsle zu Bar & Floor.",
+      "Steigere Liegestütze, indem du die Handauflage Schritt für Schritt absenkst, bis du am Boden bist. Wenn du noch keine 3 Liegestütze am Boden schaffst, ändere die Übung in Ganzkörper B auf Schräglage-Liegestütz, bis es klappt.",
+      "Die angegebenen Sätze sind Arbeitssätze. Wärme dich zuerst einige Minuten mit lockerer Bewegung auf und mache dann einen leichteren Übungssatz der ersten Übung.",
+      "Beende die meisten Sätze mit etwa 2 sauber möglichen Wiederholungen in Reserve. Behalte denselben kontrollierten Bewegungsumfang bei. Muskelversagen ist nicht erforderlich.",
+      "Trage Sätze mit Körpergewicht mit 0 Zusatzgewicht ein; die App zeigt sie als BW an. Wenn du in zwei Einheiten in jedem Satz mit sauberer Technik das obere Ende des Wiederholungsbereichs erreichst, mache die Übung schwerer, statt endlos Wiederholungen hinzuzufügen: Senke langsamer ab, wechsle zur schwereren Variante aus diesen Hinweisen oder nimm einen beladenen Rucksack und trage sein Gewicht als Zusatzlast ein.",
+      "Behalte den Plan 6–8 Wochen bei, bevor du den Fortschritt beurteilst. Wenn sich über mehrere Einheiten Ermüdung ansammelt oder die Leistung nachlässt, mache eine Woche lang weniger Sätze und leichtere Varianten. Trainiere nicht trotz Schmerzen."
+    ],
+    "workouts": {
+      "bb-full-a": {
+        "title": "Ganzkörper A",
+        "focus": "Kniebeuge, Schräglage-Liegestütz, Hüftheben und Rumpfkontrolle"
+      },
+      "bb-full-b": {
+        "title": "Ganzkörper B",
+        "focus": "Split Squat, Liegestütz, Schultern und Waden"
+      },
+      "bb-full-c": {
+        "title": "Ganzkörper C",
+        "focus": "Kniebeuge mit erhöhten Fersen, seitlicher Ausfallschritt und Rumpf"
+      }
+    }
+  },
+  "bar-floor-calisthenics": {
+    "name": "Bar & Floor: 4-Tage-Calisthenics",
+    "description": "Ober-/Unterkörpertraining mit dem eigenen Körpergewicht, einer Klimmzugstange, freier Bodenfläche, einem stabilen Stuhl und einer Treppenstufe. Für alle, die bereits mindestens 3 saubere Klimmzüge im Ober- oder Untergriff schaffen. Vier Einheiten von etwa 40–50 Minuten.",
+    "guidelines": [
+      "Trainiere vier Tage pro Woche abwechselnd Ober- und Unterkörper, möglichst mit einem Ruhetag zwischen der zweiten und dritten Einheit. Prüfe vor jeder Einheit die Befestigung und die maximale Belastbarkeit der Stange; steig kontrolliert auf und ab.",
+      "Beginne, wenn du mindestens 3 saubere Klimmzüge im Ober- oder Untergriff schaffst; nutze bis dahin Bodyweight Base. Nordic Curls brauchen eine sichere Fixierung der Fußgelenke und ein Polster unter den Knien: Senke dich nur so weit ab, wie du es kontrollieren kannst, und fang dich mit den Händen ab.",
+      "An einer Türrahmen-Klimmzugstange ist kein Rudern möglich, daher ist das Training für oberen Rücken und hintere Schultern begrenzt. Steigere Liegestütze zu Liegestützen mit erhöhten Füßen; steigere Klimmzüge durch langsameres Absenken oder einen beladenen Rucksack, den du als Zusatzgewicht einträgst.",
+      "Die angegebenen Sätze sind Arbeitssätze. Wärme dich zuerst einige Minuten mit lockerer Bewegung auf und mache dann einen leichteren Übungssatz der ersten Übung.",
+      "Beende die meisten Sätze mit etwa 2 sauber möglichen Wiederholungen in Reserve. Behalte denselben kontrollierten Bewegungsumfang bei. Muskelversagen ist nicht erforderlich.",
+      "Trage Sätze mit Körpergewicht mit 0 Zusatzgewicht ein; die App zeigt sie als BW an. Wenn du in zwei Einheiten in jedem Satz mit sauberer Technik das obere Ende des Wiederholungsbereichs erreichst, mache die Übung schwerer, statt endlos Wiederholungen hinzuzufügen: Senke langsamer ab, wechsle zur schwereren Variante aus diesen Hinweisen oder nimm einen beladenen Rucksack und trage sein Gewicht als Zusatzlast ein.",
+      "Behalte den Plan 6–8 Wochen bei, bevor du den Fortschritt beurteilst. Wenn sich über mehrere Einheiten Ermüdung ansammelt oder die Leistung nachlässt, mache eine Woche lang weniger Sätze und leichtere Varianten. Trainiere nicht trotz Schmerzen."
+    ],
+    "workouts": {
+      "bf-upper-a": {
+        "title": "Oberkörper A: Klimmzug & Liegestütz",
+        "focus": "Vertikales Ziehen, Liegestütze, Schultern und Rumpf im Hang"
+      },
+      "bf-lower-a": {
+        "title": "Unterkörper A: Split Squat & Gesäß",
+        "focus": "Einbeinige Kniebeuge, Hip Thrust und Waden"
+      },
+      "bf-upper-b": {
+        "title": "Oberkörper B: Untergriff & Füße hoch",
+        "focus": "Klimmzüge im Untergriff, Liegestütze mit erhöhten Füßen, Dips und Beinheben"
+      },
+      "bf-lower-b": {
+        "title": "Unterkörper B: Ausfallschritt & Beinbeuger",
+        "focus": "Nordic Curl, Ausfallschritte, seitliche Kniebeuge und Rumpf"
+      }
+    }
   }
 }

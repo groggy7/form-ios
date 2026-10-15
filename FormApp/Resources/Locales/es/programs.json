@@ -231,5 +231,63 @@
         "focus": "Repite las máquinas principales con deltoides posteriores y trabajo de tronco."
       }
     }
+  },
+  "bodyweight-base": {
+    "name": "Bodyweight Base: 3 días sin equipo",
+    "description": "Entrenamiento de cuerpo completo en casa sin material de gimnasio: espacio en el suelo, una pared o encimera, una silla estable y un escalón. Para principiantes y personas que retoman el entrenamiento. Tres sesiones cortas de unos 30–40 minutos.",
+    "guidelines": [
+      "Entrena tres días a la semana con un día de descanso después de cada sesión. Antes de cada sesión, comprueba que la silla o el sofá no pueda deslizarse y que el escalón sea estable.",
+      "Sin barra ni otro material, el trabajo de espalda y bíceps es limitado y no hay curl de isquiotibiales directo. Cuando puedas, instala de forma segura una barra de dominadas y pasa a Bar & Floor.",
+      "Progresa en las flexiones bajando el apoyo de las manos paso a paso hasta llegar al suelo. Si todavía no puedes hacer 3 flexiones en el suelo, edita Cuerpo completo B para usar Flexiones inclinadas hasta que puedas.",
+      "Las series indicadas son series efectivas. Calienta primero con unos minutos de movimiento suave y después haz una serie de práctica más fácil del primer ejercicio.",
+      "Termina la mayoría de las series con unas 2 repeticiones de buena técnica en reserva. Mantén el mismo recorrido controlado. No hace falta llegar al fallo.",
+      "Registra las series con peso corporal con 0 de peso adicional; la app las muestra como BW. Cuando en dos sesiones todas las series lleguen al máximo del rango de repeticiones con buena técnica, haz el ejercicio más difícil en lugar de añadir repeticiones sin fin: baja más despacio, pasa a la variante más difícil indicada en estas notas o añade una mochila cargada y registra su peso como carga adicional.",
+      "Mantén el plan durante 6–8 semanas antes de valorar el progreso. Si se acumula fatiga o el rendimiento baja durante varias sesiones, haz menos series y variantes más fáciles durante una semana. No entrenes con dolor."
+    ],
+    "workouts": {
+      "bb-full-a": {
+        "title": "Cuerpo completo A",
+        "focus": "Sentadilla, flexiones inclinadas, elevación de cadera y control del tronco"
+      },
+      "bb-full-b": {
+        "title": "Cuerpo completo B",
+        "focus": "Sentadilla dividida, flexiones, hombros y gemelos"
+      },
+      "bb-full-c": {
+        "title": "Cuerpo completo C",
+        "focus": "Sentadilla con talones elevados, estocada lateral y tronco"
+      }
+    }
+  },
+  "bar-floor-calisthenics": {
+    "name": "Bar & Floor: calistenia de 4 días",
+    "description": "Entrenamiento de torso/pierna con peso corporal, una barra de dominadas, espacio en el suelo, una silla estable y un escalón. Para quienes ya pueden hacer al menos 3 dominadas estrictas, pronas o supinas. Cuatro sesiones de unos 40–50 minutos.",
+    "guidelines": [
+      "Entrena cuatro días a la semana alternando torso y pierna, a ser posible con un día de descanso entre la segunda y la tercera sesión. Antes de cada sesión, comprueba la fijación de la barra y su límite de peso; sube y baja con un paso controlado.",
+      "Empieza cuando puedas hacer al menos 3 dominadas estrictas, pronas o supinas; hasta entonces, usa Bodyweight Base. El curl nórdico necesita un anclaje seguro para los tobillos y una almohadilla bajo las rodillas: baja solo hasta donde puedas controlar y frénate con las manos.",
+      "Una barra de puerta no permite hacer remo, así que el trabajo de espalda alta y deltoides posterior es limitado. Progresa de flexiones a flexiones declinadas; progresa en las dominadas bajando más despacio o con una mochila cargada que registres como peso adicional.",
+      "Las series indicadas son series efectivas. Calienta primero con unos minutos de movimiento suave y después haz una serie de práctica más fácil del primer ejercicio.",
+      "Termina la mayoría de las series con unas 2 repeticiones de buena técnica en reserva. Mantén el mismo recorrido controlado. No hace falta llegar al fallo.",
+      "Registra las series con peso corporal con 0 de peso adicional; la app las muestra como BW. Cuando en dos sesiones todas las series lleguen al máximo del rango de repeticiones con buena técnica, haz el ejercicio más difícil en lugar de añadir repeticiones sin fin: baja más despacio, pasa a la variante más difícil indicada en estas notas o añade una mochila cargada y registra su peso como carga adicional.",
+      "Mantén el plan durante 6–8 semanas antes de valorar el progreso. Si se acumula fatiga o el rendimiento baja durante varias sesiones, haz menos series y variantes más fáciles durante una semana. No entrenes con dolor."
+    ],
+    "workouts": {
+      "bf-upper-a": {
+        "title": "Torso A: dominadas y flexiones",
+        "focus": "Tirón vertical, flexiones, hombros y core colgado"
+      },
+      "bf-lower-a": {
+        "title": "Inferior A: sentadilla dividida y glúteos",
+        "focus": "Sentadilla a una pierna, hip thrust y gemelos"
+      },
+      "bf-upper-b": {
+        "title": "Torso B: dominada supina y declinadas",
+        "focus": "Dominadas supinas, flexiones declinadas, fondos y elevaciones de piernas"
+      },
+      "bf-lower-b": {
+        "title": "Inferior B: estocadas e isquiotibiales",
+        "focus": "Curl nórdico, estocadas, sentadilla lateral y tronco"
+      }
+    }
   }
 }

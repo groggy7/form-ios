@@ -231,5 +231,63 @@
         "focus": "Repeat the main machines with rear delts and trunk work"
       }
     }
+  },
+  "bodyweight-base": {
+    "name": "Bodyweight Base: 3-Day No Equipment",
+    "description": "Full-body training at home without gym equipment: floor space, a wall or counter, a stable chair and a stair step. For beginners and returning lifters. Three short sessions of roughly 30–40 minutes.",
+    "guidelines": [
+      "Train three days a week with a rest day after each session. Before each session, check that the chair or sofa cannot slide and that the step is stable.",
+      "Without a bar or other equipment, back and biceps work is limited and there is no direct hamstring curl. When you can, add a securely installed pull-up bar and move to Bar & Floor.",
+      "Progress push-ups by lowering the hand support step by step until you reach the floor. If you cannot do 3 floor push-ups yet, edit Full Body B to use Incline Push-up until you can.",
+      "The listed sets are working sets. Warm up first with a few minutes of easy movement, then do an easier practice set of the first exercise.",
+      "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
+      "Log bodyweight sets with 0 added weight; the app shows them as BW. When every set reaches the top of its rep range with clean form in two sessions, make the exercise harder instead of adding endless reps: slow the lowering, use the harder variation named in these notes, or add a loaded backpack and log its weight as added load.",
+      "Keep the plan for 6–8 weeks before judging progress. If fatigue accumulates or performance drops across several sessions, use fewer sets and easier variations for a week. Do not train through pain."
+    ],
+    "workouts": {
+      "bb-full-a": {
+        "title": "Full Body A",
+        "focus": "Squat, incline push-up, hip lift and trunk control"
+      },
+      "bb-full-b": {
+        "title": "Full Body B",
+        "focus": "Split squat, push-up, shoulders and calves"
+      },
+      "bb-full-c": {
+        "title": "Full Body C",
+        "focus": "Heel-elevated squat, side lunge and trunk"
+      }
+    }
+  },
+  "bar-floor-calisthenics": {
+    "name": "Bar & Floor: 4-Day Calisthenics",
+    "description": "Upper/lower bodyweight training with a pull-up bar, floor space, a stable chair and a stair step. For people who can already do at least 3 strict pull-ups or chin-ups. Four sessions of roughly 40–50 minutes.",
+    "guidelines": [
+      "Train four days a week, alternating upper and lower body, ideally with a rest day between the second and third sessions. Before every session, check the bar’s fixing and weight limit; mount and dismount with a controlled step.",
+      "Start when you can do at least 3 strict pull-ups or chin-ups; until then, use Bodyweight Base. Nordic curls need a secure ankle anchor and knee padding: lower only as far as you can control and catch yourself with your hands.",
+      "A doorway bar does not allow rows, so upper-back and rear-shoulder work is limited. Progress push-ups to decline push-ups; progress pull-ups with a slower lowering or a loaded backpack logged as added weight.",
+      "The listed sets are working sets. Warm up first with a few minutes of easy movement, then do an easier practice set of the first exercise.",
+      "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
+      "Log bodyweight sets with 0 added weight; the app shows them as BW. When every set reaches the top of its rep range with clean form in two sessions, make the exercise harder instead of adding endless reps: slow the lowering, use the harder variation named in these notes, or add a loaded backpack and log its weight as added load.",
+      "Keep the plan for 6–8 weeks before judging progress. If fatigue accumulates or performance drops across several sessions, use fewer sets and easier variations for a week. Do not train through pain."
+    ],
+    "workouts": {
+      "bf-upper-a": {
+        "title": "Upper A: Pull-Up & Push-Up",
+        "focus": "Vertical pull, push-ups, shoulders and hanging core"
+      },
+      "bf-lower-a": {
+        "title": "Lower A: Split Squat & Glutes",
+        "focus": "Single-leg squat, hip thrust and calves"
+      },
+      "bf-upper-b": {
+        "title": "Upper B: Chin-Up & Decline",
+        "focus": "Chin-ups, decline push-ups, dips and leg raises"
+      },
+      "bf-lower-b": {
+        "title": "Lower B: Lunge & Hamstrings",
+        "focus": "Nordic curl, lunges, lateral squat and trunk"
+      }
+    }
   }
 }

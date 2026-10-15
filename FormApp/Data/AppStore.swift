@@ -239,6 +239,11 @@ public final class AppStore: ObservableObject {
         let loaded = Self.loadStoredState(persistence: persistence)
         self.persistenceEnabled = loaded.canPersist
         var loadedState = Self.rotateWeek(loaded.state, now: Date())
+        // Catalogue v10 adds the home plans once; the marker waits for a successful save below.
+        let addsHomeStarters = loaded.canPersist && !UserDefaults.standard.bool(forKey: Self.seededStartersV10Key)
+        if addsHomeStarters {
+            loadedState.programs = Self.addingMissingStarterPrograms(loadedState.programs, bundled: Self.loadBundledStarterPrograms(), ids: Self.homeStarterProgramIds)
+        }
 
         let hasCompleted = UserDefaults.standard.bool(forKey: onboardingCompletedKey)
         let hasExistingData = loaded.hasSavedState || UserDefaults.standard.object(forKey: stateKey) != nil || UserDefaults.standard.object(forKey: activeSessionKey) != nil || !loadedState.history.isEmpty
@@ -304,7 +309,9 @@ public final class AppStore: ObservableObject {
         // Auto-archive stale session if from previous day or > 12 hours old
         self.checkAndArchiveStaleSession()
         self.refreshCatalogue()
-        self.saveState(self.state)
+        if self.saveState(self.state), addsHomeStarters {
+            UserDefaults.standard.set(true, forKey: Self.seededStartersV10Key)
+        }
         if !persistenceEnabled { showErrorNotice(LanguageManager.t("notice.storageFailed")) }
 
         // Sync sound preferences
@@ -1438,7 +1445,7 @@ public final class AppStore: ObservableObject {
             do {
                 var stored = try JSONDecoder().decode(StoredAppState.self, from: data)
                 let defaults = UserDefaults.standard
-                if !defaults.bool(forKey: "seeded_starters_v9"), bundled.count == 8 {
+                if !defaults.bool(forKey: "seeded_starters_v9"), bundled.count == starterProgramFiles.count {
                     if defaults.data(forKey: "starter_programs_before_v9") == nil {
                         defaults.set(data, forKey: "starter_programs_before_v9")
                     }
@@ -1487,7 +1494,7 @@ public final class AppStore: ObservableObject {
             history: [],
             calendarHistory: nil
         )
-        if bundled.count == 8 {
+        if bundled.count == starterProgramFiles.count {
             UserDefaults.standard.set(true, forKey: "seeded_starters_v9")
         }
         return initial
@@ -1532,21 +1539,37 @@ public final class AppStore: ObservableObject {
         }
     }
 
-    public static func loadBundledStarterPrograms() -> [Program] {
-        let programNames = [
-            "01_aesthetic_hypertrophy",
-            "02_powerbuilding_strength",
-            "03_classic_ppl",
-            "04_full_body_classic",
-            "05_home_forge_dumbbells",
-            "06_athletic_performance",
-            "07_upper_lower",
-            "08_machine_foundation"
-        ]
+    static let starterProgramFiles = [
+        "01_aesthetic_hypertrophy",
+        "02_powerbuilding_strength",
+        "03_classic_ppl",
+        "04_full_body_classic",
+        "05_home_forge_dumbbells",
+        "06_athletic_performance",
+        "07_upper_lower",
+        "08_machine_foundation",
+        "09_bodyweight_base",
+        "10_bar_floor_calisthenics"
+    ]
+    static let seededStartersV10Key = "seeded_starters_v10"
+    static let homeStarterProgramIds: Set<String> = ["bodyweight-base", "bar-floor-calisthenics"]
 
+    /// Adds newly bundled plans once without replacing or reordering anything the user has.
+    /// An emptied library stays empty, matching the rule that deleting every program never recreates starters.
+    public static func addingMissingStarterPrograms(_ existing: [Program], bundled: [Program], ids: Set<String>) -> [Program] {
+        guard !existing.isEmpty else { return existing }
+        var result = existing
+        for program in bundled where ids.contains(program.id) && !result.contains(where: { $0.id == program.id }) {
+            guard result.count < ProgramEditing.maxPrograms else { break }
+            result.append(program)
+        }
+        return result
+    }
+
+    public static func loadBundledStarterPrograms() -> [Program] {
         var programs: [Program] = []
 
-        for name in programNames {
+        for name in starterProgramFiles {
             var fileData: Data? = nil
             for b in Bundle.allBundles {
                 if let url = b.url(forResource: name, withExtension: "json") ??
