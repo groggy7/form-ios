@@ -20,6 +20,8 @@ public struct TodayHeroCard: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     public static let cardHeight: CGFloat = 420
+    /// Dark suites fade the surface into the photograph on a diagonal from the top-left copy toward the lower right.
+    private static let scrimEnd = UnitPoint(x: 1, y: 0.5)
     private var textWidth: CGFloat? { dynamicTypeSize >= .xxxLarge ? nil : (themeManager.currentTheme.isDark ? 215 : 172) }
 
     private var workoutScrim: [Gradient.Stop] {
@@ -30,18 +32,25 @@ public struct TodayHeroCard: View {
                 .init(color: .clear, location: 1)]
     }
     private var recoveryScrim: [Gradient.Stop] {
-        if !themeManager.currentTheme.isDark {
-            return [.init(color: cardSurface, location: 0),
-                    .init(color: cardSurface.opacity(0.95), location: 0.24),
-                    .init(color: cardSurface.opacity(0.55), location: 0.40),
-                    .init(color: cardSurface.opacity(0.03), location: 0.56),
-                    .init(color: .clear, location: 0.64), .init(color: .clear, location: 1)]
-        }
         return [.init(color: cardSurface, location: 0),
                 .init(color: cardSurface.opacity(0.95), location: 0.26),
                 .init(color: cardSurface.opacity(0.50), location: 0.48),
                 .init(color: cardSurface.opacity(0.04), location: 0.64),
                 .init(color: .clear, location: 0.74), .init(color: .clear, location: 1)]
+    }
+    /// Light suites draw the athlete over their own warm paper, not over the photograph's black studio. Ivory glows
+    /// behind the head at the upper right and deepens diagonally into sand at the lower left, where the copy sits.
+    private var lightBackdrop: some View {
+        let sand = Color.mix(cardSurface, AppColors.border, 0.70)
+        return ZStack {
+            AppColors.surface
+            LinearGradient(stops: [
+                .init(color: sand, location: 0),
+                .init(color: sand.opacity(0.85), location: 0.20),
+                .init(color: sand.opacity(0.42), location: 0.50),
+                .init(color: sand.opacity(0), location: 0.95)
+            ], startPoint: .bottomLeading, endPoint: .topTrailing)
+        }
     }
     private var workoutVerticalScrim: [Gradient.Stop] {
         return [.init(color: .clear, location: 0), .init(color: .clear, location: 0.20),
@@ -244,9 +253,8 @@ public struct TodayHeroCard: View {
                     )
 
                 if !themeManager.currentTheme.isDark {
-                    // The open upper-right studio uses Oat's ivory, blending into beige on the left.
-                    AppColors.surface
-                    LinearGradient(stops: workoutScrim, startPoint: .leading, endPoint: .trailing)
+                    // The open upper-right studio uses Oat's ivory, blending diagonally into beige at the lower left.
+                    lightBackdrop
                 }
 
                 // Muscle artwork underlay
@@ -257,7 +265,7 @@ public struct TodayHeroCard: View {
 
                 // Light heroes put their own palette behind the athlete, without a horizontal cover.
                 if themeManager.currentTheme.isDark {
-                    LinearGradient(stops: workoutScrim, startPoint: .leading, endPoint: .trailing)
+                    LinearGradient(stops: workoutScrim, startPoint: .topLeading, endPoint: Self.scrimEnd)
                         .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
                 }
 
@@ -347,22 +355,21 @@ public struct TodayHeroCard: View {
                             .stroke(cardBorder, lineWidth: 1)
                     )
 
+                let isDark = themeManager.currentTheme.isDark
+                if !isDark { lightBackdrop }
+
                 GeometryReader { geo in
-                    Image("body_rest")
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: geo.size.width, height: geo.size.height, alignment: .topTrailing)
-                        .clipped()
+                    restPhoto(size: geo.size, subjectOnly: !isDark)
                 }
-                .opacity(!themeManager.currentTheme.isDark && dynamicTypeSize >= .xxxLarge ? 0.02 : 1)
+                .opacity(!isDark && dynamicTypeSize >= .xxxLarge ? 0.02 : 1)
                 .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
 
-                LinearGradient(
-                    stops: recoveryScrim,
-                    startPoint: .leading,
-                    endPoint: .trailing
-                )
-                .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
+                // Dark suites keep the photograph's own studio and fade it in from the surface; light suites
+                // isolate the athlete with `library_body_rest`, so no scrim crosses the photograph.
+                if isDark {
+                    LinearGradient(stops: recoveryScrim, startPoint: .topLeading, endPoint: Self.scrimEnd)
+                        .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
+                }
 
                 LinearGradient(
                     stops: [
@@ -380,6 +387,24 @@ public struct TodayHeroCard: View {
         }
         .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
         .padding(.horizontal, 20)
+    }
+}
+
+extension TodayHeroCard {
+    /// The seated photograph, filled to the card and anchored to its trailing top. With `subjectOnly` the photo is
+    /// replaced by `library_body_rest`, the same photograph with its black studio matted out to soft alpha.
+    @ViewBuilder
+    fileprivate func restPhoto(size: CGSize, subjectOnly: Bool) -> some View {
+        if subjectOnly {
+            // Nudged toward the trailing edge (the bench back has spare room there) so the knee and forearm
+            // clear the guidance note on the left.
+            Image("library_body_rest").resizable().scaledToFill()
+                .frame(width: size.width, height: size.height, alignment: .topTrailing).clipped()
+                .offset(x: size.width * 0.10)
+        } else {
+            Image("body_rest").resizable().scaledToFill()
+                .frame(width: size.width, height: size.height, alignment: .topTrailing).clipped()
+        }
     }
 }
 
