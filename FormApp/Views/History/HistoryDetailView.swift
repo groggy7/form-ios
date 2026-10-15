@@ -103,7 +103,7 @@ public struct HistoryDetailView: View {
                         HStack(alignment: .top, spacing: 10) {
                             metric(LanguageManager.t("history.sets"), "\(totalSections.reduce(0) { $0 + $1.completedSets }) / \(totalSections.reduce(0) { $0 + $1.plannedSets })")
                             metric(LanguageManager.t("history.duration"), formattedDuration(sections.reduce(0) { $0 + $1.durationSeconds }))
-                            metric(LanguageManager.t("history.volume"), "\(weightUnit.formatVolume(sections.reduce(0.0) { $0 + $1.totalVolumeKg })) \(weightUnit.label)")
+                            metric(LanguageManager.t("history.volume"), volumeText(sections.reduce(0.0) { $0 + $1.totalVolumeKg }, completedSets: sections.reduce(0) { $0 + $1.completedSets }))
                         }
                     }
                     .padding(14).background(AppColors.surface)
@@ -176,7 +176,7 @@ public struct HistoryDetailView: View {
                 + LanguageManager.formatSetsFraction(completed: section.completedSets, total: section.plannedSets))
                 .font(.system(size: detailFont)).foregroundStyle(AppColors.secondaryText)
             if !single {
-                Text(formattedDuration(section.durationSeconds) + " · \(weightUnit.formatVolume(section.totalVolumeKg)) \(weightUnit.label)")
+                Text(formattedDuration(section.durationSeconds) + " · " + volumeText(section.totalVolumeKg, completedSets: section.completedSets))
                     .font(.system(size: detailFont)).foregroundStyle(AppColors.secondaryText)
             }
             HStack(spacing: 10) {
@@ -299,6 +299,11 @@ public struct HistoryDetailView: View {
             return sets + " · \(LanguageManager.t("history.top")): \(weightUnit.formatDisplayWeight(weight)) \(weightUnit.label) × \(reps)"
         }
         return sets
+    }
+
+    private func volumeText(_ volumeKg: Double, completedSets: Int) -> String {
+        WorkoutSessionUtils.bodyweightVolumeLabel(volumeKg, completedSets: completedSets)
+            ?? "\(weightUnit.formatVolume(volumeKg)) \(weightUnit.label)"
     }
 
     private func formattedDuration(_ seconds: Int) -> String {

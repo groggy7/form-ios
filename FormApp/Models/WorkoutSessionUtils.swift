@@ -170,6 +170,11 @@ public enum WorkoutSessionUtils {
         return edited
     }
 
+    /// Completed sets without any load (bodyweight work) read as bodyweight, not as "0 kg" of volume.
+    public static func bodyweightVolumeLabel(_ volumeKg: Double, completedSets: Int) -> String? {
+        volumeKg <= 0 && completedSets > 0 ? LanguageManager.t("exercise.history.bodyweight") : nil
+    }
+
     public static func resistanceVolume(_ log: SessionExerciseLog) -> Double {
         guard !isAssisted(exerciseId: log.exerciseId, name: log.exerciseName) else { return 0 }
         return log.sets.filter { !$0.isWarmup }.reduce(0) { $0 + ($1.weightKg ?? 0) * Double($1.reps ?? 0) }

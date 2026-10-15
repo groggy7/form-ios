@@ -1,6 +1,6 @@
 {
   "aesthetic-hypertrophy": {
-    "name": "Moteur esthétique : hypertrophie de 5 jours",
+    "name": "Aesthetic Engine : hypertrophie sur 5 jours",
     "description": "Pour les haltérophiles expérimentés qui apprécient cinq jours de gym. Renforcement musculaire supérieur/inférieur équilibré avec un travail supplémentaire des épaules. Salle de sport complète ; environ 55 à 75 minutes par séance.",
     "guidelines": [
       "Entraînez-vous cinq jours par semaine et gardez deux jours pour la récupération, idéalement un entre la deuxième et la troisième séance. Espacez davantage les séances si vous récupérez mal.",
@@ -33,7 +33,7 @@
     }
   },
   "powerbuilding-strength": {
-    "name": "Lourd et construit : renforcement de la puissance de 4 jours",
+    "name": "Heavy & Built : powerbuilding sur 4 jours",
     "description": "Pour les haltérophiles intermédiaires qui souhaitent des squats, des bancs et des soulevés de terre plus forts parallèlement à la croissance musculaire. Rack, barre, banc, haltères et câble/machines ; environ 60 à 80 minutes.",
     "guidelines": [
       "Entraînez-vous quatre jours par semaine, idéalement avec un jour de repos entre la deuxième et la troisième séance. Prenez 3 minutes de repos entre les séries des exercices principaux, davantage si nécessaire. Gardez le contrôle des séries lourdes sans forcer jusqu’à l’échec.",
@@ -62,7 +62,7 @@
     }
   },
   "classic-ppl": {
-    "name": "PPL pure : hypertrophie de 6 jours",
+    "name": "Pure PPL : hypertrophie sur 6 jours",
     "description": "Pour les haltérophiles expérimentés qui peuvent régulièrement récupérer après six jours de gym. Deux séances de poussée, de traction et de jambe avec des accents distincts. Salle de sport complète ; environ 45 à 65 minutes.",
     "guidelines": [
       "Prenez un jour de repos chaque semaine. Choisissez le programme haut/bas du corps sur 4 jours si six jours sont difficiles à tenir. Les séances de tirage utilisent des rowings avec appui ; les mouvements lourds de charnière de hanche sont réservés aux séances jambes.",
@@ -99,7 +99,7 @@
     }
   },
   "full-body-classic": {
-    "name": "Fond de Teint Classique : Corps Complet 3 Jours",
+    "name": "Classic Foundation : corps entier sur 3 jours",
     "description": "Un point de départ gérable pour les débutants et les haltérophiles confirmés. Répétez les principaux mouvements au lieu d’apprendre une nouvelle routine chaque jour. Salle de sport avec haltères, banc, presse jambes et câbles ; environ 40 à 55 minutes.",
     "guidelines": [
       "Entraînez-vous des jours non consécutifs. Pendant les deux premières semaines, gardez 3–4 répétitions propres en réserve et privilégiez l’apprentissage de la mise en place avant d’augmenter la charge. Demandez de l’aide pour les appareils que vous ne connaissez pas.",
@@ -124,7 +124,7 @@
     }
   },
   "home-forge-dumbbells": {
-    "name": "Forge à domicile : 4 jours haltères",
+    "name": "Home Forge : haltères sur 4 jours",
     "description": "Entraînement supérieur/inférieur avec haltères réglable et un banc réglable ; pas de câbles, barre ou station de traction. Pour les haltérophiles à l’aise avec les bases. Environ 40 à 60 minutes.",
     "guidelines": [
       "Entraînez-vous quatre jours par semaine, idéalement avec un jour de repos entre la deuxième et la troisième séance. Utilisez une plateforme basse et stable pour le split squat avec le pied avant surélevé. Si vos haltères deviennent trop légers, visez le haut de la plage de répétitions avec une technique contrôlée. N’ajoutez pas de poids fictif dans le journal.",
@@ -153,7 +153,7 @@
     }
   },
   "athletic-performance": {
-    "name": "Moteur athlétique : 3 jours de force et de puissance",
+    "name": "Athletic Engine : force et puissance sur 3 jours",
     "description": "Pratique générale de force et de puissance faible pour les haltérophiles expérimentés, pas un plan de conditionnement spécifique au sport. Salle de sport complète avec trap bar, kettlebell et plateforme basse ; environ 50 à 65 minutes.",
     "guidelines": [
       "Entraînez-vous des jours non consécutifs en tenant compte de vos autres séances de sport. Apprenez les swings et le push press avant de suivre ce programme. Utilisez des charges légères à modérées sur ces deux exercices et arrêtez la série dès que la vitesse ou la technique se dégrade, même avant le nombre de répétitions prévu.",
@@ -179,7 +179,7 @@
     }
   },
   "upper-lower-balanced": {
-    "name": "Construction équilibrée : haut/bas sur 4 jours",
+    "name": "Balanced Build : haut/bas du corps sur 4 jours",
     "description": "Une étape pratique après un entraînement complet du corps : chaque zone principale deux fois par semaine, sans travail de force intense ou six jours d'entraînement. Salle de sport complète ; environ 50 à 70 minutes.",
     "guidelines": [
       "Entraînez-vous quatre jours par semaine en alternant haut et bas du corps, idéalement avec un jour de repos entre la deuxième et la troisième séance. Si vous déplacez une séance, conservez un jour de repos entre les séances pour une même région.",
@@ -208,7 +208,7 @@
     }
   },
   "machine-foundation": {
-    "name": "Fond de teint machine : 3 jours pour tout le corps",
+    "name": "Machine Foundation : corps entier sur 3 jours",
     "description": "Pour les débutants, les haltérophiles confirmés ou toute personne préférant les configurations de machines aux poids libres. Trois séances répétables sur tout le corps utilisant des machines et des câbles sélecteurs/traîneaux. Environ 40 à 55 minutes ; vérifiez que votre salle de sport dispose des machines répertoriées.",
     "guidelines": [
       "Entraînez-vous des jours non consécutifs. Réglez le siège, les coussins et l’amplitude avant de charger. Notez toujours la charge du même appareil, car les indications des piles de poids diffèrent d’une machine à l’autre. Gardez 3–4 répétitions en réserve pendant l’apprentissage.",

@@ -1,6 +1,6 @@
 {
   "aesthetic-hypertrophy": {
-    "name": "Motor estético: hipertrofia de 5 días",
+    "name": "Aesthetic Engine: hipertrofia de 5 días",
     "description": "Para levantadores experimentados que disfrutan de cinco días de gimnasio. Desarrollo muscular equilibrado superior/inferior con trabajo adicional de hombros. Gimnasio completo; aproximadamente entre 55 y 75 minutos por sesión.",
     "guidelines": [
       "Entrena cinco días por semana y reserva dos días para recuperarte, idealmente uno entre la segunda y la tercera sesión. Deja más tiempo entre sesiones si no te recuperas bien.",
@@ -33,7 +33,7 @@
     }
   },
   "powerbuilding-strength": {
-    "name": "Pesado y construido: construcción de energía de 4 días",
+    "name": "Heavy & Built: powerbuilding de 4 días",
     "description": "Para levantadores intermedios que desean sentadillas, banco y peso muerto más fuertes junto con crecimiento muscular. Bastidor, barra, banco, mancuernas y cable/máquinas; alrededor de 60 a 80 minutos.",
     "guidelines": [
       "Entrena cuatro días por semana, idealmente con un día de descanso entre la segunda y la tercera sesión. Descansa 3 minutos entre las series de los ejercicios principales, o más si lo necesitas. Mantén el control en las series pesadas y no fuerces repeticiones hasta el fallo.",
@@ -62,7 +62,7 @@
     }
   },
   "classic-ppl": {
-    "name": "PPL pura: hipertrofia de 6 días",
+    "name": "Pure PPL: hipertrofia de 6 días",
     "description": "Para levantadores experimentados que pueden recuperarse constantemente después de seis días de gimnasio. Dos sesiones de empujar, tirar y piernas con distintos énfasis. Gimnasio completo; alrededor de 45 a 65 minutos.",
     "guidelines": [
       "Tómate un día de descanso cada semana. Elige el plan de torso/pierna de 4 días si te cuesta mantener seis días. Las sesiones de tirón usan remos con apoyo; los movimientos pesados de bisagra de cadera se reservan para los días de piernas.",
@@ -99,7 +99,7 @@
     }
   },
   "full-body-classic": {
-    "name": "Base clásica: cuerpo completo de 3 días",
+    "name": "Classic Foundation: cuerpo completo de 3 días",
     "description": "Un punto de partida manejable para principiantes y levantadores recurrentes. Repita patrones de movimiento clave en lugar de aprender una nueva rutina todos los días. Gimnasio con mancuernas, banco, prensa de piernas y cables; alrededor de 40 a 55 minutos.",
     "guidelines": [
       "Entrena en días no consecutivos. Durante las dos primeras semanas, deja 3–4 repeticiones de buena técnica en reserva y aprende la preparación del ejercicio antes de aumentar el peso. Pide ayuda con los aparatos que no conozcas.",
@@ -124,7 +124,7 @@
     }
   },
   "home-forge-dumbbells": {
-    "name": "Forja casera: mancuernas de 4 días",
+    "name": "Home Forge: mancuernas de 4 días",
     "description": "Entrenamiento superior/inferior con mancuernas ajustable y banco ajustable; sin cables, barra ni estación de dominadas. Para levantadores que se sienten cómodos con lo básico. Aproximadamente entre 40 y 60 minutos.",
     "guidelines": [
       "Entrena cuatro días por semana, idealmente con un día de descanso entre la segunda y la tercera sesión. Usa una plataforma baja y estable para la sentadilla dividida con el pie delantero elevado. Si tus mancuernas se quedan ligeras, llega al extremo superior del rango de repeticiones con una técnica controlada. No registres peso adicional que no hayas usado.",
@@ -153,7 +153,7 @@
     }
   },
   "athletic-performance": {
-    "name": "Motor atlético: fuerza y ​​potencia de 3 días",
+    "name": "Athletic Engine: fuerza y potencia de 3 días",
     "description": "Práctica de fuerza general y potencia baja-repetición para levantadores experimentados, no un plan de acondicionamiento específico para un deporte. Gimnasio completo con trap bar, pesas rusas y plataforma baja; alrededor de 50 a 65 minutos.",
     "guidelines": [
       "Entrena en días no consecutivos y ten en cuenta tus otras sesiones deportivas. Aprende los swings y el push press antes de usar este plan. Usa cargas ligeras o moderadas en estos dos ejercicios y termina la serie en cuanto disminuya la velocidad o se deteriore la técnica, incluso antes de las repeticiones previstas.",
@@ -179,7 +179,7 @@
     }
   },
   "upper-lower-balanced": {
-    "name": "Construcción equilibrada: 4 días superior/inferior",
+    "name": "Balanced Build: torso/pierna de 4 días",
     "description": "Un siguiente paso práctico después del entrenamiento de cuerpo completo: cada área principal dos veces por semana, sin trabajo pesado de fuerza baja ni seis días de entrenamiento. Gimnasio completo; alrededor de 50 a 70 minutos.",
     "guidelines": [
       "Entrena cuatro días por semana alternando torso y pierna, idealmente con un día de descanso entre la segunda y la tercera sesión. Si mueves una sesión, conserva un día de descanso entre sesiones para la misma región.",

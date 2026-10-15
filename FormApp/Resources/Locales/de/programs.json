@@ -1,6 +1,6 @@
 {
   "aesthetic-hypertrophy": {
-    "name": "Ästhetische Engine: 5-Tage-Hypertrophie",
+    "name": "Aesthetic Engine: 5-Tage-Hypertrophie",
     "description": "Für erfahrene Kraftsportler, die fünf Tage im Fitnessstudio genießen. Ausgewogener oberer/unterer Muskelaufbau mit zusätzlicher Schulterarbeit. Voll ausgestattetes Fitnessstudio; etwa 55–75 Minuten pro Sitzung.",
     "guidelines": [
       "Trainiere fünf Tage pro Woche und halte zwei Tage zur Erholung frei, idealerweise einen zwischen der zweiten und dritten Einheit. Verlängere bei Bedarf die Pause zwischen den Einheiten.",
@@ -62,7 +62,7 @@
     }
   },
   "classic-ppl": {
-    "name": "Reines PPL: 6-Tage-Hypertrophie",
+    "name": "Pure PPL: 6-Tage-Hypertrophie",
     "description": "Für erfahrene Kraftsportler, die sich nach sechs Trainingstagen kontinuierlich erholen können. Zwei Push-, Pull- und Beineinheiten mit unterschiedlichen Schwerpunkten. Voll ausgestattetes Fitnessstudio; ca. 45–65 Minuten.",
     "guidelines": [
       "Lege jede Woche einen Ruhetag ein. Wähle den 4-Tage-Oberkörper/Unterkörper-Plan, wenn sechs Trainingstage schwer durchzuhalten sind. An Zugtagen nutzt du abgestütztes Rudern; schwere Hüftstreckübungen bleiben den Beintagen vorbehalten.",
@@ -99,7 +99,7 @@
     }
   },
   "full-body-classic": {
-    "name": "Klassische Foundation: 3-Tage-Ganzkörper",
+    "name": "Classic Foundation: 3-Tage-Ganzkörper",
     "description": "Ein überschaubarer Ausgangspunkt für Anfänger und Wiedereinsteiger. Wiederholen Sie wichtige Bewegungsmuster, anstatt jeden Tag eine neue Routine zu erlernen. Fitnessstudio mit Kurzhanteln, Bank, Beinpresse und Kabelzügen; ca. 40–55 Minuten.",
     "guidelines": [
       "Trainiere an nicht aufeinanderfolgenden Tagen. Lass in den ersten zwei Wochen 3–4 sauber mögliche Wiederholungen in Reserve und lerne zuerst die richtige Ausgangsposition, bevor du das Gewicht erhöhst. Lass dir unbekannte Geräte erklären.",
@@ -124,7 +124,7 @@
     }
   },
   "home-forge-dumbbells": {
-    "name": "Home Forge: 4-Tage Kurzhanteln",
+    "name": "Home Forge: 4 Tage Kurzhanteln",
     "description": "Ober-/Untertraining mit verstellbarem Kurzhanteln und einer verstellbaren Bank; Keine Kabel, Langhantel oder Klimmzugstation. Für Lifter, die mit den Grundlagen vertraut sind. Etwa 40–60 Minuten.",
     "guidelines": [
       "Trainiere vier Tage pro Woche, idealerweise mit einem Ruhetag zwischen der zweiten und dritten Einheit. Verwende für Split Squats mit erhöhtem vorderem Fuß eine niedrige, stabile Plattform. Sind deine Kurzhanteln zu leicht, nutze das obere Ende des Wiederholungsbereichs mit kontrollierter Technik. Trage kein zusätzliches Gewicht ein, das du nicht verwendet hast.",
@@ -153,7 +153,7 @@
     }
   },
   "athletic-performance": {
-    "name": "Athletic Engine: 3-Tage-Kraft und Kraft",
+    "name": "Athletic Engine: 3-Tage-Kraft & Schnellkraft",
     "description": "Allgemeine Kraft- und Low-Wiederholung-Kraftübungen für erfahrene Lifter, kein sportspezifischer Konditionsplan. Voll ausgestattetes Fitnessstudio mit Trap-Bar, Kettlebell und niedriger Plattform; ca. 50–65 Minuten.",
     "guidelines": [
       "Trainiere an nicht aufeinanderfolgenden Tagen und berücksichtige deine anderen Sporteinheiten. Lerne Kettlebell-Swings und Push Press, bevor du diesen Plan nutzt. Verwende bei diesen beiden Übungen leichte bis mittlere Gewichte und beende den Satz, sobald Geschwindigkeit oder Technik nachlassen, auch vor der geplanten Wiederholungszahl.",
@@ -179,7 +179,7 @@
     }
   },
   "upper-lower-balanced": {
-    "name": "Ausgewogener Körperbau: 4-Tage-Upper/Lower",
+    "name": "Balanced Build: 4-Tage-Ober-/Unterkörper",
     "description": "Ein praktischer nächster Schritt nach dem Ganzkörpertraining: jeden Hauptbereich zweimal pro Woche, ohne schweres Krafttraining mit geringer Kraftausübung oder sechs Trainingstage. Voll ausgestattetes Fitnessstudio; ca. 50–70 Minuten.",
     "guidelines": [
       "Trainiere vier Tage pro Woche abwechselnd Ober- und Unterkörper, idealerweise mit einem Ruhetag zwischen der zweiten und dritten Einheit. Wenn du eine Einheit verschiebst, halte zwischen Einheiten für dieselbe Region einen Ruhetag ein.",
@@ -208,7 +208,7 @@
     }
   },
   "machine-foundation": {
-    "name": "Maschinenfundament: 3-Tage-Ganzkörper",
+    "name": "Machine Foundation: 3-Tage-Ganzkörper",
     "description": "Für Anfänger, Wiedereinsteiger oder alle, die Maschinen-Setups den Hanteln vorziehen. Drei wiederholbare Ganzkörpersitzungen mit ausgewählten Maschinen/Schlittengeräten und Kabeln. Etwa 40–55 Minuten; Überprüfen Sie, ob Ihr Fitnessstudio über die aufgeführten Geräte verfügt.",
     "guidelines": [
       "Trainiere an nicht aufeinanderfolgenden Tagen. Stelle Sitz, Polster und Bewegungsumfang ein, bevor du Gewicht auflegst. Erfasse bei Vergleichen immer das Gewicht desselben Geräts, da die Angaben am Gewichtsblock je nach Gerät abweichen. Lass beim Lernen 3–4 Wiederholungen in Reserve.",

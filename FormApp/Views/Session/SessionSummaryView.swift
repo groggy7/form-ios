@@ -374,7 +374,8 @@ public struct SessionSummaryView: View {
 
             summaryMetricColumn(
                 icon: "square.stack.3d.up",
-                value: "\(weightUnit.formatVolume(totalVolumeKg)) \(weightUnit.label)",
+                value: WorkoutSessionUtils.bodyweightVolumeLabel(totalVolumeKg, completedSets: totalCompletedSets)
+                    ?? "\(weightUnit.formatVolume(totalVolumeKg)) \(weightUnit.label)",
                 title: LanguageManager.t("summary.estimatedVolume")
             )
         }

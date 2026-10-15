@@ -24,7 +24,8 @@
       "ab wheel",
       "rollout",
       "roll out",
-      "karın çarkı"
+      "karın çarkı",
+      "bodyweight"
     ]
   },
   {
@@ -3011,9 +3012,9 @@
       "Landmine-Press",
       "Développé landmine",
       "Press landmine",
-      "Body weight",
-      "bodyweight",
-      "vücut ağırlığı"
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -5002,7 +5003,8 @@
       "Rowing en suspension",
       "Remo en suspensión",
       "Suspender Row (male)",
-      "Suspension"
+      "Suspension",
+      "bodyweight"
     ]
   },
   {
@@ -5025,7 +5027,8 @@
       "Rowing inversé aux anneaux",
       "Remo invertido en anillas",
       "Ring Inverted Row parallel to the floor (male)",
-      "Suspension"
+      "Suspension",
+      "bodyweight"
     ]
   },
   {
@@ -5550,9 +5553,9 @@
       "Einarmiger Landmine-Press",
       "Développé landmine à un bras",
       "Press landmine a una mano",
-      "Body weight",
-      "bodyweight",
-      "vücut ağırlığı"
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -6502,9 +6505,9 @@
       "Squat contre les mines terrestres",
       "Sentadilla con minas terrestres",
       "Landmine Squat (male)",
-      "Body weight",
-      "bodyweight",
-      "vücut ağırlığı"
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {
@@ -7313,7 +7316,8 @@
       "liegestütze",
       "liegestuetze",
       "pompes",
-      "flexiones"
+      "flexiones",
+      "bodyweight"
     ]
   },
   {
@@ -7516,9 +7520,9 @@
       "Landmine Gövde Dönüşü (Landmine 180)",
       "Mine terrestre 180",
       "Mina terrestre 180",
-      "Leverage machine",
-      "machine",
-      "makine"
+      "Barbell",
+      "bb",
+      "barbel"
     ]
   },
   {

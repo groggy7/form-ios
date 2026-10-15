@@ -240,7 +240,8 @@ public struct HistoryDayPreviewCard: View {
             HStack(spacing: 8) {
                 metricTile(
                     title: LanguageManager.t("history.volume").uppercased(),
-                    value: volumeKg > 0.0 ? "\(weightUnit.formatVolume(volumeKg)) \(weightUnit.label)" : "0 \(weightUnit.label)",
+                    value: WorkoutSessionUtils.bodyweightVolumeLabel(volumeKg, completedSets: totalCompletedSets)
+                        ?? (volumeKg > 0.0 ? "\(weightUnit.formatVolume(volumeKg)) \(weightUnit.label)" : "0 \(weightUnit.label)"),
                     isPrTile: false
                 )
                 metricTile(
