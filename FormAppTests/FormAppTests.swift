@@ -610,7 +610,7 @@ final class FormAppTests: XCTestCase {
         }
         let data = try XCTUnwrap(NSDataAsset(name: "program_cover_catalog")?.data)
         let catalog = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
-        XCTAssertEqual(ProgramCover.allCases.count, 24)
+        XCTAssertEqual(ProgramCover.allCases.count, 21)
         XCTAssertEqual((catalog["covers"] as? [[String: Any]])?.count, ProgramCover.allCases.count)
     }
 

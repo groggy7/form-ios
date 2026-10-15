@@ -327,57 +327,6 @@
       "exportSha256": "b7645d3e61a1707b060bf253d07d325f3de10a97874e9a1c078d7755926142e0"
     },
     {
-      "id": "hamstrings_hinge",
-      "resourceName": "program_cover_hamstrings_hinge",
-      "programIds": [],
-      "labels": {
-        "en": "Hamstring hinge",
-        "tr": "Arka bacak çalışması",
-        "de": "Beinrückseiten-Hinge",
-        "es": "Bisagra de isquiotibiales",
-        "fr": "Charnière ischio-jambiers"
-      },
-      "tags": [
-        "hamstrings",
-        "dumbbell"
-      ],
-      "exportSha256": "2a551fc042507584f716b00cee5bf701fe8c4830848d7486bd393ce9700184ab"
-    },
-    {
-      "id": "glutes_hip_thrust",
-      "resourceName": "program_cover_glutes_hip_thrust",
-      "programIds": [],
-      "labels": {
-        "en": "Hip thrust",
-        "tr": "Kalça itiş",
-        "de": "Hip Thrust",
-        "es": "Empuje de cadera",
-        "fr": "Relevé de bassin"
-      },
-      "tags": [
-        "glutes",
-        "legs"
-      ],
-      "exportSha256": "d004855f173730b22b40e545d5a9a93461499e2f886c64b1d6aea905250128b8"
-    },
-    {
-      "id": "calves_raise",
-      "resourceName": "program_cover_calves_raise",
-      "programIds": [],
-      "labels": {
-        "en": "Calf raise",
-        "tr": "Baldır yükselişi",
-        "de": "Wadenheben",
-        "es": "Elevación de talones",
-        "fr": "Élévation des mollets"
-      },
-      "tags": [
-        "calves",
-        "legs"
-      ],
-      "exportSha256": "1f77d6813356ab6a5576de6ca9260b453c42a20c84eaf36c81718c8eab9293d5"
-    },
-    {
       "id": "core_abs_pose",
       "resourceName": "program_cover_core_abs_pose",
       "programIds": [

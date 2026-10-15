@@ -408,7 +408,15 @@ public struct Program: Identifiable, Codable, Hashable {
         self.description = description
         self.guidelines = guidelines
         self.workouts = workouts
-        self.coverId = coverId
+        self.coverId = Self.normalizedCoverId(coverId)
+    }
+
+    /// Retired leg pictures use the approved quadriceps cover in saved and imported programs.
+    public static func normalizedCoverId(_ id: String?) -> String? {
+        switch id {
+        case "hamstrings_hinge", "glutes_hip_thrust", "calves_raise": return "upper_lower"
+        default: return id
+        }
     }
 
     enum CodingKeys: String, CodingKey {
@@ -422,7 +430,7 @@ public struct Program: Identifiable, Codable, Hashable {
         self.description = try container.decodeIfPresent(String.self, forKey: .description) ?? ""
         self.guidelines = try container.decodeIfPresent([String].self, forKey: .guidelines) ?? []
         self.workouts = try container.decodeIfPresent([Workout].self, forKey: .workouts) ?? []
-        self.coverId = try container.decodeIfPresent(String.self, forKey: .coverId)
+        self.coverId = Self.normalizedCoverId(try container.decodeIfPresent(String.self, forKey: .coverId))
     }
 }
 

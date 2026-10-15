@@ -9,8 +9,7 @@ public enum ProgramCover: String, CaseIterable {
     case studioDumbbellRow = "studio_dumbbell_row", studioKettlebellSwing = "studio_kettlebell_swing", studioMachinePress = "studio_machine_press"
     case chestSidePose = "chest_side_pose", shouldersPress = "shoulders_press"
     case bicepsPeakPose = "biceps_peak_pose", tricepsSidePose = "triceps_side_pose"
-    case hamstringsHinge = "hamstrings_hinge", glutesHipThrust = "glutes_hip_thrust"
-    case calvesRaise = "calves_raise", coreAbsPose = "core_abs_pose", obliquesSidePose = "obliques_side_pose", forearmsGrip = "forearms_grip"
+    case coreAbsPose = "core_abs_pose", obliquesSidePose = "obliques_side_pose", forearmsGrip = "forearms_grip"
 
     public var assetName: String { "program_cover_\(rawValue)" }
     public var programID: String? {
@@ -29,7 +28,7 @@ public enum ProgramCover: String, CaseIterable {
         }
     }
     public static func forProgram(_ program: Program) -> ProgramCover {
-        program.coverId.flatMap(ProgramCover.init(rawValue:)) ?? forProgram(program.id)
+        Program.normalizedCoverId(program.coverId).flatMap(ProgramCover.init(rawValue:)) ?? forProgram(program.id)
     }
     public static func forProgram(_ id: String) -> ProgramCover {
         allCases.first { $0.programID == id } ?? .fullBody
