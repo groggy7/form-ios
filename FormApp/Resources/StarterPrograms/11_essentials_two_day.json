@@ -1,0 +1,199 @@
+{
+  "format": "form.program",
+  "schemaVersion": 4,
+  "program": {
+    "id": "essentials-2-day",
+    "name": "Essentials: 2-Day Full Body",
+    "description": "For weeks with only two gym days. Each session trains the whole body, so every main movement pattern is practised twice a week. Gym with dumbbells, cables and leg press; about 45–60 minutes.",
+    "guidelines": [
+      "Train two days a week with at least two rest days between the sessions. Beginners leave 3–4 good repetitions in reserve for the first two weeks.",
+      "Two sessions keep the weekly dose modest. If a third day frees up, Classic Foundation repeats these basics three times a week.",
+      "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
+      "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
+      "When every set reaches the top of its rep range with clean form in two sessions, try the smallest available weight increase while aiming to keep the same reps. If reps or form suffer, use a smaller increase or repeat the previous load. Otherwise keep the weight and build reps.",
+      "Keep the plan for 6–8 weeks before judging progress. If fatigue accumulates or performance drops across several sessions, use fewer sets and lighter loads for a week. Do not train through pain."
+    ],
+    "workouts": [
+      {
+        "id": "ess-a",
+        "day": 1,
+        "title": "Full Body A",
+        "focus": "Leg press, flat press, row and hinge",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "chest",
+          "lats",
+          "shoulders",
+          "abs"
+        ],
+        "exercises": [
+          {
+            "id": "ess-a-leg-press",
+            "exerciseId": "leg-press",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 150
+          },
+          {
+            "id": "ess-a-dumbbell-bench-press",
+            "exerciseId": "dumbbell-bench-press",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "ess-a-cable-seated-row",
+            "exerciseId": "cable-seated-row",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "ess-a-dumbbell-romanian-deadlift",
+            "exerciseId": "dumbbell-romanian-deadlift",
+            "sets": 2,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 150
+          },
+          {
+            "id": "ess-a-dumbbell-lateral-raise",
+            "exerciseId": "dumbbell-lateral-raise",
+            "sets": 2,
+            "reps": {
+              "min": 12,
+              "max": 20,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "ess-a-kneeling-cable-crunch",
+            "exerciseId": "kneeling-cable-crunch",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ],
+        "tone": "violet"
+      },
+      {
+        "id": "ess-b",
+        "day": 4,
+        "title": "Full Body B",
+        "focus": "Goblet squat, pulldown, incline press and arms",
+        "targetMuscles": [
+          "quadriceps",
+          "glutes",
+          "hamstrings",
+          "lats",
+          "chest",
+          "biceps",
+          "triceps"
+        ],
+        "exercises": [
+          {
+            "id": "ess-b-goblet-squat",
+            "exerciseId": "goblet-squat",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 150
+          },
+          {
+            "id": "ess-b-lat-pulldown",
+            "exerciseId": "lat-pulldown",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "ess-b-incline-dumbbell-press",
+            "exerciseId": "incline-dumbbell-press",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "ess-b-seated-leg-curl",
+            "exerciseId": "seated-leg-curl",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "ess-b-cable-curl",
+            "exerciseId": "cable-curl",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "ess-b-rope-triceps-pressdown",
+            "exerciseId": "rope-triceps-pressdown",
+            "sets": 2,
+            "reps": {
+              "min": 10,
+              "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          }
+        ],
+        "tone": "blue"
+      }
+    ]
+  }
+}

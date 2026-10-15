@@ -193,7 +193,9 @@
     {
       "id": "studio_chest_clasp",
       "resourceName": "program_cover_studio_chest_clasp",
-      "programIds": [],
+      "programIds": [
+        "essentials-2-day"
+      ],
       "labels": {
         "en": "Chest pose",
         "tr": "Göğüs pozu",

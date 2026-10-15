@@ -62,6 +62,8 @@
 		A90000000000000000000009 /* 09_bodyweight_base.json in Resources */ = {isa = PBXBuildFile; fileRef = A90000000000000000000007 /* 09_bodyweight_base.json */; };
 		A9000000000000000000000B /* 10_bar_floor_calisthenics.json in Resources */ = {isa = PBXBuildFile; fileRef = A9000000000000000000000A /* 10_bar_floor_calisthenics.json */; };
 		A9000000000000000000000C /* 10_bar_floor_calisthenics.json in Resources */ = {isa = PBXBuildFile; fileRef = A9000000000000000000000A /* 10_bar_floor_calisthenics.json */; };
+		A9000000000000000000000E /* 11_essentials_two_day.json in Resources */ = {isa = PBXBuildFile; fileRef = A9000000000000000000000D /* 11_essentials_two_day.json */; };
+		A9000000000000000000000F /* 11_essentials_two_day.json in Resources */ = {isa = PBXBuildFile; fileRef = A9000000000000000000000D /* 11_essentials_two_day.json */; };
 		B10000000000000000000001 /* YouTubeVideo.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000001 /* YouTubeVideo.swift */; };
 		B10000000000000000000002 /* YouTubeEmbed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000002 /* YouTubeEmbed.swift */; };
 		B10000000000000000000003 /* VideoMetadataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000003 /* VideoMetadataStore.swift */; };
@@ -202,6 +204,7 @@
 		A90000000000000000000004 /* 08_machine_foundation.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 08_machine_foundation.json; sourceTree = "<group>"; };
 		A90000000000000000000007 /* 09_bodyweight_base.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 09_bodyweight_base.json; sourceTree = "<group>"; };
 		A9000000000000000000000A /* 10_bar_floor_calisthenics.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 10_bar_floor_calisthenics.json; sourceTree = "<group>"; };
+		A9000000000000000000000D /* 11_essentials_two_day.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 11_essentials_two_day.json; sourceTree = "<group>"; };
 		B16D5A75502FFC600D48A992 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
 		C10000000000000000000001 /* ContentLocalizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentLocalizer.swift; sourceTree = "<group>"; };
 		C151465400D7E4ECECCC89F9 /* form_workout_complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_workout_complete.wav; sourceTree = "<group>"; };
@@ -325,6 +328,7 @@
 				A90000000000000000000004 /* 08_machine_foundation.json */,
 				A90000000000000000000007 /* 09_bodyweight_base.json */,
 				A9000000000000000000000A /* 10_bar_floor_calisthenics.json */,
+				A9000000000000000000000D /* 11_essentials_two_day.json */,
 			);
 			path = StarterPrograms;
 			sourceTree = "<group>";
@@ -683,6 +687,7 @@
 				A90000000000000000000005 /* 08_machine_foundation.json in Resources */,
 				A90000000000000000000008 /* 09_bodyweight_base.json in Resources */,
 				A9000000000000000000000B /* 10_bar_floor_calisthenics.json in Resources */,
+				A9000000000000000000000E /* 11_essentials_two_day.json in Resources */,
 				ECAED6399ED27E48237E4DD6 /* Assets.xcassets in Resources */,
 				1D60B4E438B90C3F62FC88A9 /* form_rest_complete.wav in Resources */,
 				9698074E6A4564D0918CD7E1 /* form_set_complete.wav in Resources */,
@@ -709,6 +714,7 @@
 				A90000000000000000000006 /* 08_machine_foundation.json in Resources */,
 				A90000000000000000000009 /* 09_bodyweight_base.json in Resources */,
 				A9000000000000000000000C /* 10_bar_floor_calisthenics.json in Resources */,
+				A9000000000000000000000F /* 11_essentials_two_day.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

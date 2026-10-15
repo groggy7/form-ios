@@ -292,5 +292,27 @@
         "focus": "Curl nordique, fentes, squat latéral et gainage"
       }
     }
+  },
+  "essentials-2-day": {
+    "name": "Essentials : corps entier sur 2 jours",
+    "description": "Pour les semaines avec seulement deux jours en salle. Chaque séance travaille tout le corps, chaque mouvement principal est donc pratiqué deux fois par semaine. Salle avec haltères, poulies et presse à cuisses ; environ 45 à 60 minutes.",
+    "guidelines": [
+      "Entraînez-vous deux jours par semaine avec au moins deux jours de repos entre les séances. Les débutants gardent 3–4 répétitions propres en réserve pendant les deux premières semaines.",
+      "Deux séances gardent une dose hebdomadaire modérée. Si un troisième jour se libère, Classic Foundation reprend ces bases trois fois par semaine.",
+      "Les séries indiquées sont des séries de travail. Échauffez-vous d’abord, puis augmentez progressivement la charge sur des séries d’échauffement avant les premiers exercices lourds.",
+      "Terminez la plupart des séries avec environ 2 répétitions propres en réserve. Gardez la même amplitude contrôlée. Il n’est pas nécessaire d’aller à l’échec.",
+      "Lorsque toutes les séries atteignent le haut de la plage de répétitions avec une technique propre lors de deux séances, essayez la plus petite augmentation de charge disponible en visant le même nombre de répétitions. Si les répétitions ou la technique se dégradent, augmentez moins ou reprenez la charge précédente. Sinon, gardez la charge et augmentez les répétitions.",
+      "Conservez le plan pendant 6 à 8 semaines avant de juger des progrès. Si la fatigue s'accumule ou si les performances diminuent au cours de plusieurs séances, utilisez moins de séries et des charges plus légères pendant une semaine. Ne vous entraînez pas dans la douleur."
+    ],
+    "workouts": {
+      "ess-a": {
+        "title": "Corps entier A",
+        "focus": "Presse à cuisses, développé à plat, rowing et charnière de hanche"
+      },
+      "ess-b": {
+        "title": "Corps entier B",
+        "focus": "Goblet squat, tirage vertical, développé incliné et bras"
+      }
+    }
   }
 }

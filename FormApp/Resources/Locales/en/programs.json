@@ -292,5 +292,27 @@
         "focus": "Nordic curl, lunges, lateral squat and trunk"
       }
     }
+  },
+  "essentials-2-day": {
+    "name": "Essentials: 2-Day Full Body",
+    "description": "For weeks with only two gym days. Each session trains the whole body, so every main movement pattern is practised twice a week. Gym with dumbbells, cables and leg press; about 45–60 minutes.",
+    "guidelines": [
+      "Train two days a week with at least two rest days between the sessions. Beginners leave 3–4 good repetitions in reserve for the first two weeks.",
+      "Two sessions keep the weekly dose modest. If a third day frees up, Classic Foundation repeats these basics three times a week.",
+      "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
+      "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
+      "When every set reaches the top of its rep range with clean form in two sessions, try the smallest available weight increase while aiming to keep the same reps. If reps or form suffer, use a smaller increase or repeat the previous load. Otherwise keep the weight and build reps.",
+      "Keep the plan for 6–8 weeks before judging progress. If fatigue accumulates or performance drops across several sessions, use fewer sets and lighter loads for a week. Do not train through pain."
+    ],
+    "workouts": {
+      "ess-a": {
+        "title": "Full Body A",
+        "focus": "Leg press, flat press, row and hinge"
+      },
+      "ess-b": {
+        "title": "Full Body B",
+        "focus": "Goblet squat, pulldown, incline press and arms"
+      }
+    }
   }
 }

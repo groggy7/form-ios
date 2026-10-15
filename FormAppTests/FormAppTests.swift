@@ -257,6 +257,7 @@ final class WeeklyProgressTests: XCTestCase {
         defaults.removeObject(forKey: "active_session_v1")
         defaults.set(true, forKey: "seeded_starters_v9")
         defaults.set(true, forKey: "seeded_starters_v10")
+        defaults.set(true, forKey: "seeded_starters_v11")
         let timestamp = ISO8601DateFormatter().string(from: Date())
         let fixture = StoredAppState(programs: [program], activeProgramId: program.id, completed: ["p:w1", "p:w2"],
             currentWeekKey: "2020-W01", history: [
@@ -1382,7 +1383,7 @@ final class FormAppTests: XCTestCase {
         XCTAssertFalse(bundled.isEmpty, "Starter programs should be bundled and loaded successfully")
         XCTAssertEqual(bundled.count, AppStore.starterProgramFiles.count, "Expected every bundled starter program")
         XCTAssertEqual(bundled.first?.name, "Aesthetic Engine: 5-Day Hypertrophy")
-        XCTAssertEqual(bundled.map { $0.workouts.count }, [5, 4, 6, 3, 4, 3, 4, 3, 3, 4])
+        XCTAssertEqual(bundled.map { $0.workouts.count }, [5, 4, 6, 3, 4, 3, 4, 3, 3, 4, 2])
         let canonical = AppStore.loadBundledExercises()
         for exercise in bundled.flatMap({ $0.workouts }).flatMap({ $0.exercises }) {
             XCTAssertNotNil(exercise.exerciseId.flatMap { canonical[$0] })
@@ -1413,6 +1414,15 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(AppStore.addingMissingStarterPrograms([], bundled: bundled, ids: AppStore.homeStarterProgramIds), [])
         let full = (0..<ProgramEditing.maxPrograms).map { Program(id: "p\($0)", name: "Plan \($0)") }
         XCTAssertEqual(AppStore.addingMissingStarterPrograms(full, bundled: bundled, ids: AppStore.homeStarterProgramIds), full)
+    }
+
+    func testEveryLaterStarterAdditionIsBundledOnceUnderItsOwnMarker() {
+        let bundledIds = Set(AppStore.loadBundledStarterPrograms().map(\.id))
+        let keys = AppStore.starterAdditions.map(\.key)
+        XCTAssertEqual(Set(keys).count, keys.count)
+        let ids = AppStore.starterAdditions.flatMap(\.ids)
+        XCTAssertEqual(Set(ids).count, ids.count, "A plan belongs to one addition only")
+        XCTAssertTrue(Set(ids).isSubset(of: bundledIds))
     }
 
     func testHomeStarterPlansLogEveryExerciseAsBodyweight() {
@@ -9700,6 +9710,7 @@ final class HistoryBreakdownTests: XCTestCase {
         defaults.removeObject(forKey: "active_session_v1")
         defaults.set(true, forKey: "seeded_starters_v9")
         defaults.set(true, forKey: "seeded_starters_v10")
+        defaults.set(true, forKey: "seeded_starters_v11")
         var carryover = record(pull, complete: false)
         carryover.startedAt = ISO8601DateFormatter().string(from: Date())
         carryover.completedAt = carryover.startedAt
@@ -9752,6 +9763,7 @@ final class HistoryBreakdownTests: XCTestCase {
         defaults.removeObject(forKey: "active_session_v1")
         defaults.set(true, forKey: "seeded_starters_v9")
         defaults.set(true, forKey: "seeded_starters_v10")
+        defaults.set(true, forKey: "seeded_starters_v11")
         let calendar = Calendar(identifier: .gregorian)
         let monday = try XCTUnwrap(WorkoutCalendar.parseDate(WorkoutCalendar.mondayOfCurrentWeek()))
         let performed = calendar.date(byAdding: .hour, value: 9, to: monday)!
@@ -10861,7 +10873,7 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
 
     private func withStore(_ body: (AppStore) throws -> Void) rethrows {
         let defaults = UserDefaults.standard
-        let keys = ["stored_app_state", "active_session_v1", "weight_unit", "is_onboarding_completed", "seeded_starters_v9", "seeded_starters_v10"]
+        let keys = ["stored_app_state", "active_session_v1", "weight_unit", "is_onboarding_completed", "seeded_starters_v9", "seeded_starters_v10", "seeded_starters_v11"]
         let saved = keys.map { ($0, defaults.object(forKey: $0)) }
         let enabled = CloudMirrorManager.shared.isEnabled
         CloudMirrorManager.shared.isEnabled = false
@@ -10873,6 +10885,7 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
         defaults.set("kg", forKey: "weight_unit")
         defaults.set(true, forKey: "seeded_starters_v9")
         defaults.set(true, forKey: "seeded_starters_v10")
+        defaults.set(true, forKey: "seeded_starters_v11")
         let store = AppStore(persistence: AppStatePersistence(inMemory: true))
         store.activeSession = nil
         try body(store)
@@ -11164,6 +11177,7 @@ final class SessionSetCountPersistenceTests: XCTestCase {
         defaults.removeObject(forKey: "active_session_v1")
         defaults.set(true, forKey: "seeded_starters_v9")
         defaults.set(true, forKey: "seeded_starters_v10")
+        defaults.set(true, forKey: "seeded_starters_v11")
         let squat = Exercise(id: "squat", name: "Barbell Back Squat", exerciseId: "barbell-back-squat",
             sets: 6, reps: RepTarget(min: 5, max: 5), restSeconds: 0)
         let program = Program(id: "six-set-squats", name: "Six-set squats", workouts: [

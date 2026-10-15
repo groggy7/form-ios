@@ -292,5 +292,27 @@
         "focus": "Nordic curl, lunge, yan squat ve gövde"
       }
     }
+  },
+  "essentials-2-day": {
+    "name": "Essentials: 2 Günlük Tüm Vücut",
+    "description": "Haftada yalnızca iki salon günü olanlar için. Her seans tüm vücudu çalıştırır; böylece her ana hareket kalıbı haftada iki kez çalışılır. Dambıl, kablo ve leg press bulunan salon; yaklaşık 45–60 dakika.",
+    "guidelines": [
+      "Haftada iki gün çalışın ve iki seans arasında en az iki gün dinlenin. Yeni başlayanlar ilk iki hafta 3–4 düzgün tekrar yedekte bıraksın.",
+      "İki seans haftalık dozu makul tutar. Üçüncü bir gün boşalırsa Classic Foundation aynı temel hareketleri haftada üç kez tekrarlar.",
+      "Listelenen setler çalışma setleridir. Önce ısının; ilk ağır hareketlerden önce ağırlığı kademeli artırarak hazırlık setleri yapın.",
+      "Çoğu seti düzgün yapabileceğiniz yaklaşık 2 tekrar kalınca bitirin. Kontrollü hareket açıklığını koruyun; tükenişe gitmek gerekmez.",
+      "İki antrenmanda tüm setlerde tekrar aralığının üst sınırına düzgün formla ulaştığınızda aynı tekrarları hedefleyerek mümkün olan en küçük ağırlık artışını deneyin. Tekrarlar veya form bozulursa daha küçük bir artış kullanın ya da önceki ağırlığı tekrarlayın. Aksi halde aynı ağırlıkla tekrarları artırın.",
+      "Gelişimi değerlendirmeden önce planı 6–8 hafta uygulayın. Yorgunluk birikirse veya birkaç antrenman boyunca performans düşerse bir hafta setleri ve ağırlığı azaltın. Ağrıya rağmen devam etmeyin."
+    ],
+    "workouts": {
+      "ess-a": {
+        "title": "Tüm Vücut A",
+        "focus": "Leg press, düz itiş, row ve kalça menteşesi"
+      },
+      "ess-b": {
+        "title": "Tüm Vücut B",
+        "focus": "Goblet squat, üstten çekiş, eğik itiş ve kollar"
+      }
+    }
   }
 }

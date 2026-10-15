@@ -292,5 +292,27 @@
         "focus": "Nordic Curl, Ausfallschritte, seitliche Kniebeuge und Rumpf"
       }
     }
+  },
+  "essentials-2-day": {
+    "name": "Essentials: 2-Tage-Ganzkörper",
+    "description": "Für Wochen mit nur zwei Trainingstagen im Studio. Jede Einheit trainiert den ganzen Körper, sodass jedes wichtige Bewegungsmuster zweimal pro Woche geübt wird. Studio mit Kurzhanteln, Kabelzügen und Beinpresse; etwa 45–60 Minuten.",
+    "guidelines": [
+      "Trainiere zwei Tage pro Woche mit mindestens zwei Ruhetagen zwischen den Einheiten. Anfänger lassen in den ersten zwei Wochen 3–4 saubere Wiederholungen in Reserve.",
+      "Zwei Einheiten halten die Wochenmenge überschaubar. Wenn ein dritter Tag frei wird, wiederholt Classic Foundation diese Grundlagen dreimal pro Woche.",
+      "Die angegebenen Sätze sind Arbeitssätze. Wärme dich zuerst auf und steigere das Gewicht in vorbereitenden Aufwärmsätzen, bevor du mit den ersten schweren Übungen beginnst.",
+      "Beende die meisten Sätze mit etwa 2 sauber möglichen Wiederholungen in Reserve. Behalte denselben kontrollierten Bewegungsumfang bei. Muskelversagen ist nicht erforderlich.",
+      "Wenn du in zwei Einheiten in jedem Satz das obere Ende des Wiederholungsbereichs mit sauberer Technik erreichst, probiere die kleinste verfügbare Gewichtserhöhung und versuche, dieselbe Wiederholungszahl zu halten. Lassen Wiederholungen oder Technik nach, erhöhe weniger oder wiederhole das bisherige Gewicht. Andernfalls behalte das Gewicht bei und steigere die Wiederholungen.",
+      "Behalten Sie den Plan sechs bis acht Wochen lang bei, bevor Sie den Fortschritt beurteilen. Wenn sich über mehrere Sitzungen hinweg Ermüdungserscheinungen häufen oder die Leistung nachlässt, verwenden Sie eine Woche lang weniger Sätze und leichtere Belastungen. Trainieren Sie nicht unter Schmerzen."
+    ],
+    "workouts": {
+      "ess-a": {
+        "title": "Ganzkörper A",
+        "focus": "Beinpresse, Flachbankdrücken, Rudern und Hüftbeugen"
+      },
+      "ess-b": {
+        "title": "Ganzkörper B",
+        "focus": "Goblet Squat, Latziehen, Schrägdrücken und Arme"
+      }
+    }
   }
 }

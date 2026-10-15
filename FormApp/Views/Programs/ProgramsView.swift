@@ -24,6 +24,7 @@ public enum ProgramCover: String, CaseIterable {
         case .machines: return "machine-foundation"
         case .coreAbsPose: return "bodyweight-base"
         case .tricepsSidePose: return "bar-floor-calisthenics"
+        case .studioChestClasp: return "essentials-2-day"
         default: return nil // Optional library covers never claim a built-in program mapping.
         }
     }

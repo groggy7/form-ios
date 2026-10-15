@@ -239,10 +239,13 @@ public final class AppStore: ObservableObject {
         let loaded = Self.loadStoredState(persistence: persistence)
         self.persistenceEnabled = loaded.canPersist
         var loadedState = Self.rotateWeek(loaded.state, now: Date())
-        // Catalogue v10 adds the home plans once; the marker waits for a successful save below.
-        let addsHomeStarters = loaded.canPersist && !UserDefaults.standard.bool(forKey: Self.seededStartersV10Key)
-        if addsHomeStarters {
-            loadedState.programs = Self.addingMissingStarterPrograms(loadedState.programs, bundled: Self.loadBundledStarterPrograms(), ids: Self.homeStarterProgramIds)
+        // Plans added after the v9 refresh arrive once each; markers wait for a successful save below.
+        let pendingStarterAdditions = loaded.canPersist ? Self.starterAdditions.filter { !UserDefaults.standard.bool(forKey: $0.key) } : []
+        if !pendingStarterAdditions.isEmpty {
+            let bundled = Self.loadBundledStarterPrograms()
+            for addition in pendingStarterAdditions {
+                loadedState.programs = Self.addingMissingStarterPrograms(loadedState.programs, bundled: bundled, ids: addition.ids)
+            }
         }
 
         let hasCompleted = UserDefaults.standard.bool(forKey: onboardingCompletedKey)
@@ -309,8 +312,8 @@ public final class AppStore: ObservableObject {
         // Auto-archive stale session if from previous day or > 12 hours old
         self.checkAndArchiveStaleSession()
         self.refreshCatalogue()
-        if self.saveState(self.state), addsHomeStarters {
-            UserDefaults.standard.set(true, forKey: Self.seededStartersV10Key)
+        if self.saveState(self.state) {
+            for addition in pendingStarterAdditions { UserDefaults.standard.set(true, forKey: addition.key) }
         }
         if !persistenceEnabled { showErrorNotice(LanguageManager.t("notice.storageFailed")) }
 
@@ -1549,10 +1552,16 @@ public final class AppStore: ObservableObject {
         "07_upper_lower",
         "08_machine_foundation",
         "09_bodyweight_base",
-        "10_bar_floor_calisthenics"
+        "10_bar_floor_calisthenics",
+        "11_essentials_two_day"
     ]
-    static let seededStartersV10Key = "seeded_starters_v10"
     static let homeStarterProgramIds: Set<String> = ["bodyweight-base", "bar-floor-calisthenics"]
+    /// Plans added after the v9 refresh, oldest first. Each marker adds its plans once, so a
+    /// plan the user deleted later is never re-added by a newer marker.
+    static let starterAdditions: [(key: String, ids: Set<String>)] = [
+        ("seeded_starters_v10", homeStarterProgramIds),
+        ("seeded_starters_v11", ["essentials-2-day"]),
+    ]
 
     /// Adds newly bundled plans once without replacing or reordering anything the user has.
     /// An emptied library stays empty, matching the rule that deleting every program never recreates starters.

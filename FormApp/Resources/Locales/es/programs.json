@@ -292,5 +292,27 @@
         "focus": "Curl nórdico, estocadas, sentadilla lateral y tronco"
       }
     }
+  },
+  "essentials-2-day": {
+    "name": "Essentials: cuerpo completo de 2 días",
+    "description": "Para semanas con solo dos días de gimnasio. Cada sesión entrena todo el cuerpo, así que cada patrón de movimiento principal se practica dos veces por semana. Gimnasio con mancuernas, poleas y prensa de piernas; unos 45–60 minutos.",
+    "guidelines": [
+      "Entrena dos días a la semana con al menos dos días de descanso entre las sesiones. Los principiantes dejan 3–4 repeticiones limpias en reserva durante las dos primeras semanas.",
+      "Dos sesiones mantienen una dosis semanal moderada. Si queda libre un tercer día, Classic Foundation repite estos básicos tres veces por semana.",
+      "Las series indicadas son series efectivas. Calienta primero y aumenta la carga de forma progresiva en series de aproximación antes de los primeros ejercicios pesados.",
+      "Termina la mayoría de las series con unas 2 repeticiones de buena técnica en reserva. Mantén el mismo recorrido controlado. No hace falta llegar al fallo.",
+      "Cuando todas las series alcancen el extremo superior del rango de repeticiones con buena técnica en dos sesiones, prueba el menor aumento de peso disponible intentando mantener las mismas repeticiones. Si empeoran las repeticiones o la técnica, aumenta menos o repite la carga anterior. Si no se cumple esa condición, mantén el peso y aumenta las repeticiones.",
+      "Mantenga el plan durante 6 a 8 semanas antes de juzgar el progreso. Si la fatiga se acumula o el rendimiento disminuye en varias sesiones, utilice menos series y cargas más ligeras durante una semana. No entrenes a través del dolor."
+    ],
+    "workouts": {
+      "ess-a": {
+        "title": "Cuerpo completo A",
+        "focus": "Prensa de piernas, press plano, remo y bisagra de cadera"
+      },
+      "ess-b": {
+        "title": "Cuerpo completo B",
+        "focus": "Sentadilla goblet, jalón, press inclinado y brazos"
+      }
+    }
   }
 }
