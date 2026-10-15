@@ -37,6 +37,10 @@ public enum ProgramCover: String, CaseIterable {
 
 /// One measured height for every card, including translated text and Dynamic Type.
 enum ProgramHeroLayout {
+    static let titleFraction: CGFloat = 0.56
+    static func heading(_ name: String) -> String {
+        name.replacingOccurrences(of: "(?<=\\d)-(?=\\p{L})", with: "\u{2011}", options: .regularExpression)
+    }
     static func descriptionFraction(width: CGFloat, bodySize: CGFloat) -> CGFloat {
         bodySize > 13 * 1.15 || width < 300 ? 0.84 : 0.66
     }
@@ -48,12 +52,15 @@ enum ProgramHeroLayout {
             options: [.usesLineFragmentOrigin, .usesFontLeading],
             attributes: [.font: UIFont.systemFont(ofSize: size, weight: weight), .paragraphStyle: paragraph], context: nil).height)
     }
+    static func headerHeight(programs: [Program], width: CGFloat, titleSize: CGFloat) -> CGFloat {
+        programs.map { textHeight(heading($0.displayName), width: max(1, (width - 32) * titleFraction), size: titleSize, weight: .semibold, spacing: 2) }.max() ?? 0
+    }
     static func height(programs: [Program], width: CGFloat, titleSize: CGFloat, bodySize: CGFloat, daysSize: CGFloat, countsSize: CGFloat = 11) -> CGFloat {
         let contentWidth = max(1, width - 32)
         let footerWidth = max(1, contentWidth - 96)
+        let title = headerHeight(programs: programs, width: width, titleSize: titleSize)
         return programs.reduce(CGFloat(216)) { current, program in
-            let title = textHeight(program.displayName, width: contentWidth - 56, size: titleSize, weight: .semibold, spacing: 2)
-            let description = program.displayDescription.isEmpty ? 0 : 8 + textHeight(program.displayDescription, width: contentWidth * descriptionFraction(width: width, bodySize: bodySize), size: bodySize, weight: .regular, spacing: 3)
+            let description = program.displayDescription.isEmpty ? 0 : 20 + textHeight(program.displayDescription, width: contentWidth * descriptionFraction(width: width, bodySize: bodySize), size: bodySize, weight: .regular, spacing: 3)
             let days = LanguageManager.t("programs.daysPerWeek", ["days": "\(program.workouts.filter { !$0.exercises.isEmpty }.count)"])
             let counts = LanguageManager.t("programs.counts", [
                 "workouts": program.workouts.count,
@@ -62,7 +69,7 @@ enum ProgramHeroLayout {
             let daysHeight = textHeight(days, width: max(1, footerWidth - 24), size: daysSize, weight: .semibold)
             let countsHeight = textHeight(counts, width: footerWidth, size: countsSize, weight: .regular)
             let footer = max(40, daysHeight + 4 + countsHeight)
-            return max(current, 32 + title + description + 10 + footer)
+            return max(current, 32 + title + description + 16 + footer)
         }
     }
 }
@@ -101,6 +108,7 @@ public struct ProgramsView: View {
         NavigationStack {
             GeometryReader { geometry in
                 let width = max(1, geometry.size.width - 40)
+                let headerHeight = ProgramHeroLayout.headerHeight(programs: store.state.programs, width: width, titleSize: titleSize)
                 let height = ProgramHeroLayout.height(programs: store.state.programs, width: width, titleSize: titleSize, bodySize: bodySize, daysSize: daysSize, countsSize: countsSize)
                 ScrollView {
                     VStack(spacing: 14) {
@@ -130,7 +138,7 @@ public struct ProgramsView: View {
                         }
                         ForEach(store.state.programs) { program in
                             ProgramHeroCard(program: program, isActive: program.id == store.state.activeProgramId,
-                                width: width, height: height, titleSize: titleSize, bodySize: bodySize, daysSize: daysSize, countsSize: countsSize,
+                                width: width, height: height, titleSize: titleSize, bodySize: bodySize, daysSize: daysSize, countsSize: countsSize, headerHeight: headerHeight,
                                 onSelect: {
                                     if menuProgramId != nil {
                                         withAnimation(.spring(response: 0.2, dampingFraction: 0.85)) {
@@ -267,6 +275,7 @@ struct ProgramHeroCard: View {
     let bodySize: CGFloat
     let daysSize: CGFloat
     var countsSize: CGFloat = 11
+    let headerHeight: CGFloat
     let onSelect: () -> Void
     let onEdit: () -> Void
     var onShare: (() -> Void)? = nil
@@ -311,6 +320,7 @@ struct ProgramHeroCard: View {
         bodySize: CGFloat,
         daysSize: CGFloat,
         countsSize: CGFloat = 11,
+        headerHeight: CGFloat? = nil,
         onSelect: @escaping () -> Void,
         onEdit: @escaping () -> Void,
         onShare: (() -> Void)? = nil,
@@ -328,6 +338,7 @@ struct ProgramHeroCard: View {
         self.bodySize = bodySize
         self.daysSize = daysSize
         self.countsSize = countsSize
+        self.headerHeight = headerHeight ?? ProgramHeroLayout.headerHeight(programs: [program], width: width, titleSize: titleSize)
         self.onSelect = onSelect
         self.onEdit = onEdit
         self.onShare = onShare
@@ -359,14 +370,15 @@ struct ProgramHeroCard: View {
             // The switch button and menu button are siblings, so menu taps never switch programs.
             Button(action: onSelect) {
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(program.displayName).font(.system(size: titleSize, weight: .semibold)).lineSpacing(2)
-                        .foregroundStyle(AppColors.text).frame(width: max(1, contentWidth - 56), alignment: .leading).fixedSize(horizontal: false, vertical: true)
+                    Text(ProgramHeroLayout.heading(program.displayName)).font(.system(size: titleSize, weight: .semibold)).lineSpacing(2)
+                        .foregroundStyle(AppColors.text).frame(width: max(1, contentWidth * ProgramHeroLayout.titleFraction), alignment: .leading).fixedSize(horizontal: false, vertical: true)
+                        .frame(height: headerHeight, alignment: .topLeading)
                     if !program.displayDescription.isEmpty {
                         Text(program.displayDescription).font(.system(size: bodySize)).lineSpacing(3)
                             .foregroundStyle(AppColors.secondaryText).frame(width: contentWidth * ProgramHeroLayout.descriptionFraction(width: width, bodySize: bodySize), alignment: .leading)
-                            .fixedSize(horizontal: false, vertical: true).padding(.top, 8)
+                            .fixedSize(horizontal: false, vertical: true).padding(.top, 20)
                     }
-                    Spacer(minLength: 10)
+                    Spacer(minLength: 16)
                     HStack(alignment: .center, spacing: 0) {
                         VStack(alignment: .leading, spacing: 4) {
                             HStack(spacing: 6) {

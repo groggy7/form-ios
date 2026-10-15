@@ -622,11 +622,12 @@ final class FormAppTests: XCTestCase {
         for (language, screenWidth, scale) in [("en", CGFloat(393), CGFloat(1)), ("tr", CGFloat(320), CGFloat(1.3))] {
             LanguageManager.setLanguage(language)
             let width = screenWidth - 40
+            let headerHeight = ProgramHeroLayout.headerHeight(programs: programs, width: width, titleSize: 18 * scale)
             let height = ProgramHeroLayout.height(programs: programs, width: width, titleSize: 18 * scale, bodySize: 13 * scale, daysSize: 12 * scale, countsSize: 11 * scale)
             XCTAssertGreaterThanOrEqual(height, 216)
             for program in programs {
                 let content = ProgramHeroCard(program: program, isActive: program.id == programs[0].id,
-                    width: width, height: height, titleSize: 18 * scale, bodySize: 13 * scale, daysSize: 12 * scale, countsSize: 11 * scale,
+                    width: width, height: height, titleSize: 18 * scale, bodySize: 13 * scale, daysSize: 12 * scale, countsSize: 11 * scale, headerHeight: headerHeight,
                     onSelect: {}, onEdit: {})
                     .padding(20).background(AppColors.background)
                 let renderer = ImageRenderer(content: content)
