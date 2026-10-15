@@ -7,6 +7,7 @@
     "description": "For experienced lifters who can consistently recover from six gym days. Two push, pull and leg sessions with distinct emphases. Full gym; about 45–65 minutes.",
     "guidelines": [
       "Take one rest day each week. Choose the 4-day Upper/Lower plan if six days is hard to sustain. Pull days use supported rows, leaving heavy hip hinges to leg days.",
+      "On the assisted pull-up machine, log the counterweight; needing less assistance is progress. If bar dips bother your shoulders, shorten the range or edit the exercise to Assisted Dip Machine.",
       "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
       "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
       "When every set reaches the top of its rep range with clean form in two sessions, try the smallest available weight increase while aiming to keep the same reps. If reps or form suffer, use a smaller increase or repeat the previous load. Otherwise keep the weight and build reps.",
@@ -91,7 +92,7 @@
         "id": "ppl-pull-1",
         "day": 2,
         "title": "Pull A: Lats",
-        "focus": "Vertical pull, supported row and biceps",
+        "focus": "Assisted pull-up, pulldown, supported row and biceps",
         "targetMuscles": [
           "lats",
           "trapezius",
@@ -99,6 +100,18 @@
           "biceps"
         ],
         "exercises": [
+          {
+            "id": "ppl-pull-1-assisted-pull-up",
+            "exerciseId": "assisted-pull-up",
+            "sets": 2,
+            "reps": {
+              "min": 6,
+              "max": 10,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 120
+          },
           {
             "id": "ppl-pull-1-lat-pulldown",
             "exerciseId": "lat-pulldown",
@@ -229,7 +242,7 @@
         "id": "ppl-push-2",
         "day": 4,
         "title": "Push B: Incline",
-        "focus": "Incline press, chest isolation and overhead triceps",
+        "focus": "Incline press, dips, chest isolation and overhead triceps",
         "targetMuscles": [
           "chest",
           "shoulders",
@@ -249,12 +262,12 @@
             "restSeconds": 120
           },
           {
-            "id": "ppl-push-2-lever-chest-press",
-            "exerciseId": "lever-chest-press",
+            "id": "ppl-push-2-chest-dip",
+            "exerciseId": "chest-dip",
             "sets": 2,
             "reps": {
-              "min": 10,
-              "max": 15,
+              "min": 6,
+              "max": 12,
               "toFailure": false,
               "perSide": false
             },
@@ -320,6 +333,18 @@
               "max": 12,
               "toFailure": false,
               "perSide": false
+            },
+            "restSeconds": 120
+          },
+          {
+            "id": "ppl-pull-2-one-arm-dumbbell-row",
+            "exerciseId": "one-arm-dumbbell-row",
+            "sets": 2,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": true
             },
             "restSeconds": 120
           },

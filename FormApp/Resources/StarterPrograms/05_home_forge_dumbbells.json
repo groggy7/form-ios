@@ -7,6 +7,7 @@
     "description": "Upper/lower training with adjustable dumbbells and an adjustable bench; no cables, barbell or pull-up station. For lifters comfortable with the basics. About 40–60 minutes.",
     "guidelines": [
       "Train four days a week, ideally with a rest day between the second and third sessions. Use a stable low platform for the front-foot-elevated split squat. If your dumbbells become too light, use the top of the rep range with controlled form; do not invent extra weight in the log.",
+      "Do single-leg calf raises on a step; once bodyweight is easy, hold a dumbbell on the working side and log it as added weight.",
       "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
       "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
       "When every set reaches the top of its rep range with clean form in two sessions, try the smallest available weight increase while aiming to keep the same reps. If reps or form suffer, use a smaller increase or repeat the previous load. Otherwise keep the weight and build reps.",
@@ -105,11 +106,12 @@
         "id": "hf-lower-a",
         "day": 2,
         "title": "Lower A: Squat & Hinge",
-        "focus": "Squat, Romanian deadlift and unilateral legs",
+        "focus": "Squat, Romanian deadlift, split squat and calves",
         "targetMuscles": [
           "quadriceps",
           "glutes",
-          "hamstrings"
+          "hamstrings",
+          "calves"
         ],
         "exercises": [
           {
@@ -159,6 +161,18 @@
               "perSide": false
             },
             "restSeconds": 120
+          },
+          {
+            "id": "hf-lower-a-single-leg-calf-raise",
+            "exerciseId": "single-leg-calf-raise",
+            "sets": 2,
+            "reps": {
+              "min": 8,
+              "max": 15,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 60
           }
         ],
         "tone": "blue"
@@ -255,16 +269,17 @@
         "id": "hf-lower-b",
         "day": 5,
         "title": "Lower B: Single-Leg Strength",
-        "focus": "Split squat, hinge and glute bridge",
+        "focus": "Step-up, single-leg hinge, leg curl and calves",
         "targetMuscles": [
           "quadriceps",
           "glutes",
-          "hamstrings"
+          "hamstrings",
+          "calves"
         ],
         "exercises": [
           {
-            "id": "hf-lower-b-dumbbell-split-squat-front-foot-elevanted",
-            "exerciseId": "dumbbell-split-squat-front-foot-elevanted",
+            "id": "hf-lower-b-dumbbell-step-up",
+            "exerciseId": "dumbbell-step-up",
             "sets": 3,
             "reps": {
               "min": 8,
@@ -272,11 +287,23 @@
               "toFailure": false,
               "perSide": true
             },
-            "restSeconds": 120
+            "restSeconds": 90
           },
           {
-            "id": "hf-lower-b-dumbbell-romanian-deadlift",
-            "exerciseId": "dumbbell-romanian-deadlift",
+            "id": "hf-lower-b-dumbbell-single-leg-romanian-deadlift",
+            "exerciseId": "dumbbell-single-leg-romanian-deadlift",
+            "sets": 3,
+            "reps": {
+              "min": 8,
+              "max": 12,
+              "toFailure": false,
+              "perSide": true
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "hf-lower-b-dumbbell-lying-leg-curl",
+            "exerciseId": "dumbbell-lying-leg-curl",
             "sets": 3,
             "reps": {
               "min": 10,
@@ -284,31 +311,31 @@
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 150
+            "restSeconds": 90
           },
           {
-            "id": "hf-lower-b-goblet-squat",
-            "exerciseId": "goblet-squat",
+            "id": "hf-lower-b-dumbbell-elevated-heel-goblet-squat",
+            "exerciseId": "dumbbell-elevated-heel-goblet-squat",
             "sets": 2,
             "reps": {
-              "min": 12,
+              "min": 10,
               "max": 15,
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 120
+            "restSeconds": 90
           },
           {
-            "id": "hf-lower-b-dumbbell-glute-bridge",
-            "exerciseId": "dumbbell-glute-bridge",
+            "id": "hf-lower-b-single-leg-calf-raise",
+            "exerciseId": "single-leg-calf-raise",
             "sets": 2,
             "reps": {
-              "min": 12,
-              "max": 20,
+              "min": 8,
+              "max": 15,
               "toFailure": false,
-              "perSide": false
+              "perSide": true
             },
-            "restSeconds": 120
+            "restSeconds": 60
           }
         ],
         "tone": "lime"

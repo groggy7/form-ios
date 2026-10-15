@@ -91,7 +91,7 @@
         "id": "aesthetic-pull-a",
         "day": 2,
         "title": "Back & Biceps",
-        "focus": "Vertical pull, supported row and rear delts",
+        "focus": "Vertical pull, supported row, rear and side delts",
         "targetMuscles": [
           "lats",
           "trapezius",
@@ -127,6 +127,18 @@
             "id": "aesthetic-pull-a-lever-seated-reverse-fly",
             "exerciseId": "lever-seated-reverse-fly",
             "sets": 3,
+            "reps": {
+              "min": 12,
+              "max": 20,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "aesthetic-pull-a-lever-lateral-raise",
+            "exerciseId": "lever-lateral-raise",
+            "sets": 2,
             "reps": {
               "min": 12,
               "max": 20,

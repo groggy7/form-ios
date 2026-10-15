@@ -7,6 +7,7 @@
     "description": "A manageable starting point for beginners and returning lifters. Repeat key movement patterns instead of learning a new routine every day. Gym with dumbbells, bench, leg press and cables; about 40–55 minutes.",
     "guidelines": [
       "Use non-consecutive days. For the first two weeks, leave 3–4 good repetitions in reserve and prioritize learning the setup over adding weight. Ask for help with unfamiliar equipment.",
+      "If you cannot do 5 push-ups yet, place your hands on a bench or edit Full Body C to Incline Push-up.",
       "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
       "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
       "When every set reaches the top of its rep range with clean form in two sessions, try the smallest available weight increase while aiming to keep the same reps. If reps or form suffer, use a smaller increase or repeat the previous load. Otherwise keep the weight and build reps.",
@@ -170,7 +171,7 @@
         "id": "fb-workout-c",
         "day": 5,
         "title": "Full Body C",
-        "focus": "Repeat the basics with calves and trunk work",
+        "focus": "Leg press, push-ups, supported row, calves and trunk",
         "targetMuscles": [
           "quadriceps",
           "glutes",
@@ -194,20 +195,20 @@
             "restSeconds": 150
           },
           {
-            "id": "fb-workout-c-dumbbell-bench-press",
-            "exerciseId": "dumbbell-bench-press",
+            "id": "fb-workout-c-push-ups",
+            "exerciseId": "push-ups",
             "sets": 2,
             "reps": {
-              "min": 8,
+              "min": 5,
               "max": 12,
               "toFailure": false,
               "perSide": false
             },
-            "restSeconds": 120
+            "restSeconds": 90
           },
           {
-            "id": "fb-workout-c-cable-seated-row",
-            "exerciseId": "cable-seated-row",
+            "id": "fb-workout-c-chest-supported-dumbbell-row",
+            "exerciseId": "chest-supported-dumbbell-row",
             "sets": 2,
             "reps": {
               "min": 10,

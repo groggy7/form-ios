@@ -16,7 +16,7 @@
       },
       "aesthetic-pull-a": {
         "title": "Sırt ve Ön Kol",
-        "focus": "Dikey çekiş, destekli row ve arka omuz"
+        "focus": "Dikey çekiş, destekli row, arka ve yan omuz"
       },
       "aesthetic-legs-a": {
         "title": "Ön Bacak ve Baldır",
@@ -66,6 +66,7 @@
     "description": "Haftada altı salon gününden düzenli toparlanabilen deneyimli sporcular için. Farklı odaklarla ikişer itiş, çekiş ve bacak seansı. Tam donanımlı salon; yaklaşık 45–65 dakika.",
     "guidelines": [
       "Haftada bir gün dinlenin. Altı günü sürdürmek zorsa 4 günlük Üst/Alt Vücut planını seçin. Çekiş günlerinde destekli row kullanılır; ağır kalça menteşesi hareketleri bacak günlerindedir.",
+      "Destekli barfiks makinesinde karşı ağırlığı kaydedin; daha az destekle yapabilmek ilerlemedir. Paralel bar dips omuzlarınızı rahatsız ederse hareket açıklığını kısaltın veya hareketi Destekli Dips Makinesi olarak düzenleyin.",
       "Listelenen setler çalışma setleridir. Önce ısının; ilk ağır hareketlerden önce ağırlığı kademeli artırarak hazırlık setleri yapın.",
       "Çoğu seti düzgün yapabileceğiniz yaklaşık 2 tekrar kalınca bitirin. Kontrollü hareket açıklığını koruyun; tükenişe gitmek gerekmez.",
       "İki antrenmanda tüm setlerde tekrar aralığının üst sınırına düzgün formla ulaştığınızda aynı tekrarları hedefleyerek mümkün olan en küçük ağırlık artışını deneyin. Tekrarlar veya form bozulursa daha küçük bir artış kullanın ya da önceki ağırlığı tekrarlayın. Aksi halde aynı ağırlıkla tekrarları artırın.",
@@ -78,7 +79,7 @@
       },
       "ppl-pull-1": {
         "title": "Çekiş A: Kanat",
-        "focus": "Dikey çekiş, destekli row ve ön kol"
+        "focus": "Destekli barfiks, üstten çekiş, destekli row ve ön kol"
       },
       "ppl-legs-1": {
         "title": "Bacak A: Squat",
@@ -86,7 +87,7 @@
       },
       "ppl-push-2": {
         "title": "İtiş B: Eğik Sehpa",
-        "focus": "Eğik itiş, göğüs izolasyonu ve baş üstü arka kol"
+        "focus": "Eğik itiş, dips, göğüs izolasyonu ve baş üstü arka kol"
       },
       "ppl-pull-2": {
         "title": "Çekiş B: Row",
@@ -103,6 +104,7 @@
     "description": "Yeni başlayanlar ve spora dönenler için yönetilebilir bir başlangıç. Her gün yeni bir rutin yerine temel hareketleri tekrar edin. Dambıl, sehpa, leg press ve kablo bulunan salon; yaklaşık 40–55 dakika.",
     "guidelines": [
       "Ardışık olmayan günlerde çalışın. İlk iki hafta 3–4 düzgün tekrar yedekte bırakın; ağırlık artırmaktan önce kurulumu öğrenin. Tanımadığınız ekipman için yardım alın.",
+      "Henüz 5 şınav yapamıyorsanız ellerinizi bir sehpaya koyun veya Tüm Vücut C’deki hareketi Eğimli Şınav olarak düzenleyin.",
       "Listelenen setler çalışma setleridir. Önce ısının; ilk ağır hareketlerden önce ağırlığı kademeli artırarak hazırlık setleri yapın.",
       "Çoğu seti düzgün yapabileceğiniz yaklaşık 2 tekrar kalınca bitirin. Kontrollü hareket açıklığını koruyun; tükenişe gitmek gerekmez.",
       "İki antrenmanda tüm setlerde tekrar aralığının üst sınırına düzgün formla ulaştığınızda aynı tekrarları hedefleyerek mümkün olan en küçük ağırlık artışını deneyin. Tekrarlar veya form bozulursa daha küçük bir artış kullanın ya da önceki ağırlığı tekrarlayın. Aksi halde aynı ağırlıkla tekrarları artırın.",
@@ -119,7 +121,7 @@
       },
       "fb-workout-c": {
         "title": "Tüm Vücut C",
-        "focus": "Temelleri tekrarlayın; baldır ve karın çalışması ekleyin"
+        "focus": "Leg press, şınav, destekli row, baldır ve karın"
       }
     }
   },
@@ -128,6 +130,7 @@
     "description": "Ayarlanabilir dambıllar ve ayarlanabilir sehpayla üst/alt vücut çalışması; kablo, bar veya barfiks istasyonu gerekmez. Temel hareketleri bilenler için. Yaklaşık 40–60 dakika.",
     "guidelines": [
       "Haftada dört gün çalışın; mümkünse ikinci ve üçüncü seans arasına bir dinlenme günü koyun. Ön ayak yükseltilmiş split squat için sağlam, alçak bir platform kullanın. Dambıllar hafif kalırsa kontrollü formla tekrar aralığının üst sınırını kullanın; kayda hayali ağırlık eklemeyin.",
+      "Tek bacak baldır kaldırmayı bir basamakta yapın; vücut ağırlığı kolaylaşınca çalışan taraftaki elinizde bir dambıl tutun ve bunu ek ağırlık olarak kaydedin.",
       "Listelenen setler çalışma setleridir. Önce ısının; ilk ağır hareketlerden önce ağırlığı kademeli artırarak hazırlık setleri yapın.",
       "Çoğu seti düzgün yapabileceğiniz yaklaşık 2 tekrar kalınca bitirin. Kontrollü hareket açıklığını koruyun; tükenişe gitmek gerekmez.",
       "İki antrenmanda tüm setlerde tekrar aralığının üst sınırına düzgün formla ulaştığınızda aynı tekrarları hedefleyerek mümkün olan en küçük ağırlık artışını deneyin. Tekrarlar veya form bozulursa daha küçük bir artış kullanın ya da önceki ağırlığı tekrarlayın. Aksi halde aynı ağırlıkla tekrarları artırın.",
@@ -140,7 +143,7 @@
       },
       "hf-lower-a": {
         "title": "Alt A: Squat ve Kalça Menteşesi",
-        "focus": "Squat, Romen deadlift ve tek bacak çalışması"
+        "focus": "Squat, Romen deadlift, split squat ve baldır"
       },
       "hf-upper-b": {
         "title": "Üst B: Eğik İtiş ve Row",
@@ -148,7 +151,7 @@
       },
       "hf-lower-b": {
         "title": "Alt B: Tek Bacak Gücü",
-        "focus": "Split squat, kalça menteşesi ve kalça köprüsü"
+        "focus": "Step-up, tek bacak kalça menteşesi, bacak bükme ve baldır"
       }
     }
   },
@@ -228,7 +231,7 @@
       },
       "mf-c": {
         "title": "Makineler C",
-        "focus": "Ana makineleri tekrarlayın; arka omuz ve karın çalışması ekleyin"
+        "focus": "Leg press, eğik itiş, omuzlar, arka omuz ve karın"
       }
     }
   },

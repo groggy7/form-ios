@@ -999,7 +999,7 @@
   "push-press": {
     "name": "Push Press",
     "cues": [
-      "Halten Sie das Gewicht auf Ihren Schultern; Tauchen Sie ein wenig ein, indem Sie Hüfte und Knie beugen.",
+      "Halte das Gewicht auf Schulterhöhe und geh durch leichtes Beugen von Hüfte und Knien kurz in die Knie.",
       "Fahren Sie durch Ihre Beine und drücken Sie zum Abschluss über den Kopf. niedriger unter Kontrolle.",
       "Timing: Halten Sie den Dip kurz und ausbalanciert, treiben Sie dann die Beine an, bevor Sie drücken."
     ],
@@ -1009,7 +1009,7 @@
     ],
     "cuesDetails": [
       "Vorbereitung: Halte das Gewicht an den Schultern und spanne den Rumpf im stabilen Stand an. Lerne zuerst das Schulterdrücken ohne Beineinsatz, bevor du Schwung aus den Beinen hinzufügst.",
-      "Bewegung: Halten Sie das Gewicht auf Ihren Schultern; Tauchen Sie ein wenig ein, indem Sie Hüfte und Knie beugen.",
+      "Bewegung: Halte das Gewicht auf Schulterhöhe und geh durch leichtes Beugen von Hüfte und Knien kurz in die Knie.",
       "Kontrolle: Fahren Sie durch Ihre Beine und drücken Sie zum Abschluss über den Kopf. niedriger unter Kontrolle.",
       "Dip: Beugen Sie Hüfte und Knie leicht, während Sie das Gewicht stützen und den Oberkörper aufrecht halten. Halten Sie beim Eintauchen den Druck auf den gesamten Fuß aufrecht.",
       "Antrieb: Beine kräftig durchstrecken, dann mit den Armen weiterdrücken. Lassen Sie die Schulterblätter sich bewegen, während das Gewicht nach oben wandert.",
@@ -2737,7 +2737,7 @@
     ]
   },
   "assisted-dip-machine": {
-    "name": "Unterstützte Tauchmaschine",
+    "name": "Dip-Maschine mit Unterstützung",
     "cues": [
       "Sichern Sie Ihre Hände an den Stangen oder Griffen und halten Sie Ihren Rumpf stabil.",
       "Beugen Sie Ihre Ellbogen bis zu einer angenehmen Tiefe und drücken Sie dann, um sich aufzurichten.",
@@ -7353,7 +7353,7 @@
     "cues": [
       "Legen Sie Ihre Hände hinter Ihren Hüften und Ihre Füße vor sich auf eine stabile Bank.",
       "Beugen Sie Ihre Ellbogen bis zu einer angenehmen Tiefe und drücken Sie sie dann wieder nach oben.",
-      "Bank-Dip: Halten Sie die Hüften nahe an der Bank; Beginnen Sie mit gebeugten Knien und einer kurzen Reichweite."
+      "Bank-Dip: Halte die Hüfte nah an der Bank; beginne mit gebeugten Knien und kurzem Bewegungsumfang."
     ],
     "avoid": [
       "Vermeiden Sie es, zu tief zu fallen und die Bank nicht verrutschen zu lassen.",

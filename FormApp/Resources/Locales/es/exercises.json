@@ -999,25 +999,25 @@
   "push-press": {
     "name": "Push press",
     "cues": [
-      "Sostenga el peso sobre sus hombros; sumérgete un poco doblando las caderas y las rodillas.",
+      "Sostén el peso a la altura de los hombros y flexiona ligeramente caderas y rodillas.",
       "Conduce a través de tus piernas y termina presionando sobre tu cabeza; bajar bajo control.",
       "Sincronización: Mantenga el fondo corto y equilibrado, luego impulse las piernas antes de presionar."
     ],
     "avoid": [
-      "Evite una inmersión profunda hacia adelante o presionar desde una postura inestable.",
+      "Evita una flexión profunda inclinándote hacia delante o empujar desde una postura inestable.",
       "No persiga un cierre aéreo inestable; Practica con una carga más ligera."
     ],
     "cuesDetails": [
       "Preparación: coloca la carga cerca de los hombros y tensa el abdomen en una postura estable. Aprende primero el press sin impulso de piernas antes de añadirlo.",
-      "Movimiento: Sostenga el peso sobre sus hombros; sumérgete un poco doblando las caderas y las rodillas.",
+      "Movimiento: Sostén el peso a la altura de los hombros y flexiona ligeramente caderas y rodillas.",
       "Control: Conduce a través de tus piernas y termina presionando sobre tu cabeza; bajar bajo control.",
-      "Inmersión: Doble ligeramente las caderas y las rodillas mientras mantiene el peso apoyado y el torso erguido. Mantenga presión en todo el pie durante el baño.",
+      "Flexión: Flexiona ligeramente caderas y rodillas manteniendo el peso apoyado y el torso erguido. Mantén la presión en todo el pie durante la flexión.",
       "Impulso: Extiende las piernas con decisión, luego continúa presionando con los brazos. Deje que los omóplatos se muevan a medida que el peso pasa por encima de su cabeza.",
       "Reiniciar: estabilizar la cabeza, guiar la carga de regreso a los hombros y absorberla con una flexión controlada de las rodillas antes de repetir."
     ],
     "avoidDetails": [
-      "Evite una inmersión profunda hacia adelante o presionar desde una postura inestable.",
-      "Inmersión hacia adelante: No incline el torso hacia adelante y pierda la posición de la rejilla durante la inmersión. Reduzca la carga y ensaye un baño equilibrado.",
+      "Evita una flexión profunda inclinándote hacia delante o empujar desde una postura inestable.",
+      "Flexión hacia delante: No inclines el torso hacia delante ni pierdas la posición de la barra sobre los hombros durante la flexión. Reduce la carga y practica una flexión equilibrada.",
       "Press de brazos temprano: no comience con los brazos antes de que las piernas avancen. Coordine el descenso y conduzca antes de agregar peso.",
       "Enganche incontrolado: No permita que la carga que regresa choque contra los hombros. Detenga el equipo cuando no pueda recibirlo de manera constante."
     ]
@@ -1525,7 +1525,7 @@
     ]
   },
   "chest-dip": {
-    "name": "Inmersión en el pecho",
+    "name": "Fondos para pecho",
     "cues": [
       "Apóyate en las barras e inclínate ligeramente hacia adelante.",
       "Doble los codos hasta una profundidad cómoda y luego presione hacia arriba."
@@ -6319,7 +6319,7 @@
     ]
   },
   "lever-seated-dip": {
-    "name": "Inmersión sentada con palanca",
+    "name": "Fondos sentado en máquina",
     "cues": [
       "Siéntese contra el soporte de la máquina y agarre las manijas al lado de su torso.",
       "Extiende los codos para presionar las manijas hacia abajo y luego regresa lentamente."
@@ -6335,7 +6335,7 @@
       "Codo: Mantenga la parte superior del brazo razonablemente estable mientras el antebrazo se mueve. Enderece suavemente sin forzar un tope de unión duro.",
       "Muñeca: mantén la muñeca alineada con el antebrazo y sujeta bien el agarre. Extiende el codo sin sustituir esa acción por un movimiento de la muñeca.",
       "Regreso: Doble el codo bajo control y mantenga la misma posición de la parte superior del brazo. Utilice una resistencia que no arrastre el hombro hacia adelante.",
-      "Inmersión sentado: Permanezca sentado contra el soporte y presione las manijas hacia abajo. Este movimiento de máquina no requiere bajar el cuerpo entre barras paralelas."
+      "Fondos sentado: Permanece sentado contra el respaldo y empuja las asas hacia abajo. Este movimiento en máquina no requiere bajar el cuerpo entre barras paralelas."
     ],
     "avoidDetails": [
       "Evite levantarse del asiento o dejar que las manijas le saquen los hombros de control.",
@@ -7297,7 +7297,7 @@
     ]
   },
   "ring-dip": {
-    "name": "Inmersión del anillo",
+    "name": "Fondos en anillas",
     "cues": [
       "Asegure sus manos en las barras o manijas y mantenga firme su tronco.",
       "Doble los codos hasta una profundidad cómoda y luego presione para levantarse.",
@@ -7353,7 +7353,7 @@
     "cues": [
       "Coloque las manos en un banco estable detrás de las caderas y los pies delante de usted.",
       "Doble los codos hasta una profundidad cómoda y luego presione hacia arriba.",
-      "Inmersión en banco: Mantenga las caderas cerca del banco; Comience con las rodillas dobladas y un rango corto."
+      "Fondos en banco: Mantén la cadera cerca del banco; empieza con las rodillas flexionadas y un recorrido corto."
     ],
     "avoid": [
       "Evite caer demasiado profundo o dejar que el banco se deslice.",

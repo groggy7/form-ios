@@ -16,7 +16,7 @@
       },
       "aesthetic-pull-a": {
         "title": "Dos et biceps",
-        "focus": "Tirage vertical, rowing avec appui et deltoïdes postérieurs"
+        "focus": "Tirage vertical, rowing avec appui, arrière et côté des épaules"
       },
       "aesthetic-legs-a": {
         "title": "Quads et veaux",
@@ -66,6 +66,7 @@
     "description": "Pour les haltérophiles expérimentés qui peuvent régulièrement récupérer après six jours de gym. Deux séances de poussée, de traction et de jambe avec des accents distincts. Salle de sport complète ; environ 45 à 65 minutes.",
     "guidelines": [
       "Prenez un jour de repos chaque semaine. Choisissez le programme haut/bas du corps sur 4 jours si six jours sont difficiles à tenir. Les séances de tirage utilisent des rowings avec appui ; les mouvements lourds de charnière de hanche sont réservés aux séances jambes.",
+      "Sur la machine de tractions assistées, enregistrez le contrepoids ; avoir besoin de moins d’aide est un progrès. Si les dips aux barres parallèles gênent vos épaules, réduisez l’amplitude ou remplacez l’exercice par Machine à dips assistée.",
       "Les séries indiquées sont des séries de travail. Échauffez-vous d’abord, puis augmentez progressivement la charge sur des séries d’échauffement avant les premiers exercices lourds.",
       "Terminez la plupart des séries avec environ 2 répétitions propres en réserve. Gardez la même amplitude contrôlée. Il n’est pas nécessaire d’aller à l’échec.",
       "Lorsque toutes les séries atteignent le haut de la plage de répétitions avec une technique propre lors de deux séances, essayez la plus petite augmentation de charge disponible en visant le même nombre de répétitions. Si les répétitions ou la technique se dégradent, augmentez moins ou reprenez la charge précédente. Sinon, gardez la charge et augmentez les répétitions.",
@@ -78,7 +79,7 @@
       },
       "ppl-pull-1": {
         "title": "Tirer A : lats",
-        "focus": "Tirage vertical, rowing avec appui et biceps"
+        "focus": "Tractions assistées, tirage vertical, rowing avec appui et biceps"
       },
       "ppl-legs-1": {
         "title": "Jambes A : Squat",
@@ -86,7 +87,7 @@
       },
       "ppl-push-2": {
         "title": "Poussée B : développé incliné",
-        "focus": "Presse inclinée, isolation thoracique et triceps aériens"
+        "focus": "Développé incliné, dips, isolation des pectoraux et triceps au-dessus de la tête"
       },
       "ppl-pull-2": {
         "title": "Tirage B : rowings",
@@ -103,6 +104,7 @@
     "description": "Un point de départ gérable pour les débutants et les haltérophiles confirmés. Répétez les principaux mouvements au lieu d’apprendre une nouvelle routine chaque jour. Salle de sport avec haltères, banc, presse jambes et câbles ; environ 40 à 55 minutes.",
     "guidelines": [
       "Entraînez-vous des jours non consécutifs. Pendant les deux premières semaines, gardez 3–4 répétitions propres en réserve et privilégiez l’apprentissage de la mise en place avant d’augmenter la charge. Demandez de l’aide pour les appareils que vous ne connaissez pas.",
+      "Si vous ne réussissez pas encore 5 pompes, posez les mains sur un banc ou modifiez Corps entier C pour utiliser Pompes inclinées.",
       "Les séries indiquées sont des séries de travail. Échauffez-vous d’abord, puis augmentez progressivement la charge sur des séries d’échauffement avant les premiers exercices lourds.",
       "Terminez la plupart des séries avec environ 2 répétitions propres en réserve. Gardez la même amplitude contrôlée. Il n’est pas nécessaire d’aller à l’échec.",
       "Lorsque toutes les séries atteignent le haut de la plage de répétitions avec une technique propre lors de deux séances, essayez la plus petite augmentation de charge disponible en visant le même nombre de répétitions. Si les répétitions ou la technique se dégradent, augmentez moins ou reprenez la charge précédente. Sinon, gardez la charge et augmentez les répétitions.",
@@ -119,7 +121,7 @@
       },
       "fb-workout-c": {
         "title": "Corps entier C",
-        "focus": "Répétez les bases avec le travail des mollets et du tronc"
+        "focus": "Presse à cuisses, pompes, rowing avec appui, mollets et gainage"
       }
     }
   },
@@ -128,6 +130,7 @@
     "description": "Entraînement supérieur/inférieur avec haltères réglable et un banc réglable ; pas de câbles, barre ou station de traction. Pour les haltérophiles à l’aise avec les bases. Environ 40 à 60 minutes.",
     "guidelines": [
       "Entraînez-vous quatre jours par semaine, idéalement avec un jour de repos entre la deuxième et la troisième séance. Utilisez une plateforme basse et stable pour le split squat avec le pied avant surélevé. Si vos haltères deviennent trop légers, visez le haut de la plage de répétitions avec une technique contrôlée. N’ajoutez pas de poids fictif dans le journal.",
+      "Faites les élévations de mollets sur une jambe sur une marche ; quand le poids du corps devient facile, tenez un haltère du côté qui travaille et enregistrez-le comme charge ajoutée.",
       "Les séries indiquées sont des séries de travail. Échauffez-vous d’abord, puis augmentez progressivement la charge sur des séries d’échauffement avant les premiers exercices lourds.",
       "Terminez la plupart des séries avec environ 2 répétitions propres en réserve. Gardez la même amplitude contrôlée. Il n’est pas nécessaire d’aller à l’échec.",
       "Lorsque toutes les séries atteignent le haut de la plage de répétitions avec une technique propre lors de deux séances, essayez la plus petite augmentation de charge disponible en visant le même nombre de répétitions. Si les répétitions ou la technique se dégradent, augmentez moins ou reprenez la charge précédente. Sinon, gardez la charge et augmentez les répétitions.",
@@ -140,7 +143,7 @@
       },
       "hf-lower-a": {
         "title": "Inférieur A : Squat et charnière",
-        "focus": "Squat, soulevé de terre roumain et jambes unilatérales"
+        "focus": "Squat, soulevé de terre roumain, split squat et mollets"
       },
       "hf-upper-b": {
         "title": "Haut du corps B : développé incliné et rowing",
@@ -148,7 +151,7 @@
       },
       "hf-lower-b": {
         "title": "B inférieur : force sur une seule jambe",
-        "focus": "Split squat, charnière et pont fessier"
+        "focus": "Step-up, charnière sur une jambe, leg curl et mollets"
       }
     }
   },
@@ -228,7 +231,7 @@
       },
       "mf-c": {
         "title": "Machines C",
-        "focus": "Répétez les machines principales avec les deltes arrière et le travail du coffre"
+        "focus": "Presse à cuisses, développé incliné, épaules, arrière d’épaules et gainage"
       }
     }
   },

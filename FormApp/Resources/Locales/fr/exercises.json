@@ -999,7 +999,7 @@
   "push-press": {
     "name": "Push press",
     "cues": [
-      "Tenez le poids sur vos épaules ; plongez un peu en pliant les hanches et les genoux.",
+      "Tenez la charge au niveau des épaules et fléchissez légèrement les hanches et les genoux.",
       "Traversez vos jambes et terminez en appuyant au-dessus de votre tête ; baisser sous contrôle.",
       "Timing : Gardez le dip court et équilibré, puis conduisez les jambes avant d’appuyer."
     ],
@@ -1009,15 +1009,15 @@
     ],
     "cuesDetails": [
       "Mise en place : placez la charge près des épaules et gainez le tronc en position debout stable. Apprenez d’abord le développé sans impulsion des jambes avant d’ajouter celle-ci.",
-      "Mouvement : Tenez le poids sur vos épaules ; plongez un peu en pliant les hanches et les genoux.",
+      "Mouvement : Tenez la charge au niveau des épaules et fléchissez légèrement les hanches et les genoux.",
       "Contrôle : Traversez vos jambes et terminez en appuyant au-dessus de votre tête ; baisser sous contrôle.",
-      "Dip : Pliez légèrement les hanches et les genoux tout en gardant le poids soutenu et le torse haut. Maintenez la pression sur tout le pied pendant le plongeon.",
+      "Flexion : fléchissez légèrement les hanches et les genoux en gardant la charge soutenue et le buste droit. Gardez l’appui sur tout le pied pendant la flexion.",
       "Drive : étendez les jambes de manière décisive, puis continuez à appuyer avec les bras. Laissez les omoplates bouger pendant que le poids passe au-dessus de votre tête.",
       "Réinitialisation : stabilisez-vous au-dessus de votre tête, guidez la charge vers les épaules et absorbez-la avec une flexion contrôlée du genou avant de répéter."
     ],
     "avoidDetails": [
       "Évitez de vous replier profondément vers l'avant ou d'appuyer à partir d'une position instable.",
-      "Trempette avant : n'inclinez pas le torse vers l'avant et ne perdez pas la position du support pendant le plongeon. Réduisez la charge et répétez un dip équilibré.",
+      "Flexion vers l’avant : n’inclinez pas le buste vers l’avant et ne perdez pas la position de la barre sur les épaules pendant la flexion. Réduisez la charge et entraînez une flexion équilibrée.",
       "Presse précoce des bras : Ne commencez pas avec les bras avant que les jambes ne se déplacent. Coordonnez le plongeon et conduisez avant d’ajouter du poids.",
       "Accrochage incontrôlé : Ne laissez pas la charge revenir s'écraser sur les épaules. Arrêtez l'appareil lorsque vous ne pouvez pas le recevoir régulièrement."
     ]
@@ -1525,7 +1525,7 @@
     ]
   },
   "chest-dip": {
-    "name": "Trempette de poitrine",
+    "name": "Dips pour pectoraux",
     "cues": [
       "Appuyez-vous sur les barres et penchez-vous légèrement en avant.",
       "Pliez vos coudes à une profondeur confortable, puis appuyez à nouveau vers le haut."
@@ -2737,7 +2737,7 @@
     ]
   },
   "assisted-dip-machine": {
-    "name": "Machine de trempage assistée",
+    "name": "Machine à dips assistée",
     "cues": [
       "Fixez vos mains sur les barres ou les poignées et maintenez votre coffre stable.",
       "Pliez vos coudes à une profondeur confortable, puis appuyez pour vous lever.",
@@ -6319,7 +6319,7 @@
     ]
   },
   "lever-seated-dip": {
-    "name": "Trempette assise à levier",
+    "name": "Dips assis à la machine",
     "cues": [
       "Asseyez-vous contre le support de la machine et saisissez les poignées à côté de votre torse.",
       "Étendez vos coudes pour appuyer sur les poignées, puis revenez lentement."
@@ -7297,7 +7297,7 @@
     ]
   },
   "ring-dip": {
-    "name": "Trempette en anneau",
+    "name": "Dips aux anneaux",
     "cues": [
       "Fixez vos mains sur les barres ou les poignées et maintenez votre coffre stable.",
       "Pliez vos coudes à une profondeur confortable, puis appuyez pour vous lever.",
@@ -7353,7 +7353,7 @@
     "cues": [
       "Placez vos mains sur un banc stable derrière vos hanches et vos pieds devant vous.",
       "Pliez vos coudes à une profondeur confortable, puis appuyez à nouveau vers le haut.",
-      "Trempette sur le banc : gardez les hanches près du banc ; commencez avec les genoux pliés et une courte portée."
+      "Dips sur banc : gardez les hanches près du banc ; commencez genoux fléchis avec une faible amplitude."
     ],
     "avoid": [
       "Évitez de tomber trop profondément ou de laisser le banc glisser.",

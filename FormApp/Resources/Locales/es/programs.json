@@ -16,7 +16,7 @@
       },
       "aesthetic-pull-a": {
         "title": "Espalda y bíceps",
-        "focus": "Tirón vertical, remo con apoyo y deltoides posteriores"
+        "focus": "Tirón vertical, remo con apoyo, deltoides posterior y lateral"
       },
       "aesthetic-legs-a": {
         "title": "Cuádriceps y pantorrillas",
@@ -66,6 +66,7 @@
     "description": "Para levantadores experimentados que pueden recuperarse constantemente después de seis días de gimnasio. Dos sesiones de empujar, tirar y piernas con distintos énfasis. Gimnasio completo; alrededor de 45 a 65 minutos.",
     "guidelines": [
       "Tómate un día de descanso cada semana. Elige el plan de torso/pierna de 4 días si te cuesta mantener seis días. Las sesiones de tirón usan remos con apoyo; los movimientos pesados de bisagra de cadera se reservan para los días de piernas.",
+      "En la máquina de dominadas asistidas, registra el contrapeso; necesitar menos ayuda es progreso. Si los fondos en paralelas te molestan en los hombros, acorta el recorrido o edita el ejercicio a Máquina de fondos asistidos.",
       "Las series indicadas son series efectivas. Calienta primero y aumenta la carga de forma progresiva en series de aproximación antes de los primeros ejercicios pesados.",
       "Termina la mayoría de las series con unas 2 repeticiones de buena técnica en reserva. Mantén el mismo recorrido controlado. No hace falta llegar al fallo.",
       "Cuando todas las series alcancen el extremo superior del rango de repeticiones con buena técnica en dos sesiones, prueba el menor aumento de peso disponible intentando mantener las mismas repeticiones. Si empeoran las repeticiones o la técnica, aumenta menos o repite la carga anterior. Si no se cumple esa condición, mantén el peso y aumenta las repeticiones.",
@@ -78,7 +79,7 @@
       },
       "ppl-pull-1": {
         "title": "Tirar A: dorsales",
-        "focus": "Tirón vertical, remo con apoyo y bíceps"
+        "focus": "Dominadas asistidas, jalón, remo con apoyo y bíceps"
       },
       "ppl-legs-1": {
         "title": "Piernas A: Sentadilla",
@@ -86,7 +87,7 @@
       },
       "ppl-push-2": {
         "title": "Empuje B: press inclinado",
-        "focus": "Press inclinado, aislamiento de pecho y tríceps por encima de la cabeza"
+        "focus": "Press inclinado, fondos, aislamiento de pecho y tríceps por encima de la cabeza"
       },
       "ppl-pull-2": {
         "title": "Tirón B: remos",
@@ -103,6 +104,7 @@
     "description": "Un punto de partida manejable para principiantes y levantadores recurrentes. Repita patrones de movimiento clave en lugar de aprender una nueva rutina todos los días. Gimnasio con mancuernas, banco, prensa de piernas y cables; alrededor de 40 a 55 minutos.",
     "guidelines": [
       "Entrena en días no consecutivos. Durante las dos primeras semanas, deja 3–4 repeticiones de buena técnica en reserva y aprende la preparación del ejercicio antes de aumentar el peso. Pide ayuda con los aparatos que no conozcas.",
+      "Si todavía no puedes hacer 5 flexiones, apoya las manos en un banco o edita Cuerpo completo C para usar Flexiones inclinadas.",
       "Las series indicadas son series efectivas. Calienta primero y aumenta la carga de forma progresiva en series de aproximación antes de los primeros ejercicios pesados.",
       "Termina la mayoría de las series con unas 2 repeticiones de buena técnica en reserva. Mantén el mismo recorrido controlado. No hace falta llegar al fallo.",
       "Cuando todas las series alcancen el extremo superior del rango de repeticiones con buena técnica en dos sesiones, prueba el menor aumento de peso disponible intentando mantener las mismas repeticiones. Si empeoran las repeticiones o la técnica, aumenta menos o repite la carga anterior. Si no se cumple esa condición, mantén el peso y aumenta las repeticiones.",
@@ -119,7 +121,7 @@
       },
       "fb-workout-c": {
         "title": "Cuerpo completo C",
-        "focus": "Repite lo básico con el trabajo de pantorrillas y tronco."
+        "focus": "Prensa de piernas, flexiones, remo con apoyo, gemelos y tronco"
       }
     }
   },
@@ -128,6 +130,7 @@
     "description": "Entrenamiento superior/inferior con mancuernas ajustable y banco ajustable; sin cables, barra ni estación de dominadas. Para levantadores que se sienten cómodos con lo básico. Aproximadamente entre 40 y 60 minutos.",
     "guidelines": [
       "Entrena cuatro días por semana, idealmente con un día de descanso entre la segunda y la tercera sesión. Usa una plataforma baja y estable para la sentadilla dividida con el pie delantero elevado. Si tus mancuernas se quedan ligeras, llega al extremo superior del rango de repeticiones con una técnica controlada. No registres peso adicional que no hayas usado.",
+      "Haz las elevaciones de gemelos a una pierna en un escalón; cuando el peso corporal resulte fácil, sujeta una mancuerna en el lado que trabaja y regístrala como peso adicional.",
       "Las series indicadas son series efectivas. Calienta primero y aumenta la carga de forma progresiva en series de aproximación antes de los primeros ejercicios pesados.",
       "Termina la mayoría de las series con unas 2 repeticiones de buena técnica en reserva. Mantén el mismo recorrido controlado. No hace falta llegar al fallo.",
       "Cuando todas las series alcancen el extremo superior del rango de repeticiones con buena técnica en dos sesiones, prueba el menor aumento de peso disponible intentando mantener las mismas repeticiones. Si empeoran las repeticiones o la técnica, aumenta menos o repite la carga anterior. Si no se cumple esa condición, mantén el peso y aumenta las repeticiones.",
@@ -140,7 +143,7 @@
       },
       "hf-lower-a": {
         "title": "Inferior A: sentadilla y bisagra",
-        "focus": "Sentadilla, peso muerto rumano y piernas unilaterales"
+        "focus": "Sentadilla, peso muerto rumano, sentadilla dividida y gemelos"
       },
       "hf-upper-b": {
         "title": "Torso B: press inclinado y remo",
@@ -148,7 +151,7 @@
       },
       "hf-lower-b": {
         "title": "Inferior B: Fuerza con una sola pierna",
-        "focus": "Sentadilla dividida, bisagra y puente de glúteos"
+        "focus": "Step-up, bisagra a una pierna, curl femoral y gemelos"
       }
     }
   },
@@ -228,7 +231,7 @@
       },
       "mf-c": {
         "title": "Máquinas C",
-        "focus": "Repite las máquinas principales con deltoides posteriores y trabajo de tronco."
+        "focus": "Prensa de piernas, press inclinado, hombros, deltoides posterior y tronco"
       }
     }
   },

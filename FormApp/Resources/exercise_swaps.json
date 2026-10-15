@@ -3667,6 +3667,16 @@
       ],
       "relatedPattern": []
     },
+    "dumbbell-step-up": {
+      "samePattern": [
+        "smith-split-squat",
+        "sled-45-degrees-one-leg-press",
+        "cable-reverse-lunge",
+        "bulgarian-split-squat",
+        "bodyweight-rear-lunge"
+      ],
+      "relatedPattern": []
+    },
     "ez-bar-curl": {
       "samePattern": [
         "barbell-curl",
@@ -3966,6 +3976,16 @@
       ],
       "relatedPattern": []
     },
+    "chest-dip": {
+      "samePattern": [],
+      "relatedPattern": [
+        "lever-chest-press",
+        "dumbbell-bench-press",
+        "smith-bench-press",
+        "cable-standing-chest-press",
+        "push-ups"
+      ]
+    },
     "chin-up": {
       "samePattern": [
         "cable-underhand-pulldown",
@@ -4014,6 +4034,25 @@
       ],
       "relatedPattern": []
     },
+    "dumbbell-single-leg-romanian-deadlift": {
+      "samePattern": [
+        "cable-pull-through",
+        "kettlebell-deadlift",
+        "dumbbell-45-deg-back-extension",
+        "barbell-romanian-deadlift",
+        "smith-stiff-legged-deadlift"
+      ],
+      "relatedPattern": []
+    },
+    "lever-incline-chest-press": {
+      "samePattern": [
+        "smith-incline-bench-press",
+        "incline-dumbbell-press",
+        "incline-barbell-bench-press",
+        "decline-push-up"
+      ],
+      "relatedPattern": []
+    },
     "dumbbell-pullover": {
       "samePattern": [
         "lever-machine-pullover",
@@ -4042,12 +4081,30 @@
       ],
       "relatedPattern": []
     },
+    "assisted-pull-up": {
+      "samePattern": [
+        "lat-pulldown",
+        "lever-seated-wide-lat-pulldown",
+        "cable-kneeling-lat-pulldown",
+        "resistance-band-lat-pulldown"
+      ],
+      "relatedPattern": []
+    },
     "dumbbell-rear-fly": {
       "samePattern": [
         "lever-seated-reverse-fly",
         "cable-standing-reverse-fly",
         "resistance-band-face-pull",
         "face-pull"
+      ],
+      "relatedPattern": []
+    },
+    "lever-lateral-raise": {
+      "samePattern": [
+        "cable-lateral-raise",
+        "dumbbell-lateral-raise",
+        "dumbbell-seated-lateral-raise",
+        "band-lateral-raise"
       ],
       "relatedPattern": []
     },
@@ -4115,6 +4172,26 @@
         "sled-45-degrees-one-leg-press",
         "dumbbell-step-up",
         "cable-reverse-lunge"
+      ],
+      "relatedPattern": []
+    },
+    "dumbbell-elevated-heel-goblet-squat": {
+      "samePattern": [
+        "sled-hack-squat",
+        "leg-press",
+        "pendulum-squat",
+        "landmine-squat",
+        "heel-elevated-bodyweight-squat"
+      ],
+      "relatedPattern": []
+    },
+    "dumbbell-lying-leg-curl": {
+      "samePattern": [
+        "lying-leg-curl",
+        "seated-leg-curl",
+        "lever-standing-single-leg-curl",
+        "cable-lying-single-leg-curl",
+        "glute-ham-raise"
       ],
       "relatedPattern": []
     }

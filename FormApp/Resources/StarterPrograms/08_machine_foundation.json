@@ -194,7 +194,7 @@
         "id": "mf-c",
         "day": 5,
         "title": "Machines C",
-        "focus": "Repeat the main machines with rear delts and trunk work",
+        "focus": "Leg press, incline press, shoulders, rear delts and trunk",
         "targetMuscles": [
           "quadriceps",
           "glutes",
@@ -218,8 +218,8 @@
             "restSeconds": 150
           },
           {
-            "id": "mf-c-lever-chest-press",
-            "exerciseId": "lever-chest-press",
+            "id": "mf-c-lever-incline-chest-press",
+            "exerciseId": "lever-incline-chest-press",
             "sets": 2,
             "reps": {
               "min": 8,
@@ -242,12 +242,24 @@
             "restSeconds": 120
           },
           {
-            "id": "mf-c-seated-leg-curl",
-            "exerciseId": "seated-leg-curl",
+            "id": "mf-c-lying-leg-curl",
+            "exerciseId": "lying-leg-curl",
             "sets": 2,
             "reps": {
               "min": 10,
               "max": 15,
+              "toFailure": false,
+              "perSide": false
+            },
+            "restSeconds": 90
+          },
+          {
+            "id": "mf-c-lever-lateral-raise",
+            "exerciseId": "lever-lateral-raise",
+            "sets": 2,
+            "reps": {
+              "min": 12,
+              "max": 20,
               "toFailure": false,
               "perSide": false
             },

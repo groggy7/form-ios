@@ -16,7 +16,7 @@
       },
       "aesthetic-pull-a": {
         "title": "Rücken und Bizeps",
-        "focus": "Vertikales Ziehen, abgestütztes Rudern und hintere Schulter"
+        "focus": "Vertikales Ziehen, gestütztes Rudern, hintere und seitliche Schultern"
       },
       "aesthetic-legs-a": {
         "title": "Quadrizeps und Waden",
@@ -66,6 +66,7 @@
     "description": "Für erfahrene Kraftsportler, die sich nach sechs Trainingstagen kontinuierlich erholen können. Zwei Push-, Pull- und Beineinheiten mit unterschiedlichen Schwerpunkten. Voll ausgestattetes Fitnessstudio; ca. 45–65 Minuten.",
     "guidelines": [
       "Lege jede Woche einen Ruhetag ein. Wähle den 4-Tage-Oberkörper/Unterkörper-Plan, wenn sechs Trainingstage schwer durchzuhalten sind. An Zugtagen nutzt du abgestütztes Rudern; schwere Hüftstreckübungen bleiben den Beintagen vorbehalten.",
+      "Trage an der Klimmzugmaschine mit Unterstützung das Gegengewicht ein; weniger Unterstützung bedeutet Fortschritt. Wenn Barren-Dips deine Schultern stören, verkürze den Bewegungsumfang oder ändere die Übung auf Dip-Maschine mit Unterstützung.",
       "Die angegebenen Sätze sind Arbeitssätze. Wärme dich zuerst auf und steigere das Gewicht in vorbereitenden Aufwärmsätzen, bevor du mit den ersten schweren Übungen beginnst.",
       "Beende die meisten Sätze mit etwa 2 sauber möglichen Wiederholungen in Reserve. Behalte denselben kontrollierten Bewegungsumfang bei. Muskelversagen ist nicht erforderlich.",
       "Wenn du in zwei Einheiten in jedem Satz das obere Ende des Wiederholungsbereichs mit sauberer Technik erreichst, probiere die kleinste verfügbare Gewichtserhöhung und versuche, dieselbe Wiederholungszahl zu halten. Lassen Wiederholungen oder Technik nach, erhöhe weniger oder wiederhole das bisherige Gewicht. Andernfalls behalte das Gewicht bei und steigere die Wiederholungen.",
@@ -78,7 +79,7 @@
       },
       "ppl-pull-1": {
         "title": "Zug A: Latissimus",
-        "focus": "Vertikales Ziehen, abgestütztes Rudern und Bizeps"
+        "focus": "Unterstützter Klimmzug, Latziehen, gestütztes Rudern und Bizeps"
       },
       "ppl-legs-1": {
         "title": "Beine A: Kniebeuge",
@@ -86,7 +87,7 @@
       },
       "ppl-push-2": {
         "title": "Drücken B: Schrägbank",
-        "focus": "Schrägdrücken, Brustisolierung und Trizeps über Kopf"
+        "focus": "Schrägdrücken, Dips, Brustisolation und Trizeps über Kopf"
       },
       "ppl-pull-2": {
         "title": "Ziehen B: Rudern",
@@ -103,6 +104,7 @@
     "description": "Ein überschaubarer Ausgangspunkt für Anfänger und Wiedereinsteiger. Wiederholen Sie wichtige Bewegungsmuster, anstatt jeden Tag eine neue Routine zu erlernen. Fitnessstudio mit Kurzhanteln, Bank, Beinpresse und Kabelzügen; ca. 40–55 Minuten.",
     "guidelines": [
       "Trainiere an nicht aufeinanderfolgenden Tagen. Lass in den ersten zwei Wochen 3–4 sauber mögliche Wiederholungen in Reserve und lerne zuerst die richtige Ausgangsposition, bevor du das Gewicht erhöhst. Lass dir unbekannte Geräte erklären.",
+      "Wenn du noch keine 5 Liegestütze schaffst, stütze die Hände auf eine Bank oder ändere die Übung in Ganzkörper C auf Schräglage-Liegestütz.",
       "Die angegebenen Sätze sind Arbeitssätze. Wärme dich zuerst auf und steigere das Gewicht in vorbereitenden Aufwärmsätzen, bevor du mit den ersten schweren Übungen beginnst.",
       "Beende die meisten Sätze mit etwa 2 sauber möglichen Wiederholungen in Reserve. Behalte denselben kontrollierten Bewegungsumfang bei. Muskelversagen ist nicht erforderlich.",
       "Wenn du in zwei Einheiten in jedem Satz das obere Ende des Wiederholungsbereichs mit sauberer Technik erreichst, probiere die kleinste verfügbare Gewichtserhöhung und versuche, dieselbe Wiederholungszahl zu halten. Lassen Wiederholungen oder Technik nach, erhöhe weniger oder wiederhole das bisherige Gewicht. Andernfalls behalte das Gewicht bei und steigere die Wiederholungen.",
@@ -119,7 +121,7 @@
       },
       "fb-workout-c": {
         "title": "Ganzkörper C",
-        "focus": "Wiederholen Sie die Grundlagen mit Waden- und Rumpfarbeit"
+        "focus": "Beinpresse, Liegestütze, gestütztes Rudern, Waden und Rumpf"
       }
     }
   },
@@ -128,6 +130,7 @@
     "description": "Ober-/Untertraining mit verstellbarem Kurzhanteln und einer verstellbaren Bank; Keine Kabel, Langhantel oder Klimmzugstation. Für Lifter, die mit den Grundlagen vertraut sind. Etwa 40–60 Minuten.",
     "guidelines": [
       "Trainiere vier Tage pro Woche, idealerweise mit einem Ruhetag zwischen der zweiten und dritten Einheit. Verwende für Split Squats mit erhöhtem vorderem Fuß eine niedrige, stabile Plattform. Sind deine Kurzhanteln zu leicht, nutze das obere Ende des Wiederholungsbereichs mit kontrollierter Technik. Trage kein zusätzliches Gewicht ein, das du nicht verwendet hast.",
+      "Mache einbeiniges Wadenheben auf einer Stufe; sobald das Körpergewicht leicht ist, halte auf der arbeitenden Seite eine Kurzhantel und trage sie als Zusatzgewicht ein.",
       "Die angegebenen Sätze sind Arbeitssätze. Wärme dich zuerst auf und steigere das Gewicht in vorbereitenden Aufwärmsätzen, bevor du mit den ersten schweren Übungen beginnst.",
       "Beende die meisten Sätze mit etwa 2 sauber möglichen Wiederholungen in Reserve. Behalte denselben kontrollierten Bewegungsumfang bei. Muskelversagen ist nicht erforderlich.",
       "Wenn du in zwei Einheiten in jedem Satz das obere Ende des Wiederholungsbereichs mit sauberer Technik erreichst, probiere die kleinste verfügbare Gewichtserhöhung und versuche, dieselbe Wiederholungszahl zu halten. Lassen Wiederholungen oder Technik nach, erhöhe weniger oder wiederhole das bisherige Gewicht. Andernfalls behalte das Gewicht bei und steigere die Wiederholungen.",
@@ -140,7 +143,7 @@
       },
       "hf-lower-a": {
         "title": "Unteres A: Kniebeuge und Scharnier",
-        "focus": "Kniebeugen, rumänisches Kreuzheben und einseitige Beine"
+        "focus": "Kniebeuge, Rumänisches Kreuzheben, Split Squat und Waden"
       },
       "hf-upper-b": {
         "title": "Oberkörper B: Schrägbank & Rudern",
@@ -148,7 +151,7 @@
       },
       "hf-lower-b": {
         "title": "Unteres B: Einbeinige Kraft",
-        "focus": "Split Squat, Hinge und Glute Bridge"
+        "focus": "Step-up, einbeiniges Hüftbeugen, Beinbeuger-Curl und Waden"
       }
     }
   },
@@ -228,7 +231,7 @@
       },
       "mf-c": {
         "title": "Maschinen C",
-        "focus": "Wiederholen Sie die Hauptübungen mit den hinteren Deltamuskeln und dem Rumpf"
+        "focus": "Beinpresse, Schrägdrücken, Schultern, hintere Schultern und Rumpf"
       }
     }
   },

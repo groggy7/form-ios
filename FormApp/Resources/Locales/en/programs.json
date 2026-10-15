@@ -16,7 +16,7 @@
       },
       "aesthetic-pull-a": {
         "title": "Back & Biceps",
-        "focus": "Vertical pull, supported row and rear delts"
+        "focus": "Vertical pull, supported row, rear and side delts"
       },
       "aesthetic-legs-a": {
         "title": "Quads & Calves",
@@ -66,6 +66,7 @@
     "description": "For experienced lifters who can consistently recover from six gym days. Two push, pull and leg sessions with distinct emphases. Full gym; about 45–65 minutes.",
     "guidelines": [
       "Take one rest day each week. Choose the 4-day Upper/Lower plan if six days is hard to sustain. Pull days use supported rows, leaving heavy hip hinges to leg days.",
+      "On the assisted pull-up machine, log the counterweight; needing less assistance is progress. If bar dips bother your shoulders, shorten the range or edit the exercise to Assisted Dip Machine.",
       "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
       "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
       "When every set reaches the top of its rep range with clean form in two sessions, try the smallest available weight increase while aiming to keep the same reps. If reps or form suffer, use a smaller increase or repeat the previous load. Otherwise keep the weight and build reps.",
@@ -78,7 +79,7 @@
       },
       "ppl-pull-1": {
         "title": "Pull A: Lats",
-        "focus": "Vertical pull, supported row and biceps"
+        "focus": "Assisted pull-up, pulldown, supported row and biceps"
       },
       "ppl-legs-1": {
         "title": "Legs A: Squat",
@@ -86,7 +87,7 @@
       },
       "ppl-push-2": {
         "title": "Push B: Incline",
-        "focus": "Incline press, chest isolation and overhead triceps"
+        "focus": "Incline press, dips, chest isolation and overhead triceps"
       },
       "ppl-pull-2": {
         "title": "Pull B: Rows",
@@ -103,6 +104,7 @@
     "description": "A manageable starting point for beginners and returning lifters. Repeat key movement patterns instead of learning a new routine every day. Gym with dumbbells, bench, leg press and cables; about 40–55 minutes.",
     "guidelines": [
       "Use non-consecutive days. For the first two weeks, leave 3–4 good repetitions in reserve and prioritize learning the setup over adding weight. Ask for help with unfamiliar equipment.",
+      "If you cannot do 5 push-ups yet, place your hands on a bench or edit Full Body C to Incline Push-up.",
       "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
       "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
       "When every set reaches the top of its rep range with clean form in two sessions, try the smallest available weight increase while aiming to keep the same reps. If reps or form suffer, use a smaller increase or repeat the previous load. Otherwise keep the weight and build reps.",
@@ -119,7 +121,7 @@
       },
       "fb-workout-c": {
         "title": "Full Body C",
-        "focus": "Repeat the basics with calves and trunk work"
+        "focus": "Leg press, push-ups, supported row, calves and trunk"
       }
     }
   },
@@ -128,6 +130,7 @@
     "description": "Upper/lower training with adjustable dumbbells and an adjustable bench; no cables, barbell or pull-up station. For lifters comfortable with the basics. About 40–60 minutes.",
     "guidelines": [
       "Train four days a week, ideally with a rest day between the second and third sessions. Use a stable low platform for the front-foot-elevated split squat. If your dumbbells become too light, use the top of the rep range with controlled form; do not invent extra weight in the log.",
+      "Do single-leg calf raises on a step; once bodyweight is easy, hold a dumbbell on the working side and log it as added weight.",
       "The listed sets are working sets. Warm up first, then use progressively heavier practice sets before your first heavy lifts.",
       "Finish most sets with about 2 good repetitions left. Keep the same controlled range of motion; failure is not required.",
       "When every set reaches the top of its rep range with clean form in two sessions, try the smallest available weight increase while aiming to keep the same reps. If reps or form suffer, use a smaller increase or repeat the previous load. Otherwise keep the weight and build reps.",
@@ -140,7 +143,7 @@
       },
       "hf-lower-a": {
         "title": "Lower A: Squat & Hinge",
-        "focus": "Squat, Romanian deadlift and unilateral legs"
+        "focus": "Squat, Romanian deadlift, split squat and calves"
       },
       "hf-upper-b": {
         "title": "Upper B: Incline & Row",
@@ -148,7 +151,7 @@
       },
       "hf-lower-b": {
         "title": "Lower B: Single-Leg Strength",
-        "focus": "Split squat, hinge and glute bridge"
+        "focus": "Step-up, single-leg hinge, leg curl and calves"
       }
     }
   },
@@ -228,7 +231,7 @@
       },
       "mf-c": {
         "title": "Machines C",
-        "focus": "Repeat the main machines with rear delts and trunk work"
+        "focus": "Leg press, incline press, shoulders, rear delts and trunk"
       }
     }
   },
