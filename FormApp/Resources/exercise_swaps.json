@@ -3696,6 +3696,14 @@
       ],
       "relatedPattern": []
     },
+    "hanging-knee-raise": {
+      "samePattern": [
+        "kneeling-cable-crunch",
+        "reverse-crunch",
+        "floor-crunch"
+      ],
+      "relatedPattern": []
+    },
     "incline-barbell-bench-press": {
       "samePattern": [
         "smith-incline-bench-press",
@@ -3817,6 +3825,16 @@
         "dumbbell-fly",
         "cable-standing-fly",
         "dumbbell-incline-fly"
+      ],
+      "relatedPattern": []
+    },
+    "pull-ups": {
+      "samePattern": [
+        "lat-pulldown",
+        "assisted-pull-up",
+        "lever-seated-wide-lat-pulldown",
+        "cable-kneeling-lat-pulldown",
+        "resistance-band-lat-pulldown"
       ],
       "relatedPattern": []
     },
@@ -3948,6 +3966,16 @@
       ],
       "relatedPattern": []
     },
+    "chin-up": {
+      "samePattern": [
+        "cable-underhand-pulldown",
+        "assisted-pull-up",
+        "lat-pulldown",
+        "lever-seated-wide-lat-pulldown",
+        "resistance-band-lat-pulldown"
+      ],
+      "relatedPattern": []
+    },
     "cable-standing-fly": {
       "samePattern": [
         "pec-deck-fly",
@@ -4031,6 +4059,15 @@
       ],
       "relatedPattern": []
     },
+    "hanging-leg-raise": {
+      "samePattern": [
+        "kneeling-cable-crunch",
+        "reverse-crunch",
+        "floor-crunch",
+        "bicycle-crunch"
+      ],
+      "relatedPattern": []
+    },
     "lever-machine-hip-thrust": {
       "samePattern": [
         "smith-hip-thrust",
@@ -4038,6 +4075,15 @@
         "dumbbell-glute-bridge",
         "single-leg-hip-thrust",
         "cable-kneeling-glute-kickback"
+      ],
+      "relatedPattern": []
+    },
+    "scapular-pull-up": {
+      "samePattern": [
+        "lever-high-row",
+        "lat-pulldown",
+        "assisted-pull-up",
+        "resistance-band-lat-pulldown"
       ],
       "relatedPattern": []
     },
