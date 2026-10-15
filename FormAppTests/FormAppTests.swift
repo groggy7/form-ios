@@ -10354,7 +10354,7 @@ final class WeightConfirmationRegressionTests: XCTestCase {
         XCTAssertFalse(needs("800", set: incomplete))
         XCTAssertFalse(needs("800.00", set: ExerciseSetLog(setNumber: 1, weightInput: "800", weightKg: 800, isCompleted: true)))
         let canonicalOnly = ExerciseSetLog(setNumber: 1, weightKg: 600.1, isCompleted: true)
-        XCTAssertFalse(needs(WeightUnit.lbs.formatWeight(600.1), set: canonicalOnly, unit: .lbs))
+        XCTAssertFalse(needs(WorkoutSessionUtils.formatWeightInput(600.1, unit: .lbs), set: canonicalOnly, unit: .lbs))
     }
 
     @MainActor
@@ -10876,7 +10876,7 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
             for _ in 0..<8 {
                 store.weightUnit = .lbs
                 let set = try XCTUnwrap(store.activeSession?.setsByExercise[exercise.id]?.first)
-                XCTAssertEqual(set.weightInput, "220")
+                XCTAssertEqual(set.weightInput, "220.46")
                 XCTAssertEqual(set.weightKg, 100)
                 XCTAssertTrue(set.isCompleted && set.isWarmup)
                 XCTAssertEqual(store.activeSession?.weightInputUnit, .lbs)
@@ -10887,7 +10887,7 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
             store.weightUnit = .lbs
             let reloaded = AppStore(persistence: store.statePersistence)
             XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightKg, 100)
-            XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "220")
+            XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "220.46")
             XCTAssertEqual(reloaded.activeSession?.weightInputUnit, .lbs)
         }
     }
@@ -10903,7 +10903,7 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
             XCTAssertEqual(store.weightUnit, .lbs)
             XCTAssertEqual(store.activeSession?.id, "unit-live")
             XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.weightKg, 75)
-            XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "165")
+            XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "165.35")
         }
     }
 
@@ -10914,7 +10914,7 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
             XCTAssertTrue(store.startActiveSession(programId: "unit-plan", workout: workout, allowPast: true,
                 unfinishedRecordId: "unit-history", resumeHistory: true))
             let first = try XCTUnwrap(store.activeSession?.setsByExercise[exercise.id]?.first)
-            XCTAssertEqual(first.weightInput, "220")
+            XCTAssertEqual(first.weightInput, "220.46")
             XCTAssertEqual(first.weightKg, 100)
             XCTAssertEqual(store.activeSession?.weightInputUnit, .lbs)
         }
@@ -10929,7 +10929,7 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
             UserDefaults.standard.set("lbs", forKey: "weight_unit")
             let reloaded = AppStore(persistence: store.statePersistence)
             XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightKg, 100)
-            XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "220")
+            XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "220.46")
             XCTAssertEqual(reloaded.activeSession?.weightInputUnit, .lbs)
         }
     }
@@ -10950,21 +10950,69 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
         old.setsByExercise[exercise.id]?.append(ExerciseSetLog(id: "empty", setNumber: 3))
         let rebased = WorkoutSessionUtils.rebaseWeightInputs(old, from: .kg, to: .lbs)
         XCTAssertEqual(rebased.setsByExercise[exercise.id]?.first?.weightKg, 100)
-        XCTAssertEqual(rebased.setsByExercise[exercise.id]?.first?.weightInput, "220")
+        XCTAssertEqual(rebased.setsByExercise[exercise.id]?.first?.weightInput, "220.46")
         XCTAssertEqual(rebased.setsByExercise[exercise.id]?[1].weightInput, ".")
         XCTAssertNil(rebased.setsByExercise[exercise.id]?[1].weightKg)
         XCTAssertEqual(rebased.setsByExercise[exercise.id]?[2].weightInput, "")
     }
 
     func testPrefillIgnoresStaleDisplayTextAndRetainsFullCanonicalPrecision() throws {
-        for weight in [100.0, 100.1234567] {
+        for (weight, text) in [(100.0, "220.46"), (100.1234567, "220.73")] {
             let previous = ExerciseSetLog(setNumber: 1, weightInput: "100", repsInput: "10", weightKg: weight, completedReps: 10, isCompleted: true)
             let next = WorkoutSessionUtils.prefillSet(ExerciseSetLog(setNumber: 2), from: previous, unit: .lbs)
-            XCTAssertEqual(next.weightInput, WeightUnit.lbs.formatWeight(weight))
+            XCTAssertEqual(next.weightInput, text)
             XCTAssertEqual(next.weightKg, weight)
             XCTAssertFalse(next.isCompleted)
             XCTAssertEqual(WorkoutSessionUtils.weightForEditedInput(next.weightInput, existing: next, unit: .lbs), weight)
         }
+    }
+
+    func testPrefillShowsTheExactWeightTheRowLogs() {
+        let pounds = WeightUnit.lbs.toCanonicalKg(102.5)
+        for (canonical, unit, text) in [(pounds, WeightUnit.lbs, "102.5"), (52.25, WeightUnit.kg, "52.25")] {
+            let previous = ExerciseSetLog(setNumber: 1, weightInput: text, repsInput: "8", weightKg: canonical, completedReps: 8, isCompleted: true)
+            let next = WorkoutSessionUtils.prefillSet(ExerciseSetLog(setNumber: 2), from: previous, unit: unit)
+            XCTAssertEqual(next.weightInput, text)
+            XCTAssertEqual(next.weightKg, canonical)
+            XCTAssertEqual(WorkoutSessionUtils.weightForEditedInput(next.weightInput, existing: next, unit: unit), canonical)
+        }
+    }
+
+    func testUnitSwitchesShowExactTextWithoutAccumulatingRounding() {
+        let canonical = WeightUnit.lbs.toCanonicalKg(102.5)
+        var value = draft(weight: canonical, input: "102.5", unit: .lbs)
+        for _ in 0..<10 {
+            value = WorkoutSessionUtils.rebaseWeightInputs(value, from: .lbs, to: .kg)
+            XCTAssertEqual(value.setsByExercise[exercise.id]?.first?.weightInput, "46.49")
+            XCTAssertEqual(value.setsByExercise[exercise.id]?.first?.weightKg, canonical)
+            value = WorkoutSessionUtils.rebaseWeightInputs(value, from: .kg, to: .lbs)
+            XCTAssertEqual(value.setsByExercise[exercise.id]?.first?.weightInput, "102.5")
+            XCTAssertEqual(value.setsByExercise[exercise.id]?.first?.weightKg, canonical)
+        }
+    }
+
+    func testRepsOnlyEditRetainsCanonicalForExactAndLegacyRoundedText() throws {
+        for canonical in [100.0, 100.1234567] {
+            let rebased = WorkoutSessionUtils.rebaseWeightInputs(draft(weight: canonical), from: .kg, to: .lbs)
+            // Drafts saved before exact input text keep their rounded pounds until the next unit switch.
+            let legacy = draft(weight: canonical, input: WeightUnit.lbs.formatWeight(canonical), unit: .lbs)
+            for original in [rebased, legacy] {
+                let set = try XCTUnwrap(original.setsByExercise[exercise.id]?.first)
+                let edited = WorkoutSessionUtils.editedSet(set, weight: set.weightInput, reps: "12", exercise: exercise, unit: .lbs)
+                XCTAssertEqual(edited.weightKg, canonical)
+                XCTAssertEqual(edited.completedReps, 12)
+                let changed = WorkoutSessionUtils.editedSet(edited, weight: "225", reps: "12", exercise: exercise, unit: .lbs)
+                XCTAssertEqual(changed.weightKg, WeightUnit.lbs.toCanonicalKg(225))
+            }
+        }
+    }
+
+    func testHistoryResumeShowsExactRecordedWeight() throws {
+        let canonical = WeightUnit.lbs.toCanonicalKg(102.5)
+        let set = try XCTUnwrap(WorkoutSessionUtils.restoreSetsFromHistory(workout: workout, record: history(canonical), unit: .lbs)[exercise.id]?.first)
+        XCTAssertEqual(set.weightInput, "102.5")
+        XCTAssertEqual(set.weightKg, canonical)
+        XCTAssertEqual(WorkoutSessionUtils.weightForEditedInput(set.weightInput, existing: set, unit: .lbs), canonical)
     }
 
     func testExplicitWeightEditConvertsOnceAndClearingRemovesValue() {

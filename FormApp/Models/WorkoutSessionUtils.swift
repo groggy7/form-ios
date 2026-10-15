@@ -213,7 +213,7 @@ public enum WorkoutSessionUtils {
         guard target.inputTouched != true, !target.isCompleted, (target.weightInput.isEmpty || target.weightInput == "0"), target.repsInput.isEmpty,
               (target.weightKg == nil || (target.weightKg == 0 && target.weightInput == "0")), target.completedReps == nil, let previous, canCompleteSet(previous, allowsZeroWeight: true) else { return target }
         let canonicalWeight = previous.weightKg.flatMap { $0.isFinite && $0 >= 0 ? $0 : nil }
-        let weight = canonicalWeight.map { formatWeight($0, unit: unit) } ?? previous.weightInput
+        let weight = canonicalWeight.map { formatWeightInput($0, unit: unit) } ?? previous.weightInput
         let reps = previous.repsInput.isEmpty ? previous.completedReps.map { "\($0)" } ?? "" : previous.repsInput
         guard let weight = sanitizedWeightInput(weight, unit: unit), let reps = sanitizedRepsInput(reps) else { return target }
         var result = target
@@ -237,7 +237,7 @@ public enum WorkoutSessionUtils {
                     ?? (inputHasDigits ? sanitizedWeightInput(set.weightInput, unit: oldUnit).flatMap(Double.init).map { oldUnit.toCanonicalKg($0) } : nil)
                 if let canonical {
                     copy.weightKg = canonical
-                    copy.weightInput = formatWeight(canonical, unit: newUnit)
+                    copy.weightInput = formatWeightInput(canonical, unit: newUnit)
                 }
                 return copy
             }
@@ -258,7 +258,7 @@ public enum WorkoutSessionUtils {
     public static func weightForEditedInput(_ input: String, existing set: ExerciseSetLog, unit: WeightUnit) -> Double? {
         guard let normalized = sanitizedWeightInput(input, unit: unit), let display = Double(normalized) else { return nil }
         if let canonical = set.weightKg, canonical.isFinite, canonical >= 0 {
-            let previousInput = set.weightInput.isEmpty ? formatWeight(canonical, unit: unit) : set.weightInput
+            let previousInput = set.weightInput.isEmpty ? formatWeightInput(canonical, unit: unit) : set.weightInput
             if normalized == sanitizedWeightInput(previousInput, unit: unit) {
                 return canonical // Reps-only edits do not reinterpret rounded display text.
             }
@@ -352,7 +352,7 @@ public enum WorkoutSessionUtils {
                 var restored = completedLogs.map { s in
                     ExerciseSetLog(
                         setNumber: s.setNumber,
-                        weightInput: s.weightKg.map { formatWeight($0, unit: unit) } ?? "",
+                        weightInput: s.weightKg.map { formatWeightInput($0, unit: unit) } ?? "",
                         repsInput: (s.reps ?? 0) > 0 ? "\(s.reps!)" : "",
                         weightKg: s.weightKg,
                         completedReps: (s.reps ?? 0) > 0 ? s.reps : nil,
@@ -408,6 +408,9 @@ public enum WorkoutSessionUtils {
 
     public static func formatWeight(_ value: Double, unit: WeightUnit = .kg) -> String { unit.formatWeight(value) }
 
+    /// Editable set text shows the stored load exactly; rounded display text would log a different weight.
+    public static func formatWeightInput(_ value: Double, unit: WeightUnit = .kg) -> String { unit.formatExactWeight(value) }
+
     private static let allZerosRegex = try! NSRegularExpression(pattern: #"^0+$"#)
     private static let leadingZerosRegex = try! NSRegularExpression(pattern: #"^0+(?=[1-9]|0\.)"#)
     private static let weightInputRegex = try! NSRegularExpression(pattern: #"^\d{0,4}(\.\d{0,2})?$"#)
@@ -435,7 +438,7 @@ public enum WorkoutSessionUtils {
               let sanitized = sanitizedWeightInput(weightInput, unit: unit),
               let displayWeight = Double(sanitized) else { return false }
         let weightKg = unit.toCanonicalKg(displayWeight)
-        let oldInput = set.weightInput.isEmpty ? set.weightKg.map { formatWeight($0, unit: unit) } ?? "" : set.weightInput
+        let oldInput = set.weightInput.isEmpty ? set.weightKg.map { formatWeightInput($0, unit: unit) } ?? "" : set.weightInput
         if Double(oldInput.replacingOccurrences(of: ",", with: ".")) == displayWeight { return false }
         return isAnomalousWeight(weightKg: weightKg, previousTopWeightKg: previousTopWeightKg)
     }

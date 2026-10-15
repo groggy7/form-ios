@@ -140,7 +140,7 @@ public struct SetLoggingTable: View {
                 }()
                 let weightBinding = Binding<String>(
                     get: {
-                        return set.weightInput.isEmpty ? (set.weightKg.flatMap { $0 >= 0 ? WorkoutSessionUtils.formatWeight($0, unit: weightUnit) : nil } ?? "") : set.weightInput
+                        return set.weightInput.isEmpty ? (set.weightKg.flatMap { $0 >= 0 ? WorkoutSessionUtils.formatWeightInput($0, unit: weightUnit) : nil } ?? "") : set.weightInput
                     },
                     set: { newVal in
                         guard isSetInputEnabled else { return }
@@ -159,12 +159,12 @@ public struct SetLoggingTable: View {
                     set: { newVal in
                         guard isSetInputEnabled else { return }
                         if newVal == "0" || newVal == "00" {
-                            let weight = set.weightInput.isEmpty ? (set.weightKg.flatMap { $0 >= 0 ? WorkoutSessionUtils.formatWeight($0, unit: weightUnit) : nil } ?? "") : set.weightInput
+                            let weight = set.weightInput.isEmpty ? (set.weightKg.flatMap { $0 >= 0 ? WorkoutSessionUtils.formatWeightInput($0, unit: weightUnit) : nil } ?? "") : set.weightInput
                             onUpdateSet(index, weight, "")
                             return
                         }
                         if let sanitized = WorkoutSessionUtils.sanitizedRepsInput(newVal) {
-                            let weight = set.weightInput.isEmpty ? (set.weightKg.flatMap { $0 >= 0 ? WorkoutSessionUtils.formatWeight($0, unit: weightUnit) : nil } ?? "") : set.weightInput
+                            let weight = set.weightInput.isEmpty ? (set.weightKg.flatMap { $0 >= 0 ? WorkoutSessionUtils.formatWeightInput($0, unit: weightUnit) : nil } ?? "") : set.weightInput
                             onUpdateSet(index, weight, sanitized)
                         }
                     }
