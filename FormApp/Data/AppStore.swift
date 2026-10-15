@@ -968,33 +968,18 @@ public final class AppStore: ObservableObject {
         return true
     }
 
+    /// Moves the chosen program onto the user's days and selects it; the calendar follows its workout days.
     public func completeOnboarding(preferences: OnboardingPreferences, targetProgramId: String? = nil) {
-        let rec = OnboardingRecommender.recommendProgram(preferences: preferences, availablePrograms: state.programs)
-        let chosenProgramId = targetProgramId ?? rec.targetProgramId
-        guard let currentProg = state.programs.first(where: { $0.id == chosenProgramId }) ?? activeProgram ?? state.programs.first else {
+        let chosenProgramId = targetProgramId
+            ?? OnboardingRecommender.recommendProgram(preferences: preferences, availablePrograms: state.programs).targetProgramId
+        guard let index = state.programs.firstIndex(where: { $0.id == chosenProgramId }) else {
             setOnboardingCompleted(true)
             return
         }
 
-        let updatedWorkouts = currentProg.workouts.enumerated().map { index, workout -> Workout in
-            let newDay = index < rec.scheduledWeekdays.count ? rec.scheduledWeekdays[index] : workout.day
-            return Workout(
-                id: workout.id,
-                day: newDay,
-                title: workout.title,
-                focus: workout.focus,
-                tone: workout.tone,
-                exercises: workout.exercises,
-                targetMuscles: workout.targetMuscles
-            )
-        }
-        var updatedProg = currentProg
-        updatedProg.workouts = updatedWorkouts
         var newState = state
-        if let idx = newState.programs.firstIndex(where: { $0.id == updatedProg.id }) {
-            newState.programs[idx] = updatedProg
-        }
-        newState.activeProgramId = updatedProg.id
+        newState.programs[index] = OnboardingRecommender.schedule(newState.programs[index], preferences: preferences)
+        newState.activeProgramId = chosenProgramId
         newState = refreshCalendarState(newState)
         saveState(newState)
         selectedWorkoutId = nil

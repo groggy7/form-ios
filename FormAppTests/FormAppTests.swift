@@ -5903,71 +5903,140 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(WeightUnit.defaultForLocale(deLocale), .kg)
     }
 
-    func testOnboardingRecommender() {
-        let dummyPrograms: [Program] = [
-            Program(id: "home-forge-dumbbells", name: "Home Forge"),
-            Program(id: "machine-foundation", name: "Machine Foundation"),
-            Program(id: "classic-ppl", name: "Classic PPL"),
-            Program(id: "aesthetic-hypertrophy", name: "Aesthetic Hypertrophy"),
-            Program(id: "powerbuilding-strength", name: "Powerbuilding Strength"),
-            Program(id: "upper-lower-balanced", name: "Upper Lower"),
-            Program(id: "athletic-performance", name: "Athletic Performance"),
-            Program(id: "full-body-classic", name: "Full Body Classic")
-        ]
+    // MARK: Onboarding: shared contract in gym/docs/programs/onboarding-fixtures.json.
+    // Android OnboardingTest runs the same file; update it with scripts/sync_onboarding_fixtures.cjs.
 
-        // 1. Home / Dumbbells
-        let homePrefs = OnboardingPreferences(equipment: .dumbbellsHome)
-        let homeRec = OnboardingRecommender.recommendProgram(preferences: homePrefs, availablePrograms: dummyPrograms)
-        XCTAssertEqual(homeRec.targetProgramId, "home-forge-dumbbells")
+    private struct OnboardingFixtures: Decodable {
+        struct Answer: Decodable {
+            let name: String?
+            let goal: String
+            let experience: String
+            let equipment: String
+            let frequency: Int
+            let selectedDays: [Int]?
+            let programId: String
+            let days: [Int]?
 
-        // 2. Machines only
-        let machinePrefs = OnboardingPreferences(equipment: .machinesOnly)
-        let machineRec = OnboardingRecommender.recommendProgram(preferences: machinePrefs, availablePrograms: dummyPrograms)
-        XCTAssertEqual(machineRec.targetProgramId, "machine-foundation")
-
-        // 3. Commercial gym + 6 days
-        let pplPrefs = OnboardingPreferences(equipment: .commercialGym, frequency: .days6)
-        let pplRec = OnboardingRecommender.recommendProgram(preferences: pplPrefs, availablePrograms: dummyPrograms)
-        XCTAssertEqual(pplRec.targetProgramId, "classic-ppl")
-
-        // 4. Commercial gym + 5 days
-        let fiveDaysPrefs = OnboardingPreferences(equipment: .commercialGym, frequency: .days5)
-        let fiveDaysRec = OnboardingRecommender.recommendProgram(preferences: fiveDaysPrefs, availablePrograms: dummyPrograms)
-        XCTAssertEqual(fiveDaysRec.targetProgramId, "aesthetic-hypertrophy")
-
-        // 5. Commercial gym + 4 days + strength
-        let pbPrefs = OnboardingPreferences(goal: .strength, equipment: .commercialGym, frequency: .days4)
-        let pbRec = OnboardingRecommender.recommendProgram(preferences: pbPrefs, availablePrograms: dummyPrograms)
-        XCTAssertEqual(pbRec.targetProgramId, "powerbuilding-strength")
-
-        // 6. Commercial gym + 4 days + bulk
-        let ulPrefs = OnboardingPreferences(goal: .bulk, equipment: .commercialGym, frequency: .days4)
-        let ulRec = OnboardingRecommender.recommendProgram(preferences: ulPrefs, availablePrograms: dummyPrograms)
-        XCTAssertEqual(ulRec.targetProgramId, "upper-lower-balanced")
-
-        // 7. Commercial gym + 3 days + cut
-        let athleticPrefs = OnboardingPreferences(goal: .cut, equipment: .commercialGym, frequency: .days3)
-        let athleticRec = OnboardingRecommender.recommendProgram(preferences: athleticPrefs, availablePrograms: dummyPrograms)
-        XCTAssertEqual(athleticRec.targetProgramId, "athletic-performance")
-
-        // 8. Commercial gym + 3 days + maintain
-        let fbPrefs = OnboardingPreferences(goal: .maintain, equipment: .commercialGym, frequency: .days3)
-        let fbRec = OnboardingRecommender.recommendProgram(preferences: fbPrefs, availablePrograms: dummyPrograms)
-        XCTAssertEqual(fbRec.targetProgramId, "full-body-classic")
+            func preferences() throws -> OnboardingPreferences {
+                OnboardingPreferences(
+                    goal: try XCTUnwrap(OnboardingGoal(rawValue: goal)),
+                    experience: try XCTUnwrap(OnboardingExperience(rawValue: experience)),
+                    equipment: try XCTUnwrap(OnboardingEquipment(rawValue: equipment)),
+                    frequency: try XCTUnwrap(OnboardingFrequency(rawValue: frequency)),
+                    selectedDays: selectedDays ?? []
+                )
+            }
+        }
+        let programs: [Answer]
+        let schedules: [Answer]
     }
 
-    func testOnboardingScheduledWeekdays() {
-        let dummyPrograms = [Program(id: "upper-lower-balanced", name: "Upper Lower")]
+    private static let fullBodyProgramIds: Set<String> = ["full-body-classic", "machine-foundation", "athletic-performance"]
 
-        // Default weekdays when none explicitly selected
-        let defaultPrefs = OnboardingPreferences(frequency: .days4, selectedDays: [])
-        let defaultRec = OnboardingRecommender.recommendProgram(preferences: defaultPrefs, availablePrograms: dummyPrograms)
-        XCTAssertEqual(defaultRec.scheduledWeekdays, [1, 2, 4, 5])
+    private func onboardingFixtures() throws -> OnboardingFixtures {
+        let url = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("onboarding-fixtures.json")
+        return try JSONDecoder().decode(OnboardingFixtures.self, from: Data(contentsOf: url))
+    }
 
-        // Custom selected weekdays
-        let customPrefs = OnboardingPreferences(frequency: .days4, selectedDays: [2, 4, 6, 7])
-        let customRec = OnboardingRecommender.recommendProgram(preferences: customPrefs, availablePrograms: dummyPrograms)
-        XCTAssertEqual(customRec.scheduledWeekdays, [2, 4, 6, 7])
+    func testOnboardingEveryAnswerCombinationMatchesTheSharedTable() throws {
+        let rows = try onboardingFixtures().programs
+        let programs = AppStore.loadBundledStarterPrograms()
+        let combinations = Set(rows.map { "\($0.goal)|\($0.experience)|\($0.equipment)|\($0.frequency)" })
+        XCTAssertEqual(combinations.count, OnboardingGoal.allCases.count * OnboardingExperience.allCases.count
+            * OnboardingEquipment.allCases.count * OnboardingFrequency.allCases.count)
+        for row in rows {
+            let recommendation = OnboardingRecommender.recommendProgram(preferences: try row.preferences(), availablePrograms: programs)
+            XCTAssertEqual(recommendation.targetProgramId, row.programId, "\(row)")
+            XCTAssertNotEqual(recommendation.explanationKey, "onboarding.reason.default", "\(row)")
+        }
+    }
+
+    func testOnboardingWorkedSchedulesMatchTheSharedContract() throws {
+        let programs = AppStore.loadBundledStarterPrograms()
+        for schedule in try onboardingFixtures().schedules {
+            let name = schedule.name ?? schedule.programId
+            let recommendation = OnboardingRecommender.recommendProgram(preferences: try schedule.preferences(), availablePrograms: programs)
+            XCTAssertEqual(recommendation.targetProgramId, schedule.programId, name)
+            XCTAssertEqual(recommendation.program.workouts.map(\.day), schedule.days, name)
+            XCTAssertEqual(recommendation.scheduledWeekdays, schedule.days, name)
+        }
+    }
+
+    func testOnboardingAuditedRecommendationsTakeExperienceIntoAccount() {
+        let programs = AppStore.loadBundledStarterPrograms()
+        func program(_ experience: OnboardingExperience, _ frequency: OnboardingFrequency, _ goal: OnboardingGoal = .bulk) -> String {
+            OnboardingRecommender.recommendProgram(
+                preferences: OnboardingPreferences(goal: goal, experience: experience, equipment: .commercialGym, frequency: frequency),
+                availablePrograms: programs
+            ).targetProgramId
+        }
+        XCTAssertEqual(program(.beginner, .days6), "upper-lower-balanced")
+        XCTAssertEqual(program(.beginner, .days5), "upper-lower-balanced")
+        XCTAssertEqual(program(.beginner, .days3, .cut), "full-body-classic")
+        XCTAssertEqual(program(.intermediate, .days3, .cut), "full-body-classic")
+        XCTAssertEqual(program(.advanced, .days3), "athletic-performance")
+        XCTAssertEqual(program(.intermediate, .days6), "aesthetic-hypertrophy")
+        XCTAssertEqual(program(.advanced, .days6), "classic-ppl")
+    }
+
+    func testOnboardingEveryChosenDaySetGetsDistinctDaysAndRestBetweenFullBodySessions() {
+        for program in AppStore.loadBundledStarterPrograms() {
+            let weeklyOrder = program.workouts.sorted { $0.day < $1.day }.map(\.id)
+            for mask in 1..<128 {
+                let chosen = (1...7).filter { mask & (1 << ($0 - 1)) != 0 }
+                let scheduled = OnboardingRecommender.schedule(program, preferences: OnboardingPreferences(selectedDays: chosen))
+                let days = scheduled.workouts.map(\.day)
+                let label = "\(program.id) on \(chosen) -> \(days)"
+                XCTAssertEqual(scheduled.workouts.map(\.id), weeklyOrder, label)
+                XCTAssertEqual(days, Array(Set(days)).sorted(), label)
+                if Self.fullBodyProgramIds.contains(program.id) {
+                    XCTAssertFalse(days.contains { days.contains($0 == 7 ? 1 : $0 + 1) }, label)
+                } else {
+                    XCTAssertEqual(days.filter { chosen.contains($0) }.count, min(chosen.count, days.count), label)
+                }
+            }
+        }
+    }
+
+    func testOnboardingMissingProgramFallsBackWithItsOwnExplanation() throws {
+        let programs = AppStore.loadBundledStarterPrograms().filter { $0.id != "machine-foundation" }
+        let first = try XCTUnwrap(programs.first)
+        let recommendation = OnboardingRecommender.recommendProgram(
+            preferences: OnboardingPreferences(equipment: .machinesOnly), availablePrograms: programs
+        )
+        XCTAssertEqual(recommendation.targetProgramId, first.id)
+        XCTAssertEqual(recommendation.explanationKey, OnboardingRecommender.explanationKey(programId: first.id))
+    }
+
+    @MainActor
+    func testCompleteOnboardingStoresDistinctChosenDaysAndSelectsTheProgram() throws {
+        let key = "is_onboarding_completed"
+        let previous = UserDefaults.standard.object(forKey: key)
+        defer {
+            if let previous { UserDefaults.standard.set(previous, forKey: key) }
+            else { UserDefaults.standard.removeObject(forKey: key) }
+        }
+        let persistence = AppStatePersistence(inMemory: true)
+        let store = AppStore(persistence: persistence)
+        store.state = StoredAppState(programs: AppStore.loadBundledStarterPrograms(), activeProgramId: "aesthetic-hypertrophy")
+        let untouched = store.state.programs.filter { $0.id != "home-forge-dumbbells" }
+        // Home Forge has four workouts; three chosen days must not put two workouts on Friday.
+        let preferences = OnboardingPreferences(goal: .bulk, experience: .intermediate, equipment: .dumbbellsHome,
+            frequency: .days3, selectedDays: [1, 3, 5])
+        let recommendation = OnboardingRecommender.recommendProgram(preferences: preferences, availablePrograms: store.state.programs)
+        store.completeOnboarding(preferences: preferences, targetProgramId: recommendation.targetProgramId)
+
+        let expected = [1, 3, 5, 6]
+        XCTAssertEqual(recommendation.scheduledWeekdays, expected)
+        XCTAssertTrue(store.isOnboardingCompleted)
+        XCTAssertEqual(store.state.activeProgramId, "home-forge-dumbbells")
+        XCTAssertEqual(store.state.programs.first { $0.id == "home-forge-dumbbells" }?.workouts.map(\.day), expected)
+        XCTAssertEqual(store.state.calendarHistory?.scheduledWeekdays, expected)
+        XCTAssertEqual(store.state.programs.filter { $0.id != "home-forge-dumbbells" }, untouched)
+        try persistence.flush()
+        let reloaded = AppStore(persistence: persistence)
+        XCTAssertEqual(reloaded.state.activeProgramId, "home-forge-dumbbells")
+        XCTAssertEqual(reloaded.state.programs.first { $0.id == "home-forge-dumbbells" }?.workouts.map(\.day), expected)
     }
 
     func testProAccessManagerEntitlements() {

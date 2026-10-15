@@ -374,7 +374,19 @@ public struct OnboardingView: View {
 
                 VStack(spacing: 8) {
                     ForEach(recommendation.program.workouts) { workout in
-                        HStack {
+                        HStack(spacing: 12) {
+                            // The weekday this workout is scheduled on, after fitting the plan to the chosen days.
+                            let dayIndex = workout.day - 1
+                            Text(LanguageManager.dayLabels.indices.contains(dayIndex) ? LanguageManager.dayLabels[dayIndex] : "")
+                                .font(.system(size: 11, weight: .bold))
+                                .foregroundStyle(AppColors.secondaryText)
+                                .lineLimit(1)
+                                .fixedSize()
+                                .frame(minWidth: 32, minHeight: 32)
+                                .background(AppColors.surfaceRaised)
+                                .clipShape(RoundedRectangle(cornerRadius: 6))
+                                .accessibilityLabel(LanguageManager.workoutDays.indices.contains(dayIndex) ? LanguageManager.workoutDays[dayIndex] : "")
+
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(workout.displayTitle(programId: recommendation.program.id))
                                     .font(.system(size: 15, weight: .semibold))
