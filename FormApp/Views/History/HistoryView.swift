@@ -1028,8 +1028,8 @@ private struct BoxDayCell: View {
             let cellSize = min(geometry.size.width, geometry.size.height)
             // Include the selection ring in the fit calculation, not just the fill.
             let canGrow = cellSize >= 44
-            let pillWidth = canGrow ? min(40, cellSize - 6) : min(32, max(0, cellSize - 6))
-            let ringWidth = canGrow ? pillWidth + 4 : min(38, max(0, cellSize - 2))
+            // The pill, its border and the selection/today ring share one frame; the ring sits flush on the pill's edge.
+            let pillWidth = canGrow ? min(44, cellSize - 2) : min(38, max(0, cellSize - 2))
 
             ZStack {
                 if let date = dateOpt {
@@ -1043,36 +1043,34 @@ private struct BoxDayCell: View {
                     ZStack {
                         let pillHeight = pillWidth / calendarDayPillAspectRatio
                         let pillRadius = pillHeight * calendarDayPillCornerRadiusFraction
-                        let ringHeight = ringWidth / calendarDayPillAspectRatio
-                        let ringRadius = ringHeight * calendarDayPillCornerRadiusFraction
-
-                        // Outer border ring for selected day or today
-                        if isSelected {
-                            RoundedRectangle(cornerRadius: ringRadius, style: .continuous)
-                                .strokeBorder(AppColors.accent, lineWidth: 2)
-                                .frame(width: ringWidth, height: ringHeight)
-                        } else if isToday {
-                            let todayWidth = status == nil ? pillWidth : ringWidth
-                            let todayHeight = status == nil ? pillHeight : ringHeight
-                            let todayRadius = status == nil ? pillRadius : ringRadius
-                            RoundedRectangle(cornerRadius: todayRadius, style: .continuous)
-                                .strokeBorder(AppColors.text.opacity(0.8), lineWidth: 1)
-                                .frame(width: todayWidth, height: todayHeight)
+                        let colors: AppColors.CalendarPillColors? = status.map { status in
+                            switch status {
+                            case .completed: return AppColors.calendarCompletedPill
+                            case .unfinished: return AppColors.calendarUnfinishedPill
+                            case .missed: return AppColors.calendarMissedPill
+                            }
                         }
 
                         // Aggressively rounded rectangle status pill
-                        if let status = status {
-                            let colors: AppColors.CalendarPillColors = {
-                                switch status {
-                                case .completed: return AppColors.calendarCompletedPill
-                                case .unfinished: return AppColors.calendarUnfinishedPill
-                                case .missed: return AppColors.calendarMissedPill
-                                }
-                            }()
-
+                        if let colors {
                             CalendarPill(colors: colors)
                                 .frame(width: pillWidth, height: pillHeight)
+                        }
 
+                        // Border drawn inside the pill's edge: selection, today, or (light suites) the pill's own line.
+                        let border: (color: Color, width: CGFloat)? = {
+                            if isSelected { return (AppColors.accent, 2) }
+                            if isToday { return (AppColors.calendarTodayBorder, 1.5) }
+                            if let colors, !themeManager.currentTheme.isDark { return (colors.shade, 1) }
+                            return nil
+                        }()
+                        if let border {
+                            RoundedRectangle(cornerRadius: pillRadius, style: .continuous)
+                                .strokeBorder(border.color, lineWidth: border.width)
+                                .frame(width: pillWidth, height: pillHeight)
+                        }
+
+                        if status != nil {
                             Text("\(dayNumber)")
                                 .font(.system(size: 15, weight: .semibold))
                                 .foregroundStyle(AppColors.calendarPillText)

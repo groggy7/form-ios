@@ -78,6 +78,8 @@ public enum AppColors {
     public static var unfinishedText: Color { lightThemeColor(Color(hex: 0xFDE8CC), Color(hex: 0x845014)) }
     public static var unfinishedSurface: Color { lightThemeColor(Color(hex: 0x332717), Color(hex: 0xF2E4D0)) }
     
+    /// Border of today's calendar pill: neutral ink on dark suites, a softened accent on light ones.
+    public static var calendarTodayBorder: Color { lightThemeColor(text.opacity(0.8), accent.opacity(0.6)) }
     public static var todayIvory: Color { lightThemeColor(Color(hex: 0xEEE8DC), accent) }
     public static var todaySelectionText: Color { lightThemeColor(Color(hex: 0x1A2026), background) }
 

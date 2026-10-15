@@ -54,7 +54,7 @@ public struct SettingsView: View {
                                     Text(LanguageManager.t("settings.manage_subscription"))
                                         .font(.system(size: 13, weight: .semibold))
                                 }
-                                .foregroundStyle(AppColors.text)
+                                .foregroundStyle(Color.white)
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 38)
                                 .background(AppColors.purple)

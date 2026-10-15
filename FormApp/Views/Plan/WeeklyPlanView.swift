@@ -95,7 +95,7 @@ public struct WeeklyPlanView: View {
                                     VStack(alignment: .leading, spacing: 1) {
                                         Text(String(dayName.prefix(3)).uppercased())
                                             .font(.system(size: 10, weight: .bold))
-                                            .foregroundStyle(isToday ? AppColors.accent : (isUnfinished ? Color(hex: 0xFDE8CC) : AppColors.muted))
+                                            .foregroundStyle(isToday ? AppColors.accent : (isUnfinished ? AppColors.unfinishedText : AppColors.muted))
 
                                         Text("\(dayNumber)")
                                             .font(.system(size: 18, weight: .bold))
@@ -112,7 +112,7 @@ public struct WeeklyPlanView: View {
 
                                         Text(Self.workoutSubtitle(workout: workout, isUnfinished: isUnfinished, isMissed: isMissed))
                                             .font(.system(size: 12))
-                                            .foregroundStyle(isUnfinished ? Color(hex: 0xFDE8CC).opacity(0.8) : AppColors.muted)
+                                            .foregroundStyle(isUnfinished ? AppColors.unfinishedText.opacity(0.8) : AppColors.muted)
                                     }
 
                                     Spacer()
