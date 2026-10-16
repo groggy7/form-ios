@@ -180,14 +180,7 @@ public struct ProgramsView: View {
             .navigationTitle(LanguageManager.t("programs.title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: onDismiss) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 13, weight: .semibold))
-                            .foregroundStyle(AppColors.secondaryText)
-                    }
-                    .accessibilityLabel(LanguageManager.t("common.close"))
-                }
+                FormCloseToolbarItem(action: onDismiss)
             }
             .sheet(item: $editingProgram) { program in
                 ProgramBuilderView(store: store, program: program) { editingProgram = nil }

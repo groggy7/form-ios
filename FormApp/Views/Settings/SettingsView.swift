@@ -414,13 +414,7 @@ public struct SettingsView: View {
             .navigationTitle(LanguageManager.t("settings.title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: onDismiss) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 12, weight: .semibold))
-                            .foregroundStyle(AppColors.text.opacity(0.85))
-                    }
-                }
+                FormCloseToolbarItem(action: onDismiss)
             }
             .sheet(isPresented: $showLanguageSheet) {
                 LanguageSelectionSheet(
@@ -630,16 +624,8 @@ struct LanguageSelectionSheet: View {
                     .font(.title2.weight(.semibold))
                     .foregroundStyle(AppColors.text)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Button(action: onDismiss) {
-                    Image(systemName: "xmark")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundStyle(AppColors.secondaryText)
-                        .frame(width: 48, height: 48)
-                        .background(AppColors.surfaceRaised, in: Circle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(LanguageManager.t("common.close"))
-                .accessibilityIdentifier("language-picker-close")
+                FormCloseButton(action: onDismiss)
+                    .accessibilityIdentifier("language-picker-close")
             }
             .padding(.horizontal, 20)
             .padding(.top, 12)
@@ -753,16 +739,8 @@ struct ImportExportDataSheet: View {
                     }
                 }
                 Spacer()
-                Button(action: onDismiss) {
-                    Image(systemName: "xmark")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundStyle(AppColors.secondaryText)
-                        .frame(width: 36, height: 36)
-                        .background(AppColors.surfaceRaised, in: Circle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(LanguageManager.t("common.close"))
-                .accessibilityIdentifier("import-export-close")
+                FormCloseButton(action: onDismiss)
+                    .accessibilityIdentifier("import-export-close")
             }
             .padding(.horizontal, 20)
             .padding(.top, 30)
@@ -1284,16 +1262,8 @@ struct ThemeSelectionSheet: View {
                     .foregroundStyle(AppColors.text)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                Button(action: onDismiss) {
-                    Image(systemName: "xmark")
-                        .font(.system(size: 14, weight: .semibold))
-                        .foregroundStyle(AppColors.secondaryText)
-                        .frame(width: 48, height: 48)
-                        .background(AppColors.surfaceRaised, in: Circle())
-                }
-                .buttonStyle(.plain)
-                .accessibilityLabel(LanguageManager.t("common.close"))
-                .accessibilityIdentifier("theme-picker-close")
+                FormCloseButton(action: onDismiss)
+                    .accessibilityIdentifier("theme-picker-close")
             }
             .padding(.horizontal, 20)
             .padding(.top, 12)

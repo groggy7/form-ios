@@ -76,6 +76,7 @@
 		C0E82546129BB4114FE21B90 /* TodayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A68AD20F92BF7286266D03EB /* TodayView.swift */; };
 		C10000000000000000000002 /* ContentLocalizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C10000000000000000000001 /* ContentLocalizer.swift */; };
 		C10EBC98F5843C3C6F20A4B7 /* FormHeaderIconButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */; };
+		C105E0000000000000000001 /* FormCloseButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C105E0000000000000000002 /* FormCloseButton.swift */; };
 		CDE6B5B32A4C412F8D40C7B7 /* BottomDock.swift in Sources */ = {isa = PBXBuildFile; fileRef = F733A913348412862B8CDF1E /* BottomDock.swift */; };
 		D5DDC5DF3C8A6E620BADA5A7 /* SetLoggingTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 303A307ACE2A1CA19B710636 /* SetLoggingTable.swift */; };
 		DBF8CF30B08C1B8DF1992BA1 /* form_workout_start.wav in Resources */ = {isa = PBXBuildFile; fileRef = 400B4993DD7FAF3B3E8C9936 /* form_workout_start.wav */; };
@@ -212,6 +213,7 @@
 		C10000000000000000000001 /* ContentLocalizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentLocalizer.swift; sourceTree = "<group>"; };
 		C151465400D7E4ECECCC89F9 /* form_workout_complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_workout_complete.wav; sourceTree = "<group>"; };
 		D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormHeaderIconButton.swift; sourceTree = "<group>"; };
+		C105E0000000000000000002 /* FormCloseButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormCloseButton.swift; sourceTree = "<group>"; };
 		DECFA8F5B27849C8BE2611AF /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DF6E74CE9A7C510C260498C8 /* SessionSummaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSummaryView.swift; sourceTree = "<group>"; };
 		E10000000000000000000001 /* exercises.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = exercises.json; sourceTree = "<group>"; };
@@ -309,6 +311,7 @@
 				FCF84D563B45992D3D9DCB77 /* AppHeader.swift */,
 				F733A913348412862B8CDF1E /* BottomDock.swift */,
 				D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */,
+				C105E0000000000000000002 /* FormCloseButton.swift */,
 				2D97FA7035F2317DFBE57498 /* MovementIcon.swift */,
 				V10000000000000000000002 /* ExerciseDetailVideo.swift */,
 				C14000000000000000000002 /* SessionExerciseMedia.swift */,
@@ -775,6 +778,7 @@
 				RP0000000000000000000001 /* ExerciseReportStore.swift in Sources */,
 				947A3D0C40441B9379ABD063 /* FormApp.swift in Sources */,
 				C10EBC98F5843C3C6F20A4B7 /* FormHeaderIconButton.swift in Sources */,
+				C105E0000000000000000001 /* FormCloseButton.swift in Sources */,
 				64479F749C98F6E9114D49BC /* HistoryView.swift in Sources */,
 				A1B2C3D4E5F60718293A4B02 /* HistoryDayPreviewCard.swift in Sources */,
 				A1B2C3D4E5F60718293A4B04 /* HistoryDetailView.swift in Sources */,

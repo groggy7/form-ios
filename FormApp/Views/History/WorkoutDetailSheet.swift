@@ -90,13 +90,7 @@ public struct WorkoutDetailSheet: View {
             .navigationTitle(LanguageManager.t("history.workoutDetail"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button(action: onDismiss) {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 13, weight: .semibold))
-                            .foregroundStyle(AppColors.secondaryText)
-                    }
-                }
+                FormCloseToolbarItem(action: onDismiss)
             }
         }
     }

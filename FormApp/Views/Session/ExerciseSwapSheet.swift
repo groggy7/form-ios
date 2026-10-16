@@ -68,16 +68,7 @@ struct ExerciseSwapSheet: View {
             .navigationTitle(LanguageManager.t("session.replace.title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button { dismiss() } label: {
-                        Image(systemName: "xmark")
-                            .font(.system(size: 15, weight: .semibold))
-                            .foregroundStyle(AppColors.secondaryText)
-                            .frame(width: 44, height: 44)
-                    }
-                    .accessibilityLabel(LanguageManager.t("common.close"))
-                    .accessibilityIdentifier("exercise-swap-close")
-                }
+                FormCloseToolbarItem(accessibilityIdentifier: "exercise-swap-close") { dismiss() }
             }
         }
         .accessibilityIdentifier("exercise-swap-sheet")

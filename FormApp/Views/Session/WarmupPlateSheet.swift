@@ -102,15 +102,7 @@ public struct WarmupPlateSheet: View {
 
                         Spacer()
 
-                        Button(action: { dismiss() }) {
-                            Image(systemName: "xmark")
-                                .font(.system(size: 14, weight: .semibold))
-                                .foregroundStyle(AppColors.muted)
-                                .frame(width: 32, height: 32)
-                                .background(AppColors.surfaceRaised)
-                                .clipShape(Circle())
-                        }
-                        .buttonStyle(.plain)
+                        FormCloseButton { dismiss() }
                     }
                     .padding(.horizontal, 16)
                     .padding(.top, 16)
