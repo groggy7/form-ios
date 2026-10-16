@@ -27,22 +27,19 @@ public struct WeeklyGoalProgressCard: View {
     public let metrics: WeeklyGoalProgressMetrics
     public let isCurrentWorkoutPending: Bool
     public var weightUnit: WeightUnit = .kg
-    @State private var isBlinking: Bool = false
+    public var isPageVisible: Bool = true
+    @State private var isVisible = false
 
-    public init(metrics: WeeklyGoalProgressMetrics, isCurrentWorkoutPending: Bool = true, weightUnit: WeightUnit = .kg) {
+    public init(metrics: WeeklyGoalProgressMetrics, isCurrentWorkoutPending: Bool = true, weightUnit: WeightUnit = .kg, isPageVisible: Bool = true) {
         self.metrics = metrics
         self.isCurrentWorkoutPending = isCurrentWorkoutPending
         self.weightUnit = weightUnit
+        self.isPageVisible = isPageVisible
     }
 
     private var shouldBlink: Bool {
-        scenePhase == .active && !reduceMotion && metrics.totalWorkouts > 0 && metrics.completedWorkouts < metrics.totalWorkouts
-    }
-
-    private func updateBlinking(_ active: Bool) {
-        var transaction = Transaction(animation: active ? .easeInOut(duration: 1.25).repeatForever(autoreverses: true) : nil)
-        transaction.disablesAnimations = !active
-        withTransaction(transaction) { isBlinking = active }
+        isVisible && isPageVisible && scenePhase == .active && !reduceMotion &&
+            metrics.totalWorkouts > 0 && metrics.completedWorkouts < metrics.totalWorkouts
     }
 
     public var body: some View {
@@ -68,36 +65,17 @@ public struct WeeklyGoalProgressCard: View {
             }
 
             // Segmented Progress Bar
-            let totalSegments = max(metrics.totalWorkouts, 1)
-            HStack(spacing: 6) {
-                ForEach(0..<totalSegments, id: \.self) { i in
-                    let isCompleted = metrics.totalWorkouts > 0 && i < metrics.completedWorkouts
-                    let isBlinkingPill = isWeeklyGoalPillBlinking(
-                        pillIndex: i,
-                        totalWorkouts: metrics.totalWorkouts,
-                        completedWorkouts: metrics.completedWorkouts,
-                        isCurrentWorkoutPending: isCurrentWorkoutPending
-                    )
-
-                    let segmentColor: Color = {
-                        if isCompleted {
-                            return segmentActive
-                        } else if isBlinkingPill {
-                            return isBlinking ? segmentBlinkingTarget : segmentTrack
-                        } else {
-                            return segmentTrack
-                        }
-                    }()
-
-                    Capsule()
-                        .fill(segmentColor)
-                        .frame(height: 8)
-                }
-            }
+            WeeklyGoalSegments(
+                completedWorkouts: metrics.completedWorkouts,
+                totalWorkouts: metrics.totalWorkouts,
+                animate: shouldBlink,
+                track: segmentTrack,
+                completed: segmentActive,
+                pending: segmentBlinkingTarget
+            )
             .accessibilityIdentifier("weekly-goal-progress-segments")
-            .onAppear { updateBlinking(shouldBlink) }
-            .onChange(of: shouldBlink) { _, active in updateBlinking(active) }
-            .onDisappear { updateBlinking(false) }
+            .onAppear { isVisible = true }
+            .onDisappear { isVisible = false }
 
             // Subtle Divider
             Rectangle()
@@ -190,5 +168,46 @@ public struct WeeklyGoalProgressCard: View {
                 .stroke(cardBorder, lineWidth: 1)
         )
         .accessibilityIdentifier("weekly-goal-progress-card")
+    }
+}
+
+// Draw one coherent progress snapshot. A repeatForever transaction on the row
+// can retain old per-capsule color animations after progress or palette changes.
+struct WeeklyGoalSegments: View {
+    let completedWorkouts: Int
+    let totalWorkouts: Int
+    let animate: Bool
+    let track: Color
+    let completed: Color
+    let pending: Color
+
+    var body: some View {
+        TimelineView(.animation(minimumInterval: 1.0 / 30, paused: !animate)) { timeline in
+            let phase = timeline.date.timeIntervalSinceReferenceDate.truncatingRemainder(dividingBy: 2.5)
+            let fraction = animate ? (1 - cos(phase * .pi / 1.25)) / 2 : 1
+            let pendingColor = Color.mix(track, pending, fraction)
+            Canvas { context, size in
+                let count = max(totalWorkouts, 1)
+                let gap: CGFloat = 6
+                let width = max(0, (size.width - gap * CGFloat(count - 1)) / CGFloat(count))
+                for index in 0..<count {
+                    let color: Color
+                    if totalWorkouts > 0 && index < completedWorkouts {
+                        color = completed
+                    } else if isWeeklyGoalPillBlinking(pillIndex: index, totalWorkouts: totalWorkouts, completedWorkouts: completedWorkouts) {
+                        color = pendingColor
+                    } else {
+                        color = track
+                    }
+                    let rect = CGRect(x: CGFloat(index) * (width + gap), y: 0, width: width, height: size.height)
+                    context.fill(Path(roundedRect: rect, cornerRadius: size.height / 2), with: .color(color))
+                }
+            }
+        }
+        .frame(height: 8)
+        .transaction { transaction in
+            transaction.animation = nil
+            transaction.disablesAnimations = true
+        }
     }
 }

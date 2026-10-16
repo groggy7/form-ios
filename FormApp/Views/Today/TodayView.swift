@@ -100,7 +100,8 @@ public struct TodayView: View {
                 // Weekly goal progress card
                 WeeklyGoalProgressCard(
                     metrics: weeklyMetrics,
-                    weightUnit: store.weightUnit
+                    weightUnit: store.weightUnit,
+                    isPageVisible: store.currentView == .today && !store.isSessionPresented
                 )
                 .padding(.horizontal, 20)
 

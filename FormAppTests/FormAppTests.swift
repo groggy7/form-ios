@@ -5,6 +5,128 @@ import UIKit
 import SwiftUI
 @testable import FormApp
 
+final class WeeklyGoalRenderingTests: XCTestCase {
+    private final class Progress: ObservableObject {
+        @Published var completed = 2
+        @Published var total = 5
+        @Published var animate = true
+    }
+
+    private struct Fixture: View {
+        @ObservedObject var progress: Progress
+        @ObservedObject private var manager = ThemeManager.shared
+
+        var body: some View {
+            VStack(spacing: 0) {
+                WeeklyGoalSegments(completedWorkouts: progress.completed, totalWorkouts: progress.total,
+                    animate: progress.animate, track: manager.currentTheme.surface,
+                    completed: AppColors.goalSegmentActive, pending: AppColors.goalSegmentPending)
+                Spacer(minLength: 0)
+            }
+            .frame(width: 320, height: 200, alignment: .topLeading)
+            .background(AppColors.heroSurface)
+            .ignoresSafeArea()
+        }
+    }
+
+    @MainActor
+    func testLiveProgressResetsAndThemeChangesNeverAnimateOtherPillsOrLeaveGreenRange() async throws {
+        continueAfterFailure = false
+        let originalTheme = ThemeManager.shared.currentTheme.id
+        defer { ThemeManager.shared.setThemeId(originalTheme) }
+        let progress = Progress()
+        let controller = UIHostingController(rootView: Fixture(progress: progress))
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
+        let window = UIWindow(windowScene: scene)
+        window.frame = CGRect(x: 0, y: 0, width: 320, height: 200)
+        controller.view.frame = window.bounds
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        defer { window.isHidden = true }
+
+        for theme in [AppThemes.default, AppThemes.cobalt, AppThemes.oat] {
+            ThemeManager.shared.setThemeId(theme.id)
+            // Importing a fixture or changing a program may reduce progress or change its goal.
+            for (completed, total) in [(2, 5), (0, 5), (1, 4), (4, 4), (0, 0)] {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    progress.completed = completed
+                    progress.total = total
+                }
+                var greenValues = [Int]()
+                for _ in 0..<5 {
+                    try await Task.sleep(nanoseconds: 180_000_000)
+                    let samples = pillPixels(controller, count: max(total, 1))
+                    let track = rgb(theme.surface)
+                    let active = rgb(AppColors.goalSegmentActive)
+                    let pending = rgb(AppColors.goalSegmentPending)
+                    for (index, sample) in samples.enumerated() {
+                        if total > 0 && index < completed {
+                            assertRGB(sample, equals: active, message: "Completed pill \(index), \(theme.id)")
+                        } else if total > 0 && index == completed && completed < total {
+                            for channel in 0..<3 {
+                                XCTAssertGreaterThanOrEqual(sample[channel], min(track[channel], pending[channel]) - 2)
+                                XCTAssertLessThanOrEqual(sample[channel], max(track[channel], pending[channel]) + 2)
+                            }
+                            greenValues.append(sample[1])
+                        } else {
+                            assertRGB(sample, equals: track, message: "Future pill \(index), \(theme.id), \(completed)/\(total)")
+                        }
+                    }
+                }
+                if completed < total {
+                    XCTAssertGreaterThan((greenValues.max() ?? 0) - (greenValues.min() ?? 0), 8,
+                        "Only the next pending pill should visibly breathe")
+                }
+            }
+        }
+
+        progress.completed = 0
+        progress.total = 5
+        progress.animate = false
+        try await Task.sleep(nanoseconds: 100_000_000)
+        let stopped = pillPixels(controller, count: 5)
+        try await Task.sleep(nanoseconds: 400_000_000)
+        XCTAssertEqual(stopped, pillPixels(controller, count: 5), "Inactive/reduced-motion progress should stay still")
+        assertRGB(stopped[0], equals: rgb(AppColors.goalSegmentPending), message: "Static pending state stays distinct")
+    }
+
+    @MainActor
+    private func pillPixels(_ controller: UIViewController, count: Int) -> [[Int]] {
+        controller.view.layoutIfNeeded()
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let image = UIGraphicsImageRenderer(size: controller.view.bounds.size, format: format).image { _ in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+        var bytes = [UInt8](repeating: 0, count: 320 * 200 * 4)
+        let context = CGContext(data: &bytes, width: 320, height: 200, bitsPerComponent: 8,
+            bytesPerRow: 320 * 4, space: CGColorSpace(name: CGColorSpace.sRGB)!,
+            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
+        context.draw(image.cgImage!, in: CGRect(x: 0, y: 0, width: 320, height: 200))
+        if bytes.allSatisfy({ $0 == 0 }) {
+            let attachment = XCTAttachment(image: image)
+            attachment.name = "weekly-goal-blank-fixture"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+        }
+        let width = (320.0 - Double(count - 1) * 6) / Double(count)
+        return (0..<count).map { index in
+            let x = Int(Double(index) * (width + 6) + width / 2)
+            let offset = (4 * 320 + x) * 4
+            return (0..<3).map { Int(bytes[offset + $0]) }
+        }
+    }
+
+    private func rgb(_ color: Color) -> [Int] {
+        let resolved = color.resolve(in: EnvironmentValues())
+        return [resolved.red, resolved.green, resolved.blue].map { Int(($0 * 255).rounded()) }
+    }
+
+    private func assertRGB(_ actual: [Int], equals expected: [Int], message: String) {
+        for channel in 0..<3 { XCTAssertEqual(actual[channel], expected[channel], accuracy: 2, message) }
+    }
+}
+
 final class WeeklyProgressTests: XCTestCase {
     private let utc = TimeZone(identifier: "UTC")!
     private let now = WorkoutCalendar.parseIsoTimestamp("2026-09-14T10:30:00Z")!
