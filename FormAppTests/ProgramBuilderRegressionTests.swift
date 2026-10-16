@@ -247,9 +247,11 @@ final class ProgramBuilderRegressionTests: XCTestCase {
         for language in ["en", "tr", "de", "es", "fr"] {
             LanguageManager.setLanguage(language)
             let store = AppStore(persistence: AppStatePersistence(inMemory: true))
-            _ = store.addProgram(fixture(), activate: false)
+            var selected = fixture()
+            selected.coverId = ProgramCover.allCases.max { LanguageManager.t("programs.cover." + $0.rawValue).count < LanguageManager.t("programs.cover." + $1.rawValue).count }?.rawValue
+            _ = store.addProgram(selected, activate: false)
             for existing in [false, true] {
-                let root = ProgramBuilderView(store: store, program: existing ? fixture() : nil) { }.environment(\.sizeCategory, .extraExtraExtraLarge)
+                let root = ProgramBuilderView(store: store, program: existing ? selected : nil) { }.environment(\.sizeCategory, .extraExtraExtraLarge)
                 let host = UIHostingController(rootView: root)
                 let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
                 let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 850))

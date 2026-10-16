@@ -1301,6 +1301,8 @@
   "builder.replaceDraft": "¿Reemplazar el borrador actual?",
   "programs.cover": "Portada del programa",
   "programs.cover.choose": "Elegir portada",
+  "programs.cover.change": "Cambiar portada",
+  "programs.cover.selected": "Portada del programa: {name}",
   "builder.coverRequired": "Elige una imagen antes de guardar tu programa.",
   "programs.cover.none": "Ninguna imagen seleccionada",
   "programs.cover.remove": "Quitar imagen",

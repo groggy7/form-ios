@@ -1301,6 +1301,8 @@
   "builder.replaceDraft": "Aktuellen Entwurf ersetzen?",
   "programs.cover": "Programmbild",
   "programs.cover.choose": "Bild auswählen",
+  "programs.cover.change": "Programmbild ändern",
+  "programs.cover.selected": "Programmbild: {name}",
   "builder.coverRequired": "Wähle ein Bild aus, bevor du dein Programm speicherst.",
   "programs.cover.none": "Kein Bild ausgewählt",
   "programs.cover.remove": "Bild entfernen",

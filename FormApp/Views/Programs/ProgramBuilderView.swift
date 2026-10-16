@@ -48,6 +48,7 @@ public struct ProgramBuilderView: View {
         catch { return error.localizedDescription }
     }
     private var needsCover: Bool { (isNew || creatingCopy) && program.coverId == nil }
+    private var displayedCover: ProgramCover? { !isNew || program.coverId != nil ? ProgramCover.forProgram(program) : nil }
     private var canSave: Bool { validationMessage == nil && !needsCover }
     private var incompleteDays: Int { program.workouts.filter { $0.exercises.isEmpty }.count }
 
@@ -186,15 +187,24 @@ public struct ProgramBuilderView: View {
     private var details: some View {
         BuilderSurface {
             Text(LanguageManager.t("builder.details")).font(.headline)
-            Text(LanguageManager.t("programs.cover")).font(.caption).foregroundStyle(AppColors.secondaryText)
-            if !isNew || program.coverId != nil {
-                Image(ProgramCover.forProgram(program).assetName).resizable().aspectRatio(1.5, contentMode: .fit)
+            if let cover = displayedCover {
+                let label = LanguageManager.t("programs.cover.selected", ["name": LanguageManager.t("programs.cover." + cover.rawValue)])
+                Button { showCoverPicker = true } label: {
+                    HStack(spacing: 8) {
+                        Text(label).font(.caption).foregroundStyle(AppColors.secondaryText)
+                            .frame(maxWidth: .infinity, alignment: .leading).fixedSize(horizontal: false, vertical: true)
+                        Image(systemName: "pencil").font(.system(size: 16, weight: .semibold)).foregroundStyle(AppColors.accent)
+                    }.frame(minHeight: 48).contentShape(Rectangle())
+                }.buttonStyle(.plain).accessibilityLabel(label).accessibilityHint(LanguageManager.t("programs.cover.change"))
+                    .accessibilityIdentifier("program-cover-change")
+                Image(cover.assetName).resizable().aspectRatio(1.5, contentMode: .fit)
                     .frame(maxWidth: .infinity).clipShape(RoundedRectangle(cornerRadius: 12)).accessibilityHidden(true)
             } else {
-                Text(LanguageManager.t("programs.cover.none")).font(.subheadline).foregroundStyle(AppColors.muted)
-                    .accessibilityIdentifier("program-cover-empty")
+                Text(LanguageManager.t("programs.cover")).font(.caption).foregroundStyle(AppColors.secondaryText)
+                    .accessibilityIdentifier("program-cover-label")
+                BuilderActionButton("programs.cover.choose", systemImage: "photo") { showCoverPicker = true }
+                    .accessibilityIdentifier("program-cover-choose")
             }
-            BuilderActionButton("programs.cover.choose", systemImage: "photo") { showCoverPicker = true }
             BuilderTextField("modal.program.name", text: $program.name, limit: 100)
                 .accessibilityIdentifier("program-builder-name")
             BuilderTextField("modal.program.desc", text: $program.description, limit: 500, multiline: true)
