@@ -78,16 +78,66 @@ public struct ProgressionSetTarget: Equatable {
         validWeightKg.map(unit.formatExactWeight) ?? fallback
     }
 
-    /// Apply stores the canonical target itself; the input text only represents it, so no rounding reaches the log.
+    /// Apply stores the canonical target load itself; the input text only represents it, so no rounding reaches the log.
+    /// Reps stay the user's: the target is a placeholder hint, so a target is never recorded as performance by default.
     public func applied(to set: ExerciseSetLog, unit: WeightUnit) -> ExerciseSetLog {
         var applied = set
         applied.weightInput = weightInput(unit: unit, fallback: set.weightInput)
         applied.weightKg = validWeightKg ?? set.weightKg
-        applied.repsInput = "\(reps)"
-        applied.completedReps = reps
+        applied.targetReps = reps
         applied.inputTouched = true
         return applied
     }
+}
+
+/// The user's optional report after an exercise's working sets; logs alone cannot show effort.
+public enum ProgressionEffort: String, CaseIterable {
+    case easy, right, hard
+
+    public var labelKey: String { "progression.effort.\(rawValue)" }
+}
+
+/// The smallest load increases the user's equipment supports, as display values in each unit.
+/// Bars use twice the smallest available plate in kilograms; pounds use 5 lb plates' pairs.
+public struct ProgressionLoadSteps: Equatable {
+    public static let defaultDumbbellKg = 2.0
+    public static let defaultDumbbellLbs = 5.0
+    public static let defaultMachineKg = 5.0
+    public static let defaultMachineLbs = 10.0
+    public static let dumbbellKgOptions = [1.0, 2.0, 2.5]
+    public static let dumbbellLbsOptions = [2.5, 5.0]
+    public static let machineKgOptions = [2.5, 5.0]
+    public static let machineLbsOptions = [5.0, 10.0]
+
+    public let dumbbellKg: Double
+    public let dumbbellLbs: Double
+    public let machineKg: Double
+    public let machineLbs: Double
+    public let smallestPlateKg: Double
+
+    public init(dumbbellKg: Double = defaultDumbbellKg, dumbbellLbs: Double = defaultDumbbellLbs,
+                machineKg: Double = defaultMachineKg, machineLbs: Double = defaultMachineLbs, smallestPlateKg: Double = 1.25) {
+        self.dumbbellKg = dumbbellKg
+        self.dumbbellLbs = dumbbellLbs
+        self.machineKg = machineKg
+        self.machineLbs = machineLbs
+        self.smallestPlateKg = smallestPlateKg
+    }
+
+    /// Values outside the offered options fall back to the defaults.
+    public static func from(dumbbellKg: Double, dumbbellLbs: Double, machineKg: Double, machineLbs: Double, platesKg: [Double]) -> ProgressionLoadSteps {
+        ProgressionLoadSteps(
+            dumbbellKg: dumbbellKgOptions.contains(dumbbellKg) ? dumbbellKg : defaultDumbbellKg,
+            dumbbellLbs: dumbbellLbsOptions.contains(dumbbellLbs) ? dumbbellLbs : defaultDumbbellLbs,
+            machineKg: machineKgOptions.contains(machineKg) ? machineKg : defaultMachineKg,
+            machineLbs: machineLbsOptions.contains(machineLbs) ? machineLbs : defaultMachineLbs,
+            smallestPlateKg: platesKg.filter { $0.isFinite && $0 > 0 }.min() ?? 1.25)
+    }
+
+    public func bar(_ unit: WeightUnit) -> Double? { unit == .lbs ? 5 : (smallestPlateKg > 0 ? smallestPlateKg * 2 : nil) }
+    public func dumbbell(_ unit: WeightUnit) -> Double { unit == .lbs ? dumbbellLbs : dumbbellKg }
+    public func machine(_ unit: WeightUnit) -> Double { unit == .lbs ? machineLbs : machineKg }
+    public func bodyweight(_ unit: WeightUnit) -> Double { unit == .lbs ? 5 : 2.5 }
 }
 
 /// The active workout day and current time, as the session screen sees them.
@@ -178,27 +228,5 @@ public struct ExerciseProgressionRecommendation: Equatable {
         return Dictionary(uniqueKeysWithValues: workingIndices.enumerated().compactMap { ordinal, index in
             sets[index].isCompleted ? nil : (index, setTargets[ordinal])
         })
-    }
-}
-
-public struct MesocycleDeloadRecommendation: Equatable {
-    public let isRecommended: Bool
-    public let consecutiveWeeksTrained: Int
-    public let stagnantExercisesCount: Int
-    public let headlineKey: String
-    public let explanationKey: String
-
-    public init(
-        isRecommended: Bool,
-        consecutiveWeeksTrained: Int,
-        stagnantExercisesCount: Int,
-        headlineKey: String,
-        explanationKey: String
-    ) {
-        self.isRecommended = isRecommended
-        self.consecutiveWeeksTrained = consecutiveWeeksTrained
-        self.stagnantExercisesCount = stagnantExercisesCount
-        self.headlineKey = headlineKey
-        self.explanationKey = explanationKey
     }
 }

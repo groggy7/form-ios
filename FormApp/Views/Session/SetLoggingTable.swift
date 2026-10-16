@@ -238,7 +238,9 @@ public struct SetLoggingTable: View {
                         .frame(minHeight: 48)
                         .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: true) && isSetInputEnabled ? AppColors.accent : .clear))
 
-                    TextField("0", text: repsBinding, prompt: Text("0").foregroundStyle(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
+                    // A Smart Progression target is only a hint: the field stays empty until the user enters actual reps.
+                    let targetRepsHint = set.targetReps.flatMap { (1...999).contains($0) && !set.isCompleted ? $0 : nil }
+                    TextField("0", text: repsBinding, prompt: Text(targetRepsHint.map(String.init) ?? "0").foregroundStyle(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
                         .focused($focusedField, equals: Field(id: set.id, weight: false))
                         .simultaneousGesture(TapGesture().onEnded {
                             if isSetInputEnabled {
@@ -246,7 +248,8 @@ public struct SetLoggingTable: View {
                             }
                         })
                         .disabled(!isSetInputEnabled)
-                        .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \(LanguageManager.t("table.actualReps"))")
+                        .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \(LanguageManager.t("table.actualReps"))"
+                            + (targetRepsHint.map { ", " + LanguageManager.t("progression.coach.reps_target_hint", ["reps": "\($0)"]) } ?? ""))
                         .keyboardType(.numberPad)
                         .multilineTextAlignment(.center)
                         .font(.system(size: 15, weight: .semibold))

@@ -470,9 +470,11 @@ public struct ExerciseSetLog: Identifiable, Codable, Hashable {
     public var isCompleted: Bool
     public var inputTouched: Bool?
     public var isWarmup: Bool
+    /// Smart Progression's rep target, shown as the empty reps field's placeholder; never a logged value.
+    public var targetReps: Int?
 
     enum CodingKeys: String, CodingKey {
-        case id, setNumber, weightInput, repsInput, weightKg, completedReps, isCompleted, inputTouched, isWarmup
+        case id, setNumber, weightInput, repsInput, weightKg, completedReps, isCompleted, inputTouched, isWarmup, targetReps
     }
 
     public init(
@@ -484,8 +486,10 @@ public struct ExerciseSetLog: Identifiable, Codable, Hashable {
         completedReps: Int? = nil,
         isCompleted: Bool = false,
         inputTouched: Bool? = nil,
-        isWarmup: Bool = false
+        isWarmup: Bool = false,
+        targetReps: Int? = nil
     ) {
+        self.targetReps = targetReps
         self.id = id
         self.setNumber = setNumber
         self.weightInput = weightInput
@@ -508,6 +512,7 @@ public struct ExerciseSetLog: Identifiable, Codable, Hashable {
         self.isCompleted = try container.decodeIfPresent(Bool.self, forKey: .isCompleted) ?? false
         self.inputTouched = try container.decodeIfPresent(Bool.self, forKey: .inputTouched)
         self.isWarmup = try container.decodeIfPresent(Bool.self, forKey: .isWarmup) ?? false
+        self.targetReps = try container.decodeIfPresent(Int.self, forKey: .targetReps)
     }
 }
 
@@ -543,12 +548,15 @@ public struct SessionExerciseLog: Codable, Hashable {
     public var targetSets: Int?
     /// Stable catalog identity for new records. Nil keeps older/imported history compatible.
     public var exerciseId: String?
+    /// Optional Smart Progression rating: easy, right or hard.
+    public var effort: String?
 
-    public init(exerciseName: String, sets: [SessionSetLog] = [], targetSets: Int? = nil, exerciseId: String? = nil) {
+    public init(exerciseName: String, sets: [SessionSetLog] = [], targetSets: Int? = nil, exerciseId: String? = nil, effort: String? = nil) {
         self.exerciseName = exerciseName
         self.sets = sets
         self.targetSets = targetSets
         self.exerciseId = exerciseId
+        self.effort = effort
     }
 }
 
@@ -646,6 +654,8 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
     public var accumulatedSeconds: Int
     public var isPaused: Bool
     public var lastResumedAtEpochMillis: Int64?
+    /// Optional Smart Progression effort ratings by workout exercise ID.
+    public var effortByExercise: [String: String]?
 
     public init(
         schemaVersion: Int = 1,
@@ -663,8 +673,10 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         isPaused: Bool = false,
         lastResumedAtEpochMillis: Int64? = nil,
         scheduledDate: String? = nil,
-        weightInputUnit: WeightUnit? = nil
+        weightInputUnit: WeightUnit? = nil,
+        effortByExercise: [String: String]? = nil
     ) {
+        self.effortByExercise = effortByExercise
         self.schemaVersion = schemaVersion
         self.id = id
         self.programId = programId
@@ -701,6 +713,8 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         self.accumulatedSeconds = try container.decodeIfPresent(Int.self, forKey: .accumulatedSeconds) ?? 0
         self.isPaused = try container.decodeIfPresent(Bool.self, forKey: .isPaused) ?? false
         self.lastResumedAtEpochMillis = try container.decodeIfPresent(Int64.self, forKey: .lastResumedAtEpochMillis)
+        self.effortByExercise = try container.decodeIfPresent([String: String].self, forKey: .effortByExercise)?
+            .filter { ProgressionEffort(rawValue: $0.value) != nil }
     }
 
     public func currentDurationSeconds(nowEpochMillis: Int64) -> Int {

@@ -8351,31 +8351,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Logged-set progression targets and optional lighter-week prompts."
+            "value": "Logged-set targets, optional effort ratings and lighter-week options."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kayıtlı setlere göre ilerleme hedefleri ve isteğe bağlı hafif hafta hatırlatmaları."
+            "value": "Kayıtlı setlere dayalı hedefler, isteğe bağlı efor değerlendirmeleri ve hafif hafta seçenekleri."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fortschrittsziele aus deinen protokollierten Sätzen und optionale Hinweise für leichtere Wochen."
+            "value": "Ziele aus protokollierten Sätzen, optionale Anstrengungsbewertungen und Optionen für leichtere Wochen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Objectifs de progression issus de vos séries enregistrées et suggestions facultatives de semaine plus légère."
+            "value": "Objectifs issus des séries enregistrées, évaluations d’effort facultatives et options de semaine plus légère."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Objetivos de progresión según tus series registradas y avisos opcionales de semana más ligera."
+            "value": "Objetivos a partir de series registradas, valoraciones de esfuerzo opcionales y opciones de semana más ligera."
           }
         }
       }
@@ -19804,31 +19804,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Apply in one tap"
+            "value": "Fill weights in one tap"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tek dokunuşla uygula"
+            "value": "Ağırlıkları tek dokunuşla gir"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mit einem Tippen übernehmen"
+            "value": "Gewichte mit einem Tipp eintragen"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Appliquer en un geste"
+            "value": "Charges saisies en un geste"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aplicar con un solo toque"
+            "value": "Rellena pesos con un toque"
           }
         }
       }
@@ -19839,31 +19839,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Use the suggested weights and reps directly for your remaining sets."
+            "value": "Use the suggested weights for your remaining sets, then log the reps you actually do."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Önerilen ağırlık ve tekrarları kalan setlerine doğrudan uygula."
+            "value": "Kalan setlerin için önerilen ağırlıkları kullan, sonra gerçekten yaptığın tekrarları kaydet."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Übernimm die vorgeschlagenen Gewichte und Wiederholungen direkt für deine verbleibenden Sätze."
+            "value": "Übernimm die vorgeschlagenen Gewichte für deine verbleibenden Sätze und protokolliere dann die Wiederholungen, die du tatsächlich schaffst."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Appliquez directement les charges et répétitions proposées à vos séries restantes."
+            "value": "Utilisez les charges suggérées pour vos séries restantes, puis enregistrez les répétitions réellement effectuées."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aplica los pesos y las repeticiones sugeridos directamente a tus series restantes."
+            "value": "Usa los pesos sugeridos para tus series restantes y luego registra las repeticiones que realmente haces."
           }
         }
       }
@@ -21694,31 +21694,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "At the same weights, your total reps haven’t increased. No new target is suggested for this session."
+            "value": "At the same weights, your total reps haven’t increased. Nothing changes unless you choose an option."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aynı ağırlıklarla toplam tekrarın artmadı. Bu antrenman için yeni bir hedef önerilmiyor."
+            "value": "Aynı ağırlıklarla toplam tekrarın artmadı. Bir seçenek seçmediğin sürece hiçbir şey değişmez."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bei gleichen Gewichten ist deine Gesamtzahl an Wiederholungen nicht gestiegen. Für dieses Training wird kein neues Ziel vorgeschlagen."
+            "value": "Bei gleichen Gewichten ist deine Gesamtzahl an Wiederholungen nicht gestiegen. Nichts ändert sich, solange du keine Option wählst."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aux mêmes charges, votre total de répétitions n’a pas augmenté. Aucun nouvel objectif n’est suggéré pour cette séance."
+            "value": "Aux mêmes charges, votre total de répétitions n’a pas augmenté. Rien ne change tant que vous ne choisissez pas d’option."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Con los mismos pesos, tu total de repeticiones no ha aumentado. No se sugiere ningún objetivo nuevo para esta sesión."
+            "value": "Con los mismos pesos, tu total de repeticiones no ha aumentado. Nada cambia a menos que elijas una opción."
           }
         }
       }
@@ -22079,31 +22079,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Targets filled. Tap ✓ to record each completed set."
+            "value": "Weights filled. Enter the reps you complete, then tap ✓ to record each set."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hedefler girildi. Tamamladığın her seti ✓ ile kaydet."
+            "value": "Ağırlıklar girildi. Tamamladığın tekrarları gir, sonra her seti ✓ ile kaydet."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ziele eingetragen. Tippe auf ✓, um jeden abgeschlossenen Satz zu erfassen."
+            "value": "Gewichte eingetragen. Gib die geschafften Wiederholungen ein und tippe dann auf ✓, um jeden Satz zu erfassen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Objectifs saisis. Appuyez sur ✓ pour enregistrer chaque série terminée."
+            "value": "Charges saisies. Saisissez les répétitions réalisées, puis appuyez sur ✓ pour enregistrer chaque série."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Objetivos rellenados. Toca ✓ para registrar cada serie completada."
+            "value": "Pesos rellenados. Introduce las repeticiones que completes y toca ✓ para registrar cada serie."
           }
         }
       }
@@ -22359,31 +22359,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Reach the rep ceiling in every set twice at the same weights, within 21 days. Then try a small available increase while aiming to keep the same reps, if manageable. Use a smaller increase or repeat the load if reps or form suffer. No automatic increases for bodyweight or unsupported equipment."
+            "value": "Reach the rep ceiling in every set twice at the same weights within 21 days, or once rated Easy. Then try the next available step, set for dumbbells and machines in Settings. Steps up to 10% keep your reps; up to 25% aim for the range minimum. No increase after a Hard rating or for bodyweight work."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aynı ağırlıklarla, 21 gün içindeki iki tam antrenmanda her sette üst tekrar sınırına ulaş. Sonra uygunsa aynı tekrarları hedefleyerek ekipmanında bulunan küçük bir artışı dene. Tekrarlar veya form bozulursa daha küçük bir artış kullan ya da ağırlığı tekrarla. Vücut ağırlığı veya desteklenmeyen ekipmanda otomatik artış yoktur."
+            "value": "Aynı ağırlıklarla 21 gün içinde iki kez ya da Kolay olarak değerlendirdiğin bir antrenmanda her sette üst tekrar sınırına ulaş. Sonra bir sonraki uygun artışı dene; dambıl ve makine artışlarını Ayarlar’da belirleyebilirsin. %10’a kadar artışlarda tekrarların korunur; %25’e kadar olanlarda aralığın alt sınırı hedeflenir. Zor değerlendirmesinden sonra veya vücut ağırlığı çalışmalarında artış yoktur."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Erreiche die Wiederholungsobergrenze in jedem Satz zweimal innerhalb von 21 Tagen mit den gleichen Gewichten. Versuche dann eine kleine verfügbare Steigerung und halte dabei möglichst die gleichen Wiederholungen, wenn machbar. Wähle eine kleinere Steigerung oder wiederhole das Gewicht, wenn Wiederholungen oder Technik leiden. Keine automatische Steigerung bei Körpergewicht oder nicht unterstützter Ausrüstung."
+            "value": "Erreiche die Wiederholungsobergrenze in jedem Satz zweimal innerhalb von 21 Tagen mit gleichen Gewichten oder einmal mit der Bewertung „Leicht“. Versuche dann den nächsten verfügbaren Schritt; Kurzhantel- und Maschinenschritte legst du in den Einstellungen fest. Schritte bis 10 % behalten deine Wiederholungen bei, bis 25 % zielen sie auf das untere Ende des Bereichs. Keine Steigerung nach „Schwer“ oder bei Körpergewichtsübungen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Atteignez le plafond de répétitions dans chaque série deux fois en 21 jours avec les mêmes charges. Essayez ensuite une petite augmentation disponible en visant les mêmes répétitions, si c’est gérable. Utilisez une augmentation plus petite ou répétez la charge si les répétitions ou la technique en souffrent. Aucune augmentation automatique pour le poids du corps ou l’équipement non pris en charge."
+            "value": "Atteignez le plafond de répétitions dans chaque série deux fois en 21 jours avec les mêmes charges, ou une fois jugée « Facile ». Essayez ensuite le palier disponible suivant, réglé pour les haltères et les machines dans les Réglages. Jusqu’à 10 %, vos répétitions sont conservées ; jusqu’à 25 %, visez le bas de la plage. Aucune augmentation après « Difficile » ni pour le poids du corps."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alcanza el tope de repeticiones en cada serie dos veces en 21 días con los mismos pesos. Luego prueba un pequeño aumento disponible intentando mantener las mismas repeticiones, si es manejable. Usa un aumento menor o repite la carga si las repeticiones o la técnica empeoran. No hay aumentos automáticos con peso corporal ni con equipo no compatible."
+            "value": "Alcanza el tope de repeticiones en cada serie dos veces en 21 días con los mismos pesos, o una vez valorada como Fácil. Luego prueba el siguiente incremento disponible, configurable para mancuernas y máquinas en Ajustes. Hasta un 10 % mantienes las repeticiones; hasta un 25 % buscas el mínimo del rango. Sin aumentos tras una valoración Difícil ni con peso corporal."
           }
         }
       }
@@ -22464,31 +22464,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Review your plan when progress stalls. A lighter week is optional; no deload target is applied."
+            "value": "Review your plan when progress stalls. An optional lighter week uses about 90% of your weights; nothing is applied automatically."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İlerleme durduğunda planını gözden geçir. Daha hafif bir hafta isteğe bağlıdır; deload hedefi uygulanmaz."
+            "value": "İlerleme durduğunda planını gözden geçir. İsteğe bağlı hafif hafta ağırlıklarının yaklaşık %90’ını kullanır; hiçbir şey otomatik uygulanmaz."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Überprüfe deinen Plan, wenn der Fortschritt stockt. Eine leichtere Woche ist optional; es wird kein Deload-Ziel angewendet."
+            "value": "Überprüfe deinen Plan, wenn der Fortschritt stockt. Eine optionale leichtere Woche nutzt etwa 90 % deiner Gewichte; nichts wird automatisch übernommen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Revoyez votre plan lorsque les progrès s’arrêtent. Une semaine plus légère est facultative ; aucune cible de décharge n’est appliquée."
+            "value": "Revoyez votre plan quand la progression stagne. Une semaine plus légère facultative utilise environ 90 % de vos charges ; rien n’est appliqué automatiquement."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Revisa tu plan cuando el progreso se detenga. Una semana más ligera es opcional; no se aplica ningún objetivo de descarga."
+            "value": "Revisa tu plan cuando el progreso se estanque. Una semana más ligera opcional usa alrededor del 90 % de tus pesos; no se aplica nada automáticamente."
           }
         }
       }
@@ -23018,247 +23018,37 @@
         }
       }
     },
-    "progression.deload.none_headline": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "No Lighter-Week Prompt"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hafif Hafta Hatırlatması Yok"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kein Hinweis auf eine leichtere Woche"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aucune suggestion de semaine plus légère"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sin aviso de semana más ligera"
-          }
-        }
-      }
-    },
-    "progression.deload.none_desc": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Logged sets alone cannot tell whether you need a deload."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kayıtlı setler tek başına deload gerekip gerekmediğini göstermez."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Protokollierte Sätze allein zeigen nicht, ob du einen Deload brauchst."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les séries enregistrées ne suffisent pas à dire si vous avez besoin d’une décharge."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Las series registradas por sí solas no pueden indicar si necesitas una descarga."
-          }
-        }
-      }
-    },
-    "progression.deload.stagnant_headline": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Review Recent Training"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Son Antrenmanları Gözden Geçir"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Letzte Trainings prüfen"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Examiner l’entraînement récent"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Revisar el entrenamiento reciente"
-          }
-        }
-      }
-    },
-    "progression.deload.stagnant_desc": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Several exercises show no load or rep gain across three logged sessions. Consider a lighter week if training feels hard to sustain; this is not a fatigue assessment."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Birden fazla harekette üç kayıtlı antrenmandır ağırlık veya tekrar artışı yok. Antrenmanı sürdürmek zor geliyorsa daha hafif bir hafta düşünebilirsiniz; bu bir yorgunluk değerlendirmesi değildir."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mehrere Übungen zeigen über drei protokollierte Trainings keinen Gewichts- oder Wiederholungszuwachs. Erwäge eine leichtere Woche, wenn sich das Training schwer durchhalten lässt; dies ist keine Ermüdungsbeurteilung."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Plusieurs exercices ne montrent aucun gain de charge ou de répétitions sur trois séances enregistrées. Envisagez une semaine plus légère si l’entraînement semble difficile à maintenir ; il ne s’agit pas d’une évaluation de la fatigue."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Varios ejercicios no muestran aumento de carga ni de repeticiones en tres sesiones registradas. Considera una semana más ligera si te cuesta mantener el entrenamiento; esto no es una evaluación de la fatiga."
-          }
-        }
-      }
-    },
-    "progression.deload.weeks_headline": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Six Consecutive Training Weeks Logged"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Art Arda Altı Antrenman Haftası Kaydedildi"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sechs aufeinanderfolgende Trainingswochen protokolliert"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Six semaines d’entraînement consécutives enregistrées"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seis semanas de entrenamiento consecutivas registradas"
-          }
-        }
-      }
-    },
-    "progression.deload.weeks_desc": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "You logged training in six consecutive weeks. A lighter week is optional, depending on your goals and experience; this does not establish overload or injury risk."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Art arda altı hafta antrenman kaydettiniz. Hedeflerinize ve deneyiminize göre daha hafif bir hafta seçebilirsiniz; bu aşırı yüklenme veya sakatlık riski kanıtı değildir."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Du hast in sechs aufeinanderfolgenden Wochen Training protokolliert. Eine leichtere Woche ist optional, je nach Zielen und Erfahrung; dies belegt weder Überlastung noch Verletzungsrisiko."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Vous avez enregistré des entraînements pendant six semaines consécutives. Une semaine plus légère est facultative, selon vos objectifs et votre expérience ; cela n’indique ni surcharge ni risque de blessure."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Registraste entrenamiento en seis semanas consecutivas. Una semana más ligera es opcional, dependiendo de tus objetivos y experiencia; esto no establece riesgo de sobrecarga o lesiones."
-          }
-        }
-      }
-    },
     "progression.info.title": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Auto-Progression & Deloads"
+            "value": "Smart Progression Guide"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dinamik İlerleme ve Deload Rehberi"
+            "value": "Akıllı İlerleme Rehberi"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Automatische Progression und Deloads"
+            "value": "Smart-Progression-Leitfaden"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Progression automatique et déchargements"
+            "value": "Guide de Progression intelligente"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Progresión automática y descargas"
+            "value": "Guía de Progresión inteligente"
           }
         }
       }
@@ -23304,31 +23094,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "How Dynamic Double Progression Works"
+            "value": "How Double Progression Works"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dinamik Çift Aşamalı İlerleme Nasıl Çalışır?"
+            "value": "Çift İlerleme Nasıl Çalışır?"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "So funktioniert die dynamische Doppelprogression"
+            "value": "So funktioniert doppelte Progression"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Comment fonctionne la double progression dynamique"
+            "value": "Fonctionnement de la double progression"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cómo funciona la doble progresión dinámica"
+            "value": "Cómo funciona la doble progresión"
           }
         }
       }
@@ -23339,31 +23129,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Targets use your latest full session from this workout day, or from another day with the same sets and rep range. Incomplete logs give no target. Warmups don’t count."
+            "value": "Targets use your latest full session from this workout day, or from another day with the same sets and rep range. Extra sets are ignored; incomplete logs give no target. Warmups don’t count."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hedefler, bu antrenman gününün ya da aynı set sayısı ve tekrar aralığına sahip başka bir günün son tam kaydına dayanır. Eksik kayıtta hedef verilmez. Isınma setleri sayılmaz."
+            "value": "Hedefler bu antrenman gününün veya aynı set ve tekrar aralığına sahip başka bir günün en son tam antrenmanını kullanır. Fazladan setler dikkate alınmaz; eksik kayıtlar hedef vermez. Isınma setleri sayılmaz."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ziele verwenden deine letzte vollständige Einheit dieses Trainingstags oder eines anderen Tages mit gleicher Satzzahl und gleichem Wiederholungsbereich. Unvollständige Protokolle ergeben kein Ziel. Aufwärmsätze zählen nicht."
+            "value": "Ziele nutzen dein letztes vollständiges Training dieses Trainingstags oder eines anderen Tags mit gleichen Sätzen und gleichem Wiederholungsbereich. Zusätzliche Sätze werden ignoriert; unvollständige Protokolle ergeben kein Ziel. Aufwärmsätze zählen nicht."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Les cibles utilisent votre dernière séance complète de ce jour d’entraînement, ou d’un autre jour avec le même nombre de séries et la même plage de répétitions. Les enregistrements incomplets ne donnent aucune cible. Les échauffements ne comptent pas."
+            "value": "Les objectifs utilisent votre dernière séance complète de ce jour d’entraînement, ou d’un autre jour avec les mêmes séries et la même plage de répétitions. Les séries supplémentaires sont ignorées ; un enregistrement incomplet ne donne pas d’objectif. Les échauffements ne comptent pas."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Los objetivos usan tu última sesión completa de este día de entrenamiento, o de otro día con las mismas series y el mismo rango de repeticiones. Los registros incompletos no dan objetivo. Los calentamientos no cuentan."
+            "value": "Los objetivos usan tu última sesión completa de este día de entrenamiento, o de otro día con las mismas series y el mismo rango de repeticiones. Las series extra se ignoran; los registros incompletos no dan objetivo. Los calentamientos no cuentan."
           }
         }
       }
@@ -23409,31 +23199,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Only full sessions with matching weights and set counts are compared. Below the rep ceiling, three without a total rep gain prompt a review. The app doesn’t measure fatigue, recovery or technique."
+            "value": "Only full sessions with matching weights and set counts are compared. Below the rep ceiling, three without a total rep gain offer a lighter week or a variation idea. The app doesn’t measure fatigue, recovery or technique."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yalnızca ağırlıkları ve set sayıları aynı olan tam antrenmanlar karşılaştırılır. Üst tekrar sınırının altında üç antrenmanda toplam tekrar artmazsa planını gözden geçir. Uygulama yorgunluğu, toparlanmayı veya tekniği ölçmez."
+            "value": "Yalnızca ağırlıkları ve set sayıları eşleşen tam antrenmanlar karşılaştırılır. Üst tekrar sınırının altında, toplam tekrarın artmadığı üç antrenman hafif bir hafta veya varyasyon fikri sunar. Uygulama yorgunluğu, toparlanmayı veya tekniği ölçmez."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Es werden nur vollständige Trainings mit gleichen Gewichten und gleicher Satzzahl verglichen. Unterhalb der Wiederholungsobergrenze lösen drei Trainings ohne Wiederholungszuwachs eine Überprüfung aus. Die App misst weder Ermüdung, Erholung noch Technik."
+            "value": "Verglichen werden nur vollständige Trainings mit gleichen Gewichten und Satzzahlen. Unterhalb der Wiederholungsobergrenze bieten drei Trainings ohne Zuwachs an Gesamtwiederholungen eine leichtere Woche oder eine Variationsidee an. Die App misst weder Ermüdung noch Erholung oder Technik."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Seules les séances complètes avec les mêmes charges et le même nombre de séries sont comparées. Sous le plafond de répétitions, trois séances sans gain total de répétitions déclenchent une révision. L’application ne mesure pas la fatigue, la récupération ni la technique."
+            "value": "Seules les séances complètes avec les mêmes charges et le même nombre de séries sont comparées. Sous le plafond de répétitions, trois séances sans gain de répétitions totales proposent une semaine plus légère ou une idée de variante. L’app ne mesure ni la fatigue, ni la récupération, ni la technique."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Solo se comparan sesiones completas con los mismos pesos y número de series. Por debajo del tope de repeticiones, tres sesiones sin aumento total de repeticiones activan una revisión. La app no mide la fatiga, la recuperación ni la técnica."
+            "value": "Solo se comparan sesiones completas con los mismos pesos y número de series. Por debajo del tope de repeticiones, tres sin aumento de repeticiones totales ofrecen una semana más ligera o una idea de variante. La app no mide la fatiga, la recuperación ni la técnica."
           }
         }
       }
@@ -36266,146 +36056,6 @@
         }
       }
     },
-    "session.ghost.last_week": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Last week: {weight} × {reps}"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Geçen hafta: {weight} × {reps}"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Letzte Woche: {weight} × {reps}"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La semaine dernière : {weight} × {reps}"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La semana pasada: {weight} × {reps}"
-          }
-        }
-      }
-    },
-    "session.ghost.target_to_beat": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Target to beat: {repTarget} (or {loadTarget})"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hedef: {repTarget} (veya {loadTarget})"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zu schlagendes Ziel: {repTarget} (oder {loadTarget})"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cible à battre : {repTarget} (ou {loadTarget})"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Objetivo a vencer: {repTarget} (o {loadTarget})"
-          }
-        }
-      }
-    },
-    "session.ghost.target_to_beat_reps_only": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Target to beat: {repTarget}"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hedef: {repTarget}"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zu schlagendes Ziel: {repTarget}"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cible à battre : {repTarget}"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Objetivo a vencer: {repTarget}"
-          }
-        }
-      }
-    },
-    "session.ghost.first_session": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "First session · Target: {prescription}"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "İlk antrenman · Hedef: {prescription}"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Erstes Training · Ziel: {prescription}"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Première séance · Cible : {prescription}"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Primera sesión · Objetivo: {prescription}"
-          }
-        }
-      }
-    },
     "session.logbook.beat_notice": {
       "extractionState": "manual",
       "localizations": {
@@ -46348,6 +45998,916 @@
           "stringUnit": {
             "state": "translated",
             "value": "Se calcula a partir de tus ejercicios. Hasta {limit} áreas principales, ordenadas por series planificadas."
+          }
+        }
+      }
+    },
+    "progression.coach.reps_target_hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "target {reps} reps"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "hedef {reps} tekrar"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ziel {reps} Wiederholungen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "objectif {reps} répétitions"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "objetivo {reps} repeticiones"
+          }
+        }
+      }
+    },
+    "progression.coach.variation_harder": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Harder option: {exercise}"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Daha zor seçenek: {exercise}"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwierigere Option: {exercise}"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Option plus difficile : {exercise}"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opción más difícil: {exercise}"
+          }
+        }
+      }
+    },
+    "progression.coach.variation_idea": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Variation idea: {exercise}"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Varyasyon fikri: {exercise}"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Variationsidee: {exercise}"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idée de variante : {exercise}"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Idea de variante: {exercise}"
+          }
+        }
+      }
+    },
+    "progression.coach.lighter_week_hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optional lighter week: about 90% of these weights for the same reps. You can also review the rep range in your plan."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İsteğe bağlı hafif hafta: aynı tekrarlarla bu ağırlıkların yaklaşık %90’ı. Planındaki tekrar aralığını da gözden geçirebilirsin."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optionale leichtere Woche: etwa 90 % dieser Gewichte für die gleichen Wiederholungen. Du kannst auch den Wiederholungsbereich in deinem Plan überprüfen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semaine plus légère facultative : environ 90 % de ces charges pour les mêmes répétitions. Vous pouvez aussi revoir la plage de répétitions de votre plan."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Semana más ligera opcional: alrededor del 90 % de estos pesos con las mismas repeticiones. También puedes revisar el rango de repeticiones de tu plan."
+          }
+        }
+      }
+    },
+    "progression.coach.show_lighter_week": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show lighter week"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hafif haftayı göster"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leichtere Woche zeigen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Voir la semaine légère"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ver semana ligera"
+          }
+        }
+      }
+    },
+    "progression.coach.hide_lighter_week": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hide lighter week"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hafif haftayı gizle"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leichtere Woche ausblenden"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Masquer la semaine légère"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ocultar semana ligera"
+          }
+        }
+      }
+    },
+    "progression.coach.apply_lighter_week": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use lighter week"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hafif haftayı kullan"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leichtere Woche nutzen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Utiliser la semaine légère"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Usar semana ligera"
+          }
+        }
+      }
+    },
+    "progression.effort.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How did these sets feel?"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu setler nasıl hissettirdi?"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wie haben sich diese Sätze angefühlt?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Comment ces séries se sont-elles passées ?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Cómo te sentiste en estas series?"
+          }
+        }
+      }
+    },
+    "progression.effort.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optional. Your rating guides the next weight target."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İsteğe bağlı. Değerlendirmen bir sonraki ağırlık hedefine yön verir."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optional. Deine Einschätzung bestimmt das nächste Gewichtsziel mit."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Facultatif. Votre évaluation guide le prochain objectif de charge."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opcional. Tu valoración orienta el próximo objetivo de peso."
+          }
+        }
+      }
+    },
+    "progression.effort.easy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Easy"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kolay"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Leicht"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Facile"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fácil"
+          }
+        }
+      }
+    },
+    "progression.effort.right": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "About right"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yerinde"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Genau richtig"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adapté"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adecuado"
+          }
+        }
+      }
+    },
+    "progression.effort.hard": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hard"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zor"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schwer"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Difficile"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Difícil"
+          }
+        }
+      }
+    },
+    "progression.effort.selected": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selected"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçili"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausgewählt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sélectionné"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleccionado"
+          }
+        }
+      }
+    },
+    "progression.effort.not_selected": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not selected"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçili değil"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nicht ausgewählt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Non sélectionné"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No seleccionado"
+          }
+        }
+      }
+    },
+    "progression.rationale.partial_log": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your latest log has {logged} of {sets} working sets, so there is no target yet. Log all {sets} working sets with weights and reps."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son kaydında {sets} çalışma setinin {logged} tanesi var, bu yüzden henüz hedef yok. {sets} çalışma setinin hepsini ağırlık ve tekrarla kaydet."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein letztes Protokoll enthält {logged} von {sets} Arbeitssätzen, daher gibt es noch kein Ziel. Protokolliere alle {sets} Arbeitssätze mit Gewicht und Wiederholungen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre dernier enregistrement contient {logged} séries de travail sur {sets} ; il n’y a donc pas encore d’objectif. Enregistrez les {sets} séries de travail avec charges et répétitions."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu último registro tiene {logged} de {sets} series de trabajo, así que aún no hay objetivo. Registra las {sets} series de trabajo con pesos y repeticiones."
+          }
+        }
+      }
+    },
+    "progression.rationale.ambiguous_log": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This exercise appears more than once in your latest workout, so its baseline is unclear. Log it once with all {sets} working sets."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu egzersiz son antrenmanında birden fazla kez var, bu yüzden başlangıç verisi belirsiz. Egzersizi bir kez, {sets} çalışma setinin hepsiyle kaydet."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Übung kommt in deinem letzten Training mehrmals vor, daher ist die Grundlage unklar. Protokolliere sie einmal mit allen {sets} Arbeitssätzen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cet exercice apparaît plusieurs fois dans votre dernier entraînement ; sa référence n’est donc pas claire. Enregistrez-le une seule fois avec les {sets} séries de travail."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este ejercicio aparece más de una vez en tu último entrenamiento, así que su referencia no está clara. Regístralo una vez con las {sets} series de trabajo."
+          }
+        }
+      }
+    },
+    "progression.rationale.plan_sets_changed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your plan now has {sets} working sets; your last workout had {logged}. Each added set repeats your last set. Weight increases wait for a full workout of the new plan."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Planında artık {sets} çalışma seti var; son antrenmanında {logged} vardı. Eklenen her set son setini tekrarlar. Ağırlık artışı, yeni planla tam bir antrenmanı bekler."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dein Plan hat jetzt {sets} Arbeitssätze; dein letztes Training hatte {logged}. Jeder neue Satz wiederholt deinen letzten Satz. Gewichtssteigerungen warten auf ein vollständiges Training nach dem neuen Plan."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Votre plan compte désormais {sets} séries de travail ; votre dernier entraînement en avait {logged}. Chaque série ajoutée reprend votre dernière série. Les augmentations de charge attendent un entraînement complet du nouveau plan."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tu plan ahora tiene {sets} series de trabajo; tu último entrenamiento tenía {logged}. Cada serie añadida repite tu última serie. Los aumentos de peso esperan a un entrenamiento completo del nuevo plan."
+          }
+        }
+      }
+    },
+    "progression.rationale.increase_load_easy": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All sets reached {ceiling} reps and you rated them easy. Try the new weights for {targetReps} reps; repeat the previous weights if reps or form suffer."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm setlerde {ceiling} tekrara ulaştın ve bunları kolay olarak değerlendirdin. Yeni ağırlıklarla {targetReps} tekrarı dene; tekrarlar veya form bozulursa önceki ağırlıkları tekrarla."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Sätze erreichten {ceiling} Wiederholungen und du hast sie als leicht bewertet. Versuche die neuen Gewichte für {targetReps} Wiederholungen; wiederhole die vorherigen Gewichte, wenn Wiederholungen oder Technik leiden."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toutes les séries ont atteint {ceiling} répétitions et vous les avez jugées faciles. Essayez les nouvelles charges pour {targetReps} répétitions ; reprenez les charges précédentes si les répétitions ou la technique en souffrent."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todas las series alcanzaron {ceiling} repeticiones y las valoraste como fáciles. Prueba los nuevos pesos para {targetReps} repeticiones; repite los pesos anteriores si las repeticiones o la técnica empeoran."
+          }
+        }
+      }
+    },
+    "progression.rationale.increase_load_reset": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All sets reached {ceiling} reps in two workouts. The next available weight is a bigger jump, so aim for {floor} reps, then build reps again. Repeat the previous weights if form suffers."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İki antrenmanda tüm setlerde {ceiling} tekrara ulaştın. Bir sonraki uygun ağırlık daha büyük bir artış; bu yüzden {floor} tekrarı hedefle, sonra tekrarları yeniden artır. Form bozulursa önceki ağırlıkları tekrarla."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Sätze erreichten in zwei Trainings {ceiling} Wiederholungen. Das nächste verfügbare Gewicht ist ein größerer Sprung, also ziele auf {floor} Wiederholungen und baue die Wiederholungen dann wieder auf. Wiederhole die vorherigen Gewichte, wenn die Technik leidet."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toutes les séries ont atteint {ceiling} répétitions lors de deux entraînements. La prochaine charge disponible est un saut plus important : visez {floor} répétitions, puis augmentez de nouveau les répétitions. Reprenez les charges précédentes si la technique en souffre."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todas las series alcanzaron {ceiling} repeticiones en dos entrenamientos. El siguiente peso disponible es un salto mayor, así que busca {floor} repeticiones y luego vuelve a sumar repeticiones. Repite los pesos anteriores si la técnica empeora."
+          }
+        }
+      }
+    },
+    "progression.rationale.repeat_ceiling_hard": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You rated your last workout hard. Repeat these weights for {ceiling} reps per set before adding weight."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son antrenmanını zor olarak değerlendirdin. Ağırlık artırmadan önce bu ağırlıklarla her sette {ceiling} tekrarı tekrarla."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du hast dein letztes Training als schwer bewertet. Wiederhole diese Gewichte mit {ceiling} Wiederholungen pro Satz, bevor du Gewicht erhöhst."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous avez jugé votre dernier entraînement difficile. Répétez ces charges pour {ceiling} répétitions par série avant d’ajouter du poids."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valoraste tu último entrenamiento como difícil. Repite estos pesos con {ceiling} repeticiones por serie antes de añadir peso."
+          }
+        }
+      }
+    },
+    "progression.rationale.repeat_ceiling_no_step": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repeat {ceiling} reps per set at these loads to confirm the result before choosing how to progress."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nasıl ilerleyeceğini seçmeden önce sonucu doğrulamak için bu yüklerle her sette {ceiling} tekrarı tekrarla."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiederhole {ceiling} Wiederholungen pro Satz mit diesen Lasten, um das Ergebnis zu bestätigen, bevor du entscheidest, wie du weiter steigerst."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Répétez {ceiling} répétitions par série avec ces charges pour confirmer le résultat avant de choisir comment progresser."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Repite {ceiling} repeticiones por serie con estas cargas para confirmar el resultado antes de elegir cómo progresar."
+          }
+        }
+      }
+    },
+    "progression.rationale.bodyweight_ceiling": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You reached {ceiling} reps in every set twice. Keep progressing with a slower tempo, added weight if you have it, or a harder variation."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Her sette iki kez {ceiling} tekrara ulaştın. Daha yavaş bir tempoyla, varsa ek ağırlıkla veya daha zor bir varyasyonla ilerlemeye devam et."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Du hast in jedem Satz zweimal {ceiling} Wiederholungen erreicht. Steigere dich weiter mit langsamerem Tempo, Zusatzgewicht, falls vorhanden, oder einer schwierigeren Variante."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vous avez atteint {ceiling} répétitions dans chaque série à deux reprises. Continuez à progresser avec un tempo plus lent, une charge additionnelle si vous en avez, ou une variante plus difficile."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Has alcanzado {ceiling} repeticiones en cada serie dos veces. Sigue progresando con un ritmo más lento, peso añadido si lo tienes o una variante más difícil."
+          }
+        }
+      }
+    },
+    "settings.dumbbellStep": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dumbbell step"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dambıl artışı"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kurzhantel-Schritt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Palier haltères"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Incremento de mancuernas"
+          }
+        }
+      }
+    },
+    "settings.dumbbellStepSubtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smallest dumbbell jump at your gym, used for Smart Progression targets"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salonundaki en küçük dambıl artışı; Akıllı İlerleme hedeflerinde kullanılır"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kleinster Kurzhantelsprung in deinem Gym, für Smart-Progression-Ziele"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plus petit écart entre haltères dans votre salle, utilisé pour les objectifs de Progression intelligente"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salto de mancuerna más pequeño en tu gimnasio, usado para los objetivos de Progresión inteligente"
+          }
+        }
+      }
+    },
+    "settings.machineStep": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Machine step"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Makine artışı"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Maschinen-Schritt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Palier machines"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Incremento de máquinas"
+          }
+        }
+      }
+    },
+    "settings.machineStepSubtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Smallest weight-stack jump on machines and cables"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Makine ve kablolarda en küçük ağırlık bloğu artışı"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kleinster Sprung am Gewichtsblock von Maschinen und Kabelzügen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Plus petit écart de la pile de poids sur machines et poulies"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Salto más pequeño en la pila de peso de máquinas y poleas"
           }
         }
       }

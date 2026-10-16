@@ -20,6 +20,10 @@ public final class AppStore: ObservableObject {
     private let availablePlatesKey = "available_plates_kg"
     private let onboardingCompletedKey = "is_onboarding_completed"
     private let showProgressionTargetsKey = "show_progression_targets"
+    private static let dumbbellStepKgKey = "progression_dumbbell_step_kg"
+    private static let dumbbellStepLbsKey = "progression_dumbbell_step_lbs"
+    private static let machineStepKgKey = "progression_machine_step_kg"
+    private static let machineStepLbsKey = "progression_machine_step_lbs"
     private let showWarmupCalculatorKey = "show_warmup_calculator"
     private let progressionCardDismissedKey = "pro_progression_card_dismissed"
     private let warmupCardDismissedKey = "pro_warmup_card_dismissed"
@@ -70,6 +74,15 @@ public final class AppStore: ObservableObject {
     }
     @Published public var barType: BarType
     @Published public var availablePlatesKg: [Double]
+    /// Smart Progression load steps in each unit; the bar step comes from the smallest available plate.
+    @Published public var dumbbellStepKg: Double
+    @Published public var dumbbellStepLbs: Double
+    @Published public var machineStepKg: Double
+    @Published public var machineStepLbs: Double
+    public var progressionLoadSteps: ProgressionLoadSteps {
+        ProgressionLoadSteps.from(dumbbellKg: dumbbellStepKg, dumbbellLbs: dumbbellStepLbs,
+                                  machineKg: machineStepKg, machineLbs: machineStepLbs, platesKg: availablePlatesKg)
+    }
     @Published public var currentToast: ToastItem?
     @Published public var noticeMessage: String? {
         didSet {
@@ -203,6 +216,13 @@ public final class AppStore: ObservableObject {
         } else {
             self.availablePlatesKg = WarmupPlateEngine.defaultPlatesKg
         }
+        func savedStep(_ key: String, _ fallback: Double) -> Double {
+            UserDefaults.standard.object(forKey: key) != nil ? UserDefaults.standard.double(forKey: key) : fallback
+        }
+        self.dumbbellStepKg = savedStep(Self.dumbbellStepKgKey, ProgressionLoadSteps.defaultDumbbellKg)
+        self.dumbbellStepLbs = savedStep(Self.dumbbellStepLbsKey, ProgressionLoadSteps.defaultDumbbellLbs)
+        self.machineStepKg = savedStep(Self.machineStepKgKey, ProgressionLoadSteps.defaultMachineKg)
+        self.machineStepLbs = savedStep(Self.machineStepLbsKey, ProgressionLoadSteps.defaultMachineLbs)
         if UserDefaults.standard.object(forKey: showProgressionTargetsKey) != nil {
             self.showProgressionTargets = UserDefaults.standard.bool(forKey: showProgressionTargetsKey)
         } else if UserDefaults.standard.object(forKey: progressionCardDismissedKey) != nil {
@@ -355,6 +375,11 @@ public final class AppStore: ObservableObject {
         $availablePlatesKg
             .sink { [availablePlatesKey] in UserDefaults.standard.set($0, forKey: availablePlatesKey) }
             .store(in: &cancellables)
+
+        for (publisher, key) in [($dumbbellStepKg, Self.dumbbellStepKgKey), ($dumbbellStepLbs, Self.dumbbellStepLbsKey),
+                                 ($machineStepKg, Self.machineStepKgKey), ($machineStepLbs, Self.machineStepLbsKey)] {
+            publisher.dropFirst().sink { UserDefaults.standard.set($0, forKey: key) }.store(in: &cancellables)
+        }
 
         $isOnboardingCompleted
             .sink { [onboardingCompletedKey] in UserDefaults.standard.set($0, forKey: onboardingCompletedKey) }
@@ -567,7 +592,8 @@ public final class AppStore: ObservableObject {
             lastResumedAtEpochMillis: nowMillis,
             scheduledDate: resumeHistory ? unfinishedRecord?.scheduledDate : (unfinishedRecord?.scheduledDate ?? scheduledDate
                 ?? WorkoutCalendar.scheduledDate(forWeekday: sessionWorkout.day, relativeTo: now)),
-            weightInputUnit: weightUnit
+            weightInputUnit: weightUnit,
+            effortByExercise: unfinishedRecord.map { WorkoutSessionUtils.restoreEffortFromHistory(workout: sessionWorkout, record: $0) }.flatMap { $0.isEmpty ? nil : $0 }
         )
 
         saveActiveSession(draft)

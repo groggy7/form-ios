@@ -180,6 +180,16 @@ public struct ProgressionCoachCard: View {
                 .lineSpacing(2)
                 .foregroundStyle(AppColors.muted)
                 .fixedSize(horizontal: false, vertical: true)
+            // Say why the latest log gives no target, not only how to log this session.
+            if recommendation.action == .insufficientData {
+                Text(LanguageManager.t(recommendation.rationaleKey, recommendation.rationaleArgs))
+                    .font(.system(size: emptyBodySize - 1))
+                    .lineSpacing(2)
+                    .foregroundStyle(AppColors.secondaryText)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.top, 6)
+                    .accessibilityIdentifier("progression-no-target-reason")
+            }
         }
         .padding(.horizontal, 18)
         .padding(.vertical, 12)
@@ -273,7 +283,20 @@ struct ProgressionRecommendationCard: View {
             Text(descriptionText)
                 .font(.system(size: bodySize)).lineSpacing(2).foregroundStyle(AppColors.muted)
                 .fixedSize(horizontal: false, vertical: true)
-            if !review {
+            if let variationId = recommendation.suggestedVariationId {
+                let name = ContentLocalizer.shared.exerciseName(exerciseId: variationId, fallback: recommendation.suggestedVariationName ?? variationId)
+                Text(LanguageManager.t(review ? "progression.coach.variation_idea" : "progression.coach.variation_harder", ["exercise": name]))
+                    .font(.system(size: bodySize)).lineSpacing(2).foregroundStyle(AppColors.secondaryText)
+                    .fixedSize(horizontal: false, vertical: true).padding(.top, 6)
+                    .accessibilityIdentifier("progression-variation")
+            }
+            // A review applies nothing by itself; its lighter week is an optional, explicit choice.
+            if review && !recommendation.setTargets.isEmpty {
+                Text(LanguageManager.t("progression.coach.lighter_week_hint"))
+                    .font(.system(size: bodySize)).lineSpacing(2).foregroundStyle(AppColors.muted)
+                    .fixedSize(horizontal: false, vertical: true).padding(.top, 6)
+            }
+            if !recommendation.setTargets.isEmpty {
                 if expanded {
                     targetDetails.padding(.top, 10)
                 }
@@ -322,7 +345,7 @@ struct ProgressionRecommendationCard: View {
         if review { return LanguageManager.t("progression.coach.review_observation", recommendation.rationaleArgs) }
         if wasApplied { return LanguageManager.t("progression.coach.applied_hint") }
         if WorkoutSessionUtils.isAssisted(exerciseId: recommendation.exerciseId, name: recommendation.exerciseName) { return LanguageManager.t(recommendation.rationaleKey, recommendation.rationaleArgs) }
-        if recommendation.action == .increaseLoad || recommendation.action == .holdLoad {
+        if recommendation.rationaleKey == "progression.rationale.plan_sets_changed" || recommendation.action == .increaseLoad || recommendation.action == .holdLoad {
             return LanguageManager.t(recommendation.rationaleKey, recommendation.rationaleArgs)
         }
         if expanded { return LanguageManager.t("progression.coach.add_reps_expanded_hint") }
@@ -330,14 +353,16 @@ struct ProgressionRecommendationCard: View {
     }
 
     private var toggleButton: some View {
-        CompactCoachButton(label: LanguageManager.t(expanded ? "progression.coach.hide_targets" : "progression.coach.show_targets"),
+        CompactCoachButton(label: LanguageManager.t(review ? (expanded ? "progression.coach.hide_lighter_week" : "progression.coach.show_lighter_week")
+                : (expanded ? "progression.coach.hide_targets" : "progression.coach.show_targets")),
             expanded: expanded) { expanded.toggle() }
             .accessibilityValue(LanguageManager.t(expanded ? "progression.coach.expanded" : "progression.coach.collapsed"))
             .accessibilityIdentifier("toggle-progression-details")
     }
 
     private var applyButton: some View {
-        CompactCoachButton(label: LanguageManager.t(wasApplied ? "progression.coach.applied" : "progression.coach.apply"), primary: true) {
+        CompactCoachButton(label: LanguageManager.t(wasApplied ? "progression.coach.applied" : review ? "progression.coach.apply_lighter_week" : "progression.coach.apply"),
+                           primary: !review) {
             onApplyTarget()
             wasApplied = true
             expanded = false
@@ -347,7 +372,7 @@ struct ProgressionRecommendationCard: View {
 
     private var targetDetails: some View {
         VStack(spacing: 0) {
-            if recommendation.action == .increaseLoad {
+            if recommendation.action == .increaseLoad || recommendation.action == .deload {
                 loadIncreaseDetails
             } else {
                 ProgressionTableRow {
@@ -572,5 +597,58 @@ private struct LockedProgressionTrend: Shape {
         path.addLine(to: point(13, 15)); path.addLine(to: point(21, 7))
         path.move(to: point(15, 7)); path.addLine(to: point(21, 7)); path.addLine(to: point(21, 13))
         return path
+    }
+}
+
+/// Optional Smart Progression rating after every working set of an exercise is recorded.
+/// It is the user's own report; tapping the selected rating again clears it.
+struct ProgressionEffortRow: View {
+    @ObservedObject var themeManager = ThemeManager.shared
+    let selected: ProgressionEffort?
+    let onSelect: (ProgressionEffort?) -> Void
+    @ScaledMetric(relativeTo: .subheadline) private var titleSize = 14.0
+    @ScaledMetric(relativeTo: .caption) private var hintSize = 12.0
+    @ScaledMetric(relativeTo: .subheadline) private var optionSize = 13.0
+
+    var body: some View {
+        let _ = themeManager.currentTheme
+        VStack(alignment: .leading, spacing: 4) {
+            Text(LanguageManager.t("progression.effort.title"))
+                .font(.system(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.text)
+                .fixedSize(horizontal: false, vertical: true)
+            Text(LanguageManager.t("progression.effort.hint"))
+                .font(.system(size: hintSize)).foregroundStyle(AppColors.muted)
+                .fixedSize(horizontal: false, vertical: true)
+            ViewThatFits(in: .horizontal) {
+                HStack(spacing: 8) { options }
+                VStack(alignment: .leading, spacing: 0) { options }
+            }
+        }
+        .padding(.horizontal, 14).padding(.vertical, 12).frame(maxWidth: .infinity, alignment: .leading)
+        .background(AppColors.surface).clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("progression-effort")
+    }
+
+    @ViewBuilder private var options: some View {
+        ForEach(ProgressionEffort.allCases, id: \.self) { effort in
+            let isSelected = effort == selected
+            Button { onSelect(isSelected ? nil : effort) } label: {
+                Text(LanguageManager.t(effort.labelKey))
+                    .font(.system(size: optionSize, weight: isSelected ? .semibold : .medium))
+                    .foregroundStyle(isSelected ? AppColors.accent : AppColors.secondaryText)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .padding(.horizontal, 14).padding(.vertical, 8)
+                    .background(isSelected ? AppColors.positiveBg : AppColors.surfaceRaised)
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .stroke(isSelected ? AppColors.accent.opacity(0.6) : AppColors.border, lineWidth: 1))
+                    .frame(minWidth: 48, minHeight: 48).contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityAddTraits(isSelected ? .isSelected : [])
+            .accessibilityIdentifier("progression-effort-\(effort.rawValue)")
+        }
     }
 }

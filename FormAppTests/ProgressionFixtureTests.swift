@@ -20,9 +20,15 @@ final class ProgressionFixtureTests: XCTestCase {
         let unit: String
         let activeSessionId: String?
         let context: Context?
+        let steps: Steps?
+        let platesKg: [Double]?
         let exercise: FixtureExercise
         let history: [Record]
         let expected: Expected
+    }
+    private struct Steps: Decodable {
+        let dumbbell: Double?
+        let machine: Double?
     }
     private struct Context: Decodable {
         let programId: String
@@ -54,6 +60,7 @@ final class ProgressionFixtureTests: XCTestCase {
         let exerciseName: String
         let targetSets: Int?
         let loadUnit: String?
+        let effort: String?
         let warmups: [[Double]]?
         let working: [[Double]]
     }
@@ -66,6 +73,8 @@ final class ProgressionFixtureTests: XCTestCase {
         let targetUnit: String?
         let targets: [[Double]]?
         let applied: [String]?
+        let variation: String?
+        let rationaleArgs: [String: String]?
     }
 
     private func load() throws -> Fixtures {
@@ -104,7 +113,7 @@ final class ProgressionFixtureTests: XCTestCase {
                         }
                         return SessionExerciseLog(exerciseName: log.exerciseName,
                             sets: sets(log.warmups, warmup: true) + sets(log.working, warmup: false),
-                            targetSets: log.targetSets, exerciseId: log.exerciseId)
+                            targetSets: log.targetSets, exerciseId: log.exerciseId, effort: log.effort)
                     },
                     workoutSnapshot: record.snapshot.map { snapshot in
                         Workout(id: record.workoutId ?? "fixture", day: 1, title: "Fixture",
@@ -112,8 +121,15 @@ final class ProgressionFixtureTests: XCTestCase {
                     })
             }
             let expected = fixture.expected
+            let defaults = ProgressionLoadSteps()
+            let steps = ProgressionLoadSteps.from(
+                dumbbellKg: unit == .kg ? (fixture.steps?.dumbbell ?? defaults.dumbbellKg) : defaults.dumbbellKg,
+                dumbbellLbs: unit == .lbs ? (fixture.steps?.dumbbell ?? defaults.dumbbellLbs) : defaults.dumbbellLbs,
+                machineKg: unit == .kg ? (fixture.steps?.machine ?? defaults.machineKg) : defaults.machineKg,
+                machineLbs: unit == .lbs ? (fixture.steps?.machine ?? defaults.machineLbs) : defaults.machineLbs,
+                platesKg: fixture.platesKg ?? WarmupPlateEngine.defaultPlatesKg)
             let rec = ProgressionEngine.computeProgression(exercise: exercise, history: history, weightUnit: unit,
-                                                           activeSessionId: fixture.activeSessionId, context: context)
+                                                           activeSessionId: fixture.activeSessionId, context: context, steps: steps)
             guard let action = expected.action else { XCTAssertNil(rec, name); continue }
             guard let rec else { XCTFail("\(name): no recommendation"); continue }
             XCTAssertEqual(rec.action.rawValue, action, "\(name) action")
@@ -121,6 +137,10 @@ final class ProgressionFixtureTests: XCTestCase {
             if let id = expected.exerciseId { XCTAssertEqual(rec.exerciseId, id, "\(name) exerciseId") }
             if let display = expected.suggestedWeightDisplay { XCTAssertEqual(rec.suggestedWeightDisplay, display, "\(name) suggested") }
             if let delta = expected.weightDeltaDisplay { XCTAssertEqual(rec.weightDeltaDisplay, delta, "\(name) delta") }
+            XCTAssertEqual(rec.suggestedVariationId, expected.variation, "\(name) variation")
+            for (key, value) in expected.rationaleArgs ?? [:] {
+                XCTAssertEqual(rec.rationaleArgs[key], value, "\(name) rationale argument \(key)")
+            }
 
             let targetUnit = WeightUnit.fromCode(expected.targetUnit ?? fixture.unit)
             let targets = expected.targets ?? []
@@ -136,16 +156,27 @@ final class ProgressionFixtureTests: XCTestCase {
             XCTAssertEqual(after.map(\.weightInput), applied, "\(name) applied text")
             for (index, (row, target)) in zip(after, rec.setTargets).enumerated() {
                 XCTAssertEqual(row.weightKg, target.weightKg, "\(name) applied set \(index + 1) keeps the canonical target")
-                XCTAssertEqual(row.completedReps, target.reps, "\(name) applied set \(index + 1) reps")
+                // Apply never records reps: the target is only the empty field's placeholder.
+                XCTAssertEqual(row.repsInput, "", "\(name) applied set \(index + 1) leaves reps empty")
+                XCTAssertNil(row.completedReps, "\(name) applied set \(index + 1) has no logged reps")
+                XCTAssertEqual(row.targetReps, target.reps, "\(name) applied set \(index + 1) reps hint")
+                XCTAssertFalse(WorkoutSessionUtils.canCompleteSet(row, allowsZeroWeight: true), "\(name) applied set \(index + 1) cannot be recorded without reps")
             }
 
-            // Prefill next must never overwrite applied targets: complete each set in order with it on.
-            var current = after
-            for index in after.indices {
+            // The user enters actual reps; prefill next must never overwrite applied loads: complete each set in order with it on.
+            var entered = after
+            for index in entered.indices {
+                let reps = rec.setTargets[index].reps
+                entered[index].repsInput = "\(reps)"
+                entered[index].completedReps = reps
+            }
+            var current = entered
+            for index in entered.indices {
                 current = WorkoutSessionUtils.togglingCompletion(of: index, in: current, prefillNextSet: true, unit: unit)
                 XCTAssertTrue(current[index].isCompleted, "\(name) set \(index + 1) completes")
-                XCTAssertEqual(current.map { row in var row = row; row.isCompleted = false; return row }, after,
-                               "\(name) rows keep their applied targets after completing set \(index + 1)")
+                XCTAssertEqual(current.map { row in var row = row; row.isCompleted = false; return row }, entered,
+                               "\(name) rows keep their applied loads after completing set \(index + 1)")
+                XCTAssertEqual(current[index].weightKg, rec.setTargets[index].weightKg, "\(name) set \(index + 1) keeps its canonical load")
             }
         }
     }

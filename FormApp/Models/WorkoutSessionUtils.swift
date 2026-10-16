@@ -80,7 +80,8 @@ public struct SessionProgress {
                 exerciseName: ex.name,
                 sets: sets,
                 targetSets: target,
-                exerciseId: ExerciseCatalog.resolveCanonicalId(stableId: ex.exerciseId, name: ex.name)
+                exerciseId: ExerciseCatalog.resolveCanonicalId(stableId: ex.exerciseId, name: ex.name),
+                effort: draft.effortByExercise?[ex.id].flatMap(ProgressionEffort.init(rawValue:))?.rawValue
             )
         }
 
@@ -336,7 +337,8 @@ public enum WorkoutSessionUtils {
         return map
     }
 
-    public static func restoreSetsFromHistory(workout: Workout, record: WorkoutSessionRecord, unit: WeightUnit = .kg) -> [String: [ExerciseSetLog]] {
+    /// Each workout exercise's log in a saved record, matched by snapshot position, identity or name.
+    private static func historyLogs(workout: Workout, record: WorkoutSessionRecord) -> [SessionExerciseLog?] {
         var logsByName: [String: SessionExerciseLog] = [:]
         var logsById: [String: SessionExerciseLog] = [:]
         for log in record.exerciseLogs {
@@ -349,9 +351,7 @@ public enum WorkoutSessionUtils {
 
         let usesSnapshot = record.workoutSnapshot == workout
         let snapshotIndices = WorkoutCalendar.snapshotLogIndices(exercises: workout.exercises, logs: record.exerciseLogs)
-        var result: [String: [ExerciseSetLog]] = [:]
-        for (idx, ex) in workout.exercises.enumerated() {
-            let targetCount = initialSetCount(exercise: ex)
+        return workout.exercises.enumerated().map { idx, ex in
             let nameKey = ex.name.trimmingCharacters(in: .whitespaces).lowercased()
             let displayKey = ex.displayName.trimmingCharacters(in: .whitespaces).lowercased()
 
@@ -372,6 +372,25 @@ public enum WorkoutSessionUtils {
                     matchedLog = logsByName[enName] ?? logsByName[trName]
                 }
             }
+            return matchedLog
+        }
+    }
+
+    /// Effort ratings saved with a resumed record, keyed by the workout's exercise IDs.
+    public static func restoreEffortFromHistory(workout: Workout, record: WorkoutSessionRecord) -> [String: String] {
+        var ratings: [String: String] = [:]
+        for (exercise, log) in zip(workout.exercises, historyLogs(workout: workout, record: record)) {
+            if let effort = log?.effort.flatMap(ProgressionEffort.init(rawValue:)) { ratings[exercise.id] = effort.rawValue }
+        }
+        return ratings
+    }
+
+    public static func restoreSetsFromHistory(workout: Workout, record: WorkoutSessionRecord, unit: WeightUnit = .kg) -> [String: [ExerciseSetLog]] {
+        let logs = historyLogs(workout: workout, record: record)
+        var result: [String: [ExerciseSetLog]] = [:]
+        for (idx, ex) in workout.exercises.enumerated() {
+            let targetCount = initialSetCount(exercise: ex)
+            let matchedLog = logs[idx]
 
             let completedLogs = matchedLog?.sets ?? []
             let targetTotal = matchedLog?.targetSets ?? targetCount
@@ -534,26 +553,22 @@ public enum WorkoutSessionUtils {
         previousSets: [SessionSetLog],
         workingSetIndex: Int,
         exercise: Exercise,
-        unit: WeightUnit = .kg
+        unit: WeightUnit = .kg,
+        steps: ProgressionLoadSteps = ProgressionLoadSteps()
     ) -> GhostTarget {
         if !previousSets.isEmpty {
             guard let prev = previousSets.first(where: { $0.setNumber == workingSetIndex + 1 })
                 ?? (workingSetIndex + 1 > previousSets.last!.setNumber ? previousSets.last : nil) else {
-                return computeGhostTarget(previousSets: [], workingSetIndex: workingSetIndex, exercise: exercise, unit: unit)
+                return computeGhostTarget(previousSets: [], workingSetIndex: workingSetIndex, exercise: exercise, unit: unit, steps: steps)
             }
             let prevWeightKg = prev.weightKg ?? 0.0
             let prevReps = prev.reps ?? 8
-            let targetWeightKg = prevWeightKg
-            let targetReps = prevReps + 1
-            let deltaKg = (unit == .lbs) ? WeightUnit.toCanonicalKg(5.0, unit: .lbs) : 2.5
-            let supportsLoadStep = prevWeightKg > 0 && !isAssisted(exercise) && ["bar", "dumbbell", "machine"].contains(EquipmentCatalog.shared.categoryId(ExerciseCatalog.resolveCanonicalId(stableId: exercise.exerciseId, name: exercise.name)))
-            let altWeightKg: Double? = supportsLoadStep ? prevWeightKg + deltaKg : nil
-            let altReps: Int? = supportsLoadStep ? max(1, prevReps - 1) : nil
+            // The logbook's heavier comparison uses the same loadable step as Smart Progression.
+            let altWeightKg = ProgressionEngine.nextLoadKg(exercise: exercise, weightKg: prevWeightKg, unit: unit, steps: steps)
+            let altReps: Int? = altWeightKg != nil ? max(1, prevReps - 1) : nil
             return GhostTarget(
                 lastWeekWeightKg: prevWeightKg,
                 lastWeekReps: prevReps,
-                targetWeightKg: targetWeightKg,
-                targetReps: targetReps,
                 altWeightKg: altWeightKg,
                 altReps: altReps,
                 isFirstSession: false,
@@ -561,12 +576,9 @@ public enum WorkoutSessionUtils {
                 isAssisted: isAssisted(exercise)
             )
         } else {
-            let minReps = ProgressionEngine.parseRepRange(exercise: exercise)?.min
             return GhostTarget(
                 lastWeekWeightKg: nil,
                 lastWeekReps: nil,
-                targetWeightKg: 0.0,
-                targetReps: minReps,
                 altWeightKg: nil,
                 altReps: nil,
                 isFirstSession: true,
@@ -610,40 +622,6 @@ public enum WorkoutSessionUtils {
         return nil
     }
 
-    public static func formatGhostTargetText(target: GhostTarget, unit: WeightUnit = .kg) -> String {
-        if target.isFirstSession {
-            let presc = target.prescription.isEmpty ? "8–12 reps" : target.prescription
-            return LanguageManager.t("session.ghost.first_session", ["prescription": presc])
-        }
-        let prevW = formatWeight(target.lastWeekWeightKg ?? 0.0, unit: unit)
-        let prevR = target.lastWeekReps ?? 0
-        let repsLabel = LanguageManager.t("units.reps")
-        let lastWeekStr = LanguageManager.t(
-            "session.ghost.last_week",
-            ["weight": "\(prevW) \(unit.label)", "reps": "\(prevR) \(repsLabel)"]
-        )
-
-        let repW = formatWeight(target.targetWeightKg, unit: unit)
-        guard let repR = target.targetReps else { return lastWeekStr }
-        let repTargetStr = "\(repW) \(unit.label) × \(repR) \(repsLabel)"
-
-        let targetToBeatStr: String
-        if let altWKg = target.altWeightKg, let altR = target.altReps {
-            let altW = formatWeight(altWKg, unit: unit)
-            let loadTargetStr = "\(altW) \(unit.label) × \(altR)"
-            targetToBeatStr = LanguageManager.t(
-                "session.ghost.target_to_beat",
-                ["repTarget": repTargetStr, "loadTarget": loadTargetStr]
-            )
-        } else {
-            targetToBeatStr = LanguageManager.t(
-                "session.ghost.target_to_beat_reps_only",
-                ["repTarget": repTargetStr]
-            )
-        }
-        return "\(lastWeekStr) · \(targetToBeatStr)"
-    }
-
     public static func formatLogbookBeatBadge(result: LogbookBeatResult, unit: WeightUnit = .kg) -> String {
         if result.isAssisted && result.weightDeltaKg < -0.01 { return "−\(formatWeight(-result.weightDeltaKg, unit: unit)) \(unit.uppercaseLabel)" }
         if result.repDelta > 0 && result.weightDeltaKg <= 0.01 {
@@ -670,8 +648,6 @@ public enum WorkoutSessionUtils {
     public struct GhostTarget: Equatable {
         public let lastWeekWeightKg: Double?
         public let lastWeekReps: Int?
-        public let targetWeightKg: Double
-        public let targetReps: Int?
         public let altWeightKg: Double?
         public let altReps: Int?
         public let isFirstSession: Bool
@@ -681,8 +657,6 @@ public enum WorkoutSessionUtils {
         public init(
             lastWeekWeightKg: Double?,
             lastWeekReps: Int?,
-            targetWeightKg: Double,
-            targetReps: Int?,
             altWeightKg: Double?,
             altReps: Int?,
             isFirstSession: Bool,
@@ -691,8 +665,6 @@ public enum WorkoutSessionUtils {
         ) {
             self.lastWeekWeightKg = lastWeekWeightKg
             self.lastWeekReps = lastWeekReps
-            self.targetWeightKg = targetWeightKg
-            self.targetReps = targetReps
             self.altWeightKg = altWeightKg
             self.altReps = altReps
             self.isFirstSession = isFirstSession
@@ -752,25 +724,27 @@ final class SessionHistoryInsightsCache {
         let history: [WorkoutSessionRecord]
         let unit: WeightUnit
         let scope: ActiveScope?
+        let steps: ProgressionLoadSteps
         let language: String
     }
     private var entry: (Inputs, Insights)?
-    private let compute: (Exercise, [WorkoutSessionRecord], WeightUnit, ActiveScope?) -> Insights
+    private let compute: (Exercise, [WorkoutSessionRecord], WeightUnit, ActiveScope?, ProgressionLoadSteps) -> Insights
 
-    init(compute: @escaping (Exercise, [WorkoutSessionRecord], WeightUnit, ActiveScope?) -> Insights = { exercise, history, unit, scope in
+    init(compute: @escaping (Exercise, [WorkoutSessionRecord], WeightUnit, ActiveScope?, ProgressionLoadSteps) -> Insights = { exercise, history, unit, scope, steps in
         // A resumed session's own saved record is today's work, not the previous session.
         let baseline = scope.map { scope in history.filter { $0.id != scope.sessionId } } ?? history
         return Insights(previousWorkingSets: WorkoutSessionUtils.findPreviousSessionWorkingSets(history: baseline, exercise: exercise),
             recommendation: ProgressionEngine.computeProgression(exercise: exercise, history: history, weightUnit: unit, activeSessionId: scope?.sessionId,
-                context: scope.map { ProgressionContext(programId: $0.programId, workoutId: $0.workoutId, now: Date()) }),
+                context: scope.map { ProgressionContext(programId: $0.programId, workoutId: $0.workoutId, now: Date()) }, steps: steps),
             prText: WorkoutSessionUtils.findExercisePr(history: history, exercise: exercise, unit: unit) ?? "-")
     }) { self.compute = compute }
 
-    func get(exercise: Exercise, history: [WorkoutSessionRecord], unit: WeightUnit, scope: ActiveScope? = nil) -> Insights {
+    func get(exercise: Exercise, history: [WorkoutSessionRecord], unit: WeightUnit, scope: ActiveScope? = nil,
+             steps: ProgressionLoadSteps = ProgressionLoadSteps()) -> Insights {
         dispatchPrecondition(condition: .onQueue(.main))
-        let inputs = Inputs(exercise: exercise, history: history, unit: unit, scope: scope, language: LanguageManager.shared.currentLanguage)
+        let inputs = Inputs(exercise: exercise, history: history, unit: unit, scope: scope, steps: steps, language: LanguageManager.shared.currentLanguage)
         if let entry, entry.0 == inputs { return entry.1 }
-        let result = compute(exercise, history, unit, scope)
+        let result = compute(exercise, history, unit, scope, steps)
         entry = (inputs, result)
         return result
     }

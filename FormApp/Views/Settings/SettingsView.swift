@@ -131,6 +131,22 @@ public struct SettingsView: View {
 
                             Divider().background(AppColors.border)
 
+                            SettingsLoadStepRow(
+                                titleKey: "settings.dumbbellStep", subtitleKey: "settings.dumbbellStepSubtitle", unit: store.weightUnit,
+                                options: store.weightUnit == .lbs ? ProgressionLoadSteps.dumbbellLbsOptions : ProgressionLoadSteps.dumbbellKgOptions,
+                                selection: store.weightUnit == .lbs ? $store.dumbbellStepLbs : $store.dumbbellStepKg,
+                                isUnlocked: proManager.isProSubscribed, identifier: "progression-dumbbell-step")
+
+                            Divider().background(AppColors.border)
+
+                            SettingsLoadStepRow(
+                                titleKey: "settings.machineStep", subtitleKey: "settings.machineStepSubtitle", unit: store.weightUnit,
+                                options: store.weightUnit == .lbs ? ProgressionLoadSteps.machineLbsOptions : ProgressionLoadSteps.machineKgOptions,
+                                selection: store.weightUnit == .lbs ? $store.machineStepLbs : $store.machineStepKg,
+                                isUnlocked: proManager.isProSubscribed, identifier: "progression-machine-step")
+
+                            Divider().background(AppColors.border)
+
                             SettingsPremiumToggle(
                                 titleKey: "settings.showWarmupCalculator",
                                 subtitleKey: "settings.showWarmupCalculatorSubtitle",
@@ -1352,3 +1368,38 @@ struct ThemeSelectionSheet: View {
     }
 }
 
+/// Smart Progression load step: the smallest increase the user's equipment supports, in the selected unit.
+private struct SettingsLoadStepRow: View {
+    let titleKey: String
+    let subtitleKey: String
+    let unit: WeightUnit
+    let options: [Double]
+    @Binding var selection: Double
+    let isUnlocked: Bool
+    let identifier: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(LanguageManager.t(titleKey))
+                    .font(.system(size: 15))
+                    .foregroundStyle(isUnlocked ? AppColors.text : AppColors.muted)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Text(LanguageManager.t(subtitleKey))
+                    .font(.system(size: 12))
+                    .foregroundStyle(AppColors.secondaryText)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Picker(LanguageManager.t(titleKey), selection: $selection) {
+                ForEach(options, id: \.self) { option in
+                    Text("\(unit.formatExactWeight(unit.toCanonicalKg(option))) \(unit.label)").tag(option)
+                }
+            }
+            .pickerStyle(.segmented)
+            .disabled(!isUnlocked)
+        }
+        .padding(14)
+        .accessibilityIdentifier(identifier)
+    }
+}

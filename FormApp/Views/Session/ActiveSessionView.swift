@@ -67,7 +67,8 @@ public struct ActiveSessionView: View {
 
         let historyInsights = currentExercise.map {
             store.sessionHistoryInsights.get(exercise: $0, history: store.state.history, unit: store.weightUnit,
-                scope: .init(sessionId: activeDraft.id, programId: activeDraft.programId, workoutId: activeDraft.workout.id))
+                scope: .init(sessionId: activeDraft.id, programId: activeDraft.programId, workoutId: activeDraft.workout.id),
+                steps: store.progressionLoadSteps)
         }
         let previousWorkingSets = historyInsights?.previousWorkingSets ?? []
 
@@ -81,7 +82,8 @@ public struct ActiveSessionView: View {
                         previousSets: previousWorkingSets,
                         workingSetIndex: workingIdx,
                         exercise: exercise,
-                        unit: store.weightUnit
+                        unit: store.weightUnit,
+                        steps: store.progressionLoadSteps
                     )
                     workingIdx += 1
                     map[idx] = target
@@ -452,6 +454,16 @@ public struct ActiveSessionView: View {
                                         ghostTargets: ghostTargets,
                                         logbookBeatenSets: logbookBeatenSets
                                     )
+
+                                    let workingRows = currentSets.filter { !$0.isWarmup }
+                                    if proManager.isFeatureUnlocked(.autoProgression), store.showProgressionTargets,
+                                       !workingRows.isEmpty, workingRows.allSatisfy(\.isCompleted),
+                                       ProgressionEngine.parseRepRange(exercise: exercise) != nil {
+                                        ProgressionEffortRow(
+                                            selected: activeDraft.effortByExercise?[exercise.id].flatMap(ProgressionEffort.init(rawValue:)),
+                                            onSelect: { setEffort($0, exerciseId: exercise.id) }
+                                        )
+                                    }
                                 }
                                 .padding(18)
                                 .background(
@@ -830,6 +842,18 @@ public struct ActiveSessionView: View {
             return
         }
         executeUpdateSet(exerciseId: exerciseId, index: index, weight: weight, reps: reps)
+    }
+
+    /// Saves or clears the optional effort rating for one exercise.
+    private func setEffort(_ effort: ProgressionEffort?, exerciseId: String) {
+        store.updateActiveSession { d in
+            var copy = d
+            guard copy.workout.exercises.contains(where: { $0.id == exerciseId }) else { return copy }
+            var ratings = copy.effortByExercise ?? [:]
+            ratings[exerciseId] = effort?.rawValue
+            copy.effortByExercise = ratings.isEmpty ? nil : ratings
+            return copy
+        }
     }
 
     /// Writes the coach's canonical targets in one update against the latest draft.

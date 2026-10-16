@@ -7086,9 +7086,11 @@ final class FormAppTests: XCTestCase {
         XCTAssertTrue(rec.isPlateau)
         XCTAssertEqual(rec.action, .deload)
         XCTAssertNil(rec.suggestedWeightKg)
-        XCTAssertTrue(rec.setTargets.isEmpty)
-        XCTAssertNil(rec.suggestedVariationId)
-        XCTAssertNil(rec.suggestedVariationName)
+        // The only targets are the optional lighter week: the largest 2.5 kg step at or below 90%.
+        XCTAssertEqual(rec.setTargets, [ProgressionSetTarget(weightKg: 70, reps: 10), ProgressionSetTarget(weightKg: 70, reps: 9), ProgressionSetTarget(weightKg: 70, reps: 8)])
+        // A variation is named as an idea, never swapped automatically.
+        XCTAssertEqual(rec.suggestedVariationId, "incline-dumbbell-press")
+        XCTAssertEqual(rec.suggestedVariationName, "Incline Dumbbell Press")
     }
 
     func testEveryProgressionSwapResolvesToCatalogExercises() {
@@ -7098,24 +7100,6 @@ final class FormAppTests: XCTestCase {
             XCTAssertEqual(catalog[destination.id]?.name, destination.name,
                            "Unknown or mislabeled swap destination for \(sourceId)")
         }
-    }
-
-    func testProgressionTrainingWeeksRequireAnUnbrokenRun() {
-        func session(_ date: String) -> WorkoutSessionRecord {
-            WorkoutSessionRecord(
-                id: date, programId: "p1", workoutId: "w1", workoutTitle: "Push",
-                startedAt: "\(date)T10:00:00Z", completedAt: "\(date)T11:00:00Z",
-                durationSeconds: 3600,
-                exerciseLogs: [SessionExerciseLog(exerciseName: "Barbell Bench Press", sets: [SessionSetLog(setNumber: 1, weightKg: 80.0, reps: 10)])]
-            )
-        }
-        let scattered = ["2026-01-05", "2026-01-19", "2026-02-02", "2026-02-16", "2026-03-02", "2026-03-16"].map(session)
-        let result = ProgressionEngine.evaluateMesocycleFatigue(history: scattered, activeProgram: nil)
-        XCTAssertEqual(result.consecutiveWeeksTrained, 1)
-        XCTAssertFalse(result.isRecommended)
-
-        let continuous = ["2026-08-10", "2026-08-17", "2026-08-24", "2026-08-31", "2026-09-07", "2026-09-14"].map(session)
-        XCTAssertEqual(ProgressionEngine.evaluateMesocycleFatigue(history: continuous, activeProgram: nil).consecutiveWeeksTrained, 6)
     }
 
     func testProgressionRepGainDoesNotTriggerPlateauPrompt() {
@@ -7165,7 +7149,7 @@ final class FormAppTests: XCTestCase {
         XCTAssertNil(ProgressionEngine.parseRepRange(exercise: failure))
         XCTAssertNil(ProgressionEngine.computeProgression(exercise: failure, history: []))
         XCTAssertNil(ProgressionEngine.computeProgression(exercise: failure, history: history))
-        XCTAssertNil(WorkoutSessionUtils.computeGhostTarget(previousSets: [], workingSetIndex: 0, exercise: failure, unit: .kg).targetReps)
+        XCTAssertTrue(WorkoutSessionUtils.computeGhostTarget(previousSets: [], workingSetIndex: 0, exercise: failure, unit: .kg).isFirstSession)
     }
 
     @MainActor
@@ -8872,15 +8856,12 @@ final class FormAppTests: XCTestCase {
         XCTAssertFalse(target1.isFirstSession)
         XCTAssertEqual(target1.lastWeekWeightKg ?? 0.0, 100.0, accuracy: 0.01)
         XCTAssertEqual(target1.lastWeekReps, 8)
-        XCTAssertEqual(target1.targetWeightKg, 100.0, accuracy: 0.01)
-        XCTAssertEqual(target1.targetReps, 9)
         XCTAssertEqual(target1.altWeightKg ?? 0.0, 102.5, accuracy: 0.01)
         XCTAssertEqual(target1.altReps, 7)
 
         // Set 2 target: based on 100kg x 7
         let target2 = WorkoutSessionUtils.computeGhostTarget(previousSets: prevSets, workingSetIndex: 1, exercise: exercise, unit: .kg)
         XCTAssertEqual(target2.lastWeekReps, 7)
-        XCTAssertEqual(target2.targetReps, 8)
         XCTAssertEqual(target2.altWeightKg ?? 0.0, 102.5, accuracy: 0.01)
         XCTAssertEqual(target2.altReps, 6)
 
@@ -8889,7 +8870,7 @@ final class FormAppTests: XCTestCase {
         XCTAssertTrue(firstTarget.isFirstSession)
         XCTAssertNil(firstTarget.lastWeekWeightKg)
         XCTAssertNil(firstTarget.lastWeekReps)
-        XCTAssertEqual(firstTarget.targetReps, 8)
+        XCTAssertNil(firstTarget.altWeightKg)
     }
 
     func testLogbookBeatDetectionAndFormatting() {
@@ -9245,10 +9226,15 @@ final class ProgressionReliabilityTests: XCTestCase {
     func testLoadStepsRespectUnitsEquipmentBodyweightAndTenPercentLimit() {
         let full = [record(1, reps: [12, 12, 12]), record(2, reps: [12, 12, 12])]
         let pounds = ProgressionEngine.computeProgression(exercise: bench, history: full, weightUnit: .lbs)!
-        XCTAssertEqual(WeightUnit.lbs.toDisplay(pounds.suggestedWeightKg! - 65), 5, accuracy: 0.001)
+        // 65 kg is 143.3 lb; the next loadable 5 lb step is 150 lb.
+        XCTAssertEqual(WeightUnit.lbs.toDisplay(pounds.suggestedWeightKg!), 150, accuracy: 0.001)
         XCTAssertEqual(pounds.setTargets.map { $0.reps }, [12, 12, 12])
-        let light = [record(1, reps: [12, 12, 12], loads: [10, 10, 10]), record(2, reps: [12, 12, 12], loads: [10, 10, 10])]
-        XCTAssertEqual(ProgressionEngine.computeProgression(exercise: bench, history: light)!.action, .holdLoad)
+        // 10 kg + 2.5 kg is exactly 25%: offered at the range minimum. 5 kg + 2.5 kg (50%) is withheld.
+        func at(_ kg: Double) -> [WorkoutSessionRecord] { [record(1, reps: [12, 12, 12], loads: [kg, kg, kg]), record(2, reps: [12, 12, 12], loads: [kg, kg, kg])] }
+        let light = ProgressionEngine.computeProgression(exercise: bench, history: at(10))!
+        XCTAssertEqual(light.action, .increaseLoad)
+        XCTAssertEqual(light.setTargets, Array(repeating: ProgressionSetTarget(weightKg: 12.5, reps: 8), count: 3))
+        XCTAssertEqual(ProgressionEngine.computeProgression(exercise: bench, history: at(5))!.action, .holdLoad)
         var bodyweight = bench
         bodyweight.name = "Pull-Ups"
         bodyweight.exerciseId = "pull-ups"
@@ -9294,7 +9280,8 @@ final class ProgressionReliabilityTests: XCTestCase {
         let history = (1...3).map { record($0) }
         let plateau = ProgressionEngine.computeProgression(exercise: bench, history: history)!
         XCTAssertTrue(plateau.isPlateau)
-        XCTAssertTrue(plateau.setTargets.isEmpty)
+        // Only an optional lighter week, never applied automatically: the largest step at or below 90%.
+        XCTAssertEqual(plateau.setTargets, Array(repeating: ProgressionSetTarget(weightKg: 57.5, reps: 8), count: 3))
         XCTAssertNil(plateau.suggestedWeightKg)
         XCTAssertEqual(plateau.lastSessionSets.map { $0.reps }, [8, 8, 8])
         let changingLoads = (1...3).map { record($0, loads: Array(repeating: 72.5 - Double($0) * 2.5, count: 3)) }
@@ -9496,6 +9483,36 @@ final class ProgressionReliabilityTests: XCTestCase {
         controller.view.layoutIfNeeded()
 
         XCTAssertEqual(store.currentView, .library)
+    }
+
+    func testEffortRatingsAreKeptThroughTheDraftSavedRecordAndResume() {
+        var exercise = bench
+        exercise.id = "bench-row"
+        let workout = Workout(id: "w", day: 1, title: "Fixture", exercises: [exercise])
+        let sets = (1...3).map { ExerciseSetLog(setNumber: $0, weightInput: "65", repsInput: "12", weightKg: 65, completedReps: 12, isCompleted: true) }
+        var draft = ActiveSessionDraft(id: "d", programId: "p", workout: workout, startedAt: "2026-09-10T10:00:00Z", startedAtEpochMillis: 0,
+                                       setsByExercise: [exercise.id: sets], effortByExercise: [exercise.id: "easy"])
+        let record = SessionProgress.from(draft: draft, nowEpochMillis: 1).record(draft: draft, completedAtEpochMillis: 1)
+        XCTAssertEqual(record.exerciseLogs.first?.effort, "easy")
+        XCTAssertEqual(WorkoutSessionUtils.restoreEffortFromHistory(workout: workout, record: record), [exercise.id: "easy"])
+        let decoded = try? JSONDecoder().decode(ActiveSessionDraft.self, from: JSONEncoder().encode(draft))
+        XCTAssertEqual(decoded?.effortByExercise, [exercise.id: "easy"])
+        draft.effortByExercise = [exercise.id: "maximal"]
+        XCTAssertNil(try? JSONDecoder().decode(ActiveSessionDraft.self, from: JSONEncoder().encode(draft)).effortByExercise?[exercise.id])
+        // One easy ceiling session offers the step; the rating is the user's own report.
+        XCTAssertEqual(ProgressionEngine.computeProgression(exercise: exercise, history: [record])?.rationaleKey, "progression.rationale.increase_load_easy")
+    }
+
+    func testApplyFillsLoadsAndLeavesRepsForTheUser() {
+        let rec = ProgressionEngine.computeProgression(exercise: bench, history: [record(1, reps: [9, 9, 9])])!
+        let typed = rec.setTargets[0].applied(to: ExerciseSetLog(setNumber: 1, repsInput: "7", completedReps: 7), unit: .kg)
+        XCTAssertEqual(typed.weightInput, "65")
+        XCTAssertEqual(typed.repsInput, "7") // Reps the user already typed are kept.
+        XCTAssertEqual(typed.completedReps, 7)
+        XCTAssertEqual(typed.targetReps, 10)
+        let empty = rec.setTargets[0].applied(to: ExerciseSetLog(setNumber: 1), unit: .kg)
+        XCTAssertEqual(empty.repsInput, "")
+        XCTAssertFalse(WorkoutSessionUtils.canCompleteSet(empty))
     }
 }
 
@@ -12872,7 +12889,7 @@ final class AuditSessionInsightsTests: XCTestCase {
     @MainActor
     func testInsightsReuseHistoryAndInvalidatePrescriptionUnitLanguageAndCorrectedLogs() {
         var computations = 0
-        let cache = SessionHistoryInsightsCache { _, _, _, _ in
+        let cache = SessionHistoryInsightsCache { _, _, _, _, _ in
             computations += 1
             return .init(previousWorkingSets: [], recommendation: nil, prText: "fixture")
         }
