@@ -9201,6 +9201,78 @@ final class ProgressionReliabilityTests: XCTestCase {
 
 final class TabPagingTests: XCTestCase {
     @MainActor
+    func testLibraryKeyboardLocksPagerAndPreservesSearchAcrossNavigation() throws {
+        try verifyLibraryKeyboardNavigation(width: 393)
+    }
+
+    @MainActor
+    func testLibraryKeyboardNavigationAt320ptWithLargerTurkishText() throws {
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        LanguageManager.setLanguage("tr")
+        defer { LanguageManager.setLanguage(previousLanguage) }
+        try verifyLibraryKeyboardNavigation(width: 320, largeText: true)
+    }
+
+    @MainActor
+    private func verifyLibraryKeyboardNavigation(width: CGFloat, largeText: Bool = false) throws {
+        try withTabPager(width: width, initialView: .library) { store, controller, pager in
+            if largeText {
+                controller.traitOverrides.preferredContentSizeCategory = .extraExtraLarge
+                pumpTabPager(controller)
+            }
+            let search = try XCTUnwrap(nativeTextFields(in: controller.view).first)
+            XCTAssertTrue(search.becomeFirstResponder())
+            search.insertText("bench")
+            pumpTabPager(controller)
+            RunLoop.main.run(until: Date().addingTimeInterval(0.4))
+            XCTAssertTrue(search.isFirstResponder)
+            XCTAssertFalse(pager.isScrollEnabled, "Typing must disable only the outer page swipe")
+            let verticalScroll = try XCTUnwrap(tabScrollViews(in: controller.view).first {
+                $0 !== pager && $0.isScrollEnabled
+                    && $0.convert($0.bounds, to: controller.view).intersects(controller.view.bounds)
+            })
+            XCTAssertTrue(verticalScroll.panGestureRecognizer.isEnabled)
+            let attachment = XCTAttachment(image: tabPagerImage(controller))
+            attachment.name = "library-keyboard-open-\(Int(width))"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+
+            XCTAssertEqual(search.returnKeyType, .search)
+            search.resignFirstResponder()
+            pumpTabPager(controller)
+            RunLoop.main.run(until: Date().addingTimeInterval(0.4))
+            XCTAssertFalse(search.isFirstResponder)
+            XCTAssertEqual(search.text, "bench")
+            XCTAssertTrue(pager.isScrollEnabled)
+            try assertDockPosition(2, in: controller)
+
+            // External navigation must dismiss focus even with user exits locked.
+            XCTAssertTrue(search.becomeFirstResponder())
+            pumpTabPager(controller)
+            XCTAssertFalse(pager.isScrollEnabled)
+            store.navigate(to: .history)
+            pumpTabPager(controller)
+            RunLoop.main.run(until: Date().addingTimeInterval(0.4))
+            XCTAssertFalse(search.isFirstResponder)
+            XCTAssertTrue(pager.isScrollEnabled)
+            XCTAssertEqual(pager.contentOffset.x / pager.bounds.width, 3, accuracy: 0.01)
+
+            store.navigate(to: .library)
+            pumpTabPager(controller)
+            let returnedSearch = try XCTUnwrap(nativeTextFields(in: controller.view).first)
+            XCTAssertEqual(returnedSearch.text, "bench")
+            XCTAssertFalse(returnedSearch.isFirstResponder)
+            XCTAssertTrue(pager.isScrollEnabled)
+            try assertDockPosition(2, in: controller)
+        }
+    }
+
+    @MainActor
+    private func nativeTextFields(in view: UIView) -> [UITextField] {
+        ((view as? UITextField).map { [$0] } ?? []) + view.subviews.flatMap { nativeTextFields(in: $0) }
+    }
+
+    @MainActor
     func testTabPagerKeepsFractionalOffsetAndDockInSync() throws {
         for width in [CGFloat(320), CGFloat(440)] {
             try withTabPager(width: width) { store, controller, pager in
@@ -9339,13 +9411,19 @@ final class TabPagingTests: XCTestCase {
         store.activeSession = nil
         store.navigate(to: initialView)
         let controller = UIHostingController(rootView: RootView())
-        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 852))
+        let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
+            .flatMap(\.windows).first(where: \.isKeyWindow)
+        let scene = try XCTUnwrap(previousWindow?.windowScene)
+        let window = UIWindow(windowScene: scene)
+        window.frame = CGRect(x: 0, y: 0, width: width, height: 852)
         window.rootViewController = controller
         window.makeKeyAndVisible()
         controller.view.frame = window.bounds
         defer {
+            controller.view.endEditing(true)
             window.isHidden = true
             window.rootViewController = nil
+            previousWindow?.makeKeyAndVisible()
             store.currentView = originalView
             store.selectedExerciseId = originalExercise
             store.selectedHistoryDetailDay = originalHistoryDay

@@ -68,6 +68,7 @@ public struct RootView: View {
     @State private var dragScrollPosition: CGFloat? = nil
     @State private var scrollSelectedTab: ViewMode?
     @State private var isPagerInitialized = false
+    @State private var isKeyboardVisible = false
 
     public init() {
         _scrollSelectedTab = State(initialValue: AppStore.shared.currentView)
@@ -79,7 +80,9 @@ public struct RootView: View {
             if !store.isOnboardingCompleted {
                 OnboardingView(store: store)
             } else {
-                let isBottomDockVisible = (store.currentView != .library || store.selectedExerciseId == nil) && store.selectedHistoryDetailDay == nil
+                let isMainNavigationAvailable = (store.currentView != .library || store.selectedExerciseId == nil) && store.selectedHistoryDetailDay == nil
+                let isBottomDockVisible = isMainNavigationAvailable && !isKeyboardVisible
+                let isPageSwipingEnabled = isMainNavigationAvailable && !isKeyboardVisible
 
                 let mainTabs = AppStore.mainTabs
 
@@ -140,7 +143,7 @@ public struct RootView: View {
                                             )
                                         }
                                     }
-                                    .background(MainTabScrollGate(isEnabled: isBottomDockVisible))
+                                    .background(MainTabScrollGate(isEnabled: isPageSwipingEnabled))
                                 }
                                 .coordinateSpace(name: "mainTabPager")
                                 .scrollTargetBehavior(.paging)
@@ -155,7 +158,7 @@ public struct RootView: View {
                                     }
                                     let clamped = max(0, min(CGFloat(mainTabs.count - 1), position))
                                     dragScrollPosition = clamped
-                                    guard isBottomDockVisible else { return }
+                                    guard isPageSwipingEnabled else { return }
                                     let destination = mainTabs[Int(clamped.rounded())]
                                     // Record the scroll origin before publishing navigation.
                                     // Its onChange must not snap an unfinished drag to a page.
@@ -192,7 +195,7 @@ public struct RootView: View {
                                 )
                             }
                         }
-                        .ignoresSafeArea(.container, edges: isBottomDockVisible ? .bottom : [])
+                        .ignoresSafeArea(.container, edges: isMainNavigationAvailable ? .bottom : [])
                     }
 
                     // Animated Toast Pill
@@ -224,6 +227,12 @@ public struct RootView: View {
         }
         .preferredColorScheme(themeManager.currentTheme.colorScheme)
         .environment(\.locale, LanguageManager.locale)
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
+            isKeyboardVisible = true
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+            isKeyboardVisible = false
+        }
         .task {
             // Restore subscriptions on every app launch, not only when a paywall opens.
             _ = StoreKitSubscriptionManager.shared

@@ -15,6 +15,7 @@ public struct LibraryView: View {
     var onOpenSettings: () -> Void
 
     @State private var query: String = ""
+    @FocusState private var isSearchFocused: Bool
     @State private var selectedEquipment: String? = nil
     @State private var selectedMuscle: String? = nil
     @State private var activeModal: LibraryFilterModal? = nil
@@ -34,6 +35,7 @@ public struct LibraryView: View {
 
     public var body: some View {
         let _ = themeManager.currentTheme
+        Group {
         if let selectedId = store.selectedExerciseId, let selectedExercise = store.findExercise(id: selectedId) {
             ExerciseDetailView(exercise: selectedExercise, onBack: {
                 store.selectExerciseInLibrary(id: nil)
@@ -54,7 +56,10 @@ public struct LibraryView: View {
                     FormHeaderIconButton(
                         icon: "gearshape.fill",
                         contentDescription: LanguageManager.t("settings.title"),
-                        onClick: onOpenSettings
+                        onClick: {
+                            isSearchFocused = false
+                            onOpenSettings()
+                        }
                     )
                 }
                 .padding(.horizontal, 20)
@@ -69,6 +74,10 @@ public struct LibraryView: View {
                             .foregroundStyle(AppColors.muted)
 
                         TextField(LanguageManager.t("library.search"), text: $query)
+                            .focused($isSearchFocused)
+                            .submitLabel(.search)
+                            .onSubmit { isSearchFocused = false }
+                            .accessibilityIdentifier("library-search")
                             .font(.system(size: 14))
                             .foregroundStyle(AppColors.text)
                             .tint(AppColors.accent)
@@ -239,6 +248,7 @@ public struct LibraryView: View {
                 Spacer().frame(height: 16)
             }
         }
+        .scrollDismissesKeyboard(.interactively)
         .overlay {
             if let modal = activeModal {
                 ZStack {
@@ -277,6 +287,17 @@ public struct LibraryView: View {
             }
         }
         }
+        }
+        .onChange(of: store.currentView) { _, destination in
+            if destination != .library { isSearchFocused = false }
+        }
+        .onChange(of: store.selectedExerciseId) { _, selectedId in
+            if selectedId != nil { isSearchFocused = false }
+        }
+        .onChange(of: activeModal) { _, modal in
+            if modal != nil { isSearchFocused = false }
+        }
+        .onDisappear { isSearchFocused = false }
     }
 
     private func modalHeader(title: String) -> some View {
