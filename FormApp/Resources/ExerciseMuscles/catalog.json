@@ -1,5 +1,5 @@
 {
-  "version": 3,
+  "version": 4,
   "width": 480,
   "height": 1024,
   "views": {
@@ -12,7 +12,11 @@
         "biceps": "M 394 279 C 383 287 369 309 365 329 C 363 342 366 353 376 354 C 388 340 402 311 407 285 Z M 641 279 C 652 287 666 309 670 329 C 674 344 671 357 660 360 C 648 344 636 313 632 287 Z",
         "abs": "M 489 309 C 500 315 507 315 515 312 L 515 414 L 495 419 C 484 391 481 342 489 309 Z M 551 309 C 540 315 533 315 525 312 L 525 414 L 545 419 C 556 391 559 342 551 309 Z",
         "obliques": "M 448 323 L 476 342 C 476 373 480 401 488 416 L 472 426 L 455 418 C 444 386 443 351 448 323 Z M 592 323 L 564 342 C 564 373 560 401 552 416 L 568 426 L 585 418 C 596 386 597 351 592 323 Z",
-        "quads": "M 425 538 C 447 527 473 536 488 557 L 492 614 C 486 645 476 670 457 690 C 443 679 429 676 424 668 C 412 630 411 584 425 538 Z M 552 550 C 572 531 597 532 619 552 C 632 592 628 631 615 655 L 587 681 L 572 689 C 557 666 548 643 548 614 Z"
+        "quads": "M 425 538 C 447 527 468 534 479 553 L 482 612 C 479 642 472 668 457 690 C 443 679 429 676 424 668 C 412 630 411 584 425 538 Z M 561 552 C 577 533 597 532 619 552 C 632 592 628 631 615 655 L 587 681 L 572 689 C 561 666 556 643 556 614 Z",
+        "forearms": "M 340 384 C 352 378 376 378 388 386 C 386 404 378 424 368 442 C 362 454 354 466 345 474 C 337 470 330 460 328 448 C 326 424 330 400 340 384 Z M 695 384 C 683 378 659 378 647 386 C 649 404 657 424 667 442 C 673 454 681 466 690 474 C 698 470 705 460 707 448 C 709 424 705 400 695 384 Z",
+        "adductors": "M 485 552 C 493 549 503 549 510 553 L 508 578 C 506 590 501 602 494 614 C 492 624 490 632 489 640 C 487 632 485 624 485 614 L 484 558 Z M 553 550 C 545 548 537 549 530 553 L 532 578 C 534 590 537 602 542 616 C 545 626 548 634 550 640 C 552 630 553 622 553 612 L 553 558 Z",
+        "tibialis": "M 418 716 C 428 712 438 716 440 726 C 441 760 438 800 433 846 C 430 856 426 858 424 850 C 418 815 410 780 408 752 C 406 734 408 720 418 716 Z M 619 716 C 609 712 599 716 597 726 C 596 760 599 800 604 846 C 607 856 611 858 613 850 C 619 815 627 780 629 752 C 631 734 629 720 619 716 Z",
+        "calves": "M 452 734 C 461 730 467 738 469 754 C 469 776 463 798 455 814 C 453 804 452 788 452 770 C 451 754 451 742 452 734 Z M 585 734 C 576 730 570 738 568 754 C 568 776 574 798 582 814 C 584 804 585 788 585 770 C 586 754 586 742 585 734 Z"
       }
     },
     "back": {
@@ -24,7 +28,9 @@
         "rear-delts": "M 943 207 C 918 207 896 221 890 245 L 897 273 L 920 274 C 931 256 936 236 947 223 Z M 1131 207 C 1156 207 1178 221 1184 245 L 1177 273 L 1154 274 C 1143 256 1138 236 1127 223 Z",
         "glutes": "M 967 446 C 989 440 1010 445 1029 457 L 1029 552 C 1003 571 971 568 944 552 C 935 514 948 472 967 446 Z M 1107 446 C 1085 440 1064 445 1045 457 L 1045 552 C 1071 571 1103 568 1130 552 C 1139 514 1126 472 1107 446 Z",
         "hamstrings": "M 944 579 C 969 586 997 580 1017 570 L 1013 608 C 1001 657 984 690 967 710 L 945 699 C 931 665 932 620 944 579 Z M 1130 579 C 1105 586 1077 580 1057 570 L 1061 608 C 1073 657 1090 690 1107 710 L 1129 699 C 1143 665 1142 620 1130 579 Z",
-        "calves": "M 933 735 C 943 719 960 719 971 735 C 988 763 977 811 962 840 L 948 851 C 929 834 914 804 916 776 C 917 758 925 742 933 735 Z M 1104 733 C 1115 718 1131 722 1141 740 C 1160 772 1159 811 1140 839 L 1123 851 C 1106 830 1097 798 1097 768 C 1097 751 1099 740 1104 733 Z"
+        "calves": "M 933 735 C 943 719 960 719 971 735 C 988 763 977 811 962 840 L 948 851 C 929 834 914 804 916 776 C 917 758 925 742 933 735 Z M 1104 733 C 1115 718 1131 722 1141 740 C 1160 772 1159 811 1140 839 L 1123 851 C 1106 830 1097 798 1097 768 C 1097 751 1099 740 1104 733 Z",
+        "lower-back": "M 1033 350 L 1033 436 C 1022 437 1011 435 1003 430 C 1001 418 1003 404 1008 396 C 1014 391 1022 391 1027 389 L 1028 360 C 1029 355 1031 351 1033 350 Z M 1041 350 L 1041 436 C 1052 437 1063 435 1071 430 C 1073 418 1071 404 1066 396 C 1060 391 1052 391 1047 389 L 1046 360 C 1045 355 1043 351 1041 350 Z",
+        "forearms": "M 856 392 C 868 386 892 386 900 394 C 898 412 890 432 880 448 C 874 460 868 470 862 478 C 852 474 846 462 846 446 C 844 424 848 404 856 392 Z M 1213 392 C 1201 386 1177 386 1169 394 C 1171 412 1179 432 1189 448 C 1195 460 1201 470 1207 478 C 1217 474 1223 462 1223 446 C 1225 424 1221 404 1213 392 Z"
       }
     }
   },
@@ -84,6 +90,22 @@
     "calves": {
       "en": "Calves",
       "tr": "Baldır"
+    },
+    "lower-back": {
+      "en": "Lower back",
+      "tr": "Bel"
+    },
+    "forearms": {
+      "en": "Forearms",
+      "tr": "Ön kol"
+    },
+    "adductors": {
+      "en": "Adductors",
+      "tr": "İç bacak"
+    },
+    "tibialis": {
+      "en": "Shins",
+      "tr": "Kaval kası"
     }
   },
   "sources": {
@@ -112,7 +134,9 @@
         "quads",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -141,7 +165,9 @@
         "quads",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -168,7 +194,9 @@
         "hamstrings",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "lower-back"
+      ],
       "focus": "lower",
       "initialView": "back",
       "status": "curated",
@@ -242,6 +270,7 @@
         "hamstrings"
       ],
       "secondary": [
+        "lower-back",
         "upper-back",
         "quads"
       ],
@@ -301,7 +330,9 @@
       "primary": [
         "biceps"
       ],
-      "secondary": [],
+      "secondary": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -329,7 +360,9 @@
         "hamstrings",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "lower-back"
+      ],
       "focus": "lower",
       "initialView": "back",
       "status": "curated",
@@ -381,6 +414,7 @@
         "obliques"
       ],
       "secondary": [
+        "forearms",
         "upper-back"
       ],
       "focus": "upper",
@@ -395,7 +429,9 @@
         "quads",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -480,6 +516,7 @@
         "hamstrings"
       ],
       "secondary": [
+        "lower-back",
         "upper-back"
       ],
       "focus": "lower",
@@ -788,6 +825,7 @@
         "quads"
       ],
       "secondary": [
+        "lower-back",
         "hamstrings",
         "upper-back"
       ],
@@ -892,7 +930,9 @@
         "quads",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -1031,8 +1071,10 @@
         "quads"
       ],
       "secondary": [
+        "lower-back",
         "hamstrings",
-        "upper-back"
+        "upper-back",
+        "adductors"
       ],
       "focus": "lower",
       "initialView": "front",
@@ -1046,7 +1088,9 @@
         "quads",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -1089,7 +1133,9 @@
         "hamstrings",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "lower-back"
+      ],
       "focus": "lower",
       "initialView": "back",
       "status": "curated",
@@ -1130,7 +1176,9 @@
         "quads",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -1183,7 +1231,9 @@
         "hamstrings",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "lower-back"
+      ],
       "focus": "lower",
       "initialView": "back",
       "status": "curated",
@@ -1196,7 +1246,9 @@
         "hamstrings",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "lower-back"
+      ],
       "focus": "lower",
       "initialView": "back",
       "status": "curated",
@@ -1206,10 +1258,12 @@
     },
     "dumbbell-45-deg-back-extension": {
       "primary": [
-        "glutes",
+        "lower-back",
+        "glutes"
+      ],
+      "secondary": [
         "hamstrings"
       ],
-      "secondary": [],
       "focus": "lower",
       "initialView": "back",
       "status": "curated",
@@ -1288,7 +1342,7 @@
     },
     "lever-seated-hip-adduction": {
       "primary": [
-        "quads"
+        "adductors"
       ],
       "secondary": [],
       "focus": "lower",
@@ -1324,11 +1378,11 @@
     },
     "wall-supported-tibialis-raise": {
       "primary": [
-        "calves"
+        "tibialis"
       ],
       "secondary": [],
       "focus": "lower",
-      "initialView": "back",
+      "initialView": "front",
       "status": "curated",
       "sources": [
         "gymvisual"
@@ -1834,7 +1888,9 @@
       "primary": [
         "biceps"
       ],
-      "secondary": [],
+      "secondary": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -1996,6 +2052,7 @@
     },
     "bird-dog": {
       "primary": [
+        "lower-back",
         "glutes"
       ],
       "secondary": [
@@ -2092,6 +2149,7 @@
         "hamstrings"
       ],
       "secondary": [
+        "lower-back",
         "upper-back",
         "quads"
       ],
@@ -2157,6 +2215,7 @@
         "abs"
       ],
       "secondary": [
+        "forearms",
         "upper-back"
       ],
       "focus": "upper",
@@ -2961,6 +3020,7 @@
         "upper-back"
       ],
       "secondary": [
+        "lower-back",
         "hamstrings"
       ],
       "focus": "lower",
@@ -3299,7 +3359,9 @@
       "primary": [
         "biceps"
       ],
-      "secondary": [],
+      "secondary": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3321,6 +3383,7 @@
     },
     "barbell-reverse-curl": {
       "primary": [
+        "forearms",
         "biceps"
       ],
       "secondary": [],
@@ -3333,6 +3396,7 @@
     },
     "ez-barbell-reverse-grip-curl": {
       "primary": [
+        "forearms",
         "biceps"
       ],
       "secondary": [],
@@ -3345,6 +3409,7 @@
     },
     "dumbbell-biceps-curl-reverse": {
       "primary": [
+        "forearms",
         "biceps"
       ],
       "secondary": [],
@@ -3359,7 +3424,9 @@
       "primary": [
         "biceps"
       ],
-      "secondary": [],
+      "secondary": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3371,7 +3438,9 @@
       "primary": [
         "biceps"
       ],
-      "secondary": [],
+      "secondary": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3491,7 +3560,9 @@
       "primary": [
         "biceps"
       ],
-      "secondary": [],
+      "secondary": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3503,7 +3574,9 @@
       "primary": [
         "biceps"
       ],
-      "secondary": [],
+      "secondary": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3642,7 +3715,9 @@
         "quads",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3655,7 +3730,9 @@
         "quads",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3668,7 +3745,9 @@
         "quads",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3681,7 +3760,9 @@
         "quads",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3696,7 +3777,8 @@
       ],
       "secondary": [
         "upper-back",
-        "abs"
+        "abs",
+        "adductors"
       ],
       "focus": "lower",
       "initialView": "front",
@@ -3710,7 +3792,9 @@
         "quads",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3723,7 +3807,9 @@
         "quads",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3736,7 +3822,9 @@
         "quads",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3788,7 +3876,9 @@
         "hamstrings",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "lower-back"
+      ],
       "focus": "lower",
       "initialView": "back",
       "status": "curated",
@@ -3870,7 +3960,9 @@
         "quads",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3883,7 +3975,9 @@
         "quads",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3961,7 +4055,9 @@
         "quads",
         "glutes"
       ],
-      "secondary": [],
+      "secondary": [
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -4098,7 +4194,9 @@
         "glutes",
         "hamstrings"
       ],
-      "secondary": [],
+      "secondary": [
+        "lower-back"
+      ],
       "focus": "lower",
       "initialView": "back",
       "status": "curated",

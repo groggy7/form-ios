@@ -6245,6 +6245,41 @@
         }
       }
     },
+    "matrix.noMuscleReference": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No published weekly reference range covers this region. Sets are counted, but not rated."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu bölge için yayımlanmış haftalık referans aralığı yok. Setler sayılır ama değerlendirilmez."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für diese Region gibt es keinen veröffentlichten wöchentlichen Referenzbereich. Sätze werden gezählt, aber nicht bewertet."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune plage de référence hebdomadaire publiée ne couvre cette zone. Les séries sont comptées, mais pas évaluées."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No hay un rango de referencia semanal publicado para esta zona. Las series se cuentan, pero no se valoran."
+          }
+        }
+      }
+    },
     "matrix.creditNote": {
       "extractionState": "manual",
       "localizations": {
@@ -7441,31 +7476,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tracks your weekly working sets across 14 muscle groups against benchmark volume targets. It provides a clear visual guide for muscle balance and workload—not a diagnosis of recovery or fatigue, which varies by sleep, nutrition, and experience."
+            "value": "Tracks your weekly working sets across 18 muscle groups against benchmark volume targets. It provides a clear visual guide for muscle balance and workload—not a diagnosis of recovery or fatigue, which varies by sleep, nutrition, and experience."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "14 kas grubundaki haftalık çalışma setlerinizi genel kabul gören hacim hedefleriyle karşılaştırır. Hangi kasları ne kadar çalıştırdığınızı gösteren pratik bir rehberdir; toparlanma uykunuza ve beslenmenize de bağlı olduğundan tıbbi tanı niteliği taşımaz."
+            "value": "18 kas grubundaki haftalık çalışma setlerinizi genel kabul gören hacim hedefleriyle karşılaştırır. Hangi kasları ne kadar çalıştırdığınızı gösteren pratik bir rehberdir; toparlanma uykunuza ve beslenmenize de bağlı olduğundan tıbbi tanı niteliği taşımaz."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vergleicht deine wöchentlichen Arbeitssätze für 14 Muskelgruppen mit Volumenreferenzen. Die Übersicht zeigt die Verteilung des Trainingsvolumens. Sie stellt keine Diagnose von Erholung oder Ermüdung dar; diese hängen unter anderem von Schlaf, Ernährung und Erfahrung ab."
+            "value": "Vergleicht deine wöchentlichen Arbeitssätze für 18 Muskelgruppen mit Volumenreferenzen. Die Übersicht zeigt die Verteilung des Trainingsvolumens. Sie stellt keine Diagnose von Erholung oder Ermüdung dar; diese hängen unter anderem von Schlaf, Ernährung und Erfahrung ab."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Compare vos séries de travail hebdomadaires pour 14 groupes musculaires à des références de volume. Cette vue montre la répartition du volume d’entraînement. Elle ne diagnostique ni la récupération ni la fatigue, qui dépendent notamment du sommeil, de l’alimentation et de l’expérience."
+            "value": "Compare vos séries de travail hebdomadaires pour 18 groupes musculaires à des références de volume. Cette vue montre la répartition du volume d’entraînement. Elle ne diagnostique ni la récupération ni la fatigue, qui dépendent notamment du sommeil, de l’alimentation et de l’expérience."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Compara tus series efectivas semanales de 14 grupos musculares con referencias de volumen. Esta vista muestra la distribución del volumen de entrenamiento. No diagnostica la recuperación ni la fatiga, que dependen, entre otros factores, del sueño, la alimentación y la experiencia."
+            "value": "Compara tus series efectivas semanales de 18 grupos musculares con referencias de volumen. Esta vista muestra la distribución del volumen de entrenamiento. No diagnostica la recuperación ni la fatiga, que dependen, entre otros factores, del sueño, la alimentación y la experiencia."
           }
         }
       }
@@ -31032,7 +31067,7 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Poitrine"
+            "value": "Pectoraux"
           }
         },
         "es": {
@@ -31061,7 +31096,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zurück"
+            "value": "Rücken"
           }
         },
         "fr": {
@@ -31073,7 +31108,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Atrás"
+            "value": "Espalda"
           }
         }
       }
@@ -31108,7 +31143,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Espalda"
+            "value": "Hombros"
           }
         }
       }
@@ -31131,19 +31166,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Quads"
+            "value": "Quadrizeps"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Quads"
+            "value": "Quadriceps"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "cuádruples"
+            "value": "Cuádriceps"
           }
         }
       }
@@ -31166,7 +31201,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kniesehnen"
+            "value": "Beinbeuger"
           }
         },
         "fr": {
@@ -31201,7 +31236,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gesäßmuskeln"
+            "value": "Gesäß"
           }
         },
         "fr": {
@@ -31236,19 +31271,124 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kälber"
+            "value": "Waden"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Veaux"
+            "value": "Mollets"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Terneros"
+            "value": "Gemelos"
+          }
+        }
+      }
+    },
+    "exercise.muscle.forearms": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forearms"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ön Kol"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unterarme"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avant-bras"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antebrazos"
+          }
+        }
+      }
+    },
+    "exercise.muscle.adductors": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adductors"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İç Bacak"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adduktoren"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adducteurs"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aductores"
+          }
+        }
+      }
+    },
+    "exercise.muscle.shins": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shins"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kaval Kası"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schienbeine"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tibias"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espinillas"
           }
         }
       }
@@ -31318,7 +31458,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "tríceps"
+            "value": "Tríceps"
           }
         }
       }
@@ -31341,19 +31481,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kern"
+            "value": "Rumpf"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cœur"
+            "value": "Tronc"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Centro"
+            "value": "Core"
           }
         }
       }
@@ -43058,6 +43198,146 @@
           "stringUnit": {
             "state": "translated",
             "value": "Gemelos"
+          }
+        }
+      }
+    },
+    "anatomy.muscle.lower-back": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lower back"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bel"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unterer Rücken"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bas du dos"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zona lumbar"
+          }
+        }
+      }
+    },
+    "anatomy.muscle.forearms": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forearms"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ön kol"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unterarme"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Avant-bras"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antebrazos"
+          }
+        }
+      }
+    },
+    "anatomy.muscle.adductors": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adductors"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İç bacak"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adduktoren"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Adducteurs"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aductores"
+          }
+        }
+      }
+    },
+    "anatomy.muscle.tibialis": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shins"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kaval kası"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schienbeinmuskel"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tibial antérieur"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tibial anterior"
           }
         }
       }

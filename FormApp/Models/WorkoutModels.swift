@@ -1228,14 +1228,17 @@ public struct ExerciseMetadata {
            let primary = profile.primary.first {
             switch primary {
             case "chest": return "exercise.muscle.chest"
-            case "lats", "upper-back": return "exercise.muscle.back"
+            case "lats", "upper-back", "lower-back": return "exercise.muscle.back"
             case "front-delts", "side-delts", "rear-delts": return "exercise.muscle.shoulders"
             case "biceps": return "exercise.muscle.biceps"
+            case "forearms": return "exercise.muscle.forearms"
             case "triceps": return "exercise.muscle.triceps"
             case "quads": return "exercise.muscle.quads"
+            case "adductors": return "exercise.muscle.adductors"
             case "hamstrings": return "exercise.muscle.hamstrings"
             case "glutes": return "exercise.muscle.glutes"
             case "calves": return "exercise.muscle.calves"
+            case "tibialis": return "exercise.muscle.shins"
             case "abs", "obliques": return "exercise.muscle.core"
             default: return "exercise.muscle.full_body"
             }
@@ -1427,14 +1430,15 @@ public struct ExerciseMetadata {
         }
         let muscleMap: [String: [String]] = [
             "chest": ["chest"],
-            "back": ["lats", "upper-back"],
+            // Filter chips stay broad: precise labels, but no new chips for the smaller regions.
+            "back": ["lats", "upper-back", "lower-back"],
             "shoulders": ["front-delts", "side-delts", "rear-delts"],
-            "biceps": ["biceps"],
+            "biceps": ["biceps", "forearms"],
             "triceps": ["triceps"],
-            "quads": ["quads"],
+            "quads": ["quads", "adductors"],
             "hamstrings": ["hamstrings"],
             "glutes": ["glutes"],
-            "calves": ["calves"],
+            "calves": ["calves", "tibialis"],
             "core": ["abs", "obliques"]
         ]
         let targetMuscles = muscleMap[muscleKey] ?? [muscleKey]

@@ -3249,6 +3249,31 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(catalog.profile("cable-y-raise")?.primary, ["upper-back", "side-delts"])
     }
 
+    func testNewRegionsReplaceWrongStandIns() throws {
+        let catalog = try XCTUnwrap(ExerciseMuscleCatalog.shared)
+        let front = try XCTUnwrap(catalog.views["front"]).regions
+        let back = try XCTUnwrap(catalog.views["back"]).regions
+        for id in ["forearms", "adductors", "tibialis", "calves"] { XCTAssertNotNil(front[id], id) }
+        for id in ["forearms", "lower-back", "calves"] { XCTAssertNotNil(back[id], id) }
+        XCTAssertEqual(catalog.profile("lever-seated-hip-adduction")?.primary, ["adductors"])
+        XCTAssertEqual(catalog.profile("wall-supported-tibialis-raise")?.primary, ["tibialis"])
+        XCTAssertEqual(catalog.profile("wall-supported-tibialis-raise")?.initialView, "front")
+        XCTAssertEqual(catalog.profile("barbell-reverse-curl")?.primary, ["forearms", "biceps"])
+        XCTAssertTrue(catalog.profile("conventional-barbell-deadlift")?.secondary.contains("lower-back") == true)
+        XCTAssertTrue(catalog.profile("barbell-back-squat")?.secondary.contains("adductors") == true)
+
+        func label(_ id: String) -> String { ExerciseMetadata.resolveMuscleKey(exerciseId: id, name: id, movementType: nil) }
+        XCTAssertEqual(label("lever-seated-hip-adduction"), "exercise.muscle.adductors")
+        XCTAssertEqual(label("wall-supported-tibialis-raise"), "exercise.muscle.shins")
+        XCTAssertEqual(label("barbell-reverse-curl"), "exercise.muscle.forearms")
+        XCTAssertEqual(label("dumbbell-45-deg-back-extension"), "exercise.muscle.back")
+        func exercise(_ id: String) throws -> Exercise { try XCTUnwrap(ExerciseCatalog.canonicalExercises[id]).toExercise() }
+        XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: try exercise("lever-seated-hip-adduction"), muscleKey: "quads"))
+        XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: try exercise("wall-supported-tibialis-raise"), muscleKey: "calves"))
+        XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: try exercise("barbell-reverse-curl"), muscleKey: "biceps"))
+        XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: try exercise("bird-dog"), muscleKey: "back"))
+    }
+
     func testCustomExerciseNamesResolveToTheirMuscleLabel() {
         func key(_ name: String, _ movement: MovementType? = nil) -> String {
             ExerciseMetadata.resolveMuscleKey(exerciseId: nil, name: name, movementType: movement)
@@ -3300,6 +3325,10 @@ final class FormAppTests: XCTestCase {
             ("barbell-bench-press", "bench", "en", 350.0, DynamicTypeSize.large),
             ("pull-ups", "pull", "tr", 280.0, DynamicTypeSize.xxxLarge),
             ("seated-leg-curl", "legs", "en", 350.0, DynamicTypeSize.large),
+            ("conventional-barbell-deadlift", "deadlift", "en", 350.0, DynamicTypeSize.large),
+            ("lever-seated-hip-adduction", "adduction", "de", 280.0, DynamicTypeSize.large),
+            ("wall-supported-tibialis-raise", "tibialis", "en", 350.0, DynamicTypeSize.large),
+            ("barbell-reverse-curl", "reverse-curl", "es", 350.0, DynamicTypeSize.large),
             ("unknown", "unknown", "en", 280.0, DynamicTypeSize.large)
         ] {
             LanguageManager.setLanguage(language)
@@ -6356,7 +6385,19 @@ final class FormAppTests: XCTestCase {
             return
         }
 
-        XCTAssertEqual(VolumeMatrixEngine.canonicalMuscles.count, 14)
+        XCTAssertEqual(VolumeMatrixEngine.canonicalMuscles.count, 18)
+        let squatSession = WorkoutSessionRecord(
+            id: "squat", programId: "p", workoutId: "w", workoutTitle: "Legs",
+            startedAt: "2026-09-15T10:00:00Z", completedAt: "2026-09-15T11:00:00Z",
+            durationSeconds: 3600, exerciseLogs: [
+                SessionExerciseLog(exerciseName: "Barbell Back Squat", sets: (1...3).map { SessionSetLog(setNumber: $0, weightKg: 100, reps: 5) })
+            ])
+        let squatReport = VolumeMatrixEngine.computeLoggedVolume(targetWeekKey: "2026-W38", history: [squatSession], catalog: catalog)
+        XCTAssertEqual(squatReport.muscleSummaries["adductors"]?.totalEffectiveSets, 1.5)
+        XCTAssertEqual(squatReport.muscleSummaries["adductors"]?.zone, .noWeeklyReference)
+        XCTAssertEqual(squatReport.muscleSummaries["adductors"]?.defaultView, "front")
+        XCTAssertEqual(squatReport.muscleSummaries["calves"]?.totalEffectiveSets, 0)
+        XCTAssertEqual(squatReport.muscleSummaries["calves"]?.defaultView, "back")
         for muscle in VolumeMatrixEngine.canonicalMuscles {
             XCTAssertNotNil(catalog.muscles[muscle], "Muscle \(muscle) must exist in catalog")
         }

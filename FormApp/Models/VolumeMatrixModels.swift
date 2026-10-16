@@ -113,6 +113,8 @@ public struct VolumeLandmark: Equatable {
         "calves": VolumeLandmark(muscleKey: "calves", mev: 8, mavMin: 12, mavMax: 20, mrv: 25)
     ]
 
+    public static func hasReference(_ key: String) -> Bool { defaults[key] != nil }
+
     public static func forMuscle(_ key: String) -> VolumeLandmark {
         defaults[key] ?? VolumeLandmark(muscleKey: key, mev: 6, mavMin: 10, mavMax: 18, mrv: 22)
     }

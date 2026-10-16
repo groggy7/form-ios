@@ -565,7 +565,8 @@ public struct VolumeMatrixView: View {
                     .foregroundStyle(AppColors.secondaryText)
             }
 
-            Text(LanguageManager.t(summary.zone.descriptionKey))
+            Text(LanguageManager.t(!report.isPlannedRoutine && summary.zone == .noWeeklyReference
+                ? "matrix.noMuscleReference" : summary.zone.descriptionKey))
                 .font(.system(size: 12))
                 .foregroundStyle(AppColors.muted)
 

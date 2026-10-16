@@ -2,10 +2,13 @@ import Foundation
 
 struct VolumeMatrixEngine {
 
-    static let canonicalMuscles: [String] = [
-        "chest", "front-delts", "side-delts", "biceps", "abs", "obliques", "quads",
-        "upper-back", "lats", "triceps", "rear-delts", "glutes", "hamstrings", "calves"
+    static let frontMuscles: [String] = [
+        "chest", "front-delts", "side-delts", "biceps", "forearms", "abs", "obliques", "quads", "adductors", "tibialis"
     ]
+    static let backMuscles: [String] = [
+        "upper-back", "lats", "lower-back", "triceps", "rear-delts", "glutes", "hamstrings", "calves"
+    ]
+    static let canonicalMuscles: [String] = frontMuscles + backMuscles
 
     static func resolveExerciseId(exerciseName: String) -> String? {
         ExerciseCatalog.resolveCanonicalId(stableId: nil, name: exerciseName)
@@ -201,8 +204,6 @@ struct VolumeMatrixEngine {
         var underTrainedCount = 0
         var highFatigueCount = 0
 
-        let frontRegions = Set(catalog.views["front"]?.regions.keys.map { $0 } ?? [])
-
         for muscle in canonicalMuscles {
             let direct = directSetsMap[muscle] ?? 0
             let indirect = indirectSetsMap[muscle] ?? 0
@@ -210,7 +211,9 @@ struct VolumeMatrixEngine {
             totalSets += effective
 
             let landmarks = VolumeLandmark.forMuscle(muscle)
-            let zone: VolumeZone = isPlannedRoutine ? .noWeeklyReference : landmarks.zone(for: effective)
+            // Regions without a published weekly reference are counted but never rated.
+            let zone: VolumeZone = isPlannedRoutine || !VolumeLandmark.hasReference(muscle)
+                ? .noWeeklyReference : landmarks.zone(for: effective)
 
             switch zone {
             case .optimalMav: optimalCount += 1
@@ -221,7 +224,7 @@ struct VolumeMatrixEngine {
 
             let localized = LanguageManager.shared.translate("anatomy.muscle.\(muscle)", language:language)
 
-            let defaultView = frontRegions.contains(muscle) ? "front" : "back"
+            let defaultView = frontMuscles.contains(muscle) ? "front" : "back"
             let sortedContribs = (contributionsMap[muscle] ?? [])
                 .sorted { $0.effectiveSets > $1.effectiveSets }
 

@@ -228,8 +228,9 @@ struct ExerciseMusclesCard: View {
         let secondaryColor = AppColors.muscleSecondary
         return Canvas { context, size in
             guard let anatomy, let image = ExerciseMuscleCatalog.images[view] else { return }
-            let top: CGFloat = profile.focus == "lower" ? 410 : 0
-            let height: CGFloat = profile.focus == "lower" ? 614 : 620
+            // Lower-body hinges start higher so the lumbar region is not cropped away.
+            let top: CGFloat = profile.focus != "lower" ? 0 : (profile.all.contains("lower-back") ? 340 : 410)
+            let height: CGFloat = profile.focus == "lower" ? catalog.height - top : 620
             let scale = min(size.width / catalog.width, size.height / height)
             context.clip(to: Path(CGRect(origin: .zero, size: size)))
             context.translateBy(x: (size.width - catalog.width * scale) / 2, y: (size.height - height * scale) / 2)
