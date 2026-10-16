@@ -6103,9 +6103,9 @@ final class FormAppTests: XCTestCase {
         manager.resetOverrides()
         manager.updateSubscriptionStatus(active: false)
 
-        // 1. Free Tier Baseline: All 6 features strictly locked
-        let allFeatures: [ProFeature] = [.volumeMatrix, .autoProgression, .warmupCalculator, .formLab, .cloudBackup, .customThemes]
-        XCTAssertEqual(ProFeature.allCases.count, 6)
+        // 1. Free Tier Baseline: All 7 features strictly locked
+        let allFeatures: [ProFeature] = [.volumeMatrix, .autoProgression, .warmupCalculator, .formLab, .cloudBackup, .customThemes, .exerciseSwaps]
+        XCTAssertEqual(ProFeature.allCases.count, 7)
         for feature in allFeatures {
             XCTAssertFalse(manager.isFeatureUnlocked(feature), "Feature \(feature.rawValue) must be locked for free tier")
             XCTAssertFalse(feature.titleKey.isEmpty)
@@ -6113,7 +6113,7 @@ final class FormAppTests: XCTestCase {
             XCTAssertFalse(feature.teaserKey.isEmpty)
         }
 
-        // 2. Subscription Activation: All 6 features unlock immediately
+        // 2. Subscription Activation: All 7 features unlock immediately
         manager.updateSubscriptionStatus(active: true)
         XCTAssertTrue(manager.isProSubscribed)
         for feature in allFeatures {

@@ -101,6 +101,9 @@
 		OB0000000000000000000002 /* OnboardingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = OB0000000000000000000001 /* OnboardingModels.swift */; };
 		OV0000000000000000000002 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OV0000000000000000000001 /* OnboardingView.swift */; };
 		P10000000000000000000001 /* ExercisePriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = P10000000000000000000002 /* ExercisePriority.swift */; };
+		S70000000000000000000002 /* ExerciseSwaps.swift in Sources */ = {isa = PBXBuildFile; fileRef = S70000000000000000000001 /* ExerciseSwaps.swift */; };
+		S70000000000000000000004 /* ExerciseSwapSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = S70000000000000000000003 /* ExerciseSwapSheet.swift */; };
+		S70000000000000000000006 /* exercise_swaps.json in Resources */ = {isa = PBXBuildFile; fileRef = S70000000000000000000005 /* exercise_swaps.json */; };
 		PG0000000000000000000002 /* ProgressionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000001 /* ProgressionModels.swift */; };
 		PG0000000000000000000004 /* ProgressionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000003 /* ProgressionEngine.swift */; };
 		PG0000000000000000000006 /* ProgressionCoachCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000005 /* ProgressionCoachCard.swift */; };
@@ -235,6 +238,9 @@
 		OB0000000000000000000001 /* OnboardingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModels.swift; sourceTree = "<group>"; };
 		OV0000000000000000000001 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		P10000000000000000000002 /* ExercisePriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisePriority.swift; sourceTree = "<group>"; };
+		S70000000000000000000001 /* ExerciseSwaps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSwaps.swift; sourceTree = "<group>"; };
+		S70000000000000000000003 /* ExerciseSwapSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSwapSheet.swift; sourceTree = "<group>"; };
+		S70000000000000000000005 /* exercise_swaps.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = exercise_swaps.json; sourceTree = "<group>"; };
 		PG0000000000000000000001 /* ProgressionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionModels.swift; sourceTree = "<group>"; };
 		PG0000000000000000000003 /* ProgressionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionEngine.swift; sourceTree = "<group>"; };
 		PG0000000000000000000005 /* ProgressionCoachCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionCoachCard.swift; sourceTree = "<group>"; };
@@ -391,6 +397,7 @@
 				RP0000000000000000000002 /* ExerciseReportStore.swift */,
 				S10000000000000000000002 /* ExerciseSearch.swift */,
 				P10000000000000000000002 /* ExercisePriority.swift */,
+				S70000000000000000000001 /* ExerciseSwaps.swift */,
 				B16D5A75502FFC600D48A992 /* AudioPlayer.swift */,
 				PG0000000000000000000003 /* ProgressionEngine.swift */,
 				WP0000000000000000000003 /* WarmupPlateEngine.swift */,
@@ -506,6 +513,7 @@
 				WP0000000000000000000005 /* BarbellPlateVisualizerView.swift */,
 				WP0000000000000000000007 /* WarmupPlateSheet.swift */,
 				WP0000000000000000000009 /* WarmupPlateCard.swift */,
+				S70000000000000000000003 /* ExerciseSwapSheet.swift */,
 			);
 			path = Session;
 			sourceTree = "<group>";
@@ -519,6 +527,7 @@
 				AB01000000000000000000004 /* ExerciseBackdrops */,
 				M20000000000000000000004 /* ExerciseMuscles */,
 				E30000000000000000000004 /* equipment_catalog.json */,
+				S70000000000000000000005 /* exercise_swaps.json */,
 				A11000000000000000000004 /* Localizable.xcstrings */,
 				T10000000000000000000004 /* ExerciseThumbnails */,
 				E10000000000000000000001 /* exercises.json */,
@@ -675,6 +684,7 @@
 				AB01000000000000000000003 /* ExerciseBackdrops in Resources */,
 				M20000000000000000000003 /* ExerciseMuscles in Resources */,
 				E30000000000000000000003 /* equipment_catalog.json in Resources */,
+				S70000000000000000000006 /* exercise_swaps.json in Resources */,
 				T10000000000000000000003 /* ExerciseThumbnails in Resources */,
 				L100000000000000000000002 /* Locales in Resources */,
 				ECF655C211A97E2025683749 /* 01_aesthetic_hypertrophy.json in Resources */,
@@ -756,6 +766,8 @@
 				11494E03B6F140F80312218E /* AppStore.swift in Sources */,
 				S10000000000000000000001 /* ExerciseSearch.swift in Sources */,
 				P10000000000000000000001 /* ExercisePriority.swift in Sources */,
+				S70000000000000000000002 /* ExerciseSwaps.swift in Sources */,
+				S70000000000000000000004 /* ExerciseSwapSheet.swift in Sources */,
 				075B0F9BA865F79FB856122B /* AudioPlayer.swift in Sources */,
 				CDE6B5B32A4C412F8D40C7B7 /* BottomDock.swift in Sources */,
 				A79CAAC595702B45728DC715 /* ExerciseDetailSheet.swift in Sources */,

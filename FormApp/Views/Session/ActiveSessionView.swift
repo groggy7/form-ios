@@ -27,6 +27,9 @@ public struct ActiveSessionView: View {
     @State private var paywallFeature: ProFeature? = nil
     @State private var openWarmupAfterUnlock = false
     @State private var pendingAnomalousSet: PendingAnomalousSet? = nil
+    @State private var swappingExercise: Exercise? = nil
+    @State private var pendingSwap: (exerciseId: String, substituteId: String)? = nil
+    @ObservedObject private var proManager = ProAccessManager.shared
 
     private let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
 
@@ -339,10 +342,16 @@ public struct ActiveSessionView: View {
                             // Current Exercise Card
                             if let exercise = currentExercise {
                                 VStack(alignment: .leading, spacing: 14) {
-                                    Text(exercise.displayName)
-                                        .font(.system(size: 20, weight: .bold))
-                                        .foregroundStyle(AppColors.text)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    VStack(alignment: .leading, spacing: 10) {
+                                        Text(exercise.displayName)
+                                            .font(.system(size: 20, weight: .bold))
+                                            .foregroundStyle(AppColors.text)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                        // A substitute replaces the exercise only until one of its working sets is completed.
+                                        if !currentSets.contains(where: { $0.isCompleted && !$0.isWarmup }) {
+                                            replaceButton(for: exercise)
+                                        }
+                                    }
 
                                     let recommendation = historyInsights?.recommendation
 
@@ -692,6 +701,23 @@ public struct ActiveSessionView: View {
                 )
             }
         }
+        .sheet(item: $swappingExercise, onDismiss: {
+            // Replace once the sheet has gone, so the notice is not hidden behind it.
+            guard let swap = pendingSwap else { return }
+            pendingSwap = nil
+            if let replaced = store.replaceExercise(exerciseId: swap.exerciseId, substituteId: swap.substituteId) {
+                store.showNotice(LanguageManager.t("session.replace.done", ["name": replaced.displayName]))
+            }
+        }) { target in
+            ExerciseSwapSheet(
+                exercise: target,
+                excludedIds: Set(currentDraft.workout.exercises.compactMap(\.exerciseId)),
+                onReplace: { substituteId in
+                    pendingSwap = (target.id, substituteId)
+                    swappingExercise = nil
+                }
+            )
+        }
         .sheet(item: $paywallFeature, onDismiss: {
             if openWarmupAfterUnlock && supportsBarbellWarmup {
                 selectedPlateWeight = nil
@@ -750,6 +776,28 @@ public struct ActiveSessionView: View {
                 Text(LanguageManager.t("session.anomalous_weight.message_standalone", ["weight": weightStr]))
             }
         }
+    }
+
+    private func replaceButton(for exercise: Exercise) -> some View {
+        let unlocked = proManager.isFeatureUnlocked(.exerciseSwaps)
+        return Button {
+            if unlocked { swappingExercise = exercise } else { paywallFeature = .exerciseSwaps }
+        } label: {
+            HStack(spacing: 8) {
+                Image(systemName: "arrow.left.arrow.right")
+                    .font(.system(size: 13, weight: .semibold))
+                Text(LanguageManager.t("session.replace.action"))
+                    .font(.system(size: 14, weight: .semibold))
+                if !unlocked { ProBadge() }
+            }
+            .foregroundStyle(AppColors.text)
+            .padding(.horizontal, 14)
+            .frame(minHeight: 44)
+            .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).strokeBorder(AppColors.border, lineWidth: 1))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("session-replace-exercise")
     }
 
     // MARK: - Actions

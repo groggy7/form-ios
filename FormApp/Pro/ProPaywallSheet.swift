@@ -39,7 +39,8 @@ public struct ProPaywallSheet: View {
         onDismiss: (() -> Void)? = nil,
         onUnlocked: (() -> Void)? = nil
     ) {
-        self.feature = feature
+        // Workout swaps have no dedicated paywall art or copy; they use the general one, as on Android.
+        self.feature = feature == .exerciseSwaps ? nil : feature
         self.onDismiss = onDismiss
         self.onUnlocked = onUnlocked
     }
@@ -83,7 +84,7 @@ public struct ProPaywallSheet: View {
                 PaywallBenefit(titleKey: "paywall.custom_themes.benefit2", descKey: "paywall.custom_themes.benefit2_desc", iconName: "circle.righthalf.filled"),
                 PaywallBenefit(titleKey: "paywall.custom_themes.benefit3", descKey: "paywall.custom_themes.benefit3_desc", iconName: "sparkles")
             ]
-        case .none:
+        case .exerciseSwaps, .none:
             return [
                 PaywallBenefit(titleKey: "paywall.general.benefit1", descKey: "paywall.general.benefit1_desc", iconName: "figure.strengthtraining.traditional"),
                 PaywallBenefit(titleKey: "paywall.general.benefit2", descKey: "paywall.general.benefit2_desc", iconName: "chart.line.uptrend.xyaxis"),

@@ -655,6 +655,18 @@ public final class AppStore: ObservableObject {
         }
     }
 
+    /// Session-only "Machine taken?" substitute; nil when nothing changed (unknown IDs, or a working set is logged).
+    @discardableResult
+    public func replaceExercise(exerciseId: String, substituteId: String) -> Exercise? {
+        guard let draft = activeSession,
+              let original = draft.workout.exercises.first(where: { $0.id == exerciseId }),
+              let replacement = ExerciseSwaps.replacement(for: original, substituteId: substituteId,
+                  takenIds: Set(draft.workout.exercises.map(\.id))) else { return nil }
+        guard draft.replacingExercise(exerciseId, with: replacement) != draft else { return nil }
+        updateActiveSession { $0.replacingExercise(exerciseId, with: replacement) }
+        return replacement
+    }
+
     public func clearWarmupSets(exerciseId: String) {
         updateActiveSession { d in
             var copy = d
