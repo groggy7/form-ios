@@ -404,7 +404,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Erlauben Sie Benachrichtigungen sowie Alarme und Erinnerungen, um das Ende einer Pause zu hören oder zu spüren, wenn Ihr Telefon gesperrt ist. Einige Telefone erfordern auch Forced Rep im Hintergrund-Autostart. Ohne diesen Zugriff können Hintergrundwarnungen stumm oder verzögert erfolgen. Die Benachrichtigungs- und „Bitte nicht stören“-Einstellungen Ihres Telefons gelten weiterhin."
+            "value": "Erlaube Benachrichtigungen sowie „Alarme und Erinnerungen“, um das Ende einer Pause zu hören oder zu spüren, wenn dein Telefon gesperrt ist. Einige Telefone erfordern außerdem den Hintergrund-Autostart für Forced Rep. Ohne diesen Zugriff können Hinweise im Hintergrund stumm bleiben oder sich verzögern. Die Benachrichtigungs- und „Bitte nicht stören“-Einstellungen deines Telefons gelten weiterhin."
           }
         },
         "fr": {
@@ -416,7 +416,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Permita notificaciones y Alarmas y recordatorios para escuchar o sentir el final de un descanso con su teléfono bloqueado. Algunos teléfonos también requieren Forced Rep en inicio automático en segundo plano. Sin este acceso, las alertas en segundo plano pueden permanecer silenciosas o retrasarse. Las configuraciones de notificación y No molestar de tu teléfono aún se aplican."
+            "value": "Permite las notificaciones y «Alarmas y recordatorios» para oír o sentir el final de un descanso con el teléfono bloqueado. Algunos teléfonos también requieren el inicio automático en segundo plano para Forced Rep. Sin este acceso, los avisos en segundo plano pueden quedar en silencio o retrasarse. Los ajustes de notificaciones y No molestar de tu teléfono siguen aplicándose."
           }
         }
       }
@@ -544,7 +544,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Xiaomi und HyperOS können verhindern, dass Forced Rep das Ende eines Timers meldet, bis Sie die App erneut öffnen. Öffnen Sie den Hintergrund-Autostart, aktivieren Sie Forced Rep und kehren Sie dann zurück."
+            "value": "Xiaomi und HyperOS können verhindern, dass Forced Rep das Ende eines Timers meldet, bis du die App erneut öffnest. Öffne den Hintergrund-Autostart, aktiviere Forced Rep und kehre dann zurück."
           }
         },
         "fr": {
@@ -754,7 +754,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wählen Sie Ihre bevorzugte Einheit für Protokollierung und Ziele"
+            "value": "Wähle deine bevorzugte Einheit für Protokolle und Ziele"
           }
         },
         "fr": {
@@ -766,7 +766,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Elija su unidad preferida para el registro y los objetivos"
+            "value": "Elige tu unidad preferida para el registro y los objetivos"
           }
         }
       }
@@ -1594,7 +1594,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Übertragen Sie Trainingsdaten mithilfe einer Datei zwischen Geräten oder erstellen Sie ein manuelles Offline-Backup."
+            "value": "Übertrage Trainingsdaten per Datei zwischen Geräten oder erstelle ein manuelles Offline-Backup."
           }
         },
         "fr": {
@@ -1606,7 +1606,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Transfiera datos de entrenamiento entre dispositivos usando un archivo o cree una copia de seguridad manual sin conexión."
+            "value": "Transfiere datos de entrenamiento entre dispositivos con un archivo o crea una copia de seguridad manual sin conexión."
           }
         }
       }
@@ -1664,7 +1664,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Speichern Sie eine Sicherungsdatei auf Ihrem Gerät oder teilen Sie sie, um Ihre Trainingseinheiten auf ein anderes Telefon oder eine andere Plattform zu übertragen."
+            "value": "Speichere eine Sicherungsdatei auf deinem Gerät oder teile sie, um deine Trainings auf ein anderes Telefon oder eine andere Plattform zu übertragen."
           }
         },
         "fr": {
@@ -1676,7 +1676,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Guarde un archivo de respaldo en su dispositivo o compártalo para transferir sus entrenamientos a otro teléfono o plataforma."
+            "value": "Guarda un archivo de copia de seguridad en tu dispositivo o compártelo para pasar tus entrenamientos a otro teléfono o plataforma."
           }
         }
       }
@@ -1734,7 +1734,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Stellen Sie Trainingsroutinen und -verlauf aus einer zuvor gespeicherten Sicherungsdatei wieder her."
+            "value": "Stelle Trainingsroutinen und -verlauf aus einer zuvor gespeicherten Sicherungsdatei wieder her."
           }
         },
         "fr": {
@@ -1746,7 +1746,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Restaure las rutinas de entrenamiento y el historial desde un archivo de copia de seguridad previamente guardado."
+            "value": "Restaura rutinas de entrenamiento e historial desde un archivo de copia de seguridad guardado previamente."
           }
         }
       }
@@ -1816,7 +1816,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Forced Rep es un compañero de entrenamiento de fuerza enfocado diseñado para registrar sus entrenamientos, guiar su técnica de ejercicio con señales y animaciones de movimiento visual y realizar un seguimiento de su sobrecarga progresiva: silencioso, sin distracciones y siempre listo."
+            "value": "Forced Rep es un compañero de entrenamiento de fuerza centrado en lo esencial: registra tus entrenamientos, guía tu técnica con animaciones de movimiento e indicaciones y sigue tu sobrecarga progresiva; silencioso, sin distracciones y siempre listo."
           }
         }
       }
@@ -2644,7 +2644,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Das Video konnte nicht geladen werden. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut."
+            "value": "Das Video konnte nicht geladen werden. Prüfe deine Verbindung und versuche es erneut."
           }
         },
         "fr": {
@@ -2679,7 +2679,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "YouTube konnte dieses Video hier nicht abspielen. Versuchen Sie es erneut oder öffnen Sie es auf YouTube."
+            "value": "YouTube konnte dieses Video hier nicht abspielen. Versuche es erneut oder öffne es auf YouTube."
           }
         },
         "fr": {
@@ -2994,7 +2994,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Maximal 3 Videos verlinkt. Entfernen Sie ein vorhandenes Video, um ein weiteres hinzuzufügen."
+            "value": "Maximal 3 Videos verlinkt. Entferne ein vorhandenes Video, um ein weiteres hinzuzufügen."
           }
         },
         "fr": {
@@ -3029,7 +3029,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zu dieser Übung sind noch keine Videos verknüpft. Fügen Sie unten einen YouTube-Link hinzu."
+            "value": "Zu dieser Übung sind noch keine Videos verknüpft. Füge unten einen YouTube-Link hinzu."
           }
         },
         "fr": {
@@ -3041,7 +3041,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aún no hay vídeos vinculados a este ejercicio. Agregue un enlace de YouTube a continuación."
+            "value": "Aún no hay vídeos vinculados a este ejercicio. Añade un enlace de YouTube abajo."
           }
         }
       }
@@ -4149,7 +4149,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Beenden oder speichern Sie Ihr aktives Training, bevor Sie mit einem anderen beginnen."
+            "value": "Beende oder speichere dein aktives Training, bevor du ein anderes beginnst."
           }
         },
         "fr": {
@@ -4161,7 +4161,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Termine o guarde su entrenamiento activo antes de comenzar otro."
+            "value": "Termina o guarda tu entrenamiento activo antes de empezar otro."
           }
         }
       }
@@ -6228,7 +6228,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pro Programmzyklus: Jedes Training wird einmal gezählt, nicht gemäß Ihrem Wochenplan. Wöchentliche Referenzbewertungen werden nicht angewendet."
+            "value": "Pro Programmzyklus: Jedes Training wird einmal gezählt, nicht gemäß deinem Wochenplan. Wöchentliche Referenzbewertungen werden nicht angewendet."
           }
         },
         "fr": {
@@ -6240,7 +6240,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Por ciclo de programa: cada entrenamiento se cuenta una vez, no según su horario semanal. No se aplican calificaciones de referencia semanales."
+            "value": "Por ciclo de programa: cada entrenamiento se cuenta una vez, no según tu calendario semanal. No se aplican las valoraciones de referencia semanales."
           }
         }
       }
@@ -7383,7 +7383,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Deutlich über den üblichen Zielen. Erwägen Sie, dieser Muskelgruppe zusätzliche Erholung zu gönnen."
+            "value": "Deutlich über den üblichen Zielen. Erwäge, dieser Muskelgruppe zusätzliche Erholung zu gönnen."
           }
         },
         "fr": {
@@ -7395,7 +7395,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Muy por encima de los objetivos habituales. Considere darle a este grupo de músculos una recuperación adicional."
+            "value": "Muy por encima de los objetivos habituales. Considera dar a este grupo muscular una recuperación adicional."
           }
         }
       }
@@ -7943,7 +7943,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Unter den Grundzielen. Gut für eine geplante Entlastung oder eine aktive Erholung, obwohl Sie hier möglicherweise mehr Sätze wünschen, wenn dieser Muskel eine Wachstumspriorität hat."
+            "value": "Unter den Grundzielen. Gut für eine geplante Entlastung oder aktive Erholung – hat dieser Muskel für dich Wachstumspriorität, möchtest du hier aber vielleicht mehr Sätze."
           }
         },
         "fr": {
@@ -11517,7 +11517,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Verknüpfen Sie Ihr Google-Konto, um Ihre Daten zu sichern."
+            "value": "Verknüpfe dein Google-Konto, um deine Daten zu sichern."
           }
         },
         "fr": {
@@ -15231,7 +15231,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wählen Sie das Google-Konto aus, das Sie für Backups verwenden möchten."
+            "value": "Wähle das Google-Konto, das du für Backups verwenden möchtest."
           }
         },
         "fr": {
@@ -15243,7 +15243,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Elija la cuenta de Google que desea utilizar para las copias de seguridad."
+            "value": "Elige la cuenta de Google que quieres usar para las copias de seguridad."
           }
         }
       }
@@ -15266,7 +15266,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ihr Backup wird in einem privaten App-Datenbereich gespeichert und ist in Ihren normalen Drive-Dateien nicht sichtbar."
+            "value": "Dein Backup wird in einem privaten App-Datenbereich gespeichert und ist in deinen normalen Drive-Dateien nicht sichtbar."
           }
         },
         "fr": {
@@ -15278,7 +15278,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Su copia de seguridad se almacena en un área privada de datos de la aplicación y no es visible entre sus archivos normales de Drive."
+            "value": "Tu copia de seguridad se guarda en un área privada de datos de la app y no aparece entre tus archivos normales de Drive."
           }
         }
       }
@@ -15371,7 +15371,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sie können Ihre Daten auf einem neuen Gerät wiederherstellen, indem Sie dasselbe Google-Konto auswählen."
+            "value": "Du kannst deine Daten auf einem neuen Gerät wiederherstellen, indem du dasselbe Google-Konto auswählst."
           }
         },
         "fr": {
@@ -15383,7 +15383,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Puede restaurar sus datos en un nuevo dispositivo seleccionando la misma cuenta de Google."
+            "value": "Puedes restaurar tus datos en un dispositivo nuevo seleccionando la misma cuenta de Google."
           }
         }
       }
@@ -15966,7 +15966,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lokale Sicherheitskopie aktualisiert. Verbinden Sie Google Drive für die Sicherung außerhalb des Geräts."
+            "value": "Lokale Sicherheitskopie aktualisiert. Verbinde Google Drive für eine Sicherung außerhalb des Geräts."
           }
         },
         "fr": {
@@ -15978,7 +15978,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Copia de seguridad local actualizada. Conecte Google Drive para realizar copias de seguridad fuera del dispositivo."
+            "value": "Copia de seguridad local actualizada. Conecta Google Drive para tener una copia fuera del dispositivo."
           }
         }
       }
@@ -16036,7 +16036,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dadurch werden Ihre Programme und Ihr Verlauf aus dem neuesten verfügbaren lokalen oder iCloud-Backup wiederhergestellt. Das aktive Live-Training bleibt erhalten."
+            "value": "Dadurch werden deine Programme und dein Verlauf aus dem neuesten verfügbaren lokalen oder iCloud-Backup wiederhergestellt. Das laufende Training bleibt erhalten."
           }
         },
         "fr": {
@@ -16048,7 +16048,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esto restaurará sus programas e historial desde la última copia de seguridad local o de iCloud disponible. Se conservará el entrenamiento activo en vivo."
+            "value": "Esto restaurará tus programas e historial desde la última copia local o de iCloud disponible. El entrenamiento en curso se conservará."
           }
         }
       }
@@ -16351,7 +16351,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bitte verbinden Sie ein Google-Konto, um Backups wiederherzustellen."
+            "value": "Bitte verbinde ein Google-Konto, um Backups wiederherzustellen."
           }
         },
         "fr": {
@@ -16363,7 +16363,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Conecte una cuenta de Google para restaurar las copias de seguridad."
+            "value": "Conecta una cuenta de Google para restaurar copias de seguridad."
           }
         }
       }
@@ -16806,7 +16806,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Forced Rep betreibt keine Benutzerdatenbanken. Wählen Sie unter Android einen in der Cloud gesicherten Ordner für die Sicherung außerhalb des Geräts. Ihr Speicheranbieter steuert die Synchronisierung."
+            "value": "Forced Rep betreibt keine Benutzerdatenbanken. Wähle unter Android einen cloudgesicherten Ordner für die Sicherung außerhalb des Geräts; dein Speicheranbieter steuert die Synchronisierung."
           }
         },
         "fr": {
@@ -16818,7 +16818,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Forced Rep no opera bases de datos de usuarios. En Android, elija una carpeta respaldada en la nube para realizar copias de seguridad fuera del dispositivo; su proveedor de almacenamiento controla su sincronización."
+            "value": "Forced Rep no gestiona bases de datos de usuarios. En Android, elige una carpeta respaldada en la nube para tener copias fuera del dispositivo; tu proveedor de almacenamiento controla su sincronización."
           }
         }
       }
@@ -22336,7 +22336,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Erreichen Sie die Wiederholungsobergrenze in jedem Satz zweimal innerhalb von 21 Tagen mit den gleichen Gewichten. Versuchen Sie dann eine kleine verfügbare Steigerung und halten Sie dabei möglichst die gleichen Wiederholungen. Wählen Sie eine kleinere Steigerung oder wiederholen Sie das Gewicht, wenn Wiederholungen oder Technik leiden. Keine automatische Steigerung bei Körpergewicht oder nicht unterstützter Ausrüstung."
+            "value": "Erreiche die Wiederholungsobergrenze in jedem Satz zweimal innerhalb von 21 Tagen mit den gleichen Gewichten. Versuche dann eine kleine verfügbare Steigerung und halte dabei möglichst die gleichen Wiederholungen, wenn machbar. Wähle eine kleinere Steigerung oder wiederhole das Gewicht, wenn Wiederholungen oder Technik leiden. Keine automatische Steigerung bei Körpergewicht oder nicht unterstützter Ausrüstung."
           }
         },
         "fr": {
@@ -22406,7 +22406,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Unter dem Wiederholungsminimum fügen Sie jeweils eine Wiederholung hinzu oder wählen weniger Gewicht. An der Obergrenze wiederholen Sie, bevor Sie Gewicht hinzufügen. Nach mehr als 4 Wochen Pause wiederholen Sie zuerst Ihre letzte Einheit."
+            "value": "Unter dem Wiederholungsminimum fügst du jeweils eine Wiederholung hinzu oder wählst weniger Gewicht. An der Obergrenze wiederholst du, bevor du Gewicht hinzufügst. Nach mehr als 4 Wochen Pause wiederholst du zuerst deine letzte Einheit."
           }
         },
         "fr": {
@@ -22966,7 +22966,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ihr letztes vollständiges Protokoll für dieses Training ist älter als 4 Wochen. Wiederholen Sie diese Gewichte und Wiederholungen, um Ihre Ausgangsbasis neu zu bestätigen, bevor Sie Wiederholungen oder Gewicht hinzufügen."
+            "value": "Dein letztes vollständiges Protokoll für dieses Training ist älter als 4 Wochen. Wiederhole diese Gewichte und Wiederholungen, um deine Ausgangsbasis neu zu bestätigen, bevor du Wiederholungen oder Gewicht hinzufügst."
           }
         },
         "fr": {
@@ -23316,7 +23316,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ziele verwenden Ihre letzte vollständige Einheit dieses Trainingstags oder eines anderen Tages mit gleicher Satzzahl und gleichem Wiederholungsbereich. Unvollständige Protokolle geben kein Ziel. Aufwärmsätze zählen nicht."
+            "value": "Ziele verwenden deine letzte vollständige Einheit dieses Trainingstags oder eines anderen Tages mit gleicher Satzzahl und gleichem Wiederholungsbereich. Unvollständige Protokolle ergeben kein Ziel. Aufwärmsätze zählen nicht."
           }
         },
         "fr": {
@@ -24016,7 +24016,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Erstellen Sie ein Programm oder importieren Sie eine Forced Rep-Programm-JSON-Datei."
+            "value": "Erstelle ein Programm oder importiere eine Forced-Rep-Programmdatei (JSON)."
           }
         },
         "fr": {
@@ -24028,7 +24028,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cree un programa o importe un archivo JSON del programa Forced Rep."
+            "value": "Crea un programa o importa un archivo JSON de programa de Forced Rep."
           }
         }
       }
@@ -24471,7 +24471,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Behalten Sie die IDs beim Bearbeiten einer exportierten Datei bei. Eine andere Programm-ID erstellt ein neues Programm."
+            "value": "Behalte die IDs beim Bearbeiten einer exportierten Datei bei. Eine andere Programm-ID erstellt ein neues Programm."
           }
         },
         "fr": {
@@ -24483,7 +24483,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mantenga los ID sin cambios al editar un archivo exportado. Una ID de programa diferente crea un nuevo programa."
+            "value": "Mantén los ID sin cambios al editar un archivo exportado. Un ID de programa distinto crea un programa nuevo."
           }
         }
       }
@@ -24646,7 +24646,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Beenden oder verwerfen Sie das aktuelle Training, bevor Sie das Programm ändern."
+            "value": "Beende oder verwirf das aktuelle Training, bevor du das Programm änderst."
           }
         },
         "fr": {
@@ -24658,7 +24658,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Termine o descarte el entrenamiento actual antes de cambiar su programa."
+            "value": "Termina o descarta el entrenamiento actual antes de cambiar su programa."
           }
         }
       }
@@ -24716,7 +24716,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dadurch werden alle Programme, Abschlussaufzeichnungen und der Trainingsverlauf ersetzt und alle aktiven Trainingseinheiten verworfen. Um ein Programm zu ändern, brechen Sie den Vorgang ab und verwenden Sie stattdessen Programme → Programm importieren."
+            "value": "Dadurch werden alle Programme, Abschlussdaten und der Trainingsverlauf ersetzt, und ein laufendes Training wird verworfen. Um nur ein Programm zu ändern, brich ab und verwende stattdessen Programme → Programm importieren."
           }
         },
         "fr": {
@@ -24728,7 +24728,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Esto reemplaza todos los programas, registros de finalización e historial de entrenamiento, y descarta cualquier entrenamiento activo. Para cambiar un programa, cancele y use Programas → Importar programa en su lugar."
+            "value": "Esto reemplaza todos los programas, registros de finalización e historial de entrenamiento, y descarta cualquier entrenamiento activo. Para cambiar un solo programa, cancela y usa Programas → Importar programa."
           }
         }
       }
@@ -24926,7 +24926,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Verwenden Sie bis zu drei YouTube-Video- oder Shorts-Links, einen pro Zeile."
+            "value": "Verwende bis zu drei YouTube-Video- oder Shorts-Links, einen pro Zeile."
           }
         },
         "fr": {
@@ -24961,7 +24961,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dieser Wochentag hat bereits ein Training. Wählen Sie einen freien Tag."
+            "value": "Dieser Wochentag hat bereits ein Training. Wähle einen freien Tag."
           }
         },
         "fr": {
@@ -28012,7 +28012,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Beschreiben Sie, was falsch aussieht oder fehlt …"
+            "value": "Beschreibe, was falsch aussieht oder fehlt …"
           }
         },
         "fr": {
@@ -28082,7 +28082,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bericht eingereicht. Vielen Dank für Ihr Feedback!"
+            "value": "Bericht eingereicht. Vielen Dank für dein Feedback!"
           }
         },
         "fr": {
@@ -28117,7 +28117,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bericht erhalten. Vielen Dank für Ihr Feedback!"
+            "value": "Bericht erhalten. Vielen Dank für dein Feedback!"
           }
         },
         "fr": {
@@ -28187,7 +28187,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Der Bericht konnte nicht gespeichert werden. Bitte geben Sie Speicherplatz frei und versuchen Sie es erneut."
+            "value": "Der Bericht konnte nicht gespeichert werden. Bitte gib Speicherplatz frei und versuche es erneut."
           }
         },
         "fr": {
@@ -28199,7 +28199,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "No se pudo guardar el informe. Libere espacio e inténtelo de nuevo."
+            "value": "No se pudo guardar el informe. Libera espacio e inténtalo de nuevo."
           }
         }
       }
@@ -28222,7 +28222,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Der Bericht konnte nicht gesendet werden. Bitte überprüfen Sie es und versuchen Sie es erneut."
+            "value": "Der Bericht konnte nicht gesendet werden. Bitte überprüfe ihn und versuche es erneut."
           }
         },
         "fr": {
@@ -28234,7 +28234,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "No se pudo enviar el informe. Por favor revíselo y vuelva a intentarlo."
+            "value": "No se pudo enviar el informe. Revísalo y vuelve a intentarlo."
           }
         }
       }
@@ -28292,7 +28292,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sie können einen Bericht pro Stunde senden. Sie können diese oder eine andere Übung nach {time} melden."
+            "value": "Du kannst einen Bericht pro Stunde senden. Diese oder eine andere Übung kannst du nach {time} melden."
           }
         },
         "fr": {
@@ -28362,7 +28362,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sie haben in den letzten 24 Stunden 3 Berichte gesendet. Sie können nach {dateTime} ein weiteres senden."
+            "value": "Du hast in den letzten 24 Stunden 3 Berichte gesendet. Nach {dateTime} kannst du einen weiteren senden."
           }
         },
         "fr": {
@@ -28467,7 +28467,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Benötigen Sie sofortige Hilfe zur Sicherheit? Kontaktieren Sie den Support."
+            "value": "Brauchst du sofort Hilfe in einer Sicherheitsfrage? Kontaktiere den Support."
           }
         },
         "fr": {
@@ -28479,7 +28479,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "¿Necesita asistencia inmediata por seguridad? Póngase en contacto con el soporte."
+            "value": "¿Necesitas ayuda inmediata por seguridad? Contacta con soporte."
           }
         }
       }
@@ -28677,7 +28677,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Beim Absenden werden Übungsdetails, Kategorie, Kommentare, App-Version, Sprache und eine zufällige Geräte-ID gesendet. Geben Sie keine persönlichen Namen, Kontaktinformationen oder Krankengeschichte an."
+            "value": "Beim Absenden werden Übungsdetails, Kategorie, Kommentare, App-Version, Sprache und eine zufällige Geräte-ID gesendet. Gib keine persönlichen Namen, Kontaktdaten oder Krankengeschichte an."
           }
         },
         "fr": {
@@ -30009,7 +30009,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Für heute ist kein Training geplant. Sie können weiterhin jedes Training oben öffnen."
+            "value": "Für heute ist kein Training geplant. Du kannst trotzdem jedes Training oben öffnen."
           }
         },
         "fr": {
@@ -30044,7 +30044,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Echter Fortschritt wird erzielt, wenn die Erholung Ihrer Anstrengung entspricht. Schlafen Sie tief, tanken Sie neue Energie und lassen Sie Ihren Körper sich anpassen."
+            "value": "Echter Fortschritt entsteht, wenn die Erholung deiner Anstrengung entspricht. Schlaf tief, tank neue Energie und lass deinen Körper sich anpassen."
           }
         },
         "fr": {
@@ -30219,7 +30219,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Die Anpassung erfolgt in den ruhigen Stunden zwischen den Einheiten. Versorgen Sie Ihren Körper mit Flüssigkeit, erholen Sie sich und bereiten Sie ihn auf die nächste Herausforderung vor."
+            "value": "Die Anpassung erfolgt in den ruhigen Stunden zwischen den Einheiten. Trink genug, erhol dich und bereite deinen Körper auf die nächste Herausforderung vor."
           }
         },
         "fr": {
@@ -30254,7 +30254,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wachstum entsteht, wenn Erholung auf Disziplin trifft. Tanken Sie noch heute neue Energie, damit Sie voller Überzeugung in die bevorstehende Trainingswoche starten können."
+            "value": "Wachstum entsteht, wenn Erholung auf Disziplin trifft. Tank heute neue Energie, damit du voller Überzeugung in die kommende Trainingswoche startest."
           }
         },
         "fr": {
@@ -30324,7 +30324,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fügen Sie diesem Programm ein Training aus Ihrem Wochenplan hinzu."
+            "value": "Füge diesem Programm ein Training aus deinem Wochenplan hinzu."
           }
         },
         "fr": {
@@ -32953,7 +32953,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wählen Sie Ihre Trainingstage"
+            "value": "Wähle deine Trainingstage"
           }
         },
         "fr": {
@@ -32988,7 +32988,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Fügen Sie einen Tag hinzu, legen Sie den Schwerpunkt fest und wählen Sie dann Übungen aus der Bibliothek aus."
+            "value": "Füge einen Tag hinzu, lege den Schwerpunkt fest und wähle dann Übungen aus der Bibliothek."
           }
         },
         "fr": {
@@ -33000,7 +33000,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Agregue un día, establezca su enfoque y luego elija ejercicios de la biblioteca."
+            "value": "Añade un día, define su enfoque y luego elige ejercicios de la biblioteca."
           }
         }
       }
@@ -33762,7 +33762,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Das Programm konnte nicht gespeichert werden. Überprüfen Sie die Tage und Übungen."
+            "value": "Das Programm konnte nicht gespeichert werden. Überprüfe die Tage und Übungen."
           }
         },
         "fr": {
@@ -33774,7 +33774,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "No se pudo guardar el programa. Consulta sus días y ejercicios."
+            "value": "No se pudo guardar el programa. Revisa sus días y ejercicios."
           }
         }
       }
@@ -35267,7 +35267,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sie haben {weight} eingegeben (bisheriger Höchstwert: {previous}). Ist das richtig?"
+            "value": "Du hast {weight} eingegeben (bisheriger Höchstwert: {previous}). Stimmt das?"
           }
         },
         "fr": {
@@ -35302,7 +35302,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sie haben {weight} eingegeben. Das ist ungewöhnlich schwer. Ist das richtig?"
+            "value": "Du hast {weight} eingegeben. Das ist ungewöhnlich schwer. Stimmt das?"
           }
         },
         "fr": {
@@ -35652,7 +35652,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Geben Sie 0 ein, wenn Sie kein Zusatzgewicht verwenden."
+            "value": "Gib 0 ein, wenn du kein Zusatzgewicht verwendest."
           }
         },
         "fr": {
@@ -35722,7 +35722,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Geben Sie das Unterstützungsgewicht ein. Weniger Hilfe bedeutet mehr Widerstand; 0 bedeutet keine Unterstützung."
+            "value": "Gib das Unterstützungsgewicht ein. Weniger Unterstützung bedeutet mehr Widerstand; 0 bedeutet keine Unterstützung."
           }
         },
         "fr": {
@@ -35734,7 +35734,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Introduzca el peso de asistencia. Menos asistencia significa más resistencia; 0 significa que no hay asistencia."
+            "value": "Introduce el peso de asistencia. Menos asistencia significa más resistencia; 0 significa sin asistencia."
           }
         }
       }
@@ -35862,7 +35862,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Geben Sie ein Gewicht größer als 0 ein."
+            "value": "Gib ein Gewicht größer als 0 ein."
           }
         },
         "fr": {
@@ -35874,7 +35874,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Introduzca un peso mayor que 0."
+            "value": "Introduce un peso mayor que 0."
           }
         }
       }
@@ -35897,7 +35897,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Geben Sie ein Gewicht ein, oder 0, wenn Sie kein zusätzliches Gewicht verwenden."
+            "value": "Gib ein Gewicht ein oder 0, wenn du kein Zusatzgewicht verwendest."
           }
         },
         "fr": {
@@ -37266,7 +37266,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bitte fügen Sie mindestens eine Übung hinzu, bevor Sie mit dem Training beginnen."
+            "value": "Bitte füge mindestens eine Übung hinzu, bevor du das Training startest."
           }
         },
         "fr": {
@@ -37278,7 +37278,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Agregue al menos un ejercicio antes de comenzar el entrenamiento."
+            "value": "Añade al menos un ejercicio antes de empezar el entrenamiento."
           }
         }
       }
@@ -37721,7 +37721,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sie können das aktive Programm nicht löschen."
+            "value": "Du kannst das aktive Programm nicht löschen."
           }
         },
         "fr": {
@@ -37966,7 +37966,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Beantworten Sie 5 kurze Fragen, um Ihre optimale Routine zu finden"
+            "value": "Beantworte 5 kurze Fragen, um deine optimale Routine zu finden"
           }
         },
         "fr": {
@@ -41190,7 +41190,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ihr Backup wird im iCloud-Konto dieses Geräts gespeichert. Überprüfen Sie das Konto unter Einstellungen → Ihr Name.\n\nSuchen Sie die Datei unter Dateien → Durchsuchen → iCloud Drive → Forced Rep → CloudMirror → {file}."
+            "value": "Dein Backup wird im iCloud-Konto dieses Geräts gespeichert. Prüfe das Konto unter Einstellungen → dein Name.\n\nDu findest die Datei unter Dateien → Durchsuchen → iCloud Drive → Forced Rep → CloudMirror → {file}."
           }
         },
         "fr": {
@@ -41202,7 +41202,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Su copia de seguridad se almacena en la cuenta iCloud de este dispositivo. Verifique la cuenta en Configuración → su nombre.\n\nBusque el archivo en Archivos → Explorar → iCloud Drive → Forced Rep → CloudMirror → {file}."
+            "value": "Tu copia de seguridad se guarda en la cuenta de iCloud de este dispositivo. Comprueba la cuenta en Ajustes → tu nombre.\n\nBusca el archivo en Archivos → Explorar → iCloud Drive → Forced Rep → CloudMirror → {file}."
           }
         }
       }
@@ -41260,7 +41260,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Stellen Sie vorhandene Backups kostenlos wieder her. Für das Speichern von Backups ist Premium erforderlich."
+            "value": "Stelle vorhandene Backups kostenlos wieder her. Zum Speichern von Backups ist Premium erforderlich."
           }
         },
         "fr": {
@@ -41272,7 +41272,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Restaure las copias de seguridad existentes de forma gratuita. Guardar copias de seguridad requiere Premium."
+            "value": "Restaura gratis las copias de seguridad existentes. Guardar copias de seguridad requiere Premium."
           }
         }
       }
@@ -41575,7 +41575,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aktivieren Sie iCloud Drive in den Apple-Kontoeinstellungen für die Cloud-Sicherung."
+            "value": "Aktiviere iCloud Drive in den Einstellungen deines Apple-Accounts für die Cloud-Sicherung."
           }
         },
         "fr": {
@@ -41587,7 +41587,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Active iCloud Drive en la configuración de la cuenta de Apple para realizar copias de seguridad en la nube."
+            "value": "Activa iCloud Drive en los ajustes de tu cuenta de Apple para tener copias en la nube."
           }
         }
       }
@@ -41750,7 +41750,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aktivieren Sie die automatische Synchronisierung, bevor Sie ein Backup speichern."
+            "value": "Aktiviere die automatische Synchronisierung, bevor du ein Backup speicherst."
           }
         },
         "fr": {
@@ -41762,7 +41762,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Active la sincronización automática antes de guardar una copia de seguridad."
+            "value": "Activa la sincronización automática antes de guardar una copia de seguridad."
           }
         }
       }
@@ -41820,7 +41820,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "iCloud-Backups konnten nicht überprüft werden. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut."
+            "value": "iCloud-Backups konnten nicht überprüft werden. Prüfe deine Verbindung und versuche es erneut."
           }
         },
         "fr": {
@@ -41855,7 +41855,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Der Download des iCloud-Backups konnte nicht abgeschlossen werden. Überprüfen Sie Ihre Verbindung und versuchen Sie es erneut."
+            "value": "Der Download des iCloud-Backups konnte nicht abgeschlossen werden. Prüfe deine Verbindung und versuche es erneut."
           }
         },
         "fr": {
@@ -41890,7 +41890,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ihr Apple-Konto hat sich geändert. Verwenden Sie „Jetzt synchronisieren“, um dieses Gerät im aktuellen Konto zu sichern."
+            "value": "Dein Apple-Konto hat sich geändert. Verwende „Jetzt synchronisieren“, um dieses Gerät im aktuellen Konto zu sichern."
           }
         },
         "fr": {
@@ -41925,7 +41925,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ein neueres iCloud-Backup ist verfügbar. Stellen Sie es wieder her oder verwenden Sie „Jetzt synchronisieren“, um die Daten dieses Geräts zu speichern."
+            "value": "Ein neueres iCloud-Backup ist verfügbar. Stelle es wieder her oder verwende „Jetzt synchronisieren“, um die Daten dieses Geräts zu speichern."
           }
         },
         "fr": {
@@ -42100,7 +42100,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Speichert eine lokale Kopie Ihrer Programme und Ihres Verlaufs. Wenn iCloud Drive verfügbar ist, wird eine Kopie in Ihren privaten Container geschrieben. iCloud steuert den Upload außerhalb des Geräts."
+            "value": "Speichert eine lokale Kopie deiner Programme und deines Verlaufs. Wenn iCloud Drive verfügbar ist, wird eine Kopie in deinen privaten Container geschrieben. iCloud steuert den Upload außerhalb des Geräts."
           }
         },
         "fr": {
@@ -42112,7 +42112,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Guarda una copia local de sus programas e historial. Cuando iCloud Drive está disponible, escribe una copia en su contenedor privado; iCloud controla la carga fuera del dispositivo."
+            "value": "Guarda una copia local de tus programas e historial. Cuando iCloud Drive está disponible, escribe una copia en tu contenedor privado; iCloud gestiona la subida fuera del dispositivo."
           }
         }
       }
@@ -42625,7 +42625,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Diese Datei kann nicht gelesen werden. Überprüfen Sie die Datei und versuchen Sie es erneut."
+            "value": "Diese Datei kann nicht gelesen werden. Überprüfe die Datei und versuche es erneut."
           }
         },
         "fr": {
@@ -42637,7 +42637,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "No se puede leer este archivo. Verifique el archivo e inténtelo nuevamente."
+            "value": "No se puede leer este archivo. Revisa el archivo e inténtalo de nuevo."
           }
         }
       }
@@ -42660,7 +42660,7 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Der Bericht kann nicht gesendet werden. Bitte versuchen Sie es erneut."
+            "value": "Der Bericht kann nicht gesendet werden. Bitte versuche es erneut."
           }
         },
         "fr": {
@@ -42672,7 +42672,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "No se puede enviar el informe. Por favor inténtalo de nuevo."
+            "value": "No se puede enviar el informe. Inténtalo de nuevo."
           }
         }
       }
