@@ -22,7 +22,9 @@
           "quadriceps",
           "glutes",
           "hamstrings",
-          "calves"
+          "calves",
+          "lower-back",
+          "adductors"
         ],
         "exercises": [
           {
@@ -184,7 +186,9 @@
           "glutes",
           "hamstrings",
           "quadriceps",
-          "calves"
+          "calves",
+          "lower-back",
+          "adductors"
         ],
         "exercises": [
           {

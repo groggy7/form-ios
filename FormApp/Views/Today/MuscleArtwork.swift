@@ -37,13 +37,13 @@ public struct MuscleArtwork: View {
             let athleteCenterY: CGFloat
             if muscles.contains(.glutes) {
                 athleteCenterY = 240
-            } else if muscles.contains(.calves) {
+            } else if muscles.contains(.calves) || muscles.contains(.tibialis) {
                 athleteCenterY = 750
             } else if muscles.contains(.abs) || muscles.contains(.obliques) {
                 athleteCenterY = 660
             } else if muscles.contains(.biceps) || muscles.contains(.triceps) {
                 athleteCenterY = 560
-            } else if muscles.contains(.quadriceps) {
+            } else if muscles.contains(.quadriceps) || muscles.contains(.adductors) {
                 athleteCenterY = 430
             } else if muscles.contains(.hamstrings) {
                 athleteCenterY = 490

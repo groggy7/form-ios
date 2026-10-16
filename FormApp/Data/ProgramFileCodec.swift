@@ -85,7 +85,7 @@ enum ProgramFileCodec {
             _ = try text(workout, "title", max: 100, required: true)
             _ = try text(workout, "focus", max: 180)
             _ = try text(workout, "tone", max: 20)
-            _ = try strings(workout, "targetMuscles", max: 14, length: 40)
+            _ = try strings(workout, "targetMuscles", max: MuscleGroup.allCases.count, length: 40)
             var exerciseIDs = Set<String>()
             workout["exercises"] = try array(workout, "exercises", max: 100, required: true).map { value -> [String: Any] in
                 var e = try object(value)

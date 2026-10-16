@@ -24,7 +24,8 @@
           "glutes",
           "hamstrings",
           "chest",
-          "lats"
+          "lats",
+          "lower-back"
         ],
         "exercises": [
           {
@@ -101,7 +102,8 @@
           "hamstrings",
           "lats",
           "chest",
-          "shoulders"
+          "shoulders",
+          "adductors"
         ],
         "exercises": [
           {
@@ -179,7 +181,8 @@
           "chest",
           "lats",
           "calves",
-          "abs"
+          "abs",
+          "lower-back"
         ],
         "exercises": [
           {

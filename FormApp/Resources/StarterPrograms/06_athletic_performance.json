@@ -25,7 +25,8 @@
           "quadriceps",
           "chest",
           "lats",
-          "obliques"
+          "obliques",
+          "lower-back"
         ],
         "exercises": [
           {
@@ -178,7 +179,9 @@
           "hamstrings",
           "chest",
           "lats",
-          "obliques"
+          "obliques",
+          "lower-back",
+          "adductors"
         ],
         "exercises": [
           {

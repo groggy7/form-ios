@@ -70,8 +70,10 @@ public enum MuscleGroup: String, Codable, CaseIterable {
     case lowerBack = "lower-back"
     case forearms = "forearms"
     case quadriceps = "quadriceps"
+    case adductors = "adductors"
     case hamstrings = "hamstrings"
     case calves = "calves"
+    case tibialis = "tibialis"
     case glutes = "glutes"
 
     public var views: [BodyView] {
@@ -84,7 +86,7 @@ public enum MuscleGroup: String, Codable, CaseIterable {
             return [.back, .front]
         case .forearms:
             return [.front, .back]
-        case .quadriceps:
+        case .quadriceps, .adductors, .tibialis:
             return [.legsFront]
         case .hamstrings, .calves, .glutes:
             return [.legsBack]

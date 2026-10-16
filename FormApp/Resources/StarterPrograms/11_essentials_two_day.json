@@ -26,7 +26,8 @@
           "chest",
           "lats",
           "shoulders",
-          "abs"
+          "abs",
+          "lower-back"
         ],
         "exercises": [
           {
@@ -116,7 +117,8 @@
           "lats",
           "chest",
           "biceps",
-          "triceps"
+          "triceps",
+          "adductors"
         ],
         "exercises": [
           {

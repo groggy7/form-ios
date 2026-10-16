@@ -24,7 +24,8 @@
           "lats",
           "shoulders",
           "biceps",
-          "triceps"
+          "triceps",
+          "forearms"
         ],
         "exercises": [
           {
@@ -111,7 +112,9 @@
           "quadriceps",
           "glutes",
           "hamstrings",
-          "calves"
+          "calves",
+          "lower-back",
+          "adductors"
         ],
         "exercises": [
           {
@@ -274,7 +277,8 @@
           "quadriceps",
           "glutes",
           "hamstrings",
-          "calves"
+          "calves",
+          "lower-back"
         ],
         "exercises": [
           {

@@ -96,7 +96,8 @@
           "lats",
           "trapezius",
           "shoulders",
-          "biceps"
+          "biceps",
+          "forearms"
         ],
         "exercises": [
           {
@@ -347,7 +348,8 @@
           "hamstrings",
           "quadriceps",
           "calves",
-          "abs"
+          "abs",
+          "lower-back"
         ],
         "exercises": [
           {

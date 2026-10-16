@@ -1434,6 +1434,30 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(AppStore.addingMissingStarterPrograms(full, bundled: bundled, ids: AppStore.homeStarterProgramIds), full)
     }
 
+    func testLaterMuscleTagsReachOnlyUneditedSavedStarterWorkouts() throws {
+        let bundled = AppStore.loadBundledStarterPrograms()
+        let plan = try XCTUnwrap(bundled.first { $0.id == "powerbuilding-strength" })
+        let tags = try XCTUnwrap(plan.workouts.first { $0.id == "pb-deadlift-strength" }).targetMuscles
+        XCTAssertTrue(tags.contains("lower-back") && tags.contains("adductors"))
+        let earlier = tags.filter { !AppStore.addedStarterMuscleTags.contains($0) }
+        var saved = plan
+        saved.workouts = plan.workouts.map { workout in
+            var workout = workout
+            if workout.id == "pb-deadlift-strength" { workout.targetMuscles = earlier }
+            if workout.id == "pb-squat-strength" { workout.targetMuscles = ["quadriceps"] }
+            return workout
+        }
+        var copy = saved
+        copy.id = "my-copy"
+        let updated = AppStore.addingNewStarterMuscleTags([saved, copy], bundled: bundled)
+        XCTAssertEqual(updated[0].workouts.first { $0.id == "pb-deadlift-strength" }?.targetMuscles, tags)
+        XCTAssertEqual(updated[0].workouts.first { $0.id == "pb-squat-strength" }?.targetMuscles, ["quadriceps"])
+        XCTAssertEqual(updated[1], copy)
+        XCTAssertEqual(AppStore.addingNewStarterMuscleTags(updated, bundled: bundled), updated)
+        XCTAssertEqual(MuscleGroup.adductors.views, [.legsFront])
+        XCTAssertEqual(MuscleGroup.tibialis.views, [.legsFront])
+    }
+
     func testEveryLaterStarterAdditionIsBundledOnceUnderItsOwnMarker() {
         let bundledIds = Set(AppStore.loadBundledStarterPrograms().map(\.id))
         let keys = AppStore.starterAdditions.map(\.key)
@@ -1550,7 +1574,8 @@ final class FormAppTests: XCTestCase {
         for (name, language, width, textSize, targets) in [
             ("front", "en", 393.0, DynamicTypeSize.large, ["chest", "shoulders", "biceps", "forearms"]),
             ("back", "en", 393.0, DynamicTypeSize.large, ["triceps", "shoulders", "lats", "trapezius", "forearms"]),
-            ("front-tr-large", "tr", 320.0, DynamicTypeSize.xxxLarge, ["chest", "shoulders", "biceps"])
+            ("front-tr-large", "tr", 320.0, DynamicTypeSize.xxxLarge, ["chest", "shoulders", "biceps"]),
+            ("legs-front", "en", 393.0, DynamicTypeSize.large, ["adductors", "quadriceps", "tibialis"])
         ] {
             LanguageManager.setLanguage(language)
             let workout = Workout(id: "mask-review", day: 1,

@@ -247,6 +247,15 @@ public final class AppStore: ObservableObject {
                 loadedState.programs = Self.addingMissingStarterPrograms(loadedState.programs, bundled: bundled, ids: addition.ids)
             }
         }
+        // Later starter muscle tags reach saved copies once, only where the user kept the original tags.
+        var starterMuscleTagsReady = false
+        if loaded.canPersist && !UserDefaults.standard.bool(forKey: Self.starterMuscleTagsKey) {
+            let bundled = Self.loadBundledStarterPrograms()
+            if bundled.count == Self.starterProgramFiles.count {
+                loadedState.programs = Self.addingNewStarterMuscleTags(loadedState.programs, bundled: bundled)
+                starterMuscleTagsReady = true
+            }
+        }
 
         let hasCompleted = UserDefaults.standard.bool(forKey: onboardingCompletedKey)
         let hasExistingData = loaded.hasSavedState || UserDefaults.standard.object(forKey: stateKey) != nil || UserDefaults.standard.object(forKey: activeSessionKey) != nil || !loadedState.history.isEmpty
@@ -314,6 +323,7 @@ public final class AppStore: ObservableObject {
         self.refreshCatalogue()
         if self.saveState(self.state) {
             for addition in pendingStarterAdditions { UserDefaults.standard.set(true, forKey: addition.key) }
+            if starterMuscleTagsReady { UserDefaults.standard.set(true, forKey: Self.starterMuscleTagsKey) }
         }
         if !persistenceEnabled { showErrorNotice(LanguageManager.t("notice.storageFailed")) }
 
@@ -1573,6 +1583,31 @@ public final class AppStore: ObservableObject {
         ("seeded_starters_v10", homeStarterProgramIds),
         ("seeded_starters_v11", ["essentials-2-day"]),
     ]
+
+    static let starterMuscleTagsKey = "starter_muscle_tags_v1"
+    /// Muscle IDs added to starter workout tags after the workouts first shipped.
+    static let addedStarterMuscleTags: Set<String> = ["lower-back", "forearms", "adductors", "tibialis"]
+
+    /// Adds the later muscle tags to saved starter workouts whose tags still equal the earlier
+    /// bundled tags. A workout whose tags the user edited keeps them unchanged.
+    public static func addingNewStarterMuscleTags(_ existing: [Program], bundled: [Program]) -> [Program] {
+        var bundledTags: [String: [String]] = [:]
+        for program in bundled {
+            for workout in program.workouts { bundledTags["\(program.id)/\(workout.id)"] = workout.targetMuscles }
+        }
+        return existing.map { program in
+            var program = program
+            program.workouts = program.workouts.map { workout in
+                guard let tags = bundledTags["\(program.id)/\(workout.id)"] else { return workout }
+                let earlier = tags.filter { !addedStarterMuscleTags.contains($0) }
+                guard tags != earlier, workout.targetMuscles == earlier else { return workout }
+                var workout = workout
+                workout.targetMuscles = tags
+                return workout
+            }
+            return program
+        }
+    }
 
     /// Adds newly bundled plans once without replacing or reordering anything the user has.
     /// An emptied library stays empty, matching the rule that deleting every program never recreates starters.
