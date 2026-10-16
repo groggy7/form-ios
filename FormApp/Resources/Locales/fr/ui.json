@@ -1301,6 +1301,7 @@
   "builder.replaceDraft": "Remplacer le brouillon actuel ?",
   "programs.cover": "Image du programme",
   "programs.cover.choose": "Choisir une image",
+  "builder.coverRequired": "Choisis une image avant d’enregistrer ton programme.",
   "programs.cover.none": "Aucune image sélectionnée",
   "programs.cover.remove": "Retirer l’image",
   "programs.cover.automatic": "Automatique",

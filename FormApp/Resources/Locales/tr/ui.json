@@ -1301,6 +1301,7 @@
   "builder.replaceDraft": "Mevcut taslak değiştirilsin mi?",
   "programs.cover": "Program kapak görseli",
   "programs.cover.choose": "Kapak görseli seç",
+  "builder.coverRequired": "Programını kaydetmeden önce bir görsel seç.",
   "programs.cover.none": "Henüz görsel seçilmedi",
   "programs.cover.remove": "Görseli kaldır",
   "programs.cover.automatic": "Otomatik",

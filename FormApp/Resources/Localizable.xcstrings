@@ -44987,6 +44987,41 @@
         }
       }
     },
+    "builder.coverRequired": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a picture before saving your program."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Programını kaydetmeden önce bir görsel seç."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wähle ein Bild aus, bevor du dein Programm speicherst."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choisis une image avant d’enregistrer ton programme."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Elige una imagen antes de guardar tu programa."
+          }
+        }
+      }
+    },
     "programs.cover.none": {
       "extractionState": "manual",
       "localizations": {

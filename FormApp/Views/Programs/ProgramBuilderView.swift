@@ -47,7 +47,8 @@ public struct ProgramBuilderView: View {
         do { try ProgramEditing.validate(program, original: original, editingTitles: false); return nil }
         catch { return error.localizedDescription }
     }
-    private var canSave: Bool { validationMessage == nil }
+    private var needsCover: Bool { (isNew || creatingCopy) && program.coverId == nil }
+    private var canSave: Bool { validationMessage == nil && !needsCover }
     private var incompleteDays: Int { program.workouts.filter { $0.exercises.isEmpty }.count }
 
     public var body: some View {
@@ -221,6 +222,10 @@ public struct ProgramBuilderView: View {
 
     private var footer: some View {
         VStack(spacing: 8) {
+            if needsCover {
+                Text(LanguageManager.t("builder.coverRequired")).font(.caption).foregroundStyle(AppColors.secondaryText)
+                    .frame(maxWidth: .infinity, alignment: .leading).accessibilityIdentifier("program-cover-required")
+            }
             if let undo = removalUndo {
                 BuilderActionButton("builder.undoRemoval", systemImage: "arrow.uturn.backward") { if let restored = undo.restoring(program) { program = restored; removalUndo = nil } }.disabled(undo.restoring(program) == nil)
             }

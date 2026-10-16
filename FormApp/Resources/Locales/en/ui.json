@@ -1301,6 +1301,7 @@
   "builder.replaceDraft": "Replace the current draft?",
   "programs.cover": "Program cover",
   "programs.cover.choose": "Choose cover",
+  "builder.coverRequired": "Choose a picture before saving your program.",
   "programs.cover.none": "No picture selected",
   "programs.cover.remove": "Remove picture",
   "programs.cover.automatic": "Automatic",
