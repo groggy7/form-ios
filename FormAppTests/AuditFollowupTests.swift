@@ -22,6 +22,18 @@ final class AuditFollowupTests: XCTestCase {
         XCTAssertNil(WorkoutSessionUtils.bodyweightVolumeLabel(1200, completedSets: 6))
     }
 
+    func testWorkoutRecordedNoticeUsesBodyweightAndTheSelectedUnit() {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        LanguageManager.setLanguage("en")
+        XCTAssertEqual(WorkoutSessionUtils.workoutRecordedNotice(0, completedSets: 6, unit: .kg), "Workout recorded: 6 sets at bodyweight.")
+        XCTAssertEqual(WorkoutSessionUtils.workoutRecordedNotice(1200, completedSets: 6, unit: .kg), "Workout recorded: 6 sets, 1,200 kg volume.")
+        XCTAssertEqual(WorkoutSessionUtils.workoutRecordedNotice(1200, completedSets: 6, unit: .lbs), "Workout recorded: 6 sets, 2,646 lbs volume.")
+        XCTAssertEqual(WorkoutSessionUtils.workoutRecordedNotice(0, completedSets: 0, unit: .kg), "Workout recorded: 0 sets, 0 kg volume.")
+        LanguageManager.setLanguage("es")
+        XCTAssertEqual(WorkoutSessionUtils.workoutRecordedNotice(0, completedSets: 4, unit: .lbs), "Entrenamiento registrado: 4 series con peso corporal.")
+    }
+
     // MARK: - Machine taken? (Pro exercise swaps)
 
     private func swapFixture(_ id: String, instance: String) -> Exercise {

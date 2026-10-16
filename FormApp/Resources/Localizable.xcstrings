@@ -36974,31 +36974,66 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Workout recorded: {sets} sets, {volume}kg volume."
+            "value": "Workout recorded: {sets} sets, {volume} volume."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Antrenman kaydedildi: {sets} set, {volume}kg hacim."
+            "value": "Antrenman kaydedildi: {sets} set, {volume} hacim."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aufgezeichnetes Training: {sets} Sätze, {volume} kg Volumen."
+            "value": "Aufgezeichnetes Training: {sets} Sätze, {volume} Volumen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Entraînement enregistré : volume {sets} séries, {volume}kg."
+            "value": "Entraînement enregistré : {sets} séries, {volume} de volume."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Entrenamiento registrado: {sets} series, {volume}kg de volumen."
+            "value": "Entrenamiento registrado: {sets} series, {volume} de volumen."
+          }
+        }
+      }
+    },
+    "notice.workoutRecordedBodyweight": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workout recorded: {sets} sets at bodyweight."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antrenman kaydedildi: vücut ağırlığıyla {sets} set."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aufgezeichnetes Training: {sets} Sätze mit Körpergewicht."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entraînement enregistré : {sets} séries au poids du corps."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entrenamiento registrado: {sets} series con peso corporal."
           }
         }
       }

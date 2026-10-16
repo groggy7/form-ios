@@ -320,6 +320,24 @@ final class WeeklyProgressTests: XCTestCase {
     }
 
     @MainActor
+    func testSavedWorkoutNoticeFollowsTheWeightUnitAndReadsBodyweight() throws {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        LanguageManager.setLanguage("en")
+        try withStoredFixture { store, _ in
+            store.weightUnit = .lbs
+            var loaded = record(id: "loaded", date: "2019-12-30T10:00:00Z", volume: 600)
+            loaded.totalCompletedSets = 5
+            store.completeActiveSession(loaded)
+            XCTAssertEqual(store.noticeMessage, "Workout recorded: 5 sets, 1,323 lbs volume.")
+            var bodyweight = record(id: "bodyweight", date: "2019-12-30T11:00:00Z", volume: 0)
+            bodyweight.totalCompletedSets = 5
+            store.completeActiveSession(bodyweight)
+            XCTAssertEqual(store.noticeMessage, "Workout recorded: 5 sets at bodyweight.")
+        }
+    }
+
+    @MainActor
     func testRealResumeAndSaveKeepWeeklyTotalsStableAndCompletionRequiresEveryWorkingSet() throws {
         try withStoredFixture { store, _ in
             XCTAssertTrue(store.startActiveSession(programId: program.id, workout: workout, allowPast: true))

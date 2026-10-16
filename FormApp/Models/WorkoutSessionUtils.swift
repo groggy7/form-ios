@@ -175,6 +175,16 @@ public enum WorkoutSessionUtils {
         volumeKg <= 0 && completedSets > 0 ? LanguageManager.t("exercise.history.bodyweight") : nil
     }
 
+    /// Post-save notice: volume in the selected unit, or bodyweight when no set carried load.
+    public static func workoutRecordedNotice(_ volumeKg: Double, completedSets: Int, unit: WeightUnit) -> String {
+        bodyweightVolumeLabel(volumeKg, completedSets: completedSets) != nil
+            ? LanguageManager.t("notice.workoutRecordedBodyweight", ["sets": completedSets])
+            : LanguageManager.t("notice.workoutRecorded", [
+                "sets": completedSets,
+                "volume": "\(unit.formatVolume(volumeKg)) \(unit.label)"
+            ])
+    }
+
     public static func resistanceVolume(_ log: SessionExerciseLog) -> Double {
         guard !isAssisted(exerciseId: log.exerciseId, name: log.exerciseName) else { return 0 }
         return log.sets.filter { !$0.isWarmup }.reduce(0) { $0 + ($1.weightKg ?? 0) * Double($1.reps ?? 0) }

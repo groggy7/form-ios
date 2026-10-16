@@ -905,10 +905,9 @@ public final class AppStore: ObservableObject {
         self.activeSession = nil
         self.isSessionPresented = false
 
-        showNotice(LanguageManager.t("notice.workoutRecorded", [
-            "sets": finalRecord.totalCompletedSets,
-            "volume": Int(finalRecord.totalVolumeKg)
-        ]))
+        showNotice(WorkoutSessionUtils.workoutRecordedNotice(
+            finalRecord.totalVolumeKg, completedSets: finalRecord.totalCompletedSets, unit: weightUnit
+        ))
     }
 
     // MARK: - Program Management
