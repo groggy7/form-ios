@@ -1729,10 +1729,13 @@ final class FormAppTests: XCTestCase {
     }
 
     func testWorkoutBodyViewsResolution() {
+        // Views follow the exercises' primary muscles; manual tags never override them.
         // Quads and Calves -> legs-front and legs-back
         let legWorkout = Workout(
             id: "w1", day: 4, title: "Legs", focus: "Quads & Calves",
-            tone: "violet", exercises: [], targetMuscles: ["quadriceps", "calves"]
+            tone: "violet", exercises: [Exercise(name: "Leg Extension", exerciseId: "leg-extension", sets: 4),
+                                        Exercise(name: "Calf Raise", exerciseId: "standing-machine-calf-raise", sets: 3)],
+            targetMuscles: ["quadriceps", "calves"]
         )
         let legViews: [BodyView] = legWorkout.bodyViews()
         XCTAssertEqual(legViews, [BodyView.legsFront, BodyView.legsBack])
@@ -1740,7 +1743,9 @@ final class FormAppTests: XCTestCase {
         // Chest and Triceps -> front and back
         let upperWorkout = Workout(
             id: "w2", day: 1, title: "Push", focus: "Chest & Triceps",
-            tone: "violet", exercises: [], targetMuscles: ["chest", "triceps"]
+            tone: "violet", exercises: [Exercise(name: "Bench", exerciseId: "barbell-bench-press", sets: 4),
+                                        Exercise(name: "Pressdown", exerciseId: "rope-triceps-pressdown", sets: 3)],
+            targetMuscles: ["chest", "triceps"]
         )
         let upperViews: [BodyView] = upperWorkout.bodyViews()
         XCTAssertEqual(upperViews, [BodyView.front, BodyView.back])
