@@ -14,6 +14,82 @@ public enum FormLabTab: String, CaseIterable, Identifiable {
         case .balance: return "form_lab.tab_balance"
         }
     }
+
+    var compactTitleKey: String { titleKey + "_short" }
+    var descriptionKey: String { titleKey + "_description" }
+}
+
+struct FormLabHeader: View {
+    @ObservedObject private var themeManager = ThemeManager.shared
+    @ObservedObject private var language = LanguageManager.shared
+    @Binding var activeTab: FormLabTab
+    var onInfo: () -> Void
+    @ScaledMetric(relativeTo: .subheadline) private var tabFontSize = 13
+    @ScaledMetric(relativeTo: .caption) private var descriptionFontSize = 12
+
+    var body: some View {
+        let _ = themeManager.currentTheme
+        VStack(spacing: 4) {
+            HStack(spacing: 0) {
+                ForEach(FormLabTab.allCases) { tab in
+                    let selected = activeTab == tab
+                    let label = LanguageManager.t(tab.compactTitleKey)
+                    Button { activeTab = tab } label: {
+                        Text(label)
+                            .font(.system(size: tabFontSize, weight: selected ? .semibold : .medium))
+                            .lineLimit(label.contains(" ") ? 2 : 1)
+                            .minimumScaleFactor(0.75)
+                            .foregroundStyle(selected ? AppColors.text : AppColors.secondaryText)
+                            .multilineTextAlignment(.center)
+                            .fixedSize(horizontal: false, vertical: true)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 12)
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .frame(minHeight: 48)
+                            .background(selected ? Color.mix(AppColors.surface, AppColors.accent, 0.14) : .clear)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .overlay {
+                                if selected {
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .strokeBorder(AppColors.accent.opacity(0.85), lineWidth: 1)
+                                }
+                            }
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(LanguageManager.t(tab.titleKey))
+                    .accessibilityAddTraits(selected ? .isSelected : [])
+                    .accessibilityIdentifier("rep-lab-tab-\(tab.rawValue)")
+                }
+            }
+            .fixedSize(horizontal: false, vertical: true)
+            .background {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(AppColors.surface)
+                    .overlay(RoundedRectangle(cornerRadius: 12).strokeBorder(AppColors.border, lineWidth: 1))
+            }
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+
+            HStack(spacing: 0) {
+                Text(LanguageManager.t(activeTab.descriptionKey))
+                    .font(.system(size: descriptionFontSize))
+                    .foregroundStyle(AppColors.secondaryText)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .accessibilityIdentifier("rep-lab-tab-description")
+                Button(action: onInfo) {
+                    Image(systemName: "info.circle")
+                        .font(.system(size: 18))
+                        .foregroundStyle(AppColors.secondaryText)
+                        .frame(width: 48, height: 48)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(LanguageManager.t("form_lab.info_title"))
+                .accessibilityIdentifier("rep-lab-info")
+            }
+        }
+    }
 }
 
 public struct FormLabView: View {
@@ -106,39 +182,7 @@ public struct FormLabView: View {
     public var body: some View {
         let _ = themeManager.currentTheme
         VStack(spacing: 16) {
-            // Header with Sub-tab buttons and Info button
-            HStack(spacing: 8) {
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 6) {
-                        ForEach(FormLabTab.allCases) { tab in
-                            Button(action: { activeTab = tab }) {
-                                Text(LanguageManager.t(tab.titleKey))
-                                    .font(.system(size: 13, weight: activeTab == tab ? .semibold : .medium))
-                                    .foregroundStyle(activeTab == tab ? AppColors.text : AppColors.muted)
-                                    .padding(.horizontal, 14)
-                                    .padding(.vertical, 8)
-                                    .background(activeTab == tab ? AppColors.surfaceRaised : AppColors.surface)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .stroke(activeTab == tab ? AppColors.accent.opacity(0.6) : AppColors.border, lineWidth: 1)
-                                    )
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                            }
-                            .buttonStyle(.plain)
-                        }
-                    }
-                }
-
-                Button(action: { showInfoSheet = true }) {
-                    Image(systemName: "info.circle")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(AppColors.secondaryText)
-                        .padding(8)
-                        .background(AppColors.surfaceRaised)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                }
-                .buttonStyle(.plain)
-            }
+            FormLabHeader(activeTab: $activeTab, onInfo: { showInfoSheet = true })
 
             // Tab Content
             switch activeTab {

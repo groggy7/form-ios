@@ -12970,3 +12970,67 @@ final class AuditSearchPerformanceTests: XCTestCase {
     }
 }
 
+
+final class RepLabHeaderTests: XCTestCase {
+    @MainActor
+    func testAllTabsFitAcrossThemesAndLargerLocalizedText() throws {
+        let previousTheme = ThemeManager.shared.currentTheme.id
+        let previousLanguage = LanguageManager.shared.languagePreference
+        defer {
+            ThemeManager.shared.setThemeId(previousTheme)
+            LanguageManager.setLanguage(previousLanguage)
+        }
+        func capture(_ tab: FormLabTab, width: CGFloat, type: DynamicTypeSize, name: String) throws {
+            let content = FormLabHeader(activeTab: .constant(tab), onInfo: {})
+                .padding(16)
+                .frame(width: width)
+                .background(AppColors.background)
+                .environment(\.dynamicTypeSize, type)
+                .environment(\.locale, LanguageManager.locale)
+            let renderer = ImageRenderer(content: content)
+            renderer.scale = 1
+            let image = try XCTUnwrap(renderer.uiImage)
+            XCTAssertEqual(image.size.width, width)
+            XCTAssertGreaterThanOrEqual(image.size.height, 132)
+            XCTAssertLessThan(image.size.height, 360, "Header must retain room for analytics")
+            let cgImage = try XCTUnwrap(image.cgImage)
+            var pixels = [UInt8](repeating: 0, count: cgImage.width * cgImage.height * 4)
+            let context = try XCTUnwrap(CGContext(data: &pixels, width: cgImage.width, height: cgImage.height,
+                bitsPerComponent: 8, bytesPerRow: cgImage.width * 4, space: CGColorSpaceCreateDeviceRGB(),
+                bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue))
+            context.draw(cgImage, in: CGRect(x: 0, y: 0, width: cgImage.width, height: cgImage.height))
+            for (index, candidate) in FormLabTab.allCases.enumerated() {
+                let x = Int(16 + (width - 32) * (CGFloat(index) + 0.5) / 3)
+                let offset = (20 * cgImage.width + x) * 4
+                let expected = UIColor(candidate == tab ? Color.mix(AppColors.surface, AppColors.accent, 0.14) : AppColors.surface)
+                var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+                expected.getRed(&r, green: &g, blue: &b, alpha: &a)
+                for (channel, value) in [r, g, b].enumerated() {
+                    XCTAssertEqual(Double(pixels[offset + channel]), Double(value * 255), accuracy: 3, "Theme fill: \(name), \(candidate)")
+                }
+            }
+            let attachment = XCTAttachment(image: image)
+            attachment.name = "rep-lab-header-\(name)-\(tab.rawValue)"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+        }
+        LanguageManager.setLanguage("en")
+        for theme in AppThemes.all {
+            ThemeManager.shared.setThemeId(theme.id)
+            for tab in FormLabTab.allCases {
+                try capture(tab, width: 393, type: .large, name: theme.id)
+            }
+        }
+        ThemeManager.shared.setThemeId("cobalt")
+        for language in ["en", "tr", "de", "fr", "es"] {
+            LanguageManager.setLanguage(language)
+            for tab in FormLabTab.allCases {
+                try capture(tab, width: 320, type: .xxxLarge, name: "\(language)-320-large")
+            }
+        }
+        LanguageManager.setLanguage("en")
+        for tab in FormLabTab.allCases {
+            try capture(tab, width: 320, type: .accessibility1, name: "en-320-accessibility")
+        }
+    }
+}
