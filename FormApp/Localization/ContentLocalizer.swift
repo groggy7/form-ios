@@ -288,7 +288,7 @@ extension Workout {
     }
 
     public func displayFocus(programId: String? = nil) -> String {
-        ContentLocalizer.shared.workoutFocus(programId: programId, workoutId: id, fallback: focus)
+        resolvedMuscles.map { LanguageManager.t("muscle.\($0.rawValue)") }.joined(separator: " · ")
     }
 }
 

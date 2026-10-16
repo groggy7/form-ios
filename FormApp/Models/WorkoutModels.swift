@@ -368,9 +368,33 @@ public struct Workout: Identifiable, Codable, Hashable {
     }
 
     public var resolvedMuscles: [MuscleGroup] {
-        targetMuscles.compactMap(MuscleGroup.fromKey).reduce(into: [MuscleGroup]()) { acc, m in
-            if !acc.contains(m) { acc.append(m) }
+        mainFocus()
+    }
+
+    public static let maxFocusAreas = 4
+
+    /// Primary working muscles only; legacy manual tags never override exercise metadata.
+    func mainFocus(catalog: ExerciseMuscleCatalog? = ExerciseMuscleCatalog.shared) -> [MuscleGroup] {
+        var scores: [MuscleGroup: Int] = [:]
+        for exercise in exercises {
+            let id = ExerciseCatalog.resolveCanonicalId(stableId: exercise.exerciseId, name: exercise.name)
+            let muscles = (catalog?.profile(id)?.primary ?? []).compactMap { key -> MuscleGroup? in
+                switch key {
+                case "front-delts", "side-delts", "rear-delts": return .shoulders
+                case "upper-back": return .trapezius
+                case "quads": return .quadriceps
+                default: return MuscleGroup.fromKey(key)
+                }
+            }
+            for muscle in Set(muscles) {
+                scores[muscle, default: 0] += WorkoutSessionUtils.initialSetCount(exercise: exercise)
+            }
         }
+        let order = MuscleGroup.allCases
+        return Array(scores.keys.sorted {
+            if scores[$0] != scores[$1] { return scores[$0, default: 0] > scores[$1, default: 0] }
+            return order.firstIndex(of: $0)! < order.firstIndex(of: $1)!
+        }.prefix(Self.maxFocusAreas))
     }
 
     enum CodingKeys: String, CodingKey {

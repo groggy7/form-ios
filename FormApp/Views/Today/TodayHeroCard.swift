@@ -122,7 +122,7 @@ public struct TodayHeroCard: View {
             Spacer().frame(height: 10)
 
             // Focus
-            if !workout.focus.isEmpty {
+            if !workout.displayFocus(programId: programId).isEmpty {
                 Text(workout.displayFocus(programId: programId))
                     .font(.system(size: bodySize, weight: .regular))
                     .lineSpacing(4)
@@ -260,6 +260,7 @@ public struct TodayHeroCard: View {
         .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
         .padding(.horizontal, 20)
         .onChange(of: workout.id) { _, _ in selectedViewIndex = nil }
+        .onChange(of: workout.resolvedMuscles) { _, _ in selectedViewIndex = nil }
     }
 
     static func bodyViewOptions(for workout: Workout) -> [BodyView] {

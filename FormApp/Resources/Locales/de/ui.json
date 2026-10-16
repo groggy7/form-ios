@@ -1336,5 +1336,8 @@
   "programs.cover.triceps_side_pose": "Trizepspose",
   "programs.cover.core_abs_pose": "Bauchmuskelpose",
   "programs.cover.obliques_side_pose": "Seitliche Bauchpose",
-  "programs.cover.forearms_grip": "Griffkraft"
+  "programs.cover.forearms_grip": "Griffkraft",
+  "builder.mainFocus": "Hauptfokus",
+  "builder.focusEmpty": "Füge Übungen hinzu, um den Hauptfokus dieses Tages zu sehen.",
+  "builder.focusAutomatic": "Aus deinen Übungen berechnet. Bis zu {limit} Hauptbereiche, nach geplanten Sätzen geordnet."
 }

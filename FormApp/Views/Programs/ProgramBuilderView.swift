@@ -136,7 +136,7 @@ public struct ProgramBuilderView: View {
                     onCopy: context.isNew ? nil : { workout, day in
                         let copy = ProgramEditing.copyWorkout(workout, day: day)
                         program.workouts.append(copy); expandedIDs.insert(copy.id)
-                    })
+                    }, catalogue: store.exerciseCatalogue, defaultRest: store.defaultRestSeconds)
             }
             .sheet(item: $pickerWorkout) { workout in
                 AddExercisePickerSheet(catalogue: store.exerciseCatalogue, existing: workout.exercises,

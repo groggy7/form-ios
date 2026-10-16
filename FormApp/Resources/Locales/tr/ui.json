@@ -1336,5 +1336,8 @@
   "programs.cover.triceps_side_pose": "Triseps pozu",
   "programs.cover.core_abs_pose": "Karın pozu",
   "programs.cover.obliques_side_pose": "Yan karın pozu",
-  "programs.cover.forearms_grip": "Kavrama gücü"
+  "programs.cover.forearms_grip": "Kavrama gücü",
+  "builder.mainFocus": "Ana odak",
+  "builder.focusEmpty": "Bu günün ana odağını görmek için egzersiz ekle.",
+  "builder.focusAutomatic": "Egzersizlerinden hesaplanır. Planlanan set sayısına göre en fazla {limit} ana bölge gösterilir."
 }

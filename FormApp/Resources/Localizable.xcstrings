@@ -46247,6 +46247,111 @@
         }
       }
     },
+    "builder.mainFocus": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Main focus"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ana odak"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hauptfokus"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cibles principales"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enfoque principal"
+          }
+        }
+      }
+    },
+    "builder.focusEmpty": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add exercises to see this day’s main focus."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu günün ana odağını görmek için egzersiz ekle."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Füge Übungen hinzu, um den Hauptfokus dieses Tages zu sehen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ajoute des exercices pour voir les cibles principales de ce jour."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Añade ejercicios para ver el enfoque principal de este día."
+          }
+        }
+      }
+    },
+    "builder.focusAutomatic": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calculated from your exercises. Up to {limit} main areas, ranked by planned sets."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Egzersizlerinden hesaplanır. Planlanan set sayısına göre en fazla {limit} ana bölge gösterilir."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus deinen Übungen berechnet. Bis zu {limit} Hauptbereiche, nach geplanten Sätzen geordnet."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calculées à partir de tes exercices. Jusqu’à {limit} zones principales, classées par séries prévues."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Se calcula a partir de tus ejercicios. Hasta {limit} áreas principales, ordenadas por series planificadas."
+          }
+        }
+      }
+    },
     "counts.setsLeft": {
       "extractionState": "manual",
       "localizations": {

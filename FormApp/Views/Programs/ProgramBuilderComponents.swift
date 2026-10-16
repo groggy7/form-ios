@@ -84,7 +84,7 @@ struct BuilderWorkoutCard: View {
                             .background(AppColors.positiveBg, in: RoundedRectangle(cornerRadius: 12))
                         VStack(alignment: .leading, spacing: 4) {
                             Text(workout.title).font(.headline).foregroundStyle(AppColors.text)
-                            Text(workout.focus.isEmpty ? LanguageManager.t("builder.exerciseCount", ["count": workout.exercises.count]) : workout.focus)
+                            Text(workout.displayFocus().isEmpty ? LanguageManager.t("builder.exerciseCount", ["count": workout.exercises.count]) : workout.displayFocus())
                                 .font(.caption).foregroundStyle(AppColors.muted)
                         }.frame(maxWidth: .infinity, alignment: .leading)
                         Image(systemName: expanded ? "chevron.up" : "chevron.down").foregroundStyle(AppColors.muted)
@@ -159,12 +159,16 @@ struct BuilderWorkoutEditor: View {
     var onSave: (Workout) -> Void
     var onRemove: (() -> Void)?
     var onCopy: ((Workout, Int) -> Void)?
+    var catalogue: [ExerciseCatalogEntry] = []
+    var defaultRest: Int = 90
+    @State private var showExercises = false
     private let originalTitle: String
-    init(workout: Workout, isNew: Bool, occupiedDays: Set<Int>, onSave: @escaping (Workout) -> Void, onRemove: (() -> Void)?, onCopy: ((Workout, Int) -> Void)?) {
+    init(workout: Workout, isNew: Bool, occupiedDays: Set<Int>, onSave: @escaping (Workout) -> Void, onRemove: (() -> Void)?, onCopy: ((Workout, Int) -> Void)?, catalogue: [ExerciseCatalogEntry] = [], defaultRest: Int = 90) {
+        self.catalogue = catalogue; self.defaultRest = defaultRest
         self._workout = State(initialValue: workout); self.isNew = isNew; self.occupiedDays = occupiedDays
         self.onSave = onSave; self.onRemove = onRemove; self.onCopy = onCopy; self.originalTitle = workout.title
     }
-    private var canSave: Bool { Workout.isValidTitle(workout.title, originalTitle: isNew ? nil : originalTitle) && workout.focus.utf16.count <= 180 && !occupiedDays.contains(workout.day) }
+    private var canSave: Bool { Workout.isValidTitle(workout.title, originalTitle: isNew ? nil : originalTitle) && !occupiedDays.contains(workout.day) }
     var body: some View {
         let _ = theme.currentTheme
         NavigationStack {
@@ -172,7 +176,6 @@ struct BuilderWorkoutEditor: View {
                 VStack(alignment: .leading, spacing: 16) {
                     BuilderSurface {
                         BuilderTextField("modal.workout.name", text: $workout.title, limit: Workout.maxTitleLength, originalText: isNew ? nil : originalTitle)
-                        BuilderTextField("modal.workout.focus", text: $workout.focus, limit: 180, multiline: true)
                         Text(LanguageManager.t("modal.workout.day")).font(.headline)
                         ScrollView(.horizontal) {
                             HStack(spacing: 8) {
@@ -186,21 +189,27 @@ struct BuilderWorkoutEditor: View {
                                 }
                             }
                         }
-                        Text(LanguageManager.t("muscles.title")).font(.headline)
-                        Text(LanguageManager.t("muscles.hint")).font(.caption).foregroundStyle(AppColors.muted)
-                        LazyVGrid(columns: [GridItem(.adaptive(minimum: 110))], spacing: 8) {
-                            ForEach(MuscleGroup.allCases, id: \.rawValue) { muscle in
-                                let selected = workout.targetMuscles.contains(muscle.rawValue)
-                                Button {
-                                    if selected { workout.targetMuscles.removeAll { $0 == muscle.rawValue } }
-                                    else { workout.targetMuscles.append(muscle.rawValue) }
-                                } label: {
-                                    Text(LanguageManager.t("muscle.\(muscle.rawValue)")).font(.subheadline).frame(maxWidth: .infinity, minHeight: 48)
-                                        .background(selected ? AppColors.positiveBg : AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 10))
-                                        .foregroundStyle(selected ? AppColors.accent : AppColors.secondaryText)
-                                }.buttonStyle(.plain).accessibilityAddTraits(selected ? .isSelected : [])
+                    }
+                    BuilderSurface {
+                        Text(LanguageManager.t("builder.chooseExercises")).font(.headline)
+                        ForEach(workout.exercises) { exercise in
+                            HStack(spacing: 10) {
+                                Text(exercise.displayName).font(.subheadline).frame(maxWidth: .infinity, alignment: .leading)
+                                Button(role: .destructive) { workout.exercises.removeAll { $0.id == exercise.id } } label: {
+                                    Image(systemName: "minus.circle").frame(width: 48, height: 48)
+                                }.accessibilityLabel(LanguageManager.t("builder.removeExercise") + " " + exercise.displayName)
                             }
                         }
+                        BuilderActionButton("builder.addExercises", systemImage: "plus") { showExercises = true }
+                            .disabled(workout.exercises.count >= ProgramEditing.maxExercises)
+                    }
+                    BuilderSurface {
+                        Text(LanguageManager.t("builder.mainFocus")).font(.headline)
+                        Text(workout.displayFocus().isEmpty ? LanguageManager.t("builder.focusEmpty") : workout.displayFocus())
+                            .font(.subheadline).foregroundStyle(AppColors.secondaryText)
+                            .accessibilityIdentifier("workout-derived-focus")
+                        Text(LanguageManager.t("builder.focusAutomatic", ["limit": Workout.maxFocusAreas]))
+                            .font(.caption).foregroundStyle(AppColors.muted)
                     }
                     if let onCopy {
                         Menu {
@@ -221,10 +230,18 @@ struct BuilderWorkoutEditor: View {
                 .safeAreaInset(edge: .bottom) {
                     BuilderActionButton("modal.workout.save", systemImage: "checkmark") {
                         workout.title = workout.title.trimmingCharacters(in: .whitespacesAndNewlines)
-                        workout.focus = workout.focus.trimmingCharacters(in: .whitespacesAndNewlines)
                         onSave(workout); dismiss()
                     }.disabled(!canSave).padding(20).background(AppColors.background)
                 }
+        }
+        .sheet(isPresented: $showExercises) {
+            AddExercisePickerSheet(catalogue: catalogue, existing: workout.exercises, defaultRest: defaultRest) { selected in
+                let existing = Set(workout.exercises.map(ProgramEditing.selectionKey))
+                let additions = selected.filter { !existing.contains(ProgramEditing.selectionKey($0)) }
+                guard workout.exercises.count + additions.count <= ProgramEditing.maxExercises else { return }
+                workout.exercises.append(contentsOf: additions)
+                showExercises = false
+            }
         }
     }
 }

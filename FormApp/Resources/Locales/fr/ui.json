@@ -1336,5 +1336,8 @@
   "programs.cover.triceps_side_pose": "Pose triceps",
   "programs.cover.core_abs_pose": "Pose abdominaux",
   "programs.cover.obliques_side_pose": "Pose obliques",
-  "programs.cover.forearms_grip": "Force de préhension"
+  "programs.cover.forearms_grip": "Force de préhension",
+  "builder.mainFocus": "Cibles principales",
+  "builder.focusEmpty": "Ajoute des exercices pour voir les cibles principales de ce jour.",
+  "builder.focusAutomatic": "Calculées à partir de tes exercices. Jusqu’à {limit} zones principales, classées par séries prévues."
 }

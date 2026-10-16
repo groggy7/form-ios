@@ -30,6 +30,64 @@ final class ProgramBuilderRegressionTests: XCTestCase {
         return Program(id: "builder-fixture", name: "Builder fixture", description: "Build a weekly plan.", guidelines: ["Keep the targets controlled."], workouts: [Workout(id: "upper", day: 1, title: "Upper A", exercises: [exercise], targetMuscles: ["chest"])], coverId: "machines")
     }
 
+    func testFocusRanksPrimaryAreasBySetsAndCapsHighlights() {
+        func exercise(_ id: String, _ sets: Int) -> Exercise { Exercise(name: id, exerciseId: id, sets: sets) }
+        let workout = Workout(day: 1, title: "Full body", focus: "Old focus", exercises: [
+            exercise("barbell-bench-press", 4), exercise("pec-deck-fly", 3), exercise("lat-pulldown", 6),
+            exercise("dumbbell-lateral-raise", 5), exercise("leg-extension", 4), exercise("standing-machine-calf-raise", 3)
+        ], targetMuscles: ["abs"])
+        XCTAssertEqual(workout.resolvedMuscles, [.chest, .lats, .shoulders, .quadriceps])
+        XCTAssertEqual(workout.exercises.count, 6)
+        var changed = workout
+        changed.exercises.reverse()
+        XCTAssertEqual(changed.resolvedMuscles, workout.resolvedMuscles)
+        changed.exercises[0].sets = 10
+        XCTAssertEqual(changed.resolvedMuscles.first, .calves)
+        changed.exercises = Array(workout.exercises.dropFirst(2))
+        XCTAssertFalse(changed.resolvedMuscles.contains(.chest))
+        changed.exercises = [exercise("barbell-row", 4), exercise("standing-barbell-overhead-press", 3)]
+        XCTAssertEqual(changed.resolvedMuscles, [.trapezius, .lats, .shoulders])
+    }
+
+    func testFocusIgnoresSecondaryMusclesAndLegacyOverrides() {
+        var workout = Workout(day: 1, title: "Custom", focus: "Chest", exercises: [
+            Exercise(name: "Custom movement", exerciseId: "custom-unknown", movementType: "press")
+        ], targetMuscles: ["chest"])
+        XCTAssertTrue(workout.resolvedMuscles.isEmpty)
+        workout.exercises = []
+        XCTAssertTrue(workout.resolvedMuscles.isEmpty)
+        workout.exercises = [Exercise(name: "Bench", exerciseId: "barbell-bench-press")]
+        XCTAssertEqual(workout.resolvedMuscles, [.chest])
+        workout.exercises = [Exercise(name: "Press", exerciseId: "standing-barbell-overhead-press")]
+        XCTAssertEqual(workout.resolvedMuscles, [.shoulders])
+    }
+
+    @MainActor
+    func testTrainingDayEditorAutomaticFocusAtNarrowWidthsInAllLanguages() throws {
+        let previous = LanguageManager.shared.languagePreference
+        defer { LanguageManager.setLanguage(previous) }
+        for language in ["en", "tr", "de", "es", "fr"] {
+            LanguageManager.setLanguage(language)
+            for empty in [true, false] {
+                var workout = fixture().workouts[0]
+                if empty { workout.exercises = []; workout.title = "" }
+                let root = BuilderWorkoutEditor(workout: workout, isNew: empty, occupiedDays: [], onSave: { _ in }, onRemove: nil, onCopy: nil)
+                    .environment(\.sizeCategory, .extraExtraExtraLarge)
+                let host = UIHostingController(rootView: root)
+                let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 900))
+                window.rootViewController = host; window.makeKeyAndVisible(); host.view.frame = window.bounds
+                host.view.setNeedsLayout(); host.view.layoutIfNeeded()
+                RunLoop.main.run(until: Date().addingTimeInterval(0.15))
+                let image = UIGraphicsImageRenderer(bounds: host.view.bounds).image { context in host.view.layer.render(in: context.cgContext) }
+                let name = "training-day-\(language)-\(empty ? "empty" : "focus")"
+                try image.pngData()?.write(to: URL(fileURLWithPath: "/tmp/\(name).png"))
+                let attachment = XCTAttachment(image: image); attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
+                window.isHidden = true; previousWindow?.makeKeyAndVisible()
+            }
+        }
+    }
+
     func testEveryBundledProgramMeetsPublicContract() throws {
         let names = ["01_aesthetic_hypertrophy", "02_powerbuilding_strength", "03_classic_ppl", "04_full_body_classic", "05_home_forge_dumbbells", "06_athletic_performance", "07_upper_lower", "08_machine_foundation"]
         for name in names {
@@ -156,7 +214,8 @@ final class ProgramBuilderRegressionTests: XCTestCase {
         let w = original.workouts[0]
         var changed = w; changed.title = "My workout"; changed.focus = "My focus"
         XCTAssertEqual(changed.displayTitle(programId: original.id), "My workout")
-        XCTAssertEqual(changed.displayFocus(programId: original.id), "My focus")
+        XCTAssertEqual(changed.displayFocus(programId: original.id), w.displayFocus(programId: original.id))
+        XCTAssertEqual(changed.focus, "My focus")
     }
 
     @MainActor

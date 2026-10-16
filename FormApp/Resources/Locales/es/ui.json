@@ -1336,5 +1336,8 @@
   "programs.cover.triceps_side_pose": "Pose de tríceps",
   "programs.cover.core_abs_pose": "Pose abdominal",
   "programs.cover.obliques_side_pose": "Pose de oblicuos",
-  "programs.cover.forearms_grip": "Fuerza de agarre"
+  "programs.cover.forearms_grip": "Fuerza de agarre",
+  "builder.mainFocus": "Enfoque principal",
+  "builder.focusEmpty": "Añade ejercicios para ver el enfoque principal de este día.",
+  "builder.focusAutomatic": "Se calcula a partir de tus ejercicios. Hasta {limit} áreas principales, ordenadas por series planificadas."
 }

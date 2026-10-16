@@ -1336,5 +1336,8 @@
   "programs.cover.triceps_side_pose": "Triceps pose",
   "programs.cover.core_abs_pose": "Abdominal pose",
   "programs.cover.obliques_side_pose": "Oblique pose",
-  "programs.cover.forearms_grip": "Grip strength"
+  "programs.cover.forearms_grip": "Grip strength",
+  "builder.mainFocus": "Main focus",
+  "builder.focusEmpty": "Add exercises to see this day’s main focus.",
+  "builder.focusAutomatic": "Calculated from your exercises. Up to {limit} main areas, ranked by planned sets."
 }

@@ -3786,9 +3786,9 @@ final class FormAppTests: XCTestCase {
         let smithSquat = Exercise(name: "Smith Machine Squat", exerciseId: "smith-squat")
         XCTAssertEqual(smithSquat.displayName, "Smith Makinesi Squat")
 
-        let workout = Workout(id: "pb-squat-strength", day: 1, title: "Lower: Squat", focus: "Squat practice with hamstrings and calves")
+        let workout = Workout(id: "pb-squat-strength", day: 1, title: "Lower: Squat", focus: "Squat practice with hamstrings and calves", exercises: [Exercise(name: "Leg Extension", exerciseId: "leg-extension")])
         XCTAssertEqual(workout.displayTitle(programId: "powerbuilding-strength"), "Alt Vücut: Squat")
-        XCTAssertEqual(workout.displayFocus(programId: "powerbuilding-strength"), "Squat tekniği, arka bacak ve baldır")
+        XCTAssertEqual(workout.displayFocus(programId: "powerbuilding-strength"), LanguageManager.t("muscle.quadriceps"))
 
         let program = Program(id: "powerbuilding-strength", name: "Heavy & Built: 4-Day Powerbuilding")
         XCTAssertEqual(program.displayName, "Heavy & Built: 4 Günlük Güç ve Kas")
@@ -10666,7 +10666,10 @@ final class WorkoutDayPresentationTests: XCTestCase {
                     for (index, title) in titles.enumerated() {
                         let workout = Workout(id: "hero-name-fixture", day: 5, title: title,
                             focus: language == "en" ? "Heavy Dumbbell Bench Overload" : "Ağır Dambıl Bench Press Çalışması",
-                            exercises: [Exercise(id: "bench", name: "Bench", sets: 3)],
+                            exercises: [Exercise(id: "bench", name: "Bench", exerciseId: "barbell-bench-press", sets: 4),
+                                Exercise(name: "Pulldown", exerciseId: "lat-pulldown", sets: 3),
+                                Exercise(name: "Leg Extension", exerciseId: "leg-extension", sets: 2),
+                                Exercise(name: "Leg Curl", exerciseId: "lying-leg-curl", sets: 1)],
                             targetMuscles: ["chest", "lats", "quadriceps", "hamstrings"])
                         let content = TodayHeroCard(workout: workout, programId: "hero-name-fixture",
                             todayIndex: 0, isCompleted: false, isAvailable: false,
@@ -10701,16 +10704,16 @@ final class WorkoutDayPresentationTests: XCTestCase {
     }
 
     func testWorkoutControlsOnlyListRequiredViews() {
-        let back = Workout(day: 4, title: "Heavy Pull & Upper Back", targetMuscles: ["back", "lats", "trapezius"])
+        let back = Workout(day: 4, title: "Heavy Pull & Upper Back", exercises: [Exercise(name: "Barbell Row", exerciseId: "barbell-row")], targetMuscles: ["back", "lats", "trapezius"])
         XCTAssertEqual(back.bodyViews(), [.back], "Reproduce the single required view in the reported workout")
         XCTAssertEqual(TodayHeroCard.bodyViewOptions(for: back), [.back])
-        let chest = Workout(day: 5, title: "Chest", targetMuscles: ["chest"])
+        let chest = Workout(day: 5, title: "Chest", exercises: [Exercise(name: "Bench", exerciseId: "barbell-bench-press")], targetMuscles: ["chest"])
         XCTAssertEqual(TodayHeroCard.bodyViewOptions(for: chest), [.front])
-        let calves = Workout(day: 2, title: "Calves", targetMuscles: ["calves"])
+        let calves = Workout(day: 2, title: "Calves", exercises: [Exercise(name: "Calf Raise", exerciseId: "standing-machine-calf-raise")], targetMuscles: ["calves"])
         XCTAssertEqual(TodayHeroCard.bodyViewOptions(for: calves), [.legsBack])
-        let mixed = Workout(day: 1, title: "Full Body", targetMuscles: ["lats", "quadriceps"])
+        let mixed = Workout(day: 1, title: "Full Body", exercises: [Exercise(name: "Lat Pulldown", exerciseId: "lat-pulldown", sets: 4), Exercise(name: "Leg Extension", exerciseId: "leg-extension", sets: 3)], targetMuscles: ["lats", "quadriceps"])
         XCTAssertEqual(TodayHeroCard.bodyViewOptions(for: mixed), [.back, .legsFront])
-        let bothSides = Workout(day: 3, title: "Chest & Triceps", targetMuscles: ["chest", "triceps"])
+        let bothSides = Workout(day: 3, title: "Chest & Triceps", exercises: [Exercise(name: "Bench", exerciseId: "barbell-bench-press"), Exercise(name: "Pressdown", exerciseId: "rope-triceps-pressdown")], targetMuscles: ["chest", "triceps"])
         XCTAssertEqual(TodayHeroCard.bodyViewOptions(for: bothSides), [.front, .back])
     }
 
@@ -10720,7 +10723,7 @@ final class WorkoutDayPresentationTests: XCTestCase {
         defer { LanguageManager.setLanguage(previous) }
         let workout = Workout(id: "heavy-pull-controls", day: 4, title: "Heavy Pull & Upper Back",
             focus: "Heavy Barbell Rows, Lat & Trap Overload",
-            exercises: (0..<4).map { Exercise(id: "fixture-\($0)", name: "Fixture") },
+            exercises: [Exercise(name: "Barbell Row", exerciseId: "barbell-row")],
             targetMuscles: ["back", "lats", "trapezius"])
         for language in ["en", "tr"] {
             LanguageManager.setLanguage(language)
