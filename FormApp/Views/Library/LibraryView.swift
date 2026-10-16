@@ -471,7 +471,7 @@ struct LibraryFilterPill: View {
                     Image(systemName: "xmark")
                         .font(.system(size: 11, weight: .bold))
                         .foregroundStyle(AppColors.danger)
-                        .frame(width: 48, height: 48)
+                        .frame(width: 44, height: 48)
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
