@@ -3426,6 +3426,25 @@ final class FormAppTests: XCTestCase {
         XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: try exercise("bird-dog"), muscleKey: "back"))
     }
 
+    func testSecondReviewCorrectionsHold() throws {
+        let catalog = try XCTUnwrap(ExerciseMuscleCatalog.shared)
+        func p(_ id: String) throws -> ExerciseMuscleProfile { try XCTUnwrap(catalog.profile(id), id) }
+        XCTAssertEqual(try p("jumping-jack").primary, ["calves", "adductors"])
+        XCTAssertTrue(try p("jumping-jack").secondary.contains("side-delts"))
+        XCTAssertFalse(try p("jumping-jack").all.contains("front-delts"))
+        XCTAssertEqual(try p("jump-rope").secondary, ["forearms", "quads"])
+        XCTAssertEqual(try p("kettlebell-one-arm-snatch").primary, ["glutes", "hamstrings"])
+        XCTAssertEqual(try p("farmer-carry").primary, ["forearms", "upper-back"])
+        XCTAssertEqual(try p("dumbbell-pullover").primary, ["chest", "lats"])
+        for id in ["cossack-squat", "side-lunge", "cable-lateral-lunge"] { XCTAssertTrue(try p(id).primary.contains("adductors"), id) }
+        XCTAssertEqual(try p("barbell-rack-pull").focus, "upper")
+        XCTAssertTrue(try p("barbell-rack-pull").primary.contains("lower-back"))
+        for id in ["barbell-row", "barbell-pendlay-row", "landmine-one-arm-bent-over-row", "landmine-v-bar-bent-over-row", "dumbbell-gorilla-row"] {
+            XCTAssertTrue(try p(id).secondary.contains("lower-back"), id)
+        }
+        XCTAssertFalse(try p("chest-supported-dumbbell-row").all.contains("lower-back"))
+    }
+
     func testCustomExerciseNamesResolveToTheirMuscleLabel() {
         func key(_ name: String, _ movement: MovementType? = nil) -> String {
             ExerciseMetadata.resolveMuscleKey(exerciseId: nil, name: name, movementType: movement)

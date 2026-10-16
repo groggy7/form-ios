@@ -211,7 +211,8 @@
       ],
       "secondary": [
         "biceps",
-        "rear-delts"
+        "rear-delts",
+        "lower-back"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -410,12 +411,12 @@
     },
     "farmer-carry": {
       "primary": [
-        "abs",
-        "obliques"
-      ],
-      "secondary": [
         "forearms",
         "upper-back"
+      ],
+      "secondary": [
+        "abs",
+        "obliques"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -500,8 +501,8 @@
         "calves"
       ],
       "secondary": [
-        "quads",
-        "front-delts"
+        "forearms",
+        "quads"
       ],
       "focus": "lower",
       "initialView": "front",
@@ -1492,14 +1493,14 @@
     },
     "dumbbell-pullover": {
       "primary": [
+        "chest",
         "lats"
       ],
       "secondary": [
-        "chest",
         "triceps"
       ],
       "focus": "upper",
-      "initialView": "back",
+      "initialView": "front",
       "status": "curated",
       "sources": [
         "gymvisual"
@@ -1544,7 +1545,8 @@
       ],
       "secondary": [
         "biceps",
-        "rear-delts"
+        "rear-delts",
+        "lower-back"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -2100,10 +2102,11 @@
     "jumping-jack": {
       "primary": [
         "calves",
-        "quads"
+        "adductors"
       ],
       "secondary": [
-        "front-delts"
+        "glutes",
+        "side-delts"
       ],
       "focus": "lower",
       "initialView": "front",
@@ -2194,16 +2197,16 @@
     },
     "kettlebell-one-arm-snatch": {
       "primary": [
-        "front-delts",
-        "glutes"
+        "glutes",
+        "hamstrings"
       ],
       "secondary": [
-        "hamstrings",
+        "front-delts",
         "upper-back",
         "triceps"
       ],
       "focus": "upper",
-      "initialView": "front",
+      "initialView": "back",
       "status": "curated",
       "sources": [
         "gymvisual"
@@ -2720,7 +2723,8 @@
       ],
       "secondary": [
         "biceps",
-        "rear-delts"
+        "rear-delts",
+        "lower-back"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -2736,7 +2740,8 @@
       ],
       "secondary": [
         "biceps",
-        "rear-delts"
+        "rear-delts",
+        "lower-back"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -2944,7 +2949,8 @@
       ],
       "secondary": [
         "biceps",
-        "rear-delts"
+        "rear-delts",
+        "lower-back"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -3016,14 +3022,14 @@
     },
     "barbell-rack-pull": {
       "primary": [
-        "glutes",
-        "upper-back"
+        "upper-back",
+        "lower-back",
+        "glutes"
       ],
       "secondary": [
-        "lower-back",
         "hamstrings"
       ],
-      "focus": "lower",
+      "focus": "upper",
       "initialView": "back",
       "status": "curated",
       "sources": [
@@ -3958,11 +3964,10 @@
     "cossack-squat": {
       "primary": [
         "quads",
-        "glutes"
-      ],
-      "secondary": [
+        "glutes",
         "adductors"
       ],
+      "secondary": [],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3973,11 +3978,10 @@
     "side-lunge": {
       "primary": [
         "quads",
-        "glutes"
-      ],
-      "secondary": [
+        "glutes",
         "adductors"
       ],
+      "secondary": [],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -4053,11 +4057,10 @@
     "cable-lateral-lunge": {
       "primary": [
         "quads",
-        "glutes"
-      ],
-      "secondary": [
+        "glutes",
         "adductors"
       ],
+      "secondary": [],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
