@@ -2282,66 +2282,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Muscle highlights are illustrative."
+            "value": "Highlights are approximate and may differ from the video. This card lists the main working muscles."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kas vurguları temsilidir."
+            "value": "Vurgular yaklaşıktır ve videodan farklı olabilir. Bu kart ana çalışan kasları listeler."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Muskel-Highlights dienen der Veranschaulichung."
+            "value": "Die Markierungen sind ungefähr und können vom Video abweichen. Diese Karte zeigt die wichtigsten Arbeitsmuskeln."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Les zones musculaires mises en évidence sont indicatives."
+            "value": "Les zones mises en évidence sont approximatives et peuvent différer de la vidéo. Cette fiche indique les principaux muscles sollicités."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Las zonas musculares resaltadas son orientativas."
-          }
-        }
-      }
-    },
-    "anatomy.videoNote": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The video highlights every muscle involved; this card ranks the main ones."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Video, çalışan tüm kasları vurgular; bu kart ana kasları sıralar."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Das Video hebt alle beteiligten Muskeln hervor; diese Karte ordnet die wichtigsten ein."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "La vidéo met en évidence tous les muscles sollicités ; cette fiche classe les principaux."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "El vídeo resalta todos los músculos implicados; esta tarjeta ordena los principales."
+            "value": "Las zonas resaltadas son aproximadas y pueden diferir del vídeo. Esta tarjeta muestra los principales músculos trabajados."
           }
         }
       }

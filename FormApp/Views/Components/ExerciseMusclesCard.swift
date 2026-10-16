@@ -131,11 +131,8 @@ struct ExerciseMusclesCard: View {
                         }
                     }
                     alsoInvolved(profile)
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(LanguageManager.t("anatomy.note"))
-                        Text(LanguageManager.t("anatomy.videoNote")).accessibilityIdentifier("anatomy-video-note")
-                    }
-                    .font(.system(size: noteSize)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)
+                    Text(LanguageManager.t("anatomy.note"))
+                        .font(.system(size: noteSize)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)
                 } else {
                     Text(LanguageManager.t("anatomy.unavailable"))
                         .font(.system(size: bodySize)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)
