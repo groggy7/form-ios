@@ -43,6 +43,8 @@ public struct MuscleArtwork: View {
                 athleteCenterY = 660
             } else if muscles.contains(.biceps) || muscles.contains(.triceps) {
                 athleteCenterY = 560
+            } else if muscles.contains(.forearms) {
+                athleteCenterY = 800
             } else if muscles.contains(.quadriceps) || muscles.contains(.adductors) {
                 athleteCenterY = 430
             } else if muscles.contains(.hamstrings) {

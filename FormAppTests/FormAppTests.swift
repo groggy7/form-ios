@@ -1896,7 +1896,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_all_muscle_groups_contact_sheet.png"
+            let path = "/private/tmp/ios_all_muscle_groups_contact_sheet.png"
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote contact sheet to \(path)")
         }
@@ -3415,9 +3415,14 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(label("barbell-reverse-curl"), "exercise.muscle.forearms")
         XCTAssertEqual(label("dumbbell-45-deg-back-extension"), "exercise.muscle.back")
         func exercise(_ id: String) throws -> Exercise { try XCTUnwrap(ExerciseCatalog.canonicalExercises[id]).toExercise() }
-        XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: try exercise("lever-seated-hip-adduction"), muscleKey: "quads"))
-        XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: try exercise("wall-supported-tibialis-raise"), muscleKey: "calves"))
+        XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: try exercise("lever-seated-hip-adduction"), muscleKey: "adductors"))
+        XCTAssertFalse(ExerciseMetadata.matchesMuscle(exercise: try exercise("lever-seated-hip-adduction"), muscleKey: "quads"))
+        XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: try exercise("wall-supported-tibialis-raise"), muscleKey: "shins"))
+        XCTAssertFalse(ExerciseMetadata.matchesMuscle(exercise: try exercise("wall-supported-tibialis-raise"), muscleKey: "calves"))
+        XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: try exercise("barbell-reverse-curl"), muscleKey: "forearms"))
         XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: try exercise("barbell-reverse-curl"), muscleKey: "biceps"))
+        XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: try exercise("dumbbell-45-deg-back-extension"), muscleKey: "back"))
+        XCTAssertEqual(MuscleGroupFilter.back.muscleGroups, [.lats, .trapezius, .lowerBack])
         XCTAssertTrue(ExerciseMetadata.matchesMuscle(exercise: try exercise("bird-dog"), muscleKey: "back"))
     }
 
@@ -3440,6 +3445,11 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(key("Lateral Raise", .other), "exercise.muscle.shoulders")
         XCTAssertEqual(key("Hammer Curl"), "exercise.muscle.biceps")
         XCTAssertEqual(key("Wide Lat Pulldown"), "exercise.muscle.back")
+        XCTAssertEqual(key("Barbell Wrist Curl"), "exercise.muscle.forearms")
+        XCTAssertEqual(key("Copenhagen Adductor Plank"), "exercise.muscle.adductors")
+        XCTAssertEqual(key("Banded Tibialis Raise"), "exercise.muscle.shins")
+        XCTAssertNotEqual(key("Close-Grip Bench Press"), "exercise.muscle.forearms")
+        XCTAssertNotEqual(key("Sled Pushing"), "exercise.muscle.shins")
     }
 
     private func assertMirroredChestPath(_ path: String, centerX: Double) {

@@ -1310,6 +1310,9 @@ public struct ExerciseMetadata {
     private static func customNameMuscleKey(_ lowerName: String) -> String? {
         func has(_ terms: String...) -> Bool { terms.contains { lowerName.contains($0) } }
         if has("calf") { return "exercise.muscle.calves" }
+        if has("tibialis", "shin raise", "shins") { return "exercise.muscle.shins" }
+        if has("adductor", "adduction") { return "exercise.muscle.adductors" }
+        if has("wrist", "forearm", "reverse curl") { return "exercise.muscle.forearms" }
         if has("leg curl", "hamstring curl", "nordic", "glute-ham", "glute ham", "good morning") {
             return "exercise.muscle.hamstrings"
         }
@@ -1432,15 +1435,17 @@ public struct ExerciseMetadata {
         }
         let muscleMap: [String: [String]] = [
             "chest": ["chest"],
-            // Filter chips stay broad: precise labels, but no new chips for the smaller regions.
             "back": ["lats", "upper-back", "lower-back"],
             "shoulders": ["front-delts", "side-delts", "rear-delts"],
-            "biceps": ["biceps", "forearms"],
+            "biceps": ["biceps"],
             "triceps": ["triceps"],
-            "quads": ["quads", "adductors"],
+            "forearms": ["forearms"],
+            "quads": ["quads"],
+            "adductors": ["adductors"],
             "hamstrings": ["hamstrings"],
             "glutes": ["glutes"],
-            "calves": ["calves", "tibialis"],
+            "calves": ["calves"],
+            "shins": ["tibialis"],
             "core": ["abs", "obliques"]
         ]
         let targetMuscles = muscleMap[muscleKey] ?? [muscleKey]
@@ -1459,6 +1464,9 @@ public struct ExerciseMetadata {
         case "hamstrings": return fallbackKey == "exercise.muscle.hamstrings"
         case "glutes": return fallbackKey == "exercise.muscle.glutes"
         case "calves": return fallbackKey == "exercise.muscle.calves"
+        case "forearms": return fallbackKey == "exercise.muscle.forearms"
+        case "adductors": return fallbackKey == "exercise.muscle.adductors"
+        case "shins": return fallbackKey == "exercise.muscle.shins"
         case "core": return fallbackKey == "exercise.muscle.core"
         case "cardio": return fallbackKey == "exercise.muscle.cardio"
         default: return false
@@ -1472,10 +1480,13 @@ public enum MuscleGroupFilter: String, CaseIterable, Identifiable {
     case shoulders = "shoulders"
     case biceps = "biceps"
     case triceps = "triceps"
+    case forearms = "forearms"
     case quads = "quads"
+    case adductors = "adductors"
     case hamstrings = "hamstrings"
     case glutes = "glutes"
     case calves = "calves"
+    case shins = "shins"
     case core = "core"
     case cardio = "cardio"
 
@@ -1487,11 +1498,11 @@ public enum MuscleGroupFilter: String, CaseIterable, Identifiable {
 
     public var bodyView: BodyView {
         switch self {
-        case .chest, .shoulders, .biceps, .core, .cardio:
+        case .chest, .shoulders, .biceps, .forearms, .core, .cardio:
             return .front
         case .back, .triceps:
             return .back
-        case .quads:
+        case .quads, .adductors, .shins:
             return .legsFront
         case .hamstrings, .glutes, .calves:
             return .legsBack
@@ -1501,14 +1512,17 @@ public enum MuscleGroupFilter: String, CaseIterable, Identifiable {
     public var muscleGroups: [MuscleGroup] {
         switch self {
         case .chest: return [.chest]
-        case .back: return [.lats, .trapezius]
+        case .back: return [.lats, .trapezius, .lowerBack]
         case .shoulders: return [.shoulders]
         case .biceps: return [.biceps]
         case .triceps: return [.triceps]
+        case .forearms: return [.forearms]
         case .quads: return [.quadriceps]
+        case .adductors: return [.adductors]
         case .hamstrings: return [.hamstrings]
         case .glutes: return [.glutes]
         case .calves: return [.calves]
+        case .shins: return [.tibialis]
         case .core: return [.abs, .obliques]
         case .cardio: return []
         }
