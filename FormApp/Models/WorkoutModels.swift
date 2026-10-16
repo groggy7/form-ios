@@ -1243,6 +1243,7 @@ public struct ExerciseMetadata {
 
         let resolved = movementType ?? MovementType.fromExerciseName(name)
         let lowerName = name.lowercased()
+        if let key = customNameMuscleKey(lowerName) { return key }
         switch resolved {
         case .press:
             if lowerName.contains("overhead") || lowerName.contains("shoulder") ||
@@ -1277,7 +1278,8 @@ public struct ExerciseMetadata {
         case .other:
             if lowerName.contains("chest") || lowerName.contains("bench") || lowerName.contains("push-up") {
                 return "exercise.muscle.chest"
-            } else if lowerName.contains("lat") || lowerName.contains("pull") || lowerName.contains("row") {
+            } else if lowerName.range(of: #"\blats?\b"#, options: .regularExpression) != nil ||
+                        lowerName.contains("pull") || lowerName.contains("row") {
                 return "exercise.muscle.back"
             } else if lowerName.contains("shoulder") || lowerName.contains("delt") {
                 return "exercise.muscle.shoulders"
@@ -1297,6 +1299,30 @@ public struct ExerciseMetadata {
                 return "exercise.muscle.full_body"
             }
         }
+    }
+
+    /// Specific exercise names outrank the coarse movement type (a leg curl is not a biceps curl).
+    private static func customNameMuscleKey(_ lowerName: String) -> String? {
+        func has(_ terms: String...) -> Bool { terms.contains { lowerName.contains($0) } }
+        if has("calf") { return "exercise.muscle.calves" }
+        if has("leg curl", "hamstring curl", "nordic", "glute-ham", "glute ham", "good morning") {
+            return "exercise.muscle.hamstrings"
+        }
+        if has("leg press", "hack squat") { return "exercise.muscle.quads" }
+        if has("hip thrust", "glute bridge", "pull-through", "pull through", "glute kickback",
+               "hip abduction", "back extension", "hyperextension", "kettlebell swing") {
+            return "exercise.muscle.glutes"
+        }
+        if has("upright row", "face pull", "lateral raise", "front raise", "rear delt", "reverse fly", "rear fly") {
+            return "exercise.muscle.shoulders"
+        }
+        if has("pec deck", " fly", "flye") || lowerName.hasPrefix("fly") { return "exercise.muscle.chest" }
+        if has("pushdown", "pressdown", "skull crusher") { return "exercise.muscle.triceps" }
+        if has("shrug") { return "exercise.muscle.back" }
+        if has("russian twist", "woodchop", "dead bug", "ab wheel", "rollout", "sit-up", "sit up", "hollow", "pallof") {
+            return "exercise.muscle.core"
+        }
+        return nil
     }
 
     public static func resolveEquipmentKey(

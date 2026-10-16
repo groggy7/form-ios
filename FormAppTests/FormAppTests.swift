@@ -3237,6 +3237,39 @@ final class FormAppTests: XCTestCase {
         assertMirroredChestPath(chestPath, centerX: 520)
     }
 
+    func testReviewedMuscleMappingsAvoidImplausibleStandIns() throws {
+        let catalog = try XCTUnwrap(ExerciseMuscleCatalog.shared)
+        for id in ["barbell-back-squat", "walking-lunge", "leg-press"] {
+            XCTAssertFalse(try XCTUnwrap(catalog.profile(id)).all.contains("calves"), id)
+        }
+        XCTAssertEqual(catalog.profile("leg-press")?.primary, ["quads"])
+        XCTAssertEqual(catalog.profile("dumbbell-front-raise")?.secondary, ["side-delts"])
+        XCTAssertTrue(catalog.profile("standing-barbell-overhead-press")?.secondary.contains("side-delts") == true)
+        XCTAssertFalse(catalog.profile("barbell-good-morning")?.all.contains("upper-back") ?? true)
+        XCTAssertEqual(catalog.profile("cable-y-raise")?.primary, ["upper-back", "side-delts"])
+    }
+
+    func testCustomExerciseNamesResolveToTheirMuscleLabel() {
+        func key(_ name: String, _ movement: MovementType? = nil) -> String {
+            ExerciseMetadata.resolveMuscleKey(exerciseId: nil, name: name, movementType: movement)
+        }
+        XCTAssertEqual(key("Lying Leg Curl"), "exercise.muscle.hamstrings")
+        XCTAssertEqual(key("Nordic Curl"), "exercise.muscle.hamstrings")
+        XCTAssertEqual(key("45° Leg Press"), "exercise.muscle.quads")
+        XCTAssertEqual(key("Calf Press on Leg Press"), "exercise.muscle.calves")
+        XCTAssertEqual(key("Cable Upright Row"), "exercise.muscle.shoulders")
+        XCTAssertEqual(key("Plate Front Raise"), "exercise.muscle.shoulders")
+        XCTAssertEqual(key("Banded Hip Thrust"), "exercise.muscle.glutes")
+        XCTAssertEqual(key("Rope Pull-Through"), "exercise.muscle.glutes")
+        XCTAssertEqual(key("Rope Pressdown"), "exercise.muscle.triceps")
+        XCTAssertEqual(key("Cable Fly"), "exercise.muscle.chest")
+        XCTAssertEqual(key("Rear Delt Fly"), "exercise.muscle.shoulders")
+        XCTAssertEqual(key("Trap Bar Shrug"), "exercise.muscle.back")
+        XCTAssertEqual(key("Lateral Raise", .other), "exercise.muscle.shoulders")
+        XCTAssertEqual(key("Hammer Curl"), "exercise.muscle.biceps")
+        XCTAssertEqual(key("Wide Lat Pulldown"), "exercise.muscle.back")
+    }
+
     private func assertMirroredChestPath(_ path: String, centerX: Double) {
         let halves = path.components(separatedBy: " Z M ")
         XCTAssertEqual(halves.count, 2)
