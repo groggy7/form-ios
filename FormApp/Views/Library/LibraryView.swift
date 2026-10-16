@@ -356,9 +356,10 @@ public struct LibraryView: View {
                                 }
                                 .frame(maxWidth: .infinity)
                                 .background(isSelected ? AppColors.positiveBg : AppColors.background, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                        .stroke(isSelected ? AppColors.accent : AppColors.border, lineWidth: isSelected ? 1.5 : 1)
+                                        .strokeBorder(isSelected ? AppColors.accent : AppColors.border, lineWidth: isSelected ? 1.5 : 1)
                                 )
                             }
                             .buttonStyle(.plain)
@@ -401,7 +402,7 @@ public struct LibraryView: View {
                                                 .padding(4)
                                         }
                                     }
-                                    .frame(height: 84)
+                                    .frame(height: 90)
                                     .frame(maxWidth: .infinity)
 
                                     Text(LanguageManager.t(muscle.translationKey))
@@ -409,12 +410,14 @@ public struct LibraryView: View {
                                         .foregroundStyle(isSelected ? AppColors.accent : AppColors.text)
                                         .lineLimit(1)
                                         .padding(.horizontal, 6)
-                                        .padding(.vertical, 8)
+                                        .padding(.top, 2)
+                                        .padding(.bottom, 8)
                                 }
                                 .background(isSelected ? AppColors.positiveBg : AppColors.background, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+                                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                        .stroke(isSelected ? AppColors.accent : AppColors.border, lineWidth: isSelected ? 1.5 : 1)
+                                        .strokeBorder(isSelected ? AppColors.accent : AppColors.border, lineWidth: isSelected ? 1.5 : 1)
                                 )
                             }
                             .buttonStyle(.plain)
