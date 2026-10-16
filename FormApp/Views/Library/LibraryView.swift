@@ -453,15 +453,15 @@ struct LibraryFilterPill: View {
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
                         .truncationMode(.tail)
+                        .frame(maxWidth: .infinity, alignment: .leading)
 
-                    if !isSelected {
-                        Image(systemName: "chevron.down")
-                            .font(.system(size: 10, weight: .semibold))
-                            .foregroundStyle(AppColors.muted)
-                    }
+                    Image(systemName: "chevron.down")
+                        .font(.system(size: 10, weight: .semibold))
+                        .foregroundStyle(isSelected ? AppColors.accent : AppColors.muted)
                 }
-                .padding(.horizontal, 10)
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                .padding(.leading, 10)
+                .padding(.trailing, isSelected ? 0 : 10)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                 .contentShape(Rectangle())
             }
             .buttonStyle(.plain)
@@ -470,17 +470,16 @@ struct LibraryFilterPill: View {
                 Button(action: onClear) {
                     Image(systemName: "xmark")
                         .font(.system(size: 11, weight: .bold))
-                        .foregroundStyle(AppColors.accent)
-                        .frame(width: 36, height: 44)
+                        .foregroundStyle(AppColors.danger)
+                        .frame(width: 48, height: 48)
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(LanguageManager.t("library.clearFilter"))
-                .padding(.trailing, 2)
             }
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 44)
+        .frame(height: 48)
         .background(isSelected ? AppColors.positiveBg : AppColors.surface, in: RoundedRectangle(cornerRadius: 10, style: .continuous))
         .overlay(
             RoundedRectangle(cornerRadius: 10, style: .continuous)
