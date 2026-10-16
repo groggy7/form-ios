@@ -208,10 +208,6 @@ public struct FormLabView: View {
 
     private func repMaxMatrixTab(summary: ExerciseRepMaxSummary?) -> some View {
         VStack(spacing: 16) {
-            Text(LanguageManager.t("form_lab.estimate_policy"))
-                .font(.system(size: 12))
-                .foregroundStyle(AppColors.secondaryText)
-                .frame(maxWidth: .infinity, alignment: .leading)
             // Exercise picker & Formula selector card
             VStack(spacing: 12) {
                 HStack {
@@ -386,10 +382,6 @@ public struct FormLabView: View {
         let report = currentCurveReport
 
         return VStack(spacing: 16) {
-            Text(LanguageManager.t("form_lab.estimate_policy"))
-                .font(.system(size: 12))
-                .foregroundStyle(AppColors.secondaryText)
-                .frame(maxWidth: .infinity, alignment: .leading)
             Text(LanguageManager.t("form_lab.formula_used", ["formula": LanguageManager.t(selectedFormula.titleKey)]))
                 .font(.system(size: 12))
                 .foregroundStyle(AppColors.muted)
