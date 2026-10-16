@@ -1301,6 +1301,8 @@
   "builder.replaceDraft": "Remplacer le brouillon actuel ?",
   "programs.cover": "Image du programme",
   "programs.cover.choose": "Choisir une image",
+  "programs.cover.none": "Aucune image sélectionnée",
+  "programs.cover.remove": "Retirer l’image",
   "programs.cover.automatic": "Automatique",
   "programs.cover.hypertrophy": "Hypertrophie",
   "programs.cover.powerbuilding": "Force et muscle",

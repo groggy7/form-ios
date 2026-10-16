@@ -1301,6 +1301,8 @@
   "builder.replaceDraft": "Aktuellen Entwurf ersetzen?",
   "programs.cover": "Programmbild",
   "programs.cover.choose": "Bild auswählen",
+  "programs.cover.none": "Kein Bild ausgewählt",
+  "programs.cover.remove": "Bild entfernen",
   "programs.cover.automatic": "Automatisch",
   "programs.cover.hypertrophy": "Hypertrophie",
   "programs.cover.powerbuilding": "Kraft und Muskelaufbau",

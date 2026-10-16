@@ -248,16 +248,18 @@ final class ProgramBuilderRegressionTests: XCTestCase {
             LanguageManager.setLanguage(language)
             let store = AppStore(persistence: AppStatePersistence(inMemory: true))
             _ = store.addProgram(fixture(), activate: false)
-            let root = ProgramBuilderView(store: store, program: fixture()) { }.environment(\.sizeCategory, .extraExtraExtraLarge)
-            let host = UIHostingController(rootView: root)
-            let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
-            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 850))
-            window.rootViewController = host; window.makeKeyAndVisible(); host.view.frame = window.bounds
-            host.view.setNeedsLayout(); host.view.layoutIfNeeded()
-            let image = UIGraphicsImageRenderer(bounds: host.view.bounds).image { context in host.view.layer.render(in: context.cgContext) }
-            let attachment = XCTAttachment(image: image); attachment.name = "program-builder-320-\(language)-large"; attachment.lifetime = .keepAlways; add(attachment)
-            XCTAssertEqual(host.view.bounds.width, 320)
-            window.isHidden = true; previousWindow?.makeKeyAndVisible()
+            for existing in [false, true] {
+                let root = ProgramBuilderView(store: store, program: existing ? fixture() : nil) { }.environment(\.sizeCategory, .extraExtraExtraLarge)
+                let host = UIHostingController(rootView: root)
+                let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 850))
+                window.rootViewController = host; window.makeKeyAndVisible(); host.view.frame = window.bounds
+                host.view.setNeedsLayout(); host.view.layoutIfNeeded()
+                let image = UIGraphicsImageRenderer(bounds: host.view.bounds).image { context in host.view.layer.render(in: context.cgContext) }
+                let attachment = XCTAttachment(image: image); attachment.name = "program-builder-\(existing ? "edit" : "new")-320-\(language)-large"; attachment.lifetime = .keepAlways; add(attachment)
+                XCTAssertEqual(host.view.bounds.width, 320)
+                window.isHidden = true; previousWindow?.makeKeyAndVisible()
+            }
         }
     }
 }

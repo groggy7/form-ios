@@ -353,6 +353,7 @@ struct ProgramImportReview: View {
 struct BuilderCoverPicker: View {
     let programID: String
     @Binding var selection: String?
+    var showAutomatic = true
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var theme = ThemeManager.shared
     var body: some View {
@@ -360,8 +361,12 @@ struct BuilderCoverPicker: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 16) {
-                    BuilderActionButton("programs.cover.automatic", systemImage: selection == nil ? "checkmark" : "photo") { selection = nil; dismiss() }
-                        .accessibilityAddTraits(selection == nil ? .isSelected : [])
+                    if showAutomatic {
+                        BuilderActionButton("programs.cover.automatic", systemImage: selection == nil ? "checkmark" : "photo") { selection = nil; dismiss() }
+                            .accessibilityAddTraits(selection == nil ? .isSelected : [])
+                    } else if selection != nil {
+                        BuilderActionButton("programs.cover.remove", systemImage: "xmark") { selection = nil; dismiss() }
+                    }
                     LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
                         ForEach(ProgramCover.allCases, id: \.rawValue) { cover in
                             Button { selection = cover.rawValue; dismiss() } label: {

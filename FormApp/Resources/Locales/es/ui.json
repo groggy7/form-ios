@@ -1301,6 +1301,8 @@
   "builder.replaceDraft": "¿Reemplazar el borrador actual?",
   "programs.cover": "Portada del programa",
   "programs.cover.choose": "Elegir portada",
+  "programs.cover.none": "Ninguna imagen seleccionada",
+  "programs.cover.remove": "Quitar imagen",
   "programs.cover.automatic": "Automática",
   "programs.cover.hypertrophy": "Hipertrofia",
   "programs.cover.powerbuilding": "Fuerza y músculo",

@@ -156,7 +156,7 @@ public struct ProgramBuilderView: View {
                     program.workouts[w].exercises[e] = updated
                 }, onDelete: { removeExercise(context.workoutID, context.exercise.id) })
             }
-            .sheet(isPresented: $showCoverPicker) { BuilderCoverPicker(programID: program.id, selection: $program.coverId) }
+            .sheet(isPresented: $showCoverPicker) { BuilderCoverPicker(programID: program.id, selection: $program.coverId, showAutomatic: !isNew && !creatingCopy) }
             .sheet(isPresented: $showTemplates) {
                 NavigationStack {
                     ScrollView {
@@ -186,8 +186,13 @@ public struct ProgramBuilderView: View {
         BuilderSurface {
             Text(LanguageManager.t("builder.details")).font(.headline)
             Text(LanguageManager.t("programs.cover")).font(.caption).foregroundStyle(AppColors.secondaryText)
-            Image(ProgramCover.forProgram(program).assetName).resizable().aspectRatio(1.5, contentMode: .fit)
-                .frame(maxWidth: .infinity).clipShape(RoundedRectangle(cornerRadius: 12)).accessibilityHidden(true)
+            if !isNew || program.coverId != nil {
+                Image(ProgramCover.forProgram(program).assetName).resizable().aspectRatio(1.5, contentMode: .fit)
+                    .frame(maxWidth: .infinity).clipShape(RoundedRectangle(cornerRadius: 12)).accessibilityHidden(true)
+            } else {
+                Text(LanguageManager.t("programs.cover.none")).font(.subheadline).foregroundStyle(AppColors.muted)
+                    .accessibilityIdentifier("program-cover-empty")
+            }
             BuilderActionButton("programs.cover.choose", systemImage: "photo") { showCoverPicker = true }
             BuilderTextField("modal.program.name", text: $program.name, limit: 100)
                 .accessibilityIdentifier("program-builder-name")
