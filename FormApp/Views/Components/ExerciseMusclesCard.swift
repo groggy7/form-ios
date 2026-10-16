@@ -7,7 +7,12 @@ struct ExerciseMuscleProfile: Decodable {
     let initialView: String
     let status: String
     let sources: [String]
+    /// Display-only muscles the exercise video also highlights; never counted in analytics.
+    let involved: [String]?
+    /// Ranked working muscles; analytics, labels, filters and swaps use only these.
     var all: [String] { primary + secondary }
+    var alsoInvolved: [String] { involved ?? [] }
+    var shown: [String] { all + alsoInvolved }
 }
 struct ExerciseAnatomyView: Decodable {
     let offsetX: CGFloat
@@ -32,7 +37,7 @@ struct ExerciseMuscleCatalog: Decodable {
     }
     func availableViews(_ profile: ExerciseMuscleProfile) -> [String] {
         [profile.initialView, profile.initialView == "front" ? "back" : "front"].filter { view in
-            profile.all.contains { views[view]?.regions[$0] != nil }
+            profile.shown.contains { views[view]?.regions[$0] != nil }
         }
     }
     static let images: [String: UIImage] = {
@@ -74,6 +79,7 @@ struct ExerciseMusclesCard: View {
     @ScaledMetric(relativeTo: .body) private var bodySize: CGFloat = 15
     @ScaledMetric(relativeTo: .caption) private var labelSize: CGFloat = 13
     @ScaledMetric(relativeTo: .caption) private var noteSize: CGFloat = 12
+    @ScaledMetric(relativeTo: .body) private var involvedSize: CGFloat = 14
 
     init(exerciseId: String?, initiallyExpanded: Bool = true) {
         self.exerciseId = exerciseId
@@ -124,8 +130,12 @@ struct ExerciseMusclesCard: View {
                             stacked(catalog, profile, view, views)
                         }
                     }
-                    Text(LanguageManager.t("anatomy.note"))
-                        .font(.system(size: noteSize)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)
+                    alsoInvolved(profile)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(LanguageManager.t("anatomy.note"))
+                        Text(LanguageManager.t("anatomy.videoNote")).accessibilityIdentifier("anatomy-video-note")
+                    }
+                    .font(.system(size: noteSize)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)
                 } else {
                     Text(LanguageManager.t("anatomy.unavailable"))
                         .font(.system(size: bodySize)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)
@@ -218,19 +228,40 @@ struct ExerciseMusclesCard: View {
         }
     }
 
+    @ViewBuilder
+    private func alsoInvolved(_ profile: ExerciseMuscleProfile) -> some View {
+        // Lighter, display-only group so stabilisers the video highlights are acknowledged without ranking.
+        if !profile.alsoInvolved.isEmpty {
+            VStack(alignment: .leading, spacing: 6) {
+                Text(LanguageManager.t("anatomy.involved"))
+                    .font(.system(size: labelSize, weight: .medium)).foregroundStyle(AppColors.secondaryText)
+                HStack(alignment: .top, spacing: 8) {
+                    Circle().fill(AppColors.muscleInvolved)
+                        .frame(width: 8, height: 8).padding(.top, involvedSize * 0.3).accessibilityHidden(true)
+                    Text(profile.alsoInvolved.map { LanguageManager.t("anatomy.muscle.\($0)") }.joined(separator: ", "))
+                        .font(.system(size: involvedSize)).foregroundStyle(AppColors.secondaryText)
+                        .lineSpacing(2).fixedSize(horizontal: false, vertical: true)
+                }
+            }
+            .accessibilityIdentifier("anatomy-involved")
+        }
+    }
+
     private func figure(_ catalog: ExerciseMuscleCatalog, _ profile: ExerciseMuscleProfile, _ view: String) -> some View {
         let anatomy = catalog.views[view]
-        let paths = profile.all.compactMap { muscle -> (String, CGPath)? in
+        let paths = profile.shown.compactMap { muscle -> (String, CGPath)? in
             guard let raw = anatomy?.regions[muscle] else { return nil }
             return (muscle, SVGPathParser.parse(raw))
         }
         let primaryColor = AppColors.purple
         let secondaryColor = AppColors.muscleSecondary
+        let involvedColor = AppColors.muscleInvolved
         return Canvas { context, size in
             guard let anatomy, let image = ExerciseMuscleCatalog.images[view] else { return }
             // Lower-body hinges start higher so the lumbar region is not cropped away.
-            let top: CGFloat = profile.focus != "lower" ? 0 : (profile.all.contains("lower-back") ? 340 : 410)
-            let height: CGFloat = profile.focus == "lower" ? catalog.height - top : 620
+            let top: CGFloat = profile.focus != "lower" ? 0 : (profile.shown.contains("lower-back") ? 340 : 410)
+            // Whole-body exercises show the complete figure.
+            let height: CGFloat = profile.focus == "lower" ? catalog.height - top : profile.focus == "full" ? catalog.height : 620
             let scale = min(size.width / catalog.width, size.height / height)
             context.clip(to: Path(CGRect(origin: .zero, size: size)))
             context.translateBy(x: (size.width - catalog.width * scale) / 2, y: (size.height - height * scale) / 2)
@@ -241,7 +272,9 @@ struct ExerciseMusclesCard: View {
             context.blendMode = .color
             context.opacity = 0.7
             for (muscle, path) in paths {
-                context.fill(Path(path), with: .color(profile.primary.contains(muscle) ? primaryColor : secondaryColor))
+                let color = profile.primary.contains(muscle) ? primaryColor
+                    : profile.secondary.contains(muscle) ? secondaryColor : involvedColor
+                context.fill(Path(path), with: .color(color))
             }
         }.accessibilityLabel(LanguageManager.t(view == "front" ? "anatomy.front" : "anatomy.back"))
     }

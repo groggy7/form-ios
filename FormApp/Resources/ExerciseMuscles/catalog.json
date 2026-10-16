@@ -122,6 +122,11 @@
         "lats",
         "obliques"
       ],
+      "involved": [
+        "chest",
+        "rear-delts",
+        "adductors"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -136,6 +141,9 @@
       ],
       "secondary": [
         "adductors"
+      ],
+      "involved": [
+        "calves"
       ],
       "focus": "lower",
       "initialView": "front",
@@ -168,6 +176,9 @@
       "secondary": [
         "adductors"
       ],
+      "involved": [
+        "calves"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -181,6 +192,9 @@
       ],
       "secondary": [
         "hamstrings"
+      ],
+      "involved": [
+        "quads"
       ],
       "focus": "lower",
       "initialView": "back",
@@ -196,6 +210,11 @@
       ],
       "secondary": [
         "lower-back"
+      ],
+      "involved": [
+        "quads",
+        "calves",
+        "adductors"
       ],
       "focus": "lower",
       "initialView": "back",
@@ -214,6 +233,9 @@
         "rear-delts",
         "lower-back"
       ],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -227,6 +249,10 @@
         "glutes"
       ],
       "secondary": [],
+      "involved": [
+        "calves",
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -240,6 +266,9 @@
       ],
       "secondary": [
         "upper-back"
+      ],
+      "involved": [
+        "front-delts"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -275,7 +304,11 @@
         "upper-back",
         "quads"
       ],
-      "focus": "lower",
+      "involved": [
+        "calves",
+        "adductors"
+      ],
+      "focus": "full",
       "initialView": "back",
       "status": "curated",
       "sources": [
@@ -288,6 +321,10 @@
       ],
       "secondary": [
         "obliques"
+      ],
+      "involved": [
+        "quads",
+        "glutes"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -329,11 +366,10 @@
     },
     "dumbbell-hammer-curl": {
       "primary": [
-        "biceps"
-      ],
-      "secondary": [
+        "biceps",
         "forearms"
       ],
+      "secondary": [],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -347,6 +383,9 @@
       ],
       "secondary": [
         "upper-back"
+      ],
+      "involved": [
+        "front-delts"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -364,6 +403,10 @@
       "secondary": [
         "lower-back"
       ],
+      "involved": [
+        "quads",
+        "calves"
+      ],
       "focus": "lower",
       "initialView": "back",
       "status": "curated",
@@ -377,6 +420,10 @@
         "glutes"
       ],
       "secondary": [],
+      "involved": [
+        "calves",
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -389,6 +436,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -402,6 +452,11 @@
         "upper-back"
       ],
       "secondary": [],
+      "involved": [
+        "side-delts",
+        "biceps",
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -418,7 +473,11 @@
         "abs",
         "obliques"
       ],
-      "focus": "upper",
+      "involved": [
+        "quads",
+        "calves"
+      ],
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
@@ -433,6 +492,9 @@
       "secondary": [
         "adductors"
       ],
+      "involved": [
+        "calves"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -446,6 +508,9 @@
       ],
       "secondary": [
         "obliques"
+      ],
+      "involved": [
+        "quads"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -474,6 +539,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -504,6 +572,11 @@
         "forearms",
         "quads"
       ],
+      "involved": [
+        "hamstrings",
+        "glutes",
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -520,7 +593,15 @@
         "lower-back",
         "upper-back"
       ],
-      "focus": "lower",
+      "involved": [
+        "chest",
+        "front-delts",
+        "side-delts",
+        "quads",
+        "calves",
+        "adductors"
+      ],
+      "focus": "full",
       "initialView": "back",
       "status": "curated",
       "sources": [
@@ -576,6 +657,10 @@
       "secondary": [
         "glutes"
       ],
+      "involved": [
+        "calves",
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -605,6 +690,10 @@
       "secondary": [
         "biceps",
         "rear-delts"
+      ],
+      "involved": [
+        "chest",
+        "forearms"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -645,6 +734,9 @@
       "secondary": [
         "front-delts"
       ],
+      "involved": [
+        "biceps"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -661,6 +753,9 @@
         "biceps",
         "rear-delts"
       ],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -676,6 +771,10 @@
         "upper-back",
         "biceps",
         "rear-delts"
+      ],
+      "involved": [
+        "chest",
+        "forearms"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -694,7 +793,11 @@
         "side-delts",
         "glutes"
       ],
-      "focus": "upper",
+      "involved": [
+        "chest",
+        "calves"
+      ],
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
@@ -789,6 +892,9 @@
         "side-delts",
         "upper-back"
       ],
+      "involved": [
+        "chest"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -830,7 +936,11 @@
         "hamstrings",
         "upper-back"
       ],
-      "focus": "lower",
+      "involved": [
+        "calves",
+        "adductors"
+      ],
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
@@ -845,6 +955,10 @@
       "secondary": [
         "biceps",
         "rear-delts"
+      ],
+      "involved": [
+        "chest",
+        "forearms"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -861,6 +975,9 @@
         "triceps",
         "side-delts",
         "upper-back"
+      ],
+      "involved": [
+        "chest"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -893,6 +1010,9 @@
         "side-delts",
         "upper-back"
       ],
+      "involved": [
+        "chest"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -906,6 +1026,10 @@
         "glutes"
       ],
       "secondary": [],
+      "involved": [
+        "calves",
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -919,6 +1043,10 @@
         "glutes"
       ],
       "secondary": [],
+      "involved": [
+        "calves",
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -934,6 +1062,9 @@
       "secondary": [
         "adductors"
       ],
+      "involved": [
+        "calves"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -948,6 +1079,9 @@
       "secondary": [
         "upper-back"
       ],
+      "involved": [
+        "side-delts"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -960,6 +1094,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -972,6 +1109,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -986,6 +1126,10 @@
       "secondary": [
         "triceps",
         "front-delts"
+      ],
+      "involved": [
+        "upper-back",
+        "lats"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -1003,6 +1147,10 @@
         "biceps",
         "rear-delts"
       ],
+      "involved": [
+        "chest",
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -1016,6 +1164,10 @@
       ],
       "secondary": [
         "obliques"
+      ],
+      "involved": [
+        "front-delts",
+        "glutes"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -1044,6 +1196,10 @@
       ],
       "secondary": [
         "glutes"
+      ],
+      "involved": [
+        "calves",
+        "adductors"
       ],
       "focus": "lower",
       "initialView": "front",
@@ -1077,7 +1233,10 @@
         "upper-back",
         "adductors"
       ],
-      "focus": "lower",
+      "involved": [
+        "calves"
+      ],
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
@@ -1091,6 +1250,9 @@
       ],
       "secondary": [
         "adductors"
+      ],
+      "involved": [
+        "calves"
       ],
       "focus": "lower",
       "initialView": "front",
@@ -1137,6 +1299,10 @@
       "secondary": [
         "lower-back"
       ],
+      "involved": [
+        "quads",
+        "calves"
+      ],
       "focus": "lower",
       "initialView": "back",
       "status": "curated",
@@ -1151,6 +1317,9 @@
       "secondary": [
         "hamstrings"
       ],
+      "involved": [
+        "quads"
+      ],
       "focus": "lower",
       "initialView": "back",
       "status": "curated",
@@ -1164,6 +1333,10 @@
       ],
       "secondary": [
         "glutes"
+      ],
+      "involved": [
+        "calves",
+        "adductors"
       ],
       "focus": "lower",
       "initialView": "front",
@@ -1180,6 +1353,9 @@
       "secondary": [
         "adductors"
       ],
+      "involved": [
+        "calves"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -1193,6 +1369,9 @@
         "glutes"
       ],
       "secondary": [],
+      "involved": [
+        "calves"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -1207,6 +1386,10 @@
       "secondary": [
         "glutes"
       ],
+      "involved": [
+        "calves",
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -1220,6 +1403,9 @@
         "glutes"
       ],
       "secondary": [],
+      "involved": [
+        "calves"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -1235,6 +1421,9 @@
       "secondary": [
         "lower-back"
       ],
+      "involved": [
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "back",
       "status": "curated",
@@ -1249,6 +1438,9 @@
       ],
       "secondary": [
         "lower-back"
+      ],
+      "involved": [
+        "calves"
       ],
       "focus": "lower",
       "initialView": "back",
@@ -1308,6 +1500,9 @@
         "hamstrings"
       ],
       "secondary": [],
+      "involved": [
+        "lower-back"
+      ],
       "focus": "lower",
       "initialView": "back",
       "status": "curated",
@@ -1441,6 +1636,9 @@
       "secondary": [
         "front-delts"
       ],
+      "involved": [
+        "biceps"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -1455,6 +1653,9 @@
       "secondary": [
         "front-delts"
       ],
+      "involved": [
+        "biceps"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -1468,6 +1669,9 @@
       ],
       "secondary": [
         "front-delts"
+      ],
+      "involved": [
+        "biceps"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -1498,6 +1702,9 @@
       ],
       "secondary": [
         "triceps"
+      ],
+      "involved": [
+        "rear-delts"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -1531,6 +1738,10 @@
         "biceps",
         "rear-delts"
       ],
+      "involved": [
+        "chest",
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -1548,6 +1759,9 @@
         "rear-delts",
         "lower-back"
       ],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -1563,6 +1777,10 @@
       "secondary": [
         "biceps",
         "rear-delts"
+      ],
+      "involved": [
+        "chest",
+        "forearms"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -1580,6 +1798,9 @@
         "biceps",
         "rear-delts"
       ],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -1595,6 +1816,10 @@
         "upper-back",
         "biceps",
         "rear-delts"
+      ],
+      "involved": [
+        "chest",
+        "forearms"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -1612,6 +1837,9 @@
         "biceps",
         "rear-delts"
       ],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -1626,6 +1854,9 @@
       "secondary": [
         "upper-back",
         "triceps"
+      ],
+      "involved": [
+        "rear-delts"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -1642,6 +1873,9 @@
         "chest",
         "triceps"
       ],
+      "involved": [
+        "rear-delts"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -1657,6 +1891,9 @@
         "upper-back",
         "biceps",
         "rear-delts"
+      ],
+      "involved": [
+        "forearms"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -1686,6 +1923,9 @@
       ],
       "secondary": [
         "upper-back"
+      ],
+      "involved": [
+        "side-delts"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -1771,6 +2011,9 @@
         "side-delts",
         "upper-back"
       ],
+      "involved": [
+        "chest"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -1800,6 +2043,9 @@
       "secondary": [
         "upper-back"
       ],
+      "involved": [
+        "front-delts"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -1814,6 +2060,9 @@
       ],
       "secondary": [
         "upper-back"
+      ],
+      "involved": [
+        "side-delts"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -1830,6 +2079,10 @@
       "secondary": [
         "biceps"
       ],
+      "involved": [
+        "front-delts",
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -1843,6 +2096,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -1855,6 +2111,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -1867,6 +2126,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -1879,6 +2141,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -1888,11 +2153,10 @@
     },
     "cable-rope-hammer-curl": {
       "primary": [
-        "biceps"
-      ],
-      "secondary": [
+        "biceps",
         "forearms"
       ],
+      "secondary": [],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -1905,6 +2169,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -1917,6 +2184,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -1991,6 +2261,9 @@
       "secondary": [
         "obliques"
       ],
+      "involved": [
+        "adductors"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -2018,6 +2291,9 @@
         "obliques"
       ],
       "secondary": [],
+      "involved": [
+        "quads"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -2031,6 +2307,9 @@
       ],
       "secondary": [
         "abs"
+      ],
+      "involved": [
+        "adductors"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -2060,6 +2339,10 @@
       "secondary": [
         "abs"
       ],
+      "involved": [
+        "front-delts",
+        "hamstrings"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -2074,6 +2357,11 @@
       "secondary": [
         "quads",
         "front-delts"
+      ],
+      "involved": [
+        "chest",
+        "obliques",
+        "glutes"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -2092,7 +2380,12 @@
         "triceps",
         "calves"
       ],
-      "focus": "lower",
+      "involved": [
+        "abs",
+        "hamstrings",
+        "glutes"
+      ],
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
@@ -2105,10 +2398,16 @@
         "adductors"
       ],
       "secondary": [
-        "glutes",
-        "side-delts"
+        "quads",
+        "side-delts",
+        "upper-back",
+        "glutes"
       ],
-      "focus": "lower",
+      "involved": [
+        "chest",
+        "front-delts"
+      ],
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
@@ -2124,7 +2423,11 @@
         "calves",
         "hamstrings"
       ],
-      "focus": "lower",
+      "involved": [
+        "front-delts",
+        "lower-back"
+      ],
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
@@ -2138,6 +2441,9 @@
       ],
       "secondary": [
         "calves"
+      ],
+      "involved": [
+        "adductors"
       ],
       "focus": "lower",
       "initialView": "front",
@@ -2156,7 +2462,11 @@
         "upper-back",
         "quads"
       ],
-      "focus": "lower",
+      "involved": [
+        "calves",
+        "adductors"
+      ],
+      "focus": "full",
       "initialView": "back",
       "status": "curated",
       "sources": [
@@ -2172,7 +2482,11 @@
         "upper-back",
         "front-delts"
       ],
-      "focus": "lower",
+      "involved": [
+        "quads",
+        "calves"
+      ],
+      "focus": "full",
       "initialView": "back",
       "status": "curated",
       "sources": [
@@ -2187,6 +2501,9 @@
         "triceps",
         "side-delts",
         "upper-back"
+      ],
+      "involved": [
+        "chest"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -2205,7 +2522,13 @@
         "upper-back",
         "triceps"
       ],
-      "focus": "upper",
+      "involved": [
+        "chest",
+        "side-delts",
+        "quads",
+        "calves"
+      ],
+      "focus": "full",
       "initialView": "back",
       "status": "curated",
       "sources": [
@@ -2221,7 +2544,11 @@
         "forearms",
         "upper-back"
       ],
-      "focus": "upper",
+      "involved": [
+        "quads",
+        "calves"
+      ],
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
@@ -2258,6 +2585,9 @@
       ],
       "secondary": [
         "hamstrings"
+      ],
+      "involved": [
+        "quads"
       ],
       "focus": "lower",
       "initialView": "back",
@@ -2392,6 +2722,9 @@
       "secondary": [
         "front-delts"
       ],
+      "involved": [
+        "biceps"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -2405,6 +2738,9 @@
       ],
       "secondary": [
         "front-delts"
+      ],
+      "involved": [
+        "biceps"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -2465,6 +2801,10 @@
       "secondary": [
         "front-delts"
       ],
+      "involved": [
+        "side-delts",
+        "biceps"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -2492,6 +2832,9 @@
       ],
       "secondary": [
         "front-delts"
+      ],
+      "involved": [
+        "triceps"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -2584,6 +2927,9 @@
         "biceps",
         "rear-delts"
       ],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -2600,6 +2946,11 @@
         "biceps",
         "rear-delts"
       ],
+      "involved": [
+        "chest",
+        "obliques",
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -2615,6 +2966,9 @@
         "upper-back",
         "biceps",
         "rear-delts"
+      ],
+      "involved": [
+        "forearms"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -2648,6 +3002,10 @@
         "biceps",
         "rear-delts"
       ],
+      "involved": [
+        "chest",
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -2657,11 +3015,14 @@
     },
     "lever-machine-pullover": {
       "primary": [
-        "lats"
+        "lats",
+        "chest"
       ],
       "secondary": [
-        "chest",
         "triceps"
+      ],
+      "involved": [
+        "rear-delts"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -2677,6 +3038,9 @@
       "secondary": [
         "upper-back",
         "triceps"
+      ],
+      "involved": [
+        "rear-delts"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -2726,6 +3090,9 @@
         "rear-delts",
         "lower-back"
       ],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -2743,6 +3110,9 @@
         "rear-delts",
         "lower-back"
       ],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -2758,6 +3128,11 @@
       "secondary": [
         "biceps",
         "rear-delts"
+      ],
+      "involved": [
+        "chest",
+        "triceps",
+        "forearms"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -2775,6 +3150,9 @@
         "biceps",
         "rear-delts"
       ],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -2791,6 +3169,9 @@
         "biceps",
         "rear-delts"
       ],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -2806,6 +3187,12 @@
       "secondary": [
         "biceps",
         "rear-delts"
+      ],
+      "involved": [
+        "chest",
+        "triceps",
+        "obliques",
+        "forearms"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -2839,6 +3226,10 @@
         "biceps",
         "rear-delts"
       ],
+      "involved": [
+        "chest",
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -2854,6 +3245,10 @@
       "secondary": [
         "biceps",
         "rear-delts"
+      ],
+      "involved": [
+        "chest",
+        "forearms"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -2871,6 +3266,9 @@
         "biceps",
         "rear-delts"
       ],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -2886,6 +3284,9 @@
       "secondary": [
         "biceps",
         "rear-delts"
+      ],
+      "involved": [
+        "forearms"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -2903,6 +3304,10 @@
         "biceps",
         "rear-delts"
       ],
+      "involved": [
+        "chest",
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -2918,6 +3323,11 @@
       "secondary": [
         "biceps",
         "abs"
+      ],
+      "involved": [
+        "chest",
+        "rear-delts",
+        "forearms"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -2951,6 +3361,9 @@
         "biceps",
         "rear-delts",
         "lower-back"
+      ],
+      "involved": [
+        "forearms"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -3013,6 +3426,10 @@
         "biceps",
         "rear-delts"
       ],
+      "involved": [
+        "chest",
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -3029,7 +3446,12 @@
       "secondary": [
         "hamstrings"
       ],
-      "focus": "upper",
+      "involved": [
+        "quads",
+        "calves",
+        "adductors"
+      ],
+      "focus": "full",
       "initialView": "back",
       "status": "curated",
       "sources": [
@@ -3042,6 +3464,9 @@
       ],
       "secondary": [
         "upper-back"
+      ],
+      "involved": [
+        "front-delts"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -3058,6 +3483,9 @@
       "secondary": [
         "upper-back"
       ],
+      "involved": [
+        "front-delts"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3073,6 +3501,9 @@
       "secondary": [
         "upper-back"
       ],
+      "involved": [
+        "front-delts"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3087,6 +3518,9 @@
       ],
       "secondary": [
         "upper-back"
+      ],
+      "involved": [
+        "front-delts"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -3135,6 +3569,9 @@
       "secondary": [
         "side-delts"
       ],
+      "involved": [
+        "chest"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3148,6 +3585,9 @@
       ],
       "secondary": [
         "side-delts"
+      ],
+      "involved": [
+        "chest"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -3163,6 +3603,9 @@
       "secondary": [
         "side-delts"
       ],
+      "involved": [
+        "chest"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3176,6 +3619,9 @@
       ],
       "secondary": [
         "side-delts"
+      ],
+      "involved": [
+        "chest"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -3205,6 +3651,9 @@
       "secondary": [
         "upper-back"
       ],
+      "involved": [
+        "side-delts"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -3218,6 +3667,10 @@
       ],
       "secondary": [
         "upper-back"
+      ],
+      "involved": [
+        "front-delts",
+        "side-delts"
       ],
       "focus": "upper",
       "initialView": "back",
@@ -3249,6 +3702,10 @@
       "secondary": [
         "biceps"
       ],
+      "involved": [
+        "front-delts",
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3264,6 +3721,10 @@
       ],
       "secondary": [
         "biceps"
+      ],
+      "involved": [
+        "front-delts",
+        "forearms"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -3282,6 +3743,9 @@
         "side-delts",
         "upper-back",
         "abs"
+      ],
+      "involved": [
+        "obliques"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -3330,6 +3794,9 @@
         "side-delts",
         "upper-back"
       ],
+      "involved": [
+        "chest"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3342,6 +3809,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3354,6 +3824,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3363,11 +3836,10 @@
     },
     "dumbbell-one-arm-hammer-preacher-curl": {
       "primary": [
-        "biceps"
-      ],
-      "secondary": [
+        "biceps",
         "forearms"
       ],
+      "secondary": [],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3380,6 +3852,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3442,11 +3917,10 @@
     },
     "dumbbell-cross-body-hammer-curl": {
       "primary": [
-        "biceps"
-      ],
-      "secondary": [
+        "biceps",
         "forearms"
       ],
+      "secondary": [],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3459,6 +3933,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3471,6 +3948,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3483,6 +3963,11 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "front-delts",
+        "rear-delts",
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3495,6 +3980,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "front-delts"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3519,6 +4007,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3531,6 +4022,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3555,6 +4049,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3564,11 +4061,10 @@
     },
     "dumbbell-hammer-preacher-curl": {
       "primary": [
-        "biceps"
-      ],
-      "secondary": [
+        "biceps",
         "forearms"
       ],
+      "secondary": [],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -3646,6 +4142,9 @@
         "triceps"
       ],
       "secondary": [],
+      "involved": [
+        "front-delts"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -3709,6 +4208,10 @@
         "chest",
         "front-delts"
       ],
+      "involved": [
+        "upper-back",
+        "lats"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -3723,6 +4226,9 @@
       ],
       "secondary": [
         "adductors"
+      ],
+      "involved": [
+        "calves"
       ],
       "focus": "lower",
       "initialView": "front",
@@ -3739,6 +4245,9 @@
       "secondary": [
         "adductors"
       ],
+      "involved": [
+        "calves"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3754,6 +4263,9 @@
       "secondary": [
         "adductors"
       ],
+      "involved": [
+        "calves"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3768,6 +4280,9 @@
       ],
       "secondary": [
         "adductors"
+      ],
+      "involved": [
+        "calves"
       ],
       "focus": "lower",
       "initialView": "front",
@@ -3786,7 +4301,10 @@
         "abs",
         "adductors"
       ],
-      "focus": "lower",
+      "involved": [
+        "calves"
+      ],
+      "focus": "full",
       "initialView": "front",
       "status": "curated",
       "sources": [
@@ -3800,6 +4318,9 @@
       ],
       "secondary": [
         "adductors"
+      ],
+      "involved": [
+        "calves"
       ],
       "focus": "lower",
       "initialView": "front",
@@ -3831,6 +4352,9 @@
       "secondary": [
         "adductors"
       ],
+      "involved": [
+        "calves"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3844,6 +4368,10 @@
         "glutes"
       ],
       "secondary": [],
+      "involved": [
+        "calves",
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3857,6 +4385,10 @@
         "glutes"
       ],
       "secondary": [],
+      "involved": [
+        "hamstrings",
+        "calves"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3870,6 +4402,9 @@
         "glutes"
       ],
       "secondary": [],
+      "involved": [
+        "calves"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3926,6 +4461,10 @@
       "secondary": [
         "hamstrings"
       ],
+      "involved": [
+        "calves",
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "back",
       "status": "curated",
@@ -3939,6 +4478,10 @@
       ],
       "secondary": [
         "glutes"
+      ],
+      "involved": [
+        "calves",
+        "adductors"
       ],
       "focus": "lower",
       "initialView": "front",
@@ -3954,6 +4497,10 @@
       "secondary": [
         "glutes"
       ],
+      "involved": [
+        "calves",
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3968,6 +4515,9 @@
         "adductors"
       ],
       "secondary": [],
+      "involved": [
+        "calves"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3982,6 +4532,9 @@
         "adductors"
       ],
       "secondary": [],
+      "involved": [
+        "calves"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -3995,6 +4548,11 @@
         "glutes"
       ],
       "secondary": [],
+      "involved": [
+        "abs",
+        "calves",
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -4008,6 +4566,9 @@
         "glutes"
       ],
       "secondary": [],
+      "involved": [
+        "calves"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -4021,6 +4582,10 @@
         "glutes"
       ],
       "secondary": [],
+      "involved": [
+        "calves",
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -4034,6 +4599,10 @@
         "glutes"
       ],
       "secondary": [],
+      "involved": [
+        "calves",
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -4047,6 +4616,10 @@
         "glutes"
       ],
       "secondary": [],
+      "involved": [
+        "hamstrings",
+        "calves"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -4061,6 +4634,9 @@
         "adductors"
       ],
       "secondary": [],
+      "involved": [
+        "calves"
+      ],
       "focus": "lower",
       "initialView": "front",
       "status": "curated",
@@ -4145,6 +4721,9 @@
       "secondary": [
         "hamstrings"
       ],
+      "involved": [
+        "adductors"
+      ],
       "focus": "lower",
       "initialView": "back",
       "status": "curated",
@@ -4159,6 +4738,9 @@
       "secondary": [
         "hamstrings"
       ],
+      "involved": [
+        "quads"
+      ],
       "focus": "lower",
       "initialView": "back",
       "status": "curated",
@@ -4172,6 +4754,9 @@
       ],
       "secondary": [
         "hamstrings"
+      ],
+      "involved": [
+        "quads"
       ],
       "focus": "lower",
       "initialView": "back",
@@ -4209,12 +4794,16 @@
     },
     "handstand-push-up": {
       "primary": [
-        "front-delts"
+        "front-delts",
+        "triceps"
       ],
       "secondary": [
-        "triceps",
         "side-delts",
         "upper-back"
+      ],
+      "involved": [
+        "chest",
+        "lats"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -4261,6 +4850,10 @@
         "chest",
         "front-delts"
       ],
+      "involved": [
+        "upper-back",
+        "lats"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -4292,6 +4885,9 @@
         "biceps",
         "rear-delts"
       ],
+      "involved": [
+        "chest"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -4321,6 +4917,11 @@
         "upper-back"
       ],
       "secondary": [],
+      "involved": [
+        "side-delts",
+        "biceps",
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "back",
       "status": "curated",
@@ -4333,6 +4934,9 @@
         "biceps"
       ],
       "secondary": [],
+      "involved": [
+        "forearms"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -4358,6 +4962,9 @@
       ],
       "secondary": [
         "upper-back"
+      ],
+      "involved": [
+        "front-delts"
       ],
       "focus": "upper",
       "initialView": "front",
@@ -4390,6 +4997,9 @@
         "obliques",
         "lats"
       ],
+      "involved": [
+        "quads"
+      ],
       "focus": "upper",
       "initialView": "front",
       "status": "curated",
@@ -4405,6 +5015,9 @@
         "upper-back",
         "abs",
         "quads"
+      ],
+      "involved": [
+        "chest"
       ],
       "focus": "upper",
       "initialView": "front",

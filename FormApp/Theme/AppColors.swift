@@ -40,6 +40,7 @@ public enum AppColors {
     public static var positiveBg: Color { ThemeManager.shared.currentTheme.positiveBg }
     public static var purple: Color { ThemeManager.shared.currentTheme.purple }
     public static var muscleSecondary: Color { lightThemeColor(Color(hex: 0x8EA9F4), Color(hex: 0x4D679A)) }
+    public static var muscleInvolved: Color { lightThemeColor(Color(hex: 0xB6BEC4), Color(hex: 0x7D868D)) }
     public static var purpleBg: Color { ThemeManager.shared.currentTheme.purpleBg }
     public static var coral: Color { ThemeManager.shared.currentTheme.coral }
     public static var danger: Color { ThemeManager.shared.currentTheme.danger }

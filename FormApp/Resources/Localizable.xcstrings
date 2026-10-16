@@ -2136,6 +2136,41 @@
         }
       }
     },
+    "anatomy.involved": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Also involved"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ayrıca çalışan"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ebenfalls beteiligt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Également sollicités"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "También implicados"
+          }
+        }
+      }
+    },
     "anatomy.front": {
       "extractionState": "manual",
       "localizations": {
@@ -2272,6 +2307,41 @@
           "stringUnit": {
             "state": "translated",
             "value": "Las zonas musculares resaltadas son orientativas."
+          }
+        }
+      }
+    },
+    "anatomy.videoNote": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The video highlights every muscle involved; this card ranks the main ones."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Video, çalışan tüm kasları vurgular; bu kart ana kasları sıralar."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Das Video hebt alle beteiligten Muskeln hervor; diese Karte ordnet die wichtigsten ein."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La vidéo met en évidence tous les muscles sollicités ; cette fiche classe les principaux."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "El vídeo resalta todos los músculos implicados; esta tarjeta ordena los principales."
           }
         }
       }

@@ -3437,12 +3437,42 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(try p("farmer-carry").primary, ["forearms", "upper-back"])
         XCTAssertEqual(try p("dumbbell-pullover").primary, ["chest", "lats"])
         for id in ["cossack-squat", "side-lunge", "cable-lateral-lunge"] { XCTAssertTrue(try p(id).primary.contains("adductors"), id) }
-        XCTAssertEqual(try p("barbell-rack-pull").focus, "upper")
+        XCTAssertEqual(try p("barbell-rack-pull").focus, "full")
         XCTAssertTrue(try p("barbell-rack-pull").primary.contains("lower-back"))
         for id in ["barbell-row", "barbell-pendlay-row", "landmine-one-arm-bent-over-row", "landmine-v-bar-bent-over-row", "dumbbell-gorilla-row"] {
             XCTAssertTrue(try p(id).secondary.contains("lower-back"), id)
         }
         XCTAssertFalse(try p("chest-supported-dumbbell-row").all.contains("lower-back"))
+    }
+
+    func testAlsoInvolvedIsDisplayOnlyAndMatchesVideoConflictFixes() throws {
+        let catalog = try XCTUnwrap(ExerciseMuscleCatalog.shared)
+        XCTAssertGreaterThan(catalog.exercises.values.filter { !$0.alsoInvolved.isEmpty }.count, 150)
+        for (id, profile) in catalog.exercises {
+            XCTAssertTrue(Set(profile.alsoInvolved).isDisjoint(with: profile.all), id)
+            for muscle in profile.alsoInvolved {
+                XCTAssertTrue(catalog.views.values.contains { $0.regions[muscle] != nil }, muscle)
+                XCTAssertNotNil(catalog.muscles[muscle]?["tr"], muscle)
+            }
+        }
+        func p(_ id: String) throws -> ExerciseMuscleProfile { try XCTUnwrap(catalog.profile(id), id) }
+        XCTAssertEqual(try p("jumping-jack").primary, ["calves", "adductors"])
+        XCTAssertTrue(Set(try p("jumping-jack").alsoInvolved).isSuperset(of: ["chest", "front-delts"]))
+        for id in ["dumbbell-hammer-curl", "cable-rope-hammer-curl", "dumbbell-cross-body-hammer-curl",
+                   "dumbbell-hammer-preacher-curl", "dumbbell-one-arm-hammer-preacher-curl"] {
+            XCTAssertEqual(try p(id).primary, ["biceps", "forearms"], id)
+        }
+        XCTAssertEqual(try p("lever-machine-pullover").primary, ["lats", "chest"])
+        XCTAssertEqual(try p("handstand-push-up").primary, ["front-delts", "triceps"])
+        let session = WorkoutSessionRecord(
+            id: "s", programId: "p", workoutId: "w", workoutTitle: "Arms",
+            startedAt: "2026-09-15T10:00:00Z", completedAt: "2026-09-15T11:00:00Z",
+            durationSeconds: 600, exerciseLogs: [
+                SessionExerciseLog(exerciseName: "Barbell Curl", sets: [SessionSetLog(setNumber: 1, weightKg: 30, reps: 10)])
+            ])
+        let report = VolumeMatrixEngine.computeLoggedVolume(targetWeekKey: "2026-W38", history: [session], catalog: catalog)
+        XCTAssertEqual(report.muscleSummaries["biceps"]?.totalEffectiveSets, 1)
+        XCTAssertEqual(report.muscleSummaries["forearms"]?.totalEffectiveSets, 0)
     }
 
     func testCustomExerciseNamesResolveToTheirMuscleLabel() {
@@ -3505,6 +3535,8 @@ final class FormAppTests: XCTestCase {
             ("lever-seated-hip-adduction", "adduction", "de", 280.0, DynamicTypeSize.large),
             ("wall-supported-tibialis-raise", "tibialis", "en", 350.0, DynamicTypeSize.large),
             ("barbell-reverse-curl", "reverse-curl", "es", 350.0, DynamicTypeSize.large),
+            ("jumping-jack", "jumping-jack", "en", 350.0, DynamicTypeSize.large),
+            ("barbell-curl", "curl-tr-large", "tr", 280.0, DynamicTypeSize.xxxLarge),
             ("unknown", "unknown", "en", 280.0, DynamicTypeSize.large)
         ] {
             LanguageManager.setLanguage(language)
