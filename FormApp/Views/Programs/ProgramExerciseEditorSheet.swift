@@ -5,10 +5,6 @@ public struct ProgramExerciseEditorSheet: View {
     let exercise: Exercise
     let isNew: Bool
     @State private var name: String
-    @State private var cues: String
-    @State private var avoid: String
-    @State private var videos: String
-    @State private var movement: MovementType
     var onSave: (Exercise) -> Void
     var onDelete: (() -> Void)?
     @Environment(\.dismiss) var dismiss
@@ -31,10 +27,6 @@ public struct ProgramExerciseEditorSheet: View {
         self.exercise = exercise
         self.isNew = isNew
         _name = State(initialValue: exercise.name)
-        _cues = State(initialValue: exercise.cues)
-        _avoid = State(initialValue: exercise.avoid)
-        _videos = State(initialValue: exercise.videos.joined(separator: "\n"))
-        _movement = State(initialValue: exercise.resolvedMovement)
         self.onSave = onSave
         self.onDelete = onDelete
 
@@ -62,10 +54,7 @@ public struct ProgramExerciseEditorSheet: View {
 
     private var isValid: Bool {
         guard sets >= 1 && sets <= 10 && (0...900).contains(restSeconds) &&
-            !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && name.utf16.count <= 100 &&
-            cues.utf16.count <= 1000 && avoid.utf16.count <= 1000 else { return false }
-        let urls = videos.components(separatedBy: "\n").map(YouTubeVideo.normalizeInput).filter { !$0.isEmpty }
-        if videos != exercise.videos.joined(separator: "\n") && YouTubeVideo.validatedLinks(urls) == nil { return false }
+            !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && name.utf16.count <= 100 else { return false }
         if isCustom {
             let trimmed = customPrescription.trimmingCharacters(in: .whitespaces)
             return !trimmed.isEmpty && trimmed.count <= 100
@@ -139,13 +128,6 @@ public struct ProgramExerciseEditorSheet: View {
 
                     BuilderSurface {
                         BuilderTextField("modal.exercise.name", text: $name, limit: 100)
-                        Picker(LanguageManager.t("programs.movement"), selection: $movement) {
-                            ForEach(MovementType.allCases, id: \.rawValue) { Text(LanguageManager.t("category.\($0.rawValue)")).tag($0) }
-                        }.tint(AppColors.accent)
-                        BuilderTextField("modal.exercise.cues", text: $cues, limit: 1000, multiline: true)
-                        BuilderTextField("modal.exercise.avoid", text: $avoid, limit: 1000, multiline: true)
-                        BuilderTextField("modal.exercise.videos", text: $videos, limit: nil, multiline: true)
-                        Text(LanguageManager.t("video.youtubeOnly")).font(.caption).foregroundStyle(AppColors.muted)
                     }
 
                     // Fixed Sets Card
@@ -404,11 +386,7 @@ public struct ProgramExerciseEditorSheet: View {
         guard isValid else { return }
         var updated = exercise
         updated.name = name.trimmingCharacters(in: .whitespacesAndNewlines)
-        updated.cues = cues
-        updated.avoid = avoid
-        updated.videos = videos.components(separatedBy: "\n").map(YouTubeVideo.normalizeInput).filter { !$0.isEmpty }
-        updated.movementType = movement.rawValue
-        if updated.name != exercise.name || movement != exercise.resolvedMovement {
+        if updated.name != exercise.name {
             updated.exerciseId = nil
             updated.movementAssetId = nil
         }
