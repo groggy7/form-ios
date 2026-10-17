@@ -150,6 +150,7 @@ struct BuilderWorkoutCard: View {
     }
 }
 
+/// The builder's day editor only names and schedules a day; its exercises are managed on the day card.
 struct BuilderWorkoutEditor: View {
     @Environment(\.dismiss) private var dismiss
     @ObservedObject private var theme = ThemeManager.shared
@@ -159,12 +160,8 @@ struct BuilderWorkoutEditor: View {
     var onSave: (Workout) -> Void
     var onRemove: (() -> Void)?
     var onCopy: ((Workout, Int) -> Void)?
-    var catalogue: [ExerciseCatalogEntry] = []
-    var defaultRest: Int = 90
-    @State private var showExercises = false
     private let originalTitle: String
-    init(workout: Workout, isNew: Bool, occupiedDays: Set<Int>, onSave: @escaping (Workout) -> Void, onRemove: (() -> Void)?, onCopy: ((Workout, Int) -> Void)?, catalogue: [ExerciseCatalogEntry] = [], defaultRest: Int = 90) {
-        self.catalogue = catalogue; self.defaultRest = defaultRest
+    init(workout: Workout, isNew: Bool, occupiedDays: Set<Int>, onSave: @escaping (Workout) -> Void, onRemove: (() -> Void)?, onCopy: ((Workout, Int) -> Void)?) {
         self._workout = State(initialValue: workout); self.isNew = isNew; self.occupiedDays = occupiedDays
         self.onSave = onSave; self.onRemove = onRemove; self.onCopy = onCopy; self.originalTitle = workout.title
     }
@@ -190,58 +187,68 @@ struct BuilderWorkoutEditor: View {
                             }
                         }
                     }
-                    BuilderSurface {
-                        Text(LanguageManager.t("builder.chooseExercises")).font(.headline)
-                        ForEach(workout.exercises) { exercise in
-                            HStack(spacing: 10) {
-                                Text(exercise.displayName).font(.subheadline).frame(maxWidth: .infinity, alignment: .leading)
-                                Button(role: .destructive) { workout.exercises.removeAll { $0.id == exercise.id } } label: {
-                                    Image(systemName: "minus.circle").frame(width: 48, height: 48)
-                                }.accessibilityLabel(LanguageManager.t("builder.removeExercise") + " " + exercise.displayName)
-                            }
-                        }
-                        BuilderActionButton("builder.addExercises", systemImage: "plus") { showExercises = true }
-                            .disabled(workout.exercises.count >= ProgramEditing.maxExercises)
-                    }
-                    BuilderSurface {
-                        Text(LanguageManager.t("builder.mainFocus")).font(.headline)
-                        Text(workout.displayFocus().isEmpty ? LanguageManager.t("builder.focusEmpty") : workout.displayFocus())
-                            .font(.subheadline).foregroundStyle(AppColors.secondaryText)
-                            .accessibilityIdentifier("workout-derived-focus")
-                        Text(LanguageManager.t("builder.focusAutomatic", ["limit": Workout.maxFocusAreas]))
-                            .font(.caption).foregroundStyle(AppColors.muted)
-                    }
                     if let onCopy {
                         Menu {
                             ForEach((1...7).filter { !occupiedDays.contains($0) && $0 != workout.day }, id: \.self) { day in
                                 Button(LanguageManager.workoutDays[day - 1]) { onCopy(workout, day); dismiss() }
                             }
                         } label: { Label(LanguageManager.t("builder.copyDay"), systemImage: "doc.on.doc").frame(maxWidth: .infinity, minHeight: 48) }
-                        .disabled(occupiedDays.count >= 6 || !canSave)
+                        .tint(AppColors.accent).disabled(occupiedDays.count >= 6 || !canSave)
                     }
+                    // The builder offers Undo after removal, so deleting a day needs no confirmation.
                     if let onRemove {
                         Button(LanguageManager.t("modal.delete"), role: .destructive) { onRemove(); dismiss() }.frame(minHeight: 48)
                     }
                 }.padding(20)
             }.background(AppColors.background)
-                .navigationTitle(LanguageManager.t(isNew ? "modal.workout.titleAdd" : "modal.workout.titleEdit"))
+                .navigationTitle(LanguageManager.t(isNew ? "modal.workout.titleAdd" : "builder.editDay"))
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar { ToolbarItem(placement: .navigationBarLeading) { Button(LanguageManager.t("modal.cancel")) { dismiss() }.foregroundStyle(AppColors.secondaryText) } }
                 .safeAreaInset(edge: .bottom) {
-                    BuilderActionButton("modal.workout.save", systemImage: "checkmark") {
+                    Button {
                         workout.title = workout.title.trimmingCharacters(in: .whitespacesAndNewlines)
                         onSave(workout); dismiss()
-                    }.disabled(!canSave).padding(20).background(AppColors.background)
+                    } label: {
+                        Text(LanguageManager.t("builder.saveDay")).font(.headline).frame(maxWidth: .infinity, minHeight: 52)
+                            .foregroundStyle(AppColors.todaySelectionText).background(AppColors.accent, in: RoundedRectangle(cornerRadius: 12))
+                    }.buttonStyle(.plain).disabled(!canSave).opacity(canSave ? 1 : 0.5)
+                        .accessibilityIdentifier("workout-editor-save").padding(20).background(AppColors.background)
                 }
         }
-        .sheet(isPresented: $showExercises) {
-            AddExercisePickerSheet(catalogue: catalogue, existing: workout.exercises, defaultRest: defaultRest) { selected in
-                let existing = Set(workout.exercises.map(ProgramEditing.selectionKey))
-                let additions = selected.filter { !existing.contains(ProgramEditing.selectionKey($0)) }
-                guard workout.exercises.count + additions.count <= ProgramEditing.maxExercises else { return }
-                workout.exercises.append(contentsOf: additions)
-                showExercises = false
-            }
+    }
+}
+
+/// Templates are compared by picture, name, weekly days and summary before one replaces the draft.
+struct BuilderTemplatePicker: View {
+    let templates: [Program]
+    var onSelect: (Program) -> Void
+    @Environment(\.dismiss) private var dismiss
+    @ObservedObject private var theme = ThemeManager.shared
+    var body: some View {
+        let _ = theme.currentTheme
+        NavigationStack {
+            ScrollView {
+                LazyVStack(spacing: 12) {
+                    ForEach(templates) { template in
+                        Button { onSelect(template) } label: {
+                            HStack(alignment: .top, spacing: 12) {
+                                Image(ProgramCover.forProgram(template).assetName).resizable().aspectRatio(1.5, contentMode: .fill)
+                                    .frame(width: 96, height: 64).clipShape(RoundedRectangle(cornerRadius: 10)).accessibilityHidden(true)
+                                VStack(alignment: .leading, spacing: 3) {
+                                    Text(template.displayName).font(.subheadline.weight(.semibold)).foregroundStyle(AppColors.text)
+                                    Text(LanguageManager.t("programs.daysPerWeek", ["days": template.workouts.count])).font(.caption.weight(.medium)).foregroundStyle(AppColors.accent)
+                                    if !template.displayDescription.isEmpty {
+                                        Text(template.displayDescription).font(.caption).foregroundStyle(AppColors.muted).lineLimit(2)
+                                    }
+                                }.frame(maxWidth: .infinity, alignment: .leading).multilineTextAlignment(.leading)
+                            }.padding(10).frame(minHeight: 64)
+                                .background(AppColors.surface, in: RoundedRectangle(cornerRadius: 14))
+                                .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
+                        }.buttonStyle(.plain).accessibilityIdentifier("program-template-" + template.id)
+                    }
+                }.padding(20)
+            }.background(AppColors.background).navigationTitle(LanguageManager.t("builder.startTemplate")).navigationBarTitleDisplayMode(.inline)
+                .toolbar { ToolbarItem(placement: .navigationBarLeading) { Button(LanguageManager.t("modal.cancel")) { dismiss() }.foregroundStyle(AppColors.secondaryText) } }
         }
     }
 }

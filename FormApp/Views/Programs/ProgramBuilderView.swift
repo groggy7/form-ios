@@ -22,7 +22,9 @@ public struct ProgramBuilderView: View {
     @State private var applyOnSave = false
     @State private var saveError: String?
     @State private var removalUndo: ProgramRemovalUndo?
-    @State private var sharingItem: ProgramShareItem?
+    @State private var removalUndoToken = 0
+    @State private var pendingNewDayID: String?
+    @State private var optionalDetailsExpanded = false
     var onDismiss: () -> Void
 
     public init(store: AppStore, program: Program? = nil, template: Program? = nil, onDismiss: @escaping () -> Void) {
@@ -51,21 +53,30 @@ public struct ProgramBuilderView: View {
     private var displayedCover: ProgramCover? { !isNew || program.coverId != nil ? ProgramCover.forProgram(program) : nil }
     private var canSave: Bool { validationMessage == nil && !needsCover }
     private var incompleteDays: Int { program.workouts.filter { $0.exercises.isEmpty }.count }
+    private var creating: Bool { isNew || creatingCopy }
 
     public var body: some View {
         let _ = themeManager.currentTheme
         NavigationStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
-                    details
                     if isNew {
                         BuilderActionButton("builder.startTemplate", systemImage: "doc.on.doc") { showTemplates = true }
+                            .accessibilityIdentifier("program-start-template")
                     }
-                    overview
-                    HStack {
-                        Text(LanguageManager.t("builder.trainingDays")).font(.headline)
-                        Spacer()
-                        Text(LanguageManager.t("builder.dayCount", ["count": program.workouts.count])).font(.caption).foregroundStyle(AppColors.muted)
+                    details
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack {
+                            Text(LanguageManager.t("builder.trainingDays")).font(.headline)
+                            Spacer()
+                            Text(LanguageManager.t("builder.dayCount", ["count": program.workouts.count])).font(.caption).foregroundStyle(AppColors.muted)
+                        }
+                        if !program.workouts.isEmpty {
+                            Text(LanguageManager.t("builder.summaryCounts", [
+                                "exercises": program.workouts.reduce(0) { $0 + $1.exercises.count },
+                                "sets": program.workouts.flatMap(\.exercises).reduce(0) { $0 + WorkoutSessionUtils.initialSetCount(exercise: $1) }
+                            ])).font(.caption).foregroundStyle(AppColors.muted).accessibilityIdentifier("program-summary")
+                        }
                     }
                     if program.workouts.isEmpty {
                         BuilderSurface {
@@ -83,16 +94,11 @@ public struct ProgramBuilderView: View {
                             onRemove: { removeExercise(workout.id, $0) })
                     }
                     if program.workouts.count < 7 {
-                        BuilderActionButton("builder.addTrainingDay", systemImage: "plus") {
-                            let day = (1...7).first { day in !program.workouts.contains { $0.day == day } } ?? 1
-                            editingWorkout = BuilderWorkoutContext(workout: Workout(day: day, title: ""), isNew: true)
-                        }
+                        BuilderActionButton("builder.addTrainingDay", systemImage: "plus", action: addTrainingDay)
+                            .accessibilityIdentifier("program-add-day")
                     }
                     if incompleteDays > 0 {
                         Text(LanguageManager.t("builder.incompleteDays", ["count": incompleteDays])).font(.caption).foregroundStyle(AppColors.muted)
-                    }
-                    if let message = saveError ?? validationMessage {
-                        Text(message).font(.caption).foregroundStyle(AppColors.danger).accessibilityIdentifier("program-validation")
                     }
                 }.padding(20)
             }
@@ -131,14 +137,14 @@ public struct ProgramBuilderView: View {
                         else { program.workouts.append(updated); expandedIDs.insert(updated.id) }
                     },
                     onRemove: context.isNew ? nil : {
-                        if let index = program.workouts.firstIndex(where: { $0.id == context.workout.id }) { removalUndo = .workout(program.workouts[index], index); program.workouts.remove(at: index) }
+                        if let index = program.workouts.firstIndex(where: { $0.id == context.workout.id }) { offerUndo(.workout(program.workouts[index], index)); program.workouts.remove(at: index) }
                     },
                     onCopy: context.isNew ? nil : { workout, day in
                         let copy = ProgramEditing.copyWorkout(workout, day: day)
                         program.workouts.append(copy); expandedIDs.insert(copy.id)
-                    }, catalogue: store.exerciseCatalogue, defaultRest: store.defaultRestSeconds)
+                    })
             }
-            .sheet(item: $pickerWorkout) { workout in
+            .sheet(item: $pickerWorkout, onDismiss: dropPendingEmptyDay) { workout in
                 AddExercisePickerSheet(catalogue: store.exerciseCatalogue, existing: workout.exercises,
                     defaultRest: store.defaultRestSeconds) { selected in
                     guard let index = program.workouts.firstIndex(where: { $0.id == workout.id }) else { return }
@@ -148,6 +154,7 @@ public struct ProgramBuilderView: View {
                         store.showErrorNotice(LanguageManager.t("builder.exerciseLimit")); return
                     }
                     program.workouts[index].exercises.append(contentsOf: additions)
+                    pendingNewDayID = nil
                     pickerWorkout = nil
                 }
             }
@@ -160,33 +167,30 @@ public struct ProgramBuilderView: View {
             }
             .sheet(isPresented: $showCoverPicker) { BuilderCoverPicker(programID: program.id, selection: $program.coverId, showAutomatic: !isNew && !creatingCopy) }
             .sheet(isPresented: $showTemplates) {
-                NavigationStack {
-                    ScrollView {
-                        LazyVStack(spacing: 12) {
-                            ForEach(AppStore.loadBundledStarterPrograms()) { source in
-                                BuilderActionButton(source.displayName, systemImage: "doc.on.doc") {
-                                    showTemplates = false
-                                    if isDirty { pendingTemplate = source } else { useTemplate(source) }
-                                }
-                            }
-                        }.padding(20)
-                    }.background(AppColors.background).navigationTitle(LanguageManager.t("builder.startTemplate"))
-                        .toolbar { ToolbarItem(placement: .navigationBarLeading) { Button(LanguageManager.t("modal.cancel")) { showTemplates = false }.foregroundStyle(AppColors.secondaryText) } }
+                BuilderTemplatePicker(templates: AppStore.loadBundledStarterPrograms()) { source in
+                    showTemplates = false
+                    if isDirty { pendingTemplate = source } else { useTemplate(source) }
                 }
             }
             .confirmationDialog(LanguageManager.t("builder.replaceDraft"), isPresented: Binding(get: { pendingTemplate != nil }, set: { if !$0 { pendingTemplate = nil } }), titleVisibility: .visible) {
                 Button(LanguageManager.t("builder.startTemplate"), role: .destructive) { if let source = pendingTemplate { useTemplate(source) }; pendingTemplate = nil }
                 Button(LanguageManager.t("modal.cancel"), role: .cancel) { pendingTemplate = nil }
             }
-            .sheet(item: $sharingItem) { ProgramShareSheet(url: $0.url) }
             .onAppear(perform: recoverDraft)
             .onChange(of: program) { _, _ in saveError = nil; persistDraft() }
+            .task(id: removalUndoToken) {
+                guard removalUndo != nil else { return }
+                try? await Task.sleep(for: .seconds(10))
+                if !Task.isCancelled { removalUndo = nil }
+            }
         }
     }
 
     private var details: some View {
         BuilderSurface {
             Text(LanguageManager.t("builder.details")).font(.headline)
+            BuilderTextField("modal.program.name", text: $program.name, limit: 100)
+                .accessibilityIdentifier("program-builder-name")
             if let cover = displayedCover {
                 let label = LanguageManager.t("programs.cover.selected", ["name": LanguageManager.t("programs.cover." + cover.rawValue)])
                 Button { showCoverPicker = true } label: {
@@ -205,44 +209,57 @@ public struct ProgramBuilderView: View {
                 BuilderActionButton("programs.cover.choose", systemImage: "photo") { showCoverPicker = true }
                     .accessibilityIdentifier("program-cover-choose")
             }
-            BuilderTextField("modal.program.name", text: $program.name, limit: 100)
-                .accessibilityIdentifier("program-builder-name")
-            BuilderTextField("modal.program.desc", text: $program.description, limit: 500, multiline: true)
-            BuilderTextField("modal.program.notes", text: Binding(get: { program.guidelines.joined(separator: "\n") }, set: { program.guidelines = $0.components(separatedBy: "\n") }), limit: nil, multiline: true)
-        }
-    }
-
-    private var overview: some View {
-        BuilderSurface {
-            Text(LanguageManager.t("builder.overview")).font(.headline)
-            Text(LanguageManager.t("builder.overviewCounts", [
-                "days": program.workouts.filter { !$0.exercises.isEmpty }.count,
-                "exercises": program.workouts.reduce(0) { $0 + $1.exercises.count },
-                "sets": program.workouts.flatMap(\.exercises).reduce(0) { $0 + WorkoutSessionUtils.initialSetCount(exercise: $1) }
-            ])).font(.subheadline).foregroundStyle(AppColors.secondaryText)
-            Text(LanguageManager.t("builder.defaultRest", ["seconds": store.defaultRestSeconds])).font(.caption).foregroundStyle(AppColors.muted)
-            if isNew || creatingCopy {
-                Toggle(LanguageManager.t("builder.applyOnSave"), isOn: $applyOnSave).tint(AppColors.accent)
-                if applyOnSave && program.workouts.allSatisfy({ $0.exercises.isEmpty }) {
-                    Text(LanguageManager.t("builder.emptyApplyWarning")).font(.caption).foregroundStyle(AppColors.muted)
-                }
+            Button { withAnimation(.easeInOut(duration: 0.2)) { optionalDetailsExpanded.toggle() } } label: {
+                HStack(spacing: 10) {
+                    Image(systemName: "text.alignleft").foregroundStyle(AppColors.secondaryText)
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(LanguageManager.t("builder.optionalDetails")).font(.subheadline.weight(.medium)).foregroundStyle(AppColors.text)
+                        Text(LanguageManager.t("builder.optional")).font(.caption2).foregroundStyle(AppColors.muted)
+                    }.frame(maxWidth: .infinity, alignment: .leading)
+                    Image(systemName: optionalDetailsExpanded ? "chevron.up" : "chevron.down").foregroundStyle(AppColors.muted)
+                }.padding(.horizontal, 12).frame(minHeight: 54).contentShape(Rectangle())
+                    .background(AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 12))
+                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
+            }.buttonStyle(.plain)
+                .accessibilityHint(LanguageManager.t(optionalDetailsExpanded ? "builder.hideOptionalDetails" : "builder.showOptionalDetails"))
+                .accessibilityIdentifier("program-optional-details")
+            if optionalDetailsExpanded {
+                BuilderTextField("modal.program.desc", text: $program.description, limit: 500, multiline: true)
+                BuilderTextField("modal.program.notes", text: Binding(get: { program.guidelines.joined(separator: "\n") }, set: { program.guidelines = $0.components(separatedBy: "\n") }), limit: nil, multiline: true)
             }
         }
     }
 
     private var footer: some View {
-        VStack(spacing: 8) {
+        VStack(alignment: .leading, spacing: 8) {
+            if let undo = removalUndo {
+                HStack(spacing: 12) {
+                    Text(LanguageManager.t({ if case .workout = undo { return "builder.dayRemoved" }; return "builder.exerciseRemoved" }()))
+                        .font(.subheadline).foregroundStyle(AppColors.text).frame(maxWidth: .infinity, alignment: .leading)
+                    Button(LanguageManager.t("builder.undo")) { if let restored = undo.restoring(program) { program = restored }; removalUndo = nil }
+                        .font(.subheadline.weight(.semibold)).foregroundStyle(AppColors.accent).frame(minWidth: 48, minHeight: 48)
+                        .disabled(undo.restoring(program) == nil).accessibilityLabel(LanguageManager.t("builder.undoRemoval"))
+                }.padding(.horizontal, 14).background(AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 12))
+                    .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
+                    .accessibilityIdentifier("program-undo-removal")
+            }
+            // Every reason Save is disabled stays beside it; red is reserved for failed saves.
+            if let saveError {
+                Text(saveError).font(.caption).foregroundStyle(AppColors.danger).accessibilityIdentifier("program-validation")
+            } else if let validationMessage {
+                Text(validationMessage).font(.caption).foregroundStyle(AppColors.secondaryText).accessibilityIdentifier("program-validation")
+            }
             if needsCover {
                 Text(LanguageManager.t("builder.coverRequired")).font(.caption).foregroundStyle(AppColors.secondaryText)
                     .frame(maxWidth: .infinity, alignment: .leading).accessibilityIdentifier("program-cover-required")
             }
-            if let undo = removalUndo {
-                BuilderActionButton("builder.undoRemoval", systemImage: "arrow.uturn.backward") { if let restored = undo.restoring(program) { program = restored; removalUndo = nil } }.disabled(undo.restoring(program) == nil)
+            if creating {
+                Toggle(LanguageManager.t("builder.applyOnSave"), isOn: $applyOnSave).tint(AppColors.accent).frame(minHeight: 48)
+                    .accessibilityIdentifier("program-apply-on-save")
+                if applyOnSave && program.workouts.allSatisfy({ $0.exercises.isEmpty }) {
+                    Text(LanguageManager.t("builder.emptyApplyWarning")).font(.caption).foregroundStyle(AppColors.muted)
+                }
             }
-            BuilderActionButton("programs.export", systemImage: "square.and.arrow.up") {
-                do { sharingItem = ProgramShareItem(url: try ProgramFileCodec.shareURL(program, defaultRest: store.defaultRestSeconds)) }
-                catch { saveError = error.localizedDescription; store.showErrorNotice(error.localizedDescription) }
-            }.disabled(!canSave)
             Button(action: saveProgram) {
                 Text(LanguageManager.t("modal.program.save")).font(.headline).frame(maxWidth: .infinity, minHeight: 52)
                     .foregroundStyle(AppColors.todaySelectionText).background(AppColors.accent, in: RoundedRectangle(cornerRadius: 12))
@@ -260,8 +277,22 @@ public struct ProgramBuilderView: View {
     private func removeExercise(_ workoutID: String, _ exerciseID: String) {
         guard let w = program.workouts.firstIndex(where: { $0.id == workoutID }) else { return }
         guard let e = program.workouts[w].exercises.firstIndex(where: { $0.id == exerciseID }) else { return }
-        removalUndo = .exercise(workoutID, program.workouts[w].exercises[e], e)
+        offerUndo(.exercise(workoutID, program.workouts[w].exercises[e], e))
         program.workouts[w].exercises.remove(at: e)
+    }
+    private func offerUndo(_ undo: ProgramRemovalUndo) { removalUndo = undo; removalUndoToken += 1 }
+    private func addTrainingDay() {
+        guard let day = ProgramEditing.newDay(for: program) else { return }
+        program.workouts.append(day); expandedIDs.insert(day.id)
+        pendingNewDayID = day.id; pickerWorkout = day
+    }
+    /// Cancelling the library for a day that was just added leaves no empty placeholder behind.
+    private func dropPendingEmptyDay() {
+        guard let pending = pendingNewDayID else { return }
+        pendingNewDayID = nil
+        if let index = program.workouts.firstIndex(where: { $0.id == pending }), program.workouts[index].exercises.isEmpty {
+            program.workouts.remove(at: index); expandedIDs.remove(pending)
+        }
     }
     private func useTemplate(_ source: Program) {
         var copy = ProgramEditing.copyProgram(source)

@@ -63,7 +63,7 @@ final class ProgramBuilderRegressionTests: XCTestCase {
     }
 
     @MainActor
-    func testTrainingDayEditorAutomaticFocusAtNarrowWidthsInAllLanguages() throws {
+    func testTrainingDayEditorAtNarrowWidthsInAllLanguages() throws {
         let previous = LanguageManager.shared.languagePreference
         defer { LanguageManager.setLanguage(previous) }
         for language in ["en", "tr", "de", "es", "fr"] {
@@ -80,7 +80,7 @@ final class ProgramBuilderRegressionTests: XCTestCase {
                 host.view.setNeedsLayout(); host.view.layoutIfNeeded()
                 RunLoop.main.run(until: Date().addingTimeInterval(0.15))
                 let image = UIGraphicsImageRenderer(bounds: host.view.bounds).image { context in host.view.layer.render(in: context.cgContext) }
-                let name = "training-day-\(language)-\(empty ? "empty" : "focus")"
+                let name = "training-day-\(language)-\(empty ? "empty" : "named")"
                 try image.pngData()?.write(to: URL(fileURLWithPath: "/tmp/\(name).png"))
                 let attachment = XCTAttachment(image: image); attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
                 window.isHidden = true; previousWindow?.makeKeyAndVisible()
@@ -279,6 +279,46 @@ final class ProgramBuilderRegressionTests: XCTestCase {
         XCTAssertFalse(store.deleteProgram(withId: initial.id))
         XCTAssertEqual(store.state.programs, before.programs)
         XCTAssertEqual(store.state.activeProgramId, before.activeProgramId)
+    }
+
+    func testNewDaysTakeTheFirstFreeWeekdayAndAnUnusedNameThatFitsEveryLanguage() {
+        let previous = LanguageManager.shared.languagePreference
+        defer { LanguageManager.setLanguage(previous) }
+        LanguageManager.setLanguage("en")
+        var program = fixture()
+        program.workouts[0].day = 2; program.workouts[0].title = "Workout A"
+        let first = ProgramEditing.newDay(for: program)
+        XCTAssertEqual(first?.day, 1); XCTAssertEqual(first?.title, "Workout B"); XCTAssertEqual(first?.exercises, [])
+        program.workouts = (1...7).map { Workout(id: "d\($0)", day: $0, title: "Day") }
+        XCTAssertNil(ProgramEditing.newDay(for: program))
+        for language in ["en", "tr", "de", "es", "fr"] {
+            LanguageManager.setLanguage(language)
+            var titles: [String] = []
+            for _ in 0..<7 { titles.append(ProgramEditing.defaultDayTitle(titles)) }
+            XCTAssertEqual(Set(titles).count, 7, language)
+            XCTAssertTrue(titles.allSatisfy { Workout.isValidTitle($0) }, language)
+        }
+    }
+
+    @MainActor
+    func testTemplatePickerNarrowScreensInAllFiveLanguages() {
+        let previous = LanguageManager.shared.languagePreference
+        defer { LanguageManager.setLanguage(previous) }
+        for language in ["en", "tr", "de", "es", "fr"] {
+            LanguageManager.setLanguage(language)
+            let templates = AppStore.loadBundledStarterPrograms()
+            XCTAssertFalse(templates.isEmpty)
+            let root = BuilderTemplatePicker(templates: templates) { _ in }.environment(\.sizeCategory, .extraExtraExtraLarge)
+            let host = UIHostingController(rootView: root)
+            let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 850))
+            window.rootViewController = host; window.makeKeyAndVisible(); host.view.frame = window.bounds
+            host.view.setNeedsLayout(); host.view.layoutIfNeeded()
+            RunLoop.main.run(until: Date().addingTimeInterval(0.15))
+            let image = UIGraphicsImageRenderer(bounds: host.view.bounds).image { context in host.view.layer.render(in: context.cgContext) }
+            let attachment = XCTAttachment(image: image); attachment.name = "program-templates-320-\(language)-large"; attachment.lifetime = .keepAlways; add(attachment)
+            window.isHidden = true; previousWindow?.makeKeyAndVisible()
+        }
     }
 
     @MainActor

@@ -16,6 +16,20 @@ enum ProgramEditing {
         if !condition { throw ValidationError(message: LanguageManager.t(key)) }
     }
 
+    /// A ready-to-use name such as "Workout B" that no other day in the draft uses.
+    static func defaultDayTitle(_ existingTitles: [String]) -> String {
+        let used = Set(existingTitles.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) })
+        let names = "ABCDEFGH".map { LanguageManager.t("builder.defaultDayName", ["letter": String($0)]) }
+        return names.first { !used.contains($0) } ?? names[0]
+    }
+
+    /// One-step day creation: the first free weekday and a default name, both editable later.
+    static func newDay(for program: Program) -> Workout? {
+        guard let day = (1...7).first(where: { day in !program.workouts.contains { $0.day == day } }) else { return nil }
+        let tones = ["violet", "orange", "blue", "lime", "rose", "sand"]
+        return Workout(day: day, title: defaultDayTitle(program.workouts.map(\.title)), tone: tones[program.workouts.count % tones.count])
+    }
+
     static func validID(_ value: String) -> Bool {
         value.range(of: "^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$", options: .regularExpression) == (value.startIndex..<value.endIndex)
     }

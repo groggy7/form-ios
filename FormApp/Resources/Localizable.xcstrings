@@ -32760,6 +32760,111 @@
         }
       }
     },
+    "builder.defaultDayName": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Workout {letter}"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antrenman {letter}"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Training {letter}"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Séance {letter}"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Entrenamiento {letter}"
+          }
+        }
+      }
+    },
+    "builder.saveDay": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save training day"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antrenman gününü kaydet"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trainingstag speichern"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistrer le jour d’entraînement"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guardar día de entrenamiento"
+          }
+        }
+      }
+    },
+    "builder.summaryCounts": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exercises: {exercises} · Working sets: {sets}"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Egzersiz: {exercises} · Çalışma seti: {sets}"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übungen: {exercises} · Arbeitssätze: {sets}"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exercices : {exercises} · Séries de travail : {sets}"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ejercicios: {exercises} · Series de trabajo: {sets}"
+          }
+        }
+      }
+    },
     "builder.noDays": {
       "extractionState": "manual",
       "localizations": {
@@ -32801,31 +32906,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Add a day, set its focus, then choose exercises from the library."
+            "value": "Add a day, then choose its exercises from the library. You can rename it or change its weekday later."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bir gün ekle, odağını belirle ve kütüphaneden egzersizleri seç."
+            "value": "Bir gün ekle, ardından kütüphaneden egzersizlerini seç. Adını veya gününü sonra değiştirebilirsin."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Füge einen Tag hinzu, lege den Schwerpunkt fest und wähle dann Übungen aus der Bibliothek."
+            "value": "Füge einen Tag hinzu und wähle dann Übungen aus der Bibliothek. Name und Wochentag kannst du später ändern."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ajoutez une journée, définissez son objectif, puis choisissez des exercices dans la bibliothèque."
+            "value": "Ajoutez une journée, puis choisissez ses exercices dans la bibliothèque. Vous pourrez modifier son nom ou son jour plus tard."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Añade un día, define su enfoque y luego elige ejercicios de la biblioteca."
+            "value": "Añade un día y luego elige sus ejercicios de la biblioteca. Puedes cambiar su nombre o día más tarde."
           }
         }
       }
@@ -43902,111 +44007,6 @@
         }
       }
     },
-    "builder.overview": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Program overview"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Program özeti"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Programmübersicht"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aperçu du programme"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Resumen del programa"
-          }
-        }
-      }
-    },
-    "builder.overviewCounts": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Days: {days} · Exercises: {exercises} · Working sets: {sets}"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Gün: {days} · Egzersiz: {exercises} · Çalışma seti: {sets}"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tage: {days} · Übungen: {exercises} · Arbeitssätze: {sets}"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Jours : {days} · Exercices : {exercises} · Séries de travail : {sets}"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Días: {days} · Ejercicios: {exercises} · Series de trabajo: {sets}"
-          }
-        }
-      }
-    },
-    "builder.defaultRest": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "New exercises use {seconds}s rest."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yeni egzersizlerde dinlenme {seconds} sn."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Neue Übungen verwenden {seconds} s Pause."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Les nouveaux exercices utilisent {seconds} s de repos."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Los ejercicios nuevos usan {seconds} s de descanso."
-          }
-        }
-      }
-    },
     "builder.restPreview": {
       "extractionState": "manual",
       "localizations": {
@@ -44388,6 +44388,111 @@
           "stringUnit": {
             "state": "translated",
             "value": "Deshacer eliminación"
+          }
+        }
+      }
+    },
+    "builder.undo": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Undo"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geri al"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rückgängig"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Annuler"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Deshacer"
+          }
+        }
+      }
+    },
+    "builder.dayRemoved": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Training day removed"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Antrenman günü silindi"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trainingstag entfernt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jour d’entraînement supprimé"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Día de entrenamiento eliminado"
+          }
+        }
+      }
+    },
+    "builder.exerciseRemoved": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exercise removed"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Egzersiz kaldırıldı"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Übung entfernt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Exercice supprimé"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ejercicio eliminado"
           }
         }
       }
