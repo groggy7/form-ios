@@ -304,6 +304,9 @@ public struct TodayHeroCard: View {
         let weekdayName = LanguageManager.workoutDays.indices.contains(todayIndex)
             ? LanguageManager.workoutDays[todayIndex]
             : ""
+        let recoveryTextColor = themeManager.currentTheme.isDark ? AppColors.secondaryText : AppColors.text
+        let recoveryTextShadow = themeManager.currentTheme.isDark
+            ? Color.black.opacity(0.85) : AppColors.surface.opacity(0.96)
 
         return VStack(alignment: .leading, spacing: 0) {
             // Top row
@@ -327,7 +330,8 @@ public struct TodayHeroCard: View {
             Text(LanguageManager.restMotivationQuote(for: todayIndex))
                 .font(.system(size: bodySize, weight: .regular))
                 .lineSpacing(4)
-                .foregroundStyle(AppColors.secondaryText)
+                .foregroundStyle(recoveryTextColor)
+                .shadow(color: recoveryTextShadow, radius: 2, x: 0, y: 0)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: textWidth, alignment: .leading)
 
@@ -337,7 +341,8 @@ public struct TodayHeroCard: View {
             Text(LanguageManager.t("today.restDescription"))
                 .font(.system(size: captionSize, weight: .regular))
                 .lineSpacing(3)
-                .foregroundStyle(AppColors.muted)
+                .foregroundStyle(recoveryTextColor)
+                .shadow(color: recoveryTextShadow, radius: 2, x: 0, y: 0)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: textWidth, alignment: .leading)
 
@@ -394,7 +399,7 @@ public struct TodayHeroCard: View {
 }
 
 extension TodayHeroCard {
-    /// Every theme uses the detailed transparent joggers cutout with the same crop and placement.
+    /// Every theme uses the relaxed bench athlete with the same crop and placement.
     @ViewBuilder
     fileprivate func restPhoto(size: CGSize) -> some View {
         // Keep the athlete toward the right edge in every suite, matching Android's recovery card.
