@@ -98,14 +98,14 @@
       "expected": { "action": "deload", "rationaleKey": "progression.rationale.plateau", "targets": [[57.5, 10], [57.5, 10], [57.5, 9]], "variation": "incline-dumbbell-press", "applied": ["57.5", "57.5", "57.5"] }
     },
     {
-      "name": "an unverified top-load jump repeats the logged loads",
+      "name": "an unverified top-load jump gives no target instead of repeating it",
       "unit": "kg",
       "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
       "history": [
         { "id": "s1", "completedAt": "2026-09-01T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[60, 10], [60, 10], [60, 10]] } ] },
         { "id": "s2", "completedAt": "2026-09-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[100, 10], [100, 10], [100, 10]] } ] }
       ],
-      "expected": { "action": "hold_load", "rationaleKey": "progression.rationale.unverified_jump", "targets": [[100, 10], [100, 10], [100, 10]] }
+      "expected": { "action": "insufficient_data", "rationaleKey": "progression.rationale.unverified_jump", "targets": [] }
     },
     {
       "name": "dumbbell step in pounds",
@@ -607,6 +607,84 @@
         { "id": "s3", "completedAt": "2026-09-08T11:00:00Z", "logs": [ { "exerciseId": "push-ups", "exerciseName": "Push-Ups", "targetSets": 3, "working": [[0, 10], [0, 10], [0, 10]] } ] }
       ],
       "expected": { "action": "deload", "rationaleKey": "progression.rationale.plateau", "targets": [] }
+    },
+    {
+      "name": "a likely typo after a normal session gives no target",
+      "unit": "kg",
+      "context": { "programId": "fixture", "workoutId": "fixture", "now": "2026-10-17T11:00:00Z" },
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-10-06T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[60, 10], [60, 10], [60, 10]] } ] },
+        { "id": "s2", "completedAt": "2026-10-13T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[160, 10], [160, 10], [160, 10]] } ] }
+      ],
+      "expected": { "action": "insufficient_data", "rationaleKey": "progression.rationale.unverified_jump", "targets": [] }
+    },
+    {
+      "name": "the session after a likely typo is its own baseline",
+      "unit": "kg",
+      "context": { "programId": "fixture", "workoutId": "fixture", "now": "2026-10-17T11:00:00Z" },
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-10-01T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[60, 10], [60, 10], [60, 10]] } ] },
+        { "id": "s2", "completedAt": "2026-10-06T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[160, 10], [160, 10], [160, 10]] } ] },
+        { "id": "s3", "completedAt": "2026-10-13T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[60, 10], [60, 10], [60, 10]] } ] }
+      ],
+      "expected": { "action": "add_reps", "rationaleKey": "progression.rationale.add_reps", "targets": [[60, 11], [60, 11], [60, 11]], "applied": ["60", "60", "60"] }
+    },
+    {
+      "name": "sessions more than 21 days apart do not establish a plateau",
+      "unit": "kg",
+      "context": { "programId": "fixture", "workoutId": "fixture", "now": "2026-10-17T11:00:00Z" },
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-03-01T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 8], [65, 8], [65, 8]] } ] },
+        { "id": "s2", "completedAt": "2026-03-08T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 8], [65, 8], [65, 8]] } ] },
+        { "id": "s3", "completedAt": "2026-10-10T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 8], [65, 8], [65, 8]] } ] }
+      ],
+      "expected": { "action": "add_reps", "rationaleKey": "progression.rationale.add_reps", "targets": [[65, 9], [65, 9], [65, 9]], "applied": ["65", "65", "65"] }
+    },
+    {
+      "name": "sessions exactly 21 days apart can establish a plateau",
+      "unit": "kg",
+      "context": { "programId": "fixture", "workoutId": "fixture", "now": "2026-10-17T11:00:00Z" },
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-08-29T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 8], [65, 8], [65, 8]] } ] },
+        { "id": "s2", "completedAt": "2026-09-19T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 8], [65, 8], [65, 8]] } ] },
+        { "id": "s3", "completedAt": "2026-10-10T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 8], [65, 8], [65, 8]] } ] }
+      ],
+      "expected": { "action": "deload", "rationaleKey": "progression.rationale.plateau", "targets": [[57.5, 8], [57.5, 8], [57.5, 8]], "variation": "incline-dumbbell-press", "applied": ["57.5", "57.5", "57.5"] }
+    },
+    {
+      "name": "one bodyweight ceiling rated easy names the next ladder step",
+      "unit": "kg",
+      "context": { "programId": "fixture", "workoutId": "fixture", "now": "2026-10-17T11:00:00Z" },
+      "exercise": { "exerciseId": "push-ups", "name": "Push-Ups", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-10-14T11:00:00Z", "logs": [ { "exerciseId": "push-ups", "exerciseName": "Push-Ups", "targetSets": 3, "working": [[0, 12], [0, 12], [0, 12]], "effort": "easy" } ] }
+      ],
+      "expected": { "action": "hold_load", "rationaleKey": "progression.rationale.bodyweight_ceiling", "targets": [[0, 12], [0, 12], [0, 12]], "variation": "decline-push-up" }
+    },
+    {
+      "name": "mixed dumbbell loads explain which sets aim for the range minimum",
+      "unit": "kg",
+      "context": { "programId": "fixture", "workoutId": "fixture", "now": "2026-10-17T11:00:00Z" },
+      "exercise": { "exerciseId": "incline-dumbbell-press", "name": "Incline Dumbbell Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-10-08T11:00:00Z", "logs": [ { "exerciseId": "incline-dumbbell-press", "exerciseName": "Incline Dumbbell Press", "targetSets": 3, "working": [[20, 12], [16, 12], [12, 12]] } ] },
+        { "id": "s2", "completedAt": "2026-10-13T11:00:00Z", "logs": [ { "exerciseId": "incline-dumbbell-press", "exerciseName": "Incline Dumbbell Press", "targetSets": 3, "working": [[20, 12], [16, 12], [12, 12]] } ] }
+      ],
+      "expected": { "action": "increase_load", "rationaleKey": "progression.rationale.increase_load_reset_mixed", "targets": [[22, 12], [18, 8], [14, 8]], "rationaleArgs": { "ceiling": "12", "floor": "8" }, "applied": ["22", "18", "14"] }
+    },
+    {
+      "name": "an easy rating with mixed reset targets uses the same explanation",
+      "unit": "kg",
+      "context": { "programId": "fixture", "workoutId": "fixture", "now": "2026-10-17T11:00:00Z" },
+      "exercise": { "exerciseId": "incline-dumbbell-press", "name": "Incline Dumbbell Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-10-13T11:00:00Z", "logs": [ { "exerciseId": "incline-dumbbell-press", "exerciseName": "Incline Dumbbell Press", "targetSets": 3, "working": [[20, 12], [16, 12], [12, 12]], "effort": "easy" } ] }
+      ],
+      "expected": { "action": "increase_load", "rationaleKey": "progression.rationale.increase_load_reset_mixed", "targets": [[22, 12], [18, 8], [14, 8]] }
     }
   ]
 }

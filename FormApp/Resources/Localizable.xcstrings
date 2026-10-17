@@ -22359,31 +22359,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Reach the rep ceiling in every set twice at the same weights within 21 days, or once rated Easy. Then try the next available step, set for dumbbells and machines in Settings. Steps up to 10% keep your reps; up to 25% aim for the range minimum. No increase after a Hard rating or for bodyweight work."
+            "value": "Reach the rep ceiling in every set twice at the same weights within 21 days, or once rated Easy. Then try the next available step, set for dumbbells and machines in Settings. Steps up to 10% keep your reps; up to 25% aim for the range minimum. No increase after a Hard rating or for bodyweight work without added weight."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aynı ağırlıklarla 21 gün içinde iki kez ya da Kolay olarak değerlendirdiğin bir antrenmanda her sette üst tekrar sınırına ulaş. Sonra bir sonraki uygun artışı dene; dambıl ve makine artışlarını Ayarlar’da belirleyebilirsin. %10’a kadar artışlarda tekrarların korunur; %25’e kadar olanlarda aralığın alt sınırı hedeflenir. Zor değerlendirmesinden sonra veya vücut ağırlığı çalışmalarında artış yoktur."
+            "value": "Aynı ağırlıklarla 21 gün içinde iki kez ya da Kolay olarak değerlendirdiğin bir antrenmanda her sette üst tekrar sınırına ulaş. Sonra bir sonraki uygun artışı dene; dambıl ve makine artışlarını Ayarlar’da belirleyebilirsin. %10’a kadar artışlarda tekrarların korunur; %25’e kadar olanlarda aralığın alt sınırı hedeflenir. Zor değerlendirmesinden sonra veya ek ağırlıksız vücut ağırlığı çalışmalarında artış yoktur."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Erreiche die Wiederholungsobergrenze in jedem Satz zweimal innerhalb von 21 Tagen mit gleichen Gewichten oder einmal mit der Bewertung „Leicht“. Versuche dann den nächsten verfügbaren Schritt; Kurzhantel- und Maschinenschritte legst du in den Einstellungen fest. Schritte bis 10 % behalten deine Wiederholungen bei, bis 25 % zielen sie auf das untere Ende des Bereichs. Keine Steigerung nach „Schwer“ oder bei Körpergewichtsübungen."
+            "value": "Erreiche die Wiederholungsobergrenze in jedem Satz zweimal innerhalb von 21 Tagen mit gleichen Gewichten oder einmal mit der Bewertung „Leicht“. Versuche dann den nächsten verfügbaren Schritt; Kurzhantel- und Maschinenschritte legst du in den Einstellungen fest. Schritte bis 10 % behalten deine Wiederholungen bei, bis 25 % zielen sie auf das untere Ende des Bereichs. Keine Steigerung nach „Schwer“ oder bei Körpergewichtsübungen ohne Zusatzgewicht."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Atteignez le plafond de répétitions dans chaque série deux fois en 21 jours avec les mêmes charges, ou une fois jugée « Facile ». Essayez ensuite le palier disponible suivant, réglé pour les haltères et les machines dans les Réglages. Jusqu’à 10 %, vos répétitions sont conservées ; jusqu’à 25 %, visez le bas de la plage. Aucune augmentation après « Difficile » ni pour le poids du corps."
+            "value": "Atteignez le plafond de répétitions dans chaque série deux fois en 21 jours avec les mêmes charges, ou une fois jugée « Facile ». Essayez ensuite le palier disponible suivant, réglé pour les haltères et les machines dans les Réglages. Jusqu’à 10 %, vos répétitions sont conservées ; jusqu’à 25 %, visez le bas de la plage. Aucune augmentation après « Difficile » ni pour le poids du corps sans charge additionnelle."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alcanza el tope de repeticiones en cada serie dos veces en 21 días con los mismos pesos, o una vez valorada como Fácil. Luego prueba el siguiente incremento disponible, configurable para mancuernas y máquinas en Ajustes. Hasta un 10 % mantienes las repeticiones; hasta un 25 % buscas el mínimo del rango. Sin aumentos tras una valoración Difícil ni con peso corporal."
+            "value": "Alcanza el tope de repeticiones en cada serie dos veces en 21 días con los mismos pesos, o una vez valorada como Fácil. Luego prueba el siguiente incremento disponible, configurable para mancuernas y máquinas en Ajustes. Hasta un 10 % mantienes las repeticiones; hasta un 25 % buscas el mínimo del rango. Sin aumentos tras una valoración Difícil ni con peso corporal sin peso añadido."
           }
         }
       }
@@ -22464,31 +22464,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Review your plan when progress stalls. An optional lighter week uses about 90% of your weights; nothing is applied automatically."
+            "value": "Review your plan when progress stalls. An optional lighter week uses up to 90% of your weights, rounded down to a loadable step; nothing is applied automatically."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İlerleme durduğunda planını gözden geçir. İsteğe bağlı hafif hafta ağırlıklarının yaklaşık %90’ını kullanır; hiçbir şey otomatik uygulanmaz."
+            "value": "İlerleme durduğunda planını gözden geçir. İsteğe bağlı hafif hafta ağırlıklarının en fazla %90’ını, yüklenebilir bir artışa aşağı yuvarlayarak kullanır; hiçbir şey otomatik uygulanmaz."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Überprüfe deinen Plan, wenn der Fortschritt stockt. Eine optionale leichtere Woche nutzt etwa 90 % deiner Gewichte; nichts wird automatisch übernommen."
+            "value": "Überprüfe deinen Plan, wenn der Fortschritt stockt. Eine optionale leichtere Woche nutzt höchstens 90 % deiner Gewichte, abgerundet auf einen ladbaren Schritt; nichts wird automatisch übernommen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Revoyez votre plan quand la progression stagne. Une semaine plus légère facultative utilise environ 90 % de vos charges ; rien n’est appliqué automatiquement."
+            "value": "Revoyez votre plan quand la progression stagne. Une semaine plus légère facultative utilise au plus 90 % de vos charges, arrondies au palier chargeable inférieur ; rien n’est appliqué automatiquement."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Revisa tu plan cuando el progreso se estanque. Una semana más ligera opcional usa alrededor del 90 % de tus pesos; no se aplica nada automáticamente."
+            "value": "Revisa tu plan cuando el progreso se estanque. Una semana más ligera opcional usa como máximo el 90 % de tus pesos, redondeado hacia abajo a un incremento disponible; no se aplica nada automáticamente."
           }
         }
       }
@@ -22954,31 +22954,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The latest session had an unusually large load increase. Repeat and confirm this performance before progressing further."
+            "value": "Your latest load is unusually high or far above the session before, so it isn’t used as a target yet. If it was a typo, use your usual weights today; otherwise log another full session at this load to confirm it."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Son antrenmanda olağandışı büyük bir ağırlık artışı kaydedildi. Daha fazla ilerlemeden önce bu performansı tekrar edip doğrula."
+            "value": "Son ağırlığın olağandışı yüksek ya da bir önceki antrenmanın çok üzerinde, bu yüzden henüz hedef olarak kullanılmıyor. Yazım hatasıysa bugün her zamanki ağırlıklarını kullan; değilse doğrulamak için bu ağırlıkla bir tam antrenman daha kaydet."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Das letzte Training hatte einen ungewöhnlich großen Gewichtssprung. Wiederhole und bestätige diese Leistung, bevor du weiter steigerst."
+            "value": "Dein letztes Gewicht ist ungewöhnlich hoch oder liegt weit über dem vorherigen Training, daher wird es noch nicht als Ziel verwendet. War es ein Tippfehler, nutze heute deine üblichen Gewichte; andernfalls protokolliere ein weiteres vollständiges Training mit diesem Gewicht, um es zu bestätigen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "La dernière séance comportait une hausse de charge inhabituellement importante. Répétez et confirmez cette performance avant de progresser davantage."
+            "value": "Votre dernière charge est inhabituellement élevée ou dépasse largement celle de la séance précédente ; elle n’est donc pas encore utilisée comme objectif. S’il s’agit d’une faute de frappe, utilisez vos charges habituelles aujourd’hui ; sinon, enregistrez une autre séance complète à cette charge pour la confirmer."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "La última sesión tuvo un aumento de carga inusualmente grande. Repite y confirma este rendimiento antes de seguir progresando."
+            "value": "Tu última carga es inusualmente alta o está muy por encima de la sesión anterior, así que aún no se usa como objetivo. Si fue un error de escritura, usa hoy tus pesos habituales; si no, registra otra sesión completa con esta carga para confirmarla."
           }
         }
       }
@@ -23199,31 +23199,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Only full sessions with matching weights and set counts are compared. Below the rep ceiling, three without a total rep gain offer a lighter week or a variation idea. The app doesn’t measure fatigue, recovery or technique."
+            "value": "Only full sessions with matching weights and set counts are compared. Below the rep ceiling, three in a row without a total rep gain, each within 21 days of the next, offer a lighter week or a variation idea. The app doesn’t measure fatigue, recovery or technique."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Yalnızca ağırlıkları ve set sayıları eşleşen tam antrenmanlar karşılaştırılır. Üst tekrar sınırının altında, toplam tekrarın artmadığı üç antrenman hafif bir hafta veya varyasyon fikri sunar. Uygulama yorgunluğu, toparlanmayı veya tekniği ölçmez."
+            "value": "Yalnızca ağırlıkları ve set sayıları eşleşen tam antrenmanlar karşılaştırılır. Üst tekrar sınırının altında, aralarında 21 günden fazla olmayan ve toplam tekrarın artmadığı art arda üç antrenman hafif bir hafta veya varyasyon fikri sunar. Uygulama yorgunluğu, toparlanmayı veya tekniği ölçmez."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Verglichen werden nur vollständige Trainings mit gleichen Gewichten und Satzzahlen. Unterhalb der Wiederholungsobergrenze bieten drei Trainings ohne Zuwachs an Gesamtwiederholungen eine leichtere Woche oder eine Variationsidee an. Die App misst weder Ermüdung noch Erholung oder Technik."
+            "value": "Verglichen werden nur vollständige Trainings mit gleichen Gewichten und Satzzahlen. Unterhalb der Wiederholungsobergrenze bieten drei aufeinanderfolgende Trainings ohne Zuwachs an Gesamtwiederholungen, jeweils höchstens 21 Tage auseinander, eine leichtere Woche oder eine Variationsidee an. Die App misst weder Ermüdung noch Erholung oder Technik."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Seules les séances complètes avec les mêmes charges et le même nombre de séries sont comparées. Sous le plafond de répétitions, trois séances sans gain de répétitions totales proposent une semaine plus légère ou une idée de variante. L’app ne mesure ni la fatigue, ni la récupération, ni la technique."
+            "value": "Seules les séances complètes avec les mêmes charges et le même nombre de séries sont comparées. Sous le plafond de répétitions, trois séances consécutives sans gain de répétitions totales, espacées de 21 jours au plus, proposent une semaine plus légère ou une idée de variante. L’app ne mesure ni la fatigue, ni la récupération, ni la technique."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Solo se comparan sesiones completas con los mismos pesos y número de series. Por debajo del tope de repeticiones, tres sin aumento de repeticiones totales ofrecen una semana más ligera o una idea de variante. La app no mide la fatiga, la recuperación ni la técnica."
+            "value": "Solo se comparan sesiones completas con los mismos pesos y número de series. Por debajo del tope de repeticiones, tres seguidas sin aumento de repeticiones totales, separadas como máximo 21 días entre sí, ofrecen una semana más ligera o una idea de variante. La app no mide la fatiga, la recuperación ni la técnica."
           }
         }
       }
@@ -46113,31 +46113,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Optional lighter week: about 90% of these weights for the same reps. You can also review the rep range in your plan."
+            "value": "Optional lighter week: up to 90% of these weights, rounded down to a loadable step, for the same reps. You can also review the rep range in your plan."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İsteğe bağlı hafif hafta: aynı tekrarlarla bu ağırlıkların yaklaşık %90’ı. Planındaki tekrar aralığını da gözden geçirebilirsin."
+            "value": "İsteğe bağlı hafif hafta: aynı tekrarlarla bu ağırlıkların en fazla %90’ı, yüklenebilir bir artışa aşağı yuvarlanır. Planındaki tekrar aralığını da gözden geçirebilirsin."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Optionale leichtere Woche: etwa 90 % dieser Gewichte für die gleichen Wiederholungen. Du kannst auch den Wiederholungsbereich in deinem Plan überprüfen."
+            "value": "Optionale leichtere Woche: höchstens 90 % dieser Gewichte, abgerundet auf einen ladbaren Schritt, für die gleichen Wiederholungen. Du kannst auch den Wiederholungsbereich in deinem Plan überprüfen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Semaine plus légère facultative : environ 90 % de ces charges pour les mêmes répétitions. Vous pouvez aussi revoir la plage de répétitions de votre plan."
+            "value": "Semaine plus légère facultative : au plus 90 % de ces charges, arrondies au palier chargeable inférieur, pour les mêmes répétitions. Vous pouvez aussi revoir la plage de répétitions de votre plan."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Semana más ligera opcional: alrededor del 90 % de estos pesos con las mismas repeticiones. También puedes revisar el rango de repeticiones de tu plan."
+            "value": "Semana más ligera opcional: como máximo el 90 % de estos pesos, redondeado hacia abajo a un incremento disponible, con las mismas repeticiones. También puedes revisar el rango de repeticiones de tu plan."
           }
         }
       }
@@ -46667,6 +46667,41 @@
         }
       }
     },
+    "progression.rationale.increase_load_reset_mixed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All sets reached {ceiling} reps. Where the next available weight is a bigger jump, aim for {floor} reps and build reps again; the other sets keep {ceiling}. Repeat the previous weights if reps or form suffer."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm setlerde {ceiling} tekrara ulaştın. Bir sonraki uygun ağırlığın daha büyük bir artış olduğu setlerde {floor} tekrarı hedefle ve tekrarları yeniden artır; diğer setler {ceiling} tekrarda kalır. Tekrarlar veya form bozulursa önceki ağırlıkları tekrarla."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alle Sätze erreichten {ceiling} Wiederholungen. Wo das nächste verfügbare Gewicht ein größerer Sprung ist, ziele auf {floor} Wiederholungen und baue sie dann wieder auf; die anderen Sätze bleiben bei {ceiling}. Wiederhole die vorherigen Gewichte, wenn Wiederholungen oder Technik leiden."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Toutes les séries ont atteint {ceiling} répétitions. Là où la prochaine charge disponible est un saut plus important, visez {floor} répétitions puis augmentez-les de nouveau ; les autres séries restent à {ceiling}. Reprenez les charges précédentes si les répétitions ou la technique en souffrent."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Todas las series alcanzaron {ceiling} repeticiones. Donde el siguiente peso disponible es un salto mayor, busca {floor} repeticiones y luego vuelve a sumarlas; las demás series se quedan en {ceiling}. Repite los pesos anteriores si las repeticiones o la técnica empeoran."
+          }
+        }
+      }
+    },
     "progression.rationale.repeat_ceiling_hard": {
       "extractionState": "manual",
       "localizations": {
@@ -46743,31 +46778,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "You reached {ceiling} reps in every set twice. Keep progressing with a slower tempo, added weight if you have it, or a harder variation."
+            "value": "Every set reached the {ceiling}-rep ceiling. Keep progressing with a slower tempo, added weight if you have it, or a harder variation."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Her sette iki kez {ceiling} tekrara ulaştın. Daha yavaş bir tempoyla, varsa ek ağırlıkla veya daha zor bir varyasyonla ilerlemeye devam et."
+            "value": "Her set {ceiling} tekrarlık üst sınıra ulaştı. Daha yavaş bir tempoyla, varsa ek ağırlıkla veya daha zor bir varyasyonla ilerlemeye devam et."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Du hast in jedem Satz zweimal {ceiling} Wiederholungen erreicht. Steigere dich weiter mit langsamerem Tempo, Zusatzgewicht, falls vorhanden, oder einer schwierigeren Variante."
+            "value": "Jeder Satz hat die Obergrenze von {ceiling} Wiederholungen erreicht. Steigere dich weiter mit langsamerem Tempo, Zusatzgewicht, falls vorhanden, oder einer schwierigeren Variante."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vous avez atteint {ceiling} répétitions dans chaque série à deux reprises. Continuez à progresser avec un tempo plus lent, une charge additionnelle si vous en avez, ou une variante plus difficile."
+            "value": "Chaque série a atteint le plafond de {ceiling} répétitions. Continuez à progresser avec un tempo plus lent, une charge additionnelle si vous en avez, ou une variante plus difficile."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Has alcanzado {ceiling} repeticiones en cada serie dos veces. Sigue progresando con un ritmo más lento, peso añadido si lo tienes o una variante más difícil."
+            "value": "Cada serie alcanzó el tope de {ceiling} repeticiones. Sigue progresando con un ritmo más lento, peso añadido si lo tienes o una variante más difícil."
           }
         }
       }

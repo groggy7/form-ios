@@ -1453,7 +1453,7 @@ final class FormAppTests: XCTestCase {
         XCTAssertTrue(WorkoutSessionUtils.isAnomalousWeight(weightKg: 125, previousTopWeightKg: 12.5))
     }
 
-    func testProgressionEngineHoldsLoadOnUnverifiedJump() {
+    func testProgressionEngineGivesNoTargetOnUnverifiedJump() {
         let benchPress = Exercise(
             id: "bench-1",
             name: "Barbell Bench Press",
@@ -1500,9 +1500,11 @@ final class FormAppTests: XCTestCase {
             ]
         )
         let rec = ProgressionEngine.computeProgression(exercise: benchPress, history: [s2, s1], weightUnit: .kg)!
-        XCTAssertEqual(rec.action, ProgressionAction.holdLoad)
+        XCTAssertEqual(rec.action, ProgressionAction.insufficientData)
         XCTAssertEqual(rec.rationaleKey, "progression.rationale.unverified_jump")
-        XCTAssertEqual(rec.suggestedWeightDisplay, "140")
+        // A possible typo is never offered or applied as a target.
+        XCTAssertTrue(rec.setTargets.isEmpty)
+        XCTAssertEqual(rec.suggestedWeightDisplay, "--")
     }
 
     func testFormatSecondsToTime() {

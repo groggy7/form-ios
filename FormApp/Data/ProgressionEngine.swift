@@ -337,11 +337,19 @@ public enum ProgressionEngine {
             }
         }
 
+        // On the session screen, two sessions count together only this close in time.
+        func withinWindow(_ newer: HistoricalSessionSets, _ older: HistoricalSessionSets) -> Bool {
+            guard context != nil else { return true }
+            guard let newerDate = newer.date, let olderDate = older.date else { return false }
+            return abs(newerDate.timeIntervalSince(olderDate)) <= confirmationWindowDays * daySeconds
+        }
+
         let step = loadStep(exercise, loadsKg: workingSets.map { $0.weightKg! }, unit: weightUnit, steps: steps)
         let recent = Array(sessions.prefix(3))
+        // Sessions from before a break never count toward a plateau.
         let isPlateau = !padded && recent.count == 3 && recent.allSatisfy(comparable) && !allHitCeiling &&
             zip(recent, recent.dropFirst()).allSatisfy { newer, older in
-                fullUnpadded(newer)!.reduce(0) { $0 + $1.reps! } <= fullUnpadded(older)!.reduce(0) { $0 + $1.reps! }
+                withinWindow(newer, older) && fullUnpadded(newer)!.reduce(0) { $0 + $1.reps! } <= fullUnpadded(older)!.reduce(0) { $0 + $1.reps! }
             }
         if isPlateau {
             let variation = variationSwaps[exerciseId]
@@ -358,16 +366,12 @@ public enum ProgressionEngine {
         let repeatedLoads = sessions.dropFirst().first.map(comparable) ?? false
         let hasUnverifiedJump = (previousTopWeight != nil && topWeight > previousTopWeight! * 1.35 && (topWeight - previousTopWeight!) >= 20.0) ||
             (topWeight > 500.0 && !repeatedLoads)
-        if hasUnverifiedJump { return repeatLogged("progression.rationale.unverified_jump") }
+        // A likely typo is never offered as a target; the next full session becomes the baseline.
+        if hasUnverifiedJump { return guidance(.insufficientData, "progression.rationale.unverified_jump") }
 
         // A second full session at the same set-by-set loads, close enough in time, confirms the ceiling.
-        func withinConfirmationWindow(_ previous: HistoricalSessionSets) -> Bool {
-            guard context != nil else { return true }
-            guard let latest = last.date, let earlier = previous.date else { return false }
-            return abs(latest.timeIntervalSince(earlier)) <= confirmationWindowDays * daySeconds
-        }
         let confirmedTwice = allHitCeiling && !padded && sessions.dropFirst().first.map { previous in
-            comparable(previous) && fullUnpadded(previous)!.allSatisfy { $0.reps! >= repMax } && withinConfirmationWindow(previous)
+            comparable(previous) && fullUnpadded(previous)!.allSatisfy { $0.reps! >= repMax } && withinWindow(last, previous)
         } == true
         // The user's own rating: Easy confirms after one session, Hard withholds the step.
         let ratedEasy = allHitCeiling && !padded && last.effort == .easy
@@ -386,7 +390,9 @@ public enum ProgressionEngine {
         let key: String
         if WorkoutSessionUtils.isAssisted(exercise) { key = allHitCeiling ? "progression.rationale.assistance_ceiling" : "progression.rationale.assistance_reps" }
         else if let increase {
-            if ratedEasy && !confirmedTwice { key = "progression.rationale.increase_load_easy" }
+            // Only some sets aim for the range minimum: name both groups, whichever confirmation applied.
+            if increase.resetReps && Set(increase.targets.map { $0.reps }).count > 1 { key = "progression.rationale.increase_load_reset_mixed" }
+            else if ratedEasy && !confirmedTwice { key = "progression.rationale.increase_load_easy" }
             else if increase.resetReps { key = "progression.rationale.increase_load_reset" }
             else { key = mixedLoads ? "progression.rationale.increase_load_mixed" : "progression.rationale.increase_load" }
         }
