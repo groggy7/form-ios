@@ -79,7 +79,7 @@ struct BuilderWorkoutCard: View {
             HStack(spacing: 8) {
                 Button(action: onToggle) {
                     HStack(spacing: 10) {
-                        Text(LanguageManager.dayLabels[workout.day - 1]).font(.caption.weight(.bold))
+                        Text(LanguageManager.dayLabels.indices.contains(workout.day - 1) ? LanguageManager.dayLabels[workout.day - 1] : "").font(.caption.weight(.bold))
                             .frame(width: 50, height: 50).foregroundStyle(AppColors.accent)
                             .background(AppColors.positiveBg, in: RoundedRectangle(cornerRadius: 12))
                         VStack(alignment: .leading, spacing: 4) {

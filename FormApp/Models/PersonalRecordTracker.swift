@@ -30,12 +30,7 @@ public struct WeeklyGoalProgressMetrics: Equatable {
     }
 
     public func formattedVolume(unit: WeightUnit = .kg) -> String {
-        let display = unit.toDisplay(totalVolumeKg)
-        let rounded = Int(display.rounded())
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.locale = LanguageManager.numberLocale
-        return formatter.string(from: NSNumber(value: rounded)) ?? "\(rounded)"
+        unit.formatVolume(totalVolumeKg)
     }
 
     public var formattedVolume: String {

@@ -112,4 +112,94 @@ final class AuditFollowupTests: XCTestCase {
         XCTAssertEqual(ProPaywallSheet(feature: .formLab).feature, .formLab)
         XCTAssertEqual(LanguageManager.t(ProFeature.exerciseSwaps.titleKey), "Machine Taken? Swaps")
     }
+
+    // MARK: - Full-backup restore bounds
+
+    private func preservingDefaults(_ body: () throws -> Void) throws {
+        let defaults = UserDefaults.standard
+        let domain = try XCTUnwrap(Bundle.main.bundleIdentifier)
+        let original = defaults.persistentDomain(forName: domain) ?? [:]
+        defer { defaults.setPersistentDomain(original, forName: domain) }
+        try body()
+    }
+
+    func testRestoreBoundsCraftedNumbersAndIdentitiesBeforeSaving() throws {
+        try preservingDefaults {
+            let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+            let exercise = Exercise(id: "e", name: "Bench", sets: 1_000, restSeconds: .max)
+            let program = Program(id: "p", name: "Plan", workouts: [Workout(id: "w", day: 99, title: "Upper", exercises: [exercise, exercise])])
+            let now = ISO8601DateFormatter().string(from: Date())
+            let set = SessionSetLog(setNumber: .max, weightKg: 1e100, reps: .max)
+            let record = WorkoutSessionRecord(id: "s", programId: "p", workoutId: "w", workoutTitle: "Upper", startedAt: now, completedAt: now,
+                durationSeconds: .max, totalVolumeKg: 1e100, totalCompletedSets: .max,
+                exerciseLogs: [SessionExerciseLog(exerciseName: "Bench", sets: Array(repeating: set, count: 150), targetSets: .max)], isComplete: true)
+            let crafted = StoredAppState(programs: [program, program], activeProgramId: "p", history: [record, record])
+            XCTAssertTrue(store.restoreBackupJson(String(decoding: try JSONEncoder().encode(FullBackupDocument(state: crafted, weightUnit: .kg)), as: UTF8.self)))
+
+            for state in [store.state, try XCTUnwrap(try store.statePersistence.load())] {
+                XCTAssertEqual(state.programs.map(\.id).first, "p")
+                XCTAssertEqual(Set(state.programs.map(\.id)).count, 2)
+                let workout = try XCTUnwrap(state.programs.first?.workouts.first)
+                XCTAssertEqual(workout.day, 7)
+                XCTAssertEqual(workout.exercises.map(\.id).first, "e")
+                XCTAssertEqual(Set(workout.exercises.map(\.id)).count, 2)
+                XCTAssertEqual(workout.exercises.map(\.sets), [100, 100])
+                XCTAssertEqual(workout.exercises.map(\.restSeconds), [900, 900])
+                XCTAssertEqual(state.history.count, 1)
+                let restored = try XCTUnwrap(state.history.first)
+                XCTAssertEqual(restored.durationSeconds, 7 * 24 * 60 * 60)
+                XCTAssertEqual(restored.totalVolumeKg, 100_000_000)
+                XCTAssertEqual(restored.totalCompletedSets, 10_000)
+                let log = try XCTUnwrap(restored.exerciseLogs.first)
+                XCTAssertEqual(log.targetSets, 100)
+                XCTAssertEqual(log.sets.count, 100)
+                XCTAssertEqual(log.sets.first, SessionSetLog(setNumber: 100, weightKg: 9_999, reps: 999))
+            }
+            XCTAssertEqual(store.state.history.first.map { WeightUnit.lbs.formatVolume($0.totalVolumeKg) }, WeightUnit.lbs.formatVolume(100_000_000))
+        }
+    }
+
+    func testRestoreRejectsBackupsFromANewerSchemaBeforeChangingAnything() throws {
+        try preservingDefaults {
+            let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+            let before = try XCTUnwrap(try JSONSerialization.jsonObject(with: Data(store.exportBackupJson().utf8)) as? [String: Any])
+            var newer = before
+            newer["schemaVersion"] = StoredAppState.currentSchemaVersion + 1
+            XCTAssertFalse(store.restoreBackupJson(String(decoding: try JSONSerialization.data(withJSONObject: newer), as: UTF8.self)))
+            let after = try XCTUnwrap(try JSONSerialization.jsonObject(with: Data(store.exportBackupJson().utf8)) as? [String: Any])
+            XCTAssertTrue(NSDictionary(dictionary: after).isEqual(to: before))
+            XCTAssertTrue(store.restoreBackupJson(String(decoding: try JSONSerialization.data(withJSONObject: before), as: UTF8.self)))
+        }
+    }
+
+    func testRealBackupsPassTheRestoreBoundsUnchanged() throws {
+        let testDir = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .sortedKeys
+        for name in ["heavylifter_backup", "heavylifter_fresh_week_backup"] {
+            let url = Bundle(for: AuditFollowupTests.self).url(forResource: name, withExtension: "json")
+                ?? testDir.appendingPathComponent("../FormApp/Resources/Fixtures/\(name).json").standardized
+            let data = try Data(contentsOf: url)
+            let raw = try JSONDecoder().decode(StoredAppState.self, from: data)
+            let restored = try JSONDecoder().decode(FullBackupDocument.self, from: data).state
+            XCTAssertEqual(try encoder.encode(restored), try encoder.encode(raw), name)
+        }
+    }
+
+    func testDisplayFormattersSaturateInsteadOfTrapping() {
+        XCTAssertEqual(WeightUnit.displayInt(102), 102)
+        XCTAssertEqual(WeightUnit.displayInt(1e100), 1_000_000_000_000_000)
+        XCTAssertEqual(WeightUnit.displayInt(-1e100), -1_000_000_000_000_000)
+        XCTAssertEqual(WeightUnit.displayInt(.infinity), 0)
+        XCTAssertEqual(WeightUnit.displayInt(.nan), 0)
+        XCTAssertEqual(WeightUnit.kg.formatWeight(100), "100")
+        XCTAssertEqual(WeightUnit.lbs.formatWeight(100), "220")
+        XCTAssertEqual(WeightUnit.kg.formatWeight(1e100), "1000000000000000")
+        XCTAssertEqual(WeightUnit.lbs.formatWeight(-1e100), "-1000000000000000")
+        for unit in WeightUnit.allCases {
+            XCTAssertFalse(unit.formatVolume(1e100).isEmpty)
+            let metrics = WeeklyGoalProgressMetrics(completedWorkouts: 1, totalWorkouts: 1, totalVolumeKg: 1e100, activeDurationSeconds: 0, prsHitCount: 0)
+            XCTAssertEqual(metrics.formattedVolume(unit: unit), unit.formatVolume(1e100))
+        }
+    }
 }

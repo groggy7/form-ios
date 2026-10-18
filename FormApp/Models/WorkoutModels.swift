@@ -1212,6 +1212,9 @@ public enum WorkoutCalendar {
 
 
 public struct StoredAppState: Codable {
+    /// Matches Android's CURRENT_BACKUP_SCHEMA_VERSION; restore rejects newer backups.
+    public static let currentSchemaVersion = 4
+
     public var schemaVersion: Int
     public var programs: [Program]
     public var activeProgramId: String
@@ -1222,7 +1225,7 @@ public struct StoredAppState: Codable {
     public var calendarHistory: WorkoutCalendarHistory?
 
     public init(
-        schemaVersion: Int = 4,
+        schemaVersion: Int = StoredAppState.currentSchemaVersion,
         programs: [Program] = [],
         activeProgramId: String = "",
         completed: [String] = [],

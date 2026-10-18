@@ -67,6 +67,15 @@ public enum WeightUnit: String, Codable, CaseIterable {
         return (value < 0 ? -rounded : rounded) / factor
     }
 
+    /// Whole display units for labels. `Int(_:)` traps outside Int's range, and restored or corrupt
+    /// values must still render, so non-finite values show 0 and the rest saturate.
+    public static func displayInt(_ value: Double) -> Int {
+        guard value.isFinite else { return 0 }
+        return Int(min(max(value, -maxDisplayMagnitude), maxDisplayMagnitude))
+    }
+
+    private static let maxDisplayMagnitude = 1e15
+
     public func formatWeight(_ weightKg: Double) -> String {
         guard weightKg != 0.0 else { return "0" }
         let isNegative = weightKg < 0.0
@@ -77,11 +86,11 @@ public enum WeightUnit: String, Codable, CaseIterable {
         case .lbs:
             let rounded = Self.roundHalfAwayFromZero(display, decimals: 0)
             if abs(display - rounded) < 0.05 || display >= 10.0 {
-                formatted = "\(Int(rounded))"
+                formatted = "\(Self.displayInt(rounded))"
             } else {
                 let oneDec = Self.roundHalfAwayFromZero(display, decimals: 1)
                 if oneDec.truncatingRemainder(dividingBy: 1.0) == 0 {
-                    formatted = "\(Int(oneDec))"
+                    formatted = "\(Self.displayInt(oneDec))"
                 } else {
                     formatted = String(format: "%.1f", oneDec)
                 }
@@ -89,11 +98,11 @@ public enum WeightUnit: String, Codable, CaseIterable {
         case .kg:
             let rounded = Self.roundHalfAwayFromZero(display, decimals: 0)
             if abs(display - rounded) < 0.001 {
-                formatted = "\(Int(rounded))"
+                formatted = "\(Self.displayInt(rounded))"
             } else {
                 let oneDec = Self.roundHalfAwayFromZero(display, decimals: 1)
                 if oneDec.truncatingRemainder(dividingBy: 1.0) == 0 {
-                    formatted = "\(Int(oneDec))"
+                    formatted = "\(Self.displayInt(oneDec))"
                 } else {
                     formatted = String(format: "%.1f", oneDec)
                 }
@@ -137,7 +146,7 @@ public enum WeightUnit: String, Codable, CaseIterable {
 
     public func formatVolume(_ volumeKg: Double) -> String {
         let display = toDisplay(volumeKg)
-        let rounded = Int(display.rounded())
+        let rounded = Self.displayInt(display.rounded())
         let formatter = NumberFormatter()
         formatter.locale = LanguageManager.numberLocale
         formatter.numberStyle = .decimal

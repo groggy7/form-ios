@@ -1989,7 +1989,11 @@ struct FullBackupDocument: Codable {
     }
 
     init(from decoder: Decoder) throws {
-        state = try StoredAppState(from: decoder)
+        let decoded = try StoredAppState(from: decoder)
+        guard decoded.schemaVersion <= StoredAppState.currentSchemaVersion else {
+            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Backup was created by a newer app version"))
+        }
+        state = BackupSanitizer.sanitize(decoded)
         let metadata = try decoder.container(keyedBy: MetadataKeys.self)
         if let code = try metadata.decodeIfPresent(String.self, forKey: .weightUnit) {
             guard let unit = WeightUnit(rawValue: code.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()) else {
@@ -2005,5 +2009,88 @@ struct FullBackupDocument: Codable {
         try state.encode(to: encoder)
         var metadata = encoder.container(keyedBy: MetadataKeys.self)
         try metadata.encodeIfPresent(weightUnit, forKey: .weightUnit)
+    }
+}
+
+/// Full-backup restore bounds, following Android's StoredDataSanitizer. A corrupt or crafted
+/// file must not persist numbers that later trap in arithmetic or presentation, or identities
+/// that collide; values a real backup can hold pass through unchanged.
+enum BackupSanitizer {
+    static let maxPrograms = 100
+    static let maxArchives = 520
+    static let maxHistoryRecords = 10_000
+    static let maxLogsPerSession = 100
+    /// Planned, numbered and logged sets. Backups can hold plans above the editor's 10 (the heavylifter fixtures do).
+    static let maxSetsPerExercise = 100
+    static let maxSessionSeconds = 7 * 24 * 60 * 60
+    static let maxSessionSets = 10_000
+    static let maxSessionVolumeKg = 100_000_000.0
+    static let maxSetWeightKg = 9_999.0
+
+    static func sanitize(_ state: StoredAppState) -> StoredAppState {
+        var clean = state
+        var programIds = Set<String>()
+        clean.programs = state.programs.prefix(maxPrograms).map { program in
+            var copy = program
+            copy.id = unique(program.id, in: &programIds)
+            var workoutIds = Set<String>()
+            copy.workouts = program.workouts.map { sanitize($0, ids: &workoutIds) }
+            return copy
+        }
+        var weekKeys = Set<String>()
+        clean.weeklyArchives = Array(state.weeklyArchives.filter { weekKeys.insert($0.weekKey).inserted }.prefix(maxArchives))
+        var sessionIds = Set<String>()
+        clean.history = state.history.filter { sessionIds.insert($0.id).inserted }.prefix(maxHistoryRecords).map(sanitize)
+        return clean
+    }
+
+    private static func sanitize(_ workout: Workout, ids: inout Set<String>) -> Workout {
+        var copy = workout
+        copy.id = unique(workout.id, in: &ids)
+        copy.day = clamped(workout.day, 1...7)
+        var exerciseIds = Set<String>()
+        copy.exercises = workout.exercises.map { exercise in
+            var exercise = exercise
+            exercise.id = unique(exercise.id, in: &exerciseIds)
+            exercise.sets = exercise.sets.map { clamped($0, 1...maxSetsPerExercise) }
+            exercise.restSeconds = exercise.restSeconds.map { clamped($0, 0...900) }
+            return exercise
+        }
+        return copy
+    }
+
+    private static func sanitize(_ record: WorkoutSessionRecord) -> WorkoutSessionRecord {
+        var copy = record
+        copy.durationSeconds = clamped(record.durationSeconds, 0...maxSessionSeconds)
+        copy.totalVolumeKg = clamped(record.totalVolumeKg, 0...maxSessionVolumeKg)
+        copy.totalCompletedSets = clamped(record.totalCompletedSets, 0...maxSessionSets)
+        copy.exerciseLogs = record.exerciseLogs.prefix(maxLogsPerSession).map { log in
+            var log = log
+            log.targetSets = log.targetSets.map { clamped($0, 1...maxSetsPerExercise) }
+            log.sets = log.sets.prefix(maxSetsPerExercise).map { set in
+                SessionSetLog(
+                    setNumber: clamped(set.setNumber, 1...maxSetsPerExercise),
+                    weightKg: set.weightKg.map { clamped($0, 0...maxSetWeightKg) },
+                    reps: set.reps.map { clamped($0, 0...999) },
+                    isWarmup: set.isWarmup
+                )
+            }
+            return log
+        }
+        if let snapshot = record.workoutSnapshot {
+            var ids = Set<String>()
+            copy.workoutSnapshot = sanitize(snapshot, ids: &ids)
+        }
+        return copy
+    }
+
+    private static func unique(_ id: String, in used: inout Set<String>) -> String {
+        var candidate = id
+        while !used.insert(candidate).inserted { candidate = UUID().uuidString }
+        return candidate
+    }
+
+    private static func clamped<T: Comparable>(_ value: T, _ range: ClosedRange<T>) -> T {
+        min(max(value, range.lowerBound), range.upperBound)
     }
 }
