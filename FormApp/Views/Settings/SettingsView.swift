@@ -908,7 +908,7 @@ struct ImportExportDataSheet: View {
             }
         }
         .alert(
-            LanguageManager.t("form_lab.mirror_restore_confirm"),
+            LanguageManager.t("programs.restoreTitle"),
             isPresented: $showRestoreBackupAlert,
             actions: {
                 Button(LanguageManager.t("settings.restoreBackup"), role: .destructive) {
@@ -931,7 +931,7 @@ struct ImportExportDataSheet: View {
                 }
             },
             message: {
-                Text(LanguageManager.t("form_lab.mirror_restore_warning"))
+                Text(LanguageManager.t("programs.restoreHint"))
             }
         )
         .alert(
