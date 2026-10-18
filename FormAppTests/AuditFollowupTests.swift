@@ -296,4 +296,26 @@ final class AuditFollowupTests: XCTestCase {
         XCTAssertEqual(PersonalRecordTracker.countPrsForWeek(history: [warmupsOnly, first], currentWeekKey: "2026-W42",
                                                              timeZone: TimeZone(identifier: "UTC")!), 0)
     }
+
+    func testSavedVideoMetadataKeepsTheNewestEntriesAcrossRelaunches() throws {
+        let suite = "VideoMetadataStoreTests-\(UUID().uuidString)"
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: suite))
+        defer { defaults.removePersistentDomain(forName: suite) }
+        // An unordered dictionary from earlier builds still loads.
+        let legacy = ["https://youtu.be/a": VideoMetadata(url: "https://youtu.be/a", title: "A")]
+        defaults.set(try JSONEncoder().encode(legacy), forKey: "video_metadata_cache")
+
+        let store = VideoMetadataStore(defaults: defaults, maxEntries: 3)
+        XCTAssertEqual(store.getCached(for: "https://youtu.be/a")?.title, "A")
+        for id in ["b", "c", "d"] { store.save(VideoMetadata(url: "https://youtu.be/\(id)", title: id)) }
+        XCTAssertNil(store.getCached(for: "https://youtu.be/a"))
+        // Saving again refreshes an entry, so "c" is now the oldest.
+        store.save(VideoMetadata(url: "https://youtu.be/b", title: "B"))
+        store.save(VideoMetadata(url: "https://youtu.be/e", title: "e"))
+
+        let relaunched = VideoMetadataStore(defaults: defaults, maxEntries: 3)
+        XCTAssertEqual(["a", "b", "c", "d", "e"].map { relaunched.getCached(for: "https://youtu.be/\($0)")?.title }, [nil, "B", nil, "d", "e"])
+        relaunched.evict(for: "https://youtu.be/d")
+        XCTAssertNil(VideoMetadataStore(defaults: defaults, maxEntries: 3).getCached(for: "https://youtu.be/d"))
+    }
 }

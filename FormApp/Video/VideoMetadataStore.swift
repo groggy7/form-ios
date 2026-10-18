@@ -18,10 +18,16 @@ public final class VideoMetadataStore {
     public static let shared = VideoMetadataStore()
 
     private var memoryCache: [String: VideoMetadata] = [:]
+    /// Saved URLs, oldest first. Linked videos change over time, so only the newest `maxEntries` are kept.
+    private var savedOrder: [String] = []
     private let cacheKey = "video_metadata_cache"
     private let lock = NSLock()
+    private let defaults: UserDefaults
+    private let maxEntries: Int
 
-    private init() {
+    init(defaults: UserDefaults = .standard, maxEntries: Int = 200) {
+        self.defaults = defaults
+        self.maxEntries = maxEntries
         loadPersistedCache()
     }
 
@@ -78,27 +84,48 @@ public final class VideoMetadataStore {
     public func evict(for url: String) {
         lock.lock()
         memoryCache.removeValue(forKey: url)
+        savedOrder.removeAll { $0 == url }
         persistCurrentCache()
         lock.unlock()
     }
 
-    private func save(_ metadata: VideoMetadata) {
+    func save(_ metadata: VideoMetadata) {
         lock.lock()
         memoryCache[metadata.url] = metadata
+        savedOrder.removeAll { $0 == metadata.url }
+        savedOrder.append(metadata.url)
+        trimToLimit()
         persistCurrentCache()
         lock.unlock()
     }
 
-    private func loadPersistedCache() {
-        if let data = UserDefaults.standard.data(forKey: cacheKey),
-           let decoded = try? JSONDecoder().decode([String: VideoMetadata].self, from: data) {
-            memoryCache = decoded
+    private func trimToLimit() {
+        while savedOrder.count > maxEntries {
+            memoryCache.removeValue(forKey: savedOrder.removeFirst())
         }
     }
 
+    private func loadPersistedCache() {
+        guard let data = defaults.data(forKey: cacheKey) else { return }
+        let decoder = JSONDecoder()
+        if let entries = try? decoder.decode([VideoMetadata].self, from: data) {
+            for entry in entries {
+                memoryCache[entry.url] = entry
+                savedOrder.removeAll { $0 == entry.url }
+                savedOrder.append(entry.url)
+            }
+        } else if let legacy = try? decoder.decode([String: VideoMetadata].self, from: data) {
+            // Earlier builds saved an unordered dictionary; its entries count as the oldest.
+            memoryCache = legacy
+            savedOrder = legacy.keys.sorted()
+        }
+        trimToLimit()
+    }
+
+    /// Saves the entries oldest first, so a relaunch keeps pruning in the same order.
     private func persistCurrentCache() {
-        if let encoded = try? JSONEncoder().encode(memoryCache) {
-            UserDefaults.standard.set(encoded, forKey: cacheKey)
+        if let encoded = try? JSONEncoder().encode(savedOrder.compactMap { memoryCache[$0] }) {
+            defaults.set(encoded, forKey: cacheKey)
         }
     }
 }
