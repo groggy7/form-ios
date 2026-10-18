@@ -1043,6 +1043,8 @@ public struct ActiveSessionView: View {
     }
 
     private func checkRestTimerAlarm() {
+        // A backgrounded workout leaves its rest to the notification; returning clears it silently.
+        guard !store.isSceneBackgrounded else { return }
         guard let rest = currentDraft.restTimer, rest.isRunning, let end = rest.endsAtEpochMillis else { return }
         if nowEpochMillis >= end {
             FormAudioPlayer.playRestCompleteSound()

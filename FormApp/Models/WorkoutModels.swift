@@ -748,9 +748,20 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
 
     public func resumed(nowEpochMillis: Int64) -> ActiveSessionDraft {
         var copy = self
+        copy.lastActivityEpochMillis = nowEpochMillis
+        // Reopening a running workout must not discard the time since it last resumed.
+        guard isPaused else { return copy }
         copy.isPaused = false
         copy.lastResumedAtEpochMillis = nowEpochMillis
-        copy.lastActivityEpochMillis = nowEpochMillis
+        return copy
+    }
+
+    /// Clears a running rest whose deadline passed while the workout was not visible.
+    /// Its system notification was the alert, so the workout must not chime again on return.
+    public func clearingEndedRest(nowEpochMillis: Int64) -> ActiveSessionDraft {
+        guard let rest = restTimer, rest.isRunning, let end = rest.endsAtEpochMillis, end <= nowEpochMillis else { return self }
+        var copy = self
+        copy.restTimer = nil
         return copy
     }
 }

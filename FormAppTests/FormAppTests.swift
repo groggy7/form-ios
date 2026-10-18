@@ -3,6 +3,7 @@ import AVFoundation
 import WebKit
 import UIKit
 import SwiftUI
+import UserNotifications
 @testable import FormApp
 
 /// Debug snapshots go to `FORCEDREP_SNAPSHOT_DIR` when set, otherwise to this run's temporary directory.
@@ -246,7 +247,7 @@ final class WeeklyProgressTests: XCTestCase {
         XCTAssertTrue(pausedDraft.isPaused)
         XCTAssertEqual(pausedDraft.accumulatedSeconds, 120)
 
-        // 3. User leaves app for 1 hour (3600 seconds). Time must not tick.
+        // 3. Paused for 1 hour (3600 seconds). Time must not tick.
         let t2 = t1 + 3_600_000
         XCTAssertEqual(pausedDraft.currentDurationSeconds(nowEpochMillis: t2), 120)
         let progressPaused = SessionProgress.from(draft: pausedDraft, nowEpochMillis: t2)
@@ -329,6 +330,112 @@ final class WeeklyProgressTests: XCTestCase {
         XCTAssertFalse(pausedRest.isRunning)
         XCTAssertEqual(pausedRest.pausedSecondsRemaining, 60)
         XCTAssertNil(pausedRest.endsAtEpochMillis)
+    }
+
+    func testResumingRunningDraftKeepsElapsedDuration() {
+        let t0: Int64 = 1_000_000_000_000
+        let running = ActiveSessionDraft(
+            programId: "p1",
+            workout: Workout(id: "w1", day: 1, title: "Push", exercises: []),
+            startedAt: "2026-10-06T10:00:00Z",
+            startedAtEpochMillis: t0,
+            isPaused: false,
+            lastResumedAtEpochMillis: t0
+        )
+
+        // Reopening a workout that kept running in the background must not reset its clock.
+        let reopened = running.resumed(nowEpochMillis: t0 + 120_000)
+        XCTAssertEqual(reopened.lastResumedAtEpochMillis, t0)
+        XCTAssertEqual(reopened.lastActivityEpochMillis, t0 + 120_000)
+        XCTAssertEqual(reopened.currentDurationSeconds(nowEpochMillis: t0 + 150_000), 150)
+    }
+
+    private func restingDraft(endsAt: Int64, now: Int64) -> ActiveSessionDraft {
+        ActiveSessionDraft(id: "resting", programId: program.id, workout: workout,
+            startedAt: ISO8601DateFormatter().string(from: Date(timeIntervalSince1970: TimeInterval(now) / 1000 - 600)),
+            startedAtEpochMillis: now - 600_000,
+            restTimer: RestTimerState(exerciseName: "Bench", totalSeconds: 90, isRunning: true,
+                endsAtEpochMillis: endsAt, pausedSecondsRemaining: 90),
+            isPaused: false, lastResumedAtEpochMillis: now - 600_000)
+    }
+
+    @MainActor
+    func testBackgroundingKeepsRestDeadlineAndReturnClearsOnlyAnEndedRest() throws {
+        try withStoredFixture { store, _ in
+            let now = Int64(Date().timeIntervalSince1970 * 1000)
+            store.activeSession = restingDraft(endsAt: now + 60_000, now: now)
+            store.isSessionPresented = true
+            store.sceneDidEnterBackground()
+            XCTAssertTrue(store.isSceneBackgrounded)
+            store.sceneDidBecomeActive()
+            XCTAssertFalse(store.isSceneBackgrounded)
+            XCTAssertTrue(store.isSessionPresented)
+            XCTAssertEqual(store.activeSession?.isPaused, false)
+            XCTAssertEqual(store.activeSession?.restTimer?.isRunning, true)
+            XCTAssertEqual(store.activeSession?.restTimer?.endsAtEpochMillis, now + 60_000)
+
+            // The notification announced a rest that ended in the background; returning must not chime again.
+            store.activeSession = restingDraft(endsAt: now - 1_000, now: now)
+            store.sceneDidEnterBackground()
+            store.sceneDidBecomeActive()
+            XCTAssertNil(store.activeSession?.restTimer)
+            XCTAssertEqual(store.activeSession?.isPaused, false)
+            XCTAssertTrue(store.isSessionPresented)
+        }
+    }
+
+    @MainActor
+    func testRelaunchKeepsWorkoutRunningAndClearsOnlyAnEndedRest() throws {
+        let defaults = UserDefaults.standard
+        let domain = try XCTUnwrap(Bundle.main.bundleIdentifier)
+        let original = defaults.persistentDomain(forName: domain) ?? [:]
+        defer { defaults.setPersistentDomain(original, forName: domain) }
+        defaults.set(true, forKey: "seeded_starters_v9")
+        defaults.set(true, forKey: "seeded_starters_v10")
+        defaults.set(true, forKey: "seeded_starters_v11")
+        defaults.set(try JSONEncoder().encode(StoredAppState(programs: [program], activeProgramId: program.id,
+            currentWeekKey: "")), forKey: "stored_app_state")
+        let now = Int64(Date().timeIntervalSince1970 * 1000)
+
+        defaults.set(try JSONEncoder().encode(restingDraft(endsAt: now + 60_000, now: now)), forKey: "active_session_v1")
+        let firstLaunch = AppStore(persistence: AppStatePersistence(inMemory: true))
+        let relaunched = try XCTUnwrap(firstLaunch.activeSession)
+        XCTAssertFalse(firstLaunch.isSessionPresented)
+        XCTAssertFalse(relaunched.isPaused)
+        XCTAssertGreaterThanOrEqual(relaunched.currentDurationSeconds(nowEpochMillis: now), 600)
+        XCTAssertEqual(relaunched.restTimer?.isRunning, true)
+        XCTAssertEqual(relaunched.restTimer?.endsAtEpochMillis, now + 60_000)
+
+        // The first launch migrated the legacy state into its store, so relaunch from that store.
+        defaults.set(try JSONEncoder().encode(restingDraft(endsAt: now - 1_000, now: now)), forKey: "active_session_v1")
+        let ended = try XCTUnwrap(AppStore(persistence: firstLaunch.statePersistence).activeSession)
+        XCTAssertFalse(ended.isPaused)
+        XCTAssertNil(ended.restTimer)
+    }
+
+    func testRestAlertSchedulesOnlyARunningRestAtItsDeadline() throws {
+        let now: Int64 = 1_000_000_000_000
+        var draft = restingDraft(endsAt: now + 90_000, now: now)
+        let key = try XCTUnwrap(RestAlertKey.from(draft))
+        XCTAssertEqual(key, RestAlertKey(sessionId: "resting", endsAtEpochMillis: now + 90_000))
+        XCTAssertNil(RestAlertKey.from(draft.paused(nowEpochMillis: now + 30_000)))
+        draft.restTimer = nil
+        XCTAssertNil(RestAlertKey.from(draft))
+
+        let request = try XCTUnwrap(RestAlertScheduler.request(for: key, exerciseName: "Bench",
+            soundEnabled: true, nowEpochMillis: now + 30_000))
+        XCTAssertEqual(request.identifier, RestAlertScheduler.requestIdentifier)
+        XCTAssertEqual(request.content.title, LanguageManager.t("notification.restComplete"))
+        XCTAssertFalse(request.content.body.isEmpty)
+        XCTAssertNotNil(request.content.sound)
+        let trigger = try XCTUnwrap(request.trigger as? UNTimeIntervalNotificationTrigger)
+        XCTAssertEqual(trigger.timeInterval, 60, accuracy: 0.001)
+        XCTAssertFalse(trigger.repeats)
+
+        XCTAssertNil(RestAlertScheduler.request(for: key, exerciseName: "Bench", soundEnabled: false,
+            nowEpochMillis: now + 30_000)?.content.sound)
+        XCTAssertNil(RestAlertScheduler.request(for: key, exerciseName: "Bench", soundEnabled: true,
+            nowEpochMillis: now + 90_000))
     }
 
     func testMondayRolloverUsesLocalISOYearAndArchivesOnlyOnce() throws {

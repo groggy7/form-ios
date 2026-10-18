@@ -33,6 +33,7 @@ public final class AppStore: ObservableObject {
     @Published public var state: StoredAppState
     @Published public var activeSession: ActiveSessionDraft?
     @Published public var isSessionPresented: Bool = false
+    public private(set) var isSceneBackgrounded = false
     @Published public var isOnboardingCompleted: Bool
     @Published public var showProgressionTargets: Bool
     @Published public var showWarmupCalculator: Bool
@@ -334,14 +335,10 @@ public final class AppStore: ObservableObject {
         if let earliest = WorkoutCalendar.earliestWorkoutMonth(history: loadedState.calendarHistory, sessions: loadedState.history) {
             updateCalendarStartMonthIfEarlier(earliest)
         }
-        if let draft = activeDraft, !draft.isPaused {
-            let paused = draft.paused(nowEpochMillis: Int64(Date().timeIntervalSince1970 * 1000))
-            self.activeSession = paused
-            self.saveActiveSession(paused)
-        } else {
-            self.activeSession = activeDraft
-            if let activeDraft { self.saveActiveSession(activeDraft) }
-        }
+        // A relaunch keeps the workout clock and rest deadline running, matching Android.
+        let restoredDraft = activeDraft?.clearingEndedRest(nowEpochMillis: Int64(Date().timeIntervalSince1970 * 1000))
+        self.activeSession = restoredDraft
+        if let restoredDraft { self.saveActiveSession(restoredDraft) }
         self.isSessionPresented = false
         self.selectedWorkoutId = nil
         if let targetView = ProcessInfo.processInfo.environment["INITIAL_VIEW"], targetView == "history" {
@@ -360,6 +357,14 @@ public final class AppStore: ObservableObject {
         // Sync sound preferences
         $soundEnabled
             .sink { [soundKey] in UserDefaults.standard.set($0, forKey: soundKey) }
+            .store(in: &cancellables)
+
+        // The emitted values already include an in-progress rest restored at launch.
+        Publishers.CombineLatest($activeSession, $soundEnabled)
+            .sink { RestAlertScheduler.shared.update(for: $0, soundEnabled: $1) }
+            .store(in: &cancellables)
+        $isSessionPresented
+            .sink { RestAlertScheduler.shared.isWorkoutVisible = $0 }
             .store(in: &cancellables)
 
         $defaultRestSeconds
@@ -630,13 +635,20 @@ public final class AppStore: ObservableObject {
         return true
     }
 
-    public func pauseActiveSession() {
-        guard let active = activeSession, !active.isPaused else { return }
-        let nowMillis = Int64(Date().timeIntervalSince1970 * 1000)
-        let paused = active.paused(nowEpochMillis: nowMillis)
-        saveActiveSession(paused)
-        self.activeSession = paused
-        self.isSessionPresented = false
+    /// Marks the scene as backgrounded. The rest notification covers a deadline reached
+    /// before the scene becomes active again, so the visible workout stops completing rests.
+    public func sceneDidEnterBackground() {
+        isSceneBackgrounded = true
+    }
+
+    public func sceneDidBecomeActive() {
+        defer { isSceneBackgrounded = false }
+        RestAlertScheduler.shared.clearDelivered()
+        guard isSceneBackgrounded, let active = activeSession else { return }
+        let settled = active.clearingEndedRest(nowEpochMillis: Int64(Date().timeIntervalSince1970 * 1000))
+        guard settled != active else { return }
+        saveActiveSession(settled)
+        self.activeSession = settled
     }
 
     public func resumeActiveSession() {

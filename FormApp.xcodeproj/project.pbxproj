@@ -16,6 +16,7 @@
 		0020D035F786CD915922D766 /* TodayHeroCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 685D6F413D877B7E332EEF6D /* TodayHeroCard.swift */; };
 		0667E5D4E4CF923DF66A2C24 /* 01_aesthetic_hypertrophy.json in Resources */ = {isa = PBXBuildFile; fileRef = 92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */; };
 		075B0F9BA865F79FB856122B /* AudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B16D5A75502FFC600D48A992 /* AudioPlayer.swift */; };
+		RA0000000000000000000002 /* RestAlertScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = RA0000000000000000000001 /* RestAlertScheduler.swift */; };
 		08B89BB8E61779D8274FFEFD /* WorkoutSessionUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 829AB05F70AD9B7E6DEE97CC /* WorkoutSessionUtils.swift */; };
 		09436475DDB7B1F05D128B14 /* 06_athletic_performance.json in Resources */ = {isa = PBXBuildFile; fileRef = 53F83778D712B708C519860F /* 06_athletic_performance.json */; };
 		11494E03B6F140F80312218E /* AppStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10AEC969AB339D9720AB880B /* AppStore.swift */; };
@@ -209,6 +210,7 @@
 		A9000000000000000000000A /* 10_bar_floor_calisthenics.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 10_bar_floor_calisthenics.json; sourceTree = "<group>"; };
 		A9000000000000000000000D /* 11_essentials_two_day.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 11_essentials_two_day.json; sourceTree = "<group>"; };
 		B16D5A75502FFC600D48A992 /* AudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioPlayer.swift; sourceTree = "<group>"; };
+		RA0000000000000000000001 /* RestAlertScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestAlertScheduler.swift; sourceTree = "<group>"; };
 		C10000000000000000000001 /* ContentLocalizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentLocalizer.swift; sourceTree = "<group>"; };
 		C151465400D7E4ECECCC89F9 /* form_workout_complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_workout_complete.wav; sourceTree = "<group>"; };
 		D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormHeaderIconButton.swift; sourceTree = "<group>"; };
@@ -399,6 +401,7 @@
 				P10000000000000000000002 /* ExercisePriority.swift */,
 				S70000000000000000000001 /* ExerciseSwaps.swift */,
 				B16D5A75502FFC600D48A992 /* AudioPlayer.swift */,
+				RA0000000000000000000001 /* RestAlertScheduler.swift */,
 				PG0000000000000000000003 /* ProgressionEngine.swift */,
 				WP0000000000000000000003 /* WarmupPlateEngine.swift */,
 				FL0000000000000000000003 /* FormLabEngine.swift */,
@@ -768,6 +771,7 @@
 				S70000000000000000000002 /* ExerciseSwaps.swift in Sources */,
 				S70000000000000000000004 /* ExerciseSwapSheet.swift in Sources */,
 				075B0F9BA865F79FB856122B /* AudioPlayer.swift in Sources */,
+				RA0000000000000000000002 /* RestAlertScheduler.swift in Sources */,
 				CDE6B5B32A4C412F8D40C7B7 /* BottomDock.swift in Sources */,
 				A79CAAC595702B45728DC715 /* ExerciseDetailSheet.swift in Sources */,
 				RP0000000000000000000003 /* ExerciseReportSheet.swift in Sources */,

@@ -239,23 +239,20 @@ public struct RootView: View {
             await ExerciseReportStore.shared.retryPendingReports()
         }
         .onChange(of: scenePhase) { _, phase in
+            // Backgrounding keeps the workout and its rest deadline running, matching Android.
             if phase == .background {
+                store.sceneDidEnterBackground()
                 store.flushPendingState()
-                if store.activeSession != nil && store.isSessionPresented {
-                    store.pauseActiveSession()
-                }
             } else if phase == .active {
                 langManager.refreshDeviceLanguage()
                 store.refreshForCurrentDate()
                 store.checkAndArchiveStaleSession()
+                store.sceneDidBecomeActive()
                 Task { await ExerciseReportStore.shared.retryPendingReports() }
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification)) { _ in
             store.flushPendingState()
-            if store.activeSession != nil && store.isSessionPresented {
-                store.pauseActiveSession()
-            }
         }
     }
 
