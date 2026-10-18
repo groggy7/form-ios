@@ -2025,7 +2025,8 @@ public enum ExerciseCatalog {
 /// Flat, backward-compatible full-backup document. `weightUnit` is the preferred
 /// display/input unit; numeric fields named `weightKg`/`totalVolumeKg` stay in kg.
 /// Plain program exports and on-device StoredAppState persistence are unaffected.
-struct FullBackupDocument: Codable {
+/// Unchecked Sendable: an immutable snapshot whose state holds only structs, enums and collections of them.
+struct FullBackupDocument: Codable, @unchecked Sendable {
     let state: StoredAppState
     let weightUnit: WeightUnit?
     private enum MetadataKeys: String, CodingKey { case weightUnit }
