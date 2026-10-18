@@ -2068,7 +2068,10 @@ enum BackupSanitizer {
     static let maxArchives = 520
     static let maxHistoryRecords = 10_000
     static let maxLogsPerSession = 100
-    /// Planned, numbered and logged sets. Backups can hold plans above the editor's 10 (the heavylifter fixtures do).
+    /// Planned sets follow the editor and session range. Like Android, a value outside it falls back to the
+    /// prescription's count, so a restored plan stays editable and matches the sets a session starts with.
+    static let plannedSets = 1...10
+    /// Numbered and logged sets, which a session can extend beyond its plan.
     static let maxSetsPerExercise = 100
     static let maxSessionSeconds = 7 * 24 * 60 * 60
     static let maxSessionSets = 10_000
@@ -2100,7 +2103,8 @@ enum BackupSanitizer {
         copy.exercises = workout.exercises.map { exercise in
             var exercise = exercise
             exercise.id = unique(exercise.id, in: &exerciseIds)
-            exercise.sets = exercise.sets.map { clamped($0, 1...maxSetsPerExercise) }
+            let prescription = exercise.prescription
+            exercise.sets = exercise.sets.map { plannedSets.contains($0) ? $0 : WorkoutSessionUtils.initialSetCount(prescription: prescription) }
             exercise.restSeconds = exercise.restSeconds.map { clamped($0, 0...900) }
             return exercise
         }

@@ -151,7 +151,8 @@ final class AuditFollowupTests: XCTestCase {
                 XCTAssertEqual(workout.day, 7)
                 XCTAssertEqual(workout.exercises.map(\.id).first, "e")
                 XCTAssertEqual(Set(workout.exercises.map(\.id)).count, 2)
-                XCTAssertEqual(workout.exercises.map(\.sets), [100, 100])
+                // No prescription to count from, so the plan falls back to three sets, as on Android.
+                XCTAssertEqual(workout.exercises.map(\.sets), [3, 3])
                 XCTAssertEqual(workout.exercises.map(\.restSeconds), [900, 900])
                 XCTAssertEqual(state.history.count, 1)
                 let restored = try XCTUnwrap(state.history.first)
@@ -195,17 +196,41 @@ final class AuditFollowupTests: XCTestCase {
         XCTAssertTrue(NSDictionary(dictionary: background).isEqual(to: main))
     }
 
-    func testRealBackupsPassTheRestoreBoundsUnchanged() throws {
+    /// Real backups pass unchanged, apart from planned sets above the editor's 10. Logged sets keep their counts.
+    func testRealBackupsPassTheRestoreBoundsExceptPlansAboveTheEditorRange() throws {
         let testDir = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
         let encoder = JSONEncoder()
         encoder.outputFormatting = .sortedKeys
-        for name in ["heavylifter_backup", "heavylifter_fresh_week_backup"] {
+        for (name, cappedPlans) in [("heavylifter_backup", 4), ("heavylifter_fresh_week_backup", 2)] {
             let url = Bundle(for: AuditFollowupTests.self).url(forResource: name, withExtension: "json")
                 ?? testDir.appendingPathComponent("../FormApp/Resources/Fixtures/\(name).json").standardized
             let data = try Data(contentsOf: url)
             let raw = try JSONDecoder().decode(StoredAppState.self, from: data)
             let restored = try JSONDecoder().decode(FullBackupDocument.self, from: data).state
-            XCTAssertEqual(try encoder.encode(restored), try encoder.encode(raw), name)
+            // The fixtures' 12- and 14-set plans have matching "12 ×" and "14 ×" prescriptions.
+            var capped = 0
+            func capPlans(_ workout: Workout) -> Workout {
+                var workout = workout
+                workout.exercises = workout.exercises.map { exercise in
+                    var exercise = exercise
+                    if let sets = exercise.sets, sets > 10 { exercise.sets = 10; capped += 1 }
+                    return exercise
+                }
+                return workout
+            }
+            var expected = raw
+            expected.programs = raw.programs.map { program in
+                var program = program
+                program.workouts = program.workouts.map(capPlans)
+                return program
+            }
+            expected.history = raw.history.map { record in
+                var record = record
+                record.workoutSnapshot = record.workoutSnapshot.map(capPlans)
+                return record
+            }
+            XCTAssertEqual(capped, cappedPlans, name)
+            XCTAssertEqual(try encoder.encode(restored), try encoder.encode(expected), name)
         }
     }
 
