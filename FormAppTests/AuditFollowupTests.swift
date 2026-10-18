@@ -76,6 +76,14 @@ final class AuditFollowupTests: XCTestCase {
         XCTAssertNil(ExerciseSwaps.replacement(for: row, substituteId: "not-a-canonical-exercise", takenIds: []))
     }
 
+    func testReplacementIdsStayUniqueWhenSuffixedIdsAreTaken() {
+        // A length-based suffix settled on base-99 forever once these were taken; Android asserts the same.
+        let row = swapFixture("cable-seated-row", instance: "w-" + String(repeating: "x", count: 90))
+        let base = String("\(row.id)-swap-one-arm-dumbbell-row".prefix(96))
+        let taken: Set = [row.id, base, "\(base)-96", "\(base)-99", "\(base)-2"]
+        XCTAssertEqual(ExerciseSwaps.replacement(for: row, substituteId: "one-arm-dumbbell-row", takenIds: taken)?.id, "\(base)-3")
+    }
+
     func testReplacingSwapsTheExerciseInPlaceUntilAWorkingSetIsCompleted() {
         let store = AppStore(persistence: AppStatePersistence(inMemory: true))
         let press = swapFixture("lever-chest-press", instance: "w-press")

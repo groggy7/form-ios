@@ -91,8 +91,8 @@ enum ExerciseSwaps {
             reps?.perSide = unilateral
         }
         let base = String("\(original.id)-swap-\(substituteId)".prefix(96))
-        var id = base
-        while takenIds.contains(id) { id = "\(base)-\(id.count)" }
+        var (id, suffix) = (base, 1)
+        while takenIds.contains(id) { suffix += 1; id = "\(base)-\(suffix)" }
         var exercise = definition.toExercise()
         exercise.id = id
         exercise.sets = original.sets ?? WorkoutSessionUtils.initialSetCount(exercise: original)
