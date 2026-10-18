@@ -731,6 +731,8 @@ struct ImportExportDataSheet: View {
     static let maxBackupBytes = 64 * 1024 * 1024
     @State private var backupToRestore: String? = nil
     @State private var showRestoreBackupAlert: Bool = false
+    /// Decoding a long history takes a while; the sheet stays open and locked until it ends.
+    @State private var isRestoring = false
     @State private var importErrorMessage: String? = nil
 
     var body: some View {
@@ -759,6 +761,7 @@ struct ImportExportDataSheet: View {
                 }
                 Spacer()
                 FormCloseButton(action: onDismiss)
+                    .disabled(isRestoring)
                     .accessibilityIdentifier("import-export-close")
             }
             .padding(.horizontal, 20)
@@ -806,6 +809,7 @@ struct ImportExportDataSheet: View {
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
                         .buttonStyle(.plain)
+                        .disabled(isRestoring)
                         .accessibilityIdentifier("export-data-button")
                     }
                     .padding(16)
@@ -835,8 +839,13 @@ struct ImportExportDataSheet: View {
                             isShowingBackupImporter = true
                         }) {
                             HStack(spacing: 8) {
-                                Image(systemName: "square.and.arrow.down")
-                                    .font(.system(size: 15, weight: .semibold))
+                                if isRestoring {
+                                    ProgressView().tint(AppColors.text)
+                                        .accessibilityIdentifier("import-data-progress")
+                                } else {
+                                    Image(systemName: "square.and.arrow.down")
+                                        .font(.system(size: 15, weight: .semibold))
+                                }
                                 Text(LanguageManager.t("settings.importData"))
                                     .font(.system(size: 13, weight: .semibold))
                             }
@@ -848,6 +857,7 @@ struct ImportExportDataSheet: View {
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                         }
                         .buttonStyle(.plain)
+                        .disabled(isRestoring)
                         .accessibilityIdentifier("import-data-button")
                     }
                     .padding(16)
@@ -861,6 +871,7 @@ struct ImportExportDataSheet: View {
             }
         }
         .background(AppColors.background.ignoresSafeArea())
+        .interactiveDismissDisabled(isRestoring)
         .accessibilityIdentifier("import-export-data-sheet")
         .sheet(isPresented: $showExportSheet) {
             ShareSheet(text: exportText)
@@ -901,15 +912,18 @@ struct ImportExportDataSheet: View {
             isPresented: $showRestoreBackupAlert,
             actions: {
                 Button(LanguageManager.t("settings.restoreBackup"), role: .destructive) {
-                    if let json = backupToRestore {
-                        let success = store.restoreBackupJson(json)
+                    guard let json = backupToRestore, !isRestoring else { return }
+                    backupToRestore = nil
+                    isRestoring = true
+                    Task { @MainActor in
+                        let success = await store.restoreBackupJsonAsync(json)
+                        isRestoring = false
                         if success {
                             store.noticeMessage = LanguageManager.t("notice.backupRestored")
                             onDismiss()
                         } else {
                             importErrorMessage = LanguageManager.t("notice.restoreFailed")
                         }
-                        backupToRestore = nil
                     }
                 }
                 Button(LanguageManager.t("modal.cancel"), role: .cancel) {
@@ -1256,7 +1270,8 @@ public struct CloudBackupSheet: View {
             do {
                 let json = try await mirrorManager.readLatestSnapshotAsync()
                 try Task.checkCancellation()
-                let success = store.restoreBackupJson(json)
+                let success = await store.restoreBackupJsonAsync(json)
+                try Task.checkCancellation()
                 if success { mirrorManager.didRestoreSnapshot() }
                 syncIsError = !success
                 syncStatusMessage = LanguageManager.t(success ? "notice.backupRestored" : "notice.restoreFailed")

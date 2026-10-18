@@ -11410,23 +11410,39 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
     private var workout: Workout { Workout(id: "unit-workout", day: 1, title: "Units", exercises: [exercise]) }
 
     private func withStore(_ body: (AppStore) throws -> Void) rethrows {
+        let restore = isolateStoreDefaults()
+        defer { restore() }
+        try body(makeStore())
+    }
+
+    private func withStoreAsync(_ body: @MainActor (AppStore) async throws -> Void) async rethrows {
+        let restore = isolateStoreDefaults()
+        defer { restore() }
+        try await body(makeStore())
+    }
+
+    /// Starts from kg with no live workout and returns a closure that puts the saved keys back.
+    private func isolateStoreDefaults() -> () -> Void {
         let defaults = UserDefaults.standard
         let keys = ["stored_app_state", "active_session_v1", "weight_unit", "is_onboarding_completed", "seeded_starters_v9", "seeded_starters_v10", "seeded_starters_v11"]
         let saved = keys.map { ($0, defaults.object(forKey: $0)) }
         let enabled = CloudMirrorManager.shared.isEnabled
         CloudMirrorManager.shared.isEnabled = false
-        defer {
-            for (key, value) in saved { if let value { defaults.set(value, forKey: key) } else { defaults.removeObject(forKey: key) } }
-            CloudMirrorManager.shared.isEnabled = enabled
-        }
         defaults.removeObject(forKey: "active_session_v1")
         defaults.set("kg", forKey: "weight_unit")
         defaults.set(true, forKey: "seeded_starters_v9")
         defaults.set(true, forKey: "seeded_starters_v10")
         defaults.set(true, forKey: "seeded_starters_v11")
+        return {
+            for (key, value) in saved { if let value { defaults.set(value, forKey: key) } else { defaults.removeObject(forKey: key) } }
+            CloudMirrorManager.shared.isEnabled = enabled
+        }
+    }
+
+    private func makeStore() -> AppStore {
         let store = AppStore(persistence: AppStatePersistence(inMemory: true))
         store.activeSession = nil
-        try body(store)
+        return store
     }
 
     private func history(_ weight: Double) -> WorkoutSessionRecord {
@@ -11509,6 +11525,72 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
                 XCTAssertEqual(store.weightUnit, .kg)
                 XCTAssertEqual(store.activeSession, active)
             }
+        }
+    }
+
+    func testBackgroundRestoreDecodesOffTheMainThreadThenAppliesOnIt() async {
+        await withStoreAsync { store in
+            install(store, weight: 100)
+            store.weightUnit = .lbs
+            let backup = store.exportBackupJson()
+            store.weightUnit = .kg
+            store.state.history = []
+            var publishedOnMain: [Bool] = []
+            let watcher = store.$state.dropFirst().sink { _ in publishedOnMain.append(Thread.isMainThread) }
+            defer { watcher.cancel() }
+            let decodeQueue = DispatchQueue(label: "backup-decode-test")
+            decodeQueue.suspend()
+            let restore = Task { await store.restoreBackupJsonAsync(backup, decodeQueue: decodeQueue) }
+            // The decode waits on the suspended queue while the main actor keeps running; nothing changes yet.
+            for _ in 0..<10 { await Task.yield() }
+            XCTAssertTrue(store.state.history.isEmpty)
+            XCTAssertEqual(store.weightUnit, .kg)
+            XCTAssertTrue(publishedOnMain.isEmpty)
+            decodeQueue.resume()
+            let restored = await restore.value
+            XCTAssertTrue(restored)
+            XCTAssertEqual(store.weightUnit, .lbs)
+            XCTAssertEqual(store.state.history.first?.exerciseLogs.first?.sets.first?.weightKg, 100)
+            XCTAssertFalse(publishedOnMain.isEmpty)
+            XCTAssertTrue(publishedOnMain.allSatisfy { $0 }, "Restored state is published on the main thread")
+        }
+    }
+
+    func testRejectedBackgroundRestoreKeepsDataPreferenceAndLiveWorkout() async throws {
+        try await withStoreAsync { store in
+            install(store, weight: 100)
+            store.activeSession = draft()
+            let before = try XCTUnwrap(try JSONSerialization.jsonObject(with: Data(store.exportBackupJson().utf8)) as? [String: Any])
+            let active = store.activeSession
+            var json = before
+            json["weightUnit"] = "stone"
+            let invalid = String(data: try JSONSerialization.data(withJSONObject: json), encoding: .utf8)!
+            let restored = await store.restoreBackupJsonAsync(invalid)
+            XCTAssertFalse(restored)
+            let after = try XCTUnwrap(try JSONSerialization.jsonObject(with: Data(store.exportBackupJson().utf8)) as? [String: Any])
+            XCTAssertTrue(NSDictionary(dictionary: after).isEqual(to: before))
+            XCTAssertEqual(store.weightUnit, .kg)
+            XCTAssertEqual(store.activeSession, active)
+        }
+    }
+
+    func testCancelledBackgroundRestoreChangesNothing() async {
+        await withStoreAsync { store in
+            install(store, weight: 100)
+            store.weightUnit = .lbs
+            let backup = store.exportBackupJson()
+            store.weightUnit = .kg
+            store.state.history = []
+            let decodeQueue = DispatchQueue(label: "backup-decode-cancel-test")
+            decodeQueue.suspend()
+            let restore = Task { await store.restoreBackupJsonAsync(backup, decodeQueue: decodeQueue) }
+            for _ in 0..<10 { await Task.yield() }
+            restore.cancel()
+            decodeQueue.resume()
+            let restored = await restore.value
+            XCTAssertFalse(restored)
+            XCTAssertTrue(store.state.history.isEmpty)
+            XCTAssertEqual(store.weightUnit, .kg)
         }
     }
 

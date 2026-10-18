@@ -1476,35 +1476,61 @@ public final class AppStore: ObservableObject {
         return (try? encoder.encode(document)).flatMap { String(data: $0, encoding: .utf8) }
     }
 
-    @discardableResult
-    public func restoreBackupJson(_ jsonString: String) -> Bool {
-        guard let data = jsonString.data(using: .utf8) else { return false }
+    /// A decoded, sanitized full backup. Preparing one never touches the store.
+    struct PreparedBackup {
+        let state: StoredAppState
+        let weightUnit: WeightUnit?
+        let earliestMonth: String?
+    }
+
+    /// Decodes, sanitizes and date-aligns a full backup. It reads no store state, so it can run off the main thread.
+    static func prepareBackup(_ jsonString: String) -> PreparedBackup? {
+        guard let data = jsonString.data(using: .utf8) else { return nil }
         do {
-            let decoder = JSONDecoder()
-            let backup = try decoder.decode(FullBackupDocument.self, from: data)
+            let backup = try JSONDecoder().decode(FullBackupDocument.self, from: data)
             var restored = backup.state
-            restored.history = restored.history.map { Self.aligningToPerformedDate($0) }
-            var decodedState = Self.rotateWeek(restored, now: Date())
-            decodedState.calendarHistory = WorkoutCalendar.restore(
-                raw: decodedState.calendarHistory,
-                sessions: decodedState.history,
-                today: WorkoutCalendar.formatDate(Date()),
-                weekdays: WorkoutCalendar.weekdays(state: decodedState),
-                activeSessionId: activeSession?.id,
-                programs: decodedState.programs
-            )
-            guard saveState(refreshCalendarState(decodedState), durable: true) else { return false }
-            // Metadata restores the display preference, never the numeric weights.
-            // The property observer also rebases the live workout we preserve.
-            if let restoredUnit = backup.weightUnit { weightUnit = restoredUnit }
-            if let earliest = WorkoutCalendar.earliestWorkoutMonth(history: backup.state.calendarHistory, sessions: backup.state.history) {
-                updateCalendarStartMonthIfEarlier(earliest)
-            }
-            return true
+            restored.history = restored.history.map { aligningToPerformedDate($0) }
+            let earliest = WorkoutCalendar.earliestWorkoutMonth(history: backup.state.calendarHistory, sessions: backup.state.history)
+            return PreparedBackup(state: restored, weightUnit: backup.weightUnit, earliestMonth: earliest)
         } catch {
             print("Failed to restore backup: \(error)")
-            return false
+            return nil
         }
+    }
+
+    @discardableResult
+    public func restoreBackupJson(_ jsonString: String) -> Bool {
+        guard let backup = Self.prepareBackup(jsonString) else { return false }
+        return applyBackup(backup)
+    }
+
+    /// Decodes on a background queue, since the backup holds all history, then applies on the main thread.
+    /// A rejected backup, or a task cancelled while decoding, changes nothing.
+    @MainActor
+    public func restoreBackupJsonAsync(_ jsonString: String, decodeQueue: DispatchQueue = .global(qos: .userInitiated)) async -> Bool {
+        let backup = await withCheckedContinuation { continuation in
+            decodeQueue.async { continuation.resume(returning: Self.prepareBackup(jsonString)) }
+        }
+        guard let backup, !Task.isCancelled else { return false }
+        return applyBackup(backup)
+    }
+
+    private func applyBackup(_ backup: PreparedBackup) -> Bool {
+        var decodedState = Self.rotateWeek(backup.state, now: Date())
+        decodedState.calendarHistory = WorkoutCalendar.restore(
+            raw: decodedState.calendarHistory,
+            sessions: decodedState.history,
+            today: WorkoutCalendar.formatDate(Date()),
+            weekdays: WorkoutCalendar.weekdays(state: decodedState),
+            activeSessionId: activeSession?.id,
+            programs: decodedState.programs
+        )
+        guard saveState(refreshCalendarState(decodedState), durable: true) else { return false }
+        // Metadata restores the display preference, never the numeric weights.
+        // The property observer also rebases the live workout we preserve.
+        if let restoredUnit = backup.weightUnit { weightUnit = restoredUnit }
+        if let earliest = backup.earliestMonth { updateCalendarStartMonthIfEarlier(earliest) }
+        return true
     }
 
     private func saveActiveSession(_ draft: ActiveSessionDraft?) {
