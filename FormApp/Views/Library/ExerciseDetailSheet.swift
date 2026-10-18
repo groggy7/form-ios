@@ -160,13 +160,17 @@ public struct ExerciseDetailView: View {
 
                         ExerciseMusclesCard(exerciseId: currentExercise.exerciseId)
 
+                        // Links belong to program exercises; a library-only exercise shows its curated links read-only.
+                        let isInProgram = store.isExerciseInAnyProgram(named: currentExercise.name)
                         ExerciseVideosView(
                             exercise: currentExercise,
-                            onAddVideo: { showVideoLinks = true },
-                            onRemoveVideo: { urlToRemove in
+                            onAddVideo: {
+                                if isInProgram { showVideoLinks = true } else { store.showNotice(LanguageManager.t("video.addToProgramFirst")) }
+                            },
+                            onRemoveVideo: isInProgram ? { urlToRemove in
                                 let remaining = currentExercise.videos.filter { $0 != urlToRemove }
                                 store.setExerciseVideos(exerciseName: currentExercise.name, videoUrls: remaining)
-                            }
+                            } : nil
                         )
 
                         HStack {

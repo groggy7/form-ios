@@ -698,7 +698,7 @@ public struct ActiveSessionView: View {
                     exerciseName: exercise.displayName,
                     initialWorkingWeightKg: baseWeight,
                     initialBarType: store.barType,
-                    initialPlatesKg: store.availablePlatesKg,
+                    initialPlates: store.weightUnit == .lbs ? store.availablePlatesLbs : store.availablePlatesKg,
                     unit: store.weightUnit,
                     initialTab: warmupModalTab,
                     onInsertWarmupSets: { sets in
@@ -708,7 +708,7 @@ public struct ActiveSessionView: View {
                         store.setBarType(bar)
                     },
                     onSavePlates: { plates in
-                        store.setAvailablePlatesKg(plates)
+                        store.setAvailablePlates(plates, unit: store.weightUnit)
                     }
                 )
             }

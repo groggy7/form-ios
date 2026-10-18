@@ -574,6 +574,8 @@ public struct WorkoutSessionRecord: Identifiable, Codable, Hashable {
     public var isComplete: Bool?
     public var scheduledDate: String?
     public var workoutSnapshot: Workout?
+    /// Android's local day for a session moved to another day; kept so backups round-trip.
+    public var performedDate: String?
 
     public init(
         id: String = UUID().uuidString,
@@ -588,7 +590,8 @@ public struct WorkoutSessionRecord: Identifiable, Codable, Hashable {
         exerciseLogs: [SessionExerciseLog] = [],
         isComplete: Bool? = nil,
         scheduledDate: String? = nil,
-        workoutSnapshot: Workout? = nil
+        workoutSnapshot: Workout? = nil,
+        performedDate: String? = nil
     ) {
         self.id = id
         self.programId = programId
@@ -603,6 +606,7 @@ public struct WorkoutSessionRecord: Identifiable, Codable, Hashable {
         self.isComplete = isComplete
         self.scheduledDate = scheduledDate
         self.workoutSnapshot = workoutSnapshot
+        self.performedDate = performedDate
     }
 }
 

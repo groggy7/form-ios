@@ -171,19 +171,6 @@ public final class ContentLocalizer {
         return fallback
     }
 
-    public func workoutFocus(programId: String?, workoutId: String?, fallback: String, lang: String? = nil) -> String {
-        let currentLang = lang ?? activeLanguage
-        if let pid = programId, let wid = workoutId, fallback == loadPrograms(lang: "en")[pid]?.workouts?[wid]?.focus {
-            if let focus = loadPrograms(lang: currentLang)[pid]?.workouts?[wid]?.focus, !focus.isEmpty {
-                return focus
-            }
-            if currentLang != "en", let focus = loadPrograms(lang: "en")[pid]?.workouts?[wid]?.focus, !focus.isEmpty {
-                return focus
-            }
-        }
-        return fallback
-    }
-
     public func programName(programId: String?, fallback: String, lang: String? = nil) -> String {
         let currentLang = lang ?? activeLanguage
         if let pid = programId, fallback == loadPrograms(lang: "en")[pid]?.name {

@@ -1,3 +1,4 @@
+import Combine
 import SwiftUI
 
 public struct AppThemePalette: Identifiable, Equatable {
@@ -213,6 +214,12 @@ public enum AppThemes {
     public static func fromId(_ id: String) -> AppThemePalette {
         all.first(where: { $0.id == id }) ?? `default`
     }
+
+    /// The theme to show: a premium choice stays saved but shows as the default while Premium is inactive.
+    public static func effective(_ id: String, premiumUnlocked: Bool) -> AppThemePalette {
+        let palette = fromId(id)
+        return !palette.isPremium || premiumUnlocked ? palette : `default`
+    }
 }
 
 public final class ThemeManager: ObservableObject {
@@ -221,15 +228,27 @@ public final class ThemeManager: ObservableObject {
     private let themeKey = "app_theme_id"
 
     @Published public private(set) var currentTheme: AppThemePalette
+    /// The saved choice, kept while a lapsed premium theme shows as the default.
+    public private(set) var selectedThemeId: String
+    private var entitlement: AnyCancellable?
 
-    public init() {
+    public init(access: ProAccessManager = .shared) {
         let savedId = UserDefaults.standard.string(forKey: themeKey) ?? AppThemes.default.id
-        self.currentTheme = AppThemes.fromId(savedId)
+        self.selectedThemeId = savedId
+        self.currentTheme = AppThemes.effective(savedId, premiumUnlocked: access.isFeatureUnlocked(.customThemes))
+        // Premium themes end with Premium; the saved choice returns if it is renewed.
+        entitlement = access.$isProSubscribed.removeDuplicates().dropFirst().sink { [weak self, weak access] subscribed in
+            guard let self else { return }
+            let unlocked = subscribed || access?.isFeatureUnlocked(.customThemes) == true
+            let palette = AppThemes.effective(self.selectedThemeId, premiumUnlocked: unlocked)
+            if palette != self.currentTheme { self.currentTheme = palette }
+        }
     }
 
+    /// The picker offers premium themes only with Premium.
     public func setThemeId(_ id: String) {
-        let palette = AppThemes.fromId(id)
-        currentTheme = palette
+        selectedThemeId = id
+        currentTheme = AppThemes.fromId(id)
         UserDefaults.standard.set(id, forKey: themeKey)
     }
 }

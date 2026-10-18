@@ -40,6 +40,11 @@ public enum BarType: String, CaseIterable, Codable, Identifiable {
         return unit == .lbs ? weightLbs : weightKg
     }
 
+    /// The bar as loaded in `unit` (a 45 lb bar, not 20 kg shown in pounds), in canonical kilograms.
+    public func canonicalWeightKg(unit: WeightUnit) -> Double {
+        WeightUnit.toCanonicalKg(weight(unit: unit), unit: unit)
+    }
+
     public static func fromKey(_ key: String?) -> BarType {
         guard let key = key else { return .olympic20 }
         return BarType(rawValue: key) ?? .olympic20

@@ -5,6 +5,14 @@ import UIKit
 import SwiftUI
 @testable import FormApp
 
+/// Debug snapshots go to `FORCEDREP_SNAPSHOT_DIR` when set, otherwise to this run's temporary directory.
+func snapshotPath(_ name: String) -> String {
+    let directory = ProcessInfo.processInfo.environment["FORCEDREP_SNAPSHOT_DIR"].map { URL(fileURLWithPath: $0, isDirectory: true) }
+        ?? FileManager.default.temporaryDirectory.appendingPathComponent("FormAppSnapshots", isDirectory: true)
+    try? FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
+    return directory.appendingPathComponent(name).path
+}
+
 final class WeeklyGoalRenderingTests: XCTestCase {
     private final class Progress: ObservableObject {
         @Published var completed = 2
@@ -1785,7 +1793,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_exercise_detail_test.png"
+            let path = snapshotPath("ios_exercise_detail_test.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -1813,7 +1821,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_library_tr_snapshot.png"
+            let path = snapshotPath("ios_library_tr_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -1993,7 +2001,7 @@ final class FormAppTests: XCTestCase {
 
     @MainActor
     func testExerciseDetailSheetWithVideosSnapshot() {
-        var exercise = Exercise(
+        let exercise = Exercise(
             name: "Barbell Bench Press",
             prescription: "5 × 4–6",
             cues: "Plant heels, arch upper back, tuck shoulder blades.\nLower bar to sternum under control.\nExplode upward with leg drive.",
@@ -2022,7 +2030,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_exercise_detail_with_videos_snapshot.png"
+            let path = snapshotPath("ios_exercise_detail_with_videos_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -2137,7 +2145,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/49049143-92ae-4928-b11d-d8637d2ab36d/ios_programs_applied.png"
+            let path = snapshotPath("ios_programs_applied.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -2182,7 +2190,7 @@ final class FormAppTests: XCTestCase {
             controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
         }
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/49049143-92ae-4928-b11d-d8637d2ab36d/ios_program_card_menu_open.png"
+            let path = snapshotPath("ios_program_card_menu_open.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -2220,7 +2228,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_available_friday_fixed.png"
+            let path = snapshotPath("ios_available_friday_fixed.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -2261,7 +2269,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_quads_calves_back.png"
+            let path = snapshotPath("ios_quads_calves_back.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -2301,7 +2309,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_rest_timer_modal_snapshot.png"
+            let path = snapshotPath("ios_rest_timer_modal_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -2337,7 +2345,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_rest_timer_bar_snapshot.png"
+            let path = snapshotPath("ios_rest_timer_bar_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -2409,7 +2417,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_screen_snapshot.png"
+            let path = snapshotPath("ios_history_screen_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -2468,7 +2476,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_volume_matrix_info_sheet_snapshot.png"
+            let path = snapshotPath("ios_volume_matrix_info_sheet_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -2503,7 +2511,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_detail_missed_snapshot.png"
+            let path = snapshotPath("ios_history_detail_missed_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -2568,7 +2576,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_detail_unfinished_snapshot.png"
+            let path = snapshotPath("ios_history_detail_unfinished_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -2633,7 +2641,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_detail_expanded_snapshot.png"
+            let path = snapshotPath("ios_history_detail_expanded_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -2702,7 +2710,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_detail_turkish_snapshot.png"
+            let path = snapshotPath("ios_history_detail_turkish_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -2777,7 +2785,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_detail_completed_snapshot.png"
+            let path = snapshotPath("ios_history_detail_completed_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -2900,7 +2908,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_preview_card_snapshot.png"
+            let path = snapshotPath("ios_history_preview_card_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -2986,14 +2994,14 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_preview_card_unfinished_snapshot.png"
+            let path = snapshotPath("ios_history_preview_card_unfinished_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
     }
 
     func testHistoryDayPreviewCardMissedSnapshot() {
-        let store = AppStore.shared
+        _ = AppStore.shared
         let workout = Workout(
             id: "missed-test-workout",
             day: 1,
@@ -3038,7 +3046,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_preview_card_missed_snapshot.png"
+            let path = snapshotPath("ios_history_preview_card_missed_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -3340,6 +3348,9 @@ final class FormAppTests: XCTestCase {
             store.exerciseCatalogue = previousCatalogue; store.noticeMessage = previousNotice
         }
         let exerciseName = "Barbell Back Squat"
+        store.state.programs = [Program(id: "video-links", name: "Links", workouts: [
+            Workout(id: "video-links-day", day: 1, title: "Lower", exercises: [Exercise(name: exerciseName)])
+        ])]
 
         let testUrls = [
             "https://youtu.be/ZaTM37cfiDs",
@@ -3685,7 +3696,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_exercise_video_links_snapshot.png"
+            let path = snapshotPath("ios_exercise_video_links_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -3713,7 +3724,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_video_player_snapshot.png"
+            let path = snapshotPath("ios_video_player_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -4273,7 +4284,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_resumed_session_snapshot.png"
+            let path = snapshotPath("ios_resumed_session_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -4316,7 +4327,7 @@ final class FormAppTests: XCTestCase {
 
         // 2. Complete all sets for exercise 1
         let ex1Target = WorkoutSessionUtils.initialSetCount(exercise: ex1)
-        var ex1Sets = (1...ex1Target).map {
+        let ex1Sets = (1...ex1Target).map {
             ExerciseSetLog(id: "ex1_s\($0)", setNumber: $0, weightInput: "60", repsInput: "10", weightKg: 60, completedReps: 10, isCompleted: true)
         }
         draft.setsByExercise[ex1.id] = ex1Sets
@@ -4324,7 +4335,7 @@ final class FormAppTests: XCTestCase {
         // 3. For exercise 2, simulate deleting last set and completing the remaining sets
         let ex2OriginalCount = WorkoutSessionUtils.initialSetCount(exercise: ex2)
         let ex2NewCount = max(1, ex2OriginalCount - 1)
-        var ex2Sets = (1...ex2NewCount).map {
+        let ex2Sets = (1...ex2NewCount).map {
             ExerciseSetLog(id: "ex2_s\($0)", setNumber: $0, weightInput: "24", repsInput: "12", weightKg: 24, completedReps: 12, isCompleted: true)
         }
         draft.setsByExercise[ex2.id] = ex2Sets
@@ -4409,7 +4420,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_history_detail_completed_and_deleted_set.png"
+            let path = snapshotPath("ios_history_detail_completed_and_deleted_set.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -4798,7 +4809,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_program_exercise_editor_snapshot.png"
+            let path = snapshotPath("ios_program_exercise_editor_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -5108,7 +5119,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_settings_view_snapshot.png"
+            let path = snapshotPath("ios_settings_view_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -5343,7 +5354,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_weekly_goal_progress_card_snapshot.png"
+            let path = snapshotPath("ios_weekly_goal_progress_card_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote WeeklyGoalProgressCard snapshot to \(path)")
         }
@@ -5372,7 +5383,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_today_view_snapshot.png"
+            let path = snapshotPath("ios_today_view_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote TodayView snapshot to \(path)")
         }
@@ -5421,7 +5432,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_legs_hero_card_snapshot.png"
+            let path = snapshotPath("ios_legs_hero_card_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote legs hero snapshot to \(path)")
         }
@@ -5473,7 +5484,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_tuesday_hero_card_snapshot.png"
+            let path = snapshotPath("ios_tuesday_hero_card_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote Tuesday hero snapshot to \(path)")
         }
@@ -5516,7 +5527,7 @@ final class FormAppTests: XCTestCase {
 
             if let data = image.pngData() {
                 let suffix = lang == "en" ? "" : "_\(lang)"
-                let path = "/Users/groggy/.gemini/antigravity/brain/ceb804a2-e800-493e-9c87-33e78710bc6d/ios_rest_day_hero_card_snapshot\(suffix).png"
+                let path = snapshotPath("ios_rest_day_hero_card_snapshot\(suffix).png")
                 try? data.write(to: URL(fileURLWithPath: path))
                 print("Successfully wrote Rest Day hero snapshot to \(path)")
             }
@@ -5855,7 +5866,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_exercise_report_sheet_snapshot.png"
+            let path = snapshotPath("ios_exercise_report_sheet_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -5886,7 +5897,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_exercise_detail_with_report_button_snapshot.png"
+            let path = snapshotPath("ios_exercise_detail_with_report_button_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -6005,7 +6016,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_exercise_detail_history_snapshot.png"
+            let path = snapshotPath("ios_exercise_detail_history_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -6041,7 +6052,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_exercise_detail_history_empty_snapshot.png"
+            let path = snapshotPath("ios_exercise_detail_history_empty_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -6085,7 +6096,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/2bb02c35-faa1-4975-a6c9-c57da1990fda/ios_set_logging_table_buttons_snapshot.png"
+            let path = snapshotPath("ios_set_logging_table_buttons_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -7213,7 +7224,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_progression_coach_card_snapshot.png"
+            let path = snapshotPath("ios_progression_coach_card_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -7352,7 +7363,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_active_session_with_progression.png"
+            let path = snapshotPath("ios_active_session_with_progression.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote snapshot to \(path)")
         }
@@ -7384,7 +7395,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_root_view_dock_snapshot.png"
+            let path = snapshotPath("ios_root_view_dock_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote RootView bottom dock snapshot to \(path)")
         }
@@ -7567,7 +7578,7 @@ final class FormAppTests: XCTestCase {
             exerciseName: "Barbell Bench Press",
             initialWorkingWeightKg: 100.0,
             initialBarType: .olympic20,
-            initialPlatesKg: WarmupPlateEngine.defaultPlatesKg,
+            initialPlates: WarmupPlateEngine.defaultPlatesKg,
             unit: .kg,
             initialTab: .warmupRamp,
             onInsertWarmupSets: { _ in },
@@ -7587,7 +7598,7 @@ final class FormAppTests: XCTestCase {
             controllerRamp.view.drawHierarchy(in: controllerRamp.view.bounds, afterScreenUpdates: true)
         }
         if let data = imageRamp.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_warmup_ramp_sheet_snapshot.png"
+            let path = snapshotPath("ios_warmup_ramp_sheet_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote warmup ramp sheet snapshot to \(path)")
         }
@@ -7596,7 +7607,7 @@ final class FormAppTests: XCTestCase {
             exerciseName: "Barbell Bench Press",
             initialWorkingWeightKg: 100.0,
             initialBarType: .olympic20,
-            initialPlatesKg: WarmupPlateEngine.defaultPlatesKg,
+            initialPlates: WarmupPlateEngine.defaultPlatesKg,
             unit: .kg,
             initialTab: .plateLoader,
             onInsertWarmupSets: { _ in },
@@ -7616,7 +7627,7 @@ final class FormAppTests: XCTestCase {
             controllerPlates.view.drawHierarchy(in: controllerPlates.view.bounds, afterScreenUpdates: true)
         }
         if let data = imagePlates.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_plate_loader_sheet_snapshot.png"
+            let path = snapshotPath("ios_plate_loader_sheet_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote plate loader sheet snapshot to \(path)")
         }
@@ -7676,7 +7687,7 @@ final class FormAppTests: XCTestCase {
             controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
         }
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_active_session_with_warmup_sets_snapshot.png"
+            let path = snapshotPath("ios_active_session_with_warmup_sets_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote active session with warmups snapshot to \(path)")
         }
@@ -7796,7 +7807,7 @@ final class FormAppTests: XCTestCase {
             controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
         }
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_warmup_plate_card_active_with_delete_snapshot.png"
+            let path = snapshotPath("ios_warmup_plate_card_active_with_delete_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote active warmup plate card with delete snapshot to \(path)")
         }
@@ -7834,7 +7845,7 @@ final class FormAppTests: XCTestCase {
             controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
         }
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_warmup_plate_card_active_all_completed_snapshot.png"
+            let path = snapshotPath("ios_warmup_plate_card_active_all_completed_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote active warmup plate card with all completed snapshot to \(path)")
         }
@@ -8422,7 +8433,7 @@ final class FormAppTests: XCTestCase {
             controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
         }
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_form_lab_matrix_snapshot.png"
+            let path = snapshotPath("ios_form_lab_matrix_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote Form Lab snapshot to \(path)")
         }
@@ -8549,7 +8560,7 @@ final class FormAppTests: XCTestCase {
         let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
         let image = renderer.image { _ in controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true) }
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_form_lab_curves_snapshot.png"
+            let path = snapshotPath("ios_form_lab_curves_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote Form Lab Curves snapshot to \(path)")
         }
@@ -8589,7 +8600,7 @@ final class FormAppTests: XCTestCase {
         let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
         let image = renderer.image { _ in controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true) }
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_form_lab_balance_snapshot.png"
+            let path = snapshotPath("ios_form_lab_balance_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote Form Lab Balance snapshot to \(path)")
         }
@@ -8612,7 +8623,7 @@ final class FormAppTests: XCTestCase {
         let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
         let image = renderer.image { _ in controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true) }
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_settings_cloud_backup_snapshot.png"
+            let path = snapshotPath("ios_settings_cloud_backup_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote Settings Cloud Backup snapshot to \(path)")
         }
@@ -8645,7 +8656,7 @@ final class FormAppTests: XCTestCase {
         let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
         let image = renderer.image { _ in controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true) }
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_paywall_volume_matrix_snapshot.png"
+            let path = snapshotPath("ios_paywall_volume_matrix_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote Volume Matrix Paywall snapshot to \(path)")
         }
@@ -8664,7 +8675,7 @@ final class FormAppTests: XCTestCase {
         let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
         let image = renderer.image { _ in controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true) }
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_paywall_rep_lab_snapshot.png"
+            let path = snapshotPath("ios_paywall_rep_lab_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote Rep Lab Paywall snapshot to \(path)")
         }
@@ -8683,7 +8694,7 @@ final class FormAppTests: XCTestCase {
         let renderer = UIGraphicsImageRenderer(size: controller.view.bounds.size)
         let image = renderer.image { _ in controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true) }
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_paywall_warmup_calculator_snapshot.png"
+            let path = snapshotPath("ios_paywall_warmup_calculator_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote Warmup Calculator Paywall snapshot to \(path)")
         }
@@ -8966,7 +8977,7 @@ final class FormAppTests: XCTestCase {
         }
 
         if let data = image.pngData() {
-            let path = "/Users/groggy/.gemini/antigravity/brain/8f7a25b0-1cb4-43c6-9c07-c337d4904e34/ios_ghost_target_set_table_snapshot.png"
+            let path = snapshotPath("ios_ghost_target_set_table_snapshot.png")
             try? data.write(to: URL(fileURLWithPath: path))
             print("Successfully wrote Ghost Target Set Table snapshot to \(path)")
         }
@@ -13267,5 +13278,134 @@ final class RepLabHeaderTests: XCTestCase {
         for tab in FormLabTab.allCases {
             try capture(tab, width: 320, type: .accessibility1, name: "en-320-accessibility")
         }
+    }
+}
+
+/// Regressions for the 2026-10-18 audit fixes.
+final class AuditFixRegressionTests: XCTestCase {
+    @MainActor
+    func testPremiumThemeShowsDefaultAfterPremiumEndsAndReturnsWhenRenewed() {
+        let defaults = UserDefaults.standard
+        let previous = defaults.string(forKey: "app_theme_id")
+        defer { if let previous { defaults.set(previous, forKey: "app_theme_id") } else { defaults.removeObject(forKey: "app_theme_id") } }
+        let access = ProAccessManager()
+        access.updateSubscriptionStatus(active: true)
+        let manager = ThemeManager(access: access)
+        manager.setThemeId(AppThemes.cobalt.id)
+        XCTAssertEqual(manager.currentTheme, AppThemes.cobalt)
+
+        access.updateSubscriptionStatus(active: false)
+        XCTAssertEqual(manager.currentTheme, AppThemes.default)
+        XCTAssertEqual(manager.selectedThemeId, AppThemes.cobalt.id, "The saved choice is kept")
+        let relaunched = ThemeManager(access: access)
+        XCTAssertEqual(relaunched.currentTheme, AppThemes.default)
+
+        access.updateSubscriptionStatus(active: true)
+        XCTAssertEqual(manager.currentTheme, AppThemes.cobalt)
+        XCTAssertEqual(relaunched.currentTheme, AppThemes.cobalt)
+        XCTAssertEqual(AppThemes.effective(AppThemes.default.id, premiumUnlocked: false), AppThemes.default)
+    }
+
+    func testPoundRampUsesTheFortyFivePoundBarAndLoadsExactly() {
+        let ramp = WarmupPlateEngine.generateWarmupRamp(
+            workingWeightKg: WeightUnit.lbs.toCanonicalKg(225),
+            barWeightKg: BarType.olympic20.canonicalWeightKg(unit: .lbs),
+            availablePlates: WarmupPlateEngine.defaultPlatesLbs,
+            unit: .lbs
+        )
+        XCTAssertEqual(ramp.steps.map { (WeightUnit.lbs.toDisplay($0.weightKg) * 100).rounded() / 100 }, [45, 115, 160, 190])
+        XCTAssertEqual(ramp.steps.first?.platesResult?.displayText, "Empty Bar")
+        XCTAssertTrue(ramp.steps.allSatisfy { $0.platesResult?.isExactMatch == true })
+    }
+
+    func testRampStepsFollowTheSmallestAvailablePlatePair() {
+        let ramp = WarmupPlateEngine.generateWarmupRamp(workingWeightKg: 100, barWeightKg: 20, availablePlates: [20, 10, 5, 2.5])
+        XCTAssertTrue(ramp.steps.dropFirst().allSatisfy { $0.weightKg.truncatingRemainder(dividingBy: 5) == 0 })
+        XCTAssertTrue(ramp.steps.allSatisfy { $0.platesResult?.isExactMatch == true })
+    }
+
+    func testCustomPlateSetsFindExactLoadsAndStandardSetsKeepHeaviestFirst() {
+        let custom = WarmupPlateEngine.calculatePlates(targetWeight: 110, barWeight: 20, availablePlates: [20, 15, 10])
+        XCTAssertTrue(custom.isExactMatch)
+        XCTAssertEqual(custom.platesPerSide, [PlateCount(weight: 20, count: 1), PlateCount(weight: 15, count: 1), PlateCount(weight: 10, count: 1)])
+        let closest = WarmupPlateEngine.calculatePlates(targetWeight: 103, barWeight: 20, availablePlates: [20, 15])
+        XCTAssertEqual(closest.totalAchievedWeight, 100, accuracy: 0.001)
+        XCTAssertEqual(closest.remainderPerSide, 1.5, accuracy: 0.001)
+        let standard = WarmupPlateEngine.calculatePlates(targetWeight: 140, barWeight: 20, availablePlates: WarmupPlateEngine.defaultPlatesKg)
+        XCTAssertEqual(standard.platesPerSide, [PlateCount(weight: 25, count: 2), PlateCount(weight: 10, count: 1)])
+        let pounds = WarmupPlateEngine.calculatePlates(targetWeight: 225, barWeight: 45, availablePlates: WarmupPlateEngine.defaultPlatesLbs, unit: .lbs)
+        XCTAssertEqual(pounds.platesPerSide, [PlateCount(weight: 45, count: 2)])
+    }
+
+    @MainActor
+    func testPoundPlatesSavedUnderTheKilogramKeyMoveToTheirOwnInventory() {
+        let defaults = UserDefaults.standard
+        let keys = ["available_plates_kg", "available_plates_lbs"]
+        let saved = keys.map { defaults.object(forKey: $0) }
+        defer { for (key, value) in zip(keys, saved) { if let value { defaults.set(value, forKey: key) } else { defaults.removeObject(forKey: key) } } }
+        defaults.set([45.0, 25.0, 10.0], forKey: "available_plates_kg")
+        defaults.removeObject(forKey: "available_plates_lbs")
+
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        XCTAssertEqual(store.availablePlatesLbs, [45, 25, 10])
+        XCTAssertEqual(store.availablePlatesKg, WarmupPlateEngine.defaultPlatesKg)
+        store.setAvailablePlates([45, 35], unit: .lbs)
+        XCTAssertEqual(store.availablePlatesKg, WarmupPlateEngine.defaultPlatesKg, "Pound plates never change the kilogram inventory")
+        XCTAssertEqual(defaults.array(forKey: "available_plates_lbs") as? [Double], [45, 35])
+    }
+
+    @MainActor
+    func testVideoLinksForAnExerciseInNoProgramLeaveProgramsUnchanged() {
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        store.state.programs = [Program(id: "links", name: "Links", workouts: [
+            Workout(id: "upper", day: 1, title: "Upper", exercises: [Exercise(name: "Barbell Bench Press")])
+        ])]
+        let before = store.state.programs
+        XCTAssertFalse(store.isExerciseInAnyProgram(named: "Barbell Back Squat"))
+        XCTAssertFalse(store.setExerciseVideos(exerciseName: "Barbell Back Squat", videoUrls: ["https://youtu.be/ZaTM37cfiDs"]))
+        XCTAssertEqual(store.state.programs, before, "The library never adds an exercise to a workout")
+        XCTAssertEqual(store.noticeMessage, LanguageManager.t("video.addToProgramFirst"))
+
+        XCTAssertTrue(store.setExerciseVideos(exerciseName: "barbell bench press", videoUrls: ["https://youtu.be/ZaTM37cfiDs"]))
+        XCTAssertEqual(store.state.programs[0].workouts[0].exercises.map(\.videos), [["https://youtu.be/ZaTM37cfiDs"]])
+    }
+
+    @MainActor
+    func testEntitlementsInBillingGracePeriodKeepPremium() {
+        let monthly = StoreKitSubscriptionManager.monthlyProductId
+        XCTAssertTrue(StoreKitSubscriptionManager.grantsPremium(productID: monthly, revocationDate: nil, isUpgraded: false))
+        XCTAssertFalse(StoreKitSubscriptionManager.grantsPremium(productID: monthly, revocationDate: Date(), isUpgraded: false))
+        XCTAssertFalse(StoreKitSubscriptionManager.grantsPremium(productID: monthly, revocationDate: nil, isUpgraded: true))
+        XCTAssertFalse(StoreKitSubscriptionManager.grantsPremium(productID: "other.product", revocationDate: nil, isUpgraded: false))
+    }
+
+    func testAndroidPerformedDateRoundTripsAndAlignsTimestampsToThatDay() throws {
+        let utc = try XCTUnwrap(TimeZone(identifier: "UTC"))
+        let record = WorkoutSessionRecord(id: "moved", programId: "p", workoutId: "w", workoutTitle: "Upper",
+            startedAt: "2026-09-10T09:00:00Z", completedAt: "2026-09-10T10:00:00Z", durationSeconds: 3600, performedDate: "2026-09-08")
+        let decoded = try JSONDecoder().decode(WorkoutSessionRecord.self, from: JSONEncoder().encode(record))
+        XCTAssertEqual(decoded.performedDate, "2026-09-08")
+        let aligned = AppStore.aligningToPerformedDate(decoded, timeZone: utc)
+        XCTAssertEqual(aligned.startedAt, "2026-09-08T09:00:00Z")
+        XCTAssertEqual(aligned.completedAt, "2026-09-08T10:00:00Z")
+        XCTAssertEqual(aligned.performedDate, "2026-09-08")
+        XCTAssertEqual(AppStore.aligningToPerformedDate(aligned, timeZone: utc), aligned)
+    }
+
+    @MainActor
+    func testWorkoutFinishedWithNothingLoggedIsNotSavedToHistory() throws {
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        store.abandonActiveSession()
+        defer { store.abandonActiveSession() }
+        let workout = Workout(id: "empty-day", day: store.currentWeekDayNumber(), title: "Upper",
+            exercises: [Exercise(id: "bench", name: "Barbell Bench Press", sets: 2)])
+        store.state.programs = [Program(id: "empty", name: "Empty", workouts: [workout])]
+        store.state.activeProgramId = "empty"
+        XCTAssertTrue(store.startActiveSession(programId: "empty", workout: workout, allowPast: true))
+        let draft = try XCTUnwrap(store.activeSession)
+        let millis = Int64(Date().timeIntervalSince1970 * 1000)
+        store.completeActiveSession(SessionProgress.from(draft: draft, nowEpochMillis: millis).record(draft: draft, completedAtEpochMillis: millis))
+        XCTAssertNil(store.activeSession)
+        XCTAssertFalse(store.state.history.contains { $0.id == draft.id })
     }
 }

@@ -178,12 +178,10 @@ public class StoreKitSubscriptionManager: ObservableObject {
         let now = Date()
         for await result in Transaction.currentEntitlements {
             guard case .verified(let transaction) = result else { continue }
-            guard Self.isProProductId(transaction.productID) else { continue }
-            guard transaction.revocationDate == nil else { continue }
-            if let expirationDate = transaction.expirationDate, expirationDate <= now {
-                continue
+            if Self.grantsPremium(productID: transaction.productID, revocationDate: transaction.revocationDate,
+                                  isUpgraded: transaction.isUpgraded) {
+                purchasedIds.insert(transaction.productID)
             }
-            purchasedIds.insert(transaction.productID)
         }
         self.purchasedProductIds = purchasedIds
         let isPro = !purchasedIds.isEmpty
@@ -200,6 +198,12 @@ public class StoreKitSubscriptionManager: ObservableObject {
             UserDefaults.standard.set(0.0, forKey: Self.keyCachedEntitlementLastVerified)
             ProAccessManager.shared.updateSubscriptionStatus(active: false)
         }
+    }
+
+    /// Current entitlements already exclude expired subscriptions and deliberately include those in
+    /// Apple's billing grace period, whose expiration date has passed; never re-check that date here.
+    static func grantsPremium(productID: String, revocationDate: Date?, isUpgraded: Bool) -> Bool {
+        productIds.contains(productID) && revocationDate == nil && !isUpgraded
     }
 
     private func listenForTransactions() -> Task<Void, Never> {

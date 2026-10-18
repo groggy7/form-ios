@@ -39,7 +39,6 @@
 		6F9CAA3F576D5057AF0C84E3 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DECFA8F5B27849C8BE2611AF /* SettingsView.swift */; };
 		6FB272E05E6155F86E8A481E /* RestTimerBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89F4479A1065BF741953378 /* RestTimerBar.swift */; };
 		8CE7A1BF601A16FFB8419C60 /* Translations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F76831712F5D29B631895CD /* Translations.swift */; };
-		90857D8F8161417A3E7FCFE1 /* AppHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF84D563B45992D3D9DCB77 /* AppHeader.swift */; };
 		90CC3E5D0E555C597ED91ABB /* SessionSummaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF6E74CE9A7C510C260498C8 /* SessionSummaryView.swift */; };
 		947A3D0C40441B9379ABD063 /* FormApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3493C594E48AD17563A8CC2 /* FormApp.swift */; };
 		9698074E6A4564D0918CD7E1 /* form_set_complete.wav in Resources */ = {isa = PBXBuildFile; fileRef = 76805C2F08B45E364BEF8AB9 /* form_set_complete.wav */; };
@@ -228,7 +227,6 @@
 		F89F4479A1065BF741953378 /* RestTimerBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerBar.swift; sourceTree = "<group>"; };
 		FAENT0000000000000000001 /* FormApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FormApp.entitlements; sourceTree = "<group>"; };
 		FC5F87CCEA6BEE84FC15E6B7 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
-		FCF84D563B45992D3D9DCB77 /* AppHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppHeader.swift; sourceTree = "<group>"; };
 		FL0000000000000000000001 /* FormLabModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabModels.swift; sourceTree = "<group>"; };
 		FL0000000000000000000003 /* FormLabEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabEngine.swift; sourceTree = "<group>"; };
 		FL0000000000000000000005 /* CloudMirrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudMirrorManager.swift; sourceTree = "<group>"; };
@@ -308,7 +306,6 @@
 		1A91D28BE5BC35235E24EF0C /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				FCF84D563B45992D3D9DCB77 /* AppHeader.swift */,
 				F733A913348412862B8CDF1E /* BottomDock.swift */,
 				D34492D8B1B79732E759E04D /* FormHeaderIconButton.swift */,
 				C105E0000000000000000002 /* FormCloseButton.swift */,
@@ -764,7 +761,6 @@
 				3F7B9B586131F615F225CDD2 /* ActiveSessionView.swift in Sources */,
 				329E21359E0ADED851ABBD02 /* AppColors.swift in Sources */,
 				TH0000000000000000000001 /* AppThemes.swift in Sources */,
-				90857D8F8161417A3E7FCFE1 /* AppHeader.swift in Sources */,
 				C011A0000000000000000002 /* AppStatePersistence.swift in Sources */,
 				11494E03B6F140F80312218E /* AppStore.swift in Sources */,
 				S10000000000000000000001 /* ExerciseSearch.swift in Sources */,

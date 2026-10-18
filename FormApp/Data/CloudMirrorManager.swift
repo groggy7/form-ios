@@ -196,7 +196,6 @@ public final class CloudMirrorManager: ObservableObject {
         stateLock.lock(); let container = cachedContainer; stateLock.unlock()
         return container?.appendingPathComponent("Documents/CloudMirror")
     }
-    public var mirrorDirectory: URL { ubiquitousMirrorDirectory ?? localMirrorDirectory }
     public var isICloudAvailable: Bool { ubiquitousMirrorDirectory != nil }
     public var isEnabled: Bool {
         get { defaults.object(forKey: keyEnabled) as? Bool ?? true }
@@ -543,10 +542,6 @@ public final class CloudMirrorManager: ObservableObject {
         refreshStatus()
     }
 
-    public func checkICloudUploadStatus() -> (isUploaded: Bool, isUploading: Bool, error: Error?) {
-        guard let file = ubiquitousMirrorDirectory?.appendingPathComponent(Self.backupFileName), FileManager.default.fileExists(atPath: file.path) else { return (false, false, nil) }
-        do { return try uploadStatus(file) } catch { return (false, false, error) }
-    }
     public func refreshStatus() { syncQueue.async { [weak self] in self?.updateStatus() } }
     private func recordError(_ error: Error) {
         stateLock.lock(); operationError = error.localizedDescription; stateLock.unlock()

@@ -1,18 +1,5 @@
 import SwiftUI
 
-public struct IdentifiableCooldown: Identifiable, Equatable {
-    public var id: String { "\(isDaily)_\(nextAllowedAt.timeIntervalSince1970)" }
-    public let isDaily: Bool
-    public let nextAllowedAt: Date
-    public let remaining24h: Int
-
-    public init(isDaily: Bool, nextAllowedAt: Date, remaining24h: Int) {
-        self.isDaily = isDaily
-        self.nextAllowedAt = nextAllowedAt
-        self.remaining24h = remaining24h
-    }
-}
-
 public struct ExerciseReportSheet: View {
     @ObservedObject var themeManager = ThemeManager.shared
     let exercise: Exercise
@@ -319,79 +306,6 @@ public struct ExerciseReportSheet: View {
             }
             .background(AppColors.background.ignoresSafeArea())
         }
-    }
-}
-
-public struct ExerciseReportCooldownSheet: View {
-    @ObservedObject var themeManager = ThemeManager.shared
-    let isDaily: Bool
-    let nextAllowedAt: Date
-    let remaining24h: Int
-    var onDismiss: () -> Void
-
-    public init(
-        isDaily: Bool,
-        nextAllowedAt: Date,
-        remaining24h: Int,
-        onDismiss: @escaping () -> Void
-    ) {
-        self.isDaily = isDaily
-        self.nextAllowedAt = nextAllowedAt
-        self.remaining24h = remaining24h
-        self.onDismiss = onDismiss
-    }
-
-    public var body: some View {
-        let _ = themeManager.currentTheme
-        VStack(spacing: 20) {
-            Text(LanguageManager.t(isDaily ? "report.dailyLimitModalTitle" : "report.hourlyCooldownModalTitle"))
-                .font(.system(size: 18, weight: .bold))
-                .foregroundStyle(AppColors.text)
-                .multilineTextAlignment(.center)
-
-            let bodyText = isDaily
-                ? LanguageManager.t("report.dailyLimitModalBody", ["dateTime": ExerciseReportStore.formatLocalDateTime(nextAllowedAt)])
-                : LanguageManager.t("report.hourlyCooldownModalBody", ["time": ExerciseReportStore.formatLocalTime(nextAllowedAt)])
-
-            Text(bodyText)
-                .font(.system(size: 14))
-                .foregroundStyle(AppColors.secondaryText)
-                .multilineTextAlignment(.center)
-                .lineSpacing(4)
-
-            if !isDaily {
-                Text(LanguageManager.t("report.allowanceRemaining", ["remaining": remaining24h]))
-                    .font(.system(size: 12, weight: .semibold))
-                    .foregroundStyle(AppColors.accent)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(
-                        RoundedRectangle(cornerRadius: 8, style: .continuous)
-                            .fill(AppColors.positiveBg)
-                            .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).stroke(AppColors.accent.opacity(0.3), lineWidth: 1))
-                    )
-            } else {
-                Link(LanguageManager.t("report.supportSafetyNotice"), destination: URL(string: "https://forcedrep.com/support")!)
-                    .font(.system(size: 13, weight: .medium))
-                    .foregroundStyle(AppColors.accent)
-            }
-
-            Button(action: onDismiss) {
-                Text(LanguageManager.t("report.gotIt"))
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundStyle(AppColors.background)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 48)
-                    .background(
-                        RoundedRectangle(cornerRadius: 11, style: .continuous)
-                            .fill(AppColors.accent)
-                    )
-            }
-            .buttonStyle(.plain)
-            .padding(.top, 6)
-        }
-        .padding(24)
-        .background(AppColors.surface.ignoresSafeArea())
     }
 }
 

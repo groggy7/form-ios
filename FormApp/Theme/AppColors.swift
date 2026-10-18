@@ -36,7 +36,6 @@ public enum AppColors {
     public static var muted: Color { ThemeManager.shared.currentTheme.muted }
     public static var border: Color { ThemeManager.shared.currentTheme.border }
     public static var accent: Color { ThemeManager.shared.currentTheme.accent }
-    public static var positive: Color { ThemeManager.shared.currentTheme.accent }
     public static var positiveBg: Color { ThemeManager.shared.currentTheme.positiveBg }
     public static var purple: Color { ThemeManager.shared.currentTheme.purple }
     public static var muscleSecondary: Color { lightThemeColor(Color(hex: 0x8EA9F4), Color(hex: 0x4D679A)) }
@@ -77,11 +76,9 @@ public enum AppColors {
     public static var missedDayBorder: Color { lightThemeColor(Color(hex: 0x6B383B), Color(hex: 0xC79088)) }
     public static var completedDayBorder: Color { lightThemeColor(Color(hex: 0x2D5949), Color(hex: 0xA4BCAD)) }
     public static var unfinishedText: Color { lightThemeColor(Color(hex: 0xFDE8CC), Color(hex: 0x845014)) }
-    public static var unfinishedSurface: Color { lightThemeColor(Color(hex: 0x332717), Color(hex: 0xF2E4D0)) }
     
     /// Border of today's calendar pill: neutral ink on dark suites, a softened accent on light ones.
     public static var calendarTodayBorder: Color { lightThemeColor(text.opacity(0.8), accent.opacity(0.6)) }
-    public static var todayIvory: Color { lightThemeColor(Color(hex: 0xEEE8DC), accent) }
     public static var todaySelectionText: Color { lightThemeColor(Color(hex: 0x1A2026), background) }
 
     // Home glass stays neutral; status light is independent of the theme accent. `base` is the
@@ -115,21 +112,13 @@ public enum AppColors {
     }
 
     // Split presentation colors
-    public static var upperBorder: Color { lightThemeColor(Color(hex: 0x494260), Color(hex: 0xC7AFBA)) }
-    public static var lowerBorder: Color { lightThemeColor(Color(hex: 0x37485F), Color(hex: 0xA8B8C6)) }
-    public static var fullBodyBorder: Color { lightThemeColor(Color(hex: 0x414C57), Color(hex: 0xC7B6A1)) }
     
     // History Day Detail Sheet specific colors matching design reference
-    public static var toContinueSurface: Color { presentationColor(Color(hex: 0x102523), positiveBg) }
-    public static var progressTrack: Color { presentationColor(Color(hex: 0x1D262B), border) }
     
     // PR Badge & Tile colors (Orange identity)
     public static var orangePrBg: Color { lightThemeColor(Color(hex: 0x2C1E14), Color(hex: 0xF2E4D0)) }
     public static var orangePrBorder: Color { lightThemeColor(Color(hex: 0x6E461F), Color(hex: 0xC7A477)) }
     public static var orangePrText: Color { lightThemeColor(Color(hex: 0xF2AF61), Color(hex: 0x845014)) }
-    public static var goldPrBg: Color { lightThemeColor(Color(hex: 0x2C1E14), Color(hex: 0xF2E4D0)) }
-    public static var goldPrBorder: Color { lightThemeColor(Color(hex: 0x6E461F), Color(hex: 0xC7A477)) }
-    public static var goldPrText: Color { lightThemeColor(Color(hex: 0xF2AF61), Color(hex: 0x845014)) }
 
     // Exercise Detail History Stat Card colors
     public static var historyStatCardBg: Color { presentationColor(Color(hex: 0x1A232A), surface) }
@@ -149,8 +138,6 @@ public enum AppColors {
 
     public static var completedSurface: Color { lightThemeColor(Color(hex: 0x14241D), Color(hex: 0xE2EDE4)) }
     public static var unfinishedSummarySurface: Color { lightThemeColor(Color(hex: 0x261D13), Color(hex: 0xF2E4D0)) }
-    public static var completedDaySurface: Color { lightThemeColor(Color(hex: 0x1B332B), Color(hex: 0xE2EDE4)) }
-    public static var completedDayText: Color { lightThemeColor(Color(hex: 0xD8F3E5), Color(hex: 0x1D7050)) }
     public static var calendarPillText: Color { lightThemeColor(background, Color(hex: 0x090C0F)) }
     public static var goalSegmentActive: Color { lightThemeColor(Color(hex: 0x21E498), Color(hex: 0x258759)) }
     public static var goalSegmentPending: Color { lightThemeColor(Color(hex: 0x1E946A), Color(hex: 0x739681)) }

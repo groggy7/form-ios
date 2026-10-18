@@ -59,7 +59,7 @@ public enum WarmupPlateEngine {
         let neededFromPlates = safeTarget - safeBar
         let neededPerSide = neededFromPlates / 2.0
 
-        let sortedPlates = availablePlates.filter { $0 > 0 && $0.isFinite }.sorted(by: >)
+        let sortedPlates = Array(Set(availablePlates.filter { $0 > 0 && $0.isFinite })).sorted(by: >)
         var remainingPerSide = neededPerSide
         var selectedPlates: [PlateCount] = []
 
@@ -70,6 +70,14 @@ public enum WarmupPlateEngine {
                 selectedPlates.append(PlateCount(weight: plate, count: count))
                 remainingPerSide -= Double(count) * plate
             }
+        }
+        // Heaviest-first is exact for standard sets but can miss a load with a custom set
+        // (20+15+10 for 45 per side); search only then, so standard results never change.
+        if (remainingPerSide * 100).rounded() / 100 > 0.01,
+           let closest = closestLoad(perSide: neededPerSide, plates: sortedPlates),
+           closest.remainder < remainingPerSide - 0.0001 {
+            selectedPlates = closest.plates
+            remainingPerSide = closest.remainder
         }
 
         let totalPlatesPerSide = selectedPlates.reduce(0.0) { $0 + $1.totalWeight }
@@ -95,10 +103,42 @@ public enum WarmupPlateEngine {
         )
     }
 
+    /// Plate search covers up to 1,000 display units per side.
+    private static let maxSearchHundredths = 100_000
+
+    /// Fewest plates reaching the heaviest load at or below `perSide`, preferring heavier plates.
+    /// Values are hundredths of the display unit; nil when the target is out of range.
+    private static func closestLoad(perSide: Double, plates: [Double]) -> (plates: [PlateCount], remainder: Double)? {
+        let target = Int((perSide * 100).rounded())
+        guard target > 0, target <= maxSearchHundredths else { return nil }
+        let units = plates.map { Int(($0 * 100).rounded()) }
+        guard units.contains(where: { $0 > 0 }) else { return nil }
+        let unreachable = Int.max
+        var count = [Int](repeating: unreachable, count: target + 1)
+        var last = [Int](repeating: -1, count: target + 1)
+        count[0] = 0
+        for sum in stride(from: 1, through: target, by: 1) {
+            for (index, plate) in units.enumerated() where plate > 0 && plate <= sum {
+                let previous = count[sum - plate]
+                if previous != unreachable, previous + 1 < count[sum] {
+                    count[sum] = previous + 1
+                    last[sum] = index
+                }
+            }
+        }
+        guard let best = stride(from: target, through: 0, by: -1).first(where: { count[$0] != unreachable }) else { return nil }
+        var counts = [Int](repeating: 0, count: units.count)
+        var sum = best
+        while sum > 0 { counts[last[sum]] += 1; sum -= units[last[sum]] }
+        let chosen = plates.indices.filter { counts[$0] > 0 }.map { PlateCount(weight: plates[$0], count: counts[$0]) }
+        return (chosen, Double(target - best) / 100)
+    }
+
+    /// `availablePlates` are in `unit`; the bar is in canonical kilograms, as loaded in that unit.
     public static func generateWarmupRamp(
         workingWeightKg: Double,
         barWeightKg: Double = 20.0,
-        availablePlatesKg: [Double] = defaultPlatesKg,
+        availablePlates: [Double]? = nil,
         unit: WeightUnit = .kg
     ) -> WarmupRamp {
         guard hasWorkingLoad(workingWeightKg), barWeightKg.isFinite, barWeightKg > 0 else {
@@ -112,18 +152,22 @@ public enum WarmupPlateEngine {
 
         let isLbs = unit == .lbs
         let displayWorking = isLbs ? unit.toDisplay(safeWorking) : safeWorking
-        let displayBar = isLbs ? unit.toDisplay(safeBar) : safeBar
-        let increment = isLbs ? 5.0 : 2.5
-        let availablePlates = isLbs ? defaultPlates(for: .lbs) : availablePlatesKg
+        // A 45 lb bar is 20.41 kg; rounding its kilograms first would show 44.99 lb and inexact plates.
+        let displayBar = isLbs ? (unit.toDisplay(barWeightKg) * 100).rounded() / 100 : safeBar
+        let usablePlates = (availablePlates ?? []).filter { $0 > 0 && $0.isFinite }
+        let plates = usablePlates.isEmpty ? defaultPlates(for: unit) : usablePlates
+        // Each step must be loadable: at least a pair of the smallest plate.
+        let increment = max(isLbs ? 5.0 : 2.5, (plates.min() ?? 0) * 2)
+        let barStepKg = isLbs ? unit.toCanonicalKg(displayBar) : safeBar
 
         var steps: [WarmupStep] = []
 
         // Step 1: Empty Bar x 10 (warm joints)
-        let step1Plates = calculatePlates(targetWeight: displayBar, barWeight: displayBar, availablePlates: availablePlates, unit: unit)
+        let step1Plates = calculatePlates(targetWeight: displayBar, barWeight: displayBar, availablePlates: plates, unit: unit)
         steps.append(
             WarmupStep(
                 setNumber: 1,
-                weightKg: safeBar,
+                weightKg: barStepKg,
                 reps: 10,
                 percentage: safeWorking > 0 ? Int(((safeBar / safeWorking) * 100).rounded()) : 100,
                 labelKey: "warmup.warm_joints",
@@ -145,7 +189,7 @@ public enum WarmupPlateEngine {
                 let lastDisplayWeight = isLbs ? (steps.last.map { unit.toDisplay($0.weightKg) } ?? 0.0) : (steps.last?.weightKg ?? 0.0)
 
                 if roundedDisplayWeight > lastDisplayWeight && roundedDisplayWeight < displayWorking {
-                    let plates = calculatePlates(targetWeight: roundedDisplayWeight, barWeight: displayBar, availablePlates: availablePlates, unit: unit)
+                    let stepPlates = calculatePlates(targetWeight: roundedDisplayWeight, barWeight: displayBar, availablePlates: plates, unit: unit)
                     let stepKg = isLbs ? unit.toCanonicalKg(roundedDisplayWeight) : roundedDisplayWeight
                     steps.append(
                         WarmupStep(
@@ -155,7 +199,7 @@ public enum WarmupPlateEngine {
                             percentage: Int(candidate.fraction * 100),
                             labelKey: candidate.labelKey,
                             isPotentiation: candidate.fraction >= 0.84,
-                            platesResult: plates
+                            platesResult: stepPlates
                         )
                     )
                 }

@@ -12,7 +12,7 @@ public struct WarmupPlateSheet: View {
     let exerciseName: String
     let initialWorkingWeightKg: Double
     let initialBarType: BarType
-    let initialPlatesKg: [Double]
+    let initialPlates: [Double]
     let unit: WeightUnit
     let initialTab: WarmupPlateTab
 
@@ -30,7 +30,7 @@ public struct WarmupPlateSheet: View {
         exerciseName: String,
         initialWorkingWeightKg: Double,
         initialBarType: BarType,
-        initialPlatesKg: [Double],
+        initialPlates: [Double],
         unit: WeightUnit = .kg,
         initialTab: WarmupPlateTab = .warmupRamp,
         onInsertWarmupSets: @escaping ([ExerciseSetLog]) -> Void,
@@ -40,7 +40,7 @@ public struct WarmupPlateSheet: View {
         self.exerciseName = exerciseName
         self.initialWorkingWeightKg = initialWorkingWeightKg
         self.initialBarType = initialBarType
-        self.initialPlatesKg = initialPlatesKg
+        self.initialPlates = initialPlates
         self.unit = unit
         self.initialTab = initialTab
         self.onInsertWarmupSets = onInsertWarmupSets
@@ -55,21 +55,17 @@ public struct WarmupPlateSheet: View {
 
         _activeTab = State(initialValue: initialTab)
         _selectedBarType = State(initialValue: initialBarType)
-        let platesForUnit = unit == .lbs
-            ? (initialPlatesKg.contains(45.0) ? initialPlatesKg : WarmupPlateEngine.defaultPlatesLbs)
-            : initialPlatesKg
-        _availablePlates = State(initialValue: platesForUnit)
+        _availablePlates = State(initialValue: initialPlates.isEmpty ? WarmupPlateEngine.defaultPlates(for: unit) : initialPlates)
         _workingWeightInput = State(initialValue: defaultWeight)
         _plateTargetInput = State(initialValue: defaultWeight)
     }
 
     private var ramp: WarmupRamp {
         let workingKg = unit == .lbs ? unit.toCanonicalKg(workingWeightInput) : workingWeightInput
-        let barKg = selectedBarType.weightKg
         return WarmupPlateEngine.generateWarmupRamp(
             workingWeightKg: workingKg,
-            barWeightKg: barKg,
-            availablePlatesKg: availablePlates,
+            barWeightKg: selectedBarType.canonicalWeightKg(unit: unit),
+            availablePlates: availablePlates,
             unit: unit
         )
     }

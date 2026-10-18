@@ -16,6 +16,8 @@ struct FormApp: App {
 
     init() {
         _ = FormAudioPlayer.shared
+        // Restore the cached entitlement before the first view applies a premium theme.
+        _ = StoreKitSubscriptionManager.shared
     }
 
     var body: some Scene {

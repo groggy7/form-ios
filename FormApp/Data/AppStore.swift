@@ -18,6 +18,7 @@ public final class AppStore: ObservableObject {
     private let weightUnitKey = "weight_unit"
     private let barTypeKey = "bar_type"
     private let availablePlatesKey = "available_plates_kg"
+    private let availablePlatesLbsKey = "available_plates_lbs"
     private let onboardingCompletedKey = "is_onboarding_completed"
     private let showProgressionTargetsKey = "show_progression_targets"
     private static let dumbbellStepKgKey = "progression_dumbbell_step_kg"
@@ -48,7 +49,7 @@ public final class AppStore: ObservableObject {
     }
 
     public var appThemeId: String {
-        get { ThemeManager.shared.currentTheme.id }
+        get { ThemeManager.shared.selectedThemeId }
         set { ThemeManager.shared.setThemeId(newValue) }
     }
     @Published public var currentView: ViewMode = .today {
@@ -74,6 +75,8 @@ public final class AppStore: ObservableObject {
     }
     @Published public var barType: BarType
     @Published public var availablePlatesKg: [Double]
+    /// Pound plates are kept apart so a pound gym never changes the kilogram inventory or progression steps.
+    @Published public var availablePlatesLbs: [Double]
     /// Smart Progression load steps in each unit; the bar step comes from the smallest available plate.
     @Published public var dumbbellStepKg: Double
     @Published public var dumbbellStepLbs: Double
@@ -211,10 +214,17 @@ public final class AppStore: ObservableObject {
         } else {
             self.barType = .olympic20
         }
-        if let savedPlates = UserDefaults.standard.array(forKey: availablePlatesKey) as? [Double] {
+        let savedPlates = UserDefaults.standard.array(forKey: availablePlatesKey) as? [Double] ?? WarmupPlateEngine.defaultPlatesKg
+        if let savedLbs = UserDefaults.standard.array(forKey: availablePlatesLbsKey) as? [Double] {
             self.availablePlatesKg = savedPlates
-        } else {
+            self.availablePlatesLbs = savedLbs
+        } else if savedPlates.contains(45.0) {
+            // Earlier builds saved pound plates (a 45 is never a kilogram plate) under the kilogram key.
             self.availablePlatesKg = WarmupPlateEngine.defaultPlatesKg
+            self.availablePlatesLbs = savedPlates
+        } else {
+            self.availablePlatesKg = savedPlates
+            self.availablePlatesLbs = WarmupPlateEngine.defaultPlatesLbs
         }
         func savedStep(_ key: String, _ fallback: Double) -> Double {
             UserDefaults.standard.object(forKey: key) != nil ? UserDefaults.standard.double(forKey: key) : fallback
@@ -374,6 +384,10 @@ public final class AppStore: ObservableObject {
 
         $availablePlatesKg
             .sink { [availablePlatesKey] in UserDefaults.standard.set($0, forKey: availablePlatesKey) }
+            .store(in: &cancellables)
+
+        $availablePlatesLbs
+            .sink { [availablePlatesLbsKey] in UserDefaults.standard.set($0, forKey: availablePlatesLbsKey) }
             .store(in: &cancellables)
 
         for (publisher, key) in [($dumbbellStepKg, Self.dumbbellStepKgKey), ($dumbbellStepLbs, Self.dumbbellStepLbsKey),
@@ -678,6 +692,11 @@ public final class AppStore: ObservableObject {
         self.availablePlatesKg = plates
     }
 
+    /// Saves the inventory for `unit`; plates are in that unit.
+    public func setAvailablePlates(_ plates: [Double], unit: WeightUnit) {
+        if unit == .lbs { availablePlatesLbs = plates } else { availablePlatesKg = plates }
+    }
+
     public func insertWarmupSets(exerciseId: String, warmupSets: [ExerciseSetLog]) {
         updateActiveSession { d in
             var copy = d
@@ -849,20 +868,7 @@ public final class AppStore: ObservableObject {
                   let targetDay = WorkoutCalendar.parseDate(sessionDate) else {
                 return finalRecord
             }
-            let cal = Calendar(identifier: .gregorian)
-            let timeZone = TimeZone.current
-            let targetComps = cal.dateComponents(in: timeZone, from: targetDay)
-
-            func adjustIsoDate(_ isoString: String) -> String {
-                guard let origDate = WorkoutCalendar.parseIsoTimestamp(isoString) else { return isoString }
-                var origComps = cal.dateComponents(in: timeZone, from: origDate)
-                origComps.year = targetComps.year
-                origComps.month = targetComps.month
-                origComps.day = targetComps.day
-                guard let newDate = cal.date(from: origComps) else { return isoString }
-                let formatter = ISO8601DateFormatter()
-                return formatter.string(from: newDate)
-            }
+            func adjustIsoDate(_ isoString: String) -> String { Self.movingTimestamp(isoString, to: targetDay) }
 
             return WorkoutSessionRecord(
                 id: finalRecord.id,
@@ -881,9 +887,13 @@ public final class AppStore: ObservableObject {
             )
         }()
 
+        let hasSets = finalRecord.totalCompletedSets > 0 || finalRecord.exerciseLogs.contains { log in
+            log.sets.contains { ($0.reps ?? 0) > 0 || ($0.weightKg ?? 0) > 0 }
+        }
         var newHistory = state.history
         newHistory.removeAll { $0.id == adjustedRecord.id }
-        newHistory.insert(adjustedRecord, at: 0)
+        // Like Android, a workout finished with nothing logged is not history.
+        if hasSets || isComplete { newHistory.insert(adjustedRecord, at: 0) }
 
         var newCompleted = state.completed
         let key = "\(finalRecord.programId):\(finalRecord.workoutId)"
@@ -896,9 +906,6 @@ public final class AppStore: ObservableObject {
             cal = WorkoutCalendar.remove(history: cal, id: "session:\(draft.id)")
         }
 
-        let hasSets = finalRecord.totalCompletedSets > 0 || finalRecord.exerciseLogs.contains { log in
-            log.sets.contains { ($0.reps ?? 0) > 0 || ($0.weightKg ?? 0) > 0 }
-        }
         let sessionDateParsed = WorkoutCalendar.parseDate(sessionDate)
         let todayDate = WorkoutCalendar.parseDate(WorkoutCalendar.formatDate(Date())) ?? Date()
         let isPast = (sessionDateParsed.map { $0 < todayDate }) ?? false
@@ -934,9 +941,14 @@ public final class AppStore: ObservableObject {
         guard saveState(newState, durable: true) else { return }
 
         if ProAccessManager.shared.isFeatureUnlocked(.cloudBackup) {
-            CloudMirrorManager.shared.autoSync(backupJson: exportBackupJson())
+            // Encoding all history grows with use; keep it off the finish tap.
+            let document = FullBackupDocument(state: state, weightUnit: weightUnit)
+            DispatchQueue.global(qos: .utility).async {
+                guard let json = Self.encodeBackup(document) else { return }
+                CloudMirrorManager.shared.autoSync(backupJson: json)
+            }
         }
-        
+
         saveActiveSession(nil)
         self.activeSession = nil
         self.isSessionPresented = false
@@ -1047,10 +1059,6 @@ public final class AppStore: ObservableObject {
     public func setOnboardingCompleted(_ completed: Bool) {
         UserDefaults.standard.set(completed, forKey: onboardingCompletedKey)
         isOnboardingCompleted = completed
-    }
-
-    public func resetOnboarding() {
-        setOnboardingCompleted(false)
     }
 
     public func calendarStatuses(today: Date = Date()) -> [String: WorkoutDayStatus] {
@@ -1268,17 +1276,28 @@ public final class AppStore: ObservableObject {
         try applyProgramImport(previewProgramImport(jsonData: jsonData))
     }
 
-    public func setExerciseVideos(exerciseName: String, videoUrls: [String]) {
+    /// Video links are saved on program exercises; a library-only exercise has nowhere to keep them.
+    public func isExerciseInAnyProgram(named exerciseName: String) -> Bool {
         let key = exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
-        if key.isEmpty { return }
+        return !key.isEmpty && state.programs.contains { program in
+            program.workouts.contains { $0.exercises.contains { $0.name.trimmingCharacters(in: .whitespaces).lowercased() == key } }
+        }
+    }
+
+    /// Returns false, changing nothing, when no program contains the exercise:
+    /// adding it would change that workout's plan.
+    @discardableResult
+    public func setExerciseVideos(exerciseName: String, videoUrls: [String]) -> Bool {
+        let key = exerciseName.trimmingCharacters(in: .whitespaces).lowercased()
+        if key.isEmpty { return false }
 
         guard let cleanUrls = YouTubeVideo.validatedLinks(videoUrls) else {
             noticeMessage = LanguageManager.t("video.youtubeOnly")
-            return
+            return false
         }
 
         var matched = false
-        var updatedPrograms = state.programs.map { program in
+        let updatedPrograms = state.programs.map { program in
             var prog = program
             prog.workouts = program.workouts.map { workout in
                 var w = workout
@@ -1296,19 +1315,17 @@ public final class AppStore: ObservableObject {
             return prog
         }
 
-        if !matched {
-            let targetProgramIndex = updatedPrograms.firstIndex { $0.id == state.activeProgramId } ?? (updatedPrograms.isEmpty ? nil : 0)
-            if let pIdx = targetProgramIndex, !updatedPrograms[pIdx].workouts.isEmpty {
-                let newEx = Exercise(name: exerciseName.trimmingCharacters(in: .whitespaces), videos: cleanUrls)
-                updatedPrograms[pIdx].workouts[0].exercises.append(newEx)
-            }
+        guard matched else {
+            showErrorNotice(LanguageManager.t("video.addToProgramFirst"))
+            return false
         }
 
         var newState = state
         newState.programs = updatedPrograms
-        saveState(newState)
+        guard saveState(newState) else { return false }
         refreshCatalogue()
         showNotice(LanguageManager.t("notice.videosUpdated", ["name": exerciseName]))
+        return true
     }
 
     public func showNotice(_ message: String, style: ToastStyle = .info, duration: Double = 3.0) {
@@ -1398,6 +1415,30 @@ public final class AppStore: ObservableObject {
         return true
     }
 
+    /// The same local time of day on `day`, as an ISO timestamp; unparseable input is returned unchanged.
+    static func movingTimestamp(_ isoString: String, to day: Date, timeZone: TimeZone = .current) -> String {
+        let cal = Calendar(identifier: .gregorian)
+        let target = cal.dateComponents(in: timeZone, from: day)
+        guard let original = WorkoutCalendar.parseIsoTimestamp(isoString) else { return isoString }
+        var components = cal.dateComponents(in: timeZone, from: original)
+        components.year = target.year
+        components.month = target.month
+        components.day = target.day
+        guard let moved = cal.date(from: components) else { return isoString }
+        return ISO8601DateFormatter().string(from: moved)
+    }
+
+    /// Android keeps real timestamps and a separate performed date for a session moved to another day.
+    /// iOS saves that session on its day, as completion does here, so restored history matches.
+    static func aligningToPerformedDate(_ record: WorkoutSessionRecord, timeZone: TimeZone = .current) -> WorkoutSessionRecord {
+        guard let performed = record.performedDate, let day = WorkoutCalendar.parseDate(performed, timeZone: timeZone),
+              WorkoutCalendar.localDate(from: record.startedAt, timeZone: timeZone) != performed else { return record }
+        var aligned = record
+        aligned.startedAt = movingTimestamp(record.startedAt, to: day, timeZone: timeZone)
+        aligned.completedAt = movingTimestamp(record.completedAt, to: day, timeZone: timeZone)
+        return aligned
+    }
+
     func flushPendingState() {
         do { try statePersistence.flush() }
         catch { showErrorNotice(LanguageManager.t("notice.storageFailed")) }
@@ -1405,14 +1446,13 @@ public final class AppStore: ObservableObject {
 
     public func exportBackupJson() -> String {
         refreshForCurrentDate()
-        do {
-            let encoder = JSONEncoder()
-            encoder.outputFormatting = .prettyPrinted
-            let data = try encoder.encode(FullBackupDocument(state: state, weightUnit: weightUnit))
-            return String(data: data, encoding: .utf8) ?? "{}"
-        } catch {
-            return "{}"
-        }
+        return Self.encodeBackup(FullBackupDocument(state: state, weightUnit: weightUnit)) ?? "{}"
+    }
+
+    static func encodeBackup(_ document: FullBackupDocument) -> String? {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        return (try? encoder.encode(document)).flatMap { String(data: $0, encoding: .utf8) }
     }
 
     @discardableResult
@@ -1421,7 +1461,9 @@ public final class AppStore: ObservableObject {
         do {
             let decoder = JSONDecoder()
             let backup = try decoder.decode(FullBackupDocument.self, from: data)
-            var decodedState = Self.rotateWeek(backup.state, now: Date())
+            var restored = backup.state
+            restored.history = restored.history.map { Self.aligningToPerformedDate($0) }
+            var decodedState = Self.rotateWeek(restored, now: Date())
             decodedState.calendarHistory = WorkoutCalendar.restore(
                 raw: decodedState.calendarHistory,
                 sessions: decodedState.history,

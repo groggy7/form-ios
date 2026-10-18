@@ -110,10 +110,8 @@ public final class LanguageManager: ObservableObject {
         return formatter.string(from: NSNumber(value: Double(percent)/100)) ?? "\(percent)%"
     }
     public static func formatSetsLeft(_ count: Int) -> String { shared.plural("counts.setsLeft", count) }
-    public static func formatOtherExercises(_ count: Int) -> String { shared.plural("counts.otherExercises", count) }
     public static func formatUncompletedExercisesCount(_ count: Int) -> String { shared.plural("counts.uncompletedExercises", count) }
     public static func formatCompletedExercisesCount(_ count: Int) -> String { shared.plural("counts.completedExercises", count) }
-    public static func formatAllExercisesCount(_ count: Int) -> String { formatUncompletedExercisesCount(count) }
     public static func formatSetsFraction(completed: Int, total: Int) -> String { shared.plural("counts.setsFraction", total, ["done":completed]) }
     public static func formatExerciseSetsCompleted(completed: Int, planned: Int) -> String { shared.plural("counts.setsCompleted", planned, ["done":completed]) }
 

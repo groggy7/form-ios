@@ -726,6 +726,8 @@ struct ImportExportDataSheet: View {
     @State private var showExportSheet: Bool = false
     @State private var exportText: String = ""
     @State private var isShowingBackupImporter: Bool = false
+    /// Matches Android's limit of 20 million characters with room for multibyte text.
+    static let maxBackupBytes = 64 * 1024 * 1024
     @State private var backupToRestore: String? = nil
     @State private var showRestoreBackupAlert: Bool = false
     @State private var importErrorMessage: String? = nil
@@ -865,18 +867,21 @@ struct ImportExportDataSheet: View {
             switch result {
             case .success(let urls):
                 guard let url = urls.first else { return }
-                guard url.startAccessingSecurityScopedResource() else {
-                    importErrorMessage = "Could not access selected backup file."
-                    return
-                }
-                defer { url.stopAccessingSecurityScopedResource() }
+                // Files inside this app's own container are not security-scoped; access still works.
+                let accessed = url.startAccessingSecurityScopedResource()
+                defer { if accessed { url.stopAccessingSecurityScopedResource() } }
                 do {
+                    let size = try url.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
+                    guard size <= Self.maxBackupBytes else {
+                        importErrorMessage = LanguageManager.t("errors.fileRead")
+                        return
+                    }
                     let data = try Data(contentsOf: url)
                     if let jsonString = String(data: data, encoding: .utf8) {
                         backupToRestore = jsonString
                         showRestoreBackupAlert = true
                     } else {
-                        importErrorMessage = "The selected backup file is not valid UTF-8 text."
+                        importErrorMessage = LanguageManager.t("errors.fileRead")
                     }
                 } catch {
                     importErrorMessage = LanguageManager.t("errors.fileRead")
