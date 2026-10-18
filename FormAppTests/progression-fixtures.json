@@ -572,6 +572,50 @@
       "expected": { "action": "increase_load", "rationaleKey": "progression.rationale.increase_load", "targets": [[115, 12], [115, 12], [115, 12]], "suggestedWeightDisplay": "115", "weightDeltaDisplay": "+10 kg", "applied": ["115", "115", "115"] }
     },
     {
+      "name": "a plateau on the empty bar offers no lighter week below the bar",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-09-01T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[20, 8], [20, 8], [20, 8]] } ] },
+        { "id": "s2", "completedAt": "2026-09-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[20, 8], [20, 8], [20, 8]] } ] },
+        { "id": "s3", "completedAt": "2026-09-08T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[20, 8], [20, 8], [20, 8]] } ] }
+      ],
+      "expected": { "action": "deload", "rationaleKey": "progression.rationale.plateau", "targets": [], "variation": "incline-dumbbell-press" }
+    },
+    {
+      "name": "a lighter week can be the empty bar",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-09-01T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[22.5, 8], [22.5, 8], [22.5, 8]] } ] },
+        { "id": "s2", "completedAt": "2026-09-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[22.5, 8], [22.5, 8], [22.5, 8]] } ] },
+        { "id": "s3", "completedAt": "2026-09-08T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[22.5, 8], [22.5, 8], [22.5, 8]] } ] }
+      ],
+      "expected": { "action": "deload", "rationaleKey": "progression.rationale.plateau", "targets": [[20, 8], [20, 8], [20, 8]], "variation": "incline-dumbbell-press", "applied": ["20", "20", "20"] }
+    },
+    {
+      "name": "one set on the empty bar withholds the whole lighter week",
+      "unit": "kg",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-09-01T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[30, 8], [25, 8], [20, 8]] } ] },
+        { "id": "s2", "completedAt": "2026-09-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[30, 8], [25, 8], [20, 8]] } ] },
+        { "id": "s3", "completedAt": "2026-09-08T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[30, 8], [25, 8], [20, 8]] } ] }
+      ],
+      "expected": { "action": "deload", "rationaleKey": "progression.rationale.plateau", "targets": [], "variation": "incline-dumbbell-press" }
+    },
+    {
+      "name": "a plateau on the empty 45 lb bar offers no lighter week below the bar",
+      "unit": "lbs",
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-09-01T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[45, 8], [45, 8], [45, 8]] } ] },
+        { "id": "s2", "completedAt": "2026-09-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[45, 8], [45, 8], [45, 8]] } ] },
+        { "id": "s3", "completedAt": "2026-09-08T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[45, 8], [45, 8], [45, 8]] } ] }
+      ],
+      "expected": { "action": "deload", "rationaleKey": "progression.rationale.plateau", "targets": [], "variation": "incline-dumbbell-press" }
+    },
+    {
       "name": "kilogram history in pounds steps to the next 5 lb",
       "unit": "lbs",
       "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [3, 5] },

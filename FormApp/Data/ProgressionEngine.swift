@@ -212,13 +212,14 @@ public enum ProgressionEngine {
     }
 
     /// About 90% of each load on the same step grid, for the same reps; empty when that is not loadable.
+    /// A bar's grid never goes below the bar, so a set too close to the empty bar withholds the lighter week.
     private static func lighterWeek(_ sets: [SessionSetLog], step: LoadStep?, unit: WeightUnit, repMax: Int) -> [ProgressionSetTarget] {
         guard let step else { return [] }
         var targets: [ProgressionSetTarget] = []
         for set in sets {
             let target = unit.toDisplay(set.weightKg!) * lighterWeekShare - step.origin
             let lighter = snapped(step.origin + (target / step.display + epsilon).rounded(.down) * step.display)
-            guard lighter > 0 else { return [] }
+            guard lighter > 0, lighter >= step.origin else { return [] }
             targets.append(ProgressionSetTarget(weightKg: unit.toCanonicalKg(lighter), reps: min(set.reps!, repMax)))
         }
         return targets
