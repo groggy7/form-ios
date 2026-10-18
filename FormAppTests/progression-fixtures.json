@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "about": "Shared smart progression contract. Edit this file, then run `node scripts/sync_progression_fixtures.cjs` to copy it into both apps. Android ProgressionFixturesTest and iOS ProgressionFixtureTests execute every case. Loads are written in `unit` (or a log's `loadUnit`) and converted with each app's canonical kilogram conversion. Expected targets use the case `unit` unless `targetUnit` says otherwise. `applied` is the exact input text Apply Target (or Use lighter week) writes; Apply must also store the target's canonical kilograms unchanged, leave reps empty and show the target reps as their placeholder. A case `context` is the active workout day and current time, as the session screen passes them; records default to programId and workoutId `fixture`, and `snapshot` lists the prescription saved with a record. `steps` sets the dumbbell/machine load-step settings in the case unit (defaults: 2 kg / 5 kg, 5 lb / 10 lb); `platesKg` sets the available plates (default includes 1.25 kg). A log's `effort` is easy, right or hard. `variation` is the suggested exercise ID; `rationaleArgs` lists arguments that must match.",
+  "about": "Shared smart progression contract. Edit this file, then run `node scripts/sync_progression_fixtures.cjs` to copy it into both apps. Android ProgressionFixturesTest and iOS ProgressionFixtureTests execute every case. Loads are written in `unit` (or a log's `loadUnit`) and converted with each app's canonical kilogram conversion. Expected targets use the case `unit` unless `targetUnit` says otherwise. `applied` is the exact input text Apply Target (or Use lighter week) writes; Apply must also store the target's canonical kilograms unchanged, leave reps empty and show the target reps as their placeholder. A case `context` is the active workout day and current time, as the session screen passes them; records default to programId and workoutId `fixture`, and `snapshot` lists the prescription saved with a record. `steps` sets the dumbbell/machine load-step settings in the case unit (defaults: 2 kg / 5 kg, 5 lb / 10 lb); `platesKg` and `platesLbs` set each unit's available plates (defaults include 1.25 kg and 2.5 lb); `barType` is the Warmup & Plates bar key (default `olympic_20`: 20 kg / 45 lb), where a bar step's grid starts. A log's `effort` is easy, right or hard. `variation` is the suggested exercise ID; `rationaleArgs` lists arguments that must match.",
   "formatting": [
     { "value": 20.25, "valueUnit": "kg", "unit": "kg", "display": "20.3", "exact": "20.25" },
     { "value": 21.25, "valueUnit": "kg", "unit": "kg", "display": "21.3", "exact": "21.25" },
@@ -547,6 +547,29 @@
         { "id": "s2", "completedAt": "2026-09-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[65, 12], [65, 12], [65, 12]] } ] }
       ],
       "expected": { "action": "increase_load", "rationaleKey": "progression.rationale.increase_load", "targets": [[70, 12], [70, 12], [70, 12]], "weightDeltaDisplay": "+5 kg" }
+    },
+    {
+      "name": "without 2.5 lb plates the pound bar step is 10 lb from the 45 lb bar",
+      "unit": "lbs",
+      "platesLbs": [45, 35, 25, 10, 5],
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-09-01T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[135, 12], [135, 12], [135, 12]] } ] },
+        { "id": "s2", "completedAt": "2026-09-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[135, 12], [135, 12], [135, 12]] } ] }
+      ],
+      "expected": { "action": "increase_load", "rationaleKey": "progression.rationale.increase_load", "targets": [[145, 12], [145, 12], [145, 12]], "suggestedWeightDisplay": "145", "weightDeltaDisplay": "+10 lbs", "applied": ["145", "145", "145"] }
+    },
+    {
+      "name": "a 15 kg bar with 5 kg plates steps 10 kg from the bar",
+      "unit": "kg",
+      "barType": "womens_15",
+      "platesKg": [25, 20, 15, 10, 5],
+      "exercise": { "exerciseId": "barbell-bench-press", "name": "Barbell Bench Press", "sets": 3, "reps": [8, 12] },
+      "history": [
+        { "id": "s1", "completedAt": "2026-09-01T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[105, 12], [105, 12], [105, 12]] } ] },
+        { "id": "s2", "completedAt": "2026-09-04T11:00:00Z", "logs": [ { "exerciseId": "barbell-bench-press", "exerciseName": "Barbell Bench Press", "targetSets": 3, "working": [[105, 12], [105, 12], [105, 12]] } ] }
+      ],
+      "expected": { "action": "increase_load", "rationaleKey": "progression.rationale.increase_load", "targets": [[115, 12], [115, 12], [115, 12]], "suggestedWeightDisplay": "115", "weightDeltaDisplay": "+10 kg", "applied": ["115", "115", "115"] }
     },
     {
       "name": "kilogram history in pounds steps to the next 5 lb",

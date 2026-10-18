@@ -68,6 +68,11 @@ public enum PersonalRecordTracker {
         return WorkoutCalendar.parseIsoTimestamp(ts) ?? WorkoutCalendar.parseDate(ts, timeZone: timeZone)
     }
 
+    /// PRs compare working sets, like exercise history and Rep Lab; warmups never set or beat one.
+    private static func maxWorkingWeight(_ log: SessionExerciseLog) -> Double? {
+        log.sets.filter { !$0.isWarmup && ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }.compactMap { $0.weightKg }.max()
+    }
+
     public static func isRecordInWeek(
         _ record: WorkoutSessionRecord,
         targetWeekKey: String,
@@ -114,10 +119,7 @@ public enum PersonalRecordTracker {
             for exerciseLog in record.exerciseLogs {
                 if WorkoutSessionUtils.isAssisted(exerciseId: exerciseLog.exerciseId, name: exerciseLog.exerciseName) { continue }
                 let key = normalizeExerciseKey(exerciseLog.exerciseName)
-                let validSets = exerciseLog.sets.filter { ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }
-                guard let maxSessionWeight = validSets.compactMap({ $0.weightKg }).max() else {
-                    continue
-                }
+                guard let maxSessionWeight = maxWorkingWeight(exerciseLog) else { continue }
 
                 if let previousMax = maxWeightByExercise[key] {
                     if maxSessionWeight > previousMax {
@@ -200,11 +202,7 @@ public enum PersonalRecordTracker {
             for exerciseLog in record.exerciseLogs {
                 if WorkoutSessionUtils.isAssisted(exerciseId: exerciseLog.exerciseId, name: exerciseLog.exerciseName) { continue }
                 let key = normalizeExerciseKey(exerciseLog.exerciseName)
-                let maxSessionWeight = exerciseLog.sets
-                    .filter { ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }
-                    .compactMap { $0.weightKg }
-                    .max()
-                guard let maxWeight = maxSessionWeight else { continue }
+                guard let maxWeight = maxWorkingWeight(exerciseLog) else { continue }
 
                 if let prev = maxWeightByExercise[key] {
                     if maxWeight > prev {
@@ -220,11 +218,7 @@ public enum PersonalRecordTracker {
         for exerciseLog in targetRecord.exerciseLogs {
             if WorkoutSessionUtils.isAssisted(exerciseId: exerciseLog.exerciseId, name: exerciseLog.exerciseName) { continue }
             let key = normalizeExerciseKey(exerciseLog.exerciseName)
-            let maxSessionWeight = exerciseLog.sets
-                .filter { ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }
-                .compactMap { $0.weightKg }
-                .max()
-            guard let maxWeight = maxSessionWeight else { continue }
+            guard let maxWeight = maxWorkingWeight(exerciseLog) else { continue }
 
             if let prev = maxWeightByExercise[key], maxWeight > prev {
                 prExercises.insert(key)
@@ -289,10 +283,11 @@ public enum PersonalRecordTracker {
             return ExerciseHistoryStats()
         }
 
-        let weightedSets = allValidSets.filter { ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }
+        let workingSets = allValidSets.filter { !$0.isWarmup }
+        let weightedSets = workingSets.filter { ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }
         let prSet: SessionSetLog?
         if assisted {
-            prSet = allValidSets.filter { !$0.isWarmup && ($0.reps ?? 0) > 0 && $0.weightKg.map { $0.isFinite && $0 >= 0 } == true }.max { a, b in
+            prSet = workingSets.filter { ($0.reps ?? 0) > 0 && $0.weightKg.map { $0.isFinite && $0 >= 0 } == true }.max { a, b in
                 if a.weightKg != b.weightKg { return a.weightKg! > b.weightKg! }
                 return (a.reps ?? 0) < (b.reps ?? 0)
             }
@@ -304,7 +299,7 @@ public enum PersonalRecordTracker {
                 return (s1.reps ?? 0) < (s2.reps ?? 0)
             }
         } else {
-            prSet = allValidSets.max { ($0.reps ?? 0) < ($1.reps ?? 0) }
+            prSet = workingSets.max { ($0.reps ?? 0) < ($1.reps ?? 0) }
         }
 
         var est1rm: Double? = nil

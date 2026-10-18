@@ -98,7 +98,7 @@ public enum ProgressionEffort: String, CaseIterable {
 }
 
 /// The smallest load increases the user's equipment supports, as display values in each unit.
-/// Bars use twice the smallest available plate in kilograms; pounds use 5 lb plates' pairs.
+/// Bars use a pair of the smallest plate in that unit's inventory, counted from the selected bar.
 public struct ProgressionLoadSteps: Equatable {
     public static let defaultDumbbellKg = 2.0
     public static let defaultDumbbellLbs = 5.0
@@ -114,27 +114,40 @@ public struct ProgressionLoadSteps: Equatable {
     public let machineKg: Double
     public let machineLbs: Double
     public let smallestPlateKg: Double
+    public let smallestPlateLbs: Double
+    public let barType: BarType
 
     public init(dumbbellKg: Double = defaultDumbbellKg, dumbbellLbs: Double = defaultDumbbellLbs,
-                machineKg: Double = defaultMachineKg, machineLbs: Double = defaultMachineLbs, smallestPlateKg: Double = 1.25) {
+                machineKg: Double = defaultMachineKg, machineLbs: Double = defaultMachineLbs, smallestPlateKg: Double = 1.25,
+                smallestPlateLbs: Double = 2.5, barType: BarType = .olympic20) {
         self.dumbbellKg = dumbbellKg
         self.dumbbellLbs = dumbbellLbs
         self.machineKg = machineKg
         self.machineLbs = machineLbs
         self.smallestPlateKg = smallestPlateKg
+        self.smallestPlateLbs = smallestPlateLbs
+        self.barType = barType
     }
 
     /// Values outside the offered options fall back to the defaults.
-    public static func from(dumbbellKg: Double, dumbbellLbs: Double, machineKg: Double, machineLbs: Double, platesKg: [Double]) -> ProgressionLoadSteps {
+    public static func from(dumbbellKg: Double, dumbbellLbs: Double, machineKg: Double, machineLbs: Double, platesKg: [Double],
+                            platesLbs: [Double] = [], barType: BarType = .olympic20) -> ProgressionLoadSteps {
         ProgressionLoadSteps(
             dumbbellKg: dumbbellKgOptions.contains(dumbbellKg) ? dumbbellKg : defaultDumbbellKg,
             dumbbellLbs: dumbbellLbsOptions.contains(dumbbellLbs) ? dumbbellLbs : defaultDumbbellLbs,
             machineKg: machineKgOptions.contains(machineKg) ? machineKg : defaultMachineKg,
             machineLbs: machineLbsOptions.contains(machineLbs) ? machineLbs : defaultMachineLbs,
-            smallestPlateKg: platesKg.filter { $0.isFinite && $0 > 0 }.min() ?? 1.25)
+            smallestPlateKg: platesKg.filter { $0.isFinite && $0 > 0 }.min() ?? 1.25,
+            smallestPlateLbs: platesLbs.filter { $0.isFinite && $0 > 0 }.min() ?? 2.5,
+            barType: barType)
     }
 
-    public func bar(_ unit: WeightUnit) -> Double? { unit == .lbs ? 5 : (smallestPlateKg > 0 ? smallestPlateKg * 2 : nil) }
+    public func bar(_ unit: WeightUnit) -> Double? {
+        let smallest = unit == .lbs ? smallestPlateLbs : smallestPlateKg
+        return smallest > 0 ? smallest * 2 : nil
+    }
+    /// Bar loads are the bar plus plate pairs, so the bar step's grid starts at the bar's weight.
+    public func barOrigin(_ unit: WeightUnit) -> Double { barType.weight(unit: unit) }
     public func dumbbell(_ unit: WeightUnit) -> Double { unit == .lbs ? dumbbellLbs : dumbbellKg }
     public func machine(_ unit: WeightUnit) -> Double { unit == .lbs ? machineLbs : machineKg }
     public func bodyweight(_ unit: WeightUnit) -> Double { unit == .lbs ? 5 : 2.5 }

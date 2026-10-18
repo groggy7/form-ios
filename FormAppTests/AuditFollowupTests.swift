@@ -210,4 +210,50 @@ final class AuditFollowupTests: XCTestCase {
             XCTAssertEqual(metrics.formattedVolume(unit: unit), unit.formatVolume(1e100))
         }
     }
+
+    // 2026-10-18 audit follow-up
+
+    private func rampLoads(working: Double, bar: Double, plates: [Double]?, unit: WeightUnit = .kg) -> [Double] {
+        let ramp = WarmupPlateEngine.generateWarmupRamp(workingWeightKg: unit.toCanonicalKg(working),
+                                                        barWeightKg: unit.toCanonicalKg(bar), availablePlates: plates, unit: unit)
+        XCTAssertTrue(ramp.steps.allSatisfy { $0.platesResult?.isExactMatch == true }, "Every step loads exactly")
+        return ramp.steps.map { (unit.toDisplay($0.weightKg) * 100).rounded() / 100 }
+    }
+
+    func testWarmupStepsCountFromTheBarSoEveryStepLoads() {
+        XCTAssertEqual(rampLoads(working: 100, bar: 15, plates: [5]), [15, 55, 75, 85])
+        // Only the 60 kg step fits below the working load; 40 kg cannot be made with 20 kg plates.
+        XCTAssertEqual(rampLoads(working: 100, bar: 20, plates: [20]), [20, 60])
+        XCTAssertEqual(rampLoads(working: 225, bar: 45, plates: [45, 25, 10, 5], unit: .lbs), [45, 115, 155, 195])
+    }
+
+    func testStandardPlatesKeepTheirWarmupSteps() {
+        XCTAssertEqual(rampLoads(working: 100, bar: 20, plates: nil), [20, 50, 70, 85])
+        XCTAssertEqual(rampLoads(working: 225, bar: 45, plates: nil, unit: .lbs), [45, 115, 160, 190])
+    }
+
+    private func benchRecord(_ id: String, _ startedAt: String, working: [Double], warmups: [Double] = []) -> WorkoutSessionRecord {
+        let sets = warmups.enumerated().map { SessionSetLog(setNumber: $0.offset + 1, weightKg: $0.element, reps: 5, isWarmup: true) }
+            + working.enumerated().map { SessionSetLog(setNumber: $0.offset + 1, weightKg: $0.element, reps: 5) }
+        return WorkoutSessionRecord(id: id, programId: "p", workoutId: "w", workoutTitle: "Workout", startedAt: startedAt,
+                                    completedAt: startedAt, durationSeconds: 1800,
+                                    exerciseLogs: [SessionExerciseLog(exerciseName: "Barbell Bench Press", sets: sets)])
+    }
+
+    func testAHeavierWarmupIsNotAPersonalRecord() {
+        let baseline = benchRecord("a", "2026-10-01T10:00:00Z", working: [100])
+        let session = benchRecord("b", "2026-10-15T10:00:00Z", working: [100], warmups: [120])
+        let history = [baseline, session]
+        let utc = TimeZone(identifier: "UTC")!
+        XCTAssertEqual(PersonalRecordTracker.countPrsForWeek(history: history, currentWeekKey: "2026-W42", timeZone: utc), 0)
+        XCTAssertTrue(PersonalRecordTracker.findSessionPrExercises(history: history, targetRecord: session).isEmpty)
+        XCTAssertEqual(PersonalRecordTracker.computeExerciseHistoryStats(history: history, exerciseName: "Barbell Bench Press").prWeightKg, 100)
+    }
+
+    func testAWarmupOnlySessionIsNotABaseline() {
+        let warmupsOnly = benchRecord("a", "2026-10-01T10:00:00Z", working: [], warmups: [60])
+        let first = benchRecord("b", "2026-10-15T10:00:00Z", working: [100])
+        XCTAssertEqual(PersonalRecordTracker.countPrsForWeek(history: [warmupsOnly, first], currentWeekKey: "2026-W42",
+                                                             timeZone: TimeZone(identifier: "UTC")!), 0)
+    }
 }

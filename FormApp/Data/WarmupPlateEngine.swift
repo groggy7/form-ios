@@ -184,13 +184,12 @@ public enum WarmupPlateEngine {
             ]
 
             for candidate in candidates {
-                let rawWeight = displayWorking * candidate.fraction
-                let roundedDisplayWeight = roundToIncrement(rawWeight, increment: increment)
+                let displayWeight = loadableStep(displayWorking * candidate.fraction, bar: displayBar, increment: increment, plates: plates, unit: unit)
                 let lastDisplayWeight = isLbs ? (steps.last.map { unit.toDisplay($0.weightKg) } ?? 0.0) : (steps.last?.weightKg ?? 0.0)
 
-                if roundedDisplayWeight > lastDisplayWeight && roundedDisplayWeight < displayWorking {
-                    let stepPlates = calculatePlates(targetWeight: roundedDisplayWeight, barWeight: displayBar, availablePlates: plates, unit: unit)
-                    let stepKg = isLbs ? unit.toCanonicalKg(roundedDisplayWeight) : roundedDisplayWeight
+                if displayWeight > lastDisplayWeight && displayWeight < displayWorking {
+                    let stepPlates = calculatePlates(targetWeight: displayWeight, barWeight: displayBar, availablePlates: plates, unit: unit)
+                    let stepKg = isLbs ? unit.toCanonicalKg(displayWeight) : displayWeight
                     steps.append(
                         WarmupStep(
                             setNumber: steps.count + 1,
@@ -211,6 +210,15 @@ public enum WarmupPlateEngine {
             barWeightKg: safeBar,
             steps: steps
         )
+    }
+
+    /// The step's load in display units: `raw` rounded on a grid that starts at the bar, so a
+    /// 15 kg bar with 5 kg plates steps 15, 25, 35. A load the plates still cannot make
+    /// becomes the closest lighter load they can.
+    private static func loadableStep(_ raw: Double, bar: Double, increment: Double, plates: [Double], unit: WeightUnit) -> Double {
+        let target = ((bar + roundToIncrement(raw - bar, increment: increment)) * 100).rounded() / 100
+        let result = calculatePlates(targetWeight: target, barWeight: bar, availablePlates: plates, unit: unit)
+        return result.isExactMatch ? target : result.totalAchievedWeight
     }
 
     public static func roundToIncrement(_ value: Double, increment: Double) -> Double {

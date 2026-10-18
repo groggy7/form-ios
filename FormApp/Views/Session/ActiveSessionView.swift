@@ -11,7 +11,6 @@ public struct ActiveSessionView: View {
     @State private var showExitConfirmation: Bool = false
     @State private var showSummary: Bool = false
     @State private var finishedAt: Int64? = nil
-    @State private var restMuted: Bool = false
     @State private var warningNoticeMessage: String? = nil
     @State private var isWarningVisible: Bool = false
     @State private var celebratoryNoticeMessage: String? = nil
@@ -553,8 +552,9 @@ public struct ActiveSessionView: View {
                                     onAddSeconds: { adjustRest(seconds: $0) },
                                     onSetDuration: { setRestDuration(seconds: $0) },
                                     onSkip: { skipRest() },
-                                    isMuted: restMuted,
-                                    onToggleMute: { restMuted.toggle() }
+                                    // The rest chime and its notification follow the app sound setting, as on Android.
+                                    isMuted: !store.soundEnabled,
+                                    onToggleMute: { store.soundEnabled.toggle() }
                                 )
                                 .padding(.bottom, 16)
                             }

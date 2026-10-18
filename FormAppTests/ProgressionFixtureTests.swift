@@ -22,6 +22,8 @@ final class ProgressionFixtureTests: XCTestCase {
         let context: Context?
         let steps: Steps?
         let platesKg: [Double]?
+        let platesLbs: [Double]?
+        let barType: String?
         let exercise: FixtureExercise
         let history: [Record]
         let expected: Expected
@@ -127,7 +129,9 @@ final class ProgressionFixtureTests: XCTestCase {
                 dumbbellLbs: unit == .lbs ? (fixture.steps?.dumbbell ?? defaults.dumbbellLbs) : defaults.dumbbellLbs,
                 machineKg: unit == .kg ? (fixture.steps?.machine ?? defaults.machineKg) : defaults.machineKg,
                 machineLbs: unit == .lbs ? (fixture.steps?.machine ?? defaults.machineLbs) : defaults.machineLbs,
-                platesKg: fixture.platesKg ?? WarmupPlateEngine.defaultPlatesKg)
+                platesKg: fixture.platesKg ?? WarmupPlateEngine.defaultPlatesKg,
+                platesLbs: fixture.platesLbs ?? WarmupPlateEngine.defaultPlatesLbs,
+                barType: BarType.fromKey(fixture.barType))
             let rec = ProgressionEngine.computeProgression(exercise: exercise, history: history, weightUnit: unit,
                                                            activeSessionId: fixture.activeSessionId, context: context, steps: steps)
             guard let action = expected.action else { XCTAssertNil(rec, name); continue }

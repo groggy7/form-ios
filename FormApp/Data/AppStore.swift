@@ -76,16 +76,17 @@ public final class AppStore: ObservableObject {
     }
     @Published public var barType: BarType
     @Published public var availablePlatesKg: [Double]
-    /// Pound plates are kept apart so a pound gym never changes the kilogram inventory or progression steps.
+    /// Pound plates are kept apart so a pound gym never changes the kilogram inventory or its progression step.
     @Published public var availablePlatesLbs: [Double]
-    /// Smart Progression load steps in each unit; the bar step comes from the smallest available plate.
+    /// Smart Progression load steps in each unit; the bar step comes from that unit's smallest plate and the bar.
     @Published public var dumbbellStepKg: Double
     @Published public var dumbbellStepLbs: Double
     @Published public var machineStepKg: Double
     @Published public var machineStepLbs: Double
     public var progressionLoadSteps: ProgressionLoadSteps {
         ProgressionLoadSteps.from(dumbbellKg: dumbbellStepKg, dumbbellLbs: dumbbellStepLbs,
-                                  machineKg: machineStepKg, machineLbs: machineStepLbs, platesKg: availablePlatesKg)
+                                  machineKg: machineStepKg, machineLbs: machineStepLbs, platesKg: availablePlatesKg,
+                                  platesLbs: availablePlatesLbs, barType: barType)
     }
     @Published public var currentToast: ToastItem?
     @Published public var noticeMessage: String? {

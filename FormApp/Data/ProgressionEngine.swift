@@ -155,7 +155,8 @@ public enum ProgressionEngine {
         ExerciseCatalog.resolveCanonicalId(stableId: exercise.exerciseId, name: exercise.name) ?? ExerciseCatalog.key(exercise.name)
     }
 
-    private struct LoadStep { let display: Double; let relativeLimit: Bool }
+    /// Loads on the step's grid are `origin` plus whole steps; a bar's grid starts at the bar.
+    private struct LoadStep { let display: Double; let relativeLimit: Bool; var origin: Double = 0 }
 
     /// The smallest supported increase in `unit`, or nil when the app must not invent one.
     private static func loadStep(_ exercise: Exercise, loadsKg: [Double], unit: WeightUnit, steps: ProgressionLoadSteps) -> LoadStep? {
@@ -164,27 +165,25 @@ public enum ProgressionEngine {
         if WorkoutSessionUtils.usesBodyweightResistance(exercise) {
             return !loadsKg.isEmpty && loadsKg.allSatisfy({ $0 > 0 }) ? LoadStep(display: steps.bodyweight(unit), relativeLimit: false) : nil
         }
-        let step: Double?
         switch EquipmentCatalog.shared.categoryId(canonicalId(exercise)) {
-        case "bar": step = steps.bar(unit)
-        case "dumbbell": step = steps.dumbbell(unit)
-        case "machine": step = steps.machine(unit)
-        default: step = nil // Bodyweight, kettlebells, plates, bands and unknown equipment have no inferred step.
+        case "bar": return steps.bar(unit).map { LoadStep(display: $0, relativeLimit: true, origin: steps.barOrigin(unit)) }
+        case "dumbbell": return LoadStep(display: steps.dumbbell(unit), relativeLimit: true)
+        case "machine": return LoadStep(display: steps.machine(unit), relativeLimit: true)
+        default: return nil // Bodyweight, kettlebells, plates, bands and unknown equipment have no inferred step.
         }
-        return step.map { LoadStep(display: $0, relativeLimit: true) }
     }
 
     private static func snapped(_ value: Double) -> Double { (value * 1_000_000).rounded() / 1_000_000 }
 
-    /// The first multiple of the step at least half a step above the logged load, in display units.
-    private static func nextOnGrid(_ display: Double, step: Double) -> Double {
-        snapped(((display + step / 2) / step - epsilon).rounded(.up) * step)
+    /// The first load on the step's grid at least half a step above the logged load, in display units.
+    private static func nextOnGrid(_ display: Double, step: LoadStep) -> Double {
+        snapped(step.origin + ((display - step.origin + step.display / 2) / step.display - epsilon).rounded(.up) * step.display)
     }
 
     /// The next loadable weight for the free logbook's comparison, or nil without a supported step.
     public static func nextLoadKg(exercise: Exercise, weightKg: Double, unit: WeightUnit, steps: ProgressionLoadSteps = ProgressionLoadSteps()) -> Double? {
         guard weightKg.isFinite, weightKg > 0, let step = loadStep(exercise, loadsKg: [weightKg], unit: unit, steps: steps) else { return nil }
-        return unit.toCanonicalKg(nextOnGrid(unit.toDisplay(weightKg), step: step.display))
+        return unit.toCanonicalKg(nextOnGrid(unit.toDisplay(weightKg), step: step))
     }
 
     private struct IncreasePlan { let targets: [ProgressionSetTarget]; let resetReps: Bool; let deltaDisplay: Double? }
@@ -198,7 +197,7 @@ public enum ProgressionEngine {
         for set in sets {
             let display = unit.toDisplay(set.weightKg!)
             guard display > 0 else { return nil }
-            let next = nextOnGrid(display, step: step.display)
+            let next = nextOnGrid(display, step: step)
             guard next <= WorkoutSessionUtils.maxAllowedWeight(unit: unit) else { return nil }
             let share = (next - display) / display
             let reps: Int
@@ -217,7 +216,8 @@ public enum ProgressionEngine {
         guard let step else { return [] }
         var targets: [ProgressionSetTarget] = []
         for set in sets {
-            let lighter = snapped((unit.toDisplay(set.weightKg!) * lighterWeekShare / step.display + epsilon).rounded(.down) * step.display)
+            let target = unit.toDisplay(set.weightKg!) * lighterWeekShare - step.origin
+            let lighter = snapped(step.origin + (target / step.display + epsilon).rounded(.down) * step.display)
             guard lighter > 0 else { return [] }
             targets.append(ProgressionSetTarget(weightKg: unit.toCanonicalKg(lighter), reps: min(set.reps!, repMax)))
         }
