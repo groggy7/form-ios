@@ -5,13 +5,6 @@ public enum PaywallPlan: String, CaseIterable {
     case monthly
 }
 
-private struct PaywallBenefit: Identifiable {
-    let id = UUID()
-    let titleKey: String
-    let descKey: String
-    let iconName: String
-}
-
 public struct ProPaywallSheet: View {
     @ObservedObject var themeManager = ThemeManager.shared
     public var feature: ProFeature?
@@ -20,10 +13,6 @@ public struct ProPaywallSheet: View {
 
     @ObservedObject private var proManager = ProAccessManager.shared
     @ObservedObject private var appStore = AppStore.shared
-    @ScaledMetric(relativeTo: .title2) private var headlineSize = 22.0
-    @ScaledMetric(relativeTo: .subheadline) private var subtitleSize = 13.5
-    @ScaledMetric(relativeTo: .subheadline) private var actionSize = 15.0
-    @ScaledMetric(relativeTo: .caption) private var footnoteSize = 11.0
     @ObservedObject private var storeKit = StoreKitSubscriptionManager.shared
     @State private var selectedPlan: PaywallPlan = .annual
     @State private var userInteractedWithPlan: Bool = false
@@ -45,65 +34,12 @@ public struct ProPaywallSheet: View {
         self.onUnlocked = onUnlocked
     }
 
-    private var benefits: [PaywallBenefit] {
-        switch feature {
-        case .volumeMatrix:
-            return [
-                PaywallBenefit(titleKey: "paywall.volume_matrix.benefit1", descKey: "paywall.volume_matrix.benefit1_desc", iconName: "chart.bar.fill"),
-                PaywallBenefit(titleKey: "paywall.volume_matrix.benefit2", descKey: "paywall.volume_matrix.benefit2_desc", iconName: "figure.walk"),
-                PaywallBenefit(titleKey: "paywall.volume_matrix.benefit3", descKey: "paywall.volume_matrix.benefit3_desc", iconName: "gauge.with.needle.fill"),
-                PaywallBenefit(titleKey: "paywall.volume_matrix.benefit4", descKey: "paywall.volume_matrix.benefit4_desc", iconName: "arrow.triangle.2.circlepath")
-            ]
-        case .formLab:
-            return [
-                PaywallBenefit(titleKey: "paywall.form_lab.benefit1", descKey: "paywall.form_lab.benefit1_desc", iconName: "number.circle.fill"),
-                PaywallBenefit(titleKey: "paywall.form_lab.benefit2", descKey: "paywall.form_lab.benefit2_desc", iconName: "chart.xyaxis.line"),
-                PaywallBenefit(titleKey: "paywall.form_lab.benefit3", descKey: "paywall.form_lab.benefit3_desc", iconName: "scalemass.fill")
-            ]
-        case .cloudBackup:
-            return [
-                PaywallBenefit(titleKey: "paywall.cloud_backup.benefit1", descKey: "paywall.cloud_backup.benefit1_desc", iconName: "cloud.fill"),
-                PaywallBenefit(titleKey: "paywall.cloud_backup.benefit2", descKey: "paywall.cloud_backup.benefit2_desc", iconName: "lock.shield.fill"),
-                PaywallBenefit(titleKey: "paywall.cloud_backup.benefit3", descKey: "paywall.cloud_backup.benefit3_desc", iconName: "arrow.triangle.2.circlepath")
-            ]
-        case .autoProgression:
-            return [
-                PaywallBenefit(titleKey: "paywall.auto_progression.benefit1", descKey: "paywall.auto_progression.benefit1_desc", iconName: "arrow.up.forward.circle.fill"),
-                PaywallBenefit(titleKey: "paywall.auto_progression.benefit2", descKey: "paywall.auto_progression.benefit2_desc", iconName: "info.circle.fill"),
-                PaywallBenefit(titleKey: "paywall.auto_progression.benefit3", descKey: "paywall.auto_progression.benefit3_desc", iconName: "checkmark.circle.fill")
-            ]
-        case .warmupCalculator:
-            return [
-                PaywallBenefit(titleKey: "paywall.warmup_calculator.benefit1", descKey: "paywall.warmup_calculator.benefit1_desc", iconName: "flame.fill"),
-                PaywallBenefit(titleKey: "paywall.warmup_calculator.benefit2", descKey: "paywall.warmup_calculator.benefit2_desc", iconName: "circle.grid.cross.fill"),
-                PaywallBenefit(titleKey: "paywall.warmup_calculator.benefit3", descKey: "paywall.warmup_calculator.benefit3_desc", iconName: "plus.circle.fill")
-            ]
-        case .customThemes:
-            return [
-                PaywallBenefit(titleKey: "paywall.custom_themes.benefit1", descKey: "paywall.custom_themes.benefit1_desc", iconName: "paintpalette.fill"),
-                PaywallBenefit(titleKey: "paywall.custom_themes.benefit2", descKey: "paywall.custom_themes.benefit2_desc", iconName: "circle.righthalf.filled"),
-                PaywallBenefit(titleKey: "paywall.custom_themes.benefit3", descKey: "paywall.custom_themes.benefit3_desc", iconName: "sparkles")
-            ]
-        case .exerciseSwaps, .none:
-            return [
-                PaywallBenefit(titleKey: "paywall.general.benefit1", descKey: "paywall.general.benefit1_desc", iconName: "figure.strengthtraining.traditional"),
-                PaywallBenefit(titleKey: "paywall.general.benefit2", descKey: "paywall.general.benefit2_desc", iconName: "chart.line.uptrend.xyaxis"),
-                PaywallBenefit(titleKey: "paywall.general.benefit3", descKey: "paywall.general.benefit3_desc", iconName: "waveform.path.ecg"),
-                PaywallBenefit(titleKey: "paywall.general.benefit4", descKey: "paywall.general.benefit4_desc", iconName: "lock.shield.fill")
-            ]
-        }
-    }
-
     private func dismissSelf() {
         if let onDismiss = onDismiss {
             onDismiss()
         } else {
             presentationMode.wrappedValue.dismiss()
         }
-    }
-
-    private var selectedPriceAvailable: Bool {
-        selectedPlan == .annual ? storeKit.annualProduct != nil : storeKit.monthlyProduct != nil
     }
 
     private func selectDefaultPlanIfNeeded() {
@@ -158,486 +94,35 @@ public struct ProPaywallSheet: View {
         }
     }
 
-    private var isIllustratedFeature: Bool {
-        feature == nil || feature == .autoProgression || feature == .warmupCalculator || feature == .volumeMatrix || feature == .formLab || feature == .cloudBackup || feature == .customThemes
-    }
-
-    private var headlineKey: String {
-        switch feature {
-        case .autoProgression: return "paywall.auto_progression.headline"
-        case .warmupCalculator: return "paywall.warmup_calculator.headline"
-        case .volumeMatrix: return "paywall.volume_matrix.headline"
-        case .formLab: return "paywall.form_lab.headline"
-        case .cloudBackup: return "paywall.cloud_backup.headline"
-        case .customThemes: return "paywall.custom_themes.headline"
-        default: return feature?.titleKey ?? "pro.upgrade_cta"
-        }
-    }
-
-    private var subtitleKey: String {
-        switch feature {
-        case .autoProgression: return "paywall.auto_progression.subtitle"
-        case .warmupCalculator: return "paywall.warmup_calculator.subtitle"
-        case .volumeMatrix: return "paywall.volume_matrix.subtitle"
-        case .formLab: return "paywall.form_lab.subtitle"
-        case .cloudBackup: return "paywall.cloud_backup.subtitle"
-        case .customThemes: return "paywall.custom_themes.subtitle"
-        default: return feature?.descriptionKey ?? "paywall.cancel_anytime"
-        }
-    }
-
-    private var purchaseFooter: some View {
-        // Primary Call to Action Button
-        VStack(spacing: 8) {
-            if isIllustratedFeature {
-                let annual = selectedPlan == .annual
-                let price = annual ? storeKit.annualProduct?.displayPrice : storeKit.monthlyProduct?.displayPrice
-                Text(price.map { LanguageManager.t(annual ? "paywall.selected_annual_price" : "paywall.selected_monthly_price", ["price": $0]) }
-                    ?? LanguageManager.t("paywall.price_unavailable_short"))
-                    .font(.system(size: subtitleSize, weight: .bold))
-                    .foregroundStyle(AppColors.text)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-                let trial = storeKit.hasFreeTrial(for: selectedPlan)
-                let termsKey = annual ? (trial ? "paywall.annual_trial_subtitle" : "paywall.annual_subtitle")
-                    : (trial ? "paywall.monthly_trial_subtitle" : "paywall.monthly_subtitle")
-                Text(LanguageManager.t(termsKey))
-                    .font(.system(size: footnoteSize))
-                    .foregroundStyle(AppColors.secondaryText)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-            }
-            Button(action: {
-                performPurchase()
-            }) {
-                if storeKit.isPurchasing {
-                    ProgressView()
-                        .progressViewStyle(CircularProgressViewStyle(tint: AppColors.background))
-                        .frame(maxWidth: .infinity)
-                        .frame(minHeight: 52)
-                        .background(AppColors.accent)
-                        .clipShape(RoundedRectangle(cornerRadius: 14))
-                } else {
-                    HStack(spacing: 8) {
-                        Image(systemName: "lock.open.fill")
-                            .font(.system(size: 14, weight: .bold))
-                        let planHasTrial = storeKit.hasFreeTrial(for: selectedPlan)
-                        let ctaText = planHasTrial ? LanguageManager.t("paywall.cta_trial") : LanguageManager.t("paywall.cta_continue")
-                        Text(ctaText)
-                            .font(.system(size: actionSize, weight: .bold))
-                            .fixedSize(horizontal: false, vertical: true)
-                            .multilineTextAlignment(.center)
-                    }
-                    .foregroundStyle(AppColors.background)
-                    .frame(maxWidth: .infinity)
-                    .frame(minHeight: 52)
-                    .background(AppColors.accent)
-                    .clipShape(RoundedRectangle(cornerRadius: 14))
-                }
-            }
-            .buttonStyle(.plain)
-            .disabled(storeKit.isPurchasing || !selectedPriceAvailable)
-
-            if let purchaseError = purchaseErrorMessage {
-                HStack(alignment: .center, spacing: 10) {
-                    Image(systemName: "exclamationmark.circle.fill")
-                        .foregroundStyle(AppColors.danger)
-                        .font(.system(size: 14))
-
-                    Text(purchaseError)
-                        .font(.system(size: 11.5))
-                        .foregroundStyle(AppColors.text)
-                        .lineLimit(3)
-
-                    Spacer()
-
-                    Button(action: {
-                        performPurchase()
-                    }) {
-                        Text(LanguageManager.t("paywall.retry"))
-                            .font(.system(size: 11.5, weight: .bold))
-                            .foregroundStyle(AppColors.accent)
-                            .padding(.horizontal, 10)
-                            .padding(.vertical, 5)
-                            .background(AppColors.accent.opacity(0.12))
-                            .clipShape(RoundedRectangle(cornerRadius: 6))
-                    }
-                    .buttonStyle(.plain)
-                }
-                .padding(10)
-                .background(AppColors.avoidBg)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(AppColors.avoidBorder, lineWidth: 1)
-                )
-                .clipShape(RoundedRectangle(cornerRadius: 10))
-            }
-
-            Text(LanguageManager.t("paywall.cancel_anytime"))
-                .font(.system(size: 11))
-                .foregroundStyle(AppColors.secondaryText)
-                .multilineTextAlignment(.center)
-        }
-    }
-
     public var body: some View {
         let _ = themeManager.currentTheme
-        Group {
-            if isIllustratedFeature {
-                SessionFeaturePaywallContent(
-                    annual: SessionPaywallOffer(price: storeKit.annualProduct?.displayPrice,
-                        hasTrial: storeKit.hasFreeTrial(for: .annual), monthlyBreakdown: storeKit.annualPerMonthDisplayPrice,
-                        savingsPercent: storeKit.annualSavingsPercentage),
-                    monthly: SessionPaywallOffer(price: storeKit.monthlyProduct?.displayPrice,
-                        hasTrial: storeKit.hasFreeTrial(for: .monthly)),
-                    selectedPlan: selectedPlan, isPurchasing: storeKit.isPurchasing, isRestoring: isRestoring,
-                    purchaseError: purchaseErrorMessage, restoreMessage: restoreStatusMessage, isRestoreError: isRestoreError,
-                    onSelectPlan: { plan in
-                        userInteractedWithPlan = true
-                        selectedPlan = plan
-                        purchaseErrorMessage = nil
-                        restoreStatusMessage = nil
-                    },
-                    onPurchase: performPurchase, onRestore: performRestore,
-                    onRetryPrices: { Task { await storeKit.requestProducts() } },
-                    onTerms: { if let url = URL(string: LegalUrls.termsOfService) { openURL(url) } },
-                    onPrivacy: { if let url = URL(string: LegalUrls.privacyPolicy) { openURL(url) } },
-                    onClose: dismissSelf,
-                    feature: feature, weightUnit: appStore.weightUnit
-                )
-                .presentationDragIndicator(.visible)
-                .presentationCornerRadius(28)
-                .presentationBackground(AppColors.progressionPaywallSurface)
-            } else {
-                standardPaywall
-            }
-        }
+        SessionFeaturePaywallContent(
+            annual: SessionPaywallOffer(price: storeKit.annualProduct?.displayPrice,
+                hasTrial: storeKit.hasFreeTrial(for: .annual), monthlyBreakdown: storeKit.annualPerMonthDisplayPrice,
+                savingsPercent: storeKit.annualSavingsPercentage),
+            monthly: SessionPaywallOffer(price: storeKit.monthlyProduct?.displayPrice,
+                hasTrial: storeKit.hasFreeTrial(for: .monthly)),
+            selectedPlan: selectedPlan, isPurchasing: storeKit.isPurchasing, isRestoring: isRestoring,
+            purchaseError: purchaseErrorMessage, restoreMessage: restoreStatusMessage, isRestoreError: isRestoreError,
+            onSelectPlan: { plan in
+                userInteractedWithPlan = true
+                selectedPlan = plan
+                purchaseErrorMessage = nil
+                restoreStatusMessage = nil
+            },
+            onPurchase: performPurchase, onRestore: performRestore,
+            onRetryPrices: { Task { await storeKit.requestProducts() } },
+            onTerms: { if let url = URL(string: LegalUrls.termsOfService) { openURL(url) } },
+            onPrivacy: { if let url = URL(string: LegalUrls.privacyPolicy) { openURL(url) } },
+            onClose: dismissSelf,
+            feature: feature, weightUnit: appStore.weightUnit
+        )
+        .presentationDragIndicator(.visible)
+        .presentationCornerRadius(28)
+        .presentationBackground(AppColors.progressionPaywallSurface)
         .onAppear(perform: selectDefaultPlanIfNeeded)
         .onChange(of: storeKit.products) { selectDefaultPlanIfNeeded() }
         .onChange(of: storeKit.eligibleFreeTrialProductIds) { selectDefaultPlanIfNeeded() }
-    }
-
-    private var standardPaywall: some View {
-        ZStack {
-            AppColors.background.ignoresSafeArea()
-
-            ScrollView {
-                VStack(spacing: 24) {
-                    // Top Drag Indicator & Header
-                    HStack {
-                        HStack(spacing: 8) {
-                            ZStack {
-                                Circle()
-                                    .fill(AppColors.purpleBg)
-                                    .frame(width: 36, height: 36)
-                                Image(systemName: "crown.fill")
-                                    .font(.system(size: 18))
-                                    .foregroundStyle(AppColors.purple)
-                            }
-
-                            ProBadge(text: LanguageManager.t("paywall.badge"))
-                        }
-
-                        Spacer()
-
-                        FormCloseButton(action: dismissSelf)
-                    }
-
-                    // Headline & Subtitle
-                    VStack(spacing: 6) {
-                        if isIllustratedFeature {
-                            Text(LanguageManager.t(feature == .autoProgression ? "progression.coach.locked_title" : "warmup.card_title"))
-                                .font(.system(size: 12, weight: .medium)).foregroundStyle(AppColors.muted)
-                        }
-                        let headline = LanguageManager.t(headlineKey)
-                        Text(headline)
-                            .font(.system(size: headlineSize, weight: .bold))
-                            .foregroundStyle(AppColors.text)
-                            .multilineTextAlignment(.center)
-
-                        let subtitle = LanguageManager.t(subtitleKey)
-                        Text(subtitle)
-                            .font(.system(size: subtitleSize))
-                            .foregroundStyle(AppColors.secondaryText)
-                            .multilineTextAlignment(.center)
-                            .lineSpacing(3)
-                    }
-
-                    // Benefit List Card
-                    VStack(spacing: 14) {
-                        ForEach(benefits) { benefit in
-                            HStack(alignment: .top, spacing: 12) {
-                                ZStack {
-                                    Circle()
-                                        .fill(AppColors.accent.opacity(0.12))
-                                        .frame(width: 32, height: 32)
-                                    Image(systemName: benefit.iconName)
-                                        .font(.system(size: 14))
-                                        .foregroundStyle(AppColors.accent)
-                                }
-
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(LanguageManager.t(benefit.titleKey))
-                                        .font(.system(size: subtitleSize, weight: .semibold))
-                                        .foregroundStyle(AppColors.text)
-                                        .fixedSize(horizontal: false, vertical: true)
-                                    Text(LanguageManager.t(benefit.descKey))
-                                        .font(.system(size: footnoteSize + 1))
-                                        .foregroundStyle(AppColors.secondaryText)
-                                        .lineSpacing(2)
-                                        .fixedSize(horizontal: false, vertical: true)
-                                }
-
-                                Spacer()
-                            }
-                        }
-                    }
-                    .padding(16)
-                    .background(AppColors.surfaceRaised)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16)
-                            .stroke(AppColors.border, lineWidth: 1)
-                    )
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
-
-                    if isIllustratedFeature {
-                        if feature == .autoProgression {
-                            Text(LanguageManager.t("paywall.auto_progression.history_hint"))
-                                .font(.system(size: 12)).foregroundStyle(AppColors.muted)
-                                .fixedSize(horizontal: false, vertical: true)
-                        }
-                        Text(LanguageManager.t("paywall.all_features"))
-                            .font(.system(size: 12)).foregroundStyle(AppColors.secondaryText)
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-
-                    // Pricing Plans
-                    VStack(spacing: 12) {
-                        // Annual Plan Card (Featured)
-                        let isAnnual = selectedPlan == .annual
-                        Button(action: {
-                            userInteractedWithPlan = true
-                            selectedPlan = .annual
-                        }) {
-                            VStack(spacing: 10) {
-                                HStack {
-                                    HStack(spacing: 6) {
-                                        if let savings = storeKit.annualSavingsPercentage {
-                                            ProBadge(text: LanguageManager.t("paywall.annual_savings_template", ["savings": "\(savings)%"]))
-                                        }
-                                        if storeKit.hasFreeTrial(for: .annual) {
-                                            ProBadge(text: LanguageManager.t("paywall.trial_badge"))
-                                        }
-                                    }
-
-                                    Spacer()
-
-                                    ZStack {
-                                        Circle()
-                                            .stroke(isAnnual ? AppColors.accent : AppColors.secondaryText, lineWidth: 1.5)
-                                            .frame(width: 20, height: 20)
-                                        if isAnnual {
-                                            Circle()
-                                                .fill(AppColors.accent)
-                                                .frame(width: 12, height: 12)
-                                        }
-                                    }
-                                }
-
-                                HStack(alignment: .bottom) {
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        Text(LanguageManager.t("paywall.annual_plan"))
-                                            .font(.system(size: 15, weight: .bold))
-                                            .foregroundStyle(AppColors.text)
-                                        Text(storeKit.hasFreeTrial(for: .annual) ? LanguageManager.t("paywall.annual_trial_subtitle") : LanguageManager.t("paywall.annual_subtitle"))
-                                            .font(.system(size: 11.5))
-                                            .foregroundStyle(AppColors.secondaryText)
-                                    }
-
-                                    Spacer()
-
-                                    VStack(alignment: .trailing, spacing: 2) {
-                                        let annualPrice = storeKit.annualProduct?.displayPrice ?? "—"
-                                        Text(annualPrice)
-                                            .font(.system(size: 15, weight: .bold))
-                                            .foregroundStyle(AppColors.accent)
-                                        let annualBreakdown = storeKit.annualPerMonthDisplayPrice ?? LanguageManager.t("paywall.price_unavailable_short")
-                                        Text(annualBreakdown)
-                                            .font(.system(size: 11.5))
-                                            .foregroundStyle(AppColors.secondaryText)
-                                    }
-                                }
-                            }
-                            .padding(16)
-                            .background(isAnnual ? AppColors.accent.opacity(0.08) : AppColors.surfaceRaised)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .stroke(isAnnual ? AppColors.accent : AppColors.border, lineWidth: isAnnual ? 1.5 : 1)
-                            )
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
-                        }
-                        .buttonStyle(.plain)
-
-                        // Monthly Plan Card
-                        let isMonthly = selectedPlan == .monthly
-                        Button(action: {
-                            userInteractedWithPlan = true
-                            selectedPlan = .monthly
-                        }) {
-                            VStack(spacing: 10) {
-                                HStack {
-                                    if storeKit.hasFreeTrial(for: .monthly) {
-                                        ProBadge(text: LanguageManager.t("paywall.trial_badge"))
-                                    } else {
-                                        Spacer()
-                                    }
-
-                                    Spacer()
-
-                                    ZStack {
-                                        Circle()
-                                            .stroke(isMonthly ? AppColors.accent : AppColors.secondaryText, lineWidth: 1.5)
-                                            .frame(width: 20, height: 20)
-                                        if isMonthly {
-                                            Circle()
-                                                .fill(AppColors.accent)
-                                                .frame(width: 12, height: 12)
-                                        }
-                                    }
-                                }
-
-                                HStack(alignment: .bottom) {
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        Text(LanguageManager.t("paywall.monthly_plan"))
-                                            .font(.system(size: 15, weight: .bold))
-                                            .foregroundStyle(AppColors.text)
-                                        Text(storeKit.hasFreeTrial(for: .monthly) ? LanguageManager.t("paywall.monthly_trial_subtitle") : LanguageManager.t("paywall.monthly_subtitle"))
-                                            .font(.system(size: 11.5))
-                                            .foregroundStyle(AppColors.secondaryText)
-                                    }
-
-                                    Spacer()
-
-                                    let monthlyPrice = storeKit.monthlyProduct?.displayPrice ?? "—"
-                                    Text(monthlyPrice)
-                                        .font(.system(size: 15, weight: .bold))
-                                        .foregroundStyle(isMonthly ? AppColors.accent : AppColors.text)
-                                }
-                            }
-                            .padding(16)
-                            .background(isMonthly ? AppColors.accent.opacity(0.08) : AppColors.surfaceRaised)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 16)
-                                    .stroke(isMonthly ? AppColors.accent : AppColors.border, lineWidth: isMonthly ? 1.5 : 1)
-                            )
-                            .clipShape(RoundedRectangle(cornerRadius: 16))
-                        }
-                        .buttonStyle(.plain)
-                        if storeKit.annualProduct == nil || storeKit.monthlyProduct == nil {
-                            HStack(spacing: 8) {
-                                Text(LanguageManager.t("paywall.price_unavailable"))
-                                    .font(.system(size: 12))
-                                    .foregroundStyle(AppColors.secondaryText)
-                                Spacer()
-                                Button(LanguageManager.t("paywall.retry")) {
-                                    Task { await storeKit.requestProducts() }
-                                }
-                                .font(.system(size: 12, weight: .semibold))
-                                .foregroundStyle(AppColors.accent)
-                            }
-                        }
-                    }
-
-                    if !isIllustratedFeature { purchaseFooter }
-
-                    // Restore Purchases & Legal Links
-                    VStack(spacing: 10) {
-                        HStack(spacing: 12) {
-                            Button(action: {
-                                performRestore()
-                            }) {
-                                if isRestoring {
-                                    ProgressView()
-                                        .progressViewStyle(CircularProgressViewStyle(tint: AppColors.secondaryText))
-                                        .scaleEffect(0.7)
-                                } else {
-                                    Text(LanguageManager.t("paywall.restore"))
-                                        .font(.system(size: 11.5))
-                                        .foregroundStyle(AppColors.secondaryText)
-                                }
-                            }
-                            .buttonStyle(.plain)
-                            .disabled(isRestoring)
-
-                            Text("·")
-                                .foregroundStyle(AppColors.border)
-
-                            Button(action: {
-                                if let url = URL(string: LegalUrls.termsOfService) {
-                                    openURL(url)
-                                }
-                            }) {
-                                Text(LanguageManager.t("paywall.terms"))
-                                    .font(.system(size: 11.5))
-                                    .foregroundStyle(AppColors.secondaryText)
-                            }
-                            .buttonStyle(.plain)
-
-                            Text("·")
-                                .foregroundStyle(AppColors.border)
-
-                            Button(action: {
-                                if let url = URL(string: LegalUrls.privacyPolicy) {
-                                    openURL(url)
-                                }
-                            }) {
-                                Text(LanguageManager.t("paywall.privacy"))
-                                    .font(.system(size: 11.5))
-                                    .foregroundStyle(AppColors.secondaryText)
-                            }
-                            .buttonStyle(.plain)
-                        }
-
-                        if let status = restoreStatusMessage {
-                            HStack(alignment: .center, spacing: 6) {
-                                Image(systemName: isRestoreError ? "exclamationmark.circle" : "checkmark.circle.fill")
-                                    .foregroundStyle(isRestoreError ? AppColors.danger : AppColors.accent)
-                                    .font(.system(size: 12))
-
-                                Text(status)
-                                    .font(.system(size: 11.5, weight: .medium))
-                                    .foregroundStyle(isRestoreError ? AppColors.danger : AppColors.accent)
-                                    .multilineTextAlignment(.center)
-
-                                if isRestoreError {
-                                    Button(action: {
-                                        performRestore()
-                                    }) {
-                                        Text(LanguageManager.t("paywall.retry"))
-                                            .font(.system(size: 11.5, weight: .bold))
-                                            .foregroundStyle(AppColors.accent)
-                                            .underline()
-                                    }
-                                    .buttonStyle(.plain)
-                                }
-                            }
-                            .padding(.horizontal, 8)
-                        }
-                    }
-                }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 24)
-            }
-            .safeAreaInset(edge: .bottom, spacing: 0) {
-                if isIllustratedFeature {
-                    purchaseFooter
-                        .padding(.horizontal, 20).padding(.vertical, 12)
-                        .frame(maxWidth: .infinity)
-                        .background(AppColors.surface)
-                        .overlay(alignment: .top) { Rectangle().fill(AppColors.border).frame(height: 1) }
-                }
-            }
-        }
     }
 }
 
