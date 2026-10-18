@@ -9663,6 +9663,10 @@ final class TabPagingTests: XCTestCase {
                 pumpTabPager(controller)
             }
             let search = try XCTUnwrap(nativeTextFields(in: controller.view).first)
+            // A connected hardware keyboard suppresses the system keyboard, so focus alone posts no
+            // keyboard notifications. UIKit still presents a custom input view and posts the same
+            // notifications the page-swipe lock observes, whatever the simulator's keyboard setting.
+            search.inputView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: 300))
             XCTAssertTrue(search.becomeFirstResponder())
             search.insertText("bench")
             pumpTabPager(controller)
@@ -9851,6 +9855,8 @@ final class TabPagingTests: XCTestCase {
         let originalSession = store.activeSession
         store.isOnboardingCompleted = true
         store.activeSession = nil
+        // A toast left by an earlier test reappears over the dock and hides its active rectangle.
+        store.currentToast = nil
         store.navigate(to: initialView)
         let controller = UIHostingController(rootView: RootView())
         let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
@@ -9879,6 +9885,15 @@ final class TabPagingTests: XCTestCase {
             $0.bounds.width > 300 && $0.contentSize.width > 3 * $0.bounds.width
         })
         XCTAssertTrue(pager.isScrollEnabled)
+        // SwiftUI's hosting scroll view can keep the initial page restore as its scroll target and
+        // reapply it on the next programmatic offset change, snapping the first simulated swipe back.
+        // Nudge within the selected page and return so that target is spent before the test drives it.
+        let settled = pager.contentOffset
+        let nudge = pager.bounds.width * (settled.x > 0 ? -0.1 : 0.1)
+        pager.setContentOffset(CGPoint(x: settled.x + nudge, y: settled.y), animated: false)
+        pumpTabPager(controller)
+        pager.setContentOffset(settled, animated: false)
+        pumpTabPager(controller)
         try body(store, controller, pager)
     }
 
