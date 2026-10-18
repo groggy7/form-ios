@@ -152,11 +152,4 @@ public enum WeightUnit: String, Codable, CaseIterable {
         formatter.numberStyle = .decimal
         return formatter.string(from: NSNumber(value: rounded)) ?? "\(rounded)"
     }
-
-    public var defaultStepperStep: Double {
-        switch self {
-        case .kg: return 2.5
-        case .lbs: return 5.0
-        }
-    }
 }

@@ -725,6 +725,7 @@ struct ImportExportDataSheet: View {
 
     @State private var showExportSheet: Bool = false
     @State private var exportText: String = ""
+    @State private var isExporting = false
     @State private var isShowingBackupImporter: Bool = false
     /// Matches Android's limit of 20 million characters with room for multibyte text.
     static let maxBackupBytes = 64 * 1024 * 1024
@@ -784,8 +785,13 @@ struct ImportExportDataSheet: View {
                             .fixedSize(horizontal: false, vertical: true)
 
                         Button(action: {
-                            exportText = store.exportBackupJson()
-                            showExportSheet = true
+                            guard !isExporting else { return }
+                            isExporting = true
+                            Task { @MainActor in
+                                exportText = await store.exportBackupJsonAsync()
+                                isExporting = false
+                                showExportSheet = true
+                            }
                         }) {
                             HStack(spacing: 8) {
                                 Image(systemName: "square.and.arrow.up")
@@ -1220,16 +1226,19 @@ public struct CloudBackupSheet: View {
     private func syncNow() {
         guard proManager.isFeatureUnlocked(.cloudBackup) else { showPaywall = true; return }
         guard !isWorking else { return }
-        let json = store.exportBackupJson()
         isWorking = true
         syncStatusMessage = nil
         operationTask = Task { @MainActor in
             defer { isWorking = false }
+            let json = await store.exportBackupJsonAsync()
             do {
+                try Task.checkCancellation()
                 _ = try await mirrorManager.syncNowAsync(backupJson: json)
                 let status = mirrorManager.getStatus()
                 syncIsError = false
                 syncStatusMessage = LanguageManager.t(!status.isCloudConnected ? "form_lab.mirror_local_saved" : status.isUploadPending || status.lastSyncTimestamp == nil ? "form_lab.mirror_upload_pending" : "form_lab.mirror_success")
+            } catch is CancellationError {
+                return
             } catch {
                 syncIsError = true
                 syncStatusMessage = LanguageManager.t("form_lab.mirror_sync_failed", ["error": error.localizedDescription])

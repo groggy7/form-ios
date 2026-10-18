@@ -701,10 +701,6 @@ public final class AppStore: ObservableObject {
         self.barType = type
     }
 
-    public func setAvailablePlatesKg(_ plates: [Double]) {
-        self.availablePlatesKg = plates
-    }
-
     /// Saves the inventory for `unit`; plates are in that unit.
     public func setAvailablePlates(_ plates: [Double], unit: WeightUnit) {
         if unit == .lbs { availablePlatesLbs = plates } else { availablePlatesKg = plates }
@@ -1460,6 +1456,18 @@ public final class AppStore: ObservableObject {
     public func exportBackupJson() -> String {
         refreshForCurrentDate()
         return Self.encodeBackup(FullBackupDocument(state: state, weightUnit: weightUnit)) ?? "{}"
+    }
+
+    /// Snapshots on the main thread and encodes on a utility queue, since the backup holds all history.
+    @MainActor
+    public func exportBackupJsonAsync() async -> String {
+        refreshForCurrentDate()
+        let document = FullBackupDocument(state: state, weightUnit: weightUnit)
+        return await withCheckedContinuation { continuation in
+            DispatchQueue.global(qos: .utility).async {
+                continuation.resume(returning: Self.encodeBackup(document) ?? "{}")
+            }
+        }
     }
 
     static func encodeBackup(_ document: FullBackupDocument) -> String? {

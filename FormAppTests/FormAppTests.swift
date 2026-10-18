@@ -13019,7 +13019,7 @@ final class AuditEntitlementConcurrencyTests: XCTestCase {
         XCTAssertEqual(group.wait(timeout: .now() + 20), .success)
         manager.updateSubscriptionStatus(active: true)
         XCTAssertTrue(manager.isFeatureUnlocked(.cloudBackup))
-        XCTAssertFalse(manager.toggleSubscriptionStatus())
+        manager.updateSubscriptionStatus(active: false)
         XCTAssertFalse(manager.isFeatureUnlocked(.cloudBackup))
     }
 }

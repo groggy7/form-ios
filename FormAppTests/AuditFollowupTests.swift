@@ -180,6 +180,21 @@ final class AuditFollowupTests: XCTestCase {
         }
     }
 
+    @MainActor
+    func testBackgroundBackupExportMatchesTheSynchronousOne() async throws {
+        let defaults = UserDefaults.standard
+        let domain = try XCTUnwrap(Bundle.main.bundleIdentifier)
+        let original = defaults.persistentDomain(forName: domain) ?? [:]
+        defer { defaults.setPersistentDomain(original, forName: domain) }
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        // Key order is not stable between encodes, so compare the parsed documents.
+        let backgroundJson = await store.exportBackupJsonAsync()
+        let background = try XCTUnwrap(try JSONSerialization.jsonObject(with: Data(backgroundJson.utf8)) as? [String: Any])
+        let main = try XCTUnwrap(try JSONSerialization.jsonObject(with: Data(store.exportBackupJson().utf8)) as? [String: Any])
+        XCTAssertNotNil(background["programs"])
+        XCTAssertTrue(NSDictionary(dictionary: background).isEqual(to: main))
+    }
+
     func testRealBackupsPassTheRestoreBoundsUnchanged() throws {
         let testDir = URL(fileURLWithPath: #filePath).deletingLastPathComponent()
         let encoder = JSONEncoder()

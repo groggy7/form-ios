@@ -82,14 +82,6 @@ public final class ProAccessManager: ObservableObject {
         isProSubscribed = false
     }
 
-    @discardableResult
-    public func toggleSubscriptionStatus() -> Bool {
-        dispatchPrecondition(condition: .onQueue(.main))
-        let next = !isProSubscribed
-        updateSubscriptionStatus(active: next)
-        return next
-    }
-
     public func updateSubscriptionStatus(active: Bool) {
         dispatchPrecondition(condition: .onQueue(.main))
         entitlementLock.lock()
