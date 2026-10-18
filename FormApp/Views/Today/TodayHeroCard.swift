@@ -258,6 +258,7 @@ public struct TodayHeroCard: View {
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
+        .tourTarget("home.hero", cornerRadius: 23, flags: bodyViews.count > 1 ? [TourFlag.heroViews] : [])
         .padding(.horizontal, 20)
         .onChange(of: workout.id) { _, _ in selectedViewIndex = nil }
         .onChange(of: workout.resolvedMuscles) { _, _ in selectedViewIndex = nil }
@@ -394,6 +395,7 @@ public struct TodayHeroCard: View {
             }
         }
         .clipShape(RoundedRectangle(cornerRadius: 23, style: .continuous))
+        .tourTarget("home.hero", cornerRadius: 23, flags: [TourFlag.heroRest])
         .padding(.horizontal, 20)
     }
 }

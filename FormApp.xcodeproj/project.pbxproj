@@ -45,6 +45,7 @@
 		9698074E6A4564D0918CD7E1 /* form_set_complete.wav in Resources */ = {isa = PBXBuildFile; fileRef = 76805C2F08B45E364BEF8AB9 /* form_set_complete.wav */; };
 		9BCC80499A86D74EE5B5FEDF /* LibraryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 37340E67B2D12B2C6BCBBBC6 /* LibraryView.swift */; };
 		9D47D0FB61D291A7727C96C3 /* ProgramsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 152BA0CBC21F574ECF6F0EE6 /* ProgramsView.swift */; };
+		TR0000000000000000000004 /* TourOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = TR0000000000000000000003 /* TourOverlay.swift */; };
 		9F2ABB85EAA74F04A28E14F6 /* ToastOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08997E0EACD6176BFF508687 /* ToastOverlay.swift */; };
 		A07185A4CA1062B6F7D59B91 /* 05_home_forge_dumbbells.json in Resources */ = {isa = PBXBuildFile; fileRef = 3D4F0446A030E749B3A34E82 /* 05_home_forge_dumbbells.json */; };
 		A13B29C1D4E5F60718293A4B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A13B29C1D4E5F60718293A4A /* PrivacyInfo.xcprivacy */; };
@@ -99,6 +100,7 @@
 		L100000000000000000000003 /* Locales in Resources */ = {isa = PBXBuildFile; fileRef = L100000000000000000000001 /* Locales */; };
 		M20000000000000000000001 /* ExerciseMusclesCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = M20000000000000000000002 /* ExerciseMusclesCard.swift */; };
 		M20000000000000000000003 /* ExerciseMuscles in Resources */ = {isa = PBXBuildFile; fileRef = M20000000000000000000004 /* ExerciseMuscles */; };
+		TR0000000000000000000002 /* TourModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = TR0000000000000000000001 /* TourModels.swift */; };
 		OB0000000000000000000002 /* OnboardingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = OB0000000000000000000001 /* OnboardingModels.swift */; };
 		OV0000000000000000000002 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = OV0000000000000000000001 /* OnboardingView.swift */; };
 		P10000000000000000000001 /* ExercisePriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = P10000000000000000000002 /* ExercisePriority.swift */; };
@@ -139,6 +141,7 @@
 		C15000000000000000000006 /* ProgramFileCodec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000005 /* ProgramFileCodec.swift */; };
 		C15000000000000000000008 /* ProgramBuilderRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000007 /* ProgramBuilderRegressionTests.swift */; };
 		D90000000000000000000002 /* AuditFollowupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90000000000000000000001 /* AuditFollowupTests.swift */; };
+		TR0000000000000000000006 /* TourTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = TR0000000000000000000005 /* TourTests.swift */; };
 		C1500000000000000000000C /* ProgressionFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1500000000000000000000B /* ProgressionFixtureTests.swift */; };
 		C1500000000000000000000A /* android-builder-v5.json in Resources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000009 /* android-builder-v5.json */; };
 /* End PBXBuildFile section */
@@ -161,6 +164,7 @@
 		A11000000000000000000002 /* TranslationTables.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationTables.swift; sourceTree = "<group>"; };
 		A11000000000000000000004 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		023D09DFD513B3F32B009541 /* WorkoutDetailSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkoutDetailSheet.swift; sourceTree = "<group>"; };
+		TR0000000000000000000003 /* TourOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourOverlay.swift; sourceTree = "<group>"; };
 		08997E0EACD6176BFF508687 /* ToastOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastOverlay.swift; sourceTree = "<group>"; };
 		10AEC969AB339D9720AB880B /* AppStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStore.swift; sourceTree = "<group>"; };
 		13527F9CECF51E5936498509 /* form_set_undo.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_set_undo.wav; sourceTree = "<group>"; };
@@ -237,6 +241,7 @@
 		L100000000000000000000001 /* Locales */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Locales; sourceTree = "<group>"; };
 		M20000000000000000000002 /* ExerciseMusclesCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMusclesCard.swift; sourceTree = "<group>"; };
 		M20000000000000000000004 /* ExerciseMuscles */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseMuscles; sourceTree = "<group>"; };
+		TR0000000000000000000001 /* TourModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourModels.swift; sourceTree = "<group>"; };
 		OB0000000000000000000001 /* OnboardingModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingModels.swift; sourceTree = "<group>"; };
 		OV0000000000000000000001 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		P10000000000000000000002 /* ExercisePriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisePriority.swift; sourceTree = "<group>"; };
@@ -278,6 +283,7 @@
 		C15000000000000000000005 /* ProgramFileCodec.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramFileCodec.swift; sourceTree = "<group>"; };
 		C15000000000000000000007 /* ProgramBuilderRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramBuilderRegressionTests.swift; sourceTree = "<group>"; };
 		D90000000000000000000001 /* AuditFollowupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditFollowupTests.swift; sourceTree = "<group>"; };
+		TR0000000000000000000005 /* TourTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourTests.swift; sourceTree = "<group>"; };
 		C1500000000000000000000B /* ProgressionFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionFixtureTests.swift; sourceTree = "<group>"; };
 		C1500000000000000000000D /* progression-fixtures.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "progression-fixtures.json"; sourceTree = "<group>"; };
 		C15000000000000000000009 /* android-builder-v5.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = android-builder-v5.json; sourceTree = "<group>"; };
@@ -319,6 +325,7 @@
 				M20000000000000000000002 /* ExerciseMusclesCard.swift */,
 				E30000000000000000000002 /* ExerciseEquipment.swift */,
 				08997E0EACD6176BFF508687 /* ToastOverlay.swift */,
+				TR0000000000000000000003 /* TourOverlay.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -359,6 +366,7 @@
 				C15000000000000000000009 /* android-builder-v5.json */,
 				9D2282260300C11D1B7F29AE /* FormAppTests.swift */,
 				C1500000000000000000000B /* ProgressionFixtureTests.swift */,
+				TR0000000000000000000005 /* TourTests.swift */,
 				C1500000000000000000000D /* progression-fixtures.json */,
 			);
 			path = FormAppTests;
@@ -423,6 +431,7 @@
 			isa = PBXGroup;
 			children = (
 				OB0000000000000000000001 /* OnboardingModels.swift */,
+				TR0000000000000000000001 /* TourModels.swift */,
 				PR0000000000000000000001 /* PersonalRecordTracker.swift */,
 				WU0000000000000000000001 /* WeightUnit.swift */,
 				68CE78AD9510C658344F7888 /* WorkoutModels.swift */,
@@ -804,6 +813,7 @@
 				D5DDC5DF3C8A6E620BADA5A7 /* SetLoggingTable.swift in Sources */,
 				6F9CAA3F576D5057AF0C84E3 /* SettingsView.swift in Sources */,
 				9F2ABB85EAA74F04A28E14F6 /* ToastOverlay.swift in Sources */,
+				TR0000000000000000000004 /* TourOverlay.swift in Sources */,
 				0020D035F786CD915922D766 /* TodayHeroCard.swift in Sources */,
 				C0E82546129BB4114FE21B90 /* TodayView.swift in Sources */,
 				C10000000000000000000002 /* ContentLocalizer.swift in Sources */,
@@ -825,6 +835,7 @@
 				WG0000000000000000000002 /* WeeklyGoalProgressCard.swift in Sources */,
 				WU0000000000000000000002 /* WeightUnit.swift in Sources */,
 				OB0000000000000000000002 /* OnboardingModels.swift in Sources */,
+				TR0000000000000000000002 /* TourModels.swift in Sources */,
 				OV0000000000000000000002 /* OnboardingView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -837,6 +848,7 @@
 				C15000000000000000000008 /* ProgramBuilderRegressionTests.swift in Sources */,
 				D90000000000000000000002 /* AuditFollowupTests.swift in Sources */,
 				C1500000000000000000000C /* ProgressionFixtureTests.swift in Sources */,
+				TR0000000000000000000006 /* TourTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

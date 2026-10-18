@@ -311,6 +311,38 @@ public struct SettingsView: View {
                         }
                     }
 
+                    // Help
+                    settingsSection(title: LanguageManager.t("settings.help")) {
+                        Button(action: {
+                            store.resetTours()
+                            store.navigate(to: .today)
+                            onDismiss()
+                        }) {
+                            HStack(spacing: 12) {
+                                Image(systemName: "lightbulb")
+                                    .font(.system(size: 17))
+                                    .foregroundStyle(AppColors.secondaryText)
+                                    .frame(width: 24, height: 24)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(LanguageManager.t("settings.replayTour"))
+                                        .font(.system(size: 15))
+                                        .foregroundStyle(AppColors.text)
+                                    Text(LanguageManager.t("settings.replayTourSubtitle"))
+                                        .font(.system(size: 13))
+                                        .foregroundStyle(AppColors.secondaryText)
+                                }
+                                Spacer()
+                                Image(systemName: "chevron.right")
+                                    .font(.system(size: 13, weight: .semibold))
+                                    .foregroundStyle(AppColors.muted)
+                            }
+                            .padding(14)
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("settings-replay-tour")
+                    }
+
                     // About
                     settingsSection(title: LanguageManager.t("settings.about")) {
                         VStack(alignment: .leading, spacing: 10) {
@@ -1000,14 +1032,19 @@ public struct CloudBackupSheet: View {
         return LanguageManager.t(mirrorStatus.isCloudConnected ? "form_lab.mirror_never_synced" : "form_lab.mirror_local_help")
     }
 
-    public init(store: AppStore) {
+    /// Called after a successful restore; the welcome step uses it to finish setup.
+    private let onRestored: (() -> Void)?
+
+    public init(store: AppStore, onRestored: (() -> Void)? = nil) {
         self.store = store
         self.mirrorManager = .shared
+        self.onRestored = onRestored
     }
 
     init(store: AppStore, mirrorManager: CloudMirrorManager) {
         self.store = store
         self.mirrorManager = mirrorManager
+        self.onRestored = nil
     }
 
     public var body: some View {
@@ -1272,7 +1309,10 @@ public struct CloudBackupSheet: View {
                 try Task.checkCancellation()
                 let success = await store.restoreBackupJsonAsync(json)
                 try Task.checkCancellation()
-                if success { mirrorManager.didRestoreSnapshot() }
+                if success {
+                    mirrorManager.didRestoreSnapshot()
+                    if let onRestored { return onRestored() }
+                }
                 syncIsError = !success
                 syncStatusMessage = LanguageManager.t(success ? "notice.backupRestored" : "notice.restoreFailed")
             } catch is CancellationError {

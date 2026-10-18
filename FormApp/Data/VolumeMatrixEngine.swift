@@ -104,7 +104,6 @@ struct VolumeMatrixEngine {
             directSetsMap: directSetsMap,
             indirectSetsMap: indirectSetsMap,
             contributionsMap: contributionsMap,
-            catalog: catalog,
             language: language,
             workingSets: workingSets,
             unmapped: unmapped
@@ -180,10 +179,30 @@ struct VolumeMatrixEngine {
             directSetsMap: directSetsMap,
             indirectSetsMap: indirectSetsMap,
             contributionsMap: contributionsMap,
-            catalog: catalog,
             language: language,
             workingSets: workingSets,
             unmapped: unmapped
+        )
+    }
+
+    /// A logged-style report from per-muscle set counts, using the same credits and zones as real weeks.
+    public static func reportFromCounts(
+        weekKey: String,
+        directSets: [String: Int],
+        indirectSets: [String: Int],
+        contributions: [String: [MuscleVolumeContribution]],
+        language: String,
+        workingSets: Int
+    ) -> VolumeMatrixReport {
+        buildReport(
+            weekKey: weekKey,
+            isPlannedRoutine: false,
+            directSetsMap: directSets,
+            indirectSetsMap: indirectSets,
+            contributionsMap: contributions,
+            language: language,
+            workingSets: workingSets,
+            unmapped: [:]
         )
     }
 
@@ -193,7 +212,6 @@ struct VolumeMatrixEngine {
         directSetsMap: [String: Int],
         indirectSetsMap: [String: Int],
         contributionsMap: [String: [MuscleVolumeContribution]],
-        catalog: ExerciseMuscleCatalog,
         language: String,
         workingSets: Int,
         unmapped: [String: Int]

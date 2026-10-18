@@ -43,6 +43,7 @@ public struct LibraryView: View {
         } else {
             let filtered = store.libraryResults.entries(catalogue: store.exerciseCatalogue, query: query,
                                                        equipmentKey: selectedEquipment, muscleKey: selectedMuscle)
+            ScrollViewReader { proxy in
             ScrollView {
             VStack(spacing: 16) {
                 // Header
@@ -110,6 +111,7 @@ public struct LibraryView: View {
                         onClick: { isCardView.toggle() }
                     )
                 }
+                .tourTarget("library.search", cornerRadius: 16)
                 .padding(.horizontal, 20)
 
                 // 2 equally spaced category buttons: Equipment, Muscle Group
@@ -136,6 +138,7 @@ public struct LibraryView: View {
                     )
                     .accessibilityIdentifier(selectedMuscle != nil ? "library-active-filter-muscle" : "library-filter-muscle")
                 }
+                .tourTarget("library.filters", cornerRadius: 16)
                 .padding(.horizontal, 20)
 
                 if isCardView {
@@ -181,6 +184,7 @@ public struct LibraryView: View {
                                 )
                             }
                             .buttonStyle(.plain)
+                            .tourTargetIf(entry.id == filtered.first?.id ? "library.firstEntry" : nil, cornerRadius: 13)
                         }
                     }
                     .padding(.horizontal, 20)
@@ -233,6 +237,7 @@ public struct LibraryView: View {
                                 )
                             }
                             .buttonStyle(.plain)
+                            .tourTargetIf(entry.id == filtered.first?.id ? "library.firstEntry" : nil, cornerRadius: 13)
                         }
 
                         if filtered.isEmpty {
@@ -249,6 +254,8 @@ public struct LibraryView: View {
             }
         }
         .scrollDismissesKeyboard(.interactively)
+        .tourScrollable(proxy)
+        }
         .overlay {
             if let modal = activeModal {
                 ZStack {

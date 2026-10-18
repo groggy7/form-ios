@@ -39,6 +39,7 @@ public struct TodayView: View {
             unfinishedKeys: store.unfinishedWorkoutKeys()
         )
 
+        ScrollViewReader { proxy in
         ScrollView {
             VStack(spacing: 16) {
                 // Home header with the current week's date range
@@ -103,6 +104,7 @@ public struct TodayView: View {
                     weightUnit: store.weightUnit,
                     isPageVisible: store.currentView == .today && !store.isSessionPresented
                 )
+                .tourTarget("home.week", cornerRadius: 22)
                 .padding(.horizontal, 20)
 
                 // Exercise list preview
@@ -152,6 +154,7 @@ public struct TodayView: View {
                                     )
                                 }
                                 .buttonStyle(.plain)
+                                .tourTargetIf(index == 0 ? "home.exercises" : nil, cornerRadius: 13)
                             }
                         }
                         .padding(.horizontal, 20)
@@ -160,6 +163,8 @@ public struct TodayView: View {
 
                 Spacer().frame(height: 16)
             }
+        }
+        .tourScrollable(proxy)
         }
     }
 

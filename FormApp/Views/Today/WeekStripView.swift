@@ -57,12 +57,25 @@ public struct WeekStripView: View {
         let unfinishedKeys = store.unfinishedWorkoutKeys()
         let activeWorkout = store.activeWorkout
 
+        // Tour wording: more than four days scroll; a coloured tile starts the day-colour tip.
+        let hasStatus = workouts.contains { workout in
+            let key = "\(program.id):\(workout.id)"
+            let completed = completedKeys.contains(key)
+            let unfinished = !completed && unfinishedKeys.contains(key)
+            return completed || unfinished || WeeklyPlanView.isMissedPlanDay(dayIndex: workout.day - 1,
+                todayIndex: calendar.today, hasWorkout: true, completed: completed, unfinished: unfinished)
+        }
+        var tourFlags = Set<String>()
+        if workouts.count > 4 { tourFlags.insert(TourFlag.stripScrolls) }
+        if hasStatus { tourFlags.insert(TourFlag.stripStatus) }
+
         return AnyView(WorkoutDayStrip(
             program: program, workouts: workouts, calendar: calendar,
             activeWorkoutId: activeWorkout?.id, completedKeys: completedKeys,
             unfinishedKeys: unfinishedKeys, onSelectWorkout: onSelectWorkout,
             glowTiles: store.homeGlowTiles
-        ))
+        )
+        .tourTarget("home.days", cornerRadius: 18, flags: tourFlags))
     }
 }
 

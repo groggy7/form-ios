@@ -97,6 +97,7 @@ public struct FormLabView: View {
     @ObservedObject var store: AppStore
     @ObservedObject private var language = LanguageManager.shared
 
+    @ObservedObject private var tour = TourController.shared
     @State private var activeTab: FormLabTab = .repMax
     @State private var selectedExercise: String = "Barbell Bench Press"
     @State private var selectedFormula: RepMaxFormula = .brzycki
@@ -127,8 +128,9 @@ public struct FormLabView: View {
     }
 
     private var distinctExercises: [String] {
+        // The sample holds bench data only, so no other lift is ever named over it.
         if isPreview {
-            return ["Barbell Bench Press", "Barbell Squat", "Barbell Deadlift"]
+            return [ProPreviewData.formLabRepMaxSummary.exerciseName]
         }
         var names = Set<String>()
         for record in effectiveHistory {
@@ -196,6 +198,15 @@ public struct FormLabView: View {
         }
         .sheet(isPresented: $showInfoSheet) {
             FormLabInfoSheet()
+        }
+        // Its one-time tour walks through the three views.
+        .onChange(of: tour.isActive(.repLab) ? tour.currentStepId : nil) { _, step in
+            switch step {
+            case TourCatalog.labRepMaxStep: activeTab = .repMax
+            case TourCatalog.labCurvesStep: activeTab = .curves
+            case TourCatalog.labBalanceStep: activeTab = .balance
+            default: break
+            }
         }
         .onAppear {
             if !distinctExercises.contains(selectedExercise), let first = distinctExercises.first {
@@ -326,6 +337,7 @@ public struct FormLabView: View {
                         repMaxCard(target: target)
                     }
                 }
+                .tourTarget("lab.repmax", cornerRadius: 14)
             } else {
                 VStack(spacing: 10) {
                     Image(systemName: "dumbbell")
@@ -529,6 +541,7 @@ public struct FormLabView: View {
                 .background(AppColors.surfaceRaised)
                 .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
                 .clipShape(RoundedRectangle(cornerRadius: 16))
+                .tourTarget("lab.curves", cornerRadius: 16)
             }
         }
     }
@@ -644,6 +657,7 @@ public struct FormLabView: View {
 
             // Antagonist Ratio Cards
             antagonistRatioCard(ratio: balance.pushPull)
+                .tourTarget("lab.balance", cornerRadius: 16)
             antagonistRatioCard(ratio: balance.quadHamstring)
             antagonistRatioCard(ratio: balance.upperLower)
         }

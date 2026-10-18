@@ -35,6 +35,8 @@ public final class AppStore: ObservableObject {
     @Published public var isSessionPresented: Bool = false
     public private(set) var isSceneBackgrounded = false
     @Published public var isOnboardingCompleted: Bool
+    /// Seen tours, previews and tips; a local preference outside backups and cloud sync.
+    @Published public private(set) var tourProgress: TourProgress
     @Published public var showProgressionTargets: Bool
     @Published public var showWarmupCalculator: Bool
     @Published public var calendarStartMonth: String
@@ -297,6 +299,11 @@ public final class AppStore: ObservableObject {
         } else {
             self.isOnboardingCompleted = hasCompleted
         }
+        // Installs that finished setup before tours existed skip the screen tours and tips.
+        if UserDefaults.standard.object(forKey: Self.tourStateVersionKey) == nil {
+            Self.saveTourProgress(hasCompleted || hasExistingData ? TourProgress().returningUser() : TourProgress())
+        }
+        self.tourProgress = Self.loadTourProgress()
         let todayStr = WorkoutCalendar.formatDate(Date())
         let weekdays = WorkoutCalendar.weekdays(state: loadedState)
         let currentWeightUnit = initialWeightUnit
@@ -1068,6 +1075,47 @@ public final class AppStore: ObservableObject {
     public func setOnboardingCompleted(_ completed: Bool) {
         UserDefaults.standard.set(completed, forKey: onboardingCompletedKey)
         isOnboardingCompleted = completed
+    }
+
+    private static let tourSkipCountKey = "tour_skip_count"
+    private static let tourExistingUserKey = "tour_existing_user"
+    private static let tourStateVersionKey = "tour_state_version"
+
+    private static func loadTourProgress() -> TourProgress {
+        let defaults = UserDefaults.standard
+        return TourProgress(
+            seen: Set(TourId.allCases.filter { defaults.bool(forKey: $0.storageKey) }),
+            skipCount: defaults.integer(forKey: tourSkipCountKey),
+            existingUser: defaults.bool(forKey: tourExistingUserKey)
+        )
+    }
+
+    private static func saveTourProgress(_ progress: TourProgress) {
+        let defaults = UserDefaults.standard
+        for id in TourId.allCases {
+            if progress.seen.contains(id) { defaults.set(true, forKey: id.storageKey) } else { defaults.removeObject(forKey: id.storageKey) }
+        }
+        defaults.set(progress.skipCount, forKey: tourSkipCountKey)
+        defaults.set(progress.existingUser, forKey: tourExistingUserKey)
+        defaults.set(TourProgress.stateVersion, forKey: tourStateVersionKey)
+    }
+
+    public func updateTourProgress(_ transform: (TourProgress) -> TourProgress) {
+        let updated = transform(tourProgress)
+        guard updated != tourProgress else { return }
+        Self.saveTourProgress(updated)
+        tourProgress = updated
+    }
+
+    /// A backup restored from the welcome step belongs to a returning user: no questions, no screen tours.
+    public func completeSetupAfterRestore() {
+        updateTourProgress { $0.returningUser() }
+        setOnboardingCompleted(true)
+    }
+
+    /// Settings → Replay app tour: every tour, preview and tip shows again.
+    public func resetTours() {
+        updateTourProgress { _ in TourProgress() }
     }
 
     public func calendarStatuses(today: Date = Date()) -> [String: WorkoutDayStatus] {

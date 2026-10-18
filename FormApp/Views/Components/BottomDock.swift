@@ -56,6 +56,7 @@ public struct BottomDock: View {
                 )
                 .shadow(color: Color.black.opacity(0.35), radius: 8, x: 0, y: 4)
         )
+        .tourTarget("dock", cornerRadius: 23)
         .padding(.horizontal, 20)
         .padding(.bottom, 20)
     }

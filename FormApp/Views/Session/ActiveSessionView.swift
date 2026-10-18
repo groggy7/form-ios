@@ -28,6 +28,14 @@ public struct ActiveSessionView: View {
     @State private var pendingAnomalousSet: PendingAnomalousSet? = nil
     @State private var swappingExercise: Exercise? = nil
     @State private var pendingSwap: (exerciseId: String, substituteId: String)? = nil
+    @ObservedObject private var tour = TourController.shared
+
+    /// Workout tours start only while no sheet, detail or summary covers the exercise screen.
+    private var tourIdle: Bool {
+        !showSummary && !showExitConfirmation && inspectingExerciseId == nil && reportingExercise == nil &&
+            pendingReport == nil && !showProgressionInfo && !showWarmupPlateSheet && paywallFeature == nil &&
+            swappingExercise == nil && pendingAnomalousSet == nil
+    }
     @ObservedObject private var proManager = ProAccessManager.shared
 
     private let timer = Timer.publish(every: 0.25, on: .main, in: .common).autoconnect()
@@ -261,6 +269,7 @@ public struct ActiveSessionView: View {
                                     )
                             }
                             .buttonStyle(.plain)
+                            .tourTarget("workout.finish", cornerRadius: 18)
                         }
                     }
                     .padding(.horizontal, 16)
@@ -268,6 +277,7 @@ public struct ActiveSessionView: View {
                     .background(AppColors.background)
 
                     // Main Content
+                    ScrollViewReader { tourProxy in
                     ScrollView {
                         VStack(spacing: 20) {
                             // Exercise horizontal card carousel
@@ -331,6 +341,7 @@ public struct ActiveSessionView: View {
                                     .padding(.horizontal, 20)
                                     .padding(.top, 10)
                                 }
+                                .tourTarget("workout.exercises", cornerRadius: 13)
                                 .onChange(of: currentIndex) { _, newIdx in
                                     if exercises.indices.contains(newIdx) {
                                         withAnimation {
@@ -453,6 +464,7 @@ public struct ActiveSessionView: View {
                                         ghostTargets: ghostTargets,
                                         logbookBeatenSets: logbookBeatenSets
                                     )
+                                    .tourTarget("workout.sets", cornerRadius: 12)
 
                                     let workingRows = currentSets.filter { !$0.isWarmup }
                                     if proManager.isFeatureUnlocked(.autoProgression), store.showProgressionTargets,
@@ -474,6 +486,8 @@ public struct ActiveSessionView: View {
                             }
                         }
                         .padding(.bottom, 20)
+                    }
+                    .tourScrollable(tourProxy)
                     }
 
                     // Keep exercise navigation outside the scrolling content.
@@ -556,6 +570,7 @@ public struct ActiveSessionView: View {
                                     isMuted: !store.soundEnabled,
                                     onToggleMute: { store.soundEnabled.toggle() }
                                 )
+                                .tourTarget("workout.rest", cornerRadius: 18)
                                 .padding(.bottom, 16)
                             }
                         }
@@ -641,10 +656,18 @@ public struct ActiveSessionView: View {
 
             ToastOverlay(item: store.currentToast, bottomPadding: restTimer != nil ? 162 : 102)
         }
+        .tourOverlay(.workout)
+        .tourTrigger(.workout, enabled: true)
+        .tourTrigger(.restTimer, enabled: tour.hasTarget("workout.rest") && !tour.progress.shouldStart(.workout))
+        .onChange(of: tourIdle, initial: true) { _, idle in tour.setIdle(idle, host: .workout) }
         .task(id: mediaKey) {
             await sessionMedia.prepare(key: mediaKey, initialRowId: currentExercise?.id)
         }
-        .onDisappear { sessionMedia.close() }
+        .onDisappear {
+            sessionMedia.close()
+            tour.setIdle(false, host: .workout)
+            if let active = tour.activeTour, TourHost.host(for: active) == .workout { tour.skip() }
+        }
         .sheet(item: $reportingExercise) { exercise in
             ExerciseReportSheet(
                 exercise: exercise,

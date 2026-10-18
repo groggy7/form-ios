@@ -89,6 +89,13 @@ public struct ProgramsView: View {
     @State private var sharingItem: ProgramShareItem? = nil
     @State private var deletingProgram: Program? = nil
     @State private var menuProgramId: String? = nil
+    @ObservedObject private var tour = TourController.shared
+
+    /// The Programs tour starts only while no nested sheet, alert or picker is open.
+    private var tourIdle: Bool {
+        editingProgram == nil && copyingProgram == nil && !isCreatingNew && importPreview == nil &&
+            sharingItem == nil && deletingProgram == nil && !showFileImporter && !showImportError
+    }
     @ScaledMetric(relativeTo: .headline) private var titleSize: CGFloat = 18
     @ScaledMetric(relativeTo: .body) private var bodySize: CGFloat = 13
     @ScaledMetric(relativeTo: .subheadline) private var daysSize: CGFloat = 12
@@ -111,6 +118,7 @@ public struct ProgramsView: View {
                 let width = max(1, geometry.size.width - 40)
                 let headerHeight = ProgramHeroLayout.headerHeight(programs: store.state.programs, width: width, titleSize: titleSize)
                 let height = ProgramHeroLayout.height(programs: store.state.programs, width: width, titleSize: titleSize, bodySize: bodySize, daysSize: daysSize, countsSize: countsSize)
+                ScrollViewReader { proxy in
                 ScrollView {
                     VStack(spacing: 14) {
                         HStack(spacing: 12) {
@@ -131,6 +139,7 @@ public struct ProgramsView: View {
                                     .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).stroke(AppColors.border, lineWidth: 1))
                             }.buttonStyle(.plain)
                         }
+                        .tourTarget("programs.add", cornerRadius: 12)
                         if store.state.programs.isEmpty {
                             VStack(alignment: .leading, spacing: 10) {
                                 Text(LanguageManager.t("programs.empty")).font(.title3).foregroundStyle(AppColors.text)
@@ -171,11 +180,22 @@ public struct ProgramsView: View {
                                     }
                                 })
                             .zIndex(menuProgramId == program.id ? 10 : 0)
+                            .tourTargetIf(program.id == store.state.programs.first?.id ? "programs.list" : nil, cornerRadius: 20)
                         }
                     }.padding(.horizontal, 20).padding(.top, 10).padding(.bottom, 24)
                 }
+                .tourScrollable(proxy)
+                }
 
             }
+            .tourOverlay(.programs)
+            .tourTrigger(.programs, enabled: true)
+            .onChange(of: tourIdle, initial: true) { _, idle in tour.setIdle(idle, host: .programs) }
+            .onDisappear {
+                tour.setIdle(false, host: .programs)
+                if tour.isActive(.programs) { tour.skip() }
+            }
+            .interactiveDismissDisabled(tour.isActive(.programs))
             .background(AppColors.background)
             .navigationTitle(LanguageManager.t("programs.title"))
             .navigationBarTitleDisplayMode(.inline)

@@ -12,53 +12,33 @@ public enum ProPreviewData {
         }
     }
 
-    private static func summary(
-        muscle: String,
-        name: String,
-        effective: Float,
-        direct: Int,
-        indirect: Int,
-        zone: VolumeZone,
-        view: String
-    ) -> MuscleVolumeSummary {
-        MuscleVolumeSummary(
-            muscleKey: muscle,
-            localizedName: name,
-            totalEffectiveSets: effective,
-            directSets: direct,
-            indirectSets: indirect,
-            landmarks: VolumeLandmark.forMuscle(muscle),
-            zone: zone,
-            contributions: [],
-            defaultView: view
+    /// The sample week shown blurred behind the lock and sharp in the one-time preview
+    /// (gym/docs/design/app-tour.md §5). Counts go through the real credit and zone rules, so
+    /// every zone appears on both body views without typed totals.
+    private static let sampleDirectSets: [String: Int] = [
+        "chest": 12, "side-delts": 12, "biceps": 6, "abs": 4, "obliques": 2, "quads": 18,
+        "upper-back": 10, "lats": 12, "triceps": 10, "rear-delts": 4, "glutes": 4,
+        "hamstrings": 9, "calves": 6
+    ]
+    private static let sampleIndirectSets: [String: Int] = [
+        "front-delts": 10, "biceps": 8, "forearms": 6, "quads": 6, "adductors": 8, "upper-back": 8,
+        "lats": 2, "lower-back": 6, "triceps": 18, "rear-delts": 10, "glutes": 14
+    ]
+    private static let sampleChestWork = ["Barbell Bench Press", "Incline Dumbbell Press", "Cable Standing Fly"].map {
+        MuscleVolumeContribution(exerciseName: $0, completedSets: 4, effectiveSets: 4, isPrimary: true, date: nil)
+    }
+    public static let sampleWorkingSets = 96
+
+    public static func volumeMatrixPreviewReport(language: String = LanguageManager.shared.currentLanguage) -> VolumeMatrixReport {
+        VolumeMatrixEngine.reportFromCounts(
+            weekKey: "sample",
+            directSets: sampleDirectSets,
+            indirectSets: sampleIndirectSets,
+            contributions: ["chest": sampleChestWork],
+            language: language,
+            workingSets: sampleWorkingSets
         )
     }
-
-    public static let volumeMatrixPreviewReport: VolumeMatrixReport = {
-        let map: [String: MuscleVolumeSummary] = [
-            // Front view muscles with diverse vibrant colors visible through the paywall blur
-            "chest": summary(muscle: "chest", name: "Chest", effective: 14, direct: 14, indirect: 0, zone: .optimalMav, view: "front"),
-            "front-delts": summary(muscle: "front-delts", name: "Front shoulders", effective: 5, direct: 2, indirect: 6, zone: .progressive, view: "front"),
-            "side-delts": summary(muscle: "side-delts", name: "Side shoulders", effective: 32, direct: 32, indirect: 0, zone: .overMrv, view: "front"),
-            "biceps": summary(muscle: "biceps", name: "Biceps", effective: 22, direct: 18, indirect: 8, zone: .highFatigue, view: "front"),
-            "abs": summary(muscle: "abs", name: "Abs", effective: 8, direct: 8, indirect: 0, zone: .progressive, view: "front"),
-            "obliques": summary(muscle: "obliques", name: "Obliques", effective: 16, direct: 16, indirect: 0, zone: .highFatigue, view: "front"),
-            "quads": summary(muscle: "quads", name: "Quads", effective: 24, direct: 24, indirect: 0, zone: .overMrv, view: "front")
-            // Back view muscles omitted since user cannot view them behind paywall
-        ]
-
-        return VolumeMatrixReport(
-            weekKey: "2026-W38",
-            isPlannedRoutine: false,
-            muscleSummaries: map,
-            totalEffectiveSets: 121,
-            optimalMuscleCount: 1,
-            underTrainedCount: 0,
-            highFatigueCount: 4,
-            totalWorkingSets: 128,
-            unmappedExercises: [:]
-        )
-    }()
 
     public static let formLabRepMaxSummary: ExerciseRepMaxSummary = {
         let targets = [

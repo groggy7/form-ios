@@ -31,6 +31,7 @@ public struct WeeklyPlanView: View {
         let activeWorkout = store.activeWorkout
 
         return AnyView(
+            ScrollViewReader { proxy in
             ScrollView {
                 VStack(spacing: 20) {
                     // Header row
@@ -135,6 +136,7 @@ public struct WeeklyPlanView: View {
                             .buttonStyle(.plain)
                         }
                     }
+                    .tourTarget("plan.days", cornerRadius: 13)
                     .padding(.horizontal, 20)
 
                     // Change program outlined button
@@ -158,11 +160,14 @@ public struct WeeklyPlanView: View {
                         )
                     }
                     .buttonStyle(.plain)
+                    .tourTarget("plan.change", cornerRadius: 12)
                     .padding(.horizontal, 20)
                     .padding(.top, 4)
 
                     Spacer().frame(height: 16)
                 }
+            }
+            .tourScrollable(proxy)
             }
         )
     }

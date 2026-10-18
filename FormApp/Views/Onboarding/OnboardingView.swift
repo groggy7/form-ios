@@ -1,14 +1,29 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
+/// Welcome, four questions, then the recommendation. See gym/docs/design/app-tour.md.
 public struct OnboardingView: View {
     @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
     @ObservedObject var langManager = LanguageManager.shared
 
-    @State private var step: Int = 0
+    @State private var step: Int = Self.welcomeStep
     @State private var preferences = OnboardingPreferences()
+    @State private var showLanguageSheet = false
+    @State private var showRestoreSheet = false
+    @State private var showCloudRestore = false
+    @State private var isShowingBackupImporter = false
+    @State private var backupToRestore: String?
+    @State private var showRestoreAlert = false
+    @State private var isRestoring = false
+    @State private var restoreErrorMessage: String?
 
-    private let totalQuestions = 5
+    private static let welcomeStep = 0
+    private static let firstQuestionStep = 1
+    private static let questionCount = 4
+    private static let recommendationStep = firstQuestionStep + questionCount
+
+    private var isQuestion: Bool { (Self.firstQuestionStep..<Self.recommendationStep).contains(step) }
 
     public init(store: AppStore) {
         self.store = store
@@ -20,9 +35,9 @@ public struct OnboardingView: View {
             AppColors.background.ignoresSafeArea()
 
             VStack(spacing: 0) {
-                // Header: Back, Progress bar, Skip
-                HStack(spacing: 12) {
-                    if step > 0 && step < totalQuestions {
+                // Header: Back, progress and Skip on the questions; the language on Welcome.
+                HStack(spacing: 8) {
+                    if step > Self.welcomeStep {
                         Button(action: {
                             withAnimation(.easeInOut(duration: 0.25)) {
                                 step -= 1
@@ -31,17 +46,20 @@ public struct OnboardingView: View {
                             Image(systemName: "arrow.left")
                                 .font(.system(size: 16, weight: .semibold))
                                 .foregroundStyle(AppColors.text)
-                                .frame(width: 36, height: 36)
+                                .frame(width: 48, height: 48)
+                                .contentShape(Rectangle())
                         }
+                        .accessibilityLabel(LanguageManager.t("onboarding.back"))
+                        .accessibilityIdentifier("onboarding-back")
                     } else {
-                        Spacer().frame(width: 36, height: 36)
+                        Spacer().frame(width: 48, height: 48)
                     }
 
-                    if step < totalQuestions {
+                    if isQuestion {
                         HStack(spacing: 4) {
-                            ForEach(0..<totalQuestions, id: \.self) { index in
+                            ForEach(0..<Self.questionCount, id: \.self) { index in
                                 Capsule()
-                                    .fill(index <= step ? AppColors.accent : AppColors.border)
+                                    .fill(index <= step - Self.firstQuestionStep ? AppColors.accent : AppColors.border)
                                     .frame(height: 4)
                             }
                         }
@@ -49,36 +67,39 @@ public struct OnboardingView: View {
                         Spacer()
                     }
 
-                    if step < totalQuestions {
+                    if isQuestion {
                         Button(action: {
                             store.setOnboardingCompleted(true)
                         }) {
                             Text(LanguageManager.t("onboarding.skip"))
                                 .font(.system(size: 14, weight: .medium))
                                 .foregroundStyle(AppColors.muted)
-                                .padding(.horizontal, 8)
-                                .frame(height: 36)
+                                .padding(.horizontal, 12)
+                                .frame(minHeight: 48)
+                                .contentShape(Rectangle())
                         }
+                    } else if step == Self.welcomeStep {
+                        languagePill
                     } else {
-                        Spacer().frame(width: 36, height: 36)
+                        Spacer().frame(width: 48, height: 48)
                     }
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 12)
+                .padding(.horizontal, 8)
+                .padding(.vertical, 8)
 
                 // Step Content
                 Group {
                     switch step {
-                    case 0:
-                        goalStep
+                    case Self.welcomeStep:
+                        welcomeStep
                     case 1:
-                        experienceStep
+                        goalStep
                     case 2:
-                        equipmentStep
+                        experienceStep
                     case 3:
-                        frequencyStep
+                        equipmentStep
                     case 4:
-                        scheduleStep
+                        trainingDaysStep
                     default:
                         recommendationStep
                     }
@@ -86,7 +107,7 @@ public struct OnboardingView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
 
                 // Bottom Continue Action for question steps
-                if step < totalQuestions {
+                if isQuestion {
                     VStack(spacing: 0) {
                         Button(action: {
                             withAnimation(.easeInOut(duration: 0.25)) {
@@ -107,9 +128,229 @@ public struct OnboardingView: View {
                 }
             }
         }
+        .sheet(isPresented: $showLanguageSheet) {
+            LanguageSelectionSheet(
+                preference: langManager.languagePreference,
+                deviceLanguageName: deviceLanguageName,
+                onSelect: { code in
+                    showLanguageSheet = false
+                    if code != langManager.languagePreference { LanguageManager.setLanguage(code) }
+                },
+                onDismiss: { showLanguageSheet = false }
+            )
+            .presentationDetents([.height(520), .large])
+            .presentationDragIndicator(.visible)
+        }
+        .sheet(isPresented: $showRestoreSheet) {
+            restoreChoiceSheet
+                .presentationDetents([.height(360), .large])
+                .presentationDragIndicator(.visible)
+        }
+        .sheet(isPresented: $showCloudRestore) {
+            // A backup restored from the welcome step finishes setup as a returning user.
+            CloudBackupSheet(store: store, onRestored: {
+                showCloudRestore = false
+                store.completeSetupAfterRestore()
+                store.noticeMessage = LanguageManager.t("notice.backupRestored")
+            })
+        }
+        .fileImporter(isPresented: $isShowingBackupImporter, allowedContentTypes: [.json], allowsMultipleSelection: false) { result in
+            readBackup(result)
+        }
+        .alert(
+            LanguageManager.t("programs.restoreTitle"),
+            isPresented: $showRestoreAlert,
+            actions: {
+                Button(LanguageManager.t("settings.restoreBackup"), role: .destructive) { restoreFile() }
+                Button(LanguageManager.t("modal.cancel"), role: .cancel) { backupToRestore = nil }
+            },
+            message: { Text(LanguageManager.t("programs.restoreHint")) }
+        )
+        .alert(
+            LanguageManager.t("programs.fileError"),
+            isPresented: Binding(get: { restoreErrorMessage != nil }, set: { if !$0 { restoreErrorMessage = nil } }),
+            actions: { Button(LanguageManager.t("programs.close")) { restoreErrorMessage = nil } },
+            message: { Text(restoreErrorMessage ?? "") }
+        )
     }
 
-    // MARK: - Step 0: Goal
+    // MARK: - Welcome
+
+    private var deviceLanguageName: String {
+        let code = LanguageManager.resolveLanguage(Locale.preferredLanguages)
+        return LanguageManager.supportedLanguages.first { $0.code == code }?.name ?? "English"
+    }
+
+    private var languagePill: some View {
+        let preference = langManager.languagePreference
+        let label = preference == LanguageManager.system
+            ? deviceLanguageName
+            : LanguageManager.supportedLanguages.first { $0.code == preference }?.name ?? deviceLanguageName
+        let code = preference == LanguageManager.system ? LanguageManager.resolveLanguage(Locale.preferredLanguages) : preference
+        return Button(action: { showLanguageSheet = true }) {
+            HStack(spacing: 8) {
+                Image(LanguageManager.flagImageName(for: code))
+                    .resizable()
+                    .scaledToFill()
+                    .frame(width: 22, height: 22)
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                Text(label)
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundStyle(AppColors.text)
+            }
+            .padding(.horizontal, 12)
+            .frame(minHeight: 48)
+            .background(AppColors.surface, in: RoundedRectangle(cornerRadius: 14))
+            .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel("\(LanguageManager.t("settings.language")): \(label)")
+        .accessibilityIdentifier("onboarding-language")
+    }
+
+    private var welcomeStep: some View {
+        // The mark and text sit centred while they fit; larger text scrolls with the actions below.
+        GeometryReader { proxy in
+            ScrollView {
+                VStack(spacing: 0) {
+                    Spacer(minLength: 0)
+                    VStack(spacing: 12) {
+                        Image("LaunchMark")
+                            .renderingMode(.template)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 112, height: 112)
+                            .foregroundStyle(AppColors.text)
+                            .accessibilityHidden(true)
+                        Text(LanguageManager.t("onboarding.welcome.title"))
+                            .font(.system(size: 26, weight: .bold))
+                            .foregroundStyle(AppColors.text)
+                            .multilineTextAlignment(.center)
+                        Text(LanguageManager.t("onboarding.welcome.subtitle"))
+                            .font(.system(size: 15))
+                            .foregroundStyle(AppColors.secondaryText)
+                            .multilineTextAlignment(.center)
+                            .lineSpacing(3)
+                    }
+                    Spacer(minLength: 24)
+                    VStack(spacing: 10) {
+                        Button(action: { withAnimation(.easeInOut(duration: 0.25)) { step = Self.firstQuestionStep } }) {
+                            Text(LanguageManager.t("onboarding.welcome.start"))
+                                .font(.system(size: 16, weight: .bold))
+                                .foregroundStyle(AppColors.background)
+                                .frame(maxWidth: .infinity, minHeight: 52)
+                                .background(AppColors.accent, in: RoundedRectangle(cornerRadius: 12))
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("onboarding-start")
+                        Button(action: { showRestoreSheet = true }) {
+                            Text(LanguageManager.t("onboarding.welcome.restore"))
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundStyle(AppColors.text)
+                                .frame(maxWidth: .infinity, minHeight: 52)
+                                .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
+                                .contentShape(RoundedRectangle(cornerRadius: 12))
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("onboarding-restore")
+                    }
+                }
+                .padding(.horizontal, 20)
+                .padding(.vertical, 16)
+                .frame(minHeight: proxy.size.height)
+            }
+        }
+    }
+
+    private var restoreChoiceSheet: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(LanguageManager.t("onboarding.restore.title"))
+                .font(.system(size: 20, weight: .semibold))
+                .foregroundStyle(AppColors.text)
+            Text(LanguageManager.t("onboarding.restore.subtitle"))
+                .font(.system(size: 14))
+                .foregroundStyle(AppColors.secondaryText)
+            restoreOption(icon: "doc.text", title: "onboarding.restore.file", hint: "onboarding.restore.fileHint", id: "onboarding-restore-file") {
+                showRestoreSheet = false
+                isShowingBackupImporter = true
+            }
+            restoreOption(icon: "icloud.and.arrow.down", title: "onboarding.restore.cloud", hint: "onboarding.restore.cloudHint", id: "onboarding-restore-cloud") {
+                showRestoreSheet = false
+                showCloudRestore = true
+            }
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 28)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(AppColors.background.ignoresSafeArea())
+    }
+
+    private func restoreOption(icon: String, title: String, hint: String, id: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 14) {
+                Image(systemName: icon)
+                    .font(.system(size: 20))
+                    .foregroundStyle(AppColors.secondaryText)
+                    .frame(width: 24)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(LanguageManager.t(title))
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundStyle(AppColors.text)
+                    Text(LanguageManager.t(hint))
+                        .font(.system(size: 13))
+                        .foregroundStyle(AppColors.secondaryText)
+                        .multilineTextAlignment(.leading)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(AppColors.muted)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 12)
+            .frame(minHeight: 64)
+            .background(AppColors.surface, in: RoundedRectangle(cornerRadius: 14))
+            .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier(id)
+    }
+
+    private func readBackup(_ result: Result<[URL], Error>) {
+        guard case .success(let urls) = result, let url = urls.first else {
+            if case .failure = result { restoreErrorMessage = LanguageManager.t("errors.fileRead") }
+            return
+        }
+        // Files inside this app's own container are not security-scoped; access still works.
+        let accessed = url.startAccessingSecurityScopedResource()
+        defer { if accessed { url.stopAccessingSecurityScopedResource() } }
+        guard let size = try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize, size <= ImportExportDataSheet.maxBackupBytes,
+              let data = try? Data(contentsOf: url), let json = String(data: data, encoding: .utf8) else {
+            restoreErrorMessage = LanguageManager.t("errors.fileRead")
+            return
+        }
+        backupToRestore = json
+        showRestoreAlert = true
+    }
+
+    private func restoreFile() {
+        guard let json = backupToRestore, !isRestoring else { return }
+        isRestoring = true
+        Task { @MainActor in
+            let success = await store.restoreBackupJsonAsync(json)
+            isRestoring = false
+            backupToRestore = nil
+            if success {
+                store.completeSetupAfterRestore()
+                store.noticeMessage = LanguageManager.t("notice.backupRestored")
+            } else {
+                restoreErrorMessage = LanguageManager.t("notice.restoreFailed")
+            }
+        }
+    }
+
+    // MARK: - Step 1: Goal
     private var goalStep: some View {
         StepContainer(
             title: LanguageManager.t("onboarding.goal.title"),
@@ -142,7 +383,7 @@ public struct OnboardingView: View {
         }
     }
 
-    // MARK: - Step 1: Experience
+    // MARK: - Step 2: Experience
     private var experienceStep: some View {
         StepContainer(
             title: LanguageManager.t("onboarding.experience.title"),
@@ -169,7 +410,7 @@ public struct OnboardingView: View {
         }
     }
 
-    // MARK: - Step 2: Equipment
+    // MARK: - Step 3: Equipment
     private var equipmentStep: some View {
         StepContainer(
             title: LanguageManager.t("onboarding.equipment.title"),
@@ -208,81 +449,60 @@ public struct OnboardingView: View {
         }
     }
 
-    // MARK: - Step 3: Frequency
-    private var frequencyStep: some View {
-        StepContainer(
-            title: LanguageManager.t("onboarding.frequency.title"),
-            subtitle: LanguageManager.t("onboarding.frequency.subtitle")
-        ) {
-            OptionCard(
-                title: LanguageManager.t("onboarding.frequency.days2.title"),
-                description: LanguageManager.t("onboarding.frequency.days2.desc"),
-                isSelected: preferences.frequency == .days2,
-                onClick: {
-                    preferences.frequency = .days2
-                    preferences.selectedDays = []
-                }
-            )
-            OptionCard(
-                title: LanguageManager.t("onboarding.frequency.days3.title"),
-                description: LanguageManager.t("onboarding.frequency.days3.desc"),
-                isSelected: preferences.frequency == .days3,
-                onClick: {
-                    preferences.frequency = .days3
-                    preferences.selectedDays = []
-                }
-            )
-            OptionCard(
-                title: LanguageManager.t("onboarding.frequency.days4.title"),
-                description: LanguageManager.t("onboarding.frequency.days4.desc"),
-                isSelected: preferences.frequency == .days4,
-                onClick: {
-                    preferences.frequency = .days4
-                    preferences.selectedDays = []
-                }
-            )
-            OptionCard(
-                title: LanguageManager.t("onboarding.frequency.days5.title"),
-                description: LanguageManager.t("onboarding.frequency.days5.desc"),
-                isSelected: preferences.frequency == .days5,
-                onClick: {
-                    preferences.frequency = .days5
-                    preferences.selectedDays = []
-                }
-            )
-            OptionCard(
-                title: LanguageManager.t("onboarding.frequency.days6.title"),
-                description: LanguageManager.t("onboarding.frequency.days6.desc"),
-                isSelected: preferences.frequency == .days6,
-                onClick: {
-                    preferences.frequency = .days6
-                    preferences.selectedDays = []
-                }
-            )
-        }
-    }
-
-    // MARK: - Step 4: Schedule Days
-    private var scheduleStep: some View {
-        let currentDays = preferences.selectedDays.isEmpty ? preferences.frequency.defaultWeekdays : preferences.selectedDays
+    // MARK: - Step 4: Training days
+    /// One step for how many days and which: a count chip sets that count's default weekdays, and
+    /// the toggles below adjust them. The ticked days decide, as the recommender expects.
+    private var trainingDaysStep: some View {
+        let currentDays = OnboardingRecommender.chosenWeekdays(preferences)
         let dayLabels = LanguageManager.dayLabels
         let dayFullNames = LanguageManager.workoutDays
+        let describedCount = min(max(currentDays.count, 2), 6)
 
         return StepContainer(
-            title: LanguageManager.t("onboarding.schedule.title"),
-            subtitle: LanguageManager.t("onboarding.schedule.subtitle", ["count": "\(preferences.frequency.rawValue)"])
+            title: LanguageManager.t("onboarding.days.title"),
+            subtitle: LanguageManager.t("onboarding.days.subtitle")
         ) {
-            HStack {
-                Text(LanguageManager.t(
-                    "onboarding.schedule.daysSelected",
-                    ["selected": "\(currentDays.count)", "total": "\(preferences.frequency.rawValue)"]
-                ))
-                .font(.system(size: 13, weight: .medium))
-                .foregroundStyle(currentDays.count == preferences.frequency.rawValue ? AppColors.accent : AppColors.secondaryText)
+            Text(LanguageManager.t("onboarding.days.perWeek"))
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(AppColors.text)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
-                Spacer()
+            HStack(spacing: 8) {
+                ForEach(OnboardingFrequency.allCases, id: \.self) { frequency in
+                    let isSelected = currentDays.count == frequency.rawValue
+                    Button(action: {
+                        preferences.frequency = frequency
+                        preferences.selectedDays = frequency.defaultWeekdays
+                    }) {
+                        Text("\(frequency.rawValue)")
+                            .font(.system(size: 17, weight: isSelected ? .bold : .medium))
+                            .foregroundStyle(isSelected ? AppColors.text : AppColors.secondaryText)
+                            .frame(maxWidth: .infinity, minHeight: 48)
+                            .background(isSelected ? AppColors.positiveBg : AppColors.surface)
+                            .clipShape(RoundedRectangle(cornerRadius: 12))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(isSelected ? AppColors.accent : AppColors.border, lineWidth: isSelected ? 1.5 : 1)
+                            )
+                    }
+                    .buttonStyle(PlainButtonStyle())
+                    .accessibilityLabel(LanguageManager.t("onboarding.days.chip", ["count": frequency.rawValue]))
+                    .accessibilityAddTraits(isSelected ? .isSelected : [])
+                    .accessibilityIdentifier("onboarding-days-\(frequency.rawValue)")
+                }
             }
-            .padding(.bottom, 6)
+
+            Text(LanguageManager.t("onboarding.frequency.days\(describedCount).desc"))
+                .font(.system(size: 13))
+                .foregroundStyle(AppColors.secondaryText)
+                .lineSpacing(3)
+                .frame(maxWidth: .infinity, alignment: .leading)
+
+            Text(LanguageManager.t("onboarding.days.weekdays"))
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(AppColors.text)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.top, 6)
 
             VStack(spacing: 8) {
                 ForEach(1...7, id: \.self) { dayIndex in
@@ -341,6 +561,7 @@ public struct OnboardingView: View {
                         )
                     }
                     .buttonStyle(PlainButtonStyle())
+                    .accessibilityAddTraits(isSelected ? .isSelected : [])
                 }
             }
         }
@@ -438,6 +659,10 @@ public struct OnboardingView: View {
                     }
                 }
 
+                // Loads are entered from the first set, so the unit is confirmed before training starts.
+                weightUnitRow
+                    .padding(.top, 8)
+
                 // CTA Buttons
                 VStack(spacing: 10) {
                     Button(action: {
@@ -472,6 +697,45 @@ public struct OnboardingView: View {
 }
 
 // MARK: - Supporting Views
+
+private extension OnboardingView {
+    var weightUnitRow: some View {
+        HStack(spacing: 12) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text(LanguageManager.t("settings.weightUnit"))
+                    .font(.system(size: 15, weight: .medium))
+                    .foregroundStyle(AppColors.text)
+                Text(LanguageManager.t("settings.weightUnitSubtitle"))
+                    .font(.system(size: 13))
+                    .foregroundStyle(AppColors.secondaryText)
+            }
+            Spacer(minLength: 0)
+            HStack(spacing: 2) {
+                ForEach([WeightUnit.kg, WeightUnit.lbs], id: \.self) { option in
+                    let selected = store.weightUnit == option
+                    Button(action: { store.weightUnit = option }) {
+                        Text(option.label)
+                            .font(.system(size: 14, weight: selected ? .semibold : .medium))
+                            .foregroundStyle(selected ? AppColors.background : AppColors.secondaryText)
+                            .padding(.horizontal, 16)
+                            .frame(minHeight: 44)
+                            .background(selected ? AppColors.accent : Color.clear, in: RoundedRectangle(cornerRadius: 8))
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityAddTraits(selected ? .isSelected : [])
+                    .accessibilityIdentifier("onboarding-unit-\(option.rawValue)")
+                }
+            }
+            .padding(3)
+            .background(AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 10))
+            .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.border, lineWidth: 1))
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 8)
+        .background(AppColors.surface, in: RoundedRectangle(cornerRadius: 12))
+        .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
+    }
+}
 
 private struct StepContainer<Content: View>: View {
     @ObservedObject var themeManager = ThemeManager.shared

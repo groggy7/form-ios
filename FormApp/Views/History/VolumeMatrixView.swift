@@ -123,6 +123,7 @@ public struct VolumeMatrixView: View {
             .background(AppColors.surface)
             .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
             .clipShape(RoundedRectangle(cornerRadius: 16))
+            .tourTarget("matrix.mode", cornerRadius: 16)
 
             // Week Navigator (for Logged Mode)
             if !isPlannedMode {
@@ -257,6 +258,7 @@ public struct VolumeMatrixView: View {
                     // Left: Athlete Figure with generous left and right padding
                     heatmapFigure(catalog: catalog, report: report)
                         .frame(width: 108, height: 244)
+                        .tourTarget("matrix.figure", cornerRadius: 12)
 
                     // Right: (i) button at higher position (top-right), Front/Back switcher preserved at original level, and Vertical Legend
                     VStack(spacing: 0) {
@@ -325,6 +327,7 @@ public struct VolumeMatrixView: View {
                                 }
                             }
                         }
+                        .tourTarget("matrix.legend", cornerRadius: 8)
                     }
                     .frame(maxWidth: .infinity)
                 }
@@ -377,6 +380,7 @@ public struct VolumeMatrixView: View {
             // Detail Card
             if let selected = report.muscleSummaries[selectedMuscleKey] {
                 muscleDetailCard(summary: selected)
+                    .tourTarget("matrix.detail", cornerRadius: 18)
             }
         }
         .sheet(isPresented: $showInfoSheet) {

@@ -141,6 +141,7 @@ public struct ExerciseDetailView: View {
                     RoundedRectangle(cornerRadius: 12)
                         .stroke(AppColors.border, lineWidth: 1)
                 )
+                .tourTarget("exercise.tabs", cornerRadius: 12)
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 12)
@@ -149,16 +150,19 @@ public struct ExerciseDetailView: View {
                 VStack(alignment: .leading, spacing: 16) {
                     switch selectedTab {
                     case .main:
-                        ExerciseDetailVideo(exerciseId: currentExercise.exerciseId ?? initialExercise.exerciseId ?? initialExercise.id)
-                            .frame(maxWidth: .infinity)
-                            .background(AppColors.exerciseVideoSurface)
-                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                    .stroke(AppColors.border, lineWidth: 1)
-                            )
+                        VStack(alignment: .leading, spacing: 16) {
+                            ExerciseDetailVideo(exerciseId: currentExercise.exerciseId ?? initialExercise.exerciseId ?? initialExercise.id)
+                                .frame(maxWidth: .infinity)
+                                .background(AppColors.exerciseVideoSurface)
+                                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                        .stroke(AppColors.border, lineWidth: 1)
+                                )
 
-                        ExerciseMusclesCard(exerciseId: currentExercise.exerciseId)
+                            ExerciseMusclesCard(exerciseId: currentExercise.exerciseId)
+                        }
+                        .tourTarget("exercise.media", cornerRadius: 14)
 
                         // Links belong to program exercises; a library-only exercise shows its curated links read-only.
                         let isInProgram = store.isExerciseInAnyProgram(named: currentExercise.name)

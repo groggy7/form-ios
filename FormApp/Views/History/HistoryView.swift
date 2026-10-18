@@ -358,6 +358,7 @@ public struct HistoryView: View {
     }
 
     @ObservedObject private var proManager = ProAccessManager.shared
+    @ObservedObject private var tour = TourController.shared
     @State private var activeTab: HistoryTab = .calendar
     @State private var activePaywallFeature: ProFeature? = nil
     @State private var displayedDate: Date = Date()
@@ -429,89 +430,22 @@ public struct HistoryView: View {
                 .padding(.horizontal, 20)
 
                 if activeTab == .volumeMatrix {
-                    if proManager.isFeatureUnlocked(.volumeMatrix) {
-                        ScrollView {
-                            VolumeMatrixView(store: store)
-                                .padding(.horizontal, 20)
-                                .padding(.bottom, 24)
-                        }
-                    } else {
-                        ZStack {
-                            ScrollView(showsIndicators: false) {
-                                VolumeMatrixView(store: store, customReport: ProPreviewData.volumeMatrixPreviewReport)
-                                    .padding(.horizontal, 20)
-                                    .padding(.bottom, 24)
-                            }
-                            .scrollDisabled(true)
-                            .blur(radius: 6)
-                            .opacity(0.85)
-                            .allowsHitTesting(false)
-
-                            LinearGradient(
-                                colors: [
-                                    Color.black.opacity(0.12),
-                                    Color.black.opacity(0.25),
-                                    Color.black.opacity(0.42)
-                                ],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                            .allowsHitTesting(false)
-
-                            ProPaywallPreview(feature: .volumeMatrix) {
-                                activePaywallFeature = .volumeMatrix
-                            }
-                            .padding(.horizontal, 24)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .clipped()
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            activePaywallFeature = .volumeMatrix
-                        }
+                    let unlocked = proManager.isFeatureUnlocked(.volumeMatrix)
+                    // The first visit tours this screen sharp; locked users and empty histories see the sample week.
+                    let touring = tour.isActive(.volumeMatrix)
+                    let sample = !unlocked || (touring && !ProPreviewData.hasWorkingHistory(store.state.history))
+                    analyticsGate(feature: .volumeMatrix, unlocked: unlocked, touring: touring, sample: sample) {
+                        VolumeMatrixView(store: store, customReport: sample ? ProPreviewData.volumeMatrixPreviewReport() : nil)
                     }
+                    .tourTrigger(.volumeMatrix, enabled: true, locked: !unlocked, featureUnlocked: unlocked)
                 } else if activeTab == .formLab {
-                    if proManager.isFeatureUnlocked(.formLab) {
-                        ScrollView {
-                            FormLabView(store: store)
-                                .padding(.horizontal, 20)
-                                .padding(.bottom, 24)
-                        }
-                    } else {
-                        ZStack {
-                            ScrollView(showsIndicators: false) {
-                                FormLabView(store: store, isPreview: true)
-                                    .padding(.horizontal, 20)
-                                    .padding(.bottom, 24)
-                            }
-                            .scrollDisabled(true)
-                            .blur(radius: 6)
-                            .opacity(0.85)
-                            .allowsHitTesting(false)
-
-                            LinearGradient(
-                                colors: [
-                                    Color.black.opacity(0.12),
-                                    Color.black.opacity(0.25),
-                                    Color.black.opacity(0.42)
-                                ],
-                                startPoint: .top,
-                                endPoint: .bottom
-                            )
-                            .allowsHitTesting(false)
-
-                            ProPaywallPreview(feature: .formLab) {
-                                activePaywallFeature = .formLab
-                            }
-                            .padding(.horizontal, 24)
-                        }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .clipped()
-                        .contentShape(Rectangle())
-                        .onTapGesture {
-                            activePaywallFeature = .formLab
-                        }
+                    let unlocked = proManager.isFeatureUnlocked(.formLab)
+                    let touring = tour.isActive(.repLab)
+                    let sample = !unlocked || (touring && !ProPreviewData.hasWorkingHistory(store.state.history))
+                    analyticsGate(feature: .formLab, unlocked: unlocked, touring: touring, sample: sample) {
+                        FormLabView(store: store, isPreview: sample)
                     }
+                    .tourTrigger(.repLab, enabled: true, locked: !unlocked, featureUnlocked: unlocked)
                 } else {
                     let calendar = Calendar.current
                     let today = Date()
@@ -633,6 +567,7 @@ public struct HistoryView: View {
                             endColor: AppColors.calendarSurfaceEnd
                         )
                     )
+                    .tourTarget("progress.calendar", cornerRadius: 24)
                     .padding(.horizontal, 20)
 
                     // Calendar Legend Row
@@ -665,6 +600,7 @@ public struct HistoryView: View {
                     Spacer().frame(height: 24)
                         .id("history-bottom-anchor")
                 }
+                .tourScrollable(proxy)
                 .onChange(of: selectedDateString) { _, newDate in
                     if newDate != nil {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
@@ -681,10 +617,84 @@ public struct HistoryView: View {
     .sheet(item: $activePaywallFeature) { feat in
         ProPaywallSheet(feature: feat, onDismiss: { activePaywallFeature = nil })
     }
+    // See Premium on a sample preview's last step opens that feature's paywall.
+    .onChange(of: tour.paywallRequest) { _, request in
+        switch request {
+        case .volumeMatrix: activePaywallFeature = .volumeMatrix
+        case .repLab: activePaywallFeature = .formLab
+        default: return
+        }
+        tour.consumePaywallRequest()
+    }
 }
 }
 
+    /// Shows unlocked analytics, the sharp sample during its one-time tour, or the blurred teaser.
+    @ViewBuilder
+    private func analyticsGate<Content: View>(feature: ProFeature, unlocked: Bool, touring: Bool, sample: Bool,
+                                              @ViewBuilder content: () -> Content) -> some View {
+        let previewing = touring && !tour.isOnPremiumStep
+        let analytics = content()
+        if unlocked || previewing {
+            ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(spacing: 8) {
+                        if previewing && sample { SampleDataLabel() }
+                        analytics
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 24)
+                }
+                .tourScrollable(proxy)
+            }
+        } else {
+            ZStack {
+                ScrollView(showsIndicators: false) {
+                    analytics
+                        .padding(.horizontal, 20)
+                        .padding(.bottom, 24)
+                }
+                .scrollDisabled(true)
+                .blur(radius: 6)
+                .opacity(0.85)
+                .allowsHitTesting(false)
+                .accessibilityHidden(true)
+
+                LinearGradient(
+                    colors: [
+                        Color.black.opacity(0.12),
+                        Color.black.opacity(0.25),
+                        Color.black.opacity(0.42)
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .allowsHitTesting(false)
+
+                ProPaywallPreview(feature: feature) {
+                    activePaywallFeature = feature
+                }
+                .padding(.horizontal, 24)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .clipped()
+            .contentShape(Rectangle())
+            .onTapGesture {
+                activePaywallFeature = feature
+            }
+        }
+    }
+
+    @ViewBuilder
     private func historyTab(_ tab: HistoryTab, label: String, isPro: Bool = false) -> some View {
+        switch tab {
+        case .volumeMatrix: historyTabButton(tab, label: label, isPro: isPro).tourTarget("progress.tab.matrix", cornerRadius: 8)
+        case .formLab: historyTabButton(tab, label: label, isPro: isPro).tourTarget("progress.tab.lab", cornerRadius: 8)
+        case .calendar: historyTabButton(tab, label: label, isPro: isPro)
+        }
+    }
+
+    private func historyTabButton(_ tab: HistoryTab, label: String, isPro: Bool) -> some View {
         let isSelected = activeTab == tab
         return Button {
             activeTab = tab

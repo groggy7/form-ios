@@ -61,6 +61,7 @@ public struct RootView: View {
     @StateObject private var store = AppStore.shared
     @StateObject private var langManager = LanguageManager.shared
     @ObservedObject private var themeManager = ThemeManager.shared
+    @ObservedObject private var tour = TourController.shared
 
     @State private var showProgramsSheet: Bool = false
     @State private var showSettingsSheet: Bool = false
@@ -69,6 +70,9 @@ public struct RootView: View {
     @State private var scrollSelectedTab: ViewMode?
     @State private var isPagerInitialized = false
     @State private var isKeyboardVisible = false
+    @State private var isToastShowing = false
+    /// Tours started when the current Home visit began; tips never share a visit with a tour.
+    @State private var visitTourCount = 0
 
     public init() {
         _scrollSelectedTab = State(initialValue: AppStore.shared.currentView)
@@ -143,7 +147,7 @@ public struct RootView: View {
                                             )
                                         }
                                     }
-                                    .background(MainTabScrollGate(isEnabled: isPageSwipingEnabled))
+                                    .background(MainTabScrollGate(isEnabled: isPageSwipingEnabled && !tour.isActive))
                                 }
                                 .coordinateSpace(name: "mainTabPager")
                                 .scrollTargetBehavior(.paging)
@@ -201,6 +205,19 @@ public struct RootView: View {
                     // Animated Toast Pill
                     ToastOverlay(item: store.currentToast, bottomPadding: isBottomDockVisible ? 80 : 36)
                 }
+                .tourOverlay(.main)
+                .modifier(MainTourTriggers(store: store, tour: tour, visitTourCount: visitTourCount))
+                // Tours start only on a settled screen with nothing else asking for attention (app-tour.md §3).
+                .onChange(of: mainTourIdle, initial: true) { _, idle in tour.setIdle(idle, host: .main) }
+                .onChange(of: store.currentView) { _, _ in visitTourCount = tour.startedCount }
+                .onChange(of: store.currentToast) { _, item in
+                    guard let item else { return }
+                    isToastShowing = true
+                    Task { @MainActor in
+                        try? await Task.sleep(nanoseconds: UInt64((item.duration + 0.4) * 1_000_000_000))
+                        if store.currentToast?.id == item.id { isToastShowing = false }
+                    }
+                }
                 // Fullscreen Active Workout Session
                 .fullScreenCover(isPresented: $store.isSessionPresented) {
                     if let draft = store.activeSession {
@@ -256,6 +273,12 @@ public struct RootView: View {
         }
     }
 
+    private var mainTourIdle: Bool {
+        let settled = dragScrollPosition.map { abs($0 - $0.rounded()) < 0.01 } ?? true
+        return store.isOnboardingCompleted && !showProgramsSheet && !showSettingsSheet && selectedRecordForDetail == nil &&
+            !store.isSessionPresented && !isKeyboardVisible && !isToastShowing && settled
+    }
+
     private func selectPage(_ destination: ViewMode, using proxy: ScrollViewProxy) {
         var transaction = Transaction()
         transaction.disablesAnimations = true
@@ -264,5 +287,25 @@ public struct RootView: View {
             proxy.scrollTo(destination, anchor: .leading)
             dragScrollPosition = AppStore.mainTabs.firstIndex(of: destination).map(CGFloat.init)
         }
+    }
+}
+
+/// The tab tours and the day-colour tip; each starts on its own screen only.
+private struct MainTourTriggers: ViewModifier {
+    @ObservedObject var store: AppStore
+    @ObservedObject var tour: TourController
+    let visitTourCount: Int
+
+    func body(content: Content) -> some View {
+        let onTab = store.selectedHistoryDetailDay == nil
+        let view = store.currentView
+        content
+            .tourTrigger(.home, enabled: onTab && view == .today)
+            .tourTrigger(.plan, enabled: onTab && view == .plan)
+            .tourTrigger(.library, enabled: onTab && view == .library && store.selectedExerciseId == nil)
+            .tourTrigger(.exercise, enabled: onTab && view == .library && store.selectedExerciseId != nil)
+            .tourTrigger(.progress, enabled: onTab && view == .history)
+            .tourTrigger(.dayStatus, enabled: onTab && view == .today && visitTourCount == tour.startedCount &&
+                !tour.progress.shouldStart(.home) && tour.targetHasFlag("home.days", TourFlag.stripStatus))
     }
 }

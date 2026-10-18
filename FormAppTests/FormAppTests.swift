@@ -6655,42 +6655,23 @@ final class FormAppTests: XCTestCase {
         ]
         XCTAssertTrue(ProPreviewData.hasWorkingHistory(validSession))
 
-        // Static Volume Matrix preview report verification
-        let report = ProPreviewData.volumeMatrixPreviewReport
-        XCTAssertGreaterThan(report.totalEffectiveSets, 20)
-        XCTAssertEqual(report.optimalMuscleCount, 1)
-        XCTAssertEqual(report.highFatigueCount, 4)
-
-        // Front view muscles have diverse vibrant non-gray zones
-        let chest = report.muscleSummaries["chest"]
-        XCTAssertNotNil(chest)
-        XCTAssertEqual(chest?.zone, .optimalMav)
-        XCTAssertEqual(chest?.defaultView, "front")
-
-        let quads = report.muscleSummaries["quads"]
-        XCTAssertNotNil(quads)
-        XCTAssertEqual(quads?.zone, .overMrv)
-
-        let biceps = report.muscleSummaries["biceps"]
-        XCTAssertNotNil(biceps)
-        XCTAssertEqual(biceps?.zone, .highFatigue)
-
-        let abs = report.muscleSummaries["abs"]
-        XCTAssertNotNil(abs)
-        XCTAssertEqual(abs?.zone, .progressive)
-
-        let sideDelts = report.muscleSummaries["side-delts"]
-        XCTAssertNotNil(sideDelts)
-        XCTAssertEqual(sideDelts?.zone, .overMrv)
-
-        let obliques = report.muscleSummaries["obliques"]
-        XCTAssertNotNil(obliques)
-        XCTAssertEqual(obliques?.zone, .highFatigue)
-
-        // Back view muscles are omitted since user cannot view them behind paywall
-        XCTAssertNil(report.muscleSummaries["upper-back"])
-        XCTAssertNil(report.muscleSummaries["lats"])
-        XCTAssertNil(report.muscleSummaries["triceps"])
+        // The sample week is derived through the real counting rules (app-tour.md §5).
+        let report = ProPreviewData.volumeMatrixPreviewReport(language: "en")
+        XCTAssertEqual(report.totalEffectiveSets, 157, accuracy: 0.001)
+        XCTAssertEqual(report.totalWorkingSets, 96)
+        XCTAssertEqual(report.optimalMuscleCount, 5)
+        XCTAssertEqual(report.underTrainedCount, 3)
+        XCTAssertEqual(report.highFatigueCount, 2)
+        XCTAssertEqual(report.muscleSummaries["chest"]?.zone, .optimalMav)
+        XCTAssertEqual(report.muscleSummaries["front-delts"]?.zone, .progressive)
+        XCTAssertEqual(report.muscleSummaries["calves"]?.zone, .underMev)
+        XCTAssertEqual(report.muscleSummaries["triceps"]?.zone, .highFatigue)
+        XCTAssertEqual(report.muscleSummaries["quads"]?.zone, .overMrv)
+        XCTAssertEqual(report.muscleSummaries["forearms"]?.zone, .noWeeklyReference)
+        XCTAssertEqual(Set(report.muscleSummaries.values.map(\.zone)), Set(VolumeZone.allCases))
+        // Both body views carry colour, so the sharp preview has no empty Back view.
+        XCTAssertEqual(Set(report.muscleSummaries.values.filter { $0.totalEffectiveSets > 0 }.map(\.defaultView)), ["front", "back"])
+        XCTAssertEqual(report.muscleSummaries["chest"]?.contributions.count, 3)
 
         // Static Form Lab preview data verification
         let benchRepMax = ProPreviewData.formLabRepMaxSummary
@@ -9853,8 +9834,13 @@ final class TabPagingTests: XCTestCase {
         let originalReturnView = store.returnView
         let originalWorkout = store.selectedWorkoutId
         let originalSession = store.activeSession
+        let originalTours = store.tourProgress
         store.isOnboardingCompleted = true
         store.activeSession = nil
+        // Pager tests start with every tour seen, so no tour overlay locks the pager they measure.
+        store.updateTourProgress { _ in TourProgress(seen: Set(TourId.allCases)) }
+        // The test host's own window may already have started a tour on the shared controller.
+        TourController.shared.cancel()
         // A toast left by an earlier test reappears over the dock and hides its active rectangle.
         store.currentToast = nil
         store.navigate(to: initialView)
@@ -9879,6 +9865,7 @@ final class TabPagingTests: XCTestCase {
             store.selectedWorkoutId = originalWorkout
             store.activeSession = originalSession
             store.isOnboardingCompleted = originalOnboarding
+            store.updateTourProgress { _ in originalTours }
         }
         pumpTabPager(controller)
         let pager = try XCTUnwrap(tabScrollViews(in: controller.view).first {
