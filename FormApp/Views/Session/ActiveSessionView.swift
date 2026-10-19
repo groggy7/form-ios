@@ -462,7 +462,8 @@ public struct ActiveSessionView: View {
                                         isAssisted: WorkoutSessionUtils.isAssisted(exercise),
                                         isBodyweight: WorkoutSessionUtils.usesBodyweightResistance(exercise),
                                         ghostTargets: ghostTargets,
-                                        logbookBeatenSets: logbookBeatenSets
+                                        logbookBeatenSets: logbookBeatenSets,
+                                        onWeightUnitChange: { store.weightUnit = $0 }
                                     )
                                     .tourTarget("workout.sets", cornerRadius: 12)
 

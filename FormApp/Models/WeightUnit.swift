@@ -31,12 +31,26 @@ public enum WeightUnit: String, Codable, CaseIterable {
         return .kg
     }
 
+    // Gym-load defaults, not bodyweight/stone or road-distance conventions.
+    // Keep in sync with Android and docs/weight-units-and-backups.md.
+    private static let poundRegions: Set<String> = [
+        "AG", "AI", "AS", "BB", "BM", "BS", "BZ", "CA", "DM", "GD",
+        "GU", "GY", "JM", "KN", "KY", "LC", "LR", "MM", "MP", "MS",
+        "PR", "TC", "TT", "UM", "US", "VC", "VG", "VI"
+    ]
+
     public static func defaultForLocale(_ locale: Locale = .current) -> WeightUnit {
-        let region = locale.region?.identifier.uppercased() ?? (locale as NSLocale).countryCode?.uppercased() ?? ""
-        if region == "US" || region == "USA" {
-            return .lbs
+        let components = Locale.Components(locale: locale)
+        if let system = components.measurementSystem {
+            if system == .us { return .lbs }
+            if system == .metric || system == .uk { return .kg }
         }
-        return .kg
+        // Locale.current can carry a Settings override outside its identifier.
+        if locale.measurementSystem != Locale(identifier: locale.identifier).measurementSystem {
+            return locale.measurementSystem == .us ? .lbs : .kg
+        }
+        let region = (components.region ?? components.languageComponents.region)?.identifier.uppercased() ?? ""
+        return poundRegions.contains(region) || region == "USA" ? .lbs : .kg
     }
 
     public func toDisplay(_ weightKg: Double) -> Double {

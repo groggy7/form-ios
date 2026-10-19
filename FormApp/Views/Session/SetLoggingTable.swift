@@ -22,6 +22,7 @@ public struct SetLoggingTable: View {
     var onInspectPlates: ((Double) -> Void)? = nil
     var onToggleWarmup: ((Int) -> Void)? = nil
     var weightUnit: WeightUnit = .kg
+    var onWeightUnitChange: ((WeightUnit) -> Void)? = nil
     var allowsZeroWeight: Bool = false
     var isAssisted: Bool = false
     var isBodyweight: Bool = false
@@ -46,7 +47,8 @@ public struct SetLoggingTable: View {
         isAssisted: Bool = false,
         isBodyweight: Bool = false,
         ghostTargets: [Int: GhostTarget] = [:],
-        logbookBeatenSets: [Int: LogbookBeatResult] = [:]
+        logbookBeatenSets: [Int: LogbookBeatResult] = [:],
+        onWeightUnitChange: ((WeightUnit) -> Void)? = nil
     ) {
         self.sets = sets
         self.prescription = prescription
@@ -61,11 +63,18 @@ public struct SetLoggingTable: View {
         self.onInspectPlates = onInspectPlates
         self.onToggleWarmup = onToggleWarmup
         self.weightUnit = weightUnit
+        self.onWeightUnitChange = onWeightUnitChange
         self.allowsZeroWeight = allowsZeroWeight
         self.isAssisted = isAssisted
         self.isBodyweight = isBodyweight
         self.ghostTargets = ghostTargets
         self.logbookBeatenSets = logbookBeatenSets
+    }
+
+    private func weightInputFontSize(_ text: String, width: CGFloat) -> CGFloat {
+        let measured = (text as NSString).size(withAttributes: [.font: UIFont.systemFont(ofSize: 15, weight: .semibold)]).width
+        // Keep exact pound inputs visible without changing their text or physical load.
+        return min(15, max(12, 15 * max(1, width - 8) / max(1, measured)))
     }
 
     public var body: some View {
@@ -105,8 +114,40 @@ public struct SetLoggingTable: View {
                     .frame(width: 32, alignment: .leading)
                 Text(LanguageManager.t("table.pr"))
                     .frame(width: 56, alignment: .center)
-                Text(weightUnit.uppercaseLabel)
+                if let onWeightUnitChange {
+                    Menu {
+                        ForEach(WeightUnit.allCases, id: \.self) { option in
+                            Button {
+                                focusedField = nil
+                                selectedField = nil
+                                onWeightUnitChange(option)
+                            } label: {
+                                if option == weightUnit {
+                                    Label(option.label, systemImage: "checkmark")
+                                } else {
+                                    Text(option.label)
+                                }
+                            }
+                            .accessibilityIdentifier("session-unit-\(option.rawValue)")
+                            .accessibilityAddTraits(option == weightUnit ? .isSelected : [])
+                        }
+                    } label: {
+                        HStack(spacing: 2) {
+                            Text(weightUnit.uppercaseLabel).lineLimit(1)
+                            Image(systemName: "chevron.down").font(.system(size: 9, weight: .bold))
+                        }
+                        .padding(.horizontal, 6)
+                        .frame(minWidth: 48, minHeight: 48)
+                        .background(AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 8))
+                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(AppColors.border, lineWidth: 1))
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel("\(LanguageManager.t("settings.weightUnit")): \(weightUnit.label)")
+                    .accessibilityIdentifier("session-weight-unit")
                     .frame(maxWidth: .infinity)
+                } else {
+                    Text(weightUnit.uppercaseLabel).frame(maxWidth: .infinity)
+                }
                 Text(LanguageManager.t("table.reps"))
                     .frame(maxWidth: .infinity)
                 Text(LanguageManager.t("table.doneHeading")).frame(width: 44)
@@ -218,25 +259,29 @@ public struct SetLoggingTable: View {
                             .frame(width: 56, alignment: .center)
                     }
 
-                    TextField("0", text: weightBinding, prompt: Text("0").foregroundStyle(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
-                        .focused($focusedField, equals: Field(id: set.id, weight: true))
-                        .simultaneousGesture(TapGesture().onEnded {
-                            if isSetInputEnabled {
-                                selectedField = Field(id: set.id, weight: true)
-                            }
-                        })
-                        .disabled(!isSetInputEnabled)
-                        .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \((isAssisted ? "\(LanguageManager.t("table.assistance")) (\(weightUnit.label))" : LanguageManager.t(weightUnit == .lbs ? "table.weightLbs" : "table.weightKg")))")
-                        .keyboardType(.decimalPad)
-                        .multilineTextAlignment(.center)
-                        .font(.system(size: 15, weight: .semibold))
-                        .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
-                        .padding(.vertical, 8)
-                        .background(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5))
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                        .frame(maxWidth: .infinity)
-                        .frame(minHeight: 48)
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: true) && isSetInputEnabled ? AppColors.accent : .clear))
+                    GeometryReader { geometry in
+                        TextField("0", text: weightBinding, prompt: Text("0").foregroundStyle(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
+                            .focused($focusedField, equals: Field(id: set.id, weight: true))
+                            .simultaneousGesture(TapGesture().onEnded {
+                                if isSetInputEnabled {
+                                    selectedField = Field(id: set.id, weight: true)
+                                }
+                            })
+                            .disabled(!isSetInputEnabled)
+                            .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \((isAssisted ? "\(LanguageManager.t("table.assistance")) (\(weightUnit.label))" : LanguageManager.t(weightUnit == .lbs ? "table.weightLbs" : "table.weightKg")))")
+                            .keyboardType(.decimalPad)
+                            .multilineTextAlignment(.center)
+                            .font(.system(size: weightInputFontSize(weightBinding.wrappedValue, width: geometry.size.width), weight: .semibold))
+                            .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
+                            .padding(.vertical, 8)
+                            .background(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5))
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .frame(maxWidth: .infinity)
+                            .frame(minHeight: 48)
+                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: true) && isSetInputEnabled ? AppColors.accent : .clear))
+                    }
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 48)
 
                     // A Smart Progression target is only a hint: the field stays empty until the user enters actual reps.
                     let targetRepsHint = set.targetReps.flatMap { (1...999).contains($0) && !set.isCompleted ? $0 : nil }

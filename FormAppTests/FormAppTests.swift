@@ -1494,12 +1494,13 @@ final class FormAppTests: XCTestCase {
         func textFields(_ view: UIView) -> [UITextField] {
             (view as? UITextField).map { [$0] } ?? view.subviews.flatMap { textFields($0) }
         }
-        for language in ["en", "tr"] {
+        for language in ["en", "tr", "de", "fr", "es"] {
             LanguageManager.setLanguage(language)
             for index in 0..<2 {
-            let content = SetLoggingTable(sets: (1...3).map { ExerciseSetLog(setNumber: $0, weightInput: "12.5", repsInput: "10") }, prescription: "3 × 6–10",
-                onUpdateSet: { _, _, _ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in })
-                .padding(16).environment(\.dynamicTypeSize, .xLarge)
+            let content = SetLoggingTable(sets: (1...3).map { ExerciseSetLog(setNumber: $0, weightInput: index == 0 ? "12.5" : "220.46", repsInput: "10") }, prescription: "3 × 6–10",
+                onUpdateSet: { _, _, _ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in },
+                weightUnit: index == 0 ? .kg : .lbs, onWeightUnitChange: { _ in })
+                .padding(16).environment(\.dynamicTypeSize, .xxxLarge)
                 .frame(width: 320).background(AppColors.background)
             let host = UIHostingController(rootView: content)
             let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 700))
@@ -6345,6 +6346,24 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(WeightUnit.defaultForLocale(gbLocale), .kg)
         XCTAssertEqual(WeightUnit.defaultForLocale(trLocale), .kg)
         XCTAssertEqual(WeightUnit.defaultForLocale(deLocale), .kg)
+        let poundRegions = "AG AI AS BB BM BS BZ CA DM GD GU GY JM KN KY LC LR MM MP MS PR TC TT UM US VC VG VI".split(separator: " ")
+        for region in poundRegions {
+            XCTAssertEqual(WeightUnit.defaultForLocale(Locale(identifier: "fr_\(region)")), .lbs, String(region))
+        }
+        for region in ["GB", "TR", "DE", "FR", "AU", "NZ", "HK", "IN", "JP"] {
+            XCTAssertEqual(WeightUnit.defaultForLocale(Locale(identifier: "en_\(region)")), .kg, region)
+        }
+        XCTAssertEqual(WeightUnit.defaultForLocale(Locale(identifier: "")), .kg)
+        XCTAssertEqual(WeightUnit.defaultForLocale(Locale(identifier: "en")), .kg)
+        let overrides: [(String, WeightUnit)] = [
+            ("en-US-u-ms-metric", .kg), ("en-CA-u-ms-metric", .kg),
+            ("tr-TR-u-ms-ussystem", .lbs), ("en-US-u-ms-uksystem", .kg),
+            ("en-GB-u-rg-cazzzz", .lbs), ("en-US-u-rg-gbzzzz", .kg),
+            ("en-US-u-rg-cazzzz-ms-metric", .kg)
+        ]
+        for (tag, unit) in overrides {
+            XCTAssertEqual(WeightUnit.defaultForLocale(Locale(identifier: tag)), unit, tag)
+        }
     }
 
     // MARK: Onboarding: shared contract in gym/docs/programs/onboarding-fixtures.json.
@@ -11406,6 +11425,22 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
         let restore = isolateStoreDefaults()
         defer { restore() }
         try await body(makeStore())
+    }
+
+    func testFirstLaunchPersistsDefaultAndSkippedSetupKeepsSavedChoice() {
+        let restore = isolateStoreDefaults()
+        defer { restore() }
+        let defaults = UserDefaults.standard
+        defaults.removeObject(forKey: "weight_unit")
+        let initial = AppStore(persistence: AppStatePersistence(inMemory: true))
+        XCTAssertEqual(initial.weightUnit, WeightUnit.defaultForLocale())
+        XCTAssertEqual(defaults.string(forKey: "weight_unit"), initial.weightUnit.rawValue)
+        let selected: WeightUnit = initial.weightUnit == .kg ? .lbs : .kg
+        initial.weightUnit = selected
+        initial.setOnboardingCompleted(true)
+        let relaunched = AppStore(persistence: AppStatePersistence(inMemory: true))
+        XCTAssertEqual(relaunched.weightUnit, selected)
+        XCTAssertTrue(relaunched.isOnboardingCompleted)
     }
 
     /// Starts from kg with no live workout and returns a closure that puts the saved keys back.

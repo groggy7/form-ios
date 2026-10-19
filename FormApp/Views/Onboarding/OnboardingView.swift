@@ -659,10 +659,6 @@ public struct OnboardingView: View {
                     }
                 }
 
-                // Loads are entered from the first set, so the unit is confirmed before training starts.
-                weightUnitRow
-                    .padding(.top, 8)
-
                 // CTA Buttons
                 VStack(spacing: 10) {
                     Button(action: {
@@ -697,45 +693,6 @@ public struct OnboardingView: View {
 }
 
 // MARK: - Supporting Views
-
-private extension OnboardingView {
-    var weightUnitRow: some View {
-        HStack(spacing: 12) {
-            VStack(alignment: .leading, spacing: 2) {
-                Text(LanguageManager.t("settings.weightUnit"))
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundStyle(AppColors.text)
-                Text(LanguageManager.t("settings.weightUnitSubtitle"))
-                    .font(.system(size: 13))
-                    .foregroundStyle(AppColors.secondaryText)
-            }
-            Spacer(minLength: 0)
-            HStack(spacing: 2) {
-                ForEach([WeightUnit.kg, WeightUnit.lbs], id: \.self) { option in
-                    let selected = store.weightUnit == option
-                    Button(action: { store.weightUnit = option }) {
-                        Text(option.label)
-                            .font(.system(size: 14, weight: selected ? .semibold : .medium))
-                            .foregroundStyle(selected ? AppColors.background : AppColors.secondaryText)
-                            .padding(.horizontal, 16)
-                            .frame(minHeight: 44)
-                            .background(selected ? AppColors.accent : Color.clear, in: RoundedRectangle(cornerRadius: 8))
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityAddTraits(selected ? .isSelected : [])
-                    .accessibilityIdentifier("onboarding-unit-\(option.rawValue)")
-                }
-            }
-            .padding(3)
-            .background(AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 10))
-            .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.border, lineWidth: 1))
-        }
-        .padding(.horizontal, 14)
-        .padding(.vertical, 8)
-        .background(AppColors.surface, in: RoundedRectangle(cornerRadius: 12))
-        .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
-    }
-}
 
 private struct StepContainer<Content: View>: View {
     @ObservedObject var themeManager = ThemeManager.shared
