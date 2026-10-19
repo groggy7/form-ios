@@ -225,18 +225,18 @@ public enum WorkoutSessionUtils {
         return adjusted == 0 ? "" : "\(adjusted)"
     }
 
-    public static func prefillSet(_ target: ExerciseSetLog, from previous: ExerciseSetLog?, unit: WeightUnit = .kg) -> ExerciseSetLog {
+    public static func prefillSet(_ target: ExerciseSetLog, from previous: ExerciseSetLog?, unit: WeightUnit = .kg, barbell: Bool = false) -> ExerciseSetLog {
         guard target.inputTouched != true, !target.isCompleted, (target.weightInput.isEmpty || target.weightInput == "0"), target.repsInput.isEmpty,
               (target.weightKg == nil || (target.weightKg == 0 && target.weightInput == "0")), target.completedReps == nil, let previous, canCompleteSet(previous, allowsZeroWeight: true) else { return target }
         let canonicalWeight = previous.weightKg.flatMap { $0.isFinite && $0 >= 0 ? $0 : nil }
-        let weight = canonicalWeight.map { formatWeightInput($0, unit: unit) } ?? previous.weightInput
+        let weight = canonicalWeight.map { formatWeightInput($0, unit: unit, barbell: barbell) } ?? previous.weightInput
         let reps = previous.repsInput.isEmpty ? previous.completedReps.map { "\($0)" } ?? "" : previous.repsInput
         guard let weight = sanitizedWeightInput(weight, unit: unit), let reps = sanitizedRepsInput(reps) else { return target }
         var result = target
         result.weightInput = weight
         // The new row stores the load its text shows: exact for a load logged in this unit, the nearest
         // loadable weight for a converted one. Only legacy input-only rows need a one-time interpretation.
-        result.weightKg = canonicalWeight.map(unit.loadableKg) ?? Double(weight).map { unit.toCanonicalKg($0) }
+        result.weightKg = canonicalWeight.map { unit.loadableKg($0, barbell: barbell) } ?? Double(weight).map { unit.toCanonicalKg($0) }
         result.repsInput = reps
         result.completedReps = Int(reps)
         result.inputTouched = true
@@ -245,16 +245,18 @@ public enum WorkoutSessionUtils {
 
     public static func rebaseWeightInputs(_ draft: ActiveSessionDraft, from oldUnit: WeightUnit, to newUnit: WeightUnit) -> ActiveSessionDraft {
         var result = draft
-        result.setsByExercise = draft.setsByExercise.mapValues { sets in
-            sets.map { set in
+        let barbellIds = Set(draft.workout.exercises.filter(usesBarbellPlates).map(\.id))
+        for (exerciseId, sets) in draft.setsByExercise {
+            let barbell = barbellIds.contains(exerciseId)
+            result.setsByExercise[exerciseId] = sets.map { set in
                 var copy = set
                 let inputHasDigits = set.weightInput.rangeOfCharacter(from: .decimalDigits) != nil
                 let canonical = set.weightKg.flatMap { $0.isFinite && $0 >= 0 ? $0 : nil }
                     ?? (inputHasDigits ? sanitizedWeightInput(set.weightInput, unit: oldUnit).flatMap(Double.init).map { oldUnit.toCanonicalKg($0) } : nil)
                 if let canonical {
                     // Completed rows keep the load they were lifted at; open rows take the loadable weight they show.
-                    copy.weightKg = set.isCompleted ? canonical : newUnit.loadableKg(canonical)
-                    copy.weightInput = formatWeightInput(canonical, unit: newUnit)
+                    copy.weightKg = set.isCompleted ? canonical : newUnit.loadableKg(canonical, barbell: barbell)
+                    copy.weightInput = formatWeightInput(canonical, unit: newUnit, barbell: barbell)
                 }
                 return copy
             }
@@ -265,13 +267,13 @@ public enum WorkoutSessionUtils {
 
     /// Toggles one set's completion. Completing it prefills the next row when the setting is on;
     /// prefill only fills untouched rows, so applied targets and user edits are never overwritten.
-    public static func togglingCompletion(of index: Int, in sets: [ExerciseSetLog], prefillNextSet: Bool, unit: WeightUnit) -> [ExerciseSetLog] {
+    public static func togglingCompletion(of index: Int, in sets: [ExerciseSetLog], prefillNextSet: Bool, unit: WeightUnit, barbell: Bool = false) -> [ExerciseSetLog] {
         guard sets.indices.contains(index) else { return sets }
         var sets = sets
         let currentSet = sets[index]
         sets[index].isCompleted = !currentSet.isCompleted
         if !currentSet.isCompleted, prefillNextSet, sets.indices.contains(index + 1) {
-            sets[index + 1] = prefillSet(sets[index + 1], from: currentSet, unit: unit)
+            sets[index + 1] = prefillSet(sets[index + 1], from: currentSet, unit: unit, barbell: barbell)
         }
         return sets
     }
@@ -400,7 +402,7 @@ public enum WorkoutSessionUtils {
                 var restored = completedLogs.map { s in
                     ExerciseSetLog(
                         setNumber: s.setNumber,
-                        weightInput: s.weightKg.map { formatWeightInput($0, unit: unit) } ?? "",
+                        weightInput: s.weightKg.map { formatWeightInput($0, unit: unit, barbell: usesBarbellPlates(ex)) } ?? "",
                         repsInput: (s.reps ?? 0) > 0 ? "\(s.reps!)" : "",
                         weightKg: s.weightKg,
                         completedReps: (s.reps ?? 0) > 0 ? s.reps : nil,
@@ -456,9 +458,17 @@ public enum WorkoutSessionUtils {
 
     public static func formatWeight(_ value: Double, unit: WeightUnit = .kg) -> String { unit.formatWeight(value) }
 
-    /// Editable set text shows a load logged in this unit exactly, and a converted load at the nearest
-    /// loadable weight ("220", not "220.46"). Unchanged text keeps the row's stored load.
-    public static func formatWeightInput(_ value: Double, unit: WeightUnit = .kg) -> String { unit.formatLoadableWeight(value) }
+    /// Editable set text shows a load logged in this unit exactly, and a converted load at its loadable
+    /// weight ("225" for a 100 kg barbell load, not "220.46"). Unchanged text keeps the row's stored load.
+    public static func formatWeightInput(_ value: Double, unit: WeightUnit = .kg, barbell: Bool = false) -> String {
+        unit.formatLoadableWeight(value, barbell: barbell)
+    }
+
+    /// Barbell loads convert to the easiest plate setup nearby; dumbbells, machines and the rest round to the nearest step.
+    public static func usesBarbellPlates(_ exercise: Exercise) -> Bool {
+        let id = ExerciseCatalog.resolveCanonicalId(stableId: exercise.exerciseId, name: exercise.name) ?? ExerciseCatalog.key(exercise.name)
+        return EquipmentCatalog.shared.categoryId(id) == "bar"
+    }
 
     private static let allZerosRegex = try! NSRegularExpression(pattern: #"^0+$"#)
     private static let leadingZerosRegex = try! NSRegularExpression(pattern: #"^0+(?=[1-9]|0\.)"#)

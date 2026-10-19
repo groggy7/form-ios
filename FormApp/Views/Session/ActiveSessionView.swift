@@ -958,7 +958,8 @@ public struct ActiveSessionView: View {
                 return copy
             }
             let willComplete = !currentSet.isCompleted
-            sets = WorkoutSessionUtils.togglingCompletion(of: index, in: sets, prefillNextSet: store.prefillNextSet, unit: store.weightUnit)
+            sets = WorkoutSessionUtils.togglingCompletion(of: index, in: sets, prefillNextSet: store.prefillNextSet, unit: store.weightUnit,
+                barbell: WorkoutSessionUtils.usesBarbellPlates(exercise))
             copy.setsByExercise[exercise.id] = sets
 
             if willComplete {
@@ -986,7 +987,8 @@ public struct ActiveSessionView: View {
             guard let exercise = copy.workout.exercises.first(where: { $0.id == exerciseId }) else { return copy }
             let newSet = WorkoutSessionUtils.newSet(exercise: exercise, number: workingCount + 1)
             let lastWorking = sets.filter { !$0.isWarmup }.last
-            sets.append(store.prefillNextSet ? WorkoutSessionUtils.prefillSet(newSet, from: lastWorking, unit: store.weightUnit) : newSet)
+            sets.append(store.prefillNextSet ? WorkoutSessionUtils.prefillSet(newSet, from: lastWorking, unit: store.weightUnit,
+                barbell: WorkoutSessionUtils.usesBarbellPlates(exercise)) : newSet)
             copy.setsByExercise[exerciseId] = AppStore.reindexSets(sets)
             return copy
         }

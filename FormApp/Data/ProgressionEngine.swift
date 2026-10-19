@@ -189,14 +189,14 @@ public enum ProgressionEngine {
     private struct IncreasePlan { let targets: [ProgressionSetTarget]; let resetReps: Bool; let deltaDisplay: Double? }
 
     /// Per-set next loads; nil when any set has no loadable step within the limits.
-    private static func increasePlan(_ sets: [SessionSetLog], step: LoadStep?, unit: WeightUnit, repMin: Int, repMax: Int) -> IncreasePlan? {
+    private static func increasePlan(_ sets: [SessionSetLog], step: LoadStep?, unit: WeightUnit, barbell: Bool, repMin: Int, repMax: Int) -> IncreasePlan? {
         guard let step else { return nil }
         var targets: [ProgressionSetTarget] = []
         var deltas: [Double] = []
         var reset = false
         for set in sets {
-            // Step from the load a converted set would show (220 lbs, not 220.46), so the delta reads +5.
-            let display = unit.toDisplay(unit.loadableKg(set.weightKg!))
+            // Step from the load a converted set would show (225 lbs, not 220.46), so the delta reads +5.
+            let display = unit.toDisplay(unit.loadableKg(set.weightKg!, barbell: barbell))
             guard display > 0 else { return nil }
             let next = nextOnGrid(display, step: step)
             guard next <= WorkoutSessionUtils.maxAllowedWeight(unit: unit) else { return nil }
@@ -214,11 +214,11 @@ public enum ProgressionEngine {
 
     /// About 90% of each load on the same step grid, for the same reps; empty when that is not loadable.
     /// A bar's grid never goes below the bar, so a set too close to the empty bar withholds the lighter week.
-    private static func lighterWeek(_ sets: [SessionSetLog], step: LoadStep?, unit: WeightUnit, repMax: Int) -> [ProgressionSetTarget] {
+    private static func lighterWeek(_ sets: [SessionSetLog], step: LoadStep?, unit: WeightUnit, barbell: Bool, repMax: Int) -> [ProgressionSetTarget] {
         guard let step else { return [] }
         var targets: [ProgressionSetTarget] = []
         for set in sets {
-            let target = unit.toDisplay(unit.loadableKg(set.weightKg!)) * lighterWeekShare - step.origin
+            let target = unit.toDisplay(unit.loadableKg(set.weightKg!, barbell: barbell)) * lighterWeekShare - step.origin
             let lighter = snapped(step.origin + (target / step.display + epsilon).rounded(.down) * step.display)
             guard lighter > 0, lighter >= step.origin else { return [] }
             targets.append(ProgressionSetTarget(weightKg: unit.toCanonicalKg(lighter), reps: min(set.reps!, repMax)))
@@ -300,7 +300,10 @@ public enum ProgressionEngine {
             return guidance(.insufficientData, "progression.rationale.insufficient_data", ["sets": "\(expectedSets)"])
         }
         let planArgs = ["logged": "\(logged)", "sets": "\(expectedSets)"]
-        let lastSessionSets = workingSets.map { ProgressionSetTarget(weightKg: $0.weightKg, reps: $0.reps!) }
+        // Converted history reads, and is targeted, at its loadable weight in the current unit.
+        let barbell = WorkoutSessionUtils.usesBarbellPlates(exercise)
+        let loadable: (Double) -> Double = { weightUnit.loadableKg($0, barbell: barbell) }
+        let lastSessionSets = workingSets.map { ProgressionSetTarget(weightKg: $0.weightKg.map(loadable), reps: $0.reps!) }
         let topWeight = workingSets.map { $0.weightKg! }.max()!
         let mixedLoads = workingSets.contains { abs($0.weightKg! - topWeight) > 0.01 }
         func comparable(_ session: HistoricalSessionSets) -> Bool {
@@ -308,18 +311,18 @@ public enum ProgressionEngine {
             return zip(sets, workingSets).allSatisfy { abs($0.weightKg! - $1.weightKg!) <= 0.01 }
         }
         let allHitCeiling = workingSets.allSatisfy { $0.reps! >= repMax }
-        let summary = formatSessionSummary(workingSets, unit: weightUnit)
+        let summary = formatSessionSummary(workingSets, unit: weightUnit, barbell: barbell)
 
         // Repeat the logged loads with reps capped at the ceiling: no added rep or weight.
         func repeatLogged(_ rationaleKey: String) -> ExerciseProgressionRecommendation {
-            let targets = workingSets.map { ProgressionSetTarget(weightKg: $0.weightKg.map(weightUnit.loadableKg), reps: min($0.reps!, repMax)) }
+            let targets = workingSets.map { ProgressionSetTarget(weightKg: $0.weightKg.map(loadable), reps: min($0.reps!, repMax)) }
             let uniformWeight = Set(targets.map { $0.weightKg }).count == 1 ? targets.first?.weightKg : nil
             return ExerciseProgressionRecommendation(
                 exerciseId: exerciseId,
                 exerciseName: exercise.name,
                 action: .holdLoad,
                 suggestedWeightKg: uniformWeight,
-                suggestedWeightDisplay: formatWeight(uniformWeight ?? topWeight, unit: weightUnit),
+                suggestedWeightDisplay: formatWeight(uniformWeight ?? topWeight, unit: weightUnit, barbell: barbell),
                 suggestedRepsMin: targets.map { $0.reps }.min() ?? repMin,
                 suggestedRepsMax: targets.map { $0.reps }.max() ?? repMax,
                 weightDeltaDisplay: nil,
@@ -355,7 +358,7 @@ public enum ProgressionEngine {
             }
         if isPlateau {
             let variation = variationSwaps[exerciseId]
-            let lighter = WorkoutSessionUtils.isAssisted(exercise) ? [] : lighterWeek(workingSets, step: step, unit: weightUnit, repMax: repMax)
+            let lighter = WorkoutSessionUtils.isAssisted(exercise) ? [] : lighterWeek(workingSets, step: step, unit: weightUnit, barbell: barbell, repMax: repMax)
             return ExerciseProgressionRecommendation(exerciseId: exerciseId, exerciseName: exercise.name, action: .deload,
                 suggestedWeightKg: nil, suggestedWeightDisplay: "--", suggestedRepsMin: repMin, suggestedRepsMax: repMax,
                 rationaleKey: "progression.rationale.plateau", rationaleArgs: ["sessions": "3"], isPlateau: true, consecutiveStagnantSessions: 3,
@@ -379,14 +382,14 @@ public enum ProgressionEngine {
         let ratedEasy = allHitCeiling && !padded && last.effort == .easy
         let ratedHard = last.effort == .hard
         let confirmed = (confirmedTwice || ratedEasy) && !ratedHard
-        let possibleIncrease = increasePlan(workingSets, step: step, unit: weightUnit, repMin: repMin, repMax: repMax)
+        let possibleIncrease = increasePlan(workingSets, step: step, unit: weightUnit, barbell: barbell, repMin: repMin, repMax: repMax)
         let increase = confirmed ? possibleIncrease : nil
         let canIncrease = increase != nil
         let missedFloor = workingSets.contains { $0.reps! < repMin }
         let bodyweightOnly = step == nil && workingSets.allSatisfy { $0.weightKg == 0 }
         let action: ProgressionAction = canIncrease ? .increaseLoad : (allHitCeiling || missedFloor ? .holdLoad : .addReps)
         let targets = increase?.targets ?? workingSets.map { set in
-            ProgressionSetTarget(weightKg: set.weightKg.map(weightUnit.loadableKg), reps: allHitCeiling ? repMax : min(set.reps! + 1, repMax))
+            ProgressionSetTarget(weightKg: set.weightKg.map(loadable), reps: allHitCeiling ? repMax : min(set.reps! + 1, repMax))
         }
         let variation = allHitCeiling && (confirmedTwice || ratedEasy) && !ratedHard && bodyweightOnly ? bodyweightLadder[exerciseId] : nil
         let key: String
@@ -410,7 +413,7 @@ public enum ProgressionEngine {
         let uniformWeight = weights.count == 1 ? weights.first : nil
         let args = ["ceiling": "\(repMax)", "floor": "\(repMin)", "targetReps": "\(targets[0].reps)"].merging(planArgs) { $1 }
         return ExerciseProgressionRecommendation(exerciseId: exerciseId, exerciseName: exercise.name, action: action,
-            suggestedWeightKg: uniformWeight, suggestedWeightDisplay: formatWeight(uniformWeight ?? topWeight, unit: weightUnit),
+            suggestedWeightKg: uniformWeight, suggestedWeightDisplay: formatWeight(uniformWeight ?? topWeight, unit: weightUnit, barbell: barbell),
             suggestedRepsMin: targets.map { $0.reps }.min()!, suggestedRepsMax: targets.map { $0.reps }.max()!,
             weightDeltaDisplay: increase?.deltaDisplay.map { "+\(weightUnit.formatExactWeight(weightUnit.toCanonicalKg($0))) \(weightUnit.label)" },
             rationaleKey: key, rationaleArgs: args,
@@ -419,13 +422,13 @@ public enum ProgressionEngine {
     }
 
     // Input precision: the card must show the load Apply Target writes, and a converted load at its loadable weight.
-    private static func formatWeight(_ kg: Double, unit: WeightUnit) -> String {
-        kg <= 0.0 ? "BW" : unit.formatLoadableWeight(kg)
+    private static func formatWeight(_ kg: Double, unit: WeightUnit, barbell: Bool) -> String {
+        kg <= 0.0 ? "BW" : unit.formatLoadableWeight(kg, barbell: barbell)
     }
 
-    private static func formatSessionSummary(_ sets: [SessionSetLog], unit: WeightUnit) -> String {
+    private static func formatSessionSummary(_ sets: [SessionSetLog], unit: WeightUnit, barbell: Bool) -> String {
         sets.map { set in
-            let w = (set.weightKg != nil && set.weightKg! > 0.0) ? formatWeight(set.weightKg!, unit: unit) : "BW"
+            let w = (set.weightKg != nil && set.weightKg! > 0.0) ? formatWeight(set.weightKg!, unit: unit, barbell: barbell) : "BW"
             let r = set.reps ?? 0
             return "\(w)×\(r)"
         }.joined(separator: ", ")

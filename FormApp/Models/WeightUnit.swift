@@ -144,20 +144,56 @@ public enum WeightUnit: String, Codable, CaseIterable {
         return display.isFinite && abs(display - Self.roundHalfAwayFromZero(display, decimals: 2)) < 1e-6
     }
 
-    /// The canonical load a set or target receives in this unit. Loads logged in this unit stay exact;
-    /// converted loads round to the nearest `conversionStep`, so 100 kg becomes 220 lbs.
+    /// The canonical load a set or target receives in this unit. Loads logged in this unit stay exact.
+    /// A converted barbell load takes the easiest standard plate setup within 2.5% (100 kg becomes 225 lbs);
+    /// other converted loads round to the nearest `conversionStep` (a 22.5 kg dumbbell becomes 50 lbs).
     /// A positive load too small for the step keeps one decimal rather than becoming zero.
-    public func loadableKg(_ weightKg: Double) -> Double {
+    public func loadableKg(_ weightKg: Double, barbell: Bool = false) -> Double {
         guard weightKg.isFinite, weightKg > 0, !isNativeLoad(weightKg) else { return weightKg }
         let display = toDisplay(weightKg)
-        let stepped = Self.roundHalfAwayFromZero(display / conversionStep, decimals: 0) * conversionStep
+        let stepped = (barbell ? easiestBarbellLoad(near: display) : nil)
+            ?? Self.roundHalfAwayFromZero(display / conversionStep, decimals: 0) * conversionStep
         let loadable = stepped > 0 ? stepped : Self.roundHalfAwayFromZero(display, decimals: 1)
         return loadable > 0 ? toCanonicalKg(loadable) : weightKg
     }
 
-    /// Input text for `loadableKg`: "102.5" stays "102.5" in lbs, while 100 kg reads "220" rather than "220.46".
-    public func formatLoadableWeight(_ weightKg: Double) -> String {
-        formatExactWeight(loadableKg(weightKg))
+    /// Input text for `loadableKg`: "102.5" stays "102.5" in lbs, while a 100 kg barbell load reads "225".
+    public func formatLoadableWeight(_ weightKg: Double, barbell: Bool = false) -> String {
+        formatExactWeight(loadableKg(weightKg, barbell: barbell))
+    }
+
+    /// The standard bar and per-side plates an easy barbell setup is built from. Gyms treat a 20 kg plate
+    /// as a 45 lb plate, so 60/100/140/180 kg and 135/225/315/405 lbs convert to each other.
+    private var standardBar: Double { self == .lbs ? 45 : 20 }
+    private var standardPlates: [Double] { self == .lbs ? [45, 35, 25, 10, 5, 2.5] : [25, 20, 15, 10, 5, 2.5, 1.25] }
+
+    /// Within 2.5% of `display`, the load needing the fewest standard plates per side; ties go to the
+    /// closer, then the lighter, load. Keep the arithmetic identical to Android.
+    private func easiestBarbellLoad(near display: Double) -> Double? {
+        let first = Int((display * 0.975 / conversionStep).rounded(.up))
+        let last = Int((display * 1.025 / conversionStep).rounded(.down))
+        guard first <= last else { return nil }
+        var best: (Int, Double, Double)?
+        for multiple in first...last {
+            let load = Double(multiple) * conversionStep
+            guard let plates = platesPerSide(load) else { continue }
+            let candidate = (plates, abs(load - display), load)
+            if best.map({ candidate < $0 }) ?? true { best = candidate }
+        }
+        return best?.2
+    }
+
+    /// The fewest standard plates per side that build `load` on the standard bar, or nil below the bar.
+    private func platesPerSide(_ load: Double) -> Int? {
+        let smallest = standardPlates.last!
+        let units = Int(((load - standardBar) / 2 / smallest).rounded())
+        guard units >= 0 else { return nil }
+        let sizes = standardPlates.map { Int(($0 / smallest).rounded()) }
+        var fewest = [0] + Array(repeating: Int.max, count: units)
+        for total in stride(from: 1, through: units, by: 1) {
+            fewest[total] = sizes.filter { $0 <= total }.map { fewest[total - $0] }.min()! + 1
+        }
+        return fewest[units]
     }
 
     /// Localized `formatLoadableWeight` for the coach card, which shows what Apply writes.

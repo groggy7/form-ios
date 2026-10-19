@@ -11862,6 +11862,45 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
         }
     }
 
+    func testBarbellLoadsConvertToTheMatchingPlateSetup() {
+        for (kg, lbs) in [(20.0, "45"), (60, "135"), (80, "175"), (100, "225"), (140, "315"), (180, "405")] {
+            XCTAssertEqual(WeightUnit.lbs.formatLoadableWeight(kg, barbell: true), lbs, "\(kg) kg")
+        }
+        for (lbs, kg) in [(135.0, "60"), (185, "85"), (225, "100"), (315, "140")] {
+            XCTAssertEqual(WeightUnit.kg.formatLoadableWeight(WeightUnit.lbs.toCanonicalKg(lbs), barbell: true), kg, "\(lbs) lbs")
+        }
+        // Not plate-loaded: the nearest 5 lbs / 2.5 kg.
+        XCTAssertEqual(WeightUnit.lbs.formatLoadableWeight(22.5), "50")
+        XCTAssertEqual(WeightUnit.kg.formatLoadableWeight(WeightUnit.lbs.toCanonicalKg(50)), "22.5")
+    }
+
+    func testSessionUsesTheBarbellRuleOnlyForBarbellExercises() throws {
+        let bench = Exercise(id: "bench", name: "Barbell Bench Press", exerciseId: "barbell-bench-press", sets: 2)
+        let dumbbell = Exercise(id: "db", name: "Dumbbell Bench Press", exerciseId: "dumbbell-bench-press", sets: 2)
+        XCTAssertTrue(WorkoutSessionUtils.usesBarbellPlates(bench))
+        XCTAssertFalse(WorkoutSessionUtils.usesBarbellPlates(dumbbell))
+        let done = ExerciseSetLog(id: "done", setNumber: 1, weightInput: "100", repsInput: "5", weightKg: 100, completedReps: 5, isCompleted: true)
+        var open = done
+        open.id = "open"; open.setNumber = 2; open.isCompleted = false
+        var dumbbellSet = open
+        dumbbellSet.id = "db-open"; dumbbellSet.weightKg = 22.5; dumbbellSet.weightInput = "22.5"
+        let value = ActiveSessionDraft(id: "mixed", programId: "unit-plan", workout: Workout(id: "mixed", day: 1, title: "Mixed", exercises: [bench, dumbbell]),
+            startedAt: "2026-08-28T09:00:00Z", startedAtEpochMillis: 1_000, setsByExercise: [bench.id: [done, open], dumbbell.id: [dumbbellSet]], weightInputUnit: .kg)
+        let pounds = WorkoutSessionUtils.rebaseWeightInputs(value, from: .kg, to: .lbs)
+        let benchSets = try XCTUnwrap(pounds.setsByExercise[bench.id])
+        XCTAssertEqual(benchSets[0].weightInput, "225")
+        XCTAssertEqual(benchSets[0].weightKg, 100, "A completed row keeps its lifted load")
+        XCTAssertEqual(benchSets[1].weightInput, "225")
+        XCTAssertEqual(benchSets[1].weightKg, WeightUnit.lbs.toCanonicalKg(225))
+        XCTAssertEqual(pounds.setsByExercise[dumbbell.id]?.first?.weightInput, "50")
+        let prefilled = WorkoutSessionUtils.togglingCompletion(of: 0, in: [open, ExerciseSetLog(setNumber: 3)], prefillNextSet: true, unit: .lbs,
+            barbell: WorkoutSessionUtils.usesBarbellPlates(bench))
+        XCTAssertEqual(prefilled[1].weightInput, "225")
+        let kilograms = WorkoutSessionUtils.rebaseWeightInputs(pounds, from: .lbs, to: .kg)
+        XCTAssertEqual(kilograms.setsByExercise[bench.id]?[1].weightInput, "100")
+        XCTAssertEqual(kilograms.setsByExercise[bench.id]?[1].weightKg, 100, "225 lbs returns to exactly 100 kg")
+    }
+
     func testLoadableWeightKeepsNativeLoadsAndRoundsConvertedOnes() {
         XCTAssertEqual(WeightUnit.lbs.loadableKg(WeightUnit.lbs.toCanonicalKg(102.5)), WeightUnit.lbs.toCanonicalKg(102.5))
         XCTAssertEqual(WeightUnit.kg.loadableKg(52.25), 52.25)
