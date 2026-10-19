@@ -144,7 +144,7 @@ public struct WarmupPlateSheet: View {
                                         .clipShape(RoundedRectangle(cornerRadius: 8))
                                         .overlay(
                                             RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                                .stroke(isSel ? AppColors.accent : AppColors.border, lineWidth: 1)
+                                                .strokeBorder(isSel ? AppColors.accent : AppColors.border, lineWidth: 1)
                                         )
                                 }
                                 .buttonStyle(.plain)
@@ -194,18 +194,7 @@ public struct WarmupPlateSheet: View {
     private var warmupRampContent: some View {
         VStack(spacing: 14) {
             // Target Weight Stepper
-            HStack {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(LanguageManager.t("warmup.working_load_label"))
-                        .font(.system(size: 11))
-                        .foregroundStyle(AppColors.muted)
-                    Text("\(WarmupPlateEngine.formatPlateWeight(workingWeightInput)) \(unit.label)")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundStyle(AppColors.text)
-                }
-
-                Spacer()
-
+            targetWeightCard(titleKey: "warmup.working_load_label", weight: workingWeightInput) {
                 HStack(spacing: 6) {
                     let step = unit == .lbs ? 5.0 : 2.5
                     let rawBar = unit == .lbs ? unit.toDisplay(ramp.barWeightKg) : ramp.barWeightKg
@@ -229,16 +218,6 @@ public struct WarmupPlateSheet: View {
                     }
                 }
             }
-            .padding(.horizontal, 14)
-            .padding(.vertical, 10)
-            .background(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(AppColors.surface)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .stroke(AppColors.border, lineWidth: 1)
-                    )
-            )
 
             // Sequence Title
             Text(LanguageManager.t("warmup.sequence_title"))
@@ -354,18 +333,7 @@ public struct WarmupPlateSheet: View {
     private var plateLoaderContent: some View {
         VStack(spacing: 16) {
             // Target Weight Controller
-            HStack {
-                VStack(alignment: .leading, spacing: 2) {
-                    Text(LanguageManager.t("warmup.target_weight"))
-                        .font(.system(size: 11, weight: .medium))
-                        .foregroundStyle(AppColors.secondaryText)
-                    Text("\(WarmupPlateEngine.formatPlateWeight(plateTargetInput))\u{00A0}\(unit.label)")
-                        .font(.system(size: 18, weight: .bold))
-                        .foregroundStyle(AppColors.text)
-                }
-
-                Spacer()
-
+            targetWeightCard(titleKey: "warmup.target_weight", weight: plateTargetInput) {
                 HStack(spacing: 6) {
                     let step = unit == .lbs ? 5.0 : 2.5
                     let maxWeight = unit == .lbs ? 1000.0 : 500.0
@@ -387,16 +355,6 @@ public struct WarmupPlateSheet: View {
                     }
                 }
             }
-            .padding(.horizontal, 14)
-            .padding(.vertical, 10)
-            .background(
-                RoundedRectangle(cornerRadius: 12, style: .continuous)
-                    .fill(AppColors.surface)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12, style: .continuous)
-                            .stroke(AppColors.border, lineWidth: 1)
-                    )
-            )
 
             // Barbell Visualizer
             BarbellPlateVisualizerView(result: plateResult, unit: unit)
@@ -450,6 +408,45 @@ public struct WarmupPlateSheet: View {
             }
             .padding(.top, 6)
         }
+    }
+
+    private func targetWeightCard<Controls: View>(
+        titleKey: String,
+        weight: Double,
+        @ViewBuilder controls: () -> Controls
+    ) -> some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 2) {
+                // Both tabs reserve the same title area when localized labels wrap.
+                ZStack(alignment: .topLeading) {
+                    Text(LanguageManager.t("warmup.working_load_label"))
+                        .hidden()
+                        .accessibilityHidden(true)
+                    Text(LanguageManager.t("warmup.target_weight"))
+                        .hidden()
+                        .accessibilityHidden(true)
+                    Text(LanguageManager.t(titleKey))
+                }
+                .font(.system(size: 11, weight: .medium))
+                .foregroundStyle(AppColors.secondaryText)
+                Text("\(WarmupPlateEngine.formatPlateWeight(weight))\u{00A0}\(unit.label)")
+                    .font(.system(size: 20, weight: .bold))
+                    .foregroundStyle(AppColors.text)
+            }
+
+            Spacer()
+            controls()
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 10)
+        .background(
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
+                .fill(AppColors.surface)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 12, style: .continuous)
+                        .strokeBorder(AppColors.border, lineWidth: 1)
+                )
+        )
     }
 
     private func quickStepButton(_ label: String, action: @escaping () -> Void) -> some View {

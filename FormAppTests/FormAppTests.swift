@@ -7738,63 +7738,50 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
-    func testWarmupPlateSheetSnapshot() {
-        let sheetRamp = WarmupPlateSheet(
-            exerciseName: "Barbell Bench Press",
-            initialWorkingWeightKg: 100.0,
-            initialBarType: .olympic20,
-            initialPlates: WarmupPlateEngine.defaultPlatesKg,
-            unit: .kg,
-            initialTab: .warmupRamp,
-            onInsertWarmupSets: { _ in },
-            onSaveBarType: { _ in },
-            onSavePlates: { _ in }
-        )
-        let controllerRamp = UIHostingController(rootView: sheetRamp)
-        controllerRamp.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
-        controllerRamp.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
-        let windowRamp = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
-        windowRamp.rootViewController = controllerRamp
-        windowRamp.makeKeyAndVisible()
-        controllerRamp.view.layoutIfNeeded()
+    func testWarmupPlateSheetSnapshot() async throws {
+        let previousLanguage = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previousLanguage) }
+        let sizes: [(CGFloat, ContentSizeCategory)] = [(393, .large), (320, .extraExtraExtraLarge)]
+        for language in ["en", "tr", "de", "fr", "es"] {
+            LanguageManager.setLanguage(language)
+            for (width, textSize) in sizes {
+                for unit in [WeightUnit.kg, .lbs] {
+                    for tab in WarmupPlateTab.allCases {
+                        let sheet = WarmupPlateSheet(
+                            exerciseName: "Barbell Bench Press",
+                            initialWorkingWeightKg: 80,
+                            initialBarType: .olympic20,
+                            initialPlates: WarmupPlateEngine.defaultPlates(unit: unit),
+                            unit: unit,
+                            initialTab: tab,
+                            onInsertWarmupSets: { _ in },
+                            onSaveBarType: { _ in },
+                            onSavePlates: { _ in }
+                        )
+                        .environment(\.sizeCategory, textSize)
+                        let controller = UIHostingController(rootView: sheet)
+                        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 852))
+                        controller.view.frame = window.bounds
+                        controller.view.backgroundColor = UIColor(AppColors.background)
+                        window.rootViewController = controller
+                        window.makeKeyAndVisible()
+                        controller.view.layoutIfNeeded()
+                        try await Task.sleep(nanoseconds: 60_000_000)
+                        controller.view.layoutIfNeeded()
 
-        let rendererRamp = UIGraphicsImageRenderer(size: controllerRamp.view.bounds.size)
-        let imageRamp = rendererRamp.image { ctx in
-            controllerRamp.view.drawHierarchy(in: controllerRamp.view.bounds, afterScreenUpdates: true)
-        }
-        if let data = imageRamp.pngData() {
-            let path = snapshotPath("ios_warmup_ramp_sheet_snapshot.png")
-            try? data.write(to: URL(fileURLWithPath: path))
-            print("Successfully wrote warmup ramp sheet snapshot to \(path)")
-        }
-
-        let sheetPlates = WarmupPlateSheet(
-            exerciseName: "Barbell Bench Press",
-            initialWorkingWeightKg: 100.0,
-            initialBarType: .olympic20,
-            initialPlates: WarmupPlateEngine.defaultPlatesKg,
-            unit: .kg,
-            initialTab: .plateLoader,
-            onInsertWarmupSets: { _ in },
-            onSaveBarType: { _ in },
-            onSavePlates: { _ in }
-        )
-        let controllerPlates = UIHostingController(rootView: sheetPlates)
-        controllerPlates.view.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
-        controllerPlates.view.backgroundColor = UIColor(red: 0x09/255.0, green: 0x0C/255.0, blue: 0x0F/255.0, alpha: 1.0)
-        let windowPlates = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
-        windowPlates.rootViewController = controllerPlates
-        windowPlates.makeKeyAndVisible()
-        controllerPlates.view.layoutIfNeeded()
-
-        let rendererPlates = UIGraphicsImageRenderer(size: controllerPlates.view.bounds.size)
-        let imagePlates = rendererPlates.image { ctx in
-            controllerPlates.view.drawHierarchy(in: controllerPlates.view.bounds, afterScreenUpdates: true)
-        }
-        if let data = imagePlates.pngData() {
-            let path = snapshotPath("ios_plate_loader_sheet_snapshot.png")
-            try? data.write(to: URL(fileURLWithPath: path))
-            print("Successfully wrote plate loader sheet snapshot to \(path)")
+                        let image = UIGraphicsImageRenderer(size: controller.view.bounds.size).image { _ in
+                            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+                        }
+                        let name = "warmup-sheet-\(language)-\(unit.label)-\(Int(width))-\(tab.rawValue)"
+                        try XCTUnwrap(image.pngData()).write(to: URL(fileURLWithPath: snapshotPath("\(name).png")))
+                        let attachment = XCTAttachment(image: image)
+                        attachment.name = name
+                        attachment.lifetime = .keepAlways
+                        add(attachment)
+                        window.isHidden = true
+                    }
+                }
+            }
         }
     }
 
