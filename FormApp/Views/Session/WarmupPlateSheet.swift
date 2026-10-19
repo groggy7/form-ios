@@ -440,7 +440,7 @@ public struct WarmupPlateSheet: View {
                                 .clipShape(RoundedRectangle(cornerRadius: 8))
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                        .stroke(isAvail ? pColor.opacity(0.6) : AppColors.border.opacity(0.4), lineWidth: 1)
+                                        .strokeBorder(isAvail ? pColor.opacity(0.6) : AppColors.border.opacity(0.4), lineWidth: 1)
                                 )
                             }
                             .buttonStyle(.plain)
