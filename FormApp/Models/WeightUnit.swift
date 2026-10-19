@@ -134,14 +134,41 @@ public enum WeightUnit: String, Codable, CaseIterable {
         return text == "-0" ? "0" : text
     }
 
-    public func formatExactDisplayWeight(_ weightKg: Double) -> String {
+    /// Plate-friendly step for loads converted from the other unit: a pair of the smallest common plates.
+    public var conversionStep: Double { self == .lbs ? 5.0 : 2.5 }
+
+    /// A load logged in this unit reads back on the logger's two-decimal grid; one converted from the
+    /// other unit does not (100 kg is 220.462… lbs). Keep the tolerance identical to Android.
+    public func isNativeLoad(_ weightKg: Double) -> Bool {
+        let display = toDisplay(weightKg)
+        return display.isFinite && abs(display - Self.roundHalfAwayFromZero(display, decimals: 2)) < 1e-6
+    }
+
+    /// The canonical load a set or target receives in this unit. Loads logged in this unit stay exact;
+    /// converted loads round to the nearest `conversionStep`, so 100 kg becomes 220 lbs.
+    /// A positive load too small for the step keeps one decimal rather than becoming zero.
+    public func loadableKg(_ weightKg: Double) -> Double {
+        guard weightKg.isFinite, weightKg > 0, !isNativeLoad(weightKg) else { return weightKg }
+        let display = toDisplay(weightKg)
+        let stepped = Self.roundHalfAwayFromZero(display / conversionStep, decimals: 0) * conversionStep
+        let loadable = stepped > 0 ? stepped : Self.roundHalfAwayFromZero(display, decimals: 1)
+        return loadable > 0 ? toCanonicalKg(loadable) : weightKg
+    }
+
+    /// Input text for `loadableKg`: "102.5" stays "102.5" in lbs, while 100 kg reads "220" rather than "220.46".
+    public func formatLoadableWeight(_ weightKg: Double) -> String {
+        formatExactWeight(loadableKg(weightKg))
+    }
+
+    /// Localized `formatLoadableWeight` for the coach card, which shows what Apply writes.
+    public func formatLoadableDisplayWeight(_ weightKg: Double) -> String {
         let formatter = NumberFormatter()
         formatter.locale = LanguageManager.numberLocale
         formatter.numberStyle = .decimal
         formatter.usesGroupingSeparator = false
         formatter.maximumFractionDigits = 2
-        let exact = formatExactWeight(weightKg)
-        return formatter.string(from: NSNumber(value: Double(exact) ?? 0)) ?? exact
+        let text = formatLoadableWeight(weightKg)
+        return formatter.string(from: NSNumber(value: Double(text) ?? 0)) ?? text
     }
 
     public func formatWeightWithUnit(_ weightKg: Double) -> String {

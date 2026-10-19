@@ -14,6 +14,7 @@ final class ProgressionFixtureTests: XCTestCase {
         let unit: String
         let display: String
         let exact: String
+        let loadable: String
     }
     private struct Case: Decodable {
         let name: String
@@ -91,6 +92,7 @@ final class ProgressionFixtureTests: XCTestCase {
             let label = "\(fixture.value) \(fixture.valueUnit) in \(fixture.unit)"
             XCTAssertEqual(unit.formatWeight(kg), fixture.display, "display \(label)")
             XCTAssertEqual(unit.formatExactWeight(kg), fixture.exact, "exact \(label)")
+            XCTAssertEqual(unit.formatLoadableWeight(kg), fixture.loadable, "loadable \(label)")
         }
     }
 

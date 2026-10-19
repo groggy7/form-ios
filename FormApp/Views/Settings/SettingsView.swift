@@ -15,6 +15,8 @@ public struct SettingsView: View {
     @State private var showThemeSheet: Bool = false
     @Environment(\.openURL) private var openURL
     @State private var showImportExportSheet: Bool = false
+    /// A unit switch waiting for confirmation, asked only once loads are logged.
+    @State private var pendingWeightUnit: WeightUnit?
     // Settings is a sheet, so it shows its own notice above the app-level toast.
     @State private var premiumNotice: ToastItem?
 
@@ -262,7 +264,7 @@ public struct SettingsView: View {
                                     .foregroundStyle(AppColors.secondaryText)
                             }
                             Spacer()
-                            Picker("", selection: $store.weightUnit) {
+                            Picker("", selection: weightUnitSelection) {
                                 Text(LanguageManager.t("settings.unitKg")).tag(WeightUnit.kg)
                                 Text(LanguageManager.t("settings.unitLbs")).tag(WeightUnit.lbs)
                             }
@@ -527,7 +529,33 @@ public struct SettingsView: View {
             .sheet(isPresented: $showCloudBackupSheet) {
                 CloudBackupSheet(store: store)
             }
+            .alert(
+                LanguageManager.t(pendingWeightUnit == .kg ? "settings.unitSwitch.toKgTitle" : "settings.unitSwitch.toLbsTitle"),
+                isPresented: Binding(get: { pendingWeightUnit != nil }, set: { if !$0 { pendingWeightUnit = nil } }),
+                presenting: pendingWeightUnit,
+                actions: { unit in
+                    Button(LanguageManager.t("modal.cancel"), role: .cancel) { pendingWeightUnit = nil }
+                    Button(LanguageManager.t("settings.unitSwitch.confirm")) {
+                        pendingWeightUnit = nil
+                        store.changeWeightUnit(to: unit)
+                    }
+                },
+                message: { unit in
+                    Text(LanguageManager.t(unit == .kg ? "settings.unitSwitch.toKgMessage" : "settings.unitSwitch.toLbsMessage"))
+                }
+            )
         }
+    }
+
+    /// Switching rounds converted loads, so a user with logged weights confirms first; a fresh install switches freely.
+    private var weightUnitSelection: Binding<WeightUnit> {
+        Binding(
+            get: { store.weightUnit },
+            set: { unit in
+                guard unit != store.weightUnit else { return }
+                if store.hasRecordedLoads { pendingWeightUnit = unit } else { store.changeWeightUnit(to: unit) }
+            }
+        )
     }
 
     private var deviceLanguageName: String {

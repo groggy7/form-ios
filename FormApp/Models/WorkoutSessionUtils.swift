@@ -234,9 +234,9 @@ public enum WorkoutSessionUtils {
         guard let weight = sanitizedWeightInput(weight, unit: unit), let reps = sanitizedRepsInput(reps) else { return target }
         var result = target
         result.weightInput = weight
-        // Formatting a kg value as rounded pounds must not round-trip back into
-        // storage. Only legacy input-only rows need a one-time interpretation.
-        result.weightKg = canonicalWeight ?? Double(weight).map { unit.toCanonicalKg($0) }
+        // The new row stores the load its text shows: exact for a load logged in this unit, the nearest
+        // loadable weight for a converted one. Only legacy input-only rows need a one-time interpretation.
+        result.weightKg = canonicalWeight.map(unit.loadableKg) ?? Double(weight).map { unit.toCanonicalKg($0) }
         result.repsInput = reps
         result.completedReps = Int(reps)
         result.inputTouched = true
@@ -252,7 +252,8 @@ public enum WorkoutSessionUtils {
                 let canonical = set.weightKg.flatMap { $0.isFinite && $0 >= 0 ? $0 : nil }
                     ?? (inputHasDigits ? sanitizedWeightInput(set.weightInput, unit: oldUnit).flatMap(Double.init).map { oldUnit.toCanonicalKg($0) } : nil)
                 if let canonical {
-                    copy.weightKg = canonical
+                    // Completed rows keep the load they were lifted at; open rows take the loadable weight they show.
+                    copy.weightKg = set.isCompleted ? canonical : newUnit.loadableKg(canonical)
                     copy.weightInput = formatWeightInput(canonical, unit: newUnit)
                 }
                 return copy
@@ -455,8 +456,9 @@ public enum WorkoutSessionUtils {
 
     public static func formatWeight(_ value: Double, unit: WeightUnit = .kg) -> String { unit.formatWeight(value) }
 
-    /// Editable set text shows the stored load exactly; rounded display text would log a different weight.
-    public static func formatWeightInput(_ value: Double, unit: WeightUnit = .kg) -> String { unit.formatExactWeight(value) }
+    /// Editable set text shows a load logged in this unit exactly, and a converted load at the nearest
+    /// loadable weight ("220", not "220.46"). Unchanged text keeps the row's stored load.
+    public static func formatWeightInput(_ value: Double, unit: WeightUnit = .kg) -> String { unit.formatLoadableWeight(value) }
 
     private static let allZerosRegex = try! NSRegularExpression(pattern: #"^0+$"#)
     private static let leadingZerosRegex = try! NSRegularExpression(pattern: #"^0+(?=[1-9]|0\.)"#)

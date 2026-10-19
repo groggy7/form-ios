@@ -195,7 +195,8 @@ public enum ProgressionEngine {
         var deltas: [Double] = []
         var reset = false
         for set in sets {
-            let display = unit.toDisplay(set.weightKg!)
+            // Step from the load a converted set would show (220 lbs, not 220.46), so the delta reads +5.
+            let display = unit.toDisplay(unit.loadableKg(set.weightKg!))
             guard display > 0 else { return nil }
             let next = nextOnGrid(display, step: step)
             guard next <= WorkoutSessionUtils.maxAllowedWeight(unit: unit) else { return nil }
@@ -217,7 +218,7 @@ public enum ProgressionEngine {
         guard let step else { return [] }
         var targets: [ProgressionSetTarget] = []
         for set in sets {
-            let target = unit.toDisplay(set.weightKg!) * lighterWeekShare - step.origin
+            let target = unit.toDisplay(unit.loadableKg(set.weightKg!)) * lighterWeekShare - step.origin
             let lighter = snapped(step.origin + (target / step.display + epsilon).rounded(.down) * step.display)
             guard lighter > 0, lighter >= step.origin else { return [] }
             targets.append(ProgressionSetTarget(weightKg: unit.toCanonicalKg(lighter), reps: min(set.reps!, repMax)))
@@ -311,7 +312,7 @@ public enum ProgressionEngine {
 
         // Repeat the logged loads with reps capped at the ceiling: no added rep or weight.
         func repeatLogged(_ rationaleKey: String) -> ExerciseProgressionRecommendation {
-            let targets = workingSets.map { ProgressionSetTarget(weightKg: $0.weightKg, reps: min($0.reps!, repMax)) }
+            let targets = workingSets.map { ProgressionSetTarget(weightKg: $0.weightKg.map(weightUnit.loadableKg), reps: min($0.reps!, repMax)) }
             let uniformWeight = Set(targets.map { $0.weightKg }).count == 1 ? targets.first?.weightKg : nil
             return ExerciseProgressionRecommendation(
                 exerciseId: exerciseId,
@@ -385,7 +386,7 @@ public enum ProgressionEngine {
         let bodyweightOnly = step == nil && workingSets.allSatisfy { $0.weightKg == 0 }
         let action: ProgressionAction = canIncrease ? .increaseLoad : (allHitCeiling || missedFloor ? .holdLoad : .addReps)
         let targets = increase?.targets ?? workingSets.map { set in
-            ProgressionSetTarget(weightKg: set.weightKg, reps: allHitCeiling ? repMax : min(set.reps! + 1, repMax))
+            ProgressionSetTarget(weightKg: set.weightKg.map(weightUnit.loadableKg), reps: allHitCeiling ? repMax : min(set.reps! + 1, repMax))
         }
         let variation = allHitCeiling && (confirmedTwice || ratedEasy) && !ratedHard && bodyweightOnly ? bodyweightLadder[exerciseId] : nil
         let key: String
@@ -417,9 +418,9 @@ public enum ProgressionEngine {
             lastSessionSummary: summary, setTargets: targets, lastSessionSets: lastSessionSets)
     }
 
-    // Exact input precision: the card must show the load Apply Target writes.
+    // Input precision: the card must show the load Apply Target writes, and a converted load at its loadable weight.
     private static func formatWeight(_ kg: Double, unit: WeightUnit) -> String {
-        kg <= 0.0 ? "BW" : unit.formatExactWeight(kg)
+        kg <= 0.0 ? "BW" : unit.formatLoadableWeight(kg)
     }
 
     private static func formatSessionSummary(_ sets: [SessionSetLog], unit: WeightUnit) -> String {

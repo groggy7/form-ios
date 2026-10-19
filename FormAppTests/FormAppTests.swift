@@ -11670,7 +11670,8 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
             for _ in 0..<8 {
                 store.weightUnit = .lbs
                 let set = try XCTUnwrap(store.activeSession?.setsByExercise[exercise.id]?.first)
-                XCTAssertEqual(set.weightInput, "220.46")
+                // A completed row shows the loadable pounds but keeps the load it was lifted at.
+                XCTAssertEqual(set.weightInput, "220")
                 XCTAssertEqual(set.weightKg, 100)
                 XCTAssertTrue(set.isCompleted && set.isWarmup)
                 XCTAssertEqual(store.activeSession?.weightInputUnit, .lbs)
@@ -11681,7 +11682,7 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
             store.weightUnit = .lbs
             let reloaded = AppStore(persistence: store.statePersistence)
             XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightKg, 100)
-            XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "220.46")
+            XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "220")
             XCTAssertEqual(reloaded.activeSession?.weightInputUnit, .lbs)
         }
     }
@@ -11697,7 +11698,7 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
             XCTAssertEqual(store.weightUnit, .lbs)
             XCTAssertEqual(store.activeSession?.id, "unit-live")
             XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.weightKg, 75)
-            XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "165.35")
+            XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "165")
         }
     }
 
@@ -11708,7 +11709,7 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
             XCTAssertTrue(store.startActiveSession(programId: "unit-plan", workout: workout, allowPast: true,
                 unfinishedRecordId: "unit-history", resumeHistory: true))
             let first = try XCTUnwrap(store.activeSession?.setsByExercise[exercise.id]?.first)
-            XCTAssertEqual(first.weightInput, "220.46")
+            XCTAssertEqual(first.weightInput, "220")
             XCTAssertEqual(first.weightKg, 100)
             XCTAssertEqual(store.activeSession?.weightInputUnit, .lbs)
         }
@@ -11723,7 +11724,7 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
             UserDefaults.standard.set("lbs", forKey: "weight_unit")
             let reloaded = AppStore(persistence: store.statePersistence)
             XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightKg, 100)
-            XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "220.46")
+            XCTAssertEqual(reloaded.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "220")
             XCTAssertEqual(reloaded.activeSession?.weightInputUnit, .lbs)
         }
     }
@@ -11744,21 +11745,26 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
         old.setsByExercise[exercise.id]?.append(ExerciseSetLog(id: "empty", setNumber: 3))
         let rebased = WorkoutSessionUtils.rebaseWeightInputs(old, from: .kg, to: .lbs)
         XCTAssertEqual(rebased.setsByExercise[exercise.id]?.first?.weightKg, 100)
-        XCTAssertEqual(rebased.setsByExercise[exercise.id]?.first?.weightInput, "220.46")
+        XCTAssertEqual(rebased.setsByExercise[exercise.id]?.first?.weightInput, "220")
         XCTAssertEqual(rebased.setsByExercise[exercise.id]?[1].weightInput, ".")
         XCTAssertNil(rebased.setsByExercise[exercise.id]?[1].weightKg)
         XCTAssertEqual(rebased.setsByExercise[exercise.id]?[2].weightInput, "")
     }
 
-    func testPrefillIgnoresStaleDisplayTextAndRetainsFullCanonicalPrecision() throws {
-        for (weight, text) in [(100.0, "220.46"), (100.1234567, "220.73")] {
+    func testPrefillCarriesConvertedLoadsAtTheNearestLoadablePounds() throws {
+        for (weight, text) in [(100.0, "220"), (100.1234567, "220"), (101.25, "225"), (20.0, "45")] {
             let previous = ExerciseSetLog(setNumber: 1, weightInput: "100", repsInput: "10", weightKg: weight, completedReps: 10, isCompleted: true)
             let next = WorkoutSessionUtils.prefillSet(ExerciseSetLog(setNumber: 2), from: previous, unit: .lbs)
+            let loadable = WeightUnit.lbs.toCanonicalKg(Double(text)!)
             XCTAssertEqual(next.weightInput, text)
-            XCTAssertEqual(next.weightKg, weight)
+            XCTAssertEqual(next.weightKg, loadable, "The new row logs the weight it shows")
             XCTAssertFalse(next.isCompleted)
-            XCTAssertEqual(WorkoutSessionUtils.weightForEditedInput(next.weightInput, existing: next, unit: .lbs), weight)
+            XCTAssertEqual(WorkoutSessionUtils.weightForEditedInput(next.weightInput, existing: next, unit: .lbs), loadable)
         }
+        let poundsInKg = ExerciseSetLog(setNumber: 1, weightInput: "225", repsInput: "5", weightKg: WeightUnit.lbs.toCanonicalKg(225), completedReps: 5, isCompleted: true)
+        let next = WorkoutSessionUtils.prefillSet(ExerciseSetLog(setNumber: 2), from: poundsInKg, unit: .kg)
+        XCTAssertEqual(next.weightInput, "102.5")
+        XCTAssertEqual(next.weightKg, 102.5)
     }
 
     func testPrefillShowsTheExactWeightTheRowLogs() {
@@ -11772,16 +11778,104 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
         }
     }
 
-    func testUnitSwitchesShowExactTextWithoutAccumulatingRounding() {
+    func testUnitSwitchesNeverAccumulateRoundingOnCompletedRows() {
         let canonical = WeightUnit.lbs.toCanonicalKg(102.5)
         var value = draft(weight: canonical, input: "102.5", unit: .lbs)
         for _ in 0..<10 {
             value = WorkoutSessionUtils.rebaseWeightInputs(value, from: .lbs, to: .kg)
-            XCTAssertEqual(value.setsByExercise[exercise.id]?.first?.weightInput, "46.49")
+            XCTAssertEqual(value.setsByExercise[exercise.id]?.first?.weightInput, "47.5")
             XCTAssertEqual(value.setsByExercise[exercise.id]?.first?.weightKg, canonical)
             value = WorkoutSessionUtils.rebaseWeightInputs(value, from: .kg, to: .lbs)
             XCTAssertEqual(value.setsByExercise[exercise.id]?.first?.weightInput, "102.5")
             XCTAssertEqual(value.setsByExercise[exercise.id]?.first?.weightKg, canonical)
+        }
+    }
+
+    func testOpenRowsTakeTheLoadableWeightAndRoundTripStably() {
+        var value = draft(weight: 100, input: "100", unit: .kg)
+        value.setsByExercise[exercise.id]?[0].isCompleted = false
+        for _ in 0..<5 {
+            value = WorkoutSessionUtils.rebaseWeightInputs(value, from: .kg, to: .lbs)
+            XCTAssertEqual(value.setsByExercise[exercise.id]?.first?.weightInput, "220")
+            XCTAssertEqual(value.setsByExercise[exercise.id]?.first?.weightKg, WeightUnit.lbs.toCanonicalKg(220))
+            value = WorkoutSessionUtils.rebaseWeightInputs(value, from: .lbs, to: .kg)
+            XCTAssertEqual(value.setsByExercise[exercise.id]?.first?.weightInput, "100")
+            XCTAssertEqual(value.setsByExercise[exercise.id]?.first?.weightKg, 100)
+        }
+    }
+
+    func testUnitSwitchAsksOnlyOnceLoadsAreLoggedAndKeepsHistory() {
+        withStore { store in
+            store.state.history = []
+            XCTAssertNil(store.activeSession)
+            XCTAssertFalse(store.hasRecordedLoads, "A fresh install switches freely")
+            install(store, weight: 0)
+            XCTAssertFalse(store.hasRecordedLoads, "Bodyweight-only history has nothing to convert")
+            store.activeSession = draft(weight: 20)
+            XCTAssertTrue(store.hasRecordedLoads)
+            store.activeSession = nil
+            install(store, weight: 100)
+            XCTAssertTrue(store.hasRecordedLoads)
+            store.changeWeightUnit(to: .lbs)
+            XCTAssertEqual(store.weightUnit, .lbs)
+            XCTAssertEqual(store.state.history.first?.exerciseLogs.first?.sets.first?.weightKg, 100)
+        }
+    }
+
+    func testSettingsUnitSwitchAsksOnlyOnceLoadsAreLogged() throws {
+        try withStore { store in
+            let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
+            let host = UIHostingController(rootView: SettingsView(store: store, onDismiss: {}))
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 3000))
+            defer { window.isHidden = true; previousWindow?.makeKeyAndVisible() }
+            window.rootViewController = host
+            window.makeKeyAndVisible()
+            host.view.frame = window.bounds
+            func controls(_ view: UIView) -> [UISegmentedControl] {
+                (view as? UISegmentedControl).map { [$0] } ?? view.subviews.flatMap(controls)
+            }
+            func unitControl() throws -> UISegmentedControl {
+                host.view.layoutIfNeeded()
+                return try XCTUnwrap(controls(host.view).first { $0.titleForSegment(at: 1) == LanguageManager.t("settings.unitLbs") })
+            }
+            func select(_ index: Int) throws {
+                let control = try unitControl()
+                control.selectedSegmentIndex = index
+                control.sendActions(for: .valueChanged)
+                RunLoop.main.run(until: Date().addingTimeInterval(0.5))
+            }
+            store.state.history = []
+            RunLoop.main.run(until: Date().addingTimeInterval(0.5))
+            try select(1)
+            XCTAssertNil(host.presentedViewController as? UIAlertController, "A fresh install switches freely")
+            XCTAssertEqual(store.weightUnit, .lbs)
+            try select(0)
+            XCTAssertEqual(store.weightUnit, .kg)
+            install(store, weight: 100)
+            try select(1)
+            let alert = try XCTUnwrap(host.presentedViewController as? UIAlertController)
+            XCTAssertEqual(alert.title, LanguageManager.t("settings.unitSwitch.toLbsTitle"))
+            XCTAssertEqual(alert.message, LanguageManager.t("settings.unitSwitch.toLbsMessage"))
+            XCTAssertEqual(Set(alert.actions.compactMap(\.title)), [LanguageManager.t("modal.cancel"), LanguageManager.t("settings.unitSwitch.confirm")])
+            XCTAssertEqual(store.weightUnit, .kg, "Nothing changes until the user confirms")
+            XCTAssertEqual(try unitControl().selectedSegmentIndex, 0, "The control keeps showing the saved unit")
+        }
+    }
+
+    func testLoadableWeightKeepsNativeLoadsAndRoundsConvertedOnes() {
+        XCTAssertEqual(WeightUnit.lbs.loadableKg(WeightUnit.lbs.toCanonicalKg(102.5)), WeightUnit.lbs.toCanonicalKg(102.5))
+        XCTAssertEqual(WeightUnit.kg.loadableKg(52.25), 52.25)
+        XCTAssertEqual(WeightUnit.lbs.formatLoadableWeight(100), "220")
+        XCTAssertEqual(WeightUnit.kg.formatLoadableWeight(WeightUnit.lbs.toCanonicalKg(45)), "20")
+        // The nearest step wins, and a positive load never becomes zero.
+        XCTAssertEqual(WeightUnit.lbs.formatLoadableWeight(100.9), "220") // 222.44 lbs
+        XCTAssertEqual(WeightUnit.lbs.formatLoadableWeight(101), "225") // 222.67 lbs
+        XCTAssertEqual(WeightUnit.lbs.formatLoadableWeight(1), "2.2")
+        XCTAssertEqual(WeightUnit.lbs.formatLoadableWeight(0), "0")
+        for kg in [100.0, 101.25, 20, 0.5, 142.88] {
+            for unit in WeightUnit.allCases {
+                XCTAssertEqual(unit.loadableKg(unit.loadableKg(kg)), unit.loadableKg(kg), "\(kg) kg in \(unit)")
+            }
         }
     }
 
@@ -11845,7 +11939,9 @@ final class BackupWeightUnitSafetyTests: XCTestCase {
             reps.sendActions(for: .editingChanged)
             RunLoop.main.run(until: Date().addingTimeInterval(0.2))
             XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.completedReps, 12)
-            XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.weightKg, 100)
+            // The open row switched to the loadable 220 lbs it shows; a reps edit keeps that load.
+            XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.weightInput, "220")
+            XCTAssertEqual(store.activeSession?.setsByExercise[exercise.id]?.first?.weightKg, WeightUnit.lbs.toCanonicalKg(220))
             XCTAssertNil(host.presentedViewController as? UIAlertController)
         }
     }

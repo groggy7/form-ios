@@ -955,15 +955,7 @@ public final class AppStore: ObservableObject {
         newState.completed = newCompleted
         newState.calendarHistory = cal
         guard saveState(newState, durable: true) else { return }
-
-        if ProAccessManager.shared.isFeatureUnlocked(.cloudBackup) {
-            // Encoding all history grows with use; keep it off the finish tap.
-            let document = FullBackupDocument(state: state, weightUnit: weightUnit)
-            DispatchQueue.global(qos: .utility).async {
-                guard let json = Self.encodeBackup(document) else { return }
-                CloudMirrorManager.shared.autoSync(backupJson: json)
-            }
-        }
+        autoSyncCloudBackup()
 
         saveActiveSession(nil)
         self.activeSession = nil
@@ -1499,6 +1491,33 @@ public final class AppStore: ObservableObject {
     func flushPendingState() {
         do { try statePersistence.flush() }
         catch { showErrorNotice(LanguageManager.t("notice.storageFailed")) }
+    }
+
+    /// Mirrors a full backup when Cloud Backup is on, so a restore brings back the latest workouts and unit.
+    private func autoSyncCloudBackup() {
+        guard ProAccessManager.shared.isFeatureUnlocked(.cloudBackup) else { return }
+        // Encoding all history grows with use; keep it off the tap.
+        let document = FullBackupDocument(state: state, weightUnit: weightUnit)
+        DispatchQueue.global(qos: .utility).async {
+            guard let json = Self.encodeBackup(document) else { return }
+            CloudMirrorManager.shared.autoSync(backupJson: json)
+        }
+    }
+
+    /// Any logged load means a unit switch rounds converted weights, so Settings asks first.
+    /// A fresh install, or one with only bodyweight sets, switches freely.
+    public var hasRecordedLoads: Bool {
+        let loaded: (Double?) -> Bool = { ($0 ?? 0) > 0 }
+        return state.history.contains { $0.exerciseLogs.contains { $0.sets.contains { loaded($0.weightKg) } } }
+            || activeSession?.setsByExercise.values.contains { $0.contains { loaded($0.weightKg) } } == true
+    }
+
+    /// The Settings unit switch. The observer rebases a live workout; the cloud copy picks up the new unit
+    /// now rather than after the next finished workout.
+    public func changeWeightUnit(to unit: WeightUnit) {
+        guard unit != weightUnit else { return }
+        weightUnit = unit
+        autoSyncCloudBackup()
     }
 
     public func exportBackupJson() -> String {

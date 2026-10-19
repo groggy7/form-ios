@@ -75,15 +75,15 @@ public struct ProgressionSetTarget: Equatable {
     }
 
     public func weightInput(unit: WeightUnit, fallback: String) -> String {
-        validWeightKg.map(unit.formatExactWeight) ?? fallback
+        validWeightKg.map(unit.formatLoadableWeight) ?? fallback
     }
 
-    /// Apply stores the canonical target load itself; the input text only represents it, so no rounding reaches the log.
+    /// Apply stores the loadable target load its text shows, so no display rounding reaches the log.
     /// Reps stay the user's: the target is a placeholder hint, so a target is never recorded as performance by default.
     public func applied(to set: ExerciseSetLog, unit: WeightUnit) -> ExerciseSetLog {
         var applied = set
         applied.weightInput = weightInput(unit: unit, fallback: set.weightInput)
-        applied.weightKg = validWeightKg ?? set.weightKg
+        applied.weightKg = validWeightKg.map(unit.loadableKg) ?? set.weightKg
         applied.targetReps = reps
         applied.inputTouched = true
         return applied

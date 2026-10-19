@@ -1086,6 +1086,181 @@
         }
       }
     },
+    "settings.unitSwitch.toLbsTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch to pounds?"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "lbs birimine geçilsin mi?"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu Pfund wechseln?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passer aux livres ?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Cambiar a libras?"
+          }
+        }
+      }
+    },
+    "settings.unitSwitch.toKgTitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch to kilograms?"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kg birimine geçilsin mi?"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zu Kilogramm wechseln?"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passer aux kilos ?"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "¿Cambiar a kilos?"
+          }
+        }
+      }
+    },
+    "settings.unitSwitch.toLbsMessage": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weights you logged in kg will be converted and rounded to the nearest 5 lbs when they fill in a set or target, so 100 kg becomes 220 lbs. Sets you log at the rounded weight are saved that way, so some loads may change slightly. Past workouts keep their recorded weights."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "kg olarak kaydettiğin ağırlıklar dönüştürülür ve bir seti ya da hedefi doldururken en yakın 5 lbs değerine yuvarlanır; örneğin 100 kg, 220 lbs olur. Yuvarlanmış ağırlıkla kaydettiğin setler bu şekilde saklanır, bu yüzden bazı ağırlıklar biraz değişebilir. Geçmiş antrenmanlar kayıtlı ağırlıklarını korur."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In kg protokollierte Gewichte werden umgerechnet und beim Ausfüllen eines Satzes oder Ziels auf die nächsten 5 lbs gerundet, sodass aus 100 kg 220 lbs werden. Sätze mit dem gerundeten Gewicht werden so gespeichert, daher können sich manche Gewichte leicht ändern. Bisherige Trainings behalten ihre protokollierten Gewichte."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les poids enregistrés en kg seront convertis et arrondis aux 5 lbs les plus proches lorsqu’ils remplissent une série ou un objectif : 100 kg deviennent 220 lbs. Les séries enregistrées avec le poids arrondi sont conservées ainsi, certaines charges peuvent donc légèrement changer. Vos séances passées conservent leurs poids enregistrés."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los pesos que registraste en kg se convertirán y se redondearán a las 5 lbs más cercanas al rellenar una serie o un objetivo: 100 kg pasan a ser 220 lbs. Las series que registres con el peso redondeado se guardan así, por lo que algunas cargas pueden cambiar ligeramente. Tus entrenamientos anteriores conservan sus pesos registrados."
+          }
+        }
+      }
+    },
+    "settings.unitSwitch.toKgMessage": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Weights you logged in lbs will be converted and rounded to the nearest 2.5 kg when they fill in a set or target, so 225 lbs becomes 102.5 kg. Sets you log at the rounded weight are saved that way, so some loads may change slightly. Past workouts keep their recorded weights."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "lbs olarak kaydettiğin ağırlıklar dönüştürülür ve bir seti ya da hedefi doldururken en yakın 2,5 kg değerine yuvarlanır; örneğin 225 lbs, 102,5 kg olur. Yuvarlanmış ağırlıkla kaydettiğin setler bu şekilde saklanır, bu yüzden bazı ağırlıklar biraz değişebilir. Geçmiş antrenmanlar kayıtlı ağırlıklarını korur."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In lbs protokollierte Gewichte werden umgerechnet und beim Ausfüllen eines Satzes oder Ziels auf die nächsten 2,5 kg gerundet, sodass aus 225 lbs 102,5 kg werden. Sätze mit dem gerundeten Gewicht werden so gespeichert, daher können sich manche Gewichte leicht ändern. Bisherige Trainings behalten ihre protokollierten Gewichte."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les poids enregistrés en lbs seront convertis et arrondis aux 2,5 kg les plus proches lorsqu’ils remplissent une série ou un objectif : 225 lbs deviennent 102,5 kg. Les séries enregistrées avec le poids arrondi sont conservées ainsi, certaines charges peuvent donc légèrement changer. Vos séances passées conservent leurs poids enregistrés."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los pesos que registraste en lbs se convertirán y se redondearán a los 2,5 kg más cercanos al rellenar una serie o un objetivo: 225 lbs pasan a ser 102,5 kg. Las series que registres con el peso redondeado se guardan así, por lo que algunas cargas pueden cambiar ligeramente. Tus entrenamientos anteriores conservan sus pesos registrados."
+          }
+        }
+      }
+    },
+    "settings.unitSwitch.confirm": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Switch"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Değiştir"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wechseln"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cambiar"
+          }
+        }
+      }
+    },
     "settings.timerAndAlerts": {
       "extractionState": "manual",
       "localizations": {
