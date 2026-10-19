@@ -1342,6 +1342,7 @@
   "settings.dumbbellStepSubtitle": "Salonundaki en küçük dambıl artışı; Akıllı İlerleme hedeflerinde kullanılır",
   "settings.machineStep": "Makine artışı",
   "settings.machineStepSubtitle": "Makine ve kablolarda en küçük ağırlık bloğu artışı",
+  "settings.premiumRequiredToast": "Bu ayarı değiştirmek için Forced Rep Premium'a geçin.",
   "onboarding.welcome.title": "Forced Rep'e hoş geldiniz",
   "onboarding.welcome.subtitle": "Dört kısa soruyu yanıtlayın, haftanıza uygun bir program alın.",
   "onboarding.welcome.start": "Başla",

@@ -1342,6 +1342,7 @@
   "settings.dumbbellStepSubtitle": "Kleinster Kurzhantelsprung in deinem Gym, für Smart-Progression-Ziele",
   "settings.machineStep": "Maschinen-Schritt",
   "settings.machineStepSubtitle": "Kleinster Sprung am Gewichtsblock von Maschinen und Kabelzügen",
+  "settings.premiumRequiredToast": "Upgrade auf Forced Rep Premium, um diese Einstellung zu ändern.",
   "onboarding.welcome.title": "Willkommen bei Forced Rep",
   "onboarding.welcome.subtitle": "Beantworte vier kurze Fragen und erhalte ein Programm, das zu deiner Woche passt.",
   "onboarding.welcome.start": "Loslegen",

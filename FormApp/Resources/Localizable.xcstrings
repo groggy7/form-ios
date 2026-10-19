@@ -46418,6 +46418,41 @@
         }
       }
     },
+    "settings.premiumRequiredToast": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upgrade to Forced Rep Premium to change this setting."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu ayarı değiştirmek için Forced Rep Premium'a geçin."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upgrade auf Forced Rep Premium, um diese Einstellung zu ändern."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passez à Forced Rep Premium pour modifier ce paramètre."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mejora a Forced Rep Premium para cambiar este ajuste."
+          }
+        }
+      }
+    },
     "onboarding.welcome.title": {
       "extractionState": "manual",
       "localizations": {

@@ -1342,6 +1342,7 @@
   "settings.dumbbellStepSubtitle": "Smallest dumbbell jump at your gym, used for Smart Progression targets",
   "settings.machineStep": "Machine step",
   "settings.machineStepSubtitle": "Smallest weight-stack jump on machines and cables",
+  "settings.premiumRequiredToast": "Upgrade to Forced Rep Premium to change this setting.",
   "onboarding.welcome.title": "Welcome to Forced Rep",
   "onboarding.welcome.subtitle": "Answer four quick questions and get a program fitted to your week.",
   "onboarding.welcome.start": "Get started",
