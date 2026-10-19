@@ -12193,10 +12193,10 @@ final class PremiumSettingsTests: XCTestCase {
         for unlocked in [false, true, false, true] {
             let targetRow = SettingsPremiumToggle(titleKey: "settings.showProgressionTargets",
                 subtitleKey: "settings.showProgressionTargetsSubtitle", preference: targetsBinding,
-                isUnlocked: unlocked, identifier: "targets")
+                isUnlocked: unlocked, identifier: "targets", lockedNoticeKey: "settings.premiumNotice.smartProgression")
             let warmupRow = SettingsPremiumToggle(titleKey: "settings.showWarmupCalculator",
                 subtitleKey: "settings.showWarmupCalculatorSubtitle", preference: warmupBinding,
-                isUnlocked: unlocked, identifier: "warmup")
+                isUnlocked: unlocked, identifier: "warmup", lockedNoticeKey: "settings.premiumNotice.warmupPlates")
             XCTAssertEqual(targetRow.selection.wrappedValue, !unlocked || targets)
             XCTAssertEqual(warmupRow.selection.wrappedValue, !unlocked || warmup)
             let previousTargets = targets
@@ -12252,6 +12252,38 @@ final class PremiumSettingsTests: XCTestCase {
         }
     }
 
+    func testPremiumNoticesNameTheirFeatureAndWrapInEveryLanguage() async throws {
+        let previousLanguage = LanguageManager.shared.languagePreference
+        let previousWindow = keyWindow
+        defer { LanguageManager.setLanguage(previousLanguage); previousWindow?.makeKeyAndVisible() }
+        let keys = ["settings.premiumNotice.smartProgression", "settings.premiumNotice.warmupPlates"]
+        for lang in ["en", "tr", "de", "fr", "es"] {
+            LanguageManager.setLanguage(lang)
+            let messages = keys.map { LanguageManager.t($0) }
+            XCTAssertEqual(Set(messages).count, 2, lang)
+            for (key, message) in zip(keys, messages) {
+                XCTAssertNotEqual(message, key, lang)
+                let controller = UIHostingController(rootView: ToastPill(item: ToastItem(message: message, style: .premium))
+                    .padding(24).frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(AppColors.background).environment(\.dynamicTypeSize, .xxxLarge))
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 260))
+                window.rootViewController = controller
+                window.makeKeyAndVisible()
+                controller.view.frame = window.bounds
+                controller.view.layoutIfNeeded()
+                try await Task.sleep(nanoseconds: 150_000_000)
+                let image = UIGraphicsImageRenderer(bounds: controller.view.bounds).image { _ in
+                    controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+                }
+                window.isHidden = true
+                let name = "premium-notice-\(lang)-\(key.split(separator: ".").last!)"
+                let attachment = XCTAttachment(image: image)
+                attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
+                try image.pngData()?.write(to: URL(fileURLWithPath: "/private/tmp/\(name)-ios.png"))
+            }
+        }
+    }
+
     func testPremiumRowsRemainReadableAcrossLanguagesAndTextSizes() async throws {
         let previousLanguage = LanguageManager.shared.languagePreference
         let previousWindow = keyWindow
@@ -12263,11 +12295,11 @@ final class PremiumSettingsTests: XCTestCase {
                     let rows = VStack(spacing: 0) {
                         SettingsPremiumToggle(titleKey: "settings.showProgressionTargets",
                             subtitleKey: "settings.showProgressionTargetsSubtitle", preference: .constant(true),
-                            isUnlocked: unlocked, identifier: "targets")
+                            isUnlocked: unlocked, identifier: "targets", lockedNoticeKey: "settings.premiumNotice.smartProgression")
                         Divider().background(AppColors.border)
                         SettingsPremiumToggle(titleKey: "settings.showWarmupCalculator",
                             subtitleKey: "settings.showWarmupCalculatorSubtitle", preference: .constant(true),
-                            isUnlocked: unlocked, identifier: "warmup")
+                            isUnlocked: unlocked, identifier: "warmup", lockedNoticeKey: "settings.premiumNotice.warmupPlates")
                     }
                     .background(AppColors.surface)
                     .clipShape(RoundedRectangle(cornerRadius: 12))

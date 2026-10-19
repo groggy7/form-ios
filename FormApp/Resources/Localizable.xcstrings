@@ -46418,37 +46418,72 @@
         }
       }
     },
-    "settings.premiumRequiredToast": {
+    "settings.premiumNotice.smartProgression": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Upgrade to Forced Rep Premium to change this setting."
+            "value": "This setting is part of Smart Progression, available with Premium."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu ayarı değiştirmek için Forced Rep Premium'a geçin."
+            "value": "Bu ayar Akıllı İlerleme’nin bir parçasıdır ve Premium ile kullanılabilir."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Upgrade auf Forced Rep Premium, um diese Einstellung zu ändern."
+            "value": "Diese Einstellung gehört zur Premium-Funktion „Intelligente Steigerung“."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Passez à Forced Rep Premium pour modifier ce paramètre."
+            "value": "Ce paramètre fait partie de la fonctionnalité Premium « Progression intelligente »."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Mejora a Forced Rep Premium para cambiar este ajuste."
+            "value": "Este ajuste forma parte de la función Premium «Progresión inteligente»."
+          }
+        }
+      }
+    },
+    "settings.premiumNotice.warmupPlates": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This setting is part of Warmup & Plates, available with Premium."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu ayar Isınma & Plakalar’ın bir parçasıdır ve Premium ile kullanılabilir."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diese Einstellung gehört zur Premium-Funktion „Aufwärmen & Scheiben“."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce paramètre fait partie de la fonctionnalité Premium « Échauffement et disques »."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este ajuste forma parte de la función Premium «Calentamiento y discos»."
           }
         }
       }

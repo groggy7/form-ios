@@ -15,10 +15,16 @@ public struct SettingsView: View {
     @State private var showThemeSheet: Bool = false
     @Environment(\.openURL) private var openURL
     @State private var showImportExportSheet: Bool = false
+    // Settings is a sheet, so it shows its own notice above the app-level toast.
+    @State private var premiumNotice: ToastItem?
 
     public init(store: AppStore, onDismiss: @escaping () -> Void) {
         self.store = store
         self.onDismiss = onDismiss
+    }
+
+    private func showPremiumNotice(_ message: String) {
+        premiumNotice = ToastItem(message: message, style: .premium)
     }
 
     public var body: some View {
@@ -126,7 +132,9 @@ public struct SettingsView: View {
                                 subtitleKey: "settings.showProgressionTargetsSubtitle",
                                 preference: $store.showProgressionTargets,
                                 isUnlocked: proManager.isProSubscribed,
-                                identifier: "toggle-progression-targets"
+                                identifier: "toggle-progression-targets",
+                                lockedNoticeKey: "settings.premiumNotice.smartProgression",
+                                onLockedNotice: showPremiumNotice
                             )
 
                             Divider().background(AppColors.border)
@@ -135,7 +143,8 @@ public struct SettingsView: View {
                                 titleKey: "settings.dumbbellStep", subtitleKey: "settings.dumbbellStepSubtitle", unit: store.weightUnit,
                                 options: store.weightUnit == .lbs ? ProgressionLoadSteps.dumbbellLbsOptions : ProgressionLoadSteps.dumbbellKgOptions,
                                 selection: store.weightUnit == .lbs ? $store.dumbbellStepLbs : $store.dumbbellStepKg,
-                                isUnlocked: proManager.isProSubscribed, identifier: "progression-dumbbell-step")
+                                isUnlocked: proManager.isProSubscribed, identifier: "progression-dumbbell-step",
+                                lockedNoticeKey: "settings.premiumNotice.smartProgression", onLockedNotice: showPremiumNotice)
 
                             Divider().background(AppColors.border)
 
@@ -143,7 +152,8 @@ public struct SettingsView: View {
                                 titleKey: "settings.machineStep", subtitleKey: "settings.machineStepSubtitle", unit: store.weightUnit,
                                 options: store.weightUnit == .lbs ? ProgressionLoadSteps.machineLbsOptions : ProgressionLoadSteps.machineKgOptions,
                                 selection: store.weightUnit == .lbs ? $store.machineStepLbs : $store.machineStepKg,
-                                isUnlocked: proManager.isProSubscribed, identifier: "progression-machine-step")
+                                isUnlocked: proManager.isProSubscribed, identifier: "progression-machine-step",
+                                lockedNoticeKey: "settings.premiumNotice.smartProgression", onLockedNotice: showPremiumNotice)
 
                             Divider().background(AppColors.border)
 
@@ -152,7 +162,9 @@ public struct SettingsView: View {
                                 subtitleKey: "settings.showWarmupCalculatorSubtitle",
                                 preference: $store.showWarmupCalculator,
                                 isUnlocked: proManager.isProSubscribed,
-                                identifier: "toggle-warmup-calculator"
+                                identifier: "toggle-warmup-calculator",
+                                lockedNoticeKey: "settings.premiumNotice.warmupPlates",
+                                onLockedNotice: showPremiumNotice
                             )
                         }
                     }
@@ -459,6 +471,7 @@ public struct SettingsView: View {
                 .padding(.vertical, 16)
             }
             .background(AppColors.background)
+            .overlay { ToastOverlay(item: premiumNotice, bottomPadding: 24).allowsHitTesting(false) }
             .navigationTitle(LanguageManager.t("settings.title"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
@@ -565,6 +578,8 @@ struct SettingsPremiumToggle: View {
     @Binding var preference: Bool
     let isUnlocked: Bool
     let identifier: String
+    let lockedNoticeKey: String
+    var onLockedNotice: (String) -> Void = { _ in }
 
     // Locked switches show the default on state without changing the saved preference.
     var selection: Binding<Bool> {
@@ -599,7 +614,8 @@ struct SettingsPremiumToggle: View {
         .tint(isUnlocked ? AppColors.accent : AppColors.accent.opacity(0.35))
         .disabled(!isUnlocked)
         .padding(14)
-        .accessibilityHint(isUnlocked ? "" : LanguageManager.t("pro.premium_required"))
+        .lockedPremiumTap(isUnlocked: isUnlocked) { onLockedNotice(LanguageManager.t(lockedNoticeKey)) }
+        .accessibilityHint(isUnlocked ? "" : LanguageManager.t(lockedNoticeKey))
         .accessibilityIdentifier(identifier)
     }
 }
@@ -1446,17 +1462,26 @@ private struct SettingsLoadStepRow: View {
     @Binding var selection: Double
     let isUnlocked: Bool
     let identifier: String
+    let lockedNoticeKey: String
+    let onLockedNotice: (String) -> Void
+
+    private var title: Text {
+        if isUnlocked { return Text(LanguageManager.t(titleKey)) }
+        return Text(LanguageManager.t(titleKey)) + Text(" ")
+            + Text(Image(systemName: "lock.fill")).font(.system(size: 11))
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             VStack(alignment: .leading, spacing: 2) {
-                Text(LanguageManager.t(titleKey))
+                title
                     .font(.system(size: 15))
                     .foregroundStyle(isUnlocked ? AppColors.text : AppColors.muted)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .accessibilityLabel(LanguageManager.t(titleKey))
                 Text(LanguageManager.t(subtitleKey))
                     .font(.system(size: 12))
-                    .foregroundStyle(AppColors.secondaryText)
+                    .foregroundStyle(isUnlocked ? AppColors.secondaryText : AppColors.muted)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -1467,8 +1492,22 @@ private struct SettingsLoadStepRow: View {
             }
             .pickerStyle(.segmented)
             .disabled(!isUnlocked)
+            .accessibilityHint(isUnlocked ? "" : LanguageManager.t(lockedNoticeKey))
         }
         .padding(14)
+        .lockedPremiumTap(isUnlocked: isUnlocked) { onLockedNotice(LanguageManager.t(lockedNoticeKey)) }
         .accessibilityIdentifier(identifier)
+    }
+}
+
+private extension View {
+    /// Disabled controls ignore taps, so a locked row catches them to explain the lock.
+    /// Hidden from VoiceOver, which reads the same text as the control's hint.
+    func lockedPremiumTap(isUnlocked: Bool, action: @escaping () -> Void) -> some View {
+        overlay {
+            if !isUnlocked {
+                Color.clear.contentShape(Rectangle()).onTapGesture(perform: action).accessibilityHidden(true)
+            }
+        }
     }
 }
