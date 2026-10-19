@@ -124,34 +124,8 @@ public struct WarmupPlateSheet: View {
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                     .padding(.horizontal, 16)
 
-                    // Bar Type Selector
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 8) {
-                            ForEach(BarType.allCases, id: \.self) { bType in
-                                let isSel = bType == selectedBarType
-                                let label = "\(Int(bType.weight(unit: unit))) \(unit.label) \(LanguageManager.t(bType.titleKey))"
-
-                                Button(action: {
-                                    selectedBarType = bType
-                                    onSaveBarType(bType)
-                                }) {
-                                    Text(label)
-                                        .font(.system(size: 11, weight: isSel ? .bold : .regular))
-                                        .foregroundStyle(isSel ? AppColors.accent : AppColors.secondaryText)
-                                        .padding(.horizontal, 10)
-                                        .padding(.vertical, 7)
-                                        .background(isSel ? AppColors.positiveBg : AppColors.surface)
-                                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                                .strokeBorder(isSel ? AppColors.accent : AppColors.border, lineWidth: 1)
-                                        )
-                                }
-                                .buttonStyle(.plain)
-                            }
-                        }
+                    barTypeSelector
                         .padding(.horizontal, 16)
-                    }
 
                     // Content Area
                     ScrollView {
@@ -170,6 +144,51 @@ public struct WarmupPlateSheet: View {
             .toolbar(.hidden, for: .navigationBar)
         }
         .accessibilityIdentifier("warmup-plate-sheet")
+    }
+
+    private func barLabel(_ bar: BarType) -> String {
+        "\(Int(bar.weight(unit: unit))) \(unit.label) \(LanguageManager.t(bar.titleKey))"
+    }
+
+    private var barTypeSelector: some View {
+        Menu {
+            Picker(LanguageManager.t("warmup.bar"), selection: Binding(
+                get: { selectedBarType },
+                set: {
+                    selectedBarType = $0
+                    onSaveBarType($0)
+                }
+            )) {
+                ForEach(BarType.allCases, id: \.self) { bar in
+                    Text(barLabel(bar)).tag(bar)
+                }
+            }
+            .pickerStyle(.inline)
+        } label: {
+            HStack(spacing: 12) {
+                Text(barLabel(selectedBarType))
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(AppColors.text)
+                    .multilineTextAlignment(.leading)
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.down")
+                    .font(.system(size: 12, weight: .semibold))
+                    .foregroundStyle(AppColors.secondaryText)
+            }
+            .padding(.horizontal, 14)
+            .padding(.vertical, 10)
+            .frame(maxWidth: .infinity, minHeight: 48)
+            .background(AppColors.surface)
+            .clipShape(RoundedRectangle(cornerRadius: 12))
+            .overlay(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .strokeBorder(AppColors.border, lineWidth: 1)
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(LanguageManager.t("warmup.bar"))
+        .accessibilityValue(barLabel(selectedBarType))
+        .accessibilityIdentifier("warmup-bar-selector")
     }
 
     private func tabButton(title: String, systemImage: String, isSelected: Bool, action: @escaping () -> Void) -> some View {
@@ -366,45 +385,50 @@ public struct WarmupPlateSheet: View {
                     .foregroundStyle(AppColors.secondaryText)
 
                 let defaultPlates = WarmupPlateEngine.defaultPlates(unit: unit)
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 6) {
-                        ForEach(defaultPlates, id: \.self) { pWeight in
-                            let isAvail = availablePlates.contains(pWeight)
-                            let pColor = BarbellPlateColors.colorFor(weight: pWeight)
+                LazyVGrid(
+                    columns: [GridItem(.adaptive(minimum: 88), spacing: 8)],
+                    alignment: .leading,
+                    spacing: 8
+                ) {
+                    ForEach(defaultPlates, id: \.self) { pWeight in
+                        let isAvail = availablePlates.contains(pWeight)
+                        let pColor = BarbellPlateColors.colorFor(weight: pWeight)
 
-                            Button(action: {
-                                if availablePlates.contains(pWeight) {
-                                    if availablePlates.count > 1 {
-                                        availablePlates.removeAll { $0 == pWeight }
-                                    }
-                                } else {
-                                    availablePlates.append(pWeight)
-                                    availablePlates.sort(by: >)
+                        Button(action: {
+                            if availablePlates.contains(pWeight) {
+                                if availablePlates.count > 1 {
+                                    availablePlates.removeAll { $0 == pWeight }
                                 }
-                                onSavePlates(availablePlates)
-                            }) {
-                                HStack(spacing: 4) {
-                                    Circle()
-                                        .fill(isAvail ? pColor : AppColors.muted.opacity(0.3))
-                                        .frame(width: 7, height: 7)
-
-                                    Text("\(WarmupPlateEngine.formatPlateWeight(pWeight))\(unit.label)")
-                                        .font(.system(size: 12, weight: isAvail ? .bold : .regular))
-                                        .foregroundStyle(isAvail ? AppColors.text : AppColors.muted.opacity(0.4))
-                                }
-                                .padding(.horizontal, 8)
-                                .padding(.vertical, 6)
-                                .background(isAvail ? AppColors.surfaceRaised : AppColors.surface.opacity(0.4))
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 8, style: .continuous)
-                                        .strokeBorder(isAvail ? pColor.opacity(0.6) : AppColors.border.opacity(0.4), lineWidth: 1)
-                                )
+                            } else {
+                                availablePlates.append(pWeight)
+                                availablePlates.sort(by: >)
                             }
-                            .buttonStyle(.plain)
+                            onSavePlates(availablePlates)
+                        }) {
+                            HStack(spacing: 6) {
+                                Circle()
+                                    .fill(isAvail ? pColor : AppColors.muted.opacity(0.3))
+                                    .frame(width: 7, height: 7)
+
+                                Text("\(WarmupPlateEngine.formatPlateWeight(pWeight))\u{00A0}\(unit.label)")
+                                    .font(.system(size: 14, weight: isAvail ? .semibold : .regular))
+                                    .foregroundStyle(isAvail ? AppColors.text : AppColors.muted.opacity(0.4))
+                            }
+                            .padding(.horizontal, 10)
+                            .frame(maxWidth: .infinity, minHeight: 48)
+                            .background(isAvail ? AppColors.surfaceRaised : AppColors.surface.opacity(0.4))
+                            .clipShape(RoundedRectangle(cornerRadius: 8))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                                    .strokeBorder(isAvail ? pColor.opacity(0.6) : AppColors.border.opacity(0.4), lineWidth: 1)
+                            )
                         }
+                        .buttonStyle(.plain)
+                        .accessibilityAddTraits(isAvail ? .isSelected : [])
+                        .accessibilityIdentifier("plate-inventory-\(WarmupPlateEngine.formatPlateWeight(pWeight))")
                     }
                 }
+                .accessibilityIdentifier("plate-inventory-grid")
             }
             .padding(.top, 6)
         }
@@ -415,27 +439,36 @@ public struct WarmupPlateSheet: View {
         weight: Double,
         @ViewBuilder controls: () -> Controls
     ) -> some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 2) {
-                // Both tabs reserve the same title area when localized labels wrap.
-                ZStack(alignment: .topLeading) {
-                    Text(LanguageManager.t("warmup.working_load_label"))
-                        .hidden()
-                        .accessibilityHidden(true)
-                    Text(LanguageManager.t("warmup.target_weight"))
-                        .hidden()
-                        .accessibilityHidden(true)
-                    Text(LanguageManager.t(titleKey))
-                }
-                .font(.system(size: 11, weight: .medium))
-                .foregroundStyle(AppColors.secondaryText)
-                Text("\(WarmupPlateEngine.formatPlateWeight(weight))\u{00A0}\(unit.label)")
-                    .font(.system(size: 20, weight: .bold))
-                    .foregroundStyle(AppColors.text)
+        let label = VStack(alignment: .leading, spacing: 2) {
+            // Both tabs reserve the same title area and choose the same compact layout.
+            ZStack(alignment: .topLeading) {
+                Text(LanguageManager.t("warmup.working_load_label"))
+                    .hidden()
+                    .accessibilityHidden(true)
+                Text(LanguageManager.t("warmup.target_weight"))
+                    .hidden()
+                    .accessibilityHidden(true)
+                Text(LanguageManager.t(titleKey))
             }
+            .font(.system(size: 11, weight: .medium))
+            .foregroundStyle(AppColors.secondaryText)
+            Text("\(WarmupPlateEngine.formatPlateWeight(weight))\u{00A0}\(unit.label)")
+                .font(.system(size: 20, weight: .bold))
+                .foregroundStyle(AppColors.text)
+        }
+        .fixedSize(horizontal: true, vertical: false)
 
-            Spacer()
-            controls()
+        return ViewThatFits(in: .horizontal) {
+            HStack {
+                label
+                Spacer(minLength: 12)
+                controls()
+            }
+            VStack(alignment: .leading, spacing: 12) {
+                label
+                controls()
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+            }
         }
         .padding(.horizontal, 14)
         .padding(.vertical, 10)
