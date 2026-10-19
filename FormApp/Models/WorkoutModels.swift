@@ -1484,7 +1484,7 @@ public struct ExerciseMetadata {
             let lowerId = (exercise.exerciseId ?? "").lowercased()
             return lowerId.contains("jump-rope") || lowerId.contains("burpee") ||
                    lowerName.contains("jump rope") || lowerName.contains("sprint") ||
-                   lowerName.contains("burpee") || lowerName.contains("run") ||
+                   lowerName.contains("burpee") || lowerName.range(of: #"\brun(?:ning)?\b"#, options: .regularExpression) != nil ||
                    lowerName.contains("cardio") || lowerName.contains("box jump") ||
                    lowerName.contains("battle rope") || lowerName.contains("jumping jack") ||
                    lowerName.contains("mountain climber")

@@ -1,18 +1,20 @@
 # Exercise search
 
-The library and program-builder picker share `ExerciseSearch`, matching Android.
-Names tolerate case, punctuation, repeated spaces and accents (including Turkish
-İ/ı). Query words can be reordered and match word prefixes; every word must match.
-Exact names rank ahead of name prefixes/phrases, reordered name tokens, and helper
-keywords. ExercisePriority retains stable ordering for ties and empty queries.
+Library and program-builder search share ExerciseSearch, with behavior matching
+Android. Matching tolerates punctuation, accents, capitalization, word order,
+known plurals and bounded typos such as `sqaut` and `dumbell`. Literal matches
+precede corrected matches, and the typed query is preserved. Exact names always
+win, including custom exercise names.
 
-The canonical `exercises.json` has the same optional `searchKeywords` arrays as
-Android: both language names, vendor names/equipment and explicit aliases such as
-DB, RDL, OHP, pushdown and pressdown. The Android repository script
-`scripts/update_exercise_search_keywords.cjs` emits a patch for both catalogues.
-It does not change workout data, canonical IDs, deduplication or media mappings.
-Missing keywords decode as an empty array. Custom exercise names remain searchable.
+Muscle/equipment discovery uses reviewed primary anatomy: `abs` finds core work,
+`chest dumbbell` finds chest exercises, and explicit names such as `back squat`
+remain searchable. Filters stay strict. Both apps cache prepared Library search
+candidates and invalidate them for catalogue and language changes.
 
-Focused tests: `testFlexibleExerciseSearch` and
-`testSearchKeywordsAndCustomExerciseCompatibility`. Shared rationale and rules:
-Android repository `docs/design/exercise-search.md`.
+All 300 keyword arrays match Android, including five-language names, vendor
+names/equipment, abbreviations, single-arm/one-arm wording and exact flat-bench
+aliases. The shared exporter changes only search metadata; exercise identities,
+saved workouts, backups and media mappings are unaffected.
+
+See the [shared search contract](../../docs/design/exercise-search.md) for edit
+limits, ranking, alias maintenance and regression coverage.

@@ -1181,6 +1181,57 @@ final class FormAppTests: XCTestCase {
         XCTAssertTrue(try JSONDecoder().decode(ExerciseDefinition.self, from: old).searchKeywords.isEmpty)
     }
 
+    func testHelpfulExerciseSearchTyposPluralsAndAlternativeNames() throws {
+        for (id, query) in [
+            ("barbell-back-squat", "sqaut"), ("barbell-back-squat", "squaat"),
+            ("dumbbell-bench-press", "dumbell bench"), ("barbell-romanian-deadlift", "romanain deadlift"),
+            ("barbell-back-squat", "squats"), ("conventional-barbell-deadlift", "deadlifts"),
+            ("lying-leg-curl", "leg curls"), ("dumbbell-skull-crusher", "skull crushers"),
+            ("resistance-band-seated-row", "resistance bands row"), ("one-arm-dumbbell-row", "single arm row"),
+            ("barbell-bench-press", "flat bench press"), ("dumbbell-bench-press", "flat db bench press"),
+            ("barbell-bench-press", "chest workout")
+        ] {
+            let exercise = try XCTUnwrap(ExerciseCatalog.canonicalExercises[id]).toExercise()
+            XCTAssertNotNil(ExerciseSearch.score(.init(query), exercise: exercise), "\(id) / \(query)")
+        }
+        let squat = try XCTUnwrap(ExerciseCatalog.canonicalExercises["barbell-back-squat"]).toExercise()
+        XCTAssertEqual(ExerciseSearch.score(.init("sqaut"), exercise: Exercise(name: "Sqaut")), 0)
+        XCTAssertLessThan(try XCTUnwrap(ExerciseSearch.score(.init("squat"), exercise: squat)),
+                          try XCTUnwrap(ExerciseSearch.score(.init("sqaut"), exercise: squat)))
+        for query in ["db", "squat bicycle", "zzzzzzzz"] { XCTAssertNil(ExerciseSearch.score(.init(query), exercise: squat), query) }
+        XCTAssertNotNil(ExerciseSearch.score(.init("jeffreson curl"), exercise: Exercise(name: "Jefferson Curl")))
+    }
+
+    @MainActor
+    func testHelpfulLibrarySearchDiscoveryRankingAndFiltersInEveryLanguage() {
+        let previous = LanguageManager.shared.languagePreference
+        defer { LanguageManager.setLanguage(previous) }
+        let catalogue = ExerciseCatalog.canonicalExercises.values.map {
+            ExerciseCatalogEntry(key: $0.id, exercise: $0.toExercise(), programIds: [], workoutKeys: [])
+        }
+        let cache = LibraryExerciseResults()
+        for language in ["en", "tr", "de", "fr", "es"] {
+            LanguageManager.setLanguage(language)
+            for (query, expected) in [
+                ("sqaut", "barbell-back-squat"), ("bench", "barbell-bench-press"),
+                ("abs", "front-plank"), ("chest dumbbell", "dumbbell-bench-press"),
+                ("chest workout", "barbell-bench-press"), ("back", "lat-pulldown"),
+                ("flat bench press", "barbell-bench-press")
+            ] {
+                XCTAssertEqual(cache.entries(catalogue: catalogue, query: query).first?.key, expected, "\(language) / \(query)")
+            }
+            XCTAssertTrue(cache.entries(catalogue: catalogue, query: "single arm row").contains { $0.key == "one-arm-dumbbell-row" })
+            XCTAssertTrue(cache.entries(catalogue: catalogue, query: "sqaut", equipmentKey: "bar", muscleKey: "chest").isEmpty)
+            XCTAssertTrue(cache.entries(catalogue: catalogue, query: "sqaut", equipmentKey: "bar", muscleKey: "quads").contains { $0.key == "barbell-back-squat" })
+            XCTAssertFalse(cache.entries(catalogue: catalogue, query: "abs").contains { $0.key == "dumbbell-elevated-heel-goblet-squat" })
+            XCTAssertFalse(cache.entries(catalogue: catalogue, query: "chest dumbbell").contains { $0.key == "chest-supported-dumbbell-row" })
+            let cardio = cache.entries(catalogue: catalogue, muscleKey: "cardio").map(\.key)
+            XCTAssertTrue(cardio.contains("jump-rope"))
+            XCTAssertFalse(cardio.contains { $0.contains("crunch") })
+            XCTAssertEqual(cache.entries(catalogue: catalogue, query: " --- ").count, 300)
+        }
+    }
+
     func testExerciseVideoCatalogMatchesCurrentExercises() throws {
         XCTAssertEqual(ExerciseVideoCatalog.entries.count, 300)
         for id in ExerciseCatalog.canonicalExercises.keys {
@@ -2050,15 +2101,15 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(cache.entries(catalogue: catalogue), all)
 
         var custom = ExerciseCatalogEntry(key: "custom", exercise: Exercise(name: "Special movement", movementType: "press"), programIds: [], workoutKeys: [])
-        XCTAssertTrue(cache.entries(catalogue: [custom], query: "gogus").isEmpty)
+        XCTAssertTrue(cache.entries(catalogue: [custom], query: "itis").isEmpty)
         LanguageManager.setLanguage("tr")
-        XCTAssertEqual(cache.entries(catalogue: [custom], query: "gogus"), [custom])
+        XCTAssertEqual(cache.entries(catalogue: [custom], query: "itis"), [custom])
         custom.exercise.cues = "Updated technique"
         custom.exercise.videos = ["https://youtu.be/test"]
-        XCTAssertEqual(cache.entries(catalogue: [custom], query: "gogus"), [custom])
-        XCTAssertEqual(cache.entries(catalogue: [custom, entry("barbell-bench-press")], query: "gogus").count, 2)
+        XCTAssertEqual(cache.entries(catalogue: [custom], query: "itis"), [custom])
+        XCTAssertEqual(cache.entries(catalogue: [custom, entry("barbell-bench-press")], query: "itis").count, 2)
         LanguageManager.setLanguage("en")
-        XCTAssertTrue(cache.entries(catalogue: [custom], query: "gogus").isEmpty)
+        XCTAssertTrue(cache.entries(catalogue: [custom], query: "itis").isEmpty)
 
         let exact = ExerciseCatalogEntry(key: "custom-rdl", exercise: Exercise(name: "RDL"), programIds: [], workoutKeys: [])
         let aliases = [entry("barbell-romanian-deadlift"), exact, entry("barbell-bench-press")]

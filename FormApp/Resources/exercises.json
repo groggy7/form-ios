@@ -80,7 +80,9 @@
       "bankdrücken",
       "bankdruecken",
       "développé couché",
-      "press de banca"
+      "press de banca",
+      "flat bench press",
+      "flat barbell bench press"
     ]
   },
   {
@@ -211,6 +213,7 @@
       "Sentadilla búlgara",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı",
       "rear foot elevated split squat",
       "rfess"
@@ -314,6 +317,7 @@
       "Dead bug",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -344,7 +348,8 @@
       "bankdrücken",
       "bankdruecken",
       "développé couché",
-      "press de banca"
+      "press de banca",
+      "flat dumbbell bench press"
     ]
   },
   {
@@ -615,6 +620,7 @@
       "Hanging Knee Raise (male)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -904,7 +910,10 @@
       "db",
       "dumbbells",
       "dambıl",
-      "dambil"
+      "dambil",
+      "one arm",
+      "single arm",
+      "unilateral"
     ]
   },
   {
@@ -1009,6 +1018,7 @@
       "Pull-up",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı",
       "pull up",
       "pull ups",
@@ -1097,6 +1107,7 @@
       "Push-up",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı",
       "push up",
       "push ups",
@@ -1210,6 +1221,7 @@
       "Side Plank (male)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -1234,7 +1246,11 @@
       "Single Leg Calf Raise Off Step",
       "Body weight",
       "bodyweight",
-      "vücut ağırlığı"
+      "body weight",
+      "vücut ağırlığı",
+      "one leg",
+      "single leg",
+      "unilateral"
     ]
   },
   {
@@ -1472,6 +1488,7 @@
       "Estocada trasera con peso corporal",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -1496,6 +1513,7 @@
       "estocada caminando",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -1520,6 +1538,7 @@
       "Bodyweight Squat (male)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -1611,6 +1630,7 @@
       "Fondos para pecho",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -1634,6 +1654,7 @@
       "Dominada supina",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı",
       "chin up",
       "chin ups",
@@ -1662,6 +1683,7 @@
       "Front Plank (male)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -1816,7 +1838,8 @@
       "bankdrücken",
       "bankdruecken",
       "développé couché",
-      "press de banca"
+      "press de banca",
+      "flat smith bench press"
     ]
   },
   {
@@ -1997,7 +2020,10 @@
       "Sled 45 degrees One Leg Press",
       "Sled machine",
       "machine",
-      "makine"
+      "makine",
+      "one leg",
+      "single leg",
+      "unilateral"
     ]
   },
   {
@@ -2083,7 +2109,10 @@
       "dead lift",
       "kreuzheben",
       "soulevé de terre",
-      "peso muerto"
+      "peso muerto",
+      "one leg",
+      "single leg",
+      "unilateral"
     ]
   },
   {
@@ -2132,6 +2161,7 @@
       "Nordic Hamstring Curl (male)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -2156,6 +2186,7 @@
       "Glute Ham Raise (VERSION 2)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -2297,6 +2328,7 @@
       "Crianza de crías en burro",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -2320,6 +2352,7 @@
       "Standing Tibialis Raise Wall Supported (male)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -2621,6 +2654,7 @@
       "Remo invertido",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -2991,7 +3025,10 @@
       "ohp",
       "overhead press",
       "shoulder press",
-      "omuz press"
+      "omuz press",
+      "one arm",
+      "single arm",
+      "unilateral"
     ]
   },
   {
@@ -3330,7 +3367,10 @@
       "pressdown",
       "press down",
       "pushdown",
-      "push down"
+      "push down",
+      "one arm",
+      "single arm",
+      "unilateral"
     ]
   },
   {
@@ -3405,6 +3445,7 @@
       "Elevación de piernas colgado",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -3426,6 +3467,7 @@
       "Crunch inverso",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -3450,6 +3492,7 @@
       "Bicycle Crunch (male)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -3500,6 +3543,7 @@
       "Giro ruso",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -3521,6 +3565,7 @@
       "Bird Dog (male)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -3544,6 +3589,7 @@
       "escalador de montaña",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -3565,6 +3611,7 @@
       "Burpee (Tüm Vücut Sıçrama)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -3587,6 +3634,7 @@
       "Jumping Jack (male)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -3611,6 +3659,7 @@
       "Jump Box (male)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -3634,6 +3683,7 @@
       "Jump Squat (VERSION 2)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -3686,7 +3736,10 @@
       "Kettlebell un bras propre",
       "Pesa rusa con un brazo limpio",
       "Kettlebell",
-      "kb"
+      "kb",
+      "one arm",
+      "single arm",
+      "unilateral"
     ]
   },
   {
@@ -3731,7 +3784,10 @@
       "Kettlebell à un bras",
       "Arranque con un brazo con pesa rusa",
       "Kettlebell",
-      "kb"
+      "kb",
+      "one arm",
+      "single arm",
+      "unilateral"
     ]
   },
   {
@@ -3800,6 +3856,7 @@
       "Elevación de pantorrillas de pie con peso corporal",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -3849,6 +3906,7 @@
       "Crunch Floor (male)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -4117,7 +4175,10 @@
       "db",
       "dumbbells",
       "dambıl",
-      "dambil"
+      "dambil",
+      "one arm",
+      "single arm",
+      "unilateral"
     ]
   },
   {
@@ -4141,7 +4202,10 @@
       "Cable",
       "pulley",
       "kablo",
-      "makara"
+      "makara",
+      "one arm",
+      "single arm",
+      "unilateral"
     ]
   },
   {
@@ -4212,7 +4276,10 @@
       "Cable",
       "pulley",
       "kablo",
-      "makara"
+      "makara",
+      "one arm",
+      "single arm",
+      "unilateral"
     ]
   },
   {
@@ -4256,6 +4323,7 @@
       "Flexiones inclinadas",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı",
       "push up",
       "push ups",
@@ -4288,6 +4356,7 @@
       "Decline Push-Up",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı",
       "push up",
       "push ups",
@@ -4319,6 +4388,7 @@
       "Flexiones de diamante",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı",
       "push up",
       "push ups",
@@ -4351,6 +4421,7 @@
       "Flexiones de arquero",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı",
       "push up",
       "push ups",
@@ -4444,7 +4515,10 @@
       "kablo",
       "makara",
       "pulldown",
-      "pull down"
+      "pull down",
+      "one arm",
+      "single arm",
+      "unilateral"
     ]
   },
   {
@@ -4470,7 +4544,10 @@
       "kablo",
       "makara",
       "pulldown",
-      "pull down"
+      "pull down",
+      "one arm",
+      "single arm",
+      "unilateral"
     ]
   },
   {
@@ -4603,7 +4680,10 @@
       "kablo",
       "makara",
       "pulldown",
-      "pull down"
+      "pull down",
+      "one arm",
+      "single arm",
+      "unilateral"
     ]
   },
   {
@@ -4649,7 +4729,10 @@
       "Landmine One Arm Bent Over Row (VERSION 2)",
       "Barbell",
       "bb",
-      "barbel"
+      "barbel",
+      "one arm",
+      "single arm",
+      "unilateral"
     ]
   },
   {
@@ -4768,7 +4851,10 @@
       "Cable",
       "pulley",
       "kablo",
-      "makara"
+      "makara",
+      "one arm",
+      "single arm",
+      "unilateral"
     ]
   },
   {
@@ -5052,6 +5138,7 @@
       "Scapular Pull-up (VERSION 2)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı",
       "pull up",
       "pull ups",
@@ -5085,6 +5172,7 @@
       "Chin-ups (narrow parallel grip)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı",
       "chin up",
       "chin ups",
@@ -5220,7 +5308,10 @@
       "makara",
       "seitheben",
       "élévations latérales",
-      "elevaciones laterales"
+      "elevaciones laterales",
+      "one arm",
+      "single arm",
+      "unilateral"
     ]
   },
   {
@@ -5555,7 +5646,10 @@
       "Press landmine a una mano",
       "Barbell",
       "bb",
-      "barbel"
+      "barbel",
+      "one arm",
+      "single arm",
+      "unilateral"
     ]
   },
   {
@@ -5603,6 +5697,7 @@
       "Flexiones en pica",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı",
       "push up",
       "push ups",
@@ -5687,7 +5782,10 @@
       "dambıl",
       "dambil",
       "neutral grip curl",
-      "çekiç curl"
+      "çekiç curl",
+      "one arm",
+      "single arm",
+      "unilateral"
     ]
   },
   {
@@ -5975,7 +6073,10 @@
       "Cable",
       "pulley",
       "kablo",
-      "makara"
+      "makara",
+      "one arm",
+      "single arm",
+      "unilateral"
     ]
   },
   {
@@ -6285,7 +6386,10 @@
       "Cable",
       "pulley",
       "kablo",
-      "makara"
+      "makara",
+      "one arm",
+      "single arm",
+      "unilateral"
     ]
   },
   {
@@ -6708,6 +6812,7 @@
       "Peso corporal en cuclillas sissy",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -6756,6 +6861,7 @@
       "Bodyweight Heel Elevated Squat (male)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -6805,6 +6911,7 @@
       "Sentadilla cosaca",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -6827,6 +6934,7 @@
       "estocada lateral",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -7005,7 +7113,10 @@
       "Lever Standing Single Leg Curl (plate loaded)",
       "Leverage machine",
       "machine",
-      "makine"
+      "makine",
+      "one leg",
+      "single leg",
+      "unilateral"
     ]
   },
   {
@@ -7029,7 +7140,10 @@
       "Curl con una sola pierna tumbado en palanca",
       "Leverage machine",
       "machine",
-      "makine"
+      "makine",
+      "one leg",
+      "single leg",
+      "unilateral"
     ]
   },
   {
@@ -7053,7 +7167,10 @@
       "Curl con una pierna sentado en palanca",
       "Leverage machine",
       "machine",
-      "makine"
+      "makine",
+      "one leg",
+      "single leg",
+      "unilateral"
     ]
   },
   {
@@ -7107,7 +7224,10 @@
       "Cable",
       "pulley",
       "kablo",
-      "makara"
+      "makara",
+      "one leg",
+      "single leg",
+      "unilateral"
     ]
   },
   {
@@ -7130,6 +7250,7 @@
       "Bodyweight Frog Hip Thrust (male)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı",
       "hip thrust",
       "glute",
@@ -7157,10 +7278,14 @@
       "Empuje de cadera con una sola pierna",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı",
       "hip thrust",
       "glute",
-      "kalça"
+      "kalça",
+      "one leg",
+      "single leg",
+      "unilateral"
     ]
   },
   {
@@ -7229,6 +7354,7 @@
       "Hiperextensión inversa en Box",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -7253,6 +7379,7 @@
       "Flexiones de manos",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı",
       "push up",
       "push ups",
@@ -7285,6 +7412,7 @@
       "Fondos en anillas",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -7342,6 +7470,7 @@
       "Bench Dip (knees bent)",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
@@ -7546,6 +7675,7 @@
       "Dedos de los pies colgantes a la barra",
       "Body weight",
       "bodyweight",
+      "body weight",
       "vücut ağırlığı"
     ]
   },
