@@ -1404,7 +1404,7 @@
   "tour.workout.exercises.title": "Egzersizler",
   "tour.workout.exercises.body": "Geçmek için bir egzersize dokunun. Gösterimi için geçerli egzersize yeniden dokunun.",
   "tour.workout.sets.title": "Setlerinizi kaydedin",
-  "tour.workout.sets.body": "Ağırlığı ve tekrarı girin, sonra seti işaretleyin. Dinlenme sayacı kendiliğinden başlar.",
+  "tour.workout.sets.body": "Ağırlığı {weight_unit} cinsinden ve tekrar sayısını girip seti işaretleyin; dinlenme sayacı başlar. {weight_unit} size uygun değilse ağırlık birimini uygulama ayarlarından değiştirebilirsiniz.",
   "tour.workout.finish.body": "Bitirdiğinizde antrenmanı buradan gözden geçirip kaydedin.",
   "tour.matrix.body.title": "Renklerle kaslar",
   "tour.matrix.body.body": "Her kas, bu haftaki çalışma setlerine göre renklendirilir.",

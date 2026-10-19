@@ -1404,7 +1404,7 @@
   "tour.workout.exercises.title": "Übungen",
   "tour.workout.exercises.body": "Tippe auf eine Übung, um zu ihr zu wechseln. Tippe erneut auf die aktuelle, um ihre Demonstration zu sehen.",
   "tour.workout.sets.title": "Sätze erfassen",
-  "tour.workout.sets.body": "Gib Gewicht und Wiederholungen ein und hake den Satz ab. Der Pausentimer startet automatisch.",
+  "tour.workout.sets.body": "Gib das Gewicht in {weight_unit} und die Wiederholungen ein und hake den Satz ab, um den Pausentimer zu starten. Falls {weight_unit} nicht passt, ändere die Gewichtseinheit in den App-Einstellungen.",
   "tour.workout.finish.body": "Wenn du fertig bist, prüfst und speicherst du das Training hier.",
   "tour.matrix.body.title": "Muskeln nach Farbe",
   "tour.matrix.body.body": "Jeder Muskel ist nach den Arbeitssätzen dieser Woche eingefärbt.",

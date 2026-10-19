@@ -48594,31 +48594,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Enter weight and reps, then tick the set. The rest timer starts on its own."
+            "value": "Enter weight in {weight_unit} and reps, then tick the set to start the rest timer. If {weight_unit} is wrong, change the weight unit in app Settings."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ağırlığı ve tekrarı girin, sonra seti işaretleyin. Dinlenme sayacı kendiliğinden başlar."
+            "value": "Ağırlığı {weight_unit} cinsinden ve tekrar sayısını girip seti işaretleyin; dinlenme sayacı başlar. {weight_unit} size uygun değilse ağırlık birimini uygulama ayarlarından değiştirebilirsiniz."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gib Gewicht und Wiederholungen ein und hake den Satz ab. Der Pausentimer startet automatisch."
+            "value": "Gib das Gewicht in {weight_unit} und die Wiederholungen ein und hake den Satz ab, um den Pausentimer zu starten. Falls {weight_unit} nicht passt, ändere die Gewichtseinheit in den App-Einstellungen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Saisissez le poids et les répétitions, puis cochez la série. Le minuteur de repos démarre tout seul."
+            "value": "Saisissez le poids en {weight_unit} et les répétitions, puis cochez la série pour lancer le repos. Si {weight_unit} ne convient pas, changez l’unité de poids dans les réglages de l’app."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Introduce el peso y las repeticiones y marca la serie. El temporizador de descanso empieza solo."
+            "value": "Introduce el peso en {weight_unit} y las repeticiones, y marca la serie para iniciar el descanso. Si {weight_unit} no es la unidad adecuada, cámbiala en los ajustes de la app."
           }
         }
       }

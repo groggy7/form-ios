@@ -22,7 +22,6 @@ public struct SetLoggingTable: View {
     var onInspectPlates: ((Double) -> Void)? = nil
     var onToggleWarmup: ((Int) -> Void)? = nil
     var weightUnit: WeightUnit = .kg
-    var onWeightUnitChange: ((WeightUnit) -> Void)? = nil
     var allowsZeroWeight: Bool = false
     var isAssisted: Bool = false
     var isBodyweight: Bool = false
@@ -47,8 +46,7 @@ public struct SetLoggingTable: View {
         isAssisted: Bool = false,
         isBodyweight: Bool = false,
         ghostTargets: [Int: GhostTarget] = [:],
-        logbookBeatenSets: [Int: LogbookBeatResult] = [:],
-        onWeightUnitChange: ((WeightUnit) -> Void)? = nil
+        logbookBeatenSets: [Int: LogbookBeatResult] = [:]
     ) {
         self.sets = sets
         self.prescription = prescription
@@ -63,7 +61,6 @@ public struct SetLoggingTable: View {
         self.onInspectPlates = onInspectPlates
         self.onToggleWarmup = onToggleWarmup
         self.weightUnit = weightUnit
-        self.onWeightUnitChange = onWeightUnitChange
         self.allowsZeroWeight = allowsZeroWeight
         self.isAssisted = isAssisted
         self.isBodyweight = isBodyweight
@@ -114,40 +111,7 @@ public struct SetLoggingTable: View {
                     .frame(width: 32, alignment: .leading)
                 Text(LanguageManager.t("table.pr"))
                     .frame(width: 56, alignment: .center)
-                if let onWeightUnitChange {
-                    Menu {
-                        ForEach(WeightUnit.allCases, id: \.self) { option in
-                            Button {
-                                focusedField = nil
-                                selectedField = nil
-                                onWeightUnitChange(option)
-                            } label: {
-                                if option == weightUnit {
-                                    Label(option.label, systemImage: "checkmark")
-                                } else {
-                                    Text(option.label)
-                                }
-                            }
-                            .accessibilityIdentifier("session-unit-\(option.rawValue)")
-                            .accessibilityAddTraits(option == weightUnit ? .isSelected : [])
-                        }
-                    } label: {
-                        HStack(spacing: 2) {
-                            Text(weightUnit.uppercaseLabel).lineLimit(1)
-                            Image(systemName: "chevron.down").font(.system(size: 9, weight: .bold))
-                        }
-                        .padding(.horizontal, 6)
-                        .frame(minWidth: 48, minHeight: 48)
-                        .background(AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 8))
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(AppColors.border, lineWidth: 1))
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel("\(LanguageManager.t("settings.weightUnit")): \(weightUnit.label)")
-                    .accessibilityIdentifier("session-weight-unit")
-                    .frame(maxWidth: .infinity)
-                } else {
-                    Text(weightUnit.uppercaseLabel).frame(maxWidth: .infinity)
-                }
+                Text(weightUnit.uppercaseLabel).frame(maxWidth: .infinity)
                 Text(LanguageManager.t("table.reps"))
                     .frame(maxWidth: .infinity)
                 Text(LanguageManager.t("table.doneHeading")).frame(width: 44)

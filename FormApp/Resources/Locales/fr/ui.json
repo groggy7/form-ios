@@ -1404,7 +1404,7 @@
   "tour.workout.exercises.title": "Exercices",
   "tour.workout.exercises.body": "Touchez un exercice pour y passer. Touchez à nouveau l’exercice en cours pour voir sa démonstration.",
   "tour.workout.sets.title": "Enregistrez vos séries",
-  "tour.workout.sets.body": "Saisissez le poids et les répétitions, puis cochez la série. Le minuteur de repos démarre tout seul.",
+  "tour.workout.sets.body": "Saisissez le poids en {weight_unit} et les répétitions, puis cochez la série pour lancer le repos. Si {weight_unit} ne convient pas, changez l’unité de poids dans les réglages de l’app.",
   "tour.workout.finish.body": "Une fois terminé, revoyez et enregistrez la séance ici.",
   "tour.matrix.body.title": "Les muscles en couleur",
   "tour.matrix.body.body": "Chaque muscle est coloré selon les séries de travail de la semaine.",

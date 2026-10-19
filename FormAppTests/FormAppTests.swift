@@ -1499,7 +1499,7 @@ final class FormAppTests: XCTestCase {
             for index in 0..<2 {
             let content = SetLoggingTable(sets: (1...3).map { ExerciseSetLog(setNumber: $0, weightInput: index == 0 ? "12.5" : "220.46", repsInput: "10") }, prescription: "3 × 6–10",
                 onUpdateSet: { _, _, _ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in },
-                weightUnit: index == 0 ? .kg : .lbs, onWeightUnitChange: { _ in })
+                weightUnit: index == 0 ? .kg : .lbs)
                 .padding(16).environment(\.dynamicTypeSize, .xxxLarge)
                 .frame(width: 320).background(AppColors.background)
             let host = UIHostingController(rootView: content)

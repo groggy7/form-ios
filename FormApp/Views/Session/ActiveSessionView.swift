@@ -462,10 +462,9 @@ public struct ActiveSessionView: View {
                                         isAssisted: WorkoutSessionUtils.isAssisted(exercise),
                                         isBodyweight: WorkoutSessionUtils.usesBodyweightResistance(exercise),
                                         ghostTargets: ghostTargets,
-                                        logbookBeatenSets: logbookBeatenSets,
-                                        onWeightUnitChange: { store.weightUnit = $0 }
+                                        logbookBeatenSets: logbookBeatenSets
                                     )
-                                    .tourTarget("workout.sets", cornerRadius: 12)
+                                    .tourTarget("workout.sets", cornerRadius: 12, flags: [store.weightUnit.rawValue])
 
                                     let workingRows = currentSets.filter { !$0.isWarmup }
                                     if proManager.isFeatureUnlocked(.autoProgression), store.showProgressionTargets,

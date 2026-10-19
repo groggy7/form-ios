@@ -171,7 +171,8 @@ public enum TourCatalog {
         case .workout:
             return [
                 TourStep(id: "workout.exercises", targetId: "workout.exercises", text: text("tour.workout.exercises")),
-                TourStep(id: "workout.sets", targetId: "workout.sets", text: text("tour.workout.sets")),
+                TourStep(id: "workout.sets", targetId: "workout.sets", text: text("tour.workout.sets", ["weight_unit": "settings.unitKg"]),
+                         variants: [("lbs", text("tour.workout.sets", ["weight_unit": "settings.unitLbs"]))]),
                 TourStep(id: "workout.finish", targetId: "workout.finish", text: TourText(titleKey: "session.finishBtn", bodyKey: "tour.workout.finish.body"))
             ]
         case .volumeMatrix:

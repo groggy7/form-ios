@@ -56,6 +56,9 @@ final class TourTests: XCTestCase {
         XCTAssertEqual(workout.text(for: []).bodyKey, "tour.home.workout.body")
         XCTAssertEqual(workout.text(for: ["views"]).bodyKey, "tour.home.workout.bodyViews")
         XCTAssertEqual(workout.text(for: ["rest"]).titleKey, "tour.home.rest.title")
+        let sets = TourCatalog.steps(.workout).first { $0.id == "workout.sets" }!
+        XCTAssertEqual(sets.text(for: ["kg"]).args["weight_unit"], "settings.unitKg")
+        XCTAssertEqual(sets.text(for: ["lbs"]).args["weight_unit"], "settings.unitLbs")
     }
 
     /// Every key a step uses exists in every shipped language, with its placeholders filled.
