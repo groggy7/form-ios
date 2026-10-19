@@ -22190,7 +22190,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aynı ağırlıklarla 21 gün içinde iki kez ya da Kolay olarak değerlendirdiğin bir antrenmanda her sette üst tekrar sınırına ulaş. Sonra bir sonraki uygun artışı dene; dambıl ve makine artışlarını Ayarlar’da belirleyebilirsin. %10’a kadar artışlarda tekrarların korunur; %25’e kadar olanlarda aralığın alt sınırı hedeflenir. Zor değerlendirmesinden sonra veya ek ağırlıksız vücut ağırlığı çalışmalarında artış yoktur."
+            "value": "Aynı ağırlıklarla 21 gün içinde iki kez ya da Kolay olarak değerlendirdiğin bir antrenmanda her sette üst tekrar sınırına ulaş. Sonra bir sonraki uygun artışı dene; dambıl ve makine ağırlık artışlarını Ayarlar’da belirleyebilirsin. %10’a kadar artışlarda tekrarların korunur; %25’e kadar olanlarda aralığın alt sınırı hedeflenir. Zor değerlendirmesinden sonra veya ek ağırlıksız vücut ağırlığı çalışmalarında artış yoktur."
           }
         },
         "de": {
@@ -46290,7 +46290,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dambıl artışı"
+            "value": "Dambıl ağırlık artışı"
           }
         },
         "de": {
@@ -46325,7 +46325,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Salonundaki en küçük dambıl artışı; Akıllı İlerleme hedeflerinde kullanılır"
+            "value": "Salonundaki dambıllar arasındaki en küçük ağırlık farkı; Akıllı İlerleme hedeflerinde kullanılır"
           }
         },
         "de": {
@@ -46360,7 +46360,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Makine artışı"
+            "value": "Makine ağırlık artışı"
           }
         },
         "de": {
