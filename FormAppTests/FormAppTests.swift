@@ -9778,7 +9778,8 @@ final class TabPagingTests: XCTestCase {
 
     @MainActor
     func testTabPagerKeepsFractionalOffsetAndDockInSync() throws {
-        for width in [CGFloat(320), CGFloat(440)] {
+        // 1024pt covers a tablet-width window, where the dock stops at its maximum width.
+        for width in [CGFloat(320), CGFloat(440), CGFloat(1024)] {
             try withTabPager(width: width) { store, controller, pager in
                 // Include both sides of each selection boundary, a reversal
                 // before release, and all four settled pages.
@@ -10006,7 +10007,7 @@ final class TabPagingTests: XCTestCase {
         }
         let left = try XCTUnwrap(filledColumns.min(), "The active dock rectangle must be visible", file: file, line: line)
         let right = try XCTUnwrap(filledColumns.max(), file: file, line: line)
-        let dockWidth = min(CGFloat(image.width) - 40, 360)
+        let dockWidth = min(CGFloat(image.width) - 40, 440)
         let itemWidth = (dockWidth - 24) / 4
         let expectedLeft = (CGFloat(image.width) - dockWidth) / 2 + 6 + position * (itemWidth + 4)
         XCTAssertEqual(CGFloat(left), expectedLeft, accuracy: 2, file: file, line: line)

@@ -45,7 +45,8 @@ public struct BottomDock: View {
                 .padding(innerPadding)
             }
         }
-        .frame(maxWidth: 360)
+        // Align with the page cards on phones; stay compact and centered in wide windows.
+        .frame(maxWidth: 440)
         .frame(height: 72)
         .background(
             RoundedRectangle(cornerRadius: 23, style: .continuous)
