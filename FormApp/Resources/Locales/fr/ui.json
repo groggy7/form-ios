@@ -1425,5 +1425,6 @@
   "tip.rest.body": "Il décompte votre repos. Ouvrez-le pour ajouter du temps, le mettre en pause ou couper le son, ou utilisez « {skip} » pour commencer la série suivante.",
   "settings.help": "Aide",
   "settings.replayTour": "Revoir la visite de l’app",
-  "settings.replayTourSubtitle": "Affiche à nouveau les conseils de chaque écran"
+  "settings.replayTourSubtitle": "Affiche à nouveau les conseils de chaque écran",
+  "notice.programCoverAutoSelected": "Image de couverture sélectionnée automatiquement."
 }

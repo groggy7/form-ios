@@ -1425,5 +1425,6 @@
   "tip.rest.body": "Er zählt deine Pause herunter. Öffne ihn, um Zeit hinzuzufügen, zu pausieren oder ihn stummzuschalten, oder nutze „{skip}“, um den nächsten Satz zu beginnen.",
   "settings.help": "Hilfe",
   "settings.replayTour": "App-Tour wiederholen",
-  "settings.replayTourSubtitle": "Zeigt die Tipps jedes Bildschirms erneut"
+  "settings.replayTourSubtitle": "Zeigt die Tipps jedes Bildschirms erneut",
+  "notice.programCoverAutoSelected": "Titelbild automatisch ausgewählt."
 }

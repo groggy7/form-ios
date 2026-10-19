@@ -1425,5 +1425,6 @@
   "tip.rest.body": "It counts down your rest. Open it to add time, pause or mute it, or use {skip} to start your next set.",
   "settings.help": "Help",
   "settings.replayTour": "Replay app tour",
-  "settings.replayTourSubtitle": "Show each screen's tips again"
+  "settings.replayTourSubtitle": "Show each screen's tips again",
+  "notice.programCoverAutoSelected": "Cover picture selected automatically."
 }

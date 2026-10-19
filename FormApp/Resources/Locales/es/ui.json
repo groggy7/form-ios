@@ -1425,5 +1425,6 @@
   "tip.rest.body": "Cuenta atrás tu descanso. Ábrelo para añadir tiempo, pausarlo o silenciarlo, o usa «{skip}» para empezar tu siguiente serie.",
   "settings.help": "Ayuda",
   "settings.replayTour": "Repetir la guía de la app",
-  "settings.replayTourSubtitle": "Muestra de nuevo los consejos de cada pantalla"
+  "settings.replayTourSubtitle": "Muestra de nuevo los consejos de cada pantalla",
+  "notice.programCoverAutoSelected": "Imagen de portada seleccionada automáticamente."
 }

@@ -1425,5 +1425,6 @@
   "tip.rest.body": "Dinlenmenizi geri sayar. Süre eklemek, duraklatmak ya da sesini kapatmak için açın; sonraki sete geçmek için {skip} düğmesini kullanın.",
   "settings.help": "Yardım",
   "settings.replayTour": "Uygulama turunu yeniden göster",
-  "settings.replayTourSubtitle": "Her ekranın ipuçlarını yeniden gösterir"
+  "settings.replayTourSubtitle": "Her ekranın ipuçlarını yeniden gösterir",
+  "notice.programCoverAutoSelected": "Kapak görseli otomatik seçildi."
 }

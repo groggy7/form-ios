@@ -21,6 +21,7 @@ public struct ProgramBuilderView: View {
     @State private var creatingCopy = false
     @State private var conflictDraft: ProgramBuilderDraft?
     @State private var saveError: String?
+    @State private var pendingAutomaticCoverID: String?
     @State private var saveAttempted = false
     @State private var validationAttempt = 0
     @State private var removalUndo: ProgramRemovalUndo?
@@ -55,9 +56,8 @@ public struct ProgramBuilderView: View {
         do { try ProgramEditing.validate(program, original: original, editingTitles: false); return nil }
         catch { return error.localizedDescription }
     }
-    private var needsCover: Bool { (isNew || creatingCopy) && program.coverId == nil }
     private var displayedCover: ProgramCover? { !isNew || program.coverId != nil ? ProgramCover.forProgram(program) : nil }
-    private var canSave: Bool { validationMessage == nil && !needsCover }
+    private var canSave: Bool { validationMessage == nil }
     private var nameInvalid: Bool { program.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || program.name.utf16.count > 100 }
     private var descriptionInvalid: Bool { program.description.utf16.count > 500 }
     private var notesInvalid: Bool { program.guidelines.count > 50 || program.guidelines.contains { $0.utf16.count > 500 } }
@@ -65,7 +65,6 @@ public struct ProgramBuilderView: View {
     private var firstInvalidField: String {
         if formError != nil { return "program-details" }
         if nameInvalid { return "program-name" }
-        if needsCover { return "program-cover" }
         if descriptionInvalid { return "program-description" }
         if notesInvalid { return "program-notes" }
         return "program-training-days"
@@ -243,10 +242,6 @@ public struct ProgramBuilderView: View {
                     BuilderActionButton("programs.cover.choose", systemImage: "photo") { showCoverPicker = true }
                         .accessibilityIdentifier("program-cover-choose")
                 }
-                if saveAttempted && needsCover {
-                    Text(LanguageManager.t("builder.coverRequired")).font(.caption).foregroundStyle(AppColors.danger)
-                        .accessibilityIdentifier("program-cover-required")
-                }
             }.id("program-cover")
             Button { withAnimation(.easeInOut(duration: 0.2)) { optionalDetailsExpanded.toggle() } } label: {
                 HStack(spacing: 10) {
@@ -358,11 +353,18 @@ public struct ProgramBuilderView: View {
         clean.description = clean.description.trimmingCharacters(in: .whitespacesAndNewlines)
         clean.guidelines = clean.guidelines.map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }.filter { !$0.isEmpty }
         clean.workouts.sort { $0.day < $1.day }
+        let autoSelectedCover = (isNew || creatingCopy) && clean.coverId == nil
+        if autoSelectedCover {
+            let coverID = pendingAutomaticCoverID ?? (ProgramCover.allCases.randomElement() ?? .fullBody).rawValue
+            pendingAutomaticCoverID = coverID
+            clean.coverId = coverID
+        }
         // Record the exact submitted value so recovery recognizes a commit interrupted before draft cleanup.
         ProgramBuilderDraftStore.save(ProgramBuilderDraft(program: clean, original: original, creatingCopy: creatingCopy), id: draftKey)
         let saved = (isNew || creatingCopy) ? store.addProgram(clean, activate: false) : store.updateProgram(clean, expected: original)
         guard saved else { saveError = LanguageManager.t("builder.saveFailed"); return }
         ProgramBuilderDraftStore.clear(draftKey)
+        if autoSelectedCover { store.showNotice(LanguageManager.t("notice.programCoverAutoSelected")) }
         onDismiss()
     }
 }
