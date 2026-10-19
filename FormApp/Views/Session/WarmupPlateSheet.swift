@@ -90,10 +90,13 @@ public struct WarmupPlateSheet: View {
                     // Custom Header
                     HStack {
                         HStack(spacing: 8) {
-                            ProBadge()
                             Text(LanguageManager.t("warmup.modal_title"))
                                 .font(.system(size: 18, weight: .bold))
                                 .foregroundStyle(AppColors.text)
+                            Image(systemName: "crown.fill")
+                                .font(.system(size: 12))
+                                .foregroundStyle(AppColors.purple)
+                                .accessibilityLabel(LanguageManager.t("paywall.feature_badge"))
                         }
 
                         Spacer()
