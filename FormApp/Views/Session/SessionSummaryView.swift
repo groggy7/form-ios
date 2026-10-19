@@ -175,7 +175,7 @@ public struct SessionSummaryView: View {
                                         let completedCount = working.count
                                         let targetCount = (log.targetSets ?? 0) > 0 ? (log.targetSets ?? 0) : max(working.count, 1)
                                         let isUnstarted = completedCount == 0
-                                        let exerciseVolumeKg = working.reduce(0.0) { sum, set in sum + ((set.weightKg ?? 0.0) * Double(set.reps ?? 0)) }
+                                        let exerciseVolumeKg = working.reduce(0.0) { $0 + IntensitySets.loadVolume($1) }
 
                                         HStack(spacing: 12) {
                                             exerciseStatusBadge(completedCount: completedCount, targetCount: targetCount)
@@ -198,6 +198,12 @@ public struct SessionSummaryView: View {
                                                 Text(subtitleText)
                                                     .font(.system(size: 12))
                                                     .foregroundStyle(AppColors.muted)
+                                                ForEach(working.filter(IntensitySets.hasDetail), id: \.setNumber) { set in
+                                                    Text("\(LanguageManager.t("table.setNumber", ["count": set.setNumber])): \(IntensitySets.notation(set, unit: weightUnit))")
+                                                        .font(.system(size: 12))
+                                                        .foregroundStyle(AppColors.secondaryText)
+                                                        .fixedSize(horizontal: false, vertical: true)
+                                                }
                                             }
 
                                             Spacer()

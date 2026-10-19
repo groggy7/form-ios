@@ -304,6 +304,7 @@ public enum ProgressionEngine {
         let barbell = WorkoutSessionUtils.usesBarbellPlates(exercise)
         let loadable: (Double) -> Double = { weightUnit.loadableKg($0, barbell: barbell) }
         let lastSessionSets = workingSets.map { ProgressionSetTarget(weightKg: $0.weightKg.map(loadable), reps: $0.reps!) }
+        let lastTechniqueSets = padded ? [] : workingSets.filter(IntensitySets.hasDetail)
         let topWeight = workingSets.map { $0.weightKg! }.max()!
         let mixedLoads = workingSets.contains { abs($0.weightKg! - topWeight) > 0.01 }
         func comparable(_ session: HistoricalSessionSets) -> Bool {
@@ -332,7 +333,8 @@ public enum ProgressionEngine {
                 consecutiveStagnantSessions: 0,
                 lastSessionSummary: summary,
                 setTargets: targets,
-                lastSessionSets: lastSessionSets
+                lastSessionSets: lastSessionSets,
+                lastTechniqueSets: lastTechniqueSets
             )
         }
         // After a long break the latest log no longer shows current capacity; an unreadable date is treated as old.
@@ -363,7 +365,7 @@ public enum ProgressionEngine {
                 suggestedWeightKg: nil, suggestedWeightDisplay: "--", suggestedRepsMin: repMin, suggestedRepsMax: repMax,
                 rationaleKey: "progression.rationale.plateau", rationaleArgs: ["sessions": "3"], isPlateau: true, consecutiveStagnantSessions: 3,
                 suggestedVariationId: variation?.id, suggestedVariationName: variation?.name,
-                lastSessionSummary: summary, setTargets: lighter, lastSessionSets: lastSessionSets)
+                lastSessionSummary: summary, setTargets: lighter, lastSessionSets: lastSessionSets, lastTechniqueSets: lastTechniqueSets)
         }
 
         let previousCompleted = sessions.dropFirst().lazy.compactMap(fullSets).first
@@ -418,7 +420,7 @@ public enum ProgressionEngine {
             weightDeltaDisplay: increase?.deltaDisplay.map { "+\(weightUnit.formatExactWeight(weightUnit.toCanonicalKg($0))) \(weightUnit.label)" },
             rationaleKey: key, rationaleArgs: args,
             suggestedVariationId: variation?.id, suggestedVariationName: variation?.name,
-            lastSessionSummary: summary, setTargets: targets, lastSessionSets: lastSessionSets)
+            lastSessionSummary: summary, setTargets: targets, lastSessionSets: lastSessionSets, lastTechniqueSets: lastTechniqueSets)
     }
 
     // Input precision: the card must show the load Apply Target writes, and a converted load at its loadable weight.

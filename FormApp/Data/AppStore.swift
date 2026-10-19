@@ -21,6 +21,7 @@ public final class AppStore: ObservableObject {
     private let availablePlatesLbsKey = "available_plates_lbs"
     private let onboardingCompletedKey = "is_onboarding_completed"
     private let showProgressionTargetsKey = "show_progression_targets"
+    private let showIntensityTechniquesKey = "show_intensity_techniques"
     private static let dumbbellStepKgKey = "progression_dumbbell_step_kg"
     private static let dumbbellStepLbsKey = "progression_dumbbell_step_lbs"
     private static let machineStepKgKey = "progression_machine_step_kg"
@@ -66,6 +67,8 @@ public final class AppStore: ObservableObject {
     @Published public var soundEnabled: Bool
     @Published public var defaultRestSeconds: Int
     @Published public var prefillNextSet: Bool
+    /// Drop, Rest-pause and Partials chips in session; history keeps showing logged techniques when off.
+    @Published public var showIntensityTechniques: Bool
     /// Home day tiles use the calm glass by default; this opts back in to the earlier neon glow.
     @Published public var homeGlowTiles: Bool
     @Published public var weightUnit: WeightUnit {
@@ -205,6 +208,7 @@ public final class AppStore: ObservableObject {
         self.soundEnabled = UserDefaults.standard.object(forKey: soundKey) as? Bool ?? true
         self.defaultRestSeconds = UserDefaults.standard.object(forKey: defaultRestKey) as? Int ?? 90
         self.prefillNextSet = UserDefaults.standard.object(forKey: prefillNextSetKey) as? Bool ?? true
+        self.showIntensityTechniques = UserDefaults.standard.object(forKey: showIntensityTechniquesKey) as? Bool ?? true
         self.homeGlowTiles = UserDefaults.standard.object(forKey: homeGlowTilesKey) as? Bool ?? false
         let initialWeightUnit: WeightUnit
         if let savedUnitCode = UserDefaults.standard.string(forKey: weightUnitKey) {
@@ -381,6 +385,11 @@ public final class AppStore: ObservableObject {
 
         $prefillNextSet
             .sink { [prefillNextSetKey] in UserDefaults.standard.set($0, forKey: prefillNextSetKey) }
+            .store(in: &cancellables)
+
+        $showIntensityTechniques
+            .dropFirst()
+            .sink { [showIntensityTechniquesKey] in UserDefaults.standard.set($0, forKey: showIntensityTechniquesKey) }
             .store(in: &cancellables)
 
         $homeGlowTiles
@@ -785,7 +794,11 @@ public final class AppStore: ObservableObject {
                 completedReps: s.completedReps,
                 isCompleted: s.isCompleted,
                 inputTouched: s.inputTouched,
-                isWarmup: false
+                isWarmup: false,
+                // Warmups above are rebuilt without techniques; working sets keep theirs.
+                technique: s.technique,
+                partialRepsInput: s.partialRepsInput,
+                extensions: s.extensions
             )
         }
         return warmups + working
@@ -1615,7 +1628,10 @@ public final class AppStore: ObservableObject {
 
     private static func loadActiveSession() -> ActiveSessionDraft? {
         guard let data = UserDefaults.standard.data(forKey: "active_session_v1") else { return nil }
-        return try? JSONDecoder().decode(ActiveSessionDraft.self, from: data)
+        // A draft from a newer app may hold fields this build would drop.
+        return (try? JSONDecoder().decode(ActiveSessionDraft.self, from: data)).flatMap {
+            $0.schemaVersion <= ActiveSessionDraft.currentSchemaVersion ? $0 : nil
+        }
     }
 
     private static func clearActiveSession() {
@@ -1677,7 +1693,7 @@ public final class AppStore: ObservableObject {
                     print("[AppStore] Rescued \(rescuedHistory.count) historical sessions from corrupt state.")
                     let activeId = bundled.first?.id ?? UUID().uuidString
                     return StoredAppState(
-                        schemaVersion: 4,
+                        schemaVersion: StoredAppState.currentSchemaVersion,
                         programs: bundled,
                         activeProgramId: activeId,
                         completed: [],
@@ -1691,7 +1707,7 @@ public final class AppStore: ObservableObject {
         }
         let activeId = bundled.first?.id ?? UUID().uuidString
         let initial = StoredAppState(
-            schemaVersion: 4,
+            schemaVersion: StoredAppState.currentSchemaVersion,
             programs: bundled,
             activeProgramId: activeId,
             completed: [],
@@ -2099,7 +2115,9 @@ struct FullBackupDocument: Codable, @unchecked Sendable {
     private enum MetadataKeys: String, CodingKey { case weightUnit }
 
     init(state: StoredAppState, weightUnit: WeightUnit) {
-        self.state = state
+        var current = state
+        current.schemaVersion = StoredAppState.currentSchemaVersion
+        self.state = current
         self.weightUnit = weightUnit
     }
 
@@ -2107,6 +2125,9 @@ struct FullBackupDocument: Codable, @unchecked Sendable {
         let decoded = try StoredAppState(from: decoder)
         guard decoded.schemaVersion <= StoredAppState.currentSchemaVersion else {
             throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Backup was created by a newer app version"))
+        }
+        if let problem = BackupSanitizer.intensityProblem(in: decoded.history) {
+            throw DecodingError.dataCorrupted(.init(codingPath: decoder.codingPath, debugDescription: "Backup contains an invalid intensity set (\(problem))"))
         }
         state = BackupSanitizer.sanitize(decoded)
         let metadata = try decoder.container(keyedBy: MetadataKeys.self)
@@ -2191,7 +2212,11 @@ enum BackupSanitizer {
                     setNumber: clamped(set.setNumber, 1...maxSetsPerExercise),
                     weightKg: set.weightKg.map { clamped($0, 0...maxSetWeightKg) },
                     reps: set.reps.map { clamped($0, 0...999) },
-                    isWarmup: set.isWarmup
+                    isWarmup: set.isWarmup,
+                    // Validated before sanitizing (intensityProblem), so these pass through unchanged.
+                    partialReps: set.partialReps,
+                    technique: set.technique,
+                    extensions: set.extensions
                 )
             }
             return log
@@ -2201,6 +2226,19 @@ enum BackupSanitizer {
             copy.workoutSnapshot = sanitize(snapshot, ids: &ids)
         }
         return copy
+    }
+
+    /// The first set a logger could never write: unknown technique, misordered drops and the like.
+    static func intensityProblem(in history: [WorkoutSessionRecord]) -> String? {
+        for record in history {
+            for log in record.exerciseLogs {
+                let assisted = WorkoutSessionUtils.isAssisted(exerciseId: log.exerciseId, name: log.exerciseName)
+                for set in log.sets {
+                    if let problem = IntensitySets.restoreError(set, assisted: assisted) { return problem }
+                }
+            }
+        }
+        return nil
     }
 
     private static func unique(_ id: String, in used: inout Set<String>) -> String {

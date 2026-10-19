@@ -273,7 +273,7 @@ public enum PersonalRecordTracker {
                     let w = s.weightKg ?? 0.0
                     let r = Double(s.reps ?? 0)
                     if !assisted && w > 0.0 && r > 0 {
-                        totalVolume += w * r
+                        totalVolume += IntensitySets.loadVolume(s)
                     }
                 }
             }

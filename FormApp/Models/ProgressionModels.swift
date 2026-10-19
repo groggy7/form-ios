@@ -195,6 +195,8 @@ public struct ExerciseProgressionRecommendation: Equatable {
     public let lastSessionSummary: String?
     public let setTargets: [ProgressionSetTarget]
     public let lastSessionSets: [ProgressionSetTarget]
+    /// Baseline sets with drops, rest-pause or partials, shown as context; targets use main parts only.
+    public let lastTechniqueSets: [SessionSetLog]
 
     public init(
         exerciseId: String,
@@ -213,7 +215,8 @@ public struct ExerciseProgressionRecommendation: Equatable {
         suggestedVariationName: String? = nil,
         lastSessionSummary: String? = nil,
         setTargets: [ProgressionSetTarget] = [],
-        lastSessionSets: [ProgressionSetTarget] = []
+        lastSessionSets: [ProgressionSetTarget] = [],
+        lastTechniqueSets: [SessionSetLog] = []
     ) {
         self.exerciseId = exerciseId
         self.exerciseName = exerciseName
@@ -232,6 +235,7 @@ public struct ExerciseProgressionRecommendation: Equatable {
         self.lastSessionSummary = lastSessionSummary
         self.setTargets = setTargets
         self.lastSessionSets = lastSessionSets
+        self.lastTechniqueSets = lastTechniqueSets
     }
 
     /// Match working-set positions, never warmups, completed rows or added sets.

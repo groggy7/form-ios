@@ -40,6 +40,7 @@ struct VolumeMatrixEngine {
         var indirectSetsMap: [String: Int] = [:]
         var contributionsMap: [String: [MuscleVolumeContribution]] = [:]
         var workingSets = 0
+        var techniqueTotal = 0
         var unmapped: [String: Int] = [:]
 
         for muscle in canonicalMuscles {
@@ -55,8 +56,12 @@ struct VolumeMatrixEngine {
         for record in weekRecords {
             let dateStr = recordDateString(record)
             for log in record.exerciseLogs {
-                let completedSets = log.sets.filter { !$0.isWarmup && (($0.weightKg ?? 0) > 0 || ($0.reps ?? 0) > 0) }.count
+                let counted = log.sets.filter { !$0.isWarmup && (($0.weightKg ?? 0) > 0 || ($0.reps ?? 0) > 0) }
+                let completedSets = counted.count
                 guard completedSets > 0 else { continue }
+                // A drop or rest-pause set is one set (docs/design/intensity-sets.md); the count is only shown.
+                let techniqueSets = counted.filter(IntensitySets.usesTechnique).count
+                techniqueTotal += techniqueSets
 
                 let exerciseId = ExerciseCatalog.resolveCanonicalId(stableId: log.exerciseId, name: log.exerciseName)
                 workingSets += completedSets
@@ -75,7 +80,8 @@ struct VolumeMatrixEngine {
                                 completedSets: completedSets,
                                 effectiveSets: Float(completedSets) * 1.0,
                                 isPrimary: true,
-                                date: dateStr
+                                date: dateStr,
+                                techniqueSets: techniqueSets
                             )
                         )
                     }
@@ -90,7 +96,8 @@ struct VolumeMatrixEngine {
                                 completedSets: completedSets,
                                 effectiveSets: Float(completedSets) * 0.5,
                                 isPrimary: false,
-                                date: dateStr
+                                date: dateStr,
+                                techniqueSets: techniqueSets
                             )
                         )
                     }
@@ -106,7 +113,8 @@ struct VolumeMatrixEngine {
             contributionsMap: contributionsMap,
             language: language,
             workingSets: workingSets,
-            unmapped: unmapped
+            unmapped: unmapped,
+            techniqueSets: techniqueTotal
         )
     }
 
@@ -214,7 +222,8 @@ struct VolumeMatrixEngine {
         contributionsMap: [String: [MuscleVolumeContribution]],
         language: String,
         workingSets: Int,
-        unmapped: [String: Int]
+        unmapped: [String: Int],
+        techniqueSets: Int = 0
     ) -> VolumeMatrixReport {
         var summaries: [String: MuscleVolumeSummary] = [:]
         var totalSets: Float = 0
@@ -268,7 +277,8 @@ struct VolumeMatrixEngine {
             underTrainedCount: underTrainedCount,
             highFatigueCount: highFatigueCount,
             totalWorkingSets: workingSets,
-            unmappedExercises: unmapped
+            unmappedExercises: unmapped,
+            techniqueSets: techniqueSets
         )
     }
 

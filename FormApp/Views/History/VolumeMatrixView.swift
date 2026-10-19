@@ -237,6 +237,12 @@ public struct VolumeMatrixView: View {
             Text(LanguageManager.t("matrix.creditNote"))
                 .font(.system(size: 12)).foregroundStyle(AppColors.muted)
                 .fixedSize(horizontal: false, vertical: true)
+            if report.techniqueSets > 0 {
+                Text(LanguageManager.t("matrix.techniqueNote"))
+                    .font(.system(size: 12)).foregroundStyle(AppColors.muted)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityIdentifier("matrix-technique-note")
+            }
             if !report.unmappedExercises.isEmpty {
                 VStack(alignment: .leading, spacing: 6) {
                     Text(LanguageManager.t("matrix.unmapped", ["count": report.unmappedExercises.values.reduce(0, +)]))
@@ -592,7 +598,8 @@ public struct VolumeMatrixView: View {
                                     .font(.system(size: 13, weight: .medium))
                                     .foregroundStyle(AppColors.text)
                                     .lineLimit(1)
-                                Text((item.isPrimary ? LanguageManager.t("anatomy.primary") : LanguageManager.t("anatomy.secondary")) + (item.date.map { " · \($0)" } ?? ""))
+                                Text((item.isPrimary ? LanguageManager.t("anatomy.primary") : LanguageManager.t("anatomy.secondary")) + (item.date.map { " · \($0)" } ?? "")
+                                     + (item.techniqueSets > 0 ? " · " + LanguageManager.shared.plural("matrix.techniqueSets", item.techniqueSets) : ""))
                                     .font(.system(size: 11))
                                     .foregroundStyle(item.isPrimary ? AppColors.purple : AppColors.secondaryText)
                             }

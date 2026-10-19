@@ -143,6 +143,7 @@
 		D90000000000000000000002 /* AuditFollowupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90000000000000000000001 /* AuditFollowupTests.swift */; };
 		TR0000000000000000000006 /* TourTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = TR0000000000000000000005 /* TourTests.swift */; };
 		C1500000000000000000000C /* ProgressionFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1500000000000000000000B /* ProgressionFixtureTests.swift */; };
+		IS0000000000000000000002 /* IntensityFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IS0000000000000000000001 /* IntensityFixtureTests.swift */; };
 		C1500000000000000000000A /* android-builder-v5.json in Resources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000009 /* android-builder-v5.json */; };
 /* End PBXBuildFile section */
 
@@ -286,6 +287,8 @@
 		TR0000000000000000000005 /* TourTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourTests.swift; sourceTree = "<group>"; };
 		C1500000000000000000000B /* ProgressionFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionFixtureTests.swift; sourceTree = "<group>"; };
 		C1500000000000000000000D /* progression-fixtures.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "progression-fixtures.json"; sourceTree = "<group>"; };
+		IS0000000000000000000001 /* IntensityFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntensityFixtureTests.swift; sourceTree = "<group>"; };
+		IS0000000000000000000003 /* intensity-fixtures.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "intensity-fixtures.json"; sourceTree = "<group>"; };
 		C15000000000000000000009 /* android-builder-v5.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = android-builder-v5.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -368,6 +371,8 @@
 				C1500000000000000000000B /* ProgressionFixtureTests.swift */,
 				TR0000000000000000000005 /* TourTests.swift */,
 				C1500000000000000000000D /* progression-fixtures.json */,
+				IS0000000000000000000001 /* IntensityFixtureTests.swift */,
+				IS0000000000000000000003 /* intensity-fixtures.json */,
 			);
 			path = FormAppTests;
 			sourceTree = "<group>";
@@ -848,6 +853,7 @@
 				C15000000000000000000008 /* ProgramBuilderRegressionTests.swift in Sources */,
 				D90000000000000000000002 /* AuditFollowupTests.swift in Sources */,
 				C1500000000000000000000C /* ProgressionFixtureTests.swift in Sources */,
+				IS0000000000000000000002 /* IntensityFixtureTests.swift in Sources */,
 				TR0000000000000000000006 /* TourTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

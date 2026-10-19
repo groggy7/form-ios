@@ -127,6 +127,8 @@ public struct MuscleVolumeContribution: Identifiable, Equatable {
     public let effectiveSets: Float
     public let isPrimary: Bool
     public let date: String?
+    /// Sets with drops or rest-pause; each still counts as one set.
+    public var techniqueSets: Int = 0
 }
 
 public struct MuscleVolumeSummary: Equatable {
@@ -151,4 +153,6 @@ public struct VolumeMatrixReport: Equatable {
     public let highFatigueCount: Int
     public var totalWorkingSets: Int = 0
     public var unmappedExercises: [String: Int] = [:]
+    /// Logged working sets with drops or rest-pause this week.
+    public var techniqueSets: Int = 0
 }

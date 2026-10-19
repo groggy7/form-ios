@@ -99,6 +99,17 @@ public struct ActiveSessionView: View {
             return map
         }()
 
+        // The previous occurrence's set at the same working position, for drop prefill and PR hints.
+        let previousSetsByIndex: [Int: SessionSetLog] = {
+            var map: [Int: SessionSetLog] = [:]
+            var workingIdx = 0
+            for (idx, set) in currentSets.enumerated() where !set.isWarmup {
+                workingIdx += 1
+                map[idx] = previousWorkingSets.first { $0.setNumber == workingIdx }
+            }
+            return map
+        }()
+
         let logbookBeatenSets: [Int: LogbookBeatResult] = {
             var map: [Int: LogbookBeatResult] = [:]
             for (idx, set) in currentSets.enumerated() {
@@ -462,7 +473,8 @@ public struct ActiveSessionView: View {
                                         isAssisted: WorkoutSessionUtils.isAssisted(exercise),
                                         isBodyweight: WorkoutSessionUtils.usesBodyweightResistance(exercise),
                                         ghostTargets: ghostTargets,
-                                        logbookBeatenSets: logbookBeatenSets
+                                        logbookBeatenSets: logbookBeatenSets,
+                                        intensity: store.showIntensityTechniques ? intensityActions(exercise: exercise, previousSets: previousSetsByIndex) : nil
                                     )
                                     .tourTarget("workout.sets", cornerRadius: 12, flags: [store.weightUnit.rawValue])
 
@@ -964,8 +976,71 @@ public struct ActiveSessionView: View {
 
             if willComplete {
                 FormAudioPlayer.playSetCompleteSound()
-                copy.restTimer = RestTimerUtils.afterCompletingSet(in: copy, exercise: exercise, nowEpochMillis: nowEpochMillis)
+                copy.restTimer = RestTimerUtils.afterCompletingSet(in: copy, exercise: exercise, setId: currentSet.id, nowEpochMillis: nowEpochMillis)
             } else {
+                FormAudioPlayer.playSetUndoSound()
+            }
+            return copy
+        }
+    }
+
+    // MARK: Drop sets, rest-pause and partials
+
+    private func intensityActions(exercise: Exercise, previousSets: [Int: SessionSetLog]) -> IntensityActions {
+        IntensityActions(
+            exercise: exercise,
+            previousSets: previousSets,
+            onAddExtension: { index, technique in
+                let previous = previousSets[index]
+                changeSet(exercise: exercise, index: index) { set in
+                    let next = set.extensions?.count ?? 0
+                    let prefill = store.prefillNextSet && technique == .drop && previous?.setTechnique == .drop
+                        ? previous?.setExtensions[safe: next]?.weightKg : nil
+                    return IntensitySets.addingExtension(technique, to: set, prefillWeightKg: prefill, unit: store.weightUnit,
+                                                         barbell: WorkoutSessionUtils.usesBarbellPlates(exercise))
+                }
+            },
+            onUpdateExtension: { index, extensionIndex, weight, reps in
+                guard let weight = WorkoutSessionUtils.sanitizedWeightInput(weight, unit: store.weightUnit),
+                      let reps = WorkoutSessionUtils.sanitizedRepsInput(reps) else { return }
+                changeSet(exercise: exercise, index: index) {
+                    IntensitySets.editingExtension($0, at: extensionIndex, weight: weight, reps: reps, exercise: exercise, unit: store.weightUnit)
+                }
+            },
+            onToggleExtension: { index, extensionIndex in toggleExtension(exercise: exercise, index: index, extensionIndex: extensionIndex) },
+            onAddPartials: { index in changeSet(exercise: exercise, index: index, IntensitySets.addingPartials(to:)) },
+            onUpdatePartials: { index, extensionIndex, input in
+                changeSet(exercise: exercise, index: index) { IntensitySets.editingPartials($0, extensionIndex: extensionIndex, input: input) }
+            },
+            onRemoveLastPart: { index in changeSet(exercise: exercise, index: index, IntensitySets.removingLastPart) }
+        )
+    }
+
+    private func changeSet(exercise: Exercise, index: Int, _ change: @escaping (ExerciseSetLog) -> ExerciseSetLog) {
+        store.updateActiveSession { d in
+            var copy = d
+            var sets = copy.setsByExercise[exercise.id] ?? []
+            guard sets.indices.contains(index), !sets[index].isWarmup else { return copy }
+            sets[index] = change(sets[index])
+            copy.setsByExercise[exercise.id] = sets
+            return copy
+        }
+    }
+
+    /// Ticking an extension of the set that started the running rest restarts that rest.
+    private func toggleExtension(exercise: Exercise, index: Int, extensionIndex: Int) {
+        store.updateActiveSession { d in
+            var copy = d
+            var sets = copy.setsByExercise[exercise.id] ?? []
+            guard sets.indices.contains(index) else { return copy }
+            let wasTicked = sets[index].extensions?[safe: extensionIndex]?.isCompleted ?? false
+            sets[index] = IntensitySets.togglingExtension(sets[index], at: extensionIndex, exercise: exercise, unit: store.weightUnit)
+            let isTicked = sets[index].extensions?[safe: extensionIndex]?.isCompleted ?? false
+            copy.setsByExercise[exercise.id] = sets
+            if !wasTicked && isTicked {
+                FormAudioPlayer.playSetCompleteSound()
+                copy.restTimer = IntensitySets.restAfterTickingExtension(in: copy, setId: sets[index].id, exercise: exercise, nowEpochMillis: nowEpochMillis)
+            } else if wasTicked && !isTicked {
                 FormAudioPlayer.playSetUndoSound()
             }
             return copy

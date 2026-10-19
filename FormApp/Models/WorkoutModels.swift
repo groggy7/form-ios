@@ -472,9 +472,16 @@ public struct ExerciseSetLog: Identifiable, Codable, Hashable {
     public var isWarmup: Bool
     /// Smart Progression's rep target, shown as the empty reps field's placeholder; never a logged value.
     public var targetReps: Int?
+    /// `SetTechnique` code while the set has extensions (docs/design/intensity-sets.md).
+    public var technique: String?
+    /// Partial reps after the main part; nil hides the row, "" shows it empty.
+    public var partialRepsInput: String?
+    /// Drops or rest-pause efforts after the main part, in the order performed.
+    public var extensions: [SetExtensionLog]?
 
     enum CodingKeys: String, CodingKey {
         case id, setNumber, weightInput, repsInput, weightKg, completedReps, isCompleted, inputTouched, isWarmup, targetReps
+        case technique, partialRepsInput, extensions
     }
 
     public init(
@@ -487,7 +494,10 @@ public struct ExerciseSetLog: Identifiable, Codable, Hashable {
         isCompleted: Bool = false,
         inputTouched: Bool? = nil,
         isWarmup: Bool = false,
-        targetReps: Int? = nil
+        targetReps: Int? = nil,
+        technique: String? = nil,
+        partialRepsInput: String? = nil,
+        extensions: [SetExtensionLog]? = nil
     ) {
         self.targetReps = targetReps
         self.id = id
@@ -499,6 +509,9 @@ public struct ExerciseSetLog: Identifiable, Codable, Hashable {
         self.isCompleted = isCompleted
         self.inputTouched = inputTouched
         self.isWarmup = isWarmup
+        self.technique = technique
+        self.partialRepsInput = partialRepsInput
+        self.extensions = extensions
     }
 
     public init(from decoder: Decoder) throws {
@@ -513,24 +526,94 @@ public struct ExerciseSetLog: Identifiable, Codable, Hashable {
         self.inputTouched = try container.decodeIfPresent(Bool.self, forKey: .inputTouched)
         self.isWarmup = try container.decodeIfPresent(Bool.self, forKey: .isWarmup) ?? false
         self.targetReps = try container.decodeIfPresent(Int.self, forKey: .targetReps)
+        self.technique = try container.decodeIfPresent(String.self, forKey: .technique)
+        self.partialRepsInput = try container.decodeIfPresent(String.self, forKey: .partialRepsInput)
+        self.extensions = try container.decodeIfPresent([SetExtensionLog].self, forKey: .extensions)
+    }
+}
+
+/// An intensity technique on one set. Codes are shared with Android and backups.
+public enum SetTechnique: String, Codable, CaseIterable {
+    case drop
+    case restPause
+}
+
+/// One drop or rest-pause effort in the active-session draft; ticked like a set row.
+public struct SetExtensionLog: Identifiable, Codable, Hashable {
+    public var id: String
+    public var weightInput: String
+    public var repsInput: String
+    public var weightKg: Double?
+    public var completedReps: Int?
+    public var isCompleted: Bool
+    public var partialRepsInput: String?
+
+    public init(
+        id: String = UUID().uuidString,
+        weightInput: String = "",
+        repsInput: String = "",
+        weightKg: Double? = nil,
+        completedReps: Int? = nil,
+        isCompleted: Bool = false,
+        partialRepsInput: String? = nil
+    ) {
+        self.id = id
+        self.weightInput = weightInput
+        self.repsInput = repsInput
+        self.weightKg = weightKg
+        self.completedReps = completedReps
+        self.isCompleted = isCompleted
+        self.partialRepsInput = partialRepsInput
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.id = try container.decodeIfPresent(String.self, forKey: .id) ?? UUID().uuidString
+        self.weightInput = try container.decodeIfPresent(String.self, forKey: .weightInput) ?? ""
+        self.repsInput = try container.decodeIfPresent(String.self, forKey: .repsInput) ?? ""
+        self.weightKg = try container.decodeIfPresent(Double.self, forKey: .weightKg)
+        self.completedReps = try container.decodeIfPresent(Int.self, forKey: .completedReps)
+        self.isCompleted = try container.decodeIfPresent(Bool.self, forKey: .isCompleted) ?? false
+        self.partialRepsInput = try container.decodeIfPresent(String.self, forKey: .partialRepsInput)
+    }
+}
+
+/// A saved drop or rest-pause effort. Optional fields keep a damaged record readable; backup restore validates them.
+public struct SessionSetExtension: Codable, Hashable {
+    public var weightKg: Double?
+    public var reps: Int?
+    public var partialReps: Int?
+
+    public init(weightKg: Double?, reps: Int?, partialReps: Int? = nil) {
+        self.weightKg = weightKg
+        self.reps = reps
+        self.partialReps = partialReps
     }
 }
 
 public struct SessionSetLog: Codable, Hashable {
     public var setNumber: Int
+    /// The main part: every metric that reads only these fields sees a correct straight set.
     public var weightKg: Double?
     public var reps: Int?
     public var isWarmup: Bool
+    public var partialReps: Int?
+    public var technique: String?
+    public var extensions: [SessionSetExtension]?
 
     enum CodingKeys: String, CodingKey {
-        case setNumber, weightKg, reps, isWarmup
+        case setNumber, weightKg, reps, isWarmup, partialReps, technique, extensions
     }
 
-    public init(setNumber: Int, weightKg: Double? = nil, reps: Int? = nil, isWarmup: Bool = false) {
+    public init(setNumber: Int, weightKg: Double? = nil, reps: Int? = nil, isWarmup: Bool = false,
+                partialReps: Int? = nil, technique: String? = nil, extensions: [SessionSetExtension]? = nil) {
         self.setNumber = setNumber
         self.weightKg = weightKg
         self.reps = reps
         self.isWarmup = isWarmup
+        self.partialReps = partialReps
+        self.technique = technique
+        self.extensions = extensions
     }
 
     public init(from decoder: Decoder) throws {
@@ -539,7 +622,14 @@ public struct SessionSetLog: Codable, Hashable {
         self.weightKg = try container.decodeIfPresent(Double.self, forKey: .weightKg)
         self.reps = try container.decodeIfPresent(Int.self, forKey: .reps)
         self.isWarmup = try container.decodeIfPresent(Bool.self, forKey: .isWarmup) ?? false
+        self.partialReps = try container.decodeIfPresent(Int.self, forKey: .partialReps)
+        self.technique = try container.decodeIfPresent(String.self, forKey: .technique)
+        self.extensions = try container.decodeIfPresent([SessionSetExtension].self, forKey: .extensions)
     }
+
+    /// Completed extensions in order; empty for a straight set.
+    public var setExtensions: [SessionSetExtension] { extensions ?? [] }
+    public var setTechnique: SetTechnique? { technique.flatMap(SetTechnique.init(rawValue:)) }
 }
 
 public struct SessionExerciseLog: Codable, Hashable {
@@ -616,19 +706,23 @@ public struct RestTimerState: Codable, Hashable {
     public var isRunning: Bool
     public var endsAtEpochMillis: Int64?
     public var pausedSecondsRemaining: Int
+    /// The set whose completion started this rest; ticking one of its extensions restarts it.
+    public var setId: String?
 
     public init(
         exerciseName: String,
         totalSeconds: Int,
         isRunning: Bool,
         endsAtEpochMillis: Int64? = nil,
-        pausedSecondsRemaining: Int = 0
+        pausedSecondsRemaining: Int = 0,
+        setId: String? = nil
     ) {
         self.exerciseName = exerciseName
         self.totalSeconds = totalSeconds
         self.isRunning = isRunning
         self.endsAtEpochMillis = endsAtEpochMillis
         self.pausedSecondsRemaining = pausedSecondsRemaining
+        self.setId = setId
     }
 
     public func secondsRemaining(nowEpochMillis: Int64) -> Int {
@@ -642,6 +736,8 @@ public struct RestTimerState: Codable, Hashable {
 }
 
 public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
+    /// 2 adds set techniques, partials and the rest timer's set.
+    public static let currentSchemaVersion = 2
     public var schemaVersion: Int
     public var id: String
     public var programId: String
@@ -662,7 +758,7 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
     public var effortByExercise: [String: String]?
 
     public init(
-        schemaVersion: Int = 1,
+        schemaVersion: Int = ActiveSessionDraft.currentSchemaVersion,
         id: String = UUID().uuidString,
         programId: String,
         workout: Workout,
@@ -1224,7 +1320,7 @@ public enum WorkoutCalendar {
 
 public struct StoredAppState: Codable {
     /// Matches Android's CURRENT_BACKUP_SCHEMA_VERSION; restore rejects newer backups.
-    public static let currentSchemaVersion = 4
+    public static let currentSchemaVersion = 5
 
     public var schemaVersion: Int
     public var programs: [Program]

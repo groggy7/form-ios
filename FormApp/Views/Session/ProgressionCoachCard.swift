@@ -290,6 +290,14 @@ struct ProgressionRecommendationCard: View {
                     .fixedSize(horizontal: false, vertical: true).padding(.top, 6)
                     .accessibilityIdentifier("progression-variation")
             }
+            // Drops, rest-pause and partials are context only; targets come from main parts.
+            ForEach(recommendation.lastTechniqueSets, id: \.setNumber) { set in
+                let detail = "\(LanguageManager.t("table.setNumber", ["count": set.setNumber])): \(IntensitySets.notation(set, unit: weightUnit))"
+                Text(LanguageManager.t("intensity.lastTime", ["detail": detail]))
+                    .font(.system(size: bodySize)).lineSpacing(2).foregroundStyle(AppColors.secondaryText)
+                    .fixedSize(horizontal: false, vertical: true).padding(.top, 6)
+                    .accessibilityIdentifier("progression-last-technique-\(set.setNumber)")
+            }
             // A review applies nothing by itself; its lighter week is an optional, explicit choice.
             if review && !recommendation.setTargets.isEmpty {
                 Text(LanguageManager.t("progression.coach.lighter_week_hint"))

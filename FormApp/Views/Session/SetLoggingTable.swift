@@ -27,6 +27,9 @@ public struct SetLoggingTable: View {
     var isBodyweight: Bool = false
     var ghostTargets: [Int: GhostTarget] = [:]
     var logbookBeatenSets: [Int: LogbookBeatResult] = [:]
+    /// Drop sets, rest-pause and partials (docs/design/intensity-sets.md).
+    var intensity: IntensityActions? = nil
+    @State private var knownExtensionIds: [String] = []
 
     public init(
         sets: [ExerciseSetLog],
@@ -46,7 +49,8 @@ public struct SetLoggingTable: View {
         isAssisted: Bool = false,
         isBodyweight: Bool = false,
         ghostTargets: [Int: GhostTarget] = [:],
-        logbookBeatenSets: [Int: LogbookBeatResult] = [:]
+        logbookBeatenSets: [Int: LogbookBeatResult] = [:],
+        intensity: IntensityActions? = nil
     ) {
         self.sets = sets
         self.prescription = prescription
@@ -66,6 +70,7 @@ public struct SetLoggingTable: View {
         self.isBodyweight = isBodyweight
         self.ghostTargets = ghostTargets
         self.logbookBeatenSets = logbookBeatenSets
+        self.intensity = intensity
     }
 
     private func weightInputFontSize(_ text: String, width: CGFloat) -> CGFloat {
@@ -133,9 +138,13 @@ public struct SetLoggingTable: View {
             // Set Rows
             ForEach(Array(sets.enumerated()), id: \.element.id) { index, set in
                 let isSetEnabled = set.isCompleted || WorkoutSessionUtils.isSetEnabled(sets: sets, index: index)
+                let selectedInSet = Self.field(selectedField, belongsTo: set)
                 let isSetInputEnabled = isRestActive
-                    ? (currentLoggedIndex == index || (isRestForCurrentExercise && selectedField?.id == set.id))
+                    ? (currentLoggedIndex == index || (isRestForCurrentExercise && selectedInSet))
                     : isSetEnabled
+                let showsTechniqueRow = intensity != nil && !set.isWarmup && isSetInputEnabled
+                    && WorkoutSessionUtils.canCompleteSet(set, allowsZeroWeight: allowsZeroWeight)
+                    && (selectedInSet || index == currentLoggedIndex)
                 let ghostTarget = ghostTargets[index]
                 let contextualPr: String = {
                     if let gt = ghostTarget, let prevW = gt.lastWeekWeightKg, let prevR = gt.lastWeekReps, prevW >= 0.0, prevR > 0 {
@@ -344,6 +353,10 @@ public struct SetLoggingTable: View {
                     }
                 }
 
+                if let intensity, !set.isWarmup {
+                    intensityRows(set: set, index: index, actions: intensity, inputEnabled: isSetInputEnabled, rowEnabled: isSetEnabled)
+                }
+
                 if validationSetId == set.id, !set.isCompleted,
                    let key = WorkoutSessionUtils.setValidationError(set, allowsZeroWeight: allowsZeroWeight) {
                     Text(LanguageManager.t(key)).font(.system(size: 12)).foregroundStyle(AppColors.danger)
@@ -418,10 +431,18 @@ public struct SetLoggingTable: View {
                             .buttonStyle(.plain)
                         }
                         .padding(.top, 4)
+
+                        if showsTechniqueRow, let intensity {
+                            techniqueRow(set: set, index: index, actions: intensity).padding(.top, 4)
+                        }
                     }
                     .padding(.horizontal, 8).padding(.vertical, 4)
                     .background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 10))
                     .accessibilityIdentifier("set-adjustments")
+                } else if showsTechniqueRow, let intensity {
+                    techniqueRow(set: set, index: index, actions: intensity)
+                        .padding(8)
+                        .background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 10))
                 }
             }
 
@@ -476,8 +497,21 @@ public struct SetLoggingTable: View {
         .onChange(of: focusedField) { _, value in
             if let value { selectedField = value }
         }
-        .onChange(of: sets.map(\.id)) { _, ids in
-            if let selectedField, !ids.contains(selectedField.id) { self.selectedField = nil; focusedField = nil }
+        .onChange(of: sets.map(\.id)) { _, _ in
+            if let selectedField, !sets.contains(where: { Self.field(selectedField, belongsTo: $0) }) { self.selectedField = nil; focusedField = nil }
+        }
+        .onAppear { knownExtensionIds = sets.flatMap { $0.extensions?.map(\.id) ?? [] } }
+        .onChange(of: sets) { _, latest in
+            if let selectedField, !latest.contains(where: { Self.field(selectedField, belongsTo: $0) }) { self.selectedField = nil; focusedField = nil }
+            // A newly added drop or rest-pause effort takes focus, so its numbers can be typed straight away.
+            let ids = latest.flatMap { $0.extensions?.map(\.id) ?? [] }
+            if let added = ids.first(where: { !knownExtensionIds.contains($0) }),
+               let owner = latest.first(where: { $0.extensions?.contains { $0.id == added } == true }) {
+                let part = owner.extensions?.first { $0.id == added }
+                let wantsWeight = IntensitySets.technique(of: owner) == .drop && (part?.weightInput.isEmpty ?? true)
+                focusedField = Field(id: added, weight: wantsWeight)
+            }
+            knownExtensionIds = ids
         }
         .onChange(of: isRestActive) { _, active in
             if active {
@@ -486,4 +520,243 @@ public struct SetLoggingTable: View {
             }
         }
     }
+
+    // MARK: Drop sets, rest-pause and partials
+
+    private static func partialsFieldId(_ ownerId: String) -> String { ownerId + "-partials" }
+
+    private static func field(_ field: Field?, belongsTo set: ExerciseSetLog) -> Bool {
+        guard let id = field?.id else { return false }
+        if id == set.id || id == partialsFieldId(set.id) { return true }
+        return (set.extensions ?? []).contains { $0.id == id || partialsFieldId($0.id) == id }
+    }
+
+    private func displayedWeight(_ weightInput: String, _ weightKg: Double?) -> String {
+        weightInput.isEmpty ? (weightKg.flatMap { $0 >= 0 ? WorkoutSessionUtils.formatWeightInput($0, unit: weightUnit) : nil } ?? "") : weightInput
+    }
+
+    /// The same part in the previous occurrence, as the PR column's hint.
+    private func previousPartText(set: ExerciseSetLog, index: Int, extensionIndex: Int, actions: IntensityActions) -> String {
+        guard let previous = actions.previousSets[index], let technique = IntensitySets.technique(of: set),
+              previous.setTechnique == technique, let part = previous.setExtensions[safe: extensionIndex], let reps = part.reps else { return "-" }
+        if technique == .restPause { return "×\(reps)" }
+        return WorkoutSessionUtils.formatSessionPr(weightKg: part.weightKg ?? 0, reps: reps, unit: weightUnit, isBodyweight: isBodyweight, isAssisted: isAssisted)
+    }
+
+    private func previousPartialsText(index: Int, extensionIndex: Int?, actions: IntensityActions) -> String {
+        guard let previous = actions.previousSets[index] else { return "-" }
+        let count = extensionIndex.map { previous.setExtensions[safe: $0]?.partialReps } ?? previous.partialReps
+        return count.map { "+\($0)" } ?? "-"
+    }
+
+    @ViewBuilder
+    private func intensityRows(set: ExerciseSetLog, index: Int, actions: IntensityActions, inputEnabled: Bool, rowEnabled: Bool) -> some View {
+        if let input = set.partialRepsInput {
+            partialsRow(set: set, index: index, extensionIndex: nil, ownerId: set.id, input: input, actions: actions, inputEnabled: inputEnabled, rowEnabled: rowEnabled)
+        }
+        let technique = IntensitySets.technique(of: set) ?? .drop
+        ForEach(Array((set.extensions ?? []).enumerated()), id: \.element.id) { extensionIndex, part in
+            extensionRow(set: set, index: index, extensionIndex: extensionIndex, part: part, technique: technique,
+                         actions: actions, inputEnabled: inputEnabled, rowEnabled: rowEnabled)
+            if validationSetId == part.id, !part.isCompleted,
+               let key = IntensitySets.extensionValidationError(set, at: extensionIndex, exercise: actions.exercise, unit: weightUnit) {
+                Text(LanguageManager.t(key)).font(.system(size: 12)).foregroundStyle(AppColors.danger)
+                    .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
+                    .accessibilityIdentifier("set-validation-\(part.id)")
+            }
+            if let input = part.partialRepsInput {
+                partialsRow(set: set, index: index, extensionIndex: extensionIndex, ownerId: part.id, input: input, actions: actions, inputEnabled: inputEnabled, rowEnabled: rowEnabled)
+            }
+        }
+    }
+
+    private func subRowField(_ binding: Binding<String>, field: Field, prompt: String, enabled: Bool, label: String, keyboard: UIKeyboardType) -> some View {
+        TextField("0", text: binding, prompt: Text(prompt).foregroundStyle(AppColors.muted.opacity(enabled ? 0.6 : 0.25)))
+            .focused($focusedField, equals: field)
+            .simultaneousGesture(TapGesture().onEnded { if enabled { selectedField = field } })
+            .disabled(!enabled)
+            .accessibilityLabel(label)
+            .keyboardType(keyboard)
+            .multilineTextAlignment(.center)
+            .font(.system(size: 15, weight: .semibold))
+            .foregroundStyle(enabled ? AppColors.text : AppColors.muted.opacity(0.5))
+            .padding(.vertical, 8)
+            .background(AppColors.surfaceRaised.opacity(enabled ? 1.0 : 0.5))
+            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .frame(maxWidth: .infinity)
+            .frame(minHeight: 48)
+            .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == field && enabled ? AppColors.accent : .clear))
+    }
+
+    private func extensionRow(set: ExerciseSetLog, index: Int, extensionIndex: Int, part: SetExtensionLog, technique: SetTechnique,
+                              actions: IntensityActions, inputEnabled: Bool, rowEnabled: Bool) -> some View {
+        let isDrop = technique == .drop
+        let label = LanguageManager.t(isDrop ? "intensity.a11y.drop" : "intensity.a11y.restPause", ["set": set.setNumber, "index": extensionIndex + 1])
+        let canTick = IntensitySets.extensionValidationError(set, at: extensionIndex, exercise: actions.exercise, unit: weightUnit) == nil
+        let weightText = isDrop ? displayedWeight(part.weightInput, part.weightKg) : ""
+        let weightBinding = Binding<String>(
+            get: { weightText },
+            set: { newValue in
+                guard inputEnabled, let sanitized = WorkoutSessionUtils.sanitizedWeightInput(newValue, unit: weightUnit) else { return }
+                actions.onUpdateExtension(index, extensionIndex, sanitized, part.repsInput)
+            }
+        )
+        let repsBinding = Binding<String>(
+            get: { part.repsInput == "0" ? "" : part.repsInput },
+            set: { newValue in
+                guard inputEnabled else { return }
+                if newValue == "0" || newValue == "00" { actions.onUpdateExtension(index, extensionIndex, weightText, ""); return }
+                if let sanitized = WorkoutSessionUtils.sanitizedRepsInput(newValue) { actions.onUpdateExtension(index, extensionIndex, weightText, sanitized) }
+            }
+        )
+        let previous = previousPartText(set: set, index: index, extensionIndex: extensionIndex, actions: actions)
+        return HStack(spacing: 8) {
+            Image(systemName: isDrop ? "arrow.down.right" : "pause")
+                .font(.system(size: 13, weight: .bold))
+                .foregroundStyle(AppColors.purple.opacity(rowEnabled ? 1 : 0.35))
+                .frame(width: 32, alignment: .leading)
+                .accessibilityHidden(true)
+            Text(previous)
+                .font(.system(size: 13, weight: .medium))
+                .foregroundStyle(AppColors.secondaryText.opacity(part.isCompleted ? 0.6 : (rowEnabled ? 1 : 0.35)))
+                .lineLimit(1).minimumScaleFactor(0.7)
+                .frame(width: 56, alignment: .center)
+                .accessibilityLabel(previous)
+            if isDrop {
+                subRowField(weightBinding, field: Field(id: part.id, weight: true), prompt: "0", enabled: inputEnabled,
+                            label: "\(label), \(isAssisted ? LanguageManager.t("table.assistance") : LanguageManager.t(weightUnit == .lbs ? "table.weightLbs" : "table.weightKg"))",
+                            keyboard: .decimalPad)
+            } else {
+                // Rest-pause keeps the main part's load.
+                Text(displayedWeight(set.weightInput, set.weightKg))
+                    .font(.system(size: 15, weight: .semibold))
+                    .foregroundStyle(AppColors.muted)
+                    .frame(maxWidth: .infinity, minHeight: 48)
+                    .accessibilityLabel("\(label), \(displayedWeight(set.weightInput, set.weightKg)) \(weightUnit.label)")
+            }
+            subRowField(repsBinding, field: Field(id: part.id, weight: false), prompt: "0", enabled: inputEnabled,
+                        label: "\(label), \(LanguageManager.t("table.actualReps"))", keyboard: .numberPad)
+            Button(action: {
+                if part.isCompleted || canTick {
+                    validationSetId = nil
+                    actions.onToggleExtension(index, extensionIndex)
+                    focusedField = nil
+                    selectedField = nil
+                } else {
+                    validationSetId = part.id
+                }
+            }) {
+                Image(systemName: part.isCompleted ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 22))
+                    .foregroundStyle(part.isCompleted ? AppColors.accent : (inputEnabled ? AppColors.muted.opacity(canTick ? 0.5 : 0.2) : AppColors.muted.opacity(0.15)))
+                    .frame(width: 44, height: 44)
+            }
+            .buttonStyle(.plain)
+            .disabled(!inputEnabled)
+            .accessibilityLabel("\(LanguageManager.t("table.doneHeading")) \(label)")
+            .accessibilityIdentifier("extension-complete-\(part.id)")
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 4)
+        .background(
+            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .fill(part.isCompleted ? AppColors.positiveBg.opacity(0.4) : (rowEnabled ? AppColors.surface : AppColors.surface.opacity(0.5)))
+        )
+        .accessibilityIdentifier("extension-row-\(part.id)")
+    }
+
+    private func partialsRow(set: ExerciseSetLog, index: Int, extensionIndex: Int?, ownerId: String, input: String,
+                             actions: IntensityActions, inputEnabled: Bool, rowEnabled: Bool) -> some View {
+        let field = Field(id: Self.partialsFieldId(ownerId), weight: false)
+        let label = LanguageManager.t("intensity.a11y.partials", ["set": set.setNumber])
+        let binding = Binding<String>(
+            get: { input },
+            set: { newValue in
+                guard inputEnabled, let sanitized = IntensitySets.sanitizedPartialInput(newValue) else { return }
+                actions.onUpdatePartials(index, extensionIndex, sanitized)
+            }
+        )
+        return HStack(spacing: 8) {
+            Image(systemName: "circle.lefthalf.filled")
+                .font(.system(size: 13, weight: .bold))
+                .foregroundStyle(AppColors.purple.opacity(rowEnabled ? 1 : 0.35))
+                .frame(width: 32, alignment: .leading)
+                .accessibilityHidden(true)
+            Text(previousPartialsText(index: index, extensionIndex: extensionIndex, actions: actions))
+                .font(.system(size: 13, weight: .medium))
+                .foregroundStyle(AppColors.secondaryText.opacity(rowEnabled ? 1 : 0.35))
+                .frame(width: 56, alignment: .center)
+            Text(LanguageManager.t("intensity.partialsShort"))
+                .font(.system(size: 12, weight: .medium))
+                .foregroundStyle(AppColors.muted)
+                .lineLimit(1).minimumScaleFactor(0.7)
+                .multilineTextAlignment(.center)
+                .frame(maxWidth: .infinity, minHeight: 48)
+                .accessibilityHidden(true)
+            subRowField(binding, field: field, prompt: "0", enabled: inputEnabled, label: label, keyboard: .numberPad)
+            Color.clear.frame(width: 44, height: 44)
+        }
+        .padding(.horizontal, 14)
+        .padding(.vertical, 4)
+        .background(RoundedRectangle(cornerRadius: 10, style: .continuous).fill(rowEnabled ? AppColors.surface : AppColors.surface.opacity(0.5)))
+        .accessibilityIdentifier("partials-row-\(ownerId)")
+    }
+
+    private func techniqueChip(icon: String, titleKey: String, enabled: Bool, identifier: String, hint: String? = nil,
+                               quiet: Bool = false, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            HStack(spacing: 4) {
+                Image(systemName: icon).font(.system(size: 12, weight: .semibold))
+                Text(LanguageManager.t(titleKey)).font(.system(size: 12, weight: .medium)).lineLimit(1).fixedSize()
+            }
+            .foregroundStyle(quiet ? AppColors.muted : AppColors.purple)
+            .opacity(enabled ? 1 : 0.35)
+            .padding(.horizontal, 10)
+            .frame(maxWidth: quiet ? nil : .infinity, minHeight: 48)
+            .background(RoundedRectangle(cornerRadius: 8).stroke(quiet ? AppColors.muted.opacity(0.35) : AppColors.border))
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .disabled(!enabled)
+        .accessibilityHint(hint ?? "")
+        .accessibilityIdentifier(identifier)
+    }
+
+    /// Drop, Rest-pause, Partials and Remove last for the focused working set; one technique per set.
+    @ViewBuilder
+    private func techniqueRow(set: ExerciseSetLog, index: Int, actions: IntensityActions) -> some View {
+        let current = IntensitySets.technique(of: set)
+        let oneTechnique = LanguageManager.t("intensity.oneTechnique")
+        let drop = techniqueChip(icon: "arrow.down.right", titleKey: "intensity.drop", enabled: IntensitySets.canAdd(.drop, to: set),
+                                 identifier: "technique-drop", hint: current == .restPause ? oneTechnique : nil) { actions.onAddExtension(index, .drop) }
+        let restPause = techniqueChip(icon: "pause", titleKey: "intensity.restPause", enabled: IntensitySets.canAdd(.restPause, to: set),
+                                      identifier: "technique-rest-pause", hint: current == .drop ? oneTechnique : nil) { actions.onAddExtension(index, .restPause) }
+        let partials = techniqueChip(icon: "circle.lefthalf.filled", titleKey: "intensity.partialsChip", enabled: IntensitySets.canAddPartials(to: set),
+                                     identifier: "technique-partials") { actions.onAddPartials(index) }
+        let remove = techniqueChip(icon: "minus", titleKey: "intensity.removeLast", enabled: true, identifier: "technique-remove-last",
+                                   quiet: true) { actions.onRemoveLastPart(index) }
+        let removable = IntensitySets.hasRemovablePart(set)
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 8) { drop; restPause; partials; if removable { remove } }
+            VStack(alignment: .leading, spacing: 8) {
+                HStack(spacing: 8) { drop; restPause }
+                HStack(spacing: 8) { partials; if removable { remove } }
+            }
+            VStack(alignment: .leading, spacing: 8) { drop; restPause; partials; if removable { remove } }
+        }
+        .accessibilityIdentifier("technique-row")
+    }
+}
+
+/// What the session table needs to log drop sets, rest-pause and partials.
+public struct IntensityActions {
+    public let exercise: Exercise
+    /// The previous occurrence's working set at each row index, for PR hints.
+    public let previousSets: [Int: SessionSetLog]
+    public let onAddExtension: (Int, SetTechnique) -> Void
+    public let onUpdateExtension: (Int, Int, String, String) -> Void
+    public let onToggleExtension: (Int, Int) -> Void
+    public let onAddPartials: (Int) -> Void
+    public let onUpdatePartials: (Int, Int?, String) -> Void
+    public let onRemoveLastPart: (Int) -> Void
 }

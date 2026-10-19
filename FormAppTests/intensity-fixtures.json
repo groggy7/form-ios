@@ -1,0 +1,103 @@
+{
+  "about": "Shared contract for drop sets, rest-pause and partials (docs/design/intensity-sets.md). Android IntensityFixturesTest and iOS IntensityFixtureTests run every case. Edit here, then run node scripts/sync_intensity_fixtures.cjs.",
+  "validation": [
+    { "name": "straight set", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 100, "reps": 8 }, "error": null },
+    { "name": "double drop", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 100, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 70, "reps": 5 }, { "weightKg": 50, "reps": 4 }] }, "error": null },
+    { "name": "drop at the same load", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 100, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 100, "reps": 5 }] }, "error": "drop_order" },
+    { "name": "second drop heavier than the first", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 100, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 70, "reps": 5 }, { "weightKg": 80, "reps": 3 }] }, "error": "drop_order" },
+    { "name": "assisted drop adds assistance", "exerciseId": "assisted-pull-up", "set": { "setNumber": 1, "weightKg": 20, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 30, "reps": 4 }] }, "error": null },
+    { "name": "assisted drop with less assistance", "exerciseId": "assisted-pull-up", "set": { "setNumber": 1, "weightKg": 20, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 10, "reps": 4 }] }, "error": "drop_order" },
+    { "name": "weighted pull-up drops to bodyweight", "exerciseId": "weighted-pull-ups", "set": { "setNumber": 1, "weightKg": 20, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 0, "reps": 5 }] }, "error": null },
+    { "name": "rest-pause", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 100, "reps": 8, "technique": "restPause", "extensions": [{ "weightKg": 100, "reps": 3 }, { "weightKg": 100, "reps": 2 }] }, "error": null },
+    { "name": "rest-pause at another load", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 100, "reps": 8, "technique": "restPause", "extensions": [{ "weightKg": 90, "reps": 3 }] }, "error": "rest_pause_load" },
+    { "name": "unknown technique", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 100, "reps": 8, "technique": "cluster", "extensions": [{ "weightKg": 100, "reps": 3 }] }, "error": "technique" },
+    { "name": "technique without extensions", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 100, "reps": 8, "technique": "drop", "extensions": [] }, "error": "extensions" },
+    { "name": "technique with extensions missing", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 100, "reps": 8, "technique": "drop" }, "error": "extensions" },
+    { "name": "extensions without technique", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 100, "reps": 8, "extensions": [{ "weightKg": 70, "reps": 5 }] }, "error": "technique" },
+    { "name": "seven extensions", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 100, "reps": 8, "technique": "restPause", "extensions": [{ "weightKg": 100, "reps": 2 }, { "weightKg": 100, "reps": 2 }, { "weightKg": 100, "reps": 2 }, { "weightKg": 100, "reps": 2 }, { "weightKg": 100, "reps": 2 }, { "weightKg": 100, "reps": 2 }, { "weightKg": 100, "reps": 2 }] }, "error": "extensions" },
+    { "name": "extension without reps", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 100, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 70, "reps": 0 }] }, "error": "reps" },
+    { "name": "partials on a straight set", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 100, "reps": 8, "partialReps": 4 }, "error": null },
+    { "name": "zero partials", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 100, "reps": 8, "partialReps": 0 }, "error": "partials" },
+    { "name": "100 partials", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 100, "reps": 8, "partialReps": 100 }, "error": "partials" },
+    { "name": "partials on a drop", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 100, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 70, "reps": 5, "partialReps": 120 }] }, "error": "partials" },
+    { "name": "warmup with partials", "exerciseId": "barbell-bench-press", "set": { "setNumber": 1, "weightKg": 60, "reps": 10, "isWarmup": true, "partialReps": 3 }, "error": "warmup" }
+  ],
+  "volume": [
+    { "name": "straight set", "set": { "setNumber": 1, "weightKg": 100, "reps": 8 }, "loadVolumeKg": 800 },
+    { "name": "double drop adds each drop", "set": { "setNumber": 1, "weightKg": 100, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 70, "reps": 5 }, { "weightKg": 50, "reps": 4 }] }, "loadVolumeKg": 1150 },
+    { "name": "rest-pause adds each effort", "set": { "setNumber": 1, "weightKg": 100, "reps": 8, "technique": "restPause", "extensions": [{ "weightKg": 100, "reps": 3 }, { "weightKg": 100, "reps": 2 }] }, "loadVolumeKg": 1300 },
+    { "name": "partials add nothing", "set": { "setNumber": 1, "weightKg": 100, "reps": 8, "partialReps": 4, "technique": "drop", "extensions": [{ "weightKg": 70, "reps": 5, "partialReps": 3 }] }, "loadVolumeKg": 1150 }
+  ],
+  "notation": [
+    { "name": "double drop", "unit": "kg", "set": { "setNumber": 1, "weightKg": 100, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 70, "reps": 5 }, { "weightKg": 50, "reps": 4 }] }, "text": "100 kg × 6 → 70 kg × 5 → 50 kg × 4" },
+    { "name": "rest-pause", "unit": "kg", "set": { "setNumber": 1, "weightKg": 100, "reps": 8, "technique": "restPause", "extensions": [{ "weightKg": 100, "reps": 3 }, { "weightKg": 100, "reps": 2 }] }, "text": "100 kg × 8 + 3 + 2" },
+    { "name": "partials", "unit": "kg", "set": { "setNumber": 1, "weightKg": 100, "reps": 8, "partialReps": 4 }, "text": "100 kg × 8 (+4 partials)" },
+    { "name": "one partial", "unit": "kg", "set": { "setNumber": 1, "weightKg": 100, "reps": 8, "partialReps": 1 }, "text": "100 kg × 8 (+1 partial)" },
+    { "name": "partials after a drop", "unit": "kg", "set": { "setNumber": 1, "weightKg": 100, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 70, "reps": 5, "partialReps": 3 }] }, "text": "100 kg × 6 → 70 kg × 5 (+3 partials)" },
+    { "name": "drop to bodyweight", "unit": "kg", "set": { "setNumber": 1, "weightKg": 20, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 0, "reps": 5 }] }, "text": "20 kg × 6 → BW × 5" },
+    { "name": "pounds", "unit": "lbs", "set": { "setNumber": 1, "weightKg": 102.05828325, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 83.91458845, "reps": 5 }] }, "text": "225 lbs × 6 → 185 lbs × 5" }
+  ],
+  "saved": [
+    {
+      "name": "only ticked drops are saved",
+      "exerciseId": "barbell-bench-press",
+      "draft": { "setNumber": 1, "weightInput": "100", "repsInput": "6", "weightKg": 100, "completedReps": 6, "isCompleted": true, "technique": "drop",
+        "extensions": [{ "weightInput": "70", "repsInput": "5", "weightKg": 70, "completedReps": 5, "isCompleted": true }, { "weightInput": "50", "repsInput": "", "weightKg": 50, "isCompleted": false }] },
+      "saved": { "setNumber": 1, "weightKg": 100, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 70, "reps": 5 }] }
+    },
+    {
+      "name": "rest-pause takes the main load",
+      "exerciseId": "barbell-bench-press",
+      "draft": { "setNumber": 2, "weightInput": "100", "repsInput": "8", "weightKg": 100, "completedReps": 8, "isCompleted": true, "technique": "restPause", "partialRepsInput": "",
+        "extensions": [{ "repsInput": "3", "completedReps": 3, "isCompleted": true }, { "repsInput": "2", "completedReps": 2, "isCompleted": true, "partialRepsInput": "2" }] },
+      "saved": { "setNumber": 2, "weightKg": 100, "reps": 8, "technique": "restPause", "extensions": [{ "weightKg": 100, "reps": 3 }, { "weightKg": 100, "reps": 2, "partialReps": 2 }] }
+    },
+    {
+      "name": "no ticked extension leaves a straight set with partials",
+      "exerciseId": "barbell-bench-press",
+      "draft": { "setNumber": 1, "weightInput": "100", "repsInput": "6", "weightKg": 100, "completedReps": 6, "isCompleted": true, "technique": "drop", "partialRepsInput": "4",
+        "extensions": [{ "weightInput": "70", "repsInput": "5", "weightKg": 70, "completedReps": 5, "isCompleted": false }] },
+      "saved": { "setNumber": 1, "weightKg": 100, "reps": 6, "partialReps": 4 }
+    },
+    {
+      "name": "a drop that is not lighter is not saved",
+      "exerciseId": "barbell-bench-press",
+      "draft": { "setNumber": 1, "weightInput": "100", "repsInput": "6", "weightKg": 100, "completedReps": 6, "isCompleted": true, "technique": "drop",
+        "extensions": [{ "weightInput": "100", "repsInput": "5", "weightKg": 100, "completedReps": 5, "isCompleted": true }] },
+      "saved": { "setNumber": 1, "weightKg": 100, "reps": 6 }
+    },
+    {
+      "name": "a warmup saves no intensity",
+      "exerciseId": "barbell-bench-press",
+      "draft": { "setNumber": 1, "weightInput": "60", "repsInput": "10", "weightKg": 60, "completedReps": 10, "isCompleted": true, "isWarmup": true, "partialRepsInput": "3" },
+      "saved": { "setNumber": 1, "weightKg": 60, "reps": 10, "isWarmup": true }
+    },
+    {
+      "name": "assisted drop adds assistance",
+      "exerciseId": "assisted-pull-up",
+      "draft": { "setNumber": 1, "weightInput": "20", "repsInput": "6", "weightKg": 20, "completedReps": 6, "isCompleted": true, "technique": "drop",
+        "extensions": [{ "weightInput": "30", "repsInput": "4", "weightKg": 30, "completedReps": 4, "isCompleted": true }] },
+      "saved": { "setNumber": 1, "weightKg": 20, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 30, "reps": 4 }] }
+    },
+    {
+      "name": "weighted pull-up drops to bodyweight",
+      "exerciseId": "weighted-pull-ups",
+      "draft": { "setNumber": 1, "weightInput": "20", "repsInput": "6", "weightKg": 20, "completedReps": 6, "isCompleted": true, "technique": "drop",
+        "extensions": [{ "weightInput": "0", "repsInput": "5", "weightKg": 0, "completedReps": 5, "isCompleted": true }] },
+      "saved": { "setNumber": 1, "weightKg": 20, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 0, "reps": 5 }] }
+    }
+  ],
+  "stats": [
+    {
+      "name": "records use main parts; volume adds extensions",
+      "exerciseName": "Barbell Bench Press",
+      "exerciseId": "barbell-bench-press",
+      "sets": [
+        { "setNumber": 1, "weightKg": 100, "reps": 6, "technique": "drop", "extensions": [{ "weightKg": 70, "reps": 5 }] },
+        { "setNumber": 2, "weightKg": 90, "reps": 8, "technique": "restPause", "extensions": [{ "weightKg": 90, "reps": 3 }, { "weightKg": 90, "reps": 2 }] },
+        { "setNumber": 3, "weightKg": 80, "reps": 8, "partialReps": 4 }
+      ],
+      "expected": { "prWeightKg": 100, "prReps": 6, "estimated1rmKg": 116.12903225806451, "totalVolumeKg": 2760, "lifetimeSets": 3 }
+    }
+  ]
+}

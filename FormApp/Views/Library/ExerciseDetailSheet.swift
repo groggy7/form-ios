@@ -918,7 +918,9 @@ struct ExerciseSessionHistoryCard: View {
                                 Spacer()
 
                                 let setDetail: String = {
-                                    if let w = setLog.weightKg, w > 0.0 {
+                                    if IntensitySets.hasDetail(setLog) {
+                                        return IntensitySets.notation(setLog, unit: weightUnit)
+                                    } else if let w = setLog.weightKg, w > 0.0 {
                                         return "\(weightUnit.formatDisplayWeight(w)) \(weightUnit.label) × \(setLog.reps ?? 0)"
                                     } else {
                                         return "\(setLog.reps ?? 0) reps"
@@ -928,6 +930,7 @@ struct ExerciseSessionHistoryCard: View {
                                 Text(setDetail)
                                     .font(.system(size: 15, weight: .bold))
                                     .foregroundStyle(AppColors.text)
+                                    .multilineTextAlignment(.trailing)
                             }
                         }
                     }

@@ -4,7 +4,7 @@ public enum RestTimerUtils {
     public static let restPresets: [Int] = [60, 90, 120, 180, 240]
 
     /// Evaluate the latest draft after logging the set, independent of exercise order.
-    public static func afterCompletingSet(in draft: ActiveSessionDraft, exercise: Exercise, nowEpochMillis: Int64) -> RestTimerState? {
+    public static func afterCompletingSet(in draft: ActiveSessionDraft, exercise: Exercise, setId: String? = nil, nowEpochMillis: Int64) -> RestTimerState? {
         guard !WorkoutSessionUtils.isComplete(draft: draft) else { return nil }
         let seconds = restSeconds(for: exercise)
         guard seconds > 0 else { return nil }
@@ -13,7 +13,8 @@ public enum RestTimerUtils {
             totalSeconds: seconds,
             isRunning: true,
             endsAtEpochMillis: nowEpochMillis + Int64(seconds) * 1000,
-            pausedSecondsRemaining: seconds
+            pausedSecondsRemaining: seconds,
+            setId: setId
         )
     }
 
@@ -65,15 +66,12 @@ public struct SessionProgress {
         let completedWorking = completed.filter { !$0.isWarmup }
         let duration = draft.currentDurationSeconds(nowEpochMillis: nowEpochMillis)
         
-        let volume = draft.workout.exercises.filter { !WorkoutSessionUtils.isAssisted($0) }.reduce(0.0) { total, ex in
-            total + (draft.setsByExercise[ex.id] ?? []).filter { completedWorking.contains($0) }.reduce(0) { $0 + ($1.weightKg ?? 0) * Double($1.completedReps ?? 0) }
-        }
-
+        let unit = draft.weightInputUnit ?? .kg
         let logs = draft.workout.exercises.map { ex -> SessionExerciseLog in
             let configured = draft.setsByExercise[ex.id] ?? []
             let workingCount = configured.filter { !$0.isWarmup }.count
             let sets = configured.filter { completed.contains($0) }.map {
-                SessionSetLog(setNumber: $0.setNumber, weightKg: $0.weightKg, reps: $0.completedReps, isWarmup: $0.isWarmup)
+                IntensitySets.savedSet($0, exercise: ex, unit: unit)
             }
             let target = workingCount > 0 ? workingCount : WorkoutSessionUtils.initialSetCount(exercise: ex)
             return SessionExerciseLog(
@@ -87,6 +85,11 @@ public struct SessionProgress {
 
         let hasProg = allSets.contains {
             $0.isCompleted || (!$0.weightInput.trimmingCharacters(in: .whitespaces).isEmpty && ($0.inputTouched == true || $0.weightInput != "0")) || !$0.repsInput.trimmingCharacters(in: .whitespaces).isEmpty
+        }
+
+        // Drops and rest-pause efforts add their load volume; the set still counts once.
+        let volume = zip(draft.workout.exercises, logs).filter { !WorkoutSessionUtils.isAssisted($0.0) }.reduce(0.0) { total, pair in
+            total + pair.1.sets.filter { !$0.isWarmup }.reduce(0) { $0 + IntensitySets.loadVolume($1) }
         }
 
         return SessionProgress(
@@ -168,7 +171,7 @@ public enum WorkoutSessionUtils {
         edited.weightKg = weightForEditedInput(weight, existing: set, unit: unit)
         edited.completedReps = Int(reps); edited.inputTouched = true
         edited.isCompleted = set.isCompleted && canCompleteSet(edited, allowsZeroWeight: allowsZeroWeight(exercise))
-        return edited
+        return IntensitySets.revokingInvalidExtensions(edited, exercise: exercise, unit: unit)
     }
 
     /// Completed sets without any load (bodyweight work) read as bodyweight, not as "0 kg" of volume.
@@ -188,7 +191,7 @@ public enum WorkoutSessionUtils {
 
     public static func resistanceVolume(_ log: SessionExerciseLog) -> Double {
         guard !isAssisted(exerciseId: log.exerciseId, name: log.exerciseName) else { return 0 }
-        return log.sets.filter { !$0.isWarmup }.reduce(0) { $0 + ($1.weightKg ?? 0) * Double($1.reps ?? 0) }
+        return log.sets.filter { !$0.isWarmup }.reduce(0) { $0 + IntensitySets.loadVolume($1) }
     }
 
     public static func resistanceVolume(_ record: WorkoutSessionRecord) -> Double {
@@ -258,6 +261,18 @@ public enum WorkoutSessionUtils {
                     copy.weightKg = set.isCompleted ? canonical : newUnit.loadableKg(canonical, barbell: barbell)
                     copy.weightInput = formatWeightInput(canonical, unit: newUnit, barbell: barbell)
                 }
+                copy.extensions = set.extensions?.map { part in
+                    // Drop loads follow the same rule; rest-pause efforts have no load of their own.
+                    var part = part
+                    let digits = part.weightInput.rangeOfCharacter(from: .decimalDigits) != nil
+                    let canonical = part.weightKg.flatMap { $0.isFinite && $0 >= 0 ? $0 : nil }
+                        ?? (digits ? sanitizedWeightInput(part.weightInput, unit: oldUnit).flatMap(Double.init).map { oldUnit.toCanonicalKg($0) } : nil)
+                    if let canonical {
+                        part.weightKg = part.isCompleted ? canonical : newUnit.loadableKg(canonical, barbell: barbell)
+                        part.weightInput = formatWeightInput(canonical, unit: newUnit, barbell: barbell)
+                    }
+                    return part
+                }
                 return copy
             }
         }
@@ -272,6 +287,11 @@ public enum WorkoutSessionUtils {
         var sets = sets
         let currentSet = sets[index]
         sets[index].isCompleted = !currentSet.isCompleted
+        if currentSet.isCompleted, var parts = sets[index].extensions {
+            // Undoing the set unticks its extensions; they are saved only with a completed set.
+            for part in parts.indices { parts[part].isCompleted = false }
+            sets[index].extensions = parts
+        }
         if !currentSet.isCompleted, prefillNextSet, sets.indices.contains(index + 1) {
             sets[index + 1] = prefillSet(sets[index + 1], from: currentSet, unit: unit, barbell: barbell)
         }
@@ -400,7 +420,7 @@ public enum WorkoutSessionUtils {
             let safeTarget = max(1, targetTotal)
             if !completedLogs.isEmpty {
                 var restored = completedLogs.map { s in
-                    ExerciseSetLog(
+                    IntensitySets.restoringIntensity(s, into: ExerciseSetLog(
                         setNumber: s.setNumber,
                         weightInput: s.weightKg.map { formatWeightInput($0, unit: unit, barbell: usesBarbellPlates(ex)) } ?? "",
                         repsInput: (s.reps ?? 0) > 0 ? "\(s.reps!)" : "",
@@ -408,7 +428,7 @@ public enum WorkoutSessionUtils {
                         completedReps: (s.reps ?? 0) > 0 ? s.reps : nil,
                         isCompleted: true,
                         isWarmup: s.isWarmup
-                    )
+                    ), unit: unit, barbell: usesBarbellPlates(ex))
                 }
                 let working = restored.filter { !$0.isWarmup }
                 let needed = max(safeTarget, working.map { $0.setNumber }.max() ?? 0)
@@ -760,4 +780,311 @@ final class SessionHistoryInsightsCache {
         entry = (inputs, result)
         return result
     }
+}
+
+/// Drop sets, rest-pause and partials (gym/docs/design/intensity-sets.md). Android `IntensitySets`
+/// applies the same rules; gym/docs/intensity-fixtures.json checks both.
+public enum IntensitySets {
+    public static let maxExtensions = 6
+    public static let partialRepsRange = 1...99
+    private static let loadTolerance = 0.0001
+
+    // MARK: Saved sets
+
+    /// A set uses a technique only when it has both a known technique and extensions.
+    public static func usesTechnique(_ set: SessionSetLog) -> Bool {
+        set.setTechnique != nil && !set.setExtensions.isEmpty
+    }
+
+    /// Load volume of a working set: the main part plus each extension's load × full reps. Partials add nothing.
+    public static func loadVolume(_ set: SessionSetLog) -> Double {
+        let main = (set.weightKg ?? 0) * Double(set.reps ?? 0)
+        guard usesTechnique(set) else { return main }
+        return set.setExtensions.reduce(main) { $0 + ($1.weightKg ?? 0) * Double($1.reps ?? 0) }
+    }
+
+    /// Why a saved set cannot be restored, or nil. Restore rejects anything the logger never writes.
+    public static func restoreError(_ set: SessionSetLog, assisted: Bool) -> String? {
+        if set.isWarmup {
+            return set.technique == nil && set.extensions == nil && set.partialReps == nil ? nil : "warmup"
+        }
+        if let partial = set.partialReps, !partialRepsRange.contains(partial) { return "partials" }
+        guard let code = set.technique else { return set.extensions == nil ? nil : "technique" }
+        guard let technique = SetTechnique(rawValue: code) else { return "technique" }
+        guard let extensions = set.extensions, (1...maxExtensions).contains(extensions.count) else { return "extensions" }
+        guard let main = set.weightKg, main.isFinite, main >= 0 else { return "weight" }
+        var previous = main
+        for part in extensions {
+            guard let weight = part.weightKg, weight.isFinite, (0...BackupSanitizer.maxSetWeightKg).contains(weight) else { return "weight" }
+            guard let reps = part.reps, (1...999).contains(reps) else { return "reps" }
+            if let partial = part.partialReps, !partialRepsRange.contains(partial) { return "partials" }
+            switch technique {
+            case .drop:
+                let ordered = assisted ? weight > previous + loadTolerance : weight < previous - loadTolerance
+                if !ordered { return "drop_order" }
+            case .restPause:
+                if abs(weight - main) > loadTolerance { return "rest_pause_load" }
+            }
+            previous = weight
+        }
+        return nil
+    }
+
+    /// "100 kg × 6 → 70 kg × 5", "100 kg × 8 + 3 + 2" or "100 kg × 8 (+4 partials)". Zero loads read as BW.
+    public static func notation(_ set: SessionSetLog, unit: WeightUnit) -> String {
+        func load(_ weightKg: Double?) -> String {
+            guard let weightKg, weightKg > 0 else { return "BW" }
+            return "\(unit.formatDisplayWeight(weightKg)) \(unit.label)"
+        }
+        func partials(_ count: Int?) -> String {
+            guard let count, partialRepsRange.contains(count) else { return "" }
+            return " (" + LanguageManager.shared.plural("intensity.partials", count) + ")"
+        }
+        var text = "\(load(set.weightKg)) × \(set.reps ?? 0)" + partials(set.partialReps)
+        guard usesTechnique(set), let technique = set.setTechnique else { return text }
+        for part in set.setExtensions {
+            switch technique {
+            case .drop: text += " → \(load(part.weightKg)) × \(part.reps ?? 0)"
+            case .restPause: text += " + \(part.reps ?? 0)"
+            }
+            text += partials(part.partialReps)
+        }
+        return text
+    }
+
+    /// Whether a saved set shows more than its main part.
+    public static func hasDetail(_ set: SessionSetLog) -> Bool {
+        usesTechnique(set) || set.partialReps != nil
+    }
+
+    // MARK: Active-session draft
+
+    public static func technique(of set: ExerciseSetLog) -> SetTechnique? {
+        set.technique.flatMap(SetTechnique.init(rawValue:))
+    }
+
+    public static func partialCount(_ input: String?) -> Int? {
+        guard let value = input.flatMap({ Int($0.trimmingCharacters(in: .whitespaces)) }), partialRepsRange.contains(value) else { return nil }
+        return value
+    }
+
+    /// Accepts "" or 1–99 without leading zeros, like rep inputs.
+    public static func sanitizedPartialInput(_ value: String) -> String? {
+        let trimmed = value.trimmingCharacters(in: .whitespaces)
+        if trimmed.isEmpty { return "" }
+        guard trimmed.count <= 2, trimmed.first != "0", let number = Int(trimmed), partialRepsRange.contains(number) else { return nil }
+        return trimmed
+    }
+
+    public static func canAdd(_ technique: SetTechnique, to set: ExerciseSetLog) -> Bool {
+        !set.isWarmup && (set.technique == nil || set.technique == technique.rawValue) && (set.extensions?.count ?? 0) < maxExtensions
+    }
+
+    /// Partials attach to the set's last part; one entry per part.
+    public static func canAddPartials(to set: ExerciseSetLog) -> Bool {
+        guard !set.isWarmup else { return false }
+        if let last = set.extensions?.last { return last.partialRepsInput == nil }
+        return set.partialRepsInput == nil
+    }
+
+    public static func hasRemovablePart(_ set: ExerciseSetLog) -> Bool {
+        !(set.extensions ?? []).isEmpty || set.partialRepsInput != nil
+    }
+
+    /// Adds an empty drop or rest-pause effort. A drop may start from the previous occurrence's load.
+    public static func addingExtension(_ technique: SetTechnique, to set: ExerciseSetLog, prefillWeightKg: Double? = nil,
+                                       unit: WeightUnit, barbell: Bool = false) -> ExerciseSetLog {
+        guard canAdd(technique, to: set) else { return set }
+        var part = SetExtensionLog()
+        if technique == .drop, let weight = prefillWeightKg, weight.isFinite, weight >= 0 {
+            part.weightInput = WorkoutSessionUtils.formatWeightInput(weight, unit: unit, barbell: barbell)
+            part.weightKg = unit.loadableKg(weight, barbell: barbell)
+        }
+        var copy = set
+        copy.technique = technique.rawValue
+        copy.extensions = (set.extensions ?? []) + [part]
+        return copy
+    }
+
+    public static func addingPartials(to set: ExerciseSetLog) -> ExerciseSetLog {
+        guard canAddPartials(to: set) else { return set }
+        var copy = set
+        if var parts = set.extensions, !parts.isEmpty {
+            parts[parts.count - 1].partialRepsInput = ""
+            copy.extensions = parts
+        } else {
+            copy.partialRepsInput = ""
+        }
+        return copy
+    }
+
+    /// Removes the last part's partials, else the last extension, else the main part's partials.
+    public static func removingLastPart(_ set: ExerciseSetLog) -> ExerciseSetLog {
+        var copy = set
+        if var parts = set.extensions, let last = parts.last {
+            if last.partialRepsInput != nil {
+                parts[parts.count - 1].partialRepsInput = nil
+            } else {
+                parts.removeLast()
+            }
+            copy.extensions = parts.isEmpty ? nil : parts
+            if parts.isEmpty { copy.technique = nil }
+        } else {
+            copy.partialRepsInput = nil
+        }
+        return copy
+    }
+
+    /// The load of extension `index` in kg: typed for a drop, the main load for rest-pause.
+    public static func extensionWeightKg(_ set: ExerciseSetLog, at index: Int, unit: WeightUnit) -> Double? {
+        guard let part = set.extensions?[safe: index] else { return nil }
+        if technique(of: set) == .restPause { return mainWeightKg(set, unit: unit) }
+        return part.weightKg ?? parsedWeightKg(part.weightInput, unit: unit)
+    }
+
+    public static func mainWeightKg(_ set: ExerciseSetLog, unit: WeightUnit) -> Double? {
+        set.weightKg ?? parsedWeightKg(set.weightInput, unit: unit)
+    }
+
+    private static func parsedWeightKg(_ input: String, unit: WeightUnit) -> Double? {
+        Double(input.replacingOccurrences(of: ",", with: ".").trimmingCharacters(in: .whitespaces)).map { unit.toCanonicalKg($0) }
+    }
+
+    /// The localization key explaining why an extension cannot be ticked, or nil.
+    public static func extensionValidationError(_ set: ExerciseSetLog, at index: Int, exercise: Exercise, unit: WeightUnit) -> String? {
+        guard let part = set.extensions?[safe: index] else { return nil }
+        let allowsZero = WorkoutSessionUtils.allowsZeroWeight(exercise)
+        if let mainError = WorkoutSessionUtils.setValidationError(set, allowsZeroWeight: allowsZero) { return mainError }
+        guard let weight = extensionWeightKg(set, at: index, unit: unit), weight.isFinite, weight >= 0, allowsZero || weight > 0 else {
+            return allowsZero ? "table.validation.weight_zero_allowed" : "table.validation.weight_positive"
+        }
+        guard let reps = part.completedReps ?? Int(part.repsInput.trimmingCharacters(in: .whitespaces)), (1...999).contains(reps) else {
+            return "table.validation.reps"
+        }
+        if technique(of: set) == .drop,
+           let previous = index == 0 ? mainWeightKg(set, unit: unit) : extensionWeightKg(set, at: index - 1, unit: unit) {
+            let assisted = WorkoutSessionUtils.isAssisted(exercise)
+            let ordered = assisted ? weight > previous + loadTolerance : weight < previous - loadTolerance
+            if !ordered { return assisted ? "intensity.validation.dropAssistance" : "intensity.validation.dropLighter" }
+        }
+        return nil
+    }
+
+    /// Edits one extension's text. A drop keeps its typed load; rest-pause always uses the main load.
+    public static func editingExtension(_ set: ExerciseSetLog, at index: Int, weight: String, reps: String,
+                                        exercise: Exercise, unit: WeightUnit) -> ExerciseSetLog {
+        guard var parts = set.extensions, parts.indices.contains(index) else { return set }
+        var part = parts[index]
+        if technique(of: set) == .drop {
+            let existing = ExerciseSetLog(setNumber: set.setNumber, weightInput: part.weightInput, weightKg: part.weightKg)
+            part.weightKg = WorkoutSessionUtils.weightForEditedInput(weight, existing: existing, unit: unit)
+            part.weightInput = weight
+        }
+        part.repsInput = reps
+        part.completedReps = Int(reps)
+        parts[index] = part
+        var copy = set
+        copy.extensions = parts
+        return revokingInvalidExtensions(copy, exercise: exercise, unit: unit)
+    }
+
+    public static func editingPartials(_ set: ExerciseSetLog, extensionIndex: Int?, input: String) -> ExerciseSetLog {
+        var copy = set
+        if let extensionIndex {
+            guard var parts = set.extensions, parts.indices.contains(extensionIndex), parts[extensionIndex].partialRepsInput != nil else { return set }
+            parts[extensionIndex].partialRepsInput = input
+            copy.extensions = parts
+        } else {
+            guard set.partialRepsInput != nil else { return set }
+            copy.partialRepsInput = input
+        }
+        return copy
+    }
+
+    /// Ticks a valid extension or unticks a ticked one.
+    public static func togglingExtension(_ set: ExerciseSetLog, at index: Int, exercise: Exercise, unit: WeightUnit) -> ExerciseSetLog {
+        guard var parts = set.extensions, parts.indices.contains(index) else { return set }
+        if parts[index].isCompleted {
+            parts[index].isCompleted = false
+        } else {
+            guard extensionValidationError(set, at: index, exercise: exercise, unit: unit) == nil else { return set }
+            parts[index].isCompleted = true
+        }
+        var copy = set
+        copy.extensions = parts
+        return copy
+    }
+
+    /// Unticks extensions that are no longer valid, and all of them once the main part is not completed.
+    public static func revokingInvalidExtensions(_ set: ExerciseSetLog, exercise: Exercise, unit: WeightUnit) -> ExerciseSetLog {
+        guard var parts = set.extensions else { return set }
+        for index in parts.indices where parts[index].isCompleted {
+            if !set.isCompleted || extensionValidationError(set, at: index, exercise: exercise, unit: unit) != nil {
+                parts[index].isCompleted = false
+            }
+        }
+        var copy = set
+        copy.extensions = parts
+        return copy
+    }
+
+    /// Converting a set to a warmup removes its technique and partials.
+    public static func clearingIntensity(_ set: ExerciseSetLog) -> ExerciseSetLog {
+        var copy = set
+        copy.technique = nil
+        copy.partialRepsInput = nil
+        copy.extensions = nil
+        return copy
+    }
+
+    /// The saved form of a completed draft set: ticked, valid extensions and valid partials only.
+    public static func savedSet(_ set: ExerciseSetLog, exercise: Exercise, unit: WeightUnit) -> SessionSetLog {
+        var saved = SessionSetLog(setNumber: set.setNumber, weightKg: set.weightKg, reps: set.completedReps, isWarmup: set.isWarmup)
+        guard !set.isWarmup else { return saved }
+        saved.partialReps = partialCount(set.partialRepsInput)
+        guard let technique = technique(of: set) else { return saved }
+        let parts: [SessionSetExtension] = (set.extensions ?? []).enumerated().compactMap { index, part in
+            guard part.isCompleted, extensionValidationError(set, at: index, exercise: exercise, unit: unit) == nil,
+                  let weight = extensionWeightKg(set, at: index, unit: unit) else { return nil }
+            return SessionSetExtension(weightKg: weight, reps: part.completedReps ?? Int(part.repsInput), partialReps: partialCount(part.partialRepsInput))
+        }
+        if !parts.isEmpty {
+            saved.technique = technique.rawValue
+            saved.extensions = parts
+        }
+        return saved
+    }
+
+    /// Rebuilds a resumed session's ticked extensions and partials.
+    public static func restoringIntensity(_ saved: SessionSetLog, into set: ExerciseSetLog, unit: WeightUnit, barbell: Bool) -> ExerciseSetLog {
+        guard !saved.isWarmup else { return set }
+        var copy = set
+        copy.partialRepsInput = saved.partialReps.map(String.init)
+        if usesTechnique(saved), let technique = saved.setTechnique {
+            copy.technique = technique.rawValue
+            copy.extensions = saved.setExtensions.map { part in
+                SetExtensionLog(
+                    weightInput: technique == .drop ? part.weightKg.map { WorkoutSessionUtils.formatWeightInput($0, unit: unit, barbell: barbell) } ?? "" : "",
+                    repsInput: part.reps.map(String.init) ?? "",
+                    weightKg: technique == .drop ? part.weightKg : nil,
+                    completedReps: part.reps,
+                    isCompleted: true,
+                    partialRepsInput: part.partialReps.map(String.init)
+                )
+            }
+        }
+        return copy
+    }
+
+    /// Ticking an extension of the set that started the running rest restarts that rest at full length.
+    public static func restAfterTickingExtension(in draft: ActiveSessionDraft, setId: String, exercise: Exercise, nowEpochMillis: Int64) -> RestTimerState? {
+        guard let rest = draft.restTimer, rest.isRunning, rest.setId == setId, rest.secondsRemaining(nowEpochMillis: nowEpochMillis) > 0 else {
+            return draft.restTimer
+        }
+        return RestTimerUtils.afterCompletingSet(in: draft, exercise: exercise, setId: setId, nowEpochMillis: nowEpochMillis) ?? rest
+    }
+}
+
+extension Array {
+    subscript(safe index: Int) -> Element? { indices.contains(index) ? self[index] : nil }
 }

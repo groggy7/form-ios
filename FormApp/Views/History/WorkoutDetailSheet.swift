@@ -58,18 +58,26 @@ public struct WorkoutDetailSheet: View {
 
                                         Spacer()
 
-                                        let weightText = setLog.weightKg.map { weightUnit.formatDisplayWeight($0) + " " + weightUnit.label } ?? "—"
-                                        Text(weightText)
-                                            .font(.system(size: 14, weight: .semibold))
-                                            .foregroundStyle(AppColors.text)
+                                        if IntensitySets.hasDetail(setLog) {
+                                            // Drops, rest-pause and partials read as one chain.
+                                            Text(IntensitySets.notation(setLog, unit: weightUnit))
+                                                .font(.system(size: 14, weight: .semibold))
+                                                .foregroundStyle(AppColors.text)
+                                                .multilineTextAlignment(.trailing)
+                                        } else {
+                                            let weightText = setLog.weightKg.map { weightUnit.formatDisplayWeight($0) + " " + weightUnit.label } ?? "—"
+                                            Text(weightText)
+                                                .font(.system(size: 14, weight: .semibold))
+                                                .foregroundStyle(AppColors.text)
 
-                                        Text("×")
-                                            .foregroundStyle(AppColors.muted)
+                                            Text("×")
+                                                .foregroundStyle(AppColors.muted)
 
-                                        let repsText = setLog.reps.map { "\($0) reps" } ?? "—"
-                                        Text(repsText)
-                                            .font(.system(size: 14, weight: .semibold))
-                                            .foregroundStyle(AppColors.text)
+                                            let repsText = setLog.reps.map { "\($0) reps" } ?? "—"
+                                            Text(repsText)
+                                                .font(.system(size: 14, weight: .semibold))
+                                                .foregroundStyle(AppColors.text)
+                                        }
                                     }
                                     .padding(.horizontal, 14)
                                     .padding(.vertical, 8)
