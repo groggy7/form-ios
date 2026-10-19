@@ -6710,6 +6710,13 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(balance.quadHamstring.status, .optimal)
         XCTAssertNotNil(balance.upperLower.ratio)
         XCTAssertEqual(balance.upperLower.status, .optimal)
+        for ratio in [balance.pushPull, balance.quadHamstring, balance.upperLower] {
+            XCTAssertNotEqual(ratio.titleKey, LanguageManager.t(ratio.titleKey))
+            XCTAssertNotEqual(ratio.primaryLabelKey, LanguageManager.t(ratio.primaryLabelKey))
+            XCTAssertNotEqual(ratio.antagonistLabelKey, LanguageManager.t(ratio.antagonistLabelKey))
+            XCTAssertNotEqual(ratio.alertMessageKey, LanguageManager.t(ratio.alertMessageKey))
+            XCTAssertNotEqual(ratio.recommendationKey, LanguageManager.t(ratio.recommendationKey))
+        }
     }
 
     func testVolumeMatrixEngineComputation() {

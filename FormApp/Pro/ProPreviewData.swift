@@ -90,45 +90,45 @@ public enum ProPreviewData {
     public static let formLabBalanceReport: AntagonistBalanceReport = {
         let pushPull = AntagonistRatio(
             id: "push_pull",
-            titleKey: "form_lab.balance.push_pull",
-            primaryLabelKey: "form_lab.balance.push",
-            antagonistLabelKey: "form_lab.balance.pull",
+            titleKey: "form_lab.balance.push_pull_title",
+            primaryLabelKey: "form_lab.balance.push_label",
+            antagonistLabelKey: "form_lab.balance.pull_label",
             primarySets: 18,
             antagonistSets: 16,
             ratio: 1.12,
-            optimalMin: 0.85,
+            optimalMin: 0.80,
             optimalMax: 1.25,
             status: .optimal,
-            alertMessageKey: "",
-            recommendationKey: "form_lab.balance.rec_optimal"
+            alertMessageKey: "form_lab.balance.push_pull_optimal",
+            recommendationKey: "form_lab.balance.push_pull_optimal_rec"
         )
         let quadHam = AntagonistRatio(
             id: "quad_hamstring",
-            titleKey: "form_lab.balance.quad_ham",
-            primaryLabelKey: "form_lab.balance.quad",
-            antagonistLabelKey: "form_lab.balance.ham",
+            titleKey: "form_lab.balance.quad_ham_title",
+            primaryLabelKey: "form_lab.balance.quad_label",
+            antagonistLabelKey: "form_lab.balance.ham_label",
             primarySets: 16,
             antagonistSets: 12,
             ratio: 1.33,
-            optimalMin: 1.0,
-            optimalMax: 1.5,
+            optimalMin: 0.75,
+            optimalMax: 1.40,
             status: .optimal,
-            alertMessageKey: "",
-            recommendationKey: "form_lab.balance.rec_optimal"
+            alertMessageKey: "form_lab.balance.quad_ham_optimal",
+            recommendationKey: "form_lab.balance.quad_ham_optimal_rec"
         )
         let upperLower = AntagonistRatio(
             id: "upper_lower",
-            titleKey: "form_lab.balance.upper_lower",
-            primaryLabelKey: "form_lab.balance.upper",
-            antagonistLabelKey: "form_lab.balance.lower",
+            titleKey: "form_lab.balance.upper_lower_title",
+            primaryLabelKey: "form_lab.balance.upper_label",
+            antagonistLabelKey: "form_lab.balance.lower_label",
             primarySets: 34,
             antagonistSets: 28,
             ratio: 1.21,
-            optimalMin: 0.8,
-            optimalMax: 1.4,
+            optimalMin: 0.85,
+            optimalMax: 2.20,
             status: .optimal,
-            alertMessageKey: "",
-            recommendationKey: "form_lab.balance.rec_optimal"
+            alertMessageKey: "form_lab.balance.upper_lower_optimal",
+            recommendationKey: "form_lab.balance.upper_lower_optimal_rec"
         )
         return AntagonistBalanceReport(
             pushPull: pushPull,
