@@ -1276,8 +1276,6 @@
   "builder.replaceDraft": "Mevcut taslak değiştirilsin mi?",
   "programs.cover": "Program kapak görseli",
   "programs.cover.choose": "Kapak görseli seç",
-  "programs.cover.pick": "Seç",
-  "programs.cover.random": "Rastgele",
   "programs.cover.change": "Kapak görselini değiştir",
   "programs.cover.selected": "Program kapak görseli: {name}",
   "builder.coverRequired": "Bir kapak görseli seç.",

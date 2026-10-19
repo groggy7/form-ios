@@ -1276,8 +1276,6 @@
   "builder.replaceDraft": "¿Reemplazar el borrador actual?",
   "programs.cover": "Portada del programa",
   "programs.cover.choose": "Elegir portada",
-  "programs.cover.pick": "Elegir",
-  "programs.cover.random": "Al azar",
   "programs.cover.change": "Cambiar portada",
   "programs.cover.selected": "Portada del programa: {name}",
   "builder.coverRequired": "Elige una portada.",

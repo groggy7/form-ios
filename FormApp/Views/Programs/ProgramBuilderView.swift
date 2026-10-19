@@ -224,22 +224,30 @@ public struct ProgramBuilderView: View {
             BuilderTextField("modal.program.name", text: $program.name, limit: 100,
                 errorMessage: saveAttempted && nameInvalid ? LanguageManager.t("builder.nameError") : nil, showsLengthError: saveAttempted)
                 .accessibilityIdentifier("program-builder-name").id("program-name")
-            VStack(alignment: .leading, spacing: 4) {
-                ViewThatFits(in: .horizontal) {
-                    HStack(spacing: 8) { coverHeading.fixedSize(); Spacer(minLength: 0); coverActions.fixedSize() }
-                    VStack(alignment: .leading, spacing: 4) { coverHeading; coverActions }
+            VStack(alignment: .leading, spacing: 12) {
+                if let cover = displayedCover {
+                    let label = LanguageManager.t("programs.cover.selected", ["name": LanguageManager.t("programs.cover." + cover.rawValue)])
+                    Button { showCoverPicker = true } label: {
+                        HStack(spacing: 8) {
+                            Text(label).font(.caption).foregroundStyle(AppColors.secondaryText)
+                                .frame(maxWidth: .infinity, alignment: .leading).fixedSize(horizontal: false, vertical: true)
+                            Image(systemName: "pencil").font(.system(size: 16, weight: .semibold)).foregroundStyle(AppColors.accent)
+                        }.frame(minHeight: 48).contentShape(Rectangle())
+                    }.buttonStyle(.plain).accessibilityLabel(label).accessibilityHint(LanguageManager.t("programs.cover.change"))
+                        .accessibilityIdentifier("program-cover-change")
+                    Image(cover.assetName).resizable().aspectRatio(1.5, contentMode: .fit)
+                        .frame(maxWidth: .infinity).clipShape(RoundedRectangle(cornerRadius: 12)).accessibilityHidden(true)
+                } else {
+                    Text(LanguageManager.t("programs.cover")).font(.caption).foregroundStyle(AppColors.secondaryText)
+                        .accessibilityIdentifier("program-cover-label")
+                    BuilderActionButton("programs.cover.choose", systemImage: "photo") { showCoverPicker = true }
+                        .accessibilityIdentifier("program-cover-choose")
                 }
                 if saveAttempted && needsCover {
                     Text(LanguageManager.t("builder.coverRequired")).font(.caption).foregroundStyle(AppColors.danger)
                         .accessibilityIdentifier("program-cover-required")
                 }
             }.id("program-cover")
-            if let cover = displayedCover {
-                let label = LanguageManager.t("programs.cover.selected", ["name": LanguageManager.t("programs.cover." + cover.rawValue)])
-                Image(cover.assetName).resizable().aspectRatio(1.5, contentMode: .fit)
-                    .frame(maxWidth: .infinity).clipShape(RoundedRectangle(cornerRadius: 12))
-                    .accessibilityLabel(label).accessibilityIdentifier("program-cover-preview")
-            }
             Button { withAnimation(.easeInOut(duration: 0.2)) { optionalDetailsExpanded.toggle() } } label: {
                 HStack(spacing: 10) {
                     Image(systemName: "text.alignleft").foregroundStyle(AppColors.secondaryText)
@@ -263,28 +271,6 @@ public struct ProgramBuilderView: View {
                     .id("program-notes")
             }
         }.id("program-details")
-    }
-
-    private var coverHeading: some View {
-        Text(LanguageManager.t("programs.cover")).font(.caption).foregroundStyle(AppColors.secondaryText)
-            .accessibilityIdentifier("program-cover-label")
-    }
-    private var coverActions: some View {
-        HStack(spacing: 8) {
-            coverButton("programs.cover.pick", identifier: "program-cover-choose") { showCoverPicker = true }
-                .accessibilityLabel(LanguageManager.t("programs.cover.choose"))
-            coverButton("programs.cover.random", identifier: "program-cover-random") {
-                if let cover = ProgramCover.allCases.filter({ $0 != displayedCover }).randomElement() { program.coverId = cover.rawValue }
-            }
-        }
-    }
-    private func coverButton(_ key: String, identifier: String, action: @escaping () -> Void) -> some View {
-        Button(action: action) {
-            Text(LanguageManager.t(key)).font(.subheadline.weight(.medium)).foregroundStyle(AppColors.accent)
-                .padding(.horizontal, 12).frame(minWidth: 48, minHeight: 48)
-                .background(AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 10))
-                .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.border, lineWidth: 1))
-        }.buttonStyle(.plain).accessibilityIdentifier(identifier)
     }
 
     private var footer: some View {

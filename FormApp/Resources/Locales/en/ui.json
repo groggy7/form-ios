@@ -1276,8 +1276,6 @@
   "builder.replaceDraft": "Replace the current draft?",
   "programs.cover": "Program cover",
   "programs.cover.choose": "Choose cover",
-  "programs.cover.pick": "Choose",
-  "programs.cover.random": "Random",
   "programs.cover.change": "Change cover",
   "programs.cover.selected": "Program cover: {name}",
   "builder.coverRequired": "Choose a cover.",
