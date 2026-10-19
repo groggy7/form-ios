@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 public struct ProgramBuilderView: View {
     @ObservedObject var themeManager = ThemeManager.shared
@@ -20,6 +21,8 @@ public struct ProgramBuilderView: View {
     @State private var creatingCopy = false
     @State private var conflictDraft: ProgramBuilderDraft?
     @State private var saveError: String?
+    @State private var saveAttempted = false
+    @State private var validationAttempt = 0
     @State private var removalUndo: ProgramRemovalUndo?
     @State private var removalUndoToken = 0
     @State private var pendingNewDayID: String?
@@ -42,64 +45,91 @@ public struct ProgramBuilderView: View {
     }
 
     private var isDirty: Bool { program != original || ((isNew || creatingCopy) && (!program.name.isEmpty || !program.workouts.isEmpty || !program.description.isEmpty || !program.guidelines.isEmpty)) }
-    private var validationMessage: String? {
+    private var formError: String? {
         if (isNew || creatingCopy) && store.state.programs.count >= ProgramEditing.maxPrograms { return LanguageManager.t("builder.programLimit") }
         if !isNew && !creatingCopy && store.state.programs.first(where: { $0.id == original.id }) != original { return LanguageManager.t("builder.draftConflict") }
+        return nil
+    }
+    private var validationMessage: String? {
+        if let formError { return formError }
         do { try ProgramEditing.validate(program, original: original, editingTitles: false); return nil }
         catch { return error.localizedDescription }
     }
     private var needsCover: Bool { (isNew || creatingCopy) && program.coverId == nil }
     private var displayedCover: ProgramCover? { !isNew || program.coverId != nil ? ProgramCover.forProgram(program) : nil }
     private var canSave: Bool { validationMessage == nil && !needsCover }
+    private var nameInvalid: Bool { program.name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || program.name.utf16.count > 100 }
+    private var descriptionInvalid: Bool { program.description.utf16.count > 500 }
+    private var notesInvalid: Bool { program.guidelines.count > 50 || program.guidelines.contains { $0.utf16.count > 500 } }
+    private var trainingError: String? { formError == nil && !nameInvalid && !descriptionInvalid && !notesInvalid ? validationMessage : nil }
+    private var firstInvalidField: String {
+        if formError != nil { return "program-details" }
+        if nameInvalid { return "program-name" }
+        if needsCover { return "program-cover" }
+        if descriptionInvalid { return "program-description" }
+        if notesInvalid { return "program-notes" }
+        return "program-training-days"
+    }
     private var incompleteDays: Int { program.workouts.filter { $0.exercises.isEmpty }.count }
-    private var creating: Bool { isNew || creatingCopy }
 
     public var body: some View {
         let _ = themeManager.currentTheme
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 16) {
-                    if isNew {
-                        BuilderActionButton("builder.startTemplate", systemImage: "doc.on.doc") { showTemplates = true }
-                            .accessibilityIdentifier("program-start-template")
-                    }
-                    details
-                    VStack(alignment: .leading, spacing: 4) {
-                        HStack {
-                            Text(LanguageManager.t("builder.trainingDays")).font(.headline)
-                            Spacer()
-                            Text(LanguageManager.t("builder.dayCount", ["count": program.workouts.count])).font(.caption).foregroundStyle(AppColors.muted)
+            ScrollViewReader { reader in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 16) {
+                        if isNew {
+                            BuilderActionButton("builder.startTemplate", systemImage: "doc.on.doc") { showTemplates = true }
+                                .accessibilityIdentifier("program-start-template")
                         }
-                        if !program.workouts.isEmpty {
-                            Text(LanguageManager.t("builder.summaryCounts", [
-                                "exercises": program.workouts.reduce(0) { $0 + $1.exercises.count },
-                                "sets": program.workouts.flatMap(\.exercises).reduce(0) { $0 + WorkoutSessionUtils.initialSetCount(exercise: $1) }
-                            ])).font(.caption).foregroundStyle(AppColors.muted).accessibilityIdentifier("program-summary")
+                        details
+                        VStack(alignment: .leading, spacing: 4) {
+                            if saveAttempted, let trainingError {
+                                Text(trainingError).font(.caption).foregroundStyle(AppColors.danger).accessibilityIdentifier("program-validation")
+                            }
+                            HStack {
+                                Text(LanguageManager.t("builder.trainingDays")).font(.headline)
+                                Spacer()
+                                Text(LanguageManager.t("builder.dayCount", ["count": program.workouts.count])).font(.caption).foregroundStyle(AppColors.muted)
+                            }
+                            if !program.workouts.isEmpty {
+                                Text(LanguageManager.t("builder.summaryCounts", [
+                                    "exercises": program.workouts.reduce(0) { $0 + $1.exercises.count },
+                                    "sets": program.workouts.flatMap(\.exercises).reduce(0) { $0 + WorkoutSessionUtils.initialSetCount(exercise: $1) }
+                                ])).font(.caption).foregroundStyle(AppColors.muted).accessibilityIdentifier("program-summary")
+                            }
+                        }.id("program-training-days")
+                        if program.workouts.isEmpty {
+                            BuilderSurface {
+                                Text(LanguageManager.t("builder.noDays")).font(.headline)
+                                Text(LanguageManager.t("builder.noDaysHint")).font(.subheadline).foregroundStyle(AppColors.secondaryText)
+                            }
                         }
-                    }
-                    if program.workouts.isEmpty {
-                        BuilderSurface {
-                            Text(LanguageManager.t("builder.noDays")).font(.headline)
-                            Text(LanguageManager.t("builder.noDaysHint")).font(.subheadline).foregroundStyle(AppColors.secondaryText)
+                        ForEach(program.workouts.sorted { $0.day < $1.day }) { workout in
+                            BuilderWorkoutCard(workout: workout, expanded: expandedIDs.contains(workout.id),
+                                onToggle: { if !expandedIDs.insert(workout.id).inserted { expandedIDs.remove(workout.id) } },
+                                onEdit: { editingWorkout = BuilderWorkoutContext(workout: workout, isNew: false) },
+                                onAdd: { pickerWorkout = workout },
+                                onEditExercise: { editingExercise = BuilderExerciseContext(workoutID: workout.id, exercise: $0) },
+                                onMove: { moveExercise(workout.id, $0, $1) },
+                                onRemove: { removeExercise(workout.id, $0) })
                         }
+                        if program.workouts.count < 7 {
+                            BuilderActionButton("builder.addTrainingDay", systemImage: "plus", action: addTrainingDay)
+                                .accessibilityIdentifier("program-add-day")
+                        }
+                        if incompleteDays > 0 {
+                            Text(LanguageManager.t("builder.incompleteDays", ["count": incompleteDays])).font(.caption).foregroundStyle(AppColors.muted)
+                        }
+                    }.padding(20)
+                }
+                .onChange(of: validationAttempt) { _, _ in
+                    let target = firstInvalidField
+                    Task { @MainActor in
+                        await Task.yield()
+                        withAnimation { reader.scrollTo(target, anchor: .top) }
                     }
-                    ForEach(program.workouts.sorted { $0.day < $1.day }) { workout in
-                        BuilderWorkoutCard(workout: workout, expanded: expandedIDs.contains(workout.id),
-                            onToggle: { if !expandedIDs.insert(workout.id).inserted { expandedIDs.remove(workout.id) } },
-                            onEdit: { editingWorkout = BuilderWorkoutContext(workout: workout, isNew: false) },
-                            onAdd: { pickerWorkout = workout },
-                            onEditExercise: { editingExercise = BuilderExerciseContext(workoutID: workout.id, exercise: $0) },
-                            onMove: { moveExercise(workout.id, $0, $1) },
-                            onRemove: { removeExercise(workout.id, $0) })
-                    }
-                    if program.workouts.count < 7 {
-                        BuilderActionButton("builder.addTrainingDay", systemImage: "plus", action: addTrainingDay)
-                            .accessibilityIdentifier("program-add-day")
-                    }
-                    if incompleteDays > 0 {
-                        Text(LanguageManager.t("builder.incompleteDays", ["count": incompleteDays])).font(.caption).foregroundStyle(AppColors.muted)
-                    }
-                }.padding(20)
+                }
             }
             .background(AppColors.background)
             .navigationTitle(LanguageManager.t(isNew || creatingCopy ? "modal.program.titleAdd" : "modal.program.titleEdit"))
@@ -188,25 +218,27 @@ public struct ProgramBuilderView: View {
     private var details: some View {
         BuilderSurface {
             Text(LanguageManager.t("builder.details")).font(.headline)
-            BuilderTextField("modal.program.name", text: $program.name, limit: 100)
-                .accessibilityIdentifier("program-builder-name")
+            if saveAttempted, let formError {
+                Text(formError).font(.caption).foregroundStyle(AppColors.danger).accessibilityIdentifier("program-validation")
+            }
+            BuilderTextField("modal.program.name", text: $program.name, limit: 100,
+                errorMessage: saveAttempted && nameInvalid ? LanguageManager.t("builder.nameError") : nil, showsLengthError: saveAttempted)
+                .accessibilityIdentifier("program-builder-name").id("program-name")
+            VStack(alignment: .leading, spacing: 4) {
+                ViewThatFits(in: .horizontal) {
+                    HStack(spacing: 8) { coverHeading.fixedSize(); Spacer(minLength: 0); coverActions.fixedSize() }
+                    VStack(alignment: .leading, spacing: 4) { coverHeading; coverActions }
+                }
+                if saveAttempted && needsCover {
+                    Text(LanguageManager.t("builder.coverRequired")).font(.caption).foregroundStyle(AppColors.danger)
+                        .accessibilityIdentifier("program-cover-required")
+                }
+            }.id("program-cover")
             if let cover = displayedCover {
                 let label = LanguageManager.t("programs.cover.selected", ["name": LanguageManager.t("programs.cover." + cover.rawValue)])
-                Button { showCoverPicker = true } label: {
-                    HStack(spacing: 8) {
-                        Text(label).font(.caption).foregroundStyle(AppColors.secondaryText)
-                            .frame(maxWidth: .infinity, alignment: .leading).fixedSize(horizontal: false, vertical: true)
-                        Image(systemName: "pencil").font(.system(size: 16, weight: .semibold)).foregroundStyle(AppColors.accent)
-                    }.frame(minHeight: 48).contentShape(Rectangle())
-                }.buttonStyle(.plain).accessibilityLabel(label).accessibilityHint(LanguageManager.t("programs.cover.change"))
-                    .accessibilityIdentifier("program-cover-change")
                 Image(cover.assetName).resizable().aspectRatio(1.5, contentMode: .fit)
-                    .frame(maxWidth: .infinity).clipShape(RoundedRectangle(cornerRadius: 12)).accessibilityHidden(true)
-            } else {
-                Text(LanguageManager.t("programs.cover")).font(.caption).foregroundStyle(AppColors.secondaryText)
-                    .accessibilityIdentifier("program-cover-label")
-                BuilderActionButton("programs.cover.choose", systemImage: "photo") { showCoverPicker = true }
-                    .accessibilityIdentifier("program-cover-choose")
+                    .frame(maxWidth: .infinity).clipShape(RoundedRectangle(cornerRadius: 12))
+                    .accessibilityLabel(label).accessibilityIdentifier("program-cover-preview")
             }
             Button { withAnimation(.easeInOut(duration: 0.2)) { optionalDetailsExpanded.toggle() } } label: {
                 HStack(spacing: 10) {
@@ -223,10 +255,36 @@ public struct ProgramBuilderView: View {
                 .accessibilityHint(LanguageManager.t(optionalDetailsExpanded ? "builder.hideOptionalDetails" : "builder.showOptionalDetails"))
                 .accessibilityIdentifier("program-optional-details")
             if optionalDetailsExpanded {
-                BuilderTextField("modal.program.desc", text: $program.description, limit: 500, multiline: true)
-                BuilderTextField("modal.program.notes", text: Binding(get: { program.guidelines.joined(separator: "\n") }, set: { program.guidelines = $0.components(separatedBy: "\n") }), limit: nil, multiline: true)
+                BuilderTextField("modal.program.desc", text: $program.description, limit: 500, multiline: true,
+                    errorMessage: saveAttempted && descriptionInvalid ? LanguageManager.t("builder.descriptionError") : nil, showsLengthError: saveAttempted)
+                    .id("program-description")
+                BuilderTextField("modal.program.notes", text: Binding(get: { program.guidelines.joined(separator: "\n") }, set: { program.guidelines = $0.components(separatedBy: "\n") }), limit: nil, multiline: true,
+                    errorMessage: saveAttempted && notesInvalid ? LanguageManager.t("builder.notesError") : nil, showsLengthError: saveAttempted)
+                    .id("program-notes")
+            }
+        }.id("program-details")
+    }
+
+    private var coverHeading: some View {
+        Text(LanguageManager.t("programs.cover")).font(.caption).foregroundStyle(AppColors.secondaryText)
+            .accessibilityIdentifier("program-cover-label")
+    }
+    private var coverActions: some View {
+        HStack(spacing: 8) {
+            coverButton("programs.cover.pick", identifier: "program-cover-choose") { showCoverPicker = true }
+                .accessibilityLabel(LanguageManager.t("programs.cover.choose"))
+            coverButton("programs.cover.random", identifier: "program-cover-random") {
+                if let cover = ProgramCover.allCases.filter({ $0 != displayedCover }).randomElement() { program.coverId = cover.rawValue }
             }
         }
+    }
+    private func coverButton(_ key: String, identifier: String, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(LanguageManager.t(key)).font(.subheadline.weight(.medium)).foregroundStyle(AppColors.accent)
+                .padding(.horizontal, 12).frame(minWidth: 48, minHeight: 48)
+                .background(AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 10))
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.border, lineWidth: 1))
+        }.buttonStyle(.plain).accessibilityIdentifier(identifier)
     }
 
     private var footer: some View {
@@ -242,20 +300,13 @@ public struct ProgramBuilderView: View {
                     .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
                     .accessibilityIdentifier("program-undo-removal")
             }
-            // Every reason Save is disabled stays beside it; red is reserved for failed saves.
             if let saveError {
                 Text(saveError).font(.caption).foregroundStyle(AppColors.danger).accessibilityIdentifier("program-validation")
-            } else if let validationMessage {
-                Text(validationMessage).font(.caption).foregroundStyle(AppColors.secondaryText).accessibilityIdentifier("program-validation")
-            }
-            if needsCover {
-                Text(LanguageManager.t("builder.coverRequired")).font(.caption).foregroundStyle(AppColors.secondaryText)
-                    .frame(maxWidth: .infinity, alignment: .leading).accessibilityIdentifier("program-cover-required")
             }
             Button(action: saveProgram) {
                 Text(LanguageManager.t("modal.program.save")).font(.headline).frame(maxWidth: .infinity, minHeight: 52)
                     .foregroundStyle(AppColors.todaySelectionText).background(AppColors.accent, in: RoundedRectangle(cornerRadius: 12))
-            }.buttonStyle(.plain).disabled(!canSave).opacity(canSave ? 1 : 0.5).accessibilityIdentifier("program-builder-save")
+            }.buttonStyle(.plain).accessibilityIdentifier("program-builder-save")
         }.padding(.horizontal, 20).padding(.vertical, 10).background(AppColors.background)
     }
 
@@ -309,7 +360,13 @@ public struct ProgramBuilderView: View {
         else { ProgramBuilderDraftStore.clear(draftKey) }
     }
     private func saveProgram() {
-        guard canSave else { return }
+        guard canSave else {
+            saveAttempted = true
+            if descriptionInvalid || notesInvalid { optionalDetailsExpanded = true }
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+            validationAttempt += 1
+            return
+        }
         var clean = program
         clean.name = clean.name.trimmingCharacters(in: .whitespacesAndNewlines)
         clean.description = clean.description.trimmingCharacters(in: .whitespacesAndNewlines)

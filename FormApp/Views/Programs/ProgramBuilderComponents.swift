@@ -16,8 +16,12 @@ struct BuilderTextField: View {
     let limit: Int?
     var multiline = false
     var originalText: String?
-    init(_ label: String, text: Binding<String>, limit: Int?, multiline: Bool = false, originalText: String? = nil) {
+    var errorMessage: String?
+    var showsLengthError: Bool
+    init(_ label: String, text: Binding<String>, limit: Int?, multiline: Bool = false, originalText: String? = nil,
+         errorMessage: String? = nil, showsLengthError: Bool = true) {
         self.label = label; self._text = text; self.limit = limit; self.multiline = multiline; self.originalText = originalText
+        self.errorMessage = errorMessage; self.showsLengthError = showsLengthError
     }
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
@@ -26,14 +30,17 @@ struct BuilderTextField: View {
                 .lineLimit(multiline ? 2...6 : 1...1).font(.body).padding(12)
                 .foregroundStyle(AppColors.text)
                 .background(AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 12))
-                .overlay(RoundedRectangle(cornerRadius: 12).stroke(tooLong ? AppColors.danger : AppColors.border, lineWidth: 1))
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(tooLong || errorMessage != nil ? AppColors.danger : AppColors.border, lineWidth: 1))
             if let limit {
                 Text("\(characterCount)/\(limit)").font(.caption).foregroundStyle(tooLong ? AppColors.danger : AppColors.muted)
+            }
+            if let errorMessage {
+                Text(errorMessage).font(.caption).foregroundStyle(AppColors.danger).accessibilityIdentifier(label + "-error")
             }
         }
     }
     private var characterCount: Int { label == "modal.workout.name" ? Workout.titleLength(text) : text.utf16.count }
-    private var tooLong: Bool { (limit.map { characterCount > $0 } ?? false) && (originalText == nil || text.trimmingCharacters(in: .whitespacesAndNewlines) != originalText?.trimmingCharacters(in: .whitespacesAndNewlines)) }
+    private var tooLong: Bool { showsLengthError && (limit.map { characterCount > $0 } ?? false) && (originalText == nil || text.trimmingCharacters(in: .whitespacesAndNewlines) != originalText?.trimmingCharacters(in: .whitespacesAndNewlines)) }
 }
 
 struct BuilderActionButton: View {
