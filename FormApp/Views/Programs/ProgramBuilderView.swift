@@ -19,7 +19,6 @@ public struct ProgramBuilderView: View {
     @State private var recoveryChecked = false
     @State private var creatingCopy = false
     @State private var conflictDraft: ProgramBuilderDraft?
-    @State private var applyOnSave = false
     @State private var saveError: String?
     @State private var removalUndo: ProgramRemovalUndo?
     @State private var removalUndoToken = 0
@@ -253,13 +252,6 @@ public struct ProgramBuilderView: View {
                 Text(LanguageManager.t("builder.coverRequired")).font(.caption).foregroundStyle(AppColors.secondaryText)
                     .frame(maxWidth: .infinity, alignment: .leading).accessibilityIdentifier("program-cover-required")
             }
-            if creating {
-                Toggle(LanguageManager.t("builder.applyOnSave"), isOn: $applyOnSave).tint(AppColors.accent).frame(minHeight: 48)
-                    .accessibilityIdentifier("program-apply-on-save")
-                if applyOnSave && program.workouts.allSatisfy({ $0.exercises.isEmpty }) {
-                    Text(LanguageManager.t("builder.emptyApplyWarning")).font(.caption).foregroundStyle(AppColors.muted)
-                }
-            }
             Button(action: saveProgram) {
                 Text(LanguageManager.t("modal.program.save")).font(.headline).frame(maxWidth: .infinity, minHeight: 52)
                     .foregroundStyle(AppColors.todaySelectionText).background(AppColors.accent, in: RoundedRectangle(cornerRadius: 12))
@@ -325,7 +317,7 @@ public struct ProgramBuilderView: View {
         clean.workouts.sort { $0.day < $1.day }
         // Record the exact submitted value so recovery recognizes a commit interrupted before draft cleanup.
         ProgramBuilderDraftStore.save(ProgramBuilderDraft(program: clean, original: original, creatingCopy: creatingCopy), id: draftKey)
-        let saved = (isNew || creatingCopy) ? store.addProgram(clean, activate: applyOnSave) : store.updateProgram(clean, expected: original)
+        let saved = (isNew || creatingCopy) ? store.addProgram(clean, activate: false) : store.updateProgram(clean, expected: original)
         guard saved else { saveError = LanguageManager.t("builder.saveFailed"); return }
         ProgramBuilderDraftStore.clear(draftKey)
         onDismiss()
