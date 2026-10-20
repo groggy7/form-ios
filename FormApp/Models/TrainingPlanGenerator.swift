@@ -30,7 +30,7 @@ struct TrainingProfile: Codable, Equatable {
 }
 
 struct TrainingCatalog: Decodable {
-    struct Equipment: Decodable { let id: String; let group: String }
+    struct Equipment: Decodable { let id: String; let group: String; let artwork: String?; let home: Bool? }
     struct Candidate: Decodable {
         let id: String; let role: String; let requirements: [[String]]
         let pair: Bool; let advanced: Bool; let pullUps: Int
@@ -152,8 +152,12 @@ enum TrainingPlanGenerator {
 }
 
 enum TrainingSetupStore {
-    struct Draft: Codable { var profile: TrainingProfile; var step: Int; var programId: String; var program: Program? }
-    static func draft() -> Draft? { read(Draft.self, key: "training_setup_draft_v1") }
+    struct Draft: Codable { var profile: TrainingProfile; var step: Int; var programId: String; var program: Program?; var flowVersion: Int? = 2 }
+    static func draft() -> Draft? {
+        guard var draft = read(Draft.self, key: "training_setup_draft_v1"), (1...(draft.flowVersion == 2 ? 7 : 6)).contains(draft.step) else { return nil }
+        if draft.flowVersion != 2 { draft.step += draft.step >= 3 ? 1 : 0; draft.flowVersion = 2 }
+        return draft
+    }
     static func profile() -> TrainingProfile? { read(TrainingProfile.self, key: "training_profile_v1") }
     private static func read<T: Decodable>(_ type: T.Type, key: String) -> T? {
         UserDefaults.standard.data(forKey: key).flatMap { try? JSONDecoder().decode(type, from: $0) }

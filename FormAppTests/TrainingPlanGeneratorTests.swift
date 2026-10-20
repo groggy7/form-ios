@@ -26,6 +26,29 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         try TrainingPlanGenerator.generate(p, catalog: XCTUnwrap(TrainingCatalog.bundled), exercises: ExerciseCatalog.canonicalExercises,
             programID: "personal-plan", text: { key, _ in key })
     }
+    func testVisualEquipmentChoicesHaveReviewedArtworkAndASmallHomeSelection() throws {
+        let catalog = try XCTUnwrap(TrainingCatalog.bundled)
+        let home = catalog.equipment.filter { $0.home == true }
+        XCTAssertEqual(home.count, 12)
+        XCTAssertTrue(home.allSatisfy { $0.artwork != nil })
+        let gym = try XCTUnwrap(catalog.presets["commercial_gym"])
+        XCTAssertTrue(catalog.equipment.filter { gym.contains($0.id) }.allSatisfy { $0.artwork != nil })
+        for item in catalog.equipment {
+            if let artwork = item.artwork, artwork.hasPrefix("exercise:") {
+                XCTAssertNotNil(ExerciseCatalog.canonicalExercises[String(artwork.dropFirst("exercise:".count))])
+            }
+        }
+    }
+
+    func testOldSettingsDraftKeepsItsPreviewAtTheNewReviewStep() throws {
+        let p = profile(["dumbbells"]), program = try generate(p).program
+        let legacy = TrainingSetupStore.Draft(profile: p, step: 6, programId: program.id, program: program, flowVersion: nil)
+        UserDefaults.standard.set(try JSONEncoder().encode(legacy), forKey: "training_setup_draft_v1")
+        let recovered = try XCTUnwrap(TrainingSetupStore.draft())
+        XCTAssertEqual(recovered.step, 7)
+        XCTAssertEqual(recovered.profile, p)
+        XCTAssertEqual(recovered.program, program)
+    }
     func testSharedFixturesMatchBothNativeEngines() throws {
         struct Fixture: Decodable { let name: String; let profile: TrainingProfile; let expected: String }
         let file = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("training-generation-fixtures.json")
@@ -167,7 +190,7 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         try persistence.flush()
         store.setOnboardingCompleted(false)
         let p = profile(["dumbbells"]), program = try generate(profile(["dumbbells"])).program
-        TrainingSetupStore.saveDraft(.init(profile: p, step: 6, programId: program.id, program: program))
+        TrainingSetupStore.saveDraft(.init(profile: p, step: 7, programId: program.id, program: program))
         let before = store.state
         fail = true
         XCTAssertFalse(store.saveGeneratedPlan(profile: p, program: program, completeSetup: true))
@@ -190,18 +213,26 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
         for language in ["en", "tr", "de", "fr", "es"] {
             LanguageManager.setLanguage(language)
-            for step in [3, 6] {
-                TrainingSetupStore.saveDraft(.init(profile: profile(["dumbbells", "ez-bar", "plates"]), step: step, programId: "render-plan", program: nil))
-                let host = UIHostingController(rootView: TrainingSetupView(store: store, completeSetup: false, onClose: {}).environment(\.sizeCategory, .extraExtraExtraLarge))
-                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 900))
+            let sizes: [ContentSizeCategory] = language == "en" ? [.large, .extraExtraExtraLarge] : [.extraExtraExtraLarge]
+            for size in sizes {
+            for width in (language == "en" && size == .large ? [320.0, 390.0] : [320.0]) {
+            for location in ["home", "commercial_gym"] { for step in [3, 4, 7] {
+                var rendered = profile(["dumbbells", "ez-bar", "plates"])
+                rendered.location = location
+                if location != "home" { rendered.equipment = try XCTUnwrap(TrainingCatalog.bundled?.presets["commercial_gym"]).filter { $0 != "calf-machine" } }
+                TrainingSetupStore.saveDraft(.init(profile: rendered, step: step, programId: "render-plan", program: nil))
+                let host = UIHostingController(rootView: TrainingSetupView(store: store, completeSetup: false, onClose: {}).environment(\.sizeCategory, size))
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 900))
                 window.rootViewController = host; window.makeKeyAndVisible(); host.view.frame = window.bounds
                 host.view.setNeedsLayout(); host.view.layoutIfNeeded()
-                RunLoop.main.run(until: Date().addingTimeInterval(0.15))
+                RunLoop.main.run(until: Date().addingTimeInterval(step == 4 ? 0.6 : 0.15))
                 let image = UIGraphicsImageRenderer(bounds: host.view.bounds).image { context in host.view.layer.render(in: context.cgContext) }
-                let name = "training-setup-\(language)-\(step)"
+                let name = "training-setup-\(location)-\(language)-\(step)" + (size == .large ? "-regular" : "") + (width > 320 ? "-wide" : "")
                 try image.pngData()?.write(to: URL(fileURLWithPath: "/tmp/\(name).png"))
                 let attachment = XCTAttachment(image: image); attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
                 window.isHidden = true; previousWindow?.makeKeyAndVisible()
+            } }
+            }
             }
         }
     }
