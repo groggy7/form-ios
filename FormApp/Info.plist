@@ -24,6 +24,8 @@
 	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Forced Rep reads your weight so weigh-ins from a smart scale or other apps show in your body log without typing them twice.</string>
 	<key>NSUbiquitousContainers</key>
 	<dict>
 		<key>iCloud.com.perseverancesoftware.forcedrep</key>

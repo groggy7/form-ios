@@ -69,11 +69,53 @@ struct BodySummaryCard: View {
     }
 }
 
+/// Opt-in reading of Apple Health weigh-ins (docs/design/body-and-joint-journal.md#connecting).
+/// The system Health sheet appears only after Connect, never at launch.
+struct BodyHealthCard: View {
+    @ObservedObject private var themeManager = ThemeManager.shared
+    let isEnabled: Bool
+    let status: String?
+    let isBusy: Bool
+    let onConnect: () -> Void
+    let onTurnOff: () -> Void
+
+    var body: some View {
+        let _ = themeManager.currentTheme
+        VStack(alignment: .leading, spacing: 10) {
+            Text(LanguageManager.t("body.health.title")).font(.system(size: 15, weight: .semibold)).foregroundStyle(AppColors.text)
+            Text(LanguageManager.t(isEnabled ? "body.health.onText" : "body.health.offText"))
+                .font(.system(size: 13)).lineSpacing(3).foregroundStyle(AppColors.secondaryText)
+                .fixedSize(horizontal: false, vertical: true)
+            if let status {
+                Text(status).font(.system(size: 12)).foregroundStyle(AppColors.muted)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .accessibilityIdentifier("body-health-status")
+            }
+            Button(action: isEnabled ? onTurnOff : onConnect) {
+                Text(LanguageManager.t(isEnabled ? "body.health.turnOff" : "body.health.connect"))
+                    .font(.system(size: 14, weight: .semibold)).foregroundStyle(AppColors.text)
+                    .frame(maxWidth: .infinity, minHeight: 48)
+                    .overlay(RoundedRectangle(cornerRadius: 11, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .disabled(isBusy)
+            .accessibilityIdentifier(isEnabled ? "body-health-turn-off" : "body-health-connect")
+        }
+        .padding(16).frame(maxWidth: .infinity, alignment: .leading)
+        .background(AppColors.surface).clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: 16, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("body-health")
+    }
+}
+
 /// The body log (docs/design/body-and-joint-journal.md): free logging, Pro trend and relative strength.
 struct BodyLogView: View {
     @ObservedObject private var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
     @ObservedObject private var proManager = ProAccessManager.shared
+    @ObservedObject private var health = HealthWeights.shared
     @Environment(\.dismiss) private var dismiss
 
     @State private var date: String = BodyDay.today()
@@ -86,19 +128,30 @@ struct BodyLogView: View {
     @State private var showPaywall = false
 
     private var today: String { BodyDay.today() }
-    private var entries: [BodyEntry] { store.state.bodyEntries ?? [] }
+    /// Typed entries joined with Apple Health weigh-ins (docs/design/body-and-joint-journal.md#merge-rules).
+    private var shown: ShownBodyLog { health.shownLog(store.state) }
+    private var entries: [BodyEntry] { shown.entries }
     private var existing: BodyEntry? { entries.first { $0.date == date } }
+    private var storedEntry: BodyEntry? { store.state.bodyEntries?.first { $0.date == date } }
+    /// The date's Health weigh-in when not hidden, even where a typed weight wins.
+    private var healthKg: Double? { shown.health[date] }
     private var unit: WeightUnit { store.weightUnit }
     private var trendsUnlocked: Bool { proManager.isFeatureUnlocked(.bodyTrends) }
 
     var body: some View {
         let _ = themeManager.currentTheme
+        let shown = self.shown
+        let entries = shown.entries
         let report = trendsUnlocked ? BodyTrends.report(entries: entries, history: store.state.history, today: today) : nil
         NavigationStack {
             ScrollViewReader { proxy in
                 ScrollView {
                     LazyVStack(alignment: .leading, spacing: 14) {
                         logCard.id("log")
+                        if health.isAvailable {
+                            BodyHealthCard(isEnabled: health.isEnabled, status: healthStatus, isBusy: health.isConnecting,
+                                           onConnect: { Task { await health.connect() } }, onTurnOff: { health.turnOff() })
+                        }
                         if let report {
                             trendCard(report)
                             strengthCard(report.relativeStrength)
@@ -112,7 +165,7 @@ struct BodyLogView: View {
                             Text(LanguageManager.t("body.noEntries")).font(.system(size: 13)).foregroundStyle(AppColors.muted)
                         }
                         ForEach(entries.reversed()) { entry in
-                            entryRow(entry) {
+                            entryRow(entry, fromHealth: shown.healthDates.contains(entry.date)) {
                                 select(entry.date)
                                 withAnimation { proxy.scrollTo("log", anchor: .top) }
                             }
@@ -129,11 +182,12 @@ struct BodyLogView: View {
         }
         .accessibilityIdentifier("body-screen")
         .onAppear { syncForm() }
+        .task { await health.refresh() }
         .onChange(of: date) { _, _ in syncForm() }
         .onChange(of: existing) { _, _ in syncForm() }
         .alert(LanguageManager.t("body.deleteTitle"), isPresented: $confirmDelete) {
             Button(LanguageManager.t("modal.delete"), role: .destructive) {
-                if store.deleteBodyEntry(date: date) {
+                if store.deleteBodyEntry(date: date, hideHealth: healthKg != nil) {
                     inputs = [:]
                     loadedDate = nil
                     date = today
@@ -141,7 +195,8 @@ struct BodyLogView: View {
             }
             Button(LanguageManager.t("modal.cancel"), role: .cancel) {}
         } message: {
-            Text(LanguageManager.t("body.deleteMessage", ["date": formatBodyDate(date)]))
+            Text(LanguageManager.t("body.deleteMessage", ["date": formatBodyDate(date)])
+                 + (healthKg != nil ? " " + LanguageManager.t("body.health.deleteNotice") : ""))
         }
         .sheet(isPresented: $showPaywall) {
             ProPaywallSheet(feature: .bodyTrends, onDismiss: { showPaywall = false })
@@ -172,52 +227,45 @@ struct BodyLogView: View {
         saved = false
     }
 
-    private func buildEntry() -> (BodyEntry?, String?) {
-        var entry = BodyEntry(date: date)
-        for metric in BodyMetric.allCases {
-            let text = (inputs[metric] ?? "").trimmingCharacters(in: .whitespaces)
-            if text.isEmpty { continue }
-            let original = existing?.value(metric)
-            // An untouched field keeps its stored value, so unit conversion never drifts it.
-            let canonical: Double?
-            if let original, text == BodyUnits.formatCanonical(metric, original, unit: unit) {
-                canonical = original
-            } else {
-                canonical = BodyUnits.parse(text).map { BodyUnits.toCanonical(metric, $0, unit: unit) }
-            }
-            guard let canonical, metric.canonicalRange.contains(canonical) else {
-                let (low, high) = BodyUnits.displayRange(metric, unit: unit)
-                let label = unitLabel(metric, unit)
-                return (nil, metric == .bodyweight
-                    ? LanguageManager.t("body.invalidBodyweight", ["min": low, "max": high, "unit": label])
-                    : LanguageManager.t("body.invalidMeasurement", ["name": LanguageManager.t(metric.labelKey), "min": low, "max": high, "unit": label]))
-            }
-            entry = entry.with(metric, canonical)
-        }
-        return entry.hasValue ? (entry, nil) : (nil, LanguageManager.t("body.emptyEntry"))
+    private func invalidMessage(_ metric: BodyMetric) -> String {
+        let (low, high) = BodyUnits.displayRange(metric, unit: unit)
+        let label = unitLabel(metric, unit)
+        return metric == .bodyweight
+            ? LanguageManager.t("body.invalidBodyweight", ["min": low, "max": high, "unit": label])
+            : LanguageManager.t("body.invalidMeasurement", ["name": LanguageManager.t(metric.labelKey), "min": low, "max": high, "unit": label])
     }
 
     private func save() {
-        let (entry, problem) = buildEntry()
-        error = problem
-        guard let entry else { return }
-        if store.saveBodyEntry(entry) {
-            loadedDate = nil
-            syncForm()
-            saved = true
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { saved = false }
-        } else {
-            error = LanguageManager.t("body.saveFailed")
+        switch BodyLog.resolveForm(date: date, inputs: inputs, stored: storedEntry, healthKg: healthKg, unit: unit) {
+        case .invalid(let metric):
+            error = invalidMessage(metric)
+        case .empty:
+            error = LanguageManager.t("body.emptyEntry")
+        case .save(let stored, let hideHealth):
+            error = nil
+            if store.applyBodyEdit(date: date, stored: stored, hideHealth: hideHealth) {
+                loadedDate = nil
+                syncForm()
+                saved = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { saved = false }
+            } else {
+                error = LanguageManager.t("body.saveFailed")
+            }
         }
     }
 
     private var logCard: some View {
         card(title: LanguageManager.t(existing != nil ? "body.editTitle" : "body.logTitle"), identifier: "body-log") {
             dateStepper
-            if existing != nil {
+            if storedEntry != nil {
                 Text(LanguageManager.t("body.replaceNotice", ["date": formatBodyDate(date)]))
                     .font(.system(size: 12)).foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
                     .accessibilityIdentifier("body-replace-notice")
+            }
+            if shown.healthDates.contains(date) {
+                Text(LanguageManager.t("body.health.editNotice"))
+                    .font(.system(size: 12)).foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
+                    .accessibilityIdentifier("body-health-notice")
             }
             field(.bodyweight)
             Button { showMeasurements.toggle() } label: {
@@ -322,6 +370,18 @@ struct BodyLogView: View {
                 .accessibilityIdentifier("body-input-\(metric.rawValue)")
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    // MARK: Apple Health
+
+    private var healthStatus: String? {
+        switch health.status {
+        case .idle: return nil
+        case .failed: return LanguageManager.t("body.health.readFailed")
+        case .loaded:
+            return health.latestDate.map { LanguageManager.t("body.health.latest", ["date": formatBodyDate($0)]) }
+                ?? LanguageManager.t("body.health.none")
+        }
     }
 
     // MARK: Pro cards
@@ -469,7 +529,7 @@ struct BodyLogView: View {
 
     // MARK: Entries
 
-    private func entryRow(_ entry: BodyEntry, onTap: @escaping () -> Void) -> some View {
+    private func entryRow(_ entry: BodyEntry, fromHealth: Bool, onTap: @escaping () -> Void) -> some View {
         let measurements = BodyMetric.measurements.compactMap { metric in
             entry.value(metric).map { "\(LanguageManager.t(metric.labelKey)) \(BodyUnits.formatCanonical(metric, $0, unit: unit))" }
         }
@@ -478,6 +538,9 @@ struct BodyLogView: View {
             HStack(spacing: 10) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(formatBodyDate(entry.date)).font(.system(size: 14, weight: .semibold)).foregroundStyle(AppColors.text)
+                    if fromHealth {
+                        Text(LanguageManager.t("body.health.from")).font(.system(size: 12)).foregroundStyle(AppColors.muted)
+                    }
                     if !measurements.isEmpty {
                         Text(measurements.joined(separator: " · ") + " " + LanguageManager.t(BodyUnits.lengthLabelKey(unit)))
                             .font(.system(size: 12)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)

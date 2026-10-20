@@ -168,3 +168,116 @@ public enum BodyLog {
         entries.filter { $0.date != date }
     }
 }
+
+// MARK: Health weigh-ins (docs/design/body-and-joint-journal.md#health-weigh-ins)
+
+/// One bodyweight sample read from Apple Health: its local date, instant and kilograms.
+public struct HealthWeighIn: Hashable {
+    public var date: String
+    public var time: Date
+    public var kg: Double
+
+    public init(date: String, time: Date, kg: Double) {
+        self.date = date
+        self.time = time
+        self.kg = kg
+    }
+}
+
+public enum HealthWeighIns {
+    /// The last 365 days, counting today.
+    public static let windowDays = 365
+
+    /// Each local day's earliest valid weigh-in in the window ending today. Out-of-range and future weigh-ins are skipped.
+    public static func daily(_ samples: [HealthWeighIn], today: String) -> [String: Double] {
+        guard let todayNumber = BodyDay.number(today) else { return [:] }
+        var earliest: [String: HealthWeighIn] = [:]
+        for sample in samples where sample.kg.isFinite && BodyMetric.bodyweight.canonicalRange.contains(sample.kg) {
+            guard let day = BodyDay.number(sample.date), day <= todayNumber, day > todayNumber - windowDays else { continue }
+            if let current = earliest[sample.date], current.time <= sample.time { continue }
+            earliest[sample.date] = sample
+        }
+        return earliest.mapValues(\.kg)
+    }
+}
+
+/// The body log as shown: typed entries joined with the Health weigh-ins that are not hidden.
+public struct ShownBodyLog: Equatable {
+    public var entries: [BodyEntry]
+    /// Dates whose shown bodyweight is a Health weigh-in.
+    public var healthDates: Set<String>
+    /// Health weigh-ins by date, without hidden dates, including dates where a typed weight wins.
+    public var health: [String: Double]
+
+    public static let empty = ShownBodyLog(entries: [], healthDates: [], health: [:])
+}
+
+/// What the Log card's Save does with its fields.
+public enum BodyFormOutcome: Equatable {
+    case invalid(BodyMetric)
+    case empty
+    /// `stored` replaces the date's typed entry (nil removes it); `hideHealth` hides the date's Health weigh-in.
+    case save(stored: BodyEntry?, hideHealth: Bool)
+}
+
+extension BodyLog {
+    public static let maxHiddenDates = 10_000
+
+    /// A typed bodyweight wins; otherwise the date shows its Health weigh-in unless hidden. Measurements are only typed.
+    public static func merge(_ stored: [BodyEntry], health: [String: Double], hidden: Set<String>) -> ShownBodyLog {
+        let visible = health.filter { !hidden.contains($0.key) }
+        var byDate = Dictionary(stored.map { ($0.date, $0) }, uniquingKeysWith: { _, last in last })
+        var healthDates = Set<String>()
+        for (date, kg) in visible where byDate[date]?.bodyweightKg == nil {
+            byDate[date] = (byDate[date] ?? BodyEntry(date: date)).with(.bodyweight, kg)
+            healthDates.insert(date)
+        }
+        return ShownBodyLog(entries: byDate.values.sorted { $0.date < $1.date }, healthDates: healthDates, health: visible)
+    }
+
+    /// Resolves the Log card for `date`. An untouched field keeps its stored value, and an untouched Health weight stays
+    /// Health's (shown, never stored). A blank weight on a date with a Health weigh-in hides it.
+    public static func resolveForm(date: String, inputs: [BodyMetric: String], stored: BodyEntry?, healthKg: Double?,
+                                   unit: WeightUnit) -> BodyFormOutcome {
+        var entry = BodyEntry(date: date)
+        var keepsHealthWeight = false
+        for metric in BodyMetric.allCases {
+            let text = (inputs[metric] ?? "").trimmingCharacters(in: .whitespaces)
+            if text.isEmpty { continue }
+            if let original = stored?.value(metric), text == BodyUnits.formatCanonical(metric, original, unit: unit) {
+                entry = entry.with(metric, original)
+                continue
+            }
+            if metric == .bodyweight, stored?.bodyweightKg == nil, let healthKg,
+               text == BodyUnits.formatCanonical(metric, healthKg, unit: unit) {
+                keepsHealthWeight = true
+                continue
+            }
+            guard let canonical = BodyUnits.parse(text).map({ BodyUnits.toCanonical(metric, $0, unit: unit) }),
+                  metric.canonicalRange.contains(canonical) else { return .invalid(metric) }
+            entry = entry.with(metric, canonical)
+        }
+        let hideHealth = healthKg != nil && (inputs[.bodyweight] ?? "").trimmingCharacters(in: .whitespaces).isEmpty
+        if !entry.hasValue && !keepsHealthWeight && !hideHealth { return .empty }
+        return .save(stored: entry.hasValue ? entry : nil, hideHealth: hideHealth)
+    }
+
+    /// Replaces or removes the date's typed entry and, when asked, hides its Health weigh-in.
+    public static func applyEdit(_ entries: [BodyEntry], hidden: [String], date: String, stored: BodyEntry?,
+                                 hideHealth: Bool) -> (entries: [BodyEntry], hidden: [String]) {
+        let nextEntries = stored.map { upsert(entries, $0) } ?? remove(entries, date: date)
+        let nextHidden = hideHealth && !hidden.contains(date)
+            ? Array((hidden + [date]).sorted().suffix(maxHiddenDates)) : hidden
+        return (nextEntries, nextHidden)
+    }
+
+    /// Restore rules for hidden dates: valid, no more than one day ahead, unique, sorted, at most `maxHiddenDates`.
+    public static func sanitizeHidden(_ dates: [String]?, today: String) -> [String] {
+        guard let todayNumber = BodyDay.number(today) else { return [] }
+        let valid = Set((dates ?? []).compactMap { date -> String? in
+            guard let day = BodyDay.number(date), day <= todayNumber + 1 else { return nil }
+            return BodyDay.string(day)
+        })
+        return Array(valid.sorted().suffix(maxHiddenDates))
+    }
+}

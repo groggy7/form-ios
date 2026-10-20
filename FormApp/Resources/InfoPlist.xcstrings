@@ -1,0 +1,42 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "NSHealthShareUsageDescription": {
+      "comment": "Apple Health read permission (docs/design/body-and-joint-journal.md#health-weigh-ins).",
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep reads your weight so weigh-ins from a smart scale or other apps show in your body log without typing them twice."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep liest dein Gewicht, damit Wiegungen von einer smarten Waage oder anderen Apps in deinem Körperprotokoll erscheinen, ohne dass du sie doppelt eintippen musst."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep lit ton poids pour que les pesées d’une balance connectée ou d’autres apps apparaissent dans ton suivi corporel, sans les saisir deux fois."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep lee tu peso para que los pesajes de una báscula inteligente u otras apps aparezcan en tu registro corporal sin escribirlos dos veces."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep, akıllı tartıdan veya diğer uygulamalardan gelen tartımların iki kez yazmadan vücut kaydında görünmesi için kilonu okur."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}

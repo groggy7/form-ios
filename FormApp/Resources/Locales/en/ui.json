@@ -1528,5 +1528,22 @@
   "pro.body_trends.teaser": "Trends from your bodyweight log",
   "body.previousDay": "Previous day",
   "body.nextDay": "Next day",
-  "body.saveFailed": "The entry could not be saved. Please try again."
+  "body.saveFailed": "The entry could not be saved. Please try again.",
+  "body.health.title": "Apple Health",
+  "body.health.offText": "Show weigh-ins from Apple Health, such as your smart scale's, so you don't type them twice. A weight you type always wins.",
+  "body.health.connect": "Connect",
+  "body.health.onText": "Days without a weight you typed show that day's first weigh-in.",
+  "body.health.latest": "Latest weigh-in: {date}",
+  "body.health.none": "No weigh-ins found in the last year. If you expected some, check that Forced Rep can read Weight in the Health app.",
+  "body.health.turnOff": "Turn off",
+  "body.health.notAllowed": "Health Connect access wasn't allowed.",
+  "body.health.accessOff": "Forced Rep can't read Weight in Health Connect.",
+  "body.health.allowAccess": "Allow access",
+  "body.health.getApp": "Get Health Connect",
+  "body.health.readFailed": "Couldn't read weigh-ins right now.",
+  "body.health.from": "From Apple Health",
+  "body.health.editNotice": "This weight is from Apple Health. Change it to use your own, or clear it to hide it here.",
+  "body.health.deleteNotice": "Its Apple Health weigh-in will be hidden here and stays in Apple Health.",
+  "health.rationale.title": "Forced Rep and Health Connect",
+  "health.rationale.body": "Forced Rep reads your weight from Health Connect to show weigh-ins in your body log, so you don't type them twice. It reads only weight and never writes to Health Connect. Weigh-ins are shown on this device; they are not saved in Forced Rep's data, backups or exports, and are never shared."
 }

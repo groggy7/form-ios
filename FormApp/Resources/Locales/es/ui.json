@@ -1528,5 +1528,22 @@
   "pro.body_trends.teaser": "Tendencias de tu registro de peso corporal",
   "body.previousDay": "Día anterior",
   "body.nextDay": "Día siguiente",
-  "body.saveFailed": "No se pudo guardar el registro. Inténtalo de nuevo."
+  "body.saveFailed": "No se pudo guardar el registro. Inténtalo de nuevo.",
+  "body.health.title": "Apple Salud",
+  "body.health.offText": "Muestra los pesajes de Apple Salud, como los de tu báscula inteligente, para no escribirlos dos veces. El peso que escribas siempre tiene prioridad.",
+  "body.health.connect": "Conectar",
+  "body.health.onText": "Los días sin un peso escrito muestran el primer pesaje del día.",
+  "body.health.latest": "Último pesaje: {date}",
+  "body.health.none": "No se encontraron pesajes en el último año. Si esperabas alguno, comprueba en la app Salud que Forced Rep puede leer el peso.",
+  "body.health.turnOff": "Desactivar",
+  "body.health.notAllowed": "No se permitió el acceso a Health Connect.",
+  "body.health.accessOff": "Forced Rep no puede leer el peso en Health Connect.",
+  "body.health.allowAccess": "Permitir acceso",
+  "body.health.getApp": "Instalar Health Connect",
+  "body.health.readFailed": "No se pudieron leer los pesajes ahora.",
+  "body.health.from": "De Apple Salud",
+  "body.health.editNotice": "Este peso viene de Apple Salud. Cámbialo para usar el tuyo o bórralo para ocultarlo aquí.",
+  "body.health.deleteNotice": "Su pesaje de Apple Salud se ocultará aquí y seguirá en Apple Salud.",
+  "health.rationale.title": "Forced Rep y Health Connect",
+  "health.rationale.body": "Forced Rep lee tu peso de Health Connect para mostrar los pesajes en tu registro corporal, así no tienes que escribirlos dos veces. Solo lee el peso y nunca escribe en Health Connect. Los pesajes se muestran en este dispositivo; no se guardan en los datos, copias ni exportaciones de Forced Rep y nunca se comparten."
 }

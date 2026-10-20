@@ -1528,5 +1528,22 @@
   "pro.body_trends.teaser": "Tendances de ton suivi du poids de corps",
   "body.previousDay": "Jour précédent",
   "body.nextDay": "Jour suivant",
-  "body.saveFailed": "La saisie n’a pas pu être enregistrée. Réessaie."
+  "body.saveFailed": "La saisie n’a pas pu être enregistrée. Réessaie.",
+  "body.health.title": "Apple Santé",
+  "body.health.offText": "Affiche les pesées d’Apple Santé, comme celles de ta balance connectée, pour ne pas les saisir deux fois. Un poids que tu saisis passe toujours en premier.",
+  "body.health.connect": "Connecter",
+  "body.health.onText": "Les jours sans poids saisi affichent la première pesée du jour.",
+  "body.health.latest": "Dernière pesée : {date}",
+  "body.health.none": "Aucune pesée trouvée sur la dernière année. Si tu en attendais, vérifie dans l’app Santé que Forced Rep peut lire le poids.",
+  "body.health.turnOff": "Désactiver",
+  "body.health.notAllowed": "L’accès à Health Connect n’a pas été autorisé.",
+  "body.health.accessOff": "Forced Rep ne peut pas lire le poids dans Health Connect.",
+  "body.health.allowAccess": "Autoriser l’accès",
+  "body.health.getApp": "Installer Health Connect",
+  "body.health.readFailed": "Impossible de lire les pesées pour l’instant.",
+  "body.health.from": "Depuis Apple Santé",
+  "body.health.editNotice": "Ce poids vient d’Apple Santé. Modifie-le pour utiliser le tien, ou efface-le pour le masquer ici.",
+  "body.health.deleteNotice": "Sa pesée Apple Santé sera masquée ici et restera dans Apple Santé.",
+  "health.rationale.title": "Forced Rep et Health Connect",
+  "health.rationale.body": "Forced Rep lit ton poids dans Health Connect pour afficher les pesées dans ton suivi corporel, afin que tu n’aies pas à les saisir deux fois. Il ne lit que le poids et n’écrit jamais dans Health Connect. Les pesées s’affichent sur cet appareil ; elles ne sont pas enregistrées dans les données, sauvegardes ou exports de Forced Rep, et ne sont jamais partagées."
 }

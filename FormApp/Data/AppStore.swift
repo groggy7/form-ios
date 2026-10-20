@@ -1530,24 +1530,33 @@ public final class AppStore: ObservableObject {
     /// Adds or replaces the body-log entry for its date (docs/design/body-and-joint-journal.md).
     @discardableResult
     public func saveBodyEntry(_ entry: BodyEntry, now: Date = Date()) -> Bool {
-        let today = BodyDay.today(now)
-        guard let day = BodyDay.number(entry.date), let todayNumber = BodyDay.number(today), day <= todayNumber, entry.hasValue,
-              BodyMetric.allCases.allSatisfy({ metric in entry.value(metric).map { metric.canonicalRange.contains($0) } ?? true }) else { return false }
+        entry.hasValue && applyBodyEdit(date: entry.date, stored: entry, hideHealth: false, now: now)
+    }
+
+    /// Replaces or removes a date's typed entry and can hide its Apple Health weigh-in
+    /// (docs/design/body-and-joint-journal.md#merge-rules). Only typed values and hidden dates are stored.
+    @discardableResult
+    public func applyBodyEdit(date: String, stored: BodyEntry?, hideHealth: Bool, now: Date = Date()) -> Bool {
+        if let stored {
+            guard stored.date == date, let day = BodyDay.number(date), let todayNumber = BodyDay.number(BodyDay.today(now)),
+                  day <= todayNumber, stored.hasValue,
+                  BodyMetric.allCases.allSatisfy({ metric in stored.value(metric).map { metric.canonicalRange.contains($0) } ?? true })
+            else { return false }
+        }
+        let edit = BodyLog.applyEdit(state.bodyEntries ?? [], hidden: state.hiddenHealthWeighIns ?? [], date: date,
+                                     stored: stored, hideHealth: hideHealth)
         var next = state
-        next.bodyEntries = BodyLog.upsert(state.bodyEntries ?? [], entry)
+        next.bodyEntries = edit.entries.isEmpty ? nil : edit.entries
+        next.hiddenHealthWeighIns = edit.hidden.isEmpty ? nil : edit.hidden
         guard saveState(next, now: now, durable: true) else { return false }
         autoSyncCloudBackup()
         return true
     }
 
+    /// Deletes the date's typed entry; `hideHealth` also hides its Apple Health weigh-in.
     @discardableResult
-    public func deleteBodyEntry(date: String) -> Bool {
-        var next = state
-        let remaining = BodyLog.remove(state.bodyEntries ?? [], date: date)
-        next.bodyEntries = remaining.isEmpty ? nil : remaining
-        guard saveState(next, durable: true) else { return false }
-        autoSyncCloudBackup()
-        return true
+    public func deleteBodyEntry(date: String, hideHealth: Bool = false) -> Bool {
+        applyBodyEdit(date: date, stored: nil, hideHealth: hideHealth)
     }
 
     /// Any logged load means a unit switch rounds converted weights, so Settings asks first.
@@ -2215,6 +2224,8 @@ enum BackupSanitizer {
         clean.history = state.history.filter { sessionIds.insert($0.id).inserted }.prefix(maxHistoryRecords).map(sanitize)
         let body = BodyLog.sanitize(state.bodyEntries, today: BodyDay.today())
         clean.bodyEntries = body.isEmpty ? nil : body
+        let hidden = BodyLog.sanitizeHidden(state.hiddenHealthWeighIns, today: BodyDay.today())
+        clean.hiddenHealthWeighIns = hidden.isEmpty ? nil : hidden
         return clean
     }
 

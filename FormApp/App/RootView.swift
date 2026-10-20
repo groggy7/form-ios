@@ -266,6 +266,7 @@ public struct RootView: View {
                 store.checkAndArchiveStaleSession()
                 store.sceneDidBecomeActive()
                 Task { await ExerciseReportStore.shared.retryPendingReports() }
+                Task { await HealthWeights.shared.refresh() }
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification)) { _ in

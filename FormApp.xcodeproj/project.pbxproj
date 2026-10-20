@@ -108,6 +108,9 @@
 		S70000000000000000000004 /* ExerciseSwapSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = S70000000000000000000003 /* ExerciseSwapSheet.swift */; };
 		BJ0000000000000000000002 /* BodyTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000001 /* BodyTracking.swift */; };
 		BJ0000000000000000000004 /* BodyTrends.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000003 /* BodyTrends.swift */; };
+		HW0000000000000000000002 /* HealthWeights.swift in Sources */ = {isa = PBXBuildFile; fileRef = HW0000000000000000000001 /* HealthWeights.swift */; };
+		HW0000000000000000000004 /* HealthWeighInTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = HW0000000000000000000003 /* HealthWeighInTests.swift */; };
+		HW0000000000000000000006 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = HW0000000000000000000005 /* InfoPlist.xcstrings */; };
 		BJ0000000000000000000006 /* JointJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000005 /* JointJournalView.swift */; };
 		BJ0000000000000000000008 /* BodyLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000007 /* BodyLogView.swift */; };
 		BJ0000000000000000000010 /* BodyAndJointJournalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000009 /* BodyAndJointJournalTests.swift */; };
@@ -255,6 +258,9 @@
 		S70000000000000000000003 /* ExerciseSwapSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSwapSheet.swift; sourceTree = "<group>"; };
 		BJ0000000000000000000001 /* BodyTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyTracking.swift; sourceTree = "<group>"; };
 		BJ0000000000000000000003 /* BodyTrends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyTrends.swift; sourceTree = "<group>"; };
+		HW0000000000000000000001 /* HealthWeights.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthWeights.swift; sourceTree = "<group>"; };
+		HW0000000000000000000003 /* HealthWeighInTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthWeighInTests.swift; sourceTree = "<group>"; };
+		HW0000000000000000000005 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		BJ0000000000000000000005 /* JointJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointJournalView.swift; sourceTree = "<group>"; };
 		BJ0000000000000000000007 /* BodyLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyLogView.swift; sourceTree = "<group>"; };
 		BJ0000000000000000000009 /* BodyAndJointJournalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyAndJointJournalTests.swift; sourceTree = "<group>"; };
@@ -383,6 +389,7 @@
 				C1500000000000000000000D /* progression-fixtures.json */,
 				IS0000000000000000000001 /* IntensityFixtureTests.swift */,
 				BJ0000000000000000000009 /* BodyAndJointJournalTests.swift */,
+				HW0000000000000000000003 /* HealthWeighInTests.swift */,
 				IS0000000000000000000003 /* intensity-fixtures.json */,
 			);
 			path = FormAppTests;
@@ -425,6 +432,7 @@
 				P10000000000000000000002 /* ExercisePriority.swift */,
 				S70000000000000000000001 /* ExerciseSwaps.swift */,
 				BJ0000000000000000000003 /* BodyTrends.swift */,
+				HW0000000000000000000001 /* HealthWeights.swift */,
 				B16D5A75502FFC600D48A992 /* AudioPlayer.swift */,
 				RA0000000000000000000001 /* RestAlertScheduler.swift */,
 				PG0000000000000000000003 /* ProgressionEngine.swift */,
@@ -561,6 +569,7 @@
 				E30000000000000000000004 /* equipment_catalog.json */,
 				S70000000000000000000005 /* exercise_swaps.json */,
 				A11000000000000000000004 /* Localizable.xcstrings */,
+				HW0000000000000000000005 /* InfoPlist.xcstrings */,
 				T10000000000000000000004 /* ExerciseThumbnails */,
 				E10000000000000000000001 /* exercises.json */,
 				L100000000000000000000001 /* Locales */,
@@ -710,6 +719,7 @@
 			files = (
 				A41A7C6F20EF4E568EBC0E01 /* LaunchScreen.storyboard in Resources */,
 				A11000000000000000000003 /* Localizable.xcstrings in Resources */,
+				HW0000000000000000000006 /* InfoPlist.xcstrings in Resources */,
 				A13B29C1D4E5F60718293A4B /* PrivacyInfo.xcprivacy in Resources */,
 				E10000000000000000000002 /* exercises.json in Resources */,
 				V10000000000000000000003 /* ExerciseVideos in Resources */,
@@ -801,6 +811,7 @@
 				BJ0000000000000000000008 /* BodyLogView.swift in Sources */,
 				BJ0000000000000000000006 /* JointJournalView.swift in Sources */,
 				BJ0000000000000000000004 /* BodyTrends.swift in Sources */,
+				HW0000000000000000000002 /* HealthWeights.swift in Sources */,
 				BJ0000000000000000000002 /* BodyTracking.swift in Sources */,
 				S70000000000000000000004 /* ExerciseSwapSheet.swift in Sources */,
 				075B0F9BA865F79FB856122B /* AudioPlayer.swift in Sources */,
@@ -874,6 +885,7 @@
 				C1500000000000000000000C /* ProgressionFixtureTests.swift in Sources */,
 				IS0000000000000000000002 /* IntensityFixtureTests.swift in Sources */,
 				BJ0000000000000000000010 /* BodyAndJointJournalTests.swift in Sources */,
+				HW0000000000000000000004 /* HealthWeighInTests.swift in Sources */,
 				TR0000000000000000000006 /* TourTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

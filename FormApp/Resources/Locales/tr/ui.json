@@ -1528,5 +1528,22 @@
   "pro.body_trends.teaser": "Vücut ağırlığı kaydından eğilimler",
   "body.previousDay": "Önceki gün",
   "body.nextDay": "Sonraki gün",
-  "body.saveFailed": "Kayıt kaydedilemedi. Lütfen tekrar dene."
+  "body.saveFailed": "Kayıt kaydedilemedi. Lütfen tekrar dene.",
+  "body.health.title": "Apple Sağlık",
+  "body.health.offText": "Akıllı tartın gibi kaynaklardan gelen Apple Sağlık tartımlarını göster; böylece onları iki kez yazmazsın. Yazdığın ağırlık her zaman önceliklidir.",
+  "body.health.connect": "Bağla",
+  "body.health.onText": "Yazdığın bir ağırlık olmayan günlerde o günün ilk tartımı gösterilir.",
+  "body.health.latest": "Son tartım: {date}",
+  "body.health.none": "Son bir yılda tartım bulunamadı. Tartım bekliyorsan Sağlık uygulamasında Forced Rep'in kilo verisini okuyabildiğini kontrol et.",
+  "body.health.turnOff": "Kapat",
+  "body.health.notAllowed": "Health Connect erişimine izin verilmedi.",
+  "body.health.accessOff": "Forced Rep, Health Connect'teki kilo verisini okuyamıyor.",
+  "body.health.allowAccess": "Erişime izin ver",
+  "body.health.getApp": "Health Connect'i yükle",
+  "body.health.readFailed": "Tartımlar şu anda okunamadı.",
+  "body.health.from": "Apple Sağlık'tan",
+  "body.health.editNotice": "Bu ağırlık Apple Sağlık'tan geliyor. Kendi değerini kullanmak için değiştir ya da burada gizlemek için sil.",
+  "body.health.deleteNotice": "Bu günün Apple Sağlık tartımı burada gizlenir ve Apple Sağlık'ta kalır.",
+  "health.rationale.title": "Forced Rep ve Health Connect",
+  "health.rationale.body": "Forced Rep, tartımları vücut kaydında göstermek için kilonu Health Connect'ten okur; böylece onları iki kez yazmazsın. Yalnızca kiloyu okur ve Health Connect'e asla yazmaz. Tartımlar bu cihazda gösterilir; Forced Rep verilerine, yedeklerine veya dışa aktarımlarına kaydedilmez ve asla paylaşılmaz."
 }

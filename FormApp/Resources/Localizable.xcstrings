@@ -52897,6 +52897,601 @@
         }
       }
     },
+    "body.health.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Health"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Sağlık"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Health"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Santé"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Salud"
+          }
+        }
+      }
+    },
+    "body.health.offText": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show weigh-ins from Apple Health, such as your smart scale's, so you don't type them twice. A weight you type always wins."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Akıllı tartın gibi kaynaklardan gelen Apple Sağlık tartımlarını göster; böylece onları iki kez yazmazsın. Yazdığın ağırlık her zaman önceliklidir."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zeige Wiegungen aus Apple Health an, etwa von deiner smarten Waage, damit du sie nicht doppelt eintippen musst. Ein eingetipptes Gewicht hat immer Vorrang."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Affiche les pesées d’Apple Santé, comme celles de ta balance connectée, pour ne pas les saisir deux fois. Un poids que tu saisis passe toujours en premier."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Muestra los pesajes de Apple Salud, como los de tu báscula inteligente, para no escribirlos dos veces. El peso que escribas siempre tiene prioridad."
+          }
+        }
+      }
+    },
+    "body.health.connect": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connect"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bağla"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Verbinden"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecter"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Conectar"
+          }
+        }
+      }
+    },
+    "body.health.onText": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Days without a weight you typed show that day's first weigh-in."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yazdığın bir ağırlık olmayan günlerde o günün ilk tartımı gösterilir."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tage ohne eingetipptes Gewicht zeigen die erste Wiegung des Tages."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les jours sans poids saisi affichent la première pesée du jour."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los días sin un peso escrito muestran el primer pesaje del día."
+          }
+        }
+      }
+    },
+    "body.health.latest": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Latest weigh-in: {date}"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son tartım: {date}"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Letzte Wiegung: {date}"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dernière pesée : {date}"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Último pesaje: {date}"
+          }
+        }
+      }
+    },
+    "body.health.none": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No weigh-ins found in the last year. If you expected some, check that Forced Rep can read Weight in the Health app."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Son bir yılda tartım bulunamadı. Tartım bekliyorsan Sağlık uygulamasında Forced Rep'in kilo verisini okuyabildiğini kontrol et."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Im letzten Jahr wurden keine Wiegungen gefunden. Falls du welche erwartet hast, prüfe in der Health-App, ob Forced Rep Gewicht lesen darf."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune pesée trouvée sur la dernière année. Si tu en attendais, vérifie dans l’app Santé que Forced Rep peut lire le poids."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se encontraron pesajes en el último año. Si esperabas alguno, comprueba en la app Salud que Forced Rep puede leer el peso."
+          }
+        }
+      }
+    },
+    "body.health.turnOff": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Turn off"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kapat"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ausschalten"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Désactiver"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desactivar"
+          }
+        }
+      }
+    },
+    "body.health.notAllowed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health Connect access wasn't allowed."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health Connect erişimine izin verilmedi."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Der Zugriff auf Health Connect wurde nicht erlaubt."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "L’accès à Health Connect n’a pas été autorisé."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se permitió el acceso a Health Connect."
+          }
+        }
+      }
+    },
+    "body.health.accessOff": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep can't read Weight in Health Connect."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep, Health Connect'teki kilo verisini okuyamıyor."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep kann in Health Connect kein Gewicht lesen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep ne peut pas lire le poids dans Health Connect."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep no puede leer el peso en Health Connect."
+          }
+        }
+      }
+    },
+    "body.health.allowAccess": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Allow access"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erişime izin ver"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zugriff erlauben"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Autoriser l’accès"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Permitir acceso"
+          }
+        }
+      }
+    },
+    "body.health.getApp": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get Health Connect"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health Connect'i yükle"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Health Connect installieren"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Installer Health Connect"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Instalar Health Connect"
+          }
+        }
+      }
+    },
+    "body.health.readFailed": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Couldn't read weigh-ins right now."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tartımlar şu anda okunamadı."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wiegungen konnten gerade nicht gelesen werden."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Impossible de lire les pesées pour l’instant."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se pudieron leer los pesajes ahora."
+          }
+        }
+      }
+    },
+    "body.health.from": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "From Apple Health"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple Sağlık'tan"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aus Apple Health"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Depuis Apple Santé"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "De Apple Salud"
+          }
+        }
+      }
+    },
+    "body.health.editNotice": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This weight is from Apple Health. Change it to use your own, or clear it to hide it here."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu ağırlık Apple Sağlık'tan geliyor. Kendi değerini kullanmak için değiştir ya da burada gizlemek için sil."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dieses Gewicht stammt aus Apple Health. Ändere es, um dein eigenes zu nutzen, oder leere das Feld, um es hier auszublenden."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ce poids vient d’Apple Santé. Modifie-le pour utiliser le tien, ou efface-le pour le masquer ici."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Este peso viene de Apple Salud. Cámbialo para usar el tuyo o bórralo para ocultarlo aquí."
+          }
+        }
+      }
+    },
+    "body.health.deleteNotice": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Its Apple Health weigh-in will be hidden here and stays in Apple Health."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu günün Apple Sağlık tartımı burada gizlenir ve Apple Sağlık'ta kalır."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Die Wiegung aus Apple Health wird hier ausgeblendet und bleibt in Apple Health."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sa pesée Apple Santé sera masquée ici et restera dans Apple Santé."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Su pesaje de Apple Salud se ocultará aquí y seguirá en Apple Salud."
+          }
+        }
+      }
+    },
+    "health.rationale.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep and Health Connect"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep ve Health Connect"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep und Health Connect"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep et Health Connect"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep y Health Connect"
+          }
+        }
+      }
+    },
+    "health.rationale.body": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep reads your weight from Health Connect to show weigh-ins in your body log, so you don't type them twice. It reads only weight and never writes to Health Connect. Weigh-ins are shown on this device; they are not saved in Forced Rep's data, backups or exports, and are never shared."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep, tartımları vücut kaydında göstermek için kilonu Health Connect'ten okur; böylece onları iki kez yazmazsın. Yalnızca kiloyu okur ve Health Connect'e asla yazmaz. Tartımlar bu cihazda gösterilir; Forced Rep verilerine, yedeklerine veya dışa aktarımlarına kaydedilmez ve asla paylaşılmaz."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep liest dein Gewicht aus Health Connect, um Wiegungen in deinem Körperprotokoll anzuzeigen, damit du sie nicht doppelt eintippen musst. Es liest nur das Gewicht und schreibt nie in Health Connect. Wiegungen werden auf diesem Gerät angezeigt; sie werden nicht in den Daten, Sicherungen oder Exporten von Forced Rep gespeichert und nie geteilt."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep lit ton poids dans Health Connect pour afficher les pesées dans ton suivi corporel, afin que tu n’aies pas à les saisir deux fois. Il ne lit que le poids et n’écrit jamais dans Health Connect. Les pesées s’affichent sur cet appareil ; elles ne sont pas enregistrées dans les données, sauvegardes ou exports de Forced Rep, et ne sont jamais partagées."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forced Rep lee tu peso de Health Connect para mostrar los pesajes en tu registro corporal, así no tienes que escribirlos dos veces. Solo lee el peso y nunca escribe en Health Connect. Los pesajes se muestran en este dispositivo; no se guardan en los datos, copias ni exportaciones de Forced Rep y nunca se comparten."
+          }
+        }
+      }
+    },
     "counts.setsLeft": {
       "extractionState": "manual",
       "localizations": {

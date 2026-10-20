@@ -1342,6 +1342,8 @@ public struct StoredAppState: Codable {
     public var calendarHistory: WorkoutCalendarHistory?
     /// One entry per date (docs/design/body-and-joint-journal.md). Nil in schema 5 and older backups.
     public var bodyEntries: [BodyEntry]?
+    /// Dates whose Apple Health weigh-in the user hid. Dates only: Health values are never stored.
+    public var hiddenHealthWeighIns: [String]?
 
     public init(
         schemaVersion: Int = StoredAppState.currentSchemaVersion,
@@ -1352,9 +1354,11 @@ public struct StoredAppState: Codable {
         weeklyArchives: [WeeklyArchive] = [],
         history: [WorkoutSessionRecord] = [],
         calendarHistory: WorkoutCalendarHistory? = nil,
-        bodyEntries: [BodyEntry]? = nil
+        bodyEntries: [BodyEntry]? = nil,
+        hiddenHealthWeighIns: [String]? = nil
     ) {
         self.bodyEntries = bodyEntries
+        self.hiddenHealthWeighIns = hiddenHealthWeighIns
         self.schemaVersion = schemaVersion
         self.programs = programs
         self.activeProgramId = activeProgramId

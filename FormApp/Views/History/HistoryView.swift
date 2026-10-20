@@ -366,6 +366,7 @@ public struct HistoryView: View {
 
     @ObservedObject private var proManager = ProAccessManager.shared
     @ObservedObject private var tour = TourController.shared
+    @ObservedObject private var health = HealthWeights.shared
     @State private var activeTab: HistoryTab = .calendar
     @State private var activePaywallFeature: ProFeature? = nil
     @State private var showBody = false
@@ -607,7 +608,7 @@ public struct HistoryView: View {
                     }
 
                     // The day preview stays directly below the legend; the body log follows it.
-                    BodySummaryCard(entries: store.state.bodyEntries ?? [], weightUnit: store.weightUnit, onOpen: { showBody = true })
+                    BodySummaryCard(entries: health.shownLog(store.state).entries, weightUnit: store.weightUnit, onOpen: { showBody = true })
                         .padding(.horizontal, 20)
 
                     Spacer().frame(height: 24)
