@@ -33,11 +33,13 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         XCTAssertTrue(home.allSatisfy { $0.artwork != nil })
         let gym = try XCTUnwrap(catalog.presets["commercial_gym"])
         XCTAssertTrue(catalog.equipment.filter { gym.contains($0.id) }.allSatisfy { $0.artwork != nil })
-        for item in catalog.equipment {
-            if let artwork = item.artwork, artwork.hasPrefix("exercise:") {
-                XCTAssertNotNil(ExerciseCatalog.canonicalExercises[String(artwork.dropFirst("exercise:".count))])
-            }
+        let dedicated = catalog.equipment.filter { $0.artwork?.hasPrefix("equipment:") == true }
+        XCTAssertEqual(dedicated.count, 17)
+        for item in dedicated {
+            XCTAssertEqual(item.artwork, "equipment:\(item.id)")
+            XCTAssertNotNil(UIImage(named: "setup_equipment_" + item.id.replacingOccurrences(of: "-", with: "_")), item.id)
         }
+        XCTAssertFalse(catalog.equipment.contains { $0.artwork?.hasPrefix("exercise:") == true })
     }
 
     func testOldSettingsDraftKeepsItsPreviewAtTheNewReviewStep() throws {

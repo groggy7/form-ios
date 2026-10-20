@@ -185,8 +185,8 @@ struct TrainingSetupView: View {
                         ZStack(alignment: .topTrailing) {
                             Color.black
                             Group {
-                                if let artwork = item.artwork, artwork.hasPrefix("exercise:") {
-                                    MovementIllustration(exerciseId: String(artwork.dropFirst("exercise:".count)))
+                                if let artwork = item.artwork, artwork.hasPrefix("equipment:") {
+                                    Image("setup_equipment_" + String(artwork.dropFirst("equipment:".count)).replacingOccurrences(of: "-", with: "_")).resizable().scaledToFit()
                                 } else if let artwork = item.artwork, artwork.hasPrefix("product:") {
                                     Image("library_equipment_" + String(artwork.dropFirst("product:".count))).resizable().scaledToFit()
                                 }

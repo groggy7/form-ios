@@ -16,7 +16,7 @@
     {
       "id": "ez-bar",
       "group": "weights",
-      "artwork": "exercise:ez-bar-curl",
+      "artwork": "equipment:ez-bar",
       "home": true
     },
     {
@@ -38,25 +38,25 @@
     {
       "id": "bench",
       "group": "supports",
-      "artwork": "exercise:dumbbell-bench-press",
+      "artwork": "equipment:bench",
       "home": true
     },
     {
       "id": "adjustable-bench",
       "group": "supports",
-      "artwork": "exercise:incline-dumbbell-press",
+      "artwork": "equipment:adjustable-bench",
       "home": true
     },
     {
       "id": "rack",
       "group": "supports",
-      "artwork": "exercise:barbell-rack-pull",
+      "artwork": "equipment:rack",
       "home": true
     },
     {
       "id": "safeties",
       "group": "supports",
-      "artwork": "exercise:barbell-rack-pull"
+      "artwork": "equipment:safeties"
     },
     {
       "id": "landmine",
@@ -77,13 +77,13 @@
     {
       "id": "pull-up-bar",
       "group": "pulling",
-      "artwork": "exercise:pull-ups",
+      "artwork": "equipment:pull-up-bar",
       "home": true
     },
     {
       "id": "dip-station",
       "group": "pulling",
-      "artwork": "exercise:chest-dip",
+      "artwork": "equipment:dip-station",
       "home": true
     },
     {
@@ -123,7 +123,7 @@
     {
       "id": "ab-wheel",
       "group": "accessories",
-      "artwork": "exercise:ab-wheel-rollout",
+      "artwork": "equipment:ab-wheel",
       "home": true
     },
     {
@@ -146,47 +146,47 @@
     {
       "id": "lat-pulldown",
       "group": "machines",
-      "artwork": "exercise:lat-pulldown"
+      "artwork": "equipment:lat-pulldown"
     },
     {
       "id": "seated-row",
       "group": "machines",
-      "artwork": "exercise:cable-seated-row"
+      "artwork": "equipment:seated-row"
     },
     {
       "id": "chest-press",
       "group": "machines",
-      "artwork": "exercise:lever-chest-press"
+      "artwork": "equipment:chest-press"
     },
     {
       "id": "shoulder-press",
       "group": "machines",
-      "artwork": "exercise:lever-seated-shoulder-press"
+      "artwork": "equipment:shoulder-press"
     },
     {
       "id": "leg-press",
       "group": "machines",
-      "artwork": "exercise:leg-press"
+      "artwork": "equipment:leg-press"
     },
     {
       "id": "leg-extension",
       "group": "machines",
-      "artwork": "exercise:leg-extension"
+      "artwork": "equipment:leg-extension"
     },
     {
       "id": "leg-curl",
       "group": "machines",
-      "artwork": "exercise:seated-leg-curl"
+      "artwork": "equipment:leg-curl"
     },
     {
       "id": "calf-machine",
       "group": "machines",
-      "artwork": "exercise:standing-machine-calf-raise"
+      "artwork": "equipment:calf-machine"
     },
     {
       "id": "pec-deck",
       "group": "machines",
-      "artwork": "exercise:pec-deck-fly"
+      "artwork": "equipment:pec-deck"
     }
   ],
   "presets": {
