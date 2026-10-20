@@ -29,13 +29,13 @@ extension UIApplication: AlternateIconHost {}
 /// iOS keeps the chosen icon itself, across launches and updates, so there is no preference of our own.
 @MainActor
 public final class AppIconManager: ObservableObject {
-    public static let shared = AppIconManager()
+    public static let shared = AppIconManager(host: UIApplication.shared)
 
     @Published public private(set) var current: AppIconOption
     let icons: [AppIconOption]
     private let host: AlternateIconHost
 
-    init(host: AlternateIconHost = UIApplication.shared, icons: [AppIconOption] = AppIcons.all) {
+    init(host: AlternateIconHost, icons: [AppIconOption] = AppIcons.all) {
         self.host = host
         self.icons = icons
         current = Self.option(named: host.alternateIconName, in: icons)
