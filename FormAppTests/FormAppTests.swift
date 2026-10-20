@@ -11216,7 +11216,8 @@ final class CloudBackupReliabilityTests: XCTestCase {
         environment.container = root.appendingPathComponent("cloud")
         let relaunched = manager(root, defaults, environment)
         relaunched.retryPendingSyncIfAny()
-        try await waitUntil { !relaunched.hasPendingSync }
+        // Clearing the queue precedes publishing the resulting upload status.
+        try await waitUntil { !relaunched.hasPendingSync && relaunched.getStatus().isUploadPending }
         let file = environment.container!.appendingPathComponent("Documents/CloudMirror/form_safety_mirror.json")
         XCTAssertEqual(try String(contentsOf: file, encoding: .utf8), newer)
         XCTAssertTrue(relaunched.getStatus().isUploadPending)
