@@ -1539,7 +1539,7 @@
   "body.health.notAllowed": "L’accès à Health Connect n’a pas été autorisé.",
   "body.health.accessOff": "Forced Rep ne peut pas lire le poids dans Health Connect.",
   "body.health.allowAccess": "Autoriser l’accès",
-  "body.health.stoppedAsking": "Health Connect n’a pas redemandé. Autorise Forced Rep à lire le poids dans les autorisations des applis de Health Connect.",
+  "body.health.stoppedAsking": "Health Connect n’a pas redemandé. Ouvre-le et autorise Forced Rep à lire le poids.",
   "body.health.openSettings": "Ouvrir Health Connect",
   "body.health.getApp": "Installer Health Connect",
   "body.health.readFailed": "Impossible de lire les pesées pour l’instant.",

@@ -53253,31 +53253,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Health Connect didn't ask again. Allow Weight for Forced Rep in Health Connect's app permissions."
+            "value": "Health Connect didn't ask again. Open it and allow Weight for Forced Rep."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Health Connect yeniden sormadı. Health Connect'in uygulama izinlerinde Forced Rep'in kilo verisini okumasına izin ver."
+            "value": "Health Connect yeniden sormadı. Health Connect'i aç ve Forced Rep'in kilo verisini okumasına izin ver."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Health Connect hat nicht erneut gefragt. Erlaube Forced Rep in den App-Berechtigungen von Health Connect, das Gewicht zu lesen."
+            "value": "Health Connect hat nicht erneut gefragt. Öffne es und erlaube Forced Rep, das Gewicht zu lesen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Health Connect n’a pas redemandé. Autorise Forced Rep à lire le poids dans les autorisations des applis de Health Connect."
+            "value": "Health Connect n’a pas redemandé. Ouvre-le et autorise Forced Rep à lire le poids."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Health Connect no volvió a preguntar. Permite que Forced Rep lea el peso en los permisos de apps de Health Connect."
+            "value": "Health Connect no volvió a preguntar. Ábrelo y permite que Forced Rep lea el peso."
           }
         }
       }
