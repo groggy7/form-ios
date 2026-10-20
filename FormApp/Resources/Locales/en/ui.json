@@ -1539,6 +1539,8 @@
   "body.health.notAllowed": "Health Connect access wasn't allowed.",
   "body.health.accessOff": "Forced Rep can't read Weight in Health Connect.",
   "body.health.allowAccess": "Allow access",
+  "body.health.stoppedAsking": "Health Connect didn't ask again. Allow Weight for Forced Rep in Health Connect's app permissions.",
+  "body.health.openSettings": "Open Health Connect",
   "body.health.getApp": "Get Health Connect",
   "body.health.readFailed": "Couldn't read weigh-ins right now.",
   "body.health.from": "From Apple Health",

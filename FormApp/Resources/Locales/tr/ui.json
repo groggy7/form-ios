@@ -1539,6 +1539,8 @@
   "body.health.notAllowed": "Health Connect erişimine izin verilmedi.",
   "body.health.accessOff": "Forced Rep, Health Connect'teki kilo verisini okuyamıyor.",
   "body.health.allowAccess": "Erişime izin ver",
+  "body.health.stoppedAsking": "Health Connect yeniden sormadı. Health Connect'in uygulama izinlerinde Forced Rep'in kilo verisini okumasına izin ver.",
+  "body.health.openSettings": "Health Connect'i aç",
   "body.health.getApp": "Health Connect'i yükle",
   "body.health.readFailed": "Tartımlar şu anda okunamadı.",
   "body.health.from": "Apple Sağlık'tan",

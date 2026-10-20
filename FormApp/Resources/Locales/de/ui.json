@@ -1539,6 +1539,8 @@
   "body.health.notAllowed": "Der Zugriff auf Health Connect wurde nicht erlaubt.",
   "body.health.accessOff": "Forced Rep kann in Health Connect kein Gewicht lesen.",
   "body.health.allowAccess": "Zugriff erlauben",
+  "body.health.stoppedAsking": "Health Connect hat nicht erneut gefragt. Erlaube Forced Rep in den App-Berechtigungen von Health Connect, das Gewicht zu lesen.",
+  "body.health.openSettings": "Health Connect öffnen",
   "body.health.getApp": "Health Connect installieren",
   "body.health.readFailed": "Wiegungen konnten gerade nicht gelesen werden.",
   "body.health.from": "Aus Apple Health",

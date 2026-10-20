@@ -1539,6 +1539,8 @@
   "body.health.notAllowed": "No se permitió el acceso a Health Connect.",
   "body.health.accessOff": "Forced Rep no puede leer el peso en Health Connect.",
   "body.health.allowAccess": "Permitir acceso",
+  "body.health.stoppedAsking": "Health Connect no volvió a preguntar. Permite que Forced Rep lea el peso en los permisos de apps de Health Connect.",
+  "body.health.openSettings": "Abrir Health Connect",
   "body.health.getApp": "Instalar Health Connect",
   "body.health.readFailed": "No se pudieron leer los pesajes ahora.",
   "body.health.from": "De Apple Salud",
