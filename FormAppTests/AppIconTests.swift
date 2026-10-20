@@ -41,12 +41,14 @@ final class AppIconTests: XCTestCase {
         }
     }
 
-    func testEveryIconNameIsTranslated() {
+    func testIconNamesAndPaywallCopyAreTranslated() {
         let previous = LanguageManager.shared.languagePreference
         defer { LanguageManager.setLanguage(previous) }
         for language in ["en", "tr", "de", "fr", "es"] {
             LanguageManager.setLanguage(language)
-            for key in AppIcons.all.map(\.nameKey) + ["settings.appIcon", "settings.appIconSubtitle", "settings.appIconFailed"] {
+            let paywall = ["badge", "headline", "subtitle", "benefit1", "benefit1_desc", "benefit2", "benefit2_desc",
+                           "benefit3", "benefit3_desc", "plan", "planSubtitle", "cta", "notOnSale", "platformNote"].map { "founders.\($0)" }
+            for key in AppIcons.all.map(\.nameKey) + ["settings.appIcon", "settings.appIconSubtitle", "settings.appIconFailed"] + paywall {
                 XCTAssertNotEqual(LanguageManager.t(key), key, "\(language) lacks \(key)")
             }
         }
@@ -98,9 +100,9 @@ final class AppIconTests: XCTestCase {
         XCTAssertFalse(access.isFounder)
     }
 
-    /// Captures for review under forcedrep-ios/build/app-icon-review/: Settings with founder status
-    /// off and on, and the row and picker in every language at 393pt and at 320pt with the largest standard text.
-    func testRowAndPickerRenderInEveryLanguage() throws {
+    /// Captures for review under forcedrep-ios/build/app-icon-review/: Settings with founder status off and on,
+    /// and the row, picker and Founders Pass paywall in every language at 393pt and at 320pt with the largest standard text.
+    func testRowPickerAndPaywallRenderInEveryLanguage() throws {
         let previous = LanguageManager.shared.languagePreference
         let wasFounder = ProAccessManager.shared.isFounder
         defer {
@@ -132,6 +134,13 @@ final class AppIconTests: XCTestCase {
                 let image = render(content, width: width, height: size == .large ? 600 : 900, size: size)
                 XCTAssertEqual(image.size.width, width)
                 try XCTUnwrap(image.pngData()).write(to: outputDir.appendingPathComponent("app-icon-\(language)-\(Int(width)).png"))
+                for canPurchase in [true, false] {
+                    let paywall = render(FoundersPassPaywallContent(canPurchase: canPurchase, onPurchase: {}, onTerms: {}, onPrivacy: {}, onClose: {}),
+                                         width: width, height: size == .large ? 900 : 1500, size: size)
+                    XCTAssertEqual(paywall.size.width, width)
+                    try XCTUnwrap(paywall.pngData()).write(to: outputDir.appendingPathComponent(
+                        "founders-paywall-\(language)-\(Int(width))\(canPurchase ? "" : "-release").png"))
+                }
             }
         }
     }

@@ -10,6 +10,7 @@ public struct SettingsView: View {
     var onDismiss: () -> Void
 
     @State private var showAppIconSheet: Bool = false
+    @State private var showFoundersPaywall: Bool = false
     @State private var showPaywall: Bool = false
     @State private var paywallFeature: ProFeature? = nil
     @State private var showCloudBackupSheet: Bool = false
@@ -267,12 +268,12 @@ public struct SettingsView: View {
 
                         Divider().background(AppColors.border)
 
-                        // A Founders Pass perk; other users never see the row.
-                        if proManager.isFounder {
-                            SettingsAppIconRow(current: appIconManager.current) { showAppIconSheet = true }
-
-                            Divider().background(AppColors.border)
+                        // A Founders Pass perk: other users get the pass's paywall instead of the picker.
+                        SettingsAppIconRow(current: appIconManager.current) {
+                            if proManager.isFounder { showAppIconSheet = true } else { showFoundersPaywall = true }
                         }
+
+                        Divider().background(AppColors.border)
 
                         Toggle(isOn: $store.homeGlowTiles) {
                             HStack(spacing: 12) {
@@ -555,6 +556,10 @@ public struct SettingsView: View {
                 .presentationDragIndicator(.visible)
                 .presentationCornerRadius(28)
                 .presentationBackground(AppColors.background)
+            }
+            // A new founder goes straight on to the icon they came for.
+            .sheet(isPresented: $showFoundersPaywall, onDismiss: { if proManager.isFounder { showAppIconSheet = true } }) {
+                FoundersPassPaywallSheet(onDismiss: { showFoundersPaywall = false })
             }
             .sheet(isPresented: $showAppIconSheet) {
                 AppIconSelectionSheet(manager: appIconManager, onDismiss: { showAppIconSheet = false })
