@@ -6,8 +6,9 @@ public struct OnboardingView: View {
     @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
     @ObservedObject var langManager = LanguageManager.shared
+    @Environment(\.scenePhase) private var scenePhase
 
-    @State private var step: Int = TrainingSetupStore.draft() == nil ? Self.welcomeStep : 1
+    @State private var step: Int = Self.welcomeStep
     @State private var showLanguageSheet = false
     @State private var showRestoreSheet = false
     @State private var showCloudRestore = false
@@ -33,6 +34,19 @@ public struct OnboardingView: View {
                     welcomeStep
                 }.background(AppColors.background)
             }
+        }
+        .onAppear { TrainingSetupStore.clearDraft() }
+        .onChange(of: scenePhase) { _, phase in
+            guard phase == .background else { return }
+            // An unfinished visit restarts at Welcome; no question or answer is restored.
+            step = Self.welcomeStep
+            showLanguageSheet = false
+            showRestoreSheet = false
+            showCloudRestore = false
+            isShowingBackupImporter = false
+            showRestoreAlert = false
+            backupToRestore = nil
+            restoreErrorMessage = nil
         }
         .sheet(isPresented: $showLanguageSheet) {
             LanguageSelectionSheet(

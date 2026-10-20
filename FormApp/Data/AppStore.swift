@@ -301,15 +301,14 @@ public final class AppStore: ObservableObject {
 
         let hasCompleted = UserDefaults.standard.bool(forKey: onboardingCompletedKey)
         let hasExistingData = loaded.hasSavedState || UserDefaults.standard.object(forKey: stateKey) != nil || UserDefaults.standard.object(forKey: activeSessionKey) != nil || !loadedState.history.isEmpty
-        if !hasCompleted && hasExistingData {
-            UserDefaults.standard.set(true, forKey: onboardingCompletedKey)
-            self.isOnboardingCompleted = true
-        } else {
-            self.isOnboardingCompleted = hasCompleted
-        }
+        // Only migrate installs that predate the flag. Automatically saved starter
+        // data must not turn an unfinished first launch into completed setup.
+        let completed = UserDefaults.standard.object(forKey: onboardingCompletedKey) == nil ? hasExistingData : hasCompleted
+        UserDefaults.standard.set(completed, forKey: onboardingCompletedKey)
+        self.isOnboardingCompleted = completed
         // Installs that finished setup before tours existed skip the screen tours and tips.
         if UserDefaults.standard.object(forKey: Self.tourStateVersionKey) == nil {
-            Self.saveTourProgress(hasCompleted || hasExistingData ? TourProgress().returningUser() : TourProgress())
+            Self.saveTourProgress(completed ? TourProgress().returningUser() : TourProgress())
         }
         self.tourProgress = Self.loadTourProgress()
         let todayStr = WorkoutCalendar.formatDate(Date())

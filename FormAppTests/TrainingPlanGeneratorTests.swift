@@ -132,8 +132,31 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         XCTAssertEqual(store.state.history, before.history)
         XCTAssertEqual(store.state.activeProgramId, program.id)
         let reloaded = AppStore()
+        XCTAssertTrue(reloaded.isOnboardingCompleted)
         XCTAssertTrue(reloaded.state.programs.contains { $0.id == program.id })
         XCTAssertEqual(TrainingSetupStore.profile(), p.normalized())
+    }
+
+    @MainActor func testUnfinishedFirstLaunchStaysRequiredAfterSavingStarterData() throws {
+        let persistence = AppStatePersistence(inMemory: true)
+        let initial = AppStore(persistence: persistence)
+        XCTAssertFalse(initial.isOnboardingCompleted)
+        XCTAssertEqual(UserDefaults.standard.object(forKey: "is_onboarding_completed") as? Bool, false)
+        XCTAssertTrue(initial.saveState(initial.state, durable: true))
+        XCTAssertNotNil(try persistence.load())
+        for _ in 0..<2 {
+            XCTAssertFalse(AppStore(persistence: persistence).isOnboardingCompleted)
+        }
+    }
+
+    @MainActor func testSkipStaysCompletedAfterRelaunchAndLegacyInstallsStillMigrate() {
+        let persistence = AppStatePersistence(inMemory: true)
+        let initial = AppStore(persistence: persistence)
+        initial.setOnboardingCompleted(true)
+        XCTAssertTrue(initial.saveState(initial.state, durable: true))
+        XCTAssertTrue(AppStore(persistence: persistence).isOnboardingCompleted)
+        UserDefaults.standard.removeObject(forKey: "is_onboarding_completed")
+        XCTAssertTrue(AppStore(persistence: persistence).isOnboardingCompleted)
     }
 
     @MainActor func testFailedDurableSaveRetainsSetupAndRetryCompletesIt() throws {
@@ -169,7 +192,7 @@ final class TrainingPlanGeneratorTests: XCTestCase {
             LanguageManager.setLanguage(language)
             for step in [3, 6] {
                 TrainingSetupStore.saveDraft(.init(profile: profile(["dumbbells", "ez-bar", "plates"]), step: step, programId: "render-plan", program: nil))
-                let host = UIHostingController(rootView: TrainingSetupView(store: store, onClose: {}).environment(\.sizeCategory, .extraExtraExtraLarge))
+                let host = UIHostingController(rootView: TrainingSetupView(store: store, completeSetup: false, onClose: {}).environment(\.sizeCategory, .extraExtraExtraLarge))
                 let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 900))
                 window.rootViewController = host; window.makeKeyAndVisible(); host.view.frame = window.bounds
                 host.view.setNeedsLayout(); host.view.layoutIfNeeded()

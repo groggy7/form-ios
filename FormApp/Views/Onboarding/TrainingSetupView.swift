@@ -18,10 +18,10 @@ struct TrainingSetupView: View {
 
     init(store: AppStore, completeSetup: Bool = true, onClose: @escaping () -> Void, onSkip: (() -> Void)? = nil) {
         self.store = store; self.completeSetup = completeSetup; self.onClose = onClose; self.onSkip = onSkip
-        let draft = TrainingSetupStore.draft()
+        let draft = completeSetup ? nil : TrainingSetupStore.draft()
         var initial = TrainingProfile()
         initial.equipment = TrainingCatalog.bundled?.presets["commercial_gym"] ?? []
-        _profile = State(initialValue: draft?.profile ?? TrainingSetupStore.profile() ?? initial)
+        _profile = State(initialValue: draft?.profile ?? (completeSetup ? nil : TrainingSetupStore.profile()) ?? initial)
         _step = State(initialValue: min(max(draft?.step ?? 1, 1), 6))
         _programID = State(initialValue: draft?.programId ?? UUID().uuidString)
         _editedProgram = State(initialValue: draft?.program)
@@ -253,7 +253,10 @@ struct TrainingSetupView: View {
             else { error = LanguageManager.t("setup.saveFailed") }
         }
     }
-    private func persist() { TrainingSetupStore.saveDraft(.init(profile: profile, step: step, programId: programID, program: editedProgram)) }
+    private func persist() {
+        guard !completeSetup else { return }
+        TrainingSetupStore.saveDraft(.init(profile: profile, step: step, programId: programID, program: editedProgram))
+    }
 }
 
 private struct TrainingLoadField: View {
