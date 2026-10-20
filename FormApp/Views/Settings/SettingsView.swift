@@ -6,8 +6,10 @@ public struct SettingsView: View {
     @ObservedObject var langManager = LanguageManager.shared
     @ObservedObject private var proManager = ProAccessManager.shared
     @ObservedObject private var themeManager = ThemeManager.shared
+    @ObservedObject private var appIconManager = AppIconManager.shared
     var onDismiss: () -> Void
 
+    @State private var showAppIconSheet: Bool = false
     @State private var showPaywall: Bool = false
     @State private var paywallFeature: ProFeature? = nil
     @State private var showCloudBackupSheet: Bool = false
@@ -264,6 +266,13 @@ public struct SettingsView: View {
                         .accessibilityIdentifier("settings-theme-row")
 
                         Divider().background(AppColors.border)
+
+                        // A Founders Pass perk; other users never see the row.
+                        if proManager.isFounder {
+                            SettingsAppIconRow(current: appIconManager.current) { showAppIconSheet = true }
+
+                            Divider().background(AppColors.border)
+                        }
 
                         Toggle(isOn: $store.homeGlowTiles) {
                             HStack(spacing: 12) {
@@ -546,6 +555,13 @@ public struct SettingsView: View {
                 .presentationDragIndicator(.visible)
                 .presentationCornerRadius(28)
                 .presentationBackground(AppColors.background)
+            }
+            .sheet(isPresented: $showAppIconSheet) {
+                AppIconSelectionSheet(manager: appIconManager, onDismiss: { showAppIconSheet = false })
+                    .presentationDetents([.medium, .large])
+                    .presentationDragIndicator(.visible)
+                    .presentationCornerRadius(28)
+                    .presentationBackground(AppColors.background)
             }
             .sheet(isPresented: $showImportExportSheet) {
                 ImportExportDataSheet(store: store, onDismiss: {

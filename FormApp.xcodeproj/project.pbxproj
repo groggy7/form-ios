@@ -132,6 +132,9 @@
 		C14000000000000000000001 /* SessionExerciseMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = C14000000000000000000002 /* SessionExerciseMedia.swift */; };
 		V10000000000000000000003 /* ExerciseVideos in Resources */ = {isa = PBXBuildFile; fileRef = V10000000000000000000004 /* ExerciseVideos */; };
 		VM0000000000000000000002 /* ProFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000001 /* ProFeature.swift */; };
+		AI0000000000000000000002 /* AppIcons.swift in Sources */ = {isa = PBXBuildFile; fileRef = AI0000000000000000000001 /* AppIcons.swift */; };
+		AI0000000000000000000004 /* AppIconSelectionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = AI0000000000000000000003 /* AppIconSelectionSheet.swift */; };
+		AI0000000000000000000006 /* AppIconTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AI0000000000000000000005 /* AppIconTests.swift */; };
 		VM0000000000000000000004 /* VolumeMatrixModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000003 /* VolumeMatrixModels.swift */; };
 		VM0000000000000000000006 /* VolumeMatrixEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000005 /* VolumeMatrixEngine.swift */; };
 		VM0000000000000000000008 /* VolumeMatrixView.swift in Sources */ = {isa = PBXBuildFile; fileRef = VM0000000000000000000007 /* VolumeMatrixView.swift */; };
@@ -283,6 +286,9 @@
 		C14000000000000000000002 /* SessionExerciseMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionExerciseMedia.swift; sourceTree = "<group>"; };
 		V10000000000000000000004 /* ExerciseVideos */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseVideos; sourceTree = "<group>"; };
 		VM0000000000000000000001 /* ProFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProFeature.swift; sourceTree = "<group>"; };
+		AI0000000000000000000001 /* AppIcons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIcons.swift; sourceTree = "<group>"; };
+		AI0000000000000000000003 /* AppIconSelectionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconSelectionSheet.swift; sourceTree = "<group>"; };
+		AI0000000000000000000005 /* AppIconTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppIconTests.swift; sourceTree = "<group>"; };
 		VM0000000000000000000003 /* VolumeMatrixModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixModels.swift; sourceTree = "<group>"; };
 		VM0000000000000000000005 /* VolumeMatrixEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixEngine.swift; sourceTree = "<group>"; };
 		VM0000000000000000000007 /* VolumeMatrixView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VolumeMatrixView.swift; sourceTree = "<group>"; };
@@ -386,6 +392,7 @@
 				9D2282260300C11D1B7F29AE /* FormAppTests.swift */,
 				C1500000000000000000000B /* ProgressionFixtureTests.swift */,
 				TR0000000000000000000005 /* TourTests.swift */,
+				AI0000000000000000000005 /* AppIconTests.swift */,
 				C1500000000000000000000D /* progression-fixtures.json */,
 				IS0000000000000000000001 /* IntensityFixtureTests.swift */,
 				BJ0000000000000000000009 /* BodyAndJointJournalTests.swift */,
@@ -614,6 +621,7 @@
 		EC8D0E6B74180B62F042C537 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				AI0000000000000000000003 /* AppIconSelectionSheet.swift */,
 				DECFA8F5B27849C8BE2611AF /* SettingsView.swift */,
 			);
 			path = Settings;
@@ -630,6 +638,7 @@
 		VM0000000000000000000000 /* Pro */ = {
 			isa = PBXGroup;
 			children = (
+				AI0000000000000000000001 /* AppIcons.swift */,
 				VM0000000000000000000001 /* ProFeature.swift */,
 				PW0000000000000000000001 /* ProPaywallSheet.swift */,
 				SP0000000000000000000001 /* SessionFeaturePaywall.swift */,
@@ -778,6 +787,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				VM0000000000000000000002 /* ProFeature.swift in Sources */,
+				AI0000000000000000000002 /* AppIcons.swift in Sources */,
 				PW0000000000000000000002 /* ProPaywallSheet.swift in Sources */,
 				SP0000000000000000000002 /* SessionFeaturePaywall.swift in Sources */,
 				PP0000000000000000000002 /* ProPreviewData.swift in Sources */,
@@ -847,6 +857,7 @@
 				90CC3E5D0E555C597ED91ABB /* SessionSummaryView.swift in Sources */,
 				D5DDC5DF3C8A6E620BADA5A7 /* SetLoggingTable.swift in Sources */,
 				6F9CAA3F576D5057AF0C84E3 /* SettingsView.swift in Sources */,
+				AI0000000000000000000004 /* AppIconSelectionSheet.swift in Sources */,
 				9F2ABB85EAA74F04A28E14F6 /* ToastOverlay.swift in Sources */,
 				TR0000000000000000000004 /* TourOverlay.swift in Sources */,
 				0020D035F786CD915922D766 /* TodayHeroCard.swift in Sources */,
@@ -887,6 +898,7 @@
 				BJ0000000000000000000010 /* BodyAndJointJournalTests.swift in Sources */,
 				HW0000000000000000000004 /* HealthWeighInTests.swift in Sources */,
 				TR0000000000000000000006 /* TourTests.swift in Sources */,
+				AI0000000000000000000006 /* AppIconTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -905,6 +917,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = FormApp/FormApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
@@ -988,6 +1001,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_ENTITLEMENTS = FormApp/FormApp.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
