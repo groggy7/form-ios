@@ -1,0 +1,250 @@
+[
+  {
+    "name": "floor",
+    "profile": {
+      "version": 1,
+      "goal": "bulk",
+      "experience": "beginner",
+      "location": "home",
+      "equipment": [],
+      "equipmentConfirmed": true,
+      "selectedDays": [
+        1,
+        3,
+        5
+      ],
+      "minutes": 30,
+      "dumbbellPair": true,
+      "maxDumbbellKg": null,
+      "maxBarbellKg": null,
+      "pullUpReps": 0,
+      "advancedLifts": false,
+      "priority": "",
+      "excludedExerciseIds": []
+    },
+    "expected": "1:bodyweight-squat/2/8/12/90/false,push-ups/2/8/12/90/false,bodyweight-frog-hip-thrust/2/8/12/90/false,dead-bug/2/8/12/60/false,bodyweight-standing-calf-raise/2/8/12/60/false;3:bodyweight-rear-lunge/2/8/12/90/true,diamond-push-up/2/8/12/90/false,bodyweight-frog-hip-thrust/2/8/12/90/false,reverse-crunch/2/8/12/60/false,bodyweight-standing-calf-raise/2/8/12/60/false;5:side-lunge/2/8/12/90/false,push-ups/2/8/12/90/false,bodyweight-frog-hip-thrust/2/8/12/90/false,bird-dog/2/8/12/60/false,bodyweight-standing-calf-raise/2/8/12/60/false|setup.warning.pulling,setup.warning.hamstrings"
+  },
+  {
+    "name": "dumbbells",
+    "profile": {
+      "version": 1,
+      "goal": "bulk",
+      "experience": "beginner",
+      "location": "home",
+      "equipment": [
+        "dumbbells"
+      ],
+      "equipmentConfirmed": true,
+      "selectedDays": [
+        1,
+        3,
+        5
+      ],
+      "minutes": 30,
+      "dumbbellPair": true,
+      "maxDumbbellKg": null,
+      "maxBarbellKg": null,
+      "pullUpReps": 0,
+      "advancedLifts": false,
+      "priority": "",
+      "excludedExerciseIds": []
+    },
+    "expected": "1:goblet-squat/2/8/12/90/false,dumbbell-floor-press/2/8/12/90/false,one-arm-dumbbell-row/2/8/12/90/true,dumbbell-romanian-deadlift/2/8/12/90/false,dead-bug/2/8/12/60/false,dumbbell-one-arm-shoulder-press/2/8/12/90/true;3:dumbbell-goblet-sumo-squat/2/8/12/90/false,push-ups/2/8/12/90/false,one-arm-dumbbell-row/2/8/12/90/true,dumbbell-single-leg-romanian-deadlift/2/8/12/90/true,reverse-crunch/2/8/12/60/false,dumbbell-one-arm-shoulder-press/2/8/12/90/true;5:bodyweight-squat/2/8/12/90/false,diamond-push-up/2/8/12/90/false,one-arm-dumbbell-row/2/8/12/90/true,dumbbell-romanian-deadlift/2/8/12/90/false,bird-dog/2/8/12/60/false,dumbbell-one-arm-shoulder-press/2/8/12/90/true|"
+  },
+  {
+    "name": "single-dumbbell",
+    "profile": {
+      "version": 1,
+      "goal": "bulk",
+      "experience": "beginner",
+      "location": "home",
+      "equipment": [
+        "dumbbells"
+      ],
+      "equipmentConfirmed": true,
+      "selectedDays": [
+        1,
+        3,
+        5
+      ],
+      "minutes": 30,
+      "dumbbellPair": false,
+      "maxDumbbellKg": null,
+      "maxBarbellKg": null,
+      "pullUpReps": 0,
+      "advancedLifts": false,
+      "priority": "",
+      "excludedExerciseIds": []
+    },
+    "expected": "1:goblet-squat/2/8/12/90/false,push-ups/2/8/12/90/false,one-arm-dumbbell-row/2/8/12/90/true,dumbbell-single-leg-romanian-deadlift/2/8/12/90/true,dead-bug/2/8/12/60/false,dumbbell-one-arm-shoulder-press/2/8/12/90/true;3:dumbbell-goblet-sumo-squat/2/8/12/90/false,diamond-push-up/2/8/12/90/false,one-arm-dumbbell-row/2/8/12/90/true,dumbbell-single-leg-romanian-deadlift/2/8/12/90/true,reverse-crunch/2/8/12/60/false,dumbbell-one-arm-shoulder-press/2/8/12/90/true;5:bodyweight-squat/2/8/12/90/false,push-ups/2/8/12/90/false,one-arm-dumbbell-row/2/8/12/90/true,dumbbell-single-leg-romanian-deadlift/2/8/12/90/true,bird-dog/2/8/12/60/false,dumbbell-one-arm-shoulder-press/2/8/12/90/true|"
+  },
+  {
+    "name": "bands",
+    "profile": {
+      "version": 1,
+      "goal": "bulk",
+      "experience": "beginner",
+      "location": "home",
+      "equipment": [
+        "bands",
+        "low-anchor",
+        "high-anchor"
+      ],
+      "equipmentConfirmed": true,
+      "selectedDays": [
+        2,
+        6
+      ],
+      "minutes": 20,
+      "dumbbellPair": true,
+      "maxDumbbellKg": null,
+      "maxBarbellKg": null,
+      "pullUpReps": 0,
+      "advancedLifts": false,
+      "priority": "",
+      "excludedExerciseIds": []
+    },
+    "expected": "2:bodyweight-squat/2/8/12/90/false,push-ups/2/8/12/90/false,resistance-band-seated-row/2/8/12/90/false,bodyweight-frog-hip-thrust/2/8/12/90/false;6:bodyweight-rear-lunge/2/8/12/90/true,diamond-push-up/2/8/12/90/false,resistance-band-seated-row/2/8/12/90/false,bodyweight-frog-hip-thrust/2/8/12/90/false|setup.warning.hamstrings"
+  },
+  {
+    "name": "home-gym",
+    "profile": {
+      "version": 1,
+      "goal": "bulk",
+      "experience": "intermediate",
+      "location": "home",
+      "equipment": [
+        "barbell",
+        "plates",
+        "rack",
+        "safeties",
+        "dumbbells",
+        "adjustable-bench",
+        "ez-bar",
+        "pull-up-bar"
+      ],
+      "equipmentConfirmed": true,
+      "selectedDays": [
+        1,
+        2,
+        4,
+        5
+      ],
+      "minutes": 45,
+      "dumbbellPair": true,
+      "maxDumbbellKg": null,
+      "maxBarbellKg": null,
+      "pullUpReps": 3,
+      "advancedLifts": true,
+      "priority": "",
+      "excludedExerciseIds": []
+    },
+    "expected": "1:barbell-bench-press/3/8/12/90/false,chest-supported-dumbbell-row/3/8/12/90/false,pull-ups/3/3/3/150/false,dumbbell-seated-shoulder-press/3/8/12/90/false,ez-bar-curl/3/8/12/60/false,ez-bar-lying-triceps-extension/3/8/12/60/false,dumbbell-lateral-raise/3/8/12/60/false,dumbbell-rear-fly/2/8/12/60/false;2:barbell-back-squat/3/8/12/90/false,barbell-romanian-deadlift/3/8/12/90/false,barbell-hip-thrust/3/8/12/90/false,hanging-knee-raise/3/8/12/90/false,bodyweight-standing-calf-raise/3/8/12/60/false,barbell-front-squat/3/8/12/90/false;4:incline-barbell-bench-press/3/8/12/90/false,one-arm-dumbbell-row/3/8/12/90/true,chin-up/3/3/3/150/false,dumbbell-one-arm-shoulder-press/3/8/12/90/true,dumbbell-hammer-curl/3/8/12/60/false,dumbbell-standing-triceps-extension/3/8/12/60/false,dumbbell-lateral-raise/2/8/12/60/false;5:goblet-squat/3/8/12/90/false,conventional-barbell-deadlift/3/8/12/90/false,dumbbell-glute-bridge/3/8/12/90/false,dead-bug/3/8/12/60/false,bodyweight-standing-calf-raise/3/8/12/60/false,dumbbell-goblet-sumo-squat/3/8/12/90/false|"
+  },
+  {
+    "name": "bar-no-plates",
+    "profile": {
+      "version": 1,
+      "goal": "bulk",
+      "experience": "beginner",
+      "location": "home",
+      "equipment": [
+        "barbell"
+      ],
+      "equipmentConfirmed": true,
+      "selectedDays": [
+        1,
+        2,
+        7
+      ],
+      "minutes": 30,
+      "dumbbellPair": true,
+      "maxDumbbellKg": null,
+      "maxBarbellKg": null,
+      "pullUpReps": 0,
+      "advancedLifts": false,
+      "priority": "",
+      "excludedExerciseIds": []
+    },
+    "expected": "1:bodyweight-squat/2/8/12/90/false,push-ups/2/8/12/90/false,bodyweight-frog-hip-thrust/2/8/12/90/false,dead-bug/2/8/12/60/false,bodyweight-standing-calf-raise/2/8/12/60/false;2:bodyweight-rear-lunge/2/8/12/90/true,diamond-push-up/2/8/12/90/false,bodyweight-frog-hip-thrust/2/8/12/90/false,reverse-crunch/2/8/12/60/false,bodyweight-standing-calf-raise/2/8/12/60/false;7:side-lunge/2/8/12/90/false,push-ups/2/8/12/90/false,bodyweight-frog-hip-thrust/2/8/12/90/false,bird-dog/2/8/12/60/false,bodyweight-standing-calf-raise/2/8/12/60/false|setup.warning.pulling,setup.warning.hamstrings,setup.warning.adjacent"
+  },
+  {
+    "name": "gym-strength",
+    "profile": {
+      "version": 1,
+      "goal": "strength",
+      "experience": "advanced",
+      "location": "commercial_gym",
+      "equipment": [
+        "cable",
+        "lat-pulldown",
+        "seated-row",
+        "chest-press",
+        "shoulder-press",
+        "leg-press",
+        "leg-extension",
+        "leg-curl",
+        "calf-machine",
+        "pec-deck",
+        "dumbbells",
+        "barbell",
+        "ez-bar",
+        "plates",
+        "bench",
+        "adjustable-bench",
+        "rack",
+        "safeties",
+        "pull-up-bar"
+      ],
+      "equipmentConfirmed": true,
+      "selectedDays": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "minutes": 60,
+      "dumbbellPair": true,
+      "maxDumbbellKg": null,
+      "maxBarbellKg": null,
+      "pullUpReps": 8,
+      "advancedLifts": true,
+      "priority": "",
+      "excludedExerciseIds": []
+    },
+    "expected": "1:lever-chest-press/3/5/8/150/false,lever-seated-shoulder-press/3/5/8/150/false,rope-triceps-pressdown/3/8/12/60/false,cable-lateral-raise/3/8/12/60/false,pec-deck-fly/3/8/12/60/false,kneeling-cable-crunch/3/8/12/60/false;2:cable-seated-row/3/8/12/90/false,lat-pulldown/3/8/12/90/false,ez-bar-curl/3/8/12/60/false,lever-seated-reverse-fly/3/8/12/60/false,hanging-knee-raise/3/8/12/90/false;3:leg-press/3/5/8/150/false,barbell-romanian-deadlift/3/5/8/150/false,seated-leg-curl/3/8/12/60/false,dead-bug/3/8/12/60/false,standing-machine-calf-raise/3/8/12/60/false,leg-extension/3/8/12/60/false,barbell-back-squat/3/5/8/150/false;4:barbell-bench-press/3/5/8/150/false,dumbbell-seated-shoulder-press/3/5/8/150/false,ez-bar-lying-triceps-extension/3/8/12/60/false,dumbbell-lateral-raise/3/8/12/60/false,dumbbell-fly/3/8/12/60/false,reverse-crunch/3/8/12/60/false;5:chest-supported-dumbbell-row/3/5/8/150/false,pull-ups/3/3/8/150/false,cable-curl/3/8/12/60/false,dumbbell-rear-fly/3/8/12/60/false,bird-dog/3/8/12/60/false;6:barbell-front-squat/3/5/8/150/false,conventional-barbell-deadlift/3/5/8/150/false,seated-leg-curl/3/8/12/60/false,floor-crunch/3/8/12/60/false,bodyweight-standing-calf-raise/3/8/12/60/false,leg-extension/3/8/12/60/false,goblet-squat/3/5/8/150/false|"
+  },
+  {
+    "name": "exclusions",
+    "profile": {
+      "version": 1,
+      "goal": "bulk",
+      "experience": "beginner",
+      "location": "home",
+      "equipment": [
+        "dumbbells",
+        "adjustable-bench"
+      ],
+      "equipmentConfirmed": true,
+      "selectedDays": [
+        1,
+        3,
+        5
+      ],
+      "minutes": 20,
+      "dumbbellPair": true,
+      "maxDumbbellKg": null,
+      "maxBarbellKg": null,
+      "pullUpReps": 0,
+      "advancedLifts": false,
+      "priority": "",
+      "excludedExerciseIds": [
+        "dumbbell-bench-press",
+        "dumbbell-floor-press"
+      ]
+    },
+    "expected": "1:goblet-squat/2/8/12/90/false,incline-dumbbell-press/2/8/12/90/false,chest-supported-dumbbell-row/2/8/12/90/false,dumbbell-romanian-deadlift/2/8/12/90/false;3:dumbbell-goblet-sumo-squat/2/8/12/90/false,incline-push-up/2/8/12/90/false,one-arm-dumbbell-row/2/8/12/90/true,chest-supported-dumbbell-row/2/8/12/90/false;5:bodyweight-squat/2/8/12/90/false,push-ups/2/8/12/90/false,one-arm-dumbbell-row/2/8/12/90/true,chest-supported-dumbbell-row/2/8/12/90/false|"
+  }
+]

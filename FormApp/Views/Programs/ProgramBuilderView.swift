@@ -29,8 +29,10 @@ public struct ProgramBuilderView: View {
     @State private var pendingNewDayID: String?
     @State private var optionalDetailsExpanded = false
     var onDismiss: () -> Void
+    private var onDraftSave: ((Program) -> Bool)?
+    private var draftCatalogue: [ExerciseCatalogEntry]?
 
-    public init(store: AppStore, program: Program? = nil, template: Program? = nil, onDismiss: @escaping () -> Void) {
+    public init(store: AppStore, program: Program? = nil, template: Program? = nil, draftCatalogue: [ExerciseCatalogEntry]? = nil, onDraftSave: ((Program) -> Bool)? = nil, onDismiss: @escaping () -> Void) {
         self.store = store
         let initial = program ?? template.map { source in
             var copy = ProgramEditing.copyProgram(source)
@@ -43,10 +45,13 @@ public struct ProgramBuilderView: View {
         self.isNew = program == nil
         self.draftKey = template.map { "copy:" + $0.id } ?? program?.id
         self.onDismiss = onDismiss
+        self.onDraftSave = onDraftSave
+        self.draftCatalogue = draftCatalogue
     }
 
     private var isDirty: Bool { program != original || ((isNew || creatingCopy) && (!program.name.isEmpty || !program.workouts.isEmpty || !program.description.isEmpty || !program.guidelines.isEmpty)) }
     private var formError: String? {
+        if onDraftSave != nil { return nil }
         if (isNew || creatingCopy) && store.state.programs.count >= ProgramEditing.maxPrograms { return LanguageManager.t("builder.programLimit") }
         if !isNew && !creatingCopy && store.state.programs.first(where: { $0.id == original.id }) != original { return LanguageManager.t("builder.draftConflict") }
         return nil
@@ -74,6 +79,82 @@ public struct ProgramBuilderView: View {
     public var body: some View {
         let _ = themeManager.currentTheme
         NavigationStack {
+            editorContent
+            .confirmationDialog(LanguageManager.t("builder.unsavedTitle"), isPresented: $showDiscard, titleVisibility: .visible) {
+                Button(LanguageManager.t("builder.keepDraft")) { persistDraft(); onDismiss() }
+                Button(LanguageManager.t("builder.discard"), role: .destructive) { ProgramBuilderDraftStore.clear(draftKey); onDismiss() }
+                Button(LanguageManager.t("builder.continueEditing"), role: .cancel) { }
+            } message: { Text(LanguageManager.t("builder.unsavedMessage")) }
+            .alert(LanguageManager.t("builder.unsavedTitle"), isPresented: Binding(get: { conflictDraft != nil }, set: { if !$0 { conflictDraft = nil } })) {
+                Button(LanguageManager.t("builder.copyDraft")) {
+                    if let retained = conflictDraft {
+                        var copy = ProgramEditing.copyProgram(retained.program)
+                        copy.coverId = ProgramCover.forProgram(retained.program).rawValue
+                        program = copy; original = copy; creatingCopy = true
+                    }
+                    conflictDraft = nil; persistDraft()
+                }
+                Button(LanguageManager.t("builder.discard"), role: .destructive) { ProgramBuilderDraftStore.clear(draftKey); conflictDraft = nil }
+                Button(LanguageManager.t("builder.keepDraft"), role: .cancel) { onDismiss() }
+            } message: { Text(LanguageManager.t("builder.conflictDraftMessage")) }
+            .sheet(item: $editingWorkout) { context in
+                BuilderWorkoutEditor(workout: context.workout, isNew: context.isNew,
+                    occupiedDays: Set(program.workouts.filter { $0.id != context.workout.id }.map(\.day)),
+                    onSave: { updated in
+                        if let index = program.workouts.firstIndex(where: { $0.id == updated.id }) { program.workouts[index] = updated }
+                        else { program.workouts.append(updated); expandedIDs.insert(updated.id) }
+                    },
+                    onRemove: context.isNew ? nil : {
+                        if let index = program.workouts.firstIndex(where: { $0.id == context.workout.id }) { offerUndo(.workout(program.workouts[index], index)); program.workouts.remove(at: index) }
+                    },
+                    onCopy: context.isNew ? nil : { workout, day in
+                        let copy = ProgramEditing.copyWorkout(workout, day: day)
+                        program.workouts.append(copy); expandedIDs.insert(copy.id)
+                    })
+            }
+            .sheet(item: $pickerWorkout, onDismiss: dropPendingEmptyDay) { workout in
+                AddExercisePickerSheet(catalogue: draftCatalogue ?? store.exerciseCatalogue, existing: workout.exercises,
+                    defaultRest: store.defaultRestSeconds) { selected in
+                    guard let index = program.workouts.firstIndex(where: { $0.id == workout.id }) else { return }
+                    let existing = Set(program.workouts[index].exercises.map(ProgramEditing.selectionKey))
+                    let additions = selected.filter { !existing.contains(ProgramEditing.selectionKey($0)) }
+                    guard program.workouts[index].exercises.count + additions.count <= ProgramEditing.maxExercises else {
+                        store.showErrorNotice(LanguageManager.t("builder.exerciseLimit")); return
+                    }
+                    program.workouts[index].exercises.append(contentsOf: additions)
+                    pendingNewDayID = nil
+                    pickerWorkout = nil
+                }
+            }
+            .sheet(item: $editingExercise) { context in
+                ProgramExerciseEditorSheet(exercise: context.exercise, onSave: { updated in
+                    guard let w = program.workouts.firstIndex(where: { $0.id == context.workoutID }),
+                          let e = program.workouts[w].exercises.firstIndex(where: { $0.id == context.exercise.id }) else { return }
+                    program.workouts[w].exercises[e] = updated
+                }, onDelete: { removeExercise(context.workoutID, context.exercise.id) })
+            }
+            .sheet(isPresented: $showCoverPicker) { BuilderCoverPicker(programID: program.id, selection: $program.coverId, showAutomatic: !isNew && !creatingCopy) }
+            .sheet(isPresented: $showTemplates) {
+                BuilderTemplatePicker(templates: AppStore.loadBundledStarterPrograms()) { source in
+                    showTemplates = false
+                    if isDirty { pendingTemplate = source } else { useTemplate(source) }
+                }
+            }
+            .confirmationDialog(LanguageManager.t("builder.replaceDraft"), isPresented: Binding(get: { pendingTemplate != nil }, set: { if !$0 { pendingTemplate = nil } }), titleVisibility: .visible) {
+                Button(LanguageManager.t("builder.startTemplate"), role: .destructive) { if let source = pendingTemplate { useTemplate(source) }; pendingTemplate = nil }
+                Button(LanguageManager.t("modal.cancel"), role: .cancel) { pendingTemplate = nil }
+            }
+            .onAppear(perform: recoverDraft)
+            .onChange(of: program) { _, _ in saveError = nil; persistDraft() }
+            .task(id: removalUndoToken) {
+                guard removalUndo != nil else { return }
+                try? await Task.sleep(for: .seconds(10))
+                if !Task.isCancelled { removalUndo = nil }
+            }
+        }
+    }
+
+    private var editorContent: some View {
             ScrollViewReader { reader in
                 ScrollView {
                     VStack(alignment: .leading, spacing: 16) {
@@ -140,78 +221,6 @@ public struct ProgramBuilderView: View {
             }
             .safeAreaInset(edge: .bottom) { footer }
             .interactiveDismissDisabled(isDirty)
-            .confirmationDialog(LanguageManager.t("builder.unsavedTitle"), isPresented: $showDiscard, titleVisibility: .visible) {
-                Button(LanguageManager.t("builder.keepDraft")) { persistDraft(); onDismiss() }
-                Button(LanguageManager.t("builder.discard"), role: .destructive) { ProgramBuilderDraftStore.clear(draftKey); onDismiss() }
-                Button(LanguageManager.t("builder.continueEditing"), role: .cancel) { }
-            } message: { Text(LanguageManager.t("builder.unsavedMessage")) }
-            .alert(LanguageManager.t("builder.unsavedTitle"), isPresented: Binding(get: { conflictDraft != nil }, set: { if !$0 { conflictDraft = nil } })) {
-                Button(LanguageManager.t("builder.copyDraft")) {
-                    if let retained = conflictDraft {
-                        var copy = ProgramEditing.copyProgram(retained.program)
-                        copy.coverId = ProgramCover.forProgram(retained.program).rawValue
-                        program = copy; original = copy; creatingCopy = true
-                    }
-                    conflictDraft = nil; persistDraft()
-                }
-                Button(LanguageManager.t("builder.discard"), role: .destructive) { ProgramBuilderDraftStore.clear(draftKey); conflictDraft = nil }
-                Button(LanguageManager.t("builder.keepDraft"), role: .cancel) { onDismiss() }
-            } message: { Text(LanguageManager.t("builder.conflictDraftMessage")) }
-            .sheet(item: $editingWorkout) { context in
-                BuilderWorkoutEditor(workout: context.workout, isNew: context.isNew,
-                    occupiedDays: Set(program.workouts.filter { $0.id != context.workout.id }.map(\.day)),
-                    onSave: { updated in
-                        if let index = program.workouts.firstIndex(where: { $0.id == updated.id }) { program.workouts[index] = updated }
-                        else { program.workouts.append(updated); expandedIDs.insert(updated.id) }
-                    },
-                    onRemove: context.isNew ? nil : {
-                        if let index = program.workouts.firstIndex(where: { $0.id == context.workout.id }) { offerUndo(.workout(program.workouts[index], index)); program.workouts.remove(at: index) }
-                    },
-                    onCopy: context.isNew ? nil : { workout, day in
-                        let copy = ProgramEditing.copyWorkout(workout, day: day)
-                        program.workouts.append(copy); expandedIDs.insert(copy.id)
-                    })
-            }
-            .sheet(item: $pickerWorkout, onDismiss: dropPendingEmptyDay) { workout in
-                AddExercisePickerSheet(catalogue: store.exerciseCatalogue, existing: workout.exercises,
-                    defaultRest: store.defaultRestSeconds) { selected in
-                    guard let index = program.workouts.firstIndex(where: { $0.id == workout.id }) else { return }
-                    let existing = Set(program.workouts[index].exercises.map(ProgramEditing.selectionKey))
-                    let additions = selected.filter { !existing.contains(ProgramEditing.selectionKey($0)) }
-                    guard program.workouts[index].exercises.count + additions.count <= ProgramEditing.maxExercises else {
-                        store.showErrorNotice(LanguageManager.t("builder.exerciseLimit")); return
-                    }
-                    program.workouts[index].exercises.append(contentsOf: additions)
-                    pendingNewDayID = nil
-                    pickerWorkout = nil
-                }
-            }
-            .sheet(item: $editingExercise) { context in
-                ProgramExerciseEditorSheet(exercise: context.exercise, onSave: { updated in
-                    guard let w = program.workouts.firstIndex(where: { $0.id == context.workoutID }),
-                          let e = program.workouts[w].exercises.firstIndex(where: { $0.id == context.exercise.id }) else { return }
-                    program.workouts[w].exercises[e] = updated
-                }, onDelete: { removeExercise(context.workoutID, context.exercise.id) })
-            }
-            .sheet(isPresented: $showCoverPicker) { BuilderCoverPicker(programID: program.id, selection: $program.coverId, showAutomatic: !isNew && !creatingCopy) }
-            .sheet(isPresented: $showTemplates) {
-                BuilderTemplatePicker(templates: AppStore.loadBundledStarterPrograms()) { source in
-                    showTemplates = false
-                    if isDirty { pendingTemplate = source } else { useTemplate(source) }
-                }
-            }
-            .confirmationDialog(LanguageManager.t("builder.replaceDraft"), isPresented: Binding(get: { pendingTemplate != nil }, set: { if !$0 { pendingTemplate = nil } }), titleVisibility: .visible) {
-                Button(LanguageManager.t("builder.startTemplate"), role: .destructive) { if let source = pendingTemplate { useTemplate(source) }; pendingTemplate = nil }
-                Button(LanguageManager.t("modal.cancel"), role: .cancel) { pendingTemplate = nil }
-            }
-            .onAppear(perform: recoverDraft)
-            .onChange(of: program) { _, _ in saveError = nil; persistDraft() }
-            .task(id: removalUndoToken) {
-                guard removalUndo != nil else { return }
-                try? await Task.sleep(for: .seconds(10))
-                if !Task.isCancelled { removalUndo = nil }
-            }
-        }
     }
 
     private var details: some View {
@@ -358,6 +367,12 @@ public struct ProgramBuilderView: View {
             let coverID = pendingAutomaticCoverID ?? (ProgramCover.allCases.randomElement() ?? .fullBody).rawValue
             pendingAutomaticCoverID = coverID
             clean.coverId = coverID
+        }
+        if let onDraftSave {
+            guard onDraftSave(clean) else { saveError = LanguageManager.t("setup.edit.invalid"); return }
+            ProgramBuilderDraftStore.clear(draftKey)
+            onDismiss()
+            return
         }
         // Record the exact submitted value so recovery recognizes a commit interrupted before draft cleanup.
         ProgramBuilderDraftStore.save(ProgramBuilderDraft(program: clean, original: original, creatingCopy: creatingCopy), id: draftKey)

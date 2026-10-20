@@ -1087,6 +1087,29 @@ public final class AppStore: ObservableObject {
         refreshCatalogue()
     }
 
+    /// A generated program is added durably before setup is acknowledged. Retrying is idempotent.
+    @discardableResult
+    func saveGeneratedPlan(profile: TrainingProfile, program: Program, completeSetup: Bool) -> Bool {
+        guard activeSession == nil else { showErrorNotice(LanguageManager.t("history.finishActiveFirst")); return false }
+        do { try ProgramEditing.validate(program) } catch { return false }
+        guard !program.workouts.isEmpty, program.workouts.allSatisfy({ !$0.exercises.isEmpty }) else { return false }
+        var next = state
+        if let existing = next.programs.first(where: { $0.id == program.id }) {
+            guard existing == program else { return false }
+        } else {
+            guard next.programs.count < ProgramEditing.maxPrograms else { return false }
+            next.programs.append(program)
+        }
+        next.activeProgramId = program.id
+        guard saveState(refreshCalendarState(next), durable: true) else { return false }
+        TrainingSetupStore.saveProfile(profile.normalized())
+        if completeSetup { setOnboardingCompleted(true) }
+        TrainingSetupStore.clearDraft()
+        selectedWorkoutId = nil
+        refreshCatalogue()
+        return true
+    }
+
     public func setOnboardingCompleted(_ completed: Bool) {
         UserDefaults.standard.set(completed, forKey: onboardingCompletedKey)
         isOnboardingCompleted = completed

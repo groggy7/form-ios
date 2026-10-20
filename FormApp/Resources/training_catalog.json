@@ -1,0 +1,1740 @@
+{
+  "version": 1,
+  "equipment": [
+    {
+      "id": "dumbbells",
+      "group": "weights"
+    },
+    {
+      "id": "barbell",
+      "group": "weights"
+    },
+    {
+      "id": "ez-bar",
+      "group": "weights"
+    },
+    {
+      "id": "trap-bar",
+      "group": "weights"
+    },
+    {
+      "id": "plates",
+      "group": "weights"
+    },
+    {
+      "id": "kettlebell",
+      "group": "weights"
+    },
+    {
+      "id": "bench",
+      "group": "supports"
+    },
+    {
+      "id": "adjustable-bench",
+      "group": "supports"
+    },
+    {
+      "id": "rack",
+      "group": "supports"
+    },
+    {
+      "id": "safeties",
+      "group": "supports"
+    },
+    {
+      "id": "landmine",
+      "group": "supports"
+    },
+    {
+      "id": "step",
+      "group": "supports"
+    },
+    {
+      "id": "box",
+      "group": "supports"
+    },
+    {
+      "id": "foot-anchor",
+      "group": "supports"
+    },
+    {
+      "id": "pull-up-bar",
+      "group": "pulling"
+    },
+    {
+      "id": "dip-station",
+      "group": "pulling"
+    },
+    {
+      "id": "rings",
+      "group": "pulling"
+    },
+    {
+      "id": "suspension-trainer",
+      "group": "pulling"
+    },
+    {
+      "id": "suspension-anchor",
+      "group": "pulling"
+    },
+    {
+      "id": "bands",
+      "group": "bands"
+    },
+    {
+      "id": "band-bar",
+      "group": "bands"
+    },
+    {
+      "id": "high-anchor",
+      "group": "bands"
+    },
+    {
+      "id": "mid-anchor",
+      "group": "bands"
+    },
+    {
+      "id": "low-anchor",
+      "group": "bands"
+    },
+    {
+      "id": "ab-wheel",
+      "group": "accessories"
+    },
+    {
+      "id": "weight-vest",
+      "group": "accessories"
+    },
+    {
+      "id": "dip-belt",
+      "group": "accessories"
+    },
+    {
+      "id": "sliders",
+      "group": "accessories"
+    },
+    {
+      "id": "cable",
+      "group": "machines"
+    },
+    {
+      "id": "lat-pulldown",
+      "group": "machines"
+    },
+    {
+      "id": "seated-row",
+      "group": "machines"
+    },
+    {
+      "id": "chest-press",
+      "group": "machines"
+    },
+    {
+      "id": "shoulder-press",
+      "group": "machines"
+    },
+    {
+      "id": "leg-press",
+      "group": "machines"
+    },
+    {
+      "id": "leg-extension",
+      "group": "machines"
+    },
+    {
+      "id": "leg-curl",
+      "group": "machines"
+    },
+    {
+      "id": "calf-machine",
+      "group": "machines"
+    },
+    {
+      "id": "pec-deck",
+      "group": "machines"
+    }
+  ],
+  "presets": {
+    "home": [],
+    "machines_only": [
+      "cable",
+      "lat-pulldown",
+      "seated-row",
+      "chest-press",
+      "shoulder-press",
+      "leg-press",
+      "leg-extension",
+      "leg-curl",
+      "calf-machine",
+      "pec-deck"
+    ],
+    "commercial_gym": [
+      "cable",
+      "lat-pulldown",
+      "seated-row",
+      "chest-press",
+      "shoulder-press",
+      "leg-press",
+      "leg-extension",
+      "leg-curl",
+      "calf-machine",
+      "pec-deck",
+      "dumbbells",
+      "barbell",
+      "ez-bar",
+      "plates",
+      "bench",
+      "adjustable-bench",
+      "rack",
+      "safeties",
+      "pull-up-bar"
+    ]
+  },
+  "candidates": [
+    {
+      "id": "leg-press",
+      "role": "squat",
+      "requirements": [
+        [
+          "leg-press"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "quadriceps"
+      ]
+    },
+    {
+      "id": "barbell-back-squat",
+      "role": "squat",
+      "requirements": [
+        [
+          "barbell",
+          "plates",
+          "rack",
+          "safeties"
+        ]
+      ],
+      "pair": false,
+      "advanced": true,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "quadriceps",
+        "glutes"
+      ]
+    },
+    {
+      "id": "barbell-front-squat",
+      "role": "squat",
+      "requirements": [
+        [
+          "barbell",
+          "plates",
+          "rack",
+          "safeties"
+        ]
+      ],
+      "pair": false,
+      "advanced": true,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "quadriceps",
+        "glutes"
+      ]
+    },
+    {
+      "id": "goblet-squat",
+      "role": "squat",
+      "requirements": [
+        [
+          "dumbbells"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "quadriceps",
+        "glutes"
+      ]
+    },
+    {
+      "id": "dumbbell-goblet-sumo-squat",
+      "role": "squat",
+      "requirements": [
+        [
+          "dumbbells"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "quadriceps",
+        "glutes"
+      ]
+    },
+    {
+      "id": "kettlebell-deadlift",
+      "role": "hinge",
+      "requirements": [
+        [
+          "kettlebell"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "glutes",
+        "hamstrings"
+      ]
+    },
+    {
+      "id": "bodyweight-squat",
+      "role": "squat",
+      "requirements": [
+        []
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "quadriceps",
+        "glutes"
+      ]
+    },
+    {
+      "id": "bodyweight-rear-lunge",
+      "role": "squat",
+      "requirements": [
+        []
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": true,
+      "muscles": [
+        "quadriceps",
+        "glutes"
+      ]
+    },
+    {
+      "id": "side-lunge",
+      "role": "squat",
+      "requirements": [
+        []
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "quadriceps",
+        "glutes",
+        "adductors"
+      ]
+    },
+    {
+      "id": "bulgarian-split-squat",
+      "role": "squat",
+      "requirements": [
+        [
+          "bench"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": true,
+      "muscles": [
+        "quadriceps",
+        "glutes"
+      ]
+    },
+    {
+      "id": "dumbbell-step-up",
+      "role": "squat",
+      "requirements": [
+        [
+          "dumbbells",
+          "step"
+        ]
+      ],
+      "pair": true,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": true,
+      "muscles": [
+        "quadriceps",
+        "glutes"
+      ]
+    },
+    {
+      "id": "lever-chest-press",
+      "role": "push",
+      "requirements": [
+        [
+          "chest-press"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "chest"
+      ]
+    },
+    {
+      "id": "barbell-bench-press",
+      "role": "push",
+      "requirements": [
+        [
+          "barbell",
+          "plates",
+          "bench",
+          "rack",
+          "safeties"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "chest"
+      ]
+    },
+    {
+      "id": "incline-barbell-bench-press",
+      "role": "push",
+      "requirements": [
+        [
+          "barbell",
+          "plates",
+          "adjustable-bench",
+          "rack",
+          "safeties"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "chest"
+      ]
+    },
+    {
+      "id": "dumbbell-bench-press",
+      "role": "push",
+      "requirements": [
+        [
+          "dumbbells",
+          "bench"
+        ]
+      ],
+      "pair": true,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "chest"
+      ]
+    },
+    {
+      "id": "incline-dumbbell-press",
+      "role": "push",
+      "requirements": [
+        [
+          "dumbbells",
+          "adjustable-bench"
+        ]
+      ],
+      "pair": true,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "chest"
+      ]
+    },
+    {
+      "id": "dumbbell-floor-press",
+      "role": "push",
+      "requirements": [
+        [
+          "dumbbells"
+        ]
+      ],
+      "pair": true,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "chest"
+      ]
+    },
+    {
+      "id": "resistance-band-standing-chest-press",
+      "role": "push",
+      "requirements": [
+        [
+          "bands",
+          "mid-anchor"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "chest"
+      ]
+    },
+    {
+      "id": "ring-incline-push-up",
+      "role": "push",
+      "requirements": [
+        [
+          "rings",
+          "suspension-anchor"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "chest"
+      ]
+    },
+    {
+      "id": "incline-push-up",
+      "role": "push",
+      "requirements": [
+        [
+          "bench"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "chest"
+      ]
+    },
+    {
+      "id": "push-ups",
+      "role": "push",
+      "requirements": [
+        []
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "chest"
+      ]
+    },
+    {
+      "id": "diamond-push-up",
+      "role": "push",
+      "requirements": [
+        []
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "triceps",
+        "chest"
+      ]
+    },
+    {
+      "id": "cable-seated-row",
+      "role": "row",
+      "requirements": [
+        [
+          "seated-row"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "trapezius",
+        "lats"
+      ]
+    },
+    {
+      "id": "chest-supported-dumbbell-row",
+      "role": "row",
+      "requirements": [
+        [
+          "dumbbells",
+          "adjustable-bench"
+        ]
+      ],
+      "pair": true,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "trapezius",
+        "lats"
+      ]
+    },
+    {
+      "id": "one-arm-dumbbell-row",
+      "role": "row",
+      "requirements": [
+        [
+          "dumbbells"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": true,
+      "muscles": [
+        "trapezius",
+        "lats"
+      ]
+    },
+    {
+      "id": "barbell-row",
+      "role": "row",
+      "requirements": [
+        [
+          "barbell",
+          "plates"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "trapezius",
+        "lats"
+      ]
+    },
+    {
+      "id": "suspension-trainer-row",
+      "role": "row",
+      "requirements": [
+        [
+          "suspension-trainer",
+          "suspension-anchor"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "trapezius",
+        "lats"
+      ]
+    },
+    {
+      "id": "ring-inverted-row",
+      "role": "row",
+      "requirements": [
+        [
+          "rings",
+          "suspension-anchor"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "trapezius",
+        "lats"
+      ]
+    },
+    {
+      "id": "resistance-band-seated-row",
+      "role": "row",
+      "requirements": [
+        [
+          "bands",
+          "low-anchor"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "trapezius",
+        "lats"
+      ]
+    },
+    {
+      "id": "lat-pulldown",
+      "role": "pull",
+      "requirements": [
+        [
+          "lat-pulldown"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "lats"
+      ]
+    },
+    {
+      "id": "pull-ups",
+      "role": "pull",
+      "requirements": [
+        [
+          "pull-up-bar"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 3,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "lats"
+      ]
+    },
+    {
+      "id": "chin-up",
+      "role": "pull",
+      "requirements": [
+        [
+          "pull-up-bar"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 3,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "lats"
+      ]
+    },
+    {
+      "id": "resistance-band-lat-pulldown",
+      "role": "pull",
+      "requirements": [
+        [
+          "bands",
+          "high-anchor"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "lats"
+      ]
+    },
+    {
+      "id": "barbell-romanian-deadlift",
+      "role": "hinge",
+      "requirements": [
+        [
+          "barbell",
+          "plates"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "hamstrings",
+        "glutes"
+      ]
+    },
+    {
+      "id": "conventional-barbell-deadlift",
+      "role": "hinge",
+      "requirements": [
+        [
+          "barbell",
+          "plates"
+        ]
+      ],
+      "pair": false,
+      "advanced": true,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "glutes",
+        "hamstrings"
+      ]
+    },
+    {
+      "id": "trap-bar-deadlift",
+      "role": "hinge",
+      "requirements": [
+        [
+          "trap-bar",
+          "plates"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "glutes",
+        "quadriceps"
+      ]
+    },
+    {
+      "id": "dumbbell-romanian-deadlift",
+      "role": "hinge",
+      "requirements": [
+        [
+          "dumbbells"
+        ]
+      ],
+      "pair": true,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "hamstrings",
+        "glutes"
+      ]
+    },
+    {
+      "id": "dumbbell-single-leg-romanian-deadlift",
+      "role": "hinge",
+      "requirements": [
+        [
+          "dumbbells"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": true,
+      "muscles": [
+        "hamstrings",
+        "glutes"
+      ]
+    },
+    {
+      "id": "barbell-hip-thrust",
+      "role": "glutes",
+      "requirements": [
+        [
+          "barbell",
+          "plates",
+          "bench"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "glutes"
+      ]
+    },
+    {
+      "id": "dumbbell-glute-bridge",
+      "role": "glutes",
+      "requirements": [
+        [
+          "dumbbells"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "glutes"
+      ]
+    },
+    {
+      "id": "single-leg-hip-thrust",
+      "role": "glutes",
+      "requirements": [
+        [
+          "bench"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": true,
+      "muscles": [
+        "glutes"
+      ]
+    },
+    {
+      "id": "bodyweight-frog-hip-thrust",
+      "role": "glutes",
+      "requirements": [
+        []
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "glutes"
+      ]
+    },
+    {
+      "id": "seated-leg-curl",
+      "role": "hamstrings",
+      "requirements": [
+        [
+          "leg-curl"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "hamstrings"
+      ]
+    },
+    {
+      "id": "nordic-hamstring-curl",
+      "role": "hamstrings",
+      "requirements": [
+        [
+          "foot-anchor"
+        ]
+      ],
+      "pair": false,
+      "advanced": true,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "hamstrings"
+      ]
+    },
+    {
+      "id": "leg-extension",
+      "role": "quads",
+      "requirements": [
+        [
+          "leg-extension"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "quadriceps"
+      ]
+    },
+    {
+      "id": "lever-seated-shoulder-press",
+      "role": "shoulders",
+      "requirements": [
+        [
+          "shoulder-press"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "shoulders"
+      ]
+    },
+    {
+      "id": "dumbbell-seated-shoulder-press",
+      "role": "shoulders",
+      "requirements": [
+        [
+          "dumbbells",
+          "adjustable-bench"
+        ]
+      ],
+      "pair": true,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "shoulders"
+      ]
+    },
+    {
+      "id": "dumbbell-one-arm-shoulder-press",
+      "role": "shoulders",
+      "requirements": [
+        [
+          "dumbbells"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": true,
+      "muscles": [
+        "shoulders"
+      ]
+    },
+    {
+      "id": "kettlebell-strict-press",
+      "role": "shoulders",
+      "requirements": [
+        [
+          "kettlebell"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": true,
+      "muscles": [
+        "shoulders"
+      ]
+    },
+    {
+      "id": "standing-barbell-overhead-press",
+      "role": "shoulders",
+      "requirements": [
+        [
+          "barbell",
+          "plates",
+          "rack",
+          "safeties"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "shoulders"
+      ]
+    },
+    {
+      "id": "pike-push-up",
+      "role": "shoulders",
+      "requirements": [
+        []
+      ],
+      "pair": false,
+      "advanced": true,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "shoulders"
+      ]
+    },
+    {
+      "id": "cable-lateral-raise",
+      "role": "delts",
+      "requirements": [
+        [
+          "cable"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "shoulders"
+      ]
+    },
+    {
+      "id": "dumbbell-lateral-raise",
+      "role": "delts",
+      "requirements": [
+        [
+          "dumbbells"
+        ]
+      ],
+      "pair": true,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "shoulders"
+      ]
+    },
+    {
+      "id": "band-lateral-raise",
+      "role": "delts",
+      "requirements": [
+        [
+          "bands"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "shoulders"
+      ]
+    },
+    {
+      "id": "lever-seated-reverse-fly",
+      "role": "rear",
+      "requirements": [
+        [
+          "pec-deck"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "shoulders"
+      ]
+    },
+    {
+      "id": "dumbbell-rear-fly",
+      "role": "rear",
+      "requirements": [
+        [
+          "dumbbells",
+          "bench"
+        ]
+      ],
+      "pair": true,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "shoulders"
+      ]
+    },
+    {
+      "id": "resistance-band-face-pull",
+      "role": "rear",
+      "requirements": [
+        [
+          "bands",
+          "mid-anchor"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "shoulders",
+        "trapezius"
+      ]
+    },
+    {
+      "id": "ez-bar-curl",
+      "role": "biceps",
+      "requirements": [
+        [
+          "ez-bar",
+          "plates"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "biceps"
+      ]
+    },
+    {
+      "id": "cable-curl",
+      "role": "biceps",
+      "requirements": [
+        [
+          "cable"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "biceps"
+      ]
+    },
+    {
+      "id": "dumbbell-hammer-curl",
+      "role": "biceps",
+      "requirements": [
+        [
+          "dumbbells"
+        ]
+      ],
+      "pair": true,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "biceps",
+        "forearms"
+      ]
+    },
+    {
+      "id": "dumbbell-standing-biceps-curl",
+      "role": "biceps",
+      "requirements": [
+        [
+          "dumbbells"
+        ]
+      ],
+      "pair": true,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "biceps"
+      ]
+    },
+    {
+      "id": "dumbbell-concentration-curl",
+      "role": "biceps",
+      "requirements": [
+        [
+          "dumbbells",
+          "bench"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": true,
+      "muscles": [
+        "biceps"
+      ]
+    },
+    {
+      "id": "barbell-curl",
+      "role": "biceps",
+      "requirements": [
+        [
+          "barbell",
+          "plates"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "biceps"
+      ]
+    },
+    {
+      "id": "band-biceps-curl",
+      "role": "biceps",
+      "requirements": [
+        [
+          "bands"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "biceps"
+      ]
+    },
+    {
+      "id": "rope-triceps-pressdown",
+      "role": "triceps",
+      "requirements": [
+        [
+          "cable"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "triceps"
+      ]
+    },
+    {
+      "id": "ez-bar-lying-triceps-extension",
+      "role": "triceps",
+      "requirements": [
+        [
+          "ez-bar",
+          "plates",
+          "bench"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "triceps"
+      ]
+    },
+    {
+      "id": "dumbbell-standing-triceps-extension",
+      "role": "triceps",
+      "requirements": [
+        [
+          "dumbbells"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "triceps"
+      ]
+    },
+    {
+      "id": "resistance-band-triceps-pushdown",
+      "role": "triceps",
+      "requirements": [
+        [
+          "bands",
+          "high-anchor"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "triceps"
+      ]
+    },
+    {
+      "id": "bench-dip",
+      "role": "triceps",
+      "requirements": [
+        [
+          "bench"
+        ]
+      ],
+      "pair": false,
+      "advanced": true,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "triceps"
+      ]
+    },
+    {
+      "id": "standing-machine-calf-raise",
+      "role": "calves",
+      "requirements": [
+        [
+          "calf-machine"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "calves"
+      ]
+    },
+    {
+      "id": "single-leg-calf-raise",
+      "role": "calves",
+      "requirements": [
+        [
+          "step"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": true,
+      "muscles": [
+        "calves"
+      ]
+    },
+    {
+      "id": "bodyweight-standing-calf-raise",
+      "role": "calves",
+      "requirements": [
+        []
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "calves"
+      ]
+    },
+    {
+      "id": "kneeling-cable-crunch",
+      "role": "core",
+      "requirements": [
+        [
+          "cable"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "abs"
+      ]
+    },
+    {
+      "id": "hanging-knee-raise",
+      "role": "core",
+      "requirements": [
+        [
+          "pull-up-bar"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "abs"
+      ]
+    },
+    {
+      "id": "ab-wheel-rollout",
+      "role": "core",
+      "requirements": [
+        [
+          "ab-wheel"
+        ]
+      ],
+      "pair": false,
+      "advanced": true,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "abs"
+      ]
+    },
+    {
+      "id": "dead-bug",
+      "role": "core",
+      "requirements": [
+        []
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "abs"
+      ]
+    },
+    {
+      "id": "reverse-crunch",
+      "role": "core",
+      "requirements": [
+        []
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "abs"
+      ]
+    },
+    {
+      "id": "bird-dog",
+      "role": "core",
+      "requirements": [
+        []
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "lower-back",
+        "glutes"
+      ]
+    },
+    {
+      "id": "floor-crunch",
+      "role": "core",
+      "requirements": [
+        []
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "abs"
+      ]
+    },
+    {
+      "id": "pec-deck-fly",
+      "role": "chest",
+      "requirements": [
+        [
+          "pec-deck"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "chest"
+      ]
+    },
+    {
+      "id": "dumbbell-fly",
+      "role": "chest",
+      "requirements": [
+        [
+          "dumbbells",
+          "bench"
+        ]
+      ],
+      "pair": true,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "chest"
+      ]
+    },
+    {
+      "id": "svend-press",
+      "role": "chest",
+      "requirements": [
+        [
+          "plates"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "chest"
+      ]
+    }
+  ],
+  "layouts": {
+    "2": [
+      "full",
+      "full"
+    ],
+    "3": [
+      "full",
+      "full",
+      "full"
+    ],
+    "4": [
+      "upper",
+      "lower",
+      "upper",
+      "lower"
+    ],
+    "5": [
+      "upper",
+      "lower",
+      "push",
+      "pull",
+      "lower"
+    ],
+    "6": [
+      "push",
+      "pull",
+      "lower",
+      "push",
+      "pull",
+      "lower"
+    ]
+  },
+  "slots": {
+    "full": [
+      "squat",
+      "push",
+      "row|pull",
+      "hinge|glutes",
+      "pull|row",
+      "core",
+      "shoulders",
+      "hamstrings",
+      "calves",
+      "biceps",
+      "triceps",
+      "delts"
+    ],
+    "upper": [
+      "push",
+      "row",
+      "pull|row",
+      "shoulders",
+      "biceps",
+      "triceps",
+      "delts",
+      "rear",
+      "core"
+    ],
+    "lower": [
+      "squat",
+      "hinge|glutes",
+      "hamstrings|glutes",
+      "core",
+      "calves",
+      "quads",
+      "squat"
+    ],
+    "push": [
+      "push",
+      "shoulders",
+      "triceps",
+      "delts",
+      "chest",
+      "core"
+    ],
+    "pull": [
+      "row",
+      "pull|row",
+      "biceps",
+      "rear",
+      "core"
+    ]
+  },
+  "goals": {
+    "bulk": [
+      8,
+      12,
+      60
+    ],
+    "cut": [
+      8,
+      12,
+      60
+    ],
+    "maintain": [
+      8,
+      12,
+      60
+    ],
+    "strength": [
+      5,
+      8,
+      120
+    ]
+  }
+}

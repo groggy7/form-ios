@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		76FC109C28BE4C5DB27F0241 /* TrainingPlanGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA04F575F9A44E88B7095902; };
+		B4849E351D2A67813D1D2CDD /* training_catalog.json in Resources */ = {isa = PBXBuildFile; fileRef = 49E9F7ECC8D4F1BBE29E9542 /* training_catalog.json */; };
+		C843FA365FC55E5A037A8345 /* TrainingSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90AAF4C5263A271BF74D227 /* TrainingSetupView.swift */; };
+		6A06B66FDDD4DF6F6E3A2F09 /* TrainingPlanGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F41595ED5F65B76AA8348E7 /* TrainingPlanGenerator.swift */; };
 		AB02000000000000000000001 /* BundledPNGImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB02000000000000000000002; };
 		AB01000000000000000000001 /* ExerciseMediaBackdrop.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB01000000000000000000002; };
 		AB01000000000000000000003 /* ExerciseBackdrops in Resources */ = {isa = PBXBuildFile; fileRef = AB01000000000000000000004; };
@@ -170,6 +174,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CA04F575F9A44E88B7095902 /* TrainingPlanGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingPlanGeneratorTests.swift; sourceTree = "<group>"; };
+		49E9F7ECC8D4F1BBE29E9542 /* training_catalog.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = training_catalog.json; sourceTree = "<group>"; };
+		D90AAF4C5263A271BF74D227 /* TrainingSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingSetupView.swift; sourceTree = "<group>"; };
+		4F41595ED5F65B76AA8348E7 /* TrainingPlanGenerator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingPlanGenerator.swift; sourceTree = "<group>"; };
 		AB01000000000000000000002 /* ExerciseMediaBackdrop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseMediaBackdrop.swift; sourceTree = "<group>"; };
 		AB02000000000000000000002 /* BundledPNGImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundledPNGImage.swift; sourceTree = "<group>"; };
 		AB01000000000000000000004 /* ExerciseBackdrops */ = {isa = PBXFileReference; lastKnownFileType = folder; path = ExerciseBackdrops; sourceTree = "<group>"; };
@@ -389,6 +397,7 @@
 			isa = PBXGroup;
 			children = (
 				C15000000000000000000007 /* ProgramBuilderRegressionTests.swift */,
+				CA04F575F9A44E88B7095902 /* TrainingPlanGeneratorTests.swift */,
 				D90000000000000000000001 /* AuditFollowupTests.swift */,
 				C15000000000000000000009 /* android-builder-v5.json */,
 				9D2282260300C11D1B7F29AE /* FormAppTests.swift */,
@@ -465,6 +474,7 @@
 			isa = PBXGroup;
 			children = (
 				OB0000000000000000000001 /* OnboardingModels.swift */,
+				4F41595ED5F65B76AA8348E7 /* TrainingPlanGenerator.swift */,
 				TR0000000000000000000001 /* TourModels.swift */,
 				BJ0000000000000000000001 /* BodyTracking.swift */,
 				PR0000000000000000000001 /* PersonalRecordTracker.swift */,
@@ -577,6 +587,7 @@
 				M20000000000000000000004 /* ExerciseMuscles */,
 				E30000000000000000000004 /* equipment_catalog.json */,
 				S70000000000000000000005 /* exercise_swaps.json */,
+				49E9F7ECC8D4F1BBE29E9542 /* training_catalog.json */,
 				A11000000000000000000004 /* Localizable.xcstrings */,
 				HW0000000000000000000005 /* InfoPlist.xcstrings */,
 				T10000000000000000000004 /* ExerciseThumbnails */,
@@ -633,6 +644,7 @@
 			isa = PBXGroup;
 			children = (
 				OV0000000000000000000001 /* OnboardingView.swift */,
+				D90AAF4C5263A271BF74D227 /* TrainingSetupView.swift */,
 			);
 			path = Onboarding;
 			sourceTree = "<group>";
@@ -739,6 +751,7 @@
 				M20000000000000000000003 /* ExerciseMuscles in Resources */,
 				E30000000000000000000003 /* equipment_catalog.json in Resources */,
 				S70000000000000000000006 /* exercise_swaps.json in Resources */,
+				B4849E351D2A67813D1D2CDD /* training_catalog.json in Resources */,
 				T10000000000000000000003 /* ExerciseThumbnails in Resources */,
 				L100000000000000000000002 /* Locales in Resources */,
 				ECF655C211A97E2025683749 /* 01_aesthetic_hypertrophy.json in Resources */,
@@ -885,8 +898,10 @@
 				WG0000000000000000000002 /* WeeklyGoalProgressCard.swift in Sources */,
 				WU0000000000000000000002 /* WeightUnit.swift in Sources */,
 				OB0000000000000000000002 /* OnboardingModels.swift in Sources */,
+				6A06B66FDDD4DF6F6E3A2F09 /* TrainingPlanGenerator.swift in Sources */,
 				TR0000000000000000000002 /* TourModels.swift in Sources */,
 				OV0000000000000000000002 /* OnboardingView.swift in Sources */,
+				C843FA365FC55E5A037A8345 /* TrainingSetupView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -896,6 +911,7 @@
 			files = (
 				5F57A702A0F84F27F8CB9EC7 /* FormAppTests.swift in Sources */,
 				C15000000000000000000008 /* ProgramBuilderRegressionTests.swift in Sources */,
+				76FC109C28BE4C5DB27F0241 /* TrainingPlanGeneratorTests.swift in Sources */,
 				D90000000000000000000002 /* AuditFollowupTests.swift in Sources */,
 				C1500000000000000000000C /* ProgressionFixtureTests.swift in Sources */,
 				IS0000000000000000000002 /* IntensityFixtureTests.swift in Sources */,

@@ -9,6 +9,7 @@ public struct SettingsView: View {
     @ObservedObject private var appIconManager = AppIconManager.shared
     var onDismiss: () -> Void
 
+    @State private var showTrainingSetup = false
     @State private var showAppIconSheet: Bool = false
     @State private var showFoundersPaywall: Bool = false
     @State private var showPaywall: Bool = false
@@ -371,6 +372,19 @@ public struct SettingsView: View {
                         }
                     }
 
+                    settingsSection(title: LanguageManager.t("setup.build")) {
+                        Button { showTrainingSetup = true } label: {
+                            HStack(spacing: 12) {
+                                Image(systemName: "dumbbell").frame(width: 24, height: 24)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(LanguageManager.t("setup.build"))
+                                    Text(LanguageManager.t("setup.build.hint")).font(.caption).foregroundStyle(AppColors.secondaryText)
+                                }
+                                Spacer()
+                                Image(systemName: "chevron.right").foregroundStyle(AppColors.muted)
+                            }.padding(14).frame(minHeight: 48).contentShape(Rectangle())
+                        }.buttonStyle(.plain).accessibilityIdentifier("settings-build-program")
+                    }
                     // Help
                     settingsSection(title: LanguageManager.t("settings.help")) {
                         Button(action: {
@@ -539,6 +553,9 @@ public struct SettingsView: View {
                 .presentationDragIndicator(.visible)
                 .presentationCornerRadius(28)
                 .presentationBackground(AppColors.background)
+            }
+            .fullScreenCover(isPresented: $showTrainingSetup) {
+                TrainingSetupView(store: store, completeSetup: false, onClose: { showTrainingSetup = false })
             }
             .sheet(isPresented: $showThemeSheet) {
                 ThemeSelectionSheet(
