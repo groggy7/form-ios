@@ -114,6 +114,8 @@ extension ActiveSessionDraft {
         copy.setsByExercise[exerciseId] = nil
         copy.effortByExercise?[exerciseId] = nil
         if copy.effortByExercise?.isEmpty == true { copy.effortByExercise = nil }
+        copy.jointStressByExercise?[exerciseId] = nil
+        if copy.jointStressByExercise?.isEmpty == true { copy.jointStressByExercise = nil }
         copy.setsByExercise[replacement.id] = (1...WorkoutSessionUtils.initialSetCount(exercise: replacement))
             .map { WorkoutSessionUtils.newSet(exercise: replacement, number: $0) }
         return copy

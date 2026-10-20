@@ -190,13 +190,13 @@ final class IntensitySetsBehaviorTests: XCTestCase {
         XCTAssertEqual(pounds.setsByExercise[bench.id]?[0].extensions?[0].weightInput, WorkoutSessionUtils.formatWeightInput(70, unit: .lbs, barbell: true))
     }
 
-    func testBackupWritesSchemaFiveAndRejectsInvalidTechniques() throws {
+    func testBackupWritesTheCurrentSchemaAndRejectsInvalidTechniques() throws {
         let record = SessionProgress.from(draft: draft([dropSet()]), nowEpochMillis: 2_000).record(draft: draft([dropSet()]), completedAtEpochMillis: 2_000)
         var state = StoredAppState(programs: [], activeProgramId: "", currentWeekKey: "2026-W43", history: [record])
         state.schemaVersion = 4
         let data = try JSONEncoder().encode(FullBackupDocument(state: state, weightUnit: .kg))
         let json = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
-        XCTAssertEqual(json["schemaVersion"] as? Int, 5)
+        XCTAssertEqual(json["schemaVersion"] as? Int, StoredAppState.currentSchemaVersion)
         let restored = try JSONDecoder().decode(FullBackupDocument.self, from: data)
         XCTAssertEqual(restored.state.history[0].exerciseLogs[0].sets[0].setExtensions.first?.weightKg, 70)
 

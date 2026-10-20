@@ -6586,9 +6586,9 @@ final class FormAppTests: XCTestCase {
         manager.resetOverrides()
         manager.updateSubscriptionStatus(active: false)
 
-        // 1. Free Tier Baseline: All 7 features strictly locked
-        let allFeatures: [ProFeature] = [.volumeMatrix, .autoProgression, .warmupCalculator, .formLab, .cloudBackup, .customThemes, .exerciseSwaps]
-        XCTAssertEqual(ProFeature.allCases.count, 7)
+        // 1. Free Tier Baseline: All 8 features strictly locked
+        let allFeatures: [ProFeature] = [.volumeMatrix, .autoProgression, .warmupCalculator, .formLab, .cloudBackup, .customThemes, .exerciseSwaps, .bodyTrends]
+        XCTAssertEqual(ProFeature.allCases.count, 8)
         for feature in allFeatures {
             XCTAssertFalse(manager.isFeatureUnlocked(feature), "Feature \(feature.rawValue) must be locked for free tier")
             XCTAssertFalse(feature.titleKey.isEmpty)
@@ -6596,7 +6596,7 @@ final class FormAppTests: XCTestCase {
             XCTAssertFalse(feature.teaserKey.isEmpty)
         }
 
-        // 2. Subscription Activation: All 7 features unlock immediately
+        // 2. Subscription Activation: All 8 features unlock immediately
         manager.updateSubscriptionStatus(active: true)
         XCTAssertTrue(manager.isProSubscribed)
         for feature in allFeatures {
@@ -12411,9 +12411,9 @@ final class PremiumSettingsTests: XCTestCase {
             try await Task.sleep(nanoseconds: 250_000_000)
             controller.view.layoutIfNeeded()
             let switches = descendants(controller.view).compactMap { $0 as? UISwitch }
-            // The training section follows the free pre-fill and intensity-technique switches.
-            XCTAssertGreaterThanOrEqual(switches.count, 4)
-            for control in switches.dropFirst(2).prefix(2) {
+            // The training section follows the free pre-fill, intensity-technique and joint-stress switches.
+            XCTAssertGreaterThanOrEqual(switches.count, 5)
+            for control in switches.dropFirst(3).prefix(2) {
                 XCTAssertEqual(control.isEnabled, unlocked)
                 XCTAssertEqual(control.isOn, !unlocked)
             }
@@ -13685,7 +13685,7 @@ final class RepLabHeaderTests: XCTestCase {
                 bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue))
             context.draw(cgImage, in: CGRect(x: 0, y: 0, width: cgImage.width, height: cgImage.height))
             for (index, candidate) in FormLabTab.allCases.enumerated() {
-                let x = Int(16 + (width - 32) * (CGFloat(index) + 0.5) / 3)
+                let x = Int(16 + (width - 32) * (CGFloat(index) + 0.5) / CGFloat(FormLabTab.allCases.count))
                 let offset = (20 * cgImage.width + x) * 4
                 let expected = UIColor(candidate == tab ? Color.mix(AppColors.surface, AppColors.accent, 0.14) : AppColors.surface)
                 var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0

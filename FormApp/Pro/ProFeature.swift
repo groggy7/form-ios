@@ -8,6 +8,8 @@ public enum ProFeature: String, CaseIterable, Identifiable {
     case cloudBackup = "cloud_backup"
     case customThemes = "custom_themes"
     case exerciseSwaps = "exercise_swaps"
+    /// Bodyweight trend, weekly change and relative strength. Like swaps, it shows the general paywall.
+    case bodyTrends = "body_trends"
 
     public var id: String { rawValue }
 
@@ -20,6 +22,7 @@ public enum ProFeature: String, CaseIterable, Identifiable {
         case .cloudBackup: return "pro.cloud_backup.title"
         case .customThemes: return "pro.custom_themes.title"
         case .exerciseSwaps: return "pro.exercise_swaps.title"
+        case .bodyTrends: return "pro.body_trends.title"
         }
     }
 
@@ -32,6 +35,7 @@ public enum ProFeature: String, CaseIterable, Identifiable {
         case .cloudBackup: return "pro.cloud_backup.description"
         case .customThemes: return "pro.custom_themes.description"
         case .exerciseSwaps: return "pro.exercise_swaps.description"
+        case .bodyTrends: return "pro.body_trends.description"
         }
     }
 
@@ -44,6 +48,7 @@ public enum ProFeature: String, CaseIterable, Identifiable {
         case .cloudBackup: return "pro.cloud_backup.teaser"
         case .customThemes: return "pro.custom_themes.teaser"
         case .exerciseSwaps: return "pro.exercise_swaps.teaser"
+        case .bodyTrends: return "pro.body_trends.teaser"
         }
     }
 }

@@ -608,42 +608,76 @@ private struct LockedProgressionTrend: Shape {
     }
 }
 
-/// Optional Smart Progression rating after every working set of an exercise is recorded.
-/// It is the user's own report; tapping the selected rating again clears it.
-struct ProgressionEffortRow: View {
+/// The ratings asked once every working set of an exercise is recorded: Smart Progression's effort rating and
+/// the opt-in joint-stress rating share one card, so there is never a second prompt. Both are the user's own
+/// reports; tapping the selected value again clears it.
+struct ExerciseRatingsCard: View {
     @ObservedObject var themeManager = ThemeManager.shared
-    let selected: ProgressionEffort?
-    let onSelect: (ProgressionEffort?) -> Void
+    let effort: ProgressionEffort?
+    let onEffort: ((ProgressionEffort?) -> Void)?
+    let jointStress: JointStress?
+    let onJointStress: ((JointStress?) -> Void)?
+
+    var body: some View {
+        let _ = themeManager.currentTheme
+        if onEffort != nil || onJointStress != nil {
+            VStack(alignment: .leading, spacing: 10) {
+                if let onEffort {
+                    RatingSection(title: LanguageManager.t("progression.effort.title"), hint: LanguageManager.t("progression.effort.hint"),
+                                  options: ProgressionEffort.allCases.map { ($0.rawValue, LanguageManager.t($0.labelKey)) },
+                                  selected: effort?.rawValue, identifier: "progression-effort") { onEffort($0.flatMap(ProgressionEffort.init(rawValue:))) }
+                }
+                if onEffort != nil && onJointStress != nil {
+                    Rectangle().fill(AppColors.border.opacity(0.5)).frame(height: 0.8)
+                }
+                if let onJointStress {
+                    RatingSection(title: LanguageManager.t("joint.title"), hint: LanguageManager.t("joint.hint"),
+                                  options: JointStress.allCases.map { ($0.rawValue, LanguageManager.t($0.labelKey)) },
+                                  selected: jointStress?.rawValue, identifier: "joint-stress") { onJointStress($0.flatMap(JointStress.init(rawValue:))) }
+                }
+            }
+            .padding(.horizontal, 14).padding(.vertical, 12).frame(maxWidth: .infinity, alignment: .leading)
+            .background(AppColors.surface).clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+            .accessibilityElement(children: .contain)
+            .accessibilityIdentifier("exercise-ratings")
+        }
+    }
+}
+
+private struct RatingSection: View {
+    let title: String
+    let hint: String
+    let options: [(String, String)]
+    let selected: String?
+    let identifier: String
+    let onSelect: (String?) -> Void
     @ScaledMetric(relativeTo: .subheadline) private var titleSize = 14.0
     @ScaledMetric(relativeTo: .caption) private var hintSize = 12.0
     @ScaledMetric(relativeTo: .subheadline) private var optionSize = 13.0
 
     var body: some View {
-        let _ = themeManager.currentTheme
         VStack(alignment: .leading, spacing: 4) {
-            Text(LanguageManager.t("progression.effort.title"))
+            Text(title)
                 .font(.system(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
-            Text(LanguageManager.t("progression.effort.hint"))
+            Text(hint)
                 .font(.system(size: hintSize)).foregroundStyle(AppColors.muted)
                 .fixedSize(horizontal: false, vertical: true)
             ViewThatFits(in: .horizontal) {
-                HStack(spacing: 8) { options }
-                VStack(alignment: .leading, spacing: 0) { options }
+                HStack(spacing: 8) { buttons }
+                VStack(alignment: .leading, spacing: 0) { buttons }
             }
         }
-        .padding(.horizontal, 14).padding(.vertical, 12).frame(maxWidth: .infinity, alignment: .leading)
-        .background(AppColors.surface).clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 14, style: .continuous).stroke(AppColors.border, lineWidth: 1))
         .accessibilityElement(children: .contain)
-        .accessibilityIdentifier("progression-effort")
+        .accessibilityIdentifier(identifier)
     }
 
-    @ViewBuilder private var options: some View {
-        ForEach(ProgressionEffort.allCases, id: \.self) { effort in
-            let isSelected = effort == selected
-            Button { onSelect(isSelected ? nil : effort) } label: {
-                Text(LanguageManager.t(effort.labelKey))
+    @ViewBuilder private var buttons: some View {
+        ForEach(options, id: \.0) { code, label in
+            let isSelected = code == selected
+            Button { onSelect(isSelected ? nil : code) } label: {
+                Text(label)
                     .font(.system(size: optionSize, weight: isSelected ? .semibold : .medium))
                     .foregroundStyle(isSelected ? AppColors.accent : AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
@@ -656,7 +690,7 @@ struct ProgressionEffortRow: View {
             }
             .buttonStyle(.plain)
             .accessibilityAddTraits(isSelected ? .isSelected : [])
-            .accessibilityIdentifier("progression-effort-\(effort.rawValue)")
+            .accessibilityIdentifier("\(identifier)-\(code)")
         }
     }
 }

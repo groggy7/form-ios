@@ -278,6 +278,11 @@ public struct HistoryDetailView: View {
                 }
                 Text(exerciseSubtitle(item)).font(.system(size: detailFont)).foregroundStyle(AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
+                if let rating = item.jointStress {
+                    Text(LanguageManager.t("history.jointStress", ["rating": LanguageManager.t(rating.labelKey)]))
+                        .font(.system(size: detailFont)).foregroundStyle(AppColors.muted)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
             }.frame(maxWidth: .infinity, alignment: .leading)
             Image(systemName: completed ? "checkmark" : partial ? "clock" : "minus")
                 .font(.system(size: 16, weight: .semibold))

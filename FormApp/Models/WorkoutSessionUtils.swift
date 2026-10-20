@@ -79,7 +79,8 @@ public struct SessionProgress {
                 sets: sets,
                 targetSets: target,
                 exerciseId: ExerciseCatalog.resolveCanonicalId(stableId: ex.exerciseId, name: ex.name),
-                effort: draft.effortByExercise?[ex.id].flatMap(ProgressionEffort.init(rawValue:))?.rawValue
+                effort: draft.effortByExercise?[ex.id].flatMap(ProgressionEffort.init(rawValue:))?.rawValue,
+                jointStress: draft.jointStressByExercise?[ex.id].flatMap(JointStress.init(rawValue:))?.rawValue
             )
         }
 
@@ -133,13 +134,21 @@ public enum WorkoutSessionUtils {
     public static func isAssisted(_ exercise: Exercise) -> Bool { isAssisted(exerciseId: exercise.exerciseId, name: exercise.name) }
 
     public static func defaultsToZeroAddedWeight(_ exercise: Exercise) -> Bool {
-        guard let id = ExerciseCatalog.resolveCanonicalId(stableId: exercise.exerciseId, name: exercise.name) else { return false }
+        defaultsToZeroAddedWeight(exerciseId: exercise.exerciseId, name: exercise.name)
+    }
+
+    public static func defaultsToZeroAddedWeight(exerciseId: String?, name: String) -> Bool {
+        guard let id = ExerciseCatalog.resolveCanonicalId(stableId: exerciseId, name: name) else { return false }
         return ExerciseCatalog.canonicalExercises[id]?.searchKeywords.contains { $0.lowercased() == "bodyweight" } == true
     }
 
     public static func usesBodyweightResistance(_ exercise: Exercise) -> Bool {
-        defaultsToZeroAddedWeight(exercise) || ["weighted-pull-ups", "weighted-push-up-with-vest"].contains(
-            ExerciseCatalog.resolveCanonicalId(stableId: exercise.exerciseId, name: exercise.name) ?? "")
+        usesBodyweightResistance(exerciseId: exercise.exerciseId, name: exercise.name)
+    }
+
+    public static func usesBodyweightResistance(exerciseId: String?, name: String) -> Bool {
+        defaultsToZeroAddedWeight(exerciseId: exerciseId, name: name) || ["weighted-pull-ups", "weighted-push-up-with-vest"].contains(
+            ExerciseCatalog.resolveCanonicalId(stableId: exerciseId, name: name) ?? "")
     }
 
     public static func formatSessionPr(weightKg: Double, reps: Int, unit: WeightUnit = .kg, isBodyweight: Bool = false, isAssisted: Bool = false) -> String {
@@ -404,6 +413,15 @@ public enum WorkoutSessionUtils {
         var ratings: [String: String] = [:]
         for (exercise, log) in zip(workout.exercises, historyLogs(workout: workout, record: record)) {
             if let effort = log?.effort.flatMap(ProgressionEffort.init(rawValue:)) { ratings[exercise.id] = effort.rawValue }
+        }
+        return ratings
+    }
+
+    /// Joint-stress ratings saved with a resumed record, keyed by the workout's exercise IDs.
+    public static func restoreJointStressFromHistory(workout: Workout, record: WorkoutSessionRecord) -> [String: String] {
+        var ratings: [String: String] = [:]
+        for (exercise, log) in zip(workout.exercises, historyLogs(workout: workout, record: record)) {
+            if let rating = log?.jointStress.flatMap(JointStress.init(rawValue:)) { ratings[exercise.id] = rating.rawValue }
         }
         return ratings
     }

@@ -2,6 +2,23 @@ import Foundation
 
 public enum ProPreviewData {
 
+    /// Rep Lab's locked Joints tab: two fixed exercises, ordered by the real rules.
+    public static func jointJournalSample(today: String) -> [JointExerciseSummary] {
+        func summary(_ name: String, _ ratings: [JointStress], _ loads: [Double]) -> JointExerciseSummary {
+            let todayNumber = BodyDay.number(today) ?? 0
+            let entries = zip(ratings, loads).enumerated().map { index, pair in
+                JointRatingEntry(date: BodyDay.string(todayNumber - ((ratings.count - 1 - index) * 7 + 2)), rating: pair.0, topLoadKg: pair.1)
+            }
+            return JointExerciseSummary(exerciseName: name, recent: entries, total: entries.count,
+                                        high: ratings.filter { $0 == .high }.count, mild: ratings.filter { $0 == .mild }.count,
+                                        none: ratings.filter { $0 == .noStress }.count, latest: entries.last?.date ?? today)
+        }
+        return [
+            summary("Barbell Back Squat", [.noStress, .mild, .high, .mild, .noStress, .noStress], [100, 105, 110, 107.5, 105, 105]),
+            summary("Barbell Bench Press", [.noStress, .noStress, .mild, .noStress, .noStress, .noStress], [80, 80, 82.5, 82.5, 85, 85])
+        ]
+    }
+
     public static func hasWorkingHistory(_ history: [WorkoutSessionRecord]) -> Bool {
         return history.contains { session in
             session.exerciseLogs.contains { log in

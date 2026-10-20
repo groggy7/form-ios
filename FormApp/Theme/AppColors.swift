@@ -153,6 +153,9 @@ public enum AppColors {
     public static var bodyViewSelectedBorder: Color { presentationColor(Color(hex: 0x51455F), purple) }
     public static var bodyViewSelectedText: Color { presentationColor(Color(hex: 0xD8CFDF), purple) }
 
+    /// Matches Android `AppAmber`: the Joints tab's Mild marker.
+    public static var amber: Color { lightThemeColor(Color(hex: 0xE89A3C), Color(hex: 0x845014)) }
+
     // Warmup Set demarcation
     public static var warmupAmber: Color { lightThemeColor(Color(hex: 0xFEB447), Color(hex: 0x845014)) }
     public static var warmupAmberBg: Color { lightThemeColor(Color(hex: 0x2C1E14), Color(hex: 0xF2E4D0)) }

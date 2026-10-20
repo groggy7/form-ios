@@ -479,14 +479,15 @@ public struct ActiveSessionView: View {
                                     .tourTarget("workout.sets", cornerRadius: 12, flags: [store.weightUnit.rawValue])
 
                                     let workingRows = currentSets.filter { !$0.isWarmup }
-                                    if proManager.isFeatureUnlocked(.autoProgression), store.showProgressionTargets,
-                                       !workingRows.isEmpty, workingRows.allSatisfy(\.isCompleted),
-                                       ProgressionEngine.parseRepRange(exercise: exercise) != nil {
-                                        ProgressionEffortRow(
-                                            selected: activeDraft.effortByExercise?[exercise.id].flatMap(ProgressionEffort.init(rawValue:)),
-                                            onSelect: { setEffort($0, exerciseId: exercise.id) }
-                                        )
-                                    }
+                                    let workingSetsDone = !workingRows.isEmpty && workingRows.allSatisfy(\.isCompleted)
+                                    let asksEffort = proManager.isFeatureUnlocked(.autoProgression) && store.showProgressionTargets &&
+                                        workingSetsDone && ProgressionEngine.parseRepRange(exercise: exercise) != nil
+                                    ExerciseRatingsCard(
+                                        effort: activeDraft.effortByExercise?[exercise.id].flatMap(ProgressionEffort.init(rawValue:)),
+                                        onEffort: asksEffort ? { setEffort($0, exerciseId: exercise.id) } : nil,
+                                        jointStress: activeDraft.jointStressByExercise?[exercise.id].flatMap(JointStress.init(rawValue:)),
+                                        onJointStress: store.jointStressRatings && workingSetsDone ? { setJointStress($0, exerciseId: exercise.id) } : nil
+                                    )
                                 }
                                 .padding(18)
                                 .background(
@@ -887,6 +888,18 @@ public struct ActiveSessionView: View {
             var ratings = copy.effortByExercise ?? [:]
             ratings[exerciseId] = effort?.rawValue
             copy.effortByExercise = ratings.isEmpty ? nil : ratings
+            return copy
+        }
+    }
+
+    /// Saves or clears the optional joint-stress rating for one exercise.
+    private func setJointStress(_ rating: JointStress?, exerciseId: String) {
+        store.updateActiveSession { d in
+            var copy = d
+            guard copy.workout.exercises.contains(where: { $0.id == exerciseId }) else { return copy }
+            var ratings = copy.jointStressByExercise ?? [:]
+            ratings[exerciseId] = rating?.rawValue
+            copy.jointStressByExercise = ratings.isEmpty ? nil : ratings
             return copy
         }
     }

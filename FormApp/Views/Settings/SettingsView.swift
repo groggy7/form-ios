@@ -147,6 +147,24 @@ public struct SettingsView: View {
 
                             Divider().background(AppColors.border)
 
+                            Toggle(isOn: $store.jointStressRatings) {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(LanguageManager.t("settings.jointStress"))
+                                        .font(.system(size: 15))
+                                        .foregroundStyle(AppColors.text)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    Text(LanguageManager.t("settings.jointStressSubtitle"))
+                                        .font(.system(size: 12))
+                                        .foregroundStyle(AppColors.secondaryText)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                            }
+                            .tint(AppColors.accent)
+                            .padding(14)
+                            .accessibilityIdentifier("toggle-joint-stress")
+
+                            Divider().background(AppColors.border)
+
                             SettingsPremiumToggle(
                                 titleKey: "settings.showProgressionTargets",
                                 subtitleKey: "settings.showProgressionTargetsSubtitle",

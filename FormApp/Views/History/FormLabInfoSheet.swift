@@ -15,6 +15,7 @@ public struct FormLabInfoSheet: View {
                     overviewSection
                     formulasSection
                     balanceSection
+                    jointsSection
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
@@ -107,6 +108,23 @@ public struct FormLabInfoSheet: View {
                 ratioRow(label: LanguageManager.t("form_lab.balance.upper_lower_title"), range: "0.65 – 1.60", desc: LanguageManager.t("form_lab.info_upper_lower_desc"))
             }
             .padding(.top, 4)
+        }
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .background(AppColors.surfaceRaised)
+        .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+
+    private var jointsSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(LanguageManager.t("form_lab.info_joints_title"))
+                .font(.system(size: 15, weight: .semibold))
+                .foregroundStyle(AppColors.text)
+            Text(LanguageManager.t("form_lab.info_joints_desc"))
+                .font(.system(size: 13))
+                .lineSpacing(3)
+                .foregroundStyle(AppColors.secondaryText)
         }
         .padding(16)
         .frame(maxWidth: .infinity, alignment: .leading)

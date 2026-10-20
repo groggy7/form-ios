@@ -4,6 +4,8 @@ public enum FormLabTab: String, CaseIterable, Identifiable {
     case repMax = "rep_max"
     case curves = "curves"
     case balance = "balance"
+    /// The user's joint-stress ratings (docs/design/body-and-joint-journal.md).
+    case joints = "joints"
 
     public var id: String { rawValue }
 
@@ -12,6 +14,7 @@ public enum FormLabTab: String, CaseIterable, Identifiable {
         case .repMax: return "form_lab.tab_rep_max"
         case .curves: return "form_lab.tab_curves"
         case .balance: return "form_lab.tab_balance"
+        case .joints: return "form_lab.tab_joints"
         }
     }
 
@@ -38,11 +41,13 @@ struct FormLabHeader: View {
                         Text(label)
                             .font(.system(size: tabFontSize, weight: selected ? .semibold : .medium))
                             .lineLimit(label.contains(" ") ? 2 : 1)
-                            .minimumScaleFactor(0.75)
+                            // Four tabs share 320pt at large text sizes; shrink like Android's 13→8sp auto-size.
+                            .minimumScaleFactor(0.6)
+                            .allowsTightening(true)
                             .foregroundStyle(selected ? AppColors.text : AppColors.secondaryText)
                             .multilineTextAlignment(.center)
                             .fixedSize(horizontal: false, vertical: true)
-                            .padding(.horizontal, 8)
+                            .padding(.horizontal, 4)
                             .padding(.vertical, 12)
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
                             .frame(minHeight: 48)
@@ -194,6 +199,9 @@ public struct FormLabView: View {
                 strengthCurvesTab
             case .balance:
                 structuralBalanceTab
+            case .joints:
+                JointJournalView(history: effectiveHistory, weightUnit: store.weightUnit, isPreview: isPreview,
+                                 ratingsEnabled: store.jointStressRatings, onEnableRatings: { store.jointStressRatings = true })
             }
         }
         .sheet(isPresented: $showInfoSheet) {

@@ -10,6 +10,8 @@ public struct HistoryDayExerciseProgress: Identifiable, Equatable {
     public let topSetWeight: Double?
     public let topSetReps: Int?
     public let isPr: Bool
+    /// The user's own joint-stress report; free history shows it as a quiet line.
+    public let jointStress: JointStress?
 
     public init(
         name: String,
@@ -19,8 +21,10 @@ public struct HistoryDayExerciseProgress: Identifiable, Equatable {
         topSetWeight: Double? = nil,
         topSetReps: Int? = nil,
         isPr: Bool = false,
-        occurrenceID: String? = nil
+        occurrenceID: String? = nil,
+        jointStress: JointStress? = nil
     ) {
+        self.jointStress = jointStress
         self.occurrenceID = occurrenceID
         self.name = name
         self.prescription = prescription
@@ -299,7 +303,8 @@ public struct HistoryDayDetailData: Identifiable {
                     topSetWeight: topWeight,
                     topSetReps: topReps,
                     isPr: isPr,
-                    occurrenceID: "planned-\(ex.id)-\(index)"
+                    occurrenceID: "planned-\(ex.id)-\(index)",
+                    jointStress: log?.jointStress.flatMap(JointStress.init(rawValue:))
                 )
             }
             let used = Set(indices.compactMap { $0 })
@@ -315,7 +320,8 @@ public struct HistoryDayDetailData: Identifiable {
                     topSetWeight: topWeight,
                     topSetReps: topReps,
                     isPr: isPr,
-                    occurrenceID: "logged-\(index)"
+                    occurrenceID: "logged-\(index)",
+                    jointStress: log.jointStress.flatMap(JointStress.init(rawValue:))
                 )
             }
             return planned + extraLogs
@@ -337,7 +343,8 @@ public struct HistoryDayDetailData: Identifiable {
                     topSetWeight: topWeight,
                     topSetReps: topReps,
                     isPr: isPr,
-                    occurrenceID: "logged-\(index)"
+                    occurrenceID: "logged-\(index)",
+                    jointStress: log.jointStress.flatMap(JointStress.init(rawValue:))
                 )
             }
         }
@@ -361,6 +368,7 @@ public struct HistoryView: View {
     @ObservedObject private var tour = TourController.shared
     @State private var activeTab: HistoryTab = .calendar
     @State private var activePaywallFeature: ProFeature? = nil
+    @State private var showBody = false
     @State private var displayedDate: Date = Date()
     @State private var selectedDateString: String? = ProcessInfo.processInfo.environment["SELECTED_HISTORY_DATE"]
 
@@ -583,6 +591,7 @@ public struct HistoryView: View {
                     .padding(.horizontal, 20)
                     .padding(.top, 2)
 
+
                     // Inline Preview Card
                     if let detail = currentSelectedDetail {
                         HistoryDayPreviewCard(
@@ -596,6 +605,10 @@ public struct HistoryView: View {
                         .id("history-day-preview-card")
                         .padding(.horizontal, 20)
                     }
+
+                    // The day preview stays directly below the legend; the body log follows it.
+                    BodySummaryCard(entries: store.state.bodyEntries ?? [], weightUnit: store.weightUnit, onOpen: { showBody = true })
+                        .padding(.horizontal, 20)
 
                     Spacer().frame(height: 24)
                         .id("history-bottom-anchor")
@@ -616,6 +629,9 @@ public struct HistoryView: View {
 }
     .sheet(item: $activePaywallFeature) { feat in
         ProPaywallSheet(feature: feat, onDismiss: { activePaywallFeature = nil })
+    }
+    .fullScreenCover(isPresented: $showBody) {
+        BodyLogView(store: store)
     }
     // See Premium on a sample preview's last step opens that feature's paywall.
     .onChange(of: tour.paywallRequest) { _, request in

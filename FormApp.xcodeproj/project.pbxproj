@@ -106,6 +106,11 @@
 		P10000000000000000000001 /* ExercisePriority.swift in Sources */ = {isa = PBXBuildFile; fileRef = P10000000000000000000002 /* ExercisePriority.swift */; };
 		S70000000000000000000002 /* ExerciseSwaps.swift in Sources */ = {isa = PBXBuildFile; fileRef = S70000000000000000000001 /* ExerciseSwaps.swift */; };
 		S70000000000000000000004 /* ExerciseSwapSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = S70000000000000000000003 /* ExerciseSwapSheet.swift */; };
+		BJ0000000000000000000002 /* BodyTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000001 /* BodyTracking.swift */; };
+		BJ0000000000000000000004 /* BodyTrends.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000003 /* BodyTrends.swift */; };
+		BJ0000000000000000000006 /* JointJournalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000005 /* JointJournalView.swift */; };
+		BJ0000000000000000000008 /* BodyLogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000007 /* BodyLogView.swift */; };
+		BJ0000000000000000000010 /* BodyAndJointJournalTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BJ0000000000000000000009 /* BodyAndJointJournalTests.swift */; };
 		S70000000000000000000006 /* exercise_swaps.json in Resources */ = {isa = PBXBuildFile; fileRef = S70000000000000000000005 /* exercise_swaps.json */; };
 		PG0000000000000000000002 /* ProgressionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000001 /* ProgressionModels.swift */; };
 		PG0000000000000000000004 /* ProgressionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = PG0000000000000000000003 /* ProgressionEngine.swift */; };
@@ -248,6 +253,11 @@
 		P10000000000000000000002 /* ExercisePriority.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExercisePriority.swift; sourceTree = "<group>"; };
 		S70000000000000000000001 /* ExerciseSwaps.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSwaps.swift; sourceTree = "<group>"; };
 		S70000000000000000000003 /* ExerciseSwapSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExerciseSwapSheet.swift; sourceTree = "<group>"; };
+		BJ0000000000000000000001 /* BodyTracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyTracking.swift; sourceTree = "<group>"; };
+		BJ0000000000000000000003 /* BodyTrends.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyTrends.swift; sourceTree = "<group>"; };
+		BJ0000000000000000000005 /* JointJournalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JointJournalView.swift; sourceTree = "<group>"; };
+		BJ0000000000000000000007 /* BodyLogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyLogView.swift; sourceTree = "<group>"; };
+		BJ0000000000000000000009 /* BodyAndJointJournalTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BodyAndJointJournalTests.swift; sourceTree = "<group>"; };
 		S70000000000000000000005 /* exercise_swaps.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = exercise_swaps.json; sourceTree = "<group>"; };
 		PG0000000000000000000001 /* ProgressionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionModels.swift; sourceTree = "<group>"; };
 		PG0000000000000000000003 /* ProgressionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionEngine.swift; sourceTree = "<group>"; };
@@ -372,6 +382,7 @@
 				TR0000000000000000000005 /* TourTests.swift */,
 				C1500000000000000000000D /* progression-fixtures.json */,
 				IS0000000000000000000001 /* IntensityFixtureTests.swift */,
+				BJ0000000000000000000009 /* BodyAndJointJournalTests.swift */,
 				IS0000000000000000000003 /* intensity-fixtures.json */,
 			);
 			path = FormAppTests;
@@ -413,6 +424,7 @@
 				S10000000000000000000002 /* ExerciseSearch.swift */,
 				P10000000000000000000002 /* ExercisePriority.swift */,
 				S70000000000000000000001 /* ExerciseSwaps.swift */,
+				BJ0000000000000000000003 /* BodyTrends.swift */,
 				B16D5A75502FFC600D48A992 /* AudioPlayer.swift */,
 				RA0000000000000000000001 /* RestAlertScheduler.swift */,
 				PG0000000000000000000003 /* ProgressionEngine.swift */,
@@ -437,6 +449,7 @@
 			children = (
 				OB0000000000000000000001 /* OnboardingModels.swift */,
 				TR0000000000000000000001 /* TourModels.swift */,
+				BJ0000000000000000000001 /* BodyTracking.swift */,
 				PR0000000000000000000001 /* PersonalRecordTracker.swift */,
 				WU0000000000000000000001 /* WeightUnit.swift */,
 				68CE78AD9510C658344F7888 /* WorkoutModels.swift */,
@@ -513,6 +526,8 @@
 				VM0000000000000000000007 /* VolumeMatrixView.swift */,
 				VM0000000000000000000009 /* VolumeMatrixInfoSheet.swift */,
 				FL0000000000000000000007 /* FormLabView.swift */,
+				BJ0000000000000000000007 /* BodyLogView.swift */,
+				BJ0000000000000000000005 /* JointJournalView.swift */,
 				FL0000000000000000000009 /* FormLabInfoSheet.swift */,
 			);
 			path = History;
@@ -783,6 +798,10 @@
 				S10000000000000000000001 /* ExerciseSearch.swift in Sources */,
 				P10000000000000000000001 /* ExercisePriority.swift in Sources */,
 				S70000000000000000000002 /* ExerciseSwaps.swift in Sources */,
+				BJ0000000000000000000008 /* BodyLogView.swift in Sources */,
+				BJ0000000000000000000006 /* JointJournalView.swift in Sources */,
+				BJ0000000000000000000004 /* BodyTrends.swift in Sources */,
+				BJ0000000000000000000002 /* BodyTracking.swift in Sources */,
 				S70000000000000000000004 /* ExerciseSwapSheet.swift in Sources */,
 				075B0F9BA865F79FB856122B /* AudioPlayer.swift in Sources */,
 				RA0000000000000000000002 /* RestAlertScheduler.swift in Sources */,
@@ -854,6 +873,7 @@
 				D90000000000000000000002 /* AuditFollowupTests.swift in Sources */,
 				C1500000000000000000000C /* ProgressionFixtureTests.swift in Sources */,
 				IS0000000000000000000002 /* IntensityFixtureTests.swift in Sources */,
+				BJ0000000000000000000010 /* BodyAndJointJournalTests.swift in Sources */,
 				TR0000000000000000000006 /* TourTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

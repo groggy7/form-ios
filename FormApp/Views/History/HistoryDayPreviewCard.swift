@@ -29,6 +29,7 @@ public struct HistoryDayPreviewCard: View {
         let topSetReps: Int?
         let isPr: Bool
         let isCompleted: Bool
+        var jointStress: JointStress? = nil
     }
 
     private enum PreviewDisplayItem: Identifiable {
@@ -150,7 +151,8 @@ public struct HistoryDayPreviewCard: View {
         exerciseProgress.enumerated().map { index, item in
             PreviewExerciseItem(index: index + 1, name: item.name, setsCount: item.completedSets,
                 targetSets: item.plannedSets, topSetWeight: item.topSetWeight, topSetReps: item.topSetReps,
-                isPr: item.isPr, isCompleted: item.completedSets >= item.plannedSets && item.plannedSets > 0)
+                isPr: item.isPr, isCompleted: item.completedSets >= item.plannedSets && item.plannedSets > 0,
+                jointStress: item.jointStress)
         }
     }
 
@@ -451,6 +453,11 @@ public struct HistoryDayPreviewCard: View {
                     .font(.system(size: 11))
                     .foregroundStyle(AppColors.secondaryText)
                     .lineLimit(1)
+                if let rating = item.jointStress {
+                    Text(LanguageManager.t("history.jointStress", ["rating": LanguageManager.t(rating.labelKey)]))
+                        .font(.system(size: 11))
+                        .foregroundStyle(AppColors.muted)
+                }
             }
 
             Spacer(minLength: 4)

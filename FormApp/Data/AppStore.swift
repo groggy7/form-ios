@@ -22,6 +22,7 @@ public final class AppStore: ObservableObject {
     private let onboardingCompletedKey = "is_onboarding_completed"
     private let showProgressionTargetsKey = "show_progression_targets"
     private let showIntensityTechniquesKey = "show_intensity_techniques"
+    private let jointStressRatingsKey = "joint_stress_ratings"
     private static let dumbbellStepKgKey = "progression_dumbbell_step_kg"
     private static let dumbbellStepLbsKey = "progression_dumbbell_step_lbs"
     private static let machineStepKgKey = "progression_machine_step_kg"
@@ -69,6 +70,8 @@ public final class AppStore: ObservableObject {
     @Published public var prefillNextSet: Bool
     /// Drop, Rest-pause and Partials chips in session; history keeps showing logged techniques when off.
     @Published public var showIntensityTechniques: Bool
+    /// Opt-in joint-stress rating after an exercise's working sets (docs/design/body-and-joint-journal.md).
+    @Published public var jointStressRatings: Bool
     /// Home day tiles use the calm glass by default; this opts back in to the earlier neon glow.
     @Published public var homeGlowTiles: Bool
     @Published public var weightUnit: WeightUnit {
@@ -209,6 +212,7 @@ public final class AppStore: ObservableObject {
         self.defaultRestSeconds = UserDefaults.standard.object(forKey: defaultRestKey) as? Int ?? 90
         self.prefillNextSet = UserDefaults.standard.object(forKey: prefillNextSetKey) as? Bool ?? true
         self.showIntensityTechniques = UserDefaults.standard.object(forKey: showIntensityTechniquesKey) as? Bool ?? true
+        self.jointStressRatings = UserDefaults.standard.object(forKey: jointStressRatingsKey) as? Bool ?? false
         self.homeGlowTiles = UserDefaults.standard.object(forKey: homeGlowTilesKey) as? Bool ?? false
         let initialWeightUnit: WeightUnit
         if let savedUnitCode = UserDefaults.standard.string(forKey: weightUnitKey) {
@@ -390,6 +394,11 @@ public final class AppStore: ObservableObject {
         $showIntensityTechniques
             .dropFirst()
             .sink { [showIntensityTechniquesKey] in UserDefaults.standard.set($0, forKey: showIntensityTechniquesKey) }
+            .store(in: &cancellables)
+
+        $jointStressRatings
+            .dropFirst()
+            .sink { [jointStressRatingsKey] in UserDefaults.standard.set($0, forKey: jointStressRatingsKey) }
             .store(in: &cancellables)
 
         $homeGlowTiles
@@ -629,7 +638,8 @@ public final class AppStore: ObservableObject {
             scheduledDate: resumeHistory ? unfinishedRecord?.scheduledDate : (unfinishedRecord?.scheduledDate ?? scheduledDate
                 ?? WorkoutCalendar.scheduledDate(forWeekday: sessionWorkout.day, relativeTo: now)),
             weightInputUnit: weightUnit,
-            effortByExercise: unfinishedRecord.map { WorkoutSessionUtils.restoreEffortFromHistory(workout: sessionWorkout, record: $0) }.flatMap { $0.isEmpty ? nil : $0 }
+            effortByExercise: unfinishedRecord.map { WorkoutSessionUtils.restoreEffortFromHistory(workout: sessionWorkout, record: $0) }.flatMap { $0.isEmpty ? nil : $0 },
+            jointStressByExercise: unfinishedRecord.map { WorkoutSessionUtils.restoreJointStressFromHistory(workout: sessionWorkout, record: $0) }.flatMap { $0.isEmpty ? nil : $0 }
         )
 
         saveActiveSession(draft)
@@ -1517,6 +1527,29 @@ public final class AppStore: ObservableObject {
         }
     }
 
+    /// Adds or replaces the body-log entry for its date (docs/design/body-and-joint-journal.md).
+    @discardableResult
+    public func saveBodyEntry(_ entry: BodyEntry, now: Date = Date()) -> Bool {
+        let today = BodyDay.today(now)
+        guard let day = BodyDay.number(entry.date), let todayNumber = BodyDay.number(today), day <= todayNumber, entry.hasValue,
+              BodyMetric.allCases.allSatisfy({ metric in entry.value(metric).map { metric.canonicalRange.contains($0) } ?? true }) else { return false }
+        var next = state
+        next.bodyEntries = BodyLog.upsert(state.bodyEntries ?? [], entry)
+        guard saveState(next, now: now, durable: true) else { return false }
+        autoSyncCloudBackup()
+        return true
+    }
+
+    @discardableResult
+    public func deleteBodyEntry(date: String) -> Bool {
+        var next = state
+        let remaining = BodyLog.remove(state.bodyEntries ?? [], date: date)
+        next.bodyEntries = remaining.isEmpty ? nil : remaining
+        guard saveState(next, durable: true) else { return false }
+        autoSyncCloudBackup()
+        return true
+    }
+
     /// Any logged load means a unit switch rounds converted weights, so Settings asks first.
     /// A fresh install, or one with only bodyweight sets, switches freely.
     public var hasRecordedLoads: Bool {
@@ -2180,6 +2213,8 @@ enum BackupSanitizer {
         clean.weeklyArchives = Array(state.weeklyArchives.filter { weekKeys.insert($0.weekKey).inserted }.prefix(maxArchives))
         var sessionIds = Set<String>()
         clean.history = state.history.filter { sessionIds.insert($0.id).inserted }.prefix(maxHistoryRecords).map(sanitize)
+        let body = BodyLog.sanitize(state.bodyEntries, today: BodyDay.today())
+        clean.bodyEntries = body.isEmpty ? nil : body
         return clean
     }
 
@@ -2207,6 +2242,7 @@ enum BackupSanitizer {
         copy.exerciseLogs = record.exerciseLogs.prefix(maxLogsPerSession).map { log in
             var log = log
             log.targetSets = log.targetSets.map { clamped($0, 1...maxSetsPerExercise) }
+            log.jointStress = log.jointStress.flatMap(JointStress.init(rawValue:))?.rawValue
             log.sets = log.sets.prefix(maxSetsPerExercise).map { set in
                 SessionSetLog(
                     setNumber: clamped(set.setNumber, 1...maxSetsPerExercise),

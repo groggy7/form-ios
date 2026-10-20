@@ -640,13 +640,17 @@ public struct SessionExerciseLog: Codable, Hashable {
     public var exerciseId: String?
     /// Optional Smart Progression rating: easy, right or hard.
     public var effort: String?
+    /// Optional `JointStress` raw value: the user's own report, never used in a calculation.
+    public var jointStress: String?
 
-    public init(exerciseName: String, sets: [SessionSetLog] = [], targetSets: Int? = nil, exerciseId: String? = nil, effort: String? = nil) {
+    public init(exerciseName: String, sets: [SessionSetLog] = [], targetSets: Int? = nil, exerciseId: String? = nil, effort: String? = nil,
+                jointStress: String? = nil) {
         self.exerciseName = exerciseName
         self.sets = sets
         self.targetSets = targetSets
         self.exerciseId = exerciseId
         self.effort = effort
+        self.jointStress = jointStress
     }
 }
 
@@ -756,6 +760,8 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
     public var lastResumedAtEpochMillis: Int64?
     /// Optional Smart Progression effort ratings by workout exercise ID.
     public var effortByExercise: [String: String]?
+    /// Optional joint-stress ratings by workout exercise ID; the field is optional, so the schema stays 2.
+    public var jointStressByExercise: [String: String]?
 
     public init(
         schemaVersion: Int = ActiveSessionDraft.currentSchemaVersion,
@@ -774,9 +780,11 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         lastResumedAtEpochMillis: Int64? = nil,
         scheduledDate: String? = nil,
         weightInputUnit: WeightUnit? = nil,
-        effortByExercise: [String: String]? = nil
+        effortByExercise: [String: String]? = nil,
+        jointStressByExercise: [String: String]? = nil
     ) {
         self.effortByExercise = effortByExercise
+        self.jointStressByExercise = jointStressByExercise
         self.schemaVersion = schemaVersion
         self.id = id
         self.programId = programId
@@ -815,6 +823,8 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         self.lastResumedAtEpochMillis = try container.decodeIfPresent(Int64.self, forKey: .lastResumedAtEpochMillis)
         self.effortByExercise = try container.decodeIfPresent([String: String].self, forKey: .effortByExercise)?
             .filter { ProgressionEffort(rawValue: $0.value) != nil }
+        self.jointStressByExercise = try container.decodeIfPresent([String: String].self, forKey: .jointStressByExercise)?
+            .filter { JointStress(rawValue: $0.value) != nil }
     }
 
     public func currentDurationSeconds(nowEpochMillis: Int64) -> Int {
@@ -1319,8 +1329,8 @@ public enum WorkoutCalendar {
 
 
 public struct StoredAppState: Codable {
-    /// Matches Android's CURRENT_BACKUP_SCHEMA_VERSION; restore rejects newer backups.
-    public static let currentSchemaVersion = 5
+    /// Matches Android's CURRENT_BACKUP_SCHEMA_VERSION; restore rejects newer backups. 6 adds the body log.
+    public static let currentSchemaVersion = 6
 
     public var schemaVersion: Int
     public var programs: [Program]
@@ -1330,6 +1340,8 @@ public struct StoredAppState: Codable {
     public var weeklyArchives: [WeeklyArchive]
     public var history: [WorkoutSessionRecord]
     public var calendarHistory: WorkoutCalendarHistory?
+    /// One entry per date (docs/design/body-and-joint-journal.md). Nil in schema 5 and older backups.
+    public var bodyEntries: [BodyEntry]?
 
     public init(
         schemaVersion: Int = StoredAppState.currentSchemaVersion,
@@ -1339,8 +1351,10 @@ public struct StoredAppState: Codable {
         currentWeekKey: String = "",
         weeklyArchives: [WeeklyArchive] = [],
         history: [WorkoutSessionRecord] = [],
-        calendarHistory: WorkoutCalendarHistory? = nil
+        calendarHistory: WorkoutCalendarHistory? = nil,
+        bodyEntries: [BodyEntry]? = nil
     ) {
+        self.bodyEntries = bodyEntries
         self.schemaVersion = schemaVersion
         self.programs = programs
         self.activeProgramId = activeProgramId
