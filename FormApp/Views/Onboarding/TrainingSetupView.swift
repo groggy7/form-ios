@@ -58,7 +58,11 @@ struct TrainingSetupView: View {
                 // Fill each step's share gradually, matching Android's 600ms setup progress.
                 ProgressView(value: Double(step), total: 7).progressViewStyle(SetupProgressStyle())
                     .animation(reduceMotion ? nil : .easeInOut(duration: 0.6), value: step)
-                if let onSkip { Button(LanguageManager.t("onboarding.skip"), action: onSkip).foregroundStyle(AppColors.secondaryText).frame(minHeight: 48) }
+                // After answering every question, skipping is no longer offered; the invisible button keeps the progress line's width.
+                if let onSkip {
+                    Button(LanguageManager.t("onboarding.skip"), action: onSkip).foregroundStyle(AppColors.secondaryText).frame(minHeight: 48)
+                        .accessibilityIdentifier("onboarding-skip").opacity(step < 7 ? 1 : 0).disabled(step >= 7).accessibilityHidden(step >= 7)
+                }
             }.padding(.horizontal, 8)
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
@@ -245,31 +249,56 @@ struct TrainingSetupView: View {
         }
     }
     @ViewBuilder private func preview(_ program: Program, catalog: TrainingCatalog) -> some View {
-        if program.name != LanguageManager.t("setup.program.name") { Text(program.name).font(.title2.bold()) }
-        Text(program.description).foregroundStyle(AppColors.secondaryText)
-        Text("\(LanguageManager.t("onboarding.goal.\(profile.goal).title")) · \(LanguageManager.t("onboarding.experience.\(profile.experience).title"))")
-            .foregroundStyle(AppColors.secondaryText)
-        ForEach(generated?.warningKeys ?? [], id: \.self) { key in Text(LanguageManager.t(key)).foregroundStyle(AppColors.secondaryText) }
-        ForEach(program.workouts) { workout in
-            VStack(alignment: .leading, spacing: 10) {
-                Text("\(LanguageManager.workoutDays[workout.day - 1]) · \(workout.title)").font(.headline)
-                let minutes = (300 + workout.exercises.reduce(0) { $0 + TrainingPlanGenerator.estimateSeconds($1) } + 59) / 60
-                Text(LanguageManager.t("setup.minutes", ["count": minutes])).font(.caption).foregroundStyle(AppColors.muted)
-                ForEach(workout.exercises) { exercise in
-                    Text(exercise.displayName)
-                    Text("\(prescription(exercise)) · \(LanguageManager.t("setup.rest", ["seconds": exercise.restSeconds ?? 90]))")
-                        .font(.caption).foregroundStyle(AppColors.secondaryText)
-                    let role = catalog.candidates.first { $0.id == exercise.exerciseId }?.role
-                    let replacement = TrainingPlanGenerator.eligible(profile, catalog: catalog).first { row in row.role == role && !workout.exercises.contains { $0.exerciseId == row.id } }
-                    Button(LanguageManager.t("setup.replace")) { if let replacement { replace(exercise, in: workout, with: replacement, program: program) } }
-                        .disabled(replacement == nil).frame(minHeight: 48)
-                }
-            }.padding(14).frame(maxWidth: .infinity, alignment: .leading)
-                .background(AppColors.surface, in: RoundedRectangle(cornerRadius: 14))
-                .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border))
+        let named = program.name != LanguageManager.t("setup.program.name")
+        let goal = LanguageManager.t("onboarding.goal.\(profile.goal).title")
+        let experience = LanguageManager.t("onboarding.experience.\(profile.experience).title")
+        let eligible = TrainingPlanGenerator.eligible(profile, catalog: catalog)
+        VStack(alignment: .leading, spacing: 4) {
+            Text(named ? program.name : goal).font(.system(size: 18, weight: .semibold)).foregroundStyle(AppColors.text)
+            Text(named ? "\(goal) · \(experience)" : experience).font(.subheadline).foregroundStyle(AppColors.secondaryText)
+            Text(program.description).font(.footnote).foregroundStyle(AppColors.muted).padding(.top, 6)
+        }.padding(16).frame(maxWidth: .infinity, alignment: .leading).setupCard()
+        ForEach(generated?.warningKeys ?? [], id: \.self) { key in
+            HStack(alignment: .top, spacing: 12) {
+                Image(systemName: "info.circle.fill").foregroundStyle(AppColors.muted).accessibilityHidden(true)
+                Text(LanguageManager.t(key)).font(.footnote).foregroundStyle(AppColors.secondaryText)
+            }.padding(14).frame(maxWidth: .infinity, alignment: .leading).setupCard()
         }
-        Button(LanguageManager.t("setup.editAnswers")) { step = 1 }.buttonStyle(.bordered).frame(minHeight: 48)
-        Button(LanguageManager.t("modal.program.titleEdit")) { editing = true }.buttonStyle(.bordered).frame(minHeight: 48)
+        ForEach(program.workouts) { workout in
+            let minutes = (300 + workout.exercises.reduce(0) { $0 + TrainingPlanGenerator.estimateSeconds($1) } + 59) / 60
+            VStack(alignment: .leading, spacing: 0) {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("\(LanguageManager.workoutDays[workout.day - 1]) · \(LanguageManager.t("setup.minutes", ["count": minutes]))")
+                        .font(.footnote).foregroundStyle(AppColors.muted)
+                    Text(workout.title).font(.system(size: 17, weight: .semibold)).foregroundStyle(AppColors.text)
+                }.padding(.horizontal, 16).padding(.top, 14).padding(.bottom, 10)
+                ForEach(workout.exercises) { exercise in
+                    let role = catalog.candidates.first { $0.id == exercise.exerciseId }?.role
+                    let replacement = eligible.first { row in row.role == role && !workout.exercises.contains { $0.exerciseId == row.id } }
+                    Rectangle().fill(AppColors.border).frame(height: 1).padding(.horizontal, 16)
+                    HStack(spacing: 0) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(exercise.displayName).font(.system(size: 15, weight: .medium)).foregroundStyle(AppColors.text)
+                            Text("\(prescription(exercise)) · \(LanguageManager.t("setup.rest", ["seconds": exercise.restSeconds ?? 90]))")
+                                .font(.footnote).foregroundStyle(AppColors.secondaryText)
+                        }.padding(.vertical, 10).padding(.leading, 16).frame(maxWidth: .infinity, alignment: .leading)
+                        if let replacement {
+                            Button { replace(exercise, in: workout, with: replacement, program: program) } label: {
+                                Image(systemName: "arrow.left.arrow.right").frame(width: 48, height: 48).contentShape(Rectangle())
+                            }.buttonStyle(.plain).foregroundStyle(AppColors.secondaryText).padding(.trailing, 4)
+                                .accessibilityLabel(LanguageManager.t("setup.replace")).accessibilityIdentifier("setup-replace")
+                        } else { Spacer().frame(width: 16) }
+                    }
+                }
+            }.frame(maxWidth: .infinity, alignment: .leading).setupCard()
+        }
+        ForEach([("setup.editAnswers", { step = 1 }), ("modal.program.titleEdit", { editing = true })], id: \.0) { key, action in
+            Button(action: action) {
+                Text(LanguageManager.t(key)).frame(maxWidth: .infinity, minHeight: 48)
+            }.buttonStyle(.plain).foregroundStyle(AppColors.secondaryText)
+                .background(AppColors.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: 12))
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border))
+        }
     }
     private func choice(_ label: String, selected: Bool, hint: String = "", multiple: Bool = false, tag: String = "", action: @escaping () -> Void) -> some View {
         Button(action: action) {
@@ -329,5 +358,13 @@ private struct SetupProgressStyle: ProgressViewStyle {
                 }
             }
             .clipShape(Capsule()).frame(height: 4)
+    }
+}
+
+private extension View {
+    /// The standard contained surface: palette fill, 1pt border and 14pt corners.
+    func setupCard() -> some View {
+        background(AppColors.surface, in: RoundedRectangle(cornerRadius: 14))
+            .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border))
     }
 }
