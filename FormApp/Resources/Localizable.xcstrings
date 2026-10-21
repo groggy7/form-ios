@@ -54787,356 +54787,6 @@
         }
       }
     },
-    "setup.dumbbell.pair": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "I have a matching pair of dumbbells"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bir çift eş dambılım var"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ich habe ein passendes Hantelpaar"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Je possède une paire d’haltères identiques"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tengo un par de mancuernas iguales"
-          }
-        }
-      }
-    },
-    "setup.dumbbell.max": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Heaviest dumbbell, each (kg, optional)"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "En ağır dambıl, tek (kg, isteğe bağlı)"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Schwerste Kurzhantel, einzeln (kg, optional)"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Haltère le plus lourd, chacun (kg, facultatif)"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mancuerna más pesada, cada una (kg, opcional)"
-          }
-        }
-      }
-    },
-    "setup.barbell.max": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Maximum bar load, including bar (kg, optional)"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bar dahil en yüksek yük (kg, isteğe bağlı)"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Maximale Last inklusive Stange (kg, optional)"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Charge maximale, barre comprise (kg, facultatif)"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Carga máxima con barra incluida (kg, opcional)"
-          }
-        }
-      }
-    },
-    "setup.load.optional": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Leave blank if unknown. Starting weights are chosen during your workout."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bilmiyorsan boş bırak. Başlangıç ağırlıklarını antrenmanda seçersin."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bei Unkenntnis leer lassen. Startgewichte wählst du beim Training."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Laissez vide si vous ne savez pas. Les charges initiales se choisissent pendant la séance."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Déjalo en blanco si no lo sabes. Elegirás las cargas iniciales durante la sesión."
-          }
-        }
-      }
-    },
-    "setup.load.invalid": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enter a positive weight or leave blank."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pozitif bir ağırlık gir veya boş bırak."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Positives Gewicht eingeben oder leer lassen."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Saisissez une charge positive ou laissez vide."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Introduce un peso positivo o déjalo en blanco."
-          }
-        }
-      }
-    },
-    "setup.pullUps.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "How many strict pull-ups or chin-ups can you do?"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Kaç düzgün barfiks veya chin-up yapabiliyorsun?"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Wie viele saubere Klimmzüge schaffst du?"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Combien de tractions strictes pouvez-vous faire ?"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "¿Cuántas dominadas estrictas puedes hacer?"
-          }
-        }
-      }
-    },
-    "setup.pullUps.0": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "None yet / unsure"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Henüz yapamıyorum / emin değilim"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Noch keine / unsicher"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aucune pour le moment / incertain"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ninguna todavía / no lo sé"
-          }
-        }
-      }
-    },
-    "setup.pullUps.1": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1–2 repetitions"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1–2 tekrar"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1–2 Wiederholungen"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1–2 répétitions"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "1–2 repeticiones"
-          }
-        }
-      }
-    },
-    "setup.pullUps.3": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "3–7 repetitions"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "3–7 tekrar"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "3–7 Wiederholungen"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "3–7 répétitions"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "3–7 repeticiones"
-          }
-        }
-      }
-    },
-    "setup.pullUps.8": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "8 or more repetitions"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "8 veya daha fazla tekrar"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "8 oder mehr Wiederholungen"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "8 répétitions ou plus"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "8 repeticiones o más"
-          }
-        }
-      }
-    },
     "setup.days.hint": {
       "extractionState": "manual",
       "localizations": {
@@ -56193,31 +55843,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Full pull-ups are left out until you can perform at least three strict repetitions. Owning a bar does not require using it for pull-ups."
+            "value": "Pull-ups are not in this starting plan. If you can do three strict repetitions, add them by editing your program later."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "En az üç düzgün tekrar yapabilene kadar tam barfiks eklenmez. Barın olması barfiks yapmanı gerektirmez."
+            "value": "Barfiks bu başlangıç planında yer almıyor. Üç düzgün tekrar yapabiliyorsan programını düzenleyerek sonra ekleyebilirsin."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Vollständige Klimmzüge entfallen, bis du mindestens drei saubere Wiederholungen schaffst. Eine Stange verpflichtet nicht zu Klimmzügen."
+            "value": "Klimmzüge sind in diesem Startplan nicht enthalten. Schaffst du drei saubere Wiederholungen, füge sie später in deinem Programm hinzu."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Les tractions complètes sont exclues jusqu’à trois répétitions strictes. Posséder une barre n’oblige pas à faire des tractions."
+            "value": "Les tractions ne figurent pas dans ce plan de départ. Si tu fais trois répétitions strictes, ajoute-les plus tard en modifiant ton programme."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Las dominadas completas se excluyen hasta que puedas hacer tres repeticiones estrictas. Tener una barra no obliga a hacer dominadas."
+            "value": "Las dominadas no están en este plan inicial. Si puedes hacer tres repeticiones estrictas, añádelas más tarde editando tu programa."
           }
         }
       }
@@ -58118,31 +57768,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "All the basics"
+            "value": "Nothing missing"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Temel ekipmanlar var"
+            "value": "Hiçbir şey eksik değil"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Grundausstattung vorhanden"
+            "value": "Nichts fehlt"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tout l’essentiel est là"
+            "value": "Il ne manque rien"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Está todo lo básico"
+            "value": "No falta nada"
           }
         }
       }
@@ -58318,41 +57968,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Volver al equipo habitual"
-          }
-        }
-      }
-    },
-    "setup.equipment.details": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Equipment details (optional)"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ekipman ayrıntıları (isteğe bağlı)"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ausrüstungsdetails (optional)"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Détails du matériel (facultatif)"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Detalles del equipo (opcional)"
           }
         }
       }

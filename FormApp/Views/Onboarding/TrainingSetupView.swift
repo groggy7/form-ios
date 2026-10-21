@@ -17,7 +17,6 @@ struct TrainingSetupView: View {
     @State private var editing = false
     @State private var showGymInventory: Bool
     @State private var advancedSearch = false
-    @State private var showEquipmentDetails = false
     @ScaledMetric(relativeTo: .caption) private var tileLabelHeight: CGFloat = 48
     @ScaledMetric(relativeTo: .caption) private var minimumTileWidth: CGFloat = 110
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
@@ -119,7 +118,7 @@ struct TrainingSetupView: View {
             choice(LanguageManager.t("setup.location.\(location)"), selected: (profile.location == "home") == (location == "home"), tag: "setup-location-\(location)") {
                 guard (profile.location == "home") != (location == "home") else { return }
                 profile.location = location; profile.equipment = catalog.presets[location] ?? []; profile.equipmentConfirmed = false
-                showGymInventory = false; advancedSearch = false; showEquipmentDetails = false; search = ""
+                showGymInventory = false; advancedSearch = false; search = ""
             }
         }
     }
@@ -164,10 +163,6 @@ struct TrainingSetupView: View {
                 }
             }
         }
-        if profile.equipmentConfirmed && profile.equipment.contains(where: { ["dumbbells", "barbell", "ez-bar", "trap-bar", "pull-up-bar"].contains($0) }) {
-            expander("setup.equipment.details", expanded: showEquipmentDetails, tag: "setup-equipment-details") { showEquipmentDetails.toggle() }
-            if showEquipmentDetails { ForEach(profile.equipment, id: \.self) { equipmentDetails($0) } }
-        }
     }
     private func toggleEquipment(_ id: String) { toggle(id, in: &profile.equipment); profile.equipmentConfirmed = true }
     private func expander(_ key: String, expanded: Bool, tag: String, action: @escaping () -> Void) -> some View {
@@ -210,23 +205,6 @@ struct TrainingSetupView: View {
             }
         }.onGeometryChange(for: CGFloat.self) { $0.size.width } action: { equipmentWidth = $0 }
             .accessibilityIdentifier("setup-equipment-grid")
-    }
-    @ViewBuilder private func equipmentDetails(_ id: String) -> some View {
-        if profile.equipment.contains(id) {
-            if id == "dumbbells" {
-                choice(LanguageManager.t("setup.dumbbell.pair"), selected: profile.dumbbellPair, multiple: true) { profile.dumbbellPair.toggle() }
-                TrainingLoadField(key: "setup.dumbbell.max", value: $profile.maxDumbbellKg)
-            }
-            if ["barbell", "ez-bar", "trap-bar"].contains(id) && id == profile.equipment.first(where: { ["barbell", "ez-bar", "trap-bar"].contains($0) }) {
-                TrainingLoadField(key: "setup.barbell.max", value: $profile.maxBarbellKg)
-            }
-            if id == "pull-up-bar" {
-                Text(LanguageManager.t("setup.pullUps.title")).font(.headline)
-                ForEach([0, 1, 3, 8], id: \.self) { count in
-                    choice(LanguageManager.t("setup.pullUps.\(count)"), selected: profile.pullUpReps == count) { profile.pullUpReps = count }
-                }
-            }
-        }
     }
     private var days: some View {
         Group {
@@ -329,7 +307,7 @@ struct TrainingSetupView: View {
     }
     private func back() { if step > 1 { step -= 1 } else { onClose() } }
     private func next() {
-        if step < 7 { step += 1; search = ""; advancedSearch = false; showEquipmentDetails = false }
+        if step < 7 { step += 1; search = ""; advancedSearch = false }
         else if let program {
             if store.saveGeneratedPlan(profile: profile.normalized(), program: program, completeSetup: completeSetup) { onClose() }
             else { error = LanguageManager.t("setup.saveFailed") }
@@ -351,22 +329,5 @@ private struct SetupProgressStyle: ProgressViewStyle {
                 }
             }
             .clipShape(Capsule()).frame(height: 4)
-    }
-}
-
-private struct TrainingLoadField: View {
-    let key: String
-    @Binding var value: Double?
-    @State private var input = ""
-    var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            TextField("", text: $input, prompt: Text(LanguageManager.t(key)).foregroundStyle(AppColors.muted))
-                .keyboardType(.decimalPad).textFieldStyle(.plain).padding(14)
-                .background(AppColors.surface, in: RoundedRectangle(cornerRadius: 12))
-                .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border))
-                .accessibilityLabel(LanguageManager.t(key))
-            Text(LanguageManager.t("setup.load.optional")).font(.caption).foregroundStyle(AppColors.secondaryText)
-        }.onAppear { input = value.map { String($0) } ?? "" }
-            .onChange(of: input) { _, raw in value = Double(raw.replacingOccurrences(of: ",", with: ".")).flatMap { $0.isFinite && $0 > 0 && $0 <= 1000 ? $0 : nil } }
     }
 }
