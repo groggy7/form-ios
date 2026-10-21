@@ -706,6 +706,25 @@
       ]
     },
     {
+      "id": "dumbbell-gorilla-row",
+      "role": "row",
+      "requirements": [
+        [
+          "dumbbells"
+        ]
+      ],
+      "pair": true,
+      "advanced": false,
+      "pullUps": 0,
+      "loadable": [],
+      "compound": true,
+      "perSide": false,
+      "muscles": [
+        "trapezius",
+        "lats"
+      ]
+    },
+    {
       "id": "barbell-row",
       "role": "row",
       "requirements": [
@@ -1837,6 +1856,12 @@
         "lower.1",
         "upper.2",
         "lower.2"
+      ],
+      [
+        "full.1",
+        "full.2",
+        "full.1",
+        "full.2"
       ]
     ],
     "5": [
@@ -1846,6 +1871,20 @@
         "push.2",
         "pull.2",
         "lower.2"
+      ],
+      [
+        "upper.1",
+        "lower.1",
+        "upper.2",
+        "lower.2",
+        "upper.1"
+      ],
+      [
+        "full.1",
+        "full.2",
+        "full.3",
+        "full.1",
+        "full.2"
       ]
     ],
     "6": [
@@ -1856,6 +1895,22 @@
         "push.2",
         "pull.2",
         "lower.2"
+      ],
+      [
+        "upper.1",
+        "lower.1",
+        "upper.2",
+        "lower.2",
+        "upper.1",
+        "lower.2"
+      ],
+      [
+        "full.1",
+        "full.2",
+        "full.3",
+        "full.1",
+        "full.2",
+        "full.3"
       ]
     ]
   },
@@ -1947,7 +2002,7 @@
       "shoulders",
       "triceps",
       "delts",
-      "chest",
+      "chest|push",
       "core"
     ],
     "push.2": [
@@ -1955,7 +2010,7 @@
       "push",
       "delts",
       "triceps",
-      "chest",
+      "chest|push",
       "core"
     ],
     "pull.1": [
@@ -2092,5 +2147,19 @@
       8,
       120
     ]
+  },
+  "limits": {
+    "beginner": {
+      "exercises": 6,
+      "weeklySets": 12
+    },
+    "intermediate": {
+      "exercises": 7,
+      "weeklySets": 20
+    },
+    "advanced": {
+      "exercises": 8,
+      "weeklySets": 20
+    }
   }
 }

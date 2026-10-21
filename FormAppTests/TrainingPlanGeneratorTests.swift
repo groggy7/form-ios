@@ -245,6 +245,49 @@ final class TrainingPlanGeneratorTests: XCTestCase {
             }
         }
     }
+    func testSessionsStaySensiblySizedAndWeeklyVolumeStaysBounded() throws {
+        let catalog = try XCTUnwrap(TrainingCatalog.bundled)
+        let inventories = [[], ["dumbbells"], ["dumbbells", "adjustable-bench"], ["bands", "high-anchor", "low-anchor"],
+            ["kettlebell"], ["pull-up-bar"], try XCTUnwrap(catalog.presets["commercial_gym"])]
+        for gear in inventories {
+            for frequency in OnboardingFrequency.allCases {
+                for experience in ["beginner", "intermediate", "advanced"] {
+                    for minutes in [20, 45, 90] {
+                        for priority in ["", "push", "squat", "core"] {
+                            var p = profile(gear); p.experience = experience; p.advancedLifts = experience != "beginner"
+                            p.selectedDays = frequency.defaultWeekdays; p.minutes = minutes; p.priority = priority
+                            let workouts = try generate(p).program.workouts
+                            let limit = try XCTUnwrap(catalog.limits[experience])
+                            let focus = catalog.roles[priority]?.area
+                            let label = "\(gear) \(experience) \(frequency.rawValue)d \(minutes)min '\(priority)'"
+                            var weekly: [String: Int] = [:]
+                            for workout in workouts {
+                                XCTAssertTrue((3...limit.exercises).contains(workout.exercises.count), label)
+                                XCTAssertTrue(workout.exercises.allSatisfy { (2...4).contains($0.sets ?? 0) }, label)
+                                XCTAssertTrue(try workout.exercises.contains { ex in
+                                    try role(ex) != "core" && catalog.candidates.first { $0.id == ex.exerciseId }?.compound == true
+                                }, label)
+                                var perArea: [String: Int] = [:]
+                                for exercise in workout.exercises {
+                                    perArea[try XCTUnwrap(catalog.roles[try role(exercise)]?.area), default: 0] += exercise.sets ?? 0
+                                }
+                                for (area, sets) in perArea {
+                                    XCTAssertLessThanOrEqual(sets, area == focus ? 12 : 10, "\(label) \(area)")
+                                    weekly[area, default: 0] += sets
+                                }
+                            }
+                            for (area, sets) in weekly {
+                                XCTAssertLessThanOrEqual(sets, limit.weeklySets + (area == focus ? 4 : 0), "\(label) \(area)")
+                            }
+                            if priority != "core" {
+                                XCTAssertLessThanOrEqual(try workouts.filter { w in try w.exercises.contains { try role($0) == "core" } }.count, 3, label)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
     func testLimitationsAndExclusionsAreHonest() throws {
         var p = profile(); p.selectedDays = [7, 1, 2]
         let result = try generate(p)
