@@ -21,6 +21,7 @@ struct TrainingSetupView: View {
     @ScaledMetric(relativeTo: .caption) private var tileLabelHeight: CGFloat = 48
     @ScaledMetric(relativeTo: .caption) private var minimumTileWidth: CGFloat = 110
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var equipmentWidth: CGFloat = 0
 
     init(store: AppStore, completeSetup: Bool = true, onClose: @escaping () -> Void, onSkip: (() -> Void)? = nil) {
@@ -55,7 +56,9 @@ struct TrainingSetupView: View {
             HStack(spacing: 12) {
                 Button(action: back) { Image(systemName: "arrow.left").frame(width: 48, height: 48) }
                     .accessibilityLabel(LanguageManager.t("onboarding.back")).accessibilityIdentifier("onboarding-back")
-                ProgressView(value: Double(step), total: 7).tint(AppColors.accent)
+                // Fill each step's share gradually, matching Android's 600ms setup progress.
+                ProgressView(value: Double(step), total: 7).progressViewStyle(SetupProgressStyle())
+                    .animation(reduceMotion ? nil : .easeInOut(duration: 0.6), value: step)
                 if let onSkip { Button(LanguageManager.t("onboarding.skip"), action: onSkip).foregroundStyle(AppColors.secondaryText).frame(minHeight: 48) }
             }.padding(.horizontal, 8)
             ScrollView {
@@ -335,6 +338,19 @@ struct TrainingSetupView: View {
     private func persist() {
         guard !completeSetup else { return }
         TrainingSetupStore.saveDraft(.init(profile: profile, step: step, programId: programID, program: editedProgram))
+    }
+}
+
+/// The native bar runs its own brief slide and ignores the caller's animation; this fill follows it.
+private struct SetupProgressStyle: ProgressViewStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        Capsule().fill(AppColors.border)
+            .overlay(alignment: .leading) {
+                GeometryReader { proxy in
+                    Rectangle().fill(AppColors.accent).frame(width: proxy.size.width * (configuration.fractionCompleted ?? 0))
+                }
+            }
+            .clipShape(Capsule()).frame(height: 4)
     }
 }
 
