@@ -16,6 +16,7 @@ struct TrainingSetupView: View {
     @State private var error: String?
     @State private var editing = false
     @State private var showGymInventory: Bool
+    @State private var expandedDays: Set<String> = []
     @State private var advancedSearch = false
     @ScaledMetric(relativeTo: .caption) private var tileLabelHeight: CGFloat = 48
     @ScaledMetric(relativeTo: .caption) private var minimumTileWidth: CGFloat = 110
@@ -266,13 +267,24 @@ struct TrainingSetupView: View {
         }
         ForEach(program.workouts) { workout in
             let minutes = (300 + workout.exercises.reduce(0) { $0 + TrainingPlanGenerator.estimateSeconds($1) } + 59) / 60
+            let open = expandedDays.contains(workout.id)
             VStack(alignment: .leading, spacing: 0) {
-                VStack(alignment: .leading, spacing: 0) {
-                    Text("\(LanguageManager.workoutDays[workout.day - 1]) · \(LanguageManager.t("setup.minutes", ["count": minutes]))")
-                        .font(.footnote).foregroundStyle(AppColors.muted)
-                    Text(workout.title).font(.system(size: 17, weight: .semibold)).foregroundStyle(AppColors.text)
-                }.padding(.horizontal, 16).padding(.top, 14).padding(.bottom, 10)
-                ForEach(workout.exercises) { exercise in
+                // Days start collapsed so the whole week reads at a glance; the header carries the summary.
+                Button { if open { expandedDays.remove(workout.id) } else { expandedDays.insert(workout.id) } } label: {
+                    HStack(spacing: 12) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(LanguageManager.workoutDays[workout.day - 1]).font(.footnote).foregroundStyle(AppColors.muted)
+                            Text(workout.title).font(.system(size: 17, weight: .semibold)).foregroundStyle(AppColors.text)
+                            if !workout.focus.isEmpty { Text(workout.focus).font(.footnote).foregroundStyle(AppColors.secondaryText) }
+                            Text("\(LanguageManager.t("weekly.exerciseCount", ["count": workout.exercises.count])) · \(LanguageManager.t("setup.minutes", ["count": minutes]))")
+                                .font(.footnote).foregroundStyle(AppColors.muted)
+                        }.multilineTextAlignment(.leading)
+                        Spacer(minLength: 0)
+                        Image(systemName: open ? "chevron.up" : "chevron.down").foregroundStyle(AppColors.secondaryText).accessibilityHidden(true)
+                    }.padding(.leading, 16).padding(.trailing, 16).padding(.vertical, 14).frame(maxWidth: .infinity, alignment: .leading).contentShape(Rectangle())
+                }.buttonStyle(.plain).accessibilityIdentifier("setup-day-\(workout.day)")
+                    .accessibilityValue(LanguageManager.t(open ? "progression.coach.expanded" : "progression.coach.collapsed"))
+                if open { ForEach(workout.exercises) { exercise in
                     let role = catalog.candidates.first { $0.id == exercise.exerciseId }?.role
                     let replacement = eligible.first { row in row.role == role && !workout.exercises.contains { $0.exerciseId == row.id } }
                     Rectangle().fill(AppColors.border).frame(height: 1).padding(.horizontal, 16)
@@ -289,7 +301,7 @@ struct TrainingSetupView: View {
                                 .accessibilityLabel(LanguageManager.t("setup.replace")).accessibilityIdentifier("setup-replace")
                         } else { Spacer().frame(width: 16) }
                     }
-                }
+                } }
             }.frame(maxWidth: .infinity, alignment: .leading).setupCard()
         }
         ForEach([("setup.editAnswers", { step = 1 }), ("modal.program.titleEdit", { editing = true })], id: \.0) { key, action in
