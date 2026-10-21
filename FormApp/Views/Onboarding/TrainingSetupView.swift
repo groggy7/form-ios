@@ -250,13 +250,12 @@ struct TrainingSetupView: View {
         }
     }
     @ViewBuilder private func preview(_ program: Program, catalog: TrainingCatalog) -> some View {
-        let named = program.name != LanguageManager.t("setup.program.name")
         let goal = LanguageManager.t("onboarding.goal.\(profile.goal).title")
         let experience = LanguageManager.t("onboarding.experience.\(profile.experience).title")
         let eligible = TrainingPlanGenerator.eligible(profile, catalog: catalog)
         VStack(alignment: .leading, spacing: 4) {
-            Text(named ? program.name : goal).font(.system(size: 18, weight: .semibold)).foregroundStyle(AppColors.text)
-            Text(named ? "\(goal) · \(experience)" : experience).font(.subheadline).foregroundStyle(AppColors.secondaryText)
+            Text(program.name).font(.system(size: 18, weight: .semibold)).foregroundStyle(AppColors.text)
+            Text("\(goal) · \(experience)").font(.subheadline).foregroundStyle(AppColors.secondaryText)
             Text(program.description).font(.footnote).foregroundStyle(AppColors.muted).padding(.top, 6)
         }.padding(16).frame(maxWidth: .infinity, alignment: .leading).setupCard()
         ForEach(generated?.warningKeys ?? [], id: \.self) { key in

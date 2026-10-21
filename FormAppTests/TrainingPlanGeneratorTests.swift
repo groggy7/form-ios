@@ -22,9 +22,25 @@ final class TrainingPlanGeneratorTests: XCTestCase {
     private func profile(_ equipment: [String] = []) -> TrainingProfile {
         var p = TrainingProfile(); p.location = "home"; p.equipment = equipment; p.equipmentConfirmed = true; return p
     }
+    /// Keys and sorted arguments stand in for translations, so both engines compare exact naming choices.
+    private static func text(_ key: String, _ args: [String: Any]) -> String {
+        args.isEmpty ? key : key + "(" + args.keys.sorted().map { "\($0)=\(args[$0]!)" }.joined(separator: ",") + ")"
+    }
     private func generate(_ p: TrainingProfile) throws -> GeneratedTrainingPlan {
         try TrainingPlanGenerator.generate(p, catalog: XCTUnwrap(TrainingCatalog.bundled), exercises: ExerciseCatalog.canonicalExercises,
+            programID: "personal-plan", text: Self.text)
+    }
+    /// Key-and-argument names exceed the 100-character program limit, so storage checks use bare keys.
+    private func storable(_ p: TrainingProfile) throws -> GeneratedTrainingPlan {
+        try TrainingPlanGenerator.generate(p, catalog: XCTUnwrap(TrainingCatalog.bundled), exercises: ExerciseCatalog.canonicalExercises,
             programID: "personal-plan", text: { key, _ in key })
+    }
+    private func gym() throws -> TrainingProfile {
+        var p = TrainingProfile(); p.equipment = try XCTUnwrap(TrainingCatalog.bundled?.presets["commercial_gym"])
+        p.equipmentConfirmed = true; p.minutes = 60; return p
+    }
+    private func role(_ exercise: Exercise) throws -> String {
+        try XCTUnwrap(TrainingCatalog.bundled?.candidates.first { $0.id == exercise.exerciseId }?.role)
     }
     func testVisualEquipmentChoicesHaveReviewedArtworkAndASmallHomeSelection() throws {
         let catalog = try XCTUnwrap(TrainingCatalog.bundled)
@@ -52,9 +68,11 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         XCTAssertEqual(recovered.program, program)
     }
     func testSharedFixturesMatchBothNativeEngines() throws {
-        struct Fixture: Decodable { let name: String; let profile: TrainingProfile; let expected: String }
+        struct Fixture: Decodable { let name: String; let profile: TrainingProfile; let expected: String; let identity: String }
         let file = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("training-generation-fixtures.json")
-        for fixture in try JSONDecoder().decode([Fixture].self, from: Data(contentsOf: file)) {
+        let fixtures = try JSONDecoder().decode([Fixture].self, from: Data(contentsOf: file))
+        XCTAssertEqual(fixtures.count, 15)
+        for fixture in fixtures {
             let result = try generate(fixture.profile)
             let signature = result.program.workouts.map { workout in
                 String(workout.day) + ":" + workout.exercises.map { ex in
@@ -63,7 +81,101 @@ final class TrainingPlanGeneratorTests: XCTestCase {
                 }.joined(separator: ",")
             }.joined(separator: ";") + "|" + result.warningKeys.joined(separator: ",")
             XCTAssertEqual(signature, fixture.expected, fixture.name)
+            let identity = result.program.name + "|" + result.program.workouts.map { "\($0.title)/\($0.focus)" }.joined(separator: ";")
+                + "|" + (result.program.coverId ?? "")
+            XCTAssertEqual(identity, fixture.identity, fixture.name)
         }
+    }
+    func testBackToBackDaysAlternateRegionsWhenEquipmentAllows() throws {
+        func regions(_ workout: Workout) -> Set<String> {
+            if workout.title.contains("kind=setup.day.full") { return ["push", "pull", "lower"] }
+            if workout.title.contains("kind=setup.day.upper") { return ["push", "pull"] }
+            if workout.title.contains("kind=setup.day.push") { return ["push"] }
+            if workout.title.contains("kind=setup.day.pull") { return ["pull"] }
+            return ["lower"]
+        }
+        for gear in [try gym().equipment, ["dumbbells"], ["bands", "high-anchor", "low-anchor"]] {
+            for mask in 1..<128 {
+                let chosen = (1...7).filter { mask & (1 << ($0 - 1)) != 0 }
+                guard (2...6).contains(chosen.count) else { continue }
+                var p = profile(gear); p.selectedDays = chosen; p.minutes = 45
+                let result = try generate(p), workouts = result.program.workouts
+                XCTAssertEqual(workouts.map(\.day), chosen)
+                for (index, workout) in workouts.enumerated() {
+                    let next = workouts[(index + 1) % workouts.count]
+                    if workout.day % 7 + 1 == next.day { XCTAssertTrue(regions(workout).isDisjoint(with: regions(next)), "\(gear) \(chosen)") }
+                }
+                XCTAssertFalse(result.warningKeys.contains("setup.warning.adjacent"))
+                XCTAssertEqual(Set(workouts.map(\.title)).count, workouts.count)
+                let spread = !chosen.indices.contains { chosen[$0] % 7 + 1 == chosen[($0 + 1) % chosen.count] }
+                XCTAssertEqual(result.warningKeys.contains("setup.warning.alternating"), !spread && chosen.count <= 3, "\(gear) \(chosen)")
+            }
+        }
+    }
+    func testNamesDescribeGoalStructureEquipmentAndEachDaysLead() throws {
+        let floor = try generate(profile())
+        XCTAssertEqual(floor.program.name, "setup.name.formatEquipment(days=3,equipment=setup.name.equipment.bodyweight,goal=setup.name.goal.bulk,structure=setup.name.structure.full)")
+        var split = try gym(); split.goal = "strength"; split.experience = "intermediate"; split.selectedDays = [1, 2, 4, 5]
+        let plan = try generate(split)
+        XCTAssertEqual(plan.program.name, "setup.name.format(days=4,goal=setup.name.goal.strength,structure=setup.name.structure.upperLower)")
+        XCTAssertEqual(plan.program.workouts.map(\.title), [
+            "setup.day.titled(emphasis=setup.emphasis.pair(first=setup.emphasis.push,second=setup.emphasis.row),kind=setup.day.upper)",
+            "setup.day.titled(emphasis=setup.emphasis.squat,kind=setup.day.lower)",
+            "setup.day.titled(emphasis=setup.emphasis.pair(first=setup.emphasis.shoulders,second=setup.emphasis.pull),kind=setup.day.upper)",
+            "setup.day.titled(emphasis=setup.emphasis.hinge,kind=setup.day.lower)"])
+        var six = try gym(); six.selectedDays = [1, 2, 3, 4, 5, 6]
+        XCTAssertTrue(try generate(six).program.workouts.contains { $0.title.contains("kind=setup.day.legs") })
+        XCTAssertEqual(try generate(profile(["dumbbells"])).program.workouts.first?.focus,
+                       "setup.area.quads · setup.area.chest · setup.area.back · setup.area.hamstrings")
+    }
+    func testCoversFollowPriorityEquipmentGoalAndStructure() throws {
+        func cover(_ p: TrainingProfile) throws -> String? { try generate(p).program.coverId }
+        var intermediate = try gym(); intermediate.experience = "intermediate"
+        func variant(_ change: (inout TrainingProfile) -> Void) -> TrainingProfile { var p = intermediate; change(&p); return p }
+        var biceps = profile(["dumbbells"]); biceps.priority = "biceps"
+        XCTAssertEqual(try cover(profile()), "core_abs_pose")
+        XCTAssertEqual(try cover(profile(["dumbbells"])), "home_dumbbells")
+        XCTAssertEqual(try cover(profile(["kettlebell"])), "studio_kettlebell_swing")
+        XCTAssertEqual(try cover(biceps), "biceps_peak_pose")
+        XCTAssertEqual(try cover(try gym()), "machines")
+        XCTAssertEqual(try cover(intermediate), "full_body")
+        XCTAssertEqual(try cover(variant { $0.selectedDays = [1, 4] }), "studio_chest_clasp")
+        XCTAssertEqual(try cover(variant { $0.selectedDays = [1, 2, 4, 5] }), "upper_lower")
+        XCTAssertEqual(try cover(variant { $0.selectedDays = [1, 2, 3, 4, 5, 6] }), "push_pull_legs")
+        XCTAssertEqual(try cover(variant { $0.selectedDays = [1, 2, 3, 5, 6] }), "hypertrophy")
+        XCTAssertEqual(try cover(variant { $0.goal = "strength" }), "strength_power")
+        XCTAssertEqual(try cover(variant { $0.goal = "strength"; $0.selectedDays = [1, 2, 4, 5] }), "powerbuilding")
+        XCTAssertEqual(try cover(variant { $0.goal = "cut" }), "obliques_side_pose")
+        for goal in ["bulk", "cut", "strength", "maintain"] {
+            for priority in ["", "push", "row", "squat", "shoulders", "biceps", "core"] {
+                let id = try cover(variant { $0.goal = goal; $0.priority = priority })
+                XCTAssertNotNil(ProgramCover(rawValue: id ?? ""), "\(goal) \(priority)")
+            }
+        }
+    }
+    func testSessionsRunMainLiftsFirstAndPairSquatsWithSingleLegWork() throws {
+        let catalog = try XCTUnwrap(TrainingCatalog.bundled)
+        var advanced = try gym(); advanced.experience = "advanced"; advanced.advancedLifts = true; advanced.selectedDays = [1, 2, 4, 5]
+        for p in [try gym(), advanced, profile(["dumbbells", "adjustable-bench"])] {
+            for workout in try generate(p).program.workouts {
+                let ranks = try workout.exercises.map { try XCTUnwrap(catalog.roles[role($0)]?.rank) }
+                XCTAssertEqual(ranks, ranks.sorted(), workout.title)
+                XCTAssertLessThanOrEqual(try workout.exercises.filter { try role($0) == "squat" }.count, 1, workout.title)
+                XCTAssertEqual(workout.exercises.map(\.id), workout.exercises.indices.map { "personal-plan-d\(workout.day)-\($0 + 1)" })
+            }
+        }
+    }
+    func testExperienceAndGoalChooseTheMainLifts() throws {
+        func lead(_ change: (inout TrainingProfile) -> Void) throws -> String? {
+            var p = try gym(); change(&p); return try generate(p).program.workouts.first?.exercises.first?.exerciseId
+        }
+        XCTAssertEqual(try lead { _ in }, "leg-press")
+        XCTAssertEqual(try lead { $0.experience = "intermediate"; $0.advancedLifts = true }, "barbell-back-squat")
+        XCTAssertEqual(try lead { $0.experience = "intermediate"; $0.selectedDays = [1, 2, 4, 5] }, "barbell-bench-press")
+        XCTAssertEqual(try lead { $0.goal = "strength"; $0.selectedDays = [1, 2, 4, 5] }, "barbell-bench-press")
+        XCTAssertEqual(try lead { $0.selectedDays = [1, 2, 4, 5] }, "lever-chest-press")
+        // Loaded variations stay ahead of bodyweight ones when equipment allows.
+        XCTAssertFalse(try generate(profile(["dumbbells"])).program.workouts.flatMap(\.exercises).contains { $0.exerciseId == "bodyweight-squat" })
     }
     func testRequirementsNeverInventEquipmentOrPullingAbility() throws {
         let catalog = try XCTUnwrap(TrainingCatalog.bundled)
@@ -119,7 +231,9 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         XCTAssertEqual(result.program.workouts.map(\.day), [1, 2, 7])
         XCTAssertTrue(result.warningKeys.contains("setup.warning.pulling"))
         XCTAssertTrue(result.warningKeys.contains("setup.warning.hamstrings"))
+        // Without any pulling exercise a push/pull split would leave a near-empty day, so full-body days stay.
         XCTAssertTrue(result.warningKeys.contains("setup.warning.adjacent"))
+        XCTAssertTrue(result.program.workouts.allSatisfy { $0.title.contains("kind=setup.day.full") })
         p = profile(["dumbbells"]); p.excludedExerciseIds = ["dumbbell-floor-press"]
         XCTAssertFalse(try generate(p).program.workouts.flatMap(\.exercises).contains { $0.exerciseId == "dumbbell-floor-press" })
         XCTAssertEqual(try generate(p).program, try generate(p).program)
@@ -138,7 +252,7 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         p = profile(["unknown-item"]); XCTAssertThrowsError(try generate(p))
         p = profile(); p.excludedExerciseIds = try XCTUnwrap(TrainingCatalog.bundled).candidates.map(\.id)
         XCTAssertThrowsError(try generate(p))
-        XCTAssertNoThrow(try ProgramEditing.validate(generate(profile(["dumbbells"])).program))
+        XCTAssertNoThrow(try ProgramEditing.validate(storable(profile(["dumbbells"])).program))
     }
     @MainActor func testSavingAddsOneIndependentProgramAndRetryDoesNotDuplicateIt() throws {
         let store = AppStore(), before = store.state
@@ -149,7 +263,7 @@ final class TrainingPlanGeneratorTests: XCTestCase {
             else { UserDefaults.standard.removeObject(forKey: "is_onboarding_completed") }
         }
         let p = profile(["dumbbells"])
-        var program = try generate(p).program; program.id = UUID().uuidString
+        var program = try storable(p).program; program.id = UUID().uuidString
         XCTAssertTrue(store.saveGeneratedPlan(profile: p, program: program, completeSetup: true))
         XCTAssertTrue(store.saveGeneratedPlan(profile: p, program: program, completeSetup: true))
         XCTAssertEqual(store.state.programs.count, before.programs.count + 1)
@@ -174,6 +288,21 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         }
     }
 
+    @MainActor func testSkipStartsOnBalancedBuildAfterRelaunch() throws {
+        let persistence = AppStatePersistence(inMemory: true)
+        let initial = AppStore(persistence: persistence)
+        let programs = initial.state.programs
+        XCTAssertNotEqual(initial.state.activeProgramId, "upper-lower-balanced")
+        initial.skipSetup()
+        XCTAssertTrue(initial.isOnboardingCompleted)
+        XCTAssertEqual(initial.state.activeProgramId, "upper-lower-balanced")
+        XCTAssertEqual(initial.state.programs, programs)
+        try persistence.flush()
+        let reloaded = AppStore(persistence: persistence)
+        XCTAssertTrue(reloaded.isOnboardingCompleted)
+        XCTAssertEqual(reloaded.state.activeProgramId, "upper-lower-balanced")
+    }
+
     @MainActor func testSkipStaysCompletedAfterRelaunchAndLegacyInstallsStillMigrate() {
         let persistence = AppStatePersistence(inMemory: true)
         let initial = AppStore(persistence: persistence)
@@ -191,7 +320,7 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         let store = AppStore(persistence: persistence)
         try persistence.flush()
         store.setOnboardingCompleted(false)
-        let p = profile(["dumbbells"]), program = try generate(profile(["dumbbells"])).program
+        let p = profile(["dumbbells"]), program = try storable(profile(["dumbbells"])).program
         TrainingSetupStore.saveDraft(.init(profile: p, step: 7, programId: program.id, program: program))
         let before = store.state
         fail = true

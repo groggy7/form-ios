@@ -40083,426 +40083,6 @@
         }
       }
     },
-    "onboarding.reason.homeForge": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Matched for home training with dumbbells and an adjustable bench with balanced frequency."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Evde dambıl ve ayarlanabilir sehpa ile dengeli frekansta antrenman için eşleştirildi."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Passend für Heimtraining mit Kurzhanteln und einer verstellbaren Bank mit ausgewogener Frequenz."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adapté pour l'entraînement à domicile avec haltères et un banc réglable à fréquence équilibrée."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elegido para entrenar en casa con mancuernas y un banco ajustable, con una frecuencia equilibrada."
-          }
-        }
-      }
-    },
-    "onboarding.reason.bodyweightBase": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Matched for home training without equipment: three short full-body sessions you progress with harder variations."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ekipmansız ev antrenmanı için eşleştirildi: daha zor varyasyonlarla ilerleyen üç kısa tüm vücut seansı."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Passend für Heimtraining ohne Geräte: drei kurze Ganzkörpereinheiten, die du mit schwereren Varianten steigerst."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adapté à l’entraînement à domicile sans équipement : trois courtes séances corps entier, à faire progresser avec des variantes plus difficiles."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elegido para entrenar en casa sin equipo: tres sesiones cortas de cuerpo completo que progresas con variantes más difíciles."
-          }
-        }
-      }
-    },
-    "onboarding.reason.barFloor": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Matched for home calisthenics with a pull-up bar: upper/lower sessions four days a week."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Barfiks barıyla evde kalistenik için eşleştirildi: haftada dört gün üst/alt vücut seansı."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Passend für Calisthenics zu Hause mit Klimmzugstange: vier Tage pro Woche Ober- und Unterkörper."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adapté à la callisthénie à domicile avec une barre de traction : haut et bas du corps quatre jours par semaine."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elegido para calistenia en casa con barra de dominadas: torso y pierna cuatro días por semana."
-          }
-        }
-      }
-    },
-    "onboarding.reason.essentials": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Matched for two full-body gym sessions that practise every main movement pattern twice a week."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Haftada iki tüm vücut salon seansı için eşleştirildi: her ana hareket kalıbı haftada iki kez çalışılır."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Passend für zwei Ganzkörpereinheiten im Studio, die jedes wichtige Bewegungsmuster zweimal pro Woche üben."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adapté à deux séances corps entier en salle qui travaillent chaque mouvement principal deux fois par semaine."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elegido para dos sesiones de cuerpo completo en el gimnasio que practican cada patrón principal dos veces por semana."
-          }
-        }
-      }
-    },
-    "onboarding.reason.machineFoundation": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Matched for machine and cable guidance with low joint impact and zero barbell setup required."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Düşük eklem baskısı, serbest ağırlık kurulumu olmadan makinelerle güvenli antrenman için eşleştirildi."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Passend für geführtes Training an Maschinen und Kabelzügen mit geringer Gelenkbelastung und ganz ohne Langhantel-Aufbau."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adapté à l’entraînement guidé sur machines et poulies, peu exigeant pour les articulations et sans installation de barre."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elegido para entrenar guiado con máquinas y poleas, con bajo impacto en las articulaciones y sin montar una barra."
-          }
-        }
-      }
-    },
-    "onboarding.reason.classicPpl": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Matched for 6 days of dedicated Push, Pull, and Legs training with high hypertrophy volume."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Haftada 6 gün adanmış İtiş, Çekiş ve Bacak hipertrofi hacmi için eşleştirildi."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Passend für 6 Tage gezieltes Push-, Pull- und Beintraining mit hohem Hypertrophievolumen."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adapté à 6 jours d’entraînement push, pull et jambes avec un volume d’hypertrophie élevé."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elegido para 6 días de entrenamiento de empuje, tirón y piernas con alto volumen de hipertrofia."
-          }
-        }
-      }
-    },
-    "onboarding.reason.aestheticHypertrophy": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Matched for 5-day balanced upper/lower physique development with extra shoulder focus."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "5 günlük dengeli üst/alt vücut gelişimi ve ekstra omuz vurgusu için eşleştirildi."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Passend für eine 5-tägige ausgewogene Entwicklung des Ober- und Unterkörpers mit besonderem Fokus auf die Schulter."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adapté à 5 jours de développement équilibré du haut et du bas du corps, avec un accent supplémentaire sur les épaules."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elegido para 5 días de desarrollo equilibrado de tren superior e inferior con énfasis extra en los hombros."
-          }
-        }
-      }
-    },
-    "onboarding.reason.powerbuildingStrength": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Matched for 4-day heavy compound progression (squat, bench, deadlift) paired with hypertrophy accessory work."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "4 günlük ağır temel kaldırışlar (squat, bench, deadlift) ve hipertrofi aksesuarları için eşleştirildi."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Passend für 4 Tage schwere Progression bei den Grundübungen (Kniebeuge, Bankdrücken, Kreuzheben) mit Hypertrophie-Zusatzübungen."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adapté à 4 jours de progression lourde sur les mouvements de base (squat, développé couché, soulevé de terre) avec du travail d’hypertrophie complémentaire."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elegido para 4 días de progresión pesada en los básicos (sentadilla, press de banca, peso muerto) con trabajo accesorio de hipertrofia."
-          }
-        }
-      }
-    },
-    "onboarding.reason.upperLower": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Matched for 4-day upper/lower balance hitting each major muscle group twice a week with optimal recovery."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Haftada iki kez her kas grubunu çalıştıran 4 günlük dengeli Üst/Alt bölüşümü için eşleştirildi."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Passend für 4 Tage Ober-/Unterkörper, mit jeder großen Muskelgruppe zweimal pro Woche und guter Erholung."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adapté à 4 jours haut/bas du corps qui travaillent chaque grand groupe musculaire deux fois par semaine avec une récupération optimale."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elegido para 4 días de torso/pierna que trabajan cada grupo muscular principal dos veces por semana con una recuperación óptima."
-          }
-        }
-      }
-    },
-    "onboarding.reason.athleticPerformance": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Matched for 3-day power, explosiveness, and athletic movement patterns."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Haftada 3 gün patlayıcı güç, hız ve atletik hareket kalıpları için eşleştirildi."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Passend für 3 Tage mit Kraft, Explosivität und athletischen Bewegungsmustern."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adapté à la puissance, à l'explosivité et aux mouvements athlétiques sur 3 jours."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elegido para 3 días de potencia, explosividad y patrones de movimiento atléticos."
-          }
-        }
-      }
-    },
-    "onboarding.reason.fullBodyClassic": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Matched for 3-day whole-body training repeating key movement patterns with high efficiency."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Haftada 3 gün temel hareketleri yüksek verimle tekrarlayan tüm vücut antrenmanı için eşleştirildi."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abgestimmt auf ein 3-tägiges Ganzkörpertraining, bei dem wichtige Bewegungsmuster mit hoher Effizienz wiederholt werden."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adapté à 3 jours d’entraînement corps entier qui répètent les mouvements clés avec une grande efficacité."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Elegido para 3 días de entrenamiento de cuerpo completo que repiten los patrones clave con gran eficiencia."
-          }
-        }
-      }
-    },
-    "onboarding.reason.default": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Matched to your selected training preferences and schedule."
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Seçtiğiniz antrenman tercihleri ve takviminize göre eşleştirildi."
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Abgestimmt auf deine gewählten Trainingsvorlieben und deinen Zeitplan."
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adapté à vos préférences et à votre calendrier d'entraînement sélectionnés."
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Adaptado a tus preferencias y horario de entrenamiento."
-          }
-        }
-      }
-    },
     "rest.backgroundSetup": {
       "extractionState": "manual",
       "localizations": {
@@ -55347,41 +54927,6 @@
         }
       }
     },
-    "setup.program.name": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "My training plan"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Antrenman planım"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mein Trainingsplan"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mon plan d’entraînement"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mi plan de entrenamiento"
-          }
-        }
-      }
-    },
     "setup.program.summary": {
       "extractionState": "manual",
       "localizations": {
@@ -55973,6 +55518,41 @@
           "stringUnit": {
             "state": "translated",
             "value": "Algunas sesiones de cuerpo completo son consecutivas por tus días elegidos. Sepáralas si la recuperación se resiente."
+          }
+        }
+      }
+    },
+    "setup.warning.alternating": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Some of your training days are back to back, so sessions alternate muscle groups instead of repeating full-body workouts."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bazı antrenman günlerin art arda olduğu için seanslar tüm vücudu tekrarlamak yerine kas gruplarını dönüşümlü çalıştırır."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einige deiner Trainingstage liegen direkt hintereinander. Deshalb wechseln die Einheiten die Muskelgruppen, statt den ganzen Körper zu wiederholen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Certains de vos jours d’entraînement se suivent : les séances alternent donc les groupes musculaires au lieu de répéter le corps entier."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Algunos de tus días de entrenamiento son consecutivos, así que las sesiones alternan grupos musculares en lugar de repetir cuerpo completo."
           }
         }
       }
@@ -57307,352 +56887,1472 @@
         }
       }
     },
-    "setup.workout.full": {
+    "setup.name.format": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Full body {letter}"
+            "value": "{goal}: {days}-Day {structure}"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tüm vücut {letter}"
+            "value": "{goal}: {days} Günlük {structure}"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ganzkörper {letter}"
+            "value": "{goal}: {days}-Tage-{structure}"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Corps entier {letter}"
+            "value": "{goal} : {structure} sur {days} jours"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Cuerpo completo {letter}"
+            "value": "{goal}: {structure} de {days} días"
           }
         }
       }
     },
-    "setup.workout.full.focus": {
+    "setup.name.formatEquipment": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Whole-body training"
+            "value": "{goal}: {days}-Day {equipment} {structure}"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tüm vücut antrenmanı"
+            "value": "{goal}: {days} Günlük {equipment} {structure}"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ganzkörpertraining"
+            "value": "{goal}: {days}-Tage-{structure} {equipment}"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Entraînement du corps entier"
+            "value": "{goal} : {structure} sur {days} jours {equipment}"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Entrenamiento de cuerpo completo"
+            "value": "{goal}: {structure} de {days} días {equipment}"
           }
         }
       }
     },
-    "setup.workout.upper": {
+    "setup.name.goal.bulk": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Upper body {letter}"
+            "value": "Hypertrophy"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Üst vücut {letter}"
+            "value": "Hipertrofi"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Oberkörper {letter}"
+            "value": "Hypertrophie"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Haut du corps {letter}"
+            "value": "Hypertrophie"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tren superior {letter}"
+            "value": "Hipertrofia"
           }
         }
       }
     },
-    "setup.workout.upper.focus": {
+    "setup.name.goal.cut": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Upper-body training"
+            "value": "Lean Muscle"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Üst vücut antrenmanı"
+            "value": "Kuru Kas"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Oberkörpertraining"
+            "value": "Definition"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Entraînement du haut du corps"
+            "value": "Muscle sec"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Entrenamiento del tren superior"
+            "value": "Músculo magro"
           }
         }
       }
     },
-    "setup.workout.lower": {
+    "setup.name.goal.strength": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lower body {letter}"
+            "value": "Strength"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alt vücut {letter}"
+            "value": "Güç"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Unterkörper {letter}"
+            "value": "Kraft"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bas du corps {letter}"
+            "value": "Force"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tren inferior {letter}"
+            "value": "Fuerza"
           }
         }
       }
     },
-    "setup.workout.lower.focus": {
+    "setup.name.goal.maintain": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Lower-body training"
+            "value": "Stay Fit"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Alt vücut antrenmanı"
+            "value": "Formda Kal"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Unterkörpertraining"
+            "value": "Fit bleiben"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Entraînement du bas du corps"
+            "value": "Rester en forme"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Entrenamiento del tren inferior"
+            "value": "Mantenerse en forma"
           }
         }
       }
     },
-    "setup.workout.push": {
+    "setup.name.structure.full": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Push {letter}"
+            "value": "Full Body"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İtiş {letter}"
+            "value": "Tüm Vücut"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Drücken {letter}"
+            "value": "Ganzkörper"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Poussée {letter}"
+            "value": "corps entier"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Empuje {letter}"
+            "value": "cuerpo completo"
           }
         }
       }
     },
-    "setup.workout.push.focus": {
+    "setup.name.structure.upperLower": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Chest, shoulders and triceps"
+            "value": "Upper/Lower"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Göğüs, omuz ve arka kol"
+            "value": "Üst/Alt Vücut"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Brust, Schultern und Trizeps"
+            "value": "Ober-/Unterkörper"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pectoraux, épaules et triceps"
+            "value": "haut/bas du corps"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pecho, hombros y tríceps"
+            "value": "torso/pierna"
           }
         }
       }
     },
-    "setup.workout.pull": {
+    "setup.name.structure.ppl": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pull {letter}"
+            "value": "Push/Pull/Legs"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Çekiş {letter}"
+            "value": "İtiş/Çekiş/Bacak"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ziehen {letter}"
+            "value": "Push/Pull/Beine"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tirage {letter}"
+            "value": "poussée/tirage/jambes"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tracción {letter}"
+            "value": "empuje/tirón/pierna"
           }
         }
       }
     },
-    "setup.workout.pull.focus": {
+    "setup.name.structure.hybrid": {
       "extractionState": "manual",
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Back and biceps"
+            "value": "Hybrid Split"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sırt ve ön kol"
+            "value": "Hibrit Program"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rücken und Bizeps"
+            "value": "Hybrid-Split"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dos et biceps"
+            "value": "split hybride"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Espalda y bíceps"
+            "value": "rutina híbrida"
+          }
+        }
+      }
+    },
+    "setup.name.equipment.bodyweight": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bodyweight"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ekipmansız"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ohne Geräte"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "au poids du corps"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "sin equipo"
+          }
+        }
+      }
+    },
+    "setup.name.equipment.bands": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Band"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bantlı"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "mit Bändern"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "aux élastiques"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "con bandas"
+          }
+        }
+      }
+    },
+    "setup.name.equipment.dumbbells": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dumbbell"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dambıllı"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "mit Kurzhanteln"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "aux haltères"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "con mancuernas"
+          }
+        }
+      }
+    },
+    "setup.name.equipment.kettlebell": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kettlebell"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kettlebell’li"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "mit Kettlebell"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "au kettlebell"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "con kettlebell"
+          }
+        }
+      }
+    },
+    "setup.day.full": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Full Body"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tüm Vücut"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ganzkörper"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Corps entier"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuerpo completo"
+          }
+        }
+      }
+    },
+    "setup.day.upper": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Upper"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Üst"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oberkörper"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Haut du corps"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Torso"
+          }
+        }
+      }
+    },
+    "setup.day.lower": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lower"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Alt"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unterkörper"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bas du corps"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pierna"
+          }
+        }
+      }
+    },
+    "setup.day.legs": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Legs"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bacak"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beine"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Jambes"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Piernas"
+          }
+        }
+      }
+    },
+    "setup.day.push": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Push"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İtiş"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Drücken"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Poussée"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Empuje"
+          }
+        }
+      }
+    },
+    "setup.day.pull": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pull"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Çekiş"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ziehen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tirage"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tirón"
+          }
+        }
+      }
+    },
+    "setup.day.titled": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{kind}: {emphasis}"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{kind}: {emphasis}"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{kind}: {emphasis}"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{kind} : {emphasis}"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{kind}: {emphasis}"
+          }
+        }
+      }
+    },
+    "setup.day.repeat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{title} {letter}"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{title} {letter}"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{title} {letter}"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{title} {letter}"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{title} {letter}"
+          }
+        }
+      }
+    },
+    "setup.emphasis.pair": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{first} & {second}"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{first} ve {second}"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{first} & {second}"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{first} et {second}"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{first} y {second}"
+          }
+        }
+      }
+    },
+    "setup.emphasis.squat": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Squat"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Squat"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kniebeuge"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "squat"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "sentadilla"
+          }
+        }
+      }
+    },
+    "setup.emphasis.lunge": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Single-Leg"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tek Bacak"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Einbeinig"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "unilatéral"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "una pierna"
+          }
+        }
+      }
+    },
+    "setup.emphasis.hinge": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hinge"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalça Menteşesi"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hüftstreckung"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "charnière de hanche"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bisagra de cadera"
+          }
+        }
+      }
+    },
+    "setup.emphasis.glutes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Glutes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalça"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesäß"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "fessiers"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "glúteos"
+          }
+        }
+      }
+    },
+    "setup.emphasis.push": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chest"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Göğüs"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brust"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "pectoraux"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "pecho"
+          }
+        }
+      }
+    },
+    "setup.emphasis.shoulders": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shoulders"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Omuz"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schultern"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "épaules"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "hombros"
+          }
+        }
+      }
+    },
+    "setup.emphasis.row": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sırt"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rücken"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dos"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "espalda"
+          }
+        }
+      }
+    },
+    "setup.emphasis.pull": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lats"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kanat"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Latissimus"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dorsaux"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "dorsales"
+          }
+        }
+      }
+    },
+    "setup.area.quads": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quads"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ön bacak"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quadrizeps"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quadriceps"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cuádriceps"
+          }
+        }
+      }
+    },
+    "setup.area.hamstrings": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hamstrings"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arka bacak"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Beinbeuger"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ischio-jambiers"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Isquiotibiales"
+          }
+        }
+      }
+    },
+    "setup.area.glutes": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Glutes"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kalça"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gesäß"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Fessiers"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Glúteos"
+          }
+        }
+      }
+    },
+    "setup.area.chest": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chest"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Göğüs"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Brust"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pectoraux"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pecho"
+          }
+        }
+      }
+    },
+    "setup.area.shoulders": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Shoulders"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Omuz"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Schultern"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Épaules"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Hombros"
+          }
+        }
+      }
+    },
+    "setup.area.back": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sırt"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rücken"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dos"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Espalda"
+          }
+        }
+      }
+    },
+    "setup.area.lats": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lats"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kanat"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Latissimus"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dorsaux"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Dorsales"
+          }
+        }
+      }
+    },
+    "setup.area.biceps": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biceps"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biseps"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bizeps"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Biceps"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bíceps"
+          }
+        }
+      }
+    },
+    "setup.area.triceps": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Triceps"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Triseps"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trizeps"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Triceps"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tríceps"
+          }
+        }
+      }
+    },
+    "setup.area.calves": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calves"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Baldır"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Waden"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mollets"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gemelos"
+          }
+        }
+      }
+    },
+    "setup.area.core": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Core"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gövde"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rumpf"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Gainage"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zona media"
           }
         }
       }

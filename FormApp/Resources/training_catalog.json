@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "equipment": [
     {
       "id": "dumbbells",
@@ -340,6 +340,43 @@
       ]
     },
     {
+      "id": "dumbbell-step-up",
+      "role": "lunge",
+      "requirements": [
+        [
+          "dumbbells",
+          "step"
+        ]
+      ],
+      "pair": true,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": true,
+      "muscles": [
+        "quadriceps",
+        "glutes"
+      ]
+    },
+    {
+      "id": "bulgarian-split-squat",
+      "role": "lunge",
+      "requirements": [
+        [
+          "bench"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": true,
+      "muscles": [
+        "quadriceps",
+        "glutes"
+      ]
+    },
+    {
       "id": "bodyweight-squat",
       "role": "squat",
       "requirements": [
@@ -350,22 +387,6 @@
       "pullUps": 0,
       "compound": true,
       "perSide": false,
-      "muscles": [
-        "quadriceps",
-        "glutes"
-      ]
-    },
-    {
-      "id": "bodyweight-rear-lunge",
-      "role": "squat",
-      "requirements": [
-        []
-      ],
-      "pair": false,
-      "advanced": false,
-      "pullUps": 0,
-      "compound": true,
-      "perSide": true,
       "muscles": [
         "quadriceps",
         "glutes"
@@ -386,43 +407,6 @@
         "quadriceps",
         "glutes",
         "adductors"
-      ]
-    },
-    {
-      "id": "bulgarian-split-squat",
-      "role": "squat",
-      "requirements": [
-        [
-          "bench"
-        ]
-      ],
-      "pair": false,
-      "advanced": false,
-      "pullUps": 0,
-      "compound": true,
-      "perSide": true,
-      "muscles": [
-        "quadriceps",
-        "glutes"
-      ]
-    },
-    {
-      "id": "dumbbell-step-up",
-      "role": "squat",
-      "requirements": [
-        [
-          "dumbbells",
-          "step"
-        ]
-      ],
-      "pair": true,
-      "advanced": false,
-      "pullUps": 0,
-      "compound": true,
-      "perSide": true,
-      "muscles": [
-        "quadriceps",
-        "glutes"
       ]
     },
     {
@@ -1665,42 +1649,96 @@
       "muscles": [
         "chest"
       ]
+    },
+    {
+      "id": "bodyweight-rear-lunge",
+      "role": "lunge",
+      "requirements": [
+        []
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "compound": true,
+      "perSide": true,
+      "muscles": [
+        "quadriceps",
+        "glutes"
+      ]
     }
   ],
   "layouts": {
     "2": [
-      "full",
-      "full"
+      [
+        "full.1",
+        "full.2"
+      ],
+      [
+        "upper.1",
+        "lower.1"
+      ],
+      [
+        "lower.1",
+        "upper.1"
+      ]
     ],
     "3": [
-      "full",
-      "full",
-      "full"
+      [
+        "full.1",
+        "full.2",
+        "full.3"
+      ],
+      [
+        "upper.1",
+        "lower.1",
+        "full.2"
+      ],
+      [
+        "full.2",
+        "upper.1",
+        "lower.1"
+      ],
+      [
+        "upper.1",
+        "full.2",
+        "lower.1"
+      ],
+      [
+        "push.1",
+        "pull.1",
+        "lower.1"
+      ]
     ],
     "4": [
-      "upper",
-      "lower",
-      "upper",
-      "lower"
+      [
+        "upper.1",
+        "lower.1",
+        "upper.2",
+        "lower.2"
+      ]
     ],
     "5": [
-      "upper",
-      "lower",
-      "push",
-      "pull",
-      "lower"
+      [
+        "upper.1",
+        "lower.1",
+        "push.2",
+        "pull.2",
+        "lower.2"
+      ]
     ],
     "6": [
-      "push",
-      "pull",
-      "lower",
-      "push",
-      "pull",
-      "lower"
+      [
+        "push.1",
+        "pull.1",
+        "lower.1",
+        "push.2",
+        "pull.2",
+        "lower.2"
+      ]
     ]
   },
   "slots": {
-    "full": [
+    "full.1": [
       "squat",
       "push",
       "row|pull",
@@ -1714,7 +1752,35 @@
       "triceps",
       "delts"
     ],
-    "upper": [
+    "full.2": [
+      "hinge|glutes",
+      "pull|row",
+      "shoulders|push",
+      "lunge|squat",
+      "row|pull",
+      "core",
+      "push",
+      "hamstrings|glutes",
+      "calves",
+      "triceps",
+      "biceps",
+      "rear|delts"
+    ],
+    "full.3": [
+      "lunge|squat",
+      "shoulders|push",
+      "row|pull",
+      "hinge|glutes",
+      "push",
+      "core",
+      "pull|row",
+      "hamstrings",
+      "calves",
+      "biceps",
+      "triceps",
+      "delts"
+    ],
+    "upper.1": [
       "push",
       "row",
       "pull|row",
@@ -1725,16 +1791,36 @@
       "rear",
       "core"
     ],
-    "lower": [
+    "upper.2": [
+      "shoulders|push",
+      "pull|row",
+      "push",
+      "row",
+      "triceps",
+      "biceps",
+      "rear",
+      "delts",
+      "core"
+    ],
+    "lower.1": [
       "squat",
       "hinge|glutes",
       "hamstrings|glutes",
       "core",
       "calves",
       "quads",
-      "squat"
+      "lunge|squat"
     ],
-    "push": [
+    "lower.2": [
+      "hinge|glutes",
+      "lunge|squat",
+      "hamstrings",
+      "glutes",
+      "core",
+      "calves",
+      "quads"
+    ],
+    "push.1": [
       "push",
       "shoulders",
       "triceps",
@@ -1742,13 +1828,126 @@
       "chest",
       "core"
     ],
-    "pull": [
+    "push.2": [
+      "shoulders|push",
+      "push",
+      "delts",
+      "triceps",
+      "chest",
+      "core"
+    ],
+    "pull.1": [
       "row",
       "pull|row",
       "biceps",
       "rear",
       "core"
+    ],
+    "pull.2": [
+      "pull|row",
+      "row",
+      "rear",
+      "biceps",
+      "core"
     ]
+  },
+  "regions": {
+    "full": [
+      "push",
+      "pull",
+      "lower"
+    ],
+    "upper": [
+      "push",
+      "pull"
+    ],
+    "lower": [
+      "lower"
+    ],
+    "push": [
+      "push"
+    ],
+    "pull": [
+      "pull"
+    ]
+  },
+  "roles": {
+    "squat": {
+      "area": "quads",
+      "lead": "lower",
+      "rank": 0
+    },
+    "lunge": {
+      "area": "quads",
+      "lead": "lower",
+      "rank": 0
+    },
+    "hinge": {
+      "area": "hamstrings",
+      "lead": "lower",
+      "rank": 0
+    },
+    "glutes": {
+      "area": "glutes",
+      "lead": "lower",
+      "rank": 0
+    },
+    "push": {
+      "area": "chest",
+      "lead": "push",
+      "rank": 0
+    },
+    "shoulders": {
+      "area": "shoulders",
+      "lead": "push",
+      "rank": 0
+    },
+    "row": {
+      "area": "back",
+      "lead": "pull",
+      "rank": 0
+    },
+    "pull": {
+      "area": "lats",
+      "lead": "pull",
+      "rank": 0
+    },
+    "chest": {
+      "area": "chest",
+      "rank": 1
+    },
+    "hamstrings": {
+      "area": "hamstrings",
+      "rank": 1
+    },
+    "quads": {
+      "area": "quads",
+      "rank": 1
+    },
+    "delts": {
+      "area": "shoulders",
+      "rank": 1
+    },
+    "rear": {
+      "area": "shoulders",
+      "rank": 1
+    },
+    "biceps": {
+      "area": "biceps",
+      "rank": 1
+    },
+    "triceps": {
+      "area": "triceps",
+      "rank": 1
+    },
+    "calves": {
+      "area": "calves",
+      "rank": 2
+    },
+    "core": {
+      "area": "core",
+      "rank": 3
+    }
   },
   "goals": {
     "bulk": [

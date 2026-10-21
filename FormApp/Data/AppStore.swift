@@ -1077,25 +1077,6 @@ public final class AppStore: ObservableObject {
         return true
     }
 
-    /// Moves the chosen program onto the user's days and selects it; the calendar follows its workout days.
-    public func completeOnboarding(preferences: OnboardingPreferences, targetProgramId: String? = nil) {
-        let chosenProgramId = targetProgramId
-            ?? OnboardingRecommender.recommendProgram(preferences: preferences, availablePrograms: state.programs).targetProgramId
-        guard let index = state.programs.firstIndex(where: { $0.id == chosenProgramId }) else {
-            setOnboardingCompleted(true)
-            return
-        }
-
-        var newState = state
-        newState.programs[index] = OnboardingRecommender.schedule(newState.programs[index], preferences: preferences)
-        newState.activeProgramId = chosenProgramId
-        newState = refreshCalendarState(newState)
-        saveState(newState)
-        selectedWorkoutId = nil
-        setOnboardingCompleted(true)
-        refreshCatalogue()
-    }
-
     /// A generated program is added durably before setup is acknowledged. Retrying is idempotent.
     @discardableResult
     func saveGeneratedPlan(profile: TrainingProfile, program: Program, completeSetup: Bool) -> Bool {
@@ -1117,6 +1098,19 @@ public final class AppStore: ObservableObject {
         selectedWorkoutId = nil
         refreshCatalogue()
         return true
+    }
+
+    /// Skipping first-launch setup selects Balanced Build when it is still available.
+    public func skipSetup() {
+        if state.programs.contains(where: { $0.id == Self.skippedSetupProgramId }) {
+            var next = state
+            next.activeProgramId = Self.skippedSetupProgramId
+            if saveState(refreshCalendarState(next), durable: true) {
+                selectedWorkoutId = nil
+                refreshCatalogue()
+            }
+        }
+        setOnboardingCompleted(true)
     }
 
     public func setOnboardingCompleted(_ completed: Bool) {
@@ -1849,6 +1843,8 @@ public final class AppStore: ObservableObject {
         "11_essentials_two_day"
     ]
     static let homeStarterProgramIds: Set<String> = ["bodyweight-base", "bar-floor-calisthenics"]
+    /// Skipping setup starts on this general four-day gym plan rather than the first-listed starter.
+    static let skippedSetupProgramId = "upper-lower-balanced"
     /// Plans added after the v9 refresh, oldest first. Each marker adds its plans once, so a
     /// plan the user deleted later is never re-added by a newer marker.
     static let starterAdditions: [(key: String, ids: Set<String>)] = [

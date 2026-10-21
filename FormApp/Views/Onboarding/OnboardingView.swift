@@ -27,7 +27,7 @@ public struct OnboardingView: View {
         let _ = themeManager.currentTheme
         Group {
             if step > Self.welcomeStep {
-                TrainingSetupView(store: store, onClose: { step = Self.welcomeStep }, onSkip: { store.setOnboardingCompleted(true) })
+                TrainingSetupView(store: store, onClose: { step = Self.welcomeStep }, onSkip: { store.skipSetup() })
             } else {
                 VStack(spacing: 0) {
                     HStack { Spacer(); languagePill }.padding(8)
