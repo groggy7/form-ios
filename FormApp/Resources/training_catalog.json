@@ -237,6 +237,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -257,6 +258,7 @@
       "pair": false,
       "advanced": true,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -278,6 +280,7 @@
       "pair": false,
       "advanced": true,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -296,6 +299,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -314,6 +318,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -332,6 +337,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -351,6 +357,7 @@
       "pair": true,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": true,
       "muscles": [
@@ -369,6 +376,28 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [
+        "dumbbells"
+      ],
+      "compound": true,
+      "perSide": true,
+      "muscles": [
+        "quadriceps",
+        "glutes"
+      ]
+    },
+    {
+      "id": "dumbbell-curtsey-lunge",
+      "role": "lunge",
+      "requirements": [
+        [
+          "dumbbells"
+        ]
+      ],
+      "pair": true,
+      "advanced": false,
+      "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": true,
       "muscles": [
@@ -385,6 +414,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -401,6 +431,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -420,6 +451,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -441,6 +473,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -462,6 +495,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -480,6 +514,7 @@
       "pair": true,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -498,6 +533,7 @@
       "pair": true,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -515,6 +551,7 @@
       "pair": true,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -533,6 +570,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -551,6 +589,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -568,6 +607,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -583,6 +623,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -598,6 +639,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -616,6 +658,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -635,6 +678,7 @@
       "pair": true,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -653,6 +697,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": true,
       "muscles": [
@@ -672,6 +717,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -691,6 +737,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -710,6 +757,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -729,6 +777,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -747,6 +796,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -764,6 +814,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 3,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -781,6 +832,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 3,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -799,6 +851,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -817,6 +870,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -836,6 +890,7 @@
       "pair": false,
       "advanced": true,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -855,6 +910,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -873,6 +929,7 @@
       "pair": true,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -891,6 +948,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": true,
       "muscles": [
@@ -911,6 +969,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -928,6 +987,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -945,6 +1005,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": true,
       "muscles": [
@@ -960,6 +1021,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -977,6 +1039,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -994,6 +1057,7 @@
       "pair": false,
       "advanced": true,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1011,6 +1075,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1028,6 +1093,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -1046,6 +1112,7 @@
       "pair": true,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -1063,6 +1130,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": true,
       "muscles": [
@@ -1080,6 +1148,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": true,
       "muscles": [
@@ -1100,6 +1169,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -1115,6 +1185,7 @@
       "pair": false,
       "advanced": true,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -1132,6 +1203,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1149,6 +1221,7 @@
       "pair": true,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1166,6 +1239,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1183,6 +1257,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1201,6 +1276,7 @@
       "pair": true,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1219,6 +1295,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -1238,6 +1315,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1255,6 +1333,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1272,6 +1351,7 @@
       "pair": true,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1290,6 +1370,7 @@
       "pair": true,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1308,6 +1389,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": true,
       "muscles": [
@@ -1326,6 +1408,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1343,6 +1426,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1360,6 +1444,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1379,6 +1464,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1396,6 +1482,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1414,6 +1501,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1431,6 +1519,7 @@
       "pair": false,
       "advanced": true,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -1448,6 +1537,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1465,6 +1555,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": true,
       "muscles": [
@@ -1480,6 +1571,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1497,6 +1589,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1514,6 +1607,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -1531,6 +1625,7 @@
       "pair": false,
       "advanced": true,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": false,
       "muscles": [
@@ -1546,6 +1641,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1561,6 +1657,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1576,6 +1673,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1592,6 +1690,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1609,6 +1708,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1627,6 +1727,7 @@
       "pair": true,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1644,6 +1745,7 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": false,
       "perSide": false,
       "muscles": [
@@ -1659,11 +1761,31 @@
       "pair": false,
       "advanced": false,
       "pullUps": 0,
+      "loadable": [],
       "compound": true,
       "perSide": true,
       "muscles": [
         "quadriceps",
         "glutes"
+      ]
+    },
+    {
+      "id": "scapular-pull-up",
+      "role": "pull",
+      "requirements": [
+        [
+          "pull-up-bar"
+        ]
+      ],
+      "pair": false,
+      "advanced": false,
+      "pullUps": 0,
+      "loadable": [],
+      "compound": false,
+      "perSide": false,
+      "muscles": [
+        "trapezius",
+        "lats"
       ]
     }
   ],

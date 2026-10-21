@@ -31,9 +31,10 @@ struct TrainingProfile: Codable, Equatable {
 
 struct TrainingCatalog: Decodable {
     struct Equipment: Decodable { let id: String; let group: String; let artwork: String?; let home: Bool? }
+    /// `loadable` lists owned weights that can be held for a bodyweight-listed exercise.
     struct Candidate: Decodable {
         let id: String; let role: String; let requirements: [[String]]
-        let pair: Bool; let advanced: Bool; let pullUps: Int
+        let pair: Bool; let advanced: Bool; let pullUps: Int; let loadable: [String]
         let compound: Bool; let perSide: Bool; let muscles: [String]
     }
     /// `area` labels a day's focus, `lead` names its emphasis, and `rank` orders exercises within a session.
@@ -100,7 +101,8 @@ enum TrainingPlanGenerator {
     /// The preferred week, or the first alternative that avoids back-to-back regions. Splits are offered only
     /// when the equipment can train every region they need; otherwise full-body days stay and a warning explains.
     static func layout(days: [Int], catalog: TrainingCatalog, eligible: [TrainingCatalog.Candidate]) -> [String]? {
-        let trainable = Set(eligible.compactMap { catalog.roles[$0.role]?.lead })
+        // Isolation drills such as scapular pull-ups cannot carry a session of their own.
+        let trainable = Set(eligible.filter(\.compound).compactMap { catalog.roles[$0.role]?.lead })
         var best: (layout: [String], conflicts: Int)?
         for (index, layout) in (catalog.layouts[String(days.count)] ?? []).enumerated() {
             guard index == 0 || layout.allSatisfy({ (catalog.regions[kind($0)] ?? []).allSatisfy(trainable.contains) }) else { continue }
@@ -110,10 +112,10 @@ enum TrainingPlanGenerator {
         return best?.layout
     }
     /// Loaded work before bodyweight. Main lifts favour machines for beginners and barbells otherwise or for strength.
-    private static func tier(_ row: TrainingCatalog.Candidate, profile: TrainingProfile, groups: [String: String]) -> Int {
+    private static func tier(_ row: TrainingCatalog.Candidate, profile: TrainingProfile, groups: [String: String], owned: Set<String>) -> Int {
         let gear = row.requirements.flatMap { $0 }
         let machine = gear.contains { groups[$0] == "machines" }
-        if !machine && !gear.contains(where: { groups[$0] == "weights" }) { return 2 }
+        if !machine && !gear.contains(where: { groups[$0] == "weights" }) && !row.loadable.contains(where: owned.contains) { return 2 }
         if !row.compound { return 0 }
         if profile.experience == "beginner" && profile.goal != "strength" { return machine ? 0 : 1 }
         return gear.contains(where: barbells.contains) ? 0 : 1
@@ -133,9 +135,12 @@ enum TrainingPlanGenerator {
               layout.allSatisfy({ catalog.slots[$0] != nil && catalog.regions[kind($0)] != nil }),
               Set(catalog.candidates.map(\.role)).isSubset(of: catalog.roles.keys) else { throw TrainingPlanError.missingCatalog }
         let groups = Dictionary(catalog.equipment.map { ($0.id, $0.group) }, uniquingKeysWith: { first, _ in first })
+        let owned = capabilities(profile)
         var uses: [String: Int] = [:], warnings: [String] = []
         func warn(_ key: String) { if !warnings.contains(key) { warnings.append(key) } }
-        if !candidates.contains(where: { ["row", "pull"].contains($0.role) }) { warn("setup.warning.pulling") }
+        // Scapular pull-ups alone are limited pulling work, so only rows and full vertical pulls count.
+        func pulling(_ row: TrainingCatalog.Candidate) -> Bool { row.role == "row" || (row.role == "pull" && row.compound) }
+        if !candidates.contains(where: pulling) { warn("setup.warning.pulling") }
         if !candidates.contains(where: { ["hinge", "hamstrings"].contains($0.role) }) { warn("setup.warning.hamstrings") }
         if profile.equipment.contains("pull-up-bar") && profile.pullUpReps < 3 { warn("setup.warning.pullUps") }
         if profile.maxDumbbellKg != nil || profile.maxBarbellKg != nil { warn("setup.warning.loads") }
@@ -161,7 +166,7 @@ enum TrainingPlanGenerator {
                     let options = candidates.enumerated().filter { _, row in roles.contains(row.role) && !picked[index].contains { $0.row.id == row.id } }
                     let sorted = options.sorted { a, b in
                         func key(_ item: (offset: Int, element: TrainingCatalog.Candidate)) -> [Int] {
-                            [roles.firstIndex(of: item.element.role) ?? 0, tier(item.element, profile: profile, groups: groups),
+                            [roles.firstIndex(of: item.element.role) ?? 0, tier(item.element, profile: profile, groups: groups, owned: owned),
                              (lead ? 0 : (uses[item.element.id] ?? 0) * 8) + item.offset]
                         }
                         let ka = key(a), kb = key(b)
@@ -214,7 +219,7 @@ enum TrainingPlanGenerator {
                 }, targetMuscles: muscles)
         }
         let rows = picked.flatMap { $0.map(\.row) }
-        if Set(rows.map(\.role)).isDisjoint(with: ["row", "pull"]) { warn("setup.warning.pulling") }
+        if !rows.contains(where: pulling) { warn("setup.warning.pulling") }
         let estimates = workouts.map { (300 + $0.exercises.reduce(0) { $0 + estimateSeconds($1) } + 59) / 60 }
         let gear = Set(rows.flatMap { $0.requirements.flatMap { $0 } })
         let equipment: String?

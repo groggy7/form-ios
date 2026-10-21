@@ -71,7 +71,7 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         struct Fixture: Decodable { let name: String; let profile: TrainingProfile; let expected: String; let identity: String }
         let file = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("training-generation-fixtures.json")
         let fixtures = try JSONDecoder().decode([Fixture].self, from: Data(contentsOf: file))
-        XCTAssertEqual(fixtures.count, 15)
+        XCTAssertEqual(fixtures.count, 16)
         for fixture in fixtures {
             let result = try generate(fixture.profile)
             let signature = result.program.workouts.map { workout in
@@ -194,6 +194,26 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         XCTAssertFalse(ids(bar).contains("pull-ups")); bar.pullUpReps = 3; XCTAssertTrue(ids(bar).contains("pull-ups"))
         XCTAssertFalse(ids(profile(["rings"])).contains("ring-inverted-row"))
         XCTAssertTrue(ids(profile(["rings", "suspension-anchor"])).contains("ring-inverted-row"))
+        XCTAssertTrue(ids(profile(["dumbbells"])).contains("dumbbell-curtsey-lunge"))
+        XCTAssertFalse(ids(single).contains("dumbbell-curtsey-lunge"))
+        XCTAssertTrue(ids(profile(["pull-up-bar"])).contains("scapular-pull-up"))
+    }
+    func testLoadedSingleLegWorkAndBarOnlyPullingFillTheirGaps() throws {
+        func ids(_ p: TrainingProfile) throws -> [String] { try generate(p).program.workouts.flatMap(\.exercises).compactMap(\.exerciseId) }
+        let dumbbells = try ids(profile(["dumbbells"]))
+        XCTAssertTrue(dumbbells.contains("dumbbell-curtsey-lunge"))
+        XCTAssertFalse(dumbbells.contains("bodyweight-rear-lunge"))
+        // Holding dumbbells keeps the Bulgarian split squat ahead of the curtsey lunge when a bench is available.
+        XCTAssertEqual(try generate(profile(["dumbbells", "adjustable-bench"])).program.workouts.last?.exercises.first?.exerciseId, "bulgarian-split-squat")
+        let bar = try generate(profile(["pull-up-bar"]))
+        XCTAssertTrue(bar.program.workouts.allSatisfy { $0.exercises.contains { $0.exerciseId == "scapular-pull-up" } })
+        // Scapular pull-ups are partial-range work: the limited-pulling note stays and no pull day is built from them.
+        XCTAssertTrue(bar.warningKeys.contains("setup.warning.pulling"))
+        var backToBack = profile(["pull-up-bar"]); backToBack.selectedDays = [1, 2, 3]
+        let consecutive = try generate(backToBack)
+        XCTAssertTrue(consecutive.program.workouts.allSatisfy { $0.title.contains("kind=setup.day.full") })
+        XCTAssertTrue(consecutive.warningKeys.contains("setup.warning.adjacent"))
+        XCTAssertFalse(try ids(try gym()).contains("scapular-pull-up"))
     }
     func testEquipmentDaysTimeAndExactMediaAcrossProfiles() throws {
         let catalog = try XCTUnwrap(TrainingCatalog.bundled)
