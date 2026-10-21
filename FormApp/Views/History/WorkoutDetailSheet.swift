@@ -2,6 +2,7 @@ import SwiftUI
 
 public struct WorkoutDetailSheet: View {
     @ObservedObject var themeManager = ThemeManager.shared
+    @State private var socialRequest: SocialShareRequest?
     let record: WorkoutSessionRecord
     var onDismiss: () -> Void
     var weightUnit: WeightUnit = .kg
@@ -95,9 +96,17 @@ public struct WorkoutDetailSheet: View {
                 .padding(20)
             }
             .background(AppColors.background)
+            .sheet(item: $socialRequest) { request in SocialCardComposer(request: request) { socialRequest = nil } }
             .navigationTitle(LanguageManager.t("history.workoutDetail"))
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    if record.exerciseLogs.contains(where: { !RecordEngine.workingSets($0).isEmpty }) {
+                        Button {
+                            socialRequest = SocialShareRequest(cards: SocialCards.workout(history: AppStore.shared.state.history, record: record, unit: weightUnit))
+                        } label: { Label(LanguageManager.t("social.share"), systemImage: "square.and.arrow.up") }
+                    }
+                }
                 FormCloseToolbarItem(action: onDismiss)
             }
         }

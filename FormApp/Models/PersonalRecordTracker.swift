@@ -48,14 +48,14 @@ public enum PersonalRecordTracker {
 
     /// A resumed draft replaces its saved partial record; both contain the same completed sets.
     private static func recordsWithActiveSession(
-        history: [WorkoutSessionRecord], activeSession: ActiveSessionDraft?, now: Date
+        history: [WorkoutSessionRecord], activeSession: ActiveSessionDraft?, now: Date, timeZone: TimeZone
     ) -> [WorkoutSessionRecord] {
         guard let active = activeSession else { return history }
         let nowMillis = Int64(now.timeIntervalSince1970 * 1000)
         var record = SessionProgress.from(draft: active, nowEpochMillis: nowMillis)
             .record(draft: active, completedAtEpochMillis: nowMillis)
         // Live totals belong to the assigned training day, including sessions spanning Monday.
-        record.completedAt = active.assignedCalendarDate ?? active.startedAt
+        record.performedDate = active.assignedCalendarDate ?? WorkoutCalendar.localDate(from: active.startedAt, timeZone: timeZone)
         return history.filter { $0.id != active.id } + [record]
     }
 
@@ -68,9 +68,20 @@ public enum PersonalRecordTracker {
         return WorkoutCalendar.parseIsoTimestamp(ts) ?? WorkoutCalendar.parseDate(ts, timeZone: timeZone)
     }
 
-    /// PRs compare working sets, like exercise history and Rep Lab; warmups never set or beat one.
-    private static func maxWorkingWeight(_ log: SessionExerciseLog) -> Double? {
-        log.sets.filter { !$0.isWarmup && ($0.weightKg ?? 0.0) > 0.0 && ($0.reps ?? 0) > 0 }.compactMap { $0.weightKg }.max()
+    public static func trainingDate(_ record: WorkoutSessionRecord, timeZone: TimeZone = .current) -> Date? {
+        if let day = record.performedDate, let date = WorkoutCalendar.parseDate(day, timeZone: timeZone) { return date }
+        guard let date = recordDate(record.startedAt.isEmpty ? record.completedAt : record.startedAt, timeZone: timeZone) else { return nil }
+        var calendar = Calendar(identifier: .gregorian); calendar.timeZone = timeZone
+        return calendar.startOfDay(for: date)
+    }
+
+    public static func precedes(_ a: WorkoutSessionRecord, _ b: WorkoutSessionRecord, timeZone: TimeZone = .current) -> Bool {
+        let left = trainingDate(a, timeZone: timeZone) ?? .distantPast
+        let right = trainingDate(b, timeZone: timeZone) ?? .distantPast
+        if left != right { return left < right }
+        let at = recordDate(a.startedAt.isEmpty ? a.completedAt : a.startedAt, timeZone: timeZone) ?? .distantPast
+        let bt = recordDate(b.startedAt.isEmpty ? b.completedAt : b.startedAt, timeZone: timeZone) ?? .distantPast
+        return at < bt
     }
 
     public static func isRecordInWeek(
@@ -79,63 +90,30 @@ public enum PersonalRecordTracker {
         timeZone: TimeZone = .current
     ) -> Bool {
         guard !targetWeekKey.isEmpty else { return false }
-        guard let date = recordDate(record.completedAt, timeZone: timeZone)
-                ?? recordDate(record.startedAt, timeZone: timeZone) else {
+        guard let date = trainingDate(record, timeZone: timeZone) else {
             return false
         }
+        return isoWeekKey(date, timeZone: timeZone) == targetWeekKey
+    }
+
+    public static func isoWeekKey(_ date: Date, timeZone: TimeZone = .current) -> String {
         var calendar = Calendar(identifier: .iso8601)
         calendar.timeZone = timeZone
-        let year = calendar.component(.yearForWeekOfYear, from: date)
-        let week = calendar.component(.weekOfYear, from: date)
-        let weekKey = String(format: "%04d-W%02d", year, week)
-        return weekKey == targetWeekKey
+        return String(format: "%04d-W%02d", calendar.component(.yearForWeekOfYear, from: date), calendar.component(.weekOfYear, from: date))
     }
 
     /**
-     * Calculates weekly PRs hit according to the rule:
-     * - The first recorded weight for an exercise establishes its initial weight (not a PR).
-     * - When that weight is passed (weight > previous max recorded weight), a PR is hit.
+     * Counts one observed weight, assistance or rep record per exercise per workout.
+     * The first session establishes its baseline; see RecordEngine and the shared fixtures.
      */
     public static func countPrsForWeek(
-        history: [WorkoutSessionRecord],
-        currentWeekKey: String,
-        activeSession: ActiveSessionDraft? = nil,
-        now: Date = Date(),
-        timeZone: TimeZone = .current
+        history: [WorkoutSessionRecord], currentWeekKey: String,
+        activeSession: ActiveSessionDraft? = nil, now: Date = Date(), timeZone: TimeZone = .current
     ) -> Int {
-        let records = recordsWithActiveSession(history: history, activeSession: activeSession, now: now)
-
-        let sortedRecords = records.sorted { (r1, r2) -> Bool in
-            let d1 = r1.startedAt.isEmpty ? r1.completedAt : r1.startedAt
-            let d2 = r2.startedAt.isEmpty ? r2.completedAt : r2.startedAt
-            return d1 < d2
-        }
-
-        var maxWeightByExercise: [String: Double] = [:]
-        var prsInCurrentWeek = 0
-
-        for record in sortedRecords {
-            let isThisWeek = isRecordInWeek(record, targetWeekKey: currentWeekKey, timeZone: timeZone)
-            for exerciseLog in record.exerciseLogs {
-                if WorkoutSessionUtils.isAssisted(exerciseId: exerciseLog.exerciseId, name: exerciseLog.exerciseName) { continue }
-                let key = normalizeExerciseKey(exerciseLog.exerciseName)
-                guard let maxSessionWeight = maxWorkingWeight(exerciseLog) else { continue }
-
-                if let previousMax = maxWeightByExercise[key] {
-                    if maxSessionWeight > previousMax {
-                        maxWeightByExercise[key] = maxSessionWeight
-                        if isThisWeek {
-                            prsInCurrentWeek += 1
-                        }
-                    }
-                } else {
-                    // First recorded weight for this exercise; baseline, not a PR
-                    maxWeightByExercise[key] = maxSessionWeight
-                }
-            }
-        }
-
-        return prsInCurrentWeek
+        var seen = Set<String>()
+        let records = recordsWithActiveSession(history: history, activeSession: activeSession, now: now, timeZone: timeZone).filter { seen.insert($0.id).inserted }
+        return records.filter { isRecordInWeek($0, targetWeekKey: currentWeekKey, timeZone: timeZone) }
+            .reduce(0) { $0 + RecordEngine.forSession(history: records, target: $1, timeZone: timeZone).count }
     }
 
     public static func computeWeeklyMetrics(
@@ -154,7 +132,7 @@ public enum PersonalRecordTracker {
             return completedKeys.contains(key)
         }.count ?? 0
 
-        let currentWeekRecords = recordsWithActiveSession(history: history, activeSession: activeSession, now: now)
+        let currentWeekRecords = recordsWithActiveSession(history: history, activeSession: activeSession, now: now, timeZone: timeZone)
             .filter { isRecordInWeek($0, targetWeekKey: currentWeekKey, timeZone: timeZone) }
         let volume = currentWeekRecords.reduce(0.0) { $0 + WorkoutSessionUtils.resistanceVolume($1) }
         let duration = currentWeekRecords.reduce(0) { $0 + $1.durationSeconds }
@@ -180,52 +158,9 @@ public enum PersonalRecordTracker {
     }
 
     public static func findSessionPrExercises(
-        history: [WorkoutSessionRecord],
-        targetRecord: WorkoutSessionRecord
+        history: [WorkoutSessionRecord], targetRecord: WorkoutSessionRecord
     ) -> Set<String> {
-        let sortedRecords = history
-            .filter { $0.id != targetRecord.id }
-            .sorted { (r1, r2) -> Bool in
-                let d1 = r1.startedAt.isEmpty ? r1.completedAt : r1.startedAt
-                let d2 = r2.startedAt.isEmpty ? r2.completedAt : r2.startedAt
-                return d1 < d2
-            }
-
-        let targetTimestamp = targetRecord.startedAt.isEmpty ? targetRecord.completedAt : targetRecord.startedAt
-        let priorRecords = sortedRecords.filter { r in
-            let ts = r.startedAt.isEmpty ? r.completedAt : r.startedAt
-            return ts.isEmpty || targetTimestamp.isEmpty || ts < targetTimestamp
-        }
-
-        var maxWeightByExercise: [String: Double] = [:]
-        for record in priorRecords {
-            for exerciseLog in record.exerciseLogs {
-                if WorkoutSessionUtils.isAssisted(exerciseId: exerciseLog.exerciseId, name: exerciseLog.exerciseName) { continue }
-                let key = normalizeExerciseKey(exerciseLog.exerciseName)
-                guard let maxWeight = maxWorkingWeight(exerciseLog) else { continue }
-
-                if let prev = maxWeightByExercise[key] {
-                    if maxWeight > prev {
-                        maxWeightByExercise[key] = maxWeight
-                    }
-                } else {
-                    maxWeightByExercise[key] = maxWeight
-                }
-            }
-        }
-
-        var prExercises = Set<String>()
-        for exerciseLog in targetRecord.exerciseLogs {
-            if WorkoutSessionUtils.isAssisted(exerciseId: exerciseLog.exerciseId, name: exerciseLog.exerciseName) { continue }
-            let key = normalizeExerciseKey(exerciseLog.exerciseName)
-            guard let maxWeight = maxWorkingWeight(exerciseLog) else { continue }
-
-            if let prev = maxWeightByExercise[key], maxWeight > prev {
-                prExercises.insert(key)
-            }
-        }
-
-        return prExercises
+        Set(RecordEngine.forSession(history: history, target: targetRecord).map { normalizeExerciseKey($0.exerciseName) })
     }
 
     public static func calculateEstimated1RM(weightKg: Double, reps: Int) -> Double {

@@ -9,6 +9,7 @@ public struct HistoryDetailView: View {
     var onActionWorkout: (() -> Void)? = nil
     var weightUnit: WeightUnit = .kg
     var onActionSection: ((WorkoutDaySection) -> Void)? = nil
+    @State private var socialRequest: SocialShareRequest?
     @State private var collapsedSections: Set<String> = []
     @ScaledMetric(relativeTo: .body) private var rowFont: CGFloat = 14
     @ScaledMetric(relativeTo: .caption) private var detailFont: CGFloat = 12
@@ -129,6 +130,7 @@ public struct HistoryDetailView: View {
         .background(AppColors.background.ignoresSafeArea())
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("history-detail-screen")
+        .sheet(item: $socialRequest) { request in SocialCardComposer(request: request) { socialRequest = nil } }
     }
 
     private func metric(_ label: String, _ value: String) -> some View {
@@ -167,6 +169,14 @@ public struct HistoryDetailView: View {
             Text(section.workoutTitle).font(.system(size: cardFont, weight: .bold)).foregroundStyle(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityIdentifier("history-section-title-\(section.id)")
+            if let record = section.sessionRecord, !section.isLiveSession,
+               record.exerciseLogs.contains(where: { !RecordEngine.workingSets($0).isEmpty }) {
+                Button {
+                    let cards = SocialCards.workout(history: history, record: record, unit: weightUnit)
+                    if !cards.isEmpty { socialRequest = SocialShareRequest(cards: cards) }
+                } label: { Label(LanguageManager.t("social.share"), systemImage: "square.and.arrow.up").frame(minHeight: 48) }
+                .buttonStyle(.bordered).tint(AppColors.accent).accessibilityIdentifier("history-share-\(record.id)")
+            }
             if let label = section.scheduleLabel(on: detail.date) {
                 Text(label).font(.system(size: detailFont)).foregroundStyle(AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)

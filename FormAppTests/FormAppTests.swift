@@ -5406,7 +5406,7 @@ final class FormAppTests: XCTestCase {
         XCTAssertEqual(prCount, 2)
     }
 
-    func testBodyweightZeroKgDoesNotEstablishOrHitWeightPR() {
+    func testBodyweightBaselineAllowsLaterAddedLoadRecords() {
         let session1 = makePrSession(
             id: "s1",
             startedAt: "2026-09-07T10:00:00Z",
@@ -5415,7 +5415,7 @@ final class FormAppTests: XCTestCase {
         let session2 = makePrSession(
             id: "s2",
             startedAt: "2026-09-14T10:00:00Z",
-            exercises: [("Pull-Up", [10.0])] // First weight recorded, baseline
+            exercises: [("Pull-Up", [10.0])] // Added load beats the bodyweight baseline
         )
         let session3 = makePrSession(
             id: "s3",
@@ -5429,7 +5429,7 @@ final class FormAppTests: XCTestCase {
             timeZone: TimeZone(identifier: "UTC")!
         )
 
-        XCTAssertEqual(prCountWeek38, 1, "10 kg was first recorded weight, 15 kg was the PR")
+        XCTAssertEqual(prCountWeek38, 2, "Bodyweight establishes the exercise baseline; both added-load increases count")
     }
 
     func testWeeklyGoalMetricsFormatting() {
@@ -12412,9 +12412,9 @@ final class PremiumSettingsTests: XCTestCase {
             try await Task.sleep(nanoseconds: 250_000_000)
             controller.view.layoutIfNeeded()
             let switches = descendants(controller.view).compactMap { $0 as? UISwitch }
-            // The training section follows the free pre-fill, intensity-technique and joint-stress switches.
-            XCTAssertGreaterThanOrEqual(switches.count, 5)
-            for control in switches.dropFirst(3).prefix(2) {
+            // Premium controls follow pre-fill, intensity, joint-stress and share-suggestion switches.
+            XCTAssertGreaterThanOrEqual(switches.count, 6)
+            for control in switches.dropFirst(4).prefix(2) {
                 XCTAssertEqual(control.isEnabled, unlocked)
                 XCTAssertEqual(control.isOn, !unlocked)
             }

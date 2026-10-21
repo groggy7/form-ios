@@ -70,6 +70,8 @@ public final class AppStore: ObservableObject {
     @Published public var prefillNextSet: Bool
     /// Drop, Rest-pause and Partials chips in session; history keeps showing logged techniques when off.
     @Published public var showIntensityTechniques: Bool
+    @Published public var suggestSharing: Bool
+    @Published public var socialShareRequest: SocialShareRequest?
     /// Opt-in joint-stress rating after an exercise's working sets (docs/design/body-and-joint-journal.md).
     @Published public var jointStressRatings: Bool
     /// Home day tiles use the calm glass by default; this opts back in to the earlier neon glow.
@@ -212,6 +214,7 @@ public final class AppStore: ObservableObject {
         self.defaultRestSeconds = UserDefaults.standard.object(forKey: defaultRestKey) as? Int ?? 90
         self.prefillNextSet = UserDefaults.standard.object(forKey: prefillNextSetKey) as? Bool ?? true
         self.showIntensityTechniques = UserDefaults.standard.object(forKey: showIntensityTechniquesKey) as? Bool ?? true
+        self.suggestSharing = UserDefaults.standard.object(forKey: "suggest_sharing") as? Bool ?? true
         self.jointStressRatings = UserDefaults.standard.object(forKey: jointStressRatingsKey) as? Bool ?? false
         self.homeGlowTiles = UserDefaults.standard.object(forKey: homeGlowTilesKey) as? Bool ?? false
         let initialWeightUnit: WeightUnit
@@ -395,6 +398,7 @@ public final class AppStore: ObservableObject {
             .sink { [showIntensityTechniquesKey] in UserDefaults.standard.set($0, forKey: showIntensityTechniquesKey) }
             .store(in: &cancellables)
 
+        $suggestSharing.dropFirst().sink { UserDefaults.standard.set($0, forKey: "suggest_sharing") }.store(in: &cancellables)
         $jointStressRatings
             .dropFirst()
             .sink { [jointStressRatingsKey] in UserDefaults.standard.set($0, forKey: jointStressRatingsKey) }
@@ -856,8 +860,10 @@ public final class AppStore: ObservableObject {
         return nil
     }
 
-    public func completeActiveSession(_ record: WorkoutSessionRecord) {
+    public func completeActiveSession(_ record: WorkoutSessionRecord, suggestSharingAfterSave: Bool = false) {
         refreshForCurrentDate()
+        let wasComplete = state.history.first(where: { $0.id == record.id })?.isComplete == true
+        let oldWeek = SocialCards.week(program: activeProgram, completed: state.completed, history: state.history, weekKey: state.currentWeekKey, unit: weightUnit)
         let workout = resolveWorkout(for: record)
         let isComplete = activeSession.map(WorkoutSessionUtils.isComplete)
             ?? WorkoutCalendar.isSessionComplete(session: record, workout: workout)
@@ -983,9 +989,13 @@ public final class AppStore: ObservableObject {
         self.activeSession = nil
         self.isSessionPresented = false
 
-        showNotice(WorkoutSessionUtils.workoutRecordedNotice(
-            finalRecord.totalVolumeKg, completedSets: finalRecord.totalCompletedSets, unit: weightUnit
-        ))
+        if suggestSharingAfterSave && suggestSharing && !wasComplete && adjustedRecord.isComplete == true {
+            let week = SocialCards.week(program: activeProgram, completed: state.completed, history: state.history, weekKey: state.currentWeekKey, unit: weightUnit)
+            socialShareRequest = SocialCards.suggested(cards: SocialCards.workout(history: state.history, record: adjustedRecord, unit: weightUnit), week: week, justCompletedWeek: oldWeek == nil && week != nil)
+        }
+        if socialShareRequest == nil {
+            showNotice(WorkoutSessionUtils.workoutRecordedNotice(finalRecord.totalVolumeKg, completedSets: finalRecord.totalCompletedSets, unit: weightUnit))
+        }
     }
 
     // MARK: - Program Management

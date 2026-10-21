@@ -60,6 +60,7 @@ public struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var store = AppStore.shared
     @StateObject private var langManager = LanguageManager.shared
+    @State private var presentedSocialShareRequest: SocialShareRequest?
     @ObservedObject private var themeManager = ThemeManager.shared
     @ObservedObject private var tour = TourController.shared
 
@@ -219,12 +220,18 @@ public struct RootView: View {
                     }
                 }
                 // Fullscreen Active Workout Session
-                .fullScreenCover(isPresented: $store.isSessionPresented) {
+                .fullScreenCover(isPresented: $store.isSessionPresented, onDismiss: {
+                    // Wait for the workout cover to finish dismissing before presenting its saved sheet.
+                    presentedSocialShareRequest = store.socialShareRequest
+                }) {
                     if let draft = store.activeSession {
                         ActiveSessionView(store: store, draft: draft)
                     }
                 }
                 // Sheets
+                .sheet(item: $presentedSocialShareRequest, onDismiss: { store.socialShareRequest = nil }) { request in
+                    SocialCardComposer(request: request) { presentedSocialShareRequest = nil; store.socialShareRequest = nil }
+                }
                 .sheet(isPresented: $showProgramsSheet) {
                     ProgramsView(store: store) {
                         showProgramsSheet = false
@@ -277,7 +284,7 @@ public struct RootView: View {
     private var mainTourIdle: Bool {
         let settled = dragScrollPosition.map { abs($0 - $0.rounded()) < 0.01 } ?? true
         return store.isOnboardingCompleted && !showProgramsSheet && !showSettingsSheet && selectedRecordForDetail == nil &&
-            !store.isSessionPresented && !isKeyboardVisible && !isToastShowing && settled
+            !store.isSessionPresented && store.socialShareRequest == nil && presentedSocialShareRequest == nil && !isKeyboardVisible && !isToastShowing && settled
     }
 
     private func selectPage(_ destination: ViewMode, using proxy: ScrollViewProxy) {

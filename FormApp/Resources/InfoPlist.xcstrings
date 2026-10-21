@@ -36,6 +36,41 @@
           }
         }
       }
+    },
+    "NSPhotoLibraryAddUsageDescription": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save workout cards you choose to your photo library."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seçtiğin antrenman kartlarını fotoğraf arşivine kaydet."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Speichere ausgewählte Trainingskarten in deiner Fotomediathek."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Enregistre les cartes de séance de ton choix dans ta photothèque."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Guarda las tarjetas de entrenamiento que elijas en tu fototeca."
+          }
+        }
+      }
     }
   },
   "version": "1.0"

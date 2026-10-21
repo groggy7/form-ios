@@ -157,7 +157,7 @@ public struct ActiveSessionView: View {
                         let completedAt = finishedAt ?? Int64(Date().timeIntervalSince1970 * 1000)
                         let record = SessionProgress.from(draft: activeDraft, nowEpochMillis: completedAt)
                             .record(draft: activeDraft, completedAtEpochMillis: completedAt)
-                        store.completeActiveSession(record)
+                        store.completeActiveSession(record, suggestSharingAfterSave: true)
                     },
                     onDiscard: {
                         showSummary = false

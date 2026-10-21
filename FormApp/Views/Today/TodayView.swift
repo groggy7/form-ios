@@ -1,6 +1,7 @@
 import SwiftUI
 
 public struct TodayView: View {
+    @State private var socialRequest: SocialShareRequest?
     @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
     var onOpenPrograms: () -> Void
@@ -106,6 +107,15 @@ public struct TodayView: View {
                 )
                 .tourTarget("home.week", cornerRadius: 22)
                 .padding(.horizontal, 20)
+
+                if let card = SocialCards.week(program: store.activeProgram, completed: store.state.completed, history: store.state.history, weekKey: store.state.currentWeekKey, unit: store.weightUnit) {
+                    Button { socialRequest = SocialShareRequest(cards: [card]) } label: {
+                        Text(LanguageManager.t("social.week") + " · " + LanguageManager.t("social.share"))
+                            .frame(maxWidth: .infinity, minHeight: 48)
+                    }.buttonStyle(.bordered).tint(AppColors.accent).padding(.horizontal, 20)
+                        .accessibilityIdentifier("share-completed-week")
+                        .sheet(item: $socialRequest) { request in SocialCardComposer(request: request) { socialRequest = nil } }
+                }
 
                 // Exercise list preview
                 if let workout = workout, !workout.exercises.isEmpty {

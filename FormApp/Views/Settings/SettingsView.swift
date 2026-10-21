@@ -151,6 +151,13 @@ public struct SettingsView: View {
 
                             Divider().background(AppColors.border)
 
+                            Toggle(isOn: $store.suggestSharing) {
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(LanguageManager.t("social.suggest")).foregroundStyle(AppColors.text)
+                                    Text(LanguageManager.t("social.suggestDetail")).font(.caption).foregroundStyle(AppColors.secondaryText)
+                                }
+                            }.tint(AppColors.accent).padding(14).accessibilityIdentifier("toggle-suggest-sharing")
+                            Divider().background(AppColors.border)
                             Toggle(isOn: $store.jointStressRatings) {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(LanguageManager.t("settings.jointStress"))
