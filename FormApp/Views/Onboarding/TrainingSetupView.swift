@@ -12,7 +12,6 @@ struct TrainingSetupView: View {
     @State private var programID: String
     @State private var editedProgram: Program?
     @State private var search = ""
-    @State private var excludedSearch = ""
     @State private var error: String?
     @State private var editing = false
     @State private var showGymInventory: Bool
@@ -20,16 +19,20 @@ struct TrainingSetupView: View {
     @State private var advancedSearch = false
     @ScaledMetric(relativeTo: .caption) private var tileLabelHeight: CGFloat = 48
     @ScaledMetric(relativeTo: .caption) private var minimumTileWidth: CGFloat = 110
+    @ScaledMetric(relativeTo: .caption) private var minimumPriorityWidth: CGFloat = 136
+    @ScaledMetric(relativeTo: .caption) private var priorityFontSize: CGFloat = 13
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var equipmentWidth: CGFloat = 0
+    @State private var priorityWidth: CGFloat = 0
 
     init(store: AppStore, completeSetup: Bool = true, onClose: @escaping () -> Void, onSkip: (() -> Void)? = nil) {
         self.store = store; self.completeSetup = completeSetup; self.onClose = onClose; self.onSkip = onSkip
         let draft = completeSetup ? nil : TrainingSetupStore.draft()
         var initial = TrainingProfile()
         initial.equipment = TrainingCatalog.bundled?.presets["commercial_gym"] ?? []
-        let starting = draft?.profile ?? (completeSetup ? nil : TrainingSetupStore.profile()) ?? initial
+        var starting = draft?.profile ?? (completeSetup ? nil : TrainingSetupStore.profile()) ?? initial
+        starting.excludedExerciseIds = []
         _profile = State(initialValue: starting)
         _showGymInventory = State(initialValue: starting.equipmentConfirmed && Set(starting.equipment) != Set(TrainingCatalog.bundled?.presets["commercial_gym"] ?? []))
         _step = State(initialValue: min(max(draft?.step ?? 1, 1), 8))
@@ -92,7 +95,7 @@ struct TrainingSetupView: View {
                             ForEach([20, 30, 45, 60, 75, 90], id: \.self) { minutes in
                                 choice(LanguageManager.t("setup.minutes", ["count": minutes]), selected: profile.minutes == minutes) { profile.minutes = minutes }
                             }
-                        case 7: preferences(catalog)
+                        case 7: preferences
                         default:
                             if let program { preview(program, catalog: catalog) }
                             else { Text(LanguageManager.t("setup.generationFailed")).foregroundStyle(AppColors.danger) }
@@ -235,24 +238,58 @@ struct TrainingSetupView: View {
             }
         }
     }
-    @ViewBuilder private func preferences(_ catalog: TrainingCatalog) -> some View {
-        Text(LanguageManager.t("setup.customize.hint")).foregroundStyle(AppColors.secondaryText)
-        Text(LanguageManager.t("setup.priority.title")).font(.headline)
-        ForEach(["", "push", "row", "squat", "shoulders", "biceps", "core"], id: \.self) { priority in
-            choice(LanguageManager.t("setup.priority.\(priority.isEmpty ? "balanced" : priority)"), selected: profile.priority == priority) { profile.priority = priority }
+    private var preferences: some View {
+        let columns = dynamicTypeSize.isAccessibilitySize && priorityWidth < minimumPriorityWidth * 2 + 8
+            ? 1 : (priorityWidth >= minimumPriorityWidth * 3 + 16 ? 3 : 2)
+        return VStack(alignment: .leading, spacing: 12) {
+            Text(LanguageManager.t("setup.customize.hint")).foregroundStyle(AppColors.secondaryText)
+            Text(LanguageManager.t("setup.priority.title")).font(.headline)
+            VStack(spacing: 12) {
+                ForEach(0..<((SetupMusclePriority.options.count + columns - 1) / columns), id: \.self) { row in
+                    HStack(alignment: .top, spacing: 8) {
+                        ForEach(0..<columns, id: \.self) { column in
+                            let index = row * columns + column
+                            if index < SetupMusclePriority.options.count {
+                                priorityCard(SetupMusclePriority.options[index]).frame(maxWidth: .infinity)
+                            } else {
+                                Color.clear.frame(maxWidth: .infinity).frame(height: 0).accessibilityHidden(true)
+                            }
+                        }
+                    }
+                }
+            }.accessibilityIdentifier("setup-priority-grid")
+                .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { priorityWidth = $0 }
         }
-        Text(LanguageManager.t("setup.exclude.title")).font(.headline)
-        TextField("", text: $excludedSearch, prompt: Text(LanguageManager.t("setup.exclude.search")).foregroundStyle(AppColors.muted))
-            .textFieldStyle(.plain).padding(14).background(AppColors.surface, in: RoundedRectangle(cornerRadius: 12))
-            .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border)).accessibilityLabel(LanguageManager.t("setup.exclude.search")).accessibilityIdentifier("setup-exclude-search")
-        let excluded = catalog.candidates.filter { profile.excludedExerciseIds.contains($0.id) }
-        let matches = catalog.candidates.filter { row in !profile.excludedExerciseIds.contains(row.id) &&
-            excludedSearch.count >= 2 && ExerciseCatalog.canonicalExercises[row.id]?.toExercise().displayName.localizedCaseInsensitiveContains(excludedSearch) == true }
-        ForEach(excluded + Array(matches.prefix(20)), id: \.id) { row in
-            choice(ExerciseCatalog.canonicalExercises[row.id]?.toExercise().displayName ?? row.id, selected: profile.excludedExerciseIds.contains(row.id), multiple: true, tag: "setup-exclude-\(row.id)") {
-                toggle(row.id, in: &profile.excludedExerciseIds)
-            }
-        }
+    }
+    private func priorityCard(_ priority: SetupMusclePriority) -> some View {
+        let selected = profile.priority == priority.id
+        let label = LanguageManager.t("setup.priority.\(priority.id.isEmpty ? "balanced" : priority.id)")
+        return Button { profile.priority = priority.id } label: {
+            VStack(spacing: 0) {
+                ZStack(alignment: .topTrailing) {
+                    Color.black
+                    HStack(spacing: 0) {
+                        if let muscle = priority.muscle {
+                            MuscleArtwork(view: muscle.bodyView, muscles: muscle.muscleGroups, centered: true, transparentBackground: true)
+                        } else {
+                            MuscleArtwork(view: .front, muscles: [], centered: true, transparentBackground: true)
+                            MuscleArtwork(view: .back, muscles: [], centered: true, transparentBackground: true)
+                        }
+                    }.accessibilityHidden(true)
+                    if selected {
+                        Image(systemName: "checkmark.circle.fill").foregroundStyle(AppColors.accent)
+                            .font(.system(size: 18)).padding(5).accessibilityHidden(true)
+                    }
+                }.frame(height: 90).clipped()
+                Text(label).font(.system(size: priorityFontSize, weight: .medium)).foregroundStyle(AppColors.text)
+                    .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
+                    .padding(7).frame(maxWidth: .infinity, minHeight: tileLabelHeight)
+            }.background(selected ? AppColors.positiveBg : AppColors.surface)
+                .clipShape(RoundedRectangle(cornerRadius: 14))
+                .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(selected ? AppColors.accent : AppColors.border, lineWidth: selected ? 1.5 : 1))
+        }.buttonStyle(.plain).accessibilityElement(children: .ignore).accessibilityLabel(label)
+            .accessibilityAddTraits(selected ? .isSelected : [])
+            .accessibilityIdentifier("setup-priority-\(priority.id.isEmpty ? "balanced" : priority.id)")
     }
     @ViewBuilder private func preview(_ program: Program, catalog: TrainingCatalog) -> some View {
         let goal = LanguageManager.t("onboarding.goal.\(profile.goal).title")
@@ -383,4 +420,15 @@ private extension View {
         background(AppColors.surface, in: RoundedRectangle(cornerRadius: 14))
             .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border))
     }
+}
+
+/// Reuse the Library's registered anatomy and highlights; Balanced has no highlighted target.
+private struct SetupMusclePriority: Identifiable {
+    let id: String
+    let muscle: MuscleGroupFilter?
+    static let options: [Self] = [
+        .init(id: "", muscle: nil), .init(id: "push", muscle: .chest), .init(id: "row", muscle: .back),
+        .init(id: "squat", muscle: .quads), .init(id: "shoulders", muscle: .shoulders),
+        .init(id: "biceps", muscle: .biceps), .init(id: "core", muscle: .core)
+    ]
 }

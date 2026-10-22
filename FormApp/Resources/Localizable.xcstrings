@@ -54513,31 +54513,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Optional. Keep a balanced plan, or choose a muscle priority and exercises to avoid."
+            "value": "Optional. Keep a balanced plan, or choose a muscle group to prioritize."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "İsteğe bağlı. Dengeli bir programla devam et veya öncelik vereceğin kas grubunu ve kaçınmak istediğin egzersizleri seç."
+            "value": "İsteğe bağlı. Dengeli bir programla devam et veya öncelik vereceğin kas grubunu seç."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Optional. Behalte einen ausgewogenen Plan oder wähle einen Muskelschwerpunkt und Übungen, die du vermeiden möchtest."
+            "value": "Optional. Behalte einen ausgewogenen Plan oder wähle einen Muskelschwerpunkt."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Facultatif. Garde un programme équilibré ou choisis les muscles à privilégier et les exercices à éviter."
+            "value": "Facultatif. Garde un programme équilibré ou choisis les muscles à privilégier."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Opcional. Mantén un programa equilibrado o elige una prioridad muscular y los ejercicios que quieras evitar."
+            "value": "Opcional. Mantén un programa equilibrado o elige una prioridad muscular."
           }
         }
       }
@@ -54834,7 +54834,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ön kol"
+            "value": "Biseps"
           }
         },
         "de": {
@@ -54888,76 +54888,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Zona media"
-          }
-        }
-      }
-    },
-    "setup.exclude.title": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Exercises to leave out (optional)"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hariç tutulacak egzersizler (isteğe bağlı)"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Übungen ausschließen (optional)"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Exercices à exclure (facultatif)"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Ejercicios que excluir (opcional)"
-          }
-        }
-      }
-    },
-    "setup.exclude.search": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Search exercises to exclude"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hariç tutulacak egzersiz ara"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Auszuschließende Übungen suchen"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rechercher des exercices à exclure"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Buscar ejercicios que excluir"
           }
         }
       }

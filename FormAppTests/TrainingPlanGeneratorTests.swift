@@ -87,6 +87,24 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         }
     }
 
+    @MainActor func testSetupClearsLegacyExclusionsWithoutLosingMusclePriority() throws {
+        var p = profile(["dumbbells"])
+        p.priority = "row"; p.excludedExerciseIds = try XCTUnwrap(TrainingCatalog.bundled).candidates.map(\.id)
+        TrainingSetupStore.saveDraft(.init(profile: p, step: 7, programId: "legacy-exclusions", program: nil))
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
+        let host = UIHostingController(rootView: TrainingSetupView(store: store, completeSetup: false, onClose: {}))
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 390, height: 900))
+        defer { window.isHidden = true; previousWindow?.makeKeyAndVisible() }
+        window.rootViewController = host; window.makeKeyAndVisible(); host.view.frame = window.bounds
+        host.view.layoutIfNeeded(); RunLoop.main.run(until: Date().addingTimeInterval(0.2))
+        let recovered = try XCTUnwrap(TrainingSetupStore.draft())
+        XCTAssertTrue(recovered.profile.excludedExerciseIds.isEmpty)
+        XCTAssertEqual(recovered.profile.priority, "row")
+        XCTAssertEqual(recovered.step, 7)
+        XCTAssertFalse(try TrainingSetupStore.generate(recovered.profile, id: recovered.programId).program.workouts.isEmpty)
+    }
+
     func testSharedFixturesMatchBothNativeEngines() throws {
         struct Fixture: Decodable { let name: String; let profile: TrainingProfile; let expected: String; let identity: String }
         let file = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("training-generation-fixtures.json")
@@ -427,9 +445,9 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
         for language in ["en", "tr", "de", "fr", "es"] {
             LanguageManager.setLanguage(language)
-            let sizes: [ContentSizeCategory] = language == "en" ? [.large, .extraExtraExtraLarge] : [.extraExtraExtraLarge]
+            let sizes: [ContentSizeCategory] = language == "en" ? [.large, .extraExtraExtraLarge, .accessibilityExtraExtraExtraLarge] : [.extraExtraExtraLarge]
             for size in sizes {
-            for width in (language == "en" && size == .large ? [320.0, 390.0] : [320.0]) {
+            for width in (language == "en" && size == .large ? [320.0, 390.0, 600.0] : [320.0]) {
             for location in ["home", "commercial_gym"] { for step in [2, 3, 4, 6, 7, 8] {
                 var rendered = profile(["dumbbells", "ez-bar", "plates"])
                 rendered.location = location; rendered.experience = "advanced"; rendered.advancedLifts = true
@@ -441,9 +459,21 @@ final class TrainingPlanGeneratorTests: XCTestCase {
                 host.view.setNeedsLayout(); host.view.layoutIfNeeded()
                 RunLoop.main.run(until: Date().addingTimeInterval(step == 4 ? 0.6 : 0.15))
                 let image = UIGraphicsImageRenderer(bounds: host.view.bounds).image { context in host.view.layer.render(in: context.cgContext) }
-                let name = "training-setup-\(location)-\(language)-\(step)" + (size == .large ? "-regular" : "") + (width > 320 ? "-wide" : "")
+                let name = "training-setup-\(location)-\(language)-\(step)" + (size == .large ? "-regular" : (size == .accessibilityExtraExtraExtraLarge ? "-accessibility" : "")) + (width > 390 ? "-tablet" : (width > 320 ? "-wide" : ""))
                 try image.pngData()?.write(to: URL(fileURLWithPath: "/tmp/\(name).png"))
                 let attachment = XCTAttachment(image: image); attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
+                if step == 7 {
+                    func scrollView(in view: UIView) -> UIScrollView? {
+                        if let scroll = view as? UIScrollView { return scroll }
+                        return view.subviews.lazy.compactMap { scrollView(in: $0) }.first
+                    }
+                    let scroll = try XCTUnwrap(scrollView(in: host.view))
+                    scroll.setContentOffset(CGPoint(x: 0, y: max(0, scroll.contentSize.height - scroll.bounds.height)), animated: false)
+                    RunLoop.main.run(until: Date().addingTimeInterval(0.15))
+                    let bottom = UIGraphicsImageRenderer(bounds: host.view.bounds).image { context in host.view.layer.render(in: context.cgContext) }
+                    try bottom.pngData()?.write(to: URL(fileURLWithPath: "/tmp/\(name)-bottom.png"))
+                    let attachment = XCTAttachment(image: bottom); attachment.name = name + "-bottom"; attachment.lifetime = .keepAlways; add(attachment)
+                }
                 window.isHidden = true; previousWindow?.makeKeyAndVisible()
             } }
             }
