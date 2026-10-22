@@ -416,6 +416,7 @@ public struct RestTimerFullScreenModal: View {
                                     RoundedRectangle(cornerRadius: 12, style: .continuous)
                                         .stroke(AppColors.border, lineWidth: 1)
                                 )
+                                .contentShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                         }
                         .buttonStyle(.plain)
                         .padding(.horizontal, 20)

@@ -390,6 +390,7 @@ public struct SetLoggingTable: View {
                                     Text(label).font(.app(size: 16)).foregroundStyle(AppColors.text)
                                         .frame(maxWidth: .infinity, minHeight: 48)
                                         .background(RoundedRectangle(cornerRadius: 8).stroke(AppColors.border))
+                                        .contentShape(RoundedRectangle(cornerRadius: 8))
                                 }
                                 .buttonStyle(.plain)
                                 .accessibilityLabel("\(setLabel), \(fieldLabel), \(label)")
