@@ -1580,6 +1580,7 @@
   "setup.advanced": "I am comfortable with technical barbell lifts and advanced bodyweight exercises",
   "setup.priority.title": "Optional muscle priority",
   "setup.priority.balanced": "Balanced",
+  "setup.priority.balanced.hint": "No muscle priority",
   "setup.priority.push": "Chest",
   "setup.priority.row": "Back",
   "setup.priority.squat": "Legs",

@@ -1580,6 +1580,7 @@
   "setup.advanced": "Je maîtrise les mouvements techniques à la barre et les exercices avancés au poids du corps",
   "setup.priority.title": "Priorité musculaire facultative",
   "setup.priority.balanced": "Équilibré",
+  "setup.priority.balanced.hint": "Aucune priorité musculaire",
   "setup.priority.push": "Pectoraux",
   "setup.priority.row": "Dos",
   "setup.priority.squat": "Jambes",

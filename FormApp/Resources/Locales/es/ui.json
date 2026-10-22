@@ -1580,6 +1580,7 @@
   "setup.advanced": "Domino los movimientos técnicos con barra y los ejercicios avanzados de peso corporal",
   "setup.priority.title": "Prioridad muscular opcional",
   "setup.priority.balanced": "Equilibrado",
+  "setup.priority.balanced.hint": "Sin prioridad muscular",
   "setup.priority.push": "Pecho",
   "setup.priority.row": "Espalda",
   "setup.priority.squat": "Piernas",

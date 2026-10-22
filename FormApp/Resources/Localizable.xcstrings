@@ -54682,6 +54682,41 @@
         }
       }
     },
+    "setup.priority.balanced.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No muscle priority"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kas önceliği yok"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kein Muskelschwerpunkt"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucune priorité musculaire"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sin prioridad muscular"
+          }
+        }
+      }
+    },
     "setup.priority.push": {
       "extractionState": "manual",
       "localizations": {

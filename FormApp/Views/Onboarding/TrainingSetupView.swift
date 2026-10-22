@@ -246,6 +246,10 @@ struct TrainingSetupView: View {
         return VStack(alignment: .leading, spacing: 12) {
             Text(LanguageManager.t("setup.customize.hint")).foregroundStyle(AppColors.secondaryText)
             Text(LanguageManager.t("setup.priority.title")).font(.headline)
+            choice(LanguageManager.t("setup.priority.balanced"), selected: profile.priority.isEmpty,
+                hint: LanguageManager.t("setup.priority.balanced.hint"), tag: "setup-priority-balanced") { profile.priority = "" }
+                .accessibilityElement(children: .ignore)
+                .accessibilityLabel(LanguageManager.t("setup.priority.balanced") + ", " + LanguageManager.t("setup.priority.balanced.hint"))
             VStack(spacing: 12) {
                 ForEach(0..<((SetupMusclePriority.options.count + columns - 1) / columns), id: \.self) { row in
                     HStack(alignment: .top, spacing: 8) {
@@ -265,19 +269,13 @@ struct TrainingSetupView: View {
     }
     private func priorityCard(_ priority: SetupMusclePriority) -> some View {
         let selected = profile.priority == priority.id
-        let label = LanguageManager.t("setup.priority.\(priority.id.isEmpty ? "balanced" : priority.id)")
+        let label = LanguageManager.t("setup.priority.\(priority.id)")
         return Button { profile.priority = priority.id } label: {
             VStack(spacing: 0) {
                 ZStack(alignment: .topTrailing) {
                     Color.black
-                    HStack(spacing: 0) {
-                        if let muscle = priority.muscle {
-                            MuscleArtwork(view: muscle.bodyView, muscles: muscle.muscleGroups, centered: true, transparentBackground: true)
-                        } else {
-                            MuscleArtwork(view: .front, muscles: [], centered: true, transparentBackground: true)
-                            MuscleArtwork(view: .back, muscles: [], centered: true, transparentBackground: true)
-                        }
-                    }.accessibilityHidden(true)
+                    MuscleArtwork(view: priority.muscle.bodyView, muscles: priority.muscle.muscleGroups,
+                        centered: true, transparentBackground: true).accessibilityHidden(true)
                     if selected {
                         Image(systemName: "checkmark.circle.fill").foregroundStyle(AppColors.accent)
                             .font(.system(size: 18)).padding(5).accessibilityHidden(true)
@@ -291,7 +289,7 @@ struct TrainingSetupView: View {
                 .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(selected ? AppColors.accent : AppColors.border, lineWidth: selected ? 1.5 : 1))
         }.buttonStyle(.plain).accessibilityElement(children: .ignore).accessibilityLabel(label)
             .accessibilityAddTraits(selected ? .isSelected : [])
-            .accessibilityIdentifier("setup-priority-\(priority.id.isEmpty ? "balanced" : priority.id)")
+            .accessibilityIdentifier("setup-priority-\(priority.id)")
     }
     @ViewBuilder private func preview(_ program: Program, catalog: TrainingCatalog) -> some View {
         let goal = LanguageManager.t("onboarding.goal.\(profile.goal).title")
@@ -460,12 +458,12 @@ private extension View {
     }
 }
 
-/// Reuse the Library's registered anatomy and highlights; Balanced has no highlighted target.
+/// Only targeted priorities use the Library's registered anatomy and highlights.
 private struct SetupMusclePriority: Identifiable {
     let id: String
-    let muscle: MuscleGroupFilter?
+    let muscle: MuscleGroupFilter
     static let options: [Self] = [
-        .init(id: "", muscle: nil), .init(id: "push", muscle: .chest), .init(id: "row", muscle: .back),
+        .init(id: "push", muscle: .chest), .init(id: "row", muscle: .back),
         .init(id: "squat", muscle: .quads), .init(id: "shoulders", muscle: .shoulders),
         .init(id: "biceps", muscle: .biceps), .init(id: "core", muscle: .core)
     ]

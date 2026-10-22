@@ -1580,6 +1580,7 @@
   "setup.advanced": "Teknik bar hareketlerinde ve ileri vücut ağırlığı egzersizlerinde rahatım",
   "setup.priority.title": "İsteğe bağlı kas önceliği",
   "setup.priority.balanced": "Dengeli",
+  "setup.priority.balanced.hint": "Kas önceliği yok",
   "setup.priority.push": "Göğüs",
   "setup.priority.row": "Sırt",
   "setup.priority.squat": "Bacaklar",

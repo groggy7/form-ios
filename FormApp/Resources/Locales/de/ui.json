@@ -1580,6 +1580,7 @@
   "setup.advanced": "Ich beherrsche technische Langhantelübungen und fortgeschrittene Körpergewichtsübungen",
   "setup.priority.title": "Optionaler Muskelschwerpunkt",
   "setup.priority.balanced": "Ausgewogen",
+  "setup.priority.balanced.hint": "Kein Muskelschwerpunkt",
   "setup.priority.push": "Brust",
   "setup.priority.row": "Rücken",
   "setup.priority.squat": "Beine",
