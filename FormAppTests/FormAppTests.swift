@@ -729,7 +729,8 @@ final class FormAppTests: XCTestCase {
                     XCTAssertLessThanOrEqual(4 * tileWidth + 3 * 8, scroll.bounds.width - 40 + 1,
                         "Four whole tiles must fit at narrow and normal widths, including larger text")
                     XCTAssertGreaterThan(scroll.contentSize.width, scroll.bounds.width)
-                    XCTAssertGreaterThanOrEqual(scroll.contentSize.height, 108)
+                    XCTAssertGreaterThanOrEqual(scroll.contentSize.height, tileWidth * 1.1667,
+                        "Default reference tiles keep their 1.1667w minimum height")
                     if let boundedRowHeight {
                         XCTAssertEqual(scroll.contentSize.height, boundedRowHeight, accuracy: 1,
                             "Longer names must not increase the two-line tile height")
@@ -780,7 +781,7 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
-    func testBothHomeTileStylesKeepTheSameLayoutAndRetainSnapshots() throws {
+    func testBothHomeTileStylesKeepTheSameWidthsAndRetainSnapshots() throws {
         func scrollViews(in view: UIView) -> [UIScrollView] {
             (view as? UIScrollView).map { [$0] } ?? view.subviews.flatMap { scrollViews(in: $0) }
         }
@@ -818,8 +819,9 @@ final class FormAppTests: XCTestCase {
                 add(attachment)
                 window.isHidden = true
             }
-            XCTAssertEqual(sizes[0].width, sizes[1].width, accuracy: 0.5, "Switching style must not resize the strip (\(theme))")
-            XCTAssertEqual(sizes[0].height, sizes[1].height, accuracy: 0.5, "Switching style must not resize the strip (\(theme))")
+            // Reference tiles are proportionally shorter (1.1667w); both styles keep four equal columns.
+            XCTAssertEqual(sizes[0].width, sizes[1].width, accuracy: 0.5, "Switching style preserves four equal columns (\(theme))")
+            XCTAssertGreaterThanOrEqual(sizes[0].height, 108, "Calm tiles keep their 108pt minimum (\(theme))")
         }
     }
 
