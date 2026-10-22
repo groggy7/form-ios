@@ -14,7 +14,7 @@ public final class AppStore: ObservableObject {
     private let soundKey = "sound_enabled"
     private let defaultRestKey = "default_rest_seconds"
     private let prefillNextSetKey = "prefill_next_set"
-    private let homeGlowTilesKey = "home_glow_tiles"
+    private let homeGlowTilesKey = "home_reference_tiles_v2"
     private let weightUnitKey = "weight_unit"
     private let barTypeKey = "bar_type"
     private let availablePlatesKey = "available_plates_kg"
@@ -74,7 +74,7 @@ public final class AppStore: ObservableObject {
     @Published public var socialShareRequest: SocialShareRequest?
     /// Opt-in joint-stress rating after an exercise's working sets (docs/design/body-and-joint-journal.md).
     @Published public var jointStressRatings: Bool
-    /// Home day tiles use the calm glass by default; this opts back in to the earlier neon glow.
+    /// Reference day tiles are the default; switching off retains the optional Calm material.
     @Published public var homeGlowTiles: Bool
     @Published public var weightUnit: WeightUnit {
         didSet {
@@ -216,7 +216,7 @@ public final class AppStore: ObservableObject {
         self.showIntensityTechniques = UserDefaults.standard.object(forKey: showIntensityTechniquesKey) as? Bool ?? true
         self.suggestSharing = UserDefaults.standard.object(forKey: "suggest_sharing") as? Bool ?? true
         self.jointStressRatings = UserDefaults.standard.object(forKey: jointStressRatingsKey) as? Bool ?? false
-        self.homeGlowTiles = UserDefaults.standard.object(forKey: homeGlowTilesKey) as? Bool ?? false
+        self.homeGlowTiles = UserDefaults.standard.object(forKey: homeGlowTilesKey) as? Bool ?? true
         let initialWeightUnit: WeightUnit
         if let savedUnitCode = UserDefaults.standard.string(forKey: weightUnitKey) {
             initialWeightUnit = WeightUnit.fromCode(savedUnitCode)

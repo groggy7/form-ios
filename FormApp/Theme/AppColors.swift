@@ -120,6 +120,15 @@ public enum AppColors {
             unfinishedLight: Color(hex: 0xFFB54B), missedLight: Color(hex: 0xFF6F87))
     }
 
+    /// Weekday ink is independent of the illuminated rim.
+    public static func homeDayGlowLabel(_ statusTint: Color?) -> Color {
+        let glass = homeDayGlowColors
+        if statusTint == glass.completedLight { return Color(hex: 0xA9DDCD) }
+        if statusTint == glass.missedLight { return Color(hex: 0xF792A5) }
+        if statusTint == glass.unfinishedLight { return Color(hex: 0xF4BA53) }
+        return Color(hex: 0xD0D7DC)
+    }
+
     // Split presentation colors
     
     // History Day Detail Sheet specific colors matching design reference

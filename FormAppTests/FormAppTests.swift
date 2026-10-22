@@ -750,8 +750,8 @@ final class FormAppTests: XCTestCase {
         }
     }
 
-    func testHomeGlowTilesDefaultToCalmAndPersistTheChoice() throws {
-        let key = "home_glow_tiles"
+    func testHomeGlowTilesDefaultToReferenceAndPersistTheChoice() throws {
+        let key = "home_reference_tiles_v2"
         let previous = UserDefaults.standard.object(forKey: key)
         defer {
             if let previous { UserDefaults.standard.set(previous, forKey: key) }
@@ -759,7 +759,7 @@ final class FormAppTests: XCTestCase {
         }
         UserDefaults.standard.removeObject(forKey: key)
         let store = AppStore(persistence: AppStatePersistence(inMemory: true))
-        XCTAssertFalse(store.homeGlowTiles, "The calm glass is the default Home tile style")
+        XCTAssertTrue(store.homeGlowTiles, "The reference material is the default Home tile style")
         store.homeGlowTiles = true
         XCTAssertEqual(UserDefaults.standard.object(forKey: key) as? Bool, true)
         XCTAssertTrue(AppStore(persistence: AppStatePersistence(inMemory: true)).homeGlowTiles)

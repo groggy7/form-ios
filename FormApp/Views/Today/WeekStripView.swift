@@ -88,9 +88,10 @@ struct WorkoutDayStrip: View {
     let completedKeys: [String]
     let unfinishedKeys: Set<String>
     let onSelectWorkout: (String) -> Void
-    /// Opt-in neon glow; the default is the calmer single-light glass.
-    var glowTiles: Bool = false
+    /// Reference material is the default; the Calm alternative remains available.
+    var glowTiles: Bool = true
 
+    @State private var tileWidth: CGFloat = 82
     @ScaledMetric(relativeTo: .caption2) private var labelSize: CGFloat = 11
     @ScaledMetric(relativeTo: .title2) private var numberSize: CGFloat = 25
 
@@ -140,55 +141,56 @@ struct WorkoutDayStrip: View {
                         Button(action: {
                             onSelectWorkout(workout.id)
                         }) {
-                            VStack(spacing: 6) {
+                            VStack(spacing: glowTiles ? tileWidth * 0.09 : 6) {
                                 let dayLabel = LanguageManager.workoutDays.indices.contains(dayIndex)
                                     ? String(LanguageManager.workoutDays[dayIndex].prefix(3)).uppercased()
                                     : "DAY"
 
                                 Text(dayLabel)
-                                    .font(.app(size: labelSize, weight: .semibold))
+                                    .font(.app(size: glowTiles ? labelSize * tileWidth / 110 : labelSize, weight: .semibold))
                                     .tracking(0.5)
                                     .foregroundStyle(glowTiles && isDark
-                                        ? Color.mix(statusTint ?? glass.neutralRim, textColor, 0.55) : textColor)
+                                        ? AppColors.homeDayGlowLabel(statusTint) : textColor)
                                     .lineLimit(1)
 
                                 Text("\(dayNumber)")
-                                    .font(.app(size: numberSize, weight: .bold))
+                                    .font(.app(size: glowTiles ? numberSize * tileWidth * 0.267 / 25 : numberSize, weight: .bold))
                                     .foregroundStyle(textColor)
                                     .shadow(color: !isDark ? .clear
-                                                : glowTiles ? (statusTint ?? glass.neutralRim).opacity(0.35) : Color.black.opacity(0.35),
-                                            radius: glowTiles ? 5 : 1, x: 0, y: glowTiles ? 0 : 1)
+                                                : Color.black.opacity(0.30),
+                                            radius: glowTiles ? 0.6 : 1, x: 0, y: glowTiles ? 0.5 : 1)
                                     .lineLimit(1)
                                     .overlay(alignment: .bottom) {
                                         if glowTiles {
                                             let light = statusTint ?? glass.neutralRim
                                             Rectangle().fill(LinearGradient(colors: [light.opacity(0), light.opacity(0.65), light.opacity(0)],
                                                 startPoint: .leading, endPoint: .trailing))
-                                                .frame(width: 24, height: 0.7).offset(y: 3)
+                                                .frame(width: tileWidth * 0.25, height: tileWidth * 0.004).offset(y: tileWidth * 0.045)
                                                 .accessibilityHidden(true)
                                         }
                                     }
 
                                 Text(workout.displayTitle(programId: program.id))
-                                    .font(.app(size: labelSize))
+                                    .font(.app(size: glowTiles ? labelSize * tileWidth / 110 : labelSize))
                                     .foregroundStyle(textColor)
                                     .multilineTextAlignment(.center)
                                     .lineLimit(2, reservesSpace: true)
                                     .fixedSize(horizontal: false, vertical: true)
                                     .frame(maxWidth: .infinity)
                             }
-                            .padding(.horizontal, 8)
-                            .padding(.vertical, 12)
+                            .padding(.horizontal, glowTiles ? tileWidth * 0.125 : 8)
+                            .padding(.vertical, glowTiles ? tileWidth * 0.17 : 12)
                             .containerRelativeFrame(.horizontal) { width, _ in
                                 min(96, max(48, (width - 40 - 3 * 8) / 4))
                             }
-                            .frame(minHeight: 108, alignment: .top)
+                            .frame(minHeight: glowTiles ? tileWidth * 1.1667 : 108, alignment: .top)
+                            .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { tileWidth = $0 }
                             .frame(maxHeight: .infinity, alignment: .top)
                             .background(
                                 Group {
                                     if glowTiles {
                                         HomeDayGlassSurface(glass: glass, statusTint: statusTint, isDark: isDark,
-                                            selected: selected, today: isToday, accent: AppColors.accent)
+                                            selected: selected, accent: AppColors.accent)
                                     } else {
                                         HomeDayCalmSurface(glass: glass, statusTint: statusTint, isDark: isDark,
                                             selected: selected, today: isToday, accent: AppColors.accent)
@@ -229,104 +231,10 @@ struct WorkoutDayStrip: View {
 
 // MARK: - Home day tile glass
 //
-// Static optical layers shared with Android's `dayTileGlass` (WorkoutWeekStrip.kt): keep geometry, stops
-// and alphas in sync. Draw order: outer bloom, tinted body, edge glow, corner lights, sheens, sweep rim.
-// Every light fades to the same colour at alpha 0 so interpolation never shifts hue.
-// See docs/design/form-design-system.md, "Home day tile styles" (Glow style).
-private struct HomeGlassRecipe {
-    /// Radial light; `radius` is a fraction of the tile width.
-    struct Light { let alpha: Double; let radius: Double }
-
-    let body: Double
-    let diagonal: Double
-    let edgeAlpha: Double
-    let edgeDecay: Double
-    let topLeft: Light
-    let topRight: Light
-    let bottomLeft: Light
-    let bottomRight: Light
-    let sheenTop: Light
-    let sheenBottom: Light
-    let sheenWhite: Double
-    let bloom: Double
-    /// Bloom reach per axis as a fraction of the tile width.
-    let bloomX: Double
-    let bloomY: Double
-    /// Rim alpha and whiteness at each of `rimAngles`.
-    let rimAlpha: [Double]
-    let rimWhite: [Double]
-
-    static let status = HomeGlassRecipe(
-        body: 0.065, diagonal: 0.06, edgeAlpha: 0.19, edgeDecay: 0.11,
-        topLeft: Light(alpha: 0.42, radius: 0.46), topRight: Light(alpha: 0.28, radius: 0.36),
-        bottomLeft: Light(alpha: 0.44, radius: 0.40), bottomRight: Light(alpha: 0.30, radius: 0.32),
-        sheenTop: Light(alpha: 0.22, radius: 0.60), sheenBottom: Light(alpha: 0.10, radius: 0.58),
-        sheenWhite: 0.18, bloom: 0.15, bloomX: 0.06, bloomY: 0.10,
-        rimAlpha: statusRimAlpha, rimWhite: statusRimWhite)
-
-    static let neutral = HomeGlassRecipe(
-        body: 0.07, diagonal: 0.04, edgeAlpha: 0.17, edgeDecay: 0.078,
-        topLeft: Light(alpha: 0.34, radius: 0.46), topRight: Light(alpha: 0.25, radius: 0.36),
-        bottomLeft: Light(alpha: 0.32, radius: 0.40), bottomRight: Light(alpha: 0.24, radius: 0.32),
-        sheenTop: Light(alpha: 0.18, radius: 0.60), sheenBottom: Light(alpha: 0.08, radius: 0.58),
-        sheenWhite: 0.18, bloom: 0.11, bloomX: 0.06, bloomY: 0.10,
-        rimAlpha: neutralRimAlpha, rimWhite: neutralRimWhite)
-
-    // Rim angles (degrees clockwise from 3 o'clock) for a 46.7° corner angle, with the rim's alpha and its
-    // mix toward white at each. Status values were measured from the reference tiles (completed and missed
-    // averaged); neutral values keep the earlier brightness curve.
-    static let rimAngles: [Double] = [
-        0.0, 20.0, 40.0, 46.7, 59.0, 70.0, 90.0, 109.0, 119.0,
-        133.3, 149.0, 160.0, 180.0, 200.0, 219.0, 226.7, 239.0, 260.0,
-        270.0, 290.0, 299.0, 313.3, 330.0, 350.0, 360.0
-    ]
-
-    static let statusRimAlpha: [Double] = [
-        1.0, 0.89, 0.68, 0.87, 0.85, 0.71, 0.74, 0.73, 0.95,
-        0.99, 0.88, 0.72, 0.79, 0.99, 0.95, 1.0, 1.0, 0.85,
-        0.75, 0.84, 0.96, 1.0, 0.91, 0.99, 1.0
-    ]
-
-    static let statusRimWhite: [Double] = [
-        0.63, 0.45, 0.36, 0.52, 0.51, 0.44, 0.37, 0.27, 0.41,
-        0.82, 0.2, 0.15, 0.2, 0.48, 0.37, 0.68, 0.87, 0.32,
-        0.25, 0.36, 0.44, 0.75, 0.37, 0.61, 0.63
-    ]
-
-    static let neutralRimAlpha: [Double] = [
-        0.77, 0.64, 0.36, 0.58, 0.49, 0.32, 0.35, 0.3, 0.61,
-        0.86, 0.41, 0.31, 0.38, 0.6, 0.6, 0.9, 0.76, 0.39,
-        0.3, 0.42, 0.61, 0.91, 0.57, 0.75, 0.77
-    ]
-
-    static let neutralRimWhite: [Double] = [
-        0.76, 0.41, 0.0, 0.25, 0.0, 0.0, 0.0, 0.0, 0.32,
-        0.96, 0.0, 0.0, 0.0, 0.29, 0.29, 0.96, 0.73, 0.0,
-        0.0, 0.0, 0.32, 0.96, 0.22, 0.7, 0.76
-    ]
-
-    static let referenceCornerAngle = 46.7
-
-    /// Bloom layers use an exact 8-bit alpha (3/255) so both platforms accumulate identical steps.
+// Shared halo construction for the reference material and optional Calm shadow.
+private enum HomeGlassRecipe {
     static let bloomLayerAlpha = 3.0 / 255.0
     static let bloomKappa = 2.0
-
-    /// Maps a reference rim angle onto this tile's aspect ratio, anchoring corners and edge midpoints.
-    static func rimFraction(_ angle: Double, width: Double, height: Double) -> Double {
-        let corner = atan2(height, width) * 180 / Double.pi
-        let reference = [0, referenceCornerAngle, 90, 180 - referenceCornerAngle, 180,
-                         180 + referenceCornerAngle, 270, 360 - referenceCornerAngle, 360]
-        let actual = [0, corner, 90, 180 - corner, 180, 180 + corner, 270, 360 - corner, 360]
-        for index in 1..<reference.count where angle <= reference[index] {
-            let t = (angle - reference[index - 1]) / (reference[index] - reference[index - 1])
-            return (actual[index - 1] + (actual[index] - actual[index - 1]) * t) / 360
-        }
-        return 1
-    }
-
-    /// Distances from a tile side, as fractions of the tile width, where the edge glow is sampled.
-    /// Alpha is `edgeAlpha * exp(-distance / edgeDecay)`, reaching 0 at the last stop.
-    static let edgeStops: [Double] = [0, 0.012, 0.03, 0.06, 0.10, 0.16, 0.25]
 
     /// Outward inflation factors (0...~1.2) for equal-alpha bloom layers.
     static func bloomInflations(peak: Double, alpha: Double, kappa: Double) -> [Double] {
@@ -349,137 +257,47 @@ private struct HomeDayGlassSurface: View {
     let statusTint: Color?
     let isDark: Bool
     let selected: Bool
-    let today: Bool
     let accent: Color
 
     var body: some View {
         Canvas { context, size in
-            let edge = Self.margin
-            let w = size.width - 2 * edge
-            let h = size.height - 2 * edge
+            let w = size.width - Self.margin * 2
+            let h = size.height - Self.margin * 2
             guard w > 0, h > 0 else { return }
-            let radius = Self.radius
-            let tile = CGRect(x: edge, y: edge, width: w, height: h)
-            func rounded(_ rect: CGRect, _ cornerRadius: CGFloat) -> Path {
-                Path(roundedRect: rect, cornerRadius: max(0, cornerRadius), style: .continuous)
-            }
-            func insetPath(_ amount: CGFloat) -> Path {
-                rounded(tile.insetBy(dx: amount, dy: amount), radius - amount)
-            }
-            let shape = insetPath(0)
-            let hasStatus = statusTint != nil
-            let recipe = hasStatus ? HomeGlassRecipe.status : HomeGlassRecipe.neutral
+            let tile = CGRect(x: Self.margin, y: Self.margin, width: w, height: h)
+            let radius = w * 0.145
             let light = statusTint ?? glass.neutralRim
-            // Oat shows the status lights at full strength so green, orange and red stay vivid on the light canvas.
-            let lightScale = 1.0
-
-            // 1. Bloom: faint light outside the rim; selection lights an otherwise neutral tile.
-            let selectedNeutral = selected && !hasStatus
-            let bloomColor = selectedNeutral ? accent : light
-            let bloomPeak = recipe.bloom * lightScale * (selectedNeutral ? 1.3 : 1.0)
-            let bloomX = recipe.bloomX * Double(w)
-            let bloomY = recipe.bloomY * Double(w)
+            let index = statusTint == glass.completedLight ? 0 : statusTint == glass.missedLight ? 1 : statusTint == glass.unfinishedLight ? 2 : 3
+            func rounded(_ inset: CGFloat) -> Path {
+                Path(roundedRect: tile.insetBy(dx: inset, dy: inset), cornerRadius: max(0, radius - inset))
+            }
+            let shape = rounded(0)
             var outside = context
             outside.clip(to: shape, options: .inverse)
-            for inflation in HomeGlassRecipe.bloomInflations(peak: bloomPeak, alpha: HomeGlassRecipe.bloomLayerAlpha,
-                                                              kappa: HomeGlassRecipe.bloomKappa) {
-                let rect = tile.insetBy(dx: -CGFloat(inflation * bloomX), dy: -CGFloat(inflation * bloomY))
-                outside.fill(rounded(rect, radius + CGFloat(inflation * (bloomX + bloomY) / 2)),
-                             with: .color(bloomColor.opacity(HomeGlassRecipe.bloomLayerAlpha)))
+            for inflation in HomeGlassRecipe.bloomInflations(peak: 0.08, alpha: HomeGlassRecipe.bloomLayerAlpha, kappa: HomeGlassRecipe.bloomKappa) {
+                let spread = CGFloat(inflation) * w * 0.065
+                outside.fill(rounded(-spread), with: .color(light.opacity(HomeGlassRecipe.bloomLayerAlpha)))
             }
-
-            var glassContext = context
-            glassContext.clip(to: shape)
-
-            // 2. Body: dark suites tint the canvas with the tile's light; Oat keeps milky glass.
+            context.clip(to: shape)
             if isDark {
-                glassContext.fill(shape, with: .color(light.opacity(recipe.body)))
-                glassContext.fill(shape, with: .linearGradient(
-                    Gradient(colors: [light.opacity(0), light.opacity(recipe.diagonal)]),
-                    startPoint: CGPoint(x: tile.minX, y: tile.minY), endPoint: CGPoint(x: tile.maxX, y: tile.maxY)))
+                context.draw(Image(decorative: HomeTileReferenceSurface.images[index], scale: 1), in: tile)
             } else {
-                glassContext.fill(shape, with: .color(glass.base))
+                context.fill(shape, with: .color(glass.base))
+                context.fill(shape, with: .linearGradient(Gradient(colors: [light.opacity(0.28), light.opacity(0.05), light.opacity(0.18)]),
+                    startPoint: CGPoint(x: tile.midX, y: tile.minY), endPoint: CGPoint(x: tile.midX, y: tile.maxY)))
             }
-
-            // Broad curved reflections; the center remains dark for the copy.
-            func point(_ x: CGFloat, _ y: CGFloat) -> CGPoint {
-                CGPoint(x: tile.minX + x * w, y: tile.minY + y * h)
+            let colors = HomeTileReferenceSurface.rims[index]
+            let stops = colors.enumerated().map { index, color in
+                Gradient.Stop(color: isDark ? color : light.opacity(0.85), location: Double(index) / Double(colors.count - 1))
             }
-            var upperReflection = Path()
-            upperReflection.move(to: point(0, 0)); upperReflection.addLine(to: point(1, 0))
-            upperReflection.addLine(to: point(1, 0.30))
-            upperReflection.addCurve(to: point(0, 0.34), control1: point(0.65, 0.19), control2: point(0.30, 0.48))
-            upperReflection.closeSubpath()
-            var lowerReflection = Path()
-            lowerReflection.move(to: point(0, 0.64))
-            lowerReflection.addCurve(to: point(0.68, 1), control1: point(0.26, 0.83), control2: point(0.56, 0.76))
-            lowerReflection.addLine(to: point(0, 1)); lowerReflection.closeSubpath()
-            let reflectionScale = isDark ? 1.0 : 0.35
-            let faceReflection = Color.mix(light, glass.reflection, 0.22)
-            glassContext.fill(upperReflection, with: .linearGradient(
-                Gradient(colors: [faceReflection.opacity(0.07 * reflectionScale), light.opacity(0)]),
-                startPoint: point(0, 0), endPoint: point(0, 0.48)))
-            glassContext.fill(lowerReflection, with: .linearGradient(
-                Gradient(colors: [light.opacity(0.075 * reflectionScale), light.opacity(0)]),
-                startPoint: point(0, 1), endPoint: point(0.68, 0.64)))
-
-            // 3. Edge glow: one linear gradient per side, fading inward over a quarter of the tile width.
-            let edgeReach = 0.25 * w
-            let edgeLast = HomeGlassRecipe.edgeStops.count - 1
-            let edgeStops: [Gradient.Stop] = HomeGlassRecipe.edgeStops.enumerated().map { index, distance in
-                let alpha: Double = index == edgeLast
-                    ? 0 : recipe.edgeAlpha * lightScale * exp(-distance / recipe.edgeDecay)
-                return Gradient.Stop(color: light.opacity(alpha), location: distance / HomeGlassRecipe.edgeStops[edgeLast])
+            let rimWidth = w * 0.0075
+            context.stroke(rounded(rimWidth / 2), with: .conicGradient(Gradient(stops: stops), center: CGPoint(x: tile.midX, y: tile.midY)), lineWidth: rimWidth)
+            if selected {
+                var marker = Path()
+                marker.move(to: CGPoint(x: tile.minX + w * 0.40, y: tile.maxY - 3))
+                marker.addLine(to: CGPoint(x: tile.minX + w * 0.60, y: tile.maxY - 3))
+                context.stroke(marker, with: .color(accent), style: StrokeStyle(lineWidth: 1.5, lineCap: .round))
             }
-            let edgeGradient = Gradient(stops: edgeStops)
-            let sideRamps: [(CGPoint, CGPoint)] = [
-                (CGPoint(x: tile.midX, y: tile.minY), CGPoint(x: tile.midX, y: tile.minY + edgeReach)),
-                (CGPoint(x: tile.midX, y: tile.maxY), CGPoint(x: tile.midX, y: tile.maxY - edgeReach)),
-                (CGPoint(x: tile.minX, y: tile.midY), CGPoint(x: tile.minX + edgeReach, y: tile.midY)),
-                (CGPoint(x: tile.maxX, y: tile.midY), CGPoint(x: tile.maxX - edgeReach, y: tile.midY))
-            ]
-            for (start, end) in sideRamps {
-                glassContext.fill(shape, with: .linearGradient(edgeGradient, startPoint: start, endPoint: end))
-            }
-
-            // 4/5. Corner lights and sheens stay inside a thin bezel so the rim reads as glass thickness.
-            var bezelContext = glassContext
-            bezelContext.clip(to: insetPath(0.006 * w))
-            func radialLight(_ spec: HomeGlassRecipe.Light, at center: CGPoint, color: Color, scale: Double, midpoint: Double, midAlpha: Double) {
-                let alpha = spec.alpha * scale
-                bezelContext.fill(shape, with: .radialGradient(Gradient(stops: [
-                    .init(color: color.opacity(alpha), location: 0),
-                    .init(color: color.opacity(alpha * midAlpha), location: midpoint),
-                    .init(color: color.opacity(0), location: 1)
-                ]), center: center, startRadius: 0, endRadius: CGFloat(spec.radius) * w))
-            }
-            let topLeft = CGPoint(x: tile.minX, y: tile.minY)
-            let topRight = CGPoint(x: tile.maxX, y: tile.minY)
-            let bottomLeft = CGPoint(x: tile.minX, y: tile.maxY)
-            let bottomRight = CGPoint(x: tile.maxX, y: tile.maxY)
-            radialLight(recipe.topLeft, at: topLeft, color: light, scale: lightScale, midpoint: 0.35, midAlpha: 0.55)
-            radialLight(recipe.topRight, at: topRight, color: light, scale: lightScale, midpoint: 0.35, midAlpha: 0.55)
-            radialLight(recipe.bottomLeft, at: bottomLeft, color: light, scale: lightScale, midpoint: 0.35, midAlpha: 0.55)
-            radialLight(recipe.bottomRight, at: bottomRight, color: light, scale: lightScale, midpoint: 0.35, midAlpha: 0.55)
-            let sheen = isDark ? Color.mix(light, glass.reflection, recipe.sheenWhite) : glass.reflection
-            let sheenScale = isDark ? 1.0 : 0.9
-            radialLight(recipe.sheenTop, at: topLeft, color: sheen, scale: sheenScale, midpoint: 0.4, midAlpha: 0.5)
-            radialLight(recipe.sheenBottom, at: bottomRight, color: sheen, scale: sheenScale, midpoint: 0.4, midAlpha: 0.5)
-
-            // Selection retains the illuminated perimeter and adds the theme accent to its light.
-            let rimWidth: CGFloat = selected ? 1.75 : (today ? 1.1 : 0.9)
-            let stops: [Gradient.Stop] = HomeGlassRecipe.rimAngles.enumerated().map { index, angle in
-                var alpha = recipe.rimAlpha[index]
-                if today && !hasStatus { alpha = min(1, alpha + 0.12) }
-                if !isDark { alpha *= 0.9 }
-                let white = isDark ? recipe.rimWhite[index] * 0.38 : 0
-                let rimLight = selected ? Color.mix(light, accent, 0.65) : light
-                return Gradient.Stop(
-                    color: Color.mix(rimLight, .white, white).opacity(alpha),
-                    location: HomeGlassRecipe.rimFraction(angle, width: Double(w), height: Double(h)))
-            }
-            let rimShading: GraphicsContext.Shading = .conicGradient(Gradient(stops: stops), center: CGPoint(x: tile.midX, y: tile.midY))
-            glassContext.stroke(insetPath(rimWidth / 2), with: rimShading, lineWidth: rimWidth)
         }
         .accessibilityHidden(true)
         .allowsHitTesting(false)
@@ -488,7 +306,7 @@ private struct HomeDayGlassSurface: View {
 
 // MARK: - Home day tile, calm glass
 //
-// The default Home day tile. Tinted glass with a plain one-colour border line, an inner top highlight and
+// The optional Calm Home day tile. Tinted glass with a plain one-colour border line, an inner top highlight and
 // bottom shade, and a soft shadow. No glow (outer or along the border), corner lights, sheens, specular arc
 // or bezel step.
 // Keep geometry, stops and alphas in sync with Android's `dayTileCalmGlass` (WorkoutWeekStrip.kt).
@@ -589,4 +407,29 @@ struct HomeDayCalmSurface: View {
         .accessibilityHidden(true)
         .allowsHitTesting(false)
     }
+}
+
+
+/// Measured sRGB reference surfaces, with typography excluded and its surface continued harmonically.
+/// Order: emerald, rose, amber, neutral silver. Text and rims remain native.
+enum HomeTileReferenceSurface {
+    private static let samples = [
+        "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Gi4pGi0pGi0pGS0oGSwoGSwoGSwnGSwnGSsnGCsmGComGColGColGColFyklFyklFyklFyklFyolFyolGComGComGCsmGCsnGCwnGS4oGS4pGS8pGjAqGjErGjErGjIrGjQsGjYtGjkvGTovGTovIEU5IEQ5H0A2HjwzHTUvHDItGzArGi8qGi8qGi8qGi4pGS0pGSwnGCsnGCsnGSsnGComGComGComGColGCklFygkFygkFygjFycjFicjFicjFicjFicjFicjFicjFicjFigjFygkFygkFyklFyomGCsmGCwmGC0nGC4oGC8pGC8pGC8qGTErGTQrGTYtGTguGTkuH0Q4H0M4Hj41HToxHDQuGzArGi8qGi4pGS0oGS0oGCsnGComGCklGCklFyklGCklFygkGCkkFygkFygkFycjFiYiFiYiFiUhFSUhFSUhFSUhFSUhFSUhFSUhFSUhFSUhFSUhFiUiFiYiFScjFigjFygkFiklFyomFysmGCwnGC0nFy4nFy8oFzIqGDUsGDYsGDYsH0M4H0I4Hj40HTgwGzMsGi8qGi4pGSwnGCsmGComGCklFyklFygkFycjFycjFycjFicjFycjFicjFiYiFiYiFiUhFiUhFSUhFSUhFSUhFSQhFSQgFSQgFSQgFSQgFSQhFSUhFSUhFSUhFSUhFSYiFSYiFSciFikkFykkFyolFysmFy0mFy4oGDEpFzMqFzQrGDQrH0E3HkA3HTwyHDgwGjErGi8pGSwnGComGCklGCkkFygjFiciFiUhFSUhFSUhFSUhFSUhFSUhFSUhFSUhFSQgFSQhFiQgFSQgFSQgFSMfFSMgFSMfFCMfFCMfFCMfFSMgFSQgFSQgFSQgFSQhFSUhFSUhFSUhFSYiFSciFSgjFikkFikkFiokFislFi0mFi8nFzAoHj41HT41HToxHDYvGjAqGi4pGCsmGCklFygjFiYiFSUhFSUhFSUhFSQhFSQgFSQgFSQgFSQgFSQgFSQgFSQgFSQgFSQgFSQgFSMgFSMfFSMfFSMfFCMfFCMfFCMfFSMfFSMgFSMgFSMgFSMgFSMgFSQgFSQgFSUgFSUhFSUhFSYiFSciFSkjFiskFiwlFSwlFSwlHT41HT40HDoxHDYuGjAqGC0nGCklFygkFiYiFSUhFSQgFSMgFSMgFSMgFSQgFSQgFSQgFSQgFSQgFSQgFSQgFSQgFSMgFSMfFSMfFSMfFSMfFCMfFCMfFCMfFCMfFCMfFCMfFSMfFCMfFCIfFCIfFCIeFCIfFSMfFSMgFSUgFSUhFSUhFSgiFSkjFiskFSwlFSwlHT40HT00HDkwGzUtGi8qGCwnFyklFicjFSUhFSQgFSMfFCIeFCIeFCMfFCMfFCMfFCMfFCMfFCMfFSMfFSMfFSMfFSMfFSMfFSMfFSMfFCMfFCMfFCMfFCMfFCMfFCMfFCMfFCIfFCIfFCIfFCEfFCIeFSIfFCIeFSMfFCMfFSQfFSUgFSYiFSkjFSwkFSwlFSwlHD0zHDwyHDgwGjQsGS8pGCsmFigkFiYiFSUhFSMfFCIeFCEdFCEdFCIeFCIeFCMfFCMfFCMfFCMfFCMfFCMfFCMfFCMfFCMfFCMfFCMfFCMfFCMfFCIfFCIfFCIfFCIfFCIfFCIfFCIeFCIeFCIeFCEeFCEeFSIeFCIeFCMeFSMfFSUgFSYhFikjFiwkFSwlFSwkHDsxHDsxGzgvGjMrGC8pGComFigjFSYiFSQgFSIeFCEdEyEdEyEdFCIeFCIeFCIeFCIfFCMfFCMfFCMfFCMfFCMfFCMfFCMfFCMfFCIfFCIfFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCEeFCEeFCEeFCEeFSEeFSIeFCIeFSMfFSUgFSciFikjFSskFSwlFiwkGzsxGzoxGjcuGjMrFy4nFyolFicjFSUhFCMeFCEdEyAdEyAdEyEdEyEdFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCEeFCEdFCEdFCEeFCEeFCEeFSIeFSMfFSUgFSciFSkiFSskFSwlFS0lGzsxGzoxGjYuGTIrFy0nFyklFSciFSUhFCIeFCEdEyEdEyAdEyEdEyEdFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCEeEyEdEyEdFCEdFCEeFSEeFSEeFCMeFSQfFSUhFSciFSkiFSwkFSwkFSwkGzowGzkwGjUtGDAqFywmFikkFSYiFSQgFCIeFCEdEyAdEyAdEyEdEyEdEyEdFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCEeFCEdEyEdEyEdFCEdFCEdFCEeFSEeFCMfFSQgFSUgFSYhFSkjFSwlFSwlFSwlGjgwGjcwGjQtGDApFysmFigjFSUhFSQgFCIeFCEdFCEdEyAdFCEdFCEdFCEdFCEdFCIdFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCIeFCEeFCEdFCEdFCEdFCEdFCEdFCEdFCEdFCEeFCIeFCMfFSQgFSUgFSciFSkiFiwlFS0mFi4mGjgvGjcvGTQrGC8pFiolFSgiFSUhFSMfFCIeFCEdFCEdFCEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdFCIdFCIdFCIdFCIeFCIeFCIeFCIeFCIeFCEeFCEeFCEdFCEdFCEdFCEdFCEdFCEdFCEdFCEdFCEdFCIeFCIeFCIeFCMeFCMfFSUgFSchFSkiFiwlFTMoFTQqGjYuGjYuGTIrGC8oFikkFSciFSUhFCMfFCIeFCEdEyEdFCEdFCEdFCEdFCEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdFCEdFCEdFCEdFCEdFCEdFCEdEyEdEyEdFCEdFCEdFCEdFCEdFCEdFCEdFCEdFCEdFCIeFCIeFCIeEyIeFCMfFCQfFSchFSokFi8nFjIpFjQpGjYuGjUtGDIqGC8oFikkFSYiFSUhFSMgFCIeEyEdEyEdEyEdFCEdFCEdFCEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdFCEdFCEdFCEdFCEdFCEdEyEdEyEdEyEdEyEdFCEdFCEdEyEdEyEdEyEdEyEdFCIeFCEdFCIeFCIeEyIeFCMeFCUgFSgiFSojFS4mFjEoFjIoGTQrGTQrGDEqFy4nFikkFSYiFSUgFSMfFCIeFCEdEyEdEyEdEyEdEyEdFCEdEyEdEyEdEyEcEyEdEyEcEyEdEyEdFCEdEyEdFCEdFCEdFCEdEyEdEyEdEyEdEyEdFCEdFCEdEyEdEyEdEyEdEyEdFCIeFCEeFCEeFCIeFCIdFCMeEyQfFSciFSkjFS4mFTAnFTEnGTIrGTIrGTApFy0mFikkFSciFSQgFCMfFCEdFCEdEyEdEyEdEyEdFCEdEyAcEyEdEyEdEyEdEyEdEyAcEyEdEyEdFCEdEyEdFCEdFCEdEyEdEyEdEyEdEyEdFCEdFCEdFCEdFCEdEyEdEyEdEyEdFCEdEyEdEyEeEyEeEyIeFCMeFCUfFCchFSkiFC0lFS8nFTAnGTIrGTIrGS8pFy0mFikjFSYiFSMfFCIeFCEdFCEdEyEdEyEdEyEdEyAcEyEdEyAcEyEdEyAcEyEdEyEcEyEdEyEdFCEdEyEdFCEdFCEdFCEdFCEdEyEdFCEdEyEdEyEdEyEdEyEdEyEdEyEdFCEdEyEdFCEdFCEeEyEeEyIeEyMeFCUfFCchFSkiFS0lFC8mFS8nGTIrGTIrGC8pFywmFSgiFSUhFCMfEyIeFCEdFCEdEyEdEyEdEyEcEyAcEyAdEyAcEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdFCEdFCEdFCEdFCEdEyEdEyEdEyEdEyEdFCEdEyEdEyEdEyEdEyEdFCEdEyEdFCEeFCIeEyIeEyMeEyQeFSchFSkiFCwkFC8mFS8mGTEqGTEqGC8oFywmFSgiFSUhFCMeEyIeEyEdFCEdEyEdEyEdEyEcEyAcEyEdEyEcEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdFCEdFCEdFCIeFCIeEyMeEyQfFSYhFSkiFCwkFC8nFS8nGDEpGDApFy8oFywmFSgiFSUhFCMfFCIeFCEdFCEdEyEdEyEdEyEdEyAdEyEdEyEcEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEcEyEcEyEcEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdFCEdEyEdFCIeFCMfEyMfFCUfFCchFSkiFS0lFC8mFS8nGTEqGDEqFy8oFywmFSgjFSYhFCQfFCIeEyEdFCEdEyEdEyEdEyEcEyEdEyEdEyEcEyEdEyEdEyEdEyEdEyEcEyEdEyEdEyEdEyEcEyEdEyEdEyEcEyAcEyEcEyEdEyEdEyEcEyEdEyAcEyAcEyAcEyEdEyEdEyEdFCIeEyMeFSQgFCUgFSchFSkiFS0lFS8mFS8nGTMrGTMrGC8oFywmFigjFSUhFCQfFCIeFCEdFCEdEyEdEyEdEyEdEyEcEyEdEyEcEyEdEyEdFCEdEyEdEyEdEyEdEyEdEyEdEyEdEyEcEyEcEyAcEyEdEyEdEyAcEyAcEyAdEyEcEyEcEyAdEyAcEyEdEyEdFCEdFCIeFCMfFCQfFCUgFSciFSkiFS0lFS8mFS8nGzgwGjgwGC8oFy0mFigjFSUhFSUgFCQfFCMfFCMeFCMeFCMeEyIeEyIdEyIeEyIdEyIdEyIdFCIdEyIdEyIdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyEdEyIdEyIeFCIeFCMfFCQfFCUgFCYhFSciFSkiFC0lFS8mFS8nGzowGzkwGjYtGjMrFigjFSUhFSYhFSYhFSUgFCUgFCQgFCQfFCQfFCMfFCMeFCMeFCMeEyMeFCIeEyIeEyIeEyIeEyIeEyIdEyIdEyIdEyIdEyIdEyIdEyIdEyEdEyEdEyIdEyIdEyIdEyIeEyIeFCMeFCMeFCQfFCQfFCUgFCYgFSchFSgiFSojFSwlFS0lFS0mGjowGjkwGjcuGjYsGTMrFSYhFigiFSgiFSciFSchFSYhFCYgFCUgFCUfFCQfFCQfFCQfFCMfFCMeFCMeEyMeEyIeEyIeEyIeEyIeEyIdEyIdEyIdEyIdEyIdEyIeEyIeEyIeEyIeEyMeFCMeFCMeFCQfFCQfFCQfFCUgFCYgFSYhFSchFSgiFSkjFS0lFS8mFi8mGjwxGjsxGjkvGjYtGDIqGC8oFywlFiokFikjFSgjFSgiFSchFCYhFCYgFCUgFCUgFCQfFCQfFCQfFCMfFCMeEyMeEyMeEyMeEyIeEyIeEyIeEyIeEyIeEyIeEyIeEyMeEyMeFCMeFCMeFCQfFCQfFCQfFCUgFCUgFCYgFCYhFSchFSgiFSgiFSojFi4lFi8nFi8nGz40Gz4zGjwxGjctGDMrGDEoFy4nFi0mFislFiokFSkjFSgiFSgiFSchFCYhFCYgFCUgFCUfFCQfFCQfFCQfFCMeEyMeEyMeEyMeEyMeEyMeEyMeEyMeEyMeEyMeFCMeFCMeFCQfFCQfFCQfFCUfFCUgFCYgFCYhFCchFSchFSgiFSgiFSgiFiskFi8mFi8nFi8nG0I1G0E1Gz0yGjkvGTUsGDEpFzAoFy4nFi0mFiwlFiskFSojFSkjFSgiFSchFCYhFCYgFCUgFCUgFCQfFCQfFCQfFCMfEyMeEyMeEyMeEyMeEyMeEyMeFCMeFCMeFCMfFCQfFCQfFCQfFCUgFCUgFCYgFCYhFCchFSchFSgi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KRkdKBkdKBkdKRkeKRkeKRkeKBkeKBkeKBkdKBkdKBkdKBkdKBkdKBkdKBkdKBkdKBkdKBkdKBkdKRkdKRkeKRkeKRkeKhkeKhkeKxofKxkeLRofLhofLhofLxsgMBwgMhwgNBwhOB0iOh8iOx8iQSInQSInPSAmOB4jNBwhMRwhMBwhLhogKxkeKxkeKhkeKRkdKBgdJxgdJxgdJxgdJxgdJxgdJxgdJxgdJxgdJxgdJxgcJxgdJxgdJxgdJxgcJxgdJxgdJxgcJxgdJxgdJxkdKBkdKBkdKBkdKRkdKRkdKhkeKxkeKxkeLBoeLhofLhsfMBsgMhwgNx0iOB4iOB4iQCEmPyEmOh8kNx0iMhwhMBsgLhofKxkeKxkdKhkdKRkdKBgdJxgdJhgcJhgdJhgcJhgcJhccJhccJhgcJhccJRccJhcbJhccJhccJhccJhcbJhccJhccJRcbJhccJhgcJhgcJhgcJhgdJxgdKBgdKBkdKRkeKhkeKhkdKxkeLBkeLRoeLxofMRwgNR0hNx0hNx0hPSAlPSAlOR4kNR0iMBwgLhofKxkeKhkdKRgdKBgdKBgdJxgcJhgcJhccJhgcJhccJhccJhcbJhccJhcbJRcbJhcbJRcbJhccJRccJRcbJRcbJRcbJhccJhgcJRcbJhccJhccJhgcJhccJxgdJxgdKBkdKBkdKRkdKRkdKRkdKhkdKxkdLRoeMBsfNBwhNx0hNx0hOx8kOx8kNx0iMxwhLxofKxkdKhkdKBgdKBkdJxccJhccJhccJRccJhgcJhccJhccJhcbJhYbJRcbJhcbJRYbJRYaJRcbJRYbJRYbJRcbJRcbJRcbJRcbJRcbJhccJhcbJhcbJhcbJhccJhgcJxgdJxgdKBkdKBkdKBgdKBgdKRgdKhkdLBkdLxseMxwgNh0hNx0hOh4jOh4iNhwiMRwgLRkeKxkdKBgdJxccJhgcJhccJhcbJRcbJRYbJRcbJhcbJhcbJhcbJhYbJRcbJRcbJRYbJRYbJRcbJRYbJRYbJRcbJRcbJRcbJRcbJRcbJhcbJhcbJhcbJhcbJhccJhccJhccJhgdJxgdJxccJxgdJxgcKBkdKRkdKxkdLhoeMRwfNB0gNR0gOh4iOh4iNhwhMBsgLBkeKhkdKBgdJxgcJhcbJhYbJRYaJRYaJRYaJRYbJRcbJRcbJRcbJRcbJRcbJRcbJRYbJRYbJRYbJRYbJRYbJRcbJRcbJRcbJRcbJRcbJhcbJhcbJhcbJhcbJhcbJhccJhccJhgcJhgcJhccJhccJxgcKBgcKRgdKxkdLRoeMRsfNR0gNR0gOh4jOR4iNhwhMBsfLRkdKxkdKBgdJhgdJhcbJhcbJRYaJBYbJBYaJRYaJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRcbJRcbJRcbJRcbJRcbJRcbJRcbJhcbJhcbJhcbJhcbJhcbJhcbJhcbJhgcJhccJhgcJxgcJxkcKRgdKxkdLhseMRwfNB0hNR4gOR8iOR4iNRwhMBsfLBkeKhkdKBgdJhccJhcbJRYbJBYaJBYaJBYaJRYaJRYaJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRcbJRcbJRcbJRcbJRcbJRcbJRcbJRcbJhcbJhcbJhcbJhccJhcbJhcbJhccJhgcJhgcJxgdKRkdKxkdLhseMhwfNR4gNR4gOh4iOR4iNRwhMBsfLBkdKhgdJxccJhccJhcbJRcbJRYbJBYbJBYaJRYaJRYaJRYaJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRcbJRcbJRcbJRcbJRcbJRcbJRcbJRcbJRYbJRYbJRYaJRcbJhcbJhgcJhgcJxgcJxgdKRkdKxkdLhseMhwgNR4hNh4gOR4jOR4iNRwhMBofLBkdKhgdJxcbJhccJhccJhYbJRYbJRYaJRYaJRYaJRYaJRYaJRYaJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJhcbJhccJhgcJxkdKBkdKRkdKxkdLxseMxwgNh4hNx4hOh4iOR4iNRwhMBofKxkdKhgdKBccJhccJhcbJhYbJhYbJRYaJRYaJRYaJRYaJRYaJRYaJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRcbJhccJhgdJxgdKBkdKRkdKxkdLhseMRwfNh4gNx4hOh4jOR4iNRwhMBofLBkdKhgdKBgcJxccJhcbJhYbJhYaJhYaJRYaJRYaJRYaJRYaJRYaJRYaJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRcbJhcbJhccJxgdKBgdKBkdKRkdKxkdLxoeMhwfNh4gNx4gOx8jOh8jNRwhMBofLBkdKhgdKBgcJhccJhcbJhYbJhYbJhYbJRYaJRYaJRYaJRYaJRYaJRYaJRYaJRYaJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJRYbJhcbJhccJhgcJxgdKBkdKRkdLBkdLxseMhwfNh4gOB4hOx4iOh4iNhwhMBofLBkdKhgdKBgcJxccJhccJhYbJhYbJRYaJhYbJhYbJhYbJRYaJRYaJRYaJRYaJRYaJRYaJRYaJRYbJRYbJRYbJRYbJRYbJRYaJRYaJRYaJRYaJRYaJRYbJRYbJRYbJRYbJRYbJRYcJhccJhgcJhccJxgcJxgdKRkdKxodLhseMhwfNh4hNx8hOx4jOx4iNhwhMBofLBkdKhgcKBccJhccJhccJhYbJhYbJhYbJhYbJhYbJhYbJhYbJRYbJRYaJRYaJRYaJRYaJRYaJRYaJRYaJRYaJRYbJRYbJRYaJRYaJRYaJRYaJRYaJRYaJRYbJRYaJRYaJRYaJhYbJhYcJhcbJhccJxgdKBgcKRkdKxkdLhseMRwgQSIkQyMkOx4iOx4iNhwhMBofLBkdKhgdJxccJhccJhccJhcbJhcbJhcbJRYaJhYbJhYaJhYbJRYbJhYaJRYaJRYaJRYbJRYaJRYbJRYaJRcaJRcbJRYbJRYaJRYaJRYaJRYaJRYaJRYaJRYbJRYaJRYaJRYbJhcbJRcbJhccJhccJhccJxgcKRgcKxkdNh0hOh8iPiEjPyEjOx0iOh0iNRwgMBofLBkdKhgdKBccJxccJhcbJhcbJhYbJhYbJhYaJhYbJhYaJhcbJRYbJhcaJRYaJRYaJhcbJRYaJhYbJRYaJRcaJhcbJRYbJRYaJRYaJBYaJRYaJBYaJRYaJhcbJRYaJRYaJRYaJRYaJhYbJhcbJhccJxccJxgcLRkdMRweNR0hOh8iPyEjQCIkOh0iOh0iNhwgMBoeKxkdKRgcJxcbJxccJhYcJhYbJhYbJhYbJRcaJhYbJhYbJRcaJhYbJRYaJRYaJRcbJRYaJRYaJRYaJRYaJRYaJRYaJRYaJBYaJRYaJBYaJBYaJRYaJRYbJRYaJRYbJRYaJRYaJRYbJhcbJhYbJhYbJxgcLhkeMBofMhwfNRwgOh8iQCIkQiMlOh0iOR0iNhwhMBofKxgdKhgcKBccJhccJhcbJhYbJhYbJRYaJhYbJRYbJhYaJRYbJRYbJRcaJhYbJhcaJRYaJRYbJRYaJhcbJhcbJRYbJRYbJRYaJRYaJRYaJRYaJRYbJRYaJRYaJBYaJRYaJRYbJRcbJhYbJhcbJhccKxkdLRkeMBsfMxwgNh0hOh4iQCEkQSIlOh4iOh4iNRwhMBofKxkdKhgdKBccJxccJhYbJhcbJhYbJRYbJhcbJhYaJRcbJhYbJhcbJhcbJhYbJhcaJRYaJRYaJRYaJRYbJRYbJRYbJRYbJRYaJRYaJRYaJRYaJRYbJRYbJRYbJRYbJRYbJRcbJRYbJhcbJhccKxgdLBkdLhkeMBseMxwgNh0hOx8iPyEkQSIkOh4iOh4iNhwhMBoeKxkdKRgdKBccJxccJhYbJhYbJhYbJRYaJRcaJRYbJhYbJhcbJhccJhcbJhcbJRYaJRYaJRYaJRYaJRYaJRYaJRYaJRYaJRYaJRYaJRYaJRYaJRYbJRYbJRcaJRYbJhcbJhcbJhcbJhccKBccKxkdLBkdLhkeMBseMhwfNh0gOh8iPiAkQCIkOR4iOR4iNhwhMBoeLBkdKhgdKBccJhccJhccJhYbJhYaJhYbJRYaJRYaJhcbJRYbJhcbJhcbJhcbJRYaJRYaJRYaJRYaJRYaJRYaJRYaJRYaJRYaJBYaJBYaJBYaJRYaJRYbJhYaJRYbJRYaJRYbJhYbJhcbKRccKxkdLBkdLxoeMBoeMxwgNh0hOh4iPyEjQCEkOR4iOR4iNhwhMRofLRkdKxgdKBccJhYcJhcbJhYbJRYaJRYaJRYaJRYbJRYaJRYaJhYbJhcbJhcbJRYaJRYaJRYaJBYaJRYaJBYaJRYaJBYaJRYaJBYaJBYaJBYaJBYaJRYbJRYaJRYaJRYbJRYbJhcbJxccKRgdKxkdKxkdLhkdMBoeMxwfNx0hOR4iPiAjPyAjOR4iOB4iNhwhMBsgLRkdKxgdKBgcJxccJhcbJRYaJRYbJRYaJRYbJRYaJRYaJRYaJRYbJRYbJRYbJRYaJRYaJBYaJRYaJBYaJBYaJBYaJBYaJRYaJBYaJRYaJRYaJRYaJRYbJRYbJRYbJhYbJhcbJhccJxccKRcdKxgdKxkdLhkdMBoeNBwgNx0iOR4iPSAjPiAjOB0iOB4iNRwhMRsgLRkdKxkdKRgcKBgcJxccJxcbJhcbJhYbJhYbJhYbJhYbJhYbJhYbJRYbJRYbJRYaJRYaJRYaJRYaJRYaJRYaJRYaJRYaJRYaJRYaJRYaJRYaJhYbJhYbJhYbJhYbJxcbJxccKBccKRccKhgdKxgdLRkdLxoeMRsfMxwgNh0gOB4hPCAjPiAjOR4jOR4iNRwiMBsfLRkdKxkdKhgdKRgcKBccKBccJxcbJxcbJxcbJxcbJhcbJhYbJhYbJhYbJhYbJhYbJhYbJRYbJRYaJRYaJRYaJRYaJRYaJRYaJhYbJhYbJhYbJhYbJhcbJxcbJxcbKBccKBccKRgcKhgdKxgdLBkdLhkeLxoeMRsfMxwfNh0hOR8iPCAjPiAjOx8kOx8jNxwiMBsgLBkdKxgdKhgdKhgdKRgcKRgcKBccKBccKBccJxcbJxcbJxcbJxcbJhcbJhcbJhYbJhYbJhYbJhYbJhYbJhYbJhYbJhYbJhYbJhYbJhcbJhcbJxcbJxcbJxccKBccKBccKRgcKhgcKxgdLBkdLRkdLhoeLxoeMRsfMhsfNhwgOR4iPSAjPiAjPR8jPB8jOBwiMRsfLBkdKxgdKxgdKhgdKhgdKhgcKRgcKRccKBccKBccKBccJxcbJxcbJxcbJxcbJhcbJhcbJhcbJhYbJhYbJhYbJhYbJhcbJhcbJhcbJxcbJxcbJxcbKBccKBccKRccKRgcKhgcKxgdLBkdLRkdLhkeLxoeMBoeMRsfMhsfNhwgOR4iPCAiPiAiQSAlQCAlOh4jMxwhLhkeKxkdKxkdKxkdKxgdKxgdKhgdKhgcKRgcKRccKBccKBccKBccJxcbJxcbJxcbJxcbJhcbJhcbJhcbJhcbJhcbJhcbJxcbJxcbJxcbJxcbKBccKBccKRccKRgcKhgcKxgdKxgdLBkdLRkdLhkeLxoeMBoeMRsfMhsfNRwgOB4iOx8iPCAiQiEmQiAmPR8kOB0iMBofKxkdLBkdLBkdLBkdKxkdKxgdKhgdKhgdKRgcKRccKBccKBccKBccJxcbJxcbJxcbJxcbJxcbJhcbJhcbJxcbJxcbJxcbJxcbJxcbKBccKBccKRccKRgcKhgcKxgdKxgdLBkdLRkdLhkeLxoeMBoe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WygvWScuUCUrSyMoSSMnRiInPx8kOB0iOB0iNh0iNBwhMhwgMRwgMBwgMBsgMBsfLxoeLhkeLhkeLhkeLhkeLxoeMBsfMBofMBofMhsfMxsgNBwgNhwgNxwgOR0hPB4iQSAjSSElTyMnViUpWCcqWScqWScrXScrYCgsYiktYSgsXigsYiszYSoyYCsyWigvWSgvWygvWScuUiYsTCQpSyMoRyInPx8kOB0iOBwiNh0iNRwhMhwgMhwhMRwgMRsgMBsfLxoeLxkeLhkeLhkeLhkeMBofMRsfMBofMBsfMxwgNBwgNRwhNhwgOBwgOhwhPR4iQiAkSSElUiQoWycrXCcrWScqWScrXCcrYCgsYSksYSgsYSgs",
+        "ZEUpY0QpY0UpYkUpYEQoXEAnWT4nVTwlUDgkTDYkSTUjSDUkRTUjQzMiQjIjQTEiQDEiPzEiPjAiPjAiPjAiPS8hPC8hPS8iPS8iPS8hPS8hPS8hPS8hPS8hPC8hPC8hOy4hPC4hPi8hQjIiQzIiQzIhRTMiSDQiSzUjUTolUjokVzwmWz8nWz4mWj4mWz8nXEAnY0QpZEUpY0UpYkUpYUQoXEAnWT4nVTwmTzgkTDYkSTUkRzUkRTQjQzMiQjIiQDEiQDEiPzEiPjAiPjAiPi8iPS8hPC8hPS8iPS8iPS8hPS8hPS8hPC8hPS8hPC8hPC8hOy4hOy4hPi8hQTIiQzIiQzIhRTMiSDQiSzUjUDolUjokVzwmWz8nWj4mWj4mXEAnXEAnYUQoYUQpZEUpY0UpYEQpW0AoVTwmUTolTTckSTQjRzQjRTQiQjIiQDEiPzAiPjAhPi8hPi8hPi8hPi8iPS8hPC8iPC8iPC8iPC8hPC8iPC8hOy4hOi4hOi0gOi4hOi4hPC8hPS8hPi8hPi8hPzAhQTEhRDMiRzQiSjUjTTcjUTkkVDwlWT0mWj4mXEAnWz8mWz8mYEMpYEMpYUQoX0IpWj8oVTwmUTolTTgkSTUjRzQiRDMiQTEiPy8hPi8hPS8hPS8hPS8hPC4hPC4hPC4hOy4hOi4hOi4hOi0hOi0hOS0hOS0hOSwgOCwfOCsfOSwgOi0gOi0gOi0gOy4hPC4hPi4gPi8gQTAhQzEiRjMiSTQjTDYjUTokVjwlWj4mWz8mWj4mWj4mX0IoX0IoXkEoWj8oVTwmUDolSzYjSTQjRTMiQzEiQDAhPi8hPS4hOy0gOiwgOSwfOCwfOCwgOCwgNywgOCwgNywgNywgNysfNiofNiofNiofNiofNiofNiofNiofNysfNisfNywfOCwgOSwgOiwfOy0fPi8gPy8gQjEhRTMiSTQjTTcjUjskVzwlWj4mWj4mWT0lXUEnXUEnW0AoVzwnUDklSzYkSDQiRTIhQTAhPi8hPS4hPC0gOSsfNysfNiofNiofNikfNiofNikfNSofNiofNikfNSkfNSkfNSkfNCkfNCkeNCkeNCkeMygeNCkeNCkeNCkeNSkfNiofNysfNysfOCsfOiwfPC4gPi8gQTAhRTIhSTQiTjcjUTokVDskUzokUzokWj4mWj4mVTwmUDklSjUkRzQjQzEhQC8gPi4gOy0fOSsfNyofNSkeNSkeMykeMigeMiceMigeMigeMigeMigeMSceMSgeMSgeMSceMSceMSceMSceMSceMSceMSceMSceMiceMygeNCkeNSkeNikeNikeNyoeOSwfPC0fPi8fQjAgRTIhSTQiTDYiTzgjTzgjTzgjVzwmVjwmUDklTDYkRjMiQzEhPy8gPS4fOywfOCoeNikeNCkeMygdMiceMSYdMCYdLyYdMCYdMCceMCcdMCYdMCYdMCYdLyYdLyUdLyYdMCYdMCUdLyYdMCYdMCYdMCYdMCYdMCYdMSceMygdNCgdNSkeNikeNyoeOiwePS0fPi8fQjAgRjIgSTQhSjUiTTYhTjchUjolUjolTDYkSDQjQzAhPy8gPC0fOisfNyoeNSkeMygdMCYdMCUdMCYdLyUdLiUcLiUcLiUdLiUdLiUcLiUcLiUcLiUcLSUcLSQcLSQcLiQcLiQcLiUcLiUcLiUcLiUcLiUcLyUcLyYdMCYdMScdMicdMygdNikdNykdOisePC0ePi8fQS8gRTMgSTQiSjUiSzUhTDckTDYjSTQjRjIiPi8hPC0fOCoeNikeNCkdMygdMCYcLyUcLyUcLiUcLSQcLSQcLCQcLCQcLCQcLCQcLCQcLCMcLCMcLCMcKyMcKyMcLCMcLCMcLCMcLCMcLCMcLCQcLSQcLSQcLiQcLiUcLyUcMCUcMiccMiccNSkcNikdOSsdPCwePy8fQzAgRTMhSTQiSzckSTUjSTUjRjIiQC8gPC0fOCoeNSgdMyccMSYcMCUcLyUcLSQcLSQbKyMbKyMbKyMbKyIbKiIbKiIbKiIbKiIbKiIbKiIbKiIbKSIbKSIbKiIbKiIbKiIbKiIbKiIbKiIbKyIbKyMbLCMbLCMbLSQbLiUbMCUbMCYcMiYcNCgcNikdOCodPS0fQC8gQjAgSDUiSTUiRTMiRTIiQS8gPS0fOCoeNSgdMSYcMCUcLiUbLiQbLCMbKyMbKiIbKSEaKSEaKSEbKSEbKSEbKCEbKCEbKCEaKCEaKCEaJyEaJyEaJyEaJyEaJyEaKCEaKCEaKCEaKCEaKCEaKSEaKSIaKiIaKiIaLCMbLSQbLiQbMCUcMSYcMygcNikdOSsePi4fQjAfRjMgSDQgQS8gQC8gPi0fOSoeNCgcMCUcLiUbLSMaLCMaKyIaKiIaKiEaKCAaJyAaJyAaJyAaJyAaJyAaJiAaJiAaJh8aJh8aJh8aJR8ZJR8ZJR8ZJR8ZJR8ZJR8ZJh8ZJiAZJiAZJiAZJyAZJyAZKCAZKSAZKiEaKiEaKyIaLSQbMCUbMSYcMygcNikcOysdQC8fQS8fRDEfPi8gPi8gOywfNikdMSYcLyUbLCMaKiIaKiIaKSAaKCAaJyAaJiAZJh8ZJh8ZJR4ZJR4ZJR4ZJR4ZJB4ZJB4ZJB4ZIx4ZIx4ZIx4ZIx4ZIx4ZIx4ZIx4ZIx4ZJB4ZJB4ZJB4ZJB4ZJR8ZJh8ZJh8ZJyAZKCAZKiEaLCIaLiQbMCUbMSYcNSgcOSsdPi4eQC8fQzEfPS0ePS0eOSoeNigdMCUbLSMaKiEaKCAZKCAZJyAZJh8ZJh8ZJR8ZJB4ZJB0ZIx0ZIx0ZIx0ZIx0ZIh0ZIh0YIhwYIRwYIR0YIR0YIR0YIRwYIRwYIR0YIR0YIh0YIh0YIR0YIh0YIx0YJB0YJR4ZJh8ZJh8ZJyAZKSAZKyIaLSQbMCUcNCccOCodPCwePi4ePy8ePC0ePCweOCoeNCccLiQbKyIaKSAZJyAZJh8ZJh8ZJR4ZJB4ZJB4ZIx0ZIx0ZIx0ZIh0ZIh0YIh0YIR0YIR0YIR0YIR0YIRwYIRwYIR0YIR0YIR0YIRwYIR0YIR0YIRwYIh0YIR0YIh0YIx0YIx0YJB0ZJh8ZJh8ZJyAZKiEaLCMaMCUbMyccNikdOisdPCwePi4dOyseOiseNikdMiYcLSMaKiAZJyAZJh4ZJR4ZJB0ZIx0ZIx0ZIh0YIh0YIh0YIh0YIh0YIh0YIR0YIR0YIRwYIR0YIRwYIR0YIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIR0YIh0YIh0YIh0YIh0YJB0ZJR4ZJh8ZJyAZKiEZLSMaMCUbMycbNigbOikbOisdOSsdNikdMiYcLCIaKSAZJh8ZJR0ZJB0ZIx0YIhwYIh0YIRwYIRwYIh0YIh0YIh0YIh0YIR0YIR0YIRwYIR0YIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIR0YIR0YIR0YIh0YIh0YIx0YJB0ZJh4YJx8ZKSAZLCIaMCUbMSUaMiYaMSUaOisdOisdNikdMSUcLCIaKSAZJh4ZJB0ZIx0YIh0YIRwYIh0YIRwYIRwYIRwYIh0YIh0YIR0YIR0YIR0YIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIhwYIR0YIhwYIx0YJB0YJR4ZJh8ZKSAZLCIaLyQaMSUbMiUaMiYaOiseOiseNikdMSUcKyIaKCAZJh4YIx0YIx0YIR0YIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwXIh0YIhwYIx0YIx0ZJR0YJh8ZKSAZLCIZLyQaMCUaMiUaMSUaOyweOiseNikdMSUcLCIaKCAZJh4ZIx0YIx0YIRwYIR0YIRwYIRsXIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIR0YIx0YIx0YJB0YJh4ZKiAZLSMaLyQbMSUaMiYaMiYaOyweOyseNikdMSUcLCIaKSAZJh8ZJB0YIx0YIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIR0YIx0YIx0YJB4YJh8YKSAZLCIaLyQaMSUbMycbMycbOiseOiseNikdMSUcKyIaKCAZJh4YJB0YIh0YIR0YIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIR0YIh0YIx0ZIx0YJB0YJx8YKiAZLCIaLyUbMiUaMyYaMyYaOiodOiodNigcMCUbKyIaKCAZJh4YJB0YIh0YIhwXIRwYIh0YIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIh0YIh0YIh0YIx0YJR0ZJx8ZKiAZLCIaMCUaMiUaMyYaMyYaOyseOisdNigcMSUbKyIaKB8YJh4YJB0YIh0YIhwYIRwXIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIhwYIh0YIh0YIh0ZIx0ZIx0ZJR4YJx8YKSAZLCIZLyQaMiYaNCcaNCcaOiseOisdNSgcMCUbKyIaKCAZJh4YJB0YIxwXIRwYIRwXIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIhwYIhwYIhwYIh0YIh0YIx0ZJB0YJR0YJx8YKSAZLCIaMCUaMyYbMyYaMyYaOSsdOSodNSgcMCUbKyIaKCAZJh4YIx0YIhwYIRwXIRwYIRwXIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIhwYIhwYIhwYIhwYIx0YIh0ZIx0ZJB0ZJR4ZJh8YKSAZLCIaMCUbMiYbNScbNigbOisdOSodNCccMCUbKyEZKCAYJh4YIx0YIhwXIRwXIRwYIRsXIRsYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIhwYIhwYIh0YIh0YIh0YIx0ZIx0ZJB0ZJR4YJh8YKCAYLCIZMCUaNScbNykbNykbOSodOCkdNSccMCUbKyEZKCAZJh4ZJB0YIh0XIRwYIRsXIRsXIRwXIRwXIRwXIRwYIRwYIh0YIh0YIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIhwYIRwYIhwYIhwYIhwYIh0YIx0YIx0ZJB0ZJB4YJR0YJh4YKCAYLSMZMSUaNSgbNykbNykbOSkdOCkdNSccMCQbKyEaKB8ZJh4YIx0YIhwXIRsXIRsXIRsXIRwYIRwXIRsXIRwYIRwYIh0YIh0YIRwYIh0YIRwYIRwYIRwYIRwYIRwYIh0YIRwYIRwYIRwYIRwYIhwYIR0YIhwYIRwYIhwYIh0YIh0YIx0ZIx0ZJB0ZJR0ZJh4YKSAZLCIZMCUaNSgbOCkbOCkbOSodOCkdNSccMCUbKyEaKB8ZJh4YJB0YIh0YIRsXIRsXIRsXIRsXIRsYIRwYIRwYIR0YIhwYIR0YIRwYIhwYIRwYIRwXIh0YIRwYIR0YIh0YIhwYIRwYIRwYIRwYIRwYIR0YIh0YIh0YIhwYIh0YIh0ZIx0ZJB0ZJR0ZJh4YJx8YKSAYLSMZMCUaNCgbNigbNikaOSodOCodNCccMCUbKyEaKCAZJh4YJB0YIh0YIRwYIRsXIRwXIRwYIRwYIRwXIRwXIhwYIRwYIhwYIRwYIhwYIRwYIhwYIh0YIRwYIRwYIRwYIRwYIhwYIhwXIhwYIRwYIRwYIhwYIR0YIh0YIhwYIx0ZIx0ZJB0ZJR0ZJh8YJx8YKSAYLSMZMCUaNScbNykcNykbOCodOCkdNSccMCUbKyEaKSAZJh4ZJB0YIh0YIRwYIRwYIRwYIRwYIRwYIhwYIRwYIh0YIhwYIhwYIRwYIRwYIRwYIhwYIRwYIRwYIRwYIRwYIRwYIhwYIhwXIhwYIRwYIhwYIR0YIhwYIh0YIx0YIh0YIx0ZJB0YJR0ZJh4YJx8YKSAYLSIZMCQaNCcaNigaNigaOCkdOCkdNSgcMCUbKyEaKSAZJh4ZJB0YIx0YIhwYIRwYIRwYIRwYIhwYIRwYIRwYIhwYIhwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwYIRwXIRwXIRwYIRwXIRwXIRwYIhwYIh0YIh0YIh0YIx0YJB0ZJR4ZJh4XJx8YKSAYLSIZMCQZMyYaNScaNScaOCodOCkdNCccMCUbKiEZKCAZJh4YJB0YIx0YIhwYIRwXIRwYIRwYIRwYIRwYIhwYIRwYIRwYIRwYIRwYIRwXIRsXIRsXIRsXIRsXIRwYIRsXIRsXIRsXIRsXIRwYIRwYIRsXIRwYIhwYIh0YIh0YIh0YIx0YJB0YJB0YJh4XJx8YKiAYLCIYMCQZMiUZMyYaNCYaOisdOisdNigcMCUbKiAZKB8YJh4YJB0YIx0YIhwYIRwXIhwYIRwXIRwYIRwYIRwXIRwYIRwYIRwYIRwYIRwXIRsXIRsXIRsXIRsXIRwYIRsXIRsXIRsXIRsXIRwYIRwYIRsXIRwXIRwYIRwYIh0YIhwYIh0YJB0YJB0YJh4YJx8YKiAZLCIZMCQZMyUaNCYaNCYaQS8gQS8gNikcMSUbKiEZJx4YJh0YJB0YIx0YIhwXIRwYIRwXIRwYIRwYIRwXIRwYIRwXIRwYIRwYIRwYIRwYIRsXIRwYIRwXIRwYIRsXIRsXIRwXIRsXIRwXIRsXIRsXIRsXIRsXIRwYIRwXIh0YIh0YIx0YIx0YJR0XJh0XJx8XKiAYLSIZMCUZMyUaMyUZMyYaQjEhQjEhPi4fOCkdKiAZJx8ZKB8ZJx8ZJR4YJB4YIx0YIx0YIx0YIh0YIh0YIh0YIh0YIhwYIhwYIhwYIhwYIhwYIhwYIRwXIRwYIRwXIRwXIRwXIhwXIhwXIhwXIhwXIhwXIhwXIhwYIh0YIx0YJB0YJB4YJR4YJh4YJx8YKSAYKyEYLSIZMCUaMyUaMyYaMyYaQzEhQjAhPC0fOCkdMyYcLyQbKyIaKSAZKCAZJh8ZJR8ZJR4YJB4YJB4YIx0YIx0YIx0YIx0YIh0YIh0YIh0YIhwYIhwYIhwYIhwYIhwXIhwXIhwXIhwXIhwXIhwXIhwXIxwXIx0YIx0YJB0YJB4YJR4YJh4YJh8YJx8YKSAYKiAYKyEZLSIZMCUaMiUaMyUaMyUZRDIiQzEhPS4fOCkdMyYcMCUbLSMaKyIaKiEaKCAZJyAZJh8ZJh8ZJR4ZJR4YJB4YJB4YIx0YIx0YIx0YIx0YIx0YIh0YIh0YIhwYIhwXIhwXIhwXIxwXIxwXIx0XIx0YIx0YJB0YJB0YJR4YJR4YJh8YJx8YKB8YKSAYKiAYKyEZLCIZLSIZMCUaMyYbMyYaMyYaRDIhRDIhPi4gOCkeNCYcMCUcLiQbLSMaKyIaKiEaKSEZKCAZJyAZJh8ZJh8ZJR4ZJR4YJB4YJB4YJB0YIx0YIx0YIx0YIx0YIx0YIx0YIx0YIx0XIx0XIx0YIx0YJB0YJB0YJB4YJR4YJh4YJh8YJx8YKCAYKSAYKiAZKyEZLCIZLCIZLSMZMSUaMycaMyYaMyYZQzIhQzEhPy8gOioeNCccMCUbLyQbLiQbLSMaLCIaKiIaKSEaKCAZJyAZJx8ZJh8ZJR8ZJR4YJB4YJB4YJB0YIx0YIx0YIx0YIx0YIx0YIx0YIx0YIx0YJB0YJB0YJB0YJR4YJR4YJh4YJh8YJx8YKCAYKSAZKiEZKyEZLCIZLCIZLSMZLiMZMSUaMyYaMyUZMyUZRDMhRDIhPi8gOyseNigcMiYcMSUbMCUbLiQbLSMaLCIaKyIaKSEaKSAZKCAZJx8ZJh8ZJh8YJR4YJR4YJB4YJB0YJB0YIx0YIx0YIx0YIx0YIx0YJB0YJB0YJB0YJR4YJR4YJh4YJh8YJx8YKCAYKSAZKiEZKyEZLCIZLSIZ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Wj8oVjwnUTklSzUjRzQiRzIhRDEgPi4fOywdOCkdNSgcNCccMiYbMSUbMCUbLyMaLiMaLSIZLSMZLSMZLSMaLSIZLSIZLSMZLSMZLiMZMCQZMiUaMiUaMyYaNigbPSsdQC4eQy8dRzEeTTUgVjojWjwkVjskWTwkXD4lVzwkVjskVjskYEQqYEMqYEQqYkUqXUIpWj8oVjwnUjklTTcjSDQiSDQiRTIhPy8eOywdOCkcNigcNCgcMyYbMSUbMSUaMCQaLiMaLSMZLiMZLSMZLSMaLSMZLSIZLSMZLiMZLiMZMCQZMiUaMyYaMyYaNykbPisdQS4eRjAeSDEeTjQgWjwjWjwkVjskWDwkXD4lWTwkVjskVjsk",
+        "PD9CPD9CPD9COz5BOz5COz5COj1AODs9NDc5MjQ3MDM1MDM1LjAyKy0vKCosKCosKSstKCosKCosJyksJykrJigqJigqJigqJigqJyksJyksJigqJigqJScpJScpJScpJigqJigqJigqJykrKCosKSstKiwuKy0vLS8xLjEzLjAzLjEzMDI1MjQ3MjQ3MTQ2MTQ2PD9CPD9CPD9COz5BOz5COz5COj1AODs9NDY5MTQ2MDI1LzI0LTAyKy0vKCosKCosKCosKCosKCosJykrJigqJigqJigqJigqJigqJyksJyksJigqJigqJScpJScpJScpJScpJigqJigqJigqKCosKSstKiwuKiwuLC4wLjAzLjAzLjEzMDM1MjQ3MTQ2MTQ2MTQ2Oz5BOz5CPD9CPD9COj1AODs+NTg7NDY5MDM1LjEzLC8xLC4wKiwvKSstKCosJykrJigqJigpJScpJScpJScpJScpJSYoJSYoJScpJScpJScpJScpJScpJScpJScpJScpJScpJScpJScpJigqJykrKCosKCosKSstKiwuKiwvLC4wLjAyMDM1MjQ3MTQ2MDM1LzI0OTw/OTw/Oz5BOj1ANzo9NTg6MjQ3LzI0LjAzLC4xKy0vKiwuKCstKCosJigqJScpJScpJCYoJCYoJCUnIyUnJCUnIyUnIyUnIyUnJCYoJCYoJSYoJCUnIyUnJCUnJCUnJCYoJCYoJScpJScpJigqJicpJykrKCosKCstKiwuKy0vLC4wLjAzMDI1LzI0LzE0LzE0OTw/OTw/ODs+Njk8MzY4MDM2LzE0LS8xKiwvKSstKCstKCosJykrJigqJScpJCUnIyUnIyUnIyUnIyUnIyUnIyUnIyUnIyUnIyUnIyUnIyUnIyUnIyUnIiQmIyUnIyUnIyUnIyUnJCYnJCYoJScpJScpJigqJykrKCosKCosKiwuKiwuKy0vLC4xLzE0LzI0LzI0ODs+ODs+NTg7MzY5MDI1LjEzLS8xKiwvKSstJykrJScpJScpJScpJCYnJCUnIiQmIiQmISMkISMlIiQmIiQlISMlIiQmIiQmIiQmIiQmISMlIiMlIiMlISMkISMkISMlIiQmIiQmIiQmIyUnJCYnJCYoJCYoJScpJigqJigqKCosKSstKSstKy0vLjAyLzE0LzE0Njg7Njg7MzY4MDM1LjEzKy0vKSstKCosJigqJScpJCYoJCYnIiQmIiQmISMlISMkISIkICIjICIjICIjICIjICIjICIjISMkISMkISIkISIkICIjICEjHyEiICEjICIjICIjISMkISMlISMlIiQmIyUmJCYnIyUnJCYoJScpJScpJykrKSstKSwuKy0vKy0vKy0vNjg7NTg7MTQ3LjEzKy0wKSsuJykrJigqJCYoJCYoIiQlIiMlISMlISMkICIjICIjICIjICIjHyEiHyEiICEjICEjICEjICEjHyEiICIkISIkICEjHyEiHyAiHyAiHyAiHyEiICIjICIjISIkISMlISMlIiMlIyUmIyUnIyUnJScpJScpJykrJykrKSwuKy0vLC4xMzY4MzU4LzEzLC4xKCotJykrJScoJCYoJCYnIiQmISIkHyEjHyEjHyEjHyEiHyEiHyEiHyEiHyEiHyAiHyAiHyAiHyAiHyAiHyAiHyAiHyEiHyAiHyAiHyAiHh8hHyAiHyAiHyEiHyEiHyEjHyEjICIkISIkISMkISMlIiQmIyUnJSYoJScpJicpJykrKSsuKi0vLzI0LzI0LC8xKiwuJykrJScpJCYoJCUnIiMlISIkHyEjHyEiHyAiHh8hHh8hHh8hHh8hHh8hHh8hHh8hHh8hHh8hHh8hHh8hHh8hHh8hHh8hHh8hHh8hHh8hHh8hHh8hHh8hHh8hHiAhHiAiHyEjHyEjICEjICEjICIkISMlIiQmIiQmJCUnJScpJigqJykrKCosLjAyLTAyKiwuJykrJScoJCYoIiQmIiMlICIkHyEjHiAhHh8hHR4gHR4gHR4gHR4gHR4gHR4gHR4gHR4gHR4gHR4gHR4gHR4gHR4gHR4gHR4gHR4gHR4gHR4gHR4gHR4gHR4gHh8hHh8hHR8gHR8gHiAhHyEjHyEjICEjICIjISMkISMlIiQmIyQmJScpJigqJigqKy4wKi0vKCosJScpIyUnIiQmISMkICEjHyEjHyAiHh8hHB4fHB0fHB0fHB0fHR4fHR4fHR4fHR4fHR4fHR4fHR4fHR4fHR4fHR4fHR4fHR4fHR4fHR4fHR4fHR4fHR4fHR4fHR4gHR4gHR4gHR4gHR8gHh8hHiAiHyEiHyAiICEjICEjICIkIiQmIyUnJScoJCYoKSstKSstJigqJCYoIiQmICIkICEjHyEjHh8hHR4gHB4fHB0fHB0eGx0eGx0eHB0eHB0eHB0eGx0eGx0eGx0eGx0eGx0eGx0eGx0eGx0eGx0eGx0eGx0eGx0eGx0eHB0eHB0eHB0eHB0eHB0fHB0fHR4gHB0fHR8gHR8gHR8gHiAiHyEiICEjICIjIiMlIyUnJCYnJykrJykrJScpIiQmICIjICEjHyEjHR8hHB0fHB0fHB0fHB0eGxwdGhwdGhwdGhwdGhwdGhwdGhwdGhwdGhwdGhwdGhwdGhwdGhwdGhwdGhwdGhwdGhwdGhwdGhwdGhwdGx0eGx0eGx0eGx0eHB0eHB0eHB0fHB0fHB0fHR4gHR8gHiAhHyAiICEjISMlIiQmIiQmJigqJigqJCUnISMlICEjHyAiHR8gHB0fHB0fHB0fHB0eGxwdGhwdGhwdGhwdGhwdGhwdGRscGRscGhwdGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGhwdGhwdGhwdGhwdGhwdGxwdGx0eHB0eHB0fHB0fHB0fHB4fHR8gHh8hHyEjISMkISMlISMlJScpJScpIyUmISMlHyEiHR8gHB0fHB0fGxweGxwdGxwdGhwdGhwdGRscGhwdGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGhwdGRscGRscGRscGhwdGRscGhwdGhwdGx0eGx0eHB0eHB0eHB0eHB0fHB0fHR8gHiAiICIjISMlISMlJCYoJCYoISMlICIjHh8hHB0fHB0fGxwdGx0eGhscGRscGRscGRscGhwdGRscGRscGRscGRobGRscGRscGRobGBobGRscGRobGRobGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGhwdGhwdGhwdGx0eGx0eGxwdGxwdGxweHB0fHB4fHiAhICIjISMlISMlIyUmIyUmISIkHyEjHB4fHB0fGxwdGhscGhwdGRscGRscGRscGRobGRscGRscGRscGRscGRobGRscGRscGRobGRobGRscGRobGRobGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGhwdGhwdGhscGhwdGhwdGx0eHB0eHB0fHR8gHyEjISIkISMkIyUmIyUmISIkHyAiHB4fHB0fGxwdGhwdGRscGRobGBobGBobGBobGRobGRscGRscGRscGRscGRscGRscGRobGRobGRobGRobGRobGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGhwdGhwdGRscGRscGhwdGxwdGxweHB0fHR8gHyAiISMkISMkIyUmIyQmISIkHiAiHB4fHB0fGxwdGhwdGRscGRscGBobGBobGBobGBobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGhwdGRscGhwdGhwdGxweGxweHB0fHiAhHyEjISMkIiMlIyUnIyQmICIkHiAiHB4fHB0fGxwdGRscGRscGRobGBobGBobGBobGBobGBobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGRscGhwdGhwdGhwdHB0eHB0fHiAhICEjIiMlIiMlIyUmIyQmICIkHiAiHB4fGxweGhscGRscGRscGRscGRobGBobGBobGBobGBobGBobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRscGRscGRscGRscGRscGRscGRscGRscGRobGRobGBobGRscGRscGhwdGhwdGhwdGhwdHB0eHB0fHiAhICEjIiMlIiQlIyQmIyQmICIkHh8hHB4fGxweGhscGRscGRscGRobGRobGBobGBobGBobGBobGBobGBobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRscGRscGhwdGx0eGx0eHB0eHB0fHiAhICIjIiQlIiQmIyUmIyQmICIkHh8hHB0fGxweGhsdGRscGRscGRobGRobGBobGBobGBobGBobGBobGBobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRscGRscGhwdGhwdGx0eHB0eHB0fHiAhHyEjIiQlIiQmIyUmIyQmICIkHh8hHB4fGxweGxwdGhscGRscGRobGRobGRobGBobGBobGBobGBobGBobGBobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRscGRscGRscGhwdGxwdGx0eHB0eHB0fHh8hICEjIiQlIiQmJCYnJCUnICIkHh8hHB4fGxweGxwdGRscGRscGRobGRobGRobGBobGBobGBobGBobGBobGBobGBobGBobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRscGRscGhwdGhwdGx0eHB0eHB4fHiAhICEjIiQlIiQmIyUnIyUmISIkHh8hHB4fGxweGxwdGhscGRscGRobGRobGBobGRobGRobGRobGBobGBobGBobGBobGBobGBobGBobGRobGRobGRobGRobGRobGBobGBobGBobGBobGBobGRobGRobGRobGRobGRobGRobGRscGhwdGRscGhwdGhwdHB0eHR4gHiAhICEjIiQlIyUmIyUnIyUnISIkHh8hHB4fGxweGhsdGRscGRscGRobGRobGRobGRobGRobGRobGRobGRobGBobGBobGBobGBobGBobGBobGBobGBobGRobGRobGBobGBobGBobGBobGBobGBobGRobGBobGBobGBobGRobGRobGRscGRscGhwdGxwdHB0eHB0fHiAhHyEjJykrKCosIyUnIyUnISIkHh8hHB4fGxweGhscGRscGRscGRscGRscGRscGBobGRobGRobGRobGRobGRobGBobGBobGRobGBobGRobGBobGRocGRscGRobGBobGBobGBobGBobGBobGBobGRobGBobGBobGRobGRscGRscGRscGRscGRscGhwdGxweHB0fISMlIyUnJigqJigqIiQmIiQmICIkHh8hHB4fGxweGhsdGhscGRscGRscGRobGRobGRobGRobGRobGRscGRobGRscGBobGBobGRscGBobGRobGBobGRocGRscGRobGBobGBobGBobGBobGBobGBobGRscGBobGBobGBobGBobGRobGRscGRscGhscGhwdHB4fHyEjISMkIyUnJigqJykrIiQmIiQmICIkHh8hHB0fGxweGhscGhscGRobGRobGRobGRobGRocGRobGRobGRocGRobGBobGBobGRscGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGRobGBobGRobGBobGBobGRobGRscGRobGRobGhwdHR4gHh8hICEjICIkIyUnJykrKCosIiQmIiQlISIkHh8hGx0eGxweGhsdGRscGRscGRobGRobGBobGRobGRobGRobGRobGRobGRocGRobGRscGBobGRobGBobGRscGRscGRobGRobGBobGBobGBobGBobGRobGBobGBobGBobGBobGRobGRscGRobGRscGRscHB0fHB4fHiAiICIjISMlIyUmJigqJykrIyUmIyUmICIkHh8hHB0fGxweGhsdGhscGRobGRscGRobGRobGRscGRobGRscGRobGRscGRscGRobGRscGBobGBobGBobGRobGRobGRobGRobGBobGBobGBobGBobGRobGRobGRobGRobGRobGRscGRobGRscGRscGx0eHB4fHR4gHiAiICIjISMlJCYnJigqJykrIyUmIyUmISIkHh8hHB0fGxweGhsdGhscGRobGRobGRobGBobGRocGRobGRobGRscGRscGRscGRscGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGRobGRobGRocGRobGRscGRscGRscGRscGhsdHB0fHB4fHR4gHiAiICEjISMlIyUnJScpJykrIyQmIyQmISIkHh8hHB4fGxweGhsdGRscGRscGRobGRobGRobGBobGBobGRscGRobGRscGRscGRscGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGRobGRobGRobGBobGRobGRobGRscGhsdHB0fHB4fHh8hHh8hICIjISMlIyUmJigqJigqIyQmIyQmISIkHiAhHB4fGx0eGhsdGRobGRscGRobGBobGBobGBobGRobGBobGBobGRobGRscGRscGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGRobGBobGBobGRobGRobGRscGhscGxweHB0fHB0fHR4gHh8hICEjISMlIyQmJScpJScpIyQmIiQmISIkHyAiHB4fGx0eGxwdGhscGRscGBobGRobGBobGRobGBobGBobGBobGRobGRobGRobGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGRobGRobGRobGRobGRscGRscGhscGhwdGx0eHB0fHR4gHh8hICIjISMlIyQmJScpJScpIiMlIiQmICIkHyAiHB4fHB0fGxweGxwdGhscGhscGRscGRobGRobGRobGRobGRobGRobGRobGRobGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGBobGRobGRobGRobGRobGhscGhscGhsdGhsdGxweGx0eHB4fHh8hHyAiICIjISMlIiQmJScoJScpIyQmIyQmICIkHiAiHB4fHB0fGxweGxweGhsdGhsdGhscGhscGhscGhscGRscGRobGRobGRobGRobGRobGRobGRobGBobGBobGBobGBobGBobGBobGRobGRobGRobGRobGRscGhscGhscGhsdGhsdGxweGxweGx0eHB4fHR4gHh8hHyAiICEjISMlIyUnJScoJScpJCYoJCYnISMkHyAiHB4fGx0eGxweGxweGxweGxweGhsdGhsdGhsdGhscGhscGhscGhscGRscGRscGRobGRobGRobGRobGRobGRobGRobGRobGRobGRobGRscGRscGhscGhscGhscGhsdGhsdGxweGxweGx0eHB4fHB4fHR8gHh8hHyAiHyEiICIkIyQmJScpJScpJCYoJCYoISMkHyAiHB4fGx0eGx0eGxweGxweGxweGxweGhsdGhsdGhsdGhsdGhscGhscGhscGhscGRscGRscGRscGRobGRobGRobGRobGRscGRscGRscGhscGhscGhscGhsdGhsdGhsdGxweGxweGx0eHB4fHB4fHR4gHh8hHh8hHyAiHyEiICIkIyQmJSYoJScpJigqJigqIyUmICIjHR4gHB0fHB0fHB0fGx0eGx0eGxweGxweGxweGhsdGhsdGhsdGhsdGhscGhscGhscGhscGRscGRscGRscGRscGRscGRscGhscGhscGhscGhscGhsdGhsdGhsdGxweGxweGx0eGx0eHB4fHB4fHR4gHh8hHh8hHyAiHyEiICIkIiQmJCYnJSYoJykrJigqJCYoIiMlHh8hHB0fHB4fHB4fHB4fHB0fGx0eGxweGxweGxweGhsdGhsdGhsdGhsdGhscGhscGhscGhscGhscGRscGRscGhscGhscGhscGhscGhscGhsdGhsdGhsdGxweGxweGx0eGx0eHB4fHB4fHR4gHh8hHh8hHh8hHyAiHyAiICIkIiQlJCYoJSYoJyksJykrJScoIiMlHyEiHh8hHR8gHR4gHB4fHB4fHB4fGx0eGx0eGxweGxweGhsdGhsdGhsdGhsdGhscGhscGhscGhscGhscGhscGhscGhscGhscGhscGhsdGhsdGhsdGhsdGxweGxweGx0eGx0eHB4fHR4gHR4gHh8hHh8hHh8hHyAiHyAiICIkIyQmJCYnJCYoKiwuKSstJigqIiQlICIjHh8hHh8hHh8hHR4gHR4gHB4fHB4fGx0eGxweGxweGxweGhsdGhsdGhsdGhscGhscGhscGhscGhscGhscGhscGhscGhscGhscGhsdGhsdGhsdGxweGxweGx0eGx0eHB4fHB4fHR4gHh8hHh8hHh8hHyAiHyAiHyAiICIkIiQlJCYoJCYoKy0vKiwuJigqIyUnISIkHyEiHyEiHiAhHh8hHh8hHR4gHB4fHB4fGx0eGxweGxweGxweGhsdGhsdGhsdGhscGhscGhscGhscGhscGhscGhscGhscGhsdGhsdGhsdGhsdGxweGxweGx0eGx0eHB4fHR4gHR4gHh8hHh8hHyEiHyEiHyEjHyEiISIkIyUmJCYoJCYoLS8xLC4wKCosJCYoISMkICIkHyEjHyEiHiAhHh8hHR4gHB4fHB4fGx0eGx0eGxweGxweGhsdGhsdGhsdGhscGhscGhscGhscGhscGhscGhscGhscGhsdGhsdGhsdGhsdGxweGxweGx0eHB4fHB4fHR4gHh8hHh8hHyEiHyEiICEjICIkICIkIiQlJCYoJScpJigqLjEzLS8yKiwuJigqIiQmISMkICIkHyEjHyEiHiAhHh8hHR4gHB4fHB4fGx0eGxweGxweGhsdGhsdGhsdGhscGhscGhscGhscGhscGhscGhscGhscGhscGhsdGhsdGhsdGxweGxweGx0eHB4fHR4gHR4gHh8hHiAhHyEiICEjICIkISIkISMkIyUnJScpJigqJigqMDI1LzI0Ky0wJykrJCUnIiQlISMkICIkHyEiHiAhHh8hHR4gHB4fHB4fGx0eGxweGxweGhsdGhsdGhscGhscGhscGhscGhscGhscGhscGhscGhscGhscGhsdGhsdGhsdGxweGxweGx0eHB4fHR4gHR4gHh8hHiAhHyEjICIkISMkIiQmIiQmJScpJigqJyksKSstMzY4MjU3LC4wKSstJigqIyUnIiQmISMkHyEjHyEiHiAhHR4gHB4fHB4fGx0eGxweGxweGhsdGhsdGhscGhscGhscGhscGhscGhscGhscGRocGRocGhscGhscGhsdGhsdGxweGxweHB0fHB4fHR4gHR8gHh8hHyEiICEjISMkIiQmIyUnJCYoJigqKCstKi0vLC4wMzY4MzY4LjAzKy0vJykrJigqIyUnISMkICIkHyEiHiAhHR8gHB4fHB4fGx0eGxweGxwdGhsdGhscGhscGRobGRobGRscGhscGhscGhscGRocGRobGRscGRocGRocGhsdGxweGxweHB0fHB4fHR4gHR8gHR8gHyEiICIkISMlIyQmJScpJigqKSstKy0wLC4xLC4xNDc5NDc5MDM1LS8xKSstJigqJSYoJCYoISMkICIkHyEiHiAhHh8hHR4gHB4fHB0fGx0eGxweGxweGxweGhscGhscGhscGhscGhscGhscGhsdGhsdGhsdGhsdGhsdGhsdGx0eHB0fHB4fHR4gHh8hHiAhHyEjISIkISMlIyQmJScpJigqKSstKy4wLTAyLjAzLjAzMzY4MzY4MzY4LzE0Ky4wKSwuJigqJScpIyUnIiMlISIkHyEiHiAhHh8hHR4gHR8gHB4fHB0fHB0fGx0eGxweGxweGxweGhsdGhsdGxweGxweGx0eGxweGx0eGxweGx0eHB4fHR4gHR8gHh8hHyEiICIkISMkIiQmIyUnJScpJykrKSstKy4wLS8yMDI1MDM1MDM1NDc6NDc6NDY5MjQ3LjAzKy4wKCstJigqJigqIyUnIiMlISIkHyEjHyEiHyAiHiAiHR8gHB4fHB4fHB0fHB0fHB0fGxweGx0eGxweHB0fHB0fHB0fHB0fHB0fHB4fHB4fHR4gHh8hHiAhICIjISIkISMkIiQmJCUnJigqJykrKSsuKy4wLjAyMDM1MDM1MDI1MDI1NDY5MzY4NTg7NTc6MTM2LzE0LC4wKiwvJyksJigqIyUnIiQmIiMlISIkICEjHyAiHyAiHyAiHiAhHR4gHB4fHB4fHB4fHB0fHB4fHB4fHB4fHB4fHB4fHR4gHR4gHR4gHiAhHyEiICIkISIkIiQlIyUnJScpJigqKCosKiwvLC4xLzEzMTQ2MzY4MjU4MDM1MDM1NDc5NTg7NTg6MjQ3MTM2MTQ2MDM1LS8xKiwuKiwuKCotJScoIiMlIiMlISMlICIjICEjHyEjHyEiHyAiHiAiHh8hHR4gHR4gHR4gHR4gHh8hHiAiHh8hHh8hHyEiHyEiICIjICIkISIkIiQlIyUnJigqKCosKy0vLjAzMDI1MDI1MDI1MTM2MjU3MzY5MjU4MjQ3NTg7NDc6NTc6MTQ2MTM2MTQ2MDM1LjAzKy0wKiwuKSstJScoIiMlISMkISMlICIkICEjICEjHyEjHyAiHiAiHh8hHR4gHR4gHR4gHR4gHh8hHyAiHh8hHiAiICIjICIjICIkICIkISMkISMlIyUnJigqKCosLC8xMDM1MTM2MDI1MDI1MTM2MjU3MzY4MjU4MjU4"
+    ]
+    static let images: [CGImage] = samples.map { encoded in
+        let data = Data(base64Encoded: encoded)!
+        return CGImage(width: 49, height: 57, bitsPerComponent: 8, bitsPerPixel: 24,
+            bytesPerRow: 49 * 3, space: CGColorSpace(name: CGColorSpace.sRGB)!,
+            bitmapInfo: CGBitmapInfo(rawValue: 0), provider: CGDataProvider(data: data as CFData)!,
+            decode: nil, shouldInterpolate: true, intent: .defaultIntent)!
+    }
+    static let rims: [[Color]] = [
+        [Color(hex: 0x1DA974), Color(hex: 0x20AA74), Color(hex: 0x20AA75), Color(hex: 0x1CAC76), Color(hex: 0x1DB078), Color(hex: 0x25CC8B), Color(hex: 0x25D08E), Color(hex: 0x37EDB2), Color(hex: 0x44EFB2), Color(hex: 0x3CF7BF), Color(hex: 0x3DF9BB), Color(hex: 0x3BFFC1), Color(hex: 0x41F6B6), Color(hex: 0x2CC586), Color(hex: 0x1A9765), Color(hex: 0x17885A), Color(hex: 0x178D5B), Color(hex: 0x158859), Color(hex: 0x158D5B), Color(hex: 0x178A5B), Color(hex: 0x17925E), Color(hex: 0x15905E), Color(hex: 0x199160), Color(hex: 0x20A86F), Color(hex: 0x3FFAB6), Color(hex: 0x3FFFC3), Color(hex: 0x42FACC), Color(hex: 0x33F5BF), Color(hex: 0x46F5C6), Color(hex: 0x28C994), Color(hex: 0x1EA479), Color(hex: 0x1DA97D), Color(hex: 0x1FB182), Color(hex: 0x1FB684), Color(hex: 0x20B987), Color(hex: 0x21B685), Color(hex: 0x22B484), Color(hex: 0x1FB083), Color(hex: 0x1FB084), Color(hex: 0x2DC999), Color(hex: 0x2DD7A1), Color(hex: 0x31E6AC), Color(hex: 0x36ECB4), Color(hex: 0x36D4A3), Color(hex: 0x41F6C2), Color(hex: 0x35F7C5), Color(hex: 0x34FBCD), Color(hex: 0x3AF7C5), Color(hex: 0x43FFCA), Color(hex: 0x28C78A), Color(hex: 0x209A6C), Color(hex: 0x1D9A6A), Color(hex: 0x1D9B6C), Color(hex: 0x1DA16F), Color(hex: 0x19A370), Color(hex: 0x1AA270), Color(hex: 0x1BA773), Color(hex: 0x1FA070), Color(hex: 0x1EA272), Color(hex: 0x2DD99A), Color(hex: 0x45FFC8), Color(hex: 0x47FABC), Color(hex: 0x2CB07D), Color(hex: 0x269E71), Color(hex: 0x20A16F), Color(hex: 0x1EA270), Color(hex: 0x1DA06D), Color(hex: 0x1A9E70), Color(hex: 0x1BA370), Color(hex: 0x1AA470), Color(hex: 0x1AA46E), Color(hex: 0x1EAB76), Color(hex: 0x1DA974)],
+        [Color(hex: 0xF57061), Color(hex: 0xF46F63), Color(hex: 0xF66C5E), Color(hex: 0xF36E5E), Color(hex: 0xEF6355), Color(hex: 0xEE554F), Color(hex: 0xF3584F), Color(hex: 0xF56860), Color(hex: 0xF86F75), Color(hex: 0xEB707E), Color(hex: 0xFA7584), Color(hex: 0xFF7787), Color(hex: 0xFF7F89), Color(hex: 0xF5565F), Color(hex: 0xC2464F), Color(hex: 0xB4424A), Color(hex: 0xAD3D49), Color(hex: 0xAB3C47), Color(hex: 0xA93C47), Color(hex: 0xAE3F4A), Color(hex: 0xB6424C), Color(hex: 0xB4404B), Color(hex: 0xBE474E), Color(hex: 0xF04F5D), Color(hex: 0xFF7787), Color(hex: 0xFB8094), Color(hex: 0xF78091), Color(hex: 0xFE7A93), Color(hex: 0xF87180), Color(hex: 0xF96471), Color(hex: 0xF3474D), Color(hex: 0xFA4C51), Color(hex: 0xF74A52), Color(hex: 0xF54950), Color(hex: 0xF94F54), Color(hex: 0xFA4E55), Color(hex: 0xF95157), Color(hex: 0xFE5859), Color(hex: 0xF95759), Color(hex: 0xF85255), Color(hex: 0xF94D52), Color(hex: 0xF74950), Color(hex: 0xF94D53), Color(hex: 0xFC6A73), Color(hex: 0xFC7180), Color(hex: 0xF9768B), Color(hex: 0xFC8294), Color(hex: 0xF97F8F), Color(hex: 0xFF8197), Color(hex: 0xFF5E72), Color(hex: 0xBF4557), Color(hex: 0xBB4658), Color(hex: 0xBD4658), Color(hex: 0xB74457), Color(hex: 0xB94456), Color(hex: 0xC34659), Color(hex: 0xC3465B), Color(hex: 0xCA475B), Color(hex: 0xD04B5E), Color(hex: 0xFF5C71), Color(hex: 0xFF93A1), Color(hex: 0xFF7E90), Color(hex: 0xFA7685), Color(hex: 0xF1677C), Color(hex: 0xF46E77), Color(hex: 0xF45458), Color(hex: 0xED4C4D), Color(hex: 0xF35153), Color(hex: 0xF04E50), Color(hex: 0xF2534F), Color(hex: 0xF56A5B), Color(hex: 0xF5695C), Color(hex: 0xF57061)],
+        [Color(hex: 0xFFBF60), Color(hex: 0xFFC362), Color(hex: 0xFFC262), Color(hex: 0xFFB85D), Color(hex: 0xF99F53), Color(hex: 0xE38849), Color(hex: 0xC37642), Color(hex: 0xCE7A41), Color(hex: 0xD07D42), Color(hex: 0xC68040), Color(hex: 0xDC9149), Color(hex: 0xFFBB5D), Color(hex: 0xFFDD6D), Color(hex: 0xFFB054), Color(hex: 0xC5793D), Color(hex: 0xB67138), Color(hex: 0xB87139), Color(hex: 0xB36F36), Color(hex: 0xB97238), Color(hex: 0xB97239), Color(hex: 0xBD783C), Color(hex: 0xBE783C), Color(hex: 0xBE793D), Color(hex: 0xCD823D), Color(hex: 0xFFDE6E), Color(hex: 0xF3A14D), Color(hex: 0xE0964D), Color(hex: 0xD98D48), Color(hex: 0xD78B43), Color(hex: 0xD68842), Color(hex: 0xF3A04A), Color(hex: 0xFBAE52), Color(hex: 0xFFBB58), Color(hex: 0xFFBD5C), Color(hex: 0xFFBC5A), Color(hex: 0xFFBA57), Color(hex: 0xFFBA56), Color(hex: 0xFCB956), Color(hex: 0xFFBB58), Color(hex: 0xFFBD59), Color(hex: 0xFFBD56), Color(hex: 0xFFC158), Color(hex: 0xFFC058), Color(hex: 0xE19449), Color(hex: 0xC9803E), Color(hex: 0xDB8E49), Color(hex: 0xC88040), Color(hex: 0xEB9A4C), Color(hex: 0xF3A152), Color(hex: 0xD28543), Color(hex: 0xC67E42), Color(hex: 0xD08445), Color(hex: 0xD08142), Color(hex: 0xD78543), Color(hex: 0xE38E47), Color(hex: 0xF1964A), Color(hex: 0xF59C4E), Color(hex: 0xE78F49), Color(hex: 0xD08445), Color(hex: 0xEA974D), Color(hex: 0xF39D50), Color(hex: 0xDB8E49), Color(hex: 0xD78644), Color(hex: 0xBF7C42), Color(hex: 0xAF7340), Color(hex: 0xFFB75B), Color(hex: 0xFFC863), Color(hex: 0xFFB75A), Color(hex: 0xFFBB60), Color(hex: 0xFFBD5D), Color(hex: 0xFFBC5D), Color(hex: 0xFFBE60), Color(hex: 0xFFBF60)],
+        [Color(hex: 0x868D94), Color(hex: 0x858C93), Color(hex: 0x838A91), Color(hex: 0x848A91), Color(hex: 0x7B8187), Color(hex: 0x70767C), Color(hex: 0x737A80), Color(hex: 0x80878D), Color(hex: 0x878E95), Color(hex: 0x868D94), Color(hex: 0x8D949B), Color(hex: 0x8F979E), Color(hex: 0x959CA4), Color(hex: 0x747A80), Color(hex: 0x5D6267), Color(hex: 0x575C60), Color(hex: 0x52575B), Color(hex: 0x515559), Color(hex: 0x515559), Color(hex: 0x54585D), Color(hex: 0x585C61), Color(hex: 0x565A5F), Color(hex: 0x5D6267), Color(hex: 0x6E7379), Color(hex: 0x8F979E), Color(hex: 0x959DA5), Color(hex: 0x949CA4), Color(hex: 0x9299A1), Color(hex: 0x899097), Color(hex: 0x7F868D), Color(hex: 0x686D72), Color(hex: 0x6D7278), Color(hex: 0x6B7076), Color(hex: 0x6A6F75), Color(hex: 0x6F757A), Color(hex: 0x6E747A), Color(hex: 0x70767C), Color(hex: 0x767D83), Color(hex: 0x757B81), Color(hex: 0x71777D), Color(hex: 0x6D7379), Color(hex: 0x6A7075), Color(hex: 0x6D7379), Color(hex: 0x848B92), Color(hex: 0x8A9198), Color(hex: 0x8D959C), Color(hex: 0x979FA7), Color(hex: 0x949CA3), Color(hex: 0x979FA7), Color(hex: 0x7C8389), Color(hex: 0x5C6166), Color(hex: 0x5C6166), Color(hex: 0x5D6266), Color(hex: 0x5A5F63), Color(hex: 0x5A5F64), Color(hex: 0x5E6368), Color(hex: 0x5E6368), Color(hex: 0x60656A), Color(hex: 0x646A6F), Color(hex: 0x7B8188), Color(hex: 0xA4ADB5), Color(hex: 0x959CA4), Color(hex: 0x8D959C), Color(hex: 0x81878E), Color(hex: 0x868D93), Color(hex: 0x72777D), Color(hex: 0x6A6F75), Color(hex: 0x6F757B), Color(hex: 0x6C7277), Color(hex: 0x70767C), Color(hex: 0x81888F), Color(hex: 0x80878E), Color(hex: 0x868D94)]
+    ]
 }
