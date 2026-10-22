@@ -111,6 +111,15 @@ public enum AppColors {
             missedLight: Color(hex: 0xD0362E))
     }
 
+    // Saturated Glow lighting; Calm retains its softer status tints.
+    public static var homeDayGlowColors: HomeDayGlassColors {
+        let glass = homeDayGlassColors
+        guard ThemeManager.shared.currentTheme.isDark else { return glass }
+        return HomeDayGlassColors(base: glass.base, reflection: glass.reflection,
+            neutralRim: glass.neutralRim, completedLight: Color(hex: 0x43E5AE),
+            unfinishedLight: Color(hex: 0xFFB54B), missedLight: Color(hex: 0xFF6F87))
+    }
+
     // Split presentation colors
     
     // History Day Detail Sheet specific colors matching design reference

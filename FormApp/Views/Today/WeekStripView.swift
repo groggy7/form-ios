@@ -105,7 +105,7 @@ struct WorkoutDayStrip: View {
     }
 
     var body: some View {
-        let glass = AppColors.homeDayGlassColors
+        let glass = glowTiles ? AppColors.homeDayGlowColors : AppColors.homeDayGlassColors
         let isDark = themeManager.currentTheme.isDark
         ScrollViewReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
@@ -148,7 +148,8 @@ struct WorkoutDayStrip: View {
                                 Text(dayLabel)
                                     .font(.app(size: labelSize, weight: .semibold))
                                     .tracking(0.5)
-                                    .foregroundStyle(textColor)
+                                    .foregroundStyle(glowTiles && isDark
+                                        ? Color.mix(statusTint ?? glass.neutralRim, textColor, 0.55) : textColor)
                                     .lineLimit(1)
 
                                 Text("\(dayNumber)")
@@ -158,6 +159,15 @@ struct WorkoutDayStrip: View {
                                                 : glowTiles ? (statusTint ?? glass.neutralRim).opacity(0.35) : Color.black.opacity(0.35),
                                             radius: glowTiles ? 5 : 1, x: 0, y: glowTiles ? 0 : 1)
                                     .lineLimit(1)
+                                    .overlay(alignment: .bottom) {
+                                        if glowTiles {
+                                            let light = statusTint ?? glass.neutralRim
+                                            Rectangle().fill(LinearGradient(colors: [light.opacity(0), light.opacity(0.65), light.opacity(0)],
+                                                startPoint: .leading, endPoint: .trailing))
+                                                .frame(width: 24, height: 0.7).offset(y: 3)
+                                                .accessibilityHidden(true)
+                                        }
+                                    }
 
                                 Text(workout.displayTitle(programId: program.id))
                                     .font(.app(size: labelSize))
@@ -248,18 +258,18 @@ private struct HomeGlassRecipe {
 
     static let status = HomeGlassRecipe(
         body: 0.065, diagonal: 0.06, edgeAlpha: 0.19, edgeDecay: 0.11,
-        topLeft: Light(alpha: 0.60, radius: 0.30), topRight: Light(alpha: 0.50, radius: 0.22),
-        bottomLeft: Light(alpha: 0.62, radius: 0.28), bottomRight: Light(alpha: 0.25, radius: 0.170),
-        sheenTop: Light(alpha: 0.62, radius: 0.41), sheenBottom: Light(alpha: 0.13, radius: 0.53),
-        sheenWhite: 0.35, bloom: 0.12, bloomX: 0.06, bloomY: 0.10,
+        topLeft: Light(alpha: 0.42, radius: 0.46), topRight: Light(alpha: 0.28, radius: 0.36),
+        bottomLeft: Light(alpha: 0.44, radius: 0.40), bottomRight: Light(alpha: 0.30, radius: 0.32),
+        sheenTop: Light(alpha: 0.22, radius: 0.60), sheenBottom: Light(alpha: 0.10, radius: 0.58),
+        sheenWhite: 0.18, bloom: 0.15, bloomX: 0.06, bloomY: 0.10,
         rimAlpha: statusRimAlpha, rimWhite: statusRimWhite)
 
     static let neutral = HomeGlassRecipe(
         body: 0.07, diagonal: 0.04, edgeAlpha: 0.17, edgeDecay: 0.078,
-        topLeft: Light(alpha: 0.52, radius: 0.275), topRight: Light(alpha: 0.64, radius: 0.255),
-        bottomLeft: Light(alpha: 0.38, radius: 0.225), bottomRight: Light(alpha: 0.20, radius: 0.130),
-        sheenTop: Light(alpha: 0.39, radius: 0.435), sheenBottom: Light(alpha: 0.12, radius: 0.57),
-        sheenWhite: 0.25, bloom: 0.09, bloomX: 0.06, bloomY: 0.10,
+        topLeft: Light(alpha: 0.34, radius: 0.46), topRight: Light(alpha: 0.25, radius: 0.36),
+        bottomLeft: Light(alpha: 0.32, radius: 0.40), bottomRight: Light(alpha: 0.24, radius: 0.32),
+        sheenTop: Light(alpha: 0.18, radius: 0.60), sheenBottom: Light(alpha: 0.08, radius: 0.58),
+        sheenWhite: 0.18, bloom: 0.11, bloomX: 0.06, bloomY: 0.10,
         rimAlpha: neutralRimAlpha, rimWhite: neutralRimWhite)
 
     // Rim angles (degrees clockwise from 3 o'clock) for a 46.7° corner angle, with the rim's alpha and its
@@ -391,6 +401,28 @@ private struct HomeDayGlassSurface: View {
                 glassContext.fill(shape, with: .color(glass.base))
             }
 
+            // Broad curved reflections; the center remains dark for the copy.
+            func point(_ x: CGFloat, _ y: CGFloat) -> CGPoint {
+                CGPoint(x: tile.minX + x * w, y: tile.minY + y * h)
+            }
+            var upperReflection = Path()
+            upperReflection.move(to: point(0, 0)); upperReflection.addLine(to: point(1, 0))
+            upperReflection.addLine(to: point(1, 0.30))
+            upperReflection.addCurve(to: point(0, 0.34), control1: point(0.65, 0.19), control2: point(0.30, 0.48))
+            upperReflection.closeSubpath()
+            var lowerReflection = Path()
+            lowerReflection.move(to: point(0, 0.64))
+            lowerReflection.addCurve(to: point(0.68, 1), control1: point(0.26, 0.83), control2: point(0.56, 0.76))
+            lowerReflection.addLine(to: point(0, 1)); lowerReflection.closeSubpath()
+            let reflectionScale = isDark ? 1.0 : 0.35
+            let faceReflection = Color.mix(light, glass.reflection, 0.22)
+            glassContext.fill(upperReflection, with: .linearGradient(
+                Gradient(colors: [faceReflection.opacity(0.07 * reflectionScale), light.opacity(0)]),
+                startPoint: point(0, 0), endPoint: point(0, 0.48)))
+            glassContext.fill(lowerReflection, with: .linearGradient(
+                Gradient(colors: [light.opacity(0.075 * reflectionScale), light.opacity(0)]),
+                startPoint: point(0, 1), endPoint: point(0.68, 0.64)))
+
             // 3. Edge glow: one linear gradient per side, fading inward over a quarter of the tile width.
             let edgeReach = 0.25 * w
             let edgeLast = HomeGlassRecipe.edgeStops.count - 1
@@ -412,7 +444,7 @@ private struct HomeDayGlassSurface: View {
 
             // 4/5. Corner lights and sheens stay inside a thin bezel so the rim reads as glass thickness.
             var bezelContext = glassContext
-            bezelContext.clip(to: insetPath(0.02 * w))
+            bezelContext.clip(to: insetPath(0.006 * w))
             func radialLight(_ spec: HomeGlassRecipe.Light, at center: CGPoint, color: Color, scale: Double, midpoint: Double, midAlpha: Double) {
                 let alpha = spec.alpha * scale
                 bezelContext.fill(shape, with: .radialGradient(Gradient(stops: [
@@ -434,21 +466,19 @@ private struct HomeDayGlassSurface: View {
             radialLight(recipe.sheenTop, at: topLeft, color: sheen, scale: sheenScale, midpoint: 0.4, midAlpha: 0.5)
             radialLight(recipe.sheenBottom, at: bottomRight, color: sheen, scale: sheenScale, midpoint: 0.4, midAlpha: 0.5)
 
-            // 6. One sweep-gradient rim. Selection replaces it with a thicker, flat theme-accent stroke
-            // (one colour, one alpha, no angular variation).
-            let rimWidth: CGFloat = selected ? 1.75 : (today ? 1.1 : 0.7)
+            // Selection retains the illuminated perimeter and adds the theme accent to its light.
+            let rimWidth: CGFloat = selected ? 1.75 : (today ? 1.1 : 0.9)
             let stops: [Gradient.Stop] = HomeGlassRecipe.rimAngles.enumerated().map { index, angle in
                 var alpha = recipe.rimAlpha[index]
                 if today && !hasStatus { alpha = min(1, alpha + 0.12) }
                 if !isDark { alpha *= 0.9 }
-                let white = isDark ? recipe.rimWhite[index] : 0
+                let white = isDark ? recipe.rimWhite[index] * 0.38 : 0
+                let rimLight = selected ? Color.mix(light, accent, 0.65) : light
                 return Gradient.Stop(
-                    color: Color.mix(light, .white, white).opacity(alpha),
+                    color: Color.mix(rimLight, .white, white).opacity(alpha),
                     location: HomeGlassRecipe.rimFraction(angle, width: Double(w), height: Double(h)))
             }
-            let rimShading: GraphicsContext.Shading = selected
-                ? .color(accent)
-                : .conicGradient(Gradient(stops: stops), center: CGPoint(x: tile.midX, y: tile.midY))
+            let rimShading: GraphicsContext.Shading = .conicGradient(Gradient(stops: stops), center: CGPoint(x: tile.midX, y: tile.midY))
             glassContext.stroke(insetPath(rimWidth / 2), with: rimShading, lineWidth: rimWidth)
         }
         .accessibilityHidden(true)
