@@ -408,6 +408,7 @@ struct TourOverlay: View {
     @State private var draggingGroup = false
     @State private var naturalBubbleHeight: CGFloat = 0
     @State private var bubbleHeight: CGFloat = 0
+    @State private var measuredBubbleStep: String?
     @State private var bubbleOpacity: Double = 0
 
     static var windowSafeInsets: UIEdgeInsets {
@@ -473,8 +474,10 @@ struct TourOverlay: View {
                     }
                 })
                 .onPreferenceChange(TourBubbleHeightKey.self) { height in
+                    guard height > 0 else { return }
                     naturalBubbleHeight = height
                     bubbleHeight = min(height, maxBubbleHeight)
+                    measuredBubbleStep = step.id
                 }
                 .onChange(of: maxBubbleHeight) { _, height in bubbleHeight = min(naturalBubbleHeight, height) }
                 .offset(x: (size.width - bubbleWidth) / 2,
@@ -501,14 +504,14 @@ struct TourOverlay: View {
         .onChange(of: frames) { _, newFrames in tour.update(frames: newFrames, bounds: size, origin: origin, host: host) }
         .onChange(of: size) { _, newSize in tour.update(frames: frames, bounds: newSize, origin: origin, host: host) }
         .task(id: revealKey(showing: showing)) {
-            guard showing, bubbleHeight > 0 else { return }
+            guard showing, bubbleHeight > 0, measuredBubbleStep == tour.currentStep?.id else { return }
             await tour.revealCurrentStep(host: host, bubbleHeight: bubbleHeight)
         }
     }
 
     private func revealKey(showing: Bool) -> String {
         guard showing, let id = tour.activeTour else { return "idle" }
-        return "\(id.rawValue)-\(tour.stepIndex)-\(tour.steps.map(\.id).joined(separator: ","))-\(bubbleHeight)-\(size)"
+        return "\(id.rawValue)-\(tour.stepIndex)-\(tour.steps.map(\.id).joined(separator: ","))-\(measuredBubbleStep ?? "")-\(bubbleHeight)-\(size)"
     }
 
     private var bubbleWidth: CGFloat { min(size.width - 32, 420) }
@@ -579,6 +582,7 @@ struct TourOverlay: View {
                 .foregroundStyle(AppColors.secondaryText)
                 .lineSpacing(3)
                 .fixedSize(horizontal: false, vertical: true)
+            if step.id == "home.days" { HomeDayTourLegend() }
             if step.scrollsContent {
                 HStack(spacing: 8) {
                     Text(LanguageManager.t("tour.scrollHint"))
@@ -623,6 +627,73 @@ struct TourOverlay: View {
         .accessibilityIdentifier(down ? "tour-scroll-down" : "tour-scroll-up")
     }
 
+}
+
+struct HomeDayTourLegend: View {
+    @ObservedObject private var themeManager = ThemeManager.shared
+    @ObservedObject private var languageManager = LanguageManager.shared
+    @ScaledMetric(relativeTo: .caption) private var captionSize: CGFloat = 12
+    @ScaledMetric(relativeTo: .caption2) private var daySize: CGFloat = 11
+    @ScaledMetric(relativeTo: .title3) private var numberSize: CGFloat = 20
+    @ScaledMetric(relativeTo: .body) private var titleSize: CGFloat = 15
+    @ScaledMetric(relativeTo: .subheadline) private var descriptionSize: CGFloat = 13
+
+    var body: some View {
+        let glass = AppColors.homeDayGlassColors
+        let isDark = themeManager.currentTheme.isDark
+        VStack(alignment: .leading, spacing: 10) {
+            Text(LanguageManager.t("tour.home.days.examples"))
+                .font(.app(size: captionSize)).foregroundStyle(AppColors.muted)
+                .padding(.bottom, 2)
+            ForEach(HomeDayTourExample.allCases, id: \.self) { example in
+                HStack(spacing: 10) {
+                    VStack(spacing: 2) {
+                        Text(LanguageManager.dayLabels[example.dayIndex])
+                            .font(.app(size: daySize, weight: .semibold)).tracking(0.4)
+                        Text("\(example.number)")
+                            .font(.app(size: numberSize, weight: .semibold))
+                    }
+                    .foregroundStyle(AppColors.text)
+                    .padding(.horizontal, 5).padding(.vertical, 7)
+                    .frame(width: 62).frame(minHeight: 55)
+                    .background {
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 12).fill(AppColors.background)
+                            HomeDayCalmSurface(glass: glass, statusTint: tint(example, glass), isDark: isDark,
+                                selected: false, today: false, accent: AppColors.accent, cornerRadius: 12)
+                                .padding(-14)
+                        }
+                    }
+                    .accessibilityHidden(true)
+                    Image(systemName: "arrow.right")
+                        .font(.system(size: 18)).foregroundStyle(AppColors.muted)
+                        .frame(width: 22).accessibilityHidden(true)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(LanguageManager.t(example.titleKey))
+                            .font(.app(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.text)
+                        Text(LanguageManager.t(example.bodyKey))
+                            .font(.app(size: descriptionSize)).foregroundStyle(AppColors.secondaryText)
+                    }
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .frame(minHeight: 64)
+                .accessibilityElement(children: .combine)
+                .accessibilityIdentifier("tour-day-\(example.rawValue)")
+            }
+        }
+        .padding(.top, 12)
+        .accessibilityIdentifier("tour-day-legend")
+    }
+
+    private func tint(_ example: HomeDayTourExample, _ glass: AppColors.HomeDayGlassColors) -> Color? {
+        switch example {
+        case .done: return glass.completedLight
+        case .unfinished: return glass.unfinishedLight
+        case .missed: return glass.missedLight
+        case .upcoming: return nil
+        }
+    }
 }
 
 private struct TourBubbleHeightKey: PreferenceKey {

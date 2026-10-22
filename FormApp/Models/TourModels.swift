@@ -117,6 +117,30 @@ public struct TourProgress: Equatable {
     }
 }
 
+/// Fixed, labelled examples for the Home tour, never the user's actual workout state.
+enum HomeDayTourExample: String, CaseIterable {
+    case done, unfinished, missed, upcoming
+
+    var titleKey: String { "tour.home.days.\(rawValue).title" }
+    var bodyKey: String { "tour.home.days.\(rawValue).body" }
+    var dayIndex: Int {
+        switch self {
+        case .done: return 0
+        case .unfinished: return 1
+        case .missed: return 2
+        case .upcoming: return 4
+        }
+    }
+    var number: Int {
+        switch self {
+        case .done: return 19
+        case .unfinished: return 20
+        case .missed: return 21
+        case .upcoming: return 23
+        }
+    }
+}
+
 public enum TourCatalog {
     public static let labRepMaxStep = "lab.repmax"
     public static let labCurvesStep = "lab.curves"
@@ -135,7 +159,6 @@ public enum TourCatalog {
             return [
                 TourStep(id: "home.days", targetId: "home.days", text: text("tour.home.days"),
                          variants: [("scroll", TourText(titleKey: "tour.home.days.title", bodyKey: "tour.home.days.bodyScroll"))]),
-                TourStep(id: "home.colors", targetId: "home.days", text: text("tip.dayStatus")),
                 TourStep(id: "home.workout", targetId: "home.hero", text: text("tour.home.workout", workoutArgs),
                          variants: [("rest", text("tour.home.rest")),
                                     ("views", TourText(titleKey: "tour.home.workout.title", bodyKey: "tour.home.workout.bodyViews", args: workoutArgs))]),

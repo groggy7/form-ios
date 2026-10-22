@@ -33,10 +33,11 @@ final class TourTests: XCTestCase {
         XCTAssertEqual(TourProgress().skipped(.repLab).skipped(.restTimer).skipCount, 0)
     }
 
-    func testHomeExplainsColorsImmediatelyAndLongSectionsAreScrollable() {
+    func testHomeCombinesDaysAndColorsAndLongSectionsAreScrollable() {
         let home = TourCatalog.steps(.home)
-        XCTAssertEqual(home[1].id, "home.colors")
-        XCTAssertEqual(home[1].text.bodyKey, "tip.dayStatus.body")
+        XCTAssertEqual(home.map(\.id), ["home.days", "home.workout", "home.week", "home.exercises", "home.tabs"])
+        XCTAssertEqual(home.first?.targetId, "home.days")
+        XCTAssertEqual(home.first?.text(for: ["scroll"]).bodyKey, "tour.home.days.bodyScroll")
         XCTAssertTrue(home.first { $0.id == "home.exercises" }!.scrollsContent)
         XCTAssertTrue(TourCatalog.steps(.repLab).first!.scrollsContent)
         XCTAssertTrue(TourProgress().finished(.home).seen.contains(.dayStatus))
@@ -76,14 +77,16 @@ final class TourTests: XCTestCase {
 
     /// Every key a step uses exists in every shipped language, with its placeholders filled.
     func testEveryStepHasCopyInAllLanguages() throws {
-        let keys: [(String, Set<String>)] = TourId.allCases.flatMap { id in
+        var keys: [(String, Set<String>)] = TourId.allCases.flatMap { id in
             TourCatalog.steps(id, locked: true).flatMap { step in
                 ([step.text] + step.variants.map(\.text)).flatMap { text -> [(String, Set<String>)] in
                     [(text.titleKey, []), (text.bodyKey, Set(text.args.keys))] + text.args.values.map { ($0, []) }
                 }
             }
-        } + ["tour.next", "tour.back", "tour.done", "tour.skip", "tour.ok", "tour.seePremium", "tour.sampleData", "tour.scrollHint", "tour.scrollUp", "tour.scrollDown"].map { ($0, []) }
-            + [("tour.stepCount", ["current", "total"])]
+        }
+        keys += HomeDayTourExample.allCases.flatMap { [($0.titleKey, Set<String>()), ($0.bodyKey, Set<String>())] }
+        keys += ["tour.home.days.examples", "tour.next", "tour.back", "tour.done", "tour.skip", "tour.ok", "tour.seePremium", "tour.sampleData", "tour.scrollHint", "tour.scrollUp", "tour.scrollDown"].map { ($0, []) }
+        keys.append(("tour.stepCount", ["current", "total"]))
         let placeholder = try NSRegularExpression(pattern: "\\{(\\w+)\\}")
         for language in ["en", "tr", "de", "fr", "es"] {
             for (key, args) in keys {
@@ -136,6 +139,41 @@ final class TourLayoutTests: XCTestCase {
     }
 
     @MainActor
+    func testCompactDayLegendSnapshotsAcrossLanguagesAndThemes() throws {
+        let language = LanguageManager.shared.currentLanguage
+        let selectedTheme = ThemeManager.shared.selectedThemeId
+        let subscribed = ProAccessManager.shared.isProSubscribed
+        ProAccessManager.shared.updateSubscriptionStatus(active: true)
+        defer {
+            LanguageManager.setLanguage(language)
+            ThemeManager.shared.setThemeId(selectedTheme)
+            ProAccessManager.shared.updateSubscriptionStatus(active: subscribed)
+        }
+        for theme in ["default", "oat"] {
+            ThemeManager.shared.setThemeId(theme)
+            for language in ["en", "tr", "de", "fr", "es"] {
+                LanguageManager.setLanguage(language)
+                for size in [DynamicTypeSize.large, .accessibility1] {
+                    let content = HomeDayTourLegend()
+                        .frame(width: 252).padding(18)
+                        .background(AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 20))
+                        .padding(16).background(AppColors.background)
+                        .dynamicTypeSize(size)
+                    let renderer = ImageRenderer(content: content)
+                    renderer.scale = 1
+                    let image = try XCTUnwrap(renderer.uiImage)
+                    XCTAssertEqual(image.size.width, 320)
+                    XCTAssertTrue(image.size.height.isFinite && image.size.height > 250)
+                    let attachment = XCTAttachment(image: image)
+                    attachment.name = "day-legend-\(theme)-\(language)-\(size)"
+                    attachment.lifetime = .keepAlways
+                    add(attachment)
+                }
+            }
+        }
+    }
+
+    @MainActor
     private func checkHomeLayout(width: CGFloat, textSize: DynamicTypeSize, heroMustFit: Bool) async throws {
         let store = AppStore.shared
         let tour = TourController.shared
@@ -176,14 +214,14 @@ final class TourLayoutTests: XCTestCase {
         try await settle { tour.hasTarget("home.hero") && tour.hasTarget("home.exercises.row.7") }
         tour.start(.home)
         try await settle { tour.shownStepIndex == 0 }
+        try capture(window, "ios-home-days-\(Int(width))")
         tour.next(); try await settle { tour.shownStepIndex == 1 }
-        tour.next(); try await settle { tour.shownStepIndex == 2 }
         let hero = try XCTUnwrap(tour.frame("home.hero", host: .main)?.rect)
         let bubble = try XCTUnwrap(tour.bubbleBounds)
         if heroMustFit { XCTAssertFalse(hero.intersects(bubble), "The hero and explanation fit without overlap") }
         try capture(window, "ios-home-hero-\(Int(width))")
+        tour.next(); try await settle { tour.shownStepIndex == 2 }
         tour.next(); try await settle { tour.shownStepIndex == 3 }
-        tour.next(); try await settle { tour.shownStepIndex == 4 }
         try await settle(message: "First exercise must fit: viewport=\(String(describing: tour.groupViewport)), header=\(String(describing: tour.frame("home.exercises.row.0", host: .main)?.rect)), row=\(String(describing: tour.frame("home.exercises.row.1", host: .main)?.rect)), bubble=\(String(describing: tour.bubbleBounds))") {
             guard let area = tour.groupViewport,
                   let row = tour.frame("home.exercises.row.1", host: .main)?.rect else { return false }

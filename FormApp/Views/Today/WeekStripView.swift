@@ -463,7 +463,7 @@ private struct HomeDayGlassSurface: View {
 // or bezel step.
 // Keep geometry, stops and alphas in sync with Android's `dayTileCalmGlass` (WorkoutWeekStrip.kt).
 // See docs/design/form-design-system.md, "Home day tile styles".
-private struct HomeDayCalmSurface: View {
+struct HomeDayCalmSurface: View {
     /// `tint` is the body's blend of the light; `ring` is the opacity of the uniform border line.
     private struct Look { let tint: Double; let ring: Double }
     private static let statusDark = Look(tint: 0.19, ring: 0.60)
@@ -480,6 +480,7 @@ private struct HomeDayCalmSurface: View {
     let selected: Bool
     let today: Bool
     let accent: Color
+    var cornerRadius: CGFloat = 14
 
     var body: some View {
         Canvas { context, size in
@@ -487,7 +488,7 @@ private struct HomeDayCalmSurface: View {
             let w = size.width - 2 * edge
             let h = size.height - 2 * edge
             guard w > 0, h > 0 else { return }
-            let radius = HomeDayGlassSurface.radius
+            let radius = cornerRadius
             let tile = CGRect(x: edge, y: edge, width: w, height: h)
             func rounded(_ rect: CGRect, _ cornerRadius: CGFloat) -> Path {
                 Path(roundedRect: rect, cornerRadius: max(0, cornerRadius), style: .continuous)
