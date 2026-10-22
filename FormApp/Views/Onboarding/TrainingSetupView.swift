@@ -35,8 +35,10 @@ struct TrainingSetupView: View {
         initial.equipment = TrainingCatalog.bundled?.presets["commercial_gym"] ?? []
         var starting = draft?.profile ?? (completeSetup ? nil : TrainingSetupStore.profile()) ?? initial
         starting.excludedExerciseIds = []
+        // Gym equipment is ready by default; Home still needs an explicit inventory answer.
+        if starting.location != "home" { starting.equipmentConfirmed = true }
         _profile = State(initialValue: starting)
-        _showGymInventory = State(initialValue: starting.equipmentConfirmed && Set(starting.equipment) != Set(TrainingCatalog.bundled?.presets["commercial_gym"] ?? []))
+        _showGymInventory = State(initialValue: starting.location != "home" && Set(starting.equipment) != Set(TrainingCatalog.bundled?.presets["commercial_gym"] ?? []))
         _step = State(initialValue: min(max(draft?.step ?? 1, 1), 8))
         _programID = State(initialValue: draft?.programId ?? UUID().uuidString)
         _editedProgram = State(initialValue: draft?.program)
@@ -137,7 +139,7 @@ struct TrainingSetupView: View {
         ForEach(["commercial_gym", "home"], id: \.self) { location in
             choice(LanguageManager.t("setup.location.\(location)"), selected: (profile.location == "home") == (location == "home"), tag: "setup-location-\(location)") {
                 guard (profile.location == "home") != (location == "home") else { return }
-                profile.location = location; profile.equipment = catalog.presets[location] ?? []; profile.equipmentConfirmed = false
+                profile.location = location; profile.equipment = catalog.presets[location] ?? []; profile.equipmentConfirmed = location != "home"
                 showGymInventory = false; advancedSearch = false; search = ""
             }
         }

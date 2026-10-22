@@ -87,6 +87,36 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         }
     }
 
+    @MainActor func testGymSetupDefaultsToReadyAndPreservesEditedInventories() throws {
+        var pending = try gym(); pending.equipmentConfirmed = false
+        var edited = try gym(); edited.equipment.removeAll { $0 == "leg-press" || $0 == "dumbbells" }
+        var home = profile(); home.equipmentConfirmed = false
+        let cases: [(String, TrainingProfile?, [String], Bool)] = [
+            ("fresh", nil, pending.equipment, true), ("pending", pending, pending.equipment, true),
+            ("edited", edited, edited.equipment, true), ("home", home, [], false)
+        ]
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        let previousWindow = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
+        for (name, original, equipment, confirmed) in cases {
+            TrainingSetupStore.clearDraft()
+            if let original { TrainingSetupStore.saveDraft(.init(profile: original, step: 4, programId: name, program: nil)) }
+            let host = UIHostingController(rootView: TrainingSetupView(store: store, completeSetup: false, onClose: {}))
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 390, height: 900))
+            defer { window.isHidden = true; previousWindow?.makeKeyAndVisible() }
+            window.rootViewController = host; window.makeKeyAndVisible(); host.view.frame = window.bounds
+            host.view.layoutIfNeeded(); RunLoop.main.run(until: Date().addingTimeInterval(0.2))
+            let recovered = try XCTUnwrap(TrainingSetupStore.draft())
+            XCTAssertEqual(Set(recovered.profile.equipment), Set(equipment), name)
+            XCTAssertEqual(recovered.profile.equipmentConfirmed, confirmed, name)
+            if confirmed { XCTAssertNoThrow(try TrainingSetupStore.generate(recovered.profile, id: recovered.programId), name) }
+            if name == "pending" {
+                let image = UIGraphicsImageRenderer(bounds: host.view.bounds).image { context in host.view.layer.render(in: context.cgContext) }
+                try image.pngData()?.write(to: URL(fileURLWithPath: "/tmp/gym-default-review.png"))
+                let attachment = XCTAttachment(image: image); attachment.name = "gym-default"; attachment.lifetime = .keepAlways; add(attachment)
+            }
+        }
+    }
+
     @MainActor func testSetupClearsLegacyExclusionsWithoutLosingMusclePriority() throws {
         var p = profile(["dumbbells"])
         p.priority = "row"; p.excludedExerciseIds = try XCTUnwrap(TrainingCatalog.bundled).candidates.map(\.id)
