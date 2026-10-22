@@ -48211,31 +48211,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Exercises"
+            "value": "This day’s exercises"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Egzersizler"
+            "value": "Bu günün egzersizleri"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Übungen"
+            "value": "Übungen für diesen Tag"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Exercices"
+            "value": "Exercices de cette journée"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Ejercicios"
+            "value": "Ejercicios de este día"
           }
         }
       }
@@ -48246,31 +48246,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tap an exercise to see its demonstration, muscles and technique."
+            "value": "Scroll to see every exercise in this workout. Open one for its demonstration, muscles and technique."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Gösterimini, kaslarını ve tekniğini görmek için bir egzersize dokunun."
+            "value": "Bu antrenmandaki tüm egzersizleri görmek için kaydırın. Gösterimi, kasları ve tekniği için birini açın."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tippe auf eine Übung, um Demonstration, Muskeln und Technik zu sehen."
+            "value": "Scrolle durch alle Übungen dieses Trainings. Öffne eine Übung für die Demonstration, Muskeln und Technik."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Touchez un exercice pour voir sa démonstration, ses muscles et sa technique."
+            "value": "Faites défiler pour voir tous les exercices de cette séance. Ouvrez-en un pour voir sa démonstration, ses muscles et sa technique."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Toca un ejercicio para ver su demostración, sus músculos y su técnica."
+            "value": "Desplázate para ver todos los ejercicios de esta sesión. Abre uno para ver su demostración, músculos y técnica."
           }
         }
       }
@@ -48316,31 +48316,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "{plan}, {library} and {progress} each show a short tour the first time you open them."
+            "value": "Use {plan} for your schedule, {library} for exercise guidance, and {progress} for your logged training."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "{plan}, {library} ve {progress} ilk açtığınızda kısa birer tur gösterir."
+            "value": "Programınız için {plan}, egzersiz rehberi için {library}, kaydettiğiniz antrenmanlar için {progress} bölümünü kullanın."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "{plan}, {library} und {progress} zeigen beim ersten Öffnen jeweils eine kurze Tour."
+            "value": "Nutze {plan} für deinen Trainingsplan, {library} für Übungsanleitungen und {progress} für dein protokolliertes Training."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "{plan}, {library} et {progress} affichent chacun une courte visite la première fois que vous les ouvrez."
+            "value": "Utilisez {plan} pour votre planning, {library} pour les conseils sur les exercices et {progress} pour vos séances enregistrées."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "{plan}, {library} y {progress} muestran una guía breve la primera vez que los abres."
+            "value": "Usa {plan} para tu calendario de entrenamiento, {library} para consultar los ejercicios y {progress} para tus entrenamientos registrados."
           }
         }
       }
@@ -49401,31 +49401,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pick a muscle to see its direct and indirect sets against its MEV, MAV and MRV."
+            "value": "Choose a muscle to compare its direct and assisting sets with general volume reference ranges."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bir kasın doğrudan ve dolaylı setlerini MEV, MAV ve MRV değerlerine göre görmek için onu seçin."
+            "value": "Doğrudan ve yardımcı setlerini genel hacim referans aralıklarıyla karşılaştırmak için bir kas seçin."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Wähle einen Muskel, um seine direkten und indirekten Sätze im Vergleich zu MEV, MAV und MRV zu sehen."
+            "value": "Wähle einen Muskel, um seine direkten und unterstützenden Sätze mit allgemeinen Volumenreferenzbereichen zu vergleichen."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Choisissez un muscle pour voir ses séries directes et indirectes par rapport à son MEV, MAV et MRV."
+            "value": "Choisissez un muscle pour comparer ses séries directes et indirectes aux plages de référence générales du volume."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Elige un músculo para ver sus series directas e indirectas frente a su MEV, MAV y MRV."
+            "value": "Elige un músculo para comparar sus series directas e indirectas con los rangos de referencia generales de volumen."
           }
         }
       }
@@ -60910,6 +60910,111 @@
           "stringUnit": {
             "state": "translated",
             "value": "Guarda las tarjetas de entrenamiento que elijas en tu fototeca."
+          }
+        }
+      }
+    },
+    "tour.scrollHint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll to explore"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keşfetmek için kaydırın"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zum Erkunden scrollen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faites défiler pour explorer"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desliza para explorar"
+          }
+        }
+      }
+    },
+    "tour.scrollUp": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll up"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Yukarı kaydır"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach oben scrollen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faire défiler vers le haut"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desplazar hacia arriba"
+          }
+        }
+      }
+    },
+    "tour.scrollDown": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll down"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aşağı kaydır"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nach unten scrollen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faire défiler vers le bas"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desplazar hacia abajo"
           }
         }
       }

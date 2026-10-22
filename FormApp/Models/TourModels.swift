@@ -51,13 +51,15 @@ public struct TourStep: Equatable {
     public let text: TourText
     public let variants: [(flag: String, text: TourText)]
     public let isPremium: Bool
+    public let scrollsContent: Bool
 
-    public init(id: String, targetId: String?, text: TourText, variants: [(flag: String, text: TourText)] = [], isPremium: Bool = false) {
+    public init(id: String, targetId: String?, text: TourText, variants: [(flag: String, text: TourText)] = [], isPremium: Bool = false, scrollsContent: Bool = false) {
         self.id = id
         self.targetId = targetId
         self.text = text
         self.variants = variants
         self.isPremium = isPremium
+        self.scrollsContent = scrollsContent
     }
 
     public func text(for flags: Set<String>) -> TourText {
@@ -65,7 +67,7 @@ public struct TourStep: Equatable {
     }
 
     public static func == (lhs: TourStep, rhs: TourStep) -> Bool {
-        lhs.id == rhs.id && lhs.targetId == rhs.targetId && lhs.text == rhs.text && lhs.isPremium == rhs.isPremium
+        lhs.id == rhs.id && lhs.targetId == rhs.targetId && lhs.text == rhs.text && lhs.isPremium == rhs.isPremium && lhs.scrollsContent == rhs.scrollsContent
     }
 }
 
@@ -88,7 +90,7 @@ public struct TourProgress: Equatable {
     public func shouldStart(_ id: TourId, featureUnlocked: Bool = false) -> Bool {
         switch id.kind {
         case .screen: return !seen.contains(id) && skipCount < Self.maxSkips
-        case .tip: return !seen.contains(id)
+        case .tip: return id != .dayStatus && !seen.contains(id)
         case .preview: return !seen.contains(id) && (!featureUnlocked || !existingUser)
         }
     }
@@ -96,6 +98,7 @@ public struct TourProgress: Equatable {
     public func finished(_ id: TourId) -> TourProgress {
         var next = self
         next.seen.insert(id)
+        if id == .home { next.seen.insert(.dayStatus) }
         return next
     }
 
@@ -132,11 +135,12 @@ public enum TourCatalog {
             return [
                 TourStep(id: "home.days", targetId: "home.days", text: text("tour.home.days"),
                          variants: [("scroll", TourText(titleKey: "tour.home.days.title", bodyKey: "tour.home.days.bodyScroll"))]),
+                TourStep(id: "home.colors", targetId: "home.days", text: text("tip.dayStatus")),
                 TourStep(id: "home.workout", targetId: "home.hero", text: text("tour.home.workout", workoutArgs),
                          variants: [("rest", text("tour.home.rest")),
                                     ("views", TourText(titleKey: "tour.home.workout.title", bodyKey: "tour.home.workout.bodyViews", args: workoutArgs))]),
                 TourStep(id: "home.week", targetId: "home.week", text: text("tour.home.week")),
-                TourStep(id: "home.exercises", targetId: "home.exercises", text: text("tour.home.exercises")),
+                TourStep(id: "home.exercises", targetId: "home.exercises", text: text("tour.home.exercises"), scrollsContent: true),
                 TourStep(id: "home.tabs", targetId: "dock", text: text("tour.home.tabs",
                     ["plan": "nav.plan", "library": "nav.library", "progress": "nav.progress"]))
             ]
@@ -186,7 +190,7 @@ public enum TourCatalog {
             return steps
         case .repLab:
             var steps = [
-                TourStep(id: labRepMaxStep, targetId: "lab.repmax", text: TourText(titleKey: "form_lab.tab_rep_max", bodyKey: "tour.lab.repmax.body")),
+                TourStep(id: labRepMaxStep, targetId: "lab.repmax", text: TourText(titleKey: "form_lab.tab_rep_max", bodyKey: "tour.lab.repmax.body"), scrollsContent: true),
                 TourStep(id: labCurvesStep, targetId: "lab.curves", text: TourText(titleKey: "form_lab.tab_curves", bodyKey: "tour.lab.curves.body")),
                 TourStep(id: labBalanceStep, targetId: "lab.balance", text: TourText(titleKey: "form_lab.tab_balance", bodyKey: "tour.lab.balance.body"))
             ]

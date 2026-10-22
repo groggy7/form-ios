@@ -1393,10 +1393,10 @@
   "tour.home.rest.body": "Für diesen Tag ist nichts geplant. Tippe oben auf einen Trainingstag, um sein Training zu sehen.",
   "tour.home.week.title": "Deine Woche",
   "tour.home.week.body": "Absolvierte Trainings im Vergleich zu deinem Plan, mit Volumen, aktiver Zeit und Rekorden dieser Woche.",
-  "tour.home.exercises.title": "Übungen",
-  "tour.home.exercises.body": "Tippe auf eine Übung, um Demonstration, Muskeln und Technik zu sehen.",
+  "tour.home.exercises.title": "Übungen für diesen Tag",
+  "tour.home.exercises.body": "Scrolle durch alle Übungen dieses Trainings. Öffne eine Übung für die Demonstration, Muskeln und Technik.",
   "tour.home.tabs.title": "Mehr zu entdecken",
-  "tour.home.tabs.body": "{plan}, {library} und {progress} zeigen beim ersten Öffnen jeweils eine kurze Tour.",
+  "tour.home.tabs.body": "Nutze {plan} für deinen Trainingsplan, {library} für Übungsanleitungen und {progress} für dein protokolliertes Training.",
   "tour.plan.days.title": "Deine Woche",
   "tour.plan.days.body": "Alle sieben Tage deines aktiven Programms. Tippe auf einen Trainingstag, um ihn unter {home} zu öffnen.",
   "tour.plan.change.body": "Wechsle zu einem anderen Programm, erstelle dein eigenes oder importiere eines.",
@@ -1427,7 +1427,7 @@
   "tour.matrix.legend.title": "Was die Farben bedeuten",
   "tour.matrix.legend.body": "Sie reichen von unter dem Referenzbereich bis weit darüber. Das sind allgemeine Richtwerte, keine persönlichen Grenzen.",
   "tour.matrix.detail.title": "Muskeldetails",
-  "tour.matrix.detail.body": "Wähle einen Muskel, um seine direkten und indirekten Sätze im Vergleich zu MEV, MAV und MRV zu sehen.",
+  "tour.matrix.detail.body": "Wähle einen Muskel, um seine direkten und unterstützenden Sätze mit allgemeinen Volumenreferenzbereichen zu vergleichen.",
   "tour.matrix.mode.title": "Wochen und Pläne",
   "tour.matrix.mode.body": "Blättere zu früheren Wochen zurück oder wechsle zu {cycle}, um das Volumen zu sehen, das dein Programm vorsieht.",
   "tour.lab.repmax.body": "Aus deinen besten Sätzen schätzt Rep Lab, was du für 1 bis 12 Wiederholungen heben könntest.",
@@ -1767,5 +1767,8 @@
   "social.setsProgress.other": "{count} von {total} Sätzen abgeschlossen",
   "social.workoutsProgress.one": "{count} von {total} Trainings",
   "social.workoutsProgress.other": "{count} von {total} Trainings",
-  "social.photoPermission": "Speichere ausgewählte Trainingskarten in deiner Fotomediathek."
+  "social.photoPermission": "Speichere ausgewählte Trainingskarten in deiner Fotomediathek.",
+  "tour.scrollHint": "Zum Erkunden scrollen",
+  "tour.scrollUp": "Nach oben scrollen",
+  "tour.scrollDown": "Nach unten scrollen"
 }

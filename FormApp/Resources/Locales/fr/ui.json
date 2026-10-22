@@ -1393,10 +1393,10 @@
   "tour.home.rest.body": "Rien n’est prévu ce jour-là. Touchez un jour d’entraînement ci-dessus pour voir sa séance.",
   "tour.home.week.title": "Votre semaine",
   "tour.home.week.body": "Les séances faites par rapport à votre plan, avec le volume, le temps actif et les records de la semaine.",
-  "tour.home.exercises.title": "Exercices",
-  "tour.home.exercises.body": "Touchez un exercice pour voir sa démonstration, ses muscles et sa technique.",
+  "tour.home.exercises.title": "Exercices de cette journée",
+  "tour.home.exercises.body": "Faites défiler pour voir tous les exercices de cette séance. Ouvrez-en un pour voir sa démonstration, ses muscles et sa technique.",
   "tour.home.tabs.title": "À découvrir",
-  "tour.home.tabs.body": "{plan}, {library} et {progress} affichent chacun une courte visite la première fois que vous les ouvrez.",
+  "tour.home.tabs.body": "Utilisez {plan} pour votre planning, {library} pour les conseils sur les exercices et {progress} pour vos séances enregistrées.",
   "tour.plan.days.title": "Votre semaine",
   "tour.plan.days.body": "Les sept jours de votre programme actif. Touchez un jour d’entraînement pour l’ouvrir dans {home}.",
   "tour.plan.change.body": "Passez à un autre programme, créez le vôtre ou importez-en un.",
@@ -1427,7 +1427,7 @@
   "tour.matrix.legend.title": "Ce que signifient les couleurs",
   "tour.matrix.legend.body": "Elles vont d’en dessous de la plage de référence à bien au-dessus. Ce sont des repères généraux, pas des limites personnelles.",
   "tour.matrix.detail.title": "Détails du muscle",
-  "tour.matrix.detail.body": "Choisissez un muscle pour voir ses séries directes et indirectes par rapport à son MEV, MAV et MRV.",
+  "tour.matrix.detail.body": "Choisissez un muscle pour comparer ses séries directes et indirectes aux plages de référence générales du volume.",
   "tour.matrix.mode.title": "Semaines et programme",
   "tour.matrix.mode.body": "Revenez aux semaines précédentes, ou passez à {cycle} pour voir le volume prévu par votre programme.",
   "tour.lab.repmax.body": "À partir de vos meilleures séries, Rep Lab estime ce que vous pourriez soulever de 1 à 12 répétitions.",
@@ -1767,5 +1767,8 @@
   "social.setsProgress.other": "{count} séries terminées sur {total}",
   "social.workoutsProgress.one": "{count} séances sur {total}",
   "social.workoutsProgress.other": "{count} séances sur {total}",
-  "social.photoPermission": "Enregistre les cartes de séance de ton choix dans ta photothèque."
+  "social.photoPermission": "Enregistre les cartes de séance de ton choix dans ta photothèque.",
+  "tour.scrollHint": "Faites défiler pour explorer",
+  "tour.scrollUp": "Faire défiler vers le haut",
+  "tour.scrollDown": "Faire défiler vers le bas"
 }

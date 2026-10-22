@@ -352,7 +352,8 @@ public struct ActiveSessionView: View {
                                     .padding(.horizontal, 20)
                                     .padding(.top, 10)
                                 }
-                                .tourTarget("workout.exercises", cornerRadius: 13)
+                                .tourTarget("workout.exercises", cornerRadius: 13,
+                                            contentInsets: EdgeInsets(top: 10, leading: 20, bottom: 0, trailing: 20))
                                 .onChange(of: currentIndex) { _, newIdx in
                                     if exercises.indices.contains(newIdx) {
                                         withAnimation {

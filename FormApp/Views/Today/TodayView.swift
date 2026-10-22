@@ -125,6 +125,8 @@ public struct TodayView: View {
                             .foregroundStyle(AppColors.text)
                             .padding(.horizontal, 20)
                             .padding(.bottom, 4)
+                            .tourTarget("home.exercises.row.0",
+                                        contentInsets: EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
 
                         VStack(spacing: 8) {
                             ForEach(Array(workout.exercises.enumerated()), id: \.element.id) { index, exercise in
@@ -164,11 +166,12 @@ public struct TodayView: View {
                                     )
                                 }
                                 .buttonStyle(.plain)
-                                .tourTargetIf(index == 0 ? "home.exercises" : nil, cornerRadius: 13)
+                                .tourTarget("home.exercises.row.\(index + 1)", cornerRadius: 13)
                             }
                         }
                         .padding(.horizontal, 20)
                     }
+                    .tourTarget("home.exercises", cornerRadius: 13)
                 }
 
                 Spacer().frame(height: 16)

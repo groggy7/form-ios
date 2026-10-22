@@ -352,6 +352,7 @@ public struct FormLabView: View {
                             }
                         }
                         .fixedSize(horizontal: false, vertical: true)
+                        .tourTarget("lab.repmax.row.\(start / 2)", cornerRadius: 14)
                     }
                 }
                 .tourTarget("lab.repmax", cornerRadius: 14)

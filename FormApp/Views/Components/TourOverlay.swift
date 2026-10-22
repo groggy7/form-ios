@@ -31,6 +31,7 @@ struct TourTargetAnchor {
     let anchor: Anchor<CGRect>
     let cornerRadius: CGFloat
     let flags: Set<String>
+    let contentInsets: EdgeInsets
 }
 
 struct TourTargetKey: PreferenceKey {
@@ -71,6 +72,10 @@ public final class TourController: ObservableObject {
     @Published private(set) var targetFlags: [TourHost: [String: Set<String>]] = [:]
 
     private var frames: [TourHost: [String: TourFrame]] = [:]
+    private var scrollTargets: [String: TourScrollTarget] = [:]
+    private var origins: [TourHost: CGPoint] = [:]
+    var groupViewport: CGRect?
+    var bubbleBounds: CGRect?
     private var bounds: [TourHost: CGSize] = [:]
     private var locked = false
     private var movingBack = false
@@ -122,6 +127,7 @@ public final class TourController: ObservableObject {
     func next() {
         guard activeTour != nil else { return }
         if stepIndex >= steps.count - 1 { return finish() }
+        resetGroupViewport()
         movingBack = false
         shownStepIndex = nil
         stepIndex += 1
@@ -129,6 +135,7 @@ public final class TourController: ObservableObject {
 
     func back() {
         guard activeTour != nil, stepIndex > 0 else { return }
+        resetGroupViewport()
         movingBack = true
         shownStepIndex = nil
         stepIndex -= 1
@@ -139,6 +146,7 @@ public final class TourController: ObservableObject {
 
     /// Ends the current tour without saving it, so it starts again when next due.
     func cancel() {
+        resetGroupViewport()
         activeTour = nil
         steps = []
         stepIndex = 0
@@ -155,6 +163,7 @@ public final class TourController: ObservableObject {
 
     private func end(skipped: Bool) {
         guard let id = activeTour else { return }
+        resetGroupViewport()
         activeTour = nil
         steps = []
         stepIndex = 0
@@ -165,7 +174,8 @@ public final class TourController: ObservableObject {
         store.updateTourProgress(transform)
     }
 
-    func update(frames newFrames: [String: TourFrame], bounds size: CGSize, host: TourHost) {
+    func update(frames newFrames: [String: TourFrame], bounds size: CGSize, origin: CGPoint, host: TourHost) {
+        origins[host] = origin
         frames[host] = newFrames
         bounds[host] = size
         let flags = newFrames.mapValues(\.flags)
@@ -178,7 +188,7 @@ public final class TourController: ObservableObject {
     }
 
     /// Scrolls the current step's target into view, or drops the step if it cannot be shown.
-    func revealCurrentStep(host: TourHost) async {
+    func revealCurrentStep(host: TourHost, bubbleHeight: CGFloat) async {
         guard let step = currentStep else { return }
         guard let targetId = step.targetId else {
             shownStepIndex = stepIndex
@@ -197,6 +207,21 @@ public final class TourController: ObservableObject {
             try? await Task.sleep(nanoseconds: 450_000_000)
             guard currentStep?.id == step.id else { return }
         }
+        if let frame = frames[host]?[targetId], let scroll = scrollTargets[targetId] {
+            let safe = TourOverlay.safeRect(size: bounds[host] ?? .zero)
+            let viewport = scrollViewport(targetId, host: host).intersection(safe)
+            let desiredTop = max(viewport.minY + 6, safe.minY + bubbleHeight + 18)
+            let first = step.scrollsContent ? groupRows(targetId, host: host).first?.1 : frame
+            if let first, step.scrollsContent || first.rect.height <= viewport.maxY - 6 - desiredTop {
+                scroll.scroll(by: first.rect.minY - desiredTop)
+                try? await Task.sleep(nanoseconds: 80_000_000)
+                if !step.scrollsContent, let placed = frames[host]?[targetId], placed.rect.minY < desiredTop - 1 {
+                    scroll.scroll(by: placed.rect.minY - viewport.minY - 6)
+                    try? await Task.sleep(nanoseconds: 80_000_000)
+                }
+            }
+        }
+        guard !Task.isCancelled, currentStep?.id == step.id else { return }
         if let frame = frames[host]?[targetId], visibleRect(frame.rect, host: host).height > 1 {
             shownStepIndex = stepIndex
             return
@@ -211,6 +236,49 @@ public final class TourController: ObservableObject {
             return finish()
         }
         steps = remaining
+    }
+
+    private func resetGroupViewport() { groupViewport = nil }
+
+    fileprivate func attachScrollTarget(_ id: String, view: UIView) {
+        guard scrollTargets[id]?.view !== view else { return }
+        scrollTargets[id] = TourScrollTarget(view: view)
+    }
+
+    fileprivate func detachScrollTarget(_ id: String, view: UIView) {
+        if scrollTargets[id]?.view === view { scrollTargets.removeValue(forKey: id) }
+    }
+
+    func scrollViewport(_ id: String, host: TourHost) -> CGRect {
+        guard let scroll = scrollTargets[id]?.scrollView else {
+            return TourOverlay.safeRect(size: bounds[host] ?? .zero)
+        }
+        let rect = scroll.convert(scroll.bounds, to: nil)
+        let origin = origins[host] ?? .zero
+        return rect.offsetBy(dx: -origin.x, dy: -origin.y)
+    }
+
+    func groupRows(_ id: String, host: TourHost) -> [(String, TourFrame)] {
+        (frames[host] ?? [:]).filter { $0.key.hasPrefix("\(id).row.") }
+            .sorted { (Int($0.key.components(separatedBy: ".").last ?? "") ?? 0)
+                < (Int($1.key.components(separatedBy: ".").last ?? "") ?? 0) }
+            .map { ($0.key, $0.value) }
+    }
+
+    func dragGroup(_ delta: CGFloat) {
+        guard let step = currentStep, step.scrollsContent, let id = step.targetId else { return }
+        scrollTargets[id]?.scroll(by: delta)
+    }
+
+    func pageGroup(forward: Bool, host: TourHost) {
+        guard let step = currentStep, step.scrollsContent, let id = step.targetId,
+              let viewport = groupViewport else { return }
+        let rows = groupRows(id, host: host)
+        let row = forward ? rows.first { $0.1.rect.maxY > viewport.maxY + 1 }
+            : rows.last { $0.1.rect.minY < viewport.minY - 1 }
+        guard let row else { return }
+        let delta = forward ? row.1.rect.minY - viewport.minY : row.1.rect.maxY - viewport.maxY
+        scrollTargets[id]?.scroll(by: delta)
     }
 
     private func isOffscreen(_ id: String, host: TourHost) -> Bool {
@@ -230,11 +298,14 @@ public final class TourController: ObservableObject {
 extension View {
     /// Registers this view as a tour target. Flags let a step choose its wording, such as a day
     /// strip that scrolls or a workout card showing a rest day.
-    func tourTarget(_ id: String, cornerRadius: CGFloat = 16, flags: Set<String> = []) -> some View {
+    func tourTarget(_ id: String, cornerRadius: CGFloat = 16, flags: Set<String> = [],
+                    contentInsets: EdgeInsets = EdgeInsets()) -> some View {
         self
+            .background(TourScrollProbe(id: id))
             .id(id)
-            .anchorPreference(key: TourTargetKey.self, value: .bounds) {
-                [id: TourTargetAnchor(anchor: $0, cornerRadius: cornerRadius, flags: flags)]
+            .transformAnchorPreference(key: TourTargetKey.self, value: .bounds) { anchors, anchor in
+                anchors[id] = TourTargetAnchor(anchor: anchor, cornerRadius: cornerRadius,
+                    flags: flags, contentInsets: contentInsets)
             }
     }
 
@@ -286,10 +357,13 @@ private struct TourScrollModifier: ViewModifier {
     let proxy: ScrollViewProxy
 
     func body(content: Content) -> some View {
-        content.onChange(of: tour.scrollRequest) { _, request in
-            guard let request else { return }
-            withAnimation(.easeInOut(duration: 0.3)) { proxy.scrollTo(request.id, anchor: .center) }
-        }
+        content
+            .contentMargins(.bottom, tour.currentStep?.scrollsContent == true ? TourOverlay.windowSafeInsets.bottom + 38 : 0,
+                            for: .scrollContent)
+            .onChange(of: tour.scrollRequest) { _, request in
+                guard let request else { return }
+                withAnimation(.easeInOut(duration: 0.3)) { proxy.scrollTo(request.id, anchor: .center) }
+            }
     }
 }
 
@@ -304,9 +378,14 @@ private struct TourOverlayModifier: ViewModifier {
             .overlayPreferenceValue(TourTargetKey.self) { anchors in
                 GeometryReader { proxy in
                     let frames = anchors.mapValues {
-                        TourFrame(rect: proxy[$0.anchor], cornerRadius: $0.cornerRadius, flags: $0.flags)
+                        let rect = proxy[$0.anchor]
+                        let inset = $0.contentInsets
+                        return TourFrame(rect: CGRect(x: rect.minX + inset.leading, y: rect.minY + inset.top,
+                            width: max(0, rect.width - inset.leading - inset.trailing),
+                            height: max(0, rect.height - inset.top - inset.bottom)),
+                            cornerRadius: $0.cornerRadius, flags: $0.flags)
                     }
-                    TourOverlay(host: host, frames: frames, size: proxy.size)
+                    TourOverlay(host: host, frames: frames, size: proxy.size, origin: proxy.frame(in: .global).origin)
                 }
                 .ignoresSafeArea()
             }
@@ -317,9 +396,17 @@ struct TourOverlay: View {
     @ObservedObject private var tour = TourController.shared
     @ObservedObject private var themeManager = ThemeManager.shared
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @ScaledMetric(relativeTo: .headline) private var titleSize: CGFloat = 18
+    @ScaledMetric(relativeTo: .body) private var bodySize: CGFloat = 15
+    @ScaledMetric(relativeTo: .body) private var skipSize: CGFloat = 14
+    @ScaledMetric(relativeTo: .caption) private var captionSize: CGFloat = 12
     let host: TourHost
     let frames: [String: TourFrame]
     let size: CGSize
+    let origin: CGPoint
+    @State private var lastDrag: CGFloat = 0
+    @State private var draggingGroup = false
+    @State private var naturalBubbleHeight: CGFloat = 0
     @State private var bubbleHeight: CGFloat = 0
     @State private var bubbleOpacity: Double = 0
 
@@ -329,56 +416,99 @@ struct TourOverlay: View {
             .first?.safeAreaInsets ?? .zero
     }
 
+    static func safeRect(size: CGSize) -> CGRect {
+        let insets = windowSafeInsets
+        return CGRect(x: 16, y: insets.top + 16, width: max(0, size.width - 32),
+            height: max(0, size.height - insets.top - insets.bottom - 32))
+    }
+
     var body: some View {
         let showing = tour.activeTour.map { TourHost.host(for: $0) == host } ?? false
         ZStack(alignment: .topLeading) {
-            if showing, let tourId = tour.activeTour {
-                let shownIndex = tour.shownStepIndex
-                let step = shownIndex.flatMap { tour.steps.indices.contains($0) ? tour.steps[$0] : nil }
-                let target = step.flatMap { tour.frame($0.targetId, host: host) }
-                let cutout = target.map { $0.rect.insetBy(dx: -6, dy: -6) }
+            if showing, let tourId = tour.activeTour, let step = tour.currentStep {
+                let shown = tour.shownStepIndex == tour.stepIndex
+                let target = frames[step.targetId ?? ""]
+                let safe = Self.safeRect(size: size)
+                let viewport = tour.scrollViewport(step.targetId ?? "", host: host).intersection(safe)
+                let groupArea = CGRect(x: viewport.minX,
+                    y: max(viewport.minY + 6, safe.minY + bubbleHeight + 18), width: viewport.width,
+                    height: max(0, viewport.maxY - 6 - max(viewport.minY + 6, safe.minY + bubbleHeight + 18)))
+                let rows = step.scrollsContent ? frames.filter { $0.key.hasPrefix("\(step.targetId ?? "").row.") }.map(\.value) : []
+                let complete = rows.filter { $0.rect.minY >= groupArea.minY - 1 && $0.rect.maxY <= groupArea.maxY + 1 }
+                let groupBounds = complete.reduce(CGRect.null) { $0.union($1.rect) }
+                let rect = step.scrollsContent ? (groupBounds.isNull ? nil : groupBounds) : target?.rect.intersection(safe)
+                let cutout = shown ? rect.map { $0.insetBy(dx: -6, dy: -6) } : nil
                 let radius = (target?.cornerRadius ?? 0) + 6
-                scrim(cutout: cutout, radius: radius)
-                if let cutout {
+                scrim(cutout: cutout, radius: radius, group: step.scrollsContent)
+                if let cutout, !cutout.isNull {
                     RoundedRectangle(cornerRadius: radius, style: .continuous)
                         .stroke(AppColors.accent.opacity(0.95), lineWidth: 1.5)
                         .frame(width: cutout.width, height: cutout.height)
                         .position(x: cutout.midX, y: cutout.midY)
                         .allowsHitTesting(false)
                 }
-                if let step, let shownIndex {
-                    bubble(step: step, text: step.text(for: target?.flags ?? []), index: shownIndex,
-                           total: tour.steps.count, isTip: tourId.kind == .tip)
-                        .frame(width: bubbleWidth)
+                let header = frames["home.exercises.row.0"]?.rect
+                let firstExercise = frames["home.exercises.row.1"]?.rect
+                let firstSectionHeight = step.targetId == "home.exercises" && header != nil && firstExercise != nil
+                    ? firstExercise!.maxY - header!.minY : 0
+                let minimumRow = max(96, max(firstSectionHeight, rows.map { $0.rect.height }.max() ?? 0))
+                let maxBubbleHeight = step.scrollsContent
+                    ? max(48, viewport.maxY - safe.minY - 24 - minimumRow) : safe.height
+                ScrollView {
+                    bubble(step: step, text: step.text(for: target?.flags ?? []), index: tour.stepIndex,
+                           total: tour.steps.count, isTip: tourId.kind == .tip,
+                           canScrollUp: rows.contains { $0.rect.minY < groupArea.minY - 1 },
+                           canScrollDown: rows.contains { $0.rect.maxY > groupArea.maxY + 1 })
                         .background(GeometryReader { geometry in
                             Color.clear.preference(key: TourBubbleHeightKey.self, value: geometry.size.height)
                         })
-                        .onPreferenceChange(TourBubbleHeightKey.self) { bubbleHeight = $0 }
-                        .offset(x: (size.width - bubbleWidth) / 2, y: bubbleY(cutout: cutout))
-                        .opacity(bubbleOpacity)
-                        .id(step.id)
-                        .onAppear {
-                            bubbleOpacity = 0
-                            withAnimation(reduceMotion ? nil : .easeOut(duration: 0.15)) { bubbleOpacity = 1 }
-                            let title = LanguageManager.t(step.text(for: target?.flags ?? []).titleKey)
-                            UIAccessibility.post(notification: .screenChanged, argument: title)
-                        }
+                }
+                .scrollBounceBehavior(.basedOnSize)
+                .frame(width: bubbleWidth, height: min(naturalBubbleHeight, maxBubbleHeight))
+                .background(AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 20))
+                .clipShape(RoundedRectangle(cornerRadius: 20))
+                .background(GeometryReader { geometry in
+                    Color.clear.onChange(of: geometry.frame(in: .global), initial: true) { _, rect in
+                        tour.bubbleBounds = rect.offsetBy(dx: -origin.x, dy: -origin.y)
+                    }
+                })
+                .onPreferenceChange(TourBubbleHeightKey.self) { height in
+                    naturalBubbleHeight = height
+                    bubbleHeight = min(height, maxBubbleHeight)
+                }
+                .onChange(of: maxBubbleHeight) { _, height in bubbleHeight = min(naturalBubbleHeight, height) }
+                .offset(x: (size.width - bubbleWidth) / 2,
+                    y: step.scrollsContent ? safe.minY : bubbleY(cutout: cutout))
+                .opacity(shown ? bubbleOpacity : 0)
+                .allowsHitTesting(shown)
+                .id(step.id)
+                .onAppear {
+                    lastDrag = 0
+                    draggingGroup = false
+                    bubbleOpacity = 0
+                    withAnimation(reduceMotion ? nil : .easeOut(duration: 0.15)) { bubbleOpacity = 1 }
+                }
+                .onChange(of: groupArea, initial: true) { _, rect in
+                    if step.scrollsContent { tour.groupViewport = rect }
+                }
+                .onChange(of: shown) { _, visible in
+                    if visible { UIAccessibility.post(notification: .screenChanged, argument: LanguageManager.t(step.text(for: target?.flags ?? []).titleKey)) }
                 }
             }
         }
         .frame(width: size.width, height: size.height, alignment: .topLeading)
-        .onAppear { tour.update(frames: frames, bounds: size, host: host) }
-        .onChange(of: frames) { _, newFrames in tour.update(frames: newFrames, bounds: size, host: host) }
-        .onChange(of: size) { _, newSize in tour.update(frames: frames, bounds: newSize, host: host) }
+        .onAppear { tour.update(frames: frames, bounds: size, origin: origin, host: host) }
+        .onChange(of: frames) { _, newFrames in tour.update(frames: newFrames, bounds: size, origin: origin, host: host) }
+        .onChange(of: size) { _, newSize in tour.update(frames: frames, bounds: newSize, origin: origin, host: host) }
         .task(id: revealKey(showing: showing)) {
-            guard showing else { return }
-            await tour.revealCurrentStep(host: host)
+            guard showing, bubbleHeight > 0 else { return }
+            await tour.revealCurrentStep(host: host, bubbleHeight: bubbleHeight)
         }
     }
 
     private func revealKey(showing: Bool) -> String {
         guard showing, let id = tour.activeTour else { return "idle" }
-        return "\(id.rawValue)-\(tour.stepIndex)-\(tour.steps.map(\.id).joined(separator: ","))"
+        return "\(id.rawValue)-\(tour.stepIndex)-\(tour.steps.map(\.id).joined(separator: ","))-\(bubbleHeight)-\(size)"
     }
 
     private var bubbleWidth: CGFloat { min(size.width - 32, 420) }
@@ -394,7 +524,7 @@ struct TourOverlay: View {
     }
 
     @ViewBuilder
-    private func scrim(cutout: CGRect?, radius: CGFloat) -> some View {
+    private func scrim(cutout: CGRect?, radius: CGFloat, group: Bool) -> some View {
         let color = themeManager.currentTheme.isDark
             ? AppColors.background.opacity(0.72)
             : Color(red: 0x14 / 255, green: 0x17 / 255, blue: 0x1A / 255).opacity(0.55)
@@ -407,11 +537,19 @@ struct TourOverlay: View {
         .fill(color, style: FillStyle(eoFill: true))
         // The scrim takes every touch outside the bubble, so nothing behind it reacts.
         .contentShape(Rectangle())
-        .gesture(DragGesture(minimumDistance: 0))
+        .gesture(DragGesture(minimumDistance: 0)
+            .onChanged { value in
+                if lastDrag == 0 { draggingGroup = group && cutout?.contains(value.startLocation) == true }
+                let delta = value.translation.height - lastDrag
+                lastDrag = value.translation.height
+                if draggingGroup && abs(value.translation.height) > 8 { tour.dragGroup(-delta) }
+            }
+            .onEnded { _ in lastDrag = 0; draggingGroup = false })
         .accessibilityHidden(true)
     }
 
-    private func bubble(step: TourStep, text: TourText, index: Int, total: Int, isTip: Bool) -> some View {
+    private func bubble(step: TourStep, text: TourText, index: Int, total: Int, isTip: Bool,
+                        canScrollUp: Bool, canScrollDown: Bool) -> some View {
         let title = LanguageManager.t(text.titleKey)
         let body = LanguageManager.t(text.bodyKey, text.args.mapValues { LanguageManager.t($0) })
         let isLast = index >= total - 1
@@ -419,12 +557,12 @@ struct TourOverlay: View {
             if !isTip {
                 HStack {
                     Text(LanguageManager.t("tour.stepCount", ["current": "\(index + 1)", "total": "\(total)"]))
-                        .font(.app(size: 12, weight: .medium))
+                        .font(.app(size: captionSize, weight: .medium))
                         .foregroundStyle(AppColors.muted)
                     Spacer()
                     if !step.isPremium {
                         Button(LanguageManager.t("tour.skip")) { tour.skip() }
-                            .font(.app(size: 14))
+                            .font(.app(size: skipSize))
                             .foregroundStyle(AppColors.secondaryText)
                             .frame(minHeight: 48)
                             .accessibilityIdentifier("tour-skip")
@@ -432,15 +570,24 @@ struct TourOverlay: View {
                 }
             }
             Text(title)
-                .font(.app(size: 18, weight: .semibold))
+                .font(.app(size: titleSize, weight: .semibold))
                 .foregroundStyle(AppColors.text)
                 .accessibilityAddTraits(.isHeader)
                 .fixedSize(horizontal: false, vertical: true)
             Text(body)
-                .font(.app(size: 15))
+                .font(.app(size: bodySize))
                 .foregroundStyle(AppColors.secondaryText)
                 .lineSpacing(3)
                 .fixedSize(horizontal: false, vertical: true)
+            if step.scrollsContent {
+                HStack(spacing: 8) {
+                    Text(LanguageManager.t("tour.scrollHint"))
+                        .font(.app(size: captionSize)).foregroundStyle(AppColors.muted)
+                    Spacer(minLength: 0)
+                    scrollButton(down: false, enabled: canScrollUp)
+                    scrollButton(down: true, enabled: canScrollDown)
+                }
+            }
             HStack(spacing: 10) {
                 Spacer(minLength: 0)
                 if step.isPremium {
@@ -464,6 +611,18 @@ struct TourOverlay: View {
         .accessibilityAddTraits(.isModal)
         .accessibilityIdentifier("tour-bubble")
     }
+    private func scrollButton(down: Bool, enabled: Bool) -> some View {
+        Button { tour.pageGroup(forward: down, host: host) } label: {
+            Image(systemName: down ? "arrow.down" : "arrow.up")
+                .frame(width: 48, height: 48)
+                .foregroundStyle(AppColors.text.opacity(enabled ? 1 : 0.35))
+                .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
+        }
+        .buttonStyle(.plain).disabled(!enabled)
+        .accessibilityLabel(LanguageManager.t(down ? "tour.scrollDown" : "tour.scrollUp"))
+        .accessibilityIdentifier(down ? "tour-scroll-down" : "tour-scroll-up")
+    }
+
 }
 
 private struct TourBubbleHeightKey: PreferenceKey {
@@ -472,6 +631,7 @@ private struct TourBubbleHeightKey: PreferenceKey {
 }
 
 private struct TourButton: View {
+    @ScaledMetric(relativeTo: .body) private var fontSize: CGFloat = 15
     let title: String
     let primary: Bool
     let id: String
@@ -487,7 +647,7 @@ private struct TourButton: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(.app(size: 15, weight: primary ? .semibold : .medium))
+                .font(.app(size: fontSize, weight: primary ? .semibold : .medium))
                 .foregroundStyle(primary ? AppColors.background : AppColors.text)
                 .padding(.horizontal, 18)
                 .frame(minHeight: 48)
@@ -513,5 +673,51 @@ struct SampleDataLabel: View {
             .background(AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 6, style: .continuous))
             .overlay(RoundedRectangle(cornerRadius: 6, style: .continuous).stroke(AppColors.border, lineWidth: 1))
             .accessibilityIdentifier("pro-sample-data-label")
+    }
+}
+
+@MainActor
+private final class TourScrollTarget {
+    weak var view: UIView?
+    init(view: UIView) { self.view = view }
+    var scrollView: UIScrollView? {
+        var parent = view?.superview
+        while let current = parent {
+            if let scroll = current as? UIScrollView,
+               scroll.contentSize.height > scroll.bounds.height + 1 || scroll.alwaysBounceVertical {
+                return scroll
+            }
+            parent = current.superview
+        }
+        return nil
+    }
+    func scroll(by delta: CGFloat) {
+        guard let scroll = scrollView else { return }
+        let minimum = -scroll.adjustedContentInset.top
+        let maximum = max(minimum, scroll.contentSize.height - scroll.bounds.height + scroll.adjustedContentInset.bottom)
+        scroll.setContentOffset(CGPoint(x: scroll.contentOffset.x,
+            y: min(maximum, max(minimum, scroll.contentOffset.y + delta))), animated: false)
+        scroll.layoutIfNeeded()
+    }
+}
+
+private struct TourScrollProbe: UIViewRepresentable {
+    let id: String
+    final class Coordinator {
+        let id: String
+        init(id: String) { self.id = id }
+    }
+    func makeCoordinator() -> Coordinator { Coordinator(id: id) }
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView()
+        view.isUserInteractionEnabled = false
+        TourController.shared.attachScrollTarget(id, view: view)
+        return view
+    }
+    func updateUIView(_ uiView: UIView, context: Context) {
+        TourController.shared.attachScrollTarget(id, view: uiView)
+    }
+    static func dismantleUIView(_ uiView: UIView, coordinator: Coordinator) {
+        TourController.shared.detachScrollTarget(coordinator.id, view: uiView)
     }
 }

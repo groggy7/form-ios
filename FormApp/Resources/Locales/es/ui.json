@@ -1393,10 +1393,10 @@
   "tour.home.rest.body": "No hay nada planificado para este día. Toca un día de entrenamiento arriba para ver su entrenamiento.",
   "tour.home.week.title": "Tu semana",
   "tour.home.week.body": "Entrenamientos hechos frente a tu plan, con el volumen, el tiempo activo y los récords de esta semana.",
-  "tour.home.exercises.title": "Ejercicios",
-  "tour.home.exercises.body": "Toca un ejercicio para ver su demostración, sus músculos y su técnica.",
+  "tour.home.exercises.title": "Ejercicios de este día",
+  "tour.home.exercises.body": "Desplázate para ver todos los ejercicios de esta sesión. Abre uno para ver su demostración, músculos y técnica.",
   "tour.home.tabs.title": "Más por descubrir",
-  "tour.home.tabs.body": "{plan}, {library} y {progress} muestran una guía breve la primera vez que los abres.",
+  "tour.home.tabs.body": "Usa {plan} para tu calendario de entrenamiento, {library} para consultar los ejercicios y {progress} para tus entrenamientos registrados.",
   "tour.plan.days.title": "Tu semana",
   "tour.plan.days.body": "Los siete días de tu programa activo. Toca un día de entrenamiento para abrirlo en {home}.",
   "tour.plan.change.body": "Cambia a otro programa, crea el tuyo o importa uno.",
@@ -1427,7 +1427,7 @@
   "tour.matrix.legend.title": "Qué significan los colores",
   "tour.matrix.legend.body": "Van de por debajo del rango de referencia a muy por encima. Son guías generales, no límites personales.",
   "tour.matrix.detail.title": "Detalles del músculo",
-  "tour.matrix.detail.body": "Elige un músculo para ver sus series directas e indirectas frente a su MEV, MAV y MRV.",
+  "tour.matrix.detail.body": "Elige un músculo para comparar sus series directas e indirectas con los rangos de referencia generales de volumen.",
   "tour.matrix.mode.title": "Semanas y programa",
   "tour.matrix.mode.body": "Vuelve a semanas anteriores o cambia a {cycle} para ver el volumen que prescribe tu programa.",
   "tour.lab.repmax.body": "A partir de tus mejores series, Rep Lab estima cuánto podrías levantar de 1 a 12 repeticiones.",
@@ -1767,5 +1767,8 @@
   "social.setsProgress.other": "{count} de {total} series completadas",
   "social.workoutsProgress.one": "{count} de {total} entrenamientos",
   "social.workoutsProgress.other": "{count} de {total} entrenamientos",
-  "social.photoPermission": "Guarda las tarjetas de entrenamiento que elijas en tu fototeca."
+  "social.photoPermission": "Guarda las tarjetas de entrenamiento que elijas en tu fototeca.",
+  "tour.scrollHint": "Desliza para explorar",
+  "tour.scrollUp": "Desplazar hacia arriba",
+  "tour.scrollDown": "Desplazar hacia abajo"
 }

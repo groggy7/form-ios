@@ -1393,10 +1393,10 @@
   "tour.home.rest.body": "Bu gün için planlanmış bir şey yok. Antrenmanını görmek için yukarıdan bir antrenman gününe dokunun.",
   "tour.home.week.title": "Haftanız",
   "tour.home.week.body": "Planınıza göre tamamlanan antrenmanlar; bu haftanın hacmi, aktif süresi ve rekorlarıyla birlikte.",
-  "tour.home.exercises.title": "Egzersizler",
-  "tour.home.exercises.body": "Gösterimini, kaslarını ve tekniğini görmek için bir egzersize dokunun.",
+  "tour.home.exercises.title": "Bu günün egzersizleri",
+  "tour.home.exercises.body": "Bu antrenmandaki tüm egzersizleri görmek için kaydırın. Gösterimi, kasları ve tekniği için birini açın.",
   "tour.home.tabs.title": "Keşfedecek daha çok şey",
-  "tour.home.tabs.body": "{plan}, {library} ve {progress} ilk açtığınızda kısa birer tur gösterir.",
+  "tour.home.tabs.body": "Programınız için {plan}, egzersiz rehberi için {library}, kaydettiğiniz antrenmanlar için {progress} bölümünü kullanın.",
   "tour.plan.days.title": "Haftanız",
   "tour.plan.days.body": "Aktif programınızın yedi günü. {home} sayfasında açmak için bir antrenman gününe dokunun.",
   "tour.plan.change.body": "Başka bir programa geçin, kendi programınızı oluşturun ya da bir program içe aktarın.",
@@ -1427,7 +1427,7 @@
   "tour.matrix.legend.title": "Renklerin anlamı",
   "tour.matrix.legend.body": "Referans aralığının altından çok üstüne kadar uzanır. Bunlar kişisel sınırlar değil, genel kılavuzlardır.",
   "tour.matrix.detail.title": "Kas ayrıntıları",
-  "tour.matrix.detail.body": "Bir kasın doğrudan ve dolaylı setlerini MEV, MAV ve MRV değerlerine göre görmek için onu seçin.",
+  "tour.matrix.detail.body": "Doğrudan ve yardımcı setlerini genel hacim referans aralıklarıyla karşılaştırmak için bir kas seçin.",
   "tour.matrix.mode.title": "Haftalar ve planlar",
   "tour.matrix.mode.body": "Önceki haftalara dönün ya da programınızın öngördüğü hacmi görmek için {cycle} görünümüne geçin.",
   "tour.lab.repmax.body": "Rep Lab, en iyi setlerinizden 1 ile 12 tekrar arasında ne kaldırabileceğinizi tahmin eder.",
@@ -1767,5 +1767,8 @@
   "social.setsProgress.other": "{total} setten {count} set tamamlandı",
   "social.workoutsProgress.one": "{total} antrenmandan {count} tanesi",
   "social.workoutsProgress.other": "{total} antrenmandan {count} tanesi",
-  "social.photoPermission": "Seçtiğin antrenman kartlarını fotoğraf arşivine kaydet."
+  "social.photoPermission": "Seçtiğin antrenman kartlarını fotoğraf arşivine kaydet.",
+  "tour.scrollHint": "Keşfetmek için kaydırın",
+  "tour.scrollUp": "Yukarı kaydır",
+  "tour.scrollDown": "Aşağı kaydır"
 }

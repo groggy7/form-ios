@@ -1393,10 +1393,10 @@
   "tour.home.rest.body": "Nothing is planned for this day. Tap a training day above to see its workout.",
   "tour.home.week.title": "Your week",
   "tour.home.week.body": "Workouts done against your plan, with this week's volume, active time and records.",
-  "tour.home.exercises.title": "Exercises",
-  "tour.home.exercises.body": "Tap an exercise to see its demonstration, muscles and technique.",
+  "tour.home.exercises.title": "This day’s exercises",
+  "tour.home.exercises.body": "Scroll to see every exercise in this workout. Open one for its demonstration, muscles and technique.",
   "tour.home.tabs.title": "More to explore",
-  "tour.home.tabs.body": "{plan}, {library} and {progress} each show a short tour the first time you open them.",
+  "tour.home.tabs.body": "Use {plan} for your schedule, {library} for exercise guidance, and {progress} for your logged training.",
   "tour.plan.days.title": "Your week",
   "tour.plan.days.body": "All seven days of your active program. Tap a workout day to open it on {home}.",
   "tour.plan.change.body": "Switch to another program, build your own or import one.",
@@ -1427,7 +1427,7 @@
   "tour.matrix.legend.title": "What the colors mean",
   "tour.matrix.legend.body": "They run from below the reference range to well above it. These are general guides, not personal limits.",
   "tour.matrix.detail.title": "Muscle details",
-  "tour.matrix.detail.body": "Pick a muscle to see its direct and indirect sets against its MEV, MAV and MRV.",
+  "tour.matrix.detail.body": "Choose a muscle to compare its direct and assisting sets with general volume reference ranges.",
   "tour.matrix.mode.title": "Weeks and plans",
   "tour.matrix.mode.body": "Step back through earlier weeks, or switch to {cycle} to see the volume your program prescribes.",
   "tour.lab.repmax.body": "From your best sets, Rep Lab estimates what you could lift for 1 to 12 reps.",
@@ -1767,5 +1767,8 @@
   "social.setsProgress.other": "{count} of {total} sets completed",
   "social.workoutsProgress.one": "{count} of {total} workouts",
   "social.workoutsProgress.other": "{count} of {total} workouts",
-  "social.photoPermission": "Save workout cards you choose to your photo library."
+  "social.photoPermission": "Save workout cards you choose to your photo library.",
+  "tour.scrollHint": "Scroll to explore",
+  "tour.scrollUp": "Scroll up",
+  "tour.scrollDown": "Scroll down"
 }
