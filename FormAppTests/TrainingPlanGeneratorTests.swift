@@ -452,6 +452,7 @@ final class TrainingPlanGeneratorTests: XCTestCase {
                 var rendered = profile(["dumbbells", "ez-bar", "plates"])
                 rendered.location = location; rendered.experience = "advanced"; rendered.advancedLifts = true
                 if location != "home" { rendered.equipment = try XCTUnwrap(TrainingCatalog.bundled?.presets["commercial_gym"]).filter { $0 != "calf-machine" } }
+                if step == 8 && location != "home" { rendered.goal = "cut"; rendered.experience = "intermediate"; rendered.advancedLifts = false; rendered.selectedDays = [1, 2, 4, 5] }
                 TrainingSetupStore.saveDraft(.init(profile: rendered, step: step, programId: "render-plan", program: nil))
                 let host = UIHostingController(rootView: TrainingSetupView(store: store, completeSetup: false, onClose: {}).environment(\.sizeCategory, size))
                 let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 900))
@@ -462,7 +463,7 @@ final class TrainingPlanGeneratorTests: XCTestCase {
                 let name = "training-setup-\(location)-\(language)-\(step)" + (size == .large ? "-regular" : (size == .accessibilityExtraExtraExtraLarge ? "-accessibility" : "")) + (width > 390 ? "-tablet" : (width > 320 ? "-wide" : ""))
                 try image.pngData()?.write(to: URL(fileURLWithPath: "/tmp/\(name).png"))
                 let attachment = XCTAttachment(image: image); attachment.name = name; attachment.lifetime = .keepAlways; add(attachment)
-                if step == 7 {
+                if step == 7 || step == 8 {
                     func scrollView(in view: UIView) -> UIScrollView? {
                         if let scroll = view as? UIScrollView { return scroll }
                         return view.subviews.lazy.compactMap { scrollView(in: $0) }.first

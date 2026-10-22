@@ -21,6 +21,8 @@ struct TrainingSetupView: View {
     @ScaledMetric(relativeTo: .caption) private var minimumTileWidth: CGFloat = 110
     @ScaledMetric(relativeTo: .caption) private var minimumPriorityWidth: CGFloat = 136
     @ScaledMetric(relativeTo: .caption) private var priorityFontSize: CGFloat = 13
+    @ScaledMetric(relativeTo: .caption2) private var reviewBadgeSize: CGFloat = 50
+    @ScaledMetric(relativeTo: .caption2) private var reviewWeekdayFontSize: CGFloat = 11
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var equipmentWidth: CGFloat = 0
@@ -296,7 +298,7 @@ struct TrainingSetupView: View {
         let experience = LanguageManager.t("onboarding.experience.\(profile.experience).title")
         let eligible = TrainingPlanGenerator.eligible(profile, catalog: catalog)
         VStack(alignment: .leading, spacing: 4) {
-            Text(program.name).font(.system(size: 18, weight: .semibold)).foregroundStyle(AppColors.text)
+            Text(program.name).font(.title3.weight(.semibold)).foregroundStyle(AppColors.text)
             Text("\(goal) · \(experience)").font(.subheadline).foregroundStyle(AppColors.secondaryText)
             Text(program.description).font(.footnote).foregroundStyle(AppColors.muted).padding(.top, 6)
         }.padding(16).frame(maxWidth: .infinity, alignment: .leading).setupCard()
@@ -306,42 +308,46 @@ struct TrainingSetupView: View {
                 Text(LanguageManager.t(key)).font(.footnote).foregroundStyle(AppColors.secondaryText)
             }.padding(14).frame(maxWidth: .infinity, alignment: .leading).setupCard()
         }
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(spacing: 12) {
+                Text(LanguageManager.t("builder.trainingDays")).font(.headline).foregroundStyle(AppColors.text)
+                Spacer(minLength: 0)
+                Text(LanguageManager.t("builder.dayCount", ["count": program.workouts.count])).font(.caption).foregroundStyle(AppColors.muted)
+            }
+            Text(LanguageManager.t("builder.summaryCounts", ["exercises": program.workouts.reduce(0) { $0 + $1.exercises.count },
+                "sets": program.workouts.flatMap(\.exercises).reduce(0) { $0 + WorkoutSessionUtils.initialSetCount(exercise: $1) }]))
+                .font(.caption).foregroundStyle(AppColors.muted).accessibilityIdentifier("setup-plan-totals")
+        }.accessibilityIdentifier("setup-training-days")
         ForEach(program.workouts) { workout in
             let minutes = (300 + workout.exercises.reduce(0) { $0 + TrainingPlanGenerator.estimateSeconds($1) } + 59) / 60
             let open = expandedDays.contains(workout.id)
             VStack(alignment: .leading, spacing: 0) {
                 // Days start collapsed so the whole week reads at a glance; the header carries the summary.
                 Button { if open { expandedDays.remove(workout.id) } else { expandedDays.insert(workout.id) } } label: {
-                    HStack(spacing: 12) {
-                        VStack(alignment: .leading, spacing: 2) {
-                            Text(LanguageManager.workoutDays[workout.day - 1]).font(.footnote).foregroundStyle(AppColors.muted)
-                            Text(workout.title).font(.system(size: 17, weight: .semibold)).foregroundStyle(AppColors.text)
-                            if !workout.focus.isEmpty { Text(workout.focus).font(.footnote).foregroundStyle(AppColors.secondaryText) }
-                            Text("\(LanguageManager.t("weekly.exerciseCount", ["count": workout.exercises.count])) · \(LanguageManager.t("setup.minutes", ["count": minutes]))")
-                                .font(.footnote).foregroundStyle(AppColors.muted)
-                        }.multilineTextAlignment(.leading)
-                        Spacer(minLength: 0)
-                        Image(systemName: open ? "chevron.up" : "chevron.down").foregroundStyle(AppColors.secondaryText).accessibilityHidden(true)
-                    }.padding(.leading, 16).padding(.trailing, 16).padding(.vertical, 14).frame(maxWidth: .infinity, alignment: .leading).contentShape(Rectangle())
+                    reviewDayHeader(workout, minutes: minutes, open: open)
                 }.buttonStyle(.plain).accessibilityIdentifier("setup-day-\(workout.day)")
+                    .accessibilityLabel([LanguageManager.workoutDays[workout.day - 1], workout.title, workout.focus,
+                        LanguageManager.t("weekly.exerciseCount", ["count": workout.exercises.count]),
+                        LanguageManager.t("setup.minutes", ["count": minutes])].filter { !$0.isEmpty }.joined(separator: ", "))
                     .accessibilityValue(LanguageManager.t(open ? "progression.coach.expanded" : "progression.coach.collapsed"))
                 if open { ForEach(workout.exercises) { exercise in
                     let role = catalog.candidates.first { $0.id == exercise.exerciseId }?.role
                     let replacement = eligible.first { row in row.role == role && !workout.exercises.contains { $0.exerciseId == row.id } }
                     Rectangle().fill(AppColors.border).frame(height: 1).padding(.horizontal, 16)
-                    HStack(spacing: 0) {
+                    HStack(spacing: 10) {
+                        MovementIcon(exerciseId: exercise.exerciseId, size: 44).accessibilityHidden(true)
                         VStack(alignment: .leading, spacing: 2) {
                             Text(exercise.displayName).font(.system(size: 15, weight: .medium)).foregroundStyle(AppColors.text)
                             Text("\(prescription(exercise)) · \(LanguageManager.t("setup.rest", ["seconds": exercise.restSeconds ?? 90]))")
                                 .font(.footnote).foregroundStyle(AppColors.secondaryText)
-                        }.padding(.vertical, 10).padding(.leading, 16).frame(maxWidth: .infinity, alignment: .leading)
+                        }.padding(.vertical, 10).frame(maxWidth: .infinity, alignment: .leading)
                         if let replacement {
                             Button { replace(exercise, in: workout, with: replacement, program: program) } label: {
                                 Image(systemName: "arrow.left.arrow.right").frame(width: 48, height: 48).contentShape(Rectangle())
-                            }.buttonStyle(.plain).foregroundStyle(AppColors.secondaryText).padding(.trailing, 4)
+                            }.buttonStyle(.plain).foregroundStyle(AppColors.secondaryText)
                                 .accessibilityLabel(LanguageManager.t("setup.replace")).accessibilityIdentifier("setup-replace")
-                        } else { Spacer().frame(width: 16) }
-                    }
+                        }
+                    }.padding(.leading, 16).padding(.trailing, replacement == nil ? 16 : 4)
                 } }
             }.frame(maxWidth: .infinity, alignment: .leading).setupCard()
         }
@@ -352,6 +358,38 @@ struct TrainingSetupView: View {
                 .background(AppColors.surface.opacity(0.5), in: RoundedRectangle(cornerRadius: 12))
                 .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border))
         }
+    }
+    @ViewBuilder private func reviewDayHeader(_ workout: Workout, minutes: Int, open: Bool) -> some View {
+        VStack(alignment: .leading, spacing: 10) {
+            if dynamicTypeSize.isAccessibilitySize {
+                HStack {
+                    reviewWeekday(workout.day)
+                    Spacer(minLength: 0)
+                    Image(systemName: open ? "chevron.up" : "chevron.down").foregroundStyle(AppColors.secondaryText).accessibilityHidden(true)
+                }
+                reviewDayDetails(workout, minutes: minutes)
+            } else {
+                HStack(spacing: 12) {
+                    reviewWeekday(workout.day)
+                    reviewDayDetails(workout, minutes: minutes).frame(maxWidth: .infinity, alignment: .leading)
+                    Image(systemName: open ? "chevron.up" : "chevron.down").foregroundStyle(AppColors.secondaryText).accessibilityHidden(true)
+                }
+            }
+        }.padding(14).frame(maxWidth: .infinity, alignment: .leading).contentShape(Rectangle())
+    }
+    private func reviewWeekday(_ day: Int) -> some View {
+        Text(LanguageManager.dayLabels[day - 1]).font(.system(size: reviewWeekdayFontSize, weight: .bold))
+            .frame(width: reviewBadgeSize, height: reviewBadgeSize).foregroundStyle(AppColors.accent)
+            .background(AppColors.positiveBg, in: RoundedRectangle(cornerRadius: 12))
+            .accessibilityLabel(LanguageManager.workoutDays[day - 1]).accessibilityIdentifier("setup-weekday-badge-\(day)")
+    }
+    private func reviewDayDetails(_ workout: Workout, minutes: Int) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(workout.title).font(.headline.weight(.semibold)).foregroundStyle(AppColors.text)
+            if !workout.focus.isEmpty { Text(workout.focus).font(.footnote).foregroundStyle(AppColors.secondaryText) }
+            Text("\(LanguageManager.t("weekly.exerciseCount", ["count": workout.exercises.count])) · \(LanguageManager.t("setup.minutes", ["count": minutes]))")
+                .font(.footnote).foregroundStyle(AppColors.muted)
+        }.multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
     }
     private func choice(_ label: String, selected: Bool, hint: String = "", multiple: Bool = false, tag: String = "", action: @escaping () -> Void) -> some View {
         Button(action: action) {
@@ -417,8 +455,8 @@ private struct SetupProgressStyle: ProgressViewStyle {
 private extension View {
     /// The standard contained surface: palette fill, 1pt border and 14pt corners.
     func setupCard() -> some View {
-        background(AppColors.surface, in: RoundedRectangle(cornerRadius: 14))
-            .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border))
+        background(AppColors.surface, in: RoundedRectangle(cornerRadius: 16))
+            .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border))
     }
 }
 
