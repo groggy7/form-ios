@@ -5475,33 +5475,105 @@
       "extractionState": "manual",
       "localizations": {
         "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "{count} New"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld New"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld New"
+                }
+              }
+            }
           }
         },
         "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "{count} Yeni"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld Yeni"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld Yeni"
+                }
+              }
+            }
           }
         },
         "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "{count} neu"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld neuer"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld neue"
+                }
+              }
+            }
           }
         },
         "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "{count} nouveaux"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld nouveau"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld nouveaux"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld nouveaux"
+                }
+              }
+            }
           }
         },
         "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "{count} nuevos"
+          "variations": {
+            "plural": {
+              "one": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld nuevo"
+                }
+              },
+              "many": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld nuevos"
+                }
+              },
+              "other": {
+                "stringUnit": {
+                  "state": "translated",
+                  "value": "%lld nuevos"
+                }
+              }
+            }
           }
         }
       }
@@ -5553,13 +5625,13 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "{count} Eg"
+            "value": "{count} hareket"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "{count} Ex"
+            "value": "{count} Üb."
           }
         },
         "fr": {
@@ -5571,7 +5643,7 @@
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "{count} Ex"
+            "value": "{count} ej."
           }
         }
       }

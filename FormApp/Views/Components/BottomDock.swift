@@ -76,10 +76,12 @@ public struct BottomDock: View {
                     .foregroundStyle(foreground)
                     .frame(height: 22)
 
+                // Labels stay on one line and size to fit their slot, like Android's 6–12sp dock labels.
                 Text(title)
                     .font(.app(size: 11, weight: .medium))
                     .foregroundStyle(foreground)
                     .lineLimit(1)
+                    .minimumScaleFactor(0.55)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .contentShape(RoundedRectangle(cornerRadius: 17, style: .continuous))

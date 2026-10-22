@@ -146,6 +146,8 @@
   "history.fullLogBreakdown": "Répartition complète du journal →",
   "history.prsHit": "Records battus",
   "history.newPrs": "{count} nouveaux",
+  "history.newPrs.one": "{count} nouveau",
+  "history.newPrs.other": "{count} nouveaux",
   "history.moves": "Exercices",
   "history.movesCount": "{count} ex.",
   "history.activeDuration": "Durée active : {duration}",

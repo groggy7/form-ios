@@ -253,15 +253,17 @@ public struct HistoryDayPreviewCard: View {
                 )
                 metricTile(
                     title: LanguageManager.t("history.moves").uppercased().isEmpty ? "MOVES" : LanguageManager.t("history.moves").uppercased(),
-                    value: "\(allExercises.count) Ex",
+                    value: LanguageManager.t("history.movesCount", ["count": allExercises.count]),
                     isPrTile: false
                 )
                 metricTile(
                     title: LanguageManager.t("history.prsHit").uppercased().isEmpty ? "PRS HIT" : LanguageManager.t("history.prsHit").uppercased(),
-                    value: prsHitCount > 0 ? "⚡ \(prsHitCount) New" : "-",
+                    value: prsHitCount > 0 ? "⚡ " + LanguageManager.t("history.newPrs", ["count": prsHitCount]) : "-",
                     isPrTile: prsHitCount > 0
                 )
             }
+            // Tiles share one height when a translated title wraps.
+            .fixedSize(horizontal: false, vertical: true)
 
             // Exercise List Rows (Max 3 preview cards)
             if detail.isCompletionMark {
@@ -331,14 +333,15 @@ public struct HistoryDayPreviewCard: View {
                 .font(.app(size: 9, weight: .bold))
                 .foregroundStyle(isPrTile ? AppColors.orangePrText : AppColors.muted)
                 .tracking(0.5)
-                .lineLimit(1)
+                .multilineTextAlignment(.center)
+                .lineLimit(2)
             Text(value)
                 .font(.app(size: 13, weight: .bold))
                 .foregroundStyle(isPrTile ? AppColors.orangePrText : AppColors.text)
                 .lineLimit(1)
-                .minimumScaleFactor(0.8)
+                .minimumScaleFactor(0.7)
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding(.vertical, 8)
         .padding(.horizontal, 4)
         .background(

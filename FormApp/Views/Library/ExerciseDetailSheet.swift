@@ -504,6 +504,8 @@ struct ExerciseHistoryStatsRow: View {
                     onTap: { show1RmInfoSheet = true }
                 )
             }
+            // Both cards in a row share one height when text needs more room.
+            .fixedSize(horizontal: false, vertical: true)
 
             // Row 2: Total Sets & Total Volume
             HStack(spacing: 10) {
@@ -537,6 +539,7 @@ struct ExerciseHistoryStatsRow: View {
                     subtitleColor: AppColors.historyStatCardTitle
                 )
             }
+            .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity)
         .sheet(isPresented: $show1RmInfoSheet) {
@@ -581,6 +584,7 @@ struct HistoryStatCard: View {
                     .font(.app(size: 11, weight: .semibold))
                     .foregroundStyle(AppColors.historyStatCardTitle)
                     .lineLimit(2)
+                    .minimumScaleFactor(0.73)
                     .fixedSize(horizontal: false, vertical: true)
                     .lineSpacing(2)
                     .kerning(0.4)
@@ -601,7 +605,8 @@ struct HistoryStatCard: View {
                 .foregroundStyle(valueColor)
                 .multilineTextAlignment(.center)
                 .lineLimit(1)
-                .minimumScaleFactor(0.8)
+                // Long weights and volumes shrink to fit (18 to 12pt) before truncating.
+                .minimumScaleFactor(0.67)
 
             Spacer(minLength: 4)
 
@@ -610,11 +615,10 @@ struct HistoryStatCard: View {
                 .foregroundStyle(subtitleColor)
                 .multilineTextAlignment(.center)
                 .lineLimit(1)
-                .minimumScaleFactor(0.8)
+                .minimumScaleFactor(0.75)
         }
         .padding(14)
-        .frame(maxWidth: .infinity)
-        .frame(height: 114)
+        .frame(maxWidth: .infinity, minHeight: 114, maxHeight: .infinity)
         .background(AppColors.historyStatCardBg)
         .clipShape(RoundedRectangle(cornerRadius: 16))
         .overlay(

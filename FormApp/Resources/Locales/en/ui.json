@@ -146,6 +146,8 @@
   "history.fullLogBreakdown": "Full Log Breakdown →",
   "history.prsHit": "PRs Hit",
   "history.newPrs": "{count} New",
+  "history.newPrs.one": "{count} New",
+  "history.newPrs.other": "{count} New",
   "history.moves": "Moves",
   "history.movesCount": "{count} Ex",
   "history.activeDuration": "Active Duration: {duration}",

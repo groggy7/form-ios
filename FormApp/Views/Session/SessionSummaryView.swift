@@ -400,10 +400,12 @@ public struct SessionSummaryView: View {
             Image(systemName: icon)
                 .font(.system(size: 18))
                 .foregroundStyle(AppColors.muted)
+            // Long volumes and translated labels shrink to fit (20 to 12pt) instead of truncating.
             Text(value)
                 .font(.app(size: 20, weight: .bold))
                 .foregroundStyle(AppColors.text)
                 .lineLimit(1)
+                .minimumScaleFactor(0.6)
                 .multilineTextAlignment(.center)
             Text(title)
                 .font(.app(size: 11, weight: .medium))
