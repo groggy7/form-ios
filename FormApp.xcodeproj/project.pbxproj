@@ -32,6 +32,8 @@
 		3255EAF86BCBDCDD24C59363 /* ProgramBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35F223343B153857F9D2B8C6 /* ProgramBuilderView.swift */; };
 		329E21359E0ADED851ABBD02 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91FE39F02FA4EAA1A43D7CA8 /* AppColors.swift */; };
 		TH0000000000000000000001 /* AppThemes.swift in Sources */ = {isa = PBXBuildFile; fileRef = TH0000000000000000000002 /* AppThemes.swift */; };
+		TW0000000000000000000001 /* TextWidthScale.swift in Sources */ = {isa = PBXBuildFile; fileRef = TW0000000000000000000002 /* TextWidthScale.swift */; };
+		TW0000000000000000000003 /* TextWidthScaleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = TW0000000000000000000004 /* TextWidthScaleTests.swift */; };
 		36BD5962CDF814CE9F9A4F6C /* 02_powerbuilding_strength.json in Resources */ = {isa = PBXBuildFile; fileRef = EC5E4B6045ADD51D2CA59D20 /* 02_powerbuilding_strength.json */; };
 		3F7B9B586131F615F225CDD2 /* ActiveSessionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECF19DF767A0483E3295C1ED /* ActiveSessionView.swift */; };
 		45546ACE7DF72EB335DD41FA /* MovementIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D97FA7035F2317DFBE57498 /* MovementIcon.swift */; };
@@ -217,6 +219,8 @@
 		90A44CC582072D671FF45DE4 /* form_rest_complete.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = form_rest_complete.wav; sourceTree = "<group>"; };
 		91FE39F02FA4EAA1A43D7CA8 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		TH0000000000000000000002 /* AppThemes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppThemes.swift; sourceTree = "<group>"; };
+		TW0000000000000000000002 /* TextWidthScale.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextWidthScale.swift; sourceTree = "<group>"; };
+		TW0000000000000000000004 /* TextWidthScaleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextWidthScaleTests.swift; sourceTree = "<group>"; };
 		92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 01_aesthetic_hypertrophy.json; sourceTree = "<group>"; };
 		955CAB74DAB1D7D264DD689E /* MuscleArtwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MuscleArtwork.swift; sourceTree = "<group>"; };
 		9A2948074308DABA9A07E42E /* 04_full_body_classic.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = 04_full_body_classic.json; sourceTree = "<group>"; };
@@ -413,6 +417,7 @@
 				9D2282260300C11D1B7F29AE /* FormAppTests.swift */,
 				C1500000000000000000000B /* ProgressionFixtureTests.swift */,
 				TR0000000000000000000005 /* TourTests.swift */,
+				TW0000000000000000000004 /* TextWidthScaleTests.swift */,
 				AI0000000000000000000005 /* AppIconTests.swift */,
 				C1500000000000000000000D /* progression-fixtures.json */,
 				IS0000000000000000000001 /* IntensityFixtureTests.swift */,
@@ -476,6 +481,7 @@
 			children = (
 				91FE39F02FA4EAA1A43D7CA8 /* AppColors.swift */,
 				TH0000000000000000000002 /* AppThemes.swift */,
+				TW0000000000000000000002 /* TextWidthScale.swift */,
 			);
 			path = Theme;
 			sourceTree = "<group>";
@@ -849,6 +855,7 @@
 				3F7B9B586131F615F225CDD2 /* ActiveSessionView.swift in Sources */,
 				329E21359E0ADED851ABBD02 /* AppColors.swift in Sources */,
 				TH0000000000000000000001 /* AppThemes.swift in Sources */,
+				TW0000000000000000000001 /* TextWidthScale.swift in Sources */,
 				C011A0000000000000000002 /* AppStatePersistence.swift in Sources */,
 				11494E03B6F140F80312218E /* AppStore.swift in Sources */,
 				S10000000000000000000001 /* ExerciseSearch.swift in Sources */,
@@ -938,6 +945,7 @@
 				BJ0000000000000000000010 /* BodyAndJointJournalTests.swift in Sources */,
 				HW0000000000000000000004 /* HealthWeighInTests.swift in Sources */,
 				TR0000000000000000000006 /* TourTests.swift in Sources */,
+				TW0000000000000000000003 /* TextWidthScaleTests.swift in Sources */,
 				AI0000000000000000000006 /* AppIconTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

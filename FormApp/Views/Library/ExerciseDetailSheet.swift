@@ -90,7 +90,7 @@ public struct ExerciseDetailView: View {
                 .accessibilityLabel(LanguageManager.t("common.back"))
 
                 Text(LanguageManager.t("library.details"))
-                    .font(.system(size: 14, weight: .medium))
+                    .font(.app(size: 14, weight: .medium))
                     .foregroundStyle(AppColors.secondaryText)
 
                 Spacer()
@@ -102,11 +102,11 @@ public struct ExerciseDetailView: View {
             VStack(alignment: .leading, spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(currentExercise.displayName)
-                        .font(.system(size: 24, weight: .semibold))
+                        .font(.app(size: 24, weight: .semibold))
                         .foregroundStyle(AppColors.text)
 
                     Text(currentExercise.metadataSubtitle)
-                        .font(.system(size: 11, weight: .medium))
+                        .font(.app(size: 11, weight: .medium))
                         .foregroundStyle(AppColors.accent)
                         .tracking(0.7)
                 }
@@ -117,7 +117,7 @@ public struct ExerciseDetailView: View {
                         let isSelected = tab == selectedTab
                         Button(action: { selectedTab = tab }) {
                             Text(LanguageManager.t(tab.titleKey))
-                                .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
+                                .font(.app(size: 13, weight: isSelected ? .semibold : .medium))
                                 .foregroundStyle(isSelected ? AppColors.text : AppColors.secondaryText)
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 36)
@@ -197,7 +197,7 @@ public struct ExerciseDetailView: View {
                                     Image(systemName: "flag")
                                         .font(.system(size: 14, weight: .medium))
                                     Text(LanguageManager.t("report.action"))
-                                        .font(.system(size: 13, weight: .medium))
+                                        .font(.app(size: 13, weight: .medium))
                                 }
                                 .foregroundStyle(AppColors.danger)
                                 .padding(.horizontal, 16)
@@ -222,7 +222,7 @@ public struct ExerciseDetailView: View {
                         if cuesText.isEmpty && avoidText.isEmpty {
                             VStack(spacing: 8) {
                                 Text(LanguageManager.t("exercise.technique.empty"))
-                                    .font(.system(size: 14))
+                                    .font(.app(size: 14))
                                     .foregroundStyle(AppColors.secondaryText)
                                     .multilineTextAlignment(.center)
                             }
@@ -255,12 +255,12 @@ public struct ExerciseDetailView: View {
                                     .foregroundStyle(AppColors.muted)
 
                                 Text(LanguageManager.t("exercise.history.empty"))
-                                    .font(.system(size: 15, weight: .semibold))
+                                    .font(.app(size: 15, weight: .semibold))
                                     .foregroundStyle(AppColors.text)
                                     .multilineTextAlignment(.center)
 
                                 Text(LanguageManager.t("exercise.history.emptyHint"))
-                                    .font(.system(size: 13))
+                                    .font(.app(size: 13))
                                     .foregroundStyle(AppColors.secondaryText)
                                     .multilineTextAlignment(.center)
                                     .lineSpacing(3)
@@ -292,7 +292,7 @@ public struct ExerciseDetailView: View {
                                     }
 
                                     Text(LanguageManager.t("exercise.history.recent"))
-                                        .font(.system(size: 17, weight: .bold))
+                                        .font(.app(size: 17, weight: .bold))
                                         .foregroundStyle(AppColors.text)
 
                                     Spacer()
@@ -343,7 +343,7 @@ public struct ExerciseDetailView: View {
                                                     .foregroundStyle(AppColors.accent)
 
                                                 Text(LanguageManager.t("exercise.history.viewAll", ["count": "\(stats.recentSessions.count)"]))
-                                                    .font(.system(size: 14, weight: .bold))
+                                                    .font(.app(size: 14, weight: .bold))
                                                     .foregroundStyle(AppColors.text)
 
                                                 Spacer()
@@ -578,7 +578,7 @@ struct HistoryStatCard: View {
                 }
 
                 Text(title)
-                    .font(.system(size: 11, weight: .semibold))
+                    .font(.app(size: 11, weight: .semibold))
                     .foregroundStyle(AppColors.historyStatCardTitle)
                     .lineLimit(2)
                     .fixedSize(horizontal: false, vertical: true)
@@ -597,7 +597,7 @@ struct HistoryStatCard: View {
             Spacer(minLength: 4)
 
             Text(value)
-                .font(.system(size: 18, weight: .bold))
+                .font(.app(size: 18, weight: .bold))
                 .foregroundStyle(valueColor)
                 .multilineTextAlignment(.center)
                 .lineLimit(1)
@@ -606,7 +606,7 @@ struct HistoryStatCard: View {
             Spacer(minLength: 4)
 
             Text(subtitle)
-                .font(.system(size: 12, weight: .medium))
+                .font(.app(size: 12, weight: .medium))
                 .foregroundStyle(subtitleColor)
                 .multilineTextAlignment(.center)
                 .lineLimit(1)
@@ -654,10 +654,10 @@ struct Estimated1RmInfoSheet: View {
 
                     VStack(alignment: .leading, spacing: 2) {
                         Text(LanguageManager.t("exercise.history.estimated1rmTitle"))
-                            .font(.system(size: 17, weight: .bold))
+                            .font(.app(size: 17, weight: .bold))
                             .foregroundStyle(AppColors.text)
                         Text(LanguageManager.t("exercise.history.brzyckiEq"))
-                            .font(.system(size: 12))
+                            .font(.app(size: 12))
                             .foregroundStyle(AppColors.muted)
                     }
 
@@ -687,7 +687,7 @@ struct Estimated1RmInfoSheet: View {
 
                         VStack(spacing: 8) {
                             Text(est1rmValue)
-                                .font(.system(size: 32, weight: .bold))
+                                .font(.app(size: 32, weight: .bold))
                                 .foregroundStyle(AppColors.historyStat1RmAmber)
 
                             let sourceText: String = {
@@ -704,7 +704,7 @@ struct Estimated1RmInfoSheet: View {
                             }()
 
                             Text(sourceText)
-                                .font(.system(size: 13))
+                                .font(.app(size: 13))
                                 .foregroundStyle(AppColors.secondaryText)
                                 .multilineTextAlignment(.center)
                         }
@@ -720,10 +720,10 @@ struct Estimated1RmInfoSheet: View {
                         // Formula card
                         VStack(alignment: .leading, spacing: 8) {
                             Text(LanguageManager.t("form_lab.info_brzycki_epley_title"))
-                                .font(.system(size: 14, weight: .semibold))
+                                .font(.app(size: 14, weight: .semibold))
                                 .foregroundStyle(AppColors.text)
                             Text(LanguageManager.t("form_lab.info_brzycki_epley_desc"))
-                                .font(.system(size: 12))
+                                .font(.app(size: 12))
                                 .lineSpacing(3)
                                 .foregroundStyle(AppColors.secondaryText)
                         }
@@ -739,7 +739,7 @@ struct Estimated1RmInfoSheet: View {
                         // Policy card
                         VStack(alignment: .leading, spacing: 6) {
                             Text(LanguageManager.t("form_lab.estimate_policy"))
-                                .font(.system(size: 12))
+                                .font(.app(size: 12))
                                 .lineSpacing(3)
                                 .foregroundStyle(AppColors.muted)
                         }
@@ -836,20 +836,20 @@ struct ExerciseSessionHistoryCard: View {
                 VStack(alignment: .leading, spacing: 8) {
                     HStack(alignment: .center) {
                         Text(session.workoutTitle.isEmpty ? "Workout" : session.workoutTitle)
-                            .font(.system(size: 15, weight: .bold))
+                            .font(.app(size: 15, weight: .bold))
                             .foregroundStyle(AppColors.text)
                             .lineLimit(1)
 
                         Spacer()
 
                         Text(formatSessionDate(session.date))
-                            .font(.system(size: 13, weight: .medium))
+                            .font(.app(size: 13, weight: .medium))
                             .foregroundStyle(AppColors.historyStatCardTitle)
                     }
 
                     HStack(spacing: 8) {
                         Text(LanguageManager.t("exercise.history.setsCount", ["count": "\(session.sets.count)"]))
-                            .font(.system(size: 11, weight: .semibold))
+                            .font(.app(size: 11, weight: .semibold))
                             .foregroundStyle(AppColors.secondaryText)
                             .padding(.horizontal, 8)
                             .padding(.vertical, 3)
@@ -860,10 +860,10 @@ struct ExerciseSessionHistoryCard: View {
                         if let best = bestSetString {
                             HStack(spacing: 4) {
                                 Text("\(LanguageManager.t("exercise.history.best")):")
-                                    .font(.system(size: 12, weight: .medium))
+                                    .font(.app(size: 12, weight: .medium))
                                     .foregroundStyle(AppColors.muted)
                                 Text(best)
-                                    .font(.system(size: 12, weight: .bold))
+                                    .font(.app(size: 12, weight: .bold))
                                     .foregroundStyle(AppColors.accent)
                             }
                         }
@@ -901,12 +901,12 @@ struct ExerciseSessionHistoryCard: View {
                             HStack {
                                 HStack(spacing: 6) {
                                     Text(LanguageManager.t("table.setNumber", ["count":setLog.setNumber]))
-                                        .font(.system(size: 14))
+                                        .font(.app(size: 14))
                                         .foregroundStyle(AppColors.historyStatCardTitle)
 
                                     if setLog.isWarmup {
                                         Text("W")
-                                            .font(.system(size: 10, weight: .bold))
+                                            .font(.app(size: 10, weight: .bold))
                                             .foregroundStyle(AppColors.historyStat1RmAmber)
                                             .padding(.horizontal, 5)
                                             .padding(.vertical, 1)
@@ -928,7 +928,7 @@ struct ExerciseSessionHistoryCard: View {
                                 }()
 
                                 Text(setDetail)
-                                    .font(.system(size: 15, weight: .bold))
+                                    .font(.app(size: 15, weight: .bold))
                                     .foregroundStyle(AppColors.text)
                                     .multilineTextAlignment(.trailing)
                             }
@@ -946,7 +946,7 @@ struct ExerciseSessionHistoryCard: View {
                     Button(action: onOpenWorkout) {
                         HStack(spacing: 4) {
                             Text(LanguageManager.t("exercise.history.viewWorkout"))
-                                .font(.system(size: 12, weight: .semibold))
+                                .font(.app(size: 12, weight: .semibold))
                             Image(systemName: "arrow.up.right")
                                 .font(.system(size: 10, weight: .bold))
                         }
@@ -1027,11 +1027,11 @@ struct ExerciseHistoryArchiveView: View {
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(exercise.displayName)
-                        .font(.system(size: 16, weight: .bold))
+                        .font(.app(size: 16, weight: .bold))
                         .foregroundStyle(AppColors.text)
                         .lineLimit(1)
                     Text("\(LanguageManager.t("exercise.history.archive")) · \(sessions.count) \(LanguageManager.t("exercise.history.sessionsCount", ["count": "\(sessions.count)"]))")
-                        .font(.system(size: 12, weight: .medium))
+                        .font(.app(size: 12, weight: .medium))
                         .foregroundStyle(AppColors.secondaryText)
                 }
 
@@ -1085,7 +1085,7 @@ struct ExerciseHistoryArchiveView: View {
                             }()
 
                             Text(currentTitle)
-                                .font(.system(size: 13, weight: .semibold))
+                                .font(.app(size: 13, weight: .semibold))
                                 .foregroundStyle(AppColors.text)
 
                             Image(systemName: "chevron.up.chevron.down")
@@ -1107,7 +1107,7 @@ struct ExerciseHistoryArchiveView: View {
                             loadedCount = 20
                         }) {
                             Text(LanguageManager.t("common.clear"))
-                                .font(.system(size: 12, weight: .medium))
+                                .font(.app(size: 12, weight: .medium))
                                 .foregroundStyle(AppColors.muted)
                         }
                         .buttonStyle(.plain)
@@ -1125,7 +1125,7 @@ struct ExerciseHistoryArchiveView: View {
                                 loadedCount = 20
                             }) {
                                 Text("\(LanguageManager.t("exercise.history.allMonths"))")
-                                    .font(.system(size: 12, weight: isAllSelected ? .bold : .medium))
+                                    .font(.app(size: 12, weight: isAllSelected ? .bold : .medium))
                                     .foregroundStyle(isAllSelected ? AppColors.text : AppColors.secondaryText)
                                     .padding(.horizontal, 12)
                                     .padding(.vertical, 6)
@@ -1145,7 +1145,7 @@ struct ExerciseHistoryArchiveView: View {
                                     loadedCount = 20
                                 }) {
                                     Text("\(opt.title) (\(opt.count))")
-                                        .font(.system(size: 12, weight: isSelected ? .bold : .medium))
+                                        .font(.app(size: 12, weight: isSelected ? .bold : .medium))
                                         .foregroundStyle(isSelected ? AppColors.text : AppColors.secondaryText)
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 6)
@@ -1174,7 +1174,7 @@ struct ExerciseHistoryArchiveView: View {
                                 .font(.system(size: 28))
                                 .foregroundStyle(AppColors.muted)
                             Text(LanguageManager.t("exercise.history.noSessionsInMonth"))
-                                .font(.system(size: 14, weight: .medium))
+                                .font(.app(size: 14, weight: .medium))
                                 .foregroundStyle(AppColors.secondaryText)
                         }
                         .padding(32)
@@ -1213,7 +1213,7 @@ struct ExerciseHistoryArchiveView: View {
                                     Image(systemName: "arrow.down.circle")
                                         .font(.system(size: 13, weight: .semibold))
                                     Text("\(LanguageManager.t("exercise.history.loadMore")) (\(filteredSessions.count - visibleSessions.count))")
-                                        .font(.system(size: 13, weight: .semibold))
+                                        .font(.app(size: 13, weight: .semibold))
                                 }
                                 .foregroundStyle(AppColors.accent)
                                 .frame(maxWidth: .infinity)
@@ -1268,7 +1268,7 @@ struct TechniqueGuideView: View {
                 } label: {
                     HStack(spacing: 12) {
                         Text(LanguageManager.t(showDetails ? "exercise.technique.less" : "exercise.technique.more"))
-                            .font(.system(size: textSize))
+                            .font(.app(size: textSize))
                             .fixedSize(horizontal: false, vertical: true)
                         Spacer(minLength: 0)
                         Image(systemName: "chevron.down")
@@ -1322,7 +1322,7 @@ struct TechniqueSectionView: View {
         VStack(alignment: .leading, spacing: effectiveExpanded ? 12 : 0) {
             HStack {
                 Text(title)
-                    .font(.system(size: textSize, weight: .semibold))
+                    .font(.app(size: textSize, weight: .semibold))
                     .foregroundStyle(accent)
                     .fixedSize(horizontal: false, vertical: true)
 

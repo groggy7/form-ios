@@ -23,7 +23,7 @@ public struct ExerciseVideosView: View {
         let _ = themeManager.currentTheme
         VStack(alignment: .leading, spacing: 10) {
             Text(LanguageManager.t("library.videos"))
-                .font(.system(size: 16, weight: .semibold))
+                .font(.app(size: 16, weight: .semibold))
                 .foregroundStyle(AppColors.text)
 
             ForEach(Array(exercise.videos.enumerated()), id: \.offset) { index, url in
@@ -66,13 +66,13 @@ public struct ExerciseVideosView: View {
 
                         VStack(alignment: .leading, spacing: 3) {
                             Text(title)
-                                .font(.system(size: 14, weight: .medium))
+                                .font(.app(size: 14, weight: .medium))
                                 .foregroundStyle(isUnavailable ? AppColors.danger : AppColors.text)
                                 .lineLimit(2)
                                 .multilineTextAlignment(.leading)
 
                             Text(subtitle)
-                                .font(.system(size: 11))
+                                .font(.app(size: 11))
                                 .foregroundStyle(AppColors.muted)
                                 .lineLimit(1)
                         }
@@ -88,7 +88,7 @@ public struct ExerciseVideosView: View {
                                     Image(systemName: "trash")
                                         .font(.system(size: 12))
                                     Text(LanguageManager.t("library.remove"))
-                                        .font(.system(size: 12, weight: .medium))
+                                        .font(.app(size: 12, weight: .medium))
                                 }
                                 .foregroundStyle(AppColors.danger)
                             }
@@ -125,7 +125,7 @@ public struct ExerciseVideosView: View {
                         Image(systemName: "plus")
                             .font(.system(size: 14, weight: .medium))
                         Text(LanguageManager.t("library.attachVideoCta"))
-                            .font(.system(size: 13, weight: .medium))
+                            .font(.app(size: 13, weight: .medium))
                     }
                     .foregroundStyle(AppColors.accent)
                     .frame(maxWidth: .infinity)

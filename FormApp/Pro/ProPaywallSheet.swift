@@ -148,7 +148,7 @@ public struct ProPaywallPreview: View {
                     .font(.system(size: 11, weight: .bold))
                     .foregroundStyle(AppColors.purple)
                 Text(LanguageManager.t("paywall.badge"))
-                    .font(.system(size: 10.5, weight: .bold))
+                    .font(.app(size: 10.5, weight: .bold))
                     .foregroundStyle(AppColors.purple)
                     .tracking(0.5)
             }
@@ -158,13 +158,13 @@ public struct ProPaywallPreview: View {
             .clipShape(RoundedRectangle(cornerRadius: 6))
 
             Text(LanguageManager.t(feature.titleKey))
-                .font(.system(size: 15, weight: .bold))
+                .font(.app(size: 15, weight: .bold))
                 .foregroundStyle(AppColors.text)
                 .multilineTextAlignment(.center)
                 .lineLimit(1)
 
             Text(LanguageManager.t(feature.teaserKey))
-                .font(.system(size: 12))
+                .font(.app(size: 12))
                 .foregroundStyle(AppColors.secondaryText)
                 .multilineTextAlignment(.center)
                 .lineSpacing(2)
@@ -182,7 +182,7 @@ public struct ProPaywallPreview: View {
                     Image(systemName: "lock.fill")
                         .font(.system(size: 12))
                     Text(LanguageManager.t("pro.upgrade_cta"))
-                        .font(.system(size: 13.5, weight: .bold))
+                        .font(.app(size: 13.5, weight: .bold))
                 }
                 .foregroundStyle(AppColors.background)
                 .frame(maxWidth: .infinity)
@@ -194,7 +194,7 @@ public struct ProPaywallPreview: View {
             .padding(.top, 2)
 
             Text(LanguageManager.t("paywall.cancel_anytime_short"))
-                .font(.system(size: 10))
+                .font(.app(size: 10))
                 .foregroundStyle(AppColors.secondaryText)
                 .multilineTextAlignment(.center)
                 .lineLimit(1)

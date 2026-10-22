@@ -11,7 +11,7 @@ public struct ProgressionInfoSheet: View {
         VStack(spacing: 0) {
             HStack(spacing: 8) {
                 Text(LanguageManager.t("progression.info.title"))
-                    .font(.headline)
+                    .appFont(.headline)
                     .foregroundStyle(AppColors.text)
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -52,13 +52,13 @@ public struct ProgressionInfoSheet: View {
                     .font(.system(size: 14, weight: .bold))
                     .foregroundStyle(AppColors.accent)
                 Text(LanguageManager.t("progression.info.ddpTitle"))
-                    .font(.subheadline.weight(.semibold))
+                    .appFont(.subheadline, weight: .semibold)
                     .foregroundStyle(AppColors.text)
                     .fixedSize(horizontal: false, vertical: true)
             }
 
             Text(LanguageManager.t("progression.info.ddpText"))
-                .font(.footnote)
+                .appFont(.footnote)
                 .lineSpacing(3)
                 .foregroundStyle(AppColors.secondaryText)
                 .fixedSize(horizontal: false, vertical: true)
@@ -73,7 +73,7 @@ public struct ProgressionInfoSheet: View {
     private var actionsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(LanguageManager.t("progression.info.rules"))
-                .font(.headline)
+                .appFont(.headline)
                 .foregroundStyle(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityAddTraits(.isHeader)
@@ -119,11 +119,11 @@ public struct ProgressionInfoSheet: View {
 
             VStack(alignment: .leading, spacing: 6) {
                 Text(LanguageManager.t(titleKey).uppercased(with: LanguageManager.locale))
-                    .font(.footnote.weight(.bold))
+                    .appFont(.footnote, weight: .bold)
                     .foregroundStyle(colors.accent)
                     .fixedSize(horizontal: false, vertical: true)
                 Text(desc)
-                    .font(.footnote)
+                    .appFont(.footnote)
                     .lineSpacing(3)
                     .foregroundStyle(AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
@@ -163,13 +163,13 @@ public struct ProgressionInfoSheet: View {
                     .font(.system(size: 14, weight: .bold))
                     .foregroundStyle(AppColors.purple)
                 Text(LanguageManager.t("progression.info.plateauTitle"))
-                    .font(.subheadline.weight(.semibold))
+                    .appFont(.subheadline, weight: .semibold)
                     .foregroundStyle(AppColors.text)
                     .fixedSize(horizontal: false, vertical: true)
             }
 
             Text(LanguageManager.t("progression.info.plateauText"))
-                .font(.footnote)
+                .appFont(.footnote)
                 .lineSpacing(3)
                 .foregroundStyle(AppColors.secondaryText)
                 .fixedSize(horizontal: false, vertical: true)
@@ -188,13 +188,13 @@ public struct ProgressionInfoSheet: View {
                     .font(.system(size: 14, weight: .bold))
                     .foregroundStyle(AppColors.accent)
                 Text(LanguageManager.t("progression.info.tipTitle"))
-                    .font(.subheadline.weight(.semibold))
+                    .appFont(.subheadline, weight: .semibold)
                     .foregroundStyle(AppColors.accent)
                     .fixedSize(horizontal: false, vertical: true)
             }
 
             Text(LanguageManager.t("progression.info.tipText"))
-                .font(.footnote)
+                .appFont(.footnote)
                 .lineSpacing(3)
                 .foregroundStyle(AppColors.secondaryText)
                 .fixedSize(horizontal: false, vertical: true)

@@ -75,7 +75,7 @@ struct TrainingSetupView: View {
             }.padding(.horizontal, 8)
             ScrollView {
                 VStack(alignment: .leading, spacing: 12) {
-                    Text(LanguageManager.t(title)).font(.system(size: 24, weight: .bold)).foregroundStyle(AppColors.text)
+                    Text(LanguageManager.t(title)).font(.app(size: 24, weight: .bold)).foregroundStyle(AppColors.text)
                     if let catalog = TrainingCatalog.bundled {
                         switch step {
                         case 1:
@@ -110,7 +110,7 @@ struct TrainingSetupView: View {
             }.id(step)
             Button(action: next) {
                 Text(LanguageManager.t(step < 8 ? "onboarding.next" : "setup.start"))
-                    .font(.system(size: 16, weight: .bold)).foregroundStyle(AppColors.background)
+                    .font(.app(size: 16, weight: .bold)).foregroundStyle(AppColors.background)
                     .frame(maxWidth: .infinity).frame(minHeight: 52).padding(.vertical, 4)
                     .background(AppColors.accent, in: RoundedRectangle(cornerRadius: 12))
             }.buttonStyle(.plain)
@@ -195,8 +195,10 @@ struct TrainingSetupView: View {
             .accessibilityValue(LanguageManager.t(expanded ? "progression.coach.expanded" : "progression.coach.collapsed"))
     }
     private func equipmentGrid(_ items: [TrainingCatalog.Equipment]) -> some View {
-        let columns = dynamicTypeSize.isAccessibilitySize && equipmentWidth < minimumTileWidth * 2 + 8
-            ? 1 : (equipmentWidth >= minimumTileWidth * 3 + 16 ? 3 : 2)
+        // Tile widths follow the width text scale, so phones of every width keep the same column count.
+        let tileWidth = minimumTileWidth * TextWidthScale.factor
+        let columns = dynamicTypeSize.isAccessibilitySize && equipmentWidth < tileWidth * 2 + 8
+            ? 1 : (equipmentWidth >= tileWidth * 3 + 16 ? 3 : 2)
         return LazyVGrid(columns: Array(repeating: GridItem(.flexible(minimum: 0), spacing: 8, alignment: .top), count: columns), spacing: 8) {
             ForEach(items, id: \.id) { item in
                 let selected = profile.equipment.contains(item.id)
@@ -216,9 +218,9 @@ struct TrainingSetupView: View {
                                 Image(systemName: "checkmark.circle.fill").font(.system(size: 18)).foregroundStyle(AppColors.accent).padding(5)
                             }
                         }.frame(height: 80).accessibilityHidden(true)
-                        Text(LanguageManager.t("setup.tile.\(item.id)")).font(.caption.weight(.medium)).foregroundStyle(AppColors.text)
+                        Text(LanguageManager.t("setup.tile.\(item.id)")).appFont(.caption, weight: .medium).foregroundStyle(AppColors.text)
                             .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
-                            .padding(7).frame(maxWidth: .infinity, minHeight: tileLabelHeight)
+                            .padding(7).frame(maxWidth: .infinity, minHeight: tileLabelHeight * TextWidthScale.factor)
                     }
                 }.buttonStyle(.plain).background(selected ? AppColors.positiveBg : AppColors.surface)
                     .clipShape(RoundedRectangle(cornerRadius: 14))
@@ -243,11 +245,12 @@ struct TrainingSetupView: View {
         }
     }
     private var preferences: some View {
-        let columns = dynamicTypeSize.isAccessibilitySize && priorityWidth < minimumPriorityWidth * 2 + 8
-            ? 1 : (priorityWidth >= minimumPriorityWidth * 3 + 16 ? 3 : 2)
+        let tileWidth = minimumPriorityWidth * TextWidthScale.factor
+        let columns = dynamicTypeSize.isAccessibilitySize && priorityWidth < tileWidth * 2 + 8
+            ? 1 : (priorityWidth >= tileWidth * 3 + 16 ? 3 : 2)
         return VStack(alignment: .leading, spacing: 12) {
             Text(LanguageManager.t("setup.customize.hint")).foregroundStyle(AppColors.secondaryText)
-            Text(LanguageManager.t("setup.priority.title")).font(.headline)
+            Text(LanguageManager.t("setup.priority.title")).appFont(.headline)
             choice(LanguageManager.t("setup.priority.balanced"), selected: profile.priority.isEmpty,
                 hint: LanguageManager.t("setup.priority.balanced.hint"), tag: "setup-priority-balanced") { profile.priority = "" }
                 .accessibilityElement(children: .ignore)
@@ -283,9 +286,9 @@ struct TrainingSetupView: View {
                             .font(.system(size: 18)).padding(5).accessibilityHidden(true)
                     }
                 }.frame(height: 90).clipped()
-                Text(label).font(.system(size: priorityFontSize, weight: .medium)).foregroundStyle(AppColors.text)
+                Text(label).font(.app(size: priorityFontSize, weight: .medium)).foregroundStyle(AppColors.text)
                     .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
-                    .padding(7).frame(maxWidth: .infinity, minHeight: tileLabelHeight)
+                    .padding(7).frame(maxWidth: .infinity, minHeight: tileLabelHeight * TextWidthScale.factor)
             }.background(selected ? AppColors.positiveBg : AppColors.surface)
                 .clipShape(RoundedRectangle(cornerRadius: 14))
                 .overlay(RoundedRectangle(cornerRadius: 14).strokeBorder(selected ? AppColors.accent : AppColors.border, lineWidth: selected ? 1.5 : 1))
@@ -298,25 +301,25 @@ struct TrainingSetupView: View {
         let experience = LanguageManager.t("onboarding.experience.\(profile.experience).title")
         let eligible = TrainingPlanGenerator.eligible(profile, catalog: catalog)
         VStack(alignment: .leading, spacing: 4) {
-            Text(program.name).font(.title3.weight(.semibold)).foregroundStyle(AppColors.text)
-            Text("\(goal) · \(experience)").font(.subheadline).foregroundStyle(AppColors.secondaryText)
-            Text(program.description).font(.footnote).foregroundStyle(AppColors.muted).padding(.top, 6)
+            Text(program.name).appFont(.title3, weight: .semibold).foregroundStyle(AppColors.text)
+            Text("\(goal) · \(experience)").appFont(.subheadline).foregroundStyle(AppColors.secondaryText)
+            Text(program.description).appFont(.footnote).foregroundStyle(AppColors.muted).padding(.top, 6)
         }.padding(16).frame(maxWidth: .infinity, alignment: .leading).setupCard()
         ForEach(generated?.warningKeys ?? [], id: \.self) { key in
             HStack(alignment: .top, spacing: 12) {
                 Image(systemName: "info.circle.fill").foregroundStyle(AppColors.muted).accessibilityHidden(true)
-                Text(LanguageManager.t(key)).font(.footnote).foregroundStyle(AppColors.secondaryText)
+                Text(LanguageManager.t(key)).appFont(.footnote).foregroundStyle(AppColors.secondaryText)
             }.padding(14).frame(maxWidth: .infinity, alignment: .leading).setupCard()
         }
         VStack(alignment: .leading, spacing: 6) {
             HStack(spacing: 12) {
-                Text(LanguageManager.t("builder.trainingDays")).font(.headline).foregroundStyle(AppColors.text)
+                Text(LanguageManager.t("builder.trainingDays")).appFont(.headline).foregroundStyle(AppColors.text)
                 Spacer(minLength: 0)
-                Text(LanguageManager.t("builder.dayCount", ["count": program.workouts.count])).font(.caption).foregroundStyle(AppColors.muted)
+                Text(LanguageManager.t("builder.dayCount", ["count": program.workouts.count])).appFont(.caption).foregroundStyle(AppColors.muted)
             }
             Text(LanguageManager.t("builder.summaryCounts", ["exercises": program.workouts.reduce(0) { $0 + $1.exercises.count },
                 "sets": program.workouts.flatMap(\.exercises).reduce(0) { $0 + WorkoutSessionUtils.initialSetCount(exercise: $1) }]))
-                .font(.caption).foregroundStyle(AppColors.muted).accessibilityIdentifier("setup-plan-totals")
+                .appFont(.caption).foregroundStyle(AppColors.muted).accessibilityIdentifier("setup-plan-totals")
         }.accessibilityIdentifier("setup-training-days")
         ForEach(program.workouts) { workout in
             let minutes = (300 + workout.exercises.reduce(0) { $0 + TrainingPlanGenerator.estimateSeconds($1) } + 59) / 60
@@ -337,9 +340,9 @@ struct TrainingSetupView: View {
                     HStack(spacing: 10) {
                         MovementIcon(exerciseId: exercise.exerciseId, size: 44).accessibilityHidden(true)
                         VStack(alignment: .leading, spacing: 2) {
-                            Text(exercise.displayName).font(.system(size: 15, weight: .medium)).foregroundStyle(AppColors.text)
+                            Text(exercise.displayName).font(.app(size: 15, weight: .medium)).foregroundStyle(AppColors.text)
                             Text("\(prescription(exercise)) · \(LanguageManager.t("setup.rest", ["seconds": exercise.restSeconds ?? 90]))")
-                                .font(.footnote).foregroundStyle(AppColors.secondaryText)
+                                .appFont(.footnote).foregroundStyle(AppColors.secondaryText)
                         }.padding(.vertical, 10).frame(maxWidth: .infinity, alignment: .leading)
                         if let replacement {
                             Button { replace(exercise, in: workout, with: replacement, program: program) } label: {
@@ -378,17 +381,17 @@ struct TrainingSetupView: View {
         }.padding(14).frame(maxWidth: .infinity, alignment: .leading).contentShape(Rectangle())
     }
     private func reviewWeekday(_ day: Int) -> some View {
-        Text(LanguageManager.dayLabels[day - 1]).font(.system(size: reviewWeekdayFontSize, weight: .bold))
+        Text(LanguageManager.dayLabels[day - 1]).font(.app(size: reviewWeekdayFontSize, weight: .bold))
             .frame(width: reviewBadgeSize, height: reviewBadgeSize).foregroundStyle(AppColors.accent)
             .background(AppColors.positiveBg, in: RoundedRectangle(cornerRadius: 12))
             .accessibilityLabel(LanguageManager.workoutDays[day - 1]).accessibilityIdentifier("setup-weekday-badge-\(day)")
     }
     private func reviewDayDetails(_ workout: Workout, minutes: Int) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(workout.title).font(.headline.weight(.semibold)).foregroundStyle(AppColors.text)
-            if !workout.focus.isEmpty { Text(workout.focus).font(.footnote).foregroundStyle(AppColors.secondaryText) }
+            Text(workout.title).appFont(.headline, weight: .semibold).foregroundStyle(AppColors.text)
+            if !workout.focus.isEmpty { Text(workout.focus).appFont(.footnote).foregroundStyle(AppColors.secondaryText) }
             Text("\(LanguageManager.t("weekly.exerciseCount", ["count": workout.exercises.count])) · \(LanguageManager.t("setup.minutes", ["count": minutes]))")
-                .font(.footnote).foregroundStyle(AppColors.muted)
+                .appFont(.footnote).foregroundStyle(AppColors.muted)
         }.multilineTextAlignment(.leading).fixedSize(horizontal: false, vertical: true)
     }
     private func choice(_ label: String, selected: Bool, hint: String = "", multiple: Bool = false, tag: String = "", action: @escaping () -> Void) -> some View {
@@ -396,7 +399,7 @@ struct TrainingSetupView: View {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(label).fontWeight(.medium).foregroundStyle(AppColors.text)
-                    if !hint.isEmpty { Text(hint).font(.caption).foregroundStyle(AppColors.secondaryText) }
+                    if !hint.isEmpty { Text(hint).appFont(.caption).foregroundStyle(AppColors.secondaryText) }
                 }
                 Spacer(minLength: 0)
                 Image(systemName: selected ? (multiple ? "checkmark.square.fill" : "largecircle.fill.circle") : (multiple ? "square" : "circle"))

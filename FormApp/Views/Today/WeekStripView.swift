@@ -146,13 +146,13 @@ struct WorkoutDayStrip: View {
                                     : "DAY"
 
                                 Text(dayLabel)
-                                    .font(.system(size: labelSize, weight: .semibold))
+                                    .font(.app(size: labelSize, weight: .semibold))
                                     .tracking(0.5)
                                     .foregroundStyle(textColor)
                                     .lineLimit(1)
 
                                 Text("\(dayNumber)")
-                                    .font(.system(size: numberSize, weight: .bold))
+                                    .font(.app(size: numberSize, weight: .bold))
                                     .foregroundStyle(textColor)
                                     .shadow(color: !isDark ? .clear
                                                 : glowTiles ? (statusTint ?? glass.neutralRim).opacity(0.35) : Color.black.opacity(0.35),
@@ -160,7 +160,7 @@ struct WorkoutDayStrip: View {
                                     .lineLimit(1)
 
                                 Text(workout.displayTitle(programId: program.id))
-                                    .font(.system(size: labelSize))
+                                    .font(.app(size: labelSize))
                                     .foregroundStyle(textColor)
                                     .multilineTextAlignment(.center)
                                     .lineLimit(2, reservesSpace: true)

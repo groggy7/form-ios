@@ -48,18 +48,18 @@ public struct WeeklyGoalProgressCard: View {
             // Header: "Weekly Goal Progress" and "X / Y Completed"
             HStack(alignment: .center) {
                 Text(LanguageManager.t("today.weeklyGoalProgress"))
-                    .font(.system(size: 15, weight: .semibold))
+                    .font(.app(size: 15, weight: .semibold))
                     .foregroundStyle(AppColors.text)
 
                 Spacer()
 
                 HStack(spacing: 4) {
                     Text("\(metrics.completedWorkouts) / \(metrics.totalWorkouts)")
-                        .font(.system(size: 14, weight: .semibold))
+                        .font(.app(size: 14, weight: .semibold))
                         .foregroundStyle(segmentActive)
 
                     Text(LanguageManager.t("today.completed"))
-                        .font(.system(size: 14, weight: .regular))
+                        .font(.app(size: 14, weight: .regular))
                         .foregroundStyle(AppColors.secondaryText)
                 }
             }
@@ -87,16 +87,16 @@ public struct WeeklyGoalProgressCard: View {
                 // Stat 1: Total Volume
                 VStack(spacing: 4) {
                     Text(LanguageManager.t("today.totalVolume"))
-                        .font(.system(size: 10, weight: .semibold))
+                        .font(.app(size: 10, weight: .semibold))
                         .foregroundStyle(AppColors.muted)
 
                     HStack(alignment: .lastTextBaseline, spacing: 3) {
                         Text(metrics.formattedVolume(unit: weightUnit))
-                            .font(.system(size: 16, weight: .bold))
+                            .font(.app(size: 16, weight: .bold))
                             .foregroundStyle(AppColors.text)
 
                         Text(weightUnit.label)
-                            .font(.system(size: 11, weight: .regular))
+                            .font(.app(size: 11, weight: .regular))
                             .foregroundStyle(AppColors.muted)
                     }
                 }
@@ -114,11 +114,11 @@ public struct WeeklyGoalProgressCard: View {
                 // Stat 2: Active Time
                 VStack(spacing: 4) {
                     Text(LanguageManager.t("today.activeTime"))
-                        .font(.system(size: 10, weight: .semibold))
+                        .font(.app(size: 10, weight: .semibold))
                         .foregroundStyle(AppColors.muted)
 
                     Text(metrics.formattedActiveTime)
-                        .font(.system(size: 16, weight: .bold))
+                        .font(.app(size: 16, weight: .bold))
                         .foregroundStyle(AppColors.text)
                 }
                 .frame(maxWidth: .infinity)
@@ -135,16 +135,16 @@ public struct WeeklyGoalProgressCard: View {
                 // Stat 3: PRs Hit
                 VStack(spacing: 4) {
                     Text(LanguageManager.t("today.prsHit"))
-                        .font(.system(size: 10, weight: .semibold))
+                        .font(.app(size: 10, weight: .semibold))
                         .foregroundStyle(AppColors.muted)
 
                     HStack(alignment: .center, spacing: 4) {
                         Text("⚡")
-                            .font(.system(size: 13))
+                            .font(.app(size: 13))
                             .foregroundStyle(amberPr)
 
                         Text("\(metrics.prsHitCount)")
-                            .font(.system(size: 16, weight: .bold))
+                            .font(.app(size: 16, weight: .bold))
                             .foregroundStyle(amberPr)
                     }
                 }

@@ -91,7 +91,7 @@ public struct WarmupPlateSheet: View {
                     HStack {
                         HStack(spacing: 8) {
                             Text(LanguageManager.t("warmup.modal_title"))
-                                .font(.system(size: 18, weight: .bold))
+                                .font(.app(size: 18, weight: .bold))
                                 .foregroundStyle(AppColors.text)
                             Image(systemName: "crown.fill")
                                 .font(.system(size: 12))
@@ -170,7 +170,7 @@ public struct WarmupPlateSheet: View {
         } label: {
             HStack(spacing: 12) {
                 Text(barLabel(selectedBarType))
-                    .font(.system(size: 13, weight: .semibold))
+                    .font(.app(size: 13, weight: .semibold))
                     .foregroundStyle(AppColors.text)
                     .multilineTextAlignment(.leading)
                 Spacer(minLength: 0)
@@ -201,7 +201,7 @@ public struct WarmupPlateSheet: View {
                     .font(.system(size: 13))
                     .foregroundStyle(isSelected ? AppColors.accent : AppColors.muted)
                 Text(title)
-                    .font(.system(size: 13, weight: isSelected ? .bold : .medium))
+                    .font(.app(size: 13, weight: isSelected ? .bold : .medium))
                     .foregroundStyle(isSelected ? AppColors.accent : AppColors.muted)
             }
             .frame(maxWidth: .infinity)
@@ -243,14 +243,14 @@ public struct WarmupPlateSheet: View {
 
             // Sequence Title
             Text(LanguageManager.t("warmup.sequence_title"))
-                .font(.system(size: 12, weight: .semibold))
+                .font(.app(size: 12, weight: .semibold))
                 .foregroundStyle(AppColors.secondaryText)
                 .frame(maxWidth: .infinity, alignment: .leading)
 
             // Steps List
             if ramp.steps.isEmpty {
                 Text(LanguageManager.t(workingWeightInput <= 0 ? "warmup.enter_working_load" : "warmup.load_below_bar"))
-                    .font(.system(size: 13))
+                    .font(.app(size: 13))
                     .foregroundStyle(AppColors.muted)
             }
             VStack(spacing: 8) {
@@ -259,7 +259,7 @@ public struct WarmupPlateSheet: View {
                         HStack(spacing: 10) {
                             // Badge W1, W2 etc.
                             Text("W\(step.setNumber)")
-                                .font(.system(size: 12, weight: .bold))
+                                .font(.app(size: 12, weight: .bold))
                                 .foregroundStyle(step.isPotentiation ? AppColors.purple : AppColors.warmupAmber)
                                 .padding(.horizontal, 7)
                                 .padding(.vertical, 3)
@@ -273,10 +273,10 @@ public struct WarmupPlateSheet: View {
                             VStack(alignment: .leading, spacing: 2) {
                                 let displayStepWeight = unit == .lbs ? unit.toDisplay(step.weightKg) : step.weightKg
                                 Text("\(WarmupPlateEngine.formatPlateWeight(displayStepWeight)) \(unit.label) × \(step.reps)")
-                                    .font(.system(size: 15, weight: .bold))
+                                    .font(.app(size: 15, weight: .bold))
                                     .foregroundStyle(AppColors.text)
                                 Text(LanguageManager.t(step.labelKey))
-                                    .font(.system(size: 11))
+                                    .font(.app(size: 11))
                                     .foregroundStyle(step.isPotentiation ? AppColors.purple : AppColors.secondaryText)
                             }
                         }
@@ -288,13 +288,13 @@ public struct WarmupPlateSheet: View {
                             if let res = step.platesResult, !res.platesPerSide.isEmpty {
                                 ForEach(res.platesPerSide, id: \.weight) { p in
                                     Text("\(p.count)×\(WarmupPlateEngine.formatPlateWeight(p.weight))\u{00A0}\(unit.label)")
-                                        .font(.system(size: 11, weight: .semibold))
+                                        .font(.app(size: 11, weight: .semibold))
                                         .foregroundStyle(step.isPotentiation ? AppColors.purple.opacity(0.9) : AppColors.muted)
                                         .lineLimit(1)
                                 }
                             } else {
                                 Text(LanguageManager.t("warmup.empty_bar"))
-                                    .font(.system(size: 11, weight: .medium))
+                                    .font(.app(size: 11, weight: .medium))
                                     .foregroundStyle(AppColors.muted)
                                     .lineLimit(1)
                             }
@@ -337,7 +337,7 @@ public struct WarmupPlateSheet: View {
                     Image(systemName: "plus")
                         .font(.system(size: 15, weight: .bold))
                     Text(LanguageManager.t("warmup.insert_sets_cta", ["count": ramp.steps.count]))
-                        .font(.system(size: 15, weight: .bold))
+                        .font(.app(size: 15, weight: .bold))
                 }
                 .foregroundStyle(AppColors.background)
                 .frame(maxWidth: .infinity)
@@ -384,7 +384,7 @@ public struct WarmupPlateSheet: View {
             // Gym Plate Inventory Configuration
             VStack(alignment: .leading, spacing: 8) {
                 Text(LanguageManager.t("warmup.available_plates_inventory"))
-                    .font(.system(size: 12, weight: .semibold))
+                    .font(.app(size: 12, weight: .semibold))
                     .foregroundStyle(AppColors.secondaryText)
 
                 let defaultPlates = WarmupPlateEngine.defaultPlates(unit: unit)
@@ -414,7 +414,7 @@ public struct WarmupPlateSheet: View {
                                     .frame(width: 7, height: 7)
 
                                 Text("\(WarmupPlateEngine.formatPlateWeight(pWeight))\u{00A0}\(unit.label)")
-                                    .font(.system(size: 14, weight: isAvail ? .semibold : .regular))
+                                    .font(.app(size: 14, weight: isAvail ? .semibold : .regular))
                                     .foregroundStyle(isAvail ? AppColors.text : AppColors.muted.opacity(0.4))
                             }
                             .padding(.horizontal, 10)
@@ -453,10 +453,10 @@ public struct WarmupPlateSheet: View {
                     .accessibilityHidden(true)
                 Text(LanguageManager.t(titleKey))
             }
-            .font(.system(size: 11, weight: .medium))
+            .font(.app(size: 11, weight: .medium))
             .foregroundStyle(AppColors.secondaryText)
             Text("\(WarmupPlateEngine.formatPlateWeight(weight))\u{00A0}\(unit.label)")
-                .font(.system(size: 20, weight: .bold))
+                .font(.app(size: 20, weight: .bold))
                 .foregroundStyle(AppColors.text)
         }
         .fixedSize(horizontal: true, vertical: false)
@@ -488,7 +488,7 @@ public struct WarmupPlateSheet: View {
     private func quickStepButton(_ label: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Text(label)
-                .font(.system(size: 12, weight: .bold))
+                .font(.app(size: 12, weight: .bold))
                 .foregroundStyle(AppColors.secondaryText)
                 .frame(width: 40, height: 34)
                 .background(AppColors.surfaceRaised)

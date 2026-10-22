@@ -51,7 +51,7 @@ enum ProgramHeroLayout {
         return ceil((text as NSString).boundingRect(
             with: CGSize(width: max(1, width), height: .greatestFiniteMagnitude),
             options: [.usesLineFragmentOrigin, .usesFontLeading],
-            attributes: [.font: UIFont.systemFont(ofSize: size, weight: weight), .paragraphStyle: paragraph], context: nil).height)
+            attributes: [.font: UIFont.systemFont(ofSize: size * TextWidthScale.factor, weight: weight), .paragraphStyle: paragraph], context: nil).height)
     }
     static func headerHeight(programs: [Program], width: CGFloat, titleSize: CGFloat) -> CGFloat {
         programs.map { textHeight(heading($0.displayName), width: max(1, (width - 32) * titleFraction), size: titleSize, weight: .semibold, spacing: 2) }.max() ?? 0
@@ -124,14 +124,14 @@ public struct ProgramsView: View {
                         HStack(spacing: 12) {
                             Button(action: { isCreatingNew = true }) {
                                 Label(LanguageManager.t("programs.new"), systemImage: "plus")
-                                    .font(.system(size: bodySize * 14 / 13, weight: .semibold))
+                                    .font(.app(size: bodySize * 14 / 13, weight: .semibold))
                                     .frame(maxWidth: .infinity, minHeight: 52)
                                     .background(AppColors.accent).foregroundStyle(AppColors.todaySelectionText)
                                     .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                             }.buttonStyle(.plain)
                             Button(action: { showFileImporter = true }) {
                                 Label(LanguageManager.t("programs.import"), systemImage: "square.and.arrow.down")
-                                    .font(.system(size: bodySize * 14 / 13, weight: .semibold))
+                                    .font(.app(size: bodySize * 14 / 13, weight: .semibold))
                                     .frame(maxWidth: .infinity, minHeight: 52)
                                     .foregroundStyle(AppColors.text)
                                     .background(AppColors.surface, in: RoundedRectangle(cornerRadius: 12, style: .continuous))
@@ -142,7 +142,7 @@ public struct ProgramsView: View {
                         .tourTarget("programs.add", cornerRadius: 12)
                         if store.state.programs.isEmpty {
                             VStack(alignment: .leading, spacing: 10) {
-                                Text(LanguageManager.t("programs.empty")).font(.title3).foregroundStyle(AppColors.text)
+                                Text(LanguageManager.t("programs.empty")).appFont(.title3).foregroundStyle(AppColors.text)
                                 Text(LanguageManager.t("programs.emptyHint")).foregroundStyle(AppColors.muted)
                             }.frame(maxWidth: .infinity, alignment: .leading).padding(.vertical, 32)
                         }
@@ -384,11 +384,11 @@ struct ProgramHeroCard: View {
             // The switch button and menu button are siblings, so menu taps never switch programs.
             Button(action: onSelect) {
                 VStack(alignment: .leading, spacing: 0) {
-                    Text(ProgramHeroLayout.heading(program.displayName)).font(.system(size: titleSize, weight: .semibold)).lineSpacing(2)
+                    Text(ProgramHeroLayout.heading(program.displayName)).font(.app(size: titleSize, weight: .semibold)).lineSpacing(2)
                         .foregroundStyle(AppColors.text).frame(width: max(1, contentWidth * ProgramHeroLayout.titleFraction), alignment: .leading).fixedSize(horizontal: false, vertical: true)
                         .frame(height: headerHeight, alignment: .topLeading)
                     if !program.displayDescription.isEmpty {
-                        Text(program.displayDescription).font(.system(size: bodySize)).lineSpacing(3)
+                        Text(program.displayDescription).font(.app(size: bodySize)).lineSpacing(3)
                             .foregroundStyle(AppColors.secondaryText).frame(width: contentWidth * ProgramHeroLayout.descriptionFraction(width: width, bodySize: bodySize), alignment: .leading)
                             .fixedSize(horizontal: false, vertical: true).padding(.top, 20)
                     }
@@ -398,13 +398,13 @@ struct ProgramHeroCard: View {
                             HStack(spacing: 6) {
                                 Image(systemName: "calendar").font(.system(size: 16)).foregroundStyle(AppColors.accent)
                                 Text(LanguageManager.t("programs.daysPerWeek", ["days": "\(program.workouts.filter { !$0.exercises.isEmpty }.count)"]))
-                                    .font(.system(size: daysSize, weight: .semibold)).foregroundStyle(AppColors.accent)
+                                    .font(.app(size: daysSize, weight: .semibold)).foregroundStyle(AppColors.accent)
                             }
                             Text(LanguageManager.t("programs.counts", [
                                 "workouts": program.workouts.count,
                                 "exercises": program.workouts.reduce(0) { $0 + $1.exercises.count }
                             ]))
-                            .font(.system(size: countsSize))
+                            .font(.app(size: countsSize))
                             .foregroundStyle(AppColors.muted)
                         }
                         Spacer()
@@ -416,7 +416,7 @@ struct ProgramHeroCard: View {
 
             Button(action: onSelect) {
                 Text(LanguageManager.t(isActive ? "programs.applied" : "programs.apply"))
-                    .font(.system(size: 13, weight: .bold))
+                    .font(.app(size: 13, weight: .bold))
                     .foregroundStyle(isActive ? AppColors.accent : AppColors.todaySelectionText)
                     .padding(.horizontal, 14)
                     .padding(.vertical, 7)
@@ -470,7 +470,7 @@ struct ProgramHeroCard: View {
                                 .foregroundStyle(AppColors.secondaryText)
                                 .frame(width: 18, alignment: .center)
                             Text(LanguageManager.t("programs.edit"))
-                                .font(.system(size: 14, weight: .medium))
+                                .font(.app(size: 14, weight: .medium))
                                 .foregroundStyle(AppColors.text)
                             Spacer()
                         }
@@ -483,7 +483,7 @@ struct ProgramHeroCard: View {
                     if let onCopy {
                         Button { closeMenu(); onCopy() } label: {
                             Label(LanguageManager.t("builder.copyProgram"), systemImage: "doc.on.doc")
-                                .font(.subheadline).foregroundStyle(AppColors.text).frame(maxWidth: .infinity, minHeight: 48, alignment: .leading).padding(.horizontal, 14)
+                                .appFont(.subheadline).foregroundStyle(AppColors.text).frame(maxWidth: .infinity, minHeight: 48, alignment: .leading).padding(.horizontal, 14)
                         }.buttonStyle(.plain)
                     }
                     if let onShare {
@@ -502,7 +502,7 @@ struct ProgramHeroCard: View {
                                     .foregroundStyle(AppColors.secondaryText)
                                     .frame(width: 18, alignment: .center)
                                 Text(LanguageManager.t("programs.share"))
-                                    .font(.system(size: 14, weight: .medium))
+                                    .font(.app(size: 14, weight: .medium))
                                     .foregroundStyle(AppColors.text)
                                 Spacer()
                             }
@@ -529,7 +529,7 @@ struct ProgramHeroCard: View {
                                     .foregroundStyle(AppColors.danger)
                                     .frame(width: 18, alignment: .center)
                                 Text(LanguageManager.t("modal.delete"))
-                                    .font(.system(size: 14, weight: .medium))
+                                    .font(.app(size: 14, weight: .medium))
                                     .foregroundStyle(AppColors.danger)
                                 Spacer()
                             }

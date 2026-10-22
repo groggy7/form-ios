@@ -85,14 +85,14 @@ public struct ProgressionCoachCard: View {
                             }()
 
                             Text(targetHeadline)
-                                .font(.system(size: 14, weight: .bold))
+                                .font(.app(size: 14, weight: .bold))
                                 .foregroundStyle(AppColors.text)
                                 .fixedSize(horizontal: false, vertical: true)
                         }
 
                         if let delta = recommendation.weightDeltaDisplay {
                             Text(delta)
-                                .font(.system(size: 11, weight: .semibold))
+                                .font(.app(size: 11, weight: .semibold))
                                 .foregroundStyle(recommendation.action.color)
                                 .padding(.leading, 19)
                         }
@@ -112,7 +112,7 @@ public struct ProgressionCoachCard: View {
                                         .foregroundStyle(AppColors.accent)
                                 }
                                 Text(wasApplied ? LanguageManager.t("progression.coach.applied") : LanguageManager.t("progression.coach.apply"))
-                                    .font(.system(size: 11, weight: .semibold))
+                                    .font(.app(size: 11, weight: .semibold))
                             }
                             .foregroundStyle(wasApplied ? AppColors.accent : AppColors.text)
                             .padding(.horizontal, 10)
@@ -131,25 +131,25 @@ public struct ProgressionCoachCard: View {
                     ForEach(Array(recommendation.setTargets.enumerated()), id: \.offset) { index, target in
                         let load = (target.weightKg ?? 0) > 0 ? "\(weightUnit.formatLoadableDisplayWeight(target.weightKg!)) \(weightUnit.label) × " : ""
                         Text(LanguageManager.t("progression.coach.set_target", ["set": "\(index + 1)", "target": load.isEmpty ? LanguageManager.t("progression.coach.reps", ["reps": "\(target.reps)"]) : "\(load)\(target.reps)"]))
-                            .font(.system(size: 12))
+                            .font(.app(size: 12))
                             .foregroundStyle(AppColors.text)
                     }
                 }
                 if let summary = recommendation.lastSessionSummary {
                     Text(LanguageManager.t("progression.coach.last_logged", ["summary": summary, "unit": weightUnit.label]))
-                        .font(.system(size: 11))
+                        .font(.app(size: 11))
                         .foregroundStyle(AppColors.muted)
                 }
                 if !recommendation.setTargets.isEmpty && !canApplyTarget {
                     Text(LanguageManager.t("progression.coach.set_count_changed"))
-                        .font(.system(size: 12))
+                        .font(.app(size: 12))
                         .foregroundStyle(AppColors.secondaryText)
                 }
 
                 // Rationale text
                 let rationaleText = LanguageManager.t(recommendation.rationaleKey, recommendation.rationaleArgs)
                 Text(rationaleText)
-                    .font(.system(size: 12))
+                    .font(.app(size: 12))
                     .lineSpacing(2)
                     .foregroundStyle(AppColors.secondaryText)
             }
@@ -170,20 +170,20 @@ public struct ProgressionCoachCard: View {
             ProgressionCoachHeader(onOpenInfo: onOpenInfo).padding(.bottom, 8)
 
             Text(emptyHistoryCopy.headline)
-                .font(.system(size: emptyHeadlineSize, weight: .bold))
+                .font(.app(size: emptyHeadlineSize, weight: .bold))
                 .foregroundStyle(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
                 .padding(.bottom, 6)
 
             Text(emptyHistoryCopy.description)
-                .font(.system(size: emptyBodySize))
+                .font(.app(size: emptyBodySize))
                 .lineSpacing(2)
                 .foregroundStyle(AppColors.muted)
                 .fixedSize(horizontal: false, vertical: true)
             // Say why the latest log gives no target, not only how to log this session.
             if recommendation.action == .insufficientData {
                 Text(LanguageManager.t(recommendation.rationaleKey, recommendation.rationaleArgs))
-                    .font(.system(size: emptyBodySize - 1))
+                    .font(.app(size: emptyBodySize - 1))
                     .lineSpacing(2)
                     .foregroundStyle(AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
@@ -233,7 +233,7 @@ private struct ProgressionCoachHeader: View {
 
     private var title: some View {
         Text(LanguageManager.t("progression.coach.next_target"))
-            .font(.system(size: titleSize, weight: .bold)).foregroundStyle(AppColors.text)
+            .font(.app(size: titleSize, weight: .bold)).foregroundStyle(AppColors.text)
             .fixedSize(horizontal: false, vertical: true).frame(minHeight: 24)
     }
 
@@ -278,15 +278,15 @@ struct ProgressionRecommendationCard: View {
         VStack(alignment: .leading, spacing: 0) {
             ProgressionCoachHeader(onOpenInfo: onOpenInfo).padding(.bottom, 8)
             Text(headlineTitle)
-                .font(.system(size: headlineSize, weight: .bold)).foregroundStyle(AppColors.text)
+                .font(.app(size: headlineSize, weight: .bold)).foregroundStyle(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true).padding(.bottom, 6)
             Text(descriptionText)
-                .font(.system(size: bodySize)).lineSpacing(2).foregroundStyle(AppColors.muted)
+                .font(.app(size: bodySize)).lineSpacing(2).foregroundStyle(AppColors.muted)
                 .fixedSize(horizontal: false, vertical: true)
             if let variationId = recommendation.suggestedVariationId {
                 let name = ContentLocalizer.shared.exerciseName(exerciseId: variationId, fallback: recommendation.suggestedVariationName ?? variationId)
                 Text(LanguageManager.t(review ? "progression.coach.variation_idea" : "progression.coach.variation_harder", ["exercise": name]))
-                    .font(.system(size: bodySize)).lineSpacing(2).foregroundStyle(AppColors.secondaryText)
+                    .font(.app(size: bodySize)).lineSpacing(2).foregroundStyle(AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true).padding(.top, 6)
                     .accessibilityIdentifier("progression-variation")
             }
@@ -294,14 +294,14 @@ struct ProgressionRecommendationCard: View {
             ForEach(recommendation.lastTechniqueSets, id: \.setNumber) { set in
                 let detail = "\(LanguageManager.t("table.setNumber", ["count": set.setNumber])): \(IntensitySets.notation(set, unit: weightUnit))"
                 Text(LanguageManager.t("intensity.lastTime", ["detail": detail]))
-                    .font(.system(size: bodySize)).lineSpacing(2).foregroundStyle(AppColors.secondaryText)
+                    .font(.app(size: bodySize)).lineSpacing(2).foregroundStyle(AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true).padding(.top, 6)
                     .accessibilityIdentifier("progression-last-technique-\(set.setNumber)")
             }
             // A review applies nothing by itself; its lighter week is an optional, explicit choice.
             if review && !recommendation.setTargets.isEmpty {
                 Text(LanguageManager.t("progression.coach.lighter_week_hint"))
-                    .font(.system(size: bodySize)).lineSpacing(2).foregroundStyle(AppColors.muted)
+                    .font(.app(size: bodySize)).lineSpacing(2).foregroundStyle(AppColors.muted)
                     .fixedSize(horizontal: false, vertical: true).padding(.top, 6)
             }
             if !recommendation.setTargets.isEmpty {
@@ -310,7 +310,7 @@ struct ProgressionRecommendationCard: View {
                 }
                 if !canApplyTarget {
                     Text(LanguageManager.t("progression.coach.set_count_changed"))
-                        .font(.system(size: bodySize)).foregroundStyle(AppColors.secondaryText)
+                        .font(.app(size: bodySize)).foregroundStyle(AppColors.secondaryText)
                         .fixedSize(horizontal: false, vertical: true).padding(.top, 8)
                 }
                 ViewThatFits(in: .horizontal) {
@@ -389,7 +389,7 @@ struct ProgressionRecommendationCard: View {
                     Text(LanguageManager.t("progression.coach.last_reps_column")).multilineTextAlignment(.center)
                     Color.clear.frame(height: 0)
                     Text(LanguageManager.t("progression.coach.target_reps_column")).multilineTextAlignment(.center)
-                }.font(.system(size: metadataSize)).foregroundStyle(AppColors.muted).padding(.vertical, 8)
+                }.font(.app(size: metadataSize)).foregroundStyle(AppColors.muted).padding(.vertical, 8)
                 ForEach(Array(recommendation.setTargets.enumerated()), id: \.offset) { index, target in
                     Rectangle().fill(AppColors.border).frame(height: 1)
                     ProgressionTableRow {
@@ -400,7 +400,7 @@ struct ProgressionRecommendationCard: View {
                         Image(systemName: "arrow.right").font(.system(size: 10)).foregroundStyle(AppColors.muted).accessibilityHidden(true)
                         Text("\(target.reps)").fontWeight(.bold).foregroundStyle(AppColors.text)
                             .accessibilityIdentifier("progression-target-reps-\(index + 1)")
-                    }.font(.system(size: bodySize)).monospacedDigit().padding(.vertical, 8)
+                    }.font(.app(size: bodySize)).monospacedDigit().padding(.vertical, 8)
                         .accessibilityIdentifier("progression-target-row-\(index + 1)")
                 }
             }
@@ -418,7 +418,7 @@ struct ProgressionRecommendationCard: View {
                 Color.clear.frame(height: 0)
                 Text(LanguageManager.t("progression.coach.target_set_column"))
                     .frame(maxWidth: .infinity, alignment: .leading)
-            }.font(.system(size: metadataSize)).foregroundStyle(AppColors.muted)
+            }.font(.app(size: metadataSize)).foregroundStyle(AppColors.muted)
                 .lineLimit(1).minimumScaleFactor(0.1).padding(.vertical, 8)
             ForEach(Array(recommendation.setTargets.enumerated()), id: \.offset) { index, target in
                 Rectangle().fill(AppColors.border).frame(height: 1)
@@ -431,7 +431,7 @@ struct ProgressionRecommendationCard: View {
                     }
                     Image(systemName: "arrow.right").font(.system(size: 10)).foregroundStyle(AppColors.muted).accessibilityHidden(true)
                     setDetails(target, index: index, isTarget: true)
-                }.font(.system(size: bodySize)).monospacedDigit()
+                }.font(.app(size: bodySize)).monospacedDigit()
                     .lineLimit(1).minimumScaleFactor(0.1).padding(.vertical, 8)
                     .accessibilityIdentifier("progression-target-row-\(index + 1)")
             }
@@ -494,7 +494,7 @@ private struct CompactCoachButton: View {
         let _ = themeManager.currentTheme
         Button(action: action) {
             HStack(spacing: 6) {
-                Text(label).font(.system(size: fontSize, weight: .semibold))
+                Text(label).font(.app(size: fontSize, weight: .semibold))
                     .fixedSize(horizontal: false, vertical: true)
                 if let expanded {
                     Image(systemName: expanded ? "chevron.up" : "chevron.down")
@@ -541,7 +541,7 @@ struct LockedSessionFeatureCard<Icon: View>: View {
 
     private var heading: some View {
         Text(title)
-            .font(.system(size: titleSize, weight: .bold))
+            .font(.app(size: titleSize, weight: .bold))
             .foregroundStyle(AppColors.text)
             .fixedSize(horizontal: false, vertical: true)
     }
@@ -562,7 +562,7 @@ struct LockedSessionFeatureCard<Icon: View>: View {
                     }
                     .padding(.trailing, onDismiss != nil ? 34 : 0)
                     Text(description)
-                        .font(.system(size: bodySize))
+                        .font(.app(size: bodySize))
                         .foregroundStyle(AppColors.secondaryText)
                         .fixedSize(horizontal: false, vertical: true)
                 }
@@ -659,10 +659,10 @@ private struct RatingSection: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
-                .font(.system(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.text)
+                .font(.app(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
             Text(hint)
-                .font(.system(size: hintSize)).foregroundStyle(AppColors.muted)
+                .font(.app(size: hintSize)).foregroundStyle(AppColors.muted)
                 .fixedSize(horizontal: false, vertical: true)
             ViewThatFits(in: .horizontal) {
                 HStack(spacing: 8) { buttons }
@@ -678,7 +678,7 @@ private struct RatingSection: View {
             let isSelected = code == selected
             Button { onSelect(isSelected ? nil : code) } label: {
                 Text(label)
-                    .font(.system(size: optionSize, weight: isSelected ? .semibold : .medium))
+                    .font(.app(size: optionSize, weight: isSelected ? .semibold : .medium))
                     .foregroundStyle(isSelected ? AppColors.accent : AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
                     .padding(.horizontal, 14).padding(.vertical, 8)

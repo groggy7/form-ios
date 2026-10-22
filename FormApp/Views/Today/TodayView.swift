@@ -47,11 +47,11 @@ public struct TodayView: View {
                 HStack(alignment: .top) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(LanguageManager.t("nav.home"))
-                            .font(.system(size: 26, weight: .semibold))
+                            .font(.app(size: 26, weight: .semibold))
                             .foregroundStyle(AppColors.text)
 
                         Text(formattedWeekRange())
-                            .font(.system(size: 12))
+                            .font(.app(size: 12))
                             .foregroundStyle(AppColors.muted)
                     }
 
@@ -121,7 +121,7 @@ public struct TodayView: View {
                 if let workout = workout, !workout.exercises.isEmpty {
                     VStack(alignment: .leading, spacing: 10) {
                         Text(exerciseHeading(for: workout))
-                            .font(.system(size: 18, weight: .semibold))
+                            .font(.app(size: 18, weight: .semibold))
                             .foregroundStyle(AppColors.text)
                             .padding(.horizontal, 20)
                             .padding(.bottom, 4)
@@ -137,20 +137,20 @@ public struct TodayView: View {
 
                                         VStack(alignment: .leading, spacing: 4) {
                                             Text(exercise.displayName)
-                                                .font(.system(size: 14, weight: .medium))
+                                                .font(.app(size: 14, weight: .medium))
                                                 .lineSpacing(2)
                                                 .foregroundStyle(AppColors.text)
                                                 .lineLimit(2)
 
                                             Text(exercise.displayPrescription)
-                                                .font(.system(size: 12))
+                                                .font(.app(size: 12))
                                                 .foregroundStyle(AppColors.muted)
                                         }
 
                                         Spacer()
 
                                         Text(String(format: "%02d", index + 1))
-                                            .font(.system(size: 11, weight: .medium))
+                                            .font(.app(size: 11, weight: .medium))
                                             .foregroundStyle(AppColors.muted)
                                     }
                                     .padding(9)

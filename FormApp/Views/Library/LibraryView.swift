@@ -49,7 +49,7 @@ public struct LibraryView: View {
                 // Header
                 HStack(alignment: .center) {
                     Text(LanguageManager.t("library.title"))
-                        .font(.system(size: 26, weight: .semibold))
+                        .font(.app(size: 26, weight: .semibold))
                         .foregroundStyle(AppColors.text)
 
                     Spacer()
@@ -79,7 +79,7 @@ public struct LibraryView: View {
                             .submitLabel(.search)
                             .onSubmit { isSearchFocused = false }
                             .accessibilityIdentifier("library-search")
-                            .font(.system(size: 14))
+                            .font(.app(size: 14))
                             .foregroundStyle(AppColors.text)
                             .tint(AppColors.accent)
 
@@ -160,14 +160,14 @@ public struct LibraryView: View {
 
                                     VStack(alignment: .leading, spacing: 3) {
                                         Text(exercise.displayName)
-                                            .font(.system(size: 13, weight: .semibold))
+                                            .font(.app(size: 13, weight: .semibold))
                                             .foregroundStyle(AppColors.text)
                                             .lineLimit(2)
                                             .multilineTextAlignment(.leading)
                                             .frame(maxWidth: .infinity, minHeight: 34, alignment: .topLeading)
 
                                         Text(exercise.metadataSubtitle)
-                                            .font(.system(size: 11))
+                                            .font(.app(size: 11))
                                             .foregroundStyle(AppColors.muted)
                                             .lineLimit(1)
                                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -191,7 +191,7 @@ public struct LibraryView: View {
 
                     if filtered.isEmpty {
                         Text(LanguageManager.t("library.noResults"))
-                            .font(.system(size: 14))
+                            .font(.app(size: 14))
                             .foregroundStyle(AppColors.muted)
                             .padding(.top, 40)
                     }
@@ -209,14 +209,14 @@ public struct LibraryView: View {
 
                                     VStack(alignment: .leading, spacing: 4) {
                                         Text(exercise.displayName)
-                                            .font(.system(size: 15, weight: .medium))
+                                            .font(.app(size: 15, weight: .medium))
                                             .lineSpacing(2)
                                             .foregroundStyle(AppColors.text)
                                             .lineLimit(2)
                                             .multilineTextAlignment(.leading)
 
                                         Text(exercise.metadataSubtitle)
-                                            .font(.system(size: 11))
+                                            .font(.app(size: 11))
                                             .foregroundStyle(AppColors.muted)
                                     }
 
@@ -242,7 +242,7 @@ public struct LibraryView: View {
 
                         if filtered.isEmpty {
                             Text(LanguageManager.t("library.noResults"))
-                                .font(.system(size: 14))
+                                .font(.app(size: 14))
                                 .foregroundStyle(AppColors.muted)
                                 .padding(.top, 40)
                         }
@@ -310,7 +310,7 @@ public struct LibraryView: View {
     private func modalHeader(title: String) -> some View {
         HStack {
             Text(title)
-                .font(.system(size: 18, weight: .semibold))
+                .font(.app(size: 18, weight: .semibold))
                 .foregroundStyle(AppColors.text)
             Spacer()
             Button(action: { activeModal = nil }) {
@@ -332,46 +332,18 @@ public struct LibraryView: View {
             modalHeader(title: LanguageManager.t("library.equipment"))
             ScrollView {
                 VStack(spacing: 8) {
-                    LazyVGrid(columns: [GridItem(.flexible(), spacing: 8), GridItem(.flexible(), spacing: 8)], spacing: 8) {
-                        ForEach(EquipmentCatalog.shared.categories) { category in
-                            let isSelected = selectedEquipment == category.id
-                            Button(action: {
-                                selectedEquipment = isSelected ? nil : category.id
-                                activeModal = nil
-                            }) {
-                                VStack(spacing: 0) {
-                                    ZStack {
-                                        RoundedRectangle(cornerRadius: 10, style: .continuous)
-                                            .fill(Color.black)
-                                        Image("library_equipment_\(category.id.replacingOccurrences(of: "-", with: "_"))")
-                                            .resizable()
-                                            .scaledToFit()
-                                            .padding(.horizontal, 4)
-                                            .padding(.vertical, 2)
-                                            .accessibilityHidden(true)
-                                    }
-                                    .frame(height: 84)
-                                    .frame(maxWidth: .infinity)
-
-                                    Text(category.title)
-                                        .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
-                                        .foregroundStyle(isSelected ? AppColors.accent : AppColors.text)
-                                        .lineLimit(2)
-                                        .multilineTextAlignment(.center)
-                                        .padding(.horizontal, 6)
-                                        .padding(.vertical, 8)
-                                }
-                                .frame(maxWidth: .infinity)
-                                .background(isSelected ? AppColors.positiveBg : AppColors.background, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
-                                .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                        .strokeBorder(isSelected ? AppColors.accent : AppColors.border, lineWidth: isSelected ? 1.5 : 1)
-                                )
+                    let categories = EquipmentCatalog.shared.categories
+                    ForEach(Array(stride(from: 0, to: categories.count, by: 2)), id: \.self) { start in
+                        // A wrapped label grows both cards in the row; the label centers in the shared space.
+                        HStack(alignment: .top, spacing: 8) {
+                            equipmentFilterCard(categories[start])
+                            if start + 1 < categories.count {
+                                equipmentFilterCard(categories[start + 1])
+                            } else {
+                                Spacer(minLength: 0).frame(maxWidth: .infinity)
                             }
-                            .buttonStyle(.plain)
-                            .accessibilityIdentifier("equipment-\(category.id)")
                         }
+                        .fixedSize(horizontal: false, vertical: true)
                     }
                 }
                 .padding(.horizontal, 18)
@@ -379,6 +351,47 @@ public struct LibraryView: View {
             }
         }
         .accessibilityIdentifier("library-equipment-modal")
+    }
+
+    private func equipmentFilterCard(_ category: EquipmentCategory) -> some View {
+        let isSelected = selectedEquipment == category.id
+        return Button(action: {
+            selectedEquipment = isSelected ? nil : category.id
+            activeModal = nil
+        }) {
+            VStack(spacing: 0) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .fill(Color.black)
+                    Image("library_equipment_\(category.id.replacingOccurrences(of: "-", with: "_"))")
+                        .resizable()
+                        .scaledToFit()
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 2)
+                        .accessibilityHidden(true)
+                }
+                .frame(height: 84)
+                .frame(maxWidth: .infinity)
+
+                Text(category.title)
+                    .font(.app(size: 13, weight: isSelected ? .semibold : .medium))
+                    .foregroundStyle(isSelected ? AppColors.accent : AppColors.text)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 6)
+                    .padding(.vertical, 8)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(isSelected ? AppColors.positiveBg : AppColors.background, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+            .overlay(
+                RoundedRectangle(cornerRadius: 14, style: .continuous)
+                    .strokeBorder(isSelected ? AppColors.accent : AppColors.border, lineWidth: isSelected ? 1.5 : 1)
+            )
+        }
+        .buttonStyle(.plain)
+        .accessibilityIdentifier("equipment-\(category.id)")
     }
 
     private func muscleModalView() -> some View {
@@ -413,7 +426,7 @@ public struct LibraryView: View {
                                     .frame(maxWidth: .infinity)
 
                                     Text(LanguageManager.t(muscle.translationKey))
-                                        .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
+                                        .font(.app(size: 13, weight: isSelected ? .semibold : .medium))
                                         .foregroundStyle(isSelected ? AppColors.accent : AppColors.text)
                                         .lineLimit(1)
                                         .padding(.horizontal, 6)
@@ -458,7 +471,7 @@ struct LibraryFilterPill: View {
                         EquipmentIcon(category: equipment, tint: isSelected ? equipmentSolidColor(categoryId: equipment.id) : AppColors.secondaryText)
                     }
                     Text(title)
-                        .font(.system(size: labelSize, weight: isSelected ? .semibold : .medium))
+                        .font(.app(size: labelSize, weight: isSelected ? .semibold : .medium))
                         .foregroundStyle(isSelected ? AppColors.accent : AppColors.secondaryText)
                         .lineLimit(1)
                         .minimumScaleFactor(0.8)
@@ -521,7 +534,7 @@ struct LibraryFilterOption: View {
                 if let equipment {
                     EquipmentIcon(category: equipment, tint: selected ? equipmentSolidColor(categoryId: equipment.id) : AppColors.secondaryText)
                 }
-                Text(title).font(.system(size: labelSize, weight: selected ? .semibold : .medium))
+                Text(title).font(.app(size: labelSize, weight: selected ? .semibold : .medium))
                     .fixedSize(horizontal: false, vertical: true)
                 Spacer(minLength: 0)
             }

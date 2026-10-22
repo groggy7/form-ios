@@ -72,12 +72,12 @@ public struct WarmupPlateCard: View {
 
                     VStack(alignment: .leading, spacing: 2) {
                         Text(LanguageManager.t("warmup.active_badge"))
-                            .font(.system(size: 13, weight: .bold))
+                            .font(.app(size: 13, weight: .bold))
                             .foregroundStyle(AppColors.warmupAmber)
                             .lineLimit(1)
 
                         Text(LanguageManager.t("warmup.active_desc", ["count": warmupSets.count]))
-                            .font(.system(size: 11))
+                            .font(.app(size: 11))
                             .foregroundStyle(AppColors.muted)
                             .lineLimit(1)
                             .minimumScaleFactor(0.8)
@@ -129,7 +129,7 @@ public struct WarmupPlateCard: View {
 
     private var title: some View {
         Text(LanguageManager.t("warmup.card_title"))
-            .font(.system(size: titleSize, weight: .bold))
+            .font(.app(size: titleSize, weight: .bold))
             .foregroundStyle(AppColors.text)
             .fixedSize(horizontal: false, vertical: true)
     }
@@ -155,7 +155,7 @@ public struct WarmupPlateCard: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             Text(LanguageManager.t(!hasWorkingLoad ? "warmup.enter_working_load" : "warmup.card_desc"))
-                .font(.system(size: bodySize))
+                .font(.app(size: bodySize))
                 .foregroundStyle(AppColors.muted)
                 .fixedSize(horizontal: false, vertical: true)
             if hasWorkingLoad {
@@ -191,7 +191,7 @@ private struct WarmupPlateAction: View {
                     .foregroundStyle(warmup ? AppColors.warmupAmber : AppColors.secondaryText)
                     .accessibilityHidden(true)
                 Text(LanguageManager.t(warmup ? "warmup.generate_btn" : "warmup.plates_btn"))
-                    .font(.system(size: labelSize, weight: .bold))
+                    .font(.app(size: labelSize, weight: .bold))
                     .fixedSize(horizontal: false, vertical: true)
             }
             .foregroundStyle(warmup ? AppColors.warmupAmber : AppColors.text)

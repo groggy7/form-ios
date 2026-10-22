@@ -60,10 +60,10 @@ struct FoundersPassPaywallContent: View {
                         // The real Classic icon, so the hero needs no artwork of its own.
                         AppIconPreview(option: AppIcons.standard, size: 80).padding(.bottom, 18)
                         Text(LanguageManager.t("founders.headline"))
-                            .font(.system(size: headlineSize, weight: .bold)).foregroundStyle(AppColors.text)
+                            .font(.app(size: headlineSize, weight: .bold)).foregroundStyle(AppColors.text)
                             .fixedSize(horizontal: false, vertical: true).padding(.bottom, 10)
                         Text(LanguageManager.t("founders.subtitle"))
-                            .font(.system(size: subtitleSize)).foregroundStyle(AppColors.secondaryText).lineSpacing(3)
+                            .font(.app(size: subtitleSize)).foregroundStyle(AppColors.secondaryText).lineSpacing(3)
                             .fixedSize(horizontal: false, vertical: true).padding(.bottom, 22)
                         VStack(spacing: 16) {
                             benefit(1, icon: "infinity")
@@ -76,7 +76,7 @@ struct FoundersPassPaywallContent: View {
                         Rectangle().fill(AppColors.border.opacity(0.65)).frame(height: 1).padding(.horizontal, 4)
                         plan
                         Text(LanguageManager.t("founders.platformNote"))
-                            .font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText)
+                            .font(.app(size: footnoteSize)).foregroundStyle(AppColors.secondaryText)
                             .fixedSize(horizontal: false, vertical: true).padding(.horizontal, 4)
                     }
                     .padding(.horizontal, 20)
@@ -100,7 +100,7 @@ struct FoundersPassPaywallContent: View {
             HStack(spacing: 8) {
                 Image(systemName: "crown.fill").font(.system(size: 18, weight: .semibold)).frame(width: 20, height: 20)
                 Text(LanguageManager.t("founders.badge"))
-                    .font(.system(size: bodySize, weight: .bold)).tracking(1.3)
+                    .font(.app(size: bodySize, weight: .bold)).tracking(1.3)
                     .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
             }
             .foregroundStyle(accent).padding(.horizontal, 12).padding(.vertical, 9)
@@ -128,9 +128,9 @@ struct FoundersPassPaywallContent: View {
                 .accessibilityHidden(true)
             VStack(alignment: .leading, spacing: 3) {
                 Text(LanguageManager.t("founders.benefit\(number)"))
-                    .font(.system(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.text)
+                    .font(.app(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.text)
                 Text(LanguageManager.t("founders.benefit\(number)_desc"))
-                    .font(.system(size: descriptionSize)).foregroundStyle(AppColors.secondaryText).lineSpacing(3)
+                    .font(.app(size: descriptionSize)).foregroundStyle(AppColors.secondaryText).lineSpacing(3)
             }
             .fixedSize(horizontal: false, vertical: true).frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -140,14 +140,14 @@ struct FoundersPassPaywallContent: View {
         HStack(alignment: .top, spacing: 16) {
             VStack(alignment: .leading, spacing: 5) {
                 Text(LanguageManager.t("founders.plan"))
-                    .font(.system(size: titleSize, weight: .bold)).foregroundStyle(AppColors.text)
+                    .font(.app(size: titleSize, weight: .bold)).foregroundStyle(AppColors.text)
                 Text(LanguageManager.t("founders.planSubtitle"))
-                    .font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText)
+                    .font(.app(size: footnoteSize)).foregroundStyle(AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             // Prices come from the store once the pass is sold.
-            Text("—").font(.system(size: titleSize, weight: .bold)).foregroundStyle(accent)
+            Text("—").font(.app(size: titleSize, weight: .bold)).foregroundStyle(accent)
         }
         .padding(16)
         .background(AppColors.progressionPaywallSelectedSurface, in: RoundedRectangle(cornerRadius: 12))
@@ -160,11 +160,11 @@ struct FoundersPassPaywallContent: View {
         Button(action: onTerms) {
             Text(LanguageManager.t("paywall.terms")).fixedSize(horizontal: singleLine, vertical: true)
                 .padding(.horizontal, 6).frame(minWidth: 48, minHeight: 48).contentShape(Rectangle())
-        }.font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).buttonStyle(.plain)
+        }.font(.app(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).buttonStyle(.plain)
         Button(action: onPrivacy) {
             Text(LanguageManager.t("paywall.privacy")).fixedSize(horizontal: singleLine, vertical: true)
                 .padding(.horizontal, 6).frame(minWidth: 48, minHeight: 48).contentShape(Rectangle())
-        }.font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).buttonStyle(.plain)
+        }.font(.app(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).buttonStyle(.plain)
     }
 
     private var footer: some View {
@@ -175,7 +175,7 @@ struct FoundersPassPaywallContent: View {
                     HStack(spacing: 10) {
                         Image(systemName: "lock.open").font(.system(size: 20, weight: .medium))
                         Text(LanguageManager.t("founders.cta"))
-                            .font(.system(size: titleSize + 1, weight: .bold))
+                            .font(.app(size: titleSize + 1, weight: .bold))
                             .fixedSize(horizontal: false, vertical: true).multilineTextAlignment(.center)
                     }
                     .foregroundStyle(AppColors.background).padding(12).frame(maxWidth: .infinity, minHeight: 48)
@@ -185,7 +185,7 @@ struct FoundersPassPaywallContent: View {
                 .buttonStyle(.plain).disabled(!canPurchase)
                 .accessibilityIdentifier("founders-paywall-purchase")
                 Text(LanguageManager.t("founders.notOnSale"))
-                    .font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText)
+                    .font(.app(size: footnoteSize)).foregroundStyle(AppColors.secondaryText)
                     .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
             }
             .padding(.horizontal, 20).padding(.vertical, 10)

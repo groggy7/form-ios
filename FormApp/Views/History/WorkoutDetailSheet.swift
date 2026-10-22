@@ -21,11 +21,11 @@ public struct WorkoutDetailSheet: View {
                     // Header Metrics
                     VStack(alignment: .leading, spacing: 6) {
                         Text(record.workoutTitle)
-                            .font(.system(size: 24, weight: .bold))
+                            .font(.app(size: 24, weight: .bold))
                             .foregroundStyle(AppColors.text)
 
                         Text(formattedDate(record.completedAt))
-                            .font(.system(size: 13))
+                            .font(.app(size: 13))
                             .foregroundStyle(AppColors.muted)
                     }
 
@@ -41,19 +41,19 @@ public struct WorkoutDetailSheet: View {
                     // Exercise recap list
                     VStack(alignment: .leading, spacing: 14) {
                         Text(LanguageManager.t("summary.exerciseRecap"))
-                            .font(.system(size: 16, weight: .bold))
+                            .font(.app(size: 16, weight: .bold))
                             .foregroundStyle(AppColors.text)
 
                         ForEach(record.exerciseLogs, id: \.exerciseName) { exLog in
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(exLog.exerciseName)
-                                    .font(.system(size: 15, weight: .semibold))
+                                    .font(.app(size: 15, weight: .semibold))
                                     .foregroundStyle(AppColors.accent)
 
                                 ForEach(exLog.sets, id: \.setNumber) { setLog in
                                     HStack {
                                         Text("\(LanguageManager.t("table.set")) \(setLog.setNumber)")
-                                            .font(.system(size: 13, weight: .medium))
+                                            .font(.app(size: 13, weight: .medium))
                                             .foregroundStyle(AppColors.muted)
                                             .frame(width: 60, alignment: .leading)
 
@@ -62,13 +62,13 @@ public struct WorkoutDetailSheet: View {
                                         if IntensitySets.hasDetail(setLog) {
                                             // Drops, rest-pause and partials read as one chain.
                                             Text(IntensitySets.notation(setLog, unit: weightUnit))
-                                                .font(.system(size: 14, weight: .semibold))
+                                                .font(.app(size: 14, weight: .semibold))
                                                 .foregroundStyle(AppColors.text)
                                                 .multilineTextAlignment(.trailing)
                                         } else {
                                             let weightText = setLog.weightKg.map { weightUnit.formatDisplayWeight($0) + " " + weightUnit.label } ?? "—"
                                             Text(weightText)
-                                                .font(.system(size: 14, weight: .semibold))
+                                                .font(.app(size: 14, weight: .semibold))
                                                 .foregroundStyle(AppColors.text)
 
                                             Text("×")
@@ -76,7 +76,7 @@ public struct WorkoutDetailSheet: View {
 
                                             let repsText = setLog.reps.map { "\($0) reps" } ?? "—"
                                             Text(repsText)
-                                                .font(.system(size: 14, weight: .semibold))
+                                                .font(.app(size: 14, weight: .semibold))
                                                 .foregroundStyle(AppColors.text)
                                         }
                                     }
@@ -115,10 +115,10 @@ public struct WorkoutDetailSheet: View {
     private func metricTile(title: String, value: String) -> some View {
         VStack(spacing: 4) {
             Text(title)
-                .font(.system(size: 11, weight: .medium))
+                .font(.app(size: 11, weight: .medium))
                 .foregroundStyle(AppColors.muted)
             Text(value)
-                .font(.system(size: 16, weight: .bold))
+                .font(.app(size: 16, weight: .bold))
                 .foregroundStyle(AppColors.text)
         }
         .frame(maxWidth: .infinity)

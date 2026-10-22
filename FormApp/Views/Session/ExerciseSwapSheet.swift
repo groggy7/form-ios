@@ -38,10 +38,10 @@ struct ExerciseSwapSheet: View {
             ScrollView {
                 LazyVStack(alignment: .leading, spacing: 8) {
                     Text(exercise.displayName)
-                        .font(.subheadline.weight(.semibold))
+                        .appFont(.subheadline, weight: .semibold)
                         .foregroundStyle(AppColors.text)
                     Text(LanguageManager.t("session.replace.subtitle"))
-                        .font(.footnote)
+                        .appFont(.footnote)
                         .foregroundStyle(AppColors.secondaryText)
                         .fixedSize(horizontal: false, vertical: true)
                         .padding(.bottom, 6)
@@ -79,7 +79,7 @@ struct ExerciseSwapSheet: View {
         let rows = items.compactMap { ExerciseCatalog.canonicalExercises[$0.exerciseId]?.toExercise() }
         if !rows.isEmpty {
             Text(LanguageManager.t(titleKey))
-                .font(.caption.weight(.medium))
+                .appFont(.caption, weight: .medium)
                 .foregroundStyle(AppColors.secondaryText)
                 .padding(.top, 4)
             ForEach(rows, id: \.id) { row($0) }
@@ -88,7 +88,7 @@ struct ExerciseSwapSheet: View {
 
     private func message(_ key: String) -> some View {
         Text(LanguageManager.t(key))
-            .font(.footnote)
+            .appFont(.footnote)
             .foregroundStyle(AppColors.secondaryText)
             .padding(.vertical, 8)
     }
@@ -100,12 +100,12 @@ struct ExerciseSwapSheet: View {
                 MovementIcon(exerciseId: candidate.exerciseId, size: 48)
                 VStack(alignment: .leading, spacing: 3) {
                     Text(candidate.displayName)
-                        .font(.subheadline.weight(.semibold))
+                        .appFont(.subheadline, weight: .semibold)
                         .foregroundStyle(AppColors.text)
                         .lineLimit(2)
                     if !candidate.metadataSubtitle.isEmpty {
                         Text(candidate.metadataSubtitle)
-                            .font(.caption)
+                            .appFont(.caption)
                             .foregroundStyle(AppColors.secondaryText)
                             .lineLimit(2)
                     }

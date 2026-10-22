@@ -43,7 +43,7 @@ public struct VideoPlayerSheet: View {
         VStack(spacing: 20) {
             HStack {
                 Text(exerciseName)
-                    .font(.system(size: 18, weight: .semibold))
+                    .font(.app(size: 18, weight: .semibold))
                     .foregroundStyle(AppColors.text)
                     .lineLimit(2)
 
@@ -67,7 +67,7 @@ public struct VideoPlayerSheet: View {
                     .foregroundStyle(AppColors.muted)
 
                 Text(LanguageManager.t("video.invalid"))
-                    .font(.system(size: 14))
+                    .font(.app(size: 14))
                     .foregroundStyle(AppColors.secondaryText)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
@@ -75,7 +75,7 @@ public struct VideoPlayerSheet: View {
                 if let url = URL(string: videoUrl) {
                     Button(action: { UIApplication.shared.open(url) }) {
                         Text(LanguageManager.t("video.openExternal"))
-                            .font(.system(size: 14, weight: .medium))
+                            .font(.app(size: 14, weight: .medium))
                             .foregroundStyle(AppColors.accent)
                     }
                     .padding(.top, 8)
@@ -101,12 +101,12 @@ public struct VideoPlayerSheet: View {
                 HStack(alignment: .center, spacing: 8) {
                     VStack(alignment: .leading, spacing: 3) {
                         Text(exerciseName)
-                            .font(.system(size: 18, weight: .semibold))
+                            .font(.app(size: 18, weight: .semibold))
                             .foregroundStyle(AppColors.text)
                             .lineLimit(2)
 
                         Text(isShort ? "YouTube Shorts" : "YouTube")
-                            .font(.system(size: 12))
+                            .font(.app(size: 12))
                             .foregroundStyle(AppColors.muted)
                     }
 
@@ -152,14 +152,14 @@ public struct VideoPlayerSheet: View {
 
                             let errKey = controller.state.error == "network" ? "video.networkError" : "video.embedError"
                             Text(LanguageManager.t(errKey))
-                                .font(.system(size: 13))
+                                .font(.app(size: 13))
                                 .foregroundStyle(AppColors.secondaryText)
                                 .multilineTextAlignment(.center)
                                 .padding(.horizontal, 20)
 
                             Button(action: { controller.reload() }) {
                                 Text(LanguageManager.t("video.retry"))
-                                    .font(.system(size: 13, weight: .semibold))
+                                    .font(.app(size: 13, weight: .semibold))
                                     .foregroundStyle(AppColors.accent)
                                     .padding(.horizontal, 16)
                                     .padding(.vertical, 8)
@@ -184,7 +184,7 @@ public struct VideoPlayerSheet: View {
                             Image(systemName: "gobackward.5")
                                 .font(.system(size: 22, weight: .medium))
                             Text("−5s")
-                                .font(.system(size: 11, weight: .medium))
+                                .font(.app(size: 11, weight: .medium))
                         }
                         .foregroundStyle(controller.state.canControl ? AppColors.text : AppColors.muted.opacity(0.4))
                         .frame(width: 60, height: 50)
@@ -217,7 +217,7 @@ public struct VideoPlayerSheet: View {
                             Image(systemName: "goforward.5")
                                 .font(.system(size: 22, weight: .medium))
                             Text("+5s")
-                                .font(.system(size: 11, weight: .medium))
+                                .font(.app(size: 11, weight: .medium))
                         }
                         .foregroundStyle(controller.state.canControl ? AppColors.text : AppColors.muted.opacity(0.4))
                         .frame(width: 60, height: 50)
@@ -243,11 +243,11 @@ public struct VideoPlayerSheet: View {
 
                         if !controller.state.ready {
                             Text(LanguageManager.t("video.loading"))
-                                .font(.system(size: 12))
+                                .font(.app(size: 12))
                                 .foregroundStyle(AppColors.muted)
                         } else {
                             Text("\(formatVideoTime(controller.state.currentSeconds)) / \(formatVideoTime(controller.state.durationSeconds))")
-                                .font(.system(size: 12, design: .monospaced))
+                                .font(.app(size: 12, design: .monospaced))
                                 .foregroundStyle(AppColors.muted)
                         }
                     }

@@ -77,7 +77,7 @@ public struct BottomDock: View {
                     .frame(height: 22)
 
                 Text(title)
-                    .font(.system(size: 11, weight: .medium))
+                    .font(.app(size: 11, weight: .medium))
                     .foregroundStyle(foreground)
                     .lineLimit(1)
             }

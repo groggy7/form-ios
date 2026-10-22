@@ -46,14 +46,14 @@ struct JointJournalView: View {
 
     private func notice(title: String, body: String, showsEnable: Bool) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(LanguageManager.t(title)).font(.system(size: 15, weight: .semibold)).foregroundStyle(AppColors.text)
+            Text(LanguageManager.t(title)).font(.app(size: 15, weight: .semibold)).foregroundStyle(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
-            Text(LanguageManager.t(body)).font(.system(size: 13)).lineSpacing(3).foregroundStyle(AppColors.secondaryText)
+            Text(LanguageManager.t(body)).font(.app(size: 13)).lineSpacing(3).foregroundStyle(AppColors.secondaryText)
                 .fixedSize(horizontal: false, vertical: true)
             if showsEnable {
                 Button(action: onEnableRatings) {
                     Text(LanguageManager.t("form_lab.joints.enable"))
-                        .font(.system(size: 14, weight: .semibold)).foregroundStyle(Color.black)
+                        .font(.app(size: 14, weight: .semibold)).foregroundStyle(Color.black)
                         .frame(maxWidth: .infinity, minHeight: 48)
                         .background(AppColors.accent).clipShape(RoundedRectangle(cornerRadius: 11, style: .continuous))
                 }
@@ -73,12 +73,12 @@ struct JointJournalView: View {
                 ForEach(JointStress.allCases, id: \.self) { rating in
                     HStack(spacing: 6) {
                         marker(rating, size: 12)
-                        Text(LanguageManager.t(rating.labelKey)).font(.system(size: 12)).foregroundStyle(AppColors.secondaryText)
+                        Text(LanguageManager.t(rating.labelKey)).font(.app(size: 12)).foregroundStyle(AppColors.secondaryText)
                     }
                 }
             }
             Text(LanguageManager.t("form_lab.joints.load_caption", ["unit": weightUnit.label]))
-                .font(.system(size: 12)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)
+                .font(.app(size: 12)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)
         }
     }
 
@@ -93,11 +93,11 @@ struct JointJournalView: View {
         VStack(alignment: .leading, spacing: 10) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(ContentLocalizer.shared.exerciseName(exerciseId: nil, fallback: summary.exerciseName))
-                    .font(.system(size: 15, weight: .semibold)).foregroundStyle(AppColors.text)
+                    .font(.app(size: 15, weight: .semibold)).foregroundStyle(AppColors.text)
                     .fixedSize(horizontal: false, vertical: true)
                 Text(LanguageManager.shared.plural("form_lab.joints.ratings", summary.total) + " · " +
                      LanguageManager.t("form_lab.joints.breakdown", ["high": summary.high, "mild": summary.mild, "none": summary.none]))
-                    .font(.system(size: 12)).foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
+                    .font(.app(size: 12)).foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
             }
             ScrollViewReader { proxy in
                 ScrollView(.horizontal, showsIndicators: false) {
@@ -123,9 +123,9 @@ struct JointJournalView: View {
         let load = entry.topLoadKg.map { weightUnit.formatDisplayWeight($0) } ?? LanguageManager.t("form_lab.joints.bodyweight")
         let spokenLoad = entry.topLoadKg == nil ? load : "\(load) \(weightUnit.label)"
         return VStack(spacing: 6) {
-            Text(date).font(.system(size: 10)).foregroundStyle(AppColors.muted).lineLimit(1)
+            Text(date).font(.app(size: 10)).foregroundStyle(AppColors.muted).lineLimit(1)
             marker(entry.rating, size: 22)
-            Text(load).font(.system(size: 11, weight: .medium)).foregroundStyle(AppColors.secondaryText).lineLimit(1)
+            Text(load).font(.app(size: 11, weight: .medium)).foregroundStyle(AppColors.secondaryText).lineLimit(1)
         }
         .padding(.horizontal, 6).padding(.vertical, 8).frame(minWidth: 52)
         .background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))

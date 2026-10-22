@@ -34,7 +34,7 @@ public struct ExerciseReportSheet: View {
                 HStack(alignment: .center) {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(LanguageManager.t("report.title"))
-                            .font(.system(size: 20, weight: .semibold))
+                            .font(.app(size: 20, weight: .semibold))
                             .foregroundStyle(AppColors.text)
                     }
 
@@ -64,7 +64,7 @@ public struct ExerciseReportSheet: View {
                                 .foregroundStyle(AppColors.muted)
                                 .padding(.top, 2)
                             Text(LanguageManager.t("report.disclosure"))
-                                .font(.system(size: 12))
+                                .font(.app(size: 12))
                                 .foregroundStyle(AppColors.secondaryText)
                                 .lineSpacing(3)
                         }
@@ -89,12 +89,12 @@ public struct ExerciseReportSheet: View {
 
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(exercise.displayName)
-                                    .font(.system(size: 17, weight: .bold))
+                                    .font(.app(size: 17, weight: .bold))
                                     .foregroundStyle(AppColors.text)
                                     .lineLimit(2)
 
                                 Text(LanguageManager.t("category.\(exercise.resolvedMovement.key)").uppercased())
-                                    .font(.system(size: 11, weight: .semibold))
+                                    .font(.app(size: 11, weight: .semibold))
                                     .tracking(0.6)
                                     .foregroundStyle(AppColors.accent)
                                     .padding(.horizontal, 10)
@@ -117,7 +117,7 @@ public struct ExerciseReportSheet: View {
                         // Issue Category Section
                         VStack(alignment: .leading, spacing: 10) {
                             Text(LanguageManager.t("report.category"))
-                                .font(.system(size: 14, weight: .semibold))
+                                .font(.app(size: 14, weight: .semibold))
                                 .foregroundStyle(AppColors.text)
 
                             VStack(spacing: 8) {
@@ -128,7 +128,7 @@ public struct ExerciseReportSheet: View {
                                     }) {
                                         HStack {
                                             Text(LanguageManager.t("report.category.\(cat)"))
-                                                .font(.system(size: 14, weight: isSelected ? .semibold : .regular))
+                                                .font(.app(size: 14, weight: isSelected ? .semibold : .regular))
                                                 .foregroundStyle(isSelected ? AppColors.accent : AppColors.text)
 
                                             Spacer()
@@ -164,20 +164,20 @@ public struct ExerciseReportSheet: View {
                         VStack(alignment: .leading, spacing: 10) {
                             HStack {
                                 Text(LanguageManager.t("report.detailsLabel"))
-                                    .font(.system(size: 14, weight: .semibold))
+                                    .font(.app(size: 14, weight: .semibold))
                                     .foregroundStyle(AppColors.text)
 
                                 Spacer()
 
                                 Text("\(comments.count) / 1000")
-                                    .font(.system(size: 12, weight: .medium))
+                                    .font(.app(size: 12, weight: .medium))
                                     .foregroundStyle(comments.count > 950 ? AppColors.danger : AppColors.muted)
                             }
 
                             ZStack(alignment: .topLeading) {
                                 if comments.isEmpty {
                                     Text(LanguageManager.t("report.detailsPlaceholder"))
-                                        .font(.system(size: 14))
+                                        .font(.app(size: 14))
                                         .foregroundStyle(AppColors.muted)
                                         .padding(.horizontal, 12)
                                         .padding(.vertical, 10)
@@ -185,7 +185,7 @@ public struct ExerciseReportSheet: View {
 
                                 TextEditor(text: $comments)
                                     .scrollContentBackground(.hidden)
-                                    .font(.system(size: 14))
+                                    .font(.app(size: 14))
                                     .foregroundStyle(AppColors.text)
                                     .frame(minHeight: 90)
                                     .padding(.horizontal, 8)
@@ -216,7 +216,7 @@ public struct ExerciseReportSheet: View {
                         // Inline toast/error message if 429 occurs while sheet is open
                         if let toast = inlineToast {
                             Text(toast)
-                                .font(.system(size: 13, weight: .medium))
+                                .font(.app(size: 13, weight: .medium))
                                 .foregroundStyle(AppColors.danger)
                                 .multilineTextAlignment(.center)
                                 .padding(12)
@@ -287,7 +287,7 @@ public struct ExerciseReportSheet: View {
                                     .scaleEffect(0.9)
                             }
                             Text(LanguageManager.t("report.submit"))
-                                .font(.system(size: 15, weight: .semibold))
+                                .font(.app(size: 15, weight: .semibold))
                                 .foregroundStyle(AppColors.background)
                         }
                         .frame(maxWidth: .infinity)
@@ -332,24 +332,24 @@ public struct PendingReportSheet: View {
         let _ = themeManager.currentTheme
         VStack(spacing: 18) {
             Text(LanguageManager.t("report.pendingModalTitle"))
-                .font(.system(size: 18, weight: .bold))
+                .font(.app(size: 18, weight: .bold))
                 .foregroundStyle(AppColors.text)
 
             Text(LanguageManager.t("report.pendingModalBody"))
-                .font(.system(size: 14))
+                .font(.app(size: 14))
                 .foregroundStyle(AppColors.secondaryText)
                 .multilineTextAlignment(.center)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text(report.exerciseName)
-                    .font(.system(size: 15, weight: .semibold))
+                    .font(.app(size: 15, weight: .semibold))
                     .foregroundStyle(AppColors.text)
                 Text(LanguageManager.t("report.category.\(report.category)"))
-                    .font(.system(size: 12))
+                    .font(.app(size: 12))
                     .foregroundStyle(AppColors.accent)
                 if !report.comment.isEmpty {
                     Text(report.comment)
-                        .font(.system(size: 12))
+                        .font(.app(size: 12))
                         .foregroundStyle(AppColors.muted)
                         .lineLimit(2)
                 }
@@ -365,7 +365,7 @@ public struct PendingReportSheet: View {
             VStack(spacing: 10) {
                 Button(action: onSendNow) {
                     Text(LanguageManager.t("report.pendingSendNow"))
-                        .font(.system(size: 15, weight: .semibold))
+                        .font(.app(size: 15, weight: .semibold))
                         .foregroundStyle(AppColors.background)
                         .frame(maxWidth: .infinity)
                         .frame(height: 48)
@@ -379,7 +379,7 @@ public struct PendingReportSheet: View {
                 HStack(spacing: 12) {
                     Button(action: onDiscard) {
                         Text(LanguageManager.t("report.pendingDiscard"))
-                            .font(.system(size: 14, weight: .medium))
+                            .font(.app(size: 14, weight: .medium))
                             .foregroundStyle(AppColors.danger)
                             .frame(maxWidth: .infinity)
                             .frame(height: 44)
@@ -388,7 +388,7 @@ public struct PendingReportSheet: View {
 
                     Button(action: onDismiss) {
                         Text(LanguageManager.t("report.pendingKeep"))
-                            .font(.system(size: 14, weight: .medium))
+                            .font(.app(size: 14, weight: .medium))
                             .foregroundStyle(AppColors.secondaryText)
                             .frame(maxWidth: .infinity)
                             .frame(height: 44)

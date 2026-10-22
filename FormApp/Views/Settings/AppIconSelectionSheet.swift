@@ -12,7 +12,7 @@ struct AppIconSelectionSheet: View {
         VStack(spacing: 0) {
             HStack(spacing: 12) {
                 Text(LanguageManager.t("settings.appIcon"))
-                    .font(.title2.weight(.semibold))
+                    .appFont(.title2, weight: .semibold)
                     .foregroundStyle(AppColors.text)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -35,7 +35,7 @@ struct AppIconSelectionSheet: View {
                                 AppIconPreview(option: option, size: 48)
 
                                 Text(LanguageManager.t(option.nameKey))
-                                    .font(.system(size: 15, weight: .semibold))
+                                    .font(.app(size: 15, weight: .semibold))
                                     .foregroundStyle(AppColors.text)
                                     .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -63,7 +63,7 @@ struct AppIconSelectionSheet: View {
 
                     if failed {
                         Text(LanguageManager.t("settings.appIconFailed"))
-                            .font(.system(size: 12))
+                            .font(.app(size: 12))
                             .foregroundStyle(AppColors.danger)
                             .frame(maxWidth: .infinity, alignment: .leading)
                             .padding(.horizontal, 6)
@@ -94,16 +94,16 @@ struct SettingsAppIconRow: View {
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(LanguageManager.t("settings.appIcon"))
-                        .font(.system(size: 15))
+                        .font(.app(size: 15))
                         .foregroundStyle(AppColors.text)
                     Text(LanguageManager.t("settings.appIconSubtitle"))
-                        .font(.system(size: 12))
+                        .font(.app(size: 12))
                         .foregroundStyle(AppColors.secondaryText)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
 
                 Text(LanguageManager.t(current.nameKey))
-                    .font(.subheadline)
+                    .appFont(.subheadline)
                     .foregroundStyle(AppColors.secondaryText)
 
                 Image(systemName: "chevron.right")

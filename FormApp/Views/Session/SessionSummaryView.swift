@@ -54,14 +54,14 @@ public struct SessionSummaryView: View {
                     // Empty State: Body stretched with centered card
                     VStack(alignment: .leading, spacing: 16) {
                         Text(workoutTitle)
-                            .font(.system(size: 28, weight: .bold))
+                            .font(.app(size: 28, weight: .bold))
                             .foregroundStyle(AppColors.text)
 
                         // Unified Segmented KPI Metrics Card
                         summaryMetricsCard
 
                         Text(LanguageManager.t("summary.exerciseRecap"))
-                            .font(.system(size: 16, weight: .bold))
+                            .font(.app(size: 16, weight: .bold))
                             .foregroundStyle(AppColors.secondaryText)
 
                         VStack(spacing: 16) {
@@ -80,12 +80,12 @@ public struct SessionSummaryView: View {
 
                             VStack(spacing: 6) {
                                 Text(LanguageManager.t("summary.noSetsTitle"))
-                                    .font(.system(size: 18, weight: .bold))
+                                    .font(.app(size: 18, weight: .bold))
                                     .foregroundStyle(AppColors.text)
                                     .multilineTextAlignment(.center)
 
                                 Text(LanguageManager.t("summary.noSetsSubtitle"))
-                                    .font(.system(size: 13))
+                                    .font(.app(size: 13))
                                     .foregroundStyle(AppColors.muted)
                                     .multilineTextAlignment(.center)
                             }
@@ -105,7 +105,7 @@ public struct SessionSummaryView: View {
                     ScrollView {
                         VStack(alignment: .leading, spacing: 20) {
                             Text(workoutTitle)
-                                .font(.system(size: 28, weight: .bold))
+                                .font(.app(size: 28, weight: .bold))
                                 .foregroundStyle(AppColors.text)
 
                             // Unified Segmented KPI Metrics Card
@@ -121,13 +121,13 @@ public struct SessionSummaryView: View {
                                         .accessibilityHidden(true)
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(LanguageManager.t("summary.completeBannerTitle"))
-                                            .font(.system(size: 14, weight: .bold))
+                                            .font(.app(size: 14, weight: .bold))
                                             .foregroundStyle(AppColors.text)
                                         Text(LanguageManager.t("summary.completeBannerSubtitle", [
                                             "exercises": LanguageManager.t("programs.exerciseQuantity", ["count": totalExercises]),
                                             "sets": LanguageManager.t("summary.completedSetQuantity", ["count": totalCompletedSets])
                                         ]))
-                                            .font(.system(size: 12))
+                                            .font(.app(size: 12))
                                             .foregroundStyle(AppColors.muted)
                                     }
                                     Spacer()
@@ -146,10 +146,10 @@ public struct SessionSummaryView: View {
                                         .foregroundStyle(AppColors.unfinishedOrange)
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(LanguageManager.t("summary.partialBannerTitle", ["completed": completedExercisesCount, "total": totalExercises]))
-                                            .font(.system(size: 14, weight: .bold))
+                                            .font(.app(size: 14, weight: .bold))
                                             .foregroundStyle(AppColors.text)
                                         Text(LanguageManager.t("summary.partialBannerSubtitle"))
-                                            .font(.system(size: 12))
+                                            .font(.app(size: 12))
                                             .foregroundStyle(AppColors.muted)
                                     }
                                     Spacer()
@@ -166,7 +166,7 @@ public struct SessionSummaryView: View {
                             // Exercise Recap Section
                             VStack(alignment: .leading, spacing: 10) {
                                 Text(LanguageManager.t("summary.exerciseRecap"))
-                                    .font(.system(size: 16, weight: .bold))
+                                    .font(.app(size: 16, weight: .bold))
                                     .foregroundStyle(AppColors.secondaryText)
 
                                 VStack(spacing: 0) {
@@ -182,7 +182,7 @@ public struct SessionSummaryView: View {
 
                                             VStack(alignment: .leading, spacing: 3) {
                                                 Text(log.exerciseName)
-                                                    .font(.system(size: 14, weight: .semibold))
+                                                    .font(.app(size: 14, weight: .semibold))
                                                     .foregroundStyle(AppColors.text)
 
                                                 let subtitleText: String = {
@@ -196,11 +196,11 @@ public struct SessionSummaryView: View {
                                                 }()
 
                                                 Text(subtitleText)
-                                                    .font(.system(size: 12))
+                                                    .font(.app(size: 12))
                                                     .foregroundStyle(AppColors.muted)
                                                 ForEach(working.filter(IntensitySets.hasDetail), id: \.setNumber) { set in
                                                     Text("\(LanguageManager.t("table.setNumber", ["count": set.setNumber])): \(IntensitySets.notation(set, unit: weightUnit))")
-                                                        .font(.system(size: 12))
+                                                        .font(.app(size: 12))
                                                         .foregroundStyle(AppColors.secondaryText)
                                                         .fixedSize(horizontal: false, vertical: true)
                                                 }
@@ -240,7 +240,7 @@ public struct SessionSummaryView: View {
                     if isWorkoutEmpty {
                         Button(action: onBack) {
                             Text(LanguageManager.t("summary.continueWorkout"))
-                                .font(.system(size: 15, weight: .bold))
+                                .font(.app(size: 15, weight: .bold))
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 52)
                                 .background(
@@ -259,7 +259,7 @@ public struct SessionSummaryView: View {
                             }
                         }) {
                             Text(LanguageManager.t("summary.exitSession"))
-                                .font(.system(size: 14, weight: .medium))
+                                .font(.app(size: 14, weight: .medium))
                                 .foregroundStyle(AppColors.secondaryText)
                         }
                         .buttonStyle(.plain)
@@ -270,7 +270,7 @@ public struct SessionSummaryView: View {
                                 Image(systemName: "checkmark")
                                     .font(.system(size: 16, weight: .bold))
                                 Text(LanguageManager.t("summary.saveAndClose"))
-                                    .font(.system(size: 16, weight: .bold))
+                                    .font(.app(size: 16, weight: .bold))
                             }
                             .frame(maxWidth: .infinity)
                             .frame(height: 52)
@@ -284,7 +284,7 @@ public struct SessionSummaryView: View {
 
                         Button(action: onBack) {
                             Text(LanguageManager.t("summary.back"))
-                                .font(.system(size: 14, weight: .medium))
+                                .font(.app(size: 14, weight: .medium))
                                 .foregroundStyle(AppColors.secondaryText)
                         }
                         .buttonStyle(.plain)
@@ -306,7 +306,7 @@ public struct SessionSummaryView: View {
                                 .font(.system(size: 16, weight: .semibold))
                                 .foregroundStyle(AppColors.text)
                             Text(LanguageManager.t("summary.badge"))
-                                .font(.system(size: 18, weight: .semibold))
+                                .font(.app(size: 18, weight: .semibold))
                                 .foregroundStyle(AppColors.text)
                         }
                     }
@@ -401,12 +401,12 @@ public struct SessionSummaryView: View {
                 .font(.system(size: 18))
                 .foregroundStyle(AppColors.muted)
             Text(value)
-                .font(.system(size: 20, weight: .bold))
+                .font(.app(size: 20, weight: .bold))
                 .foregroundStyle(AppColors.text)
                 .lineLimit(1)
                 .multilineTextAlignment(.center)
             Text(title)
-                .font(.system(size: 11, weight: .medium))
+                .font(.app(size: 11, weight: .medium))
                 .foregroundStyle(AppColors.muted)
                 .lineLimit(2)
                 .multilineTextAlignment(.center)

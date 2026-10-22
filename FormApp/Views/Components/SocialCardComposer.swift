@@ -138,7 +138,7 @@ struct SocialCardComposer: View {
                                 Text(t(photo == nil ? "choosePhoto" : "changePhoto")).frame(maxWidth: .infinity, minHeight: 48)
                             }.buttonStyle(.bordered).disabled(busy).accessibilityIdentifier("social-choose-photo")
                             .photosPicker(isPresented: $choosingPhoto, selection: $photoItem, matching: .images, preferredItemEncoding: .compatible)
-                            Text(t("reposition")).font(.footnote).foregroundStyle(AppColors.secondaryText)
+                            Text(t("reposition")).appFont(.footnote).foregroundStyle(AppColors.secondaryText)
                         }
                         toggle(t("date"), $options.date)
                         if card.kind == .summary { toggle(t("workoutTitle"), $options.title) }
@@ -169,7 +169,7 @@ struct SocialCardComposer: View {
                         Button { composer = true } label: { Text(t("share")).frame(maxWidth: .infinity, minHeight: 48) }
                             .buttonStyle(.borderedProminent).accessibilityIdentifier("social-open-composer")
                     }
-                    if let message { Text(message).font(.footnote).foregroundStyle(AppColors.secondaryText).accessibilityIdentifier("social-status") }
+                    if let message { Text(message).appFont(.footnote).foregroundStyle(AppColors.secondaryText).accessibilityIdentifier("social-status") }
                 }.padding(20)
             }
             .background(AppColors.background)

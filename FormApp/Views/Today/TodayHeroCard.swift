@@ -22,7 +22,8 @@ public struct TodayHeroCard: View {
     public static let cardHeight: CGFloat = 420
     /// Dark suites fade the surface into the photograph on a diagonal from the top-left copy toward the lower right.
     private static let scrimEnd = UnitPoint(x: 1, y: 0.5)
-    private var textWidth: CGFloat? { dynamicTypeSize >= .xxxLarge ? nil : (themeManager.currentTheme.isDark ? 215 : 172) }
+    /// Scales with the text so headings break at the same words on every phone width.
+    private var textWidth: CGFloat? { dynamicTypeSize >= .xxxLarge ? nil : (themeManager.currentTheme.isDark ? 215 : 172) * TextWidthScale.factor }
 
     private var workoutScrim: [Gradient.Stop] {
         return [.init(color: cardSurface, location: 0),
@@ -104,7 +105,7 @@ public struct TodayHeroCard: View {
 
         return VStack(alignment: .leading, spacing: 0) {
             workoutDayLabel(for: workout)
-                .font(.system(size: captionSize, weight: .medium))
+                .font(.app(size: captionSize, weight: .medium))
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, minHeight: 20, alignment: .leading)
                 .accessibilityIdentifier("today-workout-day-status")
@@ -113,7 +114,7 @@ public struct TodayHeroCard: View {
 
             // Title
             Text(workout.displayTitle(programId: programId))
-                .font(.system(size: titleSize, weight: .semibold))
+                .font(.app(size: titleSize, weight: .semibold))
                 .foregroundStyle(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: textWidth, alignment: .leading)
@@ -124,7 +125,7 @@ public struct TodayHeroCard: View {
             // Focus
             if !workout.displayFocus(programId: programId).isEmpty {
                 Text(workout.displayFocus(programId: programId))
-                    .font(.system(size: bodySize, weight: .regular))
+                    .font(.app(size: bodySize, weight: .regular))
                     .lineSpacing(4)
                     .foregroundStyle(AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
@@ -142,7 +143,7 @@ public struct TodayHeroCard: View {
                             let isSel = idx == activeIndex
                             Button(action: { selectedViewIndex = idx }) {
                                 Text(LanguageManager.t("muscles.view.\(v.rawValue)"))
-                                    .font(.system(size: captionSize, weight: .medium))
+                                    .font(.app(size: captionSize, weight: .medium))
                                     .foregroundStyle(isSel ? selectedViewText : AppColors.secondaryText)
                                     .padding(.horizontal, 14)
                                     .frame(height: 38)
@@ -174,7 +175,7 @@ public struct TodayHeroCard: View {
                 "minutes": mins
             ])
             Text(meta)
-                .font(.system(size: captionSize, weight: .regular))
+                .font(.app(size: captionSize, weight: .regular))
                 .foregroundStyle(AppColors.secondaryText)
                 .fixedSize(horizontal: false, vertical: true)
 
@@ -189,7 +190,7 @@ public struct TodayHeroCard: View {
                     }
 
                     Text(buttonTitle())
-                        .font(.system(size: actionSize, weight: .semibold))
+                        .font(.app(size: actionSize, weight: .semibold))
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
@@ -312,7 +313,7 @@ public struct TodayHeroCard: View {
         return VStack(alignment: .leading, spacing: 0) {
             // Top row
             Text(weekdayName)
-                .font(.system(size: captionSize, weight: .medium))
+                .font(.app(size: captionSize, weight: .medium))
                 .foregroundStyle(AppColors.secondaryText)
                 .frame(minHeight: 20)
 
@@ -320,7 +321,7 @@ public struct TodayHeroCard: View {
 
             // Title
             Text(LanguageManager.t("today.restDay"))
-                .font(.system(size: titleSize, weight: .semibold))
+                .font(.app(size: titleSize, weight: .semibold))
                 .foregroundStyle(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: textWidth, alignment: .leading)
@@ -329,7 +330,7 @@ public struct TodayHeroCard: View {
 
             // Motivational Recovery Quote
             Text(LanguageManager.restMotivationQuote(for: todayIndex))
-                .font(.system(size: bodySize, weight: .regular))
+                .font(.app(size: bodySize, weight: .regular))
                 .lineSpacing(4)
                 .foregroundStyle(recoveryTextColor)
                 .shadow(color: recoveryTextShadow, radius: 2, x: 0, y: 0)
@@ -340,7 +341,7 @@ public struct TodayHeroCard: View {
 
             // Guidance Note
             Text(LanguageManager.t("today.restDescription"))
-                .font(.system(size: captionSize, weight: .regular))
+                .font(.app(size: captionSize, weight: .regular))
                 .lineSpacing(3)
                 .foregroundStyle(recoveryTextColor)
                 .shadow(color: recoveryTextShadow, radius: 2, x: 0, y: 0)

@@ -88,7 +88,7 @@ public struct BarbellPlateVisualizerView: View {
             if !result.platesPerSide.isEmpty {
                 PlateInfoFlow(spacing: 6) {
                     Text("\(LanguageManager.t("warmup.per_side")):")
-                        .font(.system(size: summarySize, weight: .medium))
+                        .font(.app(size: summarySize, weight: .medium))
                         .foregroundStyle(AppColors.secondaryText)
 
                     ForEach(Array(result.platesPerSide.enumerated()), id: \.offset) { _, plate in
@@ -101,7 +101,7 @@ public struct BarbellPlateVisualizerView: View {
                                 .frame(width: 7, height: 7)
 
                             Text(label)
-                                .font(.system(size: chipSize, weight: .semibold))
+                                .font(.app(size: chipSize, weight: .semibold))
                                 .foregroundStyle(AppColors.text)
                         }
                         .padding(.horizontal, 6)
@@ -119,15 +119,15 @@ public struct BarbellPlateVisualizerView: View {
             // Summary row
             PlateInfoFlow(spacing: 12) {
                 Text("\(LanguageManager.t("warmup.bar")): \(WarmupPlateEngine.formatPlateWeight(result.barWeight)) \(unit.label)")
-                    .font(.system(size: summarySize))
+                    .font(.app(size: summarySize))
                     .foregroundStyle(AppColors.muted)
 
                 Text("\(LanguageManager.t("warmup.plates_total")): \(WarmupPlateEngine.formatPlateWeight(result.totalPlatesWeight)) \(unit.label)")
-                    .font(.system(size: summarySize))
+                    .font(.app(size: summarySize))
                     .foregroundStyle(AppColors.muted)
 
                 Text("\(LanguageManager.t("warmup.total")): \(WarmupPlateEngine.formatPlateWeight(result.totalAchievedWeight)) \(unit.label)")
-                    .font(.system(size: totalSize, weight: .bold))
+                    .font(.app(size: totalSize, weight: .bold))
                     .foregroundStyle(result.isExactMatch ? AppColors.accent : AppColors.warmupAmber)
             }
 
@@ -135,7 +135,7 @@ public struct BarbellPlateVisualizerView: View {
                 let remainderStr = "\(WarmupPlateEngine.formatPlateWeight(result.remainderPerSide * 2.0)) \(unit.label)"
                 let nearestStr = "\(WarmupPlateEngine.formatPlateWeight(result.totalAchievedWeight)) \(unit.label)"
                 Text(LanguageManager.t("warmup.unmatched_remainder", ["remainder": remainderStr, "nearest": nearestStr]))
-                    .font(.system(size: chipSize))
+                    .font(.app(size: chipSize))
                     .foregroundStyle(AppColors.warmupAmber)
                     .multilineTextAlignment(.center)
             }
@@ -189,7 +189,7 @@ public struct BarbellPlateVisualizerView: View {
                     return 8
                 }()
                 let text = context.resolve(Text(label)
-                    .font(.system(size: fontSize, weight: .bold))
+                    .font(.app(size: fontSize, weight: .bold))
                     .foregroundStyle(BarbellPlateColors.textColorFor(weight: plate.weight)))
                 let textSize = text.measure(in: CGSize(width: CGFloat.infinity, height: CGFloat.infinity))
                 for _ in 0..<plate.count {
@@ -211,7 +211,7 @@ public struct BarbellPlateVisualizerView: View {
         .overlay(alignment: .bottom) {
             if result.platesPerSide.isEmpty {
                 Text(LanguageManager.t("warmup.empty_bar_sleeve"))
-                    .font(.system(size: chipSize, weight: .semibold))
+                    .font(.app(size: chipSize, weight: .semibold))
                     .foregroundStyle(AppColors.muted)
                     .multilineTextAlignment(.center)
                     .padding(8)

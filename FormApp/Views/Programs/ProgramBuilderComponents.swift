@@ -25,17 +25,17 @@ struct BuilderTextField: View {
     }
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(LanguageManager.t(label)).font(.caption).foregroundStyle(AppColors.secondaryText)
+            Text(LanguageManager.t(label)).appFont(.caption).foregroundStyle(AppColors.secondaryText)
             TextField(LanguageManager.t(label), text: $text, axis: multiline ? .vertical : .horizontal)
-                .lineLimit(multiline ? 2...6 : 1...1).font(.body).padding(12)
+                .lineLimit(multiline ? 2...6 : 1...1).appFont(.body).padding(12)
                 .foregroundStyle(AppColors.text)
                 .background(AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 12))
                 .overlay(RoundedRectangle(cornerRadius: 12).stroke(tooLong || errorMessage != nil ? AppColors.danger : AppColors.border, lineWidth: 1))
             if let limit {
-                Text("\(characterCount)/\(limit)").font(.caption).foregroundStyle(tooLong ? AppColors.danger : AppColors.muted)
+                Text("\(characterCount)/\(limit)").appFont(.caption).foregroundStyle(tooLong ? AppColors.danger : AppColors.muted)
             }
             if let errorMessage {
-                Text(errorMessage).font(.caption).foregroundStyle(AppColors.danger).accessibilityIdentifier(label + "-error")
+                Text(errorMessage).appFont(.caption).foregroundStyle(AppColors.danger).accessibilityIdentifier(label + "-error")
             }
         }
     }
@@ -52,7 +52,7 @@ struct BuilderActionButton: View {
     }
     var body: some View {
         Button(action: action) {
-            Label(LanguageManager.t(label), systemImage: systemImage).font(.subheadline.weight(.semibold))
+            Label(LanguageManager.t(label), systemImage: systemImage).appFont(.subheadline, weight: .semibold)
                 .frame(maxWidth: .infinity, minHeight: 48).padding(.horizontal, 10)
                 .foregroundStyle(AppColors.accent)
                 .background(AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 12))
@@ -86,13 +86,13 @@ struct BuilderWorkoutCard: View {
             HStack(spacing: 8) {
                 Button(action: onToggle) {
                     HStack(spacing: 10) {
-                        Text(LanguageManager.dayLabels.indices.contains(workout.day - 1) ? LanguageManager.dayLabels[workout.day - 1] : "").font(.caption.weight(.bold))
+                        Text(LanguageManager.dayLabels.indices.contains(workout.day - 1) ? LanguageManager.dayLabels[workout.day - 1] : "").appFont(.caption, weight: .bold)
                             .frame(width: 50, height: 50).foregroundStyle(AppColors.accent)
                             .background(AppColors.positiveBg, in: RoundedRectangle(cornerRadius: 12))
                         VStack(alignment: .leading, spacing: 4) {
-                            Text(workout.title).font(.headline).foregroundStyle(AppColors.text)
+                            Text(workout.title).appFont(.headline).foregroundStyle(AppColors.text)
                             Text(workout.displayFocus().isEmpty ? LanguageManager.t("builder.exerciseCount", ["count": workout.exercises.count]) : workout.displayFocus())
-                                .font(.caption).foregroundStyle(AppColors.muted)
+                                .appFont(.caption).foregroundStyle(AppColors.muted)
                         }.frame(maxWidth: .infinity, alignment: .leading)
                         Image(systemName: expanded ? "chevron.up" : "chevron.down").foregroundStyle(AppColors.muted)
                     }.contentShape(Rectangle())
@@ -109,7 +109,7 @@ struct BuilderWorkoutCard: View {
                     BuilderActionButton("builder.addExercises", systemImage: "plus", action: onAdd)
                         .disabled(workout.exercises.count >= ProgramEditing.maxExercises)
                     if workout.exercises.count >= ProgramEditing.maxExercises {
-                        Text(LanguageManager.t("builder.exerciseLimit")).font(.caption).foregroundStyle(AppColors.muted)
+                        Text(LanguageManager.t("builder.exerciseLimit")).appFont(.caption).foregroundStyle(AppColors.muted)
                     }
                 }.coordinateSpace(name: coordinateName)
                     .onPreferenceChange(BuilderRowFrames.self) { rowFrames = $0 }
@@ -122,8 +122,8 @@ struct BuilderWorkoutCard: View {
             MovementIcon(exerciseId: exercise.exerciseId, size: 56)
             Button { onEditExercise(exercise) } label: {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(exercise.displayName).font(.subheadline.weight(.semibold)).foregroundStyle(AppColors.text)
-                    Text(exercise.displayPrescription).font(.caption).foregroundStyle(AppColors.purple)
+                    Text(exercise.displayName).appFont(.subheadline, weight: .semibold).foregroundStyle(AppColors.text)
+                    Text(exercise.displayPrescription).appFont(.caption).foregroundStyle(AppColors.purple)
                 }.frame(maxWidth: .infinity, alignment: .leading).frame(minHeight: 48)
             }.buttonStyle(.plain)
             Menu {
@@ -180,12 +180,12 @@ struct BuilderWorkoutEditor: View {
                 VStack(alignment: .leading, spacing: 16) {
                     BuilderSurface {
                         BuilderTextField("modal.workout.name", text: $workout.title, limit: Workout.maxTitleLength, originalText: isNew ? nil : originalTitle)
-                        Text(LanguageManager.t("modal.workout.day")).font(.headline)
+                        Text(LanguageManager.t("modal.workout.day")).appFont(.headline)
                         ScrollView(.horizontal) {
                             HStack(spacing: 8) {
                                 ForEach(1...7, id: \.self) { day in
                                     Button { workout.day = day } label: {
-                                        Text(LanguageManager.workoutDays[day - 1]).font(.subheadline)
+                                        Text(LanguageManager.workoutDays[day - 1]).appFont(.subheadline)
                                             .padding(.horizontal, 12).frame(minHeight: 48)
                                             .background(workout.day == day ? AppColors.positiveBg : AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 10))
                                             .foregroundStyle(workout.day == day ? AppColors.accent : AppColors.secondaryText)
@@ -216,7 +216,7 @@ struct BuilderWorkoutEditor: View {
                         workout.title = workout.title.trimmingCharacters(in: .whitespacesAndNewlines)
                         onSave(workout); dismiss()
                     } label: {
-                        Text(LanguageManager.t("builder.saveDay")).font(.headline).frame(maxWidth: .infinity, minHeight: 52)
+                        Text(LanguageManager.t("builder.saveDay")).appFont(.headline).frame(maxWidth: .infinity, minHeight: 52)
                             .foregroundStyle(AppColors.todaySelectionText).background(AppColors.accent, in: RoundedRectangle(cornerRadius: 12))
                     }.buttonStyle(.plain).disabled(!canSave).opacity(canSave ? 1 : 0.5)
                         .accessibilityIdentifier("workout-editor-save").padding(20).background(AppColors.background)
@@ -242,10 +242,10 @@ struct BuilderTemplatePicker: View {
                                 Image(ProgramCover.forProgram(template).assetName).resizable().aspectRatio(1.5, contentMode: .fill)
                                     .frame(width: 96, height: 64).clipShape(RoundedRectangle(cornerRadius: 10)).accessibilityHidden(true)
                                 VStack(alignment: .leading, spacing: 3) {
-                                    Text(template.displayName).font(.subheadline.weight(.semibold)).foregroundStyle(AppColors.text)
-                                    Text(LanguageManager.t("programs.daysPerWeek", ["days": template.workouts.count])).font(.caption.weight(.medium)).foregroundStyle(AppColors.accent)
+                                    Text(template.displayName).appFont(.subheadline, weight: .semibold).foregroundStyle(AppColors.text)
+                                    Text(LanguageManager.t("programs.daysPerWeek", ["days": template.workouts.count])).appFont(.caption, weight: .medium).foregroundStyle(AppColors.accent)
                                     if !template.displayDescription.isEmpty {
-                                        Text(template.displayDescription).font(.caption).foregroundStyle(AppColors.muted).lineLimit(2)
+                                        Text(template.displayDescription).appFont(.caption).foregroundStyle(AppColors.muted).lineLimit(2)
                                     }
                                 }.frame(maxWidth: .infinity, alignment: .leading).multilineTextAlignment(.leading)
                             }.padding(10).frame(minHeight: 64)
@@ -296,7 +296,7 @@ struct AddExercisePickerSheet: View {
                     BuilderActionButton("builder.customExercise", systemImage: "plus") { showCustom = true }.disabled(capacity == 0)
                     ForEach(filtered) { entry in pickerRow(entry) }
                     if filtered.isEmpty { Text(LanguageManager.t("library.noResults")).foregroundStyle(AppColors.muted) }
-                    if selected.count >= capacity && capacity > 0 { Text(LanguageManager.t("builder.exerciseLimit")).font(.caption).foregroundStyle(AppColors.muted) }
+                    if selected.count >= capacity && capacity > 0 { Text(LanguageManager.t("builder.exerciseLimit")).appFont(.caption).foregroundStyle(AppColors.muted) }
                 }.padding(20)
             }.background(AppColors.background).searchable(text: $search)
                 .navigationTitle(LanguageManager.t("builder.chooseExercises")).navigationBarTitleDisplayMode(.inline)
@@ -305,7 +305,7 @@ struct AddExercisePickerSheet: View {
                     Button {
                         let entries = selected.compactMap { key in catalogue.first { ProgramEditing.selectionKey($0.exercise) == key } }
                         onAdd(entries.map { ProgramEditing.picked($0.exercise, defaultRest: defaultRest) })
-                    } label: { Text(LanguageManager.t("builder.addSelected", ["count": selected.count])).font(.headline).frame(maxWidth: .infinity, minHeight: 52) }
+                    } label: { Text(LanguageManager.t("builder.addSelected", ["count": selected.count])).appFont(.headline).frame(maxWidth: .infinity, minHeight: 52) }
                     .buttonStyle(.borderedProminent).tint(AppColors.accent).disabled(selected.isEmpty).padding(20).background(AppColors.background)
                 }
                 .sheet(isPresented: $showCustom) {
@@ -315,7 +315,7 @@ struct AddExercisePickerSheet: View {
     }
     private func movementButton(_ value: MovementType?) -> some View {
         Button { movement = value } label: {
-            Text(LanguageManager.t(value.map { "category.\($0.rawValue)" } ?? "builder.allMovements")).font(.subheadline)
+            Text(LanguageManager.t(value.map { "category.\($0.rawValue)" } ?? "builder.allMovements")).appFont(.subheadline)
                 .padding(.horizontal, 12).frame(minHeight: 48)
                 .background(movement == value ? AppColors.positiveBg : AppColors.surface, in: RoundedRectangle(cornerRadius: 10))
                 .foregroundStyle(movement == value ? AppColors.accent : AppColors.secondaryText)
@@ -332,8 +332,8 @@ struct AddExercisePickerSheet: View {
             HStack(spacing: 12) {
                 MovementIcon(exerciseId: entry.exercise.exerciseId, size: 64)
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(entry.exercise.displayName).font(.subheadline.weight(.semibold)).foregroundStyle(added ? AppColors.muted : AppColors.text)
-                    Text(added ? LanguageManager.t("builder.alreadyAdded") : entry.exercise.metadataSubtitle).font(.caption).foregroundStyle(AppColors.muted)
+                    Text(entry.exercise.displayName).appFont(.subheadline, weight: .semibold).foregroundStyle(added ? AppColors.muted : AppColors.text)
+                    Text(added ? LanguageManager.t("builder.alreadyAdded") : entry.exercise.metadataSubtitle).appFont(.caption).foregroundStyle(AppColors.muted)
                 }.frame(maxWidth: .infinity, alignment: .leading)
                 if added || isSelected { Image(systemName: "checkmark").foregroundStyle(isSelected ? AppColors.accent : AppColors.muted) }
             }.padding(10).frame(minHeight: 64)
@@ -355,17 +355,17 @@ struct ProgramImportReview: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     BuilderSurface {
-                        Text(preview.incoming.name).font(.headline)
-                        if preview.existing != nil { Text(LanguageManager.t("programs.importReplaceHint")).font(.subheadline).foregroundStyle(AppColors.secondaryText) }
+                        Text(preview.incoming.name).appFont(.headline)
+                        if preview.existing != nil { Text(LanguageManager.t("programs.importReplaceHint")).appFont(.subheadline).foregroundStyle(AppColors.secondaryText) }
                         ForEach(["added", "updated", "removed"], id: \.self) { kind in
                             Text(LanguageManager.t("programs.import" + kind.prefix(1).uppercased() + kind.dropFirst(), ["count": preview.changes.filter { $0.kind == kind }.count]))
-                                .font(.subheadline).foregroundStyle(kind == "removed" ? AppColors.danger : AppColors.secondaryText)
+                                .appFont(.subheadline).foregroundStyle(kind == "removed" ? AppColors.danger : AppColors.secondaryText)
                         }
                     }
                     ForEach(Array(preview.changes.enumerated()), id: \.offset) { _, change in
                         HStack {
                             Image(systemName: change.kind == "added" ? "plus" : change.kind == "removed" ? "minus" : "pencil")
-                            Text(change.label).font(.subheadline)
+                            Text(change.label).appFont(.subheadline)
                         }.foregroundStyle(change.kind == "removed" ? AppColors.danger : AppColors.text)
                             .frame(maxWidth: .infinity, alignment: .leading).padding(14)
                             .background(AppColors.surface, in: RoundedRectangle(cornerRadius: 13))
@@ -403,7 +403,7 @@ struct BuilderCoverPicker: View {
                             Button { selection = cover.rawValue; dismiss() } label: {
                                 VStack(alignment: .leading, spacing: 8) {
                                     Image(cover.assetName).resizable().aspectRatio(1.5, contentMode: .fit).clipShape(RoundedRectangle(cornerRadius: 12))
-                                    Text(LanguageManager.t("programs.cover." + cover.rawValue)).font(.subheadline).foregroundStyle(AppColors.text)
+                                    Text(LanguageManager.t("programs.cover." + cover.rawValue)).appFont(.subheadline).foregroundStyle(AppColors.text)
                                         .frame(maxWidth: .infinity, minHeight: 48, alignment: .leading)
                                 }.padding(8).background(AppColors.surface, in: RoundedRectangle(cornerRadius: 14))
                                     .overlay(RoundedRectangle(cornerRadius: 14).stroke(selection == cover.rawValue ? AppColors.accent : AppColors.border, lineWidth: selection == cover.rawValue ? 2 : 1))

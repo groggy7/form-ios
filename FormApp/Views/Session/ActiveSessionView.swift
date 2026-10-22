@@ -177,7 +177,7 @@ public struct ActiveSessionView: View {
                         // Center Column
                         VStack(spacing: 2) {
                             Text(activeDraft.workout.displayTitle(programId: activeDraft.programId))
-                                .font(.system(size: 16, weight: .bold))
+                                .font(.app(size: 16, weight: .bold))
                                 .foregroundStyle(AppColors.text)
                                 .lineLimit(1)
 
@@ -232,11 +232,11 @@ public struct ActiveSessionView: View {
 
                                 if !programLabel.isEmpty {
                                     Text("·")
-                                        .font(.system(size: 12))
+                                        .font(.app(size: 12))
                                         .foregroundStyle(AppColors.muted)
 
                                     Text(programLabel)
-                                        .font(.system(size: 12))
+                                        .font(.app(size: 12))
                                         .foregroundStyle(AppColors.muted)
                                         .lineLimit(1)
                                 }
@@ -269,7 +269,7 @@ public struct ActiveSessionView: View {
                                 presentWorkoutSummary()
                             }) {
                                 Text(LanguageManager.t("session.finishBtn"))
-                                    .font(.system(size: 13, weight: .semibold))
+                                    .font(.app(size: 13, weight: .semibold))
                                     .foregroundStyle(AppColors.accent)
                                     .padding(.horizontal, 14)
                                     .padding(.vertical, 6)
@@ -320,7 +320,7 @@ public struct ActiveSessionView: View {
                                                         )
 
                                                         Text("\(idx + 1). \(ex.displayName)")
-                                                            .font(.system(size: 11, weight: isSel ? .bold : .medium))
+                                                            .font(.app(size: 11, weight: isSel ? .bold : .medium))
                                                             .foregroundStyle(isSel ? AppColors.text : AppColors.muted)
                                                             .lineLimit(2)
                                                             .multilineTextAlignment(.center)
@@ -367,7 +367,7 @@ public struct ActiveSessionView: View {
                                 VStack(alignment: .leading, spacing: 14) {
                                     VStack(alignment: .leading, spacing: 10) {
                                         Text(exercise.displayName)
-                                            .font(.system(size: 20, weight: .bold))
+                                            .font(.app(size: 20, weight: .bold))
                                             .foregroundStyle(AppColors.text)
                                             .frame(maxWidth: .infinity, alignment: .leading)
                                         // A substitute replaces the exercise only until one of its working sets is completed.
@@ -546,7 +546,7 @@ public struct ActiveSessionView: View {
                         }) {
                             HStack(spacing: 8) {
                                 Text(LanguageManager.t(currentIndex < exercises.count - 1 ? "session.nextExercise" : "session.review"))
-                                    .font(.system(size: 14, weight: .semibold))
+                                    .font(.app(size: 14, weight: .semibold))
                                     .foregroundStyle(AppColors.background)
                                 Image(systemName: "arrow.right")
                                     .font(.system(size: 14, weight: .semibold))
@@ -599,7 +599,7 @@ public struct ActiveSessionView: View {
                             .font(.system(size: 14, weight: .bold))
                             .foregroundStyle(AppColors.accent)
                         Text(msg)
-                            .font(.system(size: 13, weight: .bold))
+                            .font(.app(size: 13, weight: .bold))
                             .foregroundStyle(AppColors.accent)
                     }
                     .padding(.horizontal, 18)
@@ -624,7 +624,7 @@ public struct ActiveSessionView: View {
                             .font(.system(size: 14, weight: .bold))
                             .foregroundStyle(AppColors.danger)
                         Text(warning)
-                            .font(.system(size: 13, weight: .bold))
+                            .font(.app(size: 13, weight: .bold))
                             .foregroundStyle(AppColors.danger)
                     }
                     .padding(.horizontal, 18)
@@ -835,7 +835,7 @@ public struct ActiveSessionView: View {
                 Image(systemName: "arrow.left.arrow.right")
                     .font(.system(size: 13, weight: .semibold))
                 Text(LanguageManager.t("session.replace.action"))
-                    .font(.system(size: 14, weight: .semibold))
+                    .font(.app(size: 14, weight: .semibold))
                 if !unlocked { ProBadge() }
             }
             .foregroundStyle(AppColors.text)
@@ -1185,11 +1185,11 @@ private struct MiniExerciseDetailModal: View {
                 HStack(alignment: .center) {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(exercise.displayName)
-                            .font(.system(size: 18, weight: .semibold))
+                            .font(.app(size: 18, weight: .semibold))
                             .foregroundStyle(AppColors.text)
                             .lineLimit(2)
                         Text(exercise.metadataSubtitle)
-                            .font(.system(size: 11, weight: .medium))
+                            .font(.app(size: 11, weight: .medium))
                             .foregroundStyle(AppColors.accent)
                     }
 
@@ -1252,7 +1252,7 @@ private struct MiniExerciseDetailModal: View {
                                         Image(systemName: "flag")
                                             .font(.system(size: 14, weight: .medium))
                                         Text(LanguageManager.t("report.action"))
-                                            .font(.system(size: 13, weight: .medium))
+                                            .font(.app(size: 13, weight: .medium))
                                     }
                                     .foregroundStyle(AppColors.danger)
                                     .padding(.horizontal, 16)
@@ -1308,7 +1308,7 @@ private struct SessionElapsedTime: View {
         TimelineView(.periodic(from: .now, by: 1)) { timeline in
             Text(RestTimerUtils.formatSecondsToTime(draft.currentDurationSeconds(
                 nowEpochMillis: Int64(timeline.date.timeIntervalSince1970 * 1000))))
-                .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                .font(.app(size: 12, weight: .semibold, design: .monospaced))
                 .foregroundStyle(AppColors.accent)
         }
     }

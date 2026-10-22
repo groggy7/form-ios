@@ -39,7 +39,7 @@ struct FormLabHeader: View {
                     let label = LanguageManager.t(tab.compactTitleKey)
                     Button { activeTab = tab } label: {
                         Text(label)
-                            .font(.system(size: tabFontSize, weight: selected ? .semibold : .medium))
+                            .font(.app(size: tabFontSize, weight: selected ? .semibold : .medium))
                             .lineLimit(label.contains(" ") ? 2 : 1)
                             // Four tabs share 320pt at large text sizes; shrink like Android's 13→8sp auto-size.
                             .minimumScaleFactor(0.6)
@@ -77,7 +77,7 @@ struct FormLabHeader: View {
 
             HStack(spacing: 0) {
                 Text(LanguageManager.t(activeTab.descriptionKey))
-                    .font(.system(size: descriptionFontSize))
+                    .font(.app(size: descriptionFontSize))
                     .foregroundStyle(AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -232,10 +232,10 @@ public struct FormLabView: View {
                 HStack {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(LanguageManager.t("form_lab.rep_max_matrix_title"))
-                            .font(.system(size: 15, weight: .semibold))
+                            .font(.app(size: 15, weight: .semibold))
                             .foregroundStyle(AppColors.text)
                         Text(LanguageManager.t("form_lab.rep_max_matrix_subtitle"))
-                            .font(.system(size: 12))
+                            .font(.app(size: 12))
                             .foregroundStyle(AppColors.secondaryText)
                     }
                     Spacer()
@@ -251,7 +251,7 @@ public struct FormLabView: View {
                 } label: {
                     HStack {
                         Text(ContentLocalizer.shared.exerciseName(exerciseId:nil,fallback:selectedExercise))
-                            .font(.system(size: 14, weight: .semibold))
+                            .font(.app(size: 14, weight: .semibold))
                             .foregroundStyle(AppColors.text)
                         Spacer()
                         Image(systemName: "chevron.up.chevron.down")
@@ -268,7 +268,7 @@ public struct FormLabView: View {
                 // Formula Toggle (Brzycki vs Epley)
                 HStack(spacing: 8) {
                     Text(LanguageManager.t("form_lab.formula_toggle") + ":")
-                        .font(.system(size: 12, weight: .medium))
+                        .font(.app(size: 12, weight: .medium))
                         .foregroundStyle(AppColors.secondaryText)
 
                     Spacer()
@@ -276,7 +276,7 @@ public struct FormLabView: View {
                     HStack(spacing: 2) {
                         Button(action: { selectedFormula = .brzycki }) {
                             Text(LanguageManager.t("form_lab.formula.brzycki"))
-                                .font(.system(size: 12, weight: selectedFormula == .brzycki ? .bold : .medium))
+                                .font(.app(size: 12, weight: selectedFormula == .brzycki ? .bold : .medium))
                                 .foregroundStyle(selectedFormula == .brzycki ? AppColors.accent : AppColors.muted)
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 5)
@@ -287,7 +287,7 @@ public struct FormLabView: View {
 
                         Button(action: { selectedFormula = .epley }) {
                             Text(LanguageManager.t("form_lab.formula.epley"))
-                                .font(.system(size: 12, weight: selectedFormula == .epley ? .bold : .medium))
+                                .font(.app(size: 12, weight: selectedFormula == .epley ? .bold : .medium))
                                 .foregroundStyle(selectedFormula == .epley ? AppColors.accent : AppColors.muted)
                                 .padding(.horizontal, 10)
                                 .padding(.vertical, 5)
@@ -327,7 +327,7 @@ public struct FormLabView: View {
                     )
 
                     Text(formatted)
-                        .font(.system(size: 12, weight: .medium))
+                        .font(.app(size: 12, weight: .medium))
                         .foregroundStyle(AppColors.text)
 
                     Spacer()
@@ -340,9 +340,18 @@ public struct FormLabView: View {
 
             // Rep Max Targets Grid
             if let targets = summary?.targets, !targets.isEmpty {
-                LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 12) {
-                    ForEach(targets) { target in
-                        repMaxCard(target: target)
+                VStack(spacing: 12) {
+                    ForEach(Array(stride(from: 0, to: targets.count, by: 2)), id: \.self) { start in
+                        // Cards in a row share the tallest card's height when a value wraps.
+                        HStack(alignment: .top, spacing: 8) {
+                            repMaxCard(target: targets[start])
+                            if start + 1 < targets.count {
+                                repMaxCard(target: targets[start + 1])
+                            } else {
+                                Spacer(minLength: 0).frame(maxWidth: .infinity)
+                            }
+                        }
+                        .fixedSize(horizontal: false, vertical: true)
                     }
                 }
                 .tourTarget("lab.repmax", cornerRadius: 14)
@@ -352,7 +361,7 @@ public struct FormLabView: View {
                         .font(.system(size: 32))
                         .foregroundStyle(AppColors.muted)
                     Text(LanguageManager.t("form_lab.no_weighted_sets"))
-                        .font(.system(size: 13))
+                        .font(.app(size: 13))
                         .foregroundStyle(AppColors.secondaryText)
                         .multilineTextAlignment(.center)
                 }
@@ -373,24 +382,24 @@ public struct FormLabView: View {
         return VStack(alignment: .leading, spacing: 6) {
             HStack {
                 Text("\(target.reps)RM")
-                    .font(.system(size: 15, weight: .bold))
+                    .font(.app(size: 15, weight: .bold))
                     .foregroundStyle(AppColors.accent)
                 Spacer()
                 Text(target.reps == 1 ? "100%" : "\(Int(target.percentageOf1RM))%")
-                    .font(.system(size: 11, weight: .semibold))
+                    .font(.app(size: 11, weight: .semibold))
                     .foregroundStyle(AppColors.muted)
             }
 
             Text(String(format: "%.1f %@", locale: LanguageManager.numberLocale, displayVal, unitStr))
-                .font(.system(size: 22, weight: .bold, design: .rounded))
+                .font(.app(size: 22, weight: .bold, design: .rounded))
                 .foregroundStyle(AppColors.text)
 
             Text(LanguageManager.t("form_lab.estimated_label"))
-                .font(.system(size: 11))
+                .font(.app(size: 11))
                 .foregroundStyle(AppColors.secondaryText)
         }
         .padding(14)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(AppColors.surfaceRaised)
         .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
         .clipShape(RoundedRectangle(cornerRadius: 14))
@@ -403,7 +412,7 @@ public struct FormLabView: View {
 
         return VStack(spacing: 16) {
             Text(LanguageManager.t("form_lab.formula_used", ["formula": LanguageManager.t(selectedFormula.titleKey)]))
-                .font(.system(size: 12))
+                .font(.app(size: 12))
                 .foregroundStyle(AppColors.muted)
                 .frame(maxWidth: .infinity, alignment: .leading)
             // Exercise picker & Timeframe selector
@@ -418,7 +427,7 @@ public struct FormLabView: View {
                 } label: {
                     HStack {
                         Text(ContentLocalizer.shared.exerciseName(exerciseId:nil,fallback:selectedExercise))
-                            .font(.system(size: 14, weight: .semibold))
+                            .font(.app(size: 14, weight: .semibold))
                             .foregroundStyle(AppColors.text)
                         Spacer()
                         Image(systemName: "chevron.up.chevron.down")
@@ -437,7 +446,7 @@ public struct FormLabView: View {
                     ForEach(StrengthCurveTimeframe.allCases) { tf in
                         Button(action: { selectedTimeframe = tf }) {
                             Text(LanguageManager.t(tf.labelKey))
-                                .font(.system(size: 12, weight: selectedTimeframe == tf ? .bold : .medium))
+                                .font(.app(size: 12, weight: selectedTimeframe == tf ? .bold : .medium))
                                 .foregroundStyle(selectedTimeframe == tf ? AppColors.accent : AppColors.muted)
                                 .frame(maxWidth: .infinity)
                                 .padding(.vertical, 7)
@@ -478,17 +487,19 @@ public struct FormLabView: View {
                         color: report.deltaKg >= 0 ? AppColors.accent : AppColors.lightThemeColor(.red, AppColors.danger)
                     )
                 }
+                // The three tiles share one height when a title wraps.
+                .fixedSize(horizontal: false, vertical: true)
 
                 // Interactive Progression Chart Card
                 VStack(alignment: .leading, spacing: 12) {
                     HStack {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(LanguageManager.t("form_lab.curves_title"))
-                                .font(.system(size: 15, weight: .semibold))
+                                .font(.app(size: 15, weight: .semibold))
                                 .foregroundStyle(AppColors.text)
                             let count = report.points.count
                             Text(LanguageManager.t("form_lab.sessions_tracked", ["count": "\(count)"]))
-                                .font(.system(size: 12))
+                                .font(.app(size: 12))
                                 .foregroundStyle(AppColors.secondaryText)
                         }
                         Spacer()
@@ -500,7 +511,7 @@ public struct FormLabView: View {
                                 .font(.system(size: 32))
                                 .foregroundStyle(AppColors.muted)
                             Text(LanguageManager.t("form_lab.no_weighted_sets"))
-                                .font(.system(size: 13))
+                                .font(.app(size: 13))
                                 .foregroundStyle(AppColors.secondaryText)
                                 .multilineTextAlignment(.center)
                                 .padding(.horizontal, 16)
@@ -518,15 +529,15 @@ public struct FormLabView: View {
                                         "date": formatAchievedDate(pt.dateString),
                                         "formula": LanguageManager.t(selectedFormula.titleKey)
                                     ]))
-                                        .font(.system(size: 11, weight: .medium))
+                                        .font(.app(size: 11, weight: .medium))
                                         .foregroundStyle(AppColors.muted)
                                 }
                                 VStack(alignment: .trailing, spacing: 2) {
                                     Text(LanguageManager.t("exercise.history.estimated1rmTitle"))
-                                        .font(.system(size: 10, weight: .bold))
+                                        .font(.app(size: 10, weight: .bold))
                                         .foregroundStyle(AppColors.accent)
                                     Text(formatWeight(pt.estimated1rmKg))
-                                        .font(.system(size: 14, weight: .bold, design: .rounded))
+                                        .font(.app(size: 14, weight: .bold, design: .rounded))
                                         .foregroundStyle(AppColors.accent)
                                 }
                             }
@@ -558,15 +569,15 @@ public struct FormLabView: View {
         VStack(alignment: .leading, spacing: 12) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(LanguageManager.t("form_lab.single_estimate_title"))
-                    .font(.system(size: 15, weight: .semibold))
+                    .font(.app(size: 15, weight: .semibold))
                     .foregroundStyle(AppColors.text)
                 Text(LanguageManager.t("form_lab.one_session_tracked"))
-                    .font(.system(size: 12))
+                    .font(.app(size: 12))
                     .foregroundStyle(AppColors.secondaryText)
             }
 
             Text(formatWeight(point.estimated1rmKg))
-                .font(.system(size: 26, weight: .bold, design: .rounded))
+                .font(.app(size: 26, weight: .bold, design: .rounded))
                 .foregroundStyle(AppColors.text)
 
             Text(LanguageManager.t("form_lab.achieved_with", [
@@ -575,12 +586,12 @@ public struct FormLabView: View {
                 "date": formatAchievedDate(point.dateString),
                 "formula": LanguageManager.t(selectedFormula.titleKey)
             ]))
-                .font(.system(size: 12))
+                .font(.app(size: 12))
                 .foregroundStyle(AppColors.secondaryText)
                 .fixedSize(horizontal: false, vertical: true)
 
             Text(LanguageManager.t("form_lab.single_estimate_hint"))
-                .font(.system(size: 12))
+                .font(.app(size: 12))
                 .foregroundStyle(AppColors.muted)
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -594,16 +605,16 @@ public struct FormLabView: View {
     private func statCard(title: String, value: String, color: Color) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             Text(title)
-                .font(.system(size: 11, weight: .medium))
+                .font(.app(size: 11, weight: .medium))
                 .foregroundStyle(AppColors.secondaryText)
             Text(value)
-                .font(.system(size: 14, weight: .bold, design: .rounded))
+                .font(.app(size: 14, weight: .bold, design: .rounded))
                 .foregroundStyle(color)
                 .lineLimit(1)
                 .minimumScaleFactor(0.8)
         }
         .padding(12)
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(AppColors.surfaceRaised)
         .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
         .clipShape(RoundedRectangle(cornerRadius: 12))
@@ -620,7 +631,7 @@ public struct FormLabView: View {
                 ForEach(StrengthCurveTimeframe.allCases) { tf in
                     Button(action: { balanceTimeframe = tf }) {
                         Text(LanguageManager.t(tf.labelKey))
-                            .font(.system(size: 12, weight: balanceTimeframe == tf ? .bold : .medium))
+                            .font(.app(size: 12, weight: balanceTimeframe == tf ? .bold : .medium))
                             .foregroundStyle(balanceTimeframe == tf ? AppColors.accent : AppColors.muted)
                             .frame(maxWidth: .infinity)
                             .padding(.vertical, 7)
@@ -642,18 +653,18 @@ public struct FormLabView: View {
             // Balance Summary Header
             VStack(alignment: .leading, spacing: 4) {
                 Text(LanguageManager.t("form_lab.balance_title"))
-                    .font(.system(size: 16, weight: .semibold))
+                    .font(.app(size: 16, weight: .semibold))
                     .foregroundStyle(AppColors.text)
                 Text(LanguageManager.t("form_lab.balance_subtitle"))
-                    .font(.system(size: 12))
+                    .font(.app(size: 12))
                     .lineSpacing(2)
                     .foregroundStyle(AppColors.secondaryText)
                 Text(LanguageManager.t("form_lab.balance.classification"))
-                    .font(.system(size: 12))
+                    .font(.app(size: 12))
                     .foregroundStyle(AppColors.secondaryText)
                 if balance.unclassifiedWorkingSets > 0 {
                     Text(LanguageManager.t("form_lab.balance.unclassified", ["count": balance.unclassifiedWorkingSets]))
-                        .font(.system(size: 12))
+                        .font(.app(size: 12))
                         .foregroundStyle(AppColors.secondaryText)
                 }
             }
@@ -677,11 +688,11 @@ public struct FormLabView: View {
             HStack(alignment: .top) {
                 VStack(alignment: .leading, spacing: 6) {
                     Text(LanguageManager.t(ratio.titleKey))
-                        .font(.system(size: 14, weight: .bold))
+                        .font(.app(size: 14, weight: .bold))
                         .foregroundStyle(AppColors.text)
 
                     Text(LanguageManager.t(ratio.status.labelKey))
-                        .font(.system(size: 10, weight: .bold))
+                        .font(.app(size: 10, weight: .bold))
                         .foregroundStyle(statusColor(ratio.status))
                         .padding(.horizontal, 8)
                         .padding(.vertical, 4)
@@ -693,7 +704,7 @@ public struct FormLabView: View {
                 Spacer()
 
                 Text(ratio.ratio.map { String(format: "%.2f : 1.0", locale: LanguageManager.numberLocale, $0) } ?? "—")
-                    .font(.system(size: 15, weight: .bold, design: .monospaced))
+                    .font(.app(size: 15, weight: .bold, design: .monospaced))
                     .foregroundStyle(statusColor(ratio.status))
                     .lineLimit(1)
             }
@@ -701,11 +712,11 @@ public struct FormLabView: View {
             // Sets breakdown
             HStack {
                 Text("\(LanguageManager.t(ratio.primaryLabelKey)): \(ratio.primarySets) \(LanguageManager.t("matrix.setsUnit"))")
-                    .font(.system(size: 12, weight: .medium))
+                    .font(.app(size: 12, weight: .medium))
                     .foregroundStyle(AppColors.secondaryText)
                 Spacer()
                 Text("\(LanguageManager.t(ratio.antagonistLabelKey)): \(ratio.antagonistSets) \(LanguageManager.t("matrix.setsUnit"))")
-                    .font(.system(size: 12, weight: .medium))
+                    .font(.app(size: 12, weight: .medium))
                     .foregroundStyle(AppColors.secondaryText)
             }
 
@@ -740,11 +751,11 @@ public struct FormLabView: View {
             // Alert / Recommendation Note
             VStack(alignment: .leading, spacing: 4) {
                 Text(LanguageManager.t(ratio.alertMessageKey))
-                    .font(.system(size: 12, weight: .medium))
+                    .font(.app(size: 12, weight: .medium))
                     .foregroundStyle(ratio.status == .optimal ? AppColors.accent : (ratio.status == .insufficientData ? AppColors.muted : AppColors.lightThemeColor(Color(hex: 0xF59E0B), AppColors.warmupAmber)))
 
                 Text(LanguageManager.t(ratio.recommendationKey))
-                    .font(.system(size: 11))
+                    .font(.app(size: 11))
                     .foregroundStyle(AppColors.secondaryText)
             }
             .padding(10)

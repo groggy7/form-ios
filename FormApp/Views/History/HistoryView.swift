@@ -404,7 +404,7 @@ public struct HistoryView: View {
                 // Header row
                 HStack(alignment: .center) {
                     Text(LanguageManager.t("nav.progress"))
-                        .font(.system(size: 28, weight: .semibold))
+                        .font(.app(size: 28, weight: .semibold))
                         .foregroundStyle(AppColors.text)
 
                     Spacer()
@@ -415,7 +415,7 @@ public struct HistoryView: View {
                             selectedDateString = nil
                         }) {
                             Text(LanguageManager.t("history.thisMonth"))
-                                .font(.system(size: 14, weight: .medium))
+                                .font(.app(size: 14, weight: .medium))
                                 .foregroundStyle(AppColors.secondaryText)
                         }
                         .buttonStyle(.plain)
@@ -508,7 +508,7 @@ public struct HistoryView: View {
                             Spacer()
 
                             Text(monthYearString(from: displayedDate))
-                                .font(.system(size: 19, weight: .medium))
+                                .font(.app(size: 19, weight: .medium))
                                 .foregroundStyle(AppColors.text)
 
                             Spacer()
@@ -537,7 +537,7 @@ public struct HistoryView: View {
                         HStack(spacing: 0) {
                             ForEach(weekdaySymbols(), id: \.self) { symbol in
                                 Text(symbol)
-                                    .font(.system(size: 11, weight: .medium))
+                                    .font(.app(size: 11, weight: .medium))
                                     .foregroundStyle(AppColors.muted)
                                     .frame(maxWidth: .infinity)
                             }
@@ -718,7 +718,7 @@ public struct HistoryView: View {
         } label: {
             HStack(spacing: 4) {
                 Text(label)
-                    .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
+                    .font(.app(size: 13, weight: isSelected ? .semibold : .medium))
                     .foregroundStyle(isSelected ? AppColors.text : AppColors.muted)
                     .lineLimit(2)
                     .multilineTextAlignment(.center)
@@ -767,7 +767,7 @@ public struct HistoryView: View {
             CalendarPill(colors: colors)
                 .frame(width: 16, height: 16)
             Text(label)
-                .font(.system(size: 12))
+                .font(.app(size: 12))
                 .foregroundStyle(AppColors.secondaryText)
         }
     }
@@ -1099,11 +1099,11 @@ private struct BoxDayCell: View {
 
                         if status != nil {
                             Text("\(dayNumber)")
-                                .font(.system(size: 15, weight: .semibold))
+                                .font(.app(size: 15, weight: .semibold))
                                 .foregroundStyle(AppColors.calendarPillText)
                         } else {
                             Text("\(dayNumber)")
-                                .font(.system(size: 15, weight: isToday ? .semibold : .regular))
+                                .font(.app(size: 15, weight: isToday ? .semibold : .regular))
                                 .foregroundStyle(dateString > todayStr ? AppColors.muted.opacity(0.45) : AppColors.secondaryText)
                         }
                     }

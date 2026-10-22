@@ -78,7 +78,7 @@ public struct VolumeMatrixView: View {
         let report = self.report
         return VStack(spacing: 16) {
             Text(LanguageManager.t("matrix.limitations"))
-                .font(.system(size: 13))
+                .font(.app(size: 13))
                 .foregroundStyle(AppColors.secondaryText)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)
@@ -86,7 +86,7 @@ public struct VolumeMatrixView: View {
             HStack(spacing: 4) {
                 Button(action: { isPlannedMode = false }) {
                     Text(LanguageManager.t("matrix.mode.completed"))
-                        .font(.system(size: 14, weight: !isPlannedMode ? .bold : .medium))
+                        .font(.app(size: 14, weight: !isPlannedMode ? .bold : .medium))
                         .foregroundStyle(!isPlannedMode ? AppColors.text : AppColors.muted)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .background(LinearGradient(
@@ -103,7 +103,7 @@ public struct VolumeMatrixView: View {
 
                 Button(action: { isPlannedMode = true }) {
                     Text(LanguageManager.t("matrix.mode.planned"))
-                        .font(.system(size: 14, weight: isPlannedMode ? .bold : .medium))
+                        .font(.app(size: 14, weight: isPlannedMode ? .bold : .medium))
                         .foregroundStyle(isPlannedMode ? AppColors.text : AppColors.muted)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .background(LinearGradient(
@@ -190,10 +190,10 @@ public struct VolumeMatrixView: View {
 
                         VStack(spacing: 2) {
                             Text(effectiveWeekKey == currentWeekKey ? LanguageManager.t("matrix.thisWeek") : effectiveWeekKey)
-                                .font(.system(size: 16, weight: .bold))
+                                .font(.app(size: 16, weight: .bold))
                                 .foregroundStyle(AppColors.text)
                             Text(effectiveWeekKey)
-                                .font(.system(size: 12, weight: .medium))
+                                .font(.app(size: 12, weight: .medium))
                                 .foregroundStyle(AppColors.muted)
                         }
 
@@ -222,7 +222,7 @@ public struct VolumeMatrixView: View {
 
             if isPlannedMode {
                 Text(LanguageManager.t("matrix.cycleNote"))
-                    .font(.system(size: 12)).foregroundStyle(AppColors.secondaryText)
+                    .font(.app(size: 12)).foregroundStyle(AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
                 if store.state.programs.isEmpty {
                     Text(LanguageManager.t("matrix.noProgram")).foregroundStyle(AppColors.muted)
@@ -235,22 +235,22 @@ public struct VolumeMatrixView: View {
                     subtitle: LanguageManager.t("matrix.creditsUnit"), icon: "chart.bar.fill", color: AppColors.accent, tone: .teal)
             }
             Text(LanguageManager.t("matrix.creditNote"))
-                .font(.system(size: 12)).foregroundStyle(AppColors.muted)
+                .font(.app(size: 12)).foregroundStyle(AppColors.muted)
                 .fixedSize(horizontal: false, vertical: true)
             if report.techniqueSets > 0 {
                 Text(LanguageManager.t("matrix.techniqueNote"))
-                    .font(.system(size: 12)).foregroundStyle(AppColors.muted)
+                    .font(.app(size: 12)).foregroundStyle(AppColors.muted)
                     .fixedSize(horizontal: false, vertical: true)
                     .accessibilityIdentifier("matrix-technique-note")
             }
             if !report.unmappedExercises.isEmpty {
                 VStack(alignment: .leading, spacing: 6) {
                     Text(LanguageManager.t("matrix.unmapped", ["count": report.unmappedExercises.values.reduce(0, +)]))
-                        .font(.system(size: 13)).foregroundStyle(AppColors.text)
+                        .font(.app(size: 13)).foregroundStyle(AppColors.text)
                     ForEach(report.unmappedExercises.keys.sorted(), id: \.self) { name in
                         let count = report.unmappedExercises[name] ?? 0
                         Text("\(name) · \(count) " + LanguageManager.t(count == 1 ? "matrix.setUnit" : "matrix.setsUnit"))
-                            .font(.system(size: 12)).foregroundStyle(AppColors.secondaryText)
+                            .font(.app(size: 12)).foregroundStyle(AppColors.secondaryText)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading).padding(14)
@@ -289,7 +289,7 @@ public struct VolumeMatrixView: View {
                                 let isSelected = currentView == view
                                 Button(action: { currentView = view }) {
                                     Text(LanguageManager.t(view == "front" ? "anatomy.front" : "anatomy.back"))
-                                        .font(.system(size: 12.5, weight: isSelected ? .semibold : .medium))
+                                        .font(.app(size: 12.5, weight: isSelected ? .semibold : .medium))
                                         .foregroundStyle(isSelected ? AppColors.text : AppColors.muted)
                                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                                         .background(isSelected ? AppColors.purpleBg : Color.clear)
@@ -319,7 +319,7 @@ public struct VolumeMatrixView: View {
                                         .fill(zone.color)
                                         .frame(width: 9, height: 9)
                                     Text(LanguageManager.t(zone.titleKey))
-                                        .font(.system(size: 12, weight: .medium))
+                                        .font(.app(size: 12, weight: .medium))
                                         .foregroundStyle(AppColors.secondaryText)
                                         .lineLimit(1)
                                     Spacer()
@@ -363,10 +363,10 @@ public struct VolumeMatrixView: View {
                             HStack(spacing: 6) {
                                 Circle().fill(zoneColor).frame(width: 7, height: 7)
                                 Text(summary?.localizedName ?? muscleKey)
-                                    .font(.system(size: 12, weight: isSelected ? .semibold : .medium))
+                                    .font(.app(size: 12, weight: isSelected ? .semibold : .medium))
                                     .foregroundStyle(isSelected ? AppColors.text : AppColors.secondaryText)
                                 Text(String(format: "%.1f", locale: LanguageManager.numberLocale, summary?.totalEffectiveSets ?? Float(0)))
-                                    .font(.system(size: 11, weight: .bold))
+                                    .font(.app(size: 11, weight: .bold))
                                     .foregroundStyle(summary?.zone.textColor ?? AppColors.muted)
                             }
                             .padding(.horizontal, 10)
@@ -473,7 +473,7 @@ public struct VolumeMatrixView: View {
                     .frame(width: 32, height: 32)
 
                     Text(title)
-                        .font(.system(size: 12.5, weight: .semibold))
+                        .font(.app(size: 12.5, weight: .semibold))
                         .foregroundStyle(AppColors.secondaryText)
                         .lineSpacing(-2)
                         .lineLimit(2)
@@ -485,10 +485,10 @@ public struct VolumeMatrixView: View {
                 // Bottom group: Value + Subtitle
                 VStack(alignment: .leading, spacing: 1) {
                     Text(value)
-                        .font(.system(size: 24, weight: .bold))
+                        .font(.app(size: 24, weight: .bold))
                         .foregroundStyle(AppColors.text)
                     Text(subtitle)
-                        .font(.system(size: 11, weight: .semibold))
+                        .font(.app(size: 11, weight: .semibold))
                         .foregroundStyle(color)
                 }
             }
@@ -556,10 +556,10 @@ public struct VolumeMatrixView: View {
         VStack(alignment: .leading, spacing: 14) {
             VStack(alignment: .leading, spacing: 8) {
                 Text(summary.localizedName)
-                    .font(.system(size: 18, weight: .bold))
+                    .font(.app(size: 18, weight: .bold))
                     .foregroundStyle(AppColors.text)
                 Text(LanguageManager.t(summary.zone.titleKey))
-                    .font(.system(size: 11, weight: .semibold))
+                    .font(.app(size: 11, weight: .semibold))
                     .foregroundStyle(summary.zone.textColor)
                     .padding(.horizontal, 8)
                     .padding(.vertical, 4)
@@ -571,13 +571,13 @@ public struct VolumeMatrixView: View {
                     "direct": summary.directSets,
                     "indirect": summary.indirectSets
                 ]))
-                    .font(.system(size: 12))
+                    .font(.app(size: 12))
                     .foregroundStyle(AppColors.secondaryText)
             }
 
             Text(LanguageManager.t(!report.isPlannedRoutine && summary.zone == .noWeeklyReference
                 ? "matrix.noMuscleReference" : summary.zone.descriptionKey))
-                .font(.system(size: 12))
+                .font(.app(size: 12))
                 .foregroundStyle(AppColors.muted)
 
             // Landmark Gauge
@@ -588,24 +588,24 @@ public struct VolumeMatrixView: View {
 
                 VStack(alignment: .leading, spacing: 8) {
                     Text(LanguageManager.t("matrix.contributingExercises"))
-                        .font(.system(size: 13, weight: .semibold))
+                        .font(.app(size: 13, weight: .semibold))
                         .foregroundStyle(AppColors.text)
 
                     ForEach(summary.contributions) { item in
                         HStack {
                             VStack(alignment: .leading, spacing: 1) {
                                 Text(ContentLocalizer.shared.exerciseName(exerciseId:nil,fallback:item.exerciseName))
-                                    .font(.system(size: 13, weight: .medium))
+                                    .font(.app(size: 13, weight: .medium))
                                     .foregroundStyle(AppColors.text)
                                     .lineLimit(1)
                                 Text((item.isPrimary ? LanguageManager.t("anatomy.primary") : LanguageManager.t("anatomy.secondary")) + (item.date.map { " · \($0)" } ?? "")
                                      + (item.techniqueSets > 0 ? " · " + LanguageManager.shared.plural("matrix.techniqueSets", item.techniqueSets) : ""))
-                                    .font(.system(size: 11))
+                                    .font(.app(size: 11))
                                     .foregroundStyle(item.isPrimary ? AppColors.purple : AppColors.secondaryText)
                             }
                             Spacer()
                             Text(LanguageManager.t("matrix.contribution", ["sets": item.completedSets, "credits": String(format: "%.1f", locale: LanguageManager.numberLocale, item.effectiveSets)]))
-                                .font(.system(size: 12, weight: .semibold))
+                                .font(.app(size: 12, weight: .semibold))
                                 .foregroundStyle(AppColors.text)
                         }
                     }
@@ -637,15 +637,15 @@ public struct VolumeMatrixView: View {
 
             HStack {
                 Text("MEV: \(Int(summary.landmarks.mev))")
-                    .font(.system(size: 10, weight: .medium))
+                    .font(.app(size: 10, weight: .medium))
                     .foregroundStyle(AppColors.muted)
                 Spacer()
                 Text("MAV: \(Int(summary.landmarks.mavMin))–\(Int(summary.landmarks.mavMax))")
-                    .font(.system(size: 10, weight: .bold))
+                    .font(.app(size: 10, weight: .bold))
                     .foregroundStyle(AppColors.historyStatPrGreen)
                 Spacer()
                 Text("MRV: \(Int(summary.landmarks.mrv))")
-                    .font(.system(size: 10, weight: .medium))
+                    .font(.app(size: 10, weight: .medium))
                     .foregroundStyle(AppColors.lightThemeColor(Color(hex: 0xFF897B), AppColors.danger))
             }
         }

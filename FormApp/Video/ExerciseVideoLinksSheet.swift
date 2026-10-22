@@ -55,11 +55,11 @@ public struct ExerciseVideoLinksSheet: View {
                 HStack(alignment: .center) {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(LanguageManager.t("video.linkTitle"))
-                            .font(.system(size: 20, weight: .semibold))
+                            .font(.app(size: 20, weight: .semibold))
                             .foregroundStyle(AppColors.text)
 
                         Text(LanguageManager.t("video.linkSubtitle"))
-                            .font(.system(size: 12))
+                            .font(.app(size: 12))
                             .foregroundStyle(AppColors.muted)
                     }
 
@@ -94,12 +94,12 @@ public struct ExerciseVideoLinksSheet: View {
                             // Right: Title & category pill
                             VStack(alignment: .leading, spacing: 8) {
                                 Text(exercise.displayName)
-                                    .font(.system(size: 17, weight: .bold))
+                                    .font(.app(size: 17, weight: .bold))
                                     .foregroundStyle(AppColors.text)
                                     .lineLimit(2)
 
                                 Text(LanguageManager.t("category.\(exercise.resolvedMovement.key)").uppercased())
-                                    .font(.system(size: 11, weight: .semibold))
+                                    .font(.app(size: 11, weight: .semibold))
                                     .tracking(0.6)
                                     .foregroundStyle(AppColors.accent)
                                     .padding(.horizontal, 10)
@@ -122,7 +122,7 @@ public struct ExerciseVideoLinksSheet: View {
                         // Linked Videos Section
                         HStack {
                             Text(LanguageManager.t("video.linkedCount", ["count": "\(linkedUrls.count)"]))
-                                .font(.system(size: 15, weight: .semibold))
+                                .font(.app(size: 15, weight: .semibold))
                                 .foregroundStyle(AppColors.text)
 
                             Spacer()
@@ -135,7 +135,7 @@ public struct ExerciseVideoLinksSheet: View {
                                     .foregroundStyle(AppColors.muted)
 
                                 Text(LanguageManager.t("video.noVideos"))
-                                    .font(.system(size: 13))
+                                    .font(.app(size: 13))
                                     .foregroundStyle(AppColors.muted)
                                     .multilineTextAlignment(.center)
                             }
@@ -187,13 +187,13 @@ public struct ExerciseVideoLinksSheet: View {
 
                                                 VStack(alignment: .leading, spacing: 2) {
                                                     Text(title)
-                                                        .font(.system(size: 13, weight: .medium))
+                                                        .font(.app(size: 13, weight: .medium))
                                                         .foregroundStyle(isUnavailable ? AppColors.danger : AppColors.text)
                                                         .lineLimit(2)
                                                         .multilineTextAlignment(.leading)
 
                                                     Text(subtitle)
-                                                        .font(.system(size: 11))
+                                                        .font(.app(size: 11))
                                                         .foregroundStyle(AppColors.muted)
                                                         .lineLimit(1)
                                                 }
@@ -243,13 +243,13 @@ public struct ExerciseVideoLinksSheet: View {
                         if linkedUrls.count < 3 {
                             VStack(alignment: .leading, spacing: 12) {
                                 Text(LanguageManager.t("library.attachVideoCta"))
-                                    .font(.system(size: 14, weight: .semibold))
+                                    .font(.app(size: 14, weight: .semibold))
                                     .foregroundStyle(AppColors.text)
 
                                 // Input box with inline Paste / Clear button
                                 HStack(spacing: 8) {
                                     TextField(LanguageManager.t("video.urlInputLabel"), text: $inputUrl)
-                                        .font(.system(size: 14))
+                                        .font(.app(size: 14))
                                         .foregroundStyle(AppColors.text)
                                         .tint(AppColors.accent)
                                         .autocorrectionDisabled()
@@ -267,7 +267,7 @@ public struct ExerciseVideoLinksSheet: View {
                                                 Image(systemName: "doc.on.clipboard")
                                                     .font(.system(size: 13))
                                                 Text(LanguageManager.t("video.paste"))
-                                                    .font(.system(size: 12, weight: .medium))
+                                                    .font(.app(size: 12, weight: .medium))
                                             }
                                             .foregroundStyle(AppColors.accent)
                                             .padding(.vertical, 6)
@@ -309,7 +309,7 @@ public struct ExerciseVideoLinksSheet: View {
                                             .foregroundStyle(AppColors.muted)
                                     }
                                 }
-                                .font(.system(size: 12))
+                                .font(.app(size: 12))
                                 .padding(.horizontal, 4)
 
                                 // Full-width Add link button
@@ -318,7 +318,7 @@ public struct ExerciseVideoLinksSheet: View {
                                         Image(systemName: "plus")
                                             .font(.system(size: 13, weight: .bold))
                                         Text(LanguageManager.t("video.addUrlButton"))
-                                            .font(.system(size: 14, weight: .semibold))
+                                            .font(.app(size: 14, weight: .semibold))
                                     }
                                     .foregroundStyle(canAdd ? AppColors.background : AppColors.muted)
                                     .frame(maxWidth: .infinity)
@@ -344,7 +344,7 @@ public struct ExerciseVideoLinksSheet: View {
                                     .foregroundStyle(AppColors.accent)
 
                                 Text(LanguageManager.t("video.maxReached"))
-                                    .font(.system(size: 13))
+                                    .font(.app(size: 13))
                                     .foregroundStyle(AppColors.muted)
 
                                 Spacer()
@@ -367,7 +367,7 @@ public struct ExerciseVideoLinksSheet: View {
 
                     if !validLinkedUrls {
                         Text(LanguageManager.t("video.youtubeOnly"))
-                            .font(.system(size: 12)).foregroundStyle(AppColors.danger)
+                            .font(.app(size: 12)).foregroundStyle(AppColors.danger)
                             .padding(.horizontal, 20).padding(.top, 8)
                     }
 
@@ -380,7 +380,7 @@ public struct ExerciseVideoLinksSheet: View {
                         }
                     }) {
                         Text(LanguageManager.t("video.saveLinks"))
-                            .font(.system(size: 15, weight: .semibold))
+                            .font(.app(size: 15, weight: .semibold))
                             .foregroundStyle(AppColors.background)
                             .frame(maxWidth: .infinity)
                             .frame(height: 50)

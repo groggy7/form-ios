@@ -419,12 +419,12 @@ struct TourOverlay: View {
             if !isTip {
                 HStack {
                     Text(LanguageManager.t("tour.stepCount", ["current": "\(index + 1)", "total": "\(total)"]))
-                        .font(.system(size: 12, weight: .medium))
+                        .font(.app(size: 12, weight: .medium))
                         .foregroundStyle(AppColors.muted)
                     Spacer()
                     if !step.isPremium {
                         Button(LanguageManager.t("tour.skip")) { tour.skip() }
-                            .font(.system(size: 14))
+                            .font(.app(size: 14))
                             .foregroundStyle(AppColors.secondaryText)
                             .frame(minHeight: 48)
                             .accessibilityIdentifier("tour-skip")
@@ -432,12 +432,12 @@ struct TourOverlay: View {
                 }
             }
             Text(title)
-                .font(.system(size: 18, weight: .semibold))
+                .font(.app(size: 18, weight: .semibold))
                 .foregroundStyle(AppColors.text)
                 .accessibilityAddTraits(.isHeader)
                 .fixedSize(horizontal: false, vertical: true)
             Text(body)
-                .font(.system(size: 15))
+                .font(.app(size: 15))
                 .foregroundStyle(AppColors.secondaryText)
                 .lineSpacing(3)
                 .fixedSize(horizontal: false, vertical: true)
@@ -487,7 +487,7 @@ private struct TourButton: View {
     var body: some View {
         Button(action: action) {
             Text(title)
-                .font(.system(size: 15, weight: primary ? .semibold : .medium))
+                .font(.app(size: 15, weight: primary ? .semibold : .medium))
                 .foregroundStyle(primary ? AppColors.background : AppColors.text)
                 .padding(.horizontal, 18)
                 .frame(minHeight: 48)
@@ -506,7 +506,7 @@ private struct TourButton: View {
 struct SampleDataLabel: View {
     var body: some View {
         Text(LanguageManager.t("tour.sampleData"))
-            .font(.system(size: 11, weight: .semibold))
+            .font(.app(size: 11, weight: .semibold))
             .foregroundStyle(AppColors.secondaryText)
             .padding(.horizontal, 8)
             .padding(.vertical, 4)

@@ -118,7 +118,7 @@ public struct ProBadge: View {
     public var body: some View {
         let _ = themeManager.currentTheme
         Text(text)
-            .font(.system(size: fontSize, weight: .bold))
+            .font(.app(size: fontSize, weight: .bold))
             .tracking(0.2)
             .fixedSize(horizontal: true, vertical: true)
             .foregroundStyle(AppColors.purple)

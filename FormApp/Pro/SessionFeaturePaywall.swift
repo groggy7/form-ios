@@ -91,9 +91,9 @@ struct SessionFeaturePaywallContent: View {
                             HStack(spacing: 12) {
                                 benefitIcon("infinity", size: 32)
                                 (Text(LanguageManager.t("\(copyPrefix).unlock_title"))
-                                    .font(.system(size: subtitleSize, weight: .semibold)).foregroundStyle(AppColors.text)
+                                    .font(.app(size: subtitleSize, weight: .semibold)).foregroundStyle(AppColors.text)
                                  + Text(LanguageManager.t("paywall.auto_progression.unlock_suffix"))
-                                    .font(.system(size: subtitleSize)).foregroundStyle(AppColors.secondaryText))
+                                    .font(.app(size: subtitleSize)).foregroundStyle(AppColors.secondaryText))
                                     .fixedSize(horizontal: false, vertical: true)
                                 Spacer(minLength: 0)
                             }
@@ -105,10 +105,10 @@ struct SessionFeaturePaywallContent: View {
                             if annual.price == nil || monthly.price == nil {
                                 HStack {
                                     Text(LanguageManager.t("paywall.price_unavailable"))
-                                        .font(.system(size: subtitleSize)).foregroundStyle(AppColors.secondaryText)
+                                        .font(.app(size: subtitleSize)).foregroundStyle(AppColors.secondaryText)
                                     Spacer(minLength: 8)
                                     Button(LanguageManager.t("paywall.retry"), action: onRetryPrices)
-                                        .font(.system(size: subtitleSize, weight: .semibold)).foregroundStyle(accent)
+                                        .font(.app(size: subtitleSize, weight: .semibold)).foregroundStyle(accent)
                                         .frame(minHeight: 48)
                                 }
                             }
@@ -138,7 +138,7 @@ struct SessionFeaturePaywallContent: View {
             HStack(spacing: 8) {
                 Image(systemName: "crown.fill").font(.system(size: 18, weight: .semibold)).frame(width: 20, height: 20)
                 Text(LanguageManager.t("paywall.auto_progression.badge"))
-                    .font(.system(size: bodySize, weight: .bold)).tracking(1.3)
+                    .font(.app(size: bodySize, weight: .bold)).tracking(1.3)
                     .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
             }
             .foregroundStyle(accent).padding(.horizontal, 12).padding(.vertical, 9)
@@ -165,15 +165,15 @@ struct SessionFeaturePaywallContent: View {
         let heroHeight = max(0, width * 1.1 - headerTopPadding - headerRowHeight - headerBottomPadding)
         return VStack(alignment: .leading, spacing: 0) {
             Text(LanguageManager.t(featureTitleKey))
-                .font(.system(size: subtitleSize)).foregroundStyle(AppColors.progressionPaywallPhotoBody)
+                .font(.app(size: subtitleSize)).foregroundStyle(AppColors.progressionPaywallPhotoBody)
                 .padding(.bottom, 8)
             Text(LanguageManager.t("\(copyPrefix).headline"))
-                .font(.system(size: isWarmup ? warmupHeadlineSize : headlineSize, weight: .bold))
+                .font(.app(size: isWarmup ? warmupHeadlineSize : headlineSize, weight: .bold))
                 .foregroundStyle(AppColors.progressionPaywallPhotoTitle).fixedSize(horizontal: false, vertical: true)
                 .frame(width: comfortableText ? (width - 48) * (isWarmup ? 0.84 : (isVolumeMatrix || isRepLab || isGeneral || isCloudBackup || isCustomThemes ? 0.72 : 0.64)) : width - 48, alignment: .leading)
                 .padding(.bottom, 10)
             Text(LanguageManager.t("\(copyPrefix).subtitle"))
-                .font(.system(size: subtitleSize)).foregroundStyle(AppColors.progressionPaywallPhotoBody)
+                .font(.app(size: subtitleSize)).foregroundStyle(AppColors.progressionPaywallPhotoBody)
                 .shadow(color: .black.opacity(0.85), radius: 2, x: 0, y: 1).lineSpacing(3)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(width: comfortableText ? (width - 48) * 0.68 : width - 48, alignment: .leading)
@@ -185,7 +185,7 @@ struct SessionFeaturePaywallContent: View {
             }
             if isRepLab {
                 Text(LanguageManager.t("\(copyPrefix).reference_note"))
-                    .font(.system(size: footnoteSize)).foregroundStyle(AppColors.progressionPaywallPhotoBody)
+                    .font(.app(size: footnoteSize)).foregroundStyle(AppColors.progressionPaywallPhotoBody)
                     .shadow(color: .black.opacity(0.85), radius: 2, x: 0, y: 1).lineSpacing(2)
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(width: comfortableText ? (width - 48) * 0.66 : width - 48, alignment: .leading)
@@ -221,9 +221,9 @@ struct SessionFeaturePaywallContent: View {
             benefitIcon(icon)
             VStack(alignment: .leading, spacing: 3) {
                 Text(LanguageManager.t("\(copyPrefix).benefit\(number)"))
-                    .font(.system(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.progressionPaywallPhotoTitle)
+                    .font(.app(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.progressionPaywallPhotoTitle)
                 Text(LanguageManager.t("\(copyPrefix).benefit\(number)_desc"))
-                    .font(.system(size: descriptionSize)).foregroundStyle(AppColors.progressionPaywallPhotoBody)
+                    .font(.app(size: descriptionSize)).foregroundStyle(AppColors.progressionPaywallPhotoBody)
                     .shadow(color: .black.opacity(0.85), radius: 2, x: 0, y: 1).lineSpacing(3)
             }
             .fixedSize(horizontal: false, vertical: true).frame(maxWidth: .infinity, alignment: .leading)
@@ -261,7 +261,7 @@ struct SessionFeaturePaywallContent: View {
                             }
                             let terms = isAnnual ? (offer.hasTrial ? "paywall.auto_progression.annual_trial_subtitle" : "paywall.annual_subtitle")
                                 : (offer.hasTrial ? "paywall.auto_progression.monthly_trial_subtitle" : "paywall.auto_progression.monthly_subtitle")
-                            Text(LanguageManager.t(terms)).font(.system(size: footnoteSize))
+                            Text(LanguageManager.t(terms)).font(.app(size: footnoteSize))
                                 .foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -282,17 +282,17 @@ struct SessionFeaturePaywallContent: View {
 
     private func planTitle(_ annual: Bool) -> some View {
         Text(LanguageManager.t(annual ? "paywall.annual_plan" : "paywall.monthly_plan"))
-            .font(.system(size: titleSize, weight: .bold)).foregroundStyle(AppColors.text)
+            .font(.app(size: titleSize, weight: .bold)).foregroundStyle(AppColors.text)
             .fixedSize(horizontal: false, vertical: true)
     }
 
     private func planPrice(_ offer: SessionPaywallOffer, selected: Bool, maxWidth: CGFloat) -> some View {
         PaywallPriceWidth(maxWidth: maxWidth) {
             VStack(alignment: .trailing, spacing: 4) {
-                Text(offer.price ?? "—").font(.system(size: titleSize, weight: .bold))
+                Text(offer.price ?? "—").font(.app(size: titleSize, weight: .bold))
                     .foregroundStyle(selected ? accent : AppColors.text)
                 if let breakdown = offer.monthlyBreakdown {
-                    Text(breakdown).font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText)
+                    Text(breakdown).font(.app(size: footnoteSize)).foregroundStyle(AppColors.secondaryText)
                 }
             }
             .multilineTextAlignment(.trailing).fixedSize(horizontal: false, vertical: true)
@@ -306,7 +306,7 @@ struct SessionFeaturePaywallContent: View {
     }
 
     private func planTag(_ text: String) -> some View {
-        Text(text).font(.system(size: footnoteSize - 2, weight: .bold)).foregroundStyle(accent)
+        Text(text).font(.app(size: footnoteSize - 2, weight: .bold)).foregroundStyle(accent)
             .padding(.horizontal, 5).padding(.vertical, 3)
             .overlay(RoundedRectangle(cornerRadius: 3).stroke(accent.opacity(0.55), lineWidth: 1))
     }
@@ -319,15 +319,15 @@ struct SessionFeaturePaywallContent: View {
             }
             .padding(.horizontal, 6).frame(minWidth: 48, minHeight: 48).contentShape(Rectangle())
         }.disabled(isRestoring)
-            .font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).buttonStyle(.plain)
+            .font(.app(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).buttonStyle(.plain)
         Button(action: onTerms) {
             Text(LanguageManager.t("paywall.terms")).fixedSize(horizontal: singleLine, vertical: true)
                 .padding(.horizontal, 6).frame(minWidth: 48, minHeight: 48).contentShape(Rectangle())
-        }.font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).buttonStyle(.plain)
+        }.font(.app(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).buttonStyle(.plain)
         Button(action: onPrivacy) {
             Text(LanguageManager.t("paywall.privacy")).fixedSize(horizontal: singleLine, vertical: true)
                 .padding(.horizontal, 6).frame(minWidth: 48, minHeight: 48).contentShape(Rectangle())
-        }.font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).buttonStyle(.plain)
+        }.font(.app(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).buttonStyle(.plain)
     }
 
     private var footer: some View {
@@ -340,7 +340,7 @@ struct SessionFeaturePaywallContent: View {
                         else {
                             Image(systemName: "lock.open").font(.system(size: 20, weight: .medium))
                             Text(LanguageManager.t(selected.hasTrial ? "paywall.cta_trial" : "paywall.auto_progression.cta_continue"))
-                                .font(.system(size: titleSize + 1, weight: .bold))
+                                .font(.app(size: titleSize + 1, weight: .bold))
                                 .fixedSize(horizontal: false, vertical: true).multilineTextAlignment(.center)
                         }
                     }
@@ -355,7 +355,7 @@ struct SessionFeaturePaywallContent: View {
                     : (selected.hasTrial ? "paywall.auto_progression.monthly_trial_footer" : "paywall.auto_progression.monthly_footer")
                 Text(selected.price.map { LanguageManager.t(footerTerms, ["price": $0]) }
                      ?? LanguageManager.t("paywall.price_unavailable_short"))
-                    .font(.system(size: footnoteSize)).foregroundStyle(AppColors.secondaryText)
+                    .font(.app(size: footnoteSize)).foregroundStyle(AppColors.secondaryText)
                     .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
                 if let purchaseError { feedback(purchaseError, isError: true, retry: onPurchase) }
             }
@@ -367,11 +367,11 @@ struct SessionFeaturePaywallContent: View {
 
     private func feedback(_ message: String, isError: Bool, retry: @escaping () -> Void) -> some View {
         HStack(spacing: 8) {
-            Text(message).font(.system(size: subtitleSize)).foregroundStyle(isError ? AppColors.danger : AppColors.text)
+            Text(message).font(.app(size: subtitleSize)).foregroundStyle(isError ? AppColors.danger : AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
             if isError {
                 Button(LanguageManager.t("paywall.retry"), action: retry)
-                    .foregroundStyle(accent).font(.system(size: subtitleSize, weight: .semibold)).frame(minHeight: 48)
+                    .foregroundStyle(accent).font(.app(size: subtitleSize, weight: .semibold)).frame(minHeight: 48)
             }
         }
         .padding(10).frame(maxWidth: .infinity)

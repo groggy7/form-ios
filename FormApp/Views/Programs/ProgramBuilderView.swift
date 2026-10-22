@@ -165,24 +165,24 @@ public struct ProgramBuilderView: View {
                         details
                         VStack(alignment: .leading, spacing: 4) {
                             if saveAttempted, let trainingError {
-                                Text(trainingError).font(.caption).foregroundStyle(AppColors.danger).accessibilityIdentifier("program-validation")
+                                Text(trainingError).appFont(.caption).foregroundStyle(AppColors.danger).accessibilityIdentifier("program-validation")
                             }
                             HStack {
-                                Text(LanguageManager.t("builder.trainingDays")).font(.headline)
+                                Text(LanguageManager.t("builder.trainingDays")).appFont(.headline)
                                 Spacer()
-                                Text(LanguageManager.t("builder.dayCount", ["count": program.workouts.count])).font(.caption).foregroundStyle(AppColors.muted)
+                                Text(LanguageManager.t("builder.dayCount", ["count": program.workouts.count])).appFont(.caption).foregroundStyle(AppColors.muted)
                             }
                             if !program.workouts.isEmpty {
                                 Text(LanguageManager.t("builder.summaryCounts", [
                                     "exercises": program.workouts.reduce(0) { $0 + $1.exercises.count },
                                     "sets": program.workouts.flatMap(\.exercises).reduce(0) { $0 + WorkoutSessionUtils.initialSetCount(exercise: $1) }
-                                ])).font(.caption).foregroundStyle(AppColors.muted).accessibilityIdentifier("program-summary")
+                                ])).appFont(.caption).foregroundStyle(AppColors.muted).accessibilityIdentifier("program-summary")
                             }
                         }.id("program-training-days")
                         if program.workouts.isEmpty {
                             BuilderSurface {
-                                Text(LanguageManager.t("builder.noDays")).font(.headline)
-                                Text(LanguageManager.t("builder.noDaysHint")).font(.subheadline).foregroundStyle(AppColors.secondaryText)
+                                Text(LanguageManager.t("builder.noDays")).appFont(.headline)
+                                Text(LanguageManager.t("builder.noDaysHint")).appFont(.subheadline).foregroundStyle(AppColors.secondaryText)
                             }
                         }
                         ForEach(program.workouts.sorted { $0.day < $1.day }) { workout in
@@ -199,7 +199,7 @@ public struct ProgramBuilderView: View {
                                 .accessibilityIdentifier("program-add-day")
                         }
                         if incompleteDays > 0 {
-                            Text(LanguageManager.t("builder.incompleteDays", ["count": incompleteDays])).font(.caption).foregroundStyle(AppColors.muted)
+                            Text(LanguageManager.t("builder.incompleteDays", ["count": incompleteDays])).appFont(.caption).foregroundStyle(AppColors.muted)
                         }
                     }.padding(20)
                 }
@@ -225,9 +225,9 @@ public struct ProgramBuilderView: View {
 
     private var details: some View {
         BuilderSurface {
-            Text(LanguageManager.t("builder.details")).font(.headline)
+            Text(LanguageManager.t("builder.details")).appFont(.headline)
             if saveAttempted, let formError {
-                Text(formError).font(.caption).foregroundStyle(AppColors.danger).accessibilityIdentifier("program-validation")
+                Text(formError).appFont(.caption).foregroundStyle(AppColors.danger).accessibilityIdentifier("program-validation")
             }
             BuilderTextField("modal.program.name", text: $program.name, limit: 100,
                 errorMessage: saveAttempted && nameInvalid ? LanguageManager.t("builder.nameError") : nil, showsLengthError: saveAttempted)
@@ -237,7 +237,7 @@ public struct ProgramBuilderView: View {
                     let label = LanguageManager.t("programs.cover.selected", ["name": LanguageManager.t("programs.cover." + cover.rawValue)])
                     Button { showCoverPicker = true } label: {
                         HStack(spacing: 8) {
-                            Text(label).font(.caption).foregroundStyle(AppColors.secondaryText)
+                            Text(label).appFont(.caption).foregroundStyle(AppColors.secondaryText)
                                 .frame(maxWidth: .infinity, alignment: .leading).fixedSize(horizontal: false, vertical: true)
                             Image(systemName: "pencil").font(.system(size: 16, weight: .semibold)).foregroundStyle(AppColors.accent)
                         }.frame(minHeight: 48).contentShape(Rectangle())
@@ -246,7 +246,7 @@ public struct ProgramBuilderView: View {
                     Image(cover.assetName).resizable().aspectRatio(1.5, contentMode: .fit)
                         .frame(maxWidth: .infinity).clipShape(RoundedRectangle(cornerRadius: 12)).accessibilityHidden(true)
                 } else {
-                    Text(LanguageManager.t("programs.cover")).font(.caption).foregroundStyle(AppColors.secondaryText)
+                    Text(LanguageManager.t("programs.cover")).appFont(.caption).foregroundStyle(AppColors.secondaryText)
                         .accessibilityIdentifier("program-cover-label")
                     BuilderActionButton("programs.cover.choose", systemImage: "photo") { showCoverPicker = true }
                         .accessibilityIdentifier("program-cover-choose")
@@ -256,8 +256,8 @@ public struct ProgramBuilderView: View {
                 HStack(spacing: 10) {
                     Image(systemName: "text.alignleft").foregroundStyle(AppColors.secondaryText)
                     VStack(alignment: .leading, spacing: 2) {
-                        Text(LanguageManager.t("builder.optionalDetails")).font(.subheadline.weight(.medium)).foregroundStyle(AppColors.text)
-                        Text(LanguageManager.t("builder.optional")).font(.caption2).foregroundStyle(AppColors.muted)
+                        Text(LanguageManager.t("builder.optionalDetails")).appFont(.subheadline, weight: .medium).foregroundStyle(AppColors.text)
+                        Text(LanguageManager.t("builder.optional")).appFont(.caption2).foregroundStyle(AppColors.muted)
                     }.frame(maxWidth: .infinity, alignment: .leading)
                     Image(systemName: optionalDetailsExpanded ? "chevron.up" : "chevron.down").foregroundStyle(AppColors.muted)
                 }.padding(.horizontal, 12).frame(minHeight: 54).contentShape(Rectangle())
@@ -282,19 +282,19 @@ public struct ProgramBuilderView: View {
             if let undo = removalUndo {
                 HStack(spacing: 12) {
                     Text(LanguageManager.t({ if case .workout = undo { return "builder.dayRemoved" }; return "builder.exerciseRemoved" }()))
-                        .font(.subheadline).foregroundStyle(AppColors.text).frame(maxWidth: .infinity, alignment: .leading)
+                        .appFont(.subheadline).foregroundStyle(AppColors.text).frame(maxWidth: .infinity, alignment: .leading)
                     Button(LanguageManager.t("builder.undo")) { if let restored = undo.restoring(program) { program = restored }; removalUndo = nil }
-                        .font(.subheadline.weight(.semibold)).foregroundStyle(AppColors.accent).frame(minWidth: 48, minHeight: 48)
+                        .appFont(.subheadline, weight: .semibold).foregroundStyle(AppColors.accent).frame(minWidth: 48, minHeight: 48)
                         .disabled(undo.restoring(program) == nil).accessibilityLabel(LanguageManager.t("builder.undoRemoval"))
                 }.padding(.horizontal, 14).background(AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 12))
                     .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
                     .accessibilityIdentifier("program-undo-removal")
             }
             if let saveError {
-                Text(saveError).font(.caption).foregroundStyle(AppColors.danger).accessibilityIdentifier("program-validation")
+                Text(saveError).appFont(.caption).foregroundStyle(AppColors.danger).accessibilityIdentifier("program-validation")
             }
             Button(action: saveProgram) {
-                Text(LanguageManager.t("modal.program.save")).font(.headline).frame(maxWidth: .infinity, minHeight: 52)
+                Text(LanguageManager.t("modal.program.save")).appFont(.headline).frame(maxWidth: .infinity, minHeight: 52)
                     .foregroundStyle(AppColors.todaySelectionText).background(AppColors.accent, in: RoundedRectangle(cornerRadius: 12))
             }.buttonStyle(.plain).accessibilityIdentifier("program-builder-save")
         }.padding(.horizontal, 20).padding(.vertical, 10).background(AppColors.background)

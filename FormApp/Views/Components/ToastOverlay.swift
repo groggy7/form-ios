@@ -93,7 +93,7 @@ struct ToastPill: View {
                 EmptyView()
             }
             Text(item.message)
-                .font(.system(size: 13, weight: .bold))
+                .font(.app(size: 13, weight: .bold))
                 .foregroundStyle(textColor(item.style))
                 .multilineTextAlignment(.center)
         }

@@ -74,7 +74,8 @@ public struct SetLoggingTable: View {
     }
 
     private func weightInputFontSize(_ text: String, width: CGFloat) -> CGFloat {
-        let measured = (text as NSString).size(withAttributes: [.font: UIFont.systemFont(ofSize: 15, weight: .semibold)]).width
+        // Measure at the rendered size; the returned size is authored and `Font.app` applies the width scale.
+        let measured = (text as NSString).size(withAttributes: [.font: UIFont.systemFont(ofSize: 15, weight: .semibold)]).width * TextWidthScale.factor
         // Keep exact pound inputs visible without changing their text or physical load.
         return min(15, max(12, 15 * max(1, width - 8) / max(1, measured)))
     }
@@ -99,12 +100,12 @@ public struct SetLoggingTable: View {
             HStack(spacing: 12) {
                 if !prescription.isEmpty {
                     Text(prescription)
-                        .font(.system(size: 16, weight: .semibold))
+                        .font(.app(size: 16, weight: .semibold))
                         .foregroundStyle(AppColors.accent)
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 Text(progressText)
-                    .font(.system(size: 14, weight: .medium))
+                    .font(.app(size: 14, weight: .medium))
                     .foregroundStyle(AppColors.secondaryText)
                     .multilineTextAlignment(.trailing)
                     .frame(maxWidth: .infinity, alignment: .trailing)
@@ -121,7 +122,7 @@ public struct SetLoggingTable: View {
                     .frame(maxWidth: .infinity)
                 Text(LanguageManager.t("table.doneHeading")).frame(width: 44)
             }
-            .font(.system(size: 11, weight: .bold))
+            .font(.app(size: 11, weight: .bold))
             .foregroundStyle(AppColors.muted)
             .padding(.horizontal, 14)
 
@@ -131,7 +132,7 @@ public struct SetLoggingTable: View {
             ].compactMap { $0 }.joined(separator: " ")
             if !weightHint.isEmpty {
                 Text(weightHint)
-                    .font(.system(size: 12)).foregroundStyle(AppColors.muted)
+                    .font(.app(size: 12)).foregroundStyle(AppColors.muted)
                     .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
             }
             let currentLoggedIndex = (isRestActive && isRestForCurrentExercise) ? sets.lastIndex(where: { $0.isCompleted }) : nil
@@ -188,7 +189,7 @@ public struct SetLoggingTable: View {
 
                 HStack(spacing: 8) {
                     Text(set.isWarmup ? "W\(set.setNumber)" : "\(set.setNumber)")
-                        .font(.system(size: set.isWarmup ? 13 : 14, weight: .bold))
+                        .font(.app(size: set.isWarmup ? 13 : 14, weight: .bold))
                         .foregroundStyle(
                             set.isWarmup
                                 ? AppColors.warmupAmber
@@ -201,13 +202,13 @@ public struct SetLoggingTable: View {
                     let beatResult = set.isCompleted ? logbookBeatenSets[index] : nil
                     if set.isWarmup {
                         Text(LanguageManager.t("warmup.badge"))
-                            .font(.system(size: 10.5, weight: .bold))
+                            .font(.app(size: 10.5, weight: .bold))
                             .foregroundStyle(AppColors.warmupAmber.opacity(0.85))
                             .lineLimit(1)
                             .frame(width: 56, alignment: .center)
                     } else if let beat = beatResult {
                         Text(WorkoutSessionUtils.formatLogbookBeatBadge(result: beat, unit: weightUnit))
-                            .font(.system(size: 10, weight: .bold))
+                            .font(.app(size: 10, weight: .bold))
                             .foregroundStyle(AppColors.accent)
                             .lineLimit(1)
                             .minimumScaleFactor(0.75)
@@ -220,7 +221,7 @@ public struct SetLoggingTable: View {
                     } else {
                         Text(contextualPr.replacingOccurrences(of: " ×", with: "\n×").replacingOccurrences(of: "BW +", with: "BW+"))
                             .accessibilityLabel(WorkoutSessionUtils.sessionPrAccessibilityLabel(contextualPr, unit: weightUnit))
-                            .font(.system(size: 13, weight: .medium))
+                            .font(.app(size: 13, weight: .medium))
                             .foregroundStyle(
                                 set.isCompleted
                                     ? AppColors.secondaryText.opacity(0.6)
@@ -244,7 +245,7 @@ public struct SetLoggingTable: View {
                             .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \((isAssisted ? "\(LanguageManager.t("table.assistance")) (\(weightUnit.label))" : LanguageManager.t(weightUnit == .lbs ? "table.weightLbs" : "table.weightKg")))")
                             .keyboardType(.decimalPad)
                             .multilineTextAlignment(.center)
-                            .font(.system(size: weightInputFontSize(weightBinding.wrappedValue, width: geometry.size.width), weight: .semibold))
+                            .font(.app(size: weightInputFontSize(weightBinding.wrappedValue, width: geometry.size.width), weight: .semibold))
                             .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
                             .padding(.vertical, 8)
                             .background(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5))
@@ -270,7 +271,7 @@ public struct SetLoggingTable: View {
                             + (targetRepsHint.map { ", " + LanguageManager.t("progression.coach.reps_target_hint", ["reps": "\($0)"]) } ?? ""))
                         .keyboardType(.numberPad)
                         .multilineTextAlignment(.center)
-                        .font(.system(size: 15, weight: .semibold))
+                        .font(.app(size: 15, weight: .semibold))
                         .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
                         .padding(.vertical, 8)
                         .background(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5))
@@ -359,7 +360,7 @@ public struct SetLoggingTable: View {
 
                 if validationSetId == set.id, !set.isCompleted,
                    let key = WorkoutSessionUtils.setValidationError(set, allowsZeroWeight: allowsZeroWeight) {
-                    Text(LanguageManager.t(key)).font(.system(size: 12)).foregroundStyle(AppColors.danger)
+                    Text(LanguageManager.t(key)).font(.app(size: 12)).foregroundStyle(AppColors.danger)
                         .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
                         .accessibilityIdentifier("set-validation-\(set.id)")
                 }
@@ -370,10 +371,10 @@ public struct SetLoggingTable: View {
                     VStack(spacing: 4) {
                         HStack {
                             Text("\(setLabel) · \(fieldLabel)")
-                                .font(.system(size: 12)).foregroundStyle(AppColors.secondaryText)
+                                .font(.app(size: 12)).foregroundStyle(AppColors.secondaryText)
                             Spacer()
                             Button(LanguageManager.t("table.done")) { focusedField = nil; selectedField = nil }
-                                .font(.system(size: 12)).foregroundStyle(AppColors.accent)
+                                .font(.app(size: 12)).foregroundStyle(AppColors.accent)
                                 .frame(minWidth: 48, minHeight: 48)
                         }
                         HStack(spacing: 8) {
@@ -386,7 +387,7 @@ public struct SetLoggingTable: View {
                                         repsBinding.wrappedValue = WorkoutSessionUtils.adjustReps(repsBinding.wrappedValue, by: step)
                                     }
                                 } label: {
-                                    Text(label).font(.system(size: 16)).foregroundStyle(AppColors.text)
+                                    Text(label).font(.app(size: 16)).foregroundStyle(AppColors.text)
                                         .frame(maxWidth: .infinity, minHeight: 48)
                                         .background(RoundedRectangle(cornerRadius: 8).stroke(AppColors.border))
                                 }
@@ -408,7 +409,7 @@ public struct SetLoggingTable: View {
                                         Image(systemName: "square.stack.3d.up")
                                             .font(.system(size: 13))
                                         Text(LanguageManager.t("warmup.tab_plates"))
-                                            .font(.system(size: 12, weight: .medium))
+                                            .font(.app(size: 12, weight: .medium))
                                     }
                                     .foregroundStyle(AppColors.accent)
                                     .frame(maxWidth: .infinity, minHeight: 40)
@@ -423,7 +424,7 @@ public struct SetLoggingTable: View {
                                     Image(systemName: set.isWarmup ? "dumbbell" : "flame")
                                         .font(.system(size: 13))
                                     Text(LanguageManager.t(set.isWarmup ? "warmup.convert_to_working" : "warmup.convert_to_warmup"))
-                                        .font(.system(size: 12, weight: .medium))
+                                        .font(.app(size: 12, weight: .medium))
                                 }
                                 .foregroundStyle(set.isWarmup ? AppColors.secondaryText : AppColors.warmupAmber)
                                 .frame(maxWidth: .infinity, minHeight: 40)
@@ -453,7 +454,7 @@ public struct SetLoggingTable: View {
                         Image(systemName: "plus")
                             .font(.system(size: 13, weight: .bold))
                         Text(LanguageManager.t("table.addSet"))
-                            .font(.system(size: 13, weight: .semibold))
+                            .font(.app(size: 13, weight: .semibold))
                     }
                     .foregroundStyle(AppColors.accent)
                     .frame(maxWidth: .infinity)
@@ -478,7 +479,7 @@ public struct SetLoggingTable: View {
                         Image(systemName: "minus")
                             .font(.system(size: 12, weight: .semibold))
                         Text(LanguageManager.t("table.removeSet"))
-                            .font(.system(size: 12, weight: .medium))
+                            .font(.app(size: 12, weight: .medium))
                     }
                     .foregroundStyle(sets.count > 1 ? AppColors.muted : AppColors.muted.opacity(0.35))
                     .frame(height: 44)
@@ -560,7 +561,7 @@ public struct SetLoggingTable: View {
                          actions: actions, inputEnabled: inputEnabled, rowEnabled: rowEnabled)
             if validationSetId == part.id, !part.isCompleted,
                let key = IntensitySets.extensionValidationError(set, at: extensionIndex, exercise: actions.exercise, unit: weightUnit) {
-                Text(LanguageManager.t(key)).font(.system(size: 12)).foregroundStyle(AppColors.danger)
+                Text(LanguageManager.t(key)).font(.app(size: 12)).foregroundStyle(AppColors.danger)
                     .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
                     .accessibilityIdentifier("set-validation-\(part.id)")
             }
@@ -578,7 +579,7 @@ public struct SetLoggingTable: View {
             .accessibilityLabel(label)
             .keyboardType(keyboard)
             .multilineTextAlignment(.center)
-            .font(.system(size: 15, weight: .semibold))
+            .font(.app(size: 15, weight: .semibold))
             .foregroundStyle(enabled ? AppColors.text : AppColors.muted.opacity(0.5))
             .padding(.vertical, 8)
             .background(AppColors.surfaceRaised.opacity(enabled ? 1.0 : 0.5))
@@ -617,7 +618,7 @@ public struct SetLoggingTable: View {
                 .frame(width: 32, alignment: .leading)
                 .accessibilityHidden(true)
             Text(previous)
-                .font(.system(size: 13, weight: .medium))
+                .font(.app(size: 13, weight: .medium))
                 .foregroundStyle(AppColors.secondaryText.opacity(part.isCompleted ? 0.6 : (rowEnabled ? 1 : 0.35)))
                 .lineLimit(1).minimumScaleFactor(0.7)
                 .frame(width: 56, alignment: .center)
@@ -629,7 +630,7 @@ public struct SetLoggingTable: View {
             } else {
                 // Rest-pause keeps the main part's load.
                 Text(displayedWeight(set.weightInput, set.weightKg))
-                    .font(.system(size: 15, weight: .semibold))
+                    .font(.app(size: 15, weight: .semibold))
                     .foregroundStyle(AppColors.muted)
                     .frame(maxWidth: .infinity, minHeight: 48)
                     .accessibilityLabel("\(label), \(displayedWeight(set.weightInput, set.weightKg)) \(weightUnit.label)")
@@ -683,11 +684,11 @@ public struct SetLoggingTable: View {
                 .frame(width: 32, alignment: .leading)
                 .accessibilityHidden(true)
             Text(previousPartialsText(index: index, extensionIndex: extensionIndex, actions: actions))
-                .font(.system(size: 13, weight: .medium))
+                .font(.app(size: 13, weight: .medium))
                 .foregroundStyle(AppColors.secondaryText.opacity(rowEnabled ? 1 : 0.35))
                 .frame(width: 56, alignment: .center)
             Text(LanguageManager.t("intensity.partialsShort"))
-                .font(.system(size: 12, weight: .medium))
+                .font(.app(size: 12, weight: .medium))
                 .foregroundStyle(AppColors.muted)
                 .lineLimit(1).minimumScaleFactor(0.7)
                 .multilineTextAlignment(.center)
@@ -707,7 +708,7 @@ public struct SetLoggingTable: View {
         Button(action: action) {
             HStack(spacing: 4) {
                 Image(systemName: icon).font(.system(size: 12, weight: .semibold))
-                Text(LanguageManager.t(titleKey)).font(.system(size: 12, weight: .medium)).lineLimit(1).fixedSize()
+                Text(LanguageManager.t(titleKey)).font(.app(size: 12, weight: .medium)).lineLimit(1).fixedSize()
             }
             .foregroundStyle(quiet ? AppColors.muted : AppColors.purple)
             .opacity(enabled ? 1 : 0.35)

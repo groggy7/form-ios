@@ -59,11 +59,11 @@ public struct RestTimerBar: View {
             HStack(spacing: 12) {
                 VStack(alignment: .leading, spacing: 1) {
                     Text(LanguageManager.t("rest.title").uppercased())
-                        .font(.system(size: 11, weight: .bold))
+                        .font(.app(size: 11, weight: .bold))
                         .tracking(1.25)
                         .foregroundStyle(AppColors.restTimerAccent)
                     Text(exerciseName)
-                        .font(.system(size: 16, weight: .bold))
+                        .font(.app(size: 16, weight: .bold))
                         .foregroundStyle(AppColors.text)
                         .lineLimit(1)
                 }
@@ -72,7 +72,7 @@ public struct RestTimerBar: View {
 
                 HStack(spacing: 6) {
                     Text(timeText)
-                        .font(.system(size: 31, weight: .bold))
+                        .font(.app(size: 31, weight: .bold))
                         .monospacedDigit()
                         .foregroundStyle(AppColors.restTimerAccent)
                         .fixedSize(horizontal: true, vertical: false)
@@ -93,7 +93,7 @@ public struct RestTimerBar: View {
             HStack(spacing: 10) {
                 Button(action: { onAddSeconds(-15) }) {
                     Text("-15s")
-                        .font(.system(size: 13))
+                        .font(.app(size: 13))
                         .foregroundStyle(AppColors.muted)
                         .frame(width: 60, height: 32)
                         .background(
@@ -109,7 +109,7 @@ public struct RestTimerBar: View {
 
                 Button(action: { onAddSeconds(30) }) {
                     Text("+30s")
-                        .font(.system(size: 13))
+                        .font(.app(size: 13))
                         .foregroundStyle(AppColors.muted)
                         .frame(width: 60, height: 32)
                         .background(
@@ -260,7 +260,7 @@ public struct RestTimerFullScreenModal: View {
                     .buttonStyle(.plain)
 
                     Text(LanguageManager.t("rest.title"))
-                        .font(.system(size: 18, weight: .semibold))
+                        .font(.app(size: 18, weight: .semibold))
                         .foregroundStyle(AppColors.text)
 
                     Spacer()
@@ -280,7 +280,7 @@ public struct RestTimerFullScreenModal: View {
                     VStack(spacing: 24) {
                         // Exercise Name
                         Text(exerciseName)
-                            .font(.system(size: 14))
+                            .font(.app(size: 14))
                             .foregroundStyle(AppColors.muted)
                             .lineLimit(2)
                             .multilineTextAlignment(.center)
@@ -315,16 +315,16 @@ public struct RestTimerFullScreenModal: View {
                             // Inner labels
                             VStack(spacing: 8) {
                                 Text(stateLabel)
-                                    .font(.system(size: 12, weight: .bold))
+                                    .font(.app(size: 12, weight: .bold))
                                     .tracking(1)
                                     .foregroundStyle(complete ? AppColors.accent : AppColors.secondaryText)
 
                                 Text(timeText)
-                                    .font(.system(size: 58, weight: .medium, design: .monospaced))
+                                    .font(.app(size: 58, weight: .medium, design: .monospaced))
                                     .foregroundStyle(AppColors.text)
 
                                 Text(LanguageManager.t("rest.target", ["time": RestTimerUtils.formatSecondsToTime(totalSeconds)]))
-                                    .font(.system(size: 13))
+                                    .font(.app(size: 13))
                                     .foregroundStyle(AppColors.muted)
                             }
                         }
@@ -338,7 +338,7 @@ public struct RestTimerFullScreenModal: View {
                                 let isSel = totalSeconds == duration
                                 Button(action: { onSetDuration(duration) }) {
                                     Text("\(duration)s")
-                                        .font(.system(size: 12, weight: isSel ? .bold : .medium))
+                                        .font(.app(size: 12, weight: isSel ? .bold : .medium))
                                         .foregroundStyle(isSel ? AppColors.purple : AppColors.secondaryText)
                                         .frame(maxWidth: .infinity)
                                         .frame(height: 48)
@@ -360,7 +360,7 @@ public struct RestTimerFullScreenModal: View {
                         HStack(spacing: 20) {
                             Button(action: { onAddSeconds(-15) }) {
                                 Text("−15s")
-                                    .font(.system(size: 16, weight: .medium))
+                                    .font(.app(size: 16, weight: .medium))
                                     .foregroundStyle(AppColors.text)
                                     .frame(maxWidth: .infinity)
                                     .frame(height: 50)
@@ -392,7 +392,7 @@ public struct RestTimerFullScreenModal: View {
 
                             Button(action: { onAddSeconds(15) }) {
                                 Text("+15s")
-                                    .font(.system(size: 16, weight: .medium))
+                                    .font(.app(size: 16, weight: .medium))
                                     .foregroundStyle(AppColors.text)
                                     .frame(maxWidth: .infinity)
                                     .frame(height: 50)
@@ -408,7 +408,7 @@ public struct RestTimerFullScreenModal: View {
                         // Skip Rest Button
                         Button(action: onSkip) {
                             Text(LanguageManager.t("rest.skip"))
-                                .font(.system(size: 14, weight: .medium))
+                                .font(.app(size: 14, weight: .medium))
                                 .foregroundStyle(AppColors.secondaryText)
                                 .frame(maxWidth: .infinity)
                                 .frame(height: 52)

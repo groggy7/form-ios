@@ -48,10 +48,10 @@ public struct VolumeMatrixInfoSheet: View {
     private var overviewSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(LanguageManager.t("matrix.info.overviewTitle"))
-                .font(.system(size: 15, weight: .semibold))
+                .font(.app(size: 15, weight: .semibold))
                 .foregroundStyle(AppColors.text)
             Text(LanguageManager.t("matrix.info.overviewText"))
-                .font(.system(size: 13))
+                .font(.app(size: 13))
                 .lineSpacing(3)
                 .foregroundStyle(AppColors.secondaryText)
         }
@@ -65,13 +65,13 @@ public struct VolumeMatrixInfoSheet: View {
     private var calculationSection: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text(LanguageManager.t("matrix.info.calculationTitle"))
-                .font(.system(size: 15, weight: .semibold))
+                .font(.app(size: 15, weight: .semibold))
                 .foregroundStyle(AppColors.text)
 
             // Direct Sets
             HStack(alignment: .top, spacing: 12) {
                 Text("1.0×")
-                    .font(.system(size: 11, weight: .bold))
+                    .font(.app(size: 11, weight: .bold))
                     .foregroundStyle(AppColors.accent)
                     .padding(.horizontal, 7)
                     .padding(.vertical, 3)
@@ -81,10 +81,10 @@ public struct VolumeMatrixInfoSheet: View {
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(LanguageManager.t("matrix.info.directSetsTitle"))
-                        .font(.system(size: 13, weight: .semibold))
+                        .font(.app(size: 13, weight: .semibold))
                         .foregroundStyle(AppColors.text)
                     Text(LanguageManager.t("matrix.info.directSetsDesc"))
-                        .font(.system(size: 12))
+                        .font(.app(size: 12))
                         .lineSpacing(2)
                         .foregroundStyle(AppColors.secondaryText)
                 }
@@ -95,7 +95,7 @@ public struct VolumeMatrixInfoSheet: View {
             // Indirect Sets
             HStack(alignment: .top, spacing: 12) {
                 Text("0.5×")
-                    .font(.system(size: 11, weight: .bold))
+                    .font(.app(size: 11, weight: .bold))
                     .foregroundStyle(AppColors.purple)
                     .padding(.horizontal, 7)
                     .padding(.vertical, 3)
@@ -105,10 +105,10 @@ public struct VolumeMatrixInfoSheet: View {
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(LanguageManager.t("matrix.info.indirectSetsTitle"))
-                        .font(.system(size: 13, weight: .semibold))
+                        .font(.app(size: 13, weight: .semibold))
                         .foregroundStyle(AppColors.text)
                     Text(LanguageManager.t("matrix.info.indirectSetsDesc"))
-                        .font(.system(size: 12))
+                        .font(.app(size: 12))
                         .lineSpacing(2)
                         .foregroundStyle(AppColors.secondaryText)
                 }
@@ -125,10 +125,10 @@ public struct VolumeMatrixInfoSheet: View {
         VStack(alignment: .leading, spacing: 14) {
             VStack(alignment: .leading, spacing: 2) {
                 Text(LanguageManager.t("matrix.info.zonesTitle"))
-                    .font(.system(size: 15, weight: .semibold))
+                    .font(.app(size: 15, weight: .semibold))
                     .foregroundStyle(AppColors.text)
                 Text(LanguageManager.t("matrix.info.zonesSubtitle"))
-                    .font(.system(size: 12))
+                    .font(.app(size: 12))
                     .foregroundStyle(AppColors.muted)
             }
 
@@ -154,12 +154,12 @@ public struct VolumeMatrixInfoSheet: View {
                         .fill(item.zone.color)
                         .frame(width: 9, height: 9)
                     Text(LanguageManager.t(item.zone.titleKey))
-                        .font(.system(size: 13, weight: .semibold))
+                        .font(.app(size: 13, weight: .semibold))
                         .foregroundStyle(AppColors.text)
                 }
                 Spacer()
                 Text(LanguageManager.t(item.rangeKey))
-                    .font(.system(size: 10, weight: .semibold))
+                    .font(.app(size: 10, weight: .semibold))
                     .foregroundStyle(item.zone.textColor)
                     .padding(.horizontal, 6)
                     .padding(.vertical, 2)
@@ -169,7 +169,7 @@ public struct VolumeMatrixInfoSheet: View {
             }
 
             Text(LanguageManager.t(item.detailKey))
-                .font(.system(size: 12))
+                .font(.app(size: 12))
                 .lineSpacing(2)
                 .foregroundStyle(AppColors.secondaryText)
         }
@@ -184,10 +184,10 @@ public struct VolumeMatrixInfoSheet: View {
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(LanguageManager.t("matrix.info.tipTitle"))
-                    .font(.system(size: 13, weight: .semibold))
+                    .font(.app(size: 13, weight: .semibold))
                     .foregroundStyle(AppColors.accent)
                 Text(LanguageManager.t("matrix.info.tipText"))
-                    .font(.system(size: 12))
+                    .font(.app(size: 12))
                     .lineSpacing(2)
                     .foregroundStyle(AppColors.secondaryText)
             }

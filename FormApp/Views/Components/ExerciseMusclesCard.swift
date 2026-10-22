@@ -92,7 +92,7 @@ struct ExerciseMusclesCard: View {
         VStack(alignment: .leading, spacing: isExpanded ? 14 : 0) {
             HStack {
                 Text(LanguageManager.t("anatomy.title"))
-                    .font(.system(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.text)
+                    .font(.app(size: titleSize, weight: .semibold)).foregroundStyle(AppColors.text)
 
                 Spacer()
 
@@ -132,10 +132,10 @@ struct ExerciseMusclesCard: View {
                     }
                     alsoInvolved(profile)
                     Text(LanguageManager.t("anatomy.note"))
-                        .font(.system(size: noteSize)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)
+                        .font(.app(size: noteSize)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)
                 } else {
                     Text(LanguageManager.t("anatomy.unavailable"))
-                        .font(.system(size: bodySize)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)
+                        .font(.app(size: bodySize)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)
                 }
             }
         }
@@ -177,7 +177,7 @@ struct ExerciseMusclesCard: View {
                     selectedView = option
                 } label: {
                     Text(LanguageManager.t(option == "front" ? "anatomy.front" : "anatomy.back"))
-                        .font(.system(size: 13, weight: isSelected ? .semibold : .medium))
+                        .font(.app(size: 13, weight: isSelected ? .semibold : .medium))
                         .foregroundStyle(isSelected ? AppColors.purple : AppColors.muted)
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .background(isSelected ? AppColors.purpleBg : Color.clear)
@@ -212,13 +212,13 @@ struct ExerciseMusclesCard: View {
     private func muscleList(_ catalog: ExerciseMuscleCatalog, _ muscles: [String], primary: Bool) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(LanguageManager.t(primary ? "anatomy.primary" : "anatomy.secondary"))
-                .font(.system(size: labelSize, weight: .medium)).foregroundStyle(AppColors.secondaryText)
+                .font(.app(size: labelSize, weight: .medium)).foregroundStyle(AppColors.secondaryText)
             ForEach(muscles, id: \.self) { muscle in
                 HStack(alignment: .top, spacing: 8) {
                     Circle().fill(primary ? AppColors.purple : AppColors.muscleSecondary)
                         .frame(width: 8, height: 8).padding(.top, bodySize * 0.3).accessibilityHidden(true)
                     Text(LanguageManager.t("anatomy.muscle.\(muscle)"))
-                        .font(.system(size: bodySize, weight: .medium)).foregroundStyle(AppColors.text)
+                        .font(.app(size: bodySize, weight: .medium)).foregroundStyle(AppColors.text)
                         .lineSpacing(3).fixedSize(horizontal: false, vertical: true)
                 }
             }
@@ -231,12 +231,12 @@ struct ExerciseMusclesCard: View {
         if !profile.alsoInvolved.isEmpty {
             VStack(alignment: .leading, spacing: 6) {
                 Text(LanguageManager.t("anatomy.involved"))
-                    .font(.system(size: labelSize, weight: .medium)).foregroundStyle(AppColors.secondaryText)
+                    .font(.app(size: labelSize, weight: .medium)).foregroundStyle(AppColors.secondaryText)
                 HStack(alignment: .top, spacing: 8) {
                     Circle().fill(AppColors.muscleInvolved)
                         .frame(width: 8, height: 8).padding(.top, involvedSize * 0.3).accessibilityHidden(true)
                     Text(profile.alsoInvolved.map { LanguageManager.t("anatomy.muscle.\($0)") }.joined(separator: ", "))
-                        .font(.system(size: involvedSize)).foregroundStyle(AppColors.secondaryText)
+                        .font(.app(size: involvedSize)).foregroundStyle(AppColors.secondaryText)
                         .lineSpacing(2).fixedSize(horizontal: false, vertical: true)
                 }
             }

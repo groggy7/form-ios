@@ -33,10 +33,10 @@ public struct FormLabInfoSheet: View {
     private var overviewSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(LanguageManager.t("form_lab.info_title"))
-                .font(.system(size: 15, weight: .semibold))
+                .font(.app(size: 15, weight: .semibold))
                 .foregroundStyle(AppColors.text)
             Text(LanguageManager.t("form_lab.info_subtitle"))
-                .font(.system(size: 13))
+                .font(.app(size: 13))
                 .lineSpacing(3)
                 .foregroundStyle(AppColors.secondaryText)
         }
@@ -50,15 +50,15 @@ public struct FormLabInfoSheet: View {
     private var formulasSection: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text(LanguageManager.t("form_lab.info_brzycki_epley_title"))
-                .font(.system(size: 15, weight: .semibold))
+                .font(.app(size: 15, weight: .semibold))
                 .foregroundStyle(AppColors.text)
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("Brzycki")
-                    .font(.system(size: 13, weight: .bold))
+                    .font(.app(size: 13, weight: .bold))
                     .foregroundStyle(AppColors.accent)
                 Text(LanguageManager.t("form_lab.info_brzycki_subtitle"))
-                    .font(.system(size: 12))
+                    .font(.app(size: 12))
                     .foregroundStyle(AppColors.secondaryText)
             }
             .padding(12)
@@ -68,10 +68,10 @@ public struct FormLabInfoSheet: View {
 
             VStack(alignment: .leading, spacing: 4) {
                 Text("Epley")
-                    .font(.system(size: 13, weight: .bold))
+                    .font(.app(size: 13, weight: .bold))
                     .foregroundStyle(AppColors.accent)
                 Text(LanguageManager.t("form_lab.info_epley_subtitle"))
-                    .font(.system(size: 12))
+                    .font(.app(size: 12))
                     .foregroundStyle(AppColors.secondaryText)
             }
             .padding(12)
@@ -80,7 +80,7 @@ public struct FormLabInfoSheet: View {
             .clipShape(RoundedRectangle(cornerRadius: 10))
 
             Text(LanguageManager.t("form_lab.info_brzycki_epley_desc"))
-                .font(.system(size: 13))
+                .font(.app(size: 13))
                 .lineSpacing(3)
                 .foregroundStyle(AppColors.secondaryText)
         }
@@ -94,11 +94,11 @@ public struct FormLabInfoSheet: View {
     private var balanceSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(LanguageManager.t("form_lab.info_antagonist_title"))
-                .font(.system(size: 15, weight: .semibold))
+                .font(.app(size: 15, weight: .semibold))
                 .foregroundStyle(AppColors.text)
 
             Text(LanguageManager.t("form_lab.info_antagonist_desc"))
-                .font(.system(size: 13))
+                .font(.app(size: 13))
                 .lineSpacing(3)
                 .foregroundStyle(AppColors.secondaryText)
 
@@ -119,10 +119,10 @@ public struct FormLabInfoSheet: View {
     private var jointsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(LanguageManager.t("form_lab.info_joints_title"))
-                .font(.system(size: 15, weight: .semibold))
+                .font(.app(size: 15, weight: .semibold))
                 .foregroundStyle(AppColors.text)
             Text(LanguageManager.t("form_lab.info_joints_desc"))
-                .font(.system(size: 13))
+                .font(.app(size: 13))
                 .lineSpacing(3)
                 .foregroundStyle(AppColors.secondaryText)
         }
@@ -137,15 +137,15 @@ public struct FormLabInfoSheet: View {
         HStack {
             VStack(alignment: .leading, spacing: 2) {
                 Text(label)
-                    .font(.system(size: 13, weight: .semibold))
+                    .font(.app(size: 13, weight: .semibold))
                     .foregroundStyle(AppColors.text)
                 Text(desc)
-                    .font(.system(size: 11))
+                    .font(.app(size: 11))
                     .foregroundStyle(AppColors.muted)
             }
             Spacer()
             Text(range)
-                .font(.system(size: 12, weight: .bold, design: .monospaced))
+                .font(.app(size: 12, weight: .bold, design: .monospaced))
                 .foregroundStyle(AppColors.accent)
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)

@@ -115,7 +115,7 @@ public struct OnboardingView: View {
                     .frame(width: 22, height: 22)
                     .clipShape(RoundedRectangle(cornerRadius: 6))
                 Text(label)
-                    .font(.system(size: 14, weight: .medium))
+                    .font(.app(size: 14, weight: .medium))
                     .foregroundStyle(AppColors.text)
             }
             .padding(.horizontal, 12)
@@ -143,11 +143,11 @@ public struct OnboardingView: View {
                             .foregroundStyle(AppColors.text)
                             .accessibilityHidden(true)
                         Text(LanguageManager.t("onboarding.welcome.title"))
-                            .font(.system(size: 26, weight: .bold))
+                            .font(.app(size: 26, weight: .bold))
                             .foregroundStyle(AppColors.text)
                             .multilineTextAlignment(.center)
                         Text(LanguageManager.t("onboarding.welcome.subtitle"))
-                            .font(.system(size: 15))
+                            .font(.app(size: 15))
                             .foregroundStyle(AppColors.secondaryText)
                             .multilineTextAlignment(.center)
                             .lineSpacing(3)
@@ -156,7 +156,7 @@ public struct OnboardingView: View {
                     VStack(spacing: 10) {
                         Button(action: { withAnimation(.easeInOut(duration: 0.25)) { step = 1 } }) {
                             Text(LanguageManager.t("onboarding.welcome.start"))
-                                .font(.system(size: 16, weight: .bold))
+                                .font(.app(size: 16, weight: .bold))
                                 .foregroundStyle(AppColors.background)
                                 .frame(maxWidth: .infinity, minHeight: 52)
                                 .background(AppColors.accent, in: RoundedRectangle(cornerRadius: 12))
@@ -165,7 +165,7 @@ public struct OnboardingView: View {
                         .accessibilityIdentifier("onboarding-start")
                         Button(action: { showRestoreSheet = true }) {
                             Text(LanguageManager.t("onboarding.welcome.restore"))
-                                .font(.system(size: 15, weight: .semibold))
+                                .font(.app(size: 15, weight: .semibold))
                                 .foregroundStyle(AppColors.text)
                                 .frame(maxWidth: .infinity, minHeight: 52)
                                 .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
@@ -185,10 +185,10 @@ public struct OnboardingView: View {
     private var restoreChoiceSheet: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(LanguageManager.t("onboarding.restore.title"))
-                .font(.system(size: 20, weight: .semibold))
+                .font(.app(size: 20, weight: .semibold))
                 .foregroundStyle(AppColors.text)
             Text(LanguageManager.t("onboarding.restore.subtitle"))
-                .font(.system(size: 14))
+                .font(.app(size: 14))
                 .foregroundStyle(AppColors.secondaryText)
             restoreOption(icon: "doc.text", title: "onboarding.restore.file", hint: "onboarding.restore.fileHint", id: "onboarding-restore-file") {
                 showRestoreSheet = false
@@ -215,10 +215,10 @@ public struct OnboardingView: View {
                     .frame(width: 24)
                 VStack(alignment: .leading, spacing: 2) {
                     Text(LanguageManager.t(title))
-                        .font(.system(size: 15, weight: .medium))
+                        .font(.app(size: 15, weight: .medium))
                         .foregroundStyle(AppColors.text)
                     Text(LanguageManager.t(hint))
-                        .font(.system(size: 13))
+                        .font(.app(size: 13))
                         .foregroundStyle(AppColors.secondaryText)
                         .multilineTextAlignment(.leading)
                 }

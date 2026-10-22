@@ -39,22 +39,22 @@ struct BodySummaryCard: View {
                     .font(.system(size: 20)).foregroundStyle(AppColors.secondaryText)
                     .frame(width: 24)
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(LanguageManager.t("body.title")).font(.system(size: 15, weight: .semibold)).foregroundStyle(AppColors.text)
+                    Text(LanguageManager.t("body.title")).font(.app(size: 15, weight: .semibold)).foregroundStyle(AppColors.text)
                     if let latestWeight, let kg = latestWeight.bodyweightKg {
-                        Text(formatValue(.bodyweight, kg, weightUnit)).font(.system(size: 18, weight: .semibold)).foregroundStyle(AppColors.text)
+                        Text(formatValue(.bodyweight, kg, weightUnit)).font(.app(size: 18, weight: .semibold)).foregroundStyle(AppColors.text)
                         Text(LanguageManager.t("body.card.lastLogged", ["date": formatBodyDate(latestWeight.date)]))
-                            .font(.system(size: 12)).foregroundStyle(AppColors.muted)
+                            .font(.app(size: 12)).foregroundStyle(AppColors.muted)
                     } else if let latest = entries.last {
                         Text(LanguageManager.t("body.card.lastLogged", ["date": formatBodyDate(latest.date)]))
-                            .font(.system(size: 12)).foregroundStyle(AppColors.secondaryText)
+                            .font(.app(size: 12)).foregroundStyle(AppColors.secondaryText)
                     } else {
-                        Text(LanguageManager.t("body.card.empty")).font(.system(size: 12)).foregroundStyle(AppColors.secondaryText)
+                        Text(LanguageManager.t("body.card.empty")).font(.app(size: 12)).foregroundStyle(AppColors.secondaryText)
                             .fixedSize(horizontal: false, vertical: true)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 Text(LanguageManager.t("body.log"))
-                    .font(.system(size: 13, weight: .semibold)).foregroundStyle(AppColors.accent)
+                    .font(.app(size: 13, weight: .semibold)).foregroundStyle(AppColors.accent)
                     .padding(.horizontal, 14).padding(.vertical, 8)
                     .background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                     .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(AppColors.border, lineWidth: 1))
@@ -82,18 +82,18 @@ struct BodyHealthCard: View {
     var body: some View {
         let _ = themeManager.currentTheme
         VStack(alignment: .leading, spacing: 10) {
-            Text(LanguageManager.t("body.health.title")).font(.system(size: 15, weight: .semibold)).foregroundStyle(AppColors.text)
+            Text(LanguageManager.t("body.health.title")).font(.app(size: 15, weight: .semibold)).foregroundStyle(AppColors.text)
             Text(LanguageManager.t(isEnabled ? "body.health.onText" : "body.health.offText"))
-                .font(.system(size: 13)).lineSpacing(3).foregroundStyle(AppColors.secondaryText)
+                .font(.app(size: 13)).lineSpacing(3).foregroundStyle(AppColors.secondaryText)
                 .fixedSize(horizontal: false, vertical: true)
             if let status {
-                Text(status).font(.system(size: 12)).foregroundStyle(AppColors.muted)
+                Text(status).font(.app(size: 12)).foregroundStyle(AppColors.muted)
                     .fixedSize(horizontal: false, vertical: true)
                     .accessibilityIdentifier("body-health-status")
             }
             Button(action: isEnabled ? onTurnOff : onConnect) {
                 Text(LanguageManager.t(isEnabled ? "body.health.turnOff" : "body.health.connect"))
-                    .font(.system(size: 14, weight: .semibold)).foregroundStyle(AppColors.text)
+                    .font(.app(size: 14, weight: .semibold)).foregroundStyle(AppColors.text)
                     .frame(maxWidth: .infinity, minHeight: 48)
                     .overlay(RoundedRectangle(cornerRadius: 11, style: .continuous).stroke(AppColors.border, lineWidth: 1))
                     .contentShape(Rectangle())
@@ -159,10 +159,10 @@ struct BodyLogView: View {
                             lockedCard(title: "body.trend.title", identifier: "body-trend-locked")
                             lockedCard(title: "body.strength.title", identifier: "body-strength-locked")
                         }
-                        Text(LanguageManager.t("body.entries")).font(.system(size: 17, weight: .semibold)).foregroundStyle(AppColors.text)
+                        Text(LanguageManager.t("body.entries")).font(.app(size: 17, weight: .semibold)).foregroundStyle(AppColors.text)
                             .padding(.top, 6)
                         if entries.isEmpty {
-                            Text(LanguageManager.t("body.noEntries")).font(.system(size: 13)).foregroundStyle(AppColors.muted)
+                            Text(LanguageManager.t("body.noEntries")).font(.app(size: 13)).foregroundStyle(AppColors.muted)
                         }
                         ForEach(entries.reversed()) { entry in
                             entryRow(entry, fromHealth: shown.healthDates.contains(entry.date)) {
@@ -259,18 +259,18 @@ struct BodyLogView: View {
             dateStepper
             if storedEntry != nil {
                 Text(LanguageManager.t("body.replaceNotice", ["date": formatBodyDate(date)]))
-                    .font(.system(size: 12)).foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
+                    .font(.app(size: 12)).foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
                     .accessibilityIdentifier("body-replace-notice")
             }
             if shown.healthDates.contains(date) {
                 Text(LanguageManager.t("body.health.editNotice"))
-                    .font(.system(size: 12)).foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
+                    .font(.app(size: 12)).foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
                     .accessibilityIdentifier("body-health-notice")
             }
             field(.bodyweight)
             Button { showMeasurements.toggle() } label: {
                 Text(LanguageManager.t(showMeasurements ? "body.hideMeasurements" : "body.showMeasurements"))
-                    .font(.system(size: 13)).foregroundStyle(AppColors.secondaryText)
+                    .font(.app(size: 13)).foregroundStyle(AppColors.secondaryText)
                     .frame(minHeight: 44)
             }
             .buttonStyle(.plain)
@@ -284,29 +284,29 @@ struct BodyLogView: View {
                 }
             }
             if let error {
-                Text(error).font(.system(size: 12)).foregroundStyle(AppColors.danger).fixedSize(horizontal: false, vertical: true)
+                Text(error).font(.app(size: 12)).foregroundStyle(AppColors.danger).fixedSize(horizontal: false, vertical: true)
                     .accessibilityIdentifier("body-error")
             }
             Button(action: save) {
                 Text(LanguageManager.t("body.save"))
-                    .font(.system(size: 14, weight: .semibold)).foregroundStyle(Color.black)
+                    .font(.app(size: 14, weight: .semibold)).foregroundStyle(Color.black)
                     .frame(maxWidth: .infinity, minHeight: 50)
                     .background(AppColors.accent).clipShape(RoundedRectangle(cornerRadius: 11, style: .continuous))
             }
             .buttonStyle(.plain)
             .accessibilityIdentifier("body-save")
             if saved {
-                Text(LanguageManager.t("body.saved")).font(.system(size: 12)).foregroundStyle(AppColors.accent)
+                Text(LanguageManager.t("body.saved")).font(.app(size: 12)).foregroundStyle(AppColors.accent)
                     .accessibilityIdentifier("body-saved")
             }
             if existing != nil {
                 HStack(spacing: 16) {
                     if date != today {
                         Button(LanguageManager.t("body.cancelEdit")) { select(today) }
-                            .font(.system(size: 13)).foregroundStyle(AppColors.secondaryText).frame(minHeight: 44)
+                            .font(.app(size: 13)).foregroundStyle(AppColors.secondaryText).frame(minHeight: 44)
                     }
                     Button(LanguageManager.t("body.deleteEntry")) { confirmDelete = true }
-                        .font(.system(size: 13)).foregroundStyle(AppColors.danger).frame(minHeight: 44)
+                        .font(.app(size: 13)).foregroundStyle(AppColors.danger).frame(minHeight: 44)
                         .accessibilityIdentifier("body-delete")
                 }
                 .buttonStyle(.plain)
@@ -327,9 +327,9 @@ struct BodyLogView: View {
             .accessibilityLabel(LanguageManager.t("body.previousDay"))
             .accessibilityIdentifier("body-date-previous")
             VStack(spacing: 1) {
-                Text(LanguageManager.t("body.date")).font(.system(size: 11)).foregroundStyle(AppColors.muted)
+                Text(LanguageManager.t("body.date")).font(.app(size: 11)).foregroundStyle(AppColors.muted)
                 Text(date == today ? LanguageManager.t("nav.today") : formatBodyDate(date))
-                    .font(.system(size: 14, weight: .semibold)).foregroundStyle(AppColors.text)
+                    .font(.app(size: 14, weight: .semibold)).foregroundStyle(AppColors.text)
                     .accessibilityIdentifier("body-date")
             }
             .frame(maxWidth: .infinity)
@@ -359,10 +359,10 @@ struct BodyLogView: View {
         )
         return VStack(alignment: .leading, spacing: 4) {
             Text("\(LanguageManager.t(metric.labelKey)) (\(unitLabel(metric, unit)))")
-                .font(.system(size: 12)).foregroundStyle(AppColors.muted).lineLimit(1)
+                .font(.app(size: 12)).foregroundStyle(AppColors.muted).lineLimit(1)
             TextField("", text: binding)
                 .keyboardType(.decimalPad)
-                .font(.system(size: 16, weight: .medium)).foregroundStyle(AppColors.text)
+                .font(.app(size: 16, weight: .medium)).foregroundStyle(AppColors.text)
                 .padding(.horizontal, 12).frame(minHeight: 48)
                 .background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
                 .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(AppColors.border, lineWidth: 1))
@@ -388,11 +388,11 @@ struct BodyLogView: View {
 
     private func lockedCard(title: String, identifier: String) -> some View {
         card(title: LanguageManager.t(title), identifier: identifier, trailing: AnyView(ProBadge())) {
-            Text(LanguageManager.t("body.locked")).font(.system(size: 13)).lineSpacing(3).foregroundStyle(AppColors.secondaryText)
+            Text(LanguageManager.t("body.locked")).font(.app(size: 13)).lineSpacing(3).foregroundStyle(AppColors.secondaryText)
                 .fixedSize(horizontal: false, vertical: true)
             Button { showPaywall = true } label: {
                 Text(LanguageManager.t("body.unlock"))
-                    .font(.system(size: 14, weight: .semibold)).foregroundStyle(AppColors.text)
+                    .font(.app(size: 14, weight: .semibold)).foregroundStyle(AppColors.text)
                     .frame(maxWidth: .infinity, minHeight: 48)
                     .overlay(RoundedRectangle(cornerRadius: 11, style: .continuous).stroke(AppColors.border, lineWidth: 1))
             }
@@ -402,7 +402,7 @@ struct BodyLogView: View {
 
     private func trendCard(_ report: BodyTrendReport) -> some View {
         card(title: LanguageManager.t("body.trend.title"), identifier: "body-trend") {
-            Text(LanguageManager.t("body.trend.subtitle")).font(.system(size: 12)).foregroundStyle(AppColors.secondaryText)
+            Text(LanguageManager.t("body.trend.subtitle")).font(.app(size: 12)).foregroundStyle(AppColors.secondaryText)
                 .fixedSize(horizontal: false, vertical: true)
             if let latest = report.latest {
                 HStack(alignment: .top, spacing: 10) {
@@ -419,32 +419,32 @@ struct BodyLogView: View {
                 let chartPoints = report.points.filter { (BodyDay.number($0.date)).map { todayNumber - $0 < BodyTrends.chartDays } ?? false }
                 if chartPoints.count >= 2 { chart(chartPoints) }
                 if !report.measurements.isEmpty {
-                    Text(LanguageManager.t("body.trend.measurements")).font(.system(size: 13, weight: .semibold)).foregroundStyle(AppColors.text)
+                    Text(LanguageManager.t("body.trend.measurements")).font(.app(size: 13, weight: .semibold)).foregroundStyle(AppColors.text)
                         .padding(.top, 4)
                     ForEach(report.measurements, id: \.metric) { change in
                         HStack(alignment: .top) {
-                            Text(LanguageManager.t(change.metric.labelKey)).font(.system(size: 13)).foregroundStyle(AppColors.secondaryText)
+                            Text(LanguageManager.t(change.metric.labelKey)).font(.app(size: 13)).foregroundStyle(AppColors.secondaryText)
                             Spacer()
                             VStack(alignment: .trailing, spacing: 1) {
-                                Text(formatValue(change.metric, change.latestCm, unit)).font(.system(size: 13, weight: .semibold)).foregroundStyle(AppColors.text)
+                                Text(formatValue(change.metric, change.latestCm, unit)).font(.app(size: 13, weight: .semibold)).foregroundStyle(AppColors.text)
                                 Text(LanguageManager.t("body.trend.since", [
                                     "change": "\(formatChange(change.metric, change.changeCm, unit)) \(unitLabel(change.metric, unit))",
                                     "date": formatBodyDate(change.since)]))
-                                    .font(.system(size: 11)).foregroundStyle(AppColors.muted)
+                                    .font(.app(size: 11)).foregroundStyle(AppColors.muted)
                             }
                         }
                     }
                 }
             } else {
-                Text(LanguageManager.t("body.trend.noData")).font(.system(size: 13)).foregroundStyle(AppColors.muted)
+                Text(LanguageManager.t("body.trend.noData")).font(.app(size: 13)).foregroundStyle(AppColors.muted)
             }
         }
     }
 
     private func tile(_ title: String, _ value: String, muted: Bool) -> some View {
         VStack(alignment: .leading, spacing: 4) {
-            Text(title).font(.system(size: 11)).foregroundStyle(AppColors.muted)
-            Text(value).font(.system(size: muted ? 12 : 17, weight: muted ? .regular : .semibold))
+            Text(title).font(.app(size: 11)).foregroundStyle(AppColors.muted)
+            Text(value).font(.app(size: muted ? 12 : 17, weight: muted ? .regular : .semibold))
                 .foregroundStyle(muted ? AppColors.secondaryText : AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
         }
@@ -462,7 +462,7 @@ struct BodyLogView: View {
         let start = todayNumber - (BodyTrends.chartDays - 1)
         let days = Double(BodyTrends.chartDays - 1)
         return VStack(alignment: .leading, spacing: 4) {
-            Text(formatValue(.bodyweight, high, unit)).font(.system(size: 10)).foregroundStyle(AppColors.muted)
+            Text(formatValue(.bodyweight, high, unit)).font(.app(size: 10)).foregroundStyle(AppColors.muted)
             GeometryReader { geometry in
                 let size = geometry.size
                 let positions = points.compactMap { point -> (CGPoint, CGPoint)? in
@@ -488,37 +488,37 @@ struct BodyLogView: View {
             .accessibilityLabel(LanguageManager.t("body.trend.chartLabel"))
             .accessibilityIdentifier("body-trend-chart")
             HStack {
-                Text(formatValue(.bodyweight, low, unit)).font(.system(size: 10)).foregroundStyle(AppColors.muted)
+                Text(formatValue(.bodyweight, low, unit)).font(.app(size: 10)).foregroundStyle(AppColors.muted)
                 Spacer()
-                Text(formatBodyDate(BodyDay.string(start)) + " – " + formatBodyDate(today)).font(.system(size: 10)).foregroundStyle(AppColors.muted)
+                Text(formatBodyDate(BodyDay.string(start)) + " – " + formatBodyDate(today)).font(.app(size: 10)).foregroundStyle(AppColors.muted)
             }
         }
     }
 
     private func strengthCard(_ report: RelativeStrengthReport) -> some View {
         card(title: LanguageManager.t("body.strength.title"), identifier: "body-strength") {
-            Text(LanguageManager.t("body.strength.subtitle")).font(.system(size: 12)).foregroundStyle(AppColors.secondaryText)
+            Text(LanguageManager.t("body.strength.subtitle")).font(.app(size: 12)).foregroundStyle(AppColors.secondaryText)
                 .fixedSize(horizontal: false, vertical: true)
             switch report {
             case .needsWeighIn:
-                Text(LanguageManager.t("body.strength.needWeighIn")).font(.system(size: 13)).foregroundStyle(AppColors.muted)
+                Text(LanguageManager.t("body.strength.needWeighIn")).font(.app(size: 13)).foregroundStyle(AppColors.muted)
                     .fixedSize(horizontal: false, vertical: true)
             case .noLifts:
-                Text(LanguageManager.t("body.strength.noLifts")).font(.system(size: 13)).foregroundStyle(AppColors.muted)
+                Text(LanguageManager.t("body.strength.noLifts")).font(.app(size: 13)).foregroundStyle(AppColors.muted)
                     .fixedSize(horizontal: false, vertical: true)
             case .rows(_, let rows):
                 ForEach(rows, id: \.exerciseName) { row in
                     HStack(spacing: 10) {
                         VStack(alignment: .leading, spacing: 2) {
                             Text(ContentLocalizer.shared.exerciseName(exerciseId: nil, fallback: row.exerciseName))
-                                .font(.system(size: 13, weight: .semibold)).foregroundStyle(AppColors.text)
+                                .font(.app(size: 13, weight: .semibold)).foregroundStyle(AppColors.text)
                                 .fixedSize(horizontal: false, vertical: true)
                             Text(LanguageManager.t("body.strength.estimate", ["weight": "\(unit.formatDisplayWeight(row.estimated1RmKg)) \(unit.label)"]))
-                                .font(.system(size: 11)).foregroundStyle(AppColors.muted)
+                                .font(.app(size: 11)).foregroundStyle(AppColors.muted)
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         Text(LanguageManager.t("body.strength.ratio", ["ratio": String(format: "%.2f", locale: LanguageManager.locale, row.ratio)]))
-                            .font(.system(size: 14, weight: .semibold)).foregroundStyle(AppColors.text)
+                            .font(.app(size: 14, weight: .semibold)).foregroundStyle(AppColors.text)
                     }
                     .accessibilityElement(children: .combine)
                     .accessibilityIdentifier("body-strength-row")
@@ -537,18 +537,18 @@ struct BodyLogView: View {
         return Button(action: onTap) {
             HStack(spacing: 10) {
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(formatBodyDate(entry.date)).font(.system(size: 14, weight: .semibold)).foregroundStyle(AppColors.text)
+                    Text(formatBodyDate(entry.date)).font(.app(size: 14, weight: .semibold)).foregroundStyle(AppColors.text)
                     if fromHealth {
-                        Text(LanguageManager.t("body.health.from")).font(.system(size: 12)).foregroundStyle(AppColors.muted)
+                        Text(LanguageManager.t("body.health.from")).font(.app(size: 12)).foregroundStyle(AppColors.muted)
                     }
                     if !measurements.isEmpty {
                         Text(measurements.joined(separator: " · ") + " " + LanguageManager.t(BodyUnits.lengthLabelKey(unit)))
-                            .font(.system(size: 12)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)
+                            .font(.app(size: 12)).foregroundStyle(AppColors.muted).fixedSize(horizontal: false, vertical: true)
                     }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 if let kg = entry.bodyweightKg {
-                    Text(formatValue(.bodyweight, kg, unit)).font(.system(size: 14, weight: .semibold)).foregroundStyle(AppColors.text)
+                    Text(formatValue(.bodyweight, kg, unit)).font(.app(size: 14, weight: .semibold)).foregroundStyle(AppColors.text)
                 }
             }
             .padding(.horizontal, 14).padding(.vertical, 12)
@@ -565,7 +565,7 @@ struct BodyLogView: View {
                                      @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 10) {
             HStack(spacing: 8) {
-                Text(title).font(.system(size: 15, weight: .semibold)).foregroundStyle(AppColors.text)
+                Text(title).font(.app(size: 15, weight: .semibold)).foregroundStyle(AppColors.text)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 if let trailing { trailing }
             }

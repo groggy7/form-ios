@@ -37,7 +37,7 @@ public struct WeeklyPlanView: View {
                     // Header row
                     HStack(alignment: .center) {
                         Text(LanguageManager.t("weekly.title"))
-                            .font(.system(size: 26, weight: .semibold))
+                            .font(.app(size: 26, weight: .semibold))
                             .foregroundStyle(AppColors.text)
 
                         Spacer()
@@ -54,7 +54,7 @@ public struct WeeklyPlanView: View {
                     // Active program and 7 weekday cards
                     VStack(alignment: .leading, spacing: 8) {
                         Text(program.displayName)
-                            .font(.system(size: 15, weight: .semibold))
+                            .font(.app(size: 15, weight: .semibold))
                             .foregroundStyle(AppColors.accent)
                             .fixedSize(horizontal: false, vertical: true)
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -86,11 +86,11 @@ public struct WeeklyPlanView: View {
                                     // Day short & date number column
                                     VStack(alignment: .leading, spacing: 1) {
                                         Text(String(dayName.prefix(3)).uppercased())
-                                            .font(.system(size: 10, weight: .bold))
+                                            .font(.app(size: 10, weight: .bold))
                                             .foregroundStyle(isToday ? AppColors.accent : (isUnfinished ? AppColors.unfinishedText : AppColors.muted))
 
                                         Text("\(dayNumber)")
-                                            .font(.system(size: 18, weight: .bold))
+                                            .font(.app(size: 18, weight: .bold))
                                             .foregroundStyle(AppColors.text)
                                     }
                                     .frame(width: 46, alignment: .leading)
@@ -98,12 +98,12 @@ public struct WeeklyPlanView: View {
                                     // Workout title & subtitle
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(workout?.displayTitle(programId: program.id) ?? LanguageManager.t("plan.recover"))
-                                            .font(.system(size: 15, weight: selected ? .bold : .semibold))
+                                            .font(.app(size: 15, weight: selected ? .bold : .semibold))
                                             .foregroundStyle(workout == nil ? AppColors.muted : AppColors.text)
                                             .lineLimit(1)
 
                                         Text(Self.workoutSubtitle(workout: workout, isUnfinished: isUnfinished, isMissed: isMissed))
-                                            .font(.system(size: 12))
+                                            .font(.app(size: 12))
                                             .foregroundStyle(isUnfinished ? AppColors.unfinishedText.opacity(0.8) : AppColors.muted)
                                     }
 
@@ -145,7 +145,7 @@ public struct WeeklyPlanView: View {
                             Image(systemName: "folder")
                                 .font(.system(size: 14, weight: .semibold))
                             Text(LanguageManager.t("weekly.changeProgram"))
-                                .font(.system(size: 14, weight: .semibold))
+                                .font(.app(size: 14, weight: .semibold))
                         }
                         .foregroundStyle(AppColors.text)
                         .frame(maxWidth: .infinity)

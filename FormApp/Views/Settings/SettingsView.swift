@@ -45,12 +45,12 @@ public struct SettingsView: View {
                                 .font(.system(size: 16, weight: .bold))
                                 .foregroundStyle(proManager.isProSubscribed ? AppColors.purple : AppColors.accent)
                             Text(LanguageManager.t("settings.pro_membership"))
-                                .font(.system(size: 16, weight: .bold))
+                                .font(.app(size: 16, weight: .bold))
                                 .foregroundStyle(AppColors.text)
                         }
 
                         Text(LanguageManager.t(proManager.isProSubscribed ? "settings.pro_active" : "pro.volume_matrix.description"))
-                            .font(.system(size: 12.5))
+                            .font(.app(size: 12.5))
                             .foregroundStyle(AppColors.secondaryText)
                             .lineSpacing(2)
 
@@ -64,7 +64,7 @@ public struct SettingsView: View {
                                     Image(systemName: "arrow.up.right")
                                         .font(.system(size: 11, weight: .semibold))
                                     Text(LanguageManager.t("settings.manage_subscription"))
-                                        .font(.system(size: 13, weight: .semibold))
+                                        .font(.app(size: 13, weight: .semibold))
                                 }
                                 .foregroundStyle(Color.white)
                                 .frame(maxWidth: .infinity)
@@ -76,7 +76,7 @@ public struct SettingsView: View {
                         } else {
                             Button(action: { showPaywall = true }) {
                                 Text(LanguageManager.t("settings.upgrade_to_pro"))
-                                    .font(.system(size: 13, weight: .semibold))
+                                    .font(.app(size: 13, weight: .semibold))
                                     .foregroundStyle(AppColors.background)
                                     .frame(maxWidth: .infinity)
                                     .frame(height: 38)
@@ -100,7 +100,7 @@ public struct SettingsView: View {
                         VStack(spacing: 0) {
                             HStack {
                                 Text(LanguageManager.t("settings.defaultRest"))
-                                    .font(.system(size: 15))
+                                    .font(.app(size: 15))
                                     .foregroundStyle(AppColors.text)
                                 Spacer()
                                 Picker("", selection: $store.defaultRestSeconds) {
@@ -119,11 +119,11 @@ public struct SettingsView: View {
                             Toggle(isOn: $store.prefillNextSet) {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(LanguageManager.t("settings.prefillNextSet"))
-                                        .font(.system(size: 15))
+                                        .font(.app(size: 15))
                                         .foregroundStyle(AppColors.text)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     Text(LanguageManager.t("settings.prefillNextSetSubtitle"))
-                                        .font(.system(size: 12))
+                                        .font(.app(size: 12))
                                         .foregroundStyle(AppColors.secondaryText)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                 }
@@ -136,11 +136,11 @@ public struct SettingsView: View {
                             Toggle(isOn: $store.showIntensityTechniques) {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(LanguageManager.t("settings.intensityTechniques"))
-                                        .font(.system(size: 15))
+                                        .font(.app(size: 15))
                                         .foregroundStyle(AppColors.text)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     Text(LanguageManager.t("settings.intensityTechniquesSubtitle"))
-                                        .font(.system(size: 12))
+                                        .font(.app(size: 12))
                                         .foregroundStyle(AppColors.secondaryText)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                 }
@@ -154,18 +154,18 @@ public struct SettingsView: View {
                             Toggle(isOn: $store.suggestSharing) {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(LanguageManager.t("social.suggest")).foregroundStyle(AppColors.text)
-                                    Text(LanguageManager.t("social.suggestDetail")).font(.caption).foregroundStyle(AppColors.secondaryText)
+                                    Text(LanguageManager.t("social.suggestDetail")).appFont(.caption).foregroundStyle(AppColors.secondaryText)
                                 }
                             }.tint(AppColors.accent).padding(14).accessibilityIdentifier("toggle-suggest-sharing")
                             Divider().background(AppColors.border)
                             Toggle(isOn: $store.jointStressRatings) {
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(LanguageManager.t("settings.jointStress"))
-                                        .font(.system(size: 15))
+                                        .font(.app(size: 15))
                                         .foregroundStyle(AppColors.text)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     Text(LanguageManager.t("settings.jointStressSubtitle"))
-                                        .font(.system(size: 12))
+                                        .font(.app(size: 12))
                                         .foregroundStyle(AppColors.secondaryText)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                 }
@@ -222,7 +222,7 @@ public struct SettingsView: View {
                     settingsSection(title: LanguageManager.t("settings.timerAndAlerts")) {
                         Toggle(isOn: $store.soundEnabled) {
                             Text(LanguageManager.t("settings.lockedScreenAlerts"))
-                                .font(.system(size: 15))
+                                .font(.app(size: 15))
                                 .foregroundStyle(AppColors.text)
                         }
                         .tint(AppColors.accent)
@@ -251,17 +251,17 @@ public struct SettingsView: View {
 
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(LanguageManager.t("settings.appTheme"))
-                                        .font(.system(size: 15))
+                                        .font(.app(size: 15))
                                         .foregroundStyle(AppColors.text)
                                     Text(LanguageManager.t("settings.appThemeSubtitle"))
-                                        .font(.system(size: 12))
+                                        .font(.app(size: 12))
                                         .foregroundStyle(AppColors.secondaryText)
                                 }
 
                                 Spacer()
 
                                 Text(LanguageManager.t(themeManager.currentTheme.nameKey))
-                                    .font(.subheadline)
+                                    .appFont(.subheadline)
                                     .foregroundStyle(AppColors.secondaryText)
 
                                 Image(systemName: "chevron.right")
@@ -291,11 +291,11 @@ public struct SettingsView: View {
                                     .frame(width: 22)
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(LanguageManager.t("settings.glowTiles"))
-                                        .font(.system(size: 15))
+                                        .font(.app(size: 15))
                                         .foregroundStyle(AppColors.text)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                     Text(LanguageManager.t("settings.glowTilesSubtitle"))
-                                        .font(.system(size: 12))
+                                        .font(.app(size: 12))
                                         .foregroundStyle(AppColors.secondaryText)
                                         .frame(maxWidth: .infinity, alignment: .leading)
                                 }
@@ -311,10 +311,10 @@ public struct SettingsView: View {
                         HStack {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(LanguageManager.t("settings.weightUnit"))
-                                    .font(.system(size: 15))
+                                    .font(.app(size: 15))
                                     .foregroundStyle(AppColors.text)
                                 Text(LanguageManager.t("settings.weightUnitSubtitle"))
-                                    .font(.system(size: 12))
+                                    .font(.app(size: 12))
                                     .foregroundStyle(AppColors.secondaryText)
                             }
                             Spacer()
@@ -340,7 +340,7 @@ public struct SettingsView: View {
                                         .foregroundStyle(AppColors.secondaryText)
                                         .frame(width: 24, height: 24)
                                     Text(LanguageManager.t("settings.cloudBackup"))
-                                        .font(.system(size: 15))
+                                        .font(.app(size: 15))
                                         .foregroundStyle(AppColors.text)
                                     Spacer()
                                     Image(systemName: "chevron.right")
@@ -364,7 +364,7 @@ public struct SettingsView: View {
                                         .foregroundStyle(AppColors.secondaryText)
                                         .frame(width: 24, height: 24)
                                     Text(LanguageManager.t("settings.importExportData"))
-                                        .font(.system(size: 15))
+                                        .font(.app(size: 15))
                                         .foregroundStyle(AppColors.text)
                                     Spacer()
                                     Image(systemName: "chevron.right")
@@ -385,7 +385,7 @@ public struct SettingsView: View {
                                 Image(systemName: "dumbbell").frame(width: 24, height: 24)
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(LanguageManager.t("setup.build"))
-                                    Text(LanguageManager.t("setup.build.hint")).font(.caption).foregroundStyle(AppColors.secondaryText)
+                                    Text(LanguageManager.t("setup.build.hint")).appFont(.caption).foregroundStyle(AppColors.secondaryText)
                                 }
                                 Spacer()
                                 Image(systemName: "chevron.right").foregroundStyle(AppColors.muted)
@@ -406,10 +406,10 @@ public struct SettingsView: View {
                                     .frame(width: 24, height: 24)
                                 VStack(alignment: .leading, spacing: 2) {
                                     Text(LanguageManager.t("settings.replayTour"))
-                                        .font(.system(size: 15))
+                                        .font(.app(size: 15))
                                         .foregroundStyle(AppColors.text)
                                     Text(LanguageManager.t("settings.replayTourSubtitle"))
-                                        .font(.system(size: 13))
+                                        .font(.app(size: 13))
                                         .foregroundStyle(AppColors.secondaryText)
                                 }
                                 Spacer()
@@ -429,10 +429,10 @@ public struct SettingsView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             HStack(spacing: 8) {
                                 Text("FORCED REP")
-                                    .font(.system(size: 16, weight: .bold))
+                                    .font(.app(size: 16, weight: .bold))
                                     .foregroundStyle(AppColors.text)
                                 Text(LanguageManager.t("settings.version"))
-                                    .font(.system(size: 12, weight: .semibold))
+                                    .font(.app(size: 12, weight: .semibold))
                                     .foregroundStyle(AppColors.accent)
                                     .padding(.horizontal, 6)
                                     .padding(.vertical, 2)
@@ -440,7 +440,7 @@ public struct SettingsView: View {
                                     .clipShape(RoundedRectangle(cornerRadius: 6))
                             }
                             Text(LanguageManager.t("settings.aboutDescription"))
-                                .font(.system(size: 14))
+                                .font(.app(size: 14))
                                 .foregroundStyle(AppColors.secondaryText)
                                 .lineSpacing(3)
                         }
@@ -457,10 +457,10 @@ public struct SettingsView: View {
                                 HStack {
                                     VStack(alignment: .leading, spacing: 2) {
                                         Text(LanguageManager.t("settings.manage_subscription"))
-                                            .font(.system(size: 15))
+                                            .font(.app(size: 15))
                                             .foregroundStyle(AppColors.text)
                                         Text(LanguageManager.t("settings.manage_subscription_desc"))
-                                            .font(.system(size: 12))
+                                            .font(.app(size: 12))
                                             .foregroundStyle(AppColors.secondaryText)
                                             .multilineTextAlignment(.leading)
                                     }
@@ -484,7 +484,7 @@ public struct SettingsView: View {
                         }) {
                             HStack {
                                 Text(LanguageManager.t("settings.terms"))
-                                    .font(.system(size: 15))
+                                    .font(.app(size: 15))
                                     .foregroundStyle(AppColors.text)
                                 Spacer()
                                 Image(systemName: "arrow.up.right")
@@ -505,7 +505,7 @@ public struct SettingsView: View {
                         }) {
                             HStack {
                                 Text(LanguageManager.t("settings.privacy"))
-                                    .font(.system(size: 15))
+                                    .font(.app(size: 15))
                                     .foregroundStyle(AppColors.text)
                                 Spacer()
                                 Image(systemName: "arrow.up.right")
@@ -526,7 +526,7 @@ public struct SettingsView: View {
                         }) {
                             HStack {
                                 Text(LanguageManager.t("settings.support"))
-                                    .font(.system(size: 15))
+                                    .font(.app(size: 15))
                                     .foregroundStyle(AppColors.text)
                                 Spacer()
                                 Image(systemName: "arrow.up.right")
@@ -665,7 +665,7 @@ public struct SettingsView: View {
     private func settingsSection<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             Text(title)
-                .font(.system(size: 13, weight: .bold))
+                .font(.app(size: 13, weight: .bold))
                 .foregroundStyle(AppColors.muted)
                 .padding(.horizontal, 20)
 
@@ -708,13 +708,13 @@ struct SettingsPremiumToggle: View {
         Toggle(isOn: selection) {
             VStack(alignment: .leading, spacing: 2) {
                 title
-                    .font(.system(size: 15))
+                    .font(.app(size: 15))
                     .foregroundStyle(isUnlocked ? AppColors.text : AppColors.muted)
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .accessibilityLabel(LanguageManager.t(titleKey))
                 Text(LanguageManager.t(subtitleKey))
-                    .font(.system(size: 12))
+                    .font(.app(size: 12))
                     .foregroundStyle(isUnlocked ? AppColors.secondaryText : AppColors.muted)
                     .fixedSize(horizontal: false, vertical: true)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -751,11 +751,11 @@ struct SettingsLanguageRow: View {
                             .stroke(AppColors.border.opacity(0.6), lineWidth: 1)
                     )
                 Text(LanguageManager.t("settings.language"))
-                    .font(.body.weight(.medium))
+                    .appFont(.body, weight: .medium)
                     .foregroundStyle(AppColors.text)
                 Spacer()
                 Text(value)
-                    .font(.subheadline)
+                    .appFont(.subheadline)
                     .foregroundStyle(AppColors.secondaryText)
                 Image(systemName: "chevron.right")
                     .font(.system(size: 13, weight: .semibold))
@@ -794,7 +794,7 @@ struct LanguageSelectionSheet: View {
         VStack(spacing: 0) {
             HStack(spacing: 12) {
                 Text(LanguageManager.t("settings.language"))
-                    .font(.title2.weight(.semibold))
+                    .appFont(.title2, weight: .semibold)
                     .foregroundStyle(AppColors.text)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 FormCloseButton(action: onDismiss)
@@ -850,11 +850,11 @@ struct LanguageSelectionSheet: View {
                     )
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
-                        .font(.body.weight(selected ? .semibold : .medium))
+                        .appFont(.body, weight: selected ? .semibold : .medium)
                         .foregroundStyle(AppColors.text)
                         .fixedSize(horizontal: false, vertical: true)
                     if let subtitle {
-                        Text(subtitle).font(.subheadline).foregroundStyle(AppColors.secondaryText)
+                        Text(subtitle).appFont(.subheadline).foregroundStyle(AppColors.secondaryText)
                             .fixedSize(horizontal: false, vertical: true)
                     }
                 }
@@ -908,10 +908,10 @@ struct ImportExportDataSheet: View {
                     }
                     VStack(alignment: .leading, spacing: 2) {
                         Text(LanguageManager.t("settings.importExportData"))
-                            .font(.system(size: 17, weight: .bold))
+                            .font(.app(size: 17, weight: .bold))
                             .foregroundStyle(AppColors.text)
                         Text(LanguageManager.t("settings.importExportSubtitle"))
-                            .font(.system(size: 12))
+                            .font(.app(size: 12))
                             .foregroundStyle(AppColors.muted)
                             .fixedSize(horizontal: false, vertical: true)
                     }
@@ -934,12 +934,12 @@ struct ImportExportDataSheet: View {
                                 .font(.system(size: 16, weight: .semibold))
                                 .foregroundStyle(AppColors.accent)
                             Text(LanguageManager.t("settings.exportData"))
-                                .font(.system(size: 15, weight: .bold))
+                                .font(.app(size: 15, weight: .bold))
                                 .foregroundStyle(AppColors.text)
                         }
 
                         Text(LanguageManager.t("settings.exportDataDesc"))
-                            .font(.system(size: 12))
+                            .font(.app(size: 12))
                             .foregroundStyle(AppColors.secondaryText)
                             .lineSpacing(2)
                             .fixedSize(horizontal: false, vertical: true)
@@ -957,7 +957,7 @@ struct ImportExportDataSheet: View {
                                 Image(systemName: "square.and.arrow.up")
                                     .font(.system(size: 15, weight: .bold))
                                 Text(LanguageManager.t("settings.exportData"))
-                                    .font(.system(size: 13, weight: .bold))
+                                    .font(.app(size: 13, weight: .bold))
                             }
                             .foregroundStyle(AppColors.background)
                             .frame(maxWidth: .infinity)
@@ -982,12 +982,12 @@ struct ImportExportDataSheet: View {
                                 .font(.system(size: 16, weight: .semibold))
                                 .foregroundStyle(AppColors.purple)
                             Text(LanguageManager.t("settings.importData"))
-                                .font(.system(size: 15, weight: .bold))
+                                .font(.app(size: 15, weight: .bold))
                                 .foregroundStyle(AppColors.text)
                         }
 
                         Text(LanguageManager.t("settings.importDataDesc"))
-                            .font(.system(size: 12))
+                            .font(.app(size: 12))
                             .foregroundStyle(AppColors.secondaryText)
                             .lineSpacing(2)
                             .fixedSize(horizontal: false, vertical: true)
@@ -1004,7 +1004,7 @@ struct ImportExportDataSheet: View {
                                         .font(.system(size: 15, weight: .semibold))
                                 }
                                 Text(LanguageManager.t("settings.importData"))
-                                    .font(.system(size: 13, weight: .semibold))
+                                    .font(.app(size: 13, weight: .semibold))
                             }
                             .foregroundStyle(AppColors.text)
                             .frame(maxWidth: .infinity)
@@ -1185,10 +1185,10 @@ public struct CloudBackupSheet: View {
                                 .foregroundStyle(AppColors.accent)
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(LanguageManager.t("settings.cloudBackup"))
-                                    .font(.system(size: 16, weight: .bold))
+                                    .font(.app(size: 16, weight: .bold))
                                     .foregroundStyle(AppColors.text)
                                 Text(LanguageManager.t(proManager.isFeatureUnlocked(.cloudBackup) ? "settings.cloudBackupSubtitle" : "form_lab.mirror_free_restore"))
-                                    .font(.system(size: 12))
+                                    .font(.app(size: 12))
                                     .foregroundStyle(AppColors.secondaryText)
                                     .multilineTextAlignment(.leading)
                             }
@@ -1205,10 +1205,10 @@ public struct CloudBackupSheet: View {
                         HStack {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(mirrorStatus.isCloudConnected ? "iCloud Drive" : LanguageManager.t("form_lab.mirror_local_provider"))
-                                    .font(.system(size: 14, weight: .semibold))
+                                    .font(.app(size: 14, weight: .semibold))
                                     .foregroundStyle(AppColors.text)
                                 Text(syncSubtitleText)
-                                    .font(.system(size: 11))
+                                    .font(.app(size: 11))
                                     .foregroundStyle(AppColors.muted)
                             }
                             Spacer()
@@ -1217,7 +1217,7 @@ public struct CloudBackupSheet: View {
                                     .fill(isBadgeActive ? AppColors.accent : AppColors.muted)
                                     .frame(width: 8, height: 8)
                                 Text(badgeLabel)
-                                    .font(.system(size: 11, weight: .semibold))
+                                    .font(.app(size: 11, weight: .semibold))
                                     .foregroundStyle(isBadgeActive ? AppColors.accent : AppColors.muted)
                             }
                             .padding(.horizontal, 8)
@@ -1233,10 +1233,10 @@ public struct CloudBackupSheet: View {
                         HStack {
                             VStack(alignment: .leading, spacing: 2) {
                                 Text(LanguageManager.t("form_lab.mirror_toggle"))
-                                    .font(.system(size: 13, weight: .medium))
+                                    .font(.app(size: 13, weight: .medium))
                                     .foregroundStyle(AppColors.text)
                                 Text(LanguageManager.t("paywall.cloud_backup.benefit3_desc"))
-                                    .font(.system(size: 11))
+                                    .font(.app(size: 11))
                                     .foregroundStyle(AppColors.muted)
                             }
                             Spacer()
@@ -1264,7 +1264,7 @@ public struct CloudBackupSheet: View {
                                 if isWorking && !isRestoring { ProgressView().tint(AppColors.background) }
                                 else { Image(systemName: "arrow.triangle.2.circlepath").font(.system(size: 14, weight: .bold)) }
                                 Text(LanguageManager.t(isWorking && !isRestoring ? "form_lab.mirror_syncing" : "form_lab.mirror_sync_now"))
-                                    .font(.system(size: 14, weight: .bold))
+                                    .font(.app(size: 14, weight: .bold))
                             }
                             .foregroundStyle(AppColors.background)
                             .frame(maxWidth: .infinity)
@@ -1281,7 +1281,7 @@ public struct CloudBackupSheet: View {
                                 if isRestoring { ProgressView().tint(AppColors.accent) }
                                 else { Image(systemName: "arrow.counterclockwise").font(.system(size: 13, weight: .medium)) }
                                 Text(LanguageManager.t(isRestoring ? "form_lab.mirror_restoring" : "form_lab.mirror_restore_cta"))
-                                    .font(.system(size: 13, weight: .medium))
+                                    .font(.app(size: 13, weight: .medium))
                             }
                             .foregroundStyle(AppColors.accent)
                             .frame(maxWidth: .infinity)
@@ -1300,7 +1300,7 @@ public struct CloudBackupSheet: View {
                             Image(systemName: syncIsError ? "exclamationmark.circle.fill" : "checkmark.circle.fill")
                                 .foregroundStyle(syncIsError ? AppColors.danger : AppColors.accent)
                             Text(msg)
-                                .font(.system(size: 12, weight: .medium))
+                                .font(.app(size: 12, weight: .medium))
                                 .foregroundStyle(AppColors.text)
                         }
                         .padding(12)
@@ -1313,10 +1313,10 @@ public struct CloudBackupSheet: View {
                     // Zero-Tracking Privacy Note
                     VStack(alignment: .leading, spacing: 4) {
                         Text(LanguageManager.t("paywall.cloud_backup.benefit2"))
-                            .font(.system(size: 13, weight: .semibold))
+                            .font(.app(size: 13, weight: .semibold))
                             .foregroundStyle(AppColors.text)
                         Text(LanguageManager.t("paywall.cloud_backup.benefit2_desc"))
-                            .font(.system(size: 11))
+                            .font(.app(size: 11))
                             .lineSpacing(2)
                             .foregroundStyle(AppColors.secondaryText)
                     }
@@ -1337,7 +1337,7 @@ public struct CloudBackupSheet: View {
                     Button(LanguageManager.t("common.done")) {
                         dismiss()
                     }
-                    .font(.system(size: 14, weight: .semibold))
+                    .font(.app(size: 14, weight: .semibold))
                     .foregroundStyle(AppColors.accent)
                 }
             }
@@ -1468,7 +1468,7 @@ struct ThemeSelectionSheet: View {
         VStack(spacing: 0) {
             HStack(spacing: 12) {
                 Text(LanguageManager.t("settings.appTheme"))
-                    .font(.title2.weight(.semibold))
+                    .appFont(.title2, weight: .semibold)
                     .foregroundStyle(AppColors.text)
                     .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -1513,11 +1513,11 @@ struct ThemeSelectionSheet: View {
 
                                 VStack(alignment: .leading, spacing: 3) {
                                     Text(LanguageManager.t(theme.nameKey))
-                                        .font(.system(size: 15, weight: .semibold))
+                                        .font(.app(size: 15, weight: .semibold))
                                         .foregroundStyle(AppColors.text)
 
                                     Text(LanguageManager.t(theme.descriptionKey))
-                                        .font(.system(size: 12))
+                                        .font(.app(size: 12))
                                         .foregroundStyle(AppColors.secondaryText)
                                         .multilineTextAlignment(.leading)
                                         .lineLimit(2)
@@ -1589,7 +1589,7 @@ private struct SettingsLoadStepRow: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .accessibilityLabel(LanguageManager.t(titleKey))
                 Text(LanguageManager.t(subtitleKey))
-                    .font(.system(size: 12))
+                    .font(.app(size: 12))
                     .foregroundStyle(isUnlocked ? AppColors.secondaryText : AppColors.muted)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .fixedSize(horizontal: false, vertical: true)
