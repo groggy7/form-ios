@@ -190,7 +190,7 @@ struct WorkoutDayStrip: View {
                                 Group {
                                     if glowTiles {
                                         HomeDayGlassSurface(glass: glass, statusTint: statusTint, isDark: isDark,
-                                            selected: selected, accent: AppColors.accent)
+                                            selected: selected, markerColor: isDark ? .white : AppColors.text)
                                     } else {
                                         HomeDayCalmSurface(glass: glass, statusTint: statusTint, isDark: isDark,
                                             selected: selected, today: isToday, accent: AppColors.accent)
@@ -257,7 +257,8 @@ private struct HomeDayGlassSurface: View {
     let statusTint: Color?
     let isDark: Bool
     let selected: Bool
-    let accent: Color
+    /// Neutral ink (white on dark suites) so the selection marker never reads as a status or accent colour.
+    let markerColor: Color
 
     var body: some View {
         Canvas { context, size in
@@ -296,7 +297,7 @@ private struct HomeDayGlassSurface: View {
                 var marker = Path()
                 marker.move(to: CGPoint(x: tile.minX + w * 0.40, y: tile.maxY - 3))
                 marker.addLine(to: CGPoint(x: tile.minX + w * 0.60, y: tile.maxY - 3))
-                context.stroke(marker, with: .color(accent), style: StrokeStyle(lineWidth: 1.5, lineCap: .round))
+                context.stroke(marker, with: .color(markerColor), style: StrokeStyle(lineWidth: 1.5, lineCap: .round))
             }
         }
         .accessibilityHidden(true)
