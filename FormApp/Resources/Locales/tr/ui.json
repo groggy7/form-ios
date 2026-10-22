@@ -1574,6 +1574,8 @@
   "setup.days.hint": "Gerçekten çalışabileceğin 2–6 gün seç. Planın bu günlerde kalır.",
   "setup.days.count": "Haftada {count} gün",
   "setup.duration.title": "Ne kadar zamanın var?",
+  "setup.customize.title": "Programını özelleştir",
+  "setup.customize.hint": "İsteğe bağlı. Dengeli bir programla devam et veya öncelik vereceğin kas grubunu ve kaçınmak istediğin egzersizleri seç.",
   "setup.minutes": "Yaklaşık {count} dk",
   "setup.advanced": "Teknik bar hareketlerinde ve ileri vücut ağırlığı egzersizlerinde rahatım",
   "setup.priority.title": "İsteğe bağlı kas önceliği",

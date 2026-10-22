@@ -1574,6 +1574,8 @@
   "setup.days.hint": "Choose 2–6 days you can actually train. Your plan stays on these weekdays.",
   "setup.days.count": "{count} days per week",
   "setup.duration.title": "How much time do you have?",
+  "setup.customize.title": "Customize your plan",
+  "setup.customize.hint": "Optional. Keep a balanced plan, or choose a muscle priority and exercises to avoid.",
   "setup.minutes": "About {count} min",
   "setup.advanced": "I am comfortable with technical barbell lifts and advanced bodyweight exercises",
   "setup.priority.title": "Optional muscle priority",

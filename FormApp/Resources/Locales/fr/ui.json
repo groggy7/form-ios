@@ -1574,6 +1574,8 @@
   "setup.days.hint": "Choisissez 2 à 6 jours disponibles. Le plan respecte ces jours.",
   "setup.days.count": "{count} jours par semaine",
   "setup.duration.title": "De combien de temps disposez-vous ?",
+  "setup.customize.title": "Personnalise ton programme",
+  "setup.customize.hint": "Facultatif. Garde un programme équilibré ou choisis les muscles à privilégier et les exercices à éviter.",
   "setup.minutes": "Environ {count} min",
   "setup.advanced": "Je maîtrise les mouvements techniques à la barre et les exercices avancés au poids du corps",
   "setup.priority.title": "Priorité musculaire facultative",

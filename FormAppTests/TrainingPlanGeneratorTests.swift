@@ -63,10 +63,30 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         let legacy = TrainingSetupStore.Draft(profile: p, step: 6, programId: program.id, program: program, flowVersion: nil)
         UserDefaults.standard.set(try JSONEncoder().encode(legacy), forKey: "training_setup_draft_v1")
         let recovered = try XCTUnwrap(TrainingSetupStore.draft())
-        XCTAssertEqual(recovered.step, 7)
+        XCTAssertEqual(recovered.step, 8)
         XCTAssertEqual(recovered.profile, p)
         XCTAssertEqual(recovered.program, program)
     }
+    func testSettingsDraftVersionsPreserveEveryQuestionAndEditedPreview() throws {
+        var p = try gym()
+        p.experience = "advanced"; p.advancedLifts = true; p.priority = "shoulders"; p.excludedExerciseIds = ["barbell-back-squat"]
+        var program = try generate(p).program
+        program.name = "Edited preview"
+        for version in 1...3 { for step in 1...(version == 1 ? 6 : (version == 2 ? 7 : 8)) {
+            let expected = version == 1 ? (step == 6 ? 8 : step + (step >= 3 ? 1 : 0)) : (version == 2 && step == 7 ? 8 : step)
+            TrainingSetupStore.saveDraft(.init(profile: p, step: step, programId: program.id, program: program, flowVersion: version))
+            let recovered = try XCTUnwrap(TrainingSetupStore.draft())
+            XCTAssertEqual(recovered.step, expected, "Version \(version), step \(step)")
+            XCTAssertEqual(recovered.flowVersion, 3)
+            XCTAssertEqual(recovered.profile, p)
+            XCTAssertEqual(recovered.program, program)
+        } }
+        for (version, step) in [(1, 7), (2, 8), (3, 9), (4, 1)] {
+            TrainingSetupStore.saveDraft(.init(profile: p, step: step, programId: program.id, program: program, flowVersion: version))
+            XCTAssertNil(TrainingSetupStore.draft())
+        }
+    }
+
     func testSharedFixturesMatchBothNativeEngines() throws {
         struct Fixture: Decodable { let name: String; let profile: TrainingProfile; let expected: String; let identity: String }
         let file = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("training-generation-fixtures.json")
@@ -384,7 +404,7 @@ final class TrainingPlanGeneratorTests: XCTestCase {
         try persistence.flush()
         store.setOnboardingCompleted(false)
         let p = profile(["dumbbells"]), program = try storable(profile(["dumbbells"])).program
-        TrainingSetupStore.saveDraft(.init(profile: p, step: 7, programId: program.id, program: program))
+        TrainingSetupStore.saveDraft(.init(profile: p, step: 8, programId: program.id, program: program))
         let before = store.state
         fail = true
         XCTAssertFalse(store.saveGeneratedPlan(profile: p, program: program, completeSetup: true))
@@ -410,9 +430,9 @@ final class TrainingPlanGeneratorTests: XCTestCase {
             let sizes: [ContentSizeCategory] = language == "en" ? [.large, .extraExtraExtraLarge] : [.extraExtraExtraLarge]
             for size in sizes {
             for width in (language == "en" && size == .large ? [320.0, 390.0] : [320.0]) {
-            for location in ["home", "commercial_gym"] { for step in [3, 4, 7] {
+            for location in ["home", "commercial_gym"] { for step in [2, 3, 4, 6, 7, 8] {
                 var rendered = profile(["dumbbells", "ez-bar", "plates"])
-                rendered.location = location
+                rendered.location = location; rendered.experience = "advanced"; rendered.advancedLifts = true
                 if location != "home" { rendered.equipment = try XCTUnwrap(TrainingCatalog.bundled?.presets["commercial_gym"]).filter { $0 != "calf-machine" } }
                 TrainingSetupStore.saveDraft(.init(profile: rendered, step: step, programId: "render-plan", program: nil))
                 let host = UIHostingController(rootView: TrainingSetupView(store: store, completeSetup: false, onClose: {}).environment(\.sizeCategory, size))

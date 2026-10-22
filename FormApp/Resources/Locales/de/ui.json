@@ -1574,6 +1574,8 @@
   "setup.days.hint": "Wähle 2–6 tatsächlich verfügbare Trainingstage. Dein Plan bleibt auf diesen Wochentagen.",
   "setup.days.count": "{count} Tage pro Woche",
   "setup.duration.title": "Wie viel Zeit hast du?",
+  "setup.customize.title": "Passe deinen Plan an",
+  "setup.customize.hint": "Optional. Behalte einen ausgewogenen Plan oder wähle einen Muskelschwerpunkt und Übungen, die du vermeiden möchtest.",
   "setup.minutes": "Etwa {count} Min.",
   "setup.advanced": "Ich beherrsche technische Langhantelübungen und fortgeschrittene Körpergewichtsübungen",
   "setup.priority.title": "Optionaler Muskelschwerpunkt",

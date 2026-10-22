@@ -32,13 +32,13 @@ struct TrainingSetupView: View {
         let starting = draft?.profile ?? (completeSetup ? nil : TrainingSetupStore.profile()) ?? initial
         _profile = State(initialValue: starting)
         _showGymInventory = State(initialValue: starting.equipmentConfirmed && Set(starting.equipment) != Set(TrainingCatalog.bundled?.presets["commercial_gym"] ?? []))
-        _step = State(initialValue: min(max(draft?.step ?? 1, 1), 7))
+        _step = State(initialValue: min(max(draft?.step ?? 1, 1), 8))
         _programID = State(initialValue: draft?.programId ?? UUID().uuidString)
         _editedProgram = State(initialValue: draft?.program)
     }
     private var generated: GeneratedTrainingPlan? { try? TrainingSetupStore.generate(profile, id: programID) }
     private var program: Program? { editedProgram ?? generated?.program }
-    private var canContinue: Bool { TrainingCatalog.bundled != nil && (step == 4 ? profile.equipmentConfirmed : (step != 7 || program != nil)) }
+    private var canContinue: Bool { TrainingCatalog.bundled != nil && (step == 4 ? profile.equipmentConfirmed : (step != 8 || program != nil)) }
     private var title: String {
         switch step {
         case 1: return "onboarding.goal.title"
@@ -47,6 +47,7 @@ struct TrainingSetupView: View {
         case 4: return profile.location == "home" ? "setup.inventory.title" : "setup.gym.title"
         case 5: return "onboarding.days.title"
         case 6: return "setup.duration.title"
+        case 7: return "setup.customize.title"
         default: return "setup.preview.title"
         }
     }
@@ -57,12 +58,12 @@ struct TrainingSetupView: View {
                 Button(action: back) { Image(systemName: "arrow.left").frame(width: 48, height: 48) }
                     .accessibilityLabel(LanguageManager.t("onboarding.back")).accessibilityIdentifier("onboarding-back")
                 // Fill each step's share gradually, matching Android's 600ms setup progress.
-                ProgressView(value: Double(step), total: 7).progressViewStyle(SetupProgressStyle())
+                ProgressView(value: Double(step), total: 8).progressViewStyle(SetupProgressStyle())
                     .animation(reduceMotion ? nil : .easeInOut(duration: 0.6), value: step)
                 // After answering every question, skipping is no longer offered; the invisible button keeps the progress line's width.
                 if let onSkip {
                     Button(LanguageManager.t("onboarding.skip"), action: onSkip).foregroundStyle(AppColors.secondaryText).frame(minHeight: 48)
-                        .accessibilityIdentifier("onboarding-skip").opacity(step < 7 ? 1 : 0).disabled(step >= 7).accessibilityHidden(step >= 7)
+                        .accessibilityIdentifier("onboarding-skip").opacity(step < 8 ? 1 : 0).disabled(step >= 8).accessibilityHidden(step >= 8)
                 }
             }.padding(.horizontal, 8)
             ScrollView {
@@ -77,12 +78,21 @@ struct TrainingSetupView: View {
                         case 2:
                             ForEach(OnboardingExperience.allCases, id: \.rawValue) { experience in
                                 choice(LanguageManager.t("onboarding.experience.\(experience.rawValue).title"), selected: profile.experience == experience.rawValue,
-                                    hint: LanguageManager.t("onboarding.experience.\(experience.rawValue).desc")) { profile.experience = experience.rawValue; profile.advancedLifts = false }
+                                    hint: LanguageManager.t("onboarding.experience.\(experience.rawValue).desc"), tag: "setup-experience-\(experience.rawValue)") {
+                                    if profile.experience != experience.rawValue { profile.experience = experience.rawValue; profile.advancedLifts = false }
+                                }
+                            }
+                            if profile.experience != "beginner" {
+                                choice(LanguageManager.t("setup.advanced"), selected: profile.advancedLifts, multiple: true, tag: "setup-lift-confidence") { profile.advancedLifts.toggle() }
                             }
                         case 3: space(catalog)
                         case 4: equipment(catalog)
                         case 5: days
-                        case 6: preferences(catalog)
+                        case 6:
+                            ForEach([20, 30, 45, 60, 75, 90], id: \.self) { minutes in
+                                choice(LanguageManager.t("setup.minutes", ["count": minutes]), selected: profile.minutes == minutes) { profile.minutes = minutes }
+                            }
+                        case 7: preferences(catalog)
                         default:
                             if let program { preview(program, catalog: catalog) }
                             else { Text(LanguageManager.t("setup.generationFailed")).foregroundStyle(AppColors.danger) }
@@ -92,7 +102,7 @@ struct TrainingSetupView: View {
                 }.padding(20).frame(maxWidth: 600, alignment: .leading).frame(maxWidth: .infinity)
             }.id(step)
             Button(action: next) {
-                Text(LanguageManager.t(step < 7 ? "onboarding.next" : "setup.start"))
+                Text(LanguageManager.t(step < 8 ? "onboarding.next" : "setup.start"))
                     .font(.system(size: 16, weight: .bold)).foregroundStyle(AppColors.background)
                     .frame(maxWidth: .infinity).frame(minHeight: 52).padding(.vertical, 4)
                     .background(AppColors.accent, in: RoundedRectangle(cornerRadius: 12))
@@ -226,12 +236,7 @@ struct TrainingSetupView: View {
         }
     }
     @ViewBuilder private func preferences(_ catalog: TrainingCatalog) -> some View {
-        ForEach([20, 30, 45, 60, 75, 90], id: \.self) { minutes in
-            choice(LanguageManager.t("setup.minutes", ["count": minutes]), selected: profile.minutes == minutes) { profile.minutes = minutes }
-        }
-        if profile.experience != "beginner" {
-            choice(LanguageManager.t("setup.advanced"), selected: profile.advancedLifts, multiple: true) { profile.advancedLifts.toggle() }
-        }
+        Text(LanguageManager.t("setup.customize.hint")).foregroundStyle(AppColors.secondaryText)
         Text(LanguageManager.t("setup.priority.title")).font(.headline)
         ForEach(["", "push", "row", "squat", "shoulders", "biceps", "core"], id: \.self) { priority in
             choice(LanguageManager.t("setup.priority.\(priority.isEmpty ? "balanced" : priority)"), selected: profile.priority == priority) { profile.priority = priority }
@@ -239,12 +244,12 @@ struct TrainingSetupView: View {
         Text(LanguageManager.t("setup.exclude.title")).font(.headline)
         TextField("", text: $excludedSearch, prompt: Text(LanguageManager.t("setup.exclude.search")).foregroundStyle(AppColors.muted))
             .textFieldStyle(.plain).padding(14).background(AppColors.surface, in: RoundedRectangle(cornerRadius: 12))
-            .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border)).accessibilityLabel(LanguageManager.t("setup.exclude.search"))
+            .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border)).accessibilityLabel(LanguageManager.t("setup.exclude.search")).accessibilityIdentifier("setup-exclude-search")
         let excluded = catalog.candidates.filter { profile.excludedExerciseIds.contains($0.id) }
         let matches = catalog.candidates.filter { row in !profile.excludedExerciseIds.contains(row.id) &&
             excludedSearch.count >= 2 && ExerciseCatalog.canonicalExercises[row.id]?.toExercise().displayName.localizedCaseInsensitiveContains(excludedSearch) == true }
         ForEach(excluded + Array(matches.prefix(20)), id: \.id) { row in
-            choice(ExerciseCatalog.canonicalExercises[row.id]?.toExercise().displayName ?? row.id, selected: profile.excludedExerciseIds.contains(row.id), multiple: true) {
+            choice(ExerciseCatalog.canonicalExercises[row.id]?.toExercise().displayName ?? row.id, selected: profile.excludedExerciseIds.contains(row.id), multiple: true, tag: "setup-exclude-\(row.id)") {
                 toggle(row.id, in: &profile.excludedExerciseIds)
             }
         }
@@ -347,7 +352,7 @@ struct TrainingSetupView: View {
     }
     private func back() { if step > 1 { step -= 1 } else { onClose() } }
     private func next() {
-        if step < 7 { step += 1; search = ""; advancedSearch = false }
+        if step < 8 { step += 1; search = ""; advancedSearch = false }
         else if let program {
             if store.saveGeneratedPlan(profile: profile.normalized(), program: program, completeSetup: completeSetup) { onClose() }
             else { error = LanguageManager.t("setup.saveFailed") }

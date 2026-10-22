@@ -54472,6 +54472,76 @@
         }
       }
     },
+    "setup.customize.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Customize your plan"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Programını özelleştir"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Passe deinen Plan an"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personnalise ton programme"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Personaliza tu programa"
+          }
+        }
+      }
+    },
+    "setup.customize.hint": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optional. Keep a balanced plan, or choose a muscle priority and exercises to avoid."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İsteğe bağlı. Dengeli bir programla devam et veya öncelik vereceğin kas grubunu ve kaçınmak istediğin egzersizleri seç."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optional. Behalte einen ausgewogenen Plan oder wähle einen Muskelschwerpunkt und Übungen, die du vermeiden möchtest."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Facultatif. Garde un programme équilibré ou choisis les muscles à privilégier et les exercices à éviter."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Opcional. Mantén un programa equilibrado o elige una prioridad muscular y los ejercicios que quieras evitar."
+          }
+        }
+      }
+    },
     "setup.minutes": {
       "extractionState": "manual",
       "localizations": {

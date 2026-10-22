@@ -348,10 +348,14 @@ enum TrainingPlanGenerator {
 }
 
 enum TrainingSetupStore {
-    struct Draft: Codable { var profile: TrainingProfile; var step: Int; var programId: String; var program: Program?; var flowVersion: Int? = 2 }
+    struct Draft: Codable { var profile: TrainingProfile; var step: Int; var programId: String; var program: Program?; var flowVersion: Int? = 3 }
     static func draft() -> Draft? {
-        guard var draft = read(Draft.self, key: "training_setup_draft_v1"), (1...(draft.flowVersion == 2 ? 7 : 6)).contains(draft.step) else { return nil }
-        if draft.flowVersion != 2 { draft.step += draft.step >= 3 ? 1 : 0; draft.flowVersion = 2 }
+        guard var draft = read(Draft.self, key: "training_setup_draft_v1") else { return nil }
+        let version = draft.flowVersion ?? 1
+        guard (0...3).contains(version), (1...(version < 2 ? 6 : (version == 2 ? 7 : 8))).contains(draft.step) else { return nil }
+        if version < 2 && draft.step >= 3 { draft.step += 1 }
+        if version < 3 && draft.step >= 7 { draft.step += 1 }
+        draft.flowVersion = 3
         return draft
     }
     static func profile() -> TrainingProfile? { read(TrainingProfile.self, key: "training_profile_v1") }
