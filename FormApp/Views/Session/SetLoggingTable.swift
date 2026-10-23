@@ -236,11 +236,12 @@ public struct SetLoggingTable: View {
                                     .font(.app(size: weightInputFontSize(weightBinding.wrappedValue, width: geometry.size.width), weight: .semibold))
                                     .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
                                     .padding(.vertical, 8)
-                                    .background(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5))
-                                    .clipShape(RoundedRectangle(cornerRadius: 8))
                                     .frame(maxWidth: .infinity)
                                     .frame(minHeight: 48)
-                                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: true) && isSetInputEnabled ? AppColors.accent : .clear))
+                                    .background(RoundedRectangle(cornerRadius: 8)
+                                        .fill(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5)).padding(.vertical, 4))
+                                    .overlay(RoundedRectangle(cornerRadius: 8)
+                                        .stroke(selectedField == Field(id: set.id, weight: true) && isSetInputEnabled ? AppColors.accent : .clear).padding(.vertical, 4))
                             }
                             .frame(maxWidth: .infinity)
                             .frame(height: 48)
@@ -262,11 +263,12 @@ public struct SetLoggingTable: View {
                                 .font(.app(size: 15, weight: .semibold))
                                 .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
                                 .padding(.vertical, 8)
-                                .background(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5))
-                                .clipShape(RoundedRectangle(cornerRadius: 8))
                                 .frame(maxWidth: .infinity)
                                 .frame(minHeight: 48)
-                                .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: false) && isSetInputEnabled ? AppColors.accent : .clear))
+                                .background(RoundedRectangle(cornerRadius: 8)
+                                    .fill(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5)).padding(.vertical, 4))
+                                .overlay(RoundedRectangle(cornerRadius: 8)
+                                    .stroke(selectedField == Field(id: set.id, weight: false) && isSetInputEnabled ? AppColors.accent : .clear).padding(.vertical, 4))
 
                             Button(action: {
                                 if isRestActive {
@@ -572,11 +574,12 @@ public struct SetLoggingTable: View {
             .font(.app(size: 15, weight: .semibold))
             .foregroundStyle(enabled ? AppColors.text : AppColors.muted.opacity(0.5))
             .padding(.vertical, 8)
-            .background(AppColors.surfaceRaised.opacity(enabled ? 1.0 : 0.5))
-            .clipShape(RoundedRectangle(cornerRadius: 8))
             .frame(maxWidth: .infinity)
             .frame(minHeight: 48)
-            .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == field && enabled ? AppColors.accent : .clear))
+            .background(RoundedRectangle(cornerRadius: 8)
+                .fill(AppColors.surfaceRaised.opacity(enabled ? 1.0 : 0.5)).padding(.vertical, 4))
+            .overlay(RoundedRectangle(cornerRadius: 8)
+                .stroke(selectedField == field && enabled ? AppColors.accent : .clear).padding(.vertical, 4))
     }
 
     private func extensionRow(set: ExerciseSetLog, index: Int, extensionIndex: Int, part: SetExtensionLog, technique: SetTechnique,
