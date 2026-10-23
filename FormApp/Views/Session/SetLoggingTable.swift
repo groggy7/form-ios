@@ -13,7 +13,7 @@ public struct SetLoggingTable: View {
     let prescription: String
     var isRestActive: Bool = false
     var isRestForCurrentExercise: Bool = true
-    var prText: String = "-"
+    var previousSets: [Int: SessionSetLog] = [:]
     var onUpdateSet: (Int, String, String) -> Void
     var onToggleCompleteSet: (Int) -> Void
     var onAddSet: () -> Void
@@ -25,7 +25,6 @@ public struct SetLoggingTable: View {
     var allowsZeroWeight: Bool = false
     var isAssisted: Bool = false
     var isBodyweight: Bool = false
-    var ghostTargets: [Int: GhostTarget] = [:]
     var logbookBeatenSets: [Int: LogbookBeatResult] = [:]
     /// Drop sets, rest-pause and partials (docs/design/intensity-sets.md).
     var intensity: IntensityActions? = nil
@@ -36,7 +35,7 @@ public struct SetLoggingTable: View {
         prescription: String = "",
         isRestActive: Bool = false,
         isRestForCurrentExercise: Bool = true,
-        prText: String = "-",
+        previousSets: [Int: SessionSetLog] = [:],
         onUpdateSet: @escaping (Int, String, String) -> Void,
         onToggleCompleteSet: @escaping (Int) -> Void,
         onAddSet: @escaping () -> Void,
@@ -48,7 +47,6 @@ public struct SetLoggingTable: View {
         allowsZeroWeight: Bool = false,
         isAssisted: Bool = false,
         isBodyweight: Bool = false,
-        ghostTargets: [Int: GhostTarget] = [:],
         logbookBeatenSets: [Int: LogbookBeatResult] = [:],
         intensity: IntensityActions? = nil
     ) {
@@ -56,7 +54,7 @@ public struct SetLoggingTable: View {
         self.prescription = prescription
         self.isRestActive = isRestActive
         self.isRestForCurrentExercise = isRestForCurrentExercise
-        self.prText = prText
+        self.previousSets = previousSets
         self.onUpdateSet = onUpdateSet
         self.onToggleCompleteSet = onToggleCompleteSet
         self.onAddSet = onAddSet
@@ -68,7 +66,6 @@ public struct SetLoggingTable: View {
         self.allowsZeroWeight = allowsZeroWeight
         self.isAssisted = isAssisted
         self.isBodyweight = isBodyweight
-        self.ghostTargets = ghostTargets
         self.logbookBeatenSets = logbookBeatenSets
         self.intensity = intensity
     }
@@ -84,38 +81,33 @@ public struct SetLoggingTable: View {
         let _ = themeManager.currentTheme
         VStack(spacing: 8) {
             let workingSets = sets.filter { !$0.isWarmup }
-            let relevantSets = workingSets.isEmpty ? sets : workingSets
-            let allRelevantDone = !relevantSets.isEmpty && relevantSets.allSatisfy(\.isCompleted)
-            let progressText: String = {
-                if allRelevantDone {
-                    return LanguageManager.t("table.allSetsDone", ["total": relevantSets.count])
-                } else {
-                    return LanguageManager.t("table.currentSet", [
-                        "current": WorkoutSessionUtils.currentSetNumber(relevantSets),
-                        "total": relevantSets.count
-                    ])
-                }
-            }()
-
-            HStack(spacing: 12) {
-                if !prescription.isEmpty {
-                    Text(prescription)
-                        .font(.app(size: 16, weight: .semibold))
-                        .foregroundStyle(AppColors.accent)
+            VStack(alignment: .leading, spacing: 6) {
+                HStack(alignment: .top, spacing: 12) {
+                    Text(LanguageManager.t("matrix.stat.totalSets"))
+                        .font(.app(size: 15, weight: .semibold))
+                        .foregroundStyle(AppColors.text)
                         .frame(maxWidth: .infinity, alignment: .leading)
+                    Text(LanguageManager.t("table.setsDone", ["done": workingSets.filter(\.isCompleted).count, "total": workingSets.count]))
+                        .font(.app(size: 13, weight: .medium))
+                        .foregroundStyle(AppColors.secondaryText)
+                        .multilineTextAlignment(.trailing)
+                        .frame(maxWidth: .infinity, alignment: .trailing)
+                        .accessibilityIdentifier("working-sets-progress")
                 }
-                Text(progressText)
-                    .font(.app(size: 14, weight: .medium))
-                    .foregroundStyle(AppColors.secondaryText)
-                    .multilineTextAlignment(.trailing)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-            }
-            .padding(12).background(AppColors.positiveBg).clipShape(RoundedRectangle(cornerRadius: 10))
+                let target = WorkoutSessionUtils.sessionPrescription(prescription)
+                if !target.isEmpty {
+                    Text(target)
+                        .font(.app(size: 12, weight: .medium))
+                        .foregroundStyle(AppColors.purple)
+                        .padding(.horizontal, 8).padding(.vertical, 4)
+                        .background(AppColors.purpleBg, in: RoundedRectangle(cornerRadius: 6))
+                }
+            }.accessibilityIdentifier("working-sets-header")
             // Table Header
             HStack(spacing: 8) {
-                Text(LanguageManager.t("table.set"))
+                Text(LanguageManager.t("table.setHeading"))
                     .frame(width: 32, alignment: .leading)
-                Text(LanguageManager.t("table.pr"))
+                Text(LanguageManager.t("table.prev"))
                     .frame(width: 56, alignment: .center)
                 Text(weightUnit.uppercaseLabel).frame(maxWidth: .infinity)
                 Text(LanguageManager.t("table.reps"))
@@ -148,12 +140,11 @@ public struct SetLoggingTable: View {
                         let showsTechniqueRow = intensity != nil && !set.isWarmup && isSetInputEnabled
                             && WorkoutSessionUtils.canCompleteSet(set, allowsZeroWeight: allowsZeroWeight)
                             && (selectedInSet || index == currentLoggedIndex)
-                        let ghostTarget = ghostTargets[index]
-                        let contextualPr: String = {
-                            if let gt = ghostTarget, let prevW = gt.lastWeekWeightKg, let prevR = gt.lastWeekReps, prevW >= 0.0, prevR > 0 {
-                                return WorkoutSessionUtils.formatSessionPr(weightKg: prevW, reps: prevR, unit: weightUnit, isBodyweight: isBodyweight, isAssisted: isAssisted)
-                            }
-                            return prText.isEmpty ? "-" : prText
+                        let previous = set.isWarmup ? nil : previousSets[index].flatMap { $0.isWarmup ? nil : $0 }
+                        let previousText: String = {
+                            guard let previous, let load = previous.weightKg, load.isFinite, load >= 0,
+                                  let count = previous.reps, (1...999).contains(count) else { return "—" }
+                            return WorkoutSessionUtils.formatSessionPr(weightKg: load, reps: count, unit: weightUnit, isBodyweight: isBodyweight, isAssisted: isAssisted)
                         }()
                         let weightBinding = Binding<String>(
                             get: {
@@ -208,31 +199,20 @@ public struct SetLoggingTable: View {
                                     .foregroundStyle(AppColors.warmupAmber.opacity(0.85))
                                     .lineLimit(1)
                                     .frame(width: 56, alignment: .center)
-                            } else if let beat = beatResult {
-                                Text(WorkoutSessionUtils.formatLogbookBeatBadge(result: beat, unit: weightUnit))
-                                    .font(.app(size: 10, weight: .bold))
-                                    .foregroundStyle(AppColors.accent)
-                                    .lineLimit(1)
-                                    .minimumScaleFactor(0.75)
-                                    .padding(.horizontal, 4)
-                                    .padding(.vertical, 2)
-                                    .background(AppColors.positiveBg)
-                                    .clipShape(RoundedRectangle(cornerRadius: 4))
-                                    .overlay(RoundedRectangle(cornerRadius: 4).stroke(AppColors.accent.opacity(0.35)))
-                                    .frame(width: 56, alignment: .center)
                             } else {
-                                Text(contextualPr.replacingOccurrences(of: " ×", with: "\n×").replacingOccurrences(of: "BW +", with: "BW+"))
-                                    .accessibilityLabel(WorkoutSessionUtils.sessionPrAccessibilityLabel(contextualPr, unit: weightUnit))
+                                let beaten = beatResult != nil && previous != nil
+                                Text(previousText.replacingOccurrences(of: " ×", with: "\n×").replacingOccurrences(of: "BW +", with: "BW+"))
+                                    .accessibilityLabel(WorkoutSessionUtils.sessionPrAccessibilityLabel(previousText, unit: weightUnit) +
+                                        (previous == nil ? "" : beatResult.map { ", \(WorkoutSessionUtils.formatLogbookBeatBadge(result: $0, unit: weightUnit))" } ?? ""))
+                                    .accessibilityIdentifier("set-prev-\(set.id)")
                                     .font(.app(size: 13, weight: .medium))
-                                    .foregroundStyle(
-                                        set.isCompleted
-                                            ? AppColors.secondaryText.opacity(0.6)
-                                            : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35))
-                                    )
-                                    .lineLimit(contextualPr.hasPrefix("BW") ? 2 : 1)
+                                    .foregroundStyle(beaten ? AppColors.accent : AppColors.secondaryText)
+                                    .lineLimit(previousText.hasPrefix("BW") ? 2 : 1)
                                     .multilineTextAlignment(.center)
-                                    .minimumScaleFactor(contextualPr.hasPrefix("BW") ? 0.7 : 1)
+                                    .minimumScaleFactor(previousText.hasPrefix("BW") ? 0.7 : 1)
                                     .frame(width: 56, alignment: .center)
+                                    .background(beaten ? AppColors.positiveBg : .clear, in: RoundedRectangle(cornerRadius: 4))
+                                    .overlay(RoundedRectangle(cornerRadius: 4).stroke(beaten ? AppColors.accent.opacity(0.35) : .clear))
                             }
 
                             GeometryReader { geometry in
@@ -327,7 +307,7 @@ public struct SetLoggingTable: View {
                                         ? (set.isWarmup ? AppColors.warmupAmberBg.opacity(0.4) : AppColors.positiveBg.opacity(0.4))
                                         : (set.isWarmup
                                             ? AppColors.warmupAmberBg.opacity(0.35)
-                                            : (isSetEnabled ? AppColors.surface : AppColors.surface.opacity(0.5)))
+                                            : (isSetEnabled ? AppColors.surfaceRaised.opacity(0.55) : AppColors.surface.opacity(0.5)))
                                 )
                         )
                         .contextMenu {

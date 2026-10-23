@@ -6453,7 +6453,7 @@ final class FormAppTests: XCTestCase {
         let table = SetLoggingTable(
             sets: sets,
             prescription: "3 × 8–10",
-            prText: "65x10",
+            previousSets: Dictionary(uniqueKeysWithValues: (0..<3).map { ($0, SessionSetLog(setNumber: $0 + 1, weightKg: 65, reps: 10)) }),
             onUpdateSet: { _, _, _ in },
             onToggleCompleteSet: { _ in },
             onAddSet: {},
@@ -9172,8 +9172,6 @@ final class FormAppTests: XCTestCase {
             SessionSetLog(setNumber: 3, weightKg: 95.0, reps: 8)
         ]
         let target1 = WorkoutSessionUtils.computeGhostTarget(previousSets: prevSets, workingSetIndex: 0, exercise: exercise, unit: .kg)
-        let target2 = WorkoutSessionUtils.computeGhostTarget(previousSets: prevSets, workingSetIndex: 1, exercise: exercise, unit: .kg)
-        let target3 = WorkoutSessionUtils.computeGhostTarget(previousSets: prevSets, workingSetIndex: 2, exercise: exercise, unit: .kg)
 
         // Set 1 completed with logbook beat: 100kg x 9 (+1 rep)
         let beatSet1 = WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: 100.0, loggedReps: 9, target: target1)!
@@ -9188,13 +9186,12 @@ final class FormAppTests: XCTestCase {
             sets: testSets,
             prescription: "3 × 8–12",
             isRestActive: false,
-            prText: "100x8",
+            previousSets: Dictionary(uniqueKeysWithValues: prevSets.enumerated().map { ($0.offset, $0.element) }),
             onUpdateSet: { _, _, _ in },
             onToggleCompleteSet: { _ in },
             onAddSet: {},
             onRemoveSet: { _ in },
             weightUnit: .kg,
-            ghostTargets: [0: target1, 1: target2, 2: target3],
             logbookBeatenSets: [0: beatSet1]
         )
 
@@ -12315,8 +12312,7 @@ final class BodyweightLoggingTests: XCTestCase {
                 XCTAssertEqual(WorkoutSessionUtils.formatSessionPr(weightKg: load, reps: 10, isBodyweight: true), language == "en" ? "BW +2.5 ×10" : "BW +2,5 ×10")
             }
             let rows = [ExerciseSetLog(setNumber: 1, weightInput: isAssisted ? "40" : "0", repsInput: "11", weightKg: isAssisted ? 40 : 0, completedReps: 11, isCompleted: true), WorkoutSessionUtils.newSet(exercise: ex, number: 2)]
-            let ghost = WorkoutSessionUtils.computeGhostTarget(previousSets: [SessionSetLog(setNumber: 1, weightKg: load, reps: 10)], workingSetIndex: 0, exercise: ex)
-            let view = ScrollView { SetLoggingTable(sets: rows, prescription: "2 × 8–12", onUpdateSet: { _,_,_ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in }, allowsZeroWeight: true, isAssisted: isAssisted, isBodyweight: !isAssisted, ghostTargets: [0: ghost]).padding(16) }.background(AppColors.background).environment(\.sizeCategory, .accessibilityMedium)
+            let view = ScrollView { SetLoggingTable(sets: rows, prescription: "2 × 8–12", previousSets: [0: SessionSetLog(setNumber: 1, weightKg: load, reps: 10)], onUpdateSet: { _,_,_ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in }, allowsZeroWeight: true, isAssisted: isAssisted, isBodyweight: !isAssisted).padding(16) }.background(AppColors.background).environment(\.sizeCategory, .accessibilityMedium)
             let controller = UIHostingController(rootView: view)
             let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 852))
             window.rootViewController = controller; window.makeKeyAndVisible(); controller.view.layoutIfNeeded()
@@ -13490,6 +13486,26 @@ final class AuditSessionInsightsTests: XCTestCase {
             XCTAssertEqual(result.prText, WorkoutSessionUtils.findExercisePr(history: [record], exercise: exercise, unit: unit))
         }
     }
+
+    @MainActor
+    func testPreviousKeepsTheLatestExactExerciseSetsWhenResumingAcrossPrograms() {
+        let exercise = Exercise(id: "bench", name: "Barbell Bench Press", exerciseId: "barbell-bench-press")
+        func record(_ id: String, _ date: String, _ sets: [SessionSetLog], exerciseId: String = "barbell-bench-press") -> WorkoutSessionRecord {
+            WorkoutSessionRecord(id: id, programId: "older-program", workoutId: "other-day", workoutTitle: "Earlier workout",
+                startedAt: date, completedAt: date, durationSeconds: 60,
+                exerciseLogs: [SessionExerciseLog(exerciseName: exercise.name, sets: sets, targetSets: 4, exerciseId: exerciseId)])
+        }
+        let latest = [SessionSetLog(setNumber: 1, weightKg: 80, reps: 8), SessionSetLog(setNumber: 3, weightKg: 75, reps: 6)]
+        let history = [
+            record("old-pr", "2026-10-15T08:00:00Z", (1...4).map { SessionSetLog(setNumber: $0, weightKg: 120, reps: 5) }),
+            record("latest", "2026-10-20T08:00:00Z", latest),
+            record("different", "2026-10-22T08:00:00Z", [SessionSetLog(setNumber: 1, weightKg: 60, reps: 10)], exerciseId: "incline-barbell-bench-press"),
+            record("resuming", "2026-10-23T08:00:00Z", [SessionSetLog(setNumber: 1, weightKg: 85, reps: 9)])
+        ]
+        let insights = SessionHistoryInsightsCache().get(exercise: exercise, history: history, unit: .kg,
+            scope: .init(sessionId: "resuming", programId: "new-program", workoutId: "new-day"))
+        XCTAssertEqual(insights.previousWorkingSets, latest, "Gaps stay gaps and a resumed session cannot compare against itself")
+    }
 }
 
 
@@ -14083,6 +14099,69 @@ final class SessionStripCollapseTests: XCTestCase {
         attachment.name = "set-table-rows"
         attachment.lifetime = .keepAlways
         add(attachment)
+    }
+
+    func testPreviousTableRendersAtNarrowWidthsInEveryLanguageAndLightTheme() throws {
+        let originalLanguage = LanguageManager.shared.currentLanguage
+        let originalTheme = ThemeManager.shared.currentTheme.id
+        defer { LanguageManager.setLanguage(originalLanguage); ThemeManager.shared.setThemeId(originalTheme) }
+        let previous: [Int: SessionSetLog] = [0: .init(setNumber: 1, weightKg: 80, reps: 8),
+            1: .init(setNumber: 2, weightKg: 80, reps: 7), 2: .init(setNumber: 3, weightKg: 75, reps: 8)]
+        let rows = [ExerciseSetLog(id: "one", setNumber: 1, weightInput: "80", repsInput: "9", weightKg: 80, completedReps: 9, isCompleted: true)] +
+            (2...4).map { ExerciseSetLog(id: "row-\($0)", setNumber: $0) }
+        let target = WorkoutSessionUtils.computeGhostTarget(previousSets: previous.values.sorted { $0.setNumber < $1.setNumber }, workingSetIndex: 0,
+            exercise: Exercise(name: "Barbell Bench Press", exerciseId: "barbell-bench-press"))
+        let beat = try XCTUnwrap(WorkoutSessionUtils.evaluateLogbookBeat(loggedWeightKg: 80, loggedReps: 9, target: target))
+        let output = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../build/session-review").standardized
+        try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
+        for language in ["en", "tr", "de", "fr", "es"] {
+            LanguageManager.setLanguage(language)
+            for theme in ["default", "oat"] {
+                ThemeManager.shared.setThemeId(theme)
+                for (width, size) in [(CGFloat(393), ContentSizeCategory.large), (320, .extraExtraExtraLarge)] {
+                    let table = SetLoggingTable(sets: rows, prescription: "3 × 6–10", previousSets: previous,
+                        onUpdateSet: { _, _, _ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in },
+                        logbookBeatenSets: [0: beat])
+                        .padding(16).frame(width: width).frame(maxHeight: .infinity, alignment: .top)
+                        .background(AppColors.background).environment(\.sizeCategory, size)
+                    let host = UIHostingController(rootView: table)
+                    let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 700))
+                    window.rootViewController = host; window.makeKeyAndVisible(); host.view.frame = window.bounds
+                    host.view.layoutIfNeeded(); RunLoop.main.run(until: Date().addingTimeInterval(0.1))
+                    let image = UIGraphicsImageRenderer(size: window.bounds.size).image { _ in
+                        host.view.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
+                    }
+                    try image.pngData()?.write(to: output.appendingPathComponent("prev-\(language)-\(theme)-\(Int(width)).png"))
+                    window.isHidden = true
+                }
+            }
+        }
+    }
+
+    func testLiveSessionTitleAndReplacePaddingSnapshot() throws {
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        let collapsed = store.sessionStripCollapsed
+        let language = LanguageManager.shared.currentLanguage
+        defer { store.sessionStripCollapsed = collapsed; LanguageManager.setLanguage(language) }
+        LanguageManager.setLanguage("en")
+        store.sessionStripCollapsed = true
+        let exercise = Exercise(id: "bench", name: "Barbell Bench Press", exerciseId: "barbell-bench-press", sets: 3, reps: RepTarget(min: 6, max: 10))
+        let workout = Workout(id: "push", day: 1, title: "Push A: Chest", exercises: [exercise])
+        let now = Int64(Date().timeIntervalSince1970 * 1000)
+        let draft = ActiveSessionDraft(programId: "review", workout: workout, startedAt: "2026-10-23T08:00:00Z", startedAtEpochMillis: now,
+            setsByExercise: [exercise.id: (1...3).map { ExerciseSetLog(setNumber: $0) }])
+        store.activeSession = draft
+        let host = UIHostingController(rootView: ActiveSessionView(store: store, draft: draft))
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 852))
+        window.rootViewController = host; window.makeKeyAndVisible(); host.view.frame = window.bounds
+        defer { window.isHidden = true }
+        host.view.layoutIfNeeded(); RunLoop.main.run(until: Date().addingTimeInterval(0.4))
+        let image = UIGraphicsImageRenderer(size: window.bounds.size).image { _ in
+            host.view.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
+        }
+        let output = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../build/session-review/live-session.png").standardized
+        try FileManager.default.createDirectory(at: output.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try image.pngData()?.write(to: output)
     }
 
     func testRenderedStripShrinksAndKeepsCompactRows() throws {

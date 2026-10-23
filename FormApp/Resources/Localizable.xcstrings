@@ -29589,19 +29589,19 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "WIEDERHOLUNGEN"
+            "value": "WDH."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "RÉPÉTITIONS"
+            "value": "RÉP."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "REPETICIONES"
+            "value": "REP."
           }
         }
       }
@@ -36406,6 +36406,41 @@
         }
       }
     },
+    "table.setHeading": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SET"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SET"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SATZ"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SÉR."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SER."
+          }
+        }
+      }
+    },
     "table.pr": {
       "extractionState": "manual",
       "localizations": {
@@ -36437,6 +36472,41 @@
           "stringUnit": {
             "state": "translated",
             "value": "PR"
+          }
+        }
+      }
+    },
+    "table.prev": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PREV"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ÖNCEKİ"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZUVOR"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PRÉC."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ANT."
           }
         }
       }
@@ -36599,13 +36669,13 @@
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "ERLEDIGT"
+            "value": "FERTIG"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "TERMINÉ"
+            "value": "FAIT"
           }
         },
         "es": {
@@ -36962,6 +37032,41 @@
           "stringUnit": {
             "state": "translated",
             "value": "Serie {current} de {total}"
+          }
+        }
+      }
+    },
+    "table.setsDone": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{done}/{total} done"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{done}/{total} bitti"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{done}/{total} fertig"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{done}/{total} faits"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{done}/{total} hechos"
           }
         }
       }

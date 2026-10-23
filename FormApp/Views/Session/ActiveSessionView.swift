@@ -100,7 +100,7 @@ public struct ActiveSessionView: View {
             return map
         }()
 
-        // The previous occurrence's set at the same working position, for drop prefill and PR hints.
+        // The previous occurrence's exact working position, independently of progression suggestions.
         let previousSetsByIndex: [Int: SessionSetLog] = {
             var map: [Int: SessionSetLog] = [:]
             var workingIdx = 0
@@ -196,7 +196,7 @@ public struct ActiveSessionView: View {
 
                             // Current Exercise Card
                             if let exercise = currentExercise {
-                                VStack(alignment: .leading, spacing: 14) {
+                                VStack(alignment: .leading, spacing: 12) {
                                     // A substitute replaces the exercise only until one of its working sets is completed.
                                     ExerciseTitleRow(name: exercise.displayName,
                                         action: currentSets.contains(where: { $0.isCompleted && !$0.isWarmup }) ? nil : replaceButton(for: exercise))
@@ -262,14 +262,13 @@ public struct ActiveSessionView: View {
 
                                     let isRestActive = (activeDraft.restTimer?.secondsRemaining(nowEpochMillis: nowEpochMillis) ?? 0) > 0
                                     let isRestForCurrentExercise = isRestActive && activeDraft.restTimer?.exerciseName == exercise.name
-                                    let prText = historyInsights?.prText ?? "-"
 
                                     SetLoggingTable(
                                         sets: currentSets,
                                         prescription: exercise.displayPrescription,
                                         isRestActive: isRestActive,
                                         isRestForCurrentExercise: isRestForCurrentExercise,
-                                        prText: prText,
+                                        previousSets: previousSetsByIndex,
                                         onUpdateSet: { setIdx, weight, reps in
                                             updateSet(exerciseId: exercise.id, index: setIdx, weight: weight, reps: reps)
                                         },
@@ -297,7 +296,6 @@ public struct ActiveSessionView: View {
                                         allowsZeroWeight: WorkoutSessionUtils.allowsZeroWeight(exercise),
                                         isAssisted: WorkoutSessionUtils.isAssisted(exercise),
                                         isBodyweight: WorkoutSessionUtils.usesBodyweightResistance(exercise),
-                                        ghostTargets: ghostTargets,
                                         logbookBeatenSets: logbookBeatenSets,
                                         intensity: store.showIntensityTechniques ? intensityActions(exercise: exercise, previousSets: previousSetsByIndex) : nil
                                     )
@@ -314,7 +312,9 @@ public struct ActiveSessionView: View {
                                         onJointStress: store.jointStressRatings && workingSetsDone ? { setJointStress($0, exerciseId: exercise.id) } : nil
                                     )
                                 }
-                                .padding(18)
+                                .padding(.horizontal, 18)
+                                .padding(.top, 8)
+                                .padding(.bottom, 18)
                                 .background(
                                     RoundedRectangle(cornerRadius: 18, style: .continuous)
                                         .fill(AppColors.surface)
@@ -695,8 +695,8 @@ public struct ActiveSessionView: View {
                 }
             }
             .foregroundStyle(AppColors.text)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 6)
+            .padding(.horizontal, 14)
+            .padding(.vertical, 8)
             .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).strokeBorder(AppColors.border, lineWidth: 1))
             .frame(minHeight: 48)
             .contentShape(Rectangle())

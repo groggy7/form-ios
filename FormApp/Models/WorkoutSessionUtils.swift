@@ -151,6 +151,14 @@ public enum WorkoutSessionUtils {
             ExerciseCatalog.resolveCanonicalId(stableId: exerciseId, name: name) ?? "")
     }
 
+    /// The live count belongs in the header; retain custom instructions and timed targets verbatim.
+    public static func sessionPrescription(_ prescription: String) -> String {
+        let target = prescription.replacingOccurrences(of: #"^\s*\d+\s*[×x]\s*"#, with: "", options: .regularExpression)
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+        return target.range(of: #"^\d+(?:\s*[–−-]\s*\d+)?$"#, options: .regularExpression) != nil
+            ? LanguageManager.t("progression.coach.reps", ["reps": target]) : LanguageManager.content(target)
+    }
+
     public static func formatSessionPr(weightKg: Double, reps: Int, unit: WeightUnit = .kg, isBodyweight: Bool = false, isAssisted: Bool = false) -> String {
         if isBodyweight && !isAssisted {
             let added = weightKg == 0 ? "" : " +\(unit.formatDisplayWeight(weightKg))"

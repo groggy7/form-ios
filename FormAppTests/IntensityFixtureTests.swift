@@ -269,7 +269,7 @@ final class IntensityTableRenderTests: XCTestCase {
             LanguageManager.setLanguage(language)
             for (width, size) in [(CGFloat(393), ContentSizeCategory.large), (320, .extraExtraExtraLarge)] {
                 let table = SetLoggingTable(sets: [drop, restPause, open], prescription: "3 × 8–12", isRestActive: true, isRestForCurrentExercise: true,
-                                            prText: "100x8", onUpdateSet: { _, _, _ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in },
+                                            previousSets: previousSets, onUpdateSet: { _, _, _ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in },
                                             weightUnit: .kg, intensity: actions)
                     .padding(16).frame(width: width).frame(maxHeight: .infinity, alignment: .top).background(AppColors.background)
                     .environment(\.sizeCategory, size)
