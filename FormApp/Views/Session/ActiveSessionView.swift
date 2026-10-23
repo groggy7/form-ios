@@ -197,16 +197,9 @@ public struct ActiveSessionView: View {
                             // Current Exercise Card
                             if let exercise = currentExercise {
                                 VStack(alignment: .leading, spacing: 14) {
-                                    VStack(alignment: .leading, spacing: 10) {
-                                        Text(exercise.displayName)
-                                            .font(.app(size: 20, weight: .bold))
-                                            .foregroundStyle(AppColors.text)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
-                                        // A substitute replaces the exercise only until one of its working sets is completed.
-                                        if !currentSets.contains(where: { $0.isCompleted && !$0.isWarmup }) {
-                                            replaceButton(for: exercise)
-                                        }
-                                    }
+                                    // A substitute replaces the exercise only until one of its working sets is completed.
+                                    ExerciseTitleRow(name: exercise.displayName,
+                                        action: currentSets.contains(where: { $0.isCompleted && !$0.isWarmup }) ? nil : replaceButton(for: exercise))
 
                                     let recommendation = historyInsights?.recommendation
 
@@ -666,7 +659,8 @@ public struct ActiveSessionView: View {
         let exercises = activeDraft.workout.exercises
         let currentIndex = min(max(0, activeDraft.currentExerciseIndex), max(0, exercises.count - 1))
         return SessionExerciseStrip(exercises: exercises, currentIndex: currentIndex, setsByExercise: activeDraft.setsByExercise,
-            media: sessionMedia, inspectingExerciseId: inspectingExerciseId, collapsed: $store.sessionStripCollapsed) { idx in
+            media: sessionMedia, inspectingExerciseId: inspectingExerciseId, collapsed: $store.sessionStripCollapsed,
+            dragsFromCards: !compactHeight) { idx in
             sessionMedia.freezeActive()
             if idx == currentIndex {
                 inspectingExerciseId = exercises[idx].id
@@ -685,17 +679,20 @@ public struct ActiveSessionView: View {
         return Button {
             if unlocked { swappingExercise = exercise } else { paywallFeature = .exerciseSwaps }
         } label: {
-            HStack(spacing: 8) {
+            // A compact pill inside a full 48pt touch target, so it can share the exercise name's line.
+            HStack(spacing: 6) {
                 Image(systemName: "arrow.left.arrow.right")
-                    .font(.system(size: 13, weight: .semibold))
+                    .font(.system(size: 12, weight: .semibold))
                 Text(LanguageManager.t("session.replace.action"))
-                    .font(.app(size: 14, weight: .semibold))
+                    .font(.app(size: 13, weight: .semibold))
+                    .lineLimit(1)
                 if !unlocked { ProBadge() }
             }
             .foregroundStyle(AppColors.text)
-            .padding(.horizontal, 14)
-            .frame(minHeight: 44)
-            .overlay(RoundedRectangle(cornerRadius: 12, style: .continuous).strokeBorder(AppColors.border, lineWidth: 1))
+            .padding(.horizontal, 10)
+            .padding(.vertical, 6)
+            .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).strokeBorder(AppColors.border, lineWidth: 1))
+            .frame(minHeight: 48)
             .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -1365,6 +1362,59 @@ private struct SessionElapsedTime: View {
     }
 }
 
+private extension VerticalAlignment {
+    private enum FirstLineCenter: AlignmentID {
+        static func defaultValue(in d: ViewDimensions) -> CGFloat { d[VerticalAlignment.center] }
+    }
+    /// The middle of a title's first line, for actions that share that line.
+    static let firstLineCenter = VerticalAlignment(FirstLineCenter.self)
+}
+
+/// The exercise name with an optional trailing action. The action sits beside the name, centered on its first
+/// line, while every word still fits beside it; otherwise it moves below so no word is split.
+struct ExerciseTitleRow<Action: View>: View {
+    @ObservedObject private var themeManager = ThemeManager.shared
+    let name: String
+    let action: Action?
+    @State private var rowWidth: CGFloat = 0
+    @State private var actionWidth: CGFloat = 0
+
+    var body: some View {
+        let _ = themeManager.currentTheme
+        let font = UIFont.systemFont(ofSize: 20 * TextWidthScale.factor, weight: .bold)
+        // Lines may break at spaces and after hyphens, so the widest piece between those must fit.
+        let longestPiece = name.replacingOccurrences(of: "-", with: "- ").split(separator: " ").map {
+            ceil((String($0) as NSString).size(withAttributes: [.font: font]).width)
+        }.max() ?? 0
+        let beside = rowWidth == 0 || longestPiece <= rowWidth - actionWidth - 12
+        let title = Text(name)
+            .font(.app(size: 20, weight: .bold))
+            .foregroundStyle(AppColors.text)
+        Group {
+            if let action, beside {
+                HStack(alignment: .firstLineCenter, spacing: 12) {
+                    title
+                        .alignmentGuide(.firstLineCenter) { $0[.firstTextBaseline] - font.capHeight / 2 }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    measured(action)
+                }
+            } else {
+                VStack(alignment: .leading, spacing: 10) {
+                    title.frame(maxWidth: .infinity, alignment: .leading)
+                    if let action { measured(action) }
+                }
+            }
+        }
+        .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { rowWidth = $0 }
+    }
+
+    private func measured(_ action: Action) -> some View {
+        action
+            .fixedSize()
+            .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { actionWidth = $0 }
+    }
+}
+
 /// Label widths and card heights of both strip layouts. Compact names are never clipped: a name takes the
 /// narrowest width that holds it in two lines, and past the widest card it wraps and every card grows taller.
 struct SessionStripMetrics: Equatable {
@@ -1448,8 +1498,14 @@ struct SessionExerciseStrip: View {
     @ObservedObject var media: SessionExerciseMedia
     let inspectingExerciseId: String?
     @Binding var collapsed: Bool
+    /// Vertical drags on the cards also collapse the strip, unless a short window scrolls it with the sets.
+    var dragsFromCards = true
     let onSelect: (Int) -> Void
     @State private var dragProgress: CGFloat? = nil
+    /// Whether the current card drag is vertical; sideways drags are left to the card row's scrolling.
+    @State private var cardDragIsVertical: Bool? = nil
+    /// The card under a vertical drag still sees the lift as a tap; a drag must not select it.
+    @State private var cardDragEndedAt = Date.distantPast
 
     static let grabberHeight: CGFloat = 24
     private static let snap = Animation.spring(response: 0.32, dampingFraction: 1)
@@ -1468,7 +1524,10 @@ struct SessionExerciseStrip: View {
                         ForEach(Array(exercises.enumerated()), id: \.element.id) { idx, ex in
                             let isSel = idx == currentIndex
                             let sets = setsByExercise[ex.id] ?? []
-                            Button(action: { onSelect(idx) }) {
+                            Button(action: {
+                                guard cardDragIsVertical != true, Date().timeIntervalSince(cardDragEndedAt) > 0.3 else { return }
+                                onSelect(idx)
+                            }) {
                                 SessionStripCard(progress: progress, label: labels[idx], compactLabel: compactLabels[idx], selected: isSel,
                                     complete: !sets.isEmpty && sets.allSatisfy { $0.isCompleted },
                                     compactLabelWidth: metrics.compactLabelWidths[idx], metrics: metrics) { size in
@@ -1485,6 +1544,7 @@ struct SessionExerciseStrip: View {
                 }
                 .tourTarget("workout.exercises", cornerRadius: 13,
                             contentInsets: EdgeInsets(top: 10, leading: 20, bottom: 0, trailing: 20))
+                .simultaneousGesture(cardDrag(metrics: metrics), including: dragsFromCards ? .all : .subviews)
                 .onAppear {
                     // A short window moves the strip into the scrolling content; keep the current card in view.
                     if exercises.indices.contains(currentIndex) { scrollProxy.scrollTo(exercises[currentIndex].id, anchor: .center) }
@@ -1501,27 +1561,54 @@ struct SessionExerciseStrip: View {
         }
     }
 
+    private func range(_ metrics: SessionStripMetrics) -> CGFloat { max(1, metrics.expandedCardHeight - metrics.compactCardHeight) }
+
+    /// Follows the finger in global coordinates: the strip shrinks under it, so local translation would cancel itself.
+    private func follow(_ value: DragGesture.Value, metrics: SessionStripMetrics) {
+        dragProgress = min(1, max(0, (collapsed ? 1 : 0) - value.translation.height / range(metrics)))
+    }
+
+    /// Snaps to the fling direction above 400pt/s, otherwise to the nearer state.
+    private func settle(_ value: DragGesture.Value) {
+        let velocity = value.velocity.height
+        let target = abs(velocity) > 400 ? velocity < 0 : (dragProgress ?? (collapsed ? 1 : 0)) >= 0.5
+        withAnimation(Self.snap) {
+            collapsed = target
+            dragProgress = nil
+        }
+    }
+
+    private func cardDrag(metrics: SessionStripMetrics) -> some Gesture {
+        DragGesture(minimumDistance: 10, coordinateSpace: .global)
+            .onChanged { value in
+                if cardDragIsVertical == nil { cardDragIsVertical = abs(value.translation.height) > abs(value.translation.width) }
+                if cardDragIsVertical == true { follow(value, metrics: metrics) }
+            }
+            .onEnded { value in
+                if cardDragIsVertical == true {
+                    settle(value)
+                    cardDragEndedAt = Date()
+                }
+                cardDragIsVertical = nil
+            }
+    }
+
     private func grabber(metrics: SessionStripMetrics) -> some View {
-        let range = max(1, metrics.expandedCardHeight - metrics.compactCardHeight)
-        let base: CGFloat = collapsed ? 1 : 0
-        return Capsule()
+        Capsule()
             .fill(AppColors.border)
             .frame(width: 36, height: 4)
             .frame(maxWidth: .infinity, minHeight: Self.grabberHeight)
             .contentShape(Rectangle())
-            // Global coordinates: the grabber rides up with the strip, so local translation would cancel itself.
             .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
-                .onChanged { value in dragProgress = min(1, max(0, base - value.translation.height / range)) }
+                .onChanged { follow($0, metrics: metrics) }
                 .onEnded { value in
-                    let current = dragProgress ?? base
-                    let velocity = value.velocity.height
-                    let target: Bool
-                    if abs(value.translation.height) < 6 && abs(velocity) < 400 { target = !collapsed }
-                    else if abs(velocity) > 400 { target = velocity < 0 }
-                    else { target = current >= 0.5 }
-                    withAnimation(Self.snap) {
-                        collapsed = target
-                        dragProgress = nil
+                    if abs(value.translation.height) < 6 && abs(value.velocity.height) < 400 {
+                        withAnimation(Self.snap) {
+                            collapsed.toggle()
+                            dragProgress = nil
+                        }
+                    } else {
+                        settle(value)
                     }
                 })
             .accessibilityElement()

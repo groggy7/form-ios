@@ -136,315 +136,318 @@ public struct SetLoggingTable: View {
                     .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
             }
             let currentLoggedIndex = (isRestActive && isRestForCurrentExercise) ? sets.lastIndex(where: { $0.isCompleted }) : nil
-            // Set Rows
-            ForEach(Array(sets.enumerated()), id: \.element.id) { index, set in
-                let isSetEnabled = set.isCompleted || WorkoutSessionUtils.isSetEnabled(sets: sets, index: index)
-                let selectedInSet = Self.field(selectedField, belongsTo: set)
-                let isSetInputEnabled = isRestActive
-                    ? (currentLoggedIndex == index || (isRestForCurrentExercise && selectedInSet))
-                    : isSetEnabled
-                let showsTechniqueRow = intensity != nil && !set.isWarmup && isSetInputEnabled
-                    && WorkoutSessionUtils.canCompleteSet(set, allowsZeroWeight: allowsZeroWeight)
-                    && (selectedInSet || index == currentLoggedIndex)
-                let ghostTarget = ghostTargets[index]
-                let contextualPr: String = {
-                    if let gt = ghostTarget, let prevW = gt.lastWeekWeightKg, let prevR = gt.lastWeekReps, prevW >= 0.0, prevR > 0 {
-                        return WorkoutSessionUtils.formatSessionPr(weightKg: prevW, reps: prevR, unit: weightUnit, isBodyweight: isBodyweight, isAssisted: isAssisted)
-                    }
-                    return prText.isEmpty ? "-" : prText
-                }()
-                let weightBinding = Binding<String>(
-                    get: {
-                        return set.weightInput.isEmpty ? (set.weightKg.flatMap { $0 >= 0 ? WorkoutSessionUtils.formatWeightInput($0, unit: weightUnit) : nil } ?? "") : set.weightInput
-                    },
-                    set: { newVal in
-                        guard isSetInputEnabled else { return }
-                        if let sanitized = WorkoutSessionUtils.sanitizedWeightInput(newVal, unit: weightUnit) {
-                            let reps = (set.repsInput == "0" || set.repsInput.isEmpty) ? (set.completedReps.flatMap { $0 > 0 ? "\($0)" : nil } ?? "") : set.repsInput
-                            onUpdateSet(index, sanitized, reps)
-                        }
-                    }
-                )
-
-                let repsBinding = Binding<String>(
-                    get: {
-                        if set.repsInput == "0" { return "" }
-                        return set.repsInput.isEmpty ? (set.completedReps.flatMap { $0 > 0 ? "\($0)" : nil } ?? "") : set.repsInput
-                    },
-                    set: { newVal in
-                        guard isSetInputEnabled else { return }
-                        if newVal == "0" || newVal == "00" {
-                            let weight = set.weightInput.isEmpty ? (set.weightKg.flatMap { $0 >= 0 ? WorkoutSessionUtils.formatWeightInput($0, unit: weightUnit) : nil } ?? "") : set.weightInput
-                            onUpdateSet(index, weight, "")
-                            return
-                        }
-                        if let sanitized = WorkoutSessionUtils.sanitizedRepsInput(newVal) {
-                            let weight = set.weightInput.isEmpty ? (set.weightKg.flatMap { $0 >= 0 ? WorkoutSessionUtils.formatWeightInput($0, unit: weightUnit) : nil } ?? "") : set.weightInput
-                            onUpdateSet(index, weight, sanitized)
-                        }
-                    }
-                )
-
-                let canComplete = set.isCompleted || (WorkoutSessionUtils.canCompleteSet(set, allowsZeroWeight: allowsZeroWeight) && !isRestActive)
-
-                HStack(spacing: 8) {
-                    Text(set.isWarmup ? "W\(set.setNumber)" : "\(set.setNumber)")
-                        .font(.app(size: set.isWarmup ? 13 : 14, weight: .bold))
-                        .foregroundStyle(
-                            set.isWarmup
-                                ? AppColors.warmupAmber
-                                : (set.isCompleted
-                                    ? AppColors.accent
-                                    : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35)))
-                        )
-                        .frame(width: 32, alignment: .leading)
-
-                    let beatResult = set.isCompleted ? logbookBeatenSets[index] : nil
-                    if set.isWarmup {
-                        Text(LanguageManager.t("warmup.badge"))
-                            .font(.app(size: 10.5, weight: .bold))
-                            .foregroundStyle(AppColors.warmupAmber.opacity(0.85))
-                            .lineLimit(1)
-                            .frame(width: 56, alignment: .center)
-                    } else if let beat = beatResult {
-                        Text(WorkoutSessionUtils.formatLogbookBeatBadge(result: beat, unit: weightUnit))
-                            .font(.app(size: 10, weight: .bold))
-                            .foregroundStyle(AppColors.accent)
-                            .lineLimit(1)
-                            .minimumScaleFactor(0.75)
-                            .padding(.horizontal, 4)
-                            .padding(.vertical, 2)
-                            .background(AppColors.positiveBg)
-                            .clipShape(RoundedRectangle(cornerRadius: 4))
-                            .overlay(RoundedRectangle(cornerRadius: 4).stroke(AppColors.accent.opacity(0.35)))
-                            .frame(width: 56, alignment: .center)
-                    } else {
-                        Text(contextualPr.replacingOccurrences(of: " ×", with: "\n×").replacingOccurrences(of: "BW +", with: "BW+"))
-                            .accessibilityLabel(WorkoutSessionUtils.sessionPrAccessibilityLabel(contextualPr, unit: weightUnit))
-                            .font(.app(size: 13, weight: .medium))
-                            .foregroundStyle(
-                                set.isCompleted
-                                    ? AppColors.secondaryText.opacity(0.6)
-                                    : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35))
-                            )
-                            .lineLimit(contextualPr.hasPrefix("BW") ? 2 : 1)
-                            .multilineTextAlignment(.center)
-                            .minimumScaleFactor(contextualPr.hasPrefix("BW") ? 0.7 : 1)
-                            .frame(width: 56, alignment: .center)
-                    }
-
-                    GeometryReader { geometry in
-                        TextField("0", text: weightBinding, prompt: Text("0").foregroundStyle(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
-                            .focused($focusedField, equals: Field(id: set.id, weight: true))
-                            .simultaneousGesture(TapGesture().onEnded {
-                                if isSetInputEnabled {
-                                    selectedField = Field(id: set.id, weight: true)
-                                }
-                            })
-                            .disabled(!isSetInputEnabled)
-                            .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \((isAssisted ? "\(LanguageManager.t("table.assistance")) (\(weightUnit.label))" : LanguageManager.t(weightUnit == .lbs ? "table.weightLbs" : "table.weightKg")))")
-                            .keyboardType(.decimalPad)
-                            .multilineTextAlignment(.center)
-                            .font(.app(size: weightInputFontSize(weightBinding.wrappedValue, width: geometry.size.width), weight: .semibold))
-                            .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
-                            .padding(.vertical, 8)
-                            .background(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5))
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                            .frame(maxWidth: .infinity)
-                            .frame(minHeight: 48)
-                            .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: true) && isSetInputEnabled ? AppColors.accent : .clear))
-                    }
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 48)
-
-                    // A Smart Progression target is only a hint: the field stays empty until the user enters actual reps.
-                    let targetRepsHint = set.targetReps.flatMap { (1...999).contains($0) && !set.isCompleted ? $0 : nil }
-                    TextField("0", text: repsBinding, prompt: Text(targetRepsHint.map(String.init) ?? "0").foregroundStyle(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
-                        .focused($focusedField, equals: Field(id: set.id, weight: false))
-                        .simultaneousGesture(TapGesture().onEnded {
-                            if isSetInputEnabled {
-                                selectedField = Field(id: set.id, weight: false)
+            // Set rows sit closer than the table's other blocks; every input keeps its 48pt target.
+            VStack(spacing: 4) {
+                ForEach(Array(sets.enumerated()), id: \.element.id) { index, set in
+                    VStack(spacing: 8) {
+                        let isSetEnabled = set.isCompleted || WorkoutSessionUtils.isSetEnabled(sets: sets, index: index)
+                        let selectedInSet = Self.field(selectedField, belongsTo: set)
+                        let isSetInputEnabled = isRestActive
+                            ? (currentLoggedIndex == index || (isRestForCurrentExercise && selectedInSet))
+                            : isSetEnabled
+                        let showsTechniqueRow = intensity != nil && !set.isWarmup && isSetInputEnabled
+                            && WorkoutSessionUtils.canCompleteSet(set, allowsZeroWeight: allowsZeroWeight)
+                            && (selectedInSet || index == currentLoggedIndex)
+                        let ghostTarget = ghostTargets[index]
+                        let contextualPr: String = {
+                            if let gt = ghostTarget, let prevW = gt.lastWeekWeightKg, let prevR = gt.lastWeekReps, prevW >= 0.0, prevR > 0 {
+                                return WorkoutSessionUtils.formatSessionPr(weightKg: prevW, reps: prevR, unit: weightUnit, isBodyweight: isBodyweight, isAssisted: isAssisted)
                             }
-                        })
-                        .disabled(!isSetInputEnabled)
-                        .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \(LanguageManager.t("table.actualReps"))"
-                            + (targetRepsHint.map { ", " + LanguageManager.t("progression.coach.reps_target_hint", ["reps": "\($0)"]) } ?? ""))
-                        .keyboardType(.numberPad)
-                        .multilineTextAlignment(.center)
-                        .font(.app(size: 15, weight: .semibold))
-                        .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
-                        .padding(.vertical, 8)
-                        .background(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5))
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
-                        .frame(maxWidth: .infinity)
-                        .frame(minHeight: 48)
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: false) && isSetInputEnabled ? AppColors.accent : .clear))
+                            return prText.isEmpty ? "-" : prText
+                        }()
+                        let weightBinding = Binding<String>(
+                            get: {
+                                return set.weightInput.isEmpty ? (set.weightKg.flatMap { $0 >= 0 ? WorkoutSessionUtils.formatWeightInput($0, unit: weightUnit) : nil } ?? "") : set.weightInput
+                            },
+                            set: { newVal in
+                                guard isSetInputEnabled else { return }
+                                if let sanitized = WorkoutSessionUtils.sanitizedWeightInput(newVal, unit: weightUnit) {
+                                    let reps = (set.repsInput == "0" || set.repsInput.isEmpty) ? (set.completedReps.flatMap { $0 > 0 ? "\($0)" : nil } ?? "") : set.repsInput
+                                    onUpdateSet(index, sanitized, reps)
+                                }
+                            }
+                        )
 
-                    Button(action: {
-                        if isRestActive {
-                            if set.isCompleted && index == currentLoggedIndex {
-                                focusedField = nil
-                                selectedField = nil
+                        let repsBinding = Binding<String>(
+                            get: {
+                                if set.repsInput == "0" { return "" }
+                                return set.repsInput.isEmpty ? (set.completedReps.flatMap { $0 > 0 ? "\($0)" : nil } ?? "") : set.repsInput
+                            },
+                            set: { newVal in
+                                guard isSetInputEnabled else { return }
+                                if newVal == "0" || newVal == "00" {
+                                    let weight = set.weightInput.isEmpty ? (set.weightKg.flatMap { $0 >= 0 ? WorkoutSessionUtils.formatWeightInput($0, unit: weightUnit) : nil } ?? "") : set.weightInput
+                                    onUpdateSet(index, weight, "")
+                                    return
+                                }
+                                if let sanitized = WorkoutSessionUtils.sanitizedRepsInput(newVal) {
+                                    let weight = set.weightInput.isEmpty ? (set.weightKg.flatMap { $0 >= 0 ? WorkoutSessionUtils.formatWeightInput($0, unit: weightUnit) : nil } ?? "") : set.weightInput
+                                    onUpdateSet(index, weight, sanitized)
+                                }
+                            }
+                        )
+
+                        let canComplete = set.isCompleted || (WorkoutSessionUtils.canCompleteSet(set, allowsZeroWeight: allowsZeroWeight) && !isRestActive)
+
+                        HStack(spacing: 8) {
+                            Text(set.isWarmup ? "W\(set.setNumber)" : "\(set.setNumber)")
+                                .font(.app(size: set.isWarmup ? 13 : 14, weight: .bold))
+                                .foregroundStyle(
+                                    set.isWarmup
+                                        ? AppColors.warmupAmber
+                                        : (set.isCompleted
+                                            ? AppColors.accent
+                                            : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35)))
+                                )
+                                .frame(width: 32, alignment: .leading)
+
+                            let beatResult = set.isCompleted ? logbookBeatenSets[index] : nil
+                            if set.isWarmup {
+                                Text(LanguageManager.t("warmup.badge"))
+                                    .font(.app(size: 10.5, weight: .bold))
+                                    .foregroundStyle(AppColors.warmupAmber.opacity(0.85))
+                                    .lineLimit(1)
+                                    .frame(width: 56, alignment: .center)
+                            } else if let beat = beatResult {
+                                Text(WorkoutSessionUtils.formatLogbookBeatBadge(result: beat, unit: weightUnit))
+                                    .font(.app(size: 10, weight: .bold))
+                                    .foregroundStyle(AppColors.accent)
+                                    .lineLimit(1)
+                                    .minimumScaleFactor(0.75)
+                                    .padding(.horizontal, 4)
+                                    .padding(.vertical, 2)
+                                    .background(AppColors.positiveBg)
+                                    .clipShape(RoundedRectangle(cornerRadius: 4))
+                                    .overlay(RoundedRectangle(cornerRadius: 4).stroke(AppColors.accent.opacity(0.35)))
+                                    .frame(width: 56, alignment: .center)
                             } else {
-                                onRestWarning?()
+                                Text(contextualPr.replacingOccurrences(of: " ×", with: "\n×").replacingOccurrences(of: "BW +", with: "BW+"))
+                                    .accessibilityLabel(WorkoutSessionUtils.sessionPrAccessibilityLabel(contextualPr, unit: weightUnit))
+                                    .font(.app(size: 13, weight: .medium))
+                                    .foregroundStyle(
+                                        set.isCompleted
+                                            ? AppColors.secondaryText.opacity(0.6)
+                                            : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35))
+                                    )
+                                    .lineLimit(contextualPr.hasPrefix("BW") ? 2 : 1)
+                                    .multilineTextAlignment(.center)
+                                    .minimumScaleFactor(contextualPr.hasPrefix("BW") ? 0.7 : 1)
+                                    .frame(width: 56, alignment: .center)
                             }
-                        } else if set.isCompleted {
-                            onToggleCompleteSet(index)
-                            focusedField = nil
-                            selectedField = nil
-                        } else if canComplete {
-                            validationSetId = nil
-                            onToggleCompleteSet(index)
-                            focusedField = nil
-                            selectedField = nil
-                        } else {
-                            validationSetId = set.id
-                        }
-                    }) {
-                        Image(systemName: set.isCompleted ? "checkmark.circle.fill" : "circle")
-                            .font(.system(size: 24))
-                            .foregroundStyle(
-                                set.isCompleted
-                                    ? (set.isWarmup ? AppColors.warmupAmber : AppColors.accent)
-                                    : (!isSetEnabled
-                                        ? AppColors.muted.opacity(0.15)
-                                        : (canComplete ? AppColors.muted.opacity(0.5) : AppColors.muted.opacity(0.2)))
-                            )
-                            .frame(width: 44, height: 44)
-                    }
-                    .buttonStyle(.plain)
-                    .accessibilityLabel("\(LanguageManager.t("table.doneHeading")) \(LanguageManager.t("table.set")) \(set.setNumber)")
-                    .accessibilityIdentifier("set-complete-\(set.id)")
-                    .disabled(!isSetEnabled && !set.isCompleted)
-                }
-                .padding(.horizontal, 14)
-                .padding(.vertical, 6)
-                .background(
-                    RoundedRectangle(cornerRadius: 10, style: .continuous)
-                        .fill(
-                            set.isCompleted
-                                ? (set.isWarmup ? AppColors.warmupAmberBg.opacity(0.4) : AppColors.positiveBg.opacity(0.4))
-                                : (set.isWarmup
-                                    ? AppColors.warmupAmberBg.opacity(0.35)
-                                    : (isSetEnabled ? AppColors.surface : AppColors.surface.opacity(0.5)))
-                        )
-                )
-                .contextMenu {
-                    if let toggleWarmup = onToggleWarmup {
-                        Button(action: { toggleWarmup(index) }) {
-                            Label(
-                                LanguageManager.t(set.isWarmup ? "warmup.convert_to_working" : "warmup.convert_to_warmup"),
-                                systemImage: set.isWarmup ? "dumbbell" : "flame"
-                            )
-                        }
-                    }
-                    let plateWeight = (WarmupPlateEngine.hasWorkingLoad(set.weightKg) ? set.weightKg : nil)
-                        ?? Double(weightBinding.wrappedValue.replacingOccurrences(of: ",", with: ".")).map {
-                        weightUnit.toCanonicalKg($0)
-                    }
-                    if let inspect = onInspectPlates, let plateWeight, WarmupPlateEngine.hasWorkingLoad(plateWeight) {
-                        Button(action: { inspect(plateWeight) }) {
-                            Label(LanguageManager.t("warmup.tab_plates"), systemImage: "square.stack.3d.up")
-                        }
-                    }
-                    if sets.count > 1 {
-                        Button(role: .destructive, action: { onRemoveSet(index) }) {
-                            Label(LanguageManager.t("table.deleteSet"), systemImage: "trash")
-                        }
-                    }
-                }
 
-                if let intensity, !set.isWarmup {
-                    intensityRows(set: set, index: index, actions: intensity, inputEnabled: isSetInputEnabled, rowEnabled: isSetEnabled)
-                }
+                            GeometryReader { geometry in
+                                TextField("0", text: weightBinding, prompt: Text("0").foregroundStyle(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
+                                    .focused($focusedField, equals: Field(id: set.id, weight: true))
+                                    .simultaneousGesture(TapGesture().onEnded {
+                                        if isSetInputEnabled {
+                                            selectedField = Field(id: set.id, weight: true)
+                                        }
+                                    })
+                                    .disabled(!isSetInputEnabled)
+                                    .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \((isAssisted ? "\(LanguageManager.t("table.assistance")) (\(weightUnit.label))" : LanguageManager.t(weightUnit == .lbs ? "table.weightLbs" : "table.weightKg")))")
+                                    .keyboardType(.decimalPad)
+                                    .multilineTextAlignment(.center)
+                                    .font(.app(size: weightInputFontSize(weightBinding.wrappedValue, width: geometry.size.width), weight: .semibold))
+                                    .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
+                                    .padding(.vertical, 8)
+                                    .background(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5))
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                                    .frame(maxWidth: .infinity)
+                                    .frame(minHeight: 48)
+                                    .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: true) && isSetInputEnabled ? AppColors.accent : .clear))
+                            }
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 48)
 
-                if validationSetId == set.id, !set.isCompleted,
-                   let key = WorkoutSessionUtils.setValidationError(set, allowsZeroWeight: allowsZeroWeight) {
-                    Text(LanguageManager.t(key)).font(.app(size: 12)).foregroundStyle(AppColors.danger)
-                        .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
-                        .accessibilityIdentifier("set-validation-\(set.id)")
-                }
-                if let selected = selectedField, selected.id == set.id, isSetInputEnabled {
-                    let weightLabelKey = weightUnit == .lbs ? "table.weightLbs" : "table.weightKg"
-                    let fieldLabel = LanguageManager.t(selected.weight ? weightLabelKey : "table.actualReps")
-                    let setLabel = "\(LanguageManager.t("table.set")) \(set.setNumber)"
-                    VStack(spacing: 4) {
-                        HStack {
-                            Text("\(setLabel) · \(fieldLabel)")
-                                .font(.app(size: 12)).foregroundStyle(AppColors.secondaryText)
-                            Spacer()
-                            Button(LanguageManager.t("table.done")) { focusedField = nil; selectedField = nil }
-                                .font(.app(size: 12)).foregroundStyle(AppColors.accent)
-                                .frame(minWidth: 48, minHeight: 48)
-                        }
-                        HStack(spacing: 8) {
-                            ForEach(selected.weight ? [-10, -5, 5, 10] : [-1, 1], id: \.self) { step in
-                                let label = step > 0 ? "+\(step)" : "−\(-step)"
-                                Button {
-                                    if selected.weight {
-                                        weightBinding.wrappedValue = WorkoutSessionUtils.adjustWeight(weightBinding.wrappedValue, by: step, unit: weightUnit)
-                                    } else {
-                                        repsBinding.wrappedValue = WorkoutSessionUtils.adjustReps(repsBinding.wrappedValue, by: step)
+                            // A Smart Progression target is only a hint: the field stays empty until the user enters actual reps.
+                            let targetRepsHint = set.targetReps.flatMap { (1...999).contains($0) && !set.isCompleted ? $0 : nil }
+                            TextField("0", text: repsBinding, prompt: Text(targetRepsHint.map(String.init) ?? "0").foregroundStyle(AppColors.muted.opacity(isSetInputEnabled ? 0.6 : 0.25)))
+                                .focused($focusedField, equals: Field(id: set.id, weight: false))
+                                .simultaneousGesture(TapGesture().onEnded {
+                                    if isSetInputEnabled {
+                                        selectedField = Field(id: set.id, weight: false)
                                     }
-                                } label: {
-                                    Text(label).font(.app(size: 16)).foregroundStyle(AppColors.text)
-                                        .frame(maxWidth: .infinity, minHeight: 48)
-                                        .background(RoundedRectangle(cornerRadius: 8).stroke(AppColors.border))
-                                        .contentShape(RoundedRectangle(cornerRadius: 8))
-                                }
-                                .buttonStyle(.plain)
-                                .accessibilityLabel("\(setLabel), \(fieldLabel), \(label)")
-                            }
-                        }
+                                })
+                                .disabled(!isSetInputEnabled)
+                                .accessibilityLabel("\(LanguageManager.t("table.set")) \(set.setNumber), \(LanguageManager.t("table.actualReps"))"
+                                    + (targetRepsHint.map { ", " + LanguageManager.t("progression.coach.reps_target_hint", ["reps": "\($0)"]) } ?? ""))
+                                .keyboardType(.numberPad)
+                                .multilineTextAlignment(.center)
+                                .font(.app(size: 15, weight: .semibold))
+                                .foregroundStyle(isSetInputEnabled ? AppColors.text : AppColors.muted.opacity(0.5))
+                                .padding(.vertical, 8)
+                                .background(AppColors.surfaceRaised.opacity(isSetInputEnabled ? 1.0 : 0.5))
+                                .clipShape(RoundedRectangle(cornerRadius: 8))
+                                .frame(maxWidth: .infinity)
+                                .frame(minHeight: 48)
+                                .overlay(RoundedRectangle(cornerRadius: 8).stroke(selectedField == Field(id: set.id, weight: false) && isSetInputEnabled ? AppColors.accent : .clear))
 
-                        HStack(spacing: 8) {
+                            Button(action: {
+                                if isRestActive {
+                                    if set.isCompleted && index == currentLoggedIndex {
+                                        focusedField = nil
+                                        selectedField = nil
+                                    } else {
+                                        onRestWarning?()
+                                    }
+                                } else if set.isCompleted {
+                                    onToggleCompleteSet(index)
+                                    focusedField = nil
+                                    selectedField = nil
+                                } else if canComplete {
+                                    validationSetId = nil
+                                    onToggleCompleteSet(index)
+                                    focusedField = nil
+                                    selectedField = nil
+                                } else {
+                                    validationSetId = set.id
+                                }
+                            }) {
+                                Image(systemName: set.isCompleted ? "checkmark.circle.fill" : "circle")
+                                    .font(.system(size: 24))
+                                    .foregroundStyle(
+                                        set.isCompleted
+                                            ? (set.isWarmup ? AppColors.warmupAmber : AppColors.accent)
+                                            : (!isSetEnabled
+                                                ? AppColors.muted.opacity(0.15)
+                                                : (canComplete ? AppColors.muted.opacity(0.5) : AppColors.muted.opacity(0.2)))
+                                    )
+                                    .frame(width: 44, height: 44)
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityLabel("\(LanguageManager.t("table.doneHeading")) \(LanguageManager.t("table.set")) \(set.setNumber)")
+                            .accessibilityIdentifier("set-complete-\(set.id)")
+                            .disabled(!isSetEnabled && !set.isCompleted)
+                        }
+                        .padding(.horizontal, 14)
+                        .background(
+                            RoundedRectangle(cornerRadius: 10, style: .continuous)
+                                .fill(
+                                    set.isCompleted
+                                        ? (set.isWarmup ? AppColors.warmupAmberBg.opacity(0.4) : AppColors.positiveBg.opacity(0.4))
+                                        : (set.isWarmup
+                                            ? AppColors.warmupAmberBg.opacity(0.35)
+                                            : (isSetEnabled ? AppColors.surface : AppColors.surface.opacity(0.5)))
+                                )
+                        )
+                        .contextMenu {
+                            if let toggleWarmup = onToggleWarmup {
+                                Button(action: { toggleWarmup(index) }) {
+                                    Label(
+                                        LanguageManager.t(set.isWarmup ? "warmup.convert_to_working" : "warmup.convert_to_warmup"),
+                                        systemImage: set.isWarmup ? "dumbbell" : "flame"
+                                    )
+                                }
+                            }
                             let plateWeight = (WarmupPlateEngine.hasWorkingLoad(set.weightKg) ? set.weightKg : nil)
                                 ?? Double(weightBinding.wrappedValue.replacingOccurrences(of: ",", with: ".")).map {
                                 weightUnit.toCanonicalKg($0)
                             }
                             if let inspect = onInspectPlates, let plateWeight, WarmupPlateEngine.hasWorkingLoad(plateWeight) {
-                                Button {
-                                    inspect(plateWeight)
-                                } label: {
-                                    HStack(spacing: 4) {
-                                        Image(systemName: "square.stack.3d.up")
-                                            .font(.system(size: 13))
-                                        Text(LanguageManager.t("warmup.tab_plates"))
-                                            .font(.app(size: 12, weight: .medium))
-                                    }
-                                    .foregroundStyle(AppColors.accent)
-                                    .frame(maxWidth: .infinity, minHeight: 40)
+                                Button(action: { inspect(plateWeight) }) {
+                                    Label(LanguageManager.t("warmup.tab_plates"), systemImage: "square.stack.3d.up")
                                 }
-                                .buttonStyle(.plain)
                             }
-
-                            Button {
-                                onToggleWarmup?(index)
-                            } label: {
-                                HStack(spacing: 4) {
-                                    Image(systemName: set.isWarmup ? "dumbbell" : "flame")
-                                        .font(.system(size: 13))
-                                    Text(LanguageManager.t(set.isWarmup ? "warmup.convert_to_working" : "warmup.convert_to_warmup"))
-                                        .font(.app(size: 12, weight: .medium))
+                            if sets.count > 1 {
+                                Button(role: .destructive, action: { onRemoveSet(index) }) {
+                                    Label(LanguageManager.t("table.deleteSet"), systemImage: "trash")
                                 }
-                                .foregroundStyle(set.isWarmup ? AppColors.secondaryText : AppColors.warmupAmber)
-                                .frame(maxWidth: .infinity, minHeight: 40)
                             }
-                            .buttonStyle(.plain)
                         }
-                        .padding(.top, 4)
 
-                        if showsTechniqueRow, let intensity {
-                            techniqueRow(set: set, index: index, actions: intensity).padding(.top, 4)
+                        if let intensity, !set.isWarmup {
+                            intensityRows(set: set, index: index, actions: intensity, inputEnabled: isSetInputEnabled, rowEnabled: isSetEnabled)
+                        }
+
+                        if validationSetId == set.id, !set.isCompleted,
+                           let key = WorkoutSessionUtils.setValidationError(set, allowsZeroWeight: allowsZeroWeight) {
+                            Text(LanguageManager.t(key)).font(.app(size: 12)).foregroundStyle(AppColors.danger)
+                                .frame(maxWidth: .infinity, alignment: .leading).padding(.horizontal, 14)
+                                .accessibilityIdentifier("set-validation-\(set.id)")
+                        }
+                        if let selected = selectedField, selected.id == set.id, isSetInputEnabled {
+                            let weightLabelKey = weightUnit == .lbs ? "table.weightLbs" : "table.weightKg"
+                            let fieldLabel = LanguageManager.t(selected.weight ? weightLabelKey : "table.actualReps")
+                            let setLabel = "\(LanguageManager.t("table.set")) \(set.setNumber)"
+                            VStack(spacing: 4) {
+                                HStack {
+                                    Text("\(setLabel) · \(fieldLabel)")
+                                        .font(.app(size: 12)).foregroundStyle(AppColors.secondaryText)
+                                    Spacer()
+                                    Button(LanguageManager.t("table.done")) { focusedField = nil; selectedField = nil }
+                                        .font(.app(size: 12)).foregroundStyle(AppColors.accent)
+                                        .frame(minWidth: 48, minHeight: 48)
+                                }
+                                HStack(spacing: 8) {
+                                    ForEach(selected.weight ? [-10, -5, 5, 10] : [-1, 1], id: \.self) { step in
+                                        let label = step > 0 ? "+\(step)" : "−\(-step)"
+                                        Button {
+                                            if selected.weight {
+                                                weightBinding.wrappedValue = WorkoutSessionUtils.adjustWeight(weightBinding.wrappedValue, by: step, unit: weightUnit)
+                                            } else {
+                                                repsBinding.wrappedValue = WorkoutSessionUtils.adjustReps(repsBinding.wrappedValue, by: step)
+                                            }
+                                        } label: {
+                                            Text(label).font(.app(size: 16)).foregroundStyle(AppColors.text)
+                                                .frame(maxWidth: .infinity, minHeight: 48)
+                                                .background(RoundedRectangle(cornerRadius: 8).stroke(AppColors.border))
+                                                .contentShape(RoundedRectangle(cornerRadius: 8))
+                                        }
+                                        .buttonStyle(.plain)
+                                        .accessibilityLabel("\(setLabel), \(fieldLabel), \(label)")
+                                    }
+                                }
+
+                                HStack(spacing: 8) {
+                                    let plateWeight = (WarmupPlateEngine.hasWorkingLoad(set.weightKg) ? set.weightKg : nil)
+                                        ?? Double(weightBinding.wrappedValue.replacingOccurrences(of: ",", with: ".")).map {
+                                        weightUnit.toCanonicalKg($0)
+                                    }
+                                    if let inspect = onInspectPlates, let plateWeight, WarmupPlateEngine.hasWorkingLoad(plateWeight) {
+                                        Button {
+                                            inspect(plateWeight)
+                                        } label: {
+                                            HStack(spacing: 4) {
+                                                Image(systemName: "square.stack.3d.up")
+                                                    .font(.system(size: 13))
+                                                Text(LanguageManager.t("warmup.tab_plates"))
+                                                    .font(.app(size: 12, weight: .medium))
+                                            }
+                                            .foregroundStyle(AppColors.accent)
+                                            .frame(maxWidth: .infinity, minHeight: 40)
+                                        }
+                                        .buttonStyle(.plain)
+                                    }
+
+                                    Button {
+                                        onToggleWarmup?(index)
+                                    } label: {
+                                        HStack(spacing: 4) {
+                                            Image(systemName: set.isWarmup ? "dumbbell" : "flame")
+                                                .font(.system(size: 13))
+                                            Text(LanguageManager.t(set.isWarmup ? "warmup.convert_to_working" : "warmup.convert_to_warmup"))
+                                                .font(.app(size: 12, weight: .medium))
+                                        }
+                                        .foregroundStyle(set.isWarmup ? AppColors.secondaryText : AppColors.warmupAmber)
+                                        .frame(maxWidth: .infinity, minHeight: 40)
+                                    }
+                                    .buttonStyle(.plain)
+                                }
+                                .padding(.top, 4)
+
+                                if showsTechniqueRow, let intensity {
+                                    techniqueRow(set: set, index: index, actions: intensity).padding(.top, 4)
+                                }
+                            }
+                            .padding(.horizontal, 8).padding(.vertical, 4)
+                            .background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 10))
+                            .accessibilityIdentifier("set-adjustments")
+                        } else if showsTechniqueRow, let intensity {
+                            techniqueRow(set: set, index: index, actions: intensity)
+                                .padding(8)
+                                .background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 10))
                         }
                     }
-                    .padding(.horizontal, 8).padding(.vertical, 4)
-                    .background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 10))
-                    .accessibilityIdentifier("set-adjustments")
-                } else if showsTechniqueRow, let intensity {
-                    techniqueRow(set: set, index: index, actions: intensity)
-                        .padding(8)
-                        .background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 10))
                 }
             }
 

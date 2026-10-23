@@ -14027,6 +14027,64 @@ final class SessionStripCollapseTests: XCTestCase {
         XCTAssertLessThan(metrics.compactLabelWidths[1], 80, "Short names keep a narrow single-line card")
     }
 
+    private func hostedHeight<V: View>(_ view: V, width: CGFloat) -> CGFloat {
+        let host = UIHostingController(rootView: view.frame(width: width).fixedSize(horizontal: false, vertical: true))
+        host.safeAreaRegions = []
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 400))
+        window.rootViewController = host
+        window.makeKeyAndVisible()
+        host.view.frame = window.bounds
+        // Two passes: the row measures its own width before choosing a layout.
+        for _ in 0..<2 {
+            host.view.layoutIfNeeded()
+            RunLoop.main.run(until: Date().addingTimeInterval(0.1))
+        }
+        defer { window.isHidden = true }
+        return host.sizeThatFits(in: CGSize(width: width, height: .greatestFiniteMagnitude)).height
+    }
+
+    func testReplaceSharesTheNameLineUnlessAWordWouldNotFit() {
+        let pill = Text("Replace").font(.app(size: 13, weight: .semibold)).padding(.horizontal, 10).frame(minHeight: 48)
+        // A normal phone's card: the name and Replace share one 48pt line.
+        XCTAssertEqual(hostedHeight(ExerciseTitleRow(name: "Barbell Bench Press", action: pill), width: 317), 48, accuracy: 1)
+        // A long name wraps beside Replace rather than pushing it down.
+        let wrapped = hostedHeight(ExerciseTitleRow(name: "Cable Seated Rear Delt Fly with Chest Support", action: pill), width: 317)
+        XCTAssertLessThan(wrapped, 48 + 10 + 30, "Replace stays beside a long name whose words fit")
+        // A word that cannot fit beside the pill moves Replace below, instead of splitting the word.
+        let stacked = hostedHeight(ExerciseTitleRow(name: "Brustmuskelkurzhantelfliegenmaschinentraining", action: pill), width: 240)
+        XCTAssertGreaterThanOrEqual(stacked, 48 + 10 + 20)
+        // Without an action the row is just the name.
+        XCTAssertLessThan(hostedHeight(ExerciseTitleRow<Text>(name: "Barbell Bench Press", action: nil), width: 317), 40)
+    }
+
+    func testSetRowsSitFourPointsApartWithFullTouchTargets() throws {
+        func textFields(_ view: UIView) -> [UITextField] {
+            (view as? UITextField).map { [$0] } ?? view.subviews.flatMap { textFields($0) }
+        }
+        let content = SetLoggingTable(sets: (1...3).map { ExerciseSetLog(setNumber: $0) }, prescription: "3 × 8–12",
+            onUpdateSet: { _, _, _ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in }, weightUnit: .kg)
+            .padding(16).frame(width: 393).background(AppColors.background)
+        let host = UIHostingController(rootView: content)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 700))
+        window.rootViewController = host
+        window.makeKeyAndVisible()
+        host.view.frame = window.bounds
+        host.view.layoutIfNeeded()
+        RunLoop.main.run(until: Date().addingTimeInterval(0.15))
+        defer { window.isHidden = true }
+        let rows = Set(textFields(host.view).map { $0.convert($0.bounds, to: nil).midY.rounded() }).sorted()
+        XCTAssertEqual(rows.count, 3)
+        XCTAssertEqual(rows[1] - rows[0], 52, accuracy: 1, "48pt rows with a 4pt gap")
+        XCTAssertEqual(rows[2] - rows[1], 52, accuracy: 1)
+        let image = UIGraphicsImageRenderer(size: host.view.bounds.size).image { _ in
+            host.view.drawHierarchy(in: host.view.bounds, afterScreenUpdates: true)
+        }
+        let attachment = XCTAttachment(image: image)
+        attachment.name = "set-table-rows"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+    }
+
     func testRenderedStripShrinksAndKeepsCompactRows() throws {
         let previous = LanguageManager.shared.currentLanguage
         defer { LanguageManager.setLanguage(previous) }
