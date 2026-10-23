@@ -174,119 +174,16 @@ public struct ActiveSessionView: View {
             } else {
                 VStack(spacing: 0) {
                     // Top Bar
-                    ZStack {
-                        // Center Column
-                        VStack(spacing: 2) {
-                            Text(activeDraft.workout.displayTitle(programId: activeDraft.programId))
-                                .font(.app(size: 16, weight: .bold))
-                                .foregroundStyle(AppColors.text)
-                                .lineLimit(1)
-
-                            HStack(spacing: 6) {
-                                TimelineView(.animation) { timeline in
-                                    let time = timeline.date.timeIntervalSinceReferenceDate
-                                    let cycleDuration = 1.4
-                                    let cycleTime = time.truncatingRemainder(dividingBy: cycleDuration)
-                                    let progress = cycleTime / cycleDuration
-                                    let (scale, alpha): (CGFloat, Double) = {
-                                        if progress < 0.75 {
-                                            let fraction = progress / 0.75
-                                            // cubic-bezier(0, 0, 0.2, 1): x(u) = 0.6 u^2 + 0.4 u^3, y(u) = 3 u^2 - 2 u^3
-                                            var u = min(1.0, max(0.0, sqrt(fraction / 0.6)))
-                                            for _ in 0..<4 {
-                                                let xu = 0.6 * u * u + 0.4 * u * u * u
-                                                let dxdu = 1.2 * u + 1.2 * u * u
-                                                if abs(dxdu) < 1e-6 { break }
-                                                u -= (xu - fraction) / dxdu
-                                                u = min(1.0, max(0.0, u))
-                                            }
-                                            let eased = min(1.0, max(0.0, 3.0 * u * u - 2.0 * u * u * u))
-                                            return (CGFloat(1.0 + eased * 1.0), 1.0 - eased)
-                                        } else {
-                                            return (2.0, 0.0)
-                                        }
-                                    }()
-
-                                    ZStack {
-                                        if alpha > 0.001 {
-                                            Circle()
-                                                .fill(
-                                                    RadialGradient(
-                                                        stops: [
-                                                            .init(color: AppColors.accent.opacity(alpha), location: 0.0),
-                                                            .init(color: AppColors.accent.opacity(alpha * 0.85), location: 0.75),
-                                                            .init(color: Color.clear, location: 1.0)
-                                                        ],
-                                                        center: .center,
-                                                        startRadius: 0,
-                                                        endRadius: 4.0
-                                                    )
-                                                )
-                                                .frame(width: 8, height: 8)
-                                                .scaleEffect(scale)
-                                        }
-                                    }
-                                    .frame(width: 8, height: 8)
-                                }
-
-                                SessionElapsedTime(draft: activeDraft)
-
-                                if !programLabel.isEmpty {
-                                    Text("·")
-                                        .font(.app(size: 12))
-                                        .foregroundStyle(AppColors.muted)
-
-                                    Text(programLabel)
-                                        .font(.app(size: 12))
-                                        .foregroundStyle(AppColors.muted)
-                                        .lineLimit(1)
-                                }
+                    SessionHeader(title: activeDraft.workout.displayTitle(programId: activeDraft.programId),
+                        programLabel: programLabel, draft: activeDraft,
+                        onExit: {
+                            if progress.hasProgress {
+                                showExitConfirmation = true
+                            } else {
+                                store.abandonActiveSession()
                             }
-                        }
-                        .padding(.horizontal, 72)
-
-                        // Left and Right buttons
-                        HStack {
-                            Button(action: {
-                                if progress.hasProgress {
-                                    showExitConfirmation = true
-                                } else {
-                                    store.abandonActiveSession()
-                                }
-                            }) {
-                                Image(systemName: "chevron.left")
-                                    .font(.system(size: 16, weight: .bold))
-                                    .foregroundStyle(AppColors.text)
-                                    .frame(width: 38, height: 38)
-                                    .background(AppColors.surface)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                            }
-                            .buttonStyle(.plain)
-                            .accessibilityLabel(LanguageManager.t("session.exit"))
-
-                            Spacer()
-
-                            Button(action: {
-                                presentWorkoutSummary()
-                            }) {
-                                Text(LanguageManager.t("session.finishBtn"))
-                                    .font(.app(size: 13, weight: .semibold))
-                                    .foregroundStyle(AppColors.accent)
-                                    .padding(.horizontal, 14)
-                                    .padding(.vertical, 6)
-                                    .background(Color.clear)
-                                    .overlay(
-                                        Capsule()
-                                            .stroke(AppColors.accent, lineWidth: 1)
-                                    )
-                            }
-                            .buttonStyle(.plain)
-                            .tourTarget("workout.finish", cornerRadius: 18)
-                        }
-                    }
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 8)
-                    .background(AppColors.background)
+                        },
+                        onFinish: presentWorkoutSummary)
 
                     // The strip stays pinned above the sets, like Android, unless the window is too short for both.
                     if !compactHeight { exerciseStrip }
@@ -1256,6 +1153,203 @@ private struct PendingAnomalousSet: Identifiable {
     var editReps: String? = nil
 }
 
+
+/// The active session's top bar: the exit square, the centered title and live status, and the outlined Finish pill.
+struct SessionHeader: View {
+    @ObservedObject private var themeManager = ThemeManager.shared
+    let title: String
+    let programLabel: String
+    let draft: ActiveSessionDraft
+    let onExit: () -> Void
+    let onFinish: () -> Void
+
+    var body: some View {
+        let _ = themeManager.currentTheme
+        SessionHeaderLayout { parts }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            .background(AppColors.background)
+    }
+
+    /// The exit button, title, live dot and timer, optional program name and Finish pill, in `SessionHeaderLayout` order.
+    @ViewBuilder var parts: some View {
+        Button(action: onExit) {
+            Image(systemName: "chevron.left")
+                .font(.system(size: 16, weight: .bold))
+                .foregroundStyle(AppColors.text)
+                .frame(width: 38, height: 38)
+                .background(AppColors.surface)
+                .clipShape(RoundedRectangle(cornerRadius: 10))
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(LanguageManager.t("session.exit"))
+
+        Text(title)
+            .font(.app(size: 16, weight: .bold))
+            .foregroundStyle(AppColors.text)
+            .lineLimit(1)
+
+        HStack(spacing: 6) {
+            TimelineView(.animation) { timeline in
+                let time = timeline.date.timeIntervalSinceReferenceDate
+                let cycleDuration = 1.4
+                let cycleTime = time.truncatingRemainder(dividingBy: cycleDuration)
+                let progress = cycleTime / cycleDuration
+                let (scale, alpha): (CGFloat, Double) = {
+                    if progress < 0.75 {
+                        let fraction = progress / 0.75
+                        // cubic-bezier(0, 0, 0.2, 1): x(u) = 0.6 u^2 + 0.4 u^3, y(u) = 3 u^2 - 2 u^3
+                        var u = min(1.0, max(0.0, sqrt(fraction / 0.6)))
+                        for _ in 0..<4 {
+                            let xu = 0.6 * u * u + 0.4 * u * u * u
+                            let dxdu = 1.2 * u + 1.2 * u * u
+                            if abs(dxdu) < 1e-6 { break }
+                            u -= (xu - fraction) / dxdu
+                            u = min(1.0, max(0.0, u))
+                        }
+                        let eased = min(1.0, max(0.0, 3.0 * u * u - 2.0 * u * u * u))
+                        return (CGFloat(1.0 + eased * 1.0), 1.0 - eased)
+                    } else {
+                        return (2.0, 0.0)
+                    }
+                }()
+
+                ZStack {
+                    if alpha > 0.001 {
+                        Circle()
+                            .fill(
+                                RadialGradient(
+                                    stops: [
+                                        .init(color: AppColors.accent.opacity(alpha), location: 0.0),
+                                        .init(color: AppColors.accent.opacity(alpha * 0.85), location: 0.75),
+                                        .init(color: Color.clear, location: 1.0)
+                                    ],
+                                    center: .center,
+                                    startRadius: 0,
+                                    endRadius: 4.0
+                                )
+                            )
+                            .frame(width: 8, height: 8)
+                            .scaleEffect(scale)
+                    }
+                }
+                .frame(width: 8, height: 8)
+            }
+
+            SessionElapsedTime(draft: draft)
+        }
+
+        if !programLabel.isEmpty {
+            HStack(spacing: 6) {
+                Text("·")
+                    .font(.app(size: 12))
+                    .foregroundStyle(AppColors.muted)
+
+                Text(programLabel)
+                    .font(.app(size: 12))
+                    .foregroundStyle(AppColors.muted)
+                    .lineLimit(1)
+            }
+            .padding(.leading, 6)
+        }
+
+        Button(action: onFinish) {
+            Text(LanguageManager.t("session.finishBtn"))
+                .font(.app(size: 13, weight: .semibold))
+                .foregroundStyle(AppColors.accent)
+                .padding(.horizontal, 14)
+                .padding(.vertical, 6)
+                .background(Color.clear)
+                .overlay(
+                    Capsule()
+                        .stroke(AppColors.accent, lineWidth: 1)
+                )
+        }
+        .buttonStyle(.plain)
+        .tourTarget("workout.finish", cornerRadius: 18)
+    }
+}
+
+/// Lays out the session header: exit button, title, live dot and timer, optional program name and Finish pill, in
+/// that order. The title and live status are centered with the same inset on both sides: 72pt, or the wider button
+/// plus an 8pt gap once a localized Finish label outgrows that. Only when the live dot and timer cannot fit there does
+/// the column use the whole space between the buttons, sliding off center as little as it needs. The title and program
+/// name truncate; nothing overlaps a button. Matches Android's `SessionHeaderBar`.
+struct SessionHeaderLayout: Layout {
+    static let minimumInset: CGFloat = 72
+    static let gap: CGFloat = 8
+    static let lineSpacing: CGFloat = 2
+
+    private struct Frames {
+        var size: CGSize
+        var exit: CGRect, title: CGRect, clock: CGRect, program: CGRect?, finish: CGRect
+        // Subviews are placed with the widths they were measured with, so truncation stays the same.
+        var finishProposal: CGFloat, clockProposal: CGFloat, columnMax: CGFloat
+    }
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        frames(width: proposal.width, subviews: subviews).size
+    }
+
+    /// Where `placeSubviews` puts each subview, in subview order, relative to the layout's origin.
+    func subviewFrames(width: CGFloat, subviews: Subviews) -> [CGRect] {
+        let frames = frames(width: width, subviews: subviews)
+        return [frames.exit, frames.title, frames.clock] + [frames.program].compactMap { $0 } + [frames.finish]
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        let frames = frames(width: bounds.width, subviews: subviews)
+        func place(_ subview: LayoutSubview, _ frame: CGRect, width: CGFloat? = nil) {
+            subview.place(at: CGPoint(x: bounds.minX + frame.minX, y: bounds.minY + frame.minY), anchor: .topLeading,
+                proposal: ProposedViewSize(width: width ?? frame.width, height: nil))
+        }
+        place(subviews[0], frames.exit)
+        place(subviews[1], frames.title, width: frames.columnMax)
+        place(subviews[2], frames.clock, width: frames.clockProposal)
+        if let program = frames.program { place(subviews[3], program, width: max(0, frames.columnMax - frames.clock.width)) }
+        place(subviews[subviews.count - 1], frames.finish, width: frames.finishProposal)
+    }
+
+    private func frames(width proposedWidth: CGFloat?, subviews: Subviews) -> Frames {
+        let exit = subviews[0], title = subviews[1], clock = subviews[2], finish = subviews[subviews.count - 1]
+        let program = subviews.count > 4 ? subviews[3] : nil
+        let gap = Self.gap
+        let exitSize = exit.sizeThatFits(.unspecified)
+        let finishIdeal = finish.sizeThatFits(.unspecified)
+        let width = proposedWidth.flatMap { $0.isFinite ? $0 : nil } ?? {
+            let status = clock.sizeThatFits(.unspecified).width + (program?.sizeThatFits(.unspecified).width ?? 0)
+            return 2 * max(Self.minimumInset, max(exitSize.width, finishIdeal.width) + gap)
+                + max(title.sizeThatFits(.unspecified).width, status)
+        }()
+        let finishProposal = max(0, width - exitSize.width - gap)
+        let finishSize = finish.sizeThatFits(ProposedViewSize(width: finishProposal, height: nil))
+        let inset = max(Self.minimumInset, max(exitSize.width, finishSize.width) + gap)
+        let centered = max(0, width - 2 * inset)
+        let between = max(width - exitSize.width - finishSize.width - 2 * gap, centered)
+        let clockSize = clock.sizeThatFits(ProposedViewSize(width: between, height: nil))
+        let columnMax = clockSize.width <= centered ? centered : between
+        let titleSize = title.sizeThatFits(ProposedViewSize(width: columnMax, height: nil))
+        let programSize = program?.sizeThatFits(ProposedViewSize(width: max(0, columnMax - clockSize.width), height: nil))
+        let statusWidth = clockSize.width + (programSize?.width ?? 0)
+        let statusHeight = max(clockSize.height, programSize?.height ?? 0)
+        let columnWidth = max(titleSize.width, statusWidth)
+        let columnHeight = titleSize.height + Self.lineSpacing + statusHeight
+        let columnX = max(exitSize.width + gap, min((width - columnWidth) / 2, width - finishSize.width - gap - columnWidth))
+        let height = max(exitSize.height, columnHeight, finishSize.height)
+        let columnY = (height - columnHeight) / 2
+        let statusX = columnX + (columnWidth - statusWidth) / 2
+        let statusY = columnY + columnHeight - statusHeight
+        return Frames(
+            size: CGSize(width: width, height: height),
+            exit: CGRect(origin: CGPoint(x: 0, y: (height - exitSize.height) / 2), size: exitSize),
+            title: CGRect(origin: CGPoint(x: columnX + (columnWidth - titleSize.width) / 2, y: columnY), size: titleSize),
+            clock: CGRect(origin: CGPoint(x: statusX, y: statusY + (statusHeight - clockSize.height) / 2), size: clockSize),
+            program: programSize.map { CGRect(origin: CGPoint(x: statusX + clockSize.width,
+                y: statusY + (statusHeight - $0.height) / 2), size: $0) },
+            finish: CGRect(origin: CGPoint(x: width - finishSize.width, y: (height - finishSize.height) / 2), size: finishSize),
+            finishProposal: finishProposal, clockProposal: between, columnMax: columnMax)
+    }
+}
 
 private struct SessionElapsedTime: View {
     @ObservedObject private var themeManager = ThemeManager.shared

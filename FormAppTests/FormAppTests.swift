@@ -14068,3 +14068,102 @@ final class SessionStripCollapseTests: XCTestCase {
         }
     }
 }
+
+/// Places like `SessionHeaderLayout` and records the frame it gives each subview.
+private struct RecordingSessionHeaderLayout: Layout {
+    let record: ([CGRect]) -> Void
+
+    func sizeThatFits(proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) -> CGSize {
+        SessionHeaderLayout().sizeThatFits(proposal: proposal, subviews: subviews, cache: &cache)
+    }
+
+    func placeSubviews(in bounds: CGRect, proposal: ProposedViewSize, subviews: Subviews, cache: inout ()) {
+        record(SessionHeaderLayout().subviewFrames(width: bounds.width, subviews: subviews))
+        SessionHeaderLayout().placeSubviews(in: bounds, proposal: proposal, subviews: subviews, cache: &cache)
+    }
+}
+
+/// The session header's title and live status stay centered between the exit square and the Finish pill, and never
+/// run under either button, in every language at 393pt and at 320pt with standard and the largest standard text.
+@MainActor
+final class SessionHeaderFitTests: XCTestCase {
+    private let workout = Workout(id: "push-a", day: 3, title: "Push A: Chest", exercises: [])
+
+    func testTitleAndLiveStatusNeverOverlapTheButtonsInAnyLanguage() throws {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        // An hour in, so the timer shows its widest hh:mm:ss form.
+        let draft = ActiveSessionDraft(id: "header-fit", programId: "p", workout: workout, startedAt: "2026-10-23T08:00:00Z",
+            startedAtEpochMillis: Int64(Date().timeIntervalSince1970 * 1000) - 3_723_000, setsByExercise: [:])
+        let timerFont = UIFont.monospacedSystemFont(ofSize: 12 * TextWidthScale.factor, weight: .semibold)
+        let clockWidth = 8 + 6 + ("01:02:03" as NSString).size(withAttributes: [.font: timerFont]).width
+        // A long bundled program name must truncate in place rather than pull the header off center.
+        for name in ["Hypertrophy", "Machine Foundation: 3-Day Full Body"] {
+            for language in ["en", "tr", "de", "fr", "es"] {
+                LanguageManager.setLanguage(language)
+                for (width, size) in [(CGFloat(393), ContentSizeCategory.large), (320, .large), (320, .extraExtraExtraLarge)] {
+                    let label = "\(language) \(Int(width)) \(size) \(name)"
+                    let header = SessionHeader(title: workout.title, programLabel: "\(name) D3", draft: draft, onExit: {}, onFinish: {})
+                    var recorded: [CGRect] = []
+                    let host = UIHostingController(rootView: RecordingSessionHeaderLayout(record: { recorded = $0 }) { header.parts }
+                        .padding(.horizontal, 16)
+                        .frame(width: width)
+                        .environment(\.sizeCategory, size))
+                    let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 120))
+                    window.rootViewController = host
+                    window.makeKeyAndVisible()
+                    host.view.frame = window.bounds
+                    host.view.layoutIfNeeded()
+                    RunLoop.main.run(until: Date().addingTimeInterval(0.05))
+                    window.isHidden = true
+                    XCTAssertEqual(recorded.count, 5, "\(label): exit, title, clock, program and Finish")
+                    guard recorded.count == 5 else { continue }
+                    let (exit, title, clock, program, finish) = (recorded[0], recorded[1], recorded[2], recorded[3], recorded[4])
+                    XCTAssertEqual(exit.width, 38, accuracy: 0.5, "\(label): exit square")
+                    XCTAssertEqual(finish.maxX, width - 32, accuracy: 0.5, "\(label): Finish sits at the trailing edge")
+                    XCTAssertLessThanOrEqual(exit.maxX + 8, finish.minX, "\(label): the buttons overlap")
+                    for (part, rect) in [("title", title), ("clock", clock), ("program", program)] {
+                        XCTAssertGreaterThanOrEqual(rect.minX, exit.maxX + 7.5, "\(label): \(part) \(rect) runs under exit \(exit)")
+                        XCTAssertLessThanOrEqual(rect.maxX, finish.minX - 7.5, "\(label): \(part) \(rect) runs under Finish \(finish)")
+                        XCTAssertGreaterThan(rect.width, 4, "\(label): \(part) is hidden")
+                    }
+                    XCTAssertGreaterThanOrEqual(clock.width, clockWidth - 0.5, "\(label): the timer is cut")
+                    XCTAssertEqual(program.minX, clock.maxX, accuracy: 0.5, "\(label): program follows the timer")
+                    // Centered on the bar unless the dot and timer need the room beside the exit button.
+                    let left = min(title.minX, clock.minX), right = max(title.maxX, program.maxX)
+                    let offCenter = (left + right) / 2 - (exit.minX + finish.maxX) / 2
+                    XCTAssertTrue(abs(offCenter) < 0.6 || (offCenter < 0 && abs(finish.minX - right - 8) < 0.6),
+                        "\(label): column is \(offCenter)pt off center")
+                    if width == 393 { XCTAssertEqual(offCenter, 0, accuracy: 0.6, "\(label) is centered") }
+                }
+            }
+        }
+    }
+
+    func testCaptureNarrowHeaders() {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        let draft = ActiveSessionDraft(id: "header-fit", programId: "p", workout: workout, startedAt: "2026-10-23T08:00:00Z",
+            startedAtEpochMillis: Int64(Date().timeIntervalSince1970 * 1000) - 3_723_000, setsByExercise: [:])
+        for (language, width) in [("de", CGFloat(320)), ("es", 320), ("fr", 320), ("en", 393)] {
+            LanguageManager.setLanguage(language)
+            let host = UIHostingController(rootView: SessionHeader(title: workout.title, programLabel: "Hypertrophy D3",
+                draft: draft, onExit: {}, onFinish: {}).frame(width: width))
+            host.safeAreaRegions = []
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 70))
+            window.rootViewController = host
+            window.makeKeyAndVisible()
+            host.view.frame = window.bounds
+            host.view.layoutIfNeeded()
+            RunLoop.main.run(until: Date().addingTimeInterval(0.1))
+            let image = UIGraphicsImageRenderer(size: host.view.bounds.size).image { _ in
+                host.view.drawHierarchy(in: host.view.bounds, afterScreenUpdates: true)
+            }
+            let attachment = XCTAttachment(image: image)
+            attachment.name = "session-header-\(language)-\(Int(width))"
+            attachment.lifetime = .keepAlways
+            add(attachment)
+            window.isHidden = true
+        }
+    }
+}
