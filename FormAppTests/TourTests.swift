@@ -40,6 +40,7 @@ final class TourTests: XCTestCase {
         XCTAssertEqual(home.first?.text(for: ["scroll"]).bodyKey, "tour.home.days.bodyScroll")
         XCTAssertTrue(home.first { $0.id == "home.exercises" }!.scrollsContent)
         XCTAssertTrue(TourCatalog.steps(.repLab).first!.scrollsContent)
+        XCTAssertTrue(TourCatalog.steps(.workout).first { $0.id == "workout.sets" }!.scrollsContent)
         XCTAssertTrue(TourProgress().finished(.home).seen.contains(.dayStatus))
         XCTAssertFalse(TourProgress().skipped(.home).shouldStart(.dayStatus))
     }
@@ -211,6 +212,83 @@ final class TourLayoutTests: XCTestCase {
     }
 
     @MainActor
+    func testWorkoutSetsStayAboveNavigationAndRevealTheirBottomControls() async throws {
+        try await checkWorkoutSets(width: 440, textSize: .large, theme: "default")
+    }
+
+    @MainActor
+    func testWorkoutSetsAt320PointsWithAccessibilityTextInOat() async throws {
+        try await checkWorkoutSets(width: 320, textSize: .accessibility3, theme: "oat")
+    }
+
+    @MainActor
+    private func checkWorkoutSets(width: CGFloat, textSize: DynamicTypeSize, theme: String) async throws {
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        let tour = TourController.shared
+        let progress = AppStore.shared.tourProgress
+        let language = LanguageManager.shared.currentLanguage
+        let selectedTheme = ThemeManager.shared.selectedThemeId
+        let subscribed = ProAccessManager.shared.isProSubscribed
+        let collapsed = store.sessionStripCollapsed
+        tour.cancel()
+        AppStore.shared.updateTourProgress { _ in TourProgress(seen: Set(TourId.allCases)) }
+        LanguageManager.setLanguage("tr")
+        ProAccessManager.shared.updateSubscriptionStatus(active: true)
+        ThemeManager.shared.setThemeId(theme)
+        store.sessionStripCollapsed = false
+        let exercise = Exercise(id: "bench", name: "Dumbbell Bench Press", exerciseId: "dumbbell-bench-press",
+                                sets: 8, reps: RepTarget(min: 6, max: 10))
+        let workout = Workout(id: "tour-sets", day: 1, title: "Push", exercises: [exercise])
+        let now = Int64(Date().timeIntervalSince1970 * 1000)
+        let draft = ActiveSessionDraft(programId: "tour-sets", workout: workout,
+            startedAt: "2026-10-23T08:00:00Z", startedAtEpochMillis: now,
+            setsByExercise: [exercise.id: (1...8).map {
+                ExerciseSetLog(id: "set-\($0)", setNumber: $0, weightKg: $0 < 3 ? 20 : nil,
+                               completedReps: $0 < 3 ? 8 : nil, isCompleted: $0 < 3)
+            }])
+        store.activeSession = draft
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
+        let previous = scene.windows.first { $0.isKeyWindow }
+        let previousRoot = previous?.rootViewController
+        previous?.rootViewController = nil
+        tour.update(frames: [:], bounds: .zero, origin: .zero, host: .workout)
+        let window = UIWindow(windowScene: scene)
+        window.frame = CGRect(x: 0, y: 0, width: width, height: 852)
+        let host = UIHostingController(rootView: ActiveSessionView(store: store, draft: draft).dynamicTypeSize(textSize))
+        window.rootViewController = host; window.makeKeyAndVisible(); host.view.frame = window.bounds
+        defer {
+            tour.cancel(); window.isHidden = true; window.rootViewController = nil
+            store.sessionStripCollapsed = collapsed
+            AppStore.shared.updateTourProgress { _ in progress }; LanguageManager.setLanguage(language)
+            ThemeManager.shared.setThemeId(selectedTheme)
+            ProAccessManager.shared.updateSubscriptionStatus(active: subscribed)
+            previous?.rootViewController = previousRoot; previous?.makeKeyAndVisible()
+        }
+        try await settle { tour.hasTarget("workout.sets") && tour.hasTarget("workout.finish") }
+        tour.start(.workout)
+        try await settle { tour.shownStepIndex == 0 }
+        tour.next(); try await settle { tour.currentStepId == "workout.sets" && tour.shownStepIndex == 1 }
+        try await Task.sleep(nanoseconds: 200_000_000)
+        try capture(window, "ios-workout-sets-first-\(Int(width))-\(theme)")
+        let viewport = try XCTUnwrap(tour.groupViewport, "The working sets must scroll within their own viewport")
+        let scroll = tour.scrollViewport("workout.sets", host: .workout)
+        XCTAssertLessThanOrEqual(viewport.maxY + 6, scroll.maxY + 1)
+        let bubble = try XCTUnwrap(tour.bubbleBounds)
+        XCTAssertLessThanOrEqual(bubble.maxY + 12, viewport.minY - 6 + 1)
+        XCTAssertEqual(tour.groupRows("workout.sets", host: .workout).count, 11, "Heading, columns, eight sets and complete Add/Remove controls")
+        try await revealLastRow("workout.sets", tour: tour, host: .workout)
+        try capture(window, "ios-workout-sets-last-\(Int(width))-\(theme)")
+        let unchanged = try XCTUnwrap(store.activeSession)
+        XCTAssertEqual(unchanged.setsByExercise, draft.setsByExercise, "Tour scrolling must not log or edit sets")
+        tour.next(); try await settle { tour.currentStepId == "workout.finish" && tour.shownStepIndex == 2 }
+        tour.back(); try await settle { tour.currentStepId == "workout.sets" && tour.shownStepIndex == 1 }
+        try await settle {
+            guard let area = tour.groupViewport, let first = tour.frame("workout.sets.row.2", host: .workout)?.rect else { return false }
+            return first.minY >= area.minY - 1 && first.maxY <= area.maxY + 1
+        }
+    }
+
+    @MainActor
     func testLongSectionAt320PointsWithAccessibilityText() async throws {
         try await checkHomeLayout(width: 320, textSize: .accessibility3, heroMustFit: false)
     }
@@ -293,6 +371,12 @@ final class TourLayoutTests: XCTestCase {
         try await settle { tour.shownStepIndex == 0 }
         try capture(window, "ios-home-days-\(Int(width))")
         tour.next(); try await settle { tour.shownStepIndex == 1 }
+        if heroMustFit {
+            try await settle(message: "The hero and explanation fit without overlap") {
+                guard let hero = tour.frame("home.hero", host: .main)?.rect, let bubble = tour.bubbleBounds else { return false }
+                return !hero.intersects(bubble)
+            }
+        }
         let hero = try XCTUnwrap(tour.frame("home.hero", host: .main)?.rect)
         let bubble = try XCTUnwrap(tour.bubbleBounds)
         if heroMustFit { XCTAssertFalse(hero.intersects(bubble), "The hero and explanation fit without overlap") }
@@ -341,15 +425,15 @@ final class TourLayoutTests: XCTestCase {
     }
 
     @MainActor
-    private func revealLastRow(_ id: String, tour: TourController) async throws {
-        let last = try XCTUnwrap(tour.groupRows(id, host: .main).last?.0)
+    private func revealLastRow(_ id: String, tour: TourController, host: TourHost = .main) async throws {
+        let last = try XCTUnwrap(tour.groupRows(id, host: host).last?.0)
         for _ in 0..<10 {
             let viewport = try XCTUnwrap(tour.groupViewport)
-            let frame = try XCTUnwrap(tour.frame(last, host: .main)?.rect)
+            let frame = try XCTUnwrap(tour.frame(last, host: host)?.rect)
             if frame.minY >= viewport.minY - 1 && frame.maxY <= viewport.maxY + 1 { return }
-            tour.pageGroup(forward: true, host: .main)
+            tour.pageGroup(forward: true, host: host)
             try await Task.sleep(nanoseconds: 150_000_000)
         }
-        XCTFail("The entire final row must be reachable in \(id)")
+        XCTFail("The entire final row must be reachable in \(id): viewport=\(String(describing: tour.groupViewport)), last=\(String(describing: tour.frame(last, host: host)?.rect))")
     }
 }

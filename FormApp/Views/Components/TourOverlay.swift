@@ -396,6 +396,7 @@ struct TourOverlay: View {
     @ObservedObject private var tour = TourController.shared
     @ObservedObject private var themeManager = ThemeManager.shared
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.displayScale) private var displayScale
     @ScaledMetric(relativeTo: .headline) private var titleSize: CGFloat = 18
     @ScaledMetric(relativeTo: .body) private var bodySize: CGFloat = 15
     @ScaledMetric(relativeTo: .body) private var skipSize: CGFloat = 14
@@ -451,10 +452,12 @@ struct TourOverlay: View {
                         .position(x: cutout.midX, y: cutout.midY)
                         .allowsHitTesting(false)
                 }
-                let header = frames["home.exercises.row.0"]?.rect
-                let firstExercise = frames["home.exercises.row.1"]?.rect
-                let firstSectionHeight = step.targetId == "home.exercises" && header != nil && firstExercise != nil
-                    ? firstExercise!.maxY - header!.minY : 0
+                let header = frames["\(step.targetId ?? "").row.0"]?.rect
+                let firstRowIndex = step.targetId == "workout.sets" ? 2 : 1
+                let firstRow = frames["\(step.targetId ?? "").row.\(firstRowIndex)"]?.rect
+                let includesHeading = step.targetId == "home.exercises" || step.targetId == "workout.sets"
+                let firstSectionHeight = includesHeading && header != nil && firstRow != nil
+                    ? firstRow!.maxY - header!.minY : 0
                 let minimumRow = max(96, max(firstSectionHeight, rows.map { $0.rect.height }.max() ?? 0))
                 let maxBubbleHeight = step.scrollsContent
                     ? max(48, viewport.maxY - safe.minY - 24 - minimumRow) : safe.height
@@ -514,7 +517,10 @@ struct TourOverlay: View {
 
     private func revealKey(showing: Bool) -> String {
         guard showing, let id = tour.activeTour else { return "idle" }
-        return "\(id.rawValue)-\(tour.stepIndex)-\(tour.steps.map(\.id).joined(separator: ","))-\(measuredBubbleStep ?? "")-\(bubbleHeight)-\(size)"
+        // Scrolling can change anchor arithmetic below one pixel. Revealing again
+        // for that noise would snap a long section back to its first row.
+        let heightInPixels = (bubbleHeight * displayScale).rounded()
+        return "\(id.rawValue)-\(tour.stepIndex)-\(tour.steps.map(\.id).joined(separator: ","))-\(measuredBubbleStep ?? "")-\(heightInPixels)-\(size)"
     }
 
     private var bubbleWidth: CGFloat { min(size.width - 32, 420) }

@@ -108,6 +108,7 @@ public struct SetLoggingTable: View {
                     if !target.isEmpty { pill }
                 }
             }.frame(maxWidth: .infinity, alignment: .leading).accessibilityIdentifier("working-sets-header")
+                .tourTarget("workout.sets.row.0", cornerRadius: 12)
             Rectangle().fill(AppColors.border).frame(height: 1).accessibilityHidden(true)
             // Table Header
             HStack(spacing: 8) {
@@ -124,6 +125,7 @@ public struct SetLoggingTable: View {
             .font(.app(size: 11, weight: .bold))
             .foregroundStyle(AppColors.muted)
             .padding(.horizontal, 14)
+            .tourTarget("workout.sets.row.1", cornerRadius: 12)
 
             let weightHint = isAssisted ? LanguageManager.t("table.assistance_hint") : [
                 isBodyweight ? "BW = \(LanguageManager.t("exercise.history.bodyweight"))." : nil,
@@ -437,6 +439,7 @@ public struct SetLoggingTable: View {
                                 .background(AppColors.surfaceRaised).clipShape(RoundedRectangle(cornerRadius: 10))
                         }
                     }
+                    .tourTarget("workout.sets.row.\(index + 2)", cornerRadius: 10)
                 }
             }
 
@@ -486,6 +489,7 @@ public struct SetLoggingTable: View {
                 .disabled(sets.count <= 1)
             }
             .padding(.top, 8)
+            .tourTarget("workout.sets.row.\(sets.count + 2)", cornerRadius: 10)
         }
         .tint(AppColors.accent)
         .onChange(of: focusedField) { _, value in
