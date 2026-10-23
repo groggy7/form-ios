@@ -1413,7 +1413,7 @@
   "tour.home.week.title": "Haftanız",
   "tour.home.week.body": "Planınıza göre tamamlanan antrenmanlar; bu haftanın hacmi, aktif süresi ve rekorlarıyla birlikte.",
   "tour.home.exercises.title": "Bu günün egzersizleri",
-  "tour.home.exercises.body": "Bu antrenmandaki tüm egzersizleri görmek için kaydırın. Gösterimi, kasları ve tekniği için birini açın.",
+  "tour.home.exercises.body": "Bu günün antrenmanındaki egzersizler burada. Hareketi, çalışan kasları ve tekniği görmek için birini açın.",
   "tour.home.tabs.title": "Keşfedecek daha çok şey",
   "tour.home.tabs.body": "Programınız için {plan}, egzersiz rehberi için {library}, kaydettiğiniz antrenmanlar için {progress} bölümünü kullanın.",
   "tour.plan.days.title": "Haftanız",
@@ -1449,7 +1449,7 @@
   "tour.matrix.detail.body": "Doğrudan ve yardımcı setlerini genel hacim referans aralıklarıyla karşılaştırmak için bir kas seçin.",
   "tour.matrix.mode.title": "Haftalar ve planlar",
   "tour.matrix.mode.body": "Önceki haftalara dönün ya da programınızın öngördüğü hacmi görmek için {cycle} görünümüne geçin.",
-  "tour.lab.repmax.body": "Rep Lab, en iyi setlerinizden 1 ile 12 tekrar arasında ne kaldırabileceğinizi tahmin eder.",
+  "tour.lab.repmax.body": "Rep Lab, en iyi setlerinizden farklı tekrar sayılarında kaldırabileceğiniz ağırlıkları tahmin eder.",
   "tour.lab.curves.body": "Her hareketin tahmini maksimumunu antrenmandan antrenmana izleyin.",
   "tour.lab.balance.body": "İtişi çekişle, ön bacağı arka bacakla ve üst vücudu alt vücutla karşılaştırın.",
   "tip.dayStatus.title": "Gün renkleri",
@@ -1786,8 +1786,5 @@
   "social.setsProgress.other": "{total} setten {count} set tamamlandı",
   "social.workoutsProgress.one": "{total} antrenmandan {count} tanesi",
   "social.workoutsProgress.other": "{total} antrenmandan {count} tanesi",
-  "social.photoPermission": "Seçtiğin antrenman kartlarını fotoğraf arşivine kaydet.",
-  "tour.scrollHint": "Keşfetmek için kaydırın",
-  "tour.scrollUp": "Yukarı kaydır",
-  "tour.scrollDown": "Aşağı kaydır"
+  "social.photoPermission": "Seçtiğin antrenman kartlarını fotoğraf arşivine kaydet."
 }

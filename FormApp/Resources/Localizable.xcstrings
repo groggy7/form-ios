@@ -48911,31 +48911,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll to see every exercise in this workout. Open one for its demonstration, muscles and technique."
+            "value": "These are this day’s exercises. Open one for its demonstration, muscles and technique."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu antrenmandaki tüm egzersizleri görmek için kaydırın. Gösterimi, kasları ve tekniği için birini açın."
+            "value": "Bu günün antrenmanındaki egzersizler burada. Hareketi, çalışan kasları ve tekniği görmek için birini açın."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scrolle durch alle Übungen dieses Trainings. Öffne eine Übung für die Demonstration, Muskeln und Technik."
+            "value": "Hier stehen die Übungen dieses Trainings. Öffne eine Übung für die Ausführung, beanspruchten Muskeln und Technik."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Faites défiler pour voir tous les exercices de cette séance. Ouvrez-en un pour voir sa démonstration, ses muscles et sa technique."
+            "value": "Voici les exercices de cet entraînement. Ouvrez-en un pour voir le mouvement, les muscles sollicités et la technique."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Desplázate para ver todos los ejercicios de esta sesión. Abre uno para ver su demostración, músculos y técnica."
+            "value": "Estos son los ejercicios de este entrenamiento. Abre uno para ver la demostración, los músculos y la técnica."
           }
         }
       }
@@ -50171,31 +50171,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "From your best sets, Rep Lab estimates what you could lift for 1 to 12 reps."
+            "value": "From your best sets, Rep Lab estimates what you could lift at different rep counts."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rep Lab, en iyi setlerinizden 1 ile 12 tekrar arasında ne kaldırabileceğinizi tahmin eder."
+            "value": "Rep Lab, en iyi setlerinizden farklı tekrar sayılarında kaldırabileceğiniz ağırlıkları tahmin eder."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aus deinen besten Sätzen schätzt Rep Lab, was du für 1 bis 12 Wiederholungen heben könntest."
+            "value": "Rep Lab schätzt anhand deiner besten Sätze, welches Gewicht du bei verschiedenen Wiederholungszahlen bewegen könntest."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "À partir de vos meilleures séries, Rep Lab estime ce que vous pourriez soulever de 1 à 12 répétitions."
+            "value": "À partir de vos meilleures séries, Rep Lab estime les charges possibles pour différents nombres de répétitions."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "A partir de tus mejores series, Rep Lab estima cuánto podrías levantar de 1 a 12 repeticiones."
+            "value": "A partir de tus mejores series, Rep Lab estima cuánto podrías levantar con distintos números de repeticiones."
           }
         }
       }
@@ -61575,111 +61575,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Guarda las tarjetas de entrenamiento que elijas en tu fototeca."
-          }
-        }
-      }
-    },
-    "tour.scrollHint": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scroll to explore"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keşfetmek için kaydırın"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Zum Erkunden scrollen"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Faites défiler pour explorer"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desliza para explorar"
-          }
-        }
-      }
-    },
-    "tour.scrollUp": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scroll up"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Yukarı kaydır"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nach oben scrollen"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Faire défiler vers le haut"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desplazar hacia arriba"
-          }
-        }
-      }
-    },
-    "tour.scrollDown": {
-      "extractionState": "manual",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Scroll down"
-          }
-        },
-        "tr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Aşağı kaydır"
-          }
-        },
-        "de": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nach unten scrollen"
-          }
-        },
-        "fr": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Faire défiler vers le bas"
-          }
-        },
-        "es": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Desplazar hacia abajo"
           }
         }
       }

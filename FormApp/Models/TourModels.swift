@@ -43,6 +43,16 @@ public struct TourText: Equatable {
     }
 }
 
+/// A stationary sample of complete rows; a nil item limit includes the entire group.
+public struct TourRowHighlight: Equatable {
+    public let leadingRows: Int
+    public let itemLimit: Int?
+    public init(leadingRows: Int = 0, itemLimit: Int? = nil) {
+        self.leadingRows = leadingRows
+        self.itemLimit = itemLimit
+    }
+}
+
 /// One bubble. `targetId` names a registered target; nil centres the bubble (the Premium step).
 /// A target may report flags, and the first matching variant replaces `text`.
 public struct TourStep: Equatable {
@@ -51,15 +61,16 @@ public struct TourStep: Equatable {
     public let text: TourText
     public let variants: [(flag: String, text: TourText)]
     public let isPremium: Bool
-    public let scrollsContent: Bool
+    public let rowHighlight: TourRowHighlight?
+    public var highlightsRows: Bool { rowHighlight != nil }
 
-    public init(id: String, targetId: String?, text: TourText, variants: [(flag: String, text: TourText)] = [], isPremium: Bool = false, scrollsContent: Bool = false) {
+    public init(id: String, targetId: String?, text: TourText, variants: [(flag: String, text: TourText)] = [], isPremium: Bool = false, rowHighlight: TourRowHighlight? = nil) {
         self.id = id
         self.targetId = targetId
         self.text = text
         self.variants = variants
         self.isPremium = isPremium
-        self.scrollsContent = scrollsContent
+        self.rowHighlight = rowHighlight
     }
 
     public func text(for flags: Set<String>) -> TourText {
@@ -67,7 +78,7 @@ public struct TourStep: Equatable {
     }
 
     public static func == (lhs: TourStep, rhs: TourStep) -> Bool {
-        lhs.id == rhs.id && lhs.targetId == rhs.targetId && lhs.text == rhs.text && lhs.isPremium == rhs.isPremium && lhs.scrollsContent == rhs.scrollsContent
+        lhs.id == rhs.id && lhs.targetId == rhs.targetId && lhs.text == rhs.text && lhs.isPremium == rhs.isPremium && lhs.rowHighlight == rhs.rowHighlight
     }
 }
 
@@ -163,7 +174,7 @@ public enum TourCatalog {
                          variants: [("rest", text("tour.home.rest")),
                                     ("views", TourText(titleKey: "tour.home.workout.title", bodyKey: "tour.home.workout.bodyViews", args: workoutArgs))]),
                 TourStep(id: "home.week", targetId: "home.week", text: text("tour.home.week")),
-                TourStep(id: "home.exercises", targetId: "home.exercises", text: text("tour.home.exercises"), scrollsContent: true),
+                TourStep(id: "home.exercises", targetId: "home.exercises", text: text("tour.home.exercises"), rowHighlight: TourRowHighlight(leadingRows: 1, itemLimit: 3)),
                 TourStep(id: "home.tabs", targetId: "dock", text: text("tour.home.tabs",
                     ["plan": "nav.plan", "library": "nav.library", "progress": "nav.progress"]))
             ]
@@ -199,7 +210,7 @@ public enum TourCatalog {
             return [
                 TourStep(id: "workout.exercises", targetId: "workout.exercises", text: text("tour.workout.exercises")),
                 TourStep(id: "workout.sets", targetId: "workout.sets", text: text("tour.workout.sets", ["weight_unit": "settings.unitKg"]),
-                         variants: [("lbs", text("tour.workout.sets", ["weight_unit": "settings.unitLbs"]))], scrollsContent: true),
+                         variants: [("lbs", text("tour.workout.sets", ["weight_unit": "settings.unitLbs"]))], rowHighlight: TourRowHighlight(leadingRows: 2, itemLimit: 3)),
                 TourStep(id: "workout.finish", targetId: "workout.finish", text: TourText(titleKey: "session.finishBtn", bodyKey: "tour.workout.finish.body"))
             ]
         case .volumeMatrix:
@@ -213,7 +224,7 @@ public enum TourCatalog {
             return steps
         case .repLab:
             var steps = [
-                TourStep(id: labRepMaxStep, targetId: "lab.repmax", text: TourText(titleKey: "form_lab.tab_rep_max", bodyKey: "tour.lab.repmax.body"), scrollsContent: true),
+                TourStep(id: labRepMaxStep, targetId: "lab.repmax", text: TourText(titleKey: "form_lab.tab_rep_max", bodyKey: "tour.lab.repmax.body"), rowHighlight: TourRowHighlight()),
                 TourStep(id: labCurvesStep, targetId: "lab.curves", text: TourText(titleKey: "form_lab.tab_curves", bodyKey: "tour.lab.curves.body")),
                 TourStep(id: labBalanceStep, targetId: "lab.balance", text: TourText(titleKey: "form_lab.tab_balance", bodyKey: "tour.lab.balance.body"))
             ]

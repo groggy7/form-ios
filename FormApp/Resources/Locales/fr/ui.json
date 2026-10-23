@@ -1413,7 +1413,7 @@
   "tour.home.week.title": "Votre semaine",
   "tour.home.week.body": "Les séances faites par rapport à votre plan, avec le volume, le temps actif et les records de la semaine.",
   "tour.home.exercises.title": "Exercices de cette journée",
-  "tour.home.exercises.body": "Faites défiler pour voir tous les exercices de cette séance. Ouvrez-en un pour voir sa démonstration, ses muscles et sa technique.",
+  "tour.home.exercises.body": "Voici les exercices de cet entraînement. Ouvrez-en un pour voir le mouvement, les muscles sollicités et la technique.",
   "tour.home.tabs.title": "À découvrir",
   "tour.home.tabs.body": "Utilisez {plan} pour votre planning, {library} pour les conseils sur les exercices et {progress} pour vos séances enregistrées.",
   "tour.plan.days.title": "Votre semaine",
@@ -1449,7 +1449,7 @@
   "tour.matrix.detail.body": "Choisissez un muscle pour comparer ses séries directes et indirectes aux plages de référence générales du volume.",
   "tour.matrix.mode.title": "Semaines et programme",
   "tour.matrix.mode.body": "Revenez aux semaines précédentes, ou passez à {cycle} pour voir le volume prévu par votre programme.",
-  "tour.lab.repmax.body": "À partir de vos meilleures séries, Rep Lab estime ce que vous pourriez soulever de 1 à 12 répétitions.",
+  "tour.lab.repmax.body": "À partir de vos meilleures séries, Rep Lab estime les charges possibles pour différents nombres de répétitions.",
   "tour.lab.curves.body": "Suivez le maximum estimé de chaque mouvement de séance en séance.",
   "tour.lab.balance.body": "Comparez poussée et tirage, quadriceps et ischio-jambiers, haut et bas du corps.",
   "tip.dayStatus.title": "Couleurs des jours",
@@ -1786,8 +1786,5 @@
   "social.setsProgress.other": "{count} séries terminées sur {total}",
   "social.workoutsProgress.one": "{count} séances sur {total}",
   "social.workoutsProgress.other": "{count} séances sur {total}",
-  "social.photoPermission": "Enregistre les cartes de séance de ton choix dans ta photothèque.",
-  "tour.scrollHint": "Faites défiler pour explorer",
-  "tour.scrollUp": "Faire défiler vers le haut",
-  "tour.scrollDown": "Faire défiler vers le bas"
+  "social.photoPermission": "Enregistre les cartes de séance de ton choix dans ta photothèque."
 }

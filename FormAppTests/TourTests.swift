@@ -33,14 +33,16 @@ final class TourTests: XCTestCase {
         XCTAssertEqual(TourProgress().skipped(.repLab).skipped(.restTimer).skipCount, 0)
     }
 
-    func testHomeCombinesDaysAndColorsAndLongSectionsAreScrollable() {
+    func testHomeCombinesDaysAndColorsAndRowHighlightsUseFocusedSamples() {
         let home = TourCatalog.steps(.home)
         XCTAssertEqual(home.map(\.id), ["home.days", "home.workout", "home.week", "home.exercises", "home.tabs"])
         XCTAssertEqual(home.first?.targetId, "home.days")
         XCTAssertEqual(home.first?.text(for: ["scroll"]).bodyKey, "tour.home.days.bodyScroll")
-        XCTAssertTrue(home.first { $0.id == "home.exercises" }!.scrollsContent)
-        XCTAssertTrue(TourCatalog.steps(.repLab).first!.scrollsContent)
-        XCTAssertTrue(TourCatalog.steps(.workout).first { $0.id == "workout.sets" }!.scrollsContent)
+        XCTAssertTrue(home.first { $0.id == "home.exercises" }!.highlightsRows)
+        XCTAssertEqual(home.first { $0.id == "home.exercises" }!.rowHighlight, TourRowHighlight(leadingRows: 1, itemLimit: 3))
+        XCTAssertEqual(TourCatalog.steps(.repLab).first!.rowHighlight, TourRowHighlight())
+        XCTAssertEqual(ProPreviewData.formLabRepMaxSummary.targets.map(\.reps), [1, 3, 5, 8, 10])
+        XCTAssertTrue(TourCatalog.steps(.workout).first { $0.id == "workout.sets" }!.highlightsRows)
         XCTAssertTrue(TourProgress().finished(.home).seen.contains(.dayStatus))
         XCTAssertFalse(TourProgress().skipped(.home).shouldStart(.dayStatus))
     }
@@ -86,7 +88,7 @@ final class TourTests: XCTestCase {
             }
         }
         keys += HomeDayTourExample.allCases.flatMap { [($0.titleKey, Set<String>()), ($0.bodyKey, Set<String>())] }
-        keys += ["tour.home.days.examples", "tour.next", "tour.back", "tour.done", "tour.skip", "tour.ok", "tour.seePremium", "tour.sampleData", "tour.scrollHint", "tour.scrollUp", "tour.scrollDown"].map { ($0, []) }
+        keys += ["tour.home.days.examples", "tour.next", "tour.back", "tour.done", "tour.skip", "tour.ok", "tour.seePremium", "tour.sampleData"].map { ($0, []) }
         keys.append(("tour.stepCount", ["current", "total"]))
         let placeholder = try NSRegularExpression(pattern: "\\{(\\w+)\\}")
         for language in ["en", "tr", "de", "fr", "es"] {
@@ -156,8 +158,9 @@ final class TourLayoutTests: XCTestCase {
         ThemeManager.shared.setThemeId(theme)
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
         let previous = scene.windows.first { $0.isKeyWindow }
-        let previousRoot = previous?.rootViewController
-        previous?.rootViewController = nil
+        let previousRoots = scene.windows.filter { $0.windowLevel == .normal && $0.rootViewController != nil }
+            .map { ($0, $0.rootViewController) }
+        previousRoots.forEach { $0.0.rootViewController = nil }
         tour.update(frames: [:], bounds: .zero, origin: .zero, host: .main)
         let window = UIWindow(windowScene: scene)
         window.frame = CGRect(x: 0, y: 0, width: width, height: 852)
@@ -176,9 +179,14 @@ final class TourLayoutTests: XCTestCase {
             store.updateTourProgress { _ in progress }; LanguageManager.setLanguage(language)
             ThemeManager.shared.setThemeId(selectedTheme)
             ProAccessManager.shared.updateSubscriptionStatus(active: subscribed)
-            previous?.rootViewController = previousRoot; previous?.makeKeyAndVisible()
+            previousRoots.forEach { $0.0.rootViewController = $0.1 }; previous?.makeKeyAndVisible()
         }
         try await settle { tour.hasTarget("dock") }
+        try await Task.sleep(nanoseconds: 200_000_000)
+        // Keep this single-target fixture independent of delayed preferences from restored app windows.
+        let dockFrame = try XCTUnwrap(tour.frame("dock", host: .main))
+        tour.cancel()
+        tour.update(frames: ["dock": dockFrame], bounds: window.bounds.size, origin: .zero, host: .main)
         tour.start(.home)
         try await settle { tour.currentStepId == "home.tabs" && tour.shownStepIndex == 0 }
         try await Task.sleep(nanoseconds: 200_000_000)
@@ -212,7 +220,7 @@ final class TourLayoutTests: XCTestCase {
     }
 
     @MainActor
-    func testWorkoutSetsStayAboveNavigationAndRevealTheirBottomControls() async throws {
+    func testWorkoutSetsShowAFocusedSampleAboveNavigation() async throws {
         try await checkWorkoutSets(width: 440, textSize: .large, theme: "default")
     }
 
@@ -249,8 +257,9 @@ final class TourLayoutTests: XCTestCase {
         store.activeSession = draft
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
         let previous = scene.windows.first { $0.isKeyWindow }
-        let previousRoot = previous?.rootViewController
-        previous?.rootViewController = nil
+        let previousRoots = scene.windows.filter { $0.windowLevel == .normal && $0.rootViewController != nil }
+            .map { ($0, $0.rootViewController) }
+        previousRoots.forEach { $0.0.rootViewController = nil }
         tour.update(frames: [:], bounds: .zero, origin: .zero, host: .workout)
         let window = UIWindow(windowScene: scene)
         window.frame = CGRect(x: 0, y: 0, width: width, height: 852)
@@ -262,7 +271,7 @@ final class TourLayoutTests: XCTestCase {
             AppStore.shared.updateTourProgress { _ in progress }; LanguageManager.setLanguage(language)
             ThemeManager.shared.setThemeId(selectedTheme)
             ProAccessManager.shared.updateSubscriptionStatus(active: subscribed)
-            previous?.rootViewController = previousRoot; previous?.makeKeyAndVisible()
+            previousRoots.forEach { $0.0.rootViewController = $0.1 }; previous?.makeKeyAndVisible()
         }
         try await settle { tour.hasTarget("workout.sets") && tour.hasTarget("workout.finish") }
         tour.start(.workout)
@@ -270,16 +279,14 @@ final class TourLayoutTests: XCTestCase {
         tour.next(); try await settle { tour.currentStepId == "workout.sets" && tour.shownStepIndex == 1 }
         try await Task.sleep(nanoseconds: 200_000_000)
         try capture(window, "ios-workout-sets-first-\(Int(width))-\(theme)")
-        let viewport = try XCTUnwrap(tour.groupViewport, "The working sets must scroll within their own viewport")
+        let viewport = try XCTUnwrap(tour.groupViewport, "The sample must fit within the table viewport")
         let scroll = tour.scrollViewport("workout.sets", host: .workout)
         XCTAssertLessThanOrEqual(viewport.maxY + 6, scroll.maxY + 1)
         let bubble = try XCTUnwrap(tour.bubbleBounds)
         XCTAssertLessThanOrEqual(bubble.maxY + 12, viewport.minY - 6 + 1)
-        XCTAssertEqual(tour.groupRows("workout.sets", host: .workout).count, 11, "Heading, columns, eight sets and complete Add/Remove controls")
-        try await revealLastRow("workout.sets", tour: tour, host: .workout)
-        try capture(window, "ios-workout-sets-last-\(Int(width))-\(theme)")
+        try assertSample("workout.sets", tour: tour, host: .workout, leadingRows: 2)
         let unchanged = try XCTUnwrap(store.activeSession)
-        XCTAssertEqual(unchanged.setsByExercise, draft.setsByExercise, "Tour scrolling must not log or edit sets")
+        XCTAssertEqual(unchanged.setsByExercise, draft.setsByExercise, "The tour must not log or edit sets")
         tour.next(); try await settle { tour.currentStepId == "workout.finish" && tour.shownStepIndex == 2 }
         tour.back(); try await settle { tour.currentStepId == "workout.sets" && tour.shownStepIndex == 1 }
         try await settle {
@@ -350,8 +357,9 @@ final class TourLayoutTests: XCTestCase {
         let previous = scene.windows.first { $0.isKeyWindow }
         // Only one main tour host may report geometry. Detach the running app while
         // the fixture owns the shared controller, then restore it after the test.
-        let previousRoot = previous?.rootViewController
-        previous?.rootViewController = nil
+        let previousRoots = scene.windows.filter { $0.windowLevel == .normal && $0.rootViewController != nil }
+            .map { ($0, $0.rootViewController) }
+        previousRoots.forEach { $0.0.rootViewController = nil }
         tour.update(frames: [:], bounds: .zero, origin: .zero, host: .main)
         let window = UIWindow(windowScene: scene)
         window.frame = CGRect(x: 0, y: 0, width: width, height: 852)
@@ -363,7 +371,7 @@ final class TourLayoutTests: XCTestCase {
             tour.cancel(); window.isHidden = true; window.rootViewController = nil
             store.state = saved; store.selectedWorkoutId = savedSelection
             store.updateTourProgress { _ in savedProgress }; LanguageManager.setLanguage(language)
-            previous?.rootViewController = previousRoot; previous?.makeKeyAndVisible()
+            previousRoots.forEach { $0.0.rootViewController = $0.1 }; previous?.makeKeyAndVisible()
         }
         try await Task.sleep(nanoseconds: 200_000_000)
         try await settle { tour.hasTarget("home.hero") && tour.hasTarget("home.exercises.row.7") }
@@ -389,51 +397,63 @@ final class TourLayoutTests: XCTestCase {
             return row.minY >= area.minY - 1 && row.maxY <= area.maxY + 1
         }
         try capture(window, "ios-home-exercises-first-\(Int(width))")
-        try await revealLastRow("home.exercises", tour: tour)
-        try capture(window, "ios-home-exercises-last-\(Int(width))")
+        try assertSample("home.exercises", tour: tour, host: .main, leadingRows: 1)
     }
 
     @MainActor
-    func testRepMaxCanRevealItsCompleteLastRow() async throws {
+    func testRepMaxHighlightsAllFiveCardsTogether() async throws {
+        try await checkRepMax(width: 393, textSize: .large)
+    }
+
+    @MainActor
+    func testRepMaxAllFiveCardsAt320PointsWithAccessibilityText() async throws {
+        try await checkRepMax(width: 320, textSize: .accessibility3)
+    }
+
+    @MainActor
+    private func checkRepMax(width: CGFloat, textSize: DynamicTypeSize) async throws {
         let store = AppStore.shared
         let tour = TourController.shared
         let saved = store.tourProgress
         tour.cancel(); store.updateTourProgress { _ in TourProgress(seen: Set(TourId.allCases)) }
         let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
         let previous = scene.windows.first { $0.isKeyWindow }
-        let previousRoot = previous?.rootViewController
-        previous?.rootViewController = nil
+        let previousRoots = scene.windows.filter { $0.windowLevel == .normal && $0.rootViewController != nil }
+            .map { ($0, $0.rootViewController) }
+        previousRoots.forEach { $0.0.rootViewController = nil }
         tour.update(frames: [:], bounds: .zero, origin: .zero, host: .main)
         let window = UIWindow(windowScene: scene)
-        window.frame = CGRect(x: 0, y: 0, width: 393, height: 852)
+        window.frame = CGRect(x: 0, y: 0, width: width, height: 852)
         let host = UIHostingController(rootView: ScrollViewReader { proxy in
             ScrollView { FormLabView(store: store, isPreview: true).padding(20) }
-                .tourScrollable(proxy).background(AppColors.background).tourOverlay(.main)
+                .tourScrollable(proxy).background(AppColors.background).tourOverlay(.main).dynamicTypeSize(textSize)
         })
         window.rootViewController = host; window.makeKeyAndVisible(); host.view.frame = window.bounds
         defer {
             tour.cancel(); window.isHidden = true; window.rootViewController = nil
             store.updateTourProgress { _ in saved }
-            previous?.rootViewController = previousRoot; previous?.makeKeyAndVisible()
+            previousRoots.forEach { $0.0.rootViewController = $0.1 }; previous?.makeKeyAndVisible()
         }
-        try await settle { tour.hasTarget("lab.repmax.row.3") }
+        try await settle { tour.hasTarget("lab.repmax.row.2") }
         tour.start(.repLab)
         try await settle { tour.shownStepIndex == 0 }
         try capture(window, "ios-repmax-first")
-        try await revealLastRow("lab.repmax", tour: tour)
-        try capture(window, "ios-repmax-last")
+        try await settle(message: "All five Rep Max cards must fit: viewport=\(String(describing: tour.groupViewport)), highlight=\(String(describing: tour.groupHighlightBounds)), rows=\(tour.groupRows("lab.repmax", host: .main))") {
+            guard let bounds = tour.groupHighlightBounds else { return false }
+            return tour.groupRows("lab.repmax", host: .main).allSatisfy { bounds.insetBy(dx: -1, dy: -1).contains($0.1.rect) }
+        }
+        XCTAssertEqual(tour.groupRows("lab.repmax", host: .main).count, 3)
+        try capture(window, "ios-repmax-all-five-\(Int(width))")
     }
 
     @MainActor
-    private func revealLastRow(_ id: String, tour: TourController, host: TourHost = .main) async throws {
-        let last = try XCTUnwrap(tour.groupRows(id, host: host).last?.0)
-        for _ in 0..<10 {
-            let viewport = try XCTUnwrap(tour.groupViewport)
-            let frame = try XCTUnwrap(tour.frame(last, host: host)?.rect)
-            if frame.minY >= viewport.minY - 1 && frame.maxY <= viewport.maxY + 1 { return }
-            tour.pageGroup(forward: true, host: host)
-            try await Task.sleep(nanoseconds: 150_000_000)
-        }
-        XCTFail("The entire final row must be reachable in \(id): viewport=\(String(describing: tour.groupViewport)), last=\(String(describing: tour.frame(last, host: host)?.rect))")
+    private func assertSample(_ id: String, tour: TourController, host: TourHost, leadingRows: Int) throws {
+        let bounds = try XCTUnwrap(tour.groupHighlightBounds)
+        let rows = tour.groupRows(id, host: host)
+        let items = rows.dropFirst(leadingRows)
+        let visible = items.filter { bounds.insetBy(dx: -1, dy: -1).contains($0.1.rect) }
+        XCTAssertTrue((1...3).contains(visible.count), "Show one to three complete items")
+        for row in rows.prefix(leadingRows) { XCTAssertTrue(bounds.insetBy(dx: -1, dy: -1).contains(row.1.rect)) }
+        for row in items.dropFirst(3) { XCTAssertFalse(bounds.intersects(row.1.rect), "Further items stay dimmed") }
     }
 }

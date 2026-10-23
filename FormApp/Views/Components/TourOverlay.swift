@@ -75,6 +75,7 @@ public final class TourController: ObservableObject {
     private var scrollTargets: [String: TourScrollTarget] = [:]
     private var origins: [TourHost: CGPoint] = [:]
     var groupViewport: CGRect?
+    var groupHighlightBounds: CGRect?
     var bubbleBounds: CGRect?
     private var bounds: [TourHost: CGSize] = [:]
     private var locked = false
@@ -211,11 +212,17 @@ public final class TourController: ObservableObject {
             let safe = TourOverlay.safeRect(size: bounds[host] ?? .zero)
             let viewport = scrollViewport(targetId, host: host).intersection(safe)
             let desiredTop = max(viewport.minY + 6, safe.minY + bubbleHeight + 18)
-            let first = step.scrollsContent ? groupRows(targetId, host: host).first?.1 : frame
-            if let first, step.scrollsContent || first.rect.height <= viewport.maxY - 6 - desiredTop {
+            let first = step.highlightsRows ? groupRows(targetId, host: host).first?.1 : frame
+            if let first, step.highlightsRows || first.rect.height <= viewport.maxY - 6 - desiredTop {
                 scroll.scroll(by: first.rect.minY - desiredTop)
                 try? await Task.sleep(nanoseconds: 80_000_000)
-                if !step.scrollsContent, let placed = frames[host]?[targetId], placed.rect.minY < desiredTop - 1 {
+                if step.highlightsRows, let placed = groupRows(targetId, host: host).first?.1,
+                   abs(placed.rect.minY - desiredTop) > 1 {
+                    // Native scrolling can settle after the anchors used by the first pass.
+                    scroll.scroll(by: placed.rect.minY - desiredTop)
+                    try? await Task.sleep(nanoseconds: 80_000_000)
+                }
+                if !step.highlightsRows, let placed = frames[host]?[targetId], placed.rect.minY < desiredTop - 1 {
                     scroll.scroll(by: placed.rect.minY - viewport.minY - 6)
                     try? await Task.sleep(nanoseconds: 80_000_000)
                 }
@@ -238,7 +245,7 @@ public final class TourController: ObservableObject {
         steps = remaining
     }
 
-    private func resetGroupViewport() { groupViewport = nil }
+    private func resetGroupViewport() { groupViewport = nil; groupHighlightBounds = nil }
 
     fileprivate func attachScrollTarget(_ id: String, view: UIView) {
         guard scrollTargets[id]?.view !== view else { return }
@@ -265,20 +272,10 @@ public final class TourController: ObservableObject {
             .map { ($0.key, $0.value) }
     }
 
-    func dragGroup(_ delta: CGFloat) {
-        guard let step = currentStep, step.scrollsContent, let id = step.targetId else { return }
-        scrollTargets[id]?.scroll(by: delta)
-    }
-
-    func pageGroup(forward: Bool, host: TourHost) {
-        guard let step = currentStep, step.scrollsContent, let id = step.targetId,
-              let viewport = groupViewport else { return }
-        let rows = groupRows(id, host: host)
-        let row = forward ? rows.first { $0.1.rect.maxY > viewport.maxY + 1 }
-            : rows.last { $0.1.rect.minY < viewport.minY - 1 }
-        guard let row else { return }
-        let delta = forward ? row.1.rect.minY - viewport.minY : row.1.rect.maxY - viewport.maxY
-        scrollTargets[id]?.scroll(by: delta)
+    func highlightRows(_ step: TourStep, host: TourHost) -> [(String, TourFrame)] {
+        let rows = groupRows(step.targetId ?? "", host: host)
+        guard let policy = step.rowHighlight, let limit = policy.itemLimit else { return rows }
+        return Array(rows.prefix(policy.leadingRows + limit))
     }
 
     private func isOffscreen(_ id: String, host: TourHost) -> Bool {
@@ -358,7 +355,7 @@ private struct TourScrollModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .contentMargins(.bottom, tour.currentStep?.scrollsContent == true ? TourOverlay.windowSafeInsets.bottom + 38 : 0,
+            .contentMargins(.bottom, tour.currentStep?.highlightsRows == true ? TourOverlay.windowSafeInsets.bottom + 38 : 0,
                             for: .scrollContent)
             .onChange(of: tour.scrollRequest) { _, request in
                 guard let request else { return }
@@ -405,8 +402,6 @@ struct TourOverlay: View {
     let frames: [String: TourFrame]
     let size: CGSize
     let origin: CGPoint
-    @State private var lastDrag: CGFloat = 0
-    @State private var draggingGroup = false
     @State private var naturalBubbleHeight: CGFloat = 0
     @State private var bubbleHeight: CGFloat = 0
     @State private var measuredBubbleStep: String?
@@ -435,16 +430,16 @@ struct TourOverlay: View {
                 let groupArea = CGRect(x: viewport.minX,
                     y: max(viewport.minY + 6, safe.minY + bubbleHeight + 18), width: viewport.width,
                     height: max(0, viewport.maxY - 6 - max(viewport.minY + 6, safe.minY + bubbleHeight + 18)))
-                let rows = step.scrollsContent ? frames.filter { $0.key.hasPrefix("\(step.targetId ?? "").row.") }.map(\.value) : []
+                let rows = step.highlightsRows ? tour.highlightRows(step, host: host).compactMap { frames[$0.0] } : []
                 let complete = rows.filter { $0.rect.minY >= groupArea.minY - 1 && $0.rect.maxY <= groupArea.maxY + 1 }
                 let groupBounds = complete.reduce(CGRect.null) { $0.union($1.rect) }
                 // Safe-area margins constrain the bubble, not the target. The dock extends
                 // below them; clipping its bounds there draws the outline through its labels.
-                let rect = step.scrollsContent ? (groupBounds.isNull ? nil : groupBounds)
+                let rect = step.highlightsRows ? (groupBounds.isNull ? nil : groupBounds)
                     : target?.rect.intersection(CGRect(origin: .zero, size: size))
                 let cutout = shown ? rect.map { $0.insetBy(dx: -6, dy: -6) } : nil
                 let radius = (target?.cornerRadius ?? 0) + 6
-                scrim(cutout: cutout, radius: radius, group: step.scrollsContent)
+                scrim(cutout: cutout, radius: radius)
                 if let cutout, !cutout.isNull {
                     RoundedRectangle(cornerRadius: radius, style: .continuous)
                         .stroke(AppColors.accent.opacity(0.95), lineWidth: 1.5)
@@ -452,20 +447,14 @@ struct TourOverlay: View {
                         .position(x: cutout.midX, y: cutout.midY)
                         .allowsHitTesting(false)
                 }
-                let header = frames["\(step.targetId ?? "").row.0"]?.rect
-                let firstRowIndex = step.targetId == "workout.sets" ? 2 : 1
-                let firstRow = frames["\(step.targetId ?? "").row.\(firstRowIndex)"]?.rect
-                let includesHeading = step.targetId == "home.exercises" || step.targetId == "workout.sets"
-                let firstSectionHeight = includesHeading && header != nil && firstRow != nil
-                    ? firstRow!.maxY - header!.minY : 0
-                let minimumRow = max(96, max(firstSectionHeight, rows.map { $0.rect.height }.max() ?? 0))
-                let maxBubbleHeight = step.scrollsContent
-                    ? max(48, viewport.maxY - safe.minY - 24 - minimumRow) : safe.height
+                let required = step.rowHighlight?.itemLimit == nil ? rows : Array(rows.prefix((step.rowHighlight?.leadingRows ?? 0) + 1))
+                let requiredBounds = required.reduce(CGRect.null) { $0.union($1.rect) }
+                let minimumRow = requiredBounds.isNull ? 96 : max(48, requiredBounds.height)
+                let maxBubbleHeight = step.highlightsRows
+                    ? max(48, viewport.maxY - safe.minY - 30 - minimumRow) : safe.height
                 ScrollView {
                     bubble(step: step, text: step.text(for: target?.flags ?? []), index: tour.stepIndex,
-                           total: tour.steps.count, isTip: tourId.kind == .tip,
-                           canScrollUp: rows.contains { $0.rect.minY < groupArea.minY - 1 },
-                           canScrollDown: rows.contains { $0.rect.maxY > groupArea.maxY + 1 })
+                           total: tour.steps.count, isTip: tourId.kind == .tip)
                         .background(GeometryReader { geometry in
                             Color.clear.preference(key: TourBubbleHeightKey.self, value: geometry.size.height)
                         })
@@ -487,18 +476,22 @@ struct TourOverlay: View {
                 }
                 .onChange(of: maxBubbleHeight) { _, height in bubbleHeight = min(naturalBubbleHeight, height) }
                 .offset(x: (size.width - bubbleWidth) / 2,
-                    y: step.scrollsContent ? safe.minY : bubbleY(cutout: cutout))
+                    y: step.highlightsRows ? safe.minY : bubbleY(cutout: cutout))
                 .opacity(shown ? bubbleOpacity : 0)
                 .allowsHitTesting(shown)
                 .id(step.id)
                 .onAppear {
-                    lastDrag = 0
-                    draggingGroup = false
                     bubbleOpacity = 0
                     withAnimation(reduceMotion ? nil : .easeOut(duration: 0.15)) { bubbleOpacity = 1 }
                 }
                 .onChange(of: groupArea, initial: true) { _, rect in
-                    if step.scrollsContent { tour.groupViewport = rect }
+                    if step.highlightsRows { tour.groupViewport = rect }
+                }
+                .onChange(of: step.id, initial: true) { _, _ in
+                    if step.highlightsRows { tour.groupViewport = groupArea }
+                }
+                .onChange(of: groupBounds, initial: true) { _, rect in
+                    tour.groupHighlightBounds = rect.isNull ? nil : rect
                 }
                 .onChange(of: shown) { _, visible in
                     if visible { UIAccessibility.post(notification: .screenChanged, argument: LanguageManager.t(step.text(for: target?.flags ?? []).titleKey)) }
@@ -536,7 +529,7 @@ struct TourOverlay: View {
     }
 
     @ViewBuilder
-    private func scrim(cutout: CGRect?, radius: CGFloat, group: Bool) -> some View {
+    private func scrim(cutout: CGRect?, radius: CGFloat) -> some View {
         let color = themeManager.currentTheme.isDark
             ? AppColors.background.opacity(0.72)
             : Color(red: 0x14 / 255, green: 0x17 / 255, blue: 0x1A / 255).opacity(0.55)
@@ -549,19 +542,11 @@ struct TourOverlay: View {
         .fill(color, style: FillStyle(eoFill: true))
         // The scrim takes every touch outside the bubble, so nothing behind it reacts.
         .contentShape(Rectangle())
-        .gesture(DragGesture(minimumDistance: 0)
-            .onChanged { value in
-                if lastDrag == 0 { draggingGroup = group && cutout?.contains(value.startLocation) == true }
-                let delta = value.translation.height - lastDrag
-                lastDrag = value.translation.height
-                if draggingGroup && abs(value.translation.height) > 8 { tour.dragGroup(-delta) }
-            }
-            .onEnded { _ in lastDrag = 0; draggingGroup = false })
+        .gesture(DragGesture(minimumDistance: 0).onChanged { _ in })
         .accessibilityHidden(true)
     }
 
-    private func bubble(step: TourStep, text: TourText, index: Int, total: Int, isTip: Bool,
-                        canScrollUp: Bool, canScrollDown: Bool) -> some View {
+    private func bubble(step: TourStep, text: TourText, index: Int, total: Int, isTip: Bool) -> some View {
         let title = LanguageManager.t(text.titleKey)
         let body = LanguageManager.t(text.bodyKey, text.args.mapValues { LanguageManager.t($0) })
         let isLast = index >= total - 1
@@ -592,15 +577,6 @@ struct TourOverlay: View {
                 .lineSpacing(3)
                 .fixedSize(horizontal: false, vertical: true)
             if step.id == "home.days" { HomeDayTourLegend() }
-            if step.scrollsContent {
-                HStack(spacing: 8) {
-                    Text(LanguageManager.t("tour.scrollHint"))
-                        .font(.app(size: captionSize)).foregroundStyle(AppColors.muted)
-                    Spacer(minLength: 0)
-                    scrollButton(down: false, enabled: canScrollUp)
-                    scrollButton(down: true, enabled: canScrollDown)
-                }
-            }
             HStack(spacing: 10) {
                 Spacer(minLength: 0)
                 if step.isPremium {
@@ -623,17 +599,6 @@ struct TourOverlay: View {
         .accessibilityElement(children: .contain)
         .accessibilityAddTraits(.isModal)
         .accessibilityIdentifier("tour-bubble")
-    }
-    private func scrollButton(down: Bool, enabled: Bool) -> some View {
-        Button { tour.pageGroup(forward: down, host: host) } label: {
-            Image(systemName: down ? "arrow.down" : "arrow.up")
-                .frame(width: 48, height: 48)
-                .foregroundStyle(AppColors.text.opacity(enabled ? 1 : 0.35))
-                .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
-        }
-        .buttonStyle(.plain).disabled(!enabled)
-        .accessibilityLabel(LanguageManager.t(down ? "tour.scrollDown" : "tour.scrollUp"))
-        .accessibilityIdentifier(down ? "tour-scroll-down" : "tour-scroll-up")
     }
 
 }

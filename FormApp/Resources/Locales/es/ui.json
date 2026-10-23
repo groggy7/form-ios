@@ -1413,7 +1413,7 @@
   "tour.home.week.title": "Tu semana",
   "tour.home.week.body": "Entrenamientos hechos frente a tu plan, con el volumen, el tiempo activo y los récords de esta semana.",
   "tour.home.exercises.title": "Ejercicios de este día",
-  "tour.home.exercises.body": "Desplázate para ver todos los ejercicios de esta sesión. Abre uno para ver su demostración, músculos y técnica.",
+  "tour.home.exercises.body": "Estos son los ejercicios de este entrenamiento. Abre uno para ver la demostración, los músculos y la técnica.",
   "tour.home.tabs.title": "Más por descubrir",
   "tour.home.tabs.body": "Usa {plan} para tu calendario de entrenamiento, {library} para consultar los ejercicios y {progress} para tus entrenamientos registrados.",
   "tour.plan.days.title": "Tu semana",
@@ -1449,7 +1449,7 @@
   "tour.matrix.detail.body": "Elige un músculo para comparar sus series directas e indirectas con los rangos de referencia generales de volumen.",
   "tour.matrix.mode.title": "Semanas y programa",
   "tour.matrix.mode.body": "Vuelve a semanas anteriores o cambia a {cycle} para ver el volumen que prescribe tu programa.",
-  "tour.lab.repmax.body": "A partir de tus mejores series, Rep Lab estima cuánto podrías levantar de 1 a 12 repeticiones.",
+  "tour.lab.repmax.body": "A partir de tus mejores series, Rep Lab estima cuánto podrías levantar con distintos números de repeticiones.",
   "tour.lab.curves.body": "Sigue el máximo estimado de cada ejercicio de sesión en sesión.",
   "tour.lab.balance.body": "Compara empujes con tirones, cuádriceps con isquiotibiales y tren superior con tren inferior.",
   "tip.dayStatus.title": "Colores de los días",
@@ -1786,8 +1786,5 @@
   "social.setsProgress.other": "{count} de {total} series completadas",
   "social.workoutsProgress.one": "{count} de {total} entrenamientos",
   "social.workoutsProgress.other": "{count} de {total} entrenamientos",
-  "social.photoPermission": "Guarda las tarjetas de entrenamiento que elijas en tu fototeca.",
-  "tour.scrollHint": "Desliza para explorar",
-  "tour.scrollUp": "Desplazar hacia arriba",
-  "tour.scrollDown": "Desplazar hacia abajo"
+  "social.photoPermission": "Guarda las tarjetas de entrenamiento que elijas en tu fototeca."
 }

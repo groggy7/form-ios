@@ -60,14 +60,10 @@ public enum ProPreviewData {
     public static let formLabRepMaxSummary: ExerciseRepMaxSummary = {
         let targets = [
             RepMaxTarget(reps: 1, estimatedWeightKg: 112.5, percentageOf1RM: 100.0),
-            RepMaxTarget(reps: 2, estimatedWeightKg: 108.8, percentageOf1RM: 96.7),
             RepMaxTarget(reps: 3, estimatedWeightKg: 105.0, percentageOf1RM: 93.3),
-            RepMaxTarget(reps: 4, estimatedWeightKg: 101.3, percentageOf1RM: 90.0),
             RepMaxTarget(reps: 5, estimatedWeightKg: 100.0, percentageOf1RM: 88.9),
-            RepMaxTarget(reps: 6, estimatedWeightKg: 96.3, percentageOf1RM: 85.6),
             RepMaxTarget(reps: 8, estimatedWeightKg: 88.8, percentageOf1RM: 78.9),
-            RepMaxTarget(reps: 10, estimatedWeightKg: 81.3, percentageOf1RM: 72.2),
-            RepMaxTarget(reps: 12, estimatedWeightKg: 73.8, percentageOf1RM: 65.6)
+            RepMaxTarget(reps: 10, estimatedWeightKg: 81.3, percentageOf1RM: 72.2)
         ]
         return ExerciseRepMaxSummary(
             exerciseId: "barbell_bench_press",

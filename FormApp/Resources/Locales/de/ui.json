@@ -1413,7 +1413,7 @@
   "tour.home.week.title": "Deine Woche",
   "tour.home.week.body": "Absolvierte Trainings im Vergleich zu deinem Plan, mit Volumen, aktiver Zeit und Rekorden dieser Woche.",
   "tour.home.exercises.title": "Übungen für diesen Tag",
-  "tour.home.exercises.body": "Scrolle durch alle Übungen dieses Trainings. Öffne eine Übung für die Demonstration, Muskeln und Technik.",
+  "tour.home.exercises.body": "Hier stehen die Übungen dieses Trainings. Öffne eine Übung für die Ausführung, beanspruchten Muskeln und Technik.",
   "tour.home.tabs.title": "Mehr zu entdecken",
   "tour.home.tabs.body": "Nutze {plan} für deinen Trainingsplan, {library} für Übungsanleitungen und {progress} für dein protokolliertes Training.",
   "tour.plan.days.title": "Deine Woche",
@@ -1449,7 +1449,7 @@
   "tour.matrix.detail.body": "Wähle einen Muskel, um seine direkten und unterstützenden Sätze mit allgemeinen Volumenreferenzbereichen zu vergleichen.",
   "tour.matrix.mode.title": "Wochen und Pläne",
   "tour.matrix.mode.body": "Blättere zu früheren Wochen zurück oder wechsle zu {cycle}, um das Volumen zu sehen, das dein Programm vorsieht.",
-  "tour.lab.repmax.body": "Aus deinen besten Sätzen schätzt Rep Lab, was du für 1 bis 12 Wiederholungen heben könntest.",
+  "tour.lab.repmax.body": "Rep Lab schätzt anhand deiner besten Sätze, welches Gewicht du bei verschiedenen Wiederholungszahlen bewegen könntest.",
   "tour.lab.curves.body": "Verfolge das geschätzte Maximum jeder Übung von Training zu Training.",
   "tour.lab.balance.body": "Vergleiche Drücken mit Ziehen, Quadrizeps mit Beinbizeps und Ober- mit Unterkörper.",
   "tip.dayStatus.title": "Tagesfarben",
@@ -1786,8 +1786,5 @@
   "social.setsProgress.other": "{count} von {total} Sätzen abgeschlossen",
   "social.workoutsProgress.one": "{count} von {total} Trainings",
   "social.workoutsProgress.other": "{count} von {total} Trainings",
-  "social.photoPermission": "Speichere ausgewählte Trainingskarten in deiner Fotomediathek.",
-  "tour.scrollHint": "Zum Erkunden scrollen",
-  "tour.scrollUp": "Nach oben scrollen",
-  "tour.scrollDown": "Nach unten scrollen"
+  "social.photoPermission": "Speichere ausgewählte Trainingskarten in deiner Fotomediathek."
 }

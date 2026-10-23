@@ -489,7 +489,6 @@ public struct SetLoggingTable: View {
                 .disabled(sets.count <= 1)
             }
             .padding(.top, 8)
-            .tourTarget("workout.sets.row.\(sets.count + 2)", cornerRadius: 10)
         }
         .tint(AppColors.accent)
         .onChange(of: focusedField) { _, value in
