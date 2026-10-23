@@ -115,7 +115,8 @@ final class TourLayoutTests: XCTestCase {
     }
 
     @MainActor
-    private func capture(_ window: UIWindow, _ name: String) throws {
+    @discardableResult
+    private func capture(_ window: UIWindow, _ name: String) throws -> UIImage {
         let image = UIGraphicsImageRenderer(bounds: window.bounds).image { _ in
             window.drawHierarchy(in: window.bounds, afterScreenUpdates: true)
         }
@@ -126,6 +127,82 @@ final class TourLayoutTests: XCTestCase {
         attachment.lifetime = .keepAlways
         add(attachment)
         print("TOUR_SCREENSHOT \(file.path)")
+        return image
+    }
+
+    @MainActor
+    func testHomeDockHighlightEnclosesTheWholeDockInTurkish() async throws {
+        try await checkDockHighlight(width: 440, textSize: .large, theme: "default")
+    }
+
+    @MainActor
+    func testHomeDockHighlightAt320PointsWithAccessibilityTextInOat() async throws {
+        try await checkDockHighlight(width: 320, textSize: .accessibility3, theme: "oat")
+    }
+
+    @MainActor
+    private func checkDockHighlight(width: CGFloat, textSize: DynamicTypeSize, theme: String) async throws {
+        let store = AppStore.shared
+        let tour = TourController.shared
+        let progress = store.tourProgress
+        let language = LanguageManager.shared.currentLanguage
+        let selectedTheme = ThemeManager.shared.selectedThemeId
+        let subscribed = ProAccessManager.shared.isProSubscribed
+        tour.cancel()
+        store.updateTourProgress { _ in TourProgress(seen: Set(TourId.allCases)) }
+        LanguageManager.setLanguage("tr")
+        ProAccessManager.shared.updateSubscriptionStatus(active: true)
+        ThemeManager.shared.setThemeId(theme)
+        let scene = try XCTUnwrap(UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.first)
+        let previous = scene.windows.first { $0.isKeyWindow }
+        let previousRoot = previous?.rootViewController
+        previous?.rootViewController = nil
+        tour.update(frames: [:], bounds: .zero, origin: .zero, host: .main)
+        let window = UIWindow(windowScene: scene)
+        window.frame = CGRect(x: 0, y: 0, width: width, height: 852)
+        // Match RootView's dock placement, including its extension into the bottom safe area.
+        let host = UIHostingController(rootView:
+            VStack(spacing: 0) {
+                Spacer()
+                BottomDock(currentView: .constant(.today))
+            }
+            .ignoresSafeArea(.container, edges: .bottom)
+            .background(AppColors.background.ignoresSafeArea())
+            .tourOverlay(.main).dynamicTypeSize(textSize))
+        window.rootViewController = host; window.makeKeyAndVisible(); host.view.frame = window.bounds
+        defer {
+            tour.cancel(); window.isHidden = true; window.rootViewController = nil
+            store.updateTourProgress { _ in progress }; LanguageManager.setLanguage(language)
+            ThemeManager.shared.setThemeId(selectedTheme)
+            ProAccessManager.shared.updateSubscriptionStatus(active: subscribed)
+            previous?.rootViewController = previousRoot; previous?.makeKeyAndVisible()
+        }
+        try await settle { tour.hasTarget("dock") }
+        tour.start(.home)
+        try await settle { tour.currentStepId == "home.tabs" && tour.shownStepIndex == 0 }
+        try await Task.sleep(nanoseconds: 200_000_000)
+        let dock = try XCTUnwrap(tour.frame("dock", host: .main)?.rect)
+        let bubble = try XCTUnwrap(tour.bubbleBounds)
+        XCTAssertLessThanOrEqual(bubble.maxY + 12, dock.minY - 6 + 1)
+        let image = try capture(window, "ios-home-dock-\(Int(width))-\(theme)")
+        let cg = try XCTUnwrap(image.cgImage)
+        let accent = AppColors.accent.resolve(in: EnvironmentValues())
+        func isOutline(x: CGFloat, y: CGFloat) -> Bool {
+            var rgba = [UInt8](repeating: 0, count: 4)
+            let context = CGContext(data: &rgba, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4,
+                space: CGColorSpace(name: CGColorSpace.sRGB)!, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
+            context.draw(cg, in: CGRect(x: -x * image.scale,
+                y: -(CGFloat(cg.height) - y * image.scale - 1), width: CGFloat(cg.width), height: CGFloat(cg.height)))
+            return abs(Float(rgba[0]) / 255 - accent.red) < 0.15
+                && abs(Float(rgba[1]) / 255 - accent.green) < 0.15
+                && abs(Float(rgba[2]) / 255 - accent.blue) < 0.15
+        }
+        let expected = dock.insetBy(dx: -6, dy: -6)
+        // Inspect the rendered ring, so clipping it to the bubble's safe area fails this check.
+        for edge in [CGPoint(x: expected.midX, y: expected.minY), CGPoint(x: expected.midX, y: expected.maxY),
+                     CGPoint(x: expected.minX, y: expected.midY), CGPoint(x: expected.maxX, y: expected.midY)] {
+            XCTAssertTrue(isOutline(x: edge.x, y: edge.y), "The outline must surround the complete dock at \(edge)")
+        }
     }
 
     @MainActor

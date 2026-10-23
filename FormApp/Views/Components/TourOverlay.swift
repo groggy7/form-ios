@@ -437,7 +437,10 @@ struct TourOverlay: View {
                 let rows = step.scrollsContent ? frames.filter { $0.key.hasPrefix("\(step.targetId ?? "").row.") }.map(\.value) : []
                 let complete = rows.filter { $0.rect.minY >= groupArea.minY - 1 && $0.rect.maxY <= groupArea.maxY + 1 }
                 let groupBounds = complete.reduce(CGRect.null) { $0.union($1.rect) }
-                let rect = step.scrollsContent ? (groupBounds.isNull ? nil : groupBounds) : target?.rect.intersection(safe)
+                // Safe-area margins constrain the bubble, not the target. The dock extends
+                // below them; clipping its bounds there draws the outline through its labels.
+                let rect = step.scrollsContent ? (groupBounds.isNull ? nil : groupBounds)
+                    : target?.rect.intersection(CGRect(origin: .zero, size: size))
                 let cutout = shown ? rect.map { $0.insetBy(dx: -6, dy: -6) } : nil
                 let radius = (target?.cornerRadius ?? 0) + 6
                 scrim(cutout: cutout, radius: radius, group: step.scrollsContent)
