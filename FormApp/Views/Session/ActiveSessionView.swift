@@ -202,8 +202,9 @@ public struct ActiveSessionView: View {
                                         action: currentSets.contains(where: { $0.isCompleted && !$0.isWarmup }) ? nil : replaceButton(for: exercise))
 
                                     let recommendation = historyInsights?.recommendation
+                                    let showsProgressionCard = recommendation != nil && store.showProgressionTargets
 
-                                    if let recommendation, store.showProgressionTargets {
+                                    if let recommendation, showsProgressionCard {
                                         ProgressionCoachCard(
                                             recommendation: recommendation,
                                             weightUnit: store.weightUnit,
@@ -228,7 +229,8 @@ public struct ActiveSessionView: View {
                                     }
 
                                     let currentWarmups = currentSets.filter { $0.isWarmup }
-                                    if (supportsBarbellWarmup || !currentWarmups.isEmpty) && store.showWarmupCalculator {
+                                    let showsWarmupCard = (supportsBarbellWarmup || !currentWarmups.isEmpty) && store.showWarmupCalculator
+                                    if showsWarmupCard {
                                         WarmupPlateCard(
                                             warmupSets: currentWarmups,
                                             hasWorkingLoad: workingWeightKg != nil,
@@ -300,6 +302,7 @@ public struct ActiveSessionView: View {
                                         intensity: store.showIntensityTechniques ? intensityActions(exercise: exercise, previousSets: previousSetsByIndex) : nil
                                     )
                                     .tourTarget("workout.sets", cornerRadius: 12, flags: [store.weightUnit.rawValue])
+                                    .padding(.top, showsProgressionCard || showsWarmupCard ? 8 : 0)
 
                                     let workingRows = currentSets.filter { !$0.isWarmup }
                                     let workingSetsDone = !workingRows.isEmpty && workingRows.allSatisfy(\.isCompleted)
