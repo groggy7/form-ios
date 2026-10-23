@@ -23,6 +23,8 @@ public struct SettingsView: View {
     @State private var pendingWeightUnit: WeightUnit?
     // Settings is a sheet, so it shows its own notice above the app-level toast.
     @State private var premiumNotice: ToastItem?
+    @State private var query = ""
+    private static let topID = "settings-top"
 
     public init(store: AppStore, onDismiss: @escaping () -> Void) {
         self.store = store
@@ -35,533 +37,41 @@ public struct SettingsView: View {
 
     public var body: some View {
         let _ = themeManager.currentTheme
+        let words = SettingsSearch.words(query)
+        let showPremiumCard = SettingsSearch.matches(words, [
+            LanguageManager.t("settings.pro_membership"), "Premium",
+            LanguageManager.t(proManager.isProSubscribed ? "settings.manage_subscription" : "settings.upgrade_to_pro")
+        ])
+        let visibleGroups = groups.compactMap { $0.matching(words) }
         NavigationStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
-                    // Forced Rep Premium Membership Card
-                    VStack(alignment: .leading, spacing: 12) {
-                        HStack(spacing: 8) {
-                            Image(systemName: "crown.fill")
-                                .font(.system(size: 16, weight: .bold))
-                                .foregroundStyle(proManager.isProSubscribed ? AppColors.purple : AppColors.accent)
-                            Text(LanguageManager.t("settings.pro_membership"))
-                                .font(.app(size: 16, weight: .bold))
-                                .foregroundStyle(AppColors.text)
-                        }
-
-                        Text(LanguageManager.t(proManager.isProSubscribed ? "settings.pro_active" : "pro.volume_matrix.description"))
-                            .font(.app(size: 12.5))
-                            .foregroundStyle(AppColors.secondaryText)
-                            .lineSpacing(2)
-
-                        if proManager.isProSubscribed {
-                            Button(action: {
-                                if let url = URL(string: LegalUrls.manageSubscriptions) {
-                                    openURL(url)
-                                }
-                            }) {
-                                HStack(spacing: 6) {
-                                    Image(systemName: "arrow.up.right")
-                                        .font(.system(size: 11, weight: .semibold))
-                                    Text(LanguageManager.t("settings.manage_subscription"))
-                                        .font(.app(size: 13, weight: .semibold))
-                                }
-                                .foregroundStyle(Color.white)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 38)
-                                .background(AppColors.purple)
-                                .clipShape(RoundedRectangle(cornerRadius: 10))
+            VStack(spacing: 0) {
+                SettingsSearchField(query: $query)
+                    .padding(.horizontal, 20)
+                    .padding(.top, 8)
+                ScrollViewReader { proxy in
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: 20) {
+                            if showPremiumCard { premiumCard }
+                            ForEach(visibleGroups) { group in
+                                settingsSection(group)
                             }
-                            .buttonStyle(.plain)
-                        } else {
-                            Button(action: { showPaywall = true }) {
-                                Text(LanguageManager.t("settings.upgrade_to_pro"))
-                                    .font(.app(size: 13, weight: .semibold))
-                                    .foregroundStyle(AppColors.background)
+                            if !showPremiumCard && visibleGroups.isEmpty {
+                                Text(LanguageManager.t("settings.searchEmpty"))
+                                    .font(.app(size: 14))
+                                    .foregroundStyle(AppColors.muted)
+                                    .multilineTextAlignment(.center)
                                     .frame(maxWidth: .infinity)
-                                    .frame(height: 38)
-                                    .background(AppColors.accent)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .padding(.vertical, 32)
+                                    .accessibilityIdentifier("settings-search-empty")
                             }
-                            .buttonStyle(.plain)
                         }
+                        .padding(.vertical, 16)
+                        .id(Self.topID)
                     }
-                    .padding(16)
-                    .background(proManager.isProSubscribed ? AppColors.purpleBg : AppColors.surfaceRaised)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 16)
-                            .stroke(proManager.isProSubscribed ? AppColors.purple.opacity(0.5) : AppColors.border, lineWidth: 1)
-                    )
-                    .clipShape(RoundedRectangle(cornerRadius: 16))
-                    .padding(.horizontal, 20)
-
-                    // Training section
-                    settingsSection(title: LanguageManager.t("settings.training")) {
-                        VStack(spacing: 0) {
-                            HStack {
-                                Text(LanguageManager.t("settings.defaultRest"))
-                                    .font(.app(size: 15))
-                                    .foregroundStyle(AppColors.text)
-                                Spacer()
-                                Picker("", selection: $store.defaultRestSeconds) {
-                                    Text("60s").tag(60)
-                                    Text("90s").tag(90)
-                                    Text("120s").tag(120)
-                                    Text("180s").tag(180)
-                                }
-                                .pickerStyle(.segmented)
-                                .frame(width: 180)
-                            }
-                            .padding(14)
-
-                            Divider().background(AppColors.border)
-
-                            Toggle(isOn: $store.prefillNextSet) {
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(LanguageManager.t("settings.prefillNextSet"))
-                                        .font(.app(size: 15))
-                                        .foregroundStyle(AppColors.text)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                    Text(LanguageManager.t("settings.prefillNextSetSubtitle"))
-                                        .font(.app(size: 12))
-                                        .foregroundStyle(AppColors.secondaryText)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                            }
-                            .tint(AppColors.accent)
-                            .padding(14)
-
-                            Divider().background(AppColors.border)
-
-                            Toggle(isOn: $store.showIntensityTechniques) {
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(LanguageManager.t("settings.intensityTechniques"))
-                                        .font(.app(size: 15))
-                                        .foregroundStyle(AppColors.text)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                    Text(LanguageManager.t("settings.intensityTechniquesSubtitle"))
-                                        .font(.app(size: 12))
-                                        .foregroundStyle(AppColors.secondaryText)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                            }
-                            .tint(AppColors.accent)
-                            .padding(14)
-                            .accessibilityIdentifier("toggle-intensity-techniques")
-
-                            Divider().background(AppColors.border)
-
-                            Toggle(isOn: $store.suggestSharing) {
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(LanguageManager.t("social.suggest")).foregroundStyle(AppColors.text)
-                                    Text(LanguageManager.t("social.suggestDetail")).appFont(.caption).foregroundStyle(AppColors.secondaryText)
-                                }
-                            }.tint(AppColors.accent).padding(14).accessibilityIdentifier("toggle-suggest-sharing")
-                            Divider().background(AppColors.border)
-                            Toggle(isOn: $store.jointStressRatings) {
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(LanguageManager.t("settings.jointStress"))
-                                        .font(.app(size: 15))
-                                        .foregroundStyle(AppColors.text)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                    Text(LanguageManager.t("settings.jointStressSubtitle"))
-                                        .font(.app(size: 12))
-                                        .foregroundStyle(AppColors.secondaryText)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                            }
-                            .tint(AppColors.accent)
-                            .padding(14)
-                            .accessibilityIdentifier("toggle-joint-stress")
-
-                            Divider().background(AppColors.border)
-
-                            SettingsPremiumToggle(
-                                titleKey: "settings.showProgressionTargets",
-                                subtitleKey: "settings.showProgressionTargetsSubtitle",
-                                preference: $store.showProgressionTargets,
-                                isUnlocked: proManager.isProSubscribed,
-                                identifier: "toggle-progression-targets",
-                                lockedNoticeKey: "settings.premiumNotice.smartProgression",
-                                onLockedNotice: showPremiumNotice
-                            )
-
-                            Divider().background(AppColors.border)
-
-                            SettingsLoadStepRow(
-                                titleKey: "settings.dumbbellStep", subtitleKey: "settings.dumbbellStepSubtitle", unit: store.weightUnit,
-                                options: store.weightUnit == .lbs ? ProgressionLoadSteps.dumbbellLbsOptions : ProgressionLoadSteps.dumbbellKgOptions,
-                                selection: store.weightUnit == .lbs ? $store.dumbbellStepLbs : $store.dumbbellStepKg,
-                                isUnlocked: proManager.isProSubscribed, identifier: "progression-dumbbell-step",
-                                lockedNoticeKey: "settings.premiumNotice.smartProgression", onLockedNotice: showPremiumNotice)
-
-                            Divider().background(AppColors.border)
-
-                            SettingsLoadStepRow(
-                                titleKey: "settings.machineStep", subtitleKey: "settings.machineStepSubtitle", unit: store.weightUnit,
-                                options: store.weightUnit == .lbs ? ProgressionLoadSteps.machineLbsOptions : ProgressionLoadSteps.machineKgOptions,
-                                selection: store.weightUnit == .lbs ? $store.machineStepLbs : $store.machineStepKg,
-                                isUnlocked: proManager.isProSubscribed, identifier: "progression-machine-step",
-                                lockedNoticeKey: "settings.premiumNotice.smartProgression", onLockedNotice: showPremiumNotice)
-
-                            Divider().background(AppColors.border)
-
-                            SettingsPremiumToggle(
-                                titleKey: "settings.showWarmupCalculator",
-                                subtitleKey: "settings.showWarmupCalculatorSubtitle",
-                                preference: $store.showWarmupCalculator,
-                                isUnlocked: proManager.isProSubscribed,
-                                identifier: "toggle-warmup-calculator",
-                                lockedNoticeKey: "settings.premiumNotice.warmupPlates",
-                                onLockedNotice: showPremiumNotice
-                            )
-                        }
-                    }
-
-                    // Preferences
-                    settingsSection(title: LanguageManager.t("settings.timerAndAlerts")) {
-                        Toggle(isOn: $store.soundEnabled) {
-                            Text(LanguageManager.t("settings.lockedScreenAlerts"))
-                                .font(.app(size: 15))
-                                .foregroundStyle(AppColors.text)
-                        }
-                        .tint(AppColors.accent)
-                        .padding(14)
-                    }
-
-                    SettingsLanguageRow(value: languagePreferenceLabel, flagImageName: activeLanguageFlagImage) {
-                        showLanguageSheet = true
-                    }
-                    .padding(.horizontal, 20)
-
-                    // Appearance
-                    settingsSection(title: LanguageManager.t("settings.appearance")) {
-                        Button(action: { showThemeSheet = true }) {
-                            HStack(spacing: 12) {
-                                HStack(spacing: 3) {
-                                    Circle().fill(themeManager.currentTheme.background).frame(width: 8, height: 8)
-                                    Circle().fill(themeManager.currentTheme.surfaceRaised).frame(width: 8, height: 8)
-                                    Circle().fill(themeManager.currentTheme.accent).frame(width: 8, height: 8)
-                                }
-                                .padding(.horizontal, 6)
-                                .padding(.vertical, 4)
-                                .background(AppColors.surfaceRaised)
-                                .clipShape(Capsule())
-                                .overlay(Capsule().stroke(AppColors.border, lineWidth: 1))
-
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(LanguageManager.t("settings.appTheme"))
-                                        .font(.app(size: 15))
-                                        .foregroundStyle(AppColors.text)
-                                    Text(LanguageManager.t("settings.appThemeSubtitle"))
-                                        .font(.app(size: 12))
-                                        .foregroundStyle(AppColors.secondaryText)
-                                }
-
-                                Spacer()
-
-                                Text(LanguageManager.t(themeManager.currentTheme.nameKey))
-                                    .appFont(.subheadline)
-                                    .foregroundStyle(AppColors.secondaryText)
-
-                                Image(systemName: "chevron.right")
-                                    .font(.system(size: 13, weight: .semibold))
-                                    .foregroundStyle(AppColors.muted)
-                            }
-                            .padding(14)
-                            .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityIdentifier("settings-theme-row")
-
-                        Divider().background(AppColors.border)
-
-                        // A Founders Pass perk: other users get the pass's paywall instead of the picker.
-                        SettingsAppIconRow(current: appIconManager.current) {
-                            if proManager.isFounder { showAppIconSheet = true } else { showFoundersPaywall = true }
-                        }
-
-                        Divider().background(AppColors.border)
-
-                        Toggle(isOn: $store.homeGlowTiles) {
-                            HStack(spacing: 12) {
-                                Image(systemName: "sparkles")
-                                    .font(.system(size: 16))
-                                    .foregroundStyle(store.homeGlowTiles ? AppColors.accent : AppColors.secondaryText)
-                                    .frame(width: 22)
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(LanguageManager.t("settings.glowTiles"))
-                                        .font(.app(size: 15))
-                                        .foregroundStyle(AppColors.text)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                    Text(LanguageManager.t("settings.glowTilesSubtitle"))
-                                        .font(.app(size: 12))
-                                        .foregroundStyle(AppColors.secondaryText)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                            }
-                        }
-                        .tint(AppColors.accent)
-                        .padding(14)
-                        .accessibilityIdentifier("toggle-glow-tiles")
-
-                        Divider().background(AppColors.border)
-
-                        Toggle(isOn: $store.historyCalendarTiles) {
-                            HStack(spacing: 12) {
-                                Image(systemName: "square.grid.3x3.fill")
-                                    .font(.system(size: 16))
-                                    .foregroundStyle(store.historyCalendarTiles ? AppColors.accent : AppColors.secondaryText)
-                                    .frame(width: 22)
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(LanguageManager.t("settings.calendarTiles"))
-                                        .font(.app(size: 15))
-                                        .foregroundStyle(AppColors.text)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                    Text(LanguageManager.t("settings.calendarTilesSubtitle"))
-                                        .font(.app(size: 12))
-                                        .foregroundStyle(AppColors.secondaryText)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                }
-                            }
-                        }
-                        .tint(AppColors.accent)
-                        .padding(14)
-                        .accessibilityIdentifier("toggle-calendar-tiles")
-                    }
-
-                    // Weight Unit
-                    settingsSection(title: LanguageManager.t("settings.weightUnit")) {
-                        HStack {
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(LanguageManager.t("settings.weightUnit"))
-                                    .font(.app(size: 15))
-                                    .foregroundStyle(AppColors.text)
-                                Text(LanguageManager.t("settings.weightUnitSubtitle"))
-                                    .font(.app(size: 12))
-                                    .foregroundStyle(AppColors.secondaryText)
-                            }
-                            Spacer()
-                            Picker("", selection: weightUnitSelection) {
-                                Text(LanguageManager.t("settings.unitKg")).tag(WeightUnit.kg)
-                                Text(LanguageManager.t("settings.unitLbs")).tag(WeightUnit.lbs)
-                            }
-                            .pickerStyle(.segmented)
-                            .frame(width: 120)
-                        }
-                        .padding(14)
-                    }
-
-                    // Data Management
-                    settingsSection(title: LanguageManager.t("settings.dataManagement")) {
-                        VStack(spacing: 0) {
-                            Button(action: {
-                                showCloudBackupSheet = true
-                            }) {
-                                HStack(spacing: 12) {
-                                    Image(systemName: "icloud.fill")
-                                        .font(.system(size: 18))
-                                        .foregroundStyle(AppColors.secondaryText)
-                                        .frame(width: 24, height: 24)
-                                    Text(LanguageManager.t("settings.cloudBackup"))
-                                        .font(.app(size: 15))
-                                        .foregroundStyle(AppColors.text)
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .font(.system(size: 13, weight: .semibold))
-                                        .foregroundStyle(AppColors.muted)
-                                }
-                                .padding(14)
-                                .contentShape(Rectangle())
-                            }
-                            .buttonStyle(.plain)
-                            .accessibilityIdentifier("settings-cloud-backup-row")
-
-                            Divider().background(AppColors.border)
-
-                            Button(action: {
-                                showImportExportSheet = true
-                            }) {
-                                HStack(spacing: 12) {
-                                    Image(systemName: "arrow.left.arrow.right")
-                                        .font(.system(size: 15, weight: .semibold))
-                                        .foregroundStyle(AppColors.secondaryText)
-                                        .frame(width: 24, height: 24)
-                                    Text(LanguageManager.t("settings.importExportData"))
-                                        .font(.app(size: 15))
-                                        .foregroundStyle(AppColors.text)
-                                    Spacer()
-                                    Image(systemName: "chevron.right")
-                                        .font(.system(size: 13, weight: .semibold))
-                                        .foregroundStyle(AppColors.muted)
-                                }
-                                .padding(14)
-                                .contentShape(Rectangle())
-                            }
-                            .buttonStyle(.plain)
-                            .accessibilityIdentifier("settings-import-export-row")
-                        }
-                    }
-
-                    settingsSection(title: LanguageManager.t("setup.build")) {
-                        Button { showTrainingSetup = true } label: {
-                            HStack(spacing: 12) {
-                                Image(systemName: "dumbbell").frame(width: 24, height: 24)
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(LanguageManager.t("setup.build"))
-                                    Text(LanguageManager.t("setup.build.hint")).appFont(.caption).foregroundStyle(AppColors.secondaryText)
-                                }
-                                Spacer()
-                                Image(systemName: "chevron.right").foregroundStyle(AppColors.muted)
-                            }.padding(14).frame(minHeight: 48).contentShape(Rectangle())
-                        }.buttonStyle(.plain).accessibilityIdentifier("settings-build-program")
-                    }
-                    // Help
-                    settingsSection(title: LanguageManager.t("settings.help")) {
-                        Button(action: {
-                            store.resetTours()
-                            store.navigate(to: .today)
-                            onDismiss()
-                        }) {
-                            HStack(spacing: 12) {
-                                Image(systemName: "lightbulb")
-                                    .font(.system(size: 17))
-                                    .foregroundStyle(AppColors.secondaryText)
-                                    .frame(width: 24, height: 24)
-                                VStack(alignment: .leading, spacing: 2) {
-                                    Text(LanguageManager.t("settings.replayTour"))
-                                        .font(.app(size: 15))
-                                        .foregroundStyle(AppColors.text)
-                                    Text(LanguageManager.t("settings.replayTourSubtitle"))
-                                        .font(.app(size: 13))
-                                        .foregroundStyle(AppColors.secondaryText)
-                                }
-                                Spacer()
-                                Image(systemName: "chevron.right")
-                                    .font(.system(size: 13, weight: .semibold))
-                                    .foregroundStyle(AppColors.muted)
-                            }
-                            .padding(14)
-                            .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-                        .accessibilityIdentifier("settings-replay-tour")
-                    }
-
-                    // About
-                    settingsSection(title: LanguageManager.t("settings.about")) {
-                        VStack(alignment: .leading, spacing: 10) {
-                            HStack(spacing: 8) {
-                                Text("FORCED REP")
-                                    .font(.app(size: 16, weight: .bold))
-                                    .foregroundStyle(AppColors.text)
-                                Text(LanguageManager.t("settings.version"))
-                                    .font(.app(size: 12, weight: .semibold))
-                                    .foregroundStyle(AppColors.accent)
-                                    .padding(.horizontal, 6)
-                                    .padding(.vertical, 2)
-                                    .background(AppColors.accent.opacity(0.15))
-                                    .clipShape(RoundedRectangle(cornerRadius: 6))
-                            }
-                            Text(LanguageManager.t("settings.aboutDescription"))
-                                .font(.app(size: 14))
-                                .foregroundStyle(AppColors.secondaryText)
-                                .lineSpacing(3)
-                        }
-                        .padding(14)
-
-                        if proManager.isProSubscribed {
-                            Divider().background(AppColors.border)
-
-                            Button(action: {
-                                if let url = URL(string: LegalUrls.manageSubscriptions) {
-                                    openURL(url)
-                                }
-                            }) {
-                                HStack {
-                                    VStack(alignment: .leading, spacing: 2) {
-                                        Text(LanguageManager.t("settings.manage_subscription"))
-                                            .font(.app(size: 15))
-                                            .foregroundStyle(AppColors.text)
-                                        Text(LanguageManager.t("settings.manage_subscription_desc"))
-                                            .font(.app(size: 12))
-                                            .foregroundStyle(AppColors.secondaryText)
-                                            .multilineTextAlignment(.leading)
-                                    }
-                                    Spacer()
-                                    Image(systemName: "arrow.up.right")
-                                        .font(.system(size: 13, weight: .semibold))
-                                        .foregroundStyle(AppColors.muted)
-                                }
-                                .padding(14)
-                                .contentShape(Rectangle())
-                            }
-                            .buttonStyle(.plain)
-                        }
-
-                        Divider().background(AppColors.border)
-
-                        Button(action: {
-                            if let url = URL(string: LegalUrls.termsOfService) {
-                                openURL(url)
-                            }
-                        }) {
-                            HStack {
-                                Text(LanguageManager.t("settings.terms"))
-                                    .font(.app(size: 15))
-                                    .foregroundStyle(AppColors.text)
-                                Spacer()
-                                Image(systemName: "arrow.up.right")
-                                    .font(.system(size: 13, weight: .semibold))
-                                    .foregroundStyle(AppColors.muted)
-                            }
-                            .padding(14)
-                            .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-
-                        Divider().background(AppColors.border)
-
-                        Button(action: {
-                            if let url = URL(string: LegalUrls.privacyPolicy) {
-                                openURL(url)
-                            }
-                        }) {
-                            HStack {
-                                Text(LanguageManager.t("settings.privacy"))
-                                    .font(.app(size: 15))
-                                    .foregroundStyle(AppColors.text)
-                                Spacer()
-                                Image(systemName: "arrow.up.right")
-                                    .font(.system(size: 13, weight: .semibold))
-                                    .foregroundStyle(AppColors.muted)
-                            }
-                            .padding(14)
-                            .contentShape(Rectangle())
-                        }
-                        .buttonStyle(.plain)
-
-                        Divider().background(AppColors.border)
-
-                        Button(action: {
-                            if let url = URL(string: LegalUrls.support) {
-                                openURL(url)
-                            }
-                        }) {
-                            HStack {
-                                Text(LanguageManager.t("settings.support"))
-                                    .font(.app(size: 15))
-                                    .foregroundStyle(AppColors.text)
-                                Spacer()
-                                Image(systemName: "arrow.up.right")
-                                    .font(.system(size: 13, weight: .semibold))
-                                    .foregroundStyle(AppColors.muted)
-                            }
-                            .padding(14)
-                        }
-                    }
+                    .scrollDismissesKeyboard(.immediately)
+                    // A changed search starts at its first result rather than where the full list was scrolled.
+                    .onChange(of: query) { proxy.scrollTo(Self.topID, anchor: .top) }
                 }
-                .padding(.vertical, 16)
             }
             .background(AppColors.background)
             .overlay { ToastOverlay(item: premiumNotice, bottomPadding: 24).allowsHitTesting(false) }
@@ -652,6 +162,462 @@ public struct SettingsView: View {
         }
     }
 
+    // Forced Rep Premium Membership Card
+    private var premiumCard: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            HStack(spacing: 8) {
+                Image(systemName: "crown.fill")
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundStyle(proManager.isProSubscribed ? AppColors.purple : AppColors.accent)
+                Text(LanguageManager.t("settings.pro_membership"))
+                    .font(.app(size: 16, weight: .bold))
+                    .foregroundStyle(AppColors.text)
+            }
+
+            Text(LanguageManager.t(proManager.isProSubscribed ? "settings.pro_active" : "pro.volume_matrix.description"))
+                .font(.app(size: 12.5))
+                .foregroundStyle(AppColors.secondaryText)
+                .lineSpacing(2)
+
+            if proManager.isProSubscribed {
+                Button(action: {
+                    if let url = URL(string: LegalUrls.manageSubscriptions) {
+                        openURL(url)
+                    }
+                }) {
+                    HStack(spacing: 6) {
+                        Image(systemName: "arrow.up.right")
+                            .font(.system(size: 11, weight: .semibold))
+                        Text(LanguageManager.t("settings.manage_subscription"))
+                            .font(.app(size: 13, weight: .semibold))
+                    }
+                    .foregroundStyle(Color.white)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 38)
+                    .background(AppColors.purple)
+                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+                .buttonStyle(.plain)
+            } else {
+                Button(action: { showPaywall = true }) {
+                    Text(LanguageManager.t("settings.upgrade_to_pro"))
+                        .font(.app(size: 13, weight: .semibold))
+                        .foregroundStyle(AppColors.background)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 38)
+                        .background(AppColors.accent)
+                        .clipShape(RoundedRectangle(cornerRadius: 10))
+                }
+                .buttonStyle(.plain)
+            }
+        }
+        .padding(16)
+        .background(proManager.isProSubscribed ? AppColors.purpleBg : AppColors.surfaceRaised)
+        .overlay(
+            RoundedRectangle(cornerRadius: 16)
+                .stroke(proManager.isProSubscribed ? AppColors.purple.opacity(0.5) : AppColors.border, lineWidth: 1)
+        )
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+        .padding(.horizontal, 20)
+    }
+
+    private var groups: [SettingsGroup] {
+        [
+            SettingsGroup(id: "workout", title: LanguageManager.t("settings.workout"), entries: [
+                SettingsEntry("weight-unit", terms: [LanguageManager.t("settings.weightUnit"), LanguageManager.t("settings.weightUnitSubtitle"),
+                                                     LanguageManager.t("settings.unitKg"), LanguageManager.t("settings.unitLbs")]) {
+                    HStack {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(LanguageManager.t("settings.weightUnit"))
+                                .font(.app(size: 15))
+                                .foregroundStyle(AppColors.text)
+                            Text(LanguageManager.t("settings.weightUnitSubtitle"))
+                                .font(.app(size: 12))
+                                .foregroundStyle(AppColors.secondaryText)
+                        }
+                        Spacer()
+                        Picker("", selection: weightUnitSelection) {
+                            Text(LanguageManager.t("settings.unitKg")).tag(WeightUnit.kg)
+                            Text(LanguageManager.t("settings.unitLbs")).tag(WeightUnit.lbs)
+                        }
+                        .pickerStyle(.segmented)
+                        .frame(width: 120)
+                    }
+                    .padding(14)
+                },
+                SettingsEntry("default-rest", terms: [LanguageManager.t("settings.defaultRest")]) {
+                    HStack {
+                        Text(LanguageManager.t("settings.defaultRest"))
+                            .font(.app(size: 15))
+                            .foregroundStyle(AppColors.text)
+                        Spacer()
+                        Picker("", selection: $store.defaultRestSeconds) {
+                            Text("60s").tag(60)
+                            Text("90s").tag(90)
+                            Text("120s").tag(120)
+                            Text("180s").tag(180)
+                        }
+                        .pickerStyle(.segmented)
+                        .frame(width: 180)
+                    }
+                    .padding(14)
+                },
+                SettingsEntry("prefill", terms: [LanguageManager.t("settings.prefillNextSet"), LanguageManager.t("settings.prefillNextSetSubtitle")]) {
+                    Toggle(isOn: $store.prefillNextSet) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(LanguageManager.t("settings.prefillNextSet"))
+                                .font(.app(size: 15))
+                                .foregroundStyle(AppColors.text)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Text(LanguageManager.t("settings.prefillNextSetSubtitle"))
+                                .font(.app(size: 12))
+                                .foregroundStyle(AppColors.secondaryText)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                    }
+                    .tint(AppColors.accent)
+                    .padding(14)
+                },
+                SettingsEntry("intensity", terms: [LanguageManager.t("settings.intensityTechniques"), LanguageManager.t("settings.intensityTechniquesSubtitle")]) {
+                    Toggle(isOn: $store.showIntensityTechniques) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(LanguageManager.t("settings.intensityTechniques"))
+                                .font(.app(size: 15))
+                                .foregroundStyle(AppColors.text)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Text(LanguageManager.t("settings.intensityTechniquesSubtitle"))
+                                .font(.app(size: 12))
+                                .foregroundStyle(AppColors.secondaryText)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                    }
+                    .tint(AppColors.accent)
+                    .padding(14)
+                    .accessibilityIdentifier("toggle-intensity-techniques")
+                },
+                SettingsEntry("joint-stress", terms: [LanguageManager.t("settings.jointStress"), LanguageManager.t("settings.jointStressSubtitle")]) {
+                    Toggle(isOn: $store.jointStressRatings) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(LanguageManager.t("settings.jointStress"))
+                                .font(.app(size: 15))
+                                .foregroundStyle(AppColors.text)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            Text(LanguageManager.t("settings.jointStressSubtitle"))
+                                .font(.app(size: 12))
+                                .foregroundStyle(AppColors.secondaryText)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                    }
+                    .tint(AppColors.accent)
+                    .padding(14)
+                    .accessibilityIdentifier("toggle-joint-stress")
+                }
+            ]),
+            SettingsGroup(id: "progression", title: LanguageManager.t("settings.progressionWarmup"), premium: true, entries: [
+                SettingsEntry("progression-targets", terms: [LanguageManager.t("settings.showProgressionTargets"), LanguageManager.t("settings.showProgressionTargetsSubtitle")]) {
+                    SettingsPremiumToggle(
+                        titleKey: "settings.showProgressionTargets",
+                        subtitleKey: "settings.showProgressionTargetsSubtitle",
+                        preference: $store.showProgressionTargets,
+                        isUnlocked: proManager.isProSubscribed,
+                        identifier: "toggle-progression-targets",
+                        lockedNoticeKey: "settings.premiumNotice.smartProgression",
+                        onLockedNotice: showPremiumNotice
+                    )
+                },
+                SettingsEntry("dumbbell-step", terms: [LanguageManager.t("settings.dumbbellStep"), LanguageManager.t("settings.dumbbellStepSubtitle")]) {
+                    SettingsLoadStepRow(
+                        titleKey: "settings.dumbbellStep", subtitleKey: "settings.dumbbellStepSubtitle", unit: store.weightUnit,
+                        options: store.weightUnit == .lbs ? ProgressionLoadSteps.dumbbellLbsOptions : ProgressionLoadSteps.dumbbellKgOptions,
+                        selection: store.weightUnit == .lbs ? $store.dumbbellStepLbs : $store.dumbbellStepKg,
+                        isUnlocked: proManager.isProSubscribed, identifier: "progression-dumbbell-step",
+                        lockedNoticeKey: "settings.premiumNotice.smartProgression", onLockedNotice: showPremiumNotice)
+                },
+                SettingsEntry("machine-step", terms: [LanguageManager.t("settings.machineStep"), LanguageManager.t("settings.machineStepSubtitle")]) {
+                    SettingsLoadStepRow(
+                        titleKey: "settings.machineStep", subtitleKey: "settings.machineStepSubtitle", unit: store.weightUnit,
+                        options: store.weightUnit == .lbs ? ProgressionLoadSteps.machineLbsOptions : ProgressionLoadSteps.machineKgOptions,
+                        selection: store.weightUnit == .lbs ? $store.machineStepLbs : $store.machineStepKg,
+                        isUnlocked: proManager.isProSubscribed, identifier: "progression-machine-step",
+                        lockedNoticeKey: "settings.premiumNotice.smartProgression", onLockedNotice: showPremiumNotice)
+                },
+                SettingsEntry("warmup-calculator", terms: [LanguageManager.t("settings.showWarmupCalculator"), LanguageManager.t("settings.showWarmupCalculatorSubtitle")]) {
+                    SettingsPremiumToggle(
+                        titleKey: "settings.showWarmupCalculator",
+                        subtitleKey: "settings.showWarmupCalculatorSubtitle",
+                        preference: $store.showWarmupCalculator,
+                        isUnlocked: proManager.isProSubscribed,
+                        identifier: "toggle-warmup-calculator",
+                        lockedNoticeKey: "settings.premiumNotice.warmupPlates",
+                        onLockedNotice: showPremiumNotice
+                    )
+                }
+            ]),
+            SettingsGroup(id: "alerts", title: LanguageManager.t("settings.alertsPrompts"), entries: [
+                SettingsEntry("rest-alerts", terms: [LanguageManager.t("settings.lockedScreenAlerts")]) {
+                    Toggle(isOn: $store.soundEnabled) {
+                        Text(LanguageManager.t("settings.lockedScreenAlerts"))
+                            .font(.app(size: 15))
+                            .foregroundStyle(AppColors.text)
+                    }
+                    .tint(AppColors.accent)
+                    .padding(14)
+                },
+                SettingsEntry("suggest-sharing", terms: [LanguageManager.t("social.suggest"), LanguageManager.t("social.suggestDetail")]) {
+                    Toggle(isOn: $store.suggestSharing) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(LanguageManager.t("social.suggest")).foregroundStyle(AppColors.text)
+                            Text(LanguageManager.t("social.suggestDetail")).appFont(.caption).foregroundStyle(AppColors.secondaryText)
+                        }
+                    }.tint(AppColors.accent).padding(14).accessibilityIdentifier("toggle-suggest-sharing")
+                }
+            ]),
+            SettingsGroup(id: "appearance", title: LanguageManager.t("settings.appearance"), entries: [
+                SettingsEntry("theme", terms: [LanguageManager.t("settings.appTheme"), LanguageManager.t("settings.appThemeSubtitle")]
+                              + AppThemes.all.map { LanguageManager.t($0.nameKey) }) {
+                    Button(action: { showThemeSheet = true }) {
+                        HStack(spacing: 12) {
+                            HStack(spacing: 3) {
+                                Circle().fill(themeManager.currentTheme.background).frame(width: 8, height: 8)
+                                Circle().fill(themeManager.currentTheme.surfaceRaised).frame(width: 8, height: 8)
+                                Circle().fill(themeManager.currentTheme.accent).frame(width: 8, height: 8)
+                            }
+                            .padding(.horizontal, 6)
+                            .padding(.vertical, 4)
+                            .background(AppColors.surfaceRaised)
+                            .clipShape(Capsule())
+                            .overlay(Capsule().stroke(AppColors.border, lineWidth: 1))
+
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(LanguageManager.t("settings.appTheme"))
+                                    .font(.app(size: 15))
+                                    .foregroundStyle(AppColors.text)
+                                Text(LanguageManager.t("settings.appThemeSubtitle"))
+                                    .font(.app(size: 12))
+                                    .foregroundStyle(AppColors.secondaryText)
+                            }
+
+                            Spacer()
+
+                            Text(LanguageManager.t(themeManager.currentTheme.nameKey))
+                                .appFont(.subheadline)
+                                .foregroundStyle(AppColors.secondaryText)
+
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 13, weight: .semibold))
+                                .foregroundStyle(AppColors.muted)
+                        }
+                        .padding(14)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("settings-theme-row")
+                },
+                SettingsEntry("app-icon", terms: [LanguageManager.t("settings.appIcon"), LanguageManager.t("settings.appIconSubtitle"),
+                                                  LanguageManager.t(appIconManager.current.nameKey)]) {
+                    // A Founders Pass perk: other users get the pass's paywall instead of the picker.
+                    SettingsAppIconRow(current: appIconManager.current) {
+                        if proManager.isFounder { showAppIconSheet = true } else { showFoundersPaywall = true }
+                    }
+                },
+                SettingsEntry("glow-tiles", terms: [LanguageManager.t("settings.glowTiles"), LanguageManager.t("settings.glowTilesSubtitle")]) {
+                    Toggle(isOn: $store.homeGlowTiles) {
+                        HStack(spacing: 12) {
+                            Image(systemName: "sparkles")
+                                .font(.system(size: 16))
+                                .foregroundStyle(store.homeGlowTiles ? AppColors.accent : AppColors.secondaryText)
+                                .frame(width: 22)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(LanguageManager.t("settings.glowTiles"))
+                                    .font(.app(size: 15))
+                                    .foregroundStyle(AppColors.text)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                Text(LanguageManager.t("settings.glowTilesSubtitle"))
+                                    .font(.app(size: 12))
+                                    .foregroundStyle(AppColors.secondaryText)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                        }
+                    }
+                    .tint(AppColors.accent)
+                    .padding(14)
+                    .accessibilityIdentifier("toggle-glow-tiles")
+                },
+                SettingsEntry("calendar-tiles", terms: [LanguageManager.t("settings.calendarTiles"), LanguageManager.t("settings.calendarTilesSubtitle")]) {
+                    Toggle(isOn: $store.historyCalendarTiles) {
+                        HStack(spacing: 12) {
+                            Image(systemName: "square.grid.3x3.fill")
+                                .font(.system(size: 16))
+                                .foregroundStyle(store.historyCalendarTiles ? AppColors.accent : AppColors.secondaryText)
+                                .frame(width: 22)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(LanguageManager.t("settings.calendarTiles"))
+                                    .font(.app(size: 15))
+                                    .foregroundStyle(AppColors.text)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                Text(LanguageManager.t("settings.calendarTilesSubtitle"))
+                                    .font(.app(size: 12))
+                                    .foregroundStyle(AppColors.secondaryText)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                        }
+                    }
+                    .tint(AppColors.accent)
+                    .padding(14)
+                    .accessibilityIdentifier("toggle-calendar-tiles")
+                },
+                // Every native language name finds the row, whichever language the app is in.
+                SettingsEntry("language", terms: [LanguageManager.t("settings.language")] + LanguageManager.supportedLanguages.map(\.name)) {
+                    SettingsLanguageRow(value: languagePreferenceLabel, flagImageName: activeLanguageFlagImage) {
+                        showLanguageSheet = true
+                    }
+                }
+            ]),
+            SettingsGroup(id: "data", title: LanguageManager.t("settings.dataManagement"), entries: [
+                SettingsEntry("cloud-backup", terms: [LanguageManager.t("settings.cloudBackup")]) {
+                    Button(action: {
+                        showCloudBackupSheet = true
+                    }) {
+                        HStack(spacing: 12) {
+                            Image(systemName: "icloud.fill")
+                                .font(.system(size: 18))
+                                .foregroundStyle(AppColors.secondaryText)
+                                .frame(width: 24, height: 24)
+                            Text(LanguageManager.t("settings.cloudBackup"))
+                                .font(.app(size: 15))
+                                .foregroundStyle(AppColors.text)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 13, weight: .semibold))
+                                .foregroundStyle(AppColors.muted)
+                        }
+                        .padding(14)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("settings-cloud-backup-row")
+                },
+                SettingsEntry("import-export", terms: [LanguageManager.t("settings.importExportData")]) {
+                    Button(action: {
+                        showImportExportSheet = true
+                    }) {
+                        HStack(spacing: 12) {
+                            Image(systemName: "arrow.left.arrow.right")
+                                .font(.system(size: 15, weight: .semibold))
+                                .foregroundStyle(AppColors.secondaryText)
+                                .frame(width: 24, height: 24)
+                            Text(LanguageManager.t("settings.importExportData"))
+                                .font(.app(size: 15))
+                                .foregroundStyle(AppColors.text)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 13, weight: .semibold))
+                                .foregroundStyle(AppColors.muted)
+                        }
+                        .padding(14)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("settings-import-export-row")
+                }
+            ]),
+            SettingsGroup(id: "help", title: LanguageManager.t("settings.help"), entries: [
+                SettingsEntry("build-program", terms: [LanguageManager.t("setup.build"), LanguageManager.t("setup.build.hint")]) {
+                    Button { showTrainingSetup = true } label: {
+                        HStack(spacing: 12) {
+                            Image(systemName: "dumbbell").frame(width: 24, height: 24)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(LanguageManager.t("setup.build"))
+                                Text(LanguageManager.t("setup.build.hint")).appFont(.caption).foregroundStyle(AppColors.secondaryText)
+                            }
+                            Spacer()
+                            Image(systemName: "chevron.right").foregroundStyle(AppColors.muted)
+                        }.padding(14).frame(minHeight: 48).contentShape(Rectangle())
+                    }.buttonStyle(.plain).accessibilityIdentifier("settings-build-program")
+                },
+                SettingsEntry("replay-tour", terms: [LanguageManager.t("settings.replayTour"), LanguageManager.t("settings.replayTourSubtitle")]) {
+                    Button(action: {
+                        store.resetTours()
+                        store.navigate(to: .today)
+                        onDismiss()
+                    }) {
+                        HStack(spacing: 12) {
+                            Image(systemName: "lightbulb")
+                                .font(.system(size: 17))
+                                .foregroundStyle(AppColors.secondaryText)
+                                .frame(width: 24, height: 24)
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(LanguageManager.t("settings.replayTour"))
+                                    .font(.app(size: 15))
+                                    .foregroundStyle(AppColors.text)
+                                Text(LanguageManager.t("settings.replayTourSubtitle"))
+                                    .font(.app(size: 13))
+                                    .foregroundStyle(AppColors.secondaryText)
+                            }
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.system(size: 13, weight: .semibold))
+                                .foregroundStyle(AppColors.muted)
+                        }
+                        .padding(14)
+                        .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityIdentifier("settings-replay-tour")
+                }
+            ]),
+            SettingsGroup(id: "about", title: LanguageManager.t("settings.about"), entries: [
+                SettingsEntry("about", terms: ["Forced Rep", LanguageManager.t("settings.version")]) {
+                    VStack(alignment: .leading, spacing: 10) {
+                        HStack(spacing: 8) {
+                            Text("FORCED REP")
+                                .font(.app(size: 16, weight: .bold))
+                                .foregroundStyle(AppColors.text)
+                            Text(LanguageManager.t("settings.version"))
+                                .font(.app(size: 12, weight: .semibold))
+                                .foregroundStyle(AppColors.accent)
+                                .padding(.horizontal, 6)
+                                .padding(.vertical, 2)
+                                .background(AppColors.accent.opacity(0.15))
+                                .clipShape(RoundedRectangle(cornerRadius: 6))
+                        }
+                        Text(LanguageManager.t("settings.aboutDescription"))
+                            .font(.app(size: 14))
+                            .foregroundStyle(AppColors.secondaryText)
+                            .lineSpacing(3)
+                    }
+                    .padding(14)
+                },
+                linkEntry("terms", titleKey: "settings.terms", url: LegalUrls.termsOfService),
+                linkEntry("privacy", titleKey: "settings.privacy", url: LegalUrls.privacyPolicy),
+                linkEntry("support", titleKey: "settings.support", url: LegalUrls.support)
+            ])
+        ]
+    }
+
+    private func linkEntry(_ id: String, titleKey: String, url: String) -> SettingsEntry {
+        SettingsEntry(id, terms: [LanguageManager.t(titleKey)]) {
+            Button(action: {
+                if let url = URL(string: url) {
+                    openURL(url)
+                }
+            }) {
+                HStack {
+                    Text(LanguageManager.t(titleKey))
+                        .font(.app(size: 15))
+                        .foregroundStyle(AppColors.text)
+                    Spacer()
+                    Image(systemName: "arrow.up.right")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(AppColors.muted)
+                }
+                .padding(14)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+        }
+    }
+
     /// Switching rounds converted loads, so a user with logged weights confirms first; a fresh install switches freely.
     private var weightUnitSelection: Binding<WeightUnit> {
         Binding(
@@ -686,21 +652,121 @@ public struct SettingsView: View {
         LanguageManager.flagImageName(for: activeLanguageCode)
     }
 
-    private func settingsSection<Content: View>(title: String, @ViewBuilder content: () -> Content) -> some View {
+    private func settingsSection(_ group: SettingsGroup) -> some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(title)
-                .font(.app(size: 13, weight: .bold))
-                .foregroundStyle(AppColors.muted)
-                .padding(.horizontal, 20)
+            HStack(spacing: 4) {
+                Text(group.title)
+                    .font(.app(size: 13, weight: .bold))
+                    .foregroundStyle(AppColors.muted)
+                if group.premium {
+                    Image(systemName: "crown.fill")
+                        .font(.system(size: 11))
+                        .foregroundStyle(AppColors.purple)
+                        .accessibilityLabel(LanguageManager.t("paywall.feature_badge"))
+                }
+            }
+            .accessibilityElement(children: .combine)
+            .padding(.horizontal, 20)
 
             VStack(spacing: 0) {
-                content()
+                ForEach(Array(group.entries.enumerated()), id: \.element.id) { index, entry in
+                    if index > 0 { Divider().background(AppColors.border) }
+                    entry.content
+                }
             }
             .background(AppColors.surface)
             .clipShape(RoundedRectangle(cornerRadius: 14))
             .overlay(RoundedRectangle(cornerRadius: 14).stroke(AppColors.border, lineWidth: 1))
             .padding(.horizontal, 20)
         }
+    }
+}
+
+/// Settings search folds case, accents and Turkish dotless i like exercise search. Every typed
+/// word must appear somewhere in a row's text or its section title, in any order; matching inside
+/// words lets German compounds such as Gewichtseinheit match "einheit".
+enum SettingsSearch {
+    static func words(_ query: String) -> [String] {
+        var seen = Set<String>()
+        return ExerciseSearch.normalize(query).split(separator: " ").map(String.init).filter { seen.insert($0).inserted }
+    }
+
+    static func matches(_ words: [String], _ terms: [String]) -> Bool {
+        guard !words.isEmpty else { return true }
+        let text = ExerciseSearch.normalize(terms.joined(separator: " "))
+        return words.allSatisfy { text.contains($0) }
+    }
+}
+
+/// One Settings row and the localized text a search can find it by.
+private struct SettingsEntry: Identifiable {
+    let id: String
+    let terms: [String]
+    let content: AnyView
+
+    init<Content: View>(_ id: String, terms: [String], @ViewBuilder content: () -> Content) {
+        self.id = id
+        self.terms = terms
+        self.content = AnyView(content())
+    }
+}
+
+private struct SettingsGroup: Identifiable {
+    let id: String
+    let title: String
+    var premium = false
+    let entries: [SettingsEntry]
+
+    /// The rows a search finds; the section title counts as part of every row.
+    func matching(_ words: [String]) -> SettingsGroup? {
+        let found = entries.filter { SettingsSearch.matches(words, $0.terms + [title]) }
+        return found.isEmpty ? nil : SettingsGroup(id: id, title: title, premium: premium, entries: found)
+    }
+}
+
+private struct SettingsSearchField: View {
+    @ObservedObject private var themeManager = ThemeManager.shared
+    @Binding var query: String
+    @FocusState private var isFocused: Bool
+
+    var body: some View {
+        let _ = themeManager.currentTheme
+        HStack(spacing: 10) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 16, weight: .medium))
+                .foregroundStyle(AppColors.muted)
+
+            TextField(LanguageManager.t("settings.search"), text: $query)
+                .focused($isFocused)
+                .submitLabel(.search)
+                .onSubmit { isFocused = false }
+                .autocorrectionDisabled()
+                .accessibilityIdentifier("settings-search")
+                .font(.app(size: 14))
+                .foregroundStyle(AppColors.text)
+                .tint(AppColors.accent)
+
+            if !query.isEmpty {
+                Button(action: { query = "" }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .font(.system(size: 16))
+                        .foregroundStyle(AppColors.muted)
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(LanguageManager.t("library.clearSearch"))
+                .accessibilityIdentifier("settings-search-clear")
+            }
+        }
+        .padding(.horizontal, 14)
+        .frame(height: 48)
+        .background(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .fill(AppColors.surface)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .stroke(AppColors.border, lineWidth: 1)
+                )
+        )
     }
 }
 
@@ -753,7 +819,7 @@ struct SettingsPremiumToggle: View {
     }
 }
 
-// A single preference row keeps every supported language out of the main settings layout.
+// A single preference row in Appearance keeps every supported language out of the main settings layout.
 struct SettingsLanguageRow: View {
     @ObservedObject var themeManager = ThemeManager.shared
     let value: String
@@ -785,13 +851,8 @@ struct SettingsLanguageRow: View {
                     .font(.system(size: 13, weight: .semibold))
                     .foregroundStyle(AppColors.muted)
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 14)
-            .frame(minHeight: 64)
-            .background(AppColors.surface)
-            .clipShape(RoundedRectangle(cornerRadius: 16))
-            .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
-            .contentShape(RoundedRectangle(cornerRadius: 16))
+            .padding(14)
+            .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         .accessibilityElement(children: .ignore)

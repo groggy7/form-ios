@@ -12502,9 +12502,9 @@ final class PremiumSettingsTests: XCTestCase {
             try await Task.sleep(nanoseconds: 250_000_000)
             controller.view.layoutIfNeeded()
             let switches = descendants(controller.view).compactMap { $0 as? UISwitch }
-            // Premium controls follow pre-fill, intensity, joint-stress and share-suggestion switches.
-            XCTAssertGreaterThanOrEqual(switches.count, 6)
-            for control in switches.dropFirst(4).prefix(2) {
+            // Premium controls follow the pre-fill, intensity and joint-stress switches.
+            XCTAssertGreaterThanOrEqual(switches.count, 5)
+            for control in switches.dropFirst(3).prefix(2) {
                 XCTAssertEqual(control.isEnabled, unlocked)
                 XCTAssertEqual(control.isOn, !unlocked)
             }
@@ -12515,6 +12515,21 @@ final class PremiumSettingsTests: XCTestCase {
             }
             try image.pngData()?.write(to: URL(fileURLWithPath: "/private/tmp/settings-\(unlocked ? "premium" : "free")-ios.png"))
         }
+    }
+
+    func testSettingsSearchMatchesEveryWordAcrossLanguages() {
+        func matches(_ query: String, _ terms: String...) -> Bool { SettingsSearch.matches(SettingsSearch.words(query), terms) }
+        for query in ["", "   ", "—!?"] { XCTAssertTrue(matches(query, "Weight unit"), query) }
+        XCTAssertTrue(matches("unit weight", "Weight unit", "Workout"))
+        XCTAssertTrue(matches("workout unit", "Weight unit", "Workout"))
+        XCTAssertFalse(matches("weight theme", "Weight unit", "Workout"))
+        XCTAssertTrue(matches("AGIRLIK", "Ağırlık birimi"))
+        XCTAssertTrue(matches("isinma", "Isınma & plaka hesaplayıcı"))
+        XCTAssertTrue(matches("İLERLEME", "İlerleme ve ısınma"))
+        XCTAssertTrue(matches("echauffement", "Progression et échauffement"))
+        XCTAssertTrue(matches("unite-de-poids", "Unité de poids"))
+        XCTAssertTrue(matches("einheit", "Gewichtseinheit"))
+        XCTAssertTrue(matches("pause", "Standardpause"))
     }
 
     func testPremiumNoticesNameTheirFeatureAndWrapInEveryLanguage() async throws {
