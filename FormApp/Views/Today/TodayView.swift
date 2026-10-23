@@ -51,6 +51,11 @@ public struct TodayView: View {
                     VStack(spacing: 16) {
                         weekSections(weeklyMetrics: weeklyMetrics)
                         exerciseSection(workout: workout)
+                        // A rest day leaves this page short; preview the next training day instead.
+                        if workout == nil, let next = nextTrainingWorkout() {
+                            WorkoutExercisePreview(store: store, workout: next, registersTourTargets: false,
+                                                   onSelectExercise: onSelectExercise)
+                        }
                         Spacer().frame(height: 16)
                     }
                     .padding(.top, 10)
@@ -140,6 +145,15 @@ public struct TodayView: View {
         if let workout = workout, !workout.exercises.isEmpty {
             WorkoutExercisePreview(store: store, workout: workout, registersTourTargets: true, onSelectExercise: onSelectExercise)
         }
+    }
+
+    /// The first training day after today, wrapping to the start of the week.
+    private func nextTrainingWorkout() -> Workout? {
+        let today = store.weekCalendar.today + 1
+        let training = (store.activeProgram?.workouts ?? [])
+            .filter { !$0.exercises.isEmpty }
+            .sorted { $0.day < $1.day }
+        return training.first { $0.day > today } ?? training.first
     }
 
     private func formattedWeekRange() -> String {
