@@ -815,7 +815,7 @@
   "report.toastDaily": "Son 24 saatteki 3 rapor sınırına ulaştınız. {dateTime} sonrasında tekrar deneyin.",
   "session.technique": "Teknik ve dikkat edilecekler",
   "session.review": "Antrenmanı incele",
-  "table.reps": "TEKRAR",
+  "table.reps": "TEK.",
   "table.removeSet": "Son seti sil",
   "table.undo": "Set tamamlanmasını geri al",
   "rest.title": "Dinlenme sayacı",

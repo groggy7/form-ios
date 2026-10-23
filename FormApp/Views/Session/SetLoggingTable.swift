@@ -111,11 +111,12 @@ public struct SetLoggingTable: View {
             // Table Header
             HStack(spacing: 8) {
                 Text(LanguageManager.t("table.setHeading"))
-                    .frame(width: 32, alignment: .leading)
+                    .frame(width: 32, alignment: .center)
                 Text(LanguageManager.t("table.prev"))
                     .frame(width: 56, alignment: .center)
                 Text(weightUnit.uppercaseLabel).frame(maxWidth: .infinity)
                 Text(LanguageManager.t("table.reps"))
+                    .lineLimit(1).minimumScaleFactor(0.7)
                     .frame(maxWidth: .infinity)
                 Text(LanguageManager.t("table.doneHeading")).frame(width: 44)
             }
@@ -195,7 +196,7 @@ public struct SetLoggingTable: View {
                                             ? AppColors.accent
                                             : (isSetEnabled ? AppColors.secondaryText : AppColors.secondaryText.opacity(0.35)))
                                 )
-                                .frame(width: 32, alignment: .leading)
+                                .frame(width: 32, alignment: .center)
 
                             let beatResult = set.isCompleted ? logbookBeatenSets[index] : nil
                             if set.isWarmup {
@@ -604,7 +605,7 @@ public struct SetLoggingTable: View {
             Image(systemName: isDrop ? "arrow.down.right" : "pause")
                 .font(.system(size: 13, weight: .bold))
                 .foregroundStyle(AppColors.purple.opacity(rowEnabled ? 1 : 0.35))
-                .frame(width: 32, alignment: .leading)
+                .frame(width: 32, alignment: .center)
                 .accessibilityHidden(true)
             Text(previous)
                 .font(.app(size: 13, weight: .medium))
@@ -670,7 +671,7 @@ public struct SetLoggingTable: View {
             Image(systemName: "circle.lefthalf.filled")
                 .font(.system(size: 13, weight: .bold))
                 .foregroundStyle(AppColors.purple.opacity(rowEnabled ? 1 : 0.35))
-                .frame(width: 32, alignment: .leading)
+                .frame(width: 32, alignment: .center)
                 .accessibilityHidden(true)
             Text(previousPartialsText(index: index, extensionIndex: extensionIndex, actions: actions))
                 .font(.app(size: 13, weight: .medium))
