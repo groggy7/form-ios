@@ -683,6 +683,47 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
+    func testHomeDayStripRevealsSelectionInsideScreenMargins() throws {
+        func scrollViews(in view: UIView) -> [UIScrollView] {
+            (view as? UIScrollView).map { [$0] } ?? view.subviews.flatMap { scrollViews(in: $0) }
+        }
+        // An unfinished Monday selected on Friday, and Sunday selected on Monday, lie outside today's window.
+        for width in [CGFloat(320), CGFloat(393)] {
+            for (count, today, selectedIndex, firstIndex) in [(5, 4, 0, 0), (6, 4, 0, 0), (7, 0, 6, 3)] {
+                let workouts = (1...count).map { Workout(id: "reveal-\($0)", day: $0, title: "Workout \($0)") }
+                let program = Program(id: "reveal-fixture", name: "Fixture", workouts: workouts)
+                let controller = UIHostingController(rootView: WorkoutDayStrip(program: program, workouts: workouts,
+                    calendar: WeekCalendar(today: today, numbers: Array(19...25)),
+                    activeWorkoutId: workouts[selectedIndex].id, completedKeys: [], unfinishedKeys: [],
+                    onSelectWorkout: { _ in })
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                    .background(AppColors.background))
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 200))
+                window.rootViewController = controller
+                window.makeKeyAndVisible()
+                controller.view.frame = window.bounds
+                controller.view.layoutIfNeeded()
+                RunLoop.main.run(until: Date().addingTimeInterval(0.15))
+                controller.view.layoutIfNeeded()
+                let scroll = try XCTUnwrap(scrollViews(in: controller.view).first)
+                let tileWidth = (width - 40 - 3 * 8) / 4
+                XCTAssertEqual(scroll.contentOffset.x, CGFloat(firstIndex) * (tileWidth + 8), accuracy: 1,
+                    "The selected tile should keep the 20pt screen margin: \(count) days, weekday \(today)")
+                if width == 393, selectedIndex == 0, count == 6 {
+                    let image = UIGraphicsImageRenderer(size: controller.view.bounds.size).image { _ in
+                        controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+                    }
+                    let attachment = XCTAttachment(image: image)
+                    attachment.name = "home-day-tiles-selected-monday-on-friday"
+                    attachment.lifetime = .keepAlways
+                    add(attachment)
+                }
+                window.isHidden = true
+            }
+        }
+    }
+
+    @MainActor
     func testHomeDayStripShowsFourCompactTilesAndScrolls() throws {
         let previous = LanguageManager.shared.currentLanguage
         defer { LanguageManager.setLanguage(previous) }

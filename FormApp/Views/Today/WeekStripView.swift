@@ -91,6 +91,9 @@ struct WorkoutDayStrip: View {
     /// Reference material is the default; the Calm alternative remains available.
     var glowTiles: Bool = true
 
+    /// Matches the Home header's horizontal padding.
+    private static let edgeInset: CGFloat = 20
+
     @State private var tileWidth: CGFloat = 82
     @Environment(\.displayScale) private var displayScale
     @ScaledMetric(relativeTo: .caption2) private var labelSize: CGFloat = 11
@@ -213,7 +216,10 @@ struct WorkoutDayStrip: View {
                             .contentShape(RoundedRectangle(cornerRadius: HomeDayGlassSurface.radius, style: .continuous))
                         }
                         .buttonStyle(.plain)
-                        .id(workout.id)
+                        // Reveal the selection with the strip's screen margin, so an edge tile lines up with the
+                        // header instead of sitting flush against the screen edge.
+                        .background(Color.clear.id(RevealTarget(workoutId: workout.id))
+                            .padding(.horizontal, -Self.edgeInset))
                         .accessibilityIdentifier("today-day-\(workout.id)")
                         .accessibilityLabel("\(LanguageManager.workoutDays[dayIndex]), \(dayNumber), \(workout.displayTitle(programId: program.id))")
                         .accessibilityValue(statusDescription)
@@ -221,13 +227,13 @@ struct WorkoutDayStrip: View {
                     }
                 }
                 .fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal, 20)
+                .padding(.horizontal, Self.edgeInset)
                 .padding(.vertical, 2)
             }
             .scrollClipDisabled()
             .defaultScrollAnchor(initialScrollAnchor)
             .onChange(of: activeWorkoutId, initial: true) { _, selectedId in
-                if let selectedId { proxy.scrollTo(selectedId) }
+                if let selectedId { proxy.scrollTo(RevealTarget(workoutId: selectedId)) }
             }
             .id(InitialWindowKey(programId: program.id, today: calendar.today,
                 schedule: workouts.map { "\($0.id):\($0.day)" }))
@@ -238,6 +244,11 @@ struct WorkoutDayStrip: View {
         let programId: String
         let today: Int
         let schedule: [String]
+    }
+
+    /// A distinct type, because ForEach already identifies each tile by its bare workout id.
+    private struct RevealTarget: Hashable {
+        let workoutId: String
     }
 }
 
