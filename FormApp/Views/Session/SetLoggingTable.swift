@@ -81,28 +81,33 @@ public struct SetLoggingTable: View {
         let _ = themeManager.currentTheme
         VStack(spacing: 8) {
             let workingSets = sets.filter { !$0.isWarmup }
-            VStack(alignment: .leading, spacing: 6) {
-                HStack(alignment: .top, spacing: 12) {
-                    Text(LanguageManager.t("matrix.stat.totalSets"))
-                        .font(.app(size: 15, weight: .semibold))
-                        .foregroundStyle(AppColors.text)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    Text(LanguageManager.t("table.setsDone", ["done": workingSets.filter(\.isCompleted).count, "total": workingSets.count]))
-                        .font(.app(size: 13, weight: .medium))
-                        .foregroundStyle(AppColors.secondaryText)
-                        .multilineTextAlignment(.trailing)
-                        .frame(maxWidth: .infinity, alignment: .trailing)
-                        .accessibilityIdentifier("working-sets-progress")
+            let done = workingSets.filter(\.isCompleted).count
+            let target = WorkoutSessionUtils.sessionPrescription(prescription)
+            let title = Text(LanguageManager.t("matrix.stat.totalSets"))
+                .font(.app(size: 15, weight: .semibold)).foregroundStyle(AppColors.text)
+            let progress = Text("\(done)/\(workingSets.count)")
+                .font(.app(size: 13, weight: .medium)).foregroundStyle(AppColors.secondaryText)
+                .accessibilityLabel(LanguageManager.t("table.setsDone", ["done": done, "total": workingSets.count]))
+                .accessibilityIdentifier("working-sets-progress")
+            let pill = Text(target).font(.app(size: 12, weight: .medium)).foregroundStyle(AppColors.purple)
+                .padding(.horizontal, 6).padding(.vertical, 2)
+                .background(AppColors.purpleBg, in: RoundedRectangle(cornerRadius: 6))
+                .accessibilityIdentifier("working-sets-target")
+            ViewThatFits(in: .horizontal) {
+                HStack(alignment: .center, spacing: 0) {
+                    title.fixedSize()
+                    if !target.isEmpty { pill.fixedSize().padding(.leading, 8) }
+                    Spacer(minLength: 12)
+                    progress.fixedSize()
                 }
-                let target = WorkoutSessionUtils.sessionPrescription(prescription)
-                if !target.isEmpty {
-                    Text(target)
-                        .font(.app(size: 12, weight: .medium))
-                        .foregroundStyle(AppColors.purple)
-                        .padding(.horizontal, 8).padding(.vertical, 4)
-                        .background(AppColors.purpleBg, in: RoundedRectangle(cornerRadius: 6))
+                VStack(alignment: .leading, spacing: 6) {
+                    HStack(alignment: .center, spacing: 12) {
+                        title.frame(maxWidth: .infinity, alignment: .leading)
+                        progress.fixedSize()
+                    }
+                    if !target.isEmpty { pill }
                 }
-            }.accessibilityIdentifier("working-sets-header")
+            }.frame(maxWidth: .infinity, alignment: .leading).accessibilityIdentifier("working-sets-header")
             // Table Header
             HStack(spacing: 8) {
                 Text(LanguageManager.t("table.setHeading"))

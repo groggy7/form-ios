@@ -14122,7 +14122,8 @@ final class SessionStripCollapseTests: XCTestCase {
                     let table = SetLoggingTable(sets: rows, prescription: "3 × 6–10", previousSets: previous,
                         onUpdateSet: { _, _, _ in }, onToggleCompleteSet: { _ in }, onAddSet: {}, onRemoveSet: { _ in },
                         logbookBeatenSets: [0: beat])
-                        .padding(16).frame(width: width).frame(maxHeight: .infinity, alignment: .top)
+                        .padding(.horizontal, 38).padding(.vertical, 16)
+                        .frame(width: width).frame(maxHeight: .infinity, alignment: .top)
                         .background(AppColors.background).environment(\.sizeCategory, size)
                     let host = UIHostingController(rootView: table)
                     let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 700))
