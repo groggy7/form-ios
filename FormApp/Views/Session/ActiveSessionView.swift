@@ -686,7 +686,13 @@ public struct ActiveSessionView: View {
                 Text(LanguageManager.t("session.replace.action"))
                     .font(.app(size: 13, weight: .semibold))
                     .lineLimit(1)
-                if !unlocked { ProBadge() }
+                // Locked, the purple lock of the session's other locked cards keeps the pill compact.
+                if !unlocked {
+                    Image(systemName: "lock.fill")
+                        .font(.system(size: 11, weight: .semibold))
+                        .foregroundStyle(AppColors.purple)
+                        .accessibilityLabel(LanguageManager.t("pro.premium_required"))
+                }
             }
             .foregroundStyle(AppColors.text)
             .padding(.horizontal, 10)
