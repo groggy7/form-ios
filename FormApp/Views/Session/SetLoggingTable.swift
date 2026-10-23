@@ -108,6 +108,7 @@ public struct SetLoggingTable: View {
                     if !target.isEmpty { pill }
                 }
             }.frame(maxWidth: .infinity, alignment: .leading).accessibilityIdentifier("working-sets-header")
+            Rectangle().fill(AppColors.border).frame(height: 1).accessibilityHidden(true)
             // Table Header
             HStack(spacing: 8) {
                 Text(LanguageManager.t("table.setHeading"))
