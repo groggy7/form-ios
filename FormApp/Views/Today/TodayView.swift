@@ -4,6 +4,7 @@ public struct TodayView: View {
     @State private var socialRequest: SocialShareRequest?
     @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
+    @Environment(\.twoPageLayout) private var twoPageLayout
     var onOpenPrograms: () -> Void
     var onOpenSettings: () -> Void
     var onSelectExercise: (Exercise) -> Void
@@ -22,17 +23,9 @@ public struct TodayView: View {
 
     public var body: some View {
         let _ = themeManager.currentTheme
-        let program = store.activeProgram
         let workout = store.activeWorkout
-        let workoutKey = workout.map { "\(program?.id ?? ""):\($0.id)" } ?? ""
-        let isCompleted = store.state.completed.contains(workoutKey)
-        let isAvailable = workout.map { store.canStartWorkout($0) } ?? false
-        let availableDay: String? = {
-            guard let w = workout, w.day > store.weekCalendar.today + 1 else { return nil }
-            return LanguageManager.workoutDays.indices.contains(w.day - 1) ? LanguageManager.workoutDays[w.day - 1] : nil
-        }()
         let weeklyMetrics = PersonalRecordTracker.computeWeeklyMetrics(
-            program: program,
+            program: store.activeProgram,
             completedKeys: store.state.completed,
             history: store.state.history,
             currentWeekKey: store.state.currentWeekKey,
@@ -40,155 +33,113 @@ public struct TodayView: View {
             unfinishedKeys: store.unfinishedWorkoutKeys()
         )
 
-        ScrollViewReader { proxy in
-        ScrollView {
-            VStack(spacing: 16) {
-                // Home header with the current week's date range
-                HStack(alignment: .top) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(LanguageManager.t("nav.home"))
-                            .font(.app(size: 26, weight: .semibold))
-                            .foregroundStyle(AppColors.text)
-
-                        Text(formattedWeekRange())
-                            .font(.app(size: 12))
-                            .foregroundStyle(AppColors.muted)
-                    }
-
-                    Spacer()
-
-                    FormHeaderIconButton(
-                        icon: "gearshape.fill",
-                        contentDescription: LanguageManager.t("settings.title"),
-                        onClick: onOpenSettings
-                    )
-                }
-                .padding(.horizontal, 20)
-                .padding(.top, 10)
-
-                // 7-day strip
-                WeekStripView(store: store) { workoutId in
-                    if store.selectedWorkoutId == workoutId {
-                        store.selectedWorkoutId = nil
-                    } else {
-                        store.selectedWorkoutId = workoutId
+        if let twoPageLayout {
+            // Open foldable: the week strip and the day's card on the left; weekly progress and the exercises on the right.
+            TwoPageSpread(layout: twoPageLayout) {
+                ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(spacing: 16) {
+                        daySections
+                        Spacer().frame(height: 16)
                     }
                 }
-
-                // Today card (Workout or Rest day)
-                TodayHeroCard(
-                    workout: workout,
-                    programId: program?.id,
-                    todayIndex: store.weekCalendar.today,
-                    isCompleted: isCompleted,
-                    isAvailable: isAvailable,
-                    availableDay: availableDay,
-                    hasUnfinishedProgress: !isCompleted && (store.activeSession?.workout.id == workout?.id || store.unfinishedWorkoutKeys().contains(workoutKey)),
-                    onStart: {
-                        if let w = workout, let p = program {
-                            if let active = store.activeSession, active.workout.id == w.id {
-                                store.resumeActiveSession()
-                            } else {
-                                if !store.startActiveSession(programId: p.id, workout: w, allowPast: true) {
-                                    if store.activeSession != nil {
-                                        store.showErrorNotice(LanguageManager.t("history.finishActiveFirst"))
-                                    }
-                                }
-                            }
-                        }
-                    }
-                )
-
-                // Weekly goal progress card
-                WeeklyGoalProgressCard(
-                    metrics: weeklyMetrics,
-                    weightUnit: store.weightUnit,
-                    isPageVisible: store.currentView == .today && !store.isSessionPresented
-                )
-                .tourTarget("home.week", cornerRadius: 22)
-                .padding(.horizontal, 20)
-
-                if let card = SocialCards.week(program: store.activeProgram, completed: store.state.completed, history: store.state.history, weekKey: store.state.currentWeekKey, unit: store.weightUnit) {
-                    Button { socialRequest = SocialShareRequest(cards: [card]) } label: {
-                        Text(LanguageManager.t("social.week") + " · " + LanguageManager.t("social.share"))
-                            .frame(maxWidth: .infinity, minHeight: 48)
-                    }.buttonStyle(.bordered).tint(AppColors.accent).padding(.horizontal, 20)
-                        .accessibilityIdentifier("share-completed-week")
-                        .sheet(item: $socialRequest) { request in SocialCardComposer(request: request) { socialRequest = nil } }
+                .tourScrollable(proxy)
                 }
-
-                // Exercise list preview
-                if let workout = workout, !workout.exercises.isEmpty {
-                    VStack(alignment: .leading, spacing: 10) {
-                        Text(exerciseHeading(for: workout))
-                            .font(.app(size: 18, weight: .semibold))
-                            .foregroundStyle(AppColors.text)
-                            .padding(.horizontal, 20)
-                            .padding(.bottom, 4)
-                            .tourTarget("home.exercises.row.0",
-                                        contentInsets: EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
-
-                        VStack(spacing: 8) {
-                            ForEach(Array(workout.exercises.enumerated()), id: \.element.id) { index, exercise in
-                                Button(action: { onSelectExercise(exercise) }) {
-                                    HStack(spacing: 12) {
-                                        MovementIcon(
-                                            exerciseId: exercise.exerciseId,
-                                            size: 52
-                                        )
-
-                                        VStack(alignment: .leading, spacing: 4) {
-                                            Text(exercise.displayName)
-                                                .font(.app(size: 14, weight: .medium))
-                                                .lineSpacing(2)
-                                                .foregroundStyle(AppColors.text)
-                                                .lineLimit(2)
-
-                                            Text(exercise.displayPrescription)
-                                                .font(.app(size: 12))
-                                                .foregroundStyle(AppColors.muted)
-                                        }
-
-                                        Spacer()
-
-                                        Text(String(format: "%02d", index + 1))
-                                            .font(.app(size: 11, weight: .medium))
-                                            .foregroundStyle(AppColors.muted)
-                                    }
-                                    .padding(9)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 13, style: .continuous)
-                                            .fill(AppColors.surface)
-                                            .overlay(
-                                                RoundedRectangle(cornerRadius: 13, style: .continuous)
-                                                    .stroke(AppColors.border, lineWidth: 1)
-                                            )
-                                    )
-                                }
-                                .buttonStyle(.plain)
-                                .tourTarget("home.exercises.row.\(index + 1)", cornerRadius: 13)
-                            }
-                        }
-                        .padding(.horizontal, 20)
+            } trailing: {
+                ScrollViewReader { proxy in
+                ScrollView {
+                    VStack(spacing: 16) {
+                        weekSections(weeklyMetrics: weeklyMetrics)
+                        exerciseSection(workout: workout)
+                        Spacer().frame(height: 16)
                     }
-                    .tourTarget("home.exercises", cornerRadius: 13)
+                    .padding(.top, 10)
                 }
-
-                Spacer().frame(height: 16)
+                .tourScrollable(proxy)
+                }
             }
-        }
-        .tourScrollable(proxy)
+        } else {
+            ScrollViewReader { proxy in
+            ScrollView {
+                VStack(spacing: 16) {
+                    daySections
+                    weekSections(weeklyMetrics: weeklyMetrics)
+
+                    // Exercise list preview
+                    exerciseSection(workout: workout)
+
+                    Spacer().frame(height: 16)
+                }
+            }
+            .tourScrollable(proxy)
+            }
         }
     }
 
-    private func exerciseHeading(for workout: Workout) -> String {
-        if workout.day == store.weekCalendar.today + 1 {
-            return LanguageManager.t("today.exercises")
+    @ViewBuilder
+    private var daySections: some View {
+        // Home header with the current week's date range
+        HStack(alignment: .top) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(LanguageManager.t("nav.home"))
+                    .font(.app(size: 26, weight: .semibold))
+                    .foregroundStyle(AppColors.text)
+
+                Text(formattedWeekRange())
+                    .font(.app(size: 12))
+                    .foregroundStyle(AppColors.muted)
+            }
+
+            Spacer()
+
+            FormHeaderIconButton(
+                icon: "gearshape.fill",
+                contentDescription: LanguageManager.t("settings.title"),
+                onClick: onOpenSettings
+            )
         }
-        guard LanguageManager.workoutDays.indices.contains(workout.day - 1) else {
-            return LanguageManager.t("history.exercises")
+        .padding(.horizontal, 20)
+        .padding(.top, 10)
+
+        // 7-day strip
+        WeekStripView(store: store) { workoutId in
+            if store.selectedWorkoutId == workoutId {
+                store.selectedWorkoutId = nil
+            } else {
+                store.selectedWorkoutId = workoutId
+            }
         }
-        return LanguageManager.t("today.dayExercises", ["day": LanguageManager.workoutDays[workout.day - 1]])
+
+        // Today card (Workout or Rest day)
+        HomeWorkoutHero(store: store, workout: store.activeWorkout)
+    }
+
+    @ViewBuilder
+    private func weekSections(weeklyMetrics: WeeklyGoalProgressMetrics) -> some View {
+        // Weekly goal progress card
+        WeeklyGoalProgressCard(
+            metrics: weeklyMetrics,
+            weightUnit: store.weightUnit,
+            isPageVisible: store.currentView == .today && !store.isSessionPresented
+        )
+        .tourTarget("home.week", cornerRadius: 22)
+        .padding(.horizontal, 20)
+
+        if let card = SocialCards.week(program: store.activeProgram, completed: store.state.completed, history: store.state.history, weekKey: store.state.currentWeekKey, unit: store.weightUnit) {
+            Button { socialRequest = SocialShareRequest(cards: [card]) } label: {
+                Text(LanguageManager.t("social.week") + " · " + LanguageManager.t("social.share"))
+                    .frame(maxWidth: .infinity, minHeight: 48)
+            }.buttonStyle(.bordered).tint(AppColors.accent).padding(.horizontal, 20)
+                .accessibilityIdentifier("share-completed-week")
+                .sheet(item: $socialRequest) { request in SocialCardComposer(request: request) { socialRequest = nil } }
+        }
+    }
+
+    @ViewBuilder
+    private func exerciseSection(workout: Workout?) -> some View {
+        if let workout = workout, !workout.exercises.isEmpty {
+            WorkoutExercisePreview(store: store, workout: workout, registersTourTargets: true, onSelectExercise: onSelectExercise)
+        }
     }
 
     private func formattedWeekRange() -> String {
@@ -203,5 +154,121 @@ public struct TodayView: View {
         let formatter = DateFormatter()
         formatter.dateFormat = "d MMM"
         return "\(formatter.string(from: monday)) – \(formatter.string(from: sunday))"
+    }
+}
+
+/// The selected day's hero card with its start/resume action; shared by Home and the open foldable's Plan.
+struct HomeWorkoutHero: View {
+    @ObservedObject var store: AppStore
+    let workout: Workout?
+    var showsRestGuidance = true
+
+    var body: some View {
+        let program = store.activeProgram
+        let workoutKey = workout.map { "\(program?.id ?? ""):\($0.id)" } ?? ""
+        let isCompleted = store.state.completed.contains(workoutKey)
+        let isAvailable = workout.map { store.canStartWorkout($0) } ?? false
+        let availableDay: String? = {
+            guard let w = workout, w.day > store.weekCalendar.today + 1 else { return nil }
+            return LanguageManager.workoutDays.indices.contains(w.day - 1) ? LanguageManager.workoutDays[w.day - 1] : nil
+        }()
+
+        TodayHeroCard(
+            workout: workout,
+            programId: program?.id,
+            todayIndex: store.weekCalendar.today,
+            isCompleted: isCompleted,
+            isAvailable: isAvailable,
+            availableDay: availableDay,
+            hasUnfinishedProgress: !isCompleted && (store.activeSession?.workout.id == workout?.id || store.unfinishedWorkoutKeys().contains(workoutKey)),
+            onStart: {
+                if let w = workout, let p = program {
+                    if let active = store.activeSession, active.workout.id == w.id {
+                        store.resumeActiveSession()
+                    } else {
+                        if !store.startActiveSession(programId: p.id, workout: w, allowPast: true) {
+                            if store.activeSession != nil {
+                                store.showErrorNotice(LanguageManager.t("history.finishActiveFirst"))
+                            }
+                        }
+                    }
+                }
+            },
+            showsRestGuidance: showsRestGuidance
+        )
+    }
+}
+
+/// A workout's exercise rows under the weekday heading. Only Home registers the tour's row targets.
+struct WorkoutExercisePreview: View {
+    @ObservedObject var store: AppStore
+    let workout: Workout
+    let registersTourTargets: Bool
+    var onSelectExercise: (Exercise) -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text(exerciseHeading(for: workout))
+                .font(.app(size: 18, weight: .semibold))
+                .foregroundStyle(AppColors.text)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 4)
+                .tourTargetIf(registersTourTargets ? "home.exercises.row.0" : nil,
+                              contentInsets: EdgeInsets(top: 0, leading: 20, bottom: 0, trailing: 20))
+
+            VStack(spacing: 8) {
+                ForEach(Array(workout.exercises.enumerated()), id: \.element.id) { index, exercise in
+                    Button(action: { onSelectExercise(exercise) }) {
+                        HStack(spacing: 12) {
+                            MovementIcon(
+                                exerciseId: exercise.exerciseId,
+                                size: 52
+                            )
+
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(exercise.displayName)
+                                    .font(.app(size: 14, weight: .medium))
+                                    .lineSpacing(2)
+                                    .foregroundStyle(AppColors.text)
+                                    .lineLimit(2)
+
+                                Text(exercise.displayPrescription)
+                                    .font(.app(size: 12))
+                                    .foregroundStyle(AppColors.muted)
+                            }
+
+                            Spacer()
+
+                            Text(String(format: "%02d", index + 1))
+                                .font(.app(size: 11, weight: .medium))
+                                .foregroundStyle(AppColors.muted)
+                        }
+                        .padding(9)
+                        .background(
+                            RoundedRectangle(cornerRadius: 13, style: .continuous)
+                                .fill(AppColors.surface)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 13, style: .continuous)
+                                        .stroke(AppColors.border, lineWidth: 1)
+                                )
+                        )
+                    }
+                    .buttonStyle(.plain)
+                    .tourTargetIf(registersTourTargets ? "home.exercises.row.\(index + 1)" : nil, cornerRadius: 13)
+                }
+            }
+            .padding(.horizontal, 20)
+        }
+        .tourTargetIf(registersTourTargets ? "home.exercises" : nil, cornerRadius: 13)
+    }
+
+    private func exerciseHeading(for workout: Workout) -> String {
+        if workout.day == store.weekCalendar.today + 1 {
+            return LanguageManager.t("today.exercises")
+        }
+        guard LanguageManager.workoutDays.indices.contains(workout.day - 1) else {
+            return LanguageManager.t("history.exercises")
+        }
+        return LanguageManager.t("today.dayExercises", ["day": LanguageManager.workoutDays[workout.day - 1]])
     }
 }

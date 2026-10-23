@@ -95,6 +95,7 @@
 		E30000000000000000000003 /* equipment_catalog.json in Resources */ = {isa = PBXBuildFile; fileRef = E30000000000000000000004 /* equipment_catalog.json */; };
 		E502AEF3D69EC46BD7225892 /* 03_classic_ppl.json in Resources */ = {isa = PBXBuildFile; fileRef = ECB10B35D7F6895ECBECEDBF /* 03_classic_ppl.json */; };
 		E9AA6F2CC609F97E3FE35804 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC5F87CCEA6BEE84FC15E6B7 /* RootView.swift */; };
+		FD0000000000000000000002 /* FoldableLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0000000000000000000001 /* FoldableLayout.swift */; };
 		ECAED6399ED27E48237E4DD6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 77203A709542614D89DFF819 /* Assets.xcassets */; };
 		ECF655C211A97E2025683749 /* 01_aesthetic_hypertrophy.json in Resources */ = {isa = PBXBuildFile; fileRef = 92FB5C1AF11F5E137168160B /* 01_aesthetic_hypertrophy.json */; };
 		F89F85797C04B79378A6EF20 /* 03_classic_ppl.json in Resources */ = {isa = PBXBuildFile; fileRef = ECB10B35D7F6895ECBECEDBF /* 03_classic_ppl.json */; };
@@ -161,6 +162,7 @@
 		C15000000000000000000008 /* ProgramBuilderRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000007 /* ProgramBuilderRegressionTests.swift */; };
 		D90000000000000000000002 /* AuditFollowupTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90000000000000000000001 /* AuditFollowupTests.swift */; };
 		TR0000000000000000000006 /* TourTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = TR0000000000000000000005 /* TourTests.swift */; };
+		FD0000000000000000000004 /* FoldableLayoutTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD0000000000000000000003 /* FoldableLayoutTests.swift */; };
 		C1500000000000000000000C /* ProgressionFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1500000000000000000000B /* ProgressionFixtureTests.swift */; };
 		IS0000000000000000000002 /* IntensityFixtureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = IS0000000000000000000001 /* IntensityFixtureTests.swift */; };
 		C1500000000000000000000A /* android-builder-v5.json in Resources */ = {isa = PBXBuildFile; fileRef = C15000000000000000000009 /* android-builder-v5.json */; };
@@ -265,6 +267,7 @@
 		F89F4479A1065BF741953378 /* RestTimerBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestTimerBar.swift; sourceTree = "<group>"; };
 		FAENT0000000000000000001 /* FormApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FormApp.entitlements; sourceTree = "<group>"; };
 		FC5F87CCEA6BEE84FC15E6B7 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		FD0000000000000000000001 /* FoldableLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldableLayout.swift; sourceTree = "<group>"; };
 		FL0000000000000000000001 /* FormLabModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabModels.swift; sourceTree = "<group>"; };
 		FL0000000000000000000003 /* FormLabEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormLabEngine.swift; sourceTree = "<group>"; };
 		FL0000000000000000000005 /* CloudMirrorManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CloudMirrorManager.swift; sourceTree = "<group>"; };
@@ -328,6 +331,7 @@
 		C15000000000000000000007 /* ProgramBuilderRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgramBuilderRegressionTests.swift; sourceTree = "<group>"; };
 		D90000000000000000000001 /* AuditFollowupTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuditFollowupTests.swift; sourceTree = "<group>"; };
 		TR0000000000000000000005 /* TourTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TourTests.swift; sourceTree = "<group>"; };
+		FD0000000000000000000003 /* FoldableLayoutTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldableLayoutTests.swift; sourceTree = "<group>"; };
 		C1500000000000000000000B /* ProgressionFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressionFixtureTests.swift; sourceTree = "<group>"; };
 		C1500000000000000000000D /* progression-fixtures.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "progression-fixtures.json"; sourceTree = "<group>"; };
 		IS0000000000000000000001 /* IntensityFixtureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntensityFixtureTests.swift; sourceTree = "<group>"; };
@@ -419,6 +423,7 @@
 				9D2282260300C11D1B7F29AE /* FormAppTests.swift */,
 				C1500000000000000000000B /* ProgressionFixtureTests.swift */,
 				TR0000000000000000000005 /* TourTests.swift */,
+				FD0000000000000000000003 /* FoldableLayoutTests.swift */,
 				TW0000000000000000000004 /* TextWidthScaleTests.swift */,
 				AI0000000000000000000005 /* AppIconTests.swift */,
 				C1500000000000000000000D /* progression-fixtures.json */,
@@ -548,6 +553,7 @@
 			children = (
 				E3493C594E48AD17563A8CC2 /* FormApp.swift */,
 				FC5F87CCEA6BEE84FC15E6B7 /* RootView.swift */,
+				FD0000000000000000000001 /* FoldableLayout.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -901,6 +907,7 @@
 				9D47D0FB61D291A7727C96C3 /* ProgramsView.swift in Sources */,
 				6FB272E05E6155F86E8A481E /* RestTimerBar.swift in Sources */,
 				E9AA6F2CC609F97E3FE35804 /* RootView.swift in Sources */,
+				FD0000000000000000000002 /* FoldableLayout.swift in Sources */,
 				90CC3E5D0E555C597ED91ABB /* SessionSummaryView.swift in Sources */,
 				D5DDC5DF3C8A6E620BADA5A7 /* SetLoggingTable.swift in Sources */,
 				6F9CAA3F576D5057AF0C84E3 /* SettingsView.swift in Sources */,
@@ -949,6 +956,7 @@
 				BJ0000000000000000000010 /* BodyAndJointJournalTests.swift in Sources */,
 				HW0000000000000000000004 /* HealthWeighInTests.swift in Sources */,
 				TR0000000000000000000006 /* TourTests.swift in Sources */,
+				FD0000000000000000000004 /* FoldableLayoutTests.swift in Sources */,
 				TW0000000000000000000003 /* TextWidthScaleTests.swift in Sources */,
 				AI0000000000000000000006 /* AppIconTests.swift in Sources */,
 			);

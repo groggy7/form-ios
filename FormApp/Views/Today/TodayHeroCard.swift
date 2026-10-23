@@ -10,6 +10,8 @@ public struct TodayHeroCard: View {
     let availableDay: String?
     let hasUnfinishedProgress: Bool
     let onStart: () -> Void
+    /// The rest-day note points to the Home day strip above; Plan's side page has no strip.
+    var showsRestGuidance = true
 
     @State private var selectedViewIndex: Int?
 
@@ -75,7 +77,8 @@ public struct TodayHeroCard: View {
         availableDay: String?,
         hasUnfinishedProgress: Bool,
         initialViewIndex: Int? = nil,
-        onStart: @escaping () -> Void
+        onStart: @escaping () -> Void,
+        showsRestGuidance: Bool = true
     ) {
         self.workout = workout
         self.programId = programId
@@ -86,6 +89,7 @@ public struct TodayHeroCard: View {
         self.hasUnfinishedProgress = hasUnfinishedProgress
         self._selectedViewIndex = State(initialValue: initialViewIndex)
         self.onStart = onStart
+        self.showsRestGuidance = showsRestGuidance
     }
 
     public var body: some View {
@@ -337,16 +341,18 @@ public struct TodayHeroCard: View {
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: textWidth, alignment: .leading)
 
-            Spacer().frame(height: 16)
+            if showsRestGuidance {
+                Spacer().frame(height: 16)
 
-            // Guidance Note
-            Text(LanguageManager.t("today.restDescription"))
-                .font(.app(size: captionSize, weight: .regular))
-                .lineSpacing(3)
-                .foregroundStyle(recoveryTextColor)
-                .shadow(color: recoveryTextShadow, radius: 2, x: 0, y: 0)
-                .fixedSize(horizontal: false, vertical: true)
-                .frame(maxWidth: textWidth, alignment: .leading)
+                // Guidance Note
+                Text(LanguageManager.t("today.restDescription"))
+                    .font(.app(size: captionSize, weight: .regular))
+                    .lineSpacing(3)
+                    .foregroundStyle(recoveryTextColor)
+                    .shadow(color: recoveryTextShadow, radius: 2, x: 0, y: 0)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(maxWidth: textWidth, alignment: .leading)
+            }
 
             Spacer()
         }

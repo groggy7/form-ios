@@ -16,6 +16,7 @@ public struct ActiveSessionView: View {
     @State private var celebratoryNoticeMessage: String? = nil
     @State private var isCelebrationVisible: Bool = false
     @State private var inspectingExerciseId: String? = nil
+    @State private var sessionSpread: TwoPageLayout?
     @StateObject private var sessionMedia = SessionExerciseMedia()
     @State private var reportingExercise: Exercise? = nil
     @State private var pendingReport: ExerciseIssueReport? = nil
@@ -172,7 +173,7 @@ public struct ActiveSessionView: View {
                     weightUnit: store.weightUnit
                 )
             } else {
-                VStack(spacing: 0) {
+                let sessionColumn = VStack(spacing: 0) {
                     // Top Bar
                     SessionHeader(title: activeDraft.workout.displayTitle(programId: activeDraft.programId),
                         programLabel: programLabel, draft: activeDraft,
@@ -419,6 +420,30 @@ public struct ActiveSessionView: View {
                     }
                 }
                 .onGeometryChange(for: Bool.self) { $0.size.height < 480 } action: { compactHeight = $0 }
+                // Beside a vertical bar (iPhone Duo) the header has no status bar above it.
+                .verticalBarHeadroom(12)
+
+                if let sessionSpread, let currentExercise {
+                    // Open foldable: logging on the left; the exercise's demonstration and cues stay open on the right.
+                    TwoPageSpread(layout: sessionSpread) {
+                        sessionColumn
+                    } trailing: {
+                        SessionExerciseDetailContent(exercise: currentExercise, media: sessionMedia,
+                                                     onReportIssue: { reportIssue(for: currentExercise) })
+                            .background(AppColors.surface)
+                            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                    .stroke(AppColors.border, lineWidth: 1)
+                            )
+                            .padding(.horizontal, 20)
+                            .padding(.bottom, 16)
+                            .verticalBarHeadroom(20)
+                            .id(currentExercise.id)
+                    }
+                } else {
+                    sessionColumn
+                }
             }
 
             if isCelebrationVisible, let msg = celebratoryNoticeMessage, !isWarningVisible {
@@ -480,24 +505,18 @@ public struct ActiveSessionView: View {
                     onReportIssue: {
                         sessionMedia.freezeActive()
                         inspectingExerciseId = nil
-                        let preflight = ExerciseReportStore.shared.checkPreflight()
-                        switch preflight {
-                        case .allowed:
-                            reportingExercise = inspectingExercise
-                        case .cooldown(let isDaily, let nextAllowedAt, _):
-                            let toastMsg = isDaily
-                                ? LanguageManager.t("report.toastDaily", ["dateTime": ExerciseReportStore.formatLocalDateTime(nextAllowedAt)])
-                                : LanguageManager.t("report.toastHourly", ["time": ExerciseReportStore.formatLocalTime(nextAllowedAt)])
-                            store.showErrorNotice(toastMsg, duration: 2.5)
-                        case .pending(let report):
-                            pendingReport = report
-                        }
+                        reportIssue(for: inspectingExercise)
                     }
                 )
                 .transition(.opacity)
             }
 
             ToastOverlay(item: store.currentToast, bottomPadding: restTimer != nil ? 162 : 102)
+        }
+        .background {
+            GeometryReader { proxy in
+                Color.clear.onChange(of: TwoPageLayout.resolve(in: proxy), initial: true) { _, spread in sessionSpread = spread }
+            }
         }
         .tourOverlay(.workout)
         .tourTrigger(.workout, enabled: true)
@@ -661,12 +680,14 @@ public struct ActiveSessionView: View {
         let activeDraft = currentDraft
         let exercises = activeDraft.workout.exercises
         let currentIndex = min(max(0, activeDraft.currentExerciseIndex), max(0, exercises.count - 1))
+        // With two pages the exercise's detail is already open on the right, and only that video plays.
+        let pinnedId = sessionSpread != nil && exercises.indices.contains(currentIndex) ? exercises[currentIndex].id : nil
         return SessionExerciseStrip(exercises: exercises, currentIndex: currentIndex, setsByExercise: activeDraft.setsByExercise,
-            media: sessionMedia, inspectingExerciseId: inspectingExerciseId, collapsed: $store.sessionStripCollapsed,
+            media: sessionMedia, inspectingExerciseId: inspectingExerciseId ?? pinnedId, collapsed: $store.sessionStripCollapsed,
             dragsFromCards: !compactHeight) { idx in
             sessionMedia.freezeActive()
             if idx == currentIndex {
-                inspectingExerciseId = exercises[idx].id
+                if pinnedId == nil { inspectingExerciseId = exercises[idx].id }
             } else {
                 store.updateActiveSession { d in
                     var copy = d
@@ -674,6 +695,21 @@ public struct ActiveSessionView: View {
                     return copy
                 }
             }
+        }
+    }
+
+    private func reportIssue(for exercise: Exercise) {
+        let preflight = ExerciseReportStore.shared.checkPreflight()
+        switch preflight {
+        case .allowed:
+            reportingExercise = exercise
+        case .cooldown(let isDaily, let nextAllowedAt, _):
+            let toastMsg = isDaily
+                ? LanguageManager.t("report.toastDaily", ["dateTime": ExerciseReportStore.formatLocalDateTime(nextAllowedAt)])
+                : LanguageManager.t("report.toastHourly", ["time": ExerciseReportStore.formatLocalTime(nextAllowedAt)])
+            store.showErrorNotice(toastMsg, duration: 2.5)
+        case .pending(let report):
+            pendingReport = report
         }
     }
 
@@ -1040,21 +1076,47 @@ private struct MiniExerciseDetailModal: View {
                 .ignoresSafeArea()
                 .onTapGesture { onDismiss() }
 
-            VStack(spacing: 0) {
-                // Header: Title, category, and close button
-                HStack(alignment: .center) {
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(exercise.displayName)
-                            .font(.app(size: 18, weight: .semibold))
-                            .foregroundStyle(AppColors.text)
-                            .lineLimit(2)
-                        Text(exercise.metadataSubtitle)
-                            .font(.app(size: 11, weight: .medium))
-                            .foregroundStyle(AppColors.accent)
-                    }
+            SessionExerciseDetailContent(exercise: exercise, media: media, onDismiss: onDismiss, onReportIssue: onReportIssue)
+                .frame(maxWidth: 360, maxHeight: 560)
+                .background(AppColors.surface)
+                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .stroke(AppColors.border, lineWidth: 1)
+                )
+                .shadow(color: Color.black.opacity(0.4), radius: 16, x: 0, y: 8)
+                .padding(24)
+                .accessibilityIdentifier("mini-exercise-detail-modal")
+        }
+    }
+}
 
-                    Spacer()
+/// An exercise's demonstration, cues and mistakes: a modal during a session, or pinned beside it on an open foldable.
+private struct SessionExerciseDetailContent: View {
+    @ObservedObject var themeManager = ThemeManager.shared
+    let exercise: Exercise
+    @ObservedObject var media: SessionExerciseMedia
+    var onDismiss: (() -> Void)? = nil
+    var onReportIssue: (() -> Void)? = nil
 
+    var body: some View {
+        let _ = themeManager.currentTheme
+        VStack(spacing: 0) {
+            // Header: Title, category, and close button
+            HStack(alignment: .center) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(exercise.displayName)
+                        .font(.app(size: 18, weight: .semibold))
+                        .foregroundStyle(AppColors.text)
+                        .lineLimit(2)
+                    Text(exercise.metadataSubtitle)
+                        .font(.app(size: 11, weight: .medium))
+                        .foregroundStyle(AppColors.accent)
+                }
+
+                Spacer()
+
+                if let onDismiss {
                     Button(action: onDismiss) {
                         Image(systemName: "xmark")
                             .font(.system(size: 14, weight: .semibold))
@@ -1064,85 +1126,75 @@ private struct MiniExerciseDetailModal: View {
                     .accessibilityLabel(LanguageManager.t("common.close"))
                     .accessibilityIdentifier("mini-exercise-detail-close")
                 }
-                .padding(.horizontal, 18)
-                .padding(.top, 14)
-                .padding(.bottom, 12)
-
-                Divider().background(AppColors.border)
-
-                // Scrollable Content: Video + Cues + Avoid
-                ScrollView {
-                    VStack(spacing: 14) {
-                        SessionExerciseDetailVideo(media: media, rowId: exercise.id, exerciseId: exercise.exerciseId)
-                            .frame(maxWidth: .infinity)
-                            .background(AppColors.exerciseVideoSurface)
-                            .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 14, style: .continuous)
-                                    .stroke(AppColors.border, lineWidth: 1)
-                            )
-
-                        let cuesText = exercise.displayCues.trimmingCharacters(in: .whitespacesAndNewlines)
-                        if !cuesText.isEmpty {
-                            TechniqueSectionView(
-                                title: LanguageManager.t("modal.exercise.cues"),
-                                text: cuesText,
-                                accent: AppColors.accent,
-                                isAvoid: false,
-                                initiallyExpanded: false
-                            )
-                        }
-
-                        let avoidText = exercise.displayAvoid.trimmingCharacters(in: .whitespacesAndNewlines)
-                        if !avoidText.isEmpty {
-                            TechniqueSectionView(
-                                title: LanguageManager.t("modal.exercise.avoid"),
-                                text: avoidText,
-                                accent: AppColors.danger,
-                                isAvoid: true,
-                                initiallyExpanded: false
-                            )
-                        }
-
-                        if let onReportIssue = onReportIssue {
-                            HStack {
-                                Spacer()
-                                Button(action: onReportIssue) {
-                                    HStack(spacing: 6) {
-                                        Image(systemName: "flag")
-                                            .font(.system(size: 14, weight: .medium))
-                                        Text(LanguageManager.t("report.action"))
-                                            .font(.app(size: 13, weight: .medium))
-                                    }
-                                    .foregroundStyle(AppColors.danger)
-                                    .padding(.horizontal, 16)
-                                    .frame(minHeight: 40)
-                                    .background(AppColors.danger.opacity(0.12))
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .stroke(AppColors.danger.opacity(0.3), lineWidth: 1)
-                                    )
-                                }
-                                .buttonStyle(.plain)
-                                Spacer()
-                            }
-                            .padding(.top, 8)
-                        }
-                    }
-                    .padding(16)
-                }
             }
-            .frame(maxWidth: 360, maxHeight: 560)
-            .background(AppColors.surface)
-            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-            .overlay(
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .stroke(AppColors.border, lineWidth: 1)
-            )
-            .shadow(color: Color.black.opacity(0.4), radius: 16, x: 0, y: 8)
-            .padding(24)
-            .accessibilityIdentifier("mini-exercise-detail-modal")
+            .padding(.horizontal, 18)
+            .padding(.top, 14)
+            .padding(.bottom, 12)
+
+            Divider().background(AppColors.border)
+
+            // Scrollable Content: Video + Cues + Avoid
+            ScrollView {
+                VStack(spacing: 14) {
+                    SessionExerciseDetailVideo(media: media, rowId: exercise.id, exerciseId: exercise.exerciseId)
+                        .frame(maxWidth: .infinity)
+                        .background(AppColors.exerciseVideoSurface)
+                        .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 14, style: .continuous)
+                                .stroke(AppColors.border, lineWidth: 1)
+                        )
+
+                    let cuesText = exercise.displayCues.trimmingCharacters(in: .whitespacesAndNewlines)
+                    if !cuesText.isEmpty {
+                        TechniqueSectionView(
+                            title: LanguageManager.t("modal.exercise.cues"),
+                            text: cuesText,
+                            accent: AppColors.accent,
+                            isAvoid: false,
+                            initiallyExpanded: false
+                        )
+                    }
+
+                    let avoidText = exercise.displayAvoid.trimmingCharacters(in: .whitespacesAndNewlines)
+                    if !avoidText.isEmpty {
+                        TechniqueSectionView(
+                            title: LanguageManager.t("modal.exercise.avoid"),
+                            text: avoidText,
+                            accent: AppColors.danger,
+                            isAvoid: true,
+                            initiallyExpanded: false
+                        )
+                    }
+
+                    if let onReportIssue = onReportIssue {
+                        HStack {
+                            Spacer()
+                            Button(action: onReportIssue) {
+                                HStack(spacing: 6) {
+                                    Image(systemName: "flag")
+                                        .font(.system(size: 14, weight: .medium))
+                                    Text(LanguageManager.t("report.action"))
+                                        .font(.app(size: 13, weight: .medium))
+                                }
+                                .foregroundStyle(AppColors.danger)
+                                .padding(.horizontal, 16)
+                                .frame(minHeight: 40)
+                                .background(AppColors.danger.opacity(0.12))
+                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 10)
+                                        .stroke(AppColors.danger.opacity(0.3), lineWidth: 1)
+                                )
+                            }
+                            .buttonStyle(.plain)
+                            Spacer()
+                        }
+                        .padding(.top, 8)
+                    }
+                }
+                .padding(16)
+            }
         }
     }
 }

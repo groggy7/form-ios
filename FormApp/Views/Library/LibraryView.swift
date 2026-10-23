@@ -11,6 +11,7 @@ public struct LibraryView: View {
     @ObservedObject var themeManager = ThemeManager.shared
     @ObservedObject var store: AppStore
     @ObservedObject private var language = LanguageManager.shared
+    @Environment(\.twoPageLayout) private var twoPageLayout
     var onSelectExercise: (Exercise) -> Void
     var onOpenSettings: () -> Void
 
@@ -36,14 +37,14 @@ public struct LibraryView: View {
     public var body: some View {
         let _ = themeManager.currentTheme
         Group {
-        if let selectedId = store.selectedExerciseId, let selectedExercise = store.findExercise(id: selectedId) {
+        if twoPageLayout == nil, let selectedId = store.selectedExerciseId, let selectedExercise = store.findExercise(id: selectedId) {
             ExerciseDetailView(exercise: selectedExercise, onBack: {
                 store.selectExerciseInLibrary(id: nil)
             })
         } else {
             let filtered = store.libraryResults.entries(catalogue: store.exerciseCatalogue, query: query,
                                                        equipmentKey: selectedEquipment, muscleKey: selectedMuscle)
-            ScrollViewReader { proxy in
+            let listPage = ScrollViewReader { proxy in
             ScrollView {
             VStack(spacing: 16) {
                 // Header
@@ -293,6 +294,17 @@ public struct LibraryView: View {
                 store.selectExerciseInLibrary(id: nil)
             }
         }
+
+            if let twoPageLayout {
+                // Open foldable: the list stays on the left and the exercise opens beside it.
+                TwoPageSpread(layout: twoPageLayout) {
+                    listPage
+                } trailing: {
+                    exercisePage(fallback: filtered.first?.exercise)
+                }
+            } else {
+                listPage
+            }
         }
         }
         .onChange(of: store.currentView) { _, destination in
@@ -305,6 +317,15 @@ public struct LibraryView: View {
             if modal != nil { isSearchFocused = false }
         }
         .onDisappear { isSearchFocused = false }
+    }
+
+    /// The chosen exercise, or a preview of the first result that does not select it.
+    @ViewBuilder
+    private func exercisePage(fallback: Exercise?) -> some View {
+        if let exercise = store.selectedExerciseId.flatMap({ store.findExercise(id: $0) }) ?? fallback {
+            ExerciseDetailView(exercise: exercise, showsBackButton: false, onBack: { store.selectExerciseInLibrary(id: nil) })
+                .id(exercise.id)
+        }
     }
 
     private func modalHeader(title: String) -> some View {

@@ -367,6 +367,7 @@ public struct HistoryView: View {
     @ObservedObject private var proManager = ProAccessManager.shared
     @ObservedObject private var tour = TourController.shared
     @ObservedObject private var health = HealthWeights.shared
+    @Environment(\.twoPageLayout) private var twoPageLayout
     @State private var activeTab: HistoryTab = .calendar
     @State private var activePaywallFeature: ProFeature? = nil
     @State private var showBody = false
@@ -387,20 +388,11 @@ public struct HistoryView: View {
 
     public var body: some View {
         let _ = themeManager.currentTheme
-        if let detailDay = store.selectedHistoryDetailDay,
+        if twoPageLayout == nil, let detailDay = store.selectedHistoryDetailDay,
            let detail = resolveDayDetail(for: detailDay) {
-            HistoryDetailView(
-                detail: detail,
-                history: store.state.history,
-                onBack: {
-                    store.selectedHistoryDetailDay = nil
-                },
-                onActionWorkout: { handleWorkoutAction(detail: detail) },
-                weightUnit: store.weightUnit,
-                onActionSection: { section in handleWorkoutAction(detail: detail, section: section) }
-            )
+            dayDetail(detail)
         } else {
-            VStack(spacing: 16) {
+            let mainPage = VStack(spacing: 16) {
                 // Header row
                 HStack(alignment: .center) {
                     Text(LanguageManager.t("nav.progress"))
@@ -613,30 +605,33 @@ public struct HistoryView: View {
                                 }
 
 
-                    // Inline Preview Card
-                    if let detail = currentSelectedDetail {
-                        HistoryDayPreviewCard(
-                            detail: detail,
-                            history: store.state.history,
-                            onOpenDetail: {
-                                store.selectedHistoryDetailDay = detail.dateString
-                            },
-                            weightUnit: store.weightUnit
-                        )
-                        .id("history-day-preview-card")
-                        .padding(.horizontal, 20)
-                    }
+                    // Two pages show the day and the body log on the right page instead.
+                    if twoPageLayout == nil {
+                        // Inline Preview Card
+                        if let detail = currentSelectedDetail {
+                            HistoryDayPreviewCard(
+                                detail: detail,
+                                history: store.state.history,
+                                onOpenDetail: {
+                                    store.selectedHistoryDetailDay = detail.dateString
+                                },
+                                weightUnit: store.weightUnit
+                            )
+                            .id("history-day-preview-card")
+                            .padding(.horizontal, 20)
+                        }
 
-                    // The day preview stays directly below the legend; the body log follows it.
-                    BodySummaryCard(entries: health.shownLog(store.state).entries, weightUnit: store.weightUnit, onOpen: { showBody = true })
-                        .padding(.horizontal, 20)
+                        // The day preview stays directly below the legend; the body log follows it.
+                        BodySummaryCard(entries: health.shownLog(store.state).entries, weightUnit: store.weightUnit, onOpen: { showBody = true })
+                            .padding(.horizontal, 20)
+                    }
 
                     Spacer().frame(height: 24)
                         .id("history-bottom-anchor")
                 }
                 .tourScrollable(proxy)
                 .onChange(of: selectedDateString) { _, newDate in
-                    if newDate != nil {
+                    if newDate != nil && twoPageLayout == nil {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
                             withAnimation(.easeInOut(duration: 0.55)) {
                                 proxy.scrollTo("history-bottom-anchor", anchor: .bottom)
@@ -663,8 +658,62 @@ public struct HistoryView: View {
         }
         tour.consumePaywallRequest()
     }
+
+    if let twoPageLayout {
+        // Open foldable: the calendar or analytics on the left; the chosen day and body log on the right.
+        TwoPageSpread(layout: twoPageLayout) {
+            mainPage
+        } trailing: {
+            dayPage
+        }
+    } else {
+        mainPage
+    }
 }
 }
+
+    private func dayDetail(_ detail: HistoryDayDetailData) -> some View {
+        HistoryDetailView(
+            detail: detail,
+            history: store.state.history,
+            onBack: {
+                store.selectedHistoryDetailDay = nil
+            },
+            onActionWorkout: { handleWorkoutAction(detail: detail) },
+            weightUnit: store.weightUnit,
+            onActionSection: { section in handleWorkoutAction(detail: detail, section: section) }
+        )
+    }
+
+    /// The open foldable's right page: a day's full detail, or its preview above the body log.
+    @ViewBuilder
+    private var dayPage: some View {
+        if let detailDay = store.selectedHistoryDetailDay, let detail = resolveDayDetail(for: detailDay) {
+            dayDetail(detail)
+        } else {
+            ScrollView {
+                VStack(spacing: 16) {
+                    if let detail = selectedDateString.flatMap({ resolveDayDetail(for: $0) }) {
+                        HistoryDayPreviewCard(
+                            detail: detail,
+                            history: store.state.history,
+                            onOpenDetail: {
+                                store.selectedHistoryDetailDay = detail.dateString
+                            },
+                            weightUnit: store.weightUnit
+                        )
+                        .padding(.horizontal, 20)
+                    }
+
+                    BodySummaryCard(entries: health.shownLog(store.state).entries, weightUnit: store.weightUnit, onOpen: { showBody = true })
+                        .padding(.horizontal, 20)
+
+                    Spacer().frame(height: 24)
+                }
+                .padding(.top, 10)
+            }
+        }
+    }
 
     /// Shows unlocked analytics, the sharp sample during its one-time tour, or the blurred teaser.
     @ViewBuilder

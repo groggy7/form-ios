@@ -19,6 +19,8 @@ public struct ExerciseDetailView: View {
     @ObservedObject var store: AppStore = AppStore.shared
     let initialExercise: Exercise
     var onBack: () -> Void
+    /// False beside the Library list on an open foldable, where the list stays visible.
+    var showsBackButton = true
 
     @State private var selectedTab: ExerciseDetailTab = .main
     @State private var showVideoLinks: Bool = false
@@ -29,9 +31,10 @@ public struct ExerciseDetailView: View {
     @State private var initializedFirstSessionId: String? = nil
     @State private var selectedWorkoutRecordForDetail: WorkoutSessionRecord? = nil
 
-    public init(exercise: Exercise, initialTab: ExerciseDetailTab = .main, onBack: @escaping () -> Void) {
+    public init(exercise: Exercise, initialTab: ExerciseDetailTab = .main, showsBackButton: Bool = true, onBack: @escaping () -> Void) {
         self.initialExercise = exercise
         self.onBack = onBack
+        self.showsBackButton = showsBackButton
         self._selectedTab = State(initialValue: initialTab)
     }
 
@@ -79,15 +82,17 @@ public struct ExerciseDetailView: View {
                 VStack(spacing: 0) {
             // Top Navigation Bar matching Android
             HStack(spacing: 8) {
-                Button(action: onBack) {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 16, weight: .semibold))
-                        .foregroundStyle(AppColors.text)
-                        .frame(width: 44, height: 44)
-                        .contentShape(Rectangle())
+                if showsBackButton {
+                    Button(action: onBack) {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundStyle(AppColors.text)
+                            .frame(width: 44, height: 44)
+                            .contentShape(Rectangle())
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(LanguageManager.t("common.back"))
                 }
-                .buttonStyle(.plain)
-                .accessibilityLabel(LanguageManager.t("common.back"))
 
                 Text(LanguageManager.t("library.details"))
                     .font(.app(size: 14, weight: .medium))
@@ -95,7 +100,9 @@ public struct ExerciseDetailView: View {
 
                 Spacer()
             }
-            .padding(.horizontal, 8)
+            // Without the back button the label keeps the row's height and the page's 20pt gutter.
+            .frame(minHeight: showsBackButton ? nil : 44)
+            .padding(.horizontal, showsBackButton ? 8 : 20)
             .padding(.vertical, 4)
 
             // Persistent Exercise Header & Segmented Tabs

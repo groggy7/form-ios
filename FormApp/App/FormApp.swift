@@ -14,7 +14,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         _ application: UIApplication,
         supportedInterfaceOrientationsFor window: UIWindow?
     ) -> UIInterfaceOrientationMask {
-        .portrait
+        // Info.plist lists landscape for open foldables; every other iPhone stays portrait.
+        FoldState.shared.supportedOrientations
     }
 }
 

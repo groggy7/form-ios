@@ -308,8 +308,8 @@ extension View {
 
     /// Registers a target only when `id` is set, such as the first row of a list.
     @ViewBuilder
-    func tourTargetIf(_ id: String?, cornerRadius: CGFloat = 16) -> some View {
-        if let id { tourTarget(id, cornerRadius: cornerRadius) } else { self }
+    func tourTargetIf(_ id: String?, cornerRadius: CGFloat = 16, contentInsets: EdgeInsets = EdgeInsets()) -> some View {
+        if let id { tourTarget(id, cornerRadius: cornerRadius, contentInsets: contentInsets) } else { self }
     }
 
     /// Starts `id` once `enabled` has held for a moment while its host is idle and the tour is due.
@@ -382,7 +382,8 @@ private struct TourOverlayModifier: ViewModifier {
                             height: max(0, rect.height - inset.top - inset.bottom)),
                             cornerRadius: $0.cornerRadius, flags: $0.flags)
                     }
-                    TourOverlay(host: host, frames: frames, size: proxy.size, origin: proxy.frame(in: .global).origin)
+                    TourOverlay(host: host, frames: frames, size: proxy.size, origin: proxy.frame(in: .global).origin,
+                                fold: TwoPageLayout.verticalFold(in: proxy))
                 }
                 .ignoresSafeArea()
             }
@@ -402,6 +403,8 @@ struct TourOverlay: View {
     let frames: [String: TourFrame]
     let size: CGSize
     let origin: CGPoint
+    /// An open foldable's fold in overlay coordinates; the bubble stays on one page.
+    var fold: CGRect? = nil
     @State private var naturalBubbleHeight: CGFloat = 0
     @State private var bubbleHeight: CGFloat = 0
     @State private var measuredBubbleStep: String?
@@ -415,7 +418,8 @@ struct TourOverlay: View {
 
     static func safeRect(size: CGSize) -> CGRect {
         let insets = windowSafeInsets
-        return CGRect(x: 16, y: insets.top + 16, width: max(0, size.width - 32),
+        // Side insets are zero on portrait iPhones; the iPhone Duo's vertical bar adds one.
+        return CGRect(x: insets.left + 16, y: insets.top + 16, width: max(0, size.width - insets.left - insets.right - 32),
             height: max(0, size.height - insets.top - insets.bottom - 32))
     }
 
@@ -460,7 +464,7 @@ struct TourOverlay: View {
                         })
                 }
                 .scrollBounceBehavior(.basedOnSize)
-                .frame(width: bubbleWidth, height: min(naturalBubbleHeight, maxBubbleHeight))
+                .frame(width: bubbleSpan(cutout: cutout).width, height: min(naturalBubbleHeight, maxBubbleHeight))
                 .background(AppColors.surfaceRaised, in: RoundedRectangle(cornerRadius: 20))
                 .clipShape(RoundedRectangle(cornerRadius: 20))
                 .background(GeometryReader { geometry in
@@ -475,7 +479,7 @@ struct TourOverlay: View {
                     measuredBubbleStep = step.id
                 }
                 .onChange(of: maxBubbleHeight) { _, height in bubbleHeight = min(naturalBubbleHeight, height) }
-                .offset(x: (size.width - bubbleWidth) / 2,
+                .offset(x: bubbleSpan(cutout: cutout).x,
                     y: step.highlightsRows ? safe.minY : bubbleY(cutout: cutout))
                 .opacity(shown ? bubbleOpacity : 0)
                 .allowsHitTesting(shown)
@@ -516,7 +520,18 @@ struct TourOverlay: View {
         return "\(id.rawValue)-\(tour.stepIndex)-\(tour.steps.map(\.id).joined(separator: ","))-\(measuredBubbleStep ?? "")-\(heightInPixels)-\(size)"
     }
 
-    private var bubbleWidth: CGFloat { min(size.width - 32, 420) }
+    /// The bubble's width and leading edge: centered between the side safe areas and, beside a fold,
+    /// on the page holding the target.
+    private func bubbleSpan(cutout: CGRect?) -> (x: CGFloat, width: CGFloat) {
+        let insets = Self.windowSafeInsets
+        var lower = insets.left
+        var upper = size.width - insets.right
+        if let fold {
+            if let cutout, cutout.midX > fold.midX { lower = max(lower, fold.maxX) } else { upper = min(upper, fold.minX) }
+        }
+        let width = min(upper - lower - 32, 420)
+        return (lower + (upper - lower - width) / 2, width)
+    }
 
     private func bubbleY(cutout: CGRect?) -> CGFloat {
         let insets = Self.windowSafeInsets

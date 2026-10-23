@@ -70,8 +70,11 @@ public struct RootView: View {
     @State private var dragScrollPosition: CGFloat? = nil
     @State private var scrollSelectedTab: ViewMode?
     @State private var isPagerInitialized = false
+    @State private var pagerWidth: CGFloat = 0
     @State private var isKeyboardVisible = false
     @State private var isToastShowing = false
+    @State private var twoPageLayout: TwoPageLayout?
+    @State private var sideBarSafeInsets = EdgeInsets()
 
     public init() {
         _scrollSelectedTab = State(initialValue: AppStore.shared.currentView)
@@ -83,18 +86,35 @@ public struct RootView: View {
             if !store.isOnboardingCompleted {
                 OnboardingView(store: store)
             } else {
-                let isMainNavigationAvailable = (store.currentView != .library || store.selectedExerciseId == nil) && store.selectedHistoryDetailDay == nil
+                // Two pages show exercise and history details beside their list, so navigation stays available.
+                let isMainNavigationAvailable = twoPageLayout != nil
+                    || ((store.currentView != .library || store.selectedExerciseId == nil) && store.selectedHistoryDetailDay == nil)
                 let isBottomDockVisible = isMainNavigationAvailable && !isKeyboardVisible
                 let isPageSwipingEnabled = isMainNavigationAvailable && !isKeyboardVisible
 
                 let mainTabs = AppStore.mainTabs
 
+                // A vertical system bar (iPhone Duo) moves the dock into its side strip.
+                VerticalBarEdgeReader { barEdge in
                 ZStack(alignment: .bottom) {
                     AppColors.background.ignoresSafeArea()
 
                     ScrollViewReader { scrollProxy in
-                        VStack(spacing: 0) {
+                        let dockSelection = Binding(
+                            get: { store.currentView },
+                            set: { destination in
+                                selectPage(destination, using: scrollProxy)
+                                if destination == .today {
+                                    store.selectedWorkoutId = nil
+                                }
+                                store.navigate(to: destination)
+                            }
+                        )
+                        // AnyLayout keeps the pager's identity, and its pages' state, when the bar edge changes.
+                        let layout = barEdge.map { AnyLayout(SideDockLayout(edge: $0)) } ?? AnyLayout(VStackLayout(spacing: 0))
+                        layout {
                             GeometryReader { proxy in
+                                let spread = TwoPageLayout.resolve(in: proxy)
                                 ScrollView(.horizontal, showsIndicators: false) {
                                     HStack(spacing: 0) {
                                         TodayView(
@@ -111,7 +131,8 @@ public struct RootView: View {
                                             store: store,
                                             onOpenToday: { store.navigate(to: .today) },
                                             onOpenPrograms: { showProgramsSheet = true },
-                                            onOpenSettings: { showSettingsSheet = true }
+                                            onOpenSettings: { showSettingsSheet = true },
+                                            onSelectExercise: { store.openExercise(id: $0.id) }
                                         )
                                         .frame(width: proxy.size.width, height: proxy.size.height)
                                         .id(ViewMode.plan)
@@ -150,12 +171,22 @@ public struct RootView: View {
                                 }
                                 .coordinateSpace(name: "mainTabPager")
                                 .scrollTargetBehavior(.paging)
+                                .environment(\.twoPageLayout, spread)
+                                .onChange(of: spread, initial: true) { _, value in twoPageLayout = value }
                                 .onPreferenceChange(MainTabScrollPositionKey.self) { position in
                                     guard let position else { return }
                                     // Scroll targets are measurable after the first layout.
                                     // Restore the selected tab before accepting scroll updates.
                                     if !isPagerInitialized {
                                         isPagerInitialized = true
+                                        pagerWidth = proxy.size.width
+                                        selectPage(store.currentView, using: scrollProxy)
+                                        return
+                                    }
+                                    // Folding, unfolding and rotating resize the pages but keep the old offset.
+                                    // Snap back to the current tab instead of reading that offset as a swipe.
+                                    if proxy.size.width != pagerWidth {
+                                        pagerWidth = proxy.size.width
                                         selectPage(store.currentView, using: scrollProxy)
                                         return
                                     }
@@ -180,29 +211,38 @@ public struct RootView: View {
                                 }
                             }
                             .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            // Beside a vertical bar the top inset is ~0; restore the header's 20pt headroom.
+                            .safeAreaPadding(.top, barEdge == nil ? 0 : max(0, 10 - sideBarSafeInsets.top))
 
-                            // Bottom Navigation Dock (hidden when viewing exercise detail or history detail)
-                            if isBottomDockVisible {
-                                BottomDock(
-                                    currentView: Binding(
-                                        get: { store.currentView },
-                                        set: { destination in
-                                            selectPage(destination, using: scrollProxy)
-                                            if destination == .today {
-                                                store.selectedWorkoutId = nil
-                                            }
-                                            store.navigate(to: destination)
-                                        }
-                                    ),
-                                    dragPosition: dragScrollPosition
+                            if let barEdge {
+                                // The strip stays reserved while the dock hides, so pages never slide beneath the status bar.
+                                SideDockSlot(
+                                    currentView: dockSelection,
+                                    dragPosition: dragScrollPosition,
+                                    width: barEdge == .leading ? sideBarSafeInsets.leading : sideBarSafeInsets.trailing,
+                                    isDockVisible: isBottomDockVisible
                                 )
+                            } else if isBottomDockVisible {
+                                // Bottom Navigation Dock (hidden when viewing exercise detail or history detail)
+                                BottomDock(currentView: dockSelection, dragPosition: dragScrollPosition)
                             }
                         }
-                        .ignoresSafeArea(.container, edges: isMainNavigationAvailable ? .bottom : [])
+                        .ignoresSafeArea(.container, edges: barEdge.map { $0 == .leading ? .leading : .trailing }
+                            ?? (isMainNavigationAvailable ? .bottom : []))
+                        .background {
+                            if barEdge != nil {
+                                GeometryReader { strip in
+                                    Color.clear.onChange(of: strip.safeAreaInsets, initial: true) { _, insets in
+                                        sideBarSafeInsets = insets
+                                    }
+                                }
+                            }
+                        }
                     }
 
                     // Animated Toast Pill
-                    ToastOverlay(item: store.currentToast, bottomPadding: isBottomDockVisible ? 80 : 36)
+                    ToastOverlay(item: store.currentToast, bottomPadding: barEdge == nil && isBottomDockVisible ? 80 : 36)
+                }
                 }
                 .tourOverlay(.main)
                 .modifier(MainTourTriggers(store: store, tour: tour))
@@ -248,8 +288,10 @@ public struct RootView: View {
         }
         .preferredColorScheme(themeManager.currentTheme.colorScheme)
         .environment(\.locale, LanguageManager.locale)
-        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { _ in
-            isKeyboardVisible = true
+        .tracksDeviceHinge()
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { note in
+            // Rotating an open foldable announces a zero-height keyboard with no matching hide.
+            isKeyboardVisible = !FoldState.shared.hasHinge || Self.keyboardCoversScreen(note)
         }
         .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
             isKeyboardVisible = false
@@ -282,6 +324,12 @@ public struct RootView: View {
         let settled = dragScrollPosition.map { abs($0 - $0.rounded()) < 0.01 } ?? true
         return store.isOnboardingCompleted && !showProgramsSheet && !showSettingsSheet && selectedRecordForDetail == nil &&
             !store.isSessionPresented && store.socialShareRequest == nil && presentedSocialShareRequest == nil && !isKeyboardVisible && !isToastShowing && settled
+    }
+
+    private static func keyboardCoversScreen(_ note: Notification) -> Bool {
+        guard let frame = note.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else { return true }
+        guard let screen = note.object as? UIScreen else { return frame.height > 0 }
+        return frame.intersection(screen.bounds).height > 0
     }
 
     private func selectPage(_ destination: ViewMode, using proxy: ScrollViewProxy) {

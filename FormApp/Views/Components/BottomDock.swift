@@ -5,10 +5,13 @@ public struct BottomDock: View {
     @ObservedObject var themeManager = ThemeManager.shared
     @Binding var currentView: ViewMode
     var dragPosition: CGFloat?
+    /// `.vertical` is the side dock inside an iPhone Duo's vertical bar.
+    var axis: Axis
 
-    public init(currentView: Binding<ViewMode>, dragPosition: CGFloat? = nil) {
+    public init(currentView: Binding<ViewMode>, dragPosition: CGFloat? = nil, axis: Axis = .horizontal) {
         self._currentView = currentView
         self.dragPosition = dragPosition
+        self.axis = axis
     }
 
     private let destinations: [(mode: ViewMode, title: String, icon: String)] = [
@@ -20,6 +23,14 @@ public struct BottomDock: View {
 
     public var body: some View {
         let _ = themeManager.currentTheme
+        if axis == .vertical {
+            sideDock
+        } else {
+            bottomDock
+        }
+    }
+
+    private var bottomDock: some View {
         GeometryReader { proxy in
             let innerPadding: CGFloat = 6
             let spacing: CGFloat = 4
@@ -60,6 +71,45 @@ public struct BottomDock: View {
         .tourTarget("dock", cornerRadius: 23)
         .padding(.horizontal, 20)
         .padding(.bottom, 20)
+    }
+
+    /// The same tabs stacked; as wide as the bottom dock is tall, and the selected tile slides vertically.
+    private var sideDock: some View {
+        let innerPadding: CGFloat = 6
+        let spacing: CGFloat = 4
+        let itemHeight: CGFloat = 64
+        let currentIndex = CGFloat(destinations.firstIndex(where: { $0.mode == currentView }) ?? 0)
+        let activePosition = max(0, min(CGFloat(destinations.count - 1), dragPosition ?? currentIndex))
+        let pillOffset = innerPadding + activePosition * (itemHeight + spacing)
+
+        return ZStack(alignment: .top) {
+            RoundedRectangle(cornerRadius: 17, style: .continuous)
+                .fill(AppColors.positiveBg)
+                .frame(height: itemHeight)
+                .padding(.horizontal, innerPadding)
+                .offset(y: pillOffset)
+                .allowsHitTesting(false)
+
+            VStack(spacing: spacing) {
+                ForEach(Array(destinations.enumerated()), id: \.offset) { index, item in
+                    dockItem(mode: item.mode, title: item.title, icon: item.icon, index: CGFloat(index), activePosition: activePosition)
+                        .frame(height: itemHeight)
+                }
+            }
+            .padding(innerPadding)
+        }
+        .frame(maxWidth: 72)
+        .background(
+            RoundedRectangle(cornerRadius: 23, style: .continuous)
+                .fill(AppColors.surface)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 23, style: .continuous)
+                        .stroke(AppColors.border, lineWidth: 1)
+                )
+                .shadow(color: Color.black.opacity(0.35), radius: 8, x: 0, y: 4)
+        )
+        .tourTarget("dock", cornerRadius: 23)
+        .padding(.horizontal, 6)
     }
 
     private func dockItem(mode: ViewMode, title: String, icon: String, index: CGFloat, activePosition: CGFloat) -> some View {
