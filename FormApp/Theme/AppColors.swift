@@ -64,6 +64,37 @@ public enum AppColors {
     public static let calendarUnfinishedPill = CalendarPillColors(light: Color(hex: 0xFFD396), body: Color(hex: 0xFF9C59), shade: Color(hex: 0xE46A32))
     public static let calendarMissedPill = CalendarPillColors(light: Color(hex: 0xFF9AAF), body: Color(hex: 0xFF4D69), shade: Color(hex: 0xD92747))
 
+    // Optional tiled Progress calendar. Dark suites use the paint measured from the supplied reference;
+    // Oat keeps pale semantic fills with its deeper status ink. Neutral tiles follow the theme.
+    public struct CalendarTileColors {
+        public let fillTop: Color
+        public let fillBottom: Color
+        public let rim: Color
+        public let glow: Color
+        public let ink: Color
+    }
+
+    public static var calendarCompletedTile: CalendarTileColors {
+        ThemeManager.shared.currentTheme.isDark
+            ? CalendarTileColors(fillTop: Color(hex: 0x114035), fillBottom: Color(hex: 0x0E332B), rim: Color(hex: 0x2A9677), glow: Color(hex: 0x0E674B), ink: Color(hex: 0x72F9D7))
+            : CalendarTileColors(fillTop: Color(hex: 0xE4EFE2), fillBottom: Color(hex: 0xD8EADA), rim: Color(hex: 0x54AF82), glow: Color(hex: 0x1C965C).opacity(0.22), ink: Color(hex: 0x1D7050))
+    }
+    public static var calendarUnfinishedTile: CalendarTileColors {
+        ThemeManager.shared.currentTheme.isDark
+            ? CalendarTileColors(fillTop: Color(hex: 0x4D3B29), fillBottom: Color(hex: 0x3B2F23), rim: Color(hex: 0xB8875C), glow: Color(hex: 0x7E5835), ink: Color(hex: 0xF7CE8A))
+            : CalendarTileColors(fillTop: Color(hex: 0xFBEBD9), fillBottom: Color(hex: 0xF9E4CE), rim: Color(hex: 0xE6974A), glow: Color(hex: 0xDE7612).opacity(0.22), ink: Color(hex: 0x845014))
+    }
+    public static var calendarMissedTile: CalendarTileColors {
+        ThemeManager.shared.currentTheme.isDark
+            ? CalendarTileColors(fillTop: Color(hex: 0x4D2830), fillBottom: Color(hex: 0x402229), rim: Color(hex: 0xA04A5C), glow: Color(hex: 0x9A384B), ink: Color(hex: 0xFB8996))
+            : CalendarTileColors(fillTop: Color(hex: 0xF9E3DC), fillBottom: Color(hex: 0xF7DAD2), rim: Color(hex: 0xDC675F), glow: Color(hex: 0xD0362E).opacity(0.22), ink: Color(hex: 0xAA3E2F))
+    }
+    public static var calendarNeutralTile: CalendarTileColors {
+        CalendarTileColors(fillTop: Color.mix(calendarSurfaceStart, surfaceRaised, 0.75),
+            fillBottom: Color.mix(calendarSurfaceEnd, surfaceRaised, 0.7),
+            rim: border.opacity(0.9), glow: border.opacity(0.35), ink: secondaryText)
+    }
+
     public static var restTimerAccent: Color { presentationColor(Color(hex: 0x12D8D2), purple) }
     public static var restTimerBorder: Color { presentationColor(Color(hex: 0x117D79), Color.mix(border, purple, 0.4)) }
     public static var restTimerSurfaceStart: Color { presentationColor(Color(hex: 0x071A1E), surfaceRaised) }

@@ -768,6 +768,139 @@ final class FormAppTests: XCTestCase {
         XCTAssertFalse(AppStore(persistence: AppStatePersistence(inMemory: true)).homeGlowTiles)
     }
 
+    func testHistoryCalendarKeepsClassicPillsUntilTilesAreChosen() throws {
+        let key = "history_calendar_tiles"
+        let previous = UserDefaults.standard.object(forKey: key)
+        defer {
+            if let previous { UserDefaults.standard.set(previous, forKey: key) }
+            else { UserDefaults.standard.removeObject(forKey: key) }
+        }
+        UserDefaults.standard.removeObject(forKey: key)
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        XCTAssertFalse(store.historyCalendarTiles, "The classic pill calendar stays the default")
+        XCTAssertNil(UserDefaults.standard.object(forKey: key), "Opening the app must not record a choice")
+        store.historyCalendarTiles = true
+        XCTAssertEqual(UserDefaults.standard.object(forKey: key) as? Bool, true)
+        XCTAssertTrue(AppStore(persistence: AppStatePersistence(inMemory: true)).historyCalendarTiles)
+        store.historyCalendarTiles = false
+        XCTAssertFalse(AppStore(persistence: AppStatePersistence(inMemory: true)).historyCalendarTiles)
+    }
+
+    func testCalendarTilesSettingIsTranslatedInEveryLanguage() {
+        XCTAssertEqual(Translations.en["settings.calendarTiles"], "Tiled calendar")
+        for language in ["tr", "de", "fr", "es"] {
+            let table = Translations.forLanguage(language)
+            for key in ["settings.calendarTiles", "settings.calendarTilesSubtitle"] {
+                let value = table[key] ?? ""
+                XCTAssertFalse(value.isEmpty, "\(language) \(key) is missing")
+                XCTAssertNotEqual(value, Translations.en[key], "\(language) \(key) still reads as English")
+            }
+        }
+    }
+
+    func testTiledCalendarAnnouncesDateStatusAndToday() {
+        LanguageManager.setLanguage("en")
+        let date = WorkoutCalendar.parseDate("2026-08-27")!
+        let formatter = DateFormatter()
+        formatter.locale = LanguageManager.locale
+        formatter.dateStyle = .full
+        XCTAssertEqual(historyCalendarDayLabel(date: date, dateString: "2026-08-27", todayStr: "2026-08-27", status: .unfinished),
+            "\(formatter.string(from: date)), Unfinished, Today")
+        XCTAssertTrue(historyCalendarDayLabel(date: date, dateString: "2026-08-27", todayStr: "2026-08-26", status: nil)
+            .hasSuffix(LanguageManager.t("history.future")))
+    }
+
+    @MainActor
+    func testTiledCalendarPaintsReferenceColorsAndRetainsSnapshots() throws {
+        let previousTheme = ThemeManager.shared.currentTheme.id
+        defer { ThemeManager.shared.setThemeId(previousTheme); LanguageManager.setLanguage("en") }
+        LanguageManager.setLanguage("en")
+
+        func render<V: View>(_ view: V, size: CGSize) -> UIImage {
+            let controller = UIHostingController(rootView: view.frame(width: size.width, height: size.height))
+            // Small windows would otherwise inherit the device's safe area and shift the content out of frame.
+            controller.safeAreaRegions = []
+            let window = UIWindow(frame: CGRect(origin: .zero, size: size))
+            window.rootViewController = controller
+            window.makeKeyAndVisible()
+            controller.view.frame = window.bounds
+            controller.view.layoutIfNeeded()
+            RunLoop.main.run(until: Date().addingTimeInterval(0.15))
+            controller.view.layoutIfNeeded()
+            defer { window.isHidden = true }
+            return UIGraphicsImageRenderer(size: size).image { _ in
+                controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+            }
+        }
+        func pixel(_ image: UIImage, x: CGFloat, y: CGFloat) -> (Double, Double, Double) {
+            let cg = image.cgImage!
+            let scale = image.scale
+            var rgba = [UInt8](repeating: 0, count: 4)
+            let context = CGContext(data: &rgba, width: 1, height: 1, bitsPerComponent: 8, bytesPerRow: 4,
+                space: CGColorSpace(name: CGColorSpace.sRGB)!, bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue)!
+            context.draw(cg, in: CGRect(x: -x * scale, y: -(CGFloat(cg.height) - y * scale - 1), width: CGFloat(cg.width), height: CGFloat(cg.height)))
+            return (Double(rgba[0]) / 255, Double(rgba[1]) / 255, Double(rgba[2]) / 255)
+        }
+        func components(_ color: Color) -> (Double, Double, Double) {
+            let resolved = color.resolve(in: EnvironmentValues())
+            return (Double(resolved.red), Double(resolved.green), Double(resolved.blue))
+        }
+
+        for theme in ["default", "oat"] {
+            ThemeManager.shared.setThemeId(theme)
+            // Fill between the glow and the numeral, near the top-left, matches the tile's palette.
+            for colors in [AppColors.calendarCompletedTile, AppColors.calendarUnfinishedTile,
+                           AppColors.calendarMissedTile, AppColors.calendarNeutralTile] {
+                let image = render(CalendarTileMaterial(colors: colors, selected: false, ring: nil)
+                    .padding(10).background(AppColors.calendarSurfaceStart), size: CGSize(width: 61, height: 61))
+                let actual = pixel(image, x: 10 + 41 * 0.16, y: 10 + 41 * 0.2)
+                let expected = components(Color.mix(colors.fillTop, colors.fillBottom, 0.2))
+                XCTAssertEqual(actual.0, expected.0, accuracy: 0.04, "\(theme) red")
+                XCTAssertEqual(actual.1, expected.1, accuracy: 0.04, "\(theme) green")
+                XCTAssertEqual(actual.2, expected.2, accuracy: 0.04, "\(theme) blue")
+            }
+            // Today's ring sits outside the tile in its ink; selection lights the rim in the same ink.
+            let unfinished = AppColors.calendarUnfinishedTile
+            let ringed = render(CalendarTileMaterial(colors: unfinished, selected: false, ring: unfinished.ink)
+                .padding(10).background(AppColors.calendarSurfaceStart), size: CGSize(width: 61, height: 61))
+            let ringOffset = max(1, 41 * 0.027) + max(1.5, 41 * 0.04) / 2
+            let ring = pixel(ringed, x: 10 - ringOffset, y: 30.5)
+            let ink = components(unfinished.ink)
+            XCTAssertEqual(ring.0, ink.0, accuracy: 0.1, "\(theme) ring red")
+            XCTAssertEqual(ring.1, ink.1, accuracy: 0.1, "\(theme) ring green")
+            let selected = render(CalendarTileMaterial(colors: unfinished, selected: true, ring: nil)
+                .padding(10).background(AppColors.calendarSurfaceStart), size: CGSize(width: 61, height: 61))
+            let rim = pixel(selected, x: 30.5, y: 10.6)
+            XCTAssertEqual(rim.0, ink.0, accuracy: 0.1, "\(theme) selected rim red")
+            XCTAssertEqual(rim.1, ink.1, accuracy: 0.1, "\(theme) selected rim green")
+
+            let today = WorkoutCalendar.parseDate("2026-08-27")!
+            let statuses: [String: WorkoutDayStatus] = [
+                "2026-08-03": .completed, "2026-08-06": .completed, "2026-08-07": .completed, "2026-08-10": .completed,
+                "2026-08-17": .completed, "2026-08-18": .completed, "2026-08-24": .completed,
+                "2026-08-04": .missed, "2026-08-14": .missed, "2026-08-25": .missed,
+                "2026-08-11": .unfinished, "2026-08-20": .unfinished, "2026-08-27": .unfinished
+            ]
+            for (width, sizeCategory) in [(CGFloat(393), ContentSizeCategory.large), (CGFloat(320), .extraExtraExtraLarge)] {
+                let card = HistoryTileCalendarCard(monthTitle: "August 2026",
+                    weekdaySymbols: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                    weeks: WorkoutCalendar.monthWeeks(for: today), todayStr: "2026-08-27", statuses: statuses,
+                    selectedDateString: "2026-08-24", canGoBack: true, canGoForward: false,
+                    onPreviousMonth: {}, onNextMonth: {}, onSelectDay: { _ in })
+                    .padding(.horizontal, 20)
+                    .environment(\.sizeCategory, sizeCategory)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                    .background(AppColors.background)
+                let image = render(card, size: CGSize(width: width, height: 640))
+                let attachment = XCTAttachment(image: image)
+                attachment.name = "history-tiles-\(theme)-\(Int(width))"
+                attachment.lifetime = .keepAlways
+                add(attachment)
+                try? image.pngData()?.write(to: URL(fileURLWithPath: snapshotPath("history-tiles-\(theme)-\(Int(width)).png")))
+            }
+        }
+    }
+
     func testGlowTilesSettingIsTranslatedInEveryLanguage() {
         XCTAssertEqual(Translations.en["settings.glowTiles"], "Glowing day tiles")
         for language in ["tr", "de", "fr", "es"] {

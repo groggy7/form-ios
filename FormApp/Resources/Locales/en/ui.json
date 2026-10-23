@@ -319,6 +319,8 @@
   "founders.platformNote": "Unlocks Forced Rep for this Apple Account. The Android app is a separate purchase.",
   "settings.glowTiles": "Glowing day tiles",
   "settings.glowTilesSubtitle": "Neon edge glow and corner highlights on the Home day tiles. Off uses the calmer glass look.",
+  "settings.calendarTiles": "Tiled calendar",
+  "settings.calendarTilesSubtitle": "Progress calendar days appear as lit tiles, with the legend inside the card. Off keeps the classic pills.",
   "theme.default.name": "Obsidian & Mint",
   "theme.default.description": "Canonical high-contrast dark theme",
   "theme.espresso.name": "Espresso & Beige",

@@ -11851,6 +11851,76 @@
         }
       }
     },
+    "settings.calendarTiles": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tiled calendar"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kutulu takvim"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kachelkalender"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calendrier en tuiles"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Calendario en casillas"
+          }
+        }
+      }
+    },
+    "settings.calendarTilesSubtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Progress calendar days appear as lit tiles, with the legend inside the card. Off keeps the classic pills."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "İlerleme takvimindeki günler ışıklı kutular olarak görünür, açıklama kartın içinde yer alır. Kapalıyken klasik yuvarlak işaretler kalır."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tage im Fortschrittskalender erscheinen als leuchtende Kacheln, mit der Legende in der Karte. Aus: klassische runde Markierungen."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Les jours du calendrier de progrès s’affichent en tuiles lumineuses, avec la légende dans la carte. Désactivé : pastilles classiques."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Los días del calendario de Progreso aparecen como casillas iluminadas, con la leyenda dentro de la tarjeta. Desactivado: marcas redondeadas clásicas."
+          }
+        }
+      }
+    },
     "theme.default.name": {
       "extractionState": "manual",
       "localizations": {

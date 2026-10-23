@@ -319,6 +319,8 @@
   "founders.platformNote": "Schaltet Forced Rep für diesen Apple-Account frei. Die Android-App ist ein separater Kauf.",
   "settings.glowTiles": "Leuchtende Tageskacheln",
   "settings.glowTilesSubtitle": "Neon-Randleuchten und Eckenglanz auf den Tageskacheln der Startseite. Aus: ruhigere Glasoptik.",
+  "settings.calendarTiles": "Kachelkalender",
+  "settings.calendarTilesSubtitle": "Tage im Fortschrittskalender erscheinen als leuchtende Kacheln, mit der Legende in der Karte. Aus: klassische runde Markierungen.",
   "theme.default.name": "Obsidian & Minze",
   "theme.default.description": "Kanonisches kontrastreiches dunkles Design",
   "theme.espresso.name": "Espresso & Beige",

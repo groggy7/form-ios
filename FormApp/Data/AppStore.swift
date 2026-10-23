@@ -15,6 +15,7 @@ public final class AppStore: ObservableObject {
     private let defaultRestKey = "default_rest_seconds"
     private let prefillNextSetKey = "prefill_next_set"
     private let homeGlowTilesKey = "home_reference_tiles_v2"
+    private let historyCalendarTilesKey = "history_calendar_tiles"
     private let weightUnitKey = "weight_unit"
     private let barTypeKey = "bar_type"
     private let availablePlatesKey = "available_plates_kg"
@@ -76,6 +77,8 @@ public final class AppStore: ObservableObject {
     @Published public var jointStressRatings: Bool
     /// Reference day tiles are the default; switching off retains the optional Calm material.
     @Published public var homeGlowTiles: Bool
+    /// Progress calendar style: classic satin pills by default, or the optional lit tiles.
+    @Published public var historyCalendarTiles: Bool
     @Published public var weightUnit: WeightUnit {
         didSet {
             guard weightUnit != oldValue, let draft = activeSession else { return }
@@ -217,6 +220,7 @@ public final class AppStore: ObservableObject {
         self.suggestSharing = UserDefaults.standard.object(forKey: "suggest_sharing") as? Bool ?? true
         self.jointStressRatings = UserDefaults.standard.object(forKey: jointStressRatingsKey) as? Bool ?? false
         self.homeGlowTiles = UserDefaults.standard.object(forKey: homeGlowTilesKey) as? Bool ?? true
+        self.historyCalendarTiles = UserDefaults.standard.object(forKey: historyCalendarTilesKey) as? Bool ?? false
         let initialWeightUnit: WeightUnit
         if let savedUnitCode = UserDefaults.standard.string(forKey: weightUnitKey) {
             initialWeightUnit = WeightUnit.fromCode(savedUnitCode)
@@ -406,6 +410,11 @@ public final class AppStore: ObservableObject {
 
         $homeGlowTiles
             .sink { [homeGlowTilesKey] in UserDefaults.standard.set($0, forKey: homeGlowTilesKey) }
+            .store(in: &cancellables)
+
+        $historyCalendarTiles
+            .dropFirst()
+            .sink { [historyCalendarTilesKey] in UserDefaults.standard.set($0, forKey: historyCalendarTilesKey) }
             .store(in: &cancellables)
 
         $weightUnit

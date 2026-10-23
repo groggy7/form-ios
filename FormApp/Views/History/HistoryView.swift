@@ -482,6 +482,25 @@ public struct HistoryView: View {
                     ScrollView {
                         ScrollViewReader { proxy in
                             VStack(spacing: 16) {
+                                if store.historyCalendarTiles {
+                                    HistoryTileCalendarCard(
+                                        monthTitle: monthYearString(from: displayedDate),
+                                        weekdaySymbols: weekdaySymbols(),
+                                        weeks: weeks,
+                                        todayStr: todayStr,
+                                        statuses: statuses,
+                                        selectedDateString: selectedDateString,
+                                        canGoBack: canGoBack,
+                                        canGoForward: !isCurrentMonth,
+                                        onPreviousMonth: { changeMonth(by: -1, allowed: canGoBack) },
+                                        onNextMonth: { changeMonth(by: 1, allowed: !isCurrentMonth) },
+                                        onSelectDay: { dateString in
+                                            selectedDateString = selectedDateString == dateString ? nil : dateString
+                                        }
+                                    )
+                                    .tourTarget("progress.calendar", cornerRadius: tileCalendarCornerRadius)
+                                    .padding(.horizontal, 20)
+                                } else {
                                 // Month Calendar Card
                                 VStack(spacing: 10) {
                         // Month navigation row
@@ -591,6 +610,7 @@ public struct HistoryView: View {
                     }
                     .padding(.horizontal, 20)
                     .padding(.top, 2)
+                                }
 
 
                     // Inline Preview Card

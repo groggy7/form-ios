@@ -319,6 +319,8 @@
   "founders.platformNote": "Desbloquea Forced Rep en esta cuenta de Apple. La app de Android es una compra aparte.",
   "settings.glowTiles": "Casillas de día brillantes",
   "settings.glowTilesSubtitle": "Resplandor neón en los bordes y brillos en las esquinas de las casillas de día de Inicio. Desactivado: cristal más sobrio.",
+  "settings.calendarTiles": "Calendario en casillas",
+  "settings.calendarTilesSubtitle": "Los días del calendario de Progreso aparecen como casillas iluminadas, con la leyenda dentro de la tarjeta. Desactivado: marcas redondeadas clásicas.",
   "theme.default.name": "Obsidiana & Menta",
   "theme.default.description": "Tema oscuro canónico de alto contraste",
   "theme.espresso.name": "Espresso & Beige",

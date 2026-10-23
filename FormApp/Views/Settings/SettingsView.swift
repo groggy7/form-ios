@@ -304,6 +304,30 @@ public struct SettingsView: View {
                         .tint(AppColors.accent)
                         .padding(14)
                         .accessibilityIdentifier("toggle-glow-tiles")
+
+                        Divider().background(AppColors.border)
+
+                        Toggle(isOn: $store.historyCalendarTiles) {
+                            HStack(spacing: 12) {
+                                Image(systemName: "square.grid.3x3.fill")
+                                    .font(.system(size: 16))
+                                    .foregroundStyle(store.historyCalendarTiles ? AppColors.accent : AppColors.secondaryText)
+                                    .frame(width: 22)
+                                VStack(alignment: .leading, spacing: 2) {
+                                    Text(LanguageManager.t("settings.calendarTiles"))
+                                        .font(.app(size: 15))
+                                        .foregroundStyle(AppColors.text)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                    Text(LanguageManager.t("settings.calendarTilesSubtitle"))
+                                        .font(.app(size: 12))
+                                        .foregroundStyle(AppColors.secondaryText)
+                                        .frame(maxWidth: .infinity, alignment: .leading)
+                                }
+                            }
+                        }
+                        .tint(AppColors.accent)
+                        .padding(14)
+                        .accessibilityIdentifier("toggle-calendar-tiles")
                     }
 
                     // Weight Unit

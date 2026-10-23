@@ -319,6 +319,8 @@
   "founders.platformNote": "Débloque Forced Rep pour ce compte Apple. L’application Android est un achat séparé.",
   "settings.glowTiles": "Tuiles de jour lumineuses",
   "settings.glowTilesSubtitle": "Halo néon sur les bords et reflets dans les coins des tuiles de jour de l’accueil. Désactivé : verre plus sobre.",
+  "settings.calendarTiles": "Calendrier en tuiles",
+  "settings.calendarTilesSubtitle": "Les jours du calendrier de progrès s’affichent en tuiles lumineuses, avec la légende dans la carte. Désactivé : pastilles classiques.",
   "theme.default.name": "Obsidienne & Menthe",
   "theme.default.description": "Thème sombre canonique à fort contraste",
   "theme.espresso.name": "Espresso & Beige",

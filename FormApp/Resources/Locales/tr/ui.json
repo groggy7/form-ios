@@ -319,6 +319,8 @@
   "founders.platformNote": "Bu Apple Hesabında Forced Rep'in kilidini açar. Android uygulaması ayrı bir satın alımdır.",
   "settings.glowTiles": "Parlayan gün kutuları",
   "settings.glowTilesSubtitle": "Ana sayfadaki gün kutularında neon kenar parlaması ve köşe vurguları. Kapalıyken daha sakin cam görünümü kullanılır.",
+  "settings.calendarTiles": "Kutulu takvim",
+  "settings.calendarTilesSubtitle": "İlerleme takvimindeki günler ışıklı kutular olarak görünür, açıklama kartın içinde yer alır. Kapalıyken klasik yuvarlak işaretler kalır.",
   "theme.default.name": "Obsidyen & Nane",
   "theme.default.description": "Orijinal yüksek kontrastlı koyu tema",
   "theme.espresso.name": "Espresso & Bej",
