@@ -958,6 +958,97 @@ final class FormAppTests: XCTestCase {
         }
     }
 
+    /// The supplied reference's own tiles (Mon 12 emerald, Tue 13 rose, Thu 15 amber, plus neutral): the date, highlight
+    /// and title follow the reference's spacing (fractions of the tile width) and line strength.
+    @MainActor
+    func testReferenceHomeTilesSpaceTextAndHighlightLikeTheSuppliedReference() throws {
+        func scrollViews(in view: UIView) -> [UIScrollView] {
+            (view as? UIScrollView).map { [$0] } ?? view.subviews.flatMap { scrollViews(in: $0) }
+        }
+        let previousTheme = ThemeManager.shared.currentTheme.id
+        defer { ThemeManager.shared.setThemeId(previousTheme) }
+        ThemeManager.shared.setThemeId("default")
+        let names = ["Chest & Triceps", "Back & Biceps", "Quads & Calves", "Upper Body & Shoulders"]
+        let workouts = zip([1, 2, 4, 5], names).enumerated().map {
+            Workout(id: "tile-\($0.offset)", day: $0.element.0, title: $0.element.1)
+        }
+        let program = Program(id: "tile-fixture", name: "Fixture", workouts: workouts)
+        let content = WorkoutDayStrip(program: program, workouts: workouts,
+            calendar: WeekCalendar(today: 4, numbers: [12, 13, 14, 15, 16, 17, 18]),
+            activeWorkoutId: nil, completedKeys: ["tile-fixture:tile-0"],
+            unfinishedKeys: ["tile-fixture:tile-2"], onSelectWorkout: { _ in })
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .background(AppColors.background)
+        let controller = UIHostingController(rootView: content)
+        let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 393, height: 200))
+        window.rootViewController = controller
+        window.makeKeyAndVisible()
+        defer { window.isHidden = true }
+        controller.view.frame = window.bounds
+        controller.view.layoutIfNeeded()
+        RunLoop.main.run(until: Date().addingTimeInterval(0.3))
+        controller.view.layoutIfNeeded()
+        let scroll = try XCTUnwrap(scrollViews(in: controller.view).first)
+        let tileWidth = (scroll.contentSize.width - 40 - 3 * 8) / 4
+        let image = UIGraphicsImageRenderer(size: controller.view.bounds.size).image { _ in
+            controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+        let attachment = XCTAttachment(image: image)
+        attachment.name = "home-day-tiles-reference-layout"
+        attachment.lifetime = .keepAlways
+        add(attachment)
+
+        let cgImage = try XCTUnwrap(image.cgImage)
+        var pixels = [UInt8](repeating: 0, count: cgImage.width * cgImage.height * 4)
+        let context = try XCTUnwrap(CGContext(data: &pixels, width: cgImage.width, height: cgImage.height,
+            bitsPerComponent: 8, bytesPerRow: cgImage.width * 4, space: CGColorSpace(name: CGColorSpace.sRGB)!,
+            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue | CGBitmapInfo.byteOrder32Big.rawValue))
+        context.draw(cgImage, in: CGRect(x: 0, y: 0, width: cgImage.width, height: cgImage.height))
+        func luminance(_ x: Int, _ y: Int) -> Double {
+            let offset = (y * cgImage.width + x) * 4
+            return (0.2126 * Double(pixels[offset]) + 0.7152 * Double(pixels[offset + 1])
+                + 0.0722 * Double(pixels[offset + 2])) / 255
+        }
+        let scale = image.scale
+        let origin = scroll.convert(CGPoint.zero, to: controller.view)
+        let w = tileWidth * scale
+        for index in 0..<4 {
+            let left = (origin.x + 20 + CGFloat(index) * (tileWidth + 8)) * scale
+            // The row is centred in the scroll view, so find the tile's top edge from its rim.
+            let rimColumn = Int(left + 0.3 * w)
+            let top = CGFloat(try XCTUnwrap((0..<cgImage.height).first { luminance(rimColumn, $0) > 0.25 }))
+            let band = Int(left + 0.12 * w)..<Int(left + 0.88 * w)
+            /// First and last rows in `range` (fractions of w) holding glyph pixels brighter than `threshold`.
+            func glyphRows(_ range: ClosedRange<CGFloat>, threshold: Double = 0.55) -> (CGFloat, CGFloat)? {
+                let rows = (Int(top + range.lowerBound * w)...Int(top + range.upperBound * w)).filter { y in
+                    band.contains { luminance($0, y) > threshold }
+                }
+                guard let first = rows.first, let last = rows.last else { return nil }
+                return ((CGFloat(first) - top) / w, (CGFloat(last + 1) - top) / w)
+            }
+            let label = try XCTUnwrap(glyphRows(0.10...0.30))
+            let date = try XCTUnwrap(glyphRows(0.31...0.64))
+            let title = try XCTUnwrap(glyphRows(0.74...0.88))
+            // Highlight: the centre column's brightest excess over the surface beside it, between date and title.
+            let centre = Int(left + w / 2)
+            let excess = (Int(top + 0.60 * w)...Int(top + 0.76 * w)).map { y -> (Int, Double) in
+                (y, luminance(centre, y) - luminance(Int(left + 0.2 * w), y))
+            }
+            let total = excess.reduce(0) { $0 + max(0, $1.1) }
+            let highlight = (excess.reduce(0) { $0 + Double($1.0) * max(0, $1.1) } / max(total, 1e-6) + 0.5 - Double(top)) / Double(w)
+            let peak = excess.map(\.1).max() ?? 0
+            print(String(format: "reference tile %d: label %.4f-%.4f date %.4f-%.4f highlight %.4f (peak %.3f) title %.4f height %.2f",
+                index, label.0, label.1, date.0, date.1, highlight, peak, title.0, scroll.contentSize.height - 4))
+            // Reference: 0.127w from weekday baseline to date cap top, 0.224w from date baseline to title cap top,
+            // highlight 52% of the way down that gap, peak 0.43–0.56 brighter than the surface.
+            XCTAssertEqual(date.0 - label.1, 0.127, accuracy: 0.012, "Weekday to date (tile \(index))")
+            XCTAssertEqual(title.0 - date.1, 0.224, accuracy: 0.012, "Date to title (tile \(index))")
+            XCTAssertEqual((highlight - date.1) / (title.0 - date.1), 0.52, accuracy: 0.06,
+                "Highlight between date and title (tile \(index))")
+            XCTAssertGreaterThan(peak, 0.38, "Highlight is as strong as the reference's (tile \(index))")
+        }
+    }
+
     @MainActor
     func testBarbellPlateSnapshotsAtNarrowAndLargerLocalizedText() throws {
         let previous = LanguageManager.shared.currentLanguage

@@ -160,6 +160,15 @@ public enum AppColors {
         return Color(hex: 0xD0D7DC)
     }
 
+    /// Peak of the highlight between date and title, sampled from the reference; neutral is the silver ink at 82%.
+    public static func homeDayGlowDivider(_ statusTint: Color?) -> Color {
+        let glass = homeDayGlowColors
+        if statusTint == glass.completedLight { return Color(hex: 0x77C0A7) }
+        if statusTint == glass.missedLight { return Color(hex: 0xDA737E) }
+        if statusTint == glass.unfinishedLight { return Color(hex: 0xC6915A) }
+        return Color(hex: 0xAAB0B4)
+    }
+
     // Split presentation colors
     
     // History Day Detail Sheet specific colors matching design reference

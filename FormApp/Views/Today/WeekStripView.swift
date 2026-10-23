@@ -92,6 +92,7 @@ struct WorkoutDayStrip: View {
     var glowTiles: Bool = true
 
     @State private var tileWidth: CGFloat = 82
+    @Environment(\.displayScale) private var displayScale
     @ScaledMetric(relativeTo: .caption2) private var labelSize: CGFloat = 11
     @ScaledMetric(relativeTo: .title2) private var numberSize: CGFloat = 25
 
@@ -141,7 +142,10 @@ struct WorkoutDayStrip: View {
                         Button(action: {
                             onSelectWorkout(workout.id)
                         }) {
-                            VStack(spacing: glowTiles ? tileWidth * 0.09 : 6) {
+                            // The reference splits the two 0.09w gaps unevenly: the date sits closer to the weekday and
+                            // the highlight is centred between date and title. Text, insets and the gaps' total are
+                            // unchanged, so the tile keeps its size.
+                            VStack(spacing: glowTiles ? 0 : 6) {
                                 let dayLabel = LanguageManager.workoutDays.indices.contains(dayIndex)
                                     ? String(LanguageManager.workoutDays[dayIndex].prefix(3)).uppercased()
                                     : "DAY"
@@ -162,13 +166,20 @@ struct WorkoutDayStrip: View {
                                     .lineLimit(1)
                                     .overlay(alignment: .bottom) {
                                         if glowTiles {
-                                            let light = statusTint ?? glass.neutralRim
-                                            Rectangle().fill(LinearGradient(colors: [light.opacity(0), light.opacity(0.65), light.opacity(0)],
+                                            let ink = isDark ? AppColors.homeDayGlowDivider(statusTint)
+                                                : (statusTint ?? glass.neutralRim).opacity(0.65)
+                                            // Whole pixels, so the core keeps the reference's full strength.
+                                            let thickness = max(1, (tileWidth * 0.0075 * displayScale).rounded())
+                                            let top = (tileWidth * 0.058 * displayScale - thickness / 2).rounded()
+                                            Rectangle().fill(LinearGradient(colors: [ink.opacity(0), ink, ink.opacity(0)],
                                                 startPoint: .leading, endPoint: .trailing))
-                                                .frame(width: tileWidth * 0.25, height: tileWidth * 0.004).offset(y: tileWidth * 0.045)
+                                                .frame(width: tileWidth * 0.25, height: thickness / displayScale)
+                                                .alignmentGuide(.bottom) { $0[.top] }
+                                                .offset(y: top / displayScale)
                                                 .accessibilityHidden(true)
                                         }
                                     }
+                                    .padding(.top, glowTiles ? tileWidth * 0.04 : 0)
 
                                 Text(workout.displayTitle(programId: program.id))
                                     .font(.app(size: glowTiles ? labelSize * tileWidth / 110 : labelSize))
@@ -177,6 +188,7 @@ struct WorkoutDayStrip: View {
                                     .lineLimit(2, reservesSpace: true)
                                     .fixedSize(horizontal: false, vertical: true)
                                     .frame(maxWidth: .infinity)
+                                    .padding(.top, glowTiles ? tileWidth * 0.14 : 0)
                             }
                             .padding(.horizontal, glowTiles ? tileWidth * 0.125 : 8)
                             .padding(.vertical, glowTiles ? tileWidth * 0.17 : 12)
