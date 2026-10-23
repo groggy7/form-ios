@@ -77,7 +77,7 @@ public final class AppStore: ObservableObject {
     @Published public var jointStressRatings: Bool
     /// Reference day tiles are the default; switching off retains the optional Calm material.
     @Published public var homeGlowTiles: Bool
-    /// Progress calendar style: classic satin pills by default, or the optional lit tiles.
+    /// Progress calendar style: lit tiles by default; switching off restores the classic satin pills.
     @Published public var historyCalendarTiles: Bool
     @Published public var weightUnit: WeightUnit {
         didSet {
@@ -220,7 +220,7 @@ public final class AppStore: ObservableObject {
         self.suggestSharing = UserDefaults.standard.object(forKey: "suggest_sharing") as? Bool ?? true
         self.jointStressRatings = UserDefaults.standard.object(forKey: jointStressRatingsKey) as? Bool ?? false
         self.homeGlowTiles = UserDefaults.standard.object(forKey: homeGlowTilesKey) as? Bool ?? true
-        self.historyCalendarTiles = UserDefaults.standard.object(forKey: historyCalendarTilesKey) as? Bool ?? false
+        self.historyCalendarTiles = UserDefaults.standard.object(forKey: historyCalendarTilesKey) as? Bool ?? true
         let initialWeightUnit: WeightUnit
         if let savedUnitCode = UserDefaults.standard.string(forKey: weightUnitKey) {
             initialWeightUnit = WeightUnit.fromCode(savedUnitCode)

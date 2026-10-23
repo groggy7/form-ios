@@ -768,7 +768,7 @@ final class FormAppTests: XCTestCase {
         XCTAssertFalse(AppStore(persistence: AppStatePersistence(inMemory: true)).homeGlowTiles)
     }
 
-    func testHistoryCalendarKeepsClassicPillsUntilTilesAreChosen() throws {
+    func testHistoryCalendarDefaultsToTilesAndPersistsTheChoice() throws {
         let key = "history_calendar_tiles"
         let previous = UserDefaults.standard.object(forKey: key)
         defer {
@@ -777,13 +777,13 @@ final class FormAppTests: XCTestCase {
         }
         UserDefaults.standard.removeObject(forKey: key)
         let store = AppStore(persistence: AppStatePersistence(inMemory: true))
-        XCTAssertFalse(store.historyCalendarTiles, "The classic pill calendar stays the default")
+        XCTAssertTrue(store.historyCalendarTiles, "The tiled calendar is the default")
         XCTAssertNil(UserDefaults.standard.object(forKey: key), "Opening the app must not record a choice")
-        store.historyCalendarTiles = true
-        XCTAssertEqual(UserDefaults.standard.object(forKey: key) as? Bool, true)
-        XCTAssertTrue(AppStore(persistence: AppStatePersistence(inMemory: true)).historyCalendarTiles)
         store.historyCalendarTiles = false
+        XCTAssertEqual(UserDefaults.standard.object(forKey: key) as? Bool, false)
         XCTAssertFalse(AppStore(persistence: AppStatePersistence(inMemory: true)).historyCalendarTiles)
+        store.historyCalendarTiles = true
+        XCTAssertTrue(AppStore(persistence: AppStatePersistence(inMemory: true)).historyCalendarTiles)
     }
 
     func testCalendarTilesSettingIsTranslatedInEveryLanguage() {
