@@ -243,15 +243,18 @@ struct SessionMovementIcon: View {
     @ObservedObject var media: SessionExerciseMedia
     let rowId: String
     let active: Bool
+    /// The compact strip shrinks the tile; the corner keeps its 11pt-at-72pt proportion.
+    var size: CGFloat = 72
 
     var body: some View {
+        let corner = size * 11 / 72
         ZStack {
             if let video = media.tiles[rowId] { SessionVideoForeground(video: video, active: active) }
         }
-        .frame(width: 72, height: 72)
+        .frame(width: size, height: size)
         .background(ExerciseMediaBackdrop())
-        .clipShape(RoundedRectangle(cornerRadius: 11, style: .continuous))
-        .overlay(RoundedRectangle(cornerRadius: 11, style: .continuous).stroke(AppColors.border.opacity(0.4), lineWidth: 1))
+        .clipShape(RoundedRectangle(cornerRadius: corner, style: .continuous))
+        .overlay(RoundedRectangle(cornerRadius: corner, style: .continuous).stroke(AppColors.border.opacity(0.4), lineWidth: 1))
         .accessibilityHidden(true)
     }
 }

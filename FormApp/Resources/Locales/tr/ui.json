@@ -992,6 +992,8 @@
   "session.finishBtn": "Bitir",
   "session.prevExercise": "Önceki egzersiz",
   "session.nextExercise": "Sonraki egzersiz",
+  "session.strip.collapse": "Egzersiz kartlarını daralt",
+  "session.strip.expand": "Egzersiz kartlarını genişlet",
   "session.anomalous_weight.title": "Ağırlığı Onayla",
   "session.anomalous_weight.message_with_previous": "{weight} girdiniz (önceki en yüksek: {previous}). Bu değer doğru mu?",
   "session.anomalous_weight.message_standalone": "{weight} girdiniz. Bu olağandışı yüksek bir ağırlık. Bu değer doğru mu?",

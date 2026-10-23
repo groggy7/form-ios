@@ -992,6 +992,8 @@
   "session.finishBtn": "Beenden",
   "session.prevExercise": "Vorherige Übung",
   "session.nextExercise": "Nächste Übung",
+  "session.strip.collapse": "Übungskarten einklappen",
+  "session.strip.expand": "Übungskarten ausklappen",
   "session.anomalous_weight.title": "Gewicht bestätigen",
   "session.anomalous_weight.message_with_previous": "Du hast {weight} eingegeben (bisheriger Höchstwert: {previous}). Stimmt das?",
   "session.anomalous_weight.message_standalone": "Du hast {weight} eingegeben. Das ist ungewöhnlich schwer. Stimmt das?",

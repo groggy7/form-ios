@@ -13954,3 +13954,117 @@ final class AuditFixRegressionTests: XCTestCase {
         XCTAssertFalse(store.state.history.contains { $0.id == draft.id })
     }
 }
+
+/// The session exercise strip collapses to compact rows that never clip a name, and remembers the choice.
+@MainActor
+final class SessionStripCollapseTests: XCTestCase {
+    private let pushDay = [
+        "barbell-bench-press", "dumbbell-seated-shoulder-press", "pec-deck-fly", "cable-lateral-raise",
+        "cable-seated-rear-delt-fly-with-chest-support", "lever-seated-rear-delt-row"
+    ].map { Exercise(id: $0, name: $0, exerciseId: $0, sets: 3) }
+
+    func testStripStartsExpandedAndPersistsTheChoice() {
+        let key = "session_strip_collapsed"
+        let previous = UserDefaults.standard.object(forKey: key)
+        defer {
+            if let previous { UserDefaults.standard.set(previous, forKey: key) }
+            else { UserDefaults.standard.removeObject(forKey: key) }
+        }
+        UserDefaults.standard.removeObject(forKey: key)
+        let store = AppStore(persistence: AppStatePersistence(inMemory: true))
+        XCTAssertFalse(store.sessionStripCollapsed, "The exercise strip starts expanded")
+        XCTAssertNil(UserDefaults.standard.object(forKey: key), "Opening the app must not record a choice")
+        store.sessionStripCollapsed = true
+        XCTAssertTrue(AppStore(persistence: AppStatePersistence(inMemory: true)).sessionStripCollapsed)
+        store.sessionStripCollapsed = false
+        XCTAssertFalse(AppStore(persistence: AppStatePersistence(inMemory: true)).sessionStripCollapsed)
+    }
+
+    func testStripLabelsAreTranslated() {
+        XCTAssertEqual(Translations.en["session.strip.collapse"], "Collapse exercise cards")
+        XCTAssertEqual(Translations.en["session.strip.expand"], "Expand exercise cards")
+        for language in ["tr", "de", "fr", "es"] {
+            for key in ["session.strip.collapse", "session.strip.expand"] {
+                let value = Translations.forLanguage(language)[key]
+                XCTAssertNotNil(value, "\(language) \(key)")
+                XCTAssertNotEqual(value, Translations.en[key], "\(language) \(key) still reads as English")
+            }
+        }
+    }
+
+    func testCompactNamesFitTwoLinesWithoutClippingInEveryLanguage() {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        for language in ["en", "tr", "de", "fr", "es"] {
+            LanguageManager.setLanguage(language)
+            let labels = pushDay.enumerated().map { "\($0.offset + 1).\u{00A0}\($0.element.displayName)" }
+            for scale in [TextWidthScale.minFactor, 1, TextWidthScale.maxFactor] {
+                let metrics = SessionStripMetrics.measure(labels, scale: scale)
+                let font = UIFont.systemFont(ofSize: 11 * scale, weight: .bold)
+                var allFitTwoLines = true
+                for (label, width) in zip(labels, metrics.compactLabelWidths) {
+                    let measured = SessionStripMetrics.lineBreaks(label, font: font, width: width - 2)
+                    // Two lines, never split inside a word, whenever the widest card allows it; never clipped either way.
+                    if SessionStripMetrics.lineBreaks(label, font: font, width: SessionStripMetrics.compactLabelMax).fitsTwoLines {
+                        XCTAssertTrue(measured.fitsTwoLines, "\(language) ×\(scale) \(label)")
+                    } else { allFitTwoLines = false }
+                    XCTAssertLessThanOrEqual(measured.height + 2 * SessionStripMetrics.cardPadding, metrics.compactCardHeight,
+                        "\(language) ×\(scale) \(label) fits the card height")
+                    XCTAssertLessThanOrEqual(width, SessionStripMetrics.compactLabelMax + 2)
+                }
+                if allFitTwoLines { XCTAssertEqual(metrics.compactCardHeight, 56, accuracy: 1, "\(language) ×\(scale)") }
+                if scale == 1 { XCTAssertTrue(allFitTwoLines, "\(language): this push day's names all fit two lines") }
+                XCTAssertEqual(metrics.expandedCardHeight, 120, accuracy: 1, "\(language) ×\(scale)")
+            }
+        }
+    }
+
+    func testOverlongNamesWrapAndGrowEveryCardInsteadOfClipping() {
+        let label = "1. " + Array(repeating: "Extraordinarily", count: 8).joined(separator: " ")
+        let metrics = SessionStripMetrics.measure([label, "2. Squat"], scale: 1)
+        XCTAssertEqual(metrics.compactLabelWidths[0], SessionStripMetrics.compactLabelMax + 2)
+        XCTAssertGreaterThan(metrics.compactCardHeight, 56)
+        XCTAssertLessThan(metrics.compactLabelWidths[1], 80, "Short names keep a narrow single-line card")
+    }
+
+    func testRenderedStripShrinksAndKeepsCompactRows() throws {
+        let previous = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(previous) }
+        func scrollViews(in view: UIView) -> [UIScrollView] {
+            (view as? UIScrollView).map { [$0] } ?? view.subviews.flatMap { scrollViews(in: $0) }
+        }
+        let media = SessionExerciseMedia()
+        for (language, width) in [("en", CGFloat(393)), ("de", CGFloat(320)), ("tr", CGFloat(320))] {
+            LanguageManager.setLanguage(language)
+            var heights: [Bool: CGFloat] = [:]
+            for collapsed in [false, true] {
+                let strip = SessionExerciseStrip(exercises: pushDay, currentIndex: 1,
+                    setsByExercise: [pushDay[0].id: [ExerciseSetLog(setNumber: 1, isCompleted: true)]],
+                    media: media, inspectingExerciseId: nil, collapsed: .constant(collapsed), onSelect: { _ in })
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                    .background(AppColors.background)
+                let controller = UIHostingController(rootView: strip)
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 260))
+                window.rootViewController = controller
+                window.makeKeyAndVisible()
+                controller.view.frame = window.bounds
+                controller.view.layoutIfNeeded()
+                RunLoop.main.run(until: Date().addingTimeInterval(0.15))
+                controller.view.layoutIfNeeded()
+                let scroll = try XCTUnwrap(scrollViews(in: controller.view).first)
+                heights[collapsed] = scroll.contentSize.height
+                XCTAssertGreaterThan(scroll.contentSize.width, scroll.bounds.width, "Further cards peek and scroll")
+                let image = UIGraphicsImageRenderer(size: controller.view.bounds.size).image { _ in
+                    controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+                }
+                let attachment = XCTAttachment(image: image)
+                attachment.name = "session-strip-\(language)-\(Int(width))-\(collapsed ? "compact" : "expanded")"
+                attachment.lifetime = .keepAlways
+                add(attachment)
+                window.isHidden = true
+            }
+            XCTAssertEqual(heights[false] ?? 0, 130, accuracy: 1, "\(language) expanded: 10pt inset and 120pt cards")
+            XCTAssertEqual(heights[true] ?? 0, 66, accuracy: 1, "\(language) compact: 10pt inset and 56pt cards")
+        }
+    }
+}

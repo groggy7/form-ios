@@ -992,6 +992,8 @@
   "session.finishBtn": "Terminer",
   "session.prevExercise": "Exercice précédent",
   "session.nextExercise": "Exercice suivant",
+  "session.strip.collapse": "Réduire les cartes d’exercice",
+  "session.strip.expand": "Développer les cartes d’exercice",
   "session.anomalous_weight.title": "Confirmer le poids",
   "session.anomalous_weight.message_with_previous": "Vous avez saisi {weight} (le maximum précédent était {previous}). Est-ce exact ?",
   "session.anomalous_weight.message_standalone": "Vous avez entré {weight}. C'est inhabituellement lourd. Est-ce exact ?",

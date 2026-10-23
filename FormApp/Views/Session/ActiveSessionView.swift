@@ -29,6 +29,7 @@ public struct ActiveSessionView: View {
     @State private var swappingExercise: Exercise? = nil
     @State private var pendingSwap: (exerciseId: String, substituteId: String)? = nil
     @ObservedObject private var tour = TourController.shared
+    @State private var compactHeight = false
 
     /// Workout tours start only while no sheet, detail or summary covers the exercise screen.
     private var tourIdle: Bool {
@@ -287,81 +288,14 @@ public struct ActiveSessionView: View {
                     .padding(.vertical, 8)
                     .background(AppColors.background)
 
+                    // The strip stays pinned above the sets, like Android, unless the window is too short for both.
+                    if !compactHeight { exerciseStrip }
+
                     // Main Content
                     ScrollViewReader { tourProxy in
                     ScrollView {
                         VStack(spacing: 20) {
-                            // Exercise horizontal card carousel
-                            ScrollViewReader { scrollProxy in
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 10) {
-                                        ForEach(Array(exercises.enumerated()), id: \.element.id) { idx, ex in
-                                            let isSel = idx == currentIndex
-                                            let sets = activeDraft.setsByExercise[ex.id] ?? []
-                                            let isAllDone = !sets.isEmpty && sets.allSatisfy { $0.isCompleted }
-
-                                            Button(action: {
-                                                sessionMedia.freezeActive()
-                                                if isSel {
-                                                    inspectingExerciseId = ex.id
-                                                } else {
-                                                    store.updateActiveSession { d in
-                                                        var copy = d
-                                                        copy.currentExerciseIndex = idx
-                                                        return copy
-                                                    }
-                                                }
-                                            }) {
-                                                ZStack(alignment: .topTrailing) {
-                                                    VStack(spacing: 4) {
-                                                        SessionMovementIcon(
-                                                            media: sessionMedia, rowId: ex.id,
-                                                            active: isSel && inspectingExerciseId == nil
-                                                        )
-
-                                                        Text("\(idx + 1). \(ex.displayName)")
-                                                            .font(.app(size: 11, weight: isSel ? .bold : .medium))
-                                                            .foregroundStyle(isSel ? AppColors.text : AppColors.muted)
-                                                            .lineLimit(2)
-                                                            .multilineTextAlignment(.center)
-                                                            .frame(maxWidth: .infinity, minHeight: 28)
-                                                    }
-                                                    .padding(8)
-                                                    .frame(width: 110)
-                                                    .background(
-                                                        RoundedRectangle(cornerRadius: 13, style: .continuous)
-                                                            .fill(AppColors.surface)
-                                                            .overlay(
-                                                                RoundedRectangle(cornerRadius: 13, style: .continuous)
-                                                                    .strokeBorder(isSel ? AppColors.accent : AppColors.border, lineWidth: 1)
-                                                            )
-                                                    )
-
-                                                    if isAllDone {
-                                                        Image(systemName: "checkmark.circle.fill")
-                                                            .font(.system(size: 16))
-                                                            .foregroundStyle(AppColors.accent)
-                                                            .padding(4)
-                                                    }
-                                                }
-                                            }
-                                            .buttonStyle(.plain)
-                                            .id(ex.id)
-                                        }
-                                    }
-                                    .padding(.horizontal, 20)
-                                    .padding(.top, 10)
-                                }
-                                .tourTarget("workout.exercises", cornerRadius: 13,
-                                            contentInsets: EdgeInsets(top: 10, leading: 20, bottom: 0, trailing: 20))
-                                .onChange(of: currentIndex) { _, newIdx in
-                                    if exercises.indices.contains(newIdx) {
-                                        withAnimation {
-                                            scrollProxy.scrollTo(exercises[newIdx].id, anchor: .center)
-                                        }
-                                    }
-                                }
-                            }
+                            if compactHeight { exerciseStrip }
 
                             // Current Exercise Card
                             if let exercise = currentExercise {
@@ -499,6 +433,7 @@ public struct ActiveSessionView: View {
                                 .padding(.horizontal, 20)
                             }
                         }
+                        .padding(.top, compactHeight ? 0 : 10)
                         .padding(.bottom, 20)
                     }
                     .tourScrollable(tourProxy)
@@ -590,6 +525,7 @@ public struct ActiveSessionView: View {
                         }
                     }
                 }
+                .onGeometryChange(for: Bool.self) { $0.size.height < 480 } action: { compactHeight = $0 }
             }
 
             if isCelebrationVisible, let msg = celebratoryNoticeMessage, !isWarningVisible {
@@ -823,6 +759,26 @@ public struct ActiveSessionView: View {
                 Text(LanguageManager.t("session.anomalous_weight.message_with_previous", ["weight": weightStr, "previous": prevStr]))
             } else {
                 Text(LanguageManager.t("session.anomalous_weight.message_standalone", ["weight": weightStr]))
+            }
+        }
+    }
+
+    /// The session's exercise cards; the grabber collapses them to compact rows (docs/design/form-design-system.md).
+    private var exerciseStrip: some View {
+        let activeDraft = currentDraft
+        let exercises = activeDraft.workout.exercises
+        let currentIndex = min(max(0, activeDraft.currentExerciseIndex), max(0, exercises.count - 1))
+        return SessionExerciseStrip(exercises: exercises, currentIndex: currentIndex, setsByExercise: activeDraft.setsByExercise,
+            media: sessionMedia, inspectingExerciseId: inspectingExerciseId, collapsed: $store.sessionStripCollapsed) { idx in
+            sessionMedia.freezeActive()
+            if idx == currentIndex {
+                inspectingExerciseId = exercises[idx].id
+            } else {
+                store.updateActiveSession { d in
+                    var copy = d
+                    copy.currentExerciseIndex = idx
+                    return copy
+                }
             }
         }
     }
@@ -1312,5 +1268,242 @@ private struct SessionElapsedTime: View {
                 .font(.app(size: 12, weight: .semibold, design: .monospaced))
                 .foregroundStyle(AppColors.accent)
         }
+    }
+}
+
+/// Label widths and card heights of both strip layouts. Compact names are never clipped: a name takes the
+/// narrowest width that holds it in two lines, and past the widest card it wraps and every card grows taller.
+struct SessionStripMetrics: Equatable {
+    static let cardPadding: CGFloat = 8
+    static let expandedWidth: CGFloat = 110
+    static let expandedThumb: CGFloat = 72
+    static let compactThumb: CGFloat = 40
+    static let compactLabelGap: CGFloat = 8
+    static let compactSingleLineMax: CGFloat = 120
+    static let compactLabelMax: CGFloat = 220
+
+    let compactLabelWidths: [CGFloat]
+    let compactCardHeight: CGFloat
+    let expandedCardHeight: CGFloat
+
+    static func compactWidth(labelWidth: CGFloat) -> CGFloat {
+        cardPadding + compactThumb + compactLabelGap + labelWidth + cardPadding
+    }
+
+    @MainActor private static var cache: [String: SessionStripMetrics] = [:]
+
+    /// Measured with the selected (bold) weight, so selecting a card never rewraps it.
+    @MainActor static func measure(_ labels: [String], scale: CGFloat = TextWidthScale.factor) -> SessionStripMetrics {
+        let key = "\(scale)|" + labels.joined(separator: "\n")
+        if let cached = cache[key] { return cached }
+        let font = UIFont.systemFont(ofSize: 11 * scale, weight: .bold)
+        let compact = labels.map { label -> (CGFloat, CGFloat) in
+            let single = ceil((label as NSString).size(withAttributes: [.font: font]).width)
+            let width: CGFloat
+            if single <= compactSingleLineMax {
+                width = single
+            } else if !lineBreaks(label, font: font, width: compactLabelMax).fitsTwoLines {
+                width = compactLabelMax
+            } else {
+                var low = ceil(single / 2), high = compactLabelMax
+                while low < high {
+                    let middle = floor((low + high) / 2)
+                    if lineBreaks(label, font: font, width: middle).fitsTwoLines { high = middle } else { low = middle + 1 }
+                }
+                width = low
+            }
+            // SwiftUI's line breaking can differ from TextKit by a fraction of a point.
+            return (width + 2, lineBreaks(label, font: font, width: width).height)
+        }
+        let metrics = SessionStripMetrics(
+            compactLabelWidths: compact.map(\.0),
+            compactCardHeight: max(compactThumb, compact.map(\.1).max() ?? 0) + 2 * cardPadding,
+            expandedCardHeight: expandedThumb + 4 + max(28, ceil(2 * font.lineHeight)) + 2 * cardPadding)
+        cache[key] = metrics
+        return metrics
+    }
+
+    /// Lays `text` out at `width`. It fits when it takes two lines at most, broken only at spaces or after hyphens,
+    /// never inside a word.
+    static func lineBreaks(_ text: String, font: UIFont, width: CGFloat) -> (fitsTwoLines: Bool, lines: Int, height: CGFloat) {
+        let storage = NSTextStorage(string: text, attributes: [.font: font])
+        let layout = NSLayoutManager()
+        let container = NSTextContainer(size: CGSize(width: width, height: .greatestFiniteMagnitude))
+        container.lineFragmentPadding = 0
+        layout.addTextContainer(container)
+        storage.addLayoutManager(layout)
+        var ends: [Int] = []
+        layout.enumerateLineFragments(forGlyphRange: layout.glyphRange(for: container)) { _, _, _, glyphs, _ in
+            ends.append(NSMaxRange(layout.characterRange(forGlyphRange: glyphs, actualGlyphRange: nil)))
+        }
+        let utf16 = Array(text.utf16)
+        let clean = ends.dropLast().allSatisfy { end in end > 0 && [UInt16(32), UInt16(45)].contains(utf16[end - 1]) }
+        return (ends.count <= 2 && clean, ends.count, ceil(layout.usedRect(for: container).height))
+    }
+}
+
+private func lerp(_ start: CGFloat, _ stop: CGFloat, _ fraction: CGFloat) -> CGFloat { start + (stop - start) * fraction }
+
+/// The session's exercise cards above a grabber. Dragging the grabber follows the finger between the expanded tiles
+/// and compact rows and snaps to the nearer one (or the fling); a tap toggles. The choice is stored in `collapsed`.
+struct SessionExerciseStrip: View {
+    @ObservedObject private var themeManager = ThemeManager.shared
+    let exercises: [Exercise]
+    let currentIndex: Int
+    let setsByExercise: [String: [ExerciseSetLog]]
+    @ObservedObject var media: SessionExerciseMedia
+    let inspectingExerciseId: String?
+    @Binding var collapsed: Bool
+    let onSelect: (Int) -> Void
+    @State private var dragProgress: CGFloat? = nil
+
+    static let grabberHeight: CGFloat = 24
+    private static let snap = Animation.spring(response: 0.32, dampingFraction: 1)
+
+    var body: some View {
+        let _ = themeManager.currentTheme
+        let labels = exercises.enumerated().map { "\($0.offset + 1). \($0.element.displayName)" }
+        // The number stays with the first word, so a long compound name breaks inside the name instead.
+        let compactLabels = exercises.enumerated().map { "\($0.offset + 1).\u{00A0}\($0.element.displayName)" }
+        let metrics = SessionStripMetrics.measure(compactLabels)
+        let progress = dragProgress ?? (collapsed ? 1 : 0)
+        VStack(spacing: 0) {
+            ScrollViewReader { scrollProxy in
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 10) {
+                        ForEach(Array(exercises.enumerated()), id: \.element.id) { idx, ex in
+                            let isSel = idx == currentIndex
+                            let sets = setsByExercise[ex.id] ?? []
+                            Button(action: { onSelect(idx) }) {
+                                SessionStripCard(progress: progress, label: labels[idx], compactLabel: compactLabels[idx], selected: isSel,
+                                    complete: !sets.isEmpty && sets.allSatisfy { $0.isCompleted },
+                                    compactLabelWidth: metrics.compactLabelWidths[idx], metrics: metrics) { size in
+                                    SessionMovementIcon(media: media, rowId: ex.id,
+                                        active: isSel && inspectingExerciseId == nil, size: size)
+                                }
+                            }
+                            .buttonStyle(.plain)
+                            .id(ex.id)
+                        }
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.top, 10)
+                }
+                .tourTarget("workout.exercises", cornerRadius: 13,
+                            contentInsets: EdgeInsets(top: 10, leading: 20, bottom: 0, trailing: 20))
+                .onAppear {
+                    // A short window moves the strip into the scrolling content; keep the current card in view.
+                    if exercises.indices.contains(currentIndex) { scrollProxy.scrollTo(exercises[currentIndex].id, anchor: .center) }
+                }
+                .onChange(of: currentIndex) { _, newIdx in
+                    if exercises.indices.contains(newIdx) {
+                        withAnimation {
+                            scrollProxy.scrollTo(exercises[newIdx].id, anchor: .center)
+                        }
+                    }
+                }
+            }
+            grabber(metrics: metrics)
+        }
+    }
+
+    private func grabber(metrics: SessionStripMetrics) -> some View {
+        let range = max(1, metrics.expandedCardHeight - metrics.compactCardHeight)
+        let base: CGFloat = collapsed ? 1 : 0
+        return Capsule()
+            .fill(AppColors.border)
+            .frame(width: 36, height: 4)
+            .frame(maxWidth: .infinity, minHeight: Self.grabberHeight)
+            .contentShape(Rectangle())
+            // Global coordinates: the grabber rides up with the strip, so local translation would cancel itself.
+            .gesture(DragGesture(minimumDistance: 0, coordinateSpace: .global)
+                .onChanged { value in dragProgress = min(1, max(0, base - value.translation.height / range)) }
+                .onEnded { value in
+                    let current = dragProgress ?? base
+                    let velocity = value.velocity.height
+                    let target: Bool
+                    if abs(value.translation.height) < 6 && abs(velocity) < 400 { target = !collapsed }
+                    else if abs(velocity) > 400 { target = velocity < 0 }
+                    else { target = current >= 0.5 }
+                    withAnimation(Self.snap) {
+                        collapsed = target
+                        dragProgress = nil
+                    }
+                })
+            .accessibilityElement()
+            .accessibilityLabel(LanguageManager.t(collapsed ? "session.strip.expand" : "session.strip.collapse"))
+            .accessibilityAddTraits(.isButton)
+            .accessibilityAction { withAnimation(Self.snap) { collapsed.toggle() } }
+            .accessibilityIdentifier("session-strip-grabber")
+    }
+}
+
+/// One strip card at `progress` between the expanded tile (0) and the compact row (1). The thumbnail and check move
+/// between both layouts; the two labels cross-fade, so neither reflows.
+private struct SessionStripCard<Thumb: View>: View {
+    let progress: CGFloat
+    let label: String
+    let compactLabel: String
+    let selected: Bool
+    let complete: Bool
+    let compactLabelWidth: CGFloat
+    let metrics: SessionStripMetrics
+    @ViewBuilder let thumb: (CGFloat) -> Thumb
+    private typealias M = SessionStripMetrics
+
+    var body: some View {
+        let p = progress
+        let thumbSize = lerp(M.expandedThumb, M.compactThumb, p)
+        let width = lerp(M.expandedWidth, M.compactWidth(labelWidth: compactLabelWidth), p)
+        let height = lerp(metrics.expandedCardHeight, metrics.compactCardHeight, p)
+        let thumbX = lerp((M.expandedWidth - thumbSize) / 2, M.cardPadding, p)
+        let thumbY = lerp(M.cardPadding, (metrics.compactCardHeight - M.compactThumb) / 2, p)
+        let font = Font.app(size: 11, weight: selected ? .bold : .medium)
+        let color = selected ? AppColors.text : AppColors.muted
+        ZStack(alignment: .topLeading) {
+            thumb(thumbSize)
+                .offset(x: thumbX, y: thumbY)
+            if p < 1 {
+                Text(label)
+                    .font(font)
+                    .foregroundStyle(color)
+                    .lineLimit(2)
+                    .multilineTextAlignment(.center)
+                    .frame(width: M.expandedWidth - 2 * M.cardPadding)
+                    .frame(minHeight: 28)
+                    .offset(x: M.cardPadding, y: thumbY + thumbSize + 4)
+                    .opacity(Double(max(0, 1 - 2 * p)))
+                    .transition(.opacity)
+            }
+            if p > 0 {
+                Text(compactLabel)
+                    .font(font)
+                    .foregroundStyle(color)
+                    .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(width: compactLabelWidth, height: height, alignment: .leading)
+                    .offset(x: thumbX + thumbSize + M.compactLabelGap)
+                    .opacity(Double(min(1, max(0, 2 * p - 1))))
+                    .transition(.opacity)
+            }
+            // Top corner of the card when expanded; the thumbnail's corner when compact, clear of the name.
+            if complete {
+                Image(systemName: "checkmark.circle.fill")
+                    .font(.system(size: 16))
+                    .foregroundStyle(AppColors.accent)
+                    .frame(width: 16, height: 16)
+                    .offset(x: lerp(width - 20, thumbX + thumbSize - 12, p), y: lerp(4, thumbY - 4, p))
+            }
+        }
+        .frame(width: width, height: height, alignment: .topLeading)
+        .clipShape(RoundedRectangle(cornerRadius: 13, style: .continuous))
+        .background(
+            RoundedRectangle(cornerRadius: 13, style: .continuous)
+                .fill(AppColors.surface)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 13, style: .continuous)
+                        .strokeBorder(selected ? AppColors.accent : AppColors.border, lineWidth: 1)
+                )
+        )
     }
 }

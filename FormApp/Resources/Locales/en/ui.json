@@ -992,6 +992,8 @@
   "session.finishBtn": "Finish",
   "session.prevExercise": "Previous exercise",
   "session.nextExercise": "Next exercise",
+  "session.strip.collapse": "Collapse exercise cards",
+  "session.strip.expand": "Expand exercise cards",
   "session.anomalous_weight.title": "Confirm Weight",
   "session.anomalous_weight.message_with_previous": "You entered {weight} (previous top was {previous}). Is this correct?",
   "session.anomalous_weight.message_standalone": "You entered {weight}. This is unusually heavy. Is this correct?",

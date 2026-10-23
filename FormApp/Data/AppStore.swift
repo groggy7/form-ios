@@ -16,6 +16,7 @@ public final class AppStore: ObservableObject {
     private let prefillNextSetKey = "prefill_next_set"
     private let homeGlowTilesKey = "home_reference_tiles_v2"
     private let historyCalendarTilesKey = "history_calendar_tiles"
+    private let sessionStripCollapsedKey = "session_strip_collapsed"
     private let weightUnitKey = "weight_unit"
     private let barTypeKey = "bar_type"
     private let availablePlatesKey = "available_plates_kg"
@@ -79,6 +80,8 @@ public final class AppStore: ObservableObject {
     @Published public var homeGlowTiles: Bool
     /// Progress calendar style: lit tiles by default; switching off restores the classic satin pills.
     @Published public var historyCalendarTiles: Bool
+    /// Compact session exercise strip; a local layout choice outside backups and cloud sync.
+    @Published public var sessionStripCollapsed: Bool
     @Published public var weightUnit: WeightUnit {
         didSet {
             guard weightUnit != oldValue, let draft = activeSession else { return }
@@ -221,6 +224,7 @@ public final class AppStore: ObservableObject {
         self.jointStressRatings = UserDefaults.standard.object(forKey: jointStressRatingsKey) as? Bool ?? false
         self.homeGlowTiles = UserDefaults.standard.object(forKey: homeGlowTilesKey) as? Bool ?? true
         self.historyCalendarTiles = UserDefaults.standard.object(forKey: historyCalendarTilesKey) as? Bool ?? true
+        self.sessionStripCollapsed = UserDefaults.standard.bool(forKey: sessionStripCollapsedKey)
         let initialWeightUnit: WeightUnit
         if let savedUnitCode = UserDefaults.standard.string(forKey: weightUnitKey) {
             initialWeightUnit = WeightUnit.fromCode(savedUnitCode)
@@ -415,6 +419,11 @@ public final class AppStore: ObservableObject {
         $historyCalendarTiles
             .dropFirst()
             .sink { [historyCalendarTilesKey] in UserDefaults.standard.set($0, forKey: historyCalendarTilesKey) }
+            .store(in: &cancellables)
+
+        $sessionStripCollapsed
+            .dropFirst()
+            .sink { [sessionStripCollapsedKey] in UserDefaults.standard.set($0, forKey: sessionStripCollapsedKey) }
             .store(in: &cancellables)
 
         $weightUnit
