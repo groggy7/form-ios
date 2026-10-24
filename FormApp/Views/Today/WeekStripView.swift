@@ -93,8 +93,10 @@ struct WorkoutDayStrip: View {
 
     /// Matches the Home header's horizontal padding.
     private static let edgeInset: CGFloat = 20
+    private static let gap: CGFloat = 8
 
     @State private var tileWidth: CGFloat = 82
+    @State private var stripWidth: CGFloat = 0
     @Environment(\.displayScale) private var displayScale
     @ScaledMetric(relativeTo: .caption2) private var labelSize: CGFloat = 11
     @ScaledMetric(relativeTo: .title2) private var numberSize: CGFloat = 25
@@ -109,12 +111,26 @@ struct WorkoutDayStrip: View {
         return UnitPoint(x: fraction, y: 0)
     }
 
+    /// Four equal slots span a phone's width; further days scroll.
+    static func tileWidth(stripWidth: CGFloat) -> CGFloat {
+        min(96, max(48, (stripWidth - 2 * edgeInset - 3 * gap) / 4))
+    }
+
+    /// When three or more days fit, they share the spare width as equal gaps and span the margins: three on
+    /// phones, or a whole week once the width cap leaves room. One or two days stay at the leading edge, and rows
+    /// that scroll keep the standard gap.
+    static func tileSpacing(stripWidth: CGFloat, count: Int) -> CGFloat {
+        guard count >= 3 else { return gap }
+        let spare = stripWidth - 2 * edgeInset - CGFloat(count) * tileWidth(stripWidth: stripWidth)
+        return max(gap, spare / CGFloat(count - 1))
+    }
+
     var body: some View {
         let glass = glowTiles ? AppColors.homeDayGlowColors : AppColors.homeDayGlassColors
         let isDark = themeManager.currentTheme.isDark
         ScrollViewReader { proxy in
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 8) {
+                HStack(spacing: Self.tileSpacing(stripWidth: stripWidth, count: workouts.count)) {
                     ForEach(workouts) { workout in
                         let dayIndex = workout.day - 1
                         let selected = workout.id == activeWorkoutId
@@ -195,9 +211,7 @@ struct WorkoutDayStrip: View {
                             }
                             .padding(.horizontal, glowTiles ? tileWidth * 0.125 : 8)
                             .padding(.vertical, glowTiles ? tileWidth * 0.17 : 12)
-                            .containerRelativeFrame(.horizontal) { width, _ in
-                                min(96, max(48, (width - 40 - 3 * 8) / 4))
-                            }
+                            .containerRelativeFrame(.horizontal) { width, _ in Self.tileWidth(stripWidth: width) }
                             .frame(minHeight: glowTiles ? tileWidth * 1.1667 : 108, alignment: .top)
                             .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { tileWidth = $0 }
                             .frame(maxHeight: .infinity, alignment: .top)
@@ -231,6 +245,7 @@ struct WorkoutDayStrip: View {
                 .padding(.vertical, 2)
             }
             .scrollClipDisabled()
+            .onGeometryChange(for: CGFloat.self) { $0.size.width } action: { stripWidth = $0 }
             .defaultScrollAnchor(initialScrollAnchor)
             .onChange(of: activeWorkoutId, initial: true) { _, selectedId in
                 if let selectedId { proxy.scrollTo(RevealTarget(workoutId: selectedId)) }

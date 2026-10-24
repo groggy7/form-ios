@@ -724,6 +724,54 @@ final class FormAppTests: XCTestCase {
     }
 
     @MainActor
+    func testHomeDayStripSpreadsRowsThatFitAcrossTheMargins() throws {
+        func scrollViews(in view: UIView) -> [UIScrollView] {
+            (view as? UIScrollView).map { [$0] } ?? view.subviews.flatMap { scrollViews(in: $0) }
+        }
+        // Phones fit three days; the 96pt cap leaves room for six on the open Duo and a whole week on a tablet.
+        for width in [CGFloat(320), CGFloat(393), CGFloat(440), CGFloat(669), CGFloat(1024)] {
+            let tileWidth = min(96, (width - 40 - 3 * 8) / 4)
+            for count in 1...7 {
+                let workouts = (1...count).map { Workout(id: "spread-\($0)", day: $0, title: "Workout \($0)") }
+                let program = Program(id: "spread-fixture", name: "Fixture", workouts: workouts)
+                let controller = UIHostingController(rootView: WorkoutDayStrip(program: program, workouts: workouts,
+                    calendar: WeekCalendar(today: 0, numbers: Array(19...25)),
+                    activeWorkoutId: nil, completedKeys: [], unfinishedKeys: [], onSelectWorkout: { _ in })
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+                    .background(AppColors.background))
+                let window = UIWindow(frame: CGRect(x: 0, y: 0, width: width, height: 200))
+                window.rootViewController = controller
+                window.makeKeyAndVisible()
+                controller.view.frame = window.bounds
+                controller.view.layoutIfNeeded()
+                RunLoop.main.run(until: Date().addingTimeInterval(0.15))
+                controller.view.layoutIfNeeded()
+                let scroll = try XCTUnwrap(scrollViews(in: controller.view).first)
+                let natural = 40 + CGFloat(count) * tileWidth + CGFloat(count - 1) * 8
+                if count >= 3, natural <= width + 0.5 {
+                    XCTAssertEqual(scroll.contentSize.width, width, accuracy: 0.5,
+                        "\(count) days that fit at \(width)pt should end at the trailing margin")
+                    XCTAssertLessThanOrEqual(scroll.contentSize.width, scroll.bounds.width + 0.01,
+                        "A spread row must not become scrollable")
+                } else {
+                    XCTAssertEqual(scroll.contentSize.width, natural, accuracy: 0.5,
+                        "\(count) days at \(width)pt should keep 8pt gaps from the leading margin")
+                }
+                if (width == 393 && count == 3) || (width == 1024 && count == 7) {
+                    let image = UIGraphicsImageRenderer(size: controller.view.bounds.size).image { _ in
+                        controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+                    }
+                    let attachment = XCTAttachment(image: image)
+                    attachment.name = "home-day-tiles-spread-\(count)-at-\(Int(width))"
+                    attachment.lifetime = .keepAlways
+                    add(attachment)
+                }
+                window.isHidden = true
+            }
+        }
+    }
+
+    @MainActor
     func testHomeDayStripShowsFourCompactTilesAndScrolls() throws {
         let previous = LanguageManager.shared.currentLanguage
         defer { LanguageManager.setLanguage(previous) }
