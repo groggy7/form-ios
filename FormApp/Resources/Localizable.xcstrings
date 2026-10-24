@@ -25966,31 +25966,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "TOTAL VOLUME"
+            "value": "VOLUME"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "TOPLAM HACİM"
+            "value": "HACİM"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "GESAMTVOLUMEN"
+            "value": "VOLUMEN"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "VOLUME TOTAL"
+            "value": "VOLUME"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "VOLUMEN TOTAL"
+            "value": "VOLUMEN"
           }
         }
       }
@@ -26042,7 +26042,7 @@
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "KIRILAN PR'LAR"
+            "value": "REKORLAR"
           }
         },
         "de": {
@@ -26054,13 +26054,13 @@
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "RECORDS BATTUS"
+            "value": "RECORDS"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "RÉCORDS LOGRADOS"
+            "value": "RÉCORDS"
           }
         }
       }

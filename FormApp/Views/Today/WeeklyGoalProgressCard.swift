@@ -82,14 +82,12 @@ public struct WeeklyGoalProgressCard: View {
                 .fill(cardBorder)
                 .frame(height: 1)
 
-            // 3 Stat Boxes Row (TOTAL VOLUME, ACTIVE TIME, PRS HIT). The tiles share the tallest one's height, so a
-            // wrapped label keeps every value on one line across the row.
+            // 3 Stat Boxes Row (VOLUME, ACTIVE TIME, PRS HIT). Labels keep one line, and the tiles share the tallest
+            // one's height so the values line up across the row.
             HStack(spacing: 8) {
                 // Stat 1: Total Volume
                 VStack(spacing: 0) {
-                    Text(LanguageManager.t("today.totalVolume"))
-                        .font(.app(size: 10, weight: .semibold))
-                        .foregroundStyle(AppColors.muted)
+                    StatLabel(LanguageManager.t("today.totalVolume"))
 
                     Spacer(minLength: 4)
 
@@ -116,9 +114,7 @@ public struct WeeklyGoalProgressCard: View {
 
                 // Stat 2: Active Time
                 VStack(spacing: 0) {
-                    Text(LanguageManager.t("today.activeTime"))
-                        .font(.app(size: 10, weight: .semibold))
-                        .foregroundStyle(AppColors.muted)
+                    StatLabel(LanguageManager.t("today.activeTime"))
 
                     Spacer(minLength: 4)
 
@@ -139,9 +135,7 @@ public struct WeeklyGoalProgressCard: View {
 
                 // Stat 3: PRs Hit
                 VStack(spacing: 0) {
-                    Text(LanguageManager.t("today.prsHit"))
-                        .font(.app(size: 10, weight: .semibold))
-                        .foregroundStyle(AppColors.muted)
+                    StatLabel(LanguageManager.t("today.prsHit"))
 
                     Spacer(minLength: 4)
 
@@ -176,6 +170,21 @@ public struct WeeklyGoalProgressCard: View {
                 .stroke(cardBorder, lineWidth: 1)
         )
         .accessibilityIdentifier("weekly-goal-progress-card")
+    }
+}
+
+/// A stat tile label on one line. It sizes down slightly before truncating, so a long translation never grows the tile.
+private struct StatLabel: View {
+    let text: String
+
+    init(_ text: String) { self.text = text }
+
+    var body: some View {
+        Text(text)
+            .font(.app(size: 10, weight: .semibold))
+            .foregroundStyle(AppColors.muted)
+            .lineLimit(1)
+            .minimumScaleFactor(0.85)
     }
 }
 
