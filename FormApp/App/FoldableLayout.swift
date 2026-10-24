@@ -29,6 +29,12 @@ final class FoldState: ObservableObject {
         return supportedOrientations
     }
 
+    /// Whether this app's window may turn landscape now, by the orientation mask's rule.
+    var allowsLandscape: Bool {
+        let screen = UIApplication.shared.connectedScenes.lazy.compactMap { ($0 as? UIWindowScene)?.screen }.first
+        return supportedOrientations(onScreen: screen?.bounds.size, isPhone: UIDevice.current.userInterfaceIdiom == .phone) != .portrait
+    }
+
     func update(isOpen: Bool) {
         hasHinge = true
         guard isOpen != self.isOpen else { return }
@@ -80,6 +86,50 @@ struct TwoPageLayout: Equatable {
         return proxy.reservedRegions(kind: .division, options: .includeInactive)
             .map(\.frame)
             .first { $0.height >= size.height / 2 && $0.width < size.width / 4 && $0.minX > 0 && $0.maxX < size.width }
+    }
+
+    /// Whether an open foldable's view has no fold region yet. The system reports it a few frames late: at launch,
+    /// and on unfolding, which first shows the cover-sized window enlarged on the inner display. Rotating keeps the
+    /// old region until the new one arrives.
+    static func awaitsFold(in proxy: GeometryProxy) -> Bool {
+        guard #available(iOS 27.1, *), FoldState.shared.allowsLandscape else { return false }
+        return proxy.reservedRegions(kind: .division, options: .includeInactive).isEmpty
+    }
+}
+
+/// Hides content while the fold is awaited, so it first appears in its open layout; after a second it shows regardless.
+private struct FoldHold: ViewModifier {
+    // The hinge opens before the window leaves the cover display.
+    @ObservedObject private var foldState = FoldState.shared
+    @State private var isAwaitingFold = false
+    @State private var hasTimedOut = false
+
+    func body(content: Content) -> some View {
+        let isHidden = isAwaitingFold && !hasTimedOut
+        content
+            // Cover at once, so a stretched or cover layout never shows; fade the open layout in. Fading the
+            // content itself would show pages that slide beneath the side dock's strip through it.
+            .overlay {
+                AppColors.background
+                    .ignoresSafeArea()
+                    .opacity(isHidden ? 1 : 0)
+                    .animation(isHidden ? nil : .easeOut(duration: 0.2), value: isHidden)
+                    .allowsHitTesting(false)
+                    .accessibilityHidden(true)
+            }
+            .background {
+                GeometryReader { proxy in
+                    Color.clear.onChange(of: TwoPageLayout.awaitsFold(in: proxy), initial: true) { _, awaiting in
+                        isAwaitingFold = awaiting
+                    }
+                }
+            }
+            .task(id: isAwaitingFold) {
+                hasTimedOut = false
+                guard isAwaitingFold else { return }
+                try? await Task.sleep(for: .seconds(1))
+                hasTimedOut = !Task.isCancelled
+            }
     }
 }
 
@@ -196,5 +246,10 @@ extension View {
     /// Keeps `FoldState` in step with the device hinge.
     func tracksDeviceHinge() -> some View {
         modifier(HingeTracking())
+    }
+
+    /// Keeps this view hidden while an open foldable waits for its fold (`TwoPageLayout.awaitsFold`).
+    func holdsUntilFold() -> some View {
+        modifier(FoldHold())
     }
 }

@@ -423,27 +423,31 @@ public struct ActiveSessionView: View {
                 // Beside a vertical bar (iPhone Duo) the header has no status bar above it.
                 .verticalBarHeadroom(12)
 
-                if let sessionSpread, let currentExercise {
-                    // Open foldable: logging on the left; the exercise's demonstration and cues stay open on the right.
-                    TwoPageSpread(layout: sessionSpread) {
+                // One view, so the hold and its fade span the switch from the single column to the spread.
+                ZStack {
+                    if let sessionSpread, let currentExercise {
+                        // Open foldable: logging on the left; the exercise's demonstration and cues stay open on the right.
+                        TwoPageSpread(layout: sessionSpread) {
+                            sessionColumn
+                        } trailing: {
+                            SessionExerciseDetailContent(exercise: currentExercise, media: sessionMedia,
+                                                         onReportIssue: { reportIssue(for: currentExercise) })
+                                .background(AppColors.surface)
+                                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                                        .stroke(AppColors.border, lineWidth: 1)
+                                )
+                                .padding(.horizontal, 20)
+                                .padding(.bottom, 16)
+                                .verticalBarHeadroom(20)
+                                .id(currentExercise.id)
+                        }
+                    } else {
                         sessionColumn
-                    } trailing: {
-                        SessionExerciseDetailContent(exercise: currentExercise, media: sessionMedia,
-                                                     onReportIssue: { reportIssue(for: currentExercise) })
-                            .background(AppColors.surface)
-                            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                                    .stroke(AppColors.border, lineWidth: 1)
-                            )
-                            .padding(.horizontal, 20)
-                            .padding(.bottom, 16)
-                            .verticalBarHeadroom(20)
-                            .id(currentExercise.id)
                     }
-                } else {
-                    sessionColumn
                 }
+                .holdsUntilFold()
             }
 
             if isCelebrationVisible, let msg = celebratoryNoticeMessage, !isWarningVisible {

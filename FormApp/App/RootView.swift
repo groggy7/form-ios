@@ -229,6 +229,8 @@ public struct RootView: View {
                         }
                         .ignoresSafeArea(.container, edges: barEdge.map { $0 == .leading ? .leading : .trailing }
                             ?? (isMainNavigationAvailable ? .bottom : []))
+                        // The fold arrives a few frames after launching or unfolding; show pages and dock only once it has.
+                        .holdsUntilFold()
                         .background {
                             if barEdge != nil {
                                 GeometryReader { strip in
