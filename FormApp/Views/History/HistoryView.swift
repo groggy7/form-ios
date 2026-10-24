@@ -12,6 +12,7 @@ public struct HistoryDayExerciseProgress: Identifiable, Equatable {
     public let isPr: Bool
     /// The user's own joint-stress report; free history shows it as a quiet line.
     public let jointStress: JointStress?
+    public let setupNote: String?
 
     public init(
         name: String,
@@ -22,9 +23,11 @@ public struct HistoryDayExerciseProgress: Identifiable, Equatable {
         topSetReps: Int? = nil,
         isPr: Bool = false,
         occurrenceID: String? = nil,
-        jointStress: JointStress? = nil
+        jointStress: JointStress? = nil,
+        setupNote: String? = nil
     ) {
         self.jointStress = jointStress
+        self.setupNote = setupNote
         self.occurrenceID = occurrenceID
         self.name = name
         self.prescription = prescription
@@ -304,7 +307,8 @@ public struct HistoryDayDetailData: Identifiable {
                     topSetReps: topReps,
                     isPr: isPr,
                     occurrenceID: "planned-\(ex.id)-\(index)",
-                    jointStress: log?.jointStress.flatMap(JointStress.init(rawValue:))
+                    jointStress: log?.jointStress.flatMap(JointStress.init(rawValue:)),
+                    setupNote: log?.setupNote
                 )
             }
             let used = Set(indices.compactMap { $0 })
@@ -321,7 +325,8 @@ public struct HistoryDayDetailData: Identifiable {
                     topSetReps: topReps,
                     isPr: isPr,
                     occurrenceID: "logged-\(index)",
-                    jointStress: log.jointStress.flatMap(JointStress.init(rawValue:))
+                    jointStress: log.jointStress.flatMap(JointStress.init(rawValue:)),
+                    setupNote: log.setupNote
                 )
             }
             return planned + extraLogs
@@ -344,7 +349,8 @@ public struct HistoryDayDetailData: Identifiable {
                     topSetReps: topReps,
                     isPr: isPr,
                     occurrenceID: "logged-\(index)",
-                    jointStress: log.jointStress.flatMap(JointStress.init(rawValue:))
+                    jointStress: log.jointStress.flatMap(JointStress.init(rawValue:)),
+                    setupNote: log.setupNote
                 )
             }
         }

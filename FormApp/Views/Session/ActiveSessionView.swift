@@ -202,6 +202,15 @@ public struct ActiveSessionView: View {
                                     ExerciseTitleRow(name: exercise.displayName,
                                         action: currentSets.contains(where: { $0.isCompleted && !$0.isWarmup }) ? nil : replaceButton(for: exercise))
 
+                                    NoteField(titleKey: "notes.setup", text: Binding(
+                                        get: { exercise.setupNote ?? "" },
+                                        set: { store.updateSetupNote(exerciseId: exercise.id, text: $0) }))
+                                        .id("setup-note-\(exercise.id)")
+                                    NoteField(titleKey: "notes.workout", text: Binding(
+                                        get: { activeDraft.note ?? "" },
+                                        set: { text in store.updateActiveSession { current in
+                                            var copy = current; copy.note = text.isEmpty ? nil : text; return copy
+                                        } }))
                                     let recommendation = historyInsights?.recommendation
                                     let showsProgressionCard = recommendation != nil && store.showProgressionTargets
 

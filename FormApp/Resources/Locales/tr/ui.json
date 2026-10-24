@@ -1864,5 +1864,11 @@
   "import.error.activeWorkout": "Geçmişi içe aktarmadan önce mevcut antrenmanı bitirin veya silin.",
   "import.error.historyFull": "Geçmiş dolu. En fazla 10.000 antrenman tutar.",
   "import.error.nothingNew": "Bu antrenmanlar zaten geçmişinizde.",
-  "import.error.saveFailed": "Antrenmanlar kaydedilemedi. Hiçbir şey içe aktarılmadı."
+  "import.error.saveFailed": "Antrenmanlar kaydedilemedi. Hiçbir şey içe aktarılmadı.",
+  "notes.setup": "Egzersiz ayarı",
+  "notes.workout": "Antrenman notu",
+  "notes.add": "Not ekle",
+  "notes.edit": "Düzenle",
+  "notes.preserved": "Korunan notlar",
+  "import.error.notesTooLong": "Bir not 10.000 karakteri aşıyor. Dışa aktarılan dosyada kısaltıp yeniden deneyin."
 }

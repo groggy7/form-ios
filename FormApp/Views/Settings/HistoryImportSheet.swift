@@ -57,6 +57,10 @@ struct HistoryImportPreviewSheet: View {
                             countRow("import.preview.warmupSets", plan.warmupSets)
                             countRow("import.preview.libraryExercises", plan.libraryExercises)
                             countRow("import.preview.customExercises", plan.customExercises)
+                            let noteCount = plan.records.reduce(0) { count, record in
+                                count + ((record.note ?? "").isEmpty ? 0 : 1) + record.exerciseLogs.filter { !($0.setupNote ?? "").isEmpty }.count
+                            }
+                            if noteCount > 0 { countRow("notes.preserved", noteCount) }
                         } else if !plan.needsUnit && plan.overlapping == 0 {
                             Text(LanguageManager.t("import.preview.noneNew"))
                                 .font(.app(size: 13))
@@ -118,8 +122,6 @@ struct HistoryImportPreviewSheet: View {
                         ("import.preview.distanceSets", file.distanceSets),
                         ("import.preview.setsWithoutReps", file.setsWithoutReps),
                         ("import.preview.rpeValues", file.rpeValues),
-                        ("import.preview.exerciseNotes", file.exerciseNotes),
-                        ("import.preview.workoutDescriptions", file.workoutDescriptions),
                         ("import.preview.supersetLinks", file.supersetLinks),
                         ("import.preview.nothingToImport", file.nothingToImport)
                     ].filter { $0.1 > 0 }

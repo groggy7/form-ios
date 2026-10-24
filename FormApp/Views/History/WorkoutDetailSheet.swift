@@ -38,6 +38,8 @@ public struct WorkoutDetailSheet: View {
 
                     Divider().background(AppColors.border)
 
+                    SavedNote(text: record.note)
+
                     // Exercise recap list
                     VStack(alignment: .leading, spacing: 14) {
                         Text(LanguageManager.t("summary.exerciseRecap"))
@@ -50,6 +52,7 @@ public struct WorkoutDetailSheet: View {
                                     .font(.app(size: 15, weight: .semibold))
                                     .foregroundStyle(AppColors.accent)
 
+                                SavedNote(text: exLog.setupNote)
                                 ForEach(exLog.sets, id: \.setNumber) { setLog in
                                     HStack {
                                         Text("\(LanguageManager.t("table.set")) \(setLog.setNumber)")

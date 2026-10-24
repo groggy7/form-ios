@@ -1,4 +1,5 @@
 import XCTest
+import SwiftUI
 @testable import FormApp
 
 /// Executes the shared import contract (gym/docs/history-import-fixtures.json) against the captured and derived
@@ -41,6 +42,59 @@ final class HistoryImportTests: XCTestCase {
     }
 
     private func instant(_ text: String) -> Date { ISO8601DateFormatter().date(from: text)! }
+
+    @MainActor func testNoteLayoutAt320PointsWithLargeText() async throws {
+        let oldLanguage = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(oldLanguage) }
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            let host = UIHostingController(rootView: VStack(spacing: 12) {
+                NoteField(titleKey: "notes.setup", text: .constant("Seat 4, chest pad 2, neutral grip.\nKeep this setup for next time."))
+                NoteField(titleKey: "notes.workout", text: .constant(""))
+                Spacer()
+            }.padding(16).background(AppColors.background).environment(\.sizeCategory, .extraExtraExtraLarge))
+            let previous = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 800))
+            window.windowScene = previous?.windowScene
+            window.frame = CGRect(x: 0, y: 0, width: 320, height: 800)
+            window.rootViewController = host; window.makeKeyAndVisible(); host.view.frame = window.bounds
+            host.view.layoutIfNeeded(); try await Task.sleep(nanoseconds: 300_000_000)
+            let image = UIGraphicsImageRenderer(bounds: host.view.bounds).image { host.view.layer.render(in: $0.cgContext) }
+            let attachment = XCTAttachment(image: image); attachment.name = "notes-\(language)-320-large"; attachment.lifetime = .keepAlways; add(attachment)
+            XCTAssertEqual(host.view.bounds.width, 320)
+            window.isHidden = true; previous?.makeKeyAndVisible()
+        }
+    }
+
+    func testNotesRemainInDraftHistoryBackupAndSharedProgram() throws {
+        let exercise = Exercise(id: "bench", name: "Bench", setupNote: "Seat 4\nNeutral grip")
+        let workout = Workout(id: "w", day: 1, title: "Push", exercises: [exercise])
+        var draft = ActiveSessionDraft(id: "s", programId: "p", workout: workout, startedAt: "2026-10-01T10:00:00Z",
+            startedAtEpochMillis: 1, setsByExercise: ["bench": [ExerciseSetLog(setNumber: 1, weightKg: 50, completedReps: 8, isCompleted: true)]], note: "Another gym")
+        let record = SessionProgress.from(draft: draft, nowEpochMillis: 1000).record(draft: draft, completedAtEpochMillis: 1000)
+        draft.workout.exercises[0].setupNote = "Seat 2"
+        XCTAssertEqual(record.exerciseLogs[0].setupNote, "Seat 4\nNeutral grip")
+        XCTAssertEqual(record.workoutSnapshot?.exercises[0].setupNote, "Seat 4\nNeutral grip")
+        XCTAssertEqual(record.note, "Another gym")
+        let decoded = try JSONDecoder().decode(ActiveSessionDraft.self, from: JSONEncoder().encode(draft))
+        XCTAssertEqual(decoded, draft)
+        let program = Program(id: "p", name: "Plan", workouts: [workout])
+        let shared = try ProgramFileCodec.decode(ProgramFileCodec.encode(program, defaultRest: 90), defaultRest: 90)
+        XCTAssertEqual(shared.workouts[0].exercises[0].setupNote, exercise.setupNote)
+        let restored = try JSONDecoder().decode(WorkoutSessionRecord.self, from: JSONEncoder().encode(record))
+        XCTAssertEqual(restored, record)
+    }
+
+    func testNotesFromStrongAndHevyArePreserved() throws {
+        let strong = "Workout #;Date;Workout Name;Duration (sec);Exercise Name;Set Order;Weight (kg);Reps;RPE;Distance (meters);Seconds;Notes;Workout Notes\n1;2026-10-01 18:00:00;Push;3600;Bench Press (Barbell);1;100;5;;;;Seat 4;Other gym\n1;2026-10-01 18:00:00;Push;3600;Bench Press (Barbell);Note;;;;;;Neutral grip;Other gym"
+        let saved = try plan(Data(strong.utf8)).records[0]
+        XCTAssertEqual(saved.note, "Other gym")
+        XCTAssertEqual(saved.exerciseLogs[0].setupNote, "Seat 4\nNeutral grip")
+        let hevy = "title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_kg,reps,distance_km,duration_seconds,rpe\nPush,\"1 Oct 2026, 10:00\",\"1 Oct 2026, 11:00\",Other gym,Bench Press (Barbell),,Seat 4,0,normal,100,5,,,"
+        let imported = try plan(Data(hevy.utf8)).records[0]
+        XCTAssertEqual(imported.note, "Other gym")
+        XCTAssertEqual(imported.exerciseLogs[0].setupNote, "Seat 4")
+    }
 
     func testEverySharedCaseMatchesItsExpectedResult() throws {
         var checked = 0

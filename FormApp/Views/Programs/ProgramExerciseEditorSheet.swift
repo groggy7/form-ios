@@ -17,6 +17,7 @@ public struct ProgramExerciseEditorSheet: View {
     @State private var perSide: Bool
     @State private var customPrescription: String
     @State private var restSeconds: Int
+    @State private var setupNote: String
 
     public init(
         exercise: Exercise,
@@ -27,6 +28,7 @@ public struct ProgramExerciseEditorSheet: View {
         self.exercise = exercise
         self.isNew = isNew
         _name = State(initialValue: exercise.name)
+        _setupNote = State(initialValue: exercise.setupNote ?? "")
         self.onSave = onSave
         self.onDelete = onDelete
 
@@ -129,6 +131,8 @@ public struct ProgramExerciseEditorSheet: View {
                     BuilderSurface {
                         BuilderTextField("modal.exercise.name", text: $name, limit: 100)
                     }
+
+                    NoteField(titleKey: "notes.setup", text: $setupNote)
 
                     // Fixed Sets Card
                     editorSection(title: LanguageManager.t("targets.sets")) {
@@ -406,6 +410,7 @@ public struct ProgramExerciseEditorSheet: View {
                 updated.reps = RepTarget(min: min, max: max, toFailure: false, perSide: perSide)
             }
         }
+        updated.setupNote = setupNote.isEmpty ? nil : setupNote
         updated.restSeconds = restSeconds
         onSave(updated)
         dismiss()

@@ -80,11 +80,12 @@ public struct SessionProgress {
                 targetSets: target,
                 exerciseId: ExerciseCatalog.resolveCanonicalId(stableId: ex.exerciseId, name: ex.name),
                 effort: draft.effortByExercise?[ex.id].flatMap(ProgressionEffort.init(rawValue:))?.rawValue,
-                jointStress: draft.jointStressByExercise?[ex.id].flatMap(JointStress.init(rawValue:))?.rawValue
+                jointStress: draft.jointStressByExercise?[ex.id].flatMap(JointStress.init(rawValue:))?.rawValue,
+                setupNote: ex.setupNote
             )
         }
 
-        let hasProg = allSets.contains {
+        let hasProg = !(draft.note ?? "").isEmpty || allSets.contains {
             $0.isCompleted || (!$0.weightInput.trimmingCharacters(in: .whitespaces).isEmpty && ($0.inputTouched == true || $0.weightInput != "0")) || !$0.repsInput.trimmingCharacters(in: .whitespaces).isEmpty
         }
 
@@ -120,7 +121,7 @@ public struct SessionProgress {
             exerciseLogs: exerciseLogs,
             isComplete: WorkoutSessionUtils.isComplete(draft: draft),
             scheduledDate: draft.scheduledDate,
-            workoutSnapshot: draft.workout
+            workoutSnapshot: draft.workout, note: draft.note
         )
     }
 }

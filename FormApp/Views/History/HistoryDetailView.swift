@@ -169,6 +169,7 @@ public struct HistoryDetailView: View {
             Text(section.workoutTitle).font(.app(size: cardFont, weight: .bold)).foregroundStyle(AppColors.text)
                 .fixedSize(horizontal: false, vertical: true)
                 .accessibilityIdentifier("history-section-title-\(section.id)")
+            SavedNote(text: section.sessionRecord?.note)
             if let record = section.sessionRecord, !section.isLiveSession,
                record.exerciseLogs.contains(where: { !RecordEngine.workingSets($0).isEmpty }) {
                 Button {
@@ -288,6 +289,7 @@ public struct HistoryDetailView: View {
                 }
                 Text(exerciseSubtitle(item)).font(.app(size: detailFont)).foregroundStyle(AppColors.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
+                SavedNote(text: item.setupNote)
                 if let rating = item.jointStress {
                     Text(LanguageManager.t("history.jointStress", ["rating": LanguageManager.t(rating.labelKey)]))
                         .font(.app(size: detailFont)).foregroundStyle(AppColors.muted)

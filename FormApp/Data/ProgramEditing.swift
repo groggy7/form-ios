@@ -78,6 +78,7 @@ enum ProgramEditing {
     static func picked(_ exercise: Exercise, defaultRest: Int) -> Exercise {
         var copy = exercise
         copy.id = UUID().uuidString
+        copy.setupNote = nil
         let custom = exercise.reps == nil && !exercise.prescription.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         copy.sets = custom ? WorkoutSessionUtils.initialSetCount(exercise: exercise) : 3
         copy.reps = custom ? nil : RepTarget(min: 8, max: 12)

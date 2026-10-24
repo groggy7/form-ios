@@ -204,7 +204,7 @@ struct ImportedSetRow {
     let reps: Int
 }
 
-struct ImportedExercise { let sourceName: String; let rows: [ImportedSetRow] }
+struct ImportedExercise { let sourceName: String; let rows: [ImportedSetRow]; var note: String? = nil }
 
 struct ImportedSession {
     let line: Int
@@ -212,6 +212,7 @@ struct ImportedSession {
     let start: ImportedDateTime
     let durationSeconds: Int
     let exercises: [ImportedExercise]
+    var note: String? = nil
 }
 
 /// A readable export: its unique sessions and what the file holds that cannot be imported.
@@ -539,16 +540,20 @@ public enum HistoryImport {
                 let imported = sets.filter(\.hasReps)
                 if imported.count > maxSets { problem("tooManySets", head.line) }
                 guard !imported.isEmpty else { continue }
+                let note = uniqueNotes(entry.map(\.note))
+                if (note?.utf16.count ?? 0) > 10_000 { problem("notesTooLong", entry[0].line) }
                 exercises.append(ImportedExercise(sourceName: entry[0].exercise, rows: imported.map { row in
                     let kind: ImportedSetKind = row.kind == .warmup ? .warmup : row.kind == .drop ? .drop : .working
                     return ImportedSetRow(line: row.line, kind: kind, weight: row.weight, reps: row.reps!)
-                }))
+                }, note: note))
             }
             if exercises.count > maxEntries { problem("tooManySets", head.line) }
             if exercises.isEmpty { nothing += 1 }
             let title = head.title.isEmpty ? untitled : head.title
+            let note = uniqueNotes(run.map(\.description))
+            if (note?.utf16.count ?? 0) > 10_000 { problem("notesTooLong", head.line) }
             sessions.append(ImportedSession(line: head.line, title: String(title.prefix(maxText)), start: head.start,
-                                            durationSeconds: head.duration, exercises: exercises))
+                                            durationSeconds: head.duration, exercises: exercises, note: note))
         }
         if !problems.isEmpty { throw HistoryImportError(problems) }
         return HistoryImportFile(
@@ -636,7 +641,7 @@ public enum HistoryImport {
                 }
                 sets.append(SessionSetLog(setNumber: sets.count + 1, weightKg: kg, reps: row.reps, isWarmup: row.kind == .warmup))
             }
-            logs.append((SessionExerciseLog(exerciseName: name, sets: sets, targetSets: sets.filter { !$0.isWarmup }.count, exerciseId: id), assisted))
+            logs.append((SessionExerciseLog(exerciseName: name, sets: sets, targetSets: sets.filter { !$0.isWarmup }.count, exerciseId: id, setupNote: exercise.note), assisted))
         }
         let started = session.start.instant(in: zone)
         let iso = ISO8601DateFormatter()
@@ -654,9 +659,15 @@ public enum HistoryImport {
             totalCompletedSets: logs.reduce(0) { $0 + $1.log.sets.filter { !$0.isWarmup }.count },
             exerciseLogs: logs.map(\.log),
             isComplete: true,
-            performedDate: session.start.date
+            performedDate: session.start.date, note: session.note
         )
         return (record, started, attached, separate)
+    }
+
+    private static func uniqueNotes(_ values: [String]) -> String? {
+        var seen = Set<String>()
+        let result = values.filter { !$0.isEmpty && seen.insert($0).inserted }.joined(separator: "\n")
+        return result.isEmpty ? nil : result
     }
 
     private static func clockSeconds(_ value: String) -> Int? {

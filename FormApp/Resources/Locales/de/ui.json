@@ -1864,5 +1864,11 @@
   "import.error.activeWorkout": "Beende oder verwirf das laufende Training, bevor du den Verlauf importierst.",
   "import.error.historyFull": "Der Verlauf ist voll. Er fasst bis zu 10.000 Trainings.",
   "import.error.nothingNew": "Diese Trainings sind schon in deinem Verlauf.",
-  "import.error.saveFailed": "Die Trainings konnten nicht gespeichert werden. Es wurde nichts importiert."
+  "import.error.saveFailed": "Die Trainings konnten nicht gespeichert werden. Es wurde nichts importiert.",
+  "notes.setup": "Übungseinstellung",
+  "notes.workout": "Trainingsnotiz",
+  "notes.add": "Notiz hinzufügen",
+  "notes.edit": "Bearbeiten",
+  "notes.preserved": "Übernommene Notizen",
+  "import.error.notesTooLong": "Eine Notiz überschreitet 10.000 Zeichen. Kürze sie in der Exportdatei und versuche es erneut."
 }

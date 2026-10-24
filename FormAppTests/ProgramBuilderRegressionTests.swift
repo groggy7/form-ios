@@ -110,7 +110,7 @@ final class ProgramBuilderRegressionTests: XCTestCase {
         let decoded = try ProgramFileCodec.decode(data)
         XCTAssertEqual(decoded, program)
         let root = try XCTUnwrap(JSONSerialization.jsonObject(with: data) as? [String: Any])
-        XCTAssertEqual(root["schemaVersion"] as? Int, 5)
+        XCTAssertEqual(root["schemaVersion"] as? Int, 6)
         let p = try XCTUnwrap(root["program"] as? [String: Any])
         let workouts = try XCTUnwrap(p["workouts"] as? [[String: Any]])
         let exercises = try XCTUnwrap(workouts[0]["exercises"] as? [[String: Any]])

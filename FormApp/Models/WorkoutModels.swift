@@ -231,6 +231,7 @@ public struct Exercise: Identifiable, Codable, Hashable {
     public var restSeconds: Int?
     public var movementType: String?
     public var movementAssetId: String?
+    public var setupNote: String?
 
     public init(
         id: String = UUID().uuidString,
@@ -244,7 +245,8 @@ public struct Exercise: Identifiable, Codable, Hashable {
         reps: RepTarget? = nil,
         restSeconds: Int? = nil,
         movementType: String? = nil,
-        movementAssetId: String? = nil
+        movementAssetId: String? = nil,
+        setupNote: String? = nil
     ) {
         self.id = id
         self.name = name
@@ -258,6 +260,7 @@ public struct Exercise: Identifiable, Codable, Hashable {
         self.restSeconds = restSeconds
         self.movementType = movementType
         self.movementAssetId = movementAssetId
+        self.setupNote = setupNote
     }
 
     public var displayPrescription: String {
@@ -285,7 +288,7 @@ public struct Exercise: Identifiable, Codable, Hashable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, name, exerciseId, prescription, cues, avoid, videos, sets, reps, restSeconds, movementType, movementAssetId
+        case id, name, exerciseId, prescription, cues, avoid, videos, sets, reps, restSeconds, movementType, movementAssetId, setupNote
     }
 
     public init(from decoder: Decoder) throws {
@@ -317,6 +320,7 @@ public struct Exercise: Identifiable, Codable, Hashable {
             self.avoid = guidanceDefinition?.avoid.joined(separator: "\n") ?? ""
         }
 
+        self.setupNote = try container.decodeIfPresent(String.self, forKey: .setupNote)
         self.videos = try container.decodeIfPresent([String].self, forKey: .videos) ?? []
         self.sets = try container.decodeIfPresent(Int.self, forKey: .sets)
         self.reps = try container.decodeIfPresent(RepTarget.self, forKey: .reps)
@@ -642,15 +646,17 @@ public struct SessionExerciseLog: Codable, Hashable {
     public var effort: String?
     /// Optional `JointStress` raw value: the user's own report, never used in a calculation.
     public var jointStress: String?
+    public var setupNote: String?
 
     public init(exerciseName: String, sets: [SessionSetLog] = [], targetSets: Int? = nil, exerciseId: String? = nil, effort: String? = nil,
-                jointStress: String? = nil) {
+                jointStress: String? = nil, setupNote: String? = nil) {
         self.exerciseName = exerciseName
         self.sets = sets
         self.targetSets = targetSets
         self.exerciseId = exerciseId
         self.effort = effort
         self.jointStress = jointStress
+        self.setupNote = setupNote
     }
 }
 
@@ -670,6 +676,7 @@ public struct WorkoutSessionRecord: Identifiable, Codable, Hashable {
     public var workoutSnapshot: Workout?
     /// Android's local day for a session moved to another day; kept so backups round-trip.
     public var performedDate: String?
+    public var note: String?
 
     public init(
         id: String = UUID().uuidString,
@@ -685,7 +692,8 @@ public struct WorkoutSessionRecord: Identifiable, Codable, Hashable {
         isComplete: Bool? = nil,
         scheduledDate: String? = nil,
         workoutSnapshot: Workout? = nil,
-        performedDate: String? = nil
+        performedDate: String? = nil,
+        note: String? = nil
     ) {
         self.id = id
         self.programId = programId
@@ -701,6 +709,7 @@ public struct WorkoutSessionRecord: Identifiable, Codable, Hashable {
         self.scheduledDate = scheduledDate
         self.workoutSnapshot = workoutSnapshot
         self.performedDate = performedDate
+        self.note = note
     }
 }
 
@@ -762,6 +771,7 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
     public var effortByExercise: [String: String]?
     /// Optional joint-stress ratings by workout exercise ID; the field is optional, so the schema stays 2.
     public var jointStressByExercise: [String: String]?
+    public var note: String?
 
     public init(
         schemaVersion: Int = ActiveSessionDraft.currentSchemaVersion,
@@ -781,10 +791,12 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         scheduledDate: String? = nil,
         weightInputUnit: WeightUnit? = nil,
         effortByExercise: [String: String]? = nil,
-        jointStressByExercise: [String: String]? = nil
+        jointStressByExercise: [String: String]? = nil,
+        note: String? = nil
     ) {
         self.effortByExercise = effortByExercise
         self.jointStressByExercise = jointStressByExercise
+        self.note = note
         self.schemaVersion = schemaVersion
         self.id = id
         self.programId = programId
@@ -821,6 +833,7 @@ public struct ActiveSessionDraft: Identifiable, Codable, Hashable {
         self.accumulatedSeconds = try container.decodeIfPresent(Int.self, forKey: .accumulatedSeconds) ?? 0
         self.isPaused = try container.decodeIfPresent(Bool.self, forKey: .isPaused) ?? false
         self.lastResumedAtEpochMillis = try container.decodeIfPresent(Int64.self, forKey: .lastResumedAtEpochMillis)
+        self.note = try container.decodeIfPresent(String.self, forKey: .note)
         self.effortByExercise = try container.decodeIfPresent([String: String].self, forKey: .effortByExercise)?
             .filter { ProgressionEffort(rawValue: $0.value) != nil }
         self.jointStressByExercise = try container.decodeIfPresent([String: String].self, forKey: .jointStressByExercise)?

@@ -1864,5 +1864,11 @@
   "import.error.activeWorkout": "Termina o descarta el entrenamiento actual antes de importar el historial.",
   "import.error.historyFull": "El historial está lleno. Admite hasta 10.000 entrenamientos.",
   "import.error.nothingNew": "Estos entrenamientos ya están en tu historial.",
-  "import.error.saveFailed": "No se pudieron guardar los entrenamientos. No se importó nada."
+  "import.error.saveFailed": "No se pudieron guardar los entrenamientos. No se importó nada.",
+  "notes.setup": "Ajuste del ejercicio",
+  "notes.workout": "Nota del entrenamiento",
+  "notes.add": "Añadir nota",
+  "notes.edit": "Editar",
+  "notes.preserved": "Notas conservadas",
+  "import.error.notesTooLong": "Una nota supera los 10.000 caracteres. Acórtala en el archivo exportado y vuelve a intentarlo."
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AABB01234567890123450002 /* NoteField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB01234567890123450001 /* NoteField.swift */; };
 		76FC109C28BE4C5DB27F0241 /* TrainingPlanGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA04F575F9A44E88B7095902; };
 		B4849E351D2A67813D1D2CDD /* training_catalog.json in Resources */ = {isa = PBXBuildFile; fileRef = 49E9F7ECC8D4F1BBE29E9542 /* training_catalog.json */; };
 		C843FA365FC55E5A037A8345 /* TrainingSetupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D90AAF4C5263A271BF74D227 /* TrainingSetupView.swift */; };
@@ -189,6 +190,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		AABB01234567890123450001 /* NoteField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/Components/NoteField.swift; sourceTree = "<group>"; };
 		CA04F575F9A44E88B7095902 /* TrainingPlanGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingPlanGeneratorTests.swift; sourceTree = "<group>"; };
 		49E9F7ECC8D4F1BBE29E9542 /* training_catalog.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = training_catalog.json; sourceTree = "<group>"; };
 		D90AAF4C5263A271BF74D227 /* TrainingSetupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingSetupView.swift; sourceTree = "<group>"; };
@@ -527,6 +529,7 @@
 			isa = PBXGroup;
 			children = (
 				FA283146D3F72346C8B57CB9 /* SocialCardComposer.swift */,
+				AABB01234567890123450001 /* NoteField.swift */,
 				0164A58B28631F1A8F02469B /* SocialCardRenderer.swift */,
 				59698B516FEB62A85A77468E /* SocialCardsTests.swift */,
 				60F1B2C71C2BAB561B4D7051 /* SocialCards.swift */,
@@ -848,6 +851,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				177AB64314F6A5E6E9617DA9 /* SocialCardComposer.swift in Sources */,
+				AABB01234567890123450002 /* NoteField.swift in Sources */,
 				C8FC3E2DD457F45E24157720 /* SocialCardRenderer.swift in Sources */,
 				3B645AC64EB340D1AA0578A2 /* SocialCards.swift in Sources */,
 				05417260ADF3E99BC760A4D0 /* RecordEngine.swift in Sources */,

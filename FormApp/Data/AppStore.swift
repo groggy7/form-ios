@@ -660,7 +660,8 @@ public final class AppStore: ObservableObject {
                 ?? WorkoutCalendar.scheduledDate(forWeekday: sessionWorkout.day, relativeTo: now)),
             weightInputUnit: weightUnit,
             effortByExercise: unfinishedRecord.map { WorkoutSessionUtils.restoreEffortFromHistory(workout: sessionWorkout, record: $0) }.flatMap { $0.isEmpty ? nil : $0 },
-            jointStressByExercise: unfinishedRecord.map { WorkoutSessionUtils.restoreJointStressFromHistory(workout: sessionWorkout, record: $0) }.flatMap { $0.isEmpty ? nil : $0 }
+            jointStressByExercise: unfinishedRecord.map { WorkoutSessionUtils.restoreJointStressFromHistory(workout: sessionWorkout, record: $0) }.flatMap { $0.isEmpty ? nil : $0 },
+            note: unfinishedRecord?.note
         )
 
         saveActiveSession(draft)
@@ -707,6 +708,25 @@ public final class AppStore: ObservableObject {
         self.activeSession = resumed
         self.isSessionPresented = true
         FormAudioPlayer.playWorkoutStartSound()
+    }
+
+    public func updateSetupNote(exerciseId: String, text: String) {
+        guard let draft = activeSession else { return }
+        let note = text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? nil : String(text.prefix(10_000))
+        var next = state
+        if let p = next.programs.firstIndex(where: { $0.id == draft.programId }),
+           let w = next.programs[p].workouts.firstIndex(where: { $0.id == draft.workout.id }),
+           let e = next.programs[p].workouts[w].exercises.firstIndex(where: { $0.id == exerciseId }) {
+            next.programs[p].workouts[w].exercises[e].setupNote = note
+            guard saveState(next, durable: true) else { return }
+        }
+        updateActiveSession { current in
+            var copy = current
+            if let e = copy.workout.exercises.firstIndex(where: { $0.id == exerciseId }) {
+                copy.workout.exercises[e].setupNote = note
+            }
+            return copy
+        }
     }
 
     public func updateActiveSession(_ transform: (ActiveSessionDraft) -> ActiveSessionDraft) {
@@ -898,7 +918,7 @@ public final class AppStore: ObservableObject {
             exerciseLogs: record.exerciseLogs,
             isComplete: isComplete,
             scheduledDate: record.scheduledDate ?? activeSession?.scheduledDate,
-            workoutSnapshot: record.workoutSnapshot ?? activeSession?.workout
+            workoutSnapshot: record.workoutSnapshot ?? activeSession?.workout, note: record.note ?? activeSession?.note
         )
 
         var cal = state.calendarHistory ?? WorkoutCalendarHistory(
@@ -945,7 +965,7 @@ public final class AppStore: ObservableObject {
                 exerciseLogs: finalRecord.exerciseLogs,
                 isComplete: finalRecord.isComplete,
                 scheduledDate: finalRecord.scheduledDate,
-                workoutSnapshot: finalRecord.workoutSnapshot
+                workoutSnapshot: finalRecord.workoutSnapshot, note: finalRecord.note
             )
         }()
 
@@ -1323,7 +1343,7 @@ public final class AppStore: ObservableObject {
             try value.encode(to: encoder)
         }
 
-        public init(format: String? = "form.program", schemaVersion: Int? = 5, program: Program) {
+        public init(format: String? = "form.program", schemaVersion: Int? = 6, program: Program) {
             self.format = format
             self.schemaVersion = schemaVersion
             self.program = program
@@ -1353,7 +1373,7 @@ public final class AppStore: ObservableObject {
             case .invalidFormat(let fmt):
                 return "Invalid format \"\(fmt)\". Expected \"form.program\"."
             case .unsupportedVersion(let v):
-                return "Unsupported program schemaVersion: \(v). Supported versions are 1–5."
+                return "Unsupported program schemaVersion: \(v). Supported versions are 1–6."
             case .missingProgram:
                 return "File does not contain a program."
             case .invalidProgramName:
@@ -2285,6 +2305,7 @@ enum BackupSanitizer {
             exercise.id = unique(exercise.id, in: &exerciseIds)
             let prescription = exercise.prescription
             exercise.sets = exercise.sets.map { plannedSets.contains($0) ? $0 : WorkoutSessionUtils.initialSetCount(prescription: prescription) }
+            exercise.setupNote = exercise.setupNote.map { String($0.prefix(10_000)) }
             exercise.restSeconds = exercise.restSeconds.map { clamped($0, 0...900) }
             return exercise
         }
@@ -2293,12 +2314,14 @@ enum BackupSanitizer {
 
     private static func sanitize(_ record: WorkoutSessionRecord) -> WorkoutSessionRecord {
         var copy = record
+        copy.note = record.note.map { String($0.prefix(10_000)) }
         copy.durationSeconds = clamped(record.durationSeconds, 0...maxSessionSeconds)
         copy.totalVolumeKg = clamped(record.totalVolumeKg, 0...maxSessionVolumeKg)
         copy.totalCompletedSets = clamped(record.totalCompletedSets, 0...maxSessionSets)
         copy.exerciseLogs = record.exerciseLogs.prefix(maxLogsPerSession).map { log in
             var log = log
             log.targetSets = log.targetSets.map { clamped($0, 1...maxSetsPerExercise) }
+            log.setupNote = log.setupNote.map { String($0.prefix(10_000)) }
             log.jointStress = log.jointStress.flatMap(JointStress.init(rawValue:))?.rawValue
             log.sets = log.sets.prefix(maxSetsPerExercise).map { set in
                 SessionSetLog(

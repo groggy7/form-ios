@@ -3,7 +3,7 @@ import CoreFoundation
 
 /// The public program contract is separate from Codable app-state persistence.
 enum ProgramFileCodec {
-    static let version = 5
+    static let version = 6
     private static func invalid() -> Error { ProgramEditing.ValidationError(message: LanguageManager.t("programs.invalidFile")) }
     private static func only(_ object: [String: Any], _ keys: [String]) throws {
         guard Set(object.keys).isSubset(of: Set(keys)) else { throw invalid() }
@@ -89,7 +89,7 @@ enum ProgramFileCodec {
             var exerciseIDs = Set<String>()
             workout["exercises"] = try array(workout, "exercises", max: 100, required: true).map { value -> [String: Any] in
                 var e = try object(value)
-                try only(e, ["id", "name", "prescription", "sets", "reps", "restSeconds", "movementType", "cues", "avoid", "videos"] + (revision >= 3 ? ["movementAssetId"] : []) + (revision >= 4 ? ["exerciseId"] : []))
+                try only(e, ["id", "name", "prescription", "sets", "reps", "restSeconds", "movementType", "cues", "avoid", "videos"] + (revision >= 3 ? ["movementAssetId"] : []) + (revision >= 4 ? ["exerciseId"] : []) + (revision >= 6 ? ["setupNote"] : []))
                 guard exerciseIDs.insert(try id(e)).inserted else { throw invalid() }
                 let reference = try text(e, "exerciseId", max: 100)
                 let rawName = try text(e, "name", max: 100)
@@ -108,6 +108,7 @@ enum ProgramFileCodec {
                 }
                 _ = try integer(e, "restSeconds", range: 0...900)
                 _ = try text(e, "movementType", max: 40)
+                _ = try text(e, "setupNote", max: 10_000)
                 _ = try text(e, "movementAssetId", max: 80)
                 _ = try strings(e, "videos", max: 3, length: 2000)
                 for field in ["cues", "avoid"] {
@@ -141,6 +142,7 @@ enum ProgramFileCodec {
                 var e: [String: Any] = ["id": exercise.id, "name": exercise.name, "sets": WorkoutSessionUtils.initialSetCount(exercise: exercise),
                     "restSeconds": exercise.restSeconds ?? RestTimerUtils.restSeconds(for: exercise), "movementType": exercise.resolvedMovement.rawValue,
                     "cues": notes(exercise.cues), "avoid": notes(exercise.avoid), "videos": exercise.videos]
+                if let note = exercise.setupNote, !note.isEmpty { e["setupNote"] = note }
                 if let reference = exercise.exerciseId { e["exerciseId"] = reference }
                 if let asset = exercise.movementAssetId { e["movementAssetId"] = asset }
                 if let reps = exercise.reps {
