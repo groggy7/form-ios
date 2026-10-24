@@ -8,51 +8,37 @@ import UIKit
 final class FoldState: ObservableObject {
     static let shared = FoldState()
 
+    /// Before the hinge first reports, only an open foldable's inner display is this wide on its short side.
+    static let openDisplayMinimumSide: CGFloat = 600
+
     @Published private(set) var isOpen = false
     /// Set once the system reports a hinge; never on other iPhones.
     private(set) var hasHinge = false
-    private var orientationObserver: NSObjectProtocol?
 
     var supportedOrientations: UIInterfaceOrientationMask {
         isOpen ? .allButUpsideDown : .portrait
     }
 
-    func update(isOpen: Bool) {
-        if !hasHinge {
-            hasHinge = true
-            UIDevice.current.beginGeneratingDeviceOrientationNotifications()
-            orientationObserver = NotificationCenter.default.addObserver(
-                forName: UIDevice.orientationDidChangeNotification, object: nil, queue: .main
-            ) { [weak self] _ in self?.followLandscapeDevice() }
+    /// The orientations for a window on a screen of `screenSize`. Once the hinge reports, it decides. Before that, a
+    /// launch on an open foldable keeps landscape allowed: a portrait-only start makes the system begin turning to
+    /// portrait, and when the hinge reverses that turn mid-way the window can stay sideways.
+    func supportedOrientations(onScreen screenSize: CGSize?, isPhone: Bool) -> UIInterfaceOrientationMask {
+        if !hasHinge, isPhone, let screenSize, min(screenSize.width, screenSize.height) >= Self.openDisplayMinimumSide {
+            return .allButUpsideDown
         }
+        return supportedOrientations
+    }
+
+    func update(isOpen: Bool) {
+        hasHinge = true
         guard isOpen != self.isOpen else { return }
         self.isOpen = isOpen
         // Ask every window to re-read the mask; folding returns the app to portrait.
-        for scene in windowScenes {
+        for scene in UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }) {
             for window in scene.windows {
                 window.rootViewController?.setNeedsUpdateOfSupportedInterfaceOrientations()
             }
         }
-        followLandscapeDevice()
-    }
-
-    /// Launching open can settle in portrait before the hinge reports; portrait stays allowed,
-    /// so the system keeps it. Turn to the device's landscape explicitly.
-    private func followLandscapeDevice() {
-        guard isOpen else { return }
-        let target: UIInterfaceOrientationMask
-        switch UIDevice.current.orientation {
-        case .landscapeLeft: target = .landscapeRight
-        case .landscapeRight: target = .landscapeLeft
-        default: return
-        }
-        for scene in windowScenes where scene.effectiveGeometry.interfaceOrientation.isPortrait {
-            scene.requestGeometryUpdate(.iOS(interfaceOrientations: target))
-        }
-    }
-
-    private var windowScenes: [UIWindowScene] {
-        UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
     }
 }
 

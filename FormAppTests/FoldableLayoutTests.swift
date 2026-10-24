@@ -22,6 +22,25 @@ final class FoldableLayoutTests: XCTestCase {
         XCTAssertEqual(fold.supportedOrientations, .portrait)
     }
 
+    func testLaunchingOnTheOpenDisplayAllowsLandscapeBeforeTheHingeReports() {
+        let fold = FoldState()
+        // The open Duo's inner display, either way round, before the hinge reports.
+        XCTAssertEqual(fold.supportedOrientations(onScreen: CGSize(width: 951, height: 669), isPhone: true), .allButUpsideDown)
+        XCTAssertEqual(fold.supportedOrientations(onScreen: CGSize(width: 669, height: 951), isPhone: true), .allButUpsideDown)
+        // The folded cover, the widest iPhones held either way, an unknown screen and iPads stay portrait.
+        for size in [CGSize(width: 466, height: 678), CGSize(width: 440, height: 956), CGSize(width: 956, height: 440)] {
+            XCTAssertEqual(fold.supportedOrientations(onScreen: size, isPhone: true), .portrait, "\(size)")
+        }
+        XCTAssertEqual(fold.supportedOrientations(onScreen: nil, isPhone: true), .portrait)
+        XCTAssertEqual(fold.supportedOrientations(onScreen: CGSize(width: 1032, height: 1376), isPhone: false), .portrait)
+
+        // Once the hinge reports, it decides on every screen.
+        fold.update(isOpen: false)
+        XCTAssertEqual(fold.supportedOrientations(onScreen: CGSize(width: 951, height: 669), isPhone: true), .portrait)
+        fold.update(isOpen: true)
+        XCTAssertEqual(fold.supportedOrientations(onScreen: CGSize(width: 466, height: 678), isPhone: true), .allButUpsideDown)
+    }
+
     @MainActor
     func testSideDockStacksTheFourTabsInsideTheVerticalBar() {
         let host = UIHostingController(rootView: BottomDock(currentView: .constant(.today), axis: .vertical).frame(width: 84))
