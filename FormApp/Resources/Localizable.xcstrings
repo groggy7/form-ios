@@ -11857,31 +11857,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "The Founders Pass isn’t on sale yet."
+            "value": "The Founders Pass is not currently available."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Founders Pass henüz satışta değil."
+            "value": "Founders Pass şu anda satışta değil."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Der Founders Pass ist noch nicht erhältlich."
+            "value": "Der Founders Pass ist derzeit nicht erhältlich."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Le Founders Pass n’est pas encore en vente."
+            "value": "Le Founders Pass n’est pas disponible actuellement."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El Founders Pass aún no está a la venta."
+            "value": "El Founders Pass no está disponible actualmente."
           }
         }
       }
@@ -19491,31 +19491,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "No active Premium subscription found for this Apple Account."
+            "value": "No Premium purchases found for this Apple Account."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Bu Apple Hesabı için aktif bir Premium aboneliği bulunamadı."
+            "value": "Bu Apple Hesabında Premium satın alımı bulunamadı."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Für diesen Apple-Account wurde kein aktives Premium-Abo gefunden."
+            "value": "Für diesen Apple-Account wurden keine Premium-Käufe gefunden."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Aucun abonnement Premium actif trouvé pour ce compte Apple."
+            "value": "Aucun achat Premium trouvé pour ce compte Apple."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "No se encontró ninguna suscripción Premium activa para esta cuenta de Apple."
+            "value": "No se encontraron compras Premium para esta cuenta de Apple."
           }
         }
       }
@@ -19666,31 +19666,31 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Subscription plan details could not be loaded. Please check your connection and try again."
+            "value": "Product details could not be loaded. Please check your connection and try again."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Abonelik planı ayrıntıları yüklenemedi. Lütfen bağlantınızı kontrol edip tekrar deneyin."
+            "value": "Ürün bilgileri yüklenemedi. Bağlantını kontrol edip tekrar dene."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Die Abo-Details konnten nicht geladen werden. Prüfe deine Verbindung und versuche es erneut."
+            "value": "Produktdetails konnten nicht geladen werden. Prüfe deine Verbindung und versuche es erneut."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Impossible de charger les détails de l’abonnement. Vérifiez votre connexion et réessayez."
+            "value": "Impossible de charger les détails du produit. Vérifiez votre connexion et réessayez."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "No se pudieron cargar los detalles de la suscripción. Comprueba la conexión e inténtalo de nuevo."
+            "value": "No se pudieron cargar los detalles del producto. Comprueba tu conexión e inténtalo de nuevo."
           }
         }
       }
@@ -61575,6 +61575,391 @@
           "stringUnit": {
             "state": "translated",
             "value": "Guarda las tarjetas de entrenamiento que elijas en tu fototeca."
+          }
+        }
+      }
+    },
+    "founders.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Founders Pass"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Founders Pass"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Founders Pass"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Founders Pass"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Founders Pass"
+          }
+        }
+      }
+    },
+    "founders.footer": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{price} · One-time payment. No subscription."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{price} · Tek seferlik ödeme. Abonelik yok."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{price} · Einmalzahlung. Kein Abo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{price} · Paiement unique. Sans abonnement."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{price} · Pago único. Sin suscripción."
+          }
+        }
+      }
+    },
+    "founders.noPass": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No Founders Pass found for this store account."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu mağaza hesabında Founders Pass bulunamadı."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für dieses Store-Konto wurde kein Founders Pass gefunden."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun Founders Pass trouvé pour ce compte de boutique."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se encontró un Founders Pass para esta cuenta de la tienda."
+          }
+        }
+      }
+    },
+    "founders.subscriptionNotice": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A lifetime purchase does not cancel your subscription. Manage it to avoid future renewals."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ömür boyu satın alım aboneliğini iptal etmez. Yeni ücretlerden kaçınmak için aboneliğini yönet."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ein lebenslanger Kauf kündigt dein Abo nicht. Verwalte es, um weitere Verlängerungen zu vermeiden."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un achat à vie ne résilie pas votre abonnement. Gérez-le pour éviter les prochains renouvellements."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "La compra de por vida no cancela tu suscripción. Gestiónala para evitar próximas renovaciones."
+          }
+        }
+      }
+    },
+    "founders.active": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Founders Pass active · Lifetime Pro"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Founders Pass etkin · Ömür boyu Pro"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Founders Pass aktiv · Pro auf Lebenszeit"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Founders Pass actif · Pro à vie"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Founders Pass activo · Pro de por vida"
+          }
+        }
+      }
+    },
+    "lifetime.active": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lifetime Pro active"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ömür boyu Pro etkin"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro auf Lebenszeit aktiv"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro à vie actif"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro de por vida activo"
+          }
+        }
+      }
+    },
+    "lifetime.title": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Lifetime Pro"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ömür boyu Pro"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro auf Lebenszeit"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro à vie"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro de por vida"
+          }
+        }
+      }
+    },
+    "lifetime.headline": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro for life."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ömür boyu Pro."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro auf Lebenszeit."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro à vie."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro de por vida."
+          }
+        }
+      }
+    },
+    "lifetime.subtitle": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "One payment unlocks every current and future Pro feature for the life of the app."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tek ödemeyle uygulamanın ömrü boyunca bugünkü ve gelecekteki tüm Pro özelliklerini aç."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Eine Zahlung schaltet alle heutigen und künftigen Pro-Funktionen für die Lebensdauer der App frei."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un paiement débloque toutes les fonctions Pro actuelles et futures pendant la durée de vie de l’application."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Un pago desbloquea todas las funciones Pro actuales y futuras durante la vida de la app."
+          }
+        }
+      }
+    },
+    "lifetime.cta": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Get Lifetime Pro"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ömür boyu Pro al"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pro auf Lebenszeit kaufen"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obtenir Pro à vie"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Obtener Pro de por vida"
+          }
+        }
+      }
+    },
+    "lifetime.noPass": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No lifetime purchase found for this store account."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Bu mağaza hesabında ömür boyu satın alım bulunamadı."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Für dieses Store-Konto wurde kein lebenslanger Kauf gefunden."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Aucun achat à vie trouvé pour ce compte de boutique."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "No se encontró una compra de por vida para esta cuenta de la tienda."
           }
         }
       }

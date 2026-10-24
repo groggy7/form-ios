@@ -7,6 +7,8 @@ public class StoreKitSubscriptionManager: ObservableObject {
 
     public static let monthlyProductId = "com.perseverancesoftware.forcedrep.premium.monthly"
     public static let annualProductId = "com.perseverancesoftware.forcedrep.premium.annual"
+    public static let foundersProductId = "com.perseverancesoftware.forcedrep.founders"
+    public static let lifetimeProductId = "com.perseverancesoftware.forcedrep.lifetime"
 
     // Backward compatibility with legacy Pro IDs
     public static let legacyMonthlyProductId = "com.perseverancesoftware.forcedrep.pro.monthly"
@@ -16,7 +18,9 @@ public class StoreKitSubscriptionManager: ObservableObject {
         monthlyProductId,
         annualProductId,
         legacyMonthlyProductId,
-        legacyAnnualProductId
+        legacyAnnualProductId,
+        foundersProductId,
+        lifetimeProductId
     ]
 
     public static func isProProductId(_ productId: String) -> Bool {
@@ -25,7 +29,29 @@ public class StoreKitSubscriptionManager: ObservableObject {
 
     private static let keyCachedEntitlement = "form_cached_pro_entitlement"
     private static let keyCachedEntitlementLastVerified = "form_cached_pro_entitlement_last_verified"
-    private static let offlineGracePeriodSeconds: TimeInterval = 7 * 24 * 60 * 60 // 7 days
+    static let keyCachedProductIds = "form_cached_product_ids"
+    static let offlineGracePeriodSeconds: TimeInterval = 7 * 24 * 60 * 60
+
+    struct Entitlements: Equatable {
+        let subscription: Bool
+        let founder: Bool
+        let lifetime: Bool
+        var hasPro: Bool { subscription || founder || lifetime }
+    }
+
+    static func entitlements(for productIDs: Set<String>) -> Entitlements {
+        Entitlements(subscription: !productIDs.intersection([monthlyProductId, annualProductId, legacyMonthlyProductId, legacyAnnualProductId]).isEmpty,
+                     founder: productIDs.contains(foundersProductId), lifetime: productIDs.contains(lifetimeProductId))
+    }
+
+    static func cachedProductIDs(defaults: UserDefaults, now: Date = Date()) -> Set<String> {
+        let checked = defaults.double(forKey: keyCachedEntitlementLastVerified)
+        let age = now.timeIntervalSince1970 - checked
+        guard defaults.bool(forKey: keyCachedEntitlement), checked > 0,
+              age >= -300, age <= offlineGracePeriodSeconds else { return [] }
+        // Existing caches came only from subscriptions. Never turn a legacy Pro flag into Founder status.
+        return Set(defaults.stringArray(forKey: keyCachedProductIds) ?? [monthlyProductId]).intersection(productIds)
+    }
 
     @Published public var products: [Product] = []
     @Published public private(set) var eligibleFreeTrialProductIds: Set<String> = []
@@ -40,6 +66,9 @@ public class StoreKitSubscriptionManager: ObservableObject {
     public var annualProduct: Product? {
         products.first { $0.id == Self.annualProductId } ?? products.first { $0.id == Self.legacyAnnualProductId }
     }
+
+    public var foundersProduct: Product? { products.first { $0.id == Self.foundersProductId && $0.type == .nonConsumable } }
+    public var lifetimeProduct: Product? { products.first { $0.id == Self.lifetimeProductId && $0.type == .nonConsumable } }
 
     public var annualPerMonthDisplayPrice: String? {
         guard let product = annualProduct else { return nil }
@@ -75,19 +104,16 @@ public class StoreKitSubscriptionManager: ObservableObject {
     }
 
     private var transactionListener: Task<Void, Never>? = nil
+    private var entitlementRevision = 0
 
     public init() {
         // Fast path: restore from local cache first for instant offline readiness if within grace period
-        let cachedActive = UserDefaults.standard.bool(forKey: Self.keyCachedEntitlement)
-        let lastVerified = UserDefaults.standard.double(forKey: Self.keyCachedEntitlementLastVerified)
-        let now = Date().timeIntervalSince1970
-        let isWithinGrace = cachedActive && lastVerified > 0 && (now - lastVerified) <= Self.offlineGracePeriodSeconds && (lastVerified - now) <= 300
-        if isWithinGrace {
-            ProAccessManager.shared.updateSubscriptionStatus(active: true)
+        let cached = Self.cachedProductIDs(defaults: .standard)
+        let entitlement = Self.entitlements(for: cached)
+        purchasedProductIds = cached
+        ProAccessManager.shared.updateEntitlements(subscription: entitlement.subscription, founder: entitlement.founder, lifetime: entitlement.lifetime)
+        if entitlement.hasPro {
             CloudMirrorManager.shared.retryPendingSyncIfAny()
-        } else if cachedActive && (now - lastVerified) > Self.offlineGracePeriodSeconds {
-            UserDefaults.standard.set(false, forKey: Self.keyCachedEntitlement)
-            ProAccessManager.shared.updateSubscriptionStatus(active: false)
         }
 
         transactionListener = listenForTransactions()
@@ -120,34 +146,38 @@ public class StoreKitSubscriptionManager: ObservableObject {
     }
 
     public func purchase(plan: PaywallPlan) async throws -> PurchaseStatus {
-        let productToPurchase = (plan == .annual) ? annualProduct : monthlyProduct
-        let targetId = productToPurchase?.id ?? ((plan == .annual) ? Self.annualProductId : Self.monthlyProductId)
-        guard let product = productToPurchase ?? products.first(where: { $0.id == targetId }) else {
-            // If product details haven't finished loading yet, try fetching again
-            let fetched = try await Product.products(for: [targetId])
-            guard let fetchedProduct = fetched.first else {
-                throw NSError(
-                    domain: "StoreKitSubscriptionManager",
-                    code: 404,
-                    userInfo: [NSLocalizedDescriptionKey: LanguageManager.t("paywall.purchase_failed")]
-                )
-            }
-            return try await executePurchase(product: fetchedProduct)
-        }
-        return try await executePurchase(product: product)
+        let product = plan == .annual ? annualProduct : monthlyProduct
+        let id = product?.id ?? (plan == .annual ? Self.annualProductId : Self.monthlyProductId)
+        return try await purchaseProduct(id: id, type: .autoRenewable)
     }
 
-    private func executePurchase(product: Product) async throws -> PurchaseStatus {
+    public func purchaseLifetime(founder: Bool) async throws -> PurchaseStatus {
+        let productID = founder ? Self.foundersProductId : Self.lifetimeProductId
+        guard !purchasedProductIds.contains(productID),
+              founder || !ProAccessManager.shared.hasLifetimeAccess else { return .success }
+        return try await purchaseProduct(id: productID, type: .nonConsumable)
+    }
+
+    private func purchaseProduct(id: String, type: Product.ProductType) async throws -> PurchaseStatus {
+        guard !isPurchasing else {
+            throw NSError(domain: "StoreKitSubscriptionManager", code: 409,
+                          userInfo: [NSLocalizedDescriptionKey: LanguageManager.t("paywall.purchase_failed")])
+        }
         isPurchasing = true
         errorMessage = nil
         defer { isPurchasing = false }
-
+        // Refresh before checkout, and hold the purchase lock while fetching as well as purchasing.
+        guard let product = try await Product.products(for: [id]).first, product.type == type else {
+            throw NSError(domain: "StoreKitSubscriptionManager", code: 404,
+                          userInfo: [NSLocalizedDescriptionKey: LanguageManager.t("paywall.error_product_unavailable")])
+        }
         let result = try await product.purchase()
         switch result {
         case .success(let verification):
             let transaction = try checkVerified(verification)
-            guard Self.isProProductId(transaction.productID) else {
-                throw NSError(domain: "StoreKitSubscriptionManager", code: 403, userInfo: [NSLocalizedDescriptionKey: "Unexpected product in Premium purchase"])
+            guard transaction.productID == product.id,
+                  Self.grantsPremium(productID: transaction.productID, revocationDate: transaction.revocationDate, isUpgraded: transaction.isUpgraded) else {
+                throw NSError(domain: "StoreKitSubscriptionManager", code: 403, userInfo: [NSLocalizedDescriptionKey: LanguageManager.t("paywall.error_verification_failed")])
             }
             await updatePurchasedProducts()
             await transaction.finish()
@@ -174,6 +204,8 @@ public class StoreKitSubscriptionManager: ObservableObject {
     }
 
     public func updatePurchasedProducts() async {
+        entitlementRevision += 1
+        let revision = entitlementRevision
         var purchasedIds: Set<String> = []
         let now = Date()
         for await result in Transaction.currentEntitlements {
@@ -183,20 +215,26 @@ public class StoreKitSubscriptionManager: ObservableObject {
                 purchasedIds.insert(transaction.productID)
             }
         }
+        guard revision == entitlementRevision else { return }
         self.purchasedProductIds = purchasedIds
-        let isPro = !purchasedIds.isEmpty
+        let entitlement = Self.entitlements(for: purchasedIds)
+        let isPro = entitlement.hasPro
+        UserDefaults.standard.set(Array(purchasedIds), forKey: Self.keyCachedProductIds)
+        ProAccessManager.shared.updateEntitlements(subscription: entitlement.subscription, founder: entitlement.founder, lifetime: entitlement.lifetime)
+        if !entitlement.founder, AppIconManager.shared.current != AppIcons.standard {
+            _ = await AppIconManager.shared.select(AppIcons.standard)
+        }
+        guard revision == entitlementRevision else { return }
         if isPro {
             eligibleFreeTrialProductIds = []
             UserDefaults.standard.set(true, forKey: Self.keyCachedEntitlement)
             UserDefaults.standard.set(now.timeIntervalSince1970, forKey: Self.keyCachedEntitlementLastVerified)
-            ProAccessManager.shared.updateSubscriptionStatus(active: true)
             CloudMirrorManager.shared.retryPendingSyncIfAny()
         } else {
             // Authoritative store query returned zero active entitlements.
             // Revoke Premium immediately and clear the cached verification timestamp.
             UserDefaults.standard.set(false, forKey: Self.keyCachedEntitlement)
             UserDefaults.standard.set(0.0, forKey: Self.keyCachedEntitlementLastVerified)
-            ProAccessManager.shared.updateSubscriptionStatus(active: false)
         }
     }
 

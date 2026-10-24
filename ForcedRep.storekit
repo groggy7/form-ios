@@ -1,166 +1,186 @@
 {
-  "appPolicies" : {
-    "eula" : "",
-    "policies" : [
+  "appPolicies": {
+    "eula": "",
+    "policies": [
       {
-        "locale" : "en_US",
-        "policyText" : "",
-        "policyURL" : ""
+        "locale": "en_US",
+        "policyText": "",
+        "policyURL": ""
       }
     ]
   },
-  "identifier" : "ForcedRepStoreKit",
-  "nonRenewingSubscriptions" : [
-
-  ],
-  "products" : [
-
-  ],
-  "settings" : {
-    "_failTransactionsEnabled" : false,
-    "_locale" : "en_US",
-    "_storefront" : "USA",
-    "_storeKitErrors" : [
-      {
-        "current" : null,
-        "enabled" : false,
-        "name" : "Load Products"
-      },
-      {
-        "current" : null,
-        "enabled" : false,
-        "name" : "Purchase"
-      },
-      {
-        "current" : null,
-        "enabled" : false,
-        "name" : "Verification"
-      },
-      {
-        "current" : null,
-        "enabled" : false,
-        "name" : "App Store Sync"
-      },
-      {
-        "current" : null,
-        "enabled" : false,
-        "name" : "Subscription Status"
-      },
-      {
-        "current" : null,
-        "enabled" : false,
-        "name" : "App Transaction"
-      },
-      {
-        "current" : null,
-        "enabled" : false,
-        "name" : "Manage Subscriptions Sheet"
-      },
-      {
-        "current" : null,
-        "enabled" : false,
-        "name" : "Refund Request Sheet"
-      },
-      {
-        "current" : null,
-        "enabled" : false,
-        "name" : "Offer Code Redeem Sheet"
-      }
-    ]
-  },
-  "subscriptionGroups" : [
+  "identifier": "ForcedRepStoreKit",
+  "nonRenewingSubscriptions": [],
+  "products": [
     {
-      "id" : "21495831",
-      "localizations" : [
+      "displayPrice": "79.99",
+      "familyShareable": false,
+      "internalID": "6826581506",
+      "localizations": [
         {
-          "description" : "Unlock all Forced Rep Premium features",
-          "displayName" : "Forced Rep Premium",
-          "locale" : "en_US"
+          "description": "Lifetime Pro and exclusive founder perks.",
+          "displayName": "Founders Pass",
+          "locale": "en_US"
         },
         {
-          "description" : "Tüm Forced Rep Premium özelliklerinin kilidini açın",
-          "displayName" : "Forced Rep Premium",
-          "locale" : "tr"
+          "description": "Ömür boyu Pro ve kurucu üyelere özel ayrıcalıklar.",
+          "displayName": "Founders Pass",
+          "locale": "tr"
         }
       ],
-      "name" : "Forced Rep Premium",
-      "subscriptions" : [
+      "productID": "com.perseverancesoftware.forcedrep.founders",
+      "referenceName": "Founders Pass Lifetime",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "119.99",
+      "familyShareable": false,
+      "internalID": "ForcedRepLifetimeFixture",
+      "localizations": [
         {
-          "adHocOffers" : [
-
-          ],
-          "codeOffers" : [
-
-          ],
-          "displayPrice" : "4.99",
-          "familyShareable" : false,
-          "groupNumber" : 2,
-          "internalID" : "6740112101",
-          "introductoryOffer" : null,
-          "localizations" : [
-            {
-              "description" : "Monthly subscription with complete Premium access",
-              "displayName" : "Forced Rep Premium Monthly",
-              "locale" : "en_US"
-            },
-            {
-              "description" : "Eksiksiz Premium erişimi ile aylık abonelik",
-              "displayName" : "Forced Rep Premium Aylık",
-              "locale" : "tr"
-            }
-          ],
-          "productID" : "com.perseverancesoftware.forcedrep.premium.monthly",
-          "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "Monthly Access",
-          "subscriptionGroupID" : "21495831",
-          "type" : "RecurringSubscription",
-          "winbackOffers" : [
-
-          ]
+          "description": "Every current and future Pro feature for life.",
+          "displayName": "Lifetime Pro",
+          "locale": "en_US"
+        }
+      ],
+      "productID": "com.perseverancesoftware.forcedrep.lifetime",
+      "referenceName": "Regular Lifetime (future product, local testing only)",
+      "type": "NonConsumable"
+    }
+  ],
+  "settings": {
+    "_failTransactionsEnabled": false,
+    "_locale": "en_US",
+    "_storefront": "USA",
+    "_storeKitErrors": [
+      {
+        "current": null,
+        "enabled": false,
+        "name": "Load Products"
+      },
+      {
+        "current": null,
+        "enabled": false,
+        "name": "Purchase"
+      },
+      {
+        "current": null,
+        "enabled": false,
+        "name": "Verification"
+      },
+      {
+        "current": null,
+        "enabled": false,
+        "name": "App Store Sync"
+      },
+      {
+        "current": null,
+        "enabled": false,
+        "name": "Subscription Status"
+      },
+      {
+        "current": null,
+        "enabled": false,
+        "name": "App Transaction"
+      },
+      {
+        "current": null,
+        "enabled": false,
+        "name": "Manage Subscriptions Sheet"
+      },
+      {
+        "current": null,
+        "enabled": false,
+        "name": "Refund Request Sheet"
+      },
+      {
+        "current": null,
+        "enabled": false,
+        "name": "Offer Code Redeem Sheet"
+      }
+    ]
+  },
+  "subscriptionGroups": [
+    {
+      "id": "21495831",
+      "localizations": [
+        {
+          "description": "Unlock all Forced Rep Premium features",
+          "displayName": "Forced Rep Premium",
+          "locale": "en_US"
         },
         {
-          "adHocOffers" : [
-
-          ],
-          "codeOffers" : [
-
-          ],
-          "displayPrice" : "39.99",
-          "familyShareable" : false,
-          "groupNumber" : 1,
-          "internalID" : "6740112102",
-          "introductoryOffer" : {
-            "internalID" : "6740112103",
-            "numberOfPeriods" : 1,
-            "paymentMode" : "free",
-            "subscriptionPeriod" : "P1W"
-          },
-          "localizations" : [
+          "description": "Tüm Forced Rep Premium özelliklerinin kilidini açın",
+          "displayName": "Forced Rep Premium",
+          "locale": "tr"
+        }
+      ],
+      "name": "Forced Rep Premium",
+      "subscriptions": [
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "4.99",
+          "familyShareable": false,
+          "groupNumber": 2,
+          "internalID": "6740112101",
+          "introductoryOffer": null,
+          "localizations": [
             {
-              "description" : "Annual subscription with 7-day free trial",
-              "displayName" : "Forced Rep Premium Annual",
-              "locale" : "en_US"
+              "description": "Monthly subscription with complete Premium access",
+              "displayName": "Forced Rep Premium Monthly",
+              "locale": "en_US"
             },
             {
-              "description" : "7 günlük ücretsiz deneme ile yıllık abonelik",
-              "displayName" : "Forced Rep Premium Yıllık",
-              "locale" : "tr"
+              "description": "Eksiksiz Premium erişimi ile aylık abonelik",
+              "displayName": "Forced Rep Premium Aylık",
+              "locale": "tr"
             }
           ],
-          "productID" : "com.perseverancesoftware.forcedrep.premium.annual",
-          "recurringSubscriptionPeriod" : "P1Y",
-          "referenceName" : "Annual Access",
-          "subscriptionGroupID" : "21495831",
-          "type" : "RecurringSubscription",
-          "winbackOffers" : [
-
-          ]
+          "productID": "com.perseverancesoftware.forcedrep.premium.monthly",
+          "recurringSubscriptionPeriod": "P1M",
+          "referenceName": "Monthly Access",
+          "subscriptionGroupID": "21495831",
+          "type": "RecurringSubscription",
+          "winbackOffers": []
+        },
+        {
+          "adHocOffers": [],
+          "codeOffers": [],
+          "displayPrice": "39.99",
+          "familyShareable": false,
+          "groupNumber": 1,
+          "internalID": "6740112102",
+          "introductoryOffer": {
+            "internalID": "6740112103",
+            "numberOfPeriods": 1,
+            "paymentMode": "free",
+            "subscriptionPeriod": "P1W"
+          },
+          "localizations": [
+            {
+              "description": "Annual subscription with 7-day free trial",
+              "displayName": "Forced Rep Premium Annual",
+              "locale": "en_US"
+            },
+            {
+              "description": "7 günlük ücretsiz deneme ile yıllık abonelik",
+              "displayName": "Forced Rep Premium Yıllık",
+              "locale": "tr"
+            }
+          ],
+          "productID": "com.perseverancesoftware.forcedrep.premium.annual",
+          "recurringSubscriptionPeriod": "P1Y",
+          "referenceName": "Annual Access",
+          "subscriptionGroupID": "21495831",
+          "type": "RecurringSubscription",
+          "winbackOffers": []
         }
       ]
     }
   ],
-  "version" : {
-    "major" : 4,
-    "minor" : 0
+  "version": {
+    "major": 4,
+    "minor": 0
   }
 }

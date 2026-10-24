@@ -1,34 +1,66 @@
 import SwiftUI
 
-/// The Founders Pass introduction. The pass is not on sale yet, so release builds cannot buy it and
-/// debug builds stand in for the purchase by granting founder status until the app restarts.
+/// Purchases and restores the selected non-consumable through StoreKit in every build configuration.
 struct FoundersPassPaywallSheet: View {
-    @ObservedObject private var themeManager = ThemeManager.shared
     @ObservedObject private var proManager = ProAccessManager.shared
+    @ObservedObject private var storeKit = StoreKitSubscriptionManager.shared
     var onDismiss: () -> Void
+    var founder: Bool = true
+    @State private var isRestoring = false
+    @State private var statusMessage: String?
     @Environment(\.openURL) private var openURL
 
-    static var canPurchase: Bool {
-        #if DEBUG
-        return true
-        #else
-        return false
-        #endif
+    private var owned: Bool { founder ? proManager.isFounder : proManager.hasLifetimeAccess }
+    private var price: String? { (founder ? storeKit.foundersProduct : storeKit.lifetimeProduct)?.displayPrice }
+
+    private func purchase() {
+        guard !isRestoring && !storeKit.isPurchasing else { return }
+        statusMessage = nil
+        Task {
+            do {
+                switch try await storeKit.purchaseLifetime(founder: founder) {
+                case .success: if owned { onDismiss() }
+                case .pending: statusMessage = LanguageManager.t("paywall.purchase_pending")
+                case .userCancelled: break
+                }
+            } catch {
+                let key = (error as NSError).code == 404 ? "paywall.error_product_unavailable" : "paywall.purchase_failed"
+                statusMessage = LanguageManager.t(key)
+            }
+        }
+    }
+
+    private func restore() {
+        guard !isRestoring && !storeKit.isPurchasing else { return }
+        isRestoring = true
+        statusMessage = nil
+        Task {
+            defer { isRestoring = false }
+            do {
+                _ = try await storeKit.restorePurchases()
+                if owned { onDismiss() }
+                else { statusMessage = LanguageManager.t(founder ? "founders.noPass" : "lifetime.noPass") }
+            } catch { statusMessage = LanguageManager.t("paywall.restore_failed") }
+        }
     }
 
     var body: some View {
-        let _ = themeManager.currentTheme
         FoundersPassPaywallContent(
-            canPurchase: Self.canPurchase,
-            onPurchase: { proManager.updateFounderStatus(active: true) },
+            canPurchase: price != nil && !owned && !isRestoring && !storeKit.isPurchasing,
+            onPurchase: purchase,
             onTerms: { if let url = URL(string: LegalUrls.termsOfService) { openURL(url) } },
             onPrivacy: { if let url = URL(string: LegalUrls.privacyPolicy) { openURL(url) } },
-            onClose: onDismiss
+            onClose: onDismiss,
+            price: price, isBusy: isRestoring || storeKit.isPurchasing, statusMessage: statusMessage,
+            onRestore: restore, onRetry: { Task { await storeKit.requestProducts() } },
+            hasActiveSubscription: proManager.hasActiveSubscription, founder: founder
         )
         .presentationDragIndicator(.visible)
         .presentationCornerRadius(28)
         .presentationBackground(AppColors.progressionPaywallSurface)
-        .onChange(of: proManager.isFounder) { if proManager.isFounder { onDismiss() } }
+        .task { await storeKit.requestProducts(); if owned { onDismiss() } }
+        .onChange(of: proManager.isFounder) { if founder && owned { onDismiss() } }
+        .onChange(of: proManager.hasLifetimeAccess) { if !founder && owned { onDismiss() } }
     }
 }
 
@@ -40,6 +72,13 @@ struct FoundersPassPaywallContent: View {
     let onTerms: () -> Void
     let onPrivacy: () -> Void
     let onClose: () -> Void
+    var price: String? = nil
+    var isBusy = false
+    var statusMessage: String? = nil
+    var onRestore: () -> Void = {}
+    var onRetry: () -> Void = {}
+    var hasActiveSubscription = false
+    var founder = true
 
     @ScaledMetric(relativeTo: .title) private var headlineSize = 26.0
     @ScaledMetric(relativeTo: .subheadline) private var titleSize = 13.0
@@ -59,16 +98,18 @@ struct FoundersPassPaywallContent: View {
                     VStack(alignment: .leading, spacing: 0) {
                         // The real Classic icon, so the hero needs no artwork of its own.
                         AppIconPreview(option: AppIcons.standard, size: 80).padding(.bottom, 18)
-                        Text(LanguageManager.t("founders.headline"))
+                        Text(LanguageManager.t(founder ? "founders.headline" : "lifetime.headline"))
                             .font(.app(size: headlineSize, weight: .bold)).foregroundStyle(AppColors.text)
                             .fixedSize(horizontal: false, vertical: true).padding(.bottom, 10)
-                        Text(LanguageManager.t("founders.subtitle"))
+                        Text(LanguageManager.t(founder ? "founders.subtitle" : "lifetime.subtitle"))
                             .font(.app(size: subtitleSize)).foregroundStyle(AppColors.secondaryText).lineSpacing(3)
                             .fixedSize(horizontal: false, vertical: true).padding(.bottom, 22)
                         VStack(spacing: 16) {
                             benefit(1, icon: "infinity")
-                            benefit(2, icon: "apps.iphone")
-                            benefit(3, icon: "bolt.fill")
+                            if founder {
+                                benefit(2, icon: "apps.iphone")
+                                benefit(3, icon: "bolt.fill")
+                            }
                         }
                     }
                     .padding(.horizontal, 24).padding(.top, 8).padding(.bottom, 22)
@@ -80,6 +121,21 @@ struct FoundersPassPaywallContent: View {
                             .fixedSize(horizontal: false, vertical: true).padding(.horizontal, 4)
                     }
                     .padding(.horizontal, 20)
+                    if hasActiveSubscription {
+                        Text(LanguageManager.t("founders.subscriptionNotice"))
+                            .font(.app(size: descriptionSize)).foregroundStyle(AppColors.secondaryText)
+                            .fixedSize(horizontal: false, vertical: true).padding(.horizontal, 24).padding(.top, 16)
+                    }
+                    if let statusMessage {
+                        Text(statusMessage).font(.app(size: descriptionSize)).foregroundStyle(AppColors.secondaryText)
+                            .fixedSize(horizontal: false, vertical: true).padding(.horizontal, 24).padding(.top, 16)
+                            .accessibilityIdentifier("founders-paywall-feedback")
+                    }
+                    if price == nil {
+                        Button(LanguageManager.t("paywall.retry"), action: onRetry)
+                            .font(.app(size: descriptionSize)).foregroundStyle(accent).frame(minHeight: 48)
+                            .disabled(isBusy).frame(maxWidth: .infinity)
+                    }
                     ViewThatFits(in: .horizontal) {
                         HStack(spacing: 0) { legalLinks(singleLine: true) }
                         VStack(spacing: 0) { legalLinks(singleLine: false) }
@@ -99,7 +155,7 @@ struct FoundersPassPaywallContent: View {
         ZStack(alignment: .trailing) {
             HStack(spacing: 8) {
                 Image(systemName: "crown.fill").font(.system(size: 18, weight: .semibold)).frame(width: 20, height: 20)
-                Text(LanguageManager.t("founders.badge"))
+                Text(LanguageManager.t(founder ? "founders.badge" : "lifetime.title"))
                     .font(.app(size: bodySize, weight: .bold)).tracking(1.3)
                     .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
             }
@@ -146,8 +202,7 @@ struct FoundersPassPaywallContent: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            // Prices come from the store once the pass is sold.
-            Text("—").font(.app(size: titleSize, weight: .bold)).foregroundStyle(accent)
+            Text(price ?? "—").font(.app(size: titleSize, weight: .bold)).foregroundStyle(accent)
         }
         .padding(16)
         .background(AppColors.progressionPaywallSelectedSurface, in: RoundedRectangle(cornerRadius: 12))
@@ -157,6 +212,11 @@ struct FoundersPassPaywallContent: View {
     }
 
     @ViewBuilder private func legalLinks(singleLine: Bool) -> some View {
+        Button(action: onRestore) {
+            Text(LanguageManager.t("paywall.auto_progression.restore")).fixedSize(horizontal: singleLine, vertical: true)
+                .padding(.horizontal, 6).frame(minWidth: 48, minHeight: 48).contentShape(Rectangle())
+        }.font(.app(size: footnoteSize)).foregroundStyle(AppColors.secondaryText).buttonStyle(.plain)
+            .disabled(isBusy).accessibilityIdentifier("founders-paywall-restore")
         Button(action: onTerms) {
             Text(LanguageManager.t("paywall.terms")).fixedSize(horizontal: singleLine, vertical: true)
                 .padding(.horizontal, 6).frame(minWidth: 48, minHeight: 48).contentShape(Rectangle())
@@ -173,8 +233,9 @@ struct FoundersPassPaywallContent: View {
             VStack(spacing: 6) {
                 Button(action: onPurchase) {
                     HStack(spacing: 10) {
-                        Image(systemName: "lock.open").font(.system(size: 20, weight: .medium))
-                        Text(LanguageManager.t("founders.cta"))
+                        if isBusy { ProgressView().tint(AppColors.background) }
+                        else { Image(systemName: "lock.open").font(.system(size: 20, weight: .medium)) }
+                        Text(LanguageManager.t(founder ? "founders.cta" : "lifetime.cta"))
                             .font(.app(size: titleSize + 1, weight: .bold))
                             .fixedSize(horizontal: false, vertical: true).multilineTextAlignment(.center)
                     }
@@ -184,7 +245,8 @@ struct FoundersPassPaywallContent: View {
                 }
                 .buttonStyle(.plain).disabled(!canPurchase)
                 .accessibilityIdentifier("founders-paywall-purchase")
-                Text(LanguageManager.t("founders.notOnSale"))
+                Text(price.map { LanguageManager.t("founders.footer", ["price": $0]) }
+                     ?? LanguageManager.t(founder ? "founders.notOnSale" : "paywall.price_unavailable"))
                     .font(.app(size: footnoteSize)).foregroundStyle(AppColors.secondaryText)
                     .multilineTextAlignment(.center).fixedSize(horizontal: false, vertical: true)
             }

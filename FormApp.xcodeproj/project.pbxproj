@@ -171,6 +171,7 @@
 		665B88F2317C85FE5538CC90 /* SocialCardsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 59698B516FEB62A85A77468E; };
 		C8FC3E2DD457F45E24157720 /* SocialCardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0164A58B28631F1A8F02469B; };
 		177AB64314F6A5E6E9617DA9 /* SocialCardComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA283146D3F72346C8B57CB9; };
+		FB0000000000000000000001 /* ForcedRep.storekit in Resources */ = {isa = PBXBuildFile; fileRef = SK0000000000000000000003 /* ForcedRep.storekit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -808,6 +809,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FB0000000000000000000001 /* ForcedRep.storekit in Resources */,
 				C1500000000000000000000A /* android-builder-v5.json in Resources */,
 				E10000000000000000000003 /* exercises.json in Resources */,
 				L100000000000000000000003 /* Locales in Resources */,

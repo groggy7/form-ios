@@ -5,6 +5,7 @@ public struct SettingsView: View {
     @ObservedObject var store: AppStore
     @ObservedObject var langManager = LanguageManager.shared
     @ObservedObject private var proManager = ProAccessManager.shared
+    @ObservedObject private var storeKit = StoreKitSubscriptionManager.shared
     @ObservedObject private var themeManager = ThemeManager.shared
     @ObservedObject private var appIconManager = AppIconManager.shared
     var onDismiss: () -> Void
@@ -12,6 +13,7 @@ public struct SettingsView: View {
     @State private var showTrainingSetup = false
     @State private var showAppIconSheet: Bool = false
     @State private var showFoundersPaywall: Bool = false
+    @State private var showLifetimePaywall = false
     @State private var showPaywall: Bool = false
     @State private var paywallFeature: ProFeature? = nil
     @State private var showCloudBackupSheet: Bool = false
@@ -116,6 +118,9 @@ public struct SettingsView: View {
                 .presentationBackground(AppColors.background)
             }
             // A new founder goes straight on to the icon they came for.
+            .sheet(isPresented: $showLifetimePaywall) {
+                FoundersPassPaywallSheet(onDismiss: { showLifetimePaywall = false }, founder: false)
+            }
             .sheet(isPresented: $showFoundersPaywall, onDismiss: { if proManager.isFounder { showAppIconSheet = true } }) {
                 FoundersPassPaywallSheet(onDismiss: { showFoundersPaywall = false })
             }
@@ -174,12 +179,16 @@ public struct SettingsView: View {
                     .foregroundStyle(AppColors.text)
             }
 
-            Text(LanguageManager.t(proManager.isProSubscribed ? "settings.pro_active" : "pro.volume_matrix.description"))
+            Text(LanguageManager.t(proManager.isFounder ? "founders.active" : proManager.hasLifetimeAccess ? "lifetime.active" : proManager.isProSubscribed ? "settings.pro_active" : "pro.volume_matrix.description"))
                 .font(.app(size: 12.5))
                 .foregroundStyle(AppColors.secondaryText)
                 .lineSpacing(2)
 
-            if proManager.isProSubscribed {
+            if proManager.hasLifetimeAccess && proManager.hasActiveSubscription {
+                Text(LanguageManager.t("founders.subscriptionNotice"))
+                    .font(.app(size: 12.5)).foregroundStyle(AppColors.secondaryText).fixedSize(horizontal: false, vertical: true)
+            }
+            if proManager.hasActiveSubscription {
                 Button(action: {
                     if let url = URL(string: LegalUrls.manageSubscriptions) {
                         openURL(url)
@@ -198,7 +207,7 @@ public struct SettingsView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
                 .buttonStyle(.plain)
-            } else {
+            } else if !proManager.isProSubscribed {
                 Button(action: { showPaywall = true }) {
                     Text(LanguageManager.t("settings.upgrade_to_pro"))
                         .font(.app(size: 13, weight: .semibold))
@@ -209,6 +218,17 @@ public struct SettingsView: View {
                         .clipShape(RoundedRectangle(cornerRadius: 10))
                 }
                 .buttonStyle(.plain)
+            }
+            if !proManager.isFounder, let price = storeKit.foundersProduct?.displayPrice {
+                Button { showFoundersPaywall = true } label: {
+                    Text(LanguageManager.t("founders.title") + " · " + price)
+                        .font(.app(size: 13, weight: .semibold)).frame(maxWidth: .infinity, minHeight: 48)
+                }.buttonStyle(.plain).foregroundStyle(AppColors.accent).accessibilityIdentifier("settings-founders-purchase")
+            } else if !proManager.hasLifetimeAccess, let price = storeKit.lifetimeProduct?.displayPrice {
+                Button { showLifetimePaywall = true } label: {
+                    Text(LanguageManager.t("lifetime.title") + " · " + price)
+                        .font(.app(size: 13, weight: .semibold)).frame(maxWidth: .infinity, minHeight: 48)
+                }.buttonStyle(.plain).foregroundStyle(AppColors.accent)
             }
         }
         .padding(16)

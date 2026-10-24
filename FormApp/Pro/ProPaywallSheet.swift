@@ -20,6 +20,14 @@ public struct ProPaywallSheet: View {
     @State private var restoreStatusMessage: String? = nil
     @State private var isRestoreError: Bool = false
     @State private var isRestoring: Bool = false
+    @State private var showLifetimeOffer = false
+    @State private var selectedLifetimeIsFounder = true
+    private var founderOffer: Bool { storeKit.foundersProduct != nil }
+    private var lifetimeOfferTitle: String? {
+        guard !proManager.hasLifetimeAccess else { return nil }
+        guard let product = storeKit.foundersProduct ?? storeKit.lifetimeProduct else { return nil }
+        return LanguageManager.t(founderOffer ? "founders.title" : "lifetime.title") + " · " + product.displayPrice
+    }
     @Environment(\.presentationMode) private var presentationMode
     @Environment(\.openURL) private var openURL
 
@@ -115,8 +123,15 @@ public struct ProPaywallSheet: View {
             onTerms: { if let url = URL(string: LegalUrls.termsOfService) { openURL(url) } },
             onPrivacy: { if let url = URL(string: LegalUrls.privacyPolicy) { openURL(url) } },
             onClose: dismissSelf,
-            feature: feature, weightUnit: appStore.weightUnit
+            feature: feature, weightUnit: appStore.weightUnit,
+            lifetimeOfferTitle: lifetimeOfferTitle, onLifetimeOffer: { selectedLifetimeIsFounder = founderOffer; showLifetimeOffer = true }
         )
+        .sheet(isPresented: $showLifetimeOffer) {
+            FoundersPassPaywallSheet(onDismiss: {
+                showLifetimeOffer = false
+                if proManager.isProSubscribed { onUnlocked?(); dismissSelf() }
+            }, founder: selectedLifetimeIsFounder)
+        }
         .presentationDragIndicator(.visible)
         .presentationCornerRadius(28)
         .presentationBackground(AppColors.progressionPaywallSurface)

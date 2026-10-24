@@ -1,5 +1,7 @@
 import XCTest
 import SwiftUI
+import StoreKit
+import StoreKitTest
 @testable import FormApp
 
 @MainActor
@@ -135,14 +137,29 @@ final class AppIconTests: XCTestCase {
                 XCTAssertEqual(image.size.width, width)
                 try XCTUnwrap(image.pngData()).write(to: outputDir.appendingPathComponent("app-icon-\(language)-\(Int(width)).png"))
                 for canPurchase in [true, false] {
-                    let paywall = render(FoundersPassPaywallContent(canPurchase: canPurchase, onPurchase: {}, onTerms: {}, onPrivacy: {}, onClose: {}),
+                    let paywall = render(FoundersPassPaywallContent(canPurchase: canPurchase, onPurchase: {}, onTerms: {}, onPrivacy: {}, onClose: {}, price: canPurchase ? "$79.99" : nil),
                                          width: width, height: size == .large ? 900 : 1500, size: size)
                     XCTAssertEqual(paywall.size.width, width)
                     try XCTUnwrap(paywall.pngData()).write(to: outputDir.appendingPathComponent(
-                        "founders-paywall-\(language)-\(Int(width))\(canPurchase ? "" : "-release").png"))
+                        "founders-paywall-\(language)-\(Int(width))\(canPurchase ? "" : "-unavailable").png"))
                 }
             }
         }
+    }
+
+    func testFounderReviewScreenshotUsesTheStorePriceAndDeviceSize() async throws {
+        try XCTSkipUnless(ProcessInfo.processInfo.environment["FORCED_REP_STOREKIT_TESTS"] == "1", "Use the local StoreKit scheme")
+        let fetched = try await Product.products(for: [StoreKitSubscriptionManager.foundersProductId])
+        let product = try XCTUnwrap(fetched.first)
+        let previous = LanguageManager.shared.languagePreference
+        defer { LanguageManager.setLanguage(previous) }
+        LanguageManager.setLanguage("en")
+        let bounds = UIScreen.main.bounds
+        let image = render(FoundersPassPaywallContent(canPurchase: true, onPurchase: {}, onTerms: {}, onPrivacy: {}, onClose: {}, price: product.displayPrice),
+                           width: bounds.width, height: bounds.height, size: .large)
+        let output = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../build/founders-review").standardized
+        try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
+        try XCTUnwrap(image.pngData()).write(to: output.appendingPathComponent("founders-pass-iphone.png"))
     }
 
     private func render<V: View>(_ view: V, width: CGFloat, height: CGFloat, size: ContentSizeCategory) -> UIImage {
@@ -160,5 +177,108 @@ final class AppIconTests: XCTestCase {
         return UIGraphicsImageRenderer(bounds: controller.view.bounds).image { _ in
             controller.view.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
         }
+    }
+}
+
+@MainActor
+final class FounderBillingTests: XCTestCase {
+    func testProductIdentitySeparatesFoundersFromSubscriptionsAndRegularLifetime() {
+        let founder = StoreKitSubscriptionManager.entitlements(for: [StoreKitSubscriptionManager.foundersProductId])
+        XCTAssertTrue(founder.hasPro); XCTAssertTrue(founder.founder); XCTAssertFalse(founder.subscription)
+        let lifetime = StoreKitSubscriptionManager.entitlements(for: [StoreKitSubscriptionManager.lifetimeProductId])
+        XCTAssertTrue(lifetime.hasPro); XCTAssertTrue(lifetime.lifetime); XCTAssertFalse(lifetime.founder)
+        let subscription = StoreKitSubscriptionManager.entitlements(for: [StoreKitSubscriptionManager.annualProductId])
+        XCTAssertTrue(subscription.hasPro); XCTAssertTrue(subscription.subscription); XCTAssertFalse(subscription.founder)
+        XCTAssertFalse(StoreKitSubscriptionManager.entitlements(for: ["unrelated.founders"]).hasPro)
+    }
+
+    func testOfflineCachePreservesProductIdentityAndExpiresWithoutInventingFounderStatus() throws {
+        let name = "FounderBillingTests." + UUID().uuidString
+        let defaults = try XCTUnwrap(UserDefaults(suiteName: name))
+        defer { defaults.removePersistentDomain(forName: name) }
+        let now = Date(timeIntervalSince1970: 1_000_000_000)
+        defaults.set(true, forKey: "form_cached_pro_entitlement")
+        defaults.set(now.timeIntervalSince1970, forKey: "form_cached_pro_entitlement_last_verified")
+        let legacy = StoreKitSubscriptionManager.entitlements(for: StoreKitSubscriptionManager.cachedProductIDs(defaults: defaults, now: now))
+        XCTAssertTrue(legacy.subscription); XCTAssertFalse(legacy.founder)
+        defaults.set([StoreKitSubscriptionManager.foundersProductId], forKey: StoreKitSubscriptionManager.keyCachedProductIds)
+        XCTAssertTrue(StoreKitSubscriptionManager.entitlements(for: StoreKitSubscriptionManager.cachedProductIDs(defaults: defaults, now: now)).founder)
+        XCTAssertTrue(StoreKitSubscriptionManager.cachedProductIDs(defaults: defaults, now: now.addingTimeInterval(8 * 86400)).isEmpty)
+        XCTAssertTrue(StoreKitSubscriptionManager.cachedProductIDs(defaults: defaults, now: now.addingTimeInterval(-3600)).isEmpty)
+    }
+
+    private func testSession() throws -> SKTestSession {
+        try XCTSkipUnless(ProcessInfo.processInfo.environment["FORCED_REP_STOREKIT_TESTS"] == "1",
+                          "Run transaction tests with the FormApp-LocalStoreKit scheme")
+        let url = try XCTUnwrap(Bundle(for: Self.self).url(forResource: "ForcedRep", withExtension: "storekit"))
+        let session = try SKTestSession(contentsOf: url)
+        session.resetToDefaultState()
+        session.timeRate = .realTime
+        session.disableDialogs = true
+        session.clearTransactions()
+        return session
+    }
+
+    private func settle(file: StaticString = #filePath, line: UInt = #line, _ condition: () -> Bool) async throws {
+        for _ in 0..<50 {
+            await StoreKitSubscriptionManager.shared.updatePurchasedProducts()
+            if condition() { return }
+            try await Task.sleep(for: .milliseconds(100))
+        }
+        XCTFail("StoreKit entitlements did not settle: \(StoreKitSubscriptionManager.shared.purchasedProductIds)", file: file, line: line)
+    }
+
+    func testPurchaseRestoreRefundAndSubscriptionCoexistence() async throws {
+        let session = try testSession()
+        defer { session.clearTransactions(); ProAccessManager.shared.resetOverrides() }
+        let manager = StoreKitSubscriptionManager.shared
+        let access = ProAccessManager.shared
+        await manager.requestProducts()
+        await manager.updatePurchasedProducts()
+        _ = try XCTUnwrap(manager.foundersProduct, "Local Founder product must load before checkout")
+        _ = try XCTUnwrap(manager.lifetimeProduct, "Select the local StoreKit scheme before running transaction tests")
+        _ = try await session.buyProduct(identifier: StoreKitSubscriptionManager.monthlyProductId)
+        try await settle { access.hasActiveSubscription && !access.isFounder }
+        _ = try await manager.purchaseLifetime(founder: true)
+        try await settle { access.isFounder && access.hasLifetimeAccess && access.hasActiveSubscription }
+        XCTAssertTrue(StoreKitSubscriptionManager.cachedProductIDs(defaults: .standard).contains(StoreKitSubscriptionManager.foundersProductId))
+
+        access.resetOverrides()
+        _ = try await manager.restorePurchases()
+        try await settle { access.isFounder && access.isProSubscribed }
+        let founder = try XCTUnwrap(session.allTransactions().first { $0.productIdentifier == StoreKitSubscriptionManager.foundersProductId })
+        try session.refundTransaction(identifier: founder.identifier)
+        try await settle { !access.isFounder && access.hasActiveSubscription && !access.hasLifetimeAccess }
+        XCTAssertTrue(access.isProSubscribed, "Refunding the Founder pass must keep a valid subscription")
+
+        _ = try await manager.purchaseLifetime(founder: false)
+        try await settle { access.hasLifetimeAccess && !access.isFounder }
+        let monthly = try XCTUnwrap(session.allTransactions().first { $0.productIdentifier == StoreKitSubscriptionManager.monthlyProductId })
+        try session.disableAutoRenewForTransaction(identifier: monthly.identifier)
+        try session.expireSubscription(productIdentifier: StoreKitSubscriptionManager.monthlyProductId)
+        try await settle { !access.hasActiveSubscription && access.hasLifetimeAccess }
+        XCTAssertTrue(access.isProSubscribed)
+        let lifetime = try XCTUnwrap(session.allTransactions().first { $0.productIdentifier == StoreKitSubscriptionManager.lifetimeProductId })
+        try session.refundTransaction(identifier: lifetime.identifier)
+        try await settle { !access.isProSubscribed && !access.isFounder }
+    }
+
+    func testPendingPurchaseDoesNotGrantFounderUntilApproved() async throws {
+        let session = try testSession()
+        defer { session.askToBuyEnabled = false; session.clearTransactions(); ProAccessManager.shared.resetOverrides() }
+        let manager = StoreKitSubscriptionManager.shared
+        let access = ProAccessManager.shared
+        await manager.updatePurchasedProducts()
+        await manager.requestProducts()
+        _ = try XCTUnwrap(manager.lifetimeProduct, "Local StoreKit fixtures must load before checkout")
+        session.askToBuyEnabled = true
+        let status = try await manager.purchaseLifetime(founder: true)
+        if case .pending = status {} else { XCTFail("Expected an Ask to Buy pending purchase") }
+        await manager.updatePurchasedProducts()
+        XCTAssertFalse(access.isFounder)
+        XCTAssertFalse(access.isProSubscribed)
+        let pending = try XCTUnwrap(session.allTransactions().first { $0.productIdentifier == StoreKitSubscriptionManager.foundersProductId })
+        try session.approveAskToBuyTransaction(identifier: pending.identifier)
+        try await settle { access.isFounder && access.hasLifetimeAccess }
     }
 }

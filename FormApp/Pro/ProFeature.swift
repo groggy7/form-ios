@@ -59,6 +59,8 @@ public final class ProAccessManager: ObservableObject {
     @Published public private(set) var isProSubscribed: Bool = false
     /// Founders Pass owner. Founder perks such as app icons check this, not `isProSubscribed`.
     @Published public private(set) var isFounder: Bool = false
+    @Published public private(set) var hasActiveSubscription: Bool = false
+    @Published public private(set) var hasLifetimeAccess: Bool = false
     private let entitlementLock = NSLock()
     private var subscribedSnapshot = false
     private var featureOverrides: [ProFeature: Bool] = [:]
@@ -88,16 +90,26 @@ public final class ProAccessManager: ObservableObject {
         entitlementLock.unlock()
         isProSubscribed = false
         isFounder = false
+        hasActiveSubscription = false
+        hasLifetimeAccess = false
     }
 
-    /// Set by StoreKit once the Founders Pass is sold; nothing sets it before then.
+    /// Used by previews and tests; production ownership comes from verified StoreKit transactions.
     public func updateFounderStatus(active: Bool) {
         dispatchPrecondition(condition: .onQueue(.main))
         isFounder = active
     }
 
     public func updateSubscriptionStatus(active: Bool) {
+        updateEntitlements(subscription: active, founder: isFounder, lifetime: hasLifetimeAccess && !isFounder)
+    }
+
+    public func updateEntitlements(subscription: Bool, founder: Bool, lifetime: Bool) {
         dispatchPrecondition(condition: .onQueue(.main))
+        let active = subscription || founder || lifetime
+        hasActiveSubscription = subscription
+        hasLifetimeAccess = founder || lifetime
+        isFounder = founder
         entitlementLock.lock()
         subscribedSnapshot = active
         entitlementLock.unlock()

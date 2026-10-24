@@ -27,6 +27,8 @@ struct SessionFeaturePaywallContent: View {
     let onClose: () -> Void
     var feature: ProFeature? = .autoProgression
     var weightUnit: WeightUnit = .kg
+    var lifetimeOfferTitle: String? = nil
+    var onLifetimeOffer: (() -> Void)? = nil
 
     @Environment(\.sizeCategory) private var textSize
     @ScaledMetric(relativeTo: .title) private var headlineSize = 26.0
@@ -114,6 +116,16 @@ struct SessionFeaturePaywallContent: View {
                             }
                         }
                         .padding(.horizontal, 20)
+                        if let lifetimeOfferTitle, let onLifetimeOffer {
+                            Button(lifetimeOfferTitle, action: onLifetimeOffer)
+                                .font(.app(size: descriptionSize, weight: .semibold)).foregroundStyle(accent)
+                                .frame(maxWidth: .infinity, minHeight: 48)
+                                .background(AppColors.progressionPaywallPlanSurface, in: RoundedRectangle(cornerRadius: 12))
+                                .overlay(RoundedRectangle(cornerRadius: 12).stroke(AppColors.border, lineWidth: 1))
+                                .padding(.horizontal, 20).padding(.top, 12)
+                                .disabled(isPurchasing || isRestoring)
+                                .accessibilityIdentifier("paywall-lifetime-offer")
+                        }
                         ViewThatFits(in: .horizontal) {
                             HStack(spacing: 0) { legalLinks(singleLine: true) }
                             VStack(spacing: 0) { legalLinks(singleLine: false) }
