@@ -1,0 +1,335 @@
+import XCTest
+@testable import FormApp
+
+/// Executes the shared import contract (gym/docs/history-import-fixtures.json) against the captured and derived
+/// Strong/Hevy exports, plus behaviour beyond the fixtures. Android HistoryImportFixturesTest and HistoryImportTest
+/// run the same cases.
+final class HistoryImportTests: XCTestCase {
+    private let gym = URL(fileURLWithPath: #filePath).deletingLastPathComponent().appendingPathComponent("../..").standardized
+    private lazy var fixtures: [String: Any] = {
+        let data = try! Data(contentsOf: gym.appendingPathComponent("docs/history-import-fixtures.json"))
+        return try! JSONSerialization.jsonObject(with: data) as! [String: Any]
+    }()
+    private lazy var zone = TimeZone(identifier: fixtures["timeZone"] as! String)!
+    private lazy var today = fixtures["today"] as! String
+    private let catalog = HistoryImportCatalog.bundled()
+    private var cases: [[String: Any]] { fixtures["cases"] as! [[String: Any]] }
+
+    private func expectOf(_ testCase: [String: Any]) -> [String: Any] {
+        var merged: [String: Any] = [:]
+        if let base = testCase["base"] as? String, let baseCase = cases.first(where: { $0["id"] as? String == base }) {
+            merged = expectOf(baseCase)
+        }
+        for (key, value) in testCase["expect"] as? [String: Any] ?? [:] { merged[key] = value }
+        return merged
+    }
+
+    private func plan(_ data: Data, existing: [WorkoutSessionRecord] = [], unit: WeightUnit? = nil,
+                      includeOverlaps: Bool = false, zone: TimeZone? = nil) throws -> HistoryImportPlan {
+        let file = try HistoryImport.read(data, zone: zone ?? self.zone, today: today, untitled: "Workout")
+        return HistoryImport.plan(file, unit: unit, existing: existing, includeOverlaps: includeOverlaps, catalog: catalog)
+    }
+
+    private func kg(_ value: Double?) -> String {
+        let rounded = ((value ?? 0) * 100).rounded() / 100
+        return rounded == rounded.rounded() ? String(Int(rounded)) : String(format: "%g", rounded)
+    }
+
+    private func describe(_ set: SessionSetLog) -> String {
+        (set.isWarmup ? "W " : "") + "\(kg(set.weightKg))x\(set.reps ?? 0)" +
+            set.setExtensions.map { " > \(kg($0.weightKg))x\($0.reps ?? 0)" }.joined()
+    }
+
+    private func instant(_ text: String) -> Date { ISO8601DateFormatter().date(from: text)! }
+
+    func testEverySharedCaseMatchesItsExpectedResult() throws {
+        var checked = 0
+        for testCase in cases {
+            let id = testCase["id"] as! String
+            let expect = expectOf(testCase)
+            let data = try Data(contentsOf: gym.appendingPathComponent(testCase["file"] as! String))
+            checked += 1
+            if let error = expect["error"] as? String {
+                do {
+                    _ = try plan(data)
+                    XCTFail("\(id) should be refused")
+                } catch let failure as HistoryImportError {
+                    XCTAssertEqual(failure.problems.first?.code, error, "\(id) error")
+                    XCTAssertEqual(failure.problems.first?.line, expect["line"] as? Int, "\(id) line")
+                }
+                continue
+            }
+            let plan = try plan(data)
+            let file = plan.file
+            XCTAssertEqual(file.source.rawValue, expect["source"] as? String, "\(id) source")
+            XCTAssertEqual(file.fileUnit?.rawValue, expect["fileUnit"] as? String, "\(id) unit")
+            XCTAssertEqual(file.workoutsInFile, expect["workoutsInFile"] as? Int, "\(id) workoutsInFile")
+            XCTAssertEqual(file.repeatedInFile, expect["repeatedInFile"] as? Int, "\(id) repeatedInFile")
+            XCTAssertEqual(plan.records.count, expect["newWorkouts"] as? Int, "\(id) newWorkouts")
+            XCTAssertEqual(file.nothingToImport, expect["nothingToImport"] as? Int, "\(id) nothingToImport")
+            XCTAssertEqual(plan.workingSets, expect["workingSets"] as? Int, "\(id) workingSets")
+            XCTAssertEqual(plan.warmupSets, expect["warmupSets"] as? Int, "\(id) warmupSets")
+            XCTAssertEqual(plan.dropsAttached, expect["dropsAttached"] as? Int, "\(id) dropsAttached")
+            XCTAssertEqual(plan.dropsSeparate, expect["dropsSeparate"] as? Int, "\(id) dropsSeparate")
+            XCTAssertEqual(file.timedSets, expect["timedSets"] as? Int, "\(id) timedSets")
+            XCTAssertEqual(file.distanceSets, expect["distanceSets"] as? Int, "\(id) distanceSets")
+            XCTAssertEqual(file.setsWithoutReps, expect["setsWithoutReps"] as? Int, "\(id) setsWithoutReps")
+            XCTAssertEqual(file.rpeValues, expect["rpeValues"] as? Int, "\(id) rpeValues")
+            XCTAssertEqual(file.exerciseNotes, expect["exerciseNotes"] as? Int, "\(id) exerciseNotes")
+            XCTAssertEqual(file.workoutDescriptions, expect["workoutDescriptions"] as? Int, "\(id) workoutDescriptions")
+            XCTAssertEqual(file.supersetLinks, expect["supersetLinks"] as? Int, "\(id) supersetLinks")
+            XCTAssertEqual(plan.libraryExercises, expect["libraryExercises"] as? Int, "\(id) libraryExercises")
+            XCTAssertEqual(plan.customExercises, expect["customExercises"] as? Int, "\(id) customExercises")
+            XCTAssertEqual(plan.records.reduce(0) { $0 + $1.totalVolumeKg }, (expect["volumeKg"] as! NSNumber).doubleValue, accuracy: 0.01, "\(id) volume")
+            XCTAssertEqual(plan.records.reduce(0) { $0 + $1.durationSeconds }, expect["durationSeconds"] as? Int, "\(id) duration")
+            let dates = expect["dates"] as! [String: Any]
+            XCTAssertEqual(Set(plan.records.compactMap(\.performedDate)).count, dates["count"] as? Int, "\(id) date count")
+            if let first = dates["first"] as? String { XCTAssertEqual(plan.firstDate, first, "\(id) first date") }
+            if let last = dates["last"] as? String { XCTAssertEqual(plan.lastDate, last, "\(id) last date") }
+            if let workouts = expect["workouts"] as? [[String: Any]] {
+                let records = plan.records.sorted { instant($0.startedAt) < instant($1.startedAt) }
+                XCTAssertEqual(records.count, workouts.count, "\(id) workouts")
+                for (want, got) in zip(workouts, records) {
+                    XCTAssertEqual(got.id, want["id"] as? String, "\(id) record id")
+                    XCTAssertEqual(got.workoutTitle, want["title"] as? String, "\(id) title")
+                    XCTAssertEqual(got.performedDate, want["performedDate"] as? String, "\(id) performedDate")
+                    XCTAssertEqual(instant(got.startedAt), instant(want["startedAt"] as! String), "\(id) startedAt")
+                    XCTAssertEqual(instant(got.completedAt), instant(want["completedAt"] as! String), "\(id) completedAt")
+                    XCTAssertEqual(got.durationSeconds, want["durationSeconds"] as? Int, "\(id) durationSeconds")
+                    XCTAssertEqual(got.totalCompletedSets, want["totalCompletedSets"] as? Int, "\(id) totalCompletedSets")
+                    XCTAssertEqual(got.totalVolumeKg, (want["totalVolumeKg"] as! NSNumber).doubleValue, accuracy: 0.01, "\(id) totalVolumeKg")
+                    XCTAssertEqual(got.isComplete, true, "\(id) complete")
+                    let exercises = want["exercises"] as! [[String: Any]]
+                    XCTAssertEqual(got.exerciseLogs.map(\.exerciseName), exercises.map { $0["name"] as! String }, "\(id) exercises")
+                    for (e, log) in zip(exercises, got.exerciseLogs) {
+                        XCTAssertEqual(log.exerciseId, e["id"] as? String, "\(id) \(log.exerciseName) id")
+                        XCTAssertEqual(log.sets.map(describe), e["sets"] as? [String], "\(id) \(log.exerciseName) sets")
+                    }
+                }
+            }
+            // Imported sets must restore from a backup like logged ones.
+            for log in plan.records.flatMap(\.exerciseLogs) {
+                let assisted = WorkoutSessionUtils.isAssisted(exerciseId: log.exerciseId, name: log.exerciseName)
+                for set in log.sets { XCTAssertNil(IntensitySets.restoreError(set, assisted: assisted), "\(id) \(log.exerciseName) restores") }
+                XCTAssertEqual(log.sets.map(\.setNumber), Array(1..<(log.sets.count + 1)), "\(id) set numbers")
+            }
+        }
+        XCTAssertEqual(checked, 62, "all 62 captured and derived exports")
+    }
+
+    // MARK: Behaviour
+
+    private let strongHeader = "Workout #;Date;Workout Name;Duration (sec);Exercise Name;Set Order;Weight (kg);Reps;RPE;Distance (meters);Seconds;Notes;Workout Notes"
+    private let hevyHeader = "title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_kg,reps,distance_km,duration_seconds,rpe"
+    private func strong(_ rows: String...) -> Data { Data(([strongHeader] + rows).joined(separator: "\n").utf8) }
+    private func hevy(_ rows: [String]) -> Data { Data(([hevyHeader] + rows).joined(separator: "\n").utf8) }
+    private func hevyRow(_ title: String, _ start: String, _ end: String, _ exercise: String, _ index: Int, _ type: String, _ weight: String, _ reps: String) -> String {
+        "\(title),\"\(start)\",\"\(end)\",,\(exercise),,,\(index),\(type),\(weight),\(reps),,,"
+    }
+    private func refusal(_ data: Data) -> HistoryImportError {
+        do { _ = try plan(data); XCTFail("expected a refusal") } catch let error as HistoryImportError { return error } catch { XCTFail("\(error)") }
+        return HistoryImportError("none", line: 0)
+    }
+    private func native(_ start: String, _ end: String, _ date: String, id: String? = nil) -> WorkoutSessionRecord {
+        WorkoutSessionRecord(id: id ?? "native-\(start)", programId: "p", workoutId: "w", workoutTitle: "Push", startedAt: start,
+                             completedAt: end, durationSeconds: 3600, isComplete: true, performedDate: date)
+    }
+
+    func testIdenticalReplayImportsNothing() throws {
+        let csv = strong("1;2026-10-01 18:00:00;Push;3600;Bench Press (Barbell);1;100;5;;;;;")
+        let first = try plan(csv)
+        XCTAssertEqual(first.records.count, 1)
+        let replay = try plan(csv, existing: first.records)
+        XCTAssertEqual(replay.alreadyImported, 1)
+        XCTAssertTrue(replay.records.isEmpty)
+        XCTAssertFalse(replay.canImport)
+    }
+
+    func testSameDayWorkoutsWithOneTitleStayDistinct() throws {
+        let strongPlan = try plan(strong(
+            "1;2026-10-01 18:00:00;Push;3600;Bench Press (Barbell);1;100;5;;;;;",
+            "2;2026-10-01 10:00:00;Push;1800;Bench Press (Barbell);1;100;5;;;;;",
+            "3;2026-10-01 12:00:00;Legs;1800;Squat (Barbell);1;100;5;;;;;"
+        ))
+        XCTAssertEqual(strongPlan.records.count, 3)
+        XCTAssertEqual(Set(strongPlan.records.map(\.id)).count, 3)
+        let hevyPlan = try plan(hevy([
+            hevyRow("Push", "1 Oct 2026, 10:00", "1 Oct 2026, 11:00", "Bench Press (Barbell)", 0, "normal", "100", "5"),
+            hevyRow("Push", "1 Oct 2026, 18:00", "1 Oct 2026, 19:00", "Bench Press (Barbell)", 0, "normal", "100", "5")
+        ]))
+        XCTAssertEqual(hevyPlan.records.count, 2)
+    }
+
+    func testALaterExportOnlyAddsTheNewWorkout() throws {
+        let older = try plan(strong("1;2026-10-01 10:00:00;Push;1800;Bench Press (Barbell);1;100;5;;;;;"))
+        let later = try plan(strong(
+            "1;2026-10-01 10:00:00;Push;1800;Bench Press (Barbell);1;100;5;;;;;",
+            "2;2026-10-03 10:00:00;Pull;1800;Pull Up;1;0;8;;;;;"
+        ), existing: older.records)
+        XCTAssertEqual(later.alreadyImported, 1)
+        XCTAssertEqual(later.records.map(\.performedDate), ["2026-10-03"])
+    }
+
+    func testWorkoutsLoggedHereAreHeldBackUnlessChosen() throws {
+        let csv = strong("1;2026-10-01 18:30:00;Push;3600;Bench Press (Barbell);1;100;5;;;;;")
+        let existing = [native("2026-10-01T15:00:00Z", "2026-10-01T16:00:00Z", "2026-10-01")]
+        let held = try plan(csv, existing: existing)
+        XCTAssertEqual(held.overlapping, 1)
+        XCTAssertTrue(held.records.isEmpty)
+        XCTAssertEqual(try plan(csv, existing: existing, includeOverlaps: true).records.count, 1)
+        let apart = try plan(csv, existing: [native("2026-10-01T06:00:00Z", "2026-10-01T07:00:00Z", "2026-10-01")])
+        XCTAssertEqual(apart.overlapping, 0)
+        XCTAssertEqual(apart.records.count, 1)
+    }
+
+    func testImportedWorkoutsNeverHoldEachOtherBackByTime() throws {
+        let first = try plan(strong("1;2026-10-01 18:00:00;Push;3600;Bench Press (Barbell);1;100;5;;;;;"))
+        let second = try plan(strong("1;2026-10-01 18:30:00;Arms;1800;Bicep Curl (Barbell);1;30;10;;;;;"), existing: first.records)
+        XCTAssertEqual(second.overlapping, 0)
+        XCTAssertEqual(second.records.count, 1)
+    }
+
+    func testAnExportWithoutAWeightUnitWaitsForTheUsersChoice() throws {
+        let csv = Data([
+            "Date;Workout Name;Duration;Exercise Name;Set Order;Weight;Reps;Distance;Seconds;Notes;Workout Notes;RPE",
+            "2026-10-01 18:00:00;Push;1h 5m;Bench Press (Barbell);1;225;5;;;;;"
+        ].joined(separator: "\n").utf8)
+        let unchosen = try plan(csv)
+        XCTAssertNil(unchosen.file.fileUnit)
+        XCTAssertTrue(unchosen.needsUnit)
+        XCTAssertFalse(unchosen.canImport)
+        XCTAssertTrue(unchosen.records.isEmpty)
+        let pounds = try plan(csv, unit: .lbs)
+        XCTAssertEqual(pounds.records.first!.exerciseLogs.first!.sets.first!.weightKg!, 225 * WeightUnit.lbsToKg, accuracy: 1e-9)
+        XCTAssertEqual(pounds.records.first!.durationSeconds, 3900)
+        XCTAssertEqual(try plan(csv, unit: .kg).records.first!.exerciseLogs.first!.sets.first!.weightKg!, 225, accuracy: 1e-9)
+    }
+
+    func testTheDeviceTimeZoneNeverMovesTheExportedDate() throws {
+        let csv = strong("1;2026-10-01 23:56:57;Late;600;Bench Press (Barbell);1;100;5;;;;;")
+        let record = try plan(csv, zone: TimeZone(identifier: "America/New_York")!).records.first!
+        XCTAssertEqual(record.performedDate, "2026-10-01")
+        XCTAssertEqual(instant(record.startedAt), instant("2026-10-02T03:56:57Z"))
+    }
+
+    func testDropRowsAttachOnlyWhenTheLoadGoesDown() throws {
+        func sets(_ rows: [(String, String)], exercise: String = "Bench Press (Barbell)") throws -> [String] {
+            let lines = rows.enumerated().map { i, row -> String in
+                let parts = row.1.split(separator: "x").map(String.init)
+                return hevyRow("T", "1 Oct 2026, 10:00", "1 Oct 2026, 11:00", exercise, i, row.0, parts[0], parts[1])
+            }
+            return try plan(hevy(lines)).records.first!.exerciseLogs.first!.sets.map(describe)
+        }
+        XCTAssertEqual(try sets([("warmup", "20x10"), ("dropset", "15x8")]), ["W 20x10", "15x8"])
+        XCTAssertEqual(try sets([("normal", "80x8"), ("dropset", "90x5")]), ["80x8", "90x5"])
+        let seven = try sets([("normal", "100x5")] + (1...7).map { ("dropset", "\(100 - $0 * 10)x5") })
+        XCTAssertEqual(seven, ["100x5 > 90x5 > 80x5 > 70x5 > 60x5 > 50x5 > 40x5", "30x5"])
+        XCTAssertEqual(try sets([("normal", "20x8"), ("dropset", "30x6")], exercise: "Pull Up (Assisted)"), ["20x8 > 30x6"])
+        XCTAssertEqual(try sets([("normal", "20x8"), ("dropset", "0x6")]), ["20x8", "0x6"])
+        XCTAssertEqual(try sets([("normal", "20x6"), ("dropset", "0x4")], exercise: "Pull Up (Weighted)"), ["20x6 > 0x4"])
+    }
+
+    func testUnknownNamesStayCustomAndBlankTitlesGetTheFallback() throws {
+        let record = try plan(strong("1;2026-10-01 18:00:00;;600;Zercher Carry (Sandbag);1;60;10;;;;;")).records.first!
+        XCTAssertEqual(record.workoutTitle, "Workout")
+        XCTAssertNil(record.exerciseLogs.first!.exerciseId)
+        XCTAssertEqual(record.exerciseLogs.first!.exerciseName, "Zercher Carry (Sandbag)")
+    }
+
+    func testReviewedAliasesKeepMovementIdentity() {
+        XCTAssertEqual(catalog.match("Overhead Press (Barbell)")?.id, "standing-barbell-overhead-press")
+        XCTAssertEqual(catalog.match("Standing Calf Raise (Machine)")?.id, "standing-machine-calf-raise")
+        XCTAssertEqual(catalog.match("Pull-Up")?.id, "pull-ups")
+        XCTAssertEqual(catalog.match("  BENCH  PRESS (Barbell) ")?.id, "barbell-bench-press")
+        XCTAssertEqual(catalog.match("Barbell Bench Press")?.id, "barbell-bench-press")
+        XCTAssertNil(catalog.match("Shoulder Press (Dumbbell)"))
+    }
+
+    func testValuesThatCannotBeReadRefuseTheWholeFile() throws {
+        func firstProblem(_ row: String) -> String {
+            let problem = refusal(strong(row)).problems.first!
+            return "\(problem.code)@\(problem.line)"
+        }
+        XCTAssertEqual(firstProblem("1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);1;80,5;5;;;;;"), "weight@2")
+        XCTAssertEqual(firstProblem("1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);1;80;5.5;;;;;"), "reps@2")
+        XCTAssertEqual(firstProblem("1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);1;80;1000;;;;;"), "reps@2")
+        XCTAssertEqual(firstProblem("1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);1;80;5;11;;;;"), "rpe@2")
+        XCTAssertEqual(firstProblem("1;2026-10-26 18:00:00;Push;600;Bench Press (Barbell);1;80;5;;;;;"), "futureDate@2")
+        XCTAssertEqual(firstProblem("1;1969-12-31 18:00:00;Push;600;Bench Press (Barbell);1;80;5;;;;;"), "date@2")
+        XCTAssertEqual(firstProblem("1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);X;80;5;;;;;"), "setType@2")
+        XCTAssertEqual(firstProblem("1;2026-10-01 18:00:00;Push;600; ;1;80;5;;;;;"), "exerciseName@2")
+        XCTAssertEqual(firstProblem("1;2026-10-01 18:00:00;Push;999999;Bench Press (Barbell);1;80;5;;;;;"), "duration@2")
+        XCTAssertEqual(try plan(strong("1;2026-10-25 08:00:00;Push;600;Bench Press (Barbell);1;80;5;;;;;")).records.count, 1)
+    }
+
+    func testUpToFiveProblemsAreReportedWithTheirLines() {
+        let rows = (1...7).map { "\($0);2026-10-0\($0) 18:00:00;Push;600;Bench Press (Barbell);1;heavy;5;;;;;" }
+        let problems = refusal(Data(([strongHeader] + rows).joined(separator: "\n").utf8)).problems
+        XCTAssertEqual(problems.map(\.line), [2, 3, 4, 5, 6])
+    }
+
+    func testLineNumbersCountQuotedLineBreaks() {
+        let csv = strong(
+            "1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);1;80;5;;;;\"two\r\nlines\";",
+            "1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);2;bad;5;;;;;"
+        )
+        XCTAssertEqual(refusal(csv).problems.first?.line, 4)
+    }
+
+    func testStructuralProblemsRefuseTheFile() {
+        func code(_ data: Data) -> String? {
+            do { _ = try HistoryImport.read(data, zone: zone, today: today, untitled: "W"); return nil }
+            catch let error as HistoryImportError { return error.problems.first?.code } catch { return nil }
+        }
+        XCTAssertEqual(code(Data([0xC3, 0x28])), "encoding")
+        XCTAssertEqual(code(Data("\n\r\n".utf8)), "empty")
+        XCTAssertEqual(code(Data("name,weight\nBench,100".utf8)), "unknownFormat")
+        XCTAssertEqual(code(Data(count: 25 * 1024 * 1024 + 1)), "tooLarge")
+        let conflicting = refusal(strong(
+            "1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);1;80;5;;;;;",
+            "2;2026-10-02 18:00:00;Pull;600;Pull Up;1;0;5;;;;;",
+            "1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);1;85;5;;;;;"
+        )).problems.first!
+        XCTAssertEqual("\(conflicting.code)@\(conflicting.line)", "conflictingRepeat@4")
+        let inconsistent = refusal(strong(
+            "1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);1;80;5;;;;;",
+            "1;2026-10-02 18:00:00;Push;600;Bench Press (Barbell);2;80;5;;;;;"
+        )).problems.first!
+        XCTAssertEqual("\(inconsistent.code)@\(inconsistent.line)", "inconsistentWorkout@3")
+    }
+
+    func testHistoryKeepsAtMostTenThousandWorkouts() throws {
+        let existing = (1...9_999).map { native("2020-01-01T00:00:00Z", "2020-01-01T01:00:00Z", "2020-01-01", id: "n\($0)") }
+        let plan = try plan(strong(
+            "1;2026-10-01 18:00:00;Push;600;Bench Press (Barbell);1;80;5;;;;;",
+            "2;2026-10-02 18:00:00;Pull;600;Pull Up;1;0;5;;;;;"
+        ), existing: existing)
+        XCTAssertEqual(plan.roomLeft, 1)
+        XCTAssertFalse(plan.canImport)
+    }
+
+    // MARK: Store
+
+    @MainActor func testImportPersistsAndAReplayAddsNothing() throws {
+        let persistence = AppStatePersistence(inMemory: true)
+        var store = AppStore(persistence: persistence)
+        let before = store.state.history
+        let file = try AppStore.readHistoryImport(strong(
+            "1;2026-10-01 23:56:57;IMPORT TEST;353;Bench Press (Barbell);W;20;10;;;;;",
+            "1;2026-10-01 23:56:57;IMPORT TEST;353;Bench Press (Barbell);1;80.5;8;;;;;",
+            "1;2026-10-01 23:56:57;IMPORT TEST;353;Bench Press (Barbell);D;60.25;10;;;;;"
+        ))
+        XCTAssertEqual(try store.importHistory(store.planHistoryImport(file, unit: nil, includeOverlaps: false)), 1)
+        store = AppStore(persistence: persistence)  // reopen from the stored state
+        let imported = store.state.history.first { $0.id.hasPrefix(HistoryImport.idPrefix) }
+        XCTAssertEqual(imported?.performedDate, "2026-10-01")
+        XCTAssertEqual(imported?.exerciseLogs.first?.sets.last?.technique, "drop")
+        XCTAssertTrue(store.state.calendarHistory?.entries.contains { $0.id == "session:\(imported!.id)" && $0.status == .completed } == true)
+        let replay = store.planHistoryImport(file, unit: nil, includeOverlaps: false)
+        XCTAssertEqual(replay.alreadyImported, 1)
+        XCTAssertThrowsError(try store.importHistory(replay)) { error in
+            XCTAssertEqual((error as? HistoryImportError)?.problems.first?.code, "nothingNew")
+        }
+        XCTAssertEqual(store.state.history.count, before.count + 1)
+    }
+}

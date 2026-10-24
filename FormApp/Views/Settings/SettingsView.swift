@@ -996,6 +996,18 @@ struct ImportExportDataSheet: View {
     /// Decoding a long history takes a while; the sheet stays open and locked until it ends.
     @State private var isRestoring = false
     @State private var importErrorMessage: String? = nil
+    /// The importer serves both backups and Strong/Hevy CSV exports; SwiftUI presents one importer per view.
+    @State private var importsHistory = false
+    @State private var isReadingHistory = false
+    @State private var historyImport: PendingHistoryImport? = nil
+    @State private var historyProblems: [HistoryImportProblem]? = nil
+    @State private var isImportingHistory = false
+
+    struct PendingHistoryImport: Identifiable {
+        let id = UUID()
+        var plan: HistoryImportPlan
+        let fileName: String
+    }
 
     var body: some View {
         let _ = themeManager.currentTheme
@@ -1098,6 +1110,7 @@ struct ImportExportDataSheet: View {
                             .fixedSize(horizontal: false, vertical: true)
 
                         Button(action: {
+                            importsHistory = false
                             isShowingBackupImporter = true
                         }) {
                             HStack(spacing: 8) {
@@ -1127,6 +1140,59 @@ struct ImportExportDataSheet: View {
                     .background(AppColors.surfaceRaised)
                     .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
                     .clipShape(RoundedRectangle(cornerRadius: 16))
+
+                    // Strong / Hevy history import (gym/docs/history-import.md)
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack(spacing: 8) {
+                            Image(systemName: "clock.arrow.circlepath")
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundStyle(AppColors.purple)
+                            Text(LanguageManager.t("import.history.title"))
+                                .font(.app(size: 15, weight: .bold))
+                                .foregroundStyle(AppColors.text)
+                        }
+
+                        Text(LanguageManager.t("import.history.desc"))
+                            .font(.app(size: 12))
+                            .foregroundStyle(AppColors.secondaryText)
+                            .lineSpacing(2)
+                            .fixedSize(horizontal: false, vertical: true)
+
+                        Button(action: {
+                            do {
+                                try store.checkHistoryImportAllowed()
+                                importsHistory = true
+                                isShowingBackupImporter = true
+                            } catch {
+                                importErrorMessage = LanguageManager.t("import.error.activeWorkout")
+                            }
+                        }) {
+                            HStack(spacing: 8) {
+                                if isReadingHistory {
+                                    ProgressView().tint(AppColors.text)
+                                } else {
+                                    Image(systemName: "doc.text")
+                                        .font(.system(size: 15, weight: .semibold))
+                                }
+                                Text(LanguageManager.t("import.history.choose"))
+                                    .font(.app(size: 13, weight: .semibold))
+                            }
+                            .foregroundStyle(AppColors.text)
+                            .frame(maxWidth: .infinity)
+                            .frame(minHeight: 44)
+                            .background(AppColors.surface)
+                            .overlay(RoundedRectangle(cornerRadius: 10).stroke(AppColors.border, lineWidth: 1))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(isRestoring || isReadingHistory)
+                        .accessibilityIdentifier("import-history-button")
+                    }
+                    .padding(16)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(AppColors.surfaceRaised)
+                    .overlay(RoundedRectangle(cornerRadius: 16).stroke(AppColors.border, lineWidth: 1))
+                    .clipShape(RoundedRectangle(cornerRadius: 16))
                 }
                 .padding(.horizontal, 20)
                 .padding(.bottom, 36)
@@ -1140,9 +1206,13 @@ struct ImportExportDataSheet: View {
         }
         .fileImporter(
             isPresented: $isShowingBackupImporter,
-            allowedContentTypes: [.json],
+            allowedContentTypes: importsHistory ? [.commaSeparatedText, .tabSeparatedText, .plainText] : [.json],
             allowsMultipleSelection: false
         ) { result in
+            if importsHistory {
+                readHistory(result)
+                return
+            }
             switch result {
             case .success(let urls):
                 guard let url = urls.first else { return }
@@ -1196,6 +1266,30 @@ struct ImportExportDataSheet: View {
                 Text(LanguageManager.t("programs.restoreHint"))
             }
         )
+        .sheet(item: $historyImport) { pending in
+            HistoryImportPreviewSheet(
+                plan: pending.plan,
+                fileName: pending.fileName,
+                importing: isImportingHistory,
+                onChooseUnit: { unit in replanHistory(unit: unit, includeOverlaps: pending.plan.includeOverlaps) },
+                onIncludeOverlaps: { include in replanHistory(unit: pending.plan.unit, includeOverlaps: include) },
+                onImport: { importHistory(pending.plan) },
+                onDismiss: { if !isImportingHistory { historyImport = nil } }
+            )
+        }
+        .alert(
+            LanguageManager.t("import.error.title"),
+            isPresented: Binding(
+                get: { historyProblems != nil },
+                set: { if !$0 { historyProblems = nil } }
+            ),
+            actions: {
+                Button(LanguageManager.t("common.close")) { historyProblems = nil }
+            },
+            message: {
+                Text((historyProblems ?? []).map(historyImportProblemText).joined(separator: "\n"))
+            }
+        )
         .alert(
             "Import Error",
             isPresented: Binding(
@@ -1209,6 +1303,60 @@ struct ImportExportDataSheet: View {
                 Text(importErrorMessage ?? "")
             }
         )
+    }
+
+    private func readHistory(_ result: Result<[URL], Error>) {
+        guard case .success(let urls) = result, let url = urls.first else {
+            if case .failure = result { importErrorMessage = LanguageManager.t("errors.fileRead") }
+            return
+        }
+        isReadingHistory = true
+        Task { @MainActor in
+            defer { isReadingHistory = false }
+            do {
+                let file = try await Task.detached(priority: .userInitiated) { () throws -> HistoryImportFile in
+                    let accessed = url.startAccessingSecurityScopedResource()
+                    defer { if accessed { url.stopAccessingSecurityScopedResource() } }
+                    let size = try url.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0
+                    guard size <= HistoryImportCsv.maxBytes else { throw HistoryImportError("tooLarge", line: 0) }
+                    return try AppStore.readHistoryImport(Data(contentsOf: url))
+                }.value
+                try store.checkHistoryImportAllowed()
+                historyImport = PendingHistoryImport(
+                    plan: store.planHistoryImport(file, unit: nil, includeOverlaps: false),
+                    fileName: url.lastPathComponent
+                )
+            } catch let error as HistoryImportError {
+                historyProblems = error.problems
+            } catch {
+                importErrorMessage = LanguageManager.t("errors.fileRead")
+            }
+        }
+    }
+
+    private func replanHistory(unit: WeightUnit?, includeOverlaps: Bool) {
+        guard let pending = historyImport, !isImportingHistory else { return }
+        historyImport?.plan = store.planHistoryImport(pending.plan.file, unit: unit, includeOverlaps: includeOverlaps)
+    }
+
+    private func importHistory(_ plan: HistoryImportPlan) {
+        guard !isImportingHistory else { return }
+        isImportingHistory = true
+        do {
+            let count = try store.importHistory(plan)
+            isImportingHistory = false
+            historyImport = nil
+            store.noticeMessage = LanguageManager.shared.plural("import.done", count)
+            onDismiss()
+        } catch let error as HistoryImportError {
+            isImportingHistory = false
+            historyImport = nil
+            importErrorMessage = LanguageManager.t("import.error.\(error.problems.first?.code ?? "saveFailed")")
+        } catch {
+            isImportingHistory = false
+            historyImport = nil
+            importErrorMessage = LanguageManager.t("import.error.saveFailed")
+        }
     }
 }
 
