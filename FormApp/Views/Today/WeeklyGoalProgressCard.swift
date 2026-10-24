@@ -82,13 +82,16 @@ public struct WeeklyGoalProgressCard: View {
                 .fill(cardBorder)
                 .frame(height: 1)
 
-            // 3 Stat Boxes Row (TOTAL VOLUME, ACTIVE TIME, PRS HIT)
+            // 3 Stat Boxes Row (TOTAL VOLUME, ACTIVE TIME, PRS HIT). The tiles share the tallest one's height, so a
+            // wrapped label keeps every value on one line across the row.
             HStack(spacing: 8) {
                 // Stat 1: Total Volume
-                VStack(spacing: 4) {
+                VStack(spacing: 0) {
                     Text(LanguageManager.t("today.totalVolume"))
                         .font(.app(size: 10, weight: .semibold))
                         .foregroundStyle(AppColors.muted)
+
+                    Spacer(minLength: 4)
 
                     HStack(alignment: .lastTextBaseline, spacing: 3) {
                         Text(metrics.formattedVolume(unit: weightUnit))
@@ -100,7 +103,7 @@ public struct WeeklyGoalProgressCard: View {
                             .foregroundStyle(AppColors.muted)
                     }
                 }
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .padding(.vertical, 12)
                 .padding(.horizontal, 6)
                 .background(statBoxBg)
@@ -112,16 +115,18 @@ public struct WeeklyGoalProgressCard: View {
                 .accessibilityIdentifier("weekly-progress-volume")
 
                 // Stat 2: Active Time
-                VStack(spacing: 4) {
+                VStack(spacing: 0) {
                     Text(LanguageManager.t("today.activeTime"))
                         .font(.app(size: 10, weight: .semibold))
                         .foregroundStyle(AppColors.muted)
+
+                    Spacer(minLength: 4)
 
                     Text(metrics.formattedActiveTime)
                         .font(.app(size: 16, weight: .bold))
                         .foregroundStyle(AppColors.text)
                 }
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .padding(.vertical, 12)
                 .padding(.horizontal, 6)
                 .background(statBoxBg)
@@ -133,10 +138,12 @@ public struct WeeklyGoalProgressCard: View {
                 .accessibilityIdentifier("weekly-progress-active-time")
 
                 // Stat 3: PRs Hit
-                VStack(spacing: 4) {
+                VStack(spacing: 0) {
                     Text(LanguageManager.t("today.prsHit"))
                         .font(.app(size: 10, weight: .semibold))
                         .foregroundStyle(AppColors.muted)
+
+                    Spacer(minLength: 4)
 
                     HStack(alignment: .center, spacing: 4) {
                         Text("⚡")
@@ -148,7 +155,7 @@ public struct WeeklyGoalProgressCard: View {
                             .foregroundStyle(amberPr)
                     }
                 }
-                .frame(maxWidth: .infinity)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .padding(.vertical, 12)
                 .padding(.horizontal, 6)
                 .background(statBoxBg)
@@ -159,6 +166,7 @@ public struct WeeklyGoalProgressCard: View {
                 )
                 .accessibilityIdentifier("weekly-progress-prs")
             }
+            .fixedSize(horizontal: false, vertical: true)
         }
         .padding(16)
         .background(cardBackground)
