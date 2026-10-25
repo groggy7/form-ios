@@ -1439,7 +1439,7 @@
   "tour.workout.exercises.title": "Exercises",
   "tour.workout.exercises.body": "Tap an exercise to switch to it. Tap the current one again for its demonstration.",
   "tour.workout.sets.title": "Log your sets",
-  "tour.workout.sets.body": "Enter weight in {weight_unit} and reps, then tick the set to start the rest timer. If {weight_unit} is wrong, change the weight unit in app Settings.",
+  "tour.workout.sets.body": "Enter weight in {weight_unit} and reps, then tick the set to log it. Rest runs between sets or superset rounds. If {weight_unit} is wrong, change the weight unit in app Settings.",
   "tour.workout.finish.body": "When you're done, review and save the workout here.",
   "tour.matrix.body.title": "Muscles by color",
   "tour.matrix.body.body": "Each muscle is colored by this week's working sets.",

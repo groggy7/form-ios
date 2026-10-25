@@ -1439,7 +1439,7 @@
   "tour.workout.exercises.title": "Ejercicios",
   "tour.workout.exercises.body": "Toca un ejercicio para cambiar a él. Vuelve a tocar el actual para ver su demostración.",
   "tour.workout.sets.title": "Registra tus series",
-  "tour.workout.sets.body": "Introduce el peso en {weight_unit} y las repeticiones, y marca la serie para iniciar el descanso. Si {weight_unit} no es la unidad adecuada, cámbiala en los ajustes de la app.",
+  "tour.workout.sets.body": "Introduce el peso en {weight_unit} y las repeticiones, y marca la serie para guardarla. El descanso va entre series o rondas de superserie. Si {weight_unit} no es la unidad adecuada, cámbiala en los ajustes de la app.",
   "tour.workout.finish.body": "Cuando termines, revisa y guarda el entrenamiento aquí.",
   "tour.matrix.body.title": "Músculos por color",
   "tour.matrix.body.body": "Cada músculo se colorea según las series de trabajo de esta semana.",
