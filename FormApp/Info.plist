@@ -70,5 +70,12 @@
 		<string>fr</string>
 		<string>es</string>
 	</array>
+	<key>NSSupportsLiveActivities</key>
+	<true/>
+	<key>CFBundleURLTypes</key>
+	<array><dict>
+		<key>CFBundleURLName</key><string>forcedrep.workout</string>
+		<key>CFBundleURLSchemes</key><array><string>forcedrep</string></array>
+	</dict></array>
 </dict>
 </plist>

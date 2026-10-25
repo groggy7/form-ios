@@ -177,6 +177,14 @@
 		C8FC3E2DD457F45E24157720 /* SocialCardRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0164A58B28631F1A8F02469B; };
 		177AB64314F6A5E6E9617DA9 /* SocialCardComposer.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA283146D3F72346C8B57CB9; };
 		FB0000000000000000000001 /* ForcedRep.storekit in Resources */ = {isa = PBXBuildFile; fileRef = SK0000000000000000000003 /* ForcedRep.storekit */; };
+		109B7227E4F1C76AF8A8C5B4 /* RestActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9140A29490FA3C8A58C71E /* RestActivityAttributes.swift */; };
+		44F4C92965A22327C391A150 /* RestActivityContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407042E495C0435AE551A27C /* RestActivityContent.swift */; };
+		547A7665E5800F49B508918F /* RestActivityContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 407042E495C0435AE551A27C /* RestActivityContent.swift */; };
+		A6A5ED679CCC0C22C3C0CB8F /* RestWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4C246384FBB92AB2A29BFE2 /* RestWidget.swift */; };
+		AD790E6DDD6274008A7D56FF /* FormRestWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = AC3F96DE1CDC7610631C969F /* FormRestWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		B93FEA2C343D18BB1FC67180 /* RestActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2D9140A29490FA3C8A58C71E /* RestActivityAttributes.swift */; };
+		BAC387605ADAE0E60CB5248D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5F5CFF3B812D4D36B51EE587 /* Foundation.framework */; };
+		ECFEB80B3B0890A60B49074C /* RestLiveActivityCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0E6C7C71BEB5A01D389BB3 /* RestLiveActivityCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -187,7 +195,39 @@
 			remoteGlobalIDString = 368EC54BCB656899BFC1C90B;
 			remoteInfo = FormApp;
 		};
+		1A6CFEEA33701697646E7C30 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8BE7676ED5FD31CDF696A7D9 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 518CBE7B8A8873D904C82E2D;
+			remoteInfo = FormRestWidget;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		60AADE55BB52376781442A85 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				AD790E6DDD6274008A7D56FF /* FormRestWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		E217E87F2D45C4BE47633738 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				BAC387605ADAE0E60CB5248D /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXFileReference section */
 		AABB01234567890123450001 /* NoteField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/Components/NoteField.swift; sourceTree = "<group>"; };
@@ -353,6 +393,13 @@
 		59698B516FEB62A85A77468E /* SocialCardsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormAppTests/SocialCardsTests.swift"; sourceTree = SOURCE_ROOT; };
 		0164A58B28631F1A8F02469B /* SocialCardRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormApp/Views/Components/SocialCardRenderer.swift"; sourceTree = SOURCE_ROOT; };
 		FA283146D3F72346C8B57CB9 /* SocialCardComposer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FormApp/Views/Components/SocialCardComposer.swift"; sourceTree = SOURCE_ROOT; };
+		2D9140A29490FA3C8A58C71E /* RestActivityAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RestActivityAttributes.swift; path = Models/RestActivityAttributes.swift; sourceTree = "<group>"; };
+		407042E495C0435AE551A27C /* RestActivityContent.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RestActivityContent.swift; path = Views/Components/RestActivityContent.swift; sourceTree = "<group>"; };
+		5F5CFF3B812D4D36B51EE587 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		AC3F96DE1CDC7610631C969F /* FormRestWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = FormRestWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4C246384FBB92AB2A29BFE2 /* RestWidget.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = RestWidget.swift; sourceTree = "<group>"; };
+		CA0E6C7C71BEB5A01D389BB3 /* RestLiveActivityCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RestLiveActivityCoordinator.swift; path = Data/RestLiveActivityCoordinator.swift; sourceTree = "<group>"; };
+		FA8D7C5D27311AEF90855B90 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -363,6 +410,8 @@
 				437F319122A3CF2DA68E58AD /* FormAppTests */,
 				E2F2588BEE12E037370DE474 /* Products */,
 				SK0000000000000000000003 /* ForcedRep.storekit */,
+				115604D978C2351331CE2950 /* Frameworks */,
+				CA104B96E99B214CBA9C6ED6 /* FormRestWidget */,
 			);
 			sourceTree = "<group>";
 		};
@@ -546,6 +595,9 @@
 				A10000000000000000000000 /* Video */,
 				4641A4117F4FD47F13412399 /* Views */,
 				VM0000000000000000000000 /* Pro */,
+				2D9140A29490FA3C8A58C71E /* RestActivityAttributes.swift */,
+				CA0E6C7C71BEB5A01D389BB3 /* RestLiveActivityCoordinator.swift */,
+				407042E495C0435AE551A27C /* RestActivityContent.swift */,
 			);
 			path = FormApp;
 			sourceTree = "<group>";
@@ -672,6 +724,7 @@
 			children = (
 				E898602344E70BEEF05AB8B3 /* FormApp.app */,
 				26BB808F3B2A565E934878C4 /* FormAppTests.xctest */,
+				AC3F96DE1CDC7610631C969F /* FormRestWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -709,6 +762,32 @@
 			path = Pro;
 			sourceTree = "<group>";
 		};
+		115604D978C2351331CE2950 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F9F8E0B20D6A34394746D919 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CA104B96E99B214CBA9C6ED6 /* FormRestWidget */ = {
+			isa = PBXGroup;
+			children = (
+				B4C246384FBB92AB2A29BFE2 /* RestWidget.swift */,
+				FA8D7C5D27311AEF90855B90 /* Info.plist */,
+			);
+			name = FormRestWidget;
+			path = FormRestWidget;
+			sourceTree = "<group>";
+		};
+		F9F8E0B20D6A34394746D919 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				5F5CFF3B812D4D36B51EE587 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -718,10 +797,12 @@
 			buildPhases = (
 				C0588F6DBE87FC8476A9F330 /* Sources */,
 				77F6A24A9ED021267BC91C92 /* Resources */,
+				60AADE55BB52376781442A85 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				EA9FE8EBD2465DD66C7A51CF /* PBXTargetDependency */,
 			);
 			name = FormApp;
 			packageProductDependencies = (
@@ -748,6 +829,23 @@
 			productName = FormAppTests;
 			productReference = 26BB808F3B2A565E934878C4 /* FormAppTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		518CBE7B8A8873D904C82E2D /* FormRestWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D5B4F0903FB03BD041BC4551 /* Build configuration list for PBXNativeTarget "FormRestWidget" */;
+			buildPhases = (
+				B3E284C7ECD09DE7388AA35C /* Sources */,
+				E217E87F2D45C4BE47633738 /* Frameworks */,
+				D8DD2AB5B9406749A8718D14 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FormRestWidget;
+			productName = FormRestWidget;
+			productReference = AC3F96DE1CDC7610631C969F /* FormRestWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -778,6 +876,7 @@
 			targets = (
 				368EC54BCB656899BFC1C90B /* FormApp */,
 				4A270DFC063B96642E768D0B /* FormAppTests */,
+				518CBE7B8A8873D904C82E2D /* FormRestWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -840,6 +939,13 @@
 				A90000000000000000000009 /* 09_bodyweight_base.json in Resources */,
 				A9000000000000000000000C /* 10_bar_floor_calisthenics.json in Resources */,
 				A9000000000000000000000F /* 11_essentials_two_day.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8DD2AB5B9406749A8718D14 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -960,6 +1066,9 @@
 				TR0000000000000000000002 /* TourModels.swift in Sources */,
 				OV0000000000000000000002 /* OnboardingView.swift in Sources */,
 				C843FA365FC55E5A037A8345 /* TrainingSetupView.swift in Sources */,
+				109B7227E4F1C76AF8A8C5B4 /* RestActivityAttributes.swift in Sources */,
+				ECFEB80B3B0890A60B49074C /* RestLiveActivityCoordinator.swift in Sources */,
+				547A7665E5800F49B508918F /* RestActivityContent.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -984,6 +1093,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B3E284C7ECD09DE7388AA35C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A6A5ED679CCC0C22C3C0CB8F /* RestWidget.swift in Sources */,
+				B93FEA2C343D18BB1FC67180 /* RestActivityAttributes.swift in Sources */,
+				44F4C92965A22327C391A150 /* RestActivityContent.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -991,6 +1110,12 @@
 			isa = PBXTargetDependency;
 			target = 368EC54BCB656899BFC1C90B /* FormApp */;
 			targetProxy = 2F12F6E1BC76F2DD434A06DC /* PBXContainerItemProxy */;
+		};
+		EA9FE8EBD2465DD66C7A51CF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FormRestWidget;
+			target = 518CBE7B8A8873D904C82E2D /* FormRestWidget */;
+			targetProxy = 1A6CFEEA33701697646E7C30 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1210,6 +1335,45 @@
 			};
 			name = Debug;
 		};
+		847ED27C4DDC169A9CCD3903 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D38SU6U4FN;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = FormRestWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.perseverancesoftware.forcedrep.rest;
+				PRODUCT_NAME = FormRestWidget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		BCB0F1CF9682A6444BA208B1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = D38SU6U4FN;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = FormRestWidget/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.perseverancesoftware.forcedrep.rest;
+				PRODUCT_NAME = FormRestWidget;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1239,6 +1403,15 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
+		};
+		D5B4F0903FB03BD041BC4551 /* Build configuration list for PBXNativeTarget "FormRestWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				847ED27C4DDC169A9CCD3903 /* Release */,
+				BCB0F1CF9682A6444BA208B1 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

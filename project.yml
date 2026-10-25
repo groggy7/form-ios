@@ -35,6 +35,27 @@ targets:
         CODE_SIGN_ENTITLEMENTS: FormApp/FormApp.entitlements
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: D38SU6U4FN
+    dependencies:
+      - target: FormRestWidget
+        embed: true
+  FormRestWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - path: FormRestWidget
+      - path: FormApp/Models/RestActivityAttributes.swift
+      - path: FormApp/Views/Components/RestActivityContent.swift
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.perseverancesoftware.forcedrep.rest
+        PRODUCT_NAME: FormRestWidget
+        INFOPLIST_FILE: FormRestWidget/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        APPLICATION_EXTENSION_API_ONLY: YES
+        SKIP_INSTALL: YES
+        SWIFT_VERSION: "5.0"
+        CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: D38SU6U4FN
   FormAppTests:
     type: bundle.unit-test
     platform: iOS

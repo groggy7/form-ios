@@ -303,6 +303,11 @@ public struct RootView: View {
             _ = StoreKitSubscriptionManager.shared
             await ExerciseReportStore.shared.retryPendingReports()
         }
+        .onOpenURL { url in
+            if url.scheme == "forcedrep", url.host == "workout", store.activeSession != nil {
+                store.resumeActiveSession()
+            }
+        }
         .onChange(of: scenePhase) { _, phase in
             // Backgrounding keeps the workout and its rest deadline running, matching Android.
             if phase == .background {

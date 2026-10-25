@@ -387,7 +387,10 @@ public final class AppStore: ObservableObject {
 
         // The emitted values already include an in-progress rest restored at launch.
         Publishers.CombineLatest($activeSession, $soundEnabled)
-            .sink { RestAlertScheduler.shared.update(for: $0, soundEnabled: $1) }
+            .sink { draft, soundEnabled in
+                RestAlertScheduler.shared.update(for: draft, soundEnabled: soundEnabled)
+                DispatchQueue.main.async { RestLiveActivityCoordinator.shared.sync(draft) }
+            }
             .store(in: &cancellables)
         $isSessionPresented
             .sink { RestAlertScheduler.shared.isWorkoutVisible = $0 }

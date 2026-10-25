@@ -1,5 +1,6 @@
 import XCTest
 import SwiftUI
+import ActivityKit
 @testable import FormApp
 
 /// Executes the shared import contract (gym/docs/history-import-fixtures.json) against the captured and derived
@@ -498,5 +499,98 @@ final class SupersetTests: XCTestCase {
         var complete = tick(tick(tick(tick(d, "a"), "b"), "a", 1), "b", 1)
         complete.currentExerciseIndex = 2; XCTAssertEqual(Supersets.nextIndex(complete), 1)
         complete.currentExerciseIndex = 1; XCTAssertNil(Supersets.nextIndex(complete))
+    }
+}
+
+final class RestCountdownTests: XCTestCase {
+    private func draft(now: Int64 = 10_000) -> ActiveSessionDraft {
+        ActiveSessionDraft(id: "countdown-fixture", programId: "p", workout: Workout(id: "w", day: 1, title: "Arms", exercises: [Exercise(id: "a", name: "Curl")]),
+            startedAt: "2026-10-25T00:00:00Z", startedAtEpochMillis: now,
+            restTimer: RestTimerState(exerciseName: "Curl", totalSeconds: 90, isRunning: true,
+                endsAtEpochMillis: now + 90_000, pausedSecondsRemaining: 90, setId: "a1"))
+    }
+    @MainActor func testLockScreenContentAt320PointsWithLargeEnglishAndTurkishText() async throws {
+        let oldLanguage = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(oldLanguage) }
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            var running = RestLiveActivitySnapshot.from(draft(now: Int64(Date().timeIntervalSince1970 * 1000)), now: Int64(Date().timeIntervalSince1970 * 1000))!.content
+            running.exerciseName = language == "tr" ? "Göğüs destekli dambıl row" : "Chest-supported dumbbell row"
+            var paused = running; paused.isRunning = false; paused.deadline = nil; paused.remainingSeconds = 35
+            let host = UIHostingController(rootView: VStack(spacing: 16) {
+                RestActivityContent(state: running).padding(16).background(Color(uiColor: .secondarySystemBackground))
+                RestActivityContent(state: paused).padding(16).background(Color(uiColor: .secondarySystemBackground))
+                Spacer()
+            }.preferredColorScheme(.dark).environment(\.sizeCategory, .extraExtraExtraLarge))
+            let previous = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 500)); window.windowScene = previous?.windowScene
+            window.frame = CGRect(x: 0, y: 0, width: 320, height: 500); window.rootViewController = host; window.makeKeyAndVisible()
+            host.view.frame = window.bounds; host.view.layoutIfNeeded(); try await Task.sleep(nanoseconds: 300_000_000)
+            let image = UIGraphicsImageRenderer(bounds: host.view.bounds).image { host.view.layer.render(in: $0.cgContext) }
+            let attachment = XCTAttachment(image: image); attachment.name = "rest-activity-\(language)-320-large"; attachment.lifetime = .keepAlways; add(attachment)
+            window.isHidden = true; previous?.makeKeyAndVisible()
+        }
+    }
+
+    func testProjectionUsesTheSameDeadlineAndPausesWithoutAdvancing() {
+        var d = draft()
+        let running = RestLiveActivitySnapshot.from(d, now: 20_000)!
+        XCTAssertEqual(running.content.deadline, Date(timeIntervalSince1970: 100))
+        XCTAssertTrue(running.content.isRunning)
+        d.restTimer!.isRunning = false; d.restTimer!.endsAtEpochMillis = nil; d.restTimer!.pausedSecondsRemaining = 35
+        let paused = RestLiveActivitySnapshot.from(d, now: 999_999)!
+        XCTAssertFalse(paused.content.isRunning); XCTAssertNil(paused.content.deadline)
+        XCTAssertEqual(paused.content.remainingSeconds, 35)
+    }
+    func testResumedAndAdjustedRestUsesItsNewDeadline() {
+        var d = draft()
+        d.restTimer!.endsAtEpochMillis = 200_000; d.restTimer!.totalSeconds = 120
+        let adjusted = RestLiveActivitySnapshot.from(d, now: 20_000)!
+        XCTAssertEqual(adjusted.content.deadline, Date(timeIntervalSince1970: 200))
+        XCTAssertEqual(adjusted.content.remainingSeconds, 120)
+    }
+    func testCanceledExpiredAndEndedWorkoutsHaveNoDisplay() {
+        var d = draft()
+        XCTAssertNil(RestLiveActivitySnapshot.from(d, now: 100_000))
+        d.restTimer = nil
+        XCTAssertNil(RestLiveActivitySnapshot.from(d, now: 20_000))
+        XCTAssertNil(RestLiveActivitySnapshot.from(nil, now: 20_000))
+    }
+    func testActivityContentRoundTripsWithoutWorkoutNotes() throws {
+        var d = draft(); d.note = "Private session note"; d.workout.exercises[0].setupNote = "Private setup"
+        let state = RestLiveActivitySnapshot.from(d, now: 20_000)!.content
+        let data = try JSONEncoder().encode(state)
+        XCTAssertFalse(String(decoding: data, as: UTF8.self).contains("Private"))
+        XCTAssertEqual(try JSONDecoder().decode(RestActivityAttributes.ContentState.self, from: data), state)
+    }
+    @MainActor func testNativeActivityUpdatesAndEndsWhenAvailable() async throws {
+        guard ActivityAuthorizationInfo().areActivitiesEnabled else { throw XCTSkip("Live Activities unavailable on this simulator.") }
+        guard UIApplication.shared.applicationState == .active else { throw XCTSkip("Native ActivityKit requests require a foreground app.") }
+        let coordinator = RestLiveActivityCoordinator(enabled: true)
+        defer { coordinator.sync(nil) }
+        var d = draft(now: Int64(Date().timeIntervalSince1970 * 1000))
+        d.id = "countdown-native"
+        coordinator.sync(d); try await settle(coordinator)
+        if let error = coordinator.lastError, error.localizedCaseInsensitiveContains("unsupportedTarget") {
+            throw XCTSkip("ActivityKit does not support the current test target: \(error)")
+        }
+        XCTAssertNil(coordinator.lastError)
+        let activity = try XCTUnwrap(Activity<RestActivityAttributes>.activities.first { $0.attributes.sessionId == d.id })
+        XCTAssertTrue(activity.content.state.isRunning)
+        d.restTimer!.isRunning = false; d.restTimer!.endsAtEpochMillis = nil; d.restTimer!.pausedSecondsRemaining = 35
+        coordinator.sync(d); try await settle(coordinator)
+        XCTAssertFalse(activity.content.state.isRunning); XCTAssertEqual(activity.content.state.remainingSeconds, 35)
+        d.restTimer!.isRunning = true; d.restTimer!.endsAtEpochMillis = Int64(Date().timeIntervalSince1970 * 1000) + 120_000
+        coordinator.sync(d); try await settle(coordinator)
+        XCTAssertTrue(activity.content.state.isRunning)
+        coordinator.sync(nil); try await settle(coordinator)
+        XCTAssertFalse(Activity<RestActivityAttributes>.activities.contains { $0.activityState == .active || $0.activityState == .stale })
+    }
+    @MainActor private func settle(_ coordinator: RestLiveActivityCoordinator) async throws {
+        for _ in 0..<200 {
+            if !coordinator.processing { return }
+            try await Task.sleep(nanoseconds: 25_000_000)
+        }
+        XCTFail("ActivityKit updates did not settle")
     }
 }
