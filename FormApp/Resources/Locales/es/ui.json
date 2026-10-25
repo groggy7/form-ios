@@ -1870,5 +1870,7 @@
   "notes.add": "Añadir nota",
   "notes.edit": "Editar",
   "notes.preserved": "Notas conservadas",
-  "import.error.notesTooLong": "Una nota supera los 10.000 caracteres. Acórtala en el archivo exportado y vuelve a intentarlo."
+  "import.error.notesTooLong": "Una nota supera los 10.000 caracteres. Acórtala en el archivo exportado y vuelve a intentarlo.",
+  "supersets.pairNext": "Emparejar con el siguiente ejercicio",
+  "supersets.unpair": "Desemparejar ejercicios"
 }

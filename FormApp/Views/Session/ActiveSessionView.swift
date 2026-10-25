@@ -199,18 +199,9 @@ public struct ActiveSessionView: View {
                             if let exercise = currentExercise {
                                 VStack(alignment: .leading, spacing: 12) {
                                     // A substitute replaces the exercise only until one of its working sets is completed.
-                                    ExerciseTitleRow(name: exercise.displayName,
+                                    ExerciseTitleRow(name: (Supersets.label(activeDraft.workout, exercise.id).map { "\($0) · " } ?? "") + exercise.displayName,
                                         action: currentSets.contains(where: { $0.isCompleted && !$0.isWarmup }) ? nil : replaceButton(for: exercise))
 
-                                    NoteField(titleKey: "notes.setup", text: Binding(
-                                        get: { exercise.setupNote ?? "" },
-                                        set: { store.updateSetupNote(exerciseId: exercise.id, text: $0) }))
-                                        .id("setup-note-\(exercise.id)")
-                                    NoteField(titleKey: "notes.workout", text: Binding(
-                                        get: { activeDraft.note ?? "" },
-                                        set: { text in store.updateActiveSession { current in
-                                            var copy = current; copy.note = text.isEmpty ? nil : text; return copy
-                                        } }))
                                     let recommendation = historyInsights?.recommendation
                                     let showsProgressionCard = recommendation != nil && store.showProgressionTargets
 
@@ -314,6 +305,16 @@ public struct ActiveSessionView: View {
                                     .tourTarget("workout.sets", cornerRadius: 12, flags: [store.weightUnit.rawValue])
                                     .padding(.top, showsProgressionCard || showsWarmupCard ? 8 : 0)
 
+                                    NoteField(titleKey: "notes.setup", text: Binding(
+                                        get: { exercise.setupNote ?? "" },
+                                        set: { store.updateSetupNote(exerciseId: exercise.id, text: $0) }))
+                                        .id("setup-note-\(exercise.id)")
+                                    NoteField(titleKey: "notes.workout", text: Binding(
+                                        get: { activeDraft.note ?? "" },
+                                        set: { text in store.updateActiveSession { current in
+                                            var copy = current; copy.note = text.isEmpty ? nil : text; return copy
+                                        } }))
+
                                     let workingRows = currentSets.filter { !$0.isWarmup }
                                     let workingSetsDone = !workingRows.isEmpty && workingRows.allSatisfy(\.isCompleted)
                                     let asksEffort = proManager.isFeatureUnlocked(.autoProgression) && store.showProgressionTargets &&
@@ -372,11 +373,11 @@ public struct ActiveSessionView: View {
                         .accessibilityLabel(LanguageManager.t("session.prevExercise"))
 
                         Button(action: {
-                            if currentIndex < exercises.count - 1 {
+                            if let nextIndex = Supersets.nextIndex(currentDraft) {
                                 sessionMedia.freezeActive()
                                 store.updateActiveSession { d in
                                     var copy = d
-                                    copy.currentExerciseIndex = currentIndex + 1
+                                    copy.currentExerciseIndex = Supersets.nextIndex(d) ?? nextIndex
                                     return copy
                                 }
                             } else {
@@ -384,7 +385,7 @@ public struct ActiveSessionView: View {
                             }
                         }) {
                             HStack(spacing: 8) {
-                                Text(LanguageManager.t(currentIndex < exercises.count - 1 ? "session.nextExercise" : "session.review"))
+                                Text(LanguageManager.t(Supersets.nextIndex(activeDraft) != nil ? "session.nextExercise" : "session.review"))
                                     .font(.app(size: 14, weight: .semibold))
                                     .foregroundStyle(AppColors.background)
                                 Image(systemName: "arrow.right")
@@ -880,29 +881,13 @@ public struct ActiveSessionView: View {
             }
         }
         store.updateActiveSession { d in
-            var copy = d
-            var sets = copy.setsByExercise[exercise.id] ?? []
-            guard sets.indices.contains(index) else { return copy }
-            let currentSet = sets[index]
-            let isRestActive = (copy.restTimer?.secondsRemaining(nowEpochMillis: nowEpochMillis) ?? 0) > 0
-            if isRestActive {
-                return copy
+            let updated = WorkoutSessionUtils.toggledSet(d, exerciseId: exercise.id, index: index,
+                prefillNextSet: store.prefillNextSet, unit: store.weightUnit, now: nowEpochMillis)
+            if updated != d {
+                if d.setsByExercise[exercise.id]?[index].isCompleted == true { FormAudioPlayer.playSetUndoSound() }
+                else { FormAudioPlayer.playSetCompleteSound() }
             }
-            if !currentSet.isCompleted && (!WorkoutSessionUtils.canCompleteSet(currentSet, allowsZeroWeight: WorkoutSessionUtils.allowsZeroWeight(exercise)) || !WorkoutSessionUtils.isSetEnabled(sets: sets, index: index)) {
-                return copy
-            }
-            let willComplete = !currentSet.isCompleted
-            sets = WorkoutSessionUtils.togglingCompletion(of: index, in: sets, prefillNextSet: store.prefillNextSet, unit: store.weightUnit,
-                barbell: WorkoutSessionUtils.usesBarbellPlates(exercise))
-            copy.setsByExercise[exercise.id] = sets
-
-            if willComplete {
-                FormAudioPlayer.playSetCompleteSound()
-                copy.restTimer = RestTimerUtils.afterCompletingSet(in: copy, exercise: exercise, setId: currentSet.id, nowEpochMillis: nowEpochMillis)
-            } else {
-                FormAudioPlayer.playSetUndoSound()
-            }
-            return copy
+            return updated
         }
     }
 
@@ -1586,9 +1571,10 @@ struct SessionExerciseStrip: View {
 
     var body: some View {
         let _ = themeManager.currentTheme
-        let labels = exercises.enumerated().map { "\($0.offset + 1). \($0.element.displayName)" }
+        let labelWorkout = Workout(id: "strip-labels", day: 1, title: "", exercises: exercises)
+        let labels = exercises.enumerated().map { (Supersets.label(labelWorkout, $0.element.id) ?? "\($0.offset + 1).") + " " + $0.element.displayName }
         // The number stays with the first word, so a long compound name breaks inside the name instead.
-        let compactLabels = exercises.enumerated().map { "\($0.offset + 1).\u{00A0}\($0.element.displayName)" }
+        let compactLabels = exercises.enumerated().map { (Supersets.label(labelWorkout, $0.element.id) ?? "\($0.offset + 1).") + "\u{00A0}" + $0.element.displayName }
         let metrics = SessionStripMetrics.measure(compactLabels)
         let progress = dragProgress ?? (collapsed ? 1 : 0)
         VStack(spacing: 0) {

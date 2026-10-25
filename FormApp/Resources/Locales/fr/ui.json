@@ -1870,5 +1870,7 @@
   "notes.add": "Ajouter une note",
   "notes.edit": "Modifier",
   "notes.preserved": "Notes conservées",
-  "import.error.notesTooLong": "Une note dépasse 10 000 caractères. Raccourcissez-la dans le fichier exporté, puis réessayez."
+  "import.error.notesTooLong": "Une note dépasse 10 000 caractères. Raccourcissez-la dans le fichier exporté, puis réessayez.",
+  "supersets.pairNext": "Associer à l’exercice suivant",
+  "supersets.unpair": "Dissocier les exercices"
 }

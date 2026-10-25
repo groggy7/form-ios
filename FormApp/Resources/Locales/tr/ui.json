@@ -1870,5 +1870,7 @@
   "notes.add": "Not ekle",
   "notes.edit": "Düzenle",
   "notes.preserved": "Korunan notlar",
-  "import.error.notesTooLong": "Bir not 10.000 karakteri aşıyor. Dışa aktarılan dosyada kısaltıp yeniden deneyin."
+  "import.error.notesTooLong": "Bir not 10.000 karakteri aşıyor. Dışa aktarılan dosyada kısaltıp yeniden deneyin.",
+  "supersets.pairNext": "Sonraki egzersizle eşleştir",
+  "supersets.unpair": "Eşleştirmeyi kaldır"
 }

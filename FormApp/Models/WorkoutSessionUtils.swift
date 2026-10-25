@@ -5,7 +5,7 @@ public enum RestTimerUtils {
 
     /// Evaluate the latest draft after logging the set, independent of exercise order.
     public static func afterCompletingSet(in draft: ActiveSessionDraft, exercise: Exercise, setId: String? = nil, nowEpochMillis: Int64) -> RestTimerState? {
-        guard !WorkoutSessionUtils.isComplete(draft: draft) else { return nil }
+        guard !WorkoutSessionUtils.isComplete(draft: draft), !Supersets.defersRest(draft, exerciseId: exercise.id, setId: setId) else { return nil }
         let seconds = restSeconds(for: exercise)
         guard seconds > 0 else { return nil }
         return RestTimerState(
@@ -127,6 +127,21 @@ public struct SessionProgress {
 }
 
 public enum WorkoutSessionUtils {
+    /// One pure transition shared by training and resume/undo regression fixtures.
+    public static func toggledSet(_ draft: ActiveSessionDraft, exerciseId: String, index: Int,
+                                  prefillNextSet: Bool = true, unit: WeightUnit = .kg, now: Int64) -> ActiveSessionDraft {
+        guard let exercise = draft.workout.exercises.first(where: { $0.id == exerciseId }),
+              let sets = draft.setsByExercise[exerciseId], sets.indices.contains(index) else { return draft }
+        let set = sets[index]
+        guard set.isCompleted || (canCompleteSet(set, allowsZeroWeight: allowsZeroWeight(exercise)) && isSetEnabled(sets: sets, index: index)) else { return draft }
+        var copy = draft
+        copy.setsByExercise[exerciseId] = togglingCompletion(of: index, in: sets, prefillNextSet: prefillNextSet, unit: unit,
+                                                           barbell: usesBarbellPlates(exercise))
+        if !set.isCompleted { copy.restTimer = RestTimerUtils.afterCompletingSet(in: copy, exercise: exercise, setId: set.id, nowEpochMillis: now) }
+        else if copy.restTimer?.setId == set.id { copy.restTimer = nil }
+        return copy
+    }
+
     public static func isAssisted(exerciseId: String?, name: String) -> Bool {
         let id = ExerciseCatalog.resolveCanonicalId(stableId: exerciseId, name: name)
         return id == "assisted-pull-up" || id == "assisted-dip-machine"
@@ -1114,4 +1129,76 @@ public enum IntensitySets {
 
 extension Array {
     subscript(safe index: Int) -> Element? { indices.contains(index) ? self[index] : nil }
+}
+
+/// Two exercises per group. Sets and records stay attached to their own exercise occurrence.
+public enum Supersets {
+    public static func normalized(_ exercises: [Exercise]) -> [Exercise] {
+        let counts = Dictionary(grouping: exercises.compactMap(\.supersetId), by: { $0 }).mapValues(\.count)
+        return exercises.map { exercise in
+            var copy = exercise
+            if let id = copy.supersetId,
+               counts[id] != 2 || id.range(of: "^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$", options: .regularExpression) != (id.startIndex..<id.endIndex) {
+                copy.supersetId = nil
+            }
+            return copy
+        }
+    }
+    private static func blocks(_ workout: Workout) -> [[Int]] {
+        let exercises = normalized(workout.exercises)
+        var used = Set<Int>()
+        var result: [[Int]] = []
+        for index in exercises.indices where !used.contains(index) {
+            let block = exercises[index].supersetId.map { group in exercises.indices.filter { exercises[$0].supersetId == group } } ?? [index]
+            used.formUnion(block); result.append(block)
+        }
+        return result
+    }
+    public static func pair(_ workout: Workout, _ exerciseId: String) -> [Exercise]? {
+        blocks(workout).first { $0.count == 2 && $0.contains { workout.exercises[$0].id == exerciseId } }?.map { workout.exercises[$0] }
+    }
+    public static func label(_ workout: Workout, _ exerciseId: String) -> String? {
+        let pairs = blocks(workout).filter { $0.count == 2 }
+        guard let group = pairs.firstIndex(where: { $0.contains { workout.exercises[$0].id == exerciseId } }),
+              let member = pairs[group].firstIndex(where: { workout.exercises[$0].id == exerciseId }) else { return nil }
+        var number = group + 1, letters = ""
+        while number > 0 { number -= 1; letters = String(UnicodeScalar(65 + number % 26)!) + letters; number /= 26 }
+        return "\(letters)\(member + 1)"
+    }
+    public static func canPair(_ workout: Workout, _ exerciseId: String) -> Bool {
+        guard let index = workout.exercises.firstIndex(where: { $0.id == exerciseId }), index + 1 < workout.exercises.count else { return false }
+        return pair(workout, exerciseId) == nil && pair(workout, workout.exercises[index + 1].id) == nil
+    }
+    public static func toggled(_ workout: Workout, _ exerciseId: String, groupId: String = UUID().uuidString) -> Workout {
+        let existing = pair(workout, exerciseId)
+        let ids: Set<String>
+        if let existing { ids = Set(existing.map(\.id)) }
+        else {
+            guard canPair(workout, exerciseId), let index = workout.exercises.firstIndex(where: { $0.id == exerciseId }) else { return workout }
+            ids = [exerciseId, workout.exercises[index + 1].id]
+        }
+        var copy = workout
+        copy.exercises = normalized(workout.exercises).map { exercise in
+            var copy = exercise
+            if ids.contains(copy.id) { copy.supersetId = existing == nil ? groupId : nil }
+            return copy
+        }
+        return copy
+    }
+    public static func nextIndex(_ draft: ActiveSessionDraft) -> Int? {
+        let blocks = blocks(draft.workout)
+        guard let position = blocks.firstIndex(where: { $0.contains(draft.currentExerciseIndex) }) else { return nil }
+        let block = blocks[position]
+        if block.count == 2, let partner = block.first(where: { $0 != draft.currentExerciseIndex }),
+           (draft.setsByExercise[draft.workout.exercises[partner].id] ?? []).contains(where: { !$0.isCompleted && !$0.isWarmup }) { return partner }
+        return position + 1 < blocks.count ? blocks[position + 1].first : nil
+    }
+    /// Warmups rest normally. A finished or skipped partner leaves solo rest for remaining work.
+    public static func defersRest(_ draft: ActiveSessionDraft, exerciseId: String, setId: String?) -> Bool {
+        guard let setId, (draft.setsByExercise[exerciseId] ?? []).first(where: { $0.id == setId })?.isWarmup == false,
+              let pair = pair(draft.workout, exerciseId), pair.first?.id == exerciseId else { return false }
+        let own = (draft.setsByExercise[exerciseId] ?? []).filter { !$0.isWarmup }
+        let partner = (draft.setsByExercise[pair[1].id] ?? []).filter { !$0.isWarmup }
+        return partner.contains { !$0.isCompleted } && own.filter(\.isCompleted).count <= partner.filter(\.isCompleted).count + 1
+    }
 }

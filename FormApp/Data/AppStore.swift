@@ -1343,7 +1343,7 @@ public final class AppStore: ObservableObject {
             try value.encode(to: encoder)
         }
 
-        public init(format: String? = "form.program", schemaVersion: Int? = 6, program: Program) {
+        public init(format: String? = "form.program", schemaVersion: Int? = 7, program: Program) {
             self.format = format
             self.schemaVersion = schemaVersion
             self.program = program
@@ -1373,7 +1373,7 @@ public final class AppStore: ObservableObject {
             case .invalidFormat(let fmt):
                 return "Invalid format \"\(fmt)\". Expected \"form.program\"."
             case .unsupportedVersion(let v):
-                return "Unsupported program schemaVersion: \(v). Supported versions are 1–6."
+                return "Unsupported program schemaVersion: \(v). Supported versions are 1–7."
             case .missingProgram:
                 return "File does not contain a program."
             case .invalidProgramName:
@@ -2309,6 +2309,7 @@ enum BackupSanitizer {
             exercise.restSeconds = exercise.restSeconds.map { clamped($0, 0...900) }
             return exercise
         }
+        copy.exercises = Supersets.normalized(copy.exercises)
         return copy
     }
 

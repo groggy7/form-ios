@@ -143,9 +143,7 @@ public struct SetLoggingTable: View {
                     VStack(spacing: 8) {
                         let isSetEnabled = set.isCompleted || WorkoutSessionUtils.isSetEnabled(sets: sets, index: index)
                         let selectedInSet = Self.field(selectedField, belongsTo: set)
-                        let isSetInputEnabled = isRestActive
-                            ? (currentLoggedIndex == index || (isRestForCurrentExercise && selectedInSet))
-                            : isSetEnabled
+                        let isSetInputEnabled = isSetEnabled
                         let showsTechniqueRow = intensity != nil && !set.isWarmup && isSetInputEnabled
                             && WorkoutSessionUtils.canCompleteSet(set, allowsZeroWeight: allowsZeroWeight)
                             && (selectedInSet || index == currentLoggedIndex)
@@ -187,7 +185,7 @@ public struct SetLoggingTable: View {
                             }
                         )
 
-                        let canComplete = set.isCompleted || (WorkoutSessionUtils.canCompleteSet(set, allowsZeroWeight: allowsZeroWeight) && !isRestActive)
+                        let canComplete = set.isCompleted || (WorkoutSessionUtils.canCompleteSet(set, allowsZeroWeight: allowsZeroWeight))
 
                         HStack(spacing: 8) {
                             Text(set.isWarmup ? "W\(set.setNumber)" : "\(set.setNumber)")
@@ -274,14 +272,7 @@ public struct SetLoggingTable: View {
                                     .stroke(selectedField == Field(id: set.id, weight: false) && isSetInputEnabled ? AppColors.accent : .clear).padding(.vertical, 4))
 
                             Button(action: {
-                                if isRestActive {
-                                    if set.isCompleted && index == currentLoggedIndex {
-                                        focusedField = nil
-                                        selectedField = nil
-                                    } else {
-                                        onRestWarning?()
-                                    }
-                                } else if set.isCompleted {
+                                if set.isCompleted {
                                     onToggleCompleteSet(index)
                                     focusedField = nil
                                     selectedField = nil

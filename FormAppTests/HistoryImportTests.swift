@@ -387,3 +387,116 @@ final class HistoryImportTests: XCTestCase {
         XCTAssertEqual(store.state.history.count, before.count + 1)
     }
 }
+
+final class SupersetTests: XCTestCase {
+    private func draft(_ a: Int = 2, _ b: Int = 2) -> ActiveSessionDraft {
+        let exercises = [Exercise(id: "a", name: "Curl", sets: a, restSeconds: 60, supersetId: "pair"),
+                         Exercise(id: "b", name: "Extension", sets: b, restSeconds: 90, supersetId: "pair"),
+                         Exercise(id: "c", name: "Row", sets: 1, restSeconds: 60)]
+        var sets: [String: [ExerciseSetLog]] = [:]
+        for exercise in exercises {
+            sets[exercise.id] = (1...exercise.sets!).map { number in
+                ExerciseSetLog(id: "\(exercise.id)\(number)", setNumber: number, weightInput: "20", repsInput: "8", weightKg: 20, completedReps: 8)
+            }
+        }
+        return ActiveSessionDraft(id: "s", programId: "p", workout: Workout(id: "w", day: 1, title: "Arms", exercises: exercises),
+            startedAt: "2026-10-24T10:00:00Z", startedAtEpochMillis: 1, setsByExercise: sets)
+    }
+    private func tick(_ d: ActiveSessionDraft, _ id: String, _ index: Int = 0, now: Int64 = 10_000) -> ActiveSessionDraft {
+        WorkoutSessionUtils.toggledSet(d, exerciseId: id, index: index, now: now)
+    }
+    @MainActor func testPairLabelsAt320PointsInEnglishAndTurkish() async throws {
+        let oldLanguage = LanguageManager.shared.currentLanguage
+        defer { LanguageManager.setLanguage(oldLanguage) }
+        for language in ["en", "tr"] {
+            LanguageManager.setLanguage(language)
+            let host = UIHostingController(rootView: ScrollView {
+                BuilderWorkoutCard(workout: draft().workout, expanded: true, onToggle: {}, onEdit: {}, onAdd: {},
+                    onEditExercise: { _ in }, onMove: { _, _ in }, onRemove: { _ in }).padding(16)
+            }.background(AppColors.background).environment(\.sizeCategory, .extraExtraExtraLarge))
+            let previous = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }.flatMap(\.windows).first(where: \.isKeyWindow)
+            let window = UIWindow(frame: CGRect(x: 0, y: 0, width: 320, height: 800)); window.windowScene = previous?.windowScene
+            window.frame = CGRect(x: 0, y: 0, width: 320, height: 800); window.rootViewController = host
+            window.makeKeyAndVisible(); host.view.frame = window.bounds; host.view.layoutIfNeeded()
+            try await Task.sleep(nanoseconds: 300_000_000)
+            let image = UIGraphicsImageRenderer(bounds: host.view.bounds).image { host.view.layer.render(in: $0.cgContext) }
+            let attachment = XCTAttachment(image: image); attachment.name = "supersets-\(language)-320-large"; attachment.lifetime = .keepAlways; add(attachment)
+            window.isHidden = true; previous?.makeKeyAndVisible()
+        }
+    }
+
+    func testPairsToggleAndNeverBecomeCircuits() {
+        let w = draft().workout
+        XCTAssertEqual(Supersets.label(w, "a"), "A1"); XCTAssertEqual(Supersets.label(w, "b"), "A2")
+        XCTAssertFalse(Supersets.canPair(w, "b")); XCTAssertFalse(Supersets.canPair(w, "c"))
+        let unpaired = Supersets.toggled(w, "b")
+        XCTAssertTrue(unpaired.exercises.allSatisfy { $0.supersetId == nil })
+        XCTAssertEqual(Supersets.pair(Supersets.toggled(unpaired, "b", groupId: "new"), "b")?.map(\.id), ["b", "c"])
+        var invalid = w.exercises
+        for index in invalid.indices { invalid[index].supersetId = "three" }
+        XCTAssertTrue(Supersets.normalized(invalid).allSatisfy { $0.supersetId == nil })
+        let copy = ProgramEditing.copyWorkout(w, day: 2)
+        XCTAssertEqual(copy.exercises.map { Supersets.label(copy, $0.id) }, ["A1", "A2", nil])
+    }
+    func testPairAlternatesAndOnlySecondMemberStartsRoundRest() {
+        let a = tick(draft(), "a")
+        XCTAssertNil(a.restTimer); XCTAssertEqual(Supersets.nextIndex(a), 1)
+        var b = tick(a, "b"); b.currentExerciseIndex = 1
+        XCTAssertEqual(b.restTimer?.setId, "b1"); XCTAssertEqual(b.restTimer?.totalSeconds, 90)
+        XCTAssertEqual(Supersets.nextIndex(b), 0)
+        let next = tick(b, "a", 1)
+        XCTAssertNil(next.restTimer); XCTAssertTrue(next.setsByExercise["a"]![1].isCompleted)
+    }
+    func testUnequalCountsAndSkippedPartnerHaveSoloRest() {
+        let round = tick(tick(draft(3, 1), "a"), "b")
+        XCTAssertEqual(tick(round, "a", 1).restTimer?.setId, "a2")
+        XCTAssertEqual(tick(tick(draft(3, 2), "a"), "a", 1).restTimer?.setId, "a2")
+        var doneA = tick(tick(draft(), "a"), "a", 1); doneA.currentExerciseIndex = 1
+        XCTAssertEqual(Supersets.nextIndex(doneA), 2)
+    }
+    func testWarmupsNeverJoinPairRounds() {
+        var d = draft()
+        let warm = ExerciseSetLog(id: "warm", setNumber: 1, weightInput: "10", repsInput: "8", weightKg: 10, completedReps: 8, isWarmup: true)
+        d.setsByExercise["a"]!.insert(warm, at: 0)
+        XCTAssertEqual(tick(d, "a").restTimer?.setId, "warm")
+    }
+    func testUndoCancelsOnlyItsOwnRest() {
+        let both = tick(tick(draft(), "a"), "b")
+        let undoA = tick(both, "a")
+        XCTAssertEqual(undoA.restTimer, both.restTimer)
+        XCTAssertTrue(undoA.setsByExercise["b"]![0].isCompleted)
+        XCTAssertNil(tick(both, "b").restTimer)
+    }
+    func testIntensityKeepsItsOwnRestAndCountsTheSetOnce() {
+        var d = tick(tick(draft(), "a"), "b")
+        let exercise = d.workout.exercises[1]
+        var set = IntensitySets.addingExtension(.restPause, to: d.setsByExercise["b"]![0], unit: .kg, barbell: false)
+        set = IntensitySets.editingExtension(set, at: 0, weight: "", reps: "3", exercise: exercise, unit: .kg)
+        set = IntensitySets.togglingExtension(set, at: 0, exercise: exercise, unit: .kg)
+        d.setsByExercise["b"]![0] = set
+        d.restTimer = IntensitySets.restAfterTickingExtension(in: d, setId: set.id, exercise: exercise, nowEpochMillis: 12_000)
+        XCTAssertEqual(d.restTimer?.endsAtEpochMillis, 102_000)
+        let progress = SessionProgress.from(draft: d, nowEpochMillis: 20_000)
+        XCTAssertEqual(progress.completedSets, 2)
+        XCTAssertEqual(progress.exerciseLogs[1].sets[0].setExtensions.first?.reps, 3)
+        XCTAssertNil(tick(d, "b").restTimer)
+    }
+    func testInterruptedDraftAndSharedProgramRetainPairs() throws {
+        var d = tick(tick(draft(), "a"), "b"); d.currentExerciseIndex = 1
+        let resumed = try JSONDecoder().decode(ActiveSessionDraft.self, from: JSONEncoder().encode(d))
+        XCTAssertEqual(Supersets.nextIndex(resumed), 0); XCTAssertEqual(resumed.restTimer, d.restTimer)
+        let program = Program(id: "p", name: "Pair", workouts: [d.workout])
+        let shared = try ProgramFileCodec.decode(ProgramFileCodec.encode(program))
+        XCTAssertEqual(shared.workouts[0].exercises.map(\.supersetId), ["pair", "pair", nil])
+        let record = SessionProgress.from(draft: d, nowEpochMillis: 20_000).record(draft: d, completedAtEpochMillis: 20_000)
+        let restored = try JSONDecoder().decode(WorkoutSessionRecord.self, from: JSONEncoder().encode(record))
+        XCTAssertEqual(restored.workoutSnapshot?.exercises[0].supersetId, "pair")
+        XCTAssertEqual(restored.exerciseLogs.map(\.exerciseName), ["Curl", "Extension", "Row"])
+    }
+    func testReorderingAPairDoesNotSkipOrLoopOtherExercises() {
+        var d = draft(); d.workout.exercises.swapAt(1, 2)
+        var complete = tick(tick(tick(tick(d, "a"), "b"), "a", 1), "b", 1)
+        complete.currentExerciseIndex = 2; XCTAssertEqual(Supersets.nextIndex(complete), 1)
+        complete.currentExerciseIndex = 1; XCTAssertNil(Supersets.nextIndex(complete))
+    }
+}

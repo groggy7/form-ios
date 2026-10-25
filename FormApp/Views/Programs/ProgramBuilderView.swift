@@ -192,7 +192,12 @@ public struct ProgramBuilderView: View {
                                 onAdd: { pickerWorkout = workout },
                                 onEditExercise: { editingExercise = BuilderExerciseContext(workoutID: workout.id, exercise: $0) },
                                 onMove: { moveExercise(workout.id, $0, $1) },
-                                onRemove: { removeExercise(workout.id, $0) })
+                                onRemove: { removeExercise(workout.id, $0) },
+                                onPair: { exerciseId in
+                                    if let index = program.workouts.firstIndex(where: { $0.id == workout.id }) {
+                                        program.workouts[index] = Supersets.toggled(program.workouts[index], exerciseId)
+                                    }
+                                })
                         }
                         if program.workouts.count < 7 {
                             BuilderActionButton("builder.addTrainingDay", systemImage: "plus", action: addTrainingDay)

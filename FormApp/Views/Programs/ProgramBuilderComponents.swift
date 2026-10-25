@@ -75,6 +75,7 @@ struct BuilderWorkoutCard: View {
     var onEditExercise: (Exercise) -> Void
     var onMove: (String, Int) -> Void
     var onRemove: (String) -> Void
+    var onPair: (String) -> Void = { _ in }
     @State private var rowFrames: [String: CGRect] = [:]
     @State private var draggedID: String?
     @State private var pointerY: CGFloat = 0
@@ -122,12 +123,15 @@ struct BuilderWorkoutCard: View {
             MovementIcon(exerciseId: exercise.exerciseId, size: 56)
             Button { onEditExercise(exercise) } label: {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text(exercise.displayName).appFont(.subheadline, weight: .semibold).foregroundStyle(AppColors.text)
+                    Text((Supersets.label(workout, exercise.id).map { "\($0) · " } ?? "") + exercise.displayName).appFont(.subheadline, weight: .semibold).foregroundStyle(AppColors.text)
                     Text(exercise.displayPrescription).appFont(.caption).foregroundStyle(AppColors.purple)
                 }.frame(maxWidth: .infinity, alignment: .leading).frame(minHeight: 48)
             }.buttonStyle(.plain)
             Menu {
                 Button(LanguageManager.t("builder.editExercise")) { onEditExercise(exercise) }
+                if Supersets.pair(workout, exercise.id) != nil || Supersets.canPair(workout, exercise.id) {
+                    Button(LanguageManager.t(Supersets.pair(workout, exercise.id) == nil ? "supersets.pairNext" : "supersets.unpair")) { onPair(exercise.id) }
+                }
                 Button(LanguageManager.t("builder.moveEarlier")) { onMove(exercise.id, index - 1) }.disabled(index == 0)
                 Button(LanguageManager.t("builder.moveLater")) { onMove(exercise.id, index + 1) }.disabled(index == workout.exercises.count - 1)
                 Button(LanguageManager.t("builder.removeExercise"), role: .destructive) { onRemove(exercise.id) }

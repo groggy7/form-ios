@@ -232,6 +232,7 @@ public struct Exercise: Identifiable, Codable, Hashable {
     public var movementType: String?
     public var movementAssetId: String?
     public var setupNote: String?
+    public var supersetId: String?
 
     public init(
         id: String = UUID().uuidString,
@@ -246,7 +247,8 @@ public struct Exercise: Identifiable, Codable, Hashable {
         restSeconds: Int? = nil,
         movementType: String? = nil,
         movementAssetId: String? = nil,
-        setupNote: String? = nil
+        setupNote: String? = nil,
+        supersetId: String? = nil
     ) {
         self.id = id
         self.name = name
@@ -261,6 +263,7 @@ public struct Exercise: Identifiable, Codable, Hashable {
         self.movementType = movementType
         self.movementAssetId = movementAssetId
         self.setupNote = setupNote
+        self.supersetId = supersetId
     }
 
     public var displayPrescription: String {
@@ -288,7 +291,7 @@ public struct Exercise: Identifiable, Codable, Hashable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, name, exerciseId, prescription, cues, avoid, videos, sets, reps, restSeconds, movementType, movementAssetId, setupNote
+        case id, name, exerciseId, prescription, cues, avoid, videos, sets, reps, restSeconds, movementType, movementAssetId, setupNote, supersetId
     }
 
     public init(from decoder: Decoder) throws {
@@ -320,6 +323,7 @@ public struct Exercise: Identifiable, Codable, Hashable {
             self.avoid = guidanceDefinition?.avoid.joined(separator: "\n") ?? ""
         }
 
+        self.supersetId = try container.decodeIfPresent(String.self, forKey: .supersetId)
         self.setupNote = try container.decodeIfPresent(String.self, forKey: .setupNote)
         self.videos = try container.decodeIfPresent([String].self, forKey: .videos) ?? []
         self.sets = try container.decodeIfPresent(Int.self, forKey: .sets)

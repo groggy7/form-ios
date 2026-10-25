@@ -111,6 +111,7 @@ extension ActiveSessionDraft {
               !(setsByExercise[exerciseId] ?? []).contains(where: { $0.isCompleted && !$0.isWarmup }) else { return self }
         var copy = self
         copy.workout.exercises[index] = replacement
+        copy.workout.exercises[index].supersetId = workout.exercises[index].supersetId
         copy.setsByExercise[exerciseId] = nil
         copy.effortByExercise?[exerciseId] = nil
         if copy.effortByExercise?.isEmpty == true { copy.effortByExercise = nil }
