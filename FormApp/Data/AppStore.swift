@@ -36,6 +36,7 @@ public final class AppStore: ObservableObject {
 
     @Published public var state: StoredAppState
     @Published public var activeSession: ActiveSessionDraft?
+    @Published var reviewPromptState = ReviewPromptState.load()
     @Published public var isSessionPresented: Bool = false
     public private(set) var isSceneBackgrounded = false
     @Published public var isOnboardingCompleted: Bool
@@ -1029,6 +1030,7 @@ public final class AppStore: ObservableObject {
         saveActiveSession(nil)
         self.activeSession = nil
         self.isSessionPresented = false
+        if suggestSharingAfterSave { recordReviewWorkoutSaved(adjustedRecord) }
 
         if suggestSharingAfterSave && suggestSharing && !wasComplete && adjustedRecord.isComplete == true {
             let week = SocialCards.week(program: activeProgram, completed: state.completed, history: state.history, weekKey: state.currentWeekKey, unit: weightUnit)
@@ -1037,6 +1039,20 @@ public final class AppStore: ObservableObject {
         if socialShareRequest == nil {
             showNotice(WorkoutSessionUtils.workoutRecordedNotice(finalRecord.totalVolumeKg, completedSets: finalRecord.totalCompletedSets, unit: weightUnit))
         }
+    }
+
+    /// Called only after a deliberate summary save has passed its durable write.
+    func recordReviewWorkoutSaved(_ record: WorkoutSessionRecord, now: Int64 = Int64(Date().timeIntervalSince1970 * 1000)) {
+        let next = reviewPromptState.recording(record, now: now)
+        if next != reviewPromptState, next.persist() { reviewPromptState = next }
+    }
+
+    func consumeReviewPrompt(allowed: Bool, now: Int64 = Int64(Date().timeIntervalSince1970 * 1000)) -> Bool {
+        guard allowed, reviewPromptState.canAttempt(now: now) else { return false }
+        let next = reviewPromptState.attempting(now: now)
+        guard next.persist() else { return false }
+        reviewPromptState = next
+        return true
     }
 
     // MARK: - Program Management

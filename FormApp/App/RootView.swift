@@ -1,5 +1,6 @@
 import SwiftUI
 import UIKit
+import StoreKit
 
 private struct MainTabScrollPositionKey: PreferenceKey {
     static var defaultValue: CGFloat? { nil }
@@ -58,6 +59,8 @@ private struct MainTabScrollGate: UIViewRepresentable {
 
 public struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.requestReview) private var requestReview
+    @ObservedObject private var billing = StoreKitSubscriptionManager.shared
     @StateObject private var store = AppStore.shared
     @StateObject private var langManager = LanguageManager.shared
     @State private var presentedSocialShareRequest: SocialShareRequest?
@@ -303,6 +306,18 @@ public struct RootView: View {
             _ = StoreKitSubscriptionManager.shared
             await ExerciseReportStore.shared.retryPendingReports()
         }
+        .task(id: reviewReady) {
+            guard reviewReady else { return }
+            try? await Task.sleep(nanoseconds: 1_000_000_000)
+            // UIKit can still be dismissing an untracked child sheet after SwiftUI clears its flag.
+            while !Task.isCancelled && reviewReady {
+                if ReviewPromptPresentation.hostIsIdle(), store.consumeReviewPrompt(allowed: reviewReady) {
+                    ReviewPromptPresentation.request { requestReview() }
+                    return
+                }
+                try? await Task.sleep(nanoseconds: 500_000_000)
+            }
+        }
         .onOpenURL { url in
             if url.scheme == "forcedrep", url.host == "workout", store.activeSession != nil {
                 store.resumeActiveSession()
@@ -325,6 +340,12 @@ public struct RootView: View {
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willTerminateNotification)) { _ in
             store.flushPendingState()
         }
+    }
+
+    private var reviewReady: Bool {
+        ReviewPromptPresentation.nativeRequestsEnabled && scenePhase == .active && mainTourIdle && !tour.isActive && !billing.isPurchasing &&
+            store.selectedExerciseId == nil && store.selectedHistoryDetailDay == nil &&
+            store.reviewPromptState.canAttempt(now: Int64(Date().timeIntervalSince1970 * 1000))
     }
 
     private var mainTourIdle: Bool {

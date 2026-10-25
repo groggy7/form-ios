@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BABA00000000000000000004 /* ReviewPromptTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABA00000000000000000003 /* ReviewPromptTests.swift */; };
+		BABA00000000000000000002 /* ReviewPrompt.swift in Sources */ = {isa = PBXBuildFile; fileRef = BABA00000000000000000001 /* ReviewPrompt.swift */; };
 		AABB01234567890123450002 /* NoteField.swift in Sources */ = {isa = PBXBuildFile; fileRef = AABB01234567890123450001 /* NoteField.swift */; };
 		76FC109C28BE4C5DB27F0241 /* TrainingPlanGeneratorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA04F575F9A44E88B7095902; };
 		B4849E351D2A67813D1D2CDD /* training_catalog.json in Resources */ = {isa = PBXBuildFile; fileRef = 49E9F7ECC8D4F1BBE29E9542 /* training_catalog.json */; };
@@ -230,6 +232,8 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXFileReference section */
+		BABA00000000000000000003 /* ReviewPromptTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormAppTests/ReviewPromptTests.swift; sourceTree = SOURCE_ROOT; };
+		BABA00000000000000000001 /* ReviewPrompt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data/ReviewPrompt.swift; sourceTree = "<group>"; };
 		AABB01234567890123450001 /* NoteField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/Components/NoteField.swift; sourceTree = "<group>"; };
 		CA04F575F9A44E88B7095902 /* TrainingPlanGeneratorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrainingPlanGeneratorTests.swift; sourceTree = "<group>"; };
 		49E9F7ECC8D4F1BBE29E9542 /* training_catalog.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = training_catalog.json; sourceTree = "<group>"; };
@@ -579,6 +583,8 @@
 			children = (
 				FA283146D3F72346C8B57CB9 /* SocialCardComposer.swift */,
 				AABB01234567890123450001 /* NoteField.swift */,
+				BABA00000000000000000003 /* ReviewPromptTests.swift */,
+				BABA00000000000000000001 /* ReviewPrompt.swift */,
 				0164A58B28631F1A8F02469B /* SocialCardRenderer.swift */,
 				59698B516FEB62A85A77468E /* SocialCardsTests.swift */,
 				60F1B2C71C2BAB561B4D7051 /* SocialCards.swift */,
@@ -958,6 +964,7 @@
 			files = (
 				177AB64314F6A5E6E9617DA9 /* SocialCardComposer.swift in Sources */,
 				AABB01234567890123450002 /* NoteField.swift in Sources */,
+				BABA00000000000000000002 /* ReviewPrompt.swift in Sources */,
 				C8FC3E2DD457F45E24157720 /* SocialCardRenderer.swift in Sources */,
 				3B645AC64EB340D1AA0578A2 /* SocialCards.swift in Sources */,
 				05417260ADF3E99BC760A4D0 /* RecordEngine.swift in Sources */,
@@ -1084,6 +1091,7 @@
 				C1500000000000000000000C /* ProgressionFixtureTests.swift in Sources */,
 				IS0000000000000000000002 /* IntensityFixtureTests.swift in Sources */,
 				HI0000000000000000000008 /* HistoryImportTests.swift in Sources */,
+				BABA00000000000000000004 /* ReviewPromptTests.swift in Sources */,
 				BJ0000000000000000000010 /* BodyAndJointJournalTests.swift in Sources */,
 				HW0000000000000000000004 /* HealthWeighInTests.swift in Sources */,
 				TR0000000000000000000006 /* TourTests.swift in Sources */,
