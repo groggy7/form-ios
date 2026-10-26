@@ -222,8 +222,25 @@ public struct HistoryDetailView: View {
                 Button {
                     let cards = SocialCards.workout(history: history, record: record, unit: weightUnit)
                     if !cards.isEmpty { socialRequest = SocialShareRequest(cards: cards) }
-                } label: { Label(LanguageManager.t("social.share"), systemImage: "square.and.arrow.up").frame(minHeight: 48) }
-                .buttonStyle(.bordered).tint(AppColors.accent).accessibilityIdentifier("history-share-\(record.id)")
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "square.and.arrow.up")
+                            .font(.system(size: 18, weight: .regular))
+                            .frame(width: 18, height: 20)
+                        Text(LanguageManager.t("social.share"))
+                            .font(.app(size: rowFont, weight: .medium))
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .foregroundStyle(AppColors.accent)
+                    .padding(.horizontal, 12).padding(.vertical, 8)
+                    .frame(minHeight: 40)
+                    .background(AppColors.surfaceRaised)
+                    .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                    .overlay(RoundedRectangle(cornerRadius: 10, style: .continuous).stroke(AppColors.border, lineWidth: 1))
+                    .frame(minHeight: 48)
+                    .contentShape(Rectangle())
+                }
+                .buttonStyle(.plain).accessibilityIdentifier("history-share-\(record.id)")
             }
             if let label = section.scheduleLabel(on: detail.date) {
                 Text(label).font(.app(size: detailFont)).foregroundStyle(AppColors.secondaryText)
